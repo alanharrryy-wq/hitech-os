@@ -1,5 +1,5 @@
-import type { AgentCapabilities, HealthReport, JobRequest, JobResult } from "../contracts.js";
-import { validateAgentCapabilities, validateJobResult } from "../contracts.js";
+import type { AgentCapabilities, HealthReport, JobRequest, JobResult } from "../contracts.ts";
+import { validateAgentCapabilities, validateJobResult } from "../contracts.ts";
 
 export interface AiAgentClientConfig {
   baseUrl: string;

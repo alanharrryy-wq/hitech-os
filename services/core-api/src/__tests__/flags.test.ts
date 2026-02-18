@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { FEATURE_FLAGS_DEFAULTS, validateJobRequest } from "../contracts.js";
+import { FEATURE_FLAGS_DEFAULTS, validateJobRequest } from "../contracts.ts";
 
 describe("validateJobRequest", () => {
   it("normalizes and accepts valid request payload", () => {

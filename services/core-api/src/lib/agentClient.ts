@@ -1,1 +1,1 @@
-export * from "./aiAgentClient.js";
+export * from "./aiAgentClient.ts";

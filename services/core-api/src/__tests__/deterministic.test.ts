@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { DeterministicJobQueue } from "../lib/jobQueue.js";
-import type { JobRequest } from "../contracts.js";
+import { DeterministicJobQueue } from "../lib/jobQueue.ts";
+import type { JobRequest } from "../contracts.ts";
 
 const FLAGS_OFF = {
   enableAiExecution: false,

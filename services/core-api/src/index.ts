@@ -1,5 +1,5 @@
-import { buildServer } from "./server.js";
-import { loadRuntimeConfig } from "./lib/config.js";
+import { buildServer } from "./server.ts";
+import { loadRuntimeConfig } from "./lib/config.ts";
 
 async function start(): Promise<void> {
   const config = loadRuntimeConfig();

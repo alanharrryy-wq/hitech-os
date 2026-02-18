@@ -18,7 +18,7 @@
     "turbo:test": "turbo run test",
     "turbo:typecheck": "turbo run typecheck",
     "docs": "node tools/scripts/generate_docs_index.mjs",
-    "health": "node tools/health/src/check_repo_health.mjs",
+    "health": "python tools/codex/guards/no_js_src_imports.py --repo . --config tools/codex/guards/no_js_src_imports.allowlist.json && node tools/health/src/check_repo_health.mjs",
     "schema:gen": "node packages/contracts/tools/gen_schemas.mjs",
     "smoke:core-api": "node services/core-api/scripts/smoke-core-api.mjs",
     "smoke:bridge": "node tools/scripts/smoke_node_python_bridge.mjs"

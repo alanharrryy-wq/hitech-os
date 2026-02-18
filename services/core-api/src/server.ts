@@ -1,14 +1,14 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
-import type { FeatureFlags } from "./contracts.js";
-import { FEATURE_FLAGS_DEFAULTS } from "./contracts.js";
-import { AiAgentClient } from "./lib/aiAgentClient.js";
-import { loadRuntimeConfig, type CoreApiRuntimeConfig } from "./lib/config.js";
-import { DeterministicJobQueue } from "./lib/jobQueue.js";
-import { getHttpContext, matchPath, writeNotFound } from "./lib/http.js";
-import { capabilitiesRoute } from "./routes/capabilities.js";
-import { flagsRoute } from "./routes/flags.js";
-import { healthRoute } from "./routes/health.js";
-import { getJobRoute, postJobsRoute, runJobRoute } from "./routes/jobs.js";
+import type { FeatureFlags } from "./contracts.ts";
+import { FEATURE_FLAGS_DEFAULTS } from "./contracts.ts";
+import { AiAgentClient } from "./lib/aiAgentClient.ts";
+import { loadRuntimeConfig, type CoreApiRuntimeConfig } from "./lib/config.ts";
+import { DeterministicJobQueue } from "./lib/jobQueue.ts";
+import { getHttpContext, matchPath, writeNotFound } from "./lib/http.ts";
+import { capabilitiesRoute } from "./routes/capabilities.ts";
+import { flagsRoute } from "./routes/flags.ts";
+import { healthRoute } from "./routes/health.ts";
+import { getJobRoute, postJobsRoute, runJobRoute } from "./routes/jobs.ts";
 
 export interface BuildServerOptions {
   runtimeConfig?: Partial<CoreApiRuntimeConfig>;

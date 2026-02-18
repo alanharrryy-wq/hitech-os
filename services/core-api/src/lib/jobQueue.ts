@@ -1,5 +1,5 @@
-import type { JsonValue, JobRequest, JobResult, JobStatus, StructuredLog } from "../contracts.js";
-import { normalizeUtcIso } from "./deterministic.js";
+import type { JsonValue, JobRequest, JobResult, JobStatus, StructuredLog } from "../contracts.ts";
+import { normalizeUtcIso } from "./deterministic.ts";
 
 export interface QueuedJobState {
   enqueueSeq: number;
