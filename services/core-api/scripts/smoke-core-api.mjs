@@ -1,0 +1,91 @@
+#!/usr/bin/env node
+import { spawn } from "node:child_process";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const serviceRoot = path.resolve(__dirname, "..");
+const baseUrl = "http://127.0.0.1:3101";
+
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function waitFor(url, timeoutMs = 10000) {
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    try {
+      const response = await fetch(url);
+      if (response.ok) {
+        return true;
+      }
+    } catch {
+      // retry
+    }
+    await wait(200);
+  }
+  return false;
+}
+
+async function readJson(response) {
+  const text = await response.text();
+  return text.length === 0 ? {} : JSON.parse(text);
+}
+
+async function run() {
+  const child = spawn(process.execPath, ["--experimental-strip-types", "src/index.ts"], {
+    cwd: serviceRoot,
+    env: {
+      ...process.env,
+      CORE_API_HOST: "127.0.0.1",
+      CORE_API_PORT: "3101"
+    },
+    stdio: ["ignore", "pipe", "pipe"]
+  });
+
+  child.stdout.on("data", (chunk) => process.stdout.write(`[core-api] ${chunk}`));
+  child.stderr.on("data", (chunk) => process.stderr.write(`[core-api:err] ${chunk}`));
+
+  try {
+    const ready = await waitFor(`${baseUrl}/health`);
+    if (!ready) {
+      throw new Error("core-api did not become healthy within timeout");
+    }
+
+    const enqueue = await fetch(`${baseUrl}/jobs`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({
+        jobId: "smoke-core-001",
+        kind: "echo",
+        input: {
+          text: "hello"
+        },
+        requestedAtUtc: "2026-01-01T00:00:00.000Z",
+        flags: {
+          enableAiExecution: false,
+          enableCapabilitiesProxy: false,
+          enableExperimentalUi: false,
+          enableHealthDashboard: false
+        }
+      })
+    });
+
+    const enqueuedResult = await readJson(enqueue);
+    const status = await fetch(`${baseUrl}/jobs/smoke-core-001`);
+    const statusResult = await readJson(status);
+
+    console.log("[smoke-core-api] enqueue", JSON.stringify(enqueuedResult));
+    console.log("[smoke-core-api] status", JSON.stringify(statusResult));
+  } finally {
+    child.kill("SIGTERM");
+  }
+}
+
+run().catch((error) => {
+  console.error("[smoke-core-api] FAILED", error.message);
+  process.exitCode = 1;
+});

@@ -1,0 +1,13 @@
+{
+  "name": "@hitech/health",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "health": "node src/check_repo_health.mjs",
+    "build": "node -e \"console.log('health tool: no build step required')\"",
+    "lint": "node -e \"console.log('health tool: lint delegated to root')\"",
+    "test": "node --test",
+    "typecheck": "node -e \"console.log('health tool: no typecheck step required')\""
+  }
+}

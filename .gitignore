@@ -1,0 +1,58 @@
+# Node / PNPM / Turbo
+node_modules/
+.pnpm-store/
+.npm/
+.turbo/
+
+# Build outputs
+dist/
+build/
+out/
+coverage/
+*.tsbuildinfo
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Logs and temp
+*.log
+*.tmp
+*.temp
+*.cache
+.cache/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Dangerous artifacts and dumps
+**/src/**/*.zip
+**/src/**/*.7z
+**/src/**/*.rar
+**/src/**/*.tar
+**/src/**/*.gz
+**/src/**/*.sql
+**/src/**/*.sqlite
+**/src/**/*.dump
+**/src/**/*DUMP*
+**/src/**/*OUT*
+**/src/**/*.bak*
+**/src/**/*.png
+**/src/**/*.jpg
+**/src/**/*.jpeg
+**/src/**/*.bmp
+
+# Allow deterministic generated schemas only
+!packages/contracts/schemas/generated/*.json

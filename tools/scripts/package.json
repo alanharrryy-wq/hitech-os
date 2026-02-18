@@ -1,0 +1,14 @@
+{
+  "name": "@hitech/scripts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "docs": "node generate_docs_index.mjs",
+    "smoke:bridge": "node smoke_node_python_bridge.mjs",
+    "build": "node -e \"console.log('scripts package: no build step required')\"",
+    "lint": "node -e \"console.log('scripts package: lint delegated to root')\"",
+    "test": "node --test",
+    "typecheck": "node -e \"console.log('scripts package: no typecheck step required')\""
+  }
+}

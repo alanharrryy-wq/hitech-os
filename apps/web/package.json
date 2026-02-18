@@ -1,0 +1,29 @@
+{
+  "name": "@hitech/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "test": "node --test",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@hitech/contracts": "workspace:*",
+    "@hitech/ui-kit": "workspace:*",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.0.2",
+    "@types/react-dom": "19.0.2",
+    "@typescript-eslint/eslint-plugin": "8.18.1",
+    "@typescript-eslint/parser": "8.18.1",
+    "eslint": "9.17.0",
+    "typescript": "5.7.2",
+    "vite": "6.0.3"
+  }
+}
