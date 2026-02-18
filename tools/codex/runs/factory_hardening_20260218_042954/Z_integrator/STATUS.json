@@ -1,0 +1,75 @@
+{
+  "artifacts": [
+    "FINAL_REPORT.txt",
+    "STATUS.json",
+    "FILES_CHANGED.json",
+    "DIFF.patch",
+    "LOGS/"
+  ],
+  "ended_at": "2026-02-18T10:35:41+00:00",
+  "errors": [],
+  "optional_checks": [
+    {
+      "log": "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954/Z_integrator/LOGS/preflight.log.txt",
+      "name": "preflight",
+      "rc": 0,
+      "status": "PASS"
+    },
+    {
+      "log": "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954/Z_integrator/LOGS/bundle_init.log.txt",
+      "name": "bundle_init",
+      "rc": 0,
+      "status": "PASS"
+    },
+    {
+      "log": "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954/Z_integrator/LOGS/launch_dry_run.log.txt",
+      "name": "launch_dry_run",
+      "rc": 0,
+      "status": "PASS"
+    },
+    {
+      "log": "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954/Z_integrator/LOGS/ledger.log.txt",
+      "name": "ledger",
+      "rc": 0,
+      "status": "PASS"
+    }
+  ],
+  "required_checks": [
+    {
+      "log": "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954/Z_integrator/LOGS/contracts_check.log.txt",
+      "name": "contracts_check",
+      "rc": 0,
+      "status": "PASS"
+    },
+    {
+      "log": "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954/Z_integrator/LOGS/bundle_validate.log.txt",
+      "name": "bundle_validate",
+      "rc": 0,
+      "status": "PASS"
+    },
+    {
+      "log": "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954/Z_integrator/LOGS/integrate.log.txt",
+      "name": "integrate",
+      "rc": 0,
+      "status": "PASS"
+    },
+    {
+      "log": "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954/Z_integrator/LOGS/self_test.log.txt",
+      "name": "self_test",
+      "rc": 0,
+      "status": "PASS"
+    },
+    {
+      "log": "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954/Z_integrator/LOGS/unit_tests.log.txt",
+      "name": "unit_tests",
+      "rc": 0,
+      "status": "PASS"
+    }
+  ],
+  "run_id": "factory_hardening_20260218_042954",
+  "schema_version": 1,
+  "started_at": "2026-02-18T10:35:41+00:00",
+  "status": "PASS",
+  "warnings": [],
+  "worker_id": "Z_integrator"
+}

@@ -1,0 +1,70 @@
+{
+  "artifacts": [
+    "FINAL_REPORT.txt",
+    "MERGE_PLAN.md",
+    "FILES_CHANGED.json",
+    "DIFF.patch",
+    "LOGS/integration.log.txt",
+    "LOGS/INDEX.json"
+  ],
+  "contract_version": 2,
+  "ended_at": "2026-02-18T13:15:11+00:00",
+  "errors": [],
+  "optional_checks": [],
+  "required_checks": [
+    {
+      "actor": "Z_integrator",
+      "detail": "blocked=0 hidden=0 invalid_paths=0 strict=True",
+      "name": "overlap_detection",
+      "rc": 0,
+      "required": true,
+      "status": "PASS"
+    },
+    {
+      "actor": "Z_integrator",
+      "detail": "",
+      "name": "schema_files_changed",
+      "rc": 0,
+      "required": true,
+      "status": "PASS"
+    },
+    {
+      "actor": "Z_integrator",
+      "detail": "",
+      "name": "schema_integrator_status",
+      "rc": 0,
+      "required": true,
+      "status": "PASS"
+    },
+    {
+      "actor": "Z_integrator",
+      "detail": "",
+      "name": "schema_log_index",
+      "rc": 0,
+      "required": true,
+      "status": "PASS"
+    },
+    {
+      "actor": "Z_integrator",
+      "detail": "blocked=0",
+      "name": "scope_detection",
+      "rc": 0,
+      "required": true,
+      "status": "PASS"
+    },
+    {
+      "actor": "Z_integrator",
+      "detail": "workers=4 blockers=0",
+      "name": "worker_bundle_validation",
+      "rc": 0,
+      "required": true,
+      "status": "PASS"
+    }
+  ],
+  "run_id": "factory_20260218_131510_6339cf02_001",
+  "schema_version": 1,
+  "started_at": "2026-02-18T13:15:11+00:00",
+  "status": "PASS",
+  "warnings": [],
+  "worker_id": "Z_integrator"
+}

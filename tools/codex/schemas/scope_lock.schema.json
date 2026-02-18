@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "allow_shared_paths": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "allowed_globs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "blocked_globs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "run_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema_version": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "worker_id": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "worker_id",
+    "allowed_globs",
+    "blocked_globs",
+    "allow_shared_paths"
+  ],
+  "title": "Scope Lock",
+  "type": "object"
+}

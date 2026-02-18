@@ -1,0 +1,70 @@
+{
+  "factory_name": "HITECH Multi-Codex Factory",
+  "feature_flags": {
+    "enable_auto_open_report": false,
+    "enable_auto_open_vscode": false,
+    "enable_ci_hook": false,
+    "enable_git_hook": false,
+    "enable_optional_repair": false,
+    "enable_overlap_blocking": false,
+    "enable_preflight_strict_mode": false,
+    "enable_run_packaging_zip": false,
+    "enable_scope_lock_enforcement": false,
+    "enable_smoke_validation_gate": false
+  },
+  "integrator": "Z_integrator",
+  "notes": [
+    "All feature flags default to false.",
+    "Deterministic ordering is required for all JSON outputs.",
+    "Z integrator merges and validates only; no feature invention."
+  ],
+  "required_integrator_files": [
+    "STATUS.json",
+    "FINAL_REPORT.txt",
+    "FILES_CHANGED.json",
+    "DIFF.patch",
+    "MERGE_PLAN.md",
+    "LOGS/INDEX.json"
+  ],
+  "required_worker_files": [
+    "STATUS.json",
+    "SUMMARY.md",
+    "FILES_CHANGED.json",
+    "DIFF.patch",
+    "SUGGESTIONS.md",
+    "SCOPE_LOCK.json",
+    "HANDOFF_NOTE.json",
+    "LOGS/INDEX.json"
+  ],
+  "schema_version": 1,
+  "schemas": {
+    "contracts_registry": "tools/codex/schemas/contracts_registry.schema.json",
+    "factory_config": "tools/codex/schemas/factory_config.schema.json",
+    "files_changed": "tools/codex/schemas/files_changed.schema.json",
+    "handoff_note": "tools/codex/schemas/handoff_note.schema.json",
+    "integrator_status": "tools/codex/schemas/integrator_status.schema.json",
+    "log_index": "tools/codex/schemas/log_index.schema.json",
+    "run_ledger": "tools/codex/schemas/run_ledger.schema.json",
+    "run_ledger_event": "tools/codex/schemas/run_ledger_event.schema.json",
+    "run_manifest": "tools/codex/schemas/run_manifest.schema.json",
+    "scope_lock": "tools/codex/schemas/scope_lock.schema.json",
+    "worker_bundle_status": "tools/codex/schemas/worker_bundle_status.schema.json"
+  },
+  "templates": {
+    "handoff_note": "tools/codex/templates/factory/handoff_note.template.json",
+    "integrator_report": "tools/codex/templates/factory/integrator_final_report.template.txt",
+    "log_index": "tools/codex/templates/factory/log_index.template.json",
+    "merge_plan": "tools/codex/templates/factory/merge_plan.template.md",
+    "scope_lock": "tools/codex/templates/factory/scope_lock.template.json",
+    "status": "tools/codex/templates/factory/status.template.json",
+    "worker_status": "tools/codex/templates/factory/worker_status.template.json",
+    "worker_summary": "tools/codex/templates/factory/worker_summary.template.md",
+    "worker_suggestions": "tools/codex/templates/factory/worker_suggestions.template.md"
+  },
+  "workers": [
+    "A_worker",
+    "B_worker",
+    "C_worker",
+    "D_worker"
+  ]
+}

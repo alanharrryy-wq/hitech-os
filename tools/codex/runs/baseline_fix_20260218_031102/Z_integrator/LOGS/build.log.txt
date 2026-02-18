@@ -1,0 +1,47 @@
+# command: pnpm -w -r build
+# group: node
+# cwd: F:\repos\hitech-os
+# required: True
+# allow_fail: False
+# started_at: 2026-02-18 03:32:48
+# ended_at: 2026-02-18 03:32:55
+# rc: 0
+
+
+> hitech-os@0.1.0 build F:\repos\hitech-os
+> pnpm -r --if-present build
+
+Scope: 9 of 10 workspace projects
+apps/demo-engine build$ node src/index.mjs --build
+packages/tooling build$ node -e "console.log('tooling package: config only')"
+packages/contracts build$ tsc -p tsconfig.json
+packages/ui-kit build$ tsc -p tsconfig.json
+apps/demo-engine build: [demo-engine] placeholder running in build mode
+packages/tooling build: tooling package: config only
+apps/demo-engine build: Done
+services/ai-agent build$ python -c "print('ai-agent build placeholder: runtime Python service')"
+packages/tooling build: Done
+services/core-api build$ node --experimental-strip-types -e "import('./src/contracts.ts').then(()=>console.log('core-api build placeholder: runtime-validated'))"
+services/ai-agent build: ai-agent build placeholder: runtime Python service
+services/ai-agent build: Done
+tools/health build$ node -e "console.log('health tool: no build step required')"
+services/core-api build: core-api build placeholder: runtime-validated
+tools/health build: health tool: no build step required
+services/core-api build: Done
+tools/scripts build$ node -e "console.log('scripts package: no build step required')"
+tools/health build: Done
+tools/scripts build: scripts package: no build step required
+tools/scripts build: Done
+packages/ui-kit build: Done
+packages/contracts build: Done
+apps/web build$ tsc -b && vite build
+apps/web build: [36mvite v6.0.3 [32mbuilding for production...[36m[39m
+apps/web build: transforming...
+apps/web build: [32m✓[39m 45 modules transformed.
+apps/web build: rendering chunks...
+apps/web build: computing gzip size...
+apps/web build: [2mdist/[22m[32mindex.html                 [39m[1m[2m  0.40 kB[22m[1m[22m[2m │ gzip:  0.27 kB[22m
+apps/web build: [2mdist/[22m[35massets/index--G9wYpmc.css  [39m[1m[2m  1.84 kB[22m[1m[22m[2m │ gzip:  0.82 kB[22m
+apps/web build: [2mdist/[22m[36massets/index-BPsjEvIE.js   [39m[1m[2m248.90 kB[22m[1m[22m[2m │ gzip: 74.51 kB[22m
+apps/web build: [32m✓ built in 1.27s[39m
+apps/web build: Done

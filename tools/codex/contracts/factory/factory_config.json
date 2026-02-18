@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "defaults": {
+    "branch_prefix": "codex/factory",
+    "integrator": "Z_integrator",
+    "run_prefix": "factory",
+    "workers": [
+      "A_worker",
+      "B_worker",
+      "C_worker",
+      "D_worker"
+    ]
+  },
+  "feature_flags": {
+    "enable_auto_open_report": false,
+    "enable_auto_open_vscode": false,
+    "enable_ci_hook": false,
+    "enable_git_hook": false,
+    "enable_optional_repair": false,
+    "enable_overlap_blocking": false,
+    "enable_preflight_strict_mode": false,
+    "enable_run_packaging_zip": false,
+    "enable_scope_lock_enforcement": false,
+    "enable_smoke_validation_gate": false
+  },
+  "policies": {
+    "additive_only": true,
+    "block_on_overlap": true,
+    "deterministic_default": true,
+    "feature_flags_default_off": true,
+    "idempotent_commands": true,
+    "machine_readable_logs": true,
+    "stable_sorting": true,
+    "z_no_feature_creation": true
+  }
+}

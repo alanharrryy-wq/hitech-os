@@ -1,0 +1,120 @@
+name: factory
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "tools/codex/factory/**"
+      - "tools/codex/schemas/**"
+      - "tools/codex/contracts/factory/**"
+      - "docs/factory/**"
+      - ".github/workflows/factory.yml"
+  pull_request:
+    paths:
+      - "tools/codex/factory/**"
+      - "tools/codex/schemas/**"
+      - "tools/codex/contracts/factory/**"
+      - "docs/factory/**"
+      - ".github/workflows/factory.yml"
+
+jobs:
+  factory-tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            experimental: false
+          - os: ubuntu-latest
+            experimental: true
+    continue-on-error: ${{ matrix.experimental }}
+    runs-on: ${{ matrix.os }}
+    env:
+      RUN_ID: ci_factory_${{ github.run_id }}_${{ github.run_attempt }}
+      HITECH_FACTORY_STRESS_MAX_SECONDS: "10"
+      FACTORY_SLOW_TESTS: "0"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Python Version
+        shell: pwsh
+        run: |
+          python --version
+          pip --version
+
+      - name: Compileall
+        shell: pwsh
+        run: |
+          python -m compileall tools/codex/factory tools/codex/schemas
+
+      - name: Optional Ruff
+        shell: pwsh
+        run: |
+          if (Get-Command ruff -ErrorAction SilentlyContinue) {
+            ruff --version
+            ruff check tools/codex/factory
+          } else {
+            Write-Output "ruff not installed; skipping"
+          }
+
+      - name: CLI Help
+        shell: pwsh
+        run: |
+          python -m tools.codex.factory --help
+          python -m tools.codex.factory.cli --help
+
+      - name: Factory Doctor
+        shell: pwsh
+        run: |
+          python -m tools.codex.factory doctor
+
+      - name: Contract Check
+        shell: pwsh
+        run: |
+          python -m tools.codex.factory contracts-check
+
+      - name: One-Shot Dry Run
+        shell: pwsh
+        run: |
+          python -m tools.codex.factory oneshot --run-id $env:RUN_ID --base-ref HEAD --dry-run | Tee-Object -FilePath factory-oneshot-output.json
+
+      - name: Factory Unit + Integration Tests
+        shell: pwsh
+        run: |
+          python -m unittest discover -s tools/codex/factory/tests -p "test_*.py" | Tee-Object -FilePath factory-tests-output.log
+
+      - name: Determinism Check
+        shell: pwsh
+        run: |
+          python -m unittest tools.codex.factory.tests.integration.test_determinism | Tee-Object -FilePath factory-determinism-output.log
+
+      - name: Quick Smoke
+        shell: pwsh
+        run: |
+          python -m tools.codex.factory self-test | Tee-Object -FilePath factory-smoke-output.json
+
+      - name: Upload Factory Artifacts On Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: factory-artifacts-${{ matrix.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          path: |
+            factory-oneshot-output.json
+            factory-tests-output.log
+            factory-determinism-output.log
+            factory-smoke-output.json
+            tools/codex/runs/factory_ledger.jsonl
+            tools/codex/runs/factory_ledger.sha256
+            tools/codex/runs/${{ env.RUN_ID }}/Z_integrator/FINAL_REPORT.txt
+            tools/codex/runs/${{ env.RUN_ID }}/Z_integrator/STATUS.json
+            tools/codex/runs/${{ env.RUN_ID }}/Z_integrator/MERGE_PLAN.md
+            tools/codex/runs/${{ env.RUN_ID }}/Z_integrator/LOGS/**
+            tools/codex/runs/${{ env.RUN_ID }}/attestations/**
+            tools/codex/runs/${{ env.RUN_ID }}/logs/**

@@ -1,0 +1,116 @@
+1) RUN ID + TIMESTAMP + BRANCH
+- Run ID: baseline_fix_20260218_031102
+- Timestamp: 2026-02-18 03:34:50 -06:00
+- Branch: chore/baseline-stabilization-20260218
+- Baseline commit at branch start: 87faa2b022312732146f277c886df25f10a2d38c
+- Stabilization commit: 42758de250fac14c78d90d26dee728347d22e494
+
+2) EVIDENCE SUMMARY
+- Pre-fix validation summary with false PASS:
+  - tools/codex/runs/preflight_20260218_023950/STATUS.json
+- First real typecheck failure:
+  - tools/codex/runs/preflight_20260218_023950/typecheck.log.txt
+  - src/index.ts(1,15): error TS2307 Cannot find module './capabilities.js'
+  - src/index.ts(5,15): error TS2307 Cannot find module './version.js'
+- First real build failure:
+  - tools/codex/runs/preflight_20260218_023950/build.log.txt
+  - same TS2307 module failures in packages/contracts/src/index.ts
+- First real unit-test failure:
+  - tools/codex/runs/preflight_20260218_023950/test_unit.log.txt
+  - ERR_MODULE_NOT_FOUND for services/core-api/src/lib/jobQueue.js
+  - ERR_MODULE_NOT_FOUND for services/core-api/src/contracts.js
+
+3) ROOT CAUSES
+- packages/contracts/src/index.ts exported capabilities/version modules that were missing from src.
+- services/core-api tests/runtime used .js specifiers while executing TS directly via node --experimental-strip-types.
+- tools/codex/validation.json marked required steps allow_fail=true, so run.py reported PASS despite failures.
+- apps/web build emitted JS into src because tsconfig noEmit was not set.
+
+4) FIXES APPLIED (BY FILE)
+- Contracts:
+  - packages/contracts/src/capabilities.ts
+  - packages/contracts/src/version.ts
+  - packages/contracts/src/__checks__/exports.check.ts
+- Core API import normalization to .ts for strip-types execution:
+  - services/core-api/src/__tests__/deterministic.test.ts
+  - services/core-api/src/__tests__/flags.test.ts
+  - services/core-api/src/index.ts
+  - services/core-api/src/server.ts
+  - services/core-api/src/lib/agentClient.ts
+  - services/core-api/src/lib/aiAgentClient.ts
+  - services/core-api/src/lib/flags.ts
+  - services/core-api/src/lib/jobQueue.ts
+- Validation hardening:
+  - tools/codex/validation.json
+  - tools/codex/run.py
+- Guardrails:
+  - tools/codex/guards/no_js_src_imports.py
+  - tools/codex/guards/no_js_src_imports.allowlist.json
+  - tools/codex/guards/tests/test_no_js_src_imports.py
+  - package.json
+  - tools/health/package.json
+- Docs:
+  - docs/codex-kernel/BASELINE_STABILIZATION.md
+  - docs/codex-kernel/INDEX.md
+  - docs/codex-kernel/docs/GUARD_NO_JS_SRC_IMPORTS.md
+  - docs/codex-kernel/docs/INDEX.md
+  - docs/codex-kernel/docs/40_VALIDATION.md
+- Hygiene:
+  - apps/web/tsconfig.json (set noEmit=true)
+
+5) GUARDRAILS ADDED
+- Deterministic Python guard fails on relative .js imports in TS src paths unless explicitly allowlisted.
+- Guard integrated into root health command and validation guardrails stage.
+- Synthetic fail dry-run evidence:
+  - tools/codex/runs/baseline_fix_20260218_031102/Z_integrator/LOGS/guard_synthetic_dry_run.log.txt
+
+6) VALIDATION RESULTS (COMMANDS + LOG PATHS)
+- pnpm -w -r typecheck: PASS
+  - tools/codex/runs/baseline_fix_20260218_031102/Z_integrator/LOGS/workspace_typecheck_final.log.txt
+- pnpm -w -r build: PASS
+  - tools/codex/runs/baseline_fix_20260218_031102/Z_integrator/LOGS/workspace_build_final.log.txt
+- pnpm -w -r test: PASS
+  - tools/codex/runs/baseline_fix_20260218_031102/Z_integrator/LOGS/workspace_test_final.log.txt
+- python tools/codex/run.py --run-id baseline_fix_20260218_031102 => PASS
+  - tools/codex/runs/baseline_fix_20260218_031102/Z_integrator/STATUS.json
+  - tools/codex/runs/baseline_fix_20260218_031102/Z_integrator/RUN_LOG.txt
+- pnpm health: PASS
+  - tools/codex/runs/baseline_fix_20260218_031102/Z_integrator/LOGS/health_final.log.txt
+- Post-commit reproducibility run: PASS
+  - tools/codex/runs/baseline_fix_20260218_031102/Z_integrator/LOGS/run_py_execution_post_commit.log.txt
+
+7) FINAL STATUS
+- PASS
+
+8) RISKS / TECH DEBT REMAINING
+- This repository snapshot still contains many pre-existing untracked kernel/doc files outside this commit scope.
+- Some packages intentionally retain .js specifiers in TS source via allowlist due compile-to-dist workflow.
+- services/core-api still duplicates contract types locally; Phase 1 extraction should converge this behind compatibility wrappers.
+
+9) SINGLE NEXT ACTION
+- Start Phase 1 extraction by switching one core-api contract consumption path to @hitech/contracts through a thin adapter, then validate with the same gate.
+
+DELETION_REQUESTS
+- None
+
+PHASE 1 EXTRACTION READINESS VERDICT
+- YES
+- Evidence: required gates PASS in tools/codex/runs/baseline_fix_20260218_031102/Z_integrator/STATUS.json
+
+BLOCK CHECKLIST SUMMARY
+- Block 01 Docs-first + Preflight: PASS
+- Block 02 Evidence capture: PASS
+- Block 03 contracts inspection: PASS
+- Block 04 contracts fix: PASS
+- Block 05 core-api inspection: PASS
+- Block 06 core-api fixes: PASS
+- Block 07 workspace typecheck stabilization: PASS
+- Block 08 workspace build stabilization: PASS
+- Block 09 unit test stabilization: PASS
+- Block 10 guardrails: PASS
+- Block 11 validation gate hardening: PASS
+- Block 12 baseline documentation: PASS
+- Block 13 repository hygiene verification: PASS
+- Block 14 run artifact packaging: PASS
+- Block 15 final verification pass: PASS
+- Block 16 commit + hand-off readiness: PASS

@@ -1,0 +1,64 @@
+Block: B
+Title: Multi-Codex Factory Hardening (Industrialization + Determinism + Audit)
+Status: PASS
+TimestampUTC: 2026-02-18T13:17:27Z
+
+Summary
+- Implemented industrial-grade factory upgrades across entrypoints, config, path security, locking, attestations, ledger v2, overlap detection v2, determinism harness, CI, docs, and tests.
+- Preserved additive-only constraints: no deletes or moves were performed.
+- Kept factory orchestration Python-first and deterministic by default.
+
+What Changed and Why
+- B1 Entry points and versioning:
+  - Added package entrypoint (`python -m tools.codex.factory`) and version module.
+  - Ensures predictable invocation from package form and explicit version visibility.
+- B2 Config system + schema:
+  - Added layered config loader (defaults < file < env < CLI) and schema-backed validation.
+  - Enables deterministic policy/config control without ad-hoc environment behavior.
+- B3 Path guard hardening:
+  - Added canonical path normalization/validation and anti-escape checks.
+  - Blocks absolute/traversal/mixed-path abuse patterns, including Windows-oriented edge cases.
+- B4 Locks and concurrency:
+  - Added per-run/per-worker lock files and integrated lock checks into worktree orchestration.
+  - Prevents concurrent mutation races and duplicate run collisions.
+- B5 Attestations:
+  - Added deterministic SHA256 manifest generation for bundles, ledger, and final report.
+  - Improves auditability and tamper evidence.
+- B6 Ledger v2:
+  - Extended ledger events with event IDs, parent IDs, durations, signatures, replay, and filtering.
+  - Added corruption handling and concurrency-safe append behavior.
+- B7 Collision detection v2:
+  - Reconciles FILES_CHANGED with DIFF.patch paths, detects hidden overlaps and invalid paths.
+  - Strict overlap blocking remains default; optional identical-patch exception stays off by default.
+- B8 Determinism harness:
+  - Added artifact normalization utility and integration determinism checks.
+  - Verifies two equivalent runs normalize to identical stable outputs (timestamps excluded).
+- B9 Stress/property/fuzz tests:
+  - Added path, overlap, schema fuzz/property/stress tests with slow gates via `FACTORY_SLOW_TESTS=1`.
+  - Raises confidence under malformed and high-volume inputs.
+- B10 CI/docs upgrades:
+  - Upgraded workflow for matrix execution, doctor/contracts checks, determinism checks, and failure artifact upload.
+  - Added forensics/security documentation and updated runbook commands.
+
+Validation Executed
+- `python -m tools.codex.factory --help` -> PASS
+- `python -m tools.codex.factory.cli --help` -> PASS
+- `python -m tools.codex.factory oneshot --base-ref HEAD --dry-run` -> PASS
+- `python -m unittest discover -s tools/codex/factory/tests -p "test_*.py"` -> PASS (`Ran 96 tests`, `OK`, `skipped=3`)
+- `python -m unittest tools.codex.factory.tests.integration.test_determinism` -> PASS (`Ran 2 tests`, `OK`)
+- `python -m unittest tools.codex.factory.tests.test_fs_guard` -> PASS (`Ran 3 tests`, `OK`)
+- `python -m tools.codex.factory doctor` -> PASS
+- `python -m tools.codex.factory ledger --run-id factory_20260218_131510_6339cf02_001 --limit 10` -> PASS
+- `python -m tools.codex.factory ledger-replay --run-id factory_20260218_131510_6339cf02_001` -> PASS
+
+Created and Modified Files
+- See `FILES_CREATED.txt`
+- See `FILES_MODIFIED.txt`
+
+Commands
+- See `COMMANDS_TO_RUN.txt`
+
+Known Limitations and Follow-ups
+- Symlink/junction escape checks are best-effort and depend on host filesystem capabilities.
+- Slow stress suites remain gated by `FACTORY_SLOW_TESTS=1` to keep default CI/runtime bounded.
+- Existing historical ledger entries can include legacy event types; replay/query path supports mixed history.

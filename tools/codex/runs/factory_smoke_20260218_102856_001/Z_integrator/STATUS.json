@@ -1,0 +1,32 @@
+{
+  "artifacts": [
+    "FINAL_REPORT.txt",
+    "MERGE_PLAN.md",
+    "FILES_CHANGED.json",
+    "DIFF.patch",
+    "LOGS/integration.log.txt"
+  ],
+  "ended_at": "2026-02-18T10:28:57+00:00",
+  "errors": [],
+  "optional_checks": [],
+  "required_checks": [
+    {
+      "name": "worker_bundle_validation",
+      "status": "PASS"
+    },
+    {
+      "name": "overlap_detection",
+      "status": "PASS"
+    },
+    {
+      "name": "scope_detection",
+      "status": "PASS"
+    }
+  ],
+  "run_id": "factory_smoke_20260218_102856_001",
+  "schema_version": 1,
+  "started_at": "2026-02-18T10:28:57+00:00",
+  "status": "PASS",
+  "warnings": [],
+  "worker_id": "Z_integrator"
+}

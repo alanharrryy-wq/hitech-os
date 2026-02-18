@@ -1,0 +1,44 @@
+{
+  "default_policy": "exclusive",
+  "rules": [
+    {
+      "allowed": [
+        "apps/**",
+        "packages/**"
+      ],
+      "worker": "A_worker"
+    },
+    {
+      "allowed": [
+        "apps/**",
+        "docs/**"
+      ],
+      "worker": "B_worker"
+    },
+    {
+      "allowed": [
+        "tools/**",
+        "packages/**"
+      ],
+      "worker": "C_worker"
+    },
+    {
+      "allowed": [
+        "docs/**",
+        "tools/**"
+      ],
+      "worker": "D_worker"
+    },
+    {
+      "allowed": [
+        "tools/codex/runs/**"
+      ],
+      "worker": "Z_integrator"
+    }
+  ],
+  "schema_version": 1,
+  "shared_allowlist": [
+    "docs/factory/**",
+    "tools/codex/runs/**"
+  ]
+}

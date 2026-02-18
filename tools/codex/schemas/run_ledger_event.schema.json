@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "actor": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "details": {
+      "type": "object"
+    },
+    "duration_ms": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "event_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "event_type": {
+      "enum": [
+        "RUN_START",
+        "PREFLIGHT",
+        "WORKTREE_CREATE",
+        "WORKER_BUNDLE_DISCOVERED",
+        "BUNDLE_VALIDATED",
+        "OVERLAP_CHECK",
+        "SCOPE_CHECK",
+        "INTEGRATE_START",
+        "REPORT_WRITTEN",
+        "RUN_END",
+        "RUN_STATE",
+        "ONESHOT_SUMMARY",
+        "RUN_INIT",
+        "LAUNCH_RESULT",
+        "INTEGRATION_RESULT",
+        "run_init",
+        "launch_result",
+        "integration_result",
+        "oneshot_summary",
+        "run_state"
+      ],
+      "type": "string"
+    },
+    "file_counts": {
+      "additionalProperties": {
+        "minimum": 0,
+        "type": "integer"
+      },
+      "type": "object"
+    },
+    "hashes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "parent_event_id": {
+      "type": "string"
+    },
+    "rc": {
+      "type": "integer"
+    },
+    "run_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema_version": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "ts_utc": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "ts_utc",
+    "run_id",
+    "event_type",
+    "actor",
+    "event_id",
+    "parent_event_id",
+    "duration_ms",
+    "file_counts",
+    "hashes",
+    "rc",
+    "details"
+  ],
+  "title": "Run Ledger Event",
+  "type": "object"
+}

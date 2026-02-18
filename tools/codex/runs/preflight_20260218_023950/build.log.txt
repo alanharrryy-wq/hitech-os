@@ -1,0 +1,34 @@
+
+> hitech-os@0.1.0 build F:\repos\hitech-os
+> pnpm -r --if-present build
+
+Scope: 9 of 10 workspace projects
+apps/demo-engine build$ node src/index.mjs --build
+packages/tooling build$ node -e "console.log('tooling package: config only')"
+packages/contracts build$ tsc -p tsconfig.json
+packages/ui-kit build$ tsc -p tsconfig.json
+apps/demo-engine build: [demo-engine] placeholder running in build mode
+packages/tooling build: tooling package: config only
+apps/demo-engine build: Done
+services/ai-agent build$ python -c "print('ai-agent build placeholder: runtime Python service')"
+packages/tooling build: Done
+services/core-api build$ node --experimental-strip-types -e "import('./src/contracts.ts').then(()=>console.log('core-api build placeholder: runtime-validated'))"
+services/ai-agent build: ai-agent build placeholder: runtime Python service
+services/ai-agent build: Done
+tools/health build$ node -e "console.log('health tool: no build step required')"
+services/core-api build: core-api build placeholder: runtime-validated
+tools/health build: health tool: no build step required
+services/core-api build: Done
+tools/scripts build$ node -e "console.log('scripts package: no build step required')"
+tools/health build: Done
+tools/scripts build: scripts package: no build step required
+tools/scripts build: Done
+packages/ui-kit build: Done
+packages/contracts build: src/index.ts(1,15): error TS2307: Cannot find module './capabilities.js' or its corresponding type declarations.
+packages/contracts build: src/index.ts(5,15): error TS2307: Cannot find module './version.js' or its corresponding type declarations.
+packages/contracts build: Failed
+F:\repos\hitech-os\packages\contracts:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @hitech/contracts@0.1.0 build: `tsc -p tsconfig.json`
+Exit status 2
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  hitech-os@0.1.0 build: `pnpm -r --if-present build`
+Exit status 2

@@ -17,6 +17,7 @@ RULE: If it’s not linked here, it doesn’t exist.
 - **GLOSSARY.md** — definitions, vocabulary, and “we mean this literally”
 - **GUARD_NO_JS_SRC_IMPORTS.md** — guardrail for TS src import specifiers
 - **../BASELINE_STABILIZATION.md** — clean baseline criteria + Phase 1 readiness
+- **../../factory/INDEX.md** — multi-codex factory operator docs and runbooks
 
 ## 🧩 Templates (Copy/Paste)
 - **templates/CODEX_OUTPUT_TEMPLATE.md**

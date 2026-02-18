@@ -1,0 +1,116 @@
+{
+  "blocked": 0,
+  "checks": [
+    {
+      "check": "python_version",
+      "detail": "3.12.10",
+      "minimum": "3.10",
+      "required": true,
+      "status": "PASS"
+    },
+    {
+      "check": "command_available",
+      "command": "git",
+      "detail": "C:\\Program Files\\Git\\cmd\\git.EXE",
+      "required": true,
+      "status": "PASS"
+    },
+    {
+      "check": "command_available",
+      "command": "python",
+      "detail": "C:\\Users\\alanh\\AppData\\Local\\Programs\\Python\\Python312\\python.EXE",
+      "required": true,
+      "status": "PASS"
+    },
+    {
+      "check": "command_available",
+      "command": "node",
+      "detail": "C:\\Program Files\\nodejs\\node.EXE",
+      "required": false,
+      "status": "PASS"
+    },
+    {
+      "check": "command_available",
+      "command": "pnpm",
+      "detail": "C:\\Users\\alanh\\AppData\\Roaming\\npm\\pnpm.CMD",
+      "required": false,
+      "status": "PASS"
+    },
+    {
+      "check": "command_available",
+      "command": "code",
+      "detail": "C:\\Users\\alanh\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\code.CMD",
+      "required": false,
+      "status": "PASS"
+    },
+    {
+      "check": "path_exists",
+      "detail": "present",
+      "path": "F:/repos/hitech-os/.git",
+      "required": true,
+      "status": "PASS"
+    },
+    {
+      "check": "path_exists",
+      "detail": "present",
+      "path": "F:/repos/hitech-os/tools/codex/run.py",
+      "required": true,
+      "status": "PASS"
+    },
+    {
+      "check": "path_exists",
+      "detail": "present",
+      "path": "F:/repos/hitech-os/tools/codex/validation.json",
+      "required": true,
+      "status": "PASS"
+    },
+    {
+      "check": "path_exists",
+      "detail": "present",
+      "path": "F:/repos/hitech-os/docs",
+      "required": true,
+      "status": "PASS"
+    },
+    {
+      "check": "path_exists",
+      "detail": "present",
+      "path": "F:/repos/hitech-os/tools/codex/contracts/factory",
+      "required": true,
+      "status": "PASS"
+    },
+    {
+      "check": "path_exists",
+      "detail": "present",
+      "path": "F:/repos/hitech-os/tools/codex/schemas",
+      "required": true,
+      "status": "PASS"
+    },
+    {
+      "check": "path_exists",
+      "detail": "missing",
+      "path": "F:/repos/hitech-os/AGENTS.md",
+      "required": false,
+      "status": "WARN"
+    },
+    {
+      "check": "path_exists",
+      "detail": "present",
+      "path": "F:/repos/hitech-os/docs/factory/AGENTS_FALLBACK.md",
+      "required": false,
+      "status": "PASS"
+    }
+  ],
+  "ended_at": "2026-02-18T13:15:10+00:00",
+  "platform": {
+    "machine": "AMD64",
+    "python": "3.12.10",
+    "release": "11",
+    "system": "Windows",
+    "version": "10.0.26100"
+  },
+  "run_id": "factory_20260218_131510_6339cf02_001",
+  "schema_version": 1,
+  "started_at": "2026-02-18T13:15:10+00:00",
+  "status": "PASS",
+  "warnings": 1
+}

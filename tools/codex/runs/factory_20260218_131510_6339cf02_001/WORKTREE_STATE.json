@@ -1,0 +1,257 @@
+{
+  "base_ref": "HEAD",
+  "base_ref_commit": {
+    "commit": "DRYRUN",
+    "rc": 0,
+    "ref": "HEAD",
+    "stderr": "",
+    "stdout": ""
+  },
+  "blocked": 0,
+  "lock_errors": [],
+  "operation": "create",
+  "run_id": "factory_20260218_131510_6339cf02_001",
+  "status": "PASS",
+  "steps": [
+    {
+      "actions": [
+        {
+          "cmd": [
+            "git",
+            "show-ref",
+            "--verify",
+            "refs/heads/codex/factory/factory_20260218_131510_6339cf02_001/A_worker"
+          ],
+          "cwd": "F:\\repos\\hitech-os",
+          "dry_run": true,
+          "rc": 0,
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "cmd": [
+            "git",
+            "worktree",
+            "add",
+            "F:/repos/hitech-os/tools/codex/worktrees/factory_20260218_131510_6339cf02_001/A_worker",
+            "codex/factory/factory_20260218_131510_6339cf02_001/A_worker"
+          ],
+          "cwd": "F:\\repos\\hitech-os",
+          "dry_run": true,
+          "rc": 0,
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "commit_check": {
+            "commit": "DRYRUN",
+            "rc": 0,
+            "ref": "HEAD",
+            "stderr": "",
+            "stdout": ""
+          }
+        }
+      ],
+      "base_ref_commit": {
+        "commit": "DRYRUN",
+        "rc": 0,
+        "ref": "HEAD",
+        "stderr": "",
+        "stdout": ""
+      },
+      "branch": "codex/factory/factory_20260218_131510_6339cf02_001/A_worker",
+      "commit_match": true,
+      "detail": "created",
+      "path": "F:/repos/hitech-os/tools/codex/worktrees/factory_20260218_131510_6339cf02_001/A_worker",
+      "status": "PASS",
+      "worker": "A_worker",
+      "worktree_commit": {
+        "commit": "DRYRUN",
+        "rc": 0,
+        "ref": "HEAD",
+        "stderr": "",
+        "stdout": ""
+      }
+    },
+    {
+      "actions": [
+        {
+          "cmd": [
+            "git",
+            "show-ref",
+            "--verify",
+            "refs/heads/codex/factory/factory_20260218_131510_6339cf02_001/B_worker"
+          ],
+          "cwd": "F:\\repos\\hitech-os",
+          "dry_run": true,
+          "rc": 0,
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "cmd": [
+            "git",
+            "worktree",
+            "add",
+            "F:/repos/hitech-os/tools/codex/worktrees/factory_20260218_131510_6339cf02_001/B_worker",
+            "codex/factory/factory_20260218_131510_6339cf02_001/B_worker"
+          ],
+          "cwd": "F:\\repos\\hitech-os",
+          "dry_run": true,
+          "rc": 0,
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "commit_check": {
+            "commit": "DRYRUN",
+            "rc": 0,
+            "ref": "HEAD",
+            "stderr": "",
+            "stdout": ""
+          }
+        }
+      ],
+      "base_ref_commit": {
+        "commit": "DRYRUN",
+        "rc": 0,
+        "ref": "HEAD",
+        "stderr": "",
+        "stdout": ""
+      },
+      "branch": "codex/factory/factory_20260218_131510_6339cf02_001/B_worker",
+      "commit_match": true,
+      "detail": "created",
+      "path": "F:/repos/hitech-os/tools/codex/worktrees/factory_20260218_131510_6339cf02_001/B_worker",
+      "status": "PASS",
+      "worker": "B_worker",
+      "worktree_commit": {
+        "commit": "DRYRUN",
+        "rc": 0,
+        "ref": "HEAD",
+        "stderr": "",
+        "stdout": ""
+      }
+    },
+    {
+      "actions": [
+        {
+          "cmd": [
+            "git",
+            "show-ref",
+            "--verify",
+            "refs/heads/codex/factory/factory_20260218_131510_6339cf02_001/C_worker"
+          ],
+          "cwd": "F:\\repos\\hitech-os",
+          "dry_run": true,
+          "rc": 0,
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "cmd": [
+            "git",
+            "worktree",
+            "add",
+            "F:/repos/hitech-os/tools/codex/worktrees/factory_20260218_131510_6339cf02_001/C_worker",
+            "codex/factory/factory_20260218_131510_6339cf02_001/C_worker"
+          ],
+          "cwd": "F:\\repos\\hitech-os",
+          "dry_run": true,
+          "rc": 0,
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "commit_check": {
+            "commit": "DRYRUN",
+            "rc": 0,
+            "ref": "HEAD",
+            "stderr": "",
+            "stdout": ""
+          }
+        }
+      ],
+      "base_ref_commit": {
+        "commit": "DRYRUN",
+        "rc": 0,
+        "ref": "HEAD",
+        "stderr": "",
+        "stdout": ""
+      },
+      "branch": "codex/factory/factory_20260218_131510_6339cf02_001/C_worker",
+      "commit_match": true,
+      "detail": "created",
+      "path": "F:/repos/hitech-os/tools/codex/worktrees/factory_20260218_131510_6339cf02_001/C_worker",
+      "status": "PASS",
+      "worker": "C_worker",
+      "worktree_commit": {
+        "commit": "DRYRUN",
+        "rc": 0,
+        "ref": "HEAD",
+        "stderr": "",
+        "stdout": ""
+      }
+    },
+    {
+      "actions": [
+        {
+          "cmd": [
+            "git",
+            "show-ref",
+            "--verify",
+            "refs/heads/codex/factory/factory_20260218_131510_6339cf02_001/D_worker"
+          ],
+          "cwd": "F:\\repos\\hitech-os",
+          "dry_run": true,
+          "rc": 0,
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "cmd": [
+            "git",
+            "worktree",
+            "add",
+            "F:/repos/hitech-os/tools/codex/worktrees/factory_20260218_131510_6339cf02_001/D_worker",
+            "codex/factory/factory_20260218_131510_6339cf02_001/D_worker"
+          ],
+          "cwd": "F:\\repos\\hitech-os",
+          "dry_run": true,
+          "rc": 0,
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "commit_check": {
+            "commit": "DRYRUN",
+            "rc": 0,
+            "ref": "HEAD",
+            "stderr": "",
+            "stdout": ""
+          }
+        }
+      ],
+      "base_ref_commit": {
+        "commit": "DRYRUN",
+        "rc": 0,
+        "ref": "HEAD",
+        "stderr": "",
+        "stdout": ""
+      },
+      "branch": "codex/factory/factory_20260218_131510_6339cf02_001/D_worker",
+      "commit_match": true,
+      "detail": "created",
+      "path": "F:/repos/hitech-os/tools/codex/worktrees/factory_20260218_131510_6339cf02_001/D_worker",
+      "status": "PASS",
+      "worker": "D_worker",
+      "worktree_commit": {
+        "commit": "DRYRUN",
+        "rc": 0,
+        "ref": "HEAD",
+        "stderr": "",
+        "stdout": ""
+      }
+    }
+  ]
+}

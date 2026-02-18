@@ -1,0 +1,127 @@
+
+> hitech-os@0.1.0 test F:\repos\hitech-os
+> pnpm -r --if-present test
+
+Scope: 9 of 10 workspace projects
+apps/demo-engine test$ node --test
+packages/tooling test$ node --test
+packages/ui-kit test$ node --test
+packages/contracts test$ node --test
+apps/demo-engine test: ℹ tests 0
+apps/demo-engine test: ℹ suites 0
+apps/demo-engine test: ℹ pass 0
+apps/demo-engine test: ℹ fail 0
+apps/demo-engine test: ℹ cancelled 0
+apps/demo-engine test: ℹ skipped 0
+apps/demo-engine test: ℹ todo 0
+apps/demo-engine test: ℹ duration_ms 26.2487
+packages/tooling test: ℹ tests 0
+packages/tooling test: ℹ suites 0
+packages/tooling test: ℹ pass 0
+packages/tooling test: ℹ fail 0
+packages/tooling test: ℹ cancelled 0
+packages/tooling test: ℹ skipped 0
+packages/tooling test: ℹ todo 0
+packages/tooling test: ℹ duration_ms 30.8063
+packages/contracts test: ℹ tests 0
+packages/contracts test: ℹ suites 0
+packages/contracts test: ℹ pass 0
+packages/contracts test: ℹ fail 0
+packages/contracts test: ℹ cancelled 0
+packages/contracts test: ℹ skipped 0
+packages/contracts test: ℹ todo 0
+packages/contracts test: ℹ duration_ms 55.6765
+apps/demo-engine test: Done
+services/ai-agent test$ python -m unittest discover -s tests -p "test_*.py"
+packages/ui-kit test: ℹ tests 0
+packages/ui-kit test: ℹ suites 0
+packages/ui-kit test: ℹ pass 0
+packages/ui-kit test: ℹ fail 0
+packages/ui-kit test: ℹ cancelled 0
+packages/ui-kit test: ℹ skipped 0
+packages/ui-kit test: ℹ todo 0
+packages/ui-kit test: ℹ duration_ms 82.2363
+packages/tooling test: Done
+packages/contracts test: Done
+services/core-api test$ node --experimental-strip-types --test src/__tests__/*.test.ts
+tools/health test$ node --test
+packages/ui-kit test: Done
+tools/scripts test$ node --test
+tools/scripts test: ℹ tests 0
+tools/scripts test: ℹ suites 0
+tools/scripts test: ℹ pass 0
+tools/scripts test: ℹ fail 0
+tools/scripts test: ℹ cancelled 0
+tools/scripts test: ℹ skipped 0
+tools/scripts test: ℹ todo 0
+tools/scripts test: ℹ duration_ms 24.7457
+tools/health test: ℹ tests 0
+tools/health test: ℹ suites 0
+tools/health test: ℹ pass 0
+tools/health test: ℹ fail 0
+tools/health test: ℹ cancelled 0
+tools/health test: ℹ skipped 0
+tools/health test: ℹ todo 0
+tools/health test: ℹ duration_ms 25.9475
+tools/health test: Done
+tools/scripts test: Done
+services/core-api test: node:internal/modules/esm/resolve:275
+services/core-api test:     throw new ERR_MODULE_NOT_FOUND(
+services/core-api test:           ^
+services/core-api test: Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'F:\repos\hitech-os\services\core-api\src\lib\jobQueue.js' imported from F:\repos\hitech-os\services\core-api\src\__tests__\deterministic.test.ts
+services/core-api test:     at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+services/core-api test:     at moduleResolve (node:internal/modules/esm/resolve:865:10)
+services/core-api test:     at defaultResolve (node:internal/modules/esm/resolve:991:11)
+services/core-api test:     at #cachedDefaultResolve (node:internal/modules/esm/loader:713:20)
+services/core-api test:     at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:730:38)
+services/core-api test:     at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:52)
+services/core-api test:     at #resolve (node:internal/modules/esm/loader:695:17)
+services/core-api test:     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:615:35)
+services/core-api test:     at ModuleJob.syncLink (node:internal/modules/esm/module_job:160:33)
+services/core-api test:     at ModuleJob.link (node:internal/modules/esm/module_job:245:17) {
+services/core-api test:   code: 'ERR_MODULE_NOT_FOUND',
+services/core-api test:   url: 'file:///F:/repos/hitech-os/services/core-api/src/lib/jobQueue.js'
+services/core-api test: }
+services/core-api test: Node.js v25.6.0
+services/core-api test: ✖ src\__tests__\deterministic.test.ts (217.1802ms)
+services/core-api test: node:internal/modules/esm/resolve:275
+services/core-api test:     throw new ERR_MODULE_NOT_FOUND(
+services/core-api test:           ^
+services/core-api test: Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'F:\repos\hitech-os\services\core-api\src\contracts.js' imported from F:\repos\hitech-os\services\core-api\src\__tests__\flags.test.ts
+services/core-api test:     at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+services/core-api test:     at moduleResolve (node:internal/modules/esm/resolve:865:10)
+services/core-api test:     at defaultResolve (node:internal/modules/esm/resolve:991:11)
+services/core-api test:     at #cachedDefaultResolve (node:internal/modules/esm/loader:713:20)
+services/core-api test:     at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:730:38)
+services/core-api test:     at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:52)
+services/core-api test:     at #resolve (node:internal/modules/esm/loader:695:17)
+services/core-api test:     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:615:35)
+services/core-api test:     at ModuleJob.syncLink (node:internal/modules/esm/module_job:160:33)
+services/core-api test:     at ModuleJob.link (node:internal/modules/esm/module_job:245:17) {
+services/core-api test:   code: 'ERR_MODULE_NOT_FOUND',
+services/core-api test:   url: 'file:///F:/repos/hitech-os/services/core-api/src/contracts.js'
+services/core-api test: }
+services/core-api test: Node.js v25.6.0
+services/core-api test: ✖ src\__tests__\flags.test.ts (209.0146ms)
+services/core-api test: ℹ tests 2
+services/core-api test: ℹ suites 0
+services/core-api test: ℹ pass 0
+services/core-api test: ℹ fail 2
+services/core-api test: ℹ cancelled 0
+services/core-api test: ℹ skipped 0
+services/core-api test: ℹ todo 0
+services/core-api test: ℹ duration_ms 238.8986
+services/core-api test: ✖ failing tests:
+services/core-api test: test at src\__tests__\deterministic.test.ts:1:1
+services/core-api test: ✖ src\__tests__\deterministic.test.ts (217.1802ms)
+services/core-api test:   'test failed'
+services/core-api test: test at src\__tests__\flags.test.ts:1:1
+services/core-api test: ✖ src\__tests__\flags.test.ts (209.0146ms)
+services/core-api test:   'test failed'
+services/core-api test: Failed
+F:\repos\hitech-os\services\core-api:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @hitech/core-api@0.2.0 test: `node --experimental-strip-types --test src/__tests__/*.test.ts`
+Exit status 1
+ WARN   Local package.json exists, but node_modules missing, did you mean to install?
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  hitech-os@0.1.0 test: `pnpm -r --if-present test`
+Exit status 1

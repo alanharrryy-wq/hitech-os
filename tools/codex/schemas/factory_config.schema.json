@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "_meta": {
+      "additionalProperties": true,
+      "type": "object"
+    },
+    "_validation_errors": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "contract_version": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "feature_flags": {
+      "additionalProperties": {
+        "type": "boolean"
+      },
+      "type": "object"
+    },
+    "paths": {
+      "additionalProperties": false,
+      "properties": {
+        "repo_root": {
+          "type": "string"
+        },
+        "runs_dir": {
+          "type": "string"
+        },
+        "worktrees_dir": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "repo_root",
+        "runs_dir",
+        "worktrees_dir"
+      ],
+      "type": "object"
+    },
+    "run": {
+      "additionalProperties": false,
+      "properties": {
+        "allow_identical_patch_overlap": {
+          "type": "boolean"
+        },
+        "base_ref": {
+          "type": "string"
+        },
+        "branch_prefix": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "quarantine_on_suspicious_bundle": {
+          "type": "boolean"
+        },
+        "run_prefix": {
+          "type": "string"
+        },
+        "strict_collision_mode": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "kind",
+        "run_prefix",
+        "branch_prefix",
+        "base_ref",
+        "strict_collision_mode",
+        "allow_identical_patch_overlap",
+        "quarantine_on_suspicious_bundle"
+      ],
+      "type": "object"
+    },
+    "schema_version": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "security": {
+      "additionalProperties": false,
+      "properties": {
+        "allow_executable_artifacts": {
+          "type": "boolean"
+        },
+        "allow_shell_execution": {
+          "type": "boolean"
+        },
+        "secret_scan_enabled": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "allow_shell_execution",
+        "allow_executable_artifacts",
+        "secret_scan_enabled"
+      ],
+      "type": "object"
+    },
+    "workers": {
+      "additionalProperties": false,
+      "properties": {
+        "allowlist_globs": {
+          "additionalProperties": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "type": "object"
+        },
+        "denylist_globs": {
+          "additionalProperties": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "type": "object"
+        },
+        "required_integrator_files": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "required_worker_files": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "required_worker_files",
+        "required_integrator_files",
+        "allowlist_globs",
+        "denylist_globs"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "contract_version",
+    "run",
+    "paths",
+    "workers",
+    "security",
+    "feature_flags"
+  ],
+  "title": "Factory Runtime Config",
+  "type": "object"
+}

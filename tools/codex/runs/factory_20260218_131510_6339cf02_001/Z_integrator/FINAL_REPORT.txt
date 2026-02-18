@@ -1,0 +1,65 @@
+# FINAL_REPORT - factory_20260218_131510_6339cf02_001
+
+## Summary
+- Final status: PASS
+- Contract version: 2
+- Worker bundles processed: 4
+- Overlap conflicts: 0
+- Scope violations: 0
+- Hidden overlaps: 0
+- Invalid FILES_CHANGED paths: 0
+
+## Required Checks
+- overlap_detection: PASS (rc=0)
+- schema_files_changed: PASS (rc=0)
+- schema_integrator_status: PASS (rc=0)
+- schema_log_index: PASS (rc=0)
+- scope_detection: PASS (rc=0)
+- worker_bundle_validation: PASS (rc=0)
+
+## Inputs
+- A_worker: PASS | errors=0 | bundle=F:/repos/hitech-os/tools/codex/runs/factory_20260218_131510_6339cf02_001/A_worker
+- B_worker: PASS | errors=0 | bundle=F:/repos/hitech-os/tools/codex/runs/factory_20260218_131510_6339cf02_001/B_worker
+- C_worker: PASS | errors=0 | bundle=F:/repos/hitech-os/tools/codex/runs/factory_20260218_131510_6339cf02_001/C_worker
+- D_worker: PASS | errors=0 | bundle=F:/repos/hitech-os/tools/codex/runs/factory_20260218_131510_6339cf02_001/D_worker
+
+## Worker Summaries
+### A_worker
+# A_worker Summary
+
+- Run ID: `factory_20260218_131510_6339cf02_001`
+- Worker: `A_worker`
+- Status: pending
+
+### B_worker
+# B_worker Summary
+
+- Run ID: `factory_20260218_131510_6339cf02_001`
+- Worker: `B_worker`
+- Status: pending
+
+### C_worker
+# C_worker Summary
+
+- Run ID: `factory_20260218_131510_6339cf02_001`
+- Worker: `C_worker`
+- Status: pending
+
+### D_worker
+# D_worker Summary
+
+- Run ID: `factory_20260218_131510_6339cf02_001`
+- Worker: `D_worker`
+- Status: pending
+
+## Blocking Conditions
+- None
+
+## Ledger Signature
+- Status: PASS
+- Signature file: F:/repos/hitech-os/tools/codex/runs/factory_ledger.sha256
+
+## NEXT ACTION
+- If BLOCKED: resolve overlap/scope/policy issues and rerun integration.
+- If FAIL: inspect logs and fix internal factory errors.
+- If PASS: run project-level validation and publish the run report.

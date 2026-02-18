@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "logs": {
+      "items": {
+        "additionalProperties": true,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "rc": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "path",
+          "rc"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "owner": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "run_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema_version": {
+      "minimum": 1,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "owner",
+    "logs"
+  ],
+  "title": "Log Index",
+  "type": "object"
+}

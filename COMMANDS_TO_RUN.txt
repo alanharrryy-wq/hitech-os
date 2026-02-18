@@ -1,0 +1,38 @@
+# Help / Version
+python -m tools.codex.factory --help
+python -m tools.codex.factory.cli --help
+python -m tools.codex.factory --version
+
+# Doctor / Contracts
+python -m tools.codex.factory doctor
+python -m tools.codex.factory contracts-check
+
+# One-shot pipeline (dry-run)
+python -m tools.codex.factory oneshot --base-ref HEAD --dry-run
+
+# One-shot pipeline (real run)
+python -m tools.codex.factory oneshot --base-ref HEAD
+
+# Launch only
+python -m tools.codex.factory launch --base-ref HEAD
+
+# Bundle validate
+python -m tools.codex.factory bundle-validate --run-id <RUN_ID>
+
+# Integrate
+python -m tools.codex.factory integrate --run-id <RUN_ID>
+
+# Ledger query / replay
+python -m tools.codex.factory ledger --run-id <RUN_ID> --limit 50
+python -m tools.codex.factory ledger --run-id <RUN_ID> --actor Z_integrator --event-type RUN_END --rc 0 --limit 50
+python -m tools.codex.factory ledger-replay --run-id <RUN_ID>
+
+# Report and run folder helpers
+python -m tools.codex.factory print-report --run-id <RUN_ID>
+python -m tools.codex.factory open-report --run-id <RUN_ID>
+python -m tools.codex.factory open-run --run-id <RUN_ID>
+
+# Unit + Integration tests
+python -m unittest discover -s tools/codex/factory/tests -p "test_*.py"
+python -m unittest tools.codex.factory.tests.integration.test_determinism
+python -m unittest tools.codex.factory.tests.integration.test_factory_pipeline

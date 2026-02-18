@@ -1,0 +1,101 @@
+# pnpm -w -r test (final)
+
+
+> hitech-os@0.1.0 test F:\repos\hitech-os
+> pnpm -r --if-present test
+
+Scope: 9 of 10 workspace projects
+apps/demo-engine test$ node --test
+packages/tooling test$ node --test
+packages/contracts test$ node --test
+packages/ui-kit test$ node --test
+packages/ui-kit test: ℹ tests 0
+packages/ui-kit test: ℹ suites 0
+packages/ui-kit test: ℹ pass 0
+packages/ui-kit test: ℹ fail 0
+packages/ui-kit test: ℹ cancelled 0
+packages/ui-kit test: ℹ skipped 0
+packages/ui-kit test: ℹ todo 0
+packages/ui-kit test: ℹ duration_ms 50.6393
+apps/demo-engine test: ℹ tests 0
+apps/demo-engine test: ℹ suites 0
+apps/demo-engine test: ℹ pass 0
+apps/demo-engine test: ℹ fail 0
+apps/demo-engine test: ℹ cancelled 0
+apps/demo-engine test: ℹ skipped 0
+apps/demo-engine test: ℹ todo 0
+apps/demo-engine test: ℹ duration_ms 38.6259
+packages/contracts test: ℹ tests 0
+packages/contracts test: ℹ suites 0
+packages/contracts test: ℹ pass 0
+packages/contracts test: ℹ fail 0
+packages/contracts test: ℹ cancelled 0
+packages/contracts test: ℹ skipped 0
+packages/contracts test: ℹ todo 0
+packages/contracts test: ℹ duration_ms 81.2459
+packages/tooling test: ℹ tests 0
+packages/tooling test: ℹ suites 0
+packages/tooling test: ℹ pass 0
+packages/tooling test: ℹ fail 0
+packages/tooling test: ℹ cancelled 0
+packages/tooling test: ℹ skipped 0
+packages/tooling test: ℹ todo 0
+packages/tooling test: ℹ duration_ms 62.4131
+packages/ui-kit test: Done
+services/ai-agent test$ python -m unittest discover -s tests -p "test_*.py"
+apps/demo-engine test: Done
+services/core-api test$ node --experimental-strip-types --test src/__tests__/*.test.ts
+packages/contracts test: Done
+tools/health test$ node --test
+packages/tooling test: Done
+tools/scripts test$ node --test
+tools/health test: ℹ tests 0
+tools/health test: ℹ suites 0
+tools/health test: ℹ pass 0
+tools/health test: ℹ fail 0
+tools/health test: ℹ cancelled 0
+tools/health test: ℹ skipped 0
+tools/health test: ℹ todo 0
+tools/health test: ℹ duration_ms 22.273
+tools/scripts test: ℹ tests 0
+tools/scripts test: ℹ suites 0
+tools/scripts test: ℹ pass 0
+tools/scripts test: ℹ fail 0
+tools/scripts test: ℹ cancelled 0
+tools/scripts test: ℹ skipped 0
+tools/scripts test: ℹ todo 0
+tools/scripts test: ℹ duration_ms 31.7546
+tools/health test: Done
+tools/scripts test: Done
+services/core-api test: ▶ DeterministicJobQueue
+services/core-api test:   ✔ orders queued jobs by requestedAtUtc and jobId deterministically (30.575ms)
+services/core-api test:   ✔ is idempotent when enqueueing the same jobId (0.6877ms)
+services/core-api test: ✔ DeterministicJobQueue (33.531ms)
+services/core-api test: ▶ validateJobRequest
+services/core-api test:   ✔ normalizes and accepts valid request payload (29.4715ms)
+services/core-api test:   ✔ rejects invalid request payload with explicit issues (0.4438ms)
+services/core-api test: ✔ validateJobRequest (32.6888ms)
+services/core-api test: ℹ tests 4
+services/core-api test: ℹ suites 2
+services/core-api test: ℹ pass 4
+services/core-api test: ℹ fail 0
+services/core-api test: ℹ cancelled 0
+services/core-api test: ℹ skipped 0
+services/core-api test: ℹ todo 0
+services/core-api test: ℹ duration_ms 555.6895
+services/core-api test: Done
+services/ai-agent test: ......
+services/ai-agent test: ----------------------------------------------------------------------
+services/ai-agent test: Ran 6 tests in 0.002s
+services/ai-agent test: OK
+services/ai-agent test: Done
+apps/web test$ node --test
+apps/web test: ℹ tests 0
+apps/web test: ℹ suites 0
+apps/web test: ℹ pass 0
+apps/web test: ℹ fail 0
+apps/web test: ℹ cancelled 0
+apps/web test: ℹ skipped 0
+apps/web test: ℹ todo 0
+apps/web test: ℹ duration_ms 36.4126
+apps/web test: Done

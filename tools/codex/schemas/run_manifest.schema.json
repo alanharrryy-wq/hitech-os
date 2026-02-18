@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "base_ref": {
+      "type": "string"
+    },
+    "base_ref_hash": {
+      "type": "string"
+    },
+    "contract_version": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "integrator": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "kind": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "paths": {
+      "additionalProperties": false,
+      "properties": {
+        "integrator_dir": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "logs_dir": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "run_dir": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_dir",
+        "integrator_dir",
+        "logs_dir"
+      ],
+      "type": "object"
+    },
+    "run_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema_version": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "status": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "workers": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "contract_version",
+    "run_id",
+    "kind",
+    "base_ref",
+    "base_ref_hash",
+    "status",
+    "workers",
+    "integrator",
+    "paths"
+  ],
+  "title": "Run Manifest",
+  "type": "object"
+}

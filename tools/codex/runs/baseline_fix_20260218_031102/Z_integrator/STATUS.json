@@ -1,0 +1,90 @@
+{
+  "run_id": "baseline_fix_20260218_031102",
+  "repo": "F:\\repos\\hitech-os",
+  "adapter": "F:\\repos\\hitech-os\\tools\\codex\\validation.json",
+  "started_at": "2026-02-18 03:32:40",
+  "results": [
+    {
+      "name": "git_status",
+      "group": "preflight",
+      "cmd": "git status --porcelain=v1",
+      "rc": 0,
+      "required": true,
+      "optional": false,
+      "allow_fail": false,
+      "status": "PASS",
+      "log": "F:\\repos\\hitech-os\\tools\\codex\\runs\\baseline_fix_20260218_031102\\Z_integrator\\LOGS\\git_status.log.txt"
+    },
+    {
+      "name": "no_js_src_imports",
+      "group": "guardrails",
+      "cmd": "python tools/codex/guards/no_js_src_imports.py --repo . --config tools/codex/guards/no_js_src_imports.allowlist.json",
+      "rc": 0,
+      "required": true,
+      "optional": false,
+      "allow_fail": false,
+      "status": "PASS",
+      "log": "F:\\repos\\hitech-os\\tools\\codex\\runs\\baseline_fix_20260218_031102\\Z_integrator\\LOGS\\no_js_src_imports.log.txt"
+    },
+    {
+      "name": "pnpm_install",
+      "group": "node",
+      "cmd": "pnpm -w install --frozen-lockfile",
+      "rc": 0,
+      "required": false,
+      "optional": true,
+      "allow_fail": true,
+      "status": "PASS",
+      "log": "F:\\repos\\hitech-os\\tools\\codex\\runs\\baseline_fix_20260218_031102\\Z_integrator\\LOGS\\pnpm_install.log.txt"
+    },
+    {
+      "name": "typecheck",
+      "group": "node",
+      "cmd": "pnpm -w -r typecheck",
+      "rc": 0,
+      "required": true,
+      "optional": false,
+      "allow_fail": false,
+      "status": "PASS",
+      "log": "F:\\repos\\hitech-os\\tools\\codex\\runs\\baseline_fix_20260218_031102\\Z_integrator\\LOGS\\typecheck.log.txt"
+    },
+    {
+      "name": "build",
+      "group": "node",
+      "cmd": "pnpm -w -r build",
+      "rc": 0,
+      "required": true,
+      "optional": false,
+      "allow_fail": false,
+      "status": "PASS",
+      "log": "F:\\repos\\hitech-os\\tools\\codex\\runs\\baseline_fix_20260218_031102\\Z_integrator\\LOGS\\build.log.txt"
+    },
+    {
+      "name": "test_unit",
+      "group": "node",
+      "cmd": "pnpm -w -r test",
+      "rc": 0,
+      "required": true,
+      "optional": false,
+      "allow_fail": false,
+      "status": "PASS",
+      "log": "F:\\repos\\hitech-os\\tools\\codex\\runs\\baseline_fix_20260218_031102\\Z_integrator\\LOGS\\test_unit.log.txt"
+    }
+  ],
+  "summary": {
+    "required": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0
+    },
+    "optional": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    }
+  },
+  "final": "PASS",
+  "blocked_reason": null,
+  "error": null,
+  "ended_at": "2026-02-18 03:32:57"
+}

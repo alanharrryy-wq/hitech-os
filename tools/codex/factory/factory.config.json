@@ -1,0 +1,96 @@
+{
+  "contract_version": 2,
+  "feature_flags": {
+    "enable_identical_patch_overlap": false,
+    "enable_ledger_compaction": false,
+    "enable_quarantine": false
+  },
+  "paths": {
+    "repo_root": "F:/repos/hitech-os",
+    "runs_dir": "F:/repos/hitech-os/tools/codex/runs",
+    "worktrees_dir": "F:/repos/hitech-os/tools/codex/worktrees"
+  },
+  "run": {
+    "allow_identical_patch_overlap": false,
+    "base_ref": "HEAD",
+    "branch_prefix": "codex/factory",
+    "kind": "factory",
+    "quarantine_on_suspicious_bundle": true,
+    "run_prefix": "factory",
+    "strict_collision_mode": true
+  },
+  "schema_version": 2,
+  "security": {
+    "allow_executable_artifacts": false,
+    "allow_shell_execution": false,
+    "secret_scan_enabled": true
+  },
+  "workers": {
+    "allowlist_globs": {
+      "A_worker": [
+        "apps/**",
+        "docs/**",
+        "packages/**"
+      ],
+      "B_worker": [
+        "apps/**",
+        "docs/**",
+        "packages/**"
+      ],
+      "C_worker": [
+        "docs/**",
+        "packages/**",
+        "tools/**"
+      ],
+      "D_worker": [
+        "docs/**",
+        "packages/**",
+        "tools/**"
+      ]
+    },
+    "denylist_globs": {
+      "A_worker": [
+        ".github/workflows/**",
+        ".git/**",
+        ".env",
+        ".env.*"
+      ],
+      "B_worker": [
+        ".github/workflows/**",
+        ".git/**",
+        ".env",
+        ".env.*"
+      ],
+      "C_worker": [
+        ".github/workflows/**",
+        ".git/**",
+        ".env",
+        ".env.*"
+      ],
+      "D_worker": [
+        ".github/workflows/**",
+        ".git/**",
+        ".env",
+        ".env.*"
+      ]
+    },
+    "required_integrator_files": [
+      "STATUS.json",
+      "FINAL_REPORT.txt",
+      "FILES_CHANGED.json",
+      "DIFF.patch",
+      "MERGE_PLAN.md",
+      "LOGS/INDEX.json"
+    ],
+    "required_worker_files": [
+      "STATUS.json",
+      "SUMMARY.md",
+      "FILES_CHANGED.json",
+      "DIFF.patch",
+      "SUGGESTIONS.md",
+      "SCOPE_LOCK.json",
+      "HANDOFF_NOTE.json",
+      "LOGS/INDEX.json"
+    ]
+  }
+}

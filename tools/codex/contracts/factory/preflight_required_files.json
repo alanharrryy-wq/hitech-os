@@ -1,0 +1,17 @@
+{
+  "optional_with_fallback": [
+    {
+      "fallback": "docs/factory/AGENTS_FALLBACK.md",
+      "path": "AGENTS.md",
+      "reason": "prevent agent prompt missing-file failures"
+    }
+  ],
+  "required": [
+    ".git",
+    "tools/codex/run.py",
+    "tools/codex/validation.json",
+    "tools/codex/contracts/factory/contracts_registry.json",
+    "tools/codex/schemas/worker_bundle_status.schema.json"
+  ],
+  "schema_version": 1
+}

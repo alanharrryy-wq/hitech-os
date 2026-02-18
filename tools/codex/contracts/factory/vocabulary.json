@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "terms": {
+    "blocked": "State where required checks fail.",
+    "bundle": "Per-agent output directory for a run.",
+    "integrator": "Worker that merges, validates, and reports only.",
+    "ledger": "Machine-readable history of runs.",
+    "optional_check": "Validation check that does not block by default.",
+    "pass": "State where required checks succeed.",
+    "required_check": "Validation gate that must pass.",
+    "run_id": "Deterministic id for one execution.",
+    "scope_lock": "File ownership contract for a worker.",
+    "warning": "Non-blocking issue."
+  }
+}

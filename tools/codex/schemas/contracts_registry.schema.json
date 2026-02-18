@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "factory_name": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "feature_flags": {
+      "additionalProperties": {
+        "type": "boolean"
+      },
+      "type": "object"
+    },
+    "integrator": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "notes": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "required_integrator_files": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "required_worker_files": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "schema_version": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "schemas": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "minProperties": 1,
+      "type": "object"
+    },
+    "templates": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "minProperties": 1,
+      "type": "object"
+    },
+    "workers": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 4,
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "factory_name",
+    "workers",
+    "integrator",
+    "required_worker_files",
+    "required_integrator_files",
+    "schemas",
+    "templates",
+    "feature_flags"
+  ],
+  "title": "Factory Contracts Registry",
+  "type": "object"
+}

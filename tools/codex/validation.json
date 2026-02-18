@@ -12,6 +12,12 @@
         "cmd": "python tools/codex/guards/no_js_src_imports.py --repo . --config tools/codex/guards/no_js_src_imports.allowlist.json",
         "allow_fail": false,
         "required": true
+      },
+      {
+        "name": "factory_contracts_check",
+        "cmd": "python tools/codex/factory_cli.py contracts-check",
+        "allow_fail": false,
+        "required": true
       }
     ]
   },

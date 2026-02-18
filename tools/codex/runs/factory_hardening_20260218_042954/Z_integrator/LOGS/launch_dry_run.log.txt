@@ -1,0 +1,291 @@
+# cmd: python tools/codex/factory_cli.py launch --run-id factory_hardening_20260218_042954_dry --dry-run
+# rc: 0
+
+{
+  "bundles": {
+    "integrator": {
+      "bundle_dir": "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954_dry/Z_integrator",
+      "created": [],
+      "worker": "Z_integrator"
+    },
+    "run_id": "factory_hardening_20260218_042954_dry",
+    "workers": [
+      {
+        "bundle_dir": "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954_dry/A_worker",
+        "created": [],
+        "worker": "A_worker"
+      },
+      {
+        "bundle_dir": "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954_dry/B_worker",
+        "created": [],
+        "worker": "B_worker"
+      },
+      {
+        "bundle_dir": "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954_dry/C_worker",
+        "created": [],
+        "worker": "C_worker"
+      },
+      {
+        "bundle_dir": "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954_dry/D_worker",
+        "created": [],
+        "worker": "D_worker"
+      }
+    ]
+  },
+  "preflight": {
+    "blocked": 0,
+    "checks": [
+      {
+        "check": "python_version",
+        "detail": "3.12.10",
+        "minimum": "3.10",
+        "required": true,
+        "status": "PASS"
+      },
+      {
+        "check": "command_available",
+        "command": "git",
+        "detail": "C:\\Program Files\\Git\\cmd\\git.EXE",
+        "required": true,
+        "status": "PASS"
+      },
+      {
+        "check": "command_available",
+        "command": "python",
+        "detail": "C:\\Users\\alanh\\AppData\\Local\\Programs\\Python\\Python312\\python.EXE",
+        "required": true,
+        "status": "PASS"
+      },
+      {
+        "check": "command_available",
+        "command": "code",
+        "detail": "C:\\Users\\alanh\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\code.CMD",
+        "required": false,
+        "status": "PASS"
+      },
+      {
+        "check": "path_exists",
+        "detail": "present",
+        "path": "F:/repos/hitech-os/.git",
+        "required": true,
+        "status": "PASS"
+      },
+      {
+        "check": "path_exists",
+        "detail": "present",
+        "path": "F:/repos/hitech-os/tools/codex/run.py",
+        "required": true,
+        "status": "PASS"
+      },
+      {
+        "check": "path_exists",
+        "detail": "present",
+        "path": "F:/repos/hitech-os/tools/codex/validation.json",
+        "required": true,
+        "status": "PASS"
+      },
+      {
+        "check": "path_exists",
+        "detail": "present",
+        "path": "F:/repos/hitech-os/docs",
+        "required": true,
+        "status": "PASS"
+      },
+      {
+        "check": "path_exists",
+        "detail": "present",
+        "path": "F:/repos/hitech-os/tools/codex/contracts/factory",
+        "required": true,
+        "status": "PASS"
+      },
+      {
+        "check": "path_exists",
+        "detail": "present",
+        "path": "F:/repos/hitech-os/tools/codex/schemas",
+        "required": true,
+        "status": "PASS"
+      },
+      {
+        "check": "path_exists",
+        "detail": "missing",
+        "path": "F:/repos/hitech-os/AGENTS.md",
+        "required": false,
+        "status": "WARN"
+      },
+      {
+        "check": "path_exists",
+        "detail": "present",
+        "path": "F:/repos/hitech-os/docs/factory/AGENTS_FALLBACK.md",
+        "required": false,
+        "status": "PASS"
+      }
+    ],
+    "ended_at": "2026-02-18T10:35:34+00:00",
+    "platform": {
+      "machine": "AMD64",
+      "python": "3.12.10",
+      "release": "11",
+      "system": "Windows",
+      "version": "10.0.26100"
+    },
+    "run_id": "factory_hardening_20260218_042954_dry",
+    "schema_version": 1,
+    "started_at": "2026-02-18T10:35:34+00:00",
+    "status": "PASS",
+    "warnings": 1
+  },
+  "run_id": "factory_hardening_20260218_042954_dry",
+  "status": "PASS",
+  "worktrees": {
+    "blocked": 0,
+    "operation": "create",
+    "run_id": "factory_hardening_20260218_042954_dry",
+    "status": "PASS",
+    "steps": [
+      {
+        "actions": [
+          {
+            "cmd": [
+              "git",
+              "show-ref",
+              "--verify",
+              "refs/heads/codex/factory/factory_hardening_20260218_042954_dry/A_worker"
+            ],
+            "cwd": "F:\\repos\\hitech-os",
+            "dry_run": true,
+            "rc": 0,
+            "stderr": "",
+            "stdout": ""
+          },
+          {
+            "cmd": [
+              "git",
+              "worktree",
+              "add",
+              "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954_dry/worktrees/A_worker",
+              "codex/factory/factory_hardening_20260218_042954_dry/A_worker"
+            ],
+            "cwd": "F:\\repos\\hitech-os",
+            "dry_run": true,
+            "rc": 0,
+            "stderr": "",
+            "stdout": ""
+          }
+        ],
+        "branch": "codex/factory/factory_hardening_20260218_042954_dry/A_worker",
+        "detail": "created",
+        "path": "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954_dry/worktrees/A_worker",
+        "status": "PASS",
+        "worker": "A_worker"
+      },
+      {
+        "actions": [
+          {
+            "cmd": [
+              "git",
+              "show-ref",
+              "--verify",
+              "refs/heads/codex/factory/factory_hardening_20260218_042954_dry/B_worker"
+            ],
+            "cwd": "F:\\repos\\hitech-os",
+            "dry_run": true,
+            "rc": 0,
+            "stderr": "",
+            "stdout": ""
+          },
+          {
+            "cmd": [
+              "git",
+              "worktree",
+              "add",
+              "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954_dry/worktrees/B_worker",
+              "codex/factory/factory_hardening_20260218_042954_dry/B_worker"
+            ],
+            "cwd": "F:\\repos\\hitech-os",
+            "dry_run": true,
+            "rc": 0,
+            "stderr": "",
+            "stdout": ""
+          }
+        ],
+        "branch": "codex/factory/factory_hardening_20260218_042954_dry/B_worker",
+        "detail": "created",
+        "path": "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954_dry/worktrees/B_worker",
+        "status": "PASS",
+        "worker": "B_worker"
+      },
+      {
+        "actions": [
+          {
+            "cmd": [
+              "git",
+              "show-ref",
+              "--verify",
+              "refs/heads/codex/factory/factory_hardening_20260218_042954_dry/C_worker"
+            ],
+            "cwd": "F:\\repos\\hitech-os",
+            "dry_run": true,
+            "rc": 0,
+            "stderr": "",
+            "stdout": ""
+          },
+          {
+            "cmd": [
+              "git",
+              "worktree",
+              "add",
+              "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954_dry/worktrees/C_worker",
+              "codex/factory/factory_hardening_20260218_042954_dry/C_worker"
+            ],
+            "cwd": "F:\\repos\\hitech-os",
+            "dry_run": true,
+            "rc": 0,
+            "stderr": "",
+            "stdout": ""
+          }
+        ],
+        "branch": "codex/factory/factory_hardening_20260218_042954_dry/C_worker",
+        "detail": "created",
+        "path": "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954_dry/worktrees/C_worker",
+        "status": "PASS",
+        "worker": "C_worker"
+      },
+      {
+        "actions": [
+          {
+            "cmd": [
+              "git",
+              "show-ref",
+              "--verify",
+              "refs/heads/codex/factory/factory_hardening_20260218_042954_dry/D_worker"
+            ],
+            "cwd": "F:\\repos\\hitech-os",
+            "dry_run": true,
+            "rc": 0,
+            "stderr": "",
+            "stdout": ""
+          },
+          {
+            "cmd": [
+              "git",
+              "worktree",
+              "add",
+              "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954_dry/worktrees/D_worker",
+              "codex/factory/factory_hardening_20260218_042954_dry/D_worker"
+            ],
+            "cwd": "F:\\repos\\hitech-os",
+            "dry_run": true,
+            "rc": 0,
+            "stderr": "",
+            "stdout": ""
+          }
+        ],
+        "branch": "codex/factory/factory_hardening_20260218_042954_dry/D_worker",
+        "detail": "created",
+        "path": "F:/repos/hitech-os/tools/codex/runs/factory_hardening_20260218_042954_dry/worktrees/D_worker",
+        "status": "PASS",
+        "worker": "D_worker"
+      }
+    ]
+  }
+}
