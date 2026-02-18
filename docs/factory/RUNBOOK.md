@@ -44,6 +44,15 @@ python -m tools.codex.factory open-run --run-id <RUN_ID>
 python -m tools.codex.factory print-report --run-id <RUN_ID>
 ```
 
+## Operator Orchestrator
+For phase-driven operator-managed runs, use:
+
+```powershell
+python -m tools.codex.factory operator phase1-extract --base-ref HEAD
+```
+
+Operator mode preserves the same stage semantics and ultimately runs `bundle-validate` then `integrate` after worker completion.
+
 ## One-Shot Stage Order
 `oneshot` executes:
 1. `preflight`

@@ -76,3 +76,18 @@ FINAL_REPORT*.txt
 FINAL_REPORT.txt
 # OS / editor junk
 *.swp
+
+# === HITECH FACTORY RUNTIME ARTIFACTS (AUTO) START ===
+
+# Codex / Factory runtime artifacts (DO NOT COMMIT)
+tools/codex/prompts/**
+tools/codex/_diff_exports/**
+
+# Optional: if you decide runs/worktrees should NEVER be committed
+# tools/codex/runs/**
+# tools/codex/worktrees/**
+
+# OS junk
+Thumbs.db
+Desktop.ini
+# === HITECH FACTORY RUNTIME ARTIFACTS (AUTO) END ===

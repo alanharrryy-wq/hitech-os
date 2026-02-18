@@ -3,13 +3,11 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
-from dataclasses import dataclass
+import sys
 from pathlib import Path
 from typing import Any
 
 if __package__ in {None, ""}:
-    import sys
-
     ROOT = Path(__file__).resolve().parents[1]
     if str(ROOT) not in sys.path:
         sys.path.insert(0, str(ROOT))
@@ -20,11 +18,23 @@ if __package__ in {None, ""}:
     from factory.doctor import run_doctor
     from factory.integrator import integrate_run
     from factory.ledger import append_event, query_events, query_runs, replay_ledger, verify_ledger_signature
+    from factory.orchestrator import (
+        DEFAULT_PHASE,
+        DEFAULT_SLEEP_SEC,
+        DEFAULT_TIMEOUT_MIN,
+        OperatorCollisionError,
+        OperatorError,
+        generate_phase_prompts,
+        resolve_phase_workers,
+        run_external_command,
+        runboard_path,
+        watch_for_worker_statuses,
+    )
     from factory.preflight import run_preflight
     from factory.run_id import next_run_identity
     from factory.schemas import contracts_check, validate_payload
     from factory.smoke import run_smoke
-    from factory.status_eval import BLOCKED, PASS, evaluate_status, make_check, status_exit_code
+    from factory.status_eval import BLOCKED, FAIL, PASS, combine_statuses, evaluate_status, make_check, status_exit_code
     from factory.version import get_version
     from factory.worktrees import create_worktrees, open_worktrees, sync_worktrees, verify_worktrees
 else:
@@ -34,20 +44,32 @@ else:
     from .doctor import run_doctor
     from .integrator import integrate_run
     from .ledger import append_event, query_events, query_runs, replay_ledger, verify_ledger_signature
+    from .orchestrator import (
+        DEFAULT_PHASE,
+        DEFAULT_SLEEP_SEC,
+        DEFAULT_TIMEOUT_MIN,
+        OperatorCollisionError,
+        OperatorError,
+        generate_phase_prompts,
+        resolve_phase_workers,
+        run_external_command,
+        runboard_path,
+        watch_for_worker_statuses,
+    )
     from .preflight import run_preflight
     from .run_id import next_run_identity
     from .schemas import contracts_check, validate_payload
     from .smoke import run_smoke
-    from .status_eval import BLOCKED, PASS, evaluate_status, make_check, status_exit_code
+    from .status_eval import BLOCKED, FAIL, PASS, combine_statuses, evaluate_status, make_check, status_exit_code
     from .version import get_version
     from .worktrees import create_worktrees, open_worktrees, sync_worktrees, verify_worktrees
 
 
 def _parse_workers(raw: str | None) -> list[str]:
     if raw is None or not raw.strip():
-        return list(WORKERS)
+        return sorted(set(WORKERS))
     parsed = [item.strip() for item in raw.split(",") if item.strip()]
-    return parsed or list(WORKERS)
+    return sorted(set(parsed)) or sorted(set(WORKERS))
 
 
 def _emit(payload: dict[str, Any], json_out: str | None = None) -> None:
@@ -255,7 +277,13 @@ def cmd_worktrees(args: argparse.Namespace) -> int:
     elif args.action == "sync":
         payload = sync_worktrees(args.run_id, workers=workers, dry_run=args.dry_run)
     elif args.action == "open":
-        payload = open_worktrees(args.run_id, workers=workers, dry_run=args.dry_run)
+        payload = open_worktrees(
+            args.run_id,
+            workers=workers,
+            dry_run=args.dry_run,
+            new_window=bool(getattr(args, "new_window", False)),
+            goto=getattr(args, "goto", None),
+        )
     else:
         raise ValueError(f"unsupported worktree action: {args.action}")
     _emit(payload, args.json_out)
@@ -560,6 +588,594 @@ def cmd_print_report(args: argparse.Namespace) -> int:
     return 0
 
 
+_PHASE1_AGENT_ACTION = "In each worker VS Code window: Ctrl+Alt+P → New Codex Agent → paste PROMPT_WORKER.txt"
+
+
+def _as_sorted_unique(values: list[str]) -> list[str]:
+    return sorted({str(item).strip() for item in values if str(item).strip()})
+
+
+def _operator_summary(
+    *,
+    command: str,
+    run_id: str,
+    base_ref: str,
+    workers: list[str],
+    actions_performed: list[str],
+    status: str,
+    paths_opened: list[str],
+    next_steps: list[str],
+    details: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    payload: dict[str, Any] = {
+        "command": command,
+        "run_id": run_id,
+        "base_ref": base_ref,
+        "workers": _as_sorted_unique(workers),
+        "actions_performed": _as_sorted_unique(actions_performed),
+        "status": status,
+        "paths_opened": _as_sorted_unique(paths_opened),
+        "next_steps": _as_sorted_unique(next_steps),
+    }
+    if details:
+        payload["details"] = details
+    return payload
+
+
+def _open_in_code(path: Path, *, dry_run: bool, new_window: bool = False, goto: bool = False) -> dict[str, Any]:
+    cmd = ["code"]
+    if new_window:
+        cmd.append("-n")
+    if goto:
+        cmd.extend(["--goto", path.as_posix()])
+    else:
+        cmd.append(path.as_posix())
+    return run_external_command(cmd, dry_run=dry_run)
+
+
+def _open_in_explorer(path: Path, *, dry_run: bool) -> dict[str, Any]:
+    return run_external_command(["explorer", path.as_posix()], dry_run=dry_run)
+
+
+def _open_final_report_outputs(
+    *,
+    run_id: str,
+    dry_run: bool,
+    open_vscode: bool,
+) -> dict[str, Any]:
+    report_path = RUNS_DIR / run_id / INTEGRATOR / "FINAL_REPORT.txt"
+    run_dir = RUNS_DIR / run_id
+    actions: list[dict[str, Any]] = []
+    opened_paths: list[str] = []
+
+    if open_vscode:
+        report_action = _open_in_code(report_path, dry_run=dry_run, new_window=False, goto=True)
+        actions.append(report_action)
+        if int(report_action.get("rc", 1)) == 0:
+            opened_paths.append(report_path.as_posix())
+
+    explorer_action = _open_in_explorer(run_dir, dry_run=dry_run)
+    actions.append(explorer_action)
+    if int(explorer_action.get("rc", 1)) == 0:
+        opened_paths.append(run_dir.as_posix())
+
+    return {
+        "actions": actions,
+        "opened_paths": sorted(set(opened_paths)),
+        "status": PASS if all(int(item.get("rc", 1)) == 0 for item in actions) else "WARN",
+    }
+
+
+def _bundle_init_with_optional_dry_run(run_id: str, *, workers: list[str], dry_run: bool) -> dict[str, Any]:
+    if dry_run:
+        return {
+            "run_id": run_id,
+            "workers": [{"worker": worker, "bundle_dir": (RUNS_DIR / run_id / worker).as_posix(), "created": []} for worker in workers],
+            "integrator": {"worker": INTEGRATOR, "bundle_dir": (RUNS_DIR / run_id / INTEGRATOR).as_posix(), "created": []},
+            "status": PASS,
+            "detail": "dry-run planned bundle scaffold",
+        }
+    payload = scaffold_all_bundles(run_id, workers=workers)
+    payload["status"] = PASS
+    return payload
+
+
+def _verify_worktrees_with_optional_dry_run(run_id: str, *, workers: list[str], dry_run: bool) -> dict[str, Any]:
+    if dry_run:
+        return {
+            "run_id": run_id,
+            "operation": "verify",
+            "status": PASS,
+            "steps": [
+                {
+                    "worker": worker,
+                    "status": PASS,
+                    "path": (Path("tools") / "codex" / "worktrees" / run_id / worker).as_posix(),
+                    "detail": "dry-run planned verification",
+                }
+                for worker in workers
+            ],
+            "blocked": 0,
+            "detail": "dry-run planned worktree verification",
+        }
+    return verify_worktrees(run_id, workers=workers)
+
+
+def _init_run_if_needed(
+    *,
+    run_id: str | None,
+    base_ref: str,
+    config: dict[str, Any],
+) -> dict[str, Any]:
+    if run_id:
+        manifest_path = RUNS_DIR / run_id / "RUN_MANIFEST.json"
+        if manifest_path.exists():
+            return {
+                "status": PASS,
+                "run_id": run_id,
+                "manifest": manifest_path.as_posix(),
+                "base_ref": base_ref,
+                "schema_errors": [],
+                "detail": "existing run manifest reused",
+            }
+    return _init_run("factory", run_id, base_ref=base_ref, config=config)
+
+
+def _collect_opened_worktree_targets(payload: dict[str, Any]) -> list[str]:
+    opened: list[str] = []
+    for step in payload.get("steps", []):
+        if str(step.get("status", "")).upper() == BLOCKED:
+            continue
+        goto = str(step.get("goto", "")).strip()
+        target = goto or str(step.get("path", "")).strip()
+        if target:
+            opened.append(target)
+    return sorted(set(opened))
+
+
+def _operator_bootstrap_payload(
+    *,
+    run_id: str | None,
+    base_ref: str,
+    workers_raw: str | None,
+    phase: str,
+    open_vscode: bool,
+    goto_prompt: bool,
+    open_runboard: bool,
+    dry_run: bool,
+    config_path: str | None,
+) -> dict[str, Any]:
+    actions: list[str] = []
+    paths_opened: list[str] = []
+    next_steps: list[str] = []
+    stage_details: dict[str, Any] = {}
+
+    workers = resolve_phase_workers(phase, workers_raw)
+    preflight_payload = run_preflight(run_id)
+    actions.append("preflight")
+    stage_details["preflight"] = preflight_payload
+    if _status_from_payload(preflight_payload) != PASS:
+        return _operator_summary(
+            command="operator bootstrap",
+            run_id=run_id or "",
+            base_ref=base_ref,
+            workers=workers,
+            actions_performed=actions,
+            status=BLOCKED,
+            paths_opened=paths_opened,
+            next_steps=[
+                "Resolve preflight blockers before bootstrap.",
+            ],
+            details=stage_details,
+        )
+
+    config = load_factory_config(
+        config_path=config_path,
+        cli_overrides={"run": {"base_ref": base_ref}},
+        strict=True,
+    )
+    init_payload = _init_run_if_needed(run_id=run_id, base_ref=base_ref, config=config)
+    actions.append("init-run")
+    stage_details["init_run"] = init_payload
+    chosen_run_id = str(init_payload.get("run_id", run_id or ""))
+    if _status_from_payload(init_payload) != PASS:
+        return _operator_summary(
+            command="operator bootstrap",
+            run_id=chosen_run_id,
+            base_ref=base_ref,
+            workers=workers,
+            actions_performed=actions,
+            status=BLOCKED,
+            paths_opened=paths_opened,
+            next_steps=[
+                "Resolve run initialization blockers before bootstrap.",
+            ],
+            details=stage_details,
+        )
+
+    create_payload = create_worktrees(chosen_run_id, workers=workers, base_ref=base_ref, dry_run=dry_run)
+    actions.append("worktrees create")
+    stage_details["worktrees_create"] = create_payload
+
+    bundles_payload = _bundle_init_with_optional_dry_run(chosen_run_id, workers=workers, dry_run=dry_run)
+    actions.append("bundle-init")
+    stage_details["bundle_init"] = bundles_payload
+
+    verify_payload = _verify_worktrees_with_optional_dry_run(chosen_run_id, workers=workers, dry_run=dry_run)
+    actions.append("worktrees verify")
+    stage_details["worktrees_verify"] = verify_payload
+
+    prompts_payload = generate_phase_prompts(
+        run_id=chosen_run_id,
+        base_ref=base_ref,
+        phase=phase,
+        workers=workers,
+        dry_run=dry_run,
+    )
+    actions.append("prompts generate")
+    stage_details["prompts"] = prompts_payload
+
+    if open_vscode:
+        worktree_open_payload = open_worktrees(
+            chosen_run_id,
+            workers=workers,
+            dry_run=dry_run,
+            new_window=True,
+            goto="PROMPT_WORKER.txt" if goto_prompt else None,
+        )
+        actions.append("worktrees open")
+        stage_details["worktrees_open"] = worktree_open_payload
+        paths_opened.extend(_collect_opened_worktree_targets(worktree_open_payload))
+
+    if open_runboard:
+        board_path = runboard_path(chosen_run_id)
+        runboard_open_payload = _open_in_code(
+            board_path,
+            dry_run=dry_run,
+            new_window=False,
+            goto=False,
+        )
+        actions.append("open runboard")
+        stage_details["runboard_open"] = runboard_open_payload
+        if int(runboard_open_payload.get("rc", 1)) == 0:
+            paths_opened.append(board_path.as_posix())
+
+    stage_statuses = [
+        _status_from_payload(create_payload),
+        _status_from_payload(bundles_payload),
+        _status_from_payload(verify_payload),
+        _status_from_payload(prompts_payload),
+    ]
+    final_status = combine_statuses(stage_statuses)
+    if final_status not in {PASS, BLOCKED, FAIL}:
+        final_status = BLOCKED
+
+    if final_status == PASS:
+        next_steps.append(f"Run: python -m tools.codex.factory operator watch --run-id {chosen_run_id}")
+        if open_vscode:
+            next_steps.append(_PHASE1_AGENT_ACTION)
+    else:
+        next_steps.append("Review bootstrap stage details and resolve blockers before rerunning.")
+
+    return _operator_summary(
+        command="operator bootstrap",
+        run_id=chosen_run_id,
+        base_ref=base_ref,
+        workers=workers,
+        actions_performed=actions,
+        status=final_status,
+        paths_opened=paths_opened,
+        next_steps=next_steps,
+        details=stage_details,
+    )
+
+
+def _operator_watch_payload(
+    *,
+    run_id: str,
+    base_ref: str,
+    workers_raw: str | None,
+    phase: str,
+    sleep_sec: int,
+    timeout_min: int,
+    open_vscode: bool,
+    open_final_report: bool,
+    dry_run: bool,
+    config_path: str | None,
+) -> dict[str, Any]:
+    actions: list[str] = []
+    paths_opened: list[str] = []
+    next_steps: list[str] = []
+    stage_details: dict[str, Any] = {}
+
+    workers = resolve_phase_workers(phase, workers_raw)
+
+    def _progress(progress_payload: dict[str, Any]) -> None:
+        missing = ",".join(progress_payload.get("missing", []))
+        present = ",".join(progress_payload.get("present", []))
+        print(
+            f"[operator.watch] iteration={progress_payload.get('iteration', 0)} present=[{present}] missing=[{missing}]",
+            file=sys.stderr,
+            flush=True,
+        )
+
+    watch_payload = watch_for_worker_statuses(
+        run_id=run_id,
+        workers=workers,
+        sleep_sec=sleep_sec,
+        timeout_min=timeout_min,
+        dry_run=dry_run,
+        on_progress=None if dry_run else _progress,
+    )
+    actions.append("watch worker statuses")
+    stage_details["watch"] = watch_payload
+
+    if dry_run:
+        actions.append("bundle-validate (planned)")
+        actions.append("integrate (planned)")
+        next_steps.append("Run operator watch without --dry-run after workers complete.")
+        return _operator_summary(
+            command="operator watch",
+            run_id=run_id,
+            base_ref=base_ref,
+            workers=workers,
+            actions_performed=actions,
+            status=PASS,
+            paths_opened=paths_opened,
+            next_steps=next_steps,
+            details=stage_details,
+        )
+
+    if _status_from_payload(watch_payload) != PASS or not bool(watch_payload.get("ready", False)):
+        next_steps.append("Ensure all worker STATUS.json files exist, then rerun operator watch.")
+        return _operator_summary(
+            command="operator watch",
+            run_id=run_id,
+            base_ref=base_ref,
+            workers=workers,
+            actions_performed=actions,
+            status=BLOCKED,
+            paths_opened=paths_opened,
+            next_steps=next_steps,
+            details=stage_details,
+        )
+
+    validate_payload = validate_run(run_id, workers=workers)
+    actions.append("bundle-validate")
+    stage_details["bundle_validate"] = validate_payload
+    if _status_from_payload(validate_payload) != PASS:
+        next_steps.append("Fix bundle validation blockers, then rerun operator watch.")
+        return _operator_summary(
+            command="operator watch",
+            run_id=run_id,
+            base_ref=base_ref,
+            workers=workers,
+            actions_performed=actions,
+            status=BLOCKED,
+            paths_opened=paths_opened,
+            next_steps=next_steps,
+            details=stage_details,
+        )
+
+    config = load_factory_config(
+        config_path=config_path,
+        cli_overrides={"run": {"base_ref": base_ref}},
+        strict=True,
+    )
+    integrate_payload = integrate_run(run_id, workers=workers, config=config)
+    actions.append("integrate")
+    stage_details["integrate"] = integrate_payload
+
+    final_status = _status_from_payload(integrate_payload, fallback=BLOCKED)
+    if final_status == PASS:
+        next_steps.append("Review tools/codex/runs/<RUN_ID>/Z_integrator/FINAL_REPORT.txt.")
+    else:
+        next_steps.append("Inspect integration logs and resolve blockers.")
+
+    if open_final_report:
+        final_open_payload = _open_final_report_outputs(run_id=run_id, dry_run=False, open_vscode=open_vscode)
+        actions.append("open final report outputs")
+        stage_details["open_final_report"] = final_open_payload
+        paths_opened.extend(final_open_payload.get("opened_paths", []))
+
+    return _operator_summary(
+        command="operator watch",
+        run_id=run_id,
+        base_ref=base_ref,
+        workers=workers,
+        actions_performed=actions,
+        status=final_status if final_status in {PASS, BLOCKED, FAIL} else BLOCKED,
+        paths_opened=paths_opened,
+        next_steps=next_steps,
+        details=stage_details,
+    )
+
+
+def cmd_operator_bootstrap(args: argparse.Namespace) -> int:
+    try:
+        payload = _operator_bootstrap_payload(
+            run_id=args.run_id,
+            base_ref=args.base_ref,
+            workers_raw=args.workers,
+            phase=args.phase,
+            open_vscode=bool(args.open_vscode),
+            goto_prompt=bool(args.goto_prompt),
+            open_runboard=bool(args.open_runboard),
+            dry_run=bool(args.dry_run),
+            config_path=args.config,
+        )
+    except (OperatorError, OperatorCollisionError) as exc:
+        workers = _parse_workers(args.workers)
+        payload = _operator_summary(
+            command="operator bootstrap",
+            run_id=args.run_id or "",
+            base_ref=args.base_ref,
+            workers=workers,
+            actions_performed=[],
+            status=BLOCKED,
+            paths_opened=[],
+            next_steps=["Resolve collision/policy issues and rerun bootstrap."],
+            details={"error": str(exc)},
+        )
+    except Exception as exc:
+        workers = _parse_workers(args.workers)
+        payload = _operator_summary(
+            command="operator bootstrap",
+            run_id=args.run_id or "",
+            base_ref=args.base_ref,
+            workers=workers,
+            actions_performed=[],
+            status=FAIL,
+            paths_opened=[],
+            next_steps=["Inspect internal errors and rerun bootstrap."],
+            details={"error": str(exc)},
+        )
+    _emit(payload, args.json_out)
+    return status_exit_code(_status_from_payload(payload))
+
+
+def cmd_operator_watch(args: argparse.Namespace) -> int:
+    try:
+        payload = _operator_watch_payload(
+            run_id=args.run_id,
+            base_ref=args.base_ref,
+            workers_raw=args.workers,
+            phase=args.phase,
+            sleep_sec=args.sleep_sec,
+            timeout_min=args.timeout_min,
+            open_vscode=bool(args.open_vscode),
+            open_final_report=bool(args.open_final_report),
+            dry_run=bool(args.dry_run),
+            config_path=args.config,
+        )
+    except (OperatorError, OperatorCollisionError) as exc:
+        workers = _parse_workers(args.workers)
+        payload = _operator_summary(
+            command="operator watch",
+            run_id=args.run_id,
+            base_ref=args.base_ref,
+            workers=workers,
+            actions_performed=[],
+            status=BLOCKED,
+            paths_opened=[],
+            next_steps=["Resolve collision/policy issues and rerun watch."],
+            details={"error": str(exc)},
+        )
+    except Exception as exc:
+        workers = _parse_workers(args.workers)
+        payload = _operator_summary(
+            command="operator watch",
+            run_id=args.run_id,
+            base_ref=args.base_ref,
+            workers=workers,
+            actions_performed=[],
+            status=FAIL,
+            paths_opened=[],
+            next_steps=["Inspect internal errors and rerun watch."],
+            details={"error": str(exc)},
+        )
+    _emit(payload, args.json_out)
+    return status_exit_code(_status_from_payload(payload))
+
+
+def cmd_operator_phase1_extract(args: argparse.Namespace) -> int:
+    try:
+        bootstrap_payload = _operator_bootstrap_payload(
+            run_id=args.run_id,
+            base_ref=args.base_ref,
+            workers_raw=args.workers,
+            phase=DEFAULT_PHASE,
+            open_vscode=bool(args.open_vscode),
+            goto_prompt=bool(args.goto_prompt),
+            open_runboard=bool(args.open_runboard),
+            dry_run=bool(args.dry_run),
+            config_path=args.config,
+        )
+        chosen_run_id = str(bootstrap_payload.get("run_id", args.run_id or ""))
+        if _status_from_payload(bootstrap_payload) != PASS:
+            payload = _operator_summary(
+                command="operator phase1-extract",
+                run_id=chosen_run_id,
+                base_ref=args.base_ref,
+                workers=list(bootstrap_payload.get("workers", [])),
+                actions_performed=list(bootstrap_payload.get("actions_performed", [])),
+                status=_status_from_payload(bootstrap_payload),
+                paths_opened=list(bootstrap_payload.get("paths_opened", [])),
+                next_steps=["Resolve bootstrap blockers before phase1 watch/integrate."],
+                details={"bootstrap": bootstrap_payload},
+            )
+            _emit(payload, args.json_out)
+            print(_PHASE1_AGENT_ACTION, file=sys.stderr, flush=True)
+            return status_exit_code(_status_from_payload(payload))
+
+        watch_payload = _operator_watch_payload(
+            run_id=chosen_run_id,
+            base_ref=args.base_ref,
+            workers_raw=args.workers,
+            phase=DEFAULT_PHASE,
+            sleep_sec=args.sleep_sec,
+            timeout_min=args.timeout_min,
+            open_vscode=bool(args.open_vscode),
+            open_final_report=bool(args.open_final_report),
+            dry_run=bool(args.dry_run),
+            config_path=args.config,
+        )
+
+        merged_actions = list(bootstrap_payload.get("actions_performed", [])) + list(watch_payload.get("actions_performed", []))
+        merged_paths = list(bootstrap_payload.get("paths_opened", [])) + list(watch_payload.get("paths_opened", []))
+        merged_next_steps = list(bootstrap_payload.get("next_steps", [])) + list(watch_payload.get("next_steps", []))
+        merged_next_steps.append(_PHASE1_AGENT_ACTION)
+
+        statuses = [_status_from_payload(bootstrap_payload), _status_from_payload(watch_payload)]
+        final_status = combine_statuses(statuses)
+        if final_status not in {PASS, BLOCKED, FAIL}:
+            final_status = BLOCKED
+
+        payload = _operator_summary(
+            command="operator phase1-extract",
+            run_id=chosen_run_id,
+            base_ref=args.base_ref,
+            workers=list(bootstrap_payload.get("workers", [])),
+            actions_performed=merged_actions,
+            status=final_status,
+            paths_opened=merged_paths,
+            next_steps=merged_next_steps,
+            details={
+                "bootstrap": bootstrap_payload,
+                "watch": watch_payload,
+            },
+        )
+    except (OperatorError, OperatorCollisionError) as exc:
+        workers = _parse_workers(args.workers)
+        payload = _operator_summary(
+            command="operator phase1-extract",
+            run_id=args.run_id or "",
+            base_ref=args.base_ref,
+            workers=workers,
+            actions_performed=[],
+            status=BLOCKED,
+            paths_opened=[],
+            next_steps=["Resolve collision/policy issues and rerun phase1-extract."],
+            details={"error": str(exc)},
+        )
+    except Exception as exc:
+        workers = _parse_workers(args.workers)
+        payload = _operator_summary(
+            command="operator phase1-extract",
+            run_id=args.run_id or "",
+            base_ref=args.base_ref,
+            workers=workers,
+            actions_performed=[],
+            status=FAIL,
+            paths_opened=[],
+            next_steps=["Inspect internal errors and rerun phase1-extract."],
+            details={"error": str(exc)},
+        )
+    _emit(payload, args.json_out)
+    print(_PHASE1_AGENT_ACTION, file=sys.stderr, flush=True)
+    return status_exit_code(_status_from_payload(payload))
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="python -m tools.codex.factory",
@@ -593,6 +1209,8 @@ def build_parser() -> argparse.ArgumentParser:
     worktrees.add_argument("--workers", help="Comma-separated worker IDs")
     worktrees.add_argument("--base-ref", default="HEAD")
     worktrees.add_argument("--dry-run", action="store_true")
+    worktrees.add_argument("--new-window", action="store_true", help="Open each worktree in a new VS Code window")
+    worktrees.add_argument("--goto", help="Optional relative/absolute file path to open with --goto in each worktree")
     worktrees.set_defaults(func=cmd_worktrees)
 
     bundle_init = sub.add_parser("bundle-init", help="Scaffold worker bundles for a run")
@@ -661,6 +1279,54 @@ def build_parser() -> argparse.ArgumentParser:
     print_report = sub.add_parser("print-report", help="Print FINAL_REPORT path and summary")
     print_report.add_argument("--run-id", required=True)
     print_report.set_defaults(func=cmd_print_report)
+
+    operator = sub.add_parser("operator", help="Operator orchestrator commands")
+    operator_sub = operator.add_subparsers(dest="operator_command", required=True)
+
+    operator_bootstrap = operator_sub.add_parser(
+        "bootstrap",
+        help="Preflight -> init-run -> worktrees create -> bundle-init -> worktrees verify -> prompt/runboard generation",
+    )
+    operator_bootstrap.add_argument("--run-id", help="Optional explicit run id")
+    operator_bootstrap.add_argument("--base-ref", default="HEAD")
+    operator_bootstrap.add_argument("--workers", default=",".join(sorted(WORKERS)), help="Comma-separated worker IDs")
+    operator_bootstrap.add_argument("--phase", default=DEFAULT_PHASE)
+    operator_bootstrap.add_argument("--open-vscode", action=argparse.BooleanOptionalAction, default=False)
+    operator_bootstrap.add_argument("--goto-prompt", action=argparse.BooleanOptionalAction, default=True)
+    operator_bootstrap.add_argument("--open-runboard", action=argparse.BooleanOptionalAction, default=True)
+    operator_bootstrap.add_argument("--dry-run", action="store_true")
+    operator_bootstrap.set_defaults(func=cmd_operator_bootstrap)
+
+    operator_watch = operator_sub.add_parser(
+        "watch",
+        help="Watch worker STATUS.json files, then run bundle-validate + integrate",
+    )
+    operator_watch.add_argument("--run-id", required=True)
+    operator_watch.add_argument("--base-ref", default="HEAD")
+    operator_watch.add_argument("--workers", default=",".join(sorted(WORKERS)), help="Comma-separated worker IDs")
+    operator_watch.add_argument("--phase", default=DEFAULT_PHASE)
+    operator_watch.add_argument("--sleep-sec", type=int, default=DEFAULT_SLEEP_SEC)
+    operator_watch.add_argument("--timeout-min", type=int, default=DEFAULT_TIMEOUT_MIN)
+    operator_watch.add_argument("--open-vscode", action=argparse.BooleanOptionalAction, default=False)
+    operator_watch.add_argument("--open-final-report", action=argparse.BooleanOptionalAction, default=True)
+    operator_watch.add_argument("--dry-run", action="store_true")
+    operator_watch.set_defaults(func=cmd_operator_watch)
+
+    operator_phase1 = operator_sub.add_parser(
+        "phase1-extract",
+        help="Bootstrap + worker watch + bundle-validate + integrate flow for phase1 extraction",
+    )
+    operator_phase1.add_argument("--run-id", help="Optional explicit run id")
+    operator_phase1.add_argument("--base-ref", default="HEAD")
+    operator_phase1.add_argument("--workers", default=",".join(sorted(WORKERS)), help="Comma-separated worker IDs")
+    operator_phase1.add_argument("--sleep-sec", type=int, default=DEFAULT_SLEEP_SEC)
+    operator_phase1.add_argument("--timeout-min", type=int, default=DEFAULT_TIMEOUT_MIN)
+    operator_phase1.add_argument("--open-vscode", action=argparse.BooleanOptionalAction, default=True)
+    operator_phase1.add_argument("--goto-prompt", action=argparse.BooleanOptionalAction, default=True)
+    operator_phase1.add_argument("--open-runboard", action=argparse.BooleanOptionalAction, default=True)
+    operator_phase1.add_argument("--open-final-report", action=argparse.BooleanOptionalAction, default=True)
+    operator_phase1.add_argument("--dry-run", action="store_true")
+    operator_phase1.set_defaults(func=cmd_operator_phase1_extract)
 
     return parser
 

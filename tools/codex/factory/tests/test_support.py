@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any, Iterable, Iterator
 from unittest.mock import patch
 
-from factory import attestations, cli, common, config, contracts, doctor, integrator, ledger, locks, preflight, schemas, worktrees
+from factory import attestations, cli, common, config, contracts, doctor, integrator, ledger, locks, orchestrator, preflight, schemas, worktrees
 
 _REAL_REPO_ROOT = common.REPO_ROOT
 _REAL_SCHEMA_DIR = _REAL_REPO_ROOT / "tools" / "codex" / "schemas"
@@ -89,6 +89,9 @@ def isolated_factory_env() -> Iterator[dict[str, Path]]:
             stack.enter_context(patch.object(worktrees, "RUNS_DIR", runs_dir))
             stack.enter_context(patch.object(worktrees, "CODEX_DIR", codex_dir))
             stack.enter_context(patch.object(worktrees, "REPO_ROOT", repo_root))
+            stack.enter_context(patch.object(orchestrator, "RUNS_DIR", runs_dir))
+            stack.enter_context(patch.object(orchestrator, "CODEX_DIR", codex_dir))
+            stack.enter_context(patch.object(orchestrator, "REPO_ROOT", repo_root))
             stack.enter_context(patch.object(locks, "RUNS_DIR", runs_dir))
             stack.enter_context(patch.object(attestations, "RUNS_DIR", runs_dir))
             stack.enter_context(patch.object(doctor, "REPO_ROOT", repo_root))

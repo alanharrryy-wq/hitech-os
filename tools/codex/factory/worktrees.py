@@ -20,6 +20,12 @@ def branch_name(run_id: str, worker: str, branch_prefix: str = DEFAULT_BRANCH_PR
     return f"{branch_prefix}/{run_id}/{worker}"
 
 
+def _sorted_workers(workers: list[str] | None) -> list[str]:
+    chosen = workers or list(WORKERS)
+    cleaned = [item.strip() for item in chosen if str(item).strip()]
+    return sorted(set(cleaned))
+
+
 def _run(args: list[str], cwd: Path | None = None, dry_run: bool = False) -> dict[str, Any]:
     if dry_run:
         return {
@@ -68,7 +74,7 @@ def create_worktrees(
     branch_prefix: str = DEFAULT_BRANCH_PREFIX,
     dry_run: bool = False,
 ) -> dict[str, Any]:
-    chosen = workers or list(WORKERS)
+    chosen = _sorted_workers(workers)
     root = worktree_root(run_id)
     ensure_dir(root)
     steps: list[dict[str, Any]] = []
@@ -180,7 +186,7 @@ def create_worktrees(
 
 
 def verify_worktrees(run_id: str, *, workers: list[str] | None = None) -> dict[str, Any]:
-    chosen = workers or list(WORKERS)
+    chosen = _sorted_workers(workers)
     steps: list[dict[str, Any]] = []
     for worker in chosen:
         target = worktree_path(run_id, worker)
@@ -208,7 +214,7 @@ def verify_worktrees(run_id: str, *, workers: list[str] | None = None) -> dict[s
 
 
 def sync_worktrees(run_id: str, *, workers: list[str] | None = None, dry_run: bool = False) -> dict[str, Any]:
-    chosen = workers or list(WORKERS)
+    chosen = _sorted_workers(workers)
     steps: list[dict[str, Any]] = []
     for worker in chosen:
         target = worktree_path(run_id, worker)
@@ -250,8 +256,31 @@ def sync_worktrees(run_id: str, *, workers: list[str] | None = None, dry_run: bo
     }
 
 
-def open_worktrees(run_id: str, *, workers: list[str] | None = None, dry_run: bool = False) -> dict[str, Any]:
-    chosen = workers or list(WORKERS)
+def _build_code_open_command(
+    *,
+    target: Path,
+    new_window: bool = False,
+    goto_path: Path | None = None,
+) -> list[str]:
+    cmd = ["code"]
+    if new_window:
+        cmd.append("-n")
+    if goto_path is not None:
+        cmd.extend(["--goto", goto_path.as_posix()])
+    else:
+        cmd.append(target.as_posix())
+    return cmd
+
+
+def open_worktrees(
+    run_id: str,
+    *,
+    workers: list[str] | None = None,
+    dry_run: bool = False,
+    new_window: bool = False,
+    goto: str | None = None,
+) -> dict[str, Any]:
+    chosen = _sorted_workers(workers)
     steps: list[dict[str, Any]] = []
     for worker in chosen:
         target = worktree_path(run_id, worker)
@@ -267,13 +296,35 @@ def open_worktrees(run_id: str, *, workers: list[str] | None = None, dry_run: bo
             )
             continue
 
-        action = _run(["code", target.as_posix()], dry_run=dry_run)
+        goto_path: Path | None = None
+        goto_missing = False
+        if goto:
+            raw = Path(goto)
+            goto_path = raw if raw.is_absolute() else target / raw
+            goto_missing = not goto_path.exists()
+
+        command = _build_code_open_command(
+            target=target,
+            new_window=new_window,
+            goto_path=goto_path,
+        )
+        action = _run(command, dry_run=dry_run)
+        if action["rc"] != 0:
+            status = "WARN"
+            detail = "failed to open VS Code"
+        elif goto_missing:
+            status = "WARN"
+            detail = "opened VS Code (goto target missing)"
+        else:
+            status = "PASS"
+            detail = "opened"
         steps.append(
             {
                 "worker": worker,
-                "status": "PASS" if action["rc"] == 0 else "WARN",
-                "detail": "opened" if action["rc"] == 0 else "failed to open VS Code",
+                "status": status,
+                "detail": detail,
                 "path": target.as_posix(),
+                "goto": goto_path.as_posix() if goto_path else "",
                 "actions": [action],
             }
         )
