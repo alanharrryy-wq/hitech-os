@@ -1,3 +1,0 @@
-# Merge Plan
-
-Pending integration.
