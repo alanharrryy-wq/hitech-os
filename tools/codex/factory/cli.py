@@ -12,7 +12,7 @@ if __package__ in {None, ""}:
     if str(ROOT) not in sys.path:
         sys.path.insert(0, str(ROOT))
 
-    from factory.common import INTEGRATOR, RUNS_DIR, WORKERS, ensure_dir, stable_sha256_text, write_json
+    from factory.common import CODEX_DIR, INTEGRATOR, RUNS_DIR, WORKERS, ensure_dir, stable_sha256_text, write_json
     from factory.config import load_factory_config
     from factory.contracts import load_registry, scaffold_all_bundles, validate_run
     from factory.doctor import run_doctor
@@ -25,9 +25,15 @@ if __package__ in {None, ""}:
         OperatorCollisionError,
         OperatorError,
         generate_phase_prompts,
+        next_available_run_id,
+        parse_run_suffix,
         resolve_phase_workers,
+        run_shared_consume_hook,
+        run_shared_publish_hook,
+        run_id_prefix_for_phase,
         run_external_command,
         runboard_path,
+        select_run_id_for_phase,
         watch_for_worker_statuses,
     )
     from factory.preflight import run_preflight
@@ -38,7 +44,7 @@ if __package__ in {None, ""}:
     from factory.version import get_version
     from factory.worktrees import create_worktrees, open_worktrees, sync_worktrees, verify_worktrees
 else:
-    from .common import INTEGRATOR, RUNS_DIR, WORKERS, ensure_dir, stable_sha256_text, write_json
+    from .common import CODEX_DIR, INTEGRATOR, RUNS_DIR, WORKERS, ensure_dir, stable_sha256_text, write_json
     from .config import load_factory_config
     from .contracts import load_registry, scaffold_all_bundles, validate_run
     from .doctor import run_doctor
@@ -51,9 +57,15 @@ else:
         OperatorCollisionError,
         OperatorError,
         generate_phase_prompts,
+        next_available_run_id,
+        parse_run_suffix,
         resolve_phase_workers,
+        run_shared_consume_hook,
+        run_shared_publish_hook,
+        run_id_prefix_for_phase,
         run_external_command,
         runboard_path,
+        select_run_id_for_phase,
         watch_for_worker_statuses,
     )
     from .preflight import run_preflight
@@ -589,10 +601,50 @@ def cmd_print_report(args: argparse.Namespace) -> int:
 
 
 _PHASE1_AGENT_ACTION = "In each worker VS Code window: Ctrl+Alt+P → New Codex Agent → paste PROMPT_WORKER.txt"
+_STAGE_PREFLIGHT = "preflight"
+_STAGE_INIT_RUN = "init-run"
+_STAGE_WORKTREES_CREATE = "worktrees create"
+_STAGE_BUNDLE_INIT = "bundle-init"
+_STAGE_WORKTREES_VERIFY = "worktrees verify"
+_STAGE_PROMPTS_GENERATE = "prompts generate"
+_STAGE_SHARED_CONSUME = "shared consume"
+_STAGE_WORKTREES_OPEN = "worktrees open"
+_STAGE_RUNBOARD_OPEN = "runboard open"
+_STAGE_WATCH = "watch worker statuses"
+_STAGE_BUNDLE_VALIDATE = "bundle-validate"
+_STAGE_INTEGRATE = "integrate"
+_STAGE_SHARED_PUBLISH = "shared publish"
+_STAGE_OPEN_FINAL_REPORT = "open final report outputs"
+_RESUME_HINT_COLLISION = "Use --run-id auto or choose a new run-id."
+_RESUME_HINT_PREFLIGHT = "Resolve preflight blockers and rerun."
+_RESUME_HINT_SCOPE = "Resolve scope/protected path issues; see details."
+_RESUME_HINT_WATCH_TIMEOUT = "Ensure worker STATUS.json exists then rerun operator watch."
+_RESUME_HINT_BOOTSTRAP = "Review bootstrap stage details and resolve blockers before rerunning."
+_RESUME_HINT_WATCH = "Inspect stage details and rerun operator watch."
 
 
 def _as_sorted_unique(values: list[str]) -> list[str]:
     return sorted({str(item).strip() for item in values if str(item).strip()})
+
+
+def _looks_like_scope_or_path_issue(payload: dict[str, Any]) -> bool:
+    text = json.dumps(payload, sort_keys=True).lower()
+    return any(token in text for token in ("overlap", "scope", "protected path", "protected_path"))
+
+
+def _emit_operator_status_line(payload: dict[str, Any]) -> None:
+    status = _status_from_payload(payload)
+    if status not in {BLOCKED, FAIL}:
+        return
+    stage_failed = str(payload.get("stage_failed", ""))
+    reason = str(payload.get("reason", "")).replace('"', "'")
+    if not reason:
+        reason = str(payload.get("resume_hint", "")).replace('"', "'") or "see details"
+    print(
+        f"[operator] status={status} stage_failed={stage_failed} reason=\"{reason}\"",
+        file=sys.stderr,
+        flush=True,
+    )
 
 
 def _operator_summary(
@@ -605,6 +657,10 @@ def _operator_summary(
     status: str,
     paths_opened: list[str],
     next_steps: list[str],
+    stage_last_completed: str,
+    stage_failed: str = "",
+    resume_hint: str = "",
+    reason: str = "",
     details: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     payload: dict[str, Any] = {
@@ -616,7 +672,12 @@ def _operator_summary(
         "status": status,
         "paths_opened": _as_sorted_unique(paths_opened),
         "next_steps": _as_sorted_unique(next_steps),
+        "stage_last_completed": stage_last_completed,
+        "stage_failed": stage_failed,
+        "resume_hint": resume_hint,
     }
+    if reason:
+        payload["reason"] = reason
     if details:
         payload["details"] = details
     return payload
@@ -736,6 +797,7 @@ def _collect_opened_worktree_targets(payload: dict[str, Any]) -> list[str]:
 def _operator_bootstrap_payload(
     *,
     run_id: str | None,
+    strict_run_id: bool,
     base_ref: str,
     workers_raw: str | None,
     phase: str,
@@ -749,36 +811,46 @@ def _operator_bootstrap_payload(
     paths_opened: list[str] = []
     next_steps: list[str] = []
     stage_details: dict[str, Any] = {}
+    attempts: list[dict[str, Any]] = []
 
     workers = resolve_phase_workers(phase, workers_raw)
-    preflight_payload = run_preflight(run_id)
-    actions.append("preflight")
-    stage_details["preflight"] = preflight_payload
-    if _status_from_payload(preflight_payload) != PASS:
+    runs_root = RUNS_DIR
+    prompts_root = CODEX_DIR / "prompts"
+    worktrees_root = CODEX_DIR / "worktrees"
+    run_prefix = run_id_prefix_for_phase(phase)
+
+    try:
+        chosen_run_id, run_id_source = select_run_id_for_phase(
+            phase=phase,
+            explicit_run_id=run_id,
+            strict=bool(strict_run_id),
+            runs_dir=runs_root,
+            prompts_dir=prompts_root,
+            worktrees_dir=worktrees_root,
+            start=1,
+            max_tries=200,
+        )
+    except OperatorCollisionError as exc:
         return _operator_summary(
             command="operator bootstrap",
-            run_id=run_id or "",
+            run_id=str(run_id or ""),
             base_ref=base_ref,
             workers=workers,
-            actions_performed=actions,
+            actions_performed=[],
             status=BLOCKED,
-            paths_opened=paths_opened,
-            next_steps=[
-                "Resolve preflight blockers before bootstrap.",
-            ],
-            details=stage_details,
+            paths_opened=[],
+            next_steps=[_RESUME_HINT_COLLISION],
+            stage_last_completed=_STAGE_INIT_RUN,
+            stage_failed=_STAGE_INIT_RUN,
+            resume_hint=_RESUME_HINT_COLLISION,
+            reason=str(exc),
+            details={"error": str(exc)},
         )
 
-    config = load_factory_config(
-        config_path=config_path,
-        cli_overrides={"run": {"base_ref": base_ref}},
-        strict=True,
-    )
-    init_payload = _init_run_if_needed(run_id=run_id, base_ref=base_ref, config=config)
-    actions.append("init-run")
-    stage_details["init_run"] = init_payload
-    chosen_run_id = str(init_payload.get("run_id", run_id or ""))
-    if _status_from_payload(init_payload) != PASS:
+    preflight_payload = run_preflight(None if run_id_source == "auto" else chosen_run_id)
+    actions.append(_STAGE_PREFLIGHT)
+    stage_details["preflight"] = preflight_payload
+    if _status_from_payload(preflight_payload) != PASS:
         return _operator_summary(
             command="operator bootstrap",
             run_id=chosen_run_id,
@@ -788,84 +860,267 @@ def _operator_bootstrap_payload(
             status=BLOCKED,
             paths_opened=paths_opened,
             next_steps=[
-                "Resolve run initialization blockers before bootstrap.",
+                _RESUME_HINT_PREFLIGHT,
             ],
+            stage_last_completed=_STAGE_PREFLIGHT,
+            stage_failed=_STAGE_PREFLIGHT,
+            resume_hint=_RESUME_HINT_PREFLIGHT,
+            reason=f"preflight blocked count={int(preflight_payload.get('blocked', 0))}",
             details=stage_details,
         )
 
-    create_payload = create_worktrees(chosen_run_id, workers=workers, base_ref=base_ref, dry_run=dry_run)
-    actions.append("worktrees create")
-    stage_details["worktrees_create"] = create_payload
-
-    bundles_payload = _bundle_init_with_optional_dry_run(chosen_run_id, workers=workers, dry_run=dry_run)
-    actions.append("bundle-init")
-    stage_details["bundle_init"] = bundles_payload
-
-    verify_payload = _verify_worktrees_with_optional_dry_run(chosen_run_id, workers=workers, dry_run=dry_run)
-    actions.append("worktrees verify")
-    stage_details["worktrees_verify"] = verify_payload
-
-    prompts_payload = generate_phase_prompts(
-        run_id=chosen_run_id,
-        base_ref=base_ref,
-        phase=phase,
-        workers=workers,
-        dry_run=dry_run,
+    config = load_factory_config(
+        config_path=config_path,
+        cli_overrides={"run": {"base_ref": base_ref}},
+        strict=True,
     )
-    actions.append("prompts generate")
-    stage_details["prompts"] = prompts_payload
+    stage_details["run_id_source"] = run_id_source
+    max_attempts = 200
+    run_id_attempt = chosen_run_id
 
-    if open_vscode:
-        worktree_open_payload = open_worktrees(
-            chosen_run_id,
-            workers=workers,
-            dry_run=dry_run,
-            new_window=True,
-            goto="PROMPT_WORKER.txt" if goto_prompt else None,
-        )
-        actions.append("worktrees open")
-        stage_details["worktrees_open"] = worktree_open_payload
-        paths_opened.extend(_collect_opened_worktree_targets(worktree_open_payload))
+    for attempt_idx in range(max_attempts):
+        try:
+            init_payload = _init_run_if_needed(run_id=run_id_attempt, base_ref=base_ref, config=config)
+            actions.append(_STAGE_INIT_RUN)
+            chosen_run_id = str(init_payload.get("run_id", run_id_attempt))
+            stage_details["init_run"] = init_payload
+            if _status_from_payload(init_payload) != PASS:
+                return _operator_summary(
+                    command="operator bootstrap",
+                    run_id=chosen_run_id,
+                    base_ref=base_ref,
+                    workers=workers,
+                    actions_performed=actions,
+                    status=BLOCKED,
+                    paths_opened=paths_opened,
+                    next_steps=[_RESUME_HINT_BOOTSTRAP],
+                    stage_last_completed=_STAGE_INIT_RUN,
+                    stage_failed=_STAGE_INIT_RUN,
+                    resume_hint=_RESUME_HINT_BOOTSTRAP,
+                    reason="run initialization blocked",
+                    details=stage_details,
+                )
 
-    if open_runboard:
-        board_path = runboard_path(chosen_run_id)
-        runboard_open_payload = _open_in_code(
-            board_path,
-            dry_run=dry_run,
-            new_window=False,
-            goto=False,
-        )
-        actions.append("open runboard")
-        stage_details["runboard_open"] = runboard_open_payload
-        if int(runboard_open_payload.get("rc", 1)) == 0:
-            paths_opened.append(board_path.as_posix())
+            shared_consume_payload = run_shared_consume_hook(
+                run_id=chosen_run_id,
+                dry_run=dry_run,
+            )
+            if bool(shared_consume_payload.get("enabled", False)):
+                actions.append(_STAGE_SHARED_CONSUME)
+                stage_details["shared_consume"] = shared_consume_payload
+            if _status_from_payload(shared_consume_payload) != PASS:
+                return _operator_summary(
+                    command="operator bootstrap",
+                    run_id=chosen_run_id,
+                    base_ref=base_ref,
+                    workers=workers,
+                    actions_performed=actions,
+                    status=BLOCKED,
+                    paths_opened=paths_opened,
+                    next_steps=[_RESUME_HINT_BOOTSTRAP],
+                    stage_last_completed=_STAGE_SHARED_CONSUME,
+                    stage_failed=_STAGE_SHARED_CONSUME,
+                    resume_hint=_RESUME_HINT_BOOTSTRAP,
+                    reason="shared consume blocked",
+                    details=stage_details,
+                )
 
-    stage_statuses = [
-        _status_from_payload(create_payload),
-        _status_from_payload(bundles_payload),
-        _status_from_payload(verify_payload),
-        _status_from_payload(prompts_payload),
-    ]
-    final_status = combine_statuses(stage_statuses)
-    if final_status not in {PASS, BLOCKED, FAIL}:
-        final_status = BLOCKED
+            create_payload = create_worktrees(chosen_run_id, workers=workers, base_ref=base_ref, dry_run=dry_run)
+            actions.append(_STAGE_WORKTREES_CREATE)
+            stage_details["worktrees_create"] = create_payload
 
-    if final_status == PASS:
-        next_steps.append(f"Run: python -m tools.codex.factory operator watch --run-id {chosen_run_id}")
+            bundles_payload = _bundle_init_with_optional_dry_run(chosen_run_id, workers=workers, dry_run=dry_run)
+            actions.append(_STAGE_BUNDLE_INIT)
+            stage_details["bundle_init"] = bundles_payload
+
+            verify_payload = _verify_worktrees_with_optional_dry_run(chosen_run_id, workers=workers, dry_run=dry_run)
+            actions.append(_STAGE_WORKTREES_VERIFY)
+            stage_details["worktrees_verify"] = verify_payload
+
+            prompts_payload = generate_phase_prompts(
+                run_id=chosen_run_id,
+                base_ref=base_ref,
+                phase=phase,
+                workers=workers,
+                dry_run=dry_run,
+            )
+            actions.append(_STAGE_PROMPTS_GENERATE)
+            stage_details["prompts"] = prompts_payload
+        except OperatorCollisionError as exc:
+            attempts.append({"attempt": attempt_idx + 1, "run_id": run_id_attempt, "result": "collision", "reason": str(exc)})
+            stage_details["attempts"] = sorted(attempts, key=lambda item: int(item.get("attempt", 0)))
+            if run_id_source != "auto":
+                return _operator_summary(
+                    command="operator bootstrap",
+                    run_id=run_id_attempt,
+                    base_ref=base_ref,
+                    workers=workers,
+                    actions_performed=actions,
+                    status=BLOCKED,
+                    paths_opened=paths_opened,
+                    next_steps=[_RESUME_HINT_COLLISION],
+                    stage_last_completed=_STAGE_PROMPTS_GENERATE,
+                    stage_failed=_STAGE_PROMPTS_GENERATE,
+                    resume_hint=_RESUME_HINT_COLLISION,
+                    reason=str(exc),
+                    details=stage_details,
+                )
+
+            if attempt_idx >= max_attempts - 1:
+                return _operator_summary(
+                    command="operator bootstrap",
+                    run_id=run_id_attempt,
+                    base_ref=base_ref,
+                    workers=workers,
+                    actions_performed=actions,
+                    status=BLOCKED,
+                    paths_opened=paths_opened,
+                    next_steps=[_RESUME_HINT_COLLISION],
+                    stage_last_completed=_STAGE_PROMPTS_GENERATE,
+                    stage_failed=_STAGE_PROMPTS_GENERATE,
+                    resume_hint=_RESUME_HINT_COLLISION,
+                    reason=f"collision retries exhausted after {max_attempts} attempts",
+                    details=stage_details,
+                )
+
+            print(
+                f"[operator] run_id_attempt={run_id_attempt} result=collision retrying...",
+                file=sys.stderr,
+                flush=True,
+            )
+            suffix = parse_run_suffix(run_id_attempt, run_prefix)
+            if suffix is None:
+                return _operator_summary(
+                    command="operator bootstrap",
+                    run_id=run_id_attempt,
+                    base_ref=base_ref,
+                    workers=workers,
+                    actions_performed=actions,
+                    status=BLOCKED,
+                    paths_opened=paths_opened,
+                    next_steps=[_RESUME_HINT_COLLISION],
+                    stage_last_completed=_STAGE_PROMPTS_GENERATE,
+                    stage_failed=_STAGE_PROMPTS_GENERATE,
+                    resume_hint=_RESUME_HINT_COLLISION,
+                    reason=f"unable to parse run-id suffix: {run_id_attempt}",
+                    details=stage_details,
+                )
+            run_id_attempt = next_available_run_id(
+                run_prefix,
+                start=suffix + 1,
+                max_tries=max_attempts - (attempt_idx + 1),
+                runs_dir=runs_root,
+                prompts_dir=prompts_root,
+                worktrees_dir=worktrees_root,
+            )
+            continue
+
+        stage_statuses = [
+            (_STAGE_WORKTREES_CREATE, _status_from_payload(create_payload)),
+            (_STAGE_BUNDLE_INIT, _status_from_payload(bundles_payload)),
+            (_STAGE_WORKTREES_VERIFY, _status_from_payload(verify_payload)),
+            (_STAGE_PROMPTS_GENERATE, _status_from_payload(prompts_payload)),
+        ]
+        if bool(shared_consume_payload.get("enabled", False)):
+            stage_statuses.insert(0, (_STAGE_SHARED_CONSUME, _status_from_payload(shared_consume_payload)))
+        final_status = combine_statuses([item[1] for item in stage_statuses])
+        if final_status not in {PASS, BLOCKED, FAIL}:
+            final_status = BLOCKED
+
+        stage_last_completed = _STAGE_PROMPTS_GENERATE
+        stage_failed = ""
+        reason = ""
+        resume_hint = "No resume needed."
+        for stage_name, stage_status in stage_statuses:
+            if stage_status != PASS:
+                stage_failed = stage_name
+                stage_last_completed = stage_name
+                reason = f"stage blocked: {stage_name}"
+                failed_payload = {
+                    _STAGE_SHARED_CONSUME: shared_consume_payload,
+                    _STAGE_WORKTREES_CREATE: create_payload,
+                    _STAGE_BUNDLE_INIT: bundles_payload,
+                    _STAGE_WORKTREES_VERIFY: verify_payload,
+                    _STAGE_PROMPTS_GENERATE: prompts_payload,
+                }[stage_name]
+                resume_hint = _RESUME_HINT_SCOPE if _looks_like_scope_or_path_issue(failed_payload) else _RESUME_HINT_BOOTSTRAP
+                break
+
         if open_vscode:
-            next_steps.append(_PHASE1_AGENT_ACTION)
-    else:
-        next_steps.append("Review bootstrap stage details and resolve blockers before rerunning.")
+            worktree_open_payload = open_worktrees(
+                chosen_run_id,
+                workers=workers,
+                dry_run=dry_run,
+                new_window=True,
+                goto="PROMPT_WORKER.txt" if goto_prompt else None,
+            )
+            actions.append(_STAGE_WORKTREES_OPEN)
+            stage_details["worktrees_open"] = worktree_open_payload
+            if not stage_failed:
+                stage_last_completed = _STAGE_WORKTREES_OPEN
+            paths_opened.extend(_collect_opened_worktree_targets(worktree_open_payload))
+
+        if open_runboard:
+            board_path = runboard_path(chosen_run_id)
+            runboard_open_payload = _open_in_code(
+                board_path,
+                dry_run=dry_run,
+                new_window=False,
+                goto=False,
+            )
+            actions.append(_STAGE_RUNBOARD_OPEN)
+            stage_details["runboard_open"] = runboard_open_payload
+            if not stage_failed:
+                stage_last_completed = _STAGE_RUNBOARD_OPEN
+            if int(runboard_open_payload.get("rc", 1)) == 0:
+                paths_opened.append(board_path.as_posix())
+
+        if run_id_source == "auto":
+            print(
+                f"[operator] selected_run_id={chosen_run_id} source=auto",
+                file=sys.stderr,
+                flush=True,
+            )
+
+        attempts.append({"attempt": attempt_idx + 1, "run_id": chosen_run_id, "result": "selected"})
+        stage_details["attempts"] = sorted(attempts, key=lambda item: int(item.get("attempt", 0)))
+
+        if final_status == PASS:
+            next_steps.append(f"Run: python -m tools.codex.factory operator watch --run-id {chosen_run_id}")
+            if open_vscode:
+                next_steps.append(_PHASE1_AGENT_ACTION)
+        else:
+            next_steps.append(_RESUME_HINT_BOOTSTRAP)
+
+        return _operator_summary(
+            command="operator bootstrap",
+            run_id=chosen_run_id,
+            base_ref=base_ref,
+            workers=workers,
+            actions_performed=actions,
+            status=final_status,
+            paths_opened=paths_opened,
+            next_steps=next_steps,
+            stage_last_completed=stage_last_completed,
+            stage_failed=stage_failed,
+            resume_hint=resume_hint,
+            reason=reason,
+            details=stage_details,
+        )
 
     return _operator_summary(
         command="operator bootstrap",
-        run_id=chosen_run_id,
+        run_id=run_id_attempt,
         base_ref=base_ref,
         workers=workers,
         actions_performed=actions,
-        status=final_status,
+        status=BLOCKED,
         paths_opened=paths_opened,
-        next_steps=next_steps,
+        next_steps=[_RESUME_HINT_COLLISION],
+        stage_last_completed=_STAGE_INIT_RUN,
+        stage_failed=_STAGE_INIT_RUN,
+        resume_hint=_RESUME_HINT_COLLISION,
+        reason=f"collision retries exhausted after {max_attempts} attempts",
         details=stage_details,
     )
 
@@ -907,7 +1162,7 @@ def _operator_watch_payload(
         dry_run=dry_run,
         on_progress=None if dry_run else _progress,
     )
-    actions.append("watch worker statuses")
+    actions.append(_STAGE_WATCH)
     stage_details["watch"] = watch_payload
 
     if dry_run:
@@ -923,11 +1178,16 @@ def _operator_watch_payload(
             status=PASS,
             paths_opened=paths_opened,
             next_steps=next_steps,
+            stage_last_completed=_STAGE_WATCH,
+            stage_failed="",
+            resume_hint="Run operator watch without --dry-run after workers complete.",
             details=stage_details,
         )
 
     if _status_from_payload(watch_payload) != PASS or not bool(watch_payload.get("ready", False)):
-        next_steps.append("Ensure all worker STATUS.json files exist, then rerun operator watch.")
+        reason = f"missing worker statuses: {','.join(watch_payload.get('missing', []))}"
+        resume_hint = _RESUME_HINT_WATCH_TIMEOUT if bool(watch_payload.get("timed_out", False)) else _RESUME_HINT_WATCH
+        next_steps.append(resume_hint)
         return _operator_summary(
             command="operator watch",
             run_id=run_id,
@@ -937,14 +1197,19 @@ def _operator_watch_payload(
             status=BLOCKED,
             paths_opened=paths_opened,
             next_steps=next_steps,
+            stage_last_completed=_STAGE_WATCH,
+            stage_failed=_STAGE_WATCH,
+            resume_hint=resume_hint,
+            reason=reason,
             details=stage_details,
         )
 
     validate_payload = validate_run(run_id, workers=workers)
-    actions.append("bundle-validate")
+    actions.append(_STAGE_BUNDLE_VALIDATE)
     stage_details["bundle_validate"] = validate_payload
     if _status_from_payload(validate_payload) != PASS:
-        next_steps.append("Fix bundle validation blockers, then rerun operator watch.")
+        resume_hint = _RESUME_HINT_SCOPE if _looks_like_scope_or_path_issue(validate_payload) else _RESUME_HINT_WATCH
+        next_steps.append(resume_hint)
         return _operator_summary(
             command="operator watch",
             run_id=run_id,
@@ -954,6 +1219,10 @@ def _operator_watch_payload(
             status=BLOCKED,
             paths_opened=paths_opened,
             next_steps=next_steps,
+            stage_last_completed=_STAGE_BUNDLE_VALIDATE,
+            stage_failed=_STAGE_BUNDLE_VALIDATE,
+            resume_hint=resume_hint,
+            reason="bundle validation blocked",
             details=stage_details,
         )
 
@@ -963,19 +1232,45 @@ def _operator_watch_payload(
         strict=True,
     )
     integrate_payload = integrate_run(run_id, workers=workers, config=config)
-    actions.append("integrate")
+    actions.append(_STAGE_INTEGRATE)
     stage_details["integrate"] = integrate_payload
 
     final_status = _status_from_payload(integrate_payload, fallback=BLOCKED)
+    stage_last_completed = _STAGE_INTEGRATE
+    stage_failed = ""
+    resume_hint = "No resume needed."
+    reason = ""
     if final_status == PASS:
         next_steps.append("Review tools/codex/runs/<RUN_ID>/Z_integrator/FINAL_REPORT.txt.")
     else:
-        next_steps.append("Inspect integration logs and resolve blockers.")
+        resume_hint = _RESUME_HINT_SCOPE if _looks_like_scope_or_path_issue(integrate_payload) else _RESUME_HINT_WATCH
+        next_steps.append(resume_hint)
+        stage_failed = _STAGE_INTEGRATE
+        reason = "integration blocked"
+
+    shared_publish_payload = run_shared_publish_hook(
+        run_id=run_id,
+        dry_run=dry_run,
+    )
+    shared_publish_status = _status_from_payload(shared_publish_payload)
+    if bool(shared_publish_payload.get("enabled", False)):
+        actions.append(_STAGE_SHARED_PUBLISH)
+        stage_details["shared_publish"] = shared_publish_payload
+        final_status = combine_statuses([final_status, shared_publish_status])
+        if final_status not in {PASS, BLOCKED, FAIL}:
+            final_status = BLOCKED
+        if not stage_failed and shared_publish_status != PASS:
+            stage_last_completed = _STAGE_SHARED_PUBLISH
+            stage_failed = _STAGE_SHARED_PUBLISH
+            reason = "shared publish blocked"
+            resume_hint = _RESUME_HINT_WATCH
+            next_steps.append(resume_hint)
 
     if open_final_report:
         final_open_payload = _open_final_report_outputs(run_id=run_id, dry_run=False, open_vscode=open_vscode)
-        actions.append("open final report outputs")
+        actions.append(_STAGE_OPEN_FINAL_REPORT)
         stage_details["open_final_report"] = final_open_payload
+        stage_last_completed = _STAGE_OPEN_FINAL_REPORT
         paths_opened.extend(final_open_payload.get("opened_paths", []))
 
     return _operator_summary(
@@ -987,6 +1282,10 @@ def _operator_watch_payload(
         status=final_status if final_status in {PASS, BLOCKED, FAIL} else BLOCKED,
         paths_opened=paths_opened,
         next_steps=next_steps,
+        stage_last_completed=stage_last_completed,
+        stage_failed=stage_failed,
+        resume_hint=resume_hint,
+        reason=reason,
         details=stage_details,
     )
 
@@ -995,6 +1294,7 @@ def cmd_operator_bootstrap(args: argparse.Namespace) -> int:
     try:
         payload = _operator_bootstrap_payload(
             run_id=args.run_id,
+            strict_run_id=bool(args.strict_run_id),
             base_ref=args.base_ref,
             workers_raw=args.workers,
             phase=args.phase,
@@ -1014,7 +1314,11 @@ def cmd_operator_bootstrap(args: argparse.Namespace) -> int:
             actions_performed=[],
             status=BLOCKED,
             paths_opened=[],
-            next_steps=["Resolve collision/policy issues and rerun bootstrap."],
+            next_steps=[_RESUME_HINT_COLLISION],
+            stage_last_completed=_STAGE_INIT_RUN,
+            stage_failed=_STAGE_INIT_RUN,
+            resume_hint=_RESUME_HINT_COLLISION,
+            reason=str(exc),
             details={"error": str(exc)},
         )
     except Exception as exc:
@@ -1028,16 +1332,43 @@ def cmd_operator_bootstrap(args: argparse.Namespace) -> int:
             status=FAIL,
             paths_opened=[],
             next_steps=["Inspect internal errors and rerun bootstrap."],
+            stage_last_completed=_STAGE_INIT_RUN,
+            stage_failed=_STAGE_INIT_RUN,
+            resume_hint="Inspect internal errors and rerun bootstrap.",
+            reason=str(exc),
             details={"error": str(exc)},
         )
+    _emit_operator_status_line(payload)
     _emit(payload, args.json_out)
     return status_exit_code(_status_from_payload(payload))
 
 
 def cmd_operator_watch(args: argparse.Namespace) -> int:
+    run_id_value = str(args.run_id or "").strip()
+    if not run_id_value or run_id_value.lower() == "auto":
+        workers = _parse_workers(args.workers)
+        payload = _operator_summary(
+            command="operator watch",
+            run_id=run_id_value,
+            base_ref=args.base_ref,
+            workers=workers,
+            actions_performed=[],
+            status=BLOCKED,
+            paths_opened=[],
+            next_steps=["Provide explicit --run-id for operator watch."],
+            stage_last_completed=_STAGE_WATCH,
+            stage_failed=_STAGE_WATCH,
+            resume_hint="Provide explicit --run-id for operator watch.",
+            reason="operator watch requires explicit --run-id",
+            details={"error": "run-id must be explicit and cannot be auto"},
+        )
+        _emit_operator_status_line(payload)
+        _emit(payload, args.json_out)
+        return status_exit_code(_status_from_payload(payload))
+
     try:
         payload = _operator_watch_payload(
-            run_id=args.run_id,
+            run_id=run_id_value,
             base_ref=args.base_ref,
             workers_raw=args.workers,
             phase=args.phase,
@@ -1058,7 +1389,11 @@ def cmd_operator_watch(args: argparse.Namespace) -> int:
             actions_performed=[],
             status=BLOCKED,
             paths_opened=[],
-            next_steps=["Resolve collision/policy issues and rerun watch."],
+            next_steps=[_RESUME_HINT_WATCH],
+            stage_last_completed=_STAGE_WATCH,
+            stage_failed=_STAGE_WATCH,
+            resume_hint=_RESUME_HINT_WATCH,
+            reason=str(exc),
             details={"error": str(exc)},
         )
     except Exception as exc:
@@ -1072,8 +1407,13 @@ def cmd_operator_watch(args: argparse.Namespace) -> int:
             status=FAIL,
             paths_opened=[],
             next_steps=["Inspect internal errors and rerun watch."],
+            stage_last_completed=_STAGE_WATCH,
+            stage_failed=_STAGE_WATCH,
+            resume_hint="Inspect internal errors and rerun watch.",
+            reason=str(exc),
             details={"error": str(exc)},
         )
+    _emit_operator_status_line(payload)
     _emit(payload, args.json_out)
     return status_exit_code(_status_from_payload(payload))
 
@@ -1082,6 +1422,7 @@ def cmd_operator_phase1_extract(args: argparse.Namespace) -> int:
     try:
         bootstrap_payload = _operator_bootstrap_payload(
             run_id=args.run_id,
+            strict_run_id=bool(args.strict_run_id),
             base_ref=args.base_ref,
             workers_raw=args.workers,
             phase=DEFAULT_PHASE,
@@ -1101,9 +1442,14 @@ def cmd_operator_phase1_extract(args: argparse.Namespace) -> int:
                 actions_performed=list(bootstrap_payload.get("actions_performed", [])),
                 status=_status_from_payload(bootstrap_payload),
                 paths_opened=list(bootstrap_payload.get("paths_opened", [])),
-                next_steps=["Resolve bootstrap blockers before phase1 watch/integrate."],
+                next_steps=[str(bootstrap_payload.get("resume_hint", _RESUME_HINT_BOOTSTRAP))],
+                stage_last_completed=str(bootstrap_payload.get("stage_last_completed", _STAGE_PREFLIGHT)),
+                stage_failed=str(bootstrap_payload.get("stage_failed", "")),
+                resume_hint=str(bootstrap_payload.get("resume_hint", _RESUME_HINT_BOOTSTRAP)),
+                reason=str(bootstrap_payload.get("reason", "bootstrap blocked")),
                 details={"bootstrap": bootstrap_payload},
             )
+            _emit_operator_status_line(payload)
             _emit(payload, args.json_out)
             print(_PHASE1_AGENT_ACTION, file=sys.stderr, flush=True)
             return status_exit_code(_status_from_payload(payload))
@@ -1131,6 +1477,18 @@ def cmd_operator_phase1_extract(args: argparse.Namespace) -> int:
         if final_status not in {PASS, BLOCKED, FAIL}:
             final_status = BLOCKED
 
+        stage_last_completed = str(watch_payload.get("stage_last_completed", _STAGE_WATCH))
+        stage_failed = str(watch_payload.get("stage_failed", ""))
+        resume_hint = str(watch_payload.get("resume_hint", "No resume needed."))
+        reason = str(watch_payload.get("reason", ""))
+        if not stage_failed:
+            bootstrap_failed = str(bootstrap_payload.get("stage_failed", ""))
+            if bootstrap_failed:
+                stage_failed = bootstrap_failed
+                stage_last_completed = str(bootstrap_payload.get("stage_last_completed", _STAGE_PREFLIGHT))
+                resume_hint = str(bootstrap_payload.get("resume_hint", _RESUME_HINT_BOOTSTRAP))
+                reason = str(bootstrap_payload.get("reason", ""))
+
         payload = _operator_summary(
             command="operator phase1-extract",
             run_id=chosen_run_id,
@@ -1140,6 +1498,10 @@ def cmd_operator_phase1_extract(args: argparse.Namespace) -> int:
             status=final_status,
             paths_opened=merged_paths,
             next_steps=merged_next_steps,
+            stage_last_completed=stage_last_completed,
+            stage_failed=stage_failed,
+            resume_hint=resume_hint,
+            reason=reason,
             details={
                 "bootstrap": bootstrap_payload,
                 "watch": watch_payload,
@@ -1155,7 +1517,11 @@ def cmd_operator_phase1_extract(args: argparse.Namespace) -> int:
             actions_performed=[],
             status=BLOCKED,
             paths_opened=[],
-            next_steps=["Resolve collision/policy issues and rerun phase1-extract."],
+            next_steps=[_RESUME_HINT_COLLISION],
+            stage_last_completed=_STAGE_INIT_RUN,
+            stage_failed=_STAGE_INIT_RUN,
+            resume_hint=_RESUME_HINT_COLLISION,
+            reason=str(exc),
             details={"error": str(exc)},
         )
     except Exception as exc:
@@ -1169,8 +1535,13 @@ def cmd_operator_phase1_extract(args: argparse.Namespace) -> int:
             status=FAIL,
             paths_opened=[],
             next_steps=["Inspect internal errors and rerun phase1-extract."],
+            stage_last_completed=_STAGE_INIT_RUN,
+            stage_failed=_STAGE_INIT_RUN,
+            resume_hint="Inspect internal errors and rerun phase1-extract.",
+            reason=str(exc),
             details={"error": str(exc)},
         )
+    _emit_operator_status_line(payload)
     _emit(payload, args.json_out)
     print(_PHASE1_AGENT_ACTION, file=sys.stderr, flush=True)
     return status_exit_code(_status_from_payload(payload))
@@ -1288,6 +1659,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="Preflight -> init-run -> worktrees create -> bundle-init -> worktrees verify -> prompt/runboard generation",
     )
     operator_bootstrap.add_argument("--run-id", help="Optional explicit run id")
+    operator_bootstrap.add_argument(
+        "--strict-run-id",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="When true, explicit --run-id must be unused across runs/prompts/worktrees.",
+    )
     operator_bootstrap.add_argument("--base-ref", default="HEAD")
     operator_bootstrap.add_argument("--workers", default=",".join(sorted(WORKERS)), help="Comma-separated worker IDs")
     operator_bootstrap.add_argument("--phase", default=DEFAULT_PHASE)
@@ -1317,6 +1694,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="Bootstrap + worker watch + bundle-validate + integrate flow for phase1 extraction",
     )
     operator_phase1.add_argument("--run-id", help="Optional explicit run id")
+    operator_phase1.add_argument(
+        "--strict-run-id",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="When true, explicit --run-id must be unused across runs/prompts/worktrees.",
+    )
     operator_phase1.add_argument("--base-ref", default="HEAD")
     operator_phase1.add_argument("--workers", default=",".join(sorted(WORKERS)), help="Comma-separated worker IDs")
     operator_phase1.add_argument("--sleep-sec", type=int, default=DEFAULT_SLEEP_SEC)

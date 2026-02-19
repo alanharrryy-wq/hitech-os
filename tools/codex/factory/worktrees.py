@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import shutil
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -27,18 +28,23 @@ def _sorted_workers(workers: list[str] | None) -> list[str]:
 
 
 def _run(args: list[str], cwd: Path | None = None, dry_run: bool = False) -> dict[str, Any]:
+    command = list(args)
+    if command:
+        resolved = shutil.which(command[0])
+        if resolved:
+            command = [resolved, *command[1:]]
     if dry_run:
         return {
-            "cmd": args,
+            "cmd": command,
             "cwd": str(cwd or REPO_ROOT),
             "rc": 0,
             "stdout": "",
             "stderr": "",
             "dry_run": True,
         }
-    proc = subprocess.run(args, cwd=str(cwd or REPO_ROOT), text=True, capture_output=True, check=False)
+    proc = subprocess.run(command, cwd=str(cwd or REPO_ROOT), text=True, capture_output=True, check=False)
     return {
-        "cmd": args,
+        "cmd": command,
         "cwd": str(cwd or REPO_ROOT),
         "rc": proc.returncode,
         "stdout": proc.stdout,

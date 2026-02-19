@@ -347,8 +347,42 @@
   - `attestations/bundles.sha256`
   - `attestations/ledger.sha256`
   - `attestations/report.sha256`
-  - `tools/codex/runs/factory_ledger.jsonl`
-  - `tools/codex/runs/factory_ledger.sha256`
+- `tools/codex/runs/factory_ledger.jsonl`
+- `tools/codex/runs/factory_ledger.sha256`
+
+## 11A. SHARED BRIDGE (OPTIONAL)
+- Shared bridge is an optional replication/ingestion layer; it does not replace canonical factory paths.
+- Canonical paths remain:
+  - `tools/codex/worktrees/<RUN_ID>/<WORKER>`
+  - `tools/codex/runs/<RUN_ID>/...`
+- Enablement is environment-driven and defaults `off`:
+  - `HITECH_SHARED_MODE=off|consume|publish|both`
+  - `HITECH_SHARED_ROOT`
+  - `HITECH_SHARED_REQUIRE_CURRENT`
+  - `HITECH_SHARED_STRICT_SCHEMA`
+  - `HITECH_SHARED_HASH_STRATEGY`
+  - `HITECH_SHARED_DRYRUN`
+- Shared root resolution:
+  1. Prefer `<repo_root>/tools/codex/shared`.
+  2. Fallback to `HITECH_SHARED_ROOT`.
+  3. If unresolved, shared mode is effectively disabled unless strict requirements demand a blocker.
+- Current-run resolution:
+  - Prefer `<shared_root>/CURRENT`.
+  - Fallback to run-mounted shared root (`META/WORKERS/HEALTH` markers).
+- Consume behavior:
+  - Copies shared inputs only into `tools/codex/runs/<RUN_ID>/incoming_shared/`.
+- Publish behavior:
+  - Copies canonical worker/integrator outputs into shared `WORKERS/*`.
+  - Copies aggregate artifacts into shared `AGGREGATE/*`.
+  - Publish is append-only by default; shared files are never deleted.
+- Lock behavior:
+  - If lock files are detected under canonical run root or shared current root, bridge publish/consume skips safely.
+  - Lock skip is recorded in bridge ledger events.
+- Determinism:
+  - Bridge manifests and ledger records use deterministic ordering and stable JSON serialization.
+  - `HITECH_SHARED_DRYRUN=1` runs manifest-only planning without writes.
+- Contract details and examples are defined in:
+  - `docs/factory/SHARED_BRIDGE.md`
 
 ## 12. CURRENT KNOWN GAPS OR OPEN QUESTIONS
 - Missing docs:

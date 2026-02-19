@@ -51,7 +51,21 @@ For phase-driven operator-managed runs, use:
 python -m tools.codex.factory operator phase1-extract --base-ref HEAD
 ```
 
-Operator mode preserves the same stage semantics and ultimately runs `bundle-validate` then `integrate` after worker completion.
+Operator mode preserves the same stage semantics and now acts as a one-command flow:
+1. Deterministically auto-selects the next free run id (`RUN_PHASE1_EXTRACT_001`, `_002`, ...), unless explicit `--run-id` is provided.
+2. Runs bootstrap stages (`preflight -> init-run -> worktrees create -> bundle-init -> worktrees verify -> prompts generate`).
+3. Opens worker worktrees in VS Code with `PROMPT_WORKER.txt`, and opens `RUNBOARD.md`.
+4. Watches worker `STATUS.json` files.
+5. Runs `bundle-validate` and `integrate`.
+6. Opens `FINAL_REPORT.txt` and reveals the run folder in Explorer.
+
+Use strict explicit run-id policy when needed:
+
+```powershell
+python -m tools.codex.factory operator phase1-extract --run-id RUN_PHASE1_EXTRACT_001 --strict-run-id --base-ref HEAD
+```
+
+`operator watch` requires explicit `--run-id`; `--run-id auto` is rejected.
 
 ## One-Shot Stage Order
 `oneshot` executes:

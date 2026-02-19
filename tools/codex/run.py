@@ -9,7 +9,20 @@ import traceback
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+
+def _discover_repo_root(start: Path) -> Path:
+    current = start.resolve()
+    if current.is_file():
+        current = current.parent
+    while True:
+        if (current / ".git").exists() or (current / "KERNEL_CONTEXT.md").exists():
+            return current
+        if current.parent == current:
+            raise RuntimeError("unable to resolve repo root (.git or KERNEL_CONTEXT.md not found)")
+        current = current.parent
+
+
+REPO_ROOT = _discover_repo_root(Path(__file__))
 CODEX_DIR = REPO_ROOT / "tools" / "codex"
 RUNS_DIR = CODEX_DIR / "runs"
 INTEGRATOR_DIR = "Z_integrator"

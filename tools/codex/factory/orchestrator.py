@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import os
+import shutil
 import subprocess
 import time
 from pathlib import Path
@@ -7,6 +9,17 @@ from typing import Any, Callable, Iterable, Mapping
 
 from .common import CODEX_DIR, REPO_ROOT, RUNS_DIR, WORKERS, ensure_dir, read_text, stable_sha256_text, write_text
 from .path_guard import is_protected_path, normalize_rel_path
+from .shared_bridge import (
+    SharedBridgeFlags,
+    consume_from_shared,
+    discover_repo_root,
+    parse_shared_flags,
+    publish_to_shared,
+    resolve_shared_current_run_root,
+    resolve_shared_root,
+    write_factory_pointer,
+    write_shared_pointer,
+)
 from .status_eval import BLOCKED, PASS
 from .worktrees import worktree_path
 
@@ -26,6 +39,49 @@ WORKER_ARTIFACT_FILES: tuple[str, ...] = (
     "LOGS/INDEX.json",
 )
 
+WORKER_ENRICHMENT_HINTS: dict[str, dict[str, tuple[str, ...]]] = {
+    "A_worker": {
+        "objective_fit": (
+            "Focus on interface-first scaffolding for render, registry, and desktop bridge modules.",
+            "Keep extension seams explicit so later runtime implementation can plug in without contract churn.",
+        ),
+        "no_go": (
+            "Do not add runtime execution paths, adapters, or environment-bound integrations.",
+            "Do not introduce broad refactors outside scaffold boundaries.",
+        ),
+    },
+    "B_worker": {
+        "objective_fit": (
+            "Focus on deterministic tooling primitives and reusable helper APIs.",
+            "Prefer composable utilities that can be imported without hidden side effects.",
+        ),
+        "no_go": (
+            "Do not add product/business behavior to tooling packages.",
+            "Do not add heavyweight dependencies when native or existing tooling is sufficient.",
+        ),
+    },
+    "C_worker": {
+        "objective_fit": (
+            "Focus on schema and placeholder contracts only, with stable serialization semantics.",
+            "Keep compatibility intent explicit so integration can validate contract evolution safely.",
+        ),
+        "no_go": (
+            "Do not add runtime implementations, loaders, or service behavior.",
+            "Do not couple schema placeholders to non-contract runtime code.",
+        ),
+    },
+    "D_worker": {
+        "objective_fit": (
+            "Focus on deterministic smoke/docs scaffolding that supports integrator consumption.",
+            "Keep acceptance criteria explicit and reproducible for follow-up automation.",
+        ),
+        "no_go": (
+            "Do not edit core runtime modules while preparing smoke/docs scaffolding.",
+            "Do not write final integration conclusions before worker artifacts are complete.",
+        ),
+    },
+}
+
 
 class OperatorError(RuntimeError):
     pass
@@ -38,6 +94,7 @@ class OperatorCollisionError(OperatorError):
 PHASE_SPECS: dict[str, dict[str, Any]] = {
     "phase1-extract": {
         "description": "Deterministic phase-1 extraction scaffolding.",
+        "run_id_prefix": "RUN_PHASE1_EXTRACT",
         "default_workers": list(DEFAULT_WORKERS),
         "workers": {
             "A_worker": {
@@ -117,6 +174,123 @@ def resolve_phase_workers(phase: str, workers: str | Iterable[str] | None) -> li
     if unsupported:
         raise OperatorError(f"workers not in phase spec {phase}: {', '.join(unsupported)}")
     return chosen
+
+
+def run_id_prefix_for_phase(phase: str) -> str:
+    spec = get_phase_spec(phase)
+    explicit = str(spec.get("run_id_prefix", "")).strip()
+    if explicit:
+        return explicit
+
+    normalized = "".join(char if char.isalnum() else "_" for char in str(phase).upper())
+    normalized = "_".join(item for item in normalized.split("_") if item)
+    if not normalized:
+        raise OperatorError(f"unable to derive run-id prefix for phase: {phase}")
+    return f"RUN_{normalized}"
+
+
+def parse_run_suffix(run_id: str, prefix: str) -> int | None:
+    token = f"{prefix}_"
+    if not str(run_id).startswith(token):
+        return None
+    suffix = str(run_id)[len(token) :]
+    if not suffix.isdigit():
+        return None
+    try:
+        return int(suffix)
+    except ValueError:
+        return None
+
+
+def list_existing_run_ids(
+    *,
+    runs_dir: Path,
+    prompts_dir: Path,
+    worktrees_dir: Path,
+    prefix: str,
+) -> list[str]:
+    candidates: set[str] = set()
+    for root in (runs_dir, prompts_dir, worktrees_dir):
+        if not root.exists():
+            continue
+        try:
+            children = sorted(item for item in root.iterdir() if item.is_dir())
+        except OSError:
+            continue
+        for child in children:
+            run_id = child.name
+            if parse_run_suffix(run_id, prefix) is not None:
+                candidates.add(run_id)
+    return sorted(candidates, key=lambda item: (parse_run_suffix(item, prefix) or 0, item))
+
+
+def is_run_id_occupied(
+    run_id: str,
+    *,
+    runs_dir: Path,
+    prompts_dir: Path,
+    worktrees_dir: Path,
+) -> bool:
+    return any((root / run_id).exists() for root in (runs_dir, prompts_dir, worktrees_dir))
+
+
+def next_available_run_id(
+    prefix: str,
+    start: int = 1,
+    max_tries: int = 200,
+    *,
+    runs_dir: Path,
+    prompts_dir: Path,
+    worktrees_dir: Path,
+) -> str:
+    origin = max(1, int(start))
+    tries = max(1, int(max_tries))
+    for offset in range(tries):
+        suffix = origin + offset
+        candidate = f"{prefix}_{suffix:03d}"
+        if not is_run_id_occupied(
+            candidate,
+            runs_dir=runs_dir,
+            prompts_dir=prompts_dir,
+            worktrees_dir=worktrees_dir,
+        ):
+            return candidate
+    raise OperatorCollisionError(f"unable to select free run-id for prefix={prefix} after {tries} attempts")
+
+
+def select_run_id_for_phase(
+    phase: str,
+    explicit_run_id: str | None,
+    strict: bool,
+    *,
+    runs_dir: Path,
+    prompts_dir: Path,
+    worktrees_dir: Path,
+    start: int = 1,
+    max_tries: int = 200,
+) -> tuple[str, str]:
+    prefix = run_id_prefix_for_phase(phase)
+    run_id_raw = str(explicit_run_id or "").strip()
+    auto_requested = not run_id_raw or run_id_raw.lower() == "auto"
+    if auto_requested:
+        chosen = next_available_run_id(
+            prefix,
+            start=start,
+            max_tries=max_tries,
+            runs_dir=runs_dir,
+            prompts_dir=prompts_dir,
+            worktrees_dir=worktrees_dir,
+        )
+        return chosen, "auto"
+
+    if strict and is_run_id_occupied(
+        run_id_raw,
+        runs_dir=runs_dir,
+        prompts_dir=prompts_dir,
+        worktrees_dir=worktrees_dir,
+    ):
+        raise OperatorCollisionError(f"explicit run-id is occupied: {run_id_raw}")
+    return run_id_raw, "explicit"
 
 
 def prompts_dir(run_id: str) -> Path:
@@ -217,6 +391,30 @@ def render_worker_prompt(
     worker: str,
     worker_spec: Mapping[str, Any],
 ) -> str:
+    header = _render_worker_prompt_header(
+        run_id=run_id,
+        base_ref=base_ref,
+        phase=phase,
+        worker=worker,
+        worker_spec=worker_spec,
+    )
+    enriched = render_enriched_playbook(
+        run_id=run_id,
+        phase=phase,
+        worker=worker,
+        worker_spec=worker_spec,
+    )
+    return f"{header}\n{enriched}"
+
+
+def _render_worker_prompt_header(
+    *,
+    run_id: str,
+    base_ref: str,
+    phase: str,
+    worker: str,
+    worker_spec: Mapping[str, Any],
+) -> str:
     scope = str(worker_spec.get("scope", "")).strip()
     repo_scope = sorted(str(item) for item in worker_spec.get("repo_scope_globs", []) if str(item).strip())
     constraints = sorted(str(item) for item in worker_spec.get("constraints", []) if str(item).strip())
@@ -273,6 +471,87 @@ def render_worker_prompt(
             "- Collision detected in prompt artifacts or worker outputs.",
             "- Requested change is outside declared scope.",
             "- Required path ownership is ambiguous.",
+        ]
+    )
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def render_enriched_playbook(
+    *,
+    run_id: str,
+    phase: str,
+    worker: str,
+    worker_spec: Mapping[str, Any],
+) -> str:
+    hints = WORKER_ENRICHMENT_HINTS.get(worker, {})
+    objective_fit = sorted(str(item) for item in hints.get("objective_fit", ()) if str(item).strip())
+    no_go_examples = sorted(str(item) for item in hints.get("no_go", ()) if str(item).strip())
+
+    lines = [
+        "## === ENRICHED PLAYBOOK ===",
+        "",
+        "### Context Guardrails",
+        "- This playbook enriches worker behavior and never overrides Factory constraints defined above.",
+        "- Confirm the active worktree maps to this RUN_ID and WORKER_ID before making edits.",
+        "- If detected context disagrees with this prompt metadata, set STATUS.json to BLOCKED and stop.",
+        "",
+        "### Preflight Checklist",
+        "- Verify git status is clean before writing repo files.",
+        "- Reconfirm every planned change remains inside the declared Repo Write Scope.",
+        "- Validate Artifact Write Root exists and is writable before code edits begin.",
+        "",
+        "### Collision Protocol",
+        "- If non-scaffold content would be overwritten, set STATUS.json to BLOCKED and stop.",
+        "- If another worker appears to own a target path, set STATUS.json to BLOCKED and document the conflict.",
+        "- Never continue after collision detection; include deterministic resume guidance in HANDOFF_NOTE.json.",
+        "",
+        "### Determinism Audit",
+        "- Keep ordering stable for JSON keys, lists, and bullet output in every artifact.",
+        "- Avoid randomness, UUIDs, and environment-specific values in generated outputs.",
+        "- Re-run local checks after edits and confirm repeated runs produce identical outputs.",
+        "",
+        "### Diff Scope Validation",
+        "- Validate git diff output is limited to the declared Repo Write Scope.",
+        "- If any out-of-scope path appears, set STATUS.json to BLOCKED and report it.",
+        "",
+        "### Development Discipline",
+        "- Keep public API surfaces explicit and typed for future extension.",
+        "- Avoid side effects on import; module loading must remain inert.",
+        "- Prefer minimal dependency changes and reuse existing repository tooling patterns.",
+        "",
+        "### Artifact Quality Gate",
+        "- Verify all required artifacts exist before signaling completion.",
+        "- Write FILES_CHANGED.json with stable ordering and deterministic action labels.",
+        "- Keep SCOPE_LOCK.json ownership entries aligned with the declared scope and overlap policy.",
+        "- Keep HANDOFF_NOTE.json concise with decisions, risks, and deterministic next actions.",
+        "",
+        "### Objective Fit Check",
+        "- Confirm each changed file directly advances this worker mission without scope drift.",
+    ]
+
+    for item in objective_fit:
+        lines.append(f"- {item}")
+
+    lines.extend(
+        [
+            "",
+            "### No-Go This Chat",
+        ]
+    )
+    for item in no_go_examples:
+        lines.append(f"- {item}")
+
+    lines.extend(
+        [
+            "",
+            "### Structured Summary Format",
+            "- In SUMMARY.md include: Completed Work, Validation Commands, Risks, and Next Actions.",
+            "- Keep file and command lists sorted for deterministic review.",
+            "",
+            "### Time Box and Troubleshooting",
+            "- Work in focused passes; if blocked, stop early and record the blocker instead of improvising.",
+            "- When a command is unavailable or environment-limited, record exact command and outcome in LOGS/INDEX.json.",
+            "- If preflight or validation remains unresolved, mark BLOCKED with concrete resume guidance.",
         ]
     )
     return "\n".join(lines).rstrip() + "\n"
@@ -467,6 +746,10 @@ def watch_for_worker_statuses(
 
 
 def run_external_command(command: list[str], *, dry_run: bool = False) -> dict[str, Any]:
+    if command:
+        resolved = shutil.which(command[0])
+        if resolved:
+            command = [resolved, *command[1:]]
     if dry_run:
         return {
             "cmd": list(command),
@@ -482,4 +765,242 @@ def run_external_command(command: list[str], *, dry_run: bool = False) -> dict[s
         "stdout": proc.stdout,
         "stderr": proc.stderr,
         "dry_run": False,
+    }
+
+
+def _shared_flags_payload(flags: SharedBridgeFlags) -> dict[str, Any]:
+    return {
+        "mode": flags.mode,
+        "require_current": bool(flags.require_current),
+        "strict_schema": bool(flags.strict_schema),
+        "hash_strategy": flags.hash_strategy,
+        "dry_run": bool(flags.dry_run),
+        "shared_root_override": str(flags.shared_root_override or ""),
+    }
+
+
+def resolve_shared_bridge_context(*, env: Mapping[str, str] | None = None) -> dict[str, Any]:
+    """
+    Resolve shared bridge runtime context from env flags.
+    Flags are OFF by default and no side effects occur in this resolver.
+    """
+    source_env = dict(os.environ)
+    if env is not None:
+        source_env.update({str(key): str(value) for key, value in dict(env).items()})
+
+    flags = parse_shared_flags(source_env)
+    payload: dict[str, Any] = {
+        "status": PASS,
+        "enabled": bool(flags.mode != "off"),
+        "flags": _shared_flags_payload(flags),
+        "repo_root": "",
+        "shared_root": "",
+        "shared_current_run_root": "",
+        "reason": "",
+    }
+
+    if flags.mode == "off":
+        payload["reason"] = "shared bridge mode is off"
+        return payload
+
+    try:
+        repo_root = discover_repo_root(REPO_ROOT)
+    except FileNotFoundError as exc:
+        payload["status"] = BLOCKED
+        payload["reason"] = str(exc)
+        return payload
+
+    shared_root = resolve_shared_root(
+        repo_root,
+        shared_root_override=flags.shared_root_override,
+        env=source_env,
+    )
+
+    try:
+        shared_current = resolve_shared_current_run_root(
+            shared_root,
+            require_current=bool(flags.require_current),
+        )
+    except FileNotFoundError as exc:
+        payload["status"] = BLOCKED
+        payload["repo_root"] = repo_root.as_posix()
+        payload["shared_root"] = shared_root.as_posix() if shared_root is not None else ""
+        payload["reason"] = str(exc)
+        return payload
+
+    payload["repo_root"] = repo_root.as_posix()
+    payload["shared_root"] = shared_root.as_posix() if shared_root is not None else ""
+    payload["shared_current_run_root"] = shared_current.as_posix() if shared_current is not None else ""
+    if shared_root is None:
+        payload["reason"] = "shared root not resolved"
+    elif shared_current is None:
+        payload["reason"] = "shared current run root not resolved"
+    else:
+        payload["reason"] = "shared bridge context resolved"
+    return payload
+
+
+def run_shared_consume_hook(
+    *,
+    run_id: str,
+    dry_run: bool = False,
+    env: Mapping[str, str] | None = None,
+) -> dict[str, Any]:
+    """
+    Pre-run shared consume hook.
+    Writes only to canonical `tools/codex/runs/<RUN_ID>/incoming_shared/` when enabled.
+    """
+    context = resolve_shared_bridge_context(env=env)
+    flags = SharedBridgeFlags(**dict(context.get("flags", {})))
+    effective_dry_run = bool(dry_run or flags.dry_run)
+
+    if not bool(context.get("enabled", False)):
+        return {
+            "status": PASS,
+            "enabled": False,
+            "mode": flags.mode,
+            "dry_run": effective_dry_run,
+            "reason": str(context.get("reason", "shared bridge disabled")),
+            "context": context,
+        }
+
+    if str(context.get("status", PASS)) != PASS:
+        return {
+            "status": BLOCKED,
+            "enabled": True,
+            "mode": flags.mode,
+            "dry_run": effective_dry_run,
+            "reason": str(context.get("reason", "shared bridge context blocked")),
+            "context": context,
+            "consume": {},
+            "pointers": {},
+        }
+
+    run_root = RUNS_DIR / run_id
+    shared_current_root_raw = str(context.get("shared_current_run_root", "")).strip()
+    shared_current_root = Path(shared_current_root_raw) if shared_current_root_raw else None
+    shared_root_raw = str(context.get("shared_root", "")).strip()
+    shared_root = Path(shared_root_raw) if shared_root_raw else None
+
+    consume_payload = consume_from_shared(
+        run_id=run_id,
+        run_root=run_root,
+        shared_current_run_root=shared_current_root,
+        mode=flags.mode,
+        hash_strategy=flags.hash_strategy,
+        dry_run=effective_dry_run,
+        strict_on_lock=bool(flags.strict_schema),
+    )
+
+    pointers: dict[str, Any] = {}
+    if shared_current_root is not None and shared_root is not None and not consume_payload.get("lock_files"):
+        pointers["factory_pointer"] = write_factory_pointer(
+            run_id=run_id,
+            factory_run_root=run_root,
+            factory_worktrees_root=CODEX_DIR / "worktrees" / run_id,
+            shared_current_run_root=shared_current_root,
+            mode=flags.mode,
+            dry_run=effective_dry_run,
+        )
+        pointers["shared_pointer"] = write_shared_pointer(
+            run_id=run_id,
+            factory_run_root=run_root,
+            shared_root=shared_root,
+            shared_current_run_root=shared_current_root,
+            mode=flags.mode,
+            dry_run=effective_dry_run,
+        )
+
+    return {
+        "status": str(consume_payload.get("status", PASS)),
+        "enabled": True,
+        "mode": flags.mode,
+        "dry_run": effective_dry_run,
+        "reason": str(consume_payload.get("reason", "")),
+        "context": context,
+        "consume": consume_payload,
+        "pointers": pointers,
+    }
+
+
+def run_shared_publish_hook(
+    *,
+    run_id: str,
+    dry_run: bool = False,
+    env: Mapping[str, str] | None = None,
+) -> dict[str, Any]:
+    """
+    Post-run shared publish hook.
+    Copies canonical run outputs into shared when enabled.
+    """
+    context = resolve_shared_bridge_context(env=env)
+    flags = SharedBridgeFlags(**dict(context.get("flags", {})))
+    effective_dry_run = bool(dry_run or flags.dry_run)
+
+    if not bool(context.get("enabled", False)):
+        return {
+            "status": PASS,
+            "enabled": False,
+            "mode": flags.mode,
+            "dry_run": effective_dry_run,
+            "reason": str(context.get("reason", "shared bridge disabled")),
+            "context": context,
+        }
+
+    if str(context.get("status", PASS)) != PASS:
+        return {
+            "status": BLOCKED,
+            "enabled": True,
+            "mode": flags.mode,
+            "dry_run": effective_dry_run,
+            "reason": str(context.get("reason", "shared bridge context blocked")),
+            "context": context,
+            "publish": {},
+            "pointers": {},
+        }
+
+    run_root = RUNS_DIR / run_id
+    shared_current_root_raw = str(context.get("shared_current_run_root", "")).strip()
+    shared_current_root = Path(shared_current_root_raw) if shared_current_root_raw else None
+    shared_root_raw = str(context.get("shared_root", "")).strip()
+    shared_root = Path(shared_root_raw) if shared_root_raw else None
+
+    publish_payload = publish_to_shared(
+        run_id=run_id,
+        run_root=run_root,
+        shared_current_run_root=shared_current_root,
+        mode=flags.mode,
+        hash_strategy=flags.hash_strategy,
+        dry_run=effective_dry_run,
+        strict_on_lock=bool(flags.strict_schema),
+    )
+
+    pointers: dict[str, Any] = {}
+    if shared_current_root is not None and shared_root is not None and not publish_payload.get("lock_files"):
+        pointers["factory_pointer"] = write_factory_pointer(
+            run_id=run_id,
+            factory_run_root=run_root,
+            factory_worktrees_root=CODEX_DIR / "worktrees" / run_id,
+            shared_current_run_root=shared_current_root,
+            mode=flags.mode,
+            dry_run=effective_dry_run,
+        )
+        pointers["shared_pointer"] = write_shared_pointer(
+            run_id=run_id,
+            factory_run_root=run_root,
+            shared_root=shared_root,
+            shared_current_run_root=shared_current_root,
+            mode=flags.mode,
+            dry_run=effective_dry_run,
+        )
+
+    return {
+        "status": str(publish_payload.get("status", PASS)),
+        "enabled": True,
+        "mode": flags.mode,
+        "dry_run": effective_dry_run,
+        "reason": str(publish_payload.get("reason", "")),
+        "context": context,
+        "publish": publish_payload,
+        "pointers": pointers,
     }

@@ -65,6 +65,7 @@ def isolated_factory_env() -> Iterator[dict[str, Path]]:
             stack.enter_context(patch.object(common, "CONTRACTS_DIR", contracts_factory_dir))
             stack.enter_context(patch.object(common, "TEMPLATES_DIR", templates_dir))
 
+            stack.enter_context(patch.object(cli, "CODEX_DIR", codex_dir))
             stack.enter_context(patch.object(cli, "RUNS_DIR", runs_dir))
 
             stack.enter_context(patch.object(config, "REPO_ROOT", repo_root))
