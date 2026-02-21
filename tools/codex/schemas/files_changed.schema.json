@@ -43,6 +43,15 @@
       "minLength": 1,
       "type": "string"
     },
+    "noop": {
+      "type": "boolean"
+    },
+    "noop_ack": {
+      "type": "string"
+    },
+    "noop_reason": {
+      "type": "string"
+    },
     "run_id": {
       "minLength": 1,
       "type": "string"
@@ -57,6 +66,33 @@
     "run_id",
     "owner",
     "changes"
+  ],
+  "anyOf": [
+    {
+      "properties": {
+        "changes": {
+          "minItems": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "noop": {
+          "const": true
+        },
+        "noop_ack": {
+          "minLength": 1
+        },
+        "noop_reason": {
+          "minLength": 1
+        }
+      },
+      "required": [
+        "noop",
+        "noop_reason",
+        "noop_ack"
+      ]
+    }
   ],
   "title": "Files Changed",
   "type": "object"

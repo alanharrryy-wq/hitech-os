@@ -560,6 +560,76 @@ def cmd_print_report(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_watch(args: argparse.Namespace) -> int:
+    run_dir = RUNS_DIR / args.run_id
+    if not run_dir.exists():
+        payload = {
+            "status": BLOCKED,
+            "run_id": args.run_id,
+            "detail": f"run folder does not exist: {run_dir.as_posix()}",
+        }
+        _emit(payload, args.json_out)
+        return status_exit_code(payload["status"])
+
+    z_status_path = run_dir / INTEGRATOR / "STATUS.json"
+    gate_path = run_dir / "VERIFY_MEANINGFUL_GATE.json"
+    integrator_status = BLOCKED
+    integrator_payload: dict[str, Any] = {}
+    gate_payload: dict[str, Any] = {}
+    gate_verdict = BLOCKED
+
+    if z_status_path.exists():
+        try:
+            integrator_payload = json.loads(z_status_path.read_text(encoding="utf-8"))
+            integrator_status = _status_from_payload(integrator_payload)
+        except Exception as exc:
+            integrator_status = BLOCKED
+            integrator_payload = {"status": BLOCKED, "error": str(exc)}
+
+    if gate_path.exists():
+        try:
+            gate_payload = json.loads(gate_path.read_text(encoding="utf-8"))
+            gate_verdict = str(gate_payload.get("verdict", BLOCKED)).upper()
+        except Exception as exc:
+            gate_payload = {"verdict": BLOCKED, "error": str(exc), "fail_modes": ["UNREADABLE_REPORT"]}
+            gate_verdict = BLOCKED
+
+    if integrator_status == "FAIL":
+        final_status = "FAIL"
+    elif integrator_status != PASS:
+        final_status = BLOCKED
+    elif gate_verdict in {PASS, "WARN"}:
+        final_status = PASS
+    else:
+        final_status = BLOCKED
+
+    summary = {
+        "run_id": args.run_id,
+        "integrator_status": integrator_status,
+        "meaningful_gate_verdict": gate_verdict if gate_path.exists() else "MISSING",
+        "meaningful_gate_fail_modes": list(gate_payload.get("fail_modes", [])) if gate_payload else [],
+        "noop": bool(gate_payload.get("noop", False)),
+        "phase_progress": bool(final_status == PASS and not gate_payload.get("noop", False)),
+    }
+    payload = {
+        "status": final_status,
+        "run_id": args.run_id,
+        "run_dir": run_dir.as_posix(),
+        "summary": summary,
+        "integrator": {
+            "status_path": z_status_path.as_posix(),
+            "payload": integrator_payload,
+        },
+        "meaningful_gate": {
+            "path": gate_path.as_posix(),
+            "exists": gate_path.exists(),
+            "payload": gate_payload,
+        },
+    }
+    _emit(payload, args.json_out)
+    return status_exit_code(_status_from_payload(payload))
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="python -m tools.codex.factory",
@@ -661,6 +731,10 @@ def build_parser() -> argparse.ArgumentParser:
     print_report = sub.add_parser("print-report", help="Print FINAL_REPORT path and summary")
     print_report.add_argument("--run-id", required=True)
     print_report.set_defaults(func=cmd_print_report)
+
+    watch = sub.add_parser("watch", help="Summarize run status including meaningful gate verdict")
+    watch.add_argument("--run-id", required=True)
+    watch.set_defaults(func=cmd_watch)
 
     return parser
 

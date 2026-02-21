@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import shutil
 import sys
 from pathlib import Path
@@ -31,6 +32,37 @@ def _check_path(path: Path, *, required: bool = True) -> dict[str, Any]:
     }
 
 
+def _check_meaningful_gate_contract() -> dict[str, Any]:
+    schema_path = REPO_ROOT / "tools" / "codex" / "schemas" / "files_changed.schema.json"
+    if not schema_path.exists():
+        return {
+            "check": "meaningful_gate_contract",
+            "status": "BLOCKED",
+            "detail": "files_changed.schema.json is missing",
+            "next_action": f"Restore `{schema_path.as_posix()}`.",
+        }
+    try:
+        payload = json.loads(schema_path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        return {
+            "check": "meaningful_gate_contract",
+            "status": "BLOCKED",
+            "detail": f"schema read error: {exc}",
+            "next_action": "Fix files_changed schema JSON syntax.",
+        }
+    properties = payload.get("properties", {}) if isinstance(payload, dict) else {}
+    any_of = payload.get("anyOf", []) if isinstance(payload, dict) else []
+    has_noop = all(name in properties for name in ("noop", "noop_reason", "noop_ack"))
+    has_gate_clause = isinstance(any_of, list) and len(any_of) > 0
+    ok = bool(has_noop and has_gate_clause)
+    return {
+        "check": "meaningful_gate_contract",
+        "status": "PASS" if ok else "BLOCKED",
+        "detail": f"noop_fields={has_noop} anyOf={has_gate_clause}",
+        "next_action": "" if ok else "Add noop fields + anyOf rule to files_changed schema.",
+    }
+
+
 def run_doctor(config_path: str | None = None) -> dict[str, Any]:
     checks: list[dict[str, Any]] = []
     checks.append(
@@ -46,6 +78,7 @@ def run_doctor(config_path: str | None = None) -> dict[str, Any]:
     checks.append(_check_path(REPO_ROOT / ".git", required=True))
     checks.append(_check_path(REPO_ROOT / "tools" / "codex" / "run.py", required=True))
     checks.append(_check_path(REPO_ROOT / "tools" / "codex" / "validation.json", required=True))
+    checks.append(_check_path(REPO_ROOT / "tools" / "codex" / "verify" / "meaningful_gate.py", required=True))
     checks.append(_check_path(RUNS_DIR, required=False))
 
     config_errors: list[str] = []
@@ -79,6 +112,7 @@ def run_doctor(config_path: str | None = None) -> dict[str, Any]:
             "next_action": "" if contracts.get("status") == "PASS" else "Fix schema contract validation failures.",
         }
     )
+    checks.append(_check_meaningful_gate_contract())
 
     blocked = [item for item in checks if item["status"] == "BLOCKED"]
     warnings = [item for item in checks if item["status"] == "WARN"]
@@ -92,4 +126,3 @@ def run_doctor(config_path: str | None = None) -> dict[str, Any]:
         "checks": checks,
         "errors": config_errors,
     }
-

@@ -22,6 +22,9 @@ def _emit_worker_content(run_id: str, worker: str) -> None:
         "run_id": run_id,
         "worker_id": worker,
         "status": "PASS",
+        "noop": True,
+        "noop_reason": "factory smoke fixture is declarative only",
+        "noop_ack": worker,
         "started_at": iso_utc(),
         "ended_at": iso_utc(),
         "required_checks": [{"name": "smoke_worker", "status": "PASS"}],
@@ -32,23 +35,16 @@ def _emit_worker_content(run_id: str, worker: str) -> None:
     }
     write_json(root / "STATUS.json", status)
 
-    changes = []
-    for path in SAMPLE_PATHS[worker]:
-        changes.append(
-            {
-                "path": path,
-                "change_type": "modified",
-                "reason": "smoke fixture",
-                "sha256": stable_sha256_text(path),
-            }
-        )
     write_json(
         root / "FILES_CHANGED.json",
         {
             "schema_version": 1,
             "run_id": run_id,
             "owner": worker,
-            "changes": changes,
+            "changes": [],
+            "noop": True,
+            "noop_reason": "factory smoke fixture is declarative only",
+            "noop_ack": worker,
         },
     )
 
@@ -80,15 +76,7 @@ def _emit_worker_content(run_id: str, worker: str) -> None:
     write_text(root / "SUMMARY.md", f"# {worker} summary\n\nSmoke fixture for {worker}.\n")
     write_text(root / "SUGGESTIONS.md", f"# {worker} suggestions\n\n- No suggestions.\n")
 
-    patch_lines = []
-    for path in SAMPLE_PATHS[worker]:
-        patch_lines.append(f"diff --git a/{path} b/{path}")
-        patch_lines.append(f"--- a/{path}")
-        patch_lines.append(f"+++ b/{path}")
-        patch_lines.append("@@ -0,0 +1 @@")
-        patch_lines.append(f"+// {worker} smoke content")
-        patch_lines.append("")
-    write_text(root / "DIFF.patch", "\n".join(patch_lines).rstrip() + "\n")
+    write_text(root / "DIFF.patch", "")
 
     write_json(
         root / "LOGS" / "INDEX.json",

@@ -46,6 +46,15 @@
       },
       "type": "array"
     },
+    "noop": {
+      "type": "boolean"
+    },
+    "noop_ack": {
+      "type": "string"
+    },
+    "noop_reason": {
+      "type": "string"
+    },
     "required_checks": {
       "items": {
         "additionalProperties": true,
@@ -119,6 +128,33 @@
     "errors",
     "warnings",
     "artifacts"
+  ],
+  "anyOf": [
+    {
+      "properties": {
+        "noop": {
+          "const": false
+        }
+      }
+    },
+    {
+      "properties": {
+        "noop": {
+          "const": true
+        },
+        "noop_ack": {
+          "minLength": 1
+        },
+        "noop_reason": {
+          "minLength": 1
+        }
+      },
+      "required": [
+        "noop",
+        "noop_reason",
+        "noop_ack"
+      ]
+    }
   ],
   "title": "Worker Bundle Status",
   "type": "object"

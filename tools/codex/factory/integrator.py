@@ -13,6 +13,19 @@ from .overlap import detect_file_overlaps, detect_scope_violations
 from .schemas import validate_payload
 from .status_eval import BLOCKED, FAIL, PASS, evaluate_status, make_check, status_exit_code
 
+try:  # pragma: no cover - import path depends on launcher mode
+    from verify.meaningful_gate import BLOCKED as GATE_BLOCKED
+    from verify.meaningful_gate import FAIL as GATE_FAIL
+    from verify.meaningful_gate import PASS as GATE_PASS
+    from verify.meaningful_gate import WARN as GATE_WARN
+    from verify.meaningful_gate import run_meaningful_gate
+except Exception:  # pragma: no cover - package mode fallback
+    from tools.codex.verify.meaningful_gate import BLOCKED as GATE_BLOCKED
+    from tools.codex.verify.meaningful_gate import FAIL as GATE_FAIL
+    from tools.codex.verify.meaningful_gate import PASS as GATE_PASS
+    from tools.codex.verify.meaningful_gate import WARN as GATE_WARN
+    from tools.codex.verify.meaningful_gate import run_meaningful_gate
+
 
 def _collect_worker_inputs(run_id: str, workers: list[str]) -> list[dict[str, Any]]:
     collected: list[dict[str, Any]] = []
@@ -26,6 +39,9 @@ def _collect_worker_inputs(run_id: str, workers: list[str]) -> list[dict[str, An
             "files_changed": [],
             "summary": "",
             "diff": "",
+            "noop": False,
+            "noop_reason": "",
+            "noop_ack": "",
         }
         if root.exists():
             record["status"] = "PRESENT"
@@ -35,6 +51,9 @@ def _collect_worker_inputs(run_id: str, workers: list[str]) -> list[dict[str, An
             if files_changed_path.exists():
                 payload = read_json(files_changed_path)
                 record["files_changed"] = list(payload.get("changes", []))
+                record["noop"] = bool(payload.get("noop", False))
+                record["noop_reason"] = str(payload.get("noop_reason", "")).strip()
+                record["noop_ack"] = str(payload.get("noop_ack", "")).strip()
             if summary_path.exists():
                 record["summary"] = read_text(summary_path).strip()
             if diff_path.exists():
@@ -44,9 +63,16 @@ def _collect_worker_inputs(run_id: str, workers: list[str]) -> list[dict[str, An
 
 
 def _merge_files_changed(run_id: str, collected: Iterable[Mapping[str, Any]]) -> dict[str, Any]:
+    records = list(collected)
     merged: list[dict[str, Any]] = []
-    for item in collected:
+    noop_records: list[tuple[str, str, str]] = []
+    for item in records:
         owner = str(item.get("worker", ""))
+        noop = bool(item.get("noop", False))
+        noop_reason = str(item.get("noop_reason", "")).strip()
+        noop_ack = str(item.get("noop_ack", "")).strip()
+        if noop and noop_reason and noop_ack:
+            noop_records.append((owner, noop_reason, noop_ack))
         for change in item.get("files_changed", []) or []:
             if not isinstance(change, Mapping):
                 continue
@@ -60,12 +86,22 @@ def _merge_files_changed(run_id: str, collected: Iterable[Mapping[str, Any]]) ->
                 }
             )
     merged = sorted(merged, key=lambda entry: (str(entry.get("path", "")), str(entry.get("owner", ""))))
-    return {
+    payload = {
         "schema_version": 1,
         "run_id": run_id,
         "owner": INTEGRATOR,
         "changes": merged,
     }
+    if not merged and noop_records and len(noop_records) == len(records):
+        ordered = sorted(noop_records, key=lambda item: item[0])
+        payload["noop"] = True
+        payload["noop_reason"] = "; ".join(f"{worker}: {reason}" for worker, reason, _ in ordered)
+        payload["noop_ack"] = ",".join(worker for worker, _, _ in ordered)
+    else:
+        payload["noop"] = False
+        payload["noop_reason"] = ""
+        payload["noop_ack"] = ""
+    return payload
 
 
 def _merge_patch(collected: Iterable[Mapping[str, Any]]) -> str:
@@ -130,7 +166,11 @@ def _render_final_report(
     policy_errors: Iterable[str] | None = None,
     internal_errors: Iterable[str] | None = None,
     ledger_signature_status: Mapping[str, Any] | None = None,
+    meaningful_gate: Mapping[str, Any] | None = None,
 ) -> str:
+    gate = meaningful_gate or {}
+    gate_verdict = str(gate.get("verdict", "N/A"))
+    gate_noop = bool(gate.get("noop", False))
     lines = [
         f"# FINAL_REPORT - {run_id}",
         "",
@@ -142,6 +182,8 @@ def _render_final_report(
         f"- Scope violations: {scope_report.get('blocked', 0)}",
         f"- Hidden overlaps: {len(overlap_report.get('hidden_overlaps', []))}",
         f"- Invalid FILES_CHANGED paths: {len(overlap_report.get('invalid_paths', []))}",
+        f"- Meaningful gate verdict: {gate_verdict}",
+        f"- NOOP declared: {str(gate_noop).lower()}",
         "",
         "## Required Checks",
     ]
@@ -180,6 +222,8 @@ def _render_final_report(
         blockers.append(f"policy: {item}")
     for item in internal_errors or []:
         blockers.append(f"internal: {item}")
+    for mode in gate.get("fail_modes", []) if isinstance(gate.get("fail_modes", []), list) else []:
+        blockers.append(f"meaningful_gate: {mode}")
 
     if blockers:
         for blocker in sorted(set(blockers)):
@@ -198,6 +242,7 @@ def _render_final_report(
             "- If BLOCKED: resolve overlap/scope/policy issues and rerun integration.",
             "- If FAIL: inspect logs and fix internal factory errors.",
             "- If PASS: run project-level validation and publish the run report.",
+            "- If PASS with NOOP: do not count as phase progress; record explicit noop rationale.",
         ]
     )
 
@@ -229,6 +274,9 @@ def _build_status_payload(
     optional_checks: list[dict[str, Any]],
     errors: list[dict[str, Any]],
     warnings: list[dict[str, Any]],
+    noop: bool = False,
+    noop_reason: str = "",
+    noop_ack: str = "",
 ) -> dict[str, Any]:
     return {
         "schema_version": 1,
@@ -236,6 +284,9 @@ def _build_status_payload(
         "run_id": run_id,
         "worker_id": INTEGRATOR,
         "status": final_status,
+        "noop": bool(noop),
+        "noop_reason": str(noop_reason),
+        "noop_ack": str(noop_ack),
         "started_at": started_at,
         "ended_at": ended_at,
         "required_checks": required_checks,
@@ -427,6 +478,9 @@ def integrate_run(
             optional_checks=[dict(item) for item in evaluation.optional_checks],
             errors=errors,
             warnings=warnings,
+            noop=bool(merged_files.get("noop", False)),
+            noop_reason=str(merged_files.get("noop_reason", "")),
+            noop_ack=str(merged_files.get("noop_ack", "")),
         )
 
         status_schema_errors = validate_payload("integrator_status", status_payload)
@@ -470,6 +524,7 @@ def integrate_run(
             policy_errors=[],
             internal_errors=[],
             ledger_signature_status={},
+            meaningful_gate={},
         )
 
         policy_errors: list[str] = []
@@ -520,6 +575,7 @@ def integrate_run(
                 policy_errors=policy_errors,
                 internal_errors=[],
                 ledger_signature_status={},
+                meaningful_gate={},
             )
             _write_standard_outputs(
                 guard=guard,
@@ -532,6 +588,64 @@ def integrate_run(
                 log_index_payload=_build_log_index(run_id, status_exit_code(final_status)),
                 extra_writes=None,
             )
+
+        repo_root_candidate = Path(str(cfg.get("paths", {}).get("repo_root", Path.cwd().as_posix()))).resolve(strict=False)
+        gate_payload = run_meaningful_gate(
+            run_id,
+            repo_root=repo_root_candidate,
+            runs_dir=RUNS_DIR,
+            write_outputs=True,
+        )
+        gate_verdict = str(gate_payload.get("verdict", GATE_BLOCKED)).upper()
+        gate_fail_modes = [str(item) for item in gate_payload.get("fail_modes", [])]
+        gate_rc = 0 if gate_verdict in {GATE_PASS, GATE_WARN} else 2
+        required_checks.append(
+            make_check(
+                "meaningful_execution_gate",
+                rc=gate_rc,
+                required=True,
+                detail=(
+                    f"verdict={gate_verdict} "
+                    f"fail_modes={','.join(sorted(gate_fail_modes)) if gate_fail_modes else '<none>'}"
+                ),
+                actor=INTEGRATOR,
+            )
+        )
+        gate_blockers = [f"meaningful_gate:{item}" for item in sorted(set(gate_fail_modes))]
+        if gate_verdict in {GATE_BLOCKED, GATE_FAIL} and not gate_blockers:
+            gate_blockers.append(f"meaningful_gate:{gate_verdict}")
+        evaluation = evaluate_status(
+            required_checks=required_checks,
+            optional_checks=[],
+            schema_errors=schema_errors,
+            blockers=blockers + policy_errors + gate_blockers,
+            internal_errors=[],
+        )
+        final_status = evaluation.status
+        status_payload["status"] = final_status
+        status_payload["required_checks"] = [dict(item) for item in evaluation.required_checks]
+        status_payload["optional_checks"] = [dict(item) for item in evaluation.optional_checks]
+        status_payload["noop"] = bool(gate_payload.get("noop", False))
+        status_payload["noop_reason"] = str(gate_payload.get("noop_reason", ""))
+        status_payload["noop_ack"] = str(gate_payload.get("noop_ack", ""))
+
+        final_report = _render_final_report(
+            run_id,
+            collected,
+            overlap_report,
+            scope_report,
+            final_status,
+            evaluation.required_checks,
+            contract_version=int(cfg.get("contract_version", 2)),
+            schema_errors=schema_errors,
+            policy_errors=policy_errors,
+            internal_errors=[],
+            ledger_signature_status={},
+            meaningful_gate=gate_payload,
+        )
+        guard.write_json(z_dir / "STATUS.json", status_payload)
+        guard.write_json(z_dir / "LOGS" / "INDEX.json", _build_log_index(run_id, status_exit_code(final_status)))
+        guard.write_text(z_dir / "FINAL_REPORT.txt", final_report)
 
         guard.append_line(run_log, f"[done] final_status={final_status}")
 
@@ -549,6 +663,7 @@ def integrate_run(
             policy_errors=policy_errors,
             internal_errors=[],
             ledger_signature_status=ledger_sig,
+            meaningful_gate=gate_payload,
         )
         guard.write_text(z_dir / "FINAL_REPORT.txt", final_report)
         report_hash = stable_sha256_text(final_report)
@@ -577,6 +692,8 @@ def integrate_run(
                     "report": (z_dir / "FINAL_REPORT.txt").as_posix(),
                     "path": (RUNS_DIR / run_id).as_posix(),
                     "attestations": attestations,
+                    "meaningful_gate": gate_payload.get("outputs", {}),
+                    "meaningful_gate_verdict": gate_payload.get("verdict", GATE_BLOCKED),
                 },
             }
         )
@@ -607,6 +724,7 @@ def integrate_run(
             "scope_blockers": len(scope_blockers),
             "report": (z_dir / "FINAL_REPORT.txt").as_posix(),
             "attestations": attestations,
+            "meaningful_gate": gate_payload,
         }
     except Exception as exc:  # pragma: no cover - integration fallback path
         ended_at = iso_utc()
@@ -628,6 +746,9 @@ def integrate_run(
             optional_checks=[],
             errors=[{"kind": "internal", "detail": fallback_error}],
             warnings=[],
+            noop=False,
+            noop_reason="",
+            noop_ack="",
         )
         fallback_report = _render_final_report(
             run_id,
@@ -641,6 +762,7 @@ def integrate_run(
             policy_errors=[],
             internal_errors=[fallback_error],
             ledger_signature_status={},
+            meaningful_gate={},
         )
         try:
             guard.write_text(z_dir / "FINAL_REPORT.txt", fallback_report)

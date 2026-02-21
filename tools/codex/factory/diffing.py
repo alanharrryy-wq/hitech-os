@@ -29,8 +29,8 @@ def unified_patch_for_paths(paths: Iterable[str]) -> str:
         new_text = new_path.read_text(encoding="utf-8") if new_path.exists() else ""
         old_text = _git_show(rel_path)
 
-        old_lines = old_text.splitlines(keepends=True)
-        new_lines = new_text.splitlines(keepends=True)
+        old_lines = old_text.splitlines(keepends=False)
+        new_lines = new_text.splitlines(keepends=False)
         patch = difflib.unified_diff(
             old_lines,
             new_lines,

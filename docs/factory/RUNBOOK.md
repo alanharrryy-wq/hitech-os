@@ -42,6 +42,7 @@ python -m tools.codex.factory ledger-replay --run-id <RUN_ID>
 python -m tools.codex.factory open-report --run-id <RUN_ID>
 python -m tools.codex.factory open-run --run-id <RUN_ID>
 python -m tools.codex.factory print-report --run-id <RUN_ID>
+python -m tools.codex.factory watch --run-id <RUN_ID>
 ```
 
 ## One-Shot Stage Order

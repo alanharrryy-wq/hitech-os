@@ -56,6 +56,9 @@ def _default_worker_status(run_id: str, worker: str) -> dict[str, Any]:
         "run_id": run_id,
         "worker_id": worker,
         "status": "PENDING",
+        "noop": False,
+        "noop_reason": "",
+        "noop_ack": "",
         "started_at": "",
         "ended_at": "",
         "required_checks": [],
@@ -72,6 +75,9 @@ def _default_files_changed(run_id: str, worker: str) -> dict[str, Any]:
         "run_id": run_id,
         "owner": worker,
         "changes": [],
+        "noop": True,
+        "noop_reason": "scaffold placeholder: worker has not declared changes",
+        "noop_ack": worker,
     }
 
 
@@ -160,6 +166,9 @@ def scaffold_integrator_bundle(run_id: str) -> dict[str, Any]:
             "run_id": run_id,
             "worker_id": worker,
             "status": "PENDING",
+            "noop": False,
+            "noop_reason": "",
+            "noop_ack": "",
             "started_at": "",
             "ended_at": "",
             "required_checks": [],
@@ -173,6 +182,9 @@ def scaffold_integrator_bundle(run_id: str) -> dict[str, Any]:
             "run_id": run_id,
             "owner": worker,
             "changes": [],
+            "noop": True,
+            "noop_reason": "scaffold placeholder: integrator has not declared changes",
+            "noop_ack": worker,
         },
         "LOGS/INDEX.json": _default_log_index(run_id, worker),
     }
