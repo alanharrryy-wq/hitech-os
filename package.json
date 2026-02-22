@@ -12,6 +12,12 @@
     "lint": "pnpm -r --if-present lint",
     "test": "pnpm -r --if-present test",
     "typecheck": "pnpm -r --if-present typecheck",
+    "factory:build": "pnpm exec tsc -p configs/tsconfig.factory.json --pretty false",
+    "factory:smoke": "pnpm run factory:build && node --test dist/tests/smoke/factory.e2e.test.js",
+    "factory:create-worker": "pnpm run factory:build && node dist/tools/create-worker.js",
+    "lockfile:check": "pnpm install --frozen-lockfile --ignore-scripts",
+    "snapshot:hos": "pnpm exec tsx tools/snapshot/hos_snapshot.ts",
+    "snapshot:hos:validate": "pnpm exec tsx tools/snapshot/validate_snapshot.ts",
     "dev": "turbo run dev --parallel",
     "turbo:build": "turbo run build",
     "turbo:lint": "turbo run lint",
@@ -24,6 +30,10 @@
     "smoke:bridge": "node tools/scripts/smoke_node_python_bridge.mjs"
   },
   "devDependencies": {
+    "@types/node": "22.13.9",
+    "ajv": "8.17.1",
+    "tsx": "4.20.5",
+    "typescript": "5.8.2",
     "turbo": "2.3.3"
   }
 }

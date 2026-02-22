@@ -1,0 +1,685 @@
+﻿{
+    "format_id":  "HOS_CONVERSATIONAL_OS",
+    "format_version":  "2.0.1",
+    "mode":  "UNKNOWN",
+    "mode_resolution":  {
+                            "base_rule":  "If a usable snapshot with format_id HOS_CONVERSATIONAL_OS is provided at chat start then mode is CONTINUE; otherwise mode is INIT_NEW.",
+                            "overrides":  {
+                                              "FORCE_INIT_NEW":  {
+                                                                     "result_mode":  "INIT_NEW",
+                                                                     "requires_usable_snapshot":  false,
+                                                                     "priority":  "highest"
+                                                                 },
+                                              "FORCE_CONTINUE":  {
+                                                                     "result_mode":  "CONTINUE",
+                                                                     "requires_usable_snapshot":  true,
+                                                                     "fallback_when_snapshot_unusable":  "INIT_NEW"
+                                                                 }
+                                          },
+                            "clarification":  "nuevo chat != nuevo proyecto. If a usable snapshot exists, continuation must keep the same project identity."
+                        },
+    "workspace":  {
+                      "base_dir":  "F:\\HITECH_OS_CHATSGPT\\",
+                      "projects_are_subfolders":  true
+                  },
+    "storage_policy":  {
+                           "latest_filename":  "LATEST.json",
+                           "template_filename":  "Machote v2.0.1.json",
+                           "file_extension":  ".json",
+                           "filename_pattern":  "S\u003cCHAT_SEQUENCE_3DIGIT\u003e__\u003cCHAT_DISPLAY_NAME_FILESAFE\u003e.json",
+                           "snapshot_filename":  "\u003cAUTO\u003e",
+                           "sequence_only_naming":  true,
+                           "no_temporal_metadata":  true,
+                           "standard_machote_filename_rule":  "Machote v2.x.x.json",
+                           "write_policy":  {
+                                                "snapshots_no_overwrite":  true,
+                                                "latest_overwrite_allowed":  true,
+                                                "atomic_write_required":  true,
+                                                "newline_policy":  "LF_OR_CRLF_ALLOWED",
+                                                "encoding":  "UTF-8"
+                                            }
+                       },
+    "naming_policy":  {
+                          "chat_title_format":  "\u003cPROJECT_LABEL\u003e \u003cN\u003e - \u003cTITLE\u003e",
+                          "anti_skip_rule":  "INIT_NEW and CONTINUE are chat-level states only. INIT_NEW sets chat_sequence=1. CONTINUE sets new_seq=(prev_seq+1) using only the provided snapshot.",
+                          "new_chat_not_new_project_rule":  "nuevo chat != nuevo proyecto. With snapshot input, keep project identity from snapshot metadata.",
+                          "filesafe_slug_rules":  [
+                                                      "Replace \u0027-\u0027 separators with \u0027__\u0027 only where required by naming policy.",
+                                                      "Replace spaces with _.",
+                                                      "Remove invalid Windows filename chars: \u003c \u003e : \" / \\\\ | ? *",
+                                                      "Collapse repeated underscores.",
+                                                      "Trim underscores from start/end.",
+                                                      "Trim trailing dots/spaces.",
+                                                      "Collapse repeated dots."
+                                                  ]
+                      },
+    "field_ownership":  {
+                            "user_inputs":  [
+                                                "mode",
+                                                "mode_resolution override token (optional)",
+                                                "init_intake.project_name_human (INIT_NEW only; assistant may derive if missing)",
+                                                "init_intake.project_key_hint (optional)",
+                                                "init_intake.project_label_hint (optional)",
+                                                "init_intake.first_chat_goal_2_lines (INIT_NEW only)",
+                                                "chat.objective_2_lines (optional)",
+                                                "chat.title_hint (optional)",
+                                                "handoff.user_signal (optional: nuevo chat)"
+                                            ],
+                            "assistant_generates":  [
+                                                        "project.key",
+                                                        "project.label",
+                                                        "project.display_name",
+                                                        "project.storage_dir",
+                                                        "project.metadata.*",
+                                                        "identity.chat_sequence",
+                                                        "identity.chat_display_name",
+                                                        "identity.chat_display_name_filesafe",
+                                                        "identity.snapshot_id",
+                                                        "storage_policy.snapshot_filename",
+                                                        "rehydration_core.*",
+                                                        "truth_model.*",
+                                                        "capture_policy.*",
+                                                        "state_now.*",
+                                                        "drift_and_contradictions.*",
+                                                        "decisions_log.*",
+                                                        "next_actions.*",
+                                                        "changelog_micro.*",
+                                                        "next_chat.*",
+                                                        "bundle_contract.*",
+                                                        "embedded_files.*"
+                                                    ],
+                            "system_calculates_deterministically":  [
+                                                                        "identity.snapshot_id",
+                                                                        "identity.chat_display_name_filesafe",
+                                                                        "storage_policy.snapshot_filename",
+                                                                        "integrity.*"
+                                                                    ]
+                        },
+    "runtime_contract":  {
+                             "intent":  "Conversational Operating System schema lock for deterministic multi-project execution. Chat decides, snapshot encodes, scripts save, disk stores.",
+                             "hard_gate":  {
+                                               "must_ack":  false,
+                                               "ack_token":  "ACK_OPTIONAL_HOS_COS20",
+                                               "description":  "No mandatory extra token. Output must be one JSON bundle that is directly usable."
+                                           },
+                             "mode_detection":  {
+                                                    "rule":  "If chat starts with a usable snapshot and format_id is HOS_CONVERSATIONAL_OS, mode is CONTINUE. If no usable snapshot, mode is INIT_NEW.",
+                                                    "overrides":  {
+                                                                      "FORCE_INIT_NEW":  "Always set INIT_NEW, even when a snapshot is present.",
+                                                                      "FORCE_CONTINUE":  "Set CONTINUE only when snapshot is usable. If unusable, fallback is INIT_NEW."
+                                                                  },
+                                                    "init_new_name_derivation_rule":  "If init_intake.project_name_human is UNKNOWN and user did not provide one, derive a concise name from chat context and store source/confidence/rationale in project.metadata.",
+                                                    "continue_truth_rule":  "In CONTINUE, snapshot-provided project metadata is the only source for project name, key, and label.",
+                                                    "clarification":  "nuevo chat != nuevo proyecto. Snapshot presence means continuation of existing project."
+                                                },
+                             "hard_rules_top30":  [
+                                                      "01) MODE IS CHAT-LEVEL: Usable snapshot at chat start means CONTINUE; no snapshot means INIT_NEW.",
+                                                      "02) OVERRIDE FORCE_INIT_NEW: Explicit override sets INIT_NEW even if a snapshot exists.",
+                                                      "03) OVERRIDE FORCE_CONTINUE: Explicit override sets CONTINUE only with a usable snapshot.",
+                                                      "04) NEW CHAT CLARITY: nuevo chat does not imply a new project.",
+                                                      "05) CONTINUE TRUTH: Project identity in CONTINUE comes only from the provided snapshot.",
+                                                      "06) NO DISK DECISIONS: Disk state and filesystem scans are never decision inputs.",
+                                                      "07) MONOTONIC SEQUENCE: In CONTINUE, new_seq = prev_seq + 1 from snapshot identity.chat_sequence.",
+                                                      "08) INIT_NEW NAME RULE: If user omits project name, derive from chat context and record metadata rationale.",
+                                                      "09) PROJECT.KEY STABILITY: Keep project.key immutable in CONTINUE unless user explicitly changes it.",
+                                                      "10) PROJECT.LABEL STABILITY: Keep project.label immutable in CONTINUE unless user explicitly changes it.",
+                                                      "11) TITLE PRIORITY: Prefer chat.title_hint, then objective first line, then Session.",
+                                                      "12) DISPLAY NAME DETERMINISTIC: identity.chat_display_name is deterministic from sequence and title.",
+                                                      "13) FILESAFE DETERMINISTIC: chat_display_name_filesafe derives only from filesafe rules.",
+                                                      "14) SNAPSHOT_ID RULE: sha256(project.key|chat_sequence|chat_display_name).",
+                                                      "15) FILENAME RULE: S\u003cCHAT_SEQUENCE_3DIGIT\u003e__\u003cCHAT_DISPLAY_NAME_FILESAFE\u003e.json.",
+                                                      "16) TEMPORAL BAN: No dates or timestamps in filenames, IDs, or saved metadata.",
+                                                      "17) PROOF REQUIRED: integrity.proof must store canonical string and sha256 output.",
+                                                      "18) UNKNOWN DISCIPLINE: Use UNKNOWN when value is not explicit or deterministic.",
+                                                      "19) ASSUMPTIONS LOG: Derived choices are recorded in truth_model.assumptions_top10.",
+                                                      "20) UNKNOWNS LOG: Gaps are recorded in truth_model.unknowns_top10.",
+                                                      "21) LAST_ACTION REQUIRED: state_now.last_action is required in every rotation.",
+                                                      "22) LIST CONTINUITY: In CONTINUE, lists are updated incrementally, not reset.",
+                                                      "23) CHANGELOG REQUIRED: changelog_micro fields are always populated.",
+                                                      "24) CAPTURE POLICY REQUIRED: Every rotation captures concrete project knowledge.",
+                                                      "25) BUNDLE ONLY: Delivery is one JSON artifact with embedded_files.",
+                                                      "26) SCRIPT ROLE: Scripts are write-only executors and never compute mode or identity.",
+                                                      "27) SCRIPT INPUT: Scripts consume bundle data already inside this JSON.",
+                                                      "28) CONFLICT RULE: Snapshot truth wins over paraphrase or memory in CONTINUE.",
+                                                      "29) RECOVERY RULE: On mismatch, regenerate deterministically from snapshot truth.",
+                                                      "30) DETERMINISM RULE: Same inputs must produce same outputs."
+                                                  ],
+                             "golden_rules":  [
+                                                  "CONTINUE TRUTH: Use snapshot metadata as the only project identity source in CONTINUE.",
+                                                  "NO DISK DECISIONS: Disk is storage only.",
+                                                  "SINGLE BUNDLE: One JSON includes snapshot and embedded scripts.",
+                                                  "SEQUENCE ONLY: IDs and filenames are sequence-driven with no temporal data.",
+                                                  "NO INVENTION: Keep UNKNOWN for missing facts."
+                                              ],
+                             "chat_start_requirements":  {
+                                                             "init_mode":  {
+                                                                               "required_user_inputs":  [
+                                                                                                            "machote limpio (single schema lock)",
+                                                                                                            "project name only when topic cannot yield stable deterministic naming"
+                                                                                                        ],
+                                                                               "assistant_must_do":  [
+                                                                                                         "If init_intake.project_name_human is UNKNOWN, derive from chat context and record source metadata.",
+                                                                                                         "Set identity.chat_sequence = 1 for INIT_NEW.",
+                                                                                                         "Set next_chat.sequence = 2."
+                                                                                                     ]
+                                                                           },
+                                                             "continue_mode":  {
+                                                                                   "required_user_inputs":  [
+                                                                                                                "previous snapshot object provided at chat start"
+                                                                                                            ],
+                                                                                   "assistant_must_do":  [
+                                                                                                             "Parse previous snapshot and read prev_seq from identity.chat_sequence.",
+                                                                                                             "Set new_seq = prev_seq + 1 with strict monotonicity.",
+                                                                                                             "Keep project name/key/label exactly from snapshot metadata."
+                                                                                                         ],
+                                                                                   "forbidden_without_previous_snapshot":  false
+                                                                               }
+                                                         },
+                             "handoff":  {
+                                             "trigger_phrase":  "nuevo chat",
+                                             "user_provides_at_trigger":  [
+                                                                              "machote limpio (same schema lock)",
+                                                                              "snapshot object at chat start when continuing an existing project"
+                                                                          ],
+                                             "assistant_uses_snapshot_from_chat_start":  true,
+                                             "assistant_must_not_use_disk":  true,
+                                             "assistant_output_format":  "Must output one JSON bundle containing snapshot data and embedded_files.",
+                                             "assistant_output_minimum":  [
+                                                                              "MACHOTE_JSON_BUNDLE_FULL"
+                                                                          ]
+                                         },
+                             "decision_source_of_truth":  {
+                                                              "chat_sequence":  "CONTINUE: only from provided snapshot identity.chat_sequence. INIT_NEW: fixed to 1.",
+                                                              "project_identity":  "CONTINUE: only from provided snapshot project block. INIT_NEW: from init_intake or deterministic derivation from chat context.",
+                                                              "title_and_display_name":  "Derived deterministically from chat inputs and naming_policy only.",
+                                                              "no_disk_lookup_for_decisions":  true
+                                                          },
+                             "assistant_guardrails":  {
+                                                          "no_reinterpretation_rule":  "When machote limpio is present, assistant output must follow this schema.",
+                                                          "no_invented_data_rule":  "Assistant must not invent facts; use UNKNOWN when not deterministic.",
+                                                          "anti_drift_rule":  "If memory or paraphrase conflicts with provided snapshot, snapshot wins in CONTINUE.",
+                                                          "sequence_rule":  "new_seq = prev_seq + 1 using snapshot identity.chat_sequence only.",
+                                                          "project_key_stability_rule":  "project.key is immutable once established unless user explicitly overrides.",
+                                                          "minimal_change_rule":  "Preserve confirmed facts between chats unless explicitly updated by user or deterministic derivation.",
+                                                          "conflict_resolution_rule":  "Record conflicts in drift_and_contradictions and proceed with snapshot-truth determinism."
+                                                      },
+                             "script_contract":  {
+                                                     "powerShell_is_wrapper_only":  true,
+                                                     "python_is_engine":  true,
+                                                     "script_must_be_dumb":  true,
+                                                     "script_must_not":  [
+                                                                             "Search directories to guess project identity",
+                                                                             "Infer mode from disk or filesystem conditions",
+                                                                             "Read LATEST.json to compute sequence or state",
+                                                                             "Compute snapshot_id, display_name, or project identity",
+                                                                             "Request interactive merge or copy steps",
+                                                                             "Modify machote template file or schema"
+                                                                         ],
+                                                     "script_must":  [
+                                                                         "Treat project.storage_dir from snapshot as authoritative target path in CONTINUE.",
+                                                                         "Create target folder idempotently when missing.",
+                                                                         "Write snapshot JSON exactly to target snapshot path from snapshot metadata.",
+                                                                         "Write or overwrite LATEST.json as exact copy of snapshot JSON.",
+                                                                         "Log saved snapshot path and next_chat.display_name.",
+                                                                         "Support single bundle execution using embedded_files."
+                                                                     ]
+                                                 },
+                             "smoothness_improvements_top100":  [
+                                                                    "01) Keep mode detection explicit and deterministic.",
+                                                                    "02) Use FORCE_INIT_NEW and FORCE_CONTINUE overrides exactly as defined.",
+                                                                    "03) Treat INIT_NEW and CONTINUE as chat-level states only.",
+                                                                    "04) Use provided snapshot as sole continuation truth source.",
+                                                                    "05) Keep project identity stable in CONTINUE.",
+                                                                    "06) Never use disk state as decision input.",
+                                                                    "07) Enforce strict monotonic sequence updates.",
+                                                                    "08) Derive display names deterministically.",
+                                                                    "09) Keep snapshot_id deterministic with canonical formula.",
+                                                                    "10) Keep filename deterministic with sequence-only pattern.",
+                                                                    "11) Ban temporal data in IDs, names, and saved metadata.",
+                                                                    "12) Keep UNKNOWN discipline strict.",
+                                                                    "13) Keep assumptions and unknowns updated each rotation.",
+                                                                    "14) Keep state_now.last_action populated.",
+                                                                    "15) Keep changelog_micro populated.",
+                                                                    "16) Keep next_chat.must_start_with_top5 populated.",
+                                                                    "17) Keep next_chat.must_not_do_top5 populated.",
+                                                                    "18) Keep drift and contradiction logs synchronized with reality.",
+                                                                    "19) Keep decisions with rationale explicit.",
+                                                                    "20) Keep risks with mitigations explicit.",
+                                                                    "21) Keep acceptance criteria concrete and testable.",
+                                                                    "22) Keep scope boundaries explicit with in/out lists.",
+                                                                    "23) Keep requirements split into functional and non-functional.",
+                                                                    "24) Keep constraints split into hard and soft.",
+                                                                    "25) Keep entities tracked for people, systems, and files.",
+                                                                    "26) Keep glossary aligned with current domain.",
+                                                                    "27) Prevent generic snapshots with capture_policy quality gates.",
+                                                                    "28) Ensure one JSON bundle includes embedded scripts.",
+                                                                    "29) Ensure scripts remain write-only executors.",
+                                                                    "30) Preserve deterministic outputs for same inputs."
+                                                                ]
+                         },
+    "init_intake":  {
+                        "mode_override_token":  "NONE",
+                        "project_name_human":  "UNKNOWN",
+                        "project_key_hint":  "",
+                        "project_label_hint":  "",
+                        "first_chat_goal_2_lines":  "UNKNOWN"
+                    },
+    "project":  {
+                    "key":  "UNKNOWN",
+                    "label":  "UNKNOWN",
+                    "display_name":  "UNKNOWN",
+                    "storage_dir":  "\u003cAUTO\u003e",
+                    "created_from_mode":  "\u003cAUTO\u003e",
+                    "metadata":  {
+                                     "continue_identity_source":  "snapshot_only",
+                                     "name_source":  "UNKNOWN",
+                                     "name_confidence":  "UNKNOWN",
+                                     "name_rationale_2_lines":  "UNKNOWN",
+                                     "name_source_allowed_values":  [
+                                                                        "snapshot",
+                                                                        "user_provided",
+                                                                        "derived_from_chat"
+                                                                    ],
+                                     "name_confidence_allowed_values":  [
+                                                                            "low",
+                                                                            "medium",
+                                                                            "high",
+                                                                            "UNKNOWN"
+                                                                        ]
+                                 }
+                },
+    "identity":  {
+                     "chat_sequence":  "UNKNOWN",
+                     "chat_display_name":  "UNKNOWN",
+                     "chat_display_name_filesafe":  "\u003cAUTO\u003e",
+                     "snapshot_id":  "\u003cAUTO_DETERMINISTIC\u003e",
+                     "source_latest_ref":  {
+                                               "used":  "\u003cAUTO\u003e",
+                                               "latest_path":  "\u003cAUTO\u003e",
+                                               "latest_snapshot_id":  "\u003cAUTO\u003e",
+                                               "note":  "AUDIT ONLY. NEVER DECISION INPUT."
+                                           }
+                 },
+    "integrity":  {
+                      "schema_lock":  {
+                                          "must_match_format_version":  true,
+                                          "forbid_extra_top_level_keys":  false,
+                                          "forbid_missing_top_level_keys":  false,
+                                          "ordering_preference":  "STABLE_ORDER"
+                                      },
+                      "proof":  {
+                                    "canonical_string_used_for_snapshot_id":  "\u003cAUTO\u003e",
+                                    "sha256_snapshot_id":  "\u003cAUTO\u003e",
+                                    "sha256_template_hash_optional":  "\u003cAUTO\u003e"
+                                },
+                      "checks":  {
+                                     "required_minimum_fields_present":  "\u003cAUTO\u003e",
+                                     "sequence_monotonicity_verified":  "\u003cAUTO\u003e",
+                                     "no_disk_decision_verified":  "\u003cAUTO\u003e",
+                                     "no_temporal_metadata_verified":  "\u003cAUTO\u003e",
+                                     "bundle_contract_verified":  "\u003cAUTO\u003e"
+                                 }
+                  },
+    "rehydration_core":  {
+                             "context_10_lines":  "UNKNOWN",
+                             "current_phase":  {
+                                                   "id":  "UNKNOWN",
+                                                   "name":  "UNKNOWN",
+                                                   "objective_primary":  "UNKNOWN",
+                                                   "objective_secondary_top5":  [
+
+                                                                                ]
+                                               },
+                             "current_focus_top3":  [
+
+                                                    ],
+                             "hard_no_list_top5":  [
+
+                                                   ],
+                             "glossary_top20":  {
+
+                                                },
+                             "operating_motto":  "Menos friccion, mas sistema, cero paja."
+                         },
+    "truth_model":  {
+                        "confirmed_facts_top15":  [
+
+                                                  ],
+                        "assumptions_top10":  [
+
+                                              ],
+                        "unknowns_top10":  [
+
+                                           ],
+                        "objectives":  {
+                                           "primary":  "UNKNOWN",
+                                           "secondary_top10":  [
+
+                                                               ]
+                                       },
+                        "scope":  {
+                                      "in":  [
+
+                                             ],
+                                      "out":  [
+
+                                              ]
+                                  },
+                        "requirements":  {
+                                             "functional":  [
+
+                                                            ],
+                                             "non_functional":  [
+
+                                                                ]
+                                         },
+                        "constraints_and_policies":  {
+                                                         "hard":  [
+
+                                                                  ],
+                                                         "soft":  [
+
+                                                                  ]
+                                                     },
+                        "glossary":  {
+
+                                     },
+                        "entities":  {
+                                         "people":  [
+
+                                                    ],
+                                         "systems":  [
+
+                                                     ],
+                                         "files":  [
+
+                                                   ]
+                                     },
+                        "decisions_with_rationale":  [
+
+                                                     ],
+                        "risks_with_mitigation":  [
+
+                                                  ],
+                        "acceptance_criteria":  [
+
+                                                ]
+                    },
+    "capture_policy":  {
+                           "required_on_each_rotation":  [
+                                                             "truth_model.objectives",
+                                                             "truth_model.scope",
+                                                             "truth_model.requirements.functional",
+                                                             "truth_model.requirements.non_functional",
+                                                             "truth_model.constraints_and_policies.hard",
+                                                             "truth_model.constraints_and_policies.soft",
+                                                             "truth_model.entities",
+                                                             "truth_model.decisions_with_rationale",
+                                                             "truth_model.risks_with_mitigation",
+                                                             "truth_model.acceptance_criteria"
+                                                         ],
+                           "quality_gates":  {
+                                                 "forbid_generic_rotation_summary":  true,
+                                                 "require_rationale_for_each_decision":  true,
+                                                 "require_mitigation_for_each_risk":  true,
+                                                 "require_scope_delta_when_scope_changes":  true
+                                             },
+                           "generic_phrases_blocklist":  [
+                                                             "todo bien",
+                                                             "seguimos",
+                                                             "sin cambios",
+                                                             "pendiente",
+                                                             "n/a"
+                                                         ]
+                       },
+    "state_now":  {
+                      "health":  {
+                                     "state":  "UNKNOWN",
+                                     "why":  "UNKNOWN"
+                                 },
+                      "determinism":  {
+                                          "state":  "UNKNOWN",
+                                          "proof_hint":  "UNKNOWN"
+                                      },
+                      "factory":  {
+                                      "state":  "UNKNOWN",
+                                      "last_known_good_run_id":  "UNKNOWN"
+                                  },
+                      "contracts":  {
+                                        "state":  "UNKNOWN",
+                                        "canonical_files":  [
+                                                                "CONTRACT.md",
+                                                                "CHANGES.md"
+                                                            ]
+                                    },
+                      "snapshot_lists":  {
+                                             "completed_top15":  [
+
+                                                                 ],
+                                             "in_progress_top15":  [
+
+                                                                   ],
+                                             "broken_top10":  [
+
+                                                              ],
+                                             "pending_top15":  [
+
+                                                               ]
+                                         },
+                      "last_action":  "UNKNOWN",
+                      "token_budget":  {
+                                           "estimate_tokens_used":  "UNKNOWN",
+                                           "orange_zone_threshold":  "UNKNOWN",
+                                           "rotation_readiness":  "UNKNOWN"
+                                       }
+                  },
+    "decisions_log":  {
+                          "last_10":  [
+
+                                      ]
+                      },
+    "drift_and_contradictions":  {
+                                     "contradictions_open_top20":  [
+
+                                                                   ],
+                                     "drift_signals_top15":  [
+
+                                                             ],
+                                     "budgets":  {
+                                                     "contradiction_budget":  {
+                                                                                  "current":  0,
+                                                                                  "limit":  5,
+                                                                                  "trend":  "STABLE"
+                                                                              },
+                                                     "duplicate_budget":  {
+                                                                              "current":  0,
+                                                                              "limit":  10,
+                                                                              "trend":  "STABLE"
+                                                                          },
+                                                     "root_noise_budget":  {
+                                                                               "current":  0,
+                                                                               "limit":  8,
+                                                                               "trend":  "STABLE"
+                                                                           }
+                                                 }
+                                 },
+    "chat":  {
+                 "title_hint":  "UNKNOWN",
+                 "objective_2_lines":  "UNKNOWN",
+                 "key_outputs_top7":  [
+
+                                      ]
+             },
+    "next_chat":  {
+                      "sequence":  "UNKNOWN",
+                      "display_name":  "UNKNOWN",
+                      "objective_2_lines":  "UNKNOWN",
+                      "opening_prompt_seed":  "UNKNOWN",
+                      "must_start_with_top5":  [
+
+                                               ],
+                      "must_not_do_top5":  [
+
+                                           ]
+                  },
+    "next_actions":  {
+                         "top12":  [
+
+                                   ]
+                     },
+    "changelog_micro":  {
+                            "delta_summary_12_lines":  "UNKNOWN",
+                            "highlights_top7":  [
+
+                                                ],
+                            "regressions_top5":  [
+
+                                                 ]
+                        },
+    "handoff":  {
+                    "user_signal":  "UNKNOWN",
+                    "assistant_should_prepare_next_snapshot":  "\u003cAUTO\u003e",
+                    "handoff_checkpoint":  {
+                                               "confirmed_all_required_fields_present":  "\u003cAUTO\u003e",
+                                               "confirmed_no_orphan_tasks":  "\u003cAUTO\u003e",
+                                               "confirmed_state_matches_reality":  "\u003cAUTO\u003e"
+                                           }
+                },
+    "rotation":  {
+                     "init_rules":  {
+                                        "identity_chat_sequence_fixed":  1,
+                                        "project_key_label_must_be_generated":  true,
+                                        "source_of_truth":  "chat-level INIT_NEW inputs plus schema lock"
+                                    },
+                     "continue_rules":  {
+                                            "chat_sequence_source":  "provided snapshot identity.chat_sequence",
+                                            "next_chat_sequence_rule":  "identity.chat_sequence + 1",
+                                            "source_of_truth":  "chat-level CONTINUE snapshot input plus schema lock",
+                                            "project_identity_source":  "provided snapshot project metadata only"
+                                        },
+                     "deterministic_snapshot_id_rule":  {
+                                                            "algorithm_hint":  "sha256(project.key|chat_sequence|chat_display_name)",
+                                                            "must_not_use_clipboard":  true,
+                                                            "must_not_require_embedded_json_in_scripts":  true,
+                                                            "must_not_use_disk_for_decisions":  true,
+                                                            "no_temporal_inputs":  true
+                                                        },
+                     "deterministic_filename_rule":  {
+                                                         "pattern":  "S\u003cCHAT_SEQUENCE_3DIGIT\u003e__\u003cCHAT_DISPLAY_NAME_FILESAFE\u003e.json",
+                                                         "no_temporal_tokens":  true
+                                                     }
+                 },
+    "bundle_contract":  {
+                            "single_artifact_required":  true,
+                            "artifact_filename_rule":  "Machote v2.x.x.json",
+                            "artifact_payload_model":  "snapshot_plus_embedded_files",
+                            "embedded_files_required":  true,
+                            "required_embedded_languages":  [
+                                                                "powershell",
+                                                                "python"
+                                                            ],
+                            "split_delivery_forbidden":  true,
+                            "interactive_steps_forbidden":  true,
+                            "no_temporal_data_rule":  "No dates/timestamps in names, IDs, or saved metadata. Sequence-only."
+                        },
+    "embedded_files":  [
+                           {
+                               "path":  "scripts/save_snapshot.ps1",
+                               "language":  "powershell",
+                               "purpose":  "Wrapper to persist one snapshot bundle and update LATEST.json without decision logic.",
+                               "content_lines":  [
+                                                     "param(",
+                                                     "  [Parameter(Mandatory = $true)][string]$BundlePath,",
+                                                     "  [Parameter(Mandatory = $true)][string]$OutputDir",
+                                                     ")",
+                                                     "$ErrorActionPreference = \u0027Stop\u0027",
+                                                     "if (-not (Test-Path -LiteralPath $BundlePath)) {",
+                                                     "  throw \u0027Bundle file not found.\u0027",
+                                                     "}",
+                                                     "$bundle = Get-Content -Raw -LiteralPath $BundlePath | ConvertFrom-Json -Depth 200",
+                                                     "$snapshot = $bundle",
+                                                     "if (-not $snapshot.storage_policy.snapshot_filename) {",
+                                                     "  throw \u0027storage_policy.snapshot_filename is required.\u0027",
+                                                     "}",
+                                                     "if (-not (Test-Path -LiteralPath $OutputDir)) {",
+                                                     "  New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null",
+                                                     "}",
+                                                     "$snapshotPath = Join-Path $OutputDir $snapshot.storage_policy.snapshot_filename",
+                                                     "if (Test-Path -LiteralPath $snapshotPath) {",
+                                                     "  throw \u0027Snapshot file already exists; refusing overwrite.\u0027",
+                                                     "}",
+                                                     "$latestPath = Join-Path $OutputDir $snapshot.storage_policy.latest_filename",
+                                                     "$enginePath = Join-Path $PSScriptRoot \u0027write_snapshot.py\u0027",
+                                                     "python $enginePath --bundle-path $BundlePath --snapshot-path $snapshotPath --latest-path $latestPath",
+                                                     "Write-Output (\u0027SAVED_SNAPSHOT=\u0027 + $snapshotPath)",
+                                                     "Write-Output (\u0027LATEST_MIRROR=\u0027 + $latestPath)",
+                                                     "Write-Output (\u0027NEXT_CHAT=\u0027 + $snapshot.next_chat.display_name)"
+                                                 ]
+                           },
+                           {
+                               "path":  "scripts/write_snapshot.py",
+                               "language":  "python",
+                               "purpose":  "Engine to write snapshot and LATEST atomically from a single bundle input.",
+                               "content_lines":  [
+                                                     "import argparse",
+                                                     "import json",
+                                                     "import os",
+                                                     "import tempfile",
+                                                     "",
+                                                     "def atomic_write(path, content):",
+                                                     "    directory = os.path.dirname(path)",
+                                                     "    if directory:",
+                                                     "        os.makedirs(directory, exist_ok=True)",
+                                                     "    fd, temp_path = tempfile.mkstemp(dir=directory or None, prefix=\u0027hos_\u0027)",
+                                                     "    try:",
+                                                     "        with os.fdopen(fd, \u0027w\u0027, encoding=\u0027utf-8\u0027, newline=\u0027\\\\n\u0027) as handle:",
+                                                     "            handle.write(content)",
+                                                     "        os.replace(temp_path, path)",
+                                                     "    finally:",
+                                                     "        if os.path.exists(temp_path):",
+                                                     "            os.remove(temp_path)",
+                                                     "",
+                                                     "def main():",
+                                                     "    parser = argparse.ArgumentParser()",
+                                                     "    parser.add_argument(\u0027--bundle-path\u0027, required=True)",
+                                                     "    parser.add_argument(\u0027--snapshot-path\u0027, required=True)",
+                                                     "    parser.add_argument(\u0027--latest-path\u0027, required=True)",
+                                                     "    args = parser.parse_args()",
+                                                     "",
+                                                     "    with open(args.bundle_path, \u0027r\u0027, encoding=\u0027utf-8\u0027) as handle:",
+                                                     "        bundle = json.load(handle)",
+                                                     "",
+                                                     "    payload = json.dumps(bundle, ensure_ascii=False, indent=2) + \u0027\\\\n\u0027",
+                                                     "",
+                                                     "    if os.path.exists(args.snapshot_path):",
+                                                     "        raise FileExistsError(\u0027Snapshot file already exists; refusing overwrite.\u0027)",
+                                                     "",
+                                                     "    atomic_write(args.snapshot_path, payload)",
+                                                     "    atomic_write(args.latest_path, payload)",
+                                                     "",
+                                                     "if __name__ == \u0027__main__\u0027:",
+                                                     "    main()"
+                                                 ]
+                           }
+                       ],
+    "validation_checklist":  {
+                                 "format_id_is_hos_conversational_os":  true,
+                                 "mode_resolution_is_explicit":  true,
+                                 "mode_resolution_has_overrides":  true,
+                                 "snapshot_id_rule_is_deterministic_and_sequence_only":  true,
+                                 "filename_pattern_is_deterministic_and_sequence_only":  true,
+                                 "single_artifact_with_embedded_files":  true,
+                                 "no_temporal_fields_or_values":  true,
+                                 "no_interactive_merge_or_copy_steps":  true
+                             },
+    "patch_notes":  [
+                        "Clarified INIT_NEW vs CONTINUE with explicit FORCE_INIT_NEW and FORCE_CONTINUE overrides.",
+                        "Replaced temporal snapshot identity inputs with sequence-only deterministic formula.",
+                        "Updated snapshot filename pattern to sequence plus filesafe display name.",
+                        "Expanded truth_model to persist objectives, scope, requirements, constraints, glossary, entities, decisions, risks, and acceptance criteria.",
+                        "Added capture_policy to enforce concrete, non-generic rotation snapshots.",
+                        "Added project.metadata naming source, confidence, and rationale fields for deterministic name provenance.",
+                        "Added bundle_contract and embedded_files so snapshot and scripts travel in one JSON artifact.",
+                        "Kept core schema sections for backward compatibility while removing temporal metadata fields."
+                    ]
+}
