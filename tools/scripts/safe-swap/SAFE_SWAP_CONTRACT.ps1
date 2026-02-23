@@ -285,7 +285,7 @@ try {
     Write-SwapLog "No staged changes found after swap; commit skipped."
   }
   elseif ($stagedDiff.ExitCode -eq 1) {
-    $commitResult = Invoke-ExternalCommand -ExePath $gitExe -ArgList @("commit", "-m=$CommitMessage") -WorkDir $repoRoot -NoThrow -Debug:$externalDebug
+    $commitResult = Invoke-ExternalCommand -ExePath $gitExe -ArgList @("commit", "-m", $CommitMessage) -WorkDir $repoRoot -NoThrow -Debug:$externalDebug
     if ($commitResult.Output) {
       Write-SwapLog $commitResult.Output.Trim()
     }

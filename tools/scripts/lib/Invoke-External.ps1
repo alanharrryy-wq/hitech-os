@@ -130,32 +130,36 @@ function Invoke-ExternalCommand {
   Write-Debug "[Invoke-ExternalCommand] ArgList: $argPreview"
   Write-Debug "[Invoke-ExternalCommand] WorkDir: $resolvedWorkDir"
 
-  $stdoutFile = [System.IO.Path]::GetTempFileName()
-  $stderrFile = [System.IO.Path]::GetTempFileName()
   $start = [DateTimeOffset]::UtcNow
+  $process = $null
 
   try {
-    $process = Start-Process `
-      -FilePath $resolvedCommand.Path `
-      -ArgumentList $ArgList `
-      -WorkingDirectory $resolvedWorkDir `
-      -NoNewWindow `
-      -PassThru `
-      -Wait `
-      -RedirectStandardOutput $stdoutFile `
-      -RedirectStandardError $stderrFile `
-      -WhatIf:$false `
-      -Confirm:$false
+    $startInfo = [System.Diagnostics.ProcessStartInfo]::new()
+    $startInfo.FileName = $resolvedCommand.Path
+    $startInfo.WorkingDirectory = $resolvedWorkDir
+    $startInfo.UseShellExecute = $false
+    $startInfo.CreateNoWindow = $true
+    $startInfo.RedirectStandardOutput = $true
+    $startInfo.RedirectStandardError = $true
 
-    $stdout = ""
-    $stderr = ""
+    foreach ($arg in $ArgList) {
+      [void]$startInfo.ArgumentList.Add([string]$arg)
+    }
 
-    if (Test-Path -LiteralPath $stdoutFile) {
-      $stdout = Get-Content -Raw -LiteralPath $stdoutFile
+    $process = [System.Diagnostics.Process]::new()
+    $process.StartInfo = $startInfo
+
+    if (-not $process.Start()) {
+      throw "Failed to start external command: $($resolvedCommand.Path)"
     }
-    if (Test-Path -LiteralPath $stderrFile) {
-      $stderr = Get-Content -Raw -LiteralPath $stderrFile
-    }
+
+    $stdoutTask = $process.StandardOutput.ReadToEndAsync()
+    $stderrTask = $process.StandardError.ReadToEndAsync()
+    $process.WaitForExit()
+    [System.Threading.Tasks.Task]::WaitAll($stdoutTask, $stderrTask)
+
+    $stdout = $stdoutTask.Result
+    $stderr = $stderrTask.Result
 
     $outputParts = New-Object System.Collections.Generic.List[string]
     if (-not [string]::IsNullOrWhiteSpace($stdout)) {
@@ -192,7 +196,8 @@ function Invoke-ExternalCommand {
     return $result
   }
   finally {
-    Remove-Item -LiteralPath $stdoutFile -Force -ErrorAction SilentlyContinue -WhatIf:$false -Confirm:$false
-    Remove-Item -LiteralPath $stderrFile -Force -ErrorAction SilentlyContinue -WhatIf:$false -Confirm:$false
+    if ($process) {
+      $process.Dispose()
+    }
   }
 }
