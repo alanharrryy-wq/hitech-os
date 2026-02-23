@@ -1,18 +1,23 @@
 # CONTRACT
-
 Version: 1.0.0
 Status: Active
 Last Updated: 2026-02-18
 Scope: Entire monorepo (`hitech-os`)
 
-## 1. Purpose
+## STAGE 0 — GLOBAL CONSTITUTION
+
+### S0_ORIG — Constitutional Origin
+
+#### 1. Purpose
 
 This file defines non-negotiable constraints for this repository.
 
 Every engineer, script, and automation must comply with this document.
 If any local workflow conflicts with this contract, the contract wins.
 
-## 2. Design Axioms
+### S0_DET — Determinism Law
+
+#### 2. Design Axioms
 
 1. Determinism over convenience.
 2. Explicit contracts over implicit coupling.
@@ -21,7 +26,9 @@ If any local workflow conflicts with this contract, the contract wins.
 5. Source trees are code-only; never data dumps.
 6. Local-first operation; network access is optional and never required for baseline checks.
 
-## 3. Monorepo Boundary Law
+### S0_PRI — Enforcement Priority
+
+#### 3. Monorepo Boundary Law
 
 The repository root contains:
 
@@ -39,7 +46,9 @@ Boundary rules:
 4. `packages/*` must never import from `apps/*` or `services/*`.
 5. `tools/*` can inspect repository files but must avoid app/service runtime coupling.
 
-## 4. Determinism Requirements
+### S0_LEX — Blueprint as Law Doctrine
+
+#### 4. Determinism Requirements
 
 Determinism is mandatory for generated content and CI outputs.
 
@@ -57,7 +66,9 @@ Forbidden behavior:
 2. Embedding machine-specific absolute paths in generated artifacts.
 3. Including transient metadata (PID, memory addresses, env snapshots) in committed outputs.
 
-## 5. Feature Flags Policy
+### S0_PROOF — Evidence Doctrine
+
+#### 5. Feature Flags Policy
 
 All feature flags default to `false` in:
 
@@ -71,7 +82,9 @@ Rules:
 2. New flags must have explicit owner, rollout plan, and rollback condition documented in `docs/NOTEBOOK.md`.
 3. Flags are not authorization controls; they only gate behavior paths.
 
-## 6. Artifact and Dump Prohibition
+### S0_NSP — No Silent Pass Rule
+
+#### 6. Artifact and Dump Prohibition
 
 No dump-like files are allowed under any `src/**` path.
 
@@ -88,7 +101,9 @@ Enforcement:
 2. Violations are deterministic and fail with non-zero exit code.
 3. File path list is sorted before report output.
 
-## 7. Contracts and Schema Authority
+### S0_TRUST — Trusted Roots Definition
+
+#### 7. Contracts and Schema Authority
 
 `packages/contracts` is the canonical source for shared shape definitions.
 
@@ -107,9 +122,13 @@ Change flow:
 4. Update `services/ai-agent` model mirror.
 5. Update tests and docs.
 
-## 8. Service Contracts
+## STAGE 1 — FOUNDATION
 
-### 8.1 Core API (`services/core-api`)
+### S1_DEF — Stage Definition
+
+#### 8. Service Contracts
+
+##### 8.1 Core API (`services/core-api`)
 
 Required endpoints:
 
@@ -123,7 +142,7 @@ Constraints:
 2. Output must conform to `JobResult`.
 3. Integration call to AI agent must fail safe and return deterministic queued fallback.
 
-### 8.2 AI Agent (`services/ai-agent`)
+##### 8.2 AI Agent (`services/ai-agent`)
 
 Required endpoints:
 
@@ -136,9 +155,11 @@ Constraints:
 2. Output shape mirrors `JobResult`.
 3. Output must be deterministic for same input payload.
 
-## 9. App Contract
+### S1_BLP — Blueprint Model (P1 scope)
 
-### 9.1 Web (`apps/web`)
+#### 9. App Contract
+
+##### 9.1 Web (`apps/web`)
 
 Required behavior:
 
@@ -147,7 +168,9 @@ Required behavior:
 3. Uses `packages/ui-kit` primitives.
 4. Respects feature flags with default OFF fallback.
 
-## 10. Tooling Contract
+### S1_INV — Repo Inventory Model
+
+#### 10. Tooling Contract
 
 `tools/health` must:
 
@@ -162,7 +185,9 @@ Required behavior:
 1. Provide local utility scripts used by root commands.
 2. Avoid mutating state outside repository.
 
-## 11. Testing and Smoke Standards
+### S1_GATE — Functional Gates v1
+
+#### 11. Testing and Smoke Standards
 
 Minimum baseline checks:
 
@@ -176,7 +201,9 @@ Test writing rules:
 2. Keep network tests local loopback only.
 3. Avoid clock-sensitive assertions unless time is injected.
 
-## 12. Formatting and Linting
+### S1_POL — Policy Strictness (P1)
+
+#### 12. Formatting and Linting
 
 Node/TypeScript:
 
@@ -188,7 +215,9 @@ Python:
 1. `pyproject.toml` includes black/ruff stubs for local standardization.
 2. Rules should be explicit; avoid global implicit ignores.
 
-## 13. Security and Secrets
+### S1_DEBT — Debt System v0
+
+#### 13. Security and Secrets
 
 Rules:
 
@@ -197,20 +226,26 @@ Rules:
 3. Service defaults must be safe for local development.
 4. No telemetry or external callbacks enabled by default.
 
-## 14. Dependency Rules
+### S1_IDX — INDEX_PRO Scope v0
+
+#### 14. Dependency Rules
 
 1. Keep dependencies minimal.
 2. Pin explicit major/minor versions where possible.
 3. Prefer built-in modules for scripts.
 4. Avoid adding heavy framework dependencies to `packages/ui-kit`.
 
-## 15. Versioning and Compatibility
+### S1_OUT — Output Minimum Contract
+
+#### 15. Versioning and Compatibility
 
 1. Contracts are backward-compatible unless major-version migration is documented.
 2. Enum value removals require explicit migration notes.
 3. Field renames require dual-read/dual-write period where practical.
 
-## 16. Pull Request Gate Checklist
+### S1_FAIL — Failure Modes (P1 only)
+
+#### 16. Pull Request Gate Checklist
 
 Each change must prove:
 
@@ -220,7 +255,9 @@ Each change must prove:
 4. Contract changes include generated schema updates.
 5. Affected tests or smoke checks are updated.
 
-## 17. Incident Handling (Local)
+### S1_PROM — Promotion Rules (P1)
+
+#### 17. Incident Handling (Local)
 
 If the repo health check fails:
 
@@ -235,7 +272,11 @@ If schema drift appears between TypeScript and Python:
 3. Update Python models and tests.
 4. Record compatibility notes in `docs/NOTEBOOK.md`.
 
-## 18. Enforcement Priority
+## STAGE 2 — EXTRACTION & CORE
+
+### S2_DEF — Stage Definition
+
+#### 18. Enforcement Priority
 
 Priority order for conflicts:
 
@@ -246,7 +287,9 @@ Priority order for conflicts:
 
 Any exception requires documented rationale in `docs/NOTEBOOK.md` with date and owner.
 
-## 19. Exceptions
+### S2_MIG — Migration Rules
+
+#### 19. Exceptions
 
 No permanent exception exists at bootstrap.
 Temporary exceptions must include:
@@ -256,8 +299,90 @@ Temporary exceptions must include:
 3. expiration date
 4. rollback plan
 
-## 20. Acceptance
+### S2_ANT — Anti-Garbage Enforcement
+
+#### 20. Acceptance
 
 By committing to this repository, contributors accept this contract.
 
 Non-compliant changes are expected to be rejected until corrected.
+
+### S2_NRG — Non-Regression Engine
+
+### S2_ESC — Placeholder Escalation
+
+### S2_SCOPE — Scope Overlap Enforcement
+
+### S2_IMM — Contract Immutability Tier
+
+### S2_PROM — Promotion Requirements
+
+## STAGE 3 — INTELLIGENCE & AUTOMATION
+
+### S3_DEF — Stage Definition
+
+### S3_OBS — Observability Requirements
+
+### S3_JOB — Job Governance Model
+
+### S3_CAP — Capability Negotiation
+
+### S3_AUTO — Deterministic Automation
+
+### S3_EXC — Exception Tightening
+
+### S3_PROM — Promotion Requirements
+
+## STAGE 4 — OPERATING SYSTEM
+
+### S4_DEF — Stage Definition
+
+### S4_REL — Release Governance
+
+### S4_SEC — Security Baseline
+
+### S4_MOD — Module System Governance
+
+### S4_AUD — Audit & Compliance
+
+### S4_PROM — Promotion Requirements
+
+## CROSS-STAGE SYSTEMS
+
+### SYS_IDX — INDEX_PRO Full Schema
+
+### SYS_BLP — Blueprint Schema
+
+### SYS_GATE — Gate Schema
+
+### SYS_DEBT — Debt Schema
+
+### SYS_DOC — DocTree Schema
+
+### SYS_RUN — Run-Level Schema
+
+### SYS_LED — Ledger & Attestation Model
+
+## RENDERING & OPERATOR UX
+
+### UX_IDX — INDEX_PRO.md Contract
+
+### UX_STA — STATUS Contract
+
+### UX_NXT — NEXT Single Action Contract
+
+### UX_TREE — Doc Unlock Tree Rendering
+
+## EVOLUTION & VERSIONING
+
+### EV_SCH — Schema Versioning
+
+### EV_BLP — Blueprint Versioning
+
+### EV_CON — Contract Change Flow
+
+### EV_COMP — Backward Compatibility Rules
+
+
+
+
