@@ -1,7 +1,7 @@
 Param(
   [Parameter(ValueFromRemainingArguments=$true)]
-  [String[]]$Args
+  [String[]]$ArgList
 )
 
-python tools/codex/factory_cli.py @Args
+python tools/codex/factory_cli.py @ArgList
 exit $LASTEXITCODE
