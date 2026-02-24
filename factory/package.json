@@ -8,5 +8,9 @@
   "scripts": {
     "build": "pnpm run -w factory:build",
     "smoke": "pnpm run -w factory:smoke"
+  },
+  "engines": {
+    "node": ">=20.0.0 <26.0.0",
+    "pnpm": ">=9.0.0 <10.0.0"
   }
 }

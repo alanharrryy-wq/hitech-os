@@ -2,38 +2,27 @@
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": [
     "pnpm-lock.yaml",
-    "turbo.json"
+    "turbo.json",
+    "eslint.config.mjs",
+    "prettier.config.cjs",
+    ".editorconfig",
+    "tsconfig.base.json"
   ],
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "dist/**",
-        "build/**",
-        "schemas/generated/**"
-      ]
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "build/**", "schemas/generated/**"]
     },
     "lint": {
-      "dependsOn": [
-        "^lint"
-      ],
+      "dependsOn": ["^lint"],
       "outputs": []
     },
     "test": {
-      "dependsOn": [
-        "^build",
-        "^test"
-      ],
-      "outputs": [
-        "coverage/**"
-      ]
+      "dependsOn": ["^build", "^test"],
+      "outputs": ["coverage/**"]
     },
     "typecheck": {
-      "dependsOn": [
-        "^typecheck"
-      ],
+      "dependsOn": ["^typecheck"],
       "outputs": []
     },
     "dev": {
@@ -41,18 +30,16 @@
       "persistent": true
     },
     "docs": {
-      "dependsOn": [
-        "^docs"
-      ],
-      "outputs": [
-        "docs/DOCS_INDEX.md"
-      ]
+      "dependsOn": ["^docs"],
+      "outputs": ["docs/DOCS_INDEX.md"]
     },
     "health": {
-      "dependsOn": [
-        "^health"
-      ],
+      "dependsOn": ["^health"],
       "cache": false,
+      "outputs": []
+    },
+    "quality": {
+      "dependsOn": ["^quality"],
       "outputs": []
     }
   }

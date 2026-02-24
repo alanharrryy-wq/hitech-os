@@ -9,5 +9,9 @@
     "test": "python -m unittest discover -s tests -p \"test_*.py\"",
     "typecheck": "python -c \"print('ai-agent typecheck placeholder: no external checker required offline')\"",
     "smoke": "python scripts/smoke_ai_agent.py"
+  },
+  "engines": {
+    "node": ">=20.0.0 <26.0.0",
+    "pnpm": ">=9.0.0 <10.0.0"
   }
 }
