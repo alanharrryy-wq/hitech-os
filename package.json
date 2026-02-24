@@ -35,7 +35,7 @@
     "workspace:validate": "node tools/scripts/validate_workspace_boundaries.mjs",
     "env:validate": "node tools/scripts/validate_env.mjs",
     "lint-staged": "lint-staged",
-    "commitlint": "commitlint --edit",
+    "commitlint": "commitlint",
     "prepare": "husky install"
   },
   "devDependencies": {

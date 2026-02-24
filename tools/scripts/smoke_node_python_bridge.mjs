@@ -11,6 +11,7 @@ const aiAgentDir = path.join(repoRoot, "services/ai-agent");
 
 const coreApiBaseUrl = "http://127.0.0.1:3001";
 const aiAgentBaseUrl = "http://127.0.0.1:8001";
+const fixedNowUtc = "2026-01-01T00:00:00.000Z";
 
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -38,6 +39,23 @@ async function waitForHealth(url, timeoutMs = 12000) {
 async function readJson(response) {
   const text = await response.text();
   return text.trim().length > 0 ? JSON.parse(text) : {};
+}
+
+function stableSort(input) {
+  if (Array.isArray(input)) {
+    return input.map((item) => stableSort(item));
+  }
+
+  if (input && typeof input === "object") {
+    return Object.keys(input)
+      .sort((left, right) => left.localeCompare(right))
+      .reduce((accumulator, key) => {
+        accumulator[key] = stableSort(input[key]);
+        return accumulator;
+      }, {});
+  }
+
+  return input;
 }
 
 function startProcess(command, args, cwd, label, extraEnv = {}) {
@@ -86,7 +104,8 @@ async function runSmoke() {
       CORE_API_HOST: "127.0.0.1",
       CORE_API_PORT: "3001",
       AI_AGENT_URL: aiAgentBaseUrl,
-      AI_AGENT_TIMEOUT_MS: "1200"
+      AI_AGENT_TIMEOUT_MS: "1200",
+      CORE_API_FIXED_NOW_UTC: fixedNowUtc
     }
   );
 
@@ -141,10 +160,17 @@ async function runSmoke() {
     const status = await readJson(statusResponse);
     const capabilities = await readJson(capabilitiesResponse);
 
-    console.log("[smoke-bridge] enqueue", JSON.stringify(enqueue));
-    console.log("[smoke-bridge] run", JSON.stringify(run));
-    console.log("[smoke-bridge] status", JSON.stringify(status));
-    console.log("[smoke-bridge] capabilities", JSON.stringify(capabilities));
+    const canonical = stableSort({
+      enqueue,
+      run,
+      status,
+      capabilities
+    });
+
+    console.log("[smoke-bridge] enqueue", JSON.stringify(canonical.enqueue));
+    console.log("[smoke-bridge] run", JSON.stringify(canonical.run));
+    console.log("[smoke-bridge] status", JSON.stringify(canonical.status));
+    console.log("[smoke-bridge] capabilities", JSON.stringify(canonical.capabilities));
 
     if (!enqueueResponse.ok || !runResponse.ok || !statusResponse.ok || !capabilitiesResponse.ok) {
       throw new Error(

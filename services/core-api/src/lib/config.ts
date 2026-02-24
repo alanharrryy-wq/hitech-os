@@ -5,6 +5,7 @@ export interface CoreApiRuntimeConfig {
   aiAgentTimeoutMs: number;
   serviceVersion: string;
   contractVersion: string;
+  fixedNowUtc: string | null;
 }
 
 function parseInteger(value: string | undefined, fallback: number): number {
@@ -20,6 +21,19 @@ function parseInteger(value: string | undefined, fallback: number): number {
   return parsed;
 }
 
+function parseUtcIso(value: string | undefined): string | null {
+  if (!value || value.trim().length === 0) {
+    return null;
+  }
+
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) {
+    return null;
+  }
+
+  return parsed.toISOString();
+}
+
 export function loadRuntimeConfig(): CoreApiRuntimeConfig {
   return {
     host: process.env.CORE_API_HOST ?? "127.0.0.1",
@@ -27,6 +41,7 @@ export function loadRuntimeConfig(): CoreApiRuntimeConfig {
     aiAgentUrl: process.env.AI_AGENT_URL ?? "http://127.0.0.1:8001",
     aiAgentTimeoutMs: parseInteger(process.env.AI_AGENT_TIMEOUT_MS, 1500),
     serviceVersion: process.env.CORE_API_VERSION ?? "0.2.0",
-    contractVersion: process.env.CONTRACT_SCHEMA_VERSION ?? "1.1.0"
+    contractVersion: process.env.CONTRACT_SCHEMA_VERSION ?? "1.1.0",
+    fixedNowUtc: parseUtcIso(process.env.CORE_API_FIXED_NOW_UTC)
   };
 }

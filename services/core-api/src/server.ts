@@ -2,6 +2,7 @@ import { createServer, type IncomingMessage, type Server, type ServerResponse } 
 import type { FeatureFlags } from "./contracts.ts";
 import { FEATURE_FLAGS_DEFAULTS } from "./contracts.ts";
 import { AiAgentClient } from "./lib/aiAgentClient.ts";
+import { createCoreClock, type CoreClock } from "./lib/clock.ts";
 import { loadRuntimeConfig, type CoreApiRuntimeConfig } from "./lib/config.ts";
 import { DeterministicJobQueue } from "./lib/jobQueue.ts";
 import { getHttpContext, matchPath, writeNotFound } from "./lib/http.ts";
@@ -15,6 +16,7 @@ export interface BuildServerOptions {
   featureFlags?: Partial<FeatureFlags>;
   queue?: DeterministicJobQueue;
   agentClient?: AiAgentClient;
+  clock?: CoreClock;
 }
 
 export interface CoreApiDependencies {
@@ -22,6 +24,7 @@ export interface CoreApiDependencies {
   featureFlags: FeatureFlags;
   queue: DeterministicJobQueue;
   agentClient: AiAgentClient;
+  clock: CoreClock;
 }
 
 export interface CoreApiServer {
@@ -48,12 +51,14 @@ function createDependencies(options: BuildServerOptions): CoreApiDependencies {
       baseUrl: runtimeConfig.aiAgentUrl,
       timeoutMs: runtimeConfig.aiAgentTimeoutMs
     });
+  const clock = options.clock ?? createCoreClock(runtimeConfig.fixedNowUtc);
 
   return {
     runtimeConfig,
     featureFlags,
     queue,
-    agentClient
+    agentClient,
+    clock
   };
 }
 

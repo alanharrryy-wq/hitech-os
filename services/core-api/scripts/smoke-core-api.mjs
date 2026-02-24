@@ -7,6 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const serviceRoot = path.resolve(__dirname, "..");
 const baseUrl = "http://127.0.0.1:3101";
+const fixedNowUtc = "2026-01-01T00:00:00.000Z";
 
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -33,13 +34,31 @@ async function readJson(response) {
   return text.length === 0 ? {} : JSON.parse(text);
 }
 
+function stableSort(input) {
+  if (Array.isArray(input)) {
+    return input.map((item) => stableSort(item));
+  }
+
+  if (input && typeof input === "object") {
+    return Object.keys(input)
+      .sort((left, right) => left.localeCompare(right))
+      .reduce((accumulator, key) => {
+        accumulator[key] = stableSort(input[key]);
+        return accumulator;
+      }, {});
+  }
+
+  return input;
+}
+
 async function run() {
   const child = spawn(process.execPath, ["--experimental-strip-types", "src/index.ts"], {
     cwd: serviceRoot,
     env: {
       ...process.env,
       CORE_API_HOST: "127.0.0.1",
-      CORE_API_PORT: "3101"
+      CORE_API_PORT: "3101",
+      CORE_API_FIXED_NOW_UTC: fixedNowUtc
     },
     stdio: ["ignore", "pipe", "pipe"]
   });
@@ -78,8 +97,8 @@ async function run() {
     const status = await fetch(`${baseUrl}/jobs/smoke-core-001`);
     const statusResult = await readJson(status);
 
-    console.log("[smoke-core-api] enqueue", JSON.stringify(enqueuedResult));
-    console.log("[smoke-core-api] status", JSON.stringify(statusResult));
+    console.log("[smoke-core-api] enqueue", JSON.stringify(stableSort(enqueuedResult)));
+    console.log("[smoke-core-api] status", JSON.stringify(stableSort(statusResult)));
   } finally {
     child.kill("SIGTERM");
   }

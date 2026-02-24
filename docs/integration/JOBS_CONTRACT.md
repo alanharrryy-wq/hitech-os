@@ -9,6 +9,20 @@ Last Updated: 2026-02-18
 - Generated schemas: `packages/contracts/schemas/generated/*.json`
 - Python model mirror: `services/ai-agent/app/models.py`
 
+## Core API Routes
+
+1. `GET /health`
+2. `GET /flags`
+3. `GET /capabilities`
+4. `POST /jobs`
+5. `GET /jobs/:id`
+6. `POST /jobs/:id/run`
+
+Determinism note:
+
+- `CORE_API_FIXED_NOW_UTC` may be set for deterministic smoke/runtime timestamping.
+- When unset, production runtime uses system UTC clock.
+
 ## Types
 
 ### FeatureFlags
@@ -105,9 +119,7 @@ Fields:
   "contractVersion": "1.1.0",
   "status": "ok",
   "timestampUtc": "2026-01-01T00:00:00.000Z",
-  "checks": [
-    { "name": "contracts", "status": "ok", "message": "contract version 1.1.0" }
-  ]
+  "checks": [{ "name": "contracts", "status": "ok", "message": "contract version 1.1.0" }]
 }
 ```
 

@@ -30,12 +30,19 @@ Smoke verifies Node↔Python bridge over localhost with deterministic contracts.
 
 ### End-to-end smoke
 
-1. Bridge smoke (starts both services, runs one job):
+1. Bridge smoke run #1 (starts both services, runs one job):
    - `node tools/scripts/smoke_node_python_bridge.mjs`
-2. Core API local smoke:
+2. Bridge smoke run #2 (same command, deterministic output expected):
+   - `node tools/scripts/smoke_node_python_bridge.mjs`
+3. Core API local smoke:
    - `node services/core-api/scripts/smoke-core-api.mjs`
-3. AI agent local smoke:
+4. AI agent local smoke:
    - `python services/ai-agent/scripts/smoke_ai_agent.py`
+
+Determinism note:
+
+- Smoke scripts set `CORE_API_FIXED_NOW_UTC=2026-01-01T00:00:00.000Z` for stable timestamps.
+- Smoke checks should avoid assertions that rely on dynamic wall-clock values.
 
 ### Health
 
