@@ -60,6 +60,41 @@ function Parse-NumStatLine {
   }
 }
 
+function Ensure-Directory {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Path
+  )
+
+  New-Item -ItemType Directory -Path $Path -Force -WhatIf:$false -Confirm:$false | Out-Null
+}
+
+function Write-CommandFailureLog {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$LogsDir,
+    [Parameter(Mandatory = $true)]
+    [string]$Name,
+    [Parameter(Mandatory = $true)]
+    [string[]]$Args,
+    [string]$Output
+  )
+
+  Ensure-Directory -Path $LogsDir
+  $logPath = Join-Path $LogsDir "$Name.log"
+  $safeOutput = if ([string]::IsNullOrWhiteSpace($Output)) { "<none>" } else { $Output.TrimEnd("`r", "`n") }
+  $text = @(
+    "COMMAND: git $([string]::Join(' ', $Args))"
+    "OUTPUT:"
+    $safeOutput
+    ""
+  ) -join "`n"
+  [System.IO.File]::WriteAllText($logPath, $text, [System.Text.UTF8Encoding]::new($false))
+  return $logPath
+}
+
 function Write-UnifiedDiffArtifact {
   [CmdletBinding()]
   param(
@@ -83,8 +118,9 @@ function Write-UnifiedDiffArtifact {
 
   $outDir = Split-Path -Parent $resolvedOutPath
   if (-not [string]::IsNullOrWhiteSpace($outDir)) {
-    New-Item -ItemType Directory -Path $outDir -Force -WhatIf:$false -Confirm:$false | Out-Null
+    Ensure-Directory -Path $outDir
   }
+  $logsDir = Join-Path $outDir "logs"
 
   $diffArgs = @("diff", "--no-color", "--patch")
   $numstatArgs = @("diff", "--no-color", "--numstat")
@@ -103,7 +139,8 @@ function Write-UnifiedDiffArtifact {
 
   $patchResult = Invoke-ExternalCommand -ExePath "git" -ArgList $diffArgs -WorkDir $resolvedRepoPath -NoThrow
   if (-not $patchResult.Ok -and $patchResult.ExitCode -ne 0) {
-    throw "Write-UnifiedDiffArtifact: git diff failed (exit $($patchResult.ExitCode)): $($patchResult.Output)"
+    $logPath = Write-CommandFailureLog -LogsDir $logsDir -Name "WRITE_UNIFIED_DIFF_PATCH" -Args $diffArgs -Output $patchResult.Output
+    throw "Write-UnifiedDiffArtifact: git diff failed (exit $($patchResult.ExitCode)). See $logPath"
   }
 
   $patchText = if ($null -eq $patchResult.Stdout) { "" } else { [string]$patchResult.Stdout }
@@ -116,7 +153,8 @@ function Write-UnifiedDiffArtifact {
 
   $numstatResult = Invoke-ExternalCommand -ExePath "git" -ArgList $numstatArgs -WorkDir $resolvedRepoPath -NoThrow
   if (-not $numstatResult.Ok -and $numstatResult.ExitCode -ne 0) {
-    throw "Write-UnifiedDiffArtifact: git diff --numstat failed (exit $($numstatResult.ExitCode)): $($numstatResult.Output)"
+    $logPath = Write-CommandFailureLog -LogsDir $logsDir -Name "WRITE_UNIFIED_DIFF_NUMSTAT" -Args $numstatArgs -Output $numstatResult.Output
+    throw "Write-UnifiedDiffArtifact: git diff --numstat failed (exit $($numstatResult.ExitCode)). See $logPath"
   }
 
   $changedFiles = New-Object System.Collections.Generic.List[string]

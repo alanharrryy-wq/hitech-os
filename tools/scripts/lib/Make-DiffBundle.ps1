@@ -1,17 +1,18 @@
 <#
 .SYNOPSIS
-Create a single deterministic plaintext diff/report bundle for a run.
+Create a deterministic disk-only diff/report bundle for a run.
 
 .DESCRIPTION
-Creates a run bundle under .tmp/run-reports/<yyyyMMdd_HHmmss>/ with:
+Creates a run bundle under `tools/codex/Z_aggregator/RUN_<yyyyMMdd_HHmmss>/` (or a caller-provided run dir) with:
 - CHANGED_FILES.txt
 - DIFF_VS_HEAD.patch
 - DIFF_UNSTAGED.patch
 - DIFF_STAGED.patch
+- logs/*.log
 - FILES/ snapshot (optional)
 - FINAL_REPORT.txt
 
-The report is generated through Write-RunReport.ps1.
+Diff bodies are never printed to console. Failures reference log file paths.
 #>
 
 [CmdletBinding()]
@@ -29,7 +30,9 @@ param(
 
   [string]$DebtNotes = "",
 
-  [bool]$OpenArtifacts = $true
+  [bool]$OpenArtifacts = $false,
+
+  [string]$RunDir = ""
 )
 
 Set-StrictMode -Version Latest
@@ -63,10 +66,9 @@ function Parse-GitStatusPath {
     $pathPart = ($pathPart -split " -> ")[-1].Trim()
   }
 
-  $normalized = $pathPart -replace "\\", "/"
   return [pscustomobject]@{
     Code = $code
-    Path = $normalized
+    Path = ($pathPart -replace "\\", "/")
     Raw = $StatusLine
   }
 }
@@ -96,21 +98,83 @@ function Ensure-Directory {
   New-Item -ItemType Directory -Path $Path -Force -WhatIf:$false -Confirm:$false | Out-Null
 }
 
+function Write-TextFile {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Path,
+    [AllowNull()]
+    [string]$Text
+  )
+
+  $safeText = if ($null -eq $Text) { "" } else { $Text }
+  [System.IO.File]::WriteAllText($Path, $safeText, [System.Text.UTF8Encoding]::new($false))
+}
+
+function Resolve-RunDir {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$RepoRoot,
+    [Parameter(Mandatory = $true)]
+    [string]$Timestamp,
+    [string]$InputPath
+  )
+
+  if ([string]::IsNullOrWhiteSpace($InputPath)) {
+    return (Join-Path $RepoRoot "tools/codex/Z_aggregator/RUN_$Timestamp")
+  }
+
+  if ([System.IO.Path]::IsPathRooted($InputPath)) {
+    return $InputPath
+  }
+
+  return (Join-Path $RepoRoot $InputPath)
+}
+
+function Write-CommandFailureLog {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$LogsDir,
+    [Parameter(Mandatory = $true)]
+    [string]$Name,
+    [Parameter(Mandatory = $true)]
+    [string]$CommandLine,
+    [string]$Output
+  )
+
+  Ensure-Directory -Path $LogsDir
+  $logPath = Join-Path $LogsDir "$Name.log"
+  $safeOutput = if ([string]::IsNullOrWhiteSpace($Output)) { "<none>" } else { $Output.TrimEnd("`r", "`n") }
+  $text = @(
+    "COMMAND: $CommandLine"
+    "OUTPUT:"
+    $safeOutput
+    ""
+  ) -join "`n"
+  Write-TextFile -Path $logPath -Text $text
+  return $logPath
+}
+
 if (-not (Test-Path -LiteralPath $RepoPath -PathType Container)) {
   throw "Make-DiffBundle: RepoPath does not exist: $RepoPath"
 }
 
 $repoRoot = (Resolve-Path -LiteralPath $RepoPath).Path
 $runTs = Get-Date -Format "yyyyMMdd_HHmmss"
-$runDir = Join-Path $repoRoot ".tmp/run-reports/$runTs"
+$runDir = Resolve-RunDir -RepoRoot $repoRoot -Timestamp $runTs -InputPath $RunDir
 $filesDir = Join-Path $runDir "FILES"
+$logsDir = Join-Path $runDir "logs"
 $changedFilesTxtPath = Join-Path $runDir "CHANGED_FILES.txt"
 $diffVsHeadPath = Join-Path $runDir "DIFF_VS_HEAD.patch"
 $diffUnstagedPath = Join-Path $runDir "DIFF_UNSTAGED.patch"
 $diffStagedPath = Join-Path $runDir "DIFF_STAGED.patch"
 $finalReportPath = Join-Path $runDir "FINAL_REPORT.txt"
+$logArtifactPaths = New-Object System.Collections.Generic.List[string]
 
 Ensure-Directory -Path $runDir
+Ensure-Directory -Path $logsDir
 if ($IncludeFilesDump) {
   Ensure-Directory -Path $filesDir
 }
@@ -139,15 +203,19 @@ function Add-DebtLine {
 
 $gitVersion = Invoke-ExternalCommand -ExePath "git" -ArgList @("--version") -WorkDir $repoRoot -NoThrow
 if (-not $gitVersion.Ok) {
-  Add-ValidationLine -Status "FAIL" -Message "git --version :: $($gitVersion.Output)"
-  throw "Make-DiffBundle: git unavailable. $($gitVersion.Output)"
+  $gitVersionLog = Write-CommandFailureLog -LogsDir $logsDir -Name "GIT_VERSION" -CommandLine "git --version" -Output $gitVersion.Output
+  [void]$logArtifactPaths.Add($gitVersionLog)
+  Add-ValidationLine -Status "FAIL" -Message "git --version failed. See $gitVersionLog"
+  throw "Make-DiffBundle: git unavailable. See $gitVersionLog"
 }
 Add-ValidationLine -Status "PASS" -Message "git --version :: $($gitVersion.Stdout.Trim())"
 
 $statusResult = Invoke-ExternalCommand -ExePath "git" -ArgList @("status", "--porcelain", "--untracked-files=all") -WorkDir $repoRoot -NoThrow
 if (-not $statusResult.Ok) {
-  Add-ValidationLine -Status "FAIL" -Message "git status --porcelain --untracked-files=all :: $($statusResult.Output)"
-  throw "Make-DiffBundle: git status failed. $($statusResult.Output)"
+  $statusLog = Write-CommandFailureLog -LogsDir $logsDir -Name "GIT_STATUS" -CommandLine "git status --porcelain --untracked-files=all" -Output $statusResult.Output
+  [void]$logArtifactPaths.Add($statusLog)
+  Add-ValidationLine -Status "FAIL" -Message "git status failed. See $statusLog"
+  throw "Make-DiffBundle: git status failed. See $statusLog"
 }
 Add-ValidationLine -Status "PASS" -Message "git status --porcelain --untracked-files=all"
 
@@ -178,33 +246,39 @@ $statusOutputLines = if ($statusEntries.Count -eq 0) {
 else {
   @($statusEntries | Sort-Object Path, Code | ForEach-Object { "$($_.Code)`t$($_.Path)" })
 }
-[System.IO.File]::WriteAllText($changedFilesTxtPath, ([string]::Join("`n", $statusOutputLines) + "`n"), [System.Text.UTF8Encoding]::new($false))
+Write-TextFile -Path $changedFilesTxtPath -Text ([string]::Join("`n", $statusOutputLines) + "`n")
 Add-ValidationLine -Status "PASS" -Message "wrote CHANGED_FILES.txt"
 
 $changedFilePaths = @($statusEntries | Select-Object -ExpandProperty Path -Unique | Sort-Object)
 
 $diffVsHeadResult = Invoke-ExternalCommand -ExePath "git" -ArgList @("diff", "--no-color", "--patch", "HEAD", "--") -WorkDir $repoRoot -NoThrow
 if (-not $diffVsHeadResult.Ok) {
-  Add-ValidationLine -Status "FAIL" -Message "git diff --no-color --patch HEAD -- :: $($diffVsHeadResult.Output)"
-  throw "Make-DiffBundle: failed DIFF_VS_HEAD. $($diffVsHeadResult.Output)"
+  $logPath = Write-CommandFailureLog -LogsDir $logsDir -Name "DIFF_VS_HEAD" -CommandLine "git diff --no-color --patch HEAD --" -Output $diffVsHeadResult.Output
+  [void]$logArtifactPaths.Add($logPath)
+  Add-ValidationLine -Status "FAIL" -Message "Make-DiffBundle: failed DIFF_VS_HEAD. See $logPath"
+  throw "Make-DiffBundle: failed DIFF_VS_HEAD. See $logPath"
 }
-[System.IO.File]::WriteAllText($diffVsHeadPath, $diffVsHeadResult.Stdout, [System.Text.UTF8Encoding]::new($false))
+Write-TextFile -Path $diffVsHeadPath -Text $diffVsHeadResult.Stdout
 Add-ValidationLine -Status "PASS" -Message "wrote DIFF_VS_HEAD.patch"
 
 $diffUnstagedResult = Invoke-ExternalCommand -ExePath "git" -ArgList @("diff", "--no-color", "--patch", "--") -WorkDir $repoRoot -NoThrow
 if (-not $diffUnstagedResult.Ok) {
-  Add-ValidationLine -Status "FAIL" -Message "git diff --no-color --patch -- :: $($diffUnstagedResult.Output)"
-  throw "Make-DiffBundle: failed DIFF_UNSTAGED. $($diffUnstagedResult.Output)"
+  $logPath = Write-CommandFailureLog -LogsDir $logsDir -Name "DIFF_UNSTAGED" -CommandLine "git diff --no-color --patch --" -Output $diffUnstagedResult.Output
+  [void]$logArtifactPaths.Add($logPath)
+  Add-ValidationLine -Status "FAIL" -Message "Make-DiffBundle: failed DIFF_UNSTAGED. See $logPath"
+  throw "Make-DiffBundle: failed DIFF_UNSTAGED. See $logPath"
 }
-[System.IO.File]::WriteAllText($diffUnstagedPath, $diffUnstagedResult.Stdout, [System.Text.UTF8Encoding]::new($false))
+Write-TextFile -Path $diffUnstagedPath -Text $diffUnstagedResult.Stdout
 Add-ValidationLine -Status "PASS" -Message "wrote DIFF_UNSTAGED.patch"
 
 $diffStagedResult = Invoke-ExternalCommand -ExePath "git" -ArgList @("diff", "--no-color", "--patch", "--cached", "--") -WorkDir $repoRoot -NoThrow
 if (-not $diffStagedResult.Ok) {
-  Add-ValidationLine -Status "FAIL" -Message "git diff --no-color --patch --cached -- :: $($diffStagedResult.Output)"
-  throw "Make-DiffBundle: failed DIFF_STAGED. $($diffStagedResult.Output)"
+  $logPath = Write-CommandFailureLog -LogsDir $logsDir -Name "DIFF_STAGED" -CommandLine "git diff --no-color --patch --cached --" -Output $diffStagedResult.Output
+  [void]$logArtifactPaths.Add($logPath)
+  Add-ValidationLine -Status "FAIL" -Message "Make-DiffBundle: failed DIFF_STAGED. See $logPath"
+  throw "Make-DiffBundle: failed DIFF_STAGED. See $logPath"
 }
-[System.IO.File]::WriteAllText($diffStagedPath, $diffStagedResult.Stdout, [System.Text.UTF8Encoding]::new($false))
+Write-TextFile -Path $diffStagedPath -Text $diffStagedResult.Stdout
 Add-ValidationLine -Status "PASS" -Message "wrote DIFF_STAGED.patch"
 
 if (Contains-AnsiSequence -Text $diffVsHeadResult.Stdout) {
@@ -242,7 +316,7 @@ if ($IncludeFilesDump) {
 
     if (Test-Path -LiteralPath $sourcePath -PathType Container) {
       $markerPath = "$destPath.skipped_dir.txt"
-      [System.IO.File]::WriteAllText($markerPath, "SKIPPED_DIRECTORY`t$relativePath`n", [System.Text.UTF8Encoding]::new($false))
+      Write-TextFile -Path $markerPath -Text "SKIPPED_DIRECTORY`t$relativePath`n"
       Add-ValidationLine -Status "WARN" -Message "skipped directory in snapshot: $relativePath"
       Add-DebtLine "DEBT_REQUIRED: inspect skipped directory path in FILES snapshot: $relativePath"
       continue
@@ -254,7 +328,7 @@ if ($IncludeFilesDump) {
     }
     else {
       $deletedPath = "$destPath.deleted.txt"
-      [System.IO.File]::WriteAllText($deletedPath, "DELETED_OR_MISSING`t$relativePath`n", [System.Text.UTF8Encoding]::new($false))
+      Write-TextFile -Path $deletedPath -Text "DELETED_OR_MISSING`t$relativePath`n"
       Add-ValidationLine -Status "PASS" -Message "recorded deleted/missing path: $relativePath"
     }
   }
@@ -278,13 +352,15 @@ if (-not [string]::IsNullOrWhiteSpace($ValidationLog)) {
 }
 
 $combinedDebt = if ($debtLines.Count -eq 0) { "" } else { [string]::Join("`n", @($debtLines)) }
+$diffArtifactPaths = @($diffVsHeadPath, $diffUnstagedPath, $diffStagedPath)
 
 $reportWrite = & $writeRunReportPath `
   -RepoPath $repoRoot `
   -OutPath $finalReportPath `
   -Title $Title `
   -ChangedFiles $changedFilePaths `
-  -DiffText $diffVsHeadResult.Stdout `
+  -DiffPaths $diffArtifactPaths `
+  -LogPaths @($logArtifactPaths) `
   -FilesDumpDir $(if ($IncludeFilesDump) { $filesDir } else { "" }) `
   -ValidationLog $combinedValidation `
   -DebtNotes $combinedDebt `
@@ -320,7 +396,8 @@ if ($OpenArtifacts) {
       -OutPath $finalReportPath `
       -Title $Title `
       -ChangedFiles $changedFilePaths `
-      -DiffText $diffVsHeadResult.Stdout `
+      -DiffPaths $diffArtifactPaths `
+      -LogPaths @($logArtifactPaths) `
       -FilesDumpDir $(if ($IncludeFilesDump) { $filesDir } else { "" }) `
       -ValidationLog $combinedValidation `
       -DebtNotes $combinedDebt `
@@ -339,6 +416,8 @@ return [pscustomobject]@{
   RunTimestamp = $runTs
   RunDir = $runDir
   FinalReportPath = $finalReportPath
+  DiffArtifacts = $diffArtifactPaths
+  LogArtifacts = @($logArtifactPaths)
   ChangedFiles = $changedFilePaths
   ChangedFilesCount = $changedFilePaths.Count
   ReportWrite = $reportWrite

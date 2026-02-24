@@ -5,7 +5,7 @@ Safely swap docs/CONTRACT_STAGE.md into docs/CONTRACT.md with rollback and optio
 .DESCRIPTION
 Performs a deterministic SAFE SWAP flow:
 preflight -> git checks -> content integrity check -> backup -> swap -> gates ->
-commit -> optional push -> open docs folder -> print last commit summary.
+commit -> optional push -> optional artifact opening -> print last commit summary.
 
 Always generates a single FINAL_REPORT.txt bundle artifact (success and failure paths).
 #>
@@ -14,7 +14,8 @@ param(
   [string]$RepoPath = "F:\repos\hitech-os",
   [bool]$AttemptPush = $true,
   [string]$CommitMessage = "docs(contract): safe swap CONTRACT_STAGE into CONTRACT",
-  [switch]$NoGates
+  [switch]$NoGates,
+  [bool]$OpenArtifacts = $false
 )
 
 Set-StrictMode -Version Latest
@@ -319,13 +320,15 @@ try {
     Write-SwapLog "Push skipped because no new commit was created."
   }
 
-  Update-SwapProgress -Status "Open docs and print commit summary"
-  try {
-    Start-Process -FilePath "explorer.exe" -ArgumentList $docsDir -WhatIf:$false -Confirm:$false | Out-Null
-    Write-SwapLog "Opened docs folder: $docsDir"
-  }
-  catch {
-    Add-Debt "WARN_DEBT: could not open docs folder automatically: $docsDir"
+  Update-SwapProgress -Status "Finalize and print commit summary"
+  if ($OpenArtifacts) {
+    try {
+      Start-Process -FilePath "explorer.exe" -ArgumentList $docsDir -WhatIf:$false -Confirm:$false | Out-Null
+      Write-SwapLog "Opened docs folder: $docsDir"
+    }
+    catch {
+      Add-Debt "WARN_DEBT: could not open docs folder automatically: $docsDir"
+    }
   }
 
   $lastCommit = Invoke-ExternalCommand -ExePath $gitExe -ArgList @("log", "-1", "--oneline") -WorkDir $repoRoot -NoThrow -Debug:$externalDebug
@@ -402,6 +405,7 @@ finally {
         -Title "SAFE SWAP CONTRACT ($swapOutcome)" `
         -IncludeFilesDump:$true `
         -AlsoPrintShortSummary:$true `
+        -OpenArtifacts:$OpenArtifacts `
         -ValidationLog $validationPayload `
         -DebtNotes $debtPayload
 

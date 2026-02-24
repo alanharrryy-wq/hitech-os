@@ -1,20 +1,35 @@
 # DIFF_OUTPUT_POLICY
 
 ## Purpose
-Codex responses must be reviewable in plain text, including terminal logs, copied chat logs, and offline artifacts. Color-only UI diffs are not sufficient evidence.
 
-## Mandatory Output Format
-Every Codex change response MUST include, in plaintext:
-1. `CHANGED FILES` list.
-2. Unified diff patch (`git diff --no-color --patch`) inside a fenced code block.
-3. Full contents of each created/modified file (or changed regions with explicit omission markers for very large files).
+Unified diffs are required evidence artifacts, but they are disk artifacts, not chat/console payloads.
+Color-only UI diffs are non-authoritative.
 
-## Artifact Requirement
-When scripts generate changes, they MUST also write a no-color patch artifact to disk (for example `.tmp/.../*.patch`) and print it to stdout when feasible.
+## Disk-Only Diff Policy
+
+For any run that changes files:
+
+1. Generate deterministic plaintext unified diffs using `git diff --no-color --patch`.
+2. Write diffs to `.patch` files under the run bundle:
+   `tools/codex/<worker>/RUN_<RUN_ID>/DIFF*.patch`
+3. Do not print raw unified diff content to stdout/stderr.
+4. Do not include raw unified diff blocks in final responses.
+
+## Final Report Policy
+
+`FINAL_REPORT.txt` is the only user-facing run artifact and must contain:
+
+- changed file summary
+- patch artifact paths
+- log artifact paths
+- validation summary and debt/blockers
+
+`FINAL_REPORT.txt` must not embed raw unified diff content.
 
 ## Do / Don't
+
 - Do: use `git diff --no-color --patch`.
-- Do: include explicit file paths and exact commands.
-- Do: treat missing plaintext diff as incomplete output.
+- Do: keep patch artifacts UTF-8 without ANSI sequences.
+- Do: reference artifact paths in final responses/reports.
+- Don't: print unified diff bodies in chat or console.
 - Don't: rely only on IDE/UI color diffs.
-- Don't: omit changed file contents from the final response.

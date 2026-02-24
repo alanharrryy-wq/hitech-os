@@ -7,10 +7,12 @@ Generates a UTF-8 report with fixed section headers and content ordering:
 1) TITLE + TIMESTAMP + REPO PATH
 2) SUMMARY
 3) CHANGED FILES
-4) UNIFIED DIFF (NO COLOR)
-5) FILE CONTENTS SNAPSHOT
+4) PATCH ARTIFACTS
+5) LOG ARTIFACTS
 6) VALIDATION OUTPUTS
 7) WARN / DEBT
+
+Raw unified diff content must not be embedded in this report.
 #>
 
 [CmdletBinding()]
@@ -25,7 +27,9 @@ param(
 
   [string[]]$ChangedFiles = @(),
 
-  [string]$DiffText = "",
+  [string[]]$DiffPaths = @(),
+
+  [string[]]$LogPaths = @(),
 
   [string]$FilesDumpDir = "",
 
@@ -33,9 +37,7 @@ param(
 
   [string]$DebtNotes = "",
 
-  [string]$RunTimestamp = "",
-
-  [int]$InlineLimitBytes = 12288
+  [string]$RunTimestamp = ""
 )
 
 Set-StrictMode -Version Latest
@@ -57,23 +59,25 @@ function Resolve-ReportOutputPath {
   return (Join-Path $BasePath $RawOutPath)
 }
 
-function Get-SnapshotPaths {
+function Normalize-PathList {
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory = $true)]
-    [string]$FilesDumpDir,
-    [Parameter(Mandatory = $true)]
-    [string]$RelativePath
+    [string]$RepoRoot,
+    [string[]]$Paths
   )
 
-  $normalizedRelative = $RelativePath -replace '/', [System.IO.Path]::DirectorySeparatorChar
-  $snapshotPath = Join-Path $FilesDumpDir $normalizedRelative
-  $deletedPath = "$snapshotPath.deleted.txt"
-
-  return [pscustomobject]@{
-    SnapshotPath = $snapshotPath
-    DeletedPath = $deletedPath
+  $normalized = New-Object System.Collections.Generic.List[string]
+  foreach ($path in @($Paths)) {
+    if ([string]::IsNullOrWhiteSpace($path)) {
+      continue
+    }
+    $candidate = $path.Trim()
+    if (-not [System.IO.Path]::IsPathRooted($candidate)) {
+      $candidate = Join-Path $RepoRoot $candidate
+    }
+    $normalized.Add($candidate)
   }
+  return @($normalized | Sort-Object -Unique)
 }
 
 if (-not (Test-Path -LiteralPath $RepoPath -PathType Container)) {
@@ -89,7 +93,8 @@ if (-not [string]::IsNullOrWhiteSpace($resolvedOutDir)) {
 
 $timestamp = if ([string]::IsNullOrWhiteSpace($RunTimestamp)) { Get-Date -Format "yyyyMMdd_HHmmss" } else { $RunTimestamp }
 $normalizedChangedFiles = @($ChangedFiles | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)
-$safeDiffText = if ($null -eq $DiffText) { "" } else { [string]$DiffText }
+$normalizedDiffPaths = @(Normalize-PathList -RepoRoot $resolvedRepoPath -Paths $DiffPaths)
+$normalizedLogPaths = @(Normalize-PathList -RepoRoot $resolvedRepoPath -Paths $LogPaths)
 $safeValidationLog = if ($null -eq $ValidationLog) { "" } else { [string]$ValidationLog }
 $safeDebtNotes = if ($null -eq $DebtNotes) { "" } else { [string]$DebtNotes }
 
@@ -104,7 +109,8 @@ $nl = "`n"
 
 [void]$lines.Add("2) SUMMARY")
 [void]$lines.Add("CHANGED_FILES_COUNT: $($normalizedChangedFiles.Count)")
-[void]$lines.Add("DIFF_CHAR_COUNT: $($safeDiffText.Length)")
+[void]$lines.Add("PATCH_ARTIFACT_COUNT: $($normalizedDiffPaths.Count)")
+[void]$lines.Add("LOG_ARTIFACT_COUNT: $($normalizedLogPaths.Count)")
 [void]$lines.Add("FILES_DUMP_DIR: $(if ([string]::IsNullOrWhiteSpace($FilesDumpDir)) { '<none>' } else { $FilesDumpDir })")
 [void]$lines.Add("")
 
@@ -119,64 +125,39 @@ else {
 }
 [void]$lines.Add("")
 
-[void]$lines.Add("4) UNIFIED DIFF (NO COLOR)")
-if ([string]::IsNullOrWhiteSpace($safeDiffText)) {
-  [void]$lines.Add("(no diff)")
-}
-else {
-  [void]$lines.Add($safeDiffText.TrimEnd("`r", "`n"))
-}
-[void]$lines.Add("")
-
-[void]$lines.Add("5) FILE CONTENTS SNAPSHOT")
-if ($normalizedChangedFiles.Count -eq 0) {
+[void]$lines.Add("4) PATCH ARTIFACTS")
+if ($normalizedDiffPaths.Count -eq 0) {
   [void]$lines.Add("(none)")
 }
 else {
-  foreach ($relativePath in $normalizedChangedFiles) {
-    [void]$lines.Add("FILE: $relativePath")
-
-    $usedSnapshot = $false
-    if (-not [string]::IsNullOrWhiteSpace($FilesDumpDir) -and (Test-Path -LiteralPath $FilesDumpDir -PathType Container)) {
-      $paths = Get-SnapshotPaths -FilesDumpDir $FilesDumpDir -RelativePath $relativePath
-      if (Test-Path -LiteralPath $paths.SnapshotPath -PathType Leaf) {
-        $usedSnapshot = $true
-        $fileInfo = Get-Item -LiteralPath $paths.SnapshotPath -Force
-        if ($fileInfo.Length -le $InlineLimitBytes) {
-          [void]$lines.Add("MODE: INLINE")
-          [void]$lines.Add("SOURCE: $($paths.SnapshotPath)")
-          [void]$lines.Add("----- BEGIN FILE $relativePath -----")
-          $snapshotText = Get-Content -Raw -LiteralPath $paths.SnapshotPath
-          if ([string]::IsNullOrEmpty($snapshotText)) {
-            [void]$lines.Add("(empty file)")
-          }
-          else {
-            [void]$lines.Add($snapshotText.TrimEnd("`r", "`n"))
-          }
-          [void]$lines.Add("----- END FILE $relativePath -----")
-        }
-        else {
-          [void]$lines.Add("MODE: DUMP_REFERENCE")
-          [void]$lines.Add("SNAPSHOT: $($paths.SnapshotPath)")
-          [void]$lines.Add("NOTE: omitted inline content due to size > $InlineLimitBytes bytes.")
-        }
-      }
-      elseif (Test-Path -LiteralPath $paths.DeletedPath -PathType Leaf) {
-        $usedSnapshot = $true
-        [void]$lines.Add("MODE: DUMP_REFERENCE")
-        [void]$lines.Add("SNAPSHOT: $($paths.DeletedPath)")
-        [void]$lines.Add("NOTE: file deleted or unavailable in working tree.")
-      }
+  foreach ($diffPath in $normalizedDiffPaths) {
+    if (Test-Path -LiteralPath $diffPath -PathType Leaf) {
+      $len = (Get-Item -LiteralPath $diffPath -Force).Length
+      [void]$lines.Add("- $diffPath (bytes=$len)")
     }
-
-    if (-not $usedSnapshot) {
-      [void]$lines.Add("MODE: MISSING_SNAPSHOT")
-      [void]$lines.Add("NOTE: no snapshot available for this path.")
+    else {
+      [void]$lines.Add("- $diffPath (missing)")
     }
-
-    [void]$lines.Add("")
   }
 }
+[void]$lines.Add("")
+
+[void]$lines.Add("5) LOG ARTIFACTS")
+if ($normalizedLogPaths.Count -eq 0) {
+  [void]$lines.Add("(none)")
+}
+else {
+  foreach ($logPath in $normalizedLogPaths) {
+    if (Test-Path -LiteralPath $logPath -PathType Leaf) {
+      $len = (Get-Item -LiteralPath $logPath -Force).Length
+      [void]$lines.Add("- $logPath (bytes=$len)")
+    }
+    else {
+      [void]$lines.Add("- $logPath (missing)")
+    }
+  }
+}
+[void]$lines.Add("")
 
 [void]$lines.Add("6) VALIDATION OUTPUTS")
 if ([string]::IsNullOrWhiteSpace($safeValidationLog)) {
@@ -204,4 +185,6 @@ return [pscustomobject]@{
   OutPath = $resolvedOutPath
   Timestamp = $timestamp
   ChangedFilesCount = $normalizedChangedFiles.Count
+  PatchArtifactCount = $normalizedDiffPaths.Count
+  LogArtifactCount = $normalizedLogPaths.Count
 }

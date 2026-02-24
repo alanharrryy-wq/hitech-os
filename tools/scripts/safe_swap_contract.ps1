@@ -139,30 +139,6 @@ function Emit-PlaintextDiffArtifact {
 
   Write-Host "Diff artifact: $diffPath"
   Write-Host "Diff summary: files=$($summary.FilesChanged) insertions=$($summary.Insertions) deletions=$($summary.Deletions) base=$baseRef"
-  [Console]::Out.WriteLine("----- BEGIN UNIFIED DIFF PATCH -----")
-
-  $patchText = ""
-  if (Test-Path -LiteralPath $diffPath -PathType Leaf) {
-    $patchText = Get-Content -Raw -LiteralPath $diffPath
-  }
-
-  if ([string]::IsNullOrEmpty($patchText)) {
-    [Console]::Out.WriteLine("(no diff)")
-  }
-  else {
-    if (($MaxPrintedPatchChars -gt 0) -and ($patchText.Length -gt $MaxPrintedPatchChars)) {
-      $headChars = [Math]::Max([int]($MaxPrintedPatchChars / 2), 1)
-      $tailChars = [Math]::Max($MaxPrintedPatchChars - $headChars, 1)
-      [Console]::Out.WriteLine($patchText.Substring(0, $headChars))
-      [Console]::Out.WriteLine(("[PATCH_TRIMMED totalChars={0} printedChars={1}]" -f $patchText.Length, $MaxPrintedPatchChars))
-      [Console]::Out.WriteLine($patchText.Substring($patchText.Length - $tailChars))
-    }
-    else {
-      [Console]::Out.WriteLine($patchText)
-    }
-  }
-
-  [Console]::Out.WriteLine("----- END UNIFIED DIFF PATCH -----")
 
   return [pscustomobject]@{
     DiffPath = $diffPath
