@@ -1,288 +1,258 @@
-# CONSTITUTION — STAGE 0 (S0\_\*)
+# CONSTITUTION — HITECH OS (Stage 0–4)
 
-Version: 2.0.0
+Version: 3.0.0
 Status: Active
 Last Updated: 2026-02-23
 Scope: Entire monorepo (`hitech-os`)
 Authority Tier: Supreme (Interpretation)
-Enforced By: `docs/CONTRACT.md` (execution), tools/gates (verification)
 
-> Stage 0 does not unlock features.
-> Stage 0 unlocks governability.
-
-This Constitution defines intent, meaning, and authority boundaries.
-`docs/CONTRACT.md` defines enforcement, execution rules, and operational constraints.
-If ambiguity exists, this Constitution resolves intent; the Contract resolves enforcement.
+This document defines intent, meaning, and authority boundaries.
+`docs/CONTRACT.md` defines enforcement and execution.
+If ambiguity exists: Constitution resolves meaning; Contract resolves execution.
 
 ---
 
-## PREAMBLE (Imperial, but binding)
+## GOVERNANCE AXIOMS (Non-negotiable)
 
-This repository is governed, not improvised.
+A1. Governance over improvisation.  
+A2. Determinism over convenience.  
+A3. Evidence over assumption.  
+A4. Ownership over anonymity.  
+A5. No silent failure.
 
-We optimize for:
-
-- determinism over convenience,
-- evidence over assumption,
-- explicit contracts over implicit coupling,
-- modular boundaries over tangled shortcuts.
-
-No silent passes.
-No undocumented exceptions.
-If it is not in the output, it did not happen.
+No Stage may weaken these axioms.
 
 ---
 
-## GOVERNANCE PRIMITIVES (Binding Definitions)
+## AUTHORITY LADDER (Conflict Resolution)
 
-- **Intent**: the meaning of a rule (why it exists).
-- **Enforcement**: the executable mechanism that makes a rule unavoidable (how it is applied).
-- **Determinism**: same inputs → same outputs; stable ordering; no machine-specific leakage.
-- **Evidence**: required output artifacts proving a claim (“ran”, “passed”, “valid”).
-- **Debt**: explicit, scoped, time-bounded allowance; never silent; must be recorded.
-- **Blocker**: must-fix before a run/merge is considered valid.
-- **Root Authority**: contracts/schemas/blueprints that define truth.
-- **Non-root Output**: logs/reports requiring verification; cannot override roots.
-- **Stage**: an unlock tier. Later stages cannot weaken Stage 0 intent.
+Highest → lowest:
+
+1. Constitution (intent / meaning)
+2. Contract (enforcement rules / IDs / gates)
+3. Tests & CI gates (proof)
+4. Tooling outputs (reports/logs)
+5. Local preferences (never override above)
 
 ---
 
-## INTERPRETATION RULES (How to decide disputes)
+## THE 10 LAWS (Constitutional Laws)
 
-1. **Contract wins on execution**  
-   If the Contract specifies an enforcement behavior, it is authoritative for execution.
+L1 — Law of Primacy  
+Constitution defines principles; Contract makes them executable; tests prove; tooling automates; preferences never override.
 
-2. **Constitution wins on meaning**  
-   If a rule is unclear, interpret it using Stage 0 intent (this document).
+L2 — Law of No Unreviewed Power  
+No sovereign-branch change without review + required checks.
 
-3. **No “text-only law”**  
-   A rule that cannot be enforced is still binding, but must be scheduled for enforcement.
-   Until enforced, any violation must surface as Evidence + Debt (never silent).
+L3 — Law of Ownership  
+Critical paths must have explicit owners; owner approval required for changes.
 
-4. **Expected failure is not Debt**  
-   If a preflight fails as expected and no swap/run was attempted and no files changed:
-   do not manufacture Debt. Report INFO only. (Truth ≠ drama.)
+L4 — Law of Audited Escapes  
+Exceptions exist, but require second approval + auditable evidence output.
 
-5. **Exceptions are constitutional events**  
-   Any exception requires:
-   - scope
-   - reason
-   - expiration date
-   - rollback plan
-     recorded in `docs/NOTEBOOK.md`.
+L5 — Law of Determinism  
+Same inputs + same config → same outputs. Host leakage is illegal.
+
+L6 — Law of Reproducibility  
+Releases must be reproducible byte-a-byte OR provide explicit evidence for deltas.
+
+L7 — Law of Output Evidence  
+“If it’s not in the output, it didn’t happen.” Critical steps must emit structured evidence.
+
+L8 — Law of Provenance  
+Release artifacts must include verifiable provenance.
+
+L9 — Law of Trust Roots  
+Root authority (contracts/keys/layouts) must be explicit; non-root outputs cannot override roots.
+
+L10 — Law of No Silent Pass  
+WARN always creates Debt — except declared expected no-op failures.
 
 ---
 
-## AMENDMENTS (Change Discipline)
+## DEFINITIONS (Binding)
 
-A constitutional change must include:
-
-1. intent update here (this file),
-2. enforcement update in `docs/CONTRACT.md` and/or tools/gates,
-3. proof in output (diffs/reports/gates).
-
-No “policy-only” changes without an enforcement plan.
-No silent behavior changes.
+- Determinism: same inputs → same outputs; stable ordering; no host leakage.
+- Evidence: required output artifacts proving a claim.
+- Debt: explicit allowance with owner + scope + expiration; never silent.
+- Expected no-op failure: a declared preflight failure where no swap/run was attempted AND no files changed.
+- Root authority: constitutions/contracts/schemas/layouts/keys that define truth.
+- Non-root output: logs/reports requiring verification; cannot override roots.
 
 ---
 
 # STAGE 0 — GLOBAL CONSTITUTION (S0\_\*)
 
-Stage 0 is the root of all governance. No later stage may weaken it.
+Stage 0 is the root. It enables governability, not features.
 
-Each Tech Node below defines:
-
-- Intent (why)
-- Meaning (what it implies)
-- Binding interpretation (how to reason about it)
-- Contract anchor (where enforcement lives)
+Each node defines:
+Intent (why) → Meaning (what) → Binding Rules (how disputes resolve) → Enforcement Hooks (where Contract/tooling must implement).
 
 ---
 
 ## S0_ORIG — Constitutional Origin
 
-**Intent**
-Declare this repo as a governed system (not a pile of scripts).
+Intent:
+Prevent power without legitimacy.
 
-**Meaning**
+Meaning:
 
-- Authority must be explicit.
-- Decisions must be justifiable by law, not preference.
-- If a local workflow conflicts with the Contract, the Contract wins.
+- Sovereign branches require PR + reviews + checks.
+- Critical paths require owners.
+- Exceptions must be audited.
 
-**Binding Interpretation**
+Binding Rules:
 
-- “Because it works” is not an argument.
-- Any new rule must anchor to Stage 0 intent.
-- Any new behavior must have an evidence path.
+- “Direct push” to sovereign branches is illegal.
+- No critical-path change without owner approval.
+- Break-glass requires second approval + evidence marker.
 
-**Contract Anchor**
+Enforcement Hooks:
 
-- `docs/CONTRACT.md` → header authority + Stage 0 entry
+- Branch protection / rulesets
+- CODEOWNERS/OWNERS with “require code owner review”
+- Output evidence must record break-glass events
 
 ---
 
 ## S0_DET — Determinism Law
 
-**Intent**
-Make the system replayable, auditable, and stable across machines.
+Intent:
+Make the system replayable and auditable.
 
-**Meaning**
+Meaning:
 
-- Same input payload must yield the same committed artifacts and CI outputs.
-- Ordering must be stable (files, keys, lists).
-- No leakage of machine-specific absolute paths into committed outputs.
-- Time/randomness are illegal unless explicitly injected as input.
+- Same input must yield same output.
+- Ordering must be stable.
+- Time/randomness illegal unless injected as input.
 
-**Binding Interpretation**
+Binding Rules:
 
-- Determinism is a requirement, not an optimization.
-- Any nondeterministic output must be treated as failure (or explicit Debt if temporarily allowed).
+- Timestamps must be normalized.
+- Arrays/sets must be deterministically ordered.
+- No absolute path leakage.
 
-**Contract Anchor**
+Enforcement Hooks:
 
-- `docs/CONTRACT.md` → S0_DET (Design Axioms) + S0_LEX (Determinism Requirements)
+- Determinism check gates
+- Canonical serialization rules
 
 ---
 
 ## S0_PRI — Enforcement Priority
 
-**Intent**
-Prevent “document civil wars” by defining an authority ladder and boundary logic.
+Intent:
+Prevent policy wars and ambiguity.
 
-**Meaning**
-Authority order (highest to lowest):
+Meaning:
 
-1. `docs/CONTRACT.md`
-2. code-level tests and health scripts
-3. README guidance
-4. local preferences
+- Constitution decides meaning; Contract decides execution.
+- Every enforceable rule must map to a LAW_ID.
 
-**Binding Interpretation**
+Binding Rules:
 
-- Conflicts must be resolved deterministically by authority tier.
-- If two artifacts disagree, the higher-tier artifact governs.
+- All gates must reference a LAW_ID.
+- Conflicts require constitutional amendment.
 
-**Contract Anchor**
+Enforcement Hooks:
 
-- `docs/CONTRACT.md` → S0_PRI (Boundary Law) + S2_DEF (priority restatement)
+- CI lint for LAW_ID mapping
+- Explicit Law references in Contract
 
 ---
 
-## S0_LEX — Blueprint as Law Doctrine
+## S0_LEX — Blueprint as Law
 
-**Intent**
-Ensure “law” is executable, not decorative text.
+Intent:
+Law must be executable.
 
-**Meaning**
+Meaning:
 
-- If a rule is not enforceable (schema/gate/tool), it does not fully govern execution yet.
-- Documentation without enforcement is non-authoritative for execution.
+- Text-only policy does not govern execution.
+- Rules must be enforceable or scheduled.
 
-**Binding Interpretation**
+Enforcement Hooks:
 
-- Blueprints must be designed to become gates.
-- The repo must prefer enforceable contracts over interpretive prose.
-
-**Contract Anchor**
-
-- `docs/CONTRACT.md` → S0_LEX (Required/Forbidden determinism behaviors)
+- Policy-as-code
+- Schema validation gates
 
 ---
 
 ## S0_PROOF — Evidence Doctrine
 
-**Intent**
-“If it’s not in the output, it didn’t happen.”
+Intent:
+Reality is defined by output.
 
-**Meaning**
+Binding Rules:
 
-- Claims require proof artifacts.
-- Proof must be stable, reviewable, and rooted.
-- Feature flags are governance primitives: default OFF; explicit rollout/rollback.
+- Critical jobs must emit OMP output.
+- No OMP → invalid run.
+- Evidence must be deterministic.
 
-**Binding Interpretation**
+Enforcement Hooks:
 
-- Evidence defines reality for governance.
-- Non-root outputs cannot override root authority.
-- Flag additions require explicit ownership and documentation.
-
-**Contract Anchor**
-
-- `docs/CONTRACT.md` → S0_PROOF (Feature Flags Policy)
+- OMP schema validation gate
+- Required artifact presence
 
 ---
 
-## S0_NSP — No Silent Pass Rule
+## S0_NSP — No Silent Pass
 
-**Intent**
-Eliminate invisible failure and self-deception.
+Intent:
+Eliminate invisible failure.
 
-**Meaning**
+Binding Rules:
 
-- WARN must never be silent.
-- WARN must always create explicit Debt, unless it is an expected preflight fail with no-op behavior.
-- Source trees are code-only; dump artifacts are forbidden.
+- WARN → DEBT (unless expected no-op).
+- No dump artifacts in source paths.
 
-**Binding Interpretation**
+Enforcement Hooks:
 
-- If a run “sort of passed”, it did not pass.
-- If a warning exists, it must be tracked or the run is invalid.
-- Expected failure must not generate fake Debt (INFO-only).
-
-**Contract Anchor**
-
-- `docs/CONTRACT.md` → S0_NSP (Artifact/Dump Prohibition) + tooling enforcement (`tools/health`)
-- SAFE_SWAP scripts must follow “expected failure ≠ debt” discipline.
+- Warning parser gate
+- Debt ledger enforcement
 
 ---
 
-## S0_TRUST — Trusted Roots Definition
+## S0_TRUST — Trusted Roots
 
-**Intent**
-Define what is authoritative and what must be verified.
+Intent:
+Define authority boundaries.
 
-**Meaning**
-Root authorities include:
+Binding Rules:
 
-- canonical contracts/schemas
-- committed deterministic generated schemas
-- blueprint law and gate definitions
+- Releases require signature + provenance + SBOM.
+- Non-root outputs cannot override roots.
 
-Non-root outputs include:
+Enforcement Hooks:
 
-- logs and worker reports without attestation
-
-**Binding Interpretation**
-
-- `packages/contracts` is canonical for shared shapes.
-- Generated schemas are committed and deterministic.
-- Python models must align to canonical shape and enums.
-- Runtime services must validate against local rules.
-
-**Contract Anchor**
-
-- `docs/CONTRACT.md` → S0_TRUST (Contracts and Schema Authority + change flow)
+- Release trust gate
+- Progressive P1 → P2+ hardening
 
 ---
 
-## STAGE 0 OUTCOME
+# HARDENING LEVELS
 
-When Stage 0 is complete:
+P1:
 
-- Authority is defined.
-- Determinism is required.
-- Evidence is mandatory.
-- Silent pass is impossible.
-- Trust boundaries are explicit.
+- CODEOWNERS
+- Determinism gate
+- OMP validation
+- Basic release trust signals
 
-You still don’t have an empire.
-You have rule of law.
+P2+:
+
+- Policy registry
+- in-toto style attestations
+- Transparency logging
+- Escalation automation
 
 ---
 
-## TRANSITION NOTE (Non-binding guidance)
+## OUTPUT MINIMUM PROTOCOL (OMP)
 
-Stage 1 builds minimal infrastructure (health, smoke, output minimum).
-Stage 2 introduces non-regression, overlap enforcement, and drift detection.
-But no stage may weaken Stage 0.
+Each critical job emits ONE deterministic file:
+
+STATUS | REPORT | BLOCKERS | DEBT | NEXT
+
+No variable timestamps.
+Implementation details live in CONTRACT.
