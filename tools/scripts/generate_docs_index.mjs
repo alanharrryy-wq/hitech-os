@@ -13,12 +13,30 @@ function toPosix(value) {
   return value.replace(/\\/g, "/");
 }
 
-function readDocsFiles() {
-  const entries = readdirSync(docsDir, { withFileTypes: true });
-  return entries
-    .filter((entry) => entry.isFile() && entry.name.endsWith(".md") && entry.name !== "DOCS_INDEX.md")
-    .map((entry) => entry.name)
-    .sort((left, right) => left.localeCompare(right));
+function readDocsFiles(currentDir = docsDir) {
+  const entries = readdirSync(currentDir, { withFileTypes: true });
+  const files = [];
+
+  for (const entry of entries) {
+    const absolutePath = path.join(currentDir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...readDocsFiles(absolutePath));
+      continue;
+    }
+
+    if (!entry.isFile() || !entry.name.endsWith(".md")) {
+      continue;
+    }
+
+    const relativeFromDocs = toPosix(path.relative(docsDir, absolutePath));
+    if (relativeFromDocs === "DOCS_INDEX.md") {
+      continue;
+    }
+
+    files.push(relativeFromDocs);
+  }
+
+  return files.sort((left, right) => left.localeCompare(right));
 }
 
 function extractTitle(content, fallback) {
@@ -32,15 +50,15 @@ function extractTitle(content, fallback) {
 
 function buildIndex() {
   const files = readDocsFiles();
-  const rows = files.map((filename) => {
-    const absolutePath = path.join(docsDir, filename);
+  const rows = files.map((relativePath) => {
+    const absolutePath = path.join(docsDir, relativePath);
     const content = readFileSync(absolutePath, "utf8");
-    const title = extractTitle(content, filename.replace(/\.md$/, ""));
+    const title = extractTitle(content, relativePath.replace(/\.md$/, ""));
     const bytes = statSync(absolutePath).size;
     const lines = content.split(/\r?\n/).length;
 
     return {
-      filename,
+      relativePath,
       title,
       bytes,
       lines
@@ -54,7 +72,10 @@ function buildIndex() {
     "",
     "| File | Title | Lines | Bytes |",
     "| --- | --- | ---: | ---: |",
-    ...rows.map((row) => `| ${toPosix(path.join("docs", row.filename))} | ${row.title} | ${row.lines} | ${row.bytes} |`),
+    ...rows.map(
+      (row) =>
+        `| ${toPosix(path.join("docs", row.relativePath))} | ${row.title} | ${row.lines} | ${row.bytes} |`
+    ),
     ""
   ].join("\n");
 

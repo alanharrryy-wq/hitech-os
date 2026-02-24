@@ -137,6 +137,8 @@ $stagePath = ""
 $backupPath = ""
 $stageSnapshot = ""
 $swapApplied = $false
+$swapStarted = $false
+$swapFilesModified = $false
 $externalDebug = $true
 $swapOutcome = "FAIL"
 $exitCode = 1
@@ -248,7 +250,9 @@ try {
   Write-SwapLog "Backup created: $backupPath"
 
   Update-SwapProgress -Status "Swap CONTRACT_STAGE.md into CONTRACT.md"
+  $swapStarted = $true
   Copy-Item -LiteralPath $stagePath -Destination $contractPath -Force
+  $swapFilesModified = $true
   Remove-Item -LiteralPath $stagePath -Force
   $swapApplied = $true
   Write-SwapLog "Swap applied: CONTRACT_STAGE.md -> CONTRACT.md and CONTRACT_STAGE.md removed."
@@ -333,19 +337,47 @@ try {
   $exitCode = 0
 }
 catch {
-  Write-SwapLog "SAFE_SWAP_CONTRACT failed: $($_.Exception.Message)"
-  if ($swapApplied -and -not [string]::IsNullOrWhiteSpace($backupPath) -and (Test-Path -LiteralPath $backupPath -PathType Leaf)) {
-    Write-SwapLog "Rollback started: restoring CONTRACT.md from backup."
-    Copy-Item -LiteralPath $backupPath -Destination $contractPath -Force
-    if (-not [string]::IsNullOrWhiteSpace($stageSnapshot)) {
-      Set-Content -LiteralPath $stagePath -Value $stageSnapshot -Encoding UTF8
-      Write-SwapLog "Rollback restored CONTRACT_STAGE.md from in-memory snapshot."
+  $failureMessage = $_.Exception.Message
+  Write-SwapLog "SAFE_SWAP_CONTRACT failed: $failureMessage"
+
+  $noSwapArtifactsCreated = (
+    [string]::IsNullOrWhiteSpace($stageSnapshot) -and
+    [string]::IsNullOrWhiteSpace($backupPath)
+  )
+
+  $missingStagePreflight = (
+    -not $swapStarted -and
+    -not $swapFilesModified -and
+    $noSwapArtifactsCreated -and
+    ($failureMessage -like "Required file missing:*CONTRACT_STAGE.md")
+  )
+
+  if ($missingStagePreflight) {
+    Write-SwapLog "INFO: expected preflight failure — no swap attempted, no rollback required."
+  }
+  elseif ($swapFilesModified) {
+    if (-not [string]::IsNullOrWhiteSpace($backupPath) -and (Test-Path -LiteralPath $backupPath -PathType Leaf)) {
+      try {
+        Write-SwapLog "Rollback started: restoring CONTRACT.md from backup."
+        Copy-Item -LiteralPath $backupPath -Destination $contractPath -Force
+        if (-not [string]::IsNullOrWhiteSpace($stageSnapshot)) {
+          Set-Content -LiteralPath $stagePath -Value $stageSnapshot -Encoding UTF8
+          Write-SwapLog "Rollback restored CONTRACT_STAGE.md from in-memory snapshot."
+        }
+        Write-SwapLog "Rollback complete."
+      }
+      catch {
+        Add-Debt "WARN_DEBT: rollback failed after swap attempt: $($_.Exception.Message)"
+      }
     }
-    Write-SwapLog "Rollback complete."
+    else {
+      Add-Debt "WARN_DEBT: rollback required after swap attempt but backup/snapshot was unavailable."
+    }
   }
   else {
-    Add-Debt "WARN_DEBT: rollback not applied because backup/snapshot was unavailable."
+    Write-SwapLog "INFO: no swap attempted; rollback not required."
   }
+
   $swapOutcome = "FAIL"
   $exitCode = 1
 }

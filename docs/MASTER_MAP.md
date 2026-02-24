@@ -7,30 +7,37 @@ This file maps ownership, boundaries, and runtime entry points.
 
 ## Top-level map
 
-| Path | Type | Purpose |
-| --- | --- | --- |
-| `apps/web` | app | User-facing React frontend |
-| `apps/demo-engine` | app | Placeholder scaffold for future demo orchestration |
-| `services/core-api` | service | Node Fastify API, contract gateway |
-| `services/ai-agent` | service | Python FastAPI deterministic AI stub |
-| `packages/contracts` | package | Shared Zod contracts + JSON schema artifacts |
-| `packages/ui-kit` | package | Shared lightweight React components |
-| `packages/tooling` | package | Shared lint/format/type presets |
-| `tools/health` | tool | Repository guardrail and anti-artifact checks |
-| `tools/scripts` | tool | Utility scripts (docs index generation) |
-| `docs` | docs | Law, notebook, and map |
+| Path                 | Type    | Purpose                                            |
+| -------------------- | ------- | -------------------------------------------------- |
+| `apps/web`           | app     | User-facing React frontend                         |
+| `apps/demo-engine`   | app     | Placeholder scaffold for future demo orchestration |
+| `services/core-api`  | service | Node Fastify API, contract gateway                 |
+| `services/ai-agent`  | service | Python FastAPI deterministic AI stub               |
+| `packages/contracts` | package | Shared Zod contracts + JSON schema artifacts       |
+| `packages/ui-kit`    | package | Shared lightweight React components                |
+| `packages/tooling`   | package | Shared lint/format/type presets                    |
+| `tools/health`       | tool    | Repository guardrail and anti-artifact checks      |
+| `tools/scripts`      | tool    | Utility scripts (docs index generation)            |
+| `docs`               | docs    | Law, notebook, and map                             |
+
+## Governance cross-links
+
+1. `docs/CONSTITUTION.md` defines constitutional intent and interpretation.
+2. `docs/CONTRACT.md` defines executable enforcement and gate rules.
+3. `docs/snapshots/HITECH_OS__SNAPSHOT_MINI.json` captures deterministic repo state.
+4. `docs/factory/CONTRACT.md` defines factory runtime contract surfaces.
 
 ## Ownership model
 
-| Area | Primary Owner | Secondary Owner |
-| --- | --- | --- |
-| Contracts | Platform | Core API |
-| Core API | Backend | Platform |
-| AI Agent | Applied AI | Backend |
-| Web | Frontend | Product |
-| UI Kit | Frontend | Platform |
-| Health Tooling | Platform | DevEx |
-| Documentation | Platform | All teams |
+| Area           | Primary Owner | Secondary Owner |
+| -------------- | ------------- | --------------- |
+| Contracts      | Platform      | Core API        |
+| Core API       | Backend       | Platform        |
+| AI Agent       | Applied AI    | Backend         |
+| Web            | Frontend      | Product         |
+| UI Kit         | Frontend      | Platform        |
+| Health Tooling | Platform      | DevEx           |
+| Documentation  | Platform      | All teams       |
 
 ## Runtime entry points
 
@@ -150,12 +157,12 @@ Turbo task behavior:
 
 ## Guardrail map
 
-| Guardrail | Enforced by | Scope |
-| --- | --- | --- |
-| Feature flags default OFF | contracts + API + web fallback | runtime behavior |
-| No dumps under src | health script + gitignore | repository hygiene |
-| Deterministic generated schema | generator check mode | contract artifacts |
-| No hidden service coupling | module boundaries | architecture |
+| Guardrail                      | Enforced by                    | Scope              |
+| ------------------------------ | ------------------------------ | ------------------ |
+| Feature flags default OFF      | contracts + API + web fallback | runtime behavior   |
+| No dumps under src             | health script + gitignore      | repository hygiene |
+| Deterministic generated schema | generator check mode           | contract artifacts |
+| No hidden service coupling     | module boundaries              | architecture       |
 
 ## Change impact map
 

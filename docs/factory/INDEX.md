@@ -1,5 +1,8 @@
 # HITECH Factory Docs
 
+- `../CONTRACT.md` - monorepo enforcement authority
+- `../CONSTITUTION.md` - monorepo intent authority
+- `../snapshots/HITECH_OS__SNAPSHOT_MINI.json` - deterministic snapshot mini
 - `QUICKSTART.md` - first command path
 - `RUNBOOK.md` - full operator flow
 - `AUDIT.md` - audit checklist and reproducibility checks

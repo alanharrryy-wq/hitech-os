@@ -1,8 +1,57 @@
 # CONTRACT
+
 Version: 1.0.0
 Status: Active
-Last Updated: 2026-02-18
+Last Updated: 2026-02-23
 Scope: Entire monorepo (`hitech-os`)
+
+Authority Tier: Supreme (Enforcement)
+Interpretation: `docs/CONSTITUTION.md` (intent) + this Contract (execution)
+
+---
+
+## PREAMBLE
+
+This repository is governed, not improvised.
+
+We optimize for:
+
+- determinism over convenience,
+- evidence over assumption,
+- explicit contracts over implicit coupling,
+- modular boundaries over tangled shortcuts.
+
+This document is law.
+If any workflow, script, test, README, or preference conflicts with this contract, the contract wins.
+
+No silent passes.
+No undocumented exceptions.
+If it is not in the output, it did not happen.
+
+---
+
+## DEFINITIONS (Binding)
+
+- Determinism: same inputs → same outputs; stable ordering; no machine-specific leakage.
+- Evidence: required output artifacts proving a claim.
+- Debt: explicit, scoped, time-bounded allowance.
+- Blocker: must-fix before merge/run is valid.
+- Root authority: contracts/schemas/blueprints that define truth.
+- Non-root output: logs/reports requiring verification.
+
+---
+
+## AUTHORITY & CONFLICT RESOLUTION (Binding)
+
+1. If rules conflict, apply S0_PRI.
+2. If intent is unclear, consult docs/CONSTITUTION.md.
+3. Exceptions must be logged in docs/NOTEBOOK.md with:
+   - scope
+   - reason
+   - expiration
+   - rollback plan
+
+---
 
 ## STAGE 0 — GLOBAL CONSTITUTION
 
@@ -382,7 +431,3 @@ Non-compliant changes are expected to be rejected until corrected.
 ### EV_CON — Contract Change Flow
 
 ### EV_COMP — Backward Compatibility Rules
-
-
-
-
