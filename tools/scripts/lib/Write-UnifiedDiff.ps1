@@ -144,7 +144,11 @@ function Write-UnifiedDiffArtifact {
   }
 
   $patchText = if ($null -eq $patchResult.Stdout) { "" } else { [string]$patchResult.Stdout }
-  if (-not [string]::IsNullOrEmpty($patchText) -and -not $patchText.EndsWith("`n")) {
+  $noChangesDetected = [string]::IsNullOrWhiteSpace($patchText)
+  if ($noChangesDetected) {
+    $patchText = "NO_CHANGES_DETECTED`n"
+  }
+  elseif (-not $patchText.EndsWith("`n")) {
     $patchText += "`n"
   }
 
@@ -188,6 +192,7 @@ function Write-UnifiedDiffArtifact {
     OutPath = $resolvedOutPath
     BaseRef = $BaseRef
     StagedOnly = [bool]$StagedOnly
+    NoChangesDetected = $noChangesDetected
     FilesChanged = $changedFiles.Count
     Insertions = $insertions
     Deletions = $deletions

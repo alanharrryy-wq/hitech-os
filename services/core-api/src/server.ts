@@ -1,6 +1,8 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import type { FeatureFlags } from "./contracts.ts";
 import { FEATURE_FLAGS_DEFAULTS } from "./contracts.ts";
+import { ArtifactStore } from "./adapters/artifactStore.ts";
+import { RunIndex } from "./adapters/runIndex.ts";
 import { AiAgentClient } from "./lib/aiAgentClient.ts";
 import { createCoreClock, type CoreClock } from "./lib/clock.ts";
 import { loadRuntimeConfig, type CoreApiRuntimeConfig } from "./lib/config.ts";
@@ -8,6 +10,11 @@ import { DeterministicJobQueue } from "./lib/jobQueue.ts";
 import { getHttpContext, matchPath, writeNotFound } from "./lib/http.ts";
 import { capabilitiesRoute } from "./routes/capabilities.ts";
 import { flagsRoute } from "./routes/flags.ts";
+import {
+  governanceRunArtifactsRoute,
+  governanceRunsRoute,
+  governanceStageRoute
+} from "./routes/governance.ts";
 import { healthRoute } from "./routes/health.ts";
 import { getJobRoute, postJobsRoute, runJobRoute } from "./routes/jobs.ts";
 
@@ -17,6 +24,8 @@ export interface BuildServerOptions {
   queue?: DeterministicJobQueue;
   agentClient?: AiAgentClient;
   clock?: CoreClock;
+  runIndex?: RunIndex;
+  artifactStore?: ArtifactStore;
 }
 
 export interface CoreApiDependencies {
@@ -25,6 +34,8 @@ export interface CoreApiDependencies {
   queue: DeterministicJobQueue;
   agentClient: AiAgentClient;
   clock: CoreClock;
+  runIndex: RunIndex;
+  artifactStore: ArtifactStore;
 }
 
 export interface CoreApiServer {
@@ -52,13 +63,26 @@ function createDependencies(options: BuildServerOptions): CoreApiDependencies {
       timeoutMs: runtimeConfig.aiAgentTimeoutMs
     });
   const clock = options.clock ?? createCoreClock(runtimeConfig.fixedNowUtc);
+  const runIndex =
+    options.runIndex ??
+    new RunIndex({
+      runsRoot: runtimeConfig.governanceRunsRoot,
+      latestRunIdPath: runtimeConfig.governanceLatestRunIdPath
+    });
+  const artifactStore =
+    options.artifactStore ??
+    new ArtifactStore({
+      runsRoot: runtimeConfig.governanceRunsRoot
+    });
 
   return {
     runtimeConfig,
     featureFlags,
     queue,
     agentClient,
-    clock
+    clock,
+    runIndex,
+    artifactStore
   };
 }
 
@@ -84,8 +108,25 @@ async function handleRequest(
     return;
   }
 
+  if (context.method === "GET" && context.pathname === "/governance/runs") {
+    await governanceRunsRoute(request, response, deps);
+    return;
+  }
+
   if (context.method === "POST" && context.pathname === "/jobs") {
     await postJobsRoute(request, response, deps);
+    return;
+  }
+
+  const stageMatch = matchPath(context.pathname, "/governance/stage/:stageId");
+  if (context.method === "GET" && stageMatch) {
+    await governanceStageRoute(request, response, deps, stageMatch.params.stageId);
+    return;
+  }
+
+  const artifactsMatch = matchPath(context.pathname, "/governance/runs/:runId/artifacts");
+  if (context.method === "GET" && artifactsMatch) {
+    await governanceRunArtifactsRoute(request, response, deps, artifactsMatch.params.runId);
     return;
   }
 

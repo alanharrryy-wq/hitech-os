@@ -1,18 +1,16 @@
 <#
 .SYNOPSIS
-Create a deterministic disk-only diff/report bundle for a run.
+Create a deterministic disk-only run bundle with FINAL_REPORT.txt as the authoritative artifact.
 
 .DESCRIPTION
 Creates a run bundle under `tools/codex/Z_aggregator/RUN_<yyyyMMdd_HHmmss>/` (or a caller-provided run dir) with:
 - CHANGED_FILES.txt
-- DIFF_VS_HEAD.patch
-- DIFF_UNSTAGED.patch
-- DIFF_STAGED.patch
 - logs/*.log
 - FILES/ snapshot (optional)
 - FINAL_REPORT.txt
 
-Diff bodies are never printed to console. Failures reference log file paths.
+Unified diff content is captured via `git diff --no-color --patch` and written only inside FINAL_REPORT.txt.
+Diff bodies are never printed to console.
 #>
 
 [CmdletBinding()]
@@ -32,7 +30,11 @@ param(
 
   [bool]$OpenArtifacts = $false,
 
-  [string]$RunDir = ""
+  [string]$RunDir = "",
+
+  [string]$DiffBaseRef = "HEAD",
+
+  [string]$ReportStatus = ""
 )
 
 Set-StrictMode -Version Latest
@@ -41,9 +43,6 @@ $ErrorActionPreference = "Stop"
 $invokeExternalPath = Join-Path $PSScriptRoot "Invoke-External.ps1"
 $invokeExternalPath = (Resolve-Path -LiteralPath $invokeExternalPath).Path
 . $invokeExternalPath
-
-$writeRunReportPath = Join-Path $PSScriptRoot "Write-RunReport.ps1"
-$writeRunReportPath = (Resolve-Path -LiteralPath $writeRunReportPath).Path
 
 function Parse-GitStatusPath {
   [CmdletBinding()]
@@ -157,19 +156,227 @@ function Write-CommandFailureLog {
   return $logPath
 }
 
+function Get-ReportStatus {
+  [CmdletBinding()]
+  param(
+    [string[]]$ValidationEntries
+  )
+
+  $items = @($ValidationEntries)
+  if ($items | Where-Object { $_ -match '^\[FAIL\]' }) {
+    return "FAIL"
+  }
+  if ($items | Where-Object { $_ -match '^\[WARN\]' }) {
+    return "WARN"
+  }
+
+  return "SUCCESS"
+}
+
+function Build-FinalReportText {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$RunId,
+    [Parameter(Mandatory = $true)]
+    [string]$Status,
+    [Parameter(Mandatory = $true)]
+    [string]$Title,
+    [Parameter(Mandatory = $true)]
+    [string]$RepoRoot,
+    [Parameter(Mandatory = $true)]
+    [string]$RunDirPath,
+    [Parameter(Mandatory = $true)]
+    [string]$RunTimestamp,
+    [Parameter(Mandatory = $true)]
+    [string]$DiffBase,
+    [string[]]$ChangedFiles,
+    [string[]]$ValidationEntries,
+    [string]$ExternalValidation,
+    [string[]]$DebtEntries,
+    [string]$InlineDebtNotes,
+    [string]$FilesDumpDirectory,
+    [string[]]$LogPaths,
+    [string]$UnifiedDiffText
+  )
+
+  $normalizedChangedFiles = @($ChangedFiles | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)
+  $normalizedValidationEntries = @($ValidationEntries | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+  $normalizedDebtEntries = @($DebtEntries | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+  $normalizedLogPaths = @($LogPaths | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)
+
+  $externalValidationLines = @()
+  if (-not [string]::IsNullOrWhiteSpace($ExternalValidation)) {
+    $externalValidationLines = @($ExternalValidation.TrimEnd("`r", "`n") -split "`r?`n")
+  }
+
+  $inlineDebtLines = @()
+  if (-not [string]::IsNullOrWhiteSpace($InlineDebtNotes)) {
+    $inlineDebtLines = @($InlineDebtNotes.TrimEnd("`r", "`n") -split "`r?`n")
+  }
+
+  $normalizedDiffText = if ($null -eq $UnifiedDiffText) { "" } else { [string]$UnifiedDiffText }
+  $normalizedDiffText = $normalizedDiffText -replace "`r`n", "`n"
+  $normalizedDiffText = $normalizedDiffText -replace "`r", "`n"
+  $diffLines = @()
+  if ([string]::IsNullOrWhiteSpace($normalizedDiffText)) {
+    $diffLines = @("NO_CHANGES_DETECTED")
+  }
+  else {
+    $diffLines = @($normalizedDiffText.TrimEnd("`n") -split "`n")
+  }
+
+  $lines = New-Object System.Collections.Generic.List[string]
+  [void]$lines.Add("=== HITECH OS FINAL REPORT ===")
+  [void]$lines.Add("")
+  [void]$lines.Add("RUN_ID: $RunId")
+  [void]$lines.Add("STATUS: $Status")
+  [void]$lines.Add("")
+
+  [void]$lines.Add("--- SUMMARY ---")
+  [void]$lines.Add("TITLE: $Title")
+  [void]$lines.Add("REPO_PATH: $RepoRoot")
+  [void]$lines.Add("RUN_DIR: $RunDirPath")
+  [void]$lines.Add("RUN_TIMESTAMP: $RunTimestamp")
+  [void]$lines.Add("DIFF_BASE_REF: $DiffBase")
+  [void]$lines.Add("CHANGED_FILES_COUNT: $($normalizedChangedFiles.Count)")
+  [void]$lines.Add("LOG_ARTIFACT_COUNT: $($normalizedLogPaths.Count)")
+  [void]$lines.Add("FILES_DUMP_DIR: $(if ([string]::IsNullOrWhiteSpace($FilesDumpDirectory)) { '<none>' } else { $FilesDumpDirectory })")
+  [void]$lines.Add("")
+
+  [void]$lines.Add("--- VALIDATIONS ---")
+  if (
+    ($normalizedValidationEntries.Count -eq 0) -and
+    ($externalValidationLines.Count -eq 0) -and
+    ($normalizedDebtEntries.Count -eq 0) -and
+    ($inlineDebtLines.Count -eq 0)
+  ) {
+    [void]$lines.Add("(none)")
+  }
+  else {
+    foreach ($entry in $normalizedValidationEntries) {
+      [void]$lines.Add($entry)
+    }
+
+    if ($externalValidationLines.Count -gt 0) {
+      if ($normalizedValidationEntries.Count -gt 0) {
+        [void]$lines.Add("")
+      }
+      [void]$lines.Add("EXTERNAL_VALIDATION_LOG")
+      foreach ($line in $externalValidationLines) {
+        [void]$lines.Add($line)
+      }
+    }
+
+    if (($normalizedDebtEntries.Count -gt 0) -or ($inlineDebtLines.Count -gt 0)) {
+      if (($normalizedValidationEntries.Count -gt 0) -or ($externalValidationLines.Count -gt 0)) {
+        [void]$lines.Add("")
+      }
+      [void]$lines.Add("DEBT_NOTES")
+      foreach ($debt in $normalizedDebtEntries) {
+        [void]$lines.Add($debt)
+      }
+      foreach ($debt in $inlineDebtLines) {
+        [void]$lines.Add($debt)
+      }
+    }
+  }
+  [void]$lines.Add("")
+
+  [void]$lines.Add("--- CHANGED FILES ---")
+  if ($normalizedChangedFiles.Count -eq 0) {
+    [void]$lines.Add("(none)")
+  }
+  else {
+    foreach ($path in $normalizedChangedFiles) {
+      [void]$lines.Add("- $path")
+    }
+  }
+  [void]$lines.Add("")
+
+  [void]$lines.Add("--- UNIFIED DIFF (PLAINTEXT) ---")
+  foreach ($line in $diffLines) {
+    [void]$lines.Add($line)
+  }
+  [void]$lines.Add("")
+  [void]$lines.Add("=== END REPORT ===")
+  [void]$lines.Add("")
+
+  return [string]::Join("`n", $lines)
+}
+
+function Write-FinalReportArtifact {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$OutPath,
+    [Parameter(Mandatory = $true)]
+    [string]$RunId,
+    [Parameter(Mandatory = $true)]
+    [string]$Title,
+    [Parameter(Mandatory = $true)]
+    [string]$RepoRoot,
+    [Parameter(Mandatory = $true)]
+    [string]$RunDirPath,
+    [Parameter(Mandatory = $true)]
+    [string]$RunTimestamp,
+    [Parameter(Mandatory = $true)]
+    [string]$DiffBase,
+    [string[]]$ChangedFiles,
+    [string[]]$ValidationEntries,
+    [string]$ExternalValidation,
+    [string[]]$DebtEntries,
+    [string]$InlineDebtNotes,
+    [string]$FilesDumpDirectory,
+    [string[]]$LogPaths,
+    [string]$UnifiedDiffText,
+    [string]$ForcedStatus
+  )
+
+  $status = if ([string]::IsNullOrWhiteSpace($ForcedStatus)) {
+    Get-ReportStatus -ValidationEntries @($ValidationEntries)
+  }
+  else {
+    $ForcedStatus.Trim().ToUpperInvariant()
+  }
+  $reportText = Build-FinalReportText `
+    -RunId $RunId `
+    -Status $status `
+    -Title $Title `
+    -RepoRoot $RepoRoot `
+    -RunDirPath $RunDirPath `
+    -RunTimestamp $RunTimestamp `
+    -DiffBase $DiffBase `
+    -ChangedFiles @($ChangedFiles) `
+    -ValidationEntries @($ValidationEntries) `
+    -ExternalValidation $ExternalValidation `
+    -DebtEntries @($DebtEntries) `
+    -InlineDebtNotes $InlineDebtNotes `
+    -FilesDumpDirectory $FilesDumpDirectory `
+    -LogPaths @($LogPaths) `
+    -UnifiedDiffText $UnifiedDiffText
+
+  Write-TextFile -Path $OutPath -Text $reportText
+
+  return [pscustomobject]@{
+    Ok = $true
+    OutPath = $OutPath
+    Status = $status
+    RunId = $RunId
+  }
+}
+
 if (-not (Test-Path -LiteralPath $RepoPath -PathType Container)) {
   throw "Make-DiffBundle: RepoPath does not exist: $RepoPath"
 }
 
 $repoRoot = (Resolve-Path -LiteralPath $RepoPath).Path
 $runTs = Get-Date -Format "yyyyMMdd_HHmmss"
+$runId = "RUN_$runTs"
 $runDir = Resolve-RunDir -RepoRoot $repoRoot -Timestamp $runTs -InputPath $RunDir
 $filesDir = Join-Path $runDir "FILES"
 $logsDir = Join-Path $runDir "logs"
 $changedFilesTxtPath = Join-Path $runDir "CHANGED_FILES.txt"
-$diffVsHeadPath = Join-Path $runDir "DIFF_VS_HEAD.patch"
-$diffUnstagedPath = Join-Path $runDir "DIFF_UNSTAGED.patch"
-$diffStagedPath = Join-Path $runDir "DIFF_STAGED.patch"
 $finalReportPath = Join-Path $runDir "FINAL_REPORT.txt"
 $logArtifactPaths = New-Object System.Collections.Generic.List[string]
 
@@ -251,15 +458,16 @@ Add-ValidationLine -Status "PASS" -Message "wrote CHANGED_FILES.txt"
 
 $changedFilePaths = @($statusEntries | Select-Object -ExpandProperty Path -Unique | Sort-Object)
 
-$diffVsHeadResult = Invoke-ExternalCommand -ExePath "git" -ArgList @("diff", "--no-color", "--patch", "HEAD", "--") -WorkDir $repoRoot -NoThrow
-if (-not $diffVsHeadResult.Ok) {
-  $logPath = Write-CommandFailureLog -LogsDir $logsDir -Name "DIFF_VS_HEAD" -CommandLine "git diff --no-color --patch HEAD --" -Output $diffVsHeadResult.Output
+$diffVsBaseArgs = @("diff", "--no-color", "--patch", $DiffBaseRef, "--")
+$diffVsBaseResult = Invoke-ExternalCommand -ExePath "git" -ArgList $diffVsBaseArgs -WorkDir $repoRoot -NoThrow
+if (-not $diffVsBaseResult.Ok) {
+  $cmd = "git diff --no-color --patch $DiffBaseRef --"
+  $logPath = Write-CommandFailureLog -LogsDir $logsDir -Name "DIFF_VS_BASE" -CommandLine $cmd -Output $diffVsBaseResult.Output
   [void]$logArtifactPaths.Add($logPath)
-  Add-ValidationLine -Status "FAIL" -Message "Make-DiffBundle: failed DIFF_VS_HEAD. See $logPath"
-  throw "Make-DiffBundle: failed DIFF_VS_HEAD. See $logPath"
+  Add-ValidationLine -Status "FAIL" -Message "Make-DiffBundle: failed DIFF_VS_BASE. See $logPath"
+  throw "Make-DiffBundle: failed DIFF_VS_BASE. See $logPath"
 }
-Write-TextFile -Path $diffVsHeadPath -Text $diffVsHeadResult.Stdout
-Add-ValidationLine -Status "PASS" -Message "wrote DIFF_VS_HEAD.patch"
+Add-ValidationLine -Status "PASS" -Message "captured unified diff via git diff --no-color --patch $DiffBaseRef --"
 
 $diffUnstagedResult = Invoke-ExternalCommand -ExePath "git" -ArgList @("diff", "--no-color", "--patch", "--") -WorkDir $repoRoot -NoThrow
 if (-not $diffUnstagedResult.Ok) {
@@ -268,8 +476,6 @@ if (-not $diffUnstagedResult.Ok) {
   Add-ValidationLine -Status "FAIL" -Message "Make-DiffBundle: failed DIFF_UNSTAGED. See $logPath"
   throw "Make-DiffBundle: failed DIFF_UNSTAGED. See $logPath"
 }
-Write-TextFile -Path $diffUnstagedPath -Text $diffUnstagedResult.Stdout
-Add-ValidationLine -Status "PASS" -Message "wrote DIFF_UNSTAGED.patch"
 
 $diffStagedResult = Invoke-ExternalCommand -ExePath "git" -ArgList @("diff", "--no-color", "--patch", "--cached", "--") -WorkDir $repoRoot -NoThrow
 if (-not $diffStagedResult.Ok) {
@@ -278,31 +484,29 @@ if (-not $diffStagedResult.Ok) {
   Add-ValidationLine -Status "FAIL" -Message "Make-DiffBundle: failed DIFF_STAGED. See $logPath"
   throw "Make-DiffBundle: failed DIFF_STAGED. See $logPath"
 }
-Write-TextFile -Path $diffStagedPath -Text $diffStagedResult.Stdout
-Add-ValidationLine -Status "PASS" -Message "wrote DIFF_STAGED.patch"
 
-if (Contains-AnsiSequence -Text $diffVsHeadResult.Stdout) {
-  Add-ValidationLine -Status "FAIL" -Message "DIFF_VS_HEAD.patch contains ANSI sequences"
-  Add-DebtLine "DEBT_REQUIRED: remove ANSI sequences from DIFF_VS_HEAD.patch generation."
+if (Contains-AnsiSequence -Text $diffVsBaseResult.Stdout) {
+  Add-ValidationLine -Status "FAIL" -Message "DIFF_VS_BASE output contains ANSI sequences"
+  Add-DebtLine "DEBT_REQUIRED: remove ANSI sequences from DIFF_VS_BASE output generation."
 }
 else {
-  Add-ValidationLine -Status "PASS" -Message "DIFF_VS_HEAD.patch has no ANSI sequences"
+  Add-ValidationLine -Status "PASS" -Message "DIFF_VS_BASE output has no ANSI sequences"
 }
 
 if (Contains-AnsiSequence -Text $diffUnstagedResult.Stdout) {
-  Add-ValidationLine -Status "FAIL" -Message "DIFF_UNSTAGED.patch contains ANSI sequences"
-  Add-DebtLine "DEBT_REQUIRED: remove ANSI sequences from DIFF_UNSTAGED.patch generation."
+  Add-ValidationLine -Status "FAIL" -Message "DIFF_UNSTAGED output contains ANSI sequences"
+  Add-DebtLine "DEBT_REQUIRED: remove ANSI sequences from DIFF_UNSTAGED output generation."
 }
 else {
-  Add-ValidationLine -Status "PASS" -Message "DIFF_UNSTAGED.patch has no ANSI sequences"
+  Add-ValidationLine -Status "PASS" -Message "DIFF_UNSTAGED output has no ANSI sequences"
 }
 
 if (Contains-AnsiSequence -Text $diffStagedResult.Stdout) {
-  Add-ValidationLine -Status "FAIL" -Message "DIFF_STAGED.patch contains ANSI sequences"
-  Add-DebtLine "DEBT_REQUIRED: remove ANSI sequences from DIFF_STAGED.patch generation."
+  Add-ValidationLine -Status "FAIL" -Message "DIFF_STAGED output contains ANSI sequences"
+  Add-DebtLine "DEBT_REQUIRED: remove ANSI sequences from DIFF_STAGED output generation."
 }
 else {
-  Add-ValidationLine -Status "PASS" -Message "DIFF_STAGED.patch has no ANSI sequences"
+  Add-ValidationLine -Status "PASS" -Message "DIFF_STAGED output has no ANSI sequences"
 }
 
 if ($IncludeFilesDump) {
@@ -346,25 +550,23 @@ if (-not [string]::IsNullOrWhiteSpace($DebtNotes)) {
   Add-DebtLine $DebtNotes.Trim()
 }
 
-$combinedValidation = [string]::Join("`n", @($validationLines))
-if (-not [string]::IsNullOrWhiteSpace($ValidationLog)) {
-  $combinedValidation = $combinedValidation + "`n`nEXTERNAL_VALIDATION_LOG`n" + $ValidationLog.Trim()
-}
-
-$combinedDebt = if ($debtLines.Count -eq 0) { "" } else { [string]::Join("`n", @($debtLines)) }
-$diffArtifactPaths = @($diffVsHeadPath, $diffUnstagedPath, $diffStagedPath)
-
-$reportWrite = & $writeRunReportPath `
-  -RepoPath $repoRoot `
+$reportWrite = Write-FinalReportArtifact `
   -OutPath $finalReportPath `
+  -RunId $runId `
   -Title $Title `
+  -RepoRoot $repoRoot `
+  -RunDirPath $runDir `
+  -RunTimestamp $runTs `
+  -DiffBase $DiffBaseRef `
   -ChangedFiles $changedFilePaths `
-  -DiffPaths $diffArtifactPaths `
+  -ValidationEntries @($validationLines) `
+  -ExternalValidation $ValidationLog `
+  -DebtEntries @($debtLines) `
+  -InlineDebtNotes $DebtNotes `
+  -FilesDumpDirectory $(if ($IncludeFilesDump) { $filesDir } else { "" }) `
   -LogPaths @($logArtifactPaths) `
-  -FilesDumpDir $(if ($IncludeFilesDump) { $filesDir } else { "" }) `
-  -ValidationLog $combinedValidation `
-  -DebtNotes $combinedDebt `
-  -RunTimestamp $runTs
+  -UnifiedDiffText $diffVsBaseResult.Stdout `
+  -ForcedStatus $ReportStatus
 
 if ($OpenArtifacts) {
   try {
@@ -385,23 +587,23 @@ if ($OpenArtifacts) {
     Add-DebtLine "DEBT_REQUIRED: manually open FINAL_REPORT.txt at $finalReportPath"
   }
 
-  $combinedValidation = [string]::Join("`n", @($validationLines))
-  if (-not [string]::IsNullOrWhiteSpace($ValidationLog)) {
-    $combinedValidation = $combinedValidation + "`n`nEXTERNAL_VALIDATION_LOG`n" + $ValidationLog.Trim()
-  }
-  $combinedDebt = if ($debtLines.Count -eq 0) { "" } else { [string]::Join("`n", @($debtLines)) }
-
-  [void](& $writeRunReportPath `
-      -RepoPath $repoRoot `
-      -OutPath $finalReportPath `
-      -Title $Title `
-      -ChangedFiles $changedFilePaths `
-      -DiffPaths $diffArtifactPaths `
-      -LogPaths @($logArtifactPaths) `
-      -FilesDumpDir $(if ($IncludeFilesDump) { $filesDir } else { "" }) `
-      -ValidationLog $combinedValidation `
-      -DebtNotes $combinedDebt `
-      -RunTimestamp $runTs)
+  $reportWrite = Write-FinalReportArtifact `
+    -OutPath $finalReportPath `
+    -RunId $runId `
+    -Title $Title `
+    -RepoRoot $repoRoot `
+    -RunDirPath $runDir `
+    -RunTimestamp $runTs `
+    -DiffBase $DiffBaseRef `
+    -ChangedFiles $changedFilePaths `
+    -ValidationEntries @($validationLines) `
+    -ExternalValidation $ValidationLog `
+    -DebtEntries @($debtLines) `
+    -InlineDebtNotes $DebtNotes `
+    -FilesDumpDirectory $(if ($IncludeFilesDump) { $filesDir } else { "" }) `
+    -LogPaths @($logArtifactPaths) `
+    -UnifiedDiffText $diffVsBaseResult.Stdout `
+    -ForcedStatus $ReportStatus
 }
 
 if ($AlsoPrintShortSummary) {
@@ -414,9 +616,10 @@ return [pscustomobject]@{
   Ok = $true
   RepoPath = $repoRoot
   RunTimestamp = $runTs
+  RunId = $runId
   RunDir = $runDir
   FinalReportPath = $finalReportPath
-  DiffArtifacts = $diffArtifactPaths
+  DiffArtifacts = @()
   LogArtifacts = @($logArtifactPaths)
   ChangedFiles = $changedFilePaths
   ChangedFilesCount = $changedFilePaths.Count

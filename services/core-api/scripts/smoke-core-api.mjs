@@ -96,9 +96,27 @@ async function run() {
     const enqueuedResult = await readJson(enqueue);
     const status = await fetch(`${baseUrl}/jobs/smoke-core-001`);
     const statusResult = await readJson(status);
+    const stage = await fetch(`${baseUrl}/governance/stage/S1`);
+    const stageResult = await readJson(stage);
+    const runs = await fetch(`${baseUrl}/governance/runs`);
+    const runsResult = await readJson(runs);
+    const manifestRunId =
+      typeof runsResult.latestRunId === "string" && runsResult.latestRunId.length > 0
+        ? runsResult.latestRunId
+        : "missing-governance-run";
+    const artifacts = await fetch(
+      `${baseUrl}/governance/runs/${encodeURIComponent(manifestRunId)}/artifacts`
+    );
+    const artifactsResult = await readJson(artifacts);
 
     console.log("[smoke-core-api] enqueue", JSON.stringify(stableSort(enqueuedResult)));
     console.log("[smoke-core-api] status", JSON.stringify(stableSort(statusResult)));
+    console.log("[smoke-core-api] governance-stage", JSON.stringify(stableSort(stageResult)));
+    console.log("[smoke-core-api] governance-runs", JSON.stringify(stableSort(runsResult)));
+    console.log(
+      "[smoke-core-api] governance-artifacts",
+      JSON.stringify(stableSort(artifactsResult))
+    );
   } finally {
     child.kill("SIGTERM");
   }
