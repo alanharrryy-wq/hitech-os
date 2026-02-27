@@ -17,3 +17,8 @@ Canonical runtime explanation:
 
 Status: READ-ONLY  
 Do not duplicate or extend runtime governance text here.
+
+## Runtime Flags
+
+- `HITECH_FACTORY_VSCODE_CLEAN` (default: `1`): before `worktrees open`, closes only VS Code processes recorded in prior factory session registries.
+- `HITECH_FACTORY_VSCODE_NUKE` (default: `0`): extends cleanup to include registry entries from the current run id as well; never kills non-registered VS Code processes.

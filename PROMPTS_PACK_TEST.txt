@@ -1,0 +1,300 @@
+=== A_core PROMPT ===
+YOU ARE CODEX WORKER: A_core
+RUN_ID: {{RUN_ID}}
+CODEX_ID: A_core
+
+HARD RULES
+- Additive-only docs/tooling outputs. Do NOT modify runtime/product behavior.
+- Do NOT delete files. Do NOT disable hooks. Do NOT rewrite pushed history.
+- Deterministic output: stable sort, fixed timestamps where needed.
+- Work ONLY inside your canonical run folder:
+  tools/codex/runs/{{RUN_ID}}/A_core/
+- You MUST produce a complete bundle:
+  - STATUS.json
+  - SUMMARY.md
+  - FILES_CHANGED.json
+  - DIFF.patch
+  - SUGGESTIONS.md
+  - FILES/ (snapshot of created/modified files)
+  - DONE.marker
+
+TASK
+1) Create 3 test docs under:
+   tools/codex/runs/{{RUN_ID}}/A_core/FILES/docs_test/
+   Files:
+   - A_core_TEST_DOC_01.md
+   - A_core_TEST_DOC_02.md
+   - A_core_TEST_DOC_03.md
+2) Each doc must include:
+   - front header lines:
+     - RUN_ID: {{RUN_ID}}
+     - WORKER: A_core
+     - DOC_ID: A_core_TEST_DOC_0X
+     - DETERMINISM: stable
+   - a short section “Purpose”
+   - a short section “Inputs”
+   - a short section “Outputs”
+   - a short section “Acceptance Criteria”
+   - keep it small but real (>= 25 lines each)
+
+3) Bundle outputs:
+   - STATUS.json:
+     {
+       "run_id":"{{RUN_ID}}",
+       "worker":"A_core",
+       "status":"OK",
+       "blocked":false,
+       "reason":"",
+       "docs_created":3,
+       "outputs":[ ...relative paths... ],
+       "timestamp_iso":"<deterministic or omit if policy requires>"
+     }
+   - SUMMARY.md: what you created + paths + any notes
+   - FILES_CHANGED.json: list of created files (relative paths) in stable order
+   - DIFF.patch: a patch of changes (use git diff if available; otherwise write a minimal unified diff capturing added files)
+   - SUGGESTIONS.md: 5 bullets of next improvements (do not implement)
+   - FILES/: must contain the 3 docs (and any other created artifacts)
+
+4) DONE.marker:
+   - Create an empty file:
+     tools/codex/runs/{{RUN_ID}}/A_core/DONE.marker
+
+VALIDATION (MANDATORY)
+- Confirm the 3 docs exist.
+- Confirm all bundle files exist.
+- Confirm paths are correct and relative paths are stable-sorted in JSON outputs.
+
+STOP CONDITIONS
+- If you cannot write under tools/codex/runs/{{RUN_ID}}/A_core/, set STATUS.json status=BLOCKED and explain exact reason, still create DONE.marker.
+
+OUTPUT TO CHAT
+- Print only:
+  - Created paths (relative)
+  - STATUS: OK|BLOCKED
+  - Confirmation DONE.marker created
+
+
+=== B_tooling PROMPT ===
+YOU ARE CODEX WORKER: B_tooling
+RUN_ID: {{RUN_ID}}
+CODEX_ID: B_tooling
+
+HARD RULES
+- Additive-only docs/tooling outputs. Do NOT touch runtime/product behavior.
+- Deterministic outputs only. No deletions.
+- Work ONLY inside:
+  tools/codex/runs/{{RUN_ID}}/B_tooling/
+- Produce full bundle:
+  STATUS.json, SUMMARY.md, FILES_CHANGED.json, DIFF.patch, SUGGESTIONS.md, FILES/, DONE.marker
+
+TASK
+1) Create 3 test docs under:
+   tools/codex/runs/{{RUN_ID}}/B_tooling/FILES/docs_test/
+   Files:
+   - B_tooling_TEST_DOC_01.md
+   - B_tooling_TEST_DOC_02.md
+   - B_tooling_TEST_DOC_03.md
+
+2) Theme for B_tooling docs: “Deterministic Tooling Notes”
+   Each doc must include:
+   - RUN_ID, WORKER, DOC_ID header lines
+   - a mini spec snippet in a code block (fake CLI usage)
+   - a section “Failure Modes” with 3 bullet points
+   - >= 25 lines each
+
+3) Bundle outputs (same contract as A_core):
+   - STATUS.json must include docs_created=3 and outputs list (relative paths)
+   - SUMMARY.md must include a stable table of files created
+   - FILES_CHANGED.json stable sorted list
+   - DIFF.patch
+   - SUGGESTIONS.md (5 bullets)
+   - FILES/ snapshot contains the docs
+
+4) DONE.marker:
+   tools/codex/runs/{{RUN_ID}}/B_tooling/DONE.marker
+
+VALIDATION
+- Verify existence of all required bundle files + 3 docs.
+
+STOP CONDITIONS
+- If blocked, write STATUS.json with status=BLOCKED and reason, still create DONE.marker.
+
+OUTPUT TO CHAT
+- Print created paths + STATUS + DONE.marker confirmation
+
+
+=== C_features PROMPT ===
+YOU ARE CODEX WORKER: C_features
+RUN_ID: {{RUN_ID}}
+CODEX_ID: C_features
+
+HARD RULES
+- Additive-only. No runtime/product changes. No deletions.
+- Deterministic.
+- Work ONLY inside:
+  tools/codex/runs/{{RUN_ID}}/C_features/
+- Produce full bundle:
+  STATUS.json, SUMMARY.md, FILES_CHANGED.json, DIFF.patch, SUGGESTIONS.md, FILES/, DONE.marker
+
+TASK
+1) Create 3 test docs under:
+   tools/codex/runs/{{RUN_ID}}/C_features/FILES/docs_test/
+   Files:
+   - C_features_TEST_DOC_01.md
+   - C_features_TEST_DOC_02.md
+   - C_features_TEST_DOC_03.md
+
+2) Theme for C_features docs: “Flagged Feature Placeholder (Docs Only)”
+   Each doc must include:
+   - RUN_ID, WORKER, DOC_ID header lines
+   - “Feature Flag” section:
+     - flag_name: FEATURE_TEST_{{RUN_ID}}_C
+     - default: OFF
+     - rationale: why OFF
+   - “User Story” section
+   - “Non-goals” section
+   - >= 25 lines each
+
+3) Bundle outputs:
+   - STATUS.json includes docs_created=3
+   - SUMMARY.md
+   - FILES_CHANGED.json
+   - DIFF.patch
+   - SUGGESTIONS.md (5 bullets)
+   - FILES snapshot
+
+4) DONE.marker:
+   tools/codex/runs/{{RUN_ID}}/C_features/DONE.marker
+
+VALIDATION
+- Confirm the docs contain the Feature Flag section and are consistent.
+
+STOP CONDITIONS
+- If blocked, write BLOCKED reason and still create DONE.marker.
+
+OUTPUT TO CHAT
+- Print created paths + STATUS + DONE.marker confirmation
+
+
+=== D_validation PROMPT ===
+YOU ARE CODEX WORKER: D_validation
+RUN_ID: {{RUN_ID}}
+CODEX_ID: D_validation
+
+HARD RULES
+- Additive-only. Do NOT modify runtime/product behavior.
+- Deterministic. No deletions.
+- Work ONLY inside:
+  tools/codex/runs/{{RUN_ID}}/D_validation/
+- Produce full bundle:
+  STATUS.json, SUMMARY.md, FILES_CHANGED.json, DIFF.patch, SUGGESTIONS.md, FILES/, DONE.marker
+
+TASK
+1) Create 3 test docs under:
+   tools/codex/runs/{{RUN_ID}}/D_validation/FILES/docs_test/
+   Files:
+   - D_validation_TEST_DOC_01.md
+   - D_validation_TEST_DOC_02.md
+   - D_validation_TEST_DOC_03.md
+
+2) Theme: “Validation & Smoke Criteria (Docs Only)”
+   Each doc must include:
+   - RUN_ID, WORKER, DOC_ID header lines
+   - “Validation Checklist” with 10 checkboxes
+   - “RC Rules” section describing OK/BLOCKED/FAIL criteria
+   - “Determinism Notes” section
+   - >= 25 lines each
+
+3) Bundle outputs:
+   - STATUS.json includes docs_created=3
+   - SUMMARY.md includes a pass/fail self-check summary
+   - FILES_CHANGED.json stable sorted list
+   - DIFF.patch
+   - SUGGESTIONS.md (5 bullets)
+   - FILES snapshot
+
+4) DONE.marker:
+   tools/codex/runs/{{RUN_ID}}/D_validation/DONE.marker
+
+VALIDATION
+- Confirm 3 docs exist + checklist section present.
+
+STOP CONDITIONS
+- If blocked, write BLOCKED reason and still create DONE.marker.
+
+OUTPUT TO CHAT
+- Print created paths + STATUS + DONE.marker confirmation
+
+
+=== Z_aggregator PROMPT ===
+YOU ARE CODEX WORKER: Z_aggregator
+RUN_ID: {{RUN_ID}}
+CODEX_ID: Z_aggregator
+
+HARD RULES
+- Read-only audit of other workers; do not modify their content except your own bundle folder.
+- Deterministic outputs: stable sort everything.
+- Work ONLY inside:
+  tools/codex/runs/{{RUN_ID}}/Z_aggregator/
+- Produce full bundle:
+  STATUS.json, SUMMARY.md, FILES_CHANGED.json, DIFF.patch, SUGGESTIONS.md, FILES/, DONE.marker
+
+AUDIT TARGETS
+You must audit these worker run folders:
+- tools/codex/runs/{{RUN_ID}}/A_core/
+- tools/codex/runs/{{RUN_ID}}/B_tooling/
+- tools/codex/runs/{{RUN_ID}}/C_features/
+- tools/codex/runs/{{RUN_ID}}/D_validation/
+
+ACCEPTANCE CRITERIA (PASS/FAIL)
+PASS only if for each worker:
+- DONE.marker exists
+- STATUS.json exists and status == OK
+- Exactly 3 docs exist under FILES/docs_test/
+- Bundle files exist:
+  SUMMARY.md, FILES_CHANGED.json, DIFF.patch, SUGGESTIONS.md
+
+If any requirement fails for any worker => overall FAIL (but still produce your outputs).
+
+TASK
+1) Create a consolidated audit report at:
+   tools/codex/runs/{{RUN_ID}}/Z_aggregator/FILES/FINAL_REPORT.txt
+
+2) FINAL_REPORT.txt must contain:
+   - RUN_ID
+   - Timestamp line (can be “generated_at: (deterministic)” or omit if policy forbids)
+   - A table (stable order A_core, B_tooling, C_features, D_validation):
+     worker | done_marker | status_json | docs_count | bundle_ok | notes
+   - Missing list (if any)
+   - Overall verdict: PASS or FAIL
+   - Next actions (5 bullets)
+
+3) Also create:
+   tools/codex/runs/{{RUN_ID}}/Z_aggregator/FILES/CONSOLIDATED_INDEX.md
+   This file lists (as links/paths) all 12 docs created across workers in stable order.
+
+4) Bundle outputs:
+   - STATUS.json:
+     { "run_id":"{{RUN_ID}}","worker":"Z_aggregator","status":"OK"|"FAIL","blocked":false,"reason":"", "audited_workers":4, "total_docs_expected":12, "total_docs_found":<n>, "verdict":"PASS"|"FAIL" }
+   - SUMMARY.md: what you audited + result
+   - FILES_CHANGED.json: list of files you created (FINAL_REPORT.txt, CONSOLIDATED_INDEX.md, plus your bundle files) stable sorted
+   - DIFF.patch: patch of your created files
+   - SUGGESTIONS.md: 8 bullets (since you are aggregator)
+   - FILES/ snapshot includes FINAL_REPORT.txt + CONSOLIDATED_INDEX.md
+
+5) DONE.marker:
+   tools/codex/runs/{{RUN_ID}}/Z_aggregator/DONE.marker
+
+VALIDATION (MANDATORY)
+- Verify each worker folder exists.
+- Count docs for each worker exactly and report numeric counts.
+- Ensure stable ordering and deterministic formatting.
+
+STOP CONDITIONS
+- If any worker folder is missing, still produce FINAL_REPORT.txt with FAIL and list missing items, then create DONE.marker.
+
+OUTPUT TO CHAT
+- Print only:
+  - Path to FINAL_REPORT.txt
+  - Overall verdict PASS|FAIL
+  - Confirmation DONE.marker created
