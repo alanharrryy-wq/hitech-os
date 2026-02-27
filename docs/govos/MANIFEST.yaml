@@ -1,0 +1,36 @@
+version: 1
+canonical_root: docs/govos
+artifacts:
+  - path: docs/govos/dependency-map/GOVOS_DEPENDENCIES.dot
+    type: dependency_map
+    doc_id: GOVOS_DEPENDENCY_MAP
+  - path: docs/govos/MASTER_INDEX.md
+    type: governance
+    doc_id: GOVOS_MASTER_INDEX
+  - path: docs/govos/README.md
+    type: governance
+    doc_id: GOVOS_ROOT_README
+  - path: docs/govos/schemas/BLOCKERS_SCHEMA.json
+    type: schema
+    doc_id: GOVOS_SCHEMA_BLOCKERS
+  - path: docs/govos/schemas/DEBT_SCHEMA.json
+    type: schema
+    doc_id: GOVOS_SCHEMA_DEBT
+  - path: docs/govos/schemas/STATUS_SCHEMA.json
+    type: schema
+    doc_id: GOVOS_SCHEMA_STATUS
+  - path: docs/govos/templates/GOVOS_DOC_TEMPLATE.md
+    type: template
+    doc_id: GOVOS_TEMPLATE_STANDARD
+  - path: docs/govos/u1_constitutional_change/U1_CONSTITUTIONAL_CHANGE.md
+    type: governance
+    doc_id: GOVOS_U1_CONSTITUTIONAL_CHANGE
+  - path: docs/govos/u2_evidence_chain/U2_EVIDENCE_CHAIN.md
+    type: governance
+    doc_id: GOVOS_U2_EVIDENCE_CHAIN
+  - path: docs/govos/u3_policy_plane/U3_POLICY_PLANE.md
+    type: governance
+    doc_id: GOVOS_U3_POLICY_PLANE
+  - path: docs/govos/u4_enterprise_agents/U4_ENTERPRISE_AGENTS.md
+    type: governance
+    doc_id: GOVOS_U4_ENTERPRISE_AGENTS

@@ -20,11 +20,11 @@ This notebook records operating assumptions, decision logs, and runbook snippets
 
 ## Runtime Matrix
 
-| Surface | Runtime | Required for baseline checks | Notes |
-| --- | --- | --- | --- |
-| Node tooling | Node 20+ | Yes | Needed for health and docs scripts |
-| Package manager | PNPM 9+ | Recommended | Workspace orchestration |
-| Python service | Python 3.11+ | Optional for full stack | AI agent local service |
+| Surface         | Runtime      | Required for baseline checks | Notes                              |
+| --------------- | ------------ | ---------------------------- | ---------------------------------- |
+| Node tooling    | Node 20+     | Yes                          | Needed for health and docs scripts |
+| Package manager | PNPM 9+      | Recommended                  | Workspace orchestration            |
+| Python service  | Python 3.11+ | Optional for full stack      | AI agent local service             |
 
 ## Local Workflow
 
@@ -88,11 +88,11 @@ This notebook records operating assumptions, decision logs, and runbook snippets
 
 ## Feature Flag Registry
 
-| Flag | Default | Owner | Scope | Notes |
-| --- | --- | --- | --- | --- |
-| `enableHealthDashboard` | `false` | Platform | web | Controls health panel visibility |
-| `enableAiExecution` | `false` | Platform | core-api/web | Controls direct AI execution path |
-| `enableExperimentalUi` | `false` | Product | web/ui-kit | Controls non-stable UI patterns |
+| Flag                    | Default | Owner    | Scope        | Notes                             |
+| ----------------------- | ------- | -------- | ------------ | --------------------------------- |
+| `enableHealthDashboard` | `false` | Platform | web          | Controls health panel visibility  |
+| `enableAiExecution`     | `false` | Platform | core-api/web | Controls direct AI execution path |
+| `enableExperimentalUi`  | `false` | Product  | web/ui-kit   | Controls non-stable UI patterns   |
 
 Rule: every new flag must be added here and in `packages/contracts/src/featureFlags.ts`.
 

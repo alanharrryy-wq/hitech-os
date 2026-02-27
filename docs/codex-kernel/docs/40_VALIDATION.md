@@ -1,26 +1,30 @@
 # 40_VALIDATION — Pluggable Validation Adapter (Python-first + Optional Playwright)
+
 STATUS: LAW
 
 ## Built‑in Improvements (10)
-1) Pluggable adapter design (stack-agnostic)
-2) Default deterministic policy (offline-first)
-3) Minimal “smoke” philosophy (fast, brutal, reliable)
-4) Optional Playwright executed under Python control
-5) Support matrix examples: Node/TS, Python, .NET, Go, DB tools
-6) A strict logging contract for every command
-7) Failure classification (flaky vs deterministic)
-8) Stop conditions + rollback guidance
-9) Recommended file format (YAML/JSON) with schema notes
-10) A repeatable “validation recipe” per run
+
+1. Pluggable adapter design (stack-agnostic)
+2. Default deterministic policy (offline-first)
+3. Minimal “smoke” philosophy (fast, brutal, reliable)
+4. Optional Playwright executed under Python control
+5. Support matrix examples: Node/TS, Python, .NET, Go, DB tools
+6. A strict logging contract for every command
+7. Failure classification (flaky vs deterministic)
+8. Stop conditions + rollback guidance
+9. Recommended file format (YAML/JSON) with schema notes
+10. A repeatable “validation recipe” per run
 
 ---
 
 ## TL;DR
+
 Validation is not “tests”. Validation is the evidence pipeline that decides if integration is allowed.
 
 ---
 
 ## Design Goals
+
 - Stack-agnostic
 - Deterministic by default
 - Minimal but meaningful checks
@@ -29,7 +33,9 @@ Validation is not “tests”. Validation is the evidence pipeline that decides 
 ---
 
 ## Adapter Concept
+
 A per-repo file defines commands by category:
+
 - preflight
 - typecheck/lint
 - build
@@ -39,12 +45,14 @@ A per-repo file defines commands by category:
 - guardrails
 
 The Python runner:
+
 - loads the adapter
 - executes commands in order
 - captures stdout/stderr to logs
 - writes `STATUS.json`
 
 ### Required vs Optional (Gate Semantics)
+
 - Each command may declare `required: true|false`.
 - Required commands determine final PASS/BLOCKED.
 - Optional commands may fail without changing final PASS.
@@ -53,11 +61,13 @@ The Python runner:
 ---
 
 ## Recommended Location
+
 - `tools/codex/validation.yaml` (or `.run/validation.yaml`)
 
 ---
 
 ## Example Adapter (Conceptual)
+
 ```yaml
 version: 1
 preflight:
@@ -88,6 +98,7 @@ guardrails:
 ---
 
 ## Playwright Policy (Optional but recommended for UI)
+
 - Playwright is a tooling dependency, not a coordination dependency.
 - The operator still uses Python; Python calls Playwright as a subprocess.
 - E2E should be **smoke minimal**:
@@ -98,7 +109,9 @@ guardrails:
 ---
 
 ## Logging Contract (Required)
+
 For every command:
+
 - log file stored under the run bundle
 - includes:
   - command string
@@ -110,6 +123,7 @@ For every command:
 ---
 
 ## Failure Classification
+
 - **Deterministic failure:** consistent under rerun → must fix before proceeding.
 - **Flaky failure:** non-deterministic → must be minimized by better assertions or reduced scope.
 - **Environment failure:** missing tools/keys → mark BLOCKED with exact missing dependency.
@@ -117,7 +131,9 @@ For every command:
 ---
 
 ## Stop Conditions
+
 Stop the run and mark BLOCKED if:
+
 - preflight fails
 - guardrails fail
 - deterministic validations fail
@@ -126,10 +142,12 @@ Stop the run and mark BLOCKED if:
 ---
 
 ## Validation Recipe (Per Integration)
+
 Minimum recommended:
-1) preflight
-2) guardrails
-3) typecheck/lint
-4) build
-5) unit
-6) e2e_smoke (if UI)
+
+1. preflight
+2. guardrails
+3. typecheck/lint
+4. build
+5. unit
+6. e2e_smoke (if UI)

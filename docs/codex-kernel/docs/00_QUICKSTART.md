@@ -1,21 +1,24 @@
 # 00_QUICKSTART — Run the Universal 4+1 Factory (Python-first)
+
 STATUS: LAW
 
 ## Built‑in Improvements (10)
-1) 30‑second TL;DR path  
-2) “Copy/paste only” operator commands  
-3) Works for apps/web/DB/CRM/slides/CLI (not stack-locked)  
-4) Deterministic defaults and safe fallbacks  
-5) Minimal required evidence outputs per run  
-6) Preflight checks to avoid wasted runs  
-7) Stop conditions (when to halt and mark BLOCKED)  
-8) Troubleshooting shortcuts for common failures  
-9) Clean naming for worktrees/runs/artifacts  
-10) A “done means done” checklist at the end  
+
+1. 30‑second TL;DR path
+2. “Copy/paste only” operator commands
+3. Works for apps/web/DB/CRM/slides/CLI (not stack-locked)
+4. Deterministic defaults and safe fallbacks
+5. Minimal required evidence outputs per run
+6. Preflight checks to avoid wasted runs
+7. Stop conditions (when to halt and mark BLOCKED)
+8. Troubleshooting shortcuts for common failures
+9. Clean naming for worktrees/runs/artifacts
+10. A “done means done” checklist at the end
 
 ---
 
 ## TL;DR (30 seconds)
+
 - You run **4 Codex builders** in parallel **in isolated worktrees**.
 - Each builder produces a **bundle** (changes + logs + diffs) and a `CODEX_OUTPUT_*.txt`.
 - Then you run **Z Integrator** to merge, repair, validate, and produce `FINAL_REPORT.txt`.
@@ -24,12 +27,15 @@ STATUS: LAW
 ---
 
 ## Prereqs (Fast)
+
 **Required**
+
 - Git
 - Python (Windows: `py -3`)
 - The repo is cloned and you have write access
 
 **Optional (only if your project uses them)**
+
 - Node + package manager (pnpm/npm/yarn)
 - Playwright (for UI e2e)
 - Docker / DB client tools (for DB integration tests)
@@ -37,16 +43,19 @@ STATUS: LAW
 ---
 
 ## Folder expectations (Kernel)
+
 The kernel does not enforce a tech stack, but it **does** enforce artifact structure:
 
 - `docs/codex-kernel/` (this folder)
-- `tools/codex/` (python runner + runs)  ← recommended
-- `.run/` or `tools/codex/runs/` (generated artifacts)  ← recommended
+- `tools/codex/` (python runner + runs) ← recommended
+- `.run/` or `tools/codex/runs/` (generated artifacts) ← recommended
 
 ---
 
 ## Golden Operator Flow (Copy/Paste)
+
 ### 1) Preflight (do not skip)
+
 From repo root:
 
 - Confirm clean status:
@@ -57,6 +66,7 @@ From repo root:
 If you see weirdness, go to **60_TROUBLESHOOTING.md**.
 
 ### 2) Create worktrees (A/B/C/D)
+
 Naming is a contract. Use:
 
 - `<RepoRoot>__codex-A__<scope>`
@@ -67,7 +77,9 @@ Naming is a contract. Use:
 See `templates/WORKTREE_NAMING.md`.
 
 ### 3) Run the 4 builders (A/B/C/D)
+
 Each builder:
+
 - runs inside their worktree
 - must not cross scope
 - must output:
@@ -75,7 +87,9 @@ Each builder:
   - bundle directory (recommended) with logs/diff/status
 
 ### 4) Run Z Integrator
+
 Z runs from **main repo root** (or a dedicated integration worktree) and:
+
 - merges A/B/C/D branches
 - resolves conflicts
 - repairs integration breakage
@@ -85,7 +99,9 @@ Z runs from **main repo root** (or a dedicated integration worktree) and:
 ---
 
 ## Minimal Evidence Required (Per Builder)
+
 A builder output is **invalid** without:
+
 - WHAT CHANGED (plain English)
 - FILES CREATED/MODIFIED (explicit list)
 - COMMAND LOGS (what ran + results)
@@ -97,7 +113,9 @@ Template: `templates/CODEX_OUTPUT_TEMPLATE.md`.
 ---
 
 ## Minimal Evidence Required (Z Integrator)
+
 Z output is **invalid** without:
+
 - Which branches were integrated
 - Conflicts encountered + resolution
 - Repairs performed (with files)
@@ -110,19 +128,23 @@ Template: `templates/FINAL_REPORT_TEMPLATE.md`.
 ---
 
 ## Stop Conditions (When to mark BLOCKED)
+
 Stop immediately if any of these occur:
+
 - Worktree corruption (missing `.git` metadata or broken worktree pointers)
 - A builder violates additive-only (deletes/moves/renames outside run)
 - Conflicts cannot be resolved without changing contracts
 - Validation fails in a way that requires re-slicing scope (wrong ownership)
 
 When BLOCKED:
+
 - Do not “push through”
 - Produce a BLOCKED report with exact evidence and the single next action
 
 ---
 
 ## “Done Means Done” Checklist
+
 ✅ All builder bundles exist  
 ✅ Z merged all intended branches  
 ✅ Z ran validations (as defined by your validation adapter)  

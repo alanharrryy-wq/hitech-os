@@ -1,7 +1,9 @@
 # BASELINE STABILIZATION (Mission 0)
+
 STATUS: LAW-ALIGNED NOTE
 
 ## TL;DR
+
 A clean baseline means these required commands exit with `rc=0`:
 
 ```bash
@@ -14,6 +16,7 @@ python tools/codex/run.py --run-id <RUN_ID>
 `tools/codex/run.py` is authoritative for PASS/BLOCKED because it enforces required checks from `tools/codex/validation.json`.
 
 ## Clean Baseline Criteria
+
 The baseline is clean only when all required checks are green:
 
 1. `typecheck` required and `rc=0`
@@ -25,6 +28,7 @@ The baseline is clean only when all required checks are green:
 Optional checks (example: dependency install bootstrap) do not decide final PASS/BLOCKED.
 
 ## Logs And Artifacts
+
 All run evidence is stored under:
 
 `tools/codex/runs/<RUN_ID>/Z_integrator/`
@@ -40,6 +44,7 @@ Required files:
 - `LOGS/*.log.txt`
 
 ## BLOCKED Triage Order
+
 When any required check fails, stop and triage in order:
 
 1. Missing imports/module resolution (first real error, not cascades)
@@ -51,6 +56,7 @@ When any required check fails, stop and triage in order:
 If still blocked, report exact failing step, log path, and one next action.
 
 ## Phase 1 Extraction Readiness Checklist
+
 - [ ] `pnpm -w -r typecheck` green
 - [ ] `pnpm -w -r build` green
 - [ ] `pnpm -w -r test` green
@@ -60,6 +66,7 @@ If still blocked, report exact failing step, log path, and one next action.
 - [ ] Feature flags default OFF unless explicitly required
 
 ## Anti-Goals Reminder
+
 - Do not write build/test artifacts under `src/**`.
 - Do not enable feature flags by default.
 - Do not bypass required validation checks using `allow_fail`.

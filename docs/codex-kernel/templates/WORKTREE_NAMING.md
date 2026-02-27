@@ -1,19 +1,24 @@
 # WORKTREE_NAMING — Deterministic Patterns
+
 STATUS: TEMPLATE
 
 ## Rule
+
 One agent = one worktree + one branch + one VS Code window.
 
 ## Naming
-<RepoRoot>__codex-<Letter>__<scope>
+
+<RepoRoot>**codex-<Letter>**<scope>
 
 Examples:
-- Inversion__codex-A__core-contracts
-- hitech-os__codex-B__app-ui
-- hitech-os__codex-C__tooling-guards
-- hitech-os__codex-D__tests-docs
+
+- Inversion**codex-A**core-contracts
+- hitech-os**codex-B**app-ui
+- hitech-os**codex-C**tooling-guards
+- hitech-os**codex-D**tests-docs
 
 ## Scope naming tips
+
 - Use nouns, not verbs
 - Keep it short
 - Avoid spaces

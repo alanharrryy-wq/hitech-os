@@ -3,6 +3,7 @@
 ## 2026-02-18 - Block A Hardening
 
 ### Added
+
 - `oneshot` CLI command (`preflight -> launch -> bundle-validate -> integrate -> summary`)
 - shared status evaluation module: `tools/codex/factory/status_eval.py`
 - strict Z write guard module: `tools/codex/factory/fs_guard.py`
@@ -15,6 +16,7 @@
   - this file
 
 ### Updated
+
 - CLI entrypoint reliability (`python -m tools.codex.factory.cli`)
 - package init side-effect removal (`tools/codex/factory/__init__.py`)
 - PASS/BLOCKED/FAIL semantics unified across CLI and integrator
@@ -24,6 +26,7 @@
 - runbook updated for oneshot and audit flow
 
 ### Contract Impact
+
 - Ledger storage contract changed from object-style ledger to append-only event JSONL.
 - Status contract now explicitly allows and uses `FAIL`.
 - Z no-write policy is now mandatory and enforced in integrator output writes.
@@ -31,6 +34,7 @@
 ## 2026-02-18 - Block B Industrialization
 
 ### Added
+
 - package entrypoint `tools/codex/factory/__main__.py`
 - factory version module `tools/codex/factory/version.py`
 - runtime config loader `tools/codex/factory/config.py`
@@ -44,6 +48,7 @@
   - `docs/factory/SECURITY.md`
 
 ### Updated
+
 - CLI now supports:
   - `python -m tools.codex.factory ...`
   - `doctor`
@@ -61,6 +66,7 @@
 - CI now runs matrix (Windows primary, Linux best-effort), doctor, contract checks, determinism test, and uploads artifacts on failure.
 
 ### Contract Impact
+
 - Run ID format changed to include base-ref hash.
 - Runtime config contract introduced with strict schema validation.
 - Ledger event contract expanded with metadata fields and signature verification.

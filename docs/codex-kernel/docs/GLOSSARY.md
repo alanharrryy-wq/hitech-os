@@ -1,21 +1,24 @@
 # GLOSSARY — Terms Used by the Codex Kernel
+
 STATUS: ACTIVE
 
 ## Built‑in Improvements (10)
-1) Short definitions (no essays)  
-2) Disambiguation for overloaded words (scope, contract, determinism)  
-3) “If you mean X, say Y” guidance  
-4) Canonical file naming conventions  
-5) What counts as “contract” in different project types  
-6) What “additive-only” really forbids  
-7) What “integrator repair” allows  
-8) What “smoke test” means here  
-9) A mini FAQ  
-10) A “don’t fight over words” section  
+
+1. Short definitions (no essays)
+2. Disambiguation for overloaded words (scope, contract, determinism)
+3. “If you mean X, say Y” guidance
+4. Canonical file naming conventions
+5. What counts as “contract” in different project types
+6. What “additive-only” really forbids
+7. What “integrator repair” allows
+8. What “smoke test” means here
+9. A mini FAQ
+10. A “don’t fight over words” section
 
 ---
 
 ## Core Terms
+
 **Contract**  
 A publicly consumed interface: schema/API/type/test-id/CLI flag. If you break it, you must declare it and migrate it.
 
@@ -43,6 +46,7 @@ A minimal deterministic test that proves the system still boots and performs one
 ---
 
 ## Mini FAQ
+
 Q: Can Z change code?  
 A: Yes, but only to repair integration breakage, not to invent new features.
 

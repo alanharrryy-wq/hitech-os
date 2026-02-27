@@ -1,0 +1,23 @@
+digraph GOVOS_DEPENDENCIES {
+  rankdir=LR;
+  node [shape=box, style="rounded,filled", fillcolor="#f4f4f4", color="#333333"];
+
+  "README" [label="docs/govos/README.md"];
+  "MASTER_INDEX" [label="docs/govos/MASTER_INDEX.md"];
+  "U1" [label="docs/govos/u1_constitutional_change/U1_CONSTITUTIONAL_CHANGE.md"];
+  "U2" [label="docs/govos/u2_evidence_chain/U2_EVIDENCE_CHAIN.md"];
+  "U3" [label="docs/govos/u3_policy_plane/U3_POLICY_PLANE.md"];
+  "U4" [label="docs/govos/u4_enterprise_agents/U4_ENTERPRISE_AGENTS.md"];
+  "TEMPLATE" [label="docs/govos/templates/GOVOS_DOC_TEMPLATE.md"];
+
+  "README" -> "MASTER_INDEX";
+  "MASTER_INDEX" -> "U1";
+  "MASTER_INDEX" -> "U2";
+  "MASTER_INDEX" -> "U3";
+  "MASTER_INDEX" -> "U4";
+  "MASTER_INDEX" -> "TEMPLATE";
+  "U1" -> "U3";
+  "U2" -> "U3";
+  "U4" -> "U2";
+  "U4" -> "U3";
+}

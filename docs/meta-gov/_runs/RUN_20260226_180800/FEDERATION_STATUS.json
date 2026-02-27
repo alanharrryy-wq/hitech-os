@@ -1,0 +1,158 @@
+{
+  "blockers": {
+    "constitutional": [],
+    "policy": [],
+    "tooling": [
+      "hitech-frontend: Docs-Doctor missing",
+      "hitech-frontend: FINAL_REPORT missing",
+      "inversion-next: Docs-Doctor missing",
+      "inversion-next: FINAL_REPORT missing"
+    ]
+  },
+  "debt": {
+    "global_debt_items": [
+      {
+        "debt_id": "ca663a89324411184847f9c0b4e29342ae9c961dcf2839d4cc72a1cd1265ee4a",
+        "line_number": 24,
+        "repo": "hitech-os",
+        "source_file": "docs/govos/_reports/CONVERGENCE_LOG.md",
+        "text": "- `docs/codex-kernel/docs/50_INTEGRATION_RULES.md`: strong STATUS/REPORT/DEBT/NEXT semantics, but broader integrator law and less factory-runtime-specific"
+      }
+    ],
+    "totals": {
+      "global_total": 1,
+      "hitech-os": 1
+    }
+  },
+  "determinism": {
+    "inputs_hash": "28c7d154965a29a75bccd6f6dd5d57cedd6d43c1cd3140edc7ff145ca8489944",
+    "outputs_hash": "0c4a1263327af3eeb69f28043373238a2dbe8486e446ed487d2ce59713dee812",
+    "stable_sort_rules": [
+      "repos sorted by name ascending",
+      "blockers sorted by (repo, type, message)",
+      "debt items sorted by debt_id ascending",
+      "json keys sorted lexicographically",
+      "meta report table rows sorted by repo name ascending"
+    ]
+  },
+  "federation": {
+    "run_id": "RUN_20260226_180800",
+    "status": "DEGRADED",
+    "summary_counts": {
+      "blocked_total": 0,
+      "degraded_total": 0,
+      "missing_tooling_total": 2,
+      "offline_total": 0,
+      "ok_total": 1,
+      "online_total": 3,
+      "repos_total": 3
+    },
+    "timestamp_iso": "2026-02-26T18:08:00-06:00",
+    "timezone": "America/Mexico_City"
+  },
+  "next_actions": {
+    "immediate": [],
+    "suggested": []
+  },
+  "repos": [
+    {
+      "blockers": {
+        "constitutional": [],
+        "policy": [],
+        "tooling": ["Docs-Doctor missing", "FINAL_REPORT missing"]
+      },
+      "debt_items": [],
+      "docs_doctor": {
+        "canonical_docs_root": "docs/govos",
+        "check_ran": false,
+        "present": false,
+        "report_path": "F:/OneDrive/Hitech/3.Proyectos/CHAT GPT AI Estudio/HITECH_AISTUDIO_SYSTEM/0.Origins/app/frontend/hitech-frontend/docs/govos/_reports/FINAL_REPORT.md",
+        "result": "MISSING_TOOLING"
+      },
+      "last_report_excerpt": [],
+      "mandatory_first_read": {
+        "additive_only_trigger": true,
+        "factory_runtime_present": false,
+        "kernel_present": false,
+        "resolution": "report unavailable"
+      },
+      "name": "hitech-frontend",
+      "online": true,
+      "path": "F:/OneDrive/Hitech/3.Proyectos/CHAT GPT AI Estudio/HITECH_AISTUDIO_SYSTEM/0.Origins/app/frontend/hitech-frontend",
+      "status": "MISSING_TOOLING"
+    },
+    {
+      "blockers": {
+        "constitutional": [],
+        "policy": [],
+        "tooling": []
+      },
+      "debt_items": [
+        {
+          "debt_id": "ca663a89324411184847f9c0b4e29342ae9c961dcf2839d4cc72a1cd1265ee4a",
+          "line_number": 24,
+          "repo": "hitech-os",
+          "source_file": "docs/govos/_reports/CONVERGENCE_LOG.md",
+          "text": "- `docs/codex-kernel/docs/50_INTEGRATION_RULES.md`: strong STATUS/REPORT/DEBT/NEXT semantics, but broader integrator law and less factory-runtime-specific"
+        }
+      ],
+      "docs_doctor": {
+        "canonical_docs_root": "docs/govos",
+        "check_ran": false,
+        "present": true,
+        "report_path": "F:/repos/hitech-os/docs/govos/_reports/FINAL_REPORT.md",
+        "result": "OK"
+      },
+      "last_report_excerpt": [
+        "# FINAL REPORT",
+        "",
+        "RESULT: OK",
+        "REPO_ROOT: F:/repos/hitech-os",
+        "CANONICAL_DOCS_ROOT: docs/govos",
+        "",
+        "## Mandatory First Read",
+        "",
+        "- KERNEL_CONTEXT.md: present",
+        "- docs/factory/FACTORY_RUNTIME_EXPLAINED.md: present",
+        "- additive_only_trigger: false",
+        "- resolution: pointer stub linked to docs/factory/CONTRACT.md"
+      ],
+      "mandatory_first_read": {
+        "additive_only_trigger": false,
+        "factory_runtime_present": true,
+        "kernel_present": true,
+        "resolution": "pointer stub linked to docs/factory/CONTRACT.md"
+      },
+      "name": "hitech-os",
+      "online": true,
+      "path": "F:/repos/hitech-os",
+      "status": "OK"
+    },
+    {
+      "blockers": {
+        "constitutional": [],
+        "policy": [],
+        "tooling": ["Docs-Doctor missing", "FINAL_REPORT missing"]
+      },
+      "debt_items": [],
+      "docs_doctor": {
+        "canonical_docs_root": "docs/govos",
+        "check_ran": false,
+        "present": false,
+        "report_path": "F:/repos/inversion-next/docs/govos/_reports/FINAL_REPORT.md",
+        "result": "MISSING_TOOLING"
+      },
+      "last_report_excerpt": [],
+      "mandatory_first_read": {
+        "additive_only_trigger": true,
+        "factory_runtime_present": false,
+        "kernel_present": false,
+        "resolution": "report unavailable"
+      },
+      "name": "inversion-next",
+      "online": true,
+      "path": "F:/repos/inversion-next",
+      "status": "MISSING_TOOLING"
+    }
+  ]
+}

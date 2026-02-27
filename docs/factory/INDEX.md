@@ -16,6 +16,7 @@
 - `ROLE_HARDENING.md` - role boundaries and anti-patterns
 - `WORKTREE_OPERATIONS.md` - isolation commands and branch naming
 - `DETERMINISM_POLICY.md` - stable-output rules
+- `RUNS_ROOT_POLICY.md` - canonical shared runs root contract and enforcement
 - `TROUBLESHOOTING.md` - failure handling
 - `ADD_WORKERS.md` - scaling beyond 4 workers
 - `ADD_CONTRACTS.md` - extending contract surfaces safely

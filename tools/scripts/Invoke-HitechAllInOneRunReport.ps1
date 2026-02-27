@@ -20,7 +20,11 @@ param(
   [switch]$DryRun,
   [switch]$VerboseMode,
   [switch]$Quiet,
-  [switch]$HydrateMissingBundles
+  [switch]$HydrateMissingBundles,
+  [string]$SharedRunsRoot,
+  [string[]]$WorktreeRootOverride,
+  [switch]$NoGitWorktreeDiscovery,
+  [switch]$BypassRunsRootDoctor
 )
 
 Set-StrictMode -Version Latest
@@ -48,6 +52,10 @@ if ($DryRun) { $forward.DryRun = $true }
 if ($VerboseMode) { $forward.VerboseMode = $true }
 if ($Quiet) { $forward.Quiet = $true }
 if ($HydrateMissingBundles) { $forward.HydrateMissingBundles = $true }
+if (-not [string]::IsNullOrWhiteSpace($SharedRunsRoot)) { $forward.SharedRunsRoot = $SharedRunsRoot }
+if (@($WorktreeRootOverride).Count -gt 0) { $forward.WorktreeRootOverride = @($WorktreeRootOverride) }
+if ($NoGitWorktreeDiscovery) { $forward.NoGitWorktreeDiscovery = $true }
+if ($BypassRunsRootDoctor) { $forward.BypassRunsRootDoctor = $true }
 if (@($RunsRootOverride).Count -gt 0) { $forward.RunsRootOverride = @($RunsRootOverride) }
 
 & $trackingEntrypoint @forward
