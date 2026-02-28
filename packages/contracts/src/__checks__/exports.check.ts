@@ -1,5 +1,19 @@
-import type { AgentCapabilities, HealthReport, JobRequest, JobResult } from "../index.js";
-import { CONTRACT_VERSION_INFO, FEATURE_FLAGS_DEFAULTS } from "../index.js";
+import type {
+  AgentCapabilities,
+  HealthReport,
+  JobRequest,
+  JobResult,
+  PitchDeck,
+  PitchScreen,
+  PitchScreenSlug
+} from "../index.js";
+import {
+  CONTRACT_VERSION_INFO,
+  FEATURE_FLAGS_DEFAULTS,
+  PITCH_DECK_FIXTURE,
+  PITCH_SCREEN_FIXTURES,
+  PITCH_SCREEN_ORDER
+} from "../index.js";
 
 const _jobRequestSample: JobRequest = {
   jobId: "job-check-001",
@@ -38,4 +52,16 @@ const _healthSample: HealthReport = {
   checks: [{ name: "contracts", status: "ok", message: "ok" }]
 };
 
-void [_jobRequestSample, _jobResultSample, _capabilitiesSample, _healthSample];
+const _pitchDeckSample: PitchDeck = PITCH_DECK_FIXTURE;
+const _pitchSlugSample: PitchScreenSlug = PITCH_SCREEN_ORDER[0] ?? "01-double-engine";
+const _pitchScreenSample: PitchScreen = PITCH_SCREEN_FIXTURES[_pitchSlugSample];
+
+void [
+  _jobRequestSample,
+  _jobResultSample,
+  _capabilitiesSample,
+  _healthSample,
+  _pitchDeckSample,
+  _pitchSlugSample,
+  _pitchScreenSample
+];

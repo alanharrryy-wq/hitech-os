@@ -1,18 +1,50 @@
-import type { PropsWithChildren } from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import type { HTMLAttributes, PropsWithChildren, ReactNode } from "react";
+import { cn } from "../lib/cn.js";
 
-export interface SectionProps {
-  heading: string;
-  description?: string;
+const sectionVariants = cva("space-y-2", {
+  variants: {
+    tone: {
+      default: "",
+      muted: "text-[hsl(var(--ui-text-3))]"
+    }
+  },
+  defaultVariants: {
+    tone: "default"
+  }
+});
+
+export interface SectionProps
+  extends PropsWithChildren,
+    Omit<HTMLAttributes<HTMLElement>, "title">,
+    VariantProps<typeof sectionVariants> {
+  readonly as?: "section" | "article" | "div";
+  readonly heading?: ReactNode;
+  readonly description?: ReactNode;
 }
 
-export function Section({ children, heading, description }: PropsWithChildren<SectionProps>) {
+export function Section({
+  as = "section",
+  className,
+  children,
+  tone,
+  heading,
+  description,
+  ...props
+}: SectionProps) {
+  const Comp = as;
+
   return (
-    <section className="ui-section">
-      <header className="ui-section__header">
-        <h2 className="ui-section__heading">{heading}</h2>
-        {description ? <p className="ui-section__description">{description}</p> : null}
-      </header>
-      <div className="ui-section__content">{children}</div>
-    </section>
+    <Comp className={cn(sectionVariants({ tone }), className)} {...props}>
+      {heading ? (
+        <h2 className="m-0 text-xl font-semibold tracking-tight text-[hsl(var(--ui-text-1))]">
+          {heading}
+        </h2>
+      ) : null}
+      {description ? (
+        <p className="m-0 text-sm text-[hsl(var(--ui-text-3))]">{description}</p>
+      ) : null}
+      {children}
+    </Comp>
   );
 }
