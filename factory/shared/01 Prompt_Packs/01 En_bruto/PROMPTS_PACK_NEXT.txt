@@ -1,0 +1,254 @@
+=== A_core PROMPT ===
+YOU ARE CODEX WORKER: A_core
+RUN_ID: {{RUN_ID}}
+CODEX_ID: A_core
+
+HARD RULES
+- Additive-only. Do NOT modify runtime/product behavior.
+- Do NOT delete files.
+- Deterministic outputs only.
+- Work ONLY inside:
+  tools/codex/runs/{{RUN_ID}}/A_core/
+- Produce full bundle:
+  STATUS.json
+  SUMMARY.md
+  FILES_CHANGED.json
+  DIFF.patch
+  SUGGESTIONS.md
+  FILES/
+  DONE.marker
+
+TASK
+Create a “Pitch Contracts Hardening Bundle” (docs + tooling notes only).
+
+1) Create 5 documentation specs under:
+   tools/codex/runs/{{RUN_ID}}/A_core/FILES/contracts_specs/
+
+   Files:
+   - PITCH_SCHEMA_SPEC.md
+   - PITCH_VERSIONING_SPEC.md
+   - PITCH_DRIFT_GUARD_SPEC.md
+   - PITCH_SELECTORS_SPEC.md
+   - CONTRACT_EXPORT_POLICY.md
+
+2) Each file must include:
+   - RUN_ID: {{RUN_ID}}
+   - WORKER: A_core
+   - DOC_ID: <filename without extension>
+   - DETERMINISM: stable
+   - Sections:
+     - Purpose
+     - Scope
+     - Constraints
+     - Failure Modes
+     - Acceptance Criteria
+   - Minimum 60 lines each.
+
+3) Bundle requirements:
+   - STATUS.json must include:
+     {
+       "run_id":"{{RUN_ID}}",
+       "worker":"A_core",
+       "status":"OK",
+       "blocked":false,
+       "docs_created":5
+     }
+   - FILES_CHANGED.json must list created files in stable sorted order.
+   - SUMMARY.md must summarize created specs.
+   - DIFF.patch must contain unified diff of added files.
+   - SUGGESTIONS.md must include 5 future improvements.
+   - FILES/ must contain snapshot copies of created docs.
+
+VALIDATION
+- Confirm all 5 docs exist.
+- Confirm bundle files exist.
+- Stable sorted output lists.
+
+DONE_MARKER_PATH: tools/codex/runs/{{RUN_ID}}/A_core/DONE.marker
+DONE_MARKER_TOKEN: DONE {{RUN_ID}} A_core
+
+
+=== B_tooling PROMPT ===
+YOU ARE CODEX WORKER: B_tooling
+RUN_ID: {{RUN_ID}}
+CODEX_ID: B_tooling
+
+HARD RULES
+- Additive-only.
+- Deterministic.
+- Work ONLY inside:
+  tools/codex/runs/{{RUN_ID}}/B_tooling/
+- Full bundle required.
+
+TASK
+Create “Layer Enforcement Guard Specs” (docs-only bundle).
+
+1) Create 5 docs under:
+   tools/codex/runs/{{RUN_ID}}/B_tooling/FILES/layer_guard_specs/
+
+   Files:
+   - LAYER_ID_CANON_SPEC.md
+   - LAYER_SCAN_ALGO_SPEC.md
+   - PERF_BUDGET_GUARD_SPEC.md
+   - FAILURE_OUTPUT_FORMAT.md
+   - CI_INTEGRATION_PLAN.md
+
+2) Each must include:
+   - RUN_ID
+   - WORKER
+   - DOC_ID
+   - Sections:
+     - Objective
+     - Algorithm Outline
+     - Edge Cases
+     - Determinism Rules
+     - Exit Codes
+   - ≥ 60 lines each.
+
+3) Bundle:
+   - STATUS.json (docs_created=5)
+   - SUMMARY.md
+   - FILES_CHANGED.json (stable sorted)
+   - DIFF.patch
+   - SUGGESTIONS.md (5 bullets)
+   - FILES snapshot
+
+DONE_MARKER_PATH: tools/codex/runs/{{RUN_ID}}/B_tooling/DONE.marker
+DONE_MARKER_TOKEN: DONE {{RUN_ID}} B_tooling
+
+
+=== C_features PROMPT ===
+YOU ARE CODEX WORKER: C_features
+RUN_ID: {{RUN_ID}}
+CODEX_ID: C_features
+
+HARD RULES
+- Additive-only.
+- Deterministic.
+- Work ONLY inside:
+  tools/codex/runs/{{RUN_ID}}/C_features/
+- Full bundle required.
+
+TASK
+Create “Feature Layer Integration Planning Docs”.
+
+1) Create 5 docs under:
+   tools/codex/runs/{{RUN_ID}}/C_features/FILES/feature_specs/
+
+   Files:
+   - MISSION_CONTROL_LAYER_INTEGRATION.md
+   - SAFE_WRAPPER_PATTERN.md
+   - QUERY_FLAG_MATRIX.md
+   - UI_PRIMITIVES_LIBRARY_PLAN.md
+   - NON_BREAKING_POLICY.md
+
+2) Each must include:
+   - RUN_ID
+   - WORKER
+   - DOC_ID
+   - Sections:
+     - Feature Flag
+     - Default Behavior
+     - Risk Analysis
+     - Non-Goals
+     - Validation Checklist
+   - ≥ 60 lines each.
+
+3) Bundle contract identical to A_core/B_tooling.
+
+DONE_MARKER_PATH: tools/codex/runs/{{RUN_ID}}/C_features/DONE.marker
+DONE_MARKER_TOKEN: DONE {{RUN_ID}} C_features
+
+
+=== D_validation PROMPT ===
+YOU ARE CODEX WORKER: D_validation
+RUN_ID: {{RUN_ID}}
+CODEX_ID: D_validation
+
+HARD RULES
+- Additive-only.
+- Deterministic.
+- Work ONLY inside:
+  tools/codex/runs/{{RUN_ID}}/D_validation/
+- Full bundle required.
+
+TASK
+Create “Validation & Smoke Matrix Planning Docs”.
+
+1) Create 5 docs under:
+   tools/codex/runs/{{RUN_ID}}/D_validation/FILES/validation_specs/
+
+   Files:
+   - ROUTE_SMOKE_MATRIX.md
+   - LAYER_PERMUTATION_MATRIX.md
+   - DATA_ATTR_ASSERTIONS.md
+   - MISSION_CONTROL_PROTECTION.md
+   - E2E_STRATEGY.md
+
+2) Each must include:
+   - RUN_ID
+   - WORKER
+   - DOC_ID
+   - Sections:
+     - Scope
+     - Test Matrix
+     - Determinism Notes
+     - PASS Criteria
+     - FAIL Criteria
+   - ≥ 60 lines each.
+
+3) Bundle contract identical to previous workers.
+
+DONE_MARKER_PATH: tools/codex/runs/{{RUN_ID}}/D_validation/DONE.marker
+DONE_MARKER_TOKEN: DONE {{RUN_ID}} D_validation
+
+
+=== Z_aggregator PROMPT ===
+YOU ARE CODEX WORKER: Z_aggregator
+RUN_ID: {{RUN_ID}}
+CODEX_ID: Z_aggregator
+
+HARD RULES
+- Read-only audit of worker folders.
+- Deterministic.
+- Work ONLY inside:
+  tools/codex/runs/{{RUN_ID}}/Z_aggregator/
+- Full bundle required.
+
+AUDIT TARGETS
+- tools/codex/runs/{{RUN_ID}}/A_core/
+- tools/codex/runs/{{RUN_ID}}/B_tooling/
+- tools/codex/runs/{{RUN_ID}}/C_features/
+- tools/codex/runs/{{RUN_ID}}/D_validation/
+
+TASK
+1) Verify for each worker:
+   - DONE.marker exists
+   - STATUS.json status == OK
+   - 5 docs exist under FILES/
+   - Bundle files exist
+
+2) Create:
+   tools/codex/runs/{{RUN_ID}}/Z_aggregator/FILES/FINAL_REPORT.txt
+   Include:
+   - RUN_ID
+   - Table (A_core, B_tooling, C_features, D_validation):
+     worker | done_marker | status | docs_count | bundle_ok | notes
+   - Overall verdict: PASS or FAIL
+   - 5 next steps
+
+3) Create:
+   tools/codex/runs/{{RUN_ID}}/Z_aggregator/FILES/CONSOLIDATED_INDEX.md
+   List all 20 docs in stable order.
+
+4) Bundle outputs:
+   STATUS.json
+   SUMMARY.md
+   FILES_CHANGED.json
+   DIFF.patch
+   SUGGESTIONS.md
+   FILES/
+   DONE.marker
+
+DONE_MARKER_PATH: tools/codex/runs/{{RUN_ID}}/Z_aggregator/DONE.marker
+DONE_MARKER_TOKEN: DONE {{RUN_ID}} Z_aggregator
