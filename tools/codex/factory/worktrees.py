@@ -12,6 +12,13 @@ from typing import Any
 
 from .common import CODEX_DIR, DEFAULT_BRANCH_PREFIX, REPO_ROOT, RUNS_DIR, WORKERS, ensure_dir, write_json
 from .locks import LockAcquisitionError, acquire_run_lock, acquire_worker_lock
+from .worktree_contract import (
+    FIXED_WORKTREE_MODE,
+    fixed_worker_path,
+    fixed_worktrees_root,
+    is_run_scoped_worktree_segment,
+    resolve_unified_worktree_mode,
+)
 
 
 def _debug_stack_enabled() -> bool:
@@ -478,15 +485,18 @@ def _write_vscode_session_registry(run_id: str, sessions: list[dict[str, Any]]) 
 
 
 def worktree_root(run_id: str) -> Path:
-    return CODEX_DIR / "worktrees" / run_id
+    _ = run_id
+    return fixed_worktrees_root()
 
 
 def worktree_path(run_id: str, worker: str) -> Path:
-    return worktree_root(run_id) / worker
+    _ = run_id
+    return fixed_worker_path(worker)
 
 
 def branch_name(run_id: str, worker: str, branch_prefix: str = DEFAULT_BRANCH_PREFIX) -> str:
-    return f"{branch_prefix}/{run_id}/{worker}"
+    _ = run_id
+    return f"{branch_prefix}/{worker}"
 
 
 def _run(args: list[str], cwd: Path | None = None, dry_run: bool = False) -> dict[str, Any]:
@@ -656,6 +666,23 @@ def create_worktrees(
     dry_run: bool = False,
 ) -> dict[str, Any]:
     chosen = workers or list(WORKERS)
+    try:
+        mode_info = resolve_unified_worktree_mode()
+    except ValueError as exc:
+        return {
+            "run_id": run_id,
+            "operation": "create",
+            "status": "BLOCKED",
+            "steps": [],
+            "blocked": len(chosen),
+            "lock_error": "",
+            "base_ref": base_ref,
+            "base_ref_commit": _resolve_commit(base_ref, dry_run=dry_run),
+            "worktree_mode": "",
+            "contract_path": "",
+            "error": str(exc),
+        }
+
     root = worktree_root(run_id)
     ensure_dir(root)
     steps: list[dict[str, Any]] = []
@@ -679,8 +706,22 @@ def create_worktrees(
     try:
         for worker in chosen:
             target = worktree_path(run_id, worker)
-            branch = branch_name(run_id, worker, branch_prefix=branch_prefix)
             worker_actions: list[dict[str, Any]] = []
+            if is_run_scoped_worktree_segment(worker):
+                detail = f"guard_trip: run-scoped worker id is forbidden in unified mode ({worker})"
+                lock_errors.append(detail)
+                steps.append(
+                    {
+                        "worker": worker,
+                        "status": "BLOCKED",
+                        "detail": detail,
+                        "path": target.as_posix(),
+                        "actions": [],
+                        "base_ref_commit": base_ref_commit,
+                        "worktree_mode": mode_info["worktree_mode"],
+                    }
+                )
+                continue
             try:
                 worker_lock = acquire_worker_lock(run_id, worker, owner="worktrees.create")
             except LockAcquisitionError as exc:
@@ -691,38 +732,33 @@ def create_worktrees(
                         "status": "BLOCKED",
                         "detail": str(exc),
                         "path": target.as_posix(),
-                        "branch": branch,
                         "actions": [],
                         "base_ref_commit": base_ref_commit,
+                        "worktree_mode": mode_info["worktree_mode"],
                     }
                 )
                 continue
 
             try:
                 if target.exists():
+                    git_dir = target / ".git"
                     head_commit = _resolve_commit("HEAD", cwd=target, dry_run=dry_run)
+                    ok = git_dir.exists()
                     step_payload = {
                         "worker": worker,
-                        "status": "PASS",
-                        "detail": "worktree already exists",
+                        "status": "PASS" if ok else "BLOCKED",
+                        "detail": "worktree already exists" if ok else "path exists but is not a git worktree",
                         "path": target.as_posix(),
-                        "branch": branch,
                         "actions": [],
                         "base_ref_commit": base_ref_commit,
                         "worktree_commit": head_commit,
-                        "commit_match": head_commit.get("commit") == base_ref_commit.get("commit") or dry_run,
+                        "commit_match": (head_commit.get("commit") == base_ref_commit.get("commit") and ok) or dry_run,
+                        "worktree_mode": mode_info["worktree_mode"],
                     }
                     steps.append(step_payload)
                     continue
 
-                check_branch = _run(["git", "show-ref", "--verify", f"refs/heads/{branch}"], dry_run=dry_run)
-                worker_actions.append(check_branch)
-                branch_exists = check_branch["rc"] == 0
-
-                if branch_exists:
-                    add_cmd = ["git", "worktree", "add", target.as_posix(), branch]
-                else:
-                    add_cmd = ["git", "worktree", "add", "-b", branch, target.as_posix(), base_ref]
+                add_cmd = ["git", "worktree", "add", "--detach", target.as_posix(), base_ref]
                 add_result = _run(add_cmd, dry_run=dry_run)
                 worker_actions.append(add_result)
 
@@ -738,11 +774,11 @@ def create_worktrees(
                         "status": status,
                         "detail": detail,
                         "path": target.as_posix(),
-                        "branch": branch,
                         "actions": worker_actions,
                         "base_ref_commit": base_ref_commit,
                         "worktree_commit": head_commit,
                         "commit_match": commit_match,
+                        "worktree_mode": mode_info["worktree_mode"],
                     }
                 )
             finally:
@@ -760,6 +796,9 @@ def create_worktrees(
         "lock_errors": lock_errors,
         "base_ref": base_ref,
         "base_ref_commit": base_ref_commit,
+        "worktree_mode": mode_info["worktree_mode"],
+        "contract_path": str(mode_info["contract_path"]),
+        "branch_prefix_ignored": branch_prefix,
     }
     state_path = RUNS_DIR / run_id / "WORKTREE_STATE.json"
     write_json(state_path, payload)
