@@ -11,6 +11,13 @@ from .schemas import validate_payload
 
 DEFAULT_CONFIG_PATH = FACTORY_DIR / "factory.config.json"
 ENV_PREFIX = "FACTORY_"
+IGNORED_ENV_KEYS = {
+    "FACTORY_AHK_EXE",
+    "FACTORY_WORKTREE_MODE",
+}
+IGNORED_ENV_PREFIXES = (
+    "FACTORY_DISPATCH__",
+)
 
 
 def default_factory_config() -> dict[str, Any]:
@@ -128,6 +135,10 @@ def _env_to_config(env: Mapping[str, str]) -> dict[str, Any]:
     for key in sorted(env):
         if not key.startswith(ENV_PREFIX):
             continue
+        if key in IGNORED_ENV_KEYS:
+            continue
+        if any(key.startswith(prefix) for prefix in IGNORED_ENV_PREFIXES):
+            continue
         dotted = key[len(ENV_PREFIX) :].lower().replace("__", ".")
         value = _coerce_scalar(env[key])
         _set_nested(overlay, dotted, value)
@@ -191,4 +202,3 @@ def write_default_config(path: str | None = None) -> Path:
     if not target.exists():
         write_json(target, default_factory_config())
     return target
-

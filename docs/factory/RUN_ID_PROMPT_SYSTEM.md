@@ -25,7 +25,7 @@ The dispatcher always uses exactly these workers:
 
 - Prompt zip input: `tools/codex/prompt_zips/<RUN_ID>.zip`
 - Extracted prompts: `tools/codex/prompts/<RUN_ID>/`
-- Worktrees: `tools/codex/worktrees/<RUN_ID>/<WORKER>`
+- Worktrees: `tools/codex/worktrees/<WORKER>`
 - Run output: `tools/codex/runs/<RUN_ID>/`
 - Dispatcher code: `tools/codex/dispatch/`
 - Dispatcher logs/report: `tools/codex/prompts/<RUN_ID>/logs/`
