@@ -1,0 +1,45 @@
+.root {
+  border: 1px solid #ccd9e6;
+  border-radius: 16px;
+  background: #ffffffde;
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.primary {
+  display: grid;
+  gap: 8px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #5a6f84;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(1.12rem, 2.1vw, 1.8rem);
+  line-height: 1.15;
+  color: #112334;
+}
+
+.subtitle {
+  margin: 0;
+  color: #435a70;
+  font-size: 0.9rem;
+  max-width: 78ch;
+}
+
+.bullets {
+  margin: 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 6px;
+  color: #384e63;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}

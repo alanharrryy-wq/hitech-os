@@ -1,0 +1,46 @@
+.root {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.card {
+  text-decoration: none;
+  border: 1px solid #ccd9e6;
+  border-radius: 14px;
+  background: #ffffffee;
+  padding: 14px;
+  display: grid;
+  gap: 7px;
+  color: inherit;
+}
+
+.order,
+.title,
+.subtitle {
+  margin: 0;
+}
+
+.order {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #607489;
+}
+
+.title {
+  font-size: 0.96rem;
+  color: #1d3145;
+}
+
+.subtitle {
+  font-size: 0.82rem;
+  color: #4a6177;
+  line-height: 1.4;
+}
+
+@media (max-width: 740px) {
+  .root {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

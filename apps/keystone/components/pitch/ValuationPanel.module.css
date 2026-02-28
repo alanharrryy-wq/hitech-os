@@ -1,0 +1,127 @@
+.root {
+  display: grid;
+  gap: 14px;
+}
+
+.card {
+  border: 1px solid #ccd8e4;
+  border-radius: 14px;
+  background: #ffffffef;
+  padding: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #1f3347;
+}
+
+.versionGrid {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.versionGrid div {
+  border: 1px solid #dae4ef;
+  border-radius: 10px;
+  padding: 8px;
+  background: #f7fbff;
+}
+
+.versionGrid dt {
+  margin: 0;
+  font-size: 0.7rem;
+  color: #657a90;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.versionGrid dd {
+  margin: 4px 0 0;
+  font-size: 0.82rem;
+  color: #334a60;
+}
+
+.tableWrap {
+  overflow: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 960px;
+}
+
+.table th,
+.table td {
+  border-bottom: 1px solid #dce6f0;
+  text-align: left;
+  padding: 8px;
+  font-size: 0.76rem;
+  color: #324960;
+}
+
+.table thead th {
+  color: #60768d;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.68rem;
+}
+
+.bridgeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.bridgeItem {
+  border: 1px solid #dae5f0;
+  border-radius: 10px;
+  background: #f9fbff;
+  padding: 10px;
+}
+
+.bridgeStep,
+.bridgePositive,
+.bridgeNegative {
+  margin: 0;
+}
+
+.bridgeStep {
+  font-size: 0.76rem;
+  color: #5a7187;
+}
+
+.bridgePositive {
+  margin-top: 4px;
+  color: #1e6f45;
+  font-size: 0.92rem;
+  font-weight: 620;
+}
+
+.bridgeNegative {
+  margin-top: 4px;
+  color: #8d2d38;
+  font-size: 0.92rem;
+  font-weight: 620;
+}
+
+.risks {
+  margin: 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: #3b5268;
+}
+
+@media (max-width: 940px) {
+  .versionGrid,
+  .bridgeGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

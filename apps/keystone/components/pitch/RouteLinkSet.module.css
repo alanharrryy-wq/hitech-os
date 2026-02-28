@@ -1,0 +1,53 @@
+.root {
+  border: 1px solid #cedae7;
+  border-radius: 14px;
+  background: #ffffffef;
+  padding: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+.block {
+  display: grid;
+  gap: 8px;
+}
+
+.title {
+  margin: 0;
+  font-size: 0.86rem;
+  color: #20364a;
+}
+
+.navGrid,
+.exampleGrid {
+  display: grid;
+  gap: 8px;
+}
+
+.navGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.link {
+  text-decoration: none;
+  border: 1px solid #d6e2ee;
+  border-radius: 9px;
+  padding: 8px;
+  font-size: 0.78rem;
+  color: #245d90;
+  background: #f8fbff;
+}
+
+.placeholder {
+  border: 1px dashed #d5dfeb;
+  border-radius: 9px;
+  padding: 8px;
+  font-size: 0.76rem;
+  color: #72869a;
+}
+
+@media (max-width: 760px) {
+  .navGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

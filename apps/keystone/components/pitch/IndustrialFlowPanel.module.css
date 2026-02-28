@@ -1,0 +1,117 @@
+.root {
+  display: grid;
+  gap: 14px;
+}
+
+.card {
+  border: 1px solid #cedbe8;
+  border-radius: 14px;
+  background: #ffffffef;
+  padding: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #22384d;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.metricItem {
+  border: 1px solid #dae4ef;
+  border-radius: 10px;
+  padding: 10px;
+  background: #f8fbff;
+}
+
+.metricName,
+.metricValue {
+  margin: 0;
+}
+
+.metricName {
+  color: #5f7389;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.metricValue {
+  font-size: 1.08rem;
+  color: #173046;
+  font-weight: 620;
+}
+
+.metricUnit {
+  font-size: 0.74rem;
+  color: #61758c;
+}
+
+.stageGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.stageCard {
+  border: 1px solid #d9e4ef;
+  border-radius: 10px;
+  padding: 10px;
+  background: #fafdff;
+  display: grid;
+  gap: 8px;
+}
+
+.stageHeader {
+  display: grid;
+  gap: 3px;
+}
+
+.stageName,
+.stageMeta,
+.stageCounts {
+  margin: 0;
+}
+
+.stageName {
+  font-size: 0.86rem;
+  color: #1f3449;
+}
+
+.stageMeta,
+.stageCounts {
+  font-size: 0.74rem;
+  color: #577089;
+}
+
+.blockers {
+  margin: 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 4px;
+  font-size: 0.76rem;
+  color: #3f5870;
+}
+
+.guardrails {
+  margin: 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: #364f66;
+}
+
+@media (max-width: 940px) {
+  .metricsGrid,
+  .stageGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

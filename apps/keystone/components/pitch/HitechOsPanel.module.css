@@ -1,0 +1,100 @@
+.root {
+  display: grid;
+  gap: 14px;
+}
+
+.card {
+  border: 1px solid #cedbe8;
+  border-radius: 14px;
+  background: #ffffffef;
+  padding: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #203549;
+}
+
+.contracts {
+  margin: 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 6px;
+  color: #3a5168;
+  font-size: 0.82rem;
+}
+
+.moduleGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.moduleCard {
+  border: 1px solid #d8e4ef;
+  border-radius: 10px;
+  background: #f9fbff;
+  padding: 10px;
+  display: grid;
+  gap: 10px;
+}
+
+.moduleHeader {
+  display: grid;
+  gap: 3px;
+}
+
+.moduleLabel,
+.moduleOwner,
+.moduleHealth {
+  margin: 0;
+}
+
+.moduleLabel {
+  font-size: 0.84rem;
+  color: #1f3448;
+}
+
+.moduleOwner,
+.moduleHealth {
+  font-size: 0.74rem;
+  color: #5f758c;
+}
+
+.ioGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.ioGrid h5 {
+  margin: 0;
+  font-size: 0.74rem;
+  color: #425a72;
+}
+
+.ioGrid ul,
+.safeguards,
+.narrative {
+  margin: 4px 0 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 4px;
+  font-size: 0.76rem;
+  color: #3e5870;
+}
+
+.narrative {
+  gap: 6px;
+  font-size: 0.82rem;
+}
+
+@media (max-width: 940px) {
+  .moduleGrid,
+  .ioGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
