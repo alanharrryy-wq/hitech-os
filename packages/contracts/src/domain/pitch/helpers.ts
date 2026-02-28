@@ -1,183 +1,291 @@
+import { parseOrThrow } from "../../parsing.js";
 import {
-  MONTHS_PER_YEAR,
-  PITCH_INDUSTRIAL_FLOW_ANNUAL_PROFIT_USD,
-  PITCH_INDUSTRIAL_FLOW_MONTHLY_BILLING_USD,
-  PITCH_INDUSTRIAL_FLOW_MONTHLY_MODULES,
-  PITCH_INDUSTRIAL_FLOW_MONTHLY_PROFIT_USD,
-  PITCH_INDUSTRIAL_FLOW_TOTAL_MODULES
+  PITCH_ROUTES,
+  PITCH_SCREEN_ORDER,
+  PITCH_SCREEN_SLUGS,
+  type PitchScreenSlug
 } from "./constants.js";
-import type {
-  PitchCycleWidgetPoint,
-  PitchIndustrialFlowKpis,
-  PitchKpiWidget,
-  PitchValuationRange
-} from "./types.js";
+import {
+  PITCH_DECK_FIXTURE,
+  PITCH_DECK_RESPONSE_FIXTURE,
+  PITCH_SCREEN_FIXTURES,
+  PITCH_SCREEN_MAP_FIXTURE,
+  PITCH_SCREENS_FIXTURE
+} from "./fixtures.js";
+import {
+  PitchDeckResponseSchema,
+  PitchDeckSchema,
+  PitchScreenMapSchema,
+  PitchScreenRequestSchema,
+  PitchScreenSchema,
+  type PitchDeck,
+  type PitchDeckResponse,
+  type PitchScreen,
+  type PitchScreenRequest,
+  type PitchScreenResponse
+} from "./schemas.js";
 
-const USD_COMPACT_FORMATTER = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  notation: "compact",
-  maximumFractionDigits: 2
-});
-
-const USD_INTEGER_FORMATTER = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  maximumFractionDigits: 0
-});
-
-const NUMBER_FORMATTER = new Intl.NumberFormat("en-US", {
-  maximumFractionDigits: 0
-});
-
-export function annualizeMonthlyValue(monthlyUsd: number): number {
-  return monthlyUsd * MONTHS_PER_YEAR;
+export function listPitchScreenSlugs(): readonly PitchScreenSlug[] {
+  return PITCH_SCREEN_ORDER;
 }
 
-export function computeMonthlyMarginPercent(monthlyProfitUsd: number, monthlyBillingUsd: number): number {
-  if (monthlyBillingUsd === 0) {
-    return 0;
+export function listPitchScreens(): readonly PitchScreen[] {
+  return PITCH_SCREENS_FIXTURE;
+}
+
+export function isPitchScreenSlug(value: string): value is PitchScreenSlug {
+  return (PITCH_SCREEN_SLUGS as readonly string[]).includes(value);
+}
+
+export function getPitchScreenBySlug(slug: PitchScreenSlug): PitchScreen {
+  return PITCH_SCREEN_FIXTURES[slug];
+}
+
+export function getPitchScreenByRoute(route: string): PitchScreen | null {
+  if (route === PITCH_ROUTES["01-double-engine"]) {
+    return PITCH_SCREEN_FIXTURES["01-double-engine"];
   }
-  return (monthlyProfitUsd / monthlyBillingUsd) * 100;
-}
 
-export function normalizePitchText(text: string): string {
-  return text.trim().replace(/\s+/g, " ");
-}
-
-export function computeMonthsToCoverModules(totalModules: number, monthlyModules: number): number {
-  if (totalModules <= 0 || monthlyModules <= 0) {
-    return 0;
+  if (route === PITCH_ROUTES["02-industrial-flow"]) {
+    return PITCH_SCREEN_FIXTURES["02-industrial-flow"];
   }
-  return Math.ceil(totalModules / monthlyModules);
+
+  if (route === PITCH_ROUTES["03-hitech-os"]) {
+    return PITCH_SCREEN_FIXTURES["03-hitech-os"];
+  }
+
+  if (route === PITCH_ROUTES["04-valuation"]) {
+    return PITCH_SCREEN_FIXTURES["04-valuation"];
+  }
+
+  return null;
 }
 
-export function buildIndustrialKpis(input?: {
-  totalModules?: number;
-  monthlyModules?: number;
-  monthlyBillingUsd?: number;
-  monthlyProfitUsd?: number;
-  annualProfitUsd?: number;
-}): PitchIndustrialFlowKpis {
-  const totalModules = input?.totalModules ?? PITCH_INDUSTRIAL_FLOW_TOTAL_MODULES;
-  const monthlyModules = input?.monthlyModules ?? PITCH_INDUSTRIAL_FLOW_MONTHLY_MODULES;
-  const monthlyBillingUsd = input?.monthlyBillingUsd ?? PITCH_INDUSTRIAL_FLOW_MONTHLY_BILLING_USD;
-  const monthlyProfitUsd = input?.monthlyProfitUsd ?? PITCH_INDUSTRIAL_FLOW_MONTHLY_PROFIT_USD;
-  const annualProfitUsd = input?.annualProfitUsd ?? annualizeMonthlyValue(monthlyProfitUsd);
+export function getPitchDeck(): PitchDeck {
+  return PITCH_DECK_FIXTURE;
+}
+
+export function getPitchDeckResponse(): PitchDeckResponse {
+  return PITCH_DECK_RESPONSE_FIXTURE;
+}
+
+export function getPitchScreenResponse(input: PitchScreenRequest): PitchScreenResponse {
+  const parsed = parseOrThrow(PitchScreenRequestSchema, input, {
+    resource: "pitch.screen.request",
+    operation: "parse"
+  });
 
   return {
-    totalModules,
-    monthlyModules,
-    monthlyBillingUsd,
-    monthlyProfitUsd,
-    annualProfitUsd,
-    annualProfitCompactText: formatCurrencyCompact(annualProfitUsd)
+    screen: getPitchScreenBySlug(parsed.slug)
   };
 }
 
-export function buildKpiWidgets(kpis: PitchIndustrialFlowKpis): readonly PitchKpiWidget[] {
+export function validatePitchScreen(value: unknown): PitchScreen {
+  return parseOrThrow(PitchScreenSchema, value, {
+    resource: "pitch.screen",
+    operation: "validate"
+  });
+}
+
+export function validatePitchDeck(value: unknown): PitchDeck {
+  return parseOrThrow(PitchDeckSchema, value, {
+    resource: "pitch.deck",
+    operation: "validate"
+  });
+}
+
+export function validatePitchDeckResponse(value: unknown): PitchDeckResponse {
+  return parseOrThrow(PitchDeckResponseSchema, value, {
+    resource: "pitch.deck.response",
+    operation: "validate"
+  });
+}
+
+export function validatePitchScreenMap(value: unknown): typeof PITCH_SCREEN_MAP_FIXTURE {
+  return parseOrThrow(PitchScreenMapSchema, value, {
+    resource: "pitch.screen.map",
+    operation: "validate"
+  });
+}
+
+export function getPitchRouteForSlug(slug: PitchScreenSlug): string {
+  return PITCH_ROUTES[slug];
+}
+
+export function serializePitchDeckToJson(deck: PitchDeck = PITCH_DECK_FIXTURE): string {
+  return JSON.stringify(deck, null, 2);
+}
+
+export function deserializePitchDeckFromJson(payload: string): PitchDeck {
+  const decoded = JSON.parse(payload) as unknown;
+  return validatePitchDeck(decoded);
+}
+
+export function serializePitchDeckResponseToJson(
+  response: PitchDeckResponse = PITCH_DECK_RESPONSE_FIXTURE
+): string {
+  return JSON.stringify(response, null, 2);
+}
+
+export function deserializePitchDeckResponseFromJson(payload: string): PitchDeckResponse {
+  const decoded = JSON.parse(payload) as unknown;
+  return validatePitchDeckResponse(decoded);
+}
+
+export function createPitchScreenMatrix(): ReadonlyArray<{
+  slug: PitchScreenSlug;
+  route: string;
+  order: number;
+  title: string;
+}> {
+  return PITCH_SCREEN_ORDER.map((slug, index) => {
+    const screen = PITCH_SCREEN_FIXTURES[slug];
+    return {
+      slug,
+      route: screen.route,
+      order: index + 1,
+      title: screen.title
+    };
+  });
+}
+
+export function assertPitchSlug(input: string): PitchScreenSlug {
+  if (!isPitchScreenSlug(input)) {
+    throw new Error(`Invalid pitch screen slug: ${input}`);
+  }
+
+  return input;
+}
+
+export function assertPitchRoute(input: string): PitchScreenSlug {
+  const slug = PITCH_SCREEN_ORDER.find((candidate) => PITCH_ROUTES[candidate] === input);
+  if (!slug) {
+    throw new Error(`Invalid pitch route: ${input}`);
+  }
+
+  return slug;
+}
+
+export function buildPitchLinkModel() {
+  return PITCH_DECK_FIXTURE.navigation.links.map((link) => ({
+    ...link,
+    isCanonical: link.href === PITCH_ROUTES[link.slug]
+  }));
+}
+
+export function copyPitchScreen(slug: PitchScreenSlug): PitchScreen {
+  const screen = getPitchScreenBySlug(slug);
+  return JSON.parse(JSON.stringify(screen)) as PitchScreen;
+}
+
+export function copyPitchDeck(): PitchDeck {
+  return JSON.parse(JSON.stringify(PITCH_DECK_FIXTURE)) as PitchDeck;
+}
+
+export function ensurePitchInvariants(deck: PitchDeck): PitchDeck {
+  const parsed = validatePitchDeck(deck);
+  const order = parsed.screens.map((screen) => screen.slug);
+
+  for (let index = 0; index < PITCH_SCREEN_ORDER.length; index += 1) {
+    if (order[index] !== PITCH_SCREEN_ORDER[index]) {
+      throw new Error("Pitch screen order invariant violated.");
+    }
+  }
+
+  return parsed;
+}
+
+export function getPitchScreenTextList(slug: PitchScreenSlug): readonly string[] {
+  const screen = getPitchScreenBySlug(slug);
+
+  if (screen.slug === "01-double-engine") {
+    return [
+      screen.title,
+      screen.leftColumn.heading,
+      ...screen.leftColumn.bullets.map((entry) => entry.text),
+      ...screen.leftColumn.microcopy.map((entry) => entry.text),
+      screen.rightColumn.heading,
+      ...screen.rightColumn.bullets.map((entry) => entry.text),
+      ...screen.rightColumn.microcopy.map((entry) => entry.text),
+      screen.implicitMessage.text
+    ];
+  }
+
+  if (screen.slug === "02-industrial-flow") {
+    return [
+      screen.title,
+      ...screen.kpis.map((entry) => entry.label),
+      screen.cycleLabel.text,
+      screen.microcopy.text
+    ];
+  }
+
+  if (screen.slug === "03-hitech-os") {
+    return [screen.title, ...screen.features.map((entry) => entry.text), screen.strongLine.text];
+  }
+
   return [
-    {
-      id: "totalModules",
-      label: "Módulos totales",
-      value: formatInteger(kpis.totalModules),
-      numericValue: kpis.totalModules
-    },
-    {
-      id: "monthlyModules",
-      label: "Módulos mensuales",
-      value: formatInteger(kpis.monthlyModules),
-      numericValue: kpis.monthlyModules
-    },
-    {
-      id: "monthlyBillingUsd",
-      label: "Facturación mensual",
-      value: formatCurrencyInteger(kpis.monthlyBillingUsd),
-      numericValue: kpis.monthlyBillingUsd
-    },
-    {
-      id: "monthlyProfitUsd",
-      label: "Utilidad mensual",
-      value: formatCurrencyInteger(kpis.monthlyProfitUsd),
-      numericValue: kpis.monthlyProfitUsd
-    },
-    {
-      id: "annualProfitUsd",
-      label: "Utilidad anual",
-      value: formatCurrencyCompact(kpis.annualProfitUsd),
-      numericValue: kpis.annualProfitUsd
-    }
-  ] as const;
+    screen.title,
+    ...screen.blocks.flatMap((block) => [block.heading, ...block.items.map((entry) => entry.text)]),
+    screen.blocks[2]?.phase1 ?? "",
+    screen.blocks[2]?.phase2 ?? "",
+    screen.combinedValuationLine.text,
+    ...screen.comparison.headers,
+    ...screen.comparison.rows.flatMap((row) => row)
+  ];
 }
 
-export function buildCycleWidgetPoints(input: {
-  totalModules: number;
-  monthlyModules: number;
-  monthsToProject: number;
-}): readonly PitchCycleWidgetPoint[] {
-  const totalModules = Math.max(0, Math.floor(input.totalModules));
-  const monthlyModules = Math.max(0, Math.floor(input.monthlyModules));
-  const monthsToProject = Math.max(0, Math.floor(input.monthsToProject));
-
-  if (totalModules === 0 || monthlyModules === 0 || monthsToProject === 0) {
-    return [];
-  }
-
-  const cycleMonths = computeMonthsToCoverModules(totalModules, monthlyModules);
-  const points: PitchCycleWidgetPoint[] = [];
-  let servicedInCycle = 0;
-
-  for (let monthIndex = 1; monthIndex <= monthsToProject; monthIndex += 1) {
-    if (servicedInCycle >= totalModules) {
-      servicedInCycle = 0;
-    }
-
-    const remainingBefore = totalModules - servicedInCycle;
-    const modulesServicedThisMonth = Math.min(monthlyModules, remainingBefore);
-    const servicedModulesInCycle = servicedInCycle + modulesServicedThisMonth;
-    const remainingModulesInCycle = totalModules - servicedModulesInCycle;
-
-    points.push({
-      monthIndex,
-      monthInCycle: ((monthIndex - 1) % cycleMonths) + 1,
-      cycleNumber: Math.floor((monthIndex - 1) / cycleMonths) + 1,
-      modulesServicedThisMonth,
-      servicedModulesInCycle,
-      remainingModulesInCycle,
-      cycleCompleted: remainingModulesInCycle === 0
-    });
-
-    servicedInCycle = servicedModulesInCycle;
-  }
-
-  return points;
+export function containsPitchText(slug: PitchScreenSlug, needle: string): boolean {
+  return getPitchScreenTextList(slug).some((line) => line === needle);
 }
 
-export function estimateValuationRangeFromAnnualProfit(
-  annualProfitUsd: number,
-  multipleLow = 2,
-  multipleHigh = 3
-): PitchValuationRange {
+export function getPitchRouteIndex(): Readonly<Record<string, PitchScreen>> {
   return {
-    low: annualProfitUsd * multipleLow,
-    high: annualProfitUsd * multipleHigh,
-    multipleLow,
-    multipleHigh
+    [PITCH_ROUTES["01-double-engine"]]: PITCH_SCREEN_FIXTURES["01-double-engine"],
+    [PITCH_ROUTES["02-industrial-flow"]]: PITCH_SCREEN_FIXTURES["02-industrial-flow"],
+    [PITCH_ROUTES["03-hitech-os"]]: PITCH_SCREEN_FIXTURES["03-hitech-os"],
+    [PITCH_ROUTES["04-valuation"]]: PITCH_SCREEN_FIXTURES["04-valuation"]
   };
 }
 
-export function defaultIndustrialValuationRange(): PitchValuationRange {
-  return estimateValuationRangeFromAnnualProfit(PITCH_INDUSTRIAL_FLOW_ANNUAL_PROFIT_USD, 2, 3);
+export function getPitchScreenCount(): number {
+  return PITCH_SCREENS_FIXTURE.length;
 }
 
-export function formatCurrencyInteger(value: number): string {
-  return USD_INTEGER_FORMATTER.format(value);
+export function getPitchFixtureStats(): {
+  screenCount: number;
+  titleCount: number;
+  routeCount: number;
+  microcopyCount: number;
+  bulletLikeCount: number;
+} {
+  const microcopyCount =
+    SCREEN01_MICROCOPY_COUNT +
+    1 +
+    1; /* screen02 microcopy + screen03 strong line treated as microcopy-like */
+
+  return {
+    screenCount: PITCH_SCREENS_FIXTURE.length,
+    titleCount: PITCH_SCREENS_FIXTURE.length,
+    routeCount: PITCH_SCREENS_FIXTURE.length,
+    microcopyCount,
+    bulletLikeCount: estimatePitchBulletLikeCount()
+  };
 }
 
-export function formatCurrencyCompact(value: number): string {
-  return USD_COMPACT_FORMATTER.format(value);
+const SCREEN01_MICROCOPY_COUNT =
+  PITCH_SCREEN_FIXTURES["01-double-engine"].leftColumn.microcopy.length +
+  PITCH_SCREEN_FIXTURES["01-double-engine"].rightColumn.microcopy.length;
+
+function estimatePitchBulletLikeCount(): number {
+  return (
+    PITCH_SCREEN_FIXTURES["01-double-engine"].leftColumn.bullets.length +
+    PITCH_SCREEN_FIXTURES["01-double-engine"].rightColumn.bullets.length +
+    PITCH_SCREEN_FIXTURES["02-industrial-flow"].kpis.length +
+    PITCH_SCREEN_FIXTURES["03-hitech-os"].features.length +
+    PITCH_SCREEN_FIXTURES["04-valuation"].blocks.reduce((sum, block) => sum + block.items.length, 0)
+  );
 }
 
-export function formatInteger(value: number): string {
-  return NUMBER_FORMATTER.format(value);
-}
+export const PITCH_DECK_JSON_FIXTURE = serializePitchDeckToJson();
+export const PITCH_DECK_RESPONSE_JSON_FIXTURE = serializePitchDeckResponseToJson();

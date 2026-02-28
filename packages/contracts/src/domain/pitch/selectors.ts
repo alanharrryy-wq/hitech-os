@@ -1,154 +1,357 @@
-import {
-  PITCH_LAYOUT_SPLIT_PERCENT,
-  PITCH_ROUTE_DOUBLE_ENGINE,
-  PITCH_ROUTE_HITECH_OS,
-  PITCH_ROUTE_INDUSTRIAL_FLOW,
-  PITCH_ROUTE_VALUATION
-} from "./constants.js";
-import { PITCH_DECK_FIXTURE, PITCH_SCREEN_BY_ROUTE } from "./fixtures.js";
-import {
-  annualizeMonthlyValue,
-  buildCycleWidgetPoints,
-  buildKpiWidgets,
-  defaultIndustrialValuationRange,
-  formatCurrencyCompact
-} from "./helpers.js";
-import type {
-  PitchDeck,
-  PitchDoubleEngineSelectorModel,
-  PitchHitechOsSelectorModel,
-  PitchIndustrialFlowSelectorModel,
-  PitchScreen,
-  PitchScreenRoute,
-  PitchSelectorsBundle,
-  PitchValuationSelectorModel
-} from "./types.js";
+import { PITCH_SCREEN_ORDER, type PitchScreenSlug } from "./constants.js";
+import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "./fixtures.js";
+import type { PitchDeckSummary, PitchScreenSummary, PitchTextFragment } from "./types.js";
 
-export function selectPitchDeck(): PitchDeck {
-  return PITCH_DECK_FIXTURE;
-}
+export function collectPitchTextFragments(slug: PitchScreenSlug): readonly PitchTextFragment[] {
+  const screen = PITCH_SCREEN_FIXTURES[slug];
 
-export function selectPitchScreenByRoute(route: PitchScreenRoute): PitchScreen {
-  return PITCH_SCREEN_BY_ROUTE[route];
-}
-
-export function selectPitchScreensInOrder(): readonly PitchScreen[] {
-  return PITCH_DECK_FIXTURE.screens;
-}
-
-export function selectPitchScreen01(): PitchDoubleEngineSelectorModel {
-  const screen = selectPitchScreenByRoute(PITCH_ROUTE_DOUBLE_ENGINE);
-  if (screen.id !== "double-engine") {
-    throw new Error("Invariant violation: /pitch/01-double-engine must map to double-engine");
-  }
-
-  return {
-    route: screen.route,
-    title: screen.title,
-    split: {
-      leftPercent: PITCH_LAYOUT_SPLIT_PERCENT,
-      rightPercent: PITCH_LAYOUT_SPLIT_PERCENT
-    },
-    motors: [
+  if (screen.slug === "01-double-engine") {
+    return [
       {
-        slot: "left",
-        widthPercent: 50,
-        motorId: "motor1",
-        title: "Motor 1",
-        bullets: screen.columns.left,
-        microcopy: screen.microcopy.left
+        id: `${slug}:title`,
+        text: screen.title,
+        scope: "title",
+        screenSlug: slug
       },
       {
-        slot: "right",
-        widthPercent: 50,
-        motorId: "motor2",
-        title: "Motor 2",
-        bullets: screen.columns.right,
-        microcopy: screen.microcopy.right
+        id: `${slug}:left-heading`,
+        text: screen.leftColumn.heading,
+        scope: "heading",
+        screenSlug: slug
+      },
+      ...screen.leftColumn.bullets.map((bullet) => ({
+        id: bullet.id,
+        text: bullet.text,
+        scope: "bullet" as const,
+        screenSlug: slug
+      })),
+      ...screen.leftColumn.microcopy.map((entry) => ({
+        id: entry.id,
+        text: entry.text,
+        scope: "microcopy" as const,
+        screenSlug: slug
+      })),
+      {
+        id: `${slug}:right-heading`,
+        text: screen.rightColumn.heading,
+        scope: "heading",
+        screenSlug: slug
+      },
+      ...screen.rightColumn.bullets.map((bullet) => ({
+        id: bullet.id,
+        text: bullet.text,
+        scope: "bullet" as const,
+        screenSlug: slug
+      })),
+      ...screen.rightColumn.microcopy.map((entry) => ({
+        id: entry.id,
+        text: entry.text,
+        scope: "microcopy" as const,
+        screenSlug: slug
+      })),
+      {
+        id: screen.implicitMessage.id,
+        text: screen.implicitMessage.text,
+        scope: "strong-line",
+        screenSlug: slug
       }
-    ],
-    implicitMessage: screen.implicitMessage
-  };
-}
-
-export function selectPitchScreen02(): PitchIndustrialFlowSelectorModel {
-  const screen = selectPitchScreenByRoute(PITCH_ROUTE_INDUSTRIAL_FLOW);
-  if (screen.id !== "industrial-flow") {
-    throw new Error("Invariant violation: /pitch/02-industrial-flow must map to industrial-flow");
+    ];
   }
 
-  const annualProfitUsd = annualizeMonthlyValue(screen.kpis.monthlyProfitUsd);
-
-  return {
-    route: screen.route,
-    title: screen.title,
-    kpiWidgets: buildKpiWidgets(screen.kpis),
-    cycleWidget: {
-      months: screen.cycle.months,
-      statement: screen.cycle.statement,
-      resetBehavior: "automatic",
-      points: buildCycleWidgetPoints({
-        totalModules: screen.kpis.totalModules,
-        monthlyModules: screen.kpis.monthlyModules,
-        monthsToProject: screen.cycle.months
-      })
-    },
-    annualization: {
-      monthlyProfitUsd: screen.kpis.monthlyProfitUsd,
-      annualProfitUsd,
-      annualProfitDisplay: formatCurrencyCompact(annualProfitUsd)
-    },
-    microcopy: screen.microcopy
-  };
-}
-
-export function selectPitchScreen03(): PitchHitechOsSelectorModel {
-  const screen = selectPitchScreenByRoute(PITCH_ROUTE_HITECH_OS);
-  if (screen.id !== "hitech-os") {
-    throw new Error("Invariant violation: /pitch/03-hitech-os must map to hitech-os");
+  if (screen.slug === "02-industrial-flow") {
+    return [
+      {
+        id: `${slug}:title`,
+        text: screen.title,
+        scope: "title",
+        screenSlug: slug
+      },
+      ...screen.kpis.map((kpi) => ({
+        id: kpi.id,
+        text: `${kpi.label} ${kpi.value}`,
+        scope: "kpi" as const,
+        screenSlug: slug
+      })),
+      {
+        id: screen.cycleLabel.id,
+        text: screen.cycleLabel.text,
+        scope: "microcopy",
+        screenSlug: slug
+      },
+      {
+        id: screen.microcopy.id,
+        text: screen.microcopy.text,
+        scope: "microcopy",
+        screenSlug: slug
+      }
+    ];
   }
 
-  return {
-    route: screen.route,
-    title: screen.title,
-    features: screen.bullets.map((label, index) => ({
-      id: `feature-${String(index + 1).padStart(2, "0")}`,
-      label
+  if (screen.slug === "03-hitech-os") {
+    return [
+      {
+        id: `${slug}:title`,
+        text: screen.title,
+        scope: "title",
+        screenSlug: slug
+      },
+      ...screen.features.map((feature) => ({
+        id: feature.id,
+        text: feature.text,
+        scope: "bullet" as const,
+        screenSlug: slug
+      })),
+      {
+        id: screen.strongLine.id,
+        text: screen.strongLine.text,
+        scope: "strong-line",
+        screenSlug: slug
+      }
+    ];
+  }
+
+  return [
+    {
+      id: `${slug}:title`,
+      text: screen.title,
+      scope: "title",
+      screenSlug: slug
+    },
+    ...screen.blocks.flatMap((block) => {
+      const blockFragments: PitchTextFragment[] = [
+        {
+          id: `${block.id}:heading`,
+          text: block.heading,
+          scope: "heading",
+          screenSlug: slug
+        },
+        ...block.items.map((item) => ({
+          id: item.id,
+          text: item.text,
+          scope: "bullet" as const,
+          screenSlug: slug
+        }))
+      ];
+
+      if (block.phase1) {
+        blockFragments.push({
+          id: `${block.id}:phase1`,
+          text: block.phase1,
+          scope: "phase",
+          screenSlug: slug
+        });
+      }
+
+      if (block.phase2) {
+        blockFragments.push({
+          id: `${block.id}:phase2`,
+          text: block.phase2,
+          scope: "phase",
+          screenSlug: slug
+        });
+      }
+
+      return blockFragments;
+    }),
+    {
+      id: screen.combinedValuationLine.id,
+      text: screen.combinedValuationLine.text,
+      scope: "strong-line",
+      screenSlug: slug
+    },
+    ...screen.comparison.headers.map((header, index) => ({
+      id: `${slug}:header:${index}`,
+      text: header,
+      scope: "table-header" as const,
+      screenSlug: slug
     })),
-    strongPhrase: screen.strongPhrase
+    ...screen.comparison.rows.flatMap((row, rowIndex) =>
+      row.map((cell, cellIndex) => ({
+        id: `${slug}:cell:${rowIndex}:${cellIndex}`,
+        text: cell,
+        scope: "table-cell" as const,
+        screenSlug: slug
+      }))
+    )
+  ];
+}
+
+export function collectAllPitchTextFragments(): readonly PitchTextFragment[] {
+  return PITCH_SCREEN_ORDER.flatMap((slug) => collectPitchTextFragments(slug));
+}
+
+export function summarizePitchScreen(slug: PitchScreenSlug): PitchScreenSummary {
+  const screen = PITCH_SCREEN_FIXTURES[slug];
+  return {
+    slug,
+    route: screen.route,
+    order: screen.order,
+    title: screen.title,
+    fragmentCount: collectPitchTextFragments(slug).length
   };
 }
 
-export function selectPitchScreen04(): PitchValuationSelectorModel {
-  const screen = selectPitchScreenByRoute(PITCH_ROUTE_VALUATION);
-  if (screen.id !== "valuation") {
-    throw new Error("Invariant violation: /pitch/04-valuation must map to valuation");
+export function summarizePitchDeck(): PitchDeckSummary {
+  const screens = PITCH_SCREEN_ORDER.map((slug) => summarizePitchScreen(slug));
+  const allFragments = collectAllPitchTextFragments();
+  const bulletLikeCount = allFragments.filter(
+    (fragment) =>
+      fragment.scope === "bullet" ||
+      fragment.scope === "kpi" ||
+      fragment.scope === "phase" ||
+      fragment.scope === "table-cell"
+  ).length;
+
+  return {
+    deckId: PITCH_DECK_FIXTURE.meta.deckId,
+    version: PITCH_DECK_FIXTURE.meta.version,
+    locale: PITCH_DECK_FIXTURE.meta.locale,
+    screenCount: screens.length,
+    bulletLikeCount,
+    totalTextFragments: allFragments.length
+  };
+}
+
+export function findPitchTextExact(value: string): readonly PitchTextFragment[] {
+  return collectAllPitchTextFragments().filter((fragment) => fragment.text === value);
+}
+
+export function assertPitchTextExists(value: string): void {
+  const matches = findPitchTextExact(value);
+  if (matches.length === 0) {
+    throw new Error(`Pitch text not found: ${value}`);
+  }
+}
+
+export function createPitchSlugToTitleMap(): Readonly<Record<PitchScreenSlug, string>> {
+  return {
+    "01-double-engine": PITCH_SCREEN_FIXTURES["01-double-engine"].title,
+    "02-industrial-flow": PITCH_SCREEN_FIXTURES["02-industrial-flow"].title,
+    "03-hitech-os": PITCH_SCREEN_FIXTURES["03-hitech-os"].title,
+    "04-valuation": PITCH_SCREEN_FIXTURES["04-valuation"].title
+  };
+}
+
+export function createPitchSlugToRouteMap(): Readonly<Record<PitchScreenSlug, string>> {
+  return {
+    "01-double-engine": PITCH_SCREEN_FIXTURES["01-double-engine"].route,
+    "02-industrial-flow": PITCH_SCREEN_FIXTURES["02-industrial-flow"].route,
+    "03-hitech-os": PITCH_SCREEN_FIXTURES["03-hitech-os"].route,
+    "04-valuation": PITCH_SCREEN_FIXTURES["04-valuation"].route
+  };
+}
+
+export function getPitchDistinctHeadings(): readonly string[] {
+  const headings = new Set<string>();
+
+  for (const slug of PITCH_SCREEN_ORDER) {
+    const screen = PITCH_SCREEN_FIXTURES[slug];
+    headings.add(screen.title);
+
+    if (screen.slug === "01-double-engine") {
+      headings.add(screen.leftColumn.heading);
+      headings.add(screen.rightColumn.heading);
+    }
+
+    if (screen.slug === "04-valuation") {
+      for (const block of screen.blocks) {
+        headings.add(block.heading);
+      }
+    }
   }
 
-  return {
-    route: screen.route,
-    title: screen.title,
-    blocks: {
-      blockOne: screen.blockOne,
-      blockTwo: screen.blockTwo,
-      combinedLine: screen.combinedLine,
-      blockThree: screen.blockThree
-    },
-    table: {
-      headers: screen.table.headers,
-      rows: screen.table.rows
-    },
-    impliedIndustrialValuation: defaultIndustrialValuationRange()
-  };
+  return [...headings];
 }
 
-export function selectPitchBundle(): PitchSelectorsBundle {
-  return {
-    byRoute: PITCH_SCREEN_BY_ROUTE,
-    orderedScreens: selectPitchScreensInOrder(),
-    screen01: selectPitchScreen01(),
-    screen02: selectPitchScreen02(),
-    screen03: selectPitchScreen03(),
-    screen04: selectPitchScreen04()
-  };
+export function getPitchDistinctBulletLines(): readonly string[] {
+  const lines = new Set<string>();
+
+  for (const slug of PITCH_SCREEN_ORDER) {
+    const screen = PITCH_SCREEN_FIXTURES[slug];
+    if (screen.slug === "01-double-engine") {
+      for (const bullet of screen.leftColumn.bullets) {
+        lines.add(bullet.text);
+      }
+      for (const bullet of screen.rightColumn.bullets) {
+        lines.add(bullet.text);
+      }
+    }
+
+    if (screen.slug === "02-industrial-flow") {
+      for (const kpi of screen.kpis) {
+        lines.add(kpi.label);
+      }
+    }
+
+    if (screen.slug === "03-hitech-os") {
+      for (const feature of screen.features) {
+        lines.add(feature.text);
+      }
+    }
+
+    if (screen.slug === "04-valuation") {
+      for (const block of screen.blocks) {
+        for (const item of block.items) {
+          lines.add(item.text);
+        }
+        if (block.phase1) {
+          lines.add(block.phase1);
+        }
+        if (block.phase2) {
+          lines.add(block.phase2);
+        }
+      }
+
+      for (const row of screen.comparison.rows) {
+        for (const cell of row) {
+          lines.add(cell);
+        }
+      }
+    }
+  }
+
+  return [...lines];
+}
+
+export function getPitchDistinctMicrocopyLines(): readonly string[] {
+  const lines = new Set<string>();
+
+  for (const slug of PITCH_SCREEN_ORDER) {
+    const screen = PITCH_SCREEN_FIXTURES[slug];
+
+    if (screen.slug === "01-double-engine") {
+      for (const line of screen.leftColumn.microcopy) {
+        lines.add(line.text);
+      }
+      for (const line of screen.rightColumn.microcopy) {
+        lines.add(line.text);
+      }
+      lines.add(screen.implicitMessage.text);
+    }
+
+    if (screen.slug === "02-industrial-flow") {
+      lines.add(screen.cycleLabel.text);
+      lines.add(screen.microcopy.text);
+    }
+
+    if (screen.slug === "03-hitech-os") {
+      lines.add(screen.strongLine.text);
+    }
+
+    if (screen.slug === "04-valuation") {
+      lines.add(screen.combinedValuationLine.text);
+    }
+  }
+
+  return [...lines];
+}
+
+export function getPitchHeadersForValuationTable(): readonly string[] {
+  const valuation = PITCH_SCREEN_FIXTURES["04-valuation"];
+  return [...valuation.comparison.headers];
+}
+
+export function getPitchRowsForValuationTable(): readonly (readonly string[])[] {
+  const valuation = PITCH_SCREEN_FIXTURES["04-valuation"];
+  return valuation.comparison.rows.map((row) => [...row]);
 }

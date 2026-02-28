@@ -1,168 +1,293 @@
-import { strict as assert } from "node:assert";
-import { test } from "node:test";
+import { describe, expect, it } from "vitest";
 import {
-  PITCH_DOUBLE_ENGINE_TITLE,
-  PITCH_HITECH_OS_TITLE,
-  PITCH_INDUSTRIAL_FLOW_ANNUAL_PROFIT_USD,
-  PITCH_INDUSTRIAL_FLOW_CYCLE_MONTHS,
-  PITCH_INDUSTRIAL_FLOW_MONTHLY_PROFIT_USD,
-  PITCH_INDUSTRIAL_FLOW_TITLE,
-  PITCH_ROUTE_DOUBLE_ENGINE,
-  PITCH_ROUTE_HITECH_OS,
-  PITCH_ROUTE_INDUSTRIAL_FLOW,
-  PITCH_ROUTE_VALUATION,
-  PITCH_VALUATION_TITLE
-} from "../src/domain/pitch/constants.js";
-import {
-  assertPitchDeckMatchesFixture,
-  collectPitchStringMap,
-  comparePitchDeckAgainstFixture,
-  createPitchCopyFingerprint
-} from "../src/domain/pitch/driftGuard.js";
-import { PITCH_DECK_FIXTURE } from "../src/domain/pitch/fixtures.js";
-import {
-  annualizeMonthlyValue,
-  buildCycleWidgetPoints,
-  buildKpiWidgets,
-  computeMonthsToCoverModules,
-  normalizePitchText
-} from "../src/domain/pitch/helpers.js";
-import { parsePitchDeck, safeParsePitchDeck } from "../src/domain/pitch/schemas.js";
-import {
-  selectPitchBundle,
-  selectPitchDeck,
-  selectPitchScreen01,
-  selectPitchScreen02,
-  selectPitchScreen03,
-  selectPitchScreen04,
-  selectPitchScreenByRoute
-} from "../src/domain/pitch/selectors.js";
+  PITCH_DECK_FIXTURE,
+  PITCH_DECK_FIXTURE_LOCK,
+  PITCH_DECK_RESPONSE_FIXTURE,
+  PITCH_ROUTES,
+  PITCH_SCREEN_ORDER,
+  PITCH_SCREEN_TITLES,
+  PitchDeckResponseSchema,
+  PitchDeckSchema,
+  PitchScreenResponseSchema,
+  PitchScreenSchema,
+  assertPitchRoute,
+  assertPitchSlug,
+  buildPitchLinkModel,
+  collectAllPitchTextFragments,
+  containsPitchText,
+  copyPitchDeck,
+  copyPitchScreen,
+  createPitchScreenMatrix,
+  createPitchSlugToRouteMap,
+  createPitchSlugToTitleMap,
+  deserializePitchDeckFromJson,
+  deserializePitchDeckResponseFromJson,
+  ensurePitchInvariants,
+  getPitchDeck,
+  getPitchDeckResponse,
+  getPitchDistinctBulletLines,
+  getPitchDistinctHeadings,
+  getPitchDistinctMicrocopyLines,
+  getPitchFixtureStats,
+  getPitchHeadersForValuationTable,
+  getPitchRouteForSlug,
+  getPitchRowsForValuationTable,
+  getPitchScreenByRoute,
+  getPitchScreenBySlug,
+  getPitchScreenCount,
+  getPitchScreenResponse,
+  getPitchScreenTextList,
+  isPitchScreenSlug,
+  listPitchScreenSlugs,
+  listPitchScreens,
+  serializePitchDeckResponseToJson,
+  serializePitchDeckToJson,
+  summarizePitchDeck,
+  summarizePitchScreen,
+  validatePitchDeck,
+  validatePitchDeckResponse,
+  validatePitchScreen,
+  validatePitchScreenMap
+} from "../dist/index.js";
 
-function collectStrings(input: unknown, output: string[] = []): string[] {
-  if (typeof input === "string") {
-    output.push(input);
-    return output;
-  }
-  if (Array.isArray(input)) {
-    for (const item of input) {
-      collectStrings(item, output);
-    }
-    return output;
-  }
-  if (input && typeof input === "object") {
-    for (const value of Object.values(input)) {
-      collectStrings(value, output);
-    }
-  }
-  return output;
-}
-
-test("fixtures parse with strong schema", () => {
-  const parsed = parsePitchDeck(PITCH_DECK_FIXTURE);
-  assert.equal(parsed.screens.length, 4);
-
-  const safe = safeParsePitchDeck(PITCH_DECK_FIXTURE);
-  assert.equal(safe.success, true);
-});
-
-test("fixtures have no empty strings", () => {
-  const values = collectStrings(PITCH_DECK_FIXTURE);
-  assert.ok(values.length > 0);
-  for (const value of values) {
-    assert.notEqual(value.trim(), "");
-  }
-});
-
-test("helpers annualization returns expected value", () => {
-  assert.equal(annualizeMonthlyValue(PITCH_INDUSTRIAL_FLOW_MONTHLY_PROFIT_USD), PITCH_INDUSTRIAL_FLOW_ANNUAL_PROFIT_USD);
-});
-
-test("helpers build cycle points for 35-month cycle", () => {
-  const months = computeMonthsToCoverModules(420, 12);
-  assert.equal(months, 35);
-
-  const points = buildCycleWidgetPoints({
-    totalModules: 420,
-    monthlyModules: 12,
-    monthsToProject: PITCH_INDUSTRIAL_FLOW_CYCLE_MONTHS
+describe("pitch contracts valid fixtures", () => {
+  it("validates pitch deck fixture", () => {
+    const parsed = PitchDeckSchema.parse(PITCH_DECK_FIXTURE);
+    expect(parsed.meta.deckId).toBe("hitech-pitch-terraform-v1");
+    expect(parsed.screens.length).toBe(4);
+    expect(parsed.navigation.links.length).toBe(4);
   });
 
-  assert.equal(points.length, 35);
-  assert.equal(points[34]?.servicedModulesInCycle, 420);
-  assert.equal(points[34]?.cycleCompleted, true);
+  it("validates pitch deck response fixture", () => {
+    const parsed = PitchDeckResponseSchema.parse(PITCH_DECK_RESPONSE_FIXTURE);
+    expect(parsed.digest.screenCount).toBe(4);
+    expect(parsed.digest.tableHeaderCount).toBe(4);
+    expect(parsed.digest.tableRowCount).toBe(2);
+  });
+
+  it("validates each screen by slug", () => {
+    for (const slug of PITCH_SCREEN_ORDER) {
+      const screen = getPitchScreenBySlug(slug);
+      const parsed = PitchScreenSchema.parse(screen);
+      expect(parsed.slug).toBe(slug);
+      expect(parsed.route).toBe(PITCH_ROUTES[slug]);
+    }
+  });
+
+  it("validates helper outputs remain deterministic", () => {
+    expect(listPitchScreenSlugs()).toEqual(PITCH_SCREEN_ORDER);
+    expect(listPitchScreens().length).toBe(4);
+    expect(getPitchScreenCount()).toBe(4);
+
+    const matrix = createPitchScreenMatrix();
+    expect(matrix).toHaveLength(4);
+    expect(matrix[0]?.slug).toBe("01-double-engine");
+    expect(matrix[1]?.slug).toBe("02-industrial-flow");
+    expect(matrix[2]?.slug).toBe("03-hitech-os");
+    expect(matrix[3]?.slug).toBe("04-valuation");
+  });
+
+  it("supports route and slug assertion helpers", () => {
+    expect(assertPitchSlug("01-double-engine")).toBe("01-double-engine");
+    expect(assertPitchRoute("/pitch/03-hitech-os")).toBe("03-hitech-os");
+
+    expect(() => assertPitchSlug("invalid")).toThrow();
+    expect(() => assertPitchRoute("/pitch/invalid")).toThrow();
+  });
+
+  it("produces canonical link model and maps", () => {
+    const links = buildPitchLinkModel();
+    expect(links).toHaveLength(4);
+    for (const link of links) {
+      expect(link.isCanonical).toBe(true);
+      expect(link.href).toBe(PITCH_ROUTES[link.slug]);
+    }
+
+    const slugToTitle = createPitchSlugToTitleMap();
+    const slugToRoute = createPitchSlugToRouteMap();
+
+    expect(slugToTitle["01-double-engine"]).toBe(PITCH_SCREEN_TITLES["01-double-engine"]);
+    expect(slugToTitle["04-valuation"]).toBe(PITCH_SCREEN_TITLES["04-valuation"]);
+    expect(slugToRoute["01-double-engine"]).toBe("/pitch/01-double-engine");
+    expect(slugToRoute["04-valuation"]).toBe("/pitch/04-valuation");
+  });
+
+  it("serializes and deserializes deck without drift", () => {
+    const payload = serializePitchDeckToJson();
+    const decoded = deserializePitchDeckFromJson(payload);
+
+    expect(decoded.meta.deckId).toBe(PITCH_DECK_FIXTURE.meta.deckId);
+    expect(decoded.screens[0].slug).toBe("01-double-engine");
+    expect(decoded.screens[3].slug).toBe("04-valuation");
+
+    const responsePayload = serializePitchDeckResponseToJson();
+    const responseDecoded = deserializePitchDeckResponseFromJson(responsePayload);
+
+    expect(responseDecoded.digest.screenCount).toBe(4);
+    expect(responseDecoded.deck.screens[2].slug).toBe("03-hitech-os");
+  });
+
+  it("provides typed screen response helper", () => {
+    const response = getPitchScreenResponse({ slug: "02-industrial-flow" });
+    const parsed = PitchScreenResponseSchema.parse(response);
+
+    expect(parsed.screen.slug).toBe("02-industrial-flow");
+    expect(parsed.screen.title).toBe("MOTOR 1 — FLUJO INDUSTRIAL RECURRENTE");
+  });
+
+  it("keeps lock constants aligned with fixture", () => {
+    expect(PITCH_DECK_FIXTURE_LOCK.screenOrder).toEqual(PITCH_SCREEN_ORDER);
+    expect(PITCH_DECK_FIXTURE_LOCK.routes["03-hitech-os"]).toBe(PITCH_ROUTES["03-hitech-os"]);
+    expect(PITCH_DECK_FIXTURE_LOCK.titles["04-valuation"]).toBe(
+      PITCH_SCREEN_TITLES["04-valuation"]
+    );
+  });
+
+  it("exposes text index and coverage helpers", () => {
+    const headings = getPitchDistinctHeadings();
+    const bullets = getPitchDistinctBulletLines();
+    const microcopy = getPitchDistinctMicrocopyLines();
+    const fragments = collectAllPitchTextFragments();
+
+    expect(headings).toContain("MOTOR 2 — HITECH OS");
+    expect(bullets).toContain("Escalable a multiindustria");
+    expect(microcopy).toContain("No soy proveedor. Soy sistema.");
+    expect(fragments.length).toBeGreaterThan(40);
+  });
+
+  it("returns table headers and rows for valuation", () => {
+    const headers = getPitchHeadersForValuationTable();
+    const rows = getPitchRowsForValuationTable();
+
+    expect(headers).toEqual(["Modelo", "Múltiplo", "Riesgo", "Escalabilidad"]);
+    expect(rows).toHaveLength(2);
+    expect(rows[0]?.[0]).toBe("Industrial tradicional");
+    expect(rows[1]?.[0]).toBe("Industrial + Software");
+  });
+
+  it("provides fixture stats and screen summaries", () => {
+    const stats = getPitchFixtureStats();
+    const screenSummary = summarizePitchScreen("01-double-engine");
+    const deckSummary = summarizePitchDeck();
+
+    expect(stats.screenCount).toBe(4);
+    expect(stats.bulletLikeCount).toBeGreaterThan(20);
+    expect(screenSummary.route).toBe("/pitch/01-double-engine");
+    expect(screenSummary.fragmentCount).toBeGreaterThan(10);
+    expect(deckSummary.screenCount).toBe(4);
+    expect(deckSummary.totalTextFragments).toBeGreaterThan(40);
+  });
+
+  it("contains required canonical lines", () => {
+    expect(containsPitchText("01-double-engine", "19 módulos facturados")).toBe(true);
+    expect(
+      containsPitchText("02-industrial-flow", "Mercado interno ya existente, no especulativo.")
+    ).toBe(true);
+    expect(
+      containsPitchText(
+        "03-hitech-os",
+        "Infraestructura digital propietaria diseñada para control de activos críticos."
+      )
+    ).toBe(true);
+    expect(containsPitchText("04-valuation", "Valuación combinada estimada: 4–6M")).toBe(true);
+  });
 });
 
-test("selectors provide typed outputs for all screens", () => {
-  const byRoute01 = selectPitchScreenByRoute(PITCH_ROUTE_DOUBLE_ENGINE);
-  const byRoute02 = selectPitchScreenByRoute(PITCH_ROUTE_INDUSTRIAL_FLOW);
-  const byRoute03 = selectPitchScreenByRoute(PITCH_ROUTE_HITECH_OS);
-  const byRoute04 = selectPitchScreenByRoute(PITCH_ROUTE_VALUATION);
+describe("pitch contracts invalid fixtures", () => {
+  it("fails when deck screen order drifts", () => {
+    const copy = copyPitchDeck();
+    const first = copy.screens[0];
+    const second = copy.screens[1];
 
-  assert.equal(byRoute01.title, PITCH_DOUBLE_ENGINE_TITLE);
-  assert.equal(byRoute02.title, PITCH_INDUSTRIAL_FLOW_TITLE);
-  assert.equal(byRoute03.title, PITCH_HITECH_OS_TITLE);
-  assert.equal(byRoute04.title, PITCH_VALUATION_TITLE);
+    copy.screens[0] = second;
+    copy.screens[1] = first;
 
-  const screen01 = selectPitchScreen01();
-  const screen02 = selectPitchScreen02();
-  const screen03 = selectPitchScreen03();
-  const screen04 = selectPitchScreen04();
+    expect(() => validatePitchDeck(copy)).toThrow();
+  });
 
-  assert.equal(screen01.motors.length, 2);
-  assert.equal(screen01.split.leftPercent + screen01.split.rightPercent, 100);
-  assert.equal(screen02.cycleWidget.points.length, 35);
-  assert.equal(screen03.features.length, 7);
-  assert.equal(screen04.table.rows.length, 2);
+  it("fails when route does not match slug", () => {
+    const copy = copyPitchDeck();
+    copy.navigation.links[0] = {
+      ...copy.navigation.links[0],
+      href: "/pitch/04-valuation"
+    };
 
-  const bundle = selectPitchBundle();
-  assert.equal(bundle.orderedScreens.length, 4);
-});
+    expect(() => validatePitchDeck(copy)).toThrow();
+  });
 
-test("drift guard is stable for fixture", () => {
-  const report = comparePitchDeckAgainstFixture(PITCH_DECK_FIXTURE);
-  assert.equal(report.hasDrift, false);
-  assert.equal(report.mismatches.length, 0);
+  it("fails when canonical copy line is mutated", () => {
+    const screen = copyPitchScreen("01-double-engine");
+    screen.implicitMessage.text = "No soy proveedor, soy plataforma";
 
-  const fingerprint = createPitchCopyFingerprint(PITCH_DECK_FIXTURE);
-  assert.ok(fingerprint.startsWith("pitch-copy-fingerprint-v1:"));
+    expect(() => validatePitchScreen(screen)).toThrow();
+  });
 
-  assertPitchDeckMatchesFixture(PITCH_DECK_FIXTURE);
-});
+  it("fails when valuation headers change", () => {
+    const screen = copyPitchScreen("04-valuation");
+    screen.comparison.headers[0] = "Tipo";
 
-test("drift guard detects intentional mutation", () => {
-  const mutated = {
-    ...PITCH_DECK_FIXTURE,
-    screens: [
-      {
-        ...PITCH_DECK_FIXTURE.screens[0],
-        implicitMessage: "No soy proveedor. Soy software."
-      },
-      ...PITCH_DECK_FIXTURE.screens.slice(1)
-    ]
-  };
+    expect(() => validatePitchScreen(screen)).toThrow();
+  });
 
-  const report = comparePitchDeckAgainstFixture(mutated);
-  assert.equal(report.hasDrift, true);
-  assert.ok(report.mismatches.length > 0);
-  assert.throws(() => assertPitchDeckMatchesFixture(mutated));
-});
+  it("fails when valuation rows change", () => {
+    const screen = copyPitchScreen("04-valuation");
+    screen.comparison.rows[1][3] = "Media";
 
-test("normalization and KPI widgets are deterministic", () => {
-  assert.equal(normalizePitchText("  test\n  value  "), "test value");
-  const widgets = buildKpiWidgets(PITCH_DECK_FIXTURE.screens[1].kpis);
-  assert.equal(widgets.length, 5);
-  assert.equal(widgets[4]?.numericValue, 1092000);
-});
+    expect(() => validatePitchScreen(screen)).toThrow();
+  });
 
-test("deck selector returns canonical fixture", () => {
-  const deck = selectPitchDeck();
-  assert.equal(deck.screens[0].route, PITCH_ROUTE_DOUBLE_ENGINE);
-});
+  it("fails when response digest shape breaks", () => {
+    const response = getPitchDeckResponse();
+    const invalid = {
+      ...response,
+      digest: {
+        ...response.digest,
+        screenCount: 5
+      }
+    };
 
-test("string map has deterministic ordering after sort", () => {
-  const entries = collectPitchStringMap(PITCH_DECK_FIXTURE);
-  const sorted = entries.slice().sort((left, right) => left.key.localeCompare(right.key));
-  for (let index = 1; index < sorted.length; index += 1) {
-    assert.ok(sorted[index - 1]!.key <= sorted[index]!.key);
-  }
+    expect(() => validatePitchDeckResponse(invalid)).toThrow();
+  });
+
+  it("fails when screen map has invalid payload", () => {
+    const invalidMap = {
+      "01-double-engine": getPitchScreenBySlug("01-double-engine"),
+      "02-industrial-flow": getPitchScreenBySlug("02-industrial-flow"),
+      "03-hitech-os": getPitchScreenBySlug("03-hitech-os"),
+      "04-valuation": {
+        ...getPitchScreenBySlug("04-valuation"),
+        title: "ESTRUCTURA FINANCIERA"
+      }
+    };
+
+    expect(() => validatePitchScreenMap(invalidMap)).toThrow();
+  });
+
+  it("fails when route lookup receives unknown route", () => {
+    expect(getPitchScreenByRoute("/pitch/99-unknown")).toBeNull();
+  });
+
+  it("rejects invariant violations", () => {
+    const copy = copyPitchDeck();
+    copy.screens[2] = {
+      ...copy.screens[2],
+      route: "/pitch/02-industrial-flow"
+    };
+
+    expect(() => ensurePitchInvariants(copy)).toThrow();
+  });
+
+  it("guards helper-level canonical APIs", () => {
+    expect(isPitchScreenSlug("03-hitech-os")).toBe(true);
+    expect(isPitchScreenSlug("03-hitech-os-v2")).toBe(false);
+
+    const deck = getPitchDeck();
+    expect(deck.navigation.base).toBe("/pitch");
+
+    const route = getPitchRouteForSlug("04-valuation");
+    expect(route).toBe("/pitch/04-valuation");
+
+    const lines = getPitchScreenTextList("04-valuation");
+    expect(lines).toContain("Modelo");
+  });
 });
