@@ -1,0 +1,106 @@
+import {
+  PITCH_DOMAIN_ID,
+  PITCH_DOMAIN_VERSION,
+  PITCH_DOUBLE_ENGINE_IMPLICIT_MESSAGE,
+  PITCH_DOUBLE_ENGINE_LEFT_BULLETS,
+  PITCH_DOUBLE_ENGINE_LEFT_MICROCOPY,
+  PITCH_DOUBLE_ENGINE_RIGHT_BULLETS,
+  PITCH_DOUBLE_ENGINE_RIGHT_MICROCOPY,
+  PITCH_DOUBLE_ENGINE_TITLE,
+  PITCH_HITECH_OS_BULLETS,
+  PITCH_HITECH_OS_STRONG_PHRASE,
+  PITCH_HITECH_OS_TITLE,
+  PITCH_INDUSTRIAL_FLOW_ANNUAL_PROFIT_COMPACT_TEXT,
+  PITCH_INDUSTRIAL_FLOW_ANNUAL_PROFIT_USD,
+  PITCH_INDUSTRIAL_FLOW_CYCLE_MONTHS,
+  PITCH_INDUSTRIAL_FLOW_CYCLE_STATEMENT,
+  PITCH_INDUSTRIAL_FLOW_MICROCOPY,
+  PITCH_INDUSTRIAL_FLOW_MONTHLY_BILLING_USD,
+  PITCH_INDUSTRIAL_FLOW_MONTHLY_MODULES,
+  PITCH_INDUSTRIAL_FLOW_MONTHLY_PROFIT_USD,
+  PITCH_INDUSTRIAL_FLOW_TITLE,
+  PITCH_INDUSTRIAL_FLOW_TOTAL_MODULES,
+  PITCH_ROUTE_DOUBLE_ENGINE,
+  PITCH_ROUTE_HITECH_OS,
+  PITCH_ROUTE_INDUSTRIAL_FLOW,
+  PITCH_ROUTE_VALUATION,
+  PITCH_VALUATION_BLOCK_ONE_LINES,
+  PITCH_VALUATION_BLOCK_THREE_LINES,
+  PITCH_VALUATION_BLOCK_TWO_LINES,
+  PITCH_VALUATION_COMBINED_LINE,
+  PITCH_VALUATION_TABLE_HEADERS,
+  PITCH_VALUATION_TABLE_ROWS,
+  PITCH_VALUATION_TITLE
+} from "./constants.js";
+import type { PitchDeck, PitchScreenRoute } from "./types.js";
+
+export const PITCH_DECK_FIXTURE: PitchDeck = {
+  domain: PITCH_DOMAIN_ID,
+  version: PITCH_DOMAIN_VERSION,
+  screens: [
+    {
+      id: "double-engine",
+      route: PITCH_ROUTE_DOUBLE_ENGINE,
+      title: PITCH_DOUBLE_ENGINE_TITLE,
+      columns: {
+        left: [...PITCH_DOUBLE_ENGINE_LEFT_BULLETS],
+        right: [...PITCH_DOUBLE_ENGINE_RIGHT_BULLETS]
+      },
+      microcopy: {
+        left: PITCH_DOUBLE_ENGINE_LEFT_MICROCOPY,
+        right: PITCH_DOUBLE_ENGINE_RIGHT_MICROCOPY
+      },
+      implicitMessage: PITCH_DOUBLE_ENGINE_IMPLICIT_MESSAGE
+    },
+    {
+      id: "industrial-flow",
+      route: PITCH_ROUTE_INDUSTRIAL_FLOW,
+      title: PITCH_INDUSTRIAL_FLOW_TITLE,
+      kpis: {
+        totalModules: PITCH_INDUSTRIAL_FLOW_TOTAL_MODULES,
+        monthlyModules: PITCH_INDUSTRIAL_FLOW_MONTHLY_MODULES,
+        monthlyBillingUsd: PITCH_INDUSTRIAL_FLOW_MONTHLY_BILLING_USD,
+        monthlyProfitUsd: PITCH_INDUSTRIAL_FLOW_MONTHLY_PROFIT_USD,
+        annualProfitUsd: PITCH_INDUSTRIAL_FLOW_ANNUAL_PROFIT_USD,
+        annualProfitCompactText: PITCH_INDUSTRIAL_FLOW_ANNUAL_PROFIT_COMPACT_TEXT
+      },
+      cycle: {
+        months: PITCH_INDUSTRIAL_FLOW_CYCLE_MONTHS,
+        statement: PITCH_INDUSTRIAL_FLOW_CYCLE_STATEMENT
+      },
+      microcopy: PITCH_INDUSTRIAL_FLOW_MICROCOPY
+    },
+    {
+      id: "hitech-os",
+      route: PITCH_ROUTE_HITECH_OS,
+      title: PITCH_HITECH_OS_TITLE,
+      bullets: [...PITCH_HITECH_OS_BULLETS],
+      strongPhrase: PITCH_HITECH_OS_STRONG_PHRASE
+    },
+    {
+      id: "valuation",
+      route: PITCH_ROUTE_VALUATION,
+      title: PITCH_VALUATION_TITLE,
+      blockOne: [...PITCH_VALUATION_BLOCK_ONE_LINES],
+      blockTwo: [...PITCH_VALUATION_BLOCK_TWO_LINES],
+      combinedLine: PITCH_VALUATION_COMBINED_LINE,
+      blockThree: [...PITCH_VALUATION_BLOCK_THREE_LINES],
+      table: {
+        headers: [...PITCH_VALUATION_TABLE_HEADERS],
+        rows: PITCH_VALUATION_TABLE_ROWS.map((row) => ({
+          model: row[0],
+          multiple: row[1],
+          risk: row[2],
+          scalability: row[3]
+        }))
+      }
+    }
+  ]
+};
+
+export const PITCH_SCREEN_BY_ROUTE: Record<PitchScreenRoute, PitchDeck["screens"][number]> = {
+  "/pitch/01-double-engine": PITCH_DECK_FIXTURE.screens[0],
+  "/pitch/02-industrial-flow": PITCH_DECK_FIXTURE.screens[1],
+  "/pitch/03-hitech-os": PITCH_DECK_FIXTURE.screens[2],
+  "/pitch/04-valuation": PITCH_DECK_FIXTURE.screens[3]
+};
