@@ -1,5 +1,13 @@
 import type { AgentCapabilities, HealthReport, JobRequest, JobResult } from "../index.js";
-import { CONTRACT_VERSION_INFO, FEATURE_FLAGS_DEFAULTS } from "../index.js";
+import {
+  CONTRACT_DOMAIN_PITCH_MODULE_PATH,
+  CONTRACT_FIXTURES_MODULE_PATH,
+  CONTRACT_FIXTURES_PITCH_MODULE_PATH,
+  CONTRACT_VERSION_INFO,
+  FEATURE_FLAGS_DEFAULTS,
+  fixtures,
+  pitch
+} from "../index.js";
 
 const _jobRequestSample: JobRequest = {
   jobId: "job-check-001",
@@ -38,4 +46,13 @@ const _healthSample: HealthReport = {
   checks: [{ name: "contracts", status: "ok", message: "ok" }]
 };
 
-void [_jobRequestSample, _jobResultSample, _capabilitiesSample, _healthSample];
+const _pitchWiringChecks = {
+  domainPath: CONTRACT_DOMAIN_PITCH_MODULE_PATH,
+  fixturesIndexPath: CONTRACT_FIXTURES_MODULE_PATH,
+  fixturesPath: CONTRACT_FIXTURES_PITCH_MODULE_PATH,
+  pitchDomainPath: pitch.domainModulePath,
+  pitchFixturesPath: pitch.fixturesModulePath,
+  fixturesPitchPath: fixtures.pitchModulePath
+};
+
+void [_jobRequestSample, _jobResultSample, _capabilitiesSample, _healthSample, _pitchWiringChecks];

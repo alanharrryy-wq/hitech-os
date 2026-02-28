@@ -10,7 +10,16 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./styles.css": "./src/styles.css"
+    "./styles.css": "./src/styles.css",
+    "./layers.css": "./src/styles/layers.css",
+    "./layers": {
+      "types": "./dist/layers/index.d.ts",
+      "default": "./dist/layers/index.js"
+    },
+    "./layers/*": {
+      "types": "./dist/layers/*.d.ts",
+      "default": "./dist/layers/*.js"
+    }
   },
   "scripts": {
     "dev": "tsc -w --preserveWatchOutput",
