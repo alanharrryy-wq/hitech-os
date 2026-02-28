@@ -58,7 +58,7 @@
   - `print-report`
   - `--version`
 - Run IDs now include base-ref hash token.
-- Worktrees now use `tools/codex/worktrees/<RUN_ID>/<WORKER>`.
+- Worktrees now use fixed worker paths: `tools/codex/worktrees/<WORKER>`.
 - Worktree creation now uses per-run/per-worker lock files.
 - Overlap detection now reconciles `FILES_CHANGED` with `DIFF.patch` and reports hidden overlaps.
 - Ledger events now include event metadata (`event_id`, parent links, durations, file counts) and signature updates.
