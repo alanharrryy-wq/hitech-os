@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background: hsl(var(--ui-bg));
+  color: hsl(var(--ui-text-1));
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.keystone-kicker {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: hsl(var(--ui-text-3));
+}
+
+.keystone-stat-value {
+  margin: 0;
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: hsl(var(--ui-text-1));
+}
+
+.keystone-muted {
+  color: hsl(var(--ui-text-3));
+}

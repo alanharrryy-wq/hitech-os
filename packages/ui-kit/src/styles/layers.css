@@ -1,0 +1,271 @@
+:root {
+  --fx-grain-op: 0.16;
+  --fx-scanline-op: 0.14;
+  --fx-haze-op: 0.12;
+  --fx-vignette-op: 0.2;
+  --fx-horizon-op: 0.2;
+  --fx-card-inner-stroke-op: 0.44;
+  --fx-card-specular-op: 0.26;
+  --fx-card-grain-op: 0.12;
+  --fx-card-shadow-ambient-op: 0.24;
+  --fx-inset-shadow-op: 0.2;
+}
+
+.stage {
+  position: relative;
+  isolation: isolate;
+}
+
+.stage .stage-overlays {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.stage .stage-content {
+  position: relative;
+  z-index: 1;
+}
+
+.stage .noise,
+.stage .scanlines,
+.stage .haze,
+.stage .vignette,
+.stage .horizon,
+.stage .frame-bezel {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--ui-core-duration-fast) ease-out;
+}
+
+.stage .noise {
+  background-image: radial-gradient(hsl(var(--ui-text-1) / 0.1) 0.4px, transparent 0.4px);
+  background-size: 3px 3px;
+}
+
+.stage .scanlines {
+  background-image: linear-gradient(
+    transparent 0,
+    transparent calc(100% - 1px),
+    hsl(var(--ui-text-1) / 0.08) calc(100% - 1px),
+    hsl(var(--ui-text-1) / 0.08) 100%
+  );
+  background-size: 100% 5px;
+}
+
+.stage .haze {
+  background:
+    radial-gradient(circle at 20% 30%, hsl(var(--ui-surface-1) / 0.6), transparent 52%),
+    radial-gradient(circle at 80% 70%, hsl(var(--ui-accent) / 0.07), transparent 56%);
+}
+
+.stage .vignette {
+  box-shadow: inset 0 0 220px hsl(var(--ui-text-1) / 0.2);
+}
+
+.stage .horizon {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 65%,
+    hsl(var(--ui-border-strong) / 0.25) 78%,
+    transparent 92%
+  );
+}
+
+.stage .frame-bezel {
+  border: 1px solid hsl(var(--ui-border-2));
+  border-radius: 0.75rem;
+  margin: 0.5rem;
+}
+
+.stage[data-layer-stage-noise="on"] .noise {
+  opacity: var(--fx-grain-op);
+}
+
+.stage[data-layer-stage-noise="off"] .noise {
+  opacity: 0;
+}
+
+.stage[data-layer-stage-scanlines="on"] .scanlines {
+  opacity: var(--fx-scanline-op);
+}
+
+.stage[data-layer-stage-scanlines="off"] .scanlines {
+  opacity: 0;
+}
+
+.stage[data-layer-stage-haze="on"] .haze {
+  opacity: var(--fx-haze-op);
+}
+
+.stage[data-layer-stage-haze="off"] .haze {
+  opacity: 0;
+}
+
+.stage[data-layer-stage-vignette="on"] .vignette {
+  opacity: var(--fx-vignette-op);
+}
+
+.stage[data-layer-stage-vignette="off"] .vignette {
+  opacity: 0;
+}
+
+.stage[data-layer-stage-horizon="on"] .horizon {
+  opacity: var(--fx-horizon-op);
+}
+
+.stage[data-layer-stage-horizon="off"] .horizon {
+  opacity: 0;
+}
+
+.stage[data-layer-frame-bezel="on"] .frame-bezel {
+  opacity: 1;
+}
+
+.stage[data-layer-frame-bezel="off"] .frame-bezel {
+  opacity: 0;
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  background: hsl(var(--ui-surface-1) / 0.92);
+  box-shadow: var(--ui-shadow-1);
+}
+
+.card::before,
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--ui-core-duration-fast) ease-out;
+}
+
+.card::before {
+  border: 1px solid hsl(var(--ui-surface-1));
+  border-radius: inherit;
+  opacity: 0;
+}
+
+.card::after {
+  background:
+    linear-gradient(120deg, hsl(var(--ui-surface-1) / 0.24), transparent 40%),
+    radial-gradient(circle at 100% 0%, hsl(var(--ui-surface-1) / 0.22), transparent 36%);
+}
+
+.card[data-layer-card-inner-stroke="on"]::before {
+  opacity: var(--fx-card-inner-stroke-op);
+}
+
+.card[data-layer-card-inner-stroke="off"]::before {
+  opacity: 0;
+}
+
+.card[data-layer-card-specular="on"]::after {
+  opacity: var(--fx-card-specular-op);
+}
+
+.card[data-layer-card-specular="off"]::after {
+  opacity: 0;
+}
+
+.card[data-layer-card-grain="on"] {
+  background-image:
+    linear-gradient(180deg, hsl(var(--ui-surface-1) / 0.94), hsl(var(--ui-surface-2) / 0.9)),
+    radial-gradient(hsl(var(--ui-text-1) / 0.08) 0.4px, transparent 0.4px);
+  background-size:
+    100% 100%,
+    4px 4px;
+  background-blend-mode: normal, multiply;
+}
+
+.card[data-layer-card-grain="off"] {
+  background-image: linear-gradient(180deg, hsl(var(--ui-surface-1) / 0.94), hsl(var(--ui-surface-2) / 0.9));
+}
+
+.card[data-layer-card-shadow-ambient="on"] {
+  box-shadow:
+    var(--ui-shadow-1),
+    0 14px 24px hsl(var(--ui-text-1) / var(--fx-card-shadow-ambient-op));
+}
+
+.card[data-layer-card-shadow-ambient="off"] {
+  box-shadow: var(--ui-shadow-1);
+}
+
+.card[data-layer-card-blur="off"] {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: hsl(var(--ui-surface-1) / 0.93);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .card[data-layer-card-blur="on"] {
+    backdrop-filter: blur(var(--ui-fx-blur-sm));
+    -webkit-backdrop-filter: blur(var(--ui-fx-blur-sm));
+    background: hsl(var(--ui-surface-1) / 0.66);
+  }
+}
+
+.inset[data-layer-inset-shadow="on"] {
+  box-shadow:
+    inset 0 1px 0 hsl(var(--ui-surface-1)),
+    inset 0 -12px 20px hsl(var(--ui-text-1) / var(--fx-inset-shadow-op));
+}
+
+.inset[data-layer-inset-shadow="off"] {
+  box-shadow: inset 0 1px 0 hsl(var(--ui-surface-1));
+}
+
+[data-layer-motion-enabled="off"] *,
+[data-layer-motion-enabled="off"]::before,
+[data-layer-motion-enabled="off"]::after {
+  animation-duration: 0ms !important;
+  animation-delay: 0ms !important;
+  transition-duration: 0ms !important;
+  scroll-behavior: auto !important;
+}
+
+[data-layer-motion-enabled="on"] .noise {
+  animation: layer-noise-drift 5s linear infinite;
+}
+
+[data-layer-motion-enabled="on"] .scanlines {
+  animation: layer-scanline-drift 7s linear infinite;
+}
+
+@keyframes layer-noise-drift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(1%, -1%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes layer-scanline-drift {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage .noise,
+  .stage .scanlines {
+    animation: none !important;
+  }
+}

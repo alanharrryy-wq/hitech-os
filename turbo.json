@@ -11,7 +11,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", "build/**", "schemas/generated/**"]
+      "outputs": ["dist/**", "build/**", ".next/**", "schemas/generated/**"]
     },
     "lint": {
       "dependsOn": ["^lint"],
