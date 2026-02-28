@@ -1,0 +1,38 @@
+{
+  "name": "@hitech/keystone",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3100",
+    "build": "next build",
+    "start": "next start -p 3100",
+    "lint": "eslint \"app/**/*.{ts,tsx}\" \"components/**/*.{ts,tsx}\" \"lib/**/*.{ts,tsx}\" \"providers/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\"",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@hitech/contracts": "workspace:*",
+    "@hitech/ui-kit": "workspace:*",
+    "@tanstack/react-query": "5.64.2",
+    "next": "16.1.6",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "zustand": "5.0.2",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "22.13.9",
+    "@types/react": "19.0.2",
+    "@types/react-dom": "19.0.2",
+    "autoprefixer": "10.4.20",
+    "postcss": "8.4.49",
+    "tailwindcss": "3.4.17",
+    "typescript": "5.8.2",
+    "vitest": "2.1.8"
+  },
+  "engines": {
+    "node": ">=20.0.0 <26.0.0",
+    "pnpm": ">=9.0.0 <10.0.0"
+  }
+}
