@@ -21,7 +21,7 @@
     "lockfile:check": "pnpm install --frozen-lockfile --ignore-scripts",
     "snapshot:hos": "pnpm exec tsx tools/snapshot/hos_snapshot.ts",
     "snapshot:hos:validate": "pnpm exec tsx tools/snapshot/validate_snapshot.ts",
-    "dev": "turbo run dev --parallel",
+    "dev": "pnpm -r --if-present dev",
     "turbo:build": "turbo run build",
     "turbo:lint": "turbo run lint",
     "turbo:test": "turbo run test",
