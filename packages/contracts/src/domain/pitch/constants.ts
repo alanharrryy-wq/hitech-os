@@ -6,7 +6,9 @@ export const PITCH_SCREEN_SLUGS = [
   "01-double-engine",
   "02-industrial-flow",
   "03-hitech-os",
-  "04-valuation"
+  "04-valuation",
+  "05-inventory-foundation",
+  "06-shipments-receiving"
 ] as const;
 
 export type PitchScreenSlug = (typeof PITCH_SCREEN_SLUGS)[number];
@@ -19,7 +21,9 @@ export const PITCH_ROUTES: Readonly<
   "01-double-engine": "/pitch/01-double-engine",
   "02-industrial-flow": "/pitch/02-industrial-flow",
   "03-hitech-os": "/pitch/03-hitech-os",
-  "04-valuation": "/pitch/04-valuation"
+  "04-valuation": "/pitch/04-valuation",
+  "05-inventory-foundation": "/pitch/05-inventory-foundation",
+  "06-shipments-receiving": "/pitch/06-shipments-receiving"
 };
 
 export const PITCH_SCREEN_ORDER: readonly PitchScreenSlug[] = PITCH_SCREEN_SLUGS;
@@ -34,21 +38,28 @@ export const PITCH_SCREEN_TITLES: Readonly<Record<PitchScreenSlug, string>> = {
   "01-double-engine": "HITECH — ARQUITECTURA DE DOBLE MOTOR",
   "02-industrial-flow": "MOTOR 1 — FLUJO INDUSTRIAL RECURRENTE",
   "03-hitech-os": "MOTOR 2 — HITECH OS (Infraestructura Digital)",
-  "04-valuation": "ESTRUCTURA FINANCIERA + VALUACIÓN"
+  "04-valuation": "ESTRUCTURA FINANCIERA + VALUACIÓN",
+  "05-inventory-foundation":
+    "RUN 1 - INVENTORY FOUNDATION (RBAC + SUPPLIERS + SKU + DOCUMENT VAULT)",
+  "06-shipments-receiving": "RUN 2 - IMPORT SHIPMENTS (CUSTOMS PACK + RECEIVING -> QUARANTINE)"
 };
 
 export const PITCH_ANCHORS: Readonly<Record<PitchScreenSlug, string>> = {
   "01-double-engine": "double-engine",
   "02-industrial-flow": "industrial-flow",
   "03-hitech-os": "hitech-os",
-  "04-valuation": "valuation"
+  "04-valuation": "valuation",
+  "05-inventory-foundation": "inventory-foundation",
+  "06-shipments-receiving": "shipments-receiving"
 };
 
-export const PITCH_SCREEN_NUMBERS: Readonly<Record<PitchScreenSlug, 1 | 2 | 3 | 4>> = {
+export const PITCH_SCREEN_NUMBERS: Readonly<Record<PitchScreenSlug, 1 | 2 | 3 | 4 | 5 | 6>> = {
   "01-double-engine": 1,
   "02-industrial-flow": 2,
   "03-hitech-os": 3,
-  "04-valuation": 4
+  "04-valuation": 4,
+  "05-inventory-foundation": 5,
+  "06-shipments-receiving": 6
 };
 
 export const PITCH_TABLE_HEADERS = ["Modelo", "Múltiplo", "Riesgo", "Escalabilidad"] as const;
@@ -71,5 +82,7 @@ export const PITCH_SCHEMA_TAGS = {
   screen01: "pitch.screen.01",
   screen02: "pitch.screen.02",
   screen03: "pitch.screen.03",
-  screen04: "pitch.screen.04"
+  screen04: "pitch.screen.04",
+  screen05: "pitch.screen.05",
+  screen06: "pitch.screen.06"
 } as const;

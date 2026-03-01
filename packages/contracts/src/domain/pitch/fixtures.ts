@@ -19,6 +19,8 @@ import {
   type PitchScreen02,
   type PitchScreen03,
   type PitchScreen04,
+  type PitchScreen05,
+  type PitchScreen06,
   PitchCopyDigestSchema,
   PitchDeckResponseSchema,
   PitchDeckSchema,
@@ -316,18 +318,246 @@ const SCREEN_04_FIXTURE: PitchScreen04 = {
   }
 };
 
+export const SCREEN_05_FIXTURE: PitchScreen05 = {
+  slug: "05-inventory-foundation",
+  route: PITCH_ROUTES["05-inventory-foundation"],
+  order: 5,
+  tag: "pitch.screen.05",
+  title: "RUN 1 - INVENTORY FOUNDATION (RBAC + SUPPLIERS + SKU + DOCUMENT VAULT)",
+  foundationStatus: {
+    id: "screen05-foundation-status",
+    heading: "Foundation status",
+    kpis: [
+      {
+        id: "screen05-kpi-01",
+        label: "RBAC profiles defined",
+        value: "4",
+        note: "Admin, Ops, QA, Finance"
+      },
+      {
+        id: "screen05-kpi-02",
+        label: "Suppliers pre-registered",
+        value: "3",
+        note: "Tier-1 baseline"
+      },
+      {
+        id: "screen05-kpi-03",
+        label: "SKU templates loaded",
+        value: "24",
+        note: "Initial import batch"
+      },
+      {
+        id: "screen05-kpi-04",
+        label: "Vault document sets",
+        value: "5",
+        note: "Mandatory compliance pack"
+      }
+    ],
+    rbacMatrixSnapshot: {
+      id: "screen05-rbac-matrix",
+      heading: "RBAC matrix snapshot",
+      rows: [
+        {
+          id: "screen05-rbac-row-01",
+          role: "Warehouse Operator",
+          permissions: ["receive.shipment", "scan.sku", "view.stock"],
+          status: "DONE"
+        },
+        {
+          id: "screen05-rbac-row-02",
+          role: "Quality Inspector",
+          permissions: ["inspect.lot", "set.quarantine", "release.qa"],
+          status: "IN_PROGRESS"
+        },
+        {
+          id: "screen05-rbac-row-03",
+          role: "Procurement Lead",
+          permissions: ["approve.supplier", "link.po", "view.documents"],
+          status: "PENDING"
+        }
+      ]
+    },
+    supplierOnboardingStatus: {
+      id: "screen05-supplier-onboarding",
+      heading: "Supplier onboarding status",
+      suppliers: [
+        {
+          id: "screen05-supplier-01",
+          supplier: "SUP-MX-ALPHA",
+          status: "DONE"
+        },
+        {
+          id: "screen05-supplier-02",
+          supplier: "SUP-US-BETA",
+          status: "IN_PROGRESS"
+        },
+        {
+          id: "screen05-supplier-03",
+          supplier: "SUP-CN-GAMMA",
+          status: "MISSING"
+        }
+      ]
+    }
+  },
+  productsSkuBaseline: {
+    id: "screen05-products-sku",
+    heading: "Products & SKU baseline",
+    fields: [
+      {
+        id: "screen05-sku-field-01",
+        label: "SKU",
+        value: "SKU-BASE-0001"
+      },
+      {
+        id: "screen05-sku-field-02",
+        label: "Barcode",
+        value: "7501234500012"
+      },
+      {
+        id: "screen05-sku-field-03",
+        label: "Traceability Batch ID",
+        value: "LOT-FOUND-001"
+      },
+      {
+        id: "screen05-sku-field-04",
+        label: "Traceability Serial ID",
+        value: "SER-FOUND-0001"
+      }
+    ]
+  },
+  documentVaultBaseline: {
+    id: "screen05-document-vault",
+    heading: "Document vault baseline",
+    requiredDocs: [
+      {
+        id: "screen05-doc-01",
+        document: "Commercial Invoice",
+        status: "DONE"
+      },
+      {
+        id: "screen05-doc-02",
+        document: "Packing List",
+        status: "DONE"
+      },
+      {
+        id: "screen05-doc-03",
+        document: "Certificate of Origin",
+        status: "IN_PROGRESS"
+      },
+      {
+        id: "screen05-doc-04",
+        document: "HS Classification Sheet",
+        status: "PENDING"
+      },
+      {
+        id: "screen05-doc-05",
+        document: "Import Permit",
+        status: "MISSING"
+      }
+    ]
+  }
+};
+
+export const SCREEN_06_FIXTURE: PitchScreen06 = {
+  slug: "06-shipments-receiving",
+  route: PITCH_ROUTES["06-shipments-receiving"],
+  order: 6,
+  tag: "pitch.screen.06",
+  title: "RUN 2 - IMPORT SHIPMENTS (CUSTOMS PACK + RECEIVING -> QUARANTINE)",
+  shipmentControlBoard: {
+    id: "screen06-shipment-control",
+    heading: "Shipment control board",
+    placeholders: [
+      {
+        id: "screen06-placeholder-awb",
+        label: "AWB / BL",
+        value: "AWB-BL-PENDING"
+      },
+      {
+        id: "screen06-placeholder-eta",
+        label: "ETA",
+        value: "ETA-TBD"
+      },
+      {
+        id: "screen06-placeholder-ata",
+        label: "ATA",
+        value: "ATA-TBD"
+      },
+      {
+        id: "screen06-placeholder-incoterm",
+        label: "Incoterm",
+        value: "INCOTERM-TBD"
+      },
+      {
+        id: "screen06-placeholder-port",
+        label: "Receiving port",
+        value: "PORT-TBD"
+      }
+    ],
+    customsPackCompleteness: {
+      id: "screen06-customs-pack",
+      text: "Customs pack completeness",
+      status: "IN_PROGRESS"
+    }
+  },
+  receivingFlow: {
+    id: "screen06-receiving-flow",
+    heading: "Receiving flow",
+    states: [
+      {
+        id: "screen06-flow-01",
+        code: "ARRIVED",
+        note: "Shipment arrived to bonded warehouse",
+        order: 1
+      },
+      {
+        id: "screen06-flow-02",
+        code: "DOCS_HOLD",
+        note: "Customs documents under verification",
+        order: 2
+      },
+      {
+        id: "screen06-flow-03",
+        code: "RECEIVED",
+        note: "Physical count and lot scan completed",
+        order: 3
+      },
+      {
+        id: "screen06-flow-04",
+        code: "QUARANTINE",
+        note: "Inventory isolated pending QA decision",
+        order: 4
+      }
+    ]
+  },
+  mismatchHandling: {
+    id: "screen06-mismatch",
+    heading: "Mismatch handling",
+    qtyLotMismatch: "Qty/lot mismatch triggers deviation record placeholder.",
+    deviationPlaceholder: "Deviation ticket: DEV-TBD"
+  },
+  nextGate: {
+    id: "screen06-next-gate",
+    text: "Next gate: QA RELEASE (RUN3, not implemented)"
+  }
+};
+
 export const PITCH_SCREEN_FIXTURES = {
   "01-double-engine": SCREEN_01_FIXTURE,
   "02-industrial-flow": SCREEN_02_FIXTURE,
   "03-hitech-os": SCREEN_03_FIXTURE,
-  "04-valuation": SCREEN_04_FIXTURE
+  "04-valuation": SCREEN_04_FIXTURE,
+  "05-inventory-foundation": SCREEN_05_FIXTURE,
+  "06-shipments-receiving": SCREEN_06_FIXTURE
 } as const;
 
 export const PITCH_SCREENS_FIXTURE: readonly PitchScreen[] = [
   PITCH_SCREEN_FIXTURES["01-double-engine"],
   PITCH_SCREEN_FIXTURES["02-industrial-flow"],
   PITCH_SCREEN_FIXTURES["03-hitech-os"],
-  PITCH_SCREEN_FIXTURES["04-valuation"]
+  PITCH_SCREEN_FIXTURES["04-valuation"],
+  PITCH_SCREEN_FIXTURES["05-inventory-foundation"],
+  PITCH_SCREEN_FIXTURES["06-shipments-receiving"]
 ];
 
 export const PITCH_DECK_FIXTURE: PitchDeck = {
@@ -368,6 +598,18 @@ export const PITCH_DECK_FIXTURE: PitchDeck = {
         href: PITCH_ROUTES["04-valuation"],
         title: PITCH_SCREEN_TITLES["04-valuation"],
         order: 4
+      },
+      {
+        slug: "05-inventory-foundation",
+        href: PITCH_ROUTES["05-inventory-foundation"],
+        title: PITCH_SCREEN_TITLES["05-inventory-foundation"],
+        order: 5
+      },
+      {
+        slug: "06-shipments-receiving",
+        href: PITCH_ROUTES["06-shipments-receiving"],
+        title: PITCH_SCREEN_TITLES["06-shipments-receiving"],
+        order: 6
       }
     ]
   },
@@ -375,7 +617,9 @@ export const PITCH_DECK_FIXTURE: PitchDeck = {
     PITCH_SCREEN_FIXTURES["01-double-engine"],
     PITCH_SCREEN_FIXTURES["02-industrial-flow"],
     PITCH_SCREEN_FIXTURES["03-hitech-os"],
-    PITCH_SCREEN_FIXTURES["04-valuation"]
+    PITCH_SCREEN_FIXTURES["04-valuation"],
+    PITCH_SCREEN_FIXTURES["05-inventory-foundation"],
+    PITCH_SCREEN_FIXTURES["06-shipments-receiving"]
   ]
 };
 
@@ -393,7 +637,23 @@ function createPitchCopyDigest(deck: PitchDeck): PitchCopyDigest {
       return total + screen.features.length;
     }
 
-    return total + screen.blocks.reduce((innerTotal, block) => innerTotal + block.items.length, 0);
+    if (screen.slug === "04-valuation") {
+      return (
+        total + screen.blocks.reduce((innerTotal, block) => innerTotal + block.items.length, 0)
+      );
+    }
+
+    if (screen.slug === "05-inventory-foundation") {
+      return (
+        total +
+        screen.foundationStatus.kpis.length +
+        screen.foundationStatus.rbacMatrixSnapshot.rows.length +
+        screen.foundationStatus.supplierOnboardingStatus.suppliers.length +
+        screen.documentVaultBaseline.requiredDocs.length
+      );
+    }
+
+    return total + screen.receivingFlow.states.length + 2;
   }, 0);
 
   const headingCount = deck.screens.reduce((total, screen) => {
@@ -405,12 +665,20 @@ function createPitchCopyDigest(deck: PitchDeck): PitchCopyDigest {
       return total + 4;
     }
 
+    if (screen.slug === "05-inventory-foundation") {
+      return total + 6;
+    }
+
+    if (screen.slug === "06-shipments-receiving") {
+      return total + 4;
+    }
+
     return total + 1;
   }, 0);
 
   return {
     deckId: deck.meta.deckId,
-    screenCount: 4,
+    screenCount: 6,
     bulletCount,
     headingCount,
     tableRowCount: 2,
@@ -429,14 +697,18 @@ export const PITCH_SCREEN_MAP_FIXTURE = {
   "01-double-engine": PITCH_SCREEN_FIXTURES["01-double-engine"],
   "02-industrial-flow": PITCH_SCREEN_FIXTURES["02-industrial-flow"],
   "03-hitech-os": PITCH_SCREEN_FIXTURES["03-hitech-os"],
-  "04-valuation": PITCH_SCREEN_FIXTURES["04-valuation"]
+  "04-valuation": PITCH_SCREEN_FIXTURES["04-valuation"],
+  "05-inventory-foundation": PITCH_SCREEN_FIXTURES["05-inventory-foundation"],
+  "06-shipments-receiving": PITCH_SCREEN_FIXTURES["06-shipments-receiving"]
 } as const;
 
 export const PITCH_SCREEN_ROUTE_INDEX = {
   [PITCH_ROUTES["01-double-engine"]]: PITCH_SCREEN_FIXTURES["01-double-engine"],
   [PITCH_ROUTES["02-industrial-flow"]]: PITCH_SCREEN_FIXTURES["02-industrial-flow"],
   [PITCH_ROUTES["03-hitech-os"]]: PITCH_SCREEN_FIXTURES["03-hitech-os"],
-  [PITCH_ROUTES["04-valuation"]]: PITCH_SCREEN_FIXTURES["04-valuation"]
+  [PITCH_ROUTES["04-valuation"]]: PITCH_SCREEN_FIXTURES["04-valuation"],
+  [PITCH_ROUTES["05-inventory-foundation"]]: PITCH_SCREEN_FIXTURES["05-inventory-foundation"],
+  [PITCH_ROUTES["06-shipments-receiving"]]: PITCH_SCREEN_FIXTURES["06-shipments-receiving"]
 } as const;
 
 export const PITCH_DECK_FIXTURE_LOCK = {
@@ -453,6 +725,8 @@ PitchScreenSchema.parse(SCREEN_01_FIXTURE);
 PitchScreenSchema.parse(SCREEN_02_FIXTURE);
 PitchScreenSchema.parse(SCREEN_03_FIXTURE);
 PitchScreenSchema.parse(SCREEN_04_FIXTURE);
+PitchScreenSchema.parse(SCREEN_05_FIXTURE);
+PitchScreenSchema.parse(SCREEN_06_FIXTURE);
 PitchDeckSchema.parse(PITCH_DECK_FIXTURE);
 PitchScreenMapSchema.parse(PITCH_SCREEN_MAP_FIXTURE);
 PitchCopyDigestSchema.parse(PITCH_COPY_DIGEST_FIXTURE);

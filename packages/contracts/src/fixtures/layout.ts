@@ -99,7 +99,8 @@ export const LAYOUT_FIXTURE: GridLayoutConfig = {
           locked: false,
           resizable: true,
           draggable: true,
-          position: { x: 0, y: 2, w: 6, h: 4, minW: 4, minH: 3, maxW: null, maxH: null }
+          // Keep chart below the table block on md to preserve a collision-free baseline.
+          position: { x: 0, y: 4, w: 6, h: 4, minW: 4, minH: 3, maxW: null, maxH: null }
         },
         {
           widgetId: "wid_dial-001",

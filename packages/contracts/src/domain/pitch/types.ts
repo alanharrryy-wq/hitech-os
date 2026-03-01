@@ -8,6 +8,8 @@ import type {
   PitchScreen02,
   PitchScreen03,
   PitchScreen04,
+  PitchScreen05,
+  PitchScreen06,
   PitchScreenMap
 } from "./schemas.js";
 
@@ -20,6 +22,8 @@ export type PitchScreen01Model = PitchScreen01;
 export type PitchScreen02Model = PitchScreen02;
 export type PitchScreen03Model = PitchScreen03;
 export type PitchScreen04Model = PitchScreen04;
+export type PitchScreen05Model = PitchScreen05;
+export type PitchScreen06Model = PitchScreen06;
 export type PitchScreenMapModel = PitchScreenMap;
 
 export interface PitchTextFragment {
