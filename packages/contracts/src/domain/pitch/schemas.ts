@@ -23,18 +23,20 @@ export const PitchScreenSlugSchema = z.enum(PITCH_SCREEN_SLUGS);
 export const PitchRouteSchema = z
   .string()
   .min(1)
-  .regex(/^\/pitch(\/01-double-engine|\/02-industrial-flow|\/03-hitech-os|\/04-valuation)$/);
+  .regex(
+    /^\/pitch(\/01-double-engine|\/02-industrial-flow|\/03-hitech-os|\/04-valuation|\/05-inventory-foundation|\/06-shipments-receiving)$/
+  );
 
 export const PitchNavigationLinkSchema = z.object({
   slug: PitchScreenSlugSchema,
   href: PitchRouteSchema,
   title: LongText,
-  order: z.number().int().min(1).max(4)
+  order: z.number().int().min(1).max(6)
 });
 
 export const PitchNavigationSchema = z.object({
   base: z.literal(PITCH_ROUTE_BASE),
-  links: z.array(PitchNavigationLinkSchema).length(4)
+  links: z.array(PitchNavigationLinkSchema).length(6)
 });
 
 export const PitchBulletSchema = z.object({
@@ -68,6 +70,41 @@ export const PitchFeatureSchema = z.object({
   text: LongText,
   category: z.enum(["operation", "quality", "traceability", "visibility", "vertical"])
 });
+
+export const PitchStatusChipSchema = z.enum(["DONE", "IN_PROGRESS", "MISSING", "PENDING"]);
+
+export const PitchRbacMatrixRowSchema = z.object({
+  id: z.string().min(1).max(80),
+  role: LongText,
+  permissions: z.array(NonEmptyText).min(1).max(6),
+  status: PitchStatusChipSchema
+});
+
+export const PitchSupplierOnboardingItemSchema = z.object({
+  id: z.string().min(1).max(80),
+  supplier: LongText,
+  status: PitchStatusChipSchema
+});
+
+export const PitchSkuBaselineFieldSchema = z.object({
+  id: z.string().min(1).max(80),
+  label: LongText,
+  value: NonEmptyText
+});
+
+export const PitchDocumentChecklistItemSchema = z.object({
+  id: z.string().min(1).max(80),
+  document: LongText,
+  status: PitchStatusChipSchema
+});
+
+export const PitchShipmentPlaceholderSchema = z.object({
+  id: z.string().min(1).max(80),
+  label: LongText,
+  value: NonEmptyText
+});
+
+export const PitchReceivingStateSchema = z.enum(["ARRIVED", "DOCS_HOLD", "RECEIVED", "QUARANTINE"]);
 
 export const PitchValuationBlockItemSchema = z.object({
   id: z.string().min(1).max(80),
@@ -112,7 +149,7 @@ export const PitchDeckMetaSchema = z.object({
 export const PitchScreenBaseSchema = z.object({
   slug: PitchScreenSlugSchema,
   route: PitchRouteSchema,
-  order: z.number().int().min(1).max(4),
+  order: z.number().int().min(1).max(6),
   title: LongText,
   tag: z.string().min(1).max(80)
 });
@@ -188,11 +225,86 @@ export const PitchScreen04Schema = PitchScreenBaseSchema.extend({
   }, "Comparison rows must match canonical source")
 });
 
+export const PitchScreen05Schema = PitchScreenBaseSchema.extend({
+  slug: z.literal("05-inventory-foundation"),
+  route: z.literal(PITCH_ROUTES["05-inventory-foundation"]),
+  order: z.literal(5),
+  title: z.literal("RUN 1 - INVENTORY FOUNDATION (RBAC + SUPPLIERS + SKU + DOCUMENT VAULT)"),
+  foundationStatus: z.object({
+    id: z.string().min(1).max(80),
+    heading: LongText,
+    kpis: z.array(PitchKpiSchema).length(4),
+    rbacMatrixSnapshot: z.object({
+      id: z.string().min(1).max(80),
+      heading: LongText,
+      rows: z.array(PitchRbacMatrixRowSchema).length(3)
+    }),
+    supplierOnboardingStatus: z.object({
+      id: z.string().min(1).max(80),
+      heading: LongText,
+      suppliers: z.array(PitchSupplierOnboardingItemSchema).length(3)
+    })
+  }),
+  productsSkuBaseline: z.object({
+    id: z.string().min(1).max(80),
+    heading: LongText,
+    fields: z.array(PitchSkuBaselineFieldSchema).length(4)
+  }),
+  documentVaultBaseline: z.object({
+    id: z.string().min(1).max(80),
+    heading: LongText,
+    requiredDocs: z.array(PitchDocumentChecklistItemSchema).length(5)
+  })
+});
+
+export const PitchScreen06Schema = PitchScreenBaseSchema.extend({
+  slug: z.literal("06-shipments-receiving"),
+  route: z.literal(PITCH_ROUTES["06-shipments-receiving"]),
+  order: z.literal(6),
+  title: z.literal("RUN 2 - IMPORT SHIPMENTS (CUSTOMS PACK + RECEIVING -> QUARANTINE)"),
+  shipmentControlBoard: z.object({
+    id: z.string().min(1).max(80),
+    heading: LongText,
+    placeholders: z.array(PitchShipmentPlaceholderSchema).length(5),
+    customsPackCompleteness: z.object({
+      id: z.string().min(1).max(80),
+      text: LongText,
+      status: PitchStatusChipSchema
+    })
+  }),
+  receivingFlow: z.object({
+    id: z.string().min(1).max(80),
+    heading: LongText,
+    states: z
+      .array(
+        z.object({
+          id: z.string().min(1).max(80),
+          code: PitchReceivingStateSchema,
+          note: LongText,
+          order: z.number().int().min(1).max(4)
+        })
+      )
+      .length(4)
+  }),
+  mismatchHandling: z.object({
+    id: z.string().min(1).max(80),
+    heading: LongText,
+    qtyLotMismatch: LongText,
+    deviationPlaceholder: LongText
+  }),
+  nextGate: z.object({
+    id: z.string().min(1).max(80),
+    text: z.literal("Next gate: QA RELEASE (RUN3, not implemented)")
+  })
+});
+
 export const PitchScreenSchema = z.discriminatedUnion("slug", [
   PitchScreen01Schema,
   PitchScreen02Schema,
   PitchScreen03Schema,
-  PitchScreen04Schema
+  PitchScreen04Schema,
+  PitchScreen05Schema,
+  PitchScreen06Schema
 ]);
 
 export const PitchDeckSchema = z
@@ -203,7 +315,9 @@ export const PitchDeckSchema = z
       PitchScreen01Schema,
       PitchScreen02Schema,
       PitchScreen03Schema,
-      PitchScreen04Schema
+      PitchScreen04Schema,
+      PitchScreen05Schema,
+      PitchScreen06Schema
     ])
   })
   .superRefine((deck, ctx) => {
@@ -245,12 +359,14 @@ export const PitchScreenMapSchema = z.object({
   "01-double-engine": PitchScreen01Schema,
   "02-industrial-flow": PitchScreen02Schema,
   "03-hitech-os": PitchScreen03Schema,
-  "04-valuation": PitchScreen04Schema
+  "04-valuation": PitchScreen04Schema,
+  "05-inventory-foundation": PitchScreen05Schema,
+  "06-shipments-receiving": PitchScreen06Schema
 });
 
 export const PitchCopyDigestSchema = z.object({
   deckId: z.literal(PITCH_DECK_ID),
-  screenCount: z.literal(4),
+  screenCount: z.literal(6),
   bulletCount: z.number().int().min(20).max(60),
   headingCount: z.number().int().min(8).max(24),
   tableRowCount: z.literal(2),
@@ -274,6 +390,8 @@ export type PitchScreen01 = z.infer<typeof PitchScreen01Schema>;
 export type PitchScreen02 = z.infer<typeof PitchScreen02Schema>;
 export type PitchScreen03 = z.infer<typeof PitchScreen03Schema>;
 export type PitchScreen04 = z.infer<typeof PitchScreen04Schema>;
+export type PitchScreen05 = z.infer<typeof PitchScreen05Schema>;
+export type PitchScreen06 = z.infer<typeof PitchScreen06Schema>;
 export type PitchScreen = z.infer<typeof PitchScreenSchema>;
 export type PitchDeck = z.infer<typeof PitchDeckSchema>;
 export type PitchScreenMap = z.infer<typeof PitchScreenMapSchema>;
