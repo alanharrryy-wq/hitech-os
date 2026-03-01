@@ -95,3 +95,17 @@ tools/codex/dispatch/
 tools/codex/verify/
 .husky/_/
 factory/01 Mirror/
+
+# --- HITECH ROOT CLUTTER (auto) ---
+# Root should stay clean: move reports/logs/packs into docs/_root_archive or tools/_local
+/FINAL_REPORT*.txt
+/FINAL_REPORT*.md
+/DISPATCH_*DIFF*.txt
+/factory_*.log
+/FILES_CREATED*.txt
+/FILES_MODIFIED*.txt
+/PROMPTS_PACK_*.txt
+/STATUS.json
+*.bak
+*.tmp
+# --- /HITECH ROOT CLUTTER (auto) ---
