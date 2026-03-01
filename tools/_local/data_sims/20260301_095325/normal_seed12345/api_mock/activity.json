@@ -1,0 +1,1293 @@
+{
+  "cursor": "act_20260301104438-auth-logout-0061",
+  "hasMore": true,
+  "items": [
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_metrics",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:22:45Z",
+      "id": "act_20260301112245-run-canceled-0053",
+      "message": "Latency Guard #01 generated event type run.canceled.",
+      "metadata": {
+        "cpuPercent": 45.43,
+        "queuePressure": 0.3402,
+        "runPriority": "high",
+        "runStatus": "queued",
+        "scenario": "normal",
+        "seriesIndex": 53,
+        "throughputPerMin": 5627.16
+      },
+      "runId": "run_normal-011",
+      "severity": "error",
+      "title": "Run Canceled · Latency Guard #01",
+      "type": "run.canceled"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Pipeline Service",
+        "id": "svc_api",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:22:34Z",
+      "id": "act_20260301112234-run-progress-0067",
+      "message": "Inventory Sync #02 reported throughput 5627.16 events/min.",
+      "metadata": {
+        "cpuPercent": 45.43,
+        "queuePressure": 0.3402,
+        "runPriority": "low",
+        "runStatus": "queued",
+        "scenario": "normal",
+        "seriesIndex": 67,
+        "throughputPerMin": 5627.16
+      },
+      "runId": "run_normal-015",
+      "severity": "info",
+      "title": "Run Progress · Inventory Sync #02",
+      "type": "run.progress"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Runtime Core",
+        "id": "sys_monitor",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:22:28Z",
+      "id": "act_20260301112228-auth-logout-0075",
+      "message": "Operator session closed after 6 minutes.",
+      "metadata": {
+        "cpuPercent": 45.43,
+        "queuePressure": 0.3402,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 75,
+        "throughputPerMin": 5627.16
+      },
+      "runId": "run_normal-003",
+      "severity": "info",
+      "title": "User Logout · Data Backfill #01",
+      "type": "auth.logout"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Runtime Core",
+        "id": "sys_observer",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:22:27Z",
+      "id": "act_20260301112227-evidence-added-0054",
+      "message": "Widget Projection #01 generated event type evidence.added.",
+      "metadata": {
+        "cpuPercent": 45.43,
+        "queuePressure": 0.3402,
+        "runPriority": "high",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 54,
+        "throughputPerMin": 5627.16
+      },
+      "runId": "run_normal-013",
+      "severity": "info",
+      "title": "Evidence Added · Widget Projection #01",
+      "type": "evidence.added"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_api",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:20:56Z",
+      "id": "act_20260301112056-run-paused-0046",
+      "message": "Telemetry Fold #01 generated event type run.paused.",
+      "metadata": {
+        "cpuPercent": 43.96,
+        "queuePressure": 0.3798,
+        "runPriority": "low",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 46,
+        "throughputPerMin": 5566.95
+      },
+      "runId": "run_normal-012",
+      "severity": "info",
+      "title": "Run Paused · Telemetry Fold #01",
+      "type": "run.paused"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Ops Lead",
+        "id": "usr_ops-0009",
+        "type": "user",
+        "userId": "usr_ops-0051"
+      },
+      "createdAt": "2026-03-01T11:20:27Z",
+      "id": "act_20260301112027-run-created-0003",
+      "message": "Policy Audit #01 generated event type run.created.",
+      "metadata": {
+        "cpuPercent": 43.96,
+        "queuePressure": 0.3798,
+        "runPriority": "critical",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 3,
+        "throughputPerMin": 5566.95
+      },
+      "runId": "run_normal-006",
+      "severity": "info",
+      "title": "Run Created · Policy Audit #01",
+      "type": "run.created"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Release Manager",
+        "id": "usr_ops-0092",
+        "type": "user",
+        "userId": "usr_ops-0031"
+      },
+      "createdAt": "2026-03-01T11:20:19Z",
+      "id": "act_20260301112019-auth-login-0088",
+      "message": "Operator session opened from trusted segment 14.",
+      "metadata": {
+        "cpuPercent": 43.96,
+        "queuePressure": 0.3798,
+        "scenario": "normal",
+        "seriesIndex": 88,
+        "throughputPerMin": 5566.95
+      },
+      "runId": null,
+      "severity": "info",
+      "title": "User Login",
+      "type": "auth.login"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_pipeline",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:19:47Z",
+      "id": "act_20260301111947-run-completed-0099",
+      "message": "Release Canary #01 completed with success rate 0.94726.",
+      "metadata": {
+        "cpuPercent": 47.62,
+        "queuePressure": 0.3358,
+        "runPriority": "low",
+        "runStatus": "succeeded",
+        "scenario": "normal",
+        "seriesIndex": 9,
+        "throughputPerMin": 5625.59
+      },
+      "runId": "run_normal-004",
+      "severity": "info",
+      "title": "Run Completed · Release Canary #01",
+      "type": "run.completed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_metrics",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:19:44Z",
+      "id": "act_20260301111944-system-alert-0087",
+      "message": "Queue pressure at 0.3358 and latency p99=203.96ms during Worker Warmup #02.",
+      "metadata": {
+        "cpuPercent": 47.62,
+        "queuePressure": 0.3358,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 87,
+        "throughputPerMin": 5625.59
+      },
+      "runId": "run_normal-022",
+      "severity": "warn",
+      "title": "System Alert · Worker Warmup #02",
+      "type": "system.alert"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Pipeline Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:18:29Z",
+      "id": "act_20260301111829-run-queued-0045",
+      "message": "Run generated event type run.queued.",
+      "metadata": {
+        "cpuPercent": 40.8,
+        "queuePressure": 0.3287,
+        "scenario": "normal",
+        "seriesIndex": 45,
+        "throughputPerMin": 5658.81
+      },
+      "runId": null,
+      "severity": "debug",
+      "title": "Run Queued",
+      "type": "run.queued"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:18:28Z",
+      "id": "act_20260301111828-run-failed-0101",
+      "message": "Run failed after elevated error ratio 0.01214.",
+      "metadata": {
+        "cpuPercent": 40.8,
+        "queuePressure": 0.3287,
+        "scenario": "normal",
+        "seriesIndex": 11,
+        "throughputPerMin": 5658.81
+      },
+      "runId": null,
+      "severity": "error",
+      "title": "Run Failed",
+      "type": "run.failed"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Platform Engineer",
+        "id": "usr_ops-0069",
+        "type": "user",
+        "userId": "usr_ops-0041"
+      },
+      "createdAt": "2026-03-01T11:17:50Z",
+      "id": "act_20260301111750-run-started-0006",
+      "message": "Release Canary #01 generated event type run.started.",
+      "metadata": {
+        "cpuPercent": 48.29,
+        "queuePressure": 0.4213,
+        "runPriority": "low",
+        "runStatus": "succeeded",
+        "scenario": "normal",
+        "seriesIndex": 6,
+        "throughputPerMin": 5480.97
+      },
+      "runId": "run_normal-004",
+      "severity": "info",
+      "title": "Run Started · Release Canary #01",
+      "type": "run.started"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_pipeline",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:17:05Z",
+      "id": "act_20260301111705-evidence-added-0015",
+      "message": "Data Backfill #01 generated event type evidence.added.",
+      "metadata": {
+        "cpuPercent": 48.29,
+        "queuePressure": 0.4213,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 15,
+        "throughputPerMin": 5480.97
+      },
+      "runId": "run_normal-003",
+      "severity": "info",
+      "title": "Evidence Added · Data Backfill #01",
+      "type": "evidence.added"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Pipeline Service",
+        "id": "svc_metrics",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:16:09Z",
+      "id": "act_20260301111609-run-resumed-0062",
+      "message": "Telemetry Fold #01 generated event type run.resumed.",
+      "metadata": {
+        "cpuPercent": 40.62,
+        "queuePressure": 0.125,
+        "runPriority": "low",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 62,
+        "throughputPerMin": 5597.34
+      },
+      "runId": "run_normal-012",
+      "severity": "warn",
+      "title": "Run Resumed · Telemetry Fold #01",
+      "type": "run.resumed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Runtime Core",
+        "id": "sys_monitor",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:16:06Z",
+      "id": "act_20260301111606-run-started-0002",
+      "message": "Search Reindex #01 generated event type run.started.",
+      "metadata": {
+        "cpuPercent": 40.62,
+        "queuePressure": 0.125,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 2,
+        "throughputPerMin": 5597.34
+      },
+      "runId": "run_normal-008",
+      "severity": "info",
+      "title": "Run Started · Search Reindex #01",
+      "type": "run.started"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "QA Specialist",
+        "id": "usr_ops-0060",
+        "type": "user",
+        "userId": "usr_ops-0080"
+      },
+      "createdAt": "2026-03-01T11:15:47Z",
+      "id": "act_20260301111547-run-canceled-0058",
+      "message": "Queue Drain #02 generated event type run.canceled.",
+      "metadata": {
+        "cpuPercent": 41.88,
+        "queuePressure": 0.3034,
+        "runPriority": "normal",
+        "runStatus": "paused",
+        "scenario": "normal",
+        "seriesIndex": 58,
+        "throughputPerMin": 5618.68
+      },
+      "runId": "run_normal-020",
+      "severity": "error",
+      "title": "Run Canceled · Queue Drain #02",
+      "type": "run.canceled"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Pipeline Service",
+        "id": "svc_api",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:15:07Z",
+      "id": "act_20260301111507-run-completed-0018",
+      "message": "Policy Audit #02 completed with success rate 0.94908.",
+      "metadata": {
+        "cpuPercent": 41.88,
+        "queuePressure": 0.3034,
+        "runPriority": "normal",
+        "runStatus": "succeeded",
+        "scenario": "normal",
+        "seriesIndex": 18,
+        "throughputPerMin": 5618.68
+      },
+      "runId": "run_normal-021",
+      "severity": "info",
+      "title": "Run Completed · Policy Audit #02",
+      "type": "run.completed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Guard",
+        "id": "sys_monitor",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:15:04Z",
+      "id": "act_20260301111504-run-queued-0044",
+      "message": "Widget Projection #01 generated event type run.queued.",
+      "metadata": {
+        "cpuPercent": 41.88,
+        "queuePressure": 0.3034,
+        "runPriority": "high",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 44,
+        "throughputPerMin": 5618.68
+      },
+      "runId": "run_normal-013",
+      "severity": "info",
+      "title": "Run Queued · Widget Projection #01",
+      "type": "run.queued"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Pipeline Service",
+        "id": "svc_api",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:14:38Z",
+      "id": "act_20260301111438-run-resumed-0027",
+      "message": "Shipment Reconcile #02 generated event type run.resumed.",
+      "metadata": {
+        "cpuPercent": 44.04,
+        "queuePressure": 0.3983,
+        "runPriority": "high",
+        "runStatus": "succeeded",
+        "scenario": "normal",
+        "seriesIndex": 27,
+        "throughputPerMin": 5601.97
+      },
+      "runId": "run_normal-024",
+      "severity": "info",
+      "title": "Run Resumed · Shipment Reconcile #02",
+      "type": "run.resumed"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Ops Analyst",
+        "id": "usr_ops-0007",
+        "type": "user",
+        "userId": "usr_ops-0013"
+      },
+      "createdAt": "2026-03-01T11:14:21Z",
+      "id": "act_20260301111421-run-failed-0063",
+      "message": "Widget Projection #01 failed after elevated error ratio 0.00371.",
+      "metadata": {
+        "cpuPercent": 44.04,
+        "queuePressure": 0.3983,
+        "runPriority": "high",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 63,
+        "throughputPerMin": 5601.97
+      },
+      "runId": "run_normal-013",
+      "severity": "error",
+      "title": "Run Failed · Widget Projection #01",
+      "type": "run.failed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Pipeline Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:12:30Z",
+      "id": "act_20260301111230-auth-logout-0069",
+      "message": "Operator session closed after 91 minutes.",
+      "metadata": {
+        "cpuPercent": 41.8,
+        "queuePressure": 0.3527,
+        "runPriority": "normal",
+        "runStatus": "canceled",
+        "scenario": "normal",
+        "seriesIndex": 69,
+        "throughputPerMin": 5611.14
+      },
+      "runId": "run_normal-018",
+      "severity": "debug",
+      "title": "User Logout · Data Backfill #02",
+      "type": "auth.logout"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Monitor",
+        "id": "sys_guard",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:11:36Z",
+      "id": "act_20260301111136-run-completed-0009",
+      "message": "Release Canary #01 completed with success rate 0.96043.",
+      "metadata": {
+        "cpuPercent": 35.13,
+        "queuePressure": 0.2549,
+        "runPriority": "low",
+        "runStatus": "succeeded",
+        "scenario": "normal",
+        "seriesIndex": 9,
+        "throughputPerMin": 5584.75
+      },
+      "runId": "run_normal-004",
+      "severity": "info",
+      "title": "Run Completed · Release Canary #01",
+      "type": "run.completed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_api",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:11:28Z",
+      "id": "act_20260301111128-auth-login-0086",
+      "message": "Operator session opened from trusted segment 19.",
+      "metadata": {
+        "cpuPercent": 35.13,
+        "queuePressure": 0.2549,
+        "runPriority": "critical",
+        "runStatus": "failed",
+        "scenario": "normal",
+        "seriesIndex": 86,
+        "throughputPerMin": 5584.75
+      },
+      "runId": "run_normal-019",
+      "severity": "info",
+      "title": "User Login · Release Canary #02",
+      "type": "auth.login"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "QA Specialist",
+        "id": "usr_ops-0020",
+        "type": "user",
+        "userId": "usr_ops-0091"
+      },
+      "createdAt": "2026-03-01T11:11:03Z",
+      "id": "act_20260301111103-run-paused-0019",
+      "message": "Run generated event type run.paused.",
+      "metadata": {
+        "cpuPercent": 35.13,
+        "queuePressure": 0.2549,
+        "scenario": "normal",
+        "seriesIndex": 19,
+        "throughputPerMin": 5584.75
+      },
+      "runId": null,
+      "severity": "debug",
+      "title": "Run Paused",
+      "type": "run.paused"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Observer",
+        "id": "sys_observer",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:08:20Z",
+      "id": "act_20260301110820-run-completed-0100",
+      "message": "Run completed with success rate 0.97244.",
+      "metadata": {
+        "cpuPercent": 40.05,
+        "queuePressure": 0.1528,
+        "scenario": "normal",
+        "seriesIndex": 10,
+        "throughputPerMin": 5534.92
+      },
+      "runId": null,
+      "severity": "info",
+      "title": "Run Completed",
+      "type": "run.completed"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Release Manager",
+        "id": "usr_ops-0039",
+        "type": "user",
+        "userId": "usr_ops-0007"
+      },
+      "createdAt": "2026-03-01T11:07:19Z",
+      "id": "act_20260301110719-run-canceled-0072",
+      "message": "Inventory Sync #02 generated event type run.canceled.",
+      "metadata": {
+        "cpuPercent": 38.93,
+        "queuePressure": 0.3649,
+        "runPriority": "low",
+        "runStatus": "queued",
+        "scenario": "normal",
+        "seriesIndex": 72,
+        "throughputPerMin": 5553.08
+      },
+      "runId": "run_normal-015",
+      "severity": "error",
+      "title": "Run Canceled · Inventory Sync #02",
+      "type": "run.canceled"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:07:14Z",
+      "id": "act_20260301110714-run-paused-0041",
+      "message": "Policy Audit #02 generated event type run.paused.",
+      "metadata": {
+        "cpuPercent": 38.93,
+        "queuePressure": 0.3649,
+        "runPriority": "normal",
+        "runStatus": "succeeded",
+        "scenario": "normal",
+        "seriesIndex": 41,
+        "throughputPerMin": 5553.08
+      },
+      "runId": "run_normal-021",
+      "severity": "info",
+      "title": "Run Paused · Policy Audit #02",
+      "type": "run.paused"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "API Service",
+        "id": "svc_alerts",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:05:17Z",
+      "id": "act_20260301110517-run-paused-0004",
+      "message": "Data Backfill #01 generated event type run.paused.",
+      "metadata": {
+        "cpuPercent": 35.36,
+        "queuePressure": 0.1067,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 4,
+        "throughputPerMin": 5594.16
+      },
+      "runId": "run_normal-003",
+      "severity": "warn",
+      "title": "Run Paused · Data Backfill #01",
+      "type": "run.paused"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_metrics",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T11:04:35Z",
+      "id": "act_20260301110435-run-paused-0073",
+      "message": "Policy Audit #01 generated event type run.paused.",
+      "metadata": {
+        "cpuPercent": 37.87,
+        "queuePressure": 0.1915,
+        "runPriority": "critical",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 73,
+        "throughputPerMin": 5511.93
+      },
+      "runId": "run_normal-006",
+      "severity": "warn",
+      "title": "Run Paused · Policy Audit #01",
+      "type": "run.paused"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Platform Engineer",
+        "id": "usr_ops-0022",
+        "type": "user",
+        "userId": "usr_ops-0028"
+      },
+      "createdAt": "2026-03-01T11:03:59Z",
+      "id": "act_20260301110359-run-created-0068",
+      "message": "Telemetry Fold #01 generated event type run.created.",
+      "metadata": {
+        "cpuPercent": 36.56,
+        "queuePressure": 0.2023,
+        "runPriority": "low",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 68,
+        "throughputPerMin": 5537.02
+      },
+      "runId": "run_normal-012",
+      "severity": "warn",
+      "title": "Run Created · Telemetry Fold #01",
+      "type": "run.created"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Release Manager",
+        "id": "usr_ops-0080",
+        "type": "user",
+        "userId": "usr_ops-0073"
+      },
+      "createdAt": "2026-03-01T10:59:53Z",
+      "id": "act_20260301105953-run-paused-0097",
+      "message": "Telemetry Fold #01 generated event type run.paused.",
+      "metadata": {
+        "cpuPercent": 40.87,
+        "queuePressure": 0.3497,
+        "runPriority": "low",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 7,
+        "throughputPerMin": 5534.8
+      },
+      "runId": "run_normal-012",
+      "severity": "info",
+      "title": "Run Paused · Telemetry Fold #01",
+      "type": "run.paused"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "QA Specialist",
+        "id": "usr_ops-0061",
+        "type": "user",
+        "userId": "usr_ops-0086"
+      },
+      "createdAt": "2026-03-01T10:58:19Z",
+      "id": "act_20260301105819-widget-updated-0052",
+      "message": "Widget settings changed by control plane for dashboard.",
+      "metadata": {
+        "cpuPercent": 41.38,
+        "queuePressure": 0.2513,
+        "scenario": "normal",
+        "seriesIndex": 52,
+        "throughputPerMin": 5434.52
+      },
+      "runId": null,
+      "severity": "info",
+      "title": "Widget Updated",
+      "type": "widget.updated"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Ops Lead",
+        "id": "usr_ops-0024",
+        "type": "user",
+        "userId": "usr_ops-0056"
+      },
+      "createdAt": "2026-03-01T10:57:30Z",
+      "id": "act_20260301105730-run-started-0021",
+      "message": "Worker Warmup #02 generated event type run.started.",
+      "metadata": {
+        "cpuPercent": 40.52,
+        "queuePressure": 0.2048,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 21,
+        "throughputPerMin": 5541.38
+      },
+      "runId": "run_normal-022",
+      "severity": "info",
+      "title": "Run Started · Worker Warmup #02",
+      "type": "run.started"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_metrics",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:57:19Z",
+      "id": "act_20260301105719-auth-login-0023",
+      "message": "Operator session opened from trusted segment 80.",
+      "metadata": {
+        "cpuPercent": 40.52,
+        "queuePressure": 0.2048,
+        "scenario": "normal",
+        "seriesIndex": 23,
+        "throughputPerMin": 5541.38
+      },
+      "runId": null,
+      "severity": "info",
+      "title": "User Login",
+      "type": "auth.login"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "QA Specialist",
+        "id": "usr_ops-0038",
+        "type": "user",
+        "userId": "usr_ops-0097"
+      },
+      "createdAt": "2026-03-01T10:56:46Z",
+      "id": "act_20260301105646-evidence-added-0036",
+      "message": "Worker Warmup #02 generated event type evidence.added.",
+      "metadata": {
+        "cpuPercent": 33.63,
+        "queuePressure": 0.3098,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 36,
+        "throughputPerMin": 5540.08
+      },
+      "runId": "run_normal-022",
+      "severity": "info",
+      "title": "Evidence Added · Worker Warmup #02",
+      "type": "evidence.added"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:54:52Z",
+      "id": "act_20260301105452-widget-updated-0080",
+      "message": "Widget settings changed by control plane for Worker Warmup #01.",
+      "metadata": {
+        "cpuPercent": 38.86,
+        "queuePressure": 0.3041,
+        "runPriority": "normal",
+        "runStatus": "queued",
+        "scenario": "normal",
+        "seriesIndex": 80,
+        "throughputPerMin": 5563.83
+      },
+      "runId": "run_normal-007",
+      "severity": "warn",
+      "title": "Widget Updated · Worker Warmup #01",
+      "type": "widget.updated"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_alerts",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:53:29Z",
+      "id": "act_20260301105329-auth-logout-0031",
+      "message": "Operator session closed after 66 minutes.",
+      "metadata": {
+        "cpuPercent": 34.1,
+        "queuePressure": 0.2331,
+        "runPriority": "critical",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 31,
+        "throughputPerMin": 5567.22
+      },
+      "runId": "run_normal-006",
+      "severity": "debug",
+      "title": "User Logout · Policy Audit #01",
+      "type": "auth.logout"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Runtime Core",
+        "id": "sys_observer",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:53:18Z",
+      "id": "act_20260301105318-system-alert-0043",
+      "message": "Queue pressure at 0.2331 and latency p99=207.48ms during global operations.",
+      "metadata": {
+        "cpuPercent": 34.1,
+        "queuePressure": 0.2331,
+        "scenario": "normal",
+        "seriesIndex": 43,
+        "throughputPerMin": 5567.22
+      },
+      "runId": null,
+      "severity": "error",
+      "title": "System Alert",
+      "type": "system.alert"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "QA Specialist",
+        "id": "usr_ops-0027",
+        "type": "user",
+        "userId": "usr_ops-0074"
+      },
+      "createdAt": "2026-03-01T10:52:15Z",
+      "id": "act_20260301105215-run-created-0025",
+      "message": "Widget Projection #01 generated event type run.created.",
+      "metadata": {
+        "cpuPercent": 46.55,
+        "queuePressure": 0.2524,
+        "runPriority": "high",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 25,
+        "throughputPerMin": 5619.16
+      },
+      "runId": "run_normal-013",
+      "severity": "warn",
+      "title": "Run Created · Widget Projection #01",
+      "type": "run.created"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "QA Specialist",
+        "id": "usr_ops-0073",
+        "type": "user",
+        "userId": "usr_ops-0031"
+      },
+      "createdAt": "2026-03-01T10:49:02Z",
+      "id": "act_20260301104902-widget-updated-0047",
+      "message": "Widget settings changed by control plane for Billing Reconciliation #02.",
+      "metadata": {
+        "cpuPercent": 46.07,
+        "queuePressure": 0.4293,
+        "runPriority": "low",
+        "runStatus": "queued",
+        "scenario": "normal",
+        "seriesIndex": 47,
+        "throughputPerMin": 5490.18
+      },
+      "runId": "run_normal-016",
+      "severity": "warn",
+      "title": "Widget Updated · Billing Reconciliation #02",
+      "type": "widget.updated"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Observer",
+        "id": "sys_monitor",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:48:25Z",
+      "id": "act_20260301104825-run-completed-0038",
+      "message": "Contract Validation #01 completed with success rate 0.94972.",
+      "metadata": {
+        "cpuPercent": 45.73,
+        "queuePressure": 0.2889,
+        "runPriority": "low",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 38,
+        "throughputPerMin": 5646.34
+      },
+      "runId": "run_normal-002",
+      "severity": "warn",
+      "title": "Run Completed · Contract Validation #01",
+      "type": "run.completed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_alerts",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:48:17Z",
+      "id": "act_20260301104817-auth-logout-0065",
+      "message": "Operator session closed after 64 minutes.",
+      "metadata": {
+        "cpuPercent": 45.73,
+        "queuePressure": 0.2889,
+        "runPriority": "low",
+        "runStatus": "succeeded",
+        "scenario": "normal",
+        "seriesIndex": 65,
+        "throughputPerMin": 5646.34
+      },
+      "runId": "run_normal-004",
+      "severity": "debug",
+      "title": "User Logout · Release Canary #01",
+      "type": "auth.logout"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:46:31Z",
+      "id": "act_20260301104631-run-resumed-0056",
+      "message": "Shipment Reconcile #02 generated event type run.resumed.",
+      "metadata": {
+        "cpuPercent": 49.0,
+        "queuePressure": 0.2857,
+        "runPriority": "high",
+        "runStatus": "succeeded",
+        "scenario": "normal",
+        "seriesIndex": 56,
+        "throughputPerMin": 5589.36
+      },
+      "runId": "run_normal-024",
+      "severity": "warn",
+      "title": "Run Resumed · Shipment Reconcile #02",
+      "type": "run.resumed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_api",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:45:56Z",
+      "id": "act_20260301104556-system-alert-0095",
+      "message": "Queue pressure at 0.2661 and latency p99=227.77ms during Evidence Sweep #01.",
+      "metadata": {
+        "cpuPercent": 44.0,
+        "queuePressure": 0.2661,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 5,
+        "throughputPerMin": 5591.62
+      },
+      "runId": "run_normal-010",
+      "severity": "error",
+      "title": "System Alert · Evidence Sweep #01",
+      "type": "system.alert"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:45:53Z",
+      "id": "act_20260301104553-run-canceled-0039",
+      "message": "Billing Reconciliation #01 generated event type run.canceled.",
+      "metadata": {
+        "cpuPercent": 44.0,
+        "queuePressure": 0.2661,
+        "runPriority": "high",
+        "runStatus": "succeeded",
+        "scenario": "normal",
+        "seriesIndex": 39,
+        "throughputPerMin": 5591.62
+      },
+      "runId": "run_normal-001",
+      "severity": "critical",
+      "title": "Run Canceled · Billing Reconciliation #01",
+      "type": "run.canceled"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Guard",
+        "id": "sys_observer",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:45:44Z",
+      "id": "act_20260301104544-widget-updated-0074",
+      "message": "Widget settings changed by control plane for Queue Drain #02.",
+      "metadata": {
+        "cpuPercent": 44.0,
+        "queuePressure": 0.2661,
+        "runPriority": "normal",
+        "runStatus": "paused",
+        "scenario": "normal",
+        "seriesIndex": 74,
+        "throughputPerMin": 5591.62
+      },
+      "runId": "run_normal-020",
+      "severity": "info",
+      "title": "Widget Updated · Queue Drain #02",
+      "type": "widget.updated"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "QA Specialist",
+        "id": "usr_ops-0090",
+        "type": "user",
+        "userId": "usr_ops-0099"
+      },
+      "createdAt": "2026-03-01T10:45:39Z",
+      "id": "act_20260301104539-run-resumed-0001",
+      "message": "Run generated event type run.resumed.",
+      "metadata": {
+        "cpuPercent": 44.0,
+        "queuePressure": 0.2661,
+        "scenario": "normal",
+        "seriesIndex": 1,
+        "throughputPerMin": 5591.62
+      },
+      "runId": null,
+      "severity": "debug",
+      "title": "Run Resumed",
+      "type": "run.resumed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Platform Engineer",
+        "id": "usr_ops-0076",
+        "type": "user",
+        "userId": "usr_ops-0042"
+      },
+      "createdAt": "2026-03-01T10:45:29Z",
+      "id": "act_20260301104529-run-started-0048",
+      "message": "Release Canary #01 generated event type run.started.",
+      "metadata": {
+        "cpuPercent": 44.0,
+        "queuePressure": 0.2661,
+        "runPriority": "low",
+        "runStatus": "succeeded",
+        "scenario": "normal",
+        "seriesIndex": 48,
+        "throughputPerMin": 5591.62
+      },
+      "runId": "run_normal-004",
+      "severity": "debug",
+      "title": "Run Started · Release Canary #01",
+      "type": "run.started"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Metrics Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:45:11Z",
+      "id": "act_20260301104511-run-paused-0016",
+      "message": "Data Backfill #01 generated event type run.paused.",
+      "metadata": {
+        "cpuPercent": 44.0,
+        "queuePressure": 0.2661,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 16,
+        "throughputPerMin": 5591.62
+      },
+      "runId": "run_normal-003",
+      "severity": "warn",
+      "title": "Run Paused · Data Backfill #01",
+      "type": "run.paused"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Platform Engineer",
+        "id": "usr_ops-0020",
+        "type": "user",
+        "userId": "usr_ops-0044"
+      },
+      "createdAt": "2026-03-01T10:44:38Z",
+      "id": "act_20260301104438-auth-logout-0061",
+      "message": "Operator session closed after 86 minutes.",
+      "metadata": {
+        "cpuPercent": 44.36,
+        "queuePressure": 0.4411,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "normal",
+        "seriesIndex": 61,
+        "throughputPerMin": 5605.18
+      },
+      "runId": "run_normal-003",
+      "severity": "info",
+      "title": "User Logout · Data Backfill #01",
+      "type": "auth.logout"
+    }
+  ],
+  "meta": {
+    "contractVersion": "2.0.0",
+    "generatedAt": "2026-03-01T09:53:00Z",
+    "requestId": "req_activity-0000012345"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "env_fixed": {
+    "status": "PASS",
+    "worktree_mode": "fixed"
+  },
+  "env_non_fixed": {
+    "error": "FACTORY_WORKTREE_MODE must be 'fixed' when set (got 'legacy')",
+    "status": "BLOCKED"
+  },
+  "missing_file": {
+    "error": "missing unified worktree contract: F:/repos/hitech-os/.tmp/does_not_exist_contract.json",
+    "status": "BLOCKED"
+  },
+  "missing_key": {
+    "error": "missing required key 'worktree_mode' in C:/Users/alanh/AppData/Local/Temp/tmpj162r4z8.json",
+    "status": "BLOCKED"
+  },
+  "wrong_mode": {
+    "error": "unsupported worktree_mode in contract: 'run_scoped' (expected 'fixed')",
+    "status": "BLOCKED"
+  }
+}

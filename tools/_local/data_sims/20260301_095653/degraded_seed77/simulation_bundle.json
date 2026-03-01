@@ -1,0 +1,3254 @@
+{
+  "activity": [
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_metrics",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:40:54Z",
+      "id": "act_20260301104054-run-started-0020",
+      "message": "Release Canary #01 generated event type run.started.",
+      "metadata": {
+        "cpuPercent": 70.03,
+        "queuePressure": 0.6286,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "degraded",
+        "seriesIndex": 20,
+        "throughputPerMin": 4609.04
+      },
+      "runId": "run_degraded-004",
+      "severity": "info",
+      "title": "Run Started · Release Canary #01",
+      "type": "run.started"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Release Manager",
+        "id": "usr_ops-0090",
+        "type": "user",
+        "userId": "usr_ops-0093"
+      },
+      "createdAt": "2026-03-01T10:40:48Z",
+      "id": "act_20260301104048-run-resumed-0037",
+      "message": "Search Reindex #01 generated event type run.resumed.",
+      "metadata": {
+        "cpuPercent": 70.03,
+        "queuePressure": 0.6286,
+        "runPriority": "normal",
+        "runStatus": "succeeded",
+        "scenario": "degraded",
+        "seriesIndex": 37,
+        "throughputPerMin": 4609.04
+      },
+      "runId": "run_degraded-008",
+      "severity": "debug",
+      "title": "Run Resumed · Search Reindex #01",
+      "type": "run.resumed"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Release Manager",
+        "id": "usr_ops-0027",
+        "type": "user",
+        "userId": "usr_ops-0021"
+      },
+      "createdAt": "2026-03-01T10:39:46Z",
+      "id": "act_20260301103946-run-started-0026",
+      "message": "Shipment Reconcile #01 generated event type run.started.",
+      "metadata": {
+        "cpuPercent": 81.82,
+        "queuePressure": 0.9106,
+        "runPriority": "high",
+        "runStatus": "running",
+        "scenario": "degraded",
+        "seriesIndex": 26,
+        "throughputPerMin": 4478.55
+      },
+      "runId": "run_degraded-009",
+      "severity": "debug",
+      "title": "Run Started · Shipment Reconcile #01",
+      "type": "run.started"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Metrics Service",
+        "id": "svc_pipeline",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:39:14Z",
+      "id": "act_20260301103914-run-created-0014",
+      "message": "Billing Reconciliation #01 generated event type run.created.",
+      "metadata": {
+        "cpuPercent": 81.82,
+        "queuePressure": 0.9106,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "degraded",
+        "seriesIndex": 14,
+        "throughputPerMin": 4478.55
+      },
+      "runId": "run_degraded-001",
+      "severity": "info",
+      "title": "Run Created · Billing Reconciliation #01",
+      "type": "run.created"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_alerts",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:39:13Z",
+      "id": "act_20260301103913-run-started-0018",
+      "message": "Run generated event type run.started.",
+      "metadata": {
+        "cpuPercent": 81.82,
+        "queuePressure": 0.9106,
+        "scenario": "degraded",
+        "seriesIndex": 18,
+        "throughputPerMin": 4478.55
+      },
+      "runId": null,
+      "severity": "info",
+      "title": "Run Started",
+      "type": "run.started"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Pipeline Service",
+        "id": "svc_pipeline",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:37:03Z",
+      "id": "act_20260301103703-run-failed-0028",
+      "message": "Shipment Reconcile #01 failed after elevated error ratio 0.11653.",
+      "metadata": {
+        "cpuPercent": 86.63,
+        "queuePressure": 0.9008,
+        "runPriority": "high",
+        "runStatus": "running",
+        "scenario": "degraded",
+        "seriesIndex": 28,
+        "throughputPerMin": 4476.58
+      },
+      "runId": "run_degraded-009",
+      "severity": "error",
+      "title": "Run Failed · Shipment Reconcile #01",
+      "type": "run.failed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_pipeline",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:34:25Z",
+      "id": "act_20260301103425-evidence-added-0048",
+      "message": "Queue Drain #01 generated event type evidence.added.",
+      "metadata": {
+        "cpuPercent": 73.5,
+        "queuePressure": 0.5393,
+        "runPriority": "critical",
+        "runStatus": "running",
+        "scenario": "degraded",
+        "seriesIndex": 3,
+        "throughputPerMin": 4533.55
+      },
+      "runId": "run_degraded-005",
+      "severity": "info",
+      "title": "Evidence Added · Queue Drain #01",
+      "type": "evidence.added"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Runtime Core",
+        "id": "sys_runtime",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:33:28Z",
+      "id": "act_20260301103328-evidence-added-0001",
+      "message": "Data Backfill #01 generated event type evidence.added.",
+      "metadata": {
+        "cpuPercent": 68.56,
+        "queuePressure": 0.5387,
+        "runPriority": "normal",
+        "runStatus": "paused",
+        "scenario": "degraded",
+        "seriesIndex": 1,
+        "throughputPerMin": 4574.96
+      },
+      "runId": "run_degraded-003",
+      "severity": "info",
+      "title": "Evidence Added · Data Backfill #01",
+      "type": "evidence.added"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_api",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:33:09Z",
+      "id": "act_20260301103309-system-alert-0031",
+      "message": "Queue pressure at 0.5387 and latency p99=424.38ms during Latency Guard #01.",
+      "metadata": {
+        "cpuPercent": 68.56,
+        "queuePressure": 0.5387,
+        "runPriority": "normal",
+        "runStatus": "scheduled",
+        "scenario": "degraded",
+        "seriesIndex": 31,
+        "throughputPerMin": 4574.96
+      },
+      "runId": "run_degraded-011",
+      "severity": "error",
+      "title": "System Alert · Latency Guard #01",
+      "type": "system.alert"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Release Manager",
+        "id": "usr_ops-0033",
+        "type": "user",
+        "userId": "usr_ops-0008"
+      },
+      "createdAt": "2026-03-01T10:31:59Z",
+      "id": "act_20260301103159-run-paused-0039",
+      "message": "Evidence Sweep #01 generated event type run.paused.",
+      "metadata": {
+        "cpuPercent": 65.27,
+        "queuePressure": 0.5174,
+        "runPriority": "normal",
+        "runStatus": "scheduled",
+        "scenario": "degraded",
+        "seriesIndex": 39,
+        "throughputPerMin": 4596.42
+      },
+      "runId": "run_degraded-010",
+      "severity": "info",
+      "title": "Run Paused · Evidence Sweep #01",
+      "type": "run.paused"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:31:16Z",
+      "id": "act_20260301103116-run-completed-0051",
+      "message": "Latency Guard #01 completed with success rate 0.80709.",
+      "metadata": {
+        "cpuPercent": 65.27,
+        "queuePressure": 0.5174,
+        "runPriority": "normal",
+        "runStatus": "scheduled",
+        "scenario": "degraded",
+        "seriesIndex": 6,
+        "throughputPerMin": 4596.42
+      },
+      "runId": "run_degraded-011",
+      "severity": "info",
+      "title": "Run Completed · Latency Guard #01",
+      "type": "run.completed"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Release Manager",
+        "id": "usr_ops-0016",
+        "type": "user",
+        "userId": "usr_ops-0043"
+      },
+      "createdAt": "2026-03-01T10:31:07Z",
+      "id": "act_20260301103107-run-paused-0053",
+      "message": "Evidence Sweep #01 generated event type run.paused.",
+      "metadata": {
+        "cpuPercent": 65.27,
+        "queuePressure": 0.5174,
+        "runPriority": "normal",
+        "runStatus": "scheduled",
+        "scenario": "degraded",
+        "seriesIndex": 8,
+        "throughputPerMin": 4596.42
+      },
+      "runId": "run_degraded-010",
+      "severity": "debug",
+      "title": "Run Paused · Evidence Sweep #01",
+      "type": "run.paused"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_alerts",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:31:07Z",
+      "id": "act_20260301103107-auth-logout-0011",
+      "message": "Operator session closed after 82 minutes.",
+      "metadata": {
+        "cpuPercent": 65.27,
+        "queuePressure": 0.5174,
+        "runPriority": "normal",
+        "runStatus": "paused",
+        "scenario": "degraded",
+        "seriesIndex": 11,
+        "throughputPerMin": 4596.42
+      },
+      "runId": "run_degraded-007",
+      "severity": "debug",
+      "title": "User Logout · Worker Warmup #01",
+      "type": "auth.logout"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Release Manager",
+        "id": "usr_ops-0031",
+        "type": "user",
+        "userId": "usr_ops-0038"
+      },
+      "createdAt": "2026-03-01T10:30:59Z",
+      "id": "act_20260301103059-run-resumed-0045",
+      "message": "Shipment Reconcile #01 generated event type run.resumed.",
+      "metadata": {
+        "cpuPercent": 64.56,
+        "queuePressure": 0.5444,
+        "runPriority": "high",
+        "runStatus": "running",
+        "scenario": "degraded",
+        "seriesIndex": 0,
+        "throughputPerMin": 4491.37
+      },
+      "runId": "run_degraded-009",
+      "severity": "warn",
+      "title": "Run Resumed · Shipment Reconcile #01",
+      "type": "run.resumed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_metrics",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:30:43Z",
+      "id": "act_20260301103043-evidence-added-0043",
+      "message": "Release Canary #01 generated event type evidence.added.",
+      "metadata": {
+        "cpuPercent": 64.56,
+        "queuePressure": 0.5444,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "degraded",
+        "seriesIndex": 43,
+        "throughputPerMin": 4491.37
+      },
+      "runId": "run_degraded-004",
+      "severity": "info",
+      "title": "Evidence Added · Release Canary #01",
+      "type": "evidence.added"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Platform Engineer",
+        "id": "usr_ops-0021",
+        "type": "user",
+        "userId": "usr_ops-0073"
+      },
+      "createdAt": "2026-03-01T10:30:35Z",
+      "id": "act_20260301103035-auth-login-0054",
+      "message": "Operator session opened from trusted segment 40.",
+      "metadata": {
+        "cpuPercent": 64.56,
+        "queuePressure": 0.5444,
+        "runPriority": "low",
+        "runStatus": "failed",
+        "scenario": "degraded",
+        "seriesIndex": 9,
+        "throughputPerMin": 4491.37
+      },
+      "runId": "run_degraded-006",
+      "severity": "info",
+      "title": "User Login · Policy Audit #01",
+      "type": "auth.login"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Monitor",
+        "id": "sys_monitor",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:29:47Z",
+      "id": "act_20260301102947-run-progress-0038",
+      "message": "Search Reindex #01 reported throughput 4508.63 events/min.",
+      "metadata": {
+        "cpuPercent": 64.01,
+        "queuePressure": 0.604,
+        "runPriority": "normal",
+        "runStatus": "succeeded",
+        "scenario": "degraded",
+        "seriesIndex": 38,
+        "throughputPerMin": 4508.63
+      },
+      "runId": "run_degraded-008",
+      "severity": "debug",
+      "title": "Run Progress · Search Reindex #01",
+      "type": "run.progress"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:29:47Z",
+      "id": "act_20260301102947-auth-login-0013",
+      "message": "Operator session opened from trusted segment 15.",
+      "metadata": {
+        "cpuPercent": 64.01,
+        "queuePressure": 0.604,
+        "runPriority": "normal",
+        "runStatus": "paused",
+        "scenario": "degraded",
+        "seriesIndex": 13,
+        "throughputPerMin": 4508.63
+      },
+      "runId": "run_degraded-007",
+      "severity": "info",
+      "title": "User Login · Worker Warmup #01",
+      "type": "auth.login"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "QA Specialist",
+        "id": "usr_ops-0045",
+        "type": "user",
+        "userId": "usr_ops-0054"
+      },
+      "createdAt": "2026-03-01T10:29:16Z",
+      "id": "act_20260301102916-run-queued-0010",
+      "message": "Run generated event type run.queued.",
+      "metadata": {
+        "cpuPercent": 64.01,
+        "queuePressure": 0.604,
+        "scenario": "degraded",
+        "seriesIndex": 10,
+        "throughputPerMin": 4508.63
+      },
+      "runId": null,
+      "severity": "info",
+      "title": "Run Queued",
+      "type": "run.queued"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_api",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:28:30Z",
+      "id": "act_20260301102830-system-alert-0032",
+      "message": "Queue pressure at 0.5416 and latency p99=426.8ms during Release Canary #01.",
+      "metadata": {
+        "cpuPercent": 69.15,
+        "queuePressure": 0.5416,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "degraded",
+        "seriesIndex": 32,
+        "throughputPerMin": 4589.06
+      },
+      "runId": "run_degraded-004",
+      "severity": "warn",
+      "title": "System Alert · Release Canary #01",
+      "type": "system.alert"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_pipeline",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:28:30Z",
+      "id": "act_20260301102830-run-paused-0007",
+      "message": "Contract Validation #01 generated event type run.paused.",
+      "metadata": {
+        "cpuPercent": 69.15,
+        "queuePressure": 0.5416,
+        "runPriority": "normal",
+        "runStatus": "queued",
+        "scenario": "degraded",
+        "seriesIndex": 7,
+        "throughputPerMin": 4589.06
+      },
+      "runId": "run_degraded-002",
+      "severity": "info",
+      "title": "Run Paused · Contract Validation #01",
+      "type": "run.paused"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Release Manager",
+        "id": "usr_ops-0016",
+        "type": "user",
+        "userId": "usr_ops-0048"
+      },
+      "createdAt": "2026-03-01T10:28:25Z",
+      "id": "act_20260301102825-run-paused-0021",
+      "message": "Queue Drain #01 generated event type run.paused.",
+      "metadata": {
+        "cpuPercent": 69.15,
+        "queuePressure": 0.5416,
+        "runPriority": "critical",
+        "runStatus": "running",
+        "scenario": "degraded",
+        "seriesIndex": 21,
+        "throughputPerMin": 4589.06
+      },
+      "runId": "run_degraded-005",
+      "severity": "debug",
+      "title": "Run Paused · Queue Drain #01",
+      "type": "run.paused"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Release Manager",
+        "id": "usr_ops-0013",
+        "type": "user",
+        "userId": "usr_ops-0051"
+      },
+      "createdAt": "2026-03-01T10:27:59Z",
+      "id": "act_20260301102759-run-queued-0024",
+      "message": "Evidence Sweep #01 generated event type run.queued.",
+      "metadata": {
+        "cpuPercent": 66.33,
+        "queuePressure": 0.4157,
+        "runPriority": "normal",
+        "runStatus": "scheduled",
+        "scenario": "degraded",
+        "seriesIndex": 24,
+        "throughputPerMin": 4537.39
+      },
+      "runId": "run_degraded-010",
+      "severity": "debug",
+      "title": "Run Queued · Evidence Sweep #01",
+      "type": "run.queued"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Platform Engineer",
+        "id": "usr_ops-0066",
+        "type": "user",
+        "userId": "usr_ops-0088"
+      },
+      "createdAt": "2026-03-01T10:27:47Z",
+      "id": "act_20260301102747-widget-updated-0041",
+      "message": "Widget settings changed by control plane for Contract Validation #01.",
+      "metadata": {
+        "cpuPercent": 66.33,
+        "queuePressure": 0.4157,
+        "runPriority": "normal",
+        "runStatus": "queued",
+        "scenario": "degraded",
+        "seriesIndex": 41,
+        "throughputPerMin": 4537.39
+      },
+      "runId": "run_degraded-002",
+      "severity": "info",
+      "title": "Widget Updated · Contract Validation #01",
+      "type": "widget.updated"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_metrics",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:27:11Z",
+      "id": "act_20260301102711-run-queued-0008",
+      "message": "Policy Audit #01 generated event type run.queued.",
+      "metadata": {
+        "cpuPercent": 66.33,
+        "queuePressure": 0.4157,
+        "runPriority": "low",
+        "runStatus": "failed",
+        "scenario": "degraded",
+        "seriesIndex": 8,
+        "throughputPerMin": 4537.39
+      },
+      "runId": "run_degraded-006",
+      "severity": "info",
+      "title": "Run Queued · Policy Audit #01",
+      "type": "run.queued"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Monitor",
+        "id": "sys_observer",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:26:27Z",
+      "id": "act_20260301102627-run-started-0046",
+      "message": "Billing Reconciliation #01 generated event type run.started.",
+      "metadata": {
+        "cpuPercent": 69.5,
+        "queuePressure": 0.5255,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "degraded",
+        "seriesIndex": 1,
+        "throughputPerMin": 4485.4
+      },
+      "runId": "run_degraded-001",
+      "severity": "info",
+      "title": "Run Started · Billing Reconciliation #01",
+      "type": "run.started"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "API Service",
+        "id": "svc_pipeline",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:25:18Z",
+      "id": "act_20260301102518-run-progress-0019",
+      "message": "Latency Guard #01 reported throughput 4572.94 events/min.",
+      "metadata": {
+        "cpuPercent": 70.87,
+        "queuePressure": 0.6217,
+        "runPriority": "normal",
+        "runStatus": "scheduled",
+        "scenario": "degraded",
+        "seriesIndex": 19,
+        "throughputPerMin": 4572.94
+      },
+      "runId": "run_degraded-011",
+      "severity": "debug",
+      "title": "Run Progress · Latency Guard #01",
+      "type": "run.progress"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Metrics Service",
+        "id": "svc_pipeline",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:24:15Z",
+      "id": "act_20260301102415-run-created-0009",
+      "message": "Run generated event type run.created.",
+      "metadata": {
+        "cpuPercent": 69.42,
+        "queuePressure": 0.5397,
+        "scenario": "degraded",
+        "seriesIndex": 9,
+        "throughputPerMin": 4568.18
+      },
+      "runId": null,
+      "severity": "info",
+      "title": "Run Created",
+      "type": "run.created"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Runtime Core",
+        "id": "sys_guard",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:20:46Z",
+      "id": "act_20260301102046-run-failed-0023",
+      "message": "Release Canary #01 failed after elevated error ratio 0.06605.",
+      "metadata": {
+        "cpuPercent": 79.84,
+        "queuePressure": 0.8381,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "degraded",
+        "seriesIndex": 23,
+        "throughputPerMin": 4513.46
+      },
+      "runId": "run_degraded-004",
+      "severity": "error",
+      "title": "Run Failed · Release Canary #01",
+      "type": "run.failed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Platform Engineer",
+        "id": "usr_ops-0092",
+        "type": "user",
+        "userId": "usr_ops-0044"
+      },
+      "createdAt": "2026-03-01T10:20:42Z",
+      "id": "act_20260301102042-run-resumed-0005",
+      "message": "Data Backfill #01 generated event type run.resumed.",
+      "metadata": {
+        "cpuPercent": 79.84,
+        "queuePressure": 0.8381,
+        "runPriority": "normal",
+        "runStatus": "paused",
+        "scenario": "degraded",
+        "seriesIndex": 5,
+        "throughputPerMin": 4513.46
+      },
+      "runId": "run_degraded-003",
+      "severity": "warn",
+      "title": "Run Resumed · Data Backfill #01",
+      "type": "run.resumed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_metrics",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:19:33Z",
+      "id": "act_20260301101933-evidence-added-0003",
+      "message": "Policy Audit #01 generated event type evidence.added.",
+      "metadata": {
+        "cpuPercent": 69.55,
+        "queuePressure": 0.6712,
+        "runPriority": "low",
+        "runStatus": "failed",
+        "scenario": "degraded",
+        "seriesIndex": 3,
+        "throughputPerMin": 4625.04
+      },
+      "runId": "run_degraded-006",
+      "severity": "info",
+      "title": "Evidence Added · Policy Audit #01",
+      "type": "evidence.added"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Ops Lead",
+        "id": "usr_ops-0029",
+        "type": "user",
+        "userId": "usr_ops-0057"
+      },
+      "createdAt": "2026-03-01T10:19:03Z",
+      "id": "act_20260301101903-run-failed-0049",
+      "message": "Run failed after elevated error ratio 0.07172.",
+      "metadata": {
+        "cpuPercent": 69.55,
+        "queuePressure": 0.6712,
+        "scenario": "degraded",
+        "seriesIndex": 4,
+        "throughputPerMin": 4625.04
+      },
+      "runId": null,
+      "severity": "warn",
+      "title": "Run Failed",
+      "type": "run.failed"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:18:21Z",
+      "id": "act_20260301101821-run-failed-0017",
+      "message": "Run failed after elevated error ratio 0.05235.",
+      "metadata": {
+        "cpuPercent": 74.6,
+        "queuePressure": 0.6695,
+        "scenario": "degraded",
+        "seriesIndex": 17,
+        "throughputPerMin": 4668.93
+      },
+      "runId": null,
+      "severity": "error",
+      "title": "Run Failed",
+      "type": "run.failed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:18:07Z",
+      "id": "act_20260301101807-run-created-0022",
+      "message": "Telemetry Fold #01 generated event type run.created.",
+      "metadata": {
+        "cpuPercent": 74.6,
+        "queuePressure": 0.6695,
+        "runPriority": "normal",
+        "runStatus": "paused",
+        "scenario": "degraded",
+        "seriesIndex": 22,
+        "throughputPerMin": 4668.93
+      },
+      "runId": "run_degraded-012",
+      "severity": "info",
+      "title": "Run Created · Telemetry Fold #01",
+      "type": "run.created"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Pipeline Service",
+        "id": "svc_pipeline",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:16:00Z",
+      "id": "act_20260301101600-run-queued-0012",
+      "message": "Evidence Sweep #01 generated event type run.queued.",
+      "metadata": {
+        "cpuPercent": 87.61,
+        "queuePressure": 0.8517,
+        "runPriority": "normal",
+        "runStatus": "scheduled",
+        "scenario": "degraded",
+        "seriesIndex": 12,
+        "throughputPerMin": 4465.67
+      },
+      "runId": "run_degraded-010",
+      "severity": "info",
+      "title": "Run Queued · Evidence Sweep #01",
+      "type": "run.queued"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "API Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:15:13Z",
+      "id": "act_20260301101513-run-failed-0029",
+      "message": "Run failed after elevated error ratio 0.03464.",
+      "metadata": {
+        "cpuPercent": 72.05,
+        "queuePressure": 0.6805,
+        "scenario": "degraded",
+        "seriesIndex": 29,
+        "throughputPerMin": 4614.85
+      },
+      "runId": null,
+      "severity": "warn",
+      "title": "Run Failed",
+      "type": "run.failed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Pipeline Service",
+        "id": "svc_pipeline",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:12:17Z",
+      "id": "act_20260301101217-run-completed-0006",
+      "message": "Release Canary #01 completed with success rate 0.80783.",
+      "metadata": {
+        "cpuPercent": 74.74,
+        "queuePressure": 0.6871,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "degraded",
+        "seriesIndex": 6,
+        "throughputPerMin": 4657.4
+      },
+      "runId": "run_degraded-004",
+      "severity": "info",
+      "title": "Run Completed · Release Canary #01",
+      "type": "run.completed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Monitor",
+        "id": "sys_runtime",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:12:15Z",
+      "id": "act_20260301101215-run-paused-0015",
+      "message": "Contract Validation #01 generated event type run.paused.",
+      "metadata": {
+        "cpuPercent": 74.74,
+        "queuePressure": 0.6871,
+        "runPriority": "normal",
+        "runStatus": "queued",
+        "scenario": "degraded",
+        "seriesIndex": 15,
+        "throughputPerMin": 4657.4
+      },
+      "runId": "run_degraded-002",
+      "severity": "info",
+      "title": "Run Paused · Contract Validation #01",
+      "type": "run.paused"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Ops Analyst",
+        "id": "usr_ops-0032",
+        "type": "user",
+        "userId": "usr_ops-0007"
+      },
+      "createdAt": "2026-03-01T10:10:46Z",
+      "id": "act_20260301101046-run-progress-0035",
+      "message": "Evidence Sweep #01 reported throughput 4641.57 events/min.",
+      "metadata": {
+        "cpuPercent": 77.12,
+        "queuePressure": 0.5884,
+        "runPriority": "normal",
+        "runStatus": "scheduled",
+        "scenario": "degraded",
+        "seriesIndex": 35,
+        "throughputPerMin": 4641.57
+      },
+      "runId": "run_degraded-010",
+      "severity": "info",
+      "title": "Run Progress · Evidence Sweep #01",
+      "type": "run.progress"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_metrics",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:10:43Z",
+      "id": "act_20260301101043-run-resumed-0034",
+      "message": "Policy Audit #01 generated event type run.resumed.",
+      "metadata": {
+        "cpuPercent": 77.12,
+        "queuePressure": 0.5884,
+        "runPriority": "low",
+        "runStatus": "failed",
+        "scenario": "degraded",
+        "seriesIndex": 34,
+        "throughputPerMin": 4641.57
+      },
+      "runId": "run_degraded-006",
+      "severity": "debug",
+      "title": "Run Resumed · Policy Audit #01",
+      "type": "run.resumed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "API Service",
+        "id": "svc_api",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:10:22Z",
+      "id": "act_20260301101022-widget-updated-0040",
+      "message": "Widget settings changed by control plane for Shipment Reconcile #01.",
+      "metadata": {
+        "cpuPercent": 77.12,
+        "queuePressure": 0.5884,
+        "runPriority": "high",
+        "runStatus": "running",
+        "scenario": "degraded",
+        "seriesIndex": 40,
+        "throughputPerMin": 4641.57
+      },
+      "runId": "run_degraded-009",
+      "severity": "info",
+      "title": "Widget Updated · Shipment Reconcile #01",
+      "type": "widget.updated"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "API Service",
+        "id": "svc_metrics",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:09:47Z",
+      "id": "act_20260301100947-widget-updated-0052",
+      "message": "Widget settings changed by control plane for Shipment Reconcile #01.",
+      "metadata": {
+        "cpuPercent": 83.86,
+        "queuePressure": 0.8043,
+        "runPriority": "high",
+        "runStatus": "running",
+        "scenario": "degraded",
+        "seriesIndex": 7,
+        "throughputPerMin": 4549.13
+      },
+      "runId": "run_degraded-009",
+      "severity": "debug",
+      "title": "Widget Updated · Shipment Reconcile #01",
+      "type": "widget.updated"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "QA Specialist",
+        "id": "usr_ops-0024",
+        "type": "user",
+        "userId": "usr_ops-0029"
+      },
+      "createdAt": "2026-03-01T10:09:26Z",
+      "id": "act_20260301100926-run-started-0004",
+      "message": "Contract Validation #01 generated event type run.started.",
+      "metadata": {
+        "cpuPercent": 83.86,
+        "queuePressure": 0.8043,
+        "runPriority": "normal",
+        "runStatus": "queued",
+        "scenario": "degraded",
+        "seriesIndex": 4,
+        "throughputPerMin": 4549.13
+      },
+      "runId": "run_degraded-002",
+      "severity": "info",
+      "title": "Run Started · Contract Validation #01",
+      "type": "run.started"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Ops Analyst",
+        "id": "usr_ops-0050",
+        "type": "user",
+        "userId": "usr_ops-0075"
+      },
+      "createdAt": "2026-03-01T10:06:11Z",
+      "id": "act_20260301100611-widget-updated-0025",
+      "message": "Widget settings changed by control plane for Data Backfill #01.",
+      "metadata": {
+        "cpuPercent": 79.2,
+        "queuePressure": 0.6814,
+        "runPriority": "normal",
+        "runStatus": "paused",
+        "scenario": "degraded",
+        "seriesIndex": 25,
+        "throughputPerMin": 4639.24
+      },
+      "runId": "run_degraded-003",
+      "severity": "warn",
+      "title": "Widget Updated · Data Backfill #01",
+      "type": "widget.updated"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Platform Engineer",
+        "id": "usr_ops-0064",
+        "type": "user",
+        "userId": "usr_ops-0004"
+      },
+      "createdAt": "2026-03-01T10:05:41Z",
+      "id": "act_20260301100541-run-paused-0002",
+      "message": "Data Backfill #01 generated event type run.paused.",
+      "metadata": {
+        "cpuPercent": 70.32,
+        "queuePressure": 0.7663,
+        "runPriority": "normal",
+        "runStatus": "paused",
+        "scenario": "degraded",
+        "seriesIndex": 2,
+        "throughputPerMin": 4690.31
+      },
+      "runId": "run_degraded-003",
+      "severity": "warn",
+      "title": "Run Paused · Data Backfill #01",
+      "type": "run.paused"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Metrics Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:05:12Z",
+      "id": "act_20260301100512-run-paused-0036",
+      "message": "Telemetry Fold #01 generated event type run.paused.",
+      "metadata": {
+        "cpuPercent": 70.32,
+        "queuePressure": 0.7663,
+        "runPriority": "normal",
+        "runStatus": "paused",
+        "scenario": "degraded",
+        "seriesIndex": 36,
+        "throughputPerMin": 4690.31
+      },
+      "runId": "run_degraded-012",
+      "severity": "warn",
+      "title": "Run Paused · Telemetry Fold #01",
+      "type": "run.paused"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_pipeline",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:03:52Z",
+      "id": "act_20260301100352-widget-updated-0016",
+      "message": "Widget settings changed by control plane for Policy Audit #01.",
+      "metadata": {
+        "cpuPercent": 78.78,
+        "queuePressure": 0.6527,
+        "runPriority": "low",
+        "runStatus": "failed",
+        "scenario": "degraded",
+        "seriesIndex": 16,
+        "throughputPerMin": 4655.25
+      },
+      "runId": "run_degraded-006",
+      "severity": "debug",
+      "title": "Widget Updated · Policy Audit #01",
+      "type": "widget.updated"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Platform Engineer",
+        "id": "usr_ops-0054",
+        "type": "user",
+        "userId": "usr_ops-0074"
+      },
+      "createdAt": "2026-03-01T10:03:12Z",
+      "id": "act_20260301100312-run-started-0044",
+      "message": "Contract Validation #01 generated event type run.started.",
+      "metadata": {
+        "cpuPercent": 78.78,
+        "queuePressure": 0.6527,
+        "runPriority": "normal",
+        "runStatus": "queued",
+        "scenario": "degraded",
+        "seriesIndex": 44,
+        "throughputPerMin": 4655.25
+      },
+      "runId": "run_degraded-002",
+      "severity": "info",
+      "title": "Run Started · Contract Validation #01",
+      "type": "run.started"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Monitor",
+        "id": "sys_monitor",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:01:44Z",
+      "id": "act_20260301100144-run-created-0042",
+      "message": "Policy Audit #01 generated event type run.created.",
+      "metadata": {
+        "cpuPercent": 86.48,
+        "queuePressure": 0.8155,
+        "runPriority": "low",
+        "runStatus": "failed",
+        "scenario": "degraded",
+        "seriesIndex": 42,
+        "throughputPerMin": 4581.92
+      },
+      "runId": "run_degraded-006",
+      "severity": "info",
+      "title": "Run Created · Policy Audit #01",
+      "type": "run.created"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "API Service",
+        "id": "svc_metrics",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:00:11Z",
+      "id": "act_20260301100011-run-completed-0033",
+      "message": "Run completed with success rate 0.77881.",
+      "metadata": {
+        "cpuPercent": 80.9,
+        "queuePressure": 0.7206,
+        "scenario": "degraded",
+        "seriesIndex": 33,
+        "throughputPerMin": 4631.95
+      },
+      "runId": null,
+      "severity": "info",
+      "title": "Run Completed",
+      "type": "run.completed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Guard",
+        "id": "sys_guard",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T09:59:59Z",
+      "id": "act_20260301095959-run-resumed-0050",
+      "message": "Worker Warmup #01 generated event type run.resumed.",
+      "metadata": {
+        "cpuPercent": 80.12,
+        "queuePressure": 0.8373,
+        "runPriority": "normal",
+        "runStatus": "paused",
+        "scenario": "degraded",
+        "seriesIndex": 5,
+        "throughputPerMin": 4526.02
+      },
+      "runId": "run_degraded-007",
+      "severity": "info",
+      "title": "Run Resumed · Worker Warmup #01",
+      "type": "run.resumed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_api",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T09:58:57Z",
+      "id": "act_20260301095857-auth-login-0047",
+      "message": "Operator session opened from trusted segment 95.",
+      "metadata": {
+        "cpuPercent": 69.17,
+        "queuePressure": 0.6683,
+        "scenario": "degraded",
+        "seriesIndex": 2,
+        "throughputPerMin": 4611.07
+      },
+      "runId": null,
+      "severity": "info",
+      "title": "User Login",
+      "type": "auth.login"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Release Manager",
+        "id": "usr_ops-0079",
+        "type": "user",
+        "userId": "usr_ops-0073"
+      },
+      "createdAt": "2026-03-01T09:57:43Z",
+      "id": "act_20260301095743-run-failed-0027",
+      "message": "Run failed after elevated error ratio 0.06949.",
+      "metadata": {
+        "cpuPercent": 85.6,
+        "queuePressure": 0.8408,
+        "scenario": "degraded",
+        "seriesIndex": 27,
+        "throughputPerMin": 4470.27
+      },
+      "runId": null,
+      "severity": "critical",
+      "title": "Run Failed",
+      "type": "run.failed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Metrics Service",
+        "id": "svc_metrics",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T09:56:16Z",
+      "id": "act_20260301095616-auth-login-0030",
+      "message": "Operator session opened from trusted segment 64.",
+      "metadata": {
+        "cpuPercent": 87.34,
+        "queuePressure": 0.8093,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "degraded",
+        "seriesIndex": 30,
+        "throughputPerMin": 4406.7
+      },
+      "runId": "run_degraded-004",
+      "severity": "info",
+      "title": "User Login · Release Canary #01",
+      "type": "auth.login"
+    }
+  ],
+  "layout": {
+    "allowOverlap": false,
+    "bounded": true,
+    "breakpoints": [
+      {
+        "breakpoint": "xs",
+        "columns": 4,
+        "gap": 8,
+        "items": [
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_chart-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 2
+            },
+            "resizable": true,
+            "widgetId": "wid_dial-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 4
+            },
+            "resizable": true,
+            "widgetId": "wid_feed-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 6
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 8
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-002"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 10
+            },
+            "resizable": true,
+            "widgetId": "wid_table-001"
+          }
+        ],
+        "rowHeight": 84
+      },
+      {
+        "breakpoint": "sm",
+        "columns": 6,
+        "gap": 10,
+        "items": [
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 3,
+              "x": 0,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_chart-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 3,
+              "x": 3,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_dial-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 3,
+              "x": 0,
+              "y": 2
+            },
+            "resizable": true,
+            "widgetId": "wid_feed-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 3,
+              "x": 3,
+              "y": 2
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 3,
+              "x": 0,
+              "y": 4
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-002"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 3,
+              "x": 3,
+              "y": 4
+            },
+            "resizable": true,
+            "widgetId": "wid_table-001"
+          }
+        ],
+        "rowHeight": 86
+      },
+      {
+        "breakpoint": "md",
+        "columns": 12,
+        "gap": 12,
+        "items": [
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_chart-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 4,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_dial-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 8,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_feed-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 2
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 4,
+              "y": 2
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-002"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 8,
+              "y": 2
+            },
+            "resizable": true,
+            "widgetId": "wid_table-001"
+          }
+        ],
+        "rowHeight": 92
+      },
+      {
+        "breakpoint": "lg",
+        "columns": 16,
+        "gap": 12,
+        "items": [
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_chart-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 4,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_dial-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 8,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_feed-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 12,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 2
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-002"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 4,
+              "y": 2
+            },
+            "resizable": true,
+            "widgetId": "wid_table-001"
+          }
+        ],
+        "rowHeight": 96
+      },
+      {
+        "breakpoint": "xl",
+        "columns": 20,
+        "gap": 12,
+        "items": [
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_chart-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 4,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_dial-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 8,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_feed-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 12,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 16,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-002"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 2
+            },
+            "resizable": true,
+            "widgetId": "wid_table-001"
+          }
+        ],
+        "rowHeight": 98
+      }
+    ],
+    "compactType": "vertical",
+    "version": 1
+  },
+  "metadata": {
+    "activityCount": 54,
+    "description": "Sustained degraded behavior with elevated latency and moderate failure pressure.",
+    "determinismHash": "4a79180587ad4d95814c5fd8ace11b2691723c45e281bf530d7a5c0155fb6e9c",
+    "durationMinutes": 45,
+    "generatedAt": "2026-03-01T09:56:00Z",
+    "runCount": 12,
+    "scenario": "degraded",
+    "seed": 77,
+    "seriesCount": 45,
+    "widgetCount": 6
+  },
+  "runs": [
+    {
+      "assigneeId": "usr_exec-0007",
+      "health": "degraded",
+      "id": "run_degraded-006",
+      "name": "Policy Audit #01",
+      "ownerId": "usr_owner-0007",
+      "priority": "low",
+      "progress": {
+        "currentStep": 12,
+        "etaSeconds": null,
+        "percent": 55.88,
+        "totalSteps": 12
+      },
+      "source": "automation",
+      "status": "failed",
+      "tags": [
+        "finance",
+        "priority"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T10:02:00Z",
+        "finishedAt": "2026-03-01T10:40:00Z",
+        "scheduledAt": "2026-03-01T10:22:00Z",
+        "startedAt": "2026-03-01T10:29:00Z",
+        "updatedAt": "2026-03-01T10:40:00Z"
+      },
+      "version": 3,
+      "widgetIds": [
+        "wid_feed-005",
+        "wid_stat-003",
+        "wid_table-009",
+        "wid_table-019"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0004",
+      "health": "healthy",
+      "id": "run_degraded-003",
+      "name": "Data Backfill #01",
+      "ownerId": "usr_owner-0004",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 1,
+        "etaSeconds": 2091,
+        "percent": 16.67,
+        "totalSteps": 6
+      },
+      "source": "automation",
+      "status": "paused",
+      "tags": [
+        "inventory",
+        "priority"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T07:08:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T07:29:00Z",
+        "startedAt": "2026-03-01T07:57:00Z",
+        "updatedAt": "2026-03-01T10:33:00Z"
+      },
+      "version": 18,
+      "widgetIds": [
+        "wid_feed-005",
+        "wid_stat-016"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0008",
+      "health": "healthy",
+      "id": "run_degraded-007",
+      "name": "Worker Warmup #01",
+      "ownerId": "usr_owner-0008",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 5,
+        "etaSeconds": 271,
+        "percent": 22.73,
+        "totalSteps": 22
+      },
+      "source": "automation",
+      "status": "paused",
+      "tags": [
+        "degraded",
+        "priority"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T08:42:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T08:44:00Z",
+        "startedAt": "2026-03-01T08:50:00Z",
+        "updatedAt": "2026-03-01T10:26:00Z"
+      },
+      "version": 2,
+      "widgetIds": [
+        "wid_stat-018",
+        "wid_table-004",
+        "wid_table-009"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0002",
+      "health": "healthy",
+      "id": "run_degraded-012",
+      "name": "Telemetry Fold #01",
+      "ownerId": "usr_owner-0004",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 12,
+        "etaSeconds": 4010,
+        "percent": 75.0,
+        "totalSteps": 16
+      },
+      "source": "schedule",
+      "status": "paused",
+      "tags": [
+        "ops",
+        "regression",
+        "release"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T03:48:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T03:49:00Z",
+        "startedAt": "2026-03-01T04:14:00Z",
+        "updatedAt": "2026-03-01T10:36:00Z"
+      },
+      "version": 8,
+      "widgetIds": [
+        "wid_table-018"
+      ]
+    },
+    {
+      "assigneeId": null,
+      "health": "unknown",
+      "id": "run_degraded-002",
+      "name": "Contract Validation #01",
+      "ownerId": "usr_owner-0003",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 0,
+        "etaSeconds": null,
+        "percent": 0.0,
+        "totalSteps": 24
+      },
+      "source": "automation",
+      "status": "queued",
+      "tags": [
+        "degraded",
+        "finance",
+        "ops"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T08:49:00Z",
+        "finishedAt": null,
+        "scheduledAt": null,
+        "startedAt": null,
+        "updatedAt": "2026-03-01T10:36:00Z"
+      },
+      "version": 10,
+      "widgetIds": [
+        "wid_feed-005"
+      ]
+    },
+    {
+      "assigneeId": null,
+      "health": "healthy",
+      "id": "run_degraded-005",
+      "name": "Queue Drain #01",
+      "ownerId": "usr_owner-0006",
+      "priority": "critical",
+      "progress": {
+        "currentStep": 7,
+        "etaSeconds": 3421,
+        "percent": 50.0,
+        "totalSteps": 14
+      },
+      "source": "automation",
+      "status": "running",
+      "tags": [
+        "contracts",
+        "finance",
+        "ops"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T04:37:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T05:10:00Z",
+        "startedAt": "2026-03-01T05:11:00Z",
+        "updatedAt": "2026-03-01T10:23:00Z"
+      },
+      "version": 16,
+      "widgetIds": [
+        "wid_feed-008"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0010",
+      "health": "healthy",
+      "id": "run_degraded-009",
+      "name": "Shipment Reconcile #01",
+      "ownerId": "usr_owner-0001",
+      "priority": "high",
+      "progress": {
+        "currentStep": 11,
+        "etaSeconds": 2697,
+        "percent": 64.71,
+        "totalSteps": 17
+      },
+      "source": "manual",
+      "status": "running",
+      "tags": [
+        "contracts",
+        "inventory",
+        "priority"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T04:32:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T04:50:00Z",
+        "startedAt": "2026-03-01T05:15:00Z",
+        "updatedAt": "2026-03-01T10:30:00Z"
+      },
+      "version": 12,
+      "widgetIds": [
+        "wid_stat-007",
+        "wid_stat-011",
+        "wid_table-009",
+        "wid_table-020"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0002",
+      "health": "healthy",
+      "id": "run_degraded-001",
+      "name": "Billing Reconciliation #01",
+      "ownerId": "usr_owner-0002",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 7,
+        "etaSeconds": 1026,
+        "percent": 70.0,
+        "totalSteps": 10
+      },
+      "source": "automation",
+      "status": "running",
+      "tags": [
+        "finance",
+        "priority",
+        "release"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T07:10:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T07:42:00Z",
+        "startedAt": "2026-03-01T07:50:00Z",
+        "updatedAt": "2026-03-01T10:23:00Z"
+      },
+      "version": 1,
+      "widgetIds": [
+        "wid_feed-002",
+        "wid_feed-006",
+        "wid_stat-010",
+        "wid_table-015"
+      ]
+    },
+    {
+      "assigneeId": null,
+      "health": "healthy",
+      "id": "run_degraded-004",
+      "name": "Release Canary #01",
+      "ownerId": "usr_owner-0005",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 9,
+        "etaSeconds": 2151,
+        "percent": 75.0,
+        "totalSteps": 12
+      },
+      "source": "automation",
+      "status": "running",
+      "tags": [
+        "contracts",
+        "regression"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T05:01:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T05:09:00Z",
+        "startedAt": "2026-03-01T05:35:00Z",
+        "updatedAt": "2026-03-01T10:26:00Z"
+      },
+      "version": 1,
+      "widgetIds": [
+        "wid_feed-009",
+        "wid_stat-005",
+        "wid_table-017"
+      ]
+    },
+    {
+      "assigneeId": null,
+      "health": "unknown",
+      "id": "run_degraded-010",
+      "name": "Evidence Sweep #01",
+      "ownerId": "usr_owner-0002",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 0,
+        "etaSeconds": null,
+        "percent": 0.0,
+        "totalSteps": 7
+      },
+      "source": "schedule",
+      "status": "scheduled",
+      "tags": [
+        "finance",
+        "regression",
+        "release"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T05:47:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T06:13:00Z",
+        "startedAt": "2026-03-01T06:40:00Z",
+        "updatedAt": "2026-03-01T10:28:00Z"
+      },
+      "version": 9,
+      "widgetIds": [
+        "wid_stat-001"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0001",
+      "health": "unknown",
+      "id": "run_degraded-011",
+      "name": "Latency Guard #01",
+      "ownerId": "usr_owner-0003",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 0,
+        "etaSeconds": null,
+        "percent": 0.0,
+        "totalSteps": 6
+      },
+      "source": "automation",
+      "status": "scheduled",
+      "tags": [
+        "alerts",
+        "inventory",
+        "regression",
+        "security"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T05:51:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T05:59:00Z",
+        "startedAt": "2026-03-01T06:03:00Z",
+        "updatedAt": "2026-03-01T10:29:00Z"
+      },
+      "version": 18,
+      "widgetIds": [
+        "wid_stat-002",
+        "wid_table-004"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0009",
+      "health": "healthy",
+      "id": "run_degraded-008",
+      "name": "Search Reindex #01",
+      "ownerId": "usr_owner-0009",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 22,
+        "etaSeconds": null,
+        "percent": 100.0,
+        "totalSteps": 22
+      },
+      "source": "automation",
+      "status": "succeeded",
+      "tags": [
+        "contracts",
+        "finance",
+        "ops",
+        "regression"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T07:06:00Z",
+        "finishedAt": "2026-03-01T10:40:00Z",
+        "scheduledAt": "2026-03-01T07:24:00Z",
+        "startedAt": "2026-03-01T07:54:00Z",
+        "updatedAt": "2026-03-01T10:40:00Z"
+      },
+      "version": 14,
+      "widgetIds": [
+        "wid_stat-017",
+        "wid_table-006",
+        "wid_table-007",
+        "wid_table-017"
+      ]
+    }
+  ],
+  "series": [
+    {
+      "activeWorkers": 17,
+      "at": "2026-03-01T09:56:00Z",
+      "cpuPercent": 87.34,
+      "errorRatio": 0.07998,
+      "latencyMs": {
+        "p50": 267.85,
+        "p95": 421.52,
+        "p99": 545.23
+      },
+      "memoryMb": 21811.24,
+      "queuePressure": 0.8093,
+      "successRate": 0.76291,
+      "throughputPerMin": 4406.7
+    },
+    {
+      "activeWorkers": 17,
+      "at": "2026-03-01T09:57:00Z",
+      "cpuPercent": 85.6,
+      "errorRatio": 0.06949,
+      "latencyMs": {
+        "p50": 280.12,
+        "p95": 444.35,
+        "p99": 575.49
+      },
+      "memoryMb": 21788.93,
+      "queuePressure": 0.8408,
+      "successRate": 0.7775,
+      "throughputPerMin": 4470.27
+    },
+    {
+      "activeWorkers": 14,
+      "at": "2026-03-01T09:58:00Z",
+      "cpuPercent": 69.17,
+      "errorRatio": 0.04755,
+      "latencyMs": {
+        "p50": 242.53,
+        "p95": 367.99,
+        "p99": 473.17
+      },
+      "memoryMb": 21832.08,
+      "queuePressure": 0.6683,
+      "successRate": 0.83659,
+      "throughputPerMin": 4611.07
+    },
+    {
+      "activeWorkers": 17,
+      "at": "2026-03-01T09:59:00Z",
+      "cpuPercent": 80.12,
+      "errorRatio": 0.09852,
+      "latencyMs": {
+        "p50": 272.6,
+        "p95": 432.06,
+        "p99": 559.49
+      },
+      "memoryMb": 21832.25,
+      "queuePressure": 0.8373,
+      "successRate": 0.72711,
+      "throughputPerMin": 4526.02
+    },
+    {
+      "activeWorkers": 16,
+      "at": "2026-03-01T10:00:00Z",
+      "cpuPercent": 80.9,
+      "errorRatio": 0.07698,
+      "latencyMs": {
+        "p50": 236.83,
+        "p95": 364.29,
+        "p99": 469.47
+      },
+      "memoryMb": 21811.21,
+      "queuePressure": 0.7206,
+      "successRate": 0.77881,
+      "throughputPerMin": 4631.95
+    },
+    {
+      "activeWorkers": 17,
+      "at": "2026-03-01T10:01:00Z",
+      "cpuPercent": 86.48,
+      "errorRatio": 0.03606,
+      "latencyMs": {
+        "p50": 273.68,
+        "p95": 431.38,
+        "p99": 558.12
+      },
+      "memoryMb": 21867.88,
+      "queuePressure": 0.8155,
+      "successRate": 0.83904,
+      "throughputPerMin": 4581.92
+    },
+    {
+      "activeWorkers": 16,
+      "at": "2026-03-01T10:02:00Z",
+      "cpuPercent": 80.09,
+      "errorRatio": 0.07598,
+      "latencyMs": {
+        "p50": 256.76,
+        "p95": 396.55,
+        "p99": 511.37
+      },
+      "memoryMb": 21855.27,
+      "queuePressure": 0.736,
+      "successRate": 0.77872,
+      "throughputPerMin": 4640.37
+    },
+    {
+      "activeWorkers": 15,
+      "at": "2026-03-01T10:03:00Z",
+      "cpuPercent": 78.78,
+      "errorRatio": 0.06077,
+      "latencyMs": {
+        "p50": 261.04,
+        "p95": 394.45,
+        "p99": 506.83
+      },
+      "memoryMb": 21801.32,
+      "queuePressure": 0.6527,
+      "successRate": 0.81533,
+      "throughputPerMin": 4655.25
+    },
+    {
+      "activeWorkers": 15,
+      "at": "2026-03-01T10:04:00Z",
+      "cpuPercent": 72.64,
+      "errorRatio": 0.0405,
+      "latencyMs": {
+        "p50": 258.88,
+        "p95": 404.38,
+        "p99": 522.43
+      },
+      "memoryMb": 21896.41,
+      "queuePressure": 0.7801,
+      "successRate": 0.83551,
+      "throughputPerMin": 4660.94
+    },
+    {
+      "activeWorkers": 15,
+      "at": "2026-03-01T10:05:00Z",
+      "cpuPercent": 70.32,
+      "errorRatio": 0.0595,
+      "latencyMs": {
+        "p50": 235.41,
+        "p95": 366.42,
+        "p99": 473.12
+      },
+      "memoryMb": 21807.09,
+      "queuePressure": 0.7663,
+      "successRate": 0.80392,
+      "throughputPerMin": 4690.31
+    },
+    {
+      "activeWorkers": 15,
+      "at": "2026-03-01T10:06:00Z",
+      "cpuPercent": 79.2,
+      "errorRatio": 0.10573,
+      "latencyMs": {
+        "p50": 247.8,
+        "p95": 377.29,
+        "p99": 485.4
+      },
+      "memoryMb": 21875.61,
+      "queuePressure": 0.6814,
+      "successRate": 0.7332,
+      "throughputPerMin": 4639.24
+    },
+    {
+      "activeWorkers": 15,
+      "at": "2026-03-01T10:07:00Z",
+      "cpuPercent": 76.21,
+      "errorRatio": 0.05203,
+      "latencyMs": {
+        "p50": 230.53,
+        "p95": 352.26,
+        "p99": 453.47
+      },
+      "memoryMb": 21858.1,
+      "queuePressure": 0.6951,
+      "successRate": 0.82552,
+      "throughputPerMin": 4594.56
+    },
+    {
+      "activeWorkers": 17,
+      "at": "2026-03-01T10:08:00Z",
+      "cpuPercent": 82.38,
+      "errorRatio": 0.06019,
+      "latencyMs": {
+        "p50": 263.17,
+        "p95": 419.11,
+        "p99": 543.14
+      },
+      "memoryMb": 21826.32,
+      "queuePressure": 0.8564,
+      "successRate": 0.7919,
+      "throughputPerMin": 4560.97
+    },
+    {
+      "activeWorkers": 17,
+      "at": "2026-03-01T10:09:00Z",
+      "cpuPercent": 83.86,
+      "errorRatio": 0.06326,
+      "latencyMs": {
+        "p50": 287.05,
+        "p95": 451.16,
+        "p99": 583.45
+      },
+      "memoryMb": 21831.95,
+      "queuePressure": 0.8043,
+      "successRate": 0.79278,
+      "throughputPerMin": 4549.13
+    },
+    {
+      "activeWorkers": 14,
+      "at": "2026-03-01T10:10:00Z",
+      "cpuPercent": 77.12,
+      "errorRatio": 0.07234,
+      "latencyMs": {
+        "p50": 255.71,
+        "p95": 379.82,
+        "p99": 486.62
+      },
+      "memoryMb": 21862.88,
+      "queuePressure": 0.5884,
+      "successRate": 0.80279,
+      "throughputPerMin": 4641.57
+    },
+    {
+      "activeWorkers": 13,
+      "at": "2026-03-01T10:11:00Z",
+      "cpuPercent": 70.72,
+      "errorRatio": 0.05003,
+      "latencyMs": {
+        "p50": 225.37,
+        "p95": 332.6,
+        "p99": 425.65
+      },
+      "memoryMb": 21819.0,
+      "queuePressure": 0.5645,
+      "successRate": 0.84471,
+      "throughputPerMin": 4585.97
+    },
+    {
+      "activeWorkers": 15,
+      "at": "2026-03-01T10:12:00Z",
+      "cpuPercent": 74.74,
+      "errorRatio": 0.0627,
+      "latencyMs": {
+        "p50": 233.8,
+        "p95": 356.51,
+        "p99": 458.78
+      },
+      "memoryMb": 21819.29,
+      "queuePressure": 0.6871,
+      "successRate": 0.80783,
+      "throughputPerMin": 4657.4
+    },
+    {
+      "activeWorkers": 14,
+      "at": "2026-03-01T10:13:00Z",
+      "cpuPercent": 74.54,
+      "errorRatio": 0.04835,
+      "latencyMs": {
+        "p50": 240.57,
+        "p95": 357.42,
+        "p99": 457.95
+      },
+      "memoryMb": 21845.51,
+      "queuePressure": 0.5893,
+      "successRate": 0.84467,
+      "throughputPerMin": 4568.46
+    },
+    {
+      "activeWorkers": 14,
+      "at": "2026-03-01T10:14:00Z",
+      "cpuPercent": 72.06,
+      "errorRatio": 0.08049,
+      "latencyMs": {
+        "p50": 230.39,
+        "p95": 350.64,
+        "p99": 451.08
+      },
+      "memoryMb": 21792.11,
+      "queuePressure": 0.6799,
+      "successRate": 0.77756,
+      "throughputPerMin": 4559.36
+    },
+    {
+      "activeWorkers": 14,
+      "at": "2026-03-01T10:15:00Z",
+      "cpuPercent": 72.05,
+      "errorRatio": 0.03464,
+      "latencyMs": {
+        "p50": 225.35,
+        "p95": 343.03,
+        "p99": 441.31
+      },
+      "memoryMb": 21798.93,
+      "queuePressure": 0.6805,
+      "successRate": 0.85772,
+      "throughputPerMin": 4614.85
+    },
+    {
+      "activeWorkers": 18,
+      "at": "2026-03-01T10:16:00Z",
+      "cpuPercent": 87.61,
+      "errorRatio": 0.10806,
+      "latencyMs": {
+        "p50": 274.68,
+        "p95": 436.92,
+        "p99": 566.11
+      },
+      "memoryMb": 21850.63,
+      "queuePressure": 0.8517,
+      "successRate": 0.70869,
+      "throughputPerMin": 4465.67
+    },
+    {
+      "activeWorkers": 15,
+      "at": "2026-03-01T10:17:00Z",
+      "cpuPercent": 72.84,
+      "errorRatio": 0.06689,
+      "latencyMs": {
+        "p50": 235.72,
+        "p95": 362.37,
+        "p99": 466.95
+      },
+      "memoryMb": 21816.74,
+      "queuePressure": 0.7182,
+      "successRate": 0.79676,
+      "throughputPerMin": 4603.15
+    },
+    {
+      "activeWorkers": 15,
+      "at": "2026-03-01T10:18:00Z",
+      "cpuPercent": 74.6,
+      "errorRatio": 0.05235,
+      "latencyMs": {
+        "p50": 231.56,
+        "p95": 351.47,
+        "p99": 451.94
+      },
+      "memoryMb": 21835.56,
+      "queuePressure": 0.6695,
+      "successRate": 0.82805,
+      "throughputPerMin": 4668.93
+    },
+    {
+      "activeWorkers": 14,
+      "at": "2026-03-01T10:19:00Z",
+      "cpuPercent": 69.55,
+      "errorRatio": 0.07172,
+      "latencyMs": {
+        "p50": 225.13,
+        "p95": 341.86,
+        "p99": 439.62
+      },
+      "memoryMb": 21898.9,
+      "queuePressure": 0.6712,
+      "successRate": 0.79395,
+      "throughputPerMin": 4625.04
+    },
+    {
+      "activeWorkers": 17,
+      "at": "2026-03-01T10:20:00Z",
+      "cpuPercent": 79.84,
+      "errorRatio": 0.06605,
+      "latencyMs": {
+        "p50": 258.55,
+        "p95": 409.86,
+        "p99": 530.77
+      },
+      "memoryMb": 21687.01,
+      "queuePressure": 0.8381,
+      "successRate": 0.78383,
+      "throughputPerMin": 4513.46
+    },
+    {
+      "activeWorkers": 14,
+      "at": "2026-03-01T10:21:00Z",
+      "cpuPercent": 73.81,
+      "errorRatio": 0.05758,
+      "latencyMs": {
+        "p50": 245.57,
+        "p95": 363.78,
+        "p99": 465.86
+      },
+      "memoryMb": 21771.59,
+      "queuePressure": 0.5785,
+      "successRate": 0.82982,
+      "throughputPerMin": 4605.1
+    },
+    {
+      "activeWorkers": 15,
+      "at": "2026-03-01T10:22:00Z",
+      "cpuPercent": 72.82,
+      "errorRatio": 0.04166,
+      "latencyMs": {
+        "p50": 241.56,
+        "p95": 367.55,
+        "p99": 472.81
+      },
+      "memoryMb": 21736.1,
+      "queuePressure": 0.6789,
+      "successRate": 0.84563,
+      "throughputPerMin": 4597.43
+    },
+    {
+      "activeWorkers": 14,
+      "at": "2026-03-01T10:23:00Z",
+      "cpuPercent": 69.99,
+      "errorRatio": 0.07014,
+      "latencyMs": {
+        "p50": 239.44,
+        "p95": 361.8,
+        "p99": 464.88
+      },
+      "memoryMb": 21900.34,
+      "queuePressure": 0.6525,
+      "successRate": 0.79895,
+      "throughputPerMin": 4563.75
+    },
+    {
+      "activeWorkers": 13,
+      "at": "2026-03-01T10:24:00Z",
+      "cpuPercent": 69.42,
+      "errorRatio": 0.0434,
+      "latencyMs": {
+        "p50": 228.08,
+        "p95": 334.34,
+        "p99": 427.38
+      },
+      "memoryMb": 21761.19,
+      "queuePressure": 0.5397,
+      "successRate": 0.85929,
+      "throughputPerMin": 4568.18
+    },
+    {
+      "activeWorkers": 14,
+      "at": "2026-03-01T10:25:00Z",
+      "cpuPercent": 70.87,
+      "errorRatio": 0.04242,
+      "latencyMs": {
+        "p50": 224.11,
+        "p95": 335.87,
+        "p99": 430.97
+      },
+      "memoryMb": 21775.22,
+      "queuePressure": 0.6217,
+      "successRate": 0.85116,
+      "throughputPerMin": 4572.94
+    },
+    {
+      "activeWorkers": 13,
+      "at": "2026-03-01T10:26:00Z",
+      "cpuPercent": 69.5,
+      "errorRatio": 0.06436,
+      "latencyMs": {
+        "p50": 219.99,
+        "p95": 321.23,
+        "p99": 410.34
+      },
+      "memoryMb": 21696.63,
+      "queuePressure": 0.5255,
+      "successRate": 0.8243,
+      "throughputPerMin": 4485.4
+    },
+    {
+      "activeWorkers": 12,
+      "at": "2026-03-01T10:27:00Z",
+      "cpuPercent": 66.33,
+      "errorRatio": 0.03875,
+      "latencyMs": {
+        "p50": 220.68,
+        "p95": 312.54,
+        "p99": 397.09
+      },
+      "memoryMb": 21745.18,
+      "queuePressure": 0.4157,
+      "successRate": 0.88231,
+      "throughputPerMin": 4537.39
+    },
+    {
+      "activeWorkers": 13,
+      "at": "2026-03-01T10:28:00Z",
+      "cpuPercent": 69.15,
+      "errorRatio": 0.01264,
+      "latencyMs": {
+        "p50": 227.63,
+        "p95": 333.86,
+        "p99": 426.8
+      },
+      "memoryMb": 21684.73,
+      "queuePressure": 0.5416,
+      "successRate": 0.91288,
+      "throughputPerMin": 4589.06
+    },
+    {
+      "activeWorkers": 13,
+      "at": "2026-03-01T10:29:00Z",
+      "cpuPercent": 64.01,
+      "errorRatio": 0.07606,
+      "latencyMs": {
+        "p50": 228.78,
+        "p95": 341.25,
+        "p99": 437.52
+      },
+      "memoryMb": 21691.18,
+      "queuePressure": 0.604,
+      "successRate": 0.79442,
+      "throughputPerMin": 4508.63
+    },
+    {
+      "activeWorkers": 12,
+      "at": "2026-03-01T10:30:00Z",
+      "cpuPercent": 64.56,
+      "errorRatio": 0.06665,
+      "latencyMs": {
+        "p50": 229.04,
+        "p95": 336.17,
+        "p99": 429.82
+      },
+      "memoryMb": 21671.82,
+      "queuePressure": 0.5444,
+      "successRate": 0.81803,
+      "throughputPerMin": 4491.37
+    },
+    {
+      "activeWorkers": 12,
+      "at": "2026-03-01T10:31:00Z",
+      "cpuPercent": 65.27,
+      "errorRatio": 0.07475,
+      "latencyMs": {
+        "p50": 227.7,
+        "p95": 331.75,
+        "p99": 423.63
+      },
+      "memoryMb": 21732.11,
+      "queuePressure": 0.5174,
+      "successRate": 0.80709,
+      "throughputPerMin": 4596.42
+    },
+    {
+      "activeWorkers": 16,
+      "at": "2026-03-01T10:32:00Z",
+      "cpuPercent": 77.17,
+      "errorRatio": 0.05493,
+      "latencyMs": {
+        "p50": 258.94,
+        "p95": 405.22,
+        "p99": 523.68
+      },
+      "memoryMb": 21646.41,
+      "queuePressure": 0.7873,
+      "successRate": 0.8094,
+      "throughputPerMin": 4448.41
+    },
+    {
+      "activeWorkers": 13,
+      "at": "2026-03-01T10:33:00Z",
+      "cpuPercent": 68.56,
+      "errorRatio": 0.04914,
+      "latencyMs": {
+        "p50": 226.55,
+        "p95": 332.0,
+        "p99": 424.38
+      },
+      "memoryMb": 21707.96,
+      "queuePressure": 0.5387,
+      "successRate": 0.84936,
+      "throughputPerMin": 4574.96
+    },
+    {
+      "activeWorkers": 14,
+      "at": "2026-03-01T10:34:00Z",
+      "cpuPercent": 73.5,
+      "errorRatio": 0.02431,
+      "latencyMs": {
+        "p50": 224.45,
+        "p95": 328.98,
+        "p99": 420.53
+      },
+      "memoryMb": 21705.09,
+      "queuePressure": 0.5393,
+      "successRate": 0.89274,
+      "throughputPerMin": 4533.55
+    },
+    {
+      "activeWorkers": 13,
+      "at": "2026-03-01T10:35:00Z",
+      "cpuPercent": 68.43,
+      "errorRatio": 0.0502,
+      "latencyMs": {
+        "p50": 242.24,
+        "p95": 361.13,
+        "p99": 462.97
+      },
+      "memoryMb": 21749.88,
+      "queuePressure": 0.602,
+      "successRate": 0.83991,
+      "throughputPerMin": 4574.88
+    },
+    {
+      "activeWorkers": 13,
+      "at": "2026-03-01T10:36:00Z",
+      "cpuPercent": 64.78,
+      "errorRatio": 0.031,
+      "latencyMs": {
+        "p50": 227.76,
+        "p95": 339.99,
+        "p99": 435.96
+      },
+      "memoryMb": 21878.4,
+      "queuePressure": 0.6069,
+      "successRate": 0.87293,
+      "throughputPerMin": 4563.46
+    },
+    {
+      "activeWorkers": 18,
+      "at": "2026-03-01T10:37:00Z",
+      "cpuPercent": 86.63,
+      "errorRatio": 0.11653,
+      "latencyMs": {
+        "p50": 291.05,
+        "p95": 468.68,
+        "p99": 608.43
+      },
+      "memoryMb": 21748.2,
+      "queuePressure": 0.9008,
+      "successRate": 0.68797,
+      "throughputPerMin": 4476.58
+    },
+    {
+      "activeWorkers": 13,
+      "at": "2026-03-01T10:38:00Z",
+      "cpuPercent": 68.83,
+      "errorRatio": 0.0485,
+      "latencyMs": {
+        "p50": 251.75,
+        "p95": 376.28,
+        "p99": 482.6
+      },
+      "memoryMb": 21862.37,
+      "queuePressure": 0.6116,
+      "successRate": 0.84174,
+      "throughputPerMin": 4604.78
+    },
+    {
+      "activeWorkers": 18,
+      "at": "2026-03-01T10:39:00Z",
+      "cpuPercent": 81.82,
+      "errorRatio": 0.09417,
+      "latencyMs": {
+        "p50": 278.18,
+        "p95": 449.04,
+        "p99": 583.15
+      },
+      "memoryMb": 21864.44,
+      "queuePressure": 0.9106,
+      "successRate": 0.72593,
+      "throughputPerMin": 4478.55
+    },
+    {
+      "activeWorkers": 14,
+      "at": "2026-03-01T10:40:00Z",
+      "cpuPercent": 70.03,
+      "errorRatio": 0.04693,
+      "latencyMs": {
+        "p50": 252.81,
+        "p95": 379.57,
+        "p99": 487.19
+      },
+      "memoryMb": 21872.74,
+      "queuePressure": 0.6286,
+      "successRate": 0.84244,
+      "throughputPerMin": 4609.04
+    }
+  ],
+  "widgets": [
+    {
+      "config": {
+        "chartFamily": "line",
+        "seriesNames": [
+          "p50",
+          "p95",
+          "p99"
+        ],
+        "supportsStacking": false,
+        "xLabel": "minute",
+        "yLabel": "ms"
+      },
+      "density": "spacious",
+      "description": "Placeholder chart config with deterministic series names.",
+      "hidden": false,
+      "id": "wid_chart-001",
+      "kind": "chart-placeholder",
+      "pinned": false,
+      "refresh": {
+        "intervalSeconds": null,
+        "mode": "manual"
+      },
+      "subtitle": "p50/p95/p99",
+      "title": "Latency Envelope"
+    },
+    {
+      "config": {
+        "criticalThreshold": 90,
+        "max": 100,
+        "min": 0,
+        "unit": "%",
+        "value": 62.86,
+        "warningThreshold": 70
+      },
+      "density": "comfortable",
+      "description": "Queue pressure scale from 0 to 100.",
+      "hidden": false,
+      "id": "wid_dial-001",
+      "kind": "dial-placeholder",
+      "pinned": true,
+      "refresh": {
+        "intervalSeconds": 10,
+        "mode": "interval"
+      },
+      "subtitle": "risk window",
+      "title": "Queue Pressure"
+    },
+    {
+      "config": {
+        "compactTimestamps": true,
+        "maxItems": 60,
+        "showSeverity": true,
+        "source": "activity"
+      },
+      "density": "comfortable",
+      "description": "Recent event feed for operational timeline.",
+      "hidden": false,
+      "id": "wid_feed-001",
+      "kind": "feed",
+      "pinned": true,
+      "refresh": {
+        "intervalSeconds": 12,
+        "mode": "interval"
+      },
+      "subtitle": "events",
+      "title": "Activity"
+    },
+    {
+      "config": {
+        "precision": 2,
+        "sparkline": [
+          4605.1,
+          4597.43,
+          4563.75,
+          4568.18,
+          4572.94,
+          4485.4,
+          4537.39,
+          4589.06,
+          4508.63,
+          4491.37,
+          4596.42,
+          4448.41,
+          4574.96,
+          4533.55,
+          4574.88,
+          4563.46,
+          4476.58,
+          4604.78,
+          4478.55,
+          4609.04
+        ],
+        "trend": "up",
+        "unit": "evt/min",
+        "value": 4609.04
+      },
+      "density": "compact",
+      "description": "Current throughput estimated from deterministic simulator.",
+      "hidden": false,
+      "id": "wid_stat-001",
+      "kind": "stat",
+      "pinned": true,
+      "refresh": {
+        "intervalSeconds": 15,
+        "mode": "interval"
+      },
+      "subtitle": "per minute",
+      "title": "Throughput"
+    },
+    {
+      "config": {
+        "precision": 2,
+        "sparkline": [
+          82.98,
+          84.56,
+          79.9,
+          85.93,
+          85.12,
+          82.43,
+          88.23,
+          91.29,
+          79.44,
+          81.8,
+          80.71,
+          80.94,
+          84.94,
+          89.27,
+          83.99,
+          87.29,
+          68.8,
+          84.17,
+          72.59,
+          84.24
+        ],
+        "trend": "flat",
+        "unit": "%",
+        "value": 84.24
+      },
+      "density": "compact",
+      "description": "Derived from error ratio and queue pressure.",
+      "hidden": false,
+      "id": "wid_stat-002",
+      "kind": "stat",
+      "pinned": true,
+      "refresh": {
+        "intervalSeconds": 30,
+        "mode": "interval"
+      },
+      "subtitle": "window",
+      "title": "Success Rate"
+    },
+    {
+      "config": {
+        "columns": [
+          {
+            "align": "left",
+            "key": "id",
+            "label": "Run ID",
+            "sortable": true,
+            "truncation": "line",
+            "width": 180
+          },
+          {
+            "align": "left",
+            "key": "name",
+            "label": "Name",
+            "sortable": true,
+            "truncation": "line",
+            "width": 260
+          },
+          {
+            "align": "center",
+            "key": "status",
+            "label": "Status",
+            "sortable": true,
+            "truncation": "none",
+            "width": 120
+          },
+          {
+            "align": "center",
+            "key": "priority",
+            "label": "Priority",
+            "sortable": true,
+            "truncation": "none",
+            "width": 120
+          },
+          {
+            "align": "right",
+            "key": "percent",
+            "label": "Progress %",
+            "sortable": true,
+            "truncation": "none",
+            "width": 140
+          }
+        ],
+        "maxRows": 20,
+        "rowKey": "id",
+        "stickyHeader": true,
+        "striped": true
+      },
+      "density": "comfortable",
+      "description": "Run summaries generated from scenario distributions.",
+      "hidden": false,
+      "id": "wid_table-001",
+      "kind": "table",
+      "pinned": false,
+      "refresh": {
+        "intervalSeconds": 25,
+        "mode": "interval"
+      },
+      "subtitle": "simulated queue",
+      "title": "Runs"
+    }
+  ]
+}

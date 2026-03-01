@@ -1,0 +1,2736 @@
+{
+  "activity": [
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Monitor",
+        "id": "sys_monitor",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:26:57Z",
+      "id": "act_20260301102657-run-created-0033",
+      "message": "Validate Inventory Ledger for Region Alpha [v08] generated event type run.created; latency envelope drifted above p95 target while enforcing policy constraints with deterministic ordering.",
+      "metadata": {
+        "cpuPercent": 57.75,
+        "queuePressure": 0.5102,
+        "runPriority": "high",
+        "runStatus": "succeeded",
+        "scenario": "spike",
+        "seriesIndex": 3,
+        "throughputPerMin": 7303.18
+      },
+      "runId": "run_spike-008",
+      "severity": "warn",
+      "title": "Run Created · Validate Inventory Ledger for Region Alpha [v08]",
+      "type": "run.created"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Pipeline Service",
+        "id": "svc_metrics",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:26:45Z",
+      "id": "act_20260301102645-run-failed-0020",
+      "message": "Run failed after elevated error ratio 0.03735.",
+      "metadata": {
+        "cpuPercent": 57.75,
+        "queuePressure": 0.5102,
+        "scenario": "spike",
+        "seriesIndex": 20,
+        "throughputPerMin": 7303.18
+      },
+      "runId": null,
+      "severity": "error",
+      "title": "Run Failed",
+      "type": "run.failed"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Runtime Steward 04",
+        "id": "usr_ops-0081",
+        "type": "user",
+        "userId": "usr_ops-0052"
+      },
+      "createdAt": "2026-03-01T10:24:33Z",
+      "id": "act_20260301102433-auth-logout-0008",
+      "message": "Operator session closed after 30 minutes.",
+      "metadata": {
+        "cpuPercent": 58.49,
+        "queuePressure": 0.3475,
+        "runPriority": "low",
+        "runStatus": "queued",
+        "scenario": "spike",
+        "seriesIndex": 8,
+        "throughputPerMin": 7296.46
+      },
+      "runId": "run_spike-004",
+      "severity": "debug",
+      "title": "User Logout · Validate Inventory Ledger for Region Alpha [v04]",
+      "type": "auth.logout"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_pipeline",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:24:09Z",
+      "id": "act_20260301102409-run-progress-0041",
+      "message": "Validate Inventory Ledger for Region Alpha [v07] reported throughput 7296.46 events/min.",
+      "metadata": {
+        "cpuPercent": 58.49,
+        "queuePressure": 0.3475,
+        "runPriority": "critical",
+        "runStatus": "running",
+        "scenario": "spike",
+        "seriesIndex": 11,
+        "throughputPerMin": 7296.46
+      },
+      "runId": "run_spike-007",
+      "severity": "debug",
+      "title": "Run Progress · Validate Inventory Ledger for Region Alpha [v07]",
+      "type": "run.progress"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:21:53Z",
+      "id": "act_20260301102153-run-completed-0032",
+      "message": "Validate Inventory Ledger for Region Alpha [v03] completed with success rate 0.93519.",
+      "metadata": {
+        "cpuPercent": 50.86,
+        "queuePressure": 0.3168,
+        "runPriority": "normal",
+        "runStatus": "scheduled",
+        "scenario": "spike",
+        "seriesIndex": 2,
+        "throughputPerMin": 7238.18
+      },
+      "runId": "run_spike-003",
+      "severity": "debug",
+      "title": "Run Completed · Validate Inventory Ledger for Region Alpha [v03]",
+      "type": "run.completed"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_pipeline",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:20:09Z",
+      "id": "act_20260301102009-run-paused-0011",
+      "message": "Validate Inventory Ledger for Region Alpha [v03] generated event type run.paused; visual baseline remained deterministic while rebuilding hot cache before hand-off checkpoint.",
+      "metadata": {
+        "cpuPercent": 56.36,
+        "queuePressure": 0.391,
+        "runPriority": "normal",
+        "runStatus": "scheduled",
+        "scenario": "spike",
+        "seriesIndex": 11,
+        "throughputPerMin": 7258.21
+      },
+      "runId": "run_spike-003",
+      "severity": "warn",
+      "title": "Run Paused · Validate Inventory Ledger for Region Alpha [v03]",
+      "type": "run.paused"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Security Analyst 01",
+        "id": "usr_ops-0058",
+        "type": "user",
+        "userId": "usr_ops-0025"
+      },
+      "createdAt": "2026-03-01T10:19:52Z",
+      "id": "act_20260301101952-run-paused-0007",
+      "message": "Validate Inventory Ledger for Region Alpha [v10] generated event type run.paused; throughput stabilized after warmup during incident control window after queue compaction.",
+      "metadata": {
+        "cpuPercent": 66.73,
+        "queuePressure": 0.6314,
+        "runPriority": "normal",
+        "runStatus": "queued",
+        "scenario": "spike",
+        "seriesIndex": 7,
+        "throughputPerMin": 7130.81
+      },
+      "runId": "run_spike-010",
+      "severity": "info",
+      "title": "Run Paused · Validate Inventory Ledger for Region Alpha [v10]",
+      "type": "run.paused"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "API Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:19:05Z",
+      "id": "act_20260301101905-widget-updated-0028",
+      "message": "Widget settings changed by control plane for Validate Inventory Ledger for Region Alpha [v06].",
+      "metadata": {
+        "cpuPercent": 66.73,
+        "queuePressure": 0.6314,
+        "runPriority": "normal",
+        "runStatus": "succeeded",
+        "scenario": "spike",
+        "seriesIndex": 28,
+        "throughputPerMin": 7130.81
+      },
+      "runId": "run_spike-006",
+      "severity": "debug",
+      "title": "Widget Updated · Validate Inventory Ledger for Region Alpha [v06]",
+      "type": "widget.updated"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Metrics Service",
+        "id": "svc_pipeline",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:18:29Z",
+      "id": "act_20260301101829-widget-updated-0038",
+      "message": "Widget settings changed by control plane for Validate Inventory Ledger for Region Alpha [v05].",
+      "metadata": {
+        "cpuPercent": 54.47,
+        "queuePressure": 0.3834,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "spike",
+        "seriesIndex": 8,
+        "throughputPerMin": 7301.78
+      },
+      "runId": "run_spike-005",
+      "severity": "info",
+      "title": "Widget Updated · Validate Inventory Ledger for Region Alpha [v05]",
+      "type": "widget.updated"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Runtime Steward 18",
+        "id": "usr_ops-0051",
+        "type": "user",
+        "userId": "usr_ops-0085"
+      },
+      "createdAt": "2026-03-01T10:18:29Z",
+      "id": "act_20260301101829-run-canceled-0022",
+      "message": "Validate Inventory Ledger for Region Alpha [v09] generated event type run.canceled; latency envelope drifted above p95 target while draining backlog segments under watchdog supervision.",
+      "metadata": {
+        "cpuPercent": 54.47,
+        "queuePressure": 0.3834,
+        "runPriority": "low",
+        "runStatus": "running",
+        "scenario": "spike",
+        "seriesIndex": 22,
+        "throughputPerMin": 7301.78
+      },
+      "runId": "run_spike-009",
+      "severity": "warn",
+      "title": "Run Canceled · Validate Inventory Ledger for Region Alpha [v09]",
+      "type": "run.canceled"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_metrics",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:17:35Z",
+      "id": "act_20260301101735-run-canceled-0015",
+      "message": "Validate Inventory Ledger for Region Alpha [v05] generated event type run.canceled; retry budget reached warning threshold while draining backlog segments after partial rollback.",
+      "metadata": {
+        "cpuPercent": 60.56,
+        "queuePressure": 0.4432,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "spike",
+        "seriesIndex": 15,
+        "throughputPerMin": 7270.1
+      },
+      "runId": "run_spike-005",
+      "severity": "warn",
+      "title": "Run Canceled · Validate Inventory Ledger for Region Alpha [v05]",
+      "type": "run.canceled"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Pipeline Service",
+        "id": "svc_api",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:17:34Z",
+      "id": "act_20260301101734-auth-login-0029",
+      "message": "Operator session opened from trusted segment 79.",
+      "metadata": {
+        "cpuPercent": 60.56,
+        "queuePressure": 0.4432,
+        "runPriority": "normal",
+        "runStatus": "succeeded",
+        "scenario": "spike",
+        "seriesIndex": 29,
+        "throughputPerMin": 7270.1
+      },
+      "runId": "run_spike-006",
+      "severity": "info",
+      "title": "User Login · Validate Inventory Ledger for Region Alpha [v06]",
+      "type": "auth.login"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Observer",
+        "id": "sys_guard",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:17:27Z",
+      "id": "act_20260301101727-auth-logout-0042",
+      "message": "Operator session closed after 95 minutes.",
+      "metadata": {
+        "cpuPercent": 60.56,
+        "queuePressure": 0.4432,
+        "runPriority": "high",
+        "runStatus": "failed",
+        "scenario": "spike",
+        "seriesIndex": 12,
+        "throughputPerMin": 7270.1
+      },
+      "runId": "run_spike-001",
+      "severity": "info",
+      "title": "User Logout · Validate Inventory Ledger for Region Alpha [v01]",
+      "type": "auth.logout"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "API Service",
+        "id": "svc_metrics",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:17:24Z",
+      "id": "act_20260301101724-run-started-0035",
+      "message": "Validate Inventory Ledger for Region Alpha [v04] generated event type run.started; visual baseline remained deterministic while draining backlog segments before audit export.",
+      "metadata": {
+        "cpuPercent": 60.56,
+        "queuePressure": 0.4432,
+        "runPriority": "low",
+        "runStatus": "queued",
+        "scenario": "spike",
+        "seriesIndex": 5,
+        "throughputPerMin": 7270.1
+      },
+      "runId": "run_spike-004",
+      "severity": "info",
+      "title": "Run Started · Validate Inventory Ledger for Region Alpha [v04]",
+      "type": "run.started"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Pipeline Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:16:57Z",
+      "id": "act_20260301101657-auth-login-0017",
+      "message": "Operator session opened from trusted segment 19.",
+      "metadata": {
+        "cpuPercent": 64.27,
+        "queuePressure": 0.6434,
+        "scenario": "spike",
+        "seriesIndex": 17,
+        "throughputPerMin": 7181.81
+      },
+      "runId": null,
+      "severity": "info",
+      "title": "User Login",
+      "type": "auth.login"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_pipeline",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:16:09Z",
+      "id": "act_20260301101609-widget-updated-0010",
+      "message": "Widget settings changed by control plane for Validate Inventory Ledger for Region Alpha [v04].",
+      "metadata": {
+        "cpuPercent": 64.27,
+        "queuePressure": 0.6434,
+        "runPriority": "low",
+        "runStatus": "queued",
+        "scenario": "spike",
+        "seriesIndex": 10,
+        "throughputPerMin": 7181.81
+      },
+      "runId": "run_spike-004",
+      "severity": "warn",
+      "title": "Widget Updated · Validate Inventory Ledger for Region Alpha [v04]",
+      "type": "widget.updated"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Logistics Coordinator 02",
+        "id": "usr_ops-0014",
+        "type": "user",
+        "userId": "usr_ops-0061"
+      },
+      "createdAt": "2026-03-01T10:15:14Z",
+      "id": "act_20260301101514-evidence-added-0021",
+      "message": "Validate Inventory Ledger for Region Alpha [v01] generated event type evidence.added; latency envelope drifted above p95 target during regional failover without downstream regression.",
+      "metadata": {
+        "cpuPercent": 59.25,
+        "queuePressure": 0.5103,
+        "runPriority": "high",
+        "runStatus": "failed",
+        "scenario": "spike",
+        "seriesIndex": 21,
+        "throughputPerMin": 7287.73
+      },
+      "runId": "run_spike-001",
+      "severity": "debug",
+      "title": "Evidence Added · Validate Inventory Ledger for Region Alpha [v01]",
+      "type": "evidence.added"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Platform Engineer 06",
+        "id": "usr_ops-0039",
+        "type": "user",
+        "userId": "usr_ops-0074"
+      },
+      "createdAt": "2026-03-01T10:15:05Z",
+      "id": "act_20260301101505-run-canceled-0039",
+      "message": "Run generated event type run.canceled; retry budget reached warning threshold while replaying deterministic snapshots after partial rollback.",
+      "metadata": {
+        "cpuPercent": 59.25,
+        "queuePressure": 0.5103,
+        "scenario": "spike",
+        "seriesIndex": 9,
+        "throughputPerMin": 7287.73
+      },
+      "runId": null,
+      "severity": "critical",
+      "title": "Run Canceled",
+      "type": "run.canceled"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Pipeline Service",
+        "id": "svc_alerts",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:14:36Z",
+      "id": "act_20260301101436-run-created-0031",
+      "message": "Validate Inventory Ledger for Region Alpha [v02] generated event type run.created; throughput stabilized after warmup during regional failover under watchdog supervision.",
+      "metadata": {
+        "cpuPercent": 56.09,
+        "queuePressure": 0.4888,
+        "runPriority": "critical",
+        "runStatus": "scheduled",
+        "scenario": "spike",
+        "seriesIndex": 1,
+        "throughputPerMin": 7318.38
+      },
+      "runId": "run_spike-002",
+      "severity": "info",
+      "title": "Run Created · Validate Inventory Ledger for Region Alpha [v02]",
+      "type": "run.created"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Finance Operator 36",
+        "id": "usr_ops-0089",
+        "type": "user",
+        "userId": "usr_ops-0072"
+      },
+      "createdAt": "2026-03-01T10:12:52Z",
+      "id": "act_20260301101252-run-resumed-0040",
+      "message": "Validate Inventory Ledger for Region Alpha [v08] generated event type run.resumed; component mirror input propagated successfully while enforcing policy constraints before hand-off checkpoint.",
+      "metadata": {
+        "cpuPercent": 64.18,
+        "queuePressure": 0.4596,
+        "runPriority": "high",
+        "runStatus": "succeeded",
+        "scenario": "spike",
+        "seriesIndex": 10,
+        "throughputPerMin": 7292.95
+      },
+      "runId": "run_spike-008",
+      "severity": "info",
+      "title": "Run Resumed · Validate Inventory Ledger for Region Alpha [v08]",
+      "type": "run.resumed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Observer",
+        "id": "sys_guard",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:11:45Z",
+      "id": "act_20260301101145-evidence-added-0034",
+      "message": "Validate Inventory Ledger for Region Alpha [v05] generated event type evidence.added; latency envelope drifted above p95 target while replaying deterministic snapshots after partial rollback.",
+      "metadata": {
+        "cpuPercent": 60.69,
+        "queuePressure": 0.4661,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "spike",
+        "seriesIndex": 4,
+        "throughputPerMin": 7335.92
+      },
+      "runId": "run_spike-005",
+      "severity": "info",
+      "title": "Evidence Added · Validate Inventory Ledger for Region Alpha [v05]",
+      "type": "evidence.added"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Metrics Service",
+        "id": "svc_alerts",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:11:42Z",
+      "id": "act_20260301101142-widget-updated-0018",
+      "message": "Widget settings changed by control plane for dashboard.",
+      "metadata": {
+        "cpuPercent": 60.69,
+        "queuePressure": 0.4661,
+        "scenario": "spike",
+        "seriesIndex": 18,
+        "throughputPerMin": 7335.92
+      },
+      "runId": null,
+      "severity": "warn",
+      "title": "Widget Updated",
+      "type": "widget.updated"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Pipeline Service",
+        "id": "svc_alerts",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:11:36Z",
+      "id": "act_20260301101136-evidence-added-0044",
+      "message": "Validate Inventory Ledger for Region Alpha [v02] generated event type evidence.added; queue pressure remained within guard bands while enforcing policy constraints without schema violations.",
+      "metadata": {
+        "cpuPercent": 60.69,
+        "queuePressure": 0.4661,
+        "runPriority": "critical",
+        "runStatus": "scheduled",
+        "scenario": "spike",
+        "seriesIndex": 14,
+        "throughputPerMin": 7335.92
+      },
+      "runId": "run_spike-002",
+      "severity": "info",
+      "title": "Evidence Added · Validate Inventory Ledger for Region Alpha [v02]",
+      "type": "evidence.added"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Pipeline Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:10:27Z",
+      "id": "act_20260301101027-auth-logout-0036",
+      "message": "Operator session closed after 91 minutes.",
+      "metadata": {
+        "cpuPercent": 50.36,
+        "queuePressure": 0.538,
+        "scenario": "spike",
+        "seriesIndex": 6,
+        "throughputPerMin": 7281.1
+      },
+      "runId": null,
+      "severity": "debug",
+      "title": "User Logout",
+      "type": "auth.logout"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Metrics Service",
+        "id": "svc_alerts",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:09:53Z",
+      "id": "act_20260301100953-auth-login-0019",
+      "message": "Operator session opened from trusted segment 94.",
+      "metadata": {
+        "cpuPercent": 55.35,
+        "queuePressure": 0.4545,
+        "runPriority": "low",
+        "runStatus": "queued",
+        "scenario": "spike",
+        "seriesIndex": 19,
+        "throughputPerMin": 7320.77
+      },
+      "runId": "run_spike-004",
+      "severity": "info",
+      "title": "User Login · Validate Inventory Ledger for Region Alpha [v04]",
+      "type": "auth.login"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Ops Lead 04",
+        "id": "usr_ops-0041",
+        "type": "user",
+        "userId": "usr_ops-0048"
+      },
+      "createdAt": "2026-03-01T10:07:21Z",
+      "id": "act_20260301100721-run-failed-0023",
+      "message": "Validate Inventory Ledger for Region Alpha [v05] failed after elevated error ratio 0.0261.",
+      "metadata": {
+        "cpuPercent": 52.25,
+        "queuePressure": 0.5754,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "spike",
+        "seriesIndex": 23,
+        "throughputPerMin": 7347.73
+      },
+      "runId": "run_spike-005",
+      "severity": "error",
+      "title": "Run Failed · Validate Inventory Ledger for Region Alpha [v05]",
+      "type": "run.failed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Pipeline Service",
+        "id": "svc_pipeline",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:07:18Z",
+      "id": "act_20260301100718-run-failed-0001",
+      "message": "Validate Inventory Ledger for Region Alpha [v04] failed after elevated error ratio 0.0261.",
+      "metadata": {
+        "cpuPercent": 52.25,
+        "queuePressure": 0.5754,
+        "runPriority": "low",
+        "runStatus": "queued",
+        "scenario": "spike",
+        "seriesIndex": 1,
+        "throughputPerMin": 7347.73
+      },
+      "runId": "run_spike-004",
+      "severity": "error",
+      "title": "Run Failed · Validate Inventory Ledger for Region Alpha [v04]",
+      "type": "run.failed"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Alerts Service",
+        "id": "svc_metrics",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:06:48Z",
+      "id": "act_20260301100648-system-alert-0003",
+      "message": "Queue pressure at 0.5608 and latency p99=294.09ms during global operations.",
+      "metadata": {
+        "cpuPercent": 54.12,
+        "queuePressure": 0.5608,
+        "scenario": "spike",
+        "seriesIndex": 3,
+        "throughputPerMin": 7312.21
+      },
+      "runId": null,
+      "severity": "error",
+      "title": "System Alert",
+      "type": "system.alert"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_api",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:06:43Z",
+      "id": "act_20260301100643-run-queued-0030",
+      "message": "Validate Inventory Ledger for Region Alpha [v02] generated event type run.queued; retry budget reached warning threshold while processing shipment wave before hand-off checkpoint.",
+      "metadata": {
+        "cpuPercent": 54.12,
+        "queuePressure": 0.5608,
+        "runPriority": "critical",
+        "runStatus": "scheduled",
+        "scenario": "spike",
+        "seriesIndex": 0,
+        "throughputPerMin": 7312.21
+      },
+      "runId": "run_spike-002",
+      "severity": "info",
+      "title": "Run Queued · Validate Inventory Ledger for Region Alpha [v02]",
+      "type": "run.queued"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Guard",
+        "id": "sys_monitor",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:06:24Z",
+      "id": "act_20260301100624-run-created-0014",
+      "message": "Validate Inventory Ledger for Region Alpha [v02] generated event type run.created; evidence snapshot attached to run state while enforcing policy constraints without downstream regression.",
+      "metadata": {
+        "cpuPercent": 54.12,
+        "queuePressure": 0.5608,
+        "runPriority": "critical",
+        "runStatus": "scheduled",
+        "scenario": "spike",
+        "seriesIndex": 14,
+        "throughputPerMin": 7312.21
+      },
+      "runId": "run_spike-002",
+      "severity": "debug",
+      "title": "Run Created · Validate Inventory Ledger for Region Alpha [v02]",
+      "type": "run.created"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Ops Analyst 24",
+        "id": "usr_ops-0092",
+        "type": "user",
+        "userId": "usr_ops-0008"
+      },
+      "createdAt": "2026-03-01T10:06:21Z",
+      "id": "act_20260301100621-run-resumed-0037",
+      "message": "Run generated event type run.resumed; throughput stabilized after warmup during incident control window before hand-off checkpoint.",
+      "metadata": {
+        "cpuPercent": 54.12,
+        "queuePressure": 0.5608,
+        "scenario": "spike",
+        "seriesIndex": 7,
+        "throughputPerMin": 7312.21
+      },
+      "runId": null,
+      "severity": "warn",
+      "title": "Run Resumed",
+      "type": "run.resumed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_alerts",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:06:08Z",
+      "id": "act_20260301100608-run-resumed-0004",
+      "message": "Validate Inventory Ledger for Region Alpha [v07] generated event type run.resumed; operator session completed with no drift while rebuilding hot cache before hand-off checkpoint.",
+      "metadata": {
+        "cpuPercent": 54.12,
+        "queuePressure": 0.5608,
+        "runPriority": "critical",
+        "runStatus": "running",
+        "scenario": "spike",
+        "seriesIndex": 4,
+        "throughputPerMin": 7312.21
+      },
+      "runId": "run_spike-007",
+      "severity": "info",
+      "title": "Run Resumed · Validate Inventory Ledger for Region Alpha [v07]",
+      "type": "run.resumed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Runtime Steward 08",
+        "id": "usr_ops-0048",
+        "type": "user",
+        "userId": "usr_ops-0071"
+      },
+      "createdAt": "2026-03-01T10:05:54Z",
+      "id": "act_20260301100554-auth-login-0024",
+      "message": "Operator session opened from trusted segment 31.",
+      "metadata": {
+        "cpuPercent": 56.37,
+        "queuePressure": 0.5398,
+        "runPriority": "low",
+        "runStatus": "queued",
+        "scenario": "spike",
+        "seriesIndex": 24,
+        "throughputPerMin": 7369.8
+      },
+      "runId": "run_spike-004",
+      "severity": "debug",
+      "title": "User Login · Validate Inventory Ledger for Region Alpha [v04]",
+      "type": "auth.login"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Supplier Manager 39",
+        "id": "usr_ops-0020",
+        "type": "user",
+        "userId": "usr_ops-0096"
+      },
+      "createdAt": "2026-03-01T10:05:15Z",
+      "id": "act_20260301100515-run-queued-0043",
+      "message": "Validate Inventory Ledger for Region Alpha [v05] generated event type run.queued; component mirror input propagated successfully while rebuilding hot cache before audit export.",
+      "metadata": {
+        "cpuPercent": 56.37,
+        "queuePressure": 0.5398,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "spike",
+        "seriesIndex": 13,
+        "throughputPerMin": 7369.8
+      },
+      "runId": "run_spike-005",
+      "severity": "warn",
+      "title": "Run Queued · Validate Inventory Ledger for Region Alpha [v05]",
+      "type": "run.queued"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Platform Engineer 24",
+        "id": "usr_ops-0038",
+        "type": "user",
+        "userId": "usr_ops-0063"
+      },
+      "createdAt": "2026-03-01T10:04:29Z",
+      "id": "act_20260301100429-evidence-added-0027",
+      "message": "Validate Inventory Ledger for Region Alpha [v04] generated event type evidence.added; contract payload verified against schema during regional failover before hand-off checkpoint.",
+      "metadata": {
+        "cpuPercent": 72.31,
+        "queuePressure": 0.7477,
+        "runPriority": "low",
+        "runStatus": "queued",
+        "scenario": "spike",
+        "seriesIndex": 27,
+        "throughputPerMin": 7208.89
+      },
+      "runId": "run_spike-004",
+      "severity": "debug",
+      "title": "Evidence Added · Validate Inventory Ledger for Region Alpha [v04]",
+      "type": "evidence.added"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Monitor",
+        "id": "sys_observer",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:04:05Z",
+      "id": "act_20260301100405-run-created-0002",
+      "message": "Validate Inventory Ledger for Region Alpha [v09] generated event type run.created; visual baseline remained deterministic during regional failover with deterministic ordering.",
+      "metadata": {
+        "cpuPercent": 72.31,
+        "queuePressure": 0.7477,
+        "runPriority": "low",
+        "runStatus": "running",
+        "scenario": "spike",
+        "seriesIndex": 2,
+        "throughputPerMin": 7208.89
+      },
+      "runId": "run_spike-009",
+      "severity": "info",
+      "title": "Run Created · Validate Inventory Ledger for Region Alpha [v09]",
+      "type": "run.created"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Metrics Service",
+        "id": "svc_api",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:04:03Z",
+      "id": "act_20260301100403-run-canceled-0013",
+      "message": "Validate Inventory Ledger for Region Alpha [v04] generated event type run.canceled; widget configuration change was acknowledged while replaying deterministic snapshots after queue compaction.",
+      "metadata": {
+        "cpuPercent": 72.31,
+        "queuePressure": 0.7477,
+        "runPriority": "low",
+        "runStatus": "queued",
+        "scenario": "spike",
+        "seriesIndex": 13,
+        "throughputPerMin": 7208.89
+      },
+      "runId": "run_spike-004",
+      "severity": "error",
+      "title": "Run Canceled · Validate Inventory Ledger for Region Alpha [v04]",
+      "type": "run.canceled"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Monitor",
+        "id": "sys_monitor",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:03:30Z",
+      "id": "act_20260301100330-auth-logout-0012",
+      "message": "Operator session closed after 33 minutes.",
+      "metadata": {
+        "cpuPercent": 61.85,
+        "queuePressure": 0.4557,
+        "runPriority": "high",
+        "runStatus": "failed",
+        "scenario": "spike",
+        "seriesIndex": 12,
+        "throughputPerMin": 7333.23
+      },
+      "runId": "run_spike-001",
+      "severity": "info",
+      "title": "User Logout · Validate Inventory Ledger for Region Alpha [v01]",
+      "type": "auth.logout"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Monitor",
+        "id": "sys_monitor",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:01:46Z",
+      "id": "act_20260301100146-run-queued-0016",
+      "message": "Validate Inventory Ledger for Region Alpha [v01] generated event type run.queued; latency envelope drifted above p95 target while processing shipment wave under controlled load.",
+      "metadata": {
+        "cpuPercent": 62.69,
+        "queuePressure": 0.6098,
+        "runPriority": "high",
+        "runStatus": "failed",
+        "scenario": "spike",
+        "seriesIndex": 16,
+        "throughputPerMin": 7313.72
+      },
+      "runId": "run_spike-001",
+      "severity": "info",
+      "title": "Run Queued · Validate Inventory Ledger for Region Alpha [v01]",
+      "type": "run.queued"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Pipeline Service",
+        "id": "svc_alerts",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:01:32Z",
+      "id": "act_20260301100132-evidence-added-0009",
+      "message": "Validate Inventory Ledger for Region Alpha [v01] generated event type evidence.added; visual baseline remained deterministic during regional failover after queue compaction.",
+      "metadata": {
+        "cpuPercent": 62.69,
+        "queuePressure": 0.6098,
+        "runPriority": "high",
+        "runStatus": "failed",
+        "scenario": "spike",
+        "seriesIndex": 9,
+        "throughputPerMin": 7313.72
+      },
+      "runId": "run_spike-001",
+      "severity": "info",
+      "title": "Evidence Added · Validate Inventory Ledger for Region Alpha [v01]",
+      "type": "evidence.added"
+    },
+    {
+      "acknowledged": false,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Guard",
+        "id": "sys_monitor",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:01:06Z",
+      "id": "act_20260301100106-run-queued-0005",
+      "message": "Validate Inventory Ledger for Region Alpha [v09] generated event type run.queued; evidence snapshot attached to run state during nightly reconciliation under watchdog supervision.",
+      "metadata": {
+        "cpuPercent": 62.69,
+        "queuePressure": 0.6098,
+        "runPriority": "low",
+        "runStatus": "running",
+        "scenario": "spike",
+        "seriesIndex": 5,
+        "throughputPerMin": 7313.72
+      },
+      "runId": "run_spike-009",
+      "severity": "info",
+      "title": "Run Queued · Validate Inventory Ledger for Region Alpha [v09]",
+      "type": "run.queued"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Pipeline Service",
+        "id": "svc_scheduler",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T10:00:42Z",
+      "id": "act_20260301100042-run-resumed-0006",
+      "message": "Validate Inventory Ledger for Region Alpha [v08] generated event type run.resumed; widget configuration change was acknowledged while rebuilding hot cache before audit export.",
+      "metadata": {
+        "cpuPercent": 76.73,
+        "queuePressure": 0.8528,
+        "runPriority": "high",
+        "runStatus": "succeeded",
+        "scenario": "spike",
+        "seriesIndex": 6,
+        "throughputPerMin": 7181.34
+      },
+      "runId": "run_spike-008",
+      "severity": "warn",
+      "title": "Run Resumed · Validate Inventory Ledger for Region Alpha [v08]",
+      "type": "run.resumed"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "System Observer",
+        "id": "sys_runtime",
+        "type": "system",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T09:59:32Z",
+      "id": "act_20260301095932-run-started-0025",
+      "message": "Validate Inventory Ledger for Region Alpha [v06] generated event type run.started; widget configuration change was acknowledged while rebuilding hot cache with bounded variance.",
+      "metadata": {
+        "cpuPercent": 69.97,
+        "queuePressure": 0.8731,
+        "runPriority": "normal",
+        "runStatus": "succeeded",
+        "scenario": "spike",
+        "seriesIndex": 25,
+        "throughputPerMin": 7173.47
+      },
+      "runId": "run_spike-006",
+      "severity": "info",
+      "title": "Run Started · Validate Inventory Ledger for Region Alpha [v06]",
+      "type": "run.started"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Scheduler Service",
+        "id": "svc_api",
+        "type": "service",
+        "userId": null
+      },
+      "createdAt": "2026-03-01T09:58:41Z",
+      "id": "act_20260301095841-run-progress-0026",
+      "message": "Validate Inventory Ledger for Region Alpha [v05] reported throughput 7299.4 events/min.",
+      "metadata": {
+        "cpuPercent": 59.68,
+        "queuePressure": 0.4363,
+        "runPriority": "normal",
+        "runStatus": "running",
+        "scenario": "spike",
+        "seriesIndex": 26,
+        "throughputPerMin": 7299.4
+      },
+      "runId": "run_spike-005",
+      "severity": "info",
+      "title": "Run Progress · Validate Inventory Ledger for Region Alpha [v05]",
+      "type": "run.progress"
+    },
+    {
+      "acknowledged": true,
+      "actor": {
+        "avatarUrl": null,
+        "displayName": "Shift Supervisor 22",
+        "id": "usr_ops-0079",
+        "type": "user",
+        "userId": "usr_ops-0095"
+      },
+      "createdAt": "2026-03-01T09:58:23Z",
+      "id": "act_20260301095823-run-failed-0045",
+      "message": "Validate Inventory Ledger for Region Alpha [v04] failed after elevated error ratio 0.02172.",
+      "metadata": {
+        "cpuPercent": 59.68,
+        "queuePressure": 0.4363,
+        "runPriority": "low",
+        "runStatus": "queued",
+        "scenario": "spike",
+        "seriesIndex": 15,
+        "throughputPerMin": 7299.4
+      },
+      "runId": "run_spike-004",
+      "severity": "critical",
+      "title": "Run Failed · Validate Inventory Ledger for Region Alpha [v04]",
+      "type": "run.failed"
+    }
+  ],
+  "layout": {
+    "allowOverlap": false,
+    "bounded": true,
+    "breakpoints": [
+      {
+        "breakpoint": "xs",
+        "columns": 4,
+        "gap": 8,
+        "items": [
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_chart-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 2
+            },
+            "resizable": true,
+            "widgetId": "wid_dial-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 4
+            },
+            "resizable": true,
+            "widgetId": "wid_feed-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 6
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 8
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-002"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 10
+            },
+            "resizable": true,
+            "widgetId": "wid_table-001"
+          }
+        ],
+        "rowHeight": 84
+      },
+      {
+        "breakpoint": "sm",
+        "columns": 6,
+        "gap": 10,
+        "items": [
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 3,
+              "x": 0,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_chart-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 3,
+              "x": 3,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_dial-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 3,
+              "x": 0,
+              "y": 2
+            },
+            "resizable": true,
+            "widgetId": "wid_feed-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 3,
+              "x": 3,
+              "y": 2
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 3,
+              "x": 0,
+              "y": 4
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-002"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 3,
+              "x": 3,
+              "y": 4
+            },
+            "resizable": true,
+            "widgetId": "wid_table-001"
+          }
+        ],
+        "rowHeight": 86
+      },
+      {
+        "breakpoint": "md",
+        "columns": 12,
+        "gap": 12,
+        "items": [
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_chart-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 4,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_dial-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 8,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_feed-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 2
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 4,
+              "y": 2
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-002"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 8,
+              "y": 2
+            },
+            "resizable": true,
+            "widgetId": "wid_table-001"
+          }
+        ],
+        "rowHeight": 92
+      },
+      {
+        "breakpoint": "lg",
+        "columns": 16,
+        "gap": 12,
+        "items": [
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_chart-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 4,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_dial-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 8,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_feed-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 12,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 2
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-002"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 4,
+              "y": 2
+            },
+            "resizable": true,
+            "widgetId": "wid_table-001"
+          }
+        ],
+        "rowHeight": 96
+      },
+      {
+        "breakpoint": "xl",
+        "columns": 20,
+        "gap": 12,
+        "items": [
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_chart-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 4,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_dial-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 8,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_feed-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 12,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-001"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 16,
+              "y": 0
+            },
+            "resizable": true,
+            "widgetId": "wid_stat-002"
+          },
+          {
+            "draggable": true,
+            "locked": false,
+            "panelSize": "md",
+            "position": {
+              "h": 2,
+              "maxH": null,
+              "maxW": null,
+              "minH": 2,
+              "minW": 2,
+              "w": 4,
+              "x": 0,
+              "y": 2
+            },
+            "resizable": true,
+            "widgetId": "wid_table-001"
+          }
+        ],
+        "rowHeight": 98
+      }
+    ],
+    "compactType": "vertical",
+    "version": 1
+  },
+  "metadata": {
+    "activityCount": 45,
+    "description": "Demand spike with intermittent throughput bursts and temporary queue inflation.",
+    "determinismHash": "ff0d2c2e2a99ac669c437b87241715bd20f06ed435011b82270cab63a3d34a5b",
+    "durationMinutes": 30,
+    "generatedAt": "2026-03-01T09:58:00Z",
+    "runCount": 10,
+    "scenario": "spike",
+    "seed": 999,
+    "seriesCount": 30,
+    "widgetCount": 6
+  },
+  "runs": [
+    {
+      "assigneeId": "usr_exec-0002",
+      "health": "degraded",
+      "id": "run_spike-001",
+      "name": "Validate Inventory Ledger for Region Alpha [v01]",
+      "ownerId": "usr_owner-0002",
+      "priority": "high",
+      "progress": {
+        "currentStep": 8,
+        "etaSeconds": null,
+        "percent": 87.06,
+        "totalSteps": 8
+      },
+      "source": "manual",
+      "status": "failed",
+      "tags": [
+        "audit:j",
+        "control:a",
+        "latency:c",
+        "recovery:j",
+        "snapshot:c"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T08:27:00Z",
+        "finishedAt": "2026-03-01T10:27:00Z",
+        "scheduledAt": "2026-03-01T08:37:00Z",
+        "startedAt": "2026-03-01T09:07:00Z",
+        "updatedAt": "2026-03-01T10:27:00Z"
+      },
+      "version": 15,
+      "widgetIds": [
+        "wid_stat-002",
+        "wid_stat-012",
+        "wid_table-013",
+        "wid_table-017"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0005",
+      "health": "unknown",
+      "id": "run_spike-004",
+      "name": "Validate Inventory Ledger for Region Alpha [v04]",
+      "ownerId": "usr_owner-0005",
+      "priority": "low",
+      "progress": {
+        "currentStep": 0,
+        "etaSeconds": null,
+        "percent": 0.0,
+        "totalSteps": 11
+      },
+      "source": "automation",
+      "status": "queued",
+      "tags": [
+        "monitoring:j",
+        "release:h"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T04:24:00Z",
+        "finishedAt": null,
+        "scheduledAt": null,
+        "startedAt": null,
+        "updatedAt": "2026-03-01T10:15:00Z"
+      },
+      "version": 15,
+      "widgetIds": [
+        "wid_stat-004",
+        "wid_table-011"
+      ]
+    },
+    {
+      "assigneeId": null,
+      "health": "stalled",
+      "id": "run_spike-010",
+      "name": "Validate Inventory Ledger for Region Alpha [v10]",
+      "ownerId": "usr_owner-0002",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 0,
+        "etaSeconds": null,
+        "percent": 0.0,
+        "totalSteps": 20
+      },
+      "source": "automation",
+      "status": "queued",
+      "tags": [
+        "control:i",
+        "determinism:g",
+        "rollback:c",
+        "rollback:f",
+        "supplier:b"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T09:50:00Z",
+        "finishedAt": null,
+        "scheduledAt": null,
+        "startedAt": null,
+        "updatedAt": "2026-03-01T10:17:00Z"
+      },
+      "version": 6,
+      "widgetIds": [
+        "wid_feed-002",
+        "wid_feed-009",
+        "wid_stat-013",
+        "wid_table-001"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0008",
+      "health": "healthy",
+      "id": "run_spike-007",
+      "name": "Validate Inventory Ledger for Region Alpha [v07]",
+      "ownerId": "usr_owner-0008",
+      "priority": "critical",
+      "progress": {
+        "currentStep": 14,
+        "etaSeconds": 1062,
+        "percent": 66.67,
+        "totalSteps": 21
+      },
+      "source": "api",
+      "status": "running",
+      "tags": [
+        "determinism:j",
+        "routing:c"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T07:07:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T07:35:00Z",
+        "startedAt": "2026-03-01T07:40:00Z",
+        "updatedAt": "2026-03-01T10:13:00Z"
+      },
+      "version": 8,
+      "widgetIds": [
+        "wid_stat-001",
+        "wid_stat-010",
+        "wid_table-013"
+      ]
+    },
+    {
+      "assigneeId": null,
+      "health": "healthy",
+      "id": "run_spike-009",
+      "name": "Validate Inventory Ledger for Region Alpha [v09]",
+      "ownerId": "usr_owner-0001",
+      "priority": "low",
+      "progress": {
+        "currentStep": 7,
+        "etaSeconds": 922,
+        "percent": 33.33,
+        "totalSteps": 21
+      },
+      "source": "automation",
+      "status": "running",
+      "tags": [
+        "audit:h",
+        "compliance:g",
+        "dock:b",
+        "monitoring:a",
+        "rollback:a"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T06:27:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T06:55:00Z",
+        "startedAt": "2026-03-01T06:56:00Z",
+        "updatedAt": "2026-03-01T10:24:00Z"
+      },
+      "version": 3,
+      "widgetIds": [
+        "wid_stat-019",
+        "wid_table-005",
+        "wid_table-019"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0006",
+      "health": "healthy",
+      "id": "run_spike-005",
+      "name": "Validate Inventory Ledger for Region Alpha [v05]",
+      "ownerId": "usr_owner-0006",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 10,
+        "etaSeconds": 238,
+        "percent": 43.48,
+        "totalSteps": 23
+      },
+      "source": "automation",
+      "status": "running",
+      "tags": [
+        "latency:e",
+        "resilience:c",
+        "security:e"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T05:54:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T06:02:00Z",
+        "startedAt": "2026-03-01T06:28:00Z",
+        "updatedAt": "2026-03-01T10:20:00Z"
+      },
+      "version": 12,
+      "widgetIds": [
+        "wid_stat-002"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0003",
+      "health": "unknown",
+      "id": "run_spike-002",
+      "name": "Validate Inventory Ledger for Region Alpha [v02]",
+      "ownerId": "usr_owner-0003",
+      "priority": "critical",
+      "progress": {
+        "currentStep": 0,
+        "etaSeconds": null,
+        "percent": 0.0,
+        "totalSteps": 22
+      },
+      "source": "api",
+      "status": "scheduled",
+      "tags": [
+        "baseline",
+        "canary:d",
+        "latency:e"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T04:43:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T05:04:00Z",
+        "startedAt": "2026-03-01T05:28:00Z",
+        "updatedAt": "2026-03-01T10:07:00Z"
+      },
+      "version": 9,
+      "widgetIds": [
+        "wid_stat-012",
+        "wid_stat-017",
+        "wid_table-011"
+      ]
+    },
+    {
+      "assigneeId": null,
+      "health": "unknown",
+      "id": "run_spike-003",
+      "name": "Validate Inventory Ledger for Region Alpha [v03]",
+      "ownerId": "usr_owner-0004",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 1,
+        "etaSeconds": null,
+        "percent": 14.29,
+        "totalSteps": 7
+      },
+      "source": "automation",
+      "status": "scheduled",
+      "tags": [
+        "compliance:j",
+        "contracts:d",
+        "monitoring:h",
+        "rollback:b"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T09:12:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T09:16:00Z",
+        "startedAt": "2026-03-01T09:38:00Z",
+        "updatedAt": "2026-03-01T10:09:00Z"
+      },
+      "version": 2,
+      "widgetIds": [
+        "wid_table-007"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0009",
+      "health": "healthy",
+      "id": "run_spike-008",
+      "name": "Validate Inventory Ledger for Region Alpha [v08]",
+      "ownerId": "usr_owner-0009",
+      "priority": "high",
+      "progress": {
+        "currentStep": 23,
+        "etaSeconds": null,
+        "percent": 100.0,
+        "totalSteps": 23
+      },
+      "source": "manual",
+      "status": "succeeded",
+      "tags": [
+        "release",
+        "routing:e"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T07:41:00Z",
+        "finishedAt": "2026-03-01T10:27:00Z",
+        "scheduledAt": "2026-03-01T08:15:00Z",
+        "startedAt": "2026-03-01T08:27:00Z",
+        "updatedAt": "2026-03-01T10:27:00Z"
+      },
+      "version": 9,
+      "widgetIds": [
+        "wid_feed-004",
+        "wid_feed-007"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0007",
+      "health": "healthy",
+      "id": "run_spike-006",
+      "name": "Validate Inventory Ledger for Region Alpha [v06]",
+      "ownerId": "usr_owner-0007",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 22,
+        "etaSeconds": null,
+        "percent": 100.0,
+        "totalSteps": 22
+      },
+      "source": "api",
+      "status": "succeeded",
+      "tags": [
+        "incident",
+        "policy:d"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T06:25:00Z",
+        "finishedAt": "2026-03-01T08:01:00Z",
+        "scheduledAt": "2026-03-01T06:44:00Z",
+        "startedAt": "2026-03-01T06:51:00Z",
+        "updatedAt": "2026-03-01T08:01:00Z"
+      },
+      "version": 2,
+      "widgetIds": [
+        "wid_table-008"
+      ]
+    }
+  ],
+  "series": [
+    {
+      "activeWorkers": 11,
+      "at": "2026-03-01T09:58:00Z",
+      "cpuPercent": 59.68,
+      "errorRatio": 0.02172,
+      "latencyMs": {
+        "p50": 159.24,
+        "p95": 226.85,
+        "p99": 288.52
+      },
+      "memoryMb": 15933.06,
+      "queuePressure": 0.4363,
+      "successRate": 0.90963,
+      "throughputPerMin": 7299.4
+    },
+    {
+      "activeWorkers": 16,
+      "at": "2026-03-01T09:59:00Z",
+      "cpuPercent": 69.97,
+      "errorRatio": 0.05852,
+      "latencyMs": {
+        "p50": 200.98,
+        "p95": 321.42,
+        "p99": 416.82
+      },
+      "memoryMb": 15985.94,
+      "queuePressure": 0.8731,
+      "successRate": 0.79282,
+      "throughputPerMin": 7173.47
+    },
+    {
+      "activeWorkers": 16,
+      "at": "2026-03-01T10:00:00Z",
+      "cpuPercent": 76.73,
+      "errorRatio": 0.0582,
+      "latencyMs": {
+        "p50": 206.67,
+        "p95": 328.83,
+        "p99": 426.08
+      },
+      "memoryMb": 15969.92,
+      "queuePressure": 0.8528,
+      "successRate": 0.79581,
+      "throughputPerMin": 7181.34
+    },
+    {
+      "activeWorkers": 13,
+      "at": "2026-03-01T10:01:00Z",
+      "cpuPercent": 62.69,
+      "errorRatio": 0.00273,
+      "latencyMs": {
+        "p50": 138.25,
+        "p95": 206.54,
+        "p99": 264.88
+      },
+      "memoryMb": 15930.19,
+      "queuePressure": 0.6098,
+      "successRate": 0.92205,
+      "throughputPerMin": 7313.72
+    },
+    {
+      "activeWorkers": 17,
+      "at": "2026-03-01T10:02:00Z",
+      "cpuPercent": 80.9,
+      "errorRatio": 0.03651,
+      "latencyMs": {
+        "p50": 207.99,
+        "p95": 333.27,
+        "p99": 432.31
+      },
+      "memoryMb": 15894.69,
+      "queuePressure": 0.8808,
+      "successRate": 0.83042,
+      "throughputPerMin": 7266.25
+    },
+    {
+      "activeWorkers": 11,
+      "at": "2026-03-01T10:03:00Z",
+      "cpuPercent": 61.85,
+      "errorRatio": 0.02705,
+      "latencyMs": {
+        "p50": 157.74,
+        "p95": 225.93,
+        "p99": 287.63
+      },
+      "memoryMb": 15967.54,
+      "queuePressure": 0.4557,
+      "successRate": 0.89798,
+      "throughputPerMin": 7333.23
+    },
+    {
+      "activeWorkers": 15,
+      "at": "2026-03-01T10:04:00Z",
+      "cpuPercent": 72.31,
+      "errorRatio": 0.04738,
+      "latencyMs": {
+        "p50": 188.59,
+        "p95": 292.13,
+        "p99": 376.91
+      },
+      "memoryMb": 15949.53,
+      "queuePressure": 0.7477,
+      "successRate": 0.82737,
+      "throughputPerMin": 7208.89
+    },
+    {
+      "activeWorkers": 11,
+      "at": "2026-03-01T10:05:00Z",
+      "cpuPercent": 56.37,
+      "errorRatio": 0.02302,
+      "latencyMs": {
+        "p50": 139.47,
+        "p95": 204.45,
+        "p99": 261.34
+      },
+      "memoryMb": 15985.67,
+      "queuePressure": 0.5398,
+      "successRate": 0.89493,
+      "throughputPerMin": 7369.8
+    },
+    {
+      "activeWorkers": 11,
+      "at": "2026-03-01T10:06:00Z",
+      "cpuPercent": 54.12,
+      "errorRatio": 0.02883,
+      "latencyMs": {
+        "p50": 155.9,
+        "p95": 229.84,
+        "p99": 294.09
+      },
+      "memoryMb": 15909.48,
+      "queuePressure": 0.5608,
+      "successRate": 0.88226,
+      "throughputPerMin": 7312.21
+    },
+    {
+      "activeWorkers": 11,
+      "at": "2026-03-01T10:07:00Z",
+      "cpuPercent": 52.25,
+      "errorRatio": 0.0261,
+      "latencyMs": {
+        "p50": 147.31,
+        "p95": 218.04,
+        "p99": 279.18
+      },
+      "memoryMb": 15946.23,
+      "queuePressure": 0.5754,
+      "successRate": 0.88527,
+      "throughputPerMin": 7347.73
+    },
+    {
+      "activeWorkers": 17,
+      "at": "2026-03-01T10:08:00Z",
+      "cpuPercent": 76.62,
+      "errorRatio": 0.04056,
+      "latencyMs": {
+        "p50": 218.51,
+        "p95": 349.84,
+        "p99": 453.74
+      },
+      "memoryMb": 16009.5,
+      "queuePressure": 0.8775,
+      "successRate": 0.82373,
+      "throughputPerMin": 7124.98
+    },
+    {
+      "activeWorkers": 11,
+      "at": "2026-03-01T10:09:00Z",
+      "cpuPercent": 55.35,
+      "errorRatio": 0.02585,
+      "latencyMs": {
+        "p50": 151.62,
+        "p95": 217.1,
+        "p99": 276.37
+      },
+      "memoryMb": 15969.32,
+      "queuePressure": 0.4545,
+      "successRate": 0.90021,
+      "throughputPerMin": 7320.77
+    },
+    {
+      "activeWorkers": 11,
+      "at": "2026-03-01T10:10:00Z",
+      "cpuPercent": 50.36,
+      "errorRatio": 0.01254,
+      "latencyMs": {
+        "p50": 154.9,
+        "p95": 226.96,
+        "p99": 290.09
+      },
+      "memoryMb": 15916.58,
+      "queuePressure": 0.538,
+      "successRate": 0.9135,
+      "throughputPerMin": 7281.1
+    },
+    {
+      "activeWorkers": 11,
+      "at": "2026-03-01T10:11:00Z",
+      "cpuPercent": 60.69,
+      "errorRatio": 0.00421,
+      "latencyMs": {
+        "p50": 142.86,
+        "p95": 205.21,
+        "p99": 261.39
+      },
+      "memoryMb": 16028.59,
+      "queuePressure": 0.4661,
+      "successRate": 0.93671,
+      "throughputPerMin": 7335.92
+    },
+    {
+      "activeWorkers": 12,
+      "at": "2026-03-01T10:12:00Z",
+      "cpuPercent": 64.18,
+      "errorRatio": 0.02389,
+      "latencyMs": {
+        "p50": 142.89,
+        "p95": 204.89,
+        "p99": 260.89
+      },
+      "memoryMb": 15952.45,
+      "queuePressure": 0.4596,
+      "successRate": 0.90304,
+      "throughputPerMin": 7292.95
+    },
+    {
+      "activeWorkers": 16,
+      "at": "2026-03-01T10:13:00Z",
+      "cpuPercent": 72.8,
+      "errorRatio": 0.05372,
+      "latencyMs": {
+        "p50": 207.92,
+        "p95": 330.95,
+        "p99": 428.85
+      },
+      "memoryMb": 15815.41,
+      "queuePressure": 0.8543,
+      "successRate": 0.80348,
+      "throughputPerMin": 7160.08
+    },
+    {
+      "activeWorkers": 11,
+      "at": "2026-03-01T10:14:00Z",
+      "cpuPercent": 56.09,
+      "errorRatio": 0.01233,
+      "latencyMs": {
+        "p50": 144.54,
+        "p95": 208.94,
+        "p99": 266.43
+      },
+      "memoryMb": 15915.89,
+      "queuePressure": 0.4888,
+      "successRate": 0.91976,
+      "throughputPerMin": 7318.38
+    },
+    {
+      "activeWorkers": 11,
+      "at": "2026-03-01T10:15:00Z",
+      "cpuPercent": 59.25,
+      "errorRatio": 0.0202,
+      "latencyMs": {
+        "p50": 141.58,
+        "p95": 205.88,
+        "p99": 262.8
+      },
+      "memoryMb": 15886.19,
+      "queuePressure": 0.5103,
+      "successRate": 0.90341,
+      "throughputPerMin": 7287.73
+    },
+    {
+      "activeWorkers": 13,
+      "at": "2026-03-01T10:16:00Z",
+      "cpuPercent": 64.27,
+      "errorRatio": 0.0427,
+      "latencyMs": {
+        "p50": 185.24,
+        "p95": 279.22,
+        "p99": 358.63
+      },
+      "memoryMb": 15846.6,
+      "queuePressure": 0.6434,
+      "successRate": 0.84806,
+      "throughputPerMin": 7181.81
+    },
+    {
+      "activeWorkers": 11,
+      "at": "2026-03-01T10:17:00Z",
+      "cpuPercent": 60.56,
+      "errorRatio": 0.01428,
+      "latencyMs": {
+        "p50": 143.11,
+        "p95": 204.26,
+        "p99": 259.88
+      },
+      "memoryMb": 15833.15,
+      "queuePressure": 0.4432,
+      "successRate": 0.92183,
+      "throughputPerMin": 7270.1
+    },
+    {
+      "activeWorkers": 10,
+      "at": "2026-03-01T10:18:00Z",
+      "cpuPercent": 54.47,
+      "errorRatio": 0.02214,
+      "latencyMs": {
+        "p50": 139.01,
+        "p95": 195.07,
+        "p99": 247.43
+      },
+      "memoryMb": 15813.55,
+      "queuePressure": 0.3834,
+      "successRate": 0.91526,
+      "throughputPerMin": 7301.78
+    },
+    {
+      "activeWorkers": 13,
+      "at": "2026-03-01T10:19:00Z",
+      "cpuPercent": 66.73,
+      "errorRatio": 0.02823,
+      "latencyMs": {
+        "p50": 190.51,
+        "p95": 286.25,
+        "p99": 367.46
+      },
+      "memoryMb": 15889.97,
+      "queuePressure": 0.6314,
+      "successRate": 0.87483,
+      "throughputPerMin": 7130.81
+    },
+    {
+      "activeWorkers": 10,
+      "at": "2026-03-01T10:20:00Z",
+      "cpuPercent": 56.36,
+      "errorRatio": 0.00911,
+      "latencyMs": {
+        "p50": 145.17,
+        "p95": 204.16,
+        "p99": 259.07
+      },
+      "memoryMb": 15805.18,
+      "queuePressure": 0.391,
+      "successRate": 0.93714,
+      "throughputPerMin": 7258.21
+    },
+    {
+      "activeWorkers": 9,
+      "at": "2026-03-01T10:21:00Z",
+      "cpuPercent": 50.86,
+      "errorRatio": 0.01531,
+      "latencyMs": {
+        "p50": 126.14,
+        "p95": 173.65,
+        "p99": 219.49
+      },
+      "memoryMb": 15738.65,
+      "queuePressure": 0.3168,
+      "successRate": 0.93519,
+      "throughputPerMin": 7238.18
+    },
+    {
+      "activeWorkers": 9,
+      "at": "2026-03-01T10:22:00Z",
+      "cpuPercent": 51.85,
+      "errorRatio": 0.01899,
+      "latencyMs": {
+        "p50": 146.18,
+        "p95": 204.18,
+        "p99": 258.77
+      },
+      "memoryMb": 15813.22,
+      "queuePressure": 0.3671,
+      "successRate": 0.92271,
+      "throughputPerMin": 7208.93
+    },
+    {
+      "activeWorkers": 10,
+      "at": "2026-03-01T10:23:00Z",
+      "cpuPercent": 55.79,
+      "errorRatio": 0.00758,
+      "latencyMs": {
+        "p50": 135.87,
+        "p95": 191.53,
+        "p99": 243.14
+      },
+      "memoryMb": 15892.65,
+      "queuePressure": 0.3992,
+      "successRate": 0.93883,
+      "throughputPerMin": 7251.61
+    },
+    {
+      "activeWorkers": 10,
+      "at": "2026-03-01T10:24:00Z",
+      "cpuPercent": 58.49,
+      "errorRatio": 0.01366,
+      "latencyMs": {
+        "p50": 126.5,
+        "p95": 175.71,
+        "p99": 222.45
+      },
+      "memoryMb": 15821.72,
+      "queuePressure": 0.3475,
+      "successRate": 0.93439,
+      "throughputPerMin": 7296.46
+    },
+    {
+      "activeWorkers": 11,
+      "at": "2026-03-01T10:25:00Z",
+      "cpuPercent": 53.05,
+      "errorRatio": 0.00188,
+      "latencyMs": {
+        "p50": 131.51,
+        "p95": 189.89,
+        "p99": 242.09
+      },
+      "memoryMb": 15880.93,
+      "queuePressure": 0.4847,
+      "successRate": 0.93853,
+      "throughputPerMin": 7267.97
+    },
+    {
+      "activeWorkers": 11,
+      "at": "2026-03-01T10:26:00Z",
+      "cpuPercent": 57.75,
+      "errorRatio": 0.03735,
+      "latencyMs": {
+        "p50": 149.64,
+        "p95": 217.59,
+        "p99": 277.76
+      },
+      "memoryMb": 15888.6,
+      "queuePressure": 0.5102,
+      "successRate": 0.87342,
+      "throughputPerMin": 7303.18
+    },
+    {
+      "activeWorkers": 12,
+      "at": "2026-03-01T10:27:00Z",
+      "cpuPercent": 60.7,
+      "errorRatio": 0.02552,
+      "latencyMs": {
+        "p50": 149.54,
+        "p95": 217.46,
+        "p99": 277.58
+      },
+      "memoryMb": 15901.95,
+      "queuePressure": 0.5104,
+      "successRate": 0.89409,
+      "throughputPerMin": 7342.1
+    }
+  ],
+  "widgets": [
+    {
+      "config": {
+        "chartFamily": "line",
+        "seriesNames": [
+          "p50",
+          "p95",
+          "p99"
+        ],
+        "supportsStacking": false,
+        "xLabel": "minute",
+        "yLabel": "ms"
+      },
+      "density": "spacious",
+      "description": "Placeholder chart config with deterministic series names.",
+      "hidden": false,
+      "id": "wid_chart-001",
+      "kind": "chart-placeholder",
+      "pinned": false,
+      "refresh": {
+        "intervalSeconds": null,
+        "mode": "manual"
+      },
+      "subtitle": "p50/p95/p99",
+      "title": "Latency Envelope"
+    },
+    {
+      "config": {
+        "criticalThreshold": 90,
+        "max": 100,
+        "min": 0,
+        "unit": "%",
+        "value": 51.04,
+        "warningThreshold": 70
+      },
+      "density": "comfortable",
+      "description": "Queue pressure scale from 0 to 100.",
+      "hidden": false,
+      "id": "wid_dial-001",
+      "kind": "dial-placeholder",
+      "pinned": true,
+      "refresh": {
+        "intervalSeconds": 10,
+        "mode": "interval"
+      },
+      "subtitle": "risk window",
+      "title": "Queue Pressure"
+    },
+    {
+      "config": {
+        "compactTimestamps": true,
+        "maxItems": 60,
+        "showSeverity": true,
+        "source": "activity"
+      },
+      "density": "comfortable",
+      "description": "Recent event feed for operational timeline.",
+      "hidden": false,
+      "id": "wid_feed-001",
+      "kind": "feed",
+      "pinned": true,
+      "refresh": {
+        "intervalSeconds": 12,
+        "mode": "interval"
+      },
+      "subtitle": "events",
+      "title": "Activity"
+    },
+    {
+      "config": {
+        "precision": 2,
+        "sparkline": [
+          7124.98,
+          7320.77,
+          7281.1,
+          7335.92,
+          7292.95,
+          7160.08,
+          7318.38,
+          7287.73,
+          7181.81,
+          7270.1,
+          7301.78,
+          7130.81,
+          7258.21,
+          7238.18,
+          7208.93,
+          7251.61,
+          7296.46,
+          7267.97,
+          7303.18,
+          7342.1
+        ],
+        "trend": "up",
+        "unit": "evt/min",
+        "value": 7342.1
+      },
+      "density": "compact",
+      "description": "Current throughput estimated from deterministic simulator.",
+      "hidden": false,
+      "id": "wid_stat-001",
+      "kind": "stat",
+      "pinned": true,
+      "refresh": {
+        "intervalSeconds": 15,
+        "mode": "interval"
+      },
+      "subtitle": "per minute",
+      "title": "Throughput"
+    },
+    {
+      "config": {
+        "precision": 2,
+        "sparkline": [
+          82.37,
+          90.02,
+          91.35,
+          93.67,
+          90.3,
+          80.35,
+          91.98,
+          90.34,
+          84.81,
+          92.18,
+          91.53,
+          87.48,
+          93.71,
+          93.52,
+          92.27,
+          93.88,
+          93.44,
+          93.85,
+          87.34,
+          89.41
+        ],
+        "trend": "flat",
+        "unit": "%",
+        "value": 89.41
+      },
+      "density": "compact",
+      "description": "Derived from error ratio and queue pressure.",
+      "hidden": false,
+      "id": "wid_stat-002",
+      "kind": "stat",
+      "pinned": true,
+      "refresh": {
+        "intervalSeconds": 30,
+        "mode": "interval"
+      },
+      "subtitle": "window",
+      "title": "Success Rate"
+    },
+    {
+      "config": {
+        "columns": [
+          {
+            "align": "left",
+            "key": "id",
+            "label": "Run ID",
+            "sortable": true,
+            "truncation": "line",
+            "width": 180
+          },
+          {
+            "align": "left",
+            "key": "name",
+            "label": "Name",
+            "sortable": true,
+            "truncation": "line",
+            "width": 260
+          },
+          {
+            "align": "center",
+            "key": "status",
+            "label": "Status",
+            "sortable": true,
+            "truncation": "none",
+            "width": 120
+          },
+          {
+            "align": "center",
+            "key": "priority",
+            "label": "Priority",
+            "sortable": true,
+            "truncation": "none",
+            "width": 120
+          },
+          {
+            "align": "right",
+            "key": "percent",
+            "label": "Progress %",
+            "sortable": true,
+            "truncation": "none",
+            "width": 140
+          }
+        ],
+        "maxRows": 20,
+        "rowKey": "id",
+        "stickyHeader": true,
+        "striped": true
+      },
+      "density": "comfortable",
+      "description": "Run summaries generated from scenario distributions.",
+      "hidden": false,
+      "id": "wid_table-001",
+      "kind": "table",
+      "pinned": false,
+      "refresh": {
+        "intervalSeconds": 25,
+        "mode": "interval"
+      },
+      "subtitle": "simulated queue",
+      "title": "Runs"
+    }
+  ]
+}

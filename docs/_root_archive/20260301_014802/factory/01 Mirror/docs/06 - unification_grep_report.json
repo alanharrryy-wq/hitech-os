@@ -1,0 +1,78 @@
+{
+  "active_code_references_run_scoped": false,
+  "deprecated_marker_found_in_docs": false,
+  "matches": {
+    "code": [
+      {
+        "excerpt": "re.compile(r'tools/codex/worktrees/\\s*[\"\\']?\\s*\\+\\s*run_id'),",
+        "file": "tools/codex/factory/unification_evidence.py",
+        "line": 282
+      },
+      {
+        "excerpt": "re.compile(r\"tools/codex/worktrees/<RUN_ID>\"),",
+        "file": "tools/codex/factory/unification_evidence.py",
+        "line": 283
+      },
+      {
+        "excerpt": "docs_run_scoped_pattern = re.compile(r\"tools/codex/worktrees/(<RUN_ID>|<run_id>|\\d{8}(?:_\\d+|_\\d{6}_[A-Z0-9]{4}))\")",
+        "file": "tools/codex/factory/unification_evidence.py",
+        "line": 285
+      },
+      {
+        "excerpt": "if \"tools/codex/worktrees/\" not in line and (scope != \"code\" or \"run_id\" not in line):",
+        "file": "tools/codex/factory/unification_evidence.py",
+        "line": 319
+      },
+      {
+        "excerpt": "if \"tools/codex/worktrees/\" in line:",
+        "file": "tools/codex/factory/unification_evidence.py",
+        "line": 323
+      }
+    ],
+    "docs_factory": [
+      {
+        "excerpt": "- Worktrees now use fixed worker paths: `tools/codex/worktrees/<WORKER>`.",
+        "file": "docs/factory/CHANGES.md",
+        "line": 61
+      },
+      {
+        "excerpt": "- `tools/codex/worktrees/A_core`",
+        "file": "docs/factory/FACTORY_LAUNCHER.md",
+        "line": 50
+      },
+      {
+        "excerpt": "- `tools/codex/worktrees/B_tooling`",
+        "file": "docs/factory/FACTORY_LAUNCHER.md",
+        "line": 51
+      },
+      {
+        "excerpt": "- `tools/codex/worktrees/C_features`",
+        "file": "docs/factory/FACTORY_LAUNCHER.md",
+        "line": 52
+      },
+      {
+        "excerpt": "- `tools/codex/worktrees/D_validation`",
+        "file": "docs/factory/FACTORY_LAUNCHER.md",
+        "line": 53
+      },
+      {
+        "excerpt": "- `tools/codex/worktrees/Z_aggregator`",
+        "file": "docs/factory/FACTORY_LAUNCHER.md",
+        "line": 54
+      },
+      {
+        "excerpt": "- Cause: folder exists at `tools/codex/worktrees/<worker>` but is not attached to this repo worktree list.",
+        "file": "docs/factory/FACTORY_LAUNCHER.md",
+        "line": 84
+      },
+      {
+        "excerpt": "- Worktrees: `tools/codex/worktrees/<WORKER>`",
+        "file": "docs/factory/RUN_ID_PROMPT_SYSTEM.md",
+        "line": 28
+      }
+    ],
+    "docs_mirror": []
+  },
+  "offending_files": [],
+  "run_scoped_mentions_outside_deprecated": false
+}

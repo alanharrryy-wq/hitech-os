@@ -1,0 +1,813 @@
+{
+  "items": [
+    {
+      "assigneeId": "usr_exec-0008",
+      "health": "degraded",
+      "id": "run_normal-018",
+      "name": "Data Backfill #02",
+      "ownerId": "usr_owner-0001",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 9,
+        "etaSeconds": null,
+        "percent": 53.04,
+        "totalSteps": 9
+      },
+      "source": "schedule",
+      "status": "canceled",
+      "tags": [
+        "finance",
+        "regression",
+        "security"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T08:05:00Z",
+        "finishedAt": "2026-03-01T11:22:00Z",
+        "scheduledAt": "2026-03-01T08:24:00Z",
+        "startedAt": "2026-03-01T08:48:00Z",
+        "updatedAt": "2026-03-01T11:22:00Z"
+      },
+      "version": 9,
+      "widgetIds": [
+        "wid_feed-005",
+        "wid_stat-003",
+        "wid_stat-009"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0009",
+      "health": "degraded",
+      "id": "run_normal-019",
+      "name": "Release Canary #02",
+      "ownerId": "usr_owner-0002",
+      "priority": "critical",
+      "progress": {
+        "currentStep": 24,
+        "etaSeconds": null,
+        "percent": 75.2,
+        "totalSteps": 24
+      },
+      "source": "schedule",
+      "status": "failed",
+      "tags": [
+        "regression"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T07:55:00Z",
+        "finishedAt": "2026-03-01T09:39:00Z",
+        "scheduledAt": "2026-03-01T08:11:00Z",
+        "startedAt": "2026-03-01T08:15:00Z",
+        "updatedAt": "2026-03-01T09:39:00Z"
+      },
+      "version": 3,
+      "widgetIds": [
+        "wid_feed-001"
+      ]
+    },
+    {
+      "assigneeId": null,
+      "health": "healthy",
+      "id": "run_normal-020",
+      "name": "Queue Drain #02",
+      "ownerId": "usr_owner-0003",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 2,
+        "etaSeconds": 1560,
+        "percent": 16.67,
+        "totalSteps": 12
+      },
+      "source": "manual",
+      "status": "paused",
+      "tags": [
+        "finance",
+        "inventory",
+        "release"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T07:41:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T07:53:00Z",
+        "startedAt": "2026-03-01T08:03:00Z",
+        "updatedAt": "2026-03-01T11:04:00Z"
+      },
+      "version": 18,
+      "widgetIds": [
+        "wid_stat-007",
+        "wid_stat-011",
+        "wid_stat-017",
+        "wid_table-005"
+      ]
+    },
+    {
+      "assigneeId": null,
+      "health": "unknown",
+      "id": "run_normal-011",
+      "name": "Latency Guard #01",
+      "ownerId": "usr_owner-0003",
+      "priority": "high",
+      "progress": {
+        "currentStep": 0,
+        "etaSeconds": null,
+        "percent": 0.0,
+        "totalSteps": 20
+      },
+      "source": "manual",
+      "status": "queued",
+      "tags": [
+        "finance",
+        "normal"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T10:23:00Z",
+        "finishedAt": null,
+        "scheduledAt": null,
+        "startedAt": null,
+        "updatedAt": "2026-03-01T11:15:00Z"
+      },
+      "version": 2,
+      "widgetIds": [
+        "wid_feed-008",
+        "wid_stat-001",
+        "wid_table-004",
+        "wid_table-013"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0005",
+      "health": "unknown",
+      "id": "run_normal-015",
+      "name": "Inventory Sync #02",
+      "ownerId": "usr_owner-0007",
+      "priority": "low",
+      "progress": {
+        "currentStep": 0,
+        "etaSeconds": null,
+        "percent": 0.0,
+        "totalSteps": 15
+      },
+      "source": "schedule",
+      "status": "queued",
+      "tags": [
+        "alerts",
+        "ops",
+        "priority",
+        "release"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T08:12:00Z",
+        "finishedAt": null,
+        "scheduledAt": null,
+        "startedAt": null,
+        "updatedAt": "2026-03-01T11:12:00Z"
+      },
+      "version": 8,
+      "widgetIds": [
+        "wid_stat-002",
+        "wid_table-014"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0006",
+      "health": "unknown",
+      "id": "run_normal-016",
+      "name": "Billing Reconciliation #02",
+      "ownerId": "usr_owner-0008",
+      "priority": "low",
+      "progress": {
+        "currentStep": 0,
+        "etaSeconds": null,
+        "percent": 0.0,
+        "totalSteps": 23
+      },
+      "source": "automation",
+      "status": "queued",
+      "tags": [
+        "regression"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T10:26:00Z",
+        "finishedAt": null,
+        "scheduledAt": null,
+        "startedAt": null,
+        "updatedAt": "2026-03-01T11:08:00Z"
+      },
+      "version": 4,
+      "widgetIds": [
+        "wid_feed-003",
+        "wid_feed-005",
+        "wid_stat-010",
+        "wid_table-014"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0008",
+      "health": "unknown",
+      "id": "run_normal-007",
+      "name": "Worker Warmup #01",
+      "ownerId": "usr_owner-0008",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 0,
+        "etaSeconds": null,
+        "percent": 0.0,
+        "totalSteps": 21
+      },
+      "source": "automation",
+      "status": "queued",
+      "tags": [
+        "alerts",
+        "inventory",
+        "normal"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T02:57:00Z",
+        "finishedAt": null,
+        "scheduledAt": null,
+        "startedAt": null,
+        "updatedAt": "2026-03-01T11:09:00Z"
+      },
+      "version": 4,
+      "widgetIds": [
+        "wid_table-017"
+      ]
+    },
+    {
+      "assigneeId": null,
+      "health": "healthy",
+      "id": "run_normal-006",
+      "name": "Policy Audit #01",
+      "ownerId": "usr_owner-0007",
+      "priority": "critical",
+      "progress": {
+        "currentStep": 15,
+        "etaSeconds": 3647,
+        "percent": 62.5,
+        "totalSteps": 24
+      },
+      "source": "manual",
+      "status": "running",
+      "tags": [
+        "alerts",
+        "finance"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T09:20:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T09:52:00Z",
+        "startedAt": "2026-03-01T10:09:00Z",
+        "updatedAt": "2026-03-01T11:08:00Z"
+      },
+      "version": 17,
+      "widgetIds": [
+        "wid_feed-005",
+        "wid_table-001",
+        "wid_table-006",
+        "wid_table-013"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0003",
+      "health": "healthy",
+      "id": "run_normal-013",
+      "name": "Widget Projection #01",
+      "ownerId": "usr_owner-0005",
+      "priority": "high",
+      "progress": {
+        "currentStep": 16,
+        "etaSeconds": 1187,
+        "percent": 80.0,
+        "totalSteps": 20
+      },
+      "source": "automation",
+      "status": "running",
+      "tags": [
+        "alerts",
+        "priority"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T06:22:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T06:39:00Z",
+        "startedAt": "2026-03-01T07:00:00Z",
+        "updatedAt": "2026-03-01T11:03:00Z"
+      },
+      "version": 2,
+      "widgetIds": [
+        "wid_feed-004",
+        "wid_table-001",
+        "wid_table-009",
+        "wid_table-016"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0003",
+      "health": "healthy",
+      "id": "run_normal-002",
+      "name": "Contract Validation #01",
+      "ownerId": "usr_owner-0003",
+      "priority": "low",
+      "progress": {
+        "currentStep": 3,
+        "etaSeconds": 3674,
+        "percent": 42.86,
+        "totalSteps": 7
+      },
+      "source": "api",
+      "status": "running",
+      "tags": [
+        "inventory",
+        "ops",
+        "priority",
+        "release"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T04:54:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T05:13:00Z",
+        "startedAt": "2026-03-01T05:14:00Z",
+        "updatedAt": "2026-03-01T11:13:00Z"
+      },
+      "version": 17,
+      "widgetIds": [
+        "wid_feed-008",
+        "wid_feed-011",
+        "wid_stat-005"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0002",
+      "health": "healthy",
+      "id": "run_normal-012",
+      "name": "Telemetry Fold #01",
+      "ownerId": "usr_owner-0004",
+      "priority": "low",
+      "progress": {
+        "currentStep": 1,
+        "etaSeconds": 1708,
+        "percent": 5.0,
+        "totalSteps": 20
+      },
+      "source": "api",
+      "status": "running",
+      "tags": [
+        "alerts",
+        "pipeline",
+        "security"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T03:33:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T04:01:00Z",
+        "startedAt": "2026-03-01T04:10:00Z",
+        "updatedAt": "2026-03-01T11:03:00Z"
+      },
+      "version": 8,
+      "widgetIds": [
+        "wid_table-016"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0004",
+      "health": "healthy",
+      "id": "run_normal-003",
+      "name": "Data Backfill #01",
+      "ownerId": "usr_owner-0004",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 16,
+        "etaSeconds": 368,
+        "percent": 88.89,
+        "totalSteps": 18
+      },
+      "source": "manual",
+      "status": "running",
+      "tags": [
+        "alerts",
+        "priority"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T06:29:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T06:46:00Z",
+        "startedAt": "2026-03-01T06:58:00Z",
+        "updatedAt": "2026-03-01T11:16:00Z"
+      },
+      "version": 10,
+      "widgetIds": [
+        "wid_stat-018"
+      ]
+    },
+    {
+      "assigneeId": null,
+      "health": "healthy",
+      "id": "run_normal-005",
+      "name": "Queue Drain #01",
+      "ownerId": "usr_owner-0006",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 2,
+        "etaSeconds": 1428,
+        "percent": 25.0,
+        "totalSteps": 8
+      },
+      "source": "automation",
+      "status": "running",
+      "tags": [
+        "inventory",
+        "regression",
+        "security"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T05:50:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T06:21:00Z",
+        "startedAt": "2026-03-01T06:27:00Z",
+        "updatedAt": "2026-03-01T11:07:00Z"
+      },
+      "version": 6,
+      "widgetIds": [
+        "wid_feed-001",
+        "wid_stat-017",
+        "wid_table-001",
+        "wid_table-014"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0009",
+      "health": "healthy",
+      "id": "run_normal-008",
+      "name": "Search Reindex #01",
+      "ownerId": "usr_owner-0009",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 14,
+        "etaSeconds": 2986,
+        "percent": 73.68,
+        "totalSteps": 19
+      },
+      "source": "automation",
+      "status": "running",
+      "tags": [
+        "alerts",
+        "normal",
+        "pipeline",
+        "priority",
+        "release"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T05:32:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T05:57:00Z",
+        "startedAt": "2026-03-01T06:13:00Z",
+        "updatedAt": "2026-03-01T11:16:00Z"
+      },
+      "version": 4,
+      "widgetIds": [
+        "wid_stat-015",
+        "wid_table-013"
+      ]
+    },
+    {
+      "assigneeId": null,
+      "health": "healthy",
+      "id": "run_normal-009",
+      "name": "Shipment Reconcile #01",
+      "ownerId": "usr_owner-0001",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 12,
+        "etaSeconds": 4091,
+        "percent": 75.0,
+        "totalSteps": 16
+      },
+      "source": "manual",
+      "status": "running",
+      "tags": [
+        "alerts",
+        "normal",
+        "ops"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T05:13:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T05:34:00Z",
+        "startedAt": "2026-03-01T05:40:00Z",
+        "updatedAt": "2026-03-01T11:18:00Z"
+      },
+      "version": 6,
+      "widgetIds": [
+        "wid_feed-004",
+        "wid_table-012"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0011",
+      "health": "healthy",
+      "id": "run_normal-010",
+      "name": "Evidence Sweep #01",
+      "ownerId": "usr_owner-0002",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 5,
+        "etaSeconds": 1839,
+        "percent": 62.5,
+        "totalSteps": 8
+      },
+      "source": "schedule",
+      "status": "running",
+      "tags": [
+        "alerts",
+        "normal",
+        "security"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T10:41:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T10:43:00Z",
+        "startedAt": "2026-03-01T11:09:00Z",
+        "updatedAt": "2026-03-01T11:12:00Z"
+      },
+      "version": 12,
+      "widgetIds": [
+        "wid_stat-016"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0001",
+      "health": "healthy",
+      "id": "run_normal-022",
+      "name": "Worker Warmup #02",
+      "ownerId": "usr_owner-0005",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 11,
+        "etaSeconds": 1410,
+        "percent": 61.11,
+        "totalSteps": 18
+      },
+      "source": "automation",
+      "status": "running",
+      "tags": [
+        "finance",
+        "regression"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T08:13:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T08:27:00Z",
+        "startedAt": "2026-03-01T08:32:00Z",
+        "updatedAt": "2026-03-01T11:08:00Z"
+      },
+      "version": 3,
+      "widgetIds": [
+        "wid_stat-004",
+        "wid_stat-012",
+        "wid_table-001"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0002",
+      "health": "unknown",
+      "id": "run_normal-023",
+      "name": "Search Reindex #02",
+      "ownerId": "usr_owner-0006",
+      "priority": "critical",
+      "progress": {
+        "currentStep": 0,
+        "etaSeconds": null,
+        "percent": 0.0,
+        "totalSteps": 20
+      },
+      "source": "manual",
+      "status": "scheduled",
+      "tags": [
+        "alerts",
+        "contracts",
+        "priority",
+        "security"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T09:47:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T10:16:00Z",
+        "startedAt": "2026-03-01T10:45:00Z",
+        "updatedAt": "2026-03-01T11:18:00Z"
+      },
+      "version": 4,
+      "widgetIds": [
+        "wid_feed-005",
+        "wid_table-014",
+        "wid_table-015"
+      ]
+    },
+    {
+      "assigneeId": null,
+      "health": "healthy",
+      "id": "run_normal-001",
+      "name": "Billing Reconciliation #01",
+      "ownerId": "usr_owner-0002",
+      "priority": "high",
+      "progress": {
+        "currentStep": 21,
+        "etaSeconds": null,
+        "percent": 100.0,
+        "totalSteps": 21
+      },
+      "source": "api",
+      "status": "succeeded",
+      "tags": [
+        "contracts",
+        "inventory"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T05:52:00Z",
+        "finishedAt": "2026-03-01T07:47:00Z",
+        "scheduledAt": "2026-03-01T06:11:00Z",
+        "startedAt": "2026-03-01T06:25:00Z",
+        "updatedAt": "2026-03-01T07:47:00Z"
+      },
+      "version": 10,
+      "widgetIds": [
+        "wid_feed-011",
+        "wid_table-020"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0007",
+      "health": "healthy",
+      "id": "run_normal-017",
+      "name": "Contract Validation #02",
+      "ownerId": "usr_owner-0009",
+      "priority": "high",
+      "progress": {
+        "currentStep": 20,
+        "etaSeconds": null,
+        "percent": 100.0,
+        "totalSteps": 20
+      },
+      "source": "automation",
+      "status": "succeeded",
+      "tags": [
+        "alerts",
+        "normal",
+        "release",
+        "security"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T05:23:00Z",
+        "finishedAt": "2026-03-01T08:15:00Z",
+        "scheduledAt": "2026-03-01T05:28:00Z",
+        "startedAt": "2026-03-01T05:29:00Z",
+        "updatedAt": "2026-03-01T08:15:00Z"
+      },
+      "version": 4,
+      "widgetIds": [
+        "wid_stat-015",
+        "wid_stat-016",
+        "wid_stat-020",
+        "wid_table-004"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0003",
+      "health": "healthy",
+      "id": "run_normal-024",
+      "name": "Shipment Reconcile #02",
+      "ownerId": "usr_owner-0007",
+      "priority": "high",
+      "progress": {
+        "currentStep": 18,
+        "etaSeconds": null,
+        "percent": 100.0,
+        "totalSteps": 18
+      },
+      "source": "automation",
+      "status": "succeeded",
+      "tags": [
+        "finance",
+        "ops",
+        "pipeline",
+        "priority"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T10:24:00Z",
+        "finishedAt": "2026-03-01T11:22:00Z",
+        "scheduledAt": "2026-03-01T10:49:00Z",
+        "startedAt": "2026-03-01T10:52:00Z",
+        "updatedAt": "2026-03-01T11:22:00Z"
+      },
+      "version": 9,
+      "widgetIds": [
+        "wid_feed-003",
+        "wid_stat-010",
+        "wid_table-017"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0005",
+      "health": "healthy",
+      "id": "run_normal-004",
+      "name": "Release Canary #01",
+      "ownerId": "usr_owner-0005",
+      "priority": "low",
+      "progress": {
+        "currentStep": 13,
+        "etaSeconds": null,
+        "percent": 100.0,
+        "totalSteps": 13
+      },
+      "source": "automation",
+      "status": "succeeded",
+      "tags": [
+        "contracts",
+        "finance"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T03:40:00Z",
+        "finishedAt": "2026-03-01T05:32:00Z",
+        "scheduledAt": "2026-03-01T03:49:00Z",
+        "startedAt": "2026-03-01T03:55:00Z",
+        "updatedAt": "2026-03-01T05:32:00Z"
+      },
+      "version": 2,
+      "widgetIds": [
+        "wid_stat-006"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0004",
+      "health": "healthy",
+      "id": "run_normal-014",
+      "name": "Security Hardening #01",
+      "ownerId": "usr_owner-0006",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 14,
+        "etaSeconds": null,
+        "percent": 100.0,
+        "totalSteps": 14
+      },
+      "source": "automation",
+      "status": "succeeded",
+      "tags": [
+        "finance",
+        "inventory",
+        "release"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T07:05:00Z",
+        "finishedAt": "2026-03-01T09:57:00Z",
+        "scheduledAt": "2026-03-01T07:22:00Z",
+        "startedAt": "2026-03-01T07:32:00Z",
+        "updatedAt": "2026-03-01T09:57:00Z"
+      },
+      "version": 9,
+      "widgetIds": [
+        "wid_feed-001"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0011",
+      "health": "healthy",
+      "id": "run_normal-021",
+      "name": "Policy Audit #02",
+      "ownerId": "usr_owner-0004",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 7,
+        "etaSeconds": null,
+        "percent": 100.0,
+        "totalSteps": 7
+      },
+      "source": "schedule",
+      "status": "succeeded",
+      "tags": [
+        "regression",
+        "security"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T08:40:00Z",
+        "finishedAt": "2026-03-01T11:22:00Z",
+        "scheduledAt": "2026-03-01T09:07:00Z",
+        "startedAt": "2026-03-01T09:08:00Z",
+        "updatedAt": "2026-03-01T11:22:00Z"
+      },
+      "version": 6,
+      "widgetIds": [
+        "wid_feed-001",
+        "wid_feed-009",
+        "wid_stat-002",
+        "wid_table-020"
+      ]
+    }
+  ],
+  "meta": {
+    "contractVersion": "2.0.0",
+    "generatedAt": "2026-03-01T09:53:00Z",
+    "requestId": "req_runs-0000012345"
+  },
+  "page": 1,
+  "pageSize": 24,
+  "total": 24
+}

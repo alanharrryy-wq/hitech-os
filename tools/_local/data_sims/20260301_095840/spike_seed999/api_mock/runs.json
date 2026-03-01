@@ -1,0 +1,349 @@
+{
+  "items": [
+    {
+      "assigneeId": "usr_exec-0002",
+      "health": "degraded",
+      "id": "run_spike-001",
+      "name": "Validate Inventory Ledger for Region Alpha [v01]",
+      "ownerId": "usr_owner-0002",
+      "priority": "high",
+      "progress": {
+        "currentStep": 8,
+        "etaSeconds": null,
+        "percent": 87.06,
+        "totalSteps": 8
+      },
+      "source": "manual",
+      "status": "failed",
+      "tags": [
+        "audit:j",
+        "control:a",
+        "latency:c",
+        "recovery:j",
+        "snapshot:c"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T08:27:00Z",
+        "finishedAt": "2026-03-01T10:27:00Z",
+        "scheduledAt": "2026-03-01T08:37:00Z",
+        "startedAt": "2026-03-01T09:07:00Z",
+        "updatedAt": "2026-03-01T10:27:00Z"
+      },
+      "version": 15,
+      "widgetIds": [
+        "wid_stat-002",
+        "wid_stat-012",
+        "wid_table-013",
+        "wid_table-017"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0005",
+      "health": "unknown",
+      "id": "run_spike-004",
+      "name": "Validate Inventory Ledger for Region Alpha [v04]",
+      "ownerId": "usr_owner-0005",
+      "priority": "low",
+      "progress": {
+        "currentStep": 0,
+        "etaSeconds": null,
+        "percent": 0.0,
+        "totalSteps": 11
+      },
+      "source": "automation",
+      "status": "queued",
+      "tags": [
+        "monitoring:j",
+        "release:h"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T04:24:00Z",
+        "finishedAt": null,
+        "scheduledAt": null,
+        "startedAt": null,
+        "updatedAt": "2026-03-01T10:15:00Z"
+      },
+      "version": 15,
+      "widgetIds": [
+        "wid_stat-004",
+        "wid_table-011"
+      ]
+    },
+    {
+      "assigneeId": null,
+      "health": "stalled",
+      "id": "run_spike-010",
+      "name": "Validate Inventory Ledger for Region Alpha [v10]",
+      "ownerId": "usr_owner-0002",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 0,
+        "etaSeconds": null,
+        "percent": 0.0,
+        "totalSteps": 20
+      },
+      "source": "automation",
+      "status": "queued",
+      "tags": [
+        "control:i",
+        "determinism:g",
+        "rollback:c",
+        "rollback:f",
+        "supplier:b"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T09:50:00Z",
+        "finishedAt": null,
+        "scheduledAt": null,
+        "startedAt": null,
+        "updatedAt": "2026-03-01T10:17:00Z"
+      },
+      "version": 6,
+      "widgetIds": [
+        "wid_feed-002",
+        "wid_feed-009",
+        "wid_stat-013",
+        "wid_table-001"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0008",
+      "health": "healthy",
+      "id": "run_spike-007",
+      "name": "Validate Inventory Ledger for Region Alpha [v07]",
+      "ownerId": "usr_owner-0008",
+      "priority": "critical",
+      "progress": {
+        "currentStep": 14,
+        "etaSeconds": 1062,
+        "percent": 66.67,
+        "totalSteps": 21
+      },
+      "source": "api",
+      "status": "running",
+      "tags": [
+        "determinism:j",
+        "routing:c"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T07:07:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T07:35:00Z",
+        "startedAt": "2026-03-01T07:40:00Z",
+        "updatedAt": "2026-03-01T10:13:00Z"
+      },
+      "version": 8,
+      "widgetIds": [
+        "wid_stat-001",
+        "wid_stat-010",
+        "wid_table-013"
+      ]
+    },
+    {
+      "assigneeId": null,
+      "health": "healthy",
+      "id": "run_spike-009",
+      "name": "Validate Inventory Ledger for Region Alpha [v09]",
+      "ownerId": "usr_owner-0001",
+      "priority": "low",
+      "progress": {
+        "currentStep": 7,
+        "etaSeconds": 922,
+        "percent": 33.33,
+        "totalSteps": 21
+      },
+      "source": "automation",
+      "status": "running",
+      "tags": [
+        "audit:h",
+        "compliance:g",
+        "dock:b",
+        "monitoring:a",
+        "rollback:a"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T06:27:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T06:55:00Z",
+        "startedAt": "2026-03-01T06:56:00Z",
+        "updatedAt": "2026-03-01T10:24:00Z"
+      },
+      "version": 3,
+      "widgetIds": [
+        "wid_stat-019",
+        "wid_table-005",
+        "wid_table-019"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0006",
+      "health": "healthy",
+      "id": "run_spike-005",
+      "name": "Validate Inventory Ledger for Region Alpha [v05]",
+      "ownerId": "usr_owner-0006",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 10,
+        "etaSeconds": 238,
+        "percent": 43.48,
+        "totalSteps": 23
+      },
+      "source": "automation",
+      "status": "running",
+      "tags": [
+        "latency:e",
+        "resilience:c",
+        "security:e"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T05:54:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T06:02:00Z",
+        "startedAt": "2026-03-01T06:28:00Z",
+        "updatedAt": "2026-03-01T10:20:00Z"
+      },
+      "version": 12,
+      "widgetIds": [
+        "wid_stat-002"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0003",
+      "health": "unknown",
+      "id": "run_spike-002",
+      "name": "Validate Inventory Ledger for Region Alpha [v02]",
+      "ownerId": "usr_owner-0003",
+      "priority": "critical",
+      "progress": {
+        "currentStep": 0,
+        "etaSeconds": null,
+        "percent": 0.0,
+        "totalSteps": 22
+      },
+      "source": "api",
+      "status": "scheduled",
+      "tags": [
+        "baseline",
+        "canary:d",
+        "latency:e"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T04:43:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T05:04:00Z",
+        "startedAt": "2026-03-01T05:28:00Z",
+        "updatedAt": "2026-03-01T10:07:00Z"
+      },
+      "version": 9,
+      "widgetIds": [
+        "wid_stat-012",
+        "wid_stat-017",
+        "wid_table-011"
+      ]
+    },
+    {
+      "assigneeId": null,
+      "health": "unknown",
+      "id": "run_spike-003",
+      "name": "Validate Inventory Ledger for Region Alpha [v03]",
+      "ownerId": "usr_owner-0004",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 1,
+        "etaSeconds": null,
+        "percent": 14.29,
+        "totalSteps": 7
+      },
+      "source": "automation",
+      "status": "scheduled",
+      "tags": [
+        "compliance:j",
+        "contracts:d",
+        "monitoring:h",
+        "rollback:b"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T09:12:00Z",
+        "finishedAt": null,
+        "scheduledAt": "2026-03-01T09:16:00Z",
+        "startedAt": "2026-03-01T09:38:00Z",
+        "updatedAt": "2026-03-01T10:09:00Z"
+      },
+      "version": 2,
+      "widgetIds": [
+        "wid_table-007"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0009",
+      "health": "healthy",
+      "id": "run_spike-008",
+      "name": "Validate Inventory Ledger for Region Alpha [v08]",
+      "ownerId": "usr_owner-0009",
+      "priority": "high",
+      "progress": {
+        "currentStep": 23,
+        "etaSeconds": null,
+        "percent": 100.0,
+        "totalSteps": 23
+      },
+      "source": "manual",
+      "status": "succeeded",
+      "tags": [
+        "release",
+        "routing:e"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T07:41:00Z",
+        "finishedAt": "2026-03-01T10:27:00Z",
+        "scheduledAt": "2026-03-01T08:15:00Z",
+        "startedAt": "2026-03-01T08:27:00Z",
+        "updatedAt": "2026-03-01T10:27:00Z"
+      },
+      "version": 9,
+      "widgetIds": [
+        "wid_feed-004",
+        "wid_feed-007"
+      ]
+    },
+    {
+      "assigneeId": "usr_exec-0007",
+      "health": "healthy",
+      "id": "run_spike-006",
+      "name": "Validate Inventory Ledger for Region Alpha [v06]",
+      "ownerId": "usr_owner-0007",
+      "priority": "normal",
+      "progress": {
+        "currentStep": 22,
+        "etaSeconds": null,
+        "percent": 100.0,
+        "totalSteps": 22
+      },
+      "source": "api",
+      "status": "succeeded",
+      "tags": [
+        "incident",
+        "policy:d"
+      ],
+      "timestamps": {
+        "createdAt": "2026-03-01T06:25:00Z",
+        "finishedAt": "2026-03-01T08:01:00Z",
+        "scheduledAt": "2026-03-01T06:44:00Z",
+        "startedAt": "2026-03-01T06:51:00Z",
+        "updatedAt": "2026-03-01T08:01:00Z"
+      },
+      "version": 2,
+      "widgetIds": [
+        "wid_table-008"
+      ]
+    }
+  ],
+  "meta": {
+    "contractVersion": "2.0.0",
+    "generatedAt": "2026-03-01T09:58:00Z",
+    "requestId": "req_runs-0000000999"
+  },
+  "page": 1,
+  "pageSize": 10,
+  "total": 10
+}

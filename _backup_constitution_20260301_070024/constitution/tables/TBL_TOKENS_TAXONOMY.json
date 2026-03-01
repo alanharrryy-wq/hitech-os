@@ -1,0 +1,56 @@
+{
+  "table_id": "TBL_TOKENS_TAXONOMY",
+  "version": "1.0.0",
+  "status": "draft",
+  "authority_level": "warning",
+  "scope": "Defines token layers and allowed reference relationships",
+  "columns": [
+    {
+      "name": "layer",
+      "type": "enum",
+      "required": true,
+      "enum_values": [
+        "base",
+        "semantic",
+        "component"
+      ]
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "can_reference",
+      "type": "enum",
+      "required": true,
+      "enum_values": [
+        "none",
+        "base",
+        "semantic"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "layer": "base",
+      "description": "Raw values (color, spacing, motion primitives)",
+      "can_reference": "none"
+    },
+    {
+      "layer": "semantic",
+      "description": "Intent-driven tokens referencing base",
+      "can_reference": "base"
+    },
+    {
+      "layer": "component",
+      "description": "Component-specific tokens referencing semantic",
+      "can_reference": "semantic"
+    }
+  ],
+  "change_policy": {
+    "requires_pr_approval": true,
+    "requires_migration_note": true,
+    "breaking_change_requires_version_bump": true
+  }
+}
