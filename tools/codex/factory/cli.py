@@ -16,7 +16,7 @@ if __package__ in {None, ""}:
 
     from factory.common import INTEGRATOR, RUNS_DIR, WORKERS, ensure_dir, stable_sha256_text, write_json
     from factory.config import load_factory_config
-    from factory.contracts import load_registry, scaffold_all_bundles, validate_run
+    from factory.contracts import autocloseout_run, load_registry, scaffold_all_bundles, validate_run
     from factory.doctor import run_doctor
     from factory.integrator import integrate_run
     from factory.ledger import append_event, query_events, query_runs, replay_ledger, verify_ledger_signature
@@ -30,7 +30,7 @@ if __package__ in {None, ""}:
 else:
     from .common import INTEGRATOR, RUNS_DIR, WORKERS, ensure_dir, stable_sha256_text, write_json
     from .config import load_factory_config
-    from .contracts import load_registry, scaffold_all_bundles, validate_run
+    from .contracts import autocloseout_run, load_registry, scaffold_all_bundles, validate_run
     from .doctor import run_doctor
     from .integrator import integrate_run
     from .ledger import append_event, query_events, query_runs, replay_ledger, verify_ledger_signature
@@ -158,7 +158,12 @@ def _launch_run(
     init_result = _init_run("factory", run_id, base_ref=base_ref, config=config)
     chosen_run_id = str(init_result["run_id"])
 
-    preflight = run_preflight(chosen_run_id) if include_preflight else {"status": PASS, "checks": [], "run_id": chosen_run_id}
+    run_cfg = dict(config.get("run", {})) if isinstance(config.get("run"), dict) else {}
+    preflight = (
+        run_preflight(chosen_run_id, auto_repair=bool(run_cfg.get("auto_preflight_repair", True)))
+        if include_preflight
+        else {"status": PASS, "checks": [], "run_id": chosen_run_id}
+    )
     worktrees = create_worktrees(
         chosen_run_id,
         workers=workers,
@@ -241,7 +246,9 @@ def cmd_init_run(args: argparse.Namespace) -> int:
 
 
 def cmd_preflight(args: argparse.Namespace) -> int:
-    payload = run_preflight(args.run_id)
+    config = _load_runtime_config(args, cli_overrides={})
+    run_cfg = dict(config.get("run", {})) if isinstance(config.get("run"), dict) else {}
+    payload = run_preflight(args.run_id, auto_repair=bool(run_cfg.get("auto_preflight_repair", True)))
     _emit(payload, args.json_out)
     return status_exit_code(_status_from_payload(payload))
 
@@ -272,9 +279,22 @@ def cmd_bundle_init(args: argparse.Namespace) -> int:
 
 def cmd_bundle_validate(args: argparse.Namespace) -> int:
     workers = _parse_workers(args.workers)
-    payload = validate_run(args.run_id, workers=workers)
+    config = _load_runtime_config(args, cli_overrides={})
+    run_cfg = dict(config.get("run", {})) if isinstance(config.get("run"), dict) else {}
+    payload = validate_run(
+        args.run_id,
+        workers=workers,
+        auto_closeout=bool(run_cfg.get("auto_closeout_workers", True)),
+    )
     _emit(payload, args.json_out)
     return status_exit_code(_status_from_payload(payload))
+
+
+def cmd_auto_closeout(args: argparse.Namespace) -> int:
+    workers = _parse_workers(args.workers)
+    payload = autocloseout_run(args.run_id, workers=workers)
+    _emit(payload, args.json_out)
+    return status_exit_code(_status_from_payload(payload, fallback=PASS))
 
 
 def cmd_integrate(args: argparse.Namespace) -> int:
@@ -318,12 +338,13 @@ def cmd_oneshot(args: argparse.Namespace) -> int:
         args,
         cli_overrides={"run": run_overrides},
     )
+    run_cfg = dict(config.get("run", {})) if isinstance(config.get("run"), dict) else {}
     run_id = args.run_id or next_run_identity("factory", base_ref=args.base_ref).run_id
 
     stage_payloads: dict[str, dict[str, Any]] = {}
     stage_checks: list[dict[str, Any]] = []
 
-    preflight_payload = run_preflight(run_id)
+    preflight_payload = run_preflight(run_id, auto_repair=bool(run_cfg.get("auto_preflight_repair", True)))
     append_event(
         {
             "schema_version": 1,
@@ -378,7 +399,11 @@ def cmd_oneshot(args: argparse.Namespace) -> int:
         _emit(payload, args.json_out)
         return evaluation.exit_code
 
-    validate_payload_result = validate_run(run_id, workers=workers)
+    validate_payload_result = validate_run(
+        run_id,
+        workers=workers,
+        auto_closeout=bool(run_cfg.get("auto_closeout_workers", True)),
+    )
     append_event(
         {
             "schema_version": 1,
@@ -611,6 +636,9 @@ def cmd_watch(args: argparse.Namespace) -> int:
         "noop": bool(gate_payload.get("noop", False)),
         "phase_progress": bool(final_status == PASS and not gate_payload.get("noop", False)),
     }
+    ledger_rows = query_events(run_id=args.run_id, limit=25)
+    summary["ledger_events"] = len(ledger_rows)
+    summary["ledger_last_event"] = str(ledger_rows[-1].get("event_type", "")) if ledger_rows else ""
     payload = {
         "status": final_status,
         "run_id": args.run_id,
@@ -624,6 +652,10 @@ def cmd_watch(args: argparse.Namespace) -> int:
             "path": gate_path.as_posix(),
             "exists": gate_path.exists(),
             "payload": gate_payload,
+        },
+        "ledger": {
+            "count": len(ledger_rows),
+            "tail": ledger_rows[-25:],
         },
     }
     _emit(payload, args.json_out)
@@ -674,6 +706,11 @@ def build_parser() -> argparse.ArgumentParser:
     bundle_validate.add_argument("--run-id", required=True)
     bundle_validate.add_argument("--workers", help="Comma-separated worker IDs")
     bundle_validate.set_defaults(func=cmd_bundle_validate)
+
+    auto_closeout = sub.add_parser("auto-closeout", help="Auto-generate/repair worker closeout artifacts")
+    auto_closeout.add_argument("--run-id", required=True)
+    auto_closeout.add_argument("--workers", help="Comma-separated worker IDs")
+    auto_closeout.set_defaults(func=cmd_auto_closeout)
 
     integrate = sub.add_parser("integrate", help="Run Z integrator pipeline")
     integrate.add_argument("--run-id", required=True)

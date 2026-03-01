@@ -32,6 +32,7 @@ class CliEntrypointTests(unittest.TestCase):
         self.assertEqual(0, proc.returncode)
         self.assertIn("usage:", proc.stdout.lower())
         self.assertIn("oneshot", proc.stdout)
+        self.assertIn("auto-closeout", proc.stdout)
         self.assertNotIn("RuntimeWarning", proc.stderr)
 
     def test_module_version_prints(self) -> None:

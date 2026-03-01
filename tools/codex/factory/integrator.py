@@ -8,7 +8,7 @@ from .common import INTEGRATOR, RUNS_DIR, WORKERS, iso_utc, read_json, read_text
 from .config import load_factory_config
 from .contracts import bundle_dir, scaffold_integrator_bundle, validate_bundle
 from .fs_guard import WriteGuard, WritePolicyError
-from .ledger import append_event, verify_ledger_signature
+from .ledger import append_event, query_events, verify_ledger_signature
 from .overlap import detect_file_overlaps, detect_scope_violations
 from .schemas import validate_payload
 from .status_eval import BLOCKED, FAIL, PASS, evaluate_status, make_check, status_exit_code
@@ -35,6 +35,7 @@ def _collect_worker_inputs(run_id: str, workers: list[str]) -> list[dict[str, An
             "worker": worker,
             "bundle": root.as_posix(),
             "status": "MISSING",
+            "worker_status": "PENDING",
             "validation": validate_bundle(run_id, worker),
             "files_changed": [],
             "summary": "",
@@ -54,6 +55,10 @@ def _collect_worker_inputs(run_id: str, workers: list[str]) -> list[dict[str, An
                 record["noop"] = bool(payload.get("noop", False))
                 record["noop_reason"] = str(payload.get("noop_reason", "")).strip()
                 record["noop_ack"] = str(payload.get("noop_ack", "")).strip()
+            status_path = root / "STATUS.json"
+            if status_path.exists():
+                status_payload = read_json(status_path)
+                record["worker_status"] = str(status_payload.get("status", "PENDING")).upper()
             if summary_path.exists():
                 record["summary"] = read_text(summary_path).strip()
             if diff_path.exists():
@@ -167,8 +172,12 @@ def _render_final_report(
     internal_errors: Iterable[str] | None = None,
     ledger_signature_status: Mapping[str, Any] | None = None,
     meaningful_gate: Mapping[str, Any] | None = None,
+    worker_completion: Mapping[str, Any] | None = None,
+    ledger_watch: Mapping[str, Any] | None = None,
 ) -> str:
     gate = meaningful_gate or {}
+    completion = worker_completion or {}
+    watch = ledger_watch or {}
     gate_verdict = str(gate.get("verdict", "N/A"))
     gate_noop = bool(gate.get("noop", False))
     lines = [
@@ -184,6 +193,8 @@ def _render_final_report(
         f"- Invalid FILES_CHANGED paths: {len(overlap_report.get('invalid_paths', []))}",
         f"- Meaningful gate verdict: {gate_verdict}",
         f"- NOOP declared: {str(gate_noop).lower()}",
+        f"- Workers completed: {completion.get('done', 0)}/{completion.get('total', len(collected))}",
+        f"- Ledger watch events: {watch.get('count', 0)}",
         "",
         "## Required Checks",
     ]
@@ -347,6 +358,8 @@ def integrate_run(
     run_cfg = dict(cfg.get("run", {})) if isinstance(cfg.get("run"), Mapping) else {}
     strict_mode = bool(run_cfg.get("strict_collision_mode", True))
     allow_identical_patch_overlap = bool(run_cfg.get("allow_identical_patch_overlap", False))
+    integrator_watch_ledger = bool(run_cfg.get("integrator_watch_ledger", True))
+    integrator_wait_for_workers = bool(run_cfg.get("integrator_wait_for_workers", True))
     started_at = iso_utc()
     scaffold_integrator_bundle(run_id)
 
@@ -382,6 +395,22 @@ def integrate_run(
         scope_report = detect_scope_violations(run_id, workers=chosen)
         merged_files = _merge_files_changed(run_id, collected)
         merged_patch = _merge_patch(collected)
+        pending_workers = sorted(
+            str(item.get("worker", ""))
+            for item in collected
+            if str(item.get("worker_status", "PENDING")).upper() in {"PENDING", ""}
+        )
+        worker_completion = {
+            "done": len(chosen) - len(pending_workers),
+            "pending": pending_workers,
+            "total": len(chosen),
+        }
+        ledger_tail = query_events(run_id=run_id, limit=25) if integrator_watch_ledger else []
+        ledger_watch = {
+            "count": len(ledger_tail),
+            "last_event": str(ledger_tail[-1].get("event_type", "")) if ledger_tail else "",
+            "enabled": integrator_watch_ledger,
+        }
 
         worker_blockers = [item for item in collected if item.get("validation", {}).get("status") != PASS]
         overlap_blockers = [item for item in overlap_report.get("overlaps", []) if item.get("status") == BLOCKED]
@@ -396,9 +425,30 @@ def integrate_run(
             f"invalid path blockers={len(invalid_path_blockers)}",
             f"scope blockers={len(scope_blockers)}",
         ]
+        if integrator_wait_for_workers and pending_workers:
+            blockers.append(f"pending workers={','.join(pending_workers)}")
         blockers = [item for item in blockers if not item.endswith("=0")]
 
+        optional_checks: list[dict[str, Any]] = []
+        if integrator_watch_ledger:
+            optional_checks.append(
+                make_check(
+                    "ledger_watch",
+                    rc=0,
+                    required=False,
+                    detail=f"events={len(ledger_tail)} last={ledger_watch['last_event'] or '<none>'}",
+                    actor=INTEGRATOR,
+                )
+            )
+
         required_checks = [
+            make_check(
+                "workers_done",
+                rc=0 if not (integrator_wait_for_workers and pending_workers) else 2,
+                required=True,
+                detail=f"pending={len(pending_workers)}",
+                actor=INTEGRATOR,
+            ),
             make_check(
                 "worker_bundle_validation",
                 rc=0 if not worker_blockers else 2,
@@ -443,7 +493,7 @@ def integrate_run(
 
         evaluation = evaluate_status(
             required_checks=required_checks,
-            optional_checks=[],
+            optional_checks=optional_checks,
             schema_errors=schema_errors,
             blockers=blockers,
             internal_errors=[],
@@ -501,7 +551,7 @@ def integrate_run(
         # Re-evaluate after schema checks.
         evaluation = evaluate_status(
             required_checks=required_checks,
-            optional_checks=[],
+            optional_checks=optional_checks,
             schema_errors=schema_errors,
             blockers=blockers,
             internal_errors=[],
@@ -525,6 +575,8 @@ def integrate_run(
             internal_errors=[],
             ledger_signature_status={},
             meaningful_gate={},
+            worker_completion=worker_completion,
+            ledger_watch=ledger_watch,
         )
 
         policy_errors: list[str] = []
@@ -555,7 +607,7 @@ def integrate_run(
             )
             evaluation = evaluate_status(
                 required_checks=required_checks,
-                optional_checks=[],
+                optional_checks=optional_checks,
                 schema_errors=schema_errors,
                 blockers=blockers + policy_errors,
                 internal_errors=[],
@@ -576,6 +628,8 @@ def integrate_run(
                 internal_errors=[],
                 ledger_signature_status={},
                 meaningful_gate={},
+                worker_completion=worker_completion,
+                ledger_watch=ledger_watch,
             )
             _write_standard_outputs(
                 guard=guard,
@@ -616,7 +670,7 @@ def integrate_run(
             gate_blockers.append(f"meaningful_gate:{gate_verdict}")
         evaluation = evaluate_status(
             required_checks=required_checks,
-            optional_checks=[],
+            optional_checks=optional_checks,
             schema_errors=schema_errors,
             blockers=blockers + policy_errors + gate_blockers,
             internal_errors=[],
@@ -642,6 +696,8 @@ def integrate_run(
             internal_errors=[],
             ledger_signature_status={},
             meaningful_gate=gate_payload,
+            worker_completion=worker_completion,
+            ledger_watch=ledger_watch,
         )
         guard.write_json(z_dir / "STATUS.json", status_payload)
         guard.write_json(z_dir / "LOGS" / "INDEX.json", _build_log_index(run_id, status_exit_code(final_status)))
@@ -664,6 +720,8 @@ def integrate_run(
             internal_errors=[],
             ledger_signature_status=ledger_sig,
             meaningful_gate=gate_payload,
+            worker_completion=worker_completion,
+            ledger_watch=ledger_watch,
         )
         guard.write_text(z_dir / "FINAL_REPORT.txt", final_report)
         report_hash = stable_sha256_text(final_report)

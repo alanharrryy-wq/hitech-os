@@ -48,6 +48,7 @@ Required worker files:
 - `SCOPE_LOCK.json`
 - `HANDOFF_NOTE.json`
 - `LOGS/INDEX.json`
+- `CODEX_OUTPUT.txt`
 
 Worker status JSON:
 
@@ -93,6 +94,40 @@ Exit codes:
 - `PASS` -> `0`
 - `BLOCKED` -> `2`
 - `FAIL` -> `1`
+
+## Preflight And Auto-Repair Contract
+
+- Preflight must execute before launch/oneshot stages.
+- Preflight runs in auto-repair mode by default.
+- Missing recoverable folders/files must be auto-healed before returning `BLOCKED`.
+- Human intervention is only valid for unrecoverable failures (for example: missing `git` executable).
+
+## Worker Auto-Closeout Contract
+
+- `bundle-validate` runs worker auto-closeout by default.
+- Auto-closeout must generate/repair all required worker artifacts.
+- Auto-closeout must write `CODEX_OUTPUT.txt` in worker bundle and mirror `CODEX_OUTPUT_<WORKER>_<RUN_ID>.txt` in worker worktree when available.
+
+## Session Hygiene Contract
+
+- Prompt materialization must inject clean-session headers.
+- Worker prompt must include:
+  - `SESSION_POLICY: CLEAN_START_REQUIRED`
+  - `AUTO_REPORT_REQUIRED: true`
+- If prior chat context exists, worker must ignore stale context and continue with current run scope.
+
+## Visual Baseline Ownership Contract
+
+- Default visual baseline owner is `B_worker`.
+- Baseline updates remain explicit/manual command (`--update-baseline`) but ownership is assigned to `B_worker` by default.
+
+## Integrator Watch Contract
+
+- Z prompt is dispatched at run start.
+- Z must monitor progress using:
+  - `python -m tools.codex.factory watch --run-id <RUN_ID>`
+  - `python -m tools.codex.factory ledger --run-id <RUN_ID> --raw-events --limit N`
+- Z integration/report work starts after worker completion checks pass.
 
 ## Ledger Contract
 

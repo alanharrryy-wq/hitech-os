@@ -31,7 +31,14 @@ def _emit_worker_content(run_id: str, worker: str) -> None:
         "optional_checks": [],
         "errors": [],
         "warnings": [],
-        "artifacts": ["SUMMARY.md", "FILES_CHANGED.json", "DIFF.patch"],
+        "artifacts": [
+            "SUMMARY.md",
+            "FILES_CHANGED.json",
+            "DIFF.patch",
+            "SELF_EVAL_REPORT.json",
+            "SANCTION_SCORE.json",
+            "SELF_CORRECTION_LOG.jsonl",
+        ],
     }
     write_json(root / "STATUS.json", status)
 
@@ -77,6 +84,38 @@ def _emit_worker_content(run_id: str, worker: str) -> None:
     write_text(root / "SUGGESTIONS.md", f"# {worker} suggestions\n\n- No suggestions.\n")
 
     write_text(root / "DIFF.patch", "")
+    write_json(
+        root / "SELF_EVAL_REPORT.json",
+        {
+            "run_id": run_id,
+            "worker_id": worker,
+            "sanction_level": "OK",
+            "sanction_score": 0.2,
+            "flags": ["SMOKE_FIXTURE"],
+        },
+    )
+    write_json(
+        root / "SANCTION_SCORE.json",
+        {
+            "run_id": run_id,
+            "worker_id": worker,
+            "sanction_score": 0.2,
+            "sanction_level": "OK",
+            "vdi": 0.8,
+            "loc_delta": 2,
+            "notes": ["SMOKE_FIXTURE"],
+        },
+    )
+    write_text(
+        root / "SELF_CORRECTION_LOG.jsonl",
+        (
+            '{"run_id":"'
+            + run_id
+            + '","worker_id":"'
+            + worker
+            + '","sanction_score":0.2,"sanction_level":"OK","vdi":0.8,"loc_delta":2}\n'
+        ),
+    )
 
     write_json(
         root / "LOGS" / "INDEX.json",
@@ -103,11 +142,13 @@ def run_smoke(run_id: str | None = None) -> dict[str, Any]:
         _emit_worker_content(chosen_run_id, worker)
 
     validation_before = validate_run(chosen_run_id, workers=list(WORKERS))
-    integration_first = integrate_run(chosen_run_id, workers=list(WORKERS))
+    # Disable volatile ledger-tail counters so deterministic smoke compares stable report content.
+    stable_config = {"run": {"integrator_watch_ledger": False}}
+    integration_first = integrate_run(chosen_run_id, workers=list(WORKERS), config=stable_config)
     first_report = (bundle_dir(chosen_run_id, "Z_integrator") / "FINAL_REPORT.txt").read_text(encoding="utf-8")
     first_digest = stable_sha256_text(first_report)
 
-    integration_second = integrate_run(chosen_run_id, workers=list(WORKERS))
+    integration_second = integrate_run(chosen_run_id, workers=list(WORKERS), config=stable_config)
     second_report = (bundle_dir(chosen_run_id, "Z_integrator") / "FINAL_REPORT.txt").read_text(encoding="utf-8")
     second_digest = stable_sha256_text(second_report)
 

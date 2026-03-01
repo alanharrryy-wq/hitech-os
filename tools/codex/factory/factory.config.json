@@ -12,12 +12,20 @@
   },
   "run": {
     "allow_identical_patch_overlap": false,
+    "auto_closeout_workers": true,
+    "auto_preflight_repair": true,
+    "auto_repair_missing_folders": true,
     "base_ref": "HEAD",
     "branch_prefix": "codex/factory",
+    "chat_hygiene_policy": "clean_start_required",
+    "integrator_wait_for_workers": true,
+    "integrator_watch_ledger": true,
     "kind": "factory",
     "quarantine_on_suspicious_bundle": true,
     "run_prefix": "factory",
-    "strict_collision_mode": true
+    "strict_collision_mode": true,
+    "visual_baseline_owner": "B_worker",
+    "visual_baseline_update_default": true
   },
   "schema_version": 2,
   "security": {
@@ -35,7 +43,9 @@
       "B_worker": [
         "apps/**",
         "docs/**",
-        "packages/**"
+        "packages/**",
+        "docs/visual-baselines/**",
+        "tools/_local/visual/**"
       ],
       "C_worker": [
         "docs/**",
@@ -90,7 +100,8 @@
       "SUGGESTIONS.md",
       "SCOPE_LOCK.json",
       "HANDOFF_NOTE.json",
-      "LOGS/INDEX.json"
+      "LOGS/INDEX.json",
+      "CODEX_OUTPUT.txt"
     ]
   }
 }

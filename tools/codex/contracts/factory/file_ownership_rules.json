@@ -11,7 +11,9 @@
     {
       "allowed": [
         "apps/**",
-        "docs/**"
+        "docs/**",
+        "docs/visual-baselines/**",
+        "tools/_local/visual/**"
       ],
       "worker": "B_worker"
     },
@@ -39,6 +41,7 @@
   "schema_version": 1,
   "shared_allowlist": [
     "docs/factory/**",
+    "docs/visual-baselines/**",
     "tools/codex/runs/**"
   ]
 }

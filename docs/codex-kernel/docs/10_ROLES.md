@@ -53,6 +53,7 @@ STATUS: LAW
 **Required artifacts**
 
 - CODEX_OUTPUT file
+- Worker bundle artifacts (STATUS/SUMMARY/FILES_CHANGED/DIFF/SUGGESTIONS/SCOPE_LOCK/HANDOFF/LOGS/INDEX/CODEX_OUTPUT.txt)
 - Diff/patch
 - Minimal validation log (unit checks if applicable)
 
@@ -85,6 +86,7 @@ STATUS: LAW
 
 - CODEX_OUTPUT file
 - Screenshot/trace evidence if UI changed (optional but recommended)
+- Worker bundle artifacts (STATUS/SUMMARY/FILES_CHANGED/DIFF/SUGGESTIONS/SCOPE_LOCK/HANDOFF/LOGS/INDEX/CODEX_OUTPUT.txt)
 - Diff/patch
 
 ---
@@ -116,6 +118,7 @@ STATUS: LAW
 
 - CODEX_OUTPUT file
 - Validation logs (build/test/guards)
+- Worker bundle artifacts (STATUS/SUMMARY/FILES_CHANGED/DIFF/SUGGESTIONS/SCOPE_LOCK/HANDOFF/LOGS/INDEX/CODEX_OUTPUT.txt)
 - Diff/patch
 
 ---
@@ -144,6 +147,7 @@ STATUS: LAW
 
 - CODEX_OUTPUT file
 - Test run logs and artifacts paths (trace/screenshot if applicable)
+- Worker bundle artifacts (STATUS/SUMMARY/FILES_CHANGED/DIFF/SUGGESTIONS/SCOPE_LOCK/HANDOFF/LOGS/INDEX/CODEX_OUTPUT.txt)
 - Diff/patch
 
 ---

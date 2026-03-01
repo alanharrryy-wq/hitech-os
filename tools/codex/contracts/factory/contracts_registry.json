@@ -16,7 +16,9 @@
   "notes": [
     "All feature flags default to false.",
     "Deterministic ordering is required for all JSON outputs.",
-    "Z integrator merges and validates only; no feature invention."
+    "Z integrator merges and validates only; no feature invention.",
+    "B_worker is the default visual baseline owner.",
+    "Worker closeout artifacts are auto-generated and repaired when possible."
   ],
   "required_integrator_files": [
     "STATUS.json",
@@ -34,7 +36,8 @@
     "SUGGESTIONS.md",
     "SCOPE_LOCK.json",
     "HANDOFF_NOTE.json",
-    "LOGS/INDEX.json"
+    "LOGS/INDEX.json",
+    "CODEX_OUTPUT.txt"
   ],
   "schema_version": 1,
   "schemas": {

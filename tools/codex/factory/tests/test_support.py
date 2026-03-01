@@ -196,6 +196,51 @@ def write_worker_bundle(
     )
     _write(root / "SUMMARY.md", summary or f"# {worker}\n\n- summary\n")
     _write(root / "SUGGESTIONS.md", "# Suggestions\n\n- none\n")
+    _write(
+        root / "CODEX_OUTPUT.txt",
+        (
+            f"# CODEX_OUTPUT_{worker}_{run_id}\n\n"
+            "## WHAT CHANGED\n- test fixture\n\n"
+            "## DIFF / PATCH\n- see DIFF.patch\n"
+        ),
+    )
+    _write(
+        root / "SELF_EVAL_REPORT.json",
+        {
+            "run_id": run_id,
+            "worker_id": worker,
+            "sanction_level": "OK",
+            "sanction_score": 0.1,
+            "flags": ["TEST_FIXTURE"],
+        },
+    )
+    _write(
+        root / "SANCTION_SCORE.json",
+        {
+            "run_id": run_id,
+            "worker_id": worker,
+            "sanction_score": 0.1,
+            "sanction_level": "OK",
+            "vdi": 0.9,
+            "loc_delta": len(changes_list),
+            "notes": ["TEST_FIXTURE"],
+        },
+    )
+    _write(
+        root / "SELF_CORRECTION_LOG.jsonl",
+        json.dumps(
+            {
+                "run_id": run_id,
+                "worker_id": worker,
+                "sanction_score": 0.1,
+                "sanction_level": "OK",
+                "vdi": 0.9,
+                "loc_delta": len(changes_list),
+                "flags": ["TEST_FIXTURE"],
+            }
+        )
+        + "\n",
+    )
     touched_paths: list[str] = []
     tracked_paths: list[str] = []
     for change in changes_list:

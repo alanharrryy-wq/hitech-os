@@ -1,9 +1,12 @@
 {
   "schema_version": 1,
   "terms": {
+    "auto_closeout": "Automatic worker artifact generation/repair step before bundle validation.",
+    "baseline_owner": "Worker assigned to visual baseline update by default (B_worker).",
     "blocked": "State where required checks fail.",
     "bundle": "Per-agent output directory for a run.",
     "integrator": "Worker that merges, validates, and reports only.",
+    "ledger_watch": "Z-integrator visibility step over run ledger and watch summary.",
     "ledger": "Machine-readable history of runs.",
     "optional_check": "Validation check that does not block by default.",
     "pass": "State where required checks succeed.",

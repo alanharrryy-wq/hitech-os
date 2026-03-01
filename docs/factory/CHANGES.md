@@ -1,5 +1,31 @@
 # Factory Contract Changes
 
+## 2026-03-01 - Worker Closeout + Auto-Heal Rules
+
+### Added
+
+- new CLI command: `auto-closeout`
+- worker bundle required artifact: `CODEX_OUTPUT.txt`
+- preflight auto-repair flow for recoverable missing paths
+- prompt contract injection for session hygiene + auto-report requirements
+- Z ledger/watch visibility in run summary (`watch` payload includes ledger tail)
+- new tests:
+  - `test_auto_closeout.py`
+  - `test_preflight_autorepair.py`
+
+### Updated
+
+- `bundle-validate` now runs worker auto-closeout by default.
+- `run_iter.ps1` dispatches Z prompt at run start, waits docs workers first, and runs `watch` + `auto-closeout` before integrate.
+- worktree operations now auto-heal missing folders instead of immediate stop where recovery is possible.
+- default visual baseline ownership set to `B_worker`.
+
+### Contract Impact
+
+- worker contract now includes deterministic `CODEX_OUTPUT` closeout artifact.
+- runtime config contract now includes auto-closeout/auto-repair/visual-baseline/Z-watch defaults.
+- dispatcher prompt contract now enforces clean-session and auto-report headers.
+
 ## 2026-02-18 - Block A Hardening
 
 ### Added

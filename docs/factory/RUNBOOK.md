@@ -38,6 +38,12 @@ python -m tools.codex.factory launch --base-ref HEAD --dry-run
 python -m tools.codex.factory bundle-validate --run-id <RUN_ID>
 ```
 
+Optional explicit closeout:
+
+```powershell
+python -m tools.codex.factory auto-closeout --run-id <RUN_ID>
+```
+
 4. Integrate:
 
 ```powershell
@@ -96,6 +102,7 @@ Required worker artifacts:
 - `SCOPE_LOCK.json`
 - `HANDOFF_NOTE.json`
 - `LOGS/INDEX.json`
+- `CODEX_OUTPUT.txt`
 
 Required integrator artifacts:
 
@@ -113,6 +120,14 @@ Required integrator artifacts:
 - `FAIL`: internal execution error.
 
 `FINAL_REPORT.txt`, `STATUS.json`, and CLI exit code must align.
+
+## Automation Defaults
+
+- Preflight auto-repair is ON by default.
+- Worker auto-closeout is ON by default (`bundle-validate`).
+- Missing worker folders trigger auto-heal attempts before blocking.
+- `B_worker` is default visual baseline owner.
+- Z watch/ledger visibility is enabled in runtime and prompt contracts.
 
 ## Determinism Rules
 

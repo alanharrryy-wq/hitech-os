@@ -46,6 +46,10 @@ Must include:
 
 Template: `templates/CODEX_OUTPUT_TEMPLATE.md`.
 
+Automation rule:
+
+- If worker output is incomplete, factory auto-closeout must generate/repair `CODEX_OUTPUT` and bundle artifacts before `bundle-validate`.
+
 ### 2) Bundle directory (recommended)
 
 Path (recommended):
@@ -60,6 +64,7 @@ Must include:
 - `DIFF.patch`
 - `LOGS/` (typecheck/build/tests)
 - `SUGGESTIONS.md`
+- `CODEX_OUTPUT.txt`
 
 Schema: `templates/BUNDLE_SCHEMA.md`.
 

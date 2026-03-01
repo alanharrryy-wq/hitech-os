@@ -44,6 +44,17 @@ Each prompt file must include near the top:
 
 - `RUN_ID: <RUN_ID>`
 - `CODEX_ID: <WORKER>`
+- `SESSION_POLICY: CLEAN_START_REQUIRED`
+- `AUTO_REPORT_REQUIRED: true`
+
+`B_tooling` prompt must include:
+
+- `VISUAL_BASELINE_OWNER: true`
+
+`Z_aggregator` prompt must include:
+
+- `LEDGER_WATCH_REQUIRED: true`
+- `START_WORK_AFTER_WORKERS_DONE: true`
 
 Each prompt file must instruct completion marker creation:
 
@@ -68,15 +79,19 @@ powershell -ExecutionPolicy Bypass -File tools/codex/dispatch/run_iter.ps1 -RunI
 6. Run `python -m tools.codex.factory worktrees open --run-id <RUN_ID> --workers ...`
 7. Ensure AutoHotkey exists (attempt winget install if needed).
 8. Dispatch prompts by UI automation to window titles:
+   - Z prompt is dispatched at run start (watch mode), then A/B/C/D.
    - `HITECHOS_A_core_<RUN_ID>`
    - `HITECHOS_B_tooling_<RUN_ID>`
    - `HITECHOS_C_features_<RUN_ID>`
    - `HITECHOS_D_validation_<RUN_ID>`
    - `HITECHOS_Z_aggregator_<RUN_ID>`
-9. Wait for all 5 `DONE.marker` files.
-10. Run `python -m tools.codex.factory bundle-validate --run-id <RUN_ID> --workers ...`
-11. Run `python -m tools.codex.factory integrate --run-id <RUN_ID> --workers ...`
-12. Write `tools/codex/prompts/<RUN_ID>/logs/DISPATCH_REPORT.md`
+9. Wait for docs workers (`A/B/C/D`) `DONE.marker` files.
+10. Run `python -m tools.codex.factory watch --run-id <RUN_ID>` (ledger/watch visibility for Z).
+11. Wait for `Z_aggregator` `DONE.marker`.
+12. Run `python -m tools.codex.factory auto-closeout --run-id <RUN_ID> --workers ...`.
+13. Run `python -m tools.codex.factory bundle-validate --run-id <RUN_ID> --workers ...`.
+14. Run `python -m tools.codex.factory integrate --run-id <RUN_ID> --workers ...`.
+15. Write `tools/codex/prompts/<RUN_ID>/logs/DISPATCH_REPORT.md`.
 
 ## Configuration
 

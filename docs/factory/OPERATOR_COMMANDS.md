@@ -3,6 +3,9 @@
 - `python tools/codex/factory_cli.py --help`
 - `python tools/codex/factory_cli.py contracts-check`
 - `python tools/codex/factory_cli.py launch --dry-run`
+- `python tools/codex/factory_cli.py auto-closeout --run-id <RUN_ID>`
+- `python tools/codex/factory_cli.py bundle-validate --run-id <RUN_ID>`
+- `python tools/codex/factory_cli.py integrate --run-id <RUN_ID>`
 - `python tools/codex/factory_cli.py self-test`
 - `python tools/codex/factory_cli.py ledger --limit 10`
 - `python tools/codex/factory_cli.py watch --run-id <RUN_ID>`
