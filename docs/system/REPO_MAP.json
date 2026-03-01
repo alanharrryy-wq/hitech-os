@@ -1,0 +1,1302 @@
+{
+  "fileStats": {
+    "topExtensions": [
+      {
+        "count": 866,
+        "extension": ".md"
+      },
+      {
+        "count": 829,
+        "extension": ".ts"
+      },
+      {
+        "count": 759,
+        "extension": ".json"
+      },
+      {
+        "count": 710,
+        "extension": ".py"
+      },
+      {
+        "count": 429,
+        "extension": ".tsx"
+      },
+      {
+        "count": 200,
+        "extension": ".txt"
+      },
+      {
+        "count": 184,
+        "extension": ".ps1"
+      },
+      {
+        "count": 88,
+        "extension": ".mjs"
+      },
+      {
+        "count": 79,
+        "extension": ".log"
+      },
+      {
+        "count": 61,
+        "extension": "<none>"
+      },
+      {
+        "count": 45,
+        "extension": ".yaml"
+      },
+      {
+        "count": 39,
+        "extension": ".patch"
+      },
+      {
+        "count": 30,
+        "extension": ".code-workspace"
+      },
+      {
+        "count": 27,
+        "extension": ".cjs"
+      },
+      {
+        "count": 26,
+        "extension": ".css"
+      },
+      {
+        "count": 16,
+        "extension": ".ahk"
+      },
+      {
+        "count": 14,
+        "extension": ".yml"
+      },
+      {
+        "count": 7,
+        "extension": ".dot"
+      },
+      {
+        "count": 7,
+        "extension": ".html"
+      },
+      {
+        "count": 7,
+        "extension": ".toml"
+      },
+      {
+        "count": 6,
+        "extension": ".ini"
+      },
+      {
+        "count": 6,
+        "extension": ".zip"
+      },
+      {
+        "count": 4,
+        "extension": ".tsbuildinfo"
+      },
+      {
+        "count": 4,
+        "extension": ".tsv"
+      },
+      {
+        "count": 1,
+        "extension": ".csv"
+      }
+    ],
+    "topLevelCounts": {
+      ".": 13,
+      ".github": 2,
+      ".vscode": 1,
+      "apps": 87,
+      "docs": 117,
+      "packages": 103,
+      "services": 46,
+      "tools": 4076
+    },
+    "totalFiles": 4445
+  },
+  "nextApps": [
+    "apps/keystone"
+  ],
+  "repoRoot": ".",
+  "schemaVersion": 1,
+  "segments": [
+    {
+      "count": 3,
+      "segment": "apps",
+      "workspaces": [
+        "apps/demo-engine",
+        "apps/keystone",
+        "apps/web"
+      ]
+    },
+    {
+      "count": 3,
+      "segment": "packages",
+      "workspaces": [
+        "packages/contracts",
+        "packages/tooling",
+        "packages/ui-kit"
+      ]
+    },
+    {
+      "count": 2,
+      "segment": "services",
+      "workspaces": [
+        "services/ai-agent",
+        "services/core-api"
+      ]
+    },
+    {
+      "count": 2,
+      "segment": "tools",
+      "workspaces": [
+        "tools/health",
+        "tools/scripts"
+      ]
+    }
+  ],
+  "signals": {
+    "playwrightPresent": false,
+    "rootConfigFiles": {
+      "eslintConfig": true,
+      "playwrightConfig": false,
+      "prettierConfig": true,
+      "stylelintConfig": false
+    },
+    "storybookPresent": false,
+    "tooling": [
+      {
+        "name": "eslint",
+        "workspaceCount": 3,
+        "workspaces": [
+          "apps/web",
+          "packages/contracts",
+          "packages/ui-kit"
+        ]
+      },
+      {
+        "name": "typescript",
+        "workspaceCount": 4,
+        "workspaces": [
+          "apps/keystone",
+          "apps/web",
+          "packages/contracts",
+          "packages/ui-kit"
+        ]
+      },
+      {
+        "name": "vitest",
+        "workspaceCount": 3,
+        "workspaces": [
+          "apps/keystone",
+          "packages/contracts",
+          "packages/ui-kit"
+        ]
+      }
+    ],
+    "uiStack": [
+      {
+        "name": "@radix-ui/react-dialog",
+        "workspaceCount": 1,
+        "workspaces": [
+          "packages/ui-kit"
+        ]
+      },
+      {
+        "name": "autoprefixer",
+        "workspaceCount": 1,
+        "workspaces": [
+          "apps/keystone"
+        ]
+      },
+      {
+        "name": "next",
+        "workspaceCount": 2,
+        "workspaces": [
+          "apps/keystone",
+          "packages/ui-kit"
+        ]
+      },
+      {
+        "name": "postcss",
+        "workspaceCount": 1,
+        "workspaces": [
+          "apps/keystone"
+        ]
+      },
+      {
+        "name": "react",
+        "workspaceCount": 3,
+        "workspaces": [
+          "apps/keystone",
+          "apps/web",
+          "packages/ui-kit"
+        ]
+      },
+      {
+        "name": "react-dom",
+        "workspaceCount": 3,
+        "workspaces": [
+          "apps/keystone",
+          "apps/web",
+          "packages/ui-kit"
+        ]
+      },
+      {
+        "name": "tailwindcss",
+        "workspaceCount": 1,
+        "workspaces": [
+          "apps/keystone"
+        ]
+      },
+      {
+        "name": "vite",
+        "workspaceCount": 1,
+        "workspaces": [
+          "apps/web"
+        ]
+      }
+    ]
+  },
+  "tsconfigs": {
+    "apps/keystone/tsconfig.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 4,
+      "jsx": "preserve",
+      "module": "ESNext",
+      "moduleResolution": "Bundler",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": "ES2022"
+    },
+    "apps/web/tsconfig.json": {
+      "baseUrl": ".",
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": "react-jsx",
+      "module": "ESNext",
+      "moduleResolution": "Bundler",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "packages/contracts/tsconfig.json": {
+      "baseUrl": null,
+      "composite": true,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": null,
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "packages/ui-kit/tsconfig.json": {
+      "baseUrl": null,
+      "composite": true,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 3,
+      "jsx": "react-jsx",
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "services/core-api/tsconfig.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": null,
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/_triage/snapshots/SNAP_20260226_1/BEFORE/apps/web/tsconfig.json": {
+      "baseUrl": ".",
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": "react-jsx",
+      "module": "ESNext",
+      "moduleResolution": "Bundler",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/_triage/snapshots/SNAP_20260226_1/BEFORE/configs/tsconfig.factory.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../tsconfig.base.json",
+      "includeCount": 3,
+      "jsx": null,
+      "module": null,
+      "moduleResolution": null,
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/_triage/snapshots/SNAP_20260226_1/BEFORE/packages/contracts/tsconfig.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": null,
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/_triage/snapshots/SNAP_20260226_1/BEFORE/packages/ui-kit/tsconfig.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 2,
+      "jsx": "react-jsx",
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/_triage/snapshots/SNAP_20260226_1/BEFORE/services/core-api/tsconfig.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": null,
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/_triage/snapshots/SNAP_20260226_1/BEFORE/tsconfig.base.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": null,
+      "includeCount": 0,
+      "jsx": null,
+      "module": "CommonJS",
+      "moduleResolution": "Node",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": "ES2022"
+    },
+    "tools/codex/worktrees/A_core/apps/keystone/tsconfig.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 4,
+      "jsx": "preserve",
+      "module": "ESNext",
+      "moduleResolution": "Bundler",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": "ES2022"
+    },
+    "tools/codex/worktrees/A_core/apps/web/tsconfig.json": {
+      "baseUrl": ".",
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": "react-jsx",
+      "module": "ESNext",
+      "moduleResolution": "Bundler",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/A_core/configs/tsconfig.factory.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../tsconfig.base.json",
+      "includeCount": 3,
+      "jsx": null,
+      "module": null,
+      "moduleResolution": null,
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/A_core/packages/contracts/tsconfig.json": {
+      "baseUrl": null,
+      "composite": true,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": null,
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/A_core/packages/ui-kit/tsconfig.json": {
+      "baseUrl": null,
+      "composite": true,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 3,
+      "jsx": "react-jsx",
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/A_core/services/core-api/tsconfig.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": null,
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/A_core/tsconfig.base.json": {
+      "baseUrl": ".",
+      "composite": false,
+      "extends": null,
+      "includeCount": 0,
+      "jsx": null,
+      "module": "CommonJS",
+      "moduleResolution": "Node",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": "ES2022"
+    },
+    "tools/codex/worktrees/A_core/tsconfig.json": {
+      "baseUrl": ".",
+      "composite": false,
+      "extends": "./tsconfig.base.json",
+      "includeCount": 0,
+      "jsx": null,
+      "module": null,
+      "moduleResolution": null,
+      "pathsAliasCount": 4,
+      "referencesCount": 2,
+      "target": null
+    },
+    "tools/codex/worktrees/B_tooling/apps/keystone/tsconfig.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 4,
+      "jsx": "preserve",
+      "module": "ESNext",
+      "moduleResolution": "Bundler",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": "ES2022"
+    },
+    "tools/codex/worktrees/B_tooling/apps/web/tsconfig.json": {
+      "baseUrl": ".",
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": "react-jsx",
+      "module": "ESNext",
+      "moduleResolution": "Bundler",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/B_tooling/configs/tsconfig.factory.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../tsconfig.base.json",
+      "includeCount": 3,
+      "jsx": null,
+      "module": null,
+      "moduleResolution": null,
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/B_tooling/packages/contracts/tsconfig.json": {
+      "baseUrl": null,
+      "composite": true,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": null,
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/B_tooling/packages/ui-kit/tsconfig.json": {
+      "baseUrl": null,
+      "composite": true,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 3,
+      "jsx": "react-jsx",
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/B_tooling/services/core-api/tsconfig.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": null,
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/B_tooling/tsconfig.base.json": {
+      "baseUrl": ".",
+      "composite": false,
+      "extends": null,
+      "includeCount": 0,
+      "jsx": null,
+      "module": "CommonJS",
+      "moduleResolution": "Node",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": "ES2022"
+    },
+    "tools/codex/worktrees/B_tooling/tsconfig.json": {
+      "baseUrl": ".",
+      "composite": false,
+      "extends": "./tsconfig.base.json",
+      "includeCount": 0,
+      "jsx": null,
+      "module": null,
+      "moduleResolution": null,
+      "pathsAliasCount": 4,
+      "referencesCount": 2,
+      "target": null
+    },
+    "tools/codex/worktrees/C_features/apps/keystone/tsconfig.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 4,
+      "jsx": "preserve",
+      "module": "ESNext",
+      "moduleResolution": "Bundler",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": "ES2022"
+    },
+    "tools/codex/worktrees/C_features/apps/web/tsconfig.json": {
+      "baseUrl": ".",
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": "react-jsx",
+      "module": "ESNext",
+      "moduleResolution": "Bundler",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/C_features/configs/tsconfig.factory.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../tsconfig.base.json",
+      "includeCount": 3,
+      "jsx": null,
+      "module": null,
+      "moduleResolution": null,
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/C_features/packages/contracts/tsconfig.json": {
+      "baseUrl": null,
+      "composite": true,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": null,
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/C_features/packages/ui-kit/tsconfig.json": {
+      "baseUrl": null,
+      "composite": true,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 3,
+      "jsx": "react-jsx",
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/C_features/services/core-api/tsconfig.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": null,
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/C_features/tsconfig.base.json": {
+      "baseUrl": ".",
+      "composite": false,
+      "extends": null,
+      "includeCount": 0,
+      "jsx": null,
+      "module": "CommonJS",
+      "moduleResolution": "Node",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": "ES2022"
+    },
+    "tools/codex/worktrees/C_features/tsconfig.json": {
+      "baseUrl": ".",
+      "composite": false,
+      "extends": "./tsconfig.base.json",
+      "includeCount": 0,
+      "jsx": null,
+      "module": null,
+      "moduleResolution": null,
+      "pathsAliasCount": 4,
+      "referencesCount": 2,
+      "target": null
+    },
+    "tools/codex/worktrees/D_validation/apps/keystone/tsconfig.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 4,
+      "jsx": "preserve",
+      "module": "ESNext",
+      "moduleResolution": "Bundler",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": "ES2022"
+    },
+    "tools/codex/worktrees/D_validation/apps/web/tsconfig.json": {
+      "baseUrl": ".",
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": "react-jsx",
+      "module": "ESNext",
+      "moduleResolution": "Bundler",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/D_validation/configs/tsconfig.factory.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../tsconfig.base.json",
+      "includeCount": 3,
+      "jsx": null,
+      "module": null,
+      "moduleResolution": null,
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/D_validation/packages/contracts/tsconfig.json": {
+      "baseUrl": null,
+      "composite": true,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": null,
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/D_validation/packages/ui-kit/tsconfig.json": {
+      "baseUrl": null,
+      "composite": true,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 3,
+      "jsx": "react-jsx",
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/D_validation/services/core-api/tsconfig.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": null,
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/D_validation/tsconfig.base.json": {
+      "baseUrl": ".",
+      "composite": false,
+      "extends": null,
+      "includeCount": 0,
+      "jsx": null,
+      "module": "CommonJS",
+      "moduleResolution": "Node",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": "ES2022"
+    },
+    "tools/codex/worktrees/D_validation/tsconfig.json": {
+      "baseUrl": ".",
+      "composite": false,
+      "extends": "./tsconfig.base.json",
+      "includeCount": 0,
+      "jsx": null,
+      "module": null,
+      "moduleResolution": null,
+      "pathsAliasCount": 4,
+      "referencesCount": 2,
+      "target": null
+    },
+    "tools/codex/worktrees/Z_aggregator/apps/keystone/tsconfig.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 4,
+      "jsx": "preserve",
+      "module": "ESNext",
+      "moduleResolution": "Bundler",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": "ES2022"
+    },
+    "tools/codex/worktrees/Z_aggregator/apps/web/tsconfig.json": {
+      "baseUrl": ".",
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": "react-jsx",
+      "module": "ESNext",
+      "moduleResolution": "Bundler",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/Z_aggregator/configs/tsconfig.factory.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../tsconfig.base.json",
+      "includeCount": 3,
+      "jsx": null,
+      "module": null,
+      "moduleResolution": null,
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/Z_aggregator/packages/contracts/tsconfig.json": {
+      "baseUrl": null,
+      "composite": true,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": null,
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/Z_aggregator/packages/ui-kit/tsconfig.json": {
+      "baseUrl": null,
+      "composite": true,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 3,
+      "jsx": "react-jsx",
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/Z_aggregator/services/core-api/tsconfig.json": {
+      "baseUrl": null,
+      "composite": false,
+      "extends": "../../tsconfig.base.json",
+      "includeCount": 1,
+      "jsx": null,
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": null
+    },
+    "tools/codex/worktrees/Z_aggregator/tsconfig.base.json": {
+      "baseUrl": ".",
+      "composite": false,
+      "extends": null,
+      "includeCount": 0,
+      "jsx": null,
+      "module": "CommonJS",
+      "moduleResolution": "Node",
+      "pathsAliasCount": 0,
+      "referencesCount": 0,
+      "target": "ES2022"
+    },
+    "tools/codex/worktrees/Z_aggregator/tsconfig.json": {
+      "baseUrl": ".",
+      "composite": false,
+      "extends": "./tsconfig.base.json",
+      "includeCount": 0,
+      "jsx": null,
+      "module": null,
+      "moduleResolution": null,
+      "pathsAliasCount": 4,
+      "referencesCount": 2,
+      "target": null
+    },
+    "tsconfig.json": {
+      "baseUrl": ".",
+      "composite": false,
+      "extends": "./tsconfig.base.json",
+      "includeCount": 0,
+      "jsx": null,
+      "module": null,
+      "moduleResolution": null,
+      "pathsAliasCount": 4,
+      "referencesCount": 2,
+      "target": null
+    }
+  },
+  "turboProbe": {
+    "globalDependencies": [
+      ".editorconfig",
+      "eslint.config.mjs",
+      "pnpm-lock.yaml",
+      "prettier.config.cjs",
+      "tsconfig.base.json",
+      "turbo.json"
+    ],
+    "issueCount": 0,
+    "issues": [],
+    "present": true,
+    "taskCount": 8,
+    "tasks": [
+      {
+        "cache": true,
+        "dependsOn": [
+          "^build"
+        ],
+        "hasRootScript": true,
+        "name": "build",
+        "outputs": [
+          ".next/**",
+          "build/**",
+          "dist/**",
+          "schemas/generated/**"
+        ],
+        "persistent": false
+      },
+      {
+        "cache": false,
+        "dependsOn": [],
+        "hasRootScript": true,
+        "name": "dev",
+        "outputs": [],
+        "persistent": true
+      },
+      {
+        "cache": true,
+        "dependsOn": [
+          "^docs"
+        ],
+        "hasRootScript": true,
+        "name": "docs",
+        "outputs": [
+          "docs/DOCS_INDEX.md"
+        ],
+        "persistent": false
+      },
+      {
+        "cache": false,
+        "dependsOn": [
+          "^health"
+        ],
+        "hasRootScript": true,
+        "name": "health",
+        "outputs": [],
+        "persistent": false
+      },
+      {
+        "cache": true,
+        "dependsOn": [
+          "^lint"
+        ],
+        "hasRootScript": true,
+        "name": "lint",
+        "outputs": [],
+        "persistent": false
+      },
+      {
+        "cache": true,
+        "dependsOn": [
+          "^quality"
+        ],
+        "hasRootScript": true,
+        "name": "quality",
+        "outputs": [],
+        "persistent": false
+      },
+      {
+        "cache": true,
+        "dependsOn": [
+          "^build",
+          "^test"
+        ],
+        "hasRootScript": true,
+        "name": "test",
+        "outputs": [
+          "coverage/**"
+        ],
+        "persistent": false
+      },
+      {
+        "cache": true,
+        "dependsOn": [
+          "^typecheck"
+        ],
+        "hasRootScript": true,
+        "name": "typecheck",
+        "outputs": [],
+        "persistent": false
+      }
+    ]
+  },
+  "workspaceCount": 10,
+  "workspacePatterns": [
+    "apps/*",
+    "services/*",
+    "packages/*",
+    "tools/*",
+    "factory"
+  ],
+  "workspaces": [
+    {
+      "dependencies": [],
+      "devDependencies": [],
+      "name": "@hitech/demo-engine",
+      "path": "apps/demo-engine",
+      "peerDependencies": [],
+      "private": true,
+      "scripts": [
+        "build",
+        "dev",
+        "lint",
+        "test",
+        "typecheck"
+      ],
+      "segment": "apps",
+      "tags": [
+        "application",
+        "lint-script",
+        "test-script",
+        "typecheck-script"
+      ]
+    },
+    {
+      "dependencies": [
+        "@hitech/contracts",
+        "@hitech/ui-kit",
+        "@tanstack/react-query",
+        "next",
+        "react",
+        "react-dom",
+        "zod",
+        "zustand"
+      ],
+      "devDependencies": [
+        "@types/node",
+        "@types/react",
+        "@types/react-dom",
+        "autoprefixer",
+        "postcss",
+        "tailwindcss",
+        "typescript",
+        "vitest"
+      ],
+      "name": "@hitech/keystone",
+      "path": "apps/keystone",
+      "peerDependencies": [],
+      "private": true,
+      "scripts": [
+        "build",
+        "dev",
+        "lint",
+        "start",
+        "test",
+        "typecheck"
+      ],
+      "segment": "apps",
+      "tags": [
+        "application",
+        "lint-script",
+        "nextjs",
+        "tailwind",
+        "test-script",
+        "typecheck-script",
+        "vitest"
+      ]
+    },
+    {
+      "dependencies": [
+        "@hitech/contracts",
+        "@hitech/ui-kit",
+        "react",
+        "react-dom"
+      ],
+      "devDependencies": [
+        "@types/react",
+        "@types/react-dom",
+        "@typescript-eslint/eslint-plugin",
+        "@typescript-eslint/parser",
+        "eslint",
+        "typescript",
+        "vite"
+      ],
+      "name": "@hitech/web",
+      "path": "apps/web",
+      "peerDependencies": [],
+      "private": true,
+      "scripts": [
+        "build",
+        "dev",
+        "lint",
+        "preview",
+        "test",
+        "typecheck"
+      ],
+      "segment": "apps",
+      "tags": [
+        "application",
+        "lint-script",
+        "test-script",
+        "typecheck-script",
+        "vite"
+      ]
+    },
+    {
+      "dependencies": [
+        "zod"
+      ],
+      "devDependencies": [
+        "@types/node",
+        "@typescript-eslint/eslint-plugin",
+        "@typescript-eslint/parser",
+        "eslint",
+        "typescript",
+        "vitest"
+      ],
+      "name": "@hitech/contracts",
+      "path": "packages/contracts",
+      "peerDependencies": [],
+      "private": true,
+      "scripts": [
+        "build",
+        "dev",
+        "lint",
+        "schema:check",
+        "schema:gen",
+        "test",
+        "typecheck"
+      ],
+      "segment": "packages",
+      "tags": [
+        "library",
+        "lint-script",
+        "test-script",
+        "typecheck-script",
+        "vitest"
+      ]
+    },
+    {
+      "dependencies": [],
+      "devDependencies": [],
+      "name": "@hitech/tooling",
+      "path": "packages/tooling",
+      "peerDependencies": [],
+      "private": true,
+      "scripts": [
+        "build",
+        "lint",
+        "test",
+        "typecheck"
+      ],
+      "segment": "packages",
+      "tags": [
+        "library",
+        "lint-script",
+        "test-script",
+        "typecheck-script"
+      ]
+    },
+    {
+      "dependencies": [
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-dropdown-menu",
+        "@radix-ui/react-scroll-area",
+        "@radix-ui/react-select",
+        "@radix-ui/react-tabs",
+        "@radix-ui/react-tooltip",
+        "class-variance-authority",
+        "clsx",
+        "lucide-react",
+        "next",
+        "tailwind-merge"
+      ],
+      "devDependencies": [
+        "@types/react",
+        "@types/react-dom",
+        "@typescript-eslint/eslint-plugin",
+        "@typescript-eslint/parser",
+        "eslint",
+        "react",
+        "react-dom",
+        "typescript",
+        "vitest"
+      ],
+      "name": "@hitech/ui-kit",
+      "path": "packages/ui-kit",
+      "peerDependencies": [
+        "react",
+        "react-dom"
+      ],
+      "private": true,
+      "scripts": [
+        "build",
+        "dev",
+        "lint",
+        "test",
+        "typecheck"
+      ],
+      "segment": "packages",
+      "tags": [
+        "library",
+        "lint-script",
+        "nextjs",
+        "test-script",
+        "typecheck-script",
+        "vitest"
+      ]
+    },
+    {
+      "dependencies": [],
+      "devDependencies": [],
+      "name": "@hitech/ai-agent",
+      "path": "services/ai-agent",
+      "peerDependencies": [],
+      "private": true,
+      "scripts": [
+        "build",
+        "dev",
+        "lint",
+        "smoke",
+        "test",
+        "typecheck"
+      ],
+      "segment": "services",
+      "tags": [
+        "lint-script",
+        "service",
+        "test-script",
+        "typecheck-script"
+      ]
+    },
+    {
+      "dependencies": [],
+      "devDependencies": [],
+      "name": "@hitech/core-api",
+      "path": "services/core-api",
+      "peerDependencies": [],
+      "private": true,
+      "scripts": [
+        "build",
+        "dev",
+        "lint",
+        "smoke",
+        "test",
+        "typecheck"
+      ],
+      "segment": "services",
+      "tags": [
+        "lint-script",
+        "service",
+        "test-script",
+        "typecheck-script"
+      ]
+    },
+    {
+      "dependencies": [],
+      "devDependencies": [],
+      "name": "@hitech/health",
+      "path": "tools/health",
+      "peerDependencies": [],
+      "private": true,
+      "scripts": [
+        "build",
+        "health",
+        "lint",
+        "test",
+        "typecheck"
+      ],
+      "segment": "tools",
+      "tags": [
+        "lint-script",
+        "test-script",
+        "tooling",
+        "typecheck-script"
+      ]
+    },
+    {
+      "dependencies": [],
+      "devDependencies": [],
+      "name": "@hitech/scripts",
+      "path": "tools/scripts",
+      "peerDependencies": [],
+      "private": true,
+      "scripts": [
+        "build",
+        "deps:check",
+        "docs",
+        "env:validate",
+        "lint",
+        "smoke:bridge",
+        "test",
+        "typecheck",
+        "workspace:validate"
+      ],
+      "segment": "tools",
+      "tags": [
+        "lint-script",
+        "test-script",
+        "tooling",
+        "typecheck-script"
+      ]
+    }
+  ]
+}

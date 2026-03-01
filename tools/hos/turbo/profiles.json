@@ -1,0 +1,21 @@
+{
+  "profiles": {
+    "aggressive": {
+      "concurrency": "auto",
+      "description": "Maximum available concurrency (delegates scheduling to Turbo).",
+      "intendedFor": "High-core local machines or dedicated CI runners."
+    },
+    "balanced": {
+      "concurrency": 6,
+      "description": "Balanced profile tuned to avoid CPU spikes while preserving throughput.",
+      "intendedFor": "Default developer profile for modern desktop CPUs."
+    },
+    "stable": {
+      "concurrency": 4,
+      "description": "Conservative profile for thermal stability and deterministic behavior.",
+      "intendedFor": "Lower noise and reproducible local execution."
+    }
+  },
+  "schemaVersion": 1
+}
+
