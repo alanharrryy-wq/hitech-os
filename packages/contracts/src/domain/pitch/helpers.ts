@@ -10,6 +10,7 @@ import {
   PITCH_DECK_RESPONSE_FIXTURE,
   PITCH_SCREEN_FIXTURES,
   PITCH_SCREEN_MAP_FIXTURE,
+  PITCH_SCREEN_ROUTE_INDEX,
   PITCH_SCREENS_FIXTURE
 } from "./fixtures.js";
 import {
@@ -42,23 +43,8 @@ export function getPitchScreenBySlug(slug: PitchScreenSlug): PitchScreen {
 }
 
 export function getPitchScreenByRoute(route: string): PitchScreen | null {
-  if (route === PITCH_ROUTES["01-double-engine"]) {
-    return PITCH_SCREEN_FIXTURES["01-double-engine"];
-  }
-
-  if (route === PITCH_ROUTES["02-industrial-flow"]) {
-    return PITCH_SCREEN_FIXTURES["02-industrial-flow"];
-  }
-
-  if (route === PITCH_ROUTES["03-hitech-os"]) {
-    return PITCH_SCREEN_FIXTURES["03-hitech-os"];
-  }
-
-  if (route === PITCH_ROUTES["04-valuation"]) {
-    return PITCH_SCREEN_FIXTURES["04-valuation"];
-  }
-
-  return null;
+  const routeIndex: Readonly<Record<string, PitchScreen>> = PITCH_SCREEN_ROUTE_INDEX;
+  return routeIndex[route] ?? null;
 }
 
 export function getPitchDeck(): PitchDeck {
@@ -198,41 +184,86 @@ export function ensurePitchInvariants(deck: PitchDeck): PitchDeck {
 export function getPitchScreenTextList(slug: PitchScreenSlug): readonly string[] {
   const screen = getPitchScreenBySlug(slug);
 
-  if (screen.slug === "01-double-engine") {
-    return [
-      screen.title,
-      screen.leftColumn.heading,
-      ...screen.leftColumn.bullets.map((entry) => entry.text),
-      ...screen.leftColumn.microcopy.map((entry) => entry.text),
-      screen.rightColumn.heading,
-      ...screen.rightColumn.bullets.map((entry) => entry.text),
-      ...screen.rightColumn.microcopy.map((entry) => entry.text),
-      screen.implicitMessage.text
-    ];
+  switch (screen.slug) {
+    case "01-double-engine":
+      return [
+        screen.title,
+        screen.leftColumn.heading,
+        ...screen.leftColumn.bullets.map((entry) => entry.text),
+        ...screen.leftColumn.microcopy.map((entry) => entry.text),
+        screen.rightColumn.heading,
+        ...screen.rightColumn.bullets.map((entry) => entry.text),
+        ...screen.rightColumn.microcopy.map((entry) => entry.text),
+        screen.implicitMessage.text
+      ];
+    case "02-industrial-flow":
+      return [
+        screen.title,
+        ...screen.kpis.map((entry) => `${entry.label} ${entry.value}`),
+        screen.cycleLabel.text,
+        screen.microcopy.text
+      ];
+    case "03-hitech-os":
+      return [screen.title, ...screen.features.map((entry) => entry.text), screen.strongLine.text];
+    case "04-valuation":
+      return [
+        screen.title,
+        ...screen.blocks.flatMap((block) => [
+          block.heading,
+          ...block.items.map((entry) => entry.text)
+        ]),
+        ...screen.blocks.flatMap((block) => [block.phase1 ?? "", block.phase2 ?? ""]),
+        screen.combinedValuationLine.text,
+        ...screen.comparison.headers,
+        ...screen.comparison.rows.flatMap((row) => row)
+      ];
+    case "05-inventory-foundation":
+      return [
+        screen.title,
+        screen.foundationStatus.heading,
+        ...screen.foundationStatus.kpis.map((entry) => `${entry.label} ${entry.value}`),
+        screen.foundationStatus.rbacMatrixSnapshot.heading,
+        ...screen.foundationStatus.rbacMatrixSnapshot.rows.flatMap((row) => [
+          row.role,
+          ...row.permissions,
+          row.status
+        ]),
+        screen.foundationStatus.supplierOnboardingStatus.heading,
+        ...screen.foundationStatus.supplierOnboardingStatus.suppliers.flatMap((supplier) => [
+          supplier.supplier,
+          supplier.status
+        ]),
+        screen.productsSkuBaseline.heading,
+        ...screen.productsSkuBaseline.fields.flatMap((field) => [field.label, field.value]),
+        screen.documentVaultBaseline.heading,
+        ...screen.documentVaultBaseline.requiredDocs.flatMap((doc) => [doc.document, doc.status])
+      ];
+    case "06-shipments-receiving":
+      return [
+        screen.title,
+        screen.shipmentControlBoard.heading,
+        ...screen.shipmentControlBoard.placeholders.flatMap((placeholder) => [
+          placeholder.label,
+          placeholder.value
+        ]),
+        screen.shipmentControlBoard.customsPackCompleteness.text,
+        screen.shipmentControlBoard.customsPackCompleteness.status,
+        screen.receivingFlow.heading,
+        ...screen.receivingFlow.states.flatMap((state) => [
+          state.code,
+          state.note,
+          String(state.order)
+        ]),
+        screen.mismatchHandling.heading,
+        screen.mismatchHandling.qtyLotMismatch,
+        screen.mismatchHandling.deviationPlaceholder,
+        screen.nextGate.text
+      ];
+    default: {
+      const unreachable: never = screen;
+      throw new Error(`Unhandled pitch screen slug: ${(unreachable as { slug: string }).slug}`);
+    }
   }
-
-  if (screen.slug === "02-industrial-flow") {
-    return [
-      screen.title,
-      ...screen.kpis.map((entry) => entry.label),
-      screen.cycleLabel.text,
-      screen.microcopy.text
-    ];
-  }
-
-  if (screen.slug === "03-hitech-os") {
-    return [screen.title, ...screen.features.map((entry) => entry.text), screen.strongLine.text];
-  }
-
-  return [
-    screen.title,
-    ...screen.blocks.flatMap((block) => [block.heading, ...block.items.map((entry) => entry.text)]),
-    screen.blocks[2]?.phase1 ?? "",
-    screen.blocks[2]?.phase2 ?? "",
-    screen.combinedValuationLine.text,
-    ...screen.comparison.headers,
-    ...screen.comparison.rows.flatMap((row) => row)
-  ];
 }
 
 export function containsPitchText(slug: PitchScreenSlug, needle: string): boolean {
@@ -240,12 +271,7 @@ export function containsPitchText(slug: PitchScreenSlug, needle: string): boolea
 }
 
 export function getPitchRouteIndex(): Readonly<Record<string, PitchScreen>> {
-  return {
-    [PITCH_ROUTES["01-double-engine"]]: PITCH_SCREEN_FIXTURES["01-double-engine"],
-    [PITCH_ROUTES["02-industrial-flow"]]: PITCH_SCREEN_FIXTURES["02-industrial-flow"],
-    [PITCH_ROUTES["03-hitech-os"]]: PITCH_SCREEN_FIXTURES["03-hitech-os"],
-    [PITCH_ROUTES["04-valuation"]]: PITCH_SCREEN_FIXTURES["04-valuation"]
-  };
+  return PITCH_SCREEN_ROUTE_INDEX;
 }
 
 export function getPitchScreenCount(): number {
@@ -262,7 +288,8 @@ export function getPitchFixtureStats(): {
   const microcopyCount =
     SCREEN01_MICROCOPY_COUNT +
     1 +
-    1; /* screen02 microcopy + screen03 strong line treated as microcopy-like */
+    1 +
+    1; /* screen02 microcopy + screen03 strong line + screen06 next gate treated as microcopy-like */
 
   return {
     screenCount: PITCH_SCREENS_FIXTURE.length,
@@ -283,7 +310,18 @@ function estimatePitchBulletLikeCount(): number {
     PITCH_SCREEN_FIXTURES["01-double-engine"].rightColumn.bullets.length +
     PITCH_SCREEN_FIXTURES["02-industrial-flow"].kpis.length +
     PITCH_SCREEN_FIXTURES["03-hitech-os"].features.length +
-    PITCH_SCREEN_FIXTURES["04-valuation"].blocks.reduce((sum, block) => sum + block.items.length, 0)
+    PITCH_SCREEN_FIXTURES["04-valuation"].blocks.reduce(
+      (sum, block) => sum + block.items.length,
+      0
+    ) +
+    PITCH_SCREEN_FIXTURES["05-inventory-foundation"].foundationStatus.kpis.length +
+    PITCH_SCREEN_FIXTURES["05-inventory-foundation"].foundationStatus.rbacMatrixSnapshot.rows
+      .length +
+    PITCH_SCREEN_FIXTURES["05-inventory-foundation"].foundationStatus.supplierOnboardingStatus
+      .suppliers.length +
+    PITCH_SCREEN_FIXTURES["05-inventory-foundation"].documentVaultBaseline.requiredDocs.length +
+    PITCH_SCREEN_FIXTURES["06-shipments-receiving"].receivingFlow.states.length +
+    2
   );
 }
 

@@ -54,13 +54,13 @@ describe("pitch contracts valid fixtures", () => {
   it("validates pitch deck fixture", () => {
     const parsed = PitchDeckSchema.parse(PITCH_DECK_FIXTURE);
     expect(parsed.meta.deckId).toBe("hitech-pitch-terraform-v1");
-    expect(parsed.screens.length).toBe(4);
-    expect(parsed.navigation.links.length).toBe(4);
+    expect(parsed.screens.length).toBe(6);
+    expect(parsed.navigation.links.length).toBe(6);
   });
 
   it("validates pitch deck response fixture", () => {
     const parsed = PitchDeckResponseSchema.parse(PITCH_DECK_RESPONSE_FIXTURE);
-    expect(parsed.digest.screenCount).toBe(4);
+    expect(parsed.digest.screenCount).toBe(6);
     expect(parsed.digest.tableHeaderCount).toBe(4);
     expect(parsed.digest.tableRowCount).toBe(2);
   });
@@ -76,20 +76,24 @@ describe("pitch contracts valid fixtures", () => {
 
   it("validates helper outputs remain deterministic", () => {
     expect(listPitchScreenSlugs()).toEqual(PITCH_SCREEN_ORDER);
-    expect(listPitchScreens().length).toBe(4);
-    expect(getPitchScreenCount()).toBe(4);
+    expect(listPitchScreens().length).toBe(6);
+    expect(getPitchScreenCount()).toBe(6);
 
     const matrix = createPitchScreenMatrix();
-    expect(matrix).toHaveLength(4);
+    expect(matrix).toHaveLength(6);
     expect(matrix[0]?.slug).toBe("01-double-engine");
     expect(matrix[1]?.slug).toBe("02-industrial-flow");
     expect(matrix[2]?.slug).toBe("03-hitech-os");
     expect(matrix[3]?.slug).toBe("04-valuation");
+    expect(matrix[4]?.slug).toBe("05-inventory-foundation");
+    expect(matrix[5]?.slug).toBe("06-shipments-receiving");
   });
 
   it("supports route and slug assertion helpers", () => {
     expect(assertPitchSlug("01-double-engine")).toBe("01-double-engine");
     expect(assertPitchRoute("/pitch/03-hitech-os")).toBe("03-hitech-os");
+    expect(assertPitchRoute("/pitch/05-inventory-foundation")).toBe("05-inventory-foundation");
+    expect(assertPitchRoute("/pitch/06-shipments-receiving")).toBe("06-shipments-receiving");
 
     expect(() => assertPitchSlug("invalid")).toThrow();
     expect(() => assertPitchRoute("/pitch/invalid")).toThrow();
@@ -97,7 +101,7 @@ describe("pitch contracts valid fixtures", () => {
 
   it("produces canonical link model and maps", () => {
     const links = buildPitchLinkModel();
-    expect(links).toHaveLength(4);
+    expect(links).toHaveLength(6);
     for (const link of links) {
       expect(link.isCanonical).toBe(true);
       expect(link.href).toBe(PITCH_ROUTES[link.slug]);
@@ -110,6 +114,8 @@ describe("pitch contracts valid fixtures", () => {
     expect(slugToTitle["04-valuation"]).toBe(PITCH_SCREEN_TITLES["04-valuation"]);
     expect(slugToRoute["01-double-engine"]).toBe("/pitch/01-double-engine");
     expect(slugToRoute["04-valuation"]).toBe("/pitch/04-valuation");
+    expect(Object.values(slugToRoute)).toContain("/pitch/05-inventory-foundation");
+    expect(Object.values(slugToRoute)).toContain("/pitch/06-shipments-receiving");
   });
 
   it("serializes and deserializes deck without drift", () => {
@@ -123,8 +129,10 @@ describe("pitch contracts valid fixtures", () => {
     const responsePayload = serializePitchDeckResponseToJson();
     const responseDecoded = deserializePitchDeckResponseFromJson(responsePayload);
 
-    expect(responseDecoded.digest.screenCount).toBe(4);
+    expect(responseDecoded.digest.screenCount).toBe(6);
     expect(responseDecoded.deck.screens[2].slug).toBe("03-hitech-os");
+    expect(responseDecoded.deck.screens[4]?.slug).toBe("05-inventory-foundation");
+    expect(responseDecoded.deck.screens[5]?.slug).toBe("06-shipments-receiving");
   });
 
   it("provides typed screen response helper", () => {
@@ -170,11 +178,11 @@ describe("pitch contracts valid fixtures", () => {
     const screenSummary = summarizePitchScreen("01-double-engine");
     const deckSummary = summarizePitchDeck();
 
-    expect(stats.screenCount).toBe(4);
+    expect(stats.screenCount).toBe(6);
     expect(stats.bulletLikeCount).toBeGreaterThan(20);
     expect(screenSummary.route).toBe("/pitch/01-double-engine");
     expect(screenSummary.fragmentCount).toBeGreaterThan(10);
-    expect(deckSummary.screenCount).toBe(4);
+    expect(deckSummary.screenCount).toBe(6);
     expect(deckSummary.totalTextFragments).toBeGreaterThan(40);
   });
 
@@ -190,6 +198,10 @@ describe("pitch contracts valid fixtures", () => {
       )
     ).toBe(true);
     expect(containsPitchText("04-valuation", "Valuación combinada estimada: 4–6M")).toBe(true);
+    expect(containsPitchText("05-inventory-foundation", "RBAC matrix snapshot")).toBe(true);
+    expect(
+      containsPitchText("06-shipments-receiving", "Next gate: QA RELEASE (RUN3, not implemented)")
+    ).toBe(true);
   });
 });
 
