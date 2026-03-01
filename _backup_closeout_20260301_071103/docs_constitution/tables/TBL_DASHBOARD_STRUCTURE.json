@@ -1,0 +1,43 @@
+{
+  "table_id": "TBL_DASHBOARD_STRUCTURE",
+  "version": "1.0.0",
+  "status": "draft",
+  "authority_level": "informational",
+  "scope": "Defines structural narrative layers for dashboards (overview → filter → details)",
+  "columns": [
+    {
+      "name": "layer",
+      "type": "enum",
+      "required": true,
+      "enum_values": [
+        "overview",
+        "filter",
+        "details"
+      ]
+    },
+    {
+      "name": "purpose",
+      "type": "string",
+      "required": true
+    }
+  ],
+  "rows": [
+    {
+      "layer": "overview",
+      "purpose": "High-level KPIs and state summary"
+    },
+    {
+      "layer": "filter",
+      "purpose": "User control and segmentation"
+    },
+    {
+      "layer": "details",
+      "purpose": "Drilldown and contextual narrative"
+    }
+  ],
+  "change_policy": {
+    "requires_pr_approval": true,
+    "requires_migration_note": true,
+    "breaking_change_requires_version_bump": true
+  }
+}
