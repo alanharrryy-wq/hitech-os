@@ -1,0 +1,412 @@
+{
+  "$id": "docs/ui-map/meta/schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "assets": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "asset_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "file_path": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "svg",
+              "png",
+              "css-bg",
+              "other"
+            ],
+            "type": "string"
+          },
+          "referenced_by": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "asset_id",
+          "file_path",
+          "referenced_by",
+          "kind"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "components": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "component_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "export_name": {
+            "type": "string"
+          },
+          "file_path": {
+            "type": "string"
+          },
+          "imports": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "kind": {
+            "enum": [
+              "route",
+              "screen",
+              "layout",
+              "block",
+              "control",
+              "dataviz",
+              "nav",
+              "brand",
+              "state",
+              "style"
+            ],
+            "type": "string"
+          },
+          "renders": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "uses": {
+            "additionalProperties": false,
+            "properties": {
+              "assets": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "css": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "hooks": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "stores": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "hooks",
+              "stores",
+              "css",
+              "assets"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "component_id",
+          "export_name",
+          "file_path",
+          "kind",
+          "imports",
+          "renders",
+          "uses"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "edges": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "imports",
+              "renders",
+              "reads",
+              "writes",
+              "uses_style",
+              "uses_asset",
+              "route_to_screen",
+              "layout_wraps"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "from",
+          "to",
+          "type"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "generated_by": {
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "const": "deterministic"
+        },
+        "tool": {
+          "const": "tools/ui_map"
+        }
+      },
+      "required": [
+        "tool",
+        "mode"
+      ],
+      "type": "object"
+    },
+    "hotspots": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "change_types": {
+            "items": {
+              "enum": [
+                "layout",
+                "copy",
+                "charts",
+                "interactions",
+                "brand",
+                "state",
+                "validation"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "components": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "files": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "hotspot_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "risk": {
+            "enum": [
+              "low",
+              "med",
+              "high"
+            ],
+            "type": "string"
+          },
+          "screen_or_global": {
+            "enum": [
+              "screen-01",
+              "screen-02",
+              "screen-03",
+              "screen-04",
+              "screen-05",
+              "screen-06",
+              "global"
+            ],
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "hotspot_id",
+          "screen_or_global",
+          "title",
+          "files",
+          "components",
+          "change_types",
+          "risk",
+          "notes"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "repo_root": {
+      "type": "string"
+    },
+    "routes": {
+      "items": {
+        "additionalProperties": true,
+        "properties": {
+          "data_source_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "entry_file": {
+            "type": "string"
+          },
+          "layout_file": {
+            "type": "string"
+          },
+          "nav_component_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "route_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "screen_component_id": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "route_id",
+          "path",
+          "entry_file",
+          "data_source_ids"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "states": {
+      "items": {
+        "additionalProperties": true,
+        "properties": {
+          "determinism_notes": {
+            "type": "string"
+          },
+          "events": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "notes": {
+                  "type": "string"
+                },
+                "writer_component_id": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "writer_component_id"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "file_path": {
+            "type": "string"
+          },
+          "readers": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "state_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "writers": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "state_id",
+          "file_path",
+          "readers",
+          "writers",
+          "events"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "styles": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "file_path": {
+            "type": "string"
+          },
+          "referenced_by": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "style_id": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "style_id",
+          "file_path",
+          "referenced_by"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "version": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "version",
+    "generated_by",
+    "repo_root",
+    "routes",
+    "components",
+    "states",
+    "styles",
+    "assets",
+    "edges",
+    "hotspots"
+  ],
+  "title": "Keystone UI Dictionary Schema",
+  "type": "object"
+}

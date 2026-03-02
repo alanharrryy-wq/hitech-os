@@ -1,0 +1,12 @@
+{"command": "generate", "event_type": "step", "level": "INFO", "message": "starting generate", "percent": 5, "timestamp_utc": "2026-03-02T19:59:58.603715+00:00"}
+{"command": "generate", "event_type": "step", "level": "INFO", "message": "writing dictionary", "percent": 30, "timestamp_utc": "2026-03-02T19:59:59.469474+00:00"}
+{"command": "generate", "event_type": "step", "level": "INFO", "message": "writing mermaid graphs", "percent": 55, "timestamp_utc": "2026-03-02T19:59:59.486447+00:00"}
+{"command": "generate", "event_type": "step", "level": "INFO", "message": "writing meta docs", "percent": 75, "timestamp_utc": "2026-03-02T19:59:59.504419+00:00"}
+{"command": "generate", "event_type": "step", "level": "INFO", "message": "writing query docs", "percent": 90, "timestamp_utc": "2026-03-02T19:59:59.506673+00:00"}
+{"command": "generate", "event_type": "step", "level": "INFO", "message": "generate completed", "percent": 100, "timestamp_utc": "2026-03-02T19:59:59.512212+00:00"}
+{"command": "validate", "event_type": "step", "level": "INFO", "message": "starting validate", "percent": 10, "timestamp_utc": "2026-03-02T20:00:05.128454+00:00"}
+{"command": "validate", "details": {"blocked": false, "counts": {"components": 481, "routes": 8, "states": 7}, "errors": [], "ok": true}, "event_type": "step", "level": "INFO", "message": "validation completed", "percent": 100, "timestamp_utc": "2026-03-02T20:00:05.153692+00:00"}
+{"command": "queries", "event_type": "step", "level": "INFO", "message": "starting queries", "percent": 10, "timestamp_utc": "2026-03-02T20:00:11.078589+00:00"}
+{"command": "queries", "details": {"queries": ["dependents_of_file(file)", "screens_using_component(component_id)", "files_touched_by_screen(screen_id)", "state_readers(state_id)", "state_writers(state_id)", "assets_used_by_screen(screen_id)", "styles_used_by_screen(screen_id)", "hotspots_by_risk(level)", "component_tree(screen_id)", "imports_of_file(file)", "routes_index()", "changeset_hint(file_or_component)"]}, "event_type": "step", "level": "INFO", "message": "queries completed", "percent": 100, "timestamp_utc": "2026-03-02T20:00:11.088800+00:00"}
+{"command": "test", "event_type": "step", "level": "INFO", "message": "starting tests", "percent": 10, "timestamp_utc": "2026-03-02T20:00:19.889383+00:00"}
+{"command": "test", "details": {"returncode": 0}, "event_type": "step", "level": "INFO", "message": "tests completed", "percent": 100, "timestamp_utc": "2026-03-02T20:00:21.723135+00:00"}
