@@ -1,6 +1,7 @@
 import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "@hitech/contracts";
 import { LayerDebugPanel, LayerFlagsProvider } from "@hitech/ui-kit";
-import { PitchShell, ScreenInventoryFoundation } from "../../../components/pitch";
+import { PitchShell } from "../../../components/pitch/pitch-shell";
+import { InventoryFoundationControlRoom } from "../../../components/pitch/run1";
 import {
   resolvePitchLayerFlags,
   type PitchSearchParamsProps
@@ -20,7 +21,7 @@ export default function PitchInventoryFoundationPage({ searchParams }: PitchSear
         subtitle={screen.title}
         nav={{ links: deck.navigation.links, activeSlug: screen.slug }}
       >
-        <ScreenInventoryFoundation screen={screen} />
+        <InventoryFoundationControlRoom screen={screen} />
       </PitchShell>
       {resolved.debug ? <LayerDebugPanel /> : null}
     </LayerFlagsProvider>

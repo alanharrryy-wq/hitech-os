@@ -1,6 +1,7 @@
 import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "@hitech/contracts";
 import { LayerDebugPanel, LayerFlagsProvider } from "@hitech/ui-kit";
-import { PitchShell, ScreenShipmentsReceiving } from "../../../components/pitch";
+import { PitchShell } from "../../../components/pitch/pitch-shell";
+import { ShipmentsReceivingControlRoom } from "../../../components/pitch/run2";
 import {
   resolvePitchLayerFlags,
   type PitchSearchParamsProps
@@ -20,7 +21,7 @@ export default function PitchShipmentsReceivingPage({ searchParams }: PitchSearc
         subtitle={screen.title}
         nav={{ links: deck.navigation.links, activeSlug: screen.slug }}
       >
-        <ScreenShipmentsReceiving screen={screen} />
+        <ShipmentsReceivingControlRoom screen={screen} />
       </PitchShell>
       {resolved.debug ? <LayerDebugPanel /> : null}
     </LayerFlagsProvider>

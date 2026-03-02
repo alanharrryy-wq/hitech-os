@@ -1,6 +1,5 @@
 import type { FeatureFlags, HealthReport } from "@hitech/contracts";
 import { Button, Card, Section, Text } from "@hitech/ui-kit";
-import { LiquidGlassToggleMini } from "../components/LiquidGlassToggle";
 
 export interface HealthPageProps {
   flags: FeatureFlags;

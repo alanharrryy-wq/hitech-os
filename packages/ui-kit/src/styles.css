@@ -435,6 +435,180 @@ body {
   color: hsl(var(--ui-text-3));
 }
 
+:root {
+  --hitech-brand-watermark-opacity: 0;
+  --hitech-brand-seal-opacity: 0;
+  --hitech-brand-header-halo-opacity: 0;
+  --hitech-brand-seal-size: 32px;
+  --hitech-brand-phoenix-url: none;
+}
+
+.ui-hitech-logo {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+}
+
+.ui-hitech-logo__mark {
+  width: 2.1rem;
+  height: 2.1rem;
+  flex: 0 0 auto;
+}
+
+.ui-hitech-logo__word {
+  font-family: "Cormorant Garamond", "Times New Roman", serif;
+  font-size: 1.22rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: hsl(var(--ui-text-1));
+}
+
+.ui-brand-presence {
+  pointer-events: none;
+  user-select: none;
+}
+
+.ui-brand-presence--watermark {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.ui-brand-presence--watermark .ui-brand-presence__glyph {
+  width: min(52vw, 560px);
+  height: auto;
+  color: hsl(var(--ui-text-1) / var(--hitech-brand-watermark-opacity));
+  filter: blur(0.4px) grayscale(0.8);
+}
+
+.ui-brand-presence--repeat .ui-brand-presence__glyph {
+  color: transparent;
+}
+
+.ui-brand-presence__pattern-mark {
+  position: absolute;
+  width: min(14vw, 152px);
+  height: auto;
+}
+
+.ui-brand-presence__pattern-glyph {
+  width: 100%;
+  height: auto;
+  color: hsl(var(--ui-text-1) / calc(var(--hitech-brand-watermark-opacity) * 0.6));
+}
+
+.ui-brand-presence--header-mark {
+  position: absolute;
+  inset: -0.45rem;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+}
+
+.ui-brand-presence--header-mark::before {
+  content: "";
+  position: absolute;
+  inset: -0.35rem;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle at center,
+    hsl(var(--ui-surface-1) / var(--hitech-brand-header-halo-opacity)),
+    transparent 66%
+  );
+}
+
+.ui-brand-presence--header-mark .ui-brand-presence__glyph {
+  width: 2.4rem;
+  height: auto;
+  color: hsl(var(--ui-text-1) / var(--hitech-brand-header-halo-opacity));
+}
+
+.ui-brand-presence--corner-seal {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  width: var(--hitech-brand-seal-size);
+  height: var(--hitech-brand-seal-size);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid hsl(var(--ui-border-1) / calc(var(--hitech-brand-seal-opacity) * 3.2));
+  background: linear-gradient(
+    145deg,
+    hsl(var(--ui-surface-1) / calc(var(--hitech-brand-seal-opacity) * 2.2)),
+    hsl(var(--ui-surface-2) / calc(var(--hitech-brand-seal-opacity) * 1.2))
+  );
+  box-shadow:
+    inset 0 1px 0 hsl(var(--ui-surface-1) / calc(var(--hitech-brand-seal-opacity) * 2.4)),
+    0 8px 16px hsl(var(--ui-text-1) / calc(var(--hitech-brand-seal-opacity) * 2));
+}
+
+.ui-brand-presence--corner-seal .ui-brand-presence__glyph {
+  width: calc(var(--hitech-brand-seal-size) * 0.7);
+  height: auto;
+  color: hsl(var(--ui-text-1) / var(--hitech-brand-seal-opacity));
+  filter: grayscale(1);
+}
+
+.hitech-brand-shell-depth {
+  position: relative;
+  isolation: isolate;
+}
+
+.hitech-brand-shell-depth::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--hitech-brand-phoenix-url);
+  background-repeat: repeat;
+  background-size: clamp(130px, 14vw, 190px);
+  opacity: calc(var(--hitech-brand-watermark-opacity) * 0.5);
+  filter: grayscale(1) blur(0.2px);
+}
+
+.hitech-brand-signature {
+  text-align: center;
+  font-family: "Cormorant Garamond", "Times New Roman", serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: hsl(var(--ui-text-2) / calc(var(--hitech-brand-watermark-opacity) * 6));
+}
+
+.hitech-brand-control-room {
+  position: relative;
+  z-index: 1;
+}
+
+.hitech-brand-control-room .ui-glass-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.hitech-brand-control-room .ui-glass-card::after {
+  content: "";
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  width: var(--hitech-brand-seal-size);
+  height: var(--hitech-brand-seal-size);
+  pointer-events: none;
+  background-image: var(--hitech-brand-phoenix-url);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: var(--hitech-brand-seal-opacity);
+  filter: grayscale(1) contrast(1.08);
+}
+
 @keyframes ui-spin {
   to {
     transform: rotate(360deg);

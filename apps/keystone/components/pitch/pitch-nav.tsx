@@ -13,6 +13,13 @@ export function PitchNav({ model, className }: PitchNavProps) {
       className={cn("grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6", className)}
       aria-label="Pitch navigation"
     >
+      <Link
+        href="/"
+        className="inline-flex h-9 items-center justify-between gap-3 rounded-[var(--ui-core-radius-sm)] border border-[hsl(var(--ui-border-2))] bg-[hsl(var(--ui-surface-1))] px-3 text-sm font-medium text-[hsl(var(--ui-text-2))] transition-colors hover:bg-[hsl(var(--ui-surface-2))]"
+      >
+        <span className="truncate text-left">Mission Control</span>
+        <span className="text-xs text-[hsl(var(--ui-text-3))]">Home</span>
+      </Link>
       {model.links.map((link) => {
         const isActive = link.slug === model.activeSlug;
         return (

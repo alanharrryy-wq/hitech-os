@@ -25,6 +25,61 @@ body {
 #root {
   margin: 0 auto;
   max-width: 840px;
+  position: relative;
+}
+
+.web-app-shell {
+  position: relative;
+  isolation: isolate;
+  border-radius: 18px;
+  border: 1px solid rgba(2, 111, 134, 0.16);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.34));
+  overflow: hidden;
+}
+
+.web-brand-watermark {
+  position: absolute;
+  inset: 0;
+}
+
+.web-app-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: flex-start;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid rgba(2, 111, 134, 0.18);
+  backdrop-filter: blur(9px) saturate(1.04);
+  -webkit-backdrop-filter: blur(9px) saturate(1.04);
+}
+
+.web-app-logo-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.web-header-mark {
+  inset: -0.3rem;
+}
+
+.web-app-logo {
+  position: relative;
+  z-index: 1;
+}
+
+.web-app-main {
+  position: relative;
+  z-index: 1;
+  padding: 1rem;
+}
+
+.web-app-signature {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0.5rem 1rem 0.9rem;
 }
 
 .web-actions {
@@ -56,18 +111,13 @@ body {
 
 /* === HITECH Liquid Glass Mini Toggle (auto) === */
 :root {
-  /* mini toggle sizing */
   --lg-mini-w: 120px;
   --lg-mini-h: 44px;
   --lg-mini-pad: 6px;
   --lg-mini-r: 999px;
-
-  /* glass */
   --lg-mini-glass-border: rgba(255, 255, 255, 0.42);
   --lg-mini-glass-bg: rgba(255, 255, 255, 0.16);
   --lg-mini-blur: 14px;
-
-  /* blob accent (HITECH cyan) */
   --lg-mini-blob: #02a7ca;
   --lg-mini-blob-glow: rgba(2, 167, 202, 0.28);
 }
@@ -147,10 +197,12 @@ body {
 .lg-mini[aria-pressed="true"] .lg-mini-thumb {
   transform: translateX(calc(var(--lg-mini-w) * 0.4));
 }
+
 .lg-mini[aria-pressed="true"] .lg-mini-blob {
   left: calc(var(--lg-mini-w) * 0.36);
   width: calc(var(--lg-mini-w) * 0.56);
 }
+
 .lg-mini:active .lg-mini-thumb {
   width: calc(var(--lg-mini-w) * 0.56);
 }

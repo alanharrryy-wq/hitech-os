@@ -1,6 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import type { FeatureFlags, HealthReport } from "@hitech/contracts";
 import { FEATURE_FLAGS_DEFAULTS } from "@hitech/contracts";
+import {
+  BrandPresenceLayer,
+  HitechLogo,
+  brandPresenceConfig,
+  createBrandPresenceRootStyle
+} from "@hitech/ui-kit";
 import { getApiBaseUrl, getFeatureFlags, getHealth } from "./lib/api";
 import { HealthPage } from "./pages/HealthPage";
 import { HomePage } from "./pages/HomePage";
@@ -23,6 +29,7 @@ export function App() {
   const [error, setError] = useState<string | null>(null);
 
   const apiBaseUrl = useMemo(() => getApiBaseUrl(), []);
+  const brandStyle = useMemo(() => createBrandPresenceRootStyle("neutral", "subtle"), []);
 
   useEffect(() => {
     const onHashChange = () => {
@@ -66,8 +73,8 @@ export function App() {
     }
   }, [route]);
 
-  if (route === "health") {
-    return (
+  const page =
+    route === "health" ? (
       <HealthPage
         flags={flags}
         health={health}
@@ -78,15 +85,43 @@ export function App() {
           window.location.hash = "#home";
         }}
       />
+    ) : (
+      <HomePage
+        apiBaseUrl={apiBaseUrl}
+        onOpenHealth={() => {
+          window.location.hash = "#health";
+        }}
+      />
     );
-  }
 
   return (
-    <HomePage
-      apiBaseUrl={apiBaseUrl}
-      onOpenHealth={() => {
-        window.location.hash = "#health";
-      }}
-    />
+    <div className="web-app-shell hitech-brand-shell-depth" style={brandStyle}>
+      {brandPresenceConfig.enableGlobalWatermark ? (
+        <BrandPresenceLayer
+          mode="watermark"
+          intensity="subtle"
+          profile="neutral"
+          repeatPattern
+          className="web-brand-watermark"
+        />
+      ) : null}
+      <header className="web-app-header">
+        <div className="web-app-logo-wrap">
+          {brandPresenceConfig.enableHeaderMark ? (
+            <BrandPresenceLayer
+              mode="header-mark"
+              intensity="subtle"
+              profile="neutral"
+              className="web-header-mark"
+            />
+          ) : null}
+          <HitechLogo className="web-app-logo" />
+        </div>
+      </header>
+      <main className="web-app-main">{page}</main>
+      {brandPresenceConfig.enableFooterSignature ? (
+        <footer className="hitech-brand-signature web-app-signature">HITech - Deterministic Systems</footer>
+      ) : null}
+    </div>
   );
 }

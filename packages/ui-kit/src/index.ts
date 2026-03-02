@@ -3,6 +3,7 @@ export * from "./lib/focus-ring.js";
 export * from "./lib/motion.js";
 export * from "./lib/tokens.js";
 export * from "./lib/fx.js";
+export * from "./brand/index.js";
 export * from "./layers/layerIds.js";
 export * from "./layers/resolveLayerFlags.js";
 export { LayerFlagsProvider } from "./layers/LayerFlagsProvider.js";
