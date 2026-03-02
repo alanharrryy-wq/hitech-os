@@ -1,78 +1,125 @@
-import { CANON_LAYER_IDS } from "./layerIds.js";
+"use client";
+
+import type { CSSProperties } from "react";
+import { ALL_LAYERS } from "./layerIds.js";
+import { shouldRenderLayerDebugPanel } from "./resolveLayerFlags.js";
 import { useLayerFlags } from "./useLayerFlags.js";
 
-export interface LayerDebugPanelProps {
-  readonly className?: string;
-  readonly title?: string;
-}
+const PANEL_STYLE: CSSProperties = {
+  position: "fixed",
+  right: "1rem",
+  bottom: "1rem",
+  zIndex: 2147483640,
+  width: "min(420px, calc(100vw - 2rem))",
+  maxHeight: "calc(100dvh - 2rem)",
+  overflow: "auto",
+  borderRadius: "12px",
+  border: "1px solid hsl(var(--ui-border-2))",
+  background: "hsl(var(--ui-surface-1) / 0.96)",
+  boxShadow: "var(--ui-shadow-2)",
+  padding: "0.875rem"
+};
 
-function joinClassNames(values: readonly (string | undefined | null | false)[]): string {
-  return values.filter(Boolean).join(" ");
-}
+const SECTION_STYLE: CSSProperties = {
+  marginTop: "0.75rem",
+  borderTop: "1px solid hsl(var(--ui-border-1))",
+  paddingTop: "0.75rem"
+};
 
-export function LayerDebugPanel({ className, title = "Layer Debug" }: LayerDebugPanelProps): JSX.Element | null {
-  const resolved = useLayerFlags();
+const ROW_STYLE: CSSProperties = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  gap: "0.5rem",
+  paddingBlock: "0.225rem"
+};
 
-  if (!resolved.debugPanelEnabled) {
+const BUTTON_ROW_STYLE: CSSProperties = {
+  display: "grid",
+  gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+  gap: "0.4rem"
+};
+
+const BUTTON_STYLE: CSSProperties = {
+  border: "1px solid hsl(var(--ui-border-2))",
+  background: "hsl(var(--ui-surface-2))",
+  color: "hsl(var(--ui-text-1))",
+  borderRadius: "0.5rem",
+  fontSize: "0.78rem",
+  padding: "0.35rem 0.6rem",
+  cursor: "pointer"
+};
+
+const SMALL_STYLE: CSSProperties = {
+  margin: 0,
+  fontSize: "0.72rem",
+  color: "hsl(var(--ui-text-3))"
+};
+
+export function LayerDebugPanel() {
+  const { resolved, enabledLayers, setLayer, setAll, setProfile, resetNeutral } = useLayerFlags();
+  if (!shouldRenderLayerDebugPanel(resolved)) {
     return null;
   }
 
   return (
-    <aside
-      className={joinClassNames(["ui-layer-debug-panel", className])}
-      data-layer-debug-panel="on"
-      data-layer-source={resolved.source}
-      data-layer-profile={resolved.profile}
-    >
-      <header className="ui-layer-debug-panel__header">
-        <h3 className="ui-layer-debug-panel__title">{title}</h3>
-        <p className="ui-layer-debug-panel__meta">
-          source=<strong>{resolved.source}</strong> profile=<strong>{resolved.profile}</strong>
+    <aside style={PANEL_STYLE} aria-label="Layer Debug Panel">
+      <header>
+        <h2 style={{ margin: 0, fontSize: "0.96rem", lineHeight: 1.1 }}>Layer Toggle Debugging</h2>
+        <p style={SMALL_STYLE}>
+          source={resolved.source} profile={resolved.profile} debug=1
         </p>
+        <p style={SMALL_STYLE}>enabled={enabledLayers.length}</p>
       </header>
 
-      <div className="ui-layer-debug-panel__query">
-        <div>
-          <span>layers</span>
-          <code>{resolved.query.layersRaw ?? "(none)"}</code>
+      <section style={SECTION_STYLE}>
+        <p style={{ margin: 0, fontSize: "0.78rem", fontWeight: 600 }}>Profile Mode</p>
+        <div style={BUTTON_ROW_STYLE}>
+          <button type="button" style={BUTTON_STYLE} onClick={() => setProfile("neutral")}>
+            neutral
+          </button>
+          <button type="button" style={BUTTON_STYLE} onClick={() => setProfile("fx")}>
+            fx
+          </button>
+          <button type="button" style={BUTTON_STYLE} onClick={() => setProfile("perf")}>
+            perf
+          </button>
+          <button type="button" style={BUTTON_STYLE} onClick={resetNeutral}>
+            resetNeutral
+          </button>
         </div>
-        <div>
-          <span>layerProfile</span>
-          <code>{resolved.query.layerProfileRaw ?? "(none)"}</code>
+      </section>
+
+      <section style={SECTION_STYLE}>
+        <p style={{ margin: 0, fontSize: "0.78rem", fontWeight: 600 }}>Explicit Layers Mode</p>
+        <div style={BUTTON_ROW_STYLE}>
+          <button type="button" style={BUTTON_STYLE} onClick={() => setAll(true)}>
+            layers=all
+          </button>
+          <button type="button" style={BUTTON_STYLE} onClick={() => setAll(false)}>
+            layers=none
+          </button>
         </div>
-        <div>
-          <span>debug</span>
-          <code>{resolved.query.debugRaw ?? "(none)"}</code>
-        </div>
-      </div>
+      </section>
 
-      <ul className="ui-layer-debug-panel__list">
-        {CANON_LAYER_IDS.map((id) => (
-          <li key={id} className="ui-layer-debug-panel__item" data-layer-enabled={resolved.flags[id] ? "on" : "off"}>
-            <code>{id}</code>
-            <span>{resolved.flags[id] ? "on" : "off"}</span>
-          </li>
-        ))}
-      </ul>
-
-      <footer className="ui-layer-debug-panel__budget">
-        <p>
-          expensive enabled: <strong>{resolved.budget.expensiveEnabledLayerIds.length}</strong>
-        </p>
-      </footer>
-
-      {resolved.unknownLayerIds.length > 0 ? (
-        <section className="ui-layer-debug-panel__unknown" aria-label="Unknown layer IDs">
-          <h4>Unknown layer IDs</h4>
-          <ul>
-            {resolved.unknownLayerIds.map((unknown) => (
-              <li key={unknown}>
-                <code>{unknown}</code>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
+      <section style={SECTION_STYLE}>
+        <p style={{ margin: 0, fontSize: "0.78rem", fontWeight: 600 }}>Layer Flags</p>
+        {ALL_LAYERS.map((id) => {
+          const checked = resolved.flags[id];
+          return (
+            <label key={id} style={ROW_STYLE}>
+              <span style={{ fontSize: "0.76rem" }}>{id}</span>
+              <input
+                type="checkbox"
+                checked={checked}
+                onChange={(event) => {
+                  setLayer(id, event.currentTarget.checked);
+                }}
+              />
+            </label>
+          );
+        })}
+      </section>
     </aside>
   );
 }

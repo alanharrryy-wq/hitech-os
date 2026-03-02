@@ -39,7 +39,7 @@ export function MissionHeader({ totalRuns, runningRuns }: MissionHeaderProps) {
             Web-first neutral shell. Contracts validated at runtime.
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap sm:items-center">
           <Badge tone="accent">{runningRuns} running</Badge>
           <Badge tone="neutral">{totalRuns} total runs</Badge>
           <Button variant="outline" onClick={toggleSidebar}>
@@ -55,7 +55,11 @@ export function MissionHeader({ totalRuns, runningRuns }: MissionHeaderProps) {
           >
             Theme: {modeLabel}
           </Button>
-          <IconButton label="Refresh" onClick={() => window.location.reload()}>
+          <IconButton
+            className="col-span-2 sm:col-span-1"
+            label="Refresh"
+            onClick={() => window.location.reload()}
+          >
             R
           </IconButton>
         </div>

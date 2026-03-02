@@ -1,37 +1,75 @@
-import type { HTMLAttributes, PropsWithChildren } from "react";
+"use client";
 
-import { GLASS_CARD_LAYER_IDS, LAYER_DATA_ATTR_MAP } from "../../layers/layerIds.js";
+import { cva, type VariantProps } from "class-variance-authority";
+import type { HTMLAttributes, PropsWithChildren } from "react";
+import { cn } from "../../lib/cn.js";
+import { mergeLayerFlags, type LayerFlags } from "../../layers/layerIds.js";
 import { useLayerFlags } from "../../layers/useLayerFlags.js";
 
-export interface GlassCardProps extends PropsWithChildren, HTMLAttributes<HTMLDivElement> {
-  readonly contentClassName?: string;
+const glassCardVariants = cva("card ui-glass-card ui-hitech-material", {
+  variants: {
+    backdrop: {
+      off: "",
+      soft: "",
+      medium: ""
+    },
+    tone: {
+      default: "",
+      muted: "bg-[hsl(var(--ui-surface-2))]",
+      raised: "shadow-[var(--ui-shadow-2)]"
+    }
+  },
+  defaultVariants: {
+    backdrop: "off",
+    tone: "default"
+  }
+});
+
+export interface GlassCardProps
+  extends PropsWithChildren,
+    HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof glassCardVariants> {
+  readonly layerOverrides?: Partial<
+    Pick<
+      LayerFlags,
+      | "card.blur"
+      | "card.innerStroke"
+      | "card.specular"
+      | "card.grain"
+      | "card.shadowAmbient"
+      | "motion.enabled"
+    >
+  >;
 }
 
-function joinClassNames(values: readonly (string | undefined | null | false)[]): string {
-  return values.filter(Boolean).join(" ");
+function onOff(value: boolean): "on" | "off" {
+  return value ? "on" : "off";
 }
 
-export function GlassCard({ children, className, contentClassName, ...rest }: GlassCardProps): JSX.Element {
-  const resolved = useLayerFlags();
-
-  const cardAttrs = {
-    [LAYER_DATA_ATTR_MAP["card.innerStroke"]]: resolved.flags["card.innerStroke"] ? "on" : "off",
-    [LAYER_DATA_ATTR_MAP["card.specular"]]: resolved.flags["card.specular"] ? "on" : "off",
-    [LAYER_DATA_ATTR_MAP["card.grain"]]: resolved.flags["card.grain"] ? "on" : "off",
-    [LAYER_DATA_ATTR_MAP["card.blur"]]: resolved.flags["card.blur"] ? "on" : "off",
-    [LAYER_DATA_ATTR_MAP["motion.enabled"]]: resolved.flags["motion.enabled"] ? "on" : "off",
-    [LAYER_DATA_ATTR_MAP["frame.bezel"]]: resolved.flags["frame.bezel"] ? "on" : "off",
-  } as const;
+export function GlassCard({
+  className,
+  children,
+  backdrop,
+  tone,
+  layerOverrides,
+  ...props
+}: GlassCardProps) {
+  const layerContext = useLayerFlags();
+  const merged = mergeLayerFlags(layerContext.flags, layerOverrides);
 
   return (
-    <article className={joinClassNames(["ui-layer-glass-card", className])} {...cardAttrs} {...rest}>
-      {resolved.flags["card.innerStroke"] ? <div className="ui-layer-glass-card__inner-stroke" aria-hidden="true" /> : null}
-      {resolved.flags["card.specular"] ? <div className="ui-layer-glass-card__specular" aria-hidden="true" /> : null}
-      {resolved.flags["card.grain"] ? <div className="ui-layer-glass-card__grain" aria-hidden="true" /> : null}
-      {resolved.flags["frame.bezel"] && GLASS_CARD_LAYER_IDS.length > 0 ? (
-        <div className="ui-layer-glass-card__bezel" aria-hidden="true" />
-      ) : null}
-      <div className={joinClassNames(["ui-layer-glass-card__content", contentClassName])}>{children}</div>
-    </article>
+    <div
+      className={cn(glassCardVariants({ backdrop, tone }), className)}
+      data-backdrop={backdrop}
+      data-layer-card-blur={onOff(merged["card.blur"])}
+      data-layer-card-inner-stroke={onOff(merged["card.innerStroke"])}
+      data-layer-card-specular={onOff(merged["card.specular"])}
+      data-layer-card-grain={onOff(merged["card.grain"])}
+      data-layer-card-shadow-ambient={onOff(merged["card.shadowAmbient"])}
+      data-layer-motion-enabled={onOff(merged["motion.enabled"])}
+      {...props}
+    >
+      {children}
+    </div>
   );
 }

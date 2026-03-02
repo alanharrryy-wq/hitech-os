@@ -1,195 +1,168 @@
-export const CANON_LAYER_IDS = [
+export const ALL_LAYERS = [
+  "stage.haze",
+  "stage.vignette",
   "stage.noise",
   "stage.scanlines",
-  "stage.glow",
+  "stage.horizon",
+  "frame.bezel",
+  "card.blur",
   "card.innerStroke",
   "card.specular",
   "card.grain",
-  "card.blur",
-  "motion.enabled",
-  "frame.bezel",
+  "card.shadowAmbient",
   "inset.shadow",
+  "motion.enabled"
 ] as const;
 
-export type LayerId = (typeof CANON_LAYER_IDS)[number];
+export type LayerId = (typeof ALL_LAYERS)[number];
 
-export const LAYER_PROFILES = ["neutral", "perf", "fx"] as const;
+export type LayerProfile = "neutral" | "fx" | "perf";
 
-export type LayerProfileId = (typeof LAYER_PROFILES)[number];
+export const PROFILE_PRESETS: Record<LayerProfile, readonly LayerId[]> = {
+  neutral: [],
+  fx: [
+    "stage.haze",
+    "stage.vignette",
+    "stage.noise",
+    "stage.scanlines",
+    "stage.horizon",
+    "frame.bezel",
+    "card.innerStroke",
+    "card.shadowAmbient",
+    "card.specular",
+    "card.grain",
+    "inset.shadow"
+  ],
+  perf: ["stage.vignette", "card.innerStroke", "inset.shadow"]
+} as const;
 
-export type LayerFlags = {
-  readonly [id in LayerId]: boolean;
-};
+export const LAYER_SET: ReadonlySet<LayerId> = new Set(ALL_LAYERS);
 
-export type MutableLayerFlags = {
-  [id in LayerId]: boolean;
-};
+export type LayerFlags = Record<LayerId, boolean>;
 
-export const DEFAULT_LAYER_PROFILE: LayerProfileId = "neutral";
-
-export const EXPENSIVE_LAYER_IDS = [
-  "stage.noise",
-  "stage.scanlines",
-  "stage.glow",
-  "card.specular",
-  "card.grain",
-  "card.blur",
-  "motion.enabled",
-] as const satisfies readonly LayerId[];
-
-export type ExpensiveLayerId = (typeof EXPENSIVE_LAYER_IDS)[number];
-
-export const LAYER_DATA_ATTR_MAP = {
+export const LAYER_DATA_ATTRIBUTES: Readonly<Record<LayerId, string>> = {
+  "stage.haze": "data-layer-stage-haze",
+  "stage.vignette": "data-layer-stage-vignette",
   "stage.noise": "data-layer-stage-noise",
   "stage.scanlines": "data-layer-stage-scanlines",
-  "stage.glow": "data-layer-stage-glow",
+  "stage.horizon": "data-layer-stage-horizon",
+  "frame.bezel": "data-layer-frame-bezel",
+  "card.blur": "data-layer-card-blur",
   "card.innerStroke": "data-layer-card-inner-stroke",
   "card.specular": "data-layer-card-specular",
   "card.grain": "data-layer-card-grain",
-  "card.blur": "data-layer-card-blur",
-  "motion.enabled": "data-layer-motion",
-  "frame.bezel": "data-layer-frame-bezel",
+  "card.shadowAmbient": "data-layer-card-shadow-ambient",
   "inset.shadow": "data-layer-inset-shadow",
-} as const satisfies Record<LayerId, string>;
-
-export type LayerDataAttrName = (typeof LAYER_DATA_ATTR_MAP)[LayerId];
-
-export type LayerDataAttrState = {
-  readonly [dataAttr in LayerDataAttrName]?: "on" | "off";
+  "motion.enabled": "data-layer-motion-enabled"
 };
 
-export const STAGE_LAYER_IDS = ["stage.noise", "stage.scanlines", "stage.glow", "motion.enabled"] as const satisfies readonly LayerId[];
+export function createAllLayersOff(): LayerFlags {
+  return {
+    "stage.haze": false,
+    "stage.vignette": false,
+    "stage.noise": false,
+    "stage.scanlines": false,
+    "stage.horizon": false,
+    "frame.bezel": false,
+    "card.blur": false,
+    "card.innerStroke": false,
+    "card.specular": false,
+    "card.grain": false,
+    "card.shadowAmbient": false,
+    "inset.shadow": false,
+    "motion.enabled": false
+  };
+}
 
-export const GLASS_CARD_LAYER_IDS = [
-  "card.innerStroke",
-  "card.specular",
-  "card.grain",
-  "card.blur",
-  "motion.enabled",
-  "frame.bezel",
-] as const satisfies readonly LayerId[];
+export function createAllLayersOn(): LayerFlags {
+  return {
+    "stage.haze": true,
+    "stage.vignette": true,
+    "stage.noise": true,
+    "stage.scanlines": true,
+    "stage.horizon": true,
+    "frame.bezel": true,
+    "card.blur": true,
+    "card.innerStroke": true,
+    "card.specular": true,
+    "card.grain": true,
+    "card.shadowAmbient": true,
+    "inset.shadow": true,
+    "motion.enabled": true
+  };
+}
 
-export const INSET_PANEL_LAYER_IDS = ["inset.shadow", "frame.bezel", "motion.enabled"] as const satisfies readonly LayerId[];
-
-export const LAYER_ID_SET: ReadonlySet<LayerId> = new Set(CANON_LAYER_IDS);
+export function applyLayerPreset(profile: LayerProfile): LayerFlags {
+  const flags = createAllLayersOff();
+  const enabled = PROFILE_PRESETS[profile] ?? [];
+  for (const id of enabled) {
+    flags[id] = true;
+  }
+  return flags;
+}
 
 export function isLayerId(value: string): value is LayerId {
-  return (LAYER_ID_SET as Set<string>).has(value);
+  return LAYER_SET.has(value as LayerId);
 }
 
-export function isLayerProfileId(value: string): value is LayerProfileId {
-  return (LAYER_PROFILES as readonly string[]).includes(value);
+export function sortLayerIds(ids: readonly LayerId[]): LayerId[] {
+  return [...ids].sort((left, right) => ALL_LAYERS.indexOf(left) - ALL_LAYERS.indexOf(right));
 }
 
-export function normalizeLayerToken(value: string): string {
-  return value.trim().toLowerCase();
+export function listEnabledLayers(flags: LayerFlags): LayerId[] {
+  return ALL_LAYERS.filter((id) => flags[id]);
 }
 
-export function createAllLayersOff(): MutableLayerFlags {
-  const flags = {} as MutableLayerFlags;
-  for (const id of CANON_LAYER_IDS) {
-    flags[id] = false;
+export function areAllLayersEnabled(flags: LayerFlags): boolean {
+  return ALL_LAYERS.every((id) => flags[id]);
+}
+
+export function areAllLayersDisabled(flags: LayerFlags): boolean {
+  return ALL_LAYERS.every((id) => !flags[id]);
+}
+
+export function mergeLayerFlags(base: LayerFlags, overrides?: Partial<LayerFlags>): LayerFlags {
+  if (!overrides) {
+    return base;
   }
-  return flags;
+
+  return {
+    "stage.haze": overrides["stage.haze"] ?? base["stage.haze"],
+    "stage.vignette": overrides["stage.vignette"] ?? base["stage.vignette"],
+    "stage.noise": overrides["stage.noise"] ?? base["stage.noise"],
+    "stage.scanlines": overrides["stage.scanlines"] ?? base["stage.scanlines"],
+    "stage.horizon": overrides["stage.horizon"] ?? base["stage.horizon"],
+    "frame.bezel": overrides["frame.bezel"] ?? base["frame.bezel"],
+    "card.blur": overrides["card.blur"] ?? base["card.blur"],
+    "card.innerStroke": overrides["card.innerStroke"] ?? base["card.innerStroke"],
+    "card.specular": overrides["card.specular"] ?? base["card.specular"],
+    "card.grain": overrides["card.grain"] ?? base["card.grain"],
+    "card.shadowAmbient": overrides["card.shadowAmbient"] ?? base["card.shadowAmbient"],
+    "inset.shadow": overrides["inset.shadow"] ?? base["inset.shadow"],
+    "motion.enabled": overrides["motion.enabled"] ?? base["motion.enabled"]
+  };
 }
 
-export function createAllLayersOn(): MutableLayerFlags {
-  const flags = {} as MutableLayerFlags;
-  for (const id of CANON_LAYER_IDS) {
-    flags[id] = true;
-  }
-  return flags;
-}
-
-export function createLayerFlags(enabledIds: Iterable<LayerId>): MutableLayerFlags {
+export function createFlagsFromEnabledLayers(enabledLayers: readonly LayerId[]): LayerFlags {
   const flags = createAllLayersOff();
-  for (const id of enabledIds) {
+  for (const id of enabledLayers) {
     flags[id] = true;
   }
   return flags;
 }
 
-export function cloneLayerFlags(flags: LayerFlags): MutableLayerFlags {
-  const clone = {} as MutableLayerFlags;
-  for (const id of CANON_LAYER_IDS) {
-    clone[id] = Boolean(flags[id]);
-  }
-  return clone;
-}
+export function parseLayerList(input: string): LayerId[] {
+  const entries = input
+    .split(",")
+    .map((value) => value.trim())
+    .filter((value) => value.length > 0);
 
-export function toOnOff(value: boolean): "on" | "off" {
-  return value ? "on" : "off";
-}
-
-export function getEnabledLayerIds(flags: LayerFlags): LayerId[] {
-  const enabled: LayerId[] = [];
-  for (const id of CANON_LAYER_IDS) {
-    if (flags[id]) {
-      enabled.push(id);
+  const unique = new Set<LayerId>();
+  for (const entry of entries) {
+    if (isLayerId(entry)) {
+      unique.add(entry);
     }
   }
-  return enabled;
-}
 
-export function getDisabledLayerIds(flags: LayerFlags): LayerId[] {
-  const disabled: LayerId[] = [];
-  for (const id of CANON_LAYER_IDS) {
-    if (!flags[id]) {
-      disabled.push(id);
-    }
-  }
-  return disabled;
-}
-
-function sortByCanonicalOrder(ids: readonly LayerId[]): LayerId[] {
-  const index = new Map<LayerId, number>();
-  for (let i = 0; i < CANON_LAYER_IDS.length; i += 1) {
-    index.set(CANON_LAYER_IDS[i], i);
-  }
-  const sorted = [...ids];
-  sorted.sort((a, b) => (index.get(a) ?? Number.MAX_SAFE_INTEGER) - (index.get(b) ?? Number.MAX_SAFE_INTEGER));
-  return sorted;
-}
-
-const PERF_ENABLED_IDS = sortByCanonicalOrder(["card.innerStroke", "frame.bezel", "inset.shadow"]);
-
-export const PROFILE_LAYER_FLAGS = {
-  neutral: createAllLayersOff(),
-  perf: createLayerFlags(PERF_ENABLED_IDS),
-  fx: createAllLayersOn(),
-} as const satisfies Record<LayerProfileId, LayerFlags>;
-
-export function buildDataAttrStateForFlags(flags: LayerFlags, ids: readonly LayerId[] = CANON_LAYER_IDS): LayerDataAttrState {
-  const output: Record<string, "on" | "off"> = {};
-  for (const id of ids) {
-    output[LAYER_DATA_ATTR_MAP[id]] = toOnOff(Boolean(flags[id]));
-  }
-  return output as LayerDataAttrState;
-}
-
-export function getProfileLayerFlags(profile: LayerProfileId): MutableLayerFlags {
-  return cloneLayerFlags(PROFILE_LAYER_FLAGS[profile]);
-}
-
-export function stableSortLayerIds(ids: readonly LayerId[]): LayerId[] {
-  return sortByCanonicalOrder(ids);
-}
-
-export function areFlagsEqual(left: LayerFlags, right: LayerFlags): boolean {
-  for (const id of CANON_LAYER_IDS) {
-    if (Boolean(left[id]) !== Boolean(right[id])) {
-      return false;
-    }
-  }
-  return true;
-}
-
-export function countEnabledFlags(flags: LayerFlags): number {
-  let count = 0;
-  for (const id of CANON_LAYER_IDS) {
-    if (flags[id]) {
-      count += 1;
-    }
-  }
-  return count;
+  return sortLayerIds([...unique]);
 }

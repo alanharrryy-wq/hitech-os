@@ -1,36 +1,56 @@
-import type { HTMLAttributes, PropsWithChildren, ReactNode } from "react";
+"use client";
 
-import { INSET_PANEL_LAYER_IDS, LAYER_DATA_ATTR_MAP } from "../../layers/layerIds.js";
+import type { HTMLAttributes, PropsWithChildren, ReactNode } from "react";
+import { cn } from "../../lib/cn.js";
+import { mergeLayerFlags, type LayerFlags } from "../../layers/layerIds.js";
 import { useLayerFlags } from "../../layers/useLayerFlags.js";
 
-export interface InsetPanelProps extends PropsWithChildren, HTMLAttributes<HTMLDivElement> {
-  readonly header?: ReactNode;
-  readonly footer?: ReactNode;
+export interface InsetPanelProps
+  extends PropsWithChildren,
+    Omit<HTMLAttributes<HTMLDivElement>, "title"> {
+  readonly title?: ReactNode;
+  readonly description?: ReactNode;
+  readonly actions?: ReactNode;
+  readonly layerOverrides?: Partial<Pick<LayerFlags, "inset.shadow" | "motion.enabled">>;
 }
 
-function joinClassNames(values: readonly (string | undefined | null | false)[]): string {
-  return values.filter(Boolean).join(" ");
+function onOff(value: boolean): "on" | "off" {
+  return value ? "on" : "off";
 }
 
-export function InsetPanel({ children, className, header, footer, ...rest }: InsetPanelProps): JSX.Element {
-  const resolved = useLayerFlags();
-
-  const insetAttrs = {
-    [LAYER_DATA_ATTR_MAP["inset.shadow"]]: resolved.flags["inset.shadow"] ? "on" : "off",
-    [LAYER_DATA_ATTR_MAP["frame.bezel"]]: resolved.flags["frame.bezel"] ? "on" : "off",
-    [LAYER_DATA_ATTR_MAP["motion.enabled"]]: resolved.flags["motion.enabled"] ? "on" : "off",
-  } as const;
+export function InsetPanel({
+  className,
+  children,
+  title,
+  description,
+  actions,
+  layerOverrides,
+  ...props
+}: InsetPanelProps) {
+  const layerContext = useLayerFlags();
+  const merged = mergeLayerFlags(layerContext.flags, layerOverrides);
 
   return (
-    <section className={joinClassNames(["ui-layer-inset-panel", className])} {...insetAttrs} {...rest}>
-      {resolved.flags["frame.bezel"] && INSET_PANEL_LAYER_IDS.length > 0 ? (
-        <div className="ui-layer-inset-panel__bezel" aria-hidden="true" />
+    <section
+      className={cn("inset ui-inset ui-hitech-material", className)}
+      data-layer-inset-shadow={onOff(merged["inset.shadow"])}
+      data-layer-motion-enabled={onOff(merged["motion.enabled"])}
+      {...props}
+    >
+      {title || description || actions ? (
+        <header className="mb-3 flex items-start justify-between gap-3">
+          <div>
+            {title ? (
+              <h3 className="m-0 text-sm font-semibold text-[hsl(var(--ui-text-2))]">{title}</h3>
+            ) : null}
+            {description ? (
+              <p className="m-0 mt-1 text-xs text-[hsl(var(--ui-text-3))]">{description}</p>
+            ) : null}
+          </div>
+          {actions ? <div className="shrink-0">{actions}</div> : null}
+        </header>
       ) : null}
-      {resolved.flags["inset.shadow"] ? <div className="ui-layer-inset-panel__shadow" aria-hidden="true" /> : null}
-
-      {header ? <header className="ui-layer-inset-panel__header">{header}</header> : null}
-      <div className="ui-layer-inset-panel__content">{children}</div>
-      {footer ? <footer className="ui-layer-inset-panel__footer">{footer}</footer> : null}
+      {children}
     </section>
   );
 }
