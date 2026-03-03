@@ -197,7 +197,12 @@ describe("pitch contracts valid fixtures", () => {
         "Infraestructura digital propietaria diseñada para control de activos críticos."
       )
     ).toBe(true);
-    expect(containsPitchText("04-valuation", "Valuación combinada estimada: 4–6M")).toBe(true);
+    expect(
+      containsPitchText(
+        "04-valuation",
+        "SAFE/Convertible con cap 4–6M anclado a escenario post-cierre 12/mes"
+      )
+    ).toBe(true);
     expect(containsPitchText("05-inventory-foundation", "RBAC matrix snapshot")).toBe(true);
     expect(
       containsPitchText("06-shipments-receiving", "Next gate: QA RELEASE (RUN3, not implemented)")

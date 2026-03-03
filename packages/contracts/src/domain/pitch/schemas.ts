@@ -205,7 +205,7 @@ export const PitchScreen04Schema = PitchScreenBaseSchema.extend({
   blocks: z.array(PitchValuationBlockSchema).length(3),
   combinedValuationLine: z.object({
     id: z.string().min(1).max(80),
-    text: z.literal("Valuación combinada estimada: 4–6M")
+    text: z.literal("SAFE/Convertible con cap 4–6M anclado a escenario post-cierre 12/mes")
   }),
   comparison: PitchComparisonSchema.refine((value) => {
     const [rowA, rowB] = value.rows;

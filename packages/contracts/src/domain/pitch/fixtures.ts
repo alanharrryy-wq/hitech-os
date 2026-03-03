@@ -28,6 +28,72 @@ import {
   PitchScreenSchema
 } from "./schemas.js";
 
+export const unitPricePerModule = 19000;
+export const profitMargin = 0.4;
+export const monthlyCadenceModules = 12;
+export const wedgeModules = 6;
+export const tractionInvoicedModules = 19;
+export const targetModules = 420;
+
+export const stage1CashUsd = 100000;
+export const stage2CashUsd = 200000;
+export const stage1ConversionBoost = 0.25;
+
+export function calcRevenue(modules: number): number {
+  return modules * unitPricePerModule;
+}
+
+export function calcProfit(revenue: number): number {
+  return Math.round(revenue * profitMargin);
+}
+
+export function annualize(monthlyProfit: number): number {
+  return monthlyProfit * 12;
+}
+
+function formatUsdWhole(value: number): string {
+  return `$${value.toLocaleString("en-US")}`;
+}
+
+function formatUsdK(value: number): string {
+  const thousands = value / 1000;
+  const fixed = Number.isInteger(thousands) ? `${thousands}` : thousands.toFixed(1);
+  return `$${fixed}k`;
+}
+
+function formatUsdM(value: number): string {
+  return `~$${(value / 1000000).toFixed(2)}M`;
+}
+
+export const PITCH_VALUATION_ECONOMICS = {
+  params: {
+    unitPricePerModule,
+    profitMargin,
+    monthlyCadenceModules,
+    wedgeModules,
+    tractionInvoicedModules,
+    targetModules
+  },
+  derived: {
+    monthlyRevenue: calcRevenue(monthlyCadenceModules),
+    monthlyProfit: calcProfit(calcRevenue(monthlyCadenceModules)),
+    annualProfit: annualize(calcProfit(calcRevenue(monthlyCadenceModules))),
+    wedgeRevenue: calcRevenue(wedgeModules),
+    wedgeProfit: calcProfit(calcRevenue(wedgeModules))
+  },
+  deal: {
+    stage1CashUsd,
+    stage2CashUsd,
+    totalCashUsd: stage1CashUsd + stage2CashUsd,
+    stage1EffectiveUsd: Math.round(stage1CashUsd * (1 + stage1ConversionBoost)),
+    totalEffectiveUsd: Math.round(stage1CashUsd * (1 + stage1ConversionBoost)) + stage2CashUsd,
+    capRangeUsd: {
+      low: 4000000,
+      high: 6000000
+    }
+  }
+} as const;
+
 const SCREEN_01_FIXTURE: PitchScreen01 = {
   slug: "01-double-engine",
   route: PITCH_ROUTES["01-double-engine"],
@@ -58,7 +124,7 @@ const SCREEN_01_FIXTURE: PitchScreen01 = {
       },
       {
         id: "screen01-left-b04",
-        text: "420 módulos instalados en SRG",
+        text: `TARGET ${targetModules} módulos en SRG`,
         emphasis: "positive",
         weight: "anchor"
       },
@@ -139,32 +205,32 @@ const SCREEN_02_FIXTURE: PitchScreen02 = {
   kpis: [
     {
       id: "screen02-kpi-01",
-      label: "420 módulos totales",
-      value: "420",
-      note: "Base instalada"
+      label: `TARGET ${targetModules} módulos`,
+      value: `${targetModules}`,
+      note: "Meta de cobertura"
     },
     {
       id: "screen02-kpi-02",
-      label: "12 módulos mensuales",
-      value: "12",
+      label: `${monthlyCadenceModules} módulos mensuales`,
+      value: `${monthlyCadenceModules}`,
       note: "Flujo pactado"
     },
     {
       id: "screen02-kpi-03",
-      label: "$228k facturación mensual",
-      value: "$228k",
+      label: `${formatUsdK(PITCH_VALUATION_ECONOMICS.derived.monthlyRevenue)} facturación mensual`,
+      value: formatUsdK(PITCH_VALUATION_ECONOMICS.derived.monthlyRevenue),
       note: "Ingreso mensual"
     },
     {
       id: "screen02-kpi-04",
-      label: "$91k utilidad mensual",
-      value: "$91k",
+      label: `${formatUsdK(PITCH_VALUATION_ECONOMICS.derived.monthlyProfit)} utilidad mensual`,
+      value: formatUsdK(PITCH_VALUATION_ECONOMICS.derived.monthlyProfit),
       note: "Margen operativo"
     },
     {
       id: "screen02-kpi-05",
-      label: "~$1.09M utilidad anual",
-      value: "~$1.09M",
+      label: `${formatUsdM(PITCH_VALUATION_ECONOMICS.derived.annualProfit)} utilidad anual`,
+      value: formatUsdM(PITCH_VALUATION_ECONOMICS.derived.annualProfit),
       note: "Anualización"
     }
   ],
@@ -240,19 +306,19 @@ const SCREEN_04_FIXTURE: PitchScreen04 = {
       items: [
         {
           id: "screen04-b01-i01",
-          text: "Genera flujo"
+          text: `Ingreso mensual @${monthlyCadenceModules}/mes: ${formatUsdWhole(PITCH_VALUATION_ECONOMICS.derived.monthlyRevenue)}`
         },
         {
           id: "screen04-b01-i02",
-          text: "Margen 40%"
+          text: `Utilidad mensual @${Math.round(profitMargin * 100)}%: ${formatUsdWhole(PITCH_VALUATION_ECONOMICS.derived.monthlyProfit)}`
         },
         {
           id: "screen04-b01-i03",
-          text: "Valuación típica 2–3x utilidad"
+          text: `Utilidad anualizada: ${formatUsdWhole(PITCH_VALUATION_ECONOMICS.derived.annualProfit)}`
         },
         {
           id: "screen04-b01-i04",
-          text: "Valuación estimada: 2.5–3M"
+          text: "Valuación base industrial: disciplina de flujo comprobada"
         }
       ]
     },
@@ -262,37 +328,62 @@ const SCREEN_04_FIXTURE: PitchScreen04 = {
       items: [
         {
           id: "screen04-b02-i01",
-          text: "Flujo recurrente"
+          text: `Wedge ${wedgeModules} módulos (30 días): ${formatUsdWhole(PITCH_VALUATION_ECONOMICS.derived.wedgeRevenue)} ingreso`
         },
         {
           id: "screen04-b02-i02",
-          text: "Propiedad intelectual"
+          text: `Utilidad wedge @${Math.round(profitMargin * 100)}%: ${formatUsdWhole(PITCH_VALUATION_ECONOMICS.derived.wedgeProfit)}`
         },
         {
           id: "screen04-b02-i03",
-          text: "Escalabilidad SaaS"
+          text: `Tras entrega se habilita acuerdo de ${monthlyCadenceModules}/mes`
         },
         {
           id: "screen04-b02-i04",
-          text: "Barrera técnica alta"
+          text: `TARGET ${targetModules} módulos (objetivo de despliegue)`
         },
         {
           id: "screen04-b02-i05",
-          text: "Múltiplo superior"
+          text: "Software + operación incrementan defendibilidad del múltiplo"
         }
       ]
     },
     {
       id: "screen04-block-03",
       heading: "Estructura de Inversión",
-      items: [],
-      phase1: "$100k → 25% rendimiento → sin dilución",
-      phase2: "$200k → 3–5% equity (según valuación final acordada)"
+      items: [
+        {
+          id: "screen04-b03-i01",
+          text: `Etapa 1: ${formatUsdK(stage1CashUsd)} hoy -> entregar ${wedgeModules} módulos (30 días)`
+        },
+        {
+          id: "screen04-b03-i02",
+          text: "Trigger Etapa 2: entrega + factura SRG (día 30)"
+        },
+        {
+          id: "screen04-b03-i03",
+          text: `Etapa 2: +${formatUsdK(stage2CashUsd)} -> ejecutar rampa ${monthlyCadenceModules} módulos/mes`
+        },
+        {
+          id: "screen04-b03-i04",
+          text: `Si Etapa 2: Tramo 1 convierte con +25% (${formatUsdK(stage1CashUsd)}->${formatUsdK(PITCH_VALUATION_ECONOMICS.deal.stage1EffectiveUsd)} efectivo)`
+        },
+        {
+          id: "screen04-b03-i05",
+          text: `Total cash: ${formatUsdK(PITCH_VALUATION_ECONOMICS.deal.totalCashUsd)} | Total efectivo equity: ${formatUsdK(PITCH_VALUATION_ECONOMICS.deal.totalEffectiveUsd)}`
+        },
+        {
+          id: "screen04-b03-i06",
+          text: "Instrumento: SAFE/Convertible con cap 4–6M (post-cierre 12/mes)"
+        }
+      ],
+      phase1: `Etapa 1: ${formatUsdK(stage1CashUsd)} -> ejecución wedge y factura en D30`,
+      phase2: `Etapa 2: +${formatUsdK(stage2CashUsd)} -> despliegue recurrente y opción equity`
     }
   ],
   combinedValuationLine: {
     id: "screen04-combined-valuation",
-    text: "Valuación combinada estimada: 4–6M"
+    text: "SAFE/Convertible con cap 4–6M anclado a escenario post-cierre 12/mes"
   },
   comparison: {
     headers: [
