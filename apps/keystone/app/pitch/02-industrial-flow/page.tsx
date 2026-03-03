@@ -15,10 +15,65 @@ export default function PitchIndustrialFlowPage({ searchParams }: PitchSearchPar
   const deck = PITCH_DECK_FIXTURE;
   const screen = PITCH_SCREEN_FIXTURES["02-industrial-flow"];
   const shellModel = buildPitchShellFrameModel(screen.slug);
+  const screenTitle = "CORE HITECH — OPERACIÓN INDUSTRIAL INSTITUCIONAL";
+  const shellModelInstitutional = {
+    ...shellModel,
+    hero: {
+      ...shellModel.hero,
+      title: "CORE HITECH — OPERACIÓN INDUSTRIAL INSTITUCIONAL",
+      subtitle:
+        "Gobernanza + estándares + evidencia: operación repetible, auditable y escalable multi-sitio.",
+      metrics: [
+        {
+          id: "standards-stack",
+          label: "Standards Stack",
+          value: "OSHA · ANSI · NFPA · NOM-STPS · ISO 45001/14001 (aligned)",
+          tone: "teal" as const
+        },
+        {
+          id: "governance-model",
+          label: "Governance Model",
+          value: "DG · HSE · Supervisión · Campo (accountability)",
+          tone: "cyan" as const
+        },
+        {
+          id: "audit-trail",
+          label: "Audit Trail",
+          value: "Version control · ID único · repositorio autorizado",
+          tone: "teal" as const
+        },
+        {
+          id: "digital-backbone",
+          label: "Digital Backbone",
+          value: "SmartService · ServiceLogix · HealthRadar · ConditionScore · FailMatrix",
+          tone: "gold" as const
+        }
+      ]
+    },
+    nav: {
+      ...shellModel.nav,
+      links: deck.navigation.links.map((link) =>
+        link.slug === screen.slug
+          ? {
+              ...link,
+              title: screenTitle
+            }
+          : link
+      )
+    },
+    breadcrumbs: shellModel.breadcrumbs.map((item, index) =>
+      index === shellModel.breadcrumbs.length - 1
+        ? {
+            ...item,
+            label: screenTitle
+          }
+        : item
+    )
+  };
 
   return (
     <LayerFlagsProvider initialResolved={resolved}>
-      <PitchShell model={{ ...shellModel, nav: { ...shellModel.nav, links: deck.navigation.links } }}>
+      <PitchShell model={shellModelInstitutional}>
         <ScreenIndustrialFlow screen={screen} />
       </PitchShell>
       {debugVisible ? <LayerDebugPanel /> : null}

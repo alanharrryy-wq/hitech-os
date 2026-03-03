@@ -24,7 +24,7 @@ export function PitchShell({
   className,
   model,
   showScrollAffordance = true,
-  enableKeyboardNav = true
+  enableKeyboardNav = false
 }: PitchShellProps) {
   const resolvedModel =
     model ??

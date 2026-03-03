@@ -44,10 +44,10 @@ describe("pitch route smoke", () => {
   it("/pitch/02-industrial-flow renders KPI labels", () => {
     const html = renderPage(PitchIndustrialFlowPage({ searchParams: {} }));
 
-    expect(html).toContain("MOTOR 1 — FLUJO INDUSTRIAL RECURRENTE");
-    expect(html).toContain("TARGET 420 módulos");
-    expect(html).toContain("12 módulos mensuales");
-    expect(html).toContain("$228k facturación mensual");
+    expect(html).toContain("CORE HITECH — OPERACIÓN INDUSTRIAL INSTITUCIONAL");
+    expect(html).toContain("Risk Method");
+    expect(html).toContain("PHA + ATS/JSA");
+    expect(html).toContain("Operational Readiness Index");
   });
 
   it("/pitch/03-hitech-os renders features and strong line", () => {

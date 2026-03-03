@@ -28,7 +28,7 @@ export function PitchRailNav({ model, progress, className }: PitchRailNavProps) 
             Pitch Index
           </span>
         </div>
-        <p className="m-0 text-xs text-[color:rgba(4,18,25,0.62)]">Seen / Current status only.</p>
+        <p className="m-0 text-xs text-[color:rgba(4,18,25,0.62)]">Navigate with Deck Progress controls.</p>
       </div>
 
       <ScrollArea className="w-full whitespace-nowrap">

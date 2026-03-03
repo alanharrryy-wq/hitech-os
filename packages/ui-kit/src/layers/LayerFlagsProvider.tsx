@@ -15,9 +15,7 @@ import {
 import {
   createLayerFlagsQueryFromResolved,
   encodeLayersParam,
-  resolveLayerFlags,
-  type ResolvedLayerFlags,
-  type SearchParamsLike
+  type ResolvedLayerFlags
 } from "./resolveLayerFlags.js";
 import { extractEnabledLayerIds, LayerFlagsContext } from "./useLayerFlags.js";
 
@@ -35,26 +33,6 @@ function buildRaw(raw: {
     ...(raw.layerProfile !== undefined ? { layerProfile: raw.layerProfile } : {}),
     ...(raw.debug !== undefined ? { debug: raw.debug } : {})
   };
-}
-
-function toSearchParamsLike(params: URLSearchParams): SearchParamsLike {
-  const byKey = new Map<string, string[]>();
-
-  params.forEach((value, key) => {
-    const current = byKey.get(key) ?? [];
-    byKey.set(key, [...current, value]);
-  });
-
-  const record: SearchParamsLike = {};
-  for (const [key, values] of byKey.entries()) {
-    if (values.length === 1) {
-      record[key] = values[0];
-    } else if (values.length > 1) {
-      record[key] = values;
-    }
-  }
-
-  return record;
 }
 
 function getResolvedSignature(resolved: ResolvedLayerFlags): string {
@@ -109,9 +87,10 @@ export function LayerFlagsProvider({ initialResolved, children }: LayerFlagsProv
   const searchParams = useSearchParams();
 
   const [resolved, setResolved] = useState<ResolvedLayerFlags>(initialResolved);
-  const lastAppliedUrlSignatureRef = useRef<string>(getResolvedSignature(initialResolved));
+  const userInitiatedSyncRef = useRef(false);
 
   const setLayer = useCallback((id: LayerId, on: boolean) => {
+    userInitiatedSyncRef.current = true;
     setResolved((previous) => {
       const flags = mergeLayerFlags(previous.flags, { [id]: on });
       return normalizeFromLayers(flags, previous.debug);
@@ -119,6 +98,7 @@ export function LayerFlagsProvider({ initialResolved, children }: LayerFlagsProv
   }, []);
 
   const setAll = useCallback((on: boolean) => {
+    userInitiatedSyncRef.current = true;
     setResolved((previous) => {
       const flags = on ? createAllLayersOn() : createAllLayersOff();
       return normalizeFromLayers(flags, previous.debug);
@@ -126,6 +106,7 @@ export function LayerFlagsProvider({ initialResolved, children }: LayerFlagsProv
   }, []);
 
   const setProfile = useCallback((profile: LayerProfile) => {
+    userInitiatedSyncRef.current = true;
     setResolved((previous) => {
       if (profile === "neutral") {
         return normalizeFromProfile("neutral", previous.debug);
@@ -135,25 +116,22 @@ export function LayerFlagsProvider({ initialResolved, children }: LayerFlagsProv
   }, []);
 
   const resetNeutral = useCallback(() => {
+    userInitiatedSyncRef.current = true;
     setResolved((previous) => normalizeDefault(previous.debug));
   }, []);
 
   useEffect(() => {
-    const fromUrl = resolveLayerFlags(
-      toSearchParamsLike(new URLSearchParams(searchParams.toString()))
+    const incomingSignature = getResolvedSignature(initialResolved);
+    setResolved((previous) =>
+      getResolvedSignature(previous) === incomingSignature ? previous : initialResolved
     );
-    const currentSignature = getResolvedSignature(resolved);
-    const fromUrlSignature = getResolvedSignature(fromUrl);
-
-    if (
-      fromUrlSignature !== currentSignature &&
-      fromUrlSignature !== lastAppliedUrlSignatureRef.current
-    ) {
-      setResolved(fromUrl);
-    }
-  }, [resolved, searchParams]);
+  }, [initialResolved]);
 
   useEffect(() => {
+    if (!userInitiatedSyncRef.current) {
+      return;
+    }
+
     const current = new URLSearchParams(searchParams.toString());
     const next = createLayerFlagsQueryFromResolved(resolved, current);
 
@@ -165,7 +143,7 @@ export function LayerFlagsProvider({ initialResolved, children }: LayerFlagsProv
       router.replace(target, { scroll: false });
     }
 
-    lastAppliedUrlSignatureRef.current = getResolvedSignature(resolved);
+    userInitiatedSyncRef.current = false;
   }, [pathname, resolved, router, searchParams]);
 
   const contextValue = useMemo(

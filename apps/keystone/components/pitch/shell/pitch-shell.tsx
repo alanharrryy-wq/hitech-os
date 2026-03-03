@@ -16,10 +16,13 @@ export function PitchShell({
   children,
   className,
   showScrollAffordance = true,
-  enableKeyboardNav = true
+  enableKeyboardNav = false
 }: PropsWithChildren<PitchShellProps>) {
   return (
-    <Stage className={cn("pitch-stage pitch-shell-root pb-16", className)}>
+    <Stage
+      className={cn("pitch-stage pitch-shell-root pb-16", className)}
+      data-pitch-screen={model.nav.activeSlug ?? "pitch-index"}
+    >
       <PitchShellBrandLayer />
       <PitchShellKeyboardNav links={model.nav.links} disabled={!enableKeyboardNav} />
       <Shell

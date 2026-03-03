@@ -31,6 +31,8 @@ export function PitchRailNavItem({
         className
       )}
       aria-current={active ? "page" : undefined}
+      aria-disabled="true"
+      tabIndex={0}
     >
       <div className="flex items-center justify-between gap-2">
         <span className="text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-[color:rgba(4,18,25,0.6)]">
