@@ -70,12 +70,9 @@ export function PitchSection({
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
             {eyebrow ? <Badge>{eyebrow}</Badge> : null}
-            <a
-              href={`#${id}`}
-              className="pitch-focus-ring rounded-full border border-[rgba(2,111,134,0.24)] px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[color:#026F86] no-underline hover:bg-[rgba(2,111,134,0.08)]"
-            >
+            <span className="rounded-full border border-[rgba(2,111,134,0.24)] px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[color:#026F86]">
               Anchor
-            </a>
+            </span>
           </div>
           {actions ? <div className="flex flex-wrap items-center gap-2">{actions}</div> : null}
         </div>

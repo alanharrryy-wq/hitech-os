@@ -5,6 +5,6 @@ export interface ScreenValuationProps {
   readonly screen: PitchScreen04;
 }
 
-export function ScreenValuation({ screen: _screen }: ScreenValuationProps) {
-  return <Screen04ValuationCinematic />;
+export function ScreenValuation({ screen }: ScreenValuationProps) {
+  return <Screen04ValuationCinematic screen={screen} />;
 }

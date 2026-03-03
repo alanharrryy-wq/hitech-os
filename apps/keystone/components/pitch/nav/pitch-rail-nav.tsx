@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo } from "react";
-import Link from "next/link";
 import { ScrollArea, ScrollBar, cn } from "@hitech/ui-kit";
 import type { PitchDeckProgressModel, PitchShellNavModel } from "../shell/types";
 import { PitchRailNavItem } from "./pitch-rail-nav-item";
@@ -22,20 +21,14 @@ export function PitchRailNav({ model, progress, className }: PitchRailNavProps) 
     <nav className={cn("pitch-glass-card pitch-neon-edge p-3", className)} aria-label="Pitch screen rail navigation">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap items-center gap-2">
-          <Link
-            href="/"
-            className="pitch-focus-ring rounded-full border border-[rgba(2,111,134,0.3)] px-3 py-1 text-xs font-semibold text-[color:#026F86] no-underline hover:bg-[rgba(2,111,134,0.08)]"
-          >
+          <span className="pitch-rail-static-card rounded-full border px-3 py-1 text-xs font-semibold text-[color:var(--pitch-ink)]">
             Mission Control
-          </Link>
-          <Link
-            href="/pitch"
-            className="pitch-focus-ring rounded-full border border-[rgba(2,111,134,0.3)] px-3 py-1 text-xs font-semibold text-[color:#026F86] no-underline hover:bg-[rgba(2,111,134,0.08)]"
-          >
+          </span>
+          <span className="pitch-rail-static-card rounded-full border px-3 py-1 text-xs font-semibold text-[color:var(--pitch-ink)]">
             Pitch Index
-          </Link>
+          </span>
         </div>
-        <p className="m-0 text-xs text-[color:rgba(4,18,25,0.62)]">Use ArrowLeft/ArrowRight to navigate screens.</p>
+        <p className="m-0 text-xs text-[color:rgba(4,18,25,0.62)]">Seen / Current status only.</p>
       </div>
 
       <ScrollArea className="w-full whitespace-nowrap">

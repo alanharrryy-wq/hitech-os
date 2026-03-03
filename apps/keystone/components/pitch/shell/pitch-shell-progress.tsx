@@ -15,7 +15,7 @@ export function PitchShellProgress({ model, className }: PitchShellProgressProps
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="grid gap-1">
           <p className="m-0 text-[0.7rem] uppercase tracking-[0.11em] text-[color:rgba(4,18,25,0.62)]">
-            Deck Progress
+            DECK PROGRESS
           </p>
           <p className="m-0 text-sm font-semibold text-[color:var(--pitch-ink)]">{model.label}</p>
         </div>

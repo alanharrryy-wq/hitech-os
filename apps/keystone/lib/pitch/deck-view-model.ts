@@ -1,4 +1,5 @@
 import {
+  PITCH_VALUATION_ECONOMICS,
   PITCH_DECK_FIXTURE,
   PITCH_SCREEN_FIXTURES,
   type PitchDeck,
@@ -125,18 +126,12 @@ function asRouteInsight(link: PitchNavigationLink): PitchRouteInsight {
   };
 }
 
-function computeSpotlight(screen01: PitchScreen01, screen02: PitchScreen02, screen04: PitchScreen04) {
-  const installedBase =
-    screen01.leftColumn.bullets.find((entry) => entry.text.includes("420 módulos"))?.text ??
-    screen02.kpis.find((entry) => entry.label.includes("420 módulos"))?.label ??
-    "420 módulos instalados en SRG";
+function computeSpotlight(screen02: PitchScreen02, screen04: PitchScreen04) {
+  const installedBase = `TARGET ${PITCH_VALUATION_ECONOMICS.params.targetModules} módulos (no instalado actual)`;
 
-  const monthlyFlow =
-    screen02.kpis.find((entry) => entry.label.includes("12 módulos"))?.label ??
-    "12 módulos mensuales";
+  const monthlyFlow = `${PITCH_VALUATION_ECONOMICS.params.monthlyCadenceModules} módulos/mes tras cierre D30`;
 
-  const annualUtility =
-    screen02.kpis.find((entry) => entry.label.includes("utilidad anual"))?.label ??
+  const annualUtility = screen02.kpis.find((entry) => entry.label.includes("utilidad anual"))?.label ??
     "~$1.09M utilidad anual";
 
   return {
@@ -181,7 +176,6 @@ export function buildPitchDeckViewModel(
   const recommendedPath = indexRoutes.filter((route) => route.recommended);
   const adjacency = locateAdjacent(indexRoutes, activeSlug);
 
-  const screen01 = PITCH_SCREEN_FIXTURES["01-double-engine"];
   const screen02 = PITCH_SCREEN_FIXTURES["02-industrial-flow"];
   const screen04 = PITCH_SCREEN_FIXTURES["04-valuation"];
 
@@ -201,7 +195,7 @@ export function buildPitchDeckViewModel(
     totalScreens: deck.screens.length,
     ...(adjacency.previous ? { previous: adjacency.previous } : {}),
     ...(adjacency.next ? { next: adjacency.next } : {}),
-    spotlight: computeSpotlight(screen01, screen02, screen04)
+    spotlight: computeSpotlight(screen02, screen04)
   };
 }
 

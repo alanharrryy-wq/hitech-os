@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Badge, cn } from "@hitech/ui-kit";
 import type { PitchNavigationLink, PitchScreenSlug } from "@hitech/contracts";
 
@@ -23,10 +22,9 @@ export function PitchRailNavItem({
   const complete = isComplete(link.order, progressCurrent);
 
   return (
-    <Link
-      href={link.href}
+    <article
       className={cn(
-        "pitch-focus-ring pitch-glass-card pitch-neon-edge inline-flex min-w-[14rem] flex-col gap-2 rounded-[var(--pitch-radius-md)] p-3 no-underline transition-all",
+        "pitch-rail-static-card pitch-focus-ring pitch-glass-card pitch-neon-edge inline-flex min-w-[14rem] flex-col gap-2 rounded-[var(--pitch-radius-md)] p-3",
         active
           ? "border-[rgba(2,167,202,0.55)] shadow-[0_14px_26px_rgba(2,167,202,0.18)]"
           : "hover:-translate-y-[1px] hover:shadow-[0_10px_18px_rgba(2,111,134,0.12)]",
@@ -47,6 +45,6 @@ export function PitchRailNavItem({
         )}
       </div>
       <p className="m-0 text-sm font-semibold leading-5 text-[color:var(--pitch-ink)]">{link.title}</p>
-    </Link>
+    </article>
   );
 }

@@ -5704,3 +5704,296 @@
   position: absolute;
   inset: 0;
 }
+
+/* Premium overrides for valuation flow */
+.pitch-shell-root {
+  --pitch-ink: #1f232b;
+  --pitch-muted: #5f6875;
+  --pitch-hairline: rgba(70, 76, 89, 0.2);
+  --pitch-accent-amber: #8f6a37;
+  --pitch-accent-teal: #45757f;
+  --pitch-accent-violet: #646286;
+  --pitch-accent-rose: #b77265;
+  --pitch-card-bg: rgba(255, 255, 255, 0.12);
+  --pitch-card-bg-strong: rgba(255, 255, 255, 0.9);
+  --pitch-card-border: rgba(100, 108, 124, 0.22);
+  --pitch-card-border-strong: rgba(100, 108, 124, 0.36);
+  --pitch-card-shadow-1: 0 10px 28px rgba(21, 28, 37, 0.08);
+  --pitch-card-shadow-2: 0 18px 48px rgba(24, 31, 41, 0.06);
+  --pitch-card-shadow-3: 0 2px 6px rgba(25, 32, 44, 0.05);
+  position: relative;
+  overflow-x: clip;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+.pitch-shell-root::before {
+  background:
+    radial-gradient(120% 80% at 10% -20%, rgba(143, 106, 55, 0.06), transparent 58%),
+    radial-gradient(90% 80% at 88% 0%, rgba(69, 117, 127, 0.05), transparent 52%),
+    radial-gradient(150% 120% at 50% 120%, rgba(31, 35, 43, 0.08), transparent 72%),
+    linear-gradient(180deg, #fbfbf8 0%, #f6f5f2 45%, #f3f2ee 100%);
+}
+
+.pitch-shell-root::after {
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(65, 70, 80, 0.015) 0px,
+      rgba(65, 70, 80, 0.015) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(65, 70, 80, 0.01) 0px,
+      rgba(65, 70, 80, 0.01) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+  background-size: 4px 4px, 5px 5px;
+  opacity: 0.8;
+  mix-blend-mode: multiply;
+}
+
+.pitch-shell-root .pitch-shell-brand-layer {
+  display: none;
+}
+
+.pitch-shell-root .pitch-glass-card,
+.pitch-shell-root .pitch-collapsible-panel {
+  position: relative;
+  border: 1px solid var(--pitch-card-border);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.07));
+  box-shadow: var(--pitch-card-shadow-1), var(--pitch-card-shadow-2), var(--pitch-card-shadow-3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.38);
+}
+
+@supports ((backdrop-filter: blur(16px)) or (-webkit-backdrop-filter: blur(16px))) {
+  .pitch-shell-root .pitch-glass-card,
+  .pitch-shell-root .pitch-collapsible-panel {
+    backdrop-filter: blur(18px) saturate(132%);
+    -webkit-backdrop-filter: blur(18px) saturate(132%);
+  }
+}
+
+.pitch-shell-root[data-layer-card-blur="off"] .pitch-glass-card,
+.pitch-shell-root[data-layer-card-blur="off"] .pitch-collapsible-panel {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.pitch-shell-root .pitch-glass-card::before,
+.pitch-shell-root .pitch-collapsible-panel::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    128deg,
+    rgba(255, 255, 255, 0.42) 0%,
+    rgba(255, 255, 255, 0.18) 14%,
+    rgba(255, 255, 255, 0.03) 42%,
+    transparent 65%
+  );
+  opacity: 0.72;
+}
+
+.pitch-shell-root .pitch-glass-card::after,
+.pitch-shell-root .pitch-collapsible-panel::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  pointer-events: none;
+}
+
+.pitch-shell-root .pitch-neon-edge::after {
+  display: none !important;
+}
+
+.pitch-shell-root [class^="pitch-halo-level-"],
+.pitch-shell-root [class*=" pitch-halo-level-"] {
+  box-shadow: none !important;
+  animation: none !important;
+}
+
+.pitch-shell-root [class^="pitch-ring-anim-"],
+.pitch-shell-root [class*=" pitch-ring-anim-"] {
+  display: none !important;
+}
+
+.pitch-shell-root .pitch-kpi-card,
+.pitch-shell-root .pitch-static-card,
+.pitch-shell-root .pitch-rail-static-card {
+  cursor: default;
+  transition:
+    border-color 260ms ease,
+    box-shadow 320ms ease,
+    transform 260ms ease,
+    background-color 260ms ease;
+}
+
+.pitch-shell-root .pitch-kpi-card,
+.pitch-shell-root .pitch-static-card,
+.pitch-shell-root .pitch-rail-static-card,
+.pitch-shell-root .pitch-collapsible-panel {
+  border-color: var(--pitch-card-border);
+}
+
+.pitch-shell-root .pitch-kpi-card:hover,
+.pitch-shell-root .pitch-kpi-card:focus-visible,
+.pitch-shell-root .pitch-static-card:hover,
+.pitch-shell-root .pitch-static-card:focus-visible,
+.pitch-shell-root .pitch-rail-static-card:hover,
+.pitch-shell-root .pitch-rail-static-card:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--pitch-card-border-strong);
+  box-shadow: 0 14px 30px rgba(23, 30, 40, 0.11), 0 20px 50px rgba(24, 31, 41, 0.08);
+}
+
+.pitch-shell-root .pitch-kpi-card--amber {
+  color: var(--pitch-ink);
+  background: linear-gradient(145deg, rgba(143, 106, 55, 0.12), rgba(255, 255, 255, 0.08));
+}
+
+.pitch-shell-root .pitch-kpi-card--teal {
+  color: var(--pitch-ink);
+  background: linear-gradient(145deg, rgba(69, 117, 127, 0.11), rgba(255, 255, 255, 0.08));
+}
+
+.pitch-shell-root .pitch-kpi-card--violet {
+  color: var(--pitch-ink);
+  background: linear-gradient(145deg, rgba(100, 98, 134, 0.11), rgba(255, 255, 255, 0.08));
+}
+
+.pitch-shell-root .pitch-kpi-card--neutral {
+  color: var(--pitch-ink);
+  background: linear-gradient(145deg, rgba(95, 104, 117, 0.09), rgba(255, 255, 255, 0.08));
+}
+
+.pitch-shell-root .pitch-stage2-kpi-halo {
+  position: relative;
+  isolation: isolate;
+}
+
+.pitch-shell-root .pitch-stage2-kpi-halo::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  z-index: -1;
+  border-radius: calc(var(--pitch-radius-md) + 8px);
+  background: radial-gradient(circle at 50% 45%, rgba(143, 106, 55, 0.11) 0%, rgba(143, 106, 55, 0) 74%);
+  filter: blur(22px);
+  opacity: 0.92;
+  transform: scale(1);
+}
+
+.pitch-shell-root .pitch-stage2-kpi-halo:hover::before,
+.pitch-shell-root .pitch-stage2-kpi-halo:focus-visible::before {
+  opacity: 1;
+  transform: scale(1.01);
+}
+
+.pitch-shell-root .pitch-hero-title,
+.pitch-shell-root .pitch-hero-subtitle,
+.pitch-shell-root h2,
+.pitch-shell-root h3,
+.pitch-shell-root p,
+.pitch-shell-root li {
+  color: var(--pitch-ink);
+}
+
+.pitch-shell-root .pitch-hero-subtitle {
+  color: var(--pitch-muted);
+}
+
+.pitch-shell-root .pitch-valuation-svg {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.pitch-shell-root .pitch-valuation-node-label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  fill: var(--pitch-muted);
+  font-weight: 700;
+}
+
+.pitch-shell-root .pitch-valuation-node-copy {
+  font-size: 10px;
+  fill: var(--pitch-ink);
+}
+
+.pitch-shell-root .pitch-halo-d30 {
+  opacity: 0.08;
+}
+
+.pitch-shell-root .pitch-halo-d30-pulse {
+  animation: pitchD30Pulse 780ms ease-in-out infinite;
+}
+
+.pitch-shell-root .pitch-draw-line {
+  stroke-dasharray: 380;
+  stroke-dashoffset: 380;
+  animation: pitchStrokeDraw 760ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.pitch-shell-root .pitch-draw-circle {
+  stroke-dasharray: 277;
+  stroke-dashoffset: 277;
+  animation: pitchStrokeDraw 820ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.pitch-shell-root .pitch-equity-tooltip-trigger {
+  border-color: var(--pitch-card-border);
+  background: rgba(255, 255, 255, 0.58);
+  color: var(--pitch-ink);
+  cursor: default;
+}
+
+.pitch-shell-root .pitch-equity-tooltip {
+  margin: 0;
+  border: 1px solid var(--pitch-card-border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 8px 10px;
+  font-size: 12px;
+  color: var(--pitch-ink);
+}
+
+@keyframes pitchStrokeDraw {
+  from {
+    stroke-dashoffset: 380;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pitchD30Pulse {
+  0% {
+    opacity: 0.06;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 0.09;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 0.06;
+    transform: scale(0.98);
+  }
+}
+
+@media (max-width: 767px) {
+  .pitch-shell-root {
+    padding-left: max(10px, env(safe-area-inset-left));
+    padding-right: max(10px, env(safe-area-inset-right));
+  }
+}

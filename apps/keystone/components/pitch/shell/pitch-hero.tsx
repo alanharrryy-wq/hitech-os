@@ -3,18 +3,18 @@ import type { PitchHeroMetric, PitchHeroModel } from "./types";
 
 function toneClass(tone: PitchHeroMetric["tone"]): string {
   if (tone === "gold") {
-    return "border-[rgba(171,123,38,0.32)] bg-[rgba(171,123,38,0.12)] text-[color:#553E13]";
+    return "pitch-kpi-card--amber";
   }
 
   if (tone === "teal") {
-    return "border-[rgba(2,111,134,0.35)] bg-[rgba(2,111,134,0.12)] text-[color:#026F86]";
+    return "pitch-kpi-card--teal";
   }
 
   if (tone === "cyan") {
-    return "border-[rgba(2,167,202,0.35)] bg-[rgba(2,167,202,0.12)] text-[color:#025C6D]";
+    return "pitch-kpi-card--violet";
   }
 
-  return "border-[rgba(4,18,25,0.2)] bg-[rgba(4,18,25,0.05)] text-[color:#041219]";
+  return "pitch-kpi-card--neutral";
 }
 
 export interface PitchHeroProps {
@@ -40,13 +40,13 @@ export function PitchHero({ model, className }: PitchHeroProps) {
       </div>
 
       <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-        {model.metrics.map((metric, index) => (
+        {model.metrics.map((metric) => (
           <article
             key={metric.id}
             className={cn(
-              "pitch-focus-ring rounded-[var(--pitch-radius-md)] border px-3 py-2 transition-shadow hover:shadow-[0_10px_20px_rgba(2,111,134,0.14)]",
+              "pitch-kpi-card pitch-focus-ring rounded-[var(--pitch-radius-md)] border px-3 py-2",
               toneClass(metric.tone),
-              `pitch-halo-level-${Math.max(1, Math.min(240, (index + 1) * 12))}`
+              metric.id === "stage-2" ? "pitch-stage2-kpi-halo" : undefined
             )}
           >
             <p className="m-0 text-[0.68rem] uppercase tracking-[0.11em]">{metric.label}</p>

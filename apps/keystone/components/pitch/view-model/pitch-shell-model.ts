@@ -1,11 +1,10 @@
-import type { PitchScreenSlug } from "@hitech/contracts";
+import { PITCH_VALUATION_ECONOMICS, type PitchScreenSlug } from "@hitech/contracts";
 import {
   buildPitchDeckViewModel,
   buildScreen01ViewModel,
   buildScreen02ViewModel,
   buildScreen03ViewModel,
-  buildScreen04ViewModel,
-  type PitchDeckViewModel
+  buildScreen04ViewModel
 } from "../../../lib/pitch/deck-view-model";
 import type { PitchShellFrameModel } from "../shell/types";
 
@@ -17,38 +16,42 @@ const HERO_SUBTITLE_BY_SLUG: Partial<Record<PitchScreenSlug, string>> = {
   "03-hitech-os":
     "Infraestructura digital propietaria con trazabilidad y control de activos críticos.",
   "04-valuation":
-    "Narrativa de múltiplo superior con estructura financiera defendible para inversión.",
+    "Deal en 2 etapas: $100k → entrega 30d → +$200k con factura SRG → opción de equity.",
   "05-inventory-foundation":
     "Control room farmacéutico: RBAC, suppliers, SKU y vault en ejecución determinística.",
   "06-shipments-receiving":
     "Control room farmacéutico: customs pack, receiving y quarantine con compuertas de riesgo."
 };
 
-function createHeroMetrics(model: PitchDeckViewModel) {
+function createHeroMetrics() {
+  const economics = PITCH_VALUATION_ECONOMICS;
+  const stage1K = Math.round(economics.deal.stage1CashUsd / 1000);
+  const stage2K = Math.round(economics.deal.stage2CashUsd / 1000);
+
   return [
     {
-      id: "installed-base",
-      label: "Installed Base",
-      value: model.spotlight.installedBase,
+      id: "traction",
+      label: "TRACTION",
+      value: `${economics.params.tractionInvoicedModules} módulos facturados (histórico)`,
       tone: "teal" as const
     },
     {
-      id: "monthly-flow",
-      label: "Monthly Flow",
-      value: model.spotlight.monthlyFlow,
+      id: "today",
+      label: "TODAY",
+      value: `${economics.params.wedgeModules} módulos · entrega 30 días (Etapa 1: $${stage1K}k)`,
       tone: "cyan" as const
     },
     {
-      id: "annual-utility",
-      label: "Annual Utility",
-      value: model.spotlight.annualUtility,
-      tone: "gold" as const
+      id: "cash",
+      label: "CASH",
+      value: "Factura día 30 · pago net 60 (cash ~día 90)",
+      tone: "teal" as const
     },
     {
-      id: "valuation",
-      label: "Valuation",
-      value: model.spotlight.valuationRange,
-      tone: "neutral" as const
+      id: "stage-2",
+      label: "STAGE 2",
+      value: `+$${stage2K}k con factura SRG (habilita ${economics.params.monthlyCadenceModules}/mes → TARGET ${economics.params.targetModules})`,
+      tone: "gold" as const
     }
   ];
 }
@@ -70,7 +73,7 @@ export function buildPitchShellFrameModel(activeSlug?: PitchScreenSlug): PitchSh
         label: "Deck ID",
         value: `${deckModel.meta.deckId}@${deckModel.meta.version}`
       },
-      metrics: createHeroMetrics(deckModel)
+      metrics: createHeroMetrics()
     },
     nav: {
       links: deckModel.links,
@@ -85,12 +88,10 @@ export function buildPitchShellFrameModel(activeSlug?: PitchScreenSlug): PitchSh
     },
     breadcrumbs: [
       {
-        label: "Mission",
-        href: "/"
+        label: "Mission"
       },
       {
-        label: "Pitch",
-        href: "/pitch"
+        label: "Pitch"
       },
       {
         label:

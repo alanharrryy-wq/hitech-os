@@ -1,30 +1,30 @@
+import type { PitchScreen04 } from "@hitech/contracts";
 import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from "@hitech/ui-kit";
 import { buildScreen04ViewModel } from "../../../lib/pitch/deck-view-model";
 import { PitchCardGrid, PitchCardGridItem } from "../layout/pitch-card-grid";
 import { PitchDataChip } from "../layout/pitch-data-chip";
 import { PitchExpandablePanel } from "../layout/pitch-expandable-panel";
 import { PitchSection } from "../layout/pitch-section";
-import { PitchComparisonMeter } from "../visuals/pitch-comparison-meter";
-import { PitchMiniBars } from "../visuals/pitch-mini-bars";
-import { PitchRadialGauge } from "../visuals/pitch-radial-gauge";
-import { PitchSparkline } from "../visuals/pitch-sparkline";
+import {
+  ValuationDeriskVisual,
+  ValuationEquityVisual,
+  ValuationTimelineVisual
+} from "../valuation-visuals";
 
 export interface Screen04ValuationCinematicProps {
+  readonly screen?: PitchScreen04;
   readonly className?: string;
 }
 
-const MULTIPLE_EXPANSION = [2.4, 2.6, 2.9, 3.2, 3.8, 4.4, 5.1, 5.7, 6.0];
-const RISK_CURVE = [72, 66, 61, 57, 51, 47, 42, 38, 34];
-
-export function Screen04ValuationCinematic({ className }: Screen04ValuationCinematicProps) {
-  const model = buildScreen04ViewModel();
+export function Screen04ValuationCinematic({ screen, className }: Screen04ValuationCinematicProps) {
+  const model = buildScreen04ViewModel(screen);
 
   return (
     <PitchSection
       id="valuation"
       eyebrow={model.kicker}
       title={model.title}
-      description="Tres paneles narrativos para múltiplo, riesgo y escalabilidad sin perder tabla contractual."
+      description="Deal en 2 etapas: $100k → entrega 30d → +$200k con factura SRG → opción de equity."
       className={className}
       actions={<PitchDataChip label="Valuation" value={model.combinedLine} tone="gold" />}
     >
@@ -55,50 +55,26 @@ export function Screen04ValuationCinematic({ className }: Screen04ValuationCinem
       </PitchCardGrid>
 
       <div className="grid gap-3 xl:grid-cols-3">
-        <article className="pitch-glass-card pitch-neon-edge grid gap-2 rounded-[var(--pitch-radius-lg)] p-4">
-          <h3 className="m-0 text-sm font-semibold text-[color:var(--pitch-ink)]">Multiple expansion</h3>
-          <PitchSparkline
-            points={MULTIPLE_EXPANSION}
-            label="2.5x -> 6x range"
-            stroke="#AB7B26"
-            fill="rgba(171,123,38,0.16)"
-          />
-          <PitchComparisonMeter
-            leftLabel="Traditional"
-            rightLabel="Hybrid"
-            leftValue={25}
-            rightValue={60}
-          />
+        <article className="pitch-static-card pitch-glass-card pitch-neon-edge grid gap-2 rounded-[var(--pitch-radius-lg)] p-4">
+          <h3 className="m-0 text-sm font-semibold text-[color:var(--pitch-ink)]">Ciclo de caja (D0→D30→D90)</h3>
+          <ValuationTimelineVisual />
         </article>
 
-        <article className="pitch-glass-card pitch-neon-edge grid gap-2 rounded-[var(--pitch-radius-lg)] p-4">
-          <h3 className="m-0 text-sm font-semibold text-[color:var(--pitch-ink)]">Risk profile</h3>
-          <PitchSparkline
-            points={RISK_CURVE}
-            label="Risk reduction trajectory"
-            stroke="#026F86"
-            fill="rgba(2,111,134,0.15)"
-          />
-          <PitchMiniBars
-            series={[
-              { label: "Traditional", value: model.derived.riskScale[0] ?? 60, tone: "gold" },
-              { label: "Hybrid", value: model.derived.riskScale[1] ?? 40, tone: "teal" }
-            ]}
-            max={100}
-          />
+        <article className="pitch-static-card pitch-glass-card pitch-neon-edge grid gap-2 rounded-[var(--pitch-radius-lg)] p-4">
+          <h3 className="m-0 text-sm font-semibold text-[color:var(--pitch-ink)]">De-risk por evidencia</h3>
+          <ValuationDeriskVisual />
         </article>
 
-        <article className="pitch-glass-card pitch-neon-edge grid place-items-center rounded-[var(--pitch-radius-lg)] p-4">
-          <PitchRadialGauge
-            value={model.derived.scalabilityScale[1] ?? 85}
-            label="Scalability"
-            valueLabel={`${model.derived.scalabilityScale[1] ?? 85}`}
-            tone="cyan"
-          />
+        <article className="pitch-static-card pitch-glass-card pitch-neon-edge grid rounded-[var(--pitch-radius-lg)] p-4">
+          <h3 className="m-0 text-sm font-semibold text-[color:var(--pitch-ink)]">Equity outcome (cap 4–6M)</h3>
+          <ValuationEquityVisual />
         </article>
       </div>
 
       <PitchExpandablePanel title="Canonical valuation table" subtitle="Contract fixtures visible" defaultOpen>
+        <p className="m-0 mb-3 text-xs text-[color:rgba(4,18,25,0.68)]">
+          Canonical valuation table: referencia contractual; el equity final depende de cap 4–6M y ejecución 12/mes.
+        </p>
         <div className="overflow-x-auto">
           <Table>
             <TableHead>

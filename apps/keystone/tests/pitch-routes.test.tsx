@@ -45,7 +45,7 @@ describe("pitch route smoke", () => {
     const html = renderPage(PitchIndustrialFlowPage({ searchParams: {} }));
 
     expect(html).toContain("MOTOR 1 — FLUJO INDUSTRIAL RECURRENTE");
-    expect(html).toContain("420 módulos totales");
+    expect(html).toContain("TARGET 420 módulos");
     expect(html).toContain("12 módulos mensuales");
     expect(html).toContain("$228k facturación mensual");
   });
