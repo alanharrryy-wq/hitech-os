@@ -6006,6 +6006,26 @@
   animation: pitchHeroTitleIn 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* Stabilize stage overlays on screen 02 to avoid visible flashing with motion-enabled layer profiles. */
+.pitch-shell-root[data-pitch-screen="02-industrial-flow"] {
+  --fx-grain-op: 0.06;
+  --fx-haze-op: 0.08;
+  --fx-vignette-op: 0.14;
+}
+
+.pitch-shell-root[data-pitch-screen="02-industrial-flow"] .stage-overlays > .noise,
+.pitch-shell-root[data-pitch-screen="02-industrial-flow"] .stage-overlays > .scanlines {
+  animation: none !important;
+  transform: none !important;
+}
+
+.pitch-shell-root[data-pitch-screen="02-industrial-flow"] .stage-overlays > .noise,
+.pitch-shell-root[data-pitch-screen="02-industrial-flow"] .stage-overlays > .scanlines,
+.pitch-shell-root[data-pitch-screen="02-industrial-flow"] .stage-overlays > .haze,
+.pitch-shell-root[data-pitch-screen="02-industrial-flow"] .stage-overlays > .vignette {
+  transition: opacity 120ms ease-out;
+}
+
 @media (max-width: 767px) {
   .pitch-shell-root {
     padding-left: max(10px, env(safe-area-inset-left));
