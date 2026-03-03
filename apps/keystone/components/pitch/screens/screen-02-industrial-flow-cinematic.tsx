@@ -106,13 +106,24 @@ function generateTrend(
   maxDrop: number
 ): readonly number[] {
   const values: number[] = [start];
+  const phase = random() * Math.PI * 2;
 
   for (let index = 1; index < points; index += 1) {
     const previous = values[index - 1] ?? start;
     const step = minStep + random() * (maxStep - minStep);
-    const jitter = (random() - 0.5) * 1.4;
-    const next = Math.round(Math.max(previous - maxDrop, previous + step + jitter));
+    const progress = index / (points - 1 || 1);
+    const wave = Math.sin(progress * Math.PI * 1.75 + phase) * 0.45;
+    const jitter = (random() - 0.5) * 0.85;
+    const projected = previous + step + wave + jitter;
+    const bounded = Math.max(previous - maxDrop, projected);
+    const next = Number(Math.min(96, Math.max(70, bounded)).toFixed(1));
     values.push(next);
+  }
+
+  const first = values[0] ?? start;
+  const last = values[values.length - 1] ?? start;
+  if (last <= first) {
+    values[values.length - 1] = Number((first + minStep + 1.2).toFixed(1));
   }
 
   return values;
@@ -120,11 +131,11 @@ function generateTrend(
 
 function buildDeterministicSeries(seedText: string): DeterministicSeries {
   const random = mulberry32(hashSeed(seedText));
-  const coverage = generateTrend(random, 74, 10, 0.8, 2.1, 1);
-  const evidence = generateTrend(random, 73, 10, 1.1, 2.4, 1);
+  const coverage = generateTrend(random, 74.2, 12, 0.55, 1.35, 0.7);
+  const evidence = generateTrend(random, 73.4, 12, 0.7, 1.6, 0.7);
   const bars = BAR_LABELS.map((label, index) => {
-    const base = 77 + index * 2.3;
-    const value = Math.round(Math.min(92, Math.max(72, base + (random() - 0.5) * 7)));
+    const base = 78 + index * 2.15;
+    const value = Math.round(Math.min(93, Math.max(72, base + (random() - 0.5) * 8.4)));
     const tone: DeterministicSeries["bars"][number]["tone"] =
       index % 3 === 0 ? "teal" : index % 3 === 1 ? "gold" : "cyan";
     return {
