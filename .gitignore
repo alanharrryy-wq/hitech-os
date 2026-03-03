@@ -32,6 +32,9 @@ venv/
 *.temp
 *.cache
 .cache/
+logs/
+# ui_map timestamped runs are ephemeral diagnostics
+tools/ui_map/_logs/[0-9]*/
 
 # OS/editor
 .DS_Store
