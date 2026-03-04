@@ -23,8 +23,10 @@ if __package__ in {None, ""}:
     from factory.preflight import run_preflight
     from factory.run_id import next_run_identity
     from factory.schemas import contracts_check, validate_payload
+    from factory.skills_index import EXPECTED_FACTORY_ROLES, generate_and_write_skills_index
     from factory.smoke import run_smoke
     from factory.status_eval import BLOCKED, PASS, evaluate_status, make_check, status_exit_code
+    from factory.unicodex import disable_unicodex, enable_unicodex, reconcile_unicodex, status_unicodex
     from factory.version import get_version
     from factory.worktrees import create_worktrees, open_worktrees, sync_worktrees, verify_worktrees
 else:
@@ -37,8 +39,10 @@ else:
     from .preflight import run_preflight
     from .run_id import next_run_identity
     from .schemas import contracts_check, validate_payload
+    from .skills_index import EXPECTED_FACTORY_ROLES, generate_and_write_skills_index
     from .smoke import run_smoke
     from .status_eval import BLOCKED, PASS, evaluate_status, make_check, status_exit_code
+    from .unicodex import disable_unicodex, enable_unicodex, reconcile_unicodex, status_unicodex
     from .version import get_version
     from .worktrees import create_worktrees, open_worktrees, sync_worktrees, verify_worktrees
 
@@ -309,6 +313,7 @@ def cmd_integrate(args: argparse.Namespace) -> int:
         cli_overrides={"run": run_overrides} if run_overrides else {},
     )
     payload = integrate_run(args.run_id, workers=workers, config=config)
+    payload["unicodex"] = reconcile_unicodex(run_id=args.run_id)
     _emit(payload, args.json_out)
     return status_exit_code(_status_from_payload(payload))
 
@@ -444,6 +449,7 @@ def cmd_oneshot(args: argparse.Namespace) -> int:
     integrate_payload = integrate_run(run_id, workers=workers, config=config)
     stage_payloads["integrate"] = integrate_payload
     stage_checks.append(make_check("integrate", rc=0 if _status_from_payload(integrate_payload) == PASS else 2, required=True, actor=INTEGRATOR))
+    unicodex_payload = reconcile_unicodex(run_id=run_id)
 
     evaluation = evaluate_status(required_checks=stage_checks, blockers=[], schema_errors=[], internal_errors=[])
     final_report = str(integrate_payload.get("report", ""))
@@ -474,6 +480,7 @@ def cmd_oneshot(args: argparse.Namespace) -> int:
         "status": evaluation.status,
         "run_id": run_id,
         "stages": stage_payloads,
+        "unicodex": unicodex_payload,
         "summary": {
             "final_report": final_report,
             "required_checks": [dict(item) for item in evaluation.required_checks],
@@ -658,8 +665,69 @@ def cmd_watch(args: argparse.Namespace) -> int:
             "tail": ledger_rows[-25:],
         },
     }
+    payload["unicodex"] = reconcile_unicodex(run_id=args.run_id)
     _emit(payload, args.json_out)
     return status_exit_code(_status_from_payload(payload))
+
+
+def cmd_skills_index(args: argparse.Namespace) -> int:
+    payload = generate_and_write_skills_index()
+    _emit(payload, args.json_out)
+    return status_exit_code(_status_from_payload(payload, fallback=PASS))
+
+
+def cmd_skills_print(args: argparse.Namespace) -> int:
+    payload = generate_and_write_skills_index()
+    index = payload.get("index", {}) if isinstance(payload, dict) else {}
+    roles = index.get("roles", {}) if isinstance(index, dict) else {}
+    role_sources = index.get("role_sources", {}) if isinstance(index, dict) else {}
+    selected_role = str(args.role).strip() if getattr(args, "role", None) else ""
+    if selected_role:
+        selected = {
+            selected_role: {
+                "source_role": str(role_sources.get(selected_role, "")).strip(),
+                "skills": list(roles.get(selected_role, [])),
+            }
+        }
+    else:
+        selected = {
+            role: {
+                "source_role": str(role_sources.get(role, "")).strip(),
+                "skills": list(roles.get(role, [])),
+            }
+            for role in EXPECTED_FACTORY_ROLES
+        }
+    out = {
+        "status": PASS,
+        "repo_root": payload.get("repo_root", ""),
+        "skills_root": payload.get("skills_root", ".codex/skills"),
+        "index_json": payload.get("index_json", ""),
+        "index_md": payload.get("index_md", ""),
+        "roles": selected,
+    }
+    _emit(out, args.json_out)
+    return status_exit_code(PASS)
+
+
+def cmd_unicodex(args: argparse.Namespace) -> int:
+    action = str(args.action).strip().lower()
+    if action == "enable":
+        payload = enable_unicodex(
+            defer_until_run_id=args.defer_until_run_id,
+            reason=args.reason,
+            requested_by=args.requested_by,
+            force_now=bool(args.force_now),
+        )
+    elif action == "disable":
+        payload = disable_unicodex(clear_pending=not bool(args.keep_pending), reason=args.reason)
+    elif action == "reconcile":
+        payload = reconcile_unicodex(run_id=args.run_id)
+    elif action == "status":
+        payload = status_unicodex(run_id=args.run_id)
+    else:
+        payload = {"status": BLOCKED, "detail": f"unsupported unicodex action: {args.action}"}
+    _emit(payload, args.json_out)
+    return status_exit_code(_status_from_payload(payload, fallback=PASS))
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -772,6 +840,23 @@ def build_parser() -> argparse.ArgumentParser:
     watch = sub.add_parser("watch", help="Summarize run status including meaningful gate verdict")
     watch.add_argument("--run-id", required=True)
     watch.set_defaults(func=cmd_watch)
+
+    unicodex = sub.add_parser("unicodex", help="Manage UNICODEX activation without interrupting active runs")
+    unicodex.add_argument("action", choices=["enable", "disable", "status", "reconcile"])
+    unicodex.add_argument("--run-id", help="Run id to inspect or reconcile")
+    unicodex.add_argument("--defer-until-run-id", help="Explicit run id to wait for before activation")
+    unicodex.add_argument("--force-now", action="store_true", help="Enable immediately even if there are active runs")
+    unicodex.add_argument("--reason", default="operator_request", help="Audit reason for state changes")
+    unicodex.add_argument("--requested-by", default="operator", help="Requester tag for deferred activation")
+    unicodex.add_argument("--keep-pending", action="store_true", help="Keep pending request when disabling")
+    unicodex.set_defaults(func=cmd_unicodex)
+
+    skills_index = sub.add_parser("skills:index", help="Build deterministic skills index from .codex/skills")
+    skills_index.set_defaults(func=cmd_skills_index)
+
+    skills_print = sub.add_parser("skills:print", help="Print indexed skills for one role or all roles")
+    skills_print.add_argument("--role", choices=EXPECTED_FACTORY_ROLES, help="Factory role to print")
+    skills_print.set_defaults(func=cmd_skills_print)
 
     return parser
 
