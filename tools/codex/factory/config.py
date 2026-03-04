@@ -31,6 +31,7 @@ def default_factory_config() -> dict[str, Any]:
             "base_ref": "HEAD",
             "strict_collision_mode": True,
             "allow_identical_patch_overlap": False,
+            "enforce_anti_padding_gate": False,
             "quarantine_on_suspicious_bundle": True,
             "auto_closeout_workers": True,
             "auto_preflight_repair": True,

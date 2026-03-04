@@ -305,6 +305,7 @@ def _render_final_report(
 ) -> str:
     gate = meaningful_gate or {}
     anti = anti_padding or {}
+    anti_blocked_effective = int(anti.get("effective_blocked_count", anti.get("blocked_count", 0)))
     completion = worker_completion or {}
     watch = ledger_watch or {}
     gate_verdict = str(gate.get("verdict", "N/A"))
@@ -321,7 +322,7 @@ def _render_final_report(
         f"- Hidden overlaps: {len(overlap_report.get('hidden_overlaps', []))}",
         f"- Invalid FILES_CHANGED paths: {len(overlap_report.get('invalid_paths', []))}",
         f"- Meaningful gate verdict: {gate_verdict}",
-        f"- Anti-padding blocked workers: {anti.get('blocked_count', 0)}",
+        f"- Anti-padding blocked workers: {anti_blocked_effective}",
         f"- NOOP declared: {str(gate_noop).lower()}",
         f"- Workers completed: {completion.get('done', 0)}/{completion.get('total', len(collected))}",
         f"- Ledger watch events: {watch.get('count', 0)}",
@@ -517,6 +518,7 @@ def integrate_run(
     run_cfg = dict(cfg.get("run", {})) if isinstance(cfg.get("run"), Mapping) else {}
     strict_mode = bool(run_cfg.get("strict_collision_mode", True))
     allow_identical_patch_overlap = bool(run_cfg.get("allow_identical_patch_overlap", False))
+    enforce_anti_padding_gate = bool(run_cfg.get("enforce_anti_padding_gate", False))
     integrator_watch_ledger = bool(run_cfg.get("integrator_watch_ledger", True))
     integrator_wait_for_workers = bool(run_cfg.get("integrator_wait_for_workers", True))
     started_at = iso_utc()
@@ -656,12 +658,16 @@ def integrate_run(
             for row in anti_padding_payload.get("blocked", [])
             if isinstance(row, Mapping)
         ]
+        effective_anti_padding_blockers = anti_padding_blockers if enforce_anti_padding_gate else []
+        anti_padding_payload["enforced"] = bool(enforce_anti_padding_gate)
+        anti_padding_payload["effective_blocked_count"] = len(effective_anti_padding_blockers)
         required_checks.append(
             make_check(
                 "anti_padding_gate",
-                rc=0 if not anti_padding_blockers else 2,
+                rc=0 if not effective_anti_padding_blockers else 2,
                 required=True,
                 detail=(
+                    f"enforced={str(enforce_anti_padding_gate).lower()} "
                     f"blocked={len(anti_padding_blockers)} "
                     f"required_level={anti_padding_payload.get('required_sanction_level', 'OK')} "
                     f"base_target={anti_padding_payload.get('base_loc_target', 0)} "
@@ -675,7 +681,7 @@ def integrate_run(
             required_checks=required_checks,
             optional_checks=optional_checks,
             schema_errors=schema_errors,
-            blockers=blockers + anti_padding_blockers,
+            blockers=blockers + effective_anti_padding_blockers,
             internal_errors=[],
         )
 
@@ -790,7 +796,7 @@ def integrate_run(
                 required_checks=required_checks,
                 optional_checks=optional_checks,
                 schema_errors=schema_errors,
-                blockers=blockers + policy_errors + anti_padding_blockers,
+                blockers=blockers + policy_errors + effective_anti_padding_blockers,
                 internal_errors=[],
             )
             final_status = evaluation.status
@@ -854,7 +860,7 @@ def integrate_run(
             required_checks=required_checks,
             optional_checks=optional_checks,
             schema_errors=schema_errors,
-            blockers=blockers + policy_errors + anti_padding_blockers + gate_blockers,
+            blockers=blockers + policy_errors + effective_anti_padding_blockers + gate_blockers,
             internal_errors=[],
         )
         final_status = evaluation.status
@@ -931,7 +937,7 @@ def integrate_run(
                     "worker_blockers": len(worker_blockers),
                     "overlap_blockers": len(overlap_blockers),
                     "scope_blockers": len(scope_blockers),
-                    "anti_padding_blockers": len(anti_padding_blockers),
+                    "anti_padding_blockers": len(effective_anti_padding_blockers),
                     "report": (z_dir / "FINAL_REPORT.txt").as_posix(),
                     "path": (RUNS_DIR / run_id).as_posix(),
                     "attestations": attestations,

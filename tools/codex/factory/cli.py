@@ -349,7 +349,10 @@ def cmd_oneshot(args: argparse.Namespace) -> int:
     stage_payloads: dict[str, dict[str, Any]] = {}
     stage_checks: list[dict[str, Any]] = []
 
-    preflight_payload = run_preflight(run_id, auto_repair=bool(run_cfg.get("auto_preflight_repair", True)))
+    preflight_payload = run_preflight(
+        run_id,
+        auto_repair=bool(run_cfg.get("auto_preflight_repair", True) and not bool(args.dry_run)),
+    )
     append_event(
         {
             "schema_version": 1,
