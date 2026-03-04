@@ -1,0 +1,151 @@
+{
+  "version": "1.0.0",
+  "name": "Pitch Engine Repo DoD",
+  "generatedBy": "B_tooling",
+  "checks": [
+    {
+      "id": "layer-dom-contract",
+      "title": "Layer DOM contract presence",
+      "description": "Ensure canonical data-layer-* hooks exist in UI kit and Keystone tests.",
+      "ownership": "shared",
+      "severity": "high",
+      "autofix": null
+    },
+    {
+      "id": "scene-ready-signal",
+      "title": "Scene ready signal exists",
+      "description": "Verify data-scene-ready=1 exists in scene runtime surfaces.",
+      "ownership": "shared",
+      "severity": "high",
+      "autofix": null
+    },
+    {
+      "id": "scene-schema-versioned-runtime-validation",
+      "title": "Scene schema version + validation + canonical URL roundtrip",
+      "description": "Ensure scene schema has explicit version and route roundtrip invariants.",
+      "ownership": "shared",
+      "severity": "high",
+      "autofix": null
+    },
+    {
+      "id": "route-discovery-output",
+      "title": "Route discovery outputs exist",
+      "description": "Check route discovery artifact files and deterministic order.",
+      "ownership": "shared",
+      "severity": "medium",
+      "autofix": "autofix-regenerate-route-discovery"
+    },
+    {
+      "id": "dev-only-404-in-prod",
+      "title": "Dev-only access returns 404 in prod",
+      "description": "Validate guardrails for development-only endpoints.",
+      "ownership": "shared",
+      "severity": "high",
+      "autofix": null
+    },
+    {
+      "id": "deterministic-runner-commands",
+      "title": "Deterministic runner commands are wired",
+      "description": "Ensure render/doctors/onebutton commands exist in package scripts.",
+      "ownership": "B_tooling",
+      "severity": "high",
+      "autofix": null
+    },
+    {
+      "id": "artifacts-index-exists",
+      "title": "Artifacts index exists",
+      "description": "Ensure pitch and scene artifact indexes exist and are normalized.",
+      "ownership": "B_tooling",
+      "severity": "high",
+      "autofix": "autofix-regenerate-indexes"
+    },
+    {
+      "id": "retention-pin-present",
+      "title": "Retention and pin workflows present",
+      "description": "Validate keep-last, pin marker, and prune CLI support.",
+      "ownership": "B_tooling",
+      "severity": "high",
+      "autofix": null
+    },
+    {
+      "id": "claim-workflow-governance-gate",
+      "title": "Claim workflow and governance gate present",
+      "description": "Verify governance claim workflows are discoverable.",
+      "ownership": "shared",
+      "severity": "medium",
+      "autofix": null
+    },
+    {
+      "id": "capabilities-registry-prod-off",
+      "title": "Capabilities registry with prod forced off",
+      "description": "Check capabilities registry and production defaults.",
+      "ownership": "shared",
+      "severity": "high",
+      "autofix": null
+    },
+    {
+      "id": "director-timeline-sequence-keyframes",
+      "title": "Director/timeline/sequence/keyframe capture present",
+      "description": "Ensure timeline + sequence artifacts include deterministic keyframes.",
+      "ownership": "B_tooling",
+      "severity": "high",
+      "autofix": null
+    },
+    {
+      "id": "tests-exist-and-pass",
+      "title": "Tooling tests exist and pass",
+      "description": "Validate pitch-engine-tooling tests are present and passing.",
+      "ownership": "B_tooling",
+      "severity": "high",
+      "autofix": null
+    },
+    {
+      "id": "doctor-command-present",
+      "title": "Doctor command present",
+      "description": "Check doctor scripts and launchers exist and are executable.",
+      "ownership": "B_tooling",
+      "severity": "high",
+      "autofix": null
+    },
+    {
+      "id": "one-button-runner-present",
+      "title": "One-button runner present",
+      "description": "Check one-button scripts for pitch and scene workflows.",
+      "ownership": "B_tooling",
+      "severity": "high",
+      "autofix": null
+    },
+    {
+      "id": "player-offline-static",
+      "title": "Offline static player assets",
+      "description": "Ensure static player files exist under each run.",
+      "ownership": "B_tooling",
+      "severity": "high",
+      "autofix": null
+    },
+    {
+      "id": "diff-notes-presence",
+      "title": "Diff notes per scene and sequence",
+      "description": "Ensure DIFF_NOTES.md exists and is writable.",
+      "ownership": "B_tooling",
+      "severity": "medium",
+      "autofix": null
+    },
+    {
+      "id": "per-sequence-reports",
+      "title": "Per-sequence report artifacts",
+      "description": "Ensure sequence report.md and report.json are generated.",
+      "ownership": "B_tooling",
+      "severity": "high",
+      "autofix": null
+    },
+    {
+      "id": "run-retention-invariant",
+      "title": "Run retention invariant",
+      "description": "Ensure retention metadata and limits are enforced.",
+      "ownership": "B_tooling",
+      "severity": "high",
+      "autofix": "autofix-normalize-artifacts-index"
+    }
+  ]
+}
