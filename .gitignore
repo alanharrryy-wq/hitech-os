@@ -20,6 +20,12 @@ __pycache__/
 *.pyd
 .venv/
 venv/
+**/.venv/
+**/venv/
+**/__pycache__/
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
 
 # Environment / secrets
 .env
@@ -100,7 +106,7 @@ tools/codex/verify/
 factory/01 Mirror/
 
 # --- HITECH ROOT CLUTTER (auto) ---
-# Root should stay clean: move reports/logs/packs into docs/_root_archive or tools/_local
+# Root should stay clean: move reports/logs/packs into _attic/docs_dump or tools/_local
 /FINAL_REPORT*.txt
 /FINAL_REPORT*.md
 /DISPATCH_*DIFF*.txt
@@ -120,3 +126,17 @@ artifacts/keystone-scene-studio/
 apps/keystone/playwright-report/
 apps/keystone/test-results/
 tools/_local/context_exports/
+
+# --- Docs Governor hygiene ---
+docs/_root_archive/
+docs/_archive/
+docs/**/run-reports/
+docs/**/*.zip
+docs/**/*.7z
+docs/**/*.rar
+docs/**/*.tar
+docs/**/*.gz
+tools/_outputs/
+tools/**/_outputs/
+tools/**/logs/
+tools/**/logs/**

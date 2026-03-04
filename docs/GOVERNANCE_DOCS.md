@@ -36,7 +36,7 @@ Disallowed documentation directories:
 - `design_docs/`
 - `random_docs/`
 
-Any violation in disallowed locations fails governance checks.
+Archives, snapshots, and tooling dumps are not canonical documentation and must live under `_attic/` (never under `docs/`).
 
 ## ADR Process
 
@@ -65,15 +65,19 @@ ADR lifecycle:
 - `docs/security/`: Security standards and operational controls.
 - `docs/architecture/`: System design documentation.
 - `docs/releases/`: Release notes and release-level change context.
-- `docs/_generated/<RUN_ID>/`: Agent-generated docs sandbox for one isolated run.
+- `docs/_generated/<RUN_ID>/`: Multi-agent generated docs sandbox for one isolated run.
+- `_attic/docs_dump/`: Archived documentation dumps moved out of canonical docs.
+- `_attic/snapshots/`: Snapshot materials and deep captures.
+- `_attic/tool_outputs/`: Tool output bundles and logs.
 
 ## Multi-Agent Documentation Rules
 
 1. Agents may create generated docs only in `docs/_generated/<RUN_ID>/`.
-2. Each run folder must include `index.md`.
-3. One run must not write into another run folder.
-4. Agents must not create ad-hoc documentation directories.
-5. New docs with duplicate names are blocked; high similarity names are warned.
+2. Each `docs/_generated/<RUN_ID>/` folder must include `index.md`.
+3. Generated docs must remain shallow (`docs` depth must be `<= 5`).
+4. One run must not write into another run folder.
+5. Agents must not create ad-hoc documentation directories.
+6. Bulk outputs, archives, and snapshots must go to `_attic/`, not `docs/`.
 
 ## Examples
 
@@ -82,9 +86,11 @@ Allowed:
 - `docs/runbooks/database-recovery.md`
 - `docs/architecture/event-flow.md`
 - `docs/_generated/20260304T101500Z/index.md`
+- `_attic/docs_dump/_root_archive/...`
 
 Disallowed:
 
 - `notes/meeting-summary.md`
 - `random_docs/idea.md`
-- `tools/README-extra.md`
+- `docs/_root_archive/...`
+- `docs/_generated/20260304T101500Z/` (without `index.md`)

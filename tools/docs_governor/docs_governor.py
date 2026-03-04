@@ -25,6 +25,10 @@ ALLOWED_ROOT_DOC_FILES = {
     "CLA.md",
 }
 
+NON_DOC_ZONES = {
+    "_attic",
+}
+
 ALLOWED_DOC_TOP_LEVEL_DIRS = {
     "adr",
     "runbooks",
@@ -60,8 +64,6 @@ SKIP_DIRS = {
     ".ruff_cache",
     "_codex_worktrees",
 }
-
-DOC_EXTENSIONS = {".md", ".rst", ".adoc", ".txt"}
 ADR_PATTERN = re.compile(r"^(\d{4})-[a-z0-9][a-z0-9-]*\.md$")
 RUN_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 SIMILARITY_THRESHOLD = 70.0
@@ -123,6 +125,8 @@ def collect_repo_files_and_disallowed_dirs(
             rel_candidate_path = normalize_relpath(rel_candidate)
             if directory in DISALLOWED_DOC_DIRS:
                 disallowed_dirs.append(rel_candidate_path)
+            if rel_dir == Path(".") and directory in NON_DOC_ZONES:
+                continue
             if directory in SKIP_DIRS:
                 continue
             kept_dirs.append(directory)
@@ -142,9 +146,9 @@ def is_doc_file(rel_path: Path) -> bool:
         return False
     if rel_path.parts[0].lower() == "docs":
         return True
-    if rel_path.name in ALLOWED_ROOT_DOC_FILES:
+    if len(rel_path.parts) == 1 and rel_path.name in ALLOWED_ROOT_DOC_FILES:
         return True
-    return rel_path.suffix.lower() in DOC_EXTENSIONS
+    return False
 
 
 def get_new_files(repo_root: Path, base_ref: str | None) -> tuple[list[Path], list[str]]:
@@ -629,6 +633,7 @@ def main() -> int:
             ],
             "allowed_root_docs": sorted(ALLOWED_ROOT_DOC_FILES),
             "allowed_docs_top_level_dirs": sorted(ALLOWED_DOC_TOP_LEVEL_DIRS),
+            "non_doc_zones": sorted(NON_DOC_ZONES),
             "disallowed_dirs": sorted(DISALLOWED_DOC_DIRS),
             "similarity_warn_threshold": SIMILARITY_THRESHOLD,
             "docs_max_depth": MAX_DOC_DEPTH,
