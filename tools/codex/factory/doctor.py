@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib.util
 import json
 import shutil
 import sys
@@ -63,6 +64,34 @@ def _check_meaningful_gate_contract() -> dict[str, Any]:
     }
 
 
+def _check_meaningful_gate_module() -> dict[str, Any]:
+    gate_path = REPO_ROOT / "tools" / "codex" / "verify" / "meaningful_gate.py"
+    if gate_path.exists():
+        return {
+            "check": "meaningful_gate_module",
+            "status": "PASS",
+            "detail": gate_path.as_posix(),
+            "next_action": "",
+        }
+
+    # Optional in lightweight distributions; integrator has an internal fallback.
+    spec = importlib.util.find_spec("tools.codex.factory.integrator")
+    if spec is not None:
+        return {
+            "check": "meaningful_gate_module",
+            "status": "WARN",
+            "detail": "missing file; internal fallback is active",
+            "next_action": "",
+        }
+
+    return {
+        "check": "meaningful_gate_module",
+        "status": "BLOCKED",
+        "detail": "missing file and fallback unavailable",
+        "next_action": f"Restore `{gate_path.as_posix()}` or enable fallback.",
+    }
+
+
 def run_doctor(config_path: str | None = None) -> dict[str, Any]:
     checks: list[dict[str, Any]] = []
     checks.append(
@@ -78,7 +107,7 @@ def run_doctor(config_path: str | None = None) -> dict[str, Any]:
     checks.append(_check_path(REPO_ROOT / ".git", required=True))
     checks.append(_check_path(REPO_ROOT / "tools" / "codex" / "run.py", required=True))
     checks.append(_check_path(REPO_ROOT / "tools" / "codex" / "validation.json", required=True))
-    checks.append(_check_path(REPO_ROOT / "tools" / "codex" / "verify" / "meaningful_gate.py", required=True))
+    checks.append(_check_meaningful_gate_module())
     checks.append(_check_path(RUNS_DIR, required=False))
 
     config_errors: list[str] = []
