@@ -44,7 +44,7 @@ def utc_now_iso() -> str:
 
 
 def file_timestamp_utc() -> str:
-    return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
 
 
 def is_excluded(relative_path: Path) -> bool:

@@ -25,6 +25,16 @@ ALLOWED_ROOT_DOC_FILES = {
     "CLA.md",
 }
 
+ALLOWED_DOC_TOP_LEVEL_DIRS = {
+    "adr",
+    "runbooks",
+    "playbooks",
+    "security",
+    "architecture",
+    "releases",
+    "_generated",
+}
+
 DISALLOWED_DOC_DIRS = {
     "docs2",
     "documentation",
@@ -53,6 +63,7 @@ SKIP_DIRS = {
 
 DOC_EXTENSIONS = {".md", ".rst", ".adoc", ".txt"}
 ADR_PATTERN = re.compile(r"^(\d{4})-[a-z0-9][a-z0-9-]*\.md$")
+RUN_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 SIMILARITY_THRESHOLD = 70.0
 MAX_DOC_DEPTH = 5
 
@@ -152,12 +163,11 @@ def get_new_files(repo_root: Path, base_ref: str | None) -> tuple[list[Path], li
                 if not line:
                     continue
                 new_files.add(normalize_relpath(line))
-            return sorted(new_files, key=lambda p: p.as_posix()), warnings
 
     status_result = run_git(repo_root, ["status", "--porcelain"])
     if status_result.returncode != 0:
         warnings.append("git status failed; unable to detect new files.")
-        return [], warnings
+        return sorted(new_files, key=lambda p: p.as_posix()), warnings
 
     for raw in status_result.stdout.splitlines():
         if len(raw) < 3:
@@ -191,10 +201,68 @@ def check_doc_locations(
 ) -> None:
     for doc in new_docs:
         parts = doc.parts
-        if parts and parts[0].lower() == "docs":
+        if not parts:
             continue
-        if len(parts) == 1 and doc.name.lower() in allowed_root_lower:
+
+        if len(parts) == 1:
+            if doc.name.lower() in allowed_root_lower:
+                continue
+            failures.append(
+                Finding(
+                    rule="allowed_locations",
+                    path=doc.as_posix(),
+                    message=(
+                        "Root documentation files must be one of: "
+                        + ", ".join(sorted(ALLOWED_ROOT_DOC_FILES))
+                        + "."
+                    ),
+                )
+            )
             continue
+
+        if parts[0].lower() == "docs":
+            if len(parts) == 2:
+                continue
+
+            top_level = parts[1].lower()
+            if top_level not in ALLOWED_DOC_TOP_LEVEL_DIRS:
+                failures.append(
+                    Finding(
+                        rule="allowed_locations",
+                        path=doc.as_posix(),
+                        message=(
+                            "Documentation under docs/ must be inside: docs/, docs/adr/, "
+                            "docs/runbooks/, docs/playbooks/, docs/security/, "
+                            "docs/architecture/, docs/releases/, or docs/_generated/<RUN_ID>/."
+                        ),
+                    )
+                )
+                continue
+
+            if top_level == "_generated":
+                if len(parts) < 4:
+                    failures.append(
+                        Finding(
+                            rule="generated_sandbox",
+                            path=doc.as_posix(),
+                            message="Generated docs must use docs/_generated/<RUN_ID>/... structure.",
+                        )
+                    )
+                    continue
+                run_id = parts[2]
+                if not RUN_ID_PATTERN.match(run_id):
+                    failures.append(
+                        Finding(
+                            rule="generated_sandbox",
+                            path=doc.as_posix(),
+                            message=(
+                                "Generated docs RUN_ID contains invalid characters. "
+                                "Allowed: letters, numbers, dot, underscore, dash."
+                            ),
+                        )
+                    )
+            continue
+
         failures.append(
             Finding(
                 rule="allowed_locations",
@@ -255,6 +323,15 @@ def check_adr_structure(repo_root: Path, all_docs: list[Path], failures: list[Fi
             continue
 
         number = int(match.group(1))
+        if number == 0:
+            failures.append(
+                Finding(
+                    rule="adr_structure",
+                    path=doc.as_posix(),
+                    message="ADR numbering starts at 0001. 0000 is reserved for the ADR template.",
+                )
+            )
+            continue
         if number in adr_numbers:
             failures.append(
                 Finding(
@@ -271,14 +348,19 @@ def check_duplicate_names(
     new_docs: list[Path], all_docs: list[Path], failures: list[Finding], warnings: list[Finding]
 ) -> None:
     existing_docs = [doc for doc in all_docs if doc not in new_docs]
-    existing_names = [doc.stem.lower() for doc in existing_docs]
-    existing_name_set = set(existing_names)
-    existing_unique_names = sorted(existing_name_set)
+    existing_file_names = {doc.name.lower() for doc in existing_docs}
+    existing_stem_map: dict[str, set[str]] = {}
+    for doc in existing_docs:
+        key = doc.stem.lower()
+        existing_stem_map.setdefault(key, set()).add(doc.name.lower())
 
-    seen_new_names: set[str] = set()
+    seen_new_file_names: set[str] = set()
+    warned_pairs: set[tuple[str, str]] = set()
     for new_doc in sorted(new_docs, key=lambda p: p.as_posix()):
-        new_name = new_doc.stem.lower()
-        if new_name in seen_new_names or new_name in existing_name_set:
+        new_file_name = new_doc.name.lower()
+        new_stem = new_doc.stem.lower()
+
+        if new_file_name in seen_new_file_names or new_file_name in existing_file_names:
             failures.append(
                 Finding(
                     rule="duplicate_docs",
@@ -286,20 +368,24 @@ def check_duplicate_names(
                     message="Document name already exists in repository.",
                 )
             )
-        seen_new_names.add(new_name)
+        seen_new_file_names.add(new_file_name)
 
-        for existing_name in existing_unique_names:
-            if existing_name == new_name:
+        for existing_stem in sorted(existing_stem_map):
+            if existing_stem == new_stem:
                 continue
-            score = SequenceMatcher(None, new_name, existing_name).ratio() * 100
+            score = SequenceMatcher(None, new_stem, existing_stem).ratio() * 100
             if score > SIMILARITY_THRESHOLD:
+                pair_key = (new_file_name, existing_stem)
+                if pair_key in warned_pairs:
+                    continue
+                warned_pairs.add(pair_key)
                 warnings.append(
                     Finding(
                         rule="duplicate_similarity",
                         path=new_doc.as_posix(),
                         message=(
                             f"Document name similarity is {score:.1f}% with existing name "
-                            f"'{existing_name}'."
+                            f"'{existing_stem}'."
                         ),
                     )
                 )
@@ -347,8 +433,19 @@ def check_generated_docs_sandbox(repo_root: Path, all_docs: list[Path], failures
                 )
             )
             continue
+        if not RUN_ID_PATTERN.match(entry.name):
+            failures.append(
+                Finding(
+                    rule="generated_sandbox",
+                    path=rel,
+                    message=(
+                        "RUN_ID directory name contains invalid characters. "
+                        "Allowed: letters, numbers, dot, underscore, dash."
+                    ),
+                )
+            )
         index_file = entry / "index.md"
-        if not index_file.exists():
+        if not index_file.exists() or not index_file.is_file():
             failures.append(
                 Finding(
                     rule="generated_sandbox",
@@ -365,6 +462,19 @@ def check_generated_docs_sandbox(repo_root: Path, all_docs: list[Path], failures
                         rule="generated_sandbox",
                         path=doc.as_posix(),
                         message="Generated docs must use docs/_generated/<RUN_ID>/... structure.",
+                    )
+                )
+                continue
+            run_id = doc.parts[2]
+            if not RUN_ID_PATTERN.match(run_id):
+                failures.append(
+                    Finding(
+                        rule="generated_sandbox",
+                        path=doc.as_posix(),
+                        message=(
+                            "Generated docs RUN_ID contains invalid characters. "
+                            "Allowed: letters, numbers, dot, underscore, dash."
+                        ),
                     )
                 )
 
@@ -518,6 +628,7 @@ def main() -> int:
                 "docs/_generated/<RUN_ID>/",
             ],
             "allowed_root_docs": sorted(ALLOWED_ROOT_DOC_FILES),
+            "allowed_docs_top_level_dirs": sorted(ALLOWED_DOC_TOP_LEVEL_DIRS),
             "disallowed_dirs": sorted(DISALLOWED_DOC_DIRS),
             "similarity_warn_threshold": SIMILARITY_THRESHOLD,
             "docs_max_depth": MAX_DOC_DEPTH,
