@@ -22,22 +22,23 @@ $hookFile = Join-Path $hooksDir "pre-commit"
 $markerStart = "# >>> HITECH_DOCS_GOVERNOR >>>"
 $markerEnd = "# <<< HITECH_DOCS_GOVERNOR <<<"
 
-$snippet = @"
-$markerStart
-repo_root=\$(git rev-parse --show-toplevel 2>/dev/null)
-if [ -z "\$repo_root" ]; then
-  repo_root="\$(pwd)"
-fi
-if command -v python >/dev/null 2>&1; then
-  python "\$repo_root/tools/docs_governor/docs_governor.py" --repo "\$repo_root" || exit 1
-elif command -v py >/dev/null 2>&1; then
-  py -3 "\$repo_root/tools/docs_governor/docs_governor.py" --repo "\$repo_root" || exit 1
-else
-  echo "docs-governor: python runtime not found"
-  exit 1
-fi
-$markerEnd
-"@
+$snippetLines = @(
+    $markerStart
+    'repo_root=$(git rev-parse --show-toplevel 2>/dev/null)'
+    'if [ -z "$repo_root" ]; then'
+    '  repo_root="$(pwd)"'
+    'fi'
+    'if command -v python >/dev/null 2>&1; then'
+    '  python "$repo_root/tools/docs_governor/docs_governor.py" --repo "$repo_root" || exit 1'
+    'elif command -v py >/dev/null 2>&1; then'
+    '  py -3 "$repo_root/tools/docs_governor/docs_governor.py" --repo "$repo_root" || exit 1'
+    'else'
+    '  echo "docs-governor: python runtime not found"'
+    '  exit 1'
+    'fi'
+    $markerEnd
+)
+$snippet = ($snippetLines -join "`n")
 
 if (-not (Test-Path -Path $hookFile -PathType Leaf)) {
     Set-Content -Path $hookFile -Value "#!/bin/sh`n" -Encoding UTF8
