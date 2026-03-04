@@ -9,7 +9,14 @@ from typing import Any
 from .common import REPO_ROOT, RUNS_DIR, iso_utc
 from .config import load_factory_config, resolve_config_path
 from .schemas import contracts_check
-from .skills_index import EXPECTED_FACTORY_ROLES, build_skills_index, generate_and_write_skills_index
+from .skills_index import (
+    DEFAULT_SKILLS_ROOT,
+    EXPECTED_FACTORY_ROLES,
+    SKILLS_ROOT_CANDIDATES,
+    build_skills_index,
+    generate_and_write_skills_index,
+    resolve_skills_root,
+)
 
 
 def _check_command(name: str) -> dict[str, Any]:
@@ -65,31 +72,36 @@ def _check_meaningful_gate_contract() -> dict[str, Any]:
 
 
 def _check_skills_root() -> dict[str, Any]:
-    skills_root = REPO_ROOT / ".codex" / "skills"
+    root_info = resolve_skills_root(repo_root=REPO_ROOT)
+    skills_root = Path(str(root_info["path"]))
     exists = skills_root.exists() and skills_root.is_dir()
+    candidates = ", ".join(SKILLS_ROOT_CANDIDATES)
     return {
         "check": "skills_autoload_root",
-        "status": "PASS" if exists else "BLOCKED",
-        "detail": skills_root.as_posix() if exists else f"missing: {skills_root.as_posix()}",
-        "next_action": "" if exists else "Create `.codex/skills` with role folders and SKILL.md files.",
+        "status": "PASS" if exists else "WARN",
+        "detail": skills_root.as_posix() if exists else f"missing candidates: {candidates}",
+        "next_action": ""
+        if exists
+        else f"Create `{DEFAULT_SKILLS_ROOT}` (preferred) with role folders and SKILL.md files.",
     }
 
 
 def _check_skills_docs() -> dict[str, Any]:
-    skills_root = REPO_ROOT / ".codex" / "skills"
+    root_info = resolve_skills_root(repo_root=REPO_ROOT)
+    skills_root = Path(str(root_info["path"]))
     if not skills_root.exists() or not skills_root.is_dir():
         return {
             "check": "skills_autoload_docs",
-            "status": "BLOCKED",
+            "status": "WARN",
             "detail": "skills root is missing",
-            "next_action": "Create `.codex/skills` before generating skills index.",
+            "next_action": f"Create `{DEFAULT_SKILLS_ROOT}` before enabling role-skills auto-load.",
         }
     docs = sorted(skills_root.rglob("SKILL.md"), key=lambda path: (path.as_posix().lower(), path.as_posix()))
     return {
         "check": "skills_autoload_docs",
-        "status": "PASS" if len(docs) > 0 else "BLOCKED",
+        "status": "PASS" if len(docs) > 0 else "WARN",
         "detail": f"skill_docs={len(docs)}",
-        "next_action": "" if docs else "Add at least one `SKILL.md` under `.codex/skills/<role>/`.",
+        "next_action": "" if docs else f"Add at least one `SKILL.md` under `{skills_root.as_posix()}/<role>/`.",
     }
 
 
@@ -105,11 +117,21 @@ def _check_skills_role_coverage() -> dict[str, Any]:
         }
     sources = index.get("role_sources", {}) if isinstance(index, dict) else {}
     missing = [role for role in EXPECTED_FACTORY_ROLES if not str(sources.get(role, "")).strip()]
+    mapped = [role for role in EXPECTED_FACTORY_ROLES if str(sources.get(role, "")).strip()]
+    if not mapped:
+        return {
+            "check": "skills_autoload_role_coverage",
+            "status": "WARN",
+            "detail": "no role mappings discovered (skills root unavailable)",
+            "next_action": f"Add role folders under `{DEFAULT_SKILLS_ROOT}` to enable skills injection.",
+        }
     return {
         "check": "skills_autoload_role_coverage",
         "status": "PASS" if not missing else "BLOCKED",
         "detail": "all roles mapped" if not missing else f"missing role mappings: {','.join(missing)}",
-        "next_action": "" if not missing else "Add direct role folders or legacy-mapped folders under `.codex/skills`.",
+        "next_action": ""
+        if not missing
+        else "Add direct role folders or legacy-mapped folders under the active skills root.",
     }
 
 

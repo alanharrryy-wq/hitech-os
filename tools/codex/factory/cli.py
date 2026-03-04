@@ -23,7 +23,7 @@ if __package__ in {None, ""}:
     from factory.preflight import run_preflight
     from factory.run_id import next_run_identity
     from factory.schemas import contracts_check, validate_payload
-    from factory.skills_index import EXPECTED_FACTORY_ROLES, generate_and_write_skills_index
+    from factory.skills_index import DEFAULT_SKILLS_ROOT, EXPECTED_FACTORY_ROLES, generate_and_write_skills_index
     from factory.smoke import run_smoke
     from factory.status_eval import BLOCKED, PASS, evaluate_status, make_check, status_exit_code
     from factory.unicodex import disable_unicodex, enable_unicodex, reconcile_unicodex, status_unicodex
@@ -39,7 +39,7 @@ else:
     from .preflight import run_preflight
     from .run_id import next_run_identity
     from .schemas import contracts_check, validate_payload
-    from .skills_index import EXPECTED_FACTORY_ROLES, generate_and_write_skills_index
+    from .skills_index import DEFAULT_SKILLS_ROOT, EXPECTED_FACTORY_ROLES, generate_and_write_skills_index
     from .smoke import run_smoke
     from .status_eval import BLOCKED, PASS, evaluate_status, make_check, status_exit_code
     from .unicodex import disable_unicodex, enable_unicodex, reconcile_unicodex, status_unicodex
@@ -703,7 +703,7 @@ def cmd_skills_print(args: argparse.Namespace) -> int:
     out = {
         "status": PASS,
         "repo_root": payload.get("repo_root", ""),
-        "skills_root": payload.get("skills_root", ".codex/skills"),
+        "skills_root": payload.get("skills_root", DEFAULT_SKILLS_ROOT),
         "index_json": payload.get("index_json", ""),
         "index_md": payload.get("index_md", ""),
         "roles": selected,
@@ -854,7 +854,10 @@ def build_parser() -> argparse.ArgumentParser:
     unicodex.add_argument("--keep-pending", action="store_true", help="Keep pending request when disabling")
     unicodex.set_defaults(func=cmd_unicodex)
 
-    skills_index = sub.add_parser("skills:index", help="Build deterministic skills index from .codex/skills")
+    skills_index = sub.add_parser(
+        "skills:index",
+        help="Build deterministic skills index from repo-local skills roots (.codex/skills preferred)",
+    )
     skills_index.set_defaults(func=cmd_skills_index)
 
     skills_print = sub.add_parser("skills:print", help="Print indexed skills for one role or all roles")

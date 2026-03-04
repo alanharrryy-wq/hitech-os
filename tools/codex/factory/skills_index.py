@@ -35,6 +35,12 @@ WORKER_TO_FACTORY_ROLE: dict[str, str] = {
     "Z_integrator": "Z_aggregator",
 }
 
+SKILLS_ROOT_CANDIDATES: tuple[str, ...] = (
+    ".codex/skills",
+    ".agents/skills",
+)
+DEFAULT_SKILLS_ROOT = SKILLS_ROOT_CANDIDATES[0]
+
 
 def find_repo_root(start: Path | None = None) -> Path:
     probe = (start or Path.cwd()).resolve()
@@ -83,9 +89,21 @@ def factory_role_for_worker(worker_id: str) -> str:
     return WORKER_TO_FACTORY_ROLE.get(worker, worker)
 
 
+def resolve_skills_root(*, repo_root: Path | None = None) -> dict[str, str]:
+    root = (repo_root or find_repo_root()).resolve()
+    for rel in SKILLS_ROOT_CANDIDATES:
+        candidate = root / Path(rel)
+        if candidate.exists() and candidate.is_dir():
+            return {"relative": rel, "path": candidate.as_posix()}
+    fallback = root / Path(DEFAULT_SKILLS_ROOT)
+    return {"relative": DEFAULT_SKILLS_ROOT, "path": fallback.as_posix()}
+
+
 def build_skills_index(*, repo_root: Path | None = None) -> dict[str, Any]:
     root = (repo_root or find_repo_root()).resolve()
-    skills_root = root / ".codex" / "skills"
+    skills_root_info = resolve_skills_root(repo_root=root)
+    skills_root = Path(str(skills_root_info["path"]))
+    skills_root_rel = str(skills_root_info["relative"])
     available_roles = {entry.name for entry in skills_root.iterdir() if entry.is_dir()} if skills_root.exists() else set()
 
     roles: dict[str, list[dict[str, str]]] = {}
@@ -106,7 +124,8 @@ def build_skills_index(*, repo_root: Path | None = None) -> dict[str, Any]:
 
     return {
         "version": 1,
-        "skills_root": ".codex/skills",
+        "skills_root": skills_root_rel,
+        "skills_root_candidates": list(SKILLS_ROOT_CANDIDATES),
         "roles": roles,
         "role_sources": role_sources,
     }
@@ -127,7 +146,7 @@ def render_skills_index_markdown(index: Mapping[str, Any]) -> str:
         "# Skills Index",
         "",
         f"- version: {int(index.get('version', 1))}",
-        f"- skills_root: `{str(index.get('skills_root', '.codex/skills'))}`",
+        f"- skills_root: `{str(index.get('skills_root', DEFAULT_SKILLS_ROOT))}`",
         "",
     ]
     roles = index.get("roles", {})
@@ -178,7 +197,7 @@ def generate_and_write_skills_index(*, repo_root: Path | None = None) -> dict[st
     return {
         "status": "PASS",
         "repo_root": root.as_posix(),
-        "skills_root": str(index.get("skills_root", ".codex/skills")),
+        "skills_root": str(index.get("skills_root", DEFAULT_SKILLS_ROOT)),
         "role_counts": role_counts,
         "index": index,
         **written,
