@@ -127,6 +127,20 @@ Exit codes:
   - `SELF_CHECK_REQUIRED: ORPHAN_MODULES,UNUSED_EXPORTS,FILES_CREATED,REAL_CODE_LOC,ARTIFACT_LOC`
 - If prior chat context exists, worker must ignore stale context and continue with current run scope.
 
+## Manual Prompt Distribution Integrity Contract
+
+- Command: `python tools/codex/dispatch/validator.py prepare-manual-run --pack-path <PROMPTS_PACK_PATH> [--run-id <RUN_ID>]`.
+- Required materialization evidence under `tools/codex/prompts/<RUN_ID>/`:
+  - `PROMPTS_PACK_SOURCE.txt`
+  - `PROMPTS_PACK_RESOLVED.txt`
+  - `PROMPT_MATERIALIZATION.json`
+  - `MANUAL_DISTRIBUTION_CHECKLIST.md`
+- `PROMPT_MATERIALIZATION.json` must include source-pack checksum and per-worker prompt checksums.
+- Manual closeout must run, in order:
+  1. `wait-done`
+  2. `execution-audit`
+  3. `validate-guardrails`
+
 ## Visual Baseline Ownership Contract
 
 - Default visual baseline owner is `B_worker`.

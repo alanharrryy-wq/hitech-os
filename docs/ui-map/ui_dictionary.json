@@ -34,6 +34,22 @@
       }
     },
     {
+      "component_id": "cmp_005058f357",
+      "export_name": "SCENE_MOTION_VALUES",
+      "file_path": "apps/keystone/lib/scene-studio/scene-constants.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_00558dfee2",
       "export_name": "TableBody",
       "file_path": "packages/ui-kit/src/components/data/Table.tsx",
@@ -204,6 +220,42 @@
       }
     },
     {
+      "component_id": "cmp_04a0c7e82f",
+      "export_name": "waitForDeterministicReady",
+      "file_path": "apps/keystone/visual-tests/helpers/deterministic.ts",
+      "imports": [
+        "apps/keystone/visual-tests/helpers/scene-manifest.ts"
+      ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "readyState",
+          "waitForLoadState"
+        ]
+      }
+    },
+    {
+      "component_id": "cmp_04f54bd3f3",
+      "export_name": "captureScene",
+      "file_path": "apps/keystone/visual-tests/helpers/scene-capture.ts",
+      "imports": [
+        "apps/keystone/visual-tests/helpers/deterministic.ts",
+        "apps/keystone/visual-tests/helpers/scene-manifest.ts"
+      ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_051d307492",
       "export_name": "PitchIconSatellite",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -324,6 +376,7 @@
       "export_name": "dynamic",
       "file_path": "apps/keystone/app/pitch/05-inventory-foundation/page.tsx",
       "imports": [
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
         "apps/keystone/components/pitch/pitch-shell.tsx",
         "apps/keystone/components/pitch/run1/index.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -333,9 +386,23 @@
       "renders": [
         "cmp_114f4ca07f",
         "cmp_1d64a6eac7",
-        "cmp_d2126a2b14",
+        "cmp_6cb06e50cd",
         "cmp_dd9d94eef4"
       ],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_075347cd7a",
+      "export_name": "SCENES_MANIFEST_PATH",
+      "file_path": "apps/keystone/visual-tests/helpers/paths.ts",
+      "imports": [],
+      "kind": "dataviz",
+      "renders": [],
       "uses": {
         "assets": [],
         "css": [],
@@ -420,6 +487,20 @@
       "imports": [
         "packages/ui-kit/src/index.ts"
       ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_08b67ff1e9",
+      "export_name": "createPixelDiff",
+      "file_path": "apps/keystone/visual-tests/helpers/diff.ts",
+      "imports": [],
       "kind": "dataviz",
       "renders": [],
       "uses": {
@@ -649,6 +730,80 @@
       }
     },
     {
+      "component_id": "cmp_0e18d237a4",
+      "export_name": "createDefaultSceneLibrary",
+      "file_path": "apps/keystone/lib/scene-studio/default-scenes.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-schema.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_0ef45dc6b4",
+      "export_name": "sceneQueryObjectToSearchParams",
+      "file_path": "apps/keystone/lib/scene-studio/scene-query.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_0f1bc4f36f",
+      "export_name": "SceneStudioEditor",
+      "file_path": "apps/keystone/components/scene-studio/scene-studio-editor.tsx",
+      "imports": [
+        "apps/keystone/components/scene-studio/scene-studio.module.css",
+        "apps/keystone/lib/scene-studio/index.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [
+          "apps/keystone/components/scene-studio/scene-studio.module.css"
+        ],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_10405d1738",
+      "export_name": "SCENE_SCHEMA_V1",
+      "file_path": "apps/keystone/lib/scene-studio/scene-schema.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-id.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_105875c51d",
       "export_name": "PitchIconForward",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -656,6 +811,39 @@
         "packages/ui-kit/src/index.ts"
       ],
       "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_107a4b287e",
+      "export_name": "VIEWPORT_PRESETS",
+      "file_path": "apps/keystone/visual-tests/helpers/deterministic.ts",
+      "imports": [
+        "apps/keystone/visual-tests/helpers/scene-manifest.ts"
+      ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "readyState",
+          "waitForLoadState"
+        ]
+      }
+    },
+    {
+      "component_id": "cmp_109f9bd9d9",
+      "export_name": "normalizeSceneId",
+      "file_path": "apps/keystone/lib/scene-studio/scene-id.ts",
+      "imports": [],
+      "kind": "block",
       "renders": [],
       "uses": {
         "assets": [],
@@ -761,6 +949,25 @@
           "PitchDemoState",
           "ShipmentState",
           "shipmentState"
+        ]
+      }
+    },
+    {
+      "component_id": "cmp_13159ad4c6",
+      "export_name": "LAYER_DOM_METADATA_PROFILE_ATTRIBUTE",
+      "file_path": "packages/ui-kit/src/layers/applyLayerFlagsToDom.ts",
+      "imports": [
+        "packages/ui-kit/src/layers/layerIds.ts",
+        "packages/ui-kit/src/layers/resolveLayerFlags.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "AppliedDomState"
         ]
       }
     },
@@ -949,7 +1156,10 @@
         "assets": [],
         "css": [],
         "hooks": [],
-        "stores": []
+        "stores": [
+          "shouldPersistMotionParamFromState",
+          "toRawFromResolvedState"
+        ]
       }
     },
     {
@@ -1161,6 +1371,20 @@
       }
     },
     {
+      "component_id": "cmp_1b28f82009",
+      "export_name": "resolveRunId",
+      "file_path": "apps/keystone/visual-tests/helpers/paths.ts",
+      "imports": [],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_1b31a3432a",
       "export_name": "ScreenValuation",
       "file_path": "apps/keystone/components/pitch/screen-valuation.tsx",
@@ -1262,6 +1486,7 @@
       "export_name": "LayerFlagsProvider",
       "file_path": "packages/ui-kit/src/layers/LayerFlagsProvider.tsx",
       "imports": [
+        "packages/ui-kit/src/layers/applyLayerFlagsToDom.ts",
         "packages/ui-kit/src/layers/layerIds.ts",
         "packages/ui-kit/src/layers/resolveLayerFlags.ts",
         "packages/ui-kit/src/layers/useLayerFlags.ts"
@@ -1276,12 +1501,49 @@
           "useEffect",
           "useMemo",
           "usePathname",
+          "useRef",
           "useRouter",
           "useSearchParams"
         ],
         "stores": [
+          "createRawFromState",
+          "createResolvedState",
           "useState"
         ]
+      }
+    },
+    {
+      "component_id": "cmp_1d72ad9a8a",
+      "export_name": "normalizeLayersList",
+      "file_path": "apps/keystone/lib/scene-studio/scene-query.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_1d9e0d5b23",
+      "export_name": "parseSceneMotion",
+      "file_path": "apps/keystone/lib/scene-studio/scene-query.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
       }
     },
     {
@@ -1433,6 +1695,51 @@
           "ShipmentState",
           "shipmentState"
         ]
+      }
+    },
+    {
+      "component_id": "cmp_22bfaa2518",
+      "export_name": "ValuationEquityVisual",
+      "file_path": "apps/keystone/components/pitch/valuation-visuals.tsx",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [
+          "useCountUp",
+          "useEffect",
+          "useLayerFlags",
+          "useMemo",
+          "useMotionEnabled",
+          "useReducedMotionPreference",
+          "useState"
+        ],
+        "stores": [
+          "useState"
+        ]
+      }
+    },
+    {
+      "component_id": "cmp_2387441951",
+      "export_name": "inferLayersFromQuery",
+      "file_path": "apps/keystone/lib/scene-studio/scene-schema.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-id.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
       }
     },
     {
@@ -1704,6 +2011,27 @@
       }
     },
     {
+      "component_id": "cmp_27250f66fb",
+      "export_name": "parseSceneUrlState",
+      "file_path": "apps/keystone/lib/scene-studio/scene-url.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "parseSceneUrlState",
+          "SceneUrlState"
+        ]
+      }
+    },
+    {
       "component_id": "cmp_2769aeb2cb",
       "export_name": "PitchIconCrown",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -1878,6 +2206,25 @@
       }
     },
     {
+      "component_id": "cmp_2913c65c2b",
+      "export_name": "SCENE_EXPORT_ENVELOPE_SCHEMA",
+      "file_path": "apps/keystone/lib/scene-studio/scene-schema.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-id.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_2917294077",
       "export_name": "PitchIconGauge",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -1885,6 +2232,22 @@
         "packages/ui-kit/src/index.ts"
       ],
       "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_2927b6c7ce",
+      "export_name": "isDiagnosticsResponseMessage",
+      "file_path": "apps/keystone/lib/scene-studio/scene-bridge.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
       "renders": [],
       "uses": {
         "assets": [],
@@ -1907,6 +2270,25 @@
         "css": [],
         "hooks": [],
         "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_2a48db8a31",
+      "export_name": "canonicalizeLayerQuery",
+      "file_path": "packages/ui-kit/src/layers/resolveLayerFlags.ts",
+      "imports": [
+        "packages/ui-kit/src/layers/layerIds.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "shouldPersistMotionParamFromState",
+          "toRawFromResolvedState"
+        ]
       }
     },
     {
@@ -1943,12 +2325,52 @@
       }
     },
     {
+      "component_id": "cmp_2b741fa993",
+      "export_name": "inferMotionFromResolved",
+      "file_path": "apps/keystone/lib/scene-studio/scene-url.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "parseSceneUrlState",
+          "SceneUrlState"
+        ]
+      }
+    },
+    {
       "component_id": "cmp_2c2aa68393",
       "export_name": "Select",
       "file_path": "packages/ui-kit/src/components/forms/Select.tsx",
       "imports": [
         "packages/ui-kit/src/lib/cn.ts",
         "packages/ui-kit/src/lib/focus-ring.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_2ca065c597",
+      "export_name": "migrateScenes",
+      "file_path": "apps/keystone/lib/scene-studio/scene-migrations.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-id.ts",
+        "apps/keystone/lib/scene-studio/scene-schema.ts",
+        "packages/ui-kit/src/index.ts"
       ],
       "kind": "block",
       "renders": [],
@@ -2001,6 +2423,35 @@
       }
     },
     {
+      "component_id": "cmp_2e4e4db285",
+      "export_name": "useSceneStudioState",
+      "file_path": "apps/keystone/components/scene-studio/use-scene-studio-state.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/index.ts"
+      ],
+      "kind": "state",
+      "renders": [
+        "cmp_c577efca6f"
+      ],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [
+          "useCallback",
+          "useEffect",
+          "useMemo",
+          "useSceneStudioState"
+        ],
+        "stores": [
+          "LocalSceneStore",
+          "refreshFromStore",
+          "SceneStudioState",
+          "useSceneStudioState",
+          "useState"
+        ]
+      }
+    },
+    {
       "component_id": "cmp_2e5f26daf9",
       "export_name": "PitchIconLab",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -2013,6 +2464,27 @@
         "assets": [],
         "css": [],
         "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_2e64b98779",
+      "export_name": "SceneStudioDiagnostics",
+      "file_path": "apps/keystone/components/scene-studio/scene-studio-diagnostics.tsx",
+      "imports": [
+        "apps/keystone/components/scene-studio/scene-studio.module.css",
+        "apps/keystone/lib/scene-studio/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [
+          "apps/keystone/components/scene-studio/scene-studio.module.css"
+        ],
+        "hooks": [
+          "useMemo"
+        ],
         "stores": []
       }
     },
@@ -2125,6 +2597,28 @@
       }
     },
     {
+      "component_id": "cmp_31b57a0d07",
+      "export_name": "SceneStudioList",
+      "file_path": "apps/keystone/components/scene-studio/scene-studio-list.tsx",
+      "imports": [
+        "apps/keystone/components/scene-studio/scene-studio.module.css",
+        "apps/keystone/lib/scene-studio/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [
+          "apps/keystone/components/scene-studio/scene-studio.module.css"
+        ],
+        "hooks": [
+          "useEffect",
+          "useMemo"
+        ],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_32d9552e03",
       "export_name": "PitchIconCheck",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -2227,6 +2721,23 @@
         "assets": [],
         "css": [],
         "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_3643dc52a6",
+      "export_name": "useSceneStudioHotkeys",
+      "file_path": "apps/keystone/components/scene-studio/use-scene-studio-hotkeys.ts",
+      "imports": [],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [
+          "useEffect",
+          "useSceneStudioHotkeys"
+        ],
         "stores": []
       }
     },
@@ -2436,6 +2947,7 @@
       "export_name": "default",
       "file_path": "apps/keystone/app/pitch/page.tsx",
       "imports": [
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -2444,7 +2956,7 @@
       "kind": "route",
       "renders": [
         "cmp_1d64a6eac7",
-        "cmp_d2126a2b14",
+        "cmp_6cb06e50cd",
         "cmp_dd9d94eef4",
         "cmp_eb400afd5e"
       ],
@@ -2470,6 +2982,25 @@
         "cmp_bfba3b066a",
         "cmp_f3cecec036"
       ],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_39d4c9d7d2",
+      "export_name": "SCENE_SCHEMA_V2",
+      "file_path": "apps/keystone/lib/scene-studio/scene-schema.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-id.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
       "uses": {
         "assets": [],
         "css": [],
@@ -2540,6 +3071,23 @@
       }
     },
     {
+      "component_id": "cmp_3c1acb6633",
+      "export_name": "detectUnknownLayers",
+      "file_path": "apps/keystone/lib/scene-studio/scene-query.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_3c476cef7d",
       "export_name": "PitchIconNetwork",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -2586,10 +3134,45 @@
       }
     },
     {
+      "component_id": "cmp_3eb2b2a3f1",
+      "export_name": "prepareDeterministicPage",
+      "file_path": "apps/keystone/visual-tests/helpers/deterministic.ts",
+      "imports": [
+        "apps/keystone/visual-tests/helpers/scene-manifest.ts"
+      ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "readyState",
+          "waitForLoadState"
+        ]
+      }
+    },
+    {
       "component_id": "cmp_3f094dcf66",
       "export_name": "FX_OVERLAYS_DISABLED",
       "file_path": "packages/ui-kit/src/lib/fx.ts",
       "imports": [],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_3f2e7ca003",
+      "export_name": "SCENE_QUERY_PRIORITY_KEYS",
+      "file_path": "apps/keystone/lib/scene-studio/scene-constants.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
       "kind": "block",
       "renders": [],
       "uses": {
@@ -2739,6 +3322,41 @@
         "assets": [],
         "css": [],
         "hooks": [],
+        "stores": [
+          "shouldPersistMotionParamFromState",
+          "toRawFromResolvedState"
+        ]
+      }
+    },
+    {
+      "component_id": "cmp_433185e9a4",
+      "export_name": "SCENE_STUDIO_STORAGE_KEY",
+      "file_path": "apps/keystone/lib/scene-studio/scene-constants.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_446936be88",
+      "export_name": "SCENE_DEFAULT_VIEWPORT_DIMENSIONS",
+      "file_path": "apps/keystone/lib/scene-studio/scene-constants.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
         "stores": []
       }
     },
@@ -2801,6 +3419,25 @@
       }
     },
     {
+      "component_id": "cmp_46d3f6738b",
+      "export_name": "LAYER_QUERY_KEY_ORDER",
+      "file_path": "packages/ui-kit/src/layers/resolveLayerFlags.ts",
+      "imports": [
+        "packages/ui-kit/src/layers/layerIds.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "shouldPersistMotionParamFromState",
+          "toRawFromResolvedState"
+        ]
+      }
+    },
+    {
       "component_id": "cmp_46fd661c30",
       "export_name": "Grid",
       "file_path": "packages/ui-kit/src/components/layout/Grid.tsx",
@@ -2831,6 +3468,22 @@
         "cmp_8d49fce9f3",
         "cmp_bfba3b066a"
       ],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_47769fe4fc",
+      "export_name": "SCENE_VIEWPORT_PRESETS",
+      "file_path": "apps/keystone/lib/scene-studio/scene-constants.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
       "uses": {
         "assets": [],
         "css": [],
@@ -2909,6 +3562,25 @@
       }
     },
     {
+      "component_id": "cmp_48b3a15c8f",
+      "export_name": "applyLayerFlagsToDom",
+      "file_path": "packages/ui-kit/src/layers/applyLayerFlagsToDom.ts",
+      "imports": [
+        "packages/ui-kit/src/layers/layerIds.ts",
+        "packages/ui-kit/src/layers/resolveLayerFlags.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "AppliedDomState"
+        ]
+      }
+    },
+    {
       "component_id": "cmp_48fde66357",
       "export_name": "PitchIconWind",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -2955,6 +3627,25 @@
       }
     },
     {
+      "component_id": "cmp_49b9905849",
+      "export_name": "migrateScene",
+      "file_path": "apps/keystone/lib/scene-studio/scene-migrations.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-id.ts",
+        "apps/keystone/lib/scene-studio/scene-schema.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_4b0b787c25",
       "export_name": "DocumentVaultPanel",
       "file_path": "apps/keystone/components/pitch/run1/DocumentVaultPanel.tsx",
@@ -2977,6 +3668,25 @@
         "hooks": [],
         "stores": [
           "docState"
+        ]
+      }
+    },
+    {
+      "component_id": "cmp_4b76d1e46d",
+      "export_name": "clearLayerFlagsFromDom",
+      "file_path": "packages/ui-kit/src/layers/applyLayerFlagsToDom.ts",
+      "imports": [
+        "packages/ui-kit/src/layers/layerIds.ts",
+        "packages/ui-kit/src/layers/resolveLayerFlags.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "AppliedDomState"
         ]
       }
     },
@@ -3054,6 +3764,7 @@
       "export_name": "default",
       "file_path": "apps/keystone/app/pitch/01-double-engine/page.tsx",
       "imports": [
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -3062,7 +3773,7 @@
       "kind": "route",
       "renders": [
         "cmp_1d64a6eac7",
-        "cmp_d2126a2b14",
+        "cmp_6cb06e50cd",
         "cmp_dd9d94eef4",
         "cmp_f14bfffde5"
       ],
@@ -3155,6 +3866,22 @@
       }
     },
     {
+      "component_id": "cmp_4e3f8729d7",
+      "export_name": "LAYER_DOM_SOURCE_VALUES",
+      "file_path": "packages/ui-kit/src/layers/layerFlagsContract.ts",
+      "imports": [
+        "packages/ui-kit/src/layers/layerIds.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_4e83083d27",
       "export_name": "PitchIconPlatform",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -3162,6 +3889,23 @@
         "packages/ui-kit/src/index.ts"
       ],
       "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_4eac0f419b",
+      "export_name": "parseSceneLayersMode",
+      "file_path": "apps/keystone/lib/scene-studio/scene-query.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
       "renders": [],
       "uses": {
         "assets": [],
@@ -3228,6 +3972,22 @@
         "packages/ui-kit/src/lib/cn.ts"
       ],
       "kind": "layout",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_4f83bf523a",
+      "export_name": "SCENE_LAYER_PROFILE_VALUES",
+      "file_path": "apps/keystone/lib/scene-studio/scene-constants.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
       "renders": [],
       "uses": {
         "assets": [],
@@ -3361,6 +4121,58 @@
       }
     },
     {
+      "component_id": "cmp_531356547d",
+      "export_name": "canonicalizeSceneQuery",
+      "file_path": "apps/keystone/lib/scene-studio/scene-query.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_535bf7270f",
+      "export_name": "createShareableLayerUrl",
+      "file_path": "packages/ui-kit/src/layers/resolveLayerFlags.ts",
+      "imports": [
+        "packages/ui-kit/src/layers/layerIds.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "shouldPersistMotionParamFromState",
+          "toRawFromResolvedState"
+        ]
+      }
+    },
+    {
+      "component_id": "cmp_537a1e5c84",
+      "export_name": "filterSceneManifest",
+      "file_path": "apps/keystone/visual-tests/helpers/scene-manifest.ts",
+      "imports": [
+        "apps/keystone/visual-tests/helpers/paths.ts"
+      ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_5394037b86",
       "export_name": "listPitchMaterialPresetsByTone",
       "file_path": "apps/keystone/components/pitch/theme/pitch-material-presets.ts",
@@ -3472,6 +4284,7 @@
       "export_name": "dynamic",
       "file_path": "apps/keystone/app/pitch/04-valuation/page.tsx",
       "imports": [
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -3481,7 +4294,7 @@
       "renders": [
         "cmp_1b31a3432a",
         "cmp_1d64a6eac7",
-        "cmp_d2126a2b14",
+        "cmp_6cb06e50cd",
         "cmp_dd9d94eef4"
       ],
       "uses": {
@@ -3510,6 +4323,7 @@
       "export_name": "default",
       "file_path": "apps/keystone/app/pitch/02-industrial-flow/page.tsx",
       "imports": [
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -3518,8 +4332,8 @@
       "kind": "route",
       "renders": [
         "cmp_1d64a6eac7",
+        "cmp_6cb06e50cd",
         "cmp_88852e131f",
-        "cmp_d2126a2b14",
         "cmp_dd9d94eef4"
       ],
       "uses": {
@@ -3537,6 +4351,22 @@
         "packages/ui-kit/src/index.ts"
       ],
       "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_58110445cd",
+      "export_name": "isDiagnosticsRequestMessage",
+      "file_path": "apps/keystone/lib/scene-studio/scene-bridge.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
       "renders": [],
       "uses": {
         "assets": [],
@@ -3825,6 +4655,7 @@
       "export_name": "default",
       "file_path": "apps/keystone/app/pitch/06-shipments-receiving/page.tsx",
       "imports": [
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
         "apps/keystone/components/pitch/pitch-shell.tsx",
         "apps/keystone/components/pitch/run2/index.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -3833,8 +4664,8 @@
       "kind": "route",
       "renders": [
         "cmp_1d64a6eac7",
+        "cmp_6cb06e50cd",
         "cmp_bf1d0f2e29",
-        "cmp_d2126a2b14",
         "cmp_dd9d94eef4"
       ],
       "uses": {
@@ -3861,10 +4692,27 @@
       }
     },
     {
+      "component_id": "cmp_5f87b72dbe",
+      "export_name": "LAYER_DOM_ROOT_TARGET",
+      "file_path": "packages/ui-kit/src/layers/layerFlagsContract.ts",
+      "imports": [
+        "packages/ui-kit/src/layers/layerIds.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_5fe598643a",
       "export_name": "default",
       "file_path": "apps/keystone/app/pitch/04-valuation/page.tsx",
       "imports": [
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -3874,7 +4722,7 @@
       "renders": [
         "cmp_1b31a3432a",
         "cmp_1d64a6eac7",
-        "cmp_d2126a2b14",
+        "cmp_6cb06e50cd",
         "cmp_dd9d94eef4"
       ],
       "uses": {
@@ -4002,6 +4850,29 @@
       }
     },
     {
+      "component_id": "cmp_62e44bb8d0",
+      "export_name": "parseSceneExport",
+      "file_path": "apps/keystone/lib/scene-studio/scene-store.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-migrations.ts",
+        "apps/keystone/lib/scene-studio/scene-schema.ts"
+      ],
+      "kind": "state",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "InMemorySceneStore",
+          "LocalSceneStore",
+          "normalizeForStore",
+          "SceneStore"
+        ]
+      }
+    },
+    {
       "component_id": "cmp_62ea04ad4f",
       "export_name": "createFlagsFromEnabledLayers",
       "file_path": "packages/ui-kit/src/layers/layerIds.ts",
@@ -4041,6 +4912,73 @@
       ],
       "kind": "block",
       "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_63d1e991fa",
+      "export_name": "PitchShareLookButton",
+      "file_path": "apps/keystone/components/pitch/debug/pitch-share-look-button.tsx",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "control",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [
+          "useLayerFlags",
+          "useState"
+        ],
+        "stores": [
+          "useState"
+        ]
+      }
+    },
+    {
+      "component_id": "cmp_63d837e0ab",
+      "export_name": "ValuationTimelineVisual",
+      "file_path": "apps/keystone/components/pitch/valuation-visuals.tsx",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [
+          "useCountUp",
+          "useEffect",
+          "useLayerFlags",
+          "useMemo",
+          "useMotionEnabled",
+          "useReducedMotionPreference",
+          "useState"
+        ],
+        "stores": [
+          "useState"
+        ]
+      }
+    },
+    {
+      "component_id": "cmp_643b586dfd",
+      "export_name": "default",
+      "file_path": "apps/keystone/app/dev/scene-studio/page.tsx",
+      "imports": [
+        "apps/keystone/components/scene-studio/scene-studio-page.tsx",
+        "apps/keystone/lib/scene-studio/index.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "route",
+      "renders": [
+        "cmp_7b8f4f141d"
+      ],
       "uses": {
         "assets": [],
         "css": [],
@@ -4173,10 +5111,30 @@
       }
     },
     {
+      "component_id": "cmp_669397f1fe",
+      "export_name": "coerceViewportPreset",
+      "file_path": "apps/keystone/lib/scene-studio/scene-schema.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-id.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_66ce3930e7",
       "export_name": "dynamic",
       "file_path": "apps/keystone/app/pitch/page.tsx",
       "imports": [
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -4185,7 +5143,7 @@
       "kind": "route",
       "renders": [
         "cmp_1d64a6eac7",
-        "cmp_d2126a2b14",
+        "cmp_6cb06e50cd",
         "cmp_dd9d94eef4",
         "cmp_eb400afd5e"
       ],
@@ -4234,6 +5192,22 @@
         "cmp_da044150c1",
         "cmp_ddfd33abd4"
       ],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_67c4101751",
+      "export_name": "resolvePitchSearchParams",
+      "file_path": "apps/keystone/lib/pitch/layer-resolution.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
       "uses": {
         "assets": [],
         "css": [],
@@ -4465,6 +5439,30 @@
       }
     },
     {
+      "component_id": "cmp_6cb06e50cd",
+      "export_name": "PitchLayerDevTools",
+      "file_path": "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
+      "imports": [
+        "apps/keystone/components/pitch/debug/pitch-scene-runtime-bridge.tsx",
+        "apps/keystone/components/pitch/debug/pitch-share-look-button.tsx",
+        "apps/keystone/components/pitch/debug/pitch-visual-scene-overlay.tsx",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [
+        "cmp_63d1e991fa",
+        "cmp_805d85de87",
+        "cmp_d2126a2b14",
+        "cmp_d2d761ad3d"
+      ],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_6cda92a335",
       "export_name": "runIndustrialStoryboard",
       "file_path": "apps/keystone/lib/pitch/demo-state.ts",
@@ -4540,31 +5538,43 @@
         "apps/keystone/components/pitch/layout/pitch-data-chip.tsx",
         "apps/keystone/components/pitch/layout/pitch-expandable-panel.tsx",
         "apps/keystone/components/pitch/layout/pitch-section.tsx",
-        "apps/keystone/components/pitch/visuals/pitch-comparison-meter.tsx",
-        "apps/keystone/components/pitch/visuals/pitch-mini-bars.tsx",
-        "apps/keystone/components/pitch/visuals/pitch-radial-gauge.tsx",
-        "apps/keystone/components/pitch/visuals/pitch-sparkline.tsx",
+        "apps/keystone/components/pitch/valuation-visuals.tsx",
         "apps/keystone/lib/pitch/deck-view-model.ts",
         "packages/ui-kit/src/index.ts"
       ],
       "kind": "screen",
       "renders": [
         "cmp_00558dfee2",
-        "cmp_133d7dec91",
+        "cmp_22bfaa2518",
         "cmp_24e728f035",
         "cmp_262a7f305a",
         "cmp_26819c9f9a",
         "cmp_4f523b5f22",
+        "cmp_63d837e0ab",
         "cmp_73815c5199",
         "cmp_90fb220e30",
-        "cmp_934d4e8c97",
         "cmp_968d0a409d",
         "cmp_a000b84953",
         "cmp_b9ab167a73",
         "cmp_c5706d2d90",
-        "cmp_cbf3af2004",
-        "cmp_f5c8a56456"
+        "cmp_ed2049f466"
       ],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_712662a4a6",
+      "export_name": "buildSceneTagIndex",
+      "file_path": "apps/keystone/lib/scene-studio/scene-tags.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-schema.ts"
+      ],
+      "kind": "block",
+      "renders": [],
       "uses": {
         "assets": [],
         "css": [],
@@ -4652,6 +5662,20 @@
       }
     },
     {
+      "component_id": "cmp_742adaf30e",
+      "export_name": "resolveSceneRunDir",
+      "file_path": "apps/keystone/visual-tests/helpers/paths.ts",
+      "imports": [],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_742b1b11b0",
       "export_name": "PitchIconMessage",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -4659,6 +5683,41 @@
         "packages/ui-kit/src/index.ts"
       ],
       "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_743b95dbec",
+      "export_name": "SCENE_SCHEMA_VERSION",
+      "file_path": "apps/keystone/lib/scene-studio/scene-constants.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_750cca0661",
+      "export_name": "normalizeSceneInput",
+      "file_path": "apps/keystone/lib/scene-studio/scene-schema.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-id.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
       "renders": [],
       "uses": {
         "assets": [],
@@ -4723,10 +5782,25 @@
       }
     },
     {
+      "component_id": "cmp_762ddc22be",
+      "export_name": "ensureSceneId",
+      "file_path": "apps/keystone/lib/scene-studio/scene-id.ts",
+      "imports": [],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_76a47f23da",
       "export_name": "dynamic",
       "file_path": "apps/keystone/app/pitch/06-shipments-receiving/page.tsx",
       "imports": [
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
         "apps/keystone/components/pitch/pitch-shell.tsx",
         "apps/keystone/components/pitch/run2/index.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -4735,8 +5809,8 @@
       "kind": "route",
       "renders": [
         "cmp_1d64a6eac7",
+        "cmp_6cb06e50cd",
         "cmp_bf1d0f2e29",
-        "cmp_d2126a2b14",
         "cmp_dd9d94eef4"
       ],
       "uses": {
@@ -4808,7 +5882,10 @@
         "assets": [],
         "css": [],
         "hooks": [],
-        "stores": []
+        "stores": [
+          "shouldPersistMotionParamFromState",
+          "toRawFromResolvedState"
+        ]
       }
     },
     {
@@ -4885,6 +5962,46 @@
         "css": [],
         "hooks": [],
         "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_7b8f4f141d",
+      "export_name": "SceneStudioPage",
+      "file_path": "apps/keystone/components/scene-studio/scene-studio-page.tsx",
+      "imports": [
+        "apps/keystone/components/scene-studio/scene-studio-diagnostics.tsx",
+        "apps/keystone/components/scene-studio/scene-studio-editor.tsx",
+        "apps/keystone/components/scene-studio/scene-studio-help-panel.tsx",
+        "apps/keystone/components/scene-studio/scene-studio-list.tsx",
+        "apps/keystone/components/scene-studio/scene-studio-preview.tsx",
+        "apps/keystone/components/scene-studio/scene-studio.module.css",
+        "apps/keystone/components/scene-studio/use-scene-studio-hotkeys.ts",
+        "apps/keystone/components/scene-studio/use-scene-studio-state.ts",
+        "apps/keystone/lib/scene-studio/index.ts"
+      ],
+      "kind": "block",
+      "renders": [
+        "cmp_0f1bc4f36f",
+        "cmp_2e64b98779",
+        "cmp_31b57a0d07",
+        "cmp_880191ca88",
+        "cmp_8f9bf09085"
+      ],
+      "uses": {
+        "assets": [],
+        "css": [
+          "apps/keystone/components/scene-studio/scene-studio.module.css"
+        ],
+        "hooks": [
+          "useMemo",
+          "useSceneStudioHotkeys",
+          "useSceneStudioState",
+          "useState"
+        ],
+        "stores": [
+          "useSceneStudioState",
+          "useState"
+        ]
       }
     },
     {
@@ -5152,6 +6269,47 @@
       }
     },
     {
+      "component_id": "cmp_7e9f59fe35",
+      "export_name": "resolveSceneQueryPrecedence",
+      "file_path": "apps/keystone/lib/scene-studio/scene-url.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "parseSceneUrlState",
+          "SceneUrlState"
+        ]
+      }
+    },
+    {
+      "component_id": "cmp_7fd81a6bbc",
+      "export_name": "compareScene",
+      "file_path": "apps/keystone/visual-tests/helpers/scene-compare.ts",
+      "imports": [
+        "apps/keystone/visual-tests/helpers/diff.ts",
+        "apps/keystone/visual-tests/helpers/paths.ts",
+        "apps/keystone/visual-tests/helpers/report.ts",
+        "apps/keystone/visual-tests/helpers/scene-capture.ts",
+        "apps/keystone/visual-tests/helpers/scene-manifest.ts"
+      ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_800e25494f",
       "export_name": "DropdownMenuSubTrigger",
       "file_path": "packages/ui-kit/src/components/navigation/DropdownMenu.tsx",
@@ -5165,6 +6323,27 @@
         "css": [],
         "hooks": [],
         "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_801c90a1d7",
+      "export_name": "inferProfileFromResolved",
+      "file_path": "apps/keystone/lib/scene-studio/scene-url.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "parseSceneUrlState",
+          "SceneUrlState"
+        ]
       }
     },
     {
@@ -5184,10 +6363,35 @@
       }
     },
     {
+      "component_id": "cmp_805d85de87",
+      "export_name": "PitchVisualSceneOverlay",
+      "file_path": "apps/keystone/components/pitch/debug/pitch-visual-scene-overlay.tsx",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [
+          "useEffect",
+          "useLayerFlags",
+          "useMemo",
+          "usePathname",
+          "useSearchParams"
+        ],
+        "stores": [
+          "useState"
+        ]
+      }
+    },
+    {
       "component_id": "cmp_80d296e91b",
       "export_name": "default",
       "file_path": "apps/keystone/app/pitch/05-inventory-foundation/page.tsx",
       "imports": [
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
         "apps/keystone/components/pitch/pitch-shell.tsx",
         "apps/keystone/components/pitch/run1/index.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -5197,7 +6401,7 @@
       "renders": [
         "cmp_114f4ca07f",
         "cmp_1d64a6eac7",
-        "cmp_d2126a2b14",
+        "cmp_6cb06e50cd",
         "cmp_dd9d94eef4"
       ],
       "uses": {
@@ -5310,6 +6514,23 @@
       }
     },
     {
+      "component_id": "cmp_84975d4dbe",
+      "export_name": "buildLayersQueryValue",
+      "file_path": "apps/keystone/lib/scene-studio/scene-query.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_84a8875e0e",
       "export_name": "PitchIconPlus",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -5391,6 +6612,47 @@
       }
     },
     {
+      "component_id": "cmp_880191ca88",
+      "export_name": "SceneStudioPreview",
+      "file_path": "apps/keystone/components/scene-studio/scene-studio-preview.tsx",
+      "imports": [
+        "apps/keystone/components/scene-studio/scene-studio.module.css",
+        "apps/keystone/lib/scene-studio/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [
+          "apps/keystone/components/scene-studio/scene-studio.module.css"
+        ],
+        "hooks": [
+          "useCallback",
+          "useEffect",
+          "useMemo"
+        ],
+        "stores": [
+          "useState"
+        ]
+      }
+    },
+    {
+      "component_id": "cmp_8832e0d534",
+      "export_name": "validateLayerFlagsContract",
+      "file_path": "packages/ui-kit/src/layers/layerFlagsContract.ts",
+      "imports": [
+        "packages/ui-kit/src/layers/layerIds.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_8869eb74c7",
       "export_name": "GET",
       "file_path": "apps/keystone/app/api/activity/route.ts",
@@ -5457,6 +6719,26 @@
       }
     },
     {
+      "component_id": "cmp_897087c37a",
+      "export_name": "dynamic",
+      "file_path": "apps/keystone/app/dev/scene-studio/page.tsx",
+      "imports": [
+        "apps/keystone/components/scene-studio/scene-studio-page.tsx",
+        "apps/keystone/lib/scene-studio/index.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "route",
+      "renders": [
+        "cmp_7b8f4f141d"
+      ],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_89cfa98853",
       "export_name": "PitchShellProgress",
       "file_path": "apps/keystone/components/pitch/shell/pitch-shell-progress.tsx",
@@ -5502,6 +6784,20 @@
           "useDemoState",
           "useState"
         ]
+      }
+    },
+    {
+      "component_id": "cmp_8aa5633da7",
+      "export_name": "isSafeSceneId",
+      "file_path": "apps/keystone/lib/scene-studio/scene-id.ts",
+      "imports": [],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
       }
     },
     {
@@ -5600,10 +6896,25 @@
       }
     },
     {
+      "component_id": "cmp_8e7ec824de",
+      "export_name": "ARTIFACTS_ROOT",
+      "file_path": "apps/keystone/visual-tests/helpers/paths.ts",
+      "imports": [],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_8ec357b7d7",
       "export_name": "dynamic",
       "file_path": "apps/keystone/app/pitch/02-industrial-flow/page.tsx",
       "imports": [
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -5612,8 +6923,8 @@
       "kind": "route",
       "renders": [
         "cmp_1d64a6eac7",
+        "cmp_6cb06e50cd",
         "cmp_88852e131f",
-        "cmp_d2126a2b14",
         "cmp_dd9d94eef4"
       ],
       "uses": {
@@ -5647,6 +6958,61 @@
         "packages/ui-kit/src/lib/cn.ts"
       ],
       "kind": "control",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_8f9a19edfb",
+      "export_name": "buildCanonicalSceneUrl",
+      "file_path": "apps/keystone/lib/scene-studio/scene-url.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "parseSceneUrlState",
+          "SceneUrlState"
+        ]
+      }
+    },
+    {
+      "component_id": "cmp_8f9bf09085",
+      "export_name": "SceneStudioHelpPanel",
+      "file_path": "apps/keystone/components/scene-studio/scene-studio-help-panel.tsx",
+      "imports": [
+        "apps/keystone/components/scene-studio/scene-studio.module.css"
+      ],
+      "kind": "control",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [
+          "apps/keystone/components/scene-studio/scene-studio.module.css"
+        ],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_9013f8e8ee",
+      "export_name": "SCENE_STUDIO_BRIDGE_NAMESPACE",
+      "file_path": "apps/keystone/lib/scene-studio/scene-bridge.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
       "renders": [],
       "uses": {
         "assets": [],
@@ -5714,7 +7080,10 @@
         "assets": [],
         "css": [],
         "hooks": [],
-        "stores": []
+        "stores": [
+          "shouldPersistMotionParamFromState",
+          "toRawFromResolvedState"
+        ]
       }
     },
     {
@@ -5767,7 +7136,10 @@
         "assets": [],
         "css": [],
         "hooks": [],
-        "stores": []
+        "stores": [
+          "shouldPersistMotionParamFromState",
+          "toRawFromResolvedState"
+        ]
       }
     },
     {
@@ -5877,6 +7249,40 @@
       }
     },
     {
+      "component_id": "cmp_96ded7712b",
+      "export_name": "KNOWN_PITCH_ROUTES",
+      "file_path": "apps/keystone/lib/scene-studio/default-scenes.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-schema.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_96fd6caae3",
+      "export_name": "searchScenes",
+      "file_path": "apps/keystone/lib/scene-studio/scene-tags.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-schema.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_9845cdd3aa",
       "export_name": "getHitechStrokeVar",
       "file_path": "packages/ui-kit/src/brand/hitech-theme.ts",
@@ -5918,6 +7324,25 @@
           "ShipmentState",
           "shipmentState"
         ]
+      }
+    },
+    {
+      "component_id": "cmp_98fd6ce434",
+      "export_name": "parseSceneOrThrow",
+      "file_path": "apps/keystone/lib/scene-studio/scene-schema.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-id.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
       }
     },
     {
@@ -6000,6 +7425,23 @@
       }
     },
     {
+      "component_id": "cmp_9ba8f2b7e5",
+      "export_name": "parseSceneQueryFromUrl",
+      "file_path": "apps/keystone/lib/scene-studio/scene-query.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_9c05a80bfc",
       "export_name": "PitchIconPhone",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -6023,6 +7465,22 @@
         "packages/ui-kit/src/index.ts"
       ],
       "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_9ce6fcd41a",
+      "export_name": "SCENE_STUDIO_SCHEMA_VERSION",
+      "file_path": "apps/keystone/lib/scene-studio/scene-constants.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
       "renders": [],
       "uses": {
         "assets": [],
@@ -6094,6 +7552,7 @@
       "export_name": "dynamic",
       "file_path": "apps/keystone/app/pitch/03-hitech-os/page.tsx",
       "imports": [
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -6103,7 +7562,7 @@
       "renders": [
         "cmp_1d64a6eac7",
         "cmp_4daf0963df",
-        "cmp_d2126a2b14",
+        "cmp_6cb06e50cd",
         "cmp_dd9d94eef4"
       ],
       "uses": {
@@ -6136,6 +7595,20 @@
       "imports": [
         "packages/ui-kit/src/index.ts"
       ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_9fdb41f5d1",
+      "export_name": "ARTIFACTS_SCENES_ROOT",
+      "file_path": "apps/keystone/visual-tests/helpers/paths.ts",
+      "imports": [],
       "kind": "dataviz",
       "renders": [],
       "uses": {
@@ -6183,6 +7656,40 @@
         "packages/ui-kit/src/index.ts"
       ],
       "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_a086c86a14",
+      "export_name": "isAllowedSceneStudioOrigin",
+      "file_path": "apps/keystone/lib/scene-studio/scene-bridge.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_a0bbbb5c12",
+      "export_name": "validateSceneDiagnostics",
+      "file_path": "apps/keystone/lib/scene-studio/scene-validator.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-bridge.ts",
+        "apps/keystone/lib/scene-studio/scene-schema.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
       "renders": [],
       "uses": {
         "assets": [],
@@ -6338,6 +7845,27 @@
       }
     },
     {
+      "component_id": "cmp_a401ef865c",
+      "export_name": "parseSceneQueryObject",
+      "file_path": "apps/keystone/lib/scene-studio/scene-url.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "parseSceneUrlState",
+          "SceneUrlState"
+        ]
+      }
+    },
+    {
       "component_id": "cmp_a421334569",
       "export_name": "DEFAULT_LAYER_FLAGS_CONTEXT",
       "file_path": "packages/ui-kit/src/layers/useLayerFlags.ts",
@@ -6456,6 +7984,25 @@
       }
     },
     {
+      "component_id": "cmp_a64eee4820",
+      "export_name": "validateScene",
+      "file_path": "apps/keystone/lib/scene-studio/scene-schema.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-id.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_a678bb7787",
       "export_name": "PitchIconStar",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -6563,11 +8110,43 @@
       }
     },
     {
+      "component_id": "cmp_a94debf8ad",
+      "export_name": "assertLayerFlagsContract",
+      "file_path": "packages/ui-kit/src/layers/layerFlagsContract.ts",
+      "imports": [
+        "packages/ui-kit/src/layers/layerIds.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_a9cff6f74e",
       "export_name": "RECEIVING_INCOTERM_RISK",
       "file_path": "apps/keystone/components/pitch/run2/data.ts",
       "imports": [
         "apps/keystone/components/pitch/run2/types.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_aa5506ce35",
+      "export_name": "LAYER_FLAGS_CONTRACT",
+      "file_path": "packages/ui-kit/src/layers/layerFlagsContract.ts",
+      "imports": [
+        "packages/ui-kit/src/layers/layerIds.ts"
       ],
       "kind": "block",
       "renders": [],
@@ -6746,6 +8325,60 @@
         ],
         "stores": [
           "useState"
+        ]
+      }
+    },
+    {
+      "component_id": "cmp_adecfe84eb",
+      "export_name": "SCENE_LAYERS_MODE_VALUES",
+      "file_path": "apps/keystone/lib/scene-studio/scene-constants.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_ae181677e0",
+      "export_name": "writeSceneReport",
+      "file_path": "apps/keystone/visual-tests/helpers/report.ts",
+      "imports": [
+        "apps/keystone/visual-tests/helpers/diff.ts",
+        "apps/keystone/visual-tests/helpers/scene-manifest.ts"
+      ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_af3e06591e",
+      "export_name": "buildCanonicalSceneQuery",
+      "file_path": "apps/keystone/lib/scene-studio/scene-url.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "parseSceneUrlState",
+          "SceneUrlState"
         ]
       }
     },
@@ -7022,7 +8655,10 @@
         "assets": [],
         "css": [],
         "hooks": [],
-        "stores": []
+        "stores": [
+          "shouldPersistMotionParamFromState",
+          "toRawFromResolvedState"
+        ]
       }
     },
     {
@@ -7084,7 +8720,10 @@
         "assets": [],
         "css": [],
         "hooks": [],
-        "stores": []
+        "stores": [
+          "shouldPersistMotionParamFromState",
+          "toRawFromResolvedState"
+        ]
       }
     },
     {
@@ -7157,6 +8796,55 @@
       "file_path": "apps/keystone/lib/api/route-contract.ts",
       "imports": [],
       "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_bc2c865d76",
+      "export_name": "parseLayersQueryValue",
+      "file_path": "packages/ui-kit/src/layers/resolveLayerFlags.ts",
+      "imports": [
+        "packages/ui-kit/src/layers/layerIds.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "shouldPersistMotionParamFromState",
+          "toRawFromResolvedState"
+        ]
+      }
+    },
+    {
+      "component_id": "cmp_bd6ef93995",
+      "export_name": "LAYER_RESOLUTION_PRECEDENCE",
+      "file_path": "packages/ui-kit/src/layers/layerFlagsContract.ts",
+      "imports": [
+        "packages/ui-kit/src/layers/layerIds.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_be3b1b1367",
+      "export_name": "BASELINES_ROOT",
+      "file_path": "apps/keystone/visual-tests/helpers/paths.ts",
+      "imports": [],
+      "kind": "dataviz",
       "renders": [],
       "uses": {
         "assets": [],
@@ -7366,6 +9054,25 @@
       }
     },
     {
+      "component_id": "cmp_c36404b994",
+      "export_name": "LAYER_DOM_METADATA_SOURCE_ATTRIBUTE",
+      "file_path": "packages/ui-kit/src/layers/applyLayerFlagsToDom.ts",
+      "imports": [
+        "packages/ui-kit/src/layers/layerIds.ts",
+        "packages/ui-kit/src/layers/resolveLayerFlags.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "AppliedDomState"
+        ]
+      }
+    },
+    {
       "component_id": "cmp_c40e7fc107",
       "export_name": "SelectContent",
       "file_path": "packages/ui-kit/src/components/forms/Select.tsx",
@@ -7400,6 +9107,27 @@
       }
     },
     {
+      "component_id": "cmp_c4be3cca6a",
+      "export_name": "roundTripSceneUrl",
+      "file_path": "apps/keystone/lib/scene-studio/scene-url.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "parseSceneUrlState",
+          "SceneUrlState"
+        ]
+      }
+    },
+    {
       "component_id": "cmp_c5354448a8",
       "export_name": "PitchIconPower",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -7429,6 +9157,50 @@
         "css": [],
         "hooks": [],
         "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_c577efca6f",
+      "export_name": "LocalSceneStore",
+      "file_path": "apps/keystone/lib/scene-studio/scene-store.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-migrations.ts",
+        "apps/keystone/lib/scene-studio/scene-schema.ts"
+      ],
+      "kind": "state",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "InMemorySceneStore",
+          "LocalSceneStore",
+          "normalizeForStore",
+          "SceneStore"
+        ]
+      }
+    },
+    {
+      "component_id": "cmp_c64d179eac",
+      "export_name": "serializeSceneQueryObject",
+      "file_path": "apps/keystone/lib/scene-studio/scene-url.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "parseSceneUrlState",
+          "SceneUrlState"
+        ]
       }
     },
     {
@@ -7598,6 +9370,41 @@
       }
     },
     {
+      "component_id": "cmp_ca87b6f80f",
+      "export_name": "createDeterministicContextOptions",
+      "file_path": "apps/keystone/visual-tests/helpers/deterministic.ts",
+      "imports": [
+        "apps/keystone/visual-tests/helpers/scene-manifest.ts"
+      ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "readyState",
+          "waitForLoadState"
+        ]
+      }
+    },
+    {
+      "component_id": "cmp_caa1b8c23c",
+      "export_name": "parseSceneLayerParams",
+      "file_path": "apps/keystone/visual-tests/helpers/scene-manifest.ts",
+      "imports": [
+        "apps/keystone/visual-tests/helpers/paths.ts"
+      ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_cab7672fcd",
       "export_name": "resolveHitechToneColor",
       "file_path": "packages/ui-kit/src/brand/hitech-theme.ts",
@@ -7618,6 +9425,73 @@
       "imports": [
         "packages/ui-kit/src/index.ts"
       ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_cbfab02c0f",
+      "export_name": "serializeSceneExport",
+      "file_path": "apps/keystone/lib/scene-studio/scene-store.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-migrations.ts",
+        "apps/keystone/lib/scene-studio/scene-schema.ts"
+      ],
+      "kind": "state",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "InMemorySceneStore",
+          "LocalSceneStore",
+          "normalizeForStore",
+          "SceneStore"
+        ]
+      }
+    },
+    {
+      "component_id": "cmp_ccc6ec7cb1",
+      "export_name": "SCENE_CANONICAL_LAYER_IDS",
+      "file_path": "apps/keystone/lib/scene-studio/scene-constants.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_cf1af64430",
+      "export_name": "default",
+      "file_path": "apps/keystone/playwright.config.ts",
+      "imports": [],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_cfdc49085c",
+      "export_name": "KEYSTONE_ROOT",
+      "file_path": "apps/keystone/visual-tests/helpers/paths.ts",
+      "imports": [],
       "kind": "dataviz",
       "renders": [],
       "uses": {
@@ -7658,6 +9532,29 @@
       }
     },
     {
+      "component_id": "cmp_d049d47f39",
+      "export_name": "InMemorySceneStore",
+      "file_path": "apps/keystone/lib/scene-studio/scene-store.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-migrations.ts",
+        "apps/keystone/lib/scene-studio/scene-schema.ts"
+      ],
+      "kind": "state",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "InMemorySceneStore",
+          "LocalSceneStore",
+          "normalizeForStore",
+          "SceneStore"
+        ]
+      }
+    },
+    {
       "component_id": "cmp_d060413965",
       "export_name": "PitchIconTarget",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -7691,11 +9588,80 @@
       }
     },
     {
+      "component_id": "cmp_d0f4c9811c",
+      "export_name": "parseSceneLayerProfile",
+      "file_path": "apps/keystone/lib/scene-studio/scene-query.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_d10d5022de",
+      "export_name": "classifyVisualChange",
+      "file_path": "apps/keystone/visual-tests/helpers/report.ts",
+      "imports": [
+        "apps/keystone/visual-tests/helpers/diff.ts",
+        "apps/keystone/visual-tests/helpers/scene-manifest.ts"
+      ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_d12e1b8674",
       "export_name": "PitchIconHalo",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
       "imports": [
         "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_d14405b63b",
+      "export_name": "parseSceneQuerySnapshot",
+      "file_path": "apps/keystone/lib/scene-studio/scene-schema.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-id.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_d1732bc81e",
+      "export_name": "loadSceneManifest",
+      "file_path": "apps/keystone/visual-tests/helpers/scene-manifest.ts",
+      "imports": [
+        "apps/keystone/visual-tests/helpers/paths.ts"
       ],
       "kind": "dataviz",
       "renders": [],
@@ -7728,6 +9694,7 @@
       "file_path": "packages/ui-kit/src/layers/LayerDebugPanel.tsx",
       "imports": [
         "packages/ui-kit/src/layers/layerIds.ts",
+        "packages/ui-kit/src/layers/resolveLayerFlags.ts",
         "packages/ui-kit/src/layers/useLayerFlags.ts"
       ],
       "kind": "control",
@@ -7736,9 +9703,39 @@
         "assets": [],
         "css": [],
         "hooks": [
-          "useLayerFlags"
+          "useLayerFlags",
+          "useMemo"
         ],
-        "stores": []
+        "stores": [
+          "useState"
+        ]
+      }
+    },
+    {
+      "component_id": "cmp_d2d761ad3d",
+      "export_name": "PitchSceneRuntimeBridge",
+      "file_path": "apps/keystone/components/pitch/debug/pitch-scene-runtime-bridge.tsx",
+      "imports": [
+        "apps/keystone/lib/scene-studio/index.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [
+          "useEffect",
+          "useLayerFlags",
+          "useMemo",
+          "usePathname",
+          "useSearchParams",
+          "useState"
+        ],
+        "stores": [
+          "playState",
+          "useState"
+        ]
       }
     },
     {
@@ -7788,6 +9785,20 @@
         "packages/ui-kit/src/layers/layerIds.ts"
       ],
       "kind": "brand",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_d5b2099583",
+      "export_name": "REPO_ROOT",
+      "file_path": "apps/keystone/visual-tests/helpers/paths.ts",
+      "imports": [],
+      "kind": "dataviz",
       "renders": [],
       "uses": {
         "assets": [],
@@ -7931,6 +9942,22 @@
           "useContext",
           "useLayerFlags"
         ],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_db45d00830",
+      "export_name": "SCENE_STUDIO_ROUTE",
+      "file_path": "apps/keystone/lib/scene-studio/scene-constants.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
         "stores": []
       }
     },
@@ -8116,6 +10143,36 @@
       }
     },
     {
+      "component_id": "cmp_df3827b0a4",
+      "export_name": "createDuplicateSceneId",
+      "file_path": "apps/keystone/lib/scene-studio/scene-id.ts",
+      "imports": [],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_df4235cc11",
+      "export_name": "resolveSceneStudioAccess",
+      "file_path": "apps/keystone/lib/scene-studio/scene-access.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_df5ed4adda",
       "export_name": "getGuardIndicators",
       "file_path": "apps/keystone/lib/pitch/demo-state.ts",
@@ -8146,6 +10203,25 @@
       }
     },
     {
+      "component_id": "cmp_df8c73eff1",
+      "export_name": "deriveLayerResolutionSource",
+      "file_path": "packages/ui-kit/src/layers/resolveLayerFlags.ts",
+      "imports": [
+        "packages/ui-kit/src/layers/layerIds.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": [
+          "shouldPersistMotionParamFromState",
+          "toRawFromResolvedState"
+        ]
+      }
+    },
+    {
       "component_id": "cmp_dfa6fd7512",
       "export_name": "PitchIconPill",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -8153,6 +10229,20 @@
         "packages/ui-kit/src/index.ts"
       ],
       "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_dfd8f6c463",
+      "export_name": "POST",
+      "file_path": "apps/keystone/app/api/scene-studio/run/route.ts",
+      "imports": [],
+      "kind": "block",
       "renders": [],
       "uses": {
         "assets": [],
@@ -8216,6 +10306,7 @@
       "export_name": "default",
       "file_path": "apps/keystone/app/pitch/03-hitech-os/page.tsx",
       "imports": [
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -8225,9 +10316,25 @@
       "renders": [
         "cmp_1d64a6eac7",
         "cmp_4daf0963df",
-        "cmp_d2126a2b14",
+        "cmp_6cb06e50cd",
         "cmp_dd9d94eef4"
       ],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_e3fadde36d",
+      "export_name": "buildScenePath",
+      "file_path": "apps/keystone/visual-tests/helpers/scene-manifest.ts",
+      "imports": [
+        "apps/keystone/visual-tests/helpers/paths.ts"
+      ],
+      "kind": "dataviz",
+      "renders": [],
       "uses": {
         "assets": [],
         "css": [],
@@ -8497,6 +10604,23 @@
       }
     },
     {
+      "component_id": "cmp_ebdbbb1bcc",
+      "export_name": "writeSummaryReport",
+      "file_path": "apps/keystone/visual-tests/helpers/report.ts",
+      "imports": [
+        "apps/keystone/visual-tests/helpers/diff.ts",
+        "apps/keystone/visual-tests/helpers/scene-manifest.ts"
+      ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_ebe0163e1e",
       "export_name": "MissionControlView",
       "file_path": "apps/keystone/components/mission/mission-control-view.tsx",
@@ -8570,6 +10694,23 @@
       }
     },
     {
+      "component_id": "cmp_ecad973d0c",
+      "export_name": "parseLayersExpression",
+      "file_path": "apps/keystone/lib/scene-studio/scene-query.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_ecfd390a3a",
       "export_name": "Skeleton",
       "file_path": "packages/ui-kit/src/components/feedback/Skeleton.tsx",
@@ -8583,6 +10724,32 @@
         "css": [],
         "hooks": [],
         "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_ed2049f466",
+      "export_name": "ValuationDeriskVisual",
+      "file_path": "apps/keystone/components/pitch/valuation-visuals.tsx",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [
+          "useCountUp",
+          "useEffect",
+          "useLayerFlags",
+          "useMemo",
+          "useMotionEnabled",
+          "useReducedMotionPreference",
+          "useState"
+        ],
+        "stores": [
+          "useState"
+        ]
       }
     },
     {
@@ -8621,6 +10788,22 @@
       "file_path": "packages/ui-kit/src/components/Text.tsx",
       "imports": [
         "packages/ui-kit/src/lib/cn.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_efdba39e95",
+      "export_name": "SCENE_STUDIO_RESPONSE_DIAGNOSTICS",
+      "file_path": "apps/keystone/lib/scene-studio/scene-bridge.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
       ],
       "kind": "block",
       "renders": [],
@@ -8673,6 +10856,25 @@
       }
     },
     {
+      "component_id": "cmp_f0f3f8429a",
+      "export_name": "resolveSceneQuerySearchParams",
+      "file_path": "apps/keystone/lib/scene-studio/scene-schema.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "apps/keystone/lib/scene-studio/scene-id.ts",
+        "apps/keystone/lib/scene-studio/scene-query.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_f14bfffde5",
       "export_name": "ScreenDoubleEngine",
       "file_path": "apps/keystone/components/pitch/screen-double-engine.tsx",
@@ -8683,6 +10885,23 @@
       "renders": [
         "cmp_b3decd4d6e"
       ],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_f1902286ab",
+      "export_name": "serializeSceneQuery",
+      "file_path": "apps/keystone/lib/scene-studio/scene-query.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
       "uses": {
         "assets": [],
         "css": [],
@@ -8718,8 +10937,7 @@
         "apps/keystone/components/pitch/visuals/pitch-kpi-chip-cloud.tsx",
         "apps/keystone/components/pitch/visuals/pitch-mini-bars.tsx",
         "apps/keystone/components/pitch/visuals/pitch-radial-gauge.tsx",
-        "apps/keystone/components/pitch/visuals/pitch-sparkline.tsx",
-        "apps/keystone/lib/pitch/deck-view-model.ts"
+        "apps/keystone/components/pitch/visuals/pitch-sparkline.tsx"
       ],
       "kind": "screen",
       "renders": [
@@ -8861,6 +11079,43 @@
       }
     },
     {
+      "component_id": "cmp_f63817b4db",
+      "export_name": "writeRunMetadata",
+      "file_path": "apps/keystone/visual-tests/helpers/scene-compare.ts",
+      "imports": [
+        "apps/keystone/visual-tests/helpers/diff.ts",
+        "apps/keystone/visual-tests/helpers/paths.ts",
+        "apps/keystone/visual-tests/helpers/report.ts",
+        "apps/keystone/visual-tests/helpers/scene-capture.ts",
+        "apps/keystone/visual-tests/helpers/scene-manifest.ts"
+      ],
+      "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_f673d5b83d",
+      "export_name": "buildSceneDiagnosticsPayload",
+      "file_path": "apps/keystone/lib/scene-studio/scene-diagnostics.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-bridge.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_f6fcfe4539",
       "export_name": "DialogContent",
       "file_path": "packages/ui-kit/src/components/overlays/Dialog.tsx",
@@ -8896,6 +11151,23 @@
       }
     },
     {
+      "component_id": "cmp_f83cc5bbf5",
+      "export_name": "parseSceneQueryToObject",
+      "file_path": "apps/keystone/lib/scene-studio/scene-query.ts",
+      "imports": [
+        "apps/keystone/lib/scene-studio/scene-constants.ts",
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_f852fc916d",
       "export_name": "PitchIconAtom",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -8903,6 +11175,22 @@
         "packages/ui-kit/src/index.ts"
       ],
       "kind": "dataviz",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_f8b25446f4",
+      "export_name": "SCENE_STUDIO_REQUEST_DIAGNOSTICS",
+      "file_path": "apps/keystone/lib/scene-studio/scene-bridge.ts",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "block",
       "renders": [],
       "uses": {
         "assets": [],
@@ -8934,6 +11222,7 @@
       "export_name": "dynamic",
       "file_path": "apps/keystone/app/pitch/01-double-engine/page.tsx",
       "imports": [
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -8942,7 +11231,7 @@
       "kind": "route",
       "renders": [
         "cmp_1d64a6eac7",
-        "cmp_d2126a2b14",
+        "cmp_6cb06e50cd",
         "cmp_dd9d94eef4",
         "cmp_f14bfffde5"
       ],
@@ -9245,6 +11534,11 @@
       "type": "imports"
     },
     {
+      "from": "cmp_005058f357",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
       "from": "cmp_00558dfee2",
       "to": "cmp_a56a27fc43",
       "type": "imports"
@@ -9350,6 +11644,26 @@
       "type": "imports"
     },
     {
+      "from": "cmp_04f54bd3f3",
+      "to": "cmp_04a0c7e82f",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_04f54bd3f3",
+      "to": "cmp_3eb2b2a3f1",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_04f54bd3f3",
+      "to": "cmp_ca87b6f80f",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_04f54bd3f3",
+      "to": "cmp_e3fadde36d",
+      "type": "imports"
+    },
+    {
       "from": "cmp_051d307492",
       "to": "cmp_a56a27fc43",
       "type": "imports"
@@ -9441,7 +11755,12 @@
     },
     {
       "from": "cmp_06fa5a7ff5",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_67c4101751",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_06fa5a7ff5",
+      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -9595,6 +11914,111 @@
       "type": "imports"
     },
     {
+      "from": "cmp_0e18d237a4",
+      "to": "cmp_39d4c9d7d2",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_0e18d237a4",
+      "to": "cmp_743b95dbec",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_0ef45dc6b4",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_0ef45dc6b4",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_0ef45dc6b4",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_0ef45dc6b4",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_0ef45dc6b4",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_0ef45dc6b4",
+      "to": "cmp_e49e5f31b9",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_0f1bc4f36f",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_0f1bc4f36f",
+      "to": "cmp_96ded7712b",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_10405d1738",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_10405d1738",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_10405d1738",
+      "to": "cmp_47769fe4fc",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_10405d1738",
+      "to": "cmp_4e3f8729d7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_10405d1738",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_10405d1738",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_10405d1738",
+      "to": "cmp_743b95dbec",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_10405d1738",
+      "to": "cmp_762ddc22be",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_10405d1738",
+      "to": "cmp_8aa5633da7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_10405d1738",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_10405d1738",
+      "to": "cmp_ecad973d0c",
+      "type": "imports"
+    },
+    {
       "from": "cmp_105875c51d",
       "to": "cmp_a56a27fc43",
       "type": "imports"
@@ -9695,6 +12119,16 @@
       "type": "imports"
     },
     {
+      "from": "cmp_13159ad4c6",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_13159ad4c6",
+      "to": "cmp_fbdd0af3a0",
+      "type": "imports"
+    },
+    {
       "from": "cmp_131eb79a6f",
       "to": "cmp_a56a27fc43",
       "type": "imports"
@@ -9731,16 +12165,6 @@
     },
     {
       "from": "cmp_16c468c2d6",
-      "to": "cmp_14a504c3ed",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_16c468c2d6",
-      "to": "cmp_2100b40d4a",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_16c468c2d6",
       "to": "cmp_45b5a64481",
       "type": "imports"
     },
@@ -9756,12 +12180,7 @@
     },
     {
       "from": "cmp_16c468c2d6",
-      "to": "cmp_685388607c",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_16c468c2d6",
-      "to": "cmp_736dbfbd88",
+      "to": "cmp_7c123a5c08",
       "type": "imports"
     },
     {
@@ -9777,6 +12196,11 @@
     {
       "from": "cmp_16c468c2d6",
       "to": "cmp_de9c0a16e6",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_16c468c2d6",
+      "to": "cmp_e49e5f31b9",
       "type": "imports"
     },
     {
@@ -9916,6 +12340,16 @@
     },
     {
       "from": "cmp_1d64a6eac7",
+      "to": "cmp_48b3a15c8f",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_1d64a6eac7",
+      "to": "cmp_4b76d1e46d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_1d64a6eac7",
       "to": "cmp_4c2da80405",
       "type": "imports"
     },
@@ -9941,12 +12375,72 @@
     },
     {
       "from": "cmp_1d64a6eac7",
-      "to": "cmp_ba2f1463d1",
+      "to": "cmp_de9c0a16e6",
       "type": "imports"
     },
     {
       "from": "cmp_1d64a6eac7",
-      "to": "cmp_de9c0a16e6",
+      "to": "cmp_df8c73eff1",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_1d72ad9a8a",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_1d72ad9a8a",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_1d72ad9a8a",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_1d72ad9a8a",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_1d72ad9a8a",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_1d72ad9a8a",
+      "to": "cmp_e49e5f31b9",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_1d9e0d5b23",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_1d9e0d5b23",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_1d9e0d5b23",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_1d9e0d5b23",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_1d9e0d5b23",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_1d9e0d5b23",
+      "to": "cmp_e49e5f31b9",
       "type": "imports"
     },
     {
@@ -10022,6 +12516,66 @@
     {
       "from": "cmp_217a574a9a",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_22bfaa2518",
+      "to": "cmp_dae81b3152",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2387441951",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2387441951",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2387441951",
+      "to": "cmp_47769fe4fc",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2387441951",
+      "to": "cmp_4e3f8729d7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2387441951",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2387441951",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2387441951",
+      "to": "cmp_743b95dbec",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2387441951",
+      "to": "cmp_762ddc22be",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2387441951",
+      "to": "cmp_8aa5633da7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2387441951",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2387441951",
+      "to": "cmp_ecad973d0c",
       "type": "imports"
     },
     {
@@ -10172,6 +12726,61 @@
     {
       "from": "cmp_26819c9f9a",
       "to": "cmp_ddfd33abd4",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_27250f66fb",
+      "to": "cmp_0ef45dc6b4",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_27250f66fb",
+      "to": "cmp_1d9e0d5b23",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_27250f66fb",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_27250f66fb",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_27250f66fb",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_27250f66fb",
+      "to": "cmp_84975d4dbe",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_27250f66fb",
+      "to": "cmp_ba2f1463d1",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_27250f66fb",
+      "to": "cmp_d0f4c9811c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_27250f66fb",
+      "to": "cmp_ecad973d0c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_27250f66fb",
+      "to": "cmp_f1902286ab",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_27250f66fb",
+      "to": "cmp_f83cc5bbf5",
       "type": "imports"
     },
     {
@@ -10330,6 +12939,61 @@
       "type": "imports"
     },
     {
+      "from": "cmp_2913c65c2b",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2913c65c2b",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2913c65c2b",
+      "to": "cmp_47769fe4fc",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2913c65c2b",
+      "to": "cmp_4e3f8729d7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2913c65c2b",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2913c65c2b",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2913c65c2b",
+      "to": "cmp_743b95dbec",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2913c65c2b",
+      "to": "cmp_762ddc22be",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2913c65c2b",
+      "to": "cmp_8aa5633da7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2913c65c2b",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2913c65c2b",
+      "to": "cmp_ecad973d0c",
+      "type": "imports"
+    },
+    {
       "from": "cmp_2917294077",
       "to": "cmp_a56a27fc43",
       "type": "imports"
@@ -10340,6 +13004,106 @@
       "type": "imports"
     },
     {
+      "from": "cmp_2a48db8a31",
+      "to": "cmp_13de148174",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2a48db8a31",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2a48db8a31",
+      "to": "cmp_51ab9b9b34",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2a48db8a31",
+      "to": "cmp_62ea04ad4f",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2a48db8a31",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2a48db8a31",
+      "to": "cmp_817817e84e",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2a48db8a31",
+      "to": "cmp_aa9f1dd5b7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2a48db8a31",
+      "to": "cmp_de9c0a16e6",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2a48db8a31",
+      "to": "cmp_e49e5f31b9",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2b741fa993",
+      "to": "cmp_0ef45dc6b4",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2b741fa993",
+      "to": "cmp_1d9e0d5b23",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2b741fa993",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2b741fa993",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2b741fa993",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2b741fa993",
+      "to": "cmp_84975d4dbe",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2b741fa993",
+      "to": "cmp_ba2f1463d1",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2b741fa993",
+      "to": "cmp_d0f4c9811c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2b741fa993",
+      "to": "cmp_ecad973d0c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2b741fa993",
+      "to": "cmp_f1902286ab",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2b741fa993",
+      "to": "cmp_f83cc5bbf5",
+      "type": "imports"
+    },
+    {
       "from": "cmp_2c2aa68393",
       "to": "cmp_7dcbc96a0b",
       "type": "imports"
@@ -10347,6 +13111,51 @@
     {
       "from": "cmp_2c2aa68393",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2ca065c597",
+      "to": "cmp_10405d1738",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2ca065c597",
+      "to": "cmp_39d4c9d7d2",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2ca065c597",
+      "to": "cmp_446936be88",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2ca065c597",
+      "to": "cmp_669397f1fe",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2ca065c597",
+      "to": "cmp_743b95dbec",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2ca065c597",
+      "to": "cmp_750cca0661",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2ca065c597",
+      "to": "cmp_762ddc22be",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2ca065c597",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2ca065c597",
+      "to": "cmp_e49e5f31b9",
       "type": "imports"
     },
     {
@@ -10380,8 +13189,43 @@
       "type": "imports"
     },
     {
+      "from": "cmp_2e4e4db285",
+      "to": "cmp_0e18d237a4",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2e4e4db285",
+      "to": "cmp_62e44bb8d0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2e4e4db285",
+      "to": "cmp_762ddc22be",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2e4e4db285",
+      "to": "cmp_c577efca6f",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2e4e4db285",
+      "to": "cmp_cbfab02c0f",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2e4e4db285",
+      "to": "cmp_df3827b0a4",
+      "type": "imports"
+    },
+    {
       "from": "cmp_2e5f26daf9",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_2e64b98779",
+      "to": "cmp_a0bbbb5c12",
       "type": "imports"
     },
     {
@@ -10437,6 +13281,16 @@
     {
       "from": "cmp_3125ea93a8",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_31b57a0d07",
+      "to": "cmp_712662a4a6",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_31b57a0d07",
+      "to": "cmp_96fd6caae3",
       "type": "imports"
     },
     {
@@ -10586,12 +13440,17 @@
     },
     {
       "from": "cmp_392b7b5544",
-      "to": "cmp_ba2f1463d1",
+      "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_392b7b5544",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_67c4101751",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_392b7b5544",
+      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -10620,8 +13479,93 @@
       "type": "imports"
     },
     {
+      "from": "cmp_39d4c9d7d2",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_39d4c9d7d2",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_39d4c9d7d2",
+      "to": "cmp_47769fe4fc",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_39d4c9d7d2",
+      "to": "cmp_4e3f8729d7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_39d4c9d7d2",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_39d4c9d7d2",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_39d4c9d7d2",
+      "to": "cmp_743b95dbec",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_39d4c9d7d2",
+      "to": "cmp_762ddc22be",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_39d4c9d7d2",
+      "to": "cmp_8aa5633da7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_39d4c9d7d2",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_39d4c9d7d2",
+      "to": "cmp_ecad973d0c",
+      "type": "imports"
+    },
+    {
       "from": "cmp_3a0024cc79",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_3c1acb6633",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_3c1acb6633",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_3c1acb6633",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_3c1acb6633",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_3c1acb6633",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_3c1acb6633",
+      "to": "cmp_e49e5f31b9",
       "type": "imports"
     },
     {
@@ -10632,6 +13576,11 @@
     {
       "from": "cmp_3c9b21201c",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_3f2e7ca003",
+      "to": "cmp_45b5a64481",
       "type": "imports"
     },
     {
@@ -10661,16 +13610,6 @@
     },
     {
       "from": "cmp_432c46b32d",
-      "to": "cmp_14a504c3ed",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_432c46b32d",
-      "to": "cmp_2100b40d4a",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_432c46b32d",
       "to": "cmp_45b5a64481",
       "type": "imports"
     },
@@ -10686,12 +13625,7 @@
     },
     {
       "from": "cmp_432c46b32d",
-      "to": "cmp_685388607c",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_432c46b32d",
-      "to": "cmp_736dbfbd88",
+      "to": "cmp_7c123a5c08",
       "type": "imports"
     },
     {
@@ -10707,6 +13641,66 @@
     {
       "from": "cmp_432c46b32d",
       "to": "cmp_de9c0a16e6",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_432c46b32d",
+      "to": "cmp_e49e5f31b9",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_433185e9a4",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_446936be88",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_46d3f6738b",
+      "to": "cmp_13de148174",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_46d3f6738b",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_46d3f6738b",
+      "to": "cmp_51ab9b9b34",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_46d3f6738b",
+      "to": "cmp_62ea04ad4f",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_46d3f6738b",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_46d3f6738b",
+      "to": "cmp_817817e84e",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_46d3f6738b",
+      "to": "cmp_aa9f1dd5b7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_46d3f6738b",
+      "to": "cmp_de9c0a16e6",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_46d3f6738b",
+      "to": "cmp_e49e5f31b9",
       "type": "imports"
     },
     {
@@ -10727,6 +13721,11 @@
     {
       "from": "cmp_47156dd84d",
       "to": "cmp_bfba3b066a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_47769fe4fc",
+      "to": "cmp_45b5a64481",
       "type": "imports"
     },
     {
@@ -10760,8 +13759,63 @@
       "type": "imports"
     },
     {
+      "from": "cmp_48b3a15c8f",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_48b3a15c8f",
+      "to": "cmp_fbdd0af3a0",
+      "type": "imports"
+    },
+    {
       "from": "cmp_48fde66357",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_49b9905849",
+      "to": "cmp_10405d1738",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_49b9905849",
+      "to": "cmp_39d4c9d7d2",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_49b9905849",
+      "to": "cmp_446936be88",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_49b9905849",
+      "to": "cmp_669397f1fe",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_49b9905849",
+      "to": "cmp_743b95dbec",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_49b9905849",
+      "to": "cmp_750cca0661",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_49b9905849",
+      "to": "cmp_762ddc22be",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_49b9905849",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_49b9905849",
+      "to": "cmp_e49e5f31b9",
       "type": "imports"
     },
     {
@@ -10787,6 +13841,16 @@
     {
       "from": "cmp_4b0b787c25",
       "to": "cmp_f3cecec036",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_4b76d1e46d",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_4b76d1e46d",
+      "to": "cmp_fbdd0af3a0",
       "type": "imports"
     },
     {
@@ -10826,12 +13890,17 @@
     },
     {
       "from": "cmp_4c33d65a1b",
-      "to": "cmp_ba2f1463d1",
+      "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_4c33d65a1b",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_67c4101751",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_4c33d65a1b",
+      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -10905,8 +13974,48 @@
       "type": "imports"
     },
     {
+      "from": "cmp_4e3f8729d7",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_4e3f8729d7",
+      "to": "cmp_fbdd0af3a0",
+      "type": "imports"
+    },
+    {
       "from": "cmp_4e83083d27",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_4eac0f419b",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_4eac0f419b",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_4eac0f419b",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_4eac0f419b",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_4eac0f419b",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_4eac0f419b",
+      "to": "cmp_e49e5f31b9",
       "type": "imports"
     },
     {
@@ -10935,6 +14044,11 @@
       "type": "imports"
     },
     {
+      "from": "cmp_4f83bf523a",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
       "from": "cmp_526d8beca6",
       "to": "cmp_a56a27fc43",
       "type": "imports"
@@ -10952,6 +14066,86 @@
     {
       "from": "cmp_52cca0d9dd",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_531356547d",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_531356547d",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_531356547d",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_531356547d",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_531356547d",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_531356547d",
+      "to": "cmp_e49e5f31b9",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_535bf7270f",
+      "to": "cmp_13de148174",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_535bf7270f",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_535bf7270f",
+      "to": "cmp_51ab9b9b34",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_535bf7270f",
+      "to": "cmp_62ea04ad4f",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_535bf7270f",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_535bf7270f",
+      "to": "cmp_817817e84e",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_535bf7270f",
+      "to": "cmp_aa9f1dd5b7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_535bf7270f",
+      "to": "cmp_de9c0a16e6",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_535bf7270f",
+      "to": "cmp_e49e5f31b9",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_537a1e5c84",
+      "to": "cmp_075347cd7a",
       "type": "imports"
     },
     {
@@ -11051,12 +14245,17 @@
     },
     {
       "from": "cmp_5650c38efe",
-      "to": "cmp_ba2f1463d1",
+      "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_5650c38efe",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_67c4101751",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_5650c38efe",
+      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -11076,17 +14275,22 @@
     },
     {
       "from": "cmp_57a316c0c8",
+      "to": "cmp_65dfb85232",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_57a316c0c8",
+      "to": "cmp_67c4101751",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_57a316c0c8",
+      "to": "cmp_6cb06e50cd",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_57a316c0c8",
       "to": "cmp_88852e131f",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_57a316c0c8",
-      "to": "cmp_ba2f1463d1",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_57a316c0c8",
-      "to": "cmp_d2126a2b14",
       "type": "imports"
     },
     {
@@ -11231,12 +14435,17 @@
     },
     {
       "from": "cmp_5f4559764e",
-      "to": "cmp_bf1d0f2e29",
+      "to": "cmp_67c4101751",
       "type": "imports"
     },
     {
       "from": "cmp_5f4559764e",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_6cb06e50cd",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_5f4559764e",
+      "to": "cmp_bf1d0f2e29",
       "type": "imports"
     },
     {
@@ -11247,6 +14456,16 @@
     {
       "from": "cmp_5f77f5f649",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_5f87b72dbe",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_5f87b72dbe",
+      "to": "cmp_fbdd0af3a0",
       "type": "imports"
     },
     {
@@ -11266,12 +14485,17 @@
     },
     {
       "from": "cmp_5fe598643a",
-      "to": "cmp_ba2f1463d1",
+      "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_5fe598643a",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_67c4101751",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_5fe598643a",
+      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -11335,6 +14559,41 @@
       "type": "imports"
     },
     {
+      "from": "cmp_62e44bb8d0",
+      "to": "cmp_2913c65c2b",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_62e44bb8d0",
+      "to": "cmp_2ca065c597",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_62e44bb8d0",
+      "to": "cmp_39d4c9d7d2",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_62e44bb8d0",
+      "to": "cmp_433185e9a4",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_62e44bb8d0",
+      "to": "cmp_49b9905849",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_62e44bb8d0",
+      "to": "cmp_750cca0661",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_62e44bb8d0",
+      "to": "cmp_9ce6fcd41a",
+      "type": "imports"
+    },
+    {
       "from": "cmp_636dd8db97",
       "to": "cmp_7dcbc96a0b",
       "type": "imports"
@@ -11342,6 +14601,31 @@
     {
       "from": "cmp_636dd8db97",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_63d1e991fa",
+      "to": "cmp_535bf7270f",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_63d1e991fa",
+      "to": "cmp_dae81b3152",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_63d837e0ab",
+      "to": "cmp_dae81b3152",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_643b586dfd",
+      "to": "cmp_7b8f4f141d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_643b586dfd",
+      "to": "cmp_df4235cc11",
       "type": "imports"
     },
     {
@@ -11416,7 +14700,72 @@
     },
     {
       "from": "cmp_65dfb85232",
+      "to": "cmp_432c46b32d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_65dfb85232",
+      "to": "cmp_92c5078638",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_65dfb85232",
       "to": "cmp_ba2f1463d1",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_669397f1fe",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_669397f1fe",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_669397f1fe",
+      "to": "cmp_47769fe4fc",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_669397f1fe",
+      "to": "cmp_4e3f8729d7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_669397f1fe",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_669397f1fe",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_669397f1fe",
+      "to": "cmp_743b95dbec",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_669397f1fe",
+      "to": "cmp_762ddc22be",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_669397f1fe",
+      "to": "cmp_8aa5633da7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_669397f1fe",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_669397f1fe",
+      "to": "cmp_ecad973d0c",
       "type": "imports"
     },
     {
@@ -11431,12 +14780,17 @@
     },
     {
       "from": "cmp_66ce3930e7",
-      "to": "cmp_ba2f1463d1",
+      "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_66ce3930e7",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_67c4101751",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_66ce3930e7",
+      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -11520,6 +14874,21 @@
       "type": "imports"
     },
     {
+      "from": "cmp_67c4101751",
+      "to": "cmp_432c46b32d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_67c4101751",
+      "to": "cmp_92c5078638",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_67c4101751",
+      "to": "cmp_ba2f1463d1",
+      "type": "imports"
+    },
+    {
       "from": "cmp_68d4dce984",
       "to": "cmp_7dcbc96a0b",
       "type": "imports"
@@ -11585,6 +14954,26 @@
       "type": "imports"
     },
     {
+      "from": "cmp_6cb06e50cd",
+      "to": "cmp_63d1e991fa",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_6cb06e50cd",
+      "to": "cmp_805d85de87",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_6cb06e50cd",
+      "to": "cmp_d2126a2b14",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_6cb06e50cd",
+      "to": "cmp_d2d761ad3d",
+      "type": "imports"
+    },
+    {
       "from": "cmp_6d593dd6e9",
       "to": "cmp_3436ea7a7f",
       "type": "imports"
@@ -11616,7 +15005,7 @@
     },
     {
       "from": "cmp_6f329bfadf",
-      "to": "cmp_133d7dec91",
+      "to": "cmp_22bfaa2518",
       "type": "imports"
     },
     {
@@ -11641,17 +15030,17 @@
     },
     {
       "from": "cmp_6f329bfadf",
+      "to": "cmp_63d837e0ab",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_6f329bfadf",
       "to": "cmp_73815c5199",
       "type": "imports"
     },
     {
       "from": "cmp_6f329bfadf",
       "to": "cmp_90fb220e30",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_6f329bfadf",
-      "to": "cmp_934d4e8c97",
       "type": "imports"
     },
     {
@@ -11676,17 +15065,12 @@
     },
     {
       "from": "cmp_6f329bfadf",
-      "to": "cmp_cbf3af2004",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_6f329bfadf",
       "to": "cmp_d75d2e793c",
       "type": "imports"
     },
     {
       "from": "cmp_6f329bfadf",
-      "to": "cmp_f5c8a56456",
+      "to": "cmp_ed2049f466",
       "type": "imports"
     },
     {
@@ -11697,6 +15081,66 @@
     {
       "from": "cmp_742b1b11b0",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_743b95dbec",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_750cca0661",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_750cca0661",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_750cca0661",
+      "to": "cmp_47769fe4fc",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_750cca0661",
+      "to": "cmp_4e3f8729d7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_750cca0661",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_750cca0661",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_750cca0661",
+      "to": "cmp_743b95dbec",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_750cca0661",
+      "to": "cmp_762ddc22be",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_750cca0661",
+      "to": "cmp_8aa5633da7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_750cca0661",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_750cca0661",
+      "to": "cmp_ecad973d0c",
       "type": "imports"
     },
     {
@@ -11746,12 +15190,17 @@
     },
     {
       "from": "cmp_76a47f23da",
-      "to": "cmp_bf1d0f2e29",
+      "to": "cmp_67c4101751",
       "type": "imports"
     },
     {
       "from": "cmp_76a47f23da",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_6cb06e50cd",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_76a47f23da",
+      "to": "cmp_bf1d0f2e29",
       "type": "imports"
     },
     {
@@ -11781,16 +15230,6 @@
     },
     {
       "from": "cmp_78be8e7da7",
-      "to": "cmp_14a504c3ed",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_78be8e7da7",
-      "to": "cmp_2100b40d4a",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_78be8e7da7",
       "to": "cmp_45b5a64481",
       "type": "imports"
     },
@@ -11806,12 +15245,7 @@
     },
     {
       "from": "cmp_78be8e7da7",
-      "to": "cmp_685388607c",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_78be8e7da7",
-      "to": "cmp_736dbfbd88",
+      "to": "cmp_7c123a5c08",
       "type": "imports"
     },
     {
@@ -11827,6 +15261,11 @@
     {
       "from": "cmp_78be8e7da7",
       "to": "cmp_de9c0a16e6",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_78be8e7da7",
+      "to": "cmp_e49e5f31b9",
       "type": "imports"
     },
     {
@@ -11857,6 +15296,61 @@
     {
       "from": "cmp_7ae7a8e3ff",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7b8f4f141d",
+      "to": "cmp_0e18d237a4",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7b8f4f141d",
+      "to": "cmp_0f1bc4f36f",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7b8f4f141d",
+      "to": "cmp_2e4e4db285",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7b8f4f141d",
+      "to": "cmp_2e64b98779",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7b8f4f141d",
+      "to": "cmp_31b57a0d07",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7b8f4f141d",
+      "to": "cmp_3643dc52a6",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7b8f4f141d",
+      "to": "cmp_880191ca88",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7b8f4f141d",
+      "to": "cmp_8f9a19edfb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7b8f4f141d",
+      "to": "cmp_8f9bf09085",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7b8f4f141d",
+      "to": "cmp_af3e06591e",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7b8f4f141d",
+      "to": "cmp_f83cc5bbf5",
       "type": "imports"
     },
     {
@@ -11985,13 +15479,173 @@
       "type": "imports"
     },
     {
+      "from": "cmp_7e9f59fe35",
+      "to": "cmp_0ef45dc6b4",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7e9f59fe35",
+      "to": "cmp_1d9e0d5b23",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7e9f59fe35",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7e9f59fe35",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7e9f59fe35",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7e9f59fe35",
+      "to": "cmp_84975d4dbe",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7e9f59fe35",
+      "to": "cmp_ba2f1463d1",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7e9f59fe35",
+      "to": "cmp_d0f4c9811c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7e9f59fe35",
+      "to": "cmp_ecad973d0c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7e9f59fe35",
+      "to": "cmp_f1902286ab",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7e9f59fe35",
+      "to": "cmp_f83cc5bbf5",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7fd81a6bbc",
+      "to": "cmp_04f54bd3f3",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7fd81a6bbc",
+      "to": "cmp_08b67ff1e9",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7fd81a6bbc",
+      "to": "cmp_1b28f82009",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7fd81a6bbc",
+      "to": "cmp_742adaf30e",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7fd81a6bbc",
+      "to": "cmp_8e7ec824de",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7fd81a6bbc",
+      "to": "cmp_ae181677e0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7fd81a6bbc",
+      "to": "cmp_be3b1b1367",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7fd81a6bbc",
+      "to": "cmp_caa1b8c23c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7fd81a6bbc",
+      "to": "cmp_d10d5022de",
+      "type": "imports"
+    },
+    {
       "from": "cmp_800e25494f",
       "to": "cmp_a56a27fc43",
       "type": "imports"
     },
     {
+      "from": "cmp_801c90a1d7",
+      "to": "cmp_0ef45dc6b4",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_801c90a1d7",
+      "to": "cmp_1d9e0d5b23",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_801c90a1d7",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_801c90a1d7",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_801c90a1d7",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_801c90a1d7",
+      "to": "cmp_84975d4dbe",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_801c90a1d7",
+      "to": "cmp_ba2f1463d1",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_801c90a1d7",
+      "to": "cmp_d0f4c9811c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_801c90a1d7",
+      "to": "cmp_ecad973d0c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_801c90a1d7",
+      "to": "cmp_f1902286ab",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_801c90a1d7",
+      "to": "cmp_f83cc5bbf5",
+      "type": "imports"
+    },
+    {
       "from": "cmp_80488362ec",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_805d85de87",
+      "to": "cmp_dae81b3152",
       "type": "imports"
     },
     {
@@ -12011,7 +15665,12 @@
     },
     {
       "from": "cmp_80d296e91b",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_67c4101751",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_80d296e91b",
+      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -12050,6 +15709,36 @@
       "type": "imports"
     },
     {
+      "from": "cmp_84975d4dbe",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_84975d4dbe",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_84975d4dbe",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_84975d4dbe",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_84975d4dbe",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_84975d4dbe",
+      "to": "cmp_e49e5f31b9",
+      "type": "imports"
+    },
+    {
       "from": "cmp_84a8875e0e",
       "to": "cmp_a56a27fc43",
       "type": "imports"
@@ -12070,6 +15759,31 @@
       "type": "imports"
     },
     {
+      "from": "cmp_880191ca88",
+      "to": "cmp_2927b6c7ce",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_880191ca88",
+      "to": "cmp_a086c86a14",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_880191ca88",
+      "to": "cmp_f8b25446f4",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_8832e0d534",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_8832e0d534",
+      "to": "cmp_fbdd0af3a0",
+      "type": "imports"
+    },
+    {
       "from": "cmp_8869eb74c7",
       "to": "cmp_bbe2a20c51",
       "type": "imports"
@@ -12087,6 +15801,16 @@
     {
       "from": "cmp_893fea1064",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_897087c37a",
+      "to": "cmp_7b8f4f141d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_897087c37a",
+      "to": "cmp_df4235cc11",
       "type": "imports"
     },
     {
@@ -12151,17 +15875,22 @@
     },
     {
       "from": "cmp_8ec357b7d7",
+      "to": "cmp_65dfb85232",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_8ec357b7d7",
+      "to": "cmp_67c4101751",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_8ec357b7d7",
+      "to": "cmp_6cb06e50cd",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_8ec357b7d7",
       "to": "cmp_88852e131f",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_8ec357b7d7",
-      "to": "cmp_ba2f1463d1",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_8ec357b7d7",
-      "to": "cmp_d2126a2b14",
       "type": "imports"
     },
     {
@@ -12177,6 +15906,61 @@
     {
       "from": "cmp_8f7b41dd50",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_8f9a19edfb",
+      "to": "cmp_0ef45dc6b4",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_8f9a19edfb",
+      "to": "cmp_1d9e0d5b23",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_8f9a19edfb",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_8f9a19edfb",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_8f9a19edfb",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_8f9a19edfb",
+      "to": "cmp_84975d4dbe",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_8f9a19edfb",
+      "to": "cmp_ba2f1463d1",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_8f9a19edfb",
+      "to": "cmp_d0f4c9811c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_8f9a19edfb",
+      "to": "cmp_ecad973d0c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_8f9a19edfb",
+      "to": "cmp_f1902286ab",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_8f9a19edfb",
+      "to": "cmp_f83cc5bbf5",
       "type": "imports"
     },
     {
@@ -12196,16 +15980,6 @@
     },
     {
       "from": "cmp_91d5a352c2",
-      "to": "cmp_14a504c3ed",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_91d5a352c2",
-      "to": "cmp_2100b40d4a",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_91d5a352c2",
       "to": "cmp_45b5a64481",
       "type": "imports"
     },
@@ -12221,12 +15995,7 @@
     },
     {
       "from": "cmp_91d5a352c2",
-      "to": "cmp_685388607c",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_91d5a352c2",
-      "to": "cmp_736dbfbd88",
+      "to": "cmp_7c123a5c08",
       "type": "imports"
     },
     {
@@ -12242,6 +16011,11 @@
     {
       "from": "cmp_91d5a352c2",
       "to": "cmp_de9c0a16e6",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_91d5a352c2",
+      "to": "cmp_e49e5f31b9",
       "type": "imports"
     },
     {
@@ -12271,16 +16045,6 @@
     },
     {
       "from": "cmp_92c5078638",
-      "to": "cmp_14a504c3ed",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_92c5078638",
-      "to": "cmp_2100b40d4a",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_92c5078638",
       "to": "cmp_45b5a64481",
       "type": "imports"
     },
@@ -12296,12 +16060,7 @@
     },
     {
       "from": "cmp_92c5078638",
-      "to": "cmp_685388607c",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_92c5078638",
-      "to": "cmp_736dbfbd88",
+      "to": "cmp_7c123a5c08",
       "type": "imports"
     },
     {
@@ -12320,6 +16079,11 @@
       "type": "imports"
     },
     {
+      "from": "cmp_92c5078638",
+      "to": "cmp_e49e5f31b9",
+      "type": "imports"
+    },
+    {
       "from": "cmp_92d5347991",
       "to": "cmp_a56a27fc43",
       "type": "imports"
@@ -12332,6 +16096,71 @@
     {
       "from": "cmp_968d0a409d",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_96ded7712b",
+      "to": "cmp_39d4c9d7d2",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_96ded7712b",
+      "to": "cmp_743b95dbec",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_98fd6ce434",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_98fd6ce434",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_98fd6ce434",
+      "to": "cmp_47769fe4fc",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_98fd6ce434",
+      "to": "cmp_4e3f8729d7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_98fd6ce434",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_98fd6ce434",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_98fd6ce434",
+      "to": "cmp_743b95dbec",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_98fd6ce434",
+      "to": "cmp_762ddc22be",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_98fd6ce434",
+      "to": "cmp_8aa5633da7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_98fd6ce434",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_98fd6ce434",
+      "to": "cmp_ecad973d0c",
       "type": "imports"
     },
     {
@@ -12355,6 +16184,36 @@
       "type": "imports"
     },
     {
+      "from": "cmp_9ba8f2b7e5",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_9ba8f2b7e5",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_9ba8f2b7e5",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_9ba8f2b7e5",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_9ba8f2b7e5",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_9ba8f2b7e5",
+      "to": "cmp_e49e5f31b9",
+      "type": "imports"
+    },
+    {
       "from": "cmp_9c05a80bfc",
       "to": "cmp_a56a27fc43",
       "type": "imports"
@@ -12362,6 +16221,11 @@
     {
       "from": "cmp_9ce37f09d9",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_9ce6fcd41a",
+      "to": "cmp_45b5a64481",
       "type": "imports"
     },
     {
@@ -12416,12 +16280,17 @@
     },
     {
       "from": "cmp_9ec03d1934",
-      "to": "cmp_ba2f1463d1",
+      "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_9ec03d1934",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_67c4101751",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_9ec03d1934",
+      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -12447,6 +16316,11 @@
     {
       "from": "cmp_a02e2ff2e5",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a0bbbb5c12",
+      "to": "cmp_fbdd0af3a0",
       "type": "imports"
     },
     {
@@ -12555,6 +16429,61 @@
       "type": "imports"
     },
     {
+      "from": "cmp_a401ef865c",
+      "to": "cmp_0ef45dc6b4",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a401ef865c",
+      "to": "cmp_1d9e0d5b23",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a401ef865c",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a401ef865c",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a401ef865c",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a401ef865c",
+      "to": "cmp_84975d4dbe",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a401ef865c",
+      "to": "cmp_ba2f1463d1",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a401ef865c",
+      "to": "cmp_d0f4c9811c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a401ef865c",
+      "to": "cmp_ecad973d0c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a401ef865c",
+      "to": "cmp_f1902286ab",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a401ef865c",
+      "to": "cmp_f83cc5bbf5",
+      "type": "imports"
+    },
+    {
       "from": "cmp_a421334569",
       "to": "cmp_45b5a64481",
       "type": "imports"
@@ -12600,6 +16529,61 @@
       "type": "imports"
     },
     {
+      "from": "cmp_a64eee4820",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a64eee4820",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a64eee4820",
+      "to": "cmp_47769fe4fc",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a64eee4820",
+      "to": "cmp_4e3f8729d7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a64eee4820",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a64eee4820",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a64eee4820",
+      "to": "cmp_743b95dbec",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a64eee4820",
+      "to": "cmp_762ddc22be",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a64eee4820",
+      "to": "cmp_8aa5633da7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a64eee4820",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a64eee4820",
+      "to": "cmp_ecad973d0c",
+      "type": "imports"
+    },
+    {
       "from": "cmp_a678bb7787",
       "to": "cmp_a56a27fc43",
       "type": "imports"
@@ -12617,6 +16601,26 @@
     {
       "from": "cmp_a910b6a86d",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a94debf8ad",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_a94debf8ad",
+      "to": "cmp_fbdd0af3a0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_aa5506ce35",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_aa5506ce35",
+      "to": "cmp_fbdd0af3a0",
       "type": "imports"
     },
     {
@@ -12677,6 +16681,66 @@
     {
       "from": "cmp_ade61a11b0",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_adecfe84eb",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_af3e06591e",
+      "to": "cmp_0ef45dc6b4",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_af3e06591e",
+      "to": "cmp_1d9e0d5b23",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_af3e06591e",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_af3e06591e",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_af3e06591e",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_af3e06591e",
+      "to": "cmp_84975d4dbe",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_af3e06591e",
+      "to": "cmp_ba2f1463d1",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_af3e06591e",
+      "to": "cmp_d0f4c9811c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_af3e06591e",
+      "to": "cmp_ecad973d0c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_af3e06591e",
+      "to": "cmp_f1902286ab",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_af3e06591e",
+      "to": "cmp_f83cc5bbf5",
       "type": "imports"
     },
     {
@@ -12821,16 +16885,6 @@
     },
     {
       "from": "cmp_b6fb900f26",
-      "to": "cmp_14a504c3ed",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_b6fb900f26",
-      "to": "cmp_2100b40d4a",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_b6fb900f26",
       "to": "cmp_45b5a64481",
       "type": "imports"
     },
@@ -12846,12 +16900,7 @@
     },
     {
       "from": "cmp_b6fb900f26",
-      "to": "cmp_685388607c",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_b6fb900f26",
-      "to": "cmp_736dbfbd88",
+      "to": "cmp_7c123a5c08",
       "type": "imports"
     },
     {
@@ -12867,6 +16916,11 @@
     {
       "from": "cmp_b6fb900f26",
       "to": "cmp_de9c0a16e6",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_b6fb900f26",
+      "to": "cmp_e49e5f31b9",
       "type": "imports"
     },
     {
@@ -12886,16 +16940,6 @@
     },
     {
       "from": "cmp_ba2f1463d1",
-      "to": "cmp_14a504c3ed",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_ba2f1463d1",
-      "to": "cmp_2100b40d4a",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_ba2f1463d1",
       "to": "cmp_45b5a64481",
       "type": "imports"
     },
@@ -12911,12 +16955,7 @@
     },
     {
       "from": "cmp_ba2f1463d1",
-      "to": "cmp_685388607c",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_ba2f1463d1",
-      "to": "cmp_736dbfbd88",
+      "to": "cmp_7c123a5c08",
       "type": "imports"
     },
     {
@@ -12932,6 +16971,11 @@
     {
       "from": "cmp_ba2f1463d1",
       "to": "cmp_de9c0a16e6",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_ba2f1463d1",
+      "to": "cmp_e49e5f31b9",
       "type": "imports"
     },
     {
@@ -12957,6 +17001,61 @@
     {
       "from": "cmp_bafdb2de69",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_bc2c865d76",
+      "to": "cmp_13de148174",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_bc2c865d76",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_bc2c865d76",
+      "to": "cmp_51ab9b9b34",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_bc2c865d76",
+      "to": "cmp_62ea04ad4f",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_bc2c865d76",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_bc2c865d76",
+      "to": "cmp_817817e84e",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_bc2c865d76",
+      "to": "cmp_aa9f1dd5b7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_bc2c865d76",
+      "to": "cmp_de9c0a16e6",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_bc2c865d76",
+      "to": "cmp_e49e5f31b9",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_bd6ef93995",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_bd6ef93995",
+      "to": "cmp_fbdd0af3a0",
       "type": "imports"
     },
     {
@@ -13120,6 +17219,16 @@
       "type": "imports"
     },
     {
+      "from": "cmp_c36404b994",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c36404b994",
+      "to": "cmp_fbdd0af3a0",
+      "type": "imports"
+    },
+    {
       "from": "cmp_c40e7fc107",
       "to": "cmp_7dcbc96a0b",
       "type": "imports"
@@ -13137,6 +17246,61 @@
     {
       "from": "cmp_c412df1705",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c4be3cca6a",
+      "to": "cmp_0ef45dc6b4",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c4be3cca6a",
+      "to": "cmp_1d9e0d5b23",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c4be3cca6a",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c4be3cca6a",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c4be3cca6a",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c4be3cca6a",
+      "to": "cmp_84975d4dbe",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c4be3cca6a",
+      "to": "cmp_ba2f1463d1",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c4be3cca6a",
+      "to": "cmp_d0f4c9811c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c4be3cca6a",
+      "to": "cmp_ecad973d0c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c4be3cca6a",
+      "to": "cmp_f1902286ab",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c4be3cca6a",
+      "to": "cmp_f83cc5bbf5",
       "type": "imports"
     },
     {
@@ -13147,6 +17311,96 @@
     {
       "from": "cmp_c5706d2d90",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c577efca6f",
+      "to": "cmp_2913c65c2b",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c577efca6f",
+      "to": "cmp_2ca065c597",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c577efca6f",
+      "to": "cmp_39d4c9d7d2",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c577efca6f",
+      "to": "cmp_433185e9a4",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c577efca6f",
+      "to": "cmp_49b9905849",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c577efca6f",
+      "to": "cmp_750cca0661",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c577efca6f",
+      "to": "cmp_9ce6fcd41a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c64d179eac",
+      "to": "cmp_0ef45dc6b4",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c64d179eac",
+      "to": "cmp_1d9e0d5b23",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c64d179eac",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c64d179eac",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c64d179eac",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c64d179eac",
+      "to": "cmp_84975d4dbe",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c64d179eac",
+      "to": "cmp_ba2f1463d1",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c64d179eac",
+      "to": "cmp_d0f4c9811c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c64d179eac",
+      "to": "cmp_ecad973d0c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c64d179eac",
+      "to": "cmp_f1902286ab",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c64d179eac",
+      "to": "cmp_f83cc5bbf5",
       "type": "imports"
     },
     {
@@ -13230,8 +17484,88 @@
       "type": "imports"
     },
     {
+      "from": "cmp_caa1b8c23c",
+      "to": "cmp_075347cd7a",
+      "type": "imports"
+    },
+    {
       "from": "cmp_cbf3af2004",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_cbfab02c0f",
+      "to": "cmp_2913c65c2b",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_cbfab02c0f",
+      "to": "cmp_2ca065c597",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_cbfab02c0f",
+      "to": "cmp_39d4c9d7d2",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_cbfab02c0f",
+      "to": "cmp_433185e9a4",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_cbfab02c0f",
+      "to": "cmp_49b9905849",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_cbfab02c0f",
+      "to": "cmp_750cca0661",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_cbfab02c0f",
+      "to": "cmp_9ce6fcd41a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_ccc6ec7cb1",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d049d47f39",
+      "to": "cmp_2913c65c2b",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d049d47f39",
+      "to": "cmp_2ca065c597",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d049d47f39",
+      "to": "cmp_39d4c9d7d2",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d049d47f39",
+      "to": "cmp_433185e9a4",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d049d47f39",
+      "to": "cmp_49b9905849",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d049d47f39",
+      "to": "cmp_750cca0661",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d049d47f39",
+      "to": "cmp_9ce6fcd41a",
       "type": "imports"
     },
     {
@@ -13250,8 +17584,98 @@
       "type": "imports"
     },
     {
+      "from": "cmp_d0f4c9811c",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d0f4c9811c",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d0f4c9811c",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d0f4c9811c",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d0f4c9811c",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d0f4c9811c",
+      "to": "cmp_e49e5f31b9",
+      "type": "imports"
+    },
+    {
       "from": "cmp_d12e1b8674",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d14405b63b",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d14405b63b",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d14405b63b",
+      "to": "cmp_47769fe4fc",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d14405b63b",
+      "to": "cmp_4e3f8729d7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d14405b63b",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d14405b63b",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d14405b63b",
+      "to": "cmp_743b95dbec",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d14405b63b",
+      "to": "cmp_762ddc22be",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d14405b63b",
+      "to": "cmp_8aa5633da7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d14405b63b",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d14405b63b",
+      "to": "cmp_ecad973d0c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d1732bc81e",
+      "to": "cmp_075347cd7a",
       "type": "imports"
     },
     {
@@ -13266,7 +17690,42 @@
     },
     {
       "from": "cmp_d2126a2b14",
+      "to": "cmp_535bf7270f",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d2126a2b14",
       "to": "cmp_dae81b3152",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d2d761ad3d",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d2d761ad3d",
+      "to": "cmp_58110445cd",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d2d761ad3d",
+      "to": "cmp_dae81b3152",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d2d761ad3d",
+      "to": "cmp_efdba39e95",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d2d761ad3d",
+      "to": "cmp_f673d5b83d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d2d761ad3d",
+      "to": "cmp_fbdd0af3a0",
       "type": "imports"
     },
     {
@@ -13360,6 +17819,11 @@
       "type": "imports"
     },
     {
+      "from": "cmp_db45d00830",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
       "from": "cmp_dc03065b3b",
       "to": "cmp_a56a27fc43",
       "type": "imports"
@@ -13435,6 +17899,51 @@
       "type": "imports"
     },
     {
+      "from": "cmp_df8c73eff1",
+      "to": "cmp_13de148174",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_df8c73eff1",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_df8c73eff1",
+      "to": "cmp_51ab9b9b34",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_df8c73eff1",
+      "to": "cmp_62ea04ad4f",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_df8c73eff1",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_df8c73eff1",
+      "to": "cmp_817817e84e",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_df8c73eff1",
+      "to": "cmp_aa9f1dd5b7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_df8c73eff1",
+      "to": "cmp_de9c0a16e6",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_df8c73eff1",
+      "to": "cmp_e49e5f31b9",
+      "type": "imports"
+    },
+    {
       "from": "cmp_dfa6fd7512",
       "to": "cmp_a56a27fc43",
       "type": "imports"
@@ -13481,17 +17990,27 @@
     },
     {
       "from": "cmp_e240b70092",
-      "to": "cmp_ba2f1463d1",
+      "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_e240b70092",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_67c4101751",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_e240b70092",
+      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
       "from": "cmp_e240b70092",
       "to": "cmp_dd9d94eef4",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_e3fadde36d",
+      "to": "cmp_075347cd7a",
       "type": "imports"
     },
     {
@@ -13695,8 +18214,43 @@
       "type": "imports"
     },
     {
+      "from": "cmp_ecad973d0c",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_ecad973d0c",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_ecad973d0c",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_ecad973d0c",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_ecad973d0c",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_ecad973d0c",
+      "to": "cmp_e49e5f31b9",
+      "type": "imports"
+    },
+    {
       "from": "cmp_ecfd390a3a",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_ed2049f466",
+      "to": "cmp_dae81b3152",
       "type": "imports"
     },
     {
@@ -13745,8 +18299,93 @@
       "type": "imports"
     },
     {
+      "from": "cmp_f0f3f8429a",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f0f3f8429a",
+      "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f0f3f8429a",
+      "to": "cmp_47769fe4fc",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f0f3f8429a",
+      "to": "cmp_4e3f8729d7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f0f3f8429a",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f0f3f8429a",
+      "to": "cmp_531356547d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f0f3f8429a",
+      "to": "cmp_743b95dbec",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f0f3f8429a",
+      "to": "cmp_762ddc22be",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f0f3f8429a",
+      "to": "cmp_8aa5633da7",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f0f3f8429a",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f0f3f8429a",
+      "to": "cmp_ecad973d0c",
+      "type": "imports"
+    },
+    {
       "from": "cmp_f14bfffde5",
       "to": "cmp_b3decd4d6e",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f1902286ab",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f1902286ab",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f1902286ab",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f1902286ab",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f1902286ab",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f1902286ab",
+      "to": "cmp_e49e5f31b9",
       "type": "imports"
     },
     {
@@ -13767,11 +18406,6 @@
     {
       "from": "cmp_f318fc340f",
       "to": "cmp_26819c9f9a",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_f318fc340f",
-      "to": "cmp_37d52163ba",
       "type": "imports"
     },
     {
@@ -13910,6 +18544,51 @@
       "type": "imports"
     },
     {
+      "from": "cmp_f63817b4db",
+      "to": "cmp_04f54bd3f3",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f63817b4db",
+      "to": "cmp_08b67ff1e9",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f63817b4db",
+      "to": "cmp_1b28f82009",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f63817b4db",
+      "to": "cmp_742adaf30e",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f63817b4db",
+      "to": "cmp_8e7ec824de",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f63817b4db",
+      "to": "cmp_ae181677e0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f63817b4db",
+      "to": "cmp_be3b1b1367",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f63817b4db",
+      "to": "cmp_caa1b8c23c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f63817b4db",
+      "to": "cmp_d10d5022de",
+      "type": "imports"
+    },
+    {
       "from": "cmp_f6fcfe4539",
       "to": "cmp_7dcbc96a0b",
       "type": "imports"
@@ -13922,6 +18601,36 @@
     {
       "from": "cmp_f803ce2ba2",
       "to": "cmp_ebe0163e1e",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f83cc5bbf5",
+      "to": "cmp_005058f357",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f83cc5bbf5",
+      "to": "cmp_3f2e7ca003",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f83cc5bbf5",
+      "to": "cmp_4f83bf523a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f83cc5bbf5",
+      "to": "cmp_7c123a5c08",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f83cc5bbf5",
+      "to": "cmp_adecfe84eb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f83cc5bbf5",
+      "to": "cmp_e49e5f31b9",
       "type": "imports"
     },
     {
@@ -13941,12 +18650,17 @@
     },
     {
       "from": "cmp_f9db57b4c9",
-      "to": "cmp_ba2f1463d1",
+      "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_f9db57b4c9",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_67c4101751",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f9db57b4c9",
+      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -14146,7 +18860,7 @@
     },
     {
       "from": "cmp_06fa5a7ff5",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_6cb06e50cd",
       "type": "renders"
     },
     {
@@ -14450,6 +19164,11 @@
       "type": "renders"
     },
     {
+      "from": "cmp_2e4e4db285",
+      "to": "cmp_c577efca6f",
+      "type": "renders"
+    },
+    {
       "from": "cmp_34f2fef512",
       "to": "cmp_2c2aa68393",
       "type": "renders"
@@ -14536,7 +19255,7 @@
     },
     {
       "from": "cmp_392b7b5544",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_6cb06e50cd",
       "type": "renders"
     },
     {
@@ -14626,7 +19345,7 @@
     },
     {
       "from": "cmp_4c33d65a1b",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_6cb06e50cd",
       "type": "renders"
     },
     {
@@ -14776,7 +19495,7 @@
     },
     {
       "from": "cmp_5650c38efe",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_6cb06e50cd",
       "type": "renders"
     },
     {
@@ -14791,12 +19510,12 @@
     },
     {
       "from": "cmp_57a316c0c8",
-      "to": "cmp_88852e131f",
+      "to": "cmp_6cb06e50cd",
       "type": "renders"
     },
     {
       "from": "cmp_57a316c0c8",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_88852e131f",
       "type": "renders"
     },
     {
@@ -14891,12 +19610,12 @@
     },
     {
       "from": "cmp_5f4559764e",
-      "to": "cmp_bf1d0f2e29",
+      "to": "cmp_6cb06e50cd",
       "type": "renders"
     },
     {
       "from": "cmp_5f4559764e",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_bf1d0f2e29",
       "type": "renders"
     },
     {
@@ -14916,7 +19635,7 @@
     },
     {
       "from": "cmp_5fe598643a",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_6cb06e50cd",
       "type": "renders"
     },
     {
@@ -14947,6 +19666,11 @@
     {
       "from": "cmp_60643c72f3",
       "to": "cmp_ddfd33abd4",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_643b586dfd",
+      "to": "cmp_7b8f4f141d",
       "type": "renders"
     },
     {
@@ -15016,7 +19740,7 @@
     },
     {
       "from": "cmp_66ce3930e7",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_6cb06e50cd",
       "type": "renders"
     },
     {
@@ -15090,6 +19814,26 @@
       "type": "renders"
     },
     {
+      "from": "cmp_6cb06e50cd",
+      "to": "cmp_63d1e991fa",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_6cb06e50cd",
+      "to": "cmp_805d85de87",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_6cb06e50cd",
+      "to": "cmp_d2126a2b14",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_6cb06e50cd",
+      "to": "cmp_d2d761ad3d",
+      "type": "renders"
+    },
+    {
       "from": "cmp_6d593dd6e9",
       "to": "cmp_3436ea7a7f",
       "type": "renders"
@@ -15106,7 +19850,7 @@
     },
     {
       "from": "cmp_6f329bfadf",
-      "to": "cmp_133d7dec91",
+      "to": "cmp_22bfaa2518",
       "type": "renders"
     },
     {
@@ -15131,17 +19875,17 @@
     },
     {
       "from": "cmp_6f329bfadf",
+      "to": "cmp_63d837e0ab",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_6f329bfadf",
       "to": "cmp_73815c5199",
       "type": "renders"
     },
     {
       "from": "cmp_6f329bfadf",
       "to": "cmp_90fb220e30",
-      "type": "renders"
-    },
-    {
-      "from": "cmp_6f329bfadf",
-      "to": "cmp_934d4e8c97",
       "type": "renders"
     },
     {
@@ -15166,12 +19910,7 @@
     },
     {
       "from": "cmp_6f329bfadf",
-      "to": "cmp_cbf3af2004",
-      "type": "renders"
-    },
-    {
-      "from": "cmp_6f329bfadf",
-      "to": "cmp_f5c8a56456",
+      "to": "cmp_ed2049f466",
       "type": "renders"
     },
     {
@@ -15201,17 +19940,42 @@
     },
     {
       "from": "cmp_76a47f23da",
+      "to": "cmp_6cb06e50cd",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_76a47f23da",
       "to": "cmp_bf1d0f2e29",
       "type": "renders"
     },
     {
       "from": "cmp_76a47f23da",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_dd9d94eef4",
       "type": "renders"
     },
     {
-      "from": "cmp_76a47f23da",
-      "to": "cmp_dd9d94eef4",
+      "from": "cmp_7b8f4f141d",
+      "to": "cmp_0f1bc4f36f",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_7b8f4f141d",
+      "to": "cmp_2e64b98779",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_7b8f4f141d",
+      "to": "cmp_31b57a0d07",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_7b8f4f141d",
+      "to": "cmp_880191ca88",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_7b8f4f141d",
+      "to": "cmp_8f9bf09085",
       "type": "renders"
     },
     {
@@ -15271,7 +20035,7 @@
     },
     {
       "from": "cmp_80d296e91b",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_6cb06e50cd",
       "type": "renders"
     },
     {
@@ -15295,6 +20059,11 @@
       "type": "renders"
     },
     {
+      "from": "cmp_897087c37a",
+      "to": "cmp_7b8f4f141d",
+      "type": "renders"
+    },
+    {
       "from": "cmp_89cfa98853",
       "to": "cmp_ddfd33abd4",
       "type": "renders"
@@ -15306,12 +20075,12 @@
     },
     {
       "from": "cmp_8ec357b7d7",
-      "to": "cmp_88852e131f",
+      "to": "cmp_6cb06e50cd",
       "type": "renders"
     },
     {
       "from": "cmp_8ec357b7d7",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_88852e131f",
       "type": "renders"
     },
     {
@@ -15341,7 +20110,7 @@
     },
     {
       "from": "cmp_9ec03d1934",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_6cb06e50cd",
       "type": "renders"
     },
     {
@@ -15711,7 +20480,7 @@
     },
     {
       "from": "cmp_e240b70092",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_6cb06e50cd",
       "type": "renders"
     },
     {
@@ -15946,7 +20715,7 @@
     },
     {
       "from": "cmp_f9db57b4c9",
-      "to": "cmp_d2126a2b14",
+      "to": "cmp_6cb06e50cd",
       "type": "renders"
     },
     {
@@ -16035,6 +20804,11 @@
       "type": "reads"
     },
     {
+      "from": "cmp_7b8f4f141d",
+      "to": "stt_53db6891ed",
+      "type": "reads"
+    },
+    {
       "from": "cmp_83f7a083a4",
       "to": "stt_3a3607b40d",
       "type": "reads"
@@ -16120,6 +20894,11 @@
       "type": "writes"
     },
     {
+      "from": "cmp_7b8f4f141d",
+      "to": "stt_53db6891ed",
+      "type": "writes"
+    },
+    {
       "from": "cmp_8a694a4760",
       "to": "stt_cda82024e1",
       "type": "writes"
@@ -16155,6 +20934,11 @@
       "type": "writes"
     },
     {
+      "from": "cmp_0f1bc4f36f",
+      "to": "sty_b698d50b48",
+      "type": "uses_style"
+    },
+    {
       "from": "cmp_27bf092c17",
       "to": "sty_5b5a57301b",
       "type": "uses_style"
@@ -16165,6 +20949,21 @@
       "type": "uses_style"
     },
     {
+      "from": "cmp_2e64b98779",
+      "to": "sty_b698d50b48",
+      "type": "uses_style"
+    },
+    {
+      "from": "cmp_31b57a0d07",
+      "to": "sty_b698d50b48",
+      "type": "uses_style"
+    },
+    {
+      "from": "cmp_7b8f4f141d",
+      "to": "sty_b698d50b48",
+      "type": "uses_style"
+    },
+    {
       "from": "cmp_7dbc7ebe4d",
       "to": "sty_5b5a57301b",
       "type": "uses_style"
@@ -16172,11 +20971,21 @@
     {
       "from": "cmp_7dbc7ebe4d",
       "to": "sty_67feb9dc78",
+      "type": "uses_style"
+    },
+    {
+      "from": "cmp_880191ca88",
+      "to": "sty_b698d50b48",
+      "type": "uses_style"
+    },
+    {
+      "from": "cmp_8f9bf09085",
+      "to": "sty_b698d50b48",
       "type": "uses_style"
     },
     {
       "from": "rte_46efb84e93",
-      "to": "cmp_eb400afd5e",
+      "to": "cmp_6cb06e50cd",
       "type": "route_to_screen"
     },
     {
@@ -16217,6 +21026,11 @@
     {
       "from": "cmp_7dbc7ebe4d",
       "to": "rte_588c6fe0cc",
+      "type": "layout_wraps"
+    },
+    {
+      "from": "cmp_7dbc7ebe4d",
+      "to": "rte_64b18eb3cd",
       "type": "layout_wraps"
     },
     {
@@ -16403,35 +21217,52 @@
       ],
       "components": [
         "cmp_0b3b4055d8",
+        "cmp_13159ad4c6",
         "cmp_13de148174",
         "cmp_14a504c3ed",
         "cmp_16c468c2d6",
         "cmp_1d64a6eac7",
         "cmp_2100b40d4a",
+        "cmp_2a48db8a31",
         "cmp_432c46b32d",
         "cmp_45b5a64481",
+        "cmp_46d3f6738b",
+        "cmp_48b3a15c8f",
+        "cmp_4b76d1e46d",
         "cmp_4c2da80405",
+        "cmp_4e3f8729d7",
         "cmp_4f5e8cc303",
         "cmp_51ab9b9b34",
+        "cmp_535bf7270f",
         "cmp_5965ccefa8",
         "cmp_5a7611b5d6",
+        "cmp_5f87b72dbe",
         "cmp_62ea04ad4f",
         "cmp_65dfb85232",
+        "cmp_67c4101751",
         "cmp_685388607c",
+        "cmp_6cb06e50cd",
         "cmp_736dbfbd88",
         "cmp_78be8e7da7",
         "cmp_7c123a5c08",
         "cmp_817817e84e",
+        "cmp_8832e0d534",
         "cmp_91d5a352c2",
         "cmp_92c5078638",
         "cmp_a421334569",
+        "cmp_a94debf8ad",
+        "cmp_aa5506ce35",
         "cmp_aa9f1dd5b7",
         "cmp_ab49225ce3",
         "cmp_b6fb900f26",
         "cmp_ba2f1463d1",
+        "cmp_bc2c865d76",
+        "cmp_bd6ef93995",
+        "cmp_c36404b994",
         "cmp_d2126a2b14",
         "cmp_dae81b3152",
         "cmp_de9c0a16e6",
+        "cmp_df8c73eff1",
         "cmp_e49e5f31b9",
         "cmp_fbdd0af3a0"
       ],
@@ -16555,7 +21386,7 @@
       "layout_file": "apps/keystone/app/layout.tsx",
       "path": "/pitch",
       "route_id": "rte_46efb84e93",
-      "screen_component_id": "cmp_eb400afd5e"
+      "screen_component_id": "cmp_6cb06e50cd"
     },
     {
       "data_source_ids": [],
@@ -16564,6 +21395,13 @@
       "path": "/pitch/06-shipments-receiving",
       "route_id": "rte_588c6fe0cc",
       "screen_component_id": "cmp_bf1d0f2e29"
+    },
+    {
+      "data_source_ids": [],
+      "entry_file": "apps/keystone/app/dev/scene-studio/page.tsx",
+      "layout_file": "apps/keystone/app/layout.tsx",
+      "path": "/dev/scene-studio",
+      "route_id": "rte_64b18eb3cd"
     },
     {
       "data_source_ids": [],
@@ -16614,6 +21452,13 @@
     }
   ],
   "states": [
+    {
+      "events": [],
+      "file_path": "apps/keystone/tests/scene-studio-store.test.ts",
+      "readers": [],
+      "state_id": "stt_042e635804",
+      "writers": []
+    },
     {
       "events": [
         {
@@ -16672,10 +21517,91 @@
       ]
     },
     {
+      "determinism_notes": "contains runtime date construction; review deterministic assumptions",
+      "events": [
+        {
+          "name": "createScene",
+          "notes": "heuristic event extraction",
+          "writer_component_id": "cmp_7b8f4f141d"
+        },
+        {
+          "name": "deleteSelectedScene",
+          "notes": "heuristic event extraction",
+          "writer_component_id": "cmp_7b8f4f141d"
+        },
+        {
+          "name": "discardDraft",
+          "notes": "heuristic event extraction",
+          "writer_component_id": "cmp_7b8f4f141d"
+        },
+        {
+          "name": "duplicateSelectedScene",
+          "notes": "heuristic event extraction",
+          "writer_component_id": "cmp_7b8f4f141d"
+        },
+        {
+          "name": "exportAllScenes",
+          "notes": "heuristic event extraction",
+          "writer_component_id": "cmp_7b8f4f141d"
+        },
+        {
+          "name": "exportSelectedScene",
+          "notes": "heuristic event extraction",
+          "writer_component_id": "cmp_7b8f4f141d"
+        },
+        {
+          "name": "importScenesFromJson",
+          "notes": "heuristic event extraction",
+          "writer_component_id": "cmp_7b8f4f141d"
+        },
+        {
+          "name": "resetSelectedSceneToDefaults",
+          "notes": "heuristic event extraction",
+          "writer_component_id": "cmp_7b8f4f141d"
+        },
+        {
+          "name": "saveDraft",
+          "notes": "heuristic event extraction",
+          "writer_component_id": "cmp_7b8f4f141d"
+        },
+        {
+          "name": "selectScene",
+          "notes": "heuristic event extraction",
+          "writer_component_id": "cmp_7b8f4f141d"
+        },
+        {
+          "name": "setSortMode",
+          "notes": "heuristic event extraction",
+          "writer_component_id": "cmp_7b8f4f141d"
+        },
+        {
+          "name": "updateDraft",
+          "notes": "heuristic event extraction",
+          "writer_component_id": "cmp_7b8f4f141d"
+        }
+      ],
+      "file_path": "apps/keystone/components/scene-studio/use-scene-studio-state.ts",
+      "readers": [
+        "cmp_7b8f4f141d"
+      ],
+      "state_id": "stt_53db6891ed",
+      "writers": [
+        "cmp_7b8f4f141d"
+      ]
+    },
+    {
       "events": [],
       "file_path": "apps/keystone/tests/demo-state.test.ts",
       "readers": [],
       "state_id": "stt_6d6705f135",
+      "writers": []
+    },
+    {
+      "determinism_notes": "contains runtime date construction; review deterministic assumptions",
+      "events": [],
+      "file_path": "apps/keystone/lib/scene-studio/scene-store.ts",
+      "readers": [],
+      "state_id": "stt_933f512320",
       "writers": []
     },
     {
@@ -16909,6 +21835,18 @@
       "file_path": "packages/ui-kit/src/styles/layers.css",
       "referenced_by": [],
       "style_id": "sty_89ebb78f51"
+    },
+    {
+      "file_path": "apps/keystone/components/scene-studio/scene-studio.module.css",
+      "referenced_by": [
+        "cmp_0f1bc4f36f",
+        "cmp_2e64b98779",
+        "cmp_31b57a0d07",
+        "cmp_7b8f4f141d",
+        "cmp_880191ca88",
+        "cmp_8f9bf09085"
+      ],
+      "style_id": "sty_b698d50b48"
     },
     {
       "file_path": "packages/ui-kit/src/styles/hitech-foundation.css",

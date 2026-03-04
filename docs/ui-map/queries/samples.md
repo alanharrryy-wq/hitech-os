@@ -56,12 +56,7 @@ Each sample is deterministic for the same dictionary input.
 - expected_output_shape: `[component_id]`
 - sample_output:
 ```json
-[
-  "cmp_60643c72f3",
-  "cmp_83f7a083a4",
-  "cmp_bf7929333d",
-  "cmp_dc06f8fea8"
-]
+[]
 ```
 
 ## state_writers
@@ -69,11 +64,7 @@ Each sample is deterministic for the same dictionary input.
 - expected_output_shape: `[component_id]`
 - sample_output:
 ```json
-[
-  "cmp_60643c72f3",
-  "cmp_bf7929333d",
-  "cmp_dc06f8fea8"
-]
+[]
 ```
 
 ## assets_used_by_screen
@@ -131,35 +122,52 @@ Each sample is deterministic for the same dictionary input.
     ],
     "components": [
       "cmp_0b3b4055d8",
+      "cmp_13159ad4c6",
       "cmp_13de148174",
       "cmp_14a504c3ed",
       "cmp_16c468c2d6",
       "cmp_1d64a6eac7",
       "cmp_2100b40d4a",
+      "cmp_2a48db8a31",
       "cmp_432c46b32d",
       "cmp_45b5a64481",
+      "cmp_46d3f6738b",
+      "cmp_48b3a15c8f",
+      "cmp_4b76d1e46d",
       "cmp_4c2da80405",
+      "cmp_4e3f8729d7",
       "cmp_4f5e8cc303",
       "cmp_51ab9b9b34",
+      "cmp_535bf7270f",
       "cmp_5965ccefa8",
       "cmp_5a7611b5d6",
+      "cmp_5f87b72dbe",
       "cmp_62ea04ad4f",
       "cmp_65dfb85232",
+      "cmp_67c4101751",
       "cmp_685388607c",
+      "cmp_6cb06e50cd",
       "cmp_736dbfbd88",
       "cmp_78be8e7da7",
       "cmp_7c123a5c08",
       "cmp_817817e84e",
+      "cmp_8832e0d534",
       "cmp_91d5a352c2",
       "cmp_92c5078638",
       "cmp_a421334569",
+      "cmp_a94debf8ad",
+      "cmp_aa5506ce35",
       "cmp_aa9f1dd5b7",
       "cmp_ab49225ce3",
       "cmp_b6fb900f26",
       "cmp_ba2f1463d1",
+      "cmp_bc2c865d76",
+      "cmp_bd6ef93995",
+      "cmp_c36404b994",
       "cmp_d2126a2b14",
       "cmp_dae81b3152",
       "cmp_de9c0a16e6",
+      "cmp_df8c73eff1",
       "cmp_e49e5f31b9",
       "cmp_fbdd0af3a0"
     ],
@@ -590,10 +598,16 @@ Each sample is deterministic for the same dictionary input.
     "screen_component_id": ""
   },
   {
+    "entry_file": "apps/keystone/app/dev/scene-studio/page.tsx",
+    "path": "/dev/scene-studio",
+    "route_id": "rte_64b18eb3cd",
+    "screen_component_id": ""
+  },
+  {
     "entry_file": "apps/keystone/app/pitch/page.tsx",
     "path": "/pitch",
     "route_id": "rte_46efb84e93",
-    "screen_component_id": "cmp_eb400afd5e"
+    "screen_component_id": "cmp_6cb06e50cd"
   },
   {
     "entry_file": "apps/keystone/app/pitch/01-double-engine/page.tsx",

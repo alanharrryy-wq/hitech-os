@@ -2,18 +2,19 @@
 
 - version: `1.0.0`
 - generated_by: `tools/ui_map deterministic`
-- routes: `8`
-- components: `481`
-- states: `7`
-- styles: `6`
+- routes: `9`
+- components: `604`
+- states: `10`
+- styles: `7`
 - assets: `2`
 - hotspots: `11`
 
 ## Routes
 | route_id | path | entry_file | screen_component_id |
 | --- | --- | --- | --- |
-| rte_46efb84e93 | /pitch | apps/keystone/app/pitch/page.tsx | cmp_eb400afd5e |
+| rte_46efb84e93 | /pitch | apps/keystone/app/pitch/page.tsx | cmp_6cb06e50cd |
 | rte_588c6fe0cc | /pitch/06-shipments-receiving | apps/keystone/app/pitch/06-shipments-receiving/page.tsx | cmp_bf1d0f2e29 |
+| rte_64b18eb3cd | /dev/scene-studio | apps/keystone/app/dev/scene-studio/page.tsx |  |
 | rte_6c122ba817 | /pitch/04-valuation | apps/keystone/app/pitch/04-valuation/page.tsx | cmp_1b31a3432a |
 | rte_8a5edab282 | / | apps/keystone/app/page.tsx |  |
 | rte_9225911e8f | /pitch/01-double-engine | apps/keystone/app/pitch/01-double-engine/page.tsx | cmp_f14bfffde5 |
@@ -25,6 +26,7 @@
 | component_id | export_name | kind | file_path |
 | --- | --- | --- | --- |
 | cmp_003267a333 | PitchHero | block | apps/keystone/components/pitch/shell/pitch-hero.tsx |
+| cmp_005058f357 | SCENE_MOTION_VALUES | block | apps/keystone/lib/scene-studio/scene-constants.ts |
 | cmp_00558dfee2 | TableBody | block | packages/ui-kit/src/components/data/Table.tsx |
 | cmp_015c59ef59 | RiskAndNextGatePanel | control | apps/keystone/components/pitch/run2/RiskAndNextGatePanel.tsx |
 | cmp_01d4823875 | PitchIconHub | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
@@ -34,6 +36,8 @@
 | cmp_03e84dbf35 | useActivityQuery | block | apps/keystone/lib/queries/activity.ts |
 | cmp_044ceddc68 | INCOTERMS | block | apps/keystone/components/pitch/run1/types.ts |
 | cmp_048265afb6 | PitchIconRisk | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
+| cmp_04a0c7e82f | waitForDeterministicReady | dataviz | apps/keystone/visual-tests/helpers/deterministic.ts |
+| cmp_04f54bd3f3 | captureScene | dataviz | apps/keystone/visual-tests/helpers/scene-capture.ts |
 | cmp_051d307492 | PitchIconSatellite | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_0691342735 | PitchIconCloud | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_0695b05495 | PitchIconFire | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
@@ -41,11 +45,13 @@
 | cmp_06cabd4ed7 | getSupplierLifecycleTone | state | apps/keystone/components/pitch/run1/store.ts |
 | cmp_06ea624681 | runsQueryKey | block | apps/keystone/lib/queries/runs.ts |
 | cmp_06fa5a7ff5 | dynamic | route | apps/keystone/app/pitch/05-inventory-foundation/page.tsx |
+| cmp_075347cd7a | SCENES_MANIFEST_PATH | dataviz | apps/keystone/visual-tests/helpers/paths.ts |
 | cmp_0760ab5e76 | DialogDescription | block | packages/ui-kit/src/components/overlays/Dialog.tsx |
 | cmp_077b3ee2ad | resolveBrandModeEnabled | brand | packages/ui-kit/src/brand/brand-presence.config.ts |
 | cmp_07e0dc2880 | PitchIconStop | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_0805226cf6 | PitchRouteCard | block | apps/keystone/components/pitch/route-index/pitch-route-card.tsx |
 | cmp_0890609e12 | PitchIconBackward | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
+| cmp_08b67ff1e9 | createPixelDiff | dataviz | apps/keystone/visual-tests/helpers/diff.ts |
 | cmp_0948794dd2 | PitchIconMinus | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_09fce7bb33 | PitchIconNode | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_0ab6307b9d | PitchIconVault | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
@@ -58,11 +64,18 @@
 | cmp_0d339b71f7 | PitchIconLeaf | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_0d43aff805 | ReceivingControlPanel | control | apps/keystone/components/pitch/run2/ReceivingControlPanel.tsx |
 | cmp_0dc055c5a2 | PitchIconFlow | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
+| cmp_0e18d237a4 | createDefaultSceneLibrary | block | apps/keystone/lib/scene-studio/default-scenes.ts |
+| cmp_0ef45dc6b4 | sceneQueryObjectToSearchParams | block | apps/keystone/lib/scene-studio/scene-query.ts |
+| cmp_0f1bc4f36f | SceneStudioEditor | block | apps/keystone/components/scene-studio/scene-studio-editor.tsx |
+| cmp_10405d1738 | SCENE_SCHEMA_V1 | block | apps/keystone/lib/scene-studio/scene-schema.ts |
 | cmp_105875c51d | PitchIconForward | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
+| cmp_107a4b287e | VIEWPORT_PRESETS | dataviz | apps/keystone/visual-tests/helpers/deterministic.ts |
+| cmp_109f9bd9d9 | normalizeSceneId | block | apps/keystone/lib/scene-studio/scene-id.ts |
 | cmp_113609dbcd | HITECH_BRAND_COLORS | brand | packages/ui-kit/src/brand/hitech-theme.ts |
 | cmp_114f4ca07f | InventoryFoundationControlRoom | control | apps/keystone/components/pitch/run1/InventoryFoundationControlRoom.tsx |
 | cmp_1265e2650d | buildPitchShellFrameModel | block | apps/keystone/components/pitch/view-model/pitch-shell-model.ts |
 | cmp_12de42b70d | buildDemoScreens | state | apps/keystone/lib/pitch/demo-state.ts |
+| cmp_13159ad4c6 | LAYER_DOM_METADATA_PROFILE_ATTRIBUTE | block | packages/ui-kit/src/layers/applyLayerFlagsToDom.ts |
 | cmp_131eb79a6f | PitchScrollAffordance | block | apps/keystone/components/pitch/shell/pitch-scroll-affordance.tsx |
 | cmp_133d7dec91 | PitchComparisonMeter | dataviz | apps/keystone/components/pitch/visuals/pitch-comparison-meter.tsx |
 | cmp_13de148174 | mergeLayerFlags | block | packages/ui-kit/src/layers/layerIds.ts |
@@ -83,12 +96,15 @@
 | cmp_1a8f7d90ca | RECEIVING_STATES | block | apps/keystone/components/pitch/run2/types.ts |
 | cmp_1a9fa7556a | setSupplierStatus | state | apps/keystone/lib/pitch/demo-state.ts |
 | cmp_1b07f76600 | DialogPortal | block | packages/ui-kit/src/components/overlays/Dialog.tsx |
+| cmp_1b28f82009 | resolveRunId | dataviz | apps/keystone/visual-tests/helpers/paths.ts |
 | cmp_1b31a3432a | ScreenValuation | screen | apps/keystone/components/pitch/screen-valuation.tsx |
 | cmp_1be6da462c | PitchIconDollar | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_1c003d2c50 | useInventoryFoundationStore | state | apps/keystone/components/pitch/run1/store.ts |
 | cmp_1c4555d654 | DialogOverlay | block | packages/ui-kit/src/components/overlays/Dialog.tsx |
 | cmp_1cc73d6ff9 | FOUNDATION_ROLES | block | apps/keystone/components/pitch/run1/types.ts |
 | cmp_1d64a6eac7 | LayerFlagsProvider | block | packages/ui-kit/src/layers/LayerFlagsProvider.tsx |
+| cmp_1d72ad9a8a | normalizeLayersList | block | apps/keystone/lib/scene-studio/scene-query.ts |
+| cmp_1d9e0d5b23 | parseSceneMotion | block | apps/keystone/lib/scene-studio/scene-query.ts |
 | cmp_1d9fcb3211 | PitchIconRefresh | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_1eedae57a4 | ValuationBlocks | block | apps/keystone/components/pitch/valuation-blocks.tsx |
 | cmp_1f8d1ba188 | Chip | block | apps/keystone/components/pitch/run2/primitives.tsx |
@@ -97,6 +113,8 @@
 | cmp_2177bf5c47 | PitchIconQuality | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_217a574a9a | PitchIconCalendar | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_2236484dad | DEMO_DOCUMENT_LIFECYCLES | state | apps/keystone/lib/pitch/demo-state.ts |
+| cmp_22bfaa2518 | ValuationEquityVisual | dataviz | apps/keystone/components/pitch/valuation-visuals.tsx |
+| cmp_2387441951 | inferLayersFromQuery | block | apps/keystone/lib/scene-studio/scene-schema.ts |
 | cmp_23893d3f81 | PitchIconMap | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_23cdf1104b | PitchIconThermal | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_23d99c659f | resolveBrandModeOpacity | brand | packages/ui-kit/src/brand/brand-presence.config.ts |
@@ -111,6 +129,7 @@
 | cmp_25c00cc5f4 | PitchIconRoute | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_262a7f305a | PitchDataChip | layout | apps/keystone/components/pitch/layout/pitch-data-chip.tsx |
 | cmp_26819c9f9a | PitchSection | layout | apps/keystone/components/pitch/layout/pitch-section.tsx |
+| cmp_27250f66fb | parseSceneUrlState | block | apps/keystone/lib/scene-studio/scene-url.ts |
 | cmp_2769aeb2cb | PitchIconCrown | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_276e587982 | PitchIconEngine | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_279f34edd5 | useInventoryFoundationPanelContext | state | apps/keystone/components/pitch/run1/store.ts |
@@ -119,37 +138,22 @@
 | cmp_286dbfc1b9 | PitchIconTree | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_289c6f22f9 | PitchIconBell | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_28ff580207 | ScreenShipmentsReceiving | screen | apps/keystone/components/pitch/screen-shipments-receiving.tsx |
+| cmp_2913c65c2b | SCENE_EXPORT_ENVELOPE_SCHEMA | block | apps/keystone/lib/scene-studio/scene-schema.ts |
 | cmp_2917294077 | PitchIconGauge | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
+| cmp_2927b6c7ce | isDiagnosticsResponseMessage | block | apps/keystone/lib/scene-studio/scene-bridge.ts |
 | cmp_29b292d7e7 | PitchIconWater | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
+| cmp_2a48db8a31 | canonicalizeLayerQuery | block | packages/ui-kit/src/layers/resolveLayerFlags.ts |
 | cmp_2a7a52f69b | useReducedMotionPreference | block | packages/ui-kit/src/lib/motion.ts |
 | cmp_2aefaeee83 | getHitechThemeCssText | brand | packages/ui-kit/src/brand/hitech-theme.ts |
-| cmp_2c2aa68393 | Select | block | packages/ui-kit/src/components/forms/Select.tsx |
-| cmp_2d1b8c8cad | PitchRailNav | nav | apps/keystone/components/pitch/nav/pitch-rail-nav.tsx |
-| cmp_2e39395b41 | SelectTrigger | block | packages/ui-kit/src/components/forms/Select.tsx |
-| cmp_2e5f26daf9 | PitchIconLab | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
-| cmp_2e8f56d3b1 | EmptyState | state | packages/ui-kit/src/components/feedback/EmptyState.tsx |
-| cmp_2eb621625b | PitchIconClock | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
-| cmp_2fd978854b | inventoryFoundationHelpers | state | apps/keystone/components/pitch/run1/store.ts |
-| cmp_301f05d16c | PITCH_MATERIAL_PRESET_BY_ID | block | apps/keystone/components/pitch/theme/pitch-material-presets.ts |
-| cmp_307724c9fb | PitchIconTrendUp | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
-| cmp_3125ea93a8 | PitchIconCompass | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
-| cmp_32d9552e03 | PitchIconCheck | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
-| cmp_339f55ae3b | GridItem | layout | packages/ui-kit/src/components/layout/Grid.tsx |
-| cmp_340fb21263 | useRouter | nav | packages/ui-kit/src/types/next-navigation.d.ts |
-| cmp_3436ea7a7f | Separator | layout | packages/ui-kit/src/components/layout/Separator.tsx |
-| cmp_34f2fef512 | DropdownField | block | apps/keystone/components/pitch/run2/primitives.tsx |
-| cmp_3576bde058 | FOUNDATION_RBAC_ROWS | block | apps/keystone/components/pitch/run1/data.ts |
-| cmp_36a5ddc2b4 | setRole | state | apps/keystone/lib/pitch/demo-state.ts |
-| cmp_379f88401b | PopoverTrigger | block | packages/ui-kit/src/components/premium/overlays/Popover.tsx |
-| cmp_37a67db804 | DropdownMenuRadioGroup | control | packages/ui-kit/src/components/navigation/DropdownMenu.tsx |
-| cmp_37ccaccffc | resolveReceiveTransition | state | apps/keystone/lib/pitch/demo-state.ts |
-| cmp_37d52163ba | buildScreen02ViewModel | block | apps/keystone/lib/pitch/deck-view-model.ts |
 
 ## States
 | state_id | file_path | readers | writers |
 | --- | --- | --- | --- |
+| stt_042e635804 | apps/keystone/tests/scene-studio-store.test.ts | 0 | 0 |
 | stt_3a3607b40d | apps/keystone/lib/store/ui-store.ts | 4 | 3 |
+| stt_53db6891ed | apps/keystone/components/scene-studio/use-scene-studio-state.ts | 1 | 1 |
 | stt_6d6705f135 | apps/keystone/tests/demo-state.test.ts | 0 | 0 |
+| stt_933f512320 | apps/keystone/lib/scene-studio/scene-store.ts | 0 | 0 |
 | stt_aecc532ac4 | packages/ui-kit/src/components/feedback/EmptyState.tsx | 0 | 0 |
 | stt_c79310c09f | apps/keystone/components/pitch/run2/store.ts | 5 | 4 |
 | stt_cda82024e1 | apps/keystone/lib/pitch/demo-state.ts | 6 | 6 |
@@ -164,6 +168,7 @@
 | sty_5b5a57301b | packages/ui-kit/src/styles.css | 2 |
 | sty_67feb9dc78 | apps/keystone/app/globals.css | 2 |
 | sty_89ebb78f51 | packages/ui-kit/src/styles/layers.css | 0 |
+| sty_b698d50b48 | apps/keystone/components/scene-studio/scene-studio.module.css | 6 |
 | sty_e6653df517 | packages/ui-kit/src/styles/hitech-foundation.css | 0 |
 
 ## Assets
