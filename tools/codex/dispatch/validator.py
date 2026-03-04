@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import hashlib
 import json
 import re
 import secrets
@@ -71,10 +72,13 @@ EVOLUTIONARY_ENGINE = REPO_ROOT / "tools" / "hos" / "guardrails" / "evolutionary
 EVOLUTIONARY_POLICY = REPO_ROOT / "tools" / "hos" / "guardrails" / "policy.json"
 REWORK_POLICY_PATH = REPO_ROOT / "tools" / "codex" / "dispatch" / "rework_policy.json"
 REWORK_TASK_BANK_PATH = REPO_ROOT / "tools" / "codex" / "dispatch" / "rework_task_bank.json"
+TASK_BANK_REFRESH_SCRIPT = REPO_ROOT / "tools" / "codex" / "dispatch" / "task_bank_refresh.py"
+CONTEXT_LAYER_SCRIPT = REPO_ROOT / "tools" / "codex" / "factory" / "context_layer.py"
 REWORK_MARKER_BEGIN = "### REWORK_INSTRUCTION_BEGIN"
 REWORK_MARKER_END = "### REWORK_INSTRUCTION_END"
 REWORK_DEFAULT_MAX_CYCLES = 3
 REWORK_DEFAULT_LOC_INCREMENT = 5000
+QUEUE_KIND_REWORK = "rework"
 
 
 def _prompt_contract_header(run_id: str, worker: str) -> str:
@@ -104,6 +108,8 @@ def _prompt_contract_header(run_id: str, worker: str) -> str:
         ),
         "REWORK_AUTONOMY_REQUIRED: true",
         f"REWORK_REQUEST_PATH: tools/codex/runs/{run_id}/{worker}/REWORK_REQUEST.json",
+        f"REWORK_QUEUE_INBOX_PATH: tools/codex/runs/{run_id}/_queue/rework/inbox/",
+        f"REWORK_QUEUE_OUTBOX_PATH: tools/codex/runs/{run_id}/_queue/rework/outbox/",
         f"REWORK_MAX_CYCLES: {REWORK_DEFAULT_MAX_CYCLES}",
         f"REWORK_LOC_INCREMENT: {REWORK_DEFAULT_LOC_INCREMENT}",
         "AUTO_RECOVERY_REQUIRED: true",
@@ -510,6 +516,12 @@ def _validate_prompt_file(path: Path, run_id: str, worker: str) -> list[str]:
     rework_path = f"tools/codex/runs/{run_id}/{worker}/REWORK_REQUEST.json"
     if rework_path not in normalized_text:
         errors.append(f"missing REWORK_REQUEST path instruction: {rework_path}")
+    queue_inbox = f"tools/codex/runs/{run_id}/_queue/rework/inbox/"
+    queue_outbox = f"tools/codex/runs/{run_id}/_queue/rework/outbox/"
+    if queue_inbox not in normalized_text:
+        errors.append(f"missing rework queue inbox path instruction: {queue_inbox}")
+    if queue_outbox not in normalized_text:
+        errors.append(f"missing rework queue outbox path instruction: {queue_outbox}")
 
     if worker in {"B_tooling", "B_worker"} and "VISUAL_BASELINE_OWNER: true" not in text:
         errors.append("missing visual baseline owner contract for B worker")
@@ -604,6 +616,321 @@ def _append_jsonl(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8", newline="\n") as handle:
         handle.write(json.dumps(payload, sort_keys=True) + "\n")
+
+
+def _queue_paths(run_id: str, kind: str = QUEUE_KIND_REWORK) -> dict[str, Path]:
+    root = RUNS_ROOT / run_id / "_queue" / kind
+    return {
+        "root": root,
+        "inbox": root / "inbox",
+        "outbox": root / "outbox",
+        "deadletter": root / "deadletter",
+        "state": root / "state",
+        "index": root / "state" / "index.json",
+    }
+
+
+def _ensure_queue_dirs(run_id: str, kind: str = QUEUE_KIND_REWORK) -> dict[str, Path]:
+    paths = _queue_paths(run_id, kind)
+    for key in ("root", "inbox", "outbox", "deadletter", "state"):
+        paths[key].mkdir(parents=True, exist_ok=True)
+    if not paths["index"].exists():
+        payload = {
+            "schema_version": 1,
+            "run_id": run_id,
+            "kind": kind,
+            "messages": {},
+            "updated_at_utc": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),
+        }
+        paths["index"].write_text(
+            json.dumps(payload, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
+    return paths
+
+
+def _load_queue_index(run_id: str, kind: str = QUEUE_KIND_REWORK) -> dict[str, Any]:
+    paths = _ensure_queue_dirs(run_id, kind)
+    payload = _safe_read_json(paths["index"])
+    if not payload:
+        return {
+            "schema_version": 1,
+            "run_id": run_id,
+            "kind": kind,
+            "messages": {},
+            "updated_at_utc": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),
+        }
+    messages = payload.get("messages", {})
+    if not isinstance(messages, dict):
+        messages = {}
+    return {
+        "schema_version": 1,
+        "run_id": run_id,
+        "kind": kind,
+        "messages": dict(messages),
+        "updated_at_utc": str(payload.get("updated_at_utc", "")),
+    }
+
+
+def _save_queue_index(run_id: str, payload: dict[str, Any], kind: str = QUEUE_KIND_REWORK) -> Path:
+    paths = _ensure_queue_dirs(run_id, kind)
+    payload = dict(payload)
+    payload["schema_version"] = 1
+    payload["run_id"] = run_id
+    payload["kind"] = kind
+    payload["updated_at_utc"] = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat()
+    if not isinstance(payload.get("messages"), dict):
+        payload["messages"] = {}
+    paths["index"].write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+    return paths["index"]
+
+
+def _safe_queue_token(value: str) -> str:
+    token = re.sub(r"[^A-Za-z0-9._-]+", "_", value.strip())
+    token = token.strip("._-")
+    return token or "token"
+
+
+def _path_posix(path: Path) -> str:
+    try:
+        return path.relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
+def _queue_message_id(run_id: str, worker: str, cycle: int, request_payload: dict[str, Any]) -> str:
+    stable = json.dumps(request_payload, sort_keys=True, separators=(",", ":"))
+    digest = hashlib.sha256(stable.encode("utf-8")).hexdigest()[:12]
+    return f"{run_id}:{worker}:c{cycle}:{digest}"
+
+
+def _enqueue_rework_request(
+    *,
+    run_id: str,
+    worker: str,
+    cycle: int,
+    request_payload: dict[str, Any],
+) -> dict[str, Any]:
+    paths = _ensure_queue_dirs(run_id, QUEUE_KIND_REWORK)
+    index_payload = _load_queue_index(run_id, QUEUE_KIND_REWORK)
+    messages = dict(index_payload.get("messages", {}))
+    message_id = _queue_message_id(run_id, worker, cycle, request_payload)
+    now_utc = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat()
+    stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    worker_token = _safe_queue_token(worker)
+    file_name = f"{stamp}_{worker_token}_c{cycle}_{message_id.split(':')[-1]}.request.json"
+    request_file = paths["inbox"] / file_name
+
+    existing = messages.get(message_id)
+    if isinstance(existing, dict):
+        existing_file = str(existing.get("request_file", "")).strip()
+        if existing_file:
+            candidate = REPO_ROOT / existing_file
+            if candidate.exists():
+                return {
+                    "message_id": message_id,
+                    "request_file": existing_file.replace("\\", "/"),
+                    "outbox_pattern": f"*_{worker_token}_c{cycle}_{message_id.split(':')[-1]}.done.json",
+                    "status": str(existing.get("status", "queued")),
+                    "created_at_utc": str(existing.get("created_at_utc", now_utc)),
+                    "reused": True,
+                }
+
+    payload = {
+        "schema_version": 1,
+        "kind": QUEUE_KIND_REWORK,
+        "run_id": run_id,
+        "worker_id": worker,
+        "cycle": int(cycle),
+        "message_id": message_id,
+        "request": request_payload,
+        "created_at_utc": now_utc,
+    }
+    request_file.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+    request_rel = _path_posix(request_file)
+    outbox_pattern = f"*_{worker_token}_c{cycle}_{message_id.split(':')[-1]}.done.json"
+    messages[message_id] = {
+        "worker_id": worker,
+        "cycle": int(cycle),
+        "status": "queued",
+        "request_file": request_rel,
+        "outbox_pattern": outbox_pattern,
+        "created_at_utc": now_utc,
+        "updated_at_utc": now_utc,
+    }
+    index_payload["messages"] = messages
+    _save_queue_index(run_id, index_payload, QUEUE_KIND_REWORK)
+    return {
+        "message_id": message_id,
+        "request_file": request_rel,
+        "outbox_pattern": outbox_pattern,
+        "status": "queued",
+        "created_at_utc": now_utc,
+        "reused": False,
+    }
+
+
+def _find_queue_done_ack(run_id: str, worker: str, cycle: int) -> dict[str, Any] | None:
+    paths = _ensure_queue_dirs(run_id, QUEUE_KIND_REWORK)
+    worker_token = _safe_queue_token(worker)
+    pattern = f"*_{worker_token}_c{cycle}_*.done.json"
+    candidates = sorted(paths["outbox"].glob(pattern), key=lambda path: path.name)
+    for candidate in candidates:
+        payload = _safe_read_json(candidate)
+        if not payload:
+            continue
+        if str(payload.get("run_id", "")).strip() != run_id:
+            continue
+        if str(payload.get("worker_id", "")).strip() != worker:
+            continue
+        if _to_int(payload.get("cycle"), -1) != int(cycle):
+            continue
+        return {
+            "file": candidate.relative_to(REPO_ROOT).as_posix(),
+            "payload": payload,
+        }
+    return None
+
+
+def wait_for_rework_queue_outbox(
+    run_id: str,
+    *,
+    workers: list[str],
+    cycle: int,
+    timeout_seconds: int,
+    poll_seconds: float = 2.0,
+) -> dict[str, Any]:
+    if cycle < 1:
+        return {
+            "status": BLOCKED,
+            "run_id": run_id,
+            "cycle": cycle,
+            "error": "cycle must be >= 1",
+        }
+    if timeout_seconds < 1:
+        timeout_seconds = 1
+    if poll_seconds <= 0:
+        poll_seconds = 0.5
+
+    deadline = time.time() + float(timeout_seconds)
+    pending = {worker for worker in workers}
+    acked: list[dict[str, Any]] = []
+    while pending and time.time() < deadline:
+        done_now: list[str] = []
+        for worker in sorted(pending):
+            ack = _find_queue_done_ack(run_id, worker, cycle)
+            if ack is None:
+                continue
+            acked.append(
+                {
+                    "worker": worker,
+                    "cycle": cycle,
+                    "outbox_file": ack["file"],
+                    "status": str(ack["payload"].get("status", "PASS")).upper(),
+                    "message_id": str(ack["payload"].get("message_id", "")).strip(),
+                }
+            )
+            done_now.append(worker)
+        for worker in done_now:
+            pending.discard(worker)
+        if pending:
+            time.sleep(poll_seconds)
+
+    if pending:
+        return {
+            "status": BLOCKED,
+            "run_id": run_id,
+            "cycle": cycle,
+            "error": f"queue outbox timeout after {int(timeout_seconds)}s; pending_workers={','.join(sorted(pending))}",
+            "acked": sorted(acked, key=lambda item: item["worker"]),
+            "pending_workers": sorted(pending),
+            "queue_root": _queue_paths(run_id, QUEUE_KIND_REWORK)["root"].as_posix(),
+        }
+
+    return {
+        "status": PASS,
+        "run_id": run_id,
+        "cycle": cycle,
+        "acked": sorted(acked, key=lambda item: item["worker"]),
+        "pending_workers": [],
+        "queue_root": _queue_paths(run_id, QUEUE_KIND_REWORK)["root"].as_posix(),
+    }
+
+
+def post_rework_queue_ack(
+    run_id: str,
+    *,
+    worker: str,
+    cycle: int,
+    status: str,
+    message_id: str,
+    note: str,
+) -> dict[str, Any]:
+    if cycle < 1:
+        return {
+            "status": BLOCKED,
+            "run_id": run_id,
+            "worker": worker,
+            "error": "cycle must be >= 1",
+        }
+    if worker not in CODEX_IDS:
+        return {
+            "status": BLOCKED,
+            "run_id": run_id,
+            "worker": worker,
+            "error": f"unknown worker '{worker}'",
+        }
+
+    paths = _ensure_queue_dirs(run_id, QUEUE_KIND_REWORK)
+    worker_token = _safe_queue_token(worker)
+    compact_id = _safe_queue_token(message_id) if message_id else "none"
+    stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    ack_file = paths["outbox"] / f"{stamp}_{worker_token}_c{cycle}_{compact_id}.done.json"
+    payload = {
+        "schema_version": 1,
+        "kind": QUEUE_KIND_REWORK,
+        "run_id": run_id,
+        "worker_id": worker,
+        "cycle": int(cycle),
+        "status": str(status).strip().upper() or PASS,
+        "message_id": str(message_id).strip(),
+        "note": str(note).strip(),
+        "acked_at_utc": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),
+    }
+    ack_file.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+
+    index_payload = _load_queue_index(run_id, QUEUE_KIND_REWORK)
+    messages = dict(index_payload.get("messages", {}))
+    if message_id and isinstance(messages.get(message_id), dict):
+        row = dict(messages[message_id])
+        row["status"] = "acked"
+        row["ack_file"] = _path_posix(ack_file)
+        row["updated_at_utc"] = payload["acked_at_utc"]
+        messages[message_id] = row
+        index_payload["messages"] = messages
+        _save_queue_index(run_id, index_payload, QUEUE_KIND_REWORK)
+
+    return {
+        "status": PASS,
+        "run_id": run_id,
+        "worker": worker,
+        "cycle": int(cycle),
+        "outbox_file": _path_posix(ack_file),
+        "message_id": str(message_id).strip(),
+    }
 
 
 def _clamp01(value: float) -> float:
@@ -1042,6 +1369,12 @@ def _read_rework_policy(path: Path | None = None) -> dict[str, Any]:
         "required_sanction_level": "OK",
         "use_local_sanction_when_stub": True,
         "task_bank_path": "tools/codex/dispatch/rework_task_bank.json",
+        "task_bank_sources_path": "tools/codex/dispatch/task_bank_sources.json",
+        "task_bank_state_path": "tools/codex/dispatch/task_bank_state.json",
+        "task_bank_report_path": "tools/codex/dispatch/reports/task_bank_health.json",
+        "task_bank_auto_refresh": True,
+        "task_bank_min_value_score": 70,
+        "file_queue_poll_seconds": 2.0,
     }
     policy_path = path or REWORK_POLICY_PATH
     payload = _safe_read_json(policy_path)
@@ -1078,6 +1411,13 @@ def _read_task_bank(path: Path) -> list[dict[str, Any]]:
         est = max(0, _to_int(item.get("estimated_mloc"), 0))
         priority = _to_int(item.get("priority"), 0)
         active = bool(item.get("active", True))
+        status_raw = str(item.get("status", "ready")).strip().lower()
+        status = status_raw if status_raw in {"ready", "assigned", "backlog", "paused", "expired"} else "ready"
+        category = str(item.get("category", "automation")).strip().lower() or "automation"
+        source = str(item.get("source", "legacy_bank")).strip() or "legacy_bank"
+        owner = str(item.get("owner", "factory")).strip() or "factory"
+        expires_at = str(item.get("expires_at", "")).strip()
+        value_score = _to_int(item.get("value_score"), priority if priority > 0 else 50)
         worker_affinity_raw = item.get("worker_affinity", [])
         worker_affinity = [str(value).strip() for value in worker_affinity_raw] if isinstance(worker_affinity_raw, list) else []
         allowed_paths_raw = item.get("allowed_paths", [])
@@ -1092,12 +1432,31 @@ def _read_task_bank(path: Path) -> list[dict[str, Any]]:
                 "estimated_mloc": est,
                 "priority": priority,
                 "active": active,
+                "status": status,
+                "category": category,
+                "source": source,
+                "owner": owner,
+                "expires_at": expires_at,
+                "value_score": value_score,
                 "worker_affinity": [value for value in worker_affinity if value],
                 "allowed_paths": [value for value in allowed_paths if value],
                 "acceptance_checks": [value for value in acceptance_checks if value],
             }
         )
-    return sorted(normalized, key=lambda row: (-int(row["priority"]), -int(row["estimated_mloc"]), str(row["id"])))
+    eligible = [
+        row
+        for row in normalized
+        if bool(row.get("active", True)) and str(row.get("status", "ready")).lower() in {"ready", "assigned"}
+    ]
+    return sorted(
+        eligible,
+        key=lambda row: (
+            -int(row.get("value_score", 0)),
+            -int(row.get("priority", 0)),
+            -int(row.get("estimated_mloc", 0)),
+            str(row.get("id", "")),
+        ),
+    )
 
 
 def _count_patch_added_loc(path: Path) -> int:
@@ -1171,6 +1530,7 @@ def _select_rework_tasks(
     shortfall_mloc: int,
     task_bank: list[dict[str, Any]],
     used_task_ids: set[str],
+    min_value_score: int,
 ) -> tuple[list[dict[str, Any]], int, int]:
     if shortfall_mloc <= 0:
         return [], 0, 0
@@ -1178,11 +1538,28 @@ def _select_rework_tasks(
     for task in task_bank:
         if not bool(task.get("active", True)):
             continue
+        status = str(task.get("status", "ready")).strip().lower()
+        if status not in {"ready", "assigned"}:
+            continue
         task_id = str(task.get("id", "")).strip()
         if not task_id or task_id in used_task_ids:
             continue
+        source = str(task.get("source", "")).strip()
+        owner = str(task.get("owner", "")).strip()
+        expires_at = str(task.get("expires_at", "")).strip()
+        value_score = _to_int(task.get("value_score"), 0)
+        if value_score < max(0, int(min_value_score)):
+            continue
+        if not source or not owner or not expires_at:
+            continue
         affinity = task.get("worker_affinity", [])
         if isinstance(affinity, list) and affinity and worker not in affinity:
+            continue
+        allowed_paths = task.get("allowed_paths", [])
+        acceptance_checks = task.get("acceptance_checks", [])
+        if not isinstance(allowed_paths, list) or not [str(item).strip() for item in allowed_paths if str(item).strip()]:
+            continue
+        if not isinstance(acceptance_checks, list) or not [str(item).strip() for item in acceptance_checks if str(item).strip()]:
             continue
         filtered.append(task)
 
@@ -1208,6 +1585,9 @@ def _strip_rework_block(text: str) -> str:
 
 def _render_rework_prompt_block(request_payload: dict[str, Any]) -> str:
     tasks = request_payload.get("fallback_tasks", [])
+    queue_request_file = str(request_payload.get("queue_request_file", "")).strip()
+    queue_outbox_dir = str(request_payload.get("queue_outbox_dir", "")).strip()
+    queue_message_id = str(request_payload.get("queue_message_id", "")).strip()
     lines = [
         REWORK_MARKER_BEGIN,
         f"REWORK_CYCLE: {request_payload.get('rework_cycle', 1)}",
@@ -1218,12 +1598,22 @@ def _render_rework_prompt_block(request_payload: dict[str, Any]) -> str:
         f"REWORK_REQUIRED_SANCTION_LEVEL: {request_payload.get('required_sanction_level', 'OK')}",
         f"REWORK_CURRENT_SANCTION_LEVEL: {request_payload.get('sanction_level', 'WARN')}",
         f"REWORK_CURRENT_SANCTION_SCORE: {request_payload.get('sanction_score', 1.0)}",
+        f"REWORK_QUEUE_REQUEST_FILE: {queue_request_file}",
+        f"REWORK_QUEUE_OUTBOX_DIR: {queue_outbox_dir}",
+        f"REWORK_QUEUE_MESSAGE_ID: {queue_message_id}",
+        (
+            "REWORK_QUEUE_ACK_COMMAND: "
+            "python tools/codex/dispatch/validator.py queue-ack "
+            f"--run-id {request_payload.get('run_id', '')} --worker {request_payload.get('worker_id', '')} "
+            f"--cycle {request_payload.get('rework_cycle', 1)} --message-id {queue_message_id} --status PASS"
+        ),
         "REWORK_MISSION: Replace failed output with meaningful code. Avoid filler.",
         "REWORK_ACTIONS:",
         "- Rebuild or replace your failed changes with deterministic, testable artifacts.",
         "- Keep scope ownership explicit in SCOPE_LOCK.json.",
         "- Update FILES_CHANGED.json and DIFF.patch to match real mutations.",
         "- End with DONE.marker only after quality checks pass.",
+        "- After finishing, write queue outbox ACK using REWORK_QUEUE_ACK_COMMAND.",
         "REWORK_FALLBACK_TASKS:",
     ]
     if isinstance(tasks, list) and tasks:
@@ -1321,6 +1711,65 @@ def _cleanup_worker_failed_changes(run_id: str, worker: str) -> dict[str, Any]:
     }
 
 
+def _refresh_task_bank(
+    *,
+    run_id: str,
+    policy: dict[str, Any],
+    task_bank_path: Path,
+) -> dict[str, Any]:
+    if not bool(policy.get("task_bank_auto_refresh", True)):
+        return {"status": "SKIPPED", "reason": "task_bank_auto_refresh=false"}
+    if not TASK_BANK_REFRESH_SCRIPT.exists():
+        return {"status": "SKIPPED", "reason": f"refresh script missing: {TASK_BANK_REFRESH_SCRIPT.as_posix()}"}
+
+    sources_rel = str(policy.get("task_bank_sources_path", "tools/codex/dispatch/task_bank_sources.json")).strip()
+    state_rel = str(policy.get("task_bank_state_path", "tools/codex/dispatch/task_bank_state.json")).strip()
+    report_rel = str(policy.get("task_bank_report_path", "tools/codex/dispatch/reports/task_bank_health.json")).strip()
+    min_value = max(0, _to_int(policy.get("task_bank_min_value_score"), 70))
+    sources_path = (REPO_ROOT / sources_rel).resolve(strict=False) if sources_rel else Path("")
+    state_path = (REPO_ROOT / state_rel).resolve(strict=False) if state_rel else Path("")
+    report_path = (REPO_ROOT / report_rel).resolve(strict=False) if report_rel else Path("")
+
+    cmd = [
+        sys.executable or "python",
+        TASK_BANK_REFRESH_SCRIPT.as_posix(),
+        "--repo",
+        REPO_ROOT.as_posix(),
+        "--task-bank",
+        task_bank_path.as_posix(),
+        "--min-value-score",
+        str(min_value),
+        "--apply",
+        "--run-id",
+        run_id,
+    ]
+    if sources_path:
+        cmd.extend(["--sources", sources_path.as_posix()])
+    if state_path:
+        cmd.extend(["--state", state_path.as_posix()])
+    if report_path:
+        cmd.extend(["--report", report_path.as_posix()])
+
+    proc = subprocess.run(
+        cmd,
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=180,
+    )
+    stdout = (proc.stdout or "").strip()
+    stderr = (proc.stderr or "").strip()
+    payload = {
+        "status": PASS if proc.returncode == 0 else BLOCKED,
+        "rc": int(proc.returncode),
+        "command": " ".join(cmd),
+        "stdout_tail": stdout[-500:],
+        "stderr_tail": stderr[-500:],
+    }
+    return payload
+
+
 def _effective_worker_metrics(run_id: str, worker: str, *, use_local_when_stub: bool) -> dict[str, Any]:
     root = RUNS_ROOT / run_id / worker
     score_payload = _safe_read_json(root / "SANCTION_SCORE.json")
@@ -1372,11 +1821,13 @@ def run_rework_cycle(
     increment = max(0, _to_int(loc_increment if loc_increment is not None else policy.get("loc_increment_per_rework"), 5000))
     required_level = str(policy.get("required_sanction_level", "OK")).upper()
     use_local_when_stub = bool(policy.get("use_local_sanction_when_stub", True))
+    min_value_score = max(0, _to_int(policy.get("task_bank_min_value_score"), 70))
 
     bank_rel = str(policy.get("task_bank_path", "")).strip()
     resolved_bank = task_bank_path
     if resolved_bank is None:
         resolved_bank = (REPO_ROOT / bank_rel).resolve(strict=False) if bank_rel else REWORK_TASK_BANK_PATH
+    refresh_payload = _refresh_task_bank(run_id=run_id, policy=policy, task_bank_path=resolved_bank)
     task_bank = _read_task_bank(resolved_bank)
 
     assignments = _load_rework_assignments(run_id)
@@ -1458,6 +1909,7 @@ def run_rework_cycle(
             shortfall_mloc=shortfall_mloc,
             task_bank=task_bank,
             used_task_ids=used,
+            min_value_score=min_value_score,
         )
         for task in selected_tasks:
             used.add(str(task.get("id", "")).strip())
@@ -1482,6 +1934,19 @@ def run_rework_cycle(
             "fallback_remaining_mloc": remaining_mloc,
             "generated_at_utc": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),
         }
+        queue_entry = _enqueue_rework_request(
+            run_id=run_id,
+            worker=worker,
+            cycle=cycle,
+            request_payload=request_payload,
+        )
+        queue_outbox_dir = _path_posix(_queue_paths(run_id, QUEUE_KIND_REWORK)["outbox"])
+        request_payload["queue_kind"] = QUEUE_KIND_REWORK
+        request_payload["queue_message_id"] = queue_entry.get("message_id", "")
+        request_payload["queue_request_file"] = queue_entry.get("request_file", "")
+        request_payload["queue_outbox_pattern"] = queue_entry.get("outbox_pattern", "")
+        request_payload["queue_outbox_dir"] = queue_outbox_dir
+        request_payload["queue_status"] = queue_entry.get("status", "queued")
         request_path = worker_root / "REWORK_REQUEST.json"
         request_path.write_text(json.dumps(request_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
         _write_rework_state(
@@ -1498,6 +1963,8 @@ def run_rework_cycle(
                 "sanction_level": sanction_level,
                 "sanction_score": sanction_score,
                 "request_file": request_path.as_posix(),
+                "queue_message_id": queue_entry.get("message_id", ""),
+                "queue_request_file": queue_entry.get("request_file", ""),
                 "updated_at_utc": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),
             },
         )
@@ -1537,6 +2004,8 @@ def run_rework_cycle(
                     "request_file": request_path.as_posix(),
                     "reasons": reasons + ["max rework cycles reached"],
                     "fallback_tasks_assigned": [str(task.get("id", "")).strip() for task in selected_tasks],
+                    "queue_message_id": queue_entry.get("message_id", ""),
+                    "queue_request_file": queue_entry.get("request_file", ""),
                 }
             )
             continue
@@ -1589,6 +2058,8 @@ def run_rework_cycle(
                     "prompt_update": prompt_update,
                     "reasons": reasons + ["cleanup failed"],
                     "fallback_tasks_assigned": [str(task.get("id", "")).strip() for task in selected_tasks],
+                    "queue_message_id": queue_entry.get("message_id", ""),
+                    "queue_request_file": queue_entry.get("request_file", ""),
                 }
             )
             continue
@@ -1609,6 +2080,9 @@ def run_rework_cycle(
                 "fallback_tasks_assigned": [str(task.get("id", "")).strip() for task in selected_tasks],
                 "fallback_remaining_mloc": remaining_mloc,
                 "rework_state_file": (worker_root / "REWORK_STATE.json").as_posix(),
+                "queue_message_id": queue_entry.get("message_id", ""),
+                "queue_request_file": queue_entry.get("request_file", ""),
+                "queue_outbox_pattern": queue_entry.get("outbox_pattern", ""),
             }
         )
 
@@ -1622,12 +2096,20 @@ def run_rework_cycle(
         "loc_increment": increment,
         "required_sanction_level": required_level,
         "task_bank_path": resolved_bank.as_posix(),
+        "task_bank_refresh": refresh_payload,
         "workers": decisions,
         "rework_workers": sorted(set(rework_workers)),
         "rework_workers_csv": ",".join(sorted(set(rework_workers))),
         "blocked_workers": sorted(set(blocked_workers)),
         "blocked_workers_count": len(sorted(set(blocked_workers))),
         "needs_redispatch": len(rework_workers) > 0 and len(blocked_workers) == 0,
+        "rework_transport": "file_queue",
+        "queue": {
+            "kind": QUEUE_KIND_REWORK,
+            "root": _path_posix(_queue_paths(run_id, QUEUE_KIND_REWORK)["root"]),
+            "inbox": _path_posix(_queue_paths(run_id, QUEUE_KIND_REWORK)["inbox"]),
+            "outbox": _path_posix(_queue_paths(run_id, QUEUE_KIND_REWORK)["outbox"]),
+        },
     }
     return payload
 
@@ -1672,6 +2154,42 @@ def _cmd_wait_done(args: argparse.Namespace) -> int:
         workers=chosen_workers,
         timeout_seconds=int(args.timeout_seconds),
         poll_seconds=float(args.poll_seconds),
+    )
+    _emit(payload)
+    return _status_code(payload["status"])
+
+
+def _cmd_queue_wait_outbox(args: argparse.Namespace) -> int:
+    try:
+        chosen_workers = _parse_workers_subset(args.workers)
+    except ValueError as exc:
+        payload = {
+            "status": BLOCKED,
+            "run_id": args.run_id,
+            "error": str(exc),
+        }
+        _emit(payload)
+        return _status_code(payload["status"])
+
+    payload = wait_for_rework_queue_outbox(
+        args.run_id,
+        workers=chosen_workers,
+        cycle=int(args.cycle),
+        timeout_seconds=int(args.timeout_seconds),
+        poll_seconds=float(args.poll_seconds),
+    )
+    _emit(payload)
+    return _status_code(payload["status"])
+
+
+def _cmd_queue_ack(args: argparse.Namespace) -> int:
+    payload = post_rework_queue_ack(
+        args.run_id,
+        worker=str(args.worker).strip(),
+        cycle=int(args.cycle),
+        status=str(args.status).strip().upper(),
+        message_id=str(args.message_id).strip(),
+        note=str(args.note).strip(),
     )
     _emit(payload)
     return _status_code(payload["status"])
@@ -1763,18 +2281,56 @@ def _cmd_prepare_manual_run(args: argparse.Namespace) -> int:
         return _status_code(payload["status"])
 
     prompt_validation = validate_prompt_folder(run_id)
+    context_build: dict[str, Any] = {"status": "SKIPPED", "reason": f"context script missing: {CONTEXT_LAYER_SCRIPT.as_posix()}"}
+    if CONTEXT_LAYER_SCRIPT.exists():
+        context_cmd = [
+            sys.executable or "python",
+            CONTEXT_LAYER_SCRIPT.as_posix(),
+            "--run-id",
+            run_id,
+            "--workers",
+            ",".join(CODEX_IDS),
+        ]
+        context_proc = subprocess.run(
+            context_cmd,
+            cwd=str(REPO_ROOT),
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=180,
+        )
+        context_stdout = (context_proc.stdout or "").strip()
+        parsed_stdout: Any = {}
+        if context_stdout:
+            try:
+                parsed_stdout = json.loads(context_stdout)
+            except Exception:
+                parsed_stdout = {"raw_stdout_tail": context_stdout[-500:]}
+        context_build = {
+            "status": PASS if context_proc.returncode == 0 else BLOCKED,
+            "rc": int(context_proc.returncode),
+            "command": " ".join(context_cmd),
+            "stdout": parsed_stdout,
+            "stderr_tail": (context_proc.stderr or "").strip()[-500:],
+        }
     expected = expected_prompt_files(run_id)
     prompt_files = {
         worker: (PROMPTS_ROOT / run_id / expected[worker]).as_posix()
         for worker in CODEX_IDS
     }
     payload = {
-        "status": PASS if str(prompt_validation.get("status", BLOCKED)).upper() == PASS else BLOCKED,
+        "status": (
+            PASS
+            if str(prompt_validation.get("status", BLOCKED)).upper() == PASS
+            and str(context_build.get("status", BLOCKED)).upper() == PASS
+            else BLOCKED
+        ),
         "run_id": run_id,
         "pack_path": pack_path.as_posix(),
         "prompt_dir": (PROMPTS_ROOT / run_id).as_posix(),
         "prompt_files": prompt_files,
         "validate_prompts": prompt_validation,
+        "context_build": context_build,
         "next_step": (
             "Distribute prompt_files to workers manually, then run "
             "pwsh -NoProfile -ExecutionPolicy Bypass -File tools/codex/dispatch/run_manual_flow.ps1 "
@@ -1807,6 +2363,23 @@ def build_parser() -> argparse.ArgumentParser:
     wait_done_cmd.add_argument("--timeout-seconds", type=int, default=3600)
     wait_done_cmd.add_argument("--poll-seconds", type=float, default=2.0)
     wait_done_cmd.set_defaults(func=_cmd_wait_done)
+
+    queue_wait_cmd = sub.add_parser("queue-wait-outbox", help="Wait for rework queue outbox acknowledgements")
+    queue_wait_cmd.add_argument("--run-id", required=True)
+    queue_wait_cmd.add_argument("--workers", help="Comma-separated worker IDs subset")
+    queue_wait_cmd.add_argument("--cycle", required=True, type=int)
+    queue_wait_cmd.add_argument("--timeout-seconds", type=int, default=3600)
+    queue_wait_cmd.add_argument("--poll-seconds", type=float, default=2.0)
+    queue_wait_cmd.set_defaults(func=_cmd_queue_wait_outbox)
+
+    queue_ack_cmd = sub.add_parser("queue-ack", help="Post a rework queue outbox acknowledgement")
+    queue_ack_cmd.add_argument("--run-id", required=True)
+    queue_ack_cmd.add_argument("--worker", required=True)
+    queue_ack_cmd.add_argument("--cycle", required=True, type=int)
+    queue_ack_cmd.add_argument("--status", default="PASS")
+    queue_ack_cmd.add_argument("--message-id", default="")
+    queue_ack_cmd.add_argument("--note", default="")
+    queue_ack_cmd.set_defaults(func=_cmd_queue_ack)
 
     guardrails_cmd = sub.add_parser("validate-guardrails", help="Validate worker docs/bundles and publish root FINAL_REPORT.md")
     guardrails_cmd.add_argument("--run-id", required=True)

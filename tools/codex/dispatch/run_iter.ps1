@@ -278,6 +278,11 @@ function Update-DispatchRunManifest {
         logs_dir = $LogsDir
         report = $ReportPath
         debug_dir = $DebugDir
+        context_dir = (Join-Path $RunDir "_context")
+        apply_dir = (Join-Path $RunDir "_apply")
+        queue_root = (Join-Path $RunDir "_queue")
+        rework_queue_inbox = (Join-Path $RunDir "_queue\rework\inbox")
+        rework_queue_outbox = (Join-Path $RunDir "_queue\rework\outbox")
         ahk_log = (Join-Path $DebugDir "AHK_DISPATCH.log")
         ahk_worker_results = (Join-Path $DebugDir "AHK_WORKER_RESULTS.log")
         heartbeat = $DispatchHeartbeatPath
@@ -1216,6 +1221,13 @@ function Build-DispatchReport {
     $reportLines.Add("") | Out-Null
     $reportLines.Add("- run_log: tools/codex/prompts/$RunId/logs/RUN_ITER.log") | Out-Null
     $reportLines.Add("- dispatch_json: tools/codex/prompts/$RunId/logs/DISPATCH_PROMPTS.json") | Out-Null
+    $reportLines.Add("- context_dir: tools/codex/runs/$RunId/_context") | Out-Null
+    $reportLines.Add("- apply_dir: tools/codex/runs/$RunId/_apply") | Out-Null
+    $reportLines.Add("- rework_queue_inbox: tools/codex/runs/$RunId/_queue/rework/inbox") | Out-Null
+    $reportLines.Add("- rework_queue_outbox: tools/codex/runs/$RunId/_queue/rework/outbox") | Out-Null
+    $reportLines.Add("- rework_transport: file_queue") | Out-Null
+    $reportLines.Add("- task_bank_health_report: tools/codex/dispatch/reports/task_bank_health.json") | Out-Null
+    $reportLines.Add("- memory_dir: tools/codex/memory") | Out-Null
     $reportLines.Add("- ahk_runtime: tools/codex/prompts/$RunId/logs/DISPATCH_RUNTIME.ahk") | Out-Null
     $reportLines.Add("- ahk_log: tools/codex/runs/$RunId/_debug/AHK_DISPATCH.log") | Out-Null
     $reportLines.Add("- ahk_worker_results: tools/codex/runs/$RunId/_debug/AHK_WORKER_RESULTS.log") | Out-Null
@@ -1324,6 +1336,31 @@ try {
         "HEAD"
     ) | Out-Null
 
+    Invoke-ExternalStep -Stage "factory_context_layer" -Executable "python" -Arguments @(
+        "tools/codex/factory/context_layer.py",
+        "--run-id",
+        $RunId,
+        "--workers",
+        $WorkersCsv
+    ) | Out-Null
+
+    Invoke-ExternalStep -Stage "task_bank_refresh" -Executable "python" -Arguments @(
+        "tools/codex/dispatch/task_bank_refresh.py",
+        "--repo",
+        ".",
+        "--task-bank",
+        "tools/codex/dispatch/rework_task_bank.json",
+        "--sources",
+        "tools/codex/dispatch/task_bank_sources.json",
+        "--state",
+        "tools/codex/dispatch/task_bank_state.json",
+        "--report",
+        "tools/codex/dispatch/reports/task_bank_health.json",
+        "--apply",
+        "--run-id",
+        $RunId
+    ) | Out-Null
+
     $ahkExe = ""
     if ($SkipInitialDispatch) {
         $manualStarted = Get-Date
@@ -1381,10 +1418,15 @@ try {
                 throw "factory_rework_docs_cycle_$reworkCycle requested redispatch but returned no rework workers."
             }
 
-            if ([string]::IsNullOrWhiteSpace($ahkExe)) {
-                $ahkExe = Resolve-AutoHotkeyExecutable
-            }
-            Invoke-DispatchStep -StageName ("dispatch_prompts_docs_rework_{0}" -f $reworkCycle) -WorkersCsv $reworkWorkersCsv -AhkExe $ahkExe -EffectiveWindowReadyTimeout $effectiveWindowReadyTimeout -EffectiveReadinessTimeout $effectiveReadinessTimeout -EffectiveBetweenWorkersDelayMs $effectiveBetweenWorkersDelayMs | Out-Null
+            Invoke-ExternalStep -Stage ("queue_wait_outbox_docs_rework_{0}" -f $reworkCycle) -Executable "python" -Arguments @(
+                "tools/codex/dispatch/validator.py",
+                "queue-wait-outbox",
+                "--run-id", $RunId,
+                "--workers", $reworkWorkersCsv,
+                "--cycle", ([string]$reworkCycle),
+                "--timeout-seconds", $effectiveWorkerDoneTimeout,
+                "--poll-seconds", "2"
+            ) | Out-Null
 
             Invoke-ExternalStep -Stage ("wait_done_markers_docs_rework_{0}" -f $reworkCycle) -Executable "python" -Arguments @(
                 "tools/codex/dispatch/validator.py",
@@ -1439,10 +1481,15 @@ try {
                 throw "factory_rework_z_cycle_$reworkCycle requested redispatch but returned no rework workers."
             }
 
-            if ([string]::IsNullOrWhiteSpace($ahkExe)) {
-                $ahkExe = Resolve-AutoHotkeyExecutable
-            }
-            Invoke-DispatchStep -StageName ("dispatch_prompts_z_rework_{0}" -f $reworkCycle) -WorkersCsv $zReworkWorkersCsv -AhkExe $ahkExe -EffectiveWindowReadyTimeout $effectiveWindowReadyTimeout -EffectiveReadinessTimeout $effectiveReadinessTimeout -EffectiveBetweenWorkersDelayMs $effectiveBetweenWorkersDelayMs | Out-Null
+            Invoke-ExternalStep -Stage ("queue_wait_outbox_z_rework_{0}" -f $reworkCycle) -Executable "python" -Arguments @(
+                "tools/codex/dispatch/validator.py",
+                "queue-wait-outbox",
+                "--run-id", $RunId,
+                "--workers", $zReworkWorkersCsv,
+                "--cycle", ([string]$reworkCycle),
+                "--timeout-seconds", $effectiveWorkerDoneTimeout,
+                "--poll-seconds", "2"
+            ) | Out-Null
 
             Invoke-ExternalStep -Stage ("wait_done_markers_z_rework_{0}" -f $reworkCycle) -Executable "python" -Arguments @(
                 "tools/codex/dispatch/validator.py",
@@ -1464,6 +1511,13 @@ try {
     Invoke-ExternalStep -Stage "factory_guardrails" -Executable "python" -Arguments @(
         "tools/codex/dispatch/validator.py",
         "validate-guardrails",
+        "--run-id",
+        $RunId
+    ) | Out-Null
+
+    Invoke-ExternalStep -Stage "factory_memory_record" -Executable "python" -Arguments @(
+        "tools/codex/factory/memory_layer.py",
+        "record-run",
         "--run-id",
         $RunId
     ) | Out-Null

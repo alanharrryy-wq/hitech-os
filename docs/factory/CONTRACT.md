@@ -30,6 +30,10 @@ All writes for a run must remain under:
 Required paths:
 
 - `tools/codex/runs/<RUN_ID>/RUN_MANIFEST.json`
+- `tools/codex/runs/<RUN_ID>/_context/`
+- `tools/codex/runs/<RUN_ID>/_apply/`
+- `tools/codex/runs/<RUN_ID>/_queue/rework/inbox/`
+- `tools/codex/runs/<RUN_ID>/_queue/rework/outbox/`
 - `tools/codex/runs/<RUN_ID>/A_worker/`
 - `tools/codex/runs/<RUN_ID>/B_worker/`
 - `tools/codex/runs/<RUN_ID>/C_worker/`
@@ -40,6 +44,7 @@ Required paths:
 
 Required worker files:
 
+- `FILES/` (when full-file snapshots are needed)
 - `STATUS.json`
 - `SUMMARY.md`
 - `FILES_CHANGED.json`
@@ -68,7 +73,10 @@ Required integrator files:
 - `FINAL_REPORT.txt`
 - `FILES_CHANGED.json`
 - `DIFF.patch`
+- `FILES_CHANGED_MERGED.json` (compatibility alias)
+- `DIFF_MERGED.patch` (compatibility alias)
 - `MERGE_PLAN.md`
+- `APPLY_INSTRUCTIONS.md`
 - `LOGS/INDEX.json`
 
 Integrator status JSON:
@@ -128,6 +136,22 @@ Exit codes:
   - `python -m tools.codex.factory watch --run-id <RUN_ID>`
   - `python -m tools.codex.factory ledger --run-id <RUN_ID> --raw-events --limit N`
 - Z integration/report work starts after worker completion checks pass.
+
+## Rework File-Queue Contract
+
+Rework transport is file-queue based (not UI automation):
+
+- Inbox root: `tools/codex/runs/<RUN_ID>/_queue/rework/inbox/`
+- Outbox root: `tools/codex/runs/<RUN_ID>/_queue/rework/outbox/`
+- Dead-letter root: `tools/codex/runs/<RUN_ID>/_queue/rework/deadletter/`
+- Queue state index: `tools/codex/runs/<RUN_ID>/_queue/rework/state/index.json`
+
+Rules:
+
+1. `validator.py rework-cycle` writes queue request payloads to inbox.
+2. Worker acknowledges completion by writing `*.done.json` into outbox.
+3. Dispatcher waits on outbox ack before `DONE.marker` validation for rework cycles.
+4. Queue message IDs must be deterministic and idempotent for repeated cycles.
 
 ## Ledger Contract
 
@@ -232,3 +256,16 @@ Run attestations:
 - `tools/codex/runs/<RUN_ID>/attestations/bundles.sha256`
 - `tools/codex/runs/<RUN_ID>/attestations/ledger.sha256`
 - `tools/codex/runs/<RUN_ID>/attestations/report.sha256`
+
+## Memory Layer Contract
+
+Persistent memory root:
+
+- `tools/codex/memory/`
+
+Required files:
+
+- `RUN_HISTORY.json`
+- `TECH_DEBT.json`
+- `FAIL_PATTERNS.json`
+- `SUCCESS_PATTERNS.json`

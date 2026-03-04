@@ -399,6 +399,20 @@ def _render_final_report(
     return "\n".join(lines).rstrip() + "\n"
 
 
+def _render_apply_instructions(run_id: str) -> str:
+    lines = [
+        "# APPLY_INSTRUCTIONS",
+        "",
+        f"RUN_ID: {run_id}",
+        "",
+        "1. Review `DIFF_MERGED.patch` and `FILES_CHANGED_MERGED.json`.",
+        "2. Use `tools/codex/runs/<RUN_ID>/_apply/` as staging area before applying.",
+        "3. Run project validation checks.",
+        "4. Commit and push only when checks pass.",
+    ]
+    return "\n".join(lines).rstrip() + "\n"
+
+
 def _build_log_index(run_id: str, rc: int) -> dict[str, Any]:
     return {
         "schema_version": 1,
@@ -447,7 +461,10 @@ def _build_status_payload(
             "FINAL_REPORT.txt",
             "MERGE_PLAN.md",
             "FILES_CHANGED.json",
+            "FILES_CHANGED_MERGED.json",
             "DIFF.patch",
+            "DIFF_MERGED.patch",
+            "APPLY_INSTRUCTIONS.md",
             "LOGS/integration.log.txt",
             "LOGS/INDEX.json",
         ],
@@ -467,9 +484,12 @@ def _write_standard_outputs(
     extra_writes: Iterable[Mapping[str, Any]] | None = None,
 ) -> None:
     guard.write_json(z_dir / "FILES_CHANGED.json", merged_files)
+    guard.write_json(z_dir / "FILES_CHANGED_MERGED.json", merged_files)
     guard.write_text(z_dir / "DIFF.patch", merged_patch)
+    guard.write_text(z_dir / "DIFF_MERGED.patch", merged_patch)
     guard.write_text(z_dir / "MERGE_PLAN.md", merge_plan)
     guard.write_text(z_dir / "FINAL_REPORT.txt", final_report)
+    guard.write_text(z_dir / "APPLY_INSTRUCTIONS.md", _render_apply_instructions(str(status_payload.get("run_id", ""))))
     guard.write_json(z_dir / "STATUS.json", status_payload)
     guard.write_json(z_dir / "LOGS" / "INDEX.json", log_index_payload)
 

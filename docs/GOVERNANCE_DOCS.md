@@ -15,6 +15,7 @@ Documentation is allowed only in:
 - `docs/security/`
 - `docs/architecture/`
 - `docs/releases/`
+- `docs/factory/`
 - `docs/_generated/<RUN_ID>/`
 
 Allowed root documentation files:
@@ -65,6 +66,7 @@ ADR lifecycle:
 - `docs/security/`: Security standards and operational controls.
 - `docs/architecture/`: System design documentation.
 - `docs/releases/`: Release notes and release-level change context.
+- `docs/factory/`: Factory runtime contracts, worker model, context and memory layer docs.
 - `docs/_generated/<RUN_ID>/`: Multi-agent generated docs sandbox for one isolated run.
 - `_attic/docs_dump/`: Archived documentation dumps moved out of canonical docs.
 - `_attic/snapshots/`: Snapshot materials and deep captures.
@@ -78,6 +80,7 @@ ADR lifecycle:
 4. One run must not write into another run folder.
 5. Agents must not create ad-hoc documentation directories.
 6. Bulk outputs, archives, and snapshots must go to `_attic/`, not `docs/`.
+7. Generated docs must include `promotion_manifest.json` before promotion into canonical docs.
 
 ## Examples
 

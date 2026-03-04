@@ -17,6 +17,9 @@
 - `WORKTREE_OPERATIONS.md` - isolation commands and branch naming
 - `DETERMINISM_POLICY.md` - stable-output rules
 - `RUNS_ROOT_POLICY.md` - canonical shared runs root contract and enforcement
+- `CONTEXT_LAYER.md` - frozen `_context/` package contract for each run
+- `MEMORY_LAYER.md` - persistent memory files and update rules
+- `WORKER_MODEL.md` - canonical worker mapping and file-queue rework model
 - `TROUBLESHOOTING.md` - failure handling
 - `ADD_WORKERS.md` - scaling beyond 4 workers
 - `ADD_CONTRACTS.md` - extending contract surfaces safely

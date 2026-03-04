@@ -36,6 +36,7 @@ ALLOWED_DOC_TOP_LEVEL_DIRS = {
     "security",
     "architecture",
     "releases",
+    "factory",
     "_generated",
 }
 
@@ -123,7 +124,7 @@ def collect_repo_files_and_disallowed_dirs(
         for directory in sorted(dir_names):
             rel_candidate = directory if rel_dir == Path(".") else str(rel_dir / directory)
             rel_candidate_path = normalize_relpath(rel_candidate)
-            if directory in DISALLOWED_DOC_DIRS:
+            if rel_dir == Path(".") and directory in DISALLOWED_DOC_DIRS:
                 disallowed_dirs.append(rel_candidate_path)
             if rel_dir == Path(".") and directory in NON_DOC_ZONES:
                 continue
@@ -237,7 +238,7 @@ def check_doc_locations(
                         message=(
                             "Documentation under docs/ must be inside: docs/, docs/adr/, "
                             "docs/runbooks/, docs/playbooks/, docs/security/, "
-                            "docs/architecture/, docs/releases/, or docs/_generated/<RUN_ID>/."
+                            "docs/architecture/, docs/releases/, docs/factory/, or docs/_generated/<RUN_ID>/."
                         ),
                     )
                 )
@@ -457,6 +458,15 @@ def check_generated_docs_sandbox(repo_root: Path, all_docs: list[Path], failures
                     message="Each docs/_generated/<RUN_ID>/ folder must contain index.md.",
                 )
             )
+        promotion_manifest = entry / "promotion_manifest.json"
+        if not promotion_manifest.exists() or not promotion_manifest.is_file():
+            failures.append(
+                Finding(
+                    rule="generated_sandbox",
+                    path=rel,
+                    message="Each docs/_generated/<RUN_ID>/ folder must contain promotion_manifest.json.",
+                )
+            )
 
     for doc in all_docs:
         if len(doc.parts) >= 2 and doc.parts[0].lower() == "docs" and doc.parts[1] == "_generated":
@@ -629,6 +639,7 @@ def main() -> int:
                 "docs/security/",
                 "docs/architecture/",
                 "docs/releases/",
+                "docs/factory/",
                 "docs/_generated/<RUN_ID>/",
             ],
             "allowed_root_docs": sorted(ALLOWED_ROOT_DOC_FILES),
@@ -638,6 +649,7 @@ def main() -> int:
             "similarity_warn_threshold": SIMILARITY_THRESHOLD,
             "docs_max_depth": MAX_DOC_DEPTH,
             "max_new_docs": args.max_new_docs,
+            "generated_docs_require_promotion_manifest": True,
         },
     }
 
