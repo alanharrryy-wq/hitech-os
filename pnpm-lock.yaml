@@ -65,7 +65,7 @@ importers:
         version: 5.64.2(react@19.0.0)
       next:
         specifier: 16.1.6
-        version: 16.1.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 16.1.6(@playwright/test@1.51.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -79,6 +79,9 @@ importers:
         specifier: 5.0.2
         version: 5.0.2(@types/react@19.0.2)(react@19.0.0)
     devDependencies:
+      "@playwright/test":
+        specifier: 1.51.1
+        version: 1.51.1
       "@types/node":
         specifier: 22.13.9
         version: 22.13.9
@@ -201,7 +204,7 @@ importers:
         version: 0.469.0(react@19.0.0)
       next:
         specifier: 16.1.6
-        version: 16.1.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 16.1.6(@playwright/test@1.51.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       tailwind-merge:
         specifier: 2.5.5
         version: 2.5.5
@@ -1511,6 +1514,14 @@ packages:
         integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==
       }
     engines: { node: ">= 8" }
+
+  "@playwright/test@1.51.1":
+    resolution:
+      {
+        integrity: sha512-nM+kEaTSAoVlXmMPH10017vn3FSiFqr/bh4fKg9vmAdMfd9SDqRZNvPSiAHADc/itWak+qPvMPZQOPwCBW7k7Q==
+      }
+    engines: { node: ">=18" }
+    hasBin: true
 
   "@radix-ui/number@1.1.0":
     resolution:
@@ -3084,6 +3095,14 @@ packages:
         integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==
       }
 
+  fsevents@2.3.2:
+    resolution:
+      {
+        integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==
+      }
+    engines: { node: ^8.16.0 || ^10.6.0 || >=11.0.0 }
+    os: [darwin]
+
   fsevents@2.3.3:
     resolution:
       {
@@ -3138,6 +3157,7 @@ packages:
         integrity: sha512-ICsMM1Wk8xSGMowkOmPrzo2Fgmfo4bMHLNX6ytHjajRJUqvHOw/TFapQ+QG75c3X/tTDDhOSRPGC52dDbNM8FQ==
       }
     engines: { node: ">=16" }
+    deprecated: This package is no longer maintained. For the JavaScript API, please use @conventional-changelog/git-client instead.
     hasBin: true
 
   glob-parent@5.1.2:
@@ -3828,6 +3848,22 @@ packages:
         integrity: sha512-TfySrs/5nm8fQJDcBDuUng3VOUKsd7S+zqvbOTiGXHfxX4wK31ard+hoNuvkicM/2YFzlpDgABOevKSsB4G/FA==
       }
     engines: { node: ">= 6" }
+
+  playwright-core@1.51.1:
+    resolution:
+      {
+        integrity: sha512-/crRMj8+j/Nq5s8QcvegseuyeZPxpQCZb6HNk3Sos3BlZyAknRjoyJPFWkpNn8v0+P3WiwqFF8P+zQo4eqiNuw==
+      }
+    engines: { node: ">=18" }
+    hasBin: true
+
+  playwright@1.51.1:
+    resolution:
+      {
+        integrity: sha512-kkx+MB2KQRkyxjYPc3a0wLZZoDczmppyGJIvQ43l+aZihkaVvmu/21kiyaHeHjiFxjxNNFnUncKmcGIyOojsaw==
+      }
+    engines: { node: ">=18" }
+    hasBin: true
 
   postcss-import@15.1.0:
     resolution:
@@ -5296,6 +5332,10 @@ snapshots:
       "@nodelib/fs.scandir": 2.1.5
       fastq: 1.20.1
 
+  "@playwright/test@1.51.1":
+    dependencies:
+      playwright: 1.51.1
+
   "@radix-ui/number@1.1.0": {}
 
   "@radix-ui/primitive@1.1.0": {}
@@ -6440,6 +6480,9 @@ snapshots:
 
   fraction.js@4.3.7: {}
 
+  fsevents@2.3.2:
+    optional: true
+
   fsevents@2.3.3:
     optional: true
 
@@ -6678,7 +6721,7 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  next@16.1.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  next@16.1.6(@playwright/test@1.51.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       "@next/env": 16.1.6
       "@swc/helpers": 0.5.15
@@ -6697,6 +6740,7 @@ snapshots:
       "@next/swc-linux-x64-musl": 16.1.6
       "@next/swc-win32-arm64-msvc": 16.1.6
       "@next/swc-win32-x64-msvc": 16.1.6
+      "@playwright/test": 1.51.1
       sharp: 0.34.5
     transitivePeerDependencies:
       - "@babel/core"
@@ -6785,6 +6829,14 @@ snapshots:
   pify@2.3.0: {}
 
   pirates@4.0.7: {}
+
+  playwright-core@1.51.1: {}
+
+  playwright@1.51.1:
+    dependencies:
+      playwright-core: 1.51.1
+    optionalDependencies:
+      fsevents: 2.3.2
 
   postcss-import@15.1.0(postcss@8.4.49):
     dependencies:

@@ -129,7 +129,12 @@ export type { SectionProps } from "./components/Section.js";
 export { Text } from "./components/Text.js";
 export type { TextProps } from "./components/Text.js";
 
-export const UI_KIT_REQUIRED_COMPONENT_EXPORTS = Object.freeze(["Button", "Card", "Section", "Text"]);
+export const UI_KIT_REQUIRED_COMPONENT_EXPORTS = Object.freeze([
+  "Button",
+  "Card",
+  "Section",
+  "Text"
+]);
 
 export const UI_KIT_LAYERS_MODULE_PATH = "./layers/index.js";
 export const UI_KIT_LAYERS_IDS_MODULE_PATH = "./layers/layerIds.js";
@@ -147,6 +152,6 @@ export const layers: UiKitLayersWiring = Object.freeze({
   modulePath: UI_KIT_LAYERS_MODULE_PATH,
   idsModulePath: UI_KIT_LAYERS_IDS_MODULE_PATH,
   cssPath: UI_KIT_LAYERS_CSS_PATH,
-  loadModule: () => import(UI_KIT_LAYERS_MODULE_PATH),
-  loadIdsModule: () => import(UI_KIT_LAYERS_IDS_MODULE_PATH)
+  loadModule: () => import("./layers/index.js"),
+  loadIdsModule: () => import("./layers/layerIds.js")
 });

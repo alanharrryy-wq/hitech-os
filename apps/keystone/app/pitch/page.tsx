@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LayerDebugPanel, LayerFlagsProvider, GlassCard, InsetPanel } from "@hitech/ui-kit";
+import { LayerFlagsProvider, GlassCard, InsetPanel } from "@hitech/ui-kit";
 import { PITCH_DECK_FIXTURE } from "@hitech/contracts";
 import { PitchShell } from "../../components/pitch";
 import {
@@ -9,8 +9,8 @@ import {
 
 export const dynamic = "force-dynamic";
 
-export default function PitchIndexPage({ searchParams }: PitchSearchParamsProps) {
-  const resolved = resolvePitchLayerFlags(searchParams);
+export default async function PitchIndexPage({ searchParams }: PitchSearchParamsProps) {
+  const resolved = await resolvePitchLayerFlags(searchParams);
   const deck = PITCH_DECK_FIXTURE;
 
   return (
@@ -37,7 +37,6 @@ export default function PitchIndexPage({ searchParams }: PitchSearchParamsProps)
           </InsetPanel>
         </GlassCard>
       </PitchShell>
-      {resolved.debug ? <LayerDebugPanel /> : null}
     </LayerFlagsProvider>
   );
 }
