@@ -1,0 +1,300 @@
+{
+  "version": "1.0.0",
+  "description": "Fallback backlog for automatic worker rework when the primary scope is saturated.",
+  "tasks": [
+    {
+      "id": "TB-AUTO-001",
+      "title": "Factory stage telemetry exporter",
+      "description": "Generate a deterministic exporter that summarizes stage durations, rc, and retry trends into JSON and Markdown.",
+      "priority": 100,
+      "estimated_mloc": 2400,
+      "active": true,
+      "worker_affinity": [
+        "D_validation",
+        "B_tooling",
+        "A_core"
+      ],
+      "allowed_paths": [
+        "tools/codex/factory/**",
+        "tools/codex/dispatch/**",
+        "docs/factory/**"
+      ],
+      "acceptance_checks": [
+        "python -m tools.codex.factory.doctor",
+        "python -m tools.codex.factory.contracts-check"
+      ]
+    },
+    {
+      "id": "TB-AUTO-002",
+      "title": "Prompt contract linter",
+      "description": "Add deterministic lint checks for prompt headers, worker ownership tags, and rework markers.",
+      "priority": 96,
+      "estimated_mloc": 2200,
+      "active": true,
+      "worker_affinity": [
+        "D_validation",
+        "A_core"
+      ],
+      "allowed_paths": [
+        "tools/codex/dispatch/**",
+        "tools/codex/verify/**",
+        "docs/dispatcher/**"
+      ],
+      "acceptance_checks": [
+        "python tools/codex/dispatch/validator.py validate-prompts --run-id <RUN_ID>"
+      ]
+    },
+    {
+      "id": "TB-AUTO-003",
+      "title": "Runs root drift auto-remediation checks",
+      "description": "Expand diagnostics and deterministic repair logs around runs-root canonicalization.",
+      "priority": 92,
+      "estimated_mloc": 1800,
+      "active": true,
+      "worker_affinity": [
+        "B_tooling",
+        "D_validation"
+      ],
+      "allowed_paths": [
+        "tools/scripts/**",
+        "tools/codex/dispatch/**",
+        "docs/factory/**"
+      ],
+      "acceptance_checks": [
+        "pwsh -NoProfile -File tools/scripts/Invoke-HitechRunsDoctor.ps1 -Quiet"
+      ]
+    },
+    {
+      "id": "TB-CORE-001",
+      "title": "Pitch engine deterministic scenario pack",
+      "description": "Add reusable deterministic scenario generators and contracts for pitch-engine workflows.",
+      "priority": 90,
+      "estimated_mloc": 3000,
+      "active": true,
+      "worker_affinity": [
+        "A_core"
+      ],
+      "allowed_paths": [
+        "apps/keystone/lib/pitch-engine/**",
+        "apps/keystone/tests/pitch-engine-core/**",
+        "docs/design/pitch-engine/**"
+      ],
+      "acceptance_checks": [
+        "pnpm --filter @hitech/keystone test"
+      ]
+    },
+    {
+      "id": "TB-CORE-002",
+      "title": "Capability registry hardening utilities",
+      "description": "Add audit utilities for capability registry diffs and deterministic validation.",
+      "priority": 88,
+      "estimated_mloc": 2100,
+      "active": true,
+      "worker_affinity": [
+        "A_core"
+      ],
+      "allowed_paths": [
+        "apps/keystone/lib/pitch-engine/capabilities/**",
+        "apps/keystone/tests/pitch-engine-core/**"
+      ],
+      "acceptance_checks": [
+        "pnpm --filter @hitech/keystone typecheck"
+      ]
+    },
+    {
+      "id": "TB-TOOL-001",
+      "title": "UI token conformance checker",
+      "description": "Implement a checker that validates token usage consistency across ui-kit components.",
+      "priority": 86,
+      "estimated_mloc": 2600,
+      "active": true,
+      "worker_affinity": [
+        "B_tooling",
+        "D_validation"
+      ],
+      "allowed_paths": [
+        "packages/ui-kit/**",
+        "tools/hos/**",
+        "docs/constitution/**"
+      ],
+      "acceptance_checks": [
+        "pnpm --filter @hitech/ui-kit lint"
+      ]
+    },
+    {
+      "id": "TB-TOOL-002",
+      "title": "Visual baseline drift triage scripts",
+      "description": "Add scripts and docs to classify visual baseline diffs and triage false positives deterministically.",
+      "priority": 84,
+      "estimated_mloc": 1700,
+      "active": true,
+      "worker_affinity": [
+        "B_tooling"
+      ],
+      "allowed_paths": [
+        "tools/hos/visual/**",
+        "packages/ui-kit/**",
+        "docs/factory/**"
+      ],
+      "acceptance_checks": [
+        "python tools/hos/visual/cli_visual.py --help"
+      ]
+    },
+    {
+      "id": "TB-FEAT-001",
+      "title": "Inventory simulation fixtures",
+      "description": "Generate deterministic, parameterized fixtures for inventory and receiving simulations.",
+      "priority": 82,
+      "estimated_mloc": 2800,
+      "active": true,
+      "worker_affinity": [
+        "C_features",
+        "D_validation"
+      ],
+      "allowed_paths": [
+        "apps/keystone/components/pitch/**",
+        "apps/keystone/tests/**",
+        "docs/runbooks/**"
+      ],
+      "acceptance_checks": [
+        "pnpm --filter @hitech/keystone test"
+      ]
+    },
+    {
+      "id": "TB-FEAT-002",
+      "title": "Receiving flow anomaly harness",
+      "description": "Add harnesses for anomaly scenarios in receiving workflows with deterministic replay.",
+      "priority": 80,
+      "estimated_mloc": 2300,
+      "active": true,
+      "worker_affinity": [
+        "C_features"
+      ],
+      "allowed_paths": [
+        "apps/keystone/app/pitch/**",
+        "apps/keystone/components/pitch/**",
+        "apps/keystone/tests/**"
+      ],
+      "acceptance_checks": [
+        "pnpm --filter @hitech/keystone build"
+      ]
+    },
+    {
+      "id": "TB-VAL-001",
+      "title": "Contract regression bundle",
+      "description": "Build additional regression suites for contract shape compatibility and deterministic snapshots.",
+      "priority": 78,
+      "estimated_mloc": 2500,
+      "active": true,
+      "worker_affinity": [
+        "D_validation"
+      ],
+      "allowed_paths": [
+        "packages/contracts/tests/**",
+        "apps/keystone/tests/**",
+        "tools/codex/verify/**"
+      ],
+      "acceptance_checks": [
+        "pnpm --filter @hitech/contracts test",
+        "pnpm --filter @hitech/keystone test"
+      ]
+    },
+    {
+      "id": "TB-VAL-002",
+      "title": "Meaningful gate edge-case pack",
+      "description": "Expand meaningful execution gate tests for empty patch, phantom paths, and declaration mismatch edge cases.",
+      "priority": 76,
+      "estimated_mloc": 1900,
+      "active": true,
+      "worker_affinity": [
+        "D_validation",
+        "A_core"
+      ],
+      "allowed_paths": [
+        "tools/codex/verify/**",
+        "tools/codex/factory/tests/**",
+        "docs/factory/**"
+      ],
+      "acceptance_checks": [
+        "python -m unittest tools.codex.factory.tests.test_support"
+      ]
+    },
+    {
+      "id": "TB-Z-001",
+      "title": "Integrator report expansion pack",
+      "description": "Add deterministic report generators for overlap maps, risk matrices, and merge-order narratives.",
+      "priority": 70,
+      "estimated_mloc": 2600,
+      "active": true,
+      "worker_affinity": [
+        "Z_aggregator"
+      ],
+      "allowed_paths": [
+        "tools/codex/runs/<RUN_ID>/Z_aggregator/**",
+        "docs/factory/**"
+      ],
+      "acceptance_checks": [
+        "python -m tools.codex.factory watch --run-id <RUN_ID>"
+      ]
+    },
+    {
+      "id": "TB-Z-002",
+      "title": "Ledger evidence compiler",
+      "description": "Generate deterministic ledger digest outputs that correlate stage events with artifact evidence.",
+      "priority": 68,
+      "estimated_mloc": 1700,
+      "active": true,
+      "worker_affinity": [
+        "Z_aggregator"
+      ],
+      "allowed_paths": [
+        "tools/codex/runs/<RUN_ID>/Z_aggregator/**",
+        "tools/codex/factory/**"
+      ],
+      "acceptance_checks": [
+        "python -m tools.codex.factory ledger --run-id <RUN_ID> --raw-events --limit 50"
+      ]
+    },
+    {
+      "id": "TB-AUTO-004",
+      "title": "Scope lock conflict explainer",
+      "description": "Add a deterministic explainer tool that translates overlap/scope blockers into fix recipes.",
+      "priority": 66,
+      "estimated_mloc": 2100,
+      "active": true,
+      "worker_affinity": [
+        "A_core",
+        "B_tooling",
+        "D_validation"
+      ],
+      "allowed_paths": [
+        "tools/codex/factory/**",
+        "tools/codex/dispatch/**",
+        "docs/factory/**"
+      ],
+      "acceptance_checks": [
+        "python -m tools.codex.factory integrate --run-id <RUN_ID> --workers A_core,B_tooling,C_features,D_validation,Z_aggregator"
+      ]
+    },
+    {
+      "id": "TB-AUTO-005",
+      "title": "Docs governor evidence bridge",
+      "description": "Create bridge tooling that links docs governor findings with worker run evidence for triage automation.",
+      "priority": 64,
+      "estimated_mloc": 1800,
+      "active": true,
+      "worker_affinity": [
+        "D_validation",
+        "B_tooling"
+      ],
+      "allowed_paths": [
+        "tools/docs_governor/**",
+        "tools/codex/dispatch/**",
+        "docs/GOVERNANCE_DOCS.md"
+      ],
+      "acceptance_checks": [
+        "python tools/docs_governor/docs_governor.py --repo . --report-dir tools/docs_governor/reports"
+      ]
+    }
+  ]
+}

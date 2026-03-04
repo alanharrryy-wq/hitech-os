@@ -1,10 +1,11 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
 from .attestations import write_all_attestations
-from .common import INTEGRATOR, RUNS_DIR, WORKERS, iso_utc, read_json, read_text, stable_sha256_text
+from .common import INTEGRATOR, REPO_ROOT, RUNS_DIR, WORKERS, iso_utc, read_json, read_text, stable_sha256_text
 from .config import load_factory_config
 from .contracts import bundle_dir, scaffold_integrator_bundle, validate_bundle
 from .fs_guard import WriteGuard, WritePolicyError
@@ -25,6 +26,132 @@ except Exception:  # pragma: no cover - package mode fallback
     from tools.codex.verify.meaningful_gate import PASS as GATE_PASS
     from tools.codex.verify.meaningful_gate import WARN as GATE_WARN
     from tools.codex.verify.meaningful_gate import run_meaningful_gate
+
+
+ANTI_PADDING_POLICY_PRIMARY = REPO_ROOT / "tools" / "codex" / "factory" / "anti_padding_policy.json"
+ANTI_PADDING_POLICY_FALLBACK = REPO_ROOT / "tools" / "codex" / "dispatch" / "rework_policy.json"
+
+
+def _safe_read_json_dict(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def _to_int(value: Any, default: int) -> int:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return int(default)
+
+
+def _to_float(value: Any, default: float) -> float:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return float(default)
+
+
+def _count_patch_added_loc(path: Path) -> int:
+    if not path.exists() or not path.is_file():
+        return 0
+    try:
+        text = path.read_text(encoding="utf-8", errors="replace")
+    except Exception:
+        return 0
+    added = 0
+    for line in text.splitlines():
+        if line.startswith("+++"):
+            continue
+        if line.startswith("+"):
+            added += 1
+    return int(added)
+
+
+def _load_anti_padding_policy() -> dict[str, Any]:
+    defaults = {
+        "version": "1.0.0",
+        "max_reworks": 3,
+        "base_loc_target": 10000,
+        "loc_increment_per_rework": 5000,
+        "required_sanction_level": "OK",
+    }
+    for candidate in (ANTI_PADDING_POLICY_PRIMARY, ANTI_PADDING_POLICY_FALLBACK):
+        payload = _safe_read_json_dict(candidate)
+        if payload:
+            merged = dict(defaults)
+            for key in defaults:
+                if key in payload:
+                    merged[key] = payload[key]
+            merged["_source"] = candidate.as_posix()
+            return merged
+    merged = dict(defaults)
+    merged["_source"] = "<defaults>"
+    return merged
+
+
+def _evaluate_anti_padding_gate(run_id: str, workers: list[str]) -> dict[str, Any]:
+    policy = _load_anti_padding_policy()
+    required_level = str(policy.get("required_sanction_level", "OK")).upper()
+    base_target = max(0, _to_int(policy.get("base_loc_target"), 10000))
+    increment = max(0, _to_int(policy.get("loc_increment_per_rework"), 5000))
+    max_reworks = max(1, _to_int(policy.get("max_reworks"), 3))
+
+    rows: list[dict[str, Any]] = []
+    blocked: list[dict[str, Any]] = []
+    for worker in workers:
+        root = bundle_dir(run_id, worker)
+        score_payload = _safe_read_json_dict(root / "SANCTION_SCORE.json")
+        state_payload = _safe_read_json_dict(root / "REWORK_STATE.json")
+        score_level = str(score_payload.get("sanction_level", "WARN")).upper()
+        score_value = _to_float(score_payload.get("sanction_score"), 1.0)
+        loc_score = max(0, _to_int(score_payload.get("loc_delta"), 0))
+        loc_patch = max(0, _count_patch_added_loc(root / "DIFF.patch"))
+        loc_state = max(0, _to_int(state_payload.get("effective_mloc"), 0))
+        effective_loc = max(loc_score, loc_patch, loc_state)
+
+        cycle = max(0, _to_int(state_payload.get("cycle"), 0))
+        configured_cycle = min(cycle, max_reworks)
+        target_mloc = max(0, _to_int(state_payload.get("target_mloc"), base_target + (configured_cycle * increment)))
+        state_status = str(state_payload.get("status", "")).upper()
+
+        reasons: list[str] = []
+        if score_level != required_level:
+            reasons.append(f"sanction_level={score_level} expected={required_level}")
+        if effective_loc < target_mloc:
+            reasons.append(f"effective_mloc={effective_loc} below target_mloc={target_mloc}")
+        if state_status in {BLOCKED, "REWORK_REQUIRED"}:
+            reasons.append(f"rework_state={state_status}")
+
+        row = {
+            "worker": worker,
+            "sanction_level": score_level,
+            "sanction_score": score_value,
+            "effective_mloc": effective_loc,
+            "target_mloc": target_mloc,
+            "rework_cycle": configured_cycle,
+            "rework_state": state_status or "N/A",
+            "ok": not reasons,
+            "reasons": reasons,
+        }
+        rows.append(row)
+        if reasons:
+            blocked.append(row)
+
+    return {
+        "policy_source": str(policy.get("_source", "<defaults>")),
+        "required_sanction_level": required_level,
+        "base_loc_target": base_target,
+        "loc_increment_per_rework": increment,
+        "max_reworks": max_reworks,
+        "workers": rows,
+        "blocked": blocked,
+        "blocked_count": len(blocked),
+    }
 
 
 def _collect_worker_inputs(run_id: str, workers: list[str]) -> list[dict[str, Any]]:
@@ -172,10 +299,12 @@ def _render_final_report(
     internal_errors: Iterable[str] | None = None,
     ledger_signature_status: Mapping[str, Any] | None = None,
     meaningful_gate: Mapping[str, Any] | None = None,
+    anti_padding: Mapping[str, Any] | None = None,
     worker_completion: Mapping[str, Any] | None = None,
     ledger_watch: Mapping[str, Any] | None = None,
 ) -> str:
     gate = meaningful_gate or {}
+    anti = anti_padding or {}
     completion = worker_completion or {}
     watch = ledger_watch or {}
     gate_verdict = str(gate.get("verdict", "N/A"))
@@ -192,6 +321,7 @@ def _render_final_report(
         f"- Hidden overlaps: {len(overlap_report.get('hidden_overlaps', []))}",
         f"- Invalid FILES_CHANGED paths: {len(overlap_report.get('invalid_paths', []))}",
         f"- Meaningful gate verdict: {gate_verdict}",
+        f"- Anti-padding blocked workers: {anti.get('blocked_count', 0)}",
         f"- NOOP declared: {str(gate_noop).lower()}",
         f"- Workers completed: {completion.get('done', 0)}/{completion.get('total', len(collected))}",
         f"- Ledger watch events: {watch.get('count', 0)}",
@@ -235,6 +365,15 @@ def _render_final_report(
         blockers.append(f"internal: {item}")
     for mode in gate.get("fail_modes", []) if isinstance(gate.get("fail_modes", []), list) else []:
         blockers.append(f"meaningful_gate: {mode}")
+    for row in anti.get("blocked", []) if isinstance(anti.get("blocked", []), list) else []:
+        if not isinstance(row, Mapping):
+            continue
+        worker = str(row.get("worker", "unknown"))
+        reasons = row.get("reasons", [])
+        if isinstance(reasons, list) and reasons:
+            blockers.append(f"anti_padding: {worker}: {'; '.join(str(item) for item in reasons)}")
+        else:
+            blockers.append(f"anti_padding: {worker}")
 
     if blockers:
         for blocker in sorted(set(blockers)):
@@ -491,11 +630,32 @@ def integrate_run(
         else:
             required_checks.append(make_check("schema_files_changed", rc=0, required=True, actor=INTEGRATOR))
 
+        anti_padding_payload = _evaluate_anti_padding_gate(run_id, chosen)
+        anti_padding_blockers = [
+            f"anti_padding:{row.get('worker', 'unknown')}:{';'.join(str(item) for item in row.get('reasons', []))}"
+            for row in anti_padding_payload.get("blocked", [])
+            if isinstance(row, Mapping)
+        ]
+        required_checks.append(
+            make_check(
+                "anti_padding_gate",
+                rc=0 if not anti_padding_blockers else 2,
+                required=True,
+                detail=(
+                    f"blocked={len(anti_padding_blockers)} "
+                    f"required_level={anti_padding_payload.get('required_sanction_level', 'OK')} "
+                    f"base_target={anti_padding_payload.get('base_loc_target', 0)} "
+                    f"increment={anti_padding_payload.get('loc_increment_per_rework', 0)}"
+                ),
+                actor=INTEGRATOR,
+            )
+        )
+
         evaluation = evaluate_status(
             required_checks=required_checks,
             optional_checks=optional_checks,
             schema_errors=schema_errors,
-            blockers=blockers,
+            blockers=blockers + anti_padding_blockers,
             internal_errors=[],
         )
 
@@ -575,6 +735,7 @@ def integrate_run(
             internal_errors=[],
             ledger_signature_status={},
             meaningful_gate={},
+            anti_padding=anti_padding_payload,
             worker_completion=worker_completion,
             ledger_watch=ledger_watch,
         )
@@ -609,7 +770,7 @@ def integrate_run(
                 required_checks=required_checks,
                 optional_checks=optional_checks,
                 schema_errors=schema_errors,
-                blockers=blockers + policy_errors,
+                blockers=blockers + policy_errors + anti_padding_blockers,
                 internal_errors=[],
             )
             final_status = evaluation.status
@@ -628,6 +789,7 @@ def integrate_run(
                 internal_errors=[],
                 ledger_signature_status={},
                 meaningful_gate={},
+                anti_padding=anti_padding_payload,
                 worker_completion=worker_completion,
                 ledger_watch=ledger_watch,
             )
@@ -672,7 +834,7 @@ def integrate_run(
             required_checks=required_checks,
             optional_checks=optional_checks,
             schema_errors=schema_errors,
-            blockers=blockers + policy_errors + gate_blockers,
+            blockers=blockers + policy_errors + anti_padding_blockers + gate_blockers,
             internal_errors=[],
         )
         final_status = evaluation.status
@@ -696,6 +858,7 @@ def integrate_run(
             internal_errors=[],
             ledger_signature_status={},
             meaningful_gate=gate_payload,
+            anti_padding=anti_padding_payload,
             worker_completion=worker_completion,
             ledger_watch=ledger_watch,
         )
@@ -720,6 +883,7 @@ def integrate_run(
             internal_errors=[],
             ledger_signature_status=ledger_sig,
             meaningful_gate=gate_payload,
+            anti_padding=anti_padding_payload,
             worker_completion=worker_completion,
             ledger_watch=ledger_watch,
         )
@@ -747,6 +911,7 @@ def integrate_run(
                     "worker_blockers": len(worker_blockers),
                     "overlap_blockers": len(overlap_blockers),
                     "scope_blockers": len(scope_blockers),
+                    "anti_padding_blockers": len(anti_padding_blockers),
                     "report": (z_dir / "FINAL_REPORT.txt").as_posix(),
                     "path": (RUNS_DIR / run_id).as_posix(),
                     "attestations": attestations,
@@ -780,9 +945,11 @@ def integrate_run(
             "hidden_overlap_blockers": len(hidden_overlap_blockers),
             "invalid_path_blockers": len(invalid_path_blockers),
             "scope_blockers": len(scope_blockers),
+            "anti_padding_blockers": len(anti_padding_blockers),
             "report": (z_dir / "FINAL_REPORT.txt").as_posix(),
             "attestations": attestations,
             "meaningful_gate": gate_payload,
+            "anti_padding_gate": anti_padding_payload,
         }
     except Exception as exc:  # pragma: no cover - integration fallback path
         ended_at = iso_utc()
