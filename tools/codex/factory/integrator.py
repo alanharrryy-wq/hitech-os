@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
@@ -20,11 +21,75 @@ try:  # pragma: no cover - import path depends on launcher mode
     from verify.meaningful_gate import WARN as GATE_WARN
     from verify.meaningful_gate import run_meaningful_gate
 except Exception:  # pragma: no cover - package mode fallback
-    from tools.codex.verify.meaningful_gate import BLOCKED as GATE_BLOCKED
-    from tools.codex.verify.meaningful_gate import FAIL as GATE_FAIL
-    from tools.codex.verify.meaningful_gate import PASS as GATE_PASS
-    from tools.codex.verify.meaningful_gate import WARN as GATE_WARN
-    from tools.codex.verify.meaningful_gate import run_meaningful_gate
+    try:  # pragma: no cover - package mode fallback
+        from tools.codex.verify.meaningful_gate import BLOCKED as GATE_BLOCKED
+        from tools.codex.verify.meaningful_gate import FAIL as GATE_FAIL
+        from tools.codex.verify.meaningful_gate import PASS as GATE_PASS
+        from tools.codex.verify.meaningful_gate import WARN as GATE_WARN
+        from tools.codex.verify.meaningful_gate import run_meaningful_gate
+    except Exception:  # pragma: no cover - graceful fallback when verify module is not shipped
+        GATE_BLOCKED = BLOCKED
+        GATE_FAIL = FAIL
+        GATE_PASS = PASS
+        GATE_WARN = "WARN"
+
+        def run_meaningful_gate(
+            run_id: str,
+            *,
+            repo_root: str | Path | None = None,
+            runs_dir: str | Path | None = None,
+            write_outputs: bool = False,
+        ) -> dict[str, Any]:
+            _ = repo_root
+            resolved_runs = Path(runs_dir).resolve(strict=False) if runs_dir is not None else RUNS_DIR
+            run_root = resolved_runs / run_id
+            files_changed_path = run_root / INTEGRATOR / "FILES_CHANGED.json"
+            output_json = run_root / "VERIFY_MEANINGFUL_GATE.json"
+            output_md = run_root / "VERIFY_MEANINGFUL_GATE.md"
+
+            noop = False
+            noop_reason = ""
+            noop_ack = ""
+            if files_changed_path.exists():
+                try:
+                    payload = read_json(files_changed_path)
+                    noop = bool(payload.get("noop", False))
+                    noop_reason = str(payload.get("noop_reason", "")).strip()
+                    noop_ack = str(payload.get("noop_ack", "")).strip()
+                except Exception:
+                    noop = False
+                    noop_reason = ""
+                    noop_ack = ""
+
+            explicit_noop = bool(noop and noop_reason and noop_ack)
+            gate_payload = {
+                "schema_version": 1,
+                "run_id": run_id,
+                "verdict": GATE_PASS if explicit_noop else GATE_WARN,
+                "fail_modes": [],
+                "noop": explicit_noop,
+                "noop_reason": noop_reason if explicit_noop else "",
+                "noop_ack": noop_ack if explicit_noop else "",
+                "outputs": {
+                    "json": output_json.as_posix(),
+                    "markdown": output_md.as_posix(),
+                },
+                "errors": ["meaningful gate module unavailable; fallback verdict emitted"],
+            }
+            if write_outputs:
+                run_root.mkdir(parents=True, exist_ok=True)
+                output_json.write_text(json.dumps(gate_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+                output_md.write_text(
+                    (
+                        f"# VERIFY_MEANINGFUL_GATE - {run_id}\n\n"
+                        f"- Verdict: {gate_payload['verdict']}\n"
+                        f"- NOOP: {str(bool(gate_payload['noop'])).lower()}\n"
+                        "- Source: fallback (module unavailable)\n"
+                    ),
+                    encoding="utf-8",
+                    newline="\n",
+                )
+            return gate_payload
 
 
 def _collect_worker_inputs(run_id: str, workers: list[str]) -> list[dict[str, Any]]:

@@ -12,13 +12,31 @@ from typing import Any
 
 from .common import CODEX_DIR, DEFAULT_BRANCH_PREFIX, REPO_ROOT, RUNS_DIR, WORKERS, ensure_dir, write_json
 from .locks import LockAcquisitionError, acquire_run_lock, acquire_worker_lock
-from .worktree_contract import (
-    FIXED_WORKTREE_MODE,
-    fixed_worker_path,
-    fixed_worktrees_root,
-    is_run_scoped_worktree_segment,
-    resolve_unified_worktree_mode,
-)
+try:  # pragma: no cover - optional module in lightweight distributions
+    from .worktree_contract import (
+        fixed_worktrees_root,
+        is_run_scoped_worktree_segment,
+        resolve_unified_worktree_mode,
+    )
+except Exception:  # pragma: no cover - inline fallback
+    def fixed_worktrees_root() -> Path:
+        return CODEX_DIR / "worktrees"
+
+
+    def is_run_scoped_worktree_segment(value: str) -> bool:
+        candidate = str(value).strip()
+        if not candidate:
+            return True
+        if candidate in {".", ".."}:
+            return True
+        return "/" in candidate or "\\" in candidate
+
+
+    def resolve_unified_worktree_mode() -> dict[str, Any]:
+        return {
+            "worktree_mode": "fixed",
+            "contract_path": "",
+        }
 
 
 def _debug_stack_enabled() -> bool:
@@ -485,13 +503,11 @@ def _write_vscode_session_registry(run_id: str, sessions: list[dict[str, Any]]) 
 
 
 def worktree_root(run_id: str) -> Path:
-    _ = run_id
-    return fixed_worktrees_root()
+    return fixed_worktrees_root() / str(run_id).strip()
 
 
 def worktree_path(run_id: str, worker: str) -> Path:
-    _ = run_id
-    return fixed_worker_path(worker)
+    return worktree_root(run_id) / str(worker).strip()
 
 
 def branch_name(run_id: str, worker: str, branch_prefix: str = DEFAULT_BRANCH_PREFIX) -> str:
