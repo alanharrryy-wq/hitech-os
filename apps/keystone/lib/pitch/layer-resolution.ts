@@ -6,16 +6,37 @@ import {
   type SearchParamsLike
 } from "@hitech/ui-kit";
 
+export type PitchSearchParamsInput = SearchParamsLike | Promise<SearchParamsLike> | undefined;
+
 export interface PitchSearchParamsProps {
-  readonly searchParams?: SearchParamsLike;
+  readonly searchParams?: PitchSearchParamsInput;
+}
+
+export async function resolvePitchSearchParams(
+  searchParams?: PitchSearchParamsInput
+): Promise<SearchParamsLike | undefined> {
+  if (!searchParams) {
+    return undefined;
+  }
+
+  return await Promise.resolve(searchParams);
 }
 
 function resolvePitchDefaultLayers(searchParams?: SearchParamsLike): ResolvedLayerFlags {
   const resolved = resolveLayerFlags(searchParams ?? {});
-  const normalized =
-    resolved.source === "default" ? createResolvedFromProfile("fx", resolved.debug) : resolved;
+  const hasExplicitUrlOverrides =
+    resolved.baseSource !== "default" || resolved.motionSource === "motion";
+  const normalized = hasExplicitUrlOverrides
+    ? resolved
+    : overrideResolvedFlags(createResolvedFromProfile("fx", resolved.debug), {
+        "motion.enabled": true
+      });
 
-  if (normalized.source === "layers" || normalized.profile === "perf") {
+  if (normalized.baseSource === "layers" || normalized.profile === "perf") {
+    return normalized;
+  }
+
+  if (normalized.motionSource === "motion") {
     return normalized;
   }
 

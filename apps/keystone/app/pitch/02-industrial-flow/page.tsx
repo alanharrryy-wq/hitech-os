@@ -1,16 +1,18 @@
 import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "@hitech/contracts";
-import { LayerDebugPanel, LayerFlagsProvider } from "@hitech/ui-kit";
+import { LayerFlagsProvider } from "@hitech/ui-kit";
 import { PitchShell, ScreenIndustrialFlow } from "../../../components/pitch";
+import { PitchLayerDevTools } from "../../../components/pitch/debug/pitch-layer-dev-tools";
 import { buildPitchShellFrameModel } from "../../../components/pitch/view-model/pitch-shell-model";
 import {
+  resolvePitchSearchParams,
   resolvePitchLayerFlags,
   type PitchSearchParamsProps
 } from "../../../lib/pitch/layer-resolution";
 
 export const dynamic = "force-dynamic";
 
-export default function PitchIndustrialFlowPage({ searchParams }: PitchSearchParamsProps) {
-  const resolved = resolvePitchLayerFlags(searchParams);
+export default async function PitchIndustrialFlowPage({ searchParams }: PitchSearchParamsProps) {
+  const resolved = resolvePitchLayerFlags(await resolvePitchSearchParams(searchParams));
   const debugVisible = resolved.debug && process.env.NODE_ENV !== "production";
   const deck = PITCH_DECK_FIXTURE;
   const screen = PITCH_SCREEN_FIXTURES["02-industrial-flow"];
@@ -76,7 +78,7 @@ export default function PitchIndustrialFlowPage({ searchParams }: PitchSearchPar
       <PitchShell model={shellModelInstitutional}>
         <ScreenIndustrialFlow screen={screen} />
       </PitchShell>
-      {debugVisible ? <LayerDebugPanel /> : null}
+      <PitchLayerDevTools visible={debugVisible} />
     </LayerFlagsProvider>
   );
 }

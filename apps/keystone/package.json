@@ -7,9 +7,19 @@
     "dev": "node ./scripts/dev-next.mjs",
     "build": "next build",
     "start": "next start -p 3100",
-    "lint": "eslint \"app/**/*.{ts,tsx}\" \"components/**/*.{ts,tsx}\" \"lib/**/*.{ts,tsx}\" \"providers/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\"",
+    "lint": "eslint \"app/**/*.{ts,tsx}\" \"components/**/*.{ts,tsx}\" \"lib/**/*.{ts,tsx}\" \"providers/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\" \"visual-tests/**/*.{ts,tsx}\" \"playwright.config.ts\" \"scripts/ui-improvement-runner.mjs\" \"scripts/scene-studio-runner.mjs\" \"scripts/scene-studio-report.mjs\" \"scripts/scene-studio-dev.mjs\" \"scripts/scene-proof-gate.mjs\" \"scripts/scene-proof-ci.mjs\"",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "ui:improvement:test": "node ./scripts/ui-improvement-runner.mjs",
+    "ui:improvement:test:update-baseline": "node ./scripts/ui-improvement-runner.mjs --update-baseline",
+    "ui:layers:verify": "node ./scripts/ui-improvement-runner.mjs --server-mode=dev -- visual-tests/layer-system-validation.spec.ts",
+    "keystone:scene:studio": "node ./scripts/scene-studio-dev.mjs",
+    "keystone:scene:visual": "node ./scripts/scene-studio-runner.mjs --full --server-mode=prod",
+    "keystone:scene:visual:smoke": "node ./scripts/scene-studio-runner.mjs --smoke --server-mode=dev",
+    "keystone:scene:visual:update": "node ./scripts/scene-studio-runner.mjs --full --update-baseline --server-mode=dev",
+    "keystone:scene:report": "node ./scripts/scene-studio-report.mjs",
+    "keystone:scene:proof:gate": "node ./scripts/scene-proof-gate.mjs",
+    "keystone:scene:proof:ci": "node ./scripts/scene-proof-ci.mjs"
   },
   "dependencies": {
     "@hitech/contracts": "workspace:*",
@@ -22,11 +32,15 @@
     "zustand": "5.0.2"
   },
   "devDependencies": {
+    "@playwright/test": "1.51.1",
     "@types/node": "22.13.9",
+    "@types/pngjs": "6.0.5",
     "@types/react": "19.0.2",
     "@types/react-dom": "19.0.2",
     "@types/react-test-renderer": "19.0.0",
     "autoprefixer": "10.4.20",
+    "pixelmatch": "7.1.0",
+    "pngjs": "7.0.0",
     "postcss": "8.4.49",
     "react-test-renderer": "19.0.0",
     "tailwindcss": "3.4.17",

@@ -18,6 +18,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const brandStyle = createBrandPresenceRootStyle("neutral", "subtle");
+  const showSceneStudioLink = process.env["NODE_ENV"] !== "production";
 
   return (
     <html lang="en">
@@ -54,6 +55,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <Link href="/pitch" className="keystone-app-nav-link">
                   Pitch
                 </Link>
+                {showSceneStudioLink ? (
+                  <Link href="/dev/scene-studio?debug=1" className="keystone-app-nav-link">
+                    Scene Studio
+                  </Link>
+                ) : null}
               </nav>
             </header>
             <main className="keystone-app-main">{children}</main>

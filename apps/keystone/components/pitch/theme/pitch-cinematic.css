@@ -5795,6 +5795,8 @@
   }
 }
 
+html:not([data-layer-card-blur]) .pitch-shell-root .pitch-glass-card,
+html:not([data-layer-card-blur]) .pitch-shell-root .pitch-collapsible-panel,
 .pitch-shell-root[data-layer-card-blur="off"] .pitch-glass-card,
 .pitch-shell-root[data-layer-card-blur="off"] .pitch-collapsible-panel {
   backdrop-filter: none !important;

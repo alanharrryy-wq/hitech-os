@@ -1,15 +1,17 @@
-import { LayerDebugPanel, LayerFlagsProvider } from "@hitech/ui-kit";
+import { LayerFlagsProvider } from "@hitech/ui-kit";
 import { PitchRouteChooser, PitchShell } from "../../components/pitch";
+import { PitchLayerDevTools } from "../../components/pitch/debug/pitch-layer-dev-tools";
 import { buildPitchShellFrameModel } from "../../components/pitch/view-model/pitch-shell-model";
 import {
+  resolvePitchSearchParams,
   resolvePitchLayerFlags,
   type PitchSearchParamsProps
 } from "../../lib/pitch/layer-resolution";
 
 export const dynamic = "force-dynamic";
 
-export default function PitchIndexPage({ searchParams }: PitchSearchParamsProps) {
-  const resolved = resolvePitchLayerFlags(searchParams);
+export default async function PitchIndexPage({ searchParams }: PitchSearchParamsProps) {
+  const resolved = resolvePitchLayerFlags(await resolvePitchSearchParams(searchParams));
   const debugVisible = resolved.debug && process.env.NODE_ENV !== "production";
   const shellModel = buildPitchShellFrameModel();
 
@@ -27,7 +29,7 @@ export default function PitchIndexPage({ searchParams }: PitchSearchParamsProps)
           </section>
         )}
       </PitchShell>
-      {debugVisible ? <LayerDebugPanel /> : null}
+      <PitchLayerDevTools visible={debugVisible} />
     </LayerFlagsProvider>
   );
 }

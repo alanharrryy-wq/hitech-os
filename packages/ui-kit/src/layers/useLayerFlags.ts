@@ -14,6 +14,7 @@ export interface LayerFlagsActions {
   readonly setLayer: (id: LayerId, on: boolean) => void;
   readonly setAll: (on: boolean) => void;
   readonly setProfile: (profile: LayerProfile) => void;
+  readonly setMotion: (on: boolean) => void;
   readonly resetNeutral: () => void;
 }
 
@@ -35,6 +36,7 @@ export const DEFAULT_LAYER_FLAGS_CONTEXT: LayerFlagsContextValue = {
   setLayer: NOOP,
   setAll: NOOP,
   setProfile: NOOP,
+  setMotion: NOOP,
   resetNeutral: NOOP
 };
 

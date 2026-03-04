@@ -9,76 +9,127 @@ import {
   createAllLayersOff,
   createAllLayersOn,
   mergeLayerFlags,
+  type LayerFlags,
   type LayerId,
   type LayerProfile
 } from "./layerIds.js";
 import {
   createLayerFlagsQueryFromResolved,
+  deriveLayerResolutionSource,
   encodeLayersParam,
+  type LayerBaseSource,
+  type LayerMotionSource,
   type ResolvedLayerFlags
 } from "./resolveLayerFlags.js";
+import { applyLayerFlagsToDom, clearLayerFlagsFromDom } from "./applyLayerFlagsToDom.js";
 import { extractEnabledLayerIds, LayerFlagsContext } from "./useLayerFlags.js";
 
 export interface LayerFlagsProviderProps extends PropsWithChildren {
   readonly initialResolved: ResolvedLayerFlags;
 }
 
-function buildRaw(raw: {
-  layers?: string | undefined;
-  layerProfile?: string | undefined;
-  debug?: string | undefined;
+function getResolvedSignature(resolved: ResolvedLayerFlags): string {
+  const enabled = ALL_LAYERS.filter((id) => resolved.flags[id]).join(",");
+  return [
+    resolved.source,
+    resolved.baseSource,
+    resolved.motionSource,
+    resolved.profile,
+    resolved.debug ? "1" : "0",
+    enabled,
+    resolved.unknownTokens.join(",")
+  ].join("|");
+}
+
+function shouldPersistMotion(input: {
+  readonly flags: LayerFlags;
+  readonly motionSource: LayerMotionSource;
+}): boolean {
+  if (input.motionSource === "motion") {
+    return true;
+  }
+
+  return input.flags["motion.enabled"];
+}
+
+function createRawFromState(input: {
+  readonly flags: LayerFlags;
+  readonly profile: LayerProfile;
+  readonly debug: boolean;
+  readonly baseSource: LayerBaseSource;
+  readonly motionSource: LayerMotionSource;
 }): ResolvedLayerFlags["raw"] {
+  const includeMotion = shouldPersistMotion(input);
+
   return {
-    ...(raw.layers !== undefined ? { layers: raw.layers } : {}),
-    ...(raw.layerProfile !== undefined ? { layerProfile: raw.layerProfile } : {}),
-    ...(raw.debug !== undefined ? { debug: raw.debug } : {})
+    ...(input.baseSource === "layers" ? { layers: encodeLayersParam(input.flags) } : {}),
+    ...(input.baseSource === "profile" ? { layerProfile: input.profile } : {}),
+    ...(includeMotion ? { motion: input.flags["motion.enabled"] ? "on" : "off" } : {}),
+    ...(input.debug ? { debug: "1" } : {})
   };
 }
 
-function getResolvedSignature(resolved: ResolvedLayerFlags): string {
-  const enabled = ALL_LAYERS.filter((id) => resolved.flags[id]).join(",");
-  return `${resolved.source}|${resolved.profile}|${resolved.debug ? "1" : "0"}|${enabled}`;
+function createResolvedState(input: {
+  readonly flags: LayerFlags;
+  readonly profile: LayerProfile;
+  readonly debug: boolean;
+  readonly baseSource: LayerBaseSource;
+  readonly motionSource: LayerMotionSource;
+}): ResolvedLayerFlags {
+  return {
+    flags: input.flags,
+    profile: input.profile,
+    debug: input.debug,
+    source: deriveLayerResolutionSource(input.baseSource, input.motionSource),
+    baseSource: input.baseSource,
+    motionSource: input.motionSource,
+    unknownTokens: [],
+    raw: createRawFromState(input)
+  };
 }
 
 function normalizeFromLayers(
   flags: ResolvedLayerFlags["flags"],
-  debug: boolean
+  debug: boolean,
+  motionSource: LayerMotionSource
 ): ResolvedLayerFlags {
-  return {
+  return createResolvedState({
     flags,
     profile: "neutral",
     debug,
-    source: "layers",
-    raw: buildRaw({
-      layers: encodeLayersParam(flags),
-      debug: debug ? "1" : undefined
-    })
-  };
+    baseSource: "layers",
+    motionSource
+  });
 }
 
-function normalizeFromProfile(profile: LayerProfile, debug: boolean): ResolvedLayerFlags {
-  return {
-    flags: applyLayerPreset(profile),
+function normalizeFromProfile(
+  profile: LayerProfile,
+  debug: boolean,
+  explicitMotion: { enabled: boolean; active: boolean }
+): ResolvedLayerFlags {
+  const profileFlags = applyLayerPreset(profile);
+  const motionSource: LayerMotionSource = explicitMotion.active ? "motion" : "profile";
+  const flags = explicitMotion.active
+    ? mergeLayerFlags(profileFlags, { "motion.enabled": explicitMotion.enabled })
+    : profileFlags;
+
+  return createResolvedState({
+    flags,
     profile,
     debug,
-    source: "profile",
-    raw: buildRaw({
-      layerProfile: profile,
-      debug: debug ? "1" : undefined
-    })
-  };
+    baseSource: "profile",
+    motionSource
+  });
 }
 
 function normalizeDefault(debug: boolean): ResolvedLayerFlags {
-  return {
+  return createResolvedState({
     flags: createAllLayersOff(),
     profile: "neutral",
     debug,
-    source: "default",
-    raw: buildRaw({
-      debug: debug ? "1" : undefined
-    })
-  };
+    baseSource: "default",
+    motionSource: "default"
+  });
 }
 
 export function LayerFlagsProvider({ initialResolved, children }: LayerFlagsProviderProps) {
@@ -91,27 +142,52 @@ export function LayerFlagsProvider({ initialResolved, children }: LayerFlagsProv
 
   const setLayer = useCallback((id: LayerId, on: boolean) => {
     userInitiatedSyncRef.current = true;
+
     setResolved((previous) => {
       const flags = mergeLayerFlags(previous.flags, { [id]: on });
-      return normalizeFromLayers(flags, previous.debug);
+      const motionSource =
+        id === "motion.enabled"
+          ? "motion"
+          : previous.motionSource === "motion"
+            ? "motion"
+            : "layers";
+
+      return normalizeFromLayers(flags, previous.debug, motionSource);
     });
   }, []);
 
   const setAll = useCallback((on: boolean) => {
     userInitiatedSyncRef.current = true;
+
     setResolved((previous) => {
       const flags = on ? createAllLayersOn() : createAllLayersOff();
-      return normalizeFromLayers(flags, previous.debug);
+      return normalizeFromLayers(flags, previous.debug, "layers");
     });
   }, []);
 
   const setProfile = useCallback((profile: LayerProfile) => {
     userInitiatedSyncRef.current = true;
+
     setResolved((previous) => {
-      if (profile === "neutral") {
-        return normalizeFromProfile("neutral", previous.debug);
-      }
-      return normalizeFromProfile(profile, previous.debug);
+      return normalizeFromProfile(profile, previous.debug, {
+        enabled: previous.flags["motion.enabled"],
+        active: previous.motionSource === "motion"
+      });
+    });
+  }, []);
+
+  const setMotion = useCallback((on: boolean) => {
+    userInitiatedSyncRef.current = true;
+
+    setResolved((previous) => {
+      const flags = mergeLayerFlags(previous.flags, { "motion.enabled": on });
+      return createResolvedState({
+        flags,
+        profile: previous.profile,
+        debug: previous.debug,
+        baseSource: previous.baseSource,
+        motionSource: "motion"
+      });
     });
   }, []);
 
@@ -126,6 +202,25 @@ export function LayerFlagsProvider({ initialResolved, children }: LayerFlagsProv
       getResolvedSignature(previous) === incomingSignature ? previous : initialResolved
     );
   }, [initialResolved]);
+
+  useEffect(() => {
+    applyLayerFlagsToDom({
+      flags: resolved.flags,
+      source: resolved.source,
+      profile: resolved.profile
+    });
+
+    if (process.env["NODE_ENV"] !== "production" && resolved.unknownTokens.length > 0) {
+      // Preserve visibility of URL mistakes without breaking rendering.
+      console.warn("[layers] Ignored unknown layer tokens:", resolved.unknownTokens.join(", "));
+    }
+  }, [resolved]);
+
+  useEffect(() => {
+    return () => {
+      clearLayerFlagsFromDom();
+    };
+  }, []);
 
   useEffect(() => {
     if (!userInitiatedSyncRef.current) {
@@ -154,9 +249,10 @@ export function LayerFlagsProvider({ initialResolved, children }: LayerFlagsProv
       setLayer,
       setAll,
       setProfile,
+      setMotion,
       resetNeutral
     }),
-    [resolved, resetNeutral, setAll, setLayer, setProfile]
+    [resolved, resetNeutral, setAll, setLayer, setMotion, setProfile]
   );
 
   return <LayerFlagsContext.Provider value={contextValue}>{children}</LayerFlagsContext.Provider>;

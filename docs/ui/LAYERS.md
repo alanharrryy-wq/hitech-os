@@ -4,6 +4,8 @@ Canonical source for Layer Toggles v1:
 
 - `packages/ui-kit/src/layers/layerIds.ts`
 - `packages/ui-kit/src/layers/resolveLayerFlags.ts`
+- `packages/ui-kit/src/layers/layerFlagsContract.ts`
+- `docs/design/layers/LAYER_FLAGS_SYSTEM.md`
 
 Do not invent new IDs.
 
@@ -38,9 +40,10 @@ Motion:
 
 Precedence:
 
-1. `layers=none|all|list`
+1. defaults
 2. `layerProfile=neutral|fx|perf`
-3. default `neutral` (all OFF)
+3. `layers=none|all|list`
+4. `motion=on|off`
 
 Debug panel visibility:
 
@@ -68,6 +71,10 @@ Debug panel visibility:
 5. Debug panel:
 
 - `?debug=1`
+
+6. Motion override:
+
+- `?motion=on`
 
 ## Additional Useful URLs
 
@@ -102,6 +109,12 @@ Inset root attributes:
 Motion:
 
 - `data-layer-motion-enabled="on|off"`
+
+Global root attributes on `html` (applied by provider):
+
+- `data-layer-<id>` present as `"1"` when enabled, removed when disabled
+- `data-layer-source="defaults|profile|layers|mixed"`
+- `data-layer-profile="<profile|none>"`
 
 ## Blur Budget Rule
 

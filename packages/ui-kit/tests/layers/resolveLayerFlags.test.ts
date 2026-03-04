@@ -5,6 +5,7 @@ import {
   createResolvedFromLayers,
   createResolvedFromProfile,
   encodeLayersParam,
+  parseLayersQueryValue,
   resolveLayerFlags,
   toLayerFlagPairs
 } from "../../src/layers/resolveLayerFlags.js";
@@ -15,6 +16,7 @@ describe("resolveLayerFlags", () => {
     expect(resolved.source).toBe("default");
     expect(resolved.profile).toBe("neutral");
     expect(resolved.debug).toBe(false);
+    expect(resolved.unknownTokens).toEqual([]);
 
     for (const id of ALL_LAYERS) {
       expect(resolved.flags[id]).toBe(false);
@@ -41,9 +43,19 @@ describe("resolveLayerFlags", () => {
     }
   });
 
-  it("applies explicit allowlist from layers=list", () => {
+  it("parses list layers and reports unknown tokens", () => {
+    const parsed = parseLayersQueryValue(
+      "stage.noise,card.innerStroke,card.innerStroke,motion.enabled,unknown.layer"
+    );
+
+    expect(parsed.layerIds).toEqual(["stage.noise", "card.innerStroke"]);
+    expect(parsed.motionAliasOn).toBe(true);
+    expect(parsed.unknownTokens).toEqual(["unknown.layer"]);
+  });
+
+  it("ignores unknown layer tokens while surfacing them", () => {
     const resolved = resolveLayerFlags({
-      layers: "stage.noise,card.innerStroke,card.innerStroke,unknown.layer"
+      layers: "stage.noise,card.innerStroke,unknown.layer"
     });
 
     expect(resolved.source).toBe("layers");
@@ -51,6 +63,7 @@ describe("resolveLayerFlags", () => {
     expect(resolved.flags["card.innerStroke"]).toBe(true);
     expect(resolved.flags["card.blur"]).toBe(false);
     expect(resolved.flags["motion.enabled"]).toBe(false);
+    expect(resolved.unknownTokens).toEqual(["unknown.layer"]);
   });
 
   it("applies layerProfile=neutral", () => {
@@ -104,6 +117,22 @@ describe("resolveLayerFlags", () => {
     expect(resolved.flags["card.innerStroke"]).toBe(false);
   });
 
+  it("supports motion query override and motion.enabled alias", () => {
+    const withAlias = resolveLayerFlags({ layers: "stage.scanlines,motion.enabled" });
+    const withMotionParam = resolveLayerFlags({ layerProfile: "perf", motion: "on" });
+    const motionOffWins = resolveLayerFlags({
+      layers: "stage.scanlines,motion.enabled",
+      motion: "off"
+    });
+
+    expect(withAlias.flags["motion.enabled"]).toBe(true);
+    expect(withAlias.motionSource).toBe("layers");
+    expect(withMotionParam.flags["motion.enabled"]).toBe(true);
+    expect(withMotionParam.motionSource).toBe("motion");
+    expect(withMotionParam.source).toBe("mixed");
+    expect(motionOffWins.flags["motion.enabled"]).toBe(false);
+  });
+
   it("enables debug only for debug=1", () => {
     expect(resolveLayerFlags({ debug: "1" }).debug).toBe(true);
     expect(resolveLayerFlags({ debug: "0" }).debug).toBe(false);
@@ -115,6 +144,7 @@ describe("resolveLayerFlags", () => {
     const resolved = resolveLayerFlags({
       layers: ["card.grain,stage.haze"],
       layerProfile: ["perf"],
+      motion: ["on"],
       debug: ["1"]
     });
 
@@ -123,6 +153,7 @@ describe("resolveLayerFlags", () => {
     expect(resolved.flags["card.grain"]).toBe(true);
     expect(resolved.flags["stage.haze"]).toBe(true);
     expect(resolved.flags["stage.vignette"]).toBe(false);
+    expect(resolved.flags["motion.enabled"]).toBe(true);
   });
 
   it("encodes query params from resolved layers mode", () => {
@@ -135,6 +166,7 @@ describe("resolveLayerFlags", () => {
     expect(next.get("layers")).toBe("stage.noise,card.innerStroke");
     expect(next.get("layerProfile")).toBeNull();
     expect(next.get("debug")).toBe("1");
+    expect(next.get("motion")).toBeNull();
   });
 
   it("encodes query params from resolved profile mode", () => {
@@ -147,6 +179,17 @@ describe("resolveLayerFlags", () => {
     expect(next.get("layers")).toBeNull();
     expect(next.get("layerProfile")).toBe("perf");
     expect(next.get("debug")).toBeNull();
+    expect(next.get("motion")).toBeNull();
+  });
+
+  it("keeps motion in canonical query when enabled", () => {
+    const resolved = resolveLayerFlags({ layerProfile: "fx", motion: "on" });
+    const next = createLayerFlagsQueryFromResolved(
+      resolved,
+      new URLSearchParams("foo=bar&layerProfile=fx")
+    );
+
+    expect(next.toString()).toBe("layerProfile=fx&motion=on&foo=bar");
   });
 
   it("encodes full-on and full-off layers as shortcuts", () => {
