@@ -1,0 +1,3 @@
+# INCIDENT TRIAGE
+
+Procedure.

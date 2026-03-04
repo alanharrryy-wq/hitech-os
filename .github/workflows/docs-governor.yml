@@ -1,0 +1,29 @@
+name: docs-governor
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  docs-governor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run docs governor
+        run: |
+          python tools/docs_governor/docs_governor.py --repo . --report-dir tools/docs_governor/reports
+
+      - name: Upload governance report if failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-governor-report
+          path: tools/docs_governor/reports/*.json
+          if-no-files-found: ignore

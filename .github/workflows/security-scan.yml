@@ -1,0 +1,13 @@
+name: Security Scan
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+
+jobs:
+  codeql:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "TODO: codeql"
