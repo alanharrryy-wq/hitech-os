@@ -100,7 +100,10 @@ exports/
 qa/
 tools/codex/prompt_zips/
 tools/codex/prompts/
-tools/codex/dispatch/
+!tools/codex/
+!tools/codex/dispatch/
+tools/codex/dispatch/*
+!tools/codex/dispatch/execution_rules.json
 tools/codex/verify/
 .husky/_/
 factory/01 Mirror/

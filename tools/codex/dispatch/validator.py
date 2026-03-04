@@ -79,6 +79,29 @@ REWORK_MARKER_END = "### REWORK_INSTRUCTION_END"
 REWORK_DEFAULT_MAX_CYCLES = 3
 REWORK_DEFAULT_LOC_INCREMENT = 5000
 QUEUE_KIND_REWORK = "rework"
+EXECUTION_RULES_PATH = REPO_ROOT / "tools" / "codex" / "dispatch" / "execution_rules.json"
+CONTEXT_REQUIRED_READS: tuple[str, ...] = (
+    "KERNEL_CONTEXT.md",
+    "docs/factory/FACTORY_RUNTIME_EXPLAINED.md",
+    "MODULE_BOUNDARIES.md",
+    "ARCHITECTURE_DECISIONS.md",
+)
+REAL_CODE_EXTENSIONS: tuple[str, ...] = (".ts", ".tsx", ".js", ".mjs", ".py", ".ps1")
+ARTIFACT_EXTENSIONS: tuple[str, ...] = (".json", ".md", ".snapshot", ".lock", ".generated")
+GENERIC_UTILITY_NAMES: tuple[str, ...] = (
+    "utils.ts",
+    "helpers.ts",
+    "common.ts",
+    "shared.ts",
+    "utils.js",
+    "helpers.js",
+    "common.js",
+    "shared.js",
+    "utils.py",
+    "helpers.py",
+    "common.py",
+    "shared.py",
+)
 
 
 def _prompt_contract_header(run_id: str, worker: str) -> str:
@@ -106,6 +129,14 @@ def _prompt_contract_header(run_id: str, worker: str) -> str:
             f"python tools/hos/guardrails/evolutionary_sanctions.py --repo . --run-id {run_id} --worker-id {worker} "
             f"--bundle-dir tools/codex/runs/{run_id}/{worker}"
         ),
+        (
+            "MANDATORY_READS: "
+            "KERNEL_CONTEXT.md,docs/factory/FACTORY_RUNTIME_EXPLAINED.md,"
+            "MODULE_BOUNDARIES.md,ARCHITECTURE_DECISIONS.md"
+        ),
+        "EXECUTION_GOVERNANCE_PATH: tools/codex/dispatch/execution_rules.json",
+        "SELF_CHECK_REQUIRED: ORPHAN_MODULES,UNUSED_EXPORTS,FILES_CREATED,REAL_CODE_LOC,ARTIFACT_LOC",
+        "PRODUCT_IMPACT_REQUIRED_PATHS: apps/,packages/",
         "REWORK_AUTONOMY_REQUIRED: true",
         f"REWORK_REQUEST_PATH: tools/codex/runs/{run_id}/{worker}/REWORK_REQUEST.json",
         f"REWORK_QUEUE_INBOX_PATH: tools/codex/runs/{run_id}/_queue/rework/inbox/",
@@ -511,6 +542,19 @@ def _validate_prompt_file(path: Path, run_id: str, worker: str) -> list[str]:
         errors.append("missing auto-report contract: AUTO_REPORT_REQUIRED: true")
     if "PRE_DONE_EVOLUTIONARY_CHECK_REQUIRED: true" not in text:
         errors.append("missing pre-DONE evolutionary contract: PRE_DONE_EVOLUTIONARY_CHECK_REQUIRED: true")
+    required_reads_line = (
+        "MANDATORY_READS: "
+        "KERNEL_CONTEXT.md,docs/factory/FACTORY_RUNTIME_EXPLAINED.md,"
+        "MODULE_BOUNDARIES.md,ARCHITECTURE_DECISIONS.md"
+    )
+    if required_reads_line not in text:
+        errors.append(f"missing mandatory reads contract: {required_reads_line}")
+    if "EXECUTION_GOVERNANCE_PATH: tools/codex/dispatch/execution_rules.json" not in text:
+        errors.append("missing execution governance contract path")
+    if "SELF_CHECK_REQUIRED: ORPHAN_MODULES,UNUSED_EXPORTS,FILES_CREATED,REAL_CODE_LOC,ARTIFACT_LOC" not in text:
+        errors.append("missing execution self-check contract")
+    if "PRODUCT_IMPACT_REQUIRED_PATHS: apps/,packages/" not in text:
+        errors.append("missing product impact contract: PRODUCT_IMPACT_REQUIRED_PATHS: apps/,packages/")
     if "REWORK_AUTONOMY_REQUIRED: true" not in text:
         errors.append("missing rework autonomy contract: REWORK_AUTONOMY_REQUIRED: true")
     rework_path = f"tools/codex/runs/{run_id}/{worker}/REWORK_REQUEST.json"
@@ -1264,6 +1308,7 @@ def validate_guardrails(run_id: str) -> dict[str, Any]:
     run_root = RUNS_ROOT / run_id
     errors: list[str] = []
     workers_payload: list[dict[str, Any]] = []
+    execution_audit: dict[str, Any] = {}
 
     if not run_root.exists():
         return {
@@ -1303,6 +1348,35 @@ def validate_guardrails(run_id: str) -> dict[str, Any]:
         if missing_bundle:
             errors.append(f"{worker}: missing bundle artifacts: {', '.join(missing_bundle)}")
 
+    execution_audit = run_execution_audit(run_id, workers=list(CODEX_IDS))
+    if str(execution_audit.get("status", BLOCKED)).upper() != PASS:
+        worker_reports = execution_audit.get("workers", []) if isinstance(execution_audit.get("workers", []), list) else []
+        for report in worker_reports:
+            if not isinstance(report, dict):
+                continue
+            if str(report.get("status", BLOCKED)).upper() == PASS:
+                continue
+            worker_name = str(report.get("worker_id", "worker")).strip() or "worker"
+            fail_rows = report.get("failures", []) if isinstance(report.get("failures", []), list) else []
+            if not fail_rows:
+                errors.append(f"{worker_name}: execution governance failed")
+                continue
+            for row in fail_rows:
+                if not isinstance(row, dict):
+                    continue
+                code = str(row.get("code", "UNKNOWN")).strip()
+                detail = str(row.get("detail", "")).strip()
+                path = str(row.get("path", "")).strip()
+                suffix = f" path={path}" if path else ""
+                errors.append(f"{worker_name}: {code}{suffix} {detail}".strip())
+        run_failures = execution_audit.get("run_failures", []) if isinstance(execution_audit.get("run_failures", []), list) else []
+        for row in run_failures:
+            if not isinstance(row, dict):
+                continue
+            code = str(row.get("code", "UNKNOWN")).strip()
+            detail = str(row.get("detail", "")).strip()
+            errors.append(f"run_execution_governance: {code} {detail}".strip())
+
     aggregator_report = run_root / "Z_aggregator" / "FILES" / "FINAL_REPORT.txt"
     if not aggregator_report.exists():
         errors.append(f"missing aggregator report: {aggregator_report.as_posix()}")
@@ -1319,6 +1393,7 @@ def validate_guardrails(run_id: str) -> dict[str, Any]:
         "workers": workers_payload,
         "z_aggregator_report": aggregator_report.as_posix(),
         "root_final_report": ROOT_FINAL_REPORT.as_posix(),
+        "execution_audit": execution_audit,
         "errors": sorted(set(errors)),
     }
 
@@ -1375,6 +1450,7 @@ def _read_rework_policy(path: Path | None = None) -> dict[str, Any]:
         "task_bank_auto_refresh": True,
         "task_bank_min_value_score": 70,
         "file_queue_poll_seconds": 2.0,
+        "execution_rules_path": "tools/codex/dispatch/execution_rules.json",
     }
     policy_path = path or REWORK_POLICY_PATH
     payload = _safe_read_json(policy_path)
@@ -1475,6 +1551,557 @@ def _count_patch_added_loc(path: Path) -> int:
     return int(added)
 
 
+def _parse_patch_stats(path: Path) -> dict[str, dict[str, int]]:
+    if not path.exists() or not path.is_file():
+        return {}
+    try:
+        text = path.read_text(encoding="utf-8", errors="replace")
+    except Exception:
+        return {}
+
+    stats: dict[str, dict[str, int]] = {}
+    current_path: str | None = None
+    diff_re = re.compile(r"^diff --git a/(.+?) b/(.+)$")
+
+    for raw_line in text.splitlines():
+        line = raw_line.rstrip("\n")
+        diff_match = diff_re.match(line)
+        if diff_match:
+            current_path = _safe_rel_path(diff_match.group(2))
+            if current_path:
+                stats.setdefault(current_path, {"added": 0, "removed": 0})
+            continue
+
+        if line.startswith("+++ "):
+            plus_path = line[4:].strip()
+            if plus_path.startswith("b/"):
+                candidate = _safe_rel_path(plus_path[2:])
+            elif plus_path == "/dev/null":
+                candidate = None
+            else:
+                candidate = _safe_rel_path(plus_path)
+            if candidate:
+                current_path = candidate
+                stats.setdefault(current_path, {"added": 0, "removed": 0})
+            continue
+
+        if current_path is None:
+            continue
+
+        if line.startswith("+") and not line.startswith("+++"):
+            stats[current_path]["added"] = int(stats[current_path]["added"]) + 1
+            continue
+        if line.startswith("-") and not line.startswith("---"):
+            stats[current_path]["removed"] = int(stats[current_path]["removed"]) + 1
+
+    return stats
+
+
+def _is_test_path(path: str) -> bool:
+    rel = f"/{str(path).replace('\\', '/').strip('/').lower()}/"
+    return any(
+        token in rel
+        for token in (
+            "/test/",
+            "/tests/",
+            ".test.",
+            ".spec.",
+            "_test.",
+            "_spec.",
+            ".guard.",
+            "/integration/",
+        )
+    )
+
+
+def _path_top_domain(path: str) -> str:
+    normalized = str(path).replace("\\", "/").strip().lstrip("./").strip("/")
+    if not normalized:
+        return ""
+    return normalized.split("/", 1)[0].strip().lower()
+
+
+def _path_matches_domains(path: str, domains: set[str]) -> bool:
+    if not domains:
+        return False
+    top = _path_top_domain(path)
+    if top in domains:
+        return True
+    normalized = f"/{str(path).replace('\\', '/').strip('/').lower()}/"
+    return any(f"/{domain.strip().lower().strip('/')}/" in normalized for domain in domains if str(domain).strip())
+
+
+def _file_line_count(path: Path) -> int:
+    if not path.exists() or not path.is_file():
+        return 0
+    try:
+        return len(path.read_text(encoding="utf-8", errors="replace").splitlines())
+    except Exception:
+        return 0
+
+
+def _git_grep_paths(token: str) -> set[str]:
+    value = str(token).strip()
+    if not value:
+        return set()
+    proc = subprocess.run(
+        [
+            "git",
+            "grep",
+            "-n",
+            "-I",
+            "--fixed-strings",
+            "--",
+            value,
+            "--",
+            "apps",
+            "packages",
+            "tools",
+        ],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=60,
+    )
+    if proc.returncode not in {0, 1}:
+        return set()
+    matches: set[str] = set()
+    for line in (proc.stdout or "").splitlines():
+        path_part = str(line).split(":", 1)[0].strip()
+        rel = _safe_rel_path(path_part)
+        if rel:
+            matches.add(rel)
+    return matches
+
+
+def _read_execution_rules(path: Path | None = None) -> dict[str, Any]:
+    policy_path = path or EXECUTION_RULES_PATH
+    defaults: dict[str, Any] = {
+        "version": "1.0.0",
+        "policy_path": policy_path.as_posix(),
+        "mandatory_reads": list(CONTEXT_REQUIRED_READS),
+        "allowed_top_level_domains": ["apps", "packages", "tools", "docs"],
+        "forbidden_top_level_layers": ["engine", "framework", "runtime", "platform", "orchestrator", "manager", "controller", "pipeline"],
+        "product_impact_required_domains": ["apps", "packages"],
+        "low_product_impact_domains": ["tools", "scripts", "infra"],
+        "max_new_files_per_run": 20,
+        "file_size_recommended_min_loc": 200,
+        "file_size_recommended_max_loc": 800,
+        "file_size_hard_max_loc": 1500,
+        "generic_utility_names": list(GENERIC_UTILITY_NAMES),
+        "real_code_extensions": list(REAL_CODE_EXTENSIONS),
+        "artifact_extensions": list(ARTIFACT_EXTENSIONS),
+        "min_real_code_ratio": 0.40,
+        "max_artifact_ratio": 0.30,
+        "min_test_ratio": 0.10,
+        "max_test_ratio": 0.30,
+        "change_density_min_files": 10,
+        "change_density_max_files": 80,
+        "module_rules": {
+            "min_import_usages": 2,
+            "require_runtime_or_test_path": True,
+            "require_test_reference": True,
+            "strict_orphan_fail": False,
+        },
+    }
+    payload = _safe_read_json(policy_path)
+    if not payload:
+        return defaults
+
+    merged = dict(defaults)
+    for key, value in payload.items():
+        if key == "module_rules" and isinstance(value, dict):
+            nested = dict(defaults["module_rules"])
+            for nested_key, nested_value in value.items():
+                if nested_key in nested:
+                    nested[nested_key] = nested_value
+            merged["module_rules"] = nested
+            continue
+        if key in merged:
+            merged[key] = value
+    merged["policy_path"] = policy_path.as_posix()
+    return merged
+
+
+def _load_worker_declared_changes(worker_root: Path) -> list[dict[str, str]]:
+    payload = _safe_read_json(worker_root / "FILES_CHANGED.json")
+    changes_raw = payload.get("changes", []) if isinstance(payload.get("changes", []), list) else []
+    rows: list[dict[str, str]] = []
+    for item in changes_raw:
+        if not isinstance(item, dict):
+            continue
+        rel = _safe_rel_path(str(item.get("path", "")))
+        if not rel:
+            continue
+        change_type = str(item.get("change_type", "modified")).strip().lower()
+        if change_type not in {"added", "modified", "deleted", "renamed", "copied"}:
+            change_type = "modified"
+        rows.append({"path": rel, "change_type": change_type})
+    return rows
+
+
+def _write_execution_rules_report(
+    *,
+    run_id: str,
+    worker: str,
+    payload: dict[str, Any],
+) -> str:
+    worker_root = RUNS_ROOT / run_id / worker
+    if not worker_root.exists():
+        return ""
+    target = worker_root / "EXECUTION_RULES_REPORT.json"
+    target.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+    return target.as_posix()
+
+
+def _evaluate_worker_execution_rules(
+    *,
+    run_id: str,
+    worker: str,
+    rules: dict[str, Any],
+) -> dict[str, Any]:
+    worker_root = RUNS_ROOT / run_id / worker
+    declared_rows = _load_worker_declared_changes(worker_root)
+    declared_by_path: dict[str, str] = {row["path"]: row["change_type"] for row in declared_rows}
+    patch_stats = _parse_patch_stats(worker_root / "DIFF.patch")
+
+    changed_paths = sorted(set([*declared_by_path.keys(), *patch_stats.keys()]))
+    new_paths = sorted([path for path, change_type in declared_by_path.items() if change_type == "added"])
+    deleted_paths = sorted([path for path, change_type in declared_by_path.items() if change_type == "deleted"])
+
+    allowed_domains = {str(item).strip().lower() for item in (rules.get("allowed_top_level_domains", []) if isinstance(rules.get("allowed_top_level_domains", []), list) else []) if str(item).strip()}
+    forbidden_layers = {str(item).strip().lower() for item in (rules.get("forbidden_top_level_layers", []) if isinstance(rules.get("forbidden_top_level_layers", []), list) else []) if str(item).strip()}
+    product_domains = {str(item).strip().lower() for item in (rules.get("product_impact_required_domains", []) if isinstance(rules.get("product_impact_required_domains", []), list) else []) if str(item).strip()}
+    low_impact_domains = {str(item).strip().lower() for item in (rules.get("low_product_impact_domains", []) if isinstance(rules.get("low_product_impact_domains", []), list) else []) if str(item).strip()}
+    generic_names = {str(item).strip().lower() for item in (rules.get("generic_utility_names", []) if isinstance(rules.get("generic_utility_names", []), list) else []) if str(item).strip()}
+    real_code_exts = {str(item).strip().lower() for item in (rules.get("real_code_extensions", []) if isinstance(rules.get("real_code_extensions", []), list) else []) if str(item).strip()}
+    artifact_exts = {str(item).strip().lower() for item in (rules.get("artifact_extensions", []) if isinstance(rules.get("artifact_extensions", []), list) else []) if str(item).strip()}
+
+    hard_max_loc = max(1, _to_int(rules.get("file_size_hard_max_loc"), 1500))
+    recommended_min_loc = max(1, _to_int(rules.get("file_size_recommended_min_loc"), 200))
+    recommended_max_loc = max(recommended_min_loc, _to_int(rules.get("file_size_recommended_max_loc"), 800))
+    min_real_ratio = max(0.0, min(1.0, _to_float(rules.get("min_real_code_ratio"), 0.4)))
+    max_artifact_ratio = max(0.0, min(1.0, _to_float(rules.get("max_artifact_ratio"), 0.3)))
+    min_test_ratio = max(0.0, min(1.0, _to_float(rules.get("min_test_ratio"), 0.1)))
+    max_test_ratio = max(0.0, min(1.0, _to_float(rules.get("max_test_ratio"), 0.3)))
+    density_min = max(0, _to_int(rules.get("change_density_min_files"), 10))
+    density_max = max(density_min, _to_int(rules.get("change_density_max_files"), 80))
+
+    module_rules = rules.get("module_rules", {}) if isinstance(rules.get("module_rules", {}), dict) else {}
+    min_import_usages = max(1, _to_int(module_rules.get("min_import_usages"), 2))
+    require_runtime_or_test = bool(module_rules.get("require_runtime_or_test_path", True))
+    require_test_reference = bool(module_rules.get("require_test_reference", True))
+    strict_orphan_fail = bool(module_rules.get("strict_orphan_fail", False))
+
+    failures: list[dict[str, str]] = []
+    warnings: list[dict[str, str]] = []
+
+    for rel in new_paths:
+        parts = rel.split("/")
+        top = parts[0].lower() if parts else ""
+        if top and top in forbidden_layers:
+            failures.append({"code": "FORBIDDEN_LAYER", "path": rel, "detail": f"top-level layer '{top}' is forbidden"})
+        if top and allowed_domains and top not in allowed_domains and len(parts) > 1:
+            failures.append({"code": "DISALLOWED_TOP_LEVEL", "path": rel, "detail": f"top-level domain '{top}' is not allowed"})
+        if Path(rel).name.lower() in generic_names:
+            failures.append({"code": "GENERIC_UTILITY_FORBIDDEN", "path": rel, "detail": "generic utility filename is forbidden"})
+
+    real_code_loc = 0
+    artifact_loc = 0
+    test_code_loc = 0
+    file_sizes: list[dict[str, Any]] = []
+    touched_product = False
+    touched_low_impact = False
+
+    for rel in changed_paths:
+        top = _path_top_domain(rel)
+        if top in product_domains:
+            touched_product = True
+        if top in low_impact_domains:
+            touched_low_impact = True
+
+        change_type = str(declared_by_path.get(rel, "modified")).strip().lower()
+        is_new_file = change_type == "added"
+        ext = Path(rel).suffix.lower()
+        stats = patch_stats.get(rel, {})
+        patch_loc = max(0, _to_int(stats.get("added"), 0)) + max(0, _to_int(stats.get("removed"), 0))
+        effective_loc = patch_loc
+        file_loc = 0
+        if ext in real_code_exts:
+            abs_path = REPO_ROOT / rel
+            file_loc = _file_line_count(abs_path)
+            effective_loc = max(patch_loc, file_loc) if is_new_file else patch_loc
+            real_code_loc += patch_loc
+            if _is_test_path(rel):
+                test_code_loc += patch_loc
+        else:
+            artifact_loc += patch_loc
+            if ext and artifact_exts and ext not in artifact_exts:
+                warnings.append(
+                    {
+                        "code": "UNKNOWN_ARTIFACT_EXTENSION",
+                        "path": rel,
+                        "detail": f"extension '{ext}' counted as artifact but not listed in policy artifact_extensions",
+                    }
+                )
+        file_sizes.append(
+            {
+                "path": rel,
+                "change_type": change_type,
+                "loc": int(effective_loc),
+                "patch_loc": int(patch_loc),
+                "file_loc": int(file_loc),
+                "ext": ext,
+            }
+        )
+        if ext in real_code_exts:
+            if is_new_file and effective_loc > hard_max_loc:
+                failures.append(
+                    {
+                        "code": "FILE_SIZE_HARD_LIMIT",
+                        "path": rel,
+                        "detail": f"new_file_loc={effective_loc} exceeds hard_max={hard_max_loc}",
+                    }
+                )
+            elif not is_new_file and patch_loc > hard_max_loc:
+                failures.append(
+                    {
+                        "code": "PATCH_SIZE_HARD_LIMIT",
+                        "path": rel,
+                        "detail": f"patch_loc={patch_loc} exceeds hard_max={hard_max_loc}",
+                    }
+                )
+            if is_new_file and (effective_loc < recommended_min_loc or effective_loc > recommended_max_loc):
+                warnings.append(
+                    {
+                        "code": "FILE_SIZE_RECOMMENDATION",
+                        "path": rel,
+                        "detail": f"new_file_loc={effective_loc} outside recommended_range={recommended_min_loc}-{recommended_max_loc}",
+                    }
+                )
+            elif not is_new_file and patch_loc > recommended_max_loc:
+                warnings.append(
+                    {
+                        "code": "PATCH_SIZE_RECOMMENDATION",
+                        "path": rel,
+                        "detail": f"patch_loc={patch_loc} above recommended_max={recommended_max_loc}",
+                    }
+                )
+
+    total_loc = max(0, int(real_code_loc + artifact_loc))
+    real_ratio = _to_float(real_code_loc / total_loc if total_loc > 0 else 0.0, 0.0)
+    artifact_ratio = _to_float(artifact_loc / total_loc if total_loc > 0 else 0.0, 0.0)
+    test_ratio = _to_float(test_code_loc / real_code_loc if real_code_loc > 0 else 0.0, 0.0)
+
+    if total_loc > 0 and real_ratio < min_real_ratio:
+        failures.append(
+            {
+                "code": "REAL_CODE_RATIO_LOW",
+                "path": "",
+                "detail": f"real_code_ratio={real_ratio:.3f} below min={min_real_ratio:.3f}",
+            }
+        )
+    if total_loc > 0 and artifact_ratio > max_artifact_ratio:
+        failures.append(
+            {
+                "code": "ARTIFACT_RATIO_HIGH",
+                "path": "",
+                "detail": f"artifact_ratio={artifact_ratio:.3f} above max={max_artifact_ratio:.3f}",
+            }
+        )
+    if real_code_loc > 0 and (test_ratio < min_test_ratio or test_ratio > max_test_ratio):
+        warnings.append(
+            {
+                "code": "TEST_RATIO_OUT_OF_RANGE",
+                "path": "",
+                "detail": f"test_ratio={test_ratio:.3f} expected_range={min_test_ratio:.3f}-{max_test_ratio:.3f}",
+            }
+        )
+
+    changed_files_count = len(changed_paths)
+    if changed_files_count > 0 and (changed_files_count < density_min or changed_files_count > density_max):
+        warnings.append(
+            {
+                "code": "CHANGE_DENSITY_OUT_OF_RANGE",
+                "path": "",
+                "detail": f"files_changed={changed_files_count} expected_range={density_min}-{density_max}",
+            }
+        )
+
+    if changed_files_count > 0 and touched_low_impact and not touched_product:
+        warnings.append(
+            {
+                "code": "LOW_PRODUCT_IMPACT_WORKER",
+                "path": "",
+                "detail": "worker changes touched only tools/scripts/infra; run-level enforcement still requires apps/ or packages/",
+            }
+        )
+
+    module_checks: list[dict[str, Any]] = []
+    for rel in new_paths:
+        ext = Path(rel).suffix.lower()
+        if ext not in real_code_exts or _is_test_path(rel) or rel in deleted_paths:
+            continue
+        no_ext = rel[:-len(ext)] if ext and rel.endswith(ext) else rel
+        stem = Path(rel).stem
+        tokens = [no_ext, f"./{stem}", f"../{stem}", f"/{stem}"]
+        matches: set[str] = set()
+        for token in tokens:
+            matches.update(_git_grep_paths(token))
+        if rel in matches:
+            matches.remove(rel)
+        ref_count = len(matches)
+        test_ref_count = len([value for value in matches if _is_test_path(value)])
+        runtime_or_test_ok = ref_count > 0 or test_ref_count > 0
+        module_row = {
+            "path": rel,
+            "reference_count": ref_count,
+            "test_reference_count": test_ref_count,
+            "runtime_or_test_ok": runtime_or_test_ok,
+        }
+        module_checks.append(module_row)
+
+        if ref_count < min_import_usages:
+            issue = {
+                "code": "ORPHAN_MODULE_RISK",
+                "path": rel,
+                "detail": f"reference_count={ref_count} below min_import_usages={min_import_usages}",
+            }
+            if strict_orphan_fail:
+                failures.append(issue)
+            else:
+                warnings.append(issue)
+        if require_runtime_or_test and not runtime_or_test_ok:
+            issue = {
+                "code": "EXECUTION_PATH_MISSING",
+                "path": rel,
+                "detail": "new module has no runtime/test execution path evidence",
+            }
+            if strict_orphan_fail:
+                failures.append(issue)
+            else:
+                warnings.append(issue)
+        if require_test_reference and test_ref_count < 1:
+            issue = {
+                "code": "TEST_REFERENCE_MISSING",
+                "path": rel,
+                "detail": "new module has no test/integration references",
+            }
+            if strict_orphan_fail:
+                failures.append(issue)
+            else:
+                warnings.append(issue)
+
+    payload = {
+        "schema_version": 1,
+        "run_id": run_id,
+        "worker_id": worker,
+        "generated_at_utc": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),
+        "policy_path": str(rules.get("policy_path", EXECUTION_RULES_PATH.as_posix())),
+        "status": PASS if not failures else BLOCKED,
+        "checks": {
+            "context_first_required_reads": list(rules.get("mandatory_reads", [])),
+            "new_files_count": len(new_paths),
+            "changed_files_count": changed_files_count,
+            "real_code_loc": int(real_code_loc),
+            "artifact_loc": int(artifact_loc),
+            "total_loc": int(total_loc),
+            "real_code_ratio": real_ratio,
+            "artifact_ratio": artifact_ratio,
+            "test_loc_ratio": test_ratio,
+            "touched_product_domains": touched_product,
+            "touched_low_impact_domains": touched_low_impact,
+            "module_checks": module_checks,
+        },
+        "paths": {
+            "changed": changed_paths,
+            "new": new_paths,
+            "deleted": deleted_paths,
+        },
+        "limits": {
+            "file_size_hard_max_loc": hard_max_loc,
+            "file_size_recommended_min_loc": recommended_min_loc,
+            "file_size_recommended_max_loc": recommended_max_loc,
+            "min_real_code_ratio": min_real_ratio,
+            "max_artifact_ratio": max_artifact_ratio,
+            "min_test_ratio": min_test_ratio,
+            "max_test_ratio": max_test_ratio,
+            "change_density_min_files": density_min,
+            "change_density_max_files": density_max,
+        },
+        "file_sizes": sorted(file_sizes, key=lambda row: str(row.get("path", ""))),
+        "failures": sorted(failures, key=lambda row: (str(row.get("code", "")), str(row.get("path", "")), str(row.get("detail", "")))),
+        "warnings": sorted(warnings, key=lambda row: (str(row.get("code", "")), str(row.get("path", "")), str(row.get("detail", "")))),
+    }
+    report_path = _write_execution_rules_report(run_id=run_id, worker=worker, payload=payload)
+    payload["report_file"] = report_path
+    return payload
+
+
+def run_execution_audit(
+    run_id: str,
+    *,
+    workers: list[str] | None = None,
+    rules_path: Path | None = None,
+) -> dict[str, Any]:
+    chosen_workers = workers or list(CODEX_IDS)
+    rules = _read_execution_rules(rules_path)
+
+    worker_reports: list[dict[str, Any]] = []
+    all_changed_paths: set[str] = set()
+    total_new_files = 0
+    for worker in chosen_workers:
+        report = _evaluate_worker_execution_rules(run_id=run_id, worker=worker, rules=rules)
+        worker_reports.append(report)
+        paths_payload = report.get("paths", {}) if isinstance(report.get("paths", {}), dict) else {}
+        changed = paths_payload.get("changed", []) if isinstance(paths_payload.get("changed", []), list) else []
+        new_files = paths_payload.get("new", []) if isinstance(paths_payload.get("new", []), list) else []
+        all_changed_paths.update(str(path).replace("\\", "/") for path in changed if str(path).strip())
+        total_new_files += len([item for item in new_files if str(item).strip()])
+
+    run_failures: list[dict[str, str]] = []
+    product_domains = {str(item).strip().lower() for item in (rules.get("product_impact_required_domains", []) if isinstance(rules.get("product_impact_required_domains", []), list) else []) if str(item).strip()}
+    touched_product = any((str(path).split("/", 1)[0].lower() in product_domains) for path in all_changed_paths if "/" in str(path))
+    if all_changed_paths and not touched_product:
+        run_failures.append(
+            {
+                "code": "RUN_LOW_PRODUCT_IMPACT",
+                "detail": "run changes did not touch apps/ or packages/",
+            }
+        )
+
+    max_new_files = max(1, _to_int(rules.get("max_new_files_per_run"), 20))
+    if total_new_files > max_new_files:
+        run_failures.append(
+            {
+                "code": "RUN_MAX_NEW_FILES_EXCEEDED",
+                "detail": f"new_files={total_new_files} exceeds max_new_files_per_run={max_new_files}",
+            }
+        )
+
+    run_root = RUNS_ROOT / run_id
+    summary_path = run_root / "_debug" / "EXECUTION_RULES_SUMMARY.json"
+    summary_path.parent.mkdir(parents=True, exist_ok=True)
+    summary_payload = {
+        "schema_version": 1,
+        "run_id": run_id,
+        "generated_at_utc": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),
+        "policy_path": str(rules.get("policy_path", EXECUTION_RULES_PATH.as_posix())),
+        "status": PASS if not run_failures and all(str(row.get("status", BLOCKED)).upper() == PASS for row in worker_reports) else BLOCKED,
+        "workers": worker_reports,
+        "run_checks": {
+            "touched_product_domains": touched_product,
+            "total_new_files": total_new_files,
+            "max_new_files_per_run": max_new_files,
+        },
+        "run_failures": run_failures,
+    }
+    summary_path.write_text(json.dumps(summary_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+    summary_payload["summary_file"] = summary_path.as_posix()
+    return summary_payload
+
+
 def _run_manifest_base_ref(run_id: str) -> str:
     manifest = _safe_read_json(RUNS_ROOT / run_id / "RUN_MANIFEST.json")
     candidate = str(manifest.get("base_ref", "")).strip()
@@ -1524,6 +2151,19 @@ def _write_rework_state(worker_root: Path, payload: dict[str, Any]) -> None:
     target.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
 
 
+def _task_touches_product_domains(task: dict[str, Any], product_domains: set[str]) -> bool:
+    if not product_domains:
+        return False
+    allowed_paths = task.get("allowed_paths", [])
+    if not isinstance(allowed_paths, list):
+        return False
+    for item in allowed_paths:
+        candidate = str(item).strip()
+        if candidate and _path_matches_domains(candidate, product_domains):
+            return True
+    return False
+
+
 def _select_rework_tasks(
     *,
     worker: str,
@@ -1531,9 +2171,12 @@ def _select_rework_tasks(
     task_bank: list[dict[str, Any]],
     used_task_ids: set[str],
     min_value_score: int,
+    product_domains: set[str] | None = None,
+    require_product_paths: bool = False,
 ) -> tuple[list[dict[str, Any]], int, int]:
     if shortfall_mloc <= 0:
         return [], 0, 0
+    product_domain_set = set(product_domains or set())
     filtered: list[dict[str, Any]] = []
     for task in task_bank:
         if not bool(task.get("active", True)):
@@ -1561,12 +2204,28 @@ def _select_rework_tasks(
             continue
         if not isinstance(acceptance_checks, list) or not [str(item).strip() for item in acceptance_checks if str(item).strip()]:
             continue
-        filtered.append(task)
+        task_row = dict(task)
+        task_row["_touches_product"] = _task_touches_product_domains(task_row, product_domain_set)
+        if require_product_paths and not bool(task_row.get("_touches_product", False)):
+            continue
+        filtered.append(task_row)
+
+    filtered.sort(
+        key=lambda row: (
+            0 if bool(row.get("_touches_product", False)) else 1,
+            -_to_int(row.get("value_score"), 0),
+            -_to_int(row.get("priority"), 0),
+            -_to_int(row.get("estimated_mloc"), 0),
+            str(row.get("id", "")),
+        )
+    )
 
     selected: list[dict[str, Any]] = []
     covered = 0
     for task in filtered:
-        selected.append(task)
+        clean = dict(task)
+        clean.pop("_touches_product", None)
+        selected.append(clean)
         covered += max(0, _to_int(task.get("estimated_mloc"), 0))
         if covered >= shortfall_mloc:
             break
@@ -1829,11 +2488,42 @@ def run_rework_cycle(
         resolved_bank = (REPO_ROOT / bank_rel).resolve(strict=False) if bank_rel else REWORK_TASK_BANK_PATH
     refresh_payload = _refresh_task_bank(run_id=run_id, policy=policy, task_bank_path=resolved_bank)
     task_bank = _read_task_bank(resolved_bank)
+    rules_rel = str(policy.get("execution_rules_path", "tools/codex/dispatch/execution_rules.json")).strip()
+    rules_path = (REPO_ROOT / rules_rel).resolve(strict=False) if rules_rel else EXECUTION_RULES_PATH
+    execution_rules = _read_execution_rules(rules_path)
+    product_domains = {
+        str(item).strip().lower()
+        for item in (
+            execution_rules.get("product_impact_required_domains", [])
+            if isinstance(execution_rules.get("product_impact_required_domains", []), list)
+            else []
+        )
+        if str(item).strip()
+    }
+    execution_preflight = run_execution_audit(run_id, workers=workers, rules_path=rules_path)
+    preflight_workers = execution_preflight.get("workers", []) if isinstance(execution_preflight.get("workers", []), list) else []
+    preflight_by_worker: dict[str, dict[str, Any]] = {}
+    for row in preflight_workers:
+        if not isinstance(row, dict):
+            continue
+        worker_id = str(row.get("worker_id", "")).strip()
+        if worker_id:
+            preflight_by_worker[worker_id] = row
+    execution_run_failures = (
+        execution_preflight.get("run_failures", [])
+        if isinstance(execution_preflight.get("run_failures", []), list)
+        else []
+    )
+    run_low_product_impact = any(
+        isinstance(row, dict) and str(row.get("code", "")).strip().upper() == "RUN_LOW_PRODUCT_IMPACT"
+        for row in execution_run_failures
+    )
 
     assignments = _load_rework_assignments(run_id)
     decisions: list[dict[str, Any]] = []
     rework_workers: list[str] = []
     blocked_workers: list[str] = []
+    product_rework_assigned = False
 
     for worker in workers:
         worker_root = RUNS_ROOT / run_id / worker
@@ -1857,9 +2547,16 @@ def run_rework_cycle(
         artifacts_ok = _artifacts_present(worker_root)
         loc_ok = effective_loc >= target_mloc
         sanction_ok = sanction_level == required_level
+        execution_report = preflight_by_worker.get(worker)
+        if not isinstance(execution_report, dict):
+            execution_report = _evaluate_worker_execution_rules(run_id=run_id, worker=worker, rules=execution_rules)
+        require_product_paths = run_low_product_impact and worker != "Z_aggregator" and not product_rework_assigned
+        execution_ok = str(execution_report.get("status", BLOCKED)).upper() == PASS
+        if require_product_paths and execution_ok:
+            execution_ok = False
         shortfall_mloc = max(0, target_mloc - effective_loc)
 
-        if artifacts_ok and loc_ok and sanction_ok:
+        if artifacts_ok and loc_ok and sanction_ok and execution_ok:
             state_payload = {
                 "schema_version": 1,
                 "run_id": run_id,
@@ -1871,6 +2568,8 @@ def run_rework_cycle(
                 "shortfall_mloc": shortfall_mloc,
                 "sanction_level": sanction_level,
                 "sanction_score": sanction_score,
+                "execution_rules_status": str(execution_report.get("status", PASS)),
+                "execution_report_file": str(execution_report.get("report_file", "")),
                 "updated_at_utc": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),
             }
             _write_rework_state(worker_root, state_payload)
@@ -1890,6 +2589,8 @@ def run_rework_cycle(
                     "sanction_level": sanction_level,
                     "sanction_score": sanction_score,
                     "metrics_source": metrics.get("source", "score"),
+                    "execution_rules_status": str(execution_report.get("status", PASS)),
+                    "execution_report_file": str(execution_report.get("report_file", "")),
                     "rework_state_file": (worker_root / "REWORK_STATE.json").as_posix(),
                 }
             )
@@ -1902,15 +2603,46 @@ def run_rework_cycle(
             reasons.append(f"effective_mloc={effective_loc} below target_mloc={target_mloc}")
         if not sanction_ok:
             reasons.append(f"sanction_level={sanction_level} expected={required_level}")
+        if not execution_ok:
+            fail_rows = execution_report.get("failures", []) if isinstance(execution_report.get("failures", []), list) else []
+            if fail_rows:
+                for row in fail_rows:
+                    if not isinstance(row, dict):
+                        continue
+                    code = str(row.get("code", "EXECUTION_RULE_FAIL")).strip() or "EXECUTION_RULE_FAIL"
+                    detail = str(row.get("detail", "")).strip()
+                    path = str(row.get("path", "")).strip()
+                    suffix = f" path={path}" if path else ""
+                    reasons.append(f"{code}{suffix} {detail}".strip())
+            elif not require_product_paths:
+                reasons.append("execution governance checks failed")
+        if require_product_paths:
+            reasons.append("RUN_LOW_PRODUCT_IMPACT requires rework touching apps/ or packages/")
 
         used = set(assignments.get(worker, []))
+        selection_shortfall = shortfall_mloc if shortfall_mloc > 0 else (1 if require_product_paths else 0)
         selected_tasks, covered_mloc, remaining_mloc = _select_rework_tasks(
             worker=worker,
-            shortfall_mloc=shortfall_mloc,
+            shortfall_mloc=selection_shortfall,
             task_bank=task_bank,
             used_task_ids=used,
             min_value_score=min_value_score,
+            product_domains=product_domains,
+            require_product_paths=require_product_paths,
         )
+        if require_product_paths and not selected_tasks:
+            reasons.append("TASK_BANK_PRODUCT_IMPACT_GAP: no eligible tasks with allowed_paths in apps/ or packages/")
+            selected_tasks, covered_mloc, remaining_mloc = _select_rework_tasks(
+                worker=worker,
+                shortfall_mloc=selection_shortfall,
+                task_bank=task_bank,
+                used_task_ids=used,
+                min_value_score=min_value_score,
+                product_domains=product_domains,
+                require_product_paths=False,
+            )
+        if require_product_paths and any(_task_touches_product_domains(task, product_domains) for task in selected_tasks):
+            product_rework_assigned = True
         for task in selected_tasks:
             used.add(str(task.get("id", "")).strip())
         assignments[worker] = sorted(item for item in used if item)
@@ -1932,6 +2664,10 @@ def run_rework_cycle(
             "fallback_tasks": selected_tasks,
             "fallback_coverage_mloc": covered_mloc,
             "fallback_remaining_mloc": remaining_mloc,
+            "execution_rules_status": str(execution_report.get("status", BLOCKED)),
+            "execution_report_file": str(execution_report.get("report_file", "")),
+            "execution_failures": execution_report.get("failures", []),
+            "execution_warnings": execution_report.get("warnings", []),
             "generated_at_utc": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),
         }
         queue_entry = _enqueue_rework_request(
@@ -1962,6 +2698,8 @@ def run_rework_cycle(
                 "shortfall_mloc": shortfall_mloc,
                 "sanction_level": sanction_level,
                 "sanction_score": sanction_score,
+                "execution_rules_status": str(execution_report.get("status", BLOCKED)),
+                "execution_report_file": str(execution_report.get("report_file", "")),
                 "request_file": request_path.as_posix(),
                 "queue_message_id": queue_entry.get("message_id", ""),
                 "queue_request_file": queue_entry.get("request_file", ""),
@@ -2004,6 +2742,8 @@ def run_rework_cycle(
                     "request_file": request_path.as_posix(),
                     "reasons": reasons + ["max rework cycles reached"],
                     "fallback_tasks_assigned": [str(task.get("id", "")).strip() for task in selected_tasks],
+                    "execution_rules_status": str(execution_report.get("status", BLOCKED)),
+                    "execution_report_file": str(execution_report.get("report_file", "")),
                     "queue_message_id": queue_entry.get("message_id", ""),
                     "queue_request_file": queue_entry.get("request_file", ""),
                 }
@@ -2038,6 +2778,8 @@ def run_rework_cycle(
                     "shortfall_mloc": shortfall_mloc,
                     "sanction_level": sanction_level,
                     "sanction_score": sanction_score,
+                    "execution_rules_status": str(execution_report.get("status", BLOCKED)),
+                    "execution_report_file": str(execution_report.get("report_file", "")),
                     "request_file": request_path.as_posix(),
                     "cleanup_errors": list(cleanup.get("errors", [])),
                     "updated_at_utc": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),
@@ -2058,6 +2800,8 @@ def run_rework_cycle(
                     "prompt_update": prompt_update,
                     "reasons": reasons + ["cleanup failed"],
                     "fallback_tasks_assigned": [str(task.get("id", "")).strip() for task in selected_tasks],
+                    "execution_rules_status": str(execution_report.get("status", BLOCKED)),
+                    "execution_report_file": str(execution_report.get("report_file", "")),
                     "queue_message_id": queue_entry.get("message_id", ""),
                     "queue_request_file": queue_entry.get("request_file", ""),
                 }
@@ -2080,6 +2824,8 @@ def run_rework_cycle(
                 "fallback_tasks_assigned": [str(task.get("id", "")).strip() for task in selected_tasks],
                 "fallback_remaining_mloc": remaining_mloc,
                 "rework_state_file": (worker_root / "REWORK_STATE.json").as_posix(),
+                "execution_rules_status": str(execution_report.get("status", BLOCKED)),
+                "execution_report_file": str(execution_report.get("report_file", "")),
                 "queue_message_id": queue_entry.get("message_id", ""),
                 "queue_request_file": queue_entry.get("request_file", ""),
                 "queue_outbox_pattern": queue_entry.get("outbox_pattern", ""),
@@ -2097,6 +2843,9 @@ def run_rework_cycle(
         "required_sanction_level": required_level,
         "task_bank_path": resolved_bank.as_posix(),
         "task_bank_refresh": refresh_payload,
+        "execution_preflight_status": str(execution_preflight.get("status", PASS)),
+        "execution_preflight_summary": str(execution_preflight.get("summary_file", "")),
+        "execution_run_failures": execution_run_failures,
         "workers": decisions,
         "rework_workers": sorted(set(rework_workers)),
         "rework_workers_csv": ",".join(sorted(set(rework_workers))),
@@ -2197,6 +2946,22 @@ def _cmd_queue_ack(args: argparse.Namespace) -> int:
 
 def _cmd_validate_guardrails(args: argparse.Namespace) -> int:
     payload = validate_guardrails(args.run_id)
+    _emit(payload)
+    return _status_code(payload["status"])
+
+
+def _cmd_execution_audit(args: argparse.Namespace) -> int:
+    try:
+        chosen_workers = _parse_workers_subset(args.workers)
+    except ValueError as exc:
+        payload = {
+            "status": BLOCKED,
+            "run_id": args.run_id,
+            "error": str(exc),
+        }
+        _emit(payload)
+        return _status_code(payload["status"])
+    payload = run_execution_audit(args.run_id, workers=chosen_workers)
     _emit(payload)
     return _status_code(payload["status"])
 
@@ -2384,6 +3149,11 @@ def build_parser() -> argparse.ArgumentParser:
     guardrails_cmd = sub.add_parser("validate-guardrails", help="Validate worker docs/bundles and publish root FINAL_REPORT.md")
     guardrails_cmd.add_argument("--run-id", required=True)
     guardrails_cmd.set_defaults(func=_cmd_validate_guardrails)
+
+    execution_audit_cmd = sub.add_parser("execution-audit", help="Run anti-hallucination and metrics governance checks")
+    execution_audit_cmd.add_argument("--run-id", required=True)
+    execution_audit_cmd.add_argument("--workers", help="Comma-separated worker IDs subset")
+    execution_audit_cmd.set_defaults(func=_cmd_execution_audit)
 
     rework_cmd = sub.add_parser("rework-cycle", help="Evaluate worker output and auto-prepare rework requests")
     rework_cmd.add_argument("--run-id", required=True)

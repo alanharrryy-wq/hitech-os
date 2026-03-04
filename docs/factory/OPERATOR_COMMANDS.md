@@ -13,6 +13,7 @@
 - `python tools/codex/factory/memory_layer.py init`
 - `python tools/codex/factory/memory_layer.py record-run --run-id <RUN_ID>`
 - `python tools/codex/dispatch/task_bank_refresh.py --repo . --task-bank tools/codex/dispatch/rework_task_bank.json --sources tools/codex/dispatch/task_bank_sources.json --state tools/codex/dispatch/task_bank_state.json --report tools/codex/dispatch/reports/task_bank_health.json --apply --run-id <RUN_ID>`
+- `python tools/codex/dispatch/validator.py execution-audit --run-id <RUN_ID> --workers A_core,B_tooling,C_features,D_validation,Z_aggregator`
 - `python tools/codex/dispatch/validator.py queue-wait-outbox --run-id <RUN_ID> --workers A_core --cycle 1 --timeout-seconds 300`
 - `python tools/codex/dispatch/validator.py queue-ack --run-id <RUN_ID> --worker A_core --cycle 1 --message-id <MESSAGE_ID> --status PASS`
 - `pwsh -NoProfile -ExecutionPolicy Bypass -File tools/scripts/Invoke-HitechRunsDoctor.ps1`

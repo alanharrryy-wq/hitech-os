@@ -26,6 +26,8 @@
         "B_tooling"
       ],
       "allowed_paths": [
+        "apps/**",
+        "packages/**",
         "tools/codex/dispatch/**",
         "tools/codex/factory/**",
         "docs/factory/**"
@@ -59,6 +61,8 @@
         "D_validation"
       ],
       "allowed_paths": [
+        "apps/**",
+        "packages/**",
         "tools/**",
         ".github/workflows/**",
         "docs/security/**"
@@ -89,6 +93,8 @@
           "D_validation"
         ],
         "allowed_paths": [
+          "apps/**",
+          "packages/**",
           "tools/codex/**",
           "docs/factory/**"
         ],
@@ -109,6 +115,8 @@
           "D_validation"
         ],
         "allowed_paths": [
+          "apps/**",
+          "packages/**",
           "tools/**",
           "docs/security/**"
         ],
@@ -130,7 +138,8 @@
         ],
         "allowed_paths": [
           "tools/codex/factory/**",
-          "apps/**/tests/**"
+          "apps/**/tests/**",
+          "packages/**/tests/**"
         ],
         "acceptance_checks": [
           "python -m tools.codex.factory self-test"
@@ -150,7 +159,8 @@
         ],
         "allowed_paths": [
           "tools/**",
-          "apps/**"
+          "apps/**",
+          "packages/**"
         ],
         "acceptance_checks": [
           "python -m tools.codex.factory doctor"
@@ -169,6 +179,8 @@
           "B_tooling"
         ],
         "allowed_paths": [
+          "apps/**",
+          "packages/**",
           "tools/**",
           "docs/factory/**"
         ],

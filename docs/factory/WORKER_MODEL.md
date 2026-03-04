@@ -39,3 +39,20 @@ Reworks use file-queue (not UI automation):
 - Outbox: `tools/codex/runs/<RUN_ID>/_queue/rework/outbox/`
 
 Workers must ACK rework completion by writing an outbox done payload before final `DONE.marker` validation.
+
+## Mandatory Worker Reads
+
+Every worker prompt must require reading:
+
+- `KERNEL_CONTEXT.md`
+- `docs/factory/FACTORY_RUNTIME_EXPLAINED.md`
+- `MODULE_BOUNDARIES.md`
+- `ARCHITECTURE_DECISIONS.md`
+
+Workers must run self-checks before completion for:
+
+- `ORPHAN_MODULES`
+- `UNUSED_EXPORTS`
+- `FILES_CREATED`
+- `REAL_CODE_LOC`
+- `ARTIFACT_LOC`

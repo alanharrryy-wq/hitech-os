@@ -122,6 +122,9 @@ Exit codes:
 - Worker prompt must include:
   - `SESSION_POLICY: CLEAN_START_REQUIRED`
   - `AUTO_REPORT_REQUIRED: true`
+  - `MANDATORY_READS: KERNEL_CONTEXT.md,docs/factory/FACTORY_RUNTIME_EXPLAINED.md,MODULE_BOUNDARIES.md,ARCHITECTURE_DECISIONS.md`
+  - `EXECUTION_GOVERNANCE_PATH: tools/codex/dispatch/execution_rules.json`
+  - `SELF_CHECK_REQUIRED: ORPHAN_MODULES,UNUSED_EXPORTS,FILES_CREATED,REAL_CODE_LOC,ARTIFACT_LOC`
 - If prior chat context exists, worker must ignore stale context and continue with current run scope.
 
 ## Visual Baseline Ownership Contract
@@ -152,6 +155,37 @@ Rules:
 2. Worker acknowledges completion by writing `*.done.json` into outbox.
 3. Dispatcher waits on outbox ack before `DONE.marker` validation for rework cycles.
 4. Queue message IDs must be deterministic and idempotent for repeated cycles.
+
+## Anti-Hallucination + Metrics Governance Contract
+
+Machine policy:
+
+- `tools/codex/dispatch/execution_rules.json`
+
+Enforcement command:
+
+- `python tools/codex/dispatch/validator.py execution-audit --run-id <RUN_ID> --workers A_core,B_tooling,C_features,D_validation,Z_aggregator`
+
+Required artifacts:
+
+- Per worker: `tools/codex/runs/<RUN_ID>/<WORKER>/EXECUTION_RULES_REPORT.json`
+- Run summary: `tools/codex/runs/<RUN_ID>/_debug/EXECUTION_RULES_SUMMARY.json`
+
+Hard checks include:
+
+- disallowed top-level architecture additions
+- forbidden generic utility files
+- low product-impact change sets
+- real-code/artifact LOC ratio thresholds
+- hard file size cap
+- max new files per run
+
+Warnings include:
+
+- recommended file-size band
+- test LOC ratio guidance
+- change density guidance
+- orphan-module risk when strict mode is disabled
 
 ## Ledger Contract
 

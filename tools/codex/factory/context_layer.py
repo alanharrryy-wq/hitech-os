@@ -16,9 +16,14 @@ PROMPTS_ROOT = CODEX_DIR / "prompts"
 DEFAULT_WORKERS = ("A_core", "B_tooling", "C_features", "D_validation", "Z_aggregator")
 
 CONTRACT_SOURCES = (
+    "KERNEL_CONTEXT.md",
+    "MODULE_BOUNDARIES.md",
+    "ARCHITECTURE_DECISIONS.md",
     "docs/factory/CONTRACT.md",
     "docs/factory/FACTORY_RUNTIME_EXPLAINED.md",
+    "docs/factory/ANTI_HALLUCINATION_METRICS_GOVERNANCE.md",
     "docs/factory/MEANINGFUL_EXECUTION_GATE.md",
+    "tools/codex/dispatch/execution_rules.json",
     "docs/GOVERNANCE_DOCS.md",
 )
 
@@ -142,9 +147,14 @@ def _target_files(manifest: dict[str, Any]) -> str:
 
 def _shared_references(run_id: str) -> str:
     refs = [
+        ("KERNEL_CONTEXT.md", "Kernel context and mandatory execution scope"),
+        ("MODULE_BOUNDARIES.md", "Module isolation boundaries"),
+        ("ARCHITECTURE_DECISIONS.md", "Architecture decision authority"),
         ("docs/factory/CONTRACT.md", "Factory runtime contract"),
         ("docs/factory/FACTORY_RUNTIME_EXPLAINED.md", "Execution model and stage semantics"),
+        ("docs/factory/ANTI_HALLUCINATION_METRICS_GOVERNANCE.md", "Anti-padding and anti-hallucination rules"),
         ("docs/factory/MEANINGFUL_EXECUTION_GATE.md", "Meaningful change enforcement"),
+        ("tools/codex/dispatch/execution_rules.json", "Anti-hallucination and LOC governance thresholds"),
         ("docs/GOVERNANCE_DOCS.md", "Documentation governance policy"),
         (f"tools/codex/runs/{run_id}/RUN_MANIFEST.json", "Run manifest and dispatch runtime metadata"),
     ]
@@ -260,6 +270,18 @@ def main() -> int:
     else:
         _write_text(context_dir / "FACTORY_RUNTIME_EXPLAINED.md", "# FACTORY_RUNTIME_EXPLAINED\n\nmissing source document.\n")
 
+    boundaries_src = REPO_ROOT / "MODULE_BOUNDARIES.md"
+    if boundaries_src.exists():
+        _write_text(context_dir / "MODULE_BOUNDARIES.md", _read_text(boundaries_src))
+    else:
+        _write_text(context_dir / "MODULE_BOUNDARIES.md", "# MODULE_BOUNDARIES\n\nmissing source document.\n")
+
+    decisions_src = REPO_ROOT / "ARCHITECTURE_DECISIONS.md"
+    if decisions_src.exists():
+        _write_text(context_dir / "ARCHITECTURE_DECISIONS.md", _read_text(decisions_src))
+    else:
+        _write_text(context_dir / "ARCHITECTURE_DECISIONS.md", "# ARCHITECTURE_DECISIONS\n\nmissing source document.\n")
+
     for worker in workers:
         _write_text(worker_inputs_dir / f"{worker}.md", _worker_input_text(run_id, worker))
 
@@ -323,6 +345,8 @@ def main() -> int:
             "contract_summary": (context_dir / "CONTRACT_SUMMARY.md").as_posix(),
             "kernel_context": (context_dir / "KERNEL_CONTEXT.md").as_posix(),
             "factory_runtime": (context_dir / "FACTORY_RUNTIME_EXPLAINED.md").as_posix(),
+            "module_boundaries": (context_dir / "MODULE_BOUNDARIES.md").as_posix(),
+            "architecture_decisions": (context_dir / "ARCHITECTURE_DECISIONS.md").as_posix(),
             "worker_inputs_dir": worker_inputs_dir.as_posix(),
             "shared_references": (context_dir / "SHARED_REFERENCES.md").as_posix(),
             "open_questions": (context_dir / "OPEN_QUESTIONS.md").as_posix(),

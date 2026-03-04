@@ -20,6 +20,7 @@
 - `CONTEXT_LAYER.md` - frozen `_context/` package contract for each run
 - `MEMORY_LAYER.md` - persistent memory files and update rules
 - `WORKER_MODEL.md` - canonical worker mapping and file-queue rework model
+- `ANTI_HALLUCINATION_METRICS_GOVERNANCE.md` - anti-padding and architecture-hallucination execution rules
 - `TROUBLESHOOTING.md` - failure handling
 - `ADD_WORKERS.md` - scaling beyond 4 workers
 - `ADD_CONTRACTS.md` - extending contract surfaces safely

@@ -1227,6 +1227,7 @@ function Build-DispatchReport {
     $reportLines.Add("- rework_queue_outbox: tools/codex/runs/$RunId/_queue/rework/outbox") | Out-Null
     $reportLines.Add("- rework_transport: file_queue") | Out-Null
     $reportLines.Add("- task_bank_health_report: tools/codex/dispatch/reports/task_bank_health.json") | Out-Null
+    $reportLines.Add("- execution_rules_summary: tools/codex/runs/$RunId/_debug/EXECUTION_RULES_SUMMARY.json") | Out-Null
     $reportLines.Add("- memory_dir: tools/codex/memory") | Out-Null
     $reportLines.Add("- ahk_runtime: tools/codex/prompts/$RunId/logs/DISPATCH_RUNTIME.ahk") | Out-Null
     $reportLines.Add("- ahk_log: tools/codex/runs/$RunId/_debug/AHK_DISPATCH.log") | Out-Null
@@ -1501,6 +1502,15 @@ try {
             ) | Out-Null
         }
     }
+
+    Invoke-ExternalStep -Stage "factory_execution_audit" -Executable "python" -Arguments @(
+        "tools/codex/dispatch/validator.py",
+        "execution-audit",
+        "--run-id",
+        $RunId,
+        "--workers",
+        $WorkersCsv
+    ) | Out-Null
 
     Invoke-ExternalStep -Stage "factory_auto_closeout" -Executable "python" -Arguments @("-m", "tools.codex.factory", "auto-closeout", "--run-id", $RunId, "--workers", $WorkersCsv) | Out-Null
 
