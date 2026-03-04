@@ -5,8 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "next dev -p 3100",
+    "keystone:scene:studio": "next dev -p 3100",
     "build": "next build",
     "start": "next start -p 3100",
+    "cf:build": "opennextjs-cloudflare build",
+    "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview --env preview",
+    "cf:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy --env production",
     "lint": "eslint \"app/**/*.{ts,tsx}\" \"components/**/*.{ts,tsx}\" \"lib/**/*.{ts,tsx}\" \"providers/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
@@ -24,6 +28,7 @@
   },
   "devDependencies": {
     "@playwright/test": "1.51.1",
+    "@opennextjs/cloudflare": "1.17.1",
     "@types/node": "22.13.9",
     "@types/react": "19.0.2",
     "@types/react-dom": "19.0.2",
@@ -31,7 +36,8 @@
     "postcss": "8.4.49",
     "tailwindcss": "3.4.17",
     "typescript": "5.8.2",
-    "vitest": "2.1.8"
+    "vitest": "2.1.8",
+    "wrangler": "4.70.0"
   },
   "engines": {
     "node": ">=20.0.0 <26.0.0",

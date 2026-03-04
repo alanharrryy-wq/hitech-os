@@ -1,0 +1,43 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "hitech-keystone",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-03-04",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "binding": "ASSETS",
+    "directory": ".open-next/assets"
+  },
+  "vars": {
+    "NODE_ENV": "production",
+    "APP_ENV": "base"
+  },
+  "env": {
+    "preview": {
+      "name": "hitech-keystone-preview",
+      "workers_dev": true,
+      "vars": {
+        "NODE_ENV": "production",
+        "APP_ENV": "preview"
+      }
+    },
+    "production": {
+      "name": "hitech-keystone-prod",
+      "workers_dev": true,
+      "vars": {
+        "NODE_ENV": "production",
+        "APP_ENV": "production"
+      }
+      // Replace with your real domain when ready.
+      // "routes": [
+      //   {
+      //     "pattern": "keystone.example.com",
+      //     "custom_domain": true
+      //   }
+      // ]
+    }
+  }
+}
