@@ -28,10 +28,12 @@ $snippetLines = @(
     'if [ -z "$repo_root" ]; then'
     '  repo_root="$(pwd)"'
     'fi'
+    'report_dir="$repo_root/.git/docs-governor-reports"'
+    'mkdir -p "$report_dir"'
     'if command -v python >/dev/null 2>&1; then'
-    '  python "$repo_root/tools/docs_governor/docs_governor.py" --repo "$repo_root" || exit 1'
+    '  python "$repo_root/tools/docs_governor/docs_governor.py" --repo "$repo_root" --report-dir "$report_dir" || exit 1'
     'elif command -v py >/dev/null 2>&1; then'
-    '  py -3 "$repo_root/tools/docs_governor/docs_governor.py" --repo "$repo_root" || exit 1'
+    '  py -3 "$repo_root/tools/docs_governor/docs_governor.py" --repo "$repo_root" --report-dir "$report_dir" || exit 1'
     'else'
     '  echo "docs-governor: python runtime not found"'
     '  exit 1'
@@ -39,19 +41,44 @@ $snippetLines = @(
     $markerEnd
 )
 $snippet = ($snippetLines -join "`n")
+$utf8NoBom = [System.Text.UTF8Encoding]::new($false)
 
-if (-not (Test-Path -Path $hookFile -PathType Leaf)) {
-    Set-Content -Path $hookFile -Value "#!/bin/sh`n" -Encoding UTF8
+function Convert-ToLf {
+    param([string]$Text)
+    if ($null -eq $Text) {
+        return ""
+    }
+    $normalized = $Text.Replace("`r`n", "`n").Replace("`r", "`n")
+    # Remove UTF-8 BOM if present in decoded content.
+    return $normalized.TrimStart([char]0xFEFF)
 }
 
-$existing = Get-Content -Path $hookFile -Raw
-if ($existing -like "*$markerStart*") {
-    Write-Output "Marker section already installed in $hookFile"
-    exit 0
+$existing = if (Test-Path -Path $hookFile -PathType Leaf) {
+    [System.IO.File]::ReadAllText($hookFile)
+}
+else {
+    "#!/bin/sh`n"
+}
+$existing = Convert-ToLf -Text $existing
+
+$pattern = "(?s)" + [regex]::Escape($markerStart) + ".*?" + [regex]::Escape($markerEnd)
+if ([regex]::IsMatch($existing, $pattern)) {
+    $updated = [regex]::Replace($existing, $pattern, $snippet, 1)
+    $action = "Updated marker section"
+}
+else {
+    $updated = $existing
+    if (-not [string]::IsNullOrEmpty($updated) -and -not $updated.EndsWith("`n")) {
+        $updated += "`n"
+    }
+    $updated += $snippet
+    $action = "Installed marker section"
 }
 
-if (-not $existing.EndsWith("`n")) {
-    Add-Content -Path $hookFile -Value "`n" -Encoding UTF8
+$updated = Convert-ToLf -Text $updated
+if (-not $updated.EndsWith("`n")) {
+    $updated += "`n"
 }
-Add-Content -Path $hookFile -Value $snippet -Encoding UTF8
-Write-Output "Installed docs governor pre-commit hook at $hookFile"
+
+[System.IO.File]::WriteAllText($hookFile, $updated, $utf8NoBom)
+Write-Output "$action in $hookFile (UTF-8 no BOM, LF)"
