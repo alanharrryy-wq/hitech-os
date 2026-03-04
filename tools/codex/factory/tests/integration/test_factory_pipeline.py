@@ -160,6 +160,36 @@ class FactoryPipelineIntegrationTests(unittest.TestCase):
             self.assertFalse((run_dir / "RUN_MANIFEST.json").exists())
             self.assertFalse((run_dir / "Z_integrator" / "FINAL_REPORT.txt").exists())
 
+    def test_integration_uses_repo_root_fallback_when_config_repo_root_is_invalid(self) -> None:
+        run_id = "integration_invalid_repo_root_20260304_000007"
+        with isolated_factory_env() as env:
+            self._seed_minimal_bundles(run_id)
+            contracts.scaffold_integrator_bundle(run_id)
+
+            config_path = env["codex_dir"] / "factory" / "factory.config.json"
+            config_path.parent.mkdir(parents=True, exist_ok=True)
+            config_path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 2,
+                        "contract_version": 2,
+                        "paths": {
+                            "repo_root": "Z:/path/that/does/not/exist",
+                        },
+                    },
+                    indent=2,
+                    sort_keys=True,
+                )
+                + "\n",
+                encoding="utf-8",
+                newline="\n",
+            )
+
+            result = integrate_run(run_id, workers=list(common.WORKERS))
+            self.assertIn(result["status"], {"PASS", "BLOCKED"})
+            self.assertNotIn("WinError 267", str(result.get("error", "")))
+            self.assertTrue(Path(result["report"]).exists())
+
 
 if __name__ == "__main__":
     unittest.main()

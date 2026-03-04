@@ -831,7 +831,12 @@ def integrate_run(
                 extra_writes=None,
             )
 
-        repo_root_candidate = Path(str(cfg.get("paths", {}).get("repo_root", Path.cwd().as_posix()))).resolve(strict=False)
+        configured_repo_root = Path(str(cfg.get("paths", {}).get("repo_root", REPO_ROOT.as_posix()))).expanduser()
+        resolved_repo_root = configured_repo_root.resolve(strict=False)
+        if resolved_repo_root.exists() and (resolved_repo_root / ".git").exists():
+            repo_root_candidate = resolved_repo_root
+        else:
+            repo_root_candidate = REPO_ROOT.resolve(strict=False)
         gate_payload = run_meaningful_gate(
             run_id,
             repo_root=repo_root_candidate,
