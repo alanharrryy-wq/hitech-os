@@ -1,11 +1,11 @@
 # Cloudflare Tunnel Forever (Industrial Mode)
 
-Infra module to keep the `hitech-demo` Cloudflare tunnel permanently healthy on Windows 11.
+Infra module to keep the `engine` Cloudflare tunnel permanently healthy on Windows 11.
 
 ## Scope
 
-- Tunnel: `hitech-demo`
-- Hostname: `demo.hitechrts.com`
+- Tunnel: `engine`
+- Hostname: `engine.hitechrts.com`
 - Origin: `http://localhost:3000`
 - Repo root: `F:\repos\hitech-os`
 - Runtime: PowerShell 7 + Python stdlib only
@@ -24,7 +24,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File F:\repos\hitech-os\tools\infra\clo
 
 ## What it enforces
 
-1. DNS route exists for `demo.hitechrts.com -> hitech-demo`
+1. DNS route exists for `engine.hitechrts.com -> engine`
 2. `C:\Users\alanh\.cloudflared\config.yml` is correct and deterministic
 3. `cloudflared` Windows service is installed, Automatic, and running
 4. Scheduled task `HITECH-Cloudflared-TunnelGuard` runs every 5 minutes
@@ -52,3 +52,4 @@ Generated files:
 - `ensure_watchdog.py`: ensure scheduled watchdog task
 - `validate_tunnel.py`: produce validation JSON and exit non-zero on critical failures
 - `tunnel_forever.py`: full orchestration + guard mode
+

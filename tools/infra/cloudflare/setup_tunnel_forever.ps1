@@ -7,8 +7,8 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
 $RepoRoot = "F:\repos\hitech-os"
-$TunnelName = "hitech-demo"
-$Hostname = "demo.hitechrts.com"
+$TunnelName = "engine"
+$Hostname = "engine.hitechrts.com"
 $OriginUrl = "http://localhost:3000"
 $LogDir = Join-Path $RepoRoot "logs\cloudflare"
 $InfraDir = Join-Path $RepoRoot "tools\infra\cloudflare"
@@ -207,3 +207,4 @@ if ($status -ne "PASS") {
   exit 2
 }
 exit 0
+

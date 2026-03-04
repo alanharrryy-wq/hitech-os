@@ -9,7 +9,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File F:\repos\hitech-os\tools\infra\clo
 This performs full remediation and validation:
 
 1. Verifies tunnel exists
-2. Ensures DNS route for `demo.hitechrts.com`
+2. Ensures DNS route for `engine.hitechrts.com`
 3. Ensures deterministic `config.yml`
 4. Ensures `cloudflared` service is installed/running/automatic
 5. Ensures watchdog scheduled task exists and is enabled
@@ -57,3 +57,4 @@ The setup now auto-ensures origin availability on `http://localhost:3000`:
   - `pnpm --filter @hitech/keystone exec next start -p 3000`
 - Runtime output is appended to:
   - `F:\repos\hitech-os\logs\cloudflare\keystone_origin_runtime.log`
+

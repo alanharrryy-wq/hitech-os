@@ -186,6 +186,18 @@ def run_full_setup(
         config_path=config_path,
         allow_elevation=True,
     )
+    if config_result.get("changed", False):
+        restart_result = restart_cloudflared_service(
+            ctx,
+            reason="config_changed_reload_cloudflared",
+            cooldown_state_path=cooldown_state_path,
+            cooldown_seconds=0,
+            allow_elevation=True,
+        )
+        service_result["restarted_after_config_change"] = restart_result.get("restarted", False)
+        service_result["restart_reason"] = "config_changed_reload_cloudflared"
+        service_result["status"] = restart_result.get("status", service_result.get("status"))
+        service_result["state"] = restart_result.get("state", service_result.get("state"))
     watchdog_result = ensure_watchdog_task(
         ctx,
         task_name=WATCHDOG_TASK_NAME,

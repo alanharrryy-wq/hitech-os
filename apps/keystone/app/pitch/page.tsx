@@ -12,19 +12,21 @@ export const dynamic = "force-dynamic";
 
 export default async function PitchIndexPage({ searchParams }: PitchSearchParamsProps) {
   const resolved = resolvePitchLayerFlags(await resolvePitchSearchParams(searchParams));
-  const debugVisible = resolved.debug && process.env.NODE_ENV !== "production";
+  const isProduction = process.env.NODE_ENV === "production";
+  const showRouteChooser = resolved.debug || isProduction;
+  const debugVisible = resolved.debug && !isProduction;
   const shellModel = buildPitchShellFrameModel();
 
   return (
     <LayerFlagsProvider initialResolved={resolved}>
       <PitchShell model={shellModel}>
-        {debugVisible ? (
+        {showRouteChooser ? (
           <PitchRouteChooser />
         ) : (
           <section className="pitch-static-card pitch-glass-card pitch-neon-edge rounded-[var(--pitch-radius-lg)] p-4">
             <h2 className="m-0 text-base font-semibold text-[color:var(--pitch-ink)]">Pitch Index bloqueado</h2>
             <p className="m-0 mt-2 text-sm text-[color:var(--pitch-muted)]">
-              El menú de rutas con redirección está disponible solo en debug (`?debug=1`).
+              En entorno local, activa `?debug=1` para mostrar herramientas avanzadas.
             </p>
           </section>
         )}

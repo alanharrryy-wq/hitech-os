@@ -17,8 +17,8 @@ from typing import Any, Sequence
 
 
 DEFAULT_REPO_ROOT = Path(r"F:\repos\hitech-os")
-DEFAULT_TUNNEL_NAME = "hitech-demo"
-DEFAULT_HOSTNAME = "demo.hitechrts.com"
+DEFAULT_TUNNEL_NAME = "engine"
+DEFAULT_HOSTNAME = "engine.hitechrts.com"
 DEFAULT_ORIGIN_URL = "http://localhost:3000"
 DEFAULT_CLOUDFLARED_DIR = Path(r"C:\Users\alanh\.cloudflared")
 DEFAULT_CONFIG_PATH = DEFAULT_CLOUDFLARED_DIR / "config.yml"
@@ -399,3 +399,4 @@ def service_status_snapshot() -> dict[str, Any]:
         "state": "Unknown",
         "path_name": "",
     }
+

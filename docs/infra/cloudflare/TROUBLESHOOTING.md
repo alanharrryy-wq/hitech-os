@@ -10,7 +10,7 @@ Fix:
 - Confirm command:
   - `cloudflared --version`
 
-## Symptom: Tunnel not found (`hitech-demo`)
+## Symptom: Tunnel not found (`engine`)
 
 Cause:
 - Tunnel does not exist in current account/token context.
@@ -18,7 +18,7 @@ Cause:
 Fix:
 - Authenticate and create tunnel, then rerun setup:
   - `cloudflared tunnel list`
-  - `cloudflared tunnel create hitech-demo`
+  - `cloudflared tunnel create engine`
 
 ## Symptom: DNS route missing or not sticking
 
@@ -27,9 +27,9 @@ Cause:
 
 Fix:
 - Check route list:
-  - `cloudflared tunnel route dns list --tunnel hitech-demo`
+  - `cloudflared tunnel route dns list --tunnel engine`
 - Add route manually (same operation setup performs):
-  - `cloudflared tunnel route dns add hitech-demo demo.hitechrts.com`
+  - `cloudflared tunnel route dns add engine engine.hitechrts.com`
 
 ## Symptom: Service install fails or missing after install
 
@@ -77,3 +77,4 @@ Fix:
    - `pwsh -NoProfile -ExecutionPolicy Bypass -File F:\repos\hitech-os\tools\infra\cloudflare\setup_tunnel_forever.ps1`
 2. Inspect origin runtime log:
    - `F:\repos\hitech-os\logs\cloudflare\keystone_origin_runtime.log`
+
