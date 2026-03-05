@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import type { SceneRecord } from "../../../lib/scene-studio";
 import { FloatingSceneDock } from "../../../src/studio/FloatingSceneDock";
 import { SceneStudioEditor } from "./SceneStudioEditor";
@@ -89,7 +89,9 @@ export default function SceneStudioPage() {
         onChange={setScene}
         onResetToDefaults={() => setScene(DEFAULT_SCENE)}
       />
-      <FloatingSceneDock />
+      <Suspense fallback={null}>
+        <FloatingSceneDock />
+      </Suspense>
     </main>
   );
 }
