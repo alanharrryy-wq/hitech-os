@@ -5,7 +5,6 @@ import {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
   type PropsWithChildren
 } from "react";
@@ -86,27 +85,47 @@ function getPresetWindows(
 
 function buildInitialState(): WindowManagerState {
   const viewport = getViewportBounds();
+
+  return {
+    activePreset: DEFAULT_PRESET,
+    windows: {},
+    registrations: {},
+    mountCounts: {},
+    snapPreview: null,
+    customPresets: {},
+    viewport
+  };
+}
+
+function hydrateStateFromStorage(previous: WindowManagerState): WindowManagerState {
+  const viewport = getViewportBounds();
   const activeLayout = loadActiveLayout();
   const customPresets = loadCustomPresets();
   const legacyLayout = activeLayout ? null : loadLegacyLayoutOnce();
   const loadedLayout = activeLayout ?? legacyLayout;
-
-  const preferredPreset = loadedLayout?.preset ?? loadLastPreset() ?? DEFAULT_PRESET;
+  const preferredPreset = loadedLayout?.preset ?? loadLastPreset() ?? previous.activePreset;
   const activePreset = preferredPreset.trim().length > 0 ? preferredPreset : DEFAULT_PRESET;
 
-  const windows = loadedLayout
-    ? clampLayout(loadedLayout, viewport).windows
-    : {};
-
-  return {
+  const baseState: WindowManagerState = {
+    ...previous,
     activePreset,
-    windows,
-    registrations: {},
-    mountCounts: {},
-    snapPreview: null,
     customPresets,
     viewport
   };
+
+  if (loadedLayout) {
+    const clampedLoadedLayout = clampLayout(loadedLayout, viewport);
+    return {
+      ...baseState,
+      windows: {
+        ...previous.windows,
+        ...clampedLoadedLayout.windows
+      },
+      snapPreview: null
+    };
+  }
+
+  return applyPresetToState(baseState, activePreset);
 }
 
 function resolveWindowState(
@@ -215,10 +234,11 @@ export const WindowManagerContext = createContext<WindowManagerContextValue | nu
 
 export function WindowManagerProvider({ children }: PropsWithChildren) {
   const [state, setState] = useState<WindowManagerState>(() => buildInitialState());
-  const isHydratingRef = useRef(true);
+  const [hasRestoredPersistedState, setHasRestoredPersistedState] = useState(false);
 
   useEffect(() => {
-    isHydratingRef.current = false;
+    setState((previous) => hydrateStateFromStorage(previous));
+    setHasRestoredPersistedState(true);
   }, []);
 
   useEffect(() => {
@@ -255,21 +275,21 @@ export function WindowManagerProvider({ children }: PropsWithChildren) {
   }, []);
 
   useEffect(() => {
-    if (isHydratingRef.current) {
+    if (!hasRestoredPersistedState) {
       return;
     }
 
     saveActiveLayout(buildLayoutSnapshot(state));
     saveLastPreset(state.activePreset);
-  }, [state.activePreset, state.windows]);
+  }, [hasRestoredPersistedState, state.activePreset, state.windows]);
 
   useEffect(() => {
-    if (isHydratingRef.current) {
+    if (!hasRestoredPersistedState) {
       return;
     }
 
     saveCustomPresets(state.customPresets);
-  }, [state.customPresets]);
+  }, [hasRestoredPersistedState, state.customPresets]);
 
   const registerWindow = useCallback((registration: WindowRegistration) => {
     setState((previous) => {
