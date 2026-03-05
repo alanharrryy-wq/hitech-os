@@ -9,6 +9,15 @@ export interface ActivityPanelProps {
   readonly isError: boolean;
 }
 
+function formatActivityTimestamp(value: string): string {
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return parsed
+    .toISOString()
+    .replace("T", " ")
+    .replace(/\.\d{3}Z$/, " UTC");
+}
+
 function severityTone(severity: string): "neutral" | "accent" | "success" | "warning" | "danger" {
   if (severity === "critical" || severity === "error") {
     return "danger";
@@ -57,7 +66,7 @@ export function ActivityPanel({ data, isLoading, isError }: ActivityPanelProps) 
                 <Badge tone={severityTone(item.severity)}>{item.severity}</Badge>
                 <span className="text-xs keystone-muted">{item.type}</span>
                 <span className="ml-auto text-xs keystone-muted">
-                  {new Date(item.createdAt).toLocaleString()}
+                  {formatActivityTimestamp(item.createdAt)}
                 </span>
               </div>
               <p className="m-0 text-sm font-medium text-[hsl(var(--ui-text-1))]">{item.title}</p>

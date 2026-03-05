@@ -86,22 +86,26 @@ export function FloatingWindow({
   const storageKey = useMemo(() => `keystone.floatingWindow.${id}`, [id]);
   const rootRef = useRef<HTMLDivElement | null>(null);
 
-  const [state, setState] = useState<FloatingWindowState>(() => {
-    const saved = typeof window !== "undefined" ? readLS(storageKey) : null;
-    return (
-      saved ?? {
-        pos: defaultPos,
-        size: defaultSize,
-        z: 1000,
-        collapsed: false
-      }
-    );
+  const [state, setState] = useState<FloatingWindowState>({
+    pos: defaultPos,
+    size: defaultSize,
+    z: 1000,
+    collapsed: false
   });
+  const [hydrated, setHydrated] = useState(false);
   const stateRef = useRef(state);
 
   useEffect(() => {
     stateRef.current = state;
   }, [state]);
+
+  useEffect(() => {
+    const saved = readLS(storageKey);
+    if (saved) {
+      setState((prev) => ({ ...prev, ...saved }));
+    }
+    setHydrated(true);
+  }, [storageKey]);
 
   useEffect(() => {
     setState((prev) => {
@@ -119,8 +123,9 @@ export function FloatingWindow({
   }, [maxSize, minSize]);
 
   useEffect(() => {
+    if (!hydrated) return;
     writeLS(storageKey, state);
-  }, [storageKey, state]);
+  }, [hydrated, storageKey, state]);
 
   useEffect(() => {
     const onResize = () => {

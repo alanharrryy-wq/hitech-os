@@ -31,20 +31,25 @@ export function PitchShareLookButton() {
   const layerState = useLayerFlags();
   const resolved = layerState.resolved ?? layerState;
   const [copied, setCopied] = useState(false);
+  const [origin, setOrigin] = useState("");
 
-  const shareUrl = useMemo(() => {
+  const sharePath = useMemo(() => {
     const next = createLayerFlagsQueryFromResolved(
       resolved,
       new URLSearchParams(searchParams.toString())
     );
     const query = next.toString();
-    const path = `${pathname}${query ? `?${query}` : ""}`;
-
-    if (typeof window === "undefined") {
-      return path;
-    }
-    return new URL(path, window.location.origin).toString();
+    return `${pathname}${query ? `?${query}` : ""}`;
   }, [pathname, resolved, searchParams]);
+
+  const shareUrl = useMemo(
+    () => (origin ? new URL(sharePath, origin).toString() : sharePath),
+    [origin, sharePath]
+  );
+
+  useEffect(() => {
+    setOrigin(window.location.origin);
+  }, []);
 
   useEffect(() => {
     if (!copied) return;
