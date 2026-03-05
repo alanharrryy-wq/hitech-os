@@ -1,17 +1,17 @@
 {
   "description": "Live fallback backlog for automatic worker rework with deterministic scoring and reserve targets.",
-  "generated_at_utc": "2026-03-04T13:12:07+00:00",
+  "generated_at_utc": "2026-03-05T10:18:57+00:00",
   "min_value_score": 70,
   "summary": {
     "errors": [],
     "ready_by_category": {
-      "automation": 2,
-      "dx": 1,
-      "performance": 1,
-      "reliability": 1,
-      "security": 2
+      "automation": 4,
+      "dx": 2,
+      "performance": 2,
+      "reliability": 2,
+      "security": 3
     },
-    "ready_count": 7,
+    "ready_count": 13,
     "reserve_targets": {
       "automation": 4,
       "dx": 2,
@@ -19,7 +19,7 @@
       "reliability": 3,
       "security": 2
     },
-    "task_count": 22
+    "task_count": 28
   },
   "tasks": [
     {
@@ -51,7 +51,45 @@
       "source": "seed_config",
       "status": "ready",
       "title": "Factory queue observability",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 86,
+      "worker_affinity": [
+        "B_tooling",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python tools/codex/dispatch/validator.py queue-wait-outbox --run-id <RUN_ID> --workers A_core --cycle 1 --timeout-seconds 5"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "apps/**",
+        "docs/factory/**",
+        "packages/**",
+        "tools/codex/dispatch/**",
+        "tools/codex/factory/**"
+      ],
+      "category": "automation",
+      "created_at_utc": "2026-03-05T10:18:57+00:00",
+      "description": "Add deterministic queue metrics and lag dashboards for rework inbox/outbox.",
+      "estimated_mloc": 2200,
+      "expires_at": "2030-01-01T00:00:00+00:00",
+      "fingerprint": "4db875765d4a51a655c4",
+      "id": "LIVE-AUTO-001",
+      "metrics": {
+        "confidence": 8,
+        "frequency": 7,
+        "impact": 8,
+        "risk_reduction": 9,
+        "unblock": 8
+      },
+      "owner": "factory",
+      "priority": 92,
+      "source": "seed_config",
+      "status": "ready",
+      "title": "Factory queue observability",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 86,
       "worker_affinity": [
         "B_tooling",
@@ -87,7 +125,45 @@
       "source": "seed_config",
       "status": "ready",
       "title": "Dependency security triage automation",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 80,
+      "worker_affinity": [
+        "B_tooling",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory doctor"
+      ],
+      "active": true,
+      "allowed_paths": [
+        ".github/workflows/**",
+        "apps/**",
+        "docs/security/**",
+        "packages/**",
+        "tools/**"
+      ],
+      "category": "security",
+      "created_at_utc": "2026-03-05T10:18:57+00:00",
+      "description": "Automate risk grouping and remediation backlog from security scan output.",
+      "estimated_mloc": 1800,
+      "expires_at": "2030-01-01T00:00:00+00:00",
+      "fingerprint": "7e085fd1fffd2b06db28",
+      "id": "LIVE-SEC-001",
+      "metrics": {
+        "confidence": 7,
+        "frequency": 6,
+        "impact": 8,
+        "risk_reduction": 9,
+        "unblock": 6
+      },
+      "owner": "security",
+      "priority": 85,
+      "source": "seed_config",
+      "status": "ready",
+      "title": "Dependency security triage automation",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 80,
       "worker_affinity": [
         "B_tooling",
@@ -116,7 +192,37 @@
       "source": "auto_seed",
       "status": "ready",
       "title": "Reliability regression harness fallback",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 78,
+      "worker_affinity": [
+        "C_features",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory self-test"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "apps/**/tests/**",
+        "packages/**/tests/**",
+        "tools/codex/factory/**"
+      ],
+      "category": "reliability",
+      "created_at_utc": "2026-03-05T10:18:57+00:00",
+      "description": "Create deterministic regression harness for flaky/failed pipeline paths.",
+      "estimated_mloc": 1700,
+      "expires_at": "2026-04-04T10:18:57+00:00",
+      "fingerprint": "c5eb7737692f054aa42e",
+      "id": "SEED-RELI-7e6db8f9",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 80,
+      "source": "auto_seed",
+      "status": "ready",
+      "title": "Reliability regression harness fallback",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 78,
       "worker_affinity": [
         "C_features",
@@ -145,7 +251,39 @@
       "source": "auto_seed",
       "status": "ready",
       "title": "Automation fallback pipeline hardening",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 76,
+      "worker_affinity": [
+        "A_core",
+        "B_tooling",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory contracts-check"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "apps/**",
+        "docs/factory/**",
+        "packages/**",
+        "tools/codex/**"
+      ],
+      "category": "automation",
+      "created_at_utc": "2026-03-05T10:18:57+00:00",
+      "description": "Improve deterministic orchestration and reporting for multicodex runs.",
+      "estimated_mloc": 1600,
+      "expires_at": "2026-04-04T10:18:57+00:00",
+      "fingerprint": "381e9bc17f339b8acd20",
+      "id": "SEED-AUTO-ae2eafa0",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 78,
+      "source": "auto_seed",
+      "status": "ready",
+      "title": "Automation fallback pipeline hardening",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 76,
       "worker_affinity": [
         "A_core",
@@ -175,7 +313,7 @@
       "source": "auto_seed",
       "status": "ready",
       "title": "Security check automation fallback",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 74,
       "worker_affinity": [
         "B_tooling",
@@ -204,7 +342,37 @@
       "source": "auto_seed",
       "status": "ready",
       "title": "Performance guardrail fallback",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 73,
+      "worker_affinity": [
+        "B_tooling",
+        "C_features"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory doctor"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "apps/**",
+        "packages/**",
+        "tools/**"
+      ],
+      "category": "performance",
+      "created_at_utc": "2026-03-05T10:18:57+00:00",
+      "description": "Automate perf budget validation and actionable reporting.",
+      "estimated_mloc": 1400,
+      "expires_at": "2026-04-04T10:18:57+00:00",
+      "fingerprint": "b2af81d817220724f577",
+      "id": "SEED-PERF-c8b6a683",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 74,
+      "source": "auto_seed",
+      "status": "ready",
+      "title": "Performance guardrail fallback",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 73,
       "worker_affinity": [
         "B_tooling",
@@ -233,7 +401,38 @@
       "source": "auto_seed",
       "status": "ready",
       "title": "Developer experience fallback",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 72,
+      "worker_affinity": [
+        "A_core",
+        "B_tooling"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory doctor"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "apps/**",
+        "docs/factory/**",
+        "packages/**",
+        "tools/**"
+      ],
+      "category": "dx",
+      "created_at_utc": "2026-03-05T10:18:57+00:00",
+      "description": "Improve local run ergonomics and deterministic troubleshooting docs.",
+      "estimated_mloc": 1300,
+      "expires_at": "2026-04-04T10:18:57+00:00",
+      "fingerprint": "eaf0e85d9822d818ff61",
+      "id": "SEED-DX-b05bcc99",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 72,
+      "source": "auto_seed",
+      "status": "ready",
+      "title": "Developer experience fallback",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 72,
       "worker_affinity": [
         "A_core",
@@ -264,7 +463,7 @@
       "source": "legacy_bank",
       "status": "backlog",
       "title": "Factory stage telemetry exporter",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 68,
       "worker_affinity": [
         "A_core",
@@ -295,7 +494,7 @@
       "source": "legacy_bank",
       "status": "backlog",
       "title": "Prompt contract linter",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 67,
       "worker_affinity": [
         "A_core",
@@ -325,7 +524,7 @@
       "source": "legacy_bank",
       "status": "backlog",
       "title": "Runs root drift auto-remediation checks",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 66,
       "worker_affinity": [
         "B_tooling",
@@ -355,7 +554,7 @@
       "source": "legacy_bank",
       "status": "backlog",
       "title": "Pitch engine deterministic scenario pack",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 65,
       "worker_affinity": [
         "A_core"
@@ -383,7 +582,7 @@
       "source": "legacy_bank",
       "status": "backlog",
       "title": "Capability registry hardening utilities",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 64,
       "worker_affinity": [
         "A_core"
@@ -412,7 +611,7 @@
       "source": "legacy_bank",
       "status": "backlog",
       "title": "UI token conformance checker",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 64,
       "worker_affinity": [
         "B_tooling",
@@ -442,7 +641,7 @@
       "source": "legacy_bank",
       "status": "backlog",
       "title": "Visual baseline drift triage scripts",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 63,
       "worker_affinity": [
         "B_tooling"
@@ -471,7 +670,7 @@
       "source": "legacy_bank",
       "status": "backlog",
       "title": "Inventory simulation fixtures",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 63,
       "worker_affinity": [
         "C_features",
@@ -501,7 +700,7 @@
       "source": "legacy_bank",
       "status": "backlog",
       "title": "Receiving flow anomaly harness",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 62,
       "worker_affinity": [
         "C_features"
@@ -531,7 +730,7 @@
       "source": "legacy_bank",
       "status": "backlog",
       "title": "Contract regression bundle",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 61,
       "worker_affinity": [
         "D_validation"
@@ -560,7 +759,7 @@
       "source": "legacy_bank",
       "status": "backlog",
       "title": "Meaningful gate edge-case pack",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 61,
       "worker_affinity": [
         "A_core",
@@ -589,7 +788,7 @@
       "source": "legacy_bank",
       "status": "backlog",
       "title": "Integrator report expansion pack",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 59,
       "worker_affinity": [
         "Z_aggregator"
@@ -617,7 +816,7 @@
       "source": "legacy_bank",
       "status": "backlog",
       "title": "Ledger evidence compiler",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 58,
       "worker_affinity": [
         "Z_aggregator"
@@ -646,7 +845,7 @@
       "source": "legacy_bank",
       "status": "backlog",
       "title": "Docs governor evidence bridge",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 57,
       "worker_affinity": [
         "B_tooling",
@@ -676,7 +875,7 @@
       "source": "legacy_bank",
       "status": "backlog",
       "title": "Scope lock conflict explainer",
-      "updated_at_utc": "2026-03-04T13:12:07+00:00",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
       "value_score": 38,
       "worker_affinity": [
         "A_core",
