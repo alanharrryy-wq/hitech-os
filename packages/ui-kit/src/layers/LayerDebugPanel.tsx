@@ -1,7 +1,7 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { ALL_LAYERS } from "./layerIds.js";
 import { createShareableLayerUrl } from "./resolveLayerFlags.js";
 import { useLayerFlags } from "./useLayerFlags.js";
@@ -19,6 +19,17 @@ const PANEL_STYLE: CSSProperties = {
   background: "hsl(var(--ui-surface-1) / 0.96)",
   boxShadow: "var(--ui-shadow-2)",
   padding: "0.875rem"
+};
+
+const INLINE_PANEL_STYLE: CSSProperties = {
+  ...PANEL_STYLE,
+  position: "relative",
+  right: "auto",
+  bottom: "auto",
+  width: "100%",
+  maxHeight: "none",
+  boxShadow: "none",
+  borderRadius: "10px"
 };
 
 const SECTION_STYLE: CSSProperties = {
@@ -79,16 +90,30 @@ function getCurrentShareUrl(
   });
 }
 
-export function LayerDebugPanel() {
+export interface LayerDebugPanelProps {
+  readonly inline?: boolean;
+}
+
+export function LayerDebugPanel({ inline = false }: LayerDebugPanelProps) {
   const { resolved, enabledLayers, setLayer, setAll, setProfile, setMotion, resetNeutral } =
     useLayerFlags();
   const [copyStatus, setCopyStatus] = useState<string>("idle");
+  const [shareUrl, setShareUrl] = useState<string | null>(null);
 
-  const shareUrl = useMemo(() => getCurrentShareUrl(resolved), [resolved]);
+  useEffect(() => {
+    if (process.env["NODE_ENV"] === "production" || !resolved.debug) {
+      setShareUrl(null);
+      return;
+    }
+
+    setShareUrl(getCurrentShareUrl(resolved));
+  }, [resolved]);
 
   if (process.env["NODE_ENV"] === "production" || !resolved.debug) {
     return null;
   }
+
+  const panelStyle = inline ? INLINE_PANEL_STYLE : PANEL_STYLE;
 
   const handleCopyShareUrl = async () => {
     if (!shareUrl || typeof navigator === "undefined" || !navigator.clipboard) {
@@ -140,7 +165,7 @@ export function LayerDebugPanel() {
   };
 
   return (
-    <aside style={PANEL_STYLE} aria-label="Layer Debug Panel">
+    <aside style={panelStyle} aria-label="Layer Debug Panel">
       <header>
         <h2 style={{ margin: 0, fontSize: "0.96rem", lineHeight: 1.1 }}>Layer Flags Debug</h2>
         <p style={SMALL_STYLE}>

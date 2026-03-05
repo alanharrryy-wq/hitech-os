@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { SearchParamsLike } from "@hitech/ui-kit";
 import { resolveSceneStudioAccess } from "../../../lib/scene-studio";
 import { SceneStudioPage } from "../../../components/scene-studio/scene-studio-page";
+import { ControlRoom } from "./ControlRoom";
 
 interface SceneStudioRouteProps {
   readonly searchParams?: SearchParamsLike | Promise<SearchParamsLike>;
@@ -17,5 +18,9 @@ export default async function SceneStudioRoute({ searchParams }: SceneStudioRout
     notFound();
   }
 
-  return <SceneStudioPage />;
+  return (
+    <ControlRoom>
+      <SceneStudioPage />
+    </ControlRoom>
+  );
 }
