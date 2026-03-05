@@ -131,3 +131,16 @@ export type { SectionProps } from "./components/Section.js";
 
 export { Text } from "./components/Text.js";
 export type { TextProps } from "./components/Text.js";
+
+export * as luxury from "./luxury/index.js";
+export * as motionKit from "./motion/index.js";
+export * as kpi from "./kpi/index.js";
+export * as dataSpine from "./data-spine/index.js";
+
+export {
+  createMockProvider,
+  createSpine,
+  createStableQueryKey,
+  safeValidateDataShape,
+  validateDataShape
+} from "./data-spine/index.js";

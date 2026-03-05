@@ -1,3 +1,5 @@
+/* eslint-env node */
+/* global process, console */
 import { spawn } from "node:child_process";
 import { createRequire } from "node:module";
 import fs from "node:fs/promises";
@@ -65,7 +67,6 @@ async function handleNextDevLock() {
 async function pickPort() {
   for (let i = 0; i <= scanWindow; i += 1) {
     const candidate = basePort + i;
-    // eslint-disable-next-line no-await-in-loop
     const available = await isPortAvailable(candidate);
     if (available) {
       return candidate;

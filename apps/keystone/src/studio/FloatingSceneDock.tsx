@@ -239,7 +239,9 @@ export function FloatingSceneDock() {
     // (We handle click toggle elsewhere; this stops “drag click” vibes.)
     try {
       (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
-    } catch {}
+    } catch {
+      // Pointer capture can already be released by the browser in edge cases.
+    }
   }
 
   function toggleOpen() {
