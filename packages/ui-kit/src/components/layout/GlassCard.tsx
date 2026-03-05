@@ -6,7 +6,7 @@ import { cn } from "../../lib/cn.js";
 import { mergeLayerFlags, type LayerFlags } from "../../layers/layerIds.js";
 import { useLayerFlags } from "../../layers/useLayerFlags.js";
 
-const glassCardVariants = cva("card ui-glass-card ui-hitech-material", {
+const glassCardVariants = cva("card ui-glass-card", {
   variants: {
     backdrop: {
       off: "",

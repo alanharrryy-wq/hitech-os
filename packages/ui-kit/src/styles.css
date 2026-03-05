@@ -1,5 +1,4 @@
 @import "./styles/layers.css";
-@import "./styles/hitech-premium.css";
 
 :root {
   /* Core tokens */
@@ -402,19 +401,6 @@ body {
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: hsl(var(--ui-text-3));
-}
-
-@media (max-width: 640px) {
-  .ui-table th,
-  .ui-table td {
-    padding: var(--ui-core-space-2) var(--ui-core-space-2);
-    font-size: 0.78rem;
-  }
-
-  .ui-table th {
-    font-size: 0.68rem;
-    letter-spacing: 0.04em;
-  }
 }
 
 .ui-spinner {

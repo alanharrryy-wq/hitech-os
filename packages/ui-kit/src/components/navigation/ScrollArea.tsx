@@ -4,34 +4,19 @@ import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import { forwardRef } from "react";
 import { cn } from "../../lib/cn.js";
 
-export interface ScrollAreaProps extends ScrollAreaPrimitive.ScrollAreaProps {
-  readonly edgeFade?: boolean;
-}
-
-export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(function ScrollArea(
-  { className, children, edgeFade = true, ...props },
-  ref
-) {
-  return (
-    <ScrollAreaPrimitive.Root
-      ref={ref}
-      className={cn("ui-scroll-area ui-premium-scroll-area", className)}
-      {...props}
-    >
-      <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
-        {children}
-      </ScrollAreaPrimitive.Viewport>
-      {edgeFade ? (
-        <>
-          <span className="ui-premium-scroll-area__fade-top" aria-hidden="true" />
-          <span className="ui-premium-scroll-area__fade-bottom" aria-hidden="true" />
-        </>
-      ) : null}
-      <ScrollBar />
-      <ScrollAreaPrimitive.Corner />
-    </ScrollAreaPrimitive.Root>
-  );
-});
+export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaPrimitive.ScrollAreaProps>(
+  function ScrollArea({ className, children, ...props }, ref) {
+    return (
+      <ScrollAreaPrimitive.Root ref={ref} className={cn("ui-scroll-area", className)} {...props}>
+        <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
+          {children}
+        </ScrollAreaPrimitive.Viewport>
+        <ScrollBar />
+        <ScrollAreaPrimitive.Corner />
+      </ScrollAreaPrimitive.Root>
+    );
+  }
+);
 
 export const ScrollBar = forwardRef<HTMLDivElement, ScrollAreaPrimitive.ScrollAreaScrollbarProps>(
   function ScrollBar({ className, orientation = "vertical", ...props }, ref) {
@@ -47,7 +32,7 @@ export const ScrollBar = forwardRef<HTMLDivElement, ScrollAreaPrimitive.ScrollAr
         )}
         {...props}
       >
-        <ScrollAreaPrimitive.ScrollAreaThumb className="relative flex-1 rounded-full ui-premium-gradient-subtle-018" />
+        <ScrollAreaPrimitive.ScrollAreaThumb className="relative flex-1 rounded-full bg-[hsl(var(--ui-border-2))]" />
       </ScrollAreaPrimitive.ScrollAreaScrollbar>
     );
   }

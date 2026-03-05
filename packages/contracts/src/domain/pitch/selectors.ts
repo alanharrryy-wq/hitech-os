@@ -110,70 +110,271 @@ export function collectPitchTextFragments(slug: PitchScreenSlug): readonly Pitch
     ];
   }
 
-  return [
-    {
-      id: `${slug}:title`,
-      text: screen.title,
-      scope: "title",
-      screenSlug: slug
-    },
-    ...screen.blocks.flatMap((block) => {
-      const blockFragments: PitchTextFragment[] = [
-        {
-          id: `${block.id}:heading`,
-          text: block.heading,
-          scope: "heading",
-          screenSlug: slug
-        },
-        ...block.items.map((item) => ({
-          id: item.id,
-          text: item.text,
-          scope: "bullet" as const,
+  if (screen.slug === "04-valuation") {
+    return [
+      {
+        id: `${slug}:title`,
+        text: screen.title,
+        scope: "title",
+        screenSlug: slug
+      },
+      ...screen.blocks.flatMap((block) => {
+        const blockFragments: PitchTextFragment[] = [
+          {
+            id: `${block.id}:heading`,
+            text: block.heading,
+            scope: "heading",
+            screenSlug: slug
+          },
+          ...block.items.map((item) => ({
+            id: item.id,
+            text: item.text,
+            scope: "bullet" as const,
+            screenSlug: slug
+          }))
+        ];
+
+        if (block.phase1) {
+          blockFragments.push({
+            id: `${block.id}:phase1`,
+            text: block.phase1,
+            scope: "phase",
+            screenSlug: slug
+          });
+        }
+
+        if (block.phase2) {
+          blockFragments.push({
+            id: `${block.id}:phase2`,
+            text: block.phase2,
+            scope: "phase",
+            screenSlug: slug
+          });
+        }
+
+        return blockFragments;
+      }),
+      {
+        id: screen.combinedValuationLine.id,
+        text: screen.combinedValuationLine.text,
+        scope: "strong-line",
+        screenSlug: slug
+      },
+      ...screen.comparison.headers.map((header, index) => ({
+        id: `${slug}:header:${index}`,
+        text: header,
+        scope: "table-header" as const,
+        screenSlug: slug
+      })),
+      ...screen.comparison.rows.flatMap((row, rowIndex) =>
+        row.map((cell, cellIndex) => ({
+          id: `${slug}:cell:${rowIndex}:${cellIndex}`,
+          text: cell,
+          scope: "table-cell" as const,
           screenSlug: slug
         }))
-      ];
+      )
+    ];
+  }
 
-      if (block.phase1) {
-        blockFragments.push({
-          id: `${block.id}:phase1`,
-          text: block.phase1,
-          scope: "phase",
-          screenSlug: slug
-        });
-      }
-
-      if (block.phase2) {
-        blockFragments.push({
-          id: `${block.id}:phase2`,
-          text: block.phase2,
-          scope: "phase",
-          screenSlug: slug
-        });
-      }
-
-      return blockFragments;
-    }),
-    {
-      id: screen.combinedValuationLine.id,
-      text: screen.combinedValuationLine.text,
-      scope: "strong-line",
-      screenSlug: slug
-    },
-    ...screen.comparison.headers.map((header, index) => ({
-      id: `${slug}:header:${index}`,
-      text: header,
-      scope: "table-header" as const,
-      screenSlug: slug
-    })),
-    ...screen.comparison.rows.flatMap((row, rowIndex) =>
-      row.map((cell, cellIndex) => ({
-        id: `${slug}:cell:${rowIndex}:${cellIndex}`,
-        text: cell,
-        scope: "table-cell" as const,
+  if (screen.slug === "05-inventory-foundation") {
+    return [
+      {
+        id: `${slug}:title`,
+        text: screen.title,
+        scope: "title",
         screenSlug: slug
-      }))
-    )
-  ];
+      },
+      {
+        id: screen.foundationStatus.id,
+        text: screen.foundationStatus.heading,
+        scope: "heading",
+        screenSlug: slug
+      },
+      ...screen.foundationStatus.kpis.map((kpi) => ({
+        id: kpi.id,
+        text: `${kpi.label} ${kpi.value}`,
+        scope: "kpi" as const,
+        screenSlug: slug
+      })),
+      {
+        id: screen.foundationStatus.rbacMatrixSnapshot.id,
+        text: screen.foundationStatus.rbacMatrixSnapshot.heading,
+        scope: "heading",
+        screenSlug: slug
+      },
+      ...screen.foundationStatus.rbacMatrixSnapshot.rows.flatMap((row) => [
+        {
+          id: row.id,
+          text: row.role,
+          scope: "bullet" as const,
+          screenSlug: slug
+        },
+        ...row.permissions.map((permission, index) => ({
+          id: `${row.id}:permission:${index}`,
+          text: permission,
+          scope: "bullet" as const,
+          screenSlug: slug
+        })),
+        {
+          id: `${row.id}:status`,
+          text: row.status,
+          scope: "microcopy" as const,
+          screenSlug: slug
+        }
+      ]),
+      {
+        id: screen.foundationStatus.supplierOnboardingStatus.id,
+        text: screen.foundationStatus.supplierOnboardingStatus.heading,
+        scope: "heading",
+        screenSlug: slug
+      },
+      ...screen.foundationStatus.supplierOnboardingStatus.suppliers.flatMap((supplier) => [
+        {
+          id: supplier.id,
+          text: supplier.supplier,
+          scope: "bullet" as const,
+          screenSlug: slug
+        },
+        {
+          id: `${supplier.id}:status`,
+          text: supplier.status,
+          scope: "microcopy" as const,
+          screenSlug: slug
+        }
+      ]),
+      {
+        id: screen.productsSkuBaseline.id,
+        text: screen.productsSkuBaseline.heading,
+        scope: "heading",
+        screenSlug: slug
+      },
+      ...screen.productsSkuBaseline.fields.flatMap((field) => [
+        {
+          id: `${field.id}:label`,
+          text: field.label,
+          scope: "bullet" as const,
+          screenSlug: slug
+        },
+        {
+          id: `${field.id}:value`,
+          text: field.value,
+          scope: "microcopy" as const,
+          screenSlug: slug
+        }
+      ]),
+      {
+        id: screen.documentVaultBaseline.id,
+        text: screen.documentVaultBaseline.heading,
+        scope: "heading",
+        screenSlug: slug
+      },
+      ...screen.documentVaultBaseline.requiredDocs.flatMap((doc) => [
+        {
+          id: doc.id,
+          text: doc.document,
+          scope: "bullet" as const,
+          screenSlug: slug
+        },
+        {
+          id: `${doc.id}:status`,
+          text: doc.status,
+          scope: "microcopy" as const,
+          screenSlug: slug
+        }
+      ])
+    ];
+  }
+
+  if (screen.slug === "06-shipments-receiving") {
+    return [
+      {
+        id: `${slug}:title`,
+        text: screen.title,
+        scope: "title",
+        screenSlug: slug
+      },
+      {
+        id: screen.shipmentControlBoard.id,
+        text: screen.shipmentControlBoard.heading,
+        scope: "heading",
+        screenSlug: slug
+      },
+      ...screen.shipmentControlBoard.placeholders.flatMap((placeholder) => [
+        {
+          id: `${placeholder.id}:label`,
+          text: placeholder.label,
+          scope: "bullet" as const,
+          screenSlug: slug
+        },
+        {
+          id: `${placeholder.id}:value`,
+          text: placeholder.value,
+          scope: "microcopy" as const,
+          screenSlug: slug
+        }
+      ]),
+      {
+        id: screen.shipmentControlBoard.customsPackCompleteness.id,
+        text: screen.shipmentControlBoard.customsPackCompleteness.text,
+        scope: "microcopy",
+        screenSlug: slug
+      },
+      {
+        id: `${screen.shipmentControlBoard.customsPackCompleteness.id}:status`,
+        text: screen.shipmentControlBoard.customsPackCompleteness.status,
+        scope: "microcopy",
+        screenSlug: slug
+      },
+      {
+        id: screen.receivingFlow.id,
+        text: screen.receivingFlow.heading,
+        scope: "heading",
+        screenSlug: slug
+      },
+      ...screen.receivingFlow.states.flatMap((state) => [
+        {
+          id: `${state.id}:code`,
+          text: state.code,
+          scope: "bullet" as const,
+          screenSlug: slug
+        },
+        {
+          id: `${state.id}:note`,
+          text: state.note,
+          scope: "microcopy" as const,
+          screenSlug: slug
+        }
+      ]),
+      {
+        id: screen.mismatchHandling.id,
+        text: screen.mismatchHandling.heading,
+        scope: "heading",
+        screenSlug: slug
+      },
+      {
+        id: `${screen.mismatchHandling.id}:qty-lot`,
+        text: screen.mismatchHandling.qtyLotMismatch,
+        scope: "bullet",
+        screenSlug: slug
+      },
+      {
+        id: `${screen.mismatchHandling.id}:deviation`,
+        text: screen.mismatchHandling.deviationPlaceholder,
+        scope: "microcopy",
+        screenSlug: slug
+      },
+      {
+        id: screen.nextGate.id,
+        text: screen.nextGate.text,
+        scope: "microcopy",
+        screenSlug: slug
+      }
+    ];
+  }
+
+  const unreachable: never = screen;
+  throw new Error(`Unhandled pitch screen slug: ${(unreachable as { slug: string }).slug}`);
 }
 
 export function collectAllPitchTextFragments(): readonly PitchTextFragment[] {
@@ -228,7 +429,9 @@ export function createPitchSlugToTitleMap(): Readonly<Record<PitchScreenSlug, st
     "01-double-engine": PITCH_SCREEN_FIXTURES["01-double-engine"].title,
     "02-industrial-flow": PITCH_SCREEN_FIXTURES["02-industrial-flow"].title,
     "03-hitech-os": PITCH_SCREEN_FIXTURES["03-hitech-os"].title,
-    "04-valuation": PITCH_SCREEN_FIXTURES["04-valuation"].title
+    "04-valuation": PITCH_SCREEN_FIXTURES["04-valuation"].title,
+    "05-inventory-foundation": PITCH_SCREEN_FIXTURES["05-inventory-foundation"].title,
+    "06-shipments-receiving": PITCH_SCREEN_FIXTURES["06-shipments-receiving"].title
   };
 }
 
@@ -237,7 +440,9 @@ export function createPitchSlugToRouteMap(): Readonly<Record<PitchScreenSlug, st
     "01-double-engine": PITCH_SCREEN_FIXTURES["01-double-engine"].route,
     "02-industrial-flow": PITCH_SCREEN_FIXTURES["02-industrial-flow"].route,
     "03-hitech-os": PITCH_SCREEN_FIXTURES["03-hitech-os"].route,
-    "04-valuation": PITCH_SCREEN_FIXTURES["04-valuation"].route
+    "04-valuation": PITCH_SCREEN_FIXTURES["04-valuation"].route,
+    "05-inventory-foundation": PITCH_SCREEN_FIXTURES["05-inventory-foundation"].route,
+    "06-shipments-receiving": PITCH_SCREEN_FIXTURES["06-shipments-receiving"].route
   };
 }
 
@@ -257,6 +462,20 @@ export function getPitchDistinctHeadings(): readonly string[] {
       for (const block of screen.blocks) {
         headings.add(block.heading);
       }
+    }
+
+    if (screen.slug === "05-inventory-foundation") {
+      headings.add(screen.foundationStatus.heading);
+      headings.add(screen.foundationStatus.rbacMatrixSnapshot.heading);
+      headings.add(screen.foundationStatus.supplierOnboardingStatus.heading);
+      headings.add(screen.productsSkuBaseline.heading);
+      headings.add(screen.documentVaultBaseline.heading);
+    }
+
+    if (screen.slug === "06-shipments-receiving") {
+      headings.add(screen.shipmentControlBoard.heading);
+      headings.add(screen.receivingFlow.heading);
+      headings.add(screen.mismatchHandling.heading);
     }
   }
 
@@ -308,6 +527,43 @@ export function getPitchDistinctBulletLines(): readonly string[] {
         }
       }
     }
+
+    if (screen.slug === "05-inventory-foundation") {
+      for (const kpi of screen.foundationStatus.kpis) {
+        lines.add(kpi.label);
+      }
+
+      for (const row of screen.foundationStatus.rbacMatrixSnapshot.rows) {
+        lines.add(row.role);
+        for (const permission of row.permissions) {
+          lines.add(permission);
+        }
+      }
+
+      for (const supplier of screen.foundationStatus.supplierOnboardingStatus.suppliers) {
+        lines.add(supplier.supplier);
+      }
+
+      for (const field of screen.productsSkuBaseline.fields) {
+        lines.add(field.label);
+      }
+
+      for (const doc of screen.documentVaultBaseline.requiredDocs) {
+        lines.add(doc.document);
+      }
+    }
+
+    if (screen.slug === "06-shipments-receiving") {
+      for (const placeholder of screen.shipmentControlBoard.placeholders) {
+        lines.add(placeholder.label);
+      }
+
+      for (const state of screen.receivingFlow.states) {
+        lines.add(state.code);
+      }
+
+      lines.add(screen.mismatchHandling.qtyLotMismatch);
+    }
   }
 
   return [...lines];
@@ -340,6 +596,44 @@ export function getPitchDistinctMicrocopyLines(): readonly string[] {
 
     if (screen.slug === "04-valuation") {
       lines.add(screen.combinedValuationLine.text);
+    }
+
+    if (screen.slug === "05-inventory-foundation") {
+      for (const kpi of screen.foundationStatus.kpis) {
+        lines.add(kpi.value);
+      }
+
+      for (const row of screen.foundationStatus.rbacMatrixSnapshot.rows) {
+        lines.add(row.status);
+      }
+
+      for (const supplier of screen.foundationStatus.supplierOnboardingStatus.suppliers) {
+        lines.add(supplier.status);
+      }
+
+      for (const field of screen.productsSkuBaseline.fields) {
+        lines.add(field.value);
+      }
+
+      for (const doc of screen.documentVaultBaseline.requiredDocs) {
+        lines.add(doc.status);
+      }
+    }
+
+    if (screen.slug === "06-shipments-receiving") {
+      for (const placeholder of screen.shipmentControlBoard.placeholders) {
+        lines.add(placeholder.value);
+      }
+
+      lines.add(screen.shipmentControlBoard.customsPackCompleteness.text);
+      lines.add(screen.shipmentControlBoard.customsPackCompleteness.status);
+
+      for (const state of screen.receivingFlow.states) {
+        lines.add(state.note);
+      }
+
+      lines.add(screen.mismatchHandling.deviationPlaceholder);
+      lines.add(screen.nextGate.text);
     }
   }
 

@@ -1,189 +1,185 @@
 "use client";
 
+import type { PropsWithChildren } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  type PropsWithChildren,
-  type ReactNode
-} from "react";
-import { ALL_LAYERS, listEnabledLayers, type LayerId, type LayerProfile } from "./layerIds.js";
+  ALL_LAYERS,
+  applyLayerPreset,
+  createAllLayersOff,
+  createAllLayersOn,
+  mergeLayerFlags,
+  type LayerId,
+  type LayerProfile
+} from "./layerIds.js";
 import {
-  createResolvedFromLayers,
-  createResolvedFromProfile,
+  createLayerFlagsQueryFromResolved,
+  encodeLayersParam,
   resolveLayerFlags,
   type ResolvedLayerFlags,
   type SearchParamsLike
 } from "./resolveLayerFlags.js";
-
-export interface LayerFlagsActions {
-  readonly setLayer: (layerId: LayerId, enabled: boolean) => void;
-  readonly setFlag: (layerId: LayerId, enabled: boolean) => void;
-  readonly setAll: (enabled: boolean) => void;
-  readonly resetAll: () => void;
-  readonly setProfile: (profile: LayerProfile) => void;
-  readonly resetNeutral: () => void;
-}
-
-export interface LayerFlagsContextValue extends ResolvedLayerFlags, LayerFlagsActions {
-  readonly resolved: ResolvedLayerFlags;
-  readonly enabledLayers: readonly LayerId[];
-}
-
-function toSearchParamsLike({
-  search,
-  layers,
-  layerProfile,
-  debug
-}: {
-  search?: string;
-  layers?: string;
-  layerProfile?: LayerProfile;
-  debug?: boolean;
-}): SearchParamsLike {
-  const query = search?.startsWith("?") ? search.slice(1) : (search ?? "");
-  const fromSearch = new URLSearchParams(query);
-  const next: SearchParamsLike = {};
-
-  const layersValue = layers ?? fromSearch.get("layers") ?? undefined;
-  const profileValue =
-    layerProfile ?? (fromSearch.get("layerProfile") as LayerProfile | null) ?? undefined;
-  const debugValue = debug ?? fromSearch.get("debug") === "1";
-
-  if (layersValue !== undefined) {
-    next["layers"] = layersValue;
-  }
-  if (profileValue !== undefined) {
-    next["layerProfile"] = profileValue;
-  }
-  if (debugValue) {
-    next["debug"] = "1";
-  }
-
-  return next;
-}
-
-function readWindowSearch(): string {
-  if (typeof window === "undefined") {
-    return "";
-  }
-  return window.location.search ?? "";
-}
-
-function buildInitialResolved(
-  value: ResolvedLayerFlags | undefined,
-  initialResolved: ResolvedLayerFlags | undefined,
-  search: string | undefined,
-  layers: string | undefined,
-  layerProfile: LayerProfile | undefined,
-  debug: boolean | undefined
-): ResolvedLayerFlags {
-  if (value) return value;
-  if (initialResolved) return initialResolved;
-
-  return resolveLayerFlags(
-    toSearchParamsLike({
-      search: search ?? readWindowSearch(),
-      ...(layers !== undefined ? { layers } : {}),
-      ...(layerProfile !== undefined ? { layerProfile } : {}),
-      ...(debug !== undefined ? { debug } : {})
-    })
-  );
-}
-
-const DEFAULT_RESOLVED_LAYER_FLAGS = resolveLayerFlags({});
-
-const NOOP_ACTIONS: LayerFlagsActions = {
-  setLayer: () => {},
-  setFlag: () => {},
-  setAll: () => {},
-  resetAll: () => {},
-  setProfile: () => {},
-  resetNeutral: () => {}
-};
-
-export const LayerFlagsContext = createContext<LayerFlagsContextValue>({
-  ...DEFAULT_RESOLVED_LAYER_FLAGS,
-  resolved: DEFAULT_RESOLVED_LAYER_FLAGS,
-  enabledLayers: listEnabledLayers(DEFAULT_RESOLVED_LAYER_FLAGS.flags),
-  ...NOOP_ACTIONS
-});
+import { extractEnabledLayerIds, LayerFlagsContext } from "./useLayerFlags.js";
 
 export interface LayerFlagsProviderProps extends PropsWithChildren {
-  readonly initialResolved?: ResolvedLayerFlags;
-  readonly value?: ResolvedLayerFlags;
-  readonly search?: string;
-  readonly layers?: string;
-  readonly layerProfile?: LayerProfile;
-  readonly debug?: boolean;
-  readonly isDevelopment?: boolean;
+  readonly initialResolved: ResolvedLayerFlags;
 }
 
-export function LayerFlagsProvider({
-  children,
-  value,
-  initialResolved,
-  search,
-  layers,
-  layerProfile,
-  debug
-}: LayerFlagsProviderProps): ReactNode {
-  const computedInitial = useMemo(
-    () => buildInitialResolved(value, initialResolved, search, layers, layerProfile, debug),
-    [debug, initialResolved, layerProfile, layers, search, value]
-  );
+function buildRaw(raw: {
+  layers?: string | undefined;
+  layerProfile?: string | undefined;
+  debug?: string | undefined;
+}): ResolvedLayerFlags["raw"] {
+  return {
+    ...(raw.layers !== undefined ? { layers: raw.layers } : {}),
+    ...(raw.layerProfile !== undefined ? { layerProfile: raw.layerProfile } : {}),
+    ...(raw.debug !== undefined ? { debug: raw.debug } : {})
+  };
+}
 
-  const [resolved, setResolved] = useState<ResolvedLayerFlags>(computedInitial);
+function toSearchParamsLike(params: URLSearchParams): SearchParamsLike {
+  const byKey = new Map<string, string[]>();
 
-  useEffect(() => {
-    setResolved(computedInitial);
-  }, [computedInitial]);
+  params.forEach((value, key) => {
+    const current = byKey.get(key) ?? [];
+    byKey.set(key, [...current, value]);
+  });
+
+  const record: SearchParamsLike = {};
+  for (const [key, values] of byKey.entries()) {
+    if (values.length === 1) {
+      record[key] = values[0];
+    } else if (values.length > 1) {
+      record[key] = values;
+    }
+  }
+
+  return record;
+}
+
+function getResolvedSignature(resolved: ResolvedLayerFlags): string {
+  const enabled = ALL_LAYERS.filter((id) => resolved.flags[id]).join(",");
+  return `${resolved.source}|${resolved.profile}|${resolved.debug ? "1" : "0"}|${enabled}`;
+}
+
+function normalizeFromLayers(
+  flags: ResolvedLayerFlags["flags"],
+  debug: boolean
+): ResolvedLayerFlags {
+  return {
+    flags,
+    profile: "neutral",
+    debug,
+    source: "layers",
+    raw: buildRaw({
+      layers: encodeLayersParam(flags),
+      debug: debug ? "1" : undefined
+    })
+  };
+}
+
+function normalizeFromProfile(profile: LayerProfile, debug: boolean): ResolvedLayerFlags {
+  return {
+    flags: applyLayerPreset(profile),
+    profile,
+    debug,
+    source: "profile",
+    raw: buildRaw({
+      layerProfile: profile,
+      debug: debug ? "1" : undefined
+    })
+  };
+}
+
+function normalizeDefault(debug: boolean): ResolvedLayerFlags {
+  return {
+    flags: createAllLayersOff(),
+    profile: "neutral",
+    debug,
+    source: "default",
+    raw: buildRaw({
+      debug: debug ? "1" : undefined
+    })
+  };
+}
+
+export function LayerFlagsProvider({ initialResolved, children }: LayerFlagsProviderProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const [resolved, setResolved] = useState<ResolvedLayerFlags>(initialResolved);
+  const lastAppliedUrlSignatureRef = useRef<string>(getResolvedSignature(initialResolved));
+
+  const setLayer = useCallback((id: LayerId, on: boolean) => {
+    setResolved((previous) => {
+      const flags = mergeLayerFlags(previous.flags, { [id]: on });
+      return normalizeFromLayers(flags, previous.debug);
+    });
+  }, []);
+
+  const setAll = useCallback((on: boolean) => {
+    setResolved((previous) => {
+      const flags = on ? createAllLayersOn() : createAllLayersOff();
+      return normalizeFromLayers(flags, previous.debug);
+    });
+  }, []);
 
   const setProfile = useCallback((profile: LayerProfile) => {
-    setResolved((prev) => createResolvedFromProfile(profile, prev.debug));
-  }, []);
-
-  const setAll = useCallback((enabled: boolean) => {
-    setResolved((prev) => createResolvedFromLayers(enabled ? ALL_LAYERS : [], prev.debug));
-  }, []);
-
-  const setLayer = useCallback((layerId: LayerId, enabled: boolean) => {
-    setResolved((prev) => {
-      const currentEnabled = new Set(listEnabledLayers(prev.flags));
-      if (enabled) {
-        currentEnabled.add(layerId);
-      } else {
-        currentEnabled.delete(layerId);
+    setResolved((previous) => {
+      if (profile === "neutral") {
+        return normalizeFromProfile("neutral", previous.debug);
       }
-      return createResolvedFromLayers([...currentEnabled], prev.debug);
+      return normalizeFromProfile(profile, previous.debug);
     });
   }, []);
 
   const resetNeutral = useCallback(() => {
-    setResolved((prev) => createResolvedFromProfile("neutral", prev.debug));
+    setResolved((previous) => normalizeDefault(previous.debug));
   }, []);
 
-  const resetAll = useCallback(() => {
-    setAll(false);
-  }, [setAll]);
+  useEffect(() => {
+    const fromUrl = resolveLayerFlags(
+      toSearchParamsLike(new URLSearchParams(searchParams.toString()))
+    );
+    const currentSignature = getResolvedSignature(resolved);
+    const fromUrlSignature = getResolvedSignature(fromUrl);
 
-  const contextValue = useMemo<LayerFlagsContextValue>(() => {
-    const enabledLayers = listEnabledLayers(resolved.flags);
+    if (
+      fromUrlSignature !== currentSignature &&
+      fromUrlSignature !== lastAppliedUrlSignatureRef.current
+    ) {
+      setResolved(fromUrl);
+    }
+  }, [resolved, searchParams]);
 
-    return {
-      ...resolved,
+  useEffect(() => {
+    const current = new URLSearchParams(searchParams.toString());
+    const next = createLayerFlagsQueryFromResolved(resolved, current);
+
+    const currentString = current.toString();
+    const nextString = next.toString();
+
+    if (currentString !== nextString) {
+      const target = nextString.length > 0 ? `${pathname}?${nextString}` : pathname;
+      router.replace(target, { scroll: false });
+    }
+
+    lastAppliedUrlSignatureRef.current = getResolvedSignature(resolved);
+  }, [pathname, resolved, router, searchParams]);
+
+  const contextValue = useMemo(
+    () => ({
       resolved,
-      enabledLayers,
+      flags: resolved.flags,
+      enabledLayers: extractEnabledLayerIds(resolved.flags),
       setLayer,
-      setFlag: setLayer,
       setAll,
-      resetAll,
       setProfile,
       resetNeutral
-    };
-  }, [resolved, resetAll, resetNeutral, setAll, setLayer, setProfile]);
+    }),
+    [resolved, resetNeutral, setAll, setLayer, setProfile]
+  );
 
   return <LayerFlagsContext.Provider value={contextValue}>{children}</LayerFlagsContext.Provider>;
 }

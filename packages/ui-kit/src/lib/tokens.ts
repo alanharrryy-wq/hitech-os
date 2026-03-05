@@ -1,5 +1,3 @@
-import { HITECH_THEME } from "../brand/hitech-theme.js";
-
 export const coreTokens = {
   radius: {
     none: "var(--ui-core-radius-none)",
@@ -55,19 +53,9 @@ export const fxTokens = {
   shadowMax: "var(--ui-shadow-max)"
 } as const;
 
-export const hitechBrandTokens = {
-  colors: HITECH_THEME.colors,
-  gradients: HITECH_THEME.gradients,
-  glows: HITECH_THEME.glows,
-  strokes: HITECH_THEME.strokes,
-  noise: HITECH_THEME.noise,
-  cssVariables: HITECH_THEME.cssVariables
-} as const;
-
 export type CoreTokens = typeof coreTokens;
 export type SemanticTokens = typeof semanticTokens;
 export type FxTokens = typeof fxTokens;
-export type HitechBrandTokens = typeof hitechBrandTokens;
 
 export function getTokenVar(name: string): string {
   return `var(${name})`;

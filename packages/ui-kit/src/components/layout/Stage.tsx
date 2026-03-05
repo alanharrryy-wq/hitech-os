@@ -1,53 +1,90 @@
-import type { HTMLAttributes, PropsWithChildren, ReactElement } from "react";
+"use client";
 
-import { LayerDebugPanel } from "../../layers/LayerDebugPanel.js";
-import { LAYER_DATA_ATTR_MAP, STAGE_LAYER_IDS } from "../../layers/layerIds.js";
+import { cva, type VariantProps } from "class-variance-authority";
+import type { HTMLAttributes, PropsWithChildren } from "react";
+import { cn } from "../../lib/cn.js";
+import { type FxOverlayOptions, normalizeFxOverlays } from "../../lib/fx.js";
+import { mergeLayerFlags, type LayerFlags } from "../../layers/layerIds.js";
 import { useLayerFlags } from "../../layers/useLayerFlags.js";
 
-export interface StageProps extends PropsWithChildren, HTMLAttributes<HTMLDivElement> {
-  readonly showDebugPanel?: boolean;
-  readonly contentClassName?: string;
+const stageVariants = cva("stage ui-stage", {
+  variants: {
+    density: {
+      default: "",
+      compact: "",
+      comfortable: ""
+    }
+  },
+  defaultVariants: {
+    density: "default"
+  }
+});
+
+export interface StageProps
+  extends PropsWithChildren,
+    HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof stageVariants> {
+  readonly fx?: FxOverlayOptions;
+  readonly layerOverrides?: Partial<
+    Pick<
+      LayerFlags,
+      | "stage.haze"
+      | "stage.vignette"
+      | "stage.noise"
+      | "stage.scanlines"
+      | "stage.horizon"
+      | "frame.bezel"
+      | "motion.enabled"
+    >
+  >;
 }
 
-function joinClassNames(values: readonly (string | undefined | null | false)[]): string {
-  return values.filter(Boolean).join(" ");
+function onOff(value: boolean): "on" | "off" {
+  return value ? "on" : "off";
 }
 
-export function Stage({
-  children,
-  className,
-  contentClassName,
-  showDebugPanel = true,
-  ...rest
-}: StageProps): ReactElement {
-  const resolved = useLayerFlags();
+function mapFxToLayerOverrides(fx?: FxOverlayOptions): Partial<LayerFlags> | undefined {
+  if (!fx) {
+    return undefined;
+  }
 
-  const stageAttrs = {
-    [LAYER_DATA_ATTR_MAP["stage.noise"]]: resolved.flags["stage.noise"] ? "on" : "off",
-    [LAYER_DATA_ATTR_MAP["stage.scanlines"]]: resolved.flags["stage.scanlines"] ? "on" : "off",
-    [LAYER_DATA_ATTR_MAP["stage.glow"]]: resolved.flags["stage.glow"] ? "on" : "off",
-    [LAYER_DATA_ATTR_MAP["motion.enabled"]]: resolved.flags["motion.enabled"] ? "on" : "off"
-  } as const;
+  const normalized = normalizeFxOverlays(fx);
+  return {
+    "stage.noise": normalized.noise,
+    "stage.scanlines": normalized.scanline,
+    "stage.haze": normalized.haze,
+    "stage.vignette": normalized.vignette
+  };
+}
+
+export function Stage({ className, children, density, fx, layerOverrides, ...props }: StageProps) {
+  const layerContext = useLayerFlags();
+  const merged = mergeLayerFlags(layerContext.flags, {
+    ...(mapFxToLayerOverrides(fx) ?? {}),
+    ...(layerOverrides ?? {})
+  });
 
   return (
-    <section className={joinClassNames(["ui-layer-stage", className])} {...stageAttrs} {...rest}>
-      <div className="ui-layer-stage__overlay" aria-hidden="true">
-        {resolved.flags["stage.noise"] ? (
-          <div className="ui-layer-stage__noise" data-layer-node="stage.noise" />
-        ) : null}
-        {resolved.flags["stage.scanlines"] ? (
-          <div className="ui-layer-stage__scanlines" data-layer-node="stage.scanlines" />
-        ) : null}
-        {resolved.flags["stage.glow"] ? (
-          <div className="ui-layer-stage__glow" data-layer-node="stage.glow" />
-        ) : null}
+    <div
+      className={cn(stageVariants({ density }), className)}
+      data-layer-stage-haze={onOff(merged["stage.haze"])}
+      data-layer-stage-vignette={onOff(merged["stage.vignette"])}
+      data-layer-stage-noise={onOff(merged["stage.noise"])}
+      data-layer-stage-scanlines={onOff(merged["stage.scanlines"])}
+      data-layer-stage-horizon={onOff(merged["stage.horizon"])}
+      data-layer-frame-bezel={onOff(merged["frame.bezel"])}
+      data-layer-motion-enabled={onOff(merged["motion.enabled"])}
+      {...props}
+    >
+      <div className="stage-overlays" aria-hidden>
+        <div className="noise" aria-hidden="true" />
+        <div className="scanlines" aria-hidden="true" />
+        <div className="haze" aria-hidden="true" />
+        <div className="vignette" aria-hidden="true" />
+        <div className="horizon" aria-hidden="true" />
+        <div className="frame-bezel" aria-hidden="true" />
       </div>
-
-      <div className={joinClassNames(["ui-layer-stage__content", contentClassName])}>
-        {children}
-      </div>
-
-      {showDebugPanel && STAGE_LAYER_IDS.length > 0 ? <LayerDebugPanel /> : null}
-    </section>
+      <div className="ui-stage__content stage-content">{children}</div>
+    </div>
   );
 }

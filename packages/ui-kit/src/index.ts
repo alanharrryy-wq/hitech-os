@@ -3,7 +3,6 @@ export * from "./lib/focus-ring.js";
 export * from "./lib/motion.js";
 export * from "./lib/tokens.js";
 export * from "./lib/fx.js";
-export * from "./brand/index.js";
 export * from "./layers/layerIds.js";
 export * from "./layers/resolveLayerFlags.js";
 export { LayerFlagsProvider } from "./layers/LayerFlagsProvider.js";
@@ -11,8 +10,6 @@ export type { LayerFlagsProviderProps } from "./layers/LayerFlagsProvider.js";
 export { useLayerFlags } from "./layers/useLayerFlags.js";
 export type { LayerFlagsContextValue, LayerFlagsActions } from "./layers/useLayerFlags.js";
 export { LayerDebugPanel } from "./layers/LayerDebugPanel.js";
-export { LayerStack } from "./layers/LayerStack.js";
-export type { LayerStackProps } from "./layers/LayerStack.js";
 
 export { Stage } from "./components/layout/Stage.js";
 export type { StageProps } from "./components/layout/Stage.js";
@@ -103,7 +100,6 @@ export {
 } from "./components/navigation/DropdownMenu.js";
 
 export { ScrollArea, ScrollBar } from "./components/navigation/ScrollArea.js";
-export type { ScrollAreaProps } from "./components/navigation/ScrollArea.js";
 
 export {
   Table,
@@ -122,9 +118,6 @@ export type { SpinnerProps } from "./components/feedback/Spinner.js";
 
 export { EmptyState } from "./components/feedback/EmptyState.js";
 export type { EmptyStateProps } from "./components/feedback/EmptyState.js";
-
-/* Premium HITECH UX components */
-export * from "./components/premium/index.js";
 
 /* Legacy exports retained for compatibility */
 export { Card } from "./components/Card.js";

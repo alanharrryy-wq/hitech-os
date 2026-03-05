@@ -240,10 +240,3 @@ export function overrideResolvedFlags(
 export function toLayerFlagPairs(flags: LayerFlags): ReadonlyArray<{ id: LayerId; on: boolean }> {
   return ALL_LAYERS.map((id) => ({ id, on: flags[id] }));
 }
-
-export function shouldRenderLayerDebugPanel(
-  resolved: Pick<ResolvedLayerFlags, "debug">,
-  environment = process.env["NODE_ENV"]
-): boolean {
-  return environment !== "production" && resolved.debug;
-}

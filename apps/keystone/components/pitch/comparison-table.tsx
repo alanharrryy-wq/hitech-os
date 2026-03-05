@@ -20,28 +20,24 @@ export function ComparisonTable({ headers, rows, className }: ComparisonTablePro
   return (
     <GlassCard className={cn("p-2", className)} tone="default" backdrop="off">
       <InsetPanel title="Comparación" description="Modelo vs Múltiplo, Riesgo y Escalabilidad">
-        <div className="overflow-x-auto">
-          <Table className="min-w-[32rem]">
-            <TableHead>
-              <TableRow>
-                {headers.map((header) => (
-                  <TableHeaderCell key={header}>{header}</TableHeaderCell>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {headers.map((header) => (
+                <TableHeaderCell key={header}>{header}</TableHeaderCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row, rowIndex) => (
+              <TableRow key={rowIndex}>
+                {row.map((cell, cellIndex) => (
+                  <TableCell key={`${rowIndex}:${cellIndex}`}>{cell}</TableCell>
                 ))}
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row, rowIndex) => (
-                <TableRow key={rowIndex}>
-                  {row.map((cell, cellIndex) => (
-                    <TableCell key={`${rowIndex}:${cellIndex}`} className="align-top">
-                      {cell}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+            ))}
+          </TableBody>
+        </Table>
       </InsetPanel>
     </GlassCard>
   );

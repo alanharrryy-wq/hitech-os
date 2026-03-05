@@ -15,9 +15,21 @@ import PitchDoubleEnginePage from "../app/pitch/01-double-engine/page";
 import PitchIndustrialFlowPage from "../app/pitch/02-industrial-flow/page";
 import PitchHiTechOsPage from "../app/pitch/03-hitech-os/page";
 import PitchValuationPage from "../app/pitch/04-valuation/page";
+import type { ReactElement } from "react";
 
 function renderPage(element: ReturnType<typeof PitchDoubleEnginePage>): string {
   return renderToStaticMarkup(element);
+}
+
+type GenericPitchPage = (input: {
+  searchParams: Record<string, string | string[] | undefined>;
+}) => ReactElement;
+
+async function importPitchPage(modulePath: string): Promise<GenericPitchPage> {
+  const module = (await import(/* @vite-ignore */ modulePath)) as {
+    default: GenericPitchPage;
+  };
+  return module.default;
 }
 
 describe("pitch route smoke", () => {
@@ -60,5 +72,25 @@ describe("pitch route smoke", () => {
     expect(html).toContain("Múltiplo");
     expect(html).toContain("Riesgo");
     expect(html).toContain("Escalabilidad");
+  });
+
+  it("/pitch/05-inventory-foundation imports page module and renders without throwing", async () => {
+    const page = await importPitchPage("../app/pitch/05-inventory-foundation/page");
+    const html = renderPage(page({ searchParams: {} }));
+
+    expect(html).toContain("Interactive demo controls");
+    expect(html).toContain("Proceed to Shipments");
+    expect(html).toContain("HOLD");
+  });
+
+  it("/pitch/06-shipments-receiving renders demo controls and deterministic transitions", async () => {
+    const page = await importPitchPage("../app/pitch/06-shipments-receiving/page");
+    const defaultHtml = renderPage(page({ searchParams: {} }));
+
+    expect(defaultHtml).toContain("Interactive demo controls");
+    expect(defaultHtml).toContain("Transition timeline");
+    expect(defaultHtml).toContain("Current shipmentState");
+    expect(defaultHtml).toContain("ARRIVED");
+    expect(defaultHtml).toContain("Advance");
   });
 });

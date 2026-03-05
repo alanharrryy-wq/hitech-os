@@ -10,7 +10,7 @@ export interface PitchNavProps {
 export function PitchNav({ model, className }: PitchNavProps) {
   return (
     <nav
-      className={cn("grid gap-2 md:grid-cols-2 xl:grid-cols-4", className)}
+      className={cn("grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6", className)}
       aria-label="Pitch navigation"
     >
       {model.links.map((link) => {

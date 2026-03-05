@@ -32,7 +32,7 @@ export function InsetPanel({
 
   return (
     <section
-      className={cn("inset ui-inset ui-hitech-material", className)}
+      className={cn("inset ui-inset", className)}
       data-layer-inset-shadow={onOff(merged["inset.shadow"])}
       data-layer-motion-enabled={onOff(merged["motion.enabled"])}
       {...props}
