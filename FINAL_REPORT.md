@@ -77,16 +77,6 @@ Date: 2026-02-28
   services/core-api test: ℹ todo 0
   services/core-api test: ℹ duration_ms 5888.6188
   services/core-api test: Done
-  apps/web test$ node --test
-  apps/web test: ℹ tests 0
-  apps/web test: ℹ suites 0
-  apps/web test: ℹ pass 0
-  apps/web test: ℹ fail 0
-  apps/web test: ℹ cancelled 0
-  apps/web test: ℹ skipped 0
-  apps/web test: ℹ todo 0
-  apps/web test: ℹ duration_ms 68.8735
-  apps/web test: Done
 - pnpm -r --if-present build => rc=1
   tail:
   Scope: 10 of 11 workspace projects

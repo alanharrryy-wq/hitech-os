@@ -3,7 +3,7 @@
 import type { PropsWithChildren } from "react";
 import { LayerDebugPanel } from "./LayerDebugPanel.js";
 import { LayerFlagsProvider } from "./LayerFlagsProvider.js";
-import { shouldRenderLayerDebugPanel, type ResolvedLayerFlags } from "./resolveLayerFlags.js";
+import type { ResolvedLayerFlags } from "./resolveLayerFlags.js";
 
 export interface LayerStackProps extends PropsWithChildren {
   readonly flags: ResolvedLayerFlags;
@@ -11,7 +11,8 @@ export interface LayerStackProps extends PropsWithChildren {
 }
 
 export function LayerStack({ flags, includeDebugPanel = true, children }: LayerStackProps) {
-  const showDebugPanel = includeDebugPanel && shouldRenderLayerDebugPanel(flags);
+  const showDebugPanel =
+    includeDebugPanel && process.env["NODE_ENV"] !== "production" && flags.debug;
 
   return (
     <LayerFlagsProvider initialResolved={flags}>

@@ -123,7 +123,7 @@ All feature flags default to `false` in:
 
 1. `packages/contracts` defaults.
 2. `services/core-api` runtime responses.
-3. `apps/web` fallback UI config.
+3. `apps/keystone` fallback UI config.
 
 Rules:
 
@@ -208,7 +208,7 @@ Constraints:
 
 #### 9. App Contract
 
-##### 9.1 Web (`apps/web`)
+##### 9.1 Keystone (`apps/keystone`)
 
 Required behavior:
 
