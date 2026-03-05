@@ -1,14 +1,15 @@
 export const ALL_LAYERS = [
-  "stage.haze",
-  "stage.vignette",
   "stage.noise",
   "stage.scanlines",
+  "stage.glow",
+  "stage.haze",
+  "stage.vignette",
   "stage.horizon",
   "frame.bezel",
-  "card.blur",
   "card.innerStroke",
   "card.specular",
   "card.grain",
+  "card.blur",
   "card.shadowAmbient",
   "inset.shadow",
   "motion.enabled"
@@ -18,78 +19,88 @@ export type LayerId = (typeof ALL_LAYERS)[number];
 
 export type LayerProfile = "neutral" | "fx" | "perf";
 
+export const CANON_LAYER_IDS = [
+  "stage.noise",
+  "stage.scanlines",
+  "stage.glow",
+  "card.innerStroke",
+  "card.specular",
+  "card.grain",
+  "card.blur",
+  "motion.enabled",
+  "frame.bezel",
+  "inset.shadow"
+] as const satisfies readonly LayerId[];
+
+export const STAGE_LAYER_IDS = ALL_LAYERS.filter((id) =>
+  id.startsWith("stage.")
+) as readonly LayerId[];
+
+export const EXPENSIVE_LAYER_IDS = [
+  "stage.noise",
+  "stage.scanlines",
+  "stage.glow",
+  "stage.haze",
+  "stage.vignette",
+  "stage.horizon",
+  "card.specular",
+  "card.grain",
+  "card.blur",
+  "card.shadowAmbient"
+] as const satisfies readonly LayerId[];
+
 export const PROFILE_PRESETS: Record<LayerProfile, readonly LayerId[]> = {
   neutral: [],
-  fx: [
-    "stage.haze",
-    "stage.vignette",
-    "stage.noise",
-    "stage.scanlines",
-    "stage.horizon",
-    "frame.bezel",
-    "card.innerStroke",
-    "card.shadowAmbient",
-    "card.specular",
-    "card.grain",
-    "inset.shadow"
-  ],
-  perf: ["stage.vignette", "card.innerStroke", "inset.shadow"]
+  fx: [...ALL_LAYERS],
+  perf: ["card.innerStroke", "frame.bezel", "inset.shadow"]
 } as const;
-
-export const LAYER_SET: ReadonlySet<LayerId> = new Set(ALL_LAYERS);
 
 export type LayerFlags = Record<LayerId, boolean>;
 
-export const LAYER_DATA_ATTRIBUTES: Readonly<Record<LayerId, string>> = {
-  "stage.haze": "data-layer-stage-haze",
-  "stage.vignette": "data-layer-stage-vignette",
+export const LAYER_DATA_ATTR_MAP: Readonly<Record<LayerId, string>> = {
   "stage.noise": "data-layer-stage-noise",
   "stage.scanlines": "data-layer-stage-scanlines",
+  "stage.glow": "data-layer-stage-glow",
+  "stage.haze": "data-layer-stage-haze",
+  "stage.vignette": "data-layer-stage-vignette",
   "stage.horizon": "data-layer-stage-horizon",
   "frame.bezel": "data-layer-frame-bezel",
-  "card.blur": "data-layer-card-blur",
   "card.innerStroke": "data-layer-card-inner-stroke",
   "card.specular": "data-layer-card-specular",
   "card.grain": "data-layer-card-grain",
+  "card.blur": "data-layer-card-blur",
   "card.shadowAmbient": "data-layer-card-shadow-ambient",
   "inset.shadow": "data-layer-inset-shadow",
-  "motion.enabled": "data-layer-motion-enabled"
+  "motion.enabled": "data-layer-motion"
 };
 
+export const LAYER_DATA_ATTRIBUTES = LAYER_DATA_ATTR_MAP;
+
+export const LAYER_SET: ReadonlySet<LayerId> = new Set(ALL_LAYERS);
+
+function createFlags(initialValue: boolean): LayerFlags {
+  const flags = {} as LayerFlags;
+  for (const id of ALL_LAYERS) {
+    flags[id] = initialValue;
+  }
+  return flags;
+}
+
 export function createAllLayersOff(): LayerFlags {
-  return {
-    "stage.haze": false,
-    "stage.vignette": false,
-    "stage.noise": false,
-    "stage.scanlines": false,
-    "stage.horizon": false,
-    "frame.bezel": false,
-    "card.blur": false,
-    "card.innerStroke": false,
-    "card.specular": false,
-    "card.grain": false,
-    "card.shadowAmbient": false,
-    "inset.shadow": false,
-    "motion.enabled": false
-  };
+  return createFlags(false);
 }
 
 export function createAllLayersOn(): LayerFlags {
-  return {
-    "stage.haze": true,
-    "stage.vignette": true,
-    "stage.noise": true,
-    "stage.scanlines": true,
-    "stage.horizon": true,
-    "frame.bezel": true,
-    "card.blur": true,
-    "card.innerStroke": true,
-    "card.specular": true,
-    "card.grain": true,
-    "card.shadowAmbient": true,
-    "inset.shadow": true,
-    "motion.enabled": true
-  };
+  return createFlags(true);
+}
+
+export const PROFILE_LAYER_FLAGS: Readonly<Record<LayerProfile, LayerFlags>> = {
+  neutral: createAllLayersOff(),
+  fx: createAllLayersOn(),
+  perf: createFlags(false)
+};
+for (const id of PROFILE_PRESETS.perf) {
+  PROFILE_LAYER_FLAGS.perf[id] = true;
 }
 
 export function applyLayerPreset(profile: LayerProfile): LayerFlags {
@@ -109,8 +120,16 @@ export function sortLayerIds(ids: readonly LayerId[]): LayerId[] {
   return [...ids].sort((left, right) => ALL_LAYERS.indexOf(left) - ALL_LAYERS.indexOf(right));
 }
 
+export function stableSortLayerIds(ids: readonly LayerId[]): LayerId[] {
+  return sortLayerIds(ids);
+}
+
 export function listEnabledLayers(flags: LayerFlags): LayerId[] {
   return ALL_LAYERS.filter((id) => flags[id]);
+}
+
+export function getEnabledLayerIds(flags: LayerFlags): LayerId[] {
+  return listEnabledLayers(flags);
 }
 
 export function areAllLayersEnabled(flags: LayerFlags): boolean {
@@ -126,21 +145,14 @@ export function mergeLayerFlags(base: LayerFlags, overrides?: Partial<LayerFlags
     return base;
   }
 
-  return {
-    "stage.haze": overrides["stage.haze"] ?? base["stage.haze"],
-    "stage.vignette": overrides["stage.vignette"] ?? base["stage.vignette"],
-    "stage.noise": overrides["stage.noise"] ?? base["stage.noise"],
-    "stage.scanlines": overrides["stage.scanlines"] ?? base["stage.scanlines"],
-    "stage.horizon": overrides["stage.horizon"] ?? base["stage.horizon"],
-    "frame.bezel": overrides["frame.bezel"] ?? base["frame.bezel"],
-    "card.blur": overrides["card.blur"] ?? base["card.blur"],
-    "card.innerStroke": overrides["card.innerStroke"] ?? base["card.innerStroke"],
-    "card.specular": overrides["card.specular"] ?? base["card.specular"],
-    "card.grain": overrides["card.grain"] ?? base["card.grain"],
-    "card.shadowAmbient": overrides["card.shadowAmbient"] ?? base["card.shadowAmbient"],
-    "inset.shadow": overrides["inset.shadow"] ?? base["inset.shadow"],
-    "motion.enabled": overrides["motion.enabled"] ?? base["motion.enabled"]
-  };
+  const merged = { ...base };
+  for (const id of ALL_LAYERS) {
+    const override = overrides[id];
+    if (override !== undefined) {
+      merged[id] = override;
+    }
+  }
+  return merged;
 }
 
 export function createFlagsFromEnabledLayers(enabledLayers: readonly LayerId[]): LayerFlags {
@@ -164,5 +176,9 @@ export function parseLayerList(input: string): LayerId[] {
     }
   }
 
-  return sortLayerIds([...unique]);
+  return stableSortLayerIds([...unique]);
+}
+
+export function toOnOff(value: boolean): "on" | "off" {
+  return value ? "on" : "off";
 }

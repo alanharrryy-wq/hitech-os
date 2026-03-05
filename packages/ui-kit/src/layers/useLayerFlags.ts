@@ -2,15 +2,17 @@ import { useContext } from "react";
 
 import { LayerFlagsContext } from "./LayerFlagsProvider.js";
 import { toOnOff, type LayerId } from "./layerIds.js";
-import type { ResolvedLayerFlags } from "./resolveLayerFlags.js";
+import type { LayerFlagsActions, LayerFlagsContextValue } from "./LayerFlagsProvider.js";
 
-export function useLayerFlags(): ResolvedLayerFlags {
+export type { LayerFlagsContextValue, LayerFlagsActions };
+
+export function useLayerFlags(): LayerFlagsContextValue {
   return useContext(LayerFlagsContext);
 }
 
 export function useLayerFlag(layerId: LayerId): boolean {
-  const resolved = useLayerFlags();
-  return resolved.flags[layerId];
+  const context = useLayerFlags();
+  return context.flags[layerId];
 }
 
 export function useLayerOnOff(layerId: LayerId): "on" | "off" {

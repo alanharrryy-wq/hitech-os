@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { LayerDebugPanel, LayerFlagsProvider, GlassCard, InsetPanel } from "@hitech/ui-kit";
+import { LayerFlagsProvider, GlassCard, InsetPanel } from "@hitech/ui-kit";
 import { PITCH_DECK_FIXTURE } from "@hitech/contracts";
-import { PitchShell } from "../../components/pitch";
+import { PitchLayerDevTools, PitchShell } from "../../components/pitch";
 import {
   resolvePitchLayerFlags,
   type PitchSearchParamsProps
@@ -37,7 +37,7 @@ export default function PitchIndexPage({ searchParams }: PitchSearchParamsProps)
           </InsetPanel>
         </GlassCard>
       </PitchShell>
-      {resolved.debug ? <LayerDebugPanel /> : null}
+      <PitchLayerDevTools visible={resolved.debug} />
     </LayerFlagsProvider>
   );
 }

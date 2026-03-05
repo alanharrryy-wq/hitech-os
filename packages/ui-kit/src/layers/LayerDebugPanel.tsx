@@ -1,18 +1,43 @@
 "use client";
 
 import type { CSSProperties } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ALL_LAYERS } from "./layerIds.js";
-import { shouldRenderLayerDebugPanel } from "./resolveLayerFlags.js";
+import {
+  createLayerFlagsQueryFromResolved,
+  shouldRenderLayerDebugPanel
+} from "./resolveLayerFlags.js";
 import { useLayerFlags } from "./useLayerFlags.js";
 
-const PANEL_STYLE: CSSProperties = {
+export interface LayerDebugPanelProps {
+  /**
+   * "floating" lets a parent container handle position/size.
+   * "fixed" keeps the legacy viewport-fixed panel.
+   */
+  mode?: "floating" | "fixed";
+}
+
+const FIXED_PANEL_STYLE: CSSProperties = {
   position: "fixed",
   right: "1rem",
   bottom: "1rem",
   zIndex: 2147483640,
-  width: "min(420px, calc(100vw - 2rem))",
+  width: "min(460px, calc(100vw - 2rem))",
   maxHeight: "calc(100dvh - 2rem)",
   overflow: "auto",
+  borderRadius: "12px",
+  border: "1px solid hsl(var(--ui-border-2))",
+  background: "hsl(var(--ui-surface-1) / 0.96)",
+  boxShadow: "var(--ui-shadow-2)",
+  padding: "0.875rem"
+};
+
+const FLOATING_PANEL_STYLE: CSSProperties = {
+  position: "relative",
+  zIndex: 1,
+  width: "100%",
+  maxHeight: "unset",
+  overflow: "visible",
   borderRadius: "12px",
   border: "1px solid hsl(var(--ui-border-2))",
   background: "hsl(var(--ui-surface-1) / 0.96)",
@@ -28,53 +53,73 @@ const SECTION_STYLE: CSSProperties = {
 
 const ROW_STYLE: CSSProperties = {
   display: "flex",
-  justifyContent: "space-between",
+  gap: "0.75rem",
   alignItems: "center",
-  gap: "0.5rem",
-  paddingBlock: "0.225rem"
-};
-
-const BUTTON_ROW_STYLE: CSSProperties = {
-  display: "grid",
-  gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-  gap: "0.4rem"
+  justifyContent: "space-between"
 };
 
 const BUTTON_STYLE: CSSProperties = {
+  height: 32,
+  padding: "0 0.75rem",
+  borderRadius: 10,
   border: "1px solid hsl(var(--ui-border-2))",
-  background: "hsl(var(--ui-surface-2))",
-  color: "hsl(var(--ui-text-1))",
-  borderRadius: "0.5rem",
-  fontSize: "0.78rem",
-  padding: "0.35rem 0.6rem",
-  cursor: "pointer"
+  background: "hsl(var(--ui-surface-2) / 0.9)",
+  cursor: "pointer",
+  fontSize: 12
 };
 
-const SMALL_STYLE: CSSProperties = {
-  margin: 0,
-  fontSize: "0.72rem",
-  color: "hsl(var(--ui-text-3))"
+const INPUT_STYLE: CSSProperties = {
+  width: "100%",
+  height: 32,
+  padding: "0 0.65rem",
+  borderRadius: 10,
+  border: "1px solid hsl(var(--ui-border-2))",
+  background: "hsl(var(--ui-surface-0) / 0.85)",
+  fontSize: 12
 };
 
-export function LayerDebugPanel() {
-  const { resolved, enabledLayers, setLayer, setAll, setProfile, resetNeutral } = useLayerFlags();
+function createShareUrl(search: URLSearchParams): string {
+  if (typeof window === "undefined") {
+    return `?${search.toString()}`;
+  }
+  const query = search.toString();
+  return `${window.location.origin}${window.location.pathname}${query ? `?${query}` : ""}`;
+}
+
+export function LayerDebugPanel({ mode = "fixed" }: LayerDebugPanelProps) {
+  const { resolved, setFlag, setAll, setProfile, resetNeutral } = useLayerFlags();
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!copied) return;
+    const timeout = window.setTimeout(() => setCopied(false), 1200);
+    return () => window.clearTimeout(timeout);
+  }, [copied]);
+
+  const shareUrl = useMemo(() => {
+    if (typeof window === "undefined") return "";
+    const next = createLayerFlagsQueryFromResolved(
+      resolved,
+      new URLSearchParams(window.location.search)
+    );
+    return createShareUrl(next);
+  }, [resolved]);
+
   if (!shouldRenderLayerDebugPanel(resolved)) {
     return null;
   }
 
-  return (
-    <aside style={PANEL_STYLE} aria-label="Layer Debug Panel">
-      <header>
-        <h2 style={{ margin: 0, fontSize: "0.96rem", lineHeight: 1.1 }}>Layer Toggle Debugging</h2>
-        <p style={SMALL_STYLE}>
-          source={resolved.source} profile={resolved.profile} debug=1
-        </p>
-        <p style={SMALL_STYLE}>enabled={enabledLayers.length}</p>
-      </header>
+  const panelStyle = mode === "fixed" ? FIXED_PANEL_STYLE : FLOATING_PANEL_STYLE;
 
-      <section style={SECTION_STYLE}>
-        <p style={{ margin: 0, fontSize: "0.78rem", fontWeight: 600 }}>Profile Mode</p>
-        <div style={BUTTON_ROW_STYLE}>
+  return (
+    <div style={panelStyle} aria-label="LayerDebugPanel">
+      <div style={{ fontWeight: 700, fontSize: 13, opacity: 0.95 }}>Layer Debug</div>
+      <div style={{ marginTop: 6, opacity: 0.75, fontSize: 12 }}>
+        source={resolved.source} profile={resolved.profile} debug=1
+      </div>
+
+      <div style={SECTION_STYLE}>
+        <div style={ROW_STYLE}>
           <button type="button" style={BUTTON_STYLE} onClick={() => setProfile("neutral")}>
             neutral
           </button>
@@ -85,41 +130,55 @@ export function LayerDebugPanel() {
             perf
           </button>
           <button type="button" style={BUTTON_STYLE} onClick={resetNeutral}>
-            resetNeutral
+            reset
           </button>
         </div>
-      </section>
 
-      <section style={SECTION_STYLE}>
-        <p style={{ margin: 0, fontSize: "0.78rem", fontWeight: 600 }}>Explicit Layers Mode</p>
-        <div style={BUTTON_ROW_STYLE}>
+        <div style={{ ...ROW_STYLE, marginTop: 8 }}>
           <button type="button" style={BUTTON_STYLE} onClick={() => setAll(true)}>
             layers=all
           </button>
           <button type="button" style={BUTTON_STYLE} onClick={() => setAll(false)}>
             layers=none
           </button>
+          <button
+            type="button"
+            style={BUTTON_STYLE}
+            onClick={() => {
+              navigator.clipboard?.writeText(shareUrl).then(
+                () => setCopied(true),
+                () => setCopied(false)
+              );
+            }}
+          >
+            {copied ? "Copied" : "Copy URL"}
+          </button>
         </div>
-      </section>
 
-      <section style={SECTION_STYLE}>
-        <p style={{ margin: 0, fontSize: "0.78rem", fontWeight: 600 }}>Layer Flags</p>
-        {ALL_LAYERS.map((id) => {
-          const checked = resolved.flags[id];
-          return (
-            <label key={id} style={ROW_STYLE}>
-              <span style={{ fontSize: "0.76rem" }}>{id}</span>
-              <input
-                type="checkbox"
-                checked={checked}
-                onChange={(event) => {
-                  setLayer(id, event.currentTarget.checked);
-                }}
-              />
-            </label>
-          );
-        })}
-      </section>
-    </aside>
+        <div style={{ marginTop: 10 }}>
+          <input style={INPUT_STYLE} value={shareUrl} readOnly aria-label="Layer debug share URL" />
+        </div>
+      </div>
+
+      <div style={SECTION_STYLE}>
+        <div style={{ fontWeight: 650, fontSize: 12, opacity: 0.9, marginBottom: 8 }}>Layers</div>
+
+        <div style={{ display: "grid", gap: 8 }}>
+          {ALL_LAYERS.map((layerId) => {
+            const enabled = Boolean(resolved.flags[layerId]);
+            return (
+              <label key={layerId} style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                <input
+                  type="checkbox"
+                  checked={enabled}
+                  onChange={(event) => setFlag(layerId, event.currentTarget.checked)}
+                />
+                <span style={{ fontSize: 12, opacity: 0.9 }}>{layerId}</span>
+              </label>
+            );
+          })}
+        </div>
+      </div>
+    </div>
   );
 }
