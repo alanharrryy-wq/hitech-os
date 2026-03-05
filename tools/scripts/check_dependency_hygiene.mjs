@@ -10,7 +10,6 @@ const repoRoot = path.resolve(__dirname, "../..");
 const packageFiles = [
   "package.json",
   "apps/demo-engine/package.json",
-  "apps/web/package.json",
   "factory/package.json",
   "packages/contracts/package.json",
   "packages/tooling/package.json",
