@@ -4,7 +4,11 @@ import type { CSSProperties } from "react";
 import { ALL_LAYERS } from "./layerIds.js";
 import { useLayerFlags } from "./useLayerFlags.js";
 
-const PANEL_STYLE: CSSProperties = {
+export interface LayerDebugPanelProps {
+  readonly mode?: "floating" | "fixed";
+}
+
+const FIXED_PANEL_STYLE: CSSProperties = {
   position: "fixed",
   right: "1rem",
   bottom: "1rem",
@@ -12,6 +16,19 @@ const PANEL_STYLE: CSSProperties = {
   width: "min(420px, calc(100vw - 2rem))",
   maxHeight: "calc(100dvh - 2rem)",
   overflow: "auto",
+  borderRadius: "12px",
+  border: "1px solid hsl(var(--ui-border-2))",
+  background: "hsl(var(--ui-surface-1) / 0.96)",
+  boxShadow: "var(--ui-shadow-2)",
+  padding: "0.875rem"
+};
+
+const FLOATING_PANEL_STYLE: CSSProperties = {
+  position: "relative",
+  zIndex: 1,
+  width: "100%",
+  maxHeight: "unset",
+  overflow: "visible",
   borderRadius: "12px",
   border: "1px solid hsl(var(--ui-border-2))",
   background: "hsl(var(--ui-surface-1) / 0.96)",
@@ -55,14 +72,16 @@ const SMALL_STYLE: CSSProperties = {
   color: "hsl(var(--ui-text-3))"
 };
 
-export function LayerDebugPanel() {
+export function LayerDebugPanel({ mode = "fixed" }: LayerDebugPanelProps) {
   const { resolved, enabledLayers, setLayer, setAll, setProfile, resetNeutral } = useLayerFlags();
   if (process.env["NODE_ENV"] === "production" || !resolved.debug) {
     return null;
   }
 
+  const panelStyle = mode === "fixed" ? FIXED_PANEL_STYLE : FLOATING_PANEL_STYLE;
+
   return (
-    <aside style={PANEL_STYLE} aria-label="Layer Debug Panel">
+    <aside style={panelStyle} aria-label="Layer Debug Panel">
       <header>
         <h2 style={{ margin: 0, fontSize: "0.96rem", lineHeight: 1.1 }}>Layer Toggle Debugging</h2>
         <p style={SMALL_STYLE}>
