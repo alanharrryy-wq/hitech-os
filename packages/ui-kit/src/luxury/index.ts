@@ -77,3 +77,22 @@ export {
   type SemanticAccentDecision,
   type SemanticTarget
 } from "./semantics/semanticMap.js";
+
+export {
+  FRAME_PRESET_BY_SURFACE,
+  FRAME_PRESETS,
+  getFramePreset,
+  resolveFramePreset,
+  resolveFramePresetId,
+  type FramePreset,
+  type FramePresetId,
+  type FrameStyleId,
+  type FrameSurfaceId
+} from "./frames/frames.js";
+
+export {
+  applyFrame,
+  applyFrameToSubtree,
+  type AppliedFrame,
+  type ApplyFrameOptions
+} from "./frames/applyFrame.js";

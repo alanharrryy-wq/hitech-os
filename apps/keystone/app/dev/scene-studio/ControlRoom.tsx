@@ -42,9 +42,27 @@ function LayerDebugWindowContent() {
   return <LayerDebugPanel inline />;
 }
 
+function resolveFrameStyleFromQuery(
+  requested: string | null
+): "LIQUID_GLASS" | "GOLD_NOIR_TERMINAL" | "GRAPHITE_PRISM_ISO" {
+  if (requested === "LIQUID_GLASS" || requested === "GOLD_NOIR_TERMINAL" || requested === "GRAPHITE_PRISM_ISO") {
+    return requested;
+  }
+
+  return "GRAPHITE_PRISM_ISO";
+}
+
 export function ControlRoom({ children }: PropsWithChildren) {
   const searchParams = useSearchParams();
   const searchSignature = searchParams.toString();
+  const frameStyle = useMemo(
+    () => resolveFrameStyleFromQuery(new URLSearchParams(searchSignature).get("luxStyle")),
+    [searchSignature]
+  );
+  const framePerfProfile = useMemo<"quality" | "perf">(
+    () => (new URLSearchParams(searchSignature).get("layerProfile") === "perf" ? "perf" : "quality"),
+    [searchSignature]
+  );
 
   const initialResolved = useMemo(() => {
     const params = Object.fromEntries(new URLSearchParams(searchSignature).entries());
@@ -59,11 +77,16 @@ export function ControlRoom({ children }: PropsWithChildren) {
         <div aria-label="Control Room overlay" style={OVERLAY_ROOT_STYLE}>
           <SnapPreviewOverlay />
           <SceneStudioRuntimeProvider>
-            <ControlRoomToolbarWindow />
+            <ControlRoomToolbarWindow
+              frameStyle={frameStyle}
+              framePerfProfile={framePerfProfile}
+            />
 
             <FloatingWindow
               id="scene-editor"
               title="Scene Editor"
+              frameStyle={frameStyle}
+              framePerfProfile={framePerfProfile}
               minWidth={360}
               minHeight={320}
               defaultState={{
@@ -82,6 +105,8 @@ export function ControlRoom({ children }: PropsWithChildren) {
             <FloatingWindow
               id="layer-debug"
               title="Layer Debug"
+              frameStyle={frameStyle}
+              framePerfProfile={framePerfProfile}
               minWidth={340}
               minHeight={240}
               defaultState={{
@@ -100,6 +125,8 @@ export function ControlRoom({ children }: PropsWithChildren) {
             <FloatingWindow
               id="scene-graph"
               title="Scene Graph"
+              frameStyle={frameStyle}
+              framePerfProfile={framePerfProfile}
               minWidth={340}
               minHeight={220}
               defaultState={{

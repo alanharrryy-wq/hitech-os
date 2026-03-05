@@ -10,6 +10,7 @@ import {
   type PointerEvent as ReactPointerEvent,
   type ReactNode
 } from "react";
+import { luxury } from "@hitech/ui-kit";
 import { clampGeometry } from "./window-manager/clamp";
 import { applySnapCandidate, computeSnapCandidate } from "./window-manager/snap";
 import { useWindowManager } from "./window-manager/useWindowManager";
@@ -22,13 +23,9 @@ import type {
 
 const WINDOW_STYLE: CSSProperties = {
   position: "fixed",
-  border: "1px solid hsl(var(--ui-border-2))",
-  borderRadius: "12px",
-  background: "color-mix(in oklab, hsl(var(--ui-surface-1)) 94%, transparent)",
-  boxShadow: "var(--ui-shadow-2)",
   overflow: "hidden",
   pointerEvents: "auto",
-  backdropFilter: "blur(8px)"
+  isolation: "isolate"
 };
 
 const HEADER_STYLE: CSSProperties = {
@@ -87,6 +84,9 @@ interface FloatingWindowProps {
   readonly singleInstance?: boolean;
   readonly resizable?: boolean;
   readonly hideCloseButton?: boolean;
+  readonly frameStyle?: "LIQUID_GLASS" | "GOLD_NOIR_TERMINAL" | "GRAPHITE_PRISM_ISO";
+  readonly frameSurface?: "controlRoomHud" | "pitchSurface" | "kpiWidget";
+  readonly framePerfProfile?: "quality" | "perf";
 }
 
 type InteractionMode = "drag" | "resize";
@@ -132,7 +132,10 @@ export function FloatingWindow({
   minHeight,
   singleInstance = true,
   resizable = true,
-  hideCloseButton = false
+  hideCloseButton = false,
+  frameStyle = "GRAPHITE_PRISM_ISO",
+  frameSurface = "controlRoomHud",
+  framePerfProfile = "quality"
 }: FloatingWindowProps) {
   const {
     state,
@@ -153,6 +156,15 @@ export function FloatingWindow({
   const constraintOptions = useMemo(
     () => buildConstraintOptions(minWidth, minHeight),
     [minHeight, minWidth]
+  );
+  const frame = useMemo(
+    () =>
+      luxury.applyFrameToSubtree({
+        style: frameStyle,
+        surface: frameSurface,
+        perfProfile: framePerfProfile
+      }),
+    [framePerfProfile, frameStyle, frameSurface]
   );
 
   useEffect(() => {
@@ -345,8 +357,11 @@ export function FloatingWindow({
     <section
       aria-label={title}
       onPointerDown={() => bringToFront(id)}
+      className={frame.wrapper.className}
+      {...frame.wrapper.attrs}
       style={{
         ...WINDOW_STYLE,
+        ...frame.wrapper.style,
         left: `${activeEntry.x}px`,
         top: `${activeEntry.y}px`,
         width: `${activeEntry.w}px`,
@@ -373,6 +388,7 @@ export function FloatingWindow({
 
       {entry.collapsed ? null : (
         <div
+          {...frame.contentAttrs}
           style={{
             ...BODY_STYLE,
             height: `${Math.max(activeEntry.h - 52, 60)}px`

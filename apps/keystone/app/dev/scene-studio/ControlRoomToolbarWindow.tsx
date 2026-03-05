@@ -3,12 +3,22 @@
 import { FloatingWindow } from "./FloatingWindow";
 import { ControlRoomToolbar } from "./ControlRoomToolbar";
 
-export function ControlRoomToolbarWindow() {
+interface ControlRoomToolbarWindowProps {
+  readonly frameStyle?: "LIQUID_GLASS" | "GOLD_NOIR_TERMINAL" | "GRAPHITE_PRISM_ISO";
+  readonly framePerfProfile?: "quality" | "perf";
+}
+
+export function ControlRoomToolbarWindow({
+  frameStyle = "GRAPHITE_PRISM_ISO",
+  framePerfProfile = "quality"
+}: ControlRoomToolbarWindowProps) {
   return (
     <FloatingWindow
       id="control-room-toolbar"
       title="Control Room"
       hideCloseButton
+      frameStyle={frameStyle}
+      framePerfProfile={framePerfProfile}
       minWidth={300}
       minHeight={220}
       defaultState={{
