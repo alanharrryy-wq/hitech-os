@@ -162,17 +162,12 @@ export function FloatingWindow({
   const rootRef = useRef<HTMLDivElement | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
-
-  const [state, setState] = useState<FloatingWindowState>(() => {
-    const saved = typeof window !== "undefined" ? readLS(storageKey) : null;
-    return (
-      saved ?? {
-        pos: compatDefaultPos,
-        size: compatDefaultSize,
-        z: resolvedInitialZ,
-        collapsed: resolvedInitialCollapsed
-      }
-    );
+  const [hasRestoredState, setHasRestoredState] = useState(false);
+  const [state, setState] = useState<FloatingWindowState>({
+    pos: compatDefaultPos,
+    size: compatDefaultSize,
+    z: resolvedInitialZ,
+    collapsed: resolvedInitialCollapsed
   });
 
   const stateRef = useRef(state);
@@ -197,8 +192,31 @@ export function FloatingWindow({
   }, [compatMinSize, maxSize]);
 
   useEffect(() => {
+    const saved = readLS(storageKey);
+    const initialState: FloatingWindowState =
+      saved ?? {
+        pos: compatDefaultPos,
+        size: compatDefaultSize,
+        z: resolvedInitialZ,
+        collapsed: resolvedInitialCollapsed
+      };
+
+    setState(initialState);
+    setHasRestoredState(true);
+  }, [
+    compatDefaultPos.x,
+    compatDefaultPos.y,
+    compatDefaultSize.h,
+    compatDefaultSize.w,
+    resolvedInitialCollapsed,
+    resolvedInitialZ,
+    storageKey
+  ]);
+
+  useEffect(() => {
+    if (!hasRestoredState) return;
     writeLS(storageKey, state);
-  }, [storageKey, state]);
+  }, [hasRestoredState, storageKey, state]);
 
   useEffect(() => {
     const onResize = () => {

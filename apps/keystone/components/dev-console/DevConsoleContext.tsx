@@ -14,7 +14,7 @@ type DevConsoleContextValue = {
 
 const DEFAULT_FLAGS: DevConsoleFlags = {
   showGrid: false,
-  motionEnabled: true,
+  motionEnabled: false,
   reducedMotion: false,
   showSafeAreas: false,
   showDebugLabels: false
@@ -43,9 +43,17 @@ function emitFlags(flags: DevConsoleFlags) {
 
 export function DevConsoleProvider({ children }: { children: React.ReactNode }) {
   const [sceneStudioBinding, setSceneStudioBinding] = useState<SceneStudioBinding | undefined>(undefined);
-  const [flags, setFlags] = useState<DevConsoleFlags>(() => readFlags());
+  const [flags, setFlags] = useState<DevConsoleFlags>(DEFAULT_FLAGS);
+  const [hasRestoredFlags, setHasRestoredFlags] = useState(false);
 
   useEffect(() => {
+    setFlags(readFlags());
+    setHasRestoredFlags(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hasRestoredFlags) return;
+
     try {
       localStorage.setItem(FLAGS_STORAGE_KEY, JSON.stringify(flags));
     } catch {
@@ -61,7 +69,7 @@ export function DevConsoleProvider({ children }: { children: React.ReactNode }) 
       document.documentElement.dataset["devConsoleSafeAreas"] = String(flags.showSafeAreas);
       document.documentElement.dataset["devConsoleDebugLabels"] = String(flags.showDebugLabels);
     }
-  }, [flags]);
+  }, [flags, hasRestoredFlags]);
 
   const value = useMemo<DevConsoleContextValue>(
     () => ({
@@ -78,11 +86,15 @@ export function DevConsoleProvider({ children }: { children: React.ReactNode }) 
 }
 
 export function useDevConsole() {
-  const value = useContext(DevConsoleContext);
+  const value = useOptionalDevConsole();
   if (!value) {
     throw new Error("useDevConsole must be used inside DevConsoleProvider");
   }
   return value;
+}
+
+export function useOptionalDevConsole() {
+  return useContext(DevConsoleContext);
 }
 
 export function DevConsoleSceneStudioBinding(props: SceneStudioBinding) {

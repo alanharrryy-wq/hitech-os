@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FloatingWindow } from "../../app/dev/scene-studio/FloatingWindow";
 import {
   FLOATING_WINDOW_DRAG_HANDLE_ATTR,
@@ -41,7 +41,11 @@ function readActiveTool(): DevConsoleToolId {
 
 export function DevConsole() {
   const { bindings, flags, setFlags } = useDevConsole();
-  const [activeTool, setActiveTool] = useState<DevConsoleToolId>(() => readActiveTool());
+  const [activeTool, setActiveTool] = useState<DevConsoleToolId>("home");
+
+  useEffect(() => {
+    setActiveTool(readActiveTool());
+  }, []);
 
   const registry = useMemo(
     () =>
@@ -104,7 +108,7 @@ export function DevConsole() {
     persistActiveTool("home");
     setFlags({
       showGrid: false,
-      motionEnabled: true,
+      motionEnabled: false,
       reducedMotion: false,
       showSafeAreas: false,
       showDebugLabels: false
