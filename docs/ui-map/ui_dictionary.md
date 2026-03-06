@@ -3,9 +3,9 @@
 - version: `1.0.0`
 - generated_by: `tools/ui_map deterministic`
 - routes: `11`
-- components: `951`
+- components: `977`
 - states: `10`
-- styles: `9`
+- styles: `10`
 - assets: `2`
 - hotspots: `11`
 
@@ -51,6 +51,7 @@
 | cmp_04f54bd3f3 | captureScene | dataviz | apps/keystone/visual-tests/helpers/scene-capture.ts |
 | cmp_04fbad1a55 | evaluateGovernanceBudget | block | packages/ui-kit/src/luxury/governancePolicy.ts |
 | cmp_051d307492 | PitchIconSatellite | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
+| cmp_051f812073 | default | layout | apps/keystone/app/dev/layout.tsx |
 | cmp_05a31fb3e6 | saveLastPreset | block | apps/keystone/app/dev/scene-studio/window-manager/storage.ts |
 | cmp_0691342735 | PitchIconCloud | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_0695b05495 | PitchIconFire | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
@@ -90,6 +91,7 @@
 | cmp_0e18d237a4 | createDefaultSceneLibrary | block | apps/keystone/lib/scene-studio/default-scenes.ts |
 | cmp_0ef39ee252 | PRESETS_STORAGE_KEY | block | apps/keystone/app/dev/scene-studio/window-manager/storage.ts |
 | cmp_0ef45dc6b4 | sceneQueryObjectToSearchParams | block | apps/keystone/lib/scene-studio/scene-query.ts |
+| cmp_0f00607a49 | PitchVisualOverlayPanel | dataviz | apps/keystone/components/dev-console/panels/PitchVisualOverlayPanel.tsx |
 | cmp_0f1bc4f36f | SceneStudioEditor | block | apps/keystone/components/scene-studio/scene-studio-editor.tsx |
 | cmp_0f82c02092 | goldNoirTerminalTokens | block | packages/ui-kit/src/luxury/tokens/goldNoirTerminal.ts |
 | cmp_10391d9c35 | ControlRoomToolbar | control | apps/keystone/app/dev/scene-studio/ControlRoomToolbar.tsx |
@@ -100,6 +102,7 @@
 | cmp_113609dbcd | HITECH_BRAND_COLORS | brand | packages/ui-kit/src/brand/hitech-theme.ts |
 | cmp_114f4ca07f | InventoryFoundationControlRoom | control | apps/keystone/components/pitch/run1/InventoryFoundationControlRoom.tsx |
 | cmp_1199d17a95 | validateGauge | block | packages/ui-kit/src/data-spine/schema/guards.ts |
+| cmp_11cea10dfe | ConsolePerfPanel | control | apps/keystone/components/dev-console/panels/ConsolePerfPanel.tsx |
 | cmp_11d5be1368 | VISUAL_BOUNDS | block | apps/keystone/app/dev/_luxury/registry/luxuryRegistry.ts |
 | cmp_1265e2650d | buildPitchShellFrameModel | block | apps/keystone/components/pitch/view-model/pitch-shell-model.ts |
 | cmp_12de42b70d | buildDemoScreens | state | apps/keystone/lib/pitch/demo-state.ts |
@@ -112,6 +115,7 @@
 | cmp_146f04c888 | RECEIVING_INCOTERMS | block | apps/keystone/components/pitch/run2/types.ts |
 | cmp_14a504c3ed | areAllLayersEnabled | block | packages/ui-kit/src/layers/layerIds.ts |
 | cmp_14d67d6cc1 | INDUSTRIAL_CATALOG_ENTRIES | state | apps/keystone/lib/pitch/demo-state.ts |
+| cmp_153a62a5a8 | buildFloatingWindowDragPath | block | apps/keystone/app/dev/scene-studio/floating-window-drag-policy.ts |
 | cmp_16248ef76b | PitchIconBolt | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
 | cmp_16baf9714d | PopoverCloseButton | block | packages/ui-kit/src/components/premium/overlays/Popover.tsx |
 | cmp_16c468c2d6 | encodeLayersParam | block | packages/ui-kit/src/layers/resolveLayerFlags.ts |
@@ -143,10 +147,6 @@
 | cmp_1d64a6eac7 | LayerFlagsProvider | block | packages/ui-kit/src/layers/LayerFlagsProvider.tsx |
 | cmp_1d72ad9a8a | normalizeLayersList | block | apps/keystone/lib/scene-studio/scene-query.ts |
 | cmp_1d9e0d5b23 | parseSceneMotion | block | apps/keystone/lib/scene-studio/scene-query.ts |
-| cmp_1d9fcb3211 | PitchIconRefresh | dataviz | apps/keystone/components/pitch/visuals/pitch-icon-library.tsx |
-| cmp_1da8504209 | createSpine | block | packages/ui-kit/src/data-spine/spine.ts |
-| cmp_1eedae57a4 | ValuationBlocks | block | apps/keystone/components/pitch/valuation-blocks.tsx |
-| cmp_1f4688696d | applySnapCandidate | block | apps/keystone/app/dev/scene-studio/window-manager/snap.ts |
 
 ## States
 | state_id | file_path | readers | writers |
@@ -171,6 +171,7 @@
 | sty_5b5a57301b | packages/ui-kit/src/styles.css | 2 |
 | sty_67feb9dc78 | apps/keystone/app/globals.css | 2 |
 | sty_89ebb78f51 | packages/ui-kit/src/styles/layers.css | 0 |
+| sty_b4a36b9bf6 | apps/keystone/components/dev-console/dev-console.module.css | 7 |
 | sty_b698d50b48 | apps/keystone/components/scene-studio/scene-studio.module.css | 6 |
 | sty_b716435591 | packages/ui-kit/src/luxury/frames/frames.css | 0 |
 | sty_e6653df517 | packages/ui-kit/src/styles/hitech-foundation.css | 0 |

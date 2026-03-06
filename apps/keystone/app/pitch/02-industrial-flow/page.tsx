@@ -1,7 +1,7 @@
 import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "@hitech/contracts";
 import { LayerFlagsProvider } from "@hitech/ui-kit";
 import { PitchShell, ScreenIndustrialFlow } from "../../../components/pitch";
-import { PitchLayerDevTools } from "../../../components/pitch/debug/pitch-layer-dev-tools";
+import { PitchLayerDevToolsClientOnly } from "../../../components/pitch/debug/pitch-layer-dev-tools-client-only";
 import { buildPitchShellFrameModel } from "../../../components/pitch/view-model/pitch-shell-model";
 import {
   resolvePitchSearchParams,
@@ -78,7 +78,7 @@ export default async function PitchIndustrialFlowPage({ searchParams }: PitchSea
       <PitchShell model={shellModelInstitutional}>
         <ScreenIndustrialFlow screen={screen} />
       </PitchShell>
-      <PitchLayerDevTools visible={debugVisible} />
+      <PitchLayerDevToolsClientOnly visible={debugVisible} />
     </LayerFlagsProvider>
   );
 }

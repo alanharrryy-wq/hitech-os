@@ -145,6 +145,7 @@
         "apps/keystone/app/dev/scene-studio/useStudioHotkeys.ts",
         "apps/keystone/app/dev/scene-studio/window-manager/SnapPreviewOverlay.tsx",
         "apps/keystone/app/dev/scene-studio/window-manager/WindowManagerProvider.tsx",
+        "apps/keystone/components/dev-console/DevConsoleContext.tsx",
         "packages/ui-kit/src/index.ts"
       ],
       "kind": "control",
@@ -165,6 +166,7 @@
         "hooks": [
           "useLayerFlags",
           "useMemo",
+          "useOptionalDevConsole",
           "useSearchParams",
           "useStudioHotkeys"
         ],
@@ -466,6 +468,26 @@
       ],
       "kind": "dataviz",
       "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_051f812073",
+      "export_name": "default",
+      "file_path": "apps/keystone/app/dev/layout.tsx",
+      "imports": [
+        "apps/keystone/components/dev-console/DevConsole.tsx",
+        "apps/keystone/components/dev-console/DevConsoleContext.tsx"
+      ],
+      "kind": "layout",
+      "renders": [
+        "cmp_9cf109b226",
+        "cmp_f13a2dbc9c"
+      ],
       "uses": {
         "assets": [],
         "css": [],
@@ -1175,6 +1197,24 @@
       }
     },
     {
+      "component_id": "cmp_0f00607a49",
+      "export_name": "PitchVisualOverlayPanel",
+      "file_path": "apps/keystone/components/dev-console/panels/PitchVisualOverlayPanel.tsx",
+      "imports": [
+        "apps/keystone/components/pitch/debug/pitch-visual-scene-overlay.tsx"
+      ],
+      "kind": "dataviz",
+      "renders": [
+        "cmp_805d85de87"
+      ],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_0f1bc4f36f",
       "export_name": "SceneStudioEditor",
       "file_path": "apps/keystone/components/scene-studio/scene-studio-editor.tsx",
@@ -1369,6 +1409,31 @@
         "css": [],
         "hooks": [],
         "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_11cea10dfe",
+      "export_name": "ConsolePerfPanel",
+      "file_path": "apps/keystone/components/dev-console/panels/ConsolePerfPanel.tsx",
+      "imports": [
+        "apps/keystone/components/dev-console/dev-console.module.css"
+      ],
+      "kind": "control",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [
+          "apps/keystone/components/dev-console/dev-console.module.css"
+        ],
+        "hooks": [
+          "useEffect",
+          "useMemo",
+          "useRef",
+          "useState"
+        ],
+        "stores": [
+          "useState"
+        ]
       }
     },
     {
@@ -1600,6 +1665,20 @@
           "ShipmentState",
           "shipmentState"
         ]
+      }
+    },
+    {
+      "component_id": "cmp_153a62a5a8",
+      "export_name": "buildFloatingWindowDragPath",
+      "file_path": "apps/keystone/app/dev/scene-studio/floating-window-drag-policy.ts",
+      "imports": [],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
       }
     },
     {
@@ -5614,10 +5693,7 @@
       "export_name": "FloatingWindow",
       "file_path": "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx",
       "imports": [
-        "apps/keystone/app/dev/scene-studio/window-manager/clamp.ts",
-        "apps/keystone/app/dev/scene-studio/window-manager/snap.ts",
-        "apps/keystone/app/dev/scene-studio/window-manager/types.ts",
-        "apps/keystone/app/dev/scene-studio/window-manager/useWindowManager.ts"
+        "apps/keystone/app/dev/scene-studio/floating-window-drag-policy.ts"
       ],
       "kind": "block",
       "renders": [],
@@ -5625,16 +5701,22 @@
         "assets": [],
         "css": [],
         "hooks": [
-          "useCallback",
           "useEffect",
           "useMemo",
-          "useState",
-          "useWindowManager"
+          "useRef",
+          "useState"
         ],
         "stores": [
-          "commitWindowState",
+          "clampState",
           "defaultState",
-          "InteractionState",
+          "FloatingWindowState",
+          "hasRestoredState",
+          "initialState",
+          "onRestore",
+          "restore",
+          "setHasRestoredState",
+          "setState",
+          "startState",
           "useState"
         ]
       }
@@ -6276,6 +6358,20 @@
       }
     },
     {
+      "component_id": "cmp_51c7d43947",
+      "export_name": "FLOATING_WINDOW_NO_DRAG_ATTR",
+      "file_path": "apps/keystone/app/dev/scene-studio/floating-window-drag-policy.ts",
+      "imports": [],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_51ebb21236",
       "export_name": "yScale",
       "file_path": "packages/ui-kit/src/kpi/charts/common.tsx",
@@ -6626,6 +6722,20 @@
         "apps/keystone/app/dev/scene-studio/window-manager/snapTargets.ts",
         "apps/keystone/app/dev/scene-studio/window-manager/types.ts"
       ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_5601d37daa",
+      "export_name": "runProcessCaptured",
+      "file_path": "apps/keystone/app/api/scene-studio/run/run-process.ts",
+      "imports": [],
       "kind": "block",
       "renders": [],
       "uses": {
@@ -7068,6 +7178,20 @@
           "useContext",
           "useLayerFlags"
         ],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_5aad06a98f",
+      "export_name": "FLOATING_WINDOW_DRAG_HANDLE_ATTR",
+      "file_path": "apps/keystone/app/dev/scene-studio/floating-window-drag-policy.ts",
+      "imports": [],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
         "stores": []
       }
     },
@@ -7755,14 +7879,12 @@
       "export_name": "default",
       "file_path": "apps/keystone/app/dev/scene-studio/page.tsx",
       "imports": [
-        "apps/keystone/app/dev/scene-studio/ControlRoom.tsx",
         "apps/keystone/components/scene-studio/scene-studio-page.tsx",
         "apps/keystone/lib/scene-studio/index.ts",
         "packages/ui-kit/src/index.ts"
       ],
       "kind": "route",
       "renders": [
-        "cmp_01b648fb75",
         "cmp_7b8f4f141d"
       ],
       "uses": {
@@ -7786,6 +7908,50 @@
         "css": [],
         "hooks": [],
         "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_64b4526a9a",
+      "export_name": "buildDevConsoleRegistry",
+      "file_path": "apps/keystone/components/dev-console/DevConsoleRegistry.tsx",
+      "imports": [
+        "apps/keystone/components/dev-console/dev-console.module.css",
+        "apps/keystone/components/dev-console/panels/ConsoleActionsPanel.tsx",
+        "apps/keystone/components/dev-console/panels/ConsoleFlagsPanel.tsx",
+        "apps/keystone/components/dev-console/panels/ConsoleHomePanel.tsx",
+        "apps/keystone/components/dev-console/panels/ConsoleLayoutProfilesPanel.tsx",
+        "apps/keystone/components/dev-console/panels/ConsolePerfPanel.tsx",
+        "apps/keystone/components/dev-console/panels/PitchLayerDebugPanel.tsx",
+        "apps/keystone/components/dev-console/panels/PitchRuntimeBridgePanel.tsx",
+        "apps/keystone/components/dev-console/panels/PitchShareLookPanel.tsx",
+        "apps/keystone/components/dev-console/panels/PitchVisualOverlayPanel.tsx",
+        "apps/keystone/components/dev-console/panels/SceneStudioEditorPanel.tsx",
+        "apps/keystone/components/dev-console/types.ts"
+      ],
+      "kind": "block",
+      "renders": [
+        "cmp_0f00607a49",
+        "cmp_11cea10dfe",
+        "cmp_757245ee31",
+        "cmp_7fed9c4eec",
+        "cmp_92745b0d6c",
+        "cmp_b925da63bf",
+        "cmp_c15261771e",
+        "cmp_d07d9f6b95",
+        "cmp_f1013bfce1",
+        "cmp_ffdbfeffb2"
+      ],
+      "uses": {
+        "assets": [],
+        "css": [
+          "apps/keystone/components/dev-console/dev-console.module.css"
+        ],
+        "hooks": [],
+        "stores": [
+          "emptyState",
+          "restore",
+          "unavailableState"
+        ]
       }
     },
     {
@@ -8352,6 +8518,7 @@
       "export_name": "PitchLayerDevTools",
       "file_path": "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
       "imports": [
+        "apps/keystone/components/dev-console/DevConsoleContext.tsx",
         "apps/keystone/components/pitch/debug/pitch-scene-runtime-bridge.tsx",
         "apps/keystone/components/pitch/debug/pitch-share-look-button.tsx",
         "apps/keystone/components/pitch/debug/pitch-visual-scene-overlay.tsx",
@@ -8367,7 +8534,9 @@
       "uses": {
         "assets": [],
         "css": [],
-        "hooks": [],
+        "hooks": [
+          "useOptionalDevConsole"
+        ],
         "stores": []
       }
     },
@@ -8675,6 +8844,20 @@
       }
     },
     {
+      "component_id": "cmp_72864389f9",
+      "export_name": "isFloatingWindowInteractiveNode",
+      "file_path": "apps/keystone/app/dev/scene-studio/floating-window-drag-policy.ts",
+      "imports": [],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_736dbfbd88",
       "export_name": "areAllLayersDisabled",
       "file_path": "packages/ui-kit/src/layers/layerIds.ts",
@@ -8833,6 +9016,24 @@
       ],
       "kind": "block",
       "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_757245ee31",
+      "export_name": "SceneStudioEditorPanel",
+      "file_path": "apps/keystone/components/dev-console/panels/SceneStudioEditorPanel.tsx",
+      "imports": [
+        "apps/keystone/components/scene-studio/scene-studio-editor.tsx"
+      ],
+      "kind": "control",
+      "renders": [
+        "cmp_0f1bc4f36f"
+      ],
       "uses": {
         "assets": [],
         "css": [],
@@ -9238,6 +9439,7 @@
       "export_name": "SceneStudioPage",
       "file_path": "apps/keystone/components/scene-studio/scene-studio-page.tsx",
       "imports": [
+        "apps/keystone/components/dev-console/DevConsoleContext.tsx",
         "apps/keystone/components/scene-studio/scene-studio-diagnostics.tsx",
         "apps/keystone/components/scene-studio/scene-studio-editor.tsx",
         "apps/keystone/components/scene-studio/scene-studio-help-panel.tsx",
@@ -9254,7 +9456,8 @@
         "cmp_2e64b98779",
         "cmp_31b57a0d07",
         "cmp_880191ca88",
-        "cmp_8f9bf09085"
+        "cmp_8f9bf09085",
+        "cmp_917042f30d"
       ],
       "uses": {
         "assets": [],
@@ -9750,6 +9953,32 @@
         "css": [],
         "hooks": [],
         "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_7fed9c4eec",
+      "export_name": "ConsoleLayoutProfilesPanel",
+      "file_path": "apps/keystone/components/dev-console/panels/ConsoleLayoutProfilesPanel.tsx",
+      "imports": [
+        "apps/keystone/components/dev-console/dev-console.module.css",
+        "apps/keystone/components/dev-console/types.ts"
+      ],
+      "kind": "layout",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [
+          "apps/keystone/components/dev-console/dev-console.module.css"
+        ],
+        "hooks": [
+          "useMemo",
+          "useState"
+        ],
+        "stores": [
+          "emptyState",
+          "restore",
+          "useState"
+        ]
       }
     },
     {
@@ -10376,14 +10605,12 @@
       "export_name": "dynamic",
       "file_path": "apps/keystone/app/dev/scene-studio/page.tsx",
       "imports": [
-        "apps/keystone/app/dev/scene-studio/ControlRoom.tsx",
         "apps/keystone/components/scene-studio/scene-studio-page.tsx",
         "apps/keystone/lib/scene-studio/index.ts",
         "packages/ui-kit/src/index.ts"
       ],
       "kind": "route",
       "renders": [
-        "cmp_01b648fb75",
         "cmp_7b8f4f141d"
       ],
       "uses": {
@@ -10912,6 +11139,30 @@
       }
     },
     {
+      "component_id": "cmp_917042f30d",
+      "export_name": "DevConsoleSceneStudioBinding",
+      "file_path": "apps/keystone/components/dev-console/DevConsoleContext.tsx",
+      "imports": [
+        "apps/keystone/components/dev-console/types.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [
+          "useContext",
+          "useDevConsole",
+          "useEffect",
+          "useOptionalDevConsole",
+          "useState"
+        ],
+        "stores": [
+          "useState"
+        ]
+      }
+    },
+    {
       "component_id": "cmp_918e1966c5",
       "export_name": "SPARKLINE_LINE_USAGE_SNIPPET",
       "file_path": "packages/ui-kit/src/kpi/charts/sparklines.tsx",
@@ -10992,6 +11243,24 @@
           "useCallback",
           "useMemo"
         ],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_92745b0d6c",
+      "export_name": "ConsoleActionsPanel",
+      "file_path": "apps/keystone/components/dev-console/panels/ConsoleActionsPanel.tsx",
+      "imports": [
+        "apps/keystone/components/dev-console/dev-console.module.css"
+      ],
+      "kind": "control",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [
+          "apps/keystone/components/dev-console/dev-console.module.css"
+        ],
+        "hooks": [],
         "stores": []
       }
     },
@@ -11220,6 +11489,20 @@
       "component_id": "cmp_959e081b75",
       "export_name": "semanticTokens",
       "file_path": "packages/ui-kit/src/lib/tokens.ts",
+      "imports": [],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_95c1f8dbdb",
+      "export_name": "buildSceneStudioRunnerArgs",
+      "file_path": "apps/keystone/app/api/scene-studio/run/run-contract.ts",
       "imports": [],
       "kind": "block",
       "renders": [],
@@ -11745,6 +12028,38 @@
         "css": [],
         "hooks": [],
         "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_9cf109b226",
+      "export_name": "DevConsole",
+      "file_path": "apps/keystone/components/dev-console/DevConsole.tsx",
+      "imports": [
+        "apps/keystone/app/dev/scene-studio/floating-window-drag-policy.ts",
+        "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx",
+        "apps/keystone/components/dev-console/dev-console.module.css",
+        "apps/keystone/components/dev-console/DevConsoleContext.tsx",
+        "apps/keystone/components/dev-console/DevConsoleRegistry.tsx",
+        "apps/keystone/components/dev-console/types.ts"
+      ],
+      "kind": "block",
+      "renders": [
+        "cmp_49aee29d8a"
+      ],
+      "uses": {
+        "assets": [],
+        "css": [
+          "apps/keystone/components/dev-console/dev-console.module.css"
+        ],
+        "hooks": [
+          "useDevConsole",
+          "useEffect",
+          "useMemo"
+        ],
+        "stores": [
+          "restore",
+          "useState"
+        ]
       }
     },
     {
@@ -13053,6 +13368,20 @@
       }
     },
     {
+      "component_id": "cmp_af30593e51",
+      "export_name": "canStartFloatingWindowDrag",
+      "file_path": "apps/keystone/app/dev/scene-studio/floating-window-drag-policy.ts",
+      "imports": [],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_af3e06591e",
       "export_name": "buildCanonicalSceneQuery",
       "file_path": "apps/keystone/lib/scene-studio/scene-url.ts",
@@ -13115,6 +13444,30 @@
         "css": [],
         "hooks": [],
         "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_afec778ea0",
+      "export_name": "useOptionalDevConsole",
+      "file_path": "apps/keystone/components/dev-console/DevConsoleContext.tsx",
+      "imports": [
+        "apps/keystone/components/dev-console/types.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [
+          "useContext",
+          "useDevConsole",
+          "useEffect",
+          "useOptionalDevConsole",
+          "useState"
+        ],
+        "stores": [
+          "useState"
+        ]
       }
     },
     {
@@ -13537,6 +13890,24 @@
       "imports": [],
       "kind": "brand",
       "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_b925da63bf",
+      "export_name": "PitchShareLookPanel",
+      "file_path": "apps/keystone/components/dev-console/panels/PitchShareLookPanel.tsx",
+      "imports": [
+        "apps/keystone/components/pitch/debug/pitch-share-look-button.tsx"
+      ],
+      "kind": "control",
+      "renders": [
+        "cmp_63d1e991fa"
+      ],
       "uses": {
         "assets": [],
         "css": [],
@@ -14090,6 +14461,24 @@
       ],
       "kind": "block",
       "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_c15261771e",
+      "export_name": "PitchRuntimeBridgePanel",
+      "file_path": "apps/keystone/components/dev-console/panels/PitchRuntimeBridgePanel.tsx",
+      "imports": [
+        "apps/keystone/components/pitch/debug/pitch-scene-runtime-bridge.tsx"
+      ],
+      "kind": "control",
+      "renders": [
+        "cmp_d2d761ad3d"
+      ],
       "uses": {
         "assets": [],
         "css": [],
@@ -14905,6 +15294,51 @@
         "css": [],
         "hooks": [],
         "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_d076928386",
+      "export_name": "runtime",
+      "file_path": "apps/keystone/app/api/scene-studio/run/route.ts",
+      "imports": [
+        "apps/keystone/app/api/scene-studio/run/run-contract.ts",
+        "apps/keystone/app/api/scene-studio/run/run-process.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_d07d9f6b95",
+      "export_name": "ConsoleHomePanel",
+      "file_path": "apps/keystone/components/dev-console/panels/ConsoleHomePanel.tsx",
+      "imports": [
+        "apps/keystone/components/dev-console/dev-console.module.css"
+      ],
+      "kind": "control",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [
+          "apps/keystone/components/dev-console/dev-console.module.css"
+        ],
+        "hooks": [
+          "useCallback",
+          "useEffect",
+          "useMemo",
+          "usePathname",
+          "useSearchParams",
+          "useState"
+        ],
+        "stores": [
+          "useState",
+          "visibilityState"
+        ]
       }
     },
     {
@@ -16031,7 +16465,10 @@
       "component_id": "cmp_dfd8f6c463",
       "export_name": "POST",
       "file_path": "apps/keystone/app/api/scene-studio/run/route.ts",
-      "imports": [],
+      "imports": [
+        "apps/keystone/app/api/scene-studio/run/run-contract.ts",
+        "apps/keystone/app/api/scene-studio/run/run-process.ts"
+      ],
       "kind": "block",
       "renders": [],
       "uses": {
@@ -17004,6 +17441,20 @@
       }
     },
     {
+      "component_id": "cmp_ed53513dbb",
+      "export_name": "parseSceneStudioRunPayload",
+      "file_path": "apps/keystone/app/api/scene-studio/run/run-contract.ts",
+      "imports": [],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_ed81b99cf2",
       "export_name": "getHitechStroke",
       "file_path": "packages/ui-kit/src/brand/hitech-theme.ts",
@@ -17015,6 +17466,30 @@
         "css": [],
         "hooks": [],
         "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_ed956b6693",
+      "export_name": "useDevConsole",
+      "file_path": "apps/keystone/components/dev-console/DevConsoleContext.tsx",
+      "imports": [
+        "apps/keystone/components/dev-console/types.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [
+          "useContext",
+          "useDevConsole",
+          "useEffect",
+          "useOptionalDevConsole",
+          "useState"
+        ],
+        "stores": [
+          "useState"
+        ]
       }
     },
     {
@@ -17147,6 +17622,48 @@
         "css": [],
         "hooks": [],
         "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_f1013bfce1",
+      "export_name": "PitchLayerDebugPanel",
+      "file_path": "apps/keystone/components/dev-console/panels/PitchLayerDebugPanel.tsx",
+      "imports": [
+        "packages/ui-kit/src/index.ts"
+      ],
+      "kind": "control",
+      "renders": [
+        "cmp_d2126a2b14"
+      ],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
+      "component_id": "cmp_f13a2dbc9c",
+      "export_name": "DevConsoleProvider",
+      "file_path": "apps/keystone/components/dev-console/DevConsoleContext.tsx",
+      "imports": [
+        "apps/keystone/components/dev-console/types.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [
+          "useContext",
+          "useDevConsole",
+          "useEffect",
+          "useOptionalDevConsole",
+          "useState"
+        ],
+        "stores": [
+          "useState"
+        ]
       }
     },
     {
@@ -18129,6 +18646,28 @@
         "hooks": [],
         "stores": []
       }
+    },
+    {
+      "component_id": "cmp_ffdbfeffb2",
+      "export_name": "ConsoleFlagsPanel",
+      "file_path": "apps/keystone/components/dev-console/panels/ConsoleFlagsPanel.tsx",
+      "imports": [
+        "apps/keystone/components/dev-console/dev-console.module.css",
+        "apps/keystone/components/dev-console/DevConsoleContext.tsx",
+        "apps/keystone/components/dev-console/types.ts"
+      ],
+      "kind": "control",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [
+          "apps/keystone/components/dev-console/dev-console.module.css"
+        ],
+        "hooks": [
+          "useDevConsole"
+        ],
+        "stores": []
+      }
     }
   ],
   "edges": [
@@ -18200,6 +18739,11 @@
     {
       "from": "cmp_01b648fb75",
       "to": "cmp_ae5bef312a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_01b648fb75",
+      "to": "cmp_afec778ea0",
       "type": "imports"
     },
     {
@@ -18455,6 +18999,16 @@
     {
       "from": "cmp_051d307492",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_051f812073",
+      "to": "cmp_9cf109b226",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_051f812073",
+      "to": "cmp_f13a2dbc9c",
       "type": "imports"
     },
     {
@@ -18865,6 +19419,11 @@
     {
       "from": "cmp_0ef45dc6b4",
       "to": "cmp_e49e5f31b9",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_0f00607a49",
+      "to": "cmp_805d85de87",
       "type": "imports"
     },
     {
@@ -21929,22 +22488,22 @@
     },
     {
       "from": "cmp_49aee29d8a",
-      "to": "cmp_1f4688696d",
+      "to": "cmp_153a62a5a8",
       "type": "imports"
     },
     {
       "from": "cmp_49aee29d8a",
-      "to": "cmp_37b3c37787",
+      "to": "cmp_51c7d43947",
       "type": "imports"
     },
     {
       "from": "cmp_49aee29d8a",
-      "to": "cmp_48c8ee6e75",
+      "to": "cmp_5aad06a98f",
       "type": "imports"
     },
     {
       "from": "cmp_49aee29d8a",
-      "to": "cmp_556d214a68",
+      "to": "cmp_af30593e51",
       "type": "imports"
     },
     {
@@ -23609,11 +24168,6 @@
     },
     {
       "from": "cmp_643b586dfd",
-      "to": "cmp_01b648fb75",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_643b586dfd",
       "to": "cmp_7b8f4f141d",
       "type": "imports"
     },
@@ -23625,6 +24179,56 @@
     {
       "from": "cmp_648ad59141",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_0f00607a49",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_11cea10dfe",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_757245ee31",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_7fed9c4eec",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_92745b0d6c",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_b925da63bf",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_c15261771e",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_d07d9f6b95",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_f1013bfce1",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_ffdbfeffb2",
       "type": "imports"
     },
     {
@@ -24009,6 +24613,11 @@
     },
     {
       "from": "cmp_6cb06e50cd",
+      "to": "cmp_afec778ea0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_6cb06e50cd",
       "to": "cmp_d2126a2b14",
       "type": "imports"
     },
@@ -24388,6 +24997,11 @@
       "type": "imports"
     },
     {
+      "from": "cmp_757245ee31",
+      "to": "cmp_0f1bc4f36f",
+      "type": "imports"
+    },
+    {
       "from": "cmp_7625577d8d",
       "to": "cmp_8547473e8d",
       "type": "imports"
@@ -24675,6 +25289,11 @@
     {
       "from": "cmp_7b8f4f141d",
       "to": "cmp_8f9bf09085",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_7b8f4f141d",
+      "to": "cmp_917042f30d",
       "type": "imports"
     },
     {
@@ -25495,11 +26114,6 @@
     {
       "from": "cmp_893fea1064",
       "to": "cmp_a56a27fc43",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_897087c37a",
-      "to": "cmp_01b648fb75",
       "type": "imports"
     },
     {
@@ -26550,6 +27164,31 @@
     {
       "from": "cmp_9ce6fcd41a",
       "to": "cmp_45b5a64481",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_9cf109b226",
+      "to": "cmp_49aee29d8a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_9cf109b226",
+      "to": "cmp_51c7d43947",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_9cf109b226",
+      "to": "cmp_5aad06a98f",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_9cf109b226",
+      "to": "cmp_64b4526a9a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_9cf109b226",
+      "to": "cmp_ed956b6693",
       "type": "imports"
     },
     {
@@ -27788,6 +28427,11 @@
       "type": "imports"
     },
     {
+      "from": "cmp_b925da63bf",
+      "to": "cmp_63d1e991fa",
+      "type": "imports"
+    },
+    {
       "from": "cmp_b93e6e1841",
       "to": "cmp_0cbb6ee8b9",
       "type": "imports"
@@ -28195,6 +28839,11 @@
     {
       "from": "cmp_c10519970f",
       "to": "cmp_477bf0ad59",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_c15261771e",
+      "to": "cmp_d2d761ad3d",
       "type": "imports"
     },
     {
@@ -28905,6 +29554,21 @@
     {
       "from": "cmp_d060413965",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d076928386",
+      "to": "cmp_5601d37daa",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d076928386",
+      "to": "cmp_95c1f8dbdb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_d076928386",
+      "to": "cmp_ed53513dbb",
       "type": "imports"
     },
     {
@@ -29675,6 +30339,21 @@
     {
       "from": "cmp_dfc501bd0d",
       "to": "cmp_82d213ec91",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_dfd8f6c463",
+      "to": "cmp_5601d37daa",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_dfd8f6c463",
+      "to": "cmp_95c1f8dbdb",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_dfd8f6c463",
+      "to": "cmp_ed53513dbb",
       "type": "imports"
     },
     {
@@ -30468,6 +31147,11 @@
       "type": "imports"
     },
     {
+      "from": "cmp_f1013bfce1",
+      "to": "cmp_d2126a2b14",
+      "type": "imports"
+    },
+    {
       "from": "cmp_f14bfffde5",
       "to": "cmp_b3decd4d6e",
       "type": "imports"
@@ -31193,6 +31877,11 @@
       "type": "imports"
     },
     {
+      "from": "cmp_ffdbfeffb2",
+      "to": "cmp_ed956b6693",
+      "type": "imports"
+    },
+    {
       "from": "cmp_003267a333",
       "to": "cmp_ddfd33abd4",
       "type": "renders"
@@ -31323,6 +32012,16 @@
       "type": "renders"
     },
     {
+      "from": "cmp_051f812073",
+      "to": "cmp_9cf109b226",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_051f812073",
+      "to": "cmp_f13a2dbc9c",
+      "type": "renders"
+    },
+    {
       "from": "cmp_06fa5a7ff5",
       "to": "cmp_114f4ca07f",
       "type": "renders"
@@ -31380,6 +32079,11 @@
     {
       "from": "cmp_0df0981f69",
       "to": "cmp_5d84f08d35",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_0f00607a49",
+      "to": "cmp_805d85de87",
       "type": "renders"
     },
     {
@@ -32404,12 +33108,57 @@
     },
     {
       "from": "cmp_643b586dfd",
-      "to": "cmp_01b648fb75",
+      "to": "cmp_7b8f4f141d",
       "type": "renders"
     },
     {
-      "from": "cmp_643b586dfd",
-      "to": "cmp_7b8f4f141d",
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_0f00607a49",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_11cea10dfe",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_757245ee31",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_7fed9c4eec",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_92745b0d6c",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_b925da63bf",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_c15261771e",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_d07d9f6b95",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_f1013bfce1",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_64b4526a9a",
+      "to": "cmp_ffdbfeffb2",
       "type": "renders"
     },
     {
@@ -32653,6 +33402,11 @@
       "type": "renders"
     },
     {
+      "from": "cmp_757245ee31",
+      "to": "cmp_0f1bc4f36f",
+      "type": "renders"
+    },
+    {
       "from": "cmp_7625577d8d",
       "to": "cmp_8d49fce9f3",
       "type": "renders"
@@ -32720,6 +33474,11 @@
     {
       "from": "cmp_7b8f4f141d",
       "to": "cmp_8f9bf09085",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_7b8f4f141d",
+      "to": "cmp_917042f30d",
       "type": "renders"
     },
     {
@@ -32810,11 +33569,6 @@
     {
       "from": "cmp_88852e131f",
       "to": "cmp_f318fc340f",
-      "type": "renders"
-    },
-    {
-      "from": "cmp_897087c37a",
-      "to": "cmp_01b648fb75",
       "type": "renders"
     },
     {
@@ -32920,6 +33674,11 @@
     {
       "from": "cmp_9bd5ba90ab",
       "to": "cmp_5d84f08d35",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_9cf109b226",
+      "to": "cmp_49aee29d8a",
       "type": "renders"
     },
     {
@@ -33123,6 +33882,11 @@
       "type": "renders"
     },
     {
+      "from": "cmp_b925da63bf",
+      "to": "cmp_63d1e991fa",
+      "type": "renders"
+    },
+    {
       "from": "cmp_b93e6e1841",
       "to": "cmp_0cbb6ee8b9",
       "type": "renders"
@@ -33255,6 +34019,11 @@
     {
       "from": "cmp_bf7929333d",
       "to": "cmp_ddfd33abd4",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_c15261771e",
+      "to": "cmp_d2d761ad3d",
       "type": "renders"
     },
     {
@@ -33575,6 +34344,11 @@
     {
       "from": "cmp_f06661856f",
       "to": "cmp_c412df1705",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_f1013bfce1",
+      "to": "cmp_d2126a2b14",
       "type": "renders"
     },
     {
@@ -33963,6 +34737,11 @@
       "type": "uses_style"
     },
     {
+      "from": "cmp_11cea10dfe",
+      "to": "sty_b4a36b9bf6",
+      "type": "uses_style"
+    },
+    {
       "from": "cmp_27bf092c17",
       "to": "sty_5b5a57301b",
       "type": "uses_style"
@@ -33983,6 +34762,11 @@
       "type": "uses_style"
     },
     {
+      "from": "cmp_64b4526a9a",
+      "to": "sty_b4a36b9bf6",
+      "type": "uses_style"
+    },
+    {
       "from": "cmp_7b8f4f141d",
       "to": "sty_b698d50b48",
       "type": "uses_style"
@@ -33998,6 +34782,11 @@
       "type": "uses_style"
     },
     {
+      "from": "cmp_7fed9c4eec",
+      "to": "sty_b4a36b9bf6",
+      "type": "uses_style"
+    },
+    {
       "from": "cmp_880191ca88",
       "to": "sty_b698d50b48",
       "type": "uses_style"
@@ -34005,6 +34794,26 @@
     {
       "from": "cmp_8f9bf09085",
       "to": "sty_b698d50b48",
+      "type": "uses_style"
+    },
+    {
+      "from": "cmp_92745b0d6c",
+      "to": "sty_b4a36b9bf6",
+      "type": "uses_style"
+    },
+    {
+      "from": "cmp_9cf109b226",
+      "to": "sty_b4a36b9bf6",
+      "type": "uses_style"
+    },
+    {
+      "from": "cmp_d07d9f6b95",
+      "to": "sty_b4a36b9bf6",
+      "type": "uses_style"
+    },
+    {
+      "from": "cmp_ffdbfeffb2",
+      "to": "sty_b4a36b9bf6",
       "type": "uses_style"
     },
     {
@@ -34043,6 +34852,21 @@
       "type": "route_to_screen"
     },
     {
+      "from": "cmp_051f812073",
+      "to": "rte_64b18eb3cd",
+      "type": "layout_wraps"
+    },
+    {
+      "from": "cmp_051f812073",
+      "to": "rte_bf321ec7dd",
+      "type": "layout_wraps"
+    },
+    {
+      "from": "cmp_051f812073",
+      "to": "rte_fc9a4ff828",
+      "type": "layout_wraps"
+    },
+    {
       "from": "cmp_7dbc7ebe4d",
       "to": "rte_46efb84e93",
       "type": "layout_wraps"
@@ -34050,11 +34874,6 @@
     {
       "from": "cmp_7dbc7ebe4d",
       "to": "rte_588c6fe0cc",
-      "type": "layout_wraps"
-    },
-    {
-      "from": "cmp_7dbc7ebe4d",
-      "to": "rte_64b18eb3cd",
       "type": "layout_wraps"
     },
     {
@@ -34074,22 +34893,12 @@
     },
     {
       "from": "cmp_7dbc7ebe4d",
-      "to": "rte_bf321ec7dd",
-      "type": "layout_wraps"
-    },
-    {
-      "from": "cmp_7dbc7ebe4d",
       "to": "rte_d2b3868d72",
       "type": "layout_wraps"
     },
     {
       "from": "cmp_7dbc7ebe4d",
       "to": "rte_e78399e664",
-      "type": "layout_wraps"
-    },
-    {
-      "from": "cmp_7dbc7ebe4d",
-      "to": "rte_fc9a4ff828",
       "type": "layout_wraps"
     },
     {
@@ -34298,6 +35107,7 @@
         "cmp_de9c0a16e6",
         "cmp_df8c73eff1",
         "cmp_e49e5f31b9",
+        "cmp_f1013bfce1",
         "cmp_fbdd0af3a0"
       ],
       "files": [
@@ -34433,7 +35243,7 @@
     {
       "data_source_ids": [],
       "entry_file": "apps/keystone/app/dev/scene-studio/page.tsx",
-      "layout_file": "apps/keystone/app/layout.tsx",
+      "layout_file": "apps/keystone/app/dev/layout.tsx",
       "path": "/dev/scene-studio",
       "route_id": "rte_64b18eb3cd"
     },
@@ -34463,7 +35273,7 @@
     {
       "data_source_ids": [],
       "entry_file": "apps/keystone/app/dev/style-lab/page.tsx",
-      "layout_file": "apps/keystone/app/layout.tsx",
+      "layout_file": "apps/keystone/app/dev/layout.tsx",
       "path": "/dev/style-lab",
       "route_id": "rte_bf321ec7dd"
     },
@@ -34486,7 +35296,7 @@
     {
       "data_source_ids": [],
       "entry_file": "apps/keystone/app/dev/kpi-supermarket/page.tsx",
-      "layout_file": "apps/keystone/app/layout.tsx",
+      "layout_file": "apps/keystone/app/dev/layout.tsx",
       "path": "/dev/kpi-supermarket",
       "route_id": "rte_fc9a4ff828"
     },
@@ -34894,6 +35704,19 @@
       "file_path": "packages/ui-kit/src/styles/layers.css",
       "referenced_by": [],
       "style_id": "sty_89ebb78f51"
+    },
+    {
+      "file_path": "apps/keystone/components/dev-console/dev-console.module.css",
+      "referenced_by": [
+        "cmp_11cea10dfe",
+        "cmp_64b4526a9a",
+        "cmp_7fed9c4eec",
+        "cmp_92745b0d6c",
+        "cmp_9cf109b226",
+        "cmp_d07d9f6b95",
+        "cmp_ffdbfeffb2"
+      ],
+      "style_id": "sty_b4a36b9bf6"
     },
     {
       "file_path": "apps/keystone/components/scene-studio/scene-studio.module.css",

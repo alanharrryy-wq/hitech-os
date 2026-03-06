@@ -225,6 +225,7 @@ If preview diagnostics fail:
 2. confirm preview and studio origins match.
 3. confirm `data-scene-ready="1"` appears on `html`.
 4. verify pitch runtime bridge is mounted.
+5. if hydration warnings mention extra form attributes, follow `docs/troubleshooting/HYDRATION_INTERNAL_TOOLING.md`.
 
 If visual runs are flaky:
 

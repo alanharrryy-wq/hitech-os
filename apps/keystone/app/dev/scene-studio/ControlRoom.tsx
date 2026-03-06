@@ -7,6 +7,7 @@ import { ControlRoomToolbarWindow } from "./ControlRoomToolbarWindow";
 import { FloatingWindow } from "./FloatingWindow";
 import { SceneGraphPanel } from "./SceneGraphPanel";
 import { useOptionalDevConsole } from "../../../components/dev-console/DevConsoleContext";
+import { InternalToolClientOnlyBoundary } from "../../../components/internal-tooling/internal-tool-client-only-boundary";
 import {
   SceneStudioEditorPanel,
   SceneStudioRuntimeProvider
@@ -27,6 +28,7 @@ const DEBUG_HINT_STYLE: CSSProperties = {
   fontSize: "0.76rem",
   color: "hsl(var(--ui-text-3))"
 };
+const LEGACY_OVERLAY_PANEL_NAME = "SceneStudioLegacyControlRoomOverlay";
 
 function StudioHotkeysBinding() {
   useStudioHotkeys();
@@ -78,75 +80,77 @@ export function ControlRoom({ children }: PropsWithChildren) {
         {children}
 
         {disableLegacyHud ? null : (
-          <div aria-label="Control Room overlay" style={OVERLAY_ROOT_STYLE}>
-            <SnapPreviewOverlay />
-            <SceneStudioRuntimeProvider>
-              <ControlRoomToolbarWindow
-                frameStyle={frameStyle}
-                framePerfProfile={framePerfProfile}
-              />
+          <InternalToolClientOnlyBoundary componentName={LEGACY_OVERLAY_PANEL_NAME}>
+            <div aria-label="Control Room overlay" style={OVERLAY_ROOT_STYLE}>
+              <SnapPreviewOverlay />
+              <SceneStudioRuntimeProvider>
+                <ControlRoomToolbarWindow
+                  frameStyle={frameStyle}
+                  framePerfProfile={framePerfProfile}
+                />
 
-              <FloatingWindow
-                id="scene-editor"
-                title="Scene Editor"
-                frameStyle={frameStyle}
-                framePerfProfile={framePerfProfile}
-                minWidth={360}
-                minHeight={320}
-                defaultState={{
-                  x: 20,
-                  y: 112,
-                  w: 500,
-                  h: 700,
-                  z: 1101,
-                  visible: true,
-                  collapsed: false
-                }}
-              >
-                <SceneStudioEditorPanel />
-              </FloatingWindow>
+                <FloatingWindow
+                  id="scene-editor"
+                  title="Scene Editor"
+                  frameStyle={frameStyle}
+                  framePerfProfile={framePerfProfile}
+                  minWidth={360}
+                  minHeight={320}
+                  defaultState={{
+                    x: 20,
+                    y: 112,
+                    w: 500,
+                    h: 700,
+                    z: 1101,
+                    visible: true,
+                    collapsed: false
+                  }}
+                >
+                  <SceneStudioEditorPanel />
+                </FloatingWindow>
 
-              <FloatingWindow
-                id="layer-debug"
-                title="Layer Debug"
-                frameStyle={frameStyle}
-                framePerfProfile={framePerfProfile}
-                minWidth={340}
-                minHeight={240}
-                defaultState={{
-                  x: 980,
-                  y: 20,
-                  w: 400,
-                  h: 520,
-                  z: 1102,
-                  visible: true,
-                  collapsed: false
-                }}
-              >
-                <LayerDebugWindowContent />
-              </FloatingWindow>
+                <FloatingWindow
+                  id="layer-debug"
+                  title="Layer Debug"
+                  frameStyle={frameStyle}
+                  framePerfProfile={framePerfProfile}
+                  minWidth={340}
+                  minHeight={240}
+                  defaultState={{
+                    x: 980,
+                    y: 20,
+                    w: 400,
+                    h: 520,
+                    z: 1102,
+                    visible: true,
+                    collapsed: false
+                  }}
+                >
+                  <LayerDebugWindowContent />
+                </FloatingWindow>
 
-              <FloatingWindow
-                id="scene-graph"
-                title="Scene Graph"
-                frameStyle={frameStyle}
-                framePerfProfile={framePerfProfile}
-                minWidth={340}
-                minHeight={220}
-                defaultState={{
-                  x: 980,
-                  y: 560,
-                  w: 400,
-                  h: 300,
-                  z: 1103,
-                  visible: true,
-                  collapsed: false
-                }}
-              >
-                <SceneGraphPanel />
-              </FloatingWindow>
-            </SceneStudioRuntimeProvider>
-          </div>
+                <FloatingWindow
+                  id="scene-graph"
+                  title="Scene Graph"
+                  frameStyle={frameStyle}
+                  framePerfProfile={framePerfProfile}
+                  minWidth={340}
+                  minHeight={220}
+                  defaultState={{
+                    x: 980,
+                    y: 560,
+                    w: 400,
+                    h: 300,
+                    z: 1103,
+                    visible: true,
+                    collapsed: false
+                  }}
+                >
+                  <SceneGraphPanel />
+                </FloatingWindow>
+              </SceneStudioRuntimeProvider>
+            </div>
+          </InternalToolClientOnlyBoundary>
         )}
 
         <StudioHotkeysBinding />

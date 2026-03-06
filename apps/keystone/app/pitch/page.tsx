@@ -1,6 +1,6 @@
 import { LayerFlagsProvider } from "@hitech/ui-kit";
 import { PitchRouteChooser, PitchShell } from "../../components/pitch";
-import { PitchLayerDevTools } from "../../components/pitch/debug/pitch-layer-dev-tools";
+import { PitchLayerDevToolsClientOnly } from "../../components/pitch/debug/pitch-layer-dev-tools-client-only";
 import { buildPitchShellFrameModel } from "../../components/pitch/view-model/pitch-shell-model";
 import {
   resolvePitchSearchParams,
@@ -31,7 +31,7 @@ export default async function PitchIndexPage({ searchParams }: PitchSearchParams
           </section>
         )}
       </PitchShell>
-      <PitchLayerDevTools visible={debugVisible} />
+      <PitchLayerDevToolsClientOnly visible={debugVisible} />
     </LayerFlagsProvider>
   );
 }
