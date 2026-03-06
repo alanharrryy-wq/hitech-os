@@ -69,7 +69,7 @@ export function MissionHeader({ totalRuns, runningRuns }: MissionHeaderProps) {
         </div>
         <Separator className="hidden md:block md:w-px md:h-8" orientation="vertical" />
         <p className="m-0 text-xs keystone-muted">
-          Progressive enhancement hooks ready. FX overlays remain disabled by default.
+          Progressive enhancement hooks ready. Floating stage overlays are enabled with low-motion tuning.
         </p>
       </div>
     </div>

@@ -3,13 +3,15 @@ export interface FxOverlayOptions {
   readonly scanline?: boolean;
   readonly haze?: boolean;
   readonly vignette?: boolean;
+  readonly floating?: boolean;
 }
 
 export const FX_OVERLAYS_DISABLED: Required<FxOverlayOptions> = Object.freeze({
   noise: false,
   scanline: false,
   haze: false,
-  vignette: false
+  vignette: false,
+  floating: false
 });
 
 export function normalizeFxOverlays(options?: FxOverlayOptions): Required<FxOverlayOptions> {
@@ -21,5 +23,11 @@ export function normalizeFxOverlays(options?: FxOverlayOptions): Required<FxOver
 
 export function hasAnyFxOverlay(options?: FxOverlayOptions): boolean {
   const normalized = normalizeFxOverlays(options);
-  return normalized.noise || normalized.scanline || normalized.haze || normalized.vignette;
+  return (
+    normalized.noise ||
+    normalized.scanline ||
+    normalized.haze ||
+    normalized.vignette ||
+    normalized.floating
+  );
 }

@@ -31,6 +31,7 @@
 .stage .noise,
 .stage .scanlines,
 .stage .haze,
+.stage .floaters,
 .stage .vignette,
 .stage .horizon,
 .stage .frame-bezel {
@@ -63,6 +64,53 @@
 
 .stage .vignette {
   box-shadow: inset 0 0 220px hsl(var(--ui-text-1) / 0.2);
+}
+
+.stage .floaters {
+  overflow: hidden;
+}
+
+.stage .floater {
+  position: absolute;
+  border: 1px solid hsl(var(--ui-accent) / 0.18);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, hsl(var(--ui-surface-1) / 0.3), hsl(var(--ui-accent) / 0.08)),
+    radial-gradient(circle at 20% 50%, hsl(var(--ui-surface-1) / 0.45), transparent 58%);
+  box-shadow:
+    inset 0 1px 0 hsl(var(--ui-surface-1) / 0.34),
+    0 16px 36px hsl(var(--ui-accent) / 0.08);
+  opacity: 0.78;
+}
+
+.stage .floater::after {
+  content: "";
+  position: absolute;
+  inset: 0.3rem auto 0.3rem 0.6rem;
+  width: 36%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, hsl(var(--ui-surface-1) / 0.28), transparent);
+}
+
+.stage .floater-alpha {
+  top: 12%;
+  right: 8%;
+  width: clamp(10rem, 20vw, 18rem);
+  height: clamp(2.5rem, 5vw, 4.75rem);
+}
+
+.stage .floater-beta {
+  bottom: 18%;
+  left: -2%;
+  width: clamp(9rem, 16vw, 14rem);
+  height: clamp(2.25rem, 4vw, 3.5rem);
+}
+
+.stage .floater-gamma {
+  right: 22%;
+  bottom: 8%;
+  width: clamp(7rem, 12vw, 10rem);
+  height: clamp(1.75rem, 3vw, 2.75rem);
 }
 
 .stage .horizon {
@@ -102,6 +150,14 @@
 }
 
 .stage[data-layer-stage-haze="off"] .haze {
+  opacity: 0;
+}
+
+.stage[data-stage-floating="on"] .floaters {
+  opacity: 1;
+}
+
+.stage[data-stage-floating="off"] .floaters {
   opacity: 0;
 }
 
@@ -239,6 +295,18 @@
   animation: layer-scanline-drift 7s linear infinite;
 }
 
+[data-layer-motion-enabled="on"] .floater-alpha {
+  animation: layer-floater-alpha 15s ease-in-out infinite;
+}
+
+[data-layer-motion-enabled="on"] .floater-beta {
+  animation: layer-floater-beta 19s ease-in-out infinite;
+}
+
+[data-layer-motion-enabled="on"] .floater-gamma {
+  animation: layer-floater-gamma 13s ease-in-out infinite;
+}
+
 @keyframes layer-noise-drift {
   0% {
     transform: translate3d(0, 0, 0);
@@ -263,9 +331,46 @@
   }
 }
 
+@keyframes layer-floater-alpha {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-2.5%, 10px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes layer-floater-beta {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(3%, -12px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes layer-floater-gamma {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-4%, -8px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .stage .noise,
-  .stage .scanlines {
+  .stage .scanlines,
+  .stage .floater {
     animation: none !important;
   }
 }

@@ -25,7 +25,10 @@ export function MissionControlView() {
   }, [runsQuery.data]);
 
   return (
-    <Stage fx={{ noise: false, scanline: false, haze: false, vignette: false }}>
+    <Stage
+      fx={{ noise: false, scanline: false, haze: true, vignette: true, floating: true }}
+      layerOverrides={{ "motion.enabled": true }}
+    >
       <Shell
         title="Keystone Mission Control"
         subtitle="Stage -> Shell -> Grid -> GlassCard -> InsetPanel architecture"
@@ -78,7 +81,7 @@ export function MissionControlView() {
             <GlassCard className="p-3" backdrop="off" tone="muted">
               <InsetPanel
                 title="System Notes"
-                description="Neutral visual baseline only. Premium motion/fx hooks are intentionally disabled."
+                description="Floating stage overlays are active. Heavy noise layers remain off to protect readability."
               >
                 <ul className="m-0 grid gap-1 pl-4 text-sm text-[hsl(var(--ui-text-2))]">
                   <li>

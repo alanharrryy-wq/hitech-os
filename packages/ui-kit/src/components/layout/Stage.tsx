@@ -59,8 +59,9 @@ function mapFxToLayerOverrides(fx?: FxOverlayOptions): Partial<LayerFlags> | und
 
 export function Stage({ className, children, density, fx, layerOverrides, ...props }: StageProps) {
   const layerContext = useLayerFlags();
+  const normalizedFx = normalizeFxOverlays(fx);
   const merged = mergeLayerFlags(layerContext.flags, {
-    ...(mapFxToLayerOverrides(fx) ?? {}),
+    ...(mapFxToLayerOverrides(normalizedFx) ?? {}),
     ...(layerOverrides ?? {})
   });
 
@@ -74,12 +75,18 @@ export function Stage({ className, children, density, fx, layerOverrides, ...pro
       data-layer-stage-horizon={onOff(merged["stage.horizon"])}
       data-layer-frame-bezel={onOff(merged["frame.bezel"])}
       data-layer-motion-enabled={onOff(merged["motion.enabled"])}
+      data-stage-floating={onOff(normalizedFx.floating)}
       {...props}
     >
       <div className="stage-overlays" aria-hidden>
         <div className="noise" aria-hidden="true" />
         <div className="scanlines" aria-hidden="true" />
         <div className="haze" aria-hidden="true" />
+        <div className="floaters" aria-hidden="true">
+          <div className="floater floater-alpha" aria-hidden="true" />
+          <div className="floater floater-beta" aria-hidden="true" />
+          <div className="floater floater-gamma" aria-hidden="true" />
+        </div>
         <div className="vignette" aria-hidden="true" />
         <div className="horizon" aria-hidden="true" />
         <div className="frame-bezel" aria-hidden="true" />
