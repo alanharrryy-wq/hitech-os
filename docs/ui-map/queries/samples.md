@@ -598,9 +598,21 @@ Each sample is deterministic for the same dictionary input.
     "screen_component_id": ""
   },
   {
+    "entry_file": "apps/keystone/app/dev/kpi-supermarket/page.tsx",
+    "path": "/dev/kpi-supermarket",
+    "route_id": "rte_fc9a4ff828",
+    "screen_component_id": ""
+  },
+  {
     "entry_file": "apps/keystone/app/dev/scene-studio/page.tsx",
     "path": "/dev/scene-studio",
     "route_id": "rte_64b18eb3cd",
+    "screen_component_id": ""
+  },
+  {
+    "entry_file": "apps/keystone/app/dev/style-lab/page.tsx",
+    "path": "/dev/style-lab",
+    "route_id": "rte_bf321ec7dd",
     "screen_component_id": ""
   },
   {
