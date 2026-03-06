@@ -241,6 +241,7 @@ export function LayerDebugPanel({ inline = false }: LayerDebugPanelProps) {
               <input
                 type="checkbox"
                 checked={checked}
+                suppressHydrationWarning
                 onChange={(event) => {
                   setLayer(id, event.currentTarget.checked);
                 }}
