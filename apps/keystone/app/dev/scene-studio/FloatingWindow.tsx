@@ -1,6 +1,12 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import {
+  FLOATING_WINDOW_DRAG_HANDLE_ATTR,
+  FLOATING_WINDOW_NO_DRAG_ATTR,
+  buildFloatingWindowDragPath,
+  canStartFloatingWindowDrag
+} from "./floating-window-drag-policy";
 
 type Vec2 = { x: number; y: number };
 type Size = { w: number; h: number };
@@ -154,6 +160,8 @@ export function FloatingWindow({
   const resolvedInitialCollapsed = defaultState?.collapsed ?? false;
   const storageKey = useMemo(() => `${storageNamespace}.${id}`, [id, storageNamespace]);
   const rootRef = useRef<HTMLDivElement | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
 
   const [state, setState] = useState<FloatingWindowState>(() => {
     const saved = typeof window !== "undefined" ? readLS(storageKey) : null;
@@ -256,13 +264,18 @@ export function FloatingWindow({
   const startDrag = (e: React.PointerEvent) => {
     if (e.button !== 0) return;
 
+    const root = rootRef.current;
+    if (!root) return;
+
+    e.preventDefault();
     bringToFront();
+    setIsDragging(true);
 
     const startPointer = { x: e.clientX, y: e.clientY };
     const startPos = { ...stateRef.current.pos };
     const startState = { ...stateRef.current };
 
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    root.setPointerCapture(e.pointerId);
 
     const onMove = (ev: PointerEvent) => {
       const dx = ev.clientX - startPointer.x;
@@ -277,6 +290,10 @@ export function FloatingWindow({
     };
 
     const onUp = () => {
+      setIsDragging(false);
+      if (root.hasPointerCapture(e.pointerId)) {
+        root.releasePointerCapture(e.pointerId);
+      }
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
       window.removeEventListener("pointercancel", onUp);
@@ -292,6 +309,7 @@ export function FloatingWindow({
     if (e.button !== 0) return;
 
     bringToFront();
+    setIsResizing(true);
 
     const startPointer = { x: e.clientX, y: e.clientY };
     const startState = { ...stateRef.current };
@@ -313,6 +331,7 @@ export function FloatingWindow({
     };
 
     const onUp = () => {
+      setIsResizing(false);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
       window.removeEventListener("pointercancel", onUp);
@@ -327,6 +346,21 @@ export function FloatingWindow({
     setState((prev) => ({ ...prev, collapsed: !prev.collapsed }));
   };
 
+  const handleShellPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    bringToFront();
+
+    if (event.button !== 0) {
+      return;
+    }
+
+    const dragPath = buildFloatingWindowDragPath(event.target, rootRef.current);
+    if (!canStartFloatingWindowDrag(dragPath)) {
+      return;
+    }
+
+    startDrag(event);
+  };
+
   const shellStyle: React.CSSProperties = {
     position: "fixed",
     left: 0,
@@ -335,13 +369,16 @@ export function FloatingWindow({
     width: `${state.size.w}px`,
     height: state.collapsed ? `${COLLAPSED_HEIGHT}px` : `${state.size.h}px`,
     zIndex: state.z,
-    borderRadius: 14,
-    border: "1px solid hsl(var(--ui-border-2))",
-    background: "hsl(var(--ui-surface-1) / 0.96)",
-    boxShadow: "var(--ui-shadow-2)",
+    borderRadius: 18,
+    border: "1px solid hsl(var(--ui-border-1) / 0.9)",
+    background:
+      "linear-gradient(165deg, hsl(var(--ui-surface-1) / 0.98) 0%, hsl(var(--ui-surface-2) / 0.95) 52%, hsl(var(--ui-surface-0) / 0.98) 100%)",
+    boxShadow:
+      "0 32px 64px hsl(220 35% 8% / 0.3), 0 10px 24px hsl(220 32% 10% / 0.22), inset 0 1px 0 hsl(var(--ui-surface-1) / 0.65)",
     overflow: "hidden",
     pointerEvents: "auto",
-    backdropFilter: "blur(8px)"
+    isolation: "isolate",
+    backdropFilter: "blur(10px) saturate(1.08)"
   };
 
   const headerStyle: React.CSSProperties = {
@@ -350,18 +387,22 @@ export function FloatingWindow({
     alignItems: "center",
     justifyContent: "space-between",
     gap: 10,
-    padding: "0 12px",
-    borderBottom: "1px solid hsl(var(--ui-border-1))",
-    cursor: "grab",
+    padding: "0 14px",
+    borderBottom: "1px solid hsl(var(--ui-border-1) / 0.96)",
+    background:
+      "linear-gradient(180deg, hsl(var(--ui-surface-1) / 0.82) 0%, hsl(var(--ui-surface-2) / 0.68) 100%)",
+    cursor: isDragging ? "grabbing" : "grab",
     userSelect: "none",
-    touchAction: "none"
+    touchAction: "none",
+    boxShadow: "inset 0 -1px 0 hsl(var(--ui-border-1) / 0.42)"
   };
 
   const titleStyle: React.CSSProperties = {
-    fontSize: 13,
+    fontSize: 12,
     opacity: 0.95,
-    fontWeight: 650,
-    letterSpacing: "0.2px",
+    fontWeight: 700,
+    letterSpacing: "0.08em",
+    textTransform: "uppercase",
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis"
@@ -371,49 +412,82 @@ export function FloatingWindow({
     height: 30,
     minWidth: 30,
     padding: "0 10px",
-    borderRadius: 10,
-    border: "1px solid hsl(var(--ui-border-2))",
-    background: "hsl(var(--ui-surface-2) / 0.9)",
+    borderRadius: 11,
+    border: "1px solid hsl(var(--ui-border-1) / 0.8)",
+    background: "linear-gradient(180deg, hsl(var(--ui-surface-1) / 0.86), hsl(var(--ui-surface-2) / 0.92))",
     color: "hsl(var(--ui-text-1))",
     cursor: "pointer",
-    fontSize: 12
+    fontSize: 11,
+    fontWeight: 650,
+    letterSpacing: "0.04em",
+    boxShadow: "inset 0 1px 0 hsl(var(--ui-surface-1) / 0.7)"
   };
 
   const bodyStyle: React.CSSProperties = {
     height: state.collapsed ? 0 : `calc(100% - ${HEADER_HEIGHT}px)`,
     overflow: "auto",
-    padding: 12,
-    pointerEvents: "auto"
+    padding: 14,
+    pointerEvents: "auto",
+    background:
+      "linear-gradient(180deg, hsl(var(--ui-surface-1) / 0.6) 0%, hsl(var(--ui-surface-0) / 0.85) 36%, hsl(var(--ui-surface-0) / 0.96) 100%)"
   };
 
   const resizeHandleStyle: React.CSSProperties = {
     position: "absolute",
-    right: 6,
-    bottom: 6,
-    width: 18,
-    height: 18,
-    borderRadius: 6,
-    border: "1px solid hsl(var(--ui-border-2))",
-    background: "hsl(var(--ui-surface-2) / 0.85)",
+    right: 8,
+    bottom: 8,
+    width: 20,
+    height: 20,
+    borderRadius: 7,
+    border: "1px solid hsl(var(--ui-border-1) / 0.88)",
+    background: "linear-gradient(140deg, hsl(var(--ui-surface-1) / 0.82), hsl(var(--ui-surface-2) / 0.95))",
     cursor: "nwse-resize",
     touchAction: "none",
-    display: state.collapsed || !resizable ? "none" : "block"
+    display: state.collapsed || !resizable ? "none" : "block",
+    boxShadow: "inset 0 1px 0 hsl(var(--ui-surface-1) / 0.7), 0 2px 8px hsl(220 34% 10% / 0.24)",
+    opacity: isResizing ? 1 : 0.86
   };
+
+  const shellAmbientStyle: React.CSSProperties = {
+    position: "absolute",
+    inset: 0,
+    pointerEvents: "none",
+    background:
+      "radial-gradient(circle at 8% -16%, hsl(var(--ui-accent) / 0.15), transparent 38%), radial-gradient(circle at 92% 0%, hsl(var(--ui-surface-1) / 0.38), transparent 34%)",
+    opacity: state.collapsed ? 0.25 : 0.52
+  };
+
+  const shellHairlineStyle: React.CSSProperties = {
+    position: "absolute",
+    left: 1,
+    right: 1,
+    top: 1,
+    height: 56,
+    borderRadius: "16px 16px 0 0",
+    pointerEvents: "none",
+    background: "linear-gradient(180deg, hsl(var(--ui-surface-1) / 0.58), transparent 76%)"
+  };
+
+  const dragHandleAttr = { [FLOATING_WINDOW_DRAG_HANDLE_ATTR]: "true" } as const;
+  const noDragAttr = { [FLOATING_WINDOW_NO_DRAG_ATTR]: "true" } as const;
 
   return (
     <div
       ref={rootRef}
       style={shellStyle}
       className={className}
-      onPointerDown={bringToFront}
+      onPointerDown={handleShellPointerDown}
       aria-label={`FloatingWindow:${id}`}
     >
-      <div style={headerStyle} onPointerDown={startDrag}>
+      <div style={shellAmbientStyle} aria-hidden />
+      <div style={shellHairlineStyle} aria-hidden />
+
+      <div style={headerStyle} {...dragHandleAttr}>
         <div style={titleStyle} title={title}>
           {title}
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }} {...noDragAttr}>
           {headerRight}
 
           {showHomeButton ? (

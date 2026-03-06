@@ -2,6 +2,10 @@
 
 import { useMemo, useState } from "react";
 import { FloatingWindow } from "../../app/dev/scene-studio/FloatingWindow";
+import {
+  FLOATING_WINDOW_DRAG_HANDLE_ATTR,
+  FLOATING_WINDOW_NO_DRAG_ATTR
+} from "../../app/dev/scene-studio/floating-window-drag-policy";
 import { useDevConsole } from "./DevConsoleContext";
 import { buildDevConsoleRegistry } from "./DevConsoleRegistry";
 import type { DevConsoleToolId } from "./types";
@@ -55,6 +59,9 @@ export function DevConsole() {
   if (!active) {
     return null;
   }
+
+  const dragHandleAttr = { [FLOATING_WINDOW_DRAG_HANDLE_ATTR]: "true" } as const;
+  const noDragAttr = { [FLOATING_WINDOW_NO_DRAG_ATTR]: "true" } as const;
 
   const persistActiveTool = (tool: DevConsoleToolId) => {
     setActiveTool(tool);
@@ -123,7 +130,7 @@ export function DevConsole() {
       headerRight={<div style={{ fontSize: 11, opacity: 0.82, whiteSpace: "nowrap" }}>Single Console Mode</div>}
     >
       <div className={cls("root")}>
-        <div className={cls("rail")}>
+        <div className={cls("rail")} {...noDragAttr}>
           {registry.map((tool) => {
             const isActive = tool.id === active.id;
             return (
@@ -141,13 +148,13 @@ export function DevConsole() {
         </div>
 
         <div className={cls("main")}>
-          <div className={cls("topBar")}>
+          <div className={cls("topBar")} {...dragHandleAttr}>
             <div className={cls("topBarTitleBlock")}>
               <div className={cls("topBarTitle")}>{active.label}</div>
               <div className={cls("topBarDescription")}>{active.description}</div>
             </div>
 
-            <div className={cls("topBarActions")}>
+            <div className={cls("topBarActions")} {...noDragAttr}>
               <button type="button" className={cls("button")} onClick={resetConsoleLayout}>
                 Reset Position
               </button>
@@ -166,7 +173,9 @@ export function DevConsole() {
             </div>
           </div>
 
-          <div className={cls("content")}>{active.render()}</div>
+          <div className={cls("content")} {...noDragAttr}>
+            {active.render()}
+          </div>
         </div>
       </div>
     </FloatingWindow>
