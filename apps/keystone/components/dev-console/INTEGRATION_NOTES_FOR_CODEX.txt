@@ -1,0 +1,40 @@
+1) The new console is globally mounted for all app/dev routes by app/dev/layout.tsx.
+
+2) Scene Editor needs route-owned scene state. Binding is wired in:
+   - apps/keystone/components/scene-studio/scene-studio-page.tsx
+   using:
+     <DevConsoleSceneStudioBinding
+       scene={normalizedDraft}
+       onChange={handleSceneChange}
+       onResetToDefaults={resetSelectedSceneToDefaults}
+     />
+
+3) Existing SceneStudioEditor and PitchLayerDevTools callers remain compatible.
+
+4) The console is registry-driven. To add a new module:
+   - create panel file under components/dev-console/panels/
+   - add tool entry in DevConsoleRegistry.tsx
+   - add any persistence/event wiring as needed
+
+5) Custom events emitted:
+   - hitech:dev-console:flags
+   - hitech:dev-console:export-scene
+   - hitech:dev-console:snapshot
+   - hitech:dev-console:toggle-grid
+   - hitech:dev-console:reset-overlays
+   - hitech:floating-window:restore
+
+6) Verify manually after integration:
+   - /dev/scene-studio
+   - /dev/style-lab
+   - /dev/kpi-supermarket
+
+7) Acceptance criteria:
+   - one single floating console appears on every /dev route
+   - console remembers position/size/collapse
+   - Home button returns to home position
+   - z-index stays above slide layers and remains manipulable
+   - active tool persists
+   - layout profiles save/load correctly
+   - flags persist and broadcast
+   - scene editor works once route binding is connected

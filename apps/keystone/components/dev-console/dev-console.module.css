@@ -1,0 +1,303 @@
+.root {
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 12px;
+}
+
+.rail {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+}
+
+.railButton {
+  width: 100%;
+  min-height: 52px;
+  border-radius: 14px;
+  border: 1px solid hsl(var(--ui-border-2));
+  background: hsl(var(--ui-surface-2) / 0.9);
+  color: hsl(var(--ui-text-1));
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+  padding: 6px;
+  text-align: center;
+}
+
+.railButton:hover {
+  transform: translateY(-1px);
+}
+
+.railButtonActive {
+  border-color: hsl(var(--ui-accent, 193 100% 49%));
+  background: hsl(var(--ui-surface-2) / 1);
+  box-shadow: 0 0 0 1px hsl(var(--ui-accent, 193 100% 49%) / 0.25) inset;
+}
+
+.railButtonText {
+  font-size: 10px;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.main {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 12px;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid hsl(var(--ui-border-1));
+  border-radius: 14px;
+  background: hsl(var(--ui-surface-0) / 0.55);
+}
+
+.topBarTitleBlock {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.topBarTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: hsl(var(--ui-text-1));
+}
+
+.topBarDescription {
+  font-size: 11px;
+  color: hsl(var(--ui-text-2));
+  opacity: 0.92;
+}
+
+.topBarActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.button {
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid hsl(var(--ui-border-2));
+  background: hsl(var(--ui-surface-2) / 0.9);
+  color: hsl(var(--ui-text-1));
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.buttonDanger {
+  border-color: hsl(var(--ui-danger, 9 83% 61%) / 0.35);
+}
+
+.content {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  display: grid;
+  gap: 12px;
+}
+
+.card {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid hsl(var(--ui-border-1));
+  background: hsl(var(--ui-surface-0) / 0.5);
+}
+
+.cardTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: hsl(var(--ui-text-1));
+}
+
+.cardHint {
+  font-size: 11px;
+  color: hsl(var(--ui-text-2));
+}
+
+.emptyState {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px dashed hsl(var(--ui-border-2));
+  background: hsl(var(--ui-surface-0) / 0.4);
+}
+
+.kvGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.kvItem {
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid hsl(var(--ui-border-1));
+  background: hsl(var(--ui-surface-0) / 0.55);
+}
+
+.kvLabel {
+  font-size: 11px;
+  color: hsl(var(--ui-text-2));
+}
+
+.kvValue {
+  font-size: 12px;
+  font-weight: 700;
+  color: hsl(var(--ui-text-1));
+  word-break: break-word;
+}
+
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.metricCard {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid hsl(var(--ui-border-1));
+  background: hsl(var(--ui-surface-0) / 0.55);
+}
+
+.metricValue {
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 800;
+  color: hsl(var(--ui-text-1));
+}
+
+.metricLabel {
+  font-size: 11px;
+  color: hsl(var(--ui-text-2));
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid hsl(var(--ui-border-1));
+  background: hsl(var(--ui-surface-0) / 0.55);
+}
+
+.toggleText {
+  display: grid;
+  gap: 2px;
+}
+
+.toggleLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: hsl(var(--ui-text-1));
+}
+
+.toggleHint {
+  font-size: 11px;
+  color: hsl(var(--ui-text-2));
+}
+
+.toggleButton {
+  min-width: 78px;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid hsl(var(--ui-border-2));
+  background: hsl(var(--ui-surface-2) / 0.9);
+  color: hsl(var(--ui-text-1));
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.list {
+  display: grid;
+  gap: 8px;
+}
+
+.profileRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid hsl(var(--ui-border-1));
+  background: hsl(var(--ui-surface-0) / 0.55);
+}
+
+.input {
+  width: 100%;
+  min-height: 34px;
+  border-radius: 10px;
+  border: 1px solid hsl(var(--ui-border-2));
+  background: hsl(var(--ui-surface-1));
+  color: hsl(var(--ui-text-1));
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.codeBox {
+  margin: 0;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid hsl(var(--ui-border-1));
+  background: hsl(var(--ui-surface-0) / 0.55);
+  color: hsl(var(--ui-text-1));
+  font-size: 11px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+@media (max-width: 900px) {
+  .root {
+    grid-template-columns: 1fr;
+  }
+
+  .rail {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-content: unset;
+  }
+
+  .metricGrid,
+  .kvGrid,
+  .split {
+    grid-template-columns: 1fr;
+  }
+
+  .profileRow {
+    grid-template-columns: 1fr;
+  }
+}

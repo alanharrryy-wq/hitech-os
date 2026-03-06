@@ -18,6 +18,7 @@ import { SceneStudioPreview } from "./scene-studio-preview";
 import { useSceneStudioHotkeys } from "./use-scene-studio-hotkeys";
 import { useSceneStudioState } from "./use-scene-studio-state";
 import type { SceneDiagnosticsPayload } from "../../lib/scene-studio";
+import { DevConsoleSceneStudioBinding } from "../dev-console/DevConsoleContext";
 
 const cls = (name: string): string => styles[name] ?? "";
 
@@ -247,8 +248,32 @@ export function SceneStudioPage() {
     );
   };
 
+  const handleSceneChange = (next: SceneRecord) => {
+    const queryObject = parseSceneQueryToObject(next.query);
+    const refreshed = syncSceneQuery({
+      ...next,
+      query: buildCanonicalSceneQuery({
+        route: next.route,
+        query: queryObject,
+        layerProfile: next.layerProfile,
+        layersMode: next.layers.mode,
+        layerIds: next.layers.layerIds,
+        motion: next.motion,
+        debug: true
+      })
+    });
+
+    updateDraft(refreshed);
+  };
+
   return (
     <section className={cls("root")}>
+      <DevConsoleSceneStudioBinding
+        scene={normalizedDraft}
+        onChange={handleSceneChange}
+        onResetToDefaults={resetSelectedSceneToDefaults}
+      />
+
       <header className={cls("panelHeader")}>
         <h1 className={cls("panelTitle")}>Keystone Scene Studio</h1>
         <p className={cls("devBanner")}>
@@ -468,22 +493,7 @@ export function SceneStudioPage() {
 
             <SceneStudioEditor
               scene={normalizedDraft}
-              onChange={(next) => {
-                const queryObject = parseSceneQueryToObject(next.query);
-                const refreshed = syncSceneQuery({
-                  ...next,
-                  query: buildCanonicalSceneQuery({
-                    route: next.route,
-                    query: queryObject,
-                    layerProfile: next.layerProfile,
-                    layersMode: next.layers.mode,
-                    layerIds: next.layers.layerIds,
-                    motion: next.motion,
-                    debug: true
-                  })
-                });
-                updateDraft(refreshed);
-              }}
+              onChange={handleSceneChange}
               onResetToDefaults={resetSelectedSceneToDefaults}
             />
 

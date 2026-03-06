@@ -1,406 +1,452 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type CSSProperties,
-  type PointerEvent as ReactPointerEvent,
-  type ReactNode
-} from "react";
-import { luxury } from "@hitech/ui-kit";
-import { clampGeometry } from "./window-manager/clamp";
-import { applySnapCandidate, computeSnapCandidate } from "./window-manager/snap";
-import { useWindowManager } from "./window-manager/useWindowManager";
-import type {
-  SnapCandidate,
-  WindowGeometry,
-  WindowLayoutEntry,
-  WindowRegistration
-} from "./window-manager/types";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
-const WINDOW_STYLE: CSSProperties = {
-  position: "fixed",
-  overflow: "hidden",
-  pointerEvents: "auto",
-  isolation: "isolate"
+type Vec2 = { x: number; y: number };
+type Size = { w: number; h: number };
+
+type FloatingWindowState = {
+  pos: Vec2;
+  size: Size;
+  z: number;
+  collapsed: boolean;
 };
 
-const HEADER_STYLE: CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  gap: "0.5rem",
-  padding: "0.5rem 0.65rem",
-  borderBottom: "1px solid hsl(var(--ui-border-1))",
-  background: "color-mix(in oklab, hsl(var(--ui-surface-2)) 86%, transparent)",
-  cursor: "grab",
-  userSelect: "none"
+type RestoreEventDetail = {
+  id?: string | null;
 };
 
-const TITLE_STYLE: CSSProperties = {
-  margin: 0,
-  fontSize: "0.72rem",
-  letterSpacing: "0.06em",
-  textTransform: "uppercase"
+type LegacyWindowLayoutEntry = {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  z: number;
+  visible: boolean;
+  collapsed: boolean;
 };
 
-const BODY_STYLE: CSSProperties = {
-  padding: "0.6rem",
-  overflow: "auto",
-  maxHeight: "calc(100dvh - 6rem)"
-};
+export interface FloatingWindowProps {
+  id: string;
+  title: string;
+  defaultPos?: Vec2;
+  defaultSize?: Size;
+  minSize?: Size;
+  maxSize?: Size;
+  children: React.ReactNode;
+  className?: string;
 
-const BUTTON_STYLE: CSSProperties = {
-  border: "1px solid hsl(var(--ui-border-2))",
-  borderRadius: "8px",
-  background: "hsl(var(--ui-surface-2))",
-  color: "hsl(var(--ui-text-1))",
-  fontSize: "0.68rem",
-  padding: "0.2rem 0.45rem",
-  cursor: "pointer"
-};
+  homePos?: Vec2;
+  homeSize?: Size;
+  initialZ?: number;
+  storageNamespace?: string;
+  headerRight?: React.ReactNode;
+  showHomeButton?: boolean;
+  resizable?: boolean;
 
-const RESIZE_HANDLE_STYLE: CSSProperties = {
-  position: "absolute",
-  right: 0,
-  bottom: 0,
-  width: "18px",
-  height: "18px",
-  cursor: "nwse-resize",
-  background:
-    "linear-gradient(135deg, transparent 0%, transparent 45%, color-mix(in oklab, hsl(var(--ui-border-2)) 55%, transparent) 45%, color-mix(in oklab, hsl(var(--ui-border-2)) 55%, transparent) 55%, transparent 55%)"
-};
-
-interface FloatingWindowProps {
-  readonly id: string;
-  readonly title: string;
-  readonly children: ReactNode;
-  readonly defaultState?: Partial<WindowLayoutEntry>;
-  readonly minWidth?: number;
-  readonly minHeight?: number;
-  readonly singleInstance?: boolean;
-  readonly resizable?: boolean;
-  readonly hideCloseButton?: boolean;
-  readonly frameStyle?: "LIQUID_GLASS" | "GOLD_NOIR_TERMINAL" | "GRAPHITE_PRISM_ISO";
-  readonly frameSurface?: "controlRoomHud" | "pitchSurface" | "kpiWidget";
-  readonly framePerfProfile?: "quality" | "perf";
+  // Legacy compatibility props. These are intentionally accepted so existing callers keep compiling.
+  defaultState?: Partial<LegacyWindowLayoutEntry>;
+  minWidth?: number;
+  minHeight?: number;
+  singleInstance?: boolean;
+  hideCloseButton?: boolean;
+  frameStyle?: "LIQUID_GLASS" | "GOLD_NOIR_TERMINAL" | "GRAPHITE_PRISM_ISO";
+  frameSurface?: "controlRoomHud" | "pitchSurface" | "kpiWidget";
+  framePerfProfile?: "quality" | "perf";
 }
 
-type InteractionMode = "drag" | "resize";
+const HEADER_HEIGHT = 48;
+const COLLAPSED_HEIGHT = 54;
+const VIEWPORT_GUTTER = 6;
+const BASE_Z = 2_000_000_000;
+const MAX_Z = 2_147_483_000;
 
-interface InteractionState {
-  readonly mode: InteractionMode;
-  readonly pointerId: number;
-  readonly startPointerX: number;
-  readonly startPointerY: number;
-  readonly startRect: WindowGeometry;
-  candidate: SnapCandidate | null;
-}
+const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
 
-function toGeometry(entry: WindowLayoutEntry): WindowGeometry {
-  return {
-    x: entry.x,
-    y: entry.y,
-    w: entry.w,
-    h: entry.h
-  };
-}
-
-function buildConstraintOptions(minWidth?: number, minHeight?: number) {
-  const options: { minWidth?: number; minHeight?: number } = {};
-
-  if (minWidth !== undefined) {
-    options.minWidth = minWidth;
+function readLS(key: string): FloatingWindowState | null {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as FloatingWindowState;
+    if (!parsed?.pos || !parsed?.size) return null;
+    return parsed;
+  } catch {
+    return null;
   }
+}
 
-  if (minHeight !== undefined) {
-    options.minHeight = minHeight;
+function writeLS(key: string, value: FloatingWindowState) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // ignore localStorage failures in restrictive contexts
   }
+}
 
-  return options;
+function getViewport() {
+  if (typeof window === "undefined") return { vw: 1280, vh: 720 };
+  return { vw: window.innerWidth, vh: window.innerHeight };
+}
+
+function clampState(
+  prev: FloatingWindowState,
+  minSize: Size,
+  maxSize: Size | undefined
+): Pick<FloatingWindowState, "pos" | "size"> {
+  const { vw, vh } = getViewport();
+  const wMax = maxSize?.w ?? vw - VIEWPORT_GUTTER * 2;
+  const hMax = maxSize?.h ?? vh - VIEWPORT_GUTTER * 2;
+
+  const w = clamp(prev.size.w, minSize.w, Math.max(minSize.w, wMax));
+  const h = clamp(prev.size.h, minSize.h, Math.max(minSize.h, hMax));
+
+  const visibleHeight = prev.collapsed ? COLLAPSED_HEIGHT : h;
+  const x = clamp(prev.pos.x, VIEWPORT_GUTTER, vw - w - VIEWPORT_GUTTER);
+  const y = clamp(prev.pos.y, VIEWPORT_GUTTER, vh - visibleHeight - VIEWPORT_GUTTER);
+
+  return { pos: { x, y }, size: { w, h } };
 }
 
 export function FloatingWindow({
   id,
   title,
+  defaultPos = { x: 24, y: 24 },
+  defaultSize = { w: 420, h: 520 },
+  minSize = { w: 280, h: 180 },
+  maxSize,
   children,
+  className,
+  homePos,
+  homeSize,
+  initialZ = BASE_Z,
+  storageNamespace = "keystone.floatingWindow",
+  headerRight,
+  showHomeButton = true,
+  resizable = true,
   defaultState,
   minWidth,
-  minHeight,
-  singleInstance = true,
-  resizable = true,
-  hideCloseButton = false,
-  frameStyle = "GRAPHITE_PRISM_ISO",
-  frameSurface = "controlRoomHud",
-  framePerfProfile = "quality"
+  minHeight
 }: FloatingWindowProps) {
-  const {
-    state,
-    registerWindow,
-    unregisterWindow,
-    bringToFront,
-    commitWindowState,
-    setWindowCollapsed,
-    setWindowVisible,
-    setSnapPreview,
-    clearSnapPreview
-  } = useWindowManager();
+  const compatDefaultPos = {
+    x: defaultState?.x ?? defaultPos.x,
+    y: defaultState?.y ?? defaultPos.y
+  };
+  const compatDefaultSize = {
+    w: defaultState?.w ?? defaultSize.w,
+    h: defaultState?.h ?? defaultSize.h
+  };
+  const compatMinSize = {
+    w: minSize.w > 0 ? minSize.w : 280,
+    h: minSize.h > 0 ? minSize.h : 180
+  };
 
-  const entry = state.windows[id];
-  const [draftEntry, setDraftEntry] = useState<WindowLayoutEntry | null>(entry ?? null);
-  const interactionRef = useRef<InteractionState | null>(null);
-  const [isInteracting, setIsInteracting] = useState(false);
-  const constraintOptions = useMemo(
-    () => buildConstraintOptions(minWidth, minHeight),
-    [minHeight, minWidth]
-  );
-  const frame = useMemo(
-    () =>
-      luxury.applyFrameToSubtree({
-        style: frameStyle,
-        surface: frameSurface,
-        perfProfile: framePerfProfile
-      }),
-    [framePerfProfile, frameStyle, frameSurface]
-  );
-
-  useEffect(() => {
-    const registration: WindowRegistration = {
-      id,
-      title,
-      singleInstance,
-      ...(defaultState !== undefined ? { defaultState } : {}),
-      ...(minWidth !== undefined ? { minWidth } : {}),
-      ...(minHeight !== undefined ? { minHeight } : {})
-    };
-
-    registerWindow(registration);
-
-    return () => {
-      unregisterWindow(id);
-    };
-  }, [defaultState, id, minHeight, minWidth, registerWindow, singleInstance, title, unregisterWindow]);
-
-  useEffect(() => {
-    if (!entry) {
-      return;
-    }
-
-    if (!isInteracting) {
-      setDraftEntry(entry);
-    }
-  }, [entry, isInteracting]);
-
-  const finishInteraction = useCallback(
-    (pointerId?: number) => {
-      if (pointerId !== undefined && interactionRef.current && interactionRef.current.pointerId !== pointerId) {
-        return;
-      }
-
-      const interaction = interactionRef.current;
-      interactionRef.current = null;
-      setIsInteracting(false);
-
-      if (!entry || !draftEntry) {
-        clearSnapPreview();
-        return;
-      }
-
-      const activeGeometry = toGeometry(draftEntry);
-      const finalGeometry = interaction?.candidate
-        ? applySnapCandidate(interaction.candidate, state.viewport, constraintOptions)
-        : clampGeometry(activeGeometry, state.viewport, constraintOptions);
-
-      commitWindowState(id, finalGeometry);
-      clearSnapPreview();
-    },
-    [clearSnapPreview, commitWindowState, draftEntry, entry, id, minHeight, minWidth, state.viewport]
-  );
-
-  const onPointerMove = useCallback(
-    (event: PointerEvent) => {
-      const interaction = interactionRef.current;
-      if (!interaction || !entry) {
-        return;
-      }
-
-      if (event.pointerId !== interaction.pointerId) {
-        return;
-      }
-
-      const deltaX = event.clientX - interaction.startPointerX;
-      const deltaY = event.clientY - interaction.startPointerY;
-
-      if (interaction.mode === "resize") {
-        const resized = clampGeometry(
-          {
-            x: interaction.startRect.x,
-            y: interaction.startRect.y,
-            w: interaction.startRect.w + deltaX,
-            h: interaction.startRect.h + deltaY
-          },
-          state.viewport,
-          constraintOptions
-        );
-
-        setDraftEntry((previous) => (previous ? { ...previous, ...resized } : previous));
-        interaction.candidate = null;
-        setSnapPreview(null);
-        return;
-      }
-
-      const moved: WindowGeometry = {
-        x: interaction.startRect.x + deltaX,
-        y: interaction.startRect.y + deltaY,
-        w: interaction.startRect.w,
-        h: interaction.startRect.h
-      };
-
-      setDraftEntry((previous) => (previous ? { ...previous, ...moved } : previous));
-
-      const candidate = computeSnapCandidate({
-        rect: moved,
-        pointer: {
-          x: event.clientX,
-          y: event.clientY
-        },
-        viewport: state.viewport,
-        disableSnap: event.altKey,
-        forceGrid: event.shiftKey
-      });
-
-      interaction.candidate = candidate;
-      setSnapPreview(candidate);
-    },
-    [constraintOptions, entry, setSnapPreview, state.viewport]
-  );
-
-  const onPointerUp = useCallback(
-    (event: PointerEvent) => {
-      finishInteraction(event.pointerId);
-    },
-    [finishInteraction]
-  );
-
-  useEffect(() => {
-    if (!isInteracting) {
-      return;
-    }
-
-    const cancel = (event: PointerEvent) => {
-      finishInteraction(event.pointerId);
-    };
-
-    window.addEventListener("pointermove", onPointerMove);
-    window.addEventListener("pointerup", onPointerUp);
-    window.addEventListener("pointercancel", cancel);
-
-    return () => {
-      window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerup", onPointerUp);
-      window.removeEventListener("pointercancel", cancel);
-    };
-  }, [finishInteraction, isInteracting, onPointerMove, onPointerUp]);
-
-  const startInteraction = useCallback(
-    (event: ReactPointerEvent<HTMLElement>, mode: InteractionMode) => {
-      if (!entry || !draftEntry) {
-        return;
-      }
-
-      if (event.button !== 0) {
-        return;
-      }
-
-      event.preventDefault();
-      event.stopPropagation();
-
-      bringToFront(id);
-      setIsInteracting(true);
-
-      interactionRef.current = {
-        mode,
-        pointerId: event.pointerId,
-        startPointerX: event.clientX,
-        startPointerY: event.clientY,
-        startRect: toGeometry(draftEntry),
-        candidate: null
-      };
-
-      event.currentTarget.setPointerCapture(event.pointerId);
-    },
-    [bringToFront, draftEntry, entry, id]
-  );
-
-  const onClose = useCallback(() => {
-    setWindowVisible(id, false);
-  }, [id, setWindowVisible]);
-
-  const onToggleCollapsed = useCallback(() => {
-    if (!entry) {
-      return;
-    }
-
-    setWindowCollapsed(id, !entry.collapsed);
-  }, [entry, id, setWindowCollapsed]);
-
-  const activeEntry = draftEntry ?? entry;
-
-  if (!activeEntry || !entry || !entry.visible) {
-    return null;
+  if (typeof minWidth === "number") {
+    compatMinSize.w = Math.max(compatMinSize.w, minWidth);
   }
 
+  if (typeof minHeight === "number") {
+    compatMinSize.h = Math.max(compatMinSize.h, minHeight);
+  }
+
+  const resolvedHomePos = homePos ?? compatDefaultPos;
+  const resolvedHomeSize = homeSize ?? compatDefaultSize;
+  const resolvedInitialZ = defaultState?.z ?? initialZ;
+  const resolvedInitialCollapsed = defaultState?.collapsed ?? false;
+  const storageKey = useMemo(() => `${storageNamespace}.${id}`, [id, storageNamespace]);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+
+  const [state, setState] = useState<FloatingWindowState>(() => {
+    const saved = typeof window !== "undefined" ? readLS(storageKey) : null;
+    return (
+      saved ?? {
+        pos: compatDefaultPos,
+        size: compatDefaultSize,
+        z: resolvedInitialZ,
+        collapsed: resolvedInitialCollapsed
+      }
+    );
+  });
+
+  const stateRef = useRef(state);
+
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
+
+  useEffect(() => {
+    setState((prev) => {
+      const next = clampState(prev, compatMinSize, maxSize);
+      if (
+        next.pos.x === prev.pos.x &&
+        next.pos.y === prev.pos.y &&
+        next.size.w === prev.size.w &&
+        next.size.h === prev.size.h
+      ) {
+        return prev;
+      }
+      return { ...prev, ...next };
+    });
+  }, [compatMinSize, maxSize]);
+
+  useEffect(() => {
+    writeLS(storageKey, state);
+  }, [storageKey, state]);
+
+  useEffect(() => {
+    const onResize = () => {
+      setState((prev) => {
+        const next = clampState(prev, compatMinSize, maxSize);
+        if (
+          next.pos.x === prev.pos.x &&
+          next.pos.y === prev.pos.y &&
+          next.size.w === prev.size.w &&
+          next.size.h === prev.size.h
+        ) {
+          return prev;
+        }
+        return { ...prev, ...next };
+      });
+    };
+
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => window.removeEventListener("resize", onResize);
+  }, [compatMinSize, maxSize]);
+
+  useEffect(() => {
+    const onRestore = (event: Event) => {
+      const detail = (event as CustomEvent<RestoreEventDetail>).detail;
+      if (detail?.id && detail.id !== id) return;
+
+      const saved = readLS(storageKey);
+      const next = saved ?? {
+        pos: resolvedHomePos,
+        size: resolvedHomeSize,
+        z: Math.max(stateRef.current.z, resolvedInitialZ),
+        collapsed: false
+      };
+
+      setState((prev) => ({
+        ...prev,
+        ...next,
+        z: Math.max(next.z ?? prev.z, prev.z)
+      }));
+    };
+
+    window.addEventListener("hitech:floating-window:restore", onRestore as EventListener);
+    return () => window.removeEventListener("hitech:floating-window:restore", onRestore as EventListener);
+  }, [id, resolvedHomePos, resolvedHomeSize, resolvedInitialZ, storageKey]);
+
+  const bringToFront = () => {
+    setState((prev) => ({
+      ...prev,
+      z: Math.min(MAX_Z, Math.max(prev.z + 1, BASE_Z + (Date.now() % 100_000)))
+    }));
+  };
+
+  const resetToHome = () => {
+    setState((prev) => ({
+      ...prev,
+      pos: resolvedHomePos,
+      size: resolvedHomeSize,
+      collapsed: false,
+      z: Math.min(MAX_Z, Math.max(prev.z + 1, BASE_Z + (Date.now() % 100_000)))
+    }));
+  };
+
+  const startDrag = (e: React.PointerEvent) => {
+    if (e.button !== 0) return;
+
+    bringToFront();
+
+    const startPointer = { x: e.clientX, y: e.clientY };
+    const startPos = { ...stateRef.current.pos };
+    const startState = { ...stateRef.current };
+
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+
+    const onMove = (ev: PointerEvent) => {
+      const dx = ev.clientX - startPointer.x;
+      const dy = ev.clientY - startPointer.y;
+      const { vw, vh } = getViewport();
+      const visibleHeight = startState.collapsed ? COLLAPSED_HEIGHT : startState.size.h;
+
+      const x = clamp(startPos.x + dx, VIEWPORT_GUTTER, vw - startState.size.w - VIEWPORT_GUTTER);
+      const y = clamp(startPos.y + dy, VIEWPORT_GUTTER, vh - visibleHeight - VIEWPORT_GUTTER);
+
+      setState((prev) => ({ ...prev, pos: { x, y } }));
+    };
+
+    const onUp = () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+    };
+
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerup", onUp, { passive: true });
+    window.addEventListener("pointercancel", onUp, { passive: true });
+  };
+
+  const startResize = (e: React.PointerEvent) => {
+    if (!resizable || stateRef.current.collapsed) return;
+    if (e.button !== 0) return;
+
+    bringToFront();
+
+    const startPointer = { x: e.clientX, y: e.clientY };
+    const startState = { ...stateRef.current };
+
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+
+    const onMove = (ev: PointerEvent) => {
+      const dx = ev.clientX - startPointer.x;
+      const dy = ev.clientY - startPointer.y;
+      const { vw, vh } = getViewport();
+
+      const wMax = maxSize?.w ?? vw - VIEWPORT_GUTTER * 2;
+      const hMax = maxSize?.h ?? vh - VIEWPORT_GUTTER * 2;
+
+      const w = clamp(startState.size.w + dx, compatMinSize.w, Math.max(compatMinSize.w, wMax));
+      const h = clamp(startState.size.h + dy, compatMinSize.h, Math.max(compatMinSize.h, hMax));
+
+      setState((prev) => ({ ...prev, size: { w, h } }));
+    };
+
+    const onUp = () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+    };
+
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerup", onUp, { passive: true });
+    window.addEventListener("pointercancel", onUp, { passive: true });
+  };
+
+  const toggleCollapsed = () => {
+    setState((prev) => ({ ...prev, collapsed: !prev.collapsed }));
+  };
+
+  const shellStyle: React.CSSProperties = {
+    position: "fixed",
+    left: 0,
+    top: 0,
+    transform: `translate3d(${state.pos.x}px, ${state.pos.y}px, 0)`,
+    width: `${state.size.w}px`,
+    height: state.collapsed ? `${COLLAPSED_HEIGHT}px` : `${state.size.h}px`,
+    zIndex: state.z,
+    borderRadius: 14,
+    border: "1px solid hsl(var(--ui-border-2))",
+    background: "hsl(var(--ui-surface-1) / 0.96)",
+    boxShadow: "var(--ui-shadow-2)",
+    overflow: "hidden",
+    pointerEvents: "auto",
+    backdropFilter: "blur(8px)"
+  };
+
+  const headerStyle: React.CSSProperties = {
+    height: HEADER_HEIGHT,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 10,
+    padding: "0 12px",
+    borderBottom: "1px solid hsl(var(--ui-border-1))",
+    cursor: "grab",
+    userSelect: "none",
+    touchAction: "none"
+  };
+
+  const titleStyle: React.CSSProperties = {
+    fontSize: 13,
+    opacity: 0.95,
+    fontWeight: 650,
+    letterSpacing: "0.2px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis"
+  };
+
+  const btnStyle: React.CSSProperties = {
+    height: 30,
+    minWidth: 30,
+    padding: "0 10px",
+    borderRadius: 10,
+    border: "1px solid hsl(var(--ui-border-2))",
+    background: "hsl(var(--ui-surface-2) / 0.9)",
+    color: "hsl(var(--ui-text-1))",
+    cursor: "pointer",
+    fontSize: 12
+  };
+
+  const bodyStyle: React.CSSProperties = {
+    height: state.collapsed ? 0 : `calc(100% - ${HEADER_HEIGHT}px)`,
+    overflow: "auto",
+    padding: 12,
+    pointerEvents: "auto"
+  };
+
+  const resizeHandleStyle: React.CSSProperties = {
+    position: "absolute",
+    right: 6,
+    bottom: 6,
+    width: 18,
+    height: 18,
+    borderRadius: 6,
+    border: "1px solid hsl(var(--ui-border-2))",
+    background: "hsl(var(--ui-surface-2) / 0.85)",
+    cursor: "nwse-resize",
+    touchAction: "none",
+    display: state.collapsed || !resizable ? "none" : "block"
+  };
+
   return (
-    <section
-      aria-label={title}
-      onPointerDown={() => bringToFront(id)}
-      className={frame.wrapper.className}
-      {...frame.wrapper.attrs}
-      style={{
-        ...WINDOW_STYLE,
-        ...frame.wrapper.style,
-        left: `${activeEntry.x}px`,
-        top: `${activeEntry.y}px`,
-        width: `${activeEntry.w}px`,
-        zIndex: activeEntry.z,
-        userSelect: isInteracting ? "none" : "auto"
-      }}
-      data-window-id={id}
+    <div
+      ref={rootRef}
+      style={shellStyle}
+      className={className}
+      onPointerDown={bringToFront}
+      aria-label={`FloatingWindow:${id}`}
     >
-      <header style={{ ...HEADER_STYLE, cursor: isInteracting ? "grabbing" : "grab" }}>
-        <div style={{ flex: 1 }} onPointerDown={(event) => startInteraction(event, "drag")}>
-          <h3 style={TITLE_STYLE}>{title}</h3>
+      <div style={headerStyle} onPointerDown={startDrag}>
+        <div style={titleStyle} title={title}>
+          {title}
         </div>
-        <div style={{ display: "flex", gap: "0.35rem", alignItems: "center" }}>
-          <button type="button" style={BUTTON_STYLE} onClick={onToggleCollapsed}>
-            {entry.collapsed ? "Expand" : "Collapse"}
-          </button>
-          {hideCloseButton ? null : (
-            <button type="button" style={BUTTON_STYLE} onClick={onClose}>
-              Hide
+
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          {headerRight}
+
+          {showHomeButton ? (
+            <button
+              type="button"
+              style={btnStyle}
+              onClick={(event) => {
+                event.stopPropagation();
+                resetToHome();
+              }}
+              title="Home position"
+            >
+              Home
             </button>
-          )}
-        </div>
-      </header>
+          ) : null}
 
-      {entry.collapsed ? null : (
-        <div
-          {...frame.contentAttrs}
-          style={{
-            ...BODY_STYLE,
-            height: `${Math.max(activeEntry.h - 52, 60)}px`
-          }}
-        >
-          {children}
+          <button
+            type="button"
+            style={btnStyle}
+            onClick={(event) => {
+              event.stopPropagation();
+              toggleCollapsed();
+            }}
+            title={state.collapsed ? "Expand" : "Collapse"}
+          >
+            {state.collapsed ? "Expand" : "Collapse"}
+          </button>
         </div>
-      )}
+      </div>
 
-      {!entry.collapsed && resizable ? (
-        <div role="presentation" style={RESIZE_HANDLE_STYLE} onPointerDown={(event) => startInteraction(event, "resize")} />
-      ) : null}
-    </section>
+      <div style={bodyStyle}>{children}</div>
+
+      <div style={resizeHandleStyle} onPointerDown={startResize} title="Resize" />
+    </div>
   );
 }
