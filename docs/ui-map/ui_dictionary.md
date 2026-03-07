@@ -3,7 +3,7 @@
 - version: `1.0.0`
 - generated_by: `tools/ui_map deterministic`
 - routes: `11`
-- components: `977`
+- components: `981`
 - states: `10`
 - styles: `10`
 - assets: `2`
@@ -12,7 +12,7 @@
 ## Routes
 | route_id | path | entry_file | screen_component_id |
 | --- | --- | --- | --- |
-| rte_46efb84e93 | /pitch | apps/keystone/app/pitch/page.tsx | cmp_6cb06e50cd |
+| rte_46efb84e93 | /pitch | apps/keystone/app/pitch/page.tsx | cmp_23eef8d3c0 |
 | rte_588c6fe0cc | /pitch/06-shipments-receiving | apps/keystone/app/pitch/06-shipments-receiving/page.tsx | cmp_bf1d0f2e29 |
 | rte_64b18eb3cd | /dev/scene-studio | apps/keystone/app/dev/scene-studio/page.tsx |  |
 | rte_6c122ba817 | /pitch/04-valuation | apps/keystone/app/pitch/04-valuation/page.tsx | cmp_1b31a3432a |

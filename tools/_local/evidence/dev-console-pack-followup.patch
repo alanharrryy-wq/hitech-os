@@ -1,0 +1,216 @@
+diff --git a/apps/keystone/app/dev/scene-studio/ControlRoom.tsx b/apps/keystone/app/dev/scene-studio/ControlRoom.tsx
+index ccba566..4e0280d 100644
+--- a/apps/keystone/app/dev/scene-studio/ControlRoom.tsx
++++ b/apps/keystone/app/dev/scene-studio/ControlRoom.tsx
+@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
+ import { ControlRoomToolbarWindow } from "./ControlRoomToolbarWindow";
+ import { FloatingWindow } from "./FloatingWindow";
+ import { SceneGraphPanel } from "./SceneGraphPanel";
++import { useOptionalDevConsole } from "../../../components/dev-console/DevConsoleContext";
+ import {
+   SceneStudioEditorPanel,
+   SceneStudioRuntimeProvider
+@@ -53,6 +54,8 @@ function resolveFrameStyleFromQuery(
+ }
+ 
+ export function ControlRoom({ children }: PropsWithChildren) {
++  const devConsole = useOptionalDevConsole();
++  const disableLegacyHud = Boolean(devConsole);
+   const searchParams = useSearchParams();
+   const searchSignature = searchParams.toString();
+   const frameStyle = useMemo(
+@@ -74,75 +77,77 @@ export function ControlRoom({ children }: PropsWithChildren) {
+       <WindowManagerProvider>
+         {children}
+ 
+-        <div aria-label="Control Room overlay" style={OVERLAY_ROOT_STYLE}>
+-          <SnapPreviewOverlay />
+-          <SceneStudioRuntimeProvider>
+-            <ControlRoomToolbarWindow
+-              frameStyle={frameStyle}
+-              framePerfProfile={framePerfProfile}
+-            />
+-
+-            <FloatingWindow
+-              id="scene-editor"
+-              title="Scene Editor"
+-              frameStyle={frameStyle}
+-              framePerfProfile={framePerfProfile}
+-              minWidth={360}
+-              minHeight={320}
+-              defaultState={{
+-                x: 20,
+-                y: 112,
+-                w: 500,
+-                h: 700,
+-                z: 1101,
+-                visible: true,
+-                collapsed: false
+-              }}
+-            >
+-              <SceneStudioEditorPanel />
+-            </FloatingWindow>
+-
+-            <FloatingWindow
+-              id="layer-debug"
+-              title="Layer Debug"
+-              frameStyle={frameStyle}
+-              framePerfProfile={framePerfProfile}
+-              minWidth={340}
+-              minHeight={240}
+-              defaultState={{
+-                x: 980,
+-                y: 20,
+-                w: 400,
+-                h: 520,
+-                z: 1102,
+-                visible: true,
+-                collapsed: false
+-              }}
+-            >
+-              <LayerDebugWindowContent />
+-            </FloatingWindow>
+-
+-            <FloatingWindow
+-              id="scene-graph"
+-              title="Scene Graph"
+-              frameStyle={frameStyle}
+-              framePerfProfile={framePerfProfile}
+-              minWidth={340}
+-              minHeight={220}
+-              defaultState={{
+-                x: 980,
+-                y: 560,
+-                w: 400,
+-                h: 300,
+-                z: 1103,
+-                visible: true,
+-                collapsed: false
+-              }}
+-            >
+-              <SceneGraphPanel />
+-            </FloatingWindow>
+-          </SceneStudioRuntimeProvider>
+-        </div>
++        {disableLegacyHud ? null : (
++          <div aria-label="Control Room overlay" style={OVERLAY_ROOT_STYLE}>
++            <SnapPreviewOverlay />
++            <SceneStudioRuntimeProvider>
++              <ControlRoomToolbarWindow
++                frameStyle={frameStyle}
++                framePerfProfile={framePerfProfile}
++              />
++
++              <FloatingWindow
++                id="scene-editor"
++                title="Scene Editor"
++                frameStyle={frameStyle}
++                framePerfProfile={framePerfProfile}
++                minWidth={360}
++                minHeight={320}
++                defaultState={{
++                  x: 20,
++                  y: 112,
++                  w: 500,
++                  h: 700,
++                  z: 1101,
++                  visible: true,
++                  collapsed: false
++                }}
++              >
++                <SceneStudioEditorPanel />
++              </FloatingWindow>
++
++              <FloatingWindow
++                id="layer-debug"
++                title="Layer Debug"
++                frameStyle={frameStyle}
++                framePerfProfile={framePerfProfile}
++                minWidth={340}
++                minHeight={240}
++                defaultState={{
++                  x: 980,
++                  y: 20,
++                  w: 400,
++                  h: 520,
++                  z: 1102,
++                  visible: true,
++                  collapsed: false
++                }}
++              >
++                <LayerDebugWindowContent />
++              </FloatingWindow>
++
++              <FloatingWindow
++                id="scene-graph"
++                title="Scene Graph"
++                frameStyle={frameStyle}
++                framePerfProfile={framePerfProfile}
++                minWidth={340}
++                minHeight={220}
++                defaultState={{
++                  x: 980,
++                  y: 560,
++                  w: 400,
++                  h: 300,
++                  z: 1103,
++                  visible: true,
++                  collapsed: false
++                }}
++              >
++                <SceneGraphPanel />
++              </FloatingWindow>
++            </SceneStudioRuntimeProvider>
++          </div>
++        )}
+ 
+         <StudioHotkeysBinding />
+       </WindowManagerProvider>
+diff --git a/apps/keystone/components/dev-console/DevConsoleContext.tsx b/apps/keystone/components/dev-console/DevConsoleContext.tsx
+index dd65ac1..cae3cf6 100644
+--- a/apps/keystone/components/dev-console/DevConsoleContext.tsx
++++ b/apps/keystone/components/dev-console/DevConsoleContext.tsx
+@@ -78,13 +78,17 @@ export function DevConsoleProvider({ children }: { children: React.ReactNode })
+ }
+ 
+ export function useDevConsole() {
+-  const value = useContext(DevConsoleContext);
++  const value = useOptionalDevConsole();
+   if (!value) {
+     throw new Error("useDevConsole must be used inside DevConsoleProvider");
+   }
+   return value;
+ }
+ 
++export function useOptionalDevConsole() {
++  return useContext(DevConsoleContext);
++}
++
+ export function DevConsoleSceneStudioBinding(props: SceneStudioBinding) {
+   const { setSceneStudioBinding } = useDevConsole();
+ 
+diff --git a/apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx b/apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx
+index 463da09..3b58aee 100644
+--- a/apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx
++++ b/apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx
+@@ -4,12 +4,20 @@ import { LayerDebugPanel } from "@hitech/ui-kit";
+ import { PitchShareLookButton } from "./pitch-share-look-button";
+ import { PitchSceneRuntimeBridge } from "./pitch-scene-runtime-bridge";
+ import { PitchVisualSceneOverlay } from "./pitch-visual-scene-overlay";
++import { useOptionalDevConsole } from "../../dev-console/DevConsoleContext";
+ 
+ export interface PitchLayerDevToolsProps {
+   readonly visible: boolean;
+ }
+ 
+ export function PitchLayerDevTools({ visible }: PitchLayerDevToolsProps) {
++  const devConsole = useOptionalDevConsole();
++
++  // When the single Dev Console is mounted, disable legacy multi-window HUD mounts.
++  if (devConsole) {
++    return <PitchSceneRuntimeBridge />;
++  }
++
+   if (!visible) {
+     return <PitchSceneRuntimeBridge />;
+   }

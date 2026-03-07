@@ -128,6 +128,7 @@ Each sample is deterministic for the same dictionary input.
       "cmp_16c468c2d6",
       "cmp_1d64a6eac7",
       "cmp_2100b40d4a",
+      "cmp_23eef8d3c0",
       "cmp_2a48db8a31",
       "cmp_432c46b32d",
       "cmp_45b5a64481",
@@ -620,7 +621,7 @@ Each sample is deterministic for the same dictionary input.
     "entry_file": "apps/keystone/app/pitch/page.tsx",
     "path": "/pitch",
     "route_id": "rte_46efb84e93",
-    "screen_component_id": "cmp_6cb06e50cd"
+    "screen_component_id": "cmp_23eef8d3c0"
   },
   {
     "entry_file": "apps/keystone/app/pitch/01-double-engine/page.tsx",

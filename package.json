@@ -51,7 +51,11 @@
     "keystone:scene:proof:ci": "pnpm --filter @hitech/keystone keystone:scene:proof:ci",
     "lint-staged": "lint-staged",
     "commitlint": "commitlint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "hydration:scan": "python tools/hydration_sentinel/sentinel.py --repo-root . --output-dir _reports/hydration_sentinel",
+    "hydration:scan:strict": "python tools/hydration_sentinel/sentinel.py --repo-root . --output-dir _reports/hydration_sentinel --strict",
+    "hydration:baseline:update": "python tools/hydration_sentinel/sentinel.py --repo-root . --output-dir _reports/hydration_sentinel --update-baseline",
+    "hydration:scan:smoke": "python tools/hydration_sentinel/sentinel.py --repo-root . --output-dir _reports/hydration_sentinel --max-files 250"
   },
   "devDependencies": {
     "@commitlint/cli": "19.8.1",

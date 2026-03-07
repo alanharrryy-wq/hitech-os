@@ -1,0 +1,84 @@
+{
+  "include_extensions": [
+    ".ts",
+    ".tsx",
+    ".js",
+    ".jsx",
+    ".mjs",
+    ".cjs"
+  ],
+  "exclude_dirs": [
+    ".git",
+    "node_modules",
+    ".next",
+    ".turbo",
+    "dist",
+    "build",
+    "coverage",
+    "_reports",
+    "_scaffold",
+    "tools/codex/runs",
+    "tools/codex/worktrees",
+    "scripts/hydration_guard_bundle"
+  ],
+  "ignore_path_globs": [
+    "**/__tests__/**",
+    "**/*.test.*",
+    "**/*.spec.*",
+    "**/*.stories.*",
+    "**/*.generated.*",
+    "**/*.gen.*",
+    "**/*.snap",
+    "**/fixtures/**",
+    "**/__snapshots__/**",
+    "**/vendor/**"
+  ],
+  "internal_tooling_globs": [
+    "apps/keystone/app/dev/**",
+    "apps/keystone/components/**/debug/**",
+    "apps/keystone/components/**/devtools/**",
+    "apps/keystone/components/**/internal-tooling/**",
+    "apps/keystone/components/**/scene-studio/**",
+    "apps/keystone/app/dev/**/scene-studio/**",
+    "tools/**",
+    "packages/tooling/**"
+  ],
+  "allow": {
+    "dynamic_ssr_false": [
+      "apps/keystone/app/dev/**",
+      "apps/keystone/components/**/debug/**",
+      "apps/keystone/components/**/devtools/**",
+      "apps/keystone/components/**/internal-tooling/**"
+    ],
+    "suppress_hydration_warning": [
+      "apps/keystone/app/dev/**",
+      "apps/keystone/components/**/debug/**",
+      "apps/keystone/components/**/devtools/**"
+    ],
+    "use_client_root_route": [
+      "apps/keystone/app/dev/**"
+    ],
+    "server_to_client_import_hint": [
+      "apps/keystone/app/dev/**",
+      "apps/keystone/components/**/debug/**",
+      "apps/keystone/components/**/devtools/**"
+    ]
+  },
+  "browser_api_tokens": [
+    "window",
+    "document",
+    "localStorage",
+    "sessionStorage",
+    "navigator",
+    "matchMedia",
+    "requestAnimationFrame"
+  ],
+  "dom_mutation_signatures": [
+    "field_signature",
+    "form_signature",
+    "alternative_form_signature",
+    "visibility_annotation"
+  ],
+  "baseline_file": "tools/hydration_sentinel/baseline.json",
+  "report_top_n": 30
+}

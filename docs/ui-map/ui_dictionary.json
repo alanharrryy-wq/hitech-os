@@ -146,6 +146,7 @@
         "apps/keystone/app/dev/scene-studio/window-manager/SnapPreviewOverlay.tsx",
         "apps/keystone/app/dev/scene-studio/window-manager/WindowManagerProvider.tsx",
         "apps/keystone/components/dev-console/DevConsoleContext.tsx",
+        "apps/keystone/components/internal-tooling/internal-tool-client-only-boundary.tsx",
         "packages/ui-kit/src/index.ts"
       ],
       "kind": "control",
@@ -158,6 +159,7 @@
         "cmp_6ea9b8c4df",
         "cmp_ae5bef312a",
         "cmp_d2126a2b14",
+        "cmp_edbe55f84a",
         "cmp_fbfe126129"
       ],
       "uses": {
@@ -616,7 +618,7 @@
       "export_name": "dynamic",
       "file_path": "apps/keystone/app/pitch/05-inventory-foundation/page.tsx",
       "imports": [
-        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools-client-only.tsx",
         "apps/keystone/components/pitch/pitch-shell.tsx",
         "apps/keystone/components/pitch/run1/index.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -626,7 +628,7 @@
       "renders": [
         "cmp_114f4ca07f",
         "cmp_1d64a6eac7",
-        "cmp_6cb06e50cd",
+        "cmp_23eef8d3c0",
         "cmp_dd9d94eef4"
       ],
       "uses": {
@@ -2758,6 +2760,26 @@
       }
     },
     {
+      "component_id": "cmp_23eef8d3c0",
+      "export_name": "PitchLayerDevToolsClientOnly",
+      "file_path": "apps/keystone/components/pitch/debug/pitch-layer-dev-tools-client-only.tsx",
+      "imports": [
+        "apps/keystone/components/internal-tooling/internal-tool-client-only-boundary.tsx",
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx"
+      ],
+      "kind": "block",
+      "renders": [
+        "cmp_6cb06e50cd",
+        "cmp_edbe55f84a"
+      ],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_241ed781ed",
       "export_name": "brandPresenceConfig",
       "file_path": "packages/ui-kit/src/brand/brand-presence.config.ts",
@@ -4578,7 +4600,7 @@
       "export_name": "default",
       "file_path": "apps/keystone/app/pitch/page.tsx",
       "imports": [
-        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools-client-only.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -4587,7 +4609,7 @@
       "kind": "route",
       "renders": [
         "cmp_1d64a6eac7",
-        "cmp_6cb06e50cd",
+        "cmp_23eef8d3c0",
         "cmp_dd9d94eef4",
         "cmp_eb400afd5e"
       ],
@@ -5926,7 +5948,7 @@
       "export_name": "default",
       "file_path": "apps/keystone/app/pitch/01-double-engine/page.tsx",
       "imports": [
-        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools-client-only.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -5935,7 +5957,7 @@
       "kind": "route",
       "renders": [
         "cmp_1d64a6eac7",
-        "cmp_6cb06e50cd",
+        "cmp_23eef8d3c0",
         "cmp_dd9d94eef4",
         "cmp_f14bfffde5"
       ],
@@ -6785,7 +6807,7 @@
       "export_name": "dynamic",
       "file_path": "apps/keystone/app/pitch/04-valuation/page.tsx",
       "imports": [
-        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools-client-only.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -6795,7 +6817,7 @@
       "renders": [
         "cmp_1b31a3432a",
         "cmp_1d64a6eac7",
-        "cmp_6cb06e50cd",
+        "cmp_23eef8d3c0",
         "cmp_dd9d94eef4"
       ],
       "uses": {
@@ -6824,7 +6846,7 @@
       "export_name": "default",
       "file_path": "apps/keystone/app/pitch/02-industrial-flow/page.tsx",
       "imports": [
-        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools-client-only.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -6833,7 +6855,7 @@
       "kind": "route",
       "renders": [
         "cmp_1d64a6eac7",
-        "cmp_6cb06e50cd",
+        "cmp_23eef8d3c0",
         "cmp_88852e131f",
         "cmp_dd9d94eef4"
       ],
@@ -7415,7 +7437,7 @@
       "export_name": "default",
       "file_path": "apps/keystone/app/pitch/06-shipments-receiving/page.tsx",
       "imports": [
-        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools-client-only.tsx",
         "apps/keystone/components/pitch/pitch-shell.tsx",
         "apps/keystone/components/pitch/run2/index.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -7424,7 +7446,7 @@
       "kind": "route",
       "renders": [
         "cmp_1d64a6eac7",
-        "cmp_6cb06e50cd",
+        "cmp_23eef8d3c0",
         "cmp_bf1d0f2e29",
         "cmp_dd9d94eef4"
       ],
@@ -7472,7 +7494,7 @@
       "export_name": "default",
       "file_path": "apps/keystone/app/pitch/04-valuation/page.tsx",
       "imports": [
-        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools-client-only.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -7482,7 +7504,7 @@
       "renders": [
         "cmp_1b31a3432a",
         "cmp_1d64a6eac7",
-        "cmp_6cb06e50cd",
+        "cmp_23eef8d3c0",
         "cmp_dd9d94eef4"
       ],
       "uses": {
@@ -7879,13 +7901,13 @@
       "export_name": "default",
       "file_path": "apps/keystone/app/dev/scene-studio/page.tsx",
       "imports": [
-        "apps/keystone/components/scene-studio/scene-studio-page.tsx",
+        "apps/keystone/components/scene-studio/scene-studio-page-client-only.tsx",
         "apps/keystone/lib/scene-studio/index.ts",
         "packages/ui-kit/src/index.ts"
       ],
       "kind": "route",
       "renders": [
-        "cmp_7b8f4f141d"
+        "cmp_cd48e6e700"
       ],
       "uses": {
         "assets": [],
@@ -8104,7 +8126,7 @@
       "export_name": "dynamic",
       "file_path": "apps/keystone/app/pitch/page.tsx",
       "imports": [
-        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools-client-only.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -8113,7 +8135,7 @@
       "kind": "route",
       "renders": [
         "cmp_1d64a6eac7",
-        "cmp_6cb06e50cd",
+        "cmp_23eef8d3c0",
         "cmp_dd9d94eef4",
         "cmp_eb400afd5e"
       ],
@@ -9113,7 +9135,7 @@
       "export_name": "dynamic",
       "file_path": "apps/keystone/app/pitch/06-shipments-receiving/page.tsx",
       "imports": [
-        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools-client-only.tsx",
         "apps/keystone/components/pitch/pitch-shell.tsx",
         "apps/keystone/components/pitch/run2/index.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -9122,7 +9144,7 @@
       "kind": "route",
       "renders": [
         "cmp_1d64a6eac7",
-        "cmp_6cb06e50cd",
+        "cmp_23eef8d3c0",
         "cmp_bf1d0f2e29",
         "cmp_dd9d94eef4"
       ],
@@ -10079,7 +10101,7 @@
       "export_name": "default",
       "file_path": "apps/keystone/app/pitch/05-inventory-foundation/page.tsx",
       "imports": [
-        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools-client-only.tsx",
         "apps/keystone/components/pitch/pitch-shell.tsx",
         "apps/keystone/components/pitch/run1/index.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -10089,7 +10111,7 @@
       "renders": [
         "cmp_114f4ca07f",
         "cmp_1d64a6eac7",
-        "cmp_6cb06e50cd",
+        "cmp_23eef8d3c0",
         "cmp_dd9d94eef4"
       ],
       "uses": {
@@ -10605,13 +10627,13 @@
       "export_name": "dynamic",
       "file_path": "apps/keystone/app/dev/scene-studio/page.tsx",
       "imports": [
-        "apps/keystone/components/scene-studio/scene-studio-page.tsx",
+        "apps/keystone/components/scene-studio/scene-studio-page-client-only.tsx",
         "apps/keystone/lib/scene-studio/index.ts",
         "packages/ui-kit/src/index.ts"
       ],
       "kind": "route",
       "renders": [
-        "cmp_7b8f4f141d"
+        "cmp_cd48e6e700"
       ],
       "uses": {
         "assets": [],
@@ -10908,7 +10930,7 @@
       "export_name": "dynamic",
       "file_path": "apps/keystone/app/pitch/02-industrial-flow/page.tsx",
       "imports": [
-        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools-client-only.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -10917,7 +10939,7 @@
       "kind": "route",
       "renders": [
         "cmp_1d64a6eac7",
-        "cmp_6cb06e50cd",
+        "cmp_23eef8d3c0",
         "cmp_88852e131f",
         "cmp_dd9d94eef4"
       ],
@@ -12174,7 +12196,7 @@
       "export_name": "dynamic",
       "file_path": "apps/keystone/app/pitch/03-hitech-os/page.tsx",
       "imports": [
-        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools-client-only.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -12183,8 +12205,8 @@
       "kind": "route",
       "renders": [
         "cmp_1d64a6eac7",
+        "cmp_23eef8d3c0",
         "cmp_4daf0963df",
-        "cmp_6cb06e50cd",
         "cmp_dd9d94eef4"
       ],
       "uses": {
@@ -15098,6 +15120,26 @@
       }
     },
     {
+      "component_id": "cmp_cd48e6e700",
+      "export_name": "SceneStudioPageClientOnly",
+      "file_path": "apps/keystone/components/scene-studio/scene-studio-page-client-only.tsx",
+      "imports": [
+        "apps/keystone/components/internal-tooling/internal-tool-client-only-boundary.tsx",
+        "apps/keystone/components/scene-studio/scene-studio-page.tsx"
+      ],
+      "kind": "block",
+      "renders": [
+        "cmp_7b8f4f141d",
+        "cmp_edbe55f84a"
+      ],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_cd538d8228",
       "export_name": "luxuryKernelSelfTestReport",
       "file_path": "packages/ui-kit/src/luxury/luxuryKernel.test.ts",
@@ -16107,6 +16149,20 @@
       }
     },
     {
+      "component_id": "cmp_dcd0d887ec",
+      "export_name": "reportInternalToolClientOnlyMount",
+      "file_path": "apps/keystone/components/internal-tooling/hydration-diagnostics.ts",
+      "imports": [],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [],
+        "stores": []
+      }
+    },
+    {
       "component_id": "cmp_dd9d94eef4",
       "export_name": "PitchShell",
       "file_path": "apps/keystone/components/pitch/pitch-shell.tsx",
@@ -16589,7 +16645,7 @@
       "export_name": "default",
       "file_path": "apps/keystone/app/pitch/03-hitech-os/page.tsx",
       "imports": [
-        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools-client-only.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -16598,8 +16654,8 @@
       "kind": "route",
       "renders": [
         "cmp_1d64a6eac7",
+        "cmp_23eef8d3c0",
         "cmp_4daf0963df",
-        "cmp_6cb06e50cd",
         "cmp_dd9d94eef4"
       ],
       "uses": {
@@ -17493,6 +17549,27 @@
       }
     },
     {
+      "component_id": "cmp_edbe55f84a",
+      "export_name": "InternalToolClientOnlyBoundary",
+      "file_path": "apps/keystone/components/internal-tooling/internal-tool-client-only-boundary.tsx",
+      "imports": [
+        "apps/keystone/components/internal-tooling/hydration-diagnostics.ts"
+      ],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [
+          "useEffect",
+          "useState"
+        ],
+        "stores": [
+          "useState"
+        ]
+      }
+    },
+    {
       "component_id": "cmp_edfed7c60a",
       "export_name": "PitchIconScale",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -18167,7 +18244,7 @@
       "export_name": "dynamic",
       "file_path": "apps/keystone/app/pitch/01-double-engine/page.tsx",
       "imports": [
-        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
+        "apps/keystone/components/pitch/debug/pitch-layer-dev-tools-client-only.tsx",
         "apps/keystone/components/pitch/index.ts",
         "apps/keystone/components/pitch/view-model/pitch-shell-model.ts",
         "apps/keystone/lib/pitch/layer-resolution.ts",
@@ -18176,7 +18253,7 @@
       "kind": "route",
       "renders": [
         "cmp_1d64a6eac7",
-        "cmp_6cb06e50cd",
+        "cmp_23eef8d3c0",
         "cmp_dd9d94eef4",
         "cmp_f14bfffde5"
       ],
@@ -18768,6 +18845,11 @@
     },
     {
       "from": "cmp_01b648fb75",
+      "to": "cmp_edbe55f84a",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_01b648fb75",
       "to": "cmp_fbfe126129",
       "type": "imports"
     },
@@ -19098,17 +19180,17 @@
     },
     {
       "from": "cmp_06fa5a7ff5",
+      "to": "cmp_23eef8d3c0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_06fa5a7ff5",
       "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_06fa5a7ff5",
       "to": "cmp_67c4101751",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_06fa5a7ff5",
-      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -20444,6 +20526,16 @@
     {
       "from": "cmp_23e9d34b62",
       "to": "cmp_a56a27fc43",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_23eef8d3c0",
+      "to": "cmp_6cb06e50cd",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_23eef8d3c0",
+      "to": "cmp_edbe55f84a",
       "type": "imports"
     },
     {
@@ -21918,17 +22010,17 @@
     },
     {
       "from": "cmp_392b7b5544",
+      "to": "cmp_23eef8d3c0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_392b7b5544",
       "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_392b7b5544",
       "to": "cmp_67c4101751",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_392b7b5544",
-      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -22748,17 +22840,17 @@
     },
     {
       "from": "cmp_4c33d65a1b",
+      "to": "cmp_23eef8d3c0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_4c33d65a1b",
       "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_4c33d65a1b",
       "to": "cmp_67c4101751",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_4c33d65a1b",
-      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -23388,17 +23480,17 @@
     },
     {
       "from": "cmp_5650c38efe",
+      "to": "cmp_23eef8d3c0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_5650c38efe",
       "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_5650c38efe",
       "to": "cmp_67c4101751",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_5650c38efe",
-      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -23418,17 +23510,17 @@
     },
     {
       "from": "cmp_57a316c0c8",
+      "to": "cmp_23eef8d3c0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_57a316c0c8",
       "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_57a316c0c8",
       "to": "cmp_67c4101751",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_57a316c0c8",
-      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -23893,17 +23985,17 @@
     },
     {
       "from": "cmp_5f4559764e",
+      "to": "cmp_23eef8d3c0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_5f4559764e",
       "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_5f4559764e",
       "to": "cmp_67c4101751",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_5f4559764e",
-      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -23948,17 +24040,17 @@
     },
     {
       "from": "cmp_5fe598643a",
+      "to": "cmp_23eef8d3c0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_5fe598643a",
       "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_5fe598643a",
       "to": "cmp_67c4101751",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_5fe598643a",
-      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -24168,7 +24260,7 @@
     },
     {
       "from": "cmp_643b586dfd",
-      "to": "cmp_7b8f4f141d",
+      "to": "cmp_cd48e6e700",
       "type": "imports"
     },
     {
@@ -24398,17 +24490,17 @@
     },
     {
       "from": "cmp_66ce3930e7",
+      "to": "cmp_23eef8d3c0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_66ce3930e7",
       "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_66ce3930e7",
       "to": "cmp_67c4101751",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_66ce3930e7",
-      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -25038,17 +25130,17 @@
     },
     {
       "from": "cmp_76a47f23da",
+      "to": "cmp_23eef8d3c0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_76a47f23da",
       "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_76a47f23da",
       "to": "cmp_67c4101751",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_76a47f23da",
-      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -25763,17 +25855,17 @@
     },
     {
       "from": "cmp_80d296e91b",
+      "to": "cmp_23eef8d3c0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_80d296e91b",
       "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_80d296e91b",
       "to": "cmp_67c4101751",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_80d296e91b",
-      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -26118,7 +26210,7 @@
     },
     {
       "from": "cmp_897087c37a",
-      "to": "cmp_7b8f4f141d",
+      "to": "cmp_cd48e6e700",
       "type": "imports"
     },
     {
@@ -26278,17 +26370,17 @@
     },
     {
       "from": "cmp_8ec357b7d7",
+      "to": "cmp_23eef8d3c0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_8ec357b7d7",
       "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_8ec357b7d7",
       "to": "cmp_67c4101751",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_8ec357b7d7",
-      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -27248,6 +27340,11 @@
     },
     {
       "from": "cmp_9ec03d1934",
+      "to": "cmp_23eef8d3c0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_9ec03d1934",
       "to": "cmp_4daf0963df",
       "type": "imports"
     },
@@ -27259,11 +27356,6 @@
     {
       "from": "cmp_9ec03d1934",
       "to": "cmp_67c4101751",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_9ec03d1934",
-      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -29232,6 +29324,16 @@
       "type": "imports"
     },
     {
+      "from": "cmp_cd48e6e700",
+      "to": "cmp_7b8f4f141d",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_cd48e6e700",
+      "to": "cmp_edbe55f84a",
+      "type": "imports"
+    },
+    {
       "from": "cmp_cd538d8228",
       "to": "cmp_04fbad1a55",
       "type": "imports"
@@ -30433,6 +30535,11 @@
     },
     {
       "from": "cmp_e240b70092",
+      "to": "cmp_23eef8d3c0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_e240b70092",
       "to": "cmp_4daf0963df",
       "type": "imports"
     },
@@ -30444,11 +30551,6 @@
     {
       "from": "cmp_e240b70092",
       "to": "cmp_67c4101751",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_e240b70092",
-      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -31042,6 +31144,11 @@
       "type": "imports"
     },
     {
+      "from": "cmp_edbe55f84a",
+      "to": "cmp_dcd0d887ec",
+      "type": "imports"
+    },
+    {
       "from": "cmp_edfed7c60a",
       "to": "cmp_a56a27fc43",
       "type": "imports"
@@ -31593,17 +31700,17 @@
     },
     {
       "from": "cmp_f9db57b4c9",
+      "to": "cmp_23eef8d3c0",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_f9db57b4c9",
       "to": "cmp_65dfb85232",
       "type": "imports"
     },
     {
       "from": "cmp_f9db57b4c9",
       "to": "cmp_67c4101751",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_f9db57b4c9",
-      "to": "cmp_6cb06e50cd",
       "type": "imports"
     },
     {
@@ -31943,6 +32050,11 @@
     },
     {
       "from": "cmp_01b648fb75",
+      "to": "cmp_edbe55f84a",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_01b648fb75",
       "to": "cmp_fbfe126129",
       "type": "renders"
     },
@@ -32033,7 +32145,7 @@
     },
     {
       "from": "cmp_06fa5a7ff5",
-      "to": "cmp_6cb06e50cd",
+      "to": "cmp_23eef8d3c0",
       "type": "renders"
     },
     {
@@ -32244,6 +32356,16 @@
     {
       "from": "cmp_23ab6aa609",
       "to": "cmp_b4869cd77b",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_23eef8d3c0",
+      "to": "cmp_6cb06e50cd",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_23eef8d3c0",
+      "to": "cmp_edbe55f84a",
       "type": "renders"
     },
     {
@@ -32563,7 +32685,7 @@
     },
     {
       "from": "cmp_392b7b5544",
-      "to": "cmp_6cb06e50cd",
+      "to": "cmp_23eef8d3c0",
       "type": "renders"
     },
     {
@@ -32688,7 +32810,7 @@
     },
     {
       "from": "cmp_4c33d65a1b",
-      "to": "cmp_6cb06e50cd",
+      "to": "cmp_23eef8d3c0",
       "type": "renders"
     },
     {
@@ -32888,7 +33010,7 @@
     },
     {
       "from": "cmp_5650c38efe",
-      "to": "cmp_6cb06e50cd",
+      "to": "cmp_23eef8d3c0",
       "type": "renders"
     },
     {
@@ -32903,7 +33025,7 @@
     },
     {
       "from": "cmp_57a316c0c8",
-      "to": "cmp_6cb06e50cd",
+      "to": "cmp_23eef8d3c0",
       "type": "renders"
     },
     {
@@ -33038,7 +33160,7 @@
     },
     {
       "from": "cmp_5f4559764e",
-      "to": "cmp_6cb06e50cd",
+      "to": "cmp_23eef8d3c0",
       "type": "renders"
     },
     {
@@ -33063,7 +33185,7 @@
     },
     {
       "from": "cmp_5fe598643a",
-      "to": "cmp_6cb06e50cd",
+      "to": "cmp_23eef8d3c0",
       "type": "renders"
     },
     {
@@ -33108,7 +33230,7 @@
     },
     {
       "from": "cmp_643b586dfd",
-      "to": "cmp_7b8f4f141d",
+      "to": "cmp_cd48e6e700",
       "type": "renders"
     },
     {
@@ -33228,7 +33350,7 @@
     },
     {
       "from": "cmp_66ce3930e7",
-      "to": "cmp_6cb06e50cd",
+      "to": "cmp_23eef8d3c0",
       "type": "renders"
     },
     {
@@ -33433,7 +33555,7 @@
     },
     {
       "from": "cmp_76a47f23da",
-      "to": "cmp_6cb06e50cd",
+      "to": "cmp_23eef8d3c0",
       "type": "renders"
     },
     {
@@ -33543,7 +33665,7 @@
     },
     {
       "from": "cmp_80d296e91b",
-      "to": "cmp_6cb06e50cd",
+      "to": "cmp_23eef8d3c0",
       "type": "renders"
     },
     {
@@ -33573,7 +33695,7 @@
     },
     {
       "from": "cmp_897087c37a",
-      "to": "cmp_7b8f4f141d",
+      "to": "cmp_cd48e6e700",
       "type": "renders"
     },
     {
@@ -33598,7 +33720,7 @@
     },
     {
       "from": "cmp_8ec357b7d7",
-      "to": "cmp_6cb06e50cd",
+      "to": "cmp_23eef8d3c0",
       "type": "renders"
     },
     {
@@ -33688,12 +33810,12 @@
     },
     {
       "from": "cmp_9ec03d1934",
-      "to": "cmp_4daf0963df",
+      "to": "cmp_23eef8d3c0",
       "type": "renders"
     },
     {
       "from": "cmp_9ec03d1934",
-      "to": "cmp_6cb06e50cd",
+      "to": "cmp_4daf0963df",
       "type": "renders"
     },
     {
@@ -34102,6 +34224,16 @@
       "type": "renders"
     },
     {
+      "from": "cmp_cd48e6e700",
+      "to": "cmp_7b8f4f141d",
+      "type": "renders"
+    },
+    {
+      "from": "cmp_cd48e6e700",
+      "to": "cmp_edbe55f84a",
+      "type": "renders"
+    },
+    {
       "from": "cmp_d184fbb0a7",
       "to": "cmp_5d84f08d35",
       "type": "renders"
@@ -34173,12 +34305,12 @@
     },
     {
       "from": "cmp_e240b70092",
-      "to": "cmp_4daf0963df",
+      "to": "cmp_23eef8d3c0",
       "type": "renders"
     },
     {
       "from": "cmp_e240b70092",
-      "to": "cmp_6cb06e50cd",
+      "to": "cmp_4daf0963df",
       "type": "renders"
     },
     {
@@ -34478,7 +34610,7 @@
     },
     {
       "from": "cmp_f9db57b4c9",
-      "to": "cmp_6cb06e50cd",
+      "to": "cmp_23eef8d3c0",
       "type": "renders"
     },
     {
@@ -34818,7 +34950,7 @@
     },
     {
       "from": "rte_46efb84e93",
-      "to": "cmp_6cb06e50cd",
+      "to": "cmp_23eef8d3c0",
       "type": "route_to_screen"
     },
     {
@@ -35066,6 +35198,7 @@
         "cmp_16c468c2d6",
         "cmp_1d64a6eac7",
         "cmp_2100b40d4a",
+        "cmp_23eef8d3c0",
         "cmp_2a48db8a31",
         "cmp_432c46b32d",
         "cmp_45b5a64481",
@@ -35230,7 +35363,7 @@
       "layout_file": "apps/keystone/app/layout.tsx",
       "path": "/pitch",
       "route_id": "rte_46efb84e93",
-      "screen_component_id": "cmp_6cb06e50cd"
+      "screen_component_id": "cmp_23eef8d3c0"
     },
     {
       "data_source_ids": [],

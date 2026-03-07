@@ -1,0 +1,5 @@
+[
+  "Investigate affected internal routes for narrow client-only isolation. The warning signature resembles external DOM mutation before hydration.",
+  "Review all dynamic(..., { ssr: false }) usages and confirm they are scoped narrowly to internal tooling subtrees rather than full route trees.",
+  "Audit suppressHydrationWarning usages and replace broad suppression with route-local root cause analysis where possible."
+]

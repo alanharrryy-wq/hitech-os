@@ -1,0 +1,791 @@
+diff --git a/apps/keystone/app/dev/scene-studio/FloatingWindow.tsx b/apps/keystone/app/dev/scene-studio/FloatingWindow.tsx
+index 69d206b..400356e 100644
+--- a/apps/keystone/app/dev/scene-studio/FloatingWindow.tsx
++++ b/apps/keystone/app/dev/scene-studio/FloatingWindow.tsx
+@@ -1,6 +1,12 @@
+ "use client";
+ 
+ import React, { useEffect, useMemo, useRef, useState } from "react";
++import {
++  FLOATING_WINDOW_DRAG_HANDLE_ATTR,
++  FLOATING_WINDOW_NO_DRAG_ATTR,
++  buildFloatingWindowDragPath,
++  canStartFloatingWindowDrag
++} from "./floating-window-drag-policy";
+ 
+ type Vec2 = { x: number; y: number };
+ type Size = { w: number; h: number };
+@@ -154,6 +160,8 @@ export function FloatingWindow({
+   const resolvedInitialCollapsed = defaultState?.collapsed ?? false;
+   const storageKey = useMemo(() => `${storageNamespace}.${id}`, [id, storageNamespace]);
+   const rootRef = useRef<HTMLDivElement | null>(null);
++  const [isDragging, setIsDragging] = useState(false);
++  const [isResizing, setIsResizing] = useState(false);
+ 
+   const [state, setState] = useState<FloatingWindowState>(() => {
+     const saved = typeof window !== "undefined" ? readLS(storageKey) : null;
+@@ -256,13 +264,18 @@ export function FloatingWindow({
+   const startDrag = (e: React.PointerEvent) => {
+     if (e.button !== 0) return;
+ 
++    const root = rootRef.current;
++    if (!root) return;
++
++    e.preventDefault();
+     bringToFront();
++    setIsDragging(true);
+ 
+     const startPointer = { x: e.clientX, y: e.clientY };
+     const startPos = { ...stateRef.current.pos };
+     const startState = { ...stateRef.current };
+ 
+-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
++    root.setPointerCapture(e.pointerId);
+ 
+     const onMove = (ev: PointerEvent) => {
+       const dx = ev.clientX - startPointer.x;
+@@ -277,6 +290,10 @@ export function FloatingWindow({
+     };
+ 
+     const onUp = () => {
++      setIsDragging(false);
++      if (root.hasPointerCapture(e.pointerId)) {
++        root.releasePointerCapture(e.pointerId);
++      }
+       window.removeEventListener("pointermove", onMove);
+       window.removeEventListener("pointerup", onUp);
+       window.removeEventListener("pointercancel", onUp);
+@@ -292,6 +309,7 @@ export function FloatingWindow({
+     if (e.button !== 0) return;
+ 
+     bringToFront();
++    setIsResizing(true);
+ 
+     const startPointer = { x: e.clientX, y: e.clientY };
+     const startState = { ...stateRef.current };
+@@ -313,6 +331,7 @@ export function FloatingWindow({
+     };
+ 
+     const onUp = () => {
++      setIsResizing(false);
+       window.removeEventListener("pointermove", onMove);
+       window.removeEventListener("pointerup", onUp);
+       window.removeEventListener("pointercancel", onUp);
+@@ -327,6 +346,21 @@ export function FloatingWindow({
+     setState((prev) => ({ ...prev, collapsed: !prev.collapsed }));
+   };
+ 
++  const handleShellPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
++    bringToFront();
++
++    if (event.button !== 0) {
++      return;
++    }
++
++    const dragPath = buildFloatingWindowDragPath(event.target, rootRef.current);
++    if (!canStartFloatingWindowDrag(dragPath)) {
++      return;
++    }
++
++    startDrag(event);
++  };
++
+   const shellStyle: React.CSSProperties = {
+     position: "fixed",
+     left: 0,
+@@ -335,13 +369,16 @@ export function FloatingWindow({
+     width: `${state.size.w}px`,
+     height: state.collapsed ? `${COLLAPSED_HEIGHT}px` : `${state.size.h}px`,
+     zIndex: state.z,
+-    borderRadius: 14,
+-    border: "1px solid hsl(var(--ui-border-2))",
+-    background: "hsl(var(--ui-surface-1) / 0.96)",
+-    boxShadow: "var(--ui-shadow-2)",
++    borderRadius: 18,
++    border: "1px solid hsl(var(--ui-border-1) / 0.9)",
++    background:
++      "linear-gradient(165deg, hsl(var(--ui-surface-1) / 0.98) 0%, hsl(var(--ui-surface-2) / 0.95) 52%, hsl(var(--ui-surface-0) / 0.98) 100%)",
++    boxShadow:
++      "0 32px 64px hsl(220 35% 8% / 0.3), 0 10px 24px hsl(220 32% 10% / 0.22), inset 0 1px 0 hsl(var(--ui-surface-1) / 0.65)",
+     overflow: "hidden",
+     pointerEvents: "auto",
+-    backdropFilter: "blur(8px)"
++    isolation: "isolate",
++    backdropFilter: "blur(10px) saturate(1.08)"
+   };
+ 
+   const headerStyle: React.CSSProperties = {
+@@ -350,18 +387,22 @@ export function FloatingWindow({
+     alignItems: "center",
+     justifyContent: "space-between",
+     gap: 10,
+-    padding: "0 12px",
+-    borderBottom: "1px solid hsl(var(--ui-border-1))",
+-    cursor: "grab",
++    padding: "0 14px",
++    borderBottom: "1px solid hsl(var(--ui-border-1) / 0.96)",
++    background:
++      "linear-gradient(180deg, hsl(var(--ui-surface-1) / 0.82) 0%, hsl(var(--ui-surface-2) / 0.68) 100%)",
++    cursor: isDragging ? "grabbing" : "grab",
+     userSelect: "none",
+-    touchAction: "none"
++    touchAction: "none",
++    boxShadow: "inset 0 -1px 0 hsl(var(--ui-border-1) / 0.42)"
+   };
+ 
+   const titleStyle: React.CSSProperties = {
+-    fontSize: 13,
++    fontSize: 12,
+     opacity: 0.95,
+-    fontWeight: 650,
+-    letterSpacing: "0.2px",
++    fontWeight: 700,
++    letterSpacing: "0.08em",
++    textTransform: "uppercase",
+     whiteSpace: "nowrap",
+     overflow: "hidden",
+     textOverflow: "ellipsis"
+@@ -371,49 +412,82 @@ export function FloatingWindow({
+     height: 30,
+     minWidth: 30,
+     padding: "0 10px",
+-    borderRadius: 10,
+-    border: "1px solid hsl(var(--ui-border-2))",
+-    background: "hsl(var(--ui-surface-2) / 0.9)",
++    borderRadius: 11,
++    border: "1px solid hsl(var(--ui-border-1) / 0.8)",
++    background: "linear-gradient(180deg, hsl(var(--ui-surface-1) / 0.86), hsl(var(--ui-surface-2) / 0.92))",
+     color: "hsl(var(--ui-text-1))",
+     cursor: "pointer",
+-    fontSize: 12
++    fontSize: 11,
++    fontWeight: 650,
++    letterSpacing: "0.04em",
++    boxShadow: "inset 0 1px 0 hsl(var(--ui-surface-1) / 0.7)"
+   };
+ 
+   const bodyStyle: React.CSSProperties = {
+     height: state.collapsed ? 0 : `calc(100% - ${HEADER_HEIGHT}px)`,
+     overflow: "auto",
+-    padding: 12,
+-    pointerEvents: "auto"
++    padding: 14,
++    pointerEvents: "auto",
++    background:
++      "linear-gradient(180deg, hsl(var(--ui-surface-1) / 0.6) 0%, hsl(var(--ui-surface-0) / 0.85) 36%, hsl(var(--ui-surface-0) / 0.96) 100%)"
+   };
+ 
+   const resizeHandleStyle: React.CSSProperties = {
+     position: "absolute",
+-    right: 6,
+-    bottom: 6,
+-    width: 18,
+-    height: 18,
+-    borderRadius: 6,
+-    border: "1px solid hsl(var(--ui-border-2))",
+-    background: "hsl(var(--ui-surface-2) / 0.85)",
++    right: 8,
++    bottom: 8,
++    width: 20,
++    height: 20,
++    borderRadius: 7,
++    border: "1px solid hsl(var(--ui-border-1) / 0.88)",
++    background: "linear-gradient(140deg, hsl(var(--ui-surface-1) / 0.82), hsl(var(--ui-surface-2) / 0.95))",
+     cursor: "nwse-resize",
+     touchAction: "none",
+-    display: state.collapsed || !resizable ? "none" : "block"
++    display: state.collapsed || !resizable ? "none" : "block",
++    boxShadow: "inset 0 1px 0 hsl(var(--ui-surface-1) / 0.7), 0 2px 8px hsl(220 34% 10% / 0.24)",
++    opacity: isResizing ? 1 : 0.86
++  };
++
++  const shellAmbientStyle: React.CSSProperties = {
++    position: "absolute",
++    inset: 0,
++    pointerEvents: "none",
++    background:
++      "radial-gradient(circle at 8% -16%, hsl(var(--ui-accent) / 0.15), transparent 38%), radial-gradient(circle at 92% 0%, hsl(var(--ui-surface-1) / 0.38), transparent 34%)",
++    opacity: state.collapsed ? 0.25 : 0.52
+   };
+ 
++  const shellHairlineStyle: React.CSSProperties = {
++    position: "absolute",
++    left: 1,
++    right: 1,
++    top: 1,
++    height: 56,
++    borderRadius: "16px 16px 0 0",
++    pointerEvents: "none",
++    background: "linear-gradient(180deg, hsl(var(--ui-surface-1) / 0.58), transparent 76%)"
++  };
++
++  const dragHandleAttr = { [FLOATING_WINDOW_DRAG_HANDLE_ATTR]: "true" } as const;
++  const noDragAttr = { [FLOATING_WINDOW_NO_DRAG_ATTR]: "true" } as const;
++
+   return (
+     <div
+       ref={rootRef}
+       style={shellStyle}
+       className={className}
+-      onPointerDown={bringToFront}
++      onPointerDown={handleShellPointerDown}
+       aria-label={`FloatingWindow:${id}`}
+     >
+-      <div style={headerStyle} onPointerDown={startDrag}>
++      <div style={shellAmbientStyle} aria-hidden />
++      <div style={shellHairlineStyle} aria-hidden />
++
++      <div style={headerStyle} {...dragHandleAttr}>
+         <div style={titleStyle} title={title}>
+           {title}
+         </div>
+ 
+-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
++        <div style={{ display: "flex", alignItems: "center", gap: 8 }} {...noDragAttr}>
+           {headerRight}
+ 
+           {showHomeButton ? (
+diff --git a/apps/keystone/components/dev-console/DevConsole.tsx b/apps/keystone/components/dev-console/DevConsole.tsx
+index ae422f0..730a020 100644
+--- a/apps/keystone/components/dev-console/DevConsole.tsx
++++ b/apps/keystone/components/dev-console/DevConsole.tsx
+@@ -2,6 +2,10 @@
+ 
+ import { useMemo, useState } from "react";
+ import { FloatingWindow } from "../../app/dev/scene-studio/FloatingWindow";
++import {
++  FLOATING_WINDOW_DRAG_HANDLE_ATTR,
++  FLOATING_WINDOW_NO_DRAG_ATTR
++} from "../../app/dev/scene-studio/floating-window-drag-policy";
+ import { useDevConsole } from "./DevConsoleContext";
+ import { buildDevConsoleRegistry } from "./DevConsoleRegistry";
+ import type { DevConsoleToolId } from "./types";
+@@ -56,6 +60,9 @@ export function DevConsole() {
+     return null;
+   }
+ 
++  const dragHandleAttr = { [FLOATING_WINDOW_DRAG_HANDLE_ATTR]: "true" } as const;
++  const noDragAttr = { [FLOATING_WINDOW_NO_DRAG_ATTR]: "true" } as const;
++
+   const persistActiveTool = (tool: DevConsoleToolId) => {
+     setActiveTool(tool);
+ 
+@@ -123,7 +130,7 @@ export function DevConsole() {
+       headerRight={<div style={{ fontSize: 11, opacity: 0.82, whiteSpace: "nowrap" }}>Single Console Mode</div>}
+     >
+       <div className={cls("root")}>
+-        <div className={cls("rail")}>
++        <div className={cls("rail")} {...noDragAttr}>
+           {registry.map((tool) => {
+             const isActive = tool.id === active.id;
+             return (
+@@ -141,13 +148,13 @@ export function DevConsole() {
+         </div>
+ 
+         <div className={cls("main")}>
+-          <div className={cls("topBar")}>
++          <div className={cls("topBar")} {...dragHandleAttr}>
+             <div className={cls("topBarTitleBlock")}>
+               <div className={cls("topBarTitle")}>{active.label}</div>
+               <div className={cls("topBarDescription")}>{active.description}</div>
+             </div>
+ 
+-            <div className={cls("topBarActions")}>
++            <div className={cls("topBarActions")} {...noDragAttr}>
+               <button type="button" className={cls("button")} onClick={resetConsoleLayout}>
+                 Reset Position
+               </button>
+@@ -166,7 +173,9 @@ export function DevConsole() {
+             </div>
+           </div>
+ 
+-          <div className={cls("content")}>{active.render()}</div>
++          <div className={cls("content")} {...noDragAttr}>
++            {active.render()}
++          </div>
+         </div>
+       </div>
+     </FloatingWindow>
+diff --git a/apps/keystone/components/dev-console/dev-console.module.css b/apps/keystone/components/dev-console/dev-console.module.css
+index 0c7a6cd..0be8157 100644
+--- a/apps/keystone/components/dev-console/dev-console.module.css
++++ b/apps/keystone/components/dev-console/dev-console.module.css
+@@ -1,47 +1,97 @@
+ .root {
++  --console-shell-1: hsl(220 28% 12% / 0.96);
++  --console-shell-2: hsl(224 31% 8% / 0.96);
++  --console-surface-1: hsl(217 27% 15% / 0.92);
++  --console-surface-2: hsl(218 22% 18% / 0.88);
++  --console-surface-3: hsl(219 18% 24% / 0.68);
++  --console-border-soft: hsl(211 30% 67% / 0.24);
++  --console-border-strong: hsl(202 52% 74% / 0.36);
++  --console-text-1: hsl(210 40% 96%);
++  --console-text-2: hsl(213 24% 79%);
++  --console-text-3: hsl(214 15% 64%);
++  --console-accent: hsl(var(--ui-accent, 193 100% 49%));
++  --console-danger: hsl(var(--ui-danger, 9 83% 61%));
+   height: 100%;
+   min-height: 0;
+   display: grid;
+-  grid-template-columns: 64px minmax(0, 1fr);
+-  gap: 12px;
++  grid-template-columns: 72px minmax(0, 1fr);
++  gap: 14px;
++  padding: 10px;
++  border-radius: 16px;
++  border: 1px solid var(--console-border-soft);
++  background:
++    radial-gradient(circle at 14% 0%, hsl(var(--ui-accent, 193 100% 49%) / 0.18), transparent 28%),
++    radial-gradient(circle at 96% 0%, hsl(36 86% 64% / 0.14), transparent 34%),
++    linear-gradient(165deg, var(--console-shell-1) 0%, var(--console-shell-2) 72%);
++  box-shadow:
++    inset 0 1px 0 hsl(210 32% 100% / 0.08),
++    0 14px 32px hsl(222 46% 5% / 0.35);
++  color: var(--console-text-1);
+ }
+ 
+ .rail {
+   display: grid;
+   align-content: start;
+   gap: 8px;
++  padding: 8px;
++  border-radius: 14px;
++  border: 1px solid var(--console-border-soft);
++  background: linear-gradient(180deg, hsl(219 22% 16% / 0.9), hsl(222 22% 11% / 0.9));
++  box-shadow: inset 0 1px 0 hsl(214 48% 100% / 0.06);
+ }
+ 
+ .railButton {
+   width: 100%;
+-  min-height: 52px;
+-  border-radius: 14px;
+-  border: 1px solid hsl(var(--ui-border-2));
+-  background: hsl(var(--ui-surface-2) / 0.9);
+-  color: hsl(var(--ui-text-1));
++  min-height: 54px;
++  border-radius: 12px;
++  border: 1px solid hsl(209 34% 76% / 0.2);
++  background: linear-gradient(180deg, hsl(219 22% 20% / 0.92), hsl(220 19% 15% / 0.95));
++  color: var(--console-text-2);
+   cursor: pointer;
+   display: grid;
+   place-items: center;
+-  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+   padding: 6px;
+   text-align: center;
++  transition:
++    transform 120ms ease,
++    border-color 120ms ease,
++    color 120ms ease,
++    background 120ms ease,
++    box-shadow 120ms ease;
+ }
+ 
+ .railButton:hover {
+   transform: translateY(-1px);
++  border-color: hsl(var(--ui-accent, 193 100% 49%) / 0.52);
++  color: var(--console-text-1);
++}
++
++.railButton:active {
++  transform: translateY(0);
++}
++
++.railButton:focus-visible {
++  outline: none;
++  border-color: hsl(var(--ui-focus, 216 100% 45%) / 0.78);
++  box-shadow: 0 0 0 2px hsl(var(--ui-focus, 216 100% 45%) / 0.28);
+ }
+ 
+ .railButtonActive {
+-  border-color: hsl(var(--ui-accent, 193 100% 49%));
+-  background: hsl(var(--ui-surface-2) / 1);
+-  box-shadow: 0 0 0 1px hsl(var(--ui-accent, 193 100% 49%) / 0.25) inset;
++  border-color: hsl(var(--ui-accent, 193 100% 49%) / 0.68);
++  background:
++    linear-gradient(180deg, hsl(var(--ui-accent, 193 100% 49%) / 0.28), transparent 56%),
++    linear-gradient(180deg, hsl(219 22% 22% / 0.96), hsl(220 20% 14% / 0.96));
++  color: var(--console-text-1);
++  box-shadow:
++    inset 0 0 0 1px hsl(var(--ui-accent, 193 100% 49%) / 0.28),
++    0 8px 18px hsl(221 54% 6% / 0.34);
+ }
+ 
+ .railButtonText {
+   font-size: 10px;
+   line-height: 1.1;
+-  font-weight: 700;
+-  letter-spacing: 0.2px;
++  font-weight: 750;
++  letter-spacing: 0.08em;
+ }
+ 
+ .main {
+@@ -53,14 +103,40 @@
+ }
+ 
+ .topBar {
++  position: relative;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+-  gap: 10px;
+-  padding: 10px 12px;
+-  border: 1px solid hsl(var(--ui-border-1));
++  gap: 12px;
++  padding: 11px 14px;
++  border: 1px solid var(--console-border-strong);
+   border-radius: 14px;
+-  background: hsl(var(--ui-surface-0) / 0.55);
++  background:
++    linear-gradient(180deg, hsl(216 31% 22% / 0.82), hsl(220 22% 14% / 0.88)),
++    linear-gradient(160deg, hsl(var(--ui-accent, 193 100% 49%) / 0.16), transparent 40%);
++  box-shadow:
++    inset 0 1px 0 hsl(214 48% 100% / 0.12),
++    0 10px 20px hsl(222 52% 5% / 0.32);
++  user-select: none;
++  touch-action: none;
++}
++
++.topBar::after {
++  content: "";
++  position: absolute;
++  left: 14px;
++  right: 14px;
++  top: 0;
++  height: 1px;
++  background: linear-gradient(90deg, transparent, hsl(206 70% 92% / 0.52), transparent);
++}
++
++.topBar[data-floating-window-drag-handle="true"] {
++  cursor: grab;
++}
++
++.topBar[data-floating-window-drag-handle="true"]:active {
++  cursor: grabbing;
+ }
+ 
+ .topBarTitleBlock {
+@@ -70,38 +146,66 @@
+ }
+ 
+ .topBarTitle {
+-  font-size: 13px;
+-  font-weight: 700;
+-  color: hsl(var(--ui-text-1));
++  font-size: 12px;
++  font-weight: 760;
++  color: var(--console-text-1);
++  letter-spacing: 0.08em;
++  text-transform: uppercase;
+ }
+ 
+ .topBarDescription {
+   font-size: 11px;
+-  color: hsl(var(--ui-text-2));
+-  opacity: 0.92;
++  color: var(--console-text-2);
++  opacity: 0.96;
++  line-height: 1.35;
+ }
+ 
+ .topBarActions {
+   display: flex;
+   align-items: center;
++  justify-content: flex-end;
+   gap: 8px;
+   flex-wrap: wrap;
++  cursor: default;
+ }
+ 
+ .button {
+   min-height: 32px;
+   padding: 0 12px;
+   border-radius: 10px;
+-  border: 1px solid hsl(var(--ui-border-2));
+-  background: hsl(var(--ui-surface-2) / 0.9);
+-  color: hsl(var(--ui-text-1));
++  border: 1px solid hsl(208 37% 78% / 0.28);
++  background: linear-gradient(180deg, hsl(219 24% 22% / 0.95), hsl(220 20% 16% / 0.95));
++  color: var(--console-text-1);
+   cursor: pointer;
+-  font-size: 12px;
+-  font-weight: 600;
++  font-size: 11px;
++  font-weight: 700;
++  letter-spacing: 0.04em;
++  text-transform: uppercase;
++  transition:
++    transform 120ms ease,
++    border-color 120ms ease,
++    background 120ms ease,
++    box-shadow 120ms ease;
++}
++
++.button:hover {
++  border-color: hsl(var(--ui-accent, 193 100% 49%) / 0.56);
++  transform: translateY(-1px);
++}
++
++.button:active {
++  transform: translateY(0);
++}
++
++.button:focus-visible {
++  outline: none;
++  border-color: hsl(var(--ui-focus, 216 100% 45%) / 0.82);
++  box-shadow: 0 0 0 2px hsl(var(--ui-focus, 216 100% 45%) / 0.32);
+ }
+ 
+ .buttonDanger {
+-  border-color: hsl(var(--ui-danger, 9 83% 61%) / 0.35);
++  border-color: hsl(var(--ui-danger, 9 83% 61%) / 0.44);
++  color: hsl(10 92% 88%);
+ }
+ 
+ .content {
+@@ -110,35 +214,46 @@
+   overflow: auto;
+   display: grid;
+   gap: 12px;
++  border-radius: 14px;
++  border: 1px solid var(--console-border-soft);
++  background:
++    linear-gradient(180deg, hsl(217 29% 13% / 0.88), hsl(220 24% 11% / 0.92)),
++    radial-gradient(circle at 100% 0%, hsl(var(--ui-accent, 193 100% 49%) / 0.1), transparent 34%);
++  padding: 12px;
+ }
+ 
+ .card {
+   display: grid;
+   gap: 10px;
+   padding: 12px;
+-  border-radius: 14px;
+-  border: 1px solid hsl(var(--ui-border-1));
+-  background: hsl(var(--ui-surface-0) / 0.5);
++  border-radius: 12px;
++  border: 1px solid hsl(209 33% 74% / 0.24);
++  background: linear-gradient(180deg, hsl(219 20% 18% / 0.84), hsl(220 20% 14% / 0.82));
+ }
+ 
+ .cardTitle {
+-  font-size: 13px;
+-  font-weight: 700;
+-  color: hsl(var(--ui-text-1));
++  font-size: 12px;
++  font-weight: 760;
++  color: var(--console-text-1);
++  letter-spacing: 0.05em;
++  text-transform: uppercase;
+ }
+ 
+ .cardHint {
+   font-size: 11px;
+-  color: hsl(var(--ui-text-2));
++  color: var(--console-text-2);
++  line-height: 1.42;
+ }
+ 
+ .emptyState {
+   display: grid;
+   gap: 10px;
+-  padding: 18px;
+-  border-radius: 14px;
+-  border: 1px dashed hsl(var(--ui-border-2));
+-  background: hsl(var(--ui-surface-0) / 0.4);
++  padding: 16px;
++  border-radius: 12px;
++  border: 1px dashed hsl(207 42% 78% / 0.32);
++  background:
++    linear-gradient(180deg, hsl(220 19% 16% / 0.72), hsl(221 21% 13% / 0.72)),
++    radial-gradient(circle at 20% 0%, hsl(var(--ui-accent, 193 100% 49%) / 0.15), transparent 44%);
+ }
+ 
+ .kvGrid {
+@@ -151,20 +266,22 @@
+   display: grid;
+   gap: 4px;
+   padding: 10px;
+-  border-radius: 12px;
+-  border: 1px solid hsl(var(--ui-border-1));
+-  background: hsl(var(--ui-surface-0) / 0.55);
++  border-radius: 10px;
++  border: 1px solid hsl(208 28% 70% / 0.22);
++  background: hsl(219 21% 18% / 0.74);
+ }
+ 
+ .kvLabel {
+-  font-size: 11px;
+-  color: hsl(var(--ui-text-2));
++  font-size: 10px;
++  color: var(--console-text-3);
++  letter-spacing: 0.06em;
++  text-transform: uppercase;
+ }
+ 
+ .kvValue {
+   font-size: 12px;
+   font-weight: 700;
+-  color: hsl(var(--ui-text-1));
++  color: var(--console-text-1);
+   word-break: break-word;
+ }
+ 
+@@ -178,21 +295,23 @@
+   display: grid;
+   gap: 6px;
+   padding: 12px;
+-  border-radius: 12px;
+-  border: 1px solid hsl(var(--ui-border-1));
+-  background: hsl(var(--ui-surface-0) / 0.55);
++  border-radius: 10px;
++  border: 1px solid hsl(206 32% 75% / 0.24);
++  background: linear-gradient(180deg, hsl(219 21% 19% / 0.84), hsl(220 18% 15% / 0.84));
+ }
+ 
+ .metricValue {
+   font-size: 22px;
+   line-height: 1;
+-  font-weight: 800;
+-  color: hsl(var(--ui-text-1));
++  font-weight: 820;
++  color: var(--console-text-1);
+ }
+ 
+ .metricLabel {
+-  font-size: 11px;
+-  color: hsl(var(--ui-text-2));
++  font-size: 10px;
++  color: var(--console-text-3);
++  letter-spacing: 0.06em;
++  text-transform: uppercase;
+ }
+ 
+ .toggleRow {
+@@ -201,9 +320,9 @@
+   justify-content: space-between;
+   gap: 12px;
+   padding: 10px 12px;
+-  border-radius: 12px;
+-  border: 1px solid hsl(var(--ui-border-1));
+-  background: hsl(var(--ui-surface-0) / 0.55);
++  border-radius: 10px;
++  border: 1px solid hsl(210 28% 72% / 0.24);
++  background: hsl(219 20% 17% / 0.75);
+ }
+ 
+ .toggleText {
+@@ -214,25 +333,30 @@
+ .toggleLabel {
+   font-size: 12px;
+   font-weight: 700;
+-  color: hsl(var(--ui-text-1));
++  color: var(--console-text-1);
+ }
+ 
+ .toggleHint {
+   font-size: 11px;
+-  color: hsl(var(--ui-text-2));
++  color: var(--console-text-3);
+ }
+ 
+ .toggleButton {
+-  min-width: 78px;
++  min-width: 82px;
+   min-height: 32px;
+   padding: 0 12px;
+   border-radius: 999px;
+-  border: 1px solid hsl(var(--ui-border-2));
+-  background: hsl(var(--ui-surface-2) / 0.9);
+-  color: hsl(var(--ui-text-1));
++  border: 1px solid hsl(210 35% 75% / 0.28);
++  background: linear-gradient(180deg, hsl(219 23% 22% / 0.95), hsl(220 18% 16% / 0.95));
++  color: var(--console-text-1);
+   cursor: pointer;
+-  font-size: 12px;
++  font-size: 11px;
+   font-weight: 700;
++  letter-spacing: 0.04em;
++}
++
++.toggleButton:hover {
++  border-color: hsl(var(--ui-accent, 193 100% 49%) / 0.56);
+ }
+ 
+ .list {
+@@ -246,22 +370,28 @@
+   gap: 8px;
+   align-items: center;
+   padding: 10px;
+-  border-radius: 12px;
+-  border: 1px solid hsl(var(--ui-border-1));
+-  background: hsl(var(--ui-surface-0) / 0.55);
++  border-radius: 10px;
++  border: 1px solid hsl(211 30% 73% / 0.24);
++  background: hsl(219 20% 18% / 0.76);
+ }
+ 
+ .input {
+   width: 100%;
+   min-height: 34px;
+   border-radius: 10px;
+-  border: 1px solid hsl(var(--ui-border-2));
+-  background: hsl(var(--ui-surface-1));
+-  color: hsl(var(--ui-text-1));
++  border: 1px solid hsl(210 34% 76% / 0.3);
++  background: hsl(220 18% 13% / 0.94);
++  color: var(--console-text-1);
+   padding: 6px 10px;
+   font-size: 12px;
+ }
+ 
++.input:focus-visible {
++  outline: none;
++  border-color: hsl(var(--ui-focus, 216 100% 45%) / 0.85);
++  box-shadow: 0 0 0 2px hsl(var(--ui-focus, 216 100% 45%) / 0.32);
++}
++
+ .split {
+   display: grid;
+   grid-template-columns: repeat(2, minmax(0, 1fr));
+@@ -271,11 +401,12 @@
+ .codeBox {
+   margin: 0;
+   padding: 12px;
+-  border-radius: 12px;
+-  border: 1px solid hsl(var(--ui-border-1));
+-  background: hsl(var(--ui-surface-0) / 0.55);
+-  color: hsl(var(--ui-text-1));
++  border-radius: 10px;
++  border: 1px solid hsl(210 32% 74% / 0.24);
++  background: hsl(220 20% 11% / 0.95);
++  color: hsl(204 28% 88%);
+   font-size: 11px;
++  line-height: 1.45;
+   overflow: auto;
+   white-space: pre-wrap;
+   word-break: break-word;
+@@ -284,11 +415,23 @@
+ @media (max-width: 900px) {
+   .root {
+     grid-template-columns: 1fr;
++    padding: 8px;
+   }
+ 
+   .rail {
+     grid-template-columns: repeat(5, minmax(0, 1fr));
+     align-content: unset;
++    padding: 6px;
++  }
++
++  .topBar {
++    flex-wrap: wrap;
++    align-items: flex-start;
++  }
++
++  .topBarActions {
++    width: 100%;
++    justify-content: flex-start;
+   }
+ 
+   .metricGrid,
