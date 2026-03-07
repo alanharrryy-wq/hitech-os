@@ -1,0 +1,76 @@
+{
+  "version": "3.0.0-proto1",
+  "repo_markers": [".git", "package.json", "pnpm-workspace.yaml", "turbo.json"],
+  "include_extensions": [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"],
+  "max_file_bytes": 1500000,
+  "exclude_dir_names": [
+    ".git",
+    ".next",
+    "dist",
+    "build",
+    "coverage",
+    "node_modules",
+    "out",
+    "tmp",
+    "temp",
+    ".turbo",
+    ".cache",
+    ".vercel",
+    ".idea",
+    ".vscode"
+  ],
+  "exclude_path_substrings": [
+    "/_reports/",
+    "\\_reports\\",
+    "/tools/codex/runs/",
+    "\\tools\\codex\\runs\\",
+    "/tools/codex/worktrees/",
+    "\\tools\\codex\\worktrees\\",
+    "/tools/codex/_triage/snapshots/",
+    "\\tools\\codex\\_triage\\snapshots\\",
+    "/scripts/hydration_guard_bundle/",
+    "\\scripts\\hydration_guard_bundle\\",
+    "/snapshots/",
+    "\\snapshots\\"
+  ],
+  "probable_tooling_path_markers": [
+    "/app/dev/",
+    "/debug/",
+    "/storybook/",
+    "/scene-studio/",
+    "/tools/",
+    "/__tests__/",
+    "/playground/"
+  ],
+  "serverish_path_markers": ["/app/", "/route.", "/layout.", "/page.", "/loader.", "/api/"],
+  "browser_api_tokens": [
+    "window",
+    "document",
+    "navigator",
+    "location",
+    "history",
+    "matchMedia",
+    "localStorage",
+    "sessionStorage",
+    "ResizeObserver",
+    "MutationObserver"
+  ],
+  "hydration_keywords": [
+    "hydrate",
+    "hydration",
+    "mismatch",
+    "suppressHydrationWarning",
+    "client-only",
+    "ssr: false"
+  ],
+  "diff_mode": {
+    "enabled": false,
+    "base_ref": "HEAD",
+    "include_untracked": true,
+    "staged_only": false
+  },
+  "line_context_radius": 1,
+  "client_directive_window": 6,
+  "ignore_minified_lines_over": 300,
+  "finding_limit_per_rule_per_file": 200
+}

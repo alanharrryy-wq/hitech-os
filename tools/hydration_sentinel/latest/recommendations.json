@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "Audit browser APIs and client boundaries together. Tighten the island contract where server entrypoints reach client-only surfaces.",
+    "Review storage-backed render state and move persistence reads behind post-mount hydration or explicit client entrypoints.",
+    "Replace render-time Date, random, and UUID generation with deterministic server data or client effects.",
+    "Move DOM mutation helpers behind effects or tooling-only wrappers before they leak into normal entrypoints.",
+    "Do not enable strict enforcement yet. Clean exclusions and highest-risk files before turning the scanner into hard policy."
+  ]
+}

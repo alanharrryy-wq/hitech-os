@@ -1,0 +1,949 @@
+{
+  "repo_root": "F:\\repos\\hitech-os\\tools\\codex\\worktrees\\B_tooling",
+  "config_version": "3.0.0-proto1",
+  "baseline_path": "F:\\repos\\hitech-os\\tools\\codex\\worktrees\\B_tooling\\tools\\hydration_sentinel\\baseline.json",
+  "stats": {
+    "files_discovered": 414,
+    "files_scanned": 414,
+    "files_skipped": 0,
+    "findings_total": 411,
+    "findings_active": 411,
+    "baseline_ignored": 0
+  },
+  "findings_by_rule": {
+    "hydration_keyword": 211,
+    "browser_api_non_client": 57,
+    "nondeterministic_render": 49,
+    "dom_mutation_signature": 22,
+    "storage_hydration": 18,
+    "server_client_import": 15,
+    "graph_server_client_chain": 14,
+    "graph_nondeterministic_reachability": 10,
+    "graph_storage_reachability": 10,
+    "graph_dom_mutation_reachability": 5
+  },
+  "findings_by_severity": {
+    "high": 88,
+    "info": 211,
+    "low": 50,
+    "medium": 62
+  },
+  "diff_mode": {
+    "enabled": false,
+    "git_available": false,
+    "base_ref": "HEAD",
+    "mode": "all",
+    "changed_files": 0,
+    "untracked_files": 0,
+    "error": null
+  },
+  "meta": {
+    "config_path": "F:\\repos\\hitech-os\\tools\\codex\\worktrees\\B_tooling\\tools\\hydration_sentinel\\config.json",
+    "baseline_exists": true,
+    "client_file_count": 52,
+    "serverish_file_count": 39,
+    "top_import_hubs": [
+      {
+        "relpath": "apps/keystone/lib/pitch-engine-tooling/fs-utils.mjs",
+        "imported_by": 19
+      },
+      {
+        "relpath": "tools/codex/runs/20260304_061005_61C9/B_tooling/FILES/apps/keystone/lib/pitch-engine-tooling/fs-utils.mjs",
+        "imported_by": 19
+      },
+      {
+        "relpath": "apps/keystone/lib/pitch-engine-tooling/constants.mjs",
+        "imported_by": 17
+      },
+      {
+        "relpath": "tools/codex/runs/20260304_061005_61C9/B_tooling/FILES/apps/keystone/lib/pitch-engine-tooling/constants.mjs",
+        "imported_by": 17
+      },
+      {
+        "relpath": "apps/keystone/lib/pitch-engine-tooling/paths.mjs",
+        "imported_by": 15
+      },
+      {
+        "relpath": "tools/codex/runs/20260304_061005_61C9/B_tooling/FILES/apps/keystone/lib/pitch-engine-tooling/paths.mjs",
+        "imported_by": 15
+      },
+      {
+        "relpath": "apps/keystone/lib/pitch-engine-tooling/exec.mjs",
+        "imported_by": 11
+      },
+      {
+        "relpath": "apps/keystone/components/pitch/types.ts",
+        "imported_by": 10
+      },
+      {
+        "relpath": "apps/keystone/lib/pitch-engine-tooling/scene-ops.mjs",
+        "imported_by": 10
+      },
+      {
+        "relpath": "apps/keystone/scripts/pitch-engine/_common.mjs",
+        "imported_by": 10
+      }
+    ],
+    "inventory_extensions": {
+      ".mjs": 126,
+      ".ts": 185,
+      ".tsx": 99,
+      ".cjs": 4
+    },
+    "rule_engine": {
+      "executed_rules": [
+        "browser_api_non_client",
+        "dynamic_ssr_false",
+        "suppress_hydration_warning",
+        "server_client_import",
+        "storage_hydration",
+        "nondeterministic_render",
+        "dom_mutation_signature"
+      ],
+      "replaced_raw_rule_ids": [
+        "browser_api_in_non_client",
+        "client_boundary_hint",
+        "dynamic_ssr_false",
+        "server_to_client_import_hint",
+        "suppress_hydration_warning"
+      ],
+      "enhanced_findings": 161,
+      "enhanced_ignored_by_baseline": 0
+    },
+    "react_graph": {
+      "node_count": 414,
+      "edge_count": 601,
+      "client_node_count": 46,
+      "serverish_node_count": 15,
+      "shared_node_count": 293,
+      "tooling_node_count": 60,
+      "entrypoint_count": 35,
+      "signal_counts": {
+        "browser_api": 26,
+        "dom_mutation": 7,
+        "hydration_keyword": 2,
+        "nondeterministic": 51,
+        "react_component": 96,
+        "react_hook_surface": 22,
+        "serverish_surface": 39,
+        "storage_api": 4,
+        "tooling_surface": 60,
+        "use_client": 52
+      },
+      "path_counts": {
+        "dom_mutation": 5,
+        "nondeterministic": 10,
+        "storage_api": 10,
+        "use_client": 14
+      },
+      "risky_paths": [
+        {
+          "source": "apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx",
+          "target": "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx",
+          "hops": [
+            "apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx",
+            "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx"
+          ],
+          "hop_count": 1,
+          "signal": "use_client",
+          "severity": "low",
+          "rationale": "Entrypoint reaches use_client surface at apps/keystone/app/dev/scene-studio/FloatingWindow.tsx via apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx -> apps/keystone/app/dev/scene-studio/FloatingWindow.tsx."
+        },
+        {
+          "source": "apps/keystone/app/dev/scene-studio/page.tsx",
+          "target": "apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx",
+          "hops": [
+            "apps/keystone/app/dev/scene-studio/page.tsx",
+            "apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx"
+          ],
+          "hop_count": 1,
+          "signal": "use_client",
+          "severity": "low",
+          "rationale": "Entrypoint reaches use_client surface at apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx via apps/keystone/app/dev/scene-studio/page.tsx -> apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx."
+        },
+        {
+          "source": "apps/keystone/app/layout.tsx",
+          "target": "apps/keystone/providers/app-providers.tsx",
+          "hops": ["apps/keystone/app/layout.tsx", "apps/keystone/providers/app-providers.tsx"],
+          "hop_count": 1,
+          "signal": "use_client",
+          "severity": "low",
+          "rationale": "Entrypoint reaches use_client surface at apps/keystone/providers/app-providers.tsx via apps/keystone/app/layout.tsx -> apps/keystone/providers/app-providers.tsx."
+        },
+        {
+          "source": "apps/keystone/app/page.tsx",
+          "target": "apps/keystone/components/mission/mission-control-view.tsx",
+          "hops": [
+            "apps/keystone/app/page.tsx",
+            "apps/keystone/components/mission/mission-control-view.tsx"
+          ],
+          "hop_count": 1,
+          "signal": "use_client",
+          "severity": "low",
+          "rationale": "Entrypoint reaches use_client surface at apps/keystone/components/mission/mission-control-view.tsx via apps/keystone/app/page.tsx -> apps/keystone/components/mission/mission-control-view.tsx."
+        },
+        {
+          "source": "apps/keystone/app/pitch/01-double-engine/page.tsx",
+          "target": "apps/keystone/components/pitch/demo-controls.tsx",
+          "hops": [
+            "apps/keystone/app/pitch/01-double-engine/page.tsx",
+            "apps/keystone/components/pitch/index.ts",
+            "apps/keystone/components/pitch/demo-controls.tsx"
+          ],
+          "hop_count": 2,
+          "signal": "use_client",
+          "severity": "medium",
+          "rationale": "Entrypoint reaches use_client surface at apps/keystone/components/pitch/demo-controls.tsx via apps/keystone/app/pitch/01-double-engine/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/demo-controls.tsx."
+        },
+        {
+          "source": "apps/keystone/app/pitch/02-industrial-flow/page.tsx",
+          "target": "apps/keystone/components/pitch/demo-controls.tsx",
+          "hops": [
+            "apps/keystone/app/pitch/02-industrial-flow/page.tsx",
+            "apps/keystone/components/pitch/index.ts",
+            "apps/keystone/components/pitch/demo-controls.tsx"
+          ],
+          "hop_count": 2,
+          "signal": "use_client",
+          "severity": "medium",
+          "rationale": "Entrypoint reaches use_client surface at apps/keystone/components/pitch/demo-controls.tsx via apps/keystone/app/pitch/02-industrial-flow/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/demo-controls.tsx."
+        },
+        {
+          "source": "apps/keystone/app/pitch/03-hitech-os/page.tsx",
+          "target": "apps/keystone/components/pitch/demo-controls.tsx",
+          "hops": [
+            "apps/keystone/app/pitch/03-hitech-os/page.tsx",
+            "apps/keystone/components/pitch/index.ts",
+            "apps/keystone/components/pitch/demo-controls.tsx"
+          ],
+          "hop_count": 2,
+          "signal": "use_client",
+          "severity": "medium",
+          "rationale": "Entrypoint reaches use_client surface at apps/keystone/components/pitch/demo-controls.tsx via apps/keystone/app/pitch/03-hitech-os/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/demo-controls.tsx."
+        },
+        {
+          "source": "apps/keystone/app/pitch/04-valuation/page.tsx",
+          "target": "apps/keystone/components/pitch/demo-controls.tsx",
+          "hops": [
+            "apps/keystone/app/pitch/04-valuation/page.tsx",
+            "apps/keystone/components/pitch/index.ts",
+            "apps/keystone/components/pitch/demo-controls.tsx"
+          ],
+          "hop_count": 2,
+          "signal": "use_client",
+          "severity": "medium",
+          "rationale": "Entrypoint reaches use_client surface at apps/keystone/components/pitch/demo-controls.tsx via apps/keystone/app/pitch/04-valuation/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/demo-controls.tsx."
+        },
+        {
+          "source": "apps/keystone/app/pitch/05-inventory-foundation/page.tsx",
+          "target": "apps/keystone/components/pitch/demo-controls.tsx",
+          "hops": [
+            "apps/keystone/app/pitch/05-inventory-foundation/page.tsx",
+            "apps/keystone/components/pitch/index.ts",
+            "apps/keystone/components/pitch/demo-controls.tsx"
+          ],
+          "hop_count": 2,
+          "signal": "use_client",
+          "severity": "medium",
+          "rationale": "Entrypoint reaches use_client surface at apps/keystone/components/pitch/demo-controls.tsx via apps/keystone/app/pitch/05-inventory-foundation/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/demo-controls.tsx."
+        },
+        {
+          "source": "apps/keystone/app/pitch/06-shipments-receiving/page.tsx",
+          "target": "apps/keystone/components/pitch/demo-controls.tsx",
+          "hops": [
+            "apps/keystone/app/pitch/06-shipments-receiving/page.tsx",
+            "apps/keystone/components/pitch/index.ts",
+            "apps/keystone/components/pitch/demo-controls.tsx"
+          ],
+          "hop_count": 2,
+          "signal": "use_client",
+          "severity": "medium",
+          "rationale": "Entrypoint reaches use_client surface at apps/keystone/components/pitch/demo-controls.tsx via apps/keystone/app/pitch/06-shipments-receiving/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/demo-controls.tsx."
+        },
+        {
+          "source": "apps/keystone/app/pitch/page.tsx",
+          "target": "apps/keystone/components/pitch/demo-controls.tsx",
+          "hops": [
+            "apps/keystone/app/pitch/page.tsx",
+            "apps/keystone/components/pitch/index.ts",
+            "apps/keystone/components/pitch/demo-controls.tsx"
+          ],
+          "hop_count": 2,
+          "signal": "use_client",
+          "severity": "medium",
+          "rationale": "Entrypoint reaches use_client surface at apps/keystone/components/pitch/demo-controls.tsx via apps/keystone/app/pitch/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/demo-controls.tsx."
+        },
+        {
+          "source": "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/KpiSupermarketClient.tsx",
+          "target": "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/dataSpine.ts",
+          "hops": [
+            "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/KpiSupermarketClient.tsx",
+            "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/dataSpine.ts"
+          ],
+          "hop_count": 1,
+          "signal": "use_client",
+          "severity": "low",
+          "rationale": "Entrypoint reaches use_client surface at tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/dataSpine.ts via tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/KpiSupermarketClient.tsx -> tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/dataSpine.ts."
+        },
+        {
+          "source": "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/page.tsx",
+          "target": "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/KpiSupermarketClient.tsx",
+          "hops": [
+            "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/page.tsx",
+            "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/KpiSupermarketClient.tsx"
+          ],
+          "hop_count": 1,
+          "signal": "use_client",
+          "severity": "low",
+          "rationale": "Entrypoint reaches use_client surface at tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/KpiSupermarketClient.tsx via tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/page.tsx -> tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/KpiSupermarketClient.tsx."
+        },
+        {
+          "source": "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/style-lab/page.tsx",
+          "target": "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/style-lab/StyleLabClient.tsx",
+          "hops": [
+            "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/style-lab/page.tsx",
+            "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/style-lab/StyleLabClient.tsx"
+          ],
+          "hop_count": 1,
+          "signal": "use_client",
+          "severity": "low",
+          "rationale": "Entrypoint reaches use_client surface at tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/style-lab/StyleLabClient.tsx via tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/style-lab/page.tsx -> tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/style-lab/StyleLabClient.tsx."
+        },
+        {
+          "source": "apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx",
+          "target": "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx",
+          "hops": [
+            "apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx",
+            "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx"
+          ],
+          "hop_count": 1,
+          "signal": "storage_api",
+          "severity": "medium",
+          "rationale": "Entrypoint reaches storage_api surface at apps/keystone/app/dev/scene-studio/FloatingWindow.tsx via apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx -> apps/keystone/app/dev/scene-studio/FloatingWindow.tsx."
+        },
+        {
+          "source": "apps/keystone/app/dev/scene-studio/page.tsx",
+          "target": "apps/keystone/src/studio/FloatingSceneDock.tsx",
+          "hops": [
+            "apps/keystone/app/dev/scene-studio/page.tsx",
+            "apps/keystone/src/studio/FloatingSceneDock.tsx"
+          ],
+          "hop_count": 1,
+          "signal": "storage_api",
+          "severity": "high",
+          "rationale": "Entrypoint reaches storage_api surface at apps/keystone/src/studio/FloatingSceneDock.tsx via apps/keystone/app/dev/scene-studio/page.tsx -> apps/keystone/src/studio/FloatingSceneDock.tsx."
+        },
+        {
+          "source": "apps/keystone/app/pitch/01-double-engine/page.tsx",
+          "target": "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx",
+          "hops": [
+            "apps/keystone/app/pitch/01-double-engine/page.tsx",
+            "apps/keystone/components/pitch/index.ts",
+            "apps/keystone/components/pitch/pitch-layer-dev-tools.tsx",
+            "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx"
+          ],
+          "hop_count": 3,
+          "signal": "storage_api",
+          "severity": "medium",
+          "rationale": "Entrypoint reaches storage_api surface at apps/keystone/app/dev/scene-studio/FloatingWindow.tsx via apps/keystone/app/pitch/01-double-engine/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/pitch-layer-dev-tools.tsx -> apps/keystone/app/dev/scene-studio/FloatingWindow.tsx."
+        },
+        {
+          "source": "apps/keystone/app/pitch/02-industrial-flow/page.tsx",
+          "target": "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx",
+          "hops": [
+            "apps/keystone/app/pitch/02-industrial-flow/page.tsx",
+            "apps/keystone/components/pitch/index.ts",
+            "apps/keystone/components/pitch/pitch-layer-dev-tools.tsx",
+            "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx"
+          ],
+          "hop_count": 3,
+          "signal": "storage_api",
+          "severity": "medium",
+          "rationale": "Entrypoint reaches storage_api surface at apps/keystone/app/dev/scene-studio/FloatingWindow.tsx via apps/keystone/app/pitch/02-industrial-flow/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/pitch-layer-dev-tools.tsx -> apps/keystone/app/dev/scene-studio/FloatingWindow.tsx."
+        },
+        {
+          "source": "apps/keystone/app/pitch/03-hitech-os/page.tsx",
+          "target": "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx",
+          "hops": [
+            "apps/keystone/app/pitch/03-hitech-os/page.tsx",
+            "apps/keystone/components/pitch/index.ts",
+            "apps/keystone/components/pitch/pitch-layer-dev-tools.tsx",
+            "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx"
+          ],
+          "hop_count": 3,
+          "signal": "storage_api",
+          "severity": "medium",
+          "rationale": "Entrypoint reaches storage_api surface at apps/keystone/app/dev/scene-studio/FloatingWindow.tsx via apps/keystone/app/pitch/03-hitech-os/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/pitch-layer-dev-tools.tsx -> apps/keystone/app/dev/scene-studio/FloatingWindow.tsx."
+        },
+        {
+          "source": "apps/keystone/app/pitch/04-valuation/page.tsx",
+          "target": "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx",
+          "hops": [
+            "apps/keystone/app/pitch/04-valuation/page.tsx",
+            "apps/keystone/components/pitch/index.ts",
+            "apps/keystone/components/pitch/pitch-layer-dev-tools.tsx",
+            "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx"
+          ],
+          "hop_count": 3,
+          "signal": "storage_api",
+          "severity": "medium",
+          "rationale": "Entrypoint reaches storage_api surface at apps/keystone/app/dev/scene-studio/FloatingWindow.tsx via apps/keystone/app/pitch/04-valuation/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/pitch-layer-dev-tools.tsx -> apps/keystone/app/dev/scene-studio/FloatingWindow.tsx."
+        }
+      ],
+      "hottest_hubs": [
+        {
+          "relpath": "apps/keystone/lib/pitch-engine-tooling/fs-utils.mjs",
+          "boundary_kind": "shared",
+          "imported_by_count": 19,
+          "signals": []
+        },
+        {
+          "relpath": "tools/codex/runs/20260304_061005_61C9/B_tooling/FILES/apps/keystone/lib/pitch-engine-tooling/fs-utils.mjs",
+          "boundary_kind": "shared",
+          "imported_by_count": 19,
+          "signals": []
+        },
+        {
+          "relpath": "apps/keystone/lib/pitch-engine-tooling/constants.mjs",
+          "boundary_kind": "shared",
+          "imported_by_count": 17,
+          "signals": []
+        },
+        {
+          "relpath": "tools/codex/runs/20260304_061005_61C9/B_tooling/FILES/apps/keystone/lib/pitch-engine-tooling/constants.mjs",
+          "boundary_kind": "shared",
+          "imported_by_count": 17,
+          "signals": []
+        },
+        {
+          "relpath": "apps/keystone/lib/pitch-engine-tooling/paths.mjs",
+          "boundary_kind": "shared",
+          "imported_by_count": 15,
+          "signals": []
+        },
+        {
+          "relpath": "tools/codex/runs/20260304_061005_61C9/B_tooling/FILES/apps/keystone/lib/pitch-engine-tooling/paths.mjs",
+          "boundary_kind": "shared",
+          "imported_by_count": 15,
+          "signals": []
+        },
+        {
+          "relpath": "apps/keystone/lib/pitch-engine-tooling/exec.mjs",
+          "boundary_kind": "shared",
+          "imported_by_count": 11,
+          "signals": ["nondeterministic"]
+        },
+        {
+          "relpath": "apps/keystone/components/pitch/types.ts",
+          "boundary_kind": "shared",
+          "imported_by_count": 10,
+          "signals": []
+        },
+        {
+          "relpath": "apps/keystone/lib/pitch-engine-tooling/scene-ops.mjs",
+          "boundary_kind": "shared",
+          "imported_by_count": 10,
+          "signals": ["nondeterministic"]
+        },
+        {
+          "relpath": "apps/keystone/scripts/pitch-engine/_common.mjs",
+          "boundary_kind": "shared",
+          "imported_by_count": 10,
+          "signals": []
+        }
+      ],
+      "notes": [
+        "Storage APIs are reachable from entrypoints. Focus on client-only post-mount hydration for those branches.",
+        "Nondeterministic render sources are still reachable through the import graph. Stabilize them before SSR boundaries.",
+        "At least one client island has high import fan-in. Consider slicing it into smaller islands."
+      ],
+      "entrypoints": [
+        "apps/keystone/app/api/activity/route.ts",
+        "apps/keystone/app/api/runs/route.ts",
+        "apps/keystone/app/api/widgets/route.ts",
+        "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx",
+        "apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx",
+        "apps/keystone/app/dev/scene-studio/page.tsx",
+        "apps/keystone/app/layout.tsx",
+        "apps/keystone/app/page.tsx",
+        "apps/keystone/app/pitch/01-double-engine/page.tsx",
+        "apps/keystone/app/pitch/02-industrial-flow/page.tsx",
+        "apps/keystone/app/pitch/03-hitech-os/page.tsx",
+        "apps/keystone/app/pitch/04-valuation/page.tsx",
+        "apps/keystone/app/pitch/05-inventory-foundation/page.tsx",
+        "apps/keystone/app/pitch/06-shipments-receiving/page.tsx",
+        "apps/keystone/app/pitch/page.tsx",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/dataSpine.ts",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/governance.ts",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/registry/governanceHeuristics.ts",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/registry/kpiCatalogBulk.ts",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/registry/kpiRegistry.ts",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/registry/luxuryRegistry.ts",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/registry/presetGallery.ts",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/registry/surfaceRecipeCatalog.ts",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/registry/validationScenarioLibrary.ts",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/tools/catalogSnapshot.ts",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/tools/clipboard.ts",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/tools/localStorageSafe.ts",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/tools/presetExport.ts",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/tools/presetImport.ts",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/tools/schemaValidate.ts",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/types.ts",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/KpiSupermarketClient.tsx",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/page.tsx",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/style-lab/StyleLabClient.tsx",
+        "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/style-lab/page.tsx"
+      ]
+    }
+  },
+  "risk": {
+    "total_score": 2276.88,
+    "risk_level": "critical",
+    "top_paths": [
+      {
+        "relpath": "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/dataSpine.ts",
+        "score": 180.0,
+        "finding_count": 150,
+        "highest_severity": "info"
+      },
+      {
+        "relpath": "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/tools/localStorageSafe.ts",
+        "score": 151.68,
+        "finding_count": 16,
+        "highest_severity": "high"
+      },
+      {
+        "relpath": "apps/keystone/lib/pitch-engine-tooling/player.mjs",
+        "score": 114.0,
+        "finding_count": 14,
+        "highest_severity": "high"
+      },
+      {
+        "relpath": "tools/codex/runs/20260304_061005_61C9/B_tooling/FILES/apps/keystone/lib/pitch-engine-tooling/player.mjs",
+        "score": 114.0,
+        "finding_count": 14,
+        "highest_severity": "high"
+      },
+      {
+        "relpath": "apps/keystone/lib/pitch-engine-tooling/retention.mjs",
+        "score": 81.0,
+        "finding_count": 5,
+        "highest_severity": "high"
+      },
+      {
+        "relpath": "tools/codex/runs/20260304_061005_61C9/B_tooling/FILES/apps/keystone/lib/pitch-engine-tooling/retention.mjs",
+        "score": 81.0,
+        "finding_count": 5,
+        "highest_severity": "high"
+      },
+      {
+        "relpath": "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/tools/clipboard.ts",
+        "score": 77.04,
+        "finding_count": 7,
+        "highest_severity": "high"
+      },
+      {
+        "relpath": "apps/keystone/lib/pitch-engine-tooling/exec.mjs",
+        "score": 64.8,
+        "finding_count": 4,
+        "highest_severity": "high"
+      },
+      {
+        "relpath": "tools/codex/runs/20260304_061005_61C9/B_tooling/FILES/apps/keystone/lib/pitch-engine-tooling/exec.mjs",
+        "score": 64.8,
+        "finding_count": 4,
+        "highest_severity": "high"
+      },
+      {
+        "relpath": "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/KpiSupermarketClient.tsx",
+        "score": 61.08,
+        "finding_count": 7,
+        "highest_severity": "medium"
+      }
+    ],
+    "rule_scores": {
+      "nondeterministic_render": 793.8,
+      "dom_mutation_signature": 279.0,
+      "browser_api_non_client": 271.2,
+      "hydration_keyword": 242.8,
+      "storage_hydration": 182.4,
+      "graph_nondeterministic_reachability": 182.04,
+      "graph_storage_reachability": 113.4,
+      "graph_server_client_chain": 85.26,
+      "server_client_import": 78.98,
+      "graph_dom_mutation_reachability": 48.0
+    }
+  },
+  "regression": {
+    "has_previous": true,
+    "new_findings": 0,
+    "resolved_findings": 0,
+    "unchanged_findings": 411
+  },
+  "recommendations": [
+    "Audit browser APIs and client boundaries together. Tighten the island contract where server entrypoints reach client-only surfaces.",
+    "Review storage-backed render state and move persistence reads behind post-mount hydration or explicit client entrypoints.",
+    "Replace render-time Date, random, and UUID generation with deterministic server data or client effects.",
+    "Move DOM mutation helpers behind effects or tooling-only wrappers before they leak into normal entrypoints.",
+    "Do not enable strict enforcement yet. Clean exclusions and highest-risk files before turning the scanner into hard policy."
+  ],
+  "graph": {
+    "node_count": 414,
+    "edge_count": 601,
+    "client_node_count": 46,
+    "serverish_node_count": 15,
+    "shared_node_count": 293,
+    "tooling_node_count": 60,
+    "entrypoint_count": 35,
+    "signal_counts": {
+      "browser_api": 26,
+      "dom_mutation": 7,
+      "hydration_keyword": 2,
+      "nondeterministic": 51,
+      "react_component": 96,
+      "react_hook_surface": 22,
+      "serverish_surface": 39,
+      "storage_api": 4,
+      "tooling_surface": 60,
+      "use_client": 52
+    },
+    "path_counts": {
+      "dom_mutation": 5,
+      "nondeterministic": 10,
+      "storage_api": 10,
+      "use_client": 14
+    },
+    "risky_paths": [
+      {
+        "source": "apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx",
+        "target": "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx",
+        "hops": [
+          "apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx",
+          "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx"
+        ],
+        "hop_count": 1,
+        "signal": "use_client",
+        "severity": "low",
+        "rationale": "Entrypoint reaches use_client surface at apps/keystone/app/dev/scene-studio/FloatingWindow.tsx via apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx -> apps/keystone/app/dev/scene-studio/FloatingWindow.tsx."
+      },
+      {
+        "source": "apps/keystone/app/dev/scene-studio/page.tsx",
+        "target": "apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx",
+        "hops": [
+          "apps/keystone/app/dev/scene-studio/page.tsx",
+          "apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx"
+        ],
+        "hop_count": 1,
+        "signal": "use_client",
+        "severity": "low",
+        "rationale": "Entrypoint reaches use_client surface at apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx via apps/keystone/app/dev/scene-studio/page.tsx -> apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx."
+      },
+      {
+        "source": "apps/keystone/app/layout.tsx",
+        "target": "apps/keystone/providers/app-providers.tsx",
+        "hops": ["apps/keystone/app/layout.tsx", "apps/keystone/providers/app-providers.tsx"],
+        "hop_count": 1,
+        "signal": "use_client",
+        "severity": "low",
+        "rationale": "Entrypoint reaches use_client surface at apps/keystone/providers/app-providers.tsx via apps/keystone/app/layout.tsx -> apps/keystone/providers/app-providers.tsx."
+      },
+      {
+        "source": "apps/keystone/app/page.tsx",
+        "target": "apps/keystone/components/mission/mission-control-view.tsx",
+        "hops": [
+          "apps/keystone/app/page.tsx",
+          "apps/keystone/components/mission/mission-control-view.tsx"
+        ],
+        "hop_count": 1,
+        "signal": "use_client",
+        "severity": "low",
+        "rationale": "Entrypoint reaches use_client surface at apps/keystone/components/mission/mission-control-view.tsx via apps/keystone/app/page.tsx -> apps/keystone/components/mission/mission-control-view.tsx."
+      },
+      {
+        "source": "apps/keystone/app/pitch/01-double-engine/page.tsx",
+        "target": "apps/keystone/components/pitch/demo-controls.tsx",
+        "hops": [
+          "apps/keystone/app/pitch/01-double-engine/page.tsx",
+          "apps/keystone/components/pitch/index.ts",
+          "apps/keystone/components/pitch/demo-controls.tsx"
+        ],
+        "hop_count": 2,
+        "signal": "use_client",
+        "severity": "medium",
+        "rationale": "Entrypoint reaches use_client surface at apps/keystone/components/pitch/demo-controls.tsx via apps/keystone/app/pitch/01-double-engine/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/demo-controls.tsx."
+      },
+      {
+        "source": "apps/keystone/app/pitch/02-industrial-flow/page.tsx",
+        "target": "apps/keystone/components/pitch/demo-controls.tsx",
+        "hops": [
+          "apps/keystone/app/pitch/02-industrial-flow/page.tsx",
+          "apps/keystone/components/pitch/index.ts",
+          "apps/keystone/components/pitch/demo-controls.tsx"
+        ],
+        "hop_count": 2,
+        "signal": "use_client",
+        "severity": "medium",
+        "rationale": "Entrypoint reaches use_client surface at apps/keystone/components/pitch/demo-controls.tsx via apps/keystone/app/pitch/02-industrial-flow/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/demo-controls.tsx."
+      },
+      {
+        "source": "apps/keystone/app/pitch/03-hitech-os/page.tsx",
+        "target": "apps/keystone/components/pitch/demo-controls.tsx",
+        "hops": [
+          "apps/keystone/app/pitch/03-hitech-os/page.tsx",
+          "apps/keystone/components/pitch/index.ts",
+          "apps/keystone/components/pitch/demo-controls.tsx"
+        ],
+        "hop_count": 2,
+        "signal": "use_client",
+        "severity": "medium",
+        "rationale": "Entrypoint reaches use_client surface at apps/keystone/components/pitch/demo-controls.tsx via apps/keystone/app/pitch/03-hitech-os/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/demo-controls.tsx."
+      },
+      {
+        "source": "apps/keystone/app/pitch/04-valuation/page.tsx",
+        "target": "apps/keystone/components/pitch/demo-controls.tsx",
+        "hops": [
+          "apps/keystone/app/pitch/04-valuation/page.tsx",
+          "apps/keystone/components/pitch/index.ts",
+          "apps/keystone/components/pitch/demo-controls.tsx"
+        ],
+        "hop_count": 2,
+        "signal": "use_client",
+        "severity": "medium",
+        "rationale": "Entrypoint reaches use_client surface at apps/keystone/components/pitch/demo-controls.tsx via apps/keystone/app/pitch/04-valuation/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/demo-controls.tsx."
+      },
+      {
+        "source": "apps/keystone/app/pitch/05-inventory-foundation/page.tsx",
+        "target": "apps/keystone/components/pitch/demo-controls.tsx",
+        "hops": [
+          "apps/keystone/app/pitch/05-inventory-foundation/page.tsx",
+          "apps/keystone/components/pitch/index.ts",
+          "apps/keystone/components/pitch/demo-controls.tsx"
+        ],
+        "hop_count": 2,
+        "signal": "use_client",
+        "severity": "medium",
+        "rationale": "Entrypoint reaches use_client surface at apps/keystone/components/pitch/demo-controls.tsx via apps/keystone/app/pitch/05-inventory-foundation/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/demo-controls.tsx."
+      },
+      {
+        "source": "apps/keystone/app/pitch/06-shipments-receiving/page.tsx",
+        "target": "apps/keystone/components/pitch/demo-controls.tsx",
+        "hops": [
+          "apps/keystone/app/pitch/06-shipments-receiving/page.tsx",
+          "apps/keystone/components/pitch/index.ts",
+          "apps/keystone/components/pitch/demo-controls.tsx"
+        ],
+        "hop_count": 2,
+        "signal": "use_client",
+        "severity": "medium",
+        "rationale": "Entrypoint reaches use_client surface at apps/keystone/components/pitch/demo-controls.tsx via apps/keystone/app/pitch/06-shipments-receiving/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/demo-controls.tsx."
+      },
+      {
+        "source": "apps/keystone/app/pitch/page.tsx",
+        "target": "apps/keystone/components/pitch/demo-controls.tsx",
+        "hops": [
+          "apps/keystone/app/pitch/page.tsx",
+          "apps/keystone/components/pitch/index.ts",
+          "apps/keystone/components/pitch/demo-controls.tsx"
+        ],
+        "hop_count": 2,
+        "signal": "use_client",
+        "severity": "medium",
+        "rationale": "Entrypoint reaches use_client surface at apps/keystone/components/pitch/demo-controls.tsx via apps/keystone/app/pitch/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/demo-controls.tsx."
+      },
+      {
+        "source": "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/KpiSupermarketClient.tsx",
+        "target": "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/dataSpine.ts",
+        "hops": [
+          "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/KpiSupermarketClient.tsx",
+          "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/dataSpine.ts"
+        ],
+        "hop_count": 1,
+        "signal": "use_client",
+        "severity": "low",
+        "rationale": "Entrypoint reaches use_client surface at tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/dataSpine.ts via tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/KpiSupermarketClient.tsx -> tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/_luxury/dataSpine.ts."
+      },
+      {
+        "source": "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/page.tsx",
+        "target": "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/KpiSupermarketClient.tsx",
+        "hops": [
+          "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/page.tsx",
+          "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/KpiSupermarketClient.tsx"
+        ],
+        "hop_count": 1,
+        "signal": "use_client",
+        "severity": "low",
+        "rationale": "Entrypoint reaches use_client surface at tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/KpiSupermarketClient.tsx via tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/page.tsx -> tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/kpi-supermarket/KpiSupermarketClient.tsx."
+      },
+      {
+        "source": "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/style-lab/page.tsx",
+        "target": "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/style-lab/StyleLabClient.tsx",
+        "hops": [
+          "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/style-lab/page.tsx",
+          "tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/style-lab/StyleLabClient.tsx"
+        ],
+        "hop_count": 1,
+        "signal": "use_client",
+        "severity": "low",
+        "rationale": "Entrypoint reaches use_client surface at tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/style-lab/StyleLabClient.tsx via tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/style-lab/page.tsx -> tools/codex/runs/20260305_092736_F9A0/B_tooling/FILES/apps/keystone/app/dev/style-lab/StyleLabClient.tsx."
+      },
+      {
+        "source": "apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx",
+        "target": "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx",
+        "hops": [
+          "apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx",
+          "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx"
+        ],
+        "hop_count": 1,
+        "signal": "storage_api",
+        "severity": "medium",
+        "rationale": "Entrypoint reaches storage_api surface at apps/keystone/app/dev/scene-studio/FloatingWindow.tsx via apps/keystone/app/dev/scene-studio/SceneStudioEditor.tsx -> apps/keystone/app/dev/scene-studio/FloatingWindow.tsx."
+      },
+      {
+        "source": "apps/keystone/app/dev/scene-studio/page.tsx",
+        "target": "apps/keystone/src/studio/FloatingSceneDock.tsx",
+        "hops": [
+          "apps/keystone/app/dev/scene-studio/page.tsx",
+          "apps/keystone/src/studio/FloatingSceneDock.tsx"
+        ],
+        "hop_count": 1,
+        "signal": "storage_api",
+        "severity": "high",
+        "rationale": "Entrypoint reaches storage_api surface at apps/keystone/src/studio/FloatingSceneDock.tsx via apps/keystone/app/dev/scene-studio/page.tsx -> apps/keystone/src/studio/FloatingSceneDock.tsx."
+      },
+      {
+        "source": "apps/keystone/app/pitch/01-double-engine/page.tsx",
+        "target": "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx",
+        "hops": [
+          "apps/keystone/app/pitch/01-double-engine/page.tsx",
+          "apps/keystone/components/pitch/index.ts",
+          "apps/keystone/components/pitch/pitch-layer-dev-tools.tsx",
+          "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx"
+        ],
+        "hop_count": 3,
+        "signal": "storage_api",
+        "severity": "medium",
+        "rationale": "Entrypoint reaches storage_api surface at apps/keystone/app/dev/scene-studio/FloatingWindow.tsx via apps/keystone/app/pitch/01-double-engine/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/pitch-layer-dev-tools.tsx -> apps/keystone/app/dev/scene-studio/FloatingWindow.tsx."
+      },
+      {
+        "source": "apps/keystone/app/pitch/02-industrial-flow/page.tsx",
+        "target": "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx",
+        "hops": [
+          "apps/keystone/app/pitch/02-industrial-flow/page.tsx",
+          "apps/keystone/components/pitch/index.ts",
+          "apps/keystone/components/pitch/pitch-layer-dev-tools.tsx",
+          "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx"
+        ],
+        "hop_count": 3,
+        "signal": "storage_api",
+        "severity": "medium",
+        "rationale": "Entrypoint reaches storage_api surface at apps/keystone/app/dev/scene-studio/FloatingWindow.tsx via apps/keystone/app/pitch/02-industrial-flow/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/pitch-layer-dev-tools.tsx -> apps/keystone/app/dev/scene-studio/FloatingWindow.tsx."
+      },
+      {
+        "source": "apps/keystone/app/pitch/03-hitech-os/page.tsx",
+        "target": "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx",
+        "hops": [
+          "apps/keystone/app/pitch/03-hitech-os/page.tsx",
+          "apps/keystone/components/pitch/index.ts",
+          "apps/keystone/components/pitch/pitch-layer-dev-tools.tsx",
+          "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx"
+        ],
+        "hop_count": 3,
+        "signal": "storage_api",
+        "severity": "medium",
+        "rationale": "Entrypoint reaches storage_api surface at apps/keystone/app/dev/scene-studio/FloatingWindow.tsx via apps/keystone/app/pitch/03-hitech-os/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/pitch-layer-dev-tools.tsx -> apps/keystone/app/dev/scene-studio/FloatingWindow.tsx."
+      },
+      {
+        "source": "apps/keystone/app/pitch/04-valuation/page.tsx",
+        "target": "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx",
+        "hops": [
+          "apps/keystone/app/pitch/04-valuation/page.tsx",
+          "apps/keystone/components/pitch/index.ts",
+          "apps/keystone/components/pitch/pitch-layer-dev-tools.tsx",
+          "apps/keystone/app/dev/scene-studio/FloatingWindow.tsx"
+        ],
+        "hop_count": 3,
+        "signal": "storage_api",
+        "severity": "medium",
+        "rationale": "Entrypoint reaches storage_api surface at apps/keystone/app/dev/scene-studio/FloatingWindow.tsx via apps/keystone/app/pitch/04-valuation/page.tsx -> apps/keystone/components/pitch/index.ts -> apps/keystone/components/pitch/pitch-layer-dev-tools.tsx -> apps/keystone/app/dev/scene-studio/FloatingWindow.tsx."
+      }
+    ],
+    "hottest_hubs": [
+      {
+        "relpath": "apps/keystone/lib/pitch-engine-tooling/fs-utils.mjs",
+        "boundary_kind": "shared",
+        "imported_by_count": 19,
+        "signals": []
+      },
+      {
+        "relpath": "tools/codex/runs/20260304_061005_61C9/B_tooling/FILES/apps/keystone/lib/pitch-engine-tooling/fs-utils.mjs",
+        "boundary_kind": "shared",
+        "imported_by_count": 19,
+        "signals": []
+      },
+      {
+        "relpath": "apps/keystone/lib/pitch-engine-tooling/constants.mjs",
+        "boundary_kind": "shared",
+        "imported_by_count": 17,
+        "signals": []
+      },
+      {
+        "relpath": "tools/codex/runs/20260304_061005_61C9/B_tooling/FILES/apps/keystone/lib/pitch-engine-tooling/constants.mjs",
+        "boundary_kind": "shared",
+        "imported_by_count": 17,
+        "signals": []
+      },
+      {
+        "relpath": "apps/keystone/lib/pitch-engine-tooling/paths.mjs",
+        "boundary_kind": "shared",
+        "imported_by_count": 15,
+        "signals": []
+      },
+      {
+        "relpath": "tools/codex/runs/20260304_061005_61C9/B_tooling/FILES/apps/keystone/lib/pitch-engine-tooling/paths.mjs",
+        "boundary_kind": "shared",
+        "imported_by_count": 15,
+        "signals": []
+      },
+      {
+        "relpath": "apps/keystone/lib/pitch-engine-tooling/exec.mjs",
+        "boundary_kind": "shared",
+        "imported_by_count": 11,
+        "signals": ["nondeterministic"]
+      },
+      {
+        "relpath": "apps/keystone/components/pitch/types.ts",
+        "boundary_kind": "shared",
+        "imported_by_count": 10,
+        "signals": []
+      },
+      {
+        "relpath": "apps/keystone/lib/pitch-engine-tooling/scene-ops.mjs",
+        "boundary_kind": "shared",
+        "imported_by_count": 10,
+        "signals": ["nondeterministic"]
+      },
+      {
+        "relpath": "apps/keystone/scripts/pitch-engine/_common.mjs",
+        "boundary_kind": "shared",
+        "imported_by_count": 10,
+        "signals": []
+      }
+    ],
+    "notes": [
+      "Storage APIs are reachable from entrypoints. Focus on client-only post-mount hydration for those branches.",
+      "Nondeterministic render sources are still reachable through the import graph. Stabilize them before SSR boundaries.",
+      "At least one client island has high import fan-in. Consider slicing it into smaller islands."
+    ]
+  },
+  "history_snapshot": {
+    "created_at": "2026-03-07T22:54:10Z",
+    "active_fingerprint_count": 411
+  },
+  "trend": {
+    "has_previous": true,
+    "new_findings": 0,
+    "resolved_findings": 0,
+    "unchanged_findings": 411,
+    "delta_total_findings": 0
+  }
+}

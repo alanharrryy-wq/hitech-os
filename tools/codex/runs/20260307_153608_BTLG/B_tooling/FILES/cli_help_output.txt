@@ -1,0 +1,42 @@
+usage: sentinel_cli.py [-h] [--repo-root REPO_ROOT] [--config CONFIG]
+                       [--baseline BASELINE] [--diff-only]
+                       [--diff-base-ref DIFF_BASE_REF]
+                       [--write-json WRITE_JSON]
+                       [--write-summary WRITE_SUMMARY] [--write-baseline]
+                       [--baseline-notes BASELINE_NOTES] [--print-summary]
+                       [--print-top PRINT_TOP] [--build-report]
+                       [--report-root REPORT_ROOT] [--write-report]
+                       [--print-graph-summary]
+
+Hydration Sentinel PRO - advanced CLI with graph analysis and history
+snapshots
+
+options:
+  -h, --help            show this help message and exit
+  --repo-root REPO_ROOT
+                        Path to the repository root.
+  --config CONFIG       Optional path to config.json override.
+  --baseline BASELINE   Optional path to baseline.json override.
+  --diff-only           Scan only files changed relative to --diff-base-ref.
+  --diff-base-ref DIFF_BASE_REF
+                        Git ref used for diff selection. Default comes from
+                        config.
+  --write-json WRITE_JSON
+                        Write full findings payload to this JSON file.
+  --write-summary WRITE_SUMMARY
+                        Write summary payload to this JSON file.
+  --write-baseline      Write current findings as a new baseline file.
+  --baseline-notes BASELINE_NOTES
+                        Optional notes when writing the baseline file.
+  --print-summary       Print summary JSON to stdout.
+  --print-top PRINT_TOP
+                        Print the first N active findings to stdout.
+  --build-report        Build the full report pipeline, including graph
+                        analysis and history snapshots.
+  --report-root REPORT_ROOT
+                        Optional output directory for report artifacts.
+  --write-report        Write full report artifacts to the report root latest
+                        folder.
+  --print-graph-summary
+                        Print graph summary JSON to stdout after report
+                        generation.
