@@ -1,24 +1,17 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   buildCanonicalSceneUrl,
   buildCanonicalSceneQuery,
-  createDefaultSceneLibrary,
   parseSceneQueryToObject,
-  type SceneImportMode,
   type SceneRecord
 } from "../../lib/scene-studio";
-import { SceneStudioDiagnostics } from "./scene-studio-diagnostics";
-import { SceneStudioEditor } from "./scene-studio-editor";
-import { SceneStudioHelpPanel } from "./scene-studio-help-panel";
-import { SceneStudioList } from "./scene-studio-list";
+import { DevConsoleSceneStudioBinding } from "../dev-console/DevConsoleContext";
 import styles from "./scene-studio.module.css";
 import { SceneStudioPreview } from "./scene-studio-preview";
 import { useSceneStudioHotkeys } from "./use-scene-studio-hotkeys";
 import { useSceneStudioState } from "./use-scene-studio-state";
-import type { SceneDiagnosticsPayload } from "../../lib/scene-studio";
-import { DevConsoleSceneStudioBinding } from "../dev-console/DevConsoleContext";
 
 const cls = (name: string): string => styles[name] ?? "";
 
@@ -66,49 +59,178 @@ async function copyTextToClipboard(text: string): Promise<boolean> {
   return copied;
 }
 
-function downloadText(fileName: string, content: string): void {
-  const blob = new Blob([content], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement("a");
-  anchor.href = url;
-  anchor.download = fileName;
-  anchor.click();
-  URL.revokeObjectURL(url);
+function BackdropCard({
+  title,
+  value,
+  wide = false
+}: {
+  title: string;
+  value: string;
+  wide?: boolean;
+}) {
+  return (
+    <div
+      style={{
+        minWidth: wide ? "min(420px, 100%)" : "180px",
+        flex: wide ? "1 1 420px" : "0 1 auto",
+        borderRadius: 18,
+        border: "1px solid rgba(2, 167, 202, 0.22)",
+        background: "linear-gradient(180deg, rgba(6, 14, 22, 0.82), rgba(6, 14, 22, 0.62))",
+        boxShadow: "0 12px 40px rgba(0, 0, 0, 0.22)",
+        padding: "14px 16px"
+      }}
+    >
+      <div
+        style={{
+          color: "rgba(171, 123, 38, 0.95)",
+          fontSize: 11,
+          fontWeight: 700,
+          letterSpacing: "0.16em",
+          marginBottom: 8,
+          textTransform: "uppercase"
+        }}
+      >
+        {title}
+      </div>
+
+      <div
+        style={{
+          color: "rgba(226, 247, 255, 0.95)",
+          fontSize: wide ? 14 : 13,
+          lineHeight: 1.45,
+          wordBreak: "break-word"
+        }}
+      >
+        {value}
+      </div>
+    </div>
+  );
 }
 
-const SORT_OPTIONS: ReadonlyArray<{ value: "updated" | "title" | "route"; label: string }> = [
-  { value: "updated", label: "Updated" },
-  { value: "title", label: "Title" },
-  { value: "route", label: "Route" }
-];
+function BrandedBackdrop({
+  sceneTitle,
+  canonicalUrl,
+  statusLine
+}: {
+  sceneTitle: string;
+  canonicalUrl: string;
+  statusLine: string;
+}) {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        display: "grid",
+        placeItems: "center",
+        padding: "32px"
+      }}
+    >
+      <div
+        style={{
+          width: "min(1200px, 94vw)",
+          borderRadius: 32,
+          overflow: "hidden",
+          border: "1px solid rgba(2, 167, 202, 0.18)",
+          background: [
+            "radial-gradient(circle at top left, rgba(171, 123, 38, 0.16), transparent 28%)",
+            "radial-gradient(circle at top right, rgba(2, 167, 202, 0.16), transparent 30%)",
+            "linear-gradient(160deg, rgba(3, 9, 15, 0.92), rgba(9, 20, 29, 0.82))"
+          ].join(", "),
+          boxShadow: "0 28px 120px rgba(0, 0, 0, 0.42)"
+        }}
+      >
+        <div
+          style={{
+            padding: "56px 56px 28px",
+            borderBottom: "1px solid rgba(2, 167, 202, 0.12)"
+          }}
+        >
+          <div
+            style={{
+              color: "rgba(171, 123, 38, 0.95)",
+              fontSize: 12,
+              fontWeight: 800,
+              letterSpacing: "0.28em",
+              marginBottom: 14,
+              textTransform: "uppercase"
+            }}
+          >
+            Hitech · Scene Studio
+          </div>
+
+          <h1
+            style={{
+              color: "#f3fbff",
+              fontSize: "clamp(34px, 5vw, 64px)",
+              lineHeight: 1.04,
+              margin: 0,
+              maxWidth: "12ch"
+            }}
+          >
+            Floating-only mode with a live stage behind the console.
+          </h1>
+
+          <p
+            style={{
+              color: "rgba(206, 235, 244, 0.82)",
+              fontSize: 16,
+              lineHeight: 1.65,
+              margin: "18px 0 0",
+              maxWidth: "72ch"
+            }}
+          >
+            La consola flotante se queda con el volante. El escenario vive atrás como stage pasivo,
+            sin shell incrustado y sin doble HUD.
+          </p>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 16,
+            padding: "28px 32px 32px"
+          }}
+        >
+          <BackdropCard title="Current scene" value={sceneTitle} />
+          <BackdropCard title="Workspace mode" value="Floating console only" />
+          <BackdropCard title="Status" value={statusLine} />
+          <BackdropCard
+            title="Canonical URL"
+            value={canonicalUrl || "Waiting for a selected scene to generate a canonical URL."}
+            wide
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function SceneStudioPage() {
   const {
-    scenes,
-    selectedScene,
     draftScene,
-    dirty,
-    sortMode,
-    setSortMode,
-    selectScene,
     updateDraft,
     saveDraft,
-    discardDraft,
     createScene,
-    duplicateSelectedScene,
-    deleteSelectedScene,
-    resetSelectedSceneToDefaults,
-    exportAllScenes,
-    exportSelectedScene,
-    importScenesFromJson
+    resetSelectedSceneToDefaults
   } = useSceneStudioState();
 
-  const searchInputRef = useRef<HTMLInputElement | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedTags, setSelectedTags] = useState<readonly string[]>([]);
-  const [diagnostics, setDiagnostics] = useState<SceneDiagnosticsPayload | null>(null);
-  const [compareSceneId, setCompareSceneId] = useState<string>("");
   const [statusLine, setStatusLine] = useState<string>("ready");
+  const backgroundRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const node = backgroundRef.current;
+    if (!node) {
+      return;
+    }
+
+    node.setAttribute("inert", "");
+
+    return () => {
+      node.removeAttribute("inert");
+    };
+  }, []);
 
   const normalizedDraft = useMemo(() => (draftScene ? syncSceneQuery(draftScene) : undefined), [draftScene]);
 
@@ -128,61 +250,9 @@ export function SceneStudioPage() {
     });
   }, [normalizedDraft]);
 
-  const compareScene = useMemo(() => scenes.find((scene) => scene.id === compareSceneId), [compareSceneId, scenes]);
-
-  const compareCanonicalUrl = useMemo(() => {
-    if (!compareScene) {
-      return undefined;
-    }
-
-    return buildCanonicalSceneUrl({
-      route: compareScene.route,
-      query: compareScene.query,
-      layerProfile: compareScene.layerProfile,
-      layersMode: compareScene.layers.mode,
-      layerIds: compareScene.layers.layerIds,
-      motion: compareScene.motion,
-      debug: true
-    });
-  }, [compareScene]);
-
-  useSceneStudioHotkeys({
-    onFocusSearch: () => searchInputRef.current?.focus(),
-    onNewScene: () => {
-      createScene();
-      setStatusLine("new scene created");
-    },
-    onSaveScene: () => {
-      const saved = saveDraft();
-      setStatusLine(saved ? `saved ${saved.id}` : "nothing to save");
-    },
-    onCopyUrl: () => {
-      if (!canonicalUrl) {
-        setStatusLine("no scene selected");
-        return;
-      }
-
-      void copyTextToClipboard(canonicalUrl).then((ok) => {
-        setStatusLine(ok ? "canonical URL copied" : "copy failed");
-      });
-    },
-    onRunVisual: () => {
-      void runVisualForSelection();
-    }
-  });
-
-  const toggleTag = (tag: string) => {
-    setSelectedTags((previous) => {
-      if (previous.includes(tag)) {
-        return previous.filter((entry) => entry !== tag);
-      }
-
-      return [...previous, tag].sort((left, right) => left.localeCompare(right));
-    });
-  };
-
-  const runVisualForSelection = async () => {
+  const runVisualForSelection = async (): Promise<void> => {
     if (!normalizedDraft) {
+      setStatusLine("no scene selected");
       return;
     }
 
@@ -222,31 +292,34 @@ export function SceneStudioPage() {
     }
   };
 
-  const importFromFile = async (file: File, mode: SceneImportMode) => {
-    const raw = await file.text();
-
-    try {
-      const result = importScenesFromJson(raw, mode);
-      setStatusLine(
-        `imported=${result.imported} migrated=${result.migrated} errors=${result.errors.length}`
-      );
-    } catch (error) {
-      setStatusLine(error instanceof Error ? error.message : "scene import failed");
+  const handlePassiveCopyCanonicalUrl = async (): Promise<boolean> => {
+    if (!canonicalUrl) {
+      setStatusLine("no scene selected");
+      return false;
     }
+
+    const copied = await copyTextToClipboard(canonicalUrl);
+    setStatusLine(copied ? "canonical URL copied" : "copy failed");
+    return copied;
   };
 
-  const runManifestBootstrap = () => {
-    const defaults = createDefaultSceneLibrary();
-    const payload = {
-      schemaVersion: 2,
-      exportedAt: new Date().toISOString(),
-      scenes: defaults
-    };
-    const result = importScenesFromJson(JSON.stringify(payload), "replace");
-    setStatusLine(
-      `manifest loaded. imported=${result.imported} migrated=${result.migrated} errors=${result.errors.length}`
-    );
-  };
+  useSceneStudioHotkeys({
+    onFocusSearch: () => {},
+    onNewScene: () => {
+      createScene();
+      setStatusLine("new scene created");
+    },
+    onSaveScene: () => {
+      const saved = saveDraft();
+      setStatusLine(saved ? `saved ${saved.id}` : "nothing to save");
+    },
+    onCopyUrl: () => {
+      void handlePassiveCopyCanonicalUrl();
+    },
+    onRunVisual: () => {
+      void runVisualForSelection();
+    }
+  });
 
   const handleSceneChange = (next: SceneRecord) => {
     const queryObject = parseSceneQueryToObject(next.query);
@@ -267,256 +340,135 @@ export function SceneStudioPage() {
   };
 
   return (
-    <section className={cls("root")}>
+    <section
+      className={cls("root")}
+      style={{
+        position: "relative",
+        minHeight: "calc(100dvh - 4.5rem)",
+        overflow: "hidden",
+        isolation: "isolate"
+      }}
+    >
       <DevConsoleSceneStudioBinding
         scene={normalizedDraft}
         onChange={handleSceneChange}
         onResetToDefaults={resetSelectedSceneToDefaults}
       />
 
-      <header className={cls("panelHeader")}>
-        <h1 className={cls("panelTitle")}>Keystone Scene Studio</h1>
-        <p className={cls("devBanner")}>
-          Dev-only workspace for reproducible scenes, share URLs, diagnostics and visual proof.
-        </p>
-      </header>
+      <div
+        ref={backgroundRef}
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: "none",
+          userSelect: "none"
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(180deg, rgba(4, 10, 16, 0.08), rgba(4, 10, 16, 0.34))"
+          }}
+        />
 
-      <div className={cls("shell")}>
-        <aside className={cls("panel")} aria-label="Scene catalog">
-          <header className={cls("panelHeader")}>
-            <h2 className={cls("panelTitle")}>Scenes</h2>
-            <div className={cls("actionsRow")}>
-              <button type="button" className={cls("button")} onClick={() => {
-                createScene();
-                setStatusLine("new scene created");
-              }}>
-                New
-              </button>
-              <button
-                type="button"
-                className={cls("button")}
-                onClick={() => {
-                  const clone = duplicateSelectedScene();
-                  setStatusLine(clone ? `duplicated ${clone.id}` : "no scene selected");
-                }}
-                disabled={!selectedScene}
-              >
-                Duplicate
-              </button>
-            </div>
-          </header>
-
-          <div className={cls("panelBody")}>
-            <div className={cls("searchRow")}>
-              <label className={cls("legend")} htmlFor="scene-sort-mode">
-                Sort
-              </label>
-              <select
-                id="scene-sort-mode"
-                className={cls("select")}
-                value={sortMode}
-                onChange={(event) => setSortMode(event.currentTarget.value as "updated" | "title" | "route")}
-              >
-                {SORT_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <SceneStudioList
-              scenes={scenes}
-              selectedId={selectedScene?.id}
-              searchTerm={searchTerm}
-              selectedTags={selectedTags}
-              onSearchTermChange={setSearchTerm}
-              onTagToggle={toggleTag}
-              onSelect={(id) => {
-                const selected = selectScene(id);
-                setStatusLine(selected ? `selected ${id}` : "selection cancelled");
+        {normalizedDraft ? (
+          <>
+            <div
+              style={{
+                position: "absolute",
+                inset: "clamp(20px, 4vw, 48px)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
               }}
-              searchInputRef={searchInputRef}
-            />
-
-            <div className={cls("actionsRow")}>
-              <button
-                type="button"
-                className={cls("button")}
-                onClick={() => {
-                  const payload = exportAllScenes();
-                  downloadText("keystone-scenes-export.json", payload);
-                  setStatusLine("all scenes exported");
+            >
+              <div
+                style={{
+                  width: "min(1480px, 94vw)",
+                  maxWidth: "100%",
+                  borderRadius: 28,
+                  overflow: "hidden",
+                  border: "1px solid rgba(2, 167, 202, 0.16)",
+                  background: "rgba(2, 7, 11, 0.72)",
+                  boxShadow: "0 36px 120px rgba(0, 0, 0, 0.46)",
+                  opacity: 0.9,
+                  filter: "saturate(0.92) contrast(0.94) brightness(0.92)"
                 }}
               >
-                Export All
-              </button>
-
-              <button
-                type="button"
-                className={cls("button")}
-                onClick={() => {
-                  const payload = exportSelectedScene();
-                  if (!payload || !selectedScene) {
-                    setStatusLine("no scene selected");
-                    return;
-                  }
-                  downloadText(`${selectedScene.id}.json`, payload);
-                  setStatusLine(`exported ${selectedScene.id}`);
-                }}
-                disabled={!selectedScene}
-              >
-                Export Scene
-              </button>
-
-              <label className={cls("button")}>
-                Import Merge
-                <input
-                  type="file"
-                  hidden
-                  accept="application/json"
-                  onChange={async (event) => {
-                    const file = event.currentTarget.files?.[0];
-                    if (!file) {
-                      return;
-                    }
-
-                    await importFromFile(file, "merge");
-                    event.currentTarget.value = "";
-                  }}
+                <SceneStudioPreview
+                  scene={normalizedDraft}
+                  compareScene={undefined}
+                  canonicalUrl={canonicalUrl}
+                  compareCanonicalUrl={undefined}
+                  onCopyCanonicalUrl={handlePassiveCopyCanonicalUrl}
+                  onDiagnostics={() => {}}
+                  onRunVisual={runVisualForSelection}
+                  passive
                 />
-              </label>
-
-              <label className={cls("button")}>
-                Import Replace
-                <input
-                  type="file"
-                  hidden
-                  accept="application/json"
-                  onChange={async (event) => {
-                    const file = event.currentTarget.files?.[0];
-                    if (!file) {
-                      return;
-                    }
-
-                    await importFromFile(file, "replace");
-                    event.currentTarget.value = "";
-                  }}
-                />
-              </label>
-
-              <button type="button" className={cls("button")} onClick={runManifestBootstrap}>
-                Reset Library
-              </button>
+              </div>
             </div>
-          </div>
-        </aside>
 
-        <section className={cls("panel")} aria-label="Preview and compare">
-          <header className={cls("panelHeader")}>
-            <h2 className={cls("panelTitle")}>Preview</h2>
-            <div className={cls("actionsRow")}>
-              <select
-                className={cls("select")}
-                value={compareSceneId}
-                onChange={(event) => setCompareSceneId(event.currentTarget.value)}
-                aria-label="Compare scene selector"
-              >
-                <option value="">Compare scene...</option>
-                {scenes
-                  .filter((scene) => scene.id !== normalizedDraft?.id)
-                  .map((scene) => (
-                    <option key={scene.id} value={scene.id}>
-                      {scene.title}
-                    </option>
-                  ))}
-              </select>
-            </div>
-          </header>
-          <div className={cls("panelBody")}>
-            <SceneStudioPreview
-              scene={normalizedDraft}
-              compareScene={compareScene}
-              canonicalUrl={canonicalUrl}
-              compareCanonicalUrl={compareCanonicalUrl}
-              onCopyCanonicalUrl={() => copyTextToClipboard(canonicalUrl)}
-              onDiagnostics={setDiagnostics}
-              onRunVisual={runVisualForSelection}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: [
+                  "linear-gradient(180deg, rgba(5, 8, 12, 0.18) 0%, rgba(5, 8, 12, 0.08) 16%, rgba(5, 8, 12, 0.34) 100%)",
+                  "radial-gradient(circle at 50% 50%, transparent 0%, rgba(5, 8, 12, 0.08) 52%, rgba(5, 8, 12, 0.42) 100%)"
+                ].join(", ")
+              }}
             />
-          </div>
-        </section>
+          </>
+        ) : (
+          <BrandedBackdrop
+            sceneTitle="No scene selected"
+            canonicalUrl={canonicalUrl}
+            statusLine={statusLine}
+          />
+        )}
+      </div>
 
-        <aside className={cls("panel")} aria-label="Inspector and diagnostics">
-          <header className={cls("panelHeader")}>
-            <h2 className={cls("panelTitle")}>Inspector</h2>
-            <div className={cls("actionsRow")}>
-              <button
-                type="button"
-                className={cls("button")}
-                onClick={() => {
-                  const saved = saveDraft();
-                  setStatusLine(saved ? `saved ${saved.id}` : "nothing to save");
-                }}
-                disabled={!dirty}
-              >
-                Save
-              </button>
-              <button
-                type="button"
-                className={cls("button")}
-                onClick={() => {
-                  discardDraft();
-                  setStatusLine("changes discarded");
-                }}
-                disabled={!dirty}
-              >
-                Discard
-              </button>
-              <button
-                type="button"
-                className={cls("button")}
-                onClick={() => {
-                  deleteSelectedScene();
-                  setStatusLine("scene deleted");
-                }}
-                disabled={!selectedScene}
-              >
-                Delete
-              </button>
-            </div>
-          </header>
-
-          <div className={cls("panelBody")}>
-            <p className={cls("subtle")}>
-              status={statusLine} dirty={dirty ? "1" : "0"}
-            </p>
-
-            <SceneStudioEditor
-              scene={normalizedDraft}
-              onChange={handleSceneChange}
-              onResetToDefaults={resetSelectedSceneToDefaults}
-            />
-
-            <section className={cls("panel")} aria-label="Diagnostics">
-              <header className={cls("panelHeader")}>
-                <h3 className={cls("panelTitle")}>Diagnostics</h3>
-              </header>
-              <SceneStudioDiagnostics scene={normalizedDraft} diagnostics={diagnostics} />
-            </section>
-
-            <section className={cls("panel")} aria-label="Help">
-              <header className={cls("panelHeader")}>
-                <h3 className={cls("panelTitle")}>Help</h3>
-              </header>
-              <SceneStudioHelpPanel />
-            </section>
-          </div>
-        </aside>
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          left: 20,
+          right: 20,
+          bottom: 18,
+          zIndex: 1,
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 10,
+          pointerEvents: "none"
+        }}
+      >
+        {[
+          "floating-only",
+          normalizedDraft ? "live passive stage" : "branded backdrop",
+          normalizedDraft ? normalizedDraft.title : "no scene selected",
+          statusLine
+        ].map((label) => (
+          <span
+            key={label}
+            style={{
+              borderRadius: 999,
+              border: "1px solid rgba(2, 167, 202, 0.18)",
+              background: "rgba(5, 11, 17, 0.58)",
+              boxShadow: "0 8px 30px rgba(0, 0, 0, 0.18)",
+              color: "rgba(228, 247, 255, 0.88)",
+              fontSize: 12,
+              lineHeight: 1,
+              padding: "10px 12px",
+              backdropFilter: "blur(10px)"
+            }}
+          >
+            {label}
+          </span>
+        ))}
       </div>
     </section>
   );
 }
-
-
-
-

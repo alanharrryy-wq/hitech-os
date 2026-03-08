@@ -39,6 +39,7 @@ export interface SceneStudioPreviewProps {
   readonly onCopyCanonicalUrl: () => Promise<boolean>;
   readonly onDiagnostics: (payload: SceneDiagnosticsPayload | null) => void;
   readonly onRunVisual: () => Promise<void>;
+  readonly passive?: boolean;
 }
 
 export function SceneStudioPreview({
@@ -48,7 +49,8 @@ export function SceneStudioPreview({
   compareCanonicalUrl,
   onCopyCanonicalUrl,
   onDiagnostics,
-  onRunVisual
+  onRunVisual,
+  passive = false
 }: SceneStudioPreviewProps) {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "failed">("idle");
@@ -58,7 +60,7 @@ export function SceneStudioPreview({
 
   const requestDiagnostics = useCallback(() => {
     const iframeWindow = iframeRef.current?.contentWindow;
-    if (!iframeWindow || !scene) {
+    if (!iframeWindow || !scene || passive) {
       return;
     }
 
@@ -76,7 +78,7 @@ export function SceneStudioPreview({
     window.setTimeout(() => {
       setDiagnosticsStatus((previous) => (previous === "loading" ? "failed" : previous));
     }, 2500);
-  }, [scene]);
+  }, [passive, scene]);
 
   useEffect(() => {
     onDiagnostics(null);
@@ -103,6 +105,35 @@ export function SceneStudioPreview({
 
   if (!scene) {
     return <p className={cls("subtle")}>Select a scene to preview.</p>;
+  }
+
+  if (passive) {
+    return (
+      <div className={cls("previewWrap")}>
+        <div
+          className={cls("compareCard")}
+          style={{
+            background: "rgba(255, 255, 255, 0.96)"
+          }}
+        >
+          <iframe
+            ref={iframeRef}
+            title="Scene preview passive stage"
+            src={canonicalUrl}
+            className={cls("compareFrame")}
+            style={{
+              display: "block",
+              width: viewportFrame?.width ?? "100%",
+              minHeight: viewportFrame?.minHeight ?? 760,
+              marginInline: "auto",
+              pointerEvents: "none"
+            }}
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+            tabIndex={-1}
+          />
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -163,7 +194,10 @@ export function SceneStudioPreview({
               title="Scene compare preview"
               src={compareCanonicalUrl}
               className={cls("compareFrame")}
-              style={{ width: resolveViewportFrameSize(compareScene).width, minHeight: resolveViewportFrameSize(compareScene).minHeight }}
+              style={{
+                width: resolveViewportFrameSize(compareScene).width,
+                minHeight: resolveViewportFrameSize(compareScene).minHeight
+              }}
               sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
             />
           </article>
@@ -181,7 +215,3 @@ export function SceneStudioPreview({
     </div>
   );
 }
-
-
-
-

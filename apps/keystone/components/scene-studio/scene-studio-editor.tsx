@@ -1,7 +1,11 @@
 "use client";
 
 import { ALL_LAYERS, type LayerId } from "@hitech/ui-kit";
-import { KNOWN_PITCH_ROUTES, type SceneRecord } from "../../lib/scene-studio";
+import {
+  KNOWN_PITCH_ROUTES,
+  createDefaultSceneLibrary,
+  type SceneRecord
+} from "../../lib/scene-studio";
 import styles from "./scene-studio.module.css";
 
 const cls = (name: string): string => styles[name] ?? "";
@@ -12,6 +16,8 @@ const LAYER_GROUPS: Readonly<Record<string, readonly LayerId[]>> = {
   inset: ALL_LAYERS.filter((id) => id.startsWith("inset.")),
   motion: ["motion.enabled"]
 };
+
+const SCENE_REFERENCE_LIBRARY = createDefaultSceneLibrary("2026-01-01T00:00:00.000Z");
 
 export interface SceneStudioEditorProps {
   readonly scene: SceneRecord | undefined;
@@ -80,6 +86,33 @@ function applyLayerGroup(scene: SceneRecord, group: keyof typeof LAYER_GROUPS, o
   });
 }
 
+function uniqueStrings(values: readonly string[]): string[] {
+  return Array.from(new Set(values.filter((value) => value.trim().length > 0)));
+}
+
+function buildSceneReferenceLibrary(scene: SceneRecord): readonly SceneRecord[] {
+  if (SCENE_REFERENCE_LIBRARY.some((entry) => entry.id === scene.id)) {
+    return SCENE_REFERENCE_LIBRARY;
+  }
+
+  return [scene, ...SCENE_REFERENCE_LIBRARY];
+}
+
+function findReferenceById(
+  library: readonly SceneRecord[],
+  id: string
+): SceneRecord | undefined {
+  return library.find((entry) => entry.id === id);
+}
+
+function findUniqueReferenceByTitle(
+  library: readonly SceneRecord[],
+  title: string
+): SceneRecord | undefined {
+  const matches = library.filter((entry) => entry.title === title);
+  return matches.length === 1 ? matches[0] : undefined;
+}
+
 export function SceneStudioEditor({ scene, onChange, onResetToDefaults }: SceneStudioEditorProps) {
   if (!scene) {
     return <p className={cls("subtle")}>Select a scene to edit.</p>;
@@ -87,6 +120,15 @@ export function SceneStudioEditor({ scene, onChange, onResetToDefaults }: SceneS
 
   const invalidRoute = !scene.route.startsWith("/");
   const invalidListMode = scene.layers.mode === "list" && scene.layers.layerIds.length === 0;
+
+  const sceneReferenceLibrary = buildSceneReferenceLibrary(scene);
+  const sceneIdOptions = sceneReferenceLibrary.map((entry) => entry.id);
+  const titleOptions = uniqueStrings(sceneReferenceLibrary.map((entry) => entry.title));
+  const routeOptions = uniqueStrings([
+    scene.route,
+    ...KNOWN_PITCH_ROUTES,
+    ...sceneReferenceLibrary.map((entry) => entry.route)
+  ]);
 
   return (
     <div className={cls("panelBody")}>
@@ -103,38 +145,87 @@ export function SceneStudioEditor({ scene, onChange, onResetToDefaults }: SceneS
         <label className={cls("legend")} htmlFor="scene-id-input">
           Scene Id
         </label>
-        <input
+        <select
           id="scene-id-input"
-          className={cls("input")}
+          className={cls("select")}
           value={scene.id}
-          onChange={(event) => onChange(updateScene(scene, { id: event.currentTarget.value }))}
-        />
+          onChange={(event) => {
+            const selectedId = event.currentTarget.value;
+            const matched = findReferenceById(sceneReferenceLibrary, selectedId);
+
+            if (!matched) {
+              onChange(updateScene(scene, { id: selectedId }));
+              return;
+            }
+
+            onChange(
+              updateScene(scene, {
+                id: matched.id,
+                title: matched.title,
+                route: matched.route
+              })
+            );
+          }}
+        >
+          {sceneIdOptions.map((sceneId) => (
+            <option key={sceneId} value={sceneId}>
+              {sceneId}
+            </option>
+          ))}
+        </select>
 
         <label className={cls("legend")} htmlFor="scene-title-input">
           Title
         </label>
-        <input
+        <select
           id="scene-title-input"
-          className={cls("input")}
+          className={cls("select")}
           value={scene.title}
-          onChange={(event) => onChange(updateScene(scene, { title: event.currentTarget.value }))}
-        />
+          onChange={(event) => {
+            const selectedTitle = event.currentTarget.value;
+            const matched = findUniqueReferenceByTitle(sceneReferenceLibrary, selectedTitle);
+
+            if (!matched) {
+              onChange(updateScene(scene, { title: selectedTitle }));
+              return;
+            }
+
+            onChange(
+              updateScene(scene, {
+                id: matched.id,
+                title: matched.title,
+                route: matched.route
+              })
+            );
+          }}
+        >
+          {titleOptions.map((title) => (
+            <option key={title} value={title}>
+              {title}
+            </option>
+          ))}
+        </select>
 
         <label className={cls("legend")} htmlFor="scene-route-input">
           Route
         </label>
-        <input
+        <select
           id="scene-route-input"
-          className={cls("input")}
-          list="scene-known-routes"
+          className={cls("select")}
           value={scene.route}
           onChange={(event) => onChange(updateScene(scene, { route: event.currentTarget.value }))}
-        />
-        <datalist id="scene-known-routes">
-          {KNOWN_PITCH_ROUTES.map((route) => (
-            <option key={route} value={route} />
+        >
+          {routeOptions.map((route) => (
+            <option key={route} value={route}>
+              {route}
+            </option>
           ))}
-        </datalist>
+        </select>
+
+        <p className={cls("subtle")}>
+          Identity fields are constrained to known scene options so the floating console does not drift
+          into malformed scene metadata.
+        </p>
       </div>
 
       <div className={cls("fieldset")}>
@@ -358,7 +449,3 @@ export function SceneStudioEditor({ scene, onChange, onResetToDefaults }: SceneS
     </div>
   );
 }
-
-
-
-
