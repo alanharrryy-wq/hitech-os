@@ -8540,25 +8540,16 @@
       "export_name": "PitchLayerDevTools",
       "file_path": "apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx",
       "imports": [
-        "apps/keystone/components/dev-console/DevConsoleContext.tsx",
-        "apps/keystone/components/pitch/debug/pitch-scene-runtime-bridge.tsx",
-        "apps/keystone/components/pitch/debug/pitch-share-look-button.tsx",
-        "apps/keystone/components/pitch/debug/pitch-visual-scene-overlay.tsx",
-        "packages/ui-kit/src/index.ts"
+        "apps/keystone/components/pitch/debug/pitch-scene-runtime-bridge.tsx"
       ],
       "kind": "block",
       "renders": [
-        "cmp_63d1e991fa",
-        "cmp_805d85de87",
-        "cmp_d2126a2b14",
         "cmp_d2d761ad3d"
       ],
       "uses": {
         "assets": [],
         "css": [],
-        "hooks": [
-          "useOptionalDevConsole"
-        ],
+        "hooks": [],
         "stores": []
       }
     },
@@ -9462,10 +9453,6 @@
       "file_path": "apps/keystone/components/scene-studio/scene-studio-page.tsx",
       "imports": [
         "apps/keystone/components/dev-console/DevConsoleContext.tsx",
-        "apps/keystone/components/scene-studio/scene-studio-diagnostics.tsx",
-        "apps/keystone/components/scene-studio/scene-studio-editor.tsx",
-        "apps/keystone/components/scene-studio/scene-studio-help-panel.tsx",
-        "apps/keystone/components/scene-studio/scene-studio-list.tsx",
         "apps/keystone/components/scene-studio/scene-studio-preview.tsx",
         "apps/keystone/components/scene-studio/scene-studio.module.css",
         "apps/keystone/components/scene-studio/use-scene-studio-hotkeys.ts",
@@ -9474,11 +9461,7 @@
       ],
       "kind": "block",
       "renders": [
-        "cmp_0f1bc4f36f",
-        "cmp_2e64b98779",
-        "cmp_31b57a0d07",
         "cmp_880191ca88",
-        "cmp_8f9bf09085",
         "cmp_917042f30d"
       ],
       "uses": {
@@ -9487,10 +9470,10 @@
           "apps/keystone/components/scene-studio/scene-studio.module.css"
         ],
         "hooks": [
+          "useEffect",
           "useMemo",
           "useSceneStudioHotkeys",
-          "useSceneStudioState",
-          "useState"
+          "useSceneStudioState"
         ],
         "stores": [
           "useSceneStudioState",
@@ -15582,7 +15565,6 @@
         "hooks": [
           "useEffect",
           "useLayerFlags",
-          "useMemo",
           "usePathname",
           "useSearchParams",
           "useState"
@@ -17667,6 +17649,32 @@
       }
     },
     {
+      "component_id": "cmp_f0870b3e28",
+      "export_name": "LayerFlagsProvider",
+      "file_path": "apps/keystone/components/pitch/debug/LayerFlagsProvider.tsx",
+      "imports": [],
+      "kind": "block",
+      "renders": [],
+      "uses": {
+        "assets": [],
+        "css": [],
+        "hooks": [
+          "useCallback",
+          "useEffect",
+          "useMemo",
+          "usePathname",
+          "useRef",
+          "useRouter",
+          "useSearchParams"
+        ],
+        "stores": [
+          "createRawFromState",
+          "createResolvedState",
+          "useState"
+        ]
+      }
+    },
+    {
       "component_id": "cmp_f0e4464b37",
       "export_name": "PitchIconFactory",
       "file_path": "apps/keystone/components/pitch/visuals/pitch-icon-library.tsx",
@@ -19506,6 +19514,11 @@
     {
       "from": "cmp_0f00607a49",
       "to": "cmp_805d85de87",
+      "type": "imports"
+    },
+    {
+      "from": "cmp_0f1bc4f36f",
+      "to": "cmp_0e18d237a4",
       "type": "imports"
     },
     {
@@ -24695,26 +24708,6 @@
     },
     {
       "from": "cmp_6cb06e50cd",
-      "to": "cmp_63d1e991fa",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_6cb06e50cd",
-      "to": "cmp_805d85de87",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_6cb06e50cd",
-      "to": "cmp_afec778ea0",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_6cb06e50cd",
-      "to": "cmp_d2126a2b14",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_6cb06e50cd",
       "to": "cmp_d2d761ad3d",
       "type": "imports"
     },
@@ -25340,27 +25333,7 @@
     },
     {
       "from": "cmp_7b8f4f141d",
-      "to": "cmp_0e18d237a4",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_7b8f4f141d",
-      "to": "cmp_0f1bc4f36f",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_7b8f4f141d",
       "to": "cmp_2e4e4db285",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_7b8f4f141d",
-      "to": "cmp_2e64b98779",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_7b8f4f141d",
-      "to": "cmp_31b57a0d07",
       "type": "imports"
     },
     {
@@ -25376,11 +25349,6 @@
     {
       "from": "cmp_7b8f4f141d",
       "to": "cmp_8f9a19edfb",
-      "type": "imports"
-    },
-    {
-      "from": "cmp_7b8f4f141d",
-      "to": "cmp_8f9bf09085",
       "type": "imports"
     },
     {
@@ -33425,21 +33393,6 @@
     },
     {
       "from": "cmp_6cb06e50cd",
-      "to": "cmp_63d1e991fa",
-      "type": "renders"
-    },
-    {
-      "from": "cmp_6cb06e50cd",
-      "to": "cmp_805d85de87",
-      "type": "renders"
-    },
-    {
-      "from": "cmp_6cb06e50cd",
-      "to": "cmp_d2126a2b14",
-      "type": "renders"
-    },
-    {
-      "from": "cmp_6cb06e50cd",
       "to": "cmp_d2d761ad3d",
       "type": "renders"
     },
@@ -33575,27 +33528,7 @@
     },
     {
       "from": "cmp_7b8f4f141d",
-      "to": "cmp_0f1bc4f36f",
-      "type": "renders"
-    },
-    {
-      "from": "cmp_7b8f4f141d",
-      "to": "cmp_2e64b98779",
-      "type": "renders"
-    },
-    {
-      "from": "cmp_7b8f4f141d",
-      "to": "cmp_31b57a0d07",
-      "type": "renders"
-    },
-    {
-      "from": "cmp_7b8f4f141d",
       "to": "cmp_880191ca88",
-      "type": "renders"
-    },
-    {
-      "from": "cmp_7b8f4f141d",
-      "to": "cmp_8f9bf09085",
       "type": "renders"
     },
     {
@@ -35240,6 +35173,7 @@
         "cmp_de9c0a16e6",
         "cmp_df8c73eff1",
         "cmp_e49e5f31b9",
+        "cmp_f0870b3e28",
         "cmp_f1013bfce1",
         "cmp_fbdd0af3a0"
       ],

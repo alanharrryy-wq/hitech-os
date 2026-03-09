@@ -10,4 +10,3 @@ export function PitchLayerDevToolsClientOnly({ visible }: PitchLayerDevToolsProp
     </InternalToolClientOnlyBoundary>
   );
 }
-

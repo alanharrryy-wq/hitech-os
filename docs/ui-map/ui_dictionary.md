@@ -3,7 +3,7 @@
 - version: `1.0.0`
 - generated_by: `tools/ui_map deterministic`
 - routes: `11`
-- components: `981`
+- components: `982`
 - states: `10`
 - styles: `10`
 - assets: `2`

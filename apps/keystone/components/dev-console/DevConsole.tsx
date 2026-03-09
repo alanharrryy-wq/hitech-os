@@ -8,11 +8,13 @@ import {
 } from "../../app/dev/scene-studio/floating-window-drag-policy";
 import { useDevConsole } from "./DevConsoleContext";
 import { buildDevConsoleRegistry } from "./DevConsoleRegistry";
-import type { DevConsoleToolId } from "./types";
+import type { DevConsoleBridgeStatus, DevConsoleToolId } from "./types";
 import styles from "./dev-console.module.css";
 
 const cls = (name: string) => styles[name] ?? "";
 const ACTIVE_TOOL_STORAGE_KEY = "keystone.devConsole.activeTool";
+
+let __HITECH_DEV_CONSOLE_SINGLETON__ = false;
 
 function readActiveTool(): DevConsoleToolId {
   if (typeof window === "undefined") return "home";
@@ -39,8 +41,48 @@ function readActiveTool(): DevConsoleToolId {
   }
 }
 
+function bridgeTone(status: DevConsoleBridgeStatus) {
+  switch (status) {
+    case "live":
+      return { label: "Bridge live", title: "Diagnostics stream healthy" };
+    case "stale":
+      return { label: "Bridge stale", title: "Diagnostics stopped updating" };
+    case "booting":
+      return { label: "Bridge booting", title: "Waiting for first diagnostics heartbeat" };
+    case "offline":
+      return { label: "Bridge offline", title: "Runtime bridge not detected" };
+    default:
+      return { label: "Bridge idle", title: "No diagnostics yet" };
+  }
+}
+
 export function DevConsole() {
-  const { bindings, flags, setFlags } = useDevConsole();
+  const [allowed, setAllowed] = useState(false);
+
+  useEffect(() => {
+    if (__HITECH_DEV_CONSOLE_SINGLETON__) {
+      console.warn("HITECH DevConsole: prevented duplicate mount");
+      setAllowed(false);
+      return;
+    }
+
+    __HITECH_DEV_CONSOLE_SINGLETON__ = true;
+    setAllowed(true);
+
+    return () => {
+      __HITECH_DEV_CONSOLE_SINGLETON__ = false;
+    };
+  }, []);
+
+  if (!allowed) {
+    return null;
+  }
+
+  return <ActualDevConsole />;
+}
+
+function ActualDevConsole() {
+  const { bindings, flags, setFlags, runtime, bridgeStatus, lastDiagnosticsAt, refreshDiagnostics } = useDevConsole();
   const [activeTool, setActiveTool] = useState<DevConsoleToolId>("home");
 
   useEffect(() => {
@@ -94,7 +136,7 @@ export function DevConsole() {
   const clearConsoleStorage = () => {
     const keys = [
       "keystone.floatingWindow.dev-console",
-      "keystone.devConsole.activeTool",
+      ACTIVE_TOOL_STORAGE_KEY,
       "keystone.devConsole.flags",
       "keystone.devConsole.layoutProfiles"
     ];
@@ -121,6 +163,11 @@ export function DevConsole() {
     );
   };
 
+  const bridgeMeta = bridgeTone(bridgeStatus);
+  const runtimeSummary = runtime
+    ? `${runtime.route}${runtime.query ? runtime.query : ""}`
+    : "No runtime snapshot yet";
+
   return (
     <FloatingWindow
       id="dev-console"
@@ -131,7 +178,11 @@ export function DevConsole() {
       homeSize={{ w: 980, h: 760 }}
       minSize={{ w: 760, h: 420 }}
       initialZ={2_100_000_000}
-      headerRight={<div style={{ fontSize: 11, opacity: 0.82, whiteSpace: "nowrap" }}>Single Console Mode</div>}
+      headerRight={
+        <div style={{ fontSize: 11, opacity: 0.82, whiteSpace: "nowrap" }}>
+          {runtime?.diagnosticsAvailable ? "Runtime synced" : "Runtime awaiting first snapshot"}
+        </div>
+      }
     >
       <div className={cls("root")}>
         <div className={cls("rail")} {...noDragAttr}>
@@ -156,9 +207,17 @@ export function DevConsole() {
             <div className={cls("topBarTitleBlock")}>
               <div className={cls("topBarTitle")}>{active.label}</div>
               <div className={cls("topBarDescription")}>{active.description}</div>
+              <div className={cls("cardHint")} title={bridgeMeta.title}>
+                {bridgeMeta.label} · {runtimeSummary}
+                {lastDiagnosticsAt ? ` · ${lastDiagnosticsAt}` : ""}
+              </div>
             </div>
 
             <div className={cls("topBarActions")} {...noDragAttr}>
+              <button type="button" className={cls("button")} onClick={() => refreshDiagnostics()}>
+                Refresh Runtime
+              </button>
+
               <button type="button" className={cls("button")} onClick={resetConsoleLayout}>
                 Reset Position
               </button>

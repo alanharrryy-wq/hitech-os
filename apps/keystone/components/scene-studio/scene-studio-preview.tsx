@@ -53,6 +53,7 @@ export function SceneStudioPreview({
   passive = false
 }: SceneStudioPreviewProps) {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const requestTimerRef = useRef<number | null>(null);
   const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "failed">("idle");
   const [diagnosticsStatus, setDiagnosticsStatus] = useState<"idle" | "loading" | "ready" | "failed">("idle");
 
@@ -61,7 +62,7 @@ export function SceneStudioPreview({
   const requestDiagnostics = useCallback(() => {
     const iframeWindow = iframeRef.current?.contentWindow;
     if (!iframeWindow || !scene || passive) {
-      return;
+      return false;
     }
 
     const requestId = `${scene.id}:${Date.now()}`;
@@ -75,9 +76,15 @@ export function SceneStudioPreview({
       window.location.origin
     );
 
-    window.setTimeout(() => {
+    if (requestTimerRef.current) {
+      window.clearTimeout(requestTimerRef.current);
+    }
+
+    requestTimerRef.current = window.setTimeout(() => {
       setDiagnosticsStatus((previous) => (previous === "loading" ? "failed" : previous));
     }, 2500);
+
+    return true;
   }, [passive, scene]);
 
   useEffect(() => {
@@ -95,6 +102,11 @@ export function SceneStudioPreview({
         return;
       }
 
+      if (requestTimerRef.current) {
+        window.clearTimeout(requestTimerRef.current);
+        requestTimerRef.current = null;
+      }
+
       setDiagnosticsStatus("ready");
       onDiagnostics(event.data.payload);
     };
@@ -102,6 +114,15 @@ export function SceneStudioPreview({
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
   }, [onDiagnostics]);
+
+  useEffect(() => {
+    return () => {
+      if (requestTimerRef.current) {
+        window.clearTimeout(requestTimerRef.current);
+        requestTimerRef.current = null;
+      }
+    };
+  }, []);
 
   if (!scene) {
     return <p className={cls("subtle")}>Select a scene to preview.</p>;
@@ -120,6 +141,11 @@ export function SceneStudioPreview({
             ref={iframeRef}
             title="Scene preview passive stage"
             src={canonicalUrl}
+            onLoad={() => {
+              window.setTimeout(() => {
+                void requestDiagnostics();
+              }, 80);
+            }}
             className={cls("compareFrame")}
             style={{
               display: "block",
@@ -153,7 +179,7 @@ export function SceneStudioPreview({
         >
           {copyStatus === "copied" ? "Copied" : "Copy Canonical URL"}
         </button>
-        <button type="button" className={cls("button")} onClick={requestDiagnostics}>
+        <button type="button" className={cls("button")} onClick={() => requestDiagnostics()}>
           Validate Scene
         </button>
         <button
@@ -161,6 +187,9 @@ export function SceneStudioPreview({
           className={cls("button")}
           onClick={async () => {
             await onRunVisual();
+            window.setTimeout(() => {
+              void requestDiagnostics();
+            }, 120);
           }}
         >
           Run Visual Test
@@ -178,6 +207,11 @@ export function SceneStudioPreview({
             ref={iframeRef}
             title="Scene preview"
             src={canonicalUrl}
+            onLoad={() => {
+              window.setTimeout(() => {
+                void requestDiagnostics();
+              }, 80);
+            }}
             className={cls("compareFrame")}
             style={{ width: viewportFrame?.width ?? "100%", minHeight: viewportFrame?.minHeight ?? 760 }}
             sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
@@ -203,7 +237,7 @@ export function SceneStudioPreview({
           </article>
         ) : (
           <article className={cls("compareCard")}>
-            <header className={cls("panelHeader")}>
+            <header className={cls("panelHeader")}> 
               <h3 className={cls("panelTitle")}>Compare Scene</h3>
             </header>
             <div className={cls("panelBody")}>

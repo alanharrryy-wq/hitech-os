@@ -46,21 +46,11 @@ type Props = {
   setFlags: React.Dispatch<React.SetStateAction<DevConsoleFlags>>;
 };
 
-export function ConsoleLayoutProfilesPanel({
-  activeTool,
-  setActiveTool,
-  flags,
-  setFlags
-}: Props) {
+export function ConsoleLayoutProfilesPanel({ activeTool, setActiveTool, flags, setFlags }: Props) {
   const [profiles, setProfiles] = useState<LayoutProfile[]>(() => readProfiles());
   const [profileName, setProfileName] = useState("Luxury Layout");
 
-  const hasProfiles = profiles.length > 0;
-
-  const sortedProfiles = useMemo(
-    () => [...profiles].sort((a, b) => b.savedAt.localeCompare(a.savedAt)),
-    [profiles]
-  );
+  const sortedProfiles = useMemo(() => [...profiles].sort((a, b) => b.savedAt.localeCompare(a.savedAt)), [profiles]);
 
   const saveProfile = () => {
     if (typeof window === "undefined") return;
@@ -93,11 +83,7 @@ export function ConsoleLayoutProfilesPanel({
       // ignore
     }
 
-    window.dispatchEvent(
-      new CustomEvent("hitech:floating-window:restore", {
-        detail: { id: "dev-console" }
-      })
-    );
+    window.dispatchEvent(new CustomEvent("hitech:floating-window:restore", { detail: { id: "dev-console" } }));
   };
 
   const removeProfile = (profileId: string) => {
@@ -107,68 +93,74 @@ export function ConsoleLayoutProfilesPanel({
   };
 
   return (
-    <div className={cls("card")}>
-      <div className={cls("cardTitle")}>Layout Profiles</div>
-      <div className={cls("cardHint")}>
-        Save and restore the console position, active tool, and runtime flags.
-      </div>
+    <div className={cls("split")}>
+      <section className={cls("card")}>
+        <div className={cls("cardTitle")}>Layout profiles</div>
+        <div className={cls("cardHint")}>
+          Save the console pose, active tool, and runtime flags as a reusable cockpit preset.
+        </div>
 
-      <div className={cls("split")}>
-        <input
-          className={cls("input")}
-          value={profileName}
-          onChange={(event) => setProfileName(event.currentTarget.value)}
-          placeholder="Profile name"
-        />
+        <div className={cls("split")}>
+          <input
+            className={cls("input")}
+            value={profileName}
+            onChange={(event) => setProfileName(event.currentTarget.value)}
+            placeholder="Profile name"
+          />
+          <button type="button" className={cls("button")} onClick={saveProfile}>
+            Save Current Layout
+          </button>
+        </div>
 
-        <button type="button" className={cls("button")} onClick={saveProfile}>
-          Save Current Layout
-        </button>
-      </div>
+        <pre className={cls("codeBox")}>
+{JSON.stringify(
+  {
+    activeTool,
+    flags,
+    profiles: profiles.length
+  },
+  null,
+  2
+)}
+        </pre>
+      </section>
 
-      {hasProfiles ? (
-        <div className={cls("list")}>
-          {sortedProfiles.map((profile) => (
-            <div key={profile.id} className={cls("profileRow")}>
-              <div>
-                <div className={cls("cardTitle")}>{profile.name}</div>
-                <div className={cls("cardHint")}>
-                  {profile.activeTool} · {new Date(profile.savedAt).toLocaleString()}
+      <section className={cls("card")}>
+        <div className={cls("cardTitle")}>Saved presets</div>
+        {sortedProfiles.length > 0 ? (
+          <div className={cls("list")}>
+            {sortedProfiles.map((profile) => (
+              <div key={profile.id} className={cls("profileRow")}>
+                <div>
+                  <div className={cls("cardTitle")}>{profile.name}</div>
+                  <div className={cls("cardHint")}>
+                    {profile.activeTool} · {new Date(profile.savedAt).toLocaleString()}
+                  </div>
                 </div>
+
+                <button type="button" className={cls("button")} onClick={() => loadProfile(profile)}>
+                  Load
+                </button>
+                <button type="button" className={cls("button")} onClick={() => setProfileName(profile.name)}>
+                  Copy Name
+                </button>
+                <button
+                  type="button"
+                  className={`${cls("button")} ${cls("buttonDanger")}`}
+                  onClick={() => removeProfile(profile.id)}
+                >
+                  Delete
+                </button>
               </div>
-
-              <button type="button" className={cls("button")} onClick={() => loadProfile(profile)}>
-                Load
-              </button>
-
-              <button
-                type="button"
-                className={cls("button")}
-                onClick={() => {
-                  setProfileName(profile.name);
-                }}
-              >
-                Copy Name
-              </button>
-
-              <button
-                type="button"
-                className={`${cls("button")} ${cls("buttonDanger")}`}
-                onClick={() => removeProfile(profile.id)}
-              >
-                Delete
-              </button>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className={cls("emptyState")}>
-          <div className={cls("cardTitle")}>No profiles yet</div>
-          <div className={cls("cardHint")}>
-            Save one after moving the console to your favorite command-center position.
+            ))}
           </div>
-        </div>
-      )}
+        ) : (
+          <div className={cls("emptyState")}>
+            <div className={cls("cardTitle")}>No profiles yet</div>
+            <div className={cls("cardHint")}>Save one after moving the console to your favorite command-center corner.</div>
+          </div>
+        )}
+      </section>
     </div>
   );
 }

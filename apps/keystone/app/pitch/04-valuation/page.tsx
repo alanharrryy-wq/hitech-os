@@ -1,7 +1,6 @@
 import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "@hitech/contracts";
 import { LayerFlagsProvider } from "@hitech/ui-kit";
 import { PitchShell, ScreenValuation } from "../../../components/pitch";
-import { PitchLayerDevToolsClientOnly } from "../../../components/pitch/debug/pitch-layer-dev-tools-client-only";
 import { buildPitchShellFrameModel } from "../../../components/pitch/view-model/pitch-shell-model";
 import {
   resolvePitchSearchParams,
@@ -26,7 +25,6 @@ export default async function PitchValuationPage({ searchParams }: PitchSearchPa
       >
         <ScreenValuation screen={screen} />
       </PitchShell>
-      <PitchLayerDevToolsClientOnly visible={debugVisible} />
-    </LayerFlagsProvider>
+</LayerFlagsProvider>
   );
 }

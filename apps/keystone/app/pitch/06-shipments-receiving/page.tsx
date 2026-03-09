@@ -1,8 +1,7 @@
 import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "@hitech/contracts";
 import { LayerFlagsProvider } from "@hitech/ui-kit";
-import { PitchLayerDevToolsClientOnly } from "../../../components/pitch/debug/pitch-layer-dev-tools-client-only";
-import { PitchShell } from "../../../components/pitch/pitch-shell";
-import { ShipmentsReceivingControlRoom } from "../../../components/pitch/run2";
+import { PitchShell, ScreenShipmentsReceiving } from "../../../components/pitch";
+import { buildPitchShellFrameModel } from "../../../components/pitch/view-model/pitch-shell-model";
 import {
   resolvePitchSearchParams,
   resolvePitchLayerFlags,
@@ -16,17 +15,13 @@ export default async function PitchShipmentsReceivingPage({ searchParams }: Pitc
   const debugVisible = resolved.debug && process.env.NODE_ENV !== "production";
   const deck = PITCH_DECK_FIXTURE;
   const screen = PITCH_SCREEN_FIXTURES["06-shipments-receiving"];
+  const shellModel = buildPitchShellFrameModel(screen.slug);
 
   return (
     <LayerFlagsProvider initialResolved={resolved}>
-      <PitchShell
-        title="Keystone Pitch Deck"
-        subtitle={screen.title}
-        nav={{ links: deck.navigation.links, activeSlug: screen.slug }}
-      >
-        <ShipmentsReceivingControlRoom screen={screen} />
+      <PitchShell model={{ ...shellModel, nav: { ...shellModel.nav, links: deck.navigation.links } }}>
+        <ScreenShipmentsReceiving screen={screen} />
       </PitchShell>
-      <PitchLayerDevToolsClientOnly visible={debugVisible} />
-    </LayerFlagsProvider>
+</LayerFlagsProvider>
   );
 }

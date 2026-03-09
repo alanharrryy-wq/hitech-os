@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from "react";
 import { Grid, GridItem, Shell, Stage, cn } from "@hitech/ui-kit";
 import { PitchRailNav } from "../nav/pitch-rail-nav";
+import { PitchDevConsoleMount } from "../debug/pitch-dev-console-mount";
 import { PitchShellBreadcrumbs } from "./pitch-shell-breadcrumbs";
 import { PitchHero } from "./pitch-hero";
 import { PitchShellProgress } from "./pitch-shell-progress";
@@ -25,6 +26,7 @@ export function PitchShell({
     >
       <PitchShellBrandLayer />
       <PitchShellKeyboardNav links={model.nav.links} disabled={!enableKeyboardNav} />
+
       <Shell
         title={model.hero.title}
         subtitle={model.hero.subtitle}
@@ -63,7 +65,9 @@ export function PitchShell({
           </Grid>
         </PitchSectionProvider>
       </Shell>
+
       {showScrollAffordance ? <PitchScrollAffordance /> : null}
+      <PitchDevConsoleMount visible />
     </Stage>
   );
 }

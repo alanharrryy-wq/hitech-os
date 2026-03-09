@@ -1,7 +1,6 @@
 import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "@hitech/contracts";
 import { LayerFlagsProvider } from "@hitech/ui-kit";
 import { PitchShell, ScreenDoubleEngine } from "../../../components/pitch";
-import { PitchLayerDevToolsClientOnly } from "../../../components/pitch/debug/pitch-layer-dev-tools-client-only";
 import { buildPitchShellFrameModel } from "../../../components/pitch/view-model/pitch-shell-model";
 import {
   resolvePitchSearchParams,
@@ -23,7 +22,6 @@ export default async function PitchDoubleEnginePage({ searchParams }: PitchSearc
       <PitchShell model={{ ...shellModel, nav: { ...shellModel.nav, links: deck.navigation.links } }}>
         <ScreenDoubleEngine screen={screen} />
       </PitchShell>
-      <PitchLayerDevToolsClientOnly visible={debugVisible} />
-    </LayerFlagsProvider>
+</LayerFlagsProvider>
   );
 }

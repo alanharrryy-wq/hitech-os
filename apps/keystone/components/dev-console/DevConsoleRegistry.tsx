@@ -45,14 +45,14 @@ export function buildDevConsoleRegistry({
       id: "home",
       label: "Home",
       shortLabel: "HOME",
-      description: "Control room overview and module slots status.",
+      description: "Single command deck for runtime health, route state, and panel readiness.",
       render: () => <ConsoleHomePanel />
     },
     {
       id: "scene",
       label: "Scene Editor",
       shortLabel: "SCN",
-      description: "Embedded Scene Studio editor. Uses route-provided binding when available.",
+      description: "Embedded Scene Studio editor bound to the current route owner when available.",
       render: () =>
         bindings.sceneStudio ? (
           <SceneStudioEditorPanel
@@ -63,64 +63,64 @@ export function buildDevConsoleRegistry({
         ) : (
           unavailableState(
             "Scene binding unavailable",
-            "Wire DevConsoleSceneStudioBinding in the current scene owner component/page. The rest of the console still works."
+            "Wire DevConsoleSceneStudioBinding in the owning page or editor wrapper. Runtime and diagnostics panels still work."
           )
         )
     },
     {
       id: "layers",
-      label: "Layer Debug",
+      label: "Layer Diagnostics",
       shortLabel: "LYR",
-      description: "Embedded layer debug panel, same debug muscle but inside the single console.",
+      description: "Requested, resolved, DOM-applied, and missing layer state in one place.",
       render: () => <PitchLayerDebugPanel />
     },
     {
       id: "overlay",
       label: "Visual Overlay",
       shortLabel: "OVR",
-      description: "Visual scene overlay, embedded instead of popping its own window.",
+      description: "Overlay module slot for future visual guides and hit-area paint.",
       render: () => <PitchVisualOverlayPanel />
     },
     {
       id: "share-look",
       label: "Share Look",
       shortLabel: "SHR",
-      description: "Look sharing and replication affordance.",
+      description: "Snapshot and replication affordances for scene review flows.",
       render: () => <PitchShareLookPanel />
     },
     {
       id: "runtime",
       label: "Runtime Bridge",
       shortLabel: "RTM",
-      description: "Keeps the runtime bridge alive while exposing a dedicated inspection slot.",
+      description: "Live inspection of diagnostics heartbeat, route state, and bridge payload freshness.",
       render: () => <PitchRuntimeBridgePanel />
     },
     {
       id: "actions",
       label: "Actions",
       shortLabel: "ACT",
-      description: "Quick action emitters for export, snapshot, reset, and future automation.",
+      description: "Quick emitters for validation, copying, reset flows, and future automation hooks.",
       render: () => <ConsoleActionsPanel />
     },
     {
       id: "flags",
       label: "Flags",
       shortLabel: "FLG",
-      description: "Runtime flags with persistence and event broadcasting.",
+      description: "Runtime flags with persistence, document datasets, and event broadcasting.",
       render: () => <ConsoleFlagsPanel />
     },
     {
       id: "perf",
       label: "Perf",
       shortLabel: "FPS",
-      description: "Simple performance telemetry to catch visual heaviness fast.",
+      description: "Fast telemetry slot for performance smoke checks and visual heaviness clues.",
       render: () => <ConsolePerfPanel />
     },
     {
       id: "layouts",
       label: "Layouts",
       shortLabel: "LAY",
-      description: "Save and restore console layouts with active tool and flags.",
+      description: "Persist and restore console arrangements with active tool and flag snapshots.",
       render: () => (
         <ConsoleLayoutProfilesPanel
           activeTool={activeTool}
