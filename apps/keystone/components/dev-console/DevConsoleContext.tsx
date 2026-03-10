@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { SCENE_STUDIO_REQUEST_DIAGNOSTICS } from "../../lib/scene-studio";
 import type {
   DevConsoleBridgeStatus,
   DevConsoleContextValue,
@@ -21,7 +22,7 @@ const DEFAULT_FLAGS: DevConsoleFlags = {
 const FLAGS_STORAGE_KEY = "keystone.devConsole.flags";
 const BRIDGE_BOOT_GRACE_MS = 1800;
 const BRIDGE_STALE_MS = 15_000;
-const REQUEST_DIAGNOSTICS_TYPE = "SCENE_STUDIO_REQUEST_DIAGNOSTICS";
+const REQUEST_DIAGNOSTICS_TYPE = SCENE_STUDIO_REQUEST_DIAGNOSTICS;
 const DIAGNOSTICS_EVENT_NAME = "hitech:dev-console:diagnostics";
 
 const DevConsoleContext = createContext<DevConsoleContextValue | null>(null);
@@ -129,17 +130,32 @@ export function DevConsoleProvider({ children }: { children: React.ReactNode }) 
     }
 
     const iframe = document.querySelector<HTMLIFrameElement>('iframe[title="Scene preview"]');
-    const iframeWindow = iframe?.contentWindow;
+    const targetWindow = iframe?.contentWindow ?? window;
 
-    if (!iframeWindow) {
+    if (typeof targetWindow.postMessage !== "function") {
       return false;
     }
 
     const requestId = `dev-console:${Date.now()}`;
-    iframeWindow.postMessage({ type: REQUEST_DIAGNOSTICS_TYPE, requestId }, window.location.origin);
+    targetWindow.postMessage({ type: REQUEST_DIAGNOSTICS_TYPE, requestId }, window.location.origin);
     setBridgeStatus((previous) => (previous === "idle" ? "booting" : previous));
     return true;
   }, []);
+
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const timer = window.setTimeout(() => {
+      if (!diagnostics) {
+        refreshDiagnostics();
+      }
+    }, 220);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [diagnostics, refreshDiagnostics]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;

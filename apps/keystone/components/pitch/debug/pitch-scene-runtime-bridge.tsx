@@ -113,9 +113,10 @@ export function PitchSceneRuntimeBridge() {
         return;
       }
 
-      if (!event.source || typeof (event.source as Window).postMessage !== "function") {
-        return;
-      }
+      const replyTarget = event.source && typeof (event.source as Window).postMessage === "function"
+        ? (event.source as Window)
+        : window;
+
 
       const domDataAttributes = collectDomLayerAttributes();
       const missingDataAttributes = collectMissingLayerAttributes(resolved.flags);
@@ -132,7 +133,9 @@ export function PitchSceneRuntimeBridge() {
         userAgent: navigator.userAgent
       });
 
-      (event.source as Window).postMessage(
+      window.dispatchEvent(new CustomEvent("hitech:dev-console:diagnostics", { detail: payload }));
+
+      replyTarget.postMessage(
         {
           type: SCENE_STUDIO_RESPONSE_DIAGNOSTICS,
           payload

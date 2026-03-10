@@ -1,6 +1,7 @@
+\
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useDevConsole } from "../DevConsoleContext";
 import styles from "../dev-console.module.css";
 
@@ -24,16 +25,71 @@ async function copyText(text: string): Promise<boolean> {
   return false;
 }
 
-export function ConsoleActionsPanel() {
-  const { bindings, diagnostics, runtime, refreshDiagnostics, resetFlags } = useDevConsole();
-  const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
+function normalizeQuery(value: string | null | undefined): string {
+  if (!value) {
+    return "";
+  }
 
-  const canonicalPath = `${diagnostics?.route ?? runtime?.route ?? "/pitch"}${diagnostics?.query ?? runtime?.query ?? ""}`;
+  return value.startsWith("?") ? value : `?${value}`;
+}
+
+export function ConsoleActionsPanel() {
+  const { bindings, bridgeStatus, diagnostics, runtime, refreshDiagnostics, resetFlags } = useDevConsole();
+  const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
+  const [actionState, setActionState] = useState("idle");
+
+  const canonicalPath = useMemo(() => {
+    const route = diagnostics?.route ?? runtime?.route ?? "/pitch";
+    const query = diagnostics?.query ?? runtime?.query ?? "";
+    return `${route}${normalizeQuery(query)}`;
+  }, [diagnostics?.query, diagnostics?.route, runtime?.query, runtime?.route]);
+
+  const actionPayload = useMemo(
+    () => ({
+      canonicalPath,
+      sceneId: bindings.sceneStudio?.scene?.id ?? null,
+      profile: diagnostics?.resolved.profile ?? runtime?.profile ?? null,
+      enabledLayerIds: diagnostics?.enabledLayerIds ?? runtime?.enabledLayerIds ?? [],
+      bridgeStatus
+    }),
+    [bindings.sceneStudio?.scene?.id, bridgeStatus, canonicalPath, diagnostics, runtime]
+  );
+
+  const flash = (value: string) => {
+    setActionState(value);
+    if (typeof window !== "undefined") {
+      window.setTimeout(() => setActionState("idle"), 1400);
+    }
+  };
 
   const handleCopy = async () => {
     const ok = await copyText(canonicalPath);
     setCopyState(ok ? "copied" : "failed");
-    window.setTimeout(() => setCopyState("idle"), 1200);
+    if (typeof window !== "undefined") {
+      window.setTimeout(() => setCopyState("idle"), 1200);
+    }
+  };
+
+  const handleSnapshot = () => {
+    emit("hitech:dev-console:snapshot", {
+      ...actionPayload,
+      requestedAt: new Date().toISOString()
+    });
+    flash("snapshot emitted");
+  };
+
+  const handleOpenScene = () => {
+    emit("hitech:dev-console:open-scene", actionPayload);
+    flash("open scene emitted");
+  };
+
+  const handleValidateScene = () => {
+    emit("hitech:dev-console:validate-scene", {
+      ...actionPayload,
+      requestedAt: new Date().toISOString()
+    });
+    const ok = refreshDiagnostics();
+    flash(ok ? "validation requested" : "bridge unavailable");
   };
 
   return (
@@ -43,6 +99,7 @@ export function ConsoleActionsPanel() {
         <div className={cls("cardHint")}>
           Small but useful emitters. Enough muscle to refresh the console, reset state, and throw signals that future tools can subscribe to.
         </div>
+        {actionState !== "idle" ? <div className={cls("cardHint")}>Last action: {actionState}</div> : null}
 
         <div className={cls("topBarActions")}>
           <button type="button" className={cls("button")} onClick={() => refreshDiagnostics()}>
@@ -60,13 +117,13 @@ export function ConsoleActionsPanel() {
         </div>
 
         <div className={cls("topBarActions")}>
-          <button type="button" className={cls("button")} onClick={() => emit("hitech:dev-console:snapshot", { canonicalPath })}>
+          <button type="button" className={cls("button")} onClick={() => handleSnapshot()}>
             Emit Snapshot Event
           </button>
-          <button type="button" className={cls("button")} onClick={() => emit("hitech:dev-console:open-scene", { canonicalPath })}>
+          <button type="button" className={cls("button")} onClick={() => handleOpenScene()}>
             Emit Open Scene
           </button>
-          <button type="button" className={cls("button")} onClick={() => emit("hitech:dev-console:validate-scene", { canonicalPath })}>
+          <button type="button" className={cls("button")} onClick={() => handleValidateScene()}>
             Emit Validate Scene
           </button>
         </div>
@@ -76,16 +133,7 @@ export function ConsoleActionsPanel() {
         <div className={cls("cardTitle")}>Action payload</div>
         <div className={cls("cardHint")}>The console should be a command deck, not a museum. These are the low-friction packets it can ship right now.</div>
         <pre className={cls("codeBox")}>
-{JSON.stringify(
-  {
-    canonicalPath,
-    sceneId: bindings.sceneStudio?.scene?.id ?? null,
-    profile: diagnostics?.resolved.profile ?? runtime?.profile ?? null,
-    enabledLayerIds: diagnostics?.enabledLayerIds ?? runtime?.enabledLayerIds ?? []
-  },
-  null,
-  2
-)}
+{JSON.stringify(actionPayload, null, 2)}
         </pre>
       </section>
     </div>

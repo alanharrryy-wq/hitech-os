@@ -407,12 +407,14 @@ def main(argv: List[str]) -> int:
     build(cfg)
     return 0
 
+def _running_in_ipykernel() -> bool:
+    try:
+        from IPython import get_ipython
+        ip = get_ipython()
+        return ip is not None and "IPKernelApp" in ip.config
+    except Exception:
+        return False
+
 if __name__ == "__main__":
-    raise SystemExit(main(sys.argv[1:]))
-# %%
-def run_jupyter(root=r"F:\repos\hitech-os"):
-    return main([
-        "--root", root,
-        "--hash", "head",
-        "--hash-head-bytes", "1048576",
-    ])
+    argv = [] if _running_in_ipykernel() else sys.argv[1:]
+    raise SystemExit(main(argv))

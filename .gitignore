@@ -154,3 +154,11 @@ tools/**/logs/**
 *.restorecheck_*
 _dev_console_zips/
 tools/ui_map/_logs/*.zip
+
+# Agent factory temp bundles/logs/backups
+.agents/*.zip
+.agents/_merge_backups/
+.agents/_merge_logs/
+.agents/_rebuild_logs/
+.agents/agents_chatgpt/
+.agents/_runs/
