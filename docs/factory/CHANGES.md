@@ -1,5 +1,79 @@
 # Factory Contract Changes
 
+## 2026-03-11 - Graph Subsystem Hardening and Normalization Follow-up
+
+### Added
+
+- Canonical enum normalization across graph-analysis schemas:
+  - shared reason-code vocabulary
+  - normalized risk-level ordering (`NONE`..`CRITICAL`)
+  - normalized protection-level model with legacy aliases
+- Semantic compatibility metadata required in all graph-analysis artifacts:
+  - `schema_family`
+  - `compatibility_mode`
+  - `minimum_reader_version`
+  - `breaking_change`
+- Provenance and lineage normalization:
+  - generator invocation/source-input structure
+  - repository comparison provenance
+  - snapshot lineage object
+- Structured blocker/anomaly/dependency-basis models in canonical JSON.
+- Structured dispatch decision rationale schema.
+- Vocabulary hardening in `tools/codex/contracts/factory/vocabulary.json`.
+
+### Updated
+
+- Graph-analysis schema files tightened with strict identity and compatibility fields.
+- Runtime scaffold payloads in `tools/codex/factory/contracts.py` updated to satisfy hardened schemas.
+- Kernel and factory docs updated for semver governance, canonical JSON precedence, and compatibility rules.
+
+### Contract Impact
+
+- Canonical graph-analysis artifacts now require richer identity/provenance/compatibility metadata.
+- Dispatch and impact artifacts now enforce typed rationale/blocker/dependency structures.
+- Compatibility between canonical and legacy worker naming is explicit and schema-governed.
+
+## 2026-03-11 - Graph Analysis and Impact-Aware Planning Formalization
+
+### Added
+
+- Law docs:
+  - `docs/codex-kernel/docs/35_ARCHITECTURAL_GRAVITY.md`
+  - `docs/factory/ARCHITECTURAL_GRAVITY_POLICY.md`
+- New canonical schemas:
+  - `tools/codex/schemas/gravity_report.schema.json`
+  - `tools/codex/schemas/protected_nodes.schema.json`
+  - `tools/codex/schemas/impact_cone_report.schema.json`
+  - `tools/codex/schemas/dependency_diff.schema.json`
+  - `tools/codex/schemas/dispatch_recommendations.schema.json`
+
+### Updated
+
+- Contract registry mapping in:
+  - `tools/codex/contracts/factory/contracts_registry.json`
+- Runtime schema index in:
+  - `tools/codex/factory/schemas.py`
+- Integrator required artifact set and schema validation wiring in:
+  - `tools/codex/factory/contracts.py`
+  - `tools/codex/factory/factory.config.json`
+- Kernel law docs:
+  - `docs/codex-kernel/docs/INDEX.md`
+  - `docs/codex-kernel/docs/30_OUTPUT_CONTRACT.md`
+  - `docs/codex-kernel/docs/50_INTEGRATION_RULES.md`
+- Factory docs:
+  - `docs/factory/INDEX.md`
+  - `docs/factory/CONTRACT.md`
+  - `docs/factory/ARCHITECTURE.md`
+  - `docs/factory/CONTRACTS_REGISTRY.md`
+  - `docs/factory/ADD_CONTRACTS.md`
+
+### Contract Impact
+
+- Z_aggregator now has mandatory graph-analysis artifacts as part of completion criteria.
+- JSON graph-analysis artifacts are canonical and schema-validated.
+- Protected-node mutation protocol is explicitly enforced as blockable policy.
+- Compatibility between canonical planning IDs and legacy runtime IDs is explicit and documented.
+
 ## 2026-03-01 - Worker Closeout + Auto-Heal Rules
 
 ### Added

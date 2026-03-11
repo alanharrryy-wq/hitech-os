@@ -74,6 +74,13 @@ def default_factory_config() -> dict[str, Any]:
                 "DIFF.patch",
                 "MERGE_PLAN.md",
                 "LOGS/INDEX.json",
+                "GRAVITY_REPORT.json",
+                "PROTECTED_NODES.json",
+                "IMPACT_CONE_REPORT.json",
+                "DEPENDENCY_DIFF.json",
+                "DISPATCH_RECOMMENDATIONS.json",
+                "GRAVITY_SUMMARY.md",
+                "DISPATCH_RECOMMENDATIONS.md",
             ],
             "allowlist_globs": {
                 "A_core": ["apps/**", "packages/**", "docs/**"],

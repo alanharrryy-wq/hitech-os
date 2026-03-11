@@ -16,3 +16,15 @@
 - Run ledger tracks all runs.
 - Z watch/ledger visibility is enabled by default.
 
+## Graph-Analysis Subsystem
+
+Z_aggregator owns publication of:
+
+- `GRAVITY_REPORT.json`
+- `PROTECTED_NODES.json`
+- `IMPACT_CONE_REPORT.json`
+- `DEPENDENCY_DIFF.json`
+- `DISPATCH_RECOMMENDATIONS.json`
+
+Dispatch output remains advisory-by-default for next iteration planning.
+

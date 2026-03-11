@@ -18,6 +18,11 @@ SCHEMA_INDEX: dict[str, str] = {
     "log_index": "log_index.schema.json",
     "contracts_registry": "contracts_registry.schema.json",
     "factory_config": "factory_config.schema.json",
+    "gravity_report": "gravity_report.schema.json",
+    "protected_nodes": "protected_nodes.schema.json",
+    "impact_cone_report": "impact_cone_report.schema.json",
+    "dependency_diff": "dependency_diff.schema.json",
+    "dispatch_recommendations": "dispatch_recommendations.schema.json",
 }
 
 

@@ -17,6 +17,9 @@
     "All feature flags default to false.",
     "Deterministic ordering is required for all JSON outputs.",
     "Z_aggregator merges and validates only; no feature invention.",
+    "Graph-analysis artifacts are required Z_aggregator outputs and JSON artifacts are canonical.",
+    "Graph-analysis schemas use semantic schema_version and explicit compatibility metadata.",
+    "Canonical worker IDs are supported with explicit legacy aliases for compatibility.",
     "C_features is the default visual baseline owner.",
     "Worker closeout artifacts are auto-generated and repaired when possible."
   ],
@@ -26,7 +29,14 @@
     "FILES_CHANGED.json",
     "DIFF.patch",
     "MERGE_PLAN.md",
-    "LOGS/INDEX.json"
+    "LOGS/INDEX.json",
+    "GRAVITY_REPORT.json",
+    "PROTECTED_NODES.json",
+    "IMPACT_CONE_REPORT.json",
+    "DEPENDENCY_DIFF.json",
+    "DISPATCH_RECOMMENDATIONS.json",
+    "GRAVITY_SUMMARY.md",
+    "DISPATCH_RECOMMENDATIONS.md"
   ],
   "required_worker_files": [
     "STATUS.json",
@@ -51,7 +61,12 @@
     "run_ledger_event": "tools/codex/schemas/run_ledger_event.schema.json",
     "run_manifest": "tools/codex/schemas/run_manifest.schema.json",
     "scope_lock": "tools/codex/schemas/scope_lock.schema.json",
-    "worker_bundle_status": "tools/codex/schemas/worker_bundle_status.schema.json"
+    "worker_bundle_status": "tools/codex/schemas/worker_bundle_status.schema.json",
+    "gravity_report": "tools/codex/schemas/gravity_report.schema.json",
+    "protected_nodes": "tools/codex/schemas/protected_nodes.schema.json",
+    "impact_cone_report": "tools/codex/schemas/impact_cone_report.schema.json",
+    "dependency_diff": "tools/codex/schemas/dependency_diff.schema.json",
+    "dispatch_recommendations": "tools/codex/schemas/dispatch_recommendations.schema.json"
   },
   "templates": {
     "handoff_note": "tools/codex/templates/factory/handoff_note.template.json",

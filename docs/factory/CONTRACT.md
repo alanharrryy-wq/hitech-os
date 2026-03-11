@@ -108,6 +108,13 @@ Required integrator files:
 - `MERGE_PLAN.md`
 - `APPLY_INSTRUCTIONS.md`
 - `LOGS/INDEX.json`
+- `GRAVITY_REPORT.json`
+- `PROTECTED_NODES.json`
+- `IMPACT_CONE_REPORT.json`
+- `DEPENDENCY_DIFF.json`
+- `DISPATCH_RECOMMENDATIONS.json`
+- `GRAVITY_SUMMARY.md`
+- `DISPATCH_RECOMMENDATIONS.md`
 
 Integrator status JSON:
 
@@ -118,6 +125,29 @@ Integrator status JSON:
   - `BLOCKED`
   - `WARN`
   - `FAIL`
+
+Graph-analysis canonicality:
+
+- JSON graph-analysis artifacts are canonical and schema-validated.
+- Markdown mirrors summarize canonical JSON and must not contradict it.
+
+Compatibility metadata required in graph-analysis JSON:
+
+- `schema_family`
+- `compatibility_mode`
+- `minimum_reader_version`
+- `breaking_change`
+
+SemVer governance:
+
+- PATCH: non-breaking/non-semantic
+- MINOR: additive optional structures
+- MAJOR: required-field or semantic break
+
+Protected-node policy:
+
+- Protected-node mutation requires declaration + impact cone + dependency diff + D_validation review + Z_aggregator approval.
+- Missing protocol evidence => `BLOCKED`.
 
 ## Status Evaluation Contract
 

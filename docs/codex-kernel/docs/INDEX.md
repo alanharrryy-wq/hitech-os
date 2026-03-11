@@ -10,7 +10,8 @@ RULE: If it’s not linked here, it doesn’t exist.
 2. **10_ROLES.md** — what each agent does (and must NOT do)
 3. **20_SCOPE_RULES.md** — how to slice ANY project into A/B/C/D
 4. **30_OUTPUT_CONTRACT.md** — what artifacts must be produced (evidence > vibes)
-5. **50_INTEGRATION_RULES.md** — how Z merges, repairs, validates, reports
+5. **35_ARCHITECTURAL_GRAVITY.md** — graph-analysis law and protected-node protocol
+6. **50_INTEGRATION_RULES.md** — how Z_aggregator merges, repairs, validates, reports
 
 ## 🧱 Core Kernel Docs
 

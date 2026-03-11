@@ -101,7 +101,20 @@ Must include:
 - `MERGE_PLAN.md`
 - `FILES_CHANGED.json`
 - `DIFF.patch`
+- `LOGS/INDEX.json`
+- `GRAVITY_REPORT.json`
+- `PROTECTED_NODES.json`
+- `IMPACT_CONE_REPORT.json`
+- `DEPENDENCY_DIFF.json`
+- `DISPATCH_RECOMMENDATIONS.json`
+- `GRAVITY_SUMMARY.md`
+- `DISPATCH_RECOMMENDATIONS.md`
 - validation logs
+
+Canonicality rule:
+
+- Graph-analysis JSON artifacts are canonical.
+- Markdown mirrors summarize JSON and must not contradict canonical JSON.
 
 ---
 

@@ -13,6 +13,7 @@
 - `ARCHITECTURE.md` - A/B/C/D/Z model
 - `COMMUNICATION_PROTOCOL.md` - bundle artifacts and expectations
 - `CONTRACTS_REGISTRY.md` - schemas/contracts and how tooling consumes them
+- `ARCHITECTURAL_GRAVITY_POLICY.md` - graph-analysis policy and protected-node protocol
 - `ROLE_HARDENING.md` - role boundaries and anti-patterns
 - `WORKTREE_OPERATIONS.md` - isolation commands and branch naming
 - `DETERMINISM_POLICY.md` - stable-output rules

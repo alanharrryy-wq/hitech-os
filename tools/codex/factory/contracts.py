@@ -47,6 +47,21 @@ INTEGRATOR_REQUIRED_FILES: tuple[str, ...] = (
     "DIFF.patch",
     "MERGE_PLAN.md",
     "LOGS/INDEX.json",
+    "GRAVITY_REPORT.json",
+    "PROTECTED_NODES.json",
+    "IMPACT_CONE_REPORT.json",
+    "DEPENDENCY_DIFF.json",
+    "DISPATCH_RECOMMENDATIONS.json",
+    "GRAVITY_SUMMARY.md",
+    "DISPATCH_RECOMMENDATIONS.md",
+)
+
+INTEGRATOR_GRAPH_SCHEMA_FILES: tuple[tuple[str, str], ...] = (
+    ("GRAVITY_REPORT.json", "gravity_report"),
+    ("PROTECTED_NODES.json", "protected_nodes"),
+    ("IMPACT_CONE_REPORT.json", "impact_cone_report"),
+    ("DEPENDENCY_DIFF.json", "dependency_diff"),
+    ("DISPATCH_RECOMMENDATIONS.json", "dispatch_recommendations"),
 )
 
 EVOLUTIONARY_REQUIRED_FILES: tuple[str, ...] = (
@@ -143,6 +158,324 @@ def _default_log_index(run_id: str, owner: str) -> dict[str, Any]:
         "owner": owner,
         "logs": [],
     }
+
+
+def _default_graph_repository() -> dict[str, Any]:
+    return {
+        "repo_root": ".",
+        "base_ref": "HEAD",
+        "head_ref": "HEAD",
+        "commit_sha": "0000000",
+        "comparison_basis": "working_tree",
+    }
+
+
+def _default_snapshot_lineage() -> dict[str, Any]:
+    return {
+        "snapshot_id": "SNAP_NONE",
+        "previous_snapshot_id": None,
+        "baseline_snapshot_id": None,
+        "lineage_mode": "NOT_AVAILABLE",
+        "graph_build_id": "GRAPH_BUILD_NONE",
+    }
+
+
+def _default_dependency_basis() -> dict[str, Any]:
+    return {
+        "upstream_nodes": [],
+        "downstream_nodes": [],
+        "dependency_count": 0,
+        "transitive_dependency_count": 0,
+        "graph_scope_reference": "repository",
+    }
+
+
+def _default_scope_ref(scope_id: str, owner: str) -> dict[str, Any]:
+    return {
+        "scope_id": scope_id,
+        "scope_type": "workspace",
+        "scope_path": ".",
+        "owner_worker": owner,
+        "parent_scope_id": None,
+        "internal_only": True,
+    }
+
+
+def _base_graph_artifact(*, artifact_type: str, run_id: str, worker: str) -> dict[str, Any]:
+    return {
+        "schema_version": "2.0.0",
+        "schema_family": "HITECH_GRAPH_ANALYSIS",
+        "compatibility_mode": "LEGACY_ALIAS_ACCEPTED",
+        "minimum_reader_version": "1.0.0",
+        "breaking_change": False,
+        "artifact_type": artifact_type,
+        "artifact_id": f"{artifact_type}:{run_id}:placeholder",
+        "artifact_status": "INCOMPLETE",
+        "run_id": run_id,
+        "generated_at_utc": "1970-01-01T00:00:00Z",
+        "generator": {
+            "actor": worker,
+            "tool_name": "tools.codex.factory",
+            "tool_version": "2.0.0",
+            "execution_mode": "integration",
+            "invocation_context": {
+                "run_phase": "scaffold",
+                "command": "python -m tools.codex.factory.cli scaffold",
+                "working_directory": ".",
+                "environment_keys": [],
+            },
+            "source_inputs": [
+                {
+                    "input_type": "RUN_BUNDLE",
+                    "input_id": "SCAFFOLD_INPUT",
+                    "input_path": "tools/codex/runs",
+                    "input_sha256": None,
+                    "input_role": "placeholder",
+                }
+            ],
+        },
+        "repository": _default_graph_repository(),
+        "snapshot_lineage": _default_snapshot_lineage(),
+        "notes": [],
+    }
+
+
+def _default_gravity_report(run_id: str, worker: str) -> dict[str, Any]:
+    base = _base_graph_artifact(artifact_type="GRAVITY_REPORT", run_id=run_id, worker=worker)
+    base.update(
+        {
+            "policy": {
+                "policy_name": "default_arch_gravity",
+                "policy_version": "2.0.0",
+                "threshold_mode": "hybrid",
+                "thresholds": {
+                    "score_scale": "0_to_100",
+                    "level_bands": [
+                        {
+                            "gravity_level": "LOW",
+                            "min_inclusive": 0,
+                            "max_exclusive": 25,
+                            "rationale": "low coupling and limited blast radius",
+                        },
+                        {
+                            "gravity_level": "MEDIUM",
+                            "min_inclusive": 25,
+                            "max_exclusive": 50,
+                            "rationale": "moderate coupling and impact",
+                        },
+                        {
+                            "gravity_level": "HIGH",
+                            "min_inclusive": 50,
+                            "max_exclusive": 80,
+                            "rationale": "high coupling and validation burden",
+                        },
+                        {
+                            "gravity_level": "PROTECTED",
+                            "min_inclusive": 80,
+                            "max_exclusive": None,
+                            "rationale": "protected-node policy threshold",
+                        },
+                    ],
+                    "protected_conditions": ["PROTECTED_POLICY_RULE"],
+                },
+                "protected_node_rule": "Protected nodes require explicit protocol before mutation.",
+                "scoring_notes": [],
+            },
+            "source_graph": {
+                "graph_scope": "repository",
+                "graph_artifact_root": "tools/codex/runs",
+                "internal_only": True,
+                "total_graph_files": 0,
+                "total_nodes_seen": 0,
+                "total_edges_seen": 0,
+            },
+            "summary": {
+                "node_count": 0,
+                "edge_count": 0,
+                "scope_count": 0,
+                "protected_count": 0,
+                "high_count": 0,
+                "medium_count": 0,
+                "low_count": 0,
+                "hotspot_count": 0,
+                "cycle_count": 0,
+                "orphan_count": 0,
+                "external_dependency_count": 0,
+                "highest_risk_level": "NONE",
+            },
+            "nodes": [],
+            "hotspots": [],
+            "anomalies": {
+                "cycles": [],
+                "orphan_nodes": [],
+                "unstable_hubs": [],
+                "missing_owner_nodes": [],
+                "external_drift": [],
+                "classification_regressions": [],
+                "ownership_mismatches": [],
+                "contract_gaps": [],
+            },
+        }
+    )
+    return base
+
+
+def _default_protected_nodes(run_id: str, worker: str) -> dict[str, Any]:
+    protocol_steps = [
+        "DECLARE_PROTECTED_CHANGE",
+        "GENERATE_IMPACT_CONE_REPORT",
+        "GENERATE_DEPENDENCY_DIFF",
+        "REQUEST_D_VALIDATION_REVIEW",
+        "REQUEST_Z_APPROVAL",
+        "ATTACH_EVIDENCE_TO_FINAL_REPORT",
+    ]
+    base = _base_graph_artifact(artifact_type="PROTECTED_NODES", run_id=run_id, worker=worker)
+    base.update(
+        {
+            "policy": {
+                "rule_name": "protected_node_protocol",
+                "rule_version": "2.0.0",
+                "default_block_result": "BLOCKED",
+                "required_protocol_steps": protocol_steps,
+                "explicit_authorization_required": True,
+                "unauthorized_mutation_status": "BLOCKED",
+            },
+            "summary": {
+                "protected_count": 0,
+                "watched_count": 0,
+                "guarded_count": 0,
+                "protected_level_count": 0,
+                "locked_count": 0,
+                "exemption_count": 0,
+                "highest_risk_level": "NONE",
+            },
+            "protected_nodes": [],
+            "exemptions": [],
+        }
+    )
+    return base
+
+
+def _default_impact_cone_report(run_id: str, worker: str) -> dict[str, Any]:
+    base = _base_graph_artifact(artifact_type="IMPACT_CONE_REPORT", run_id=run_id, worker=worker)
+    base.update(
+        {
+            "summary": {
+                "changed_entity_count": 0,
+                "directly_affected_count": 0,
+                "transitively_affected_count": 0,
+                "affected_scope_count": 0,
+                "affected_contract_count": 0,
+                "affected_test_count": 0,
+                "protected_entity_count": 0,
+                "highest_risk_entities": [],
+                "highest_risk_level": "NONE",
+            },
+            "changed_entities": [],
+            "aggregate_risk": {
+                "overall_risk_level": "NONE",
+                "reason_codes": ["VALIDATION_GAP"],
+                "rationale": "No changed entities were detected.",
+                "protected_nodes_touched": [],
+                "validation_burden": {
+                    "command_count": 0,
+                    "test_count": 0,
+                    "contract_count": 0,
+                    "estimated_minutes": 0,
+                    "risk_level": "NONE",
+                },
+                "recommended_owner_sequence": ["A_core", "B_tooling", "C_features", "D_validation", "Z_aggregator"],
+            },
+            "validation_targets": {
+                "contracts": [],
+                "tests": [],
+                "commands": [],
+                "smoke_paths": [],
+            },
+        }
+    )
+    return base
+
+
+def _default_dependency_diff(run_id: str, worker: str) -> dict[str, Any]:
+    base = _base_graph_artifact(artifact_type="DEPENDENCY_DIFF", run_id=run_id, worker=worker)
+    base.update(
+        {
+            "comparison": {
+                "baseline_snapshot_id": "SNAP_NONE",
+                "current_snapshot_id": "SNAP_NONE",
+                "baseline_run_id": run_id,
+                "current_run_id": run_id,
+                "baseline_ref": "HEAD",
+                "current_ref": "HEAD",
+                "comparable": True,
+                "incompatibility_reason": "",
+            },
+            "summary": {
+                "node_add_count": 0,
+                "node_remove_count": 0,
+                "edge_add_count": 0,
+                "edge_remove_count": 0,
+                "classification_change_count": 0,
+                "protected_add_count": 0,
+                "protected_remove_count": 0,
+                "cycle_add_count": 0,
+                "cycle_remove_count": 0,
+                "ownership_change_count": 0,
+            },
+            "nodes_added": [],
+            "nodes_removed": [],
+            "edges_added": [],
+            "edges_removed": [],
+            "classification_changes": [],
+            "cycle_changes": [],
+            "ownership_changes": [],
+            "contract_changes": [],
+        }
+    )
+    return base
+
+
+def _default_dispatch_recommendations(run_id: str, worker: str) -> dict[str, Any]:
+    base = _base_graph_artifact(artifact_type="DISPATCH_RECOMMENDATIONS", run_id=run_id, worker=worker)
+    base.update(
+        {
+            "planning_scope": {
+                "planning_mode": "next_iteration",
+                "based_on_run_id": run_id,
+                "based_on_snapshot_id": "SNAP_NONE",
+                "respects_current_run_ownership": True,
+                "advisory_only": True,
+                "policy_version": "2.0.0",
+            },
+            "summary": {
+                "slice_count": 0,
+                "protected_slice_count": 0,
+                "blocked_slice_count": 0,
+                "deferred_slice_count": 0,
+                "high_risk_slice_count": 0,
+                "recommended_execution_order": [
+                    "A_core",
+                    "B_tooling",
+                    "C_features",
+                    "D_validation",
+                    "Z_aggregator",
+                ],
+                "highest_risk_level": "NONE",
+            },
+            "worker_queues": {
+                "A_core": [],
+                "B_tooling": [],
+                "C_features": [],
+                "D_validation": [],
+                "Z_aggregator": [],
+            },
+            "recommended_slices": [],
+            "deferred_work": [],
+            "blocked_work": [],
+        }
+    )
+    return base
 
 
 def scaffold_worker_bundle(run_id: str, worker: str) -> dict[str, Any]:
@@ -247,6 +580,11 @@ def scaffold_integrator_bundle(run_id: str) -> dict[str, Any]:
             "noop_ack": worker,
         },
         "LOGS/INDEX.json": _default_log_index(run_id, worker),
+        "GRAVITY_REPORT.json": _default_gravity_report(run_id, worker),
+        "PROTECTED_NODES.json": _default_protected_nodes(run_id, worker),
+        "IMPACT_CONE_REPORT.json": _default_impact_cone_report(run_id, worker),
+        "DEPENDENCY_DIFF.json": _default_dependency_diff(run_id, worker),
+        "DISPATCH_RECOMMENDATIONS.json": _default_dispatch_recommendations(run_id, worker),
     }
 
     for name, payload in json_files.items():
@@ -258,6 +596,8 @@ def scaffold_integrator_bundle(run_id: str) -> dict[str, Any]:
     text_files = {
         "FINAL_REPORT.txt": "# Final Report\n\nPending integration.\n",
         "MERGE_PLAN.md": "# Merge Plan\n\nPending integration.\n",
+        "GRAVITY_SUMMARY.md": "# Gravity Summary\n\nPending graph analysis.\n",
+        "DISPATCH_RECOMMENDATIONS.md": "# Dispatch Recommendations\n\nPending slice planning.\n",
         "DIFF.patch": "",
     }
     for name, payload in text_files.items():
@@ -939,6 +1279,12 @@ def validate_bundle_schemas(run_id: str, worker: str) -> list[str]:
             errors.extend([f"SCOPE_LOCK.json: {item}" for item in validate_payload("scope_lock", read_json(scope_lock_path))])
         if handoff_path.exists():
             errors.extend([f"HANDOFF_NOTE.json: {item}" for item in validate_payload("handoff_note", read_json(handoff_path))])
+    else:
+        for filename, schema_name in INTEGRATOR_GRAPH_SCHEMA_FILES:
+            payload_path = target / filename
+            if payload_path.exists():
+                schema_errors = validate_payload(schema_name, read_json(payload_path))
+                errors.extend([f"{filename}: {item}" for item in schema_errors])
 
     log_index_path = target / "LOGS" / "INDEX.json"
     if log_index_path.exists():
