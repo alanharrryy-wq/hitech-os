@@ -132,7 +132,7 @@ _HTML = """<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Git Sentinel Dashboard</title>
+  <title>Git Sentinel Control Deck</title>
   <style>
     :root {
       --bg: #060912;
