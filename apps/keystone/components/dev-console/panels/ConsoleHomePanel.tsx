@@ -32,7 +32,8 @@ function formatTimestamp(value: string | null): string {
 export function ConsoleHomePanel() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { bindings, bridgeStatus, runtime, diagnostics, lastDiagnosticsAt, refreshDiagnostics } = useDevConsole();
+  const { bindings, bridgeStatus, bridgeMeta, runtime, diagnostics, lastDiagnosticsAt, refreshDiagnostics, lastActionResult } =
+    useDevConsole();
 
   const query = searchParams.toString();
   const currentRoute = `${pathname ?? "/"}${query ? `?${query}` : ""}`;
@@ -81,6 +82,10 @@ export function ConsoleHomePanel() {
             <div className={cls("kvValue")}>{bindingReady}</div>
           </div>
           <div className={cls("kvItem")}>
+            <div className={cls("kvLabel")}>Active scene id</div>
+            <div className={cls("kvValue")}>{bindings.sceneStudio?.scene?.id ?? "none"}</div>
+          </div>
+          <div className={cls("kvItem")}>
             <div className={cls("kvLabel")}>Scene ready</div>
             <div className={cls("kvValue")}>{runtime?.sceneReady ?? "unknown"}</div>
           </div>
@@ -122,17 +127,30 @@ export function ConsoleHomePanel() {
             <div className={cls("kvLabel")}>Missing DOM attrs</div>
             <div className={cls("kvValue")}>{formatList(diagnostics?.missingDataAttributes ?? [], "none")}</div>
           </div>
+          <div className={cls("kvItem")}>
+            <div className={cls("kvLabel")}>Diagnostics age</div>
+            <div className={cls("kvValue")}>
+              {bridgeMeta.diagnosticsAgeMs === null ? "n/a" : `${Math.max(0, Math.round(bridgeMeta.diagnosticsAgeMs / 1000))}s`}
+            </div>
+          </div>
+          <div className={cls("kvItem")}>
+            <div className={cls("kvLabel")}>Stale reason</div>
+            <div className={cls("kvValue")}>{bridgeMeta.staleReason ?? "none"}</div>
+          </div>
         </div>
 
         <pre className={cls("codeBox")}>
 {[
   "dev-console.status",
   `bridge=${bridgeStatus}`,
+  `scene=${bindings.sceneStudio?.scene?.id ?? "none"}`,
   `route=${currentRoute}`,
   `binding=${bindingReady}`,
   `ready=${runtime?.sceneReady ?? "unknown"}`,
   `enabled=[${(runtime?.enabledLayerIds ?? []).join(", ")}]`,
-  `missing=[${(diagnostics?.missingDataAttributes ?? []).join(", ")}]`
+  `missing=[${(diagnostics?.missingDataAttributes ?? []).join(", ")}]`,
+  `staleReason=${bridgeMeta.staleReason ?? "none"}`,
+  `lastAction=${lastActionResult ? `${lastActionResult.action}:${lastActionResult.ok ? "ok" : "fail"}` : "none"}`
 ].join("\n")}
         </pre>
       </section>

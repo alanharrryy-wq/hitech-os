@@ -1,45 +1,17 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { FloatingWindow } from "../../app/dev/scene-studio/FloatingWindow";
-import {
-  FLOATING_WINDOW_DRAG_HANDLE_ATTR,
-  FLOATING_WINDOW_NO_DRAG_ATTR
-} from "../../app/dev/scene-studio/floating-window-drag-policy";
 import { useDevConsole } from "./DevConsoleContext";
 import { buildDevConsoleRegistry } from "./DevConsoleRegistry";
 import type { DevConsoleBridgeStatus, DevConsoleToolId } from "./types";
-import styles from "./dev-console.module.css";
-
-const cls = (name: string) => styles[name] ?? "";
-const ACTIVE_TOOL_STORAGE_KEY = "keystone.devConsole.activeTool";
-
-let __HITECH_DEV_CONSOLE_SINGLETON__ = false;
-
-function readActiveTool(): DevConsoleToolId {
-  if (typeof window === "undefined") return "home";
-
-  try {
-    const raw = localStorage.getItem(ACTIVE_TOOL_STORAGE_KEY);
-    switch (raw) {
-      case "home":
-      case "scene":
-      case "layers":
-      case "overlay":
-      case "share-look":
-      case "runtime":
-      case "actions":
-      case "flags":
-      case "perf":
-      case "layouts":
-        return raw;
-      default:
-        return "home";
-    }
-  } catch {
-    return "home";
-  }
-}
+import {
+  CONSOLE_ACTIVE_TOOL_STORAGE_KEY,
+  readStoredConsoleTool,
+  resetConsoleWindowLayout,
+  persistConsoleTool
+} from "./core/console-core-layout";
+import { useConsoleCoreSingleton } from "./core/console-core-lifecycle";
+import { ConsoleCoreShell } from "./core/console-core-shell";
 
 function bridgeTone(status: DevConsoleBridgeStatus) {
   switch (status) {
@@ -57,23 +29,7 @@ function bridgeTone(status: DevConsoleBridgeStatus) {
 }
 
 export function DevConsole() {
-  const [allowed, setAllowed] = useState(false);
-
-  useEffect(() => {
-    if (__HITECH_DEV_CONSOLE_SINGLETON__) {
-      console.warn("HITECH DevConsole: prevented duplicate mount");
-      setAllowed(false);
-      return;
-    }
-
-    __HITECH_DEV_CONSOLE_SINGLETON__ = true;
-    setAllowed(true);
-
-    return () => {
-      __HITECH_DEV_CONSOLE_SINGLETON__ = false;
-    };
-  }, []);
-
+  const allowed = useConsoleCoreSingleton("dev-console");
   if (!allowed) {
     return null;
   }
@@ -82,11 +38,21 @@ export function DevConsole() {
 }
 
 function ActualDevConsole() {
-  const { bindings, flags, setFlags, runtime, bridgeStatus, lastDiagnosticsAt, refreshDiagnostics } = useDevConsole();
+  const {
+    bindings,
+    flags,
+    setFlags,
+    runtime,
+    bridgeStatus,
+    bridgeMeta,
+    lastDiagnosticsAt,
+    refreshDiagnostics,
+    replaceSceneLookModel
+  } = useDevConsole();
   const [activeTool, setActiveTool] = useState<DevConsoleToolId>("home");
 
   useEffect(() => {
-    setActiveTool(readActiveTool());
+    setActiveTool(readStoredConsoleTool("home"));
   }, []);
 
   const registry = useMemo(
@@ -106,37 +72,18 @@ function ActualDevConsole() {
     return null;
   }
 
-  const dragHandleAttr = { [FLOATING_WINDOW_DRAG_HANDLE_ATTR]: "true" } as const;
-  const noDragAttr = { [FLOATING_WINDOW_NO_DRAG_ATTR]: "true" } as const;
+  const bridgeBadge = bridgeTone(bridgeStatus);
+  const runtimeSummary = runtime ? `${runtime.route}${runtime.query ? runtime.query : ""}` : "No runtime snapshot yet";
 
-  const persistActiveTool = (tool: DevConsoleToolId) => {
+  const selectTool = (tool: DevConsoleToolId) => {
     setActiveTool(tool);
-
-    try {
-      localStorage.setItem(ACTIVE_TOOL_STORAGE_KEY, tool);
-    } catch {
-      // ignore
-    }
-  };
-
-  const resetConsoleLayout = () => {
-    try {
-      localStorage.removeItem("keystone.floatingWindow.dev-console");
-    } catch {
-      // ignore
-    }
-
-    window.dispatchEvent(
-      new CustomEvent("hitech:floating-window:restore", {
-        detail: { id: "dev-console" }
-      })
-    );
+    persistConsoleTool(tool);
   };
 
   const clearConsoleStorage = () => {
     const keys = [
       "keystone.floatingWindow.dev-console",
-      ACTIVE_TOOL_STORAGE_KEY,
+      CONSOLE_ACTIVE_TOOL_STORAGE_KEY,
       "keystone.devConsole.flags",
       "keystone.devConsole.layoutProfiles"
     ];
@@ -147,7 +94,7 @@ function ActualDevConsole() {
       // ignore
     }
 
-    persistActiveTool("home");
+    selectTool("home");
     setFlags({
       showGrid: false,
       motionEnabled: false,
@@ -155,92 +102,27 @@ function ActualDevConsole() {
       showSafeAreas: false,
       showDebugLabels: false
     });
-
-    window.dispatchEvent(
-      new CustomEvent("hitech:floating-window:restore", {
-        detail: { id: "dev-console" }
-      })
-    );
+    replaceSceneLookModel();
+    resetConsoleWindowLayout("dev-console");
   };
 
-  const bridgeMeta = bridgeTone(bridgeStatus);
-  const runtimeSummary = runtime
-    ? `${runtime.route}${runtime.query ? runtime.query : ""}`
-    : "No runtime snapshot yet";
+  const statusLine = `${runtimeSummary}${lastDiagnosticsAt ? ` · ${lastDiagnosticsAt}` : ""}${
+    bridgeMeta.staleReason ? ` · ${bridgeMeta.staleReason}` : ""
+  }`;
 
   return (
-    <FloatingWindow
-      id="dev-console"
-      title="HITECH Dev Console"
-      defaultPos={{ x: 20, y: 20 }}
-      defaultSize={{ w: 980, h: 760 }}
-      homePos={{ x: 20, y: 20 }}
-      homeSize={{ w: 980, h: 760 }}
-      minSize={{ w: 760, h: 420 }}
-      initialZ={2_100_000_000}
-      headerRight={
-        <div style={{ fontSize: 11, opacity: 0.82, whiteSpace: "nowrap" }}>
-          {runtime?.diagnosticsAvailable ? "Runtime synced" : "Runtime awaiting first snapshot"}
-        </div>
-      }
-    >
-      <div className={cls("root")}>
-        <div className={cls("rail")} {...noDragAttr}>
-          {registry.map((tool) => {
-            const isActive = tool.id === active.id;
-            return (
-              <button
-                key={tool.id}
-                type="button"
-                className={`${cls("railButton")} ${isActive ? cls("railButtonActive") : ""}`}
-                onClick={() => persistActiveTool(tool.id)}
-                title={tool.label}
-              >
-                <span className={cls("railButtonText")}>{tool.shortLabel}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        <div className={cls("main")}>
-          <div className={cls("topBar")} {...dragHandleAttr}>
-            <div className={cls("topBarTitleBlock")}>
-              <div className={cls("topBarTitle")}>{active.label}</div>
-              <div className={cls("topBarDescription")}>{active.description}</div>
-              <div className={cls("cardHint")} title={bridgeMeta.title}>
-                {bridgeMeta.label} · {runtimeSummary}
-                {lastDiagnosticsAt ? ` · ${lastDiagnosticsAt}` : ""}
-              </div>
-            </div>
-
-            <div className={cls("topBarActions")} {...noDragAttr}>
-              <button type="button" className={cls("button")} onClick={() => refreshDiagnostics()}>
-                Refresh Runtime
-              </button>
-
-              <button type="button" className={cls("button")} onClick={resetConsoleLayout}>
-                Reset Position
-              </button>
-
-              <button type="button" className={cls("button")} onClick={() => persistActiveTool("home")}>
-                Go Home
-              </button>
-
-              <button
-                type="button"
-                className={`${cls("button")} ${cls("buttonDanger")}`}
-                onClick={clearConsoleStorage}
-              >
-                Clear Console State
-              </button>
-            </div>
-          </div>
-
-          <div className={cls("content")} {...noDragAttr}>
-            {active.render()}
-          </div>
-        </div>
-      </div>
-    </FloatingWindow>
+    <ConsoleCoreShell
+      registry={registry}
+      activeTool={active}
+      statusLabel={bridgeBadge.label}
+      statusTitle={bridgeMeta.staleReason ? `${bridgeBadge.title}. ${bridgeMeta.staleReason}` : bridgeBadge.title}
+      statusLine={statusLine}
+      diagnosticsLabel={runtime?.diagnosticsAvailable ? "Runtime synced" : "Runtime awaiting first snapshot"}
+      onSelectTool={selectTool}
+      onRefreshRuntime={() => refreshDiagnostics()}
+      onResetPosition={() => resetConsoleWindowLayout("dev-console")}
+      onGoHome={() => selectTool("home")}
+      onClearState={clearConsoleStorage}
+    />
   );
 }

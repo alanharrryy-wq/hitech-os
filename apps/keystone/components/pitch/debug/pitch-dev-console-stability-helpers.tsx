@@ -1,42 +1,29 @@
-\
 "use client";
 
 import { useEffect } from "react";
+import { ALL_LAYERS, type LayerId } from "@hitech/ui-kit";
 import { useOptionalDevConsole } from "../../dev-console/DevConsoleContext";
+import {
+  DEV_CONSOLE_OPEN_SCENE_EVENT,
+  DEV_CONSOLE_SNAPSHOT_EVENT,
+  DEV_CONSOLE_VALIDATE_SCENE_EVENT,
+  buildCanonicalPath,
+  dispatchDevConsoleActionResult,
+  normalizeRoutePath
+} from "../../dev-console/dev-console-events";
+import { registerConsoleEventListener } from "../../dev-console/core/console-core-events";
 
-const HEARTBEAT_MS = 4000;
-const QUICK_GROUPS: Record<string, readonly string[]> = {
-  "STAGE ON": ["stage.haze", "stage.noise", "stage.horizon", "stage.vignette", "stage.scanlines"],
-  "STAGE OFF": ["stage.haze", "stage.noise", "stage.horizon", "stage.vignette", "stage.scanlines"],
-  "CARD ON": ["card.blur", "card.specular", "card.shadowAmbient", "frame.bezel", "card.innerStroke", "card.grain"],
-  "CARD OFF": ["card.blur", "card.specular", "card.shadowAmbient", "frame.bezel", "card.innerStroke", "card.grain"],
-  "INSET ON": ["inset.shadow"],
-  "INSET OFF": ["inset.shadow"],
+const HEARTBEAT_MS = 7000;
+const QUICK_GROUPS: Record<string, readonly LayerId[]> = {
+  "STAGE ON": ALL_LAYERS.filter((id) => id.startsWith("stage.")),
+  "STAGE OFF": ALL_LAYERS.filter((id) => id.startsWith("stage.")),
+  "CARD ON": ALL_LAYERS.filter((id) => id.startsWith("card.")),
+  "CARD OFF": ALL_LAYERS.filter((id) => id.startsWith("card.")),
+  "INSET ON": ALL_LAYERS.filter((id) => id.startsWith("inset.")),
+  "INSET OFF": ALL_LAYERS.filter((id) => id.startsWith("inset.")),
   "MOTION ON": ["motion.enabled"],
   "MOTION OFF": ["motion.enabled"]
 };
-
-function normalizePath(path: string | null | undefined): string {
-  if (!path) {
-    return "/pitch";
-  }
-
-  return path.startsWith("/") ? path : `/${path}`;
-}
-
-function normalizeQuery(query: string | null | undefined): string {
-  if (!query) {
-    return "";
-  }
-
-  return query.startsWith("?") ? query.slice(1) : query;
-}
-
-function buildCanonicalPath(route: string | null | undefined, query: string | null | undefined): string {
-  const normalizedRoute = normalizePath(route);
-  const normalizedQuery = normalizeQuery(query);
-  return normalizedQuery ? `${normalizedRoute}?${normalizedQuery}` : normalizedRoute;
-}
 
 function copyJson(payload: unknown): void {
   const text = JSON.stringify(payload, null, 2);
@@ -62,19 +49,22 @@ function copyJson(payload: unknown): void {
   window.URL.revokeObjectURL(url);
 }
 
-function updateSceneLayers(binding: NonNullable<ReturnType<typeof useOptionalDevConsole>>["bindings"]["sceneStudio"], command: string) {
+function updateSceneLayers(
+  binding: NonNullable<ReturnType<typeof useOptionalDevConsole>>["bindings"]["sceneStudio"],
+  command: string
+): boolean {
   const scene = binding?.scene;
   if (!scene) {
-    return;
+    return false;
   }
 
   const group = QUICK_GROUPS[command];
   if (!group || group.length === 0) {
-    return;
+    return false;
   }
 
   const enable = command.endsWith("ON");
-  const existing = new Set(scene.layers?.layerIds ?? []);
+  const existing = new Set<LayerId>(scene.layers?.layerIds ?? []);
   for (const layerId of group) {
     if (enable) {
       existing.add(layerId);
@@ -84,15 +74,18 @@ function updateSceneLayers(binding: NonNullable<ReturnType<typeof useOptionalDev
   }
 
   const nextMotion = command === "MOTION ON" ? "on" : command === "MOTION OFF" ? "off" : scene.motion;
+  const layerIds = Array.from(existing).sort((left, right) => left.localeCompare(right));
   binding.onChange({
     ...scene,
     motion: nextMotion,
     layers: {
       ...scene.layers,
-      layerIds: Array.from(existing)
+      mode: layerIds.length > 0 ? "list" : "none",
+      layerIds
     },
     updatedAt: new Date().toISOString()
   });
+  return true;
 }
 
 export function PitchDevConsoleStabilityHelpers() {
@@ -111,7 +104,9 @@ export function PitchDevConsoleStabilityHelpers() {
     }, 180);
 
     const heartbeat = window.setInterval(() => {
-      devConsole.refreshDiagnostics();
+      if (devConsole.bridgeStatus !== "live") {
+        devConsole.refreshDiagnostics();
+      }
     }, HEARTBEAT_MS);
 
     return () => {
@@ -148,6 +143,7 @@ export function PitchDevConsoleStabilityHelpers() {
 
     const handleSnapshot = (event: Event) => {
       const detail = (event as CustomEvent<Record<string, unknown> | null>).detail ?? {};
+      const requestId = typeof detail["requestId"] === "string" ? detail["requestId"] : undefined;
       copyJson({
         generatedAt: new Date().toISOString(),
         canonicalPath: buildCanonicalPath(devConsole.diagnostics?.route ?? devConsole.runtime?.route, devConsole.diagnostics?.query ?? devConsole.runtime?.query),
@@ -157,27 +153,64 @@ export function PitchDevConsoleStabilityHelpers() {
         runtime: devConsole.runtime,
         detail
       });
+      const result = {
+        action: "snapshot",
+        ok: true,
+        message: "Snapshot exported",
+        at: new Date().toISOString(),
+        metadata: {
+          sceneId: devConsole.bindings.sceneStudio?.scene?.id ?? null
+        }
+      } as const;
+      dispatchDevConsoleActionResult(requestId ? { ...result, requestId } : result);
     };
 
     const handleOpenScene = (event: Event) => {
-      const detail = (event as CustomEvent<{ canonicalPath?: string } | null>).detail;
+      const detail = (event as CustomEvent<{ canonicalPath?: string; requestId?: string } | null>).detail;
       const fallbackPath = buildCanonicalPath(devConsole.diagnostics?.route ?? devConsole.runtime?.route, devConsole.diagnostics?.query ?? devConsole.runtime?.query);
-      const nextPath = normalizePath(detail?.canonicalPath ?? fallbackPath);
-      window.open(nextPath, "_blank", "noopener,noreferrer");
+      const nextPath = normalizeRoutePath(detail?.canonicalPath ?? fallbackPath);
+      window.location.assign(nextPath);
+      const result = {
+        action: "open-scene",
+        ok: true,
+        message: "Navigated to requested scene path",
+        at: new Date().toISOString(),
+        metadata: {
+          nextPath
+        }
+      } as const;
+      dispatchDevConsoleActionResult(detail?.requestId ? { ...result, requestId: detail.requestId } : result);
     };
 
-    const handleValidate = () => {
-      devConsole.refreshDiagnostics();
+    const handleValidate = (event: Event) => {
+      const detail = (event as CustomEvent<{ requestId?: string } | null>).detail;
+      const ok = devConsole.refreshDiagnostics();
+      const result = {
+        action: "validate-scene",
+        ok,
+        message: ok ? "Diagnostics refresh requested" : "Unable to contact runtime bridge",
+        at: new Date().toISOString()
+      } as const;
+      dispatchDevConsoleActionResult(detail?.requestId ? { ...result, requestId: detail.requestId } : result);
     };
 
-    window.addEventListener("hitech:dev-console:snapshot", handleSnapshot as EventListener);
-    window.addEventListener("hitech:dev-console:open-scene", handleOpenScene as EventListener);
-    window.addEventListener("hitech:dev-console:validate-scene", handleValidate as EventListener);
+    const disposeSnapshotListener = registerConsoleEventListener(
+      DEV_CONSOLE_SNAPSHOT_EVENT,
+      handleSnapshot as EventListener
+    );
+    const disposeOpenSceneListener = registerConsoleEventListener(
+      DEV_CONSOLE_OPEN_SCENE_EVENT,
+      handleOpenScene as EventListener
+    );
+    const disposeValidateSceneListener = registerConsoleEventListener(
+      DEV_CONSOLE_VALIDATE_SCENE_EVENT,
+      handleValidate as EventListener
+    );
 
     return () => {
-      window.removeEventListener("hitech:dev-console:snapshot", handleSnapshot as EventListener);
-      window.removeEventListener("hitech:dev-console:open-scene", handleOpenScene as EventListener);
-      window.removeEventListener("hitech:dev-console:validate-scene", handleValidate as EventListener);
+      disposeSnapshotListener();
+      disposeOpenSceneListener();
+      disposeValidateSceneListener();
     };
   }, [devConsole]);
 
@@ -196,14 +229,25 @@ export function PitchDevConsoleStabilityHelpers() {
         return;
       }
 
-      const label = (button.textContent ?? "").trim().toUpperCase();
+      const raw = button.getAttribute("data-dev-console-scene-command");
+      if (!raw) {
+        return;
+      }
+      const label = raw.trim().toUpperCase();
       if (!(label in QUICK_GROUPS)) {
         return;
       }
 
       event.preventDefault();
       event.stopPropagation();
-      updateSceneLayers(devConsole.bindings.sceneStudio, label);
+      const ok = updateSceneLayers(devConsole.bindings.sceneStudio, label);
+      dispatchDevConsoleActionResult({
+        action: "toggle-scene-group",
+        ok,
+        message: ok ? `Applied ${label}` : `Failed ${label}`,
+        at: new Date().toISOString(),
+        metadata: { command: label }
+      });
     };
 
     document.addEventListener("click", onClickCapture, true);

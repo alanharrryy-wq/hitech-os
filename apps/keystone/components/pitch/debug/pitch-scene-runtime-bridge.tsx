@@ -1,13 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { ALL_LAYERS, LAYER_DATA_ATTRIBUTES, useLayerFlags } from "@hitech/ui-kit";
 import {
   buildSceneDiagnosticsPayload,
+  isAllowedSceneStudioOrigin,
   SCENE_STUDIO_RESPONSE_DIAGNOSTICS,
   isDiagnosticsRequestMessage
 } from "../../../lib/scene-studio";
+import {
+  DEV_CONSOLE_DIAGNOSTICS_EVENT,
+  DEV_CONSOLE_REQUEST_DIAGNOSTICS_EVENT
+} from "../../dev-console/dev-console-events";
+import { dispatchConsoleEvent, registerConsoleEventListener } from "../../dev-console/core/console-core-events";
+
+export const BRIDGE_HEARTBEAT_MS = 5000;
+const BRIDGE_MIN_PUBLISH_INTERVAL_MS = 450;
 
 function collectDomLayerAttributes(): Record<string, string> {
   const attributes: Record<string, string> = {};
@@ -85,10 +94,12 @@ export function PitchSceneRuntimeBridge() {
   const searchParams = useSearchParams();
   const { resolved, enabledLayers } = useLayerFlags();
   const [, setViewportLabel] = useState("desktop");
+  const lastPublishRef = useRef(0);
+  const search = searchParams.toString();
 
   useEffect(() => {
     void waitForStableDocument();
-  }, [pathname, searchParams]);
+  }, [pathname, search]);
 
   useEffect(() => {
     const updateViewport = () => {
@@ -103,9 +114,59 @@ export function PitchSceneRuntimeBridge() {
     };
   }, []);
 
+  const publishDiagnostics = useCallback(
+    ({
+      requestId,
+      replyTarget,
+      replyOrigin,
+      force
+    }: {
+      requestId: string;
+      replyTarget?: Window | null;
+      replyOrigin?: string;
+      force?: boolean;
+    }) => {
+      const now = Date.now();
+      if (!force && now - lastPublishRef.current < BRIDGE_MIN_PUBLISH_INTERVAL_MS) {
+        return;
+      }
+      lastPublishRef.current = now;
+
+      const domDataAttributes = collectDomLayerAttributes();
+      const missingDataAttributes = collectMissingLayerAttributes(resolved.flags);
+
+      const payload = buildSceneDiagnosticsPayload({
+        requestId,
+        pathname: window.location.pathname,
+        search,
+        resolved,
+        enabledLayerIds: enabledLayers,
+        domDataAttributes,
+        missingDataAttributes,
+        sceneReady: document.documentElement.getAttribute("data-scene-ready"),
+        userAgent: navigator.userAgent
+      });
+
+      dispatchConsoleEvent(DEV_CONSOLE_DIAGNOSTICS_EVENT, payload);
+
+      if (replyTarget && typeof replyTarget.postMessage === "function") {
+        const targetOrigin = replyOrigin && isAllowedSceneStudioOrigin(replyOrigin) ? replyOrigin : window.location.origin;
+        replyTarget.postMessage(
+          {
+            type: SCENE_STUDIO_RESPONSE_DIAGNOSTICS,
+            payload
+          },
+          targetOrigin
+        );
+      }
+
+    },
+    [enabledLayers, resolved, search]
+  );
+
   useEffect(() => {
     const onMessage = (event: MessageEvent) => {
-      if (event.origin !== window.location.origin) {
+      if (!isAllowedSceneStudioOrigin(event.origin)) {
         return;
       }
 
@@ -116,40 +177,46 @@ export function PitchSceneRuntimeBridge() {
       const replyTarget = event.source && typeof (event.source as Window).postMessage === "function"
         ? (event.source as Window)
         : window;
-
-
-      const domDataAttributes = collectDomLayerAttributes();
-      const missingDataAttributes = collectMissingLayerAttributes(resolved.flags);
-
-      const payload = buildSceneDiagnosticsPayload({
+      publishDiagnostics({
         requestId: event.data.requestId,
-        pathname: window.location.pathname,
-        search: searchParams.toString(),
-        resolved,
-        enabledLayerIds: enabledLayers,
-        domDataAttributes,
-        missingDataAttributes,
-        sceneReady: document.documentElement.getAttribute("data-scene-ready"),
-        userAgent: navigator.userAgent
+        replyTarget,
+        replyOrigin: event.origin,
+        force: true
       });
-
-      window.dispatchEvent(new CustomEvent("hitech:dev-console:diagnostics", { detail: payload }));
-
-      replyTarget.postMessage(
-        {
-          type: SCENE_STUDIO_RESPONSE_DIAGNOSTICS,
-          payload
-        },
-        event.origin
-      );
     };
+
+    const onDiagnosticsRequestEvent = (event: Event) => {
+      const detail = (event as CustomEvent<{ requestId?: string } | undefined>).detail;
+      const requestId = detail?.requestId ?? `bridge:event:${Date.now()}`;
+      publishDiagnostics({
+        requestId,
+        force: true
+      });
+    };
+
+    publishDiagnostics({
+      requestId: `bridge:initial:${Date.now()}`,
+      force: true
+    });
+
+    const heartbeat = window.setInterval(() => {
+      publishDiagnostics({
+        requestId: `bridge:heartbeat:${Date.now()}`
+      });
+    }, BRIDGE_HEARTBEAT_MS);
 
     window.addEventListener("message", onMessage);
+    const disposeRequestListener = registerConsoleEventListener(
+      DEV_CONSOLE_REQUEST_DIAGNOSTICS_EVENT,
+      onDiagnosticsRequestEvent as EventListener
+    );
 
     return () => {
+      window.clearInterval(heartbeat);
       window.removeEventListener("message", onMessage);
+      disposeRequestListener();
     };
-  }, [enabledLayers, resolved, searchParams]);
+  }, [publishDiagnostics]);
 
   return null;
 }

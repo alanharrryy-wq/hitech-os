@@ -4,6 +4,7 @@ import { ALL_LAYERS, type LayerId } from "@hitech/ui-kit";
 import {
   KNOWN_PITCH_ROUTES,
   createDefaultSceneLibrary,
+  parseSceneUrlState,
   type SceneRecord
 } from "../../lib/scene-studio";
 import styles from "./scene-studio.module.css";
@@ -17,7 +18,10 @@ const LAYER_GROUPS: Readonly<Record<string, readonly LayerId[]>> = {
   motion: ["motion.enabled"]
 };
 
-const SCENE_REFERENCE_LIBRARY = createDefaultSceneLibrary("2026-01-01T00:00:00.000Z");
+const SCENE_REFERENCE_TIMESTAMP = "2026-01-01T00:00:00.000Z";
+const DEFAULT_SCENE_QUERY = "debug=1&layerProfile=neutral&layers=none&motion=off";
+const ROUTABLE_PITCH_ROUTES = KNOWN_PITCH_ROUTES.filter((route) => route !== "/pitch");
+const SCENE_REFERENCE_LIBRARY = createDefaultSceneLibrary(SCENE_REFERENCE_TIMESTAMP);
 
 export interface SceneStudioEditorProps {
   readonly scene: SceneRecord | undefined;
@@ -90,12 +94,79 @@ function uniqueStrings(values: readonly string[]): string[] {
   return Array.from(new Set(values.filter((value) => value.trim().length > 0)));
 }
 
-function buildSceneReferenceLibrary(scene: SceneRecord): readonly SceneRecord[] {
-  if (SCENE_REFERENCE_LIBRARY.some((entry) => entry.id === scene.id)) {
-    return SCENE_REFERENCE_LIBRARY;
+function toTitleCase(value: string): string {
+  return value.replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function buildRouteReferenceId(route: string): string {
+  return route
+    .replace(/^\/+/, "")
+    .replace(/[^a-z0-9]+/gi, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase()
+    .concat("-neutral-desktop");
+}
+
+function buildRouteReferenceTitle(route: string): string {
+  const normalized = route.replace(/^\/+/, "");
+  const segments = normalized
+    .split("/")
+    .filter(Boolean)
+    .map((segment) => segment.replace(/^\d+-/, "").replace(/-/g, " ").trim())
+    .filter(Boolean)
+    .map(toTitleCase);
+
+  if (segments.length === 0) {
+    return "Pitch Runtime Neutral Desktop";
   }
 
-  return [scene, ...SCENE_REFERENCE_LIBRARY];
+  return `${segments.join(" ")} Neutral Desktop`;
+}
+
+function buildRouteCoverageReferenceScene(route: string): SceneRecord {
+  const urlState = parseSceneUrlState(route, DEFAULT_SCENE_QUERY);
+  return {
+    schemaVersion: 2,
+    id: buildRouteReferenceId(urlState.route),
+    title: buildRouteReferenceTitle(urlState.route),
+    route: urlState.route,
+    query: urlState.query,
+    viewport: { preset: "desktop" },
+    layerProfile: urlState.layerProfile,
+    layers: {
+      mode: urlState.layersMode,
+      layerIds: [...urlState.layerIds]
+    },
+    motion: urlState.motion,
+    notes: "Generated scene reference for pitch route coverage in Dev Console.",
+    tags: ["pitch", "runtime", "coverage"],
+    createdAt: SCENE_REFERENCE_TIMESTAMP,
+    updatedAt: SCENE_REFERENCE_TIMESTAMP
+  };
+}
+
+function buildSceneReferenceLibrary(scene: SceneRecord): readonly SceneRecord[] {
+  const byId = new Map<string, SceneRecord>();
+  for (const entry of SCENE_REFERENCE_LIBRARY) {
+    byId.set(entry.id, entry);
+  }
+  byId.set(scene.id, scene);
+
+  const coveredRoutes = new Set<string>();
+  for (const entry of byId.values()) {
+    coveredRoutes.add(parseSceneUrlState(entry.route, entry.query).route);
+  }
+
+  for (const route of ROUTABLE_PITCH_ROUTES) {
+    if (coveredRoutes.has(route)) {
+      continue;
+    }
+    const fallback = buildRouteCoverageReferenceScene(route);
+    byId.set(fallback.id, fallback);
+    coveredRoutes.add(route);
+  }
+
+  return [...byId.values()].sort((left, right) => left.id.localeCompare(right.id));
 }
 
 function findReferenceById(
@@ -111,6 +182,24 @@ function findUniqueReferenceByTitle(
 ): SceneRecord | undefined {
   const matches = library.filter((entry) => entry.title === title);
   return matches.length === 1 ? matches[0] : undefined;
+}
+
+function applyReferenceScene(scene: SceneRecord, reference: SceneRecord): SceneRecord {
+  return updateScene(scene, {
+    id: reference.id,
+    title: reference.title,
+    route: reference.route,
+    query: reference.query,
+    viewport: { ...reference.viewport },
+    layerProfile: reference.layerProfile,
+    layers: {
+      mode: reference.layers.mode,
+      layerIds: [...reference.layers.layerIds]
+    },
+    motion: reference.motion,
+    notes: reference.notes,
+    tags: [...reference.tags]
+  });
 }
 
 export function SceneStudioEditor({ scene, onChange, onResetToDefaults }: SceneStudioEditorProps) {
@@ -158,13 +247,7 @@ export function SceneStudioEditor({ scene, onChange, onResetToDefaults }: SceneS
               return;
             }
 
-            onChange(
-              updateScene(scene, {
-                id: matched.id,
-                title: matched.title,
-                route: matched.route
-              })
-            );
+            onChange(applyReferenceScene(scene, matched));
           }}
         >
           {sceneIdOptions.map((sceneId) => (
@@ -190,13 +273,7 @@ export function SceneStudioEditor({ scene, onChange, onResetToDefaults }: SceneS
               return;
             }
 
-            onChange(
-              updateScene(scene, {
-                id: matched.id,
-                title: matched.title,
-                route: matched.route
-              })
-            );
+            onChange(applyReferenceScene(scene, matched));
           }}
         >
           {titleOptions.map((title) => (
@@ -391,6 +468,7 @@ export function SceneStudioEditor({ scene, onChange, onResetToDefaults }: SceneS
               <button
                 type="button"
                 className={cls("button")}
+                data-dev-console-scene-command={`${String(group).toUpperCase()} ON`}
                 onClick={() => onChange(applyLayerGroup(scene, group, true))}
               >
                 {group} on
@@ -398,6 +476,7 @@ export function SceneStudioEditor({ scene, onChange, onResetToDefaults }: SceneS
               <button
                 type="button"
                 className={cls("button")}
+                data-dev-console-scene-command={`${String(group).toUpperCase()} OFF`}
                 onClick={() => onChange(applyLayerGroup(scene, group, false))}
               >
                 {group} off

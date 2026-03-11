@@ -3,6 +3,19 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { DevConsoleProvider } from "../components/dev-console/DevConsoleContext";
 import { PitchLayerDevTools } from "../components/pitch/debug/pitch-layer-dev-tools";
 
+const navState = vi.hoisted(() => ({
+  search: "",
+  replace: vi.fn<(target: string) => void>()
+}));
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({
+    replace: navState.replace
+  }),
+  usePathname: () => "/pitch/02-industrial-flow",
+  useSearchParams: () => new URLSearchParams(navState.search)
+}));
+
 vi.mock("../components/pitch/debug/pitch-scene-runtime-bridge", () => ({
   PitchSceneRuntimeBridge: () => <div data-tool="runtime-bridge" />
 }));

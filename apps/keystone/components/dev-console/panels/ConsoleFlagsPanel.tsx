@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
 import styles from "../dev-console.module.css";
 import { useDevConsole } from "../DevConsoleContext";
-import type { DevConsoleFlags } from "../types";
+import type { SceneLookModel, SceneLookModelPatch } from "../look/scene-look-model";
 
 const cls = (name: string) => styles[name] ?? "";
 
@@ -29,15 +28,26 @@ function ToggleRow({ label, hint, value, onToggle }: ToggleRowProps) {
   );
 }
 
-function toggleFlag<K extends keyof DevConsoleFlags>(
-  setFlags: React.Dispatch<React.SetStateAction<DevConsoleFlags>>,
-  key: K
+function toggleOverlay(
+  updateSceneLookModel: (
+    patch: SceneLookModelPatch | ((previous: SceneLookModel) => SceneLookModelPatch)
+  ) => void,
+  key: keyof SceneLookModel["overlays"],
+  value: boolean
 ) {
-  setFlags((prev) => ({ ...prev, [key]: !prev[key] }));
+  if (key === "grid") {
+    updateSceneLookModel({ overlays: { grid: !value } });
+    return;
+  }
+  if (key === "safeAreas") {
+    updateSceneLookModel({ overlays: { safeAreas: !value } });
+    return;
+  }
+  updateSceneLookModel({ overlays: { debugLabels: !value } });
 }
 
 export function ConsoleFlagsPanel() {
-  const { flags, setFlags, resetFlags, bridgeStatus, runtime } = useDevConsole();
+  const { flags, sceneLookModel, updateSceneLookModel, resetFlags, bridgeStatus, runtime } = useDevConsole();
 
   return (
     <div className={cls("split")}>
@@ -51,31 +61,33 @@ export function ConsoleFlagsPanel() {
           label="Grid"
           hint="Visual alignment helper for dense scenes and layout checks."
           value={flags.showGrid}
-          onToggle={() => toggleFlag(setFlags, "showGrid")}
+          onToggle={() => toggleOverlay(updateSceneLookModel, "grid", sceneLookModel.overlays.grid)}
         />
         <ToggleRow
           label="Motion"
           hint="Global intent for transitions and animated flourishes."
           value={flags.motionEnabled}
-          onToggle={() => toggleFlag(setFlags, "motionEnabled")}
+          onToggle={() => updateSceneLookModel({ motion: sceneLookModel.motion === "on" ? "off" : "on" })}
         />
         <ToggleRow
           label="Reduced motion"
           hint="Force calmer behavior when the browser starts sweating."
           value={flags.reducedMotion}
-          onToggle={() => toggleFlag(setFlags, "reducedMotion")}
+          onToggle={() =>
+            updateSceneLookModel({ motion: sceneLookModel.motion === "reduced" ? "off" : "reduced" })
+          }
         />
         <ToggleRow
           label="Safe areas"
           hint="Frame boundaries and presentation guards."
           value={flags.showSafeAreas}
-          onToggle={() => toggleFlag(setFlags, "showSafeAreas")}
+          onToggle={() => toggleOverlay(updateSceneLookModel, "safeAreas", sceneLookModel.overlays.safeAreas)}
         />
         <ToggleRow
           label="Debug labels"
           hint="Semantic labels for quick provenance tracing."
           value={flags.showDebugLabels}
-          onToggle={() => toggleFlag(setFlags, "showDebugLabels")}
+          onToggle={() => toggleOverlay(updateSceneLookModel, "debugLabels", sceneLookModel.overlays.debugLabels)}
         />
 
         <div className={cls("topBarActions")}>

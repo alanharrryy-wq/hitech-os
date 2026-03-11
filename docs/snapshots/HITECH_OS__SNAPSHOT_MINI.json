@@ -1,59 +1,38 @@
 {
   "factory_configs": {
-    "files": ["configs/factory/feature-flags.json", "configs/factory/runtime.json"],
-    "state": "PRESENT"
+    "files": [],
+    "state": "MISSING"
   },
   "factory_contracts": {
-    "files": [
-      "factory/contracts/AgentInterface.ts",
-      "factory/contracts/BundleSchema.ts",
-      "factory/contracts/ExecutionReport.ts",
-      "factory/contracts/FactoryContracts.ts",
-      "factory/contracts/index.ts"
-    ],
-    "state": "PRESENT"
+    "files": [],
+    "state": "MISSING"
   },
   "factory_modules": {
     "A_core": {
-      "files": [
-        "factory/A_core/AgentRegistry.ts",
-        "factory/A_core/ContextGuard.ts",
-        "factory/A_core/CoreOrchestrator.ts",
-        "factory/A_core/DeterministicExecutor.ts",
-        "factory/A_core/index.ts"
-      ],
-      "state": "PRESENT"
+      "files": [],
+      "state": "MISSING"
     },
     "B_tooling": {
-      "files": ["factory/B_tooling/index.ts", "factory/B_tooling/ToolingPolicy.ts"],
-      "state": "PRESENT"
+      "files": [],
+      "state": "MISSING"
     },
     "C_features": {
-      "files": ["factory/C_features/FeatureFlagRegistry.ts", "factory/C_features/index.ts"],
-      "state": "PRESENT"
+      "files": [],
+      "state": "MISSING"
     },
     "D_validation": {
-      "files": [
-        "factory/D_validation/DeterminismAudit.ts",
-        "factory/D_validation/index.ts",
-        "factory/D_validation/SchemaValidator.ts",
-        "factory/D_validation/SnapshotValidator.ts"
-      ],
-      "state": "PRESENT"
+      "files": [],
+      "state": "MISSING"
     },
     "Z_aggregator": {
-      "files": [
-        "factory/Z_aggregator/FinalReportBuilder.ts",
-        "factory/Z_aggregator/index.ts",
-        "factory/Z_aggregator/ResultAggregator.ts"
-      ],
-      "state": "PRESENT"
+      "files": [],
+      "state": "MISSING"
     }
   },
   "health_checks": {
     "commands": [
       "health=python tools/codex/guards/no_js_src_imports.py --repo . --config tools/codex/guards/no_js_src_imports.allowlist.json && node tools/health/src/check_repo_health.mjs",
-      "quality=pnpm run env:validate && pnpm run deps:check && pnpm run workspace:validate && pnpm run health && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build && pnpm run snapshot:hos:validate"
+      "quality=pnpm run env:validate && pnpm run deps:check && pnpm run workspace:validate && pnpm run dev-console:guard && pnpm run health && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build && pnpm run snapshot:hos:validate"
     ],
     "script_refs": [
       "tools/codex/guards/no_js_src_imports.allowlist.json",
@@ -65,21 +44,42 @@
   "notes_unknowns": [],
   "root_scripts": {
     "build": "pnpm -r --if-present build",
-    "ci": "pnpm run quality && pnpm run smoke && pnpm run snapshot:hos",
+    "ci": "pnpm run quality && pnpm run smoke && pnpm run snapshot:hos && pnpm run keystone:scene:proof:ci",
     "commitlint": "commitlint",
     "deps:check": "node tools/scripts/check_dependency_hygiene.mjs",
-    "dev": "turbo run dev --parallel",
+    "dev": "pnpm -r --if-present dev",
+    "dev-console:guard": "python tools/dev-console/architecture_guard.py --repo-root . --strict",
     "docs": "node tools/scripts/generate_docs_index.mjs",
     "env:validate": "node tools/scripts/validate_env.mjs",
     "factory:build": "pnpm exec tsc -p configs/tsconfig.factory.json --pretty false",
     "factory:create-worker": "pnpm run factory:build && node dist/tools/create-worker.js",
     "factory:smoke": "pnpm run factory:build && node --test dist/tests/smoke/factory.e2e.test.js",
     "health": "python tools/codex/guards/no_js_src_imports.py --repo . --config tools/codex/guards/no_js_src_imports.allowlist.json && node tools/health/src/check_repo_health.mjs",
+    "hos:doctor": "python tools/hos/doctor/doctor.py",
+    "hos:git-sentinel": "python tools/hos/git_sentinel/cli_sentinel.py once",
+    "hos:git-sentinel:apply": "python tools/hos/git_sentinel/cli_sentinel.py once --apply",
+    "hos:git-sentinel:guardian": "python tools/hos/git_sentinel/cli_sentinel.py guardian --apply --interval-sec 300",
+    "hos:git-sentinel:scan": "python tools/hos/git_sentinel/cli_sentinel.py scan",
+    "hos:hygiene": "python tools/hos/hygiene/cli_hygiene.py",
+    "hos:simulate": "python tools/hos/data/cli_simulate.py",
+    "hos:turbo": "python tools/hos/turbo/turbo_wrap.py",
+    "hos:visual": "python tools/hos/visual/cli_visual.py",
+    "hydration:baseline:update": "python tools/hydration_sentinel/sentinel.py --repo-root . --output-dir _reports/hydration_sentinel --update-baseline",
+    "hydration:scan": "python tools/hydration_sentinel/sentinel.py --repo-root . --output-dir _reports/hydration_sentinel",
+    "hydration:scan:smoke": "python tools/hydration_sentinel/sentinel.py --repo-root . --output-dir _reports/hydration_sentinel --max-files 250",
+    "hydration:scan:strict": "python tools/hydration_sentinel/sentinel.py --repo-root . --output-dir _reports/hydration_sentinel --strict",
+    "keystone:scene:proof:ci": "pnpm --filter @hitech/keystone keystone:scene:proof:ci",
+    "keystone:scene:proof:gate": "pnpm --filter @hitech/keystone keystone:scene:proof:gate",
+    "keystone:scene:report": "pnpm --filter @hitech/keystone keystone:scene:report",
+    "keystone:scene:studio": "pnpm --filter @hitech/keystone keystone:scene:studio",
+    "keystone:scene:visual": "pnpm --filter @hitech/keystone keystone:scene:visual",
+    "keystone:scene:visual:smoke": "pnpm --filter @hitech/keystone keystone:scene:visual:smoke",
+    "keystone:scene:visual:update": "pnpm --filter @hitech/keystone keystone:scene:visual:update",
     "lint": "pnpm -r --if-present lint",
     "lint-staged": "lint-staged",
     "lockfile:check": "pnpm install --frozen-lockfile --ignore-scripts",
     "prepare": "husky install",
-    "quality": "pnpm run env:validate && pnpm run deps:check && pnpm run workspace:validate && pnpm run health && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build && pnpm run snapshot:hos:validate",
+    "quality": "pnpm run env:validate && pnpm run deps:check && pnpm run workspace:validate && pnpm run dev-console:guard && pnpm run health && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build && pnpm run snapshot:hos:validate",
     "schema:gen": "node packages/contracts/tools/gen_schemas.mjs",
     "smoke": "pnpm run smoke:core-api && pnpm run smoke:bridge",
     "smoke:bridge": "node tools/scripts/smoke_node_python_bridge.mjs",
@@ -92,25 +92,36 @@
     "turbo:test": "turbo run test",
     "turbo:typecheck": "turbo run typecheck",
     "typecheck": "pnpm -r --if-present typecheck",
+    "ui:improvement:test": "pnpm --filter @hitech/keystone ui:improvement:test",
+    "ui:improvement:test:update-baseline": "pnpm --filter @hitech/keystone ui:improvement:test:update-baseline",
+    "ui:layers:verify": "pnpm --filter @hitech/keystone ui:layers:verify",
     "workspace:validate": "node tools/scripts/validate_workspace_boundaries.mjs"
   },
   "schema_version": "1.0.0",
   "smoke": {
-    "run_factory_smoke_ps1_state": "PRESENT",
+    "run_factory_smoke_ps1_state": "MISSING",
     "smoke_commands": [
-      "ci=pnpm run quality && pnpm run smoke && pnpm run snapshot:hos",
+      "ci=pnpm run quality && pnpm run smoke && pnpm run snapshot:hos && pnpm run keystone:scene:proof:ci",
       "factory:smoke=pnpm run factory:build && node --test dist/tests/smoke/factory.e2e.test.js",
+      "hydration:scan:smoke=python tools/hydration_sentinel/sentinel.py --repo-root . --output-dir _reports/hydration_sentinel --max-files 250",
+      "keystone:scene:visual:smoke=pnpm --filter @hitech/keystone keystone:scene:visual:smoke",
       "smoke:bridge=node tools/scripts/smoke_node_python_bridge.mjs",
       "smoke:core-api=node services/core-api/scripts/smoke-core-api.mjs",
       "smoke=pnpm run smoke:core-api && pnpm run smoke:bridge"
     ],
-    "tests_smoke_files": ["tests/smoke/factory.e2e.test.ts"],
-    "tests_smoke_state": "PRESENT"
+    "tests_smoke_files": [],
+    "tests_smoke_state": "MISSING"
   },
   "workspace_manager": {
     "package_manager": "pnpm@9.15.0",
     "workspace_file": "pnpm-workspace.yaml",
     "workspace_file_state": "PRESENT",
-    "workspace_packages": ["apps/*", "factory", "packages/*", "services/*", "tools/*"]
+    "workspace_packages": [
+      "apps/*",
+      "factory",
+      "packages/*",
+      "services/*",
+      "tools/*"
+    ]
   }
 }

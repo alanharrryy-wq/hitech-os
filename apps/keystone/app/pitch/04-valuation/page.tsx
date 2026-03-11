@@ -12,7 +12,6 @@ export const dynamic = "force-dynamic";
 
 export default async function PitchValuationPage({ searchParams }: PitchSearchParamsProps) {
   const resolved = resolvePitchLayerFlags(await resolvePitchSearchParams(searchParams));
-  const debugVisible = resolved.debug && process.env.NODE_ENV !== "production";
   const deck = PITCH_DECK_FIXTURE;
   const screen = PITCH_SCREEN_FIXTURES["04-valuation"];
   const shellModel = buildPitchShellFrameModel(screen.slug);

@@ -6,7 +6,10 @@ import styles from "../dev-console.module.css";
 const cls = (name: string) => styles[name] ?? "";
 
 export function PitchRuntimeBridgePanel() {
-  const { bridgeStatus, runtime, diagnostics, refreshDiagnostics, lastDiagnosticsAt } = useDevConsole();
+  const { bridgeStatus, bridgeMeta, bindings, runtime, diagnostics, refreshDiagnostics, lastDiagnosticsAt, lastActionResult } =
+    useDevConsole();
+  const diagnosticsAge =
+    bridgeMeta.diagnosticsAgeMs === null ? "n/a" : `${Math.max(0, Math.round(bridgeMeta.diagnosticsAgeMs / 1000))}s`;
 
   return (
     <div className={cls("split")}>
@@ -44,6 +47,26 @@ export function PitchRuntimeBridgePanel() {
             <div className={cls("kvLabel")}>Last diagnostics</div>
             <div className={cls("kvValue")}>{lastDiagnosticsAt ?? "none yet"}</div>
           </div>
+          <div className={cls("kvItem")}>
+            <div className={cls("kvLabel")}>Scene id</div>
+            <div className={cls("kvValue")}>{bindings.sceneStudio?.scene?.id ?? "none"}</div>
+          </div>
+          <div className={cls("kvItem")}>
+            <div className={cls("kvLabel")}>Request target</div>
+            <div className={cls("kvValue")}>{bridgeMeta.lastRequestTarget}</div>
+          </div>
+          <div className={cls("kvItem")}>
+            <div className={cls("kvLabel")}>Diagnostics source</div>
+            <div className={cls("kvValue")}>{bridgeMeta.lastDiagnosticsSource ?? "none"}</div>
+          </div>
+          <div className={cls("kvItem")}>
+            <div className={cls("kvLabel")}>Diagnostics age</div>
+            <div className={cls("kvValue")}>{diagnosticsAge}</div>
+          </div>
+          <div className={cls("kvItem")}>
+            <div className={cls("kvLabel")}>Stale reason</div>
+            <div className={cls("kvValue")}>{bridgeMeta.staleReason ?? "none"}</div>
+          </div>
         </div>
 
         <div>
@@ -56,7 +79,9 @@ export function PitchRuntimeBridgePanel() {
       <section className={cls("card")}>
         <div className={cls("cardTitle")}>Raw payload</div>
         <div className={cls("cardHint")}>No more empty room. This panel now exposes the actual snapshot the console is seeing.</div>
-        <pre className={cls("codeBox")}>{JSON.stringify({ bridgeStatus, runtime, diagnostics }, null, 2)}</pre>
+        <pre className={cls("codeBox")}>
+          {JSON.stringify({ bridgeStatus, bridgeMeta, runtime, diagnostics, lastActionResult }, null, 2)}
+        </pre>
       </section>
     </div>
   );

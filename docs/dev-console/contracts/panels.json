@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "panels": [
+    {
+      "id": "home",
+      "domain": "core",
+      "file": "apps/keystone/components/dev-console/panels/ConsoleHomePanel.tsx",
+      "requires_scene_look_model": false
+    },
+    {
+      "id": "actions",
+      "domain": "core",
+      "file": "apps/keystone/components/dev-console/panels/ConsoleActionsPanel.tsx",
+      "requires_scene_look_model": false
+    },
+    {
+      "id": "layouts",
+      "domain": "core",
+      "file": "apps/keystone/components/dev-console/panels/ConsoleLayoutProfilesPanel.tsx",
+      "requires_scene_look_model": false
+    },
+    {
+      "id": "runtime",
+      "domain": "inspect",
+      "file": "apps/keystone/components/dev-console/panels/PitchRuntimeBridgePanel.tsx",
+      "requires_scene_look_model": false
+    },
+    {
+      "id": "layers",
+      "domain": "inspect",
+      "file": "apps/keystone/components/dev-console/panels/PitchLayerDebugPanel.tsx",
+      "requires_scene_look_model": false
+    },
+    {
+      "id": "perf",
+      "domain": "inspect",
+      "file": "apps/keystone/components/dev-console/panels/ConsolePerfPanel.tsx",
+      "requires_scene_look_model": false
+    },
+    {
+      "id": "inspect-events",
+      "domain": "inspect",
+      "file": "apps/keystone/components/dev-console/domains/inspect/InspectEventMonitorPanel.tsx",
+      "requires_scene_look_model": false
+    },
+    {
+      "id": "inspect-snapshot",
+      "domain": "inspect",
+      "file": "apps/keystone/components/dev-console/domains/inspect/InspectSnapshotViewerPanel.tsx",
+      "requires_scene_look_model": false
+    },
+    {
+      "id": "scene",
+      "domain": "compose",
+      "file": "apps/keystone/components/dev-console/panels/SceneStudioEditorPanel.tsx",
+      "requires_scene_look_model": false
+    },
+    {
+      "id": "compose-look",
+      "domain": "compose",
+      "file": "apps/keystone/components/dev-console/domains/compose/ComposeSceneLookPanel.tsx",
+      "requires_scene_look_model": true
+    },
+    {
+      "id": "overlay",
+      "domain": "compose",
+      "file": "apps/keystone/components/dev-console/panels/PitchVisualOverlayPanel.tsx",
+      "requires_scene_look_model": false
+    },
+    {
+      "id": "share-look",
+      "domain": "compose",
+      "file": "apps/keystone/components/dev-console/panels/PitchShareLookPanel.tsx",
+      "requires_scene_look_model": false
+    },
+    {
+      "id": "flags",
+      "domain": "compose",
+      "file": "apps/keystone/components/dev-console/panels/ConsoleFlagsPanel.tsx",
+      "requires_scene_look_model": true
+    }
+  ]
+}

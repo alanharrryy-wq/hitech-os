@@ -1,8 +1,18 @@
 "use client";
 
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { SCENE_STUDIO_REQUEST_DIAGNOSTICS } from "../../lib/scene-studio";
+import {
+  isDiagnosticsResponseMessage
+} from "../../lib/scene-studio";
+import {
+  DEFAULT_SCENE_LOOK_MODEL,
+  mergeSceneLookModel,
+  normalizeSceneLookModel,
+  type SceneLookModel,
+  type SceneLookModelPatch
+} from "./look/scene-look-model";
 import type {
+  DevConsoleBridgeMeta,
   DevConsoleBridgeStatus,
   DevConsoleContextValue,
   DevConsoleDiagnosticsSnapshot,
@@ -10,6 +20,17 @@ import type {
   DevConsoleRuntimeSnapshot,
   SceneStudioBinding
 } from "./types";
+import {
+  DEV_CONSOLE_ACTION_RESULT_EVENT,
+  DEV_CONSOLE_DIAGNOSTICS_EVENT,
+  DEV_CONSOLE_FLAGS_EVENT,
+  type DevConsoleActionResult
+} from "./dev-console-events";
+import {
+  type DiagnosticsRequestTarget,
+  requestConsoleDiagnostics
+} from "./core/console-core-diagnostics";
+import { registerConsoleEventListener } from "./core/console-core-events";
 
 const DEFAULT_FLAGS: DevConsoleFlags = {
   showGrid: false,
@@ -22,8 +43,7 @@ const DEFAULT_FLAGS: DevConsoleFlags = {
 const FLAGS_STORAGE_KEY = "keystone.devConsole.flags";
 const BRIDGE_BOOT_GRACE_MS = 1800;
 const BRIDGE_STALE_MS = 15_000;
-const REQUEST_DIAGNOSTICS_TYPE = SCENE_STUDIO_REQUEST_DIAGNOSTICS;
-const DIAGNOSTICS_EVENT_NAME = "hitech:dev-console:diagnostics";
+const BRIDGE_SELF_HEAL_RETRY_MS = 3000;
 
 const DevConsoleContext = createContext<DevConsoleContextValue | null>(null);
 
@@ -41,7 +61,7 @@ function readFlags(): DevConsoleFlags {
 
 function emitFlags(flags: DevConsoleFlags) {
   if (typeof window === "undefined") return;
-  window.dispatchEvent(new CustomEvent("hitech:dev-console:flags", { detail: flags }));
+  window.dispatchEvent(new CustomEvent(DEV_CONSOLE_FLAGS_EVENT, { detail: flags }));
 }
 
 function isDiagnosticsSnapshot(value: unknown): value is DevConsoleDiagnosticsSnapshot {
@@ -49,13 +69,13 @@ function isDiagnosticsSnapshot(value: unknown): value is DevConsoleDiagnosticsSn
 
   const candidate = value as Record<string, unknown>;
   return (
-    typeof candidate.route === "string" &&
-    typeof candidate.query === "string" &&
-    typeof candidate.timestamp === "string" &&
-    !!candidate.resolved &&
-    Array.isArray(candidate.enabledLayerIds) &&
-    Array.isArray(candidate.missingDataAttributes) &&
-    typeof candidate.domDataAttributes === "object"
+    typeof candidate["route"] === "string" &&
+    typeof candidate["query"] === "string" &&
+    typeof candidate["timestamp"] === "string" &&
+    !!candidate["resolved"] &&
+    Array.isArray(candidate["enabledLayerIds"]) &&
+    Array.isArray(candidate["missingDataAttributes"]) &&
+    typeof candidate["domDataAttributes"] === "object"
   );
 }
 
@@ -88,17 +108,113 @@ function applyFlagDatasets(flags: DevConsoleFlags) {
   document.documentElement.dataset["devConsoleDebugLabels"] = String(flags.showDebugLabels);
 }
 
+function sceneLookModelToFlags(model: SceneLookModel): DevConsoleFlags {
+  return {
+    showGrid: model.overlays.grid,
+    motionEnabled: model.motion === "on",
+    reducedMotion: model.motion === "reduced",
+    showSafeAreas: model.overlays.safeAreas,
+    showDebugLabels: model.overlays.debugLabels
+  };
+}
+
+function mergeSceneLookModelWithFlags(model: SceneLookModel, flags: DevConsoleFlags): SceneLookModel {
+  return normalizeSceneLookModel({
+    ...model,
+    overlays: {
+      ...model.overlays,
+      grid: flags.showGrid,
+      safeAreas: flags.showSafeAreas,
+      debugLabels: flags.showDebugLabels
+    },
+    motion: flags.reducedMotion ? "reduced" : flags.motionEnabled ? "on" : "off"
+  });
+}
+
 export function DevConsoleProvider({ children }: { children: React.ReactNode }) {
   const [sceneStudioBinding, setSceneStudioBinding] = useState<SceneStudioBinding | undefined>(undefined);
-  const [flags, setFlags] = useState<DevConsoleFlags>(DEFAULT_FLAGS);
+  const [flagsState, setFlagsState] = useState<DevConsoleFlags>(DEFAULT_FLAGS);
+  const [sceneLookModel, setSceneLookModel] = useState<SceneLookModel>(DEFAULT_SCENE_LOOK_MODEL);
   const [hasRestoredFlags, setHasRestoredFlags] = useState(false);
   const [diagnostics, setDiagnostics] = useState<DevConsoleDiagnosticsSnapshot | null>(null);
   const [bridgeStatus, setBridgeStatus] = useState<DevConsoleBridgeStatus>("booting");
   const [lastDiagnosticsAt, setLastDiagnosticsAt] = useState<string | null>(null);
+  const [lastActionResult, setLastActionResult] = useState<DevConsoleActionResult | null>(null);
+  const [bridgeMeta, setBridgeMeta] = useState<DevConsoleBridgeMeta>({
+    lastRequestId: null,
+    lastRequestAt: null,
+    lastRequestTarget: "none",
+    lastDiagnosticsSource: null,
+    diagnosticsAgeMs: null,
+    staleReason: null
+  });
   const latestRuntimeTsRef = useRef<number>(Date.now());
+  const pendingRequestRef = useRef<{
+    requestId: string;
+    requestedAtMs: number;
+    requestedAtIso: string;
+    target: DiagnosticsRequestTarget;
+  } | null>(null);
+  const lastSelfHealAttemptRef = useRef(0);
+  const latestSnapshotKeyRef = useRef<string | null>(null);
+
+  const setFlags = useCallback<React.Dispatch<React.SetStateAction<DevConsoleFlags>>>((next) => {
+    setFlagsState((previous) => {
+      const resolved = typeof next === "function" ? next(previous) : next;
+      setSceneLookModel((current) => mergeSceneLookModelWithFlags(current, resolved));
+      return resolved;
+    });
+  }, []);
+
+  const updateSceneLookModel = useCallback(
+    (patch: SceneLookModelPatch | ((previous: SceneLookModel) => SceneLookModelPatch)) => {
+      setSceneLookModel((previous) => {
+        const next = mergeSceneLookModel(previous, patch);
+        setFlagsState(sceneLookModelToFlags(next));
+        return next;
+      });
+    },
+    []
+  );
+
+  const replaceSceneLookModel = useCallback((next?: SceneLookModel) => {
+    const normalized = normalizeSceneLookModel(next ?? DEFAULT_SCENE_LOOK_MODEL);
+    setSceneLookModel(normalized);
+    setFlagsState(sceneLookModelToFlags(normalized));
+  }, []);
+
+  const applyDiagnosticsSnapshot = useCallback(
+    (snapshot: DevConsoleDiagnosticsSnapshot | null, source: "message" | "event") => {
+      const snapshotKey = snapshot ? `${snapshot.requestId ?? "none"}::${snapshot.timestamp}` : "null";
+      if (snapshotKey === latestSnapshotKeyRef.current) {
+        return;
+      }
+      latestSnapshotKeyRef.current = snapshotKey;
+
+      setDiagnostics(snapshot);
+      const timestamp = snapshot?.timestamp ?? null;
+      setLastDiagnosticsAt(timestamp);
+      latestRuntimeTsRef.current = Date.now();
+      setBridgeStatus(snapshot ? "live" : "idle");
+      setBridgeMeta((previous) => ({
+        ...previous,
+        lastDiagnosticsSource: source,
+        diagnosticsAgeMs: 0,
+        staleReason: null
+      }));
+
+      const requestId = snapshot?.requestId ?? null;
+      if (requestId && pendingRequestRef.current?.requestId === requestId) {
+        pendingRequestRef.current = null;
+      }
+    },
+    []
+  );
 
   useEffect(() => {
-    setFlags(readFlags());
+    const restoredFlags = readFlags();
+    setFlagsState(restoredFlags);
+    setSceneLookModel((current) => mergeSceneLookModelWithFlags(current, restoredFlags));
     setHasRestoredFlags(true);
   }, []);
 
@@ -106,39 +222,53 @@ export function DevConsoleProvider({ children }: { children: React.ReactNode }) 
     if (!hasRestoredFlags) return;
 
     try {
-      localStorage.setItem(FLAGS_STORAGE_KEY, JSON.stringify(flags));
+      localStorage.setItem(FLAGS_STORAGE_KEY, JSON.stringify(flagsState));
     } catch {
       // ignore
     }
 
-    emitFlags(flags);
-    applyFlagDatasets(flags);
-  }, [flags, hasRestoredFlags]);
+    emitFlags(flagsState);
+    applyFlagDatasets(flagsState);
+  }, [flagsState, hasRestoredFlags]);
 
-  const setDiagnosticsSnapshot = useCallback((snapshot: DevConsoleDiagnosticsSnapshot | null) => {
-    setDiagnostics(snapshot);
-    const timestamp = snapshot?.timestamp ?? null;
-    setLastDiagnosticsAt(timestamp);
-    latestRuntimeTsRef.current = Date.now();
-    setBridgeStatus(snapshot ? "live" : "idle");
-
-  }, []);
+  const setDiagnosticsSnapshot = useCallback(
+    (snapshot: DevConsoleDiagnosticsSnapshot | null) => {
+      applyDiagnosticsSnapshot(snapshot, "event");
+    },
+    [applyDiagnosticsSnapshot]
+  );
 
   const refreshDiagnostics = useCallback(() => {
-    if (typeof window === "undefined") {
+    const requestResult = requestConsoleDiagnostics();
+    const requestAtMs = Date.parse(requestResult.requestedAtIso);
+    const target: DiagnosticsRequestTarget = requestResult.target;
+
+    pendingRequestRef.current = {
+      requestId: requestResult.requestId,
+      requestedAtMs: requestAtMs,
+      requestedAtIso: requestResult.requestedAtIso,
+      target
+    };
+
+    setBridgeMeta((previous) => ({
+      ...previous,
+      lastRequestId: requestResult.requestId,
+      lastRequestAt: requestResult.requestedAtIso,
+      lastRequestTarget: target
+    }));
+
+    if (target === "none") {
+      setBridgeStatus("offline");
+      setBridgeMeta((previous) => ({
+        ...previous,
+        staleReason: "Diagnostics request failed: no postMessage target"
+      }));
       return false;
     }
 
-    const iframe = document.querySelector<HTMLIFrameElement>('iframe[title="Scene preview"]');
-    const targetWindow = iframe?.contentWindow ?? window;
-
-    if (typeof targetWindow.postMessage !== "function") {
-      return false;
-    }
-
-    const requestId = `dev-console:${Date.now()}`;
-    targetWindow.postMessage({ type: REQUEST_DIAGNOSTICS_TYPE, requestId }, window.location.origin);
-    setBridgeStatus((previous) => (previous === "idle" ? "booting" : previous));
+    setBridgeStatus((previous) =>
+      previous === "offline" || previous === "idle" || previous === "booting" ? "booting" : previous
+    );
     return true;
   }, []);
 
@@ -165,12 +295,19 @@ export function DevConsoleProvider({ children }: { children: React.ReactNode }) 
         return;
       }
 
-      const payload = (event.data as { payload?: unknown } | null)?.payload;
-      if (!isDiagnosticsSnapshot(payload)) {
+      if (isDiagnosticsResponseMessage(event.data)) {
+        const payload = event.data.payload;
+        if (!isDiagnosticsSnapshot(payload)) {
+          return;
+        }
+        applyDiagnosticsSnapshot(payload, "message");
         return;
       }
 
-      setDiagnosticsSnapshot(payload);
+      const payload = (event.data as { payload?: unknown } | null)?.payload;
+      if (isDiagnosticsSnapshot(payload)) {
+        applyDiagnosticsSnapshot(payload, "message");
+      }
     };
 
     const onDiagnosticsEvent = (event: Event) => {
@@ -179,7 +316,15 @@ export function DevConsoleProvider({ children }: { children: React.ReactNode }) 
         return;
       }
 
-      setDiagnosticsSnapshot(payload);
+      applyDiagnosticsSnapshot(payload, "event");
+    };
+
+    const onActionResult = (event: Event) => {
+      const detail = (event as CustomEvent<DevConsoleActionResult>).detail;
+      if (!detail || typeof detail !== "object") {
+        return;
+      }
+      setLastActionResult(detail);
     };
 
     const bootTimer = window.setTimeout(() => {
@@ -188,22 +333,51 @@ export function DevConsoleProvider({ children }: { children: React.ReactNode }) 
 
     const staleTimer = window.setInterval(() => {
       const age = Date.now() - latestRuntimeTsRef.current;
+      const pending = pendingRequestRef.current;
+      const staleReason =
+        age > BRIDGE_STALE_MS
+          ? pending
+            ? `No diagnostics response for ${Math.round((Date.now() - pending.requestedAtMs) / 1000)}s (request=${pending.requestId}, target=${pending.target})`
+            : `No diagnostics heartbeat for ${Math.round(age / 1000)}s`
+          : null;
+
       setBridgeStatus((current) => {
         if (current === "idle" || current === "offline") return current;
         return age > BRIDGE_STALE_MS ? "stale" : "live";
       });
+      setBridgeMeta((previous) => ({
+        ...previous,
+        diagnosticsAgeMs: age,
+        staleReason
+      }));
+
+      if (age > BRIDGE_STALE_MS) {
+        const now = Date.now();
+        if (now - lastSelfHealAttemptRef.current >= BRIDGE_SELF_HEAL_RETRY_MS) {
+          lastSelfHealAttemptRef.current = now;
+          refreshDiagnostics();
+        }
+      }
     }, 1000);
 
     window.addEventListener("message", onMessage);
-    window.addEventListener(DIAGNOSTICS_EVENT_NAME, onDiagnosticsEvent as EventListener);
+    const disposeDiagnosticsListener = registerConsoleEventListener(
+      DEV_CONSOLE_DIAGNOSTICS_EVENT,
+      onDiagnosticsEvent as EventListener
+    );
+    const disposeActionListener = registerConsoleEventListener(
+      DEV_CONSOLE_ACTION_RESULT_EVENT,
+      onActionResult as EventListener
+    );
 
     return () => {
       window.clearTimeout(bootTimer);
       window.clearInterval(staleTimer);
       window.removeEventListener("message", onMessage);
-      window.removeEventListener(DIAGNOSTICS_EVENT_NAME, onDiagnosticsEvent as EventListener);
+      disposeDiagnosticsListener();
+      disposeActionListener();
     };
-  }, [setDiagnosticsSnapshot]);
+  }, [applyDiagnosticsSnapshot, refreshDiagnostics]);
 
   const runtime = useMemo(() => deriveRuntime(diagnostics), [diagnostics]);
 
@@ -211,17 +385,37 @@ export function DevConsoleProvider({ children }: { children: React.ReactNode }) 
     () => ({
       bindings: sceneStudioBinding ? { sceneStudio: sceneStudioBinding } : {},
       setSceneStudioBinding,
-      flags,
+      flags: flagsState,
       setFlags,
       resetFlags: () => setFlags(DEFAULT_FLAGS),
       diagnostics,
       runtime,
       bridgeStatus,
+      bridgeMeta,
+      sceneLookModel,
       lastDiagnosticsAt,
       refreshDiagnostics,
-      setDiagnosticsSnapshot
+      setDiagnosticsSnapshot,
+      updateSceneLookModel,
+      replaceSceneLookModel,
+      lastActionResult
     }),
-    [bridgeStatus, diagnostics, flags, lastDiagnosticsAt, refreshDiagnostics, runtime, sceneStudioBinding, setDiagnosticsSnapshot]
+    [
+      bridgeMeta,
+      bridgeStatus,
+      diagnostics,
+      flagsState,
+      lastActionResult,
+      lastDiagnosticsAt,
+      replaceSceneLookModel,
+      refreshDiagnostics,
+      runtime,
+      sceneStudioBinding,
+      sceneLookModel,
+      setDiagnosticsSnapshot,
+      setFlags,
+      updateSceneLookModel
+    ]
   );
 
   return <DevConsoleContext.Provider value={value}>{children}</DevConsoleContext.Provider>;

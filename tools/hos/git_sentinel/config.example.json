@@ -1,0 +1,32 @@
+{
+  "runtime_artifact_dirs": [
+    "tools/codex/worktrees",
+    "tools/codex/runs",
+    "tools/_local",
+    "artifacts",
+    "logs"
+  ],
+  "large_file_threshold_bytes": 10485760,
+  "duplicate_hash_max_bytes": 67108864,
+  "max_security_scan_files": 15000,
+  "ignore_history_path": "tools/_local/git_sentinel/state/ignore_rules_history.json",
+  "safe_cleanup_prefixes": [
+    "tools/codex/worktrees/",
+    "tools/codex/runs/",
+    "tools/_local/",
+    "artifacts/",
+    "logs/",
+    "_reports/",
+    ".agents/_merge_"
+  ],
+  "safe_ignore_prefixes": [
+    "tools/codex/worktrees/",
+    "tools/codex/runs/",
+    "tools/_local/",
+    "artifacts/",
+    "logs/",
+    "_reports/",
+    ".agents/"
+  ],
+  "prediction_window": 20
+}

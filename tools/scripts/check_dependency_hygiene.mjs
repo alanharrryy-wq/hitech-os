@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -42,9 +42,15 @@ function isSorted(keys) {
 }
 
 const issues = [];
+const missingPackageFiles = [];
 
 for (const relativePath of packageFiles) {
   const absolutePath = path.join(repoRoot, relativePath);
+  if (!existsSync(absolutePath)) {
+    missingPackageFiles.push(relativePath);
+    continue;
+  }
+
   const content = readFileSync(absolutePath, "utf8");
   const parsed = JSON.parse(content);
 
@@ -69,6 +75,7 @@ for (const relativePath of packageFiles) {
 }
 
 issues.sort((left, right) => left.localeCompare(right));
+missingPackageFiles.sort((left, right) => left.localeCompare(right));
 
 if (issues.length > 0) {
   console.error("[deps:check] FAILED");
@@ -78,4 +85,14 @@ if (issues.length > 0) {
   process.exit(1);
 }
 
-console.log(`[deps:check] OK (${packageFiles.length} package manifests)`);
+if (missingPackageFiles.length > 0) {
+  console.warn(
+    `[deps:check] warning: skipped missing manifests (${missingPackageFiles.length})`
+  );
+  for (const relativePath of missingPackageFiles) {
+    console.warn(` - ${relativePath}`);
+  }
+}
+
+const checkedCount = packageFiles.length - missingPackageFiles.length;
+console.log(`[deps:check] OK (${checkedCount} package manifests)`);

@@ -13,7 +13,6 @@ export default async function PitchIndexPage({ searchParams }: PitchSearchParams
   const resolved = resolvePitchLayerFlags(await resolvePitchSearchParams(searchParams));
   const isProduction = process.env.NODE_ENV === "production";
   const showRouteChooser = resolved.debug || isProduction;
-  const debugVisible = resolved.debug && !isProduction;
   const shellModel = buildPitchShellFrameModel();
 
   return (

@@ -23,6 +23,8 @@ No scanner is enforced by default.
 python tools/hos/hygiene/cli_hygiene.py
 python tools/hos/hygiene/cli_hygiene.py --include-large-files --large-file-min-mb 8
 python tools/hos/hygiene/cli_hygiene.py --strict
+python tools/hos/git_sentinel/cli_sentinel.py once
+python tools/hos/git_sentinel/cli_sentinel.py guardian --apply --interval-sec 300
 ```
 
 Reports are written to:
@@ -34,4 +36,3 @@ Reports are written to:
 - OFF by default.
 - `--strict` is opt-in and local/manual.
 - No default CI gate was added by this tooling rollout.
-

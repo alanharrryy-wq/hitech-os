@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import type { LayerFlags, LayerId, ResolvedLayerFlags } from "@hitech/ui-kit";
 import type { SceneRecord } from "../../lib/scene-studio";
+import type { DevConsoleActionResult } from "./dev-console-events";
+import type { SceneLookModel, SceneLookModelPatch } from "./look/scene-look-model";
 
 export type DevConsoleToolId =
   | "home"
@@ -12,7 +14,12 @@ export type DevConsoleToolId =
   | "actions"
   | "flags"
   | "perf"
-  | "layouts";
+  | "layouts"
+  | "inspect-events"
+  | "inspect-snapshot"
+  | "compose-look";
+
+export type DevConsoleDomain = "core" | "inspect" | "compose";
 
 export type DevConsoleFlags = {
   showGrid: boolean;
@@ -34,6 +41,7 @@ export type DevConsoleBindings = {
 
 export type DevConsoleToolDefinition = {
   id: DevConsoleToolId;
+  domain: DevConsoleDomain;
   label: string;
   shortLabel: string;
   description: string;
@@ -41,6 +49,15 @@ export type DevConsoleToolDefinition = {
 };
 
 export type DevConsoleBridgeStatus = "idle" | "booting" | "live" | "stale" | "offline";
+
+export type DevConsoleBridgeMeta = {
+  lastRequestId: string | null;
+  lastRequestAt: string | null;
+  lastRequestTarget: "window" | "window+iframe" | "none";
+  lastDiagnosticsSource: "message" | "event" | null;
+  diagnosticsAgeMs: number | null;
+  staleReason: string | null;
+};
 
 export type DevConsoleResolvedSnapshot = Pick<
   ResolvedLayerFlags,
@@ -87,7 +104,12 @@ export type DevConsoleContextValue = {
   diagnostics: DevConsoleDiagnosticsSnapshot | null;
   runtime: DevConsoleRuntimeSnapshot | null;
   bridgeStatus: DevConsoleBridgeStatus;
+  bridgeMeta: DevConsoleBridgeMeta;
+  sceneLookModel: SceneLookModel;
   lastDiagnosticsAt: string | null;
   refreshDiagnostics: () => boolean;
   setDiagnosticsSnapshot: (snapshot: DevConsoleDiagnosticsSnapshot | null) => void;
+  updateSceneLookModel: (patch: SceneLookModelPatch | ((previous: SceneLookModel) => SceneLookModelPatch)) => void;
+  replaceSceneLookModel: (next?: SceneLookModel) => void;
+  lastActionResult: DevConsoleActionResult | null;
 };

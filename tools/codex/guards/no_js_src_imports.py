@@ -14,12 +14,20 @@ DEFAULT_IGNORED_DIRS = {
     ".git",
     ".turbo",
     ".venv",
+    "_attic",
+    "_local",
+    "_reports",
+    "_triage",
+    "artifacts",
     "__pycache__",
     "build",
     "coverage",
     "dist",
+    "logs",
     "node_modules",
+    "runs",
     "venv",
+    "worktrees",
 }
 
 SPECIFIER_PATTERN = re.compile(
@@ -73,6 +81,8 @@ def collect_source_files(repo_root: Path) -> List[Path]:
         if path.is_dir():
             continue
         if any(part in DEFAULT_IGNORED_DIRS for part in path.parts):
+            continue
+        if any(part.startswith("_backup") for part in path.parts):
             continue
         if path.suffix not in {".ts", ".tsx", ".mts", ".cts"}:
             continue

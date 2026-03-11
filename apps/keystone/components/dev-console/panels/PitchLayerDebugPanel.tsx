@@ -21,7 +21,6 @@ export function PitchLayerDebugPanel() {
 
     const enabled = new Set(diagnostics.enabledLayerIds);
     const missing = new Set(diagnostics.missingDataAttributes);
-    const domAttributes = new Set(Object.keys(diagnostics.domDataAttributes));
 
     return diagnostics.enabledLayerIds.map((layerId) => {
       const domKey = Object.keys(diagnostics.domDataAttributes).find((key) => key.includes(layerId.replace(/\./g, "-")));

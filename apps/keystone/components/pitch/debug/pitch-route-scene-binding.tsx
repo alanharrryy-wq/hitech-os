@@ -1,4 +1,3 @@
-\
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -6,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { DevConsoleSceneStudioBinding } from "../../dev-console/DevConsoleContext";
 import {
   KNOWN_PITCH_ROUTES,
+  buildCanonicalSceneQuery,
   LocalSceneStore,
   buildCanonicalSceneUrl,
   createDefaultSceneLibrary,
@@ -122,6 +122,18 @@ function buildSceneRecord(route: string, query: string, base?: SceneRecord): Sce
   };
 }
 
+function buildCanonicalQueryFromScene(scene: SceneRecord): string {
+  return buildCanonicalSceneQuery({
+    route: scene.route,
+    query: scene.query,
+    layerProfile: scene.layerProfile,
+    layersMode: scene.layers.mode,
+    layerIds: scene.layers.layerIds,
+    motion: scene.motion,
+    debug: true
+  });
+}
+
 function buildSceneUrl(scene: SceneRecord): string {
   return buildCanonicalSceneUrl({
     route: scene.route,
@@ -220,7 +232,15 @@ export function PitchRouteSceneBinding() {
 
   const handleSceneChange = useCallback(
     (draft: SceneRecord) => {
-      const normalized = buildSceneRecord(draft.route, draft.query, draft);
+      const canonicalQuery = buildCanonicalQueryFromScene(draft);
+      const normalized = buildSceneRecord(draft.route, canonicalQuery, {
+        ...draft,
+        query: canonicalQuery,
+        layers: {
+          mode: draft.layers.mode,
+          layerIds: [...draft.layers.layerIds]
+        }
+      });
       setScene(normalized);
       persistScene(normalized);
       navigateToScene(normalized);

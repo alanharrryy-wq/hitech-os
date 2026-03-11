@@ -32,7 +32,7 @@ describe("scene diagnostics payload", () => {
     expect(payload).toMatchObject({
       requestId: "req-1",
       route: "/pitch/02-industrial-flow",
-      query: "layers=stage.haze&motion=off",
+      query: "?layers=stage.haze&motion=off",
       timestamp: "2026-03-03T00:00:00.000Z",
       resolved: {
         source: "layers",
