@@ -34,6 +34,7 @@ python tools/hos/git_sentinel/cli_sentinel.py once --apply-repair
 python tools/hos/git_sentinel/cli_sentinel.py guardian --profile strict --apply --interval-sec 0
 python tools/hos/git_sentinel/cli_sentinel.py security-eval
 python tools/hos/git_sentinel/cli_sentinel.py ci-gate --base-ref origin/main
+python tools/hos/git_sentinel/dashboard_app.py --profile strict --port 8787 --open-browser
 ```
 
 `ci-gate` scopes findings to `base_ref...HEAD` and also includes local/staged pending changes.
@@ -49,6 +50,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File tools/hos/git_sentinel/manage_guar
 
 By default the scheduled task runs with `--no-ignore-update` to avoid dirtying tracked files during background cycles.
 Use `-Profile strict` or `-Profile aggressive` when you need tighter hygiene cadence.
+The installer defaults to hidden window execution (`pythonw.exe` if available).
 
 ## Runtime output
 
@@ -70,6 +72,16 @@ Key outputs:
 - `visualization/file_modification_heatmap.json`
 - `visualization/repository_growth_timeline.json`
 - `visualization/module_interaction_graph.json`
+
+## Dashboard (Local Web)
+
+Run a simple local operations dashboard (no extra dependencies):
+
+```powershell
+python tools/hos/git_sentinel/dashboard_app.py --profile strict --port 8787
+```
+
+Then open `http://127.0.0.1:8787/`.
 
 ## Safety model
 

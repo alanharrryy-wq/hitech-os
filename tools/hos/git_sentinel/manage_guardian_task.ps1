@@ -10,6 +10,7 @@ param(
     [ValidateSet("safe", "strict", "aggressive")]
     [string]$Profile = "safe",
     [string]$Config = "",
+    [switch]$ConsoleWindow,
     [switch]$RunNow,
     [switch]$NoExecute
 )
@@ -24,6 +25,23 @@ function Assert-ScheduledTasksSupport {
 
 function Resolve-RepoRoot {
     return (Resolve-Path (Join-Path $PSScriptRoot "..\..\..")).Path
+}
+
+function Resolve-PythonExecutable {
+    param(
+        [bool]$ForceConsoleWindow = $false
+    )
+
+    $python = (Get-Command python -ErrorAction Stop).Source
+    if ($ForceConsoleWindow) {
+        return $python
+    }
+    $pythonDir = Split-Path -Path $python -Parent
+    $pythonw = Join-Path $pythonDir "pythonw.exe"
+    if (Test-Path -LiteralPath $pythonw) {
+        return $pythonw
+    }
+    return $python
 }
 
 function Get-SafeInterval {
@@ -86,12 +104,15 @@ function Get-TaskInfo {
         return $null
     }
     $info = Get-ScheduledTaskInfo -TaskName $Name
+    $action = $task.Actions | Select-Object -First 1
     return [PSCustomObject]@{
         TaskName     = $task.TaskName
         State        = [string]$task.State
         LastRunTime  = $info.LastRunTime
         LastTaskResult = $info.LastTaskResult
         NextRunTime  = $info.NextRunTime
+        Execute = [string]$action.Execute
+        Arguments = [string]$action.Arguments
     }
 }
 
@@ -106,11 +127,12 @@ function Invoke-GuardianTaskAction {
         [bool]$DisableIgnoreUpdate,
         [string]$ProfileValue,
         [string]$ConfigValue,
-        [bool]$ShouldRunNow
+        [bool]$ShouldRunNow,
+        [bool]$ForceConsoleWindow
     )
 
     $repoRoot = Resolve-RepoRoot
-    $python = (Get-Command python -ErrorAction Stop).Source
+    $python = Resolve-PythonExecutable -ForceConsoleWindow $ForceConsoleWindow
     $cliScript = (Resolve-Path (Join-Path $repoRoot "tools/hos/git_sentinel/cli_sentinel.py")).Path
     $safeInterval = Get-SafeInterval -Interval $IntervalValue
 
@@ -144,7 +166,8 @@ function Invoke-GuardianTaskAction {
                 -AllowStartIfOnBatteries `
                 -DontStopIfGoingOnBatteries `
                 -StartWhenAvailable `
-                -MultipleInstances IgnoreNew
+                -MultipleInstances IgnoreNew `
+                -Hidden
             $principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -LogonType Interactive -RunLevel Limited
 
             Register-ScheduledTask `
@@ -160,9 +183,10 @@ function Invoke-GuardianTaskAction {
             }
 
             $status = Get-TaskInfo -Name $TaskNameValue
-            Write-Output "[git-sentinel] guardian_task=installed name=$TaskNameValue interval_sec=$safeInterval profile=$ProfileValue apply=$EnableApply apply_cleanup=$EnableApplyCleanup apply_repair=$EnableApplyRepair no_ignore_update=$DisableIgnoreUpdate"
+            Write-Output "[git-sentinel] guardian_task=installed name=$TaskNameValue interval_sec=$safeInterval profile=$ProfileValue apply=$EnableApply apply_cleanup=$EnableApplyCleanup apply_repair=$EnableApplyRepair no_ignore_update=$DisableIgnoreUpdate execute=$python"
             if ($status) {
                 Write-Output "[git-sentinel] state=$($status.State) last_result=$($status.LastTaskResult) next_run=$($status.NextRunTime)"
+                Write-Output "[git-sentinel] execute=$($status.Execute) args=$($status.Arguments)"
             }
             break
         }
@@ -210,6 +234,7 @@ function Invoke-GuardianTaskAction {
             }
             Write-Output "[git-sentinel] guardian_task=present name=$TaskNameValue state=$($status.State) last_result=$($status.LastTaskResult)"
             Write-Output "[git-sentinel] last_run=$($status.LastRunTime) next_run=$($status.NextRunTime)"
+            Write-Output "[git-sentinel] execute=$($status.Execute) args=$($status.Arguments)"
             break
         }
     }
@@ -229,4 +254,5 @@ Invoke-GuardianTaskAction `
     -DisableIgnoreUpdate $NoIgnoreUpdate.IsPresent `
     -ProfileValue $Profile `
     -ConfigValue $Config `
-    -ShouldRunNow $RunNow.IsPresent
+    -ShouldRunNow $RunNow.IsPresent `
+    -ForceConsoleWindow $ConsoleWindow.IsPresent
