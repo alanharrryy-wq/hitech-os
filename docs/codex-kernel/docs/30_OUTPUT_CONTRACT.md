@@ -115,18 +115,19 @@ Canonicality rule:
 
 - Graph-analysis JSON artifacts are canonical.
 - Markdown mirrors summarize JSON and must not contradict canonical JSON.
+- `GRAVITY_REPORT.json` must carry typed centrality and derived planning/risk sections (`centrality_summary`, `refactor_candidates`, `protected_node_recommendations`, `architecture_risk_flags`) in current-runtime emissions.
 
 ---
 
 ## Naming Rules (Deterministic)
 
 - Run IDs: `run_YYYYMMDD_HHMMSS` or monotonic counter
-- Agent IDs: `A_core`, `B_tooling`, `C_features`, `D_validation`, `Z_aggregator`
+- Agent IDs: `A_core`, `B_tooling`, `C_features`, `D_validation`, `Z_aggregator`, `R_reviewer`, `E_planner`
 - JSON: stable key order if possible; sort file lists
 
 Compatibility note:
 
-- Readers/parsers may accept legacy aliases (`A_worker`, `B_worker`, `C_worker`, `D_worker`, `Z_integrator`).
+- Readers/parsers may accept legacy aliases (`A_worker`, `B_worker`, `C_worker`, `D_worker`, `Z_integrator`, `R_worker`, `E_worker`).
 - Writers/generators/new artifacts must emit canonical IDs only.
 
 ---

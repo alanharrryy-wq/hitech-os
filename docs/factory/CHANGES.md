@@ -1,5 +1,29 @@
 # Factory Contract Changes
 
+## 2026-03-11 - Gravity Report Centrality and Derived Planning Enrichment
+
+### Added
+
+- Formal centrality model in `GRAVITY_REPORT` schema:
+  - typed per-node `centrality_metrics`
+  - run-level `centrality_summary`
+  - metric taxonomy including `BETWEENNESS_CENTRALITY`, `PAGERANK`, `EIGENVECTOR_CENTRALITY`, and related graph metrics
+- New derived, schema-validated gravity sections:
+  - `refactor_candidates`
+  - `protected_node_recommendations`
+  - `architecture_risk_flags`
+- Vocabulary additions in `tools/codex/contracts/factory/vocabulary.json` for centrality and derived-output taxonomies.
+
+### Updated
+
+- Integrator gravity scaffold payload in `tools/codex/factory/contracts.py` now emits the new centrality and derived sections by default.
+- Kernel/factory gravity law docs updated to encode these sections as additive compatibility-safe outputs.
+
+### Contract Impact
+
+- No breaking change to artifact file set.
+- `GRAVITY_REPORT.json` gains additive formal structures that improve machine-driven refactor, protection, and architecture-risk planning.
+
 ## 2026-03-11 - Graph Subsystem Hardening and Normalization Follow-up
 
 ### Added

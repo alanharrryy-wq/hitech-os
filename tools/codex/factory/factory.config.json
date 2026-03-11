@@ -56,6 +56,20 @@
         "docs/**",
         "packages/**",
         "tools/**"
+      ],
+      "E_planner": [
+        "docs/factory/**",
+        "tools/codex/contracts/**",
+        "tools/codex/dispatch/**",
+        "tools/codex/runs/**",
+        "tools/codex/schemas/**"
+      ],
+      "R_reviewer": [
+        "docs/factory/**",
+        "tools/codex/contracts/**",
+        "tools/codex/dispatch/**",
+        "tools/codex/runs/**",
+        "tools/codex/schemas/**"
       ]
     },
     "denylist_globs": {
@@ -82,6 +96,22 @@
         ".git/**",
         ".env",
         ".env.*"
+      ],
+      "E_planner": [
+        ".github/workflows/**",
+        ".git/**",
+        ".env",
+        ".env.*",
+        "apps/**",
+        "packages/**"
+      ],
+      "R_reviewer": [
+        ".github/workflows/**",
+        ".git/**",
+        ".env",
+        ".env.*",
+        "apps/**",
+        "packages/**"
       ]
     },
     "required_integrator_files": [
@@ -99,6 +129,20 @@
       "GRAVITY_SUMMARY.md",
       "DISPATCH_RECOMMENDATIONS.md"
     ],
+    "required_post_run_files": {
+      "E_planner": [
+        "TASK_BANK_DELTA.json",
+        "TASK_BANK_INGEST_REPORT.json",
+        "PLANNER_RECOMMENDATIONS.json",
+        "PLANNER_SUMMARY.md"
+      ],
+      "R_reviewer": [
+        "REVIEW_REPORT.json",
+        "REVIEW_FINDINGS.json",
+        "REVIEW_RECOMMENDATIONS.json",
+        "ARCH_REVIEW_SUMMARY.md"
+      ]
+    },
     "required_worker_files": [
       "STATUS.json",
       "SUMMARY.md",

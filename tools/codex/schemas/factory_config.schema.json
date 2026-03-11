@@ -164,6 +164,15 @@
           },
           "type": "array"
         },
+        "required_post_run_files": {
+          "additionalProperties": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "type": "object"
+        },
         "required_worker_files": {
           "items": {
             "type": "string"

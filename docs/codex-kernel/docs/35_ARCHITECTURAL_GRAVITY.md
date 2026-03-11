@@ -9,6 +9,7 @@ This law formalizes deterministic graph-analysis and planning outputs for factor
 Scope:
 
 - gravity classification
+- centrality-aware criticality scoring
 - protected-node protocol
 - impact cone analysis
 - dependency diff
@@ -30,6 +31,15 @@ Operator mirrors:
 - `DISPATCH_RECOMMENDATIONS.md`
 
 Validation and automation MUST trust canonical JSON first.
+
+`GRAVITY_REPORT.json` must include formal, schema-valid sections (when emitted by current runtime) for:
+
+- `centrality_summary`
+- `refactor_candidates`
+- `protected_node_recommendations`
+- `architecture_risk_flags`
+
+These sections are additive and compatibility-safe for legacy readers.
 
 ## Canonical Enums
 
@@ -86,6 +96,29 @@ Graph-analysis schemas use normalized structures for:
 - impact radius category: `LOCAL`, `MULTI_SCOPE`, `CROSS_WORKER`, `REPO_WIDE`
 - blocker taxonomy: `PROTECTED_NODE_CROSSING`, `MISSING_CONTRACT`, `OWNERSHIP_CONFLICT`, `VALIDATION_GAP`, `BASELINE_MISMATCH`, `INCOMPARABLE_SNAPSHOT`
 - anomaly taxonomy: `CYCLE`, `ORPHAN`, `UNOWNED`, `UNSTABLE_HUB`, `EXTERNAL_DRIFT`, `CLASSIFICATION_REGRESSION`, `OWNERSHIP_MISMATCH`, `CONTRACT_GAP`
+
+Centrality metrics in `GRAVITY_REPORT` must be machine-readable and typed. Recommended baseline metrics:
+
+- `BETWEENNESS_CENTRALITY`
+- `PAGERANK`
+- `EIGENVECTOR_CENTRALITY`
+- `CLOSENESS_CENTRALITY`
+- `DEGREE_CENTRALITY`
+- `IN_DEGREE_CENTRALITY`
+- `OUT_DEGREE_CENTRALITY`
+- `KATZ_CENTRALITY`
+- `HUB_SCORE`
+- `AUTHORITY_SCORE`
+- `BRIDGING_CENTRALITY`
+- `CURRENT_FLOW_BETWEENNESS`
+- `LOAD_CENTRALITY`
+- `HARMONIC_CENTRALITY`
+
+Derived planning/risk sections must be explicit:
+
+- `refactor_candidates` for prioritized structural refactors
+- `protected_node_recommendations` for protection-level and protocol guidance
+- `architecture_risk_flags` for cross-cutting architecture risk tracking
 
 ## Artifact Identity and Provenance
 
@@ -180,8 +213,8 @@ Z must not:
 
 Canonical worker IDs:
 
-- `A_core`, `B_tooling`, `C_features`, `D_validation`, `Z_aggregator`
+- `A_core`, `B_tooling`, `C_features`, `D_validation`, `Z_aggregator`, `R_reviewer`, `E_planner`
 
 Legacy runtime aliases accepted for compatibility:
 
-- `A_worker`, `B_worker`, `C_worker`, `D_worker`, `Z_integrator`
+- `A_worker`, `B_worker`, `C_worker`, `D_worker`, `Z_integrator`, `R_worker`, `E_worker`

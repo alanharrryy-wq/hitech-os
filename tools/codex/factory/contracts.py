@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from .common import (
+    CANONICAL_POST_RUN_WORKERS,
     CONTRACTS_DIR,
     INTEGRATOR,
     REPO_ROOT,
@@ -63,6 +64,34 @@ INTEGRATOR_GRAPH_SCHEMA_FILES: tuple[tuple[str, str], ...] = (
     ("DEPENDENCY_DIFF.json", "dependency_diff"),
     ("DISPATCH_RECOMMENDATIONS.json", "dispatch_recommendations"),
 )
+
+POST_RUN_REQUIRED_FILES: dict[str, tuple[str, ...]] = {
+    "R_reviewer": (
+        "REVIEW_REPORT.json",
+        "REVIEW_FINDINGS.json",
+        "REVIEW_RECOMMENDATIONS.json",
+        "ARCH_REVIEW_SUMMARY.md",
+    ),
+    "E_planner": (
+        "TASK_BANK_DELTA.json",
+        "TASK_BANK_INGEST_REPORT.json",
+        "PLANNER_RECOMMENDATIONS.json",
+        "PLANNER_SUMMARY.md",
+    ),
+}
+
+POST_RUN_SCHEMA_FILES: dict[str, tuple[tuple[str, str], ...]] = {
+    "R_reviewer": (
+        ("REVIEW_REPORT.json", "review_report"),
+        ("REVIEW_FINDINGS.json", "review_findings"),
+        ("REVIEW_RECOMMENDATIONS.json", "review_recommendations"),
+    ),
+    "E_planner": (
+        ("TASK_BANK_DELTA.json", "task_bank_delta"),
+        ("TASK_BANK_INGEST_REPORT.json", "task_bank_ingest_report"),
+        ("PLANNER_RECOMMENDATIONS.json", "planner_recommendations"),
+    ),
+}
 
 EVOLUTIONARY_REQUIRED_FILES: tuple[str, ...] = (
     "SELF_EVAL_REPORT.json",
@@ -244,9 +273,10 @@ def _default_gravity_report(run_id: str, worker: str) -> dict[str, Any]:
     base = _base_graph_artifact(artifact_type="GRAVITY_REPORT", run_id=run_id, worker=worker)
     base.update(
         {
+            "schema_version": "2.1.0",
             "policy": {
                 "policy_name": "default_arch_gravity",
-                "policy_version": "2.0.0",
+                "policy_version": "2.1.0",
                 "threshold_mode": "hybrid",
                 "thresholds": {
                     "score_scale": "0_to_100",
@@ -302,9 +332,74 @@ def _default_gravity_report(run_id: str, worker: str) -> dict[str, Any]:
                 "orphan_count": 0,
                 "external_dependency_count": 0,
                 "highest_risk_level": "NONE",
+                "refactor_candidate_count": 0,
+                "protected_recommendation_count": 0,
+                "architecture_risk_flag_count": 0,
+                "centrality_metric_count": 0,
+                "centrality_computed_node_count": 0,
+            },
+            "centrality_summary": {
+                "computed": False,
+                "graph_model": "DIRECTED_GENERAL",
+                "normalization": "ALGORITHM_DEFAULT",
+                "damping_factor": 0.85,
+                "max_iterations": 100,
+                "convergence_tolerance": 0.000001,
+                "node_coverage": 0,
+                "metric_status": [
+                    {
+                        "metric": "BETWEENNESS_CENTRALITY",
+                        "computed": False,
+                        "computation_basis": "NOT_COMPUTED",
+                        "algorithm": "Brandes",
+                        "notes": ["Placeholder scaffold value."],
+                    },
+                    {
+                        "metric": "PAGERANK",
+                        "computed": False,
+                        "computation_basis": "NOT_COMPUTED",
+                        "algorithm": "PageRank",
+                        "notes": ["Placeholder scaffold value."],
+                    },
+                    {
+                        "metric": "EIGENVECTOR_CENTRALITY",
+                        "computed": False,
+                        "computation_basis": "NOT_COMPUTED",
+                        "algorithm": "Power iteration",
+                        "notes": ["Placeholder scaffold value."],
+                    },
+                    {
+                        "metric": "CLOSENESS_CENTRALITY",
+                        "computed": False,
+                        "computation_basis": "NOT_COMPUTED",
+                        "algorithm": "Shortest-path based",
+                        "notes": ["Placeholder scaffold value."],
+                    },
+                    {
+                        "metric": "DEGREE_CENTRALITY",
+                        "computed": False,
+                        "computation_basis": "NOT_COMPUTED",
+                        "algorithm": "Degree-based",
+                        "notes": ["Placeholder scaffold value."],
+                    },
+                    {
+                        "metric": "BRIDGING_CENTRALITY",
+                        "computed": False,
+                        "computation_basis": "NOT_COMPUTED",
+                        "algorithm": "Bridge coefficient",
+                        "notes": ["Placeholder scaffold value."],
+                    },
+                ],
+                "top_nodes_by_metric": [],
+                "computation_notes": [
+                    "Centrality metrics are optional but recommended for high-quality gravity scoring.",
+                ],
             },
             "nodes": [],
             "hotspots": [],
+            "refactor_candidates": [],
+            "protected_node_recommendations": [],
+            "architecture_risk_flags": [],
             "anomalies": {
                 "cycles": [],
                 "orphan_nodes": [],
@@ -384,7 +479,15 @@ def _default_impact_cone_report(run_id: str, worker: str) -> dict[str, Any]:
                     "estimated_minutes": 0,
                     "risk_level": "NONE",
                 },
-                "recommended_owner_sequence": ["A_core", "B_tooling", "C_features", "D_validation", "Z_aggregator"],
+                "recommended_owner_sequence": [
+                    "A_core",
+                    "B_tooling",
+                    "C_features",
+                    "D_validation",
+                    "Z_aggregator",
+                    "R_reviewer",
+                    "E_planner",
+                ],
             },
             "validation_targets": {
                 "contracts": [],
@@ -460,6 +563,8 @@ def _default_dispatch_recommendations(run_id: str, worker: str) -> dict[str, Any
                     "C_features",
                     "D_validation",
                     "Z_aggregator",
+                    "R_reviewer",
+                    "E_planner",
                 ],
                 "highest_risk_level": "NONE",
             },
@@ -469,6 +574,8 @@ def _default_dispatch_recommendations(run_id: str, worker: str) -> dict[str, Any
                 "C_features": [],
                 "D_validation": [],
                 "Z_aggregator": [],
+                "R_reviewer": [],
+                "E_planner": [],
             },
             "recommended_slices": [],
             "deferred_work": [],
@@ -476,6 +583,108 @@ def _default_dispatch_recommendations(run_id: str, worker: str) -> dict[str, Any
         }
     )
     return base
+
+
+def _default_review_report(run_id: str, worker: str) -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "run_id": run_id,
+        "worker_id": worker,
+        "generated_at_utc": "1970-01-01T00:00:00Z",
+        "status": "PASS",
+        "summary": {
+            "finding_count": 0,
+            "recommendation_count": 0,
+            "severity_counts": {
+                "low": 0,
+                "medium": 0,
+                "high": 0,
+                "critical": 0,
+            },
+            "category_counts": {},
+        },
+        "history": {
+            "runs_considered": 0,
+            "repeated_risk_patterns": 0,
+        },
+        "source_artifacts": [
+            "Z_aggregator/GRAVITY_REPORT.json",
+            "Z_aggregator/IMPACT_CONE_REPORT.json",
+            "Z_aggregator/DEPENDENCY_DIFF.json",
+            "Z_aggregator/DISPATCH_RECOMMENDATIONS.json",
+        ],
+        "notes": [],
+    }
+
+
+def _default_review_findings(run_id: str, worker: str) -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "run_id": run_id,
+        "worker_id": worker,
+        "generated_at_utc": "1970-01-01T00:00:00Z",
+        "findings": [],
+    }
+
+
+def _default_review_recommendations(run_id: str, worker: str) -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "run_id": run_id,
+        "worker_id": worker,
+        "generated_at_utc": "1970-01-01T00:00:00Z",
+        "recommendations": [],
+    }
+
+
+def _default_task_bank_delta(run_id: str, worker: str) -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "run_id": run_id,
+        "worker_id": worker,
+        "generated_at_utc": "1970-01-01T00:00:00Z",
+        "status": "PASS",
+        "summary": {
+            "candidate_count": 0,
+            "added_count": 0,
+            "updated_count": 0,
+            "duplicate_count": 0,
+        },
+        "added_tasks": [],
+        "updated_tasks": [],
+        "skipped_duplicates": [],
+    }
+
+
+def _default_task_bank_ingest_report(run_id: str, worker: str) -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "run_id": run_id,
+        "worker_id": worker,
+        "generated_at_utc": "1970-01-01T00:00:00Z",
+        "status": "PASS",
+        "summary": {
+            "source_count": 0,
+            "candidate_count": 0,
+            "accepted_count": 0,
+            "rejected_count": 0,
+        },
+        "sources": [],
+        "accepted": [],
+        "rejected": [],
+        "notes": [],
+    }
+
+
+def _default_planner_recommendations(run_id: str, worker: str) -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "run_id": run_id,
+        "worker_id": worker,
+        "generated_at_utc": "1970-01-01T00:00:00Z",
+        "recommendations": [],
+        "notes": [],
+    }
 
 
 def scaffold_worker_bundle(run_id: str, worker: str) -> dict[str, Any]:
@@ -509,6 +718,22 @@ def scaffold_worker_bundle(run_id: str, worker: str) -> dict[str, Any]:
             "notes": ["PENDING_AUTOCLOSEOUT_EVALUATION"],
         },
     }
+    if worker == "R_reviewer":
+        files_payload.update(
+            {
+                "REVIEW_REPORT.json": _default_review_report(run_id, worker),
+                "REVIEW_FINDINGS.json": _default_review_findings(run_id, worker),
+                "REVIEW_RECOMMENDATIONS.json": _default_review_recommendations(run_id, worker),
+            }
+        )
+    elif worker == "E_planner":
+        files_payload.update(
+            {
+                "TASK_BANK_DELTA.json": _default_task_bank_delta(run_id, worker),
+                "TASK_BANK_INGEST_REPORT.json": _default_task_bank_ingest_report(run_id, worker),
+                "PLANNER_RECOMMENDATIONS.json": _default_planner_recommendations(run_id, worker),
+            }
+        )
 
     for name, payload in files_payload.items():
         path = target / name
@@ -532,6 +757,10 @@ def scaffold_worker_bundle(run_id: str, worker: str) -> dict[str, Any]:
         ),
         "SELF_CORRECTION_LOG.jsonl": "",
     }
+    if worker == "R_reviewer":
+        text_files["ARCH_REVIEW_SUMMARY.md"] = "# Architecture Review Summary\n\nPending review synthesis.\n"
+    elif worker == "E_planner":
+        text_files["PLANNER_SUMMARY.md"] = "# Planner Summary\n\nPending task bank synthesis.\n"
     for name, text in text_files.items():
         path = target / name
         if not path.exists():
@@ -1150,7 +1379,8 @@ def autocloseout_worker_bundle(run_id: str, worker: str) -> dict[str, Any]:
     status_payload["noop"] = bool(files_changed_payload.get("noop", False))
     status_payload["noop_reason"] = str(files_changed_payload.get("noop_reason", ""))
     status_payload["noop_ack"] = str(files_changed_payload.get("noop_ack", ""))
-    status_payload["artifacts"] = sorted(set(list(WORKER_REQUIRED_FILES)))
+    post_run_required = list(POST_RUN_REQUIRED_FILES.get(worker, ()))
+    status_payload["artifacts"] = sorted(set([*list(WORKER_REQUIRED_FILES), *post_run_required]))
     write_json(status_path, status_payload)
 
     summary_generated = _build_summary_md(run_id, worker, changes, str(status_payload.get("status", "PASS")))
@@ -1214,7 +1444,7 @@ def autocloseout_worker_bundle(run_id: str, worker: str) -> dict[str, Any]:
 
 
 def autocloseout_run(run_id: str, workers: list[str] | None = None) -> dict[str, Any]:
-    chosen = canonicalize_workers(workers)
+    chosen = canonicalize_workers(workers, include_post_run=True)
     results = [autocloseout_worker_bundle(run_id, worker) for worker in chosen if worker != INTEGRATOR]
     return {
         "run_id": run_id,
@@ -1224,7 +1454,7 @@ def autocloseout_run(run_id: str, workers: list[str] | None = None) -> dict[str,
 
 
 def scaffold_all_bundles(run_id: str, workers: list[str] | None = None) -> dict[str, Any]:
-    chosen = canonicalize_workers(workers)
+    chosen = canonicalize_workers(workers, include_post_run=True)
     result = {
         "run_id": run_id,
         "workers": [],
@@ -1241,8 +1471,24 @@ def validate_bundle_shape(run_id: str, worker: str) -> list[str]:
     cfg = load_factory_config(strict=False)
     worker_files = cfg.get("workers", {}).get("required_worker_files", list(WORKER_REQUIRED_FILES))
     integrator_files = cfg.get("workers", {}).get("required_integrator_files", list(INTEGRATOR_REQUIRED_FILES))
+    post_run_files_cfg = (
+        cfg.get("workers", {}).get("required_post_run_files", {})
+        if isinstance(cfg.get("workers", {}).get("required_post_run_files", {}), dict)
+        else {}
+    )
+    post_run_files = post_run_files_cfg.get(worker, POST_RUN_REQUIRED_FILES.get(worker, ()))
     if worker != INTEGRATOR:
-        required = tuple(sorted(set(list(worker_files) + list(EVOLUTIONARY_REQUIRED_FILES))))
+        required = tuple(
+            sorted(
+                set(
+                    [
+                        *list(worker_files),
+                        *list(EVOLUTIONARY_REQUIRED_FILES),
+                        *([str(item) for item in post_run_files] if worker in CANONICAL_POST_RUN_WORKERS else []),
+                    ]
+                )
+            )
+        )
     else:
         required = tuple(integrator_files)
     errors: list[str] = []
@@ -1279,6 +1525,11 @@ def validate_bundle_schemas(run_id: str, worker: str) -> list[str]:
             errors.extend([f"SCOPE_LOCK.json: {item}" for item in validate_payload("scope_lock", read_json(scope_lock_path))])
         if handoff_path.exists():
             errors.extend([f"HANDOFF_NOTE.json: {item}" for item in validate_payload("handoff_note", read_json(handoff_path))])
+        for filename, schema_name in POST_RUN_SCHEMA_FILES.get(worker, ()):
+            payload_path = target / filename
+            if payload_path.exists():
+                schema_errors = validate_payload(schema_name, read_json(payload_path))
+                errors.extend([f"{filename}: {item}" for item in schema_errors])
     else:
         for filename, schema_name in INTEGRATOR_GRAPH_SCHEMA_FILES:
             payload_path = target / filename
@@ -1307,7 +1558,7 @@ def validate_bundle(run_id: str, worker: str) -> dict[str, Any]:
 
 
 def validate_run(run_id: str, workers: list[str] | None = None, *, auto_closeout: bool = False) -> dict[str, Any]:
-    chosen = canonicalize_workers(workers)
+    chosen = canonicalize_workers(workers, include_post_run=True)
     closeout_payload: dict[str, Any] | None = None
     if auto_closeout:
         closeout_payload = autocloseout_run(run_id, workers=chosen)

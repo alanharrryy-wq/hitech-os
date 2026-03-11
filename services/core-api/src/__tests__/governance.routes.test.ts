@@ -75,14 +75,14 @@ async function createGovernanceRunsFixture(): Promise<{ runsRoot: string; runId:
   const runsRoot = await mkdtemp(path.join(tmpdir(), "core-api-governance-routes-"));
   const runId = "factory_20260224_170000_aaaaaaaa_001";
 
-  await mkdir(path.join(runsRoot, runId, "E_worker"), { recursive: true });
+  await mkdir(path.join(runsRoot, runId, "E_planner"), { recursive: true });
   await mkdir(path.join(runsRoot, runId, "Z_integrator"), { recursive: true });
   await writeFile(
     path.join(runsRoot, runId, "RUN_MANIFEST.json"),
     '{\n  "run_id": "fixture"\n}\n',
     "utf8"
   );
-  await writeFile(path.join(runsRoot, runId, "E_worker", "SUMMARY.md"), "# worker\n", "utf8");
+  await writeFile(path.join(runsRoot, runId, "E_planner", "SUMMARY.md"), "# worker\n", "utf8");
   await writeFile(path.join(runsRoot, "LATEST_RUN_ID.txt"), `${runId}\n`, "utf8");
 
   return {
@@ -133,7 +133,7 @@ describe("governance routes", () => {
         runs: Array<{
           runId: string;
           hasRunManifest: boolean;
-          hasLegacyEWorkerBundle: boolean;
+          hasLegacyAliasBundles: boolean;
           hasZAggregatorBundle: boolean;
         }>;
       };
@@ -142,7 +142,7 @@ describe("governance routes", () => {
       assert.equal(payload.runs.length, 1);
       assert.equal(payload.runs[0]?.runId, fixture.runId);
       assert.equal(payload.runs[0]?.hasRunManifest, true);
-      assert.equal(payload.runs[0]?.hasLegacyEWorkerBundle, true);
+      assert.equal(payload.runs[0]?.hasLegacyAliasBundles, true);
       assert.equal(payload.runs[0]?.hasZAggregatorBundle, true);
     } finally {
       await started.close();
@@ -171,7 +171,7 @@ describe("governance routes", () => {
         true
       );
       assert.equal(
-        foundPayload.artifacts.some((entry) => entry.relativePath === "E_worker/SUMMARY.md"),
+        foundPayload.artifacts.some((entry) => entry.relativePath === "E_planner/SUMMARY.md"),
         true
       );
 

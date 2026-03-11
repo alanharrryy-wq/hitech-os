@@ -9,6 +9,7 @@ from typing import Any, Mapping
 from .common import (
     FACTORY_DIR,
     REPO_ROOT,
+    CANONICAL_POST_RUN_WORKERS,
     canonical_worker_id,
     ensure_dir,
     read_json,
@@ -82,6 +83,20 @@ def default_factory_config() -> dict[str, Any]:
                 "GRAVITY_SUMMARY.md",
                 "DISPATCH_RECOMMENDATIONS.md",
             ],
+            "required_post_run_files": {
+                "R_reviewer": [
+                    "REVIEW_REPORT.json",
+                    "REVIEW_FINDINGS.json",
+                    "REVIEW_RECOMMENDATIONS.json",
+                    "ARCH_REVIEW_SUMMARY.md",
+                ],
+                "E_planner": [
+                    "TASK_BANK_DELTA.json",
+                    "TASK_BANK_INGEST_REPORT.json",
+                    "PLANNER_RECOMMENDATIONS.json",
+                    "PLANNER_SUMMARY.md",
+                ],
+            },
             "allowlist_globs": {
                 "A_core": ["apps/**", "packages/**", "docs/**"],
                 "B_tooling": ["tools/**", "docs/**", "packages/**"],
@@ -93,12 +108,16 @@ def default_factory_config() -> dict[str, Any]:
                     "tools/_local/visual/**",
                 ],
                 "D_validation": ["docs/**", "tools/**", "packages/**"],
+                "R_reviewer": ["tools/codex/runs/**", "tools/codex/dispatch/**", "docs/factory/**", "tools/codex/contracts/**", "tools/codex/schemas/**"],
+                "E_planner": ["tools/codex/runs/**", "tools/codex/dispatch/**", "docs/factory/**", "tools/codex/contracts/**", "tools/codex/schemas/**"],
             },
             "denylist_globs": {
                 "A_core": [".github/workflows/**", ".git/**", ".env", ".env.*"],
                 "B_tooling": [".github/workflows/**", ".git/**", ".env", ".env.*"],
                 "C_features": [".github/workflows/**", ".git/**", ".env", ".env.*"],
                 "D_validation": [".github/workflows/**", ".git/**", ".env", ".env.*"],
+                "R_reviewer": [".github/workflows/**", ".git/**", ".env", ".env.*", "apps/**", "packages/**"],
+                "E_planner": [".github/workflows/**", ".git/**", ".env", ".env.*", "apps/**", "packages/**"],
             },
         },
         "security": {
@@ -196,6 +215,21 @@ def _canonicalize_worker_globs(section: Any) -> dict[str, Any]:
     return normalized
 
 
+def _canonicalize_post_run_required(section: Any) -> dict[str, list[str]]:
+    if not isinstance(section, Mapping):
+        return {}
+    normalized: dict[str, list[str]] = {}
+    for worker, value in section.items():
+        canonical = canonical_worker_id(str(worker).strip())
+        if canonical not in CANONICAL_POST_RUN_WORKERS:
+            continue
+        files = [str(item).strip() for item in value] if isinstance(value, list) else []
+        files = [item for item in files if item]
+        if files:
+            normalized[canonical] = sorted(set(files))
+    return normalized
+
+
 def _canonicalize_merged_config(payload: Mapping[str, Any]) -> dict[str, Any]:
     merged = deepcopy(dict(payload))
     run_block = merged.get("run", {})
@@ -211,6 +245,9 @@ def _canonicalize_merged_config(payload: Mapping[str, Any]) -> dict[str, Any]:
         workers_obj = dict(workers_block)
         workers_obj["allowlist_globs"] = _canonicalize_worker_globs(workers_obj.get("allowlist_globs", {}))
         workers_obj["denylist_globs"] = _canonicalize_worker_globs(workers_obj.get("denylist_globs", {}))
+        workers_obj["required_post_run_files"] = _canonicalize_post_run_required(
+            workers_obj.get("required_post_run_files", {})
+        )
         merged["workers"] = workers_obj
     return merged
 

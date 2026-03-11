@@ -7,6 +7,8 @@
 - `C_features`: product/feature implementation within assigned scope.
 - `D_validation`: validation, testing, policy checks, and risk controls.
 - `Z_aggregator`: integration, overlap resolution, and final reporting.
+- `R_reviewer`: post-run structural review synthesis over integrated artifacts.
+- `E_planner`: post-run task synthesis, dedupe, and task-bank deltas.
 
 ## Compatibility Mapping
 
@@ -17,6 +19,8 @@ Legacy naming used in historical docs is mapped as:
 - `C_worker` -> `C_features`
 - `D_worker` -> `D_validation`
 - `Z_integrator` -> `Z_aggregator`
+- `R_worker` -> `R_reviewer`
+- `E_worker` -> `E_planner`
 
 ## Required Worker Bundle Artifacts
 
@@ -30,6 +34,22 @@ Legacy naming used in historical docs is mapped as:
 - `HANDOFF_NOTE.json`
 - `LOGS/INDEX.json`
 - `DONE.marker`
+
+## Post-Run Required Artifacts
+
+`R_reviewer`:
+
+- `REVIEW_REPORT.json`
+- `REVIEW_FINDINGS.json`
+- `REVIEW_RECOMMENDATIONS.json`
+- `ARCH_REVIEW_SUMMARY.md`
+
+`E_planner`:
+
+- `TASK_BANK_DELTA.json`
+- `TASK_BANK_INGEST_REPORT.json`
+- `PLANNER_RECOMMENDATIONS.json`
+- `PLANNER_SUMMARY.md`
 
 ## Rework Transport
 

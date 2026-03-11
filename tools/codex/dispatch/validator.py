@@ -17,18 +17,20 @@ from typing import Any
 PASS = "PASS"
 BLOCKED = "BLOCKED"
 
-CODEX_IDS: tuple[str, ...] = (
-    "A_core",
-    "B_tooling",
-    "C_features",
-    "D_validation",
-    "Z_aggregator",
-)
+CODEX_BUILD_IDS: tuple[str, ...] = ("A_core", "B_tooling", "C_features")
+CODEX_VALIDATION_IDS: tuple[str, ...] = ("D_validation",)
+CODEX_PRE_INTEGRATION_IDS: tuple[str, ...] = (*CODEX_BUILD_IDS, *CODEX_VALIDATION_IDS)
+CODEX_INTEGRATOR_ID = "Z_aggregator"
+CODEX_POST_RUN_IDS: tuple[str, ...] = ("R_reviewer", "E_planner")
+CODEX_EXECUTION_IDS: tuple[str, ...] = (*CODEX_PRE_INTEGRATION_IDS, CODEX_INTEGRATOR_ID)
+CODEX_IDS: tuple[str, ...] = (*CODEX_EXECUTION_IDS, *CODEX_POST_RUN_IDS)
 WORKER_ALIAS_TO_CANONICAL: dict[str, str] = {
     "A_worker": "A_core",
     "B_worker": "B_tooling",
     "C_worker": "C_features",
     "D_worker": "D_validation",
+    "R_worker": "R_reviewer",
+    "E_worker": "E_planner",
     "Z_integrator": "Z_aggregator",
 }
 LEGACY_ALIASES_BY_CANONICAL: dict[str, list[str]] = {}
@@ -63,6 +65,84 @@ def _canonicalize_workers(workers: list[str]) -> list[str]:
     return deduped
 
 
+def _allowed_workers(
+    *,
+    include_integrator: bool,
+    include_post_run: bool,
+) -> list[str]:
+    allowed: list[str] = [*CODEX_PRE_INTEGRATION_IDS]
+    if include_integrator:
+        allowed.append(CODEX_INTEGRATOR_ID)
+    if include_post_run:
+        allowed.extend(CODEX_POST_RUN_IDS)
+    return allowed
+
+
+def _default_workers_for_run(
+    run_id: str,
+    *,
+    include_integrator: bool,
+    include_post_run: bool,
+) -> list[str]:
+    allowed = _allowed_workers(
+        include_integrator=include_integrator,
+        include_post_run=include_post_run,
+    )
+    allowed_set = set(allowed)
+    run_root = RUNS_ROOT / str(run_id).strip()
+
+    manifest_path = run_root / "RUN_MANIFEST.json"
+    manifest_payload = _safe_read_json(manifest_path) if manifest_path.exists() else {}
+    declared_workers: list[str] = []
+    workers_value = manifest_payload.get("workers", [])
+    if isinstance(workers_value, list):
+        declared_workers.extend(str(item).strip() for item in workers_value if str(item).strip())
+    integrator_value = str(manifest_payload.get("integrator", "")).strip()
+    if integrator_value:
+        declared_workers.append(integrator_value)
+    if declared_workers:
+        chosen = [worker for worker in _canonicalize_workers(declared_workers) if worker in allowed_set]
+        if chosen:
+            return sorted(chosen, key=lambda worker: allowed.index(worker))
+
+    discovered: list[str] = []
+    for worker in allowed:
+        for candidate in _bundle_path_candidates(run_id, worker):
+            if candidate.exists() and candidate.is_dir():
+                discovered.append(worker)
+                break
+    if discovered:
+        return discovered
+
+    return list(allowed)
+
+
+def _required_prompt_workers() -> tuple[str, ...]:
+    return CODEX_EXECUTION_IDS
+
+
+def _required_bundle_entries(worker: str) -> tuple[str, ...]:
+    canonical = _canonical_worker_id(worker)
+    required: list[str] = [*WORKER_BUNDLE_REQUIRED]
+    required.extend(list(POST_RUN_BUNDLE_REQUIRED.get(canonical, ())))
+    return tuple(sorted(set(required)))
+
+
+def _post_run_prompt_placeholder(worker: str) -> str:
+    canonical = _canonical_worker_id(worker)
+    if canonical == "R_reviewer":
+        return (
+            "POST_RUN_REVIEWER_PLACEHOLDER: synthesize review artifacts using Z_aggregator outputs only.\n"
+            "Do not mutate product code. Emit REVIEW_REPORT/REVIEW_FINDINGS/REVIEW_RECOMMENDATIONS.\n"
+        )
+    if canonical == "E_planner":
+        return (
+            "POST_RUN_PLANNER_PLACEHOLDER: synthesize task-bank deltas from Z_aggregator and R_reviewer signals.\n"
+            "Do not mutate product code. Emit TASK_BANK_DELTA/TASK_BANK_INGEST_REPORT/PLANNER_RECOMMENDATIONS.\n"
+        )
+    return "AUTOFIX_PROMPT_PLACEHOLDER: worker prompt was missing and auto-generated.\n"
+
+
 def _bundle_path_candidates(run_id: str, worker: str) -> list[Path]:
     candidates: list[Path] = []
     seen: set[str] = set()
@@ -95,6 +175,8 @@ PACK_WORKER_HEADERS: dict[str, str] = {
     "C_features": "=== C_features PROMPT ===",
     "D_validation": "=== D_validation PROMPT ===",
     "Z_aggregator": "=== Z_aggregator PROMPT ===",
+    "R_reviewer": "=== R_reviewer PROMPT ===",
+    "E_planner": "=== E_planner PROMPT ===",
 }
 PROMPT_SOURCE_SNAPSHOT_FILE = "PROMPTS_PACK_SOURCE.txt"
 PROMPT_RESOLVED_SNAPSHOT_FILE = "PROMPTS_PACK_RESOLVED.txt"
@@ -115,7 +197,7 @@ PROMPTS_ROOT = CODEX_DIR / "prompts"
 RUNS_ROOT = CODEX_DIR / "runs"
 
 HEADER_SCAN_LINES = 40
-DOC_WORKERS: tuple[str, ...] = CODEX_IDS[:-1]
+DOC_WORKERS: tuple[str, ...] = CODEX_PRE_INTEGRATION_IDS
 WORKER_BUNDLE_REQUIRED: tuple[str, ...] = (
     "STATUS.json",
     "SUMMARY.md",
@@ -131,6 +213,20 @@ WORKER_BUNDLE_REQUIRED: tuple[str, ...] = (
     "SELF_CORRECTION_LOG.jsonl",
     "DONE.marker",
 )
+POST_RUN_BUNDLE_REQUIRED: dict[str, tuple[str, ...]] = {
+    "R_reviewer": (
+        "REVIEW_REPORT.json",
+        "REVIEW_FINDINGS.json",
+        "REVIEW_RECOMMENDATIONS.json",
+        "ARCH_REVIEW_SUMMARY.md",
+    ),
+    "E_planner": (
+        "TASK_BANK_DELTA.json",
+        "TASK_BANK_INGEST_REPORT.json",
+        "PLANNER_RECOMMENDATIONS.json",
+        "PLANNER_SUMMARY.md",
+    ),
+}
 AGGREGATOR_FINAL_REPORT_REL = "FINAL_REPORT.txt"
 AGGREGATOR_FINAL_REPORT_LEGACY_REL = "FILES/FINAL_REPORT.txt"
 ROOT_FINAL_REPORT = REPO_ROOT / "FINAL_REPORT.md"
@@ -201,6 +297,10 @@ def _fallback_factory_role(worker: str) -> str:
         "D_worker": "D_validation",
         "Z_aggregator": "Z_aggregator",
         "Z_integrator": "Z_aggregator",
+        "R_reviewer": "R_reviewer",
+        "R_worker": "R_reviewer",
+        "E_planner": "E_planner",
+        "E_worker": "E_planner",
     }
     value = str(worker).strip()
     return mapping.get(value, value)
@@ -263,7 +363,23 @@ def _available_skills_block(worker: str) -> str:
 
 
 def _prompt_contract_header(run_id: str, worker: str) -> str:
+    canonical_worker = _canonical_worker_id(worker)
     done_marker = f"tools/codex/runs/{run_id}/{worker}/DONE.marker"
+    auto_report_artifacts = [
+        "STATUS.json",
+        "SUMMARY.md",
+        "FILES_CHANGED.json",
+        "DIFF.patch",
+        "SUGGESTIONS.md",
+        "SCOPE_LOCK.json",
+        "HANDOFF_NOTE.json",
+        "LOGS/INDEX.json",
+        "CODEX_OUTPUT.txt",
+        "SELF_EVAL_REPORT.json",
+        "SANCTION_SCORE.json",
+        "SELF_CORRECTION_LOG.jsonl",
+        *POST_RUN_BUNDLE_REQUIRED.get(canonical_worker, ()),
+    ]
     lines = [
         f"YOU ARE CODEX WORKER: {worker}",
         f"RUN_ID: {run_id}",
@@ -271,12 +387,7 @@ def _prompt_contract_header(run_id: str, worker: str) -> str:
         "SESSION_POLICY: CLEAN_START_REQUIRED",
         "SESSION_RECOVERY: IF_HISTORY_PRESENT_IGNORE_PRIOR_CONTEXT_AND_RESTATE_SCOPE",
         "AUTO_REPORT_REQUIRED: true",
-        (
-            "AUTO_REPORT_ARTIFACTS: "
-            "STATUS.json,SUMMARY.md,FILES_CHANGED.json,DIFF.patch,SUGGESTIONS.md,"
-            "SCOPE_LOCK.json,HANDOFF_NOTE.json,LOGS/INDEX.json,CODEX_OUTPUT.txt,"
-            "SELF_EVAL_REPORT.json,SANCTION_SCORE.json,SELF_CORRECTION_LOG.jsonl"
-        ),
+        f"AUTO_REPORT_ARTIFACTS: {','.join(auto_report_artifacts)}",
         "PRE_DONE_EVOLUTIONARY_CHECK_REQUIRED: true",
         "PRE_DONE_EVOLUTIONARY_MODE: NON_BLOCKING_AUTOSANCTION_RETRY",
         (
@@ -305,7 +416,7 @@ def _prompt_contract_header(run_id: str, worker: str) -> str:
         "AUTO_RECOVERY_REQUIRED: true",
         f"DONE_MARKER_PATH: {done_marker}",
     ]
-    if worker in {"C_features", "C_worker"}:
+    if canonical_worker == "C_features":
         lines.extend(
             [
                 "VISUAL_BASELINE_OWNER: true",
@@ -313,13 +424,22 @@ def _prompt_contract_header(run_id: str, worker: str) -> str:
                 "VISUAL_BASELINE_COMMAND: python tools/hos/visual/cli_visual.py --suite keystone --update-baseline",
             ]
         )
-    if worker in {"Z_aggregator", "Z_integrator"}:
+    if canonical_worker == "Z_aggregator":
         lines.extend(
             [
                 "LEDGER_WATCH_REQUIRED: true",
                 f"LEDGER_WATCH_COMMAND: python -m tools.codex.factory watch --run-id {run_id}",
                 f"LEDGER_EVENTS_COMMAND: python -m tools.codex.factory ledger --run-id {run_id} --raw-events --limit 200",
                 "START_WORK_AFTER_WORKERS_DONE: true",
+            ]
+        )
+    if canonical_worker in CODEX_POST_RUN_IDS:
+        lines.extend(
+            [
+                "POST_RUN_INTELLIGENCE_ONLY: true",
+                "NO_DIRECT_CODE_MUTATION: true",
+                f"POST_RUN_SOURCE_ROOT: tools/codex/runs/{run_id}/Z_aggregator/",
+                f"POST_RUN_REVIEW_ROOT: tools/codex/runs/{run_id}/R_reviewer/",
             ]
         )
     lines.extend(
@@ -478,7 +598,14 @@ def _sync_run_from_worktrees(
     required_only: bool,
     include_queue: bool,
 ) -> dict[str, Any]:
-    chosen_workers = _canonicalize_workers(workers or list(CODEX_IDS))
+    chosen_workers = _canonicalize_workers(
+        workers
+        or _default_workers_for_run(
+            run_id,
+            include_integrator=True,
+            include_post_run=True,
+        )
+    )
     worker_payload = [_sync_worker_bundle_from_worktree(run_id, worker, required_only=required_only) for worker in chosen_workers]
     queue_payload: dict[str, Any] | None = None
     if include_queue:
@@ -496,19 +623,37 @@ def _sync_run_from_worktrees(
     return payload
 
 
-def _parse_workers_subset(raw: str | None) -> list[str]:
+def _parse_workers_subset(
+    raw: str | None,
+    *,
+    run_id: str | None = None,
+    include_integrator: bool = True,
+    include_post_run: bool = True,
+) -> list[str]:
+    allowed = _allowed_workers(
+        include_integrator=include_integrator,
+        include_post_run=include_post_run,
+    )
+    allowed_set = set(allowed)
+
     if raw is None or not raw.strip():
-        return list(CODEX_IDS)
+        if run_id and str(run_id).strip():
+            return _default_workers_for_run(
+                str(run_id).strip(),
+                include_integrator=include_integrator,
+                include_post_run=include_post_run,
+            )
+        return list(allowed)
 
     parsed = [part.strip() for part in str(raw).split(",") if part.strip()]
     if not parsed:
-        return list(CODEX_IDS)
+        return list(allowed)
 
     normalized: list[str] = []
     unknown: list[str] = []
     for worker in parsed:
         canonical = _canonical_worker_id(worker)
-        if canonical not in CODEX_IDS:
+        if canonical not in allowed_set:
             unknown.append(worker)
             continue
         normalized.append(canonical)
@@ -619,6 +764,7 @@ def _manual_distribution_checklist(
     *,
     run_id: str,
     workers_csv: str,
+    execution_workers_csv: str,
     source_pack_path: str,
     source_pack_sha256: str,
     prompt_rows: dict[str, dict[str, Any]],
@@ -651,7 +797,7 @@ def _manual_distribution_checklist(
             "",
             "## Closeout Commands",
             f"1. `python tools/codex/dispatch/validator.py wait-done --run-id {run_id} --workers {workers_csv}`",
-            f"2. `python tools/codex/dispatch/validator.py execution-audit --run-id {run_id} --workers {workers_csv}`",
+            f"2. `python tools/codex/dispatch/validator.py execution-audit --run-id {run_id} --workers {execution_workers_csv}`",
             f"3. `python tools/codex/dispatch/validator.py validate-guardrails --run-id {run_id}`",
             "",
         ]
@@ -706,19 +852,22 @@ def materialize_prompt_pack(run_id: str, pack_path: Path) -> dict[str, Any]:
         }
 
     parsed, duplicates, seen_headers = _parse_prompt_pack(raw_text)
-    missing = [worker for worker in CODEX_IDS if worker not in parsed]
-    empty = [worker for worker in CODEX_IDS if worker in parsed and not parsed[worker].strip()]
+    required_workers = list(_required_prompt_workers())
+    missing_required = [worker for worker in required_workers if worker not in parsed]
+    empty_required = [worker for worker in required_workers if worker in parsed and not parsed[worker].strip()]
+    missing_post_run = [worker for worker in CODEX_POST_RUN_IDS if worker not in parsed]
+    empty_post_run = [worker for worker in CODEX_POST_RUN_IDS if worker in parsed and not parsed[worker].strip()]
     unknown_sections = sorted(set(seen_headers) - set(CODEX_IDS))
 
-    if missing or duplicates or empty or unknown_sections:
+    if missing_required or duplicates or empty_required or unknown_sections:
         return {
             "status": BLOCKED,
             "run_id": run_id,
             "pack_path": pack_path.as_posix(),
             "prompt_dir": prompt_dir.as_posix(),
-            "missing_sections": [PACK_WORKER_HEADERS.get(worker, worker) for worker in missing],
+            "missing_sections": [PACK_WORKER_HEADERS.get(worker, worker) for worker in missing_required],
             "duplicate_sections": sorted(set(duplicates)),
-            "empty_sections": sorted(empty),
+            "empty_sections": sorted(empty_required),
             "unknown_sections": unknown_sections,
             "error": "prompts pack section validation failed",
         }
@@ -730,7 +879,10 @@ def materialize_prompt_pack(run_id: str, pack_path: Path) -> dict[str, Any]:
     for worker in CODEX_IDS:
         file_name = expected[worker]
         target = prompt_dir / file_name
-        resolved_text = parsed[worker].replace("{{RUN_ID}}", run_id)
+        base_prompt = parsed.get(worker, "")
+        if not str(base_prompt).strip():
+            base_prompt = _post_run_prompt_placeholder(worker)
+        resolved_text = str(base_prompt).replace("{{RUN_ID}}", run_id)
         resolved_text = _apply_prompt_contract(run_id, worker, resolved_text)
         target.write_text(resolved_text, encoding="utf-8", newline="\n")
         resolved_prompts[worker] = resolved_text
@@ -756,11 +908,13 @@ def materialize_prompt_pack(run_id: str, pack_path: Path) -> dict[str, Any]:
 
     source_sha256 = hashlib.sha256(raw_bytes).hexdigest()
     workers_csv = ",".join(CODEX_IDS)
+    execution_workers_csv = ",".join(CODEX_EXECUTION_IDS)
     checklist_path = prompt_dir / PROMPT_DISTRIBUTION_CHECKLIST_FILE
     checklist_path.write_text(
         _manual_distribution_checklist(
             run_id=run_id,
             workers_csv=workers_csv,
+            execution_workers_csv=execution_workers_csv,
             source_pack_path=pack_path.as_posix(),
             source_pack_sha256=source_sha256,
             prompt_rows=worker_rows,
@@ -781,10 +935,12 @@ def materialize_prompt_pack(run_id: str, pack_path: Path) -> dict[str, Any]:
         "prompt_dir": prompt_dir.as_posix(),
         "workers": worker_rows,
         "workers_csv": workers_csv,
+        "execution_workers_csv": execution_workers_csv,
         "source_snapshot_file": source_snapshot.as_posix(),
         "resolved_snapshot_file": resolved_snapshot.as_posix(),
         "checklist_file": checklist_path.as_posix(),
         "contract_header_injected": True,
+        "autofilled_post_run_sections": sorted(set([*missing_post_run, *empty_post_run])),
     }
     manifest_path = prompt_dir / PROMPT_MATERIALIZATION_MANIFEST
     manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
@@ -861,6 +1017,8 @@ def extract_prompt_zip(run_id: str) -> dict[str, Any]:
     zip_path = PROMPT_ZIPS_DIR / f"{run_id}.zip"
     prompt_dir = PROMPTS_ROOT / run_id
     expected = expected_prompt_files(run_id)
+    required_workers = list(_required_prompt_workers())
+    required_names = {expected[worker] for worker in required_workers}
     expected_names = set(expected.values())
 
     if prompt_dir.exists():
@@ -892,17 +1050,20 @@ def extract_prompt_zip(run_id: str) -> dict[str, Any]:
                 continue
             by_basename.setdefault(base, []).append(member)
 
-        missing = sorted(name for name in expected_names if name not in by_basename)
+        missing_required = sorted(name for name in required_names if name not in by_basename)
         duplicates = sorted(name for name, items in by_basename.items() if name in expected_names and len(items) > 1)
         unexpected = sorted(name for name in by_basename if name not in expected_names)
+        missing_post_run = sorted(
+            worker for worker in CODEX_POST_RUN_IDS if expected[worker] not in by_basename
+        )
 
-        if missing or duplicates or unexpected:
+        if missing_required or duplicates or unexpected:
             return {
                 "status": BLOCKED,
                 "run_id": run_id,
                 "zip": zip_path.as_posix(),
                 "prompt_dir": prompt_dir.as_posix(),
-                "missing": missing,
+                "missing_required": missing_required,
                 "duplicates": duplicates,
                 "unexpected": unexpected,
                 "error": "zip shape validation failed",
@@ -911,6 +1072,9 @@ def extract_prompt_zip(run_id: str) -> dict[str, Any]:
         decoded_prompts: dict[str, str] = {}
         for worker in CODEX_IDS:
             name = expected[worker]
+            if name not in by_basename:
+                decoded_prompts[name] = _post_run_prompt_placeholder(worker)
+                continue
             info = by_basename[name][0]
             raw = archive.read(info)
             try:
@@ -923,6 +1087,8 @@ def extract_prompt_zip(run_id: str) -> dict[str, Any]:
                     "prompt_dir": prompt_dir.as_posix(),
                     "error": f"prompt is not UTF-8: {name} ({exc})",
                 }
+            if worker in CODEX_POST_RUN_IDS and not text.strip():
+                text = _post_run_prompt_placeholder(worker)
             decoded_prompts[name] = text
 
         prompt_dir.mkdir(parents=True, exist_ok=False)
@@ -940,11 +1106,13 @@ def extract_prompt_zip(run_id: str) -> dict[str, Any]:
         "zip": zip_path.as_posix(),
         "prompt_dir": prompt_dir.as_posix(),
         "extracted": sorted(extracted),
+        "autofilled_post_run_sections": missing_post_run,
     }
 
 
 def _validate_prompt_file(path: Path, run_id: str, worker: str) -> list[str]:
     errors: list[str] = []
+    canonical_worker = _canonical_worker_id(worker)
     text = path.read_text(encoding="utf-8")
     normalized_text = text.replace("\\", "/")
 
@@ -1011,10 +1179,15 @@ def _validate_prompt_file(path: Path, run_id: str, worker: str) -> list[str]:
         if z_rule_line not in text:
             errors.append(f"missing Z read-only rule: {z_rule_line}")
 
-    if worker in {"C_features", "C_worker"} and "VISUAL_BASELINE_OWNER: true" not in text:
+    if canonical_worker == "C_features" and "VISUAL_BASELINE_OWNER: true" not in text:
         errors.append("missing visual baseline owner contract for C worker")
-    if worker in {"Z_aggregator", "Z_integrator"} and "LEDGER_WATCH_REQUIRED: true" not in text:
+    if canonical_worker == "Z_aggregator" and "LEDGER_WATCH_REQUIRED: true" not in text:
         errors.append("missing ledger watch contract for Z worker")
+    if canonical_worker in CODEX_POST_RUN_IDS:
+        if "POST_RUN_INTELLIGENCE_ONLY: true" not in text:
+            errors.append("missing post-run intelligence contract")
+        if "NO_DIRECT_CODE_MUTATION: true" not in text:
+            errors.append("missing post-run no-mutation contract")
 
     return errors
 
@@ -1662,7 +1835,14 @@ def wait_for_done_markers(
     timeout_seconds: int,
     poll_seconds: float,
 ) -> dict[str, Any]:
-    chosen_workers = _canonicalize_workers(workers or list(CODEX_IDS))
+    chosen_workers = _canonicalize_workers(
+        workers
+        or _default_workers_for_run(
+            run_id,
+            include_integrator=True,
+            include_post_run=True,
+        )
+    )
     _ensure_worker_run_folders(run_id, chosen_workers)
     start = time.monotonic()
     deadline = start + max(1, int(timeout_seconds))
@@ -1771,7 +1951,7 @@ def wait_for_done_markers(
 def _bundle_missing_entries(run_id: str, worker: str) -> list[str]:
     root = _resolve_bundle_root(run_id, worker)
     missing: list[str] = []
-    for rel in WORKER_BUNDLE_REQUIRED:
+    for rel in _required_bundle_entries(worker):
         if not (root / rel).exists():
             missing.append(rel)
     files_dir = root / "FILES"
@@ -1785,6 +1965,11 @@ def validate_guardrails(run_id: str) -> dict[str, Any]:
     errors: list[str] = []
     workers_payload: list[dict[str, Any]] = []
     execution_audit: dict[str, Any] = {}
+    guard_workers = _default_workers_for_run(
+        run_id,
+        include_integrator=True,
+        include_post_run=True,
+    )
 
     if not run_root.exists():
         return {
@@ -1795,7 +1980,7 @@ def validate_guardrails(run_id: str) -> dict[str, Any]:
 
     _sync_run_from_worktrees(
         run_id,
-        workers=list(CODEX_IDS),
+        workers=guard_workers,
         required_only=False,
         include_queue=True,
     )
@@ -1826,12 +2011,12 @@ def validate_guardrails(run_id: str) -> dict[str, Any]:
             }
         )
 
-    for worker in CODEX_IDS:
+    for worker in guard_workers:
         missing_bundle = _bundle_missing_entries(run_id, worker)
         if missing_bundle:
             errors.append(f"{worker}: missing bundle artifacts: {', '.join(missing_bundle)}")
 
-    execution_audit = run_execution_audit(run_id, workers=list(CODEX_IDS))
+    execution_audit = run_execution_audit(run_id, workers=list(CODEX_EXECUTION_IDS))
     if str(execution_audit.get("status", BLOCKED)).upper() != PASS:
         worker_reports = execution_audit.get("workers", []) if isinstance(execution_audit.get("workers", []), list) else []
         for report in worker_reports:
@@ -2543,7 +2728,14 @@ def run_execution_audit(
     workers: list[str] | None = None,
     rules_path: Path | None = None,
 ) -> dict[str, Any]:
-    chosen_workers = _canonicalize_workers(workers or list(CODEX_IDS))
+    chosen_workers = _canonicalize_workers(
+        workers
+        or _default_workers_for_run(
+            run_id,
+            include_integrator=True,
+            include_post_run=False,
+        )
+    )
     _sync_run_from_worktrees(
         run_id,
         workers=chosen_workers,
@@ -2985,6 +3177,20 @@ def run_rework_cycle(
     update_prompts: bool = True,
 ) -> dict[str, Any]:
     workers = _canonicalize_workers(workers)
+    disallowed = [worker for worker in workers if worker in CODEX_POST_RUN_IDS]
+    if disallowed:
+        return {
+            "status": BLOCKED,
+            "run_id": run_id,
+            "error": "rework-cycle only supports pre-integration/integration workers; post-run workers are not supported",
+            "disallowed_workers": sorted(set(disallowed)),
+        }
+    if not workers:
+        return {
+            "status": BLOCKED,
+            "run_id": run_id,
+            "error": "rework-cycle workers resolved to empty set",
+        }
     if cycle < 1:
         return {
             "status": BLOCKED,
@@ -3406,7 +3612,12 @@ def _cmd_validate_prompts(args: argparse.Namespace) -> int:
 
 def _cmd_wait_done(args: argparse.Namespace) -> int:
     try:
-        chosen_workers = _parse_workers_subset(args.workers)
+        chosen_workers = _parse_workers_subset(
+            args.workers,
+            run_id=args.run_id,
+            include_integrator=True,
+            include_post_run=True,
+        )
     except ValueError as exc:
         payload = {
             "status": BLOCKED,
@@ -3428,7 +3639,12 @@ def _cmd_wait_done(args: argparse.Namespace) -> int:
 
 def _cmd_queue_wait_outbox(args: argparse.Namespace) -> int:
     try:
-        chosen_workers = _parse_workers_subset(args.workers)
+        chosen_workers = _parse_workers_subset(
+            args.workers,
+            run_id=args.run_id,
+            include_integrator=True,
+            include_post_run=False,
+        )
     except ValueError as exc:
         payload = {
             "status": BLOCKED,
@@ -3470,7 +3686,12 @@ def _cmd_validate_guardrails(args: argparse.Namespace) -> int:
 
 def _cmd_execution_audit(args: argparse.Namespace) -> int:
     try:
-        chosen_workers = _parse_workers_subset(args.workers)
+        chosen_workers = _parse_workers_subset(
+            args.workers,
+            run_id=args.run_id,
+            include_integrator=True,
+            include_post_run=False,
+        )
     except ValueError as exc:
         payload = {
             "status": BLOCKED,
@@ -3486,7 +3707,12 @@ def _cmd_execution_audit(args: argparse.Namespace) -> int:
 
 def _cmd_rework_cycle(args: argparse.Namespace) -> int:
     try:
-        chosen_workers = _parse_workers_subset(args.workers)
+        chosen_workers = _parse_workers_subset(
+            args.workers,
+            run_id=args.run_id,
+            include_integrator=True,
+            include_post_run=False,
+        )
     except ValueError as exc:
         payload = {
             "status": BLOCKED,
@@ -3598,13 +3824,14 @@ def _cmd_prepare_manual_run(args: argparse.Namespace) -> int:
         }
     expected = expected_prompt_files(run_id)
     workers_csv = ",".join(CODEX_IDS)
+    execution_workers_csv = ",".join(CODEX_EXECUTION_IDS)
     prompt_files = {
         worker: (PROMPTS_ROOT / run_id / expected[worker]).as_posix()
         for worker in CODEX_IDS
     }
     closeout_steps = [
         f"python tools/codex/dispatch/validator.py wait-done --run-id {run_id} --workers {workers_csv}",
-        f"python tools/codex/dispatch/validator.py execution-audit --run-id {run_id} --workers {workers_csv}",
+        f"python tools/codex/dispatch/validator.py execution-audit --run-id {run_id} --workers {execution_workers_csv}",
         f"python tools/codex/dispatch/validator.py validate-guardrails --run-id {run_id}",
     ]
     payload = {

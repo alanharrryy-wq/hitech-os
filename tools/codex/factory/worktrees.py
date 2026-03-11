@@ -680,7 +680,7 @@ def create_worktrees(
     branch_prefix: str = DEFAULT_BRANCH_PREFIX,
     dry_run: bool = False,
 ) -> dict[str, Any]:
-    chosen = canonicalize_workers(workers)
+    chosen = canonicalize_workers(workers, include_integrator=True, include_post_run=True)
     try:
         mode_info = resolve_unified_worktree_mode()
     except ValueError as exc:
@@ -880,7 +880,7 @@ def create_worktrees(
 
 
 def verify_worktrees(run_id: str, *, workers: list[str] | None = None) -> dict[str, Any]:
-    chosen = canonicalize_workers(workers)
+    chosen = canonicalize_workers(workers, include_integrator=True, include_post_run=True)
     steps: list[dict[str, Any]] = []
     for worker in chosen:
         target = worktree_path(run_id, worker)
@@ -918,7 +918,7 @@ def verify_worktrees(run_id: str, *, workers: list[str] | None = None) -> dict[s
 
 
 def sync_worktrees(run_id: str, *, workers: list[str] | None = None, dry_run: bool = False) -> dict[str, Any]:
-    chosen = canonicalize_workers(workers)
+    chosen = canonicalize_workers(workers, include_integrator=True, include_post_run=True)
     steps: list[dict[str, Any]] = []
     for worker in chosen:
         target = worktree_path(run_id, worker)
@@ -973,7 +973,7 @@ def sync_worktrees(run_id: str, *, workers: list[str] | None = None, dry_run: bo
 
 
 def open_worktrees(run_id: str, *, workers: list[str] | None = None, dry_run: bool = False) -> dict[str, Any]:
-    chosen = canonicalize_workers(workers)
+    chosen = canonicalize_workers(workers, include_integrator=True, include_post_run=True)
     steps: list[dict[str, Any]] = []
     cleanup_result = _cleanup_vscode_sessions(run_id) if not dry_run else {
         "clean_enabled": _env_enabled("HITECH_FACTORY_VSCODE_CLEAN", True),

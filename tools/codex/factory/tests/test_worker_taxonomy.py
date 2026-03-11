@@ -10,8 +10,12 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+DISPATCH_ROOT = ROOT / "dispatch"
+if str(DISPATCH_ROOT) not in sys.path:
+    sys.path.insert(0, str(DISPATCH_ROOT))
 
 from factory import common, config, contracts  # noqa: E402
+import validator as dispatch_validator  # noqa: E402
 
 
 class WorkerTaxonomyTests(unittest.TestCase):
@@ -21,6 +25,8 @@ class WorkerTaxonomyTests(unittest.TestCase):
         self.assertEqual("C_features", common.canonical_worker_id("C_worker"))
         self.assertEqual("D_validation", common.canonical_worker_id("D_worker"))
         self.assertEqual("Z_aggregator", common.canonical_worker_id("Z_integrator"))
+        self.assertEqual("R_reviewer", common.canonical_worker_id("R_worker"))
+        self.assertEqual("E_planner", common.canonical_worker_id("E_worker"))
 
     def test_canonicalize_workers_accepts_legacy_inputs(self) -> None:
         parsed = common.canonicalize_workers(
@@ -29,6 +35,17 @@ class WorkerTaxonomyTests(unittest.TestCase):
         )
         self.assertEqual(
             ["A_core", "B_tooling", "C_features", "D_validation", "Z_aggregator"],
+            parsed,
+        )
+
+    def test_canonicalize_workers_accepts_post_run_aliases(self) -> None:
+        parsed = common.canonicalize_workers(
+            ["E_worker", "A_worker", "R_worker", "Z_integrator"],
+            include_integrator=True,
+            include_post_run=True,
+        )
+        self.assertEqual(
+            ["A_core", "Z_aggregator", "R_reviewer", "E_planner"],
             parsed,
         )
 
@@ -100,6 +117,74 @@ class WorkerTaxonomyTests(unittest.TestCase):
                 "DISPATCH_RECOMMENDATIONS.json",
             ):
                 self.assertTrue((integrator_root / filename).exists(), filename)
+
+            gravity_payload = common.read_json(integrator_root / "GRAVITY_REPORT.json")
+            self.assertIn("centrality_summary", gravity_payload)
+            self.assertIn("refactor_candidates", gravity_payload)
+            self.assertIn("protected_node_recommendations", gravity_payload)
+            self.assertIn("architecture_risk_flags", gravity_payload)
+            self.assertIn("metric_status", gravity_payload["centrality_summary"])
+            self.assertIn("top_nodes_by_metric", gravity_payload["centrality_summary"])
+            self.assertIn("centrality_metric_count", gravity_payload["summary"])
+            self.assertIn("refactor_candidate_count", gravity_payload["summary"])
+
+    def test_scaffold_emits_post_run_required_artifacts(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="worker_taxonomy_post_run_") as temp_dir:
+            runs_dir = Path(temp_dir) / "runs"
+            runs_dir.mkdir(parents=True, exist_ok=True)
+            run_id = "factory_taxonomy_post_run"
+
+            with patch.object(common, "RUNS_DIR", runs_dir), patch.object(contracts, "RUNS_DIR", runs_dir):
+                reviewer = contracts.scaffold_worker_bundle(run_id, "R_worker")
+                planner = contracts.scaffold_worker_bundle(run_id, "E_worker")
+
+            self.assertEqual("R_reviewer", reviewer["worker"])
+            self.assertEqual("E_planner", planner["worker"])
+
+            r_root = runs_dir / run_id / "R_reviewer"
+            e_root = runs_dir / run_id / "E_planner"
+            for filename in (
+                "REVIEW_REPORT.json",
+                "REVIEW_FINDINGS.json",
+                "REVIEW_RECOMMENDATIONS.json",
+                "ARCH_REVIEW_SUMMARY.md",
+            ):
+                self.assertTrue((r_root / filename).exists(), filename)
+            for filename in (
+                "TASK_BANK_DELTA.json",
+                "TASK_BANK_INGEST_REPORT.json",
+                "PLANNER_RECOMMENDATIONS.json",
+                "PLANNER_SUMMARY.md",
+            ):
+                self.assertTrue((e_root / filename).exists(), filename)
+
+    def test_validator_default_worker_subset_respects_legacy_manifest_workers(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="worker_taxonomy_validator_manifest_") as temp_dir:
+            runs_dir = Path(temp_dir) / "runs"
+            run_id = "factory_taxonomy_legacy_manifest"
+            run_root = runs_dir / run_id
+            run_root.mkdir(parents=True, exist_ok=True)
+            manifest = {
+                "workers": ["A_worker", "B_worker", "C_worker", "D_worker"],
+                "integrator": "Z_integrator",
+            }
+            (run_root / "RUN_MANIFEST.json").write_text(
+                json.dumps(manifest, indent=2, sort_keys=True),
+                encoding="utf-8",
+            )
+
+            with patch.object(dispatch_validator, "RUNS_ROOT", runs_dir):
+                chosen = dispatch_validator._parse_workers_subset(
+                    None,
+                    run_id=run_id,
+                    include_integrator=True,
+                    include_post_run=True,
+                )
+
+            self.assertEqual(
+                ["A_core", "B_tooling", "C_features", "D_validation", "Z_aggregator"],
+                chosen,
+            )
 
 
 if __name__ == "__main__":

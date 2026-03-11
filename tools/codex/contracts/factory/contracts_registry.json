@@ -17,9 +17,10 @@
     "All feature flags default to false.",
     "Deterministic ordering is required for all JSON outputs.",
     "Z_aggregator merges and validates only; no feature invention.",
+    "Execution phases are build/validation/integration/post_run with canonical runtime order A_core,B_tooling,C_features,D_validation,Z_aggregator,R_reviewer,E_planner.",
     "Graph-analysis artifacts are required Z_aggregator outputs and JSON artifacts are canonical.",
     "Graph-analysis schemas use semantic schema_version and explicit compatibility metadata.",
-    "Canonical worker IDs are supported with explicit legacy aliases for compatibility.",
+    "Canonical worker IDs are supported with explicit legacy aliases for compatibility (A_worker,B_worker,C_worker,D_worker,Z_integrator,E_worker,R_worker).",
     "C_features is the default visual baseline owner.",
     "Worker closeout artifacts are auto-generated and repaired when possible."
   ],
@@ -49,9 +50,29 @@
     "LOGS/INDEX.json",
     "CODEX_OUTPUT.txt"
   ],
+  "required_post_run_files": {
+    "E_planner": [
+      "TASK_BANK_DELTA.json",
+      "TASK_BANK_INGEST_REPORT.json",
+      "PLANNER_RECOMMENDATIONS.json",
+      "PLANNER_SUMMARY.md"
+    ],
+    "R_reviewer": [
+      "REVIEW_REPORT.json",
+      "REVIEW_FINDINGS.json",
+      "REVIEW_RECOMMENDATIONS.json",
+      "ARCH_REVIEW_SUMMARY.md"
+    ]
+  },
   "schema_version": 1,
   "schemas": {
     "contracts_registry": "tools/codex/schemas/contracts_registry.schema.json",
+    "planner_recommendations": "tools/codex/schemas/planner_recommendations.schema.json",
+    "review_findings": "tools/codex/schemas/review_findings.schema.json",
+    "review_recommendations": "tools/codex/schemas/review_recommendations.schema.json",
+    "review_report": "tools/codex/schemas/review_report.schema.json",
+    "task_bank_delta": "tools/codex/schemas/task_bank_delta.schema.json",
+    "task_bank_ingest_report": "tools/codex/schemas/task_bank_ingest_report.schema.json",
     "factory_config": "tools/codex/schemas/factory_config.schema.json",
     "files_changed": "tools/codex/schemas/files_changed.schema.json",
     "handoff_note": "tools/codex/schemas/handoff_note.schema.json",
@@ -83,6 +104,9 @@
     "A_core",
     "B_tooling",
     "C_features",
-    "D_validation"
+    "D_validation",
+    "Z_aggregator",
+    "R_reviewer",
+    "E_planner"
   ]
 }

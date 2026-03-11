@@ -21,12 +21,20 @@ Mirrors:
 - `GRAVITY_SUMMARY.md`
 - `DISPATCH_RECOMMENDATIONS.md`
 
+`GRAVITY_REPORT.json` includes formal, schema-validated additive sections for:
+
+- `centrality_summary`
+- `refactor_candidates`
+- `protected_node_recommendations`
+- `architecture_risk_flags`
+
 ## Canonical Enum Families
 
 - reason codes: shared vocabulary in graph-analysis schemas
 - risk levels: `NONE`, `LOW`, `MEDIUM`, `HIGH`, `CRITICAL`
 - protection levels: `WATCHED`, `GUARDED`, `PROTECTED`, `LOCKED`
 - impact radius categories: `LOCAL`, `MULTI_SCOPE`, `CROSS_WORKER`, `REPO_WIDE`
+- centrality metrics: typed metric set (`BETWEENNESS_CENTRALITY`, `PAGERANK`, `EIGENVECTOR_CENTRALITY`, and related metrics)
 
 Legacy protection aliases remain accepted for reader compatibility:
 
@@ -79,3 +87,5 @@ Dispatch recommendations must include structured rationale:
 - protocol requirements
 
 Default behavior remains advisory for next iteration.
+
+`refactor_candidates`, `protected_node_recommendations`, and `architecture_risk_flags` are planning/risk inputs and do not authorize mutation by themselves.

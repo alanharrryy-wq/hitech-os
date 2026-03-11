@@ -69,6 +69,8 @@
         "B_tooling",
         "C_features",
         "D_validation",
+        "R_reviewer",
+        "E_planner",
         "Z_aggregator"
       ],
       "legacy_aliases": [
@@ -76,6 +78,8 @@
         "B_worker",
         "C_worker",
         "D_worker",
+        "E_worker",
+        "R_worker",
         "Z_integrator"
       ]
     },
@@ -96,6 +100,57 @@
         "field rename without alias",
         "enum contraction",
         "semantic reinterpretation"
+      ]
+    },
+    "centrality_metrics": [
+      "BETWEENNESS_CENTRALITY",
+      "PAGERANK",
+      "EIGENVECTOR_CENTRALITY",
+      "CLOSENESS_CENTRALITY",
+      "DEGREE_CENTRALITY",
+      "IN_DEGREE_CENTRALITY",
+      "OUT_DEGREE_CENTRALITY",
+      "KATZ_CENTRALITY",
+      "HUB_SCORE",
+      "AUTHORITY_SCORE",
+      "BRIDGING_CENTRALITY",
+      "CURRENT_FLOW_BETWEENNESS",
+      "LOAD_CENTRALITY",
+      "HARMONIC_CENTRALITY"
+    ],
+    "gravity_derived_outputs": {
+      "refactor_candidates": [
+        "EXTRACT_MODULE",
+        "SPLIT_RESPONSIBILITY",
+        "REDUCE_FAN_OUT",
+        "REDUCE_FAN_IN",
+        "ISOLATE_EXTERNAL_DEPENDENCIES",
+        "STABILIZE_INTERFACE",
+        "ADD_CONTRACT_TESTS",
+        "DECOMPOSE_CYCLE",
+        "REASSIGN_OWNERSHIP",
+        "SCHEDULE_INCREMENTAL_REFACTOR"
+      ],
+      "protected_node_recommendations": [
+        "PROMOTE_TO_GUARDED",
+        "PROMOTE_TO_PROTECTED",
+        "PROMOTE_TO_LOCKED",
+        "DEMOTE_TO_GUARDED",
+        "DEMOTE_TO_WATCHED",
+        "KEEP_AS_IS",
+        "REVIEW_MANUALLY"
+      ],
+      "architecture_risk_flags": [
+        "SINGLE_POINT_OF_FAILURE",
+        "COUPLING_HOTSPOT",
+        "OWNERSHIP_FRAGMENTATION",
+        "PROTECTED_NODE_UNDER_CLASSIFIED",
+        "PROTECTED_NODE_OVER_CLASSIFIED",
+        "VALIDATION_GAP_CLUSTER",
+        "DEPENDENCY_DRIFT",
+        "CYCLE_CLUSTER",
+        "EXTERNAL_BLAST_RADIUS",
+        "CONTRACT_FRAGILITY"
       ]
     }
   }

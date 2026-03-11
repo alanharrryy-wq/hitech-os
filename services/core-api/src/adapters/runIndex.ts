@@ -27,6 +27,8 @@ const LEGACY_WORKER_ALIAS_TO_CANONICAL = Object.freeze({
   B_worker: "B_tooling",
   C_worker: "C_features",
   D_worker: "D_validation",
+  R_worker: "R_reviewer",
+  E_worker: "E_planner",
   Z_integrator: "Z_aggregator"
 } as const);
 
@@ -35,7 +37,9 @@ const CANONICAL_BUNDLE_DIRECTORIES = Object.freeze([
   "B_tooling",
   "C_features",
   "D_validation",
-  "Z_aggregator"
+  "Z_aggregator",
+  "R_reviewer",
+  "E_planner"
 ] as const);
 
 const LEGACY_BUNDLE_ALIAS_SET = new Set<string>(
@@ -200,7 +204,7 @@ export class RunIndex {
       runId,
       runPath: toPosixPath(runPath),
       hasRunManifest,
-      hasLegacyEWorkerBundle: bundleDirectoriesRaw.includes("E_worker"),
+      hasLegacyAliasBundles: legacyAliasBundles.length > 0,
       hasZAggregatorBundle: bundleDirectories.includes("Z_aggregator"),
       bundleDirectories,
       legacyAliasBundles

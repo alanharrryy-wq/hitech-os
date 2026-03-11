@@ -39,6 +39,8 @@ Required paths:
 - `tools/codex/runs/<RUN_ID>/C_features/`
 - `tools/codex/runs/<RUN_ID>/D_validation/`
 - `tools/codex/runs/<RUN_ID>/Z_aggregator/`
+- `tools/codex/runs/<RUN_ID>/R_reviewer/`
+- `tools/codex/runs/<RUN_ID>/E_planner/`
 
 ## Worker Taxonomy Contract
 
@@ -49,6 +51,8 @@ Canonical worker IDs for all new emissions (docs, prompts, bundles, metadata):
 - `C_features`
 - `D_validation`
 - `Z_aggregator`
+- `R_reviewer`
+- `E_planner`
 
 Canonical role semantics:
 
@@ -57,6 +61,8 @@ Canonical role semantics:
 - `C_features`: product/features, operator/user surface ownership, UI/UX behavior
 - `D_validation`: validation, policy checks, risk controls, release confidence
 - `Z_aggregator`: integration, overlap resolution, merge coordination, final reporting
+- `R_reviewer`: post-run structural review and synthesized findings/recommendations
+- `E_planner`: post-run planning/task synthesis with stable dedupe and task-bank deltas
 
 Legacy aliases remain accepted for compatibility in readers/parsers/CLI inputs only:
 
@@ -65,6 +71,8 @@ Legacy aliases remain accepted for compatibility in readers/parsers/CLI inputs o
 - `C_worker -> C_features`
 - `D_worker -> D_validation`
 - `Z_integrator -> Z_aggregator`
+- `R_worker -> R_reviewer`
+- `E_worker -> E_planner`
 
 Emission rule:
 
@@ -130,6 +138,7 @@ Graph-analysis canonicality:
 
 - JSON graph-analysis artifacts are canonical and schema-validated.
 - Markdown mirrors summarize canonical JSON and must not contradict it.
+- `GRAVITY_REPORT.json` includes typed centrality fields and derived planning/risk arrays in current-runtime scaffold emissions (`centrality_summary`, `refactor_candidates`, `protected_node_recommendations`, `architecture_risk_flags`).
 
 Compatibility metadata required in graph-analysis JSON:
 

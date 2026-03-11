@@ -16,24 +16,37 @@ SCHEMAS_DIR = CODEX_DIR / "schemas"
 CONTRACTS_DIR = CODEX_DIR / "contracts" / "factory"
 TEMPLATES_DIR = CODEX_DIR / "templates" / "factory"
 
-CANONICAL_WORKERS: tuple[str, ...] = ("A_core", "B_tooling", "C_features", "D_validation")
+CANONICAL_BUILD_WORKERS: tuple[str, ...] = ("A_core", "B_tooling", "C_features")
+CANONICAL_VALIDATION_WORKERS: tuple[str, ...] = ("D_validation",)
+CANONICAL_POST_RUN_WORKERS: tuple[str, ...] = ("R_reviewer", "E_planner")
+PRE_INTEGRATION_WORKERS: tuple[str, ...] = (*CANONICAL_BUILD_WORKERS, *CANONICAL_VALIDATION_WORKERS)
+CANONICAL_EXECUTION_WORKERS: tuple[str, ...] = (*PRE_INTEGRATION_WORKERS, "Z_aggregator")
+CANONICAL_WORKERS: tuple[str, ...] = (*PRE_INTEGRATION_WORKERS, *CANONICAL_POST_RUN_WORKERS)
 CANONICAL_INTEGRATOR = "Z_aggregator"
+RUNTIME_WORKERS: tuple[str, ...] = (*PRE_INTEGRATION_WORKERS, CANONICAL_INTEGRATOR, *CANONICAL_POST_RUN_WORKERS)
+WORKER_PHASE_BY_CANONICAL: dict[str, str] = {
+    **{worker: "build" for worker in CANONICAL_BUILD_WORKERS},
+    **{worker: "validation" for worker in CANONICAL_VALIDATION_WORKERS},
+    CANONICAL_INTEGRATOR: "integration",
+    **{worker: "post_run" for worker in CANONICAL_POST_RUN_WORKERS},
+}
 LEGACY_WORKER_ALIASES: dict[str, str] = {
     "A_worker": "A_core",
     "B_worker": "B_tooling",
     "C_worker": "C_features",
     "D_worker": "D_validation",
+    "E_worker": "E_planner",
+    "R_worker": "R_reviewer",
     "Z_integrator": "Z_aggregator",
 }
 LEGACY_ALIAS_BY_CANONICAL: dict[str, str] = {value: key for key, value in LEGACY_WORKER_ALIASES.items()}
 KNOWN_WORKER_IDS: tuple[str, ...] = (
-    *CANONICAL_WORKERS,
-    CANONICAL_INTEGRATOR,
+    *RUNTIME_WORKERS,
     *sorted(LEGACY_WORKER_ALIASES.keys()),
 )
 
 # Backward-compatible exports used by the rest of the factory runtime.
-WORKERS: tuple[str, ...] = CANONICAL_WORKERS
+WORKERS: tuple[str, ...] = PRE_INTEGRATION_WORKERS
 INTEGRATOR = CANONICAL_INTEGRATOR
 DEFAULT_BRANCH_PREFIX = "codex/factory"
 UTC = dt.timezone.utc
@@ -105,9 +118,34 @@ def canonical_worker_id(worker: str) -> str:
     return LEGACY_WORKER_ALIASES.get(value, value)
 
 
-def is_known_worker_id(worker: str, *, include_integrator: bool = True) -> bool:
+def canonical_workers_for_phase(phase: str) -> tuple[str, ...]:
+    key = str(phase).strip().lower()
+    if key == "build":
+        return CANONICAL_BUILD_WORKERS
+    if key == "validation":
+        return CANONICAL_VALIDATION_WORKERS
+    if key == "integration":
+        return (CANONICAL_INTEGRATOR,)
+    if key in {"post_run", "postrun"}:
+        return CANONICAL_POST_RUN_WORKERS
+    return ()
+
+
+def worker_phase(worker: str) -> str:
     canonical = canonical_worker_id(worker)
-    if canonical in CANONICAL_WORKERS:
+    return WORKER_PHASE_BY_CANONICAL.get(canonical, "")
+
+
+def is_known_worker_id(
+    worker: str,
+    *,
+    include_integrator: bool = True,
+    include_post_run: bool = True,
+) -> bool:
+    canonical = canonical_worker_id(worker)
+    if canonical in PRE_INTEGRATION_WORKERS:
+        return True
+    if include_post_run and canonical in CANONICAL_POST_RUN_WORKERS:
         return True
     if include_integrator and canonical == INTEGRATOR:
         return True
@@ -135,16 +173,19 @@ def canonicalize_workers(
     workers: Iterable[str] | None,
     *,
     include_integrator: bool = False,
+    include_post_run: bool = False,
     keep_unknown: bool = False,
 ) -> list[str]:
+    ordered = [
+        *PRE_INTEGRATION_WORKERS,
+        *([INTEGRATOR] if include_integrator else []),
+        *([*CANONICAL_POST_RUN_WORKERS] if include_post_run else []),
+    ]
+    allowed = set(ordered)
+
     if workers is None:
-        return [*CANONICAL_WORKERS, *( [INTEGRATOR] if include_integrator else [] )]
+        return list(ordered)
 
-    allowed = set(CANONICAL_WORKERS)
-    if include_integrator:
-        allowed.add(INTEGRATOR)
-
-    ordered = [*CANONICAL_WORKERS, *( [INTEGRATOR] if include_integrator else [] )]
     seen: set[str] = set()
     normalized: list[str] = []
     unknown: list[str] = []
