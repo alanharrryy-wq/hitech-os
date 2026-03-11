@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from .config import SentinelConfig
+from .false_positive import apply_false_positive_feedback, load_feedback
 
 
 SECRET_PATTERNS: tuple[tuple[str, str, str], ...] = (
@@ -104,9 +105,14 @@ def scan_security(config: SentinelConfig, scan_state: dict[str, Any]) -> dict[st
     for finding in findings:
         unique_by_key[finding["fingerprint"]] = finding
     deduped = sorted(unique_by_key.values(), key=lambda item: (item["path"], item["line"], item["kind"]))
+    feedback = load_feedback(config)
+    filtered_findings, suppressed_findings, false_positive_summary = apply_false_positive_feedback(
+        findings=deduped,
+        feedback=feedback,
+    )
 
     counts: dict[str, int] = {}
-    for finding in deduped:
+    for finding in filtered_findings:
         sev = str(finding.get("severity", "low")).lower()
         counts[sev] = counts.get(sev, 0) + 1
 
@@ -122,11 +128,12 @@ def scan_security(config: SentinelConfig, scan_state: dict[str, Any]) -> dict[st
 
     return {
         "summary": {
-            "findingCount": len(deduped),
+            **false_positive_summary,
             "severityCounts": dict(sorted(counts.items())),
             "alertLevel": alert_level,
             "scannedFiles": scanned_files,
             "scanLimit": int(config.max_security_scan_files),
         },
-        "findings": deduped,
+        "findings": filtered_findings,
+        "suppressedFindings": suppressed_findings,
     }

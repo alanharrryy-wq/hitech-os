@@ -1,4 +1,5 @@
 {
+  "profile_name": "safe",
   "runtime_artifact_dirs": [
     "tools/codex/worktrees",
     "tools/codex/runs",
@@ -28,5 +29,19 @@
     "_reports/",
     ".agents/"
   ],
-  "prediction_window": 20
+  "prediction_window": 20,
+  "lock_path": "tools/_local/git_sentinel/state/guardian.lock.json",
+  "lock_stale_seconds": 7200,
+  "retention_enabled": true,
+  "retention_max_age_days": 30,
+  "retention_max_files_per_dir": 500,
+  "alert_health_threshold": 65,
+  "alert_webhook_env_var": "GIT_SENTINEL_ALERT_WEBHOOK",
+  "false_positive_feedback_path": "tools/_local/git_sentinel/state/false_positive_feedback.json",
+  "default_guardian_interval_seconds": 600,
+  "autotune_enabled": false,
+  "autotune_min_interval_seconds": 300,
+  "autotune_max_interval_seconds": 1800,
+  "autotune_high_activity_threshold": 220,
+  "autotune_low_activity_threshold": 80
 }

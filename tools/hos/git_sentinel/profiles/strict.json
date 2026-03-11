@@ -1,0 +1,16 @@
+{
+  "profile_name": "strict",
+  "retention_enabled": true,
+  "retention_max_age_days": 21,
+  "retention_max_files_per_dir": 300,
+  "autotune_enabled": true,
+  "default_guardian_interval_seconds": 480,
+  "autotune_min_interval_seconds": 240,
+  "autotune_max_interval_seconds": 1500,
+  "autotune_high_activity_threshold": 180,
+  "autotune_low_activity_threshold": 70,
+  "alert_health_threshold": 75,
+  "lock_stale_seconds": 5400,
+  "max_security_scan_files": 20000,
+  "prediction_window": 30
+}

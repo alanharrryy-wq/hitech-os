@@ -12,6 +12,12 @@ for _parent in (_BOOT.parent, *_BOOT.parents):
             sys.path.insert(0, str(_parent))
         break
 
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, OSError):
+        continue
+
 from tools.hos._core.stable_json import dump_json  # noqa: E402
 from tools.hos.git_sentinel.config import build_config  # noqa: E402
 from tools.hos.git_sentinel.scheduler import GuardianRunOptions, run_guardian  # noqa: E402
@@ -21,6 +27,12 @@ from tools.hos.git_sentinel.sentinel import SentinelRunOptions, run_sentinel_cyc
 def _add_common_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--repo-root", default=None, help="Absolute or relative repository root.")
     parser.add_argument("--config", default=None, help="Optional JSON config override path.")
+    parser.add_argument(
+        "--profile",
+        default=None,
+        choices=("safe", "strict", "aggressive"),
+        help="Optional sentinel profile override.",
+    )
     parser.add_argument("--json", action="store_true", help="Emit JSON output.")
 
 
@@ -34,6 +46,8 @@ def parse_args() -> argparse.Namespace:
     once_parser = subparsers.add_parser("once", help="Run one sentinel cycle.")
     _add_common_args(once_parser)
     once_parser.add_argument("--apply", action="store_true", help="Apply cleanup/repair/ignore updates.")
+    once_parser.add_argument("--apply-cleanup", action="store_true", help="Apply cleanup actions only.")
+    once_parser.add_argument("--apply-repair", action="store_true", help="Apply repair actions only.")
     once_parser.add_argument("--no-ignore-update", action="store_true", help="Disable ignore update.")
     once_parser.add_argument("--no-cleanup", action="store_true", help="Disable cleanup engine.")
     once_parser.add_argument("--no-repair", action="store_true", help="Disable repair engine.")
@@ -51,7 +65,14 @@ def parse_args() -> argparse.Namespace:
     guardian_parser = subparsers.add_parser("guardian", help="Continuous guardian mode.")
     _add_common_args(guardian_parser)
     guardian_parser.add_argument("--apply", action="store_true", help="Apply automatic maintenance actions.")
-    guardian_parser.add_argument("--interval-sec", type=int, default=300, help="Cycle interval in seconds.")
+    guardian_parser.add_argument("--apply-cleanup", action="store_true", help="Apply cleanup actions only.")
+    guardian_parser.add_argument("--apply-repair", action="store_true", help="Apply repair actions only.")
+    guardian_parser.add_argument(
+        "--interval-sec",
+        type=int,
+        default=0,
+        help="Cycle interval in seconds (0 uses profile/default interval).",
+    )
     guardian_parser.add_argument(
         "--iterations",
         type=int,
@@ -88,14 +109,30 @@ def _print_payload(payload: dict, json_output: bool) -> None:
         print(f"[git-sentinel] report={payload.get('files', {}).get('reportJson', '')}")
         print(f"[git-sentinel] dashboard={payload.get('files', {}).get('dashboardJson', '')}")
         return
-    print(f"[git-sentinel] guardian cycles={payload.get('cycles', 0)} apply={payload.get('applyMode', False)}")
+    print(
+        f"[git-sentinel] guardian cycles={payload.get('cycles', 0)} "
+        f"apply={payload.get('applyMode', False)} "
+        f"apply_cleanup={payload.get('applyCleanupMode', False)} "
+        f"apply_repair={payload.get('applyRepairMode', False)}"
+    )
+    print(
+        f"[git-sentinel] interval_start={payload.get('intervalSecondsStart', 0)} "
+        f"interval_final={payload.get('intervalSecondsFinal', 0)} "
+        f"autotune={payload.get('autoTuneEnabled', False)}"
+    )
+    lock = payload.get("lock", {})
+    if isinstance(lock, dict) and lock:
+        print(
+            f"[git-sentinel] lock_acquired={lock.get('acquired', False)} "
+            f"lock_path={lock.get('path', '')}"
+        )
     print(f"[git-sentinel] summary={payload.get('summaryPath', '')}")
 
 
 def main() -> int:
     args = parse_args()
     try:
-        config = build_config(repo_root=args.repo_root, config_path=args.config)
+        config = build_config(repo_root=args.repo_root, config_path=args.config, profile=args.profile)
     except FileNotFoundError as exc:
         print(f"[git-sentinel] stop_condition_triggered: {exc}")
         return 3
@@ -119,6 +156,8 @@ def main() -> int:
             config=config,
             options=SentinelRunOptions(
                 apply=args.apply,
+                apply_cleanup=args.apply_cleanup,
+                apply_repair=args.apply_repair,
                 update_ignore=not args.no_ignore_update,
                 enable_cleanup=not args.no_cleanup,
                 enable_repair=not args.no_repair,
@@ -139,6 +178,8 @@ def main() -> int:
             interval_seconds=args.interval_sec,
             iterations=args.iterations,
             apply=args.apply,
+            apply_cleanup=args.apply_cleanup,
+            apply_repair=args.apply_repair,
             update_ignore=not args.no_ignore_update,
             cleanup=not args.no_cleanup,
             repair=not args.no_repair,
@@ -147,6 +188,9 @@ def main() -> int:
         ),
     )
     _print_payload(guardian_payload, json_output=args.json)
+    lock_info = guardian_payload.get("lock", {})
+    if isinstance(lock_info, dict) and not bool(lock_info.get("acquired", True)):
+        return 2
     return 0
 
 

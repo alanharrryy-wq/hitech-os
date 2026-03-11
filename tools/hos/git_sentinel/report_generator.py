@@ -111,6 +111,9 @@ def _markdown_report(payload: dict[str, Any]) -> str:
         f"- Artifact count: {summary.get('artifactCount', 0)}",
         f"- Nested git markers: {summary.get('nestedGitMarkers', 0)}",
         f"- Security findings: {summary.get('securityFindings', 0)}",
+        f"- Security raw findings: {summary.get('securityRawFindings', 0)}",
+        f"- Security suppressed (false positives): {summary.get('securitySuppressedFindings', 0)}",
+        f"- Security false-positive rate: {summary.get('securityFalsePositiveRate', 0.0)}",
         "",
         "## Predictions",
         "",
@@ -127,6 +130,7 @@ def _markdown_report(payload: dict[str, Any]) -> str:
             f"- Report JSON: {files.get('reportJson', '')}",
             f"- Dashboard data: {files.get('dashboardJson', '')}",
             f"- Telemetry latest: {files.get('telemetryLatest', '')}",
+            f"- False-positive metrics: {files.get('falsePositiveMetricsLatest', '')}",
             "",
         ]
     )
@@ -190,6 +194,11 @@ def build_report_payload(
         "artifactCount": int(artifact_result.get("summary", {}).get("artifactCount", 0)),
         "nestedGitMarkers": int(scan_state.get("summary", {}).get("nestedGitMarkers", 0)),
         "securityFindings": int(security_result.get("summary", {}).get("findingCount", 0)),
+        "securityRawFindings": int(
+            security_result.get("summary", {}).get("rawFindingCount", security_result.get("summary", {}).get("findingCount", 0))
+        ),
+        "securitySuppressedFindings": int(security_result.get("summary", {}).get("suppressedFindingCount", 0)),
+        "securityFalsePositiveRate": float(security_result.get("summary", {}).get("falsePositiveRate", 0.0)),
         "cleanupDeletedFiles": int(cleanup_result.get("summary", {}).get("deletedFiles", 0)),
         "repairExecutedActions": int(repair_result.get("summary", {}).get("executedActions", 0)),
         "errorCount": len(errors),
@@ -202,6 +211,9 @@ def build_report_payload(
             "artifactCount": telemetry_payload.get("artifactCount", 0),
             "cleanupDeleted": telemetry_payload.get("cleanupDeleted", 0),
             "securityFindingCount": telemetry_payload.get("securityFindingCount", 0),
+            "securityRawFindingCount": telemetry_payload.get("securityRawFindingCount", 0),
+            "securitySuppressedFindingCount": telemetry_payload.get("securitySuppressedFindingCount", 0),
+            "securityFalsePositiveRate": telemetry_payload.get("securityFalsePositiveRate", 0.0),
         },
         "alerts": security_result.get("findings", []),
         "cleanupActions": cleanup_result.get("results", []),
@@ -232,5 +244,7 @@ def build_report_payload(
         "files": {
             "telemetryLatest": telemetry_files.get("latest", ""),
             "telemetrySnapshot": telemetry_files.get("snapshot", ""),
+            "falsePositiveMetricsLatest": telemetry_files.get("falsePositiveLatest", ""),
+            "falsePositiveMetricsSnapshot": telemetry_files.get("falsePositiveSnapshot", ""),
         },
     }

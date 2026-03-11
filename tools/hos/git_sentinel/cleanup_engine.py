@@ -19,17 +19,50 @@ def _is_safe_cleanup_path(rel_path: str, config: SentinelConfig) -> bool:
     return False
 
 
+def _registered_worktree_prefixes(config: SentinelConfig, scan_state: dict[str, Any]) -> tuple[str, ...]:
+    repo_root = config.repo_root.resolve()
+    prefixes: set[str] = set()
+    for row in scan_state.get("gitWorktrees", []):
+        raw_path = str(row.get("path", "")).strip()
+        if not raw_path:
+            continue
+        worktree_path = Path(raw_path).resolve()
+        if worktree_path == repo_root:
+            continue
+        if not is_within(repo_root, worktree_path):
+            continue
+        rel_prefix = worktree_path.relative_to(repo_root).as_posix().strip("/")
+        if rel_prefix:
+            prefixes.add(rel_prefix)
+    return tuple(sorted(prefixes))
+
+
+def _is_inside_registered_worktree(rel_path: str, worktree_prefixes: tuple[str, ...]) -> bool:
+    normalized = rel_path.replace("\\", "/").strip("/")
+    if not normalized:
+        return False
+    for prefix in worktree_prefixes:
+        prefix_norm = prefix.replace("\\", "/").strip("/")
+        if normalized == prefix_norm or normalized.startswith(prefix_norm + "/"):
+            return True
+    return False
+
+
 def plan_cleanup(
     config: SentinelConfig,
     scan_state: dict[str, Any],
     artifact_result: dict[str, Any],
 ) -> dict[str, Any]:
     tracked_set = set(scan_state.get("trackedFiles", []))
+    worktree_prefixes = _registered_worktree_prefixes(config=config, scan_state=scan_state)
     actions: list[dict[str, Any]] = []
     blocked: list[dict[str, Any]] = []
 
     for row in artifact_result.get("cleanupCandidates", []):
         rel_path = str(row.get("path", ""))
+        if _is_inside_registered_worktree(rel_path=rel_path, worktree_prefixes=worktree_prefixes):
+            blocked.append({"path": rel_path, "reason": "inside registered worktree"})
+            continue
         if rel_path in tracked_set:
             blocked.append({"path": rel_path, "reason": "tracked file"})
             continue
@@ -51,6 +84,9 @@ def plan_cleanup(
         if len(paths) < 2:
             continue
         for candidate in paths[1:]:
+            if _is_inside_registered_worktree(rel_path=candidate, worktree_prefixes=worktree_prefixes):
+                blocked.append({"path": candidate, "reason": "duplicate inside registered worktree"})
+                continue
             if candidate in tracked_set:
                 blocked.append({"path": candidate, "reason": "duplicate but tracked"})
                 continue
@@ -69,6 +105,9 @@ def plan_cleanup(
     # Broken symlinks can be cleaned if in safe zones.
     for rel_path in scan_state.get("brokenSymlinks", []):
         rel = str(rel_path)
+        if _is_inside_registered_worktree(rel_path=rel, worktree_prefixes=worktree_prefixes):
+            blocked.append({"path": rel, "reason": "broken symlink inside registered worktree"})
+            continue
         if rel in tracked_set:
             blocked.append({"path": rel, "reason": "broken symlink but tracked"})
             continue

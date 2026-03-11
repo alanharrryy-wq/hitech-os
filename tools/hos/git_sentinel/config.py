@@ -9,6 +9,22 @@ from tools.hos._core.repo_root import find_repo_root
 from tools.hos._core.stable_json import load_json
 
 
+def _load_profile_overrides(profile_name: str) -> dict[str, Any]:
+    profile = (profile_name or "safe").strip().lower()
+    profile_path = (Path(__file__).resolve().parent / "profiles" / f"{profile}.json").resolve()
+    if not profile_path.exists():
+        raise FileNotFoundError(f"profile not found: {profile_path}")
+    payload = load_json(profile_path)
+    if not isinstance(payload, dict):
+        raise ValueError(f"profile file must be an object: {profile_path}")
+    return payload
+
+
+def _normalize_profile_name(profile_name: str | None) -> str:
+    raw = (profile_name or "").strip().lower()
+    return raw or "safe"
+
+
 @dataclass(frozen=True)
 class SentinelConfig:
     repo_root: Path
@@ -21,6 +37,7 @@ class SentinelConfig:
     visualization_dir: Path
     log_dir: Path
     quarantine_dir: Path
+    profile_name: str = "safe"
     runtime_artifact_dirs: tuple[str, ...] = (
         "tools/codex/worktrees",
         "tools/codex/runs",
@@ -187,6 +204,20 @@ class SentinelConfig:
     max_files_for_dependency_graph: int = 5000
     max_commits_for_history: int = 2500
     prediction_window: int = 20
+    lock_path: str = "tools/_local/git_sentinel/state/guardian.lock.json"
+    lock_stale_seconds: int = 7200
+    retention_enabled: bool = True
+    retention_max_age_days: int = 30
+    retention_max_files_per_dir: int = 500
+    alert_health_threshold: int = 65
+    alert_webhook_env_var: str = "GIT_SENTINEL_ALERT_WEBHOOK"
+    false_positive_feedback_path: str = "tools/_local/git_sentinel/state/false_positive_feedback.json"
+    default_guardian_interval_seconds: int = 600
+    autotune_enabled: bool = False
+    autotune_min_interval_seconds: int = 300
+    autotune_max_interval_seconds: int = 1800
+    autotune_high_activity_threshold: int = 220
+    autotune_low_activity_threshold: int = 80
     additional: dict[str, Any] = field(default_factory=dict)
 
     def rel(self, path: Path) -> str:
@@ -277,14 +308,29 @@ def _merge_override(base: SentinelConfig, payload: dict[str, Any]) -> SentinelCo
     return SentinelConfig(**mutable)
 
 
-def build_config(repo_root: str | None = None, config_path: str | None = None) -> SentinelConfig:
+def build_config(
+    repo_root: str | None = None,
+    config_path: str | None = None,
+    profile: str | None = None,
+) -> SentinelConfig:
     resolved_root = _repo_root_from_arg(repo_root=repo_root)
     defaults = _default_paths(resolved_root)
     config = SentinelConfig(repo_root=resolved_root, **defaults)
-
+    override_payload: dict[str, Any] = {}
     if config_path:
-        payload = load_json(Path(config_path))
-        if not isinstance(payload, dict):
+        raw_payload = load_json(Path(config_path))
+        if not isinstance(raw_payload, dict):
             raise ValueError(f"config file must be an object: {config_path}")
-        config = _merge_override(config, payload)
+        override_payload = raw_payload
+
+    selected_profile = _normalize_profile_name(
+        profile
+        if profile is not None
+        else str(override_payload.get("profile_name", config.profile_name)),
+    )
+    config = _merge_override(config, _load_profile_overrides(selected_profile))
+    config = _merge_override(config, {"profile_name": selected_profile})
+
+    if override_payload:
+        config = _merge_override(config, override_payload)
     return config
