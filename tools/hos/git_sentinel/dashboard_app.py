@@ -87,6 +87,13 @@ def collect_dashboard_state(config: SentinelConfig) -> dict[str, Any]:
             "securityEvalPassed": bool(security_eval.get("passed", False)),
             "ciGatePassed": bool(ci_gate.get("passed", True)),
             "guardianCycles": int(guardian_summary.get("cycles", 0)),
+            "guardianIntervalSec": int(
+                guardian_summary.get(
+                    "intervalSecondsFinal",
+                    guardian_summary.get("intervalSeconds", 0),
+                )
+                or 0
+            ),
         },
         "health": health,
         "security": security_summary,
@@ -127,71 +134,360 @@ _HTML = """<!doctype html>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Git Sentinel Dashboard</title>
   <style>
-    body { font-family: "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #0f1218; color: #e5e7eb; }
-    h1 { margin: 0 0 12px; font-size: 22px; }
-    .meta { color: #9ca3af; font-size: 12px; margin-bottom: 12px; }
-    .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
-    .card { background: #171b22; border: 1px solid #263041; border-radius: 8px; padding: 10px; }
-    .card .label { color: #9ca3af; font-size: 12px; }
-    .card .value { font-size: 20px; font-weight: 700; margin-top: 4px; }
-    .section { background: #171b22; border: 1px solid #263041; border-radius: 8px; padding: 10px; margin-bottom: 10px; }
-    .section h2 { margin: 0 0 8px; font-size: 14px; }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { border-bottom: 1px solid #253042; padding: 6px 8px; text-align: left; font-size: 12px; vertical-align: top; }
-    th { color: #9ca3af; font-weight: 600; }
-    pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-size: 12px; }
-    .ok { color: #22c55e; }
-    .warn { color: #f59e0b; }
-    .bad { color: #ef4444; }
-    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    button { background: #1f2937; border: 1px solid #374151; color: #e5e7eb; border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+    :root {
+      --bg: #060912;
+      --panel: rgba(12, 18, 33, 0.78);
+      --line: rgba(129, 172, 255, 0.18);
+      --line-strong: rgba(129, 172, 255, 0.33);
+      --text: #e8f2ff;
+      --muted: #91a8c9;
+      --ok: #20df9c;
+      --warn: #ffb347;
+      --bad: #ff6a6a;
+      --accent: #6cd0ff;
+      --accent-2: #63ffa8;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: "Bahnschrift", "Franklin Gothic Medium", "Trebuchet MS", sans-serif;
+      background:
+        radial-gradient(1200px 900px at -8% -10%, rgba(66, 163, 255, 0.22), transparent 62%),
+        radial-gradient(900px 700px at 112% 12%, rgba(38, 255, 188, 0.16), transparent 52%),
+        radial-gradient(900px 700px at 40% 120%, rgba(35, 99, 255, 0.24), transparent 55%),
+        linear-gradient(165deg, #04060d 0%, #0a1020 42%, #03060f 100%);
+      padding: 22px;
+      letter-spacing: 0.2px;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 120px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 120px);
+      mix-blend-mode: screen;
+      opacity: 0.23;
+    }
+
+    .shell {
+      width: min(1800px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+      animation: reveal 500ms ease;
+    }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero {
+      background: linear-gradient(145deg, rgba(14, 22, 41, 0.86), rgba(8, 12, 23, 0.9));
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 22px 44px rgba(0, 0, 0, 0.38);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(114, 196, 255, 0.12), transparent);
+      transform: translateX(-100%);
+      animation: sweep 5s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes sweep {
+      to { transform: translateX(100%); }
+    }
+
+    .title-wrap h1 {
+      margin: 0;
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 1.04;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      font-family: "Impact", "Haettenschweiler", "Franklin Gothic Heavy", sans-serif;
+      text-shadow: 0 0 20px rgba(93, 184, 255, 0.35);
+    }
+
+    .title-wrap p {
+      margin: 8px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+      font-family: "Consolas", "Lucida Console", monospace;
+      max-width: 860px;
+      word-break: break-word;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      z-index: 2;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(8, 13, 24, 0.85);
+      padding: 7px 12px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .status-pill {
+      color: #dff8ff;
+      border-color: rgba(103, 255, 198, 0.55);
+      box-shadow: inset 0 0 0 1px rgba(103, 255, 198, 0.2);
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent-2);
+      display: inline-block;
+      margin-right: 8px;
+      box-shadow: 0 0 0 0 rgba(99, 255, 168, 0.65);
+      animation: pulse 2s infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(99, 255, 168, 0.65); }
+      70% { box-shadow: 0 0 0 10px rgba(99, 255, 168, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(99, 255, 168, 0); }
+    }
+
+    button {
+      border: 1px solid rgba(141, 201, 255, 0.34);
+      color: #e8f8ff;
+      border-radius: 12px;
+      padding: 9px 14px;
+      font-family: "Bahnschrift", "Trebuchet MS", sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      background: linear-gradient(130deg, rgba(26, 62, 116, 0.95), rgba(13, 148, 112, 0.84));
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+      cursor: pointer;
+      transition: transform 140ms ease, filter 140ms ease, box-shadow 140ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.42);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+      min-height: 94px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(130deg, rgba(120, 192, 255, 0.2), transparent 40%, rgba(98, 255, 172, 0.14));
+      opacity: 0;
+      transition: opacity 180ms ease;
+      pointer-events: none;
+    }
+
+    .card:hover::before { opacity: 1; }
+    .card .label {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+
+    .card .value {
+      font-size: clamp(22px, 2.2vw, 32px);
+      font-weight: 800;
+      margin-top: 6px;
+      line-height: 1.1;
+      font-family: "Franklin Gothic Heavy", "Bahnschrift", sans-serif;
+      text-shadow: 0 0 16px rgba(94, 175, 255, 0.22);
+    }
+
+    .card .sub {
+      margin-top: 4px;
+      color: #7f95b8;
+      font-size: 11px;
+    }
+
+    .panel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+    }
+
+    .section h2 {
+      margin: 0 0 10px;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-family: "Franklin Gothic Demi", "Bahnschrift", sans-serif;
+      color: #d8e9ff;
+    }
+
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    th, td {
+      border-bottom: 1px solid rgba(128, 170, 245, 0.14);
+      padding: 7px 8px;
+      text-align: left;
+      vertical-align: top;
+      font-size: 12px;
+      word-break: break-word;
+    }
+
+    th {
+      color: #a8bddb;
+      font-weight: 700;
+      width: 44%;
+      letter-spacing: 0.3px;
+    }
+
+    .findings th { width: auto; }
+    .findings td { font-family: "Consolas", "Lucida Console", monospace; font-size: 11px; }
+    .findings td:nth-child(3), .findings td:nth-child(5) { color: #c8dbf6; }
+
+    pre {
+      margin: 10px 0 0;
+      background: rgba(6, 10, 18, 0.85);
+      border: 1px dashed rgba(255, 130, 130, 0.35);
+      color: #ffdede;
+      border-radius: 10px;
+      padding: 9px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      min-height: 34px;
+      font-family: "Consolas", "Lucida Console", monospace;
+      font-size: 11px;
+    }
+
+    .ok { color: var(--ok); font-weight: 700; }
+    .warn { color: var(--warn); font-weight: 700; }
+    .bad { color: var(--bad); font-weight: 700; }
+
+    @media (max-width: 1200px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .panel-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      body { padding: 12px; }
+      .grid { grid-template-columns: 1fr; }
+      .hero { padding: 14px; }
+    }
   </style>
 </head>
 <body>
-  <h1>Git Sentinel Dashboard</h1>
-  <div class="meta" id="meta">loading...</div>
-  <div style="margin-bottom:10px"><button onclick="refresh()">Refresh now</button></div>
+  <div class="shell">
+    <header class="hero">
+      <div class="title-wrap">
+        <h1>Git Sentinel Control Deck</h1>
+        <p id="meta">loading...</p>
+      </div>
+      <div class="hero-actions">
+        <span class="pill status-pill"><span class="dot"></span>Live Guardian</span>
+        <span class="pill" id="refreshClock">refresh in 60s</span>
+        <button onclick="refresh()">Refresh now</button>
+      </div>
+    </header>
 
-  <div class="grid" id="cards"></div>
+    <section class="grid" id="cards"></section>
 
-  <div class="row">
-    <div class="section">
-      <h2>Security Severity</h2>
-      <table><tbody id="securitySeverity"></tbody></table>
+    <section class="panel-grid">
+      <div class="section">
+        <h2>Security Severity</h2>
+        <table><tbody id="securitySeverity"></tbody></table>
+      </div>
+      <div class="section">
+        <h2>CI Gate</h2>
+        <table><tbody id="ciGate"></tbody></table>
+        <pre id="ciGateFailures"></pre>
+      </div>
     </div>
-    <div class="section">
-      <h2>CI Gate</h2>
-      <table><tbody id="ciGate"></tbody></table>
-      <pre id="ciGateFailures"></pre>
-    </div>
-  </div>
 
-  <div class="row">
-    <div class="section">
-      <h2>Security Eval</h2>
-      <table><tbody id="securityEval"></tbody></table>
-    </div>
-    <div class="section">
-      <h2>Suppressions</h2>
-      <table><tbody id="suppressions"></tbody></table>
-    </div>
-  </div>
+    <section class="panel-grid">
+      <div class="section">
+        <h2>Security Eval</h2>
+        <table><tbody id="securityEval"></tbody></table>
+      </div>
+      <div class="section">
+        <h2>Suppressions</h2>
+        <table><tbody id="suppressions"></tbody></table>
+      </div>
+    </section>
 
-  <div class="section">
-    <h2>Top Security Findings</h2>
-    <table>
-      <thead><tr><th>severity</th><th>kind</th><th>path</th><th>line</th><th>snippet</th></tr></thead>
-      <tbody id="topFindings"></tbody>
-    </table>
+    <section class="section">
+      <h2>Top Security Findings</h2>
+      <table class="findings">
+        <thead><tr><th>severity</th><th>kind</th><th>path</th><th>line</th><th>snippet</th></tr></thead>
+        <tbody id="topFindings"></tbody>
+      </table>
+    </section>
   </div>
 
   <script>
     const REFRESH_MS = 60000;
+    let nextRefresh = REFRESH_MS / 1000;
+
     function esc(v) {
       if (v === null || v === undefined) return "";
       return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
     }
+
     function tr(k, v, cls="") { return `<tr><th>${esc(k)}</th><td class="${cls}">${esc(v)}</td></tr>`; }
+
     function statusClass(v) {
       const s = String(v).toLowerCase();
       if (["true", "passed", "healthy", "ok", "ready"].includes(s)) return "ok";
@@ -199,24 +495,49 @@ _HTML = """<!doctype html>
       if (["false", "failed", "critical", "error"].includes(s)) return "bad";
       return "";
     }
+
+    function fmtRate(v) {
+      const n = Number(v || 0);
+      return `${(n * 100).toFixed(1)}%`;
+    }
+
+    function fmtInterval(sec) {
+      const n = Number(sec || 0);
+      if (!n || n <= 0) return "n/a";
+      if (n < 60) return `${n}s`;
+      const m = Math.floor(n / 60);
+      const s = n % 60;
+      if (!s) return `${m}m`;
+      return `${m}m ${s}s`;
+    }
+
+    function refreshClockTick() {
+      nextRefresh -= 1;
+      if (nextRefresh < 0) nextRefresh = 0;
+      const clock = document.getElementById("refreshClock");
+      if (clock) clock.textContent = `refresh in ${nextRefresh}s`;
+    }
+
     function renderCards(cards) {
       const rows = [
-        ["Health Score", `${cards.healthScore} (${cards.healthStatus})`, statusClass(cards.healthStatus)],
-        ["Security Findings", cards.securityFindings, cards.securityFindings > 0 ? "warn" : "ok"],
-        ["False Positive Rate", cards.falsePositiveRate, cards.falsePositiveRate > 0.2 ? "warn" : "ok"],
-        ["Security Eval F1", `${cards.securityEvalF1} (${cards.securityEvalPassed})`, cards.securityEvalPassed ? "ok" : "bad"],
-        ["CI Gate", String(cards.ciGatePassed), cards.ciGatePassed ? "ok" : "bad"],
-        ["Guardian Cycles", cards.guardianCycles, ""],
+        ["Health Score", `${cards.healthScore} (${cards.healthStatus})`, statusClass(cards.healthStatus), "overall repository hygiene"],
+        ["Security Findings", cards.securityFindings, cards.securityFindings > 0 ? "warn" : "ok", "active findings after suppression"],
+        ["False Positive Rate", fmtRate(cards.falsePositiveRate), cards.falsePositiveRate > 0.2 ? "warn" : "ok", "suppressed / total findings"],
+        ["Security Eval F1", `${cards.securityEvalF1} (${cards.securityEvalPassed})`, cards.securityEvalPassed ? "ok" : "bad", "golden-set detector quality"],
+        ["CI Gate", String(cards.ciGatePassed), cards.ciGatePassed ? "ok" : "bad", "incremental diff gate"],
+        ["Guardian", `${cards.guardianCycles} cycles`, "", `interval ${fmtInterval(cards.guardianIntervalSec)}`],
       ];
-      document.getElementById("cards").innerHTML = rows.map(([label, value, cls]) =>
-        `<div class="card"><div class="label">${esc(label)}</div><div class="value ${cls}">${esc(value)}</div></div>`
+      document.getElementById("cards").innerHTML = rows.map(([label, value, cls, sub]) =>
+        `<div class="card"><div class="label">${esc(label)}</div><div class="value ${cls}">${esc(value)}</div><div class="sub">${esc(sub)}</div></div>`
       ).join("");
     }
+
     function renderSeverity(security) {
       const counts = security.severityCounts || {};
       const keys = Object.keys(counts).sort();
       document.getElementById("securitySeverity").innerHTML = keys.map(k => tr(k, counts[k], statusClass(k))).join("");
     }
+
     function renderCIGate(ciGate) {
       const summary = ciGate.summary || {};
       document.getElementById("ciGate").innerHTML = ""
@@ -227,6 +548,7 @@ _HTML = """<!doctype html>
         + tr("passed", String(!(ciGate.failures || []).length), (ciGate.failures || []).length ? "bad" : "ok");
       document.getElementById("ciGateFailures").textContent = (ciGate.failures || []).join("\\n");
     }
+
     function renderSecurityEval(securityEval) {
       const metrics = securityEval.metrics || {};
       const thresholds = securityEval.thresholds || {};
@@ -238,6 +560,7 @@ _HTML = """<!doctype html>
         + tr("f1", `${metrics.f1} (min ${thresholds.minF1})`, (metrics.f1 || 0) >= (thresholds.minF1 || 0) ? "ok" : "bad")
         + tr("tp/fp/fn", `${metrics.tp}/${metrics.fp}/${metrics.fn}`);
     }
+
     function renderSuppressions(falsePositive) {
       const metrics = (falsePositive.metrics || {}).summary || {};
       const audit = (falsePositive.audit || {});
@@ -247,12 +570,14 @@ _HTML = """<!doctype html>
         + tr("suppressedFindingCount", metrics.suppressedFindingCount || 0)
         + tr("activeSuppressionCount(audit)", audit.activeSuppressionCount || 0);
     }
+
     function renderFindings(items) {
       const rows = (items || []).slice(0, 20).map(row =>
         `<tr><td class="${statusClass(row.severity)}">${esc(row.severity)}</td><td>${esc(row.kind)}</td><td>${esc(row.path)}</td><td>${esc(row.line)}</td><td>${esc(row.snippet)}</td></tr>`
       );
       document.getElementById("topFindings").innerHTML = rows.join("");
     }
+
     async function refresh() {
       const r = await fetch("/api/state");
       if (!r.ok) throw new Error(`http_${r.status}`);
@@ -264,9 +589,12 @@ _HTML = """<!doctype html>
       renderSecurityEval(data.securityEval || {});
       renderSuppressions(data.falsePositive || {});
       renderFindings(data.securityFindingsTop || []);
+      nextRefresh = REFRESH_MS / 1000;
     }
+
     refresh().catch(err => { document.getElementById("meta").textContent = `error=${err}`; });
     setInterval(() => refresh().catch(() => {}), REFRESH_MS);
+    setInterval(refreshClockTick, 1000);
   </script>
 </body>
 </html>

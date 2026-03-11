@@ -1,9 +1,23 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import os
 import subprocess
 from pathlib import Path
 from typing import Any
+
+
+def _hidden_subprocess_kwargs() -> dict[str, Any]:
+    if os.name != "nt":
+        return {}
+    creationflags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+    startupinfo = subprocess.STARTUPINFO()
+    startupinfo.dwFlags |= getattr(subprocess, "STARTF_USESHOWWINDOW", 0)
+    startupinfo.wShowWindow = getattr(subprocess, "SW_HIDE", 0)
+    return {
+        "creationflags": creationflags,
+        "startupinfo": startupinfo,
+    }
 
 
 def run_git(repo_root: Path, args: list[str], check: bool = True) -> subprocess.CompletedProcess[str]:
@@ -15,6 +29,7 @@ def run_git(repo_root: Path, args: list[str], check: bool = True) -> subprocess.
         encoding="utf-8",
         errors="replace",
         check=False,
+        **_hidden_subprocess_kwargs(),
     )
     if check and completed.returncode != 0:
         raise RuntimeError(
@@ -207,4 +222,3 @@ def git_commit_file_sets(repo_root: Path, max_commits: int = 2500) -> list[list[
     if current:
         commits.append(sorted(set(current)))
     return commits
-
