@@ -11,6 +11,79 @@ from .config import SentinelConfig
 from .utils import now_utc_iso
 
 
+def _artifact_volume_penalty(artifact_result: dict[str, Any]) -> tuple[int, dict[str, Any] | None]:
+    summary = artifact_result.get("summary", {})
+    total = int(summary.get("artifactCount", 0))
+    cleanup_candidates = int(summary.get("cleanupCandidateCount", total))
+    if cleanup_candidates <= 0:
+        return 0, None
+    penalty = min(25, cleanup_candidates // 20 + 1)
+    return penalty, {"cleanupCandidates": cleanup_candidates, "totalArtifacts": total}
+
+
+def _security_findings_penalty(security_result: dict[str, Any]) -> tuple[int, dict[str, Any] | None]:
+    findings = security_result.get("findings", [])
+    if isinstance(findings, list) and findings:
+        severity_weight = {
+            "critical": 12.0,
+            "high": 8.0,
+            "medium": 4.0,
+            "low": 1.0,
+        }
+        weighted_points = 0.0
+        for finding in findings:
+            severity = str(finding.get("severity", "low")).lower()
+            context = str(finding.get("context", "runtime")).lower()
+            confidence_raw = finding.get("confidence", 1.0)
+            try:
+                confidence = float(confidence_raw)
+            except (TypeError, ValueError):
+                confidence = 1.0
+            confidence = max(0.1, min(1.0, confidence))
+            context_multiplier = 0.2 if context == "documentation" else 1.0
+            weighted_points += severity_weight.get(severity, 1.0) * confidence * context_multiplier
+        penalty = min(30, int(round(weighted_points)))
+        return penalty, {"weightedRiskPoints": round(weighted_points, 4), "findingCount": len(findings)}
+
+    finding_count = int(security_result.get("summary", {}).get("findingCount", 0))
+    if finding_count <= 0:
+        return 0, None
+    penalty = min(30, finding_count * 2)
+    return penalty, {"findingCount": finding_count}
+
+
+def _prediction_penalty(prediction_result: dict[str, Any]) -> tuple[int, dict[str, Any] | None]:
+    actionable_kinds = {
+        "repository_bloat",
+        "artifact_accumulation",
+        "disk_usage_growth",
+        "problematic_files",
+    }
+    predictions = prediction_result.get("predictions", [])
+    if not isinstance(predictions, list) or not predictions:
+        high_risk_predictions = int(prediction_result.get("summary", {}).get("highRisk", 0))
+        if high_risk_predictions <= 0:
+            return 0, None
+        penalty = min(20, high_risk_predictions * 6)
+        return penalty, {"highRisk": high_risk_predictions}
+
+    high = 0
+    medium = 0
+    for row in predictions:
+        kind = str(row.get("kind", "")).strip()
+        if kind not in actionable_kinds:
+            continue
+        risk = str(row.get("risk", "low")).lower()
+        if risk == "high":
+            high += 1
+        elif risk == "medium":
+            medium += 1
+    penalty = min(16, high * 4 + medium * 2)
+    if penalty <= 0:
+        return 0, None
+    return penalty, {"actionableHighRisk": high, "actionableMediumRisk": medium}
+
+
 def compute_health_score(
     scan_state: dict[str, Any],
     artifact_result: dict[str, Any],
@@ -30,17 +103,17 @@ def compute_health_score(
         score -= penalty
         factors.append({"factor": "unmanaged_nested_git", "delta": -penalty, "value": nested})
 
-    artifact_count = int(artifact_result.get("summary", {}).get("artifactCount", 0))
-    if artifact_count > 0:
-        penalty = min(25, artifact_count // 40 + 1)
+    artifact_penalty, artifact_value = _artifact_volume_penalty(artifact_result=artifact_result)
+    if artifact_penalty > 0:
+        penalty = artifact_penalty
         score -= penalty
-        factors.append({"factor": "artifact_volume", "delta": -penalty, "value": artifact_count})
+        factors.append({"factor": "artifact_volume", "delta": -penalty, "value": artifact_value})
 
-    security_findings = int(security_result.get("summary", {}).get("findingCount", 0))
-    if security_findings > 0:
-        penalty = min(30, security_findings * 2)
+    security_penalty, security_value = _security_findings_penalty(security_result=security_result)
+    if security_penalty > 0:
+        penalty = security_penalty
         score -= penalty
-        factors.append({"factor": "security_findings", "delta": -penalty, "value": security_findings})
+        factors.append({"factor": "security_findings", "delta": -penalty, "value": security_value})
 
     cleanup_deleted = int(cleanup_result.get("summary", {}).get("deletedFiles", 0))
     if cleanup_deleted > 0:
@@ -54,11 +127,11 @@ def compute_health_score(
         score -= penalty
         factors.append({"factor": "repair_failures", "delta": -penalty, "value": repair_failed})
 
-    high_risk_predictions = int(prediction_result.get("summary", {}).get("highRisk", 0))
-    if high_risk_predictions > 0:
-        penalty = min(20, high_risk_predictions * 6)
+    prediction_penalty, prediction_value = _prediction_penalty(prediction_result=prediction_result)
+    if prediction_penalty > 0:
+        penalty = prediction_penalty
         score -= penalty
-        factors.append({"factor": "high_risk_predictions", "delta": -penalty, "value": high_risk_predictions})
+        factors.append({"factor": "high_risk_predictions", "delta": -penalty, "value": prediction_value})
 
     repo_size = int(telemetry_payload.get("repositorySizeBytes", 0))
     if repo_size > 2 * 1024 * 1024 * 1024:

@@ -201,7 +201,7 @@ _HTML = """<!doctype html>
     }
     function renderCards(cards) {
       const rows = [
-        ["Health", `${cards.healthScore} (${cards.healthStatus})`, statusClass(cards.healthStatus)],
+        ["Health Score", `${cards.healthScore} (${cards.healthStatus})`, statusClass(cards.healthStatus)],
         ["Security Findings", cards.securityFindings, cards.securityFindings > 0 ? "warn" : "ok"],
         ["False Positive Rate", cards.falsePositiveRate, cards.falsePositiveRate > 0.2 ? "warn" : "ok"],
         ["Security Eval F1", `${cards.securityEvalF1} (${cards.securityEvalPassed})`, cards.securityEvalPassed ? "ok" : "bad"],
