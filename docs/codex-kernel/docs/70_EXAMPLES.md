@@ -28,8 +28,8 @@ These are patterns. Don’t cargo-cult the folder names; cargo-cult the boundari
 **Scopes**
 
 - A: domain + API contracts
-- B: UI surface
-- C: tooling/CI/guards
+- B: tooling/CI/guards
+- C: UI surface
 - D: tests/docs
 
 **Smoke validation idea**
@@ -44,8 +44,8 @@ These are patterns. Don’t cargo-cult the folder names; cargo-cult the boundari
 **Scopes**
 
 - A: schema + migrations + constraints
-- B: query adapters / admin surface
-- C: env harness (docker compose, seed tools)
+- B: env harness (docker compose, seed tools)
+- C: query adapters / admin surface
 - D: integrity tests + migration tests + runbooks
 
 **Smoke validation idea**
@@ -61,8 +61,8 @@ These are patterns. Don’t cargo-cult the folder names; cargo-cult the boundari
 **Scopes**
 
 - A: permissions + audit + workflow rules
-- B: operator UI dashboards/forms
-- C: import/export tooling + guardrails
+- B: import/export tooling + guardrails
+- C: operator UI dashboards/forms
 - D: end-to-end workflow tests + docs
 
 ---
@@ -72,8 +72,8 @@ These are patterns. Don’t cargo-cult the folder names; cargo-cult the boundari
 **Scopes**
 
 - A: state/replay/evidence contracts
-- B: visual surfaces/modules
-- C: determinism + guards + runner
+- B: determinism + guards + runner
+- C: visual surfaces/modules
 - D: e2e smoke + runbooks
 
 ---
@@ -83,13 +83,13 @@ These are patterns. Don’t cargo-cult the folder names; cargo-cult the boundari
 **Scopes**
 
 - A: core logic + command contracts
-- B: CLI UX (help text, prompts, formatting)
-- C: packaging/release scripts
+- B: packaging/release scripts
+- C: CLI UX (help text, prompts, formatting)
 - D: golden tests + docs
 
 ---
 
 ## Z Merge Plan Examples
 
-- Web app: merge A then B then D then C (or C earlier if it provides shared tooling)
+- Web app: merge A then C then D then B (or B earlier if it provides shared tooling)
 - DB-heavy: merge A then C then D then B (to ensure harness exists before tests)

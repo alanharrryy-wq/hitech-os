@@ -8,10 +8,10 @@ from .integrator import integrate_run
 from .run_id import next_run_identity
 
 SAMPLE_PATHS = {
-    "A_worker": ["apps/demo/src/a_feature.ts", "apps/demo/src/a_service.ts"],
-    "B_worker": ["apps/demo/src/b_feature.ts", "apps/demo/src/b_ui.ts"],
-    "C_worker": ["tools/demo/c_tool.py", "tools/demo/c_manifest.json"],
-    "D_worker": ["docs/demo/d_validation.md", "docs/demo/d_matrix.md"],
+    "A_core": ["apps/demo/src/a_feature.ts", "apps/demo/src/a_service.ts"],
+    "B_tooling": ["tools/demo/b_tool.py", "tools/demo/b_manifest.json"],
+    "C_features": ["apps/demo/src/c_feature.ts", "apps/demo/src/c_ui.ts"],
+    "D_validation": ["docs/demo/d_validation.md", "docs/demo/d_matrix.md"],
 }
 
 
@@ -145,11 +145,11 @@ def run_smoke(run_id: str | None = None) -> dict[str, Any]:
     # Disable volatile ledger-tail counters so deterministic smoke compares stable report content.
     stable_config = {"run": {"integrator_watch_ledger": False}}
     integration_first = integrate_run(chosen_run_id, workers=list(WORKERS), config=stable_config)
-    first_report = (bundle_dir(chosen_run_id, "Z_integrator") / "FINAL_REPORT.txt").read_text(encoding="utf-8")
+    first_report = (bundle_dir(chosen_run_id, "Z_aggregator") / "FINAL_REPORT.txt").read_text(encoding="utf-8")
     first_digest = stable_sha256_text(first_report)
 
     integration_second = integrate_run(chosen_run_id, workers=list(WORKERS), config=stable_config)
-    second_report = (bundle_dir(chosen_run_id, "Z_integrator") / "FINAL_REPORT.txt").read_text(encoding="utf-8")
+    second_report = (bundle_dir(chosen_run_id, "Z_aggregator") / "FINAL_REPORT.txt").read_text(encoding="utf-8")
     second_digest = stable_sha256_text(second_report)
 
     deterministic = first_digest == second_digest
@@ -169,7 +169,7 @@ def run_smoke(run_id: str | None = None) -> dict[str, Any]:
         },
     }
 
-    smoke_dir = RUNS_DIR / chosen_run_id / "Z_integrator" / "LOGS"
+    smoke_dir = RUNS_DIR / chosen_run_id / "Z_aggregator" / "LOGS"
     smoke_dir.mkdir(parents=True, exist_ok=True)
     write_json(smoke_dir / "factory_smoke_STATUS.json", payload)
     return payload

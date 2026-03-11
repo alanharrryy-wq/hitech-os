@@ -7,7 +7,21 @@ import time
 from pathlib import Path
 from typing import Any
 
-from .common import CONTRACTS_DIR, INTEGRATOR, REPO_ROOT, RUNS_DIR, WORKERS, ensure_dir, iso_utc, read_json, write_json, write_text
+from .common import (
+    CONTRACTS_DIR,
+    INTEGRATOR,
+    REPO_ROOT,
+    RUNS_DIR,
+    WORKERS,
+    canonical_worker_id,
+    canonicalize_workers,
+    ensure_dir,
+    iso_utc,
+    read_json,
+    resolve_bundle_dir,
+    write_json,
+    write_text,
+)
 from .config import load_factory_config
 from .schemas import validate_payload
 
@@ -64,7 +78,7 @@ def run_dir(run_id: str) -> Path:
 
 
 def bundle_dir(run_id: str, worker: str) -> Path:
-    return run_dir(run_id) / worker
+    return resolve_bundle_dir(run_id, canonical_worker_id(worker), prefer_existing=True)
 
 
 def _default_worker_status(run_id: str, worker: str) -> dict[str, Any]:
@@ -132,6 +146,7 @@ def _default_log_index(run_id: str, owner: str) -> dict[str, Any]:
 
 
 def scaffold_worker_bundle(run_id: str, worker: str) -> dict[str, Any]:
+    worker = canonical_worker_id(worker)
     target = bundle_dir(run_id, worker)
     ensure_dir(target)
     ensure_dir(target / "LOGS")
@@ -695,6 +710,7 @@ def _resolve_worktree_path(worker: str) -> Path:
 
 
 def autocloseout_worker_bundle(run_id: str, worker: str) -> dict[str, Any]:
+    worker = canonical_worker_id(worker)
     scaffold_worker_bundle(run_id, worker)
     root = bundle_dir(run_id, worker)
     logs_dir = root / "LOGS"
@@ -858,7 +874,7 @@ def autocloseout_worker_bundle(run_id: str, worker: str) -> dict[str, Any]:
 
 
 def autocloseout_run(run_id: str, workers: list[str] | None = None) -> dict[str, Any]:
-    chosen = workers or list(WORKERS)
+    chosen = canonicalize_workers(workers)
     results = [autocloseout_worker_bundle(run_id, worker) for worker in chosen if worker != INTEGRATOR]
     return {
         "run_id": run_id,
@@ -868,7 +884,7 @@ def autocloseout_run(run_id: str, workers: list[str] | None = None) -> dict[str,
 
 
 def scaffold_all_bundles(run_id: str, workers: list[str] | None = None) -> dict[str, Any]:
-    chosen = workers or list(WORKERS)
+    chosen = canonicalize_workers(workers)
     result = {
         "run_id": run_id,
         "workers": [],
@@ -880,6 +896,7 @@ def scaffold_all_bundles(run_id: str, workers: list[str] | None = None) -> dict[
 
 
 def validate_bundle_shape(run_id: str, worker: str) -> list[str]:
+    worker = canonical_worker_id(worker)
     target = bundle_dir(run_id, worker)
     cfg = load_factory_config(strict=False)
     worker_files = cfg.get("workers", {}).get("required_worker_files", list(WORKER_REQUIRED_FILES))
@@ -899,6 +916,7 @@ def validate_bundle_shape(run_id: str, worker: str) -> list[str]:
 
 
 def validate_bundle_schemas(run_id: str, worker: str) -> list[str]:
+    worker = canonical_worker_id(worker)
     target = bundle_dir(run_id, worker)
     errors: list[str] = []
 
@@ -930,6 +948,7 @@ def validate_bundle_schemas(run_id: str, worker: str) -> list[str]:
 
 
 def validate_bundle(run_id: str, worker: str) -> dict[str, Any]:
+    worker = canonical_worker_id(worker)
     shape_errors = validate_bundle_shape(run_id, worker)
     schema_errors = [] if shape_errors else validate_bundle_schemas(run_id, worker)
     all_errors = [*shape_errors, *schema_errors]
@@ -942,7 +961,7 @@ def validate_bundle(run_id: str, worker: str) -> dict[str, Any]:
 
 
 def validate_run(run_id: str, workers: list[str] | None = None, *, auto_closeout: bool = False) -> dict[str, Any]:
-    chosen = workers or list(WORKERS)
+    chosen = canonicalize_workers(workers)
     closeout_payload: dict[str, Any] | None = None
     if auto_closeout:
         closeout_payload = autocloseout_run(run_id, workers=chosen)

@@ -47,7 +47,7 @@ Each prompt file must include near the top:
 - `SESSION_POLICY: CLEAN_START_REQUIRED`
 - `AUTO_REPORT_REQUIRED: true`
 
-`B_tooling` prompt must include:
+`C_features` prompt must include:
 
 - `VISUAL_BASELINE_OWNER: true`
 
@@ -79,7 +79,7 @@ powershell -ExecutionPolicy Bypass -File tools/codex/dispatch/run_iter.ps1 -RunI
 6. Run `python -m tools.codex.factory worktrees open --run-id <RUN_ID> --workers ...`
 7. Ensure AutoHotkey exists (attempt winget install if needed).
 8. Dispatch prompts by UI automation to window titles:
-   - Z prompt is dispatched at run start (watch mode), then A/B/C/D.
+   - Z_aggregator prompt is dispatched at run start (watch mode), then A/B/C/D.
    - `HITECHOS_A_core_<RUN_ID>`
    - `HITECHOS_B_tooling_<RUN_ID>`
    - `HITECHOS_C_features_<RUN_ID>`

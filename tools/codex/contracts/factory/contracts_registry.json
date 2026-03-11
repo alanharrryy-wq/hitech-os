@@ -12,12 +12,12 @@
     "enable_scope_lock_enforcement": false,
     "enable_smoke_validation_gate": false
   },
-  "integrator": "Z_integrator",
+  "integrator": "Z_aggregator",
   "notes": [
     "All feature flags default to false.",
     "Deterministic ordering is required for all JSON outputs.",
-    "Z integrator merges and validates only; no feature invention.",
-    "B_worker is the default visual baseline owner.",
+    "Z_aggregator merges and validates only; no feature invention.",
+    "C_features is the default visual baseline owner.",
     "Worker closeout artifacts are auto-generated and repaired when possible."
   ],
   "required_integrator_files": [
@@ -65,9 +65,9 @@
     "worker_suggestions": "tools/codex/templates/factory/worker_suggestions.template.md"
   },
   "workers": [
-    "A_worker",
-    "B_worker",
-    "C_worker",
-    "D_worker"
+    "A_core",
+    "B_tooling",
+    "C_features",
+    "D_validation"
   ]
 }

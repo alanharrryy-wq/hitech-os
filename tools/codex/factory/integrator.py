@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Any, Iterable, Mapping
 
 from .attestations import write_all_attestations
-from .common import INTEGRATOR, REPO_ROOT, RUNS_DIR, WORKERS, iso_utc, read_json, read_text, stable_sha256_text
+from .common import INTEGRATOR, REPO_ROOT, RUNS_DIR, WORKERS, canonicalize_workers, iso_utc, read_json, read_text, stable_sha256_text
 from .config import load_factory_config
 from .contracts import bundle_dir, scaffold_integrator_bundle, validate_bundle
 from .fs_guard import WriteGuard, WritePolicyError
@@ -513,7 +513,7 @@ def integrate_run(
     config: Mapping[str, Any] | None = None,
     extra_writes: Iterable[Mapping[str, Any]] | None = None,
 ) -> dict[str, Any]:
-    chosen = list(workers or WORKERS)
+    chosen = canonicalize_workers(workers)
     cfg = dict(config or load_factory_config(strict=False))
     run_cfg = dict(cfg.get("run", {})) if isinstance(cfg.get("run"), Mapping) else {}
     strict_mode = bool(run_cfg.get("strict_collision_mode", True))

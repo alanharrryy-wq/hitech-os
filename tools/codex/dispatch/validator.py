@@ -24,6 +24,67 @@ CODEX_IDS: tuple[str, ...] = (
     "D_validation",
     "Z_aggregator",
 )
+WORKER_ALIAS_TO_CANONICAL: dict[str, str] = {
+    "A_worker": "A_core",
+    "B_worker": "B_tooling",
+    "C_worker": "C_features",
+    "D_worker": "D_validation",
+    "Z_integrator": "Z_aggregator",
+}
+LEGACY_ALIASES_BY_CANONICAL: dict[str, list[str]] = {}
+for _legacy_worker, _canonical_worker in WORKER_ALIAS_TO_CANONICAL.items():
+    LEGACY_ALIASES_BY_CANONICAL.setdefault(_canonical_worker, []).append(_legacy_worker)
+
+
+def _canonical_worker_id(worker: str) -> str:
+    value = str(worker).strip()
+    if not value:
+        return value
+    return WORKER_ALIAS_TO_CANONICAL.get(value, value)
+
+
+def _worker_aliases(worker: str) -> list[str]:
+    canonical = _canonical_worker_id(worker)
+    aliases: list[str] = []
+    if canonical:
+        aliases.append(canonical)
+    for alias in LEGACY_ALIASES_BY_CANONICAL.get(canonical, []):
+        if alias not in aliases:
+            aliases.append(alias)
+    return aliases
+
+
+def _canonicalize_workers(workers: list[str]) -> list[str]:
+    deduped: list[str] = []
+    for worker in workers:
+        canonical = _canonical_worker_id(worker)
+        if canonical and canonical not in deduped:
+            deduped.append(canonical)
+    return deduped
+
+
+def _bundle_path_candidates(run_id: str, worker: str) -> list[Path]:
+    candidates: list[Path] = []
+    seen: set[str] = set()
+    for alias in _worker_aliases(worker):
+        path = RUNS_ROOT / run_id / alias
+        key = path.as_posix().lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        candidates.append(path)
+    return candidates
+
+
+def _canonical_bundle_root(run_id: str, worker: str) -> Path:
+    return RUNS_ROOT / run_id / _canonical_worker_id(worker)
+
+
+def _resolve_bundle_root(run_id: str, worker: str) -> Path:
+    for candidate in _bundle_path_candidates(run_id, worker):
+        if candidate.exists() and candidate.is_dir():
+            return candidate
+    return _canonical_bundle_root(run_id, worker)
 
 RUN_ID_NEW_RE = re.compile(r"^(?P<day>\d{8})_(?P<time>\d{6})_(?P<rand>[A-Z0-9]{4})$")
 RUN_ID_OLD_RE = re.compile(r"^(?P<day>\d{8})_(?P<seq>\d+)$")
@@ -244,7 +305,7 @@ def _prompt_contract_header(run_id: str, worker: str) -> str:
         "AUTO_RECOVERY_REQUIRED: true",
         f"DONE_MARKER_PATH: {done_marker}",
     ]
-    if worker in {"B_tooling", "B_worker"}:
+    if worker in {"C_features", "C_worker"}:
         lines.extend(
             [
                 "VISUAL_BASELINE_OWNER: true",
@@ -296,7 +357,7 @@ def _rotate_existing_prompt_dir(prompt_dir: Path) -> tuple[bool, str]:
 
 def _ensure_worker_run_folders(run_id: str, workers: list[str]) -> None:
     for worker in workers:
-        root = RUNS_ROOT / run_id / worker
+        root = _canonical_bundle_root(run_id, worker)
         root.mkdir(parents=True, exist_ok=True)
         (root / "LOGS").mkdir(parents=True, exist_ok=True)
         (root / "FILES").mkdir(parents=True, exist_ok=True)
@@ -323,14 +384,28 @@ def _copy_file_if_newer(source_path: Path, target_path: Path) -> bool:
 
 
 def _sync_worker_bundle_from_worktree(run_id: str, worker: str, *, required_only: bool) -> dict[str, Any]:
-    source_root = _worktree_run_root(run_id, worker) / worker
-    target_root = RUNS_ROOT / run_id / worker
+    canonical_worker = _canonical_worker_id(worker)
+    source_root: Path | None = None
+    source_worker = canonical_worker
+    source_candidates: list[str] = []
+    for candidate in _worker_aliases(canonical_worker):
+        worker_root = _worktree_run_root(run_id, candidate) / candidate
+        source_candidates.append(worker_root.as_posix())
+        if worker_root.exists() and worker_root.is_dir():
+            source_root = worker_root
+            source_worker = candidate
+            break
+    if source_root is None:
+        source_root = _worktree_run_root(run_id, canonical_worker) / canonical_worker
+    target_root = RUNS_ROOT / run_id / canonical_worker
     target_root.mkdir(parents=True, exist_ok=True)
 
     if not source_root.exists() or not source_root.is_dir():
         return {
-            "worker": worker,
+            "worker": canonical_worker,
             "source_root": source_root.as_posix(),
+            "source_worker": source_worker,
+            "source_candidates": source_candidates,
             "target_root": target_root.as_posix(),
             "source_found": False,
             "copied": 0,
@@ -350,8 +425,10 @@ def _sync_worker_bundle_from_worktree(run_id: str, worker: str, *, required_only
             copied += 1
 
     return {
-        "worker": worker,
+        "worker": canonical_worker,
         "source_root": source_root.as_posix(),
+        "source_worker": source_worker,
+        "source_candidates": source_candidates,
         "target_root": target_root.as_posix(),
         "source_found": True,
         "copied": copied,
@@ -367,22 +444,23 @@ def _sync_rework_queue_from_worktrees(run_id: str, *, kind: str = QUEUE_KIND_REW
     copied = 0
     sources: list[str] = []
     seen_sources: set[str] = set()
-    for worker in [*CODEX_IDS, "Z_integrator"]:
-        source_root = _worktree_run_root(run_id, worker) / "_queue" / kind
-        if not source_root.exists() or not source_root.is_dir():
-            continue
-        source_key = source_root.as_posix().lower()
-        if source_key in seen_sources:
-            continue
-        seen_sources.add(source_key)
-        sources.append(source_root.as_posix())
-        for source_path in source_root.rglob("*"):
-            if not source_path.is_file():
+    for worker in CODEX_IDS:
+        for alias in _worker_aliases(worker):
+            source_root = _worktree_run_root(run_id, alias) / "_queue" / kind
+            if not source_root.exists() or not source_root.is_dir():
                 continue
-            rel_path = source_path.relative_to(source_root)
-            target_path = target_root / rel_path
-            if _copy_file_if_newer(source_path, target_path):
-                copied += 1
+            source_key = source_root.as_posix().lower()
+            if source_key in seen_sources:
+                continue
+            seen_sources.add(source_key)
+            sources.append(source_root.as_posix())
+            for source_path in source_root.rglob("*"):
+                if not source_path.is_file():
+                    continue
+                rel_path = source_path.relative_to(source_root)
+                target_path = target_root / rel_path
+                if _copy_file_if_newer(source_path, target_path):
+                    copied += 1
 
     return {
         "run_id": run_id,
@@ -400,7 +478,7 @@ def _sync_run_from_worktrees(
     required_only: bool,
     include_queue: bool,
 ) -> dict[str, Any]:
-    chosen_workers = workers or list(CODEX_IDS)
+    chosen_workers = _canonicalize_workers(workers or list(CODEX_IDS))
     worker_payload = [_sync_worker_bundle_from_worktree(run_id, worker, required_only=required_only) for worker in chosen_workers]
     queue_payload: dict[str, Any] | None = None
     if include_queue:
@@ -426,12 +504,19 @@ def _parse_workers_subset(raw: str | None) -> list[str]:
     if not parsed:
         return list(CODEX_IDS)
 
-    unknown = [worker for worker in parsed if worker not in CODEX_IDS]
+    normalized: list[str] = []
+    unknown: list[str] = []
+    for worker in parsed:
+        canonical = _canonical_worker_id(worker)
+        if canonical not in CODEX_IDS:
+            unknown.append(worker)
+            continue
+        normalized.append(canonical)
     if unknown:
         raise ValueError(f"unknown worker ids in --workers: {','.join(sorted(set(unknown)))}")
 
     deduped: list[str] = []
-    for worker in parsed:
+    for worker in normalized:
         if worker not in deduped:
             deduped.append(worker)
     return deduped
@@ -501,7 +586,7 @@ def _parse_prompt_pack(text: str) -> tuple[dict[str, str], list[str], list[str]]
         line = raw_line.rstrip("\n")
         match = PACK_SECTION_RE.match(line.strip())
         if match:
-            worker = str(match.group("worker")).strip()
+            worker = _canonical_worker_id(str(match.group("worker")).strip())
             seen_headers.append(worker)
             if worker in sections:
                 duplicates.append(worker)
@@ -926,8 +1011,8 @@ def _validate_prompt_file(path: Path, run_id: str, worker: str) -> list[str]:
         if z_rule_line not in text:
             errors.append(f"missing Z read-only rule: {z_rule_line}")
 
-    if worker in {"B_tooling", "B_worker"} and "VISUAL_BASELINE_OWNER: true" not in text:
-        errors.append("missing visual baseline owner contract for B worker")
+    if worker in {"C_features", "C_worker"} and "VISUAL_BASELINE_OWNER: true" not in text:
+        errors.append("missing visual baseline owner contract for C worker")
     if worker in {"Z_aggregator", "Z_integrator"} and "LEDGER_WATCH_REQUIRED: true" not in text:
         errors.append("missing ledger watch contract for Z worker")
 
@@ -1193,7 +1278,8 @@ def _enqueue_rework_request(
 
 def _find_queue_done_ack(run_id: str, worker: str, cycle: int) -> dict[str, Any] | None:
     paths = _ensure_queue_dirs(run_id, QUEUE_KIND_REWORK)
-    worker_token = _safe_queue_token(worker)
+    canonical_worker = _canonical_worker_id(worker)
+    worker_token = _safe_queue_token(canonical_worker)
     pattern = f"*_{worker_token}_c{cycle}_*.done.json"
     candidates = sorted(paths["outbox"].glob(pattern), key=lambda path: path.name)
     for candidate in candidates:
@@ -1202,7 +1288,8 @@ def _find_queue_done_ack(run_id: str, worker: str, cycle: int) -> dict[str, Any]
             continue
         if str(payload.get("run_id", "")).strip() != run_id:
             continue
-        if str(payload.get("worker_id", "")).strip() != worker:
+        payload_worker = _canonical_worker_id(str(payload.get("worker_id", "")).strip())
+        if payload_worker != canonical_worker:
             continue
         if _to_int(payload.get("cycle"), -1) != int(cycle):
             continue
@@ -1221,6 +1308,7 @@ def wait_for_rework_queue_outbox(
     timeout_seconds: int,
     poll_seconds: float = 2.0,
 ) -> dict[str, Any]:
+    workers = _canonicalize_workers(workers)
     if cycle < 1:
         return {
             "status": BLOCKED,
@@ -1293,14 +1381,15 @@ def post_rework_queue_ack(
     message_id: str,
     note: str,
 ) -> dict[str, Any]:
+    canonical_worker = _canonical_worker_id(worker)
     if cycle < 1:
         return {
             "status": BLOCKED,
             "run_id": run_id,
-            "worker": worker,
+            "worker": canonical_worker or worker,
             "error": "cycle must be >= 1",
         }
-    if worker not in CODEX_IDS:
+    if canonical_worker not in CODEX_IDS:
         return {
             "status": BLOCKED,
             "run_id": run_id,
@@ -1309,7 +1398,7 @@ def post_rework_queue_ack(
         }
 
     paths = _ensure_queue_dirs(run_id, QUEUE_KIND_REWORK)
-    worker_token = _safe_queue_token(worker)
+    worker_token = _safe_queue_token(canonical_worker)
     compact_id = _safe_queue_token(message_id) if message_id else "none"
     stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     ack_file = paths["outbox"] / f"{stamp}_{worker_token}_c{cycle}_{compact_id}.done.json"
@@ -1317,7 +1406,7 @@ def post_rework_queue_ack(
         "schema_version": 1,
         "kind": QUEUE_KIND_REWORK,
         "run_id": run_id,
-        "worker_id": worker,
+        "worker_id": canonical_worker,
         "cycle": int(cycle),
         "status": str(status).strip().upper() or PASS,
         "message_id": str(message_id).strip(),
@@ -1344,7 +1433,7 @@ def post_rework_queue_ack(
     return {
         "status": PASS,
         "run_id": run_id,
-        "worker": worker,
+        "worker": canonical_worker,
         "cycle": int(cycle),
         "outbox_file": _path_posix(ack_file),
         "message_id": str(message_id).strip(),
@@ -1455,7 +1544,8 @@ def _read_current_score(bundle_root: Path) -> float | None:
 
 
 def _run_pre_done_evolutionary_non_blocking(run_id: str, worker: str) -> dict[str, Any]:
-    bundle_root = RUNS_ROOT / run_id / worker
+    worker = _canonical_worker_id(worker)
+    bundle_root = _canonical_bundle_root(run_id, worker)
     bundle_root.mkdir(parents=True, exist_ok=True)
     (bundle_root / "LOGS").mkdir(parents=True, exist_ok=True)
     log_path = bundle_root / "LOGS" / "evolutionary_pre_done.log.jsonl"
@@ -1572,7 +1662,7 @@ def wait_for_done_markers(
     timeout_seconds: int,
     poll_seconds: float,
 ) -> dict[str, Any]:
-    chosen_workers = workers or list(CODEX_IDS)
+    chosen_workers = _canonicalize_workers(workers or list(CODEX_IDS))
     _ensure_worker_run_folders(run_id, chosen_workers)
     start = time.monotonic()
     deadline = start + max(1, int(timeout_seconds))
@@ -1580,7 +1670,7 @@ def wait_for_done_markers(
     per_worker: dict[str, dict[str, Any]] = {
         worker: {
             "worker": worker,
-            "marker": (RUNS_ROOT / run_id / worker / "DONE.marker").as_posix(),
+            "marker": (_canonical_bundle_root(run_id, worker) / "DONE.marker").as_posix(),
             "status": "PENDING",
             "content_ok": False,
             "error": "",
@@ -1607,7 +1697,13 @@ def wait_for_done_markers(
         )
         all_done = True
         for worker, entry in per_worker.items():
-            marker = Path(str(entry["marker"]))
+            marker_candidates = [candidate / "DONE.marker" for candidate in _bundle_path_candidates(run_id, worker)]
+            marker = marker_candidates[0]
+            for candidate in marker_candidates:
+                if candidate.exists():
+                    marker = candidate
+                    break
+            entry["marker"] = marker.as_posix()
             token = f"DONE {run_id} {worker}"
             if not marker.exists():
                 entry["status"] = "PENDING"
@@ -1673,7 +1769,7 @@ def wait_for_done_markers(
 
 
 def _bundle_missing_entries(run_id: str, worker: str) -> list[str]:
-    root = RUNS_ROOT / run_id / worker
+    root = _resolve_bundle_root(run_id, worker)
     missing: list[str] = []
     for rel in WORKER_BUNDLE_REQUIRED:
         if not (root / rel).exists():
@@ -1699,13 +1795,13 @@ def validate_guardrails(run_id: str) -> dict[str, Any]:
 
     _sync_run_from_worktrees(
         run_id,
-        workers=[*CODEX_IDS, "Z_integrator"],
+        workers=list(CODEX_IDS),
         required_only=False,
         include_queue=True,
     )
 
     for worker in DOC_WORKERS:
-        worker_root = run_root / worker
+        worker_root = _resolve_bundle_root(run_id, worker)
         docs_dir = worker_root / "FILES" / "docs_test"
         docs = sorted(
             [path.as_posix() for path in docs_dir.glob("*.md") if path.is_file()],
@@ -1767,6 +1863,8 @@ def validate_guardrails(run_id: str) -> dict[str, Any]:
     report_candidates = [
         run_root / "Z_aggregator" / AGGREGATOR_FINAL_REPORT_REL,
         run_root / "Z_aggregator" / AGGREGATOR_FINAL_REPORT_LEGACY_REL,
+        run_root / "Z_integrator" / AGGREGATOR_FINAL_REPORT_REL,
+        run_root / "Z_integrator" / AGGREGATOR_FINAL_REPORT_LEGACY_REL,
     ]
     aggregator_report = report_candidates[0]
     for candidate in report_candidates:
@@ -2143,9 +2241,10 @@ def _write_execution_rules_report(
     worker: str,
     payload: dict[str, Any],
 ) -> str:
-    worker_root = RUNS_ROOT / run_id / worker
-    if not worker_root.exists():
-        return ""
+    canonical_worker = _canonical_worker_id(worker)
+    worker_root = _canonical_bundle_root(run_id, canonical_worker)
+    worker_root.mkdir(parents=True, exist_ok=True)
+    (worker_root / "LOGS").mkdir(parents=True, exist_ok=True)
     target = worker_root / "EXECUTION_RULES_REPORT.json"
     target.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     return target.as_posix()
@@ -2157,7 +2256,7 @@ def _evaluate_worker_execution_rules(
     worker: str,
     rules: dict[str, Any],
 ) -> dict[str, Any]:
-    worker_root = RUNS_ROOT / run_id / worker
+    worker_root = _resolve_bundle_root(run_id, worker)
     declared_rows = _load_worker_declared_changes(worker_root)
     declared_by_path: dict[str, str] = {row["path"]: row["change_type"] for row in declared_rows}
     patch_stats = _parse_patch_stats(worker_root / "DIFF.patch")
@@ -2444,7 +2543,7 @@ def run_execution_audit(
     workers: list[str] | None = None,
     rules_path: Path | None = None,
 ) -> dict[str, Any]:
-    chosen_workers = workers or list(CODEX_IDS)
+    chosen_workers = _canonicalize_workers(workers or list(CODEX_IDS))
     _sync_run_from_worktrees(
         run_id,
         workers=chosen_workers,
@@ -2535,7 +2634,10 @@ def _load_rework_assignments(run_id: str) -> dict[str, list[str]]:
     for worker, values in workers_payload.items():
         if not isinstance(values, list):
             continue
-        normalized[str(worker)] = [str(value).strip() for value in values if str(value).strip()]
+        canonical = _canonical_worker_id(str(worker).strip())
+        if not canonical:
+            continue
+        normalized[canonical] = [str(value).strip() for value in values if str(value).strip()]
     return normalized
 
 
@@ -2546,7 +2648,11 @@ def _save_rework_assignments(run_id: str, assignments: dict[str, list[str]]) -> 
         "schema_version": 1,
         "run_id": run_id,
         "updated_at_utc": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),
-        "workers": {worker: sorted(set(values)) for worker, values in sorted(assignments.items())},
+        "workers": {
+            _canonical_worker_id(worker): sorted(set(values))
+            for worker, values in sorted(assignments.items())
+            if _canonical_worker_id(worker)
+        },
     }
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
 
@@ -2579,6 +2685,7 @@ def _select_rework_tasks(
     product_domains: set[str] | None = None,
     require_product_paths: bool = False,
 ) -> tuple[list[dict[str, Any]], int, int]:
+    worker = _canonical_worker_id(worker)
     if shortfall_mloc <= 0:
         return [], 0, 0
     product_domain_set = set(product_domains or set())
@@ -2601,7 +2708,12 @@ def _select_rework_tasks(
         if not source or not owner or not expires_at:
             continue
         affinity = task.get("worker_affinity", [])
-        if isinstance(affinity, list) and affinity and worker not in affinity:
+        normalized_affinity = (
+            _canonicalize_workers([str(item).strip() for item in affinity if str(item).strip()])
+            if isinstance(affinity, list)
+            else []
+        )
+        if normalized_affinity and worker not in normalized_affinity:
             continue
         allowed_paths = task.get("allowed_paths", [])
         acceptance_checks = task.get("acceptance_checks", [])
@@ -2716,7 +2828,7 @@ def _inject_rework_prompt_request(run_id: str, worker: str, request_payload: dic
 
 
 def _cleanup_worker_failed_changes(run_id: str, worker: str) -> dict[str, Any]:
-    root = RUNS_ROOT / run_id / worker
+    root = _resolve_bundle_root(run_id, worker)
     files_changed = _safe_read_json(root / "FILES_CHANGED.json")
     changes = files_changed.get("changes", []) if isinstance(files_changed.get("changes", []), list) else []
     changed_paths: set[str] = set()
@@ -2835,7 +2947,7 @@ def _refresh_task_bank(
 
 
 def _effective_worker_metrics(run_id: str, worker: str, *, use_local_when_stub: bool) -> dict[str, Any]:
-    root = RUNS_ROOT / run_id / worker
+    root = _resolve_bundle_root(run_id, worker)
     score_payload = _safe_read_json(root / "SANCTION_SCORE.json")
     report_payload = _safe_read_json(root / "SELF_EVAL_REPORT.json")
     score_level = str(score_payload.get("sanction_level", report_payload.get("sanction_level", "WARN"))).upper()
@@ -2872,6 +2984,7 @@ def run_rework_cycle(
     auto_cleanup: bool = True,
     update_prompts: bool = True,
 ) -> dict[str, Any]:
+    workers = _canonicalize_workers(workers)
     if cycle < 1:
         return {
             "status": BLOCKED,
@@ -2911,7 +3024,7 @@ def run_rework_cycle(
     for row in preflight_workers:
         if not isinstance(row, dict):
             continue
-        worker_id = str(row.get("worker_id", "")).strip()
+        worker_id = _canonical_worker_id(str(row.get("worker_id", "")).strip())
         if worker_id:
             preflight_by_worker[worker_id] = row
     execution_run_failures = (
@@ -2931,7 +3044,7 @@ def run_rework_cycle(
     product_rework_assigned = False
 
     for worker in workers:
-        worker_root = RUNS_ROOT / run_id / worker
+        worker_root = _resolve_bundle_root(run_id, worker)
         target_mloc = int(base_target + (cycle * increment))
         if not worker_root.exists():
             blocked_workers.append(worker)

@@ -33,8 +33,8 @@ def _write_manifest(path: Path, run_id: str) -> None:
             "run_id": run_id,
             "kind": "factory",
             "base_ref": "HEAD",
-            "workers": ["A_worker", "B_worker", "C_worker", "D_worker"],
-            "integrator": "Z_integrator",
+            "workers": ["A_core", "B_tooling", "C_features", "D_validation"],
+            "integrator": "Z_aggregator",
         },
     )
 
@@ -45,7 +45,7 @@ class MeaningfulGateTests(unittest.TestCase):
         with isolated_factory_env() as env:
             contracts.scaffold_integrator_bundle(run_id)
             run_dir = env["runs_dir"] / run_id
-            z_dir = run_dir / "Z_integrator"
+            z_dir = run_dir / "Z_aggregator"
             _write_manifest(run_dir / "RUN_MANIFEST.json", run_id)
 
             _write_json(
@@ -53,7 +53,7 @@ class MeaningfulGateTests(unittest.TestCase):
                 {
                     "schema_version": 1,
                     "run_id": run_id,
-                    "owner": "Z_integrator",
+                    "owner": "Z_aggregator",
                     "changes": [],
                     "noop": False,
                     "noop_reason": "",
@@ -74,7 +74,7 @@ class MeaningfulGateTests(unittest.TestCase):
         with isolated_factory_env() as env:
             contracts.scaffold_integrator_bundle(run_id)
             run_dir = env["runs_dir"] / run_id
-            z_dir = run_dir / "Z_integrator"
+            z_dir = run_dir / "Z_aggregator"
             _write_manifest(run_dir / "RUN_MANIFEST.json", run_id)
 
             _write_json(
@@ -82,7 +82,7 @@ class MeaningfulGateTests(unittest.TestCase):
                 {
                     "schema_version": 1,
                     "run_id": run_id,
-                    "owner": "Z_integrator",
+                    "owner": "Z_aggregator",
                     "changes": [
                         {
                             "path": "apps/phantom/not_there.txt",
@@ -119,7 +119,7 @@ class MeaningfulGateTests(unittest.TestCase):
         with isolated_factory_env() as env:
             contracts.scaffold_integrator_bundle(run_id)
             run_dir = env["runs_dir"] / run_id
-            z_dir = run_dir / "Z_integrator"
+            z_dir = run_dir / "Z_aggregator"
             _write_manifest(run_dir / "RUN_MANIFEST.json", run_id)
 
             target = env["repo_root"] / rel_path
@@ -131,7 +131,7 @@ class MeaningfulGateTests(unittest.TestCase):
                 {
                     "schema_version": 1,
                     "run_id": run_id,
-                    "owner": "Z_integrator",
+                    "owner": "Z_aggregator",
                     "changes": [
                         {
                             "path": rel_path,
@@ -168,7 +168,7 @@ class MeaningfulGateTests(unittest.TestCase):
         with isolated_factory_env() as env:
             contracts.scaffold_integrator_bundle(run_id)
             run_dir = env["runs_dir"] / run_id
-            z_dir = run_dir / "Z_integrator"
+            z_dir = run_dir / "Z_aggregator"
             _write_manifest(run_dir / "RUN_MANIFEST.json", run_id)
 
             target = env["repo_root"] / rel_path
@@ -182,7 +182,7 @@ class MeaningfulGateTests(unittest.TestCase):
                 {
                     "schema_version": 1,
                     "run_id": run_id,
-                    "owner": "Z_integrator",
+                    "owner": "Z_aggregator",
                     "changes": [
                         {
                             "path": rel_path,
@@ -208,3 +208,4 @@ class MeaningfulGateTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

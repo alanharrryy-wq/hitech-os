@@ -14,6 +14,7 @@ CODEX_DIR = REPO_ROOT / "tools" / "codex"
 RUNS_ROOT = CODEX_DIR / "runs"
 PROMPTS_ROOT = CODEX_DIR / "prompts"
 DEFAULT_WORKERS = ("A_core", "B_tooling", "C_features", "D_validation", "Z_aggregator")
+INTEGRATOR_DIR = "Z_aggregator"
 
 CONTRACT_SOURCES = (
     "KERNEL_CONTEXT.md",
@@ -290,7 +291,7 @@ def main() -> int:
     context_fingerprint = _context_fingerprint(context_dir)
     _write_json(context_dir / "CONTEXT_FINGERPRINT.json", context_fingerprint)
 
-    z_dir = run_root / "Z_integrator"
+    z_dir = run_root / INTEGRATOR_DIR
     _write_apply_instructions(run_id, z_dir, run_root / "_apply")
 
     if args.prepare_generated_docs:

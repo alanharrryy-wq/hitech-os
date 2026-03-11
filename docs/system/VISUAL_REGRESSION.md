@@ -47,4 +47,5 @@ If no Storybook workspace is detected, the command continues against `--base-url
 - Baseline updates require explicit `--update-baseline`.
 - No automatic baseline updates are configured in CI.
 - Baselines remain optional until constitution enables mandatory enforcement.
-- Factory default ownership for baseline update is `B_worker`.
+- Factory default ownership for baseline update is `C_features`.
+

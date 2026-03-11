@@ -24,7 +24,7 @@
     "quarantine_on_suspicious_bundle": true,
     "run_prefix": "factory",
     "strict_collision_mode": true,
-    "visual_baseline_owner": "B_worker",
+    "visual_baseline_owner": "C_features",
     "visual_baseline_update_default": true
   },
   "schema_version": 2,
@@ -35,49 +35,49 @@
   },
   "workers": {
     "allowlist_globs": {
-      "A_worker": [
+      "A_core": [
         "apps/**",
         "docs/**",
         "packages/**"
       ],
-      "B_worker": [
+      "B_tooling": [
+        "docs/**",
+        "packages/**",
+        "tools/**"
+      ],
+      "C_features": [
         "apps/**",
         "docs/**",
         "packages/**",
         "docs/visual-baselines/**",
         "tools/_local/visual/**"
       ],
-      "C_worker": [
-        "docs/**",
-        "packages/**",
-        "tools/**"
-      ],
-      "D_worker": [
+      "D_validation": [
         "docs/**",
         "packages/**",
         "tools/**"
       ]
     },
     "denylist_globs": {
-      "A_worker": [
+      "A_core": [
         ".github/workflows/**",
         ".git/**",
         ".env",
         ".env.*"
       ],
-      "B_worker": [
+      "B_tooling": [
         ".github/workflows/**",
         ".git/**",
         ".env",
         ".env.*"
       ],
-      "C_worker": [
+      "C_features": [
         ".github/workflows/**",
         ".git/**",
         ".env",
         ".env.*"
       ],
-      "D_worker": [
+      "D_validation": [
         ".github/workflows/**",
         ".git/**",
         ".env",

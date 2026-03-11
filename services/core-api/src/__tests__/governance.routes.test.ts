@@ -133,8 +133,8 @@ describe("governance routes", () => {
         runs: Array<{
           runId: string;
           hasRunManifest: boolean;
-          hasEWorkerBundle: boolean;
-          hasZIntegratorBundle: boolean;
+          hasLegacyEWorkerBundle: boolean;
+          hasZAggregatorBundle: boolean;
         }>;
       };
 
@@ -142,8 +142,8 @@ describe("governance routes", () => {
       assert.equal(payload.runs.length, 1);
       assert.equal(payload.runs[0]?.runId, fixture.runId);
       assert.equal(payload.runs[0]?.hasRunManifest, true);
-      assert.equal(payload.runs[0]?.hasEWorkerBundle, true);
-      assert.equal(payload.runs[0]?.hasZIntegratorBundle, true);
+      assert.equal(payload.runs[0]?.hasLegacyEWorkerBundle, true);
+      assert.equal(payload.runs[0]?.hasZAggregatorBundle, true);
     } finally {
       await started.close();
       await rm(fixture.runsRoot, { recursive: true, force: true });

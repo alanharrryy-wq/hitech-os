@@ -10,7 +10,17 @@ import traceback
 from pathlib import Path
 from typing import Any
 
-from .common import CODEX_DIR, DEFAULT_BRANCH_PREFIX, REPO_ROOT, RUNS_DIR, WORKERS, ensure_dir, write_json
+from .common import (
+    CODEX_DIR,
+    DEFAULT_BRANCH_PREFIX,
+    REPO_ROOT,
+    RUNS_DIR,
+    WORKERS,
+    canonical_worker_id,
+    canonicalize_workers,
+    ensure_dir,
+    write_json,
+)
 from .locks import LockAcquisitionError, acquire_run_lock, acquire_worker_lock
 from .worktree_contract import (
     FIXED_WORKTREE_MODE,
@@ -495,12 +505,13 @@ def worktree_root(run_id: str) -> Path:
 
 def worktree_path(run_id: str, worker: str) -> Path:
     _ = run_id
-    return fixed_worker_path(worker)
+    return fixed_worker_path(canonical_worker_id(worker))
 
 
 def branch_name(run_id: str, worker: str, branch_prefix: str = DEFAULT_BRANCH_PREFIX) -> str:
     _ = run_id
-    return f"{branch_prefix}/{worker}"
+    canonical = canonical_worker_id(worker)
+    return f"{branch_prefix}/{canonical}"
 
 
 def _run(args: list[str], cwd: Path | None = None, dry_run: bool = False) -> dict[str, Any]:
@@ -669,7 +680,7 @@ def create_worktrees(
     branch_prefix: str = DEFAULT_BRANCH_PREFIX,
     dry_run: bool = False,
 ) -> dict[str, Any]:
-    chosen = workers or list(WORKERS)
+    chosen = canonicalize_workers(workers)
     try:
         mode_info = resolve_unified_worktree_mode()
     except ValueError as exc:
@@ -869,7 +880,7 @@ def create_worktrees(
 
 
 def verify_worktrees(run_id: str, *, workers: list[str] | None = None) -> dict[str, Any]:
-    chosen = workers or list(WORKERS)
+    chosen = canonicalize_workers(workers)
     steps: list[dict[str, Any]] = []
     for worker in chosen:
         target = worktree_path(run_id, worker)
@@ -907,7 +918,7 @@ def verify_worktrees(run_id: str, *, workers: list[str] | None = None) -> dict[s
 
 
 def sync_worktrees(run_id: str, *, workers: list[str] | None = None, dry_run: bool = False) -> dict[str, Any]:
-    chosen = workers or list(WORKERS)
+    chosen = canonicalize_workers(workers)
     steps: list[dict[str, Any]] = []
     for worker in chosen:
         target = worktree_path(run_id, worker)
@@ -962,7 +973,7 @@ def sync_worktrees(run_id: str, *, workers: list[str] | None = None, dry_run: bo
 
 
 def open_worktrees(run_id: str, *, workers: list[str] | None = None, dry_run: bool = False) -> dict[str, Any]:
-    chosen = workers or list(WORKERS)
+    chosen = canonicalize_workers(workers)
     steps: list[dict[str, Any]] = []
     cleanup_result = _cleanup_vscode_sessions(run_id) if not dry_run else {
         "clean_enabled": _env_enabled("HITECH_FACTORY_VSCODE_CLEAN", True),

@@ -14,7 +14,7 @@ if __package__ in {None, ""}:
     if str(ROOT) not in sys.path:
         sys.path.insert(0, str(ROOT))
 
-    from factory.common import INTEGRATOR, RUNS_DIR, WORKERS, ensure_dir, stable_sha256_text, write_json
+    from factory.common import INTEGRATOR, RUNS_DIR, WORKERS, canonicalize_workers, ensure_dir, stable_sha256_text, write_json
     from factory.config import load_factory_config
     from factory.contracts import autocloseout_run, load_registry, scaffold_all_bundles, validate_run
     from factory.doctor import run_doctor
@@ -30,7 +30,7 @@ if __package__ in {None, ""}:
     from factory.version import get_version
     from factory.worktrees import create_worktrees, open_worktrees, sync_worktrees, verify_worktrees
 else:
-    from .common import INTEGRATOR, RUNS_DIR, WORKERS, ensure_dir, stable_sha256_text, write_json
+    from .common import INTEGRATOR, RUNS_DIR, WORKERS, canonicalize_workers, ensure_dir, stable_sha256_text, write_json
     from .config import load_factory_config
     from .contracts import autocloseout_run, load_registry, scaffold_all_bundles, validate_run
     from .doctor import run_doctor
@@ -51,7 +51,7 @@ def _parse_workers(raw: str | None) -> list[str]:
     if raw is None or not raw.strip():
         return list(WORKERS)
     parsed = [item.strip() for item in raw.split(",") if item.strip()]
-    return parsed or list(WORKERS)
+    return canonicalize_workers(parsed, keep_unknown=True) or list(WORKERS)
 
 
 def _emit(payload: dict[str, Any], json_out: str | None = None) -> None:

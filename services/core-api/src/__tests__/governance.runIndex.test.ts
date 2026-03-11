@@ -73,9 +73,10 @@ describe("RunIndex", () => {
       );
       assert.ok(withBundles);
       assert.equal(withBundles?.hasRunManifest, true);
-      assert.equal(withBundles?.hasEWorkerBundle, true);
-      assert.equal(withBundles?.hasZIntegratorBundle, true);
-      assert.deepEqual(withBundles?.bundleDirectories, ["A_worker", "E_worker", "Z_integrator"]);
+      assert.equal(withBundles?.hasLegacyEWorkerBundle, true);
+      assert.equal(withBundles?.hasZAggregatorBundle, true);
+      assert.deepEqual(withBundles?.bundleDirectories, ["A_core", "E_worker", "Z_aggregator"]);
+      assert.deepEqual(withBundles?.legacyAliasBundles, ["A_worker", "Z_integrator"]);
       assert.equal(
         payload.warnings.some((warning) => warning.code === "RUN_ID_SKIPPED_UNSAFE"),
         true

@@ -70,9 +70,9 @@ Schema: `templates/BUNDLE_SCHEMA.md`.
 
 ---
 
-## Z Integrator Output — Required
+## Z_aggregator Output — Required
 
-Z must produce:
+Z_aggregator must produce:
 
 ### 1) FINAL_REPORT.txt
 
@@ -92,7 +92,7 @@ Template: `templates/FINAL_REPORT_TEMPLATE.md`.
 
 Path (recommended):
 
-- `tools/codex/runs/<RUN_ID>/Z_integrator/`
+- `tools/codex/runs/<RUN_ID>/Z_aggregator/`
 
 Must include:
 
@@ -108,8 +108,13 @@ Must include:
 ## Naming Rules (Deterministic)
 
 - Run IDs: `run_YYYYMMDD_HHMMSS` or monotonic counter
-- Agent IDs: `A_core`, `B_surface`, `C_tooling`, `D_validation`, `Z_integrator`
+- Agent IDs: `A_core`, `B_tooling`, `C_features`, `D_validation`, `Z_aggregator`
 - JSON: stable key order if possible; sort file lists
+
+Compatibility note:
+
+- Readers/parsers may accept legacy aliases (`A_worker`, `B_worker`, `C_worker`, `D_worker`, `Z_integrator`).
+- Writers/generators/new artifacts must emit canonical IDs only.
 
 ---
 
@@ -131,3 +136,4 @@ If a delete/move/rename is necessary:
 ✅ Z produced FINAL_REPORT and STATUS.json  
 ✅ Validations were executed and logged  
 ✅ No undocumented deletes/moves/renames
+

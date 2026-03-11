@@ -15,16 +15,16 @@ Provide reproducible evidence that a factory run is deterministic, policy-compli
 Under `tools/codex/runs/<RUN_ID>/`:
 
 - `RUN_MANIFEST.json`
-- `A_worker/*`
-- `B_worker/*`
-- `C_worker/*`
-- `D_worker/*`
-- `Z_integrator/FINAL_REPORT.txt`
-- `Z_integrator/STATUS.json`
-- `Z_integrator/MERGE_PLAN.md`
-- `Z_integrator/FILES_CHANGED.json`
-- `Z_integrator/DIFF.patch`
-- `Z_integrator/LOGS/INDEX.json`
+- `A_core/*`
+- `B_tooling/*`
+- `C_features/*`
+- `D_validation/*`
+- `Z_aggregator/FINAL_REPORT.txt`
+- `Z_aggregator/STATUS.json`
+- `Z_aggregator/MERGE_PLAN.md`
+- `Z_aggregator/FILES_CHANGED.json`
+- `Z_aggregator/DIFF.patch`
+- `Z_aggregator/LOGS/INDEX.json`
 
 Global ledger:
 
@@ -95,6 +95,7 @@ python -m tools.codex.factory.cli integrate --run-id <RUN_ID>
 Collect these for review:
 
 - One-shot JSON output (`--json-out`)
-- `Z_integrator/FINAL_REPORT.txt`
-- `Z_integrator/STATUS.json`
+- `Z_aggregator/FINAL_REPORT.txt`
+- `Z_aggregator/STATUS.json`
 - Last 50 ledger entries (`ledger --limit 50`)
+

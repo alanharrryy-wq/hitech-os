@@ -59,65 +59,65 @@ STATUS: LAW
 
 ---
 
-### CODEX‑B — Interface / UX / Surface Layer
+### CODEX‑B — Tooling / Guardrails / Runtime Automation Layer
 
-**Purpose:** build the operator/user surface: UI/CLI/admin tools, deck surfaces, interaction layers.
-
-**Allowed surfaces**
-
-- UI components/screens/routes
-- Interaction flows (state wiring using A’s contracts)
-- Test IDs / selectors stability (if tests exist)
-- Accessibility/usability affordances
-
-**Forbidden**
-
-- Breaking or silently changing core contracts
-- Adding timer-driven control as primary mechanism
-- Changing infra/CI globally unless assigned
-
-**DONE means**
-
-- Surface is operable with safe defaults
-- Uses core contracts cleanly
-- Deterministic interactions (no “autoplay” control)
-
-**Required artifacts**
-
-- CODEX_OUTPUT file
-- Screenshot/trace evidence if UI changed (optional but recommended)
-- Worker bundle artifacts (STATUS/SUMMARY/FILES_CHANGED/DIFF/SUGGESTIONS/SCOPE_LOCK/HANDOFF/LOGS/INDEX/CODEX_OUTPUT.txt)
-- Diff/patch
-
----
-
-### CODEX‑C — Infra / Tooling / Guardrails Layer
-
-**Purpose:** make the project reproducible: build/test scripts, CI, lint/format, security/guardrails.
+**Purpose:** make the project reproducible and safe: tooling, pipelines, CI/build harnesses, and guardrails.
 
 **Allowed surfaces**
 
-- Tooling scripts, runners, build configs
-- Guardrails (boundary checks, overlap checks)
+- Tooling scripts, runners, and build configs
+- Guardrails (boundary checks, overlap checks, policy gates)
+- Runtime automation and infra-facing operational support
 - Performance diagnostics harness (non-invasive)
-- Repo hygiene automation (without deleting history)
 
 **Forbidden**
 
-- Implementing business features
-- Restructuring product code without explicit scope
-- Adding noisy global behaviors (keybinds, timers) without consent
+- Implementing product/user features as primary deliverable
+- Mutating domain truth owned by A
+- Broad product-surface refactors outside assigned scope
 
 **DONE means**
 
 - Running the project is simpler and more deterministic
 - Guardrails prevent future drift
-- Changes are additive and documented
+- Tooling changes are additive and documented
 
 **Required artifacts**
 
 - CODEX_OUTPUT file
 - Validation logs (build/test/guards)
+- Worker bundle artifacts (STATUS/SUMMARY/FILES_CHANGED/DIFF/SUGGESTIONS/SCOPE_LOCK/HANDOFF/LOGS/INDEX/CODEX_OUTPUT.txt)
+- Diff/patch
+
+---
+
+### CODEX‑C — Product / Feature / Surface / UX Layer
+
+**Purpose:** build operator/user-facing product features, UI/UX surfaces, and flow behavior.
+
+**Allowed surfaces**
+
+- UI components/screens/routes
+- Interaction flows wired against A contracts
+- Operator-facing and user-facing functionality
+- Visual behavior within assigned feature scope
+
+**Forbidden**
+
+- Breaking or silently changing core contracts
+- Global infra/CI mutations owned by B unless explicitly assigned
+- Scope creep into unrelated domains
+
+**DONE means**
+
+- Surface is operable with safe defaults
+- Uses core contracts cleanly
+- Feature behavior is deterministic and testable
+
+**Required artifacts**
+
+- CODEX_OUTPUT file
+- Screenshot/trace evidence if UI changed (optional but recommended)
 - Worker bundle artifacts (STATUS/SUMMARY/FILES_CHANGED/DIFF/SUGGESTIONS/SCOPE_LOCK/HANDOFF/LOGS/INDEX/CODEX_OUTPUT.txt)
 - Diff/patch
 
@@ -188,8 +188,8 @@ STATUS: LAW
 | Change Type                                      | Owner | Notes                              |
 | ------------------------------------------------ | ----- | ---------------------------------- |
 | Domain rules / schemas / migrations              | A     | B consumes, D tests                |
-| UI/UX surface / components / operator flows      | B     | Must not mutate contracts silently |
-| CI/build scripts / guardrails / runners          | C     | Must stay deterministic            |
+| UI/UX surface / components / operator flows      | C     | Must not mutate contracts silently |
+| CI/build scripts / guardrails / runners          | B     | Must stay deterministic            |
 | Tests / docs / runbooks                          | D     | Must reflect reality               |
 | Merge conflicts / cross-branch integration fixes | Z     | No new features                    |
 

@@ -27,11 +27,12 @@
 - Preflight runs in auto-repair mode by default.
 - Missing worker folders must trigger auto-heal first; blocking is only allowed when recovery fails.
 - Prompt hygiene is mandatory: clean-session contract headers are injected during prompt materialization.
-- Visual baseline owner default is `B_worker` (`--update-baseline` responsibility).
-- Z integrator must run with ledger/watch visibility (`watch` + `ledger`).
+- Visual baseline owner default is `C_features` (`--update-baseline` responsibility).
+- Z_aggregator must run with ledger/watch visibility (`watch` + `ledger`).
 
 ## Anti-Ambiguity Conventions
 
 - Use repo-relative paths.
 - Provide deterministic file ordering.
 - Include SHA256 per changed file entry.
+

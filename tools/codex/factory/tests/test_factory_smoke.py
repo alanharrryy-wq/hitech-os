@@ -39,7 +39,7 @@ class FactorySmokeTests(unittest.TestCase):
     def test_auto_closeout_repairs_missing_codex_output(self) -> None:
         with isolated_factory_env():
             run_id = "autocloseout_20260301_000001"
-            worker = "A_worker"
+            worker = "A_core"
             contracts.scaffold_worker_bundle(run_id, worker)
             root = contracts.bundle_dir(run_id, worker)
             files_changed = {
@@ -80,3 +80,4 @@ class FactorySmokeTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

@@ -30,7 +30,7 @@ def _event(run_id: str, *, ts: str, event_type: str, rc: int = 0, status: str = 
         "ts_utc": ts,
         "run_id": run_id,
         "event_type": event_type,
-        "actor": "Z_integrator",
+        "actor": "Z_aggregator",
         "event_id": "",
         "parent_event_id": "",
         "duration_ms": 0,
@@ -100,8 +100,8 @@ class LedgerTests(unittest.TestCase):
                     "kind": "factory",
                     "status": "PASS",
                     "path": "tools/codex/runs/factory_20260218_101010_001",
-                    "report": "tools/codex/runs/factory_20260218_101010_001/Z_integrator/FINAL_REPORT.txt",
-                    "workers": ["A_worker", "B_worker", "C_worker", "D_worker"],
+                    "report": "tools/codex/runs/factory_20260218_101010_001/Z_aggregator/FINAL_REPORT.txt",
+                    "workers": ["A_core", "B_tooling", "C_features", "D_validation"],
                     "started_at": "2026-02-18T10:10:10+00:00",
                     "ended_at": "2026-02-18T10:10:11+00:00",
                 },
@@ -112,7 +112,7 @@ class LedgerTests(unittest.TestCase):
             row = rows[0]
             self.assertEqual("factory_20260218_101010_001", row["run_id"])
             self.assertEqual("RUN_STATE", row["event_type"])
-            self.assertEqual("Z_integrator", row["actor"])
+            self.assertEqual("Z_aggregator", row["actor"])
             self.assertEqual(0, row["rc"])
 
     def test_query_run_ids_returns_sorted_unique(self) -> None:
@@ -216,3 +216,4 @@ class LedgerTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

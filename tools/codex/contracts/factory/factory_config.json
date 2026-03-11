@@ -2,14 +2,14 @@
   "schema_version": 1,
   "defaults": {
     "branch_prefix": "codex/factory",
-    "integrator": "Z_integrator",
+    "integrator": "Z_aggregator",
     "run_prefix": "factory",
-    "visual_baseline_owner": "B_worker",
+    "visual_baseline_owner": "C_features",
     "workers": [
-      "A_worker",
-      "B_worker",
-      "C_worker",
-      "D_worker"
+      "A_core",
+      "B_tooling",
+      "C_features",
+      "D_validation"
     ]
   },
   "feature_flags": {

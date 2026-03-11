@@ -6,7 +6,14 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping
 
-from .common import FACTORY_DIR, REPO_ROOT, ensure_dir, read_json, write_json
+from .common import (
+    FACTORY_DIR,
+    REPO_ROOT,
+    canonical_worker_id,
+    ensure_dir,
+    read_json,
+    write_json,
+)
 from .schemas import validate_payload
 
 DEFAULT_CONFIG_PATH = FACTORY_DIR / "factory.config.json"
@@ -39,7 +46,7 @@ def default_factory_config() -> dict[str, Any]:
             "auto_repair_missing_folders": True,
             "integrator_watch_ledger": True,
             "integrator_wait_for_workers": True,
-            "visual_baseline_owner": "B_worker",
+            "visual_baseline_owner": "C_features",
             "visual_baseline_update_default": True,
             "chat_hygiene_policy": "clean_start_required",
         },
@@ -69,22 +76,22 @@ def default_factory_config() -> dict[str, Any]:
                 "LOGS/INDEX.json",
             ],
             "allowlist_globs": {
-                "A_worker": ["apps/**", "packages/**", "docs/**"],
-                "B_worker": [
+                "A_core": ["apps/**", "packages/**", "docs/**"],
+                "B_tooling": ["tools/**", "docs/**", "packages/**"],
+                "C_features": [
                     "apps/**",
                     "packages/**",
                     "docs/**",
                     "docs/visual-baselines/**",
                     "tools/_local/visual/**",
                 ],
-                "C_worker": ["tools/**", "docs/**", "packages/**"],
-                "D_worker": ["docs/**", "tools/**", "packages/**"],
+                "D_validation": ["docs/**", "tools/**", "packages/**"],
             },
             "denylist_globs": {
-                "A_worker": [".github/workflows/**", ".git/**", ".env", ".env.*"],
-                "B_worker": [".github/workflows/**", ".git/**", ".env", ".env.*"],
-                "C_worker": [".github/workflows/**", ".git/**", ".env", ".env.*"],
-                "D_worker": [".github/workflows/**", ".git/**", ".env", ".env.*"],
+                "A_core": [".github/workflows/**", ".git/**", ".env", ".env.*"],
+                "B_tooling": [".github/workflows/**", ".git/**", ".env", ".env.*"],
+                "C_features": [".github/workflows/**", ".git/**", ".env", ".env.*"],
+                "D_validation": [".github/workflows/**", ".git/**", ".env", ".env.*"],
             },
         },
         "security": {
@@ -162,6 +169,45 @@ def _env_to_config(env: Mapping[str, str]) -> dict[str, Any]:
     return overlay
 
 
+def _canonicalize_worker_globs(section: Any) -> dict[str, Any]:
+    if not isinstance(section, Mapping):
+        return {}
+    normalized: dict[str, Any] = {}
+    for worker, value in section.items():
+        canonical = canonical_worker_id(str(worker).strip())
+        if not canonical:
+            continue
+        existing = normalized.get(canonical)
+        if isinstance(existing, list) and isinstance(value, list):
+            merged: list[Any] = [*existing]
+            for item in value:
+                if item not in merged:
+                    merged.append(item)
+            normalized[canonical] = merged
+        else:
+            normalized[canonical] = deepcopy(value)
+    return normalized
+
+
+def _canonicalize_merged_config(payload: Mapping[str, Any]) -> dict[str, Any]:
+    merged = deepcopy(dict(payload))
+    run_block = merged.get("run", {})
+    if isinstance(run_block, Mapping):
+        run_obj = dict(run_block)
+        owner = run_obj.get("visual_baseline_owner")
+        if isinstance(owner, str):
+            run_obj["visual_baseline_owner"] = canonical_worker_id(owner)
+        merged["run"] = run_obj
+
+    workers_block = merged.get("workers", {})
+    if isinstance(workers_block, Mapping):
+        workers_obj = dict(workers_block)
+        workers_obj["allowlist_globs"] = _canonicalize_worker_globs(workers_obj.get("allowlist_globs", {}))
+        workers_obj["denylist_globs"] = _canonicalize_worker_globs(workers_obj.get("denylist_globs", {}))
+        merged["workers"] = workers_obj
+    return merged
+
+
 def resolve_config_path(explicit_path: str | None = None) -> Path:
     if explicit_path:
         return Path(explicit_path).expanduser().resolve(strict=False)
@@ -197,6 +243,7 @@ def load_factory_config(
     merged = _deep_merge(defaults, file_payload)
     merged = _deep_merge(merged, env_payload)
     merged = _deep_merge(merged, cli_payload)
+    merged = _canonicalize_merged_config(merged)
 
     meta = {
         "config_path": resolved_path.as_posix(),

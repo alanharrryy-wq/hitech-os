@@ -4,7 +4,17 @@ import datetime as dt
 from pathlib import Path
 from typing import Any, Mapping
 
-from .common import CODEX_DIR, INTEGRATOR, RUNS_DIR, WORKERS, ensure_dir, iso_utc, read_json, write_json
+from .common import (
+    CODEX_DIR,
+    INTEGRATOR,
+    RUNS_DIR,
+    WORKERS,
+    canonicalize_workers,
+    ensure_dir,
+    iso_utc,
+    read_json,
+    write_json,
+)
 from .ledger import read_events
 
 STATE_DIR = CODEX_DIR / "_state"
@@ -85,11 +95,7 @@ def _workers_for_run(run_id: str) -> list[str]:
         raw_workers = manifest.get(key)
         if not isinstance(raw_workers, list):
             continue
-        parsed = [
-            str(item).strip()
-            for item in raw_workers
-            if str(item).strip() and str(item).strip() not in {INTEGRATOR, "Z_integrator"}
-        ]
+        parsed = canonicalize_workers(raw_workers, include_integrator=False)
         if parsed:
             return parsed
     return list(WORKERS)

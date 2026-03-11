@@ -51,10 +51,10 @@ class LockTests(unittest.TestCase):
             runs_dir = Path(temp_dir) / "runs"
             runs_dir.mkdir(parents=True, exist_ok=True)
             with patch.object(locks, "RUNS_DIR", runs_dir):
-                acquired = locks.acquire_worker_lock("run2", "A_worker", owner="owner")
-                self.assertTrue((runs_dir / "run2" / "locks" / "A_worker.lock").exists())
+                acquired = locks.acquire_worker_lock("run2", "A_core", owner="owner")
+                self.assertTrue((runs_dir / "run2" / "locks" / "A_core.lock").exists())
                 acquired.release()
-                self.assertFalse((runs_dir / "run2" / "locks" / "A_worker.lock").exists())
+                self.assertFalse((runs_dir / "run2" / "locks" / "A_core.lock").exists())
 
     def test_second_launch_is_blocked_when_run_lock_exists(self) -> None:
         with isolated_factory_env() as env:
@@ -69,3 +69,4 @@ class LockTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

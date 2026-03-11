@@ -8,7 +8,7 @@ This contract defines:
 - Run artifact layout
 - Worker and integrator status semantics
 - Ledger event format
-- Z-integrator write policy
+- Z_aggregator write policy
 
 ## Run ID
 
@@ -34,11 +34,41 @@ Required paths:
 - `tools/codex/runs/<RUN_ID>/_apply/`
 - `tools/codex/runs/<RUN_ID>/_queue/rework/inbox/`
 - `tools/codex/runs/<RUN_ID>/_queue/rework/outbox/`
-- `tools/codex/runs/<RUN_ID>/A_worker/`
-- `tools/codex/runs/<RUN_ID>/B_worker/`
-- `tools/codex/runs/<RUN_ID>/C_worker/`
-- `tools/codex/runs/<RUN_ID>/D_worker/`
-- `tools/codex/runs/<RUN_ID>/Z_integrator/`
+- `tools/codex/runs/<RUN_ID>/A_core/`
+- `tools/codex/runs/<RUN_ID>/B_tooling/`
+- `tools/codex/runs/<RUN_ID>/C_features/`
+- `tools/codex/runs/<RUN_ID>/D_validation/`
+- `tools/codex/runs/<RUN_ID>/Z_aggregator/`
+
+## Worker Taxonomy Contract
+
+Canonical worker IDs for all new emissions (docs, prompts, bundles, metadata):
+
+- `A_core`
+- `B_tooling`
+- `C_features`
+- `D_validation`
+- `Z_aggregator`
+
+Canonical role semantics:
+
+- `A_core`: core architecture, shared contracts, foundational implementation
+- `B_tooling`: tooling, pipelines, guardrails, runtime automation, infra-facing support
+- `C_features`: product/features, operator/user surface ownership, UI/UX behavior
+- `D_validation`: validation, policy checks, risk controls, release confidence
+- `Z_aggregator`: integration, overlap resolution, merge coordination, final reporting
+
+Legacy aliases remain accepted for compatibility in readers/parsers/CLI inputs only:
+
+- `A_worker -> A_core`
+- `B_worker -> B_tooling`
+- `C_worker -> C_features`
+- `D_worker -> D_validation`
+- `Z_integrator -> Z_aggregator`
+
+Emission rule:
+
+- Writers/generators/new artifacts must emit canonical worker IDs only.
 
 ## Worker Bundle Contract
 
@@ -143,12 +173,12 @@ Exit codes:
 
 ## Visual Baseline Ownership Contract
 
-- Default visual baseline owner is `B_worker`.
-- Baseline updates remain explicit/manual command (`--update-baseline`) but ownership is assigned to `B_worker` by default.
+- Default visual baseline owner is `C_features`.
+- Baseline updates remain explicit/manual command (`--update-baseline`) but ownership is assigned to `C_features` by default.
 
 ## Integrator Watch Contract
 
-- Z prompt is dispatched at run start.
+- Z_aggregator prompt is dispatched at run start.
 - Z must monitor progress using:
   - `python -m tools.codex.factory watch --run-id <RUN_ID>`
   - `python -m tools.codex.factory ledger --run-id <RUN_ID> --raw-events --limit N`
@@ -248,7 +278,7 @@ Allowed root:
 
 Policy:
 
-- Z-integrator write attempts outside allowed root must raise a policy error.
+- Z_aggregator write attempts outside allowed root must raise a policy error.
 - Result must be non-pass (`BLOCKED` or `FAIL`).
 - Human-readable policy message must be included in `FINAL_REPORT.txt`.
 
@@ -317,3 +347,4 @@ Required files:
 - `TECH_DEBT.json`
 - `FAIL_PATTERNS.json`
 - `SUCCESS_PATTERNS.json`
+

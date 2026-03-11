@@ -13,6 +13,8 @@ DEFAULT_TASK_BANK = "tools/codex/dispatch/rework_task_bank.json"
 DEFAULT_SOURCES = "tools/codex/dispatch/task_bank_sources.json"
 DEFAULT_STATE = "tools/codex/dispatch/task_bank_state.json"
 DEFAULT_REPORT = "tools/codex/dispatch/reports/task_bank_health.json"
+INTEGRATOR_DIR = "Z_aggregator"
+LEGACY_INTEGRATOR_DIR = "Z_integrator"
 
 CATEGORIES = ("automation", "security", "reliability", "performance", "dx")
 REQUIRED_FIELDS = (
@@ -273,7 +275,11 @@ def _build_signal_tasks(repo_root: Path, *, now: dt.datetime, run_id: str) -> li
                 }
             )
 
-    z_status_files = sorted((repo_root / "tools" / "codex" / "runs").glob("*/Z_integrator/STATUS.json"), key=lambda p: p.as_posix())
+    runs_root = repo_root / "tools" / "codex" / "runs"
+    z_status_files = sorted(
+        [*runs_root.glob(f"*/{INTEGRATOR_DIR}/STATUS.json"), *runs_root.glob(f"*/{LEGACY_INTEGRATOR_DIR}/STATUS.json")],
+        key=lambda p: p.as_posix(),
+    )
     if z_status_files:
         latest = _read_json(z_status_files[-1], {})
         anti_blockers = _to_int(latest.get("anti_padding_blockers"), 0)

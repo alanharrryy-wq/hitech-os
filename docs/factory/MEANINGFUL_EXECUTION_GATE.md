@@ -11,8 +11,8 @@ Prevent false-positive `PASS` outcomes where integration artifacts exist but no 
 
 ## Inputs
 
-- `tools/codex/runs/<RUN_ID>/Z_integrator/FILES_CHANGED.json`
-- `tools/codex/runs/<RUN_ID>/Z_integrator/DIFF.patch`
+- `tools/codex/runs/<RUN_ID>/Z_aggregator/FILES_CHANGED.json`
+- `tools/codex/runs/<RUN_ID>/Z_aggregator/DIFF.patch`
 - `tools/codex/runs/<RUN_ID>/RUN_MANIFEST.json` (for `base_ref`, optional fallback to `HEAD`)
 - git mutation signals from:
   - `git diff --name-status <base>..HEAD`
@@ -74,3 +74,4 @@ JSON report fields:
 - Integrator adds required check `meaningful_execution_gate`.
 - Final integrator status is re-evaluated with gate verdict and fail modes.
 - `watch` output reports meaningful gate verdict/fail modes/noop clearly.
+

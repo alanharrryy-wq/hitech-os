@@ -10,6 +10,8 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[3]
 MEMORY_DIR = REPO_ROOT / "tools" / "codex" / "memory"
 RUNS_DIR = REPO_ROOT / "tools" / "codex" / "runs"
+INTEGRATOR_DIR = "Z_aggregator"
+LEGACY_INTEGRATOR_DIR = "Z_integrator"
 
 
 def _iso_utc() -> str:
@@ -55,8 +57,11 @@ def _ensure_memory_files() -> dict[str, Path]:
 def _load_run_snapshot(run_id: str) -> dict[str, Any]:
     run_root = RUNS_DIR / run_id
     manifest = _read_json(run_root / "RUN_MANIFEST.json", {})
-    z_status = _read_json(run_root / "Z_integrator" / "STATUS.json", {})
-    z_report = run_root / "Z_integrator" / "FINAL_REPORT.txt"
+    z_root = run_root / INTEGRATOR_DIR
+    if not z_root.exists() and (run_root / LEGACY_INTEGRATOR_DIR).exists():
+        z_root = run_root / LEGACY_INTEGRATOR_DIR
+    z_status = _read_json(z_root / "STATUS.json", {})
+    z_report = z_root / "FINAL_REPORT.txt"
     return {
         "run_id": run_id,
         "run_root": run_root.as_posix(),

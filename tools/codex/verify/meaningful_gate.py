@@ -16,6 +16,8 @@ PASS = "PASS"
 FAIL = "FAIL"
 BLOCKED = "BLOCKED"
 WARN = "WARN"
+INTEGRATOR_DIR = "Z_aggregator"
+LEGACY_INTEGRATOR_DIR = "Z_integrator"
 
 EMPTY_DECLARATIONS = "EMPTY_DECLARATIONS"
 EMPTY_PATCH = "EMPTY_PATCH"
@@ -245,7 +247,9 @@ def run_meaningful_gate(
     root = Path(repo_root or _repo_root_default()).resolve()
     all_runs = Path(runs_dir or _runs_dir_default(root)).resolve()
     run_dir = all_runs / run_id
-    z_dir = run_dir / "Z_integrator"
+    z_dir = run_dir / INTEGRATOR_DIR
+    if not z_dir.exists() and (run_dir / LEGACY_INTEGRATOR_DIR).exists():
+        z_dir = run_dir / LEGACY_INTEGRATOR_DIR
     files_changed_path = z_dir / "FILES_CHANGED.json"
     diff_path = z_dir / "DIFF.patch"
     manifest_path = run_dir / "RUN_MANIFEST.json"

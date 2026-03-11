@@ -16,8 +16,25 @@ SCHEMAS_DIR = CODEX_DIR / "schemas"
 CONTRACTS_DIR = CODEX_DIR / "contracts" / "factory"
 TEMPLATES_DIR = CODEX_DIR / "templates" / "factory"
 
-WORKERS: tuple[str, ...] = ("A_worker", "B_worker", "C_worker", "D_worker")
-INTEGRATOR = "Z_integrator"
+CANONICAL_WORKERS: tuple[str, ...] = ("A_core", "B_tooling", "C_features", "D_validation")
+CANONICAL_INTEGRATOR = "Z_aggregator"
+LEGACY_WORKER_ALIASES: dict[str, str] = {
+    "A_worker": "A_core",
+    "B_worker": "B_tooling",
+    "C_worker": "C_features",
+    "D_worker": "D_validation",
+    "Z_integrator": "Z_aggregator",
+}
+LEGACY_ALIAS_BY_CANONICAL: dict[str, str] = {value: key for key, value in LEGACY_WORKER_ALIASES.items()}
+KNOWN_WORKER_IDS: tuple[str, ...] = (
+    *CANONICAL_WORKERS,
+    CANONICAL_INTEGRATOR,
+    *sorted(LEGACY_WORKER_ALIASES.keys()),
+)
+
+# Backward-compatible exports used by the rest of the factory runtime.
+WORKERS: tuple[str, ...] = CANONICAL_WORKERS
+INTEGRATOR = CANONICAL_INTEGRATOR
 DEFAULT_BRANCH_PREFIX = "codex/factory"
 UTC = dt.timezone.utc
 
@@ -79,6 +96,96 @@ def normalize_rel(path: Path | str, start: Path | None = None) -> str:
 
 def sorted_unique(values: Iterable[str]) -> list[str]:
     return sorted({value for value in values})
+
+
+def canonical_worker_id(worker: str) -> str:
+    value = str(worker).strip()
+    if not value:
+        return value
+    return LEGACY_WORKER_ALIASES.get(value, value)
+
+
+def is_known_worker_id(worker: str, *, include_integrator: bool = True) -> bool:
+    canonical = canonical_worker_id(worker)
+    if canonical in CANONICAL_WORKERS:
+        return True
+    if include_integrator and canonical == INTEGRATOR:
+        return True
+    return False
+
+
+def worker_aliases(worker: str) -> tuple[str, ...]:
+    canonical = canonical_worker_id(worker)
+    values: list[str] = []
+    if canonical:
+        values.append(canonical)
+    legacy = LEGACY_ALIAS_BY_CANONICAL.get(canonical, "")
+    if legacy:
+        values.append(legacy)
+    if str(worker).strip() and str(worker).strip() not in values:
+        values.append(str(worker).strip())
+    deduped: list[str] = []
+    for item in values:
+        if item not in deduped:
+            deduped.append(item)
+    return tuple(deduped)
+
+
+def canonicalize_workers(
+    workers: Iterable[str] | None,
+    *,
+    include_integrator: bool = False,
+    keep_unknown: bool = False,
+) -> list[str]:
+    if workers is None:
+        return [*CANONICAL_WORKERS, *( [INTEGRATOR] if include_integrator else [] )]
+
+    allowed = set(CANONICAL_WORKERS)
+    if include_integrator:
+        allowed.add(INTEGRATOR)
+
+    ordered = [*CANONICAL_WORKERS, *( [INTEGRATOR] if include_integrator else [] )]
+    seen: set[str] = set()
+    normalized: list[str] = []
+    unknown: list[str] = []
+    for item in workers:
+        raw = str(item).strip()
+        if not raw:
+            continue
+        canonical = canonical_worker_id(raw)
+        if canonical in allowed:
+            if canonical not in seen:
+                seen.add(canonical)
+                normalized.append(canonical)
+            continue
+        if keep_unknown and raw not in unknown:
+            unknown.append(raw)
+
+    if not normalized:
+        normalized = [worker for worker in ordered if worker in allowed]
+    normalized.sort(key=lambda value: ordered.index(value) if value in ordered else len(ordered))
+    return [*normalized, *sorted(unknown)]
+
+
+def bundle_path_candidates(run_id: str, worker: str) -> list[Path]:
+    run_root = RUNS_DIR / str(run_id).strip()
+    canonical = canonical_worker_id(worker)
+    candidates: list[Path] = []
+    for value in worker_aliases(canonical):
+        if value:
+            candidate = run_root / value
+            if candidate not in candidates:
+                candidates.append(candidate)
+    return candidates
+
+
+def resolve_bundle_dir(run_id: str, worker: str, *, prefer_existing: bool = True) -> Path:
+    candidates = bundle_path_candidates(run_id, worker)
+    if prefer_existing:
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+    return candidates[0] if candidates else RUNS_DIR / str(run_id).strip() / canonical_worker_id(worker)
 
 
 def bool_env(name: str, default: bool = False) -> bool:

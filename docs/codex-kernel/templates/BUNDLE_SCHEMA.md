@@ -15,13 +15,13 @@ typecheck.log.txt
 build.log.txt
 tests.log.txt
 SUGGESTIONS.md
-B_surface/
+B_tooling/
 ...
-C_tooling/
+C_features/
 ...
 D_validation/
 ...
-Z_integrator/
+Z_aggregator/
 STATUS.json
 FINAL_REPORT.txt
 MERGE_PLAN.md
@@ -35,3 +35,4 @@ validate*\*.log.txt
 - STATUS.json (machine readable)
 - DIFF.patch
 - At least one LOGS/ file or COMMAND LOGS in report
+

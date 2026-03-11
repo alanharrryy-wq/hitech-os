@@ -16,9 +16,9 @@
 ### Updated
 
 - `bundle-validate` now runs worker auto-closeout by default.
-- `run_iter.ps1` dispatches Z prompt at run start, waits docs workers first, and runs `watch` + `auto-closeout` before integrate.
+- `run_iter.ps1` dispatches `Z_aggregator` prompt at run start, waits docs workers first, and runs `watch` + `auto-closeout` before integrate.
 - worktree operations now auto-heal missing folders instead of immediate stop where recovery is possible.
-- default visual baseline ownership set to `B_worker`.
+- default visual baseline ownership set to `C_features`.
 
 ### Contract Impact
 
@@ -98,3 +98,4 @@
 - Ledger event contract expanded with metadata fields and signature verification.
 - Lock file contract introduced for concurrency safety.
 - Attestation artifacts added as required forensic evidence.
+

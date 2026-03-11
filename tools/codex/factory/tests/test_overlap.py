@@ -22,24 +22,24 @@ class OverlapAndScopeTests(unittest.TestCase):
         with isolated_factory_env():
             write_worker_bundle(
                 run_id=run_id,
-                worker="A_worker",
+                worker="A_core",
                 changes=[make_change("apps/demo/shared.ts", sha256="a")],
                 allow_shared_paths=[],
             )
             write_worker_bundle(
                 run_id=run_id,
-                worker="B_worker",
+                worker="B_tooling",
                 changes=[make_change("apps/demo/shared.ts", sha256="b")],
                 allow_shared_paths=[],
             )
-            write_worker_bundle(run_id=run_id, worker="C_worker", changes=[make_change("docs/demo/c.md", sha256="c")])
-            write_worker_bundle(run_id=run_id, worker="D_worker", changes=[make_change("tools/demo/d.py", sha256="d")])
+            write_worker_bundle(run_id=run_id, worker="C_features", changes=[make_change("docs/demo/c.md", sha256="c")])
+            write_worker_bundle(run_id=run_id, worker="D_validation", changes=[make_change("tools/demo/d.py", sha256="d")])
 
             payload = detect_file_overlaps(run_id, workers=list(common.WORKERS))
             self.assertEqual("BLOCKED", payload["status"])
             self.assertEqual(1, payload["blocked"])
             self.assertEqual("apps/demo/shared.ts", payload["overlaps"][0]["path"])
-            self.assertEqual(["A_worker", "B_worker"], payload["overlaps"][0]["workers"])
+            self.assertEqual(["A_core", "B_tooling"], payload["overlaps"][0]["workers"])
 
     def test_collision_warns_when_shared_allowed_by_all(self) -> None:
         run_id = "collision_20260218_000002"
@@ -47,18 +47,18 @@ class OverlapAndScopeTests(unittest.TestCase):
             shared_path = "apps/demo/shared_allowed.ts"
             write_worker_bundle(
                 run_id=run_id,
-                worker="A_worker",
+                worker="A_core",
                 changes=[make_change(shared_path, sha256="a")],
                 allow_shared_paths=[shared_path],
             )
             write_worker_bundle(
                 run_id=run_id,
-                worker="B_worker",
+                worker="B_tooling",
                 changes=[make_change(shared_path, sha256="b")],
                 allow_shared_paths=[shared_path],
             )
-            write_worker_bundle(run_id=run_id, worker="C_worker", changes=[make_change("docs/demo/c.md", sha256="c")])
-            write_worker_bundle(run_id=run_id, worker="D_worker", changes=[make_change("tools/demo/d.py", sha256="d")])
+            write_worker_bundle(run_id=run_id, worker="C_features", changes=[make_change("docs/demo/c.md", sha256="c")])
+            write_worker_bundle(run_id=run_id, worker="D_validation", changes=[make_change("tools/demo/d.py", sha256="d")])
 
             payload = detect_file_overlaps(run_id, workers=list(common.WORKERS), strict_mode=False)
             self.assertEqual("PASS", payload["status"])
@@ -71,14 +71,14 @@ class OverlapAndScopeTests(unittest.TestCase):
         with isolated_factory_env():
             write_worker_bundle(
                 run_id=run_id,
-                worker="A_worker",
+                worker="A_core",
                 changes=[make_change("services/api/private.py", sha256="a")],
                 allowed_globs=["apps/**"],
                 blocked_globs=["services/**"],
             )
-            write_worker_bundle(run_id=run_id, worker="B_worker", changes=[make_change("apps/demo/b.ts", sha256="b")])
-            write_worker_bundle(run_id=run_id, worker="C_worker", changes=[make_change("docs/demo/c.md", sha256="c")])
-            write_worker_bundle(run_id=run_id, worker="D_worker", changes=[make_change("tools/demo/d.py", sha256="d")])
+            write_worker_bundle(run_id=run_id, worker="B_tooling", changes=[make_change("apps/demo/b.ts", sha256="b")])
+            write_worker_bundle(run_id=run_id, worker="C_features", changes=[make_change("docs/demo/c.md", sha256="c")])
+            write_worker_bundle(run_id=run_id, worker="D_validation", changes=[make_change("tools/demo/d.py", sha256="d")])
 
             payload = detect_scope_violations(run_id, workers=list(common.WORKERS))
             self.assertEqual("BLOCKED", payload["status"])
@@ -91,7 +91,7 @@ class OverlapAndScopeTests(unittest.TestCase):
         with isolated_factory_env():
             write_worker_bundle(
                 run_id=run_id,
-                worker="A_worker",
+                worker="A_core",
                 changes=[
                     make_change("apps/demo/z_last.ts", sha256="1"),
                     make_change("apps/demo/a_first.ts", sha256="2"),
@@ -99,14 +99,14 @@ class OverlapAndScopeTests(unittest.TestCase):
             )
             write_worker_bundle(
                 run_id=run_id,
-                worker="B_worker",
+                worker="B_tooling",
                 changes=[
                     make_change("apps/demo/a_first.ts", sha256="3"),
                     make_change("apps/demo/z_last.ts", sha256="4"),
                 ],
             )
-            write_worker_bundle(run_id=run_id, worker="C_worker", changes=[make_change("docs/demo/c.md", sha256="c")])
-            write_worker_bundle(run_id=run_id, worker="D_worker", changes=[make_change("tools/demo/d.py", sha256="d")])
+            write_worker_bundle(run_id=run_id, worker="C_features", changes=[make_change("docs/demo/c.md", sha256="c")])
+            write_worker_bundle(run_id=run_id, worker="D_validation", changes=[make_change("tools/demo/d.py", sha256="d")])
 
             payload = detect_file_overlaps(run_id, workers=list(common.WORKERS))
             ordered_paths = [entry["path"] for entry in payload["overlaps"]]
@@ -115,10 +115,10 @@ class OverlapAndScopeTests(unittest.TestCase):
     def test_hidden_overlap_detected_from_patch_only(self) -> None:
         run_id = "hidden_overlap_20260218_000006"
         with isolated_factory_env():
-            root_a = write_worker_bundle(run_id=run_id, worker="A_worker", changes=[make_change("apps/demo/a.ts", sha256="a")])
-            root_b = write_worker_bundle(run_id=run_id, worker="B_worker", changes=[make_change("apps/demo/b.ts", sha256="b")])
-            write_worker_bundle(run_id=run_id, worker="C_worker", changes=[make_change("tools/demo/c.py", sha256="c")])
-            write_worker_bundle(run_id=run_id, worker="D_worker", changes=[make_change("docs/demo/d.md", sha256="d")])
+            root_a = write_worker_bundle(run_id=run_id, worker="A_core", changes=[make_change("apps/demo/a.ts", sha256="a")])
+            root_b = write_worker_bundle(run_id=run_id, worker="B_tooling", changes=[make_change("apps/demo/b.ts", sha256="b")])
+            write_worker_bundle(run_id=run_id, worker="C_features", changes=[make_change("tools/demo/c.py", sha256="c")])
+            write_worker_bundle(run_id=run_id, worker="D_validation", changes=[make_change("docs/demo/d.md", sha256="d")])
 
             # Add hidden overlap path in DIFF.patch that was not declared in FILES_CHANGED.
             (root_a / "DIFF.patch").write_text(
@@ -139,10 +139,10 @@ class OverlapAndScopeTests(unittest.TestCase):
     def test_identical_patch_exception_flag(self) -> None:
         run_id = "identical_patch_20260218_000007"
         with isolated_factory_env():
-            root_a = write_worker_bundle(run_id=run_id, worker="A_worker", changes=[make_change("apps/shared/x.ts", sha256="1")])
-            root_b = write_worker_bundle(run_id=run_id, worker="B_worker", changes=[make_change("apps/shared/x.ts", sha256="2")])
-            write_worker_bundle(run_id=run_id, worker="C_worker", changes=[make_change("tools/c.py", sha256="3")])
-            write_worker_bundle(run_id=run_id, worker="D_worker", changes=[make_change("docs/d.md", sha256="4")])
+            root_a = write_worker_bundle(run_id=run_id, worker="A_core", changes=[make_change("apps/shared/x.ts", sha256="1")])
+            root_b = write_worker_bundle(run_id=run_id, worker="B_tooling", changes=[make_change("apps/shared/x.ts", sha256="2")])
+            write_worker_bundle(run_id=run_id, worker="C_features", changes=[make_change("tools/c.py", sha256="3")])
+            write_worker_bundle(run_id=run_id, worker="D_validation", changes=[make_change("docs/d.md", sha256="4")])
 
             patch_text = (
                 "diff --git a/apps/shared/x.ts b/apps/shared/x.ts\n"
@@ -174,10 +174,10 @@ class OverlapAndScopeTests(unittest.TestCase):
     def test_invalid_path_in_files_changed_is_blocked(self) -> None:
         run_id = "invalid_path_20260218_000008"
         with isolated_factory_env():
-            write_worker_bundle(run_id=run_id, worker="A_worker", changes=[make_change(r"..\..\evil.ts", sha256="1")])
-            write_worker_bundle(run_id=run_id, worker="B_worker", changes=[make_change("apps/demo/b.ts", sha256="2")])
-            write_worker_bundle(run_id=run_id, worker="C_worker", changes=[make_change("tools/demo/c.py", sha256="3")])
-            write_worker_bundle(run_id=run_id, worker="D_worker", changes=[make_change("docs/demo/d.md", sha256="4")])
+            write_worker_bundle(run_id=run_id, worker="A_core", changes=[make_change(r"..\..\evil.ts", sha256="1")])
+            write_worker_bundle(run_id=run_id, worker="B_tooling", changes=[make_change("apps/demo/b.ts", sha256="2")])
+            write_worker_bundle(run_id=run_id, worker="C_features", changes=[make_change("tools/demo/c.py", sha256="3")])
+            write_worker_bundle(run_id=run_id, worker="D_validation", changes=[make_change("docs/demo/d.md", sha256="4")])
             payload = detect_file_overlaps(run_id, workers=list(common.WORKERS))
             self.assertEqual("BLOCKED", payload["status"])
             self.assertGreaterEqual(len(payload["invalid_paths"]), 1)
@@ -197,13 +197,13 @@ class OverlapAndScopeTests(unittest.TestCase):
                 c_paths = all_paths[30:35]
                 d_paths = all_paths[35:40]
 
-                write_worker_bundle(run_id=run_id, worker="A_worker", changes=[make_change(path, sha256="a") for path in a_paths])
-                write_worker_bundle(run_id=run_id, worker="B_worker", changes=[make_change(path, sha256="b") for path in b_paths])
-                write_worker_bundle(run_id=run_id, worker="C_worker", changes=[make_change(path, sha256="c") for path in c_paths])
-                write_worker_bundle(run_id=run_id, worker="D_worker", changes=[make_change(path, sha256="d") for path in d_paths])
+                write_worker_bundle(run_id=run_id, worker="A_core", changes=[make_change(path, sha256="a") for path in a_paths])
+                write_worker_bundle(run_id=run_id, worker="B_tooling", changes=[make_change(path, sha256="b") for path in b_paths])
+                write_worker_bundle(run_id=run_id, worker="C_features", changes=[make_change(path, sha256="c") for path in c_paths])
+                write_worker_bundle(run_id=run_id, worker="D_validation", changes=[make_change(path, sha256="d") for path in d_paths])
 
-                first = detect_file_overlaps(run_id, workers=["A_worker", "B_worker", "C_worker", "D_worker"])
-                second = detect_file_overlaps(run_id, workers=["D_worker", "C_worker", "B_worker", "A_worker"])
+                first = detect_file_overlaps(run_id, workers=["A_core", "B_tooling", "C_features", "D_validation"])
+                second = detect_file_overlaps(run_id, workers=["D_validation", "C_features", "B_tooling", "A_core"])
 
                 self.assertEqual(first["status"], second["status"])
                 self.assertEqual(first["blocked"], second["blocked"])
@@ -230,22 +230,22 @@ class OverlapAndScopeTests(unittest.TestCase):
 
             write_worker_bundle(
                 run_id=run_id,
-                worker="A_worker",
+                worker="A_core",
                 changes=[make_change(path, sha256="a") for path in (common_paths + a_unique)],
             )
             write_worker_bundle(
                 run_id=run_id,
-                worker="B_worker",
+                worker="B_tooling",
                 changes=[make_change(path, sha256="b") for path in (common_paths + b_unique)],
             )
             write_worker_bundle(
                 run_id=run_id,
-                worker="C_worker",
+                worker="C_features",
                 changes=[make_change(path, sha256="c") for path in c_unique],
             )
             write_worker_bundle(
                 run_id=run_id,
-                worker="D_worker",
+                worker="D_validation",
                 changes=[make_change(path, sha256="d") for path in d_unique],
             )
 
@@ -260,3 +260,4 @@ class OverlapAndScopeTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

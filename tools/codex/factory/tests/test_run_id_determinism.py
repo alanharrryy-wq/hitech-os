@@ -32,7 +32,7 @@ class RunIdDeterminismTests(unittest.TestCase):
                     "ts_utc": "2026-02-18T10:10:10+00:00",
                     "run_id": f"{prefix}_001",
                     "event_type": "RUN_START",
-                    "actor": "Z_integrator",
+                    "actor": "Z_aggregator",
                     "event_id": "",
                     "parent_event_id": "",
                     "duration_ms": 0,
@@ -49,7 +49,7 @@ class RunIdDeterminismTests(unittest.TestCase):
                     "ts_utc": "2026-02-18T10:10:11+00:00",
                     "run_id": f"{prefix}_002",
                     "event_type": "RUN_START",
-                    "actor": "Z_integrator",
+                    "actor": "Z_aggregator",
                     "event_id": "",
                     "parent_event_id": "",
                     "duration_ms": 0,
@@ -74,7 +74,7 @@ class RunIdDeterminismTests(unittest.TestCase):
                     "ts_utc": "2026-02-18T10:10:10+00:00",
                     "run_id": seed.run_id.rsplit("_", 1)[0] + "_004",
                     "event_type": "RUN_START",
-                    "actor": "Z_integrator",
+                    "actor": "Z_aggregator",
                     "event_id": "",
                     "parent_event_id": "",
                     "duration_ms": 0,
@@ -97,3 +97,4 @@ class RunIdDeterminismTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
