@@ -20,6 +20,7 @@ def build_telemetry_payload(
     cleanup_result: dict[str, Any],
     repair_result: dict[str, Any],
     security_result: dict[str, Any],
+    security_eval_result: dict[str, Any] | None,
     health_score: int,
     error_count: int,
 ) -> dict[str, Any]:
@@ -27,6 +28,8 @@ def build_telemetry_payload(
     cleanup_summary = cleanup_result.get("summary", {})
     repair_summary = repair_result.get("summary", {})
     security_summary = security_result.get("summary", {})
+    security_eval_result = security_eval_result or {}
+    security_eval_metrics = security_eval_result.get("metrics", {})
     artifact_summary = artifact_result.get("summary", {})
 
     branch_activity = git_branch_activity(config.repo_root)
@@ -60,6 +63,11 @@ def build_telemetry_payload(
         "securitySuppressedFindingCount": int(security_summary.get("suppressedFindingCount", 0)),
         "securityFalsePositiveRate": float(security_summary.get("falsePositiveRate", 0.0)),
         "securityAlertLevel": str(security_summary.get("alertLevel", "none")),
+        "securityEvalStatus": str(security_eval_result.get("status", "skipped")),
+        "securityEvalPassed": bool(security_eval_result.get("passed", False)),
+        "securityEvalPrecision": float(security_eval_metrics.get("precision", 0.0)),
+        "securityEvalRecall": float(security_eval_metrics.get("recall", 0.0)),
+        "securityEvalF1": float(security_eval_metrics.get("f1", 0.0)),
         "healthScore": int(health_score),
         "errorCount": int(error_count),
         "branchActivity": branch_activity,

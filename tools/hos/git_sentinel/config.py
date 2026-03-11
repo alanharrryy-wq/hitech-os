@@ -212,6 +212,35 @@ class SentinelConfig:
     alert_health_threshold: int = 65
     alert_webhook_env_var: str = "GIT_SENTINEL_ALERT_WEBHOOK"
     false_positive_feedback_path: str = "tools/_local/git_sentinel/state/false_positive_feedback.json"
+    false_positive_audit_path: str = "tools/_local/git_sentinel/state/false_positive_audit.json"
+    false_positive_default_ttl_days: int = 30
+    security_doc_path_globs: tuple[str, ...] = (
+        "docs/**",
+        "**/docs/**",
+        "**/README.md",
+        "**/*.md",
+        "**/examples/**",
+        "**/example/**",
+        "**/samples/**",
+        "**/sample/**",
+        "**/tests/**",
+        "**/test/**",
+        "**/__tests__/**",
+        "**/fixtures/**",
+        "**/fixture/**",
+        "**/golden/**",
+        "tools/hos/git_sentinel/golden/**",
+        ".agents/**",
+    )
+    security_entropy_min_length: int = 20
+    security_entropy_threshold: float = 3.6
+    security_eval_dataset_path: str = "tools/hos/git_sentinel/golden/security_eval_dataset.json"
+    security_eval_min_precision: float = 0.85
+    security_eval_min_recall: float = 0.85
+    security_eval_min_f1: float = 0.85
+    ci_gate_default_base_ref: str = "origin/main"
+    ci_gate_block_high: bool = True
+    ci_gate_block_critical: bool = True
     default_guardian_interval_seconds: int = 600
     autotune_enabled: bool = False
     autotune_min_interval_seconds: int = 300
@@ -299,6 +328,7 @@ def _merge_override(base: SentinelConfig, payload: dict[str, Any]) -> SentinelCo
         "secret_scan_extensions",
         "dangerous_script_tokens",
         "expected_text_extensions",
+        "security_doc_path_globs",
     ]
     for key in tuple_keys:
         raw = mutable.get(key)

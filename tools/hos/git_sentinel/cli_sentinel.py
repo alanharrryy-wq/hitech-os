@@ -19,8 +19,10 @@ for _stream in (sys.stdout, sys.stderr):
         continue
 
 from tools.hos._core.stable_json import dump_json  # noqa: E402
+from tools.hos.git_sentinel.ci_gate import run_ci_gate  # noqa: E402
 from tools.hos.git_sentinel.config import build_config  # noqa: E402
 from tools.hos.git_sentinel.scheduler import GuardianRunOptions, run_guardian  # noqa: E402
+from tools.hos.git_sentinel.security_quality import evaluate_security_dataset, write_security_eval_files  # noqa: E402
 from tools.hos.git_sentinel.sentinel import SentinelRunOptions, run_sentinel_cycle  # noqa: E402
 
 
@@ -93,12 +95,49 @@ def parse_args() -> argparse.Namespace:
         help="Allow reverting tracked files flagged by high-severity security findings.",
     )
 
+    eval_parser = subparsers.add_parser("security-eval", help="Evaluate security detector quality against golden set.")
+    _add_common_args(eval_parser)
+    eval_parser.add_argument("--dataset", default=None, help="Optional dataset override path.")
+
+    gate_parser = subparsers.add_parser("ci-gate", help="Run CI security gate on changed files.")
+    _add_common_args(gate_parser)
+    gate_parser.add_argument("--base-ref", default=None, help="Base git ref for incremental diff scope.")
+    gate_parser.add_argument(
+        "--no-security-eval",
+        action="store_true",
+        help="Skip golden-set security evaluation in CI gate.",
+    )
+
     return parser.parse_args()
 
 
 def _print_payload(payload: dict, json_output: bool) -> None:
     if json_output:
         print(dump_json(payload), end="")
+        return
+    if "metrics" in payload and "thresholds" in payload:
+        metrics = payload.get("metrics", {})
+        print(
+            f"[git-sentinel] security_eval passed={payload.get('passed', False)} "
+            f"precision={metrics.get('precision', 0.0)} "
+            f"recall={metrics.get('recall', 0.0)} "
+            f"f1={metrics.get('f1', 0.0)}"
+        )
+        files = payload.get("files", {})
+        if isinstance(files, dict):
+            print(f"[git-sentinel] security_eval_latest={files.get('latest', '')}")
+        return
+    if "passed" in payload and "security" in payload and "baseRef" in payload:
+        security_summary = payload.get("security", {}).get("summary", {})
+        print(
+            f"[git-sentinel] ci_gate passed={payload.get('passed', False)} "
+            f"base_ref={payload.get('baseRef', '')} "
+            f"changed_paths={payload.get('changedPathCount', 0)} "
+            f"severity={security_summary.get('severityCounts', {})}"
+        )
+        if payload.get("failures"):
+            print(f"[git-sentinel] ci_gate_failures={payload.get('failures', [])}")
+        print(f"[git-sentinel] ci_gate_report={payload.get('files', {}).get('latest', '')}")
         return
     if "health" in payload:
         print(
@@ -171,6 +210,22 @@ def main() -> int:
             for item in report.get("errors", [])
         )
         return 2 if stop_error else 0
+
+    if args.command == "security-eval":
+        payload = evaluate_security_dataset(config=config, dataset_path=args.dataset)
+        files = write_security_eval_files(config=config, payload=payload)
+        payload["files"] = files
+        _print_payload(payload, json_output=args.json)
+        return 0 if bool(payload.get("passed", False)) else 2
+
+    if args.command == "ci-gate":
+        payload = run_ci_gate(
+            config=config,
+            base_ref=args.base_ref,
+            run_security_eval=not args.no_security_eval,
+        )
+        _print_payload(payload, json_output=args.json)
+        return 0 if bool(payload.get("passed", False)) else 2
 
     guardian_payload = run_guardian(
         config=config,

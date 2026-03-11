@@ -18,6 +18,7 @@ from .repair_engine import execute_repairs, plan_repairs
 from .retention import apply_retention_policy
 from .report_generator import build_report_payload, compute_health_score, write_reports
 from .scanner import scan_repository
+from .security_quality import evaluate_security_dataset, write_security_eval_files
 from .security_scanner import scan_security
 from .telemetry import build_telemetry_payload, persist_telemetry_payload, write_telemetry_files
 from .visualization import generate_visualization_data
@@ -135,6 +136,8 @@ def run_sentinel_cycle(config: SentinelConfig, options: SentinelRunOptions) -> d
         final_security = initial_security
 
     visualization = generate_visualization_data(config=config, scan_state=final_scan)
+    security_eval_result = evaluate_security_dataset(config=config)
+    security_eval_files = write_security_eval_files(config=config, payload=security_eval_result)
 
     telemetry_payload = build_telemetry_payload(
         config=config,
@@ -143,6 +146,7 @@ def run_sentinel_cycle(config: SentinelConfig, options: SentinelRunOptions) -> d
         cleanup_result=cleanup_result,
         repair_result=repair_result,
         security_result=final_security,
+        security_eval_result=security_eval_result,
         health_score=0,
         error_count=len(errors),
     )
@@ -166,6 +170,8 @@ def run_sentinel_cycle(config: SentinelConfig, options: SentinelRunOptions) -> d
     )
     telemetry_files["falsePositiveLatest"] = false_positive_files.get("latest", "")
     telemetry_files["falsePositiveSnapshot"] = false_positive_files.get("snapshot", "")
+    telemetry_files["securityEvalLatest"] = security_eval_files.get("latest", "")
+    telemetry_files["securityEvalSnapshot"] = security_eval_files.get("snapshot", "")
 
     report_payload = build_report_payload(
         config=config,
@@ -184,6 +190,7 @@ def run_sentinel_cycle(config: SentinelConfig, options: SentinelRunOptions) -> d
             "plan": repair_plan,
         },
         security_result=final_security,
+        security_eval_result=security_eval_result,
         telemetry_payload=telemetry_payload,
         prediction_result=prediction_result,
         visualization_result=visualization,
