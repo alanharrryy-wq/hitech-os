@@ -51,6 +51,15 @@ python tools/hos/git_sentinel/cli_sentinel.py once
 python tools/hos/git_sentinel/cli_sentinel.py once --apply
 ```
 
+Task scheduler activation (Windows, persistent):
+
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File tools/hos/git_sentinel/manage_guardian_task.ps1 -Action install -Apply -IntervalSec 600 -RunNow
+pwsh -NoProfile -ExecutionPolicy Bypass -File tools/hos/git_sentinel/manage_guardian_task.ps1 -Action status
+```
+
+The managed task defaults to `--no-ignore-update` so background runs stay deterministic without modifying tracked `.gitignore`.
+
 ## Runtime Artifacts
 
 All sentinel runtime artifacts are written to:
@@ -80,4 +89,3 @@ Contains:
 - cleanup actions
 - health score and factors
 - prediction signals
-

@@ -22,8 +22,19 @@ Autonomous repository hygiene system for HITECH OS.
 python tools/hos/git_sentinel/cli_sentinel.py scan --json
 python tools/hos/git_sentinel/cli_sentinel.py once
 python tools/hos/git_sentinel/cli_sentinel.py once --apply
-python tools/hos/git_sentinel/cli_sentinel.py guardian --apply --interval-sec 300
+python tools/hos/git_sentinel/cli_sentinel.py guardian --apply --interval-sec 600
 ```
+
+## Persistent guardian (Windows)
+
+Register an idempotent scheduled task that runs guardian cycles continuously:
+
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File tools/hos/git_sentinel/manage_guardian_task.ps1 -Action install -Apply -IntervalSec 600 -RunNow
+pwsh -NoProfile -ExecutionPolicy Bypass -File tools/hos/git_sentinel/manage_guardian_task.ps1 -Action status
+```
+
+By default the scheduled task runs with `--no-ignore-update` to avoid dirtying tracked files during background cycles.
 
 ## Runtime output
 
