@@ -11,7 +11,7 @@ import {
   dispatchDevConsoleActionResult,
   normalizeRoutePath
 } from "../../dev-console/dev-console-events";
-import { registerConsoleEventListener } from "../../dev-console/core/console-core-events";
+import { registerConsoleEventListener } from "../../dev-console/console-core/console-core-events";
 
 const HEARTBEAT_MS = 7000;
 const QUICK_GROUPS: Record<string, readonly LayerId[]> = {

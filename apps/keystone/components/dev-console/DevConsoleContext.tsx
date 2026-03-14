@@ -29,8 +29,8 @@ import {
 import {
   type DiagnosticsRequestTarget,
   requestConsoleDiagnostics
-} from "./core/console-core-diagnostics";
-import { registerConsoleEventListener } from "./core/console-core-events";
+} from "./console-core/console-core-diagnostics";
+import { registerConsoleEventListener } from "./console-core/console-core-events";
 
 const DEFAULT_FLAGS: DevConsoleFlags = {
   showGrid: false,

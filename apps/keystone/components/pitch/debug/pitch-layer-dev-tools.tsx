@@ -2,7 +2,7 @@
 
 import { DevConsole } from "../../dev-console/DevConsole";
 import { DevConsoleProvider } from "../../dev-console/DevConsoleContext";
-import { ConsoleCoreRuntimeInvariants } from "../../dev-console/core/console-core-runtime-invariants";
+import { ConsoleCoreRuntimeInvariants } from "../../dev-console/console-core/console-core-runtime-invariants";
 import { PitchDevConsoleStabilityHelpers } from "./pitch-dev-console-stability-helpers";
 import { PitchRouteSceneBinding } from "./pitch-route-scene-binding";
 import { PitchSceneRuntimeBridge } from "./pitch-scene-runtime-bridge";

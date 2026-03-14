@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useOptionalDevConsole } from "../../dev-console/DevConsoleContext";
 import { applySceneLookModelToElement } from "../../dev-console/look/scene-look-model";
-import { dispatchConsoleEvent } from "../../dev-console/core/console-core-events";
+import { dispatchConsoleEvent } from "../../dev-console/console-core/console-core-events";
 import { DEV_CONSOLE_SCENE_LOOK_MODEL_EVENT } from "../../dev-console/dev-console-events";
 
 function applyToPitchRoots() {

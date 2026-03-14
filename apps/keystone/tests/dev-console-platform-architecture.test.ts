@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { buildDevConsoleRegistry } from "../components/dev-console/DevConsoleRegistry";
 import { DEFAULT_SCENE_LOOK_MODEL, mergeSceneLookModel, sceneLookModelToDatasetEntries } from "../components/dev-console/look";
-import { DEV_CONSOLE_EVENT_CONTRACTS } from "../components/dev-console/core/console-core-contracts";
+import { DEV_CONSOLE_EVENT_CONTRACTS } from "../components/dev-console/console-core/console-core-contracts";
 import { BRIDGE_HEARTBEAT_MS } from "../components/pitch/debug/pitch-scene-runtime-bridge";
 
 describe("Dev Console hardened platform architecture", () => {

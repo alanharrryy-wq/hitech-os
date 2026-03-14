@@ -4,8 +4,8 @@ import React from "react";
 import type { DevConsoleBindings, DevConsoleFlags, DevConsoleToolDefinition, DevConsoleToolId } from "./types";
 import { buildComposeConsolePanels } from "./domains/compose/compose-console-panels";
 import { buildInspectConsolePanels } from "./domains/inspect/inspect-console-panels";
-import { buildConsoleCoreRegistry } from "./core/console-core-registry";
-import { buildCoreConsolePanels } from "./core/core-console-panels";
+import { buildConsoleCoreRegistry } from "./console-core/console-core-registry";
+import { buildCoreConsolePanels } from "./console-core/core-console-panels";
 
 type BuildArgs = {
   bindings: DevConsoleBindings;

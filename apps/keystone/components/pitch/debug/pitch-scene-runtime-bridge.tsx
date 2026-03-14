@@ -13,7 +13,7 @@ import {
   DEV_CONSOLE_DIAGNOSTICS_EVENT,
   DEV_CONSOLE_REQUEST_DIAGNOSTICS_EVENT
 } from "../../dev-console/dev-console-events";
-import { dispatchConsoleEvent, registerConsoleEventListener } from "../../dev-console/core/console-core-events";
+import { dispatchConsoleEvent, registerConsoleEventListener } from "../../dev-console/console-core/console-core-events";
 
 export const BRIDGE_HEARTBEAT_MS = 5000;
 const BRIDGE_MIN_PUBLISH_INTERVAL_MS = 450;

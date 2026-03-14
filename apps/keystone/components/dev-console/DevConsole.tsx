@@ -9,9 +9,9 @@ import {
   readStoredConsoleTool,
   resetConsoleWindowLayout,
   persistConsoleTool
-} from "./core/console-core-layout";
-import { useConsoleCoreSingleton } from "./core/console-core-lifecycle";
-import { ConsoleCoreShell } from "./core/console-core-shell";
+} from "./console-core/console-core-layout";
+import { useConsoleCoreSingleton } from "./console-core/console-core-lifecycle";
+import { ConsoleCoreShell } from "./console-core/console-core-shell";
 
 function bridgeTone(status: DevConsoleBridgeStatus) {
   switch (status) {

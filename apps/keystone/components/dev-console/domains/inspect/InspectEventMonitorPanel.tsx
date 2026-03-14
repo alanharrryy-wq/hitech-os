@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useDevConsole } from "../../DevConsoleContext";
-import { DEV_CONSOLE_EVENT_CONTRACTS } from "../../core/console-core-contracts";
-import { snapshotConsoleEventListenerCounts } from "../../core/console-core-events";
+import { DEV_CONSOLE_EVENT_CONTRACTS } from "../../console-core/console-core-contracts";
+import { snapshotConsoleEventListenerCounts } from "../../console-core/console-core-events";
 import styles from "../../dev-console.module.css";
 
 const cls = (name: string) => styles[name] ?? "";
