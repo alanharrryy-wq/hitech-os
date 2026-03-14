@@ -342,7 +342,6 @@ Read:
 - `20_PROTECTED_NODES.md`
 - `28_SECURITY_MODEL.md`
 - `40_ARCHITECTURAL_DECISIONS.md`
-- `42_ARCHITECTURE_ARTIFACTS.md`
 
 ## If you are about to build UI features
 
@@ -381,7 +380,6 @@ These are the documents nobody touching serious code should skip:
 - `19_DEPENDENCY_POLICY.md`
 - `20_PROTECTED_NODES.md`
 - `40_ARCHITECTURAL_DECISIONS.md`
-- `42_ARCHITECTURE_ARTIFACTS.md`
 
 If someone skips these and then toca arquitectura, ya sabemos cómo acaba la película 😅
 
@@ -415,3 +413,9 @@ These three files should always agree on reading priorities.
 ## Summary
 
 `00_READING_PATHS.md` defines the fastest correct ways to understand the Live Scene Composer documentation set. It gives onboarding paths by time, by role, and by task so that contributors can get enough context without drowning—or worse, building blind.
+
+## Guardrails and Architecture Evidence
+
+If you are touching boundaries, policy, bridge contracts, or protected seams, read:
+
+- `41_ARCHITECTURE_GUARD_DOC_RULES.md`
