@@ -23,12 +23,18 @@ $script:RunLogPath = $null
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..\..")).Path
 $CodexDir = Join-Path $RepoRoot "tools/codex"
 $PromptsRoot = Join-Path $CodexDir "prompts"
-$DocWorkers = @("A_core", "B_tooling", "C_features", "D_validation")
+$BuildWorkers = @("A_core", "B_tooling", "C_features")
+$ValidationWorkers = @("D_validation")
+$PreIntegrationWorkers = @($BuildWorkers + $ValidationWorkers)
 $AggregatorWorkers = @("Z_aggregator")
-$Workers = @($DocWorkers + $AggregatorWorkers)
+$ExecutionWorkers = @($PreIntegrationWorkers + $AggregatorWorkers)
+$PostRunWorkers = @("R_reviewer", "E_planner")
+$Workers = @($ExecutionWorkers + $PostRunWorkers)
 $WorkersCsv = [string]::Join(",", $Workers)
-$DocWorkersCsv = [string]::Join(",", $DocWorkers)
+$PreIntegrationWorkersCsv = [string]::Join(",", $PreIntegrationWorkers)
 $AggregatorWorkersCsv = [string]::Join(",", $AggregatorWorkers)
+$ExecutionWorkersCsv = [string]::Join(",", $ExecutionWorkers)
+$PostRunWorkersCsv = [string]::Join(",", $PostRunWorkers)
 
 $PromptsDir = $null
 $LogsDir = $null
@@ -1151,7 +1157,10 @@ function Build-DispatchReport {
     }
 
     $dispatchStages = $script:StageResults | Where-Object {
-        $_.Stage -eq "dispatch_prompts_docs" -or $_.Stage -eq "dispatch_prompts_z"
+        $_.Stage -eq "dispatch_prompts_pre_integration" -or
+        $_.Stage -eq "dispatch_prompts_docs" -or
+        $_.Stage -eq "dispatch_prompts_z" -or
+        $_.Stage -eq "dispatch_prompts_post_run"
     }
     if (@($dispatchStages).Count -gt 0) {
         $reportLines.Add("") | Out-Null
@@ -1175,7 +1184,10 @@ function Build-DispatchReport {
     }
 
     $doneStages = $script:StageResults | Where-Object {
-        $_.Stage -eq "wait_done_markers_docs" -or $_.Stage -eq "wait_done_markers_z"
+        $_.Stage -eq "wait_done_markers_pre_integration" -or
+        $_.Stage -eq "wait_done_markers_docs" -or
+        $_.Stage -eq "wait_done_markers_z" -or
+        $_.Stage -eq "wait_done_markers_post_run"
     }
     if (@($doneStages).Count -gt 0) {
         $reportLines.Add("") | Out-Null
@@ -1283,6 +1295,7 @@ Write-Log "Debug stack diagnostics enabled: $DebugStackEnabled"
 
 $dispatchDocsPayload = $null
 $dispatchZPayload = $null
+$dispatchPostRunPayload = $null
 
 Push-Location $RepoRoot
 try {
@@ -1375,26 +1388,25 @@ try {
         Write-Log "[dispatch_prompts_initial_manual] PASS: $manualOutput"
     } else {
         $ahkExe = Resolve-AutoHotkeyExecutable
-        $dispatchZPayload = Invoke-DispatchStep -StageName "dispatch_prompts_z" -WorkersCsv $AggregatorWorkersCsv -AhkExe $ahkExe -EffectiveWindowReadyTimeout $effectiveWindowReadyTimeout -EffectiveReadinessTimeout $effectiveReadinessTimeout -EffectiveBetweenWorkersDelayMs $effectiveBetweenWorkersDelayMs
-        $dispatchDocsPayload = Invoke-DispatchStep -StageName "dispatch_prompts_docs" -WorkersCsv $DocWorkersCsv -AhkExe $ahkExe -EffectiveWindowReadyTimeout $effectiveWindowReadyTimeout -EffectiveReadinessTimeout $effectiveReadinessTimeout -EffectiveBetweenWorkersDelayMs $effectiveBetweenWorkersDelayMs
+        $dispatchDocsPayload = Invoke-DispatchStep -StageName "dispatch_prompts_pre_integration" -WorkersCsv $PreIntegrationWorkersCsv -AhkExe $ahkExe -EffectiveWindowReadyTimeout $effectiveWindowReadyTimeout -EffectiveReadinessTimeout $effectiveReadinessTimeout -EffectiveBetweenWorkersDelayMs $effectiveBetweenWorkersDelayMs
     }
 
-    Invoke-ExternalStep -Stage "wait_done_markers_docs" -Executable "python" -Arguments @(
+    Invoke-ExternalStep -Stage "wait_done_markers_pre_integration" -Executable "python" -Arguments @(
         "tools/codex/dispatch/validator.py",
         "wait-done",
         "--run-id", $RunId,
-        "--workers", $DocWorkersCsv,
+        "--workers", $PreIntegrationWorkersCsv,
         "--timeout-seconds", $effectiveWorkerDoneTimeout,
         "--poll-seconds", "2"
     ) | Out-Null
 
     if ($effectiveReworkMaxCycles -gt 0) {
         for ($reworkCycle = 1; $reworkCycle -le $effectiveReworkMaxCycles; $reworkCycle++) {
-            $docsReworkPayload = Invoke-ExternalStep -Stage ("factory_rework_docs_cycle_{0}" -f $reworkCycle) -Executable "python" -Arguments @(
+            $docsReworkPayload = Invoke-ExternalStep -Stage ("factory_rework_pre_integration_cycle_{0}" -f $reworkCycle) -Executable "python" -Arguments @(
                 "tools/codex/dispatch/validator.py",
                 "rework-cycle",
                 "--run-id", $RunId,
-                "--workers", $DocWorkersCsv,
+                "--workers", $PreIntegrationWorkersCsv,
                 "--cycle", ([string]$reworkCycle),
                 "--max-reworks", ([string]$effectiveReworkMaxCycles),
                 "--base-loc-target", ([string]$effectiveBaseLocTarget),
@@ -1416,10 +1428,10 @@ try {
                 $reworkWorkersCsv = Convert-WorkerListToCsv -Value $docsReworkPayload.rework_workers
             }
             if ([string]::IsNullOrWhiteSpace($reworkWorkersCsv)) {
-                throw "factory_rework_docs_cycle_$reworkCycle requested redispatch but returned no rework workers."
+                throw "factory_rework_pre_integration_cycle_$reworkCycle requested redispatch but returned no rework workers."
             }
 
-            Invoke-ExternalStep -Stage ("queue_wait_outbox_docs_rework_{0}" -f $reworkCycle) -Executable "python" -Arguments @(
+            Invoke-ExternalStep -Stage ("queue_wait_outbox_pre_integration_rework_{0}" -f $reworkCycle) -Executable "python" -Arguments @(
                 "tools/codex/dispatch/validator.py",
                 "queue-wait-outbox",
                 "--run-id", $RunId,
@@ -1429,7 +1441,7 @@ try {
                 "--poll-seconds", "2"
             ) | Out-Null
 
-            Invoke-ExternalStep -Stage ("wait_done_markers_docs_rework_{0}" -f $reworkCycle) -Executable "python" -Arguments @(
+            Invoke-ExternalStep -Stage ("wait_done_markers_pre_integration_rework_{0}" -f $reworkCycle) -Executable "python" -Arguments @(
                 "tools/codex/dispatch/validator.py",
                 "wait-done",
                 "--run-id", $RunId,
@@ -1438,6 +1450,10 @@ try {
                 "--poll-seconds", "2"
             ) | Out-Null
         }
+    }
+
+    if (-not $SkipInitialDispatch) {
+        $dispatchZPayload = Invoke-DispatchStep -StageName "dispatch_prompts_z" -WorkersCsv $AggregatorWorkersCsv -AhkExe $ahkExe -EffectiveWindowReadyTimeout $effectiveWindowReadyTimeout -EffectiveReadinessTimeout $effectiveReadinessTimeout -EffectiveBetweenWorkersDelayMs $effectiveBetweenWorkersDelayMs
     }
 
     Invoke-ExternalStep -Stage "factory_watch_z_pre_integrate" -Executable "python" -Arguments @("-m", "tools.codex.factory", "watch", "--run-id", $RunId) | Out-Null
@@ -1509,14 +1525,67 @@ try {
         "--run-id",
         $RunId,
         "--workers",
-        $WorkersCsv
+        $ExecutionWorkersCsv
     ) | Out-Null
 
-    Invoke-ExternalStep -Stage "factory_auto_closeout" -Executable "python" -Arguments @("-m", "tools.codex.factory", "auto-closeout", "--run-id", $RunId, "--workers", $WorkersCsv) | Out-Null
+    Invoke-ExternalStep -Stage "factory_auto_closeout_execution" -Executable "python" -Arguments @("-m", "tools.codex.factory", "auto-closeout", "--run-id", $RunId, "--workers", $ExecutionWorkersCsv) | Out-Null
 
-    Invoke-ExternalStep -Stage "factory_bundle_validate" -Executable "python" -Arguments @("-m", "tools.codex.factory", "bundle-validate", "--run-id", $RunId, "--workers", $WorkersCsv) | Out-Null
+    Invoke-ExternalStep -Stage "factory_bundle_validate_execution" -Executable "python" -Arguments @("-m", "tools.codex.factory", "bundle-validate", "--run-id", $RunId, "--workers", $ExecutionWorkersCsv) | Out-Null
 
-    Invoke-ExternalStep -Stage "factory_integrate" -Executable "python" -Arguments @("-m", "tools.codex.factory", "integrate", "--run-id", $RunId, "--workers", $WorkersCsv) | Out-Null
+    Invoke-ExternalStep -Stage "factory_integrate" -Executable "python" -Arguments @("-m", "tools.codex.factory", "integrate", "--run-id", $RunId, "--workers", $ExecutionWorkersCsv) | Out-Null
+
+    Invoke-ExternalStep -Stage "task_bank_post_run_seed" -Executable "python" -Arguments @(
+        "tools/codex/dispatch/task_bank_refresh.py",
+        "--repo",
+        ".",
+        "--task-bank",
+        "tools/codex/dispatch/rework_task_bank.json",
+        "--sources",
+        "tools/codex/dispatch/task_bank_sources.json",
+        "--state",
+        "tools/codex/dispatch/task_bank_state.json",
+        "--report",
+        "tools/codex/dispatch/reports/task_bank_health.json",
+        "--apply",
+        "--emit-post-run-artifacts",
+        "--run-id",
+        $RunId
+    ) | Out-Null
+
+    if (-not $SkipInitialDispatch) {
+        $dispatchPostRunPayload = Invoke-DispatchStep -StageName "dispatch_prompts_post_run" -WorkersCsv $PostRunWorkersCsv -AhkExe $ahkExe -EffectiveWindowReadyTimeout $effectiveWindowReadyTimeout -EffectiveReadinessTimeout $effectiveReadinessTimeout -EffectiveBetweenWorkersDelayMs $effectiveBetweenWorkersDelayMs
+    }
+
+    Invoke-ExternalStep -Stage "wait_done_markers_post_run" -Executable "python" -Arguments @(
+        "tools/codex/dispatch/validator.py",
+        "wait-done",
+        "--run-id", $RunId,
+        "--workers", $PostRunWorkersCsv,
+        "--timeout-seconds", $effectiveWorkerDoneTimeout,
+        "--poll-seconds", "2"
+    ) | Out-Null
+
+    Invoke-ExternalStep -Stage "task_bank_post_run_refresh" -Executable "python" -Arguments @(
+        "tools/codex/dispatch/task_bank_refresh.py",
+        "--repo",
+        ".",
+        "--task-bank",
+        "tools/codex/dispatch/rework_task_bank.json",
+        "--sources",
+        "tools/codex/dispatch/task_bank_sources.json",
+        "--state",
+        "tools/codex/dispatch/task_bank_state.json",
+        "--report",
+        "tools/codex/dispatch/reports/task_bank_health.json",
+        "--apply",
+        "--emit-post-run-artifacts",
+        "--run-id",
+        $RunId
+    ) | Out-Null
+
+    Invoke-ExternalStep -Stage "factory_auto_closeout_all" -Executable "python" -Arguments @("-m", "tools.codex.factory", "auto-closeout", "--run-id", $RunId, "--workers", $WorkersCsv) | Out-Null
+
+    Invoke-ExternalStep -Stage "factory_bundle_validate_all" -Executable "python" -Arguments @("-m", "tools.codex.factory", "bundle-validate", "--run-id", $RunId, "--workers", $WorkersCsv) | Out-Null
 
     Invoke-ExternalStep -Stage "factory_guardrails" -Executable "python" -Arguments @(
         "tools/codex/dispatch/validator.py",
@@ -1532,7 +1601,7 @@ try {
         $RunId
     ) | Out-Null
 
-    Update-DispatchRunManifest -ReadinessTimeoutSeconds $effectiveReadinessTimeout -DispatchPhases @($dispatchDocsPayload, $dispatchZPayload)
+    Update-DispatchRunManifest -ReadinessTimeoutSeconds $effectiveReadinessTimeout -DispatchPhases @($dispatchDocsPayload, $dispatchZPayload, $dispatchPostRunPayload)
 
     Write-Log "Run completed successfully."
 }
@@ -1556,7 +1625,7 @@ finally {
             Initialize-Logs
         }
 
-        Update-DispatchRunManifest -ReadinessTimeoutSeconds $effectiveReadinessTimeout -DispatchPhases @($dispatchDocsPayload, $dispatchZPayload)
+        Update-DispatchRunManifest -ReadinessTimeoutSeconds $effectiveReadinessTimeout -DispatchPhases @($dispatchDocsPayload, $dispatchZPayload, $dispatchPostRunPayload)
         Build-DispatchReport -Verdict $finalVerdict -ErrorMessage $fatalMessage -EffectiveWindowReadyTimeout $effectiveWindowReadyTimeout -EffectiveReadinessTimeout $effectiveReadinessTimeout -EffectiveWorkerDoneTimeout $effectiveWorkerDoneTimeout -EffectiveBetweenWorkersDelayMs $effectiveBetweenWorkersDelayMs
         Write-Log "Dispatch report written to $ReportPath"
     } catch {

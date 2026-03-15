@@ -12,7 +12,15 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-WORKERS: tuple[str, ...] = ("A_core", "B_tooling", "C_features", "D_validation", "Z_aggregator")
+WORKERS: tuple[str, ...] = (
+    "A_core",
+    "B_tooling",
+    "C_features",
+    "D_validation",
+    "Z_aggregator",
+    "R_reviewer",
+    "E_planner",
+)
 DEFAULT_FALLBACK_REPO = Path(r"F:\repos\hitech-os")
 DEFAULT_BASE_BRANCH = "main"
 WORKTREE_BRANCH_PREFIX = "hos/factory-launcher"

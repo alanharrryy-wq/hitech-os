@@ -8,6 +8,11 @@ import json
 from pathlib import Path
 from typing import Any
 
+try:
+    from .post_run_intelligence import synthesize_post_run
+except Exception:
+    from post_run_intelligence import synthesize_post_run
+
 REPO_DEFAULT = Path(__file__).resolve().parents[3]
 DEFAULT_TASK_BANK = "tools/codex/dispatch/rework_task_bank.json"
 DEFAULT_SOURCES = "tools/codex/dispatch/task_bank_sources.json"
@@ -395,6 +400,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--report", default=DEFAULT_REPORT)
     parser.add_argument("--run-id", default="")
     parser.add_argument("--min-value-score", type=int, default=70)
+    parser.add_argument("--emit-post-run-artifacts", action="store_true")
     parser.add_argument("--apply", action="store_true")
     return parser.parse_args()
 
@@ -451,6 +457,19 @@ def main() -> int:
             final_norm.append(item)
     final_tasks = _dedupe(final_norm)
 
+    post_run_payload: dict[str, Any] | None = None
+    if args.emit_post_run_artifacts and str(args.run_id).strip():
+        post_run_payload = synthesize_post_run(
+            repo_root=repo_root,
+            run_id=str(args.run_id).strip(),
+            now=now,
+            tasks=final_tasks,
+        )
+        if isinstance(post_run_payload, dict) and isinstance(post_run_payload.get("tasks"), list):
+            final_tasks = _dedupe(
+                [dict(item) for item in post_run_payload.get("tasks", []) if isinstance(item, dict)]
+            )
+
     ready_count = len([item for item in final_tasks if str(item.get("status", "")).lower() in {"ready", "assigned"} and bool(item.get("active", True))])
     by_category_ready: dict[str, int] = {cat: 0 for cat in CATEGORIES}
     for item in final_tasks:
@@ -472,6 +491,11 @@ def main() -> int:
         },
         "tasks": final_tasks,
     }
+    if post_run_payload is not None:
+        output_payload["post_run"] = {
+            "status": str(post_run_payload.get("status", "WARN")),
+            "summary": post_run_payload.get("summary", {}),
+        }
 
     state_payload = _read_json(state_path, {})
     if not isinstance(state_payload, dict):
@@ -500,6 +524,11 @@ def main() -> int:
         "reserve_targets": reserve,
         "errors": sorted(set(errors)),
     }
+    if post_run_payload is not None:
+        report_payload["post_run"] = {
+            "status": str(post_run_payload.get("status", "WARN")),
+            "summary": post_run_payload.get("summary", {}),
+        }
 
     if args.apply:
         _write_json(task_bank_path, output_payload)
@@ -515,6 +544,7 @@ def main() -> int:
                 "task_count": len(final_tasks),
                 "ready_count": ready_count,
                 "errors": sorted(set(errors)),
+                "post_run_status": str(post_run_payload.get("status", "")) if isinstance(post_run_payload, dict) else "",
                 "applied": bool(args.apply),
             },
             indent=2,

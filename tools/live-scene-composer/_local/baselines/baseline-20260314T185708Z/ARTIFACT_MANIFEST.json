@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-03-14T18:57:13+00:00",
+  "output_dir": "F:/repos/hitech-os/docs/live-scene-composer/architecture-artifacts",
+  "generator": "tools/live-scene-composer/generate_architecture_artifacts.py",
+  "artifacts": [
+    {
+      "file": "README.md",
+      "purpose": "Human guide to architecture artifacts package.",
+      "generation_notes": "Maintained manually; reviewed alongside generated outputs.",
+      "exists": false
+    },
+    {
+      "file": "GRAPH_LEGEND.md",
+      "purpose": "Legend defining node/edge semantics and risk codes.",
+      "generation_notes": "Maintained manually; used by humans and tooling references.",
+      "exists": false
+    },
+    {
+      "file": "live-scene-composer-architecture-boundaries.dot",
+      "purpose": "Strategic top-level architecture boundaries graph.",
+      "generation_notes": "Generated from strategic edge model plus observed edge evidence.",
+      "exists": true
+    },
+    {
+      "file": "live-scene-composer-architecture-deps.dot",
+      "purpose": "Tactical dependency and seam graph.",
+      "generation_notes": "Generated from tactical seam model plus observed edge evidence.",
+      "exists": true
+    },
+    {
+      "file": "dependency-inventory.json",
+      "purpose": "Machine-readable architecture-relevant edge inventory.",
+      "generation_notes": "Derived from import scanning and strategic boundary model.",
+      "exists": true
+    },
+    {
+      "file": "protected-nodes-map.json",
+      "purpose": "Machine-readable protected node metadata.",
+      "generation_notes": "Generated from maintained protected seam map.",
+      "exists": true
+    },
+    {
+      "file": "live-scene-composer-architecture-boundaries.svg",
+      "purpose": "Rendered strategic architecture boundaries graph.",
+      "generation_notes": "Generated with Graphviz dot from strategic .dot source.",
+      "exists": true
+    },
+    {
+      "file": "live-scene-composer-architecture-deps.svg",
+      "purpose": "Rendered tactical architecture dependencies graph.",
+      "generation_notes": "Generated with Graphviz dot from tactical .dot source.",
+      "exists": true
+    }
+  ]
+}

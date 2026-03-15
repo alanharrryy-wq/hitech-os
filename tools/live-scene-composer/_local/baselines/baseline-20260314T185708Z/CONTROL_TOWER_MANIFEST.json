@@ -1,0 +1,37 @@
+{
+  "generated_at_utc": "2026-03-14T08:45:53+00:00",
+  "repo_root": "F:\\repos\\hitech-os",
+  "target_root": "F:\\repos\\hitech-os\\tools\\live-scene-composer",
+  "downloads_hint": "F:\\OneDrive\\Descargas",
+  "written_files": [
+    {
+      "path": "tools/live-scene-composer/control_tower.py",
+      "status": "written",
+      "sha256": "61787cb2069348d24e016df3b6fbbe66843a35fa704457dc17a6e350ad66ff52"
+    },
+    {
+      "path": "tools/live-scene-composer/run_control_tower.bat",
+      "status": "written",
+      "sha256": "0483e4cb7527ad2256d0c56e03e8dd20ebc354a24aab2a8ada93270660b7aad2"
+    },
+    {
+      "path": "tools/live-scene-composer/CONTROL_TOWER_README.md",
+      "status": "written",
+      "sha256": "ae59076dac131d13ca766efeabab8f3e3dd213b5446b33fd447b3d107e6b1060"
+    }
+  ],
+  "python_validation": [
+    {
+      "path": "tools/live-scene-composer/control_tower.py",
+      "ok": true,
+      "detail": "ok"
+    }
+  ],
+  "canonical_scripts": {
+    "artifacts": "tools/live-scene-composer/architecture/generate_architecture_artifacts.py",
+    "guard": "tools/live-scene-composer/policy/validate_docs_architecture_guard.py",
+    "docs_cli": "tools/live-scene-composer/docs/swui_docs_cli.py"
+  },
+  "artifacts_returncode": 0,
+  "guard_returncode": 1
+}
