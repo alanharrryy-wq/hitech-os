@@ -1,0 +1,152 @@
+{
+  "zip_path": "F:\\OneDrive\\Descargas\\live-scene-composer_authoring-workbench-v1_wave1_FINAL_FIXED.zip",
+  "repo_root": "F:\\repos\\hitech-os",
+  "default_repo_root": "F:\\repos\\hitech-os",
+  "canonical_package": "live-scene-composer (2).zip",
+  "handoff_package": "handoff_live_scene_composer_planning_20260314.zip",
+  "precedence_policy": {
+    "durable_architecture": "canonical unless a clearly newer handoff governance artifact explicitly supersedes it",
+    "execution_state_and_operational_rules": "handoff",
+    "conflict_mode": "preserve the safer interpretation and do not invent certainty"
+  },
+  "overlaps": [
+    {
+      "relative_path": "00_DOCS_INDEX.md",
+      "category": "durable-canonical-copy",
+      "status": "different",
+      "winner": "canonical",
+      "reason": "Durable architecture file copied into handoff context; canonical wins by merge policy."
+    },
+    {
+      "relative_path": "05_SYSTEM_ARCHITECTURE.md",
+      "category": "durable-canonical-copy",
+      "status": "same",
+      "winner": "canonical",
+      "reason": "Files match; canonical and handoff agree."
+    },
+    {
+      "relative_path": "06_SYSTEM_BOUNDARIES.md",
+      "category": "durable-canonical-copy",
+      "status": "same",
+      "winner": "canonical",
+      "reason": "Files match; canonical and handoff agree."
+    },
+    {
+      "relative_path": "07_DOMAIN_MODEL.md",
+      "category": "durable-canonical-copy",
+      "status": "same",
+      "winner": "canonical",
+      "reason": "Files match; canonical and handoff agree."
+    },
+    {
+      "relative_path": "08_STATE_MODEL.md",
+      "category": "durable-canonical-copy",
+      "status": "same",
+      "winner": "canonical",
+      "reason": "Files match; canonical and handoff agree."
+    },
+    {
+      "relative_path": "09_RUNTIME_MODEL.md",
+      "category": "durable-canonical-copy",
+      "status": "same",
+      "winner": "canonical",
+      "reason": "Files match; canonical and handoff agree."
+    },
+    {
+      "relative_path": "10_MUTATION_MODEL.md",
+      "category": "durable-canonical-copy",
+      "status": "same",
+      "winner": "canonical",
+      "reason": "Files match; canonical and handoff agree."
+    },
+    {
+      "relative_path": "18_RUNTIME_MUTATION_BRIDGE.md",
+      "category": "durable-canonical-copy",
+      "status": "same",
+      "winner": "canonical",
+      "reason": "Files match; canonical and handoff agree."
+    },
+    {
+      "relative_path": "19_DEPENDENCY_POLICY.md",
+      "category": "durable-canonical-copy",
+      "status": "same",
+      "winner": "canonical",
+      "reason": "Files match; canonical and handoff agree."
+    },
+    {
+      "relative_path": "40_ARCHITECTURAL_DECISIONS.md",
+      "category": "durable-canonical-copy",
+      "status": "same",
+      "winner": "canonical",
+      "reason": "Files match; canonical and handoff agree."
+    },
+    {
+      "relative_path": "41_ARCHITECTURE_GUARD_DOC_RULES.md",
+      "category": "durable-canonical-copy",
+      "status": "same",
+      "winner": "canonical",
+      "reason": "Files match; canonical and handoff agree."
+    },
+    {
+      "relative_path": "42_ARCHITECTURE_ARTIFACTS.md",
+      "category": "durable-canonical-copy",
+      "status": "same",
+      "winner": "canonical",
+      "reason": "Files match; canonical and handoff agree."
+    },
+    {
+      "relative_path": "governance/ARCHITECTURE_REUSE_PRINCIPLES.md",
+      "category": "governance-overlap",
+      "status": "different",
+      "winner": "canonical",
+      "reason": "Canonical governance artifact is same or newer; canonical wins for durable governance."
+    },
+    {
+      "relative_path": "governance/MODULE_INTEGRATION_CONTRACT.md",
+      "category": "governance-overlap",
+      "status": "different",
+      "winner": "canonical",
+      "reason": "Canonical governance artifact is same or newer; canonical wins for durable governance."
+    },
+    {
+      "relative_path": "governance/REUSABLE_CORE_BOUNDARY.md",
+      "category": "governance-overlap",
+      "status": "different",
+      "winner": "canonical",
+      "reason": "Canonical governance artifact is same or newer; canonical wins for durable governance."
+    },
+    {
+      "relative_path": "governance/SELECTION_MODEL_V1.md",
+      "category": "governance-overlap",
+      "status": "different",
+      "winner": "canonical",
+      "reason": "Canonical governance artifact is same or newer; canonical wins for durable governance."
+    }
+  ],
+  "source_package_preservation": {
+    "source_package_filename": "live-scene-composer_authoring-workbench-v1_wave1.zip",
+    "preserved_as_base": true,
+    "notes": [
+      "The user-supplied source package was used as the base package for this rebuild.",
+      "No packaged file rows were dropped during the rebuild; route metadata and installer behavior were updated in place."
+    ]
+  },
+  "repo_resolution": {
+    "repo_root": "F:\\repos\\hitech-os",
+    "required_markers_ok": true,
+    "dynamic_roots": {
+      "LIVE_SCENE_COMPOSER_ROOT": {
+        "resolved": "apps\\keystone\\components\\live-scene-composer",
+        "status": "preferred-match"
+      },
+      "RUNTIME_MUTATION_BRIDGE_ROOT": {
+        "resolved": "apps/keystone/components/runtime-mutation-bridge",
+        "status": "preferred-inferred-missing",
+        "exists": false
+      }
+    },
+    "notes": [
+      "runtime-mutation-bridge was not observed in the repo probe; inferred installs may target the preferred sibling boundary path only with explicit operator opt-in."
+    ]
+  }
+}

@@ -166,3 +166,15 @@ tools/ui_map/_logs/*.zip
 .agents/agents_chatgpt/
 .agents/_runs/
 tools/_local/git_sentinel/
+
+# Graphviz generated artifacts
+
+tools/graphviz/graphs/**
+tools/graphviz/.graphviz_manifest.json
+tools/graphviz/.graphviz_state.json
+tools/graphviz/.repo_analyzer_settings.json
+
+# Keep repo analyzer tracked
+
+!tools/graphviz/repo_analizer/
+!tools/graphviz/repo_analizer/**
