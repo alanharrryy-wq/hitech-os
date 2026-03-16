@@ -1,14 +1,121 @@
-import type {
-  AuthoringMode,
-  MutationFeedback,
-  PrefabDefinition,
-  SceneDocument,
-  SceneId,
-  SceneLookModelPatch,
-  SelectionTarget,
-  WidgetPropsPatch,
-  WidgetStylePatch,
-} from "../../live-scene-composer/authoring-workbench-v1/authoring-workbench-contracts";
+import type { SceneLookModel, SceneLookModelPatch } from "../../live-scene-composer/scene-look-model";
+
+export type AuthoringMode = "safe" | "advanced";
+export type TargetKind = "scene" | "layout-node" | "slot" | "widget" | "draft";
+export type LayoutNodeKind = "root" | "stack" | "grid" | "container" | "slot-reference";
+export type SlotKind = "content" | "metric" | "chart" | "media" | "container" | "custom";
+export type WidgetType = "text" | "kpi" | "chart" | "image" | "container";
+export type WidgetCapability = "textual" | "metric" | "chart" | "media" | "layout-container";
+export type FeedbackLevel = "info" | "success" | "warning" | "error";
+
+export type SceneId = string;
+export type LayoutNodeId = string;
+export type SlotId = string;
+export type WidgetId = string;
+export type PrefabId = string;
+
+export interface FrameBox {
+  readonly x: number;
+  readonly y: number;
+  readonly width: number;
+  readonly height: number;
+}
+
+export interface WidgetStyle {
+  readonly background: string;
+  readonly foreground: string;
+  readonly borderStyle: "none" | "solid" | "glass";
+  readonly radius: number;
+  readonly emphasis: "subtle" | "default" | "strong";
+}
+
+export type WidgetStylePatch = Partial<WidgetStyle>;
+export type WidgetPropsPatch = Readonly<Record<string, unknown>>;
+
+export interface SceneEntity {
+  readonly id: SceneId;
+  readonly title: string;
+  readonly description: string;
+  readonly look: SceneLookModel;
+}
+
+export interface LayoutNode {
+  readonly id: LayoutNodeId;
+  readonly title: string;
+  readonly kind: LayoutNodeKind;
+  readonly parentId: LayoutNodeId | null;
+  readonly childIds: readonly LayoutNodeId[];
+  readonly orderIndex: number;
+  readonly slotId: SlotId | null;
+  readonly frame: FrameBox;
+  readonly locked: boolean;
+}
+
+export interface SlotEntity {
+  readonly id: SlotId;
+  readonly title: string;
+  readonly kind: SlotKind;
+  readonly acceptedWidgetTypes: readonly WidgetType[];
+  readonly acceptedCapabilities: readonly WidgetCapability[];
+  readonly widgetIds: readonly WidgetId[];
+  readonly maxWidgets: number;
+  readonly locked: boolean;
+}
+
+export interface WidgetEntity {
+  readonly id: WidgetId;
+  readonly title: string;
+  readonly type: WidgetType;
+  readonly slotId: SlotId;
+  readonly prefabId: PrefabId | null;
+  readonly capabilities: readonly WidgetCapability[];
+  readonly props: Readonly<Record<string, unknown>>;
+  readonly style: WidgetStyle;
+  readonly visible: boolean;
+  readonly locked: boolean;
+}
+
+export interface PrefabDefinition {
+  readonly id: PrefabId;
+  readonly title: string;
+  readonly widgetType: WidgetType;
+  readonly acceptedSlotKinds: readonly SlotKind[];
+  readonly acceptedCapabilities: readonly WidgetCapability[];
+  readonly defaultProps: Readonly<Record<string, unknown>>;
+  readonly defaultStyle: WidgetStyle;
+  readonly description: string;
+  readonly tags: readonly string[];
+}
+
+export interface DocumentMeta {
+  readonly revision: number;
+  readonly nextId: number;
+  readonly lastCommittedAtIso: string | null;
+}
+
+export interface SceneDocument {
+  readonly scene: SceneEntity;
+  readonly rootLayoutId: LayoutNodeId;
+  readonly layoutNodes: Readonly<Record<LayoutNodeId, LayoutNode>>;
+  readonly slots: Readonly<Record<SlotId, SlotEntity>>;
+  readonly widgets: Readonly<Record<WidgetId, WidgetEntity>>;
+  readonly meta: DocumentMeta;
+}
+
+export interface SelectionTarget {
+  readonly kind: Exclude<TargetKind, "draft">;
+  readonly id: string;
+  readonly sceneId: SceneId;
+}
+
+export interface MutationFeedback {
+  readonly commandType: string;
+  readonly level: FeedbackLevel;
+  readonly message: string;
+  readonly code: string;
+  readonly changedTargets: readonly string[];
+  readonly recordedAtIso: string;
+}
 
 export const AUTHORING_WORKBENCH_MUTATION_SOURCE = "live-scene-composer.authoring-workbench-v1" as const;
 export type MutationSource = typeof AUTHORING_WORKBENCH_MUTATION_SOURCE;

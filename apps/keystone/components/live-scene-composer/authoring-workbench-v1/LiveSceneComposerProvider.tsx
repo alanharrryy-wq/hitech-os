@@ -16,7 +16,7 @@ import {
   createSceneLookUpdateCommand,
   createUpdateWidgetPropsCommand,
   createUpdateWidgetStyleCommand,
-} from "../../runtime-mutation-bridge/authoring-workbench-v1/contract";
+} from "./mutations/mutation-client";
 import type { SceneDocument, SceneLookModelPatch } from "./authoring-workbench-contracts";
 
 export interface LiveSceneComposerContextValue {

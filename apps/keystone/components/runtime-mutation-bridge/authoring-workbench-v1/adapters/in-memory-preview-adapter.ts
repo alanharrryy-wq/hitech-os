@@ -1,5 +1,4 @@
-import type { RuntimeMutationCommand } from "../contract";
-import type { SceneDocument } from "../../../live-scene-composer/authoring-workbench-v1/authoring-workbench-contracts";
+import type { RuntimeMutationCommand, SceneDocument } from "../contract";
 
 export interface RuntimeMutationBridgeAdapterEvent {
   readonly commandType: RuntimeMutationCommand["type"];

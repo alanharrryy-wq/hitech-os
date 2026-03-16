@@ -1,17 +1,50 @@
 import { mergeSceneLookModel } from "../../live-scene-composer/scene-look-model";
 import type {
   MutationFeedback,
+  RuntimeMutationCommand,
+  RuntimeMutationExecutionContext,
+  RuntimeMutationResult,
+  RuntimeMutationValidationError,
   SceneDocument,
-  SelectionTarget,
   SlotEntity,
   WidgetEntity,
-} from "../../live-scene-composer/authoring-workbench-v1/authoring-workbench-contracts";
-import { cloneSceneDocument, coerceStylePatch, createWidgetFromPrefab } from "../../live-scene-composer/authoring-workbench-v1/model/scene-graph";
+  WidgetStyle,
+  PrefabDefinition,
+} from "./contract";
 import type { RuntimeMutationBridgeAdapter } from "./adapters/in-memory-preview-adapter";
-import type { RuntimeMutationCommand, RuntimeMutationExecutionContext, RuntimeMutationResult, RuntimeMutationValidationError } from "./contract";
 import { validateRuntimeMutationCommand } from "./validateRuntimeMutationCommand";
 
 type MutableSceneDocument = any;
+
+function cloneSceneDocument(document: SceneDocument): SceneDocument {
+  return JSON.parse(JSON.stringify(document)) as SceneDocument;
+}
+
+function coerceStylePatch(previous: WidgetStyle, patch: Partial<WidgetStyle>): WidgetStyle {
+  return {
+    background: patch.background ?? previous.background,
+    foreground: patch.foreground ?? previous.foreground,
+    borderStyle: patch.borderStyle ?? previous.borderStyle,
+    radius: typeof patch.radius === "number" ? patch.radius : previous.radius,
+    emphasis: patch.emphasis ?? previous.emphasis,
+  };
+}
+
+function createWidgetFromPrefab(prefab: PrefabDefinition, slotId: string, nextId: number): WidgetEntity {
+  const widgetId = `widget-${nextId}`;
+  return {
+    id: widgetId,
+    title: prefab.title,
+    type: prefab.widgetType,
+    slotId,
+    prefabId: prefab.id,
+    capabilities: prefab.acceptedCapabilities,
+    props: prefab.defaultProps,
+    style: prefab.defaultStyle,
+    visible: true,
+    locked: false,
+  };
+}
 
 function createFeedback(commandType: string, accepted: boolean, message: string, code: string, changedTargets: readonly string[]): MutationFeedback {
   return {
@@ -76,7 +109,7 @@ function ensureWidgetReset(nextDraft: MutableSceneDocument, baseline: MutableSce
     const baselineSlot = baseline.slots[slotId];
     if (baselineSlot) {
       nextDraft.slots[slotId] = JSON.parse(JSON.stringify(baselineSlot)) as SlotEntity;
-      baselineSlot.widgetIds.forEach((baselineWidgetId) => {
+      baselineSlot.widgetIds.forEach((baselineWidgetId: string) => {
         if (baseline.widgets[baselineWidgetId]) {
           nextDraft.widgets[baselineWidgetId] = JSON.parse(JSON.stringify(baseline.widgets[baselineWidgetId])) as WidgetEntity;
         }
@@ -103,9 +136,11 @@ export function applyRuntimeMutationThroughBridge(
     adapter?.record(command, "rejection", context.draft);
     return rejectedResult(command, context.baseline, context.draft, validation.errors);
   }
+
   const nextDraft = cloneSceneDocument(context.draft) as MutableSceneDocument;
   const baseline = cloneSceneDocument(context.baseline) as MutableSceneDocument;
   let changedTargets: string[] = [];
+
   switch (command.type) {
     case "scene.look.update": {
       nextDraft.scene = {
@@ -145,13 +180,13 @@ export function applyRuntimeMutationThroughBridge(
       const node = nextDraft.layoutNodes[command.target.id];
       if (node.parentId) {
         const parent = nextDraft.layoutNodes[node.parentId];
-        const childIds = parent.childIds.filter((childId) => childId !== node.id);
+        const childIds = parent.childIds.filter((childId: string) => childId !== node.id);
         childIds.splice(command.payload.toIndex, 0, node.id);
         nextDraft.layoutNodes[node.parentId] = {
           ...parent,
           childIds,
         };
-        childIds.forEach((childId, index) => {
+        childIds.forEach((childId: string, index: number) => {
           const child = nextDraft.layoutNodes[childId];
           nextDraft.layoutNodes[childId] = {
             ...child,
@@ -232,7 +267,7 @@ export function applyRuntimeMutationThroughBridge(
             }
           }
           nextDraft.slots[command.target.id] = JSON.parse(JSON.stringify(baselineSlot));
-          baselineSlot.widgetIds.forEach((widgetId) => {
+          baselineSlot.widgetIds.forEach((widgetId: string) => {
             const baselineWidget = baseline.widgets[widgetId];
             if (baselineWidget) {
               nextDraft.widgets[widgetId] = JSON.parse(JSON.stringify(baselineWidget));
@@ -264,6 +299,7 @@ export function applyRuntimeMutationThroughBridge(
     default:
       break;
   }
+
   const preview = cloneSceneDocument(nextDraft);
   const phase = command.scope === "preview-only" ? "preview" : "draft-update";
   adapter?.record(command, phase, preview);

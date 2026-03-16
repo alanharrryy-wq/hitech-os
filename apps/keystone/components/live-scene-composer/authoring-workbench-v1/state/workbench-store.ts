@@ -4,7 +4,7 @@ import { isDraftDirty } from "../model/scene-graph";
 import { applyWorkbenchMutation } from "../mutations/mutation-client";
 import { createRuntimeObservationFromDocument } from "../runtime/runtime-observation";
 import { createSelectionState, setSelection } from "../selection/selection-model";
-import type { RuntimeMutationCommand } from "../../../runtime-mutation-bridge/authoring-workbench-v1/contract";
+import type { RuntimeMutationCommand } from "../mutations/mutation-client";
 
 export type WorkbenchAction =
   | { readonly type: "selection.set"; readonly target: SelectionTarget | null; readonly sourceSurface: "canvas" | "structure" | "inspector" | "system" }

@@ -1,5 +1,4 @@
-import type { SceneDocument } from "../../live-scene-composer/authoring-workbench-v1/authoring-workbench-contracts";
-import type { RuntimeMutationCommand, RuntimeMutationValidationResult, RuntimeMutationValidationError } from "./contract";
+import type { RuntimeMutationCommand, RuntimeMutationValidationError, RuntimeMutationValidationResult, SceneDocument } from "./contract";
 
 const SAFE_MODE_COMMANDS = new Set<string>([
   "scene.look.update",
@@ -62,6 +61,7 @@ export function validateRuntimeMutationCommand(command: RuntimeMutationCommand, 
       push(errors, "locked-target", "Widget target is locked.");
     }
   }
+
   switch (command.type) {
     case "scene.look.update": {
       if (command.target.kind !== "scene") {
@@ -154,5 +154,6 @@ export function validateRuntimeMutationCommand(command: RuntimeMutationCommand, 
     default:
       break;
   }
+
   return { accepted: errors.length === 0, errors };
 }
