@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from contextlib import closing
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Mapping
@@ -88,7 +89,7 @@ class SQLiteLearningStore:
         return sqlite3.connect(str(self.db_path))
 
     def _ensure_schema(self) -> None:
-        with self._connect() as conn:
+        with closing(self._connect()) as conn:
             conn.execute(
                 """
                 CREATE TABLE IF NOT EXISTS learning_snapshots (
@@ -102,7 +103,7 @@ class SQLiteLearningStore:
 
     def load_snapshot(self, repo_root: str) -> dict[str, Any]:
         repo_root = str(Path(repo_root).resolve())
-        with self._connect() as conn:
+        with closing(self._connect()) as conn:
             row = conn.execute(
                 "SELECT payload_json FROM learning_snapshots WHERE repo_root = ?",
                 (repo_root,),
@@ -115,7 +116,7 @@ class SQLiteLearningStore:
         repo_root = str(Path(repo_root).resolve())
         snapshot = LearningSnapshot.from_mapping({**dict(payload), "repo_root": repo_root})
         encoded = json.dumps(snapshot.to_dict(), ensure_ascii=False, sort_keys=True)
-        with self._connect() as conn:
+        with closing(self._connect()) as conn:
             conn.execute(
                 """
                 INSERT INTO learning_snapshots (repo_root, payload_json, updated_at)

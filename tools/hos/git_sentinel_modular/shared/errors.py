@@ -18,7 +18,7 @@ class SentinelError(Exception):
 
     def __post_init__(self) -> None:
         self.context = _coerce_context(self.context)
-        super().__init__(self.render())
+        Exception.__init__(self, self.render())
 
     def render(self) -> str:
         parts = [f"[{self.code}]", self.message]

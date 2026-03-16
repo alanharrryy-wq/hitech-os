@@ -1,8 +1,8 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from PySide6.QtCore import QEasingCurve, QEvent, QObject, QRectF, QVariantAnimation
-from PySide6.QtGui import QColor, QPainter, QPainterPath, QPen
-from PySide6.QtWidgets import QFrame, QPushButton, QWidget
+from PySide6.QtGui import QColor, QLinearGradient, QPainter, QPainterPath, QPen
+from PySide6.QtWidgets import QFrame, QLabel, QPushButton, QVBoxLayout, QWidget
 
 from .skins import SkinTokens, rgba
 
@@ -12,7 +12,7 @@ class PanelCard(QFrame):
         super().__init__(parent)
         self._tokens = tokens
         self._accent = accent
-        self.setObjectName("panelCard")
+        self.setObjectName('panelCard')
         self.setFrameShape(QFrame.NoFrame)
         self.setContentsMargins(8, 8, 8, 8)
 
@@ -20,45 +20,53 @@ class PanelCard(QFrame):
         self._tokens = tokens
         self.update()
 
+    def set_accent(self, accent: bool) -> None:
+        self._accent = accent
+        self.update()
+
     def paintEvent(self, event) -> None:  # type: ignore[override]
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
         rect = self.rect().adjusted(1, 1, -1, -1)
-        radius = 14.0
+        radius = 16.0
 
         path = QPainterPath()
         path.addRoundedRect(QRectF(rect), radius, radius)
 
-        painter.fillPath(path, QColor(self._tokens.panel))
+        gradient = QLinearGradient(rect.topLeft(), rect.bottomLeft())
+        gradient.setColorAt(0.0, QColor(self._tokens.panel_alt if self._accent else self._tokens.panel))
+        gradient.setColorAt(1.0, QColor(self._tokens.panel))
+        painter.fillPath(path, gradient)
 
-        outer_pen = QPen(QColor(self._tokens.border), 1)
-        painter.setPen(outer_pen)
+        painter.setPen(QPen(QColor(self._tokens.border), 1))
         painter.drawPath(path)
 
         inner_rect = rect.adjusted(1, 1, -1, -1)
         inner_path = QPainterPath()
         inner_path.addRoundedRect(QRectF(inner_rect), radius - 1, radius - 1)
-        painter.setPen(QPen(rgba(self._tokens.bevel_light, 120), 1))
+        painter.setPen(QPen(rgba(self._tokens.bevel_light, 100), 1))
         painter.drawPath(inner_path)
-
-        shadow_rect = rect.adjusted(1, 2, -1, -1)
-        shadow_path = QPainterPath()
-        shadow_path.addRoundedRect(QRectF(shadow_rect), radius - 1, radius - 1)
-        painter.setPen(QPen(rgba(self._tokens.bevel_shadow, 90), 1))
-        painter.drawPath(shadow_path)
 
         if self._accent:
             accent_pen = QPen(QColor(self._tokens.accent), 1)
             painter.setPen(accent_pen)
-            painter.drawLine(rect.left() + 12, rect.top() + 2, rect.right() - 12, rect.top() + 2)
+            painter.drawLine(rect.left() + 14, rect.top() + 2, rect.right() - 14, rect.top() + 2)
 
         super().paintEvent(event)
 
 
 class AccentButton(QPushButton):
-    def __init__(self, text: str, tokens: SkinTokens, parent: QWidget | None = None) -> None:
+    def __init__(
+        self,
+        text: str,
+        tokens: SkinTokens,
+        parent: QWidget | None = None,
+        *,
+        strong: bool = False,
+    ) -> None:
         super().__init__(text, parent)
         self._tokens = tokens
+        self._strong = strong
         self._mix = 0.0
         self._anim = QVariantAnimation(self)
         self._anim.setDuration(140)
@@ -75,8 +83,17 @@ class AccentButton(QPushButton):
         self._refresh_style()
 
     def _refresh_style(self) -> None:
-        hover = QColor(self._tokens.accent_hover)
-        base = QColor(self._tokens.panel_alt)
+        if self._strong:
+            base = QColor(self._tokens.accent)
+            hover = QColor(self._tokens.accent_hover)
+            border = self._tokens.accent_hover
+            text = '#101318'
+        else:
+            base = QColor(self._tokens.panel_alt)
+            hover = QColor(self._tokens.accent_hover)
+            border = self._tokens.border
+            text = self._tokens.text
+
         mix = QColor(
             round(base.red() + (hover.red() - base.red()) * self._mix),
             round(base.green() + (hover.green() - base.green()) * self._mix),
@@ -86,18 +103,20 @@ class AccentButton(QPushButton):
             f"""
             QPushButton {{
                 background: {mix.name()};
-                color: {self._tokens.text};
-                border: 1px solid {self._tokens.border};
+                color: {text};
+                border: 1px solid {border};
                 border-top: 1px solid {self._tokens.bevel_light};
                 border-bottom: 1px solid {self._tokens.bevel_shadow};
                 border-radius: 10px;
                 padding: 8px 12px;
+                font-weight: 600;
             }}
             QPushButton:hover {{
                 border: 1px solid {self._tokens.accent};
             }}
             QPushButton:pressed {{
                 background: {self._tokens.panel};
+                color: {self._tokens.text};
                 border: 1px solid {self._tokens.accent_hover};
             }}
             """
@@ -106,7 +125,7 @@ class AccentButton(QPushButton):
     def enterEvent(self, event) -> None:  # type: ignore[override]
         self._anim.stop()
         self._anim.setStartValue(self._mix)
-        self._anim.setEndValue(0.22)
+        self._anim.setEndValue(0.28 if self._strong else 0.18)
         self._anim.start()
         super().enterEvent(event)
 
@@ -116,6 +135,34 @@ class AccentButton(QPushButton):
         self._anim.setEndValue(0.0)
         self._anim.start()
         super().leaveEvent(event)
+
+
+class MetricTile(PanelCard):
+    def __init__(self, tokens: SkinTokens, title: str, parent: QWidget | None = None) -> None:
+        super().__init__(tokens, accent=False, parent=parent)
+        self._tokens = tokens
+        self._title = QLabel(title, self)
+        self._title.setObjectName('metricTitleLabel')
+        self._value = QLabel('0', self)
+        self._value.setObjectName('accentValueLabel')
+        self._caption = QLabel('', self)
+        self._caption.setObjectName('metricCaptionLabel')
+
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(14, 12, 14, 12)
+        layout.setSpacing(6)
+        layout.addWidget(self._title)
+        layout.addWidget(self._value)
+        layout.addWidget(self._caption)
+        layout.addStretch(1)
+
+    def set_skin(self, tokens: SkinTokens) -> None:
+        self._tokens = tokens
+        super().set_skin(tokens)
+
+    def set_data(self, value: str, caption: str = '') -> None:
+        self._value.setText(value)
+        self._caption.setText(caption)
 
 
 class HoverRaiseFilter(QObject):

@@ -1,1 +1,8 @@
-"""Package scaffold generated for modular Git Sentinel."""
+from __future__ import annotations
+
+from .orchestrator import OrchestratorConfig, SentinelOrchestrator
+
+__all__ = [
+    "OrchestratorConfig",
+    "SentinelOrchestrator",
+]
