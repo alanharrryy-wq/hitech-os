@@ -6,6 +6,7 @@ export interface GlassHeaderProps extends Omit<HTMLAttributes<HTMLDivElement>, "
   readonly kicker?: ReactNode;
   readonly description?: ReactNode;
   readonly actions?: ReactNode;
+  readonly className?: string;
 }
 
 export function GlassHeader({

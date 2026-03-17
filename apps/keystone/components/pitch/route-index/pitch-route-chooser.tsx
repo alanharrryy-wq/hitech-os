@@ -18,7 +18,7 @@ export function PitchRouteChooser({ className }: PitchRouteChooserProps) {
       eyebrow="Pitch Index"
       title="Premium Route Chooser"
       description="Selecciona una pantalla del deck con contexto de intención e impacto para inversión."
-      {...(className ? { className } : {})}
+      className={className ?? ""}
       stickyHeading={false}
       actions={
         <div className="flex flex-wrap items-center gap-2">

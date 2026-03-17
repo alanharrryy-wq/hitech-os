@@ -64,10 +64,21 @@ def sha256_file(path: Path) -> str:
 
 
 def detect_repo_root() -> Path:
+    """
+    Detect the repository root by checking for .git and tools/hos markers.
+    
+    Searches upward from the script's location first (portable), then falls back
+    to DEFAULT_REPO (environment-specific hardcoded path) as a last resort.
+    Avoids dependency on current working directory.
+    """
     candidates = []
-    cwd = Path.cwd()
-    candidates.append(cwd)
-    candidates.extend(cwd.parents)
+    
+    # Start from script location and search upward (portable)
+    script_location = Path(__file__).resolve().parent
+    candidates.append(script_location)
+    candidates.extend(script_location.parents)
+    
+    # Fallback to DEFAULT_REPO (environment-local, for development shortcut)
     candidates.append(DEFAULT_REPO)
 
     for cand in candidates:
@@ -75,7 +86,8 @@ def detect_repo_root() -> Path:
             return cand.resolve()
 
     raise FileNotFoundError(
-        f"No pude detectar el repo root. Busqué desde `{cwd}` hacia arriba y también `{DEFAULT_REPO}`."
+        f"Could not detect repo root. Searched upward from {script_location} and fallback {DEFAULT_REPO}. "
+        f"No .git and tools/hos markers found."
     )
 
 

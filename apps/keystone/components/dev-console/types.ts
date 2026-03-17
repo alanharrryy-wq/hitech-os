@@ -1,3 +1,4 @@
+import * as React from "react";
 import type { ReactNode } from "react";
 import type { LayerFlags, LayerId, ResolvedLayerFlags } from "@hitech/ui-kit";
 import type { SceneRecord } from "../../lib/scene-studio";

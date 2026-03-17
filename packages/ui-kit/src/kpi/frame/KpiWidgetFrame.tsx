@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import type { CSSProperties, HTMLAttributes, PropsWithChildren } from "react";
 import { cn } from "../../lib/cn.js";
 import { useReducedMotion } from "../motion/useReducedMotion.js";
@@ -29,6 +30,8 @@ export interface KpiWidgetFrameProps
   readonly hero?: boolean | undefined;
   readonly heroSlot?: "primary" | "support" | undefined;
   readonly style?: CSSProperties | undefined;
+  readonly className?: string;
+  readonly children?: React.ReactNode;
 }
 
 const MIN_HEIGHT: Readonly<Record<SizeVariant, number>> = {

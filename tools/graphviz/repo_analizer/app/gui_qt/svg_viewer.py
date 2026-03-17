@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from pathlib import Path
 
@@ -76,15 +76,14 @@ class SvgPreviewWindow(QMainWindow):
         self._current_path: str | None = None
         self._renderer = QSvgRenderer(self)
         self._scene = QGraphicsScene(self)
-        self._svg_item = QGraphicsSvgItem()
-        self._svg_item.setSharedRenderer(self._renderer)
-        self._scene.addItem(self._svg_item)
+        self._svg_item: QGraphicsSvgItem | None = None
 
         self.setWindowTitle('SVG Workspace')
         self.resize(1260, 900)
 
         self._build_ui()
         self._build_toolbar()
+        self._rebuild_svg_item()
         self.set_skin(tokens)
 
     def _build_ui(self) -> None:
@@ -115,7 +114,7 @@ class SvgPreviewWindow(QMainWindow):
         title_box.addWidget(self.meta_label)
         header_layout.addLayout(title_box, 1)
 
-        self.pill_label = QLabel('Pan • Zoom • Fit', header)
+        self.pill_label = QLabel('Pan â€¢ Zoom â€¢ Fit', header)
         self.pill_label.setObjectName('panelPill')
         header_layout.addWidget(self.pill_label)
         card_layout.addWidget(header)
@@ -154,6 +153,13 @@ class SvgPreviewWindow(QMainWindow):
         zoom_out_action.triggered.connect(self.view.zoom_out)
         toolbar.addAction(zoom_out_action)
 
+    def _rebuild_svg_item(self) -> None:
+        self._scene.clear()
+        self._svg_item = QGraphicsSvgItem()
+        self._svg_item.setSharedRenderer(self._renderer)
+        self._svg_item.setPos(0, 0)
+        self._scene.addItem(self._svg_item)
+
     def set_skin(self, tokens: SkinTokens) -> None:
         self._tokens = tokens
         self._card.set_skin(tokens)
@@ -182,20 +188,27 @@ class SvgPreviewWindow(QMainWindow):
             return
 
         self._current_path = str(file_path)
-        bounds = self._scene.itemsBoundingRect()
-        if bounds.isNull():
+        self._rebuild_svg_item()
+
+        view_box = self._renderer.viewBoxF()
+        if view_box.isValid() and not view_box.isNull():
+            self._scene.setSceneRect(view_box)
+        else:
             default_size = self._renderer.defaultSize()
             if default_size.isValid():
                 self._scene.setSceneRect(0, 0, default_size.width(), default_size.height())
-        else:
-            self._scene.setSceneRect(bounds)
+            else:
+                self._scene.setSceneRect(self._scene.itemsBoundingRect())
+
+        self._scene.update()
+        self.view.viewport().update()
 
         shown_title = title or file_path.name
         self.title_label.setText(shown_title)
         default_size = self._renderer.defaultSize()
-        dimensions = f'{default_size.width()}×{default_size.height()}' if default_size.isValid() else 'dimensión desconocida'
-        self.meta_label.setText(f'{file_path.name} • {dimensions}')
-        self.setWindowTitle(f'SVG Workspace • {shown_title}')
+        dimensions = f'{default_size.width()}Ã—{default_size.height()}' if default_size.isValid() else 'dimensiÃ³n desconocida'
+        self.meta_label.setText(f'{file_path.name} â€¢ {dimensions}')
+        self.setWindowTitle(f'SVG Workspace â€¢ {shown_title}')
         self.fit_to_view()
 
     def fit_to_view(self) -> None:
@@ -203,3 +216,4 @@ class SvgPreviewWindow(QMainWindow):
 
     def actual_size(self) -> None:
         self.view.set_actual_size()
+

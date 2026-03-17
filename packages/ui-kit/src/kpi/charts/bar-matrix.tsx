@@ -42,7 +42,7 @@ export const BULLET_CHART_USAGE_SNIPPET = `
 />
 `.trim();
 
-export function BulletChart({ actual, target, min = 0, max = 100, state, ...props }: BulletChartProps) {
+export function BulletChart({ actual, target, min = 0, max = 100, state, className, ...props }: BulletChartProps) {
   const resolvedState = state ?? "ready";
   const theme = useKpiTheme({
     styleId: props.styleId,
@@ -67,6 +67,7 @@ export function BulletChart({ actual, target, min = 0, max = 100, state, ...prop
       summary={props.summary ?? `Actual ${actual.toFixed(1)} against target ${target.toFixed(1)}.`}
       loadingMessage="Loading bullet chart"
       {...props}
+      className={className ?? ""}
     >
       <svg viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`} role="img" aria-hidden="true" className={chartClassName()}>
         <rect
@@ -132,7 +133,7 @@ export const COMPACT_BARS_USAGE_SNIPPET = `
 />
 `.trim();
 
-export function CompactBars({ items, state, ...props }: CompactBarsProps) {
+export function CompactBars({ items, state, className, ...props }: CompactBarsProps) {
   const resolvedState = state ?? (items.length > 0 ? "ready" : "empty");
   const theme = useKpiTheme({
     styleId: props.styleId,
@@ -155,6 +156,7 @@ export function CompactBars({ items, state, ...props }: CompactBarsProps) {
       emptyMessage="No bar groups available."
       loadingMessage="Loading compact bars"
       {...props}
+      className={className ?? ""}
     >
       <svg viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`} role="img" aria-hidden="true" className={chartClassName()}>
         {items.map((item, index) => {
@@ -229,7 +231,7 @@ export const HEATMAP_GRID_USAGE_SNIPPET = `
 />
 `.trim();
 
-export function HeatmapGrid({ rowLabels, colLabels, cells, state, ...props }: HeatmapGridProps) {
+export function HeatmapGrid({ rowLabels, colLabels, cells, state, className, ...props }: HeatmapGridProps) {
   const resolvedState = state ?? (cells.length > 0 ? "ready" : "empty");
   const theme = useKpiTheme({
     styleId: props.styleId,
@@ -264,6 +266,7 @@ export function HeatmapGrid({ rowLabels, colLabels, cells, state, ...props }: He
       emptyMessage="No matrix entries to visualize."
       loadingMessage="Loading heatmap grid"
       {...props}
+      className={className ?? ""}
     >
       <svg
         viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}

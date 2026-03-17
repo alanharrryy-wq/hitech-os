@@ -3,6 +3,7 @@ import { cn } from "../../lib/cn.js";
 
 export interface SpinnerProps extends HTMLAttributes<HTMLSpanElement> {
   readonly label?: string;
+  readonly className?: string;
 }
 
 export function Spinner({ className, label = "Loading", ...props }: SpinnerProps) {

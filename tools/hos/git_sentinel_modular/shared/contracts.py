@@ -2,10 +2,59 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field, is_dataclass
 from datetime import datetime, timezone
-from typing import Any, Iterable, Mapping
+from pathlib import Path
+from typing import Any, Iterable, Mapping, Protocol
 
 
 CONTRACT_VERSION = "1.0.0"
+
+
+@dataclass(slots=True)
+class ScanConfig:
+    """
+    Boundary-safe scan configuration.
+    
+    Defines the data contract for scan execution. This lives in shared/contracts
+    so that legacy and other code can depend on it without importing from core.
+    
+    The core.orchestrator.OrchestratorConfig is an implementation detail;
+    legacy code uses ScanConfig from shared instead.
+    """
+    repo_root: str
+    learning_db_path: str
+    report_json_path: str = ""
+    report_md_path: str = ""
+    alert_output_path: str = ""
+    run_alerting: bool = True
+
+    def validate(self) -> ScanConfig:
+        """Validate and resolve paths."""
+        self.repo_root = str(Path(self.repo_root).resolve())
+        self.learning_db_path = str(Path(self.learning_db_path).resolve())
+        if self.report_json_path:
+            self.report_json_path = str(Path(self.report_json_path).resolve())
+        if self.report_md_path:
+            self.report_md_path = str(Path(self.report_md_path).resolve())
+        if self.alert_output_path:
+            self.alert_output_path = str(Path(self.alert_output_path).resolve())
+        return self
+
+
+class ScanAdapter(Protocol):
+    """
+    Boundary-safe scan adapter contract.
+    
+    Defines the interface for scan execution. Implementations (e.g., core.orchestrator)
+    satisfy this protocol. Legacy code depends on this protocol, not on concrete classes.
+    """
+    
+    def __init__(self, config: ScanConfig) -> None:
+        """Initialize with scan configuration."""
+        ...
+    
+    def run_once(self) -> dict[str, Any]:
+        """Execute a single scan and return results."""
+        ...
 VALID_SEVERITIES = {"info", "low", "medium", "high", "critical"}
 VALID_ARTIFACT_CATEGORIES = {
     "build_output",

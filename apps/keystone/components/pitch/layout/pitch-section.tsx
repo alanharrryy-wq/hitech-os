@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { useEffect, useRef, type PropsWithChildren } from "react";
 import { Badge, cn } from "@hitech/ui-kit";
 import { usePitchSectionContext } from "../shell/pitch-shell-context";
@@ -14,6 +15,7 @@ export interface PitchSectionProps extends PropsWithChildren {
   readonly contentClassName?: string | undefined;
   readonly stickyHeading?: boolean | undefined;
   readonly actions?: React.ReactNode | undefined;
+  readonly children?: React.ReactNode;
 }
 
 export function PitchSection({

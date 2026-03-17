@@ -5,6 +5,7 @@ export interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, "t
   readonly title: ReactNode;
   readonly description?: ReactNode;
   readonly action?: ReactNode;
+  readonly className?: string;
 }
 
 export function EmptyState({ className, title, description, action, ...props }: EmptyStateProps) {

@@ -37,7 +37,7 @@ export const DONUT_BREAKDOWN_USAGE_SNIPPET = `
 />
 `.trim();
 
-export function DonutBreakdown({ segments, state, ...props }: DonutBreakdownProps) {
+export function DonutBreakdown({ segments, state, className, ...props }: DonutBreakdownProps) {
   const limited = useMemo(() => segments.slice(0, 4), [segments]);
   const resolvedState = state ?? (limited.length > 0 ? "ready" : "empty");
   const theme = useKpiTheme({
@@ -67,6 +67,7 @@ export function DonutBreakdown({ segments, state, ...props }: DonutBreakdownProp
       emptyMessage="No segment values to render."
       loadingMessage="Loading donut breakdown"
       {...props}
+      className={className ?? ""}
     >
       <svg viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`} role="img" aria-hidden="true" className={chartClassName()}>
         <circle cx={centerX} cy={centerY} r={radius} fill="none" stroke={theme.chart.grid} strokeWidth={18} />
@@ -146,7 +147,7 @@ export const RING_GAUGE_USAGE_SNIPPET = `
 />
 `.trim();
 
-export function RingGauge({ value, min = 0, max = 100, threshold, state, ...props }: GaugeProps) {
+export function RingGauge({ value, min = 0, max = 100, threshold, state, className, ...props }: GaugeProps) {
   const resolvedState = state ?? "ready";
   const theme = useKpiTheme({
     styleId: props.styleId,
@@ -170,6 +171,7 @@ export function RingGauge({ value, min = 0, max = 100, threshold, state, ...prop
       summary={props.summary ?? `Gauge value ${value.toFixed(1)} between ${min} and ${max}.`}
       loadingMessage="Loading ring gauge"
       {...props}
+      className={className ?? ""}
     >
       <svg viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`} role="img" aria-hidden="true" className={chartClassName()}>
         <circle cx="180" cy="90" r="58" fill="none" stroke={theme.chart.grid} strokeWidth="14" />
@@ -220,7 +222,7 @@ export const RADIAL_GAUGE_USAGE_SNIPPET = `
 />
 `.trim();
 
-export function RadialGauge({ value, min = 0, max = 100, threshold, state, ...props }: GaugeProps) {
+export function RadialGauge({ value, min = 0, max = 100, threshold, state, className, ...props }: GaugeProps) {
   const resolvedState = state ?? "ready";
   const theme = useKpiTheme({
     styleId: props.styleId,
@@ -251,6 +253,7 @@ export function RadialGauge({ value, min = 0, max = 100, threshold, state, ...pr
       summary={props.summary ?? `Radial gauge value ${value.toFixed(0)} of ${max}.`}
       loadingMessage="Loading radial gauge"
       {...props}
+      className={className ?? ""}
     >
       <svg viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`} role="img" aria-hidden="true" className={chartClassName()}>
         <path d={baseArc} fill="none" stroke={theme.chart.grid} strokeWidth={16} strokeLinecap="round" />

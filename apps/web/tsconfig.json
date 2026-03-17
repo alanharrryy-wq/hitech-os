@@ -3,11 +3,16 @@
   "compilerOptions": {
     "module": "ESNext",
     "moduleResolution": "Bundler",
+
     "jsx": "react-jsx",
+    "jsxImportSource": "react",
+
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
+
     "noEmit": true,
     "noPropertyAccessFromIndexSignature": false,
     "skipLibCheck": true,
+
     "types": ["vite/client"],
     "baseUrl": "."
   },

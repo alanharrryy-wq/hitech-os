@@ -14,6 +14,7 @@ export interface KpiHeaderProps extends HTMLAttributes<HTMLDivElement> {
   readonly surface?: KpiSurfaceId | undefined;
   readonly intent?: SemanticIntent | undefined;
   readonly perfProfile?: PerfProfile | undefined;
+  readonly className?: string;
 }
 
 export function KpiHeader({

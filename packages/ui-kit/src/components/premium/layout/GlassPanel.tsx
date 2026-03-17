@@ -1,3 +1,4 @@
+import * as React from "react";
 import type { HTMLAttributes, PropsWithChildren, ReactNode } from "react";
 import { cn } from "../../../lib/cn.js";
 
@@ -10,6 +11,8 @@ export interface GlassPanelProps
   readonly actions?: ReactNode;
   readonly footer?: ReactNode;
   readonly materialClassName?: string;
+  readonly className?: string;
+  readonly children?: React.ReactNode;
 }
 
 export function GlassPanel({

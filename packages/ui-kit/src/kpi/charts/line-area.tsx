@@ -49,7 +49,7 @@ export const LINE_CHART_USAGE_SNIPPET = `
 />
 `.trim();
 
-export function LineChart({ series, state, ...props }: MultiSeriesChartProps) {
+export function LineChart({ series, state, className, ...props }: MultiSeriesChartProps) {
   const resolvedState = state ?? (series.length > 0 ? "ready" : "empty");
   const theme = useKpiTheme({
     styleId: props.styleId,
@@ -78,6 +78,7 @@ export function LineChart({ series, state, ...props }: MultiSeriesChartProps) {
       emptyMessage="No series loaded for this line chart."
       loadingMessage="Loading multi-series line chart"
       {...props}
+      className={className ?? ""}
     >
       <svg viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`} role="img" aria-hidden="true" className={chartClassName()}>
         <defs>
@@ -146,7 +147,7 @@ export const AREA_CHART_USAGE_SNIPPET = `
 />
 `.trim();
 
-export function AreaChart({ series, state, ...props }: MultiSeriesChartProps) {
+export function AreaChart({ series, state, className, ...props }: MultiSeriesChartProps) {
   const resolvedState = state ?? (series.length > 0 ? "ready" : "empty");
   const theme = useKpiTheme({
     styleId: props.styleId,
@@ -169,6 +170,7 @@ export function AreaChart({ series, state, ...props }: MultiSeriesChartProps) {
       emptyMessage="No area series loaded."
       loadingMessage="Loading area chart"
       {...props}
+      className={className ?? ""}
     >
       <svg viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`} role="img" aria-hidden="true" className={chartClassName()}>
         <defs>

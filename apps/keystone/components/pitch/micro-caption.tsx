@@ -1,8 +1,10 @@
+import * as React from "react";
 import type { PropsWithChildren } from "react";
 import { cn } from "@hitech/ui-kit";
 
 export interface MicroCaptionProps extends PropsWithChildren {
   readonly className?: string;
+  readonly children?: React.ReactNode;
 }
 
 export function MicroCaption({ className, children }: MicroCaptionProps) {

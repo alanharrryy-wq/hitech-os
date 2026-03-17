@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import {
   createContext,
   useCallback,
@@ -8,7 +9,9 @@ import {
   useMemo,
   useRef,
   useState,
+  isValidElement,
   type HTMLAttributes,
+  type MutableRefObject,
   type ReactNode
 } from "react";
 import { cn } from "../../../lib/cn.js";
@@ -17,8 +20,8 @@ import { FOCUS_RING_CLASS } from "../../../lib/focus-ring.js";
 interface PopoverContextValue {
   readonly open: boolean;
   readonly setOpen: (open: boolean) => void;
-  readonly triggerRef: React.RefObject<HTMLElement | null>;
-  readonly contentRef: React.RefObject<HTMLDivElement | null>;
+  readonly triggerRef: MutableRefObject<HTMLElement | null>;
+  readonly contentRef: MutableRefObject<HTMLDivElement | null>;
 }
 
 const PopoverContext = createContext<PopoverContextValue | null>(null);
@@ -29,6 +32,19 @@ function usePopoverContext(): PopoverContextValue {
     throw new Error("Popover components must be used within <PopoverRoot>");
   }
   return context;
+}
+
+function assignElementRef<T>(ref: React.Ref<T> | undefined, value: T | null): void {
+  if (!ref) {
+    return;
+  }
+
+  if (typeof ref === "function") {
+    ref(value);
+    return;
+  }
+
+  (ref as MutableRefObject<T | null>).current = value;
 }
 
 export interface PopoverRootProps {
@@ -103,28 +119,30 @@ export function PopoverRoot({ defaultOpen = false, open, onOpenChange, children 
 export interface PopoverTriggerProps extends HTMLAttributes<HTMLElement> {
   readonly asChild?: boolean;
   readonly children: ReactNode;
+  readonly className?: string;
 }
 
 interface PopoverTriggerElementProps {
   readonly ref?: React.Ref<HTMLElement>;
   readonly onClick?: (event: React.MouseEvent<HTMLElement>) => void;
+  readonly className?: string;
 }
 
 export function PopoverTrigger({ asChild = false, children, className, ...props }: PopoverTriggerProps) {
   const { open, setOpen, triggerRef } = usePopoverContext();
 
-  if (asChild && children && typeof children === "object") {
-    const element = children as React.ReactElement<PopoverTriggerElementProps>;
+  if (asChild && isValidElement<PopoverTriggerElementProps>(children)) {
+    const element = children;
+    const originalRef = (element as unknown as { ref?: React.Ref<HTMLElement> }).ref;
+
     return (
       <element.type
         {...element.props}
         {...props}
+        className={cn(element.props.className, className)}
         ref={(node: HTMLElement | null) => {
           triggerRef.current = node;
-          const { ref } = element as unknown as { ref?: React.RefCallback<HTMLElement> };
-          if (typeof ref === "function") {
-            ref(node);
-          }
+          assignElementRef(originalRef, node);
         }}
         aria-expanded={open}
         aria-haspopup="dialog"
@@ -141,7 +159,7 @@ export function PopoverTrigger({ asChild = false, children, className, ...props 
   return (
     <button
       type="button"
-      ref={(node) => {
+      ref={(node: HTMLButtonElement | null) => {
         triggerRef.current = node;
       }}
       className={cn("ui-neon-button", FOCUS_RING_CLASS, className)}
@@ -157,6 +175,9 @@ export function PopoverTrigger({ asChild = false, children, className, ...props 
 
 export interface PopoverContentProps extends HTMLAttributes<HTMLDivElement> {
   readonly sideOffset?: number;
+  readonly className?: string;
+  readonly children?: React.ReactNode;
+  readonly style?: React.CSSProperties;
 }
 
 export function PopoverContent({ className, sideOffset = 8, children, style, ...props }: PopoverContentProps) {
@@ -183,7 +204,9 @@ export function PopoverContent({ className, sideOffset = 8, children, style, ...
 
   return (
     <div
-      ref={contentRef}
+      ref={(node: HTMLDivElement | null) => {
+        contentRef.current = node;
+      }}
       role="dialog"
       className={cn("ui-neon-popover ui-premium-float-004", className)}
       style={{

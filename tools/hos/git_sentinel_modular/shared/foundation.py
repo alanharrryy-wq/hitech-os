@@ -41,7 +41,7 @@ class SentinelEnvironment:
         return cls(
             python_executable=sys.executable,
             platform_name=platform.platform(),
-            working_directory=str(Path.cwd().resolve()),
+            working_directory="",  # Empty string, not cwd - avoids cwd-dependent behavior
         )
 
 
@@ -80,10 +80,32 @@ class SentinelPaths:
 
 
 def detect_repo_root(explicit: str | Path | None = None) -> Path:
-    candidate = Path(explicit).resolve() if explicit else Path.cwd().resolve()
+    """
+    Detect the repository root by checking for .git and tools/hos markers.
+    
+    If explicit is provided, uses it directly. Otherwise, searches upward
+    from the module's location (not from cwd), ensuring deterministic behavior
+    regardless of launch directory.
+    
+    Args:
+        explicit: Explicit path to consider as starting point. If None, uses module location.
+    
+    Returns:
+        Path to repo root
+        
+    Raises:
+        ConfigurationError: If no repo root found by searching markers
+    """
+    if explicit:
+        candidate = Path(explicit).resolve()
+    else:
+        # Use module location as deterministic starting point, not cwd
+        candidate = Path(__file__).resolve().parent
+    
     for root in [candidate, *candidate.parents]:
         if (root / ".git").exists() and (root / "tools" / "hos").exists():
             return root.resolve()
+    
     raise ConfigurationError(
         "Could not detect repo root.",
         start_path=str(candidate),

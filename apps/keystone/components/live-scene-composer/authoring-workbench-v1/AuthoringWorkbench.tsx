@@ -34,8 +34,12 @@ export interface AuthoringWorkbenchProps {
 }
 
 export function AuthoringWorkbench(props: AuthoringWorkbenchProps): any {
+  const providerProps = props.initialDocument
+    ? { initialDocument: props.initialDocument }
+    : {};
+
   return (
-    <LiveSceneComposerProvider initialDocument={props.initialDocument}>
+    <LiveSceneComposerProvider {...providerProps}>
       <AuthoringWorkbenchShell />
     </LiveSceneComposerProvider>
   );

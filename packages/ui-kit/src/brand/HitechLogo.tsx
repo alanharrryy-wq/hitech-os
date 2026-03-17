@@ -6,6 +6,7 @@ export interface HitechLogoProps extends HTMLAttributes<HTMLSpanElement> {
   readonly showWordmark?: boolean;
   readonly imageClassName?: string;
   readonly wordmark?: string;
+  readonly className?: string;
 }
 
 export function HitechLogo({

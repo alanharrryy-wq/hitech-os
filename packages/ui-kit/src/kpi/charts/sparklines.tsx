@@ -34,7 +34,7 @@ export const SPARKLINE_LINE_USAGE_SNIPPET = `
 />
 `.trim();
 
-export function SparklineLine({ data, state, ...props }: SparklineProps) {
+export function SparklineLine({ data, state, className, ...props }: SparklineProps) {
   const resolvedState = state ?? (data.length > 0 ? "ready" : "empty");
   const theme = useKpiTheme({
     styleId: props.styleId,
@@ -74,6 +74,7 @@ export function SparklineLine({ data, state, ...props }: SparklineProps) {
       emptyMessage="No trend samples for this sparkline."
       loadingMessage="Loading sparkline"
       {...props}
+      className={className ?? ""}
     >
       <svg viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`} role="img" aria-hidden="true" className={chartClassName()}>
         <defs>
@@ -132,7 +133,7 @@ export const SPARKLINE_AREA_USAGE_SNIPPET = `
 />
 `.trim();
 
-export function SparklineArea({ data, state, ...props }: SparklineProps) {
+export function SparklineArea({ data, state, className, ...props }: SparklineProps) {
   const resolvedState = state ?? (data.length > 0 ? "ready" : "empty");
   const theme = useKpiTheme({
     styleId: props.styleId,
@@ -187,6 +188,7 @@ export function SparklineArea({ data, state, ...props }: SparklineProps) {
       emptyMessage="No area trend samples for this widget."
       loadingMessage="Loading area sparkline"
       {...props}
+      className={className ?? ""}
     >
       <svg viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`} role="img" aria-hidden="true" className={chartClassName()}>
         <defs>

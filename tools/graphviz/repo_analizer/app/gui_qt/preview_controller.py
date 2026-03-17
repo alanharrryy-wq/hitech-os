@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import subprocess
 import sys
@@ -262,7 +262,7 @@ class PreviewController:
         from .svg_viewer import SvgPreviewWindow
 
         if self.main._svg_window is None:
-            self.main._svg_window = SvgPreviewWindow()
+            self.main._svg_window = SvgPreviewWindow(self.main._skin_tokens)
 
         self.main._svg_window.set_skin(self.main._skin_tokens)
         self.main._svg_window.load_svg(
@@ -290,3 +290,4 @@ class PreviewController:
                 subprocess.Popen(['xdg-open', path])
         except Exception as e:
             QMessageBox.warning(self.main, 'Repo Analyzer', f'No se pudo abrir con el sistema:\n{e}')
+

@@ -1,0 +1,33 @@
+{
+  "blocked_suffixes": [
+    ".tmp",
+    ".bak",
+    ".pyc",
+    ".pyo"
+  ],
+  "blocked_path_parts": [
+    "_local",
+    ".git",
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache"
+  ],
+  "critical_prefixes": [
+    "legacy/",
+    "shared/",
+    "configs/",
+    "tools/",
+    "core/"
+  ],
+  "max_total_touched_for_easy_cutover": 5,
+  "max_total_touched_before_attention": 15,
+  "fail_on_removed_legacy": true,
+  "require_python_parse_for_changed_py": true,
+  "promotion_status_blockers": [
+    "blocked"
+  ],
+  "promotion_status_attention": [
+    "needs_review"
+  ],
+  "cutover_mode": "manual_only"
+}

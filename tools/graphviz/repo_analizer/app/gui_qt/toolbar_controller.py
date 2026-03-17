@@ -11,6 +11,7 @@ from .widgets import AccentButton
 if TYPE_CHECKING:
     from .main_window import RepoAnalyzerMainWindow
     from .skins import SkinTokens
+    from .ui_contribution_registry import ToolbarActionContribution
 
 
 class ToolbarController:
@@ -19,6 +20,7 @@ class ToolbarController:
     def __init__(self, main_window: RepoAnalyzerMainWindow) -> None:
         self.main = main_window
         self.buttons: list[AccentButton] = []
+        self.plugin_actions: list[QAction] = []
 
     def build_toolbar(self) -> None:
         """Build workspace and command toolbars."""
@@ -157,6 +159,36 @@ class ToolbarController:
         self.main.default_layout_action = QAction('Ember Layout', self.main)
         self.main.default_layout_action.triggered.connect(self.main.reset_layout)
         toolbar.addAction(self.main.default_layout_action)
+
+    def add_plugin_action(self, contribution: ToolbarActionContribution) -> QAction:
+        """Add a plugin-provided action to a supported toolbar."""
+        toolbar = self._resolve_toolbar(contribution.target)
+        action = QAction(contribution.text, self.main)
+        action.setObjectName(
+            f"plugin_action_{self._sanitize_action_name(contribution.contribution_id)}"
+        )
+        if contribution.shortcut:
+            action.setShortcut(QKeySequence(contribution.shortcut))
+        if contribution.tooltip:
+            action.setToolTip(contribution.tooltip)
+            action.setStatusTip(contribution.tooltip)
+        action.triggered.connect(
+            lambda checked=False, callback=contribution.callback: callback()
+        )
+        toolbar.addAction(action)
+        self.plugin_actions.append(action)
+        return action
+
+    def _resolve_toolbar(self, target: str) -> QToolBar:
+        """Resolve toolbar aliases to concrete toolbar instances."""
+        if str(target).strip().lower() == 'workspace':
+            return self.main.workspace_toolbar
+        return self.main.command_toolbar
+
+    def _sanitize_action_name(self, value: str) -> str:
+        """Make a safe objectName fragment for plugin toolbar actions."""
+        sanitized = ''.join(ch if ch.isalnum() else '_' for ch in value.strip().lower())
+        return sanitized.strip('_') or 'plugin'
 
     def apply_skin_to_buttons(self, skin_tokens: SkinTokens) -> None:
         """Apply skin to all toolbar buttons."""

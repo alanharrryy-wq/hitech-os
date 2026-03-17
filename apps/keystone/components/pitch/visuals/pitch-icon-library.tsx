@@ -1,8 +1,10 @@
+import * as React from "react";
 import { cn } from "@hitech/ui-kit";
 
 export interface PitchIconProps {
   readonly className?: string;
   readonly strokeWidth?: number;
+  readonly children?: React.ReactNode;
 }
 
 function BaseIcon({ className, strokeWidth = 1.8, children }: PitchIconProps & { readonly children: React.ReactNode }) {

@@ -3,6 +3,7 @@ import re
 import sys
 import time
 import json
+import html
 import hashlib
 from datetime import datetime, timezone
 from pathlib import Path
@@ -18,6 +19,7 @@ from graphviz import Digraph
 # - Keeps previous generated outputs on disk
 # - Uses stable output folder names so new folders do not break old links
 # - Optional auto-refresh watch mode
+# - Dark-theme friendly SVG output with transparent background
 # ============================================================
 
 # ---------------------------
@@ -59,6 +61,39 @@ MAX_EDGES_PER_FOLDER = 400
 MAX_LABEL_LENGTH = 64
 INTERNAL_ONLY = True
 STATE_VERSION = 2
+
+# IMPORTANT:
+# Bump this whenever you change visual output so unchanged folders re-render.
+RENDER_STYLE_VERSION = "premium-dark-cyan-v2"
+
+# ---------------------------
+# THEME
+# ---------------------------
+SVG_BACKGROUND = "transparent"
+
+GRAPH_TITLE_COLOR = "#E6F6FF"
+GRAPH_TEXT_COLOR = "#CFE9F6"
+GRAPH_EDGE_COLOR = "#8BE9FD"
+GRAPH_EDGE_GLOW = "#7DD3FC"
+
+FILE_NODE_FILL = "#0F2233"
+FILE_NODE_FILL_2 = "#123149"
+FILE_NODE_BORDER = "#67E8F9"
+FILE_NODE_TEXT = "#ECFEFF"
+
+EXTERNAL_NODE_FILL = "#1B2338"
+EXTERNAL_NODE_FILL_2 = "#23304C"
+EXTERNAL_NODE_BORDER = "#93C5FD"
+EXTERNAL_NODE_TEXT = "#DBEAFE"
+
+INDEX_BG = "#06111D"
+INDEX_PANEL = "#0C1B2A"
+INDEX_PANEL_2 = "#12263B"
+INDEX_TEXT = "#E6F6FF"
+INDEX_MUTED = "#92AFC4"
+INDEX_LINK = "#7DD3FC"
+INDEX_BORDER = "#18334A"
+INDEX_ACCENT = "#67E8F9"
 
 # ---------------------------
 # REGEX
@@ -208,12 +243,42 @@ def node_id(label: str) -> str:
 
 def add_node(graph: Digraph, label: str, kind: str):
     nid = node_id(label)
+    safe_label = truncate_label(label)
+
     if kind == "file":
-        graph.node(nid, label=truncate_label(label), shape="box", style="rounded")
+        graph.node(
+            nid,
+            label=safe_label,
+            shape="box",
+            style="rounded,filled",
+            fillcolor=f"{FILE_NODE_FILL}:{FILE_NODE_FILL_2}",
+            gradientangle="90",
+            color=FILE_NODE_BORDER,
+            fontcolor=FILE_NODE_TEXT,
+            penwidth="1.45",
+            margin="0.18,0.11",
+        )
     elif kind == "external":
-        graph.node(nid, label=truncate_label(label), shape="ellipse", style="dashed")
+        graph.node(
+            nid,
+            label=safe_label,
+            shape="ellipse",
+            style="filled,dashed",
+            fillcolor=f"{EXTERNAL_NODE_FILL}:{EXTERNAL_NODE_FILL_2}",
+            gradientangle="90",
+            color=EXTERNAL_NODE_BORDER,
+            fontcolor=EXTERNAL_NODE_TEXT,
+            penwidth="1.25",
+            margin="0.14,0.09",
+        )
     else:
-        graph.node(nid, label=truncate_label(label))
+        graph.node(
+            nid,
+            label=safe_label,
+            color=GRAPH_TEXT_COLOR,
+            fontcolor=GRAPH_TEXT_COLOR,
+        )
+
     return nid
 
 
@@ -345,12 +410,14 @@ def compute_folder_digest(payload: dict) -> str:
     edges = sorted(payload["edges"])
     externals = sorted(payload["externals"])
     fingerprints = payload["fingerprints"]
+
     digest_seed = json.dumps(
         {
             "files": files,
             "edges": edges[:MAX_EDGES_PER_FOLDER],
             "externals": externals,
             "fingerprints": fingerprints,
+            "render_style_version": RENDER_STYLE_VERSION,
         },
         sort_keys=True,
         ensure_ascii=False,
@@ -367,10 +434,51 @@ def render_folder_graph(display_index: int, rel_folder: str, folder_id: str, pay
     out_dir.mkdir(parents=True, exist_ok=True)
 
     graph = Digraph(name=f"folder_{folder_id}")
-    graph.attr(rankdir="LR", splines="true", overlap="false")
-    graph.attr("node", fontname="Arial", fontsize="10")
-    graph.attr("edge", fontname="Arial", fontsize="9")
-    graph.attr(label=rel_folder, labelloc="t", fontsize="18")
+    graph.attr(
+        rankdir="LR",
+        splines="true",
+        overlap="false",
+        bgcolor=SVG_BACKGROUND,
+        pad="0.34",
+        margin="0.12",
+        nodesep="0.42",
+        ranksep="0.82",
+        outputorder="edgesfirst",
+    )
+
+    graph.attr(
+        "graph",
+        color=GRAPH_TEXT_COLOR,
+        fontname="Segoe UI",
+        fontsize="18",
+        fontcolor=GRAPH_TITLE_COLOR,
+    )
+
+    graph.attr(
+        "node",
+        fontname="Segoe UI",
+        fontsize="10",
+        color=FILE_NODE_BORDER,
+        fontcolor=FILE_NODE_TEXT,
+    )
+
+    graph.attr(
+        "edge",
+        fontname="Segoe UI",
+        fontsize="9",
+        color=GRAPH_EDGE_COLOR,
+        fontcolor=GRAPH_EDGE_GLOW,
+        penwidth="1.35",
+        arrowsize="0.78",
+    )
+
+    graph.attr(
+        label=rel_folder,
+        labelloc="t",
+        fontsize="18",
+        fontname="Segoe UI Semibold",
+        fontcolor=GRAPH_TITLE_COLOR,
+    )
 
     for rel_file in files:
         add_node(graph, rel_file, "file")
@@ -399,8 +507,14 @@ def render_folder_graph(display_index: int, rel_folder: str, folder_id: str, pay
         "external_count": len(externals),
         "internal_only": INTERNAL_ONLY,
         "rendered_at": now_iso(),
+        "render_style_version": RENDER_STYLE_VERSION,
     }
-    (out_dir / "summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
+
+    (out_dir / "summary.json").write_text(
+        json.dumps(summary, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
     (out_dir / "README.txt").write_text(
         "\n".join(
             [
@@ -412,6 +526,7 @@ def render_folder_graph(display_index: int, rel_folder: str, folder_id: str, pay
                 f"Edges rendered: {len(limited_edges)}",
                 f"External imports tracked: {len(externals)}",
                 f"Internal only mode: {INTERNAL_ONLY}",
+                f"Render style version: {RENDER_STYLE_VERSION}",
                 f"Rendered at: {now_iso()}",
                 "",
                 "Files in this folder graph:",
@@ -428,22 +543,112 @@ def write_master_index(current_rows: list[dict], manifest: dict):
     OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
 
     lines = [
-        "<html><head><meta charset='utf-8'><title>HITECH Graphviz Index</title></head><body>",
+        "<!doctype html>",
+        "<html>",
+        "<head>",
+        "<meta charset='utf-8'>",
+        "<meta name='viewport' content='width=device-width, initial-scale=1'>",
+        "<title>HITECH Graphviz Index</title>",
+        "<style>",
+        f"""
+        :root {{
+            --bg: {INDEX_BG};
+            --panel: {INDEX_PANEL};
+            --panel2: {INDEX_PANEL_2};
+            --text: {INDEX_TEXT};
+            --muted: {INDEX_MUTED};
+            --link: {INDEX_LINK};
+            --border: {INDEX_BORDER};
+            --accent: {INDEX_ACCENT};
+        }}
+        * {{ box-sizing: border-box; }}
+        body {{
+            margin: 0;
+            padding: 24px;
+            background:
+                radial-gradient(circle at top left, rgba(103, 232, 249, 0.12), transparent 28%),
+                radial-gradient(circle at top right, rgba(125, 211, 252, 0.10), transparent 24%),
+                var(--bg);
+            color: var(--text);
+            font-family: Segoe UI, Arial, sans-serif;
+        }}
+        .wrap {{
+            max-width: 1240px;
+            margin: 0 auto;
+        }}
+        .hero {{
+            background: linear-gradient(180deg, var(--panel), var(--panel2));
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 22px 24px;
+            margin-bottom: 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.20);
+        }}
+        h1, h2 {{
+            margin: 0 0 12px 0;
+        }}
+        h1 {{
+            color: var(--accent);
+            letter-spacing: 0.2px;
+        }}
+        p {{
+            margin: 0;
+            color: var(--muted);
+        }}
+        .list {{
+            background: linear-gradient(180deg, rgba(12, 27, 42, 0.96), rgba(18, 38, 59, 0.92));
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 18px 22px;
+            margin-bottom: 18px;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
+        }}
+        ol, ul {{
+            margin: 0;
+            padding-left: 22px;
+        }}
+        li {{
+            margin: 10px 0;
+            line-height: 1.55;
+        }}
+        a {{
+            color: var(--link);
+            text-decoration: none;
+        }}
+        a:hover {{
+            text-decoration: underline;
+        }}
+        .muted {{
+            color: var(--muted);
+        }}
+        code {{
+            color: var(--accent);
+        }}
+        """,
+        "</style>",
+        "</head>",
+        "<body>",
+        "<div class='wrap'>",
+        "<div class='hero'>",
         "<h1>HITECH Graphviz Index</h1>",
-        "<p>Current scan plus preserved historical outputs. Existing graph folders are never deleted by this script.</p>",
+        f"<p>Current scan plus preserved historical outputs. Existing graph folders are never deleted by this script. Theme: <code>{html.escape(RENDER_STYLE_VERSION)}</code></p>",
+        "</div>",
+        "<div class='list'>",
         "<h2>Current folders</h2>",
         "<ol>",
     ]
 
     for row in current_rows:
+        folder = html.escape(row["folder"])
+        dir_name = html.escape(row["dir_name"])
         lines.append(
-            f"<li><b>{row['display_index']:03d}</b> | {row['folder']} | "
-            f"<a href='./{row['dir_name']}/graph.svg'>graph.svg</a> | "
-            f"<a href='./{row['dir_name']}/graph.dot'>graph.dot</a> | "
-            f"<a href='./{row['dir_name']}/summary.json'>summary.json</a></li>"
+            f"<li><b>{row['display_index']:03d}</b> | {folder} | "
+            f"<a href='./{dir_name}/graph.svg'>graph.svg</a> | "
+            f"<a href='./{dir_name}/graph.dot'>graph.dot</a> | "
+            f"<a href='./{dir_name}/summary.json'>summary.json</a></li>"
         )
 
-    lines.extend(["</ol>"])
+    lines.extend(["</ol>", "</div>"])
 
     legacy_rows = []
     current_set = {row["folder"] for row in current_rows}
@@ -462,17 +667,20 @@ def write_master_index(current_rows: list[dict], manifest: dict):
         )
 
     if legacy_rows:
-        lines.extend(["<h2>Historical folders kept on disk</h2>", "<ul>"])
+        lines.extend(["<div class='list'>", "<h2>Historical folders kept on disk</h2>", "<ul>"])
         for row in legacy_rows:
+            folder = html.escape(row["folder"])
+            dir_name = html.escape(row["dir_name"])
+            last_seen_at = html.escape(row["last_seen_at"])
             lines.append(
-                f"<li>{row['folder']} | last seen: {row['last_seen_at']} | "
-                f"<a href='./{row['dir_name']}/graph.svg'>graph.svg</a> | "
-                f"<a href='./{row['dir_name']}/graph.dot'>graph.dot</a> | "
-                f"<a href='./{row['dir_name']}/summary.json'>summary.json</a></li>"
+                f"<li>{folder} | <span class='muted'>last seen: {last_seen_at}</span> | "
+                f"<a href='./{dir_name}/graph.svg'>graph.svg</a> | "
+                f"<a href='./{dir_name}/graph.dot'>graph.dot</a> | "
+                f"<a href='./{dir_name}/summary.json'>summary.json</a></li>"
             )
-        lines.append("</ul>")
+        lines.extend(["</ul>", "</div>"])
 
-    lines.extend(["</body></html>"])
+    lines.extend(["</div>", "</body>", "</html>"])
     (OUTPUT_ROOT / "index.html").write_text("\n".join(lines), encoding="utf-8")
 
 # ---------------------------
@@ -494,6 +702,7 @@ def run_once() -> int:
     safe_print(f"Output: {OUTPUT_ROOT}")
     safe_print(f"Mode:   {'WATCH' if WATCH_MODE else 'ONE-SHOT'}")
     safe_print(f"Scope:  {'INTERNAL ONLY' if INTERNAL_ONLY else 'INTERNAL + EXTERNAL'}")
+    safe_print(f"Theme:  {RENDER_STYLE_VERSION}")
     safe_print("Policy: update only new/changed folders; keep previous outputs")
     safe_print("")
 

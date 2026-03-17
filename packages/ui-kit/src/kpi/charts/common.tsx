@@ -41,6 +41,7 @@ export interface KpiChartSurfaceProps extends KpiChartPropsBase {
   readonly emptyMessage?: string;
   readonly loadingMessage?: string;
   readonly children?: ReactNode;
+  readonly className?: string;
 }
 
 export function KpiChartSurface({
@@ -59,7 +60,7 @@ export function KpiChartSurface({
   state = "ready",
   hero,
   heroSlot,
-  className,
+  className = "",
   ariaLabel,
   summary,
   footerNote,
@@ -104,7 +105,7 @@ export function KpiChartSurface({
       hero={hero}
       heroSlot={heroSlot}
       state={state}
-      className={className}
+      className={className ?? ""}
       aria-label={resolvedLabel}
       aria-describedby={describedById}
     >

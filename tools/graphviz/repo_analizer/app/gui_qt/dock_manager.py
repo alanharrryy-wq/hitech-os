@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QDockWidget,
@@ -20,6 +21,7 @@ from .widgets import AccentButton, PanelCard
 if TYPE_CHECKING:
     from .main_window import RepoAnalyzerMainWindow
     from .skins import SkinTokens
+    from .ui_contribution_registry import DockContribution
 
 
 class DockManager:
@@ -131,6 +133,60 @@ class DockManager:
         bookmarks_layout.addWidget(bm_btn_row)
         self.main.bookmarks_dock.setWidget(bookmarks_card)
         self.main._panel_cards.append(bookmarks_card)
+
+    def add_plugin_dock(
+        self,
+        contribution: DockContribution,
+        skin_tokens: SkinTokens | None = None,
+    ) -> QDockWidget:
+        """Create and attach a plugin-provided dock widget."""
+        area = self._resolve_dock_area(contribution.area)
+        dock = self._make_dock(contribution.title, area)
+        dock.setObjectName(
+            f"plugin_dock_{self._sanitize_object_name(contribution.contribution_id)}"
+        )
+
+        features = QDockWidget.NoDockWidgetFeatures
+        if contribution.movable:
+            features |= QDockWidget.DockWidgetMovable
+        if contribution.floatable:
+            features |= QDockWidget.DockWidgetFloatable
+        if contribution.closable:
+            features |= QDockWidget.DockWidgetClosable
+        dock.setFeatures(features)
+
+        if contribution.allowed_areas is not None:
+            dock.setAllowedAreas(contribution.allowed_areas)
+
+        widget = contribution.widget_factory(dock)
+        dock.setWidget(widget)
+
+        if skin_tokens is not None and dock.widget() is not None:
+            apply_shadow(dock.widget(), skin_tokens.shadow, blur=24.0, y_offset=4.0)
+            fade_in(dock.widget())
+
+        if not contribution.visible:
+            dock.hide()
+
+        return dock
+
+    def _resolve_dock_area(self, area) -> Qt.DockWidgetArea:
+        """Resolve plugin dock area aliases into Qt dock areas."""
+        if isinstance(area, Qt.DockWidgetArea):
+            return area
+
+        mapping = {
+            'left': Qt.LeftDockWidgetArea,
+            'right': Qt.RightDockWidgetArea,
+            'top': Qt.TopDockWidgetArea,
+            'bottom': Qt.BottomDockWidgetArea,
+        }
+        return mapping.get(str(area).strip().lower(), Qt.RightDockWidgetArea)
+
+    def _sanitize_object_name(self, value: str) -> str:
+        """Make a safe objectName fragment for plugin docks."""
+        sanitized = ''.join(ch if ch.isalnum() else '_' for ch in value.strip().lower())
+        return sanitized.strip('_') or 'plugin'
 
     def _make_dock(self, title: str, area) -> QDockWidget:
         """Create a dock widget."""

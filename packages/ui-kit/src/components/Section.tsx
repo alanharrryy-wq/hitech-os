@@ -1,3 +1,4 @@
+import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import type { HTMLAttributes, PropsWithChildren, ReactNode } from "react";
 import { cn } from "../lib/cn.js";
@@ -21,6 +22,8 @@ export interface SectionProps
   readonly as?: "section" | "article" | "div";
   readonly heading?: ReactNode;
   readonly description?: ReactNode;
+  readonly className?: string;
+  readonly children?: React.ReactNode;
 }
 
 export function Section({

@@ -5,13 +5,14 @@ import sys
 from pathlib import Path
 
 from PySide6.QtCore import QSettings, Qt, QThread
-from PySide6.QtGui import QFont
+from PySide6.QtGui import QAction, QFont, QKeySequence
 from PySide6.QtWidgets import (
     QApplication,
     QFileDialog,
     QHBoxLayout,
     QLabel,
     QMainWindow,
+    QMenu,
     QMessageBox,
     QProgressBar,
     QSplitter,
@@ -20,6 +21,12 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+
+try:
+    from shiboken6 import isValid as qt_object_is_valid
+except ImportError:  # pragma: no cover - PySide6 ships shiboken6
+    def qt_object_is_valid(obj):
+        return obj is not None
 
 from app.backend import AnalyzerBackend
 from app.config import APP_TITLE
@@ -47,6 +54,7 @@ from .skins import ORANGE_EMBER, SkinTokens, apply_skin, get_skin, list_skins
 from .svg_viewer import SvgPreviewWindow
 from .toolbar_controller import ToolbarController
 from .tree_controller import TreeController
+from .ui_contribution_registry import UIContributionRegistry
 from .widgets import MetricTile, PanelCard
 from .workers import IndexWorker
 
@@ -105,6 +113,9 @@ class RepoAnalyzerMainWindow(QMainWindow):
         self._restored_preview_once = False
         self._pending_folder_filter = '(todo)'
         self._pending_ext_filter = '(todas)'
+        self._plugin_ui_applied = False
+        self._menu_path_cache: dict[str, QMenu] = {}
+        self._plugin_menu_actions: list[QAction] = []
         
         # Initialize controllers
         self.toolbar_controller = ToolbarController(self)
@@ -145,6 +156,7 @@ class RepoAnalyzerMainWindow(QMainWindow):
         self.dock_manager.build_docks(self._skin_tokens)
         self._build_status_bar()
         self._build_menu()
+        self._apply_plugin_ui_contributions()
 
     def _finalize_setup(self) -> None:
         """Finalize setup and restore state."""
@@ -171,11 +183,13 @@ class RepoAnalyzerMainWindow(QMainWindow):
         self.event_bus = EventBus()
         self.command_dispatcher = CommandDispatcher()
         self.service_container = ServiceContainer()
+        self.ui_contribution_registry = UIContributionRegistry()
         
         # Register services in container
         self.service_container.register('event_bus', self.event_bus)
         self.service_container.register('command_dispatcher', self.command_dispatcher)
         self.service_container.register('backend', self.backend)
+        self.service_container.register('ui_contribution_registry', self.ui_contribution_registry)
         self.service_container.register('settings', self.settings)
         self.service_container.register('main_window', self)
         
@@ -241,6 +255,155 @@ class RepoAnalyzerMainWindow(QMainWindow):
             'remove_bookmark',
             RemoveBookmarkCommand(self),
         )
+
+    def _apply_plugin_ui_contributions(self) -> None:
+        """Apply declarative UI contributions registered by plugins."""
+        if self._plugin_ui_applied:
+            return
+
+        registry = self.service_container.get('ui_contribution_registry')
+        if registry is None:
+            return
+
+        for contribution in registry.get_dock_contributions():
+            self.dock_manager.add_plugin_dock(contribution, self._skin_tokens)
+
+        for contribution in registry.get_toolbar_contributions():
+            self.toolbar_controller.add_plugin_action(contribution)
+
+        self._plugin_menu_actions.clear()
+        for contribution in registry.get_menu_contributions():
+            menu = self._find_or_create_menu_path(contribution.menu_path)
+            if menu is None or not self._is_menu_alive(menu):
+                raise RuntimeError(
+                    f"Could not resolve live menu path for plugin contribution '{contribution.contribution_id}'"
+                )
+
+            action = QAction(contribution.text, menu)
+            action.setObjectName(
+                f"plugin_menu_action_{self._sanitize_plugin_ui_name(contribution.contribution_id)}"
+            )
+            if contribution.shortcut:
+                action.setShortcut(QKeySequence(contribution.shortcut))
+            if contribution.tooltip:
+                action.setToolTip(contribution.tooltip)
+                action.setStatusTip(contribution.tooltip)
+            action.triggered.connect(
+                lambda checked=False, callback=contribution.callback: callback()
+            )
+            menu.addAction(action)
+            self._plugin_menu_actions.append(action)
+
+        self.menuBar().update()
+        self._plugin_ui_applied = True
+
+    def _reset_menu_runtime_state(self) -> None:
+        """Reset runtime caches used to build and extend menus safely."""
+        self._menu_path_cache.clear()
+        self._plugin_menu_actions.clear()
+
+    def _menu_cache_key(self, menu_path: str) -> str:
+        parts = [part.strip() for part in menu_path.split('/') if part.strip()]
+        return '/'.join(self._normalize_menu_text(part) for part in parts)
+
+    def _remember_menu_path(self, menu_path: str, menu: QMenu) -> QMenu:
+        """Store a strong reference to a menu path when the Qt object is alive."""
+        key = self._menu_cache_key(menu_path)
+        if key and self._is_menu_alive(menu):
+            self._menu_path_cache[key] = menu
+        return menu
+
+    def _get_cached_menu(self, menu_path: str) -> QMenu | None:
+        """Return a cached menu only if its underlying Qt object is still valid."""
+        key = self._menu_cache_key(menu_path)
+        if not key:
+            return None
+
+        menu = self._menu_path_cache.get(key)
+        if self._is_menu_alive(menu):
+            return menu
+
+        self._menu_path_cache.pop(key, None)
+        return None
+
+    def _is_menu_alive(self, menu: QMenu | None) -> bool:
+        """Check whether a QMenu wrapper still points to a live Qt object."""
+        if menu is None:
+            return False
+
+        try:
+            return bool(qt_object_is_valid(menu))
+        except RuntimeError:
+            return False
+
+    def _find_or_create_menu_path(self, menu_path: str):
+        """Find or create a nested menu path such as 'Tools/My Plugin'."""
+        parts = [part.strip() for part in menu_path.split('/') if part.strip()]
+        if not parts:
+            raise ValueError('menu_path cannot be empty')
+
+        current_menu = None
+        current_path: list[str] = []
+
+        for index, part in enumerate(parts):
+            current_path.append(part)
+            path_str = '/'.join(current_path)
+
+            cached_menu = self._get_cached_menu(path_str)
+            if cached_menu is not None:
+                current_menu = cached_menu
+                continue
+
+            if index == 0:
+                current_menu = self._find_or_create_top_level_menu(part)
+            else:
+                if current_menu is None or not self._is_menu_alive(current_menu):
+                    raise RuntimeError(f"Parent menu became invalid while resolving '{menu_path}'")
+                current_menu = self._find_or_create_sub_menu(current_menu, part)
+
+            self._remember_menu_path(path_str, current_menu)
+
+        if current_menu is None or not self._is_menu_alive(current_menu):
+            raise RuntimeError(f"Menu path '{menu_path}' resolved to an invalid QMenu")
+
+        return current_menu
+
+    def _find_or_create_top_level_menu(self, title: str):
+        """Find an existing top-level menu or create it."""
+        normalized = self._normalize_menu_text(title)
+        for action in self.menuBar().actions():
+            menu = action.menu()
+            if not self._is_menu_alive(menu):
+                continue
+            if self._normalize_menu_text(menu.title()) == normalized:
+                return menu
+
+        menu = QMenu(title, self.menuBar())
+        self.menuBar().addMenu(menu)
+        return menu
+
+    def _find_or_create_sub_menu(self, parent_menu, title: str):
+        """Find an existing submenu or create it under the given menu."""
+        normalized = self._normalize_menu_text(title)
+        for action in parent_menu.actions():
+            menu = action.menu()
+            if not self._is_menu_alive(menu):
+                continue
+            if self._normalize_menu_text(menu.title()) == normalized:
+                return menu
+
+        menu = QMenu(title, parent_menu)
+        parent_menu.addMenu(menu)
+        return menu
+
+    def _normalize_menu_text(self, value: str) -> str:
+        """Normalize menu titles for comparison."""
+        return value.replace('&', '').strip().lower()
+
+    def _sanitize_plugin_ui_name(self, value: str) -> str:
+        """Create a safe object name fragment for plugin UI actions."""
+        sanitized = ''.join(ch if ch.isalnum() else '_' for ch in value.strip().lower())
+        return sanitized.strip('_') or 'plugin'
 
     def _build_central(self) -> None:
         """Build central widget with preview and inspector panels."""
@@ -323,9 +486,11 @@ class RepoAnalyzerMainWindow(QMainWindow):
     def _build_menu(self) -> None:
         """Build application menu bar."""
         menu = self.menuBar()
+        self._reset_menu_runtime_state()
 
         # File menu
         file_menu = menu.addMenu('File')
+        self._remember_menu_path('File', file_menu)
         
         open_repo_action = file_menu.addAction('Open Repo...')
         open_repo_action.triggered.connect(self.choose_repo)
@@ -340,6 +505,7 @@ class RepoAnalyzerMainWindow(QMainWindow):
 
         # Workspace menu
         workspace_menu = menu.addMenu('Workspace')
+        self._remember_menu_path('Workspace', workspace_menu)
         
         save_workspace = workspace_menu.addAction('Save Current Layout')
         save_workspace.triggered.connect(self.layout_manager.save_current_layout_snapshot)
@@ -355,7 +521,9 @@ class RepoAnalyzerMainWindow(QMainWindow):
 
         # View menu
         view_menu = menu.addMenu('View')
+        self._remember_menu_path('View', view_menu)
         skins_menu = view_menu.addMenu('Skins')
+        self._remember_menu_path('View/Skins', skins_menu)
         for skin in list_skins():
             action = skins_menu.addAction(skin.display_name)
             action.triggered.connect(lambda checked=False, name=skin.name: self.apply_selected_skin(name))
@@ -369,6 +537,7 @@ class RepoAnalyzerMainWindow(QMainWindow):
 
         # Navigate menu
         navigate_menu = menu.addMenu('Navigate')
+        self._remember_menu_path('Navigate', navigate_menu)
         navigate_menu.addAction(self.back_action)
         navigate_menu.addAction(self.forward_action)
 

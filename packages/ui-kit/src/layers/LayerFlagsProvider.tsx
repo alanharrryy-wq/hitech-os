@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import type { PropsWithChildren } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -26,6 +27,7 @@ import { extractEnabledLayerIds, LayerFlagsContext } from "./useLayerFlags.js";
 
 export interface LayerFlagsProviderProps extends PropsWithChildren {
   readonly initialResolved: ResolvedLayerFlags;
+  readonly children?: React.ReactNode;
 }
 
 function getResolvedSignature(resolved: ResolvedLayerFlags): string {

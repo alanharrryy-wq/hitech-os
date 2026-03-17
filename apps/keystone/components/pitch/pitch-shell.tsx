@@ -1,3 +1,4 @@
+import * as React from "react";
 import type { PropsWithChildren, ReactNode } from "react";
 import { cn } from "@hitech/ui-kit";
 import { buildPitchShellFrameModel } from "./view-model/pitch-shell-model";
@@ -13,6 +14,7 @@ export interface PitchShellProps extends PropsWithChildren {
   readonly model?: CorePitchShellProps["model"];
   readonly showScrollAffordance?: boolean;
   readonly enableKeyboardNav?: boolean;
+  readonly children?: React.ReactNode;
 }
 
 export function PitchShell({

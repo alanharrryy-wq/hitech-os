@@ -1,3 +1,4 @@
+import * as React from "react";
 import type { CSSProperties, HTMLAttributes } from "react";
 import type { LayerProfile } from "../layers/layerIds.js";
 import { cn } from "../lib/cn.js";
@@ -48,6 +49,8 @@ export interface BrandPresenceLayerProps extends HTMLAttributes<HTMLDivElement> 
   readonly intensity?: BrandPresenceIntensity;
   readonly profile?: LayerProfile;
   readonly repeatPattern?: boolean;
+  readonly className?: string;
+  readonly style?: React.CSSProperties;
 }
 
 export function BrandPresenceLayer({

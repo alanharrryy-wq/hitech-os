@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { useLayerFlags, cn } from "@hitech/ui-kit";
 
 export interface PitchLayerEffectsProps {

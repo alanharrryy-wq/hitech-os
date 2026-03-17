@@ -48,7 +48,7 @@ export const WATERFALL_MINI_USAGE_SNIPPET = `
 />
 `.trim();
 
-export function WaterfallMini({ steps, openingValue = 0, state, ...props }: WaterfallMiniProps) {
+export function WaterfallMini({ steps, openingValue = 0, state, className, ...props }: WaterfallMiniProps) {
   const resolvedState = state ?? (steps.length > 0 ? "ready" : "empty");
   const theme = useKpiTheme({
     styleId: props.styleId,
@@ -80,6 +80,7 @@ export function WaterfallMini({ steps, openingValue = 0, state, ...props }: Wate
       emptyMessage="No waterfall steps available."
       loadingMessage="Loading waterfall chart"
       {...props}
+      className={className ?? ""}
     >
       <svg viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`} role="img" aria-hidden="true" className={chartClassName()}>
         {steps.map((step, index) => {
@@ -141,7 +142,7 @@ export const MINI_TABLE_KPI_USAGE_SNIPPET = `
 />
 `.trim();
 
-export function MiniTableKpi({ rows, state, ...props }: MiniTableKpiProps) {
+export function MiniTableKpi({ rows, state, className, ...props }: MiniTableKpiProps) {
   const resolvedState = state ?? (rows.length > 0 ? "ready" : "empty");
   const theme = useKpiTheme({
     styleId: props.styleId,
@@ -160,6 +161,7 @@ export function MiniTableKpi({ rows, state, ...props }: MiniTableKpiProps) {
       emptyMessage="No ledger rows available."
       loadingMessage="Loading mini ledger table"
       {...props}
+      className={className ?? ""}
     >
       <table className="w-full border-collapse text-sm" role="table" aria-label={`${props.title} ledger`}>
         <thead>
@@ -235,7 +237,7 @@ export const DISTRIBUTION_DOTS_USAGE_SNIPPET = `
 />
 `.trim();
 
-export function DistributionDots({ points, enabled = false, state, ...props }: DistributionDotsProps) {
+export function DistributionDots({ points, enabled = false, state, className, ...props }: DistributionDotsProps) {
   const resolvedState = state ?? (enabled && points.length > 0 ? "ready" : "empty");
   const theme = useKpiTheme({
     styleId: props.styleId,
@@ -254,6 +256,7 @@ export function DistributionDots({ points, enabled = false, state, ...props }: D
         summary={props.summary ?? "Distribution Dots is intentionally gated off by default."}
         emptyMessage="Alien Tech mode is off. Enable explicitly to render this widget."
         {...props}
+        className={className ?? ""}
       />
     );
   }
@@ -278,6 +281,7 @@ export function DistributionDots({ points, enabled = false, state, ...props }: D
       loadingMessage="Loading distribution dots"
       emptyMessage="No distribution samples available."
       {...props}
+      className={className ?? ""}
     >
       <svg viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`} role="img" aria-hidden="true" className={chartClassName()}>
         <line
