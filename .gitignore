@@ -33,9 +33,6 @@ venv/
 !.env.example
 
 # Logs and temp
-*.log
-*.tmp
-*.temp
 *.cache
 .cache/
 logs/
@@ -126,7 +123,6 @@ factory/01 Mirror/
 /PROMPTS_PACK_*.txt
 /STATUS.json
 *.bak
-*.tmp
 # --- /HITECH ROOT CLUTTER (auto) ---
 tools/_local/context_exporter/export_repo_context.py
 
@@ -181,3 +177,67 @@ tools/graphviz/.repo_analyzer_settings.json
 *_backup*/
 *backup*/
 *archived*/
+
+# >>> hitech-os generated cleanup rules >>>
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+
+# Graphviz generated outputs
+tools/graphviz/graphs/
+tools/graphviz/*.svg
+tools/graphviz/*.dot
+
+# Graphviz runtime/cache state
+tools/graphviz/.graphviz_state.json
+tools/graphviz/.graphviz_manifest.json
+
+# Backup folders and generated backup content
+
+# Logs and temp files
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# VS Code local workspace noise
+.vscode/
+# <<< hitech-os generated cleanup rules <<<
+
+# >>> hitech-os surgical cleanup rules >>>
+# Python caches
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+
+# Graphviz generated outputs
+tools/graphviz/graphs/
+tools/graphviz/*.svg
+tools/graphviz/*.dot
+tools/graphviz/.graphviz_state.json
+tools/graphviz/.graphviz_manifest.json
+
+# Known generated backup trees only
+_backup_closeout_*/
+_backup_constitution_*/
+tools/_local/backups/
+tools/live-scene-composer/_local/backups/
+
+# Generated install/log/report caches
+tools/ui_map/_logs/
+
+# Editor/OS noise
+.DS_Store
+Thumbs.db
+.vscode/
+# <<< hitech-os surgical cleanup rules <<<
+
