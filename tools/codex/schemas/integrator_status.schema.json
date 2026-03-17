@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "artifacts": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "ended_at": {
+      "type": "string"
+    },
+    "errors": {
+      "items": {
+        "type": [
+          "object",
+          "string"
+        ]
+      },
+      "type": "array"
+    },
+    "optional_checks": {
+      "items": {
+        "additionalProperties": true,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "BLOCKED",
+              "WARN",
+              "PENDING",
+              "FAIL"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "status"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "noop": {
+      "type": "boolean"
+    },
+    "noop_ack": {
+      "type": "string"
+    },
+    "noop_reason": {
+      "type": "string"
+    },
+    "required_checks": {
+      "items": {
+        "additionalProperties": true,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "BLOCKED",
+              "WARN",
+              "PENDING",
+              "FAIL"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "status"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "run_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema_version": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "started_at": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "PENDING",
+        "PASS",
+        "BLOCKED",
+        "WARN",
+        "FAIL"
+      ],
+      "type": "string"
+    },
+    "warnings": {
+      "items": {
+        "type": [
+          "object",
+          "string"
+        ]
+      },
+      "type": "array"
+    },
+    "worker_id": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "worker_id",
+    "status",
+    "started_at",
+    "ended_at",
+    "required_checks",
+    "optional_checks",
+    "errors",
+    "warnings",
+    "artifacts"
+  ],
+  "anyOf": [
+    {
+      "properties": {
+        "noop": {
+          "const": false
+        }
+      }
+    },
+    {
+      "properties": {
+        "noop": {
+          "const": true
+        },
+        "noop_ack": {
+          "minLength": 1
+        },
+        "noop_reason": {
+          "minLength": 1
+        }
+      },
+      "required": [
+        "noop",
+        "noop_reason",
+        "noop_ack"
+      ]
+    }
+  ],
+  "title": "Worker Bundle Status",
+  "type": "object"
+}

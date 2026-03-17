@@ -1,0 +1,193 @@
+{
+  "version": "1.0.0",
+  "min_ready_per_category": {
+    "automation": 4,
+    "security": 2,
+    "reliability": 3,
+    "performance": 2,
+    "dx": 2
+  },
+  "seed_tasks": [
+    {
+      "id": "LIVE-AUTO-001",
+      "title": "Factory queue observability",
+      "description": "Add deterministic queue metrics and lag dashboards for rework inbox/outbox.",
+      "category": "automation",
+      "source": "seed_config",
+      "owner": "factory",
+      "priority": 92,
+      "estimated_mloc": 2200,
+      "value_score": 86,
+      "active": true,
+      "status": "ready",
+      "expires_at": "2030-01-01T00:00:00+00:00",
+      "worker_affinity": [
+        "D_validation",
+        "B_tooling"
+      ],
+      "allowed_paths": [
+        "apps/**",
+        "packages/**",
+        "tools/codex/dispatch/**",
+        "tools/codex/factory/**",
+        "docs/factory/**"
+      ],
+      "acceptance_checks": [
+        "python tools/codex/dispatch/validator.py queue-wait-outbox --run-id <RUN_ID> --workers A_core --cycle 1 --timeout-seconds 5"
+      ],
+      "metrics": {
+        "impact": 8,
+        "risk_reduction": 9,
+        "frequency": 7,
+        "unblock": 8,
+        "confidence": 8
+      }
+    },
+    {
+      "id": "LIVE-SEC-001",
+      "title": "Dependency security triage automation",
+      "description": "Automate risk grouping and remediation backlog from security scan output.",
+      "category": "security",
+      "source": "seed_config",
+      "owner": "security",
+      "priority": 85,
+      "estimated_mloc": 1800,
+      "value_score": 80,
+      "active": true,
+      "status": "ready",
+      "expires_at": "2030-01-01T00:00:00+00:00",
+      "worker_affinity": [
+        "B_tooling",
+        "D_validation"
+      ],
+      "allowed_paths": [
+        "apps/**",
+        "packages/**",
+        "tools/**",
+        ".github/workflows/**",
+        "docs/security/**"
+      ],
+      "acceptance_checks": [
+        "python -m tools.codex.factory doctor"
+      ],
+      "metrics": {
+        "impact": 8,
+        "risk_reduction": 9,
+        "frequency": 6,
+        "unblock": 6,
+        "confidence": 7
+      }
+    }
+  ],
+  "seed_templates": {
+    "automation": [
+      {
+        "title": "Automation fallback pipeline hardening",
+        "description": "Improve deterministic orchestration and reporting for multicodex runs.",
+        "priority": 78,
+        "estimated_mloc": 1600,
+        "value_score": 76,
+        "worker_affinity": [
+          "A_core",
+          "B_tooling",
+          "D_validation"
+        ],
+        "allowed_paths": [
+          "apps/**",
+          "packages/**",
+          "tools/codex/**",
+          "docs/factory/**"
+        ],
+        "acceptance_checks": [
+          "python -m tools.codex.factory contracts-check"
+        ]
+      }
+    ],
+    "security": [
+      {
+        "title": "Security check automation fallback",
+        "description": "Add deterministic security checks to pipeline with reproducible outputs.",
+        "priority": 75,
+        "estimated_mloc": 1500,
+        "value_score": 74,
+        "worker_affinity": [
+          "B_tooling",
+          "D_validation"
+        ],
+        "allowed_paths": [
+          "apps/**",
+          "packages/**",
+          "tools/**",
+          "docs/security/**"
+        ],
+        "acceptance_checks": [
+          "python -m tools.codex.factory doctor"
+        ]
+      }
+    ],
+    "reliability": [
+      {
+        "title": "Reliability regression harness fallback",
+        "description": "Create deterministic regression harness for flaky/failed pipeline paths.",
+        "priority": 80,
+        "estimated_mloc": 1700,
+        "value_score": 78,
+        "worker_affinity": [
+          "D_validation",
+          "C_features"
+        ],
+        "allowed_paths": [
+          "tools/codex/factory/**",
+          "apps/**/tests/**",
+          "packages/**/tests/**"
+        ],
+        "acceptance_checks": [
+          "python -m tools.codex.factory self-test"
+        ]
+      }
+    ],
+    "performance": [
+      {
+        "title": "Performance guardrail fallback",
+        "description": "Automate perf budget validation and actionable reporting.",
+        "priority": 74,
+        "estimated_mloc": 1400,
+        "value_score": 73,
+        "worker_affinity": [
+          "B_tooling",
+          "C_features"
+        ],
+        "allowed_paths": [
+          "tools/**",
+          "apps/**",
+          "packages/**"
+        ],
+        "acceptance_checks": [
+          "python -m tools.codex.factory doctor"
+        ]
+      }
+    ],
+    "dx": [
+      {
+        "title": "Developer experience fallback",
+        "description": "Improve local run ergonomics and deterministic troubleshooting docs.",
+        "priority": 72,
+        "estimated_mloc": 1300,
+        "value_score": 72,
+        "worker_affinity": [
+          "A_core",
+          "B_tooling"
+        ],
+        "allowed_paths": [
+          "apps/**",
+          "packages/**",
+          "tools/**",
+          "docs/factory/**"
+        ],
+        "acceptance_checks": [
+          "python -m tools.codex.factory doctor"
+        ]
+      }
+    ]
+  }
+}

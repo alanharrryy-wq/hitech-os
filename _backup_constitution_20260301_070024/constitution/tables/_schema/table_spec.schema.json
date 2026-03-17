@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hitech-os.local/schemas/table_spec.schema.json",
+  "title": "HITECH OS Constitution Table Spec",
+  "type": "object",
+  "required": [
+    "table_id",
+    "version",
+    "status",
+    "authority_level",
+    "scope",
+    "columns",
+    "rows",
+    "change_policy"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "table_id": {
+      "type": "string",
+      "pattern": "^TBL_[A-Z0-9_]+$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "active",
+        "deprecated"
+      ]
+    },
+    "authority_level": {
+      "type": "string",
+      "enum": [
+        "informational",
+        "warning",
+        "enforced"
+      ]
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "row_defaults": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "columns": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "required"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "string",
+              "enum",
+              "number",
+              "boolean"
+            ]
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "enum_values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "enum"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "enum_values"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "change_policy": {
+      "type": "object",
+      "required": [
+        "requires_pr_approval",
+        "requires_migration_note",
+        "breaking_change_requires_version_bump"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "requires_pr_approval": {
+          "type": "boolean"
+        },
+        "requires_migration_note": {
+          "type": "boolean"
+        },
+        "breaking_change_requires_version_bump": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

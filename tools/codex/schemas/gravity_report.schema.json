@@ -1,0 +1,2030 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tools/codex/schemas/gravity_report.schema.json",
+  "title": "Architectural Gravity Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "schema_family",
+    "compatibility_mode",
+    "minimum_reader_version",
+    "breaking_change",
+    "artifact_type",
+    "artifact_id",
+    "artifact_status",
+    "run_id",
+    "generated_at_utc",
+    "generator",
+    "repository",
+    "snapshot_lineage",
+    "policy",
+    "source_graph",
+    "summary",
+    "nodes",
+    "hotspots",
+    "anomalies",
+    "notes"
+  ],
+  "properties": {
+    "schema_version": {
+      "$ref": "#/$defs/semver"
+    },
+    "schema_family": {
+      "type": "string",
+      "const": "HITECH_GRAPH_ANALYSIS"
+    },
+    "compatibility_mode": {
+      "$ref": "#/$defs/compatibilityMode"
+    },
+    "minimum_reader_version": {
+      "$ref": "#/$defs/semver"
+    },
+    "breaking_change": {
+      "type": "boolean"
+    },
+    "artifact_type": {
+      "type": "string",
+      "const": "GRAVITY_REPORT"
+    },
+    "artifact_id": {
+      "$ref": "#/$defs/id"
+    },
+    "artifact_status": {
+      "$ref": "#/$defs/artifactStatus"
+    },
+    "run_id": {
+      "$ref": "#/$defs/runId"
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "generator": {
+      "$ref": "#/$defs/generator"
+    },
+    "repository": {
+      "$ref": "#/$defs/repository"
+    },
+    "snapshot_lineage": {
+      "$ref": "#/$defs/snapshotLineage"
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_name",
+        "policy_version",
+        "threshold_mode",
+        "thresholds",
+        "protected_node_rule",
+        "scoring_notes"
+      ],
+      "properties": {
+        "policy_name": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "policy_version": {
+          "$ref": "#/$defs/semver"
+        },
+        "threshold_mode": {
+          "type": "string",
+          "enum": [
+            "score_bands",
+            "quantile",
+            "manual_override",
+            "hybrid"
+          ]
+        },
+        "thresholds": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "score_scale",
+            "level_bands",
+            "protected_conditions"
+          ],
+          "properties": {
+            "score_scale": {
+              "type": "string",
+              "enum": [
+                "0_to_1",
+                "0_to_100",
+                "custom"
+              ]
+            },
+            "level_bands": {
+              "type": "array",
+              "minItems": 4,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "gravity_level",
+                  "min_inclusive",
+                  "max_exclusive",
+                  "rationale"
+                ],
+                "properties": {
+                  "gravity_level": {
+                    "$ref": "#/$defs/gravityLevel"
+                  },
+                  "min_inclusive": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "max_exclusive": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "rationale": {
+                    "$ref": "#/$defs/nonEmpty"
+                  }
+                }
+              }
+            },
+            "protected_conditions": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/$defs/reasonCode"
+              }
+            }
+          }
+        },
+        "protected_node_rule": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "scoring_notes": {
+          "$ref": "#/$defs/notes"
+        }
+      }
+    },
+    "source_graph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "graph_scope",
+        "graph_artifact_root",
+        "internal_only",
+        "total_graph_files",
+        "total_nodes_seen",
+        "total_edges_seen"
+      ],
+      "properties": {
+        "graph_scope": {
+          "type": "string",
+          "enum": [
+            "repository",
+            "workspace",
+            "run",
+            "package",
+            "service",
+            "custom"
+          ]
+        },
+        "graph_artifact_root": {
+          "$ref": "#/$defs/path"
+        },
+        "internal_only": {
+          "type": "boolean"
+        },
+        "total_graph_files": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_nodes_seen": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_edges_seen": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "node_count",
+        "edge_count",
+        "scope_count",
+        "protected_count",
+        "high_count",
+        "medium_count",
+        "low_count",
+        "hotspot_count",
+        "cycle_count",
+        "orphan_count",
+        "external_dependency_count",
+        "highest_risk_level"
+      ],
+      "properties": {
+        "node_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "edge_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "scope_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "protected_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "high_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "medium_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "low_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "hotspot_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cycle_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "orphan_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "external_dependency_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "highest_risk_level": {
+          "$ref": "#/$defs/riskLevel"
+        },
+        "refactor_candidate_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "protected_recommendation_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "architecture_risk_flag_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "centrality_metric_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "centrality_computed_node_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "node_id",
+          "display_name",
+          "node_type",
+          "scope_id",
+          "scope",
+          "canonical_path",
+          "related_paths",
+          "owner_worker",
+          "producer_contracts",
+          "consumer_contracts",
+          "direct_in_degree",
+          "direct_out_degree",
+          "transitive_dependents",
+          "transitive_dependencies",
+          "external_dependency_count",
+          "internal_only",
+          "gravity_score",
+          "gravity_level",
+          "risk_level",
+          "protected",
+          "protection_level",
+          "reason_codes",
+          "impact_radius",
+          "dependency_basis",
+          "changed_in_run",
+          "previous_gravity_level",
+          "notes"
+        ],
+        "properties": {
+          "node_id": {
+            "$ref": "#/$defs/id"
+          },
+          "display_name": {
+            "$ref": "#/$defs/nonEmpty"
+          },
+          "node_type": {
+            "$ref": "#/$defs/nodeType"
+          },
+          "scope_id": {
+            "$ref": "#/$defs/id"
+          },
+          "scope": {
+            "$ref": "#/$defs/scopeRef"
+          },
+          "canonical_path": {
+            "$ref": "#/$defs/path"
+          },
+          "related_paths": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/$defs/path"
+            }
+          },
+          "owner_worker": {
+            "$ref": "#/$defs/workerId"
+          },
+          "producer_contracts": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/$defs/id"
+            }
+          },
+          "consumer_contracts": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/$defs/id"
+            }
+          },
+          "direct_in_degree": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "direct_out_degree": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "transitive_dependents": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "transitive_dependencies": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "external_dependency_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "internal_only": {
+            "type": "boolean"
+          },
+          "gravity_score": {
+            "type": "number",
+            "minimum": 0
+          },
+          "gravity_level": {
+            "$ref": "#/$defs/gravityLevel"
+          },
+          "risk_level": {
+            "$ref": "#/$defs/riskLevel"
+          },
+          "protected": {
+            "type": "boolean"
+          },
+          "protection_level": {
+            "$ref": "#/$defs/protectionLevel"
+          },
+          "reason_codes": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/$defs/reasonCode"
+            }
+          },
+          "impact_radius": {
+            "$ref": "#/$defs/impactRadius"
+          },
+          "dependency_basis": {
+            "$ref": "#/$defs/dependencyBasis"
+          },
+          "changed_in_run": {
+            "type": "boolean"
+          },
+          "previous_gravity_level": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "LOW",
+              "MEDIUM",
+              "HIGH",
+              "PROTECTED",
+              null
+            ]
+          },
+          "notes": {
+            "$ref": "#/$defs/notes"
+          },
+          "centrality_metrics": {
+            "$ref": "#/$defs/nodeCentralityMetrics"
+          }
+        }
+      }
+    },
+    "hotspots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "rank",
+          "node_id",
+          "gravity_score",
+          "gravity_level",
+          "risk_level",
+          "dependent_count",
+          "hotspot_type",
+          "rationale_codes",
+          "affected_scope_count",
+          "stability_status",
+          "action_hint",
+          "notes"
+        ],
+        "properties": {
+          "rank": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "node_id": {
+            "$ref": "#/$defs/id"
+          },
+          "gravity_score": {
+            "type": "number",
+            "minimum": 0
+          },
+          "gravity_level": {
+            "$ref": "#/$defs/gravityLevel"
+          },
+          "risk_level": {
+            "$ref": "#/$defs/riskLevel"
+          },
+          "dependent_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "hotspot_type": {
+            "type": "string",
+            "enum": [
+              "CENTRALITY",
+              "DOWNSTREAM_BLAST",
+              "CONTRACT_CONVERGENCE",
+              "VALIDATION_LOAD",
+              "CROSS_WORKER_CHURN"
+            ]
+          },
+          "rationale_codes": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/$defs/reasonCode"
+            }
+          },
+          "affected_scope_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "stability_status": {
+            "type": "string",
+            "enum": [
+              "STABLE",
+              "RECURRENT",
+              "VOLATILE",
+              "REGRESSION"
+            ]
+          },
+          "action_hint": {
+            "$ref": "#/$defs/nonEmpty"
+          },
+          "notes": {
+            "$ref": "#/$defs/notes"
+          }
+        }
+      }
+    },
+    "anomalies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cycles",
+        "orphan_nodes",
+        "unstable_hubs",
+        "missing_owner_nodes",
+        "external_drift",
+        "classification_regressions",
+        "ownership_mismatches",
+        "contract_gaps"
+      ],
+      "properties": {
+        "cycles": {
+          "$ref": "#/$defs/anomalyArrayCycle"
+        },
+        "orphan_nodes": {
+          "$ref": "#/$defs/anomalyArrayOrphan"
+        },
+        "unstable_hubs": {
+          "$ref": "#/$defs/anomalyArrayUnstableHub"
+        },
+        "missing_owner_nodes": {
+          "$ref": "#/$defs/anomalyArrayUnowned"
+        },
+        "external_drift": {
+          "$ref": "#/$defs/anomalyArrayExternalDrift"
+        },
+        "classification_regressions": {
+          "$ref": "#/$defs/anomalyArrayClassRegression"
+        },
+        "ownership_mismatches": {
+          "$ref": "#/$defs/anomalyArrayOwnershipMismatch"
+        },
+        "contract_gaps": {
+          "$ref": "#/$defs/anomalyArrayContractGap"
+        }
+      }
+    },
+    "deprecation": {
+      "$ref": "#/$defs/deprecation"
+    },
+    "notes": {
+      "$ref": "#/$defs/notes"
+    },
+    "metadata_extensions": {
+      "$ref": "#/$defs/extensions"
+    },
+    "centrality_summary": {
+      "$ref": "#/$defs/centralitySummary"
+    },
+    "refactor_candidates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/refactorCandidate"
+      }
+    },
+    "protected_node_recommendations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/protectedNodeRecommendation"
+      }
+    },
+    "architecture_risk_flags": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/architectureRiskFlag"
+      }
+    }
+  },
+  "$defs": {
+    "nonEmpty": {
+      "type": "string",
+      "minLength": 1
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!\\s*$).+"
+    },
+    "runId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 255,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{2,254}$"
+    },
+    "semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    "artifactStatus": {
+      "type": "string",
+      "enum": [
+        "OK",
+        "WARNING",
+        "BLOCKED",
+        "INCOMPLETE",
+        "NOT_COMPARABLE"
+      ]
+    },
+    "compatibilityMode": {
+      "type": "string",
+      "enum": [
+        "STRICT_PRODUCER",
+        "STRICT_PRODUCER_COMPAT_READER",
+        "LEGACY_ALIAS_ACCEPTED"
+      ]
+    },
+    "gravityLevel": {
+      "type": "string",
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "PROTECTED"
+      ]
+    },
+    "riskLevel": {
+      "type": "string",
+      "enum": [
+        "NONE",
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "CRITICAL"
+      ]
+    },
+    "protectionLevel": {
+      "type": "string",
+      "enum": [
+        "WATCHED",
+        "GUARDED",
+        "PROTECTED",
+        "LOCKED",
+        "WATCH",
+        "ELEVATED",
+        "STRICT"
+      ]
+    },
+    "nodeType": {
+      "type": "string",
+      "enum": [
+        "module",
+        "package",
+        "file",
+        "contract",
+        "schema",
+        "api",
+        "service",
+        "library",
+        "test",
+        "pipeline",
+        "workspace",
+        "other"
+      ]
+    },
+    "reasonCode": {
+      "type": "string",
+      "enum": [
+        "ARCH_CENTRALITY_HIGH",
+        "TRANSITIVE_DEPENDENCY_HIGH",
+        "DIRECT_DEPENDENT_COUNT_HIGH",
+        "CROSS_SCOPE_IMPACT",
+        "CROSS_WORKER_IMPACT",
+        "EXTERNAL_DEPENDENCY_PRESENT",
+        "PROTECTED_POLICY_RULE",
+        "CONTRACT_SURFACE_CRITICAL",
+        "VALIDATION_BURDEN_HIGH",
+        "CYCLE_MEMBERSHIP",
+        "OWNERSHIP_AMBIGUOUS",
+        "SNAPSHOT_NOT_COMPARABLE",
+        "BASELINE_DRIFT",
+        "HOTSPOT_RECURRING",
+        "CHANGE_TOUCHES_PROTECTED_NODE",
+        "DISPATCH_REQUIRES_A_CORE",
+        "DISPATCH_REQUIRES_D_VALIDATION",
+        "DISPATCH_DEFERRED_PENDING_UNBLOCK",
+        "DISPATCH_BLOCKED_BY_POLICY",
+        "OWNERSHIP_CONFLICT",
+        "MISSING_CONTRACT",
+        "VALIDATION_GAP",
+        "INCOMPARABLE_SNAPSHOT",
+        "CONTRACT_BREAKING_CHANGE",
+        "HIGH_CHURN"
+      ]
+    },
+    "workerId": {
+      "type": "string",
+      "enum": [
+        "A_core",
+        "B_tooling",
+        "C_features",
+        "D_validation",
+        "Z_aggregator",
+        "R_reviewer",
+        "E_planner",
+        "A_worker",
+        "B_worker",
+        "C_worker",
+        "D_worker",
+        "Z_integrator",
+        "R_worker",
+        "E_worker",
+        "UNASSIGNED"
+      ]
+    },
+    "generator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actor",
+        "tool_name",
+        "tool_version",
+        "execution_mode",
+        "invocation_context",
+        "source_inputs"
+      ],
+      "properties": {
+        "actor": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "tool_name": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "tool_version": {
+          "$ref": "#/$defs/semver"
+        },
+        "execution_mode": {
+          "type": "string",
+          "enum": [
+            "analysis",
+            "integration",
+            "planning",
+            "audit",
+            "dry_run",
+            "ci"
+          ]
+        },
+        "invocation_context": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "run_phase",
+            "command",
+            "working_directory",
+            "environment_keys"
+          ],
+          "properties": {
+            "run_phase": {
+              "$ref": "#/$defs/nonEmpty"
+            },
+            "command": {
+              "$ref": "#/$defs/nonEmpty"
+            },
+            "working_directory": {
+              "$ref": "#/$defs/path"
+            },
+            "environment_keys": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/$defs/nonEmpty"
+              }
+            }
+          }
+        },
+        "source_inputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "input_type",
+              "input_id",
+              "input_path",
+              "input_sha256",
+              "input_role"
+            ],
+            "properties": {
+              "input_type": {
+                "type": "string",
+                "enum": [
+                  "GRAPH_SNAPSHOT",
+                  "RUN_BUNDLE",
+                  "CONTRACT_REGISTRY",
+                  "SCHEMA",
+                  "MANUAL_OVERRIDE",
+                  "OTHER"
+                ]
+              },
+              "input_id": {
+                "$ref": "#/$defs/id"
+              },
+              "input_path": {
+                "$ref": "#/$defs/path"
+              },
+              "input_sha256": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^[A-Fa-f0-9]{64}$"
+              },
+              "input_role": {
+                "$ref": "#/$defs/nonEmpty"
+              }
+            }
+          }
+        }
+      }
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repo_root",
+        "base_ref",
+        "head_ref",
+        "commit_sha",
+        "comparison_basis"
+      ],
+      "properties": {
+        "repo_root": {
+          "$ref": "#/$defs/path"
+        },
+        "base_ref": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "head_ref": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "commit_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{7,64}$"
+        },
+        "comparison_basis": {
+          "type": "string",
+          "enum": [
+            "working_tree",
+            "base_vs_head",
+            "run_snapshot",
+            "manual"
+          ]
+        }
+      }
+    },
+    "snapshotLineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "snapshot_id",
+        "previous_snapshot_id",
+        "baseline_snapshot_id",
+        "lineage_mode",
+        "graph_build_id"
+      ],
+      "properties": {
+        "snapshot_id": {
+          "$ref": "#/$defs/id"
+        },
+        "previous_snapshot_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{2,254}$"
+        },
+        "baseline_snapshot_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{2,254}$"
+        },
+        "lineage_mode": {
+          "type": "string",
+          "enum": [
+            "FULL",
+            "INCREMENTAL",
+            "REBUILT",
+            "NOT_AVAILABLE"
+          ]
+        },
+        "graph_build_id": {
+          "$ref": "#/$defs/id"
+        }
+      }
+    },
+    "scopeRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope_id",
+        "scope_type",
+        "scope_path",
+        "owner_worker",
+        "parent_scope_id",
+        "internal_only"
+      ],
+      "properties": {
+        "scope_id": {
+          "$ref": "#/$defs/id"
+        },
+        "scope_type": {
+          "type": "string",
+          "enum": [
+            "package",
+            "service",
+            "module_group",
+            "contract_surface",
+            "workspace",
+            "other"
+          ]
+        },
+        "scope_path": {
+          "$ref": "#/$defs/path"
+        },
+        "owner_worker": {
+          "$ref": "#/$defs/workerId"
+        },
+        "parent_scope_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{2,254}$"
+        },
+        "internal_only": {
+          "type": "boolean"
+        }
+      }
+    },
+    "impactRadius": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "category",
+        "direct_dependent_count",
+        "transitive_dependent_count",
+        "affected_scope_count",
+        "affected_worker_count"
+      ],
+      "properties": {
+        "category": {
+          "type": "string",
+          "enum": [
+            "LOCAL",
+            "MULTI_SCOPE",
+            "CROSS_WORKER",
+            "REPO_WIDE"
+          ]
+        },
+        "direct_dependent_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "transitive_dependent_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "affected_scope_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "affected_worker_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "dependencyBasis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "upstream_nodes",
+        "downstream_nodes",
+        "dependency_count",
+        "transitive_dependency_count",
+        "graph_scope_reference"
+      ],
+      "properties": {
+        "upstream_nodes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "downstream_nodes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "dependency_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "transitive_dependency_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "graph_scope_reference": {
+          "$ref": "#/$defs/nonEmpty"
+        }
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deprecation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "deprecated_fields",
+        "replacement_fields",
+        "compatibility_notes"
+      ],
+      "properties": {
+        "deprecated_fields": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonEmpty"
+          }
+        },
+        "replacement_fields": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/nonEmpty"
+          }
+        },
+        "compatibility_notes": {
+          "$ref": "#/$defs/notes"
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x_[A-Za-z0-9_.-]+$": {}
+      }
+    },
+    "anomalyArrayCycle": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/anomalyCycle"
+      }
+    },
+    "anomalyArrayOrphan": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/anomalyOrphan"
+      }
+    },
+    "anomalyArrayUnstableHub": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/anomalyUnstableHub"
+      }
+    },
+    "anomalyArrayUnowned": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/anomalyUnowned"
+      }
+    },
+    "anomalyArrayExternalDrift": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/anomalyExternalDrift"
+      }
+    },
+    "anomalyArrayClassRegression": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/anomalyClassRegression"
+      }
+    },
+    "anomalyArrayOwnershipMismatch": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/anomalyOwnershipMismatch"
+      }
+    },
+    "anomalyArrayContractGap": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/anomalyContractGap"
+      }
+    },
+    "anomalyCycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "anomaly_id",
+        "anomaly_type",
+        "member_nodes",
+        "risk_level",
+        "reason_codes",
+        "notes"
+      ],
+      "properties": {
+        "anomaly_id": {
+          "$ref": "#/$defs/id"
+        },
+        "anomaly_type": {
+          "type": "string",
+          "const": "CYCLE"
+        },
+        "member_nodes": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "risk_level": {
+          "$ref": "#/$defs/riskLevel"
+        },
+        "reason_codes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reasonCode"
+          }
+        },
+        "notes": {
+          "$ref": "#/$defs/notes"
+        }
+      }
+    },
+    "anomalyOrphan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "anomaly_id",
+        "anomaly_type",
+        "node_id",
+        "canonical_path",
+        "risk_level",
+        "reason_codes",
+        "notes"
+      ],
+      "properties": {
+        "anomaly_id": {
+          "$ref": "#/$defs/id"
+        },
+        "anomaly_type": {
+          "type": "string",
+          "const": "ORPHAN"
+        },
+        "node_id": {
+          "$ref": "#/$defs/id"
+        },
+        "canonical_path": {
+          "$ref": "#/$defs/path"
+        },
+        "risk_level": {
+          "$ref": "#/$defs/riskLevel"
+        },
+        "reason_codes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reasonCode"
+          }
+        },
+        "notes": {
+          "$ref": "#/$defs/notes"
+        }
+      }
+    },
+    "anomalyUnstableHub": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "anomaly_id",
+        "anomaly_type",
+        "node_id",
+        "variance_score",
+        "risk_level",
+        "reason_codes",
+        "notes"
+      ],
+      "properties": {
+        "anomaly_id": {
+          "$ref": "#/$defs/id"
+        },
+        "anomaly_type": {
+          "type": "string",
+          "const": "UNSTABLE_HUB"
+        },
+        "node_id": {
+          "$ref": "#/$defs/id"
+        },
+        "variance_score": {
+          "type": "number",
+          "minimum": 0
+        },
+        "risk_level": {
+          "$ref": "#/$defs/riskLevel"
+        },
+        "reason_codes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reasonCode"
+          }
+        },
+        "notes": {
+          "$ref": "#/$defs/notes"
+        }
+      }
+    },
+    "anomalyUnowned": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "anomaly_id",
+        "anomaly_type",
+        "node_id",
+        "canonical_path",
+        "risk_level",
+        "reason_codes",
+        "notes"
+      ],
+      "properties": {
+        "anomaly_id": {
+          "$ref": "#/$defs/id"
+        },
+        "anomaly_type": {
+          "type": "string",
+          "const": "UNOWNED"
+        },
+        "node_id": {
+          "$ref": "#/$defs/id"
+        },
+        "canonical_path": {
+          "$ref": "#/$defs/path"
+        },
+        "risk_level": {
+          "$ref": "#/$defs/riskLevel"
+        },
+        "reason_codes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reasonCode"
+          }
+        },
+        "notes": {
+          "$ref": "#/$defs/notes"
+        }
+      }
+    },
+    "anomalyExternalDrift": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "anomaly_id",
+        "anomaly_type",
+        "external_reference",
+        "risk_level",
+        "reason_codes",
+        "notes"
+      ],
+      "properties": {
+        "anomaly_id": {
+          "$ref": "#/$defs/id"
+        },
+        "anomaly_type": {
+          "type": "string",
+          "const": "EXTERNAL_DRIFT"
+        },
+        "external_reference": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "risk_level": {
+          "$ref": "#/$defs/riskLevel"
+        },
+        "reason_codes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reasonCode"
+          }
+        },
+        "notes": {
+          "$ref": "#/$defs/notes"
+        }
+      }
+    },
+    "anomalyClassRegression": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "anomaly_id",
+        "anomaly_type",
+        "node_id",
+        "previous_gravity_level",
+        "current_gravity_level",
+        "risk_level",
+        "reason_codes",
+        "notes"
+      ],
+      "properties": {
+        "anomaly_id": {
+          "$ref": "#/$defs/id"
+        },
+        "anomaly_type": {
+          "type": "string",
+          "const": "CLASSIFICATION_REGRESSION"
+        },
+        "node_id": {
+          "$ref": "#/$defs/id"
+        },
+        "previous_gravity_level": {
+          "$ref": "#/$defs/gravityLevel"
+        },
+        "current_gravity_level": {
+          "$ref": "#/$defs/gravityLevel"
+        },
+        "risk_level": {
+          "$ref": "#/$defs/riskLevel"
+        },
+        "reason_codes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reasonCode"
+          }
+        },
+        "notes": {
+          "$ref": "#/$defs/notes"
+        }
+      }
+    },
+    "anomalyOwnershipMismatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "anomaly_id",
+        "anomaly_type",
+        "node_id",
+        "expected_owner",
+        "actual_owner",
+        "risk_level",
+        "reason_codes",
+        "notes"
+      ],
+      "properties": {
+        "anomaly_id": {
+          "$ref": "#/$defs/id"
+        },
+        "anomaly_type": {
+          "type": "string",
+          "const": "OWNERSHIP_MISMATCH"
+        },
+        "node_id": {
+          "$ref": "#/$defs/id"
+        },
+        "expected_owner": {
+          "$ref": "#/$defs/workerId"
+        },
+        "actual_owner": {
+          "$ref": "#/$defs/workerId"
+        },
+        "risk_level": {
+          "$ref": "#/$defs/riskLevel"
+        },
+        "reason_codes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reasonCode"
+          }
+        },
+        "notes": {
+          "$ref": "#/$defs/notes"
+        }
+      }
+    },
+    "anomalyContractGap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "anomaly_id",
+        "anomaly_type",
+        "contract_id",
+        "risk_level",
+        "reason_codes",
+        "notes"
+      ],
+      "properties": {
+        "anomaly_id": {
+          "$ref": "#/$defs/id"
+        },
+        "anomaly_type": {
+          "type": "string",
+          "const": "CONTRACT_GAP"
+        },
+        "contract_id": {
+          "$ref": "#/$defs/id"
+        },
+        "risk_level": {
+          "$ref": "#/$defs/riskLevel"
+        },
+        "reason_codes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reasonCode"
+          }
+        },
+        "notes": {
+          "$ref": "#/$defs/notes"
+        }
+      }
+    },
+    "centralityMetric": {
+      "type": "string",
+      "enum": [
+        "BETWEENNESS_CENTRALITY",
+        "PAGERANK",
+        "EIGENVECTOR_CENTRALITY",
+        "CLOSENESS_CENTRALITY",
+        "DEGREE_CENTRALITY",
+        "IN_DEGREE_CENTRALITY",
+        "OUT_DEGREE_CENTRALITY",
+        "KATZ_CENTRALITY",
+        "HUB_SCORE",
+        "AUTHORITY_SCORE",
+        "BRIDGING_CENTRALITY",
+        "CURRENT_FLOW_BETWEENNESS",
+        "LOAD_CENTRALITY",
+        "HARMONIC_CENTRALITY"
+      ]
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "P0",
+        "P1",
+        "P2",
+        "P3"
+      ]
+    },
+    "centralityValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "score",
+        "normalized_score",
+        "percentile_rank"
+      ],
+      "properties": {
+        "score": {
+          "type": "number"
+        },
+        "normalized_score": {
+          "type": "number",
+          "minimum": 0
+        },
+        "percentile_rank": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "metricNodeScore": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "node_id",
+        "score",
+        "percentile_rank"
+      ],
+      "properties": {
+        "node_id": {
+          "$ref": "#/$defs/id"
+        },
+        "score": {
+          "type": "number"
+        },
+        "percentile_rank": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "notes": {
+          "$ref": "#/$defs/notes"
+        }
+      }
+    },
+    "centralityMetricStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric",
+        "computed",
+        "computation_basis"
+      ],
+      "properties": {
+        "metric": {
+          "$ref": "#/$defs/centralityMetric"
+        },
+        "computed": {
+          "type": "boolean"
+        },
+        "computation_basis": {
+          "type": "string",
+          "enum": [
+            "DIRECTED_GRAPH",
+            "UNDIRECTED_PROJECTION",
+            "WEIGHTED_GRAPH",
+            "UNWEIGHTED_GRAPH",
+            "NOT_COMPUTED"
+          ]
+        },
+        "algorithm": {
+          "$ref": "#/$defs/nonEmpty"
+        },
+        "notes": {
+          "$ref": "#/$defs/notes"
+        }
+      }
+    },
+    "centralityTopMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric",
+        "top_nodes"
+      ],
+      "properties": {
+        "metric": {
+          "$ref": "#/$defs/centralityMetric"
+        },
+        "top_nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/metricNodeScore"
+          }
+        }
+      }
+    },
+    "centralitySummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "computed",
+        "graph_model",
+        "normalization",
+        "damping_factor",
+        "max_iterations",
+        "convergence_tolerance",
+        "node_coverage",
+        "metric_status",
+        "top_nodes_by_metric",
+        "computation_notes"
+      ],
+      "properties": {
+        "computed": {
+          "type": "boolean"
+        },
+        "graph_model": {
+          "type": "string",
+          "enum": [
+            "DIRECTED_GENERAL",
+            "DIRECTED_ACYCLIC",
+            "UNDIRECTED_PROJECTION",
+            "MIXED"
+          ]
+        },
+        "normalization": {
+          "type": "string",
+          "enum": [
+            "ALGORITHM_DEFAULT",
+            "MIN_MAX",
+            "PROBABILITY",
+            "Z_SCORE",
+            "NONE"
+          ]
+        },
+        "damping_factor": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "max_iterations": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "convergence_tolerance": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "node_coverage": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "metric_status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/centralityMetricStatus"
+          }
+        },
+        "top_nodes_by_metric": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/centralityTopMetric"
+          }
+        },
+        "computation_notes": {
+          "$ref": "#/$defs/notes"
+        }
+      }
+    },
+    "nodeCentralityMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "betweenness_centrality": {
+          "$ref": "#/$defs/centralityValue"
+        },
+        "pagerank": {
+          "$ref": "#/$defs/centralityValue"
+        },
+        "eigenvector_centrality": {
+          "$ref": "#/$defs/centralityValue"
+        },
+        "closeness_centrality": {
+          "$ref": "#/$defs/centralityValue"
+        },
+        "degree_centrality": {
+          "$ref": "#/$defs/centralityValue"
+        },
+        "in_degree_centrality": {
+          "$ref": "#/$defs/centralityValue"
+        },
+        "out_degree_centrality": {
+          "$ref": "#/$defs/centralityValue"
+        },
+        "katz_centrality": {
+          "$ref": "#/$defs/centralityValue"
+        },
+        "hub_score": {
+          "$ref": "#/$defs/centralityValue"
+        },
+        "authority_score": {
+          "$ref": "#/$defs/centralityValue"
+        },
+        "bridging_centrality": {
+          "$ref": "#/$defs/centralityValue"
+        },
+        "current_flow_betweenness": {
+          "$ref": "#/$defs/centralityValue"
+        },
+        "load_centrality": {
+          "$ref": "#/$defs/centralityValue"
+        },
+        "harmonic_centrality": {
+          "$ref": "#/$defs/centralityValue"
+        }
+      }
+    },
+    "centralityDriver": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric",
+        "score",
+        "percentile_rank",
+        "evidence"
+      ],
+      "properties": {
+        "metric": {
+          "$ref": "#/$defs/centralityMetric"
+        },
+        "score": {
+          "type": "number"
+        },
+        "percentile_rank": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "evidence": {
+          "$ref": "#/$defs/nonEmpty"
+        }
+      }
+    },
+    "refactorCandidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_id",
+        "node_id",
+        "recommendation_type",
+        "priority",
+        "risk_level",
+        "confidence",
+        "centrality_drivers",
+        "reason_codes",
+        "proposed_owner",
+        "validation_targets",
+        "blockers",
+        "notes"
+      ],
+      "properties": {
+        "candidate_id": {
+          "$ref": "#/$defs/id"
+        },
+        "node_id": {
+          "$ref": "#/$defs/id"
+        },
+        "recommendation_type": {
+          "type": "string",
+          "enum": [
+            "EXTRACT_MODULE",
+            "SPLIT_RESPONSIBILITY",
+            "REDUCE_FAN_OUT",
+            "REDUCE_FAN_IN",
+            "ISOLATE_EXTERNAL_DEPENDENCIES",
+            "STABILIZE_INTERFACE",
+            "ADD_CONTRACT_TESTS",
+            "DECOMPOSE_CYCLE",
+            "REASSIGN_OWNERSHIP",
+            "SCHEDULE_INCREMENTAL_REFACTOR"
+          ]
+        },
+        "priority": {
+          "$ref": "#/$defs/priority"
+        },
+        "risk_level": {
+          "$ref": "#/$defs/riskLevel"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "centrality_drivers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/centralityDriver"
+          }
+        },
+        "reason_codes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reasonCode"
+          }
+        },
+        "proposed_owner": {
+          "$ref": "#/$defs/workerId"
+        },
+        "validation_targets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonEmpty"
+          }
+        },
+        "blockers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonEmpty"
+          }
+        },
+        "notes": {
+          "$ref": "#/$defs/notes"
+        }
+      }
+    },
+    "protectedNodeRecommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recommendation_id",
+        "node_id",
+        "current_protection_level",
+        "recommended_protection_level",
+        "recommendation_type",
+        "rationale_codes",
+        "required_protocol_steps",
+        "requires_a_core_review",
+        "requires_d_validation_review",
+        "requires_z_approval",
+        "risk_level",
+        "notes"
+      ],
+      "properties": {
+        "recommendation_id": {
+          "$ref": "#/$defs/id"
+        },
+        "node_id": {
+          "$ref": "#/$defs/id"
+        },
+        "current_protection_level": {
+          "$ref": "#/$defs/protectionLevel"
+        },
+        "recommended_protection_level": {
+          "$ref": "#/$defs/protectionLevel"
+        },
+        "recommendation_type": {
+          "type": "string",
+          "enum": [
+            "PROMOTE_TO_GUARDED",
+            "PROMOTE_TO_PROTECTED",
+            "PROMOTE_TO_LOCKED",
+            "DEMOTE_TO_GUARDED",
+            "DEMOTE_TO_WATCHED",
+            "KEEP_AS_IS",
+            "REVIEW_MANUALLY"
+          ]
+        },
+        "rationale_codes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reasonCode"
+          }
+        },
+        "required_protocol_steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/nonEmpty"
+          }
+        },
+        "centrality_threshold_breaches": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/centralityDriver"
+          }
+        },
+        "requires_a_core_review": {
+          "type": "boolean"
+        },
+        "requires_d_validation_review": {
+          "type": "boolean"
+        },
+        "requires_z_approval": {
+          "type": "boolean"
+        },
+        "risk_level": {
+          "$ref": "#/$defs/riskLevel"
+        },
+        "notes": {
+          "$ref": "#/$defs/notes"
+        }
+      }
+    },
+    "architectureRiskFlag": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "flag_id",
+        "flag_type",
+        "severity",
+        "status",
+        "node_ids",
+        "scope_ids",
+        "reason_codes",
+        "owner_worker",
+        "recommended_actions",
+        "due_phase",
+        "notes"
+      ],
+      "properties": {
+        "flag_id": {
+          "$ref": "#/$defs/id"
+        },
+        "flag_type": {
+          "type": "string",
+          "enum": [
+            "SINGLE_POINT_OF_FAILURE",
+            "COUPLING_HOTSPOT",
+            "OWNERSHIP_FRAGMENTATION",
+            "PROTECTED_NODE_UNDER_CLASSIFIED",
+            "PROTECTED_NODE_OVER_CLASSIFIED",
+            "VALIDATION_GAP_CLUSTER",
+            "DEPENDENCY_DRIFT",
+            "CYCLE_CLUSTER",
+            "EXTERNAL_BLAST_RADIUS",
+            "CONTRACT_FRAGILITY"
+          ]
+        },
+        "severity": {
+          "$ref": "#/$defs/riskLevel"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "OPEN",
+            "MONITORED",
+            "MITIGATING",
+            "ACCEPTED",
+            "RESOLVED"
+          ]
+        },
+        "node_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "scope_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "related_hotspots": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "reason_codes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reasonCode"
+          }
+        },
+        "centrality_evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/centralityDriver"
+          }
+        },
+        "owner_worker": {
+          "$ref": "#/$defs/workerId"
+        },
+        "recommended_actions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/nonEmpty"
+          }
+        },
+        "due_phase": {
+          "type": "string",
+          "enum": [
+            "current_run",
+            "next_iteration",
+            "next_release",
+            "backlog"
+          ]
+        },
+        "notes": {
+          "$ref": "#/$defs/notes"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "table_id": "TBL_VRT_POLICY",
+  "version": "1.0.0",
+  "status": "draft",
+  "authority_level": "warning",
+  "scope": "Defines visual regression strictness levels and snapshot behavior",
+  "columns": [
+    {
+      "name": "mode",
+      "type": "enum",
+      "required": true,
+      "enum_values": [
+        "strict",
+        "relaxed"
+      ]
+    },
+    {
+      "name": "pixel_strict",
+      "type": "boolean",
+      "required": true
+    },
+    {
+      "name": "motion_disabled",
+      "type": "boolean",
+      "required": true
+    }
+  ],
+  "rows": [
+    {
+      "mode": "strict",
+      "pixel_strict": true,
+      "motion_disabled": true
+    },
+    {
+      "mode": "relaxed",
+      "pixel_strict": false,
+      "motion_disabled": true
+    }
+  ],
+  "change_policy": {
+    "requires_pr_approval": true,
+    "requires_migration_note": true,
+    "breaking_change_requires_version_bump": true
+  }
+}

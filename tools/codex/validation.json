@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "defaults": {
+    "preflight": [
+      { "name": "git_status", "cmd": "git status --porcelain=v1", "allow_fail": false, "required": true }
+    ]
+  },
+  "guardrails": {
+    "commands": [
+      {
+        "name": "no_js_src_imports",
+        "cmd": "python tools/codex/guards/no_js_src_imports.py --repo . --config tools/codex/guards/no_js_src_imports.allowlist.json",
+        "allow_fail": false,
+        "required": true
+      },
+      {
+        "name": "factory_contracts_check",
+        "cmd": "python tools/codex/factory_cli.py contracts-check",
+        "allow_fail": false,
+        "required": true
+      }
+    ]
+  },
+  "node": {
+    "detect": { "any_files": ["pnpm-lock.yaml", "package.json"] },
+    "commands": [
+      { "name": "pnpm_install", "cmd": "pnpm -w install --frozen-lockfile", "allow_fail": true, "required": false },
+      { "name": "typecheck",    "cmd": "pnpm -w -r typecheck",              "allow_fail": false, "required": true },
+      { "name": "build",        "cmd": "pnpm -w -r build",                  "allow_fail": false, "required": true },
+      { "name": "test_unit",    "cmd": "pnpm -w -r test",                   "allow_fail": false, "required": true }
+    ]
+  },
+  "playwright": {
+    "detect": { "any_files": ["playwright.config.ts", "playwright.config.js"] },
+    "commands": [
+      { "name": "e2e_smoke", "cmd": "npx playwright test --reporter=line", "allow_fail": false, "required": true }
+    ]
+  },
+  "policies": {
+    "additive_only": true,
+    "deterministic_default": true,
+    "feature_flags_default_off": true
+  }
+}

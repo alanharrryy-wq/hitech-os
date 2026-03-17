@@ -1,0 +1,49 @@
+{
+  "default_policy": "exclusive",
+  "rules": [
+    {
+      "allowed": [
+        "apps/**",
+        "packages/**"
+      ],
+      "worker": "A_core"
+    },
+    {
+      "allowed": [
+        "apps/**",
+        "docs/**",
+        "docs/visual-baselines/**",
+        "packages/**",
+        "tools/_local/visual/**"
+      ],
+      "worker": "C_features"
+    },
+    {
+      "allowed": [
+        "tools/**",
+        "packages/**",
+        "docs/**"
+      ],
+      "worker": "B_tooling"
+    },
+    {
+      "allowed": [
+        "docs/**",
+        "tools/**"
+      ],
+      "worker": "D_validation"
+    },
+    {
+      "allowed": [
+        "tools/codex/runs/**"
+      ],
+      "worker": "Z_aggregator"
+    }
+  ],
+  "schema_version": 1,
+  "shared_allowlist": [
+    "docs/factory/**",
+    "docs/visual-baselines/**",
+    "tools/codex/runs/**"
+  ]
+}

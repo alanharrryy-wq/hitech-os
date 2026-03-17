@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "runs": {
+      "items": {
+        "additionalProperties": true,
+        "properties": {
+          "ended_at": {
+            "type": "string"
+          },
+          "kind": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "report": {
+            "type": "string"
+          },
+          "run_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "started_at": {
+            "type": "string"
+          },
+          "status": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "workers": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "run_id",
+          "kind",
+          "status",
+          "path"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "schema_version": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "updated_at": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "updated_at",
+    "runs"
+  ],
+  "title": "Run Ledger",
+  "type": "object"
+}
