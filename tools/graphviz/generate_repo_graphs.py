@@ -32,9 +32,11 @@ STATE_FILE = TOOLS_ROOT / ".graphviz_state.json"
 MANIFEST_FILE = TOOLS_ROOT / ".graphviz_manifest.json"
 
 WATCH_MODE = False          # True = keep watching for changes
-OPEN_INDEX_ON_FINISH = True # Opens graphs folder when done on Windows
-OPEN_FIRST_SVG = False      # Opens the first generated SVG
+OPEN_INDEX_ON_FINISH = True  # Opens graphs folder when done on Windows
+OPEN_FIRST_SVG = False       # Opens the first generated SVG
 SLEEP_SECONDS = 15
+PAUSE_ON_EXIT = False        # Automation-safe default: do not block waiting for ENTER
+PAUSE_ON_ERROR = False       # Keep errors visible in terminal logs without blocking wrappers
 
 INCLUDE_EXTENSIONS = {".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".py"}
 EXCLUDE_DIRS = {
@@ -335,6 +337,17 @@ def open_path(path: Path):
     try:
         os.startfile(str(path))  # type: ignore[attr-defined]
     except Exception:
+        pass
+
+
+def maybe_pause(message: str):
+    if not PAUSE_ON_EXIT:
+        return
+    if not sys.stdin or not sys.stdin.isatty():
+        return
+    try:
+        input(message)
+    except EOFError:
         pass
 
 # ---------------------------
@@ -787,7 +800,8 @@ def run_once() -> int:
 def main():
     if not REPO_PATH.exists():
         safe_print(f"ERROR: Repo path does not exist: {REPO_PATH}")
-        input("\nPress ENTER to close...")
+        if PAUSE_ON_ERROR:
+            maybe_pause("\nPress ENTER to close...")
         sys.exit(1)
 
     if WATCH_MODE:
@@ -801,7 +815,7 @@ def main():
             safe_print("\nStopped by user.")
     else:
         run_once()
-        input("Press ENTER to close...")
+        maybe_pause("Press ENTER to close...")
 
 
 if __name__ == "__main__":

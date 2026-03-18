@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-03-17T23:31:19.591Z",
+  "policy_path": "policies/security.json",
+  "codeowners_path": ".github/CODEOWNERS",
+  "diff": {
+    "base": "HEAD~1",
+    "head": "HEAD",
+    "mode": "triple-dot",
+    "changed_file_count": 6
+  },
+  "strict_mode": false,
+  "sensitive_paths": {
+    "changed_count": 6,
+    "changed_files": [
+      "tools/hos/git_sentinel_modular/operator_tools/common.ps1",
+      "tools/hos/git_sentinel_modular/operator_tools/prepare_workspace_for_execute.ps1",
+      "tools/hos/git_sentinel_modular/operator_tools/repair_workspace_bundles_from_downloads.ps1",
+      "tools/hos/git_sentinel_modular/operator_tools/run_sentinel_cutover.ps1",
+      "tools/hos/git_sentinel_modular/operator_tools/run_sentinel_execute.ps1",
+      "tools/hos/git_sentinel_modular/operator_tools/run_sentinel_promotion.ps1"
+    ],
+    "unowned_count": 0,
+    "unowned_files": [],
+    "owner_count": 1,
+    "single_owner_mode": true,
+    "ownership": [
+      {
+        "file": "tools/hos/git_sentinel_modular/operator_tools/common.ps1",
+        "owners": [
+          "@alanharrryy"
+        ]
+      },
+      {
+        "file": "tools/hos/git_sentinel_modular/operator_tools/prepare_workspace_for_execute.ps1",
+        "owners": [
+          "@alanharrryy"
+        ]
+      },
+      {
+        "file": "tools/hos/git_sentinel_modular/operator_tools/repair_workspace_bundles_from_downloads.ps1",
+        "owners": [
+          "@alanharrryy"
+        ]
+      },
+      {
+        "file": "tools/hos/git_sentinel_modular/operator_tools/run_sentinel_cutover.ps1",
+        "owners": [
+          "@alanharrryy"
+        ]
+      },
+      {
+        "file": "tools/hos/git_sentinel_modular/operator_tools/run_sentinel_execute.ps1",
+        "owners": [
+          "@alanharrryy"
+        ]
+      },
+      {
+        "file": "tools/hos/git_sentinel_modular/operator_tools/run_sentinel_promotion.ps1",
+        "owners": [
+          "@alanharrryy"
+        ]
+      }
+    ]
+  },
+  "secret_scan": {
+    "enabled": true,
+    "scanned_file_count": 6,
+    "finding_count": 0,
+    "findings": []
+  },
+  "status": "pass"
+}

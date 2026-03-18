@@ -1,0 +1,322 @@
+{
+  "generated_at_utc": "2026-03-17T22:37:58Z",
+  "package_name": "structure_tree_canvas_sync_over_selection_store_pack_v1",
+  "purpose": "Structure Tree + Canvas synchronization reference pack that stacks on top of the Selection Store bundle for Live Scene Composer.",
+  "entry_files": [
+    "00_PACKAGE_README.md",
+    "22_STRUCTURE_TREE_CANVAS_SYNC_CONTRACT.md",
+    "32_STRUCTURE_CANVAS_REPO_INTEGRATION_PLAYBOOK.md",
+    "34_STRUCTURE_CANVAS_MIGRATION_STEPS.md",
+    "35_STRUCTURE_CANVAS_FAILURE_ATLAS.md",
+    "install_live_scene_composer_structure_tree_canvas_sync_over_selection_store_v1.ps1",
+    "run_live_scene_composer_structure_tree_canvas_sync_over_selection_store_v1_from_zip.ps1"
+  ],
+  "file_count": 61,
+  "files": [
+    {
+      "path": "00_PACKAGE_README.md",
+      "size_bytes": 3496,
+      "sha256": "a924a16976348d963de0835daf042bb594ca882c60689e5c8ecdaa8708ebec6c"
+    },
+    {
+      "path": "01_PACKAGE_CONTENTS.md",
+      "size_bytes": 1333,
+      "sha256": "c2b8ebfbf86693c8e18767d41b0d45595953b1310b801738dda6c06587789f63"
+    },
+    {
+      "path": "02_INSTALL_GUIDE.md",
+      "size_bytes": 929,
+      "sha256": "d884a07d083ef3a47073c39c62a1ae4ecc5dd4799e26638b502d4316c42ad2ca"
+    },
+    {
+      "path": "03_IMPLEMENTATION_NOTES.md",
+      "size_bytes": 897,
+      "sha256": "5e5c8c8d63e8a36e12ef46f0dda5af26641458cf31507ce3af62a6f5752b206b"
+    },
+    {
+      "path": "04_STACKING_AND_SCOPE.md",
+      "size_bytes": 659,
+      "sha256": "5887b12ebe00f4f25ea4d3f070faa6e36b211516f3c11be0f5add98a350f1dff"
+    },
+    {
+      "path": "05_PACKAGE_MANIFEST.json",
+      "size_bytes": 10329,
+      "sha256": "e52349a7473d63e586cd3d56c913515c457ef3b4c177ea454423a06f3144a8cb"
+    },
+    {
+      "path": "22_STRUCTURE_TREE_CANVAS_SYNC_CONTRACT.md",
+      "size_bytes": 4072,
+      "sha256": "73d9a9aecc328f53cd76a35ce8391b63f42324116c9be6a0486961163358f34c"
+    },
+    {
+      "path": "23_STRUCTURE_TREE_PROJECTION_CONTRACT.md",
+      "size_bytes": 2464,
+      "sha256": "9fa7eb159173f08ce809f376b8d6f67f89e304f949fb9c68215380fffadb5aae"
+    },
+    {
+      "path": "24_CANVAS_VIEWMODEL_AND_OVERLAY_CONTRACT.md",
+      "size_bytes": 2025,
+      "sha256": "4dfc070b0f80a41ce0b71c86b2b3445796be284da4edb1bf04349cd58e0b64a6"
+    },
+    {
+      "path": "25_SURFACE_COORDINATION_FLOW.md",
+      "size_bytes": 1544,
+      "sha256": "3ff468eb25e08ca0c358b1d11086d99271b9d98beff7029ee6b4ff3fcb0239d2"
+    },
+    {
+      "path": "26_POINTER_AND_KEYBOARD_SELECTION_RULES.md",
+      "size_bytes": 1617,
+      "sha256": "682cc97696ce368ba22ffc7bed6eb668d08910af37cdcdbe4d9b30dfbbba1784"
+    },
+    {
+      "path": "27_STRUCTURE_CANVAS_RECONCILIATION_RULES.md",
+      "size_bytes": 1474,
+      "sha256": "51031a21bc0f17811bf609acb21cedf334615a115cb68ee6b931775f60c62e6f"
+    },
+    {
+      "path": "28_MUTATION_INTENT_ENTRYPOINTS.md",
+      "size_bytes": 1182,
+      "sha256": "a6983c9fd3fb0b9a14506fff70bc546b02d1ddae47c6c0f8c2ebc6e1ad23241e"
+    },
+    {
+      "path": "29_STRUCTURE_CANVAS_TEST_PLAN.md",
+      "size_bytes": 910,
+      "sha256": "4b6f84a155b48e9bfc89e4db8985850be2f362f49dafbaa7263432d17bc63982"
+    },
+    {
+      "path": "30_STRUCTURE_CANVAS_PACKAGE_DECISIONS.md",
+      "size_bytes": 581,
+      "sha256": "3467c5ed24fc898677b2453f5b6ed20e50bde27b6d1a5e8957a513fe706faf04"
+    },
+    {
+      "path": "31_STRUCTURE_CANVAS_EVENT_SCENARIOS.md",
+      "size_bytes": 1307,
+      "sha256": "045e4259f56226f126cf05b1fbf42bc4d4fd023ad4f5ef77096c32c5d7f846e0"
+    },
+    {
+      "path": "32_STRUCTURE_CANVAS_REPO_INTEGRATION_PLAYBOOK.md",
+      "size_bytes": 967,
+      "sha256": "bf969800c61d3ba89f93d3e416d5b5567fa44bc0b50fb90a046f340fb149373c"
+    },
+    {
+      "path": "33_STRUCTURE_CANVAS_FIELD_MANUAL.md",
+      "size_bytes": 938,
+      "sha256": "e2aa856e652952ac072fd8750ab44cfac99bab1cc56c42aac451512a230738e6"
+    },
+    {
+      "path": "34_STRUCTURE_CANVAS_MIGRATION_STEPS.md",
+      "size_bytes": 482,
+      "sha256": "2787be089c201b795aa0b99bf05da9acbf34135e7a366bdd174b055ee08c3508"
+    },
+    {
+      "path": "35_STRUCTURE_CANVAS_FAILURE_ATLAS.md",
+      "size_bytes": 586,
+      "sha256": "c9a983ff38c749a22bbf0f6a9eca8046b6507df6e51a9ecda5b85f49b54e27bf"
+    },
+    {
+      "path": "artifacts/diagnostics/surface_diagnostics_walkthrough_01.jsonl",
+      "size_bytes": 352375,
+      "sha256": "34e155b532045f10700223a3e7ca572dd7e87d76d6f1d3b95dce477224229e32"
+    },
+    {
+      "path": "artifacts/diagnostics/surface_diagnostics_walkthrough_02.jsonl",
+      "size_bytes": 352261,
+      "sha256": "31bd67ff491160c608316affe68f881eda2630a3f735b1d34ade8d9044a5fa54"
+    },
+    {
+      "path": "artifacts/fixtures/structure_canvas_scene_fixture_01.json",
+      "size_bytes": 41316,
+      "sha256": "4950ba38ece27bbd748225be63d7b6675fc4107712b82f7c348ff4c8f0a30599"
+    },
+    {
+      "path": "artifacts/fixtures/structure_canvas_scene_fixture_02.json",
+      "size_bytes": 41303,
+      "sha256": "baf4f71d3031d48a9f97c663d6124d2b9e9a011a583380fb18e73ca3bda3aa1d"
+    },
+    {
+      "path": "artifacts/fixtures/structure_canvas_scene_fixture_03.json",
+      "size_bytes": 41326,
+      "sha256": "197c3ba4786737077b8018281e92ef3bc54ca1659999bcd440eea832586b1ac9"
+    },
+    {
+      "path": "artifacts/fixtures/structure_canvas_scene_fixture_04.json",
+      "size_bytes": 41290,
+      "sha256": "288f8d8fa77170cc65547ca64d9880e848e235acf17403a04b9743a094ba9688"
+    },
+    {
+      "path": "artifacts/heatmaps/tree_canvas_heatmap_01.csv",
+      "size_bytes": 103779,
+      "sha256": "36236a52dbd548de05cbe2f14ea34a81bc3d20b418dcbdb488aabff08bd76b16"
+    },
+    {
+      "path": "artifacts/heatmaps/tree_canvas_heatmap_02.csv",
+      "size_bytes": 103669,
+      "sha256": "67bbddaec2cbe6d1155fb492cd140dc7fb74765a87f4503e7e72e44904acb36d"
+    },
+    {
+      "path": "artifacts/matrices/structure_canvas_reconciliation_matrix_01.csv",
+      "size_bytes": 1903,
+      "sha256": "98c66a5cf4d479abe1f37c388cb7a67e74f2c21939eced07d2819c82d112fe16"
+    },
+    {
+      "path": "artifacts/matrices/structure_canvas_reconciliation_matrix_02.csv",
+      "size_bytes": 1903,
+      "sha256": "6a7ad5e15f87176e6124d3b72f2364977a7b9825565c6aa09714313753a1e310"
+    },
+    {
+      "path": "artifacts/reviews/protected_nodes_and_expected_touchpoints.md",
+      "size_bytes": 496,
+      "sha256": "d7fdfb3a4d7952478c83dcf9f3291a1b96b81031d848d13d8f86c79b5cbaaa8a"
+    },
+    {
+      "path": "artifacts/reviews/structure_canvas_review_questions.md",
+      "size_bytes": 471,
+      "sha256": "080495d2382598c0df2f091faa40c03f104e391e0d5a659ba1e501f435b1a506"
+    },
+    {
+      "path": "artifacts/snapshots/overlay_snapshot_catalog_01.json",
+      "size_bytes": 372074,
+      "sha256": "9cc528b761ba7f5e17beff43ccc8ff7d66bb45b5e855b6d13a6a5b86748d4454"
+    },
+    {
+      "path": "artifacts/snapshots/overlay_snapshot_catalog_02.json",
+      "size_bytes": 372206,
+      "sha256": "b6e615f5518fd48180514fa94aa973f9f22c5fe4722c00bea5ffcf1d09458924"
+    },
+    {
+      "path": "artifacts/snapshots/overlay_snapshot_catalog_03.json",
+      "size_bytes": 372076,
+      "sha256": "da04d93005fcb52a0982f8802bf931732330fb2849b82cca15ce269691888064"
+    },
+    {
+      "path": "artifacts/traces/structure_canvas_event_trace_01.jsonl",
+      "size_bytes": 43970,
+      "sha256": "329b74dfd4884a9c9660c4dd60106325501adc3750827e5a81acb28c22e995ae"
+    },
+    {
+      "path": "artifacts/traces/structure_canvas_event_trace_02.jsonl",
+      "size_bytes": 44149,
+      "sha256": "6b16b9095c50450e4390f8148cbbbc8262f5b6c43781b73441505e4189c8bde6"
+    },
+    {
+      "path": "install_live_scene_composer_structure_tree_canvas_sync_over_selection_store_v1.ps1",
+      "size_bytes": 16111,
+      "sha256": "d6da2ab32d709bbbee39a6d33d6dc00ed12ab59244957b159ba648a1232ac090"
+    },
+    {
+      "path": "run_live_scene_composer_structure_tree_canvas_sync_over_selection_store_v1_from_zip.ps1",
+      "size_bytes": 3452,
+      "sha256": "5b53f5e734a74469beec5940c1b63f4c261c3485e38b94fd0d032f2f587c9ec9"
+    },
+    {
+      "path": "source/composer-sync/README.md",
+      "size_bytes": 602,
+      "sha256": "fbfa51663bc98aa352f0fe81b6463d865c6b6221ca812c02db5b94b7adb665e2"
+    },
+    {
+      "path": "source/composer-sync/__tests__/canvas-viewmodel.spec.ts",
+      "size_bytes": 1045,
+      "sha256": "f8c1cfc454ea68683e56482d80c705785c14ffd78a255d27d240fcaebd4cd157"
+    },
+    {
+      "path": "source/composer-sync/__tests__/integration-adapters.spec.ts",
+      "size_bytes": 700,
+      "sha256": "91a6b4a6a23841359b9a6f2b5e0a3e3fdc8f103673c9d9f403918e939367e9a7"
+    },
+    {
+      "path": "source/composer-sync/__tests__/keyboard-navigation.spec.ts",
+      "size_bytes": 653,
+      "sha256": "76c48619e3ca4e9d2caee76580824329d32894ff9f7565349bf4b33976ef2667"
+    },
+    {
+      "path": "source/composer-sync/__tests__/mutation-intent-entrypoints.spec.ts",
+      "size_bytes": 837,
+      "sha256": "d83e6a89104608490cf3841705e507eabfdf9e64d12aa2987ae7b95430fb8759"
+    },
+    {
+      "path": "source/composer-sync/__tests__/pointer-hit-selection.spec.ts",
+      "size_bytes": 493,
+      "sha256": "7a000f344c6a6059f7925eb59bd2d82ba497f9b6a2349b242783adc43ca76e29"
+    },
+    {
+      "path": "source/composer-sync/__tests__/stale-reconciliation.spec.ts",
+      "size_bytes": 792,
+      "sha256": "dec75afe2cb5f360279cd54a0c548af2e8ab75a5159cd6f0e516d376d686f00b"
+    },
+    {
+      "path": "source/composer-sync/__tests__/structure-tree-projection.spec.ts",
+      "size_bytes": 689,
+      "sha256": "17ba15ee66f36cfb3251d63ddfc45074cbbaa46c1f84f6607c2230e3d1e60bcd"
+    },
+    {
+      "path": "source/composer-sync/__tests__/surface-coordinator.spec.ts",
+      "size_bytes": 1367,
+      "sha256": "a76d1f742d974ee2d0f80fc1907121ce01c3ccddc8a3d1d1dd7e0fd904d7279a"
+    },
+    {
+      "path": "source/composer-sync/canvas-viewmodel.ts",
+      "size_bytes": 2673,
+      "sha256": "1538a847de87b8d673adda66db675f5080852974697992343bacc9016e2f0077"
+    },
+    {
+      "path": "source/composer-sync/contracts.ts",
+      "size_bytes": 6219,
+      "sha256": "ddb509c708d4aa56d703e806959b44f86232e4d05700c596077036c5eceb0df2"
+    },
+    {
+      "path": "source/composer-sync/examples/structure-tree-canvas-demo.ts",
+      "size_bytes": 867,
+      "sha256": "53cc9e1217b23e7f8797a33308ca2dedb39cb653a0d336631c93f206904a0c1b"
+    },
+    {
+      "path": "source/composer-sync/index.ts",
+      "size_bytes": 394,
+      "sha256": "4333851b98c362f9c3f2640995228cd08cc79ad6c01b2689d4346c4d8d8b425e"
+    },
+    {
+      "path": "source/composer-sync/integration-adapters.ts",
+      "size_bytes": 814,
+      "sha256": "08474a23881b5e4203c1b652877ac2a14538b52d2e0008305967b2230b9f36d6"
+    },
+    {
+      "path": "source/composer-sync/keyboard-navigation.ts",
+      "size_bytes": 835,
+      "sha256": "69c6befa6ddaf4926291daab938b270e867530d83a837c0ddfabdacecd3251d9"
+    },
+    {
+      "path": "source/composer-sync/mutation-intent-entrypoints.ts",
+      "size_bytes": 2863,
+      "sha256": "c70b303dd0097dea83e8c63df60ac9da3ac174e1c4ffa77d1dc9067d383a1d1c"
+    },
+    {
+      "path": "source/composer-sync/pointer-hit-selection.ts",
+      "size_bytes": 929,
+      "sha256": "1d8abd0d20d8b89ac45f27ed105dfb521ebb25a9b5462cbf2d5fdec330b636d2"
+    },
+    {
+      "path": "source/composer-sync/react-hooks.ts",
+      "size_bytes": 929,
+      "sha256": "e2bce8bdc5922abf933f04b3eac980903d75eb0a2c74189d78291704af5c2197"
+    },
+    {
+      "path": "source/composer-sync/scenario-fixtures.ts",
+      "size_bytes": 3206,
+      "sha256": "227845c5733cf2dd3a02c43135af440d26e5895dad70c656fe16ce4599805f78"
+    },
+    {
+      "path": "source/composer-sync/stale-reconciliation.ts",
+      "size_bytes": 2310,
+      "sha256": "35ba97fdd4a2d1d25fcf823f3f25873dff91d4fa423682172281452effc28558"
+    },
+    {
+      "path": "source/composer-sync/structure-tree-projection.ts",
+      "size_bytes": 3277,
+      "sha256": "43198dd7e063264b932eaa29adf6a1730a3cb8d3888203641f79ec79de81c45f"
+    },
+    {
+      "path": "source/composer-sync/surface-coordinator.ts",
+      "size_bytes": 4839,
+      "sha256": "3f3d1d0b64f339b9ab1b126b6b80f1390e7d358ce7a9e03369c82d3a6342b6f7"
+    }
+  ]
+}

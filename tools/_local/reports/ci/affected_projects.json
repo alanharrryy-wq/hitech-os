@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-03-17T23:31:18.932Z",
+  "diff": {
+    "base": "HEAD~1",
+    "head": "HEAD",
+    "mode": "triple-dot",
+    "changed_file_count": 6
+  },
+  "global_trigger": true,
+  "global_trigger_reason": {
+    "unmatched_non_docs_count": 6
+  },
+  "workspace": {
+    "project_count": 10,
+    "projects": [
+      {
+        "path": "apps/demo-engine",
+        "packageName": "@hitech/demo-engine",
+        "manifestPath": "apps/demo-engine/package.json"
+      },
+      {
+        "path": "apps/keystone",
+        "packageName": "@hitech/keystone",
+        "manifestPath": "apps/keystone/package.json"
+      },
+      {
+        "path": "apps/web",
+        "packageName": "@hitech/web",
+        "manifestPath": "apps/web/package.json"
+      },
+      {
+        "path": "packages/contracts",
+        "packageName": "@hitech/contracts",
+        "manifestPath": "packages/contracts/package.json"
+      },
+      {
+        "path": "packages/tooling",
+        "packageName": "@hitech/tooling",
+        "manifestPath": "packages/tooling/package.json"
+      },
+      {
+        "path": "packages/ui-kit",
+        "packageName": "@hitech/ui-kit",
+        "manifestPath": "packages/ui-kit/package.json"
+      },
+      {
+        "path": "services/ai-agent",
+        "packageName": "@hitech/ai-agent",
+        "manifestPath": "services/ai-agent/package.json"
+      },
+      {
+        "path": "services/core-api",
+        "packageName": "@hitech/core-api",
+        "manifestPath": "services/core-api/package.json"
+      },
+      {
+        "path": "tools/health",
+        "packageName": "@hitech/health",
+        "manifestPath": "tools/health/package.json"
+      },
+      {
+        "path": "tools/scripts",
+        "packageName": "@hitech/scripts",
+        "manifestPath": "tools/scripts/package.json"
+      }
+    ],
+    "dependency_edges": [
+      {
+        "from": "apps/keystone",
+        "to": "packages/contracts"
+      },
+      {
+        "from": "apps/keystone",
+        "to": "packages/ui-kit"
+      },
+      {
+        "from": "apps/web",
+        "to": "packages/contracts"
+      },
+      {
+        "from": "apps/web",
+        "to": "packages/ui-kit"
+      }
+    ]
+  },
+  "affected": {
+    "direct": [
+      "apps/demo-engine",
+      "apps/keystone",
+      "apps/web",
+      "packages/contracts",
+      "packages/tooling",
+      "packages/ui-kit",
+      "services/ai-agent",
+      "services/core-api",
+      "tools/health",
+      "tools/scripts"
+    ],
+    "transitive_only": [],
+    "all": [
+      "apps/demo-engine",
+      "apps/keystone",
+      "apps/web",
+      "packages/contracts",
+      "packages/tooling",
+      "packages/ui-kit",
+      "services/ai-agent",
+      "services/core-api",
+      "tools/health",
+      "tools/scripts"
+    ],
+    "unaffected": []
+  },
+  "files": {
+    "ownership": [
+      {
+        "file": "tools/hos/git_sentinel_modular/operator_tools/common.ps1",
+        "ownerProject": null
+      },
+      {
+        "file": "tools/hos/git_sentinel_modular/operator_tools/prepare_workspace_for_execute.ps1",
+        "ownerProject": null
+      },
+      {
+        "file": "tools/hos/git_sentinel_modular/operator_tools/repair_workspace_bundles_from_downloads.ps1",
+        "ownerProject": null
+      },
+      {
+        "file": "tools/hos/git_sentinel_modular/operator_tools/run_sentinel_cutover.ps1",
+        "ownerProject": null
+      },
+      {
+        "file": "tools/hos/git_sentinel_modular/operator_tools/run_sentinel_execute.ps1",
+        "ownerProject": null
+      },
+      {
+        "file": "tools/hos/git_sentinel_modular/operator_tools/run_sentinel_promotion.ps1",
+        "ownerProject": null
+      }
+    ],
+    "unmatched": [
+      "tools/hos/git_sentinel_modular/operator_tools/common.ps1",
+      "tools/hos/git_sentinel_modular/operator_tools/prepare_workspace_for_execute.ps1",
+      "tools/hos/git_sentinel_modular/operator_tools/repair_workspace_bundles_from_downloads.ps1",
+      "tools/hos/git_sentinel_modular/operator_tools/run_sentinel_cutover.ps1",
+      "tools/hos/git_sentinel_modular/operator_tools/run_sentinel_execute.ps1",
+      "tools/hos/git_sentinel_modular/operator_tools/run_sentinel_promotion.ps1"
+    ]
+  }
+}

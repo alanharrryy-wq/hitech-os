@@ -1,0 +1,95 @@
+{
+  "schema_version": 2,
+  "generated_at_utc": "2026-03-18T00:36:36.962Z",
+  "context": {
+    "repository": "hitech-os",
+    "event_name": null,
+    "ref": null,
+    "sha": null,
+    "run_id": null,
+    "run_attempt": null
+  },
+  "metrics": {
+    "pipeline_seconds": {
+      "checkout": null,
+      "install": null,
+      "guardrails": null,
+      "build": null,
+      "test": null,
+      "publish": null,
+      "artifact_upload": null,
+      "total": null
+    },
+    "pipeline_duration_targets_seconds": {
+      "p50_target": 900,
+      "p95_target": 1800
+    },
+    "cache": {
+      "dependency_cache_hit_rate": null,
+      "build_cache_hit_rate": null,
+      "pnpm_cache_hit": null,
+      "turbo_cache_hit": null,
+      "notes": "single-run cache metrics are sampled as hit/miss booleans; stable hit-rate requires historical aggregation"
+    },
+    "flakiness": {
+      "indicator": null,
+      "notes": "requires historical CI run telemetry"
+    },
+    "affected_project_count": 10,
+    "affected_global_trigger": true,
+    "dependency_cycle_count": 0,
+    "new_dependency_cycle_count": 0,
+    "boundary_policy_violation_count": null,
+    "dependency_policy_error_count": null,
+    "codeowners_single_owner_mode": true,
+    "codeowners_owner_count": 1,
+    "release_violation_count": 0,
+    "release_status": "pass",
+    "sensitive_paths_changed_count": 6,
+    "sensitive_unowned_count": 0,
+    "secret_finding_count": 0,
+    "graph_focus_clean_folder_count": 262,
+    "graph_noise_folder_count": 732,
+    "graph_priority_hotspot_count": 80,
+    "graph_top_risk_score": 167,
+    "repo_large_file_count": 4,
+    "repo_lfs_candidate_count": 0
+  },
+  "contract": {
+    "required_metric_keys": [
+      "pipeline_seconds.checkout",
+      "pipeline_seconds.install",
+      "pipeline_seconds.guardrails",
+      "pipeline_seconds.total",
+      "pipeline_seconds.artifact_upload",
+      "affected_project_count",
+      "dependency_cycle_count",
+      "codeowners_owner_count",
+      "release_violation_count",
+      "secret_finding_count",
+      "graph_focus_clean_folder_count",
+      "graph_noise_folder_count",
+      "repo_large_file_count"
+    ],
+    "missing_required_metric_keys": [
+      "pipeline_seconds.checkout",
+      "pipeline_seconds.install",
+      "pipeline_seconds.guardrails",
+      "pipeline_seconds.total",
+      "pipeline_seconds.artifact_upload"
+    ],
+    "completeness_ratio": 0.615,
+    "notes": "some baseline metrics are unavailable for this run context"
+  },
+  "source_reports": {
+    "affected": "tools/_local/reports/ci/affected_projects.json",
+    "codeowners": "tools/_local/reports/ci/codeowners_coverage.json",
+    "dependencyPolicy": "tools/_local/reports/ci/dependencies_policy_validation.json",
+    "cycles": "tools/_local/reports/ci/dependency_cycles.json",
+    "release": "tools/_local/reports/ci/release_discipline.json",
+    "sensitive": "tools/_local/reports/ci/sensitive_paths.json",
+    "hygiene": "tools/_local/reports/ci/repo_hygiene.json",
+    "graph": "tools/graphviz/graphs/scope_summary.json",
+    "graphTopRisk": "tools/graphviz/graphs/scope_top_risks.json"
+  }
+}

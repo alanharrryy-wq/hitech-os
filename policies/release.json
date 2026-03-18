@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "policy_id": "release",
+  "version": "2026-03-18",
+  "versioning_mode": "lockstep",
+  "lockstep_scope": "grouped-provisional",
+  "change_note_paths": [
+    "CHANGELOG.md",
+    "docs/releases/"
+  ],
+  "release_evidence_paths": [
+    "CHANGELOG.md",
+    "docs/releases/",
+    "docs/release_governance.md"
+  ],
+  "release_critical_paths": [
+    "packages/contracts/",
+    "services/core-api/src/contracts/",
+    "services/core-api/src/routes/",
+    "apps/keystone/app/api/",
+    "release-please-config.json",
+    ".releaserc.json",
+    ".github/workflows/release.yml"
+  ],
+  "public_api_paths": [
+    "packages/contracts/src/",
+    "services/core-api/src/contracts/",
+    "services/core-api/src/routes/"
+  ],
+  "require_change_note_for_release_critical": true,
+  "require_change_note_for_public_api": true,
+  "require_change_note_for_manifest_changes": true,
+  "require_release_intent_for_version_change": true,
+  "blocking_checks": [
+    "missing_change_note_release_critical",
+    "missing_change_note_public_api"
+  ],
+  "report_only_default": true
+}

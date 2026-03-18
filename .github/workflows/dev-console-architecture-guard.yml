@@ -2,8 +2,20 @@ name: dev-console-architecture-guard
 
 on:
   pull_request:
+    paths:
+      - "apps/keystone/**"
+      - "packages/ui-kit/**"
+      - "tools/dev-console/**"
+      - "tools/codex/guards/**"
+      - ".github/workflows/dev-console-architecture-guard.yml"
   push:
     branches: ["main", "master"]
+    paths:
+      - "apps/keystone/**"
+      - "packages/ui-kit/**"
+      - "tools/dev-console/**"
+      - "tools/codex/guards/**"
+      - ".github/workflows/dev-console-architecture-guard.yml"
 
 jobs:
   architecture-guard:

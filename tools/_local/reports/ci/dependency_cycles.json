@@ -1,0 +1,225 @@
+{
+  "schema_version": 2,
+  "generated_at_utc": "2026-03-18T00:36:50.438Z",
+  "policy_path": "policies/dependencies.json",
+  "workspace_path": "pnpm-workspace.yaml",
+  "strict_mode": true,
+  "workspace_model": {
+    "roots": [
+      "apps",
+      "packages",
+      "services",
+      "tools"
+    ],
+    "effective_patterns": [
+      "apps/*",
+      "packages/*",
+      "services/*",
+      "tools/*"
+    ],
+    "policy_patterns": [
+      "apps/*",
+      "services/*",
+      "packages/*",
+      "tools/*"
+    ],
+    "pnpm_workspace_patterns": [
+      "apps/*",
+      "packages/*",
+      "services/*",
+      "tools/*"
+    ],
+    "pattern_sync": {
+      "in_sync": true,
+      "only_in_policy": [],
+      "only_in_pnpm_workspace": []
+    },
+    "retired_entries": [
+      "factory"
+    ],
+    "retired_entries_present": [],
+    "discovery_anomalies": {
+      "missing_patterns": [],
+      "entries_without_manifest": []
+    }
+  },
+  "policy_validation": {
+    "error_count": 0,
+    "warning_count": 0,
+    "errors": [],
+    "warnings": []
+  },
+  "workspace": {
+    "project_count": 10,
+    "edge_count": 4
+  },
+  "cycles": {
+    "enforcement_enabled": true,
+    "total": 0,
+    "allowed": 0,
+    "new_cycle_count": 0,
+    "cycle_ids": [],
+    "new_cycle_ids": [],
+    "no_new_cycles_pass": true
+  },
+  "hubs": {
+    "fan_in": [
+      {
+        "project": "packages/contracts",
+        "fan_in": 2,
+        "fan_out": 0,
+        "total_degree": 2
+      },
+      {
+        "project": "packages/ui-kit",
+        "fan_in": 2,
+        "fan_out": 0,
+        "total_degree": 2
+      },
+      {
+        "project": "apps/demo-engine",
+        "fan_in": 0,
+        "fan_out": 0,
+        "total_degree": 0
+      },
+      {
+        "project": "apps/keystone",
+        "fan_in": 0,
+        "fan_out": 2,
+        "total_degree": 2
+      },
+      {
+        "project": "apps/web",
+        "fan_in": 0,
+        "fan_out": 2,
+        "total_degree": 2
+      },
+      {
+        "project": "packages/tooling",
+        "fan_in": 0,
+        "fan_out": 0,
+        "total_degree": 0
+      },
+      {
+        "project": "services/ai-agent",
+        "fan_in": 0,
+        "fan_out": 0,
+        "total_degree": 0
+      },
+      {
+        "project": "services/core-api",
+        "fan_in": 0,
+        "fan_out": 0,
+        "total_degree": 0
+      },
+      {
+        "project": "tools/health",
+        "fan_in": 0,
+        "fan_out": 0,
+        "total_degree": 0
+      },
+      {
+        "project": "tools/scripts",
+        "fan_in": 0,
+        "fan_out": 0,
+        "total_degree": 0
+      }
+    ],
+    "fan_out": [
+      {
+        "project": "apps/keystone",
+        "fan_in": 0,
+        "fan_out": 2,
+        "total_degree": 2
+      },
+      {
+        "project": "apps/web",
+        "fan_in": 0,
+        "fan_out": 2,
+        "total_degree": 2
+      },
+      {
+        "project": "apps/demo-engine",
+        "fan_in": 0,
+        "fan_out": 0,
+        "total_degree": 0
+      },
+      {
+        "project": "packages/contracts",
+        "fan_in": 2,
+        "fan_out": 0,
+        "total_degree": 2
+      },
+      {
+        "project": "packages/tooling",
+        "fan_in": 0,
+        "fan_out": 0,
+        "total_degree": 0
+      },
+      {
+        "project": "packages/ui-kit",
+        "fan_in": 2,
+        "fan_out": 0,
+        "total_degree": 2
+      },
+      {
+        "project": "services/ai-agent",
+        "fan_in": 0,
+        "fan_out": 0,
+        "total_degree": 0
+      },
+      {
+        "project": "services/core-api",
+        "fan_in": 0,
+        "fan_out": 0,
+        "total_degree": 0
+      },
+      {
+        "project": "tools/health",
+        "fan_in": 0,
+        "fan_out": 0,
+        "total_degree": 0
+      },
+      {
+        "project": "tools/scripts",
+        "fan_in": 0,
+        "fan_out": 0,
+        "total_degree": 0
+      }
+    ]
+  },
+  "cross_boundary_edges": {
+    "count": 4,
+    "sample": [
+      {
+        "from": "apps/keystone",
+        "to": "packages/contracts",
+        "from_root": "apps",
+        "to_root": "packages"
+      },
+      {
+        "from": "apps/keystone",
+        "to": "packages/ui-kit",
+        "from_root": "apps",
+        "to_root": "packages"
+      },
+      {
+        "from": "apps/web",
+        "to": "packages/contracts",
+        "from_root": "apps",
+        "to_root": "packages"
+      },
+      {
+        "from": "apps/web",
+        "to": "packages/ui-kit",
+        "from_root": "apps",
+        "to_root": "packages"
+      }
+    ]
+  },
+  "boundary_policy": {
+    "violation_count": 0,
+    "violations_sample": []
+  },
+  "status": "pass"
+}

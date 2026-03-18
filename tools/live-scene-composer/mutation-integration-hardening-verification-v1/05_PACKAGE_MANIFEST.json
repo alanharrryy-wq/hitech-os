@@ -1,0 +1,838 @@
+{
+  "generated_at_utc": "2026-03-18T00:19:34.251010Z",
+  "package_name": "live_scene_composer_mutation_integration_hardening_verification_pack_v1",
+  "purpose": "Hardening and verification pack for Live Scene Composer mutation integration, stacking on top of the mutation-client preview/commit pack with robust PowerShell installation and evidence outputs.",
+  "entry_files": [
+    "00_PACKAGE_README.md",
+    "70_MUTATION_INTEGRATION_HARDENING_OVERVIEW.md",
+    "72_POST_INSTALL_VERIFICATION_MODEL.md",
+    "78_MUTATION_INTEGRATION_TEST_PLAN.md",
+    "install_live_scene_composer_mutation_integration_hardening_verification_v1.ps1",
+    "run_live_scene_composer_mutation_integration_hardening_verification_v1_from_zip.ps1",
+    "verify_live_scene_composer_mutation_integration_hardening_v1.ps1",
+    "invoke_live_scene_composer_mutation_smoke_checks_v1.ps1"
+  ],
+  "file_count": 164,
+  "files": [
+    {
+      "path": "00_PACKAGE_README.md",
+      "size_bytes": 1702,
+      "sha256": "60bdb4f41a5860d2f0fa8ea00e9dbf0db6f6ca3ae495ba818ce66d0b15e72028"
+    },
+    {
+      "path": "01_PACKAGE_CONTENTS.md",
+      "size_bytes": 529,
+      "sha256": "16338059ed70cd77e12a0361eec39569b9bd54e6935b994d0d40ccc5e7cc1100"
+    },
+    {
+      "path": "02_INSTALL_GUIDE.md",
+      "size_bytes": 912,
+      "sha256": "abc30c97eff3c57fe2ae9fe8bbb50e034632b317d91928f7a9c53b0c39b71b21"
+    },
+    {
+      "path": "03_IMPLEMENTATION_NOTES.md",
+      "size_bytes": 469,
+      "sha256": "9e3c5dd1ee562db9c123fe8a7acb1a4f246214804d0f924077b4b8a6d5e3b447"
+    },
+    {
+      "path": "04_STACKING_AND_SCOPE.md",
+      "size_bytes": 515,
+      "sha256": "7e809f680f30b3ca411e1f262f271e4c5a64ef2f45dbf98a44cf5b797df75e63"
+    },
+    {
+      "path": "05_PACKAGE_MANIFEST.json",
+      "size_bytes": 31652,
+      "sha256": "d68ced1adc268589c12bccc61a8be23c708e5584bcd34fe102860536a7897d60"
+    },
+    {
+      "path": "50_MUTATION_CLIENT_BRIDGE_CONTRACT.md",
+      "size_bytes": 2326,
+      "sha256": "47d2c7af4a67ccde616e3b87698acf1d08f65e3e1f438a9ac3422af254c9fd64"
+    },
+    {
+      "path": "51_PREVIEW_SESSION_MODEL.md",
+      "size_bytes": 1176,
+      "sha256": "db4504e8cdfc232b2e2b8ec3cbd2f13b7585f2cb8a20e925ad53a2d0dd7212d3"
+    },
+    {
+      "path": "52_COMMIT_REVERT_DISCARD_FLOW.md",
+      "size_bytes": 925,
+      "sha256": "76611d1cc167104f1ba443c4294253fc9017951e02d499b909996da9f8b0c8f3"
+    },
+    {
+      "path": "53_MUTATION_POLICY_MODE_MATRIX.md",
+      "size_bytes": 864,
+      "sha256": "18098efe1e59c60719a21ba136808ac370553e45a2c2b004df4995111de5be62"
+    },
+    {
+      "path": "54_BRIDGE_ADAPTER_ROUTING_RULES.md",
+      "size_bytes": 799,
+      "sha256": "2deb2deb7be4fce0c9a5b138416c0518e2441678d5fe23caff2811be7c9b30dc"
+    },
+    {
+      "path": "55_PREVIEW_DIFF_AND_BASELINE_COMPARE.md",
+      "size_bytes": 619,
+      "sha256": "114d770a312466214adf829726b1b8bf38309bbf2e1413101283845a0bc9a917"
+    },
+    {
+      "path": "56_MUTATION_REJECTION_AND_DIAGNOSTICS.md",
+      "size_bytes": 666,
+      "sha256": "669d9549e5aae2185021cae8241589dd04834e04fadf963be526c152bc03e981"
+    },
+    {
+      "path": "57_MUTATION_CLIENT_TEST_PLAN.md",
+      "size_bytes": 673,
+      "sha256": "eda5015a3478b59aa3579a9e7c7ad81e465d4819c8de2f57cb0ca61bca3b930a"
+    },
+    {
+      "path": "58_MUTATION_CLIENT_PACKAGE_DECISIONS.md",
+      "size_bytes": 430,
+      "sha256": "e3146c45ac961cbfff514db0362d130f29ba7dbf99dae04da96438fe5e91ac19"
+    },
+    {
+      "path": "59_MUTATION_CLIENT_EVENT_SCENARIOS.md",
+      "size_bytes": 387,
+      "sha256": "435c2175a5399e056fee2386d26b25a29949852e995a46cd219e49f460bdcb0b"
+    },
+    {
+      "path": "60_MUTATION_CLIENT_REPO_INTEGRATION_PLAYBOOK.md",
+      "size_bytes": 577,
+      "sha256": "f75fc9a26bf32eb53c87fe78b976b82bb8e50ce0de61af8b0f5404c23cd67485"
+    },
+    {
+      "path": "61_MUTATION_CLIENT_FIELD_MANUAL.md",
+      "size_bytes": 529,
+      "sha256": "cd5ff50c88d1406df976947db629a60c8c343d106480688210675f5c0f884798"
+    },
+    {
+      "path": "62_MUTATION_CLIENT_MIGRATION_STEPS.md",
+      "size_bytes": 415,
+      "sha256": "9551b9608b6b351cd927f4ebc8b2a55c2e61413df73e1c32291dbfacb3a6bc0a"
+    },
+    {
+      "path": "63_MUTATION_CLIENT_FAILURE_ATLAS.md",
+      "size_bytes": 381,
+      "sha256": "a4c58c5fa1328b53979b84cf1c73dd510fa266b5e12ad6126a0881c028dcf7f7"
+    },
+    {
+      "path": "70_MUTATION_INTEGRATION_HARDENING_OVERVIEW.md",
+      "size_bytes": 950,
+      "sha256": "98214632317f82c1aeea3a7a260f10fbd75f5759d0b3429bee35c3e1a96b67e1"
+    },
+    {
+      "path": "71_INSTALLER_HARDENING_RULES.md",
+      "size_bytes": 686,
+      "sha256": "b4cec1d0e9a7fac252f71bcbb33dd4b559d0187dc5c1ebbffd9d7e24d4d707e3"
+    },
+    {
+      "path": "72_POST_INSTALL_VERIFICATION_MODEL.md",
+      "size_bytes": 710,
+      "sha256": "3c2aee426ae9872607c5312ebc9c53e46d3adf866dd9e6706406c0fd567f01a5"
+    },
+    {
+      "path": "73_SMOKE_CHECKS_AND_EVIDENCE.md",
+      "size_bytes": 487,
+      "sha256": "13a2a6b639d89a7ed6cb045e92cd27dd16fdd42ed384e2439313c0b97edc2e25"
+    },
+    {
+      "path": "74_BRIDGE_INTEGRATION_ACCEPTANCE.md",
+      "size_bytes": 421,
+      "sha256": "acb875f53f753708fd637f313c0d872c2fe626c0657c33ca76fc5ea1840c44ca"
+    },
+    {
+      "path": "75_PREVIEW_COMMIT_REVERT_ASSERTIONS.md",
+      "size_bytes": 294,
+      "sha256": "7c8e567df17f2dd8e083f8510ff7eab28e57ae053c16c722f16eace246e43780"
+    },
+    {
+      "path": "76_TARGET_SCOPE_AND_POLICY_ASSERTIONS.md",
+      "size_bytes": 316,
+      "sha256": "5fc7ca15ab3fac481c20931f06f8233ffddf6fed1add0ba454550dbb7d611502"
+    },
+    {
+      "path": "77_RUNTIME_ADAPTER_BINDING_ASSUMPTIONS.md",
+      "size_bytes": 373,
+      "sha256": "8020e058539350c9f2d89ca2b6f33604ca39e17ffcf74d72de6d2bc45230e279"
+    },
+    {
+      "path": "78_MUTATION_INTEGRATION_TEST_PLAN.md",
+      "size_bytes": 372,
+      "sha256": "3489dc9837d87b6b97189e033d669775ad4858dae65e3167668fc2eeb05db030"
+    },
+    {
+      "path": "79_MUTATION_INTEGRATION_FAILURE_ATLAS.md",
+      "size_bytes": 359,
+      "sha256": "d05b302c6fba5311104e22c5d96228551d15d323e3f6d929f95d04ac01296732"
+    },
+    {
+      "path": "80_REPO_STACKING_PLAYBOOK.md",
+      "size_bytes": 391,
+      "sha256": "f0e7bdf589b4c9afd92e700ad4b02d49674e4ec8129f5cb12f580ff66a75f952"
+    },
+    {
+      "path": "81_OPERATOR_RUNBOOK.md",
+      "size_bytes": 308,
+      "sha256": "ac9d0c8f992932b71147b30ba375c08687aba3ab54cf05f1ced200184a41177c"
+    },
+    {
+      "path": "82_EVIDENCE_SCHEMA.md",
+      "size_bytes": 296,
+      "sha256": "271ab30e737e4b09979e247ec263ea6d16bcadc7b37a52845ee43b00cee00e5f"
+    },
+    {
+      "path": "83_FOLLOW_UP_IMPLEMENTATION_ORDER.md",
+      "size_bytes": 410,
+      "sha256": "797dd7ccc494c6641ca06a4b4d237042e36039480c6d759f7871f7fcaab63c80"
+    },
+    {
+      "path": "84_MUTATION_HARDENING_TOUCHPOINTS.md",
+      "size_bytes": 291,
+      "sha256": "92bda5990d790fac364b3b928db53fe60d6df1aeb2d8786ec9825d6d853b9f27"
+    },
+    {
+      "path": "85_MUTATION_VERIFICATION_HANDOFF_TEMPLATE.md",
+      "size_bytes": 257,
+      "sha256": "898c7c01714a1c734c50991e61594a9734088ba253aef958c6c8cf8d8a0d5f58"
+    },
+    {
+      "path": "artifacts/diagnostics/bridge_diagnostics_walkthrough_01.jsonl",
+      "size_bytes": 520542,
+      "sha256": "65d33afbb9fe63e50c332e3cbd39aa2914e50e2c717228c8ea9bd32747dda27e"
+    },
+    {
+      "path": "artifacts/diagnostics/bridge_diagnostics_walkthrough_02.jsonl",
+      "size_bytes": 520609,
+      "sha256": "e861f3e73a66046a255c1aea887a4c205ffa149f31340ed33d9b587df6bfadde"
+    },
+    {
+      "path": "artifacts/diagnostics/bridge_verification_diagnostic_01.jsonl",
+      "size_bytes": 129048,
+      "sha256": "f65042d7ad6cb1bb9404870b1553e7d9296216c4423ca1584e4f7439e638ffaf"
+    },
+    {
+      "path": "artifacts/diagnostics/bridge_verification_diagnostic_02.jsonl",
+      "size_bytes": 129048,
+      "sha256": "973af4dfaf875a34b0778a09c1f9eb707439d307254a1bafe0ebad1b3487e405"
+    },
+    {
+      "path": "artifacts/diagnostics/bridge_verification_diagnostic_03.jsonl",
+      "size_bytes": 129048,
+      "sha256": "d384593820c3f6cc82582abffa22f55dc5b72a479751624f426002771be23707"
+    },
+    {
+      "path": "artifacts/diagnostics/bridge_verification_diagnostic_04.jsonl",
+      "size_bytes": 129048,
+      "sha256": "0d1fe523b0aefccaba9c0bbeda85aa39bb786a2f4f2b21326c95718d3fadb4d1"
+    },
+    {
+      "path": "artifacts/examples/evidence_bundle_example_01.json",
+      "size_bytes": 855,
+      "sha256": "75e2c2d7618972be508e6176803bc36613099857651fc882e8bfa15272ea3d0e"
+    },
+    {
+      "path": "artifacts/examples/evidence_bundle_example_02.json",
+      "size_bytes": 850,
+      "sha256": "0eeb729161f2c8b14b4839e451ea51e7ebf4de09c2648fc84f1380fa9339f19c"
+    },
+    {
+      "path": "artifacts/examples/evidence_bundle_example_03.json",
+      "size_bytes": 851,
+      "sha256": "6ade88bd00b2b69435a9dad539fee057a467e8aa49afa6960a3e5773f3c472ad"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_integration_fixture_01.json",
+      "size_bytes": 105120,
+      "sha256": "6ded45db1c2d447b3e0b4c3f7a286ffcf279cda39037071d1db9e9f31bc58fcc"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_integration_fixture_02.json",
+      "size_bytes": 110164,
+      "sha256": "6797812fd310574259c34d8ad7dd1bb2260ada010d37855abe9b8bb6b7822b26"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_integration_fixture_03.json",
+      "size_bytes": 105120,
+      "sha256": "66232d6636f17cc935311aacb359cf42dda5c5ddb472ed0a37178a3993532bb1"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_integration_fixture_04.json",
+      "size_bytes": 105120,
+      "sha256": "66073c2b0766330fe09c09d09aef4afac7350a78d100e2b3990c5c56a2f22993"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_integration_fixture_05.json",
+      "size_bytes": 103859,
+      "sha256": "822464bf1636eeaf0c600502416a2c9a26a04a6f2c47f067b967931d90d64ab6"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_integration_fixture_06.json",
+      "size_bytes": 105120,
+      "sha256": "38bac7c236e2e3d9913dba39f63f1ab81ac5680800c7802e0b85f8c5c5824cf8"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_integration_fixture_07.json",
+      "size_bytes": 110164,
+      "sha256": "270fa0f607d3bc30a634b627fda1d44cd7ca18489fb238cb5ca7d0efed9c25c8"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_integration_fixture_08.json",
+      "size_bytes": 106381,
+      "sha256": "2ed58fbdc673c58a6f2d8ccf3fb1d3cdd1c6524dbea9ed45cc669f09697a623d"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_session_fixture_01.json",
+      "size_bytes": 256023,
+      "sha256": "ee9b4ff625d570a7fe82041c482626d31eeb07caf1d3f45dc2573a3ceca2a6b7"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_session_fixture_02.json",
+      "size_bytes": 255973,
+      "sha256": "bc5b17c58ece3dd643b09aa2f392c619111fc73edba9e9609fbd7b346c8ac21a"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_session_fixture_03.json",
+      "size_bytes": 256064,
+      "sha256": "54048161ccca3376e27ccb05e54fdb9d218458b74d5c7a88f6a04cdd1bb5568b"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_session_fixture_04.json",
+      "size_bytes": 256012,
+      "sha256": "a2c6f799189d604a695e1c6a1006d67e78e18530c88c439ba724c73f31b2e577"
+    },
+    {
+      "path": "artifacts/matrices/installer_phase_matrix.csv",
+      "size_bytes": 393,
+      "sha256": "3dcc31802c11b8e61ec1ac2a2a8a7629ebacb4147294c51c411d6a93019738e0"
+    },
+    {
+      "path": "artifacts/matrices/mirror_status_matrix.csv",
+      "size_bytes": 232,
+      "sha256": "d076b4bef01e4bb3f80ef81b26e628770689636f46229a2811ce62809902a848"
+    },
+    {
+      "path": "artifacts/matrices/mutation_integration_smoke_matrix.csv",
+      "size_bytes": 257,
+      "sha256": "96cb1c8e13fa79e329fce34d71481be6ceea3576496aa5645eada5dfb36e4f63"
+    },
+    {
+      "path": "artifacts/matrices/mutation_policy_matrix_advanced.csv",
+      "size_bytes": 626,
+      "sha256": "d69230da8aabddb7928870bf9ad73e761e0837136864396ad373494c0a75e8d3"
+    },
+    {
+      "path": "artifacts/matrices/mutation_policy_matrix_safe.csv",
+      "size_bytes": 590,
+      "sha256": "288f028db2f4720bf8cb46063428224ccf735ae67a73ad20147bec7cbaf98d1a"
+    },
+    {
+      "path": "artifacts/matrices/preview_commit_assertion_matrix.csv",
+      "size_bytes": 270,
+      "sha256": "46d02f7736638a9b55eccfac901c6e797b8c74c7fd9eb62391caf3603e2061b0"
+    },
+    {
+      "path": "artifacts/matrices/preview_commit_scope_matrix.csv",
+      "size_bytes": 272,
+      "sha256": "8b009dab12afdf2b3f4183c2124130d2cfd3de0ba58f0d011da7b5a324680a29"
+    },
+    {
+      "path": "artifacts/matrices/verification_status_matrix.csv",
+      "size_bytes": 164,
+      "sha256": "5931f36131195578e6a5a38c364f90cc423bd07d16a0afd581d37f9ac2953b99"
+    },
+    {
+      "path": "artifacts/playbacks/commit_revert_playback_01.jsonl",
+      "size_bytes": 244462,
+      "sha256": "e7bc5fdd8b11b1910f84fa0ab57687e6c0af731b7948023cd2175d360705e50a"
+    },
+    {
+      "path": "artifacts/playbacks/commit_revert_playback_02.jsonl",
+      "size_bytes": 244558,
+      "sha256": "7e9124eac9a386d478c2241cca85795f0375bc982b0d49132170a5d16049e4c7"
+    },
+    {
+      "path": "artifacts/playbacks/mutation_commit_playback_01.jsonl",
+      "size_bytes": 115590,
+      "sha256": "ad0271536e3f9f3d9d08ab59b54ea2599129e383ee8ff4df397c3b4eda3a7c1f"
+    },
+    {
+      "path": "artifacts/playbacks/mutation_commit_playback_02.jsonl",
+      "size_bytes": 115590,
+      "sha256": "b3e6b6966c0fe5628e9ec20b84cdf85d4badc6ac968166987fe6534e446fc091"
+    },
+    {
+      "path": "artifacts/playbacks/mutation_commit_playback_03.jsonl",
+      "size_bytes": 115590,
+      "sha256": "2f4a56460a682b5849acdc8b614d754f89f957437466b86a08a3d979f0fd6504"
+    },
+    {
+      "path": "artifacts/playbacks/mutation_commit_playback_04.jsonl",
+      "size_bytes": 115590,
+      "sha256": "ac245a6fe4bdaba0f75805176ac28917d70a08396135adfa95b5dbb21297cc05"
+    },
+    {
+      "path": "artifacts/reviews/bridge_review_questions.md",
+      "size_bytes": 310,
+      "sha256": "7a634b24c7c2e7483e90ea902f92626ea65f8fc22a6f756525e5026c11e64291"
+    },
+    {
+      "path": "artifacts/reviews/protected_nodes_and_touchpoints.md",
+      "size_bytes": 336,
+      "sha256": "a19ae21aff22e4e8e28bc0dd40a46e38b622671d6d79b9b667a8eb4d39c5718d"
+    },
+    {
+      "path": "artifacts/reviews/review_checklist_01.md",
+      "size_bytes": 279,
+      "sha256": "f25daefd4883a8e3671a8a4f7c20b6c77ac9ecb82553394717194e7e0a43d51a"
+    },
+    {
+      "path": "artifacts/reviews/review_checklist_02.md",
+      "size_bytes": 279,
+      "sha256": "e6fb19168247de6fea9496bdb6c67a4149d665b1218833a5b9330e9587cf367c"
+    },
+    {
+      "path": "artifacts/reviews/review_checklist_03.md",
+      "size_bytes": 279,
+      "sha256": "062862cb80a3a1d484cdca31ecf429cdef9218ee11abf29ba0e8f7df4ad2621b"
+    },
+    {
+      "path": "artifacts/reviews/review_checklist_04.md",
+      "size_bytes": 279,
+      "sha256": "01385918cd09e64b54a406361117ae1998ed99bfb6ed08f4ca12e7e046966643"
+    },
+    {
+      "path": "artifacts/schemas/install_summary.schema.json",
+      "size_bytes": 466,
+      "sha256": "ae07414aa2b1289cc3658cec7156bd86915c34ef99b4033c88b877dbaa20e8ec"
+    },
+    {
+      "path": "artifacts/schemas/smoke_report.schema.json",
+      "size_bytes": 222,
+      "sha256": "5315cd9e37e84db203bd66aa816cb2f9f6c3ae0079b858410c9e0306b5a6ff01"
+    },
+    {
+      "path": "artifacts/schemas/verification_report.schema.json",
+      "size_bytes": 243,
+      "sha256": "70a6229dff1a55d648d855ad30479b9b47e564029e26754d0079defb7f7e8332"
+    },
+    {
+      "path": "artifacts/snapshots/mutation_integration_snapshot_01.json",
+      "size_bytes": 67354,
+      "sha256": "85517a8527fffcd2b0c2b4b2d8469e7e9c20efa5fdd3283b3d96bfd2653772e1"
+    },
+    {
+      "path": "artifacts/snapshots/mutation_integration_snapshot_02.json",
+      "size_bytes": 67354,
+      "sha256": "6254f9bfd7cae58a1d7f433497cf60f3d7ac3fc5873b457f76f0b90edd9d9a0d"
+    },
+    {
+      "path": "artifacts/snapshots/mutation_integration_snapshot_03.json",
+      "size_bytes": 67354,
+      "sha256": "939d586f54f946d363d54a7eedef5946141fc92c72b9d70de9d76e2101890433"
+    },
+    {
+      "path": "artifacts/snapshots/mutation_integration_snapshot_04.json",
+      "size_bytes": 67354,
+      "sha256": "1f059072e8f234b4ff7878368dbd050e5d5465c2139441899328a0a0648d0389"
+    },
+    {
+      "path": "artifacts/snapshots/preview_session_snapshot_catalog_01.json",
+      "size_bytes": 615999,
+      "sha256": "11fe09c0b706a29fac6b0b289f374310790d054a8c51c39d5587947b7c35bf9c"
+    },
+    {
+      "path": "artifacts/snapshots/preview_session_snapshot_catalog_02.json",
+      "size_bytes": 616030,
+      "sha256": "555ac13cde958910d2e1242170b65904299f6a7c830d7e5fd45186f1d5ca92b1"
+    },
+    {
+      "path": "artifacts/snapshots/preview_session_snapshot_catalog_03.json",
+      "size_bytes": 616054,
+      "sha256": "e7a0b79c97fda28e60cbe1d7e84f1f548005b0bb2982d713f80e43c16f5c82a7"
+    },
+    {
+      "path": "artifacts/telemetry/mutation_integration_telemetry_01.csv",
+      "size_bytes": 23861,
+      "sha256": "3089f60c0404211546df9ba5203a72e02cb79b4acb471c365f9abb96a1a9bc72"
+    },
+    {
+      "path": "artifacts/telemetry/mutation_integration_telemetry_02.csv",
+      "size_bytes": 23861,
+      "sha256": "3089f60c0404211546df9ba5203a72e02cb79b4acb471c365f9abb96a1a9bc72"
+    },
+    {
+      "path": "artifacts/telemetry/mutation_integration_telemetry_03.csv",
+      "size_bytes": 23861,
+      "sha256": "3089f60c0404211546df9ba5203a72e02cb79b4acb471c365f9abb96a1a9bc72"
+    },
+    {
+      "path": "artifacts/telemetry/mutation_integration_telemetry_04.csv",
+      "size_bytes": 23861,
+      "sha256": "3089f60c0404211546df9ba5203a72e02cb79b4acb471c365f9abb96a1a9bc72"
+    },
+    {
+      "path": "artifacts/telemetry/preview_commit_telemetry_01.csv",
+      "size_bytes": 290430,
+      "sha256": "87f37133fcd348528824dc40429bea98663cb3cb3fd8bbe5ae13224b8fce1b43"
+    },
+    {
+      "path": "artifacts/telemetry/preview_commit_telemetry_02.csv",
+      "size_bytes": 290389,
+      "sha256": "aed7f24514d727af9a8efcbaffa446e600c3dac8b8e5605f6c8602774c5e7b30"
+    },
+    {
+      "path": "artifacts/traces/mutation_integration_trace_01.jsonl",
+      "size_bytes": 146378,
+      "sha256": "0ba9a17ffc452c6cafcc45306f43b32c6ab8639a77f0e497ff75930b3e9bbd81"
+    },
+    {
+      "path": "artifacts/traces/mutation_integration_trace_02.jsonl",
+      "size_bytes": 146378,
+      "sha256": "0ec13d4c699596a49d0ee40823702acf24749d459922ce9194dec20576ddcdac"
+    },
+    {
+      "path": "artifacts/traces/mutation_integration_trace_03.jsonl",
+      "size_bytes": 146378,
+      "sha256": "05aee63aef9ca6dc1e7f6b2818af3d5a6d3f557582abc8d6f3403016e7cb93ca"
+    },
+    {
+      "path": "artifacts/traces/mutation_integration_trace_04.jsonl",
+      "size_bytes": 146378,
+      "sha256": "3c1703e92cd8d8785956666143132b4f60d738ac0578ea0e38f2ceeea3a89caa"
+    },
+    {
+      "path": "artifacts/traces/mutation_integration_trace_05.jsonl",
+      "size_bytes": 146378,
+      "sha256": "440e80d660e54d08b311e0f3f053c6468d89b82339946167fd271757ed3ce3c4"
+    },
+    {
+      "path": "artifacts/traces/mutation_preview_commit_trace_01.jsonl",
+      "size_bytes": 217324,
+      "sha256": "d74e54b46bb434641ea0d625f5ce2121d08b4a9fb5f0d1ec80ba0b9c6ff11abb"
+    },
+    {
+      "path": "artifacts/traces/mutation_preview_commit_trace_02.jsonl",
+      "size_bytes": 217270,
+      "sha256": "4113901550493bd347632b6fb70fe0d4c67644ba216a3403e4eb920c48500d52"
+    },
+    {
+      "path": "artifacts/traces/mutation_preview_commit_trace_03.jsonl",
+      "size_bytes": 217341,
+      "sha256": "20309ea9bd8f260383bd9261cd04f34e9b9183974b576cfc29e4c2c7708012a6"
+    },
+    {
+      "path": "install_live_scene_composer_mutation_integration_hardening_verification_v1.ps1",
+      "size_bytes": 19578,
+      "sha256": "f1dca3d2ba854532ae33241450be9ea549ab49dc8354d0a876c38a9ff7f48284"
+    },
+    {
+      "path": "invoke_live_scene_composer_mutation_smoke_checks_v1.ps1",
+      "size_bytes": 2200,
+      "sha256": "742d107cba7e484ef3f2d5d575c7230b290edf5dd9fd994889073644f1b7c71b"
+    },
+    {
+      "path": "run_live_scene_composer_mutation_integration_hardening_verification_v1_from_zip.ps1",
+      "size_bytes": 4088,
+      "sha256": "78f8a409462b3d83db5a4ddc3e2167feb66cb93d8e1d470ebdc6fc6abf9ae592"
+    },
+    {
+      "path": "source/mutation-client/README.md",
+      "size_bytes": 335,
+      "sha256": "10c7a6b04b3e39b3c79459ae9ab1e9135048712ac84b2f9cdd823c6392dd4c5d"
+    },
+    {
+      "path": "source/mutation-client/__tests__/bridge-adapter.spec.ts",
+      "size_bytes": 633,
+      "sha256": "ce0d89cbcde6d58f90e50f12a8f926f69f5a92ce6a9d70d8ff80d5744bdd2901"
+    },
+    {
+      "path": "source/mutation-client/__tests__/bridge-client.spec.ts",
+      "size_bytes": 635,
+      "sha256": "d8a49b62e6c924e2b64822a59a6af630b4e36f1bb0575c06c4d4574e4fd37831"
+    },
+    {
+      "path": "source/mutation-client/__tests__/commit-orchestrator.spec.ts",
+      "size_bytes": 910,
+      "sha256": "1765959ed44cd963d86f913d88cb095578922bc5b600a419f9d2b12695160bf3"
+    },
+    {
+      "path": "source/mutation-client/__tests__/contracts.spec.ts",
+      "size_bytes": 257,
+      "sha256": "c6591cad2564329acdd5cb247ca35bbd93a726f323f9982927c6e2ad1e6af10c"
+    },
+    {
+      "path": "source/mutation-client/__tests__/diagnostics.spec.ts",
+      "size_bytes": 333,
+      "sha256": "825109bd6750af5652a455cb5cd1ff8611f4ae8e055bfd235a6c5950cded941d"
+    },
+    {
+      "path": "source/mutation-client/__tests__/history-log.spec.ts",
+      "size_bytes": 692,
+      "sha256": "527a168ee9ed425b2082812f9e99da1cc8438d9b8877ccefb2116ac663f26ea6"
+    },
+    {
+      "path": "source/mutation-client/__tests__/integration-flow.spec.ts",
+      "size_bytes": 570,
+      "sha256": "20a5af769c4ab661c21aa12399d1fbf4a0350dc3cb7d07a5c2fe3147754f15e2"
+    },
+    {
+      "path": "source/mutation-client/__tests__/mode-policy.spec.ts",
+      "size_bytes": 567,
+      "sha256": "cf4b26036fca1eaaa3c010339ca21bed0b7dc2005b4c959053e271686e48aae6"
+    },
+    {
+      "path": "source/mutation-client/__tests__/preview-diff.spec.ts",
+      "size_bytes": 310,
+      "sha256": "818381393804b6a90e5b4769233208b676caaa888d3cbd7cbd8bc26034750cc5"
+    },
+    {
+      "path": "source/mutation-client/__tests__/preview-session.spec.ts",
+      "size_bytes": 741,
+      "sha256": "0a0502a104a0aff2751f36b27c9e3282f877215a97a7ee6cb4241b8c508889b4"
+    },
+    {
+      "path": "source/mutation-client/__tests__/revert-planner.spec.ts",
+      "size_bytes": 630,
+      "sha256": "8d7453a1184067b1bb773b92b192be73f99f53ca973f76665e306730b764d228"
+    },
+    {
+      "path": "source/mutation-client/__tests__/validation.spec.ts",
+      "size_bytes": 614,
+      "sha256": "5c39b0657641388377cfb498242ffb1ad63e336509459ced92e373f0caf77c78"
+    },
+    {
+      "path": "source/mutation-client/bridge-adapter.ts",
+      "size_bytes": 1332,
+      "sha256": "0e742a455c17ec2322866dab085b6801deb542ffc4a99fb7dff1424e1bb4d08f"
+    },
+    {
+      "path": "source/mutation-client/bridge-client.ts",
+      "size_bytes": 2554,
+      "sha256": "325a53d0167e9b7833d9d4b4c9828d45eb94b1eb891ba7b79749f9b78b02ec75"
+    },
+    {
+      "path": "source/mutation-client/commit-orchestrator.ts",
+      "size_bytes": 1832,
+      "sha256": "f2037e8763a8a8df15631e8c6ce8b8dc57d32ef14268e413ae5f8f4e18cae9e1"
+    },
+    {
+      "path": "source/mutation-client/contracts.ts",
+      "size_bytes": 5699,
+      "sha256": "dc6b78315a5c2c8f5c466f05a888f6a49624e09733717d0260fdf6626f9ffd13"
+    },
+    {
+      "path": "source/mutation-client/diagnostics.ts",
+      "size_bytes": 1388,
+      "sha256": "66ead110f96987c67d7756ee027049d8f2884cd936c83815d1ca3886de6c60c0"
+    },
+    {
+      "path": "source/mutation-client/examples/mutation-client-demo.ts",
+      "size_bytes": 951,
+      "sha256": "4552db3d8a7f52cd0e9fd60bb1eb5ab3280049349a4764690fa7ff0220be69e2"
+    },
+    {
+      "path": "source/mutation-client/history-log.ts",
+      "size_bytes": 987,
+      "sha256": "787fe697b9fe8c8830eaad6167011d31d99ba21630e46c3ce06471e00e0203bd"
+    },
+    {
+      "path": "source/mutation-client/index.ts",
+      "size_bytes": 463,
+      "sha256": "68abace239aead77c3af53543b83300ed04f08392f8c6d4f5148517a5a76cc3f"
+    },
+    {
+      "path": "source/mutation-client/mode-policy.ts",
+      "size_bytes": 1702,
+      "sha256": "1a855469aa566ff62e2fd3acdc1ec2c65a5c8d26e62fbe9c7e996bc28ab66d80"
+    },
+    {
+      "path": "source/mutation-client/mutation-intents.ts",
+      "size_bytes": 2807,
+      "sha256": "b15e049c812f3b5c5ed8f16c866b254b436fca022e3d80d458302c5a452e77a2"
+    },
+    {
+      "path": "source/mutation-client/preview-diff.ts",
+      "size_bytes": 913,
+      "sha256": "bf7a24ebf4deded23b01d6f04960a3c207f1fe125e8d53fe0c22f69d34fd898e"
+    },
+    {
+      "path": "source/mutation-client/preview-session.ts",
+      "size_bytes": 2487,
+      "sha256": "c274d3fd6b53eab89ae557fe830d5e4ed020b8953829dad827ac7d04e12f9500"
+    },
+    {
+      "path": "source/mutation-client/react-hooks.ts",
+      "size_bytes": 526,
+      "sha256": "c95a18e5f72b743e92469ca761e8476af8da3216f6f44f5a8cf843aefb5befca"
+    },
+    {
+      "path": "source/mutation-client/revert-planner.ts",
+      "size_bytes": 1698,
+      "sha256": "a234d073a7686d0376a00ff43f67f99e489cc19e9ddf33e78de30b79288429d1"
+    },
+    {
+      "path": "source/mutation-client/scenario-fixtures.ts",
+      "size_bytes": 1867,
+      "sha256": "dfd07c49a0bc2ae75f412cbf240a419ee7c0a2ec808555d163ce0a939db28e0f"
+    },
+    {
+      "path": "source/mutation-client/types/react-shim.d.ts",
+      "size_bytes": 196,
+      "sha256": "6af5f0b2241cf1cdaa4ab4e212950a82be78926b9399bf17ec5ee9db600c33c5"
+    },
+    {
+      "path": "source/mutation-client/validation.ts",
+      "size_bytes": 2820,
+      "sha256": "d335ced642a4d0fa9d342ea26c39da11623a11f113995cd006608e9a1dcea719"
+    },
+    {
+      "path": "source/mutation-integration/README.md",
+      "size_bytes": 126,
+      "sha256": "6bb0418230a40595cf80970a28017f756a7efcc2c0ac8f17c45fe4a3d7f7e915"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/artifacts-index.spec.ts",
+      "size_bytes": 159,
+      "sha256": "52e2e05cffb82d64ce48cad23a28e3df1f0a68fc660c23bd69ba213ca7529dd7"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/bridge-policy-assertions.spec.ts",
+      "size_bytes": 158,
+      "sha256": "0726263f12145c5743d2af65c054b3d604efd4f85fb8daddf5d0938aff661758"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/bridge-routing-assertions.spec.ts",
+      "size_bytes": 191,
+      "sha256": "b11e375def4c13e32aac2b9f5ce8626811230caeed21e81f0b3451dc60ad645f"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/contracts.spec.ts",
+      "size_bytes": 179,
+      "sha256": "db27b774db58c94d0b34aed70d6a40824ea1851cc2029ebb606d5d206da9e1f6"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/entrypoint-map.spec.ts",
+      "size_bytes": 211,
+      "sha256": "e95f35827dadc50e587c826c918cb6623e13c70276e71d8f6945f6532e918d4f"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/integration-seam.spec.ts",
+      "size_bytes": 255,
+      "sha256": "007b1af075495e2c291ca27f06e10deb50ad2bda7140734d577bdd91d9a9c552"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/path-hardening.spec.ts",
+      "size_bytes": 159,
+      "sha256": "4c753e3d9beedc9d2431a6e78cae8061dba117b358e903ed5026e03a56f0ea9f"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/preview-commit-assertions.spec.ts",
+      "size_bytes": 152,
+      "sha256": "7efd60e29bd302cd9188d792d4ecb37092df21339bf58c0e4ca98df9d1a5c1f5"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/repo-probes.spec.ts",
+      "size_bytes": 214,
+      "sha256": "5a727284d3de2c2759ccfae3bfbb95426e005ba9f5a59afbbd9633d0fb47dd20"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/smoke-checks.spec.ts",
+      "size_bytes": 191,
+      "sha256": "7a869d16e0e581286e4c3c5abff78b363ec0e5452022e05d66a1643069ad07da"
+    },
+    {
+      "path": "source/mutation-integration/artifacts-index.ts",
+      "size_bytes": 709,
+      "sha256": "162e16dcd558e2ac0f9e98aeed64451454765a07ed700d13e89161ee04877606"
+    },
+    {
+      "path": "source/mutation-integration/bridge-policy-assertions.ts",
+      "size_bytes": 373,
+      "sha256": "c711d9ae3b6dcfd1ce304e0d3689981f2863e4fb82f6073f208e1819920229f8"
+    },
+    {
+      "path": "source/mutation-integration/bridge-routing-assertions.ts",
+      "size_bytes": 472,
+      "sha256": "0fa5fbd24b7350cfe83541815bdc197fb0c9f896f8df66d4c30ba444214c39f1"
+    },
+    {
+      "path": "source/mutation-integration/composer-entrypoint-map.ts",
+      "size_bytes": 276,
+      "sha256": "18bf9c2bb397ab7ea6d34b269fe74e6c96c2d22ec5fed27e7ae711a4b37393c7"
+    },
+    {
+      "path": "source/mutation-integration/contracts.ts",
+      "size_bytes": 951,
+      "sha256": "68e97caf911fa2059ae4dbbbfcf84183f03612d8f5d24b6ee7065451471f28e0"
+    },
+    {
+      "path": "source/mutation-integration/evidence-contracts.ts",
+      "size_bytes": 363,
+      "sha256": "969a2d39959989d69f6321f05d3400f02f289f466eefa793a40ce385a9ae183a"
+    },
+    {
+      "path": "source/mutation-integration/examples/report-shape-demo.ts",
+      "size_bytes": 640,
+      "sha256": "215074f4919be71c28dd5595a25bba8ba30a7803fce5d49fb849b8cb8c6ea363"
+    },
+    {
+      "path": "source/mutation-integration/examples/run-smoke-checks-demo.ts",
+      "size_bytes": 237,
+      "sha256": "f8a6bf31cdf9dbbdcd9fea86debb0212b18d07b1d5f29a98766ab067b7a85f95"
+    },
+    {
+      "path": "source/mutation-integration/index.ts",
+      "size_bytes": 523,
+      "sha256": "8e7884506279dc5c206a3f96ba5714ba571c2591f190dfd494d572084be9be0c"
+    },
+    {
+      "path": "source/mutation-integration/mutation-flow-map.ts",
+      "size_bytes": 206,
+      "sha256": "2d613bc891d3a34d32d514c0ec520b16809f874d1d835328b7449157c7dbac80"
+    },
+    {
+      "path": "source/mutation-integration/path-hardening.ts",
+      "size_bytes": 750,
+      "sha256": "3c7cef8403d14687f41ad7583883ce1d06f21ad52c1e19c9d7c663b3011c9867"
+    },
+    {
+      "path": "source/mutation-integration/post-install-report.ts",
+      "size_bytes": 462,
+      "sha256": "de1d52ff6e25bbb0b8bbd19af798f2ff7887f38499457def780c7fa181c1c066"
+    },
+    {
+      "path": "source/mutation-integration/preview-commit-assertions.ts",
+      "size_bytes": 580,
+      "sha256": "5cb53cad61fa75d5165fcbad164204a5d844fd4e29c6bca77f1d4ad0e2c666c2"
+    },
+    {
+      "path": "source/mutation-integration/repo-probes.ts",
+      "size_bytes": 322,
+      "sha256": "3099aeac0514b3221b77d3efa929de04b8317255e6c965ba44a9274554a7c599"
+    },
+    {
+      "path": "source/mutation-integration/smoke-checks.ts",
+      "size_bytes": 356,
+      "sha256": "54d802d26d19cee58d70bffe1dcc26f627fd22649df7ec18147a7dc388e62bec"
+    },
+    {
+      "path": "source/mutation-integration/types/react-shim.d.ts",
+      "size_bytes": 201,
+      "sha256": "818ba14ab430351bf9cd1bba97a88d5fe0f1c281d4186251b67b8160e47633ce"
+    },
+    {
+      "path": "source/mutation-integration/verification-plan.ts",
+      "size_bytes": 726,
+      "sha256": "19168093205bc42cfc06e82a5029234d33e9c3502f2d286f59f00425d652c65e"
+    },
+    {
+      "path": "source/mutation-integration/wiring-targets.ts",
+      "size_bytes": 549,
+      "sha256": "1843cea363698dccefe29c2a03da433d2db2c4f7803b3f6ee494abe735c07d4a"
+    },
+    {
+      "path": "verify_live_scene_composer_mutation_integration_hardening_v1.ps1",
+      "size_bytes": 4260,
+      "sha256": "d6274926734433c4017097736f160093bbe8a0969b803c1cd09c4d6a25f48a9a"
+    }
+  ]
+}

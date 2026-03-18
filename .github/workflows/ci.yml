@@ -2,12 +2,221 @@ name: CI
 
 on:
   pull_request:
+    paths-ignore:
+      - "tools/graphviz/graphs/**"
+      - "tools/_local/**"
+      - "_reports/**"
+      - ".repo_map/**"
+      - "docs/knowledge/codex_chats/**"
+      - "artifacts/**"
   push:
     branches: ["main"]
+    paths-ignore:
+      - "tools/graphviz/graphs/**"
+      - "tools/_local/**"
+      - "_reports/**"
+      - ".repo_map/**"
+      - "docs/knowledge/codex_chats/**"
+      - "artifacts/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  ci:
+  guardrails:
     runs-on: ubuntu-latest
+    env:
+      REPORT_DIR: tools/_local/reports/ci
     steps:
-      - uses: actions/checkout@v4
-      - run: echo "TODO: install + lint + test"
+      - name: Mark workflow start
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "CI_METRIC_WORKFLOW_START=$(date +%s)" >> "$GITHUB_ENV"
+          echo "CI_METRIC_CHECKOUT_START=$(date +%s)" >> "$GITHUB_ENV"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Record checkout duration
+        shell: bash
+        run: |
+          set -euo pipefail
+          end_ts="$(date +%s)"
+          duration="$((end_ts-CI_METRIC_CHECKOUT_START))"
+          echo "CI_METRIC_CHECKOUT_SECONDS=${duration}" >> "$GITHUB_ENV"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - name: Setup Node
+        id: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Restore turbo cache (optional)
+        id: turbo-cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'turbo.json') }}
+          restore-keys: |
+            turbo-${{ runner.os }}-
+
+      - name: Record cache signals
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "CI_METRIC_TURBO_CACHE_HIT=${{ steps.turbo-cache.outputs.cache-hit }}" >> "$GITHUB_ENV"
+          echo "CI_METRIC_PNPM_CACHE_HIT=${{ steps.setup-node.outputs.cache-hit }}" >> "$GITHUB_ENV"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Resolve diff base SHA
+        id: base
+        shell: bash
+        run: |
+          set -euo pipefail
+          base_sha="${{ github.event.pull_request.base.sha }}"
+          if [ -z "${base_sha}" ] || [ "${base_sha}" = "null" ]; then
+            base_sha="${{ github.event.before }}"
+          fi
+          if [ -z "${base_sha}" ] || [ "${base_sha}" = "null" ] || [ "${base_sha}" = "0000000000000000000000000000000000000000" ]; then
+            base_sha="HEAD~1"
+          fi
+          echo "base_sha=${base_sha}" >> "$GITHUB_OUTPUT"
+
+      - name: Install dependencies (frozen lockfile)
+        shell: bash
+        run: |
+          set -euo pipefail
+          install_start="$(date +%s)"
+          pnpm install --frozen-lockfile --ignore-scripts
+          install_end="$(date +%s)"
+          echo "CI_METRIC_INSTALL_SECONDS=$((install_end-install_start))" >> "$GITHUB_ENV"
+
+      - name: Guardrail checks (deterministic + report-mode)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "${REPORT_DIR}"
+          guardrail_start="$(date +%s)"
+
+          node tools/scripts/validate_dependencies_policy.mjs \
+            --strict \
+            --output "${REPORT_DIR}/dependencies_policy_validation.json"
+
+          node tools/scripts/validate_workspace_boundaries.mjs \
+            --output "${REPORT_DIR}/workspace_boundaries.json"
+
+          node tools/scripts/check_dependency_hygiene.mjs \
+            --output "${REPORT_DIR}/dependency_hygiene.json"
+
+          node tools/scripts/compute_affected_projects.mjs \
+            --base "${{ steps.base.outputs.base_sha }}" \
+            --head "${GITHUB_SHA}" \
+            --output "${REPORT_DIR}/affected_projects.json"
+
+          node tools/scripts/report_codeowners_coverage.mjs \
+            --output "${REPORT_DIR}/codeowners_coverage.json"
+
+          node tools/scripts/check_no_new_cycles.mjs \
+            --strict \
+            --output "${REPORT_DIR}/dependency_cycles.json"
+
+          node tools/scripts/check_release_discipline.mjs \
+            --base "${{ steps.base.outputs.base_sha }}" \
+            --head "${GITHUB_SHA}" \
+            --output "${REPORT_DIR}/release_discipline.json"
+
+          node tools/scripts/report_sensitive_paths.mjs \
+            --base "${{ steps.base.outputs.base_sha }}" \
+            --head "${GITHUB_SHA}" \
+            --output "${REPORT_DIR}/sensitive_paths.json"
+
+          node tools/scripts/report_repo_hygiene.mjs \
+            --output "${REPORT_DIR}/repo_hygiene.json"
+
+          python tools/graphviz/build_scope_index.py
+
+          guardrail_end="$(date +%s)"
+          echo "CI_METRIC_GUARDRAILS_SECONDS=$((guardrail_end-guardrail_start))" >> "$GITHUB_ENV"
+
+      - name: Main lane governance signal (report only)
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          set -euo pipefail
+          node tools/scripts/check_release_discipline.mjs \
+            --base "${{ steps.base.outputs.base_sha }}" \
+            --head "${GITHUB_SHA}" \
+            --output "${REPORT_DIR}/release_discipline.main_lane.json"
+
+      - name: Normalize optional report artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f "${REPORT_DIR}/release_discipline.main_lane.json" ]; then
+            echo "{\"status\":\"skipped\",\"reason\":\"main lane only\"}" > "${REPORT_DIR}/release_discipline.main_lane.json"
+          fi
+
+      - name: Mark artifact upload start
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "CI_METRIC_ARTIFACT_START=$(date +%s)" >> "$GITHUB_ENV"
+
+      - name: Upload CI observability reports (core)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-observability-core-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          path: |
+            tools/_local/reports/ci/dependencies_policy_validation.json
+            tools/_local/reports/ci/workspace_boundaries.json
+            tools/_local/reports/ci/dependency_hygiene.json
+            tools/_local/reports/ci/affected_projects.json
+            tools/_local/reports/ci/codeowners_coverage.json
+            tools/_local/reports/ci/dependency_cycles.json
+            tools/_local/reports/ci/release_discipline.json
+            tools/_local/reports/ci/release_discipline.main_lane.json
+            tools/_local/reports/ci/sensitive_paths.json
+            tools/_local/reports/ci/repo_hygiene.json
+            tools/graphviz/graphs/scope_summary.json
+            tools/graphviz/graphs/scope_top_risks.json
+            tools/graphviz/graphs/index.scoped.html
+
+      - name: Record artifact duration and workflow total
+        shell: bash
+        run: |
+          set -euo pipefail
+          artifact_end="$(date +%s)"
+          echo "CI_METRIC_ARTIFACT_SECONDS=$((artifact_end-CI_METRIC_ARTIFACT_START))" >> "$GITHUB_ENV"
+          echo "CI_METRIC_TOTAL_SECONDS=$((artifact_end-CI_METRIC_WORKFLOW_START))" >> "$GITHUB_ENV"
+
+      - name: Collect engineering health summary
+        shell: bash
+        run: |
+          set -euo pipefail
+          node tools/scripts/collect_engineering_health.mjs \
+            --output "${REPORT_DIR}/engineering_health.json"
+
+      - name: Upload engineering health report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-observability-health-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          path: tools/_local/reports/ci/engineering_health.json
