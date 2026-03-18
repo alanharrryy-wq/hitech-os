@@ -33,11 +33,17 @@ class TreeController:
         explorer_layout.setSpacing(10)
 
         tree_filter_box = QLineEdit(explorer_card)
+        tree_filter_box.setObjectName('treeFilterSurface')
+        tree_filter_box.setProperty('visualRole', 'status-surface')
+        tree_filter_box.setProperty('visualTier', 'themed')
         tree_filter_box.setPlaceholderText('Filtrar árbol por nombre o ruta...')
         tree_filter_box.textChanged.connect(self.on_tree_filter_changed)
         explorer_layout.addWidget(tree_filter_box)
 
         repo_tree = QTreeWidget(explorer_card)
+        repo_tree.setObjectName('repoTreeSurface')
+        repo_tree.setProperty('visualRole', 'summary-surface')
+        repo_tree.setProperty('visualTier', 'themed')
         repo_tree.setHeaderLabels(['Repositorio'])
         repo_tree.setAlternatingRowColors(True)
         repo_tree.setAnimated(True)
@@ -47,7 +53,6 @@ class TreeController:
         explorer_layout.addWidget(repo_tree, 1)
 
         self.main.explorer_dock.setWidget(explorer_card)
-        self.main._panel_cards.append(explorer_card)
 
         return tree_filter_box, repo_tree
 

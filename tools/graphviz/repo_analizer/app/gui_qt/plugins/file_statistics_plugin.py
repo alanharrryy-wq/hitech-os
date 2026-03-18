@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from ..plugin_base import Plugin, PluginContext
+from .plugin_base import Plugin, PluginContext
 
 if TYPE_CHECKING:
     pass
@@ -57,7 +57,7 @@ class FileStatisticsPlugin(Plugin):
         # Register commands
         self._register_commands(context)
 
-        print(f"✓ Plugin '{self.name}' initialized")
+        print(f"[OK] Plugin '{self.name}' initialized")
 
     def _subscribe_to_events(self, context: PluginContext) -> None:
         """Subscribe to application events."""
@@ -103,4 +103,4 @@ class FileStatisticsPlugin(Plugin):
     def shutdown(self) -> None:
         """Clean up when plugin is unloaded."""
         super().shutdown()
-        print(f"✓ Plugin '{self.name}' shut down")
+        print(f"[OK] Plugin '{self.name}' shut down")

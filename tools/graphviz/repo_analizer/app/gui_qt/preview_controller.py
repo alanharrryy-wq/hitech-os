@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import subprocess
 import sys
@@ -57,22 +57,22 @@ class PreviewController:
         self.main.open_system_btn = AccentButton('Abrir con sistema', skin_tokens, preview_card)
         self.main.open_system_btn.clicked.connect(self.main.open_current_preview_with_system)
         preview_header.addWidget(self.main.open_system_btn)
-        self.main._toolbar_buttons.append(self.main.open_system_btn)
 
         self.main.open_svg_btn = AccentButton('SVG Workspace', skin_tokens, preview_card)
         self.main.open_svg_btn.clicked.connect(self.main.open_svg_workspace)
         preview_header.addWidget(self.main.open_svg_btn)
-        self.main._toolbar_buttons.append(self.main.open_svg_btn)
 
         self.main.bookmark_btn = AccentButton('Bookmark', skin_tokens, preview_card)
         self.main.bookmark_btn.clicked.connect(self.main.add_current_preview_bookmark)
         preview_header.addWidget(self.main.bookmark_btn)
-        self.main._toolbar_buttons.append(self.main.bookmark_btn)
 
         preview_layout.addLayout(preview_header)
 
         # Preview text
         self.main.preview = QPlainTextEdit(preview_card)
+        self.main.preview.setObjectName('previewCodeSurface')
+        self.main.preview.setProperty('visualRole', 'code-surface')
+        self.main.preview.setProperty('codeSurface', True)
         self.main.preview.setReadOnly(True)
         self.main.preview.setLineWrapMode(QPlainTextEdit.NoWrap)
         code_font = QFont('Consolas', 10)
@@ -87,7 +87,6 @@ class PreviewController:
         self.main.preview_hint_label.setObjectName('panelMutedLabel')
         preview_layout.addWidget(self.main.preview_hint_label)
 
-        self.main._panel_cards.append(preview_card)
         return preview_card
 
     def build_inspector_panel(self, skin_tokens: SkinTokens, central_splitter) -> QWidget:
@@ -112,22 +111,37 @@ class PreviewController:
         from PySide6.QtWidgets import QTabWidget
 
         self.main.insights_tabs = QTabWidget(insights_card)
+        self.main.insights_tabs.setObjectName('insightsTabsSurface')
+        self.main.insights_tabs.setProperty('visualRole', 'panel-surface')
+        self.main.insights_tabs.setProperty('visualTier', 'themed')
 
         # Stats tab
         self.main.stats_text = QPlainTextEdit(insights_card)
+        self.main.stats_text.setObjectName('statsTextSurface')
+        self.main.stats_text.setProperty('visualRole', 'code-surface')
+        self.main.stats_text.setProperty('codeSurface', True)
         self.main.stats_text.setReadOnly(True)
 
         # Log tab
         self.main.log_text = QPlainTextEdit(insights_card)
+        self.main.log_text.setObjectName('logTextSurface')
+        self.main.log_text.setProperty('visualRole', 'code-surface')
+        self.main.log_text.setProperty('codeSurface', True)
         self.main.log_text.setReadOnly(True)
 
         # Imports tab
         self.main.imports_tree = QTreeWidget(insights_card)
+        self.main.imports_tree.setObjectName('importsTreeSurface')
+        self.main.imports_tree.setProperty('visualRole', 'summary-surface')
+        self.main.imports_tree.setProperty('visualTier', 'themed')
         self.main.imports_tree.setHeaderLabels(['Import', 'Resuelto'])
         self.main.imports_tree.itemDoubleClicked.connect(self.on_import_double_click)
 
         # Dependents tab
         self.main.dependents_tree = QTreeWidget(insights_card)
+        self.main.dependents_tree.setObjectName('dependentsTreeSurface')
+        self.main.dependents_tree.setProperty('visualRole', 'summary-surface')
+        self.main.dependents_tree.setProperty('visualTier', 'themed')
         self.main.dependents_tree.setHeaderLabels(['Archivo dependiente'])
         self.main.dependents_tree.itemDoubleClicked.connect(self.on_dependent_double_click)
 
@@ -137,7 +151,6 @@ class PreviewController:
         self.main.insights_tabs.addTab(self.main.log_text, 'Log')
         insights_layout.addWidget(self.main.insights_tabs, 1)
 
-        self.main._panel_cards.append(insights_card)
         return insights_card
 
     def show_preview_for_relpath(self, relpath: str, line: int = 0, *, add_history: bool = True) -> None:
@@ -222,6 +235,9 @@ class PreviewController:
             lines.append(f'Línea objetivo: {preview.line}')
         if path.suffix.lower() == '.svg':
             lines.append('Tip: usa SVG Workspace para paneo y zoom fino.')
+            canonical_path = self._legacy_graph_svg_candidate(path)
+            if canonical_path is not None and canonical_path != path:
+                lines.append(f'Workspace SVG canónico: {canonical_path}')
 
         self.main.file_summary.setPlainText('\n'.join(lines))
 
@@ -251,12 +267,45 @@ class PreviewController:
         if self.main.current_preview_path:
             self.main.open_with_system(self.main.current_preview_path)
 
+    def _legacy_graph_svg_candidate(self, current_path: Path) -> Path | None:
+        """Resolve legacy flat graph SVG paths to the canonical graphs/<folder_id>/graph.svg layout."""
+        if current_path.suffix.lower() != '.svg' or current_path.name == 'graph.svg':
+            return None
+
+        candidate = current_path.parent / current_path.stem / 'graph.svg'
+        if candidate.exists():
+            return candidate
+        return None
+
+    def _resolve_svg_workspace_target(self) -> tuple[Path | None, str | None]:
+        """Resolve the most appropriate SVG file for the dedicated workspace."""
+        if not self.main.current_preview_path:
+            return None, None
+
+        preview_path = Path(self.main.current_preview_path)
+        if preview_path.suffix.lower() != '.svg':
+            return None, None
+
+        resolved_path = self._legacy_graph_svg_candidate(preview_path) or preview_path
+        if resolved_path.name == 'graph.svg':
+            title = f'{resolved_path.parent.name}/graph.svg'
+        else:
+            title = self.main.current_preview_rel or resolved_path.name
+        return resolved_path, title
+
     def open_svg_workspace(self) -> None:
         """Open SVG workspace for current preview."""
-        if not self.main.current_preview_path:
+        svg_path, title = self._resolve_svg_workspace_target()
+        if svg_path is None:
             return
 
-        if Path(self.main.current_preview_path).suffix.lower() != '.svg':
+        if not svg_path.exists():
+            QMessageBox.warning(
+                self.main,
+                'Repo Analyzer',
+                f'No se encontró el SVG para el workspace\n{svg_path}',
+
+            )
             return
 
         from .svg_viewer import SvgPreviewWindow
@@ -265,10 +314,7 @@ class PreviewController:
             self.main._svg_window = SvgPreviewWindow(self.main._skin_tokens)
 
         self.main._svg_window.set_skin(self.main._skin_tokens)
-        self.main._svg_window.load_svg(
-            self.main.current_preview_path,
-            self.main.current_preview_rel or Path(self.main.current_preview_path).name
-        )
+        self.main._svg_window.load_svg(str(svg_path), title)
         self.main._svg_window.show()
         self.main._svg_window.raise_()
         self.main._svg_window.activateWindow()
@@ -290,4 +336,3 @@ class PreviewController:
                 subprocess.Popen(['xdg-open', path])
         except Exception as e:
             QMessageBox.warning(self.main, 'Repo Analyzer', f'No se pudo abrir con el sistema:\n{e}')
-

@@ -6,9 +6,11 @@ from __future__ import annotations
 
 import importlib
 import importlib.util
+import os
 import sys
+from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING, Dict, Optional
+from typing import TYPE_CHECKING, Any, Dict, Optional
 
 from .plugin_base import Plugin, PluginContext
 from .plugin_manifest import PluginManifest
@@ -17,6 +19,18 @@ if TYPE_CHECKING:
     from ..command_dispatcher import CommandDispatcher
     from ..event_bus import EventBus
     from ..services import ServiceContainer
+
+
+_DEBUG_TRUE_VALUES = {'1', 'true', 'yes', 'on'}
+
+
+@dataclass(slots=True)
+class PluginDiagnosticEvent:
+    phase: str
+    status: str
+    plugin: str = ''
+    message: str = ''
+    source: str = ''
 
 
 class PluginManager:
@@ -48,6 +62,116 @@ class PluginManager:
         self._plugin_dependencies: Dict[str, list[str]] = {}
         self._plugins_dir = Path(__file__).resolve().parent
         self._app_root = Path(__file__).resolve().parents[3]
+        self._diagnostic_events: list[PluginDiagnosticEvent] = []
+        self._load_failures: list[str] = []
+        self._init_failures: list[str] = []
+        self._skipped_plugins: list[str] = []
+        self._contract_warnings: list[str] = []
+        self._manifest_validation_failures: list[str] = []
+
+    def _resolve_debug_mode(self) -> bool:
+        env_value = os.environ.get('HITECH_QT_DEV_TRACE', '').strip().lower()
+        if env_value in _DEBUG_TRUE_VALUES:
+            return True
+
+        settings = self.container.get('settings') if self.container is not None else None
+        if settings is not None:
+            try:
+                raw = settings.value('developer_debug_mode', False)
+                text = str(raw).strip().lower()
+                if text in _DEBUG_TRUE_VALUES:
+                    return True
+            except Exception:
+                pass
+        return False
+
+    def _emit_log(self, message: str) -> None:
+        main_window = self.container.get('main_window') if self.container is not None else None
+        logger = getattr(main_window, 'log', None)
+        if callable(logger):
+            try:
+                logger(message)
+                return
+            except Exception:
+                pass
+        print(message)
+
+    def _record_event(
+        self,
+        *,
+        phase: str,
+        status: str,
+        plugin: str = '',
+        message: str = '',
+        source: str = '',
+    ) -> None:
+        event = PluginDiagnosticEvent(
+            phase=phase,
+            status=status,
+            plugin=plugin,
+            message=message,
+            source=source,
+        )
+        self._diagnostic_events.append(event)
+
+        if status in {'failed', 'warning', 'skipped'} or self._resolve_debug_mode():
+            plugin_part = f' plugin={plugin}' if plugin else ''
+            source_part = f' source={source}' if source else ''
+            message_part = f' msg={message}' if message else ''
+            self._emit_log(
+                f"[plugin-diag] {phase}:{status}{plugin_part}{source_part}{message_part}"
+            )
+
+    def _record_contract_warning(self, plugin_name: str, message: str) -> None:
+        entry = f"{plugin_name}: {message}"
+        self._contract_warnings.append(entry)
+        self._record_event(
+            phase='contract',
+            status='warning',
+            plugin=plugin_name,
+            message=message,
+        )
+
+    def _resolve_manifest_module_file(self, manifest: PluginManifest) -> Path | None:
+        if manifest.plugin_dir is None:
+            return None
+
+        parts = manifest.module_path_parts()
+        if not parts:
+            return None
+
+        candidate_root = manifest.plugin_dir.joinpath(*parts)
+        module_file = candidate_root.with_suffix('.py')
+        package_init = candidate_root / '__init__.py'
+
+        if module_file.exists():
+            return module_file
+        if package_init.exists():
+            return package_init
+        return None
+
+    def _validate_manifest_contract(self, manifest: PluginManifest) -> None:
+        if manifest.manifest_path is None:
+            raise ValueError("Plugin manifest path is not defined")
+        if manifest.plugin_dir is None:
+            raise ValueError(f"Plugin manifest '{manifest.id}' has no plugin directory")
+        if not manifest.plugin_dir.exists():
+            raise ValueError(
+                f"Plugin directory does not exist for '{manifest.id}': {manifest.plugin_dir}"
+            )
+
+        module_file = self._resolve_manifest_module_file(manifest)
+        if module_file is None:
+            module_ref = manifest.module.replace("\\", "/")
+            raise ValueError(
+                f"Plugin manifest '{manifest.id}' module '{module_ref}' does not resolve to "
+                f"a module file under {manifest.plugin_dir}"
+            )
+
+        if manifest.class_name == "Plugin":
+            raise ValueError(
+                f"Plugin manifest '{manifest.id}' cannot use abstract base class 'Plugin' as class_name"
+            )
 
     def _plugins_package_name(self) -> str:
         package_name = __package__
@@ -184,8 +308,19 @@ class PluginManager:
             except Exception:
                 pass
 
+        if not plugin_name:
+            raise ValueError('Plugin name cannot be empty')
+
         if plugin_name in self._plugins:
             raise ValueError(f"Plugin '{plugin_name}' is already loaded")
+
+        version = str(getattr(plugin, 'version', '') or '').strip()
+        if not version:
+            self._record_contract_warning(plugin_name, 'missing version')
+
+        description = str(getattr(plugin, 'description', '') or '').strip()
+        if not description:
+            self._record_contract_warning(plugin_name, 'missing description')
 
         self._plugins[plugin_name] = plugin
         self._plugin_dependencies[plugin_name] = (
@@ -194,6 +329,13 @@ class PluginManager:
         if manifest is not None:
             self._manifests[plugin_name] = manifest
 
+        self._record_event(
+            phase='register',
+            status='ok',
+            plugin=plugin_name,
+            message='plugin registered',
+            source=str(manifest.manifest_path) if manifest is not None and manifest.manifest_path else fallback_name,
+        )
         return plugin_name
 
     def load_plugin_from_file(self, filepath: str) -> Optional[str]:
@@ -211,10 +353,19 @@ class PluginManager:
 
         plugin_class = self._find_plugin_class(module)
         plugin = plugin_class()
-        return self._register_plugin(plugin, fallback_name=filepath_obj.stem)
+        plugin_name = self._register_plugin(plugin, fallback_name=filepath_obj.stem)
+        self._record_event(
+            phase='load',
+            status='ok',
+            plugin=plugin_name,
+            message='loaded from file',
+            source=str(filepath_obj),
+        )
+        return plugin_name
 
     def load_plugin_from_manifest(self, manifest_path: str) -> Optional[str]:
         manifest = PluginManifest.from_file(manifest_path)
+        self._validate_manifest_contract(manifest)
         module = self._load_manifest_plugin_module(manifest)
 
         if module not in self._loaded_modules:
@@ -222,52 +373,120 @@ class PluginManager:
 
         plugin_class = self._find_plugin_class(module, manifest.class_name)
         plugin = plugin_class()
-        return self._register_plugin(
+        plugin_name = self._register_plugin(
             plugin,
             manifest=manifest,
             fallback_name=manifest.id,
         )
+        self._record_event(
+            phase='load',
+            status='ok',
+            plugin=plugin_name,
+            message='loaded from manifest',
+            source=str(manifest.manifest_path) if manifest.manifest_path else manifest_path,
+        )
+        return plugin_name
 
     def load_plugins_from_directory(self, directory: str) -> list[str]:
         directory_path = Path(directory).resolve()
         if not directory_path.exists():
+            self._record_event(
+                phase='discover',
+                status='warning',
+                message='plugin directory not found',
+                source=str(directory_path),
+            )
             return []
 
         loaded: list[str] = []
 
-        for plugin_dir in self._discover_manifest_plugin_dirs(directory_path):
+        manifest_dirs = self._discover_manifest_plugin_dirs(directory_path)
+        self._record_event(
+            phase='discover',
+            status='ok',
+            message=f'manifest_dirs={len(manifest_dirs)}',
+            source=str(directory_path),
+        )
+
+        for plugin_dir in manifest_dirs:
             manifest_path = plugin_dir / self.PLUGIN_MANIFEST_NAME
             try:
                 plugin_name = self.load_plugin_from_manifest(str(manifest_path))
                 if plugin_name:
                     loaded.append(plugin_name)
             except Exception as exc:
-                print(f"Failed to load plugin manifest from {manifest_path}: {exc}")
+                failure = f"Failed to load plugin manifest from {manifest_path}: {exc}"
+                self._load_failures.append(failure)
+                self._manifest_validation_failures.append(failure)
+                self._record_event(
+                    phase='manifest',
+                    status='failed',
+                    message=str(exc),
+                    source=str(manifest_path),
+                )
+                print(failure)
 
-        for file_path in sorted(directory_path.iterdir(), key=lambda p: p.name.lower()):
-            if not self._is_discoverable_plugin_file(file_path):
-                continue
+        discoverable_files = [
+            file_path
+            for file_path in sorted(directory_path.iterdir(), key=lambda p: p.name.lower())
+            if self._is_discoverable_plugin_file(file_path)
+        ]
+        self._record_event(
+            phase='discover',
+            status='ok',
+            message=f'legacy_files={len(discoverable_files)}',
+            source=str(directory_path),
+        )
 
+        for file_path in discoverable_files:
             try:
                 plugin_name = self.load_plugin_from_file(str(file_path))
                 if plugin_name:
                     loaded.append(plugin_name)
             except Exception as exc:
-                print(f"Failed to load plugin from {file_path}: {exc}")
+                failure = f"Failed to load plugin from {file_path}: {exc}"
+                self._load_failures.append(failure)
+                self._record_event(
+                    phase='load',
+                    status='failed',
+                    message=str(exc),
+                    source=str(file_path),
+                )
+                print(failure)
 
         return loaded
 
     def initialize_plugin(self, name: str) -> bool:
         if name not in self._plugins:
+            self._record_event(
+                phase='initialize',
+                status='failed',
+                plugin=name,
+                message='plugin not loaded',
+            )
             return False
 
         if name in self._contexts:
+            self._record_event(
+                phase='initialize',
+                status='skipped',
+                plugin=name,
+                message='already initialized',
+            )
             return True
 
         plugin = self._plugins[name]
         manifest = self._manifests.get(name)
         if manifest is not None and not manifest.enabled:
-            print(f"Skipping disabled plugin '{name}' from manifest")
+            msg = f"Skipping disabled plugin '{name}' from manifest"
+            self._skipped_plugins.append(msg)
+            self._record_event(
+                phase='initialize',
+                status='skipped',
+                plugin=name,
+                message='manifest disabled',
+            )
+            print(msg)
             return False
 
         context = PluginContext(self.event_bus, self.dispatcher, self.container)
@@ -275,9 +494,23 @@ class PluginManager:
 
         try:
             plugin.initialize(context)
+            self._record_event(
+                phase='initialize',
+                status='ok',
+                plugin=name,
+                message='initialized',
+            )
             return True
         except Exception as exc:
-            print(f"Failed to initialize plugin '{name}': {exc}")
+            failure = f"Failed to initialize plugin '{name}': {exc}"
+            self._init_failures.append(failure)
+            self._record_event(
+                phase='initialize',
+                status='failed',
+                plugin=name,
+                message=str(exc),
+            )
+            print(failure)
             self._contexts.pop(name, None)
             return False
 
@@ -294,9 +527,21 @@ class PluginManager:
                 return False
             if name in visiting:
                 print(f"Dependency cycle detected while initializing plugin '{name}'")
+                self._record_event(
+                    phase='dependency',
+                    status='failed',
+                    plugin=name,
+                    message='dependency cycle detected',
+                )
                 failed.add(name)
                 return False
             if name not in self._plugins:
+                self._record_event(
+                    phase='dependency',
+                    status='failed',
+                    plugin=name,
+                    message='plugin not loaded',
+                )
                 failed.add(name)
                 return False
 
@@ -306,10 +551,22 @@ class PluginManager:
                     print(
                         f"Cannot initialize plugin '{name}': missing dependency '{dependency}'"
                     )
+                    self._record_event(
+                        phase='dependency',
+                        status='failed',
+                        plugin=name,
+                        message=f"missing dependency '{dependency}'",
+                    )
                     visiting.remove(name)
                     failed.add(name)
                     return False
                 if not initialize_with_dependencies(dependency):
+                    self._record_event(
+                        phase='dependency',
+                        status='failed',
+                        plugin=name,
+                        message=f"dependency '{dependency}' failed",
+                    )
                     visiting.remove(name)
                     failed.add(name)
                     return False
@@ -327,6 +584,27 @@ class PluginManager:
             initialize_with_dependencies(name)
 
         return initialized
+
+    def get_diagnostics_report(self) -> dict[str, Any]:
+        loaded_plugins = sorted(self._plugins.keys())
+        initialized_plugins = sorted(self._contexts.keys())
+        return {
+            'loaded_plugins': loaded_plugins,
+            'loaded_plugins_count': len(loaded_plugins),
+            'initialized_plugins': initialized_plugins,
+            'initialized_plugins_count': len(initialized_plugins),
+            'load_failures': list(self._load_failures),
+            'load_failures_count': len(self._load_failures),
+            'init_failures': list(self._init_failures),
+            'init_failures_count': len(self._init_failures),
+            'skipped_plugins': list(self._skipped_plugins),
+            'skipped_plugins_count': len(self._skipped_plugins),
+            'contract_warnings': list(self._contract_warnings),
+            'contract_warnings_count': len(self._contract_warnings),
+            'manifest_validation_failures': list(self._manifest_validation_failures),
+            'manifest_validation_failures_count': len(self._manifest_validation_failures),
+            'events': [asdict(event) for event in self._diagnostic_events],
+        }
 
     def get_plugin(self, name: str) -> Optional[Plugin]:
         return self._plugins.get(name)

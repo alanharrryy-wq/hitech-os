@@ -15,7 +15,7 @@ Start here based on your role:
 3. [FILE_INVENTORY.md](FILE_INVENTORY.md) - File structure overview
 
 ### 📚 I'm Learning
-1. [app/gui_qt/EXTENSIBILITY_README.md](app/gui_qt/EXTENSIBILITY_README.md) - High-level overview
+1. [../app/gui_qt/EXTENSIBILITY_README.md](../app/gui_qt/EXTENSIBILITY_README.md) - High-level overview
 2. [PLUGIN_QUICK_START.md](PLUGIN_QUICK_START.md) - Hands-on tutorial
 3. [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) - What was built
 
@@ -143,7 +143,7 @@ Complete inventory of all new files and changes.
 
 ### Quick References
 
-#### [app/gui_qt/EXTENSIBILITY_README.md](app/gui_qt/EXTENSIBILITY_README.md) - 200 lines
+#### [../app/gui_qt/EXTENSIBILITY_README.md](../app/gui_qt/EXTENSIBILITY_README.md) - 200 lines
 Quick reference for the extensibility layer.
 
 **Contains**:
@@ -179,7 +179,7 @@ Quick reference for the extensibility layer.
 4. Progress through phases as needed
 
 ### Path 4: "I just want to know what exists" (30 min)
-1. Read [app/gui_qt/EXTENSIBILITY_README.md](app/gui_qt/EXTENSIBILITY_README.md) (10 min)
+1. Read [../app/gui_qt/EXTENSIBILITY_README.md](../app/gui_qt/EXTENSIBILITY_README.md) (10 min)
 2. Skim [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) (15 min)
 3. Bookmark [API_REFERENCE.md](API_REFERENCE.md) for later (5 min)
 
@@ -270,7 +270,7 @@ A: See [EXTENSIBLE_ARCHITECTURE.md](EXTENSIBLE_ARCHITECTURE.md#debugging--monito
 3. You're ready to explore
 
 **30-Minute Start**:
-1. Read [app/gui_qt/EXTENSIBILITY_README.md](app/gui_qt/EXTENSIBILITY_README.md)
+1. Read [../app/gui_qt/EXTENSIBILITY_README.md](../app/gui_qt/EXTENSIBILITY_README.md)
 2. Read [PLUGIN_QUICK_START.md](PLUGIN_QUICK_START.md)
 3. You're ready to create plugins
 

@@ -198,15 +198,15 @@ plugin.initialize(context)
 
 ## Next Steps
 
-1. Read [PLUGIN_QUICK_START.md](./PLUGIN_QUICK_START.md)
+1. Read [PLUGIN_QUICK_START.md](../../docs/PLUGIN_QUICK_START.md)
 2. Look at [file_statistics_plugin.py](./plugins/file_statistics_plugin.py)
 3. Create your first plugin
-4. Refer to [API_REFERENCE.md](./API_REFERENCE.md) for details
+4. Refer to [API_REFERENCE.md](../../docs/API_REFERENCE.md) for details
 
 ## Support
 
-- [Architecture Guide](./EXTENSIBLE_ARCHITECTURE.md)
-- [API Reference](./API_REFERENCE.md)
+- [Architecture Guide](../../docs/EXTENSIBLE_ARCHITECTURE.md)
+- [API Reference](../../docs/API_REFERENCE.md)
 - [Example Plugin](./plugins/file_statistics_plugin.py)
 - Source code comments (100% documented)
 

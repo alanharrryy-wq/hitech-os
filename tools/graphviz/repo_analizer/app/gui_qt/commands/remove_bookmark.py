@@ -33,12 +33,20 @@ class RemoveBookmarkCommand(Command):
 
     def can_execute(self) -> bool:
         """Check if there is a selected bookmark."""
-        return (
-            self.main_window is not None
-            and hasattr(self.main_window, 'bookmarks_list')
-            and self.main_window.bookmarks_list.currentItem() is not None
-        )
+        if self.main_window is None:
+            return False
+
+        bookmarks_list = getattr(self.main_window, 'bookmarks_list', None)
+        if bookmarks_list is None or not hasattr(bookmarks_list, 'currentItem'):
+            return False
+
+        try:
+            return bookmarks_list.currentItem() is not None
+        except RuntimeError:
+            return False
 
     def execute(self) -> None:
         """Execute the remove bookmark operation."""
+        if not self.can_execute():
+            return
         self.main_window.remove_selected_bookmark()

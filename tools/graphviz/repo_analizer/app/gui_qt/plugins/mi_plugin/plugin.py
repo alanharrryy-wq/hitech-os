@@ -24,27 +24,28 @@ class MiPluginPlugin(Plugin):
 
     def initialize(self, context: PluginContext) -> None:
         self.context = context
-        context.register_dock(
+        context.register_safe_dock(
             contribution_id=self.DOCK_ID,
             title="Mi Plugin",
             widget_factory=self._create_dock_widget,
             area="right",
             visible=True,
+            object_name="miPluginDockSurface",
         )
-        context.register_toolbar_action(
+        context.register_safe_toolbar_action(
             contribution_id=self.TOOLBAR_ID,
             text="Mi Plugin",
             callback=self._on_toolbar_action,
             tooltip="Run Mi Plugin toolbar action.",
         )
-        context.register_menu_action(
+        context.register_safe_menu_action(
             contribution_id=self.MENU_ID,
             menu_path="Plugins",
             text="Mi Plugin",
             callback=self._on_menu_action,
             tooltip="Run Mi Plugin menu action.",
         )
-        print(f"✓ Plugin '{self.name}' initialized")
+        print(f"[OK] Plugin '{self.name}' initialized")
 
     def _create_dock_widget(self, *args, **kwargs) -> QWidget:
         if self._dock_widget is not None:

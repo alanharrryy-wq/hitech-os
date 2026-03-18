@@ -1,22 +1,12 @@
 from __future__ import annotations
 
-from pathlib import Path
 from typing import TYPE_CHECKING
 
 
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (
-    QDockWidget,
-    QHBoxLayout,
-    QLabel,
-    QListWidget,
-    QPlainTextEdit,
-    QVBoxLayout,
-    QWidget,
-)
+from PySide6.QtWidgets import QDockWidget
 
-from .effects import apply_shadow, fade_in
-from .widgets import AccentButton, PanelCard
+from .shell.dock_sections import DockSectionFactory
 
 if TYPE_CHECKING:
     from .main_window import RepoAnalyzerMainWindow
@@ -29,13 +19,12 @@ class DockManager:
 
     def __init__(self, main_window: RepoAnalyzerMainWindow) -> None:
         self.main = main_window
+        self._sections = DockSectionFactory(main_window)
 
     def build_docks(self, skin_tokens: SkinTokens) -> None:
         """Create and configure all dock widgets."""
         self.main.explorer_dock = self._make_dock('Explorer', Qt.LeftDockWidgetArea)
         self.main.results_dock = self._make_dock('Results', Qt.BottomDockWidgetArea)
-        self.main.inspector_dock = self._make_dock('Inspector', Qt.RightDockWidgetArea)
-        self.main.bookmarks_dock = self._make_dock('Bookmarks', Qt.RightDockWidgetArea)
 
         # Build explorer dock (via tree controller)
         tree_filter_box, repo_tree = self.main.tree_controller.build_tree_dock_widget(skin_tokens)
@@ -45,11 +34,31 @@ class DockManager:
         # Build results dock (via search controller)
         self.main.search_controller.build_results_dock_widget(skin_tokens)
 
-        # Build inspector dock
-        self._build_inspector_dock(skin_tokens)
-
-        # Build bookmarks dock
-        self._build_bookmarks_dock(skin_tokens)
+        # Use feature panel helper to reduce repeated dock wiring for core shell surfaces.
+        self.main.inspector_dock = self.register_feature_panel(
+            title='Inspector',
+            area=Qt.RightDockWidgetArea,
+            widget_factory=lambda dock: self._sections.build_inspector_section(
+                skin_tokens,
+                parent=dock,
+            ),
+            skin_tokens=skin_tokens,
+            object_name='dock_inspector',
+            reason='dock-manager-inspector-panel',
+            visual_role='dock-content-root',
+        )
+        self.main.bookmarks_dock = self.register_feature_panel(
+            title='Bookmarks',
+            area=Qt.RightDockWidgetArea,
+            widget_factory=lambda dock: self._sections.build_bookmarks_section(
+                skin_tokens,
+                parent=dock,
+            ),
+            skin_tokens=skin_tokens,
+            object_name='dock_bookmarks',
+            reason='dock-manager-bookmarks-panel',
+            visual_role='dock-content-root',
+        )
 
         # Tabify and finalize
         self.main.tabifyDockWidget(self.main.inspector_dock, self.main.bookmarks_dock)
@@ -62,77 +71,10 @@ class DockManager:
         )
         self.main.resizeDocks([self.main.results_dock], [320], Qt.Vertical)
 
-        # Apply effects
+        # Route all built-in docks through the central visual runtime.
         for dock in (self.main.explorer_dock, self.main.results_dock, self.main.inspector_dock, self.main.bookmarks_dock):
-            apply_shadow(dock.widget(), skin_tokens.shadow, blur=24.0, y_offset=4.0)
-            fade_in(dock.widget())
-
-    def _build_inspector_dock(self, skin_tokens: SkinTokens) -> None:
-        """Build inspector dock with search options and file tabs."""
-        inspector_card = PanelCard(skin_tokens, accent=False, parent=self.main.inspector_dock)
-        inspector_layout = QVBoxLayout(inspector_card)
-        inspector_layout.setContentsMargins(14, 14, 14, 14)
-        inspector_layout.setSpacing(10)
-
-        from PySide6.QtWidgets import QTabWidget
-
-        self.main.inspector_tabs = QTabWidget(inspector_card)
-        inspector_layout.addWidget(self.main.inspector_tabs)
-
-        # Search tab
-        search_tab = self.main.search_controller.build_search_inspector_tab(
-            self.main.inspector_tabs, skin_tokens
-        )
-
-        # File tab
-        file_tab = QWidget(self.main.inspector_tabs)
-        file_layout = QVBoxLayout(file_tab)
-        file_layout.setContentsMargins(8, 8, 8, 8)
-        file_layout.setSpacing(8)
-        file_header = QLabel('Ficha del archivo', file_tab)
-        file_header.setObjectName('heroTitleLabel')
-        file_layout.addWidget(file_header)
-
-        self.main.file_summary = QPlainTextEdit(file_tab)
-        self.main.file_summary.setReadOnly(True)
-        file_layout.addWidget(self.main.file_summary, 1)
-
-        self.main.inspector_tabs.addTab(search_tab, 'Search Ops')
-        self.main.inspector_tabs.addTab(file_tab, 'File')
-
-        self.main.inspector_dock.setWidget(inspector_card)
-        self.main._panel_cards.append(inspector_card)
-
-    def _build_bookmarks_dock(self, skin_tokens: SkinTokens) -> None:
-        """Build bookmarks dock."""
-        bookmarks_card = PanelCard(skin_tokens, accent=False, parent=self.main.bookmarks_dock)
-        bookmarks_layout = QVBoxLayout(bookmarks_card)
-        bookmarks_layout.setContentsMargins(14, 14, 14, 14)
-        bookmarks_layout.setSpacing(8)
-
-        self.main.bookmarks_list = QListWidget(bookmarks_card)
-        self.main.bookmarks_list.itemDoubleClicked.connect(self.main.open_selected_bookmark)
-        bookmarks_layout.addWidget(self.main.bookmarks_list, 1)
-
-        # Buttons
-        bm_btn_row = QWidget(bookmarks_card)
-        bm_btn_layout = QHBoxLayout(bm_btn_row)
-        bm_btn_layout.setContentsMargins(0, 0, 0, 0)
-        bm_btn_layout.setSpacing(8)
-
-        self.main.bm_open_btn = AccentButton('Abrir', skin_tokens, bm_btn_row)
-        self.main.bm_open_btn.clicked.connect(self.main.open_selected_bookmark)
-
-        self.main.bm_remove_btn = AccentButton('Quitar', skin_tokens, bm_btn_row)
-        self.main.bm_remove_btn.clicked.connect(self.main.remove_selected_bookmark)
-
-        for btn in (self.main.bm_open_btn, self.main.bm_remove_btn):
-            bm_btn_layout.addWidget(btn)
-            self.main._toolbar_buttons.append(btn)
-
-        bookmarks_layout.addWidget(bm_btn_row)
-        self.main.bookmarks_dock.setWidget(bookmarks_card)
-        self.main._panel_cards.append(bookmarks_card)
+            self._prepare_dock_content_root(dock)
+            self._process_dock_visual_runtime(dock, skin_tokens, reason='dock-manager-builtins')
 
     def add_plugin_dock(
         self,
@@ -141,34 +83,20 @@ class DockManager:
     ) -> QDockWidget:
         """Create and attach a plugin-provided dock widget."""
         area = self._resolve_dock_area(contribution.area)
-        dock = self._make_dock(contribution.title, area)
-        dock.setObjectName(
-            f"plugin_dock_{self._sanitize_object_name(contribution.contribution_id)}"
+        return self.register_feature_panel(
+            title=contribution.title,
+            area=area,
+            widget_factory=contribution.widget_factory,
+            skin_tokens=skin_tokens,
+            object_name=f"plugin_dock_{self._sanitize_object_name(contribution.contribution_id)}",
+            visible=contribution.visible,
+            closable=contribution.closable,
+            floatable=contribution.floatable,
+            movable=contribution.movable,
+            allowed_areas=contribution.allowed_areas,
+            reason='dock-manager-plugin',
+            visual_role='plugin-dock-root',
         )
-
-        features = QDockWidget.NoDockWidgetFeatures
-        if contribution.movable:
-            features |= QDockWidget.DockWidgetMovable
-        if contribution.floatable:
-            features |= QDockWidget.DockWidgetFloatable
-        if contribution.closable:
-            features |= QDockWidget.DockWidgetClosable
-        dock.setFeatures(features)
-
-        if contribution.allowed_areas is not None:
-            dock.setAllowedAreas(contribution.allowed_areas)
-
-        widget = contribution.widget_factory(dock)
-        dock.setWidget(widget)
-
-        if skin_tokens is not None and dock.widget() is not None:
-            apply_shadow(dock.widget(), skin_tokens.shadow, blur=24.0, y_offset=4.0)
-            fade_in(dock.widget())
-
-        if not contribution.visible:
-            dock.hide()
-
-        return dock
 
     def _resolve_dock_area(self, area) -> Qt.DockWidgetArea:
         """Resolve plugin dock area aliases into Qt dock areas."""
@@ -198,5 +126,128 @@ class DockManager:
             | QDockWidget.DockWidgetClosable
         )
         dock.setAllowedAreas(Qt.AllDockWidgetAreas)
+        dock.setProperty('visualRole', 'dock-shell')
         self.main.addDockWidget(area, dock)
         return dock
+
+    def register_feature_panel(
+        self,
+        *,
+        title: str,
+        area,
+        widget_factory,
+        skin_tokens: SkinTokens | None = None,
+        object_name: str = '',
+        visible: bool = True,
+        closable: bool = True,
+        floatable: bool = True,
+        movable: bool = True,
+        allowed_areas=None,
+        reason: str = 'dock-manager-feature-panel',
+        visual_role: str = 'dock-content-root',
+    ) -> QDockWidget:
+        """
+        Register and attach a feature dock panel through one safe, idempotent path.
+
+        This helper is the default fast path for new core panels and plugin docks.
+        """
+        dock = self._make_dock(title, area)
+        if object_name:
+            dock.setObjectName(object_name)
+
+        features = QDockWidget.NoDockWidgetFeatures
+        if movable:
+            features |= QDockWidget.DockWidgetMovable
+        if floatable:
+            features |= QDockWidget.DockWidgetFloatable
+        if closable:
+            features |= QDockWidget.DockWidgetClosable
+        dock.setFeatures(features)
+
+        if allowed_areas is not None:
+            dock.setAllowedAreas(allowed_areas)
+
+        widget = widget_factory(dock)
+        if widget is None:
+            raise RuntimeError(f"Feature panel '{title}' did not return a widget")
+
+        dock.setWidget(widget)
+        if visual_role and not widget.property('visualRole'):
+            widget.setProperty('visualRole', visual_role)
+        widget.setProperty('dockContentRoot', True)
+
+        self._prepare_dock_content_root(dock)
+        self._process_dock_visual_runtime(dock, skin_tokens, reason=reason)
+
+        if not visible:
+            dock.hide()
+
+        diagnostics = getattr(self.main, 'runtime_diagnostics', None)
+        if diagnostics is not None and hasattr(diagnostics, 'trace'):
+            diagnostics.trace(
+                'dock-manager',
+                'feature panel attached',
+                title=title,
+                object_name=dock.objectName(),
+                reason=reason,
+            )
+
+        return dock
+
+    def _prepare_dock_content_root(self, dock: QDockWidget) -> None:
+        """Mark dock content root so visual runtime can classify it deterministically."""
+        widget = dock.widget()
+        if widget is None:
+            return
+
+        if not widget.property('visualRole'):
+            if dock.objectName().startswith('plugin_dock_'):
+                widget.setProperty('visualRole', 'plugin-dock-root')
+            else:
+                widget.setProperty('visualRole', 'dock-content-root')
+        widget.setProperty('dockContentRoot', True)
+
+    def _process_dock_visual_runtime(
+        self,
+        dock: QDockWidget,
+        skin_tokens: SkinTokens | None,
+        *,
+        reason: str,
+    ) -> None:
+        runtime = getattr(self.main, 'visual_runtime', None)
+        if runtime is None:
+            return
+
+        tokens = skin_tokens or getattr(self.main, '_skin_tokens', None)
+        if tokens is None:
+            return
+
+        try:
+            report = runtime.process_dock_widget(
+                dock,
+                tokens=tokens,
+                reason=reason,
+            )
+            diagnostics = getattr(self.main, 'runtime_diagnostics', None)
+            if diagnostics is not None and hasattr(diagnostics, 'trace'):
+                diagnostics.trace(
+                    'dock-manager',
+                    'dock visual runtime processed',
+                    dock=dock.objectName(),
+                    discovered=report.discovered,
+                    skinned=report.skin_applied,
+                    effects=report.effects_applied,
+                    failures=report.failures,
+                )
+        except Exception as exc:
+            logger = getattr(self.main, 'log', None)
+            if callable(logger):
+                logger(f'[dock-manager] visual runtime skipped for {dock.objectName()}: {exc}')
+            diagnostics = getattr(self.main, 'runtime_diagnostics', None)
+            if diagnostics is not None and hasattr(diagnostics, 'warning'):
+                diagnostics.warning(
+                    'dock-manager',
+                    'visual runtime skipped',
+                    dock=dock.objectName(),
+                    detail=str(exc),
+                )

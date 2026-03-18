@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from PySide6.QtCore import Qt, QThread
+from PySide6.QtCore import QObject, Qt, QThread, Slot
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QCheckBox,
@@ -36,10 +36,11 @@ ROLE_RESULT_LINE = 259  # Qt.UserRole + 4
 ROLE_RESULT_MATCHES = 260  # Qt.UserRole + 5
 
 
-class SearchController:
+class SearchController(QObject):
     """Manages all search functionality and results display."""
 
     def __init__(self, main_window: RepoAnalyzerMainWindow) -> None:
+        super().__init__(main_window)
         self.main = main_window
         self._search_thread: QThread | None = None
         self._search_worker: SearchWorker | None = None
@@ -52,6 +53,9 @@ class SearchController:
         results_layout.setSpacing(10)
 
         results_table = QTableView(results_card)
+        results_table.setObjectName('resultsTableSurface')
+        results_table.setProperty('visualRole', 'summary-surface')
+        results_table.setProperty('visualTier', 'themed')
         results_model = QStandardItemModel(0, 6, results_table)
         results_model.setHorizontalHeaderLabels([
             'Ruta',
@@ -79,7 +83,6 @@ class SearchController:
         results_layout.addWidget(results_table, 1)
 
         self.main.results_dock.setWidget(results_card)
-        self.main._panel_cards.append(results_card)
 
         self.main.results_table = results_table
         self.main.results_model = results_model
@@ -87,6 +90,9 @@ class SearchController:
     def build_search_inspector_tab(self, parent: QWidget, skin_tokens: SkinTokens) -> QWidget:
         """Create the search operations inspector tab."""
         search_tab = QWidget(parent)
+        search_tab.setObjectName('searchInspectorSurface')
+        search_tab.setProperty('visualRole', 'panel-surface')
+        search_tab.setProperty('visualTier', 'themed')
         search_form = QFormLayout(search_tab)
         search_form.setContentsMargins(8, 8, 8, 8)
         search_form.setSpacing(10)
@@ -105,6 +111,9 @@ class SearchController:
         self.main.include_hidden_check.toggled.connect(self.main.on_include_hidden_changed)
 
         checks_wrap = QWidget(search_tab)
+        checks_wrap.setObjectName('searchOptionsSurface')
+        checks_wrap.setProperty('visualRole', 'panel-surface')
+        checks_wrap.setProperty('visualTier', 'themed')
         checks_layout = QVBoxLayout(checks_wrap)
         checks_layout.setContentsMargins(0, 0, 0, 0)
         checks_layout.setSpacing(6)
@@ -127,6 +136,9 @@ class SearchController:
 
         # Action buttons
         search_buttons_row = QWidget(search_tab)
+        search_buttons_row.setObjectName('searchActionsSurface')
+        search_buttons_row.setProperty('visualRole', 'panel-surface')
+        search_buttons_row.setProperty('visualTier', 'themed')
         row_layout = QHBoxLayout(search_buttons_row)
         row_layout.setContentsMargins(0, 0, 0, 0)
         row_layout.setSpacing(8)
@@ -150,7 +162,6 @@ class SearchController:
             self.main.open_repo_btn,
         ):
             row_layout.addWidget(btn)
-            self.main._toolbar_buttons.append(btn)
 
         search_form.addRow(search_buttons_row)
 
@@ -212,6 +223,7 @@ class SearchController:
         self._search_worker = worker
         thread.start()
 
+    @Slot(object)
     def on_search_ready(self, results_obj: object) -> None:
         """Handle search completion."""
         self.main.progress_bar.hide()
@@ -310,6 +322,7 @@ class SearchController:
         except Exception as e:
             QMessageBox.critical(self.main, 'Repo Analyzer', f'No se pudo exportar:\n{e}')
 
+    @Slot()
     def _clear_search_thread(self) -> None:
         """Clear search thread reference."""
         self._search_thread = None

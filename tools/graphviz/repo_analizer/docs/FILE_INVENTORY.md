@@ -558,8 +558,8 @@ F:\repos\hitech-os\tools\graphviz\repo_analizer\app\gui_qt\plugins\file_statisti
 F:\repos\hitech-os\tools\graphviz\repo_analizer\app\gui_qt\plugins\statistics_command.py
 F:\repos\hitech-os\tools\graphviz\repo_analizer\app\gui_qt\EXTENSIBILITY_README.md
 F:\repos\hitech-os\tools\graphviz\repo_analizer\app\gui_qt\main_window.py
-F:\repos\hitech-os\tools\graphviz\repo_analizer\EXTENSIBLE_ARCHITECTURE.md
-F:\repos\hitech-os\tools\graphviz\repo_analizer\PLUGIN_QUICK_START.md
-F:\repos\hitech-os\tools\graphviz\repo_analizer\MIGRATION_GUIDE.md
-F:\repos\hitech-os\tools\graphviz\repo_analizer\API_REFERENCE.md
-F:\repos\hitech-os\tools\graphviz\repo_analizer\IMPLEMENTATION_SUMMARY.md
+F:\repos\hitech-os\tools\graphviz\repo_analizer\docs\EXTENSIBLE_ARCHITECTURE.md
+F:\repos\hitech-os\tools\graphviz\repo_analizer\docs\PLUGIN_QUICK_START.md
+F:\repos\hitech-os\tools\graphviz\repo_analizer\docs\MIGRATION_GUIDE.md
+F:\repos\hitech-os\tools\graphviz\repo_analizer\docs\API_REFERENCE.md
+F:\repos\hitech-os\tools\graphviz\repo_analizer\docs\IMPLEMENTATION_SUMMARY.md

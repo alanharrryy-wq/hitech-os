@@ -24,27 +24,28 @@ class ${CLASS_NAME}(Plugin):
 
     def initialize(self, context: PluginContext) -> None:
         self.context = context
-        context.register_dock(
+        context.register_safe_dock(
             contribution_id=self.DOCK_ID,
             title="${DISPLAY_NAME}",
             widget_factory=self._create_dock_widget,
             area="right",
             visible=True,
+            object_name="${PLUGIN_ID}_dock_surface",
         )
-        context.register_toolbar_action(
+        context.register_safe_toolbar_action(
             contribution_id=self.TOOLBAR_ID,
             text="${DISPLAY_NAME}",
             callback=self._on_toolbar_action,
             tooltip="Run ${DISPLAY_NAME} toolbar action.",
         )
-        context.register_menu_action(
+        context.register_safe_menu_action(
             contribution_id=self.MENU_ID,
             menu_path="Plugins",
             text="${DISPLAY_NAME}",
             callback=self._on_menu_action,
             tooltip="Run ${DISPLAY_NAME} menu action.",
         )
-        print(f"✓ Plugin '{self.name}' initialized")
+        print(f"[OK] Plugin '{self.name}' initialized")
 
     def _create_dock_widget(self, *args, **kwargs) -> QWidget:
         if self._dock_widget is not None:

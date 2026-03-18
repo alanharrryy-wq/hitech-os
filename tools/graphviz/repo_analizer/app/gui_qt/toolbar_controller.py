@@ -34,6 +34,8 @@ class ToolbarController:
 
         toolbar = QToolBar('WorkspaceToolbar', self.main)
         toolbar.setObjectName('WorkspaceToolbar')
+        toolbar.setProperty('visualRole', 'toolbar-surface')
+        toolbar.setProperty('visualTier', 'themed')
         toolbar.setMovable(False)
         toolbar.setFloatable(False)
         self.main.addToolBar(Qt.TopToolBarArea, toolbar)
@@ -41,6 +43,9 @@ class ToolbarController:
 
         # Title section
         title_wrap = QWidget(self.main)
+        title_wrap.setObjectName('workspaceTitleSurface')
+        title_wrap.setProperty('visualRole', 'panel-surface')
+        title_wrap.setProperty('visualTier', 'themed')
         title_layout = QVBoxLayout(title_wrap)
         title_layout.setContentsMargins(0, 0, 12, 0)
         title_layout.setSpacing(0)
@@ -56,6 +61,7 @@ class ToolbarController:
         # Accent bar
         accent_bar = QFrame(self.main)
         accent_bar.setObjectName('accentBar')
+        accent_bar.setProperty('visualRole', 'status-surface')
         accent_bar.setFixedSize(4, 42)
         toolbar.addWidget(accent_bar)
 
@@ -114,6 +120,8 @@ class ToolbarController:
         """Build the command toolbar with search and filters."""
         toolbar = QToolBar('CommandToolbar', self.main)
         toolbar.setObjectName('CommandToolbar')
+        toolbar.setProperty('visualRole', 'toolbar-surface')
+        toolbar.setProperty('visualTier', 'themed')
         toolbar.setMovable(False)
         toolbar.setFloatable(False)
         self.main.addToolBar(Qt.TopToolBarArea, toolbar)
@@ -167,6 +175,8 @@ class ToolbarController:
         action.setObjectName(
             f"plugin_action_{self._sanitize_action_name(contribution.contribution_id)}"
         )
+        action.setProperty('pluginContributionId', contribution.contribution_id)
+        action.setProperty('pluginContributionKind', 'toolbar')
         if contribution.shortcut:
             action.setShortcut(QKeySequence(contribution.shortcut))
         if contribution.tooltip:

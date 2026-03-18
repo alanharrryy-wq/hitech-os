@@ -76,22 +76,23 @@ class DemoUIValidationPlugin(Plugin):
         if self._ui_registered:
             return
 
-        context.register_dock(
+        context.register_safe_dock(
             contribution_id=self.DOCK_ID,
             title=self.DOCK_TITLE,
             widget_factory=self._create_dock_widget,
             area="right",
             visible=True,
+            object_name='demoUiValidationDockSurface',
         )
 
-        context.register_toolbar_action(
+        context.register_safe_toolbar_action(
             contribution_id=self.TOOLBAR_ACTION_ID,
             text=self.TOOLBAR_TEXT,
             callback=self._on_toolbar_action,
             tooltip="Trigger the demo plugin toolbar validation action.",
         )
 
-        context.register_menu_action(
+        context.register_safe_menu_action(
             contribution_id=self.MENU_ACTION_ID,
             menu_path=self.MENU_PATH,
             text=self.MENU_TEXT,
