@@ -1,11 +1,114 @@
-name: Release
+name: Release Governance
 
 on:
   workflow_dispatch:
+    inputs:
+      base_sha:
+        description: "Optional base SHA for diff computation"
+        required: false
+        type: string
+      head_sha:
+        description: "Optional head SHA for diff computation"
+        required: false
+        type: string
+      strict:
+        description: "Fail if release discipline violations are found"
+        required: false
+        default: false
+        type: boolean
+  pull_request:
+    paths:
+      - "packages/contracts/**"
+      - "services/core-api/src/contracts/**"
+      - "services/core-api/src/routes/**"
+      - "apps/keystone/app/api/**"
+      - "docs/releases/**"
+      - "CHANGELOG.md"
+      - "release-please-config.json"
+      - ".releaserc.json"
+      - "policies/release.json"
+      - "policies/dependencies.json"
+      - "pnpm-workspace.yaml"
+      - "tools/scripts/check_release_discipline.mjs"
+      - ".github/workflows/release.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "packages/contracts/**"
+      - "services/core-api/src/contracts/**"
+      - "services/core-api/src/routes/**"
+      - "apps/keystone/app/api/**"
+      - "docs/releases/**"
+      - "CHANGELOG.md"
+      - "release-please-config.json"
+      - ".releaserc.json"
+      - "policies/release.json"
+      - "policies/dependencies.json"
+      - "pnpm-workspace.yaml"
+      - "tools/scripts/check_release_discipline.mjs"
+      - ".github/workflows/release.yml"
+
+permissions:
+  contents: read
 
 jobs:
-  release:
+  release-governance:
     runs-on: ubuntu-latest
+    env:
+      REPORT_DIR: tools/_local/reports/ci
     steps:
       - uses: actions/checkout@v4
-      - run: echo "TODO: create release"
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Resolve diff inputs
+        id: refs
+        shell: bash
+        run: |
+          set -euo pipefail
+          base_sha="${{ inputs.base_sha }}"
+          head_sha="${{ inputs.head_sha }}"
+
+          if [ -z "${head_sha}" ] || [ "${head_sha}" = "null" ]; then
+            head_sha="${GITHUB_SHA}"
+          fi
+
+          if [ -z "${base_sha}" ] || [ "${base_sha}" = "null" ]; then
+            base_sha="${{ github.event.pull_request.base.sha }}"
+          fi
+          if [ -z "${base_sha}" ] || [ "${base_sha}" = "null" ]; then
+            base_sha="${{ github.event.before }}"
+          fi
+          if [ -z "${base_sha}" ] || [ "${base_sha}" = "null" ] || [ "${base_sha}" = "0000000000000000000000000000000000000000" ]; then
+            base_sha="HEAD~1"
+          fi
+
+          echo "base_sha=${base_sha}" >> "$GITHUB_OUTPUT"
+          echo "head_sha=${head_sha}" >> "$GITHUB_OUTPUT"
+
+      - name: Run release governance report
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "${REPORT_DIR}"
+          strict_flag=""
+          if [ "${{ inputs.strict }}" = "true" ]; then
+            strict_flag="--strict"
+          fi
+          node tools/scripts/check_release_discipline.mjs \
+            --base "${{ steps.refs.outputs.base_sha }}" \
+            --head "${{ steps.refs.outputs.head_sha }}" \
+            --dependencies-policy "policies/dependencies.json" \
+            ${strict_flag} \
+            --output "${REPORT_DIR}/release_discipline.release_workflow.json"
+
+      - name: Upload release governance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-governance-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          path: tools/_local/reports/ci/release_discipline.release_workflow.json

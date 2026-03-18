@@ -1,0 +1,239 @@
+{
+  "generated_at_utc": "2026-03-17T00:00:00Z",
+  "package_name": "selection_store_inspector_target_wiring_pack_v1",
+  "purpose": "Complete delivery pack for Selection Store + InspectorTarget wiring in Live Scene Composer.",
+  "entry_files": [
+    "00_PACKAGE_README.md",
+    "01_PACKAGE_CONTENTS.md",
+    "02_INSTALL_GUIDE.md",
+    "11_SELECTION_STORE_CONTRACT.md",
+    "19_SELECTION_EVENT_SCENARIOS.md",
+    "20_REPO_INTEGRATION_PLAYBOOK.md",
+    "21_SELECTION_FIELD_MANUAL.md",
+    "source/selection/README.md",
+    "install_live_scene_composer_selection_store_inspector_target_wiring_v1.ps1"
+  ],
+  "file_count": 45,
+  "files": [
+    {
+      "path": "00_PACKAGE_README.md",
+      "size_bytes": 2835,
+      "sha256": "73dabfaaaf8423274750912454abee8d61d9a73cc9372aa773a0c9fcd5899688"
+    },
+    {
+      "path": "01_PACKAGE_CONTENTS.md",
+      "size_bytes": 1471,
+      "sha256": "202f9addac94b6d1cc1801609f9e52e530d83809062e64127220cd33455676ef"
+    },
+    {
+      "path": "02_INSTALL_GUIDE.md",
+      "size_bytes": 1212,
+      "sha256": "551afbb9bdda93a5b13765c7285478eca196c9a4fd385e850abfaa1ae092d1a7"
+    },
+    {
+      "path": "03_IMPLEMENTATION_NOTES.md",
+      "size_bytes": 1155,
+      "sha256": "526e242b906f75f52f8ac8c8643e93a25ca8c3bddd928b9df80c1893c9b70f78"
+    },
+    {
+      "path": "11_SELECTION_STORE_CONTRACT.md",
+      "size_bytes": 5389,
+      "sha256": "7b4c16fbdabad2323fc8c7b74044e4a8a48b2484117e5056d9b0cfee99e62c92"
+    },
+    {
+      "path": "12_INSPECTOR_TARGET_DERIVATION.md",
+      "size_bytes": 3642,
+      "sha256": "8769181877728dba8b6365519ec657aaa50ea5e11f79b4eae362416fbe39df75"
+    },
+    {
+      "path": "13_SELECTION_SURFACE_SYNC_MATRIX.md",
+      "size_bytes": 2740,
+      "sha256": "c07d47a873301f95a9a35bddc6c63cfb0ebe1a4cbe1b820fd245371e158e5c7c"
+    },
+    {
+      "path": "14_SELECTION_STALENESS_AND_RECOVERY.md",
+      "size_bytes": 2433,
+      "sha256": "860336f7a66d884eb0e59adf57436512541a9eeb570dcb38507efa962b2e27e1"
+    },
+    {
+      "path": "15_SELECTION_MUTATION_INTENT_BOUNDARY.md",
+      "size_bytes": 2060,
+      "sha256": "64b61baf9e53f62c2aaf784d25af45298a89f48f39a49416a39106bfe0cf0e2f"
+    },
+    {
+      "path": "16_SELECTION_IMPLEMENTATION_SEQUENCE.md",
+      "size_bytes": 1819,
+      "sha256": "d9cb0b7c8314cc8d0274a5227270a2c9c41e88236d6789327939e60c0be09787"
+    },
+    {
+      "path": "17_SELECTION_TEST_PLAN.md",
+      "size_bytes": 1637,
+      "sha256": "94eb14925f62358e4929658fb94c0010d7c55b82492ef4ab6c947543fbfd3d15"
+    },
+    {
+      "path": "18_SELECTION_PACKAGE_DECISIONS.md",
+      "size_bytes": 1176,
+      "sha256": "f1ad2ff196a88324e34ce86bd3e906cd4e7109bf87c99d682595404e0fe0fd9a"
+    },
+    {
+      "path": "19_SELECTION_EVENT_SCENARIOS.md",
+      "size_bytes": 13880,
+      "sha256": "e3e2846e357b845c50c31cc9ee6cb55a0a3e2422cf33c8592b4df0d6fea82683"
+    },
+    {
+      "path": "20_REPO_INTEGRATION_PLAYBOOK.md",
+      "size_bytes": 2647,
+      "sha256": "aa3a2bfbfd07601709f3eb9086c8d31cc09ba02c86562322fb74c2915abb7840"
+    },
+    {
+      "path": "21_SELECTION_FIELD_MANUAL.md",
+      "size_bytes": 2527,
+      "sha256": "62f87eac88f0259dd66d68ed2e5d9e89b42e62dd30436795c3ea14deeffa973b"
+    },
+    {
+      "path": "artifacts/fixtures/scene_fixture_01.json",
+      "size_bytes": 40217,
+      "sha256": "e0513b6af218f38c37db6805453c56e60797fdb91c4fb673946cbe6bdf27e493"
+    },
+    {
+      "path": "artifacts/fixtures/scene_fixture_02.json",
+      "size_bytes": 40217,
+      "sha256": "efbce429fe37089c46e1b98d433ef4519b4c823931370595b3801d68b449b2f6"
+    },
+    {
+      "path": "artifacts/fixtures/scene_fixture_03.json",
+      "size_bytes": 40217,
+      "sha256": "70b5dd5fd574536b4588e809dc5aab5451372c4cc5b63e18124c6e1d339fa0e5"
+    },
+    {
+      "path": "artifacts/fixtures/scene_fixture_04.json",
+      "size_bytes": 40217,
+      "sha256": "7e8f59e6a0e224efa24fc5fb5c5fd66497544edfca2a485b28e5eb2bf72900a0"
+    },
+    {
+      "path": "artifacts/fixtures/selection_timeline_fixture_05.json",
+      "size_bytes": 37579,
+      "sha256": "60aec4561b1097ad747ac29c987b104af845108bcfcf9c2926a6dc3c3bc8675e"
+    },
+    {
+      "path": "artifacts/fixtures/selection_timeline_fixture_06.json",
+      "size_bytes": 37579,
+      "sha256": "24311bacd0083e88f729cc6f5a1b2931f106f26bfce4d5804afca7400e8a128c"
+    },
+    {
+      "path": "artifacts/fixtures/selection_timeline_fixture_07.json",
+      "size_bytes": 37579,
+      "sha256": "47f77920c31b88cfed3f62f94c74664c23fb072b25518ba02a9bd05635f68b29"
+    },
+    {
+      "path": "artifacts/fixtures/selection_timeline_fixture_08.json",
+      "size_bytes": 37579,
+      "sha256": "5ad58683d50a3662f077243438b68fb079b938371f4fd2866efba677986c490e"
+    },
+    {
+      "path": "artifacts/selection_surface_review_matrix.csv",
+      "size_bytes": 39450,
+      "sha256": "80b640b27966ae387894406043a273ce539dc499467c6f2e4c95023205e2122a"
+    },
+    {
+      "path": "artifacts/selection_transition_matrix.jsonl",
+      "size_bytes": 122560,
+      "sha256": "4f083ce4a892f54e98a2808d326ac3a191b0cb6dae4b873d87f06c031ca371cf"
+    },
+    {
+      "path": "install_live_scene_composer_selection_store_inspector_target_wiring_v1.ps1",
+      "size_bytes": 16677,
+      "sha256": "7644c917a63316541c03df15b9b2c9057ab79d1f6b5e8f3459f41232e118fa71"
+    },
+    {
+      "path": "run_live_scene_composer_selection_store_inspector_target_wiring_v1_from_zip.ps1",
+      "size_bytes": 3312,
+      "sha256": "35a516e94a9cd8d4150ccb79d381d679a39ada2612cfb9bae212d2fe92c7f72b"
+    },
+    {
+      "path": "source/selection/README.md",
+      "size_bytes": 977,
+      "sha256": "4c5fa8c23ef223c85c19b32e1d3a910a0f91cfd13f96007c16ce935aa17b5532"
+    },
+    {
+      "path": "source/selection/__tests__/inspector-target.spec.ts",
+      "size_bytes": 1584,
+      "sha256": "75074d93aef696a9840e8a5a13e3e6490b4c97c379d87e27d30a0d46a54ccfb9"
+    },
+    {
+      "path": "source/selection/__tests__/mutation-intent.spec.ts",
+      "size_bytes": 986,
+      "sha256": "bfc77c14e35bc5d855305e61914ce99cce937ebf9f333a05c27dd095b6c874aa"
+    },
+    {
+      "path": "source/selection/__tests__/selection-selectors.spec.ts",
+      "size_bytes": 968,
+      "sha256": "3144cbe69116de87928b5ad1ee2eb83d0786383791b3e43d2d17955632fea4d1"
+    },
+    {
+      "path": "source/selection/__tests__/selection-store.spec.ts",
+      "size_bytes": 1844,
+      "sha256": "f4877a72b2996e09d5efbfcb1790ebf88653393578ed364ea152a645691934ac"
+    },
+    {
+      "path": "source/selection/__tests__/selection-sync.spec.ts",
+      "size_bytes": 1239,
+      "sha256": "a383e92d00fbee68ba8629a42b886773d873e8e23e9c15c13821cbe3402a1c97"
+    },
+    {
+      "path": "source/selection/contracts.ts",
+      "size_bytes": 7860,
+      "sha256": "0af7a21b04dffb9b63693d550f10a92dc64315121d323c446947be95c68667c8"
+    },
+    {
+      "path": "source/selection/examples/selection-store-demo.ts",
+      "size_bytes": 1007,
+      "sha256": "478aad18e1e26c06861819676bfa7e24bb05b57e6a876c22adbeb2a888a00a29"
+    },
+    {
+      "path": "source/selection/index.ts",
+      "size_bytes": 313,
+      "sha256": "9e4fa408f1f35ebc68c5e7e4cc48535f2ce55f89747632c7298a86f810784503"
+    },
+    {
+      "path": "source/selection/inspector-target.ts",
+      "size_bytes": 6248,
+      "sha256": "d5fb6e5b5f655a5e5c25183c3d8abd65a8563c423c4f3e198cba171aef536642"
+    },
+    {
+      "path": "source/selection/mutation-intent.ts",
+      "size_bytes": 2457,
+      "sha256": "75e7df989353682e90e1f06f9546d1500ed48a36da3fd42c1ef81270cbc0784d"
+    },
+    {
+      "path": "source/selection/react-hooks.ts",
+      "size_bytes": 714,
+      "sha256": "f2599ae0fc499bdab6e4d465da26efd7d6162a6a360538bce9eb511f5c8e3e05"
+    },
+    {
+      "path": "source/selection/selection-fixtures.ts",
+      "size_bytes": 2475,
+      "sha256": "7627e50e031c981014575a6740b41ca4fe2eee555dad4d2e0ae1d954ed4af1cb"
+    },
+    {
+      "path": "source/selection/selection-selectors.ts",
+      "size_bytes": 1326,
+      "sha256": "0b1aa84f787f9c479d0c188d95a98d199dec520c3a8f93fb53b87757648e038f"
+    },
+    {
+      "path": "source/selection/selection-store.ts",
+      "size_bytes": 5122,
+      "sha256": "91371cf9da2152b02a384c7a3478decce6026eed748f114e80a6006028c85211"
+    },
+    {
+      "path": "source/selection/selection-sync.ts",
+      "size_bytes": 3289,
+      "sha256": "64dfb160795467b16cb2078624eb4ac6d10b93c163c827a7bd6116fd722edcf5"
+    },
+    {
+      "path": "source/selection/surface-adapters.ts",
+      "size_bytes": 966,
+      "sha256": "93cd699cce377e171526956e5f5a770bb31cc1aa80e947e815ace0ef5f86eb2b"
+    }
+  ]
+}

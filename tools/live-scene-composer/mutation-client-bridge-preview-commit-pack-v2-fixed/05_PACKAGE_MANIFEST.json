@@ -1,0 +1,382 @@
+{
+  "generated_at_utc": "2026-03-17T23:09:13Z",
+  "package_name": "mutation_client_bridge_preview_commit_pack_v2_fixed",
+  "purpose": "Fixed mutation client + bridge preview/commit reference pack with corrected PowerShell installer syntax, stacking on top of the selection and surface-sync bundles for Live Scene Composer.",
+  "entry_files": [
+    "00_PACKAGE_README.md",
+    "50_MUTATION_CLIENT_BRIDGE_CONTRACT.md",
+    "60_MUTATION_CLIENT_REPO_INTEGRATION_PLAYBOOK.md",
+    "62_MUTATION_CLIENT_MIGRATION_STEPS.md",
+    "63_MUTATION_CLIENT_FAILURE_ATLAS.md",
+    "install_live_scene_composer_mutation_client_bridge_preview_commit_v2_fixed.ps1",
+    "run_live_scene_composer_mutation_client_bridge_preview_commit_v2_fixed_from_zip.ps1"
+  ],
+  "file_count": 73,
+  "files": [
+    {
+      "path": "00_PACKAGE_README.md",
+      "size_bytes": 4006,
+      "sha256": "d9aea6fc7648b5b552d34eff993acf516dbf8732470b75a280902b4246f00cef"
+    },
+    {
+      "path": "01_PACKAGE_CONTENTS.md",
+      "size_bytes": 1107,
+      "sha256": "8b3839c6f61f506a66f553df5075437c9de340c19dabb5442efbb0f55f9fdab2"
+    },
+    {
+      "path": "02_INSTALL_GUIDE.md",
+      "size_bytes": 782,
+      "sha256": "125851c9caa5e90ea3dbb0f6b283c1f81e9111c8d0d606de1953b3f9fd089dd1"
+    },
+    {
+      "path": "03_IMPLEMENTATION_NOTES.md",
+      "size_bytes": 685,
+      "sha256": "f1c595d0c8a1c6a887c07c472ed012746e6c46b4bdc7ac9025e6085d6520fb9f"
+    },
+    {
+      "path": "04_STACKING_AND_SCOPE.md",
+      "size_bytes": 576,
+      "sha256": "9ea7cd6d87b759a6748830296c75cc5f01a3e2990547516034501b740aa5e57b"
+    },
+    {
+      "path": "05_PACKAGE_MANIFEST.json",
+      "size_bytes": 14272,
+      "sha256": "feab69c8723afb097479809680759640126d6a71bb9ff60b42922e9dd6fb3d56"
+    },
+    {
+      "path": "50_MUTATION_CLIENT_BRIDGE_CONTRACT.md",
+      "size_bytes": 2326,
+      "sha256": "47d2c7af4a67ccde616e3b87698acf1d08f65e3e1f438a9ac3422af254c9fd64"
+    },
+    {
+      "path": "51_PREVIEW_SESSION_MODEL.md",
+      "size_bytes": 1176,
+      "sha256": "db4504e8cdfc232b2e2b8ec3cbd2f13b7585f2cb8a20e925ad53a2d0dd7212d3"
+    },
+    {
+      "path": "52_COMMIT_REVERT_DISCARD_FLOW.md",
+      "size_bytes": 925,
+      "sha256": "76611d1cc167104f1ba443c4294253fc9017951e02d499b909996da9f8b0c8f3"
+    },
+    {
+      "path": "53_MUTATION_POLICY_MODE_MATRIX.md",
+      "size_bytes": 864,
+      "sha256": "18098efe1e59c60719a21ba136808ac370553e45a2c2b004df4995111de5be62"
+    },
+    {
+      "path": "54_BRIDGE_ADAPTER_ROUTING_RULES.md",
+      "size_bytes": 799,
+      "sha256": "2deb2deb7be4fce0c9a5b138416c0518e2441678d5fe23caff2811be7c9b30dc"
+    },
+    {
+      "path": "55_PREVIEW_DIFF_AND_BASELINE_COMPARE.md",
+      "size_bytes": 619,
+      "sha256": "114d770a312466214adf829726b1b8bf38309bbf2e1413101283845a0bc9a917"
+    },
+    {
+      "path": "56_MUTATION_REJECTION_AND_DIAGNOSTICS.md",
+      "size_bytes": 666,
+      "sha256": "669d9549e5aae2185021cae8241589dd04834e04fadf963be526c152bc03e981"
+    },
+    {
+      "path": "57_MUTATION_CLIENT_TEST_PLAN.md",
+      "size_bytes": 673,
+      "sha256": "eda5015a3478b59aa3579a9e7c7ad81e465d4819c8de2f57cb0ca61bca3b930a"
+    },
+    {
+      "path": "58_MUTATION_CLIENT_PACKAGE_DECISIONS.md",
+      "size_bytes": 430,
+      "sha256": "e3146c45ac961cbfff514db0362d130f29ba7dbf99dae04da96438fe5e91ac19"
+    },
+    {
+      "path": "59_MUTATION_CLIENT_EVENT_SCENARIOS.md",
+      "size_bytes": 387,
+      "sha256": "435c2175a5399e056fee2386d26b25a29949852e995a46cd219e49f460bdcb0b"
+    },
+    {
+      "path": "60_MUTATION_CLIENT_REPO_INTEGRATION_PLAYBOOK.md",
+      "size_bytes": 577,
+      "sha256": "f75fc9a26bf32eb53c87fe78b976b82bb8e50ce0de61af8b0f5404c23cd67485"
+    },
+    {
+      "path": "61_MUTATION_CLIENT_FIELD_MANUAL.md",
+      "size_bytes": 529,
+      "sha256": "cd5ff50c88d1406df976947db629a60c8c343d106480688210675f5c0f884798"
+    },
+    {
+      "path": "62_MUTATION_CLIENT_MIGRATION_STEPS.md",
+      "size_bytes": 415,
+      "sha256": "9551b9608b6b351cd927f4ebc8b2a55c2e61413df73e1c32291dbfacb3a6bc0a"
+    },
+    {
+      "path": "63_MUTATION_CLIENT_FAILURE_ATLAS.md",
+      "size_bytes": 381,
+      "sha256": "a4c58c5fa1328b53979b84cf1c73dd510fa266b5e12ad6126a0881c028dcf7f7"
+    },
+    {
+      "path": "artifacts/diagnostics/bridge_diagnostics_walkthrough_01.jsonl",
+      "size_bytes": 520542,
+      "sha256": "65d33afbb9fe63e50c332e3cbd39aa2914e50e2c717228c8ea9bd32747dda27e"
+    },
+    {
+      "path": "artifacts/diagnostics/bridge_diagnostics_walkthrough_02.jsonl",
+      "size_bytes": 520609,
+      "sha256": "e861f3e73a66046a255c1aea887a4c205ffa149f31340ed33d9b587df6bfadde"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_session_fixture_01.json",
+      "size_bytes": 256023,
+      "sha256": "ee9b4ff625d570a7fe82041c482626d31eeb07caf1d3f45dc2573a3ceca2a6b7"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_session_fixture_02.json",
+      "size_bytes": 255973,
+      "sha256": "bc5b17c58ece3dd643b09aa2f392c619111fc73edba9e9609fbd7b346c8ac21a"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_session_fixture_03.json",
+      "size_bytes": 256064,
+      "sha256": "54048161ccca3376e27ccb05e54fdb9d218458b74d5c7a88f6a04cdd1bb5568b"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_session_fixture_04.json",
+      "size_bytes": 256012,
+      "sha256": "a2c6f799189d604a695e1c6a1006d67e78e18530c88c439ba724c73f31b2e577"
+    },
+    {
+      "path": "artifacts/matrices/mutation_policy_matrix_advanced.csv",
+      "size_bytes": 626,
+      "sha256": "d69230da8aabddb7928870bf9ad73e761e0837136864396ad373494c0a75e8d3"
+    },
+    {
+      "path": "artifacts/matrices/mutation_policy_matrix_safe.csv",
+      "size_bytes": 590,
+      "sha256": "288f028db2f4720bf8cb46063428224ccf735ae67a73ad20147bec7cbaf98d1a"
+    },
+    {
+      "path": "artifacts/matrices/preview_commit_scope_matrix.csv",
+      "size_bytes": 272,
+      "sha256": "8b009dab12afdf2b3f4183c2124130d2cfd3de0ba58f0d011da7b5a324680a29"
+    },
+    {
+      "path": "artifacts/playbacks/commit_revert_playback_01.jsonl",
+      "size_bytes": 244462,
+      "sha256": "e7bc5fdd8b11b1910f84fa0ab57687e6c0af731b7948023cd2175d360705e50a"
+    },
+    {
+      "path": "artifacts/playbacks/commit_revert_playback_02.jsonl",
+      "size_bytes": 244558,
+      "sha256": "7e9124eac9a386d478c2241cca85795f0375bc982b0d49132170a5d16049e4c7"
+    },
+    {
+      "path": "artifacts/reviews/bridge_review_questions.md",
+      "size_bytes": 310,
+      "sha256": "7a634b24c7c2e7483e90ea902f92626ea65f8fc22a6f756525e5026c11e64291"
+    },
+    {
+      "path": "artifacts/reviews/protected_nodes_and_touchpoints.md",
+      "size_bytes": 336,
+      "sha256": "a19ae21aff22e4e8e28bc0dd40a46e38b622671d6d79b9b667a8eb4d39c5718d"
+    },
+    {
+      "path": "artifacts/snapshots/preview_session_snapshot_catalog_01.json",
+      "size_bytes": 615999,
+      "sha256": "11fe09c0b706a29fac6b0b289f374310790d054a8c51c39d5587947b7c35bf9c"
+    },
+    {
+      "path": "artifacts/snapshots/preview_session_snapshot_catalog_02.json",
+      "size_bytes": 616030,
+      "sha256": "555ac13cde958910d2e1242170b65904299f6a7c830d7e5fd45186f1d5ca92b1"
+    },
+    {
+      "path": "artifacts/snapshots/preview_session_snapshot_catalog_03.json",
+      "size_bytes": 616054,
+      "sha256": "e7a0b79c97fda28e60cbe1d7e84f1f548005b0bb2982d713f80e43c16f5c82a7"
+    },
+    {
+      "path": "artifacts/telemetry/preview_commit_telemetry_01.csv",
+      "size_bytes": 290430,
+      "sha256": "87f37133fcd348528824dc40429bea98663cb3cb3fd8bbe5ae13224b8fce1b43"
+    },
+    {
+      "path": "artifacts/telemetry/preview_commit_telemetry_02.csv",
+      "size_bytes": 290389,
+      "sha256": "aed7f24514d727af9a8efcbaffa446e600c3dac8b8e5605f6c8602774c5e7b30"
+    },
+    {
+      "path": "artifacts/traces/mutation_preview_commit_trace_01.jsonl",
+      "size_bytes": 217324,
+      "sha256": "d74e54b46bb434641ea0d625f5ce2121d08b4a9fb5f0d1ec80ba0b9c6ff11abb"
+    },
+    {
+      "path": "artifacts/traces/mutation_preview_commit_trace_02.jsonl",
+      "size_bytes": 217270,
+      "sha256": "4113901550493bd347632b6fb70fe0d4c67644ba216a3403e4eb920c48500d52"
+    },
+    {
+      "path": "artifacts/traces/mutation_preview_commit_trace_03.jsonl",
+      "size_bytes": 217341,
+      "sha256": "20309ea9bd8f260383bd9261cd04f34e9b9183974b576cfc29e4c2c7708012a6"
+    },
+    {
+      "path": "install_live_scene_composer_mutation_client_bridge_preview_commit_v2_fixed.ps1",
+      "size_bytes": 18515,
+      "sha256": "b393cbe5c35da4e7c3989a9e992efcbb9ba1543f8cf58f1379884c11d9e679de"
+    },
+    {
+      "path": "run_live_scene_composer_mutation_client_bridge_preview_commit_v2_fixed_from_zip.ps1",
+      "size_bytes": 3427,
+      "sha256": "1f7d6b7256d084d23bf947ef649b12aab4f895158291eea77f80a11ac84cf42f"
+    },
+    {
+      "path": "source/mutation-client/README.md",
+      "size_bytes": 335,
+      "sha256": "10c7a6b04b3e39b3c79459ae9ab1e9135048712ac84b2f9cdd823c6392dd4c5d"
+    },
+    {
+      "path": "source/mutation-client/__tests__/bridge-adapter.spec.ts",
+      "size_bytes": 633,
+      "sha256": "ce0d89cbcde6d58f90e50f12a8f926f69f5a92ce6a9d70d8ff80d5744bdd2901"
+    },
+    {
+      "path": "source/mutation-client/__tests__/bridge-client.spec.ts",
+      "size_bytes": 635,
+      "sha256": "d8a49b62e6c924e2b64822a59a6af630b4e36f1bb0575c06c4d4574e4fd37831"
+    },
+    {
+      "path": "source/mutation-client/__tests__/commit-orchestrator.spec.ts",
+      "size_bytes": 910,
+      "sha256": "1765959ed44cd963d86f913d88cb095578922bc5b600a419f9d2b12695160bf3"
+    },
+    {
+      "path": "source/mutation-client/__tests__/contracts.spec.ts",
+      "size_bytes": 257,
+      "sha256": "c6591cad2564329acdd5cb247ca35bbd93a726f323f9982927c6e2ad1e6af10c"
+    },
+    {
+      "path": "source/mutation-client/__tests__/diagnostics.spec.ts",
+      "size_bytes": 333,
+      "sha256": "825109bd6750af5652a455cb5cd1ff8611f4ae8e055bfd235a6c5950cded941d"
+    },
+    {
+      "path": "source/mutation-client/__tests__/history-log.spec.ts",
+      "size_bytes": 692,
+      "sha256": "527a168ee9ed425b2082812f9e99da1cc8438d9b8877ccefb2116ac663f26ea6"
+    },
+    {
+      "path": "source/mutation-client/__tests__/integration-flow.spec.ts",
+      "size_bytes": 570,
+      "sha256": "20a5af769c4ab661c21aa12399d1fbf4a0350dc3cb7d07a5c2fe3147754f15e2"
+    },
+    {
+      "path": "source/mutation-client/__tests__/mode-policy.spec.ts",
+      "size_bytes": 567,
+      "sha256": "cf4b26036fca1eaaa3c010339ca21bed0b7dc2005b4c959053e271686e48aae6"
+    },
+    {
+      "path": "source/mutation-client/__tests__/preview-diff.spec.ts",
+      "size_bytes": 310,
+      "sha256": "818381393804b6a90e5b4769233208b676caaa888d3cbd7cbd8bc26034750cc5"
+    },
+    {
+      "path": "source/mutation-client/__tests__/preview-session.spec.ts",
+      "size_bytes": 741,
+      "sha256": "0a0502a104a0aff2751f36b27c9e3282f877215a97a7ee6cb4241b8c508889b4"
+    },
+    {
+      "path": "source/mutation-client/__tests__/revert-planner.spec.ts",
+      "size_bytes": 630,
+      "sha256": "8d7453a1184067b1bb773b92b192be73f99f53ca973f76665e306730b764d228"
+    },
+    {
+      "path": "source/mutation-client/__tests__/validation.spec.ts",
+      "size_bytes": 614,
+      "sha256": "5c39b0657641388377cfb498242ffb1ad63e336509459ced92e373f0caf77c78"
+    },
+    {
+      "path": "source/mutation-client/bridge-adapter.ts",
+      "size_bytes": 1332,
+      "sha256": "0e742a455c17ec2322866dab085b6801deb542ffc4a99fb7dff1424e1bb4d08f"
+    },
+    {
+      "path": "source/mutation-client/bridge-client.ts",
+      "size_bytes": 2554,
+      "sha256": "325a53d0167e9b7833d9d4b4c9828d45eb94b1eb891ba7b79749f9b78b02ec75"
+    },
+    {
+      "path": "source/mutation-client/commit-orchestrator.ts",
+      "size_bytes": 1832,
+      "sha256": "f2037e8763a8a8df15631e8c6ce8b8dc57d32ef14268e413ae5f8f4e18cae9e1"
+    },
+    {
+      "path": "source/mutation-client/contracts.ts",
+      "size_bytes": 5699,
+      "sha256": "dc6b78315a5c2c8f5c466f05a888f6a49624e09733717d0260fdf6626f9ffd13"
+    },
+    {
+      "path": "source/mutation-client/diagnostics.ts",
+      "size_bytes": 1388,
+      "sha256": "66ead110f96987c67d7756ee027049d8f2884cd936c83815d1ca3886de6c60c0"
+    },
+    {
+      "path": "source/mutation-client/examples/mutation-client-demo.ts",
+      "size_bytes": 951,
+      "sha256": "4552db3d8a7f52cd0e9fd60bb1eb5ab3280049349a4764690fa7ff0220be69e2"
+    },
+    {
+      "path": "source/mutation-client/history-log.ts",
+      "size_bytes": 987,
+      "sha256": "787fe697b9fe8c8830eaad6167011d31d99ba21630e46c3ce06471e00e0203bd"
+    },
+    {
+      "path": "source/mutation-client/index.ts",
+      "size_bytes": 463,
+      "sha256": "68abace239aead77c3af53543b83300ed04f08392f8c6d4f5148517a5a76cc3f"
+    },
+    {
+      "path": "source/mutation-client/mode-policy.ts",
+      "size_bytes": 1702,
+      "sha256": "1a855469aa566ff62e2fd3acdc1ec2c65a5c8d26e62fbe9c7e996bc28ab66d80"
+    },
+    {
+      "path": "source/mutation-client/mutation-intents.ts",
+      "size_bytes": 2807,
+      "sha256": "b15e049c812f3b5c5ed8f16c866b254b436fca022e3d80d458302c5a452e77a2"
+    },
+    {
+      "path": "source/mutation-client/preview-diff.ts",
+      "size_bytes": 913,
+      "sha256": "bf7a24ebf4deded23b01d6f04960a3c207f1fe125e8d53fe0c22f69d34fd898e"
+    },
+    {
+      "path": "source/mutation-client/preview-session.ts",
+      "size_bytes": 2487,
+      "sha256": "c274d3fd6b53eab89ae557fe830d5e4ed020b8953829dad827ac7d04e12f9500"
+    },
+    {
+      "path": "source/mutation-client/react-hooks.ts",
+      "size_bytes": 526,
+      "sha256": "c95a18e5f72b743e92469ca761e8476af8da3216f6f44f5a8cf843aefb5befca"
+    },
+    {
+      "path": "source/mutation-client/revert-planner.ts",
+      "size_bytes": 1698,
+      "sha256": "a234d073a7686d0376a00ff43f67f99e489cc19e9ddf33e78de30b79288429d1"
+    },
+    {
+      "path": "source/mutation-client/scenario-fixtures.ts",
+      "size_bytes": 1867,
+      "sha256": "dfd07c49a0bc2ae75f412cbf240a419ee7c0a2ec808555d163ce0a939db28e0f"
+    },
+    {
+      "path": "source/mutation-client/types/react-shim.d.ts",
+      "size_bytes": 196,
+      "sha256": "6af5f0b2241cf1cdaa4ab4e212950a82be78926b9399bf17ec5ee9db600c33c5"
+    },
+    {
+      "path": "source/mutation-client/validation.ts",
+      "size_bytes": 2820,
+      "sha256": "d335ced642a4d0fa9d342ea26c39da11623a11f113995cd006608e9a1dcea719"
+    }
+  ]
+}

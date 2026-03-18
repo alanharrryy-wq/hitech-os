@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "policy_id": "security",
+  "version": "2026-03-17",
+  "sensitive_path_prefixes": [
+    ".github/workflows/",
+    "services/",
+    "packages/contracts/",
+    "apps/keystone/app/api/",
+    "tools/codex/",
+    "tools/graphviz/",
+    "tools/hos/",
+    "terraform/",
+    "helm/",
+    "k8s/",
+    "policies/"
+  ],
+  "secret_scan": {
+    "enabled": true,
+    "scan_max_file_bytes": 1048576,
+    "include_extensions": [
+      ".env",
+      ".json",
+      ".yaml",
+      ".yml",
+      ".toml",
+      ".ini",
+      ".txt",
+      ".md",
+      ".js",
+      ".cjs",
+      ".mjs",
+      ".ts",
+      ".tsx",
+      ".py",
+      ".sh",
+      ".ps1"
+    ],
+    "high_confidence_patterns": [
+      {
+        "id": "private_key",
+        "regex": "-----BEGIN (?:RSA|EC|DSA|OPENSSH|PGP|PRIVATE) KEY-----"
+      },
+      {
+        "id": "aws_access_key",
+        "regex": "\\bAKIA[0-9A-Z]{16}\\b"
+      },
+      {
+        "id": "github_pat",
+        "regex": "\\bghp_[A-Za-z0-9]{36}\\b|\\bgithub_pat_[A-Za-z0-9_]{20,}\\b"
+      },
+      {
+        "id": "openai_key",
+        "regex": "\\bsk-[A-Za-z0-9]{20,}\\b"
+      },
+      {
+        "id": "slack_token",
+        "regex": "\\bxox[baprs]-[A-Za-z0-9-]{10,}\\b"
+      }
+    ]
+  },
+  "review": {
+    "require_owner_review": true,
+    "require_secondary_owner": false,
+    "report_if_single_owner_mode": true
+  }
+}

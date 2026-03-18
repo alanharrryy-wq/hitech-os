@@ -2,7 +2,19 @@ name: docs-governor
 
 on:
   push:
+    paths:
+      - "docs/**"
+      - "tools/docs_governor/**"
+      - ".github/workflows/docs-governor.yml"
+    paths-ignore:
+      - "docs/knowledge/codex_chats/**"
   pull_request:
+    paths:
+      - "docs/**"
+      - "tools/docs_governor/**"
+      - ".github/workflows/docs-governor.yml"
+    paths-ignore:
+      - "docs/knowledge/codex_chats/**"
 
 jobs:
   docs-governor:

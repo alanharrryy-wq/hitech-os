@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-03-17T23:33:31.142Z",
+  "policy_path": "policies/release.json",
+  "versioning_mode": "lockstep",
+  "diff": {
+    "base": "HEAD~1",
+    "head": "HEAD",
+    "mode": "triple-dot",
+    "changed_file_count": 6
+  },
+  "strict_mode": true,
+  "report_only_default": true,
+  "changes": {
+    "release_critical": [],
+    "public_api": [],
+    "change_notes": [],
+    "package_manifests": []
+  },
+  "checks": {
+    "require_change_note_for_release_critical": true,
+    "change_note_present_when_required": true
+  },
+  "violations": [],
+  "status": "pass",
+  "insufficient_evidence": []
+}
