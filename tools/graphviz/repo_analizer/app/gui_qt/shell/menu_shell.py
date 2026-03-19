@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from PySide6.QtGui import QAction, QKeySequence
-from PySide6.QtWidgets import QMenu
+from PySide6.QtWidgets import QDockWidget, QMenu
 
 from ..skins import list_skins
 
@@ -51,7 +51,7 @@ class ShellMenuBuilder:
         workspace_menu.addAction("Restore Saved Layout").triggered.connect(
             self.main.layout_manager.restore_saved_layout_snapshot
         )
-        workspace_menu.addAction("Reset to Ember Layout").triggered.connect(
+        workspace_menu.addAction("Reset to Balanced Layout").triggered.connect(
             self.main.reset_layout
         )
         workspace_menu.addAction("Apply Focus Layout").triggered.connect(
@@ -69,13 +69,19 @@ class ShellMenuBuilder:
             )
 
         view_menu.addSeparator()
-        for dock in (
-            self.main.explorer_dock,
-            self.main.results_dock,
-            self.main.inspector_dock,
-            self.main.bookmarks_dock,
-        ):
-            view_menu.addAction(dock.toggleViewAction())
+        dock_names = (
+            "workspace_summary_dock",
+            "preview_workspace_dock",
+            "central_inspector_dock",
+            "explorer_dock",
+            "results_dock",
+            "inspector_dock",
+            "bookmarks_dock",
+        )
+        for name in dock_names:
+            dock = getattr(self.main, name, None)
+            if isinstance(dock, QDockWidget):
+                view_menu.addAction(dock.toggleViewAction())
 
         view_menu.addSeparator()
         view_menu.addAction(self.main.workspace_toolbar.toggleViewAction())

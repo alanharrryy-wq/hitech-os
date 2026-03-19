@@ -18,7 +18,7 @@ from PySide6.QtWidgets import (
 )
 
 from app.helpers import human_size
-from .widgets import AccentButton, PanelCard
+from .widgets import GhostButton, PanelCard, SecondaryButton
 
 if TYPE_CHECKING:
     from .main_window import RepoAnalyzerMainWindow
@@ -37,14 +37,15 @@ class PreviewController:
         """Build the preview panel with imports and dependents."""
         preview_card = PanelCard(skin_tokens, accent=True, parent=central_splitter)
         preview_layout = QVBoxLayout(preview_card)
-        preview_layout.setContentsMargins(18, 16, 18, 16)
+        preview_layout.setContentsMargins(20, 18, 20, 18)
         preview_layout.setSpacing(10)
 
         # Header
         preview_header = QHBoxLayout()
+        preview_header.setSpacing(8)
         preview_title_box = QVBoxLayout()
         preview_title_box.setContentsMargins(0, 0, 0, 0)
-        preview_title_box.setSpacing(2)
+        preview_title_box.setSpacing(3)
 
         self.main.preview_title_label = QLabel('Sin archivo seleccionado', preview_card)
         self.main.preview_title_label.setObjectName('heroTitleLabel')
@@ -54,15 +55,15 @@ class PreviewController:
         preview_title_box.addWidget(self.main.preview_meta_label)
         preview_header.addLayout(preview_title_box, 1)
 
-        self.main.open_system_btn = AccentButton('Abrir con sistema', skin_tokens, preview_card)
+        self.main.open_system_btn = SecondaryButton('Abrir con sistema', skin_tokens, preview_card)
         self.main.open_system_btn.clicked.connect(self.main.open_current_preview_with_system)
         preview_header.addWidget(self.main.open_system_btn)
 
-        self.main.open_svg_btn = AccentButton('SVG Workspace', skin_tokens, preview_card)
+        self.main.open_svg_btn = SecondaryButton('SVG Workspace', skin_tokens, preview_card)
         self.main.open_svg_btn.clicked.connect(self.main.open_svg_workspace)
         preview_header.addWidget(self.main.open_svg_btn)
 
-        self.main.bookmark_btn = AccentButton('Bookmark', skin_tokens, preview_card)
+        self.main.bookmark_btn = GhostButton('Bookmark', skin_tokens, preview_card)
         self.main.bookmark_btn.clicked.connect(self.main.add_current_preview_bookmark)
         preview_header.addWidget(self.main.bookmark_btn)
 
@@ -81,7 +82,7 @@ class PreviewController:
         preview_layout.addWidget(self.main.preview, 1)
 
         self.main.preview_hint_label = QLabel(
-            'Doble clic en árbol o resultados para abrir con tu sistema. Alt+Left / Alt+Right para navegar.',
+            'Doble clic en árbol o resultados para abrir en sistema. Alt+Left / Alt+Right para historial.',
             preview_card
         )
         self.main.preview_hint_label.setObjectName('panelMutedLabel')
@@ -94,7 +95,7 @@ class PreviewController:
         insights_card = PanelCard(skin_tokens, accent=False, parent=central_splitter)
         insights_layout = QVBoxLayout(insights_card)
         insights_layout.setContentsMargins(18, 16, 18, 16)
-        insights_layout.setSpacing(10)
+        insights_layout.setSpacing(9)
 
         # Header
         insights_header = QHBoxLayout()

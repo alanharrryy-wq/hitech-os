@@ -23,7 +23,7 @@ from PySide6.QtGui import QStandardItem, QStandardItemModel
 
 from app.config import DEFAULT_MAX_RESULTS
 from app.helpers import human_size
-from .widgets import AccentButton, PanelCard
+from .widgets import AccentButton, GhostButton, PanelCard, SecondaryButton
 from .workers import SearchWorker
 
 if TYPE_CHECKING:
@@ -49,7 +49,7 @@ class SearchController(QObject):
         """Create the results table view."""
         results_card = PanelCard(skin_tokens, accent=True, parent=self.main.results_dock)
         results_layout = QVBoxLayout(results_card)
-        results_layout.setContentsMargins(14, 14, 14, 14)
+        results_layout.setContentsMargins(16, 16, 16, 16)
         results_layout.setSpacing(10)
 
         results_table = QTableView(results_card)
@@ -94,7 +94,7 @@ class SearchController(QObject):
         search_tab.setProperty('visualRole', 'panel-surface')
         search_tab.setProperty('visualTier', 'themed')
         search_form = QFormLayout(search_tab)
-        search_form.setContentsMargins(8, 8, 8, 8)
+        search_form.setContentsMargins(10, 10, 10, 10)
         search_form.setSpacing(10)
 
         # Folder combo
@@ -146,13 +146,13 @@ class SearchController(QObject):
         self.main.search_now_btn = AccentButton('Buscar', skin_tokens, search_buttons_row, strong=True)
         self.main.search_now_btn.clicked.connect(self.main.start_search)
         
-        self.main.clear_search_btn = AccentButton('Limpiar', skin_tokens, search_buttons_row)
+        self.main.clear_search_btn = GhostButton('Limpiar', skin_tokens, search_buttons_row)
         self.main.clear_search_btn.clicked.connect(self.clear_search)
         
-        self.main.export_btn = AccentButton('Exportar', skin_tokens, search_buttons_row)
+        self.main.export_btn = SecondaryButton('Exportar', skin_tokens, search_buttons_row)
         self.main.export_btn.clicked.connect(self.export_results)
         
-        self.main.open_repo_btn = AccentButton('Abrir carpeta', skin_tokens, search_buttons_row)
+        self.main.open_repo_btn = SecondaryButton('Abrir carpeta', skin_tokens, search_buttons_row)
         self.main.open_repo_btn.clicked.connect(self.main.open_current_repo_folder)
 
         for btn in (

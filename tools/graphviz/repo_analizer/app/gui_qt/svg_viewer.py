@@ -28,8 +28,8 @@ class SvgGraphicsView(QGraphicsView):
         super().__init__(parent)
         self._zoom = 1.0
         self._content_rect = QRectF()
-        self._padding_ratio = 0.06
-        self._padding_min = 36.0
+        self._padding_ratio = 0.08
+        self._padding_min = 42.0
         self.setRenderHints(QPainter.Antialiasing | QPainter.SmoothPixmapTransform | QPainter.TextAntialiasing)
         self.setDragMode(QGraphicsView.ScrollHandDrag)
         self.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
@@ -40,7 +40,7 @@ class SvgGraphicsView(QGraphicsView):
     def set_canvas_colors(self, background: str, border: str) -> None:
         self.setBackgroundBrush(QColor(background))
         self.viewport().setStyleSheet(
-            f'background: {background}; border-radius: 10px; border: 1px solid {border};'
+            f'background: {background}; border-radius: 12px; border: 1px solid {border};'
         )
         self.viewport().update()
 
@@ -130,12 +130,12 @@ class SvgPreviewWindow(QMainWindow):
     def _build_ui(self) -> None:
         central = QWidget(self)
         outer = QVBoxLayout(central)
-        outer.setContentsMargins(12, 12, 12, 12)
+        outer.setContentsMargins(10, 10, 10, 10)
         outer.setSpacing(10)
 
         card = PanelCard(self._tokens, accent=True, parent=central)
         card_layout = QVBoxLayout(card)
-        card_layout.setContentsMargins(16, 16, 16, 16)
+        card_layout.setContentsMargins(18, 16, 18, 16)
         card_layout.setSpacing(10)
 
         header = QWidget(card)
@@ -160,7 +160,7 @@ class SvgPreviewWindow(QMainWindow):
         pill_box.setSpacing(6)
         self.pill_label = QLabel('Pan • Zoom • Fit', header)
         self.pill_label.setObjectName('panelPill')
-        self.status_label = QLabel('Canvas IDE dark', header)
+        self.status_label = QLabel('Canvas ready', header)
         self.status_label.setObjectName('svgStatusLabel')
         pill_box.addWidget(self.pill_label, 0, Qt.AlignRight)
         pill_box.addWidget(self.status_label, 0, Qt.AlignRight)
@@ -172,7 +172,7 @@ class SvgPreviewWindow(QMainWindow):
         card_layout.addWidget(self.view, 1)
 
         self.hint_label = QLabel(
-            'Ctrl + rueda para zoom. Arrastra para paneo. Ajustar regresa al encuadre ideal.',
+            'Ctrl + rueda para zoom. Arrastra para paneo. Ajustar devuelve encuadre limpio.',
             card,
         )
         self.hint_label.setObjectName('svgHintLabel')
@@ -222,8 +222,8 @@ class SvgPreviewWindow(QMainWindow):
         self._toolbar.setStyleSheet(
             f'''
             QToolBar#SvgToolbar {{
-                background: {tokens.bg_alt};
-                border-bottom: 1px solid {tokens.accent};
+                background: {tokens.toolbar_bg};
+                border-bottom: 1px solid {tokens.border};
                 spacing: 8px;
                 padding: 8px 10px;
             }}
@@ -231,17 +231,17 @@ class SvgPreviewWindow(QMainWindow):
                 background: {tokens.panel_alt};
                 color: {tokens.text};
                 border: 1px solid {tokens.border};
-                border-radius: 10px;
-                padding: 7px 11px;
+                border-radius: 9px;
+                padding: 7px 10px;
                 font-weight: 600;
             }}
             QToolBar#SvgToolbar QToolButton:hover {{
-                border: 1px solid {tokens.accent};
+                border: 1px solid {tokens.border_strong};
                 background: {tokens.panel_hover};
             }}
             '''
         )
-        self.status_label.setText(f'Canvas {tokens.display_name} • fondo real {tokens.code_bg}')
+        self.status_label.setText(f'Canvas {tokens.display_name}')
         self.view.viewport().update()
         self._scene.update()
 

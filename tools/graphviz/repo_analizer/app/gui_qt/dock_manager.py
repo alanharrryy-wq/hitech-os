@@ -23,6 +23,34 @@ class DockManager:
 
     def build_docks(self, skin_tokens: SkinTokens) -> None:
         """Create and configure all dock widgets."""
+        self.main.workspace_summary_dock = self.register_feature_panel(
+            title='Workspace Summary',
+            area=Qt.TopDockWidgetArea,
+            widget_factory=lambda dock: self._prebuilt_panel('workspace_summary_panel', 'Workspace Summary'),
+            skin_tokens=skin_tokens,
+            object_name='dock_workspace_summary',
+            reason='dock-manager-workspace-summary',
+            visual_role='hero-surface',
+        )
+        self.main.preview_workspace_dock = self.register_feature_panel(
+            title='Preview Workspace',
+            area=Qt.TopDockWidgetArea,
+            widget_factory=lambda dock: self._prebuilt_panel('preview_workspace_panel', 'Preview Workspace'),
+            skin_tokens=skin_tokens,
+            object_name='dock_preview_workspace',
+            reason='dock-manager-preview-workspace',
+            visual_role='panel-surface',
+        )
+        self.main.central_inspector_dock = self.register_feature_panel(
+            title='Inspector Central',
+            area=Qt.TopDockWidgetArea,
+            widget_factory=lambda dock: self._prebuilt_panel('central_inspector_panel', 'Inspector Central'),
+            skin_tokens=skin_tokens,
+            object_name='dock_central_inspector',
+            reason='dock-manager-central-inspector',
+            visual_role='panel-surface',
+        )
+
         self.main.explorer_dock = self._make_dock('Explorer', Qt.LeftDockWidgetArea)
         self.main.results_dock = self._make_dock('Results', Qt.BottomDockWidgetArea)
 
@@ -63,18 +91,52 @@ class DockManager:
         # Tabify and finalize
         self.main.tabifyDockWidget(self.main.inspector_dock, self.main.bookmarks_dock)
         self.main.inspector_dock.raise_()
+        self.main.splitDockWidget(
+            self.main.workspace_summary_dock,
+            self.main.preview_workspace_dock,
+            Qt.Vertical,
+        )
+        self.main.splitDockWidget(
+            self.main.preview_workspace_dock,
+            self.main.central_inspector_dock,
+            Qt.Vertical,
+        )
+        self.main.preview_workspace_dock.raise_()
 
         self.main.resizeDocks(
             [self.main.explorer_dock, self.main.inspector_dock],
-            [360, 380],
+            [350, 420],
             Qt.Horizontal
         )
-        self.main.resizeDocks([self.main.results_dock], [320], Qt.Vertical)
+        self.main.resizeDocks([self.main.results_dock], [300], Qt.Vertical)
+        self.main.resizeDocks(
+            [
+                self.main.workspace_summary_dock,
+                self.main.preview_workspace_dock,
+                self.main.central_inspector_dock,
+            ],
+            [220, 420, 280],
+            Qt.Vertical,
+        )
 
         # Route all built-in docks through the central visual runtime.
-        for dock in (self.main.explorer_dock, self.main.results_dock, self.main.inspector_dock, self.main.bookmarks_dock):
+        for dock in (
+            self.main.workspace_summary_dock,
+            self.main.preview_workspace_dock,
+            self.main.central_inspector_dock,
+            self.main.explorer_dock,
+            self.main.results_dock,
+            self.main.inspector_dock,
+            self.main.bookmarks_dock,
+        ):
             self._prepare_dock_content_root(dock)
             self._process_dock_visual_runtime(dock, skin_tokens, reason='dock-manager-builtins')
+
+    def _prebuilt_panel(self, attr_name: str, label: str):
+        panel = getattr(self.main, attr_name, None)
+        if panel is None:
+            raise RuntimeError(f"Prebuilt panel '{label}' was not prepared before dock attach")
+        return panel
 
     def add_plugin_dock(
         self,
@@ -120,6 +182,7 @@ class DockManager:
         """Create a dock widget."""
         dock = QDockWidget(title, self.main)
         dock.setObjectName(f'dock_{title.lower()}')
+        dock.setProperty('visualTier', 'themed')
         dock.setFeatures(
             QDockWidget.DockWidgetMovable
             | QDockWidget.DockWidgetFloatable

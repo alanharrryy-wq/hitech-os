@@ -106,19 +106,19 @@ _NAME_ROLE_HINTS: tuple[tuple[str, str], ...] = (
 )
 
 _SHADOW_PROFILES: dict[str, tuple[float, float]] = {
-    'workspace-surface': (18.0, 2.0),
-    'toolbar-surface': (16.0, 2.0),
-    'hero-surface': (30.0, 6.0),
-    'panel-surface': (22.0, 4.0),
-    'metric-surface': (20.0, 4.0),
-    'summary-surface': (20.0, 4.0),
-    'status-surface': (16.0, 1.0),
-    'premium-surface': (24.0, 5.0),
-    'dock-content-root': (24.0, 4.0),
-    'plugin-dock-root': (24.0, 4.0),
+    'workspace-surface': (12.0, 1.0),
+    'toolbar-surface': (10.0, 1.0),
+    'hero-surface': (18.0, 3.0),
+    'panel-surface': (14.0, 2.0),
+    'metric-surface': (12.0, 2.0),
+    'summary-surface': (12.0, 2.0),
+    'status-surface': (8.0, 0.0),
+    'premium-surface': (16.0, 2.0),
+    'dock-content-root': (16.0, 2.0),
+    'plugin-dock-root': (16.0, 2.0),
 }
 
-_SHADOW_DEFAULT_PROFILE = (20.0, 4.0)
+_SHADOW_DEFAULT_PROFILE = (12.0, 1.0)
 
 _DEBUG_TRUE_VALUES = {'1', 'true', 'yes', 'on'}
 _ALL_CHILD_PATTERN = QRegularExpression('.*')

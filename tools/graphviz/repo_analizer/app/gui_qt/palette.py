@@ -26,12 +26,22 @@ def token_to_css(color_hex: str) -> str:
     # Validate and normalize hex format
     if not color_hex.startswith('#'):
         color_hex = '#' + color_hex
-    
-    # Ensure valid 6-digit hex
-    if len(color_hex) != 7:
-        return "#000000"  # Fallback to black
-    
-    return color_hex
+
+    if len(color_hex) == 7:
+        return color_hex
+
+    # Support #RRGGBBAA tokens by converting to rgba()
+    if len(color_hex) == 9:
+        try:
+            r = int(color_hex[1:3], 16)
+            g = int(color_hex[3:5], 16)
+            b = int(color_hex[5:7], 16)
+            a = int(color_hex[7:9], 16) / 255.0
+            return f"rgba({r}, {g}, {b}, {a:.2f})"
+        except ValueError:
+            return "#000000"
+
+    return "#000000"  # Fallback to black
 
 
 def token_with_alpha(color_hex: str, alpha_pct: int = 100) -> str:
@@ -180,7 +190,9 @@ def severity_glow_css(tokens: SkinTokens, severity: str) -> str:
     """
     match severity.lower():
         case "accent":
-            return glow_css(tokens.accent, tokens.accent_glow.split('x')[1] if 'x' in tokens.accent_glow else "33")
+            if isinstance(tokens.accent_glow, str) and len(tokens.accent_glow) == 9 and tokens.accent_glow.startswith('#'):
+                return token_to_css(tokens.accent_glow)
+            return glow_css(tokens.accent, "33")
         case "success":
             return glow_css(tokens.success, "33")
         case "warning":

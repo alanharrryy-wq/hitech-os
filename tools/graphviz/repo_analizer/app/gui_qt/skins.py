@@ -75,84 +75,125 @@ class SkinTokens:
 ORANGE_EMBER = SkinTokens(
     name="orange_ember",
     display_name="Orange Ember",
-    bg="#101317",
-    bg_alt="#151a20",
-    bg_elevated="#1a2028",
-    panel="#1c232c",
-    panel_alt="#232c37",
-    panel_hover="#2a3440",
-    panel_active="#313d4b",
-    text="#eef3f8",
-    text_muted="#96a3b6",
-    text_soft="#7d8999",
-    accent="#ff9a3d",
-    accent_hover="#ffb86b",
-    accent_pressed="#ff8a22",
-    accent_soft="#4f341f",
-    accent_glow="#ff9a3d33",
-    success="#4dd98d",
-    warning="#ffc857",
-    danger="#ff6d77",
-    border="#2f3946",
-    border_soft="#242d38",
-    border_strong="#4f5e72",
-    bevel_light="#ffffff16",
-    bevel_shadow="#00000094",
-    shadow="#000000c4",
-    selection="#2e3d4d",
-    focus_ring="#ff9a3d55",
-    toolbar_bg="#141920",
-    dock_title_bg="#18202a",
-    menu_bg="#171d24",
-    scrollbar="#5a687b",
-    scrollbar_hover="#ff9a3d",
-    splitter="#364252",
-    code_bg="#0f1318",
-    code_text="#e8edf5",
-    code_line="#1b2330",
+    bg="#0f1318",
+    bg_alt="#141a22",
+    bg_elevated="#1a212c",
+    panel="#1d2531",
+    panel_alt="#232d3a",
+    panel_hover="#2b3747",
+    panel_active="#314258",
+    text="#edf2f8",
+    text_muted="#9aa8bc",
+    text_soft="#7c8a9e",
+    accent="#d9a168",
+    accent_hover="#e4b582",
+    accent_pressed="#c8925a",
+    accent_soft="#36281a",
+    accent_glow="#d9a1682c",
+    success="#5fc794",
+    warning="#d8b36d",
+    danger="#d58086",
+    border="#2d3848",
+    border_soft="#263140",
+    border_strong="#3f5067",
+    bevel_light="#ffffff12",
+    bevel_shadow="#00000073",
+    shadow="#0000009f",
+    selection="#2f4058",
+    focus_ring="#d9a1686b",
+    toolbar_bg="#111821",
+    dock_title_bg="#151f2b",
+    menu_bg="#151e28",
+    scrollbar="#4f5d70",
+    scrollbar_hover="#d9a168",
+    splitter="#2f3c4e",
+    code_bg="#0b1118",
+    code_text="#e8eef6",
+    code_line="#15202d",
 )
 
 CYAN_NOIR = SkinTokens(
     name="cyan_noir",
     display_name="Cyan Noir",
-    bg="#0f1418",
-    bg_alt="#141b21",
-    bg_elevated="#182129",
-    panel="#1a242c",
-    panel_alt="#21303a",
-    panel_hover="#2a3c49",
-    panel_active="#314654",
-    text="#ebf5f8",
-    text_muted="#97afba",
-    text_soft="#80929b",
-    accent="#38d7ef",
-    accent_hover="#7be8f3",
-    accent_pressed="#21c7df",
-    accent_soft="#1a4047",
-    accent_glow="#38d7ef33",
-    success="#4dd98d",
-    warning="#ffc857",
-    danger="#ff6d77",
-    border="#2e4150",
-    border_soft="#23323d",
-    border_strong="#486276",
-    bevel_light="#ffffff15",
-    bevel_shadow="#00000094",
-    shadow="#000000c4",
-    selection="#29414c",
-    focus_ring="#38d7ef50",
-    toolbar_bg="#131a20",
-    dock_title_bg="#17212a",
-    menu_bg="#161d23",
-    scrollbar="#5c7180",
-    scrollbar_hover="#38d7ef",
-    splitter="#35505f",
-    code_bg="#0e1318",
-    code_text="#e6f2f6",
-    code_line="#18222b",
+    bg="#0f1318",
+    bg_alt="#141b22",
+    bg_elevated="#19222b",
+    panel="#1d2732",
+    panel_alt="#23303d",
+    panel_hover="#2a3949",
+    panel_active="#304356",
+    text="#ebf3f7",
+    text_muted="#98aeb8",
+    text_soft="#7f949f",
+    accent="#7fb8c1",
+    accent_hover="#98c8cf",
+    accent_pressed="#6ea8b2",
+    accent_soft="#1f363a",
+    accent_glow="#7fb8c12b",
+    success="#60c797",
+    warning="#d8b570",
+    danger="#d27f88",
+    border="#2d3d4d",
+    border_soft="#253241",
+    border_strong="#3e556a",
+    bevel_light="#ffffff11",
+    bevel_shadow="#00000073",
+    shadow="#0000009f",
+    selection="#2d4458",
+    focus_ring="#7fb8c167",
+    toolbar_bg="#111921",
+    dock_title_bg="#15212a",
+    menu_bg="#142028",
+    scrollbar="#4d6270",
+    scrollbar_hover="#7fb8c1",
+    splitter="#2f4353",
+    code_bg="#0b1118",
+    code_text="#e6eff4",
+    code_line="#14212c",
+)
+
+GRAPHITE_LUXE = SkinTokens(
+    name="graphite_luxe",
+    display_name="Graphite Luxe",
+    bg="#0d1117",
+    bg_alt="#11161d",
+    bg_elevated="#161d26",
+    panel="#1a222d",
+    panel_alt="#202a37",
+    panel_hover="#273447",
+    panel_active="#2e3f56",
+    text="#e9eef6",
+    text_muted="#9caabc",
+    text_soft="#78879b",
+    accent="#88addc",
+    accent_hover="#a4c0e6",
+    accent_pressed="#729bce",
+    accent_soft="#1f3048",
+    accent_glow="#88addc2d",
+    success="#5fc794",
+    warning="#d7b36b",
+    danger="#d37b84",
+    border="#2b3748",
+    border_soft="#243041",
+    border_strong="#3b4c64",
+    bevel_light="#ffffff12",
+    bevel_shadow="#00000076",
+    shadow="#000000a3",
+    selection="#2d415a",
+    focus_ring="#88addc69",
+    toolbar_bg="#101721",
+    dock_title_bg="#151f2c",
+    menu_bg="#141e2a",
+    scrollbar="#4e5c70",
+    scrollbar_hover="#6b87ad",
+    splitter="#2e3b4c",
+    code_bg="#0a1018",
+    code_text="#e5ebf3",
+    code_line="#141d2a",
 )
 
 SKINS: dict[str, SkinTokens] = {
+    GRAPHITE_LUXE.name: GRAPHITE_LUXE,
     ORANGE_EMBER.name: ORANGE_EMBER,
     CYAN_NOIR.name: CYAN_NOIR,
 }
@@ -196,15 +237,33 @@ def get_skin(name: Any) -> SkinTokens:
     return SKINS.get(key, ORANGE_EMBER)
 
 
+def _hex_rgba(color_hex: str, alpha: int) -> str:
+    try:
+        color = QColor(color_hex)
+    except Exception:
+        color = QColor()
+
+    if not color.isValid():
+        color = QColor(0, 0, 0)
+
+    alpha = max(0, min(255, int(alpha)))
+    return f"rgba({color.red()}, {color.green()}, {color.blue()}, {alpha})"
+
+
 def _build_stylesheet(tokens: SkinTokens) -> str:
     tokens = _coerce_skin_tokens(tokens)
+    soft_border = _hex_rgba(tokens.border, 176)
+    soft_accent = _hex_rgba(tokens.accent, 44)
+    panel_hover_soft = _hex_rgba(tokens.panel_hover, 215)
+    splitter_soft = _hex_rgba(tokens.splitter, 220)
+    menu_bg = _hex_rgba(tokens.menu_bg, 244)
     return f"""
     QWidget {{
         background: {tokens.bg};
         color: {tokens.text};
         selection-background-color: {tokens.selection};
         selection-color: {tokens.text};
-        font-family: 'Segoe UI';
+        font-family: 'Segoe UI Variable Text', 'Segoe UI', sans-serif;
         font-size: 10pt;
     }}
 
@@ -212,45 +271,54 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
         background: {tokens.bg};
     }}
 
-    QMenuBar, QMenu, QStatusBar {{
-        color: {tokens.text};
+    QWidget#workspaceCanvasRootSurface,
+    QWidget#workspaceCanvasSurface {{
+        background: qlineargradient(
+            x1:0, y1:0, x2:0, y2:1,
+            stop:0 {tokens.bg_alt},
+            stop:1 {tokens.bg}
+        );
+        border: none;
     }}
 
     QMenuBar {{
-        background: {tokens.bg};
+        background: {tokens.toolbar_bg};
         border: none;
-        border-bottom: 1px solid {tokens.border};
-        padding: 4px 8px 6px 8px;
+        border-bottom: 1px solid {soft_border};
+        padding: 5px 10px 6px 10px;
+        spacing: 4px;
     }}
 
     QMenuBar::item {{
-        padding: 7px 12px;
+        padding: 6px 12px;
+        margin: 0 2px;
         border-radius: 8px;
         background: transparent;
         color: {tokens.text_muted};
-        margin: 0 2px;
     }}
 
     QMenuBar::item:selected {{
-        background: {tokens.bg_elevated};
-        color: {tokens.text};
-    }}
-
-    QMenuBar::item:pressed {{
         background: {tokens.panel};
         color: {tokens.text};
     }}
 
+    QMenuBar::item:pressed {{
+        background: {tokens.panel_active};
+        color: {tokens.text};
+    }}
+
     QMenu {{
-        background: {tokens.menu_bg};
+        background: {menu_bg};
+        color: {tokens.text};
         border: 1px solid {tokens.border};
-        border-radius: 12px;
-        padding: 8px;
+        border-radius: 10px;
+        padding: 7px;
     }}
 
     QMenu::item {{
-        padding: 8px 12px;
-        border-radius: 8px;
+        padding: 7px 10px;
+        margin: 1px 0;
+        border-radius: 7px;
         background: transparent;
     }}
 
@@ -261,146 +329,290 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
 
     QMenu::separator {{
         height: 1px;
-        background: {tokens.border_soft};
         margin: 6px 4px;
+        background: {tokens.border_soft};
     }}
 
     QToolBar {{
-        background: {tokens.toolbar_bg};
         border: none;
-        spacing: 8px;
-        padding: 8px 10px;
+        spacing: 10px;
     }}
 
-    QToolBar#WorkspaceToolbar,
+    QToolBar#WorkspaceToolbar {{
+        background: qlineargradient(
+            x1:0, y1:0, x2:0, y2:1,
+            stop:0 {tokens.toolbar_bg},
+            stop:1 {tokens.bg_alt}
+        );
+        border-bottom: 1px solid {tokens.border_soft};
+        padding: 12px 14px 10px 14px;
+    }}
+
     QToolBar#CommandToolbar {{
-        background: {tokens.toolbar_bg};
+        background: qlineargradient(
+            x1:0, y1:0, x2:0, y2:1,
+            stop:0 {tokens.bg_alt},
+            stop:1 {tokens.bg}
+        );
         border-bottom: 1px solid {tokens.border};
+        padding: 8px 14px 12px 14px;
     }}
 
     QToolBar#SvgToolbar {{
-        background: {tokens.bg_alt};
-        border-bottom: 1px solid {tokens.accent};
+        background: {tokens.toolbar_bg};
+        border-bottom: 1px solid {tokens.border};
+        padding: 8px 10px;
         spacing: 8px;
-        padding: 8px 12px;
     }}
 
     QToolBar::separator {{
         width: 1px;
-        margin: 4px 6px;
+        margin: 7px 9px;
         background: {tokens.border_soft};
     }}
 
-    QToolButton, QPushButton {{
-        background: {tokens.panel_alt};
-        color: {tokens.text};
+    QFrame#panelCard,
+    QFrame#workspaceHeroSurface,
+    QFrame#workspaceRepoSurface,
+    QFrame#workspaceNavSurface,
+    QFrame#workspaceSkinSurface,
+    QFrame#commandDeckSurface,
+    QFrame#commandFiltersSurface,
+    QFrame#commandLayoutSurface,
+    QFrame#searchOptionsSurface,
+    QFrame#searchActionsSurface,
+    QFrame#bookmarksActionsSurface,
+    QWidget#searchInspectorSurface,
+    QWidget#fileInspectorSurface {{
+        background: qlineargradient(
+            x1:0, y1:0, x2:0, y2:1,
+            stop:0 {tokens.panel},
+            stop:1 {tokens.panel_alt}
+        );
         border: 1px solid {tokens.border};
-        border-top: 1px solid {tokens.bevel_light};
-        border-bottom: 1px solid {tokens.bevel_shadow};
-        border-radius: 11px;
-        padding: 8px 12px;
+        border-radius: 14px;
     }}
 
-    QToolButton:hover, QPushButton:hover {{
-        background: {tokens.panel_hover};
-        border: 1px solid {tokens.accent};
-    }}
-
-    QToolButton:pressed, QPushButton:pressed {{
-        background: {tokens.panel};
-        border: 1px solid {tokens.accent_pressed};
-        padding-top: 9px;
-        padding-bottom: 7px;
-    }}
-
-    QToolButton:checked {{
-        background: {tokens.panel_active};
-        border: 1px solid {tokens.accent};
-        color: {tokens.text};
-    }}
-
-    QToolButton:disabled, QPushButton:disabled {{
-        background: {tokens.panel};
-        color: {tokens.text_soft};
-        border: 1px solid {tokens.border_soft};
-    }}
-
-    QLineEdit, QPlainTextEdit, QTextEdit, QComboBox, QSpinBox {{
-        background: {tokens.panel};
-        color: {tokens.text};
-        border: 1px solid {tokens.border};
-        border-top: 1px solid {tokens.bevel_light};
-        border-bottom: 1px solid {tokens.bevel_shadow};
-        border-radius: 10px;
-        padding: 8px 10px;
-        selection-background-color: {tokens.selection};
-    }}
-
-    QLineEdit:hover, QPlainTextEdit:hover, QTextEdit:hover, QComboBox:hover, QSpinBox:hover {{
+    QFrame#panelCard:hover,
+    QFrame#workspaceHeroSurface:hover,
+    QFrame#workspaceRepoSurface:hover,
+    QFrame#workspaceNavSurface:hover,
+    QFrame#workspaceSkinSurface:hover,
+    QFrame#commandDeckSurface:hover,
+    QFrame#commandFiltersSurface:hover,
+    QFrame#commandLayoutSurface:hover {{
         border: 1px solid {tokens.border_strong};
+    }}
+
+    QFrame#metricTile {{
+        background: {tokens.panel_alt};
+        border: 1px solid {tokens.border_soft};
+        border-radius: 12px;
+    }}
+
+    QFrame#metricTile:hover {{
+        background: {tokens.panel_hover};
+        border: 1px solid {tokens.border_strong};
+    }}
+
+    QLineEdit,
+    QPlainTextEdit,
+    QTextEdit,
+    QComboBox,
+    QSpinBox {{
+        background: {tokens.panel};
+        color: {tokens.text};
+        border: 1px solid {tokens.border};
+        border-radius: 10px;
+        padding: 8px 11px;
+        min-height: 20px;
+    }}
+
+    QLineEdit:hover,
+    QPlainTextEdit:hover,
+    QTextEdit:hover,
+    QComboBox:hover,
+    QSpinBox:hover {{
+        border: 1px solid {tokens.border_strong};
+        background: {tokens.panel_alt};
+    }}
+
+    QLineEdit:focus,
+    QPlainTextEdit:focus,
+    QTextEdit:focus,
+    QComboBox:focus,
+    QSpinBox:focus {{
+        border: 1px solid {tokens.accent};
         background: {tokens.bg_elevated};
     }}
 
-    QLineEdit:focus, QPlainTextEdit:focus, QTextEdit:focus, QComboBox:focus, QSpinBox:focus {{
-        border: 1px solid {tokens.accent};
+    QLineEdit#heroSearchBox {{
+        border-radius: 12px;
+        border: 1px solid {tokens.border_strong};
+        padding: 10px 14px;
         background: {tokens.bg_elevated};
+        font-size: 10.2pt;
+    }}
+
+    QLineEdit#heroSearchBox:focus {{
+        border: 1px solid {tokens.accent};
+        background: {tokens.panel};
+    }}
+
+    QLineEdit#treeFilterSurface {{
+        background: {tokens.bg_elevated};
+        border: 1px solid {tokens.border_soft};
     }}
 
     QComboBox::drop-down {{
         border: none;
-        width: 26px;
+        width: 24px;
         background: transparent;
     }}
 
-    QAbstractItemView {{
-        selection-background-color: {tokens.selection};
-        selection-color: {tokens.text};
+    QComboBox#repoComboBox,
+    QComboBox#skinComboBox,
+    QComboBox#quickFilterComboBox,
+    QComboBox#extComboBox,
+    QComboBox#sortComboBox {{
+        background: {tokens.bg_elevated};
+    }}
+
+    QPushButton,
+    QToolButton {{
+        background: {tokens.panel_alt};
+        color: {tokens.text};
+        border: 1px solid {tokens.border};
+        border-radius: 9px;
+        padding: 7px 11px;
+    }}
+
+    QPushButton:hover,
+    QToolButton:hover {{
+        background: {tokens.panel_hover};
+        border: 1px solid {tokens.border_strong};
+    }}
+
+    QPushButton:pressed,
+    QToolButton:pressed {{
+        background: {tokens.panel_active};
+        border: 1px solid {tokens.accent_pressed};
+        padding-top: 8px;
+        padding-bottom: 6px;
+    }}
+
+    QPushButton:checked,
+    QToolButton:checked {{
+        background: {tokens.selection};
+        border: 1px solid {tokens.accent};
+    }}
+
+    QPushButton:disabled,
+    QToolButton:disabled {{
+        background: {tokens.panel};
+        border: 1px solid {tokens.border_soft};
+        color: {tokens.text_soft};
+    }}
+
+    QTreeView,
+    QTableView,
+    QListWidget,
+    QTabWidget::pane {{
+        background: {tokens.panel};
+        alternate-background-color: {tokens.panel_alt};
+        border: 1px solid {tokens.border};
+        border-radius: 11px;
         outline: 0;
+        gridline-color: {tokens.border_soft};
+    }}
+
+    QTreeView#repoTreeSurface,
+    QTreeView#importsTreeSurface,
+    QTreeView#dependentsTreeSurface,
+    QListWidget#bookmarksListSurface,
+    QTableView#resultsTableSurface {{
+        background: {tokens.panel};
+        border: 1px solid {tokens.border};
+        border-radius: 11px;
+    }}
+
+    QTreeView::item,
+    QTableView::item,
+    QListWidget::item {{
+        padding: 6px;
+        margin: 1px 3px;
+        border-radius: 6px;
+    }}
+
+    QTreeView::item:hover,
+    QTableView::item:hover,
+    QListWidget::item:hover {{
+        background: {tokens.panel_hover};
+    }}
+
+    QTreeView::item:selected,
+    QTableView::item:selected,
+    QListWidget::item:selected {{
+        background: {tokens.selection};
+        color: {tokens.text};
+        border-left: 2px solid {tokens.accent};
     }}
 
     QHeaderView::section {{
         background: {tokens.panel_alt};
-        color: {tokens.text};
-        padding: 9px 10px;
+        color: {tokens.text_muted};
         border: none;
-        border-bottom: 1px solid {tokens.accent};
-        border-right: 1px solid {tokens.border};
+        border-bottom: 1px solid {tokens.border_soft};
+        border-right: 1px solid {tokens.border_soft};
+        padding: 8px 10px;
         font-weight: 600;
     }}
 
     QTableCornerButton::section {{
         background: {tokens.panel_alt};
         border: none;
-        border-right: 1px solid {tokens.border};
-        border-bottom: 1px solid {tokens.accent};
+        border-right: 1px solid {tokens.border_soft};
+        border-bottom: 1px solid {tokens.border_soft};
     }}
 
-    QTreeView, QTableView, QListWidget, QTabWidget::pane {{
-        background: {tokens.panel};
-        alternate-background-color: {tokens.panel_alt};
-        border: 1px solid {tokens.border};
-        border-top: 1px solid {tokens.bevel_light};
-        border-bottom: 1px solid {tokens.bevel_shadow};
-        border-radius: 12px;
-        outline: 0;
-        gridline-color: {tokens.border};
+    QTabWidget::pane {{
+        top: -1px;
     }}
 
-    QTreeView::item, QTableView::item, QListWidget::item {{
-        padding: 6px;
-        border: none;
-        margin: 1px 3px;
-        border-radius: 7px;
+    QTabBar::tab {{
+        background: {tokens.panel_alt};
+        color: {tokens.text_muted};
+        border: 1px solid {tokens.border_soft};
+        border-bottom: none;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding: 7px 12px;
+        margin-right: 3px;
     }}
 
-    QTreeView::item:hover, QTableView::item:hover, QListWidget::item:hover {{
-        background: {tokens.bg_elevated};
-    }}
-
-    QTreeView::item:selected, QTableView::item:selected, QListWidget::item:selected {{
-        background: {tokens.selection};
-        border-left: 2px solid {tokens.accent};
+    QTabBar::tab:hover {{
         color: {tokens.text};
+        background: {panel_hover_soft};
+        border: 1px solid {tokens.border};
+        border-bottom: none;
+    }}
+
+    QTabBar::tab:selected {{
+        color: {tokens.text};
+        background: {tokens.panel};
+        border: 1px solid {tokens.border};
+        border-bottom: 1px solid {tokens.panel};
+    }}
+
+    QPlainTextEdit#previewCodeSurface,
+    QPlainTextEdit#statsTextSurface,
+    QPlainTextEdit#logTextSurface,
+    QPlainTextEdit#fileSummarySurface {{
+        background: {tokens.code_bg};
+        color: {tokens.code_text};
+        border: 1px solid {tokens.border};
+        border-radius: 11px;
+        selection-background-color: {tokens.selection};
     }}
 
     QGraphicsView#svgGraphicsView {{
@@ -418,94 +630,91 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
         text-align: left;
         background: {tokens.dock_title_bg};
         color: {tokens.text};
-        padding: 10px 14px;
         border-top: 1px solid {tokens.bevel_light};
-        border-bottom: 1px solid {tokens.accent};
+        border-bottom: 1px solid {tokens.border};
+        padding: 9px 13px;
     }}
 
-    QTabWidget::pane {{
-        top: -1px;
+    QDockWidget::close-button,
+    QDockWidget::float-button {{
+        border: 1px solid transparent;
+        border-radius: 6px;
+        background: transparent;
     }}
 
-    QTabBar::tab {{
-        background: {tokens.panel_alt};
-        color: {tokens.text_muted};
-        padding: 8px 13px;
-        margin-right: 4px;
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
-        border: 1px solid {tokens.border};
-        border-bottom: none;
-    }}
-
-    QTabBar::tab:hover {{
+    QDockWidget::close-button:hover,
+    QDockWidget::float-button:hover {{
         background: {tokens.panel_hover};
-        color: {tokens.text};
+        border: 1px solid {tokens.border_soft};
     }}
 
-    QTabBar::tab:selected {{
+    QStatusBar {{
+        background: {tokens.toolbar_bg};
+        color: {tokens.text_muted};
+        border-top: 1px solid {tokens.border};
+        padding: 3px 4px;
+    }}
+
+    QLabel#statusScopeSurface,
+    QLabel#statusSummarySurface {{
+        color: {tokens.text_soft};
+        padding: 1px 6px;
+    }}
+
+    QProgressBar#statusProgressSurface {{
         background: {tokens.panel};
-        color: {tokens.text};
-        border: 1px solid {tokens.accent};
-        border-bottom: 1px solid {tokens.panel};
+        border: 1px solid {tokens.border_soft};
+        border-radius: 8px;
+        min-height: 9px;
+        max-height: 9px;
+        text-align: center;
     }}
 
-    QCheckBox, QRadioButton {{
-        spacing: 8px;
-        color: {tokens.text};
+    QProgressBar#statusProgressSurface::chunk {{
+        background: {tokens.accent};
+        border-radius: 7px;
     }}
 
-    QCheckBox::indicator, QRadioButton::indicator {{
-        width: 16px;
-        height: 16px;
-    }}
-
-    QCheckBox::indicator:unchecked, QRadioButton::indicator:unchecked {{
-        border: 1px solid {tokens.border_strong};
-        background: {tokens.panel_alt};
-        border-radius: 4px;
-    }}
-
-    QCheckBox::indicator:checked, QRadioButton::indicator:checked {{
-        border: 1px solid {tokens.accent};
-        background: {tokens.accent_soft};
-        border-radius: 4px;
-    }}
-
-    QScrollBar:vertical, QScrollBar:horizontal {{
+    QScrollBar:vertical,
+    QScrollBar:horizontal {{
         background: transparent;
         border: none;
-        margin: 4px;
+        margin: 2px;
     }}
 
     QScrollBar:vertical {{
-        width: 12px;
+        width: 11px;
     }}
 
     QScrollBar:horizontal {{
-        height: 12px;
+        height: 11px;
     }}
 
-    QScrollBar::handle:vertical, QScrollBar::handle:horizontal {{
+    QScrollBar::handle:vertical,
+    QScrollBar::handle:horizontal {{
         background: {tokens.scrollbar};
-        min-height: 30px;
-        min-width: 30px;
-        border-radius: 6px;
+        border-radius: 5px;
+        min-width: 24px;
+        min-height: 24px;
     }}
 
-    QScrollBar::handle:vertical:hover, QScrollBar::handle:horizontal:hover {{
+    QScrollBar::handle:vertical:hover,
+    QScrollBar::handle:horizontal:hover {{
         background: {tokens.scrollbar_hover};
     }}
 
-    QScrollBar::add-line, QScrollBar::sub-line, QScrollBar::add-page, QScrollBar::sub-page {{
+    QScrollBar::add-line,
+    QScrollBar::sub-line,
+    QScrollBar::add-page,
+    QScrollBar::sub-page {{
         background: transparent;
         border: none;
-        width: 0px;
-        height: 0px;
+        width: 0;
+        height: 0;
     }}
 
     QSplitter::handle {{
-        background: {tokens.splitter};
+        background: {splitter_soft};
         margin: 2px;
     }}
 
@@ -517,14 +726,10 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
         height: 3px;
     }}
 
-    QStatusBar {{
-        background: {tokens.bg};
-        border-top: 1px solid {tokens.border};
-        color: {tokens.text_muted};
-    }}
-
-    QLabel {{
-        background: transparent;
+    QLabel#heroTitleLabel {{
+        color: {tokens.text};
+        font-size: 16pt;
+        font-weight: 700;
     }}
 
     QLabel#subtitleLabel,
@@ -534,50 +739,51 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
     QLabel#svgHintLabel,
     QLabel#secondaryMetaLabel {{
         color: {tokens.text_muted};
-        font-size: 9.5pt;
+        font-size: 9.3pt;
     }}
 
-    QLabel#svgStatusLabel {{
-        color: {tokens.accent_hover};
-        font-size: 9pt;
+    QLabel#toolbarSectionCaption {{
+        color: {tokens.text_soft};
+        font-size: 8.2pt;
         font-weight: 700;
-    }}
-
-    QLabel#heroTitleLabel {{
-        font-size: 17pt;
-        font-weight: 700;
-        color: {tokens.text};
+        letter-spacing: 0.8px;
+        padding-left: 2px;
     }}
 
     QLabel#heroMetaPill,
     QLabel#panelPill,
     QLabel#toolbarPill,
     QLabel#statusPill {{
-        background: {tokens.accent_soft};
+        background: {soft_accent};
         color: {tokens.accent_hover};
-        border: 1px solid {tokens.border};
+        border: 1px solid {tokens.border_strong};
         border-radius: 999px;
-        padding: 4px 10px;
-        font-size: 9pt;
+        padding: 3px 10px;
+        font-size: 8.7pt;
         font-weight: 700;
+    }}
+
+    QLabel#svgStatusLabel {{
+        color: {tokens.accent_hover};
+        font-size: 8.8pt;
+        font-weight: 600;
     }}
 
     QLabel#accentValueLabel {{
         color: {tokens.accent_hover};
-        font-size: 18pt;
+        font-size: 17pt;
         font-weight: 700;
     }}
 
     QLabel#metricTitleLabel {{
         color: {tokens.text_soft};
-        font-size: 9pt;
+        font-size: 8.5pt;
         font-weight: 700;
-        text-transform: uppercase;
     }}
 
     QLabel#metricCaptionLabel {{
         color: {tokens.text_muted};
-        font-size: 9pt;
+        font-size: 8.4pt;
     }}
 
     QLabel#sectionTitleLabel {{
@@ -590,32 +796,6 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
         background: {tokens.accent};
         border: none;
         border-radius: 3px;
-    }}
-
-    QFrame#surfaceCard,
-    QFrame#heroPanel,
-    QFrame#metricPanel,
-    QFrame#toolbarSurface {{
-        background: {tokens.panel};
-        border: 1px solid {tokens.border};
-        border-top: 1px solid {tokens.bevel_light};
-        border-bottom: 1px solid {tokens.bevel_shadow};
-        border-radius: 14px;
-    }}
-
-    QFrame#surfaceCard:hover,
-    QFrame#heroPanel:hover,
-    QFrame#metricPanel:hover,
-    QFrame#toolbarSurface:hover {{
-        background: {tokens.bg_elevated};
-        border: 1px solid {tokens.border_strong};
-    }}
-
-    QFrame#surfaceCardElevated,
-    QFrame#heroPanelElevated {{
-        background: {tokens.bg_elevated};
-        border: 1px solid {tokens.border_strong};
-        border-radius: 14px;
     }}
     """
 

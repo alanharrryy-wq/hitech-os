@@ -11,7 +11,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from ..widgets import AccentButton, PanelCard
+from ..widgets import GhostButton, PanelCard, SecondaryButton
 
 if TYPE_CHECKING:
     from ..main_window import RepoAnalyzerMainWindow
@@ -33,7 +33,7 @@ class DockSectionFactory:
         surface_parent = parent or self.main.inspector_dock
         inspector_card = PanelCard(skin_tokens, accent=False, parent=surface_parent)
         inspector_layout = QVBoxLayout(inspector_card)
-        inspector_layout.setContentsMargins(14, 14, 14, 14)
+        inspector_layout.setContentsMargins(16, 16, 16, 16)
         inspector_layout.setSpacing(10)
 
         from PySide6.QtWidgets import QTabWidget
@@ -80,7 +80,7 @@ class DockSectionFactory:
         surface_parent = parent or self.main.bookmarks_dock
         bookmarks_card = PanelCard(skin_tokens, accent=False, parent=surface_parent)
         bookmarks_layout = QVBoxLayout(bookmarks_card)
-        bookmarks_layout.setContentsMargins(14, 14, 14, 14)
+        bookmarks_layout.setContentsMargins(16, 16, 16, 16)
         bookmarks_layout.setSpacing(8)
 
         self.main.bookmarks_list = QListWidget(bookmarks_card)
@@ -98,9 +98,9 @@ class DockSectionFactory:
         button_row_layout.setContentsMargins(0, 0, 0, 0)
         button_row_layout.setSpacing(8)
 
-        self.main.bm_open_btn = AccentButton("Abrir", skin_tokens, button_row)
+        self.main.bm_open_btn = SecondaryButton("Abrir", skin_tokens, button_row)
         self.main.bm_open_btn.clicked.connect(self.main.open_selected_bookmark)
-        self.main.bm_remove_btn = AccentButton("Quitar", skin_tokens, button_row)
+        self.main.bm_remove_btn = GhostButton("Quitar", skin_tokens, button_row)
         self.main.bm_remove_btn.clicked.connect(self.main.remove_selected_bookmark)
 
         for button in (self.main.bm_open_btn, self.main.bm_remove_btn):

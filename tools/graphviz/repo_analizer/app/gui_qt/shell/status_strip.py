@@ -19,12 +19,13 @@ class StatusStripBuilder:
         status.setObjectName('statusStripSurface')
         status.setProperty('visualRole', 'status-surface')
         status.setProperty('visualTier', 'themed')
+        status.setSizeGripEnabled(False)
 
         self.main.progress_bar = QProgressBar(self.main)
         self.main.progress_bar.setObjectName('statusProgressSurface')
         self.main.progress_bar.setProperty('visualRole', 'status-surface')
         self.main.progress_bar.setProperty('visualTier', 'themed')
-        self.main.progress_bar.setFixedWidth(180)
+        self.main.progress_bar.setFixedWidth(196)
         self.main.progress_bar.setTextVisible(False)
         self.main.progress_bar.hide()
         status.addPermanentWidget(self.main.progress_bar)
@@ -41,5 +42,5 @@ class StatusStripBuilder:
         self.main.status_summary.setProperty('visualTier', 'themed')
         status.addPermanentWidget(self.main.status_summary)
 
-        status.showMessage("Ready. Ember Graph shell armed and clean.", 2200)
+        status.showMessage("Ready. Workstation initialized.", 2200)
         self.main.setStatusBar(status)

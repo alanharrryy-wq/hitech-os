@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QHBoxLayout, QLabel, QSplitter, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
 from ..widgets import MetricTile, PanelCard
 
@@ -13,44 +13,42 @@ if TYPE_CHECKING:
 
 
 class CentralWorkspaceBuilder:
-    """Compose the permanent central shell workspace."""
+    """Prepare central workspace panels and host a neutral center canvas."""
 
     def __init__(self, main_window: RepoAnalyzerMainWindow) -> None:
         self.main = main_window
 
     def build(self, skin_tokens: SkinTokens) -> None:
-        """Build hero + metrics + preview/inspector splitter."""
+        """
+        Build central workspace assets.
+
+        The user-facing workspace surfaces are prepared here and later attached as
+        movable QDockWidgets by DockManager.
+        """
         central = QWidget(self.main)
-        central.setObjectName('workspaceRootSurface')
+        central.setObjectName('workspaceCanvasRootSurface')
         central.setProperty('visualRole', 'workspace-root')
-        central.setProperty('visualTier', 'themed')
+        central.setProperty('visualTier', 'premium')
         outer = QVBoxLayout(central)
-        outer.setContentsMargins(12, 12, 12, 12)
-        outer.setSpacing(10)
-
-        hero_card = self._build_hero_card(skin_tokens, central)
-        outer.addWidget(hero_card)
-
-        self.main.central_splitter = QSplitter(Qt.Vertical, central)
-        self.main.central_splitter.setObjectName('workspaceSplitterSurface')
-        self.main.central_splitter.setProperty('visualRole', 'workspace-surface')
-        self.main.central_splitter.setProperty('visualTier', 'themed')
-        outer.addWidget(self.main.central_splitter, 1)
-
-        preview_card = self.main.preview_controller.build_preview_panel(
-            skin_tokens,
-            self.main.central_splitter,
-        )
-        inspector_card = self.main.preview_controller.build_inspector_panel(
-            skin_tokens,
-            self.main.central_splitter,
-        )
-
-        self.main.central_splitter.addWidget(preview_card)
-        self.main.central_splitter.addWidget(inspector_card)
-        self.main.central_splitter.setSizes([760, 300])
-
+        outer.setContentsMargins(8, 8, 8, 8)
+        outer.setSpacing(0)
+        canvas_hint = QWidget(central)
+        canvas_hint.setObjectName('workspaceCanvasSurface')
+        canvas_hint.setProperty('visualRole', 'workspace-surface')
+        canvas_hint.setProperty('visualTier', 'themed')
+        outer.addWidget(canvas_hint, 1)
         self.main.setCentralWidget(central)
+
+        self.main.workspace_summary_panel = self._build_hero_card(skin_tokens, self.main)
+        self.main.preview_workspace_panel = self.main.preview_controller.build_preview_panel(
+            skin_tokens,
+            self.main,
+        )
+        self.main.central_inspector_panel = self.main.preview_controller.build_inspector_panel(
+            skin_tokens,
+            self.main,
+        )
+        self.main.central_splitter = None
 
     def _build_hero_card(self, skin_tokens: SkinTokens, parent: QWidget) -> PanelCard:
         card = PanelCard(skin_tokens, accent=True, parent=parent)
@@ -58,8 +56,8 @@ class CentralWorkspaceBuilder:
         card.setProperty('visualTier', 'premium')
         card.setProperty('premium', True)
         layout = QVBoxLayout(card)
-        layout.setContentsMargins(18, 16, 18, 16)
-        layout.setSpacing(12)
+        layout.setContentsMargins(20, 18, 20, 18)
+        layout.setSpacing(14)
 
         header_row = QHBoxLayout()
         header_left = QVBoxLayout()
@@ -69,7 +67,7 @@ class CentralWorkspaceBuilder:
         self.main.hero_repo_label = QLabel("Sin repo indexado", card)
         self.main.hero_repo_label.setObjectName("heroTitleLabel")
         self.main.hero_scope_label = QLabel(
-            "Selecciona un repo para empezar a mapearlo",
+            "Selecciona un repositorio para empezar el análisis estructural",
             card,
         )
         self.main.hero_scope_label.setObjectName("workspaceMutedLabel")
@@ -77,13 +75,13 @@ class CentralWorkspaceBuilder:
         header_left.addWidget(self.main.hero_scope_label)
         header_row.addLayout(header_left, 1)
 
-        self.main.hero_mode_pill = QLabel("Workspace listo", card)
+        self.main.hero_mode_pill = QLabel("Workbench listo", card)
         self.main.hero_mode_pill.setObjectName("heroMetaPill")
         header_row.addWidget(self.main.hero_mode_pill, 0, Qt.AlignTop)
         layout.addLayout(header_row)
 
         metrics_row = QHBoxLayout()
-        metrics_row.setSpacing(10)
+        metrics_row.setSpacing(12)
         self.main.metric_repo = MetricTile(skin_tokens, "Repo", card)
         self.main.metric_files = MetricTile(skin_tokens, "Files", card)
         self.main.metric_scope = MetricTile(skin_tokens, "Scope", card)

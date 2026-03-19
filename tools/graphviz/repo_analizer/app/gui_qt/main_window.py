@@ -574,7 +574,14 @@ class RepoAnalyzerMainWindow(QMainWindow):
         """Save state before closing."""
         self.settings.setValue('geometry', self.saveGeometry())
         self.settings.setValue('window_state_v3', self.saveState(STATE_VERSION))
-        self.settings.setValue('central_splitter_sizes', self.central_splitter.sizes())
+        splitter = getattr(self, 'central_splitter', None)
+        if splitter is not None:
+            try:
+                self.settings.setValue('central_splitter_sizes', splitter.sizes())
+            except Exception:
+                self.settings.setValue('central_splitter_sizes', [])
+        else:
+            self.settings.setValue('central_splitter_sizes', [])
         self.settings.setValue('last_repo', self.repo_combo.currentText())
         self.settings.setValue('last_preview_rel', self.current_preview_rel or '')
         self.backend.remember_repo(self.repo_combo.currentText())

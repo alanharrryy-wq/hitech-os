@@ -231,19 +231,29 @@ class PanelCard(QFrame):
         self._accent = bool(accent)
         self.setObjectName('panelCard')
         self.setFrameShape(QFrame.NoFrame)
-        self.setContentsMargins(8, 8, 8, 8)
+        self.setContentsMargins(0, 0, 0, 0)
         _set_visual_markers(self, role='panel-surface', tier='themed', premium=True)
         self._apply_skin()
 
     def _apply_skin(self) -> None:
         """Apply current tokens to stylesheet."""
-        bg = token_to_css(self._tokens.panel)
-        border = token_to_css(self._tokens.accent if self._accent else self._tokens.border)
+        bg_top = token_to_css(self._tokens.panel)
+        bg_bottom = token_to_css(self._tokens.panel_alt)
+        border = token_to_css(self._tokens.border_strong if self._accent else self._tokens.border)
         self.setStyleSheet(f"""
             QFrame#panelCard {{
-                background-color: {bg};
+                background: qlineargradient(
+                    x1:0, y1:0, x2:0, y2:1,
+                    stop:0 {bg_top},
+                    stop:1 {bg_bottom}
+                );
                 border: 1px solid {border};
-                border-radius: 10px;
+                border-top: 1px solid {token_to_css(self._tokens.bevel_light)};
+                border-bottom: 1px solid {token_to_css(self._tokens.bevel_shadow)};
+                border-radius: 14px;
+            }}
+            QFrame#panelCard:hover {{
+                border: 1px solid {token_to_css(self._tokens.border_strong)};
             }}
         """)
 
@@ -291,7 +301,7 @@ class InsetPanel(QFrame):
             QFrame#insetPanel {{
                 background-color: {bg};
                 border: 1px solid {border};
-                border-radius: 8px;
+                border-radius: 10px;
             }}
         """)
 
@@ -316,19 +326,19 @@ class MetricTile(PanelCard):
         
         layout = QVBoxLayout(self)
         layout.setContentsMargins(14, 12, 14, 12)
-        layout.setSpacing(6)
+        layout.setSpacing(4)
         
         self._title = QLabel(title, self)
         self._title.setObjectName('metricTitleLabel')
-        self._title.setStyleSheet(f"color: {token_to_css(tokens.text_soft)}; font-size: 8pt;")
+        self._title.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         
         self._value = QLabel('0', self)
         self._value.setObjectName('accentValueLabel')
-        self._value.setStyleSheet(f"color: {token_to_css(tokens.accent)}; font-size: 16pt; font-weight: bold;")
+        self._value.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         
         self._caption = QLabel('', self)
         self._caption.setObjectName('metricCaptionLabel')
-        self._caption.setStyleSheet(f"color: {token_to_css(tokens.text_muted)}; font-size: 7pt;")
+        self._caption.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         
         layout.addWidget(self._title)
         layout.addWidget(self._value)
@@ -338,10 +348,6 @@ class MetricTile(PanelCard):
     def set_skin(self, tokens: SkinTokens) -> None:
         self._tokens = tokens
         super().set_skin(tokens)
-        # Update child labels
-        self._title.setStyleSheet(f"color: {token_to_css(tokens.text_soft)}; font-size: 8pt;")
-        self._value.setStyleSheet(f"color: {token_to_css(tokens.accent)}; font-size: 16pt; font-weight: bold;")
-        self._caption.setStyleSheet(f"color: {token_to_css(tokens.text_muted)}; font-size: 7pt;")
 
     def set_data(self, value: str, caption: str = '') -> None:
         self._value.setText(value)
@@ -1404,7 +1410,7 @@ class AccentButton(QPushButton):
         self._strong = strong
         self._mix = 0.0
         self._anim = QVariantAnimation(self)
-        self._anim.setDuration(140)
+        self._anim.setDuration(130)
         self._anim.setEasingCurve(QEasingCurve.OutCubic)
         self._anim.valueChanged.connect(self._on_value_changed)
         self._refresh_style()
@@ -1419,35 +1425,44 @@ class AccentButton(QPushButton):
 
     def _refresh_style(self) -> None:
         if self._strong:
-            start = self._tokens.accent
-            end = self._tokens.accent_hover
-            border = self._tokens.accent_hover
-            text = '#101318'
+            start = self._tokens.accent_soft
+            end = self._tokens.accent
+            border = blend_colors(self._tokens.border_strong, self._tokens.accent, self._mix)
+            text = self._tokens.text
         else:
             start = self._tokens.panel_alt
-            end = self._tokens.accent_hover
-            border = self._tokens.border
+            end = self._tokens.panel_hover
+            border = blend_colors(self._tokens.border, self._tokens.accent, self._mix * 0.45)
             text = self._tokens.text
 
-        # Use palette blend function
         mixed = blend_colors(start, end, self._mix)
+        hover = blend_colors(mixed, self._tokens.accent_hover, 0.18)
         
         self.setStyleSheet(
             f"""
             QPushButton {{
                 background-color: {mixed};
-                color: {text};
+                color: {token_to_css(text)};
                 border: 1px solid {token_to_css(border)};
                 border-top: 1px solid {token_to_css(self._tokens.bevel_light)};
                 border-bottom: 1px solid {token_to_css(self._tokens.bevel_shadow)};
-                border-radius: 10px;
-                padding: 8px 12px;
+                border-radius: 9px;
+                padding: 7px 12px;
                 font-weight: 600;
             }}
+            QPushButton:hover {{
+                background-color: {hover};
+                border: 1px solid {token_to_css(blend_colors(border, self._tokens.accent_hover, 0.5))};
+            }}
             QPushButton:pressed {{
-                background-color: {token_to_css(self._tokens.panel)};
+                background-color: {token_to_css(self._tokens.panel_active)};
                 color: {token_to_css(self._tokens.text)};
-                border: 1px solid {token_to_css(self._tokens.accent_hover)};
+                border: 1px solid {token_to_css(self._tokens.accent_pressed)};
+            }}
+            QPushButton:disabled {{
+                background-color: {token_to_css(self._tokens.panel)};
+                border: 1px solid {token_to_css(self._tokens.border_soft)};
+                color: {token_to_css(self._tokens.text_soft)};
             }}
             """
         )
@@ -1455,7 +1470,7 @@ class AccentButton(QPushButton):
     def enterEvent(self, event) -> None:  # type: ignore[override]
         self._anim.stop()
         self._anim.setStartValue(self._mix)
-        self._anim.setEndValue(0.28 if self._strong else 0.18)
+        self._anim.setEndValue(0.72 if self._strong else 0.42)
         self._anim.start()
         super().enterEvent(event)
 
@@ -1475,7 +1490,7 @@ class SecondaryButton(QPushButton):
         self._tokens = tokens
         self._mix = 0.0
         self._anim = QVariantAnimation(self)
-        self._anim.setDuration(130)
+        self._anim.setDuration(120)
         self._anim.setEasingCurve(QEasingCurve.OutCubic)
         self._anim.valueChanged.connect(self._update_mix)
         self._refresh_style()
@@ -1490,17 +1505,21 @@ class SecondaryButton(QPushButton):
 
     def _refresh_style(self) -> None:
         mixed = blend_colors(self._tokens.panel_alt, self._tokens.panel_hover, self._mix)
+        border = blend_colors(self._tokens.border, self._tokens.border_strong, self._mix)
         self.setStyleSheet(
             f"""
             QPushButton {{
                 background-color: {mixed};
                 color: {token_to_css(self._tokens.text)};
-                border: 1px solid {token_to_css(self._tokens.border)};
+                border: 1px solid {token_to_css(border)};
                 border-top: 1px solid {token_to_css(self._tokens.bevel_light)};
                 border-bottom: 1px solid {token_to_css(self._tokens.bevel_shadow)};
-                border-radius: 8px;
-                padding: 7px 14px;
+                border-radius: 9px;
+                padding: 7px 13px;
                 font-weight: 500;
+            }}
+            QPushButton:hover {{
+                border: 1px solid {token_to_css(self._tokens.border_strong)};
             }}
             QPushButton:pressed {{
                 background-color: {token_to_css(self._tokens.panel_active)};
@@ -1532,7 +1551,7 @@ class GhostButton(QPushButton):
         self._tokens = tokens
         self._mix = 0.0
         self._anim = QVariantAnimation(self)
-        self._anim.setDuration(120)
+        self._anim.setDuration(110)
         self._anim.setEasingCurve(QEasingCurve.OutCubic)
         self._anim.valueChanged.connect(self._update_mix)
         self._refresh_style()
@@ -1546,15 +1565,16 @@ class GhostButton(QPushButton):
         self._refresh_style()
 
     def _refresh_style(self) -> None:
-        bg = token_with_alpha(self._tokens.panel_hover, int(30 * self._mix))
+        bg = token_with_alpha(self._tokens.panel_hover, int(46 * self._mix))
+        border = blend_colors(self._tokens.border_soft, self._tokens.border_strong, self._mix)
         self.setStyleSheet(
             f"""
             QPushButton {{
                 background-color: {bg};
                 color: {token_to_css(self._tokens.text_muted)};
-                border: 1px solid transparent;
-                border-radius: 6px;
-                padding: 6px 10px;
+                border: 1px solid {token_to_css(border)};
+                border-radius: 8px;
+                padding: 6px 11px;
                 font-size: 9pt;
             }}
             QPushButton:hover {{
@@ -1586,7 +1606,7 @@ class QuietButton(QPushButton):
         self._tokens = tokens
         self._mix = 0.0
         self._anim = QVariantAnimation(self)
-        self._anim.setDuration(110)
+        self._anim.setDuration(100)
         self._anim.setEasingCurve(QEasingCurve.OutCubic)
         self._anim.valueChanged.connect(self._update_mix)
         self._refresh_style()
@@ -1601,13 +1621,16 @@ class QuietButton(QPushButton):
 
     def _refresh_style(self) -> None:
         mixed_text = blend_colors(self._tokens.text_muted, self._tokens.accent, self._mix)
+        bg = token_with_alpha(self._tokens.accent_soft, int(38 * self._mix))
+        border = token_with_alpha(self._tokens.accent, int(48 * self._mix))
         self.setStyleSheet(
             f"""
             QPushButton {{
-                background-color: transparent;
+                background-color: {bg};
                 color: {mixed_text};
-                border: none;
-                padding: 4px 8px;
+                border: 1px solid {border};
+                border-radius: 7px;
+                padding: 4px 9px;
                 font-size: 9pt;
                 font-weight: 500;
             }}
@@ -1646,13 +1669,25 @@ class HoverRaiseFilter(QObject):
         super().__init__(widget)
         self._widget = widget
         self._lift_px = lift_px
-        
-        # Use shadow effect instead of pos() manipulation
-        self._shadow = QGraphicsDropShadowEffect(widget)
-        self._shadow.setBlurRadius(0)
-        self._shadow.setColor(QColor(0, 0, 0, 0))
-        self._shadow.setOffset(0, 0)
-        widget.setGraphicsEffect(self._shadow)
+        self._shadow: QGraphicsDropShadowEffect | None
+        self._base_blur = 0.0
+        self._base_offset_y = 0.0
+        self._base_color = QColor(0, 0, 0, 0)
+
+        existing = widget.graphicsEffect()
+        if isinstance(existing, QGraphicsDropShadowEffect):
+            self._shadow = existing
+            self._base_blur = float(existing.blurRadius())
+            self._base_offset_y = float(existing.offset().y())
+            self._base_color = QColor(existing.color())
+        elif existing is None:
+            self._shadow = QGraphicsDropShadowEffect(widget)
+            self._shadow.setBlurRadius(0)
+            self._shadow.setColor(QColor(0, 0, 0, 0))
+            self._shadow.setOffset(0.0, 0.0)
+            widget.setGraphicsEffect(self._shadow)
+        else:
+            self._shadow = None
         
         self._anim = QVariantAnimation(self)
         self._anim.setDuration(130)
@@ -1662,8 +1697,16 @@ class HoverRaiseFilter(QObject):
 
     def _apply_lift(self, value) -> None:
         """Apply shadow blur as visual lift."""
-        blur = float(value) if value is not None else 0.0
-        self._shadow.setBlurRadius(max(0, blur * 8))
+        if self._shadow is None:
+            return
+        strength = float(value) if value is not None else 0.0
+        self._shadow.setBlurRadius(max(0.0, self._base_blur + strength * 3.2))
+        self._shadow.setOffset(0.0, self._base_offset_y + strength * 0.6)
+        lifted = QColor(self._base_color)
+        if not lifted.isValid():
+            lifted = QColor(0, 0, 0, 0)
+        lifted.setAlpha(min(255, int(max(0, lifted.alpha()) + strength * 14)))
+        self._shadow.setColor(lifted)
 
     def eventFilter(self, watched: QObject, event: QEvent) -> bool:
         if watched is self._widget:
@@ -1674,7 +1717,9 @@ class HoverRaiseFilter(QObject):
                 self._anim.start()
             elif event.type() == QEvent.Leave:
                 self._anim.stop()
-                current = self._shadow.blurRadius() / 8.0
+                if self._shadow is None:
+                    return False
+                current = max(0.0, (self._shadow.blurRadius() - self._base_blur) / 3.2)
                 self._anim.setStartValue(current)
                 self._anim.setEndValue(0.0)
                 self._anim.start()

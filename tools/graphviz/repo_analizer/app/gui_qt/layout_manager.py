@@ -16,6 +16,39 @@ class LayoutManager:
     def __init__(self, main_window: RepoAnalyzerMainWindow) -> None:
         self.main = main_window
 
+    def _iter_primary_docks(self):
+        return tuple(
+            dock
+            for dock in (
+                getattr(self.main, "workspace_summary_dock", None),
+                getattr(self.main, "preview_workspace_dock", None),
+                getattr(self.main, "central_inspector_dock", None),
+                self.main.explorer_dock,
+                self.main.results_dock,
+                self.main.inspector_dock,
+                self.main.bookmarks_dock,
+            )
+            if dock is not None
+        )
+
+    def _set_central_splitter_sizes(self, sizes: list[int]) -> None:
+        splitter = getattr(self.main, "central_splitter", None)
+        if splitter is None:
+            return
+        try:
+            splitter.setSizes(sizes)
+        except Exception:
+            pass
+
+    def _get_central_splitter_sizes(self) -> list[int]:
+        splitter = getattr(self.main, "central_splitter", None)
+        if splitter is None:
+            return []
+        try:
+            return list(splitter.sizes())
+        except Exception:
+            return []
+
     @staticmethod
     def _coerce_splitter_sizes(value: object) -> list[int]:
         """Normalize persisted splitter sizes into a clean list of ints."""
@@ -86,30 +119,36 @@ class LayoutManager:
             self.main.settings.value("central_splitter_sizes")
         )
         if splitter_sizes:
-            try:
-                self.main.central_splitter.setSizes(splitter_sizes)
-            except Exception:
-                pass
+            self._set_central_splitter_sizes(splitter_sizes)
 
         self.main._update_metric_cards_idle()
 
     def reset_layout(self, save_snapshot: bool = True) -> None:
         """Reset to default Ember layout."""
-        for dock in (
-            self.main.explorer_dock,
-            self.main.results_dock,
-            self.main.inspector_dock,
-            self.main.bookmarks_dock,
-        ):
+        for dock in self._iter_primary_docks():
             self.main.removeDockWidget(dock)
 
+        self.main.addDockWidget(Qt.TopDockWidgetArea, self.main.workspace_summary_dock)
+        self.main.addDockWidget(Qt.TopDockWidgetArea, self.main.preview_workspace_dock)
+        self.main.addDockWidget(Qt.TopDockWidgetArea, self.main.central_inspector_dock)
         self.main.addDockWidget(Qt.LeftDockWidgetArea, self.main.explorer_dock)
         self.main.addDockWidget(Qt.BottomDockWidgetArea, self.main.results_dock)
         self.main.addDockWidget(Qt.RightDockWidgetArea, self.main.inspector_dock)
         self.main.addDockWidget(Qt.RightDockWidgetArea, self.main.bookmarks_dock)
 
+        self.main.splitDockWidget(
+            self.main.workspace_summary_dock,
+            self.main.preview_workspace_dock,
+            Qt.Vertical,
+        )
+        self.main.splitDockWidget(
+            self.main.preview_workspace_dock,
+            self.main.central_inspector_dock,
+            Qt.Vertical,
+        )
         self.main.tabifyDockWidget(self.main.inspector_dock, self.main.bookmarks_dock)
         self.main.inspector_dock.raise_()
+        self.main.preview_workspace_dock.raise_()
 
         self.main.resizeDocks(
             [self.main.explorer_dock, self.main.inspector_dock],
@@ -117,7 +156,15 @@ class LayoutManager:
             Qt.Horizontal,
         )
         self.main.resizeDocks([self.main.results_dock], [310], Qt.Vertical)
-        self.main.central_splitter.setSizes([760, 300])
+        self.main.resizeDocks(
+            [
+                self.main.workspace_summary_dock,
+                self.main.preview_workspace_dock,
+                self.main.central_inspector_dock,
+            ],
+            [210, 430, 270],
+            Qt.Vertical,
+        )
 
         self.main.statusBar().showMessage("Layout Ember Graph restaurado", 2200)
 
@@ -126,6 +173,9 @@ class LayoutManager:
 
     def apply_focus_layout(self) -> None:
         """Apply focus layout (hide results and bookmarks)."""
+        self.main.workspace_summary_dock.show()
+        self.main.preview_workspace_dock.show()
+        self.main.central_inspector_dock.show()
         self.main.explorer_dock.show()
         self.main.inspector_dock.show()
         self.main.results_dock.hide()
@@ -135,7 +185,15 @@ class LayoutManager:
             [280, 320],
             Qt.Horizontal,
         )
-        self.main.central_splitter.setSizes([880, 220])
+        self.main.resizeDocks(
+            [
+                self.main.workspace_summary_dock,
+                self.main.preview_workspace_dock,
+                self.main.central_inspector_dock,
+            ],
+            [190, 500, 220],
+            Qt.Vertical,
+        )
         self.main.statusBar().showMessage("Focus layout aplicado", 2200)
 
     def save_current_layout_snapshot(self) -> None:
@@ -146,7 +204,7 @@ class LayoutManager:
         )
         self.main.settings.setValue(
             "workspace_snapshot_splitter",
-            self.main.central_splitter.sizes(),
+            self._get_central_splitter_sizes(),
         )
         self.main.statusBar().showMessage("Layout actual guardado", 2200)
 
@@ -164,9 +222,6 @@ class LayoutManager:
         self.main.restoreState(state, self.main.STATE_VERSION)
 
         if splitter_sizes:
-            try:
-                self.main.central_splitter.setSizes(splitter_sizes)
-            except Exception:
-                pass
+            self._set_central_splitter_sizes(splitter_sizes)
 
         self.main.statusBar().showMessage("Layout guardado restaurado", 2200)
