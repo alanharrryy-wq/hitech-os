@@ -174,84 +174,58 @@ tools/graphviz/.repo_analyzer_settings.json
 
 !tools/graphviz/repo_analizer/
 !tools/graphviz/repo_analizer/**
+# But never track local/runtime byproducts inside repo_analizer
+tools/graphviz/repo_analizer/**/__pycache__/
+tools/graphviz/repo_analizer/**/*.pyc
+tools/graphviz/repo_analizer/**/*.pyo
+tools/graphviz/repo_analizer/**/*.pyd
+tools/graphviz/repo_analizer/.repo_analyzer_settings.json
+tools/graphviz/repo_analizer/**/.pytest_cache/
+tools/graphviz/repo_analizer/**/.mypy_cache/
+tools/graphviz/repo_analizer/**/.ruff_cache/
+tools/ui_map/_logs/
+tools/ui_map/_logs/**
 *_backup*/
 *backup*/
 *archived*/
 
-# >>> hitech-os generated cleanup rules >>>
-# Python
-__pycache__/
-*.py[cod]
-*.pyo
+# === COMPREHENSIVE TEMPORARY FILES ===
+# Covers all temporary/ephemeral files across all tools and environments
+# Existing rules above already cover Python, venv, graphviz, backups, and OS noise
 
-# Virtual environments
-.venv/
-venv/
-
-# Graphviz generated outputs
-tools/graphviz/graphs/
-tools/graphviz/*.svg
-tools/graphviz/*.dot
-
-# Graphviz runtime/cache state
-tools/graphviz/.graphviz_state.json
-tools/graphviz/.graphviz_manifest.json
-
-# Backup folders and generated backup content
-
-# Logs and temp files
-
-# OS noise
-.DS_Store
-Thumbs.db
-
-# VS Code local workspace noise
-.vscode/
-# <<< hitech-os generated cleanup rules <<<
-
-# >>> hitech-os surgical cleanup rules >>>
-# Python caches
-__pycache__/
-*.py[cod]
-*.pyo
-
-# Virtual environments
-.venv/
-venv/
-
-# Graphviz generated outputs
-tools/graphviz/graphs/
-tools/graphviz/*.svg
-tools/graphviz/*.dot
-tools/graphviz/.graphviz_state.json
-tools/graphviz/.graphviz_manifest.json
-
-# Known generated backup trees only
-_backup_closeout_*/
-_backup_constitution_*/
-tools/_local/backups/
-tools/live-scene-composer/_local/backups/
-
-# Generated install/log/report caches
-tools/ui_map/_logs/
-
-# Editor/OS noise
-.DS_Store
-Thumbs.db
-.vscode/
-# <<< hitech-os surgical cleanup rules <<<
-
-_attic/docs_dump/_root_archive/*/.tmp/tools/_local/
-
-# temp dumps
-_attic/
+# Extended temporary file patterns
 *.tmp
+*.tmp.*
+*.temp
+*.temp.*
+*~
+*.bak
+*.backup
+*.orig
+*.swp
+*.swo
+.*.swp
 
-# temp dumps
-_attic/
-*.tmp
+# Partial/downloading files (from interrupted transfers)
+*.partial
+*.downloading
+*.incomplete
+*.part
 
-# junk dumps
+# Lock/state files
+.lock
+*.lock
+
+# IDE runtime cache
+.history/
+
+# System/environment files
+desktop.ini
+$RECYCLE.BIN/
+.AppleDouble
+.LSOverride
+.TemporaryItems
+
+# junk dumps and temp directories
 _attic/
 tools/_local/tmp/
-*.tmp
