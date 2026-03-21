@@ -6,7 +6,6 @@ import { useInventoryFoundationPanelContext } from "./store";
 import { DocumentVaultPanel } from "./DocumentVaultPanel";
 import { FoundationActivityPanel } from "./FoundationActivityPanel";
 import { FoundationDashboard } from "./FoundationDashboard";
-import { LiveFieldPanel } from "./LiveFieldPanel";
 import { RBACMatrixPanel } from "./RBACMatrixPanel";
 import { ReadinessScorePanel } from "./ReadinessScorePanel";
 import { SupplierStatusPanel } from "./SupplierStatusPanel";
@@ -43,23 +42,19 @@ export function InventoryFoundationControlRoom({ screen }: InventoryFoundationCo
           <FoundationDashboard context={context} />
         </GridItem>
 
-        <GridItem span={12}>
-          <LiveFieldPanel context={context} />
-        </GridItem>
-
-        <GridItem span={12} spanLg={7}>
+        <GridItem span={12} spanLg={6}>
           <RBACMatrixPanel context={context} />
         </GridItem>
 
-        <GridItem span={12} spanLg={5}>
+        <GridItem span={12} spanLg={6}>
           <ReadinessScorePanel context={context} />
         </GridItem>
 
-        <GridItem span={12} spanLg={7}>
+        <GridItem span={12} spanLg={6}>
           <DocumentVaultPanel context={context} />
         </GridItem>
 
-        <GridItem span={12} spanLg={5}>
+        <GridItem span={12} spanLg={6}>
           <SupplierStatusPanel context={context} />
         </GridItem>
 

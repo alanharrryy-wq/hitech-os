@@ -1,3 +1,5 @@
+"use client";
+
 import { InternalToolClientOnlyBoundary } from "../../internal-tooling/internal-tool-client-only-boundary";
 import { PitchLayerDevTools, type PitchLayerDevToolsProps } from "./pitch-layer-dev-tools";
 

@@ -10,6 +10,7 @@ export interface PitchMiniBarsProps {
   readonly series: readonly PitchMiniBarsSeries[];
   readonly max?: number;
   readonly className?: string;
+  readonly formatValue?: (value: number, label: string) => string;
 }
 
 function toneClass(tone: PitchMiniBarsSeries["tone"]): string {
@@ -24,7 +25,7 @@ function toneClass(tone: PitchMiniBarsSeries["tone"]): string {
   return "bg-[linear-gradient(90deg,#02A7CA,#026F86)]";
 }
 
-export function PitchMiniBars({ series, max, className }: PitchMiniBarsProps) {
+export function PitchMiniBars({ series, max, className, formatValue }: PitchMiniBarsProps) {
   const upper = max ?? Math.max(...series.map((entry) => entry.value), 1);
 
   return (
@@ -36,7 +37,9 @@ export function PitchMiniBars({ series, max, className }: PitchMiniBarsProps) {
           <li key={entry.label} className="grid gap-1">
             <div className="flex items-center justify-between gap-2 text-xs">
               <span className="font-medium text-[color:rgba(4,18,25,0.76)]">{entry.label}</span>
-              <span className="font-semibold text-[color:var(--pitch-ink)]">{entry.value}</span>
+              <span className="font-semibold text-[color:var(--pitch-ink)]">
+                {formatValue ? formatValue(entry.value, entry.label) : entry.value}
+              </span>
             </div>
             <div className="h-2 overflow-hidden rounded-full bg-[rgba(4,18,25,0.08)]">
               <span className={cn("block h-full rounded-full", toneClass(entry.tone))} style={{ width: `${width}%` }} />

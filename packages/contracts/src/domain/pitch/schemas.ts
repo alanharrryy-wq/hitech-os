@@ -228,8 +228,8 @@ export const PitchScreen04Schema = PitchScreenBaseSchema.extend({
 export const PitchScreen05Schema = PitchScreenBaseSchema.extend({
   slug: z.literal("05-inventory-foundation"),
   route: z.literal(PITCH_ROUTES["05-inventory-foundation"]),
-  order: z.literal(5),
-  title: z.literal("RUN 1 - INVENTORY FOUNDATION (RBAC + SUPPLIERS + SKU + DOCUMENT VAULT)"),
+  order: z.literal(6),
+  title: z.literal("INVENTORY FOUNDATION (RBAC + SUPPLIERS + SKU + DOCUMENT VAULT)"),
   foundationStatus: z.object({
     id: z.string().min(1).max(80),
     heading: LongText,
@@ -260,8 +260,8 @@ export const PitchScreen05Schema = PitchScreenBaseSchema.extend({
 export const PitchScreen06Schema = PitchScreenBaseSchema.extend({
   slug: z.literal("06-shipments-receiving"),
   route: z.literal(PITCH_ROUTES["06-shipments-receiving"]),
-  order: z.literal(6),
-  title: z.literal("RUN 2 - IMPORT SHIPMENTS (CUSTOMS PACK + RECEIVING -> QUARANTINE)"),
+  order: z.literal(5),
+  title: z.literal("IMPORT SHIPMENTS (CUSTOMS PACK + RECEIVING -> QUARANTINE)"),
   shipmentControlBoard: z.object({
     id: z.string().min(1).max(80),
     heading: LongText,
@@ -316,8 +316,8 @@ export const PitchDeckSchema = z
       PitchScreen02Schema,
       PitchScreen03Schema,
       PitchScreen04Schema,
-      PitchScreen05Schema,
-      PitchScreen06Schema
+      PitchScreen06Schema,
+      PitchScreen05Schema
     ])
   })
   .superRefine((deck, ctx) => {

@@ -12,6 +12,8 @@ import { PitchSectionProvider } from "./pitch-shell-context";
 import { PitchLayerEffects } from "./pitch-layer-effects";
 import { PitchShellBrandLayer } from "./pitch-shell-brand-layer";
 
+const MINIMAL_TOP_CHROME_ROUTES = new Set(["05-inventory-foundation"]);
+
 export function PitchShell({
   model,
   children,
@@ -19,6 +21,9 @@ export function PitchShell({
   showScrollAffordance = true,
   enableKeyboardNav = false
 }: PropsWithChildren<PitchShellProps>) {
+  const hideTopChrome =
+    model.nav.activeSlug !== undefined && MINIMAL_TOP_CHROME_ROUTES.has(model.nav.activeSlug);
+
   return (
     <Stage
       className={cn("pitch-stage pitch-shell-root pb-16", className)}
@@ -34,35 +39,51 @@ export function PitchShell({
         className="relative z-10"
       >
         <PitchSectionProvider>
-          <Grid cols={12} gap="md">
-            <GridItem span={12}>
-              <PitchShellBreadcrumbs items={model.breadcrumbs} />
-            </GridItem>
+          {hideTopChrome ? (
+            <Grid cols={12} gap="md">
+              <GridItem span={12} spanLg={9}>
+                <PitchLayerEffects className="grid gap-4">{children}</PitchLayerEffects>
+              </GridItem>
 
-            <GridItem span={12}>
-              <PitchLayerEffects>
-                <PitchHero model={model.hero} />
-              </PitchLayerEffects>
-            </GridItem>
+              <GridItem span={12} spanLg={3}>
+                <aside className="grid gap-4 lg:sticky lg:top-4">
+                  <PitchLayerEffects>
+                    <PitchShellProgress model={model.progress} />
+                  </PitchLayerEffects>
+                </aside>
+              </GridItem>
+            </Grid>
+          ) : (
+            <Grid cols={12} gap="md">
+              <GridItem span={12}>
+                <PitchShellBreadcrumbs items={model.breadcrumbs} />
+              </GridItem>
 
-            <GridItem span={12}>
-              <PitchLayerEffects>
-                <PitchRailNav model={model.nav} progress={model.progress} />
-              </PitchLayerEffects>
-            </GridItem>
-
-            <GridItem span={12} spanLg={9}>
-              <PitchLayerEffects className="grid gap-4">{children}</PitchLayerEffects>
-            </GridItem>
-
-            <GridItem span={12} spanLg={3}>
-              <aside className="grid gap-4 lg:sticky lg:top-4">
+              <GridItem span={12}>
                 <PitchLayerEffects>
-                  <PitchShellProgress model={model.progress} />
+                  <PitchHero model={model.hero} />
                 </PitchLayerEffects>
-              </aside>
-            </GridItem>
-          </Grid>
+              </GridItem>
+
+              <GridItem span={12}>
+                <PitchLayerEffects>
+                  <PitchRailNav model={model.nav} progress={model.progress} />
+                </PitchLayerEffects>
+              </GridItem>
+
+              <GridItem span={12} spanLg={9}>
+                <PitchLayerEffects className="grid gap-4">{children}</PitchLayerEffects>
+              </GridItem>
+
+              <GridItem span={12} spanLg={3}>
+                <aside className="grid gap-4 lg:sticky lg:top-4">
+                  <PitchLayerEffects>
+                    <PitchShellProgress model={model.progress} />
+                  </PitchLayerEffects>
+                </aside>
+              </GridItem>
+            </Grid>
+          )}
         </PitchSectionProvider>
       </Shell>
 

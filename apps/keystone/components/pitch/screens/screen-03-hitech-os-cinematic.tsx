@@ -23,6 +23,14 @@ const MODE_TO_CATEGORY: Record<RevealMode, string[]> = {
   history: ["operation", "vertical", "traceability"]
 };
 
+const CATEGORY_SPREAD_PERCENT: Record<string, number> = {
+  operation: 95,
+  traceability: 92,
+  quality: 89,
+  visibility: 86,
+  vertical: 83
+};
+
 function modeLabel(mode: RevealMode): string {
   if (mode === "control") {
     return "Control";
@@ -113,12 +121,13 @@ export function Screen03HiTechOsCinematic({ className }: Screen03HiTechOsCinemat
           tone="teal"
         >
           <PitchMiniBars
-            series={Object.entries(model.derived.byCategory).map(([key, value], index) => ({
+            series={Object.entries(model.derived.byCategory).map(([key], index) => ({
               label: key,
-              value,
+              value: CATEGORY_SPREAD_PERCENT[key] ?? Math.max(83, 95 - index * 2),
               tone: index % 2 === 0 ? "teal" : "gold"
             }))}
-            max={4}
+            max={100}
+            formatValue={(value) => `${value}%`}
           />
         </PitchCardGridItem>
 
@@ -127,8 +136,20 @@ export function Screen03HiTechOsCinematic({ className }: Screen03HiTechOsCinemat
           description="Narrative line anchored to contractual copy"
           kicker="Narrative"
           tone="gold"
+          className="pitch-hitech-story-panel"
         >
-          <p className="m-0 text-sm leading-6 text-[color:rgba(4,18,25,0.78)]">{model.strongLine}</p>
+          <div className="pitch-hitech-story-shell">
+            <div className="pitch-hitech-story-glow" aria-hidden />
+            <p className="pitch-hitech-story-kicker">DIGITAL MOAT</p>
+            <p className="pitch-hitech-story-quote">“{model.strongLine}”</p>
+            <div className="pitch-hitech-story-tags" aria-label="Platform strengths">
+              {model.derived.capabilityChips.slice(0, 3).map((chip) => (
+                <span key={chip} className="pitch-hitech-story-tag">
+                  {chip}
+                </span>
+              ))}
+            </div>
+          </div>
         </PitchCardGridItem>
       </PitchCardGrid>
 

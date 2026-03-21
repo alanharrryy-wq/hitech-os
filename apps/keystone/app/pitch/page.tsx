@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import { LayerFlagsProvider } from "@hitech/ui-kit";
 import { PitchRouteChooser, PitchShell } from "../../components/pitch";
 import { buildPitchShellFrameModel } from "../../components/pitch/view-model/pitch-shell-model";
@@ -12,7 +13,14 @@ export const dynamic = "force-dynamic";
 export default async function PitchIndexPage({ searchParams }: PitchSearchParamsProps) {
   const resolved = resolvePitchLayerFlags(await resolvePitchSearchParams(searchParams));
   const isProduction = process.env.NODE_ENV === "production";
-  const showRouteChooser = resolved.debug || isProduction;
+  const requestHeaders = await headers();
+  const hostHeader = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "";
+  const normalizedHost = hostHeader.toLowerCase();
+  const isLocalHost =
+    normalizedHost.includes("localhost") ||
+    normalizedHost.startsWith("127.") ||
+    normalizedHost.startsWith("[::1]");
+  const showRouteChooser = resolved.debug || isProduction || !isLocalHost;
   const shellModel = buildPitchShellFrameModel();
 
   return (

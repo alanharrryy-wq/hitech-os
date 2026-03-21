@@ -412,9 +412,9 @@ const SCREEN_04_FIXTURE: PitchScreen04 = {
 export const SCREEN_05_FIXTURE: PitchScreen05 = {
   slug: "05-inventory-foundation",
   route: PITCH_ROUTES["05-inventory-foundation"],
-  order: 5,
+  order: 6,
   tag: "pitch.screen.05",
-  title: "RUN 1 - INVENTORY FOUNDATION (RBAC + SUPPLIERS + SKU + DOCUMENT VAULT)",
+  title: "INVENTORY FOUNDATION (RBAC + SUPPLIERS + SKU + DOCUMENT VAULT)",
   foundationStatus: {
     id: "screen05-foundation-status",
     heading: "Foundation status",
@@ -552,9 +552,9 @@ export const SCREEN_05_FIXTURE: PitchScreen05 = {
 export const SCREEN_06_FIXTURE: PitchScreen06 = {
   slug: "06-shipments-receiving",
   route: PITCH_ROUTES["06-shipments-receiving"],
-  order: 6,
+  order: 5,
   tag: "pitch.screen.06",
-  title: "RUN 2 - IMPORT SHIPMENTS (CUSTOMS PACK + RECEIVING -> QUARANTINE)",
+  title: "IMPORT SHIPMENTS (CUSTOMS PACK + RECEIVING -> QUARANTINE)",
   shipmentControlBoard: {
     id: "screen06-shipment-control",
     heading: "Shipment control board",
@@ -647,8 +647,8 @@ export const PITCH_SCREENS_FIXTURE: readonly PitchScreen[] = [
   PITCH_SCREEN_FIXTURES["02-industrial-flow"],
   PITCH_SCREEN_FIXTURES["03-hitech-os"],
   PITCH_SCREEN_FIXTURES["04-valuation"],
-  PITCH_SCREEN_FIXTURES["05-inventory-foundation"],
-  PITCH_SCREEN_FIXTURES["06-shipments-receiving"]
+  PITCH_SCREEN_FIXTURES["06-shipments-receiving"],
+  PITCH_SCREEN_FIXTURES["05-inventory-foundation"]
 ];
 
 export const PITCH_DECK_FIXTURE: PitchDeck = {
@@ -691,15 +691,15 @@ export const PITCH_DECK_FIXTURE: PitchDeck = {
         order: 4
       },
       {
-        slug: "05-inventory-foundation",
-        href: PITCH_ROUTES["05-inventory-foundation"],
-        title: PITCH_SCREEN_TITLES["05-inventory-foundation"],
-        order: 5
-      },
-      {
         slug: "06-shipments-receiving",
         href: PITCH_ROUTES["06-shipments-receiving"],
         title: PITCH_SCREEN_TITLES["06-shipments-receiving"],
+        order: 5
+      },
+      {
+        slug: "05-inventory-foundation",
+        href: PITCH_ROUTES["05-inventory-foundation"],
+        title: PITCH_SCREEN_TITLES["05-inventory-foundation"],
         order: 6
       }
     ]
@@ -709,8 +709,8 @@ export const PITCH_DECK_FIXTURE: PitchDeck = {
     PITCH_SCREEN_FIXTURES["02-industrial-flow"],
     PITCH_SCREEN_FIXTURES["03-hitech-os"],
     PITCH_SCREEN_FIXTURES["04-valuation"],
-    PITCH_SCREEN_FIXTURES["05-inventory-foundation"],
-    PITCH_SCREEN_FIXTURES["06-shipments-receiving"]
+    PITCH_SCREEN_FIXTURES["06-shipments-receiving"],
+    PITCH_SCREEN_FIXTURES["05-inventory-foundation"]
   ]
 };
 

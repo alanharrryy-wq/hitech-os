@@ -200,12 +200,20 @@ export function Screen02IndustrialFlowCinematic({ className }: Screen02Industria
               label="Standardization Coverage"
               stroke="var(--pitch-governance-cobalt)"
               fill="var(--pitch-governance-fill)"
+              variant="premium"
+              smooth
+              showStats
+              valueFormatter={(value) => `${Math.round(value)}%`}
             />
             <PitchSparkline
               points={SCREEN_02_SERIES.evidence}
               label="Evidence Depth"
               stroke="var(--pitch-accent-amber-muted)"
               fill="var(--pitch-accent-amber-fill)"
+              variant="premium"
+              smooth
+              showStats
+              valueFormatter={(value) => `${Math.round(value)}%`}
             />
           </div>
 

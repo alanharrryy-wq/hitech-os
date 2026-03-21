@@ -76,8 +76,8 @@ const ROUTE_BADGES: Record<PitchScreenSlug, string> = {
   "02-industrial-flow": "Cash Engine",
   "03-hitech-os": "Digital Moat",
   "04-valuation": "Investor Math",
-  "05-inventory-foundation": "Run 1",
-  "06-shipments-receiving": "Run 2"
+  "05-inventory-foundation": "Run 2",
+  "06-shipments-receiving": "Run 1"
 };
 
 const ROUTE_EMPHASIS: Record<PitchScreenSlug, PitchRouteInsight["emphasis"]> = {
@@ -298,10 +298,10 @@ function normalizeThemeLabel(slug: PitchScreenSlug): string {
   }
 
   if (slug === "05-inventory-foundation") {
-    return "PHARMA RUN 1";
+    return "PHARMA RUN 2";
   }
 
-  return "PHARMA RUN 2";
+  return "PHARMA RUN 1";
 }
 
 function screenBase(screen: PitchScreen): PitchScreenBaseViewModel {

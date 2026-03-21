@@ -85,8 +85,8 @@ describe("pitch contracts valid fixtures", () => {
     expect(matrix[1]?.slug).toBe("02-industrial-flow");
     expect(matrix[2]?.slug).toBe("03-hitech-os");
     expect(matrix[3]?.slug).toBe("04-valuation");
-    expect(matrix[4]?.slug).toBe("05-inventory-foundation");
-    expect(matrix[5]?.slug).toBe("06-shipments-receiving");
+    expect(matrix[4]?.slug).toBe("06-shipments-receiving");
+    expect(matrix[5]?.slug).toBe("05-inventory-foundation");
   });
 
   it("supports route and slug assertion helpers", () => {
@@ -131,8 +131,8 @@ describe("pitch contracts valid fixtures", () => {
 
     expect(responseDecoded.digest.screenCount).toBe(6);
     expect(responseDecoded.deck.screens[2].slug).toBe("03-hitech-os");
-    expect(responseDecoded.deck.screens[4]?.slug).toBe("05-inventory-foundation");
-    expect(responseDecoded.deck.screens[5]?.slug).toBe("06-shipments-receiving");
+    expect(responseDecoded.deck.screens[4]?.slug).toBe("06-shipments-receiving");
+    expect(responseDecoded.deck.screens[5]?.slug).toBe("05-inventory-foundation");
   });
 
   it("provides typed screen response helper", () => {

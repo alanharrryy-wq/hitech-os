@@ -28,7 +28,7 @@ export function Screen04ValuationCinematic({ screen, className }: Screen04Valuat
       className={className}
       actions={<PitchDataChip label="Valuation" value={model.combinedLine} tone="gold" />}
     >
-      <PitchCardGrid columns={3}>
+      <PitchCardGrid columns={3} className="pitch-valuation-block-grid">
         {model.blocks.map((block, index) => (
           <PitchCardGridItem
             key={block.heading}
@@ -36,19 +36,20 @@ export function Screen04ValuationCinematic({ screen, className }: Screen04Valuat
             description="Panel narrativo"
             kicker={model.derived.panelLabels[index] ?? `Panel ${index + 1}`}
             tone={index === 0 ? "neutral" : index === 1 ? "cyan" : "gold"}
+            className="pitch-valuation-block-item"
           >
             {block.items.length > 0 ? (
-              <ul className="m-0 list-disc space-y-1 pl-5 text-sm text-[color:rgba(4,18,25,0.76)]">
+              <ul className="pitch-valuation-block-list m-0 text-sm text-[color:rgba(4,18,25,0.76)]">
                 {block.items.map((item) => (
-                  <li key={item}>{item}</li>
+                  <li key={item} className="pitch-valuation-block-list-item">{item}</li>
                 ))}
               </ul>
             ) : null}
             {block.phase1 ? (
-              <p className="m-0 rounded-md border border-[rgba(2,111,134,0.2)] px-2 py-1 text-xs">{block.phase1}</p>
+              <p className="pitch-valuation-phase-pill m-0 text-xs">{block.phase1}</p>
             ) : null}
             {block.phase2 ? (
-              <p className="m-0 rounded-md border border-[rgba(2,111,134,0.2)] px-2 py-1 text-xs">{block.phase2}</p>
+              <p className="pitch-valuation-phase-pill m-0 text-xs">{block.phase2}</p>
             ) : null}
           </PitchCardGridItem>
         ))}
