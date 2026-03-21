@@ -1,69 +1,122 @@
+.windowFrame {
+  --floating-window-border: hsl(211 62% 82% / 0.22);
+  --floating-window-bg: linear-gradient(
+    165deg,
+    hsl(221 48% 18% / 0.12) 0%,
+    hsl(223 50% 12% / 0.08) 52%,
+    hsl(223 52% 8% / 0.16) 100%
+  );
+  --floating-window-shadow: 0 40px 88px hsl(224 60% 4% / 0.3), 0 16px 34px hsl(222 50% 8% / 0.18),
+    inset 0 1px 0 hsl(208 80% 98% / 0.24);
+  --floating-window-backdrop: blur(44px) saturate(1.38);
+  --floating-window-header-border: hsl(211 64% 86% / 0.28);
+  --floating-window-header-bg: linear-gradient(180deg, hsl(220 50% 22% / 0.16), hsl(222 44% 12% / 0.1));
+  --floating-window-header-text: hsl(208 95% 97%);
+  --floating-window-title-shadow: 0 1px 10px hsl(220 64% 4% / 0.74);
+  --floating-window-header-shadow: inset 0 -1px 0 hsl(209 74% 96% / 0.14);
+  --floating-window-button-border: hsl(210 62% 84% / 0.34);
+  --floating-window-button-bg: linear-gradient(180deg, hsl(219 50% 24% / 0.12), hsl(222 46% 14% / 0.08));
+  --floating-window-button-backdrop: blur(12px) saturate(1.22);
+  --floating-window-button-text: hsl(209 94% 97%);
+  --floating-window-button-shadow: inset 0 1px 0 hsl(208 88% 98% / 0.22), 0 4px 14px hsl(224 56% 5% / 0.28);
+  --floating-window-body-text: hsl(208 65% 95%);
+  --floating-window-body-bg: linear-gradient(
+      180deg,
+      hsl(220 48% 22% / 0.03) 0%,
+      hsl(222 46% 12% / 0.05) 48%,
+      hsl(224 48% 8% / 0.08) 100%
+    ),
+    radial-gradient(circle at 10% -10%, hsl(205 95% 86% / 0.12), transparent 44%);
+  --floating-window-resize-border: hsl(210 56% 82% / 0.36);
+  --floating-window-resize-bg: linear-gradient(140deg, hsl(219 42% 22% / 0.42), hsl(222 38% 11% / 0.44));
+  --floating-window-resize-shadow: inset 0 1px 0 hsl(209 80% 98% / 0.22), 0 3px 10px hsl(222 60% 4% / 0.42);
+  --floating-window-ambient-bg: radial-gradient(circle at 8% -16%, hsl(201 90% 86% / 0.24), transparent 42%),
+    radial-gradient(circle at 88% 0%, hsl(218 62% 72% / 0.14), transparent 36%);
+  --floating-window-hairline-bg: linear-gradient(180deg, hsl(210 90% 98% / 0.26), transparent 78%);
+}
+
 .root {
-  --console-shell-1: hsl(220 28% 12% / 0.96);
-  --console-shell-2: hsl(224 31% 8% / 0.96);
-  --console-surface-1: hsl(217 27% 15% / 0.92);
-  --console-surface-2: hsl(218 22% 18% / 0.88);
-  --console-surface-3: hsl(219 18% 24% / 0.68);
-  --console-border-soft: hsl(211 30% 67% / 0.24);
-  --console-border-strong: hsl(202 52% 74% / 0.36);
-  --console-text-1: hsl(210 40% 96%);
-  --console-text-2: hsl(213 24% 79%);
-  --console-text-3: hsl(214 15% 64%);
+  --console-shell-1: hsl(221 44% 19% / 0.08);
+  --console-shell-2: hsl(223 48% 8% / 0.12);
+  --console-surface-1: hsl(219 38% 24% / 0.1);
+  --console-surface-2: hsl(221 42% 16% / 0.08);
+  --console-surface-3: hsl(221 34% 28% / 0.08);
+  --console-border-soft: hsl(210 58% 84% / 0.18);
+  --console-border-strong: hsl(211 62% 88% / 0.26);
+  --console-text-1: hsl(210 84% 97%);
+  --console-text-2: hsl(211 62% 88%);
+  --console-text-3: hsl(212 34% 72%);
   --console-accent: hsl(var(--ui-accent, 193 100% 49%));
   --console-danger: hsl(var(--ui-danger, 9 83% 61%));
   height: 100%;
   min-height: 0;
   display: grid;
-  grid-template-columns: 72px minmax(0, 1fr);
-  gap: 14px;
-  padding: 10px;
-  border-radius: 16px;
-  border: 1px solid var(--console-border-soft);
-  background:
-    radial-gradient(circle at 14% 0%, hsl(var(--ui-accent, 193 100% 49%) / 0.18), transparent 28%),
-    radial-gradient(circle at 96% 0%, hsl(36 86% 64% / 0.14), transparent 34%),
-    linear-gradient(165deg, var(--console-shell-1) 0%, var(--console-shell-2) 72%);
-  box-shadow:
-    inset 0 1px 0 hsl(210 32% 100% / 0.08),
-    0 14px 32px hsl(222 46% 5% / 0.35);
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 16px;
+  padding: 4px;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
   color: var(--console-text-1);
 }
 
 .rail {
   display: grid;
   align-content: start;
-  gap: 8px;
-  padding: 8px;
-  border-radius: 14px;
-  border: 1px solid var(--console-border-soft);
-  background: linear-gradient(180deg, hsl(219 22% 16% / 0.9), hsl(222 22% 11% / 0.9));
-  box-shadow: inset 0 1px 0 hsl(214 48% 100% / 0.06);
+  gap: 14px;
+  padding: 12px 10px;
+  border-radius: 18px;
+  border: 1px solid hsl(210 58% 84% / 0.18);
+  background:
+    radial-gradient(circle at 14% 0%, hsl(199 100% 86% / 0.14), transparent 34%),
+    linear-gradient(180deg, hsl(219 44% 24% / 0.14), hsl(223 42% 11% / 0.18));
+  box-shadow:
+    inset 0 1px 0 hsl(208 90% 100% / 0.18),
+    0 16px 36px hsl(224 56% 4% / 0.28),
+    0 0 0 1px hsl(210 62% 84% / 0.06);
+  -webkit-backdrop-filter: blur(24px) saturate(1.26);
+  backdrop-filter: blur(24px) saturate(1.26);
 }
 
 .railButton {
   width: 100%;
-  min-height: 54px;
-  border-radius: 12px;
-  border: 1px solid hsl(209 34% 76% / 0.2);
-  background: linear-gradient(180deg, hsl(219 22% 20% / 0.92), hsl(220 19% 15% / 0.95));
+  min-height: 48px;
+  border-radius: 16px;
+  border: 1px solid hsl(210 62% 84% / 0.2);
+  background:
+    linear-gradient(180deg, hsl(220 44% 26% / 0.16), hsl(222 42% 14% / 0.2)),
+    radial-gradient(circle at 50% 0%, hsl(204 100% 84% / 0.08), transparent 54%);
   color: var(--console-text-2);
   cursor: pointer;
   display: grid;
   place-items: center;
-  padding: 6px;
+  padding: 8px 6px;
   text-align: center;
   transition:
-    transform 120ms ease,
-    border-color 120ms ease,
-    color 120ms ease,
-    background 120ms ease,
-    box-shadow 120ms ease;
+    transform 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    background 140ms ease,
+    box-shadow 140ms ease,
+    filter 140ms ease;
+  box-shadow:
+    inset 0 1px 0 hsl(208 90% 100% / 0.12),
+    0 12px 28px hsl(224 56% 4% / 0.22);
+  -webkit-backdrop-filter: blur(18px) saturate(1.22);
+  backdrop-filter: blur(18px) saturate(1.22);
 }
 
 .railButton:hover {
   transform: translateY(-1px);
   border-color: hsl(var(--ui-accent, 193 100% 49%) / 0.52);
   color: var(--console-text-1);
+  box-shadow:
+    inset 0 1px 0 hsl(208 90% 100% / 0.18),
+    0 18px 36px hsl(224 56% 4% / 0.3),
+    0 0 22px hsl(var(--ui-accent, 193 100% 49%) / 0.14);
 }
 
 .railButton:active {
@@ -77,20 +130,24 @@
 }
 
 .railButtonActive {
-  border-color: hsl(var(--ui-accent, 193 100% 49%) / 0.68);
+  border-color: hsl(204 92% 86% / 0.7);
   background:
-    linear-gradient(180deg, hsl(var(--ui-accent, 193 100% 49%) / 0.28), transparent 56%),
-    linear-gradient(180deg, hsl(219 22% 22% / 0.96), hsl(220 20% 14% / 0.96));
+    linear-gradient(180deg, hsl(198 100% 86% / 0.32), transparent 52%),
+    linear-gradient(180deg, hsl(220 42% 28% / 0.42), hsl(222 38% 14% / 0.5));
   color: var(--console-text-1);
   box-shadow:
-    inset 0 0 0 1px hsl(var(--ui-accent, 193 100% 49%) / 0.28),
-    0 8px 18px hsl(221 54% 6% / 0.34);
+    inset 0 1px 0 hsl(203 88% 96% / 0.28),
+    inset 0 0 0 1px hsl(203 88% 96% / 0.12),
+    0 12px 30px hsl(221 54% 4% / 0.42),
+    0 0 26px hsl(var(--ui-focus, 216 100% 45%) / 0.22),
+    0 0 0 1px hsl(var(--ui-focus, 216 100% 45%) / 0.22);
+  filter: saturate(1.08);
 }
 
 .railButtonText {
-  font-size: 10px;
-  line-height: 1.1;
-  font-weight: 750;
+  font-size: 11px;
+  line-height: 1.05;
+  font-weight: 800;
   letter-spacing: 0.08em;
 }
 
@@ -108,15 +165,17 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 11px 14px;
-  border: 1px solid var(--console-border-strong);
-  border-radius: 14px;
+  padding: 14px 16px;
+  border: 1px solid hsl(210 62% 84% / 0.22);
+  border-radius: 18px;
   background:
-    linear-gradient(180deg, hsl(216 31% 22% / 0.82), hsl(220 22% 14% / 0.88)),
-    linear-gradient(160deg, hsl(var(--ui-accent, 193 100% 49%) / 0.16), transparent 40%);
+    radial-gradient(circle at 10% 0%, hsl(201 90% 86% / 0.12), transparent 30%),
+    linear-gradient(180deg, hsl(220 46% 20% / 0.18), hsl(223 42% 12% / 0.24));
   box-shadow:
-    inset 0 1px 0 hsl(214 48% 100% / 0.12),
-    0 10px 20px hsl(222 52% 5% / 0.32);
+    inset 0 1px 0 hsl(208 90% 100% / 0.14),
+    0 18px 40px hsl(224 56% 4% / 0.22);
+  -webkit-backdrop-filter: blur(24px) saturate(1.26);
+  backdrop-filter: blur(24px) saturate(1.26);
   user-select: none;
   touch-action: none;
 }
@@ -124,11 +183,13 @@
 .topBar::after {
   content: "";
   position: absolute;
-  left: 14px;
-  right: 14px;
-  top: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, hsl(206 70% 92% / 0.52), transparent);
+  left: 1px;
+  right: 1px;
+  top: 1px;
+  height: 48px;
+  border-radius: 17px 17px 0 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, hsl(210 90% 98% / 0.14), transparent 82%);
 }
 
 .topBar[data-floating-window-drag-handle="true"] {
@@ -146,9 +207,10 @@
 }
 
 .topBarTitle {
-  font-size: 12px;
-  font-weight: 760;
-  color: var(--console-text-1);
+  font-size: 13px;
+  font-weight: 800;
+  color: hsl(207 98% 97%);
+  text-shadow: 0 1px 10px hsl(222 70% 4% / 0.72);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -156,8 +218,8 @@
 .topBarDescription {
   font-size: 11px;
   color: var(--console-text-2);
-  opacity: 0.96;
-  line-height: 1.35;
+  opacity: 0.98;
+  line-height: 1.4;
 }
 
 .topBarActions {
@@ -170,27 +232,38 @@
 }
 
 .button {
-  min-height: 32px;
-  padding: 0 12px;
-  border-radius: 10px;
-  border: 1px solid hsl(208 37% 78% / 0.28);
-  background: linear-gradient(180deg, hsl(219 24% 22% / 0.95), hsl(220 20% 16% / 0.95));
+  min-height: 34px;
+  padding: 0 16px;
+  border-radius: 13px;
+  border: 1px solid hsl(210 62% 84% / 0.28);
+  background:
+    linear-gradient(180deg, hsl(220 46% 30% / 0.18), hsl(223 42% 15% / 0.22)),
+    radial-gradient(circle at 50% 0%, hsl(204 100% 84% / 0.08), transparent 52%);
   color: var(--console-text-1);
   cursor: pointer;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 760;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   transition:
-    transform 120ms ease,
-    border-color 120ms ease,
-    background 120ms ease,
-    box-shadow 120ms ease;
+    transform 140ms ease,
+    border-color 140ms ease,
+    background 140ms ease,
+    box-shadow 140ms ease;
+  box-shadow:
+    inset 0 1px 0 hsl(208 90% 100% / 0.16),
+    0 10px 24px hsl(224 56% 4% / 0.22);
+  -webkit-backdrop-filter: blur(18px) saturate(1.22);
+  backdrop-filter: blur(18px) saturate(1.22);
 }
 
 .button:hover {
   border-color: hsl(var(--ui-accent, 193 100% 49%) / 0.56);
   transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 hsl(208 90% 100% / 0.18),
+    0 14px 28px hsl(224 56% 4% / 0.28),
+    0 0 22px hsl(var(--ui-accent, 193 100% 49%) / 0.12);
 }
 
 .button:active {
@@ -214,21 +287,34 @@
   overflow: auto;
   display: grid;
   gap: 12px;
-  border-radius: 14px;
-  border: 1px solid var(--console-border-soft);
+  border-radius: 18px;
+  border: 1px solid hsl(210 58% 84% / 0.18);
   background:
-    linear-gradient(180deg, hsl(217 29% 13% / 0.88), hsl(220 24% 11% / 0.92)),
-    radial-gradient(circle at 100% 0%, hsl(var(--ui-accent, 193 100% 49%) / 0.1), transparent 34%);
-  padding: 12px;
+    radial-gradient(circle at 10% 0%, hsl(199 100% 86% / 0.12), transparent 34%),
+    radial-gradient(circle at 100% 0%, hsl(198 100% 88% / 0.08), transparent 40%),
+    linear-gradient(180deg, hsl(220 44% 20% / 0.14), hsl(223 46% 10% / 0.18));
+  box-shadow:
+    inset 0 1px 0 hsl(208 90% 100% / 0.14),
+    0 22px 46px hsl(224 56% 4% / 0.28);
+  -webkit-backdrop-filter: blur(28px) saturate(1.28);
+  backdrop-filter: blur(28px) saturate(1.28);
+  padding: 14px;
 }
 
 .card {
   display: grid;
   gap: 10px;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid hsl(209 33% 74% / 0.24);
-  background: linear-gradient(180deg, hsl(219 20% 18% / 0.84), hsl(220 20% 14% / 0.82));
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid hsl(210 58% 84% / 0.18);
+  background:
+    radial-gradient(circle at 12% 0%, hsl(199 100% 86% / 0.06), transparent 34%),
+    linear-gradient(180deg, hsl(220 46% 24% / 0.14), hsl(222 46% 12% / 0.18));
+  box-shadow:
+    0 16px 34px hsl(224 58% 4% / 0.24),
+    inset 0 1px 0 hsl(206 90% 98% / 0.14);
+  -webkit-backdrop-filter: blur(20px) saturate(1.22);
+  backdrop-filter: blur(20px) saturate(1.22);
 }
 
 .cardTitle {
@@ -250,10 +336,12 @@
   gap: 10px;
   padding: 16px;
   border-radius: 12px;
-  border: 1px dashed hsl(207 42% 78% / 0.32);
+  border: 1px dashed hsl(210 58% 84% / 0.26);
   background:
-    linear-gradient(180deg, hsl(220 19% 16% / 0.72), hsl(221 21% 13% / 0.72)),
-    radial-gradient(circle at 20% 0%, hsl(var(--ui-accent, 193 100% 49%) / 0.15), transparent 44%);
+    linear-gradient(180deg, hsl(220 38% 23% / 0.12), hsl(223 38% 12% / 0.2)),
+    radial-gradient(circle at 20% 0%, hsl(198 95% 86% / 0.14), transparent 46%);
+  -webkit-backdrop-filter: blur(12px) saturate(1.14);
+  backdrop-filter: blur(12px) saturate(1.14);
 }
 
 .kvGrid {
@@ -265,10 +353,15 @@
 .kvItem {
   display: grid;
   gap: 4px;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid hsl(208 28% 70% / 0.22);
-  background: hsl(219 21% 18% / 0.74);
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid hsl(210 58% 84% / 0.16);
+  background: linear-gradient(180deg, hsl(220 44% 20% / 0.12), hsl(223 42% 11% / 0.16));
+  box-shadow:
+    0 10px 24px hsl(224 56% 4% / 0.2),
+    inset 0 1px 0 hsl(206 90% 98% / 0.12);
+  -webkit-backdrop-filter: blur(16px) saturate(1.16);
+  backdrop-filter: blur(16px) saturate(1.16);
 }
 
 .kvLabel {
@@ -293,11 +386,18 @@
 
 .metricCard {
   display: grid;
-  gap: 6px;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid hsl(206 32% 75% / 0.24);
-  background: linear-gradient(180deg, hsl(219 21% 19% / 0.84), hsl(220 18% 15% / 0.84));
+  gap: 8px;
+  padding: 16px 14px;
+  border-radius: 16px;
+  border: 1px solid hsl(210 58% 84% / 0.18);
+  background:
+    linear-gradient(180deg, hsl(220 46% 24% / 0.16), hsl(223 46% 14% / 0.18)),
+    radial-gradient(circle at 50% 0%, hsl(204 100% 84% / 0.06), transparent 54%);
+  box-shadow:
+    0 16px 34px hsl(224 58% 4% / 0.22),
+    inset 0 1px 0 hsl(206 90% 98% / 0.12);
+  -webkit-backdrop-filter: blur(18px) saturate(1.18);
+  backdrop-filter: blur(18px) saturate(1.18);
 }
 
 .metricValue {
@@ -319,10 +419,15 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid hsl(210 28% 72% / 0.24);
-  background: hsl(219 20% 17% / 0.75);
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid hsl(210 58% 84% / 0.16);
+  background: linear-gradient(180deg, hsl(220 44% 18% / 0.14), hsl(223 42% 11% / 0.18));
+  box-shadow:
+    0 12px 26px hsl(224 56% 4% / 0.18),
+    inset 0 1px 0 hsl(206 90% 98% / 0.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.16);
+  backdrop-filter: blur(16px) saturate(1.16);
 }
 
 .toggleText {
@@ -343,16 +448,21 @@
 
 .toggleButton {
   min-width: 82px;
-  min-height: 32px;
-  padding: 0 12px;
+  min-height: 34px;
+  padding: 0 14px;
   border-radius: 999px;
-  border: 1px solid hsl(210 35% 75% / 0.28);
-  background: linear-gradient(180deg, hsl(219 23% 22% / 0.95), hsl(220 18% 16% / 0.95));
+  border: 1px solid hsl(210 58% 84% / 0.22);
+  background: linear-gradient(180deg, hsl(220 50% 28% / 0.16), hsl(223 46% 14% / 0.18));
   color: var(--console-text-1);
   cursor: pointer;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 760;
   letter-spacing: 0.04em;
+  box-shadow:
+    inset 0 1px 0 hsl(208 90% 100% / 0.12),
+    0 10px 22px hsl(224 56% 4% / 0.18);
+  -webkit-backdrop-filter: blur(14px) saturate(1.18);
+  backdrop-filter: blur(14px) saturate(1.18);
 }
 
 .toggleButton:hover {
@@ -369,21 +479,33 @@
   grid-template-columns: minmax(0, 1fr) auto auto auto;
   gap: 8px;
   align-items: center;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid hsl(211 30% 73% / 0.24);
-  background: hsl(219 20% 18% / 0.76);
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid hsl(210 58% 84% / 0.16);
+  background: linear-gradient(180deg, hsl(220 44% 19% / 0.12), hsl(223 42% 12% / 0.16));
+  box-shadow:
+    0 12px 24px hsl(224 56% 4% / 0.18),
+    inset 0 1px 0 hsl(206 90% 98% / 0.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.16);
+  backdrop-filter: blur(16px) saturate(1.16);
 }
 
 .input {
   width: 100%;
-  min-height: 34px;
-  border-radius: 10px;
-  border: 1px solid hsl(210 34% 76% / 0.3);
-  background: hsl(220 18% 13% / 0.94);
+  min-height: 36px;
+  border-radius: 12px;
+  border: 1px solid hsl(210 58% 84% / 0.22);
+  background:
+    linear-gradient(180deg, hsl(220 44% 13% / 0.16), hsl(223 42% 10% / 0.18)),
+    radial-gradient(circle at 50% 0%, hsl(204 100% 84% / 0.04), transparent 54%);
   color: var(--console-text-1);
-  padding: 6px 10px;
+  padding: 8px 12px;
   font-size: 12px;
+  box-shadow:
+    inset 0 1px 0 hsl(208 90% 100% / 0.1),
+    0 10px 22px hsl(224 56% 4% / 0.16);
+  -webkit-backdrop-filter: blur(14px) saturate(1.16);
+  backdrop-filter: blur(14px) saturate(1.16);
 }
 
 .input:focus-visible {
@@ -396,32 +518,150 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
+  align-items: stretch;
+}
+
+.split > .card {
+  min-height: 0;
+}
+
+.split > .card .codeBox {
+  margin: 0;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid hsl(210 58% 84% / 0.18);
+  background:
+    linear-gradient(180deg, hsl(221 48% 10% / 0.16), hsl(224 50% 7% / 0.22)),
+    radial-gradient(circle at 8% 0%, hsl(199 100% 86% / 0.05), transparent 34%);
+  color: hsl(206 22% 90%);
+  font-size: 11px;
+  line-height: 1.45;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-shadow:
+    0 14px 28px hsl(224 58% 4% / 0.22),
+    inset 0 1px 0 hsl(206 90% 98% / 0.1);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  backdrop-filter: blur(18px) saturate(1.2);
 }
 
 .codeBox {
   margin: 0;
   padding: 12px;
   border-radius: 10px;
-  border: 1px solid hsl(210 32% 74% / 0.24);
-  background: hsl(220 20% 11% / 0.95);
-  color: hsl(204 28% 88%);
+  border: 1px solid hsl(210 58% 84% / 0.16);
+  background: hsl(221 48% 10% / 0.08);
+  color: hsl(206 22% 90%);
   font-size: 11px;
   line-height: 1.45;
   overflow: auto;
   white-space: pre-wrap;
   word-break: break-word;
+  -webkit-backdrop-filter: blur(14px) saturate(1.18);
+  backdrop-filter: blur(14px) saturate(1.18);
+}
+
+
+.rail > div {
+  display: grid;
+  gap: 10px;
+}
+
+.rail .cardHint {
+  padding: 6px 2px 2px !important;
+  font-size: 11px !important;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center !important;
+  color: hsl(210 70% 90% / 0.88);
+}
+
+.buttonDanger {
+  border-color: hsl(var(--ui-danger, 9 83% 61%) / 0.52);
+  color: hsl(10 92% 88%);
+  box-shadow:
+    inset 0 1px 0 hsl(10 100% 96% / 0.08),
+    0 10px 22px hsl(8 78% 12% / 0.22);
+}
+
+.buttonDanger:hover {
+  box-shadow:
+    inset 0 1px 0 hsl(10 100% 96% / 0.1),
+    0 14px 28px hsl(8 78% 12% / 0.28),
+    0 0 22px hsl(var(--ui-danger, 9 83% 61%) / 0.16);
+}
+
+.content :global(select),
+.content :global([role="combobox"]),
+.content :global([data-radix-select-trigger]),
+.content :global(button[data-slot="select-trigger"]) {
+  min-height: 36px;
+  border-radius: 12px !important;
+  border: 1px solid hsl(210 58% 84% / 0.22) !important;
+  background:
+    linear-gradient(180deg, hsl(220 44% 13% / 0.16), hsl(223 42% 10% / 0.18)),
+    radial-gradient(circle at 50% 0%, hsl(204 100% 84% / 0.04), transparent 54%) !important;
+  color: var(--console-text-1) !important;
+  box-shadow:
+    inset 0 1px 0 hsl(208 90% 100% / 0.1),
+    0 10px 22px hsl(224 56% 4% / 0.16) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.16);
+  backdrop-filter: blur(14px) saturate(1.16);
+}
+
+.content :global([data-radix-select-content]),
+.content :global([role="listbox"]),
+.content :global([data-slot="select-content"]) {
+  border-radius: 14px !important;
+  border: 1px solid hsl(210 58% 84% / 0.2) !important;
+  background:
+    linear-gradient(180deg, hsl(220 44% 13% / 0.22), hsl(223 42% 10% / 0.28)),
+    radial-gradient(circle at 18% 0%, hsl(199 100% 86% / 0.08), transparent 36%) !important;
+  box-shadow:
+    0 18px 36px hsl(224 56% 4% / 0.34),
+    inset 0 1px 0 hsl(208 90% 100% / 0.12) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(1.24);
+  backdrop-filter: blur(22px) saturate(1.24);
+  overflow: hidden;
+}
+
+.content :global([data-radix-select-item]),
+.content :global([role="option"]),
+.content :global([data-slot="select-item"]) {
+  border-radius: 10px !important;
+  color: var(--console-text-1) !important;
+  transition: background 120ms ease, box-shadow 120ms ease, color 120ms ease;
+}
+
+.content :global([data-radix-select-item][data-highlighted]),
+.content :global([role="option"]:hover),
+.content :global([data-slot="select-item"]:hover) {
+  background: hsl(210 58% 84% / 0.08) !important;
+}
+
+.content :global([data-radix-select-item][data-state="checked"]),
+.content :global([role="option"][aria-selected="true"]),
+.content :global([data-slot="select-item"][data-state="checked"]) {
+  background:
+    linear-gradient(180deg, hsl(198 100% 86% / 0.24), transparent 62%),
+    linear-gradient(180deg, hsl(220 42% 28% / 0.32), hsl(222 38% 14% / 0.36)) !important;
+  box-shadow:
+    inset 0 1px 0 hsl(203 88% 96% / 0.18),
+    0 0 18px hsl(var(--ui-focus, 216 100% 45%) / 0.14) !important;
 }
 
 @media (max-width: 900px) {
   .root {
     grid-template-columns: 1fr;
-    padding: 8px;
+    padding: 6px;
   }
 
   .rail {
     grid-template-columns: repeat(5, minmax(0, 1fr));
     align-content: unset;
-    padding: 6px;
+    padding: 8px;
   }
 
   .topBar {
