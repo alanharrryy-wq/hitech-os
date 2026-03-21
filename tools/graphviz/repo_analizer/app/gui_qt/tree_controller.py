@@ -4,7 +4,14 @@ from collections import defaultdict
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from PySide6.QtWidgets import QLineEdit, QTreeWidget, QTreeWidgetItem, QVBoxLayout
+from PySide6.QtWidgets import (
+    QAbstractItemView,
+    QHeaderView,
+    QLineEdit,
+    QTreeWidget,
+    QTreeWidgetItem,
+    QVBoxLayout,
+)
 
 from .widgets import PanelCard
 
@@ -28,14 +35,16 @@ class TreeController:
     def build_tree_dock_widget(self, skin_tokens: SkinTokens) -> tuple[QLineEdit, QTreeWidget]:
         """Create and return the explorer tree widget with filter."""
         explorer_card = PanelCard(skin_tokens, accent=True, parent=self.main.explorer_dock)
+        explorer_card.setProperty('surfaceKind', 'explorer')
         explorer_layout = QVBoxLayout(explorer_card)
-        explorer_layout.setContentsMargins(16, 16, 16, 16)
-        explorer_layout.setSpacing(9)
+        explorer_layout.setContentsMargins(14, 14, 14, 14)
+        explorer_layout.setSpacing(10)
 
         tree_filter_box = QLineEdit(explorer_card)
         tree_filter_box.setObjectName('treeFilterSurface')
         tree_filter_box.setProperty('visualRole', 'status-surface')
         tree_filter_box.setProperty('visualTier', 'themed')
+        tree_filter_box.setClearButtonEnabled(True)
         tree_filter_box.setPlaceholderText('Filtrar por nombre de archivo o ruta relativa...')
         tree_filter_box.textChanged.connect(self.on_tree_filter_changed)
         explorer_layout.addWidget(tree_filter_box)
@@ -47,8 +56,18 @@ class TreeController:
         repo_tree.setHeaderLabels(['Repositorio'])
         repo_tree.setAlternatingRowColors(True)
         repo_tree.setAnimated(True)
-        repo_tree.setIndentation(20)
+        repo_tree.setIndentation(18)
+        repo_tree.setRootIsDecorated(True)
+        repo_tree.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
+        repo_tree.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        repo_tree.setExpandsOnDoubleClick(True)
         repo_tree.setUniformRowHeights(True)
+        repo_tree.setSelectionBehavior(QAbstractItemView.SelectRows)
+        repo_tree.setAllColumnsShowFocus(True)
+        header = repo_tree.header()
+        header.setObjectName('repoTreeHeaderSurface')
+        header.setStretchLastSection(True)
+        header.setSectionResizeMode(0, QHeaderView.Stretch)
         repo_tree.itemSelectionChanged.connect(self.on_tree_selection_changed)
         repo_tree.itemDoubleClicked.connect(self.on_tree_double_click)
         explorer_layout.addWidget(repo_tree, 1)
@@ -73,27 +92,41 @@ class TreeController:
         root_item.setExpanded(True)
         tree.addTopLevelItem(root_item)
 
-        # Build folder and file hierarchy
+        # Build canonical folder -> folder and folder -> file hierarchy.
+        # Each relpath is a file path; folder nodes are derived only from path parents.
         folder_children: dict[str, set[str]] = defaultdict(set)
-        file_children: dict[str, list[str]] = defaultdict(list)
+        file_children: dict[str, set[str]] = defaultdict(set)
 
-        for rel in self.main.index_data.get('files', {}).keys():
-            parts = rel.split('/')
-            if len(parts) == 1:
-                file_children[''].append(rel)
-            for depth in range(1, len(parts)):
-                parent_rel = '/'.join(parts[:depth])
-                child_folder_rel = '/'.join(parts[: depth + 1])
-                folder_children[parent_rel].add(child_folder_rel)
-            file_children['/'.join(parts[:-1])].append(rel)
+        for raw_rel in self.main.index_data.get('files', {}).keys():
+            rel = str(raw_rel).replace('\\', '/').strip('/')
+            if not rel:
+                continue
 
-        def insert_branch(parent_item: QTreeWidgetItem, parent_rel: str, depth: int) -> None:
+            parts = [segment for segment in rel.split('/') if segment]
+            if not parts:
+                continue
+
+            file_name = parts[-1]
+            if not file_name:
+                continue
+
+            folders = parts[:-1]
+            for depth in range(len(folders)):
+                parent_rel = '/'.join(folders[:depth])
+                child_folder_rel = '/'.join(folders[: depth + 1])
+                if child_folder_rel:
+                    folder_children[parent_rel].add(child_folder_rel)
+
+            parent_folder_rel = '/'.join(folders)
+            file_children[parent_folder_rel].add(rel)
+
+        def insert_branch(parent_item: QTreeWidgetItem, parent_rel: str) -> None:
             child_folders = sorted(
                 folder_children.get(parent_rel, set()),
                 key=lambda x: Path(x).name.lower()
             )
             child_files = sorted(
-                file_children.get(parent_rel, []),
+                file_children.get(parent_rel, set()),
                 key=lambda x: Path(x).name.lower()
             )
 
@@ -103,7 +136,7 @@ class TreeController:
                 folder_item.setData(0, ROLE_NODE_KIND, 'folder')
                 folder_item.setData(0, ROLE_RELPATH, folder_rel)
                 parent_item.addChild(folder_item)
-                insert_branch(folder_item, folder_rel, depth + 1)
+                insert_branch(folder_item, folder_rel)
 
             for file_rel in child_files:
                 file_name = Path(file_rel).name
@@ -115,7 +148,7 @@ class TreeController:
                 parent_item.addChild(file_item)
                 self._tree_items_by_relpath[file_rel] = file_item
 
-        insert_branch(root_item, '', 0)
+        insert_branch(root_item, '')
         tree.expandItem(root_item)
         tree.resizeColumnToContents(0)
 

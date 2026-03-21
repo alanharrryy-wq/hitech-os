@@ -51,37 +51,37 @@ class ToolbarController:
 
         hero_surface = self._create_surface('workspaceHeroSurface', role='hero-surface', tier='premium')
         hero_layout = QVBoxLayout(hero_surface)
-        hero_layout.setContentsMargins(20, 16, 20, 16)
-        hero_layout.setSpacing(5)
+        hero_layout.setContentsMargins(18, 12, 18, 12)
+        hero_layout.setSpacing(4)
 
         hero_top = QHBoxLayout()
         hero_top.setContentsMargins(0, 0, 0, 0)
-        hero_top.setSpacing(8)
+        hero_top.setSpacing(7)
 
         title = QLabel('Repo Analyzer', hero_surface)
         title.setObjectName('heroTitleLabel')
         hero_top.addWidget(title)
         hero_top.addStretch(1)
 
-        product_pill = QLabel('ENGINEERING WORKSTATION', hero_surface)
+        product_pill = QLabel('ENGINEERING CONSOLE', hero_surface)
         product_pill.setObjectName('heroMetaPill')
         hero_top.addWidget(product_pill)
         hero_layout.addLayout(hero_top)
 
         subtitle = QLabel(
-            'Calm analysis shell for deep repository search, structural review, and controlled navigation.',
+            'Calm shell for repository search, structural review, and controlled navigation.',
             hero_surface,
         )
         subtitle.setObjectName('subtitleLabel')
         subtitle.setWordWrap(True)
-        subtitle.setMinimumWidth(520)
+        subtitle.setMinimumWidth(420)
         hero_layout.addWidget(subtitle)
         toolbar.addWidget(hero_surface)
 
         repo_surface = self._create_surface('workspaceRepoSurface')
         repo_layout = QVBoxLayout(repo_surface)
-        repo_layout.setContentsMargins(14, 12, 14, 12)
-        repo_layout.setSpacing(7)
+        repo_layout.setContentsMargins(12, 10, 12, 10)
+        repo_layout.setSpacing(6)
         repo_layout.addWidget(self._build_section_caption('REPOSITORY CONTROL', parent=repo_surface))
 
         repo_row = QHBoxLayout()
@@ -91,7 +91,7 @@ class ToolbarController:
         self.main.repo_combo = QComboBox(repo_surface)
         self.main.repo_combo.setObjectName('repoComboBox')
         self.main.repo_combo.setEditable(True)
-        self.main.repo_combo.setMinimumWidth(400)
+        self.main.repo_combo.setMinimumWidth(360)
         self.main.repo_combo.addItems(self.main.backend.settings.get('recent_repos', []))
         self.main.repo_combo.setCurrentText(self.main._repo_path)
         repo_row.addWidget(self.main.repo_combo, 1)
@@ -111,8 +111,8 @@ class ToolbarController:
 
         nav_surface = self._create_surface('workspaceNavSurface')
         nav_layout = QVBoxLayout(nav_surface)
-        nav_layout.setContentsMargins(14, 12, 14, 12)
-        nav_layout.setSpacing(7)
+        nav_layout.setContentsMargins(12, 10, 12, 10)
+        nav_layout.setSpacing(6)
         nav_layout.addWidget(self._build_section_caption('NAVIGATION', parent=nav_surface))
 
         nav_row = QHBoxLayout()
@@ -162,8 +162,8 @@ class ToolbarController:
 
         skin_surface = self._create_surface('workspaceSkinSurface')
         skin_layout = QVBoxLayout(skin_surface)
-        skin_layout.setContentsMargins(14, 12, 14, 12)
-        skin_layout.setSpacing(7)
+        skin_layout.setContentsMargins(12, 10, 12, 10)
+        skin_layout.setSpacing(6)
         skin_layout.addWidget(self._build_section_caption('VISUAL SKIN', parent=skin_surface))
 
         self.main.skin_combo = QComboBox(skin_surface)
@@ -190,8 +190,8 @@ class ToolbarController:
 
         search_surface = self._create_surface('commandDeckSurface', role='toolbar-surface', tier='premium')
         search_layout = QVBoxLayout(search_surface)
-        search_layout.setContentsMargins(14, 12, 14, 12)
-        search_layout.setSpacing(7)
+        search_layout.setContentsMargins(12, 10, 12, 10)
+        search_layout.setSpacing(6)
         search_layout.addWidget(self._build_section_caption('SEARCH DECK', parent=search_surface))
 
         search_row = QHBoxLayout()
@@ -201,7 +201,7 @@ class ToolbarController:
         self.main.search_box = QLineEdit(search_surface)
         self.main.search_box.setObjectName('heroSearchBox')
         self.main.search_box.setPlaceholderText('Search files, symbols, paths, imports, snippets...')
-        self.main.search_box.setMinimumWidth(410)
+        self.main.search_box.setMinimumWidth(360)
         self.main.search_box.returnPressed.connect(self.main.start_search)
         search_row.addWidget(self.main.search_box, 1)
 
@@ -215,8 +215,8 @@ class ToolbarController:
 
         filters_surface = self._create_surface('commandFiltersSurface')
         filters_layout = QVBoxLayout(filters_surface)
-        filters_layout.setContentsMargins(14, 12, 14, 12)
-        filters_layout.setSpacing(7)
+        filters_layout.setContentsMargins(12, 10, 12, 10)
+        filters_layout.setSpacing(6)
         filters_layout.addWidget(self._build_section_caption('SMART FILTERS', parent=filters_surface))
 
         filters_row = QHBoxLayout()
@@ -225,19 +225,19 @@ class ToolbarController:
 
         self.main.quick_filter_combo = QComboBox(filters_surface)
         self.main.quick_filter_combo.setObjectName('quickFilterComboBox')
-        self.main.quick_filter_combo.setMinimumWidth(210)
+        self.main.quick_filter_combo.setMinimumWidth(190)
         self.main.quick_filter_combo.currentIndexChanged.connect(self.main.on_quick_filter_selected)
         filters_row.addWidget(self.main.quick_filter_combo)
 
         self.main.ext_combo = QComboBox(filters_surface)
         self.main.ext_combo.setObjectName('extComboBox')
-        self.main.ext_combo.setMinimumWidth(140)
+        self.main.ext_combo.setMinimumWidth(128)
         self.main.ext_combo.currentIndexChanged.connect(self.main.on_filter_inputs_changed)
         filters_row.addWidget(self.main.ext_combo)
 
         self.main.sort_combo = QComboBox(filters_surface)
         self.main.sort_combo.setObjectName('sortComboBox')
-        self.main.sort_combo.setMinimumWidth(130)
+        self.main.sort_combo.setMinimumWidth(120)
         self.main.sort_combo.addItems(['path', 'modified', 'size', 'ext'])
         filters_row.addWidget(self.main.sort_combo)
 
@@ -246,8 +246,8 @@ class ToolbarController:
 
         layout_surface = self._create_surface('commandLayoutSurface')
         layout_layout = QVBoxLayout(layout_surface)
-        layout_layout.setContentsMargins(14, 12, 14, 12)
-        layout_layout.setSpacing(7)
+        layout_layout.setContentsMargins(12, 10, 12, 10)
+        layout_layout.setSpacing(6)
         layout_layout.addWidget(self._build_section_caption('LAYOUT MODES', parent=layout_surface))
 
         layout_row = QHBoxLayout()

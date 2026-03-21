@@ -192,7 +192,48 @@ GRAPHITE_LUXE = SkinTokens(
     code_line="#141d2a",
 )
 
+ALABASTER_GLASS = SkinTokens(
+    name="alabaster_glass",
+    display_name="Alabaster Glass",
+    bg="#f1f4f8",
+    bg_alt="#e8eef5",
+    bg_elevated="#fcfeff",
+    panel="#f9fcff",
+    panel_alt="#eef4fb",
+    panel_hover="#e4edf8",
+    panel_active="#dbe7f4",
+    text="#182433",
+    text_muted="#465a72",
+    text_soft="#6c8098",
+    accent="#536f90",
+    accent_hover="#617fa3",
+    accent_pressed="#446181",
+    accent_soft="#d5e1ef",
+    accent_glow="#536f9026",
+    success="#2f8b67",
+    warning="#9a6f2b",
+    danger="#af4d58",
+    border="#c7d3e3",
+    border_soft="#d8e0ec",
+    border_strong="#adbed4",
+    bevel_light="#ffffffe6",
+    bevel_shadow="#8da0b53d",
+    shadow="#1b2b3a1f",
+    selection="#d7e4f3",
+    focus_ring="#536f9056",
+    toolbar_bg="#f3f7fc",
+    dock_title_bg="#e9f0f8",
+    menu_bg="#fbfdff",
+    scrollbar="#a5b6ca",
+    scrollbar_hover="#6d87a5",
+    splitter="#c0cedf",
+    code_bg="#e5edf7",
+    code_text="#1f2f43",
+    code_line="#d0dceb",
+)
+
 SKINS: dict[str, SkinTokens] = {
+    ALABASTER_GLASS.name: ALABASTER_GLASS,
     GRAPHITE_LUXE.name: GRAPHITE_LUXE,
     ORANGE_EMBER.name: ORANGE_EMBER,
     CYAN_NOIR.name: CYAN_NOIR,
@@ -257,6 +298,13 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
     panel_hover_soft = _hex_rgba(tokens.panel_hover, 215)
     splitter_soft = _hex_rgba(tokens.splitter, 220)
     menu_bg = _hex_rgba(tokens.menu_bg, 244)
+    chrome_border = _hex_rgba(tokens.border, 198)
+    accent_line = _hex_rgba(tokens.accent, 78)
+    glass_bg = _hex_rgba(tokens.bg_elevated, 242)
+    muted_panel = _hex_rgba(tokens.panel_alt, 232)
+    tree_hover = _hex_rgba(tokens.panel_hover, 230)
+    tree_selection = _hex_rgba(tokens.selection, 242)
+    header_bg = _hex_rgba(tokens.panel_alt, 246)
     return f"""
     QWidget {{
         background: {tokens.bg};
@@ -282,28 +330,36 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
     }}
 
     QMenuBar {{
-        background: {tokens.toolbar_bg};
+        background: qlineargradient(
+            x1:0, y1:0, x2:0, y2:1,
+            stop:0 {tokens.toolbar_bg},
+            stop:0.62 {tokens.bg_alt},
+            stop:1 {tokens.bg}
+        );
         border: none;
-        border-bottom: 1px solid {soft_border};
-        padding: 5px 10px 6px 10px;
+        border-bottom: 1px solid {chrome_border};
+        padding: 4px 10px 5px 10px;
         spacing: 4px;
     }}
 
     QMenuBar::item {{
-        padding: 6px 12px;
+        padding: 5px 11px;
         margin: 0 2px;
-        border-radius: 8px;
+        border: 1px solid transparent;
+        border-radius: 9px;
         background: transparent;
         color: {tokens.text_muted};
     }}
 
     QMenuBar::item:selected {{
-        background: {tokens.panel};
+        background: {glass_bg};
+        border: 1px solid {tokens.border_soft};
         color: {tokens.text};
     }}
 
     QMenuBar::item:pressed {{
         background: {tokens.panel_active};
+        border: 1px solid {accent_line};
         color: {tokens.text};
     }}
 
@@ -342,20 +398,23 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
         background: qlineargradient(
             x1:0, y1:0, x2:0, y2:1,
             stop:0 {tokens.toolbar_bg},
-            stop:1 {tokens.bg_alt}
+            stop:0.58 {tokens.bg_alt},
+            stop:1 {tokens.bg}
         );
-        border-bottom: 1px solid {tokens.border_soft};
-        padding: 12px 14px 10px 14px;
+        border-top: 1px solid {tokens.bevel_light};
+        border-bottom: 1px solid {chrome_border};
+        padding: 9px 12px 8px 12px;
     }}
 
     QToolBar#CommandToolbar {{
         background: qlineargradient(
             x1:0, y1:0, x2:0, y2:1,
             stop:0 {tokens.bg_alt},
+            stop:0.52 {tokens.bg},
             stop:1 {tokens.bg}
         );
-        border-bottom: 1px solid {tokens.border};
-        padding: 8px 14px 12px 14px;
+        border-bottom: 1px solid {chrome_border};
+        padding: 7px 12px 9px 12px;
     }}
 
     QToolBar#SvgToolbar {{
@@ -386,11 +445,18 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
     QWidget#fileInspectorSurface {{
         background: qlineargradient(
             x1:0, y1:0, x2:0, y2:1,
-            stop:0 {tokens.panel},
+            stop:0 {glass_bg},
+            stop:0.48 {tokens.panel},
             stop:1 {tokens.panel_alt}
         );
-        border: 1px solid {tokens.border};
-        border-radius: 14px;
+        border: 1px solid {chrome_border};
+        border-top: 1px solid {tokens.bevel_light};
+        border-radius: 13px;
+    }}
+
+    QFrame#workspaceHeroSurface,
+    QFrame#commandDeckSurface {{
+        border: 1px solid {tokens.border_strong};
     }}
 
     QFrame#panelCard:hover,
@@ -460,8 +526,23 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
     }}
 
     QLineEdit#treeFilterSurface {{
+        background: qlineargradient(
+            x1:0, y1:0, x2:0, y2:1,
+            stop:0 {glass_bg},
+            stop:1 {tokens.panel}
+        );
+        border: 1px solid {tokens.border};
+        border-radius: 11px;
+        padding: 7px 11px;
+    }}
+
+    QLineEdit#treeFilterSurface:hover {{
+        border: 1px solid {tokens.border_strong};
+    }}
+
+    QLineEdit#treeFilterSurface:focus {{
+        border: 1px solid {tokens.accent};
         background: {tokens.bg_elevated};
-        border: 1px solid {tokens.border_soft};
     }}
 
     QComboBox::drop-down {{
@@ -536,6 +617,36 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
         border-radius: 11px;
     }}
 
+    QTreeView#repoTreeSurface {{
+        background: qlineargradient(
+            x1:0, y1:0, x2:0, y2:1,
+            stop:0 {glass_bg},
+            stop:1 {tokens.panel_alt}
+        );
+        alternate-background-color: {muted_panel};
+        border: 1px solid {tokens.border_strong};
+        border-radius: 12px;
+        padding: 4px 3px 4px 3px;
+        outline: 0;
+    }}
+
+    QTreeView#repoTreeSurface::item {{
+        padding: 7px 8px;
+        margin: 1px 4px;
+        border-radius: 7px;
+    }}
+
+    QTreeView#repoTreeSurface::item:hover {{
+        background: {tree_hover};
+    }}
+
+    QTreeView#repoTreeSurface::item:selected {{
+        background: {tree_selection};
+        color: {tokens.text};
+        border-left: 3px solid {tokens.accent};
+        border-right: 1px solid {soft_border};
+    }}
+
     QTreeView::item,
     QTableView::item,
     QListWidget::item {{
@@ -559,13 +670,27 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
     }}
 
     QHeaderView::section {{
-        background: {tokens.panel_alt};
+        background: {header_bg};
         color: {tokens.text_muted};
         border: none;
         border-bottom: 1px solid {tokens.border_soft};
         border-right: 1px solid {tokens.border_soft};
         padding: 8px 10px;
         font-weight: 600;
+    }}
+
+    QHeaderView#repoTreeHeaderSurface::section {{
+        background: qlineargradient(
+            x1:0, y1:0, x2:0, y2:1,
+            stop:0 {glass_bg},
+            stop:1 {tokens.panel_alt}
+        );
+        color: {tokens.text_soft};
+        border: none;
+        border-bottom: 1px solid {tokens.border_soft};
+        padding: 8px 10px 8px 10px;
+        font-size: 8.6pt;
+        font-weight: 700;
     }}
 
     QTableCornerButton::section {{
@@ -628,11 +753,15 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
 
     QDockWidget::title {{
         text-align: left;
-        background: {tokens.dock_title_bg};
+        background: qlineargradient(
+            x1:0, y1:0, x2:0, y2:1,
+            stop:0 {tokens.dock_title_bg},
+            stop:1 {tokens.toolbar_bg}
+        );
         color: {tokens.text};
         border-top: 1px solid {tokens.bevel_light};
-        border-bottom: 1px solid {tokens.border};
-        padding: 9px 13px;
+        border-bottom: 1px solid {chrome_border};
+        padding: 8px 12px;
     }}
 
     QDockWidget::close-button,
@@ -679,21 +808,22 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
     QScrollBar:horizontal {{
         background: transparent;
         border: none;
-        margin: 2px;
+        margin: 1px;
     }}
 
     QScrollBar:vertical {{
-        width: 11px;
+        width: 10px;
     }}
 
     QScrollBar:horizontal {{
-        height: 11px;
+        height: 10px;
     }}
 
     QScrollBar::handle:vertical,
     QScrollBar::handle:horizontal {{
         background: {tokens.scrollbar};
-        border-radius: 5px;
+        border-radius: 4px;
+        border: 1px solid {soft_border};
         min-width: 24px;
         min-height: 24px;
     }}
@@ -726,9 +856,25 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
         height: 3px;
     }}
 
+    QTreeView#repoTreeSurface QScrollBar:vertical {{
+        margin: 5px 2px 5px 0;
+    }}
+
+    QTreeView#repoTreeSurface QScrollBar::handle:vertical {{
+        background: {tokens.scrollbar};
+        border: 1px solid {tokens.border_soft};
+        border-radius: 4px;
+        min-height: 22px;
+    }}
+
+    QTreeView#repoTreeSurface QScrollBar::handle:vertical:hover {{
+        background: {tokens.scrollbar_hover};
+        border: 1px solid {accent_line};
+    }}
+
     QLabel#heroTitleLabel {{
         color: {tokens.text};
-        font-size: 16pt;
+        font-size: 14.8pt;
         font-weight: 700;
     }}
 
@@ -739,14 +885,14 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
     QLabel#svgHintLabel,
     QLabel#secondaryMetaLabel {{
         color: {tokens.text_muted};
-        font-size: 9.3pt;
+        font-size: 9pt;
     }}
 
     QLabel#toolbarSectionCaption {{
         color: {tokens.text_soft};
-        font-size: 8.2pt;
+        font-size: 8pt;
         font-weight: 700;
-        letter-spacing: 0.8px;
+        letter-spacing: 1.0px;
         padding-left: 2px;
     }}
 
@@ -758,8 +904,8 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
         color: {tokens.accent_hover};
         border: 1px solid {tokens.border_strong};
         border-radius: 999px;
-        padding: 3px 10px;
-        font-size: 8.7pt;
+        padding: 2px 9px;
+        font-size: 8.1pt;
         font-weight: 700;
     }}
 
@@ -771,7 +917,7 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
 
     QLabel#accentValueLabel {{
         color: {tokens.accent_hover};
-        font-size: 17pt;
+        font-size: 16pt;
         font-weight: 700;
     }}
 
@@ -793,9 +939,14 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
     }}
 
     QFrame#accentBar {{
-        background: {tokens.accent};
+        background: qlineargradient(
+            x1:0, y1:0, x2:1, y2:0,
+            stop:0 {accent_line},
+            stop:0.6 {tokens.accent},
+            stop:1 {tokens.accent_hover}
+        );
         border: none;
-        border-radius: 3px;
+        border-radius: 2px;
     }}
     """
 
