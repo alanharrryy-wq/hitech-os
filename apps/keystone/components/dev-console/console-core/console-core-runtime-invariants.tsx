@@ -59,9 +59,12 @@ export function ConsoleCoreRuntimeInvariants() {
       }
     };
 
-    check();
+    const firstCheckTimer = window.setTimeout(check, 0);
     const timer = window.setInterval(check, RUNTIME_ASSERTION_INTERVAL_MS);
-    return () => window.clearInterval(timer);
+    return () => {
+      window.clearTimeout(firstCheckTimer);
+      window.clearInterval(timer);
+    };
   }, [devConsole]);
 
   return null;
