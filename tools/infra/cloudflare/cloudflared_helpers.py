@@ -19,7 +19,9 @@ from typing import Any, Sequence
 DEFAULT_REPO_ROOT = Path(r"F:\repos\hitech-os")
 DEFAULT_TUNNEL_NAME = "engine"
 DEFAULT_HOSTNAME = "engine.hitechrts.com"
-DEFAULT_ORIGIN_URL = "http://localhost:3000"
+DEFAULT_ORIGIN_HOST = "127.0.0.1"
+DEFAULT_ORIGIN_PORT = 3100
+DEFAULT_ORIGIN_URL = f"http://{DEFAULT_ORIGIN_HOST}:{DEFAULT_ORIGIN_PORT}"
 DEFAULT_CLOUDFLARED_DIR = Path(r"C:\Users\alanh\.cloudflared")
 DEFAULT_CONFIG_PATH = DEFAULT_CLOUDFLARED_DIR / "config.yml"
 DEFAULT_LOG_DIR = DEFAULT_REPO_ROOT / "logs" / "cloudflare"
@@ -321,6 +323,41 @@ def origin_reachable(url: str, timeout_seconds: int = 4) -> tuple[bool, int | No
         return False, None, str(err)
 
 
+def public_endpoint_status(
+    url: str,
+    *,
+    timeout_seconds: int = 8,
+    retries: int = 2,
+    retry_delay_seconds: float = 1.5,
+) -> tuple[bool, int | None, str | None]:
+    last_error: str | None = None
+    status_code: int | None = None
+    attempts = max(1, retries)
+    for attempt in range(1, attempts + 1):
+        request = urllib.request.Request(
+            url,
+            method="GET",
+            headers={
+                "User-Agent": "hitech-cloudflare-validate/1.0",
+                "Accept": "text/html,application/json,*/*;q=0.9",
+            },
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=timeout_seconds) as response:
+                return True, int(response.status), None
+        except urllib.error.HTTPError as err:
+            status_code = int(err.code)
+            last_error = str(err)
+            # HTTP-level failure still means edge was reached.
+            return True, status_code, last_error
+        except Exception as err:  # noqa: BLE001
+            last_error = str(err)
+            if attempt < attempts:
+                time.sleep(retry_delay_seconds)
+
+    return False, status_code, last_error
+
+
 def is_windows_admin() -> bool:
     if os.name != "nt":
         return False
@@ -372,7 +409,8 @@ def service_status_snapshot() -> dict[str, Any]:
             "} else { "
             "$c = Get-CimInstance Win32_Service -Filter \"Name='cloudflared'\"; "
             "@{installed=$true; service_name='cloudflared'; status=$svc.Status.ToString(); "
-            "start_mode=$c.StartMode; state=$c.State; path_name=$c.PathName} | ConvertTo-Json -Compress }"
+            "start_mode=$c.StartMode; state=$c.State; path_name=$c.PathName; "
+            "start_name=$c.StartName; process_id=$c.ProcessId} | ConvertTo-Json -Compress }"
         ),
     ]
     result = run_cmd(cmd, timeout=60)
@@ -384,6 +422,8 @@ def service_status_snapshot() -> dict[str, Any]:
             "start_mode": "Unknown",
             "state": "Unknown",
             "path_name": "",
+            "start_name": "",
+            "process_id": 0,
         }
     try:
         payload = json.loads(result.stdout)
@@ -398,5 +438,6 @@ def service_status_snapshot() -> dict[str, Any]:
         "start_mode": "Unknown",
         "state": "Unknown",
         "path_name": "",
+        "start_name": "",
+        "process_id": 0,
     }
-

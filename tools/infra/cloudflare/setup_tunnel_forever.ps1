@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
-  [switch]$GuardOnly
+  [switch]$GuardOnly,
+  [string]$OriginUrl = $(if ($env:HITECH_CLOUDFLARE_ORIGIN_URL) { $env:HITECH_CLOUDFLARE_ORIGIN_URL } else { "http://127.0.0.1:3100" })
 )
 
 Set-StrictMode -Version Latest
@@ -9,7 +10,6 @@ $ErrorActionPreference = "Stop"
 $RepoRoot = "F:\repos\hitech-os"
 $TunnelName = "engine"
 $Hostname = "engine.hitechrts.com"
-$OriginUrl = "http://localhost:3000"
 $LogDir = Join-Path $RepoRoot "logs\cloudflare"
 $InfraDir = Join-Path $RepoRoot "tools\infra\cloudflare"
 $TunnelForeverPy = Join-Path $InfraDir "tunnel_forever.py"
@@ -48,6 +48,9 @@ if (-not (Test-Path -LiteralPath $TunnelForeverPy)) {
 }
 if (-not (Test-Path -LiteralPath $ValidatePy)) {
   Fail-AndExit "Validation script not found: $ValidatePy"
+}
+if ([string]::IsNullOrWhiteSpace($OriginUrl)) {
+  Fail-AndExit "OriginUrl cannot be empty. Use -OriginUrl or env HITECH_CLOUDFLARE_ORIGIN_URL."
 }
 
 $pythonCmd = Get-Command python -ErrorAction SilentlyContinue
@@ -97,6 +100,15 @@ Write-MagentaProgress -Id 1 -Activity "Cloudflare Industrial Setup" -Status "Run
   --json-out $validateJsonPath
 $validateExit = $LASTEXITCODE
 
+$validateJson = @{}
+if (Test-Path -LiteralPath $validateJsonPath) {
+  try {
+    $validateJson = Get-Content -LiteralPath $validateJsonPath -Raw | ConvertFrom-Json -ErrorAction Stop
+  } catch {
+    $validateJson = @{}
+  }
+}
+
 Write-MagentaProgress -Id 1 -Activity "Cloudflare Industrial Setup" -Status "Checking DNS route list" -Percent 75
 $dnsOutput = (& cloudflared tunnel route dns list --tunnel $TunnelName 2>&1 | Out-String).Trim()
 $dnsExit = $LASTEXITCODE
@@ -121,14 +133,57 @@ $taskOutputLower = $taskOutput.ToLowerInvariant()
 $taskAccessDenied = ($taskOutputLower -match "acceso denegado") -or ($taskOutputLower -match "access is denied")
 $taskInstalled = ($taskExit -eq 0) -or $taskAccessDenied
 
+$publicTaskOutput = (& schtasks /Query /TN "HITECH-Cloudflared-PublicHealth" /V /FO LIST 2>&1 | Out-String).Trim()
+$publicTaskExit = $LASTEXITCODE
+$publicTaskOutputLower = $publicTaskOutput.ToLowerInvariant()
+$publicTaskAccessDenied = ($publicTaskOutputLower -match "acceso denegado") -or ($publicTaskOutputLower -match "access is denied")
+$publicTaskInstalled = ($publicTaskExit -eq 0) -or $publicTaskAccessDenied
+
+$publicUrl = "https://$Hostname"
+$localOriginHealthy = $false
+$tunnelConnected = $false
+$publicHostnameHealthy = $false
+$publicStatusCode = "unknown"
+if ($validateJson -and ($validateJson.PSObject.Properties.Name -contains "public_url")) {
+  $publicUrl = [string]$validateJson.public_url
+}
+if ($validateJson -and ($validateJson.PSObject.Properties.Name -contains "local_origin_healthy")) {
+  $localOriginHealthy = [bool]$validateJson.local_origin_healthy
+}
+if ($validateJson -and ($validateJson.PSObject.Properties.Name -contains "tunnel_connected")) {
+  $tunnelConnected = [bool]$validateJson.tunnel_connected
+}
+if ($validateJson -and ($validateJson.PSObject.Properties.Name -contains "public_hostname_healthy")) {
+  $publicHostnameHealthy = [bool]$validateJson.public_hostname_healthy
+}
+if ($validateJson -and ($validateJson.PSObject.Properties.Name -contains "public_status_code")) {
+  $publicStatusCode = [string]$validateJson.public_status_code
+}
+
 $status = "PASS"
-if ($coreExit -ne 0 -or $validateExit -ne 0 -or $dnsExit -ne 0 -or -not $serviceInstalled -or $serviceStatus -ne "Running" -or -not $taskInstalled) {
+if (
+  $coreExit -ne 0 `
+  -or $validateExit -ne 0 `
+  -or $dnsExit -ne 0 `
+  -or -not $serviceInstalled `
+  -or $serviceStatus -ne "Running" `
+  -or -not $taskInstalled `
+  -or -not $publicTaskInstalled `
+  -or -not $localOriginHealthy `
+  -or -not $tunnelConnected `
+  -or -not $publicHostnameHealthy
+) {
   $status = "FAIL"
 }
 
 $hostnameRouteStatus = if ($dnsOutput -match [regex]::Escape($Hostname) -or $dnsOutput -match "already configured") { "BOUND" } else { "MISSING" }
 $watchdogStatus = if ($taskInstalled) {
   if ($taskAccessDenied -and $taskExit -ne 0) { "INSTALLED (QUERY RESTRICTED)" } else { "INSTALLED" }
+} else {
+  "MISSING"
+}
+$publicWatchdogStatus = if ($publicTaskInstalled) {
+  if ($publicTaskAccessDenied -and $publicTaskExit -ne 0) { "INSTALLED (QUERY RESTRICTED)" } else { "INSTALLED" }
 } else {
   "MISSING"
 }
@@ -142,6 +197,7 @@ GuardOnly: $GuardOnly
 
 Tunnel Name: $TunnelName
 Hostname: $Hostname
+Public URL: $publicUrl
 Origin URL: $OriginUrl
 
 Core Exit Code: $coreExit
@@ -152,6 +208,11 @@ Tunnel UUID: (see $validateJsonPath)
 Hostname Route Status: $hostnameRouteStatus
 Service Status: $serviceStatus
 Watchdog Task Status: $watchdogStatus
+Public Health Task Status: $publicWatchdogStatus
+Local Origin Healthy: $localOriginHealthy
+Tunnel Connected: $tunnelConnected
+Public Hostname Healthy (2xx/3xx): $publicHostnameHealthy
+Public Status Code: $publicStatusCode
 
 Log Directory: $LogDir
 Validation JSON: $validateJsonPath
@@ -165,20 +226,14 @@ $serviceOutput
 
 --- WATCHDOG TASK ---
 $taskOutput
+
+--- PUBLIC HEALTH TASK ---
+$publicTaskOutput
 "@
 $report | Set-Content -Path $FinalReportPath -Encoding UTF8
 
 Write-MagentaProgress -Id 1 -Activity "Cloudflare Industrial Setup" -Status "Completed" -Percent 100
 Write-Progress -Id 1 -Activity "Cloudflare Industrial Setup" -Completed
-
-$validateJson = @{}
-if (Test-Path -LiteralPath $validateJsonPath) {
-  try {
-    $validateJson = Get-Content -LiteralPath $validateJsonPath -Raw | ConvertFrom-Json -ErrorAction Stop
-  } catch {
-    $validateJson = @{}
-  }
-}
 
 if ($validateJson -and ($validateJson.PSObject.Properties.Name -contains "hostname_bound")) {
   if ([bool]$validateJson.hostname_bound) {
@@ -201,10 +256,13 @@ Write-Host ("Tunnel UUID: {0}" -f $tunnelUuidOut)
 Write-Host ("Hostname route status: {0}" -f $hostnameRouteStatus)
 Write-Host ("Service status: {0}" -f $serviceStatus)
 Write-Host ("Watchdog task status: {0}" -f $watchdogStatus)
+Write-Host ("Public health task status: {0}" -f $publicWatchdogStatus)
+Write-Host ("Origin healthy: {0}" -f $localOriginHealthy)
+Write-Host ("Tunnel connected: {0}" -f $tunnelConnected)
+Write-Host ("Public hostname healthy: {0} (status={1})" -f $publicHostnameHealthy, $publicStatusCode)
 Write-Host ("Logs stored at: {0}" -f $LogDir)
 
 if ($status -ne "PASS") {
   exit 2
 }
 exit 0
-

@@ -28,12 +28,21 @@ from ensure_config import ensure_tunnel_config
 from ensure_origin import ensure_keystone_origin
 from ensure_service import ensure_cloudflared_service, get_service_status, restart_cloudflared_service
 from ensure_watchdog import WATCHDOG_TASK_NAME, ensure_watchdog_task, inspect_watchdog_task
+from ensure_public_watchdog import (
+    PUBLIC_HEALTH_TASK_NAME,
+    ensure_public_health_task,
+    inspect_public_health_task,
+)
 from fix_dns import ensure_dns_binding
 from validate_tunnel import validate_tunnel_state
 
 
 def _default_report_path(repo_root: Path) -> Path:
     return repo_root / "tools" / "infra" / "cloudflare" / "FINAL_REPORT.txt"
+
+
+def _public_url(hostname: str) -> str:
+    return f"https://{hostname}"
 
 
 def _build_report_text(
@@ -47,6 +56,8 @@ def _build_report_text(
     ingress_ok: bool,
     service_status: dict[str, Any],
     watchdog_status: dict[str, Any],
+    public_watchdog_status: dict[str, Any],
+    validation_payload: dict[str, Any],
     validation_path: Path,
     setup_log_path: Path,
     actions_log_path: Path,
@@ -62,18 +73,31 @@ def _build_report_text(
         f"Tunnel Name: {tunnel_name}\n"
         f"Tunnel UUID: {tunnel_uuid}\n"
         f"Hostname: {hostname}\n"
+        f"Public URL: {validation_payload.get('public_url', _public_url(hostname))}\n"
         f"Hostname Route Bound: {dns_status}\n"
         f"Ingress OK: {ingress_ok}\n"
+        f"Tunnel Connected: {validation_payload.get('tunnel_connected', False)}\n"
+        f"Origin Healthy: {validation_payload.get('local_origin_healthy', False)}\n"
+        f"Public Hostname Healthy (2xx/3xx): {validation_payload.get('public_hostname_healthy', False)}\n"
+        f"Public Status Code: {validation_payload.get('public_status_code', 'n/a')}\n"
         "\n"
         f"Service Installed: {service_status.get('installed', False)}\n"
         f"Service Running: {str(service_status.get('status', '')).lower() == 'running' or str(service_status.get('state', '')).lower() == 'running'}\n"
         f"Service Start Mode: {service_status.get('start_mode', 'Unknown')}\n"
+        f"Service Account: {service_status.get('start_name', 'Unknown')}\n"
+        f"Service ImagePath: {service_status.get('path_name', '')}\n"
         "\n"
         f"Watchdog Task: {watchdog_status.get('task_name', WATCHDOG_TASK_NAME)}\n"
         f"Watchdog Installed: {watchdog_status.get('installed', False)}\n"
         f"Watchdog Command OK: {watchdog_status.get('command_ok', False)}\n"
         f"Watchdog Schedule OK (PT5M): {watchdog_status.get('schedule_ok', False)}\n"
         f"Watchdog Enabled: {watchdog_status.get('enabled', False)}\n"
+        "\n"
+        f"Public Health Task: {public_watchdog_status.get('task_name', PUBLIC_HEALTH_TASK_NAME)}\n"
+        f"Public Health Task Installed: {public_watchdog_status.get('installed', False)}\n"
+        f"Public Health Command OK: {public_watchdog_status.get('command_ok', False)}\n"
+        f"Public Health Schedule OK (PT5M): {public_watchdog_status.get('schedule_ok', False)}\n"
+        f"Public Health Enabled: {public_watchdog_status.get('enabled', False)}\n"
         "\n"
         "Log Paths\n"
         "---------\n"
@@ -204,6 +228,12 @@ def run_full_setup(
         repo_root=repo_root,
         allow_elevation=True,
     )
+    public_watchdog_result = ensure_public_health_task(
+        ctx,
+        task_name=PUBLIC_HEALTH_TASK_NAME,
+        repo_root=repo_root,
+        allow_elevation=True,
+    )
     origin_result = ensure_keystone_origin(
         ctx,
         repo_root=repo_root,
@@ -214,14 +244,53 @@ def run_full_setup(
         launch_cooldown_seconds=120,
     )
 
+    public_url = _public_url(hostname)
     validation_payload, critical_ok = validate_tunnel_state(
         ctx,
         tunnel_name=tunnel_name,
         hostname=hostname,
+        public_url=public_url,
         origin_url=origin_url,
         config_path=config_path,
         cloudflared_dir=cloudflared_dir,
     )
+    force_reinstall_applied = False
+    likely_service_mode_drift = bool(
+        validation_payload.get("hostname_bound", False)
+        and validation_payload.get("ingress_ok", False)
+        and validation_payload.get("service_installed", False)
+        and validation_payload.get("service_running", False)
+        and validation_payload.get("tunnel_connected", False)
+        and validation_payload.get("local_origin_healthy", False)
+        and not validation_payload.get("public_hostname_healthy", False)
+    )
+    if not critical_ok and likely_service_mode_drift:
+        ctx.action(
+            "service_mode_drift_detected",
+            "warning",
+            {
+                "public_status_code": validation_payload.get("public_status_code"),
+                "service_path_name": validation_payload.get("service_path_name"),
+            },
+        )
+        service_result = ensure_cloudflared_service(
+            ctx,
+            tunnel_name=tunnel_name,
+            config_path=config_path,
+            allow_elevation=True,
+            force_reinstall=True,
+        )
+        force_reinstall_applied = True
+        validation_payload, critical_ok = validate_tunnel_state(
+            ctx,
+            tunnel_name=tunnel_name,
+            hostname=hostname,
+            public_url=public_url,
+            origin_url=origin_url,
+            config_path=config_path,
+            cloudflared_dir=cloudflared_dir,
+        )
+    validation_payload["service_force_reinstall_applied"] = force_reinstall_applied
     write_json(validate_json_out, validation_payload)
 
     dns_list_after = cloudflared(ctx, ["tunnel", "route", "dns", "list", "--tunnel", tunnel_name], timeout=180)
@@ -231,6 +300,7 @@ def run_full_setup(
             dns_list_after = cloudflared(ctx, ["tunnel", "route", "dns", tunnel_name, hostname], timeout=180)
     service_snapshot = get_service_status(ctx)
     watchdog_snapshot = inspect_watchdog_task(ctx, WATCHDOG_TASK_NAME, repo_root)
+    public_watchdog_snapshot = inspect_public_health_task(ctx, PUBLIC_HEALTH_TASK_NAME, repo_root)
 
     run_logged(
         ctx,
@@ -249,6 +319,8 @@ def run_full_setup(
         ingress_ok=bool(validation_payload.get("ingress_ok", False)),
         service_status=service_snapshot,
         watchdog_status=watchdog_snapshot,
+        public_watchdog_status=public_watchdog_snapshot,
+        validation_payload=validation_payload,
         validation_path=validate_json_out,
         setup_log_path=ctx.setup_log_path,
         actions_log_path=ctx.actions_log_path,
@@ -272,11 +344,14 @@ def run_full_setup(
         "config_result": config_result,
         "service_result": service_result,
         "watchdog_result": watchdog_result,
+        "public_watchdog_result": public_watchdog_result,
         "origin_result": origin_result,
         "validation": validation_payload,
+        "service_force_reinstall_applied": force_reinstall_applied,
         "dns_list_stdout": dns_list_after.stdout,
         "service_snapshot": service_snapshot,
         "watchdog_snapshot": watchdog_snapshot,
+        "public_watchdog_snapshot": public_watchdog_snapshot,
         "validate_json_out": str(validate_json_out),
         "final_report_path": str(final_report_path),
     }

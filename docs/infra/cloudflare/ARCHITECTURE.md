@@ -22,8 +22,10 @@ Provide a permanent, self-healing setup that prevents Cloudflare Error 1033 by e
   - Ensure DNS route
   - Ensure config
   - Ensure service (auto-elevate if needed)
-  - Ensure watchdog task (auto-elevate if needed)
-  - Validate full state and persist JSON
+  - Ensure watchdog task (connection guard, auto-elevate if needed)
+  - Ensure public-health task (public edge alerts, auto-elevate if needed)
+  - Validate full state (local origin + tunnel connection + public edge) and persist JSON
+  - If service-mode drift pattern is detected (`local/tunnel OK` + `public FAIL`), force-reinstall service and re-validate once
 - Guard mode:
   - Check active tunnel connections
   - Restart service on unhealthy state with cooldown guard
@@ -33,11 +35,18 @@ Provide a permanent, self-healing setup that prevents Cloudflare Error 1033 by e
 - `ensure_config.py`
 - `ensure_service.py`
 - `ensure_watchdog.py`
+- `ensure_public_watchdog.py`
 - `validate_tunnel.py`
+  - Distinguishes:
+    - local origin healthy
+    - tunnel connected
+    - public hostname healthy (`2xx/3xx`)
+  - Fails critical status when public endpoint is still unhealthy
 
 4. Shared runtime
 - `cloudflared_helpers.py` (logging, command execution, parsing, admin elevation)
-- `ensure_origin.py` (ensures Keystone origin process on `localhost:3000`)
+- `ensure_origin.py` (ensures Keystone origin process on `127.0.0.1:3100`)
+- `public_health_probe.ps1` (scheduled public endpoint health probe + alerting)
 
 ## Idempotency Model
 
@@ -45,6 +54,7 @@ Provide a permanent, self-healing setup that prevents Cloudflare Error 1033 by e
 - Config rewrite only when values/ingress do not match required state.
 - Service install only when service is missing.
 - Startup mode/service running repaired only when drift is detected.
+- Service command (`ImagePath`) is normalized to canonical tunnel-run invocation to minimize service-vs-foreground drift.
 - Watchdog task updated in place (`/F`) under the same task name.
 
 ## Storage

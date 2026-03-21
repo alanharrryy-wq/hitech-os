@@ -58,7 +58,7 @@ Checklist:
 2. `ingress_ok` is `true`.
 3. Service is installed and running.
 4. `connections_count > 0`.
-5. `origin_reachable` is `true` for `http://localhost:3000`.
+5. `origin_reachable` is `true` for `http://127.0.0.1:3100`.
 
 If any fails, rerun full setup and inspect:
 
@@ -70,11 +70,36 @@ If any fails, rerun full setup and inspect:
 ## Symptom: 502 Bad Gateway (Host Error)
 
 Cause:
-- Keystone origin is down on `localhost:3000`.
+- Common case A: Keystone origin is down on `127.0.0.1:3100`.
+- Common case B: service-mode runtime drift (Windows service process differs from known-good foreground invocation), so edge requests fail while local checks can look healthy.
 
 Fix:
 1. Run full setup again (it auto-deploys origin):
    - `pwsh -NoProfile -ExecutionPolicy Bypass -File F:\repos\hitech-os\tools\infra\cloudflare\setup_tunnel_forever.ps1`
 2. Inspect origin runtime log:
    - `F:\repos\hitech-os\logs\cloudflare\keystone_origin_runtime.log`
+3. If local origin is healthy and tunnel has active connections but public endpoint still returns 502, force-reinstall service:
+   - `python F:\repos\hitech-os\tools\infra\cloudflare\ensure_service.py --apply --force-reinstall`
+4. Re-validate public edge explicitly:
+   - `python F:\repos\hitech-os\tools\infra\cloudflare\validate_tunnel.py --json-out F:\repos\hitech-os\logs\cloudflare\validate_manual.json`
 
+Expected validation signal after fix:
+- `local_origin_healthy: true`
+- `tunnel_connected: true`
+- `public_hostname_healthy: true` with `public_status_code` in `2xx/3xx`
+
+## Symptom: No alerts received when public endpoint fails
+
+Checklist:
+
+1. Public-health task exists and is enabled:
+   - `schtasks /Query /TN HITECH-Cloudflared-PublicHealth /V /FO LIST`
+2. Probe script can run manually:
+   - `pwsh -NoProfile -ExecutionPolicy Bypass -File F:\repos\hitech-os\tools\infra\cloudflare\public_health_probe.ps1`
+3. Probe output files update:
+   - `F:\repos\hitech-os\logs\cloudflare\public_health_probe_last.json`
+   - `F:\repos\hitech-os\logs\cloudflare\public_health_alert_state.json`
+4. Event log writes are allowed (`Application`):
+   - `Get-WinEvent -LogName Application -MaxEvents 50 | ? { $_.ProviderName -match 'HITECH-Cloudflare|EventCreate' }`
+5. If webhook is expected, verify env var:
+   - `$env:HITECH_CLOUDFLARE_ALERT_WEBHOOK`

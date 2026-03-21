@@ -58,6 +58,52 @@ def _status_has_tunnel_command(status: dict[str, Any], tunnel_name: str, config_
     )
 
 
+def _build_desired_image_path(cloudflared_exe: str, config_path: Path, tunnel_name: str) -> str:
+    return f'"{cloudflared_exe}" --config "{config_path}" tunnel run {tunnel_name}'
+
+
+def _normalize_cmdline(value: str) -> str:
+    collapsed = " ".join(str(value or "").strip().split())
+    return collapsed.lower().replace("/", "\\")
+
+
+def _status_matches_desired_image_path(status: dict[str, Any], desired_image_path: str) -> bool:
+    current = _normalize_cmdline(str(status.get("path_name", "") or ""))
+    expected = _normalize_cmdline(desired_image_path)
+    if not current or not expected:
+        return False
+    return current == expected
+
+
+def _build_apply_args(
+    *,
+    tunnel_name: str,
+    config_path: Path,
+    log_dir: Path,
+    run_id: str,
+    force_reinstall: bool,
+) -> list[str]:
+    args: list[str] = [
+        "--apply",
+        "--tunnel-name",
+        tunnel_name,
+        "--config-path",
+        str(config_path),
+    ]
+    if force_reinstall:
+        args.append("--force-reinstall")
+    args.extend(
+        [
+            "--log-dir",
+            str(log_dir),
+            "--run-id",
+            run_id,
+            "--no-elevate",
+        ]
+    )
+    return args
+
+
 def _status_is_transitional(status: dict[str, Any]) -> bool:
     text = f"{status.get('status', '')} {status.get('state', '')}".lower().replace(" ", "")
     return any(
@@ -94,6 +140,7 @@ def _apply_service_changes_local(
     tunnel_name: str,
     config_path: Path,
     status_before: dict[str, Any],
+    force_reinstall: bool = False,
 ) -> dict[str, Any]:
     if not config_path.exists():
         raise TunnelSetupError(
@@ -101,13 +148,40 @@ def _apply_service_changes_local(
         )
 
     changed = False
-    installed = bool(status_before.get("installed", False))
     cloudflared_exe = ensure_cloudflared_available(ctx)
+    desired_image_path = _build_desired_image_path(cloudflared_exe, config_path, tunnel_name)
+    installed = bool(status_before.get("installed", False))
 
     if installed and _status_is_transitional(status_before):
         _recover_transitional_service_state(ctx)
         changed = True
         status_before = get_service_status(ctx)
+
+    if installed and force_reinstall:
+        stop_before_uninstall = run_logged(
+            ctx,
+            ["powershell", "-NoProfile", "-Command", f"Stop-Service -Name '{SERVICE_NAME}' -Force -ErrorAction SilentlyContinue"],
+            timeout=120,
+            action_name="service_stop_before_reinstall",
+        )
+        if stop_before_uninstall.returncode != 0:
+            ctx.action(
+                "service_stop_before_reinstall",
+                "warning",
+                {"stderr": stop_before_uninstall.stderr.strip() or stop_before_uninstall.stdout.strip() or "n/a"},
+            )
+        uninstall = cloudflared(ctx, ["service", "uninstall"], timeout=240)
+        uninstall_combined = f"{uninstall.stdout}\n{uninstall.stderr}".lower()
+        if uninstall.returncode != 0 and "does not exist" not in uninstall_combined and "not found" not in uninstall_combined:
+            raise TunnelSetupError(
+                "cloudflared service uninstall failed during force-reinstall. "
+                f"stderr: {uninstall.stderr.strip() or uninstall.stdout.strip() or 'n/a'}"
+            )
+        changed = True
+        time.sleep(2)
+        status_before = get_service_status(ctx)
+        installed = bool(status_before.get("installed", False))
+
     if not installed:
         install = cloudflared(ctx, ["service", "install"], timeout=240)
         combined = f"{install.stdout}\n{install.stderr}".lower()
@@ -125,8 +199,16 @@ def _apply_service_changes_local(
             )
         status_before = recheck
 
-    if not _status_has_tunnel_command(status_before, tunnel_name, config_path):
-        desired_image_path = f'"{cloudflared_exe}" --config "{config_path}" tunnel run {tunnel_name}'
+    image_path_matches = _status_matches_desired_image_path(status_before, desired_image_path)
+    if not image_path_matches:
+        ctx.action(
+            "service_image_path_drift",
+            "warning",
+            {
+                "current_path_name": str(status_before.get("path_name", "")),
+                "desired_image_path": desired_image_path,
+            },
+        )
         set_path = run_logged(
             ctx,
             [
@@ -185,16 +267,26 @@ def _apply_service_changes_local(
         time.sleep(1)
 
     status_after = get_service_status(ctx)
+    image_path_matches_after = _status_matches_desired_image_path(status_after, desired_image_path)
     if (
         not bool(status_after.get("installed", False))
         or not _status_is_auto(status_after)
         or not _status_is_running(status_after)
         or not _status_has_tunnel_command(status_after, tunnel_name, config_path)
+        or not image_path_matches_after
     ):
         raise TunnelSetupError(
             f"{SERVICE_NAME} is not in desired state after apply. status={status_after}"
         )
-    payload = {"changed": changed, **status_after, "tunnel_name": tunnel_name, "config_path": str(config_path)}
+    payload = {
+        "changed": changed,
+        **status_after,
+        "tunnel_name": tunnel_name,
+        "config_path": str(config_path),
+        "desired_image_path": desired_image_path,
+        "image_path_matches_expected": image_path_matches_after,
+        "force_reinstall": force_reinstall,
+    }
     ctx.action("ensure_service", "ok", payload)
     return payload
 
@@ -205,16 +297,29 @@ def ensure_cloudflared_service(
     tunnel_name: str,
     config_path: Path,
     allow_elevation: bool = True,
+    force_reinstall: bool = False,
 ) -> dict[str, Any]:
     status_before = get_service_status(ctx)
+    cloudflared_exe = ensure_cloudflared_available(ctx)
+    desired_image_path = _build_desired_image_path(cloudflared_exe, config_path, tunnel_name)
     needs_change = (
-        not bool(status_before.get("installed", False))
+        force_reinstall
+        or not bool(status_before.get("installed", False))
         or not _status_is_auto(status_before)
         or not _status_is_running(status_before)
         or not _status_has_tunnel_command(status_before, tunnel_name, config_path)
+        or not _status_matches_desired_image_path(status_before, desired_image_path)
     )
     if not needs_change:
-        payload = {"changed": False, **status_before, "tunnel_name": tunnel_name, "config_path": str(config_path)}
+        payload = {
+            "changed": False,
+            **status_before,
+            "tunnel_name": tunnel_name,
+            "config_path": str(config_path),
+            "desired_image_path": desired_image_path,
+            "image_path_matches_expected": True,
+            "force_reinstall": force_reinstall,
+        }
         ctx.action("ensure_service", "ok", payload)
         return payload
 
@@ -226,18 +331,13 @@ def ensure_cloudflared_service(
         elevated = run_python_elevated(
             ctx,
             Path(__file__).resolve(),
-            [
-                "--apply",
-                "--tunnel-name",
-                tunnel_name,
-                "--config-path",
-                str(config_path),
-                "--log-dir",
-                str(ctx.log_dir),
-                "--run-id",
-                ctx.run_id,
-                "--no-elevate",
-            ],
+            _build_apply_args(
+                tunnel_name=tunnel_name,
+                config_path=config_path,
+                log_dir=ctx.log_dir,
+                run_id=ctx.run_id,
+                force_reinstall=force_reinstall,
+            ),
             timeout=900,
         )
         if elevated.returncode != 0:
@@ -251,9 +351,18 @@ def ensure_cloudflared_service(
             or not _status_is_auto(status_after)
             or not _status_is_running(status_after)
             or not _status_has_tunnel_command(status_after, tunnel_name, config_path)
+            or not _status_matches_desired_image_path(status_after, desired_image_path)
         ):
             raise TunnelSetupError(f"Service state invalid after elevated apply: {status_after}")
-        payload = {"changed": True, **status_after, "tunnel_name": tunnel_name, "config_path": str(config_path)}
+        payload = {
+            "changed": True,
+            **status_after,
+            "tunnel_name": tunnel_name,
+            "config_path": str(config_path),
+            "desired_image_path": desired_image_path,
+            "image_path_matches_expected": True,
+            "force_reinstall": force_reinstall,
+        }
         ctx.action("ensure_service", "ok", payload)
         return payload
 
@@ -262,6 +371,7 @@ def ensure_cloudflared_service(
         tunnel_name=tunnel_name,
         config_path=config_path,
         status_before=status_before,
+        force_reinstall=force_reinstall,
     )
 
 
@@ -355,6 +465,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--json-out", default=None)
     parser.add_argument("--apply", action="store_true")
     parser.add_argument("--restart", action="store_true")
+    parser.add_argument("--force-reinstall", action="store_true")
     parser.add_argument("--reason", default="manual")
     parser.add_argument("--cooldown-state", default=str(Path(DEFAULT_LOG_DIR) / "guard_state.json"))
     parser.add_argument("--cooldown-seconds", type=int, default=120)
@@ -382,6 +493,7 @@ def main() -> int:
                 tunnel_name=args.tunnel_name,
                 config_path=Path(args.config_path),
                 allow_elevation=not args.no_elevate,
+                force_reinstall=args.force_reinstall,
             )
             payload["ok"] = True
         else:

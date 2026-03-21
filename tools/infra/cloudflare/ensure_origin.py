@@ -8,9 +8,11 @@ import subprocess
 import time
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 from cloudflared_helpers import (
     DEFAULT_LOG_DIR,
+    DEFAULT_ORIGIN_PORT,
     DEFAULT_ORIGIN_URL,
     DEFAULT_REPO_ROOT,
     RunContext,
@@ -28,13 +30,14 @@ def _ps_single_quote(value: str) -> str:
 
 
 def _port_from_origin(origin_url: str) -> int:
-    if ":" not in origin_url:
-        return 3000
+    parsed = urlparse(origin_url)
+    if parsed.port is not None:
+        return parsed.port
     candidate = origin_url.rsplit(":", 1)[-1].strip("/")
     try:
         return int(candidate)
     except ValueError:
-        return 3000
+        return DEFAULT_ORIGIN_PORT
 
 
 def _pid_alive(pid: int) -> bool:
