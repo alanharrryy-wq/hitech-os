@@ -1,5 +1,24 @@
 # Cloudflare Tunnel Troubleshooting
 
+## Stabilization Note (2026-03-27, Resolved)
+
+Incident pattern is closed unless new runtime evidence shows regression.
+
+- Root cause:
+  - Local origin at `http://127.0.0.1:3100` was down.
+  - `setup_tunnel_forever.ps1` also needed safe native-command capture to avoid false-stop behavior when native commands return expected non-zero states during fallback/inspection.
+- Scheduled task `AccessDenied` is not by itself an outage root cause:
+  - In canonical inspectors, `AccessDenied` can still classify tasks as installed with limited inspection (`inspection_limited=true`), so this signal alone does not imply broken watchdog/public-health behavior.
+- Why `Invoke-NativeCapture` was added:
+  - To capture output and exit codes from native commands (`cloudflared`, `schtasks`) without terminating the wrapper prematurely under strict error settings.
+  - This preserves deterministic fallback behavior and allows convergence/report generation to complete.
+- Recovery evidence:
+  - Public endpoint: `https://engine.hitechrts.com` -> `200`
+  - Origin endpoint: `http://127.0.0.1:3100` -> `200`
+  - Validation critical booleans: all true (`hostname_bound`, `ingress_ok`, `service_installed`, `service_running`, `tunnel_connected`, `origin_reachable`, `public_ok`)
+  - Final report status: `PASS`
+- Canonical fix commit: `e5a428f`
+
 ## Symptom: `cloudflared` not found
 
 Cause:
