@@ -36,6 +36,39 @@ function Fail-AndExit {
   exit $Code
 }
 
+function Invoke-NativeCapture {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$FilePath,
+    [string[]]$ArgumentList = @()
+  )
+
+  $nativePrefVar = Get-Variable -Name PSNativeCommandUseErrorActionPreference -ErrorAction SilentlyContinue
+  $hadNativePreference = $null -ne $nativePrefVar
+  $previousNativePreference = $false
+  if ($hadNativePreference) {
+    $previousNativePreference = [bool]$nativePrefVar.Value
+    Set-Variable -Scope Script -Name PSNativeCommandUseErrorActionPreference -Value $false
+  }
+  $previousErrorPreference = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
+
+  try {
+    $output = (& $FilePath @ArgumentList 2>&1 | Out-String).Trim()
+    $exitCode = $LASTEXITCODE
+  } finally {
+    $ErrorActionPreference = $previousErrorPreference
+    if ($hadNativePreference) {
+      Set-Variable -Scope Script -Name PSNativeCommandUseErrorActionPreference -Value $previousNativePreference
+    }
+  }
+
+  [pscustomobject]@{
+    Output = $output
+    ExitCode = $exitCode
+  }
+}
+
 Write-MagentaProgress -Id 1 -Activity "Cloudflare Industrial Setup" -Status "Bootstrapping paths and runtime checks" -Percent 5
 if (-not (Test-Path -LiteralPath $RepoRoot)) {
   Fail-AndExit "Repo root not found at '$RepoRoot'."
@@ -110,11 +143,13 @@ if (Test-Path -LiteralPath $validateJsonPath) {
 }
 
 Write-MagentaProgress -Id 1 -Activity "Cloudflare Industrial Setup" -Status "Checking DNS route list" -Percent 75
-$dnsOutput = (& cloudflared tunnel route dns list --tunnel $TunnelName 2>&1 | Out-String).Trim()
-$dnsExit = $LASTEXITCODE
+$dnsListResult = Invoke-NativeCapture -FilePath "cloudflared" -ArgumentList @("tunnel", "route", "dns", "list", "--tunnel", $TunnelName)
+$dnsOutput = $dnsListResult.Output
+$dnsExit = $dnsListResult.ExitCode
 if ($dnsExit -ne 0 -and $dnsOutput -match "expects the format") {
-  $dnsFallbackOutput = (& cloudflared tunnel route dns $TunnelName $Hostname 2>&1 | Out-String).Trim()
-  if ($LASTEXITCODE -eq 0) {
+  $dnsFallbackResult = Invoke-NativeCapture -FilePath "cloudflared" -ArgumentList @("tunnel", "route", "dns", $TunnelName, $Hostname)
+  $dnsFallbackOutput = $dnsFallbackResult.Output
+  if ($dnsFallbackResult.ExitCode -eq 0) {
     $dnsOutput = $dnsOutput + "`n[FALLBACK]" + "`n" + $dnsFallbackOutput
     $dnsExit = 0
   }
@@ -127,14 +162,16 @@ $serviceInstalled = ($null -ne $serviceObj)
 $serviceOutput = if ($null -eq $serviceObj) { "cloudflared service not found" } else { $serviceObj | Format-List Name, Status, DisplayName | Out-String }
 
 Write-MagentaProgress -Id 1 -Activity "Cloudflare Industrial Setup" -Status "Checking watchdog task state" -Percent 92
-$taskOutput = (& schtasks /Query /TN "HITECH-Cloudflared-TunnelGuard" /V /FO LIST 2>&1 | Out-String).Trim()
-$taskExit = $LASTEXITCODE
+$taskResult = Invoke-NativeCapture -FilePath "schtasks" -ArgumentList @("/Query", "/TN", "HITECH-Cloudflared-TunnelGuard", "/V", "/FO", "LIST")
+$taskOutput = $taskResult.Output
+$taskExit = $taskResult.ExitCode
 $taskOutputLower = $taskOutput.ToLowerInvariant()
 $taskAccessDenied = ($taskOutputLower -match "acceso denegado") -or ($taskOutputLower -match "access is denied")
 $taskInstalled = ($taskExit -eq 0) -or $taskAccessDenied
 
-$publicTaskOutput = (& schtasks /Query /TN "HITECH-Cloudflared-PublicHealth" /V /FO LIST 2>&1 | Out-String).Trim()
-$publicTaskExit = $LASTEXITCODE
+$publicTaskResult = Invoke-NativeCapture -FilePath "schtasks" -ArgumentList @("/Query", "/TN", "HITECH-Cloudflared-PublicHealth", "/V", "/FO", "LIST")
+$publicTaskOutput = $publicTaskResult.Output
+$publicTaskExit = $publicTaskResult.ExitCode
 $publicTaskOutputLower = $publicTaskOutput.ToLowerInvariant()
 $publicTaskAccessDenied = ($publicTaskOutputLower -match "acceso denegado") -or ($publicTaskOutputLower -match "access is denied")
 $publicTaskInstalled = ($publicTaskExit -eq 0) -or $publicTaskAccessDenied
