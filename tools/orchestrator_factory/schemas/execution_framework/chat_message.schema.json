@@ -1,0 +1,47 @@
+{
+  "name": "chat_message",
+  "required_fields": {
+    "schema_version": "string",
+    "message_id": "string",
+    "message_type": "string",
+    "run_id": "string",
+    "round_id": "string",
+    "channel_id": "string",
+    "from_chat_id": "string",
+    "published_at_utc": "string",
+    "status": "string",
+    "status_summary": "string"
+  },
+  "optional_fields": {
+    "project_id": "string",
+    "package_id": "string",
+    "to_chat_id": "string",
+    "severity": "string",
+    "blocker_type": "string",
+    "current_item_refs": "array",
+    "related_entity_ids": "array",
+    "evidence_refs": "array",
+    "next_action_owner": "string",
+    "next_planned_action": "string",
+    "payload_ref": "string",
+    "tags": "array",
+    "history": "array"
+  },
+  "allowed_message_types": [
+    "chat_heartbeat",
+    "sync_checkpoint",
+    "handoff_ticket",
+    "dependency_request",
+    "dependency_response",
+    "blocker_report",
+    "escalation_event",
+    "merge_window",
+    "coordination_snapshot"
+  ],
+  "allowed_status_values": [
+    "planned",
+    "in_progress",
+    "blocked",
+    "done"
+  ]
+}

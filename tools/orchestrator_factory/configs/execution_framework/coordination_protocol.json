@@ -1,0 +1,173 @@
+{
+  "schema_version": "1.0",
+  "system_name": "universal_execution_framework",
+  "config_name": "coordination_protocol",
+  "purpose": "Provide deterministic lifecycle states and legal transitions for coordinated multi-chat execution.",
+  "canonical_states": [
+    {
+      "state": "planned",
+      "description": "The work item exists, ownership is known, and execution has not started.",
+      "required_minimum_evidence": [
+        "owner_chat_id",
+        "created_at_utc",
+        "scope_refs"
+      ]
+    },
+    {
+      "state": "in_progress",
+      "description": "The owner has accepted the item and is actively working it.",
+      "required_minimum_evidence": [
+        "accepted_at_utc",
+        "active_owner_chat_id",
+        "latest_checkpoint_at_utc"
+      ]
+    },
+    {
+      "state": "blocked",
+      "description": "The owner cannot continue without external action, a dependency, or a governance decision.",
+      "required_minimum_evidence": [
+        "blocked_at_utc",
+        "blocker_id",
+        "blocker_type",
+        "next_action_owner"
+      ]
+    },
+    {
+      "state": "done",
+      "description": "The work item is complete and includes evidence needed for downstream consumers.",
+      "required_minimum_evidence": [
+        "completed_at_utc",
+        "evidence_refs",
+        "completion_summary"
+      ]
+    }
+  ],
+  "state_transition_rules": [
+    {
+      "from_state": "planned",
+      "to_state": "in_progress",
+      "allowed_when": [
+        "ownership has been accepted",
+        "required inputs are present",
+        "no unresolved severity one blocker exists for the item"
+      ],
+      "required_event": "accept"
+    },
+    {
+      "from_state": "planned",
+      "to_state": "blocked",
+      "allowed_when": [
+        "required inputs are missing",
+        "scope is unclear",
+        "the item depends on a closed or unavailable resource"
+      ],
+      "required_event": "report_blocker"
+    },
+    {
+      "from_state": "in_progress",
+      "to_state": "blocked",
+      "allowed_when": [
+        "a blocker stops forward progress",
+        "dependency response missed its deadline",
+        "integration window denial prevents completion"
+      ],
+      "required_event": "report_blocker"
+    },
+    {
+      "from_state": "in_progress",
+      "to_state": "done",
+      "allowed_when": [
+        "required outputs exist",
+        "evidence refs are attached",
+        "the owner published a completion checkpoint"
+      ],
+      "required_event": "complete"
+    },
+    {
+      "from_state": "blocked",
+      "to_state": "planned",
+      "allowed_when": [
+        "ownership changed after triage",
+        "the item was re-scoped before work resumed"
+      ],
+      "required_event": "reset_after_triage"
+    },
+    {
+      "from_state": "blocked",
+      "to_state": "in_progress",
+      "allowed_when": [
+        "the blocker is resolved",
+        "the active owner confirms work resumed"
+      ],
+      "required_event": "resume"
+    },
+    {
+      "from_state": "blocked",
+      "to_state": "done",
+      "allowed_when": [
+        "the item was completed while the blocker record remained open",
+        "resolution evidence proves no further work is required"
+      ],
+      "required_event": "resolve_and_complete"
+    }
+  ],
+  "protocol_entities": [
+    {
+      "entity_type": "handoff_ticket",
+      "states": [
+        "planned",
+        "in_progress",
+        "blocked",
+        "done"
+      ],
+      "owner_field": "to_chat_id",
+      "summary_field": "handoff_summary"
+    },
+    {
+      "entity_type": "dependency_request",
+      "states": [
+        "planned",
+        "in_progress",
+        "blocked",
+        "done"
+      ],
+      "owner_field": "requested_from_chat_id",
+      "summary_field": "requested_outcome"
+    },
+    {
+      "entity_type": "blocker_report",
+      "states": [
+        "planned",
+        "in_progress",
+        "blocked",
+        "done"
+      ],
+      "owner_field": "owner_chat_id",
+      "summary_field": "blocker_summary"
+    },
+    {
+      "entity_type": "sync_checkpoint",
+      "states": [
+        "planned",
+        "in_progress",
+        "blocked",
+        "done"
+      ],
+      "owner_field": "owner_chat_id",
+      "summary_field": "status_summary"
+    }
+  ],
+  "invariants": [
+    "Every coordinated item has exactly one active owner chat at any instant.",
+    "Only governance control may reassign ownership across package boundaries.",
+    "Items in blocked state must include blocker_type and next_action_owner.",
+    "Items in done state must include at least one evidence ref.",
+    "State timestamps must be monotonic for the same item."
+  ],
+  "governance_actions": {
+    "may_reassign_owner": true,
+    "may_force_blocked_state": true,
+    "may_close_protocol_violation_items": true,
+    "must_publish_checkpoint_after_reassignment": true
+  }
+}

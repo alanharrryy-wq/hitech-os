@@ -1,0 +1,63 @@
+{
+  "name": "handoff_ticket",
+  "required_fields": {
+    "schema_version": "string",
+    "handoff_id": "string",
+    "run_id": "string",
+    "round_id": "string",
+    "from_chat_id": "string",
+    "to_chat_id": "string",
+    "handoff_kind": "string",
+    "package_id": "string",
+    "task_ref": "string",
+    "handoff_summary": "string",
+    "requested_outcome": "string",
+    "scope_refs": "array",
+    "acceptance_criteria": "array",
+    "status": "string",
+    "severity": "string",
+    "opened_at_utc": "string",
+    "response_due_at_utc": "string",
+    "ownership_mode": "string",
+    "evidence_refs": "array",
+    "dependency_refs": "array",
+    "related_blocker_ids": "array",
+    "history": "array"
+  },
+  "optional_fields": {
+    "project_id": "string",
+    "accepted_at_utc": "string",
+    "blocked_at_utc": "string",
+    "completed_at_utc": "string",
+    "updated_at_utc": "string",
+    "completion_summary": "string",
+    "rejection_reason": "string",
+    "request_revision_fields": "array",
+    "resolved_by_chat_id": "string",
+    "next_action_owner": "string",
+    "status_summary": "string"
+  },
+  "allowed_status_values": [
+    "planned",
+    "in_progress",
+    "blocked",
+    "done"
+  ],
+  "allowed_handoff_kinds": [
+    "dependency_delivery",
+    "scope_clarification",
+    "integration_preparation",
+    "blocker_resolution"
+  ],
+  "allowed_ownership_modes": [
+    "transfer",
+    "assist",
+    "review"
+  ],
+  "allowed_severity_values": [
+    "sev1",
+    "sev2",
+    "sev3",
+    "sev4"
+  ]
+}

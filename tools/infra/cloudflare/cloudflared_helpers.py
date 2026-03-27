@@ -25,6 +25,7 @@ DEFAULT_ORIGIN_URL = f"http://{DEFAULT_ORIGIN_HOST}:{DEFAULT_ORIGIN_PORT}"
 DEFAULT_CLOUDFLARED_DIR = Path(r"C:\Users\alanh\.cloudflared")
 DEFAULT_CONFIG_PATH = DEFAULT_CLOUDFLARED_DIR / "config.yml"
 DEFAULT_LOG_DIR = DEFAULT_REPO_ROOT / "logs" / "cloudflare"
+DEFAULT_ORIGIN_CERT_PATH = DEFAULT_CLOUDFLARED_DIR / "cert.pem"
 
 
 UUID_RE = re.compile(
@@ -188,10 +189,32 @@ def ensure_cloudflared_available(ctx: RunContext) -> str:
     return exe
 
 
+def resolve_origin_cert_path() -> Path | None:
+    env_path = os.environ.get("TUNNEL_ORIGIN_CERT", "").strip()
+    if env_path:
+        candidate = Path(env_path)
+        if candidate.exists():
+            return candidate
+
+    candidates = [
+        DEFAULT_ORIGIN_CERT_PATH,
+        Path.home() / ".cloudflared" / "cert.pem",
+    ]
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+    return None
+
+
 def cloudflared(ctx: RunContext, args: Sequence[str], *, timeout: int = 120) -> CommandResult:
     ensure_cloudflared_available(ctx)
     cmd = ["cloudflared", *args]
-    return run_logged(ctx, cmd, timeout=timeout, action_name="cloudflared")
+    env = os.environ.copy()
+    if not env.get("TUNNEL_ORIGIN_CERT"):
+        cert_path = resolve_origin_cert_path()
+        if cert_path:
+            env["TUNNEL_ORIGIN_CERT"] = str(cert_path)
+    return run_logged(ctx, cmd, timeout=timeout, action_name="cloudflared", env=env)
 
 
 def parse_tunnel_uuid_from_list_output(output: str, tunnel_name: str) -> str | None:
