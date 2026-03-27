@@ -1,73 +1,28 @@
-from pathlib import Path
-import copy
+from __future__ import annotations
+
 import json
+from pathlib import Path
+from typing import Any, Mapping
 
-DEFAULT_POLICY = {
-    "blocked_path_parts": [
-        "_local",
-        ".git",
-        "__pycache__",
-        ".pytest_cache",
-        ".mypy_cache",
-    ],
-    "blocked_suffixes": [
-        ".tmp",
-        ".bak",
-        ".pyc",
-        ".pyo",
-    ],
-    "hard_block_removed_prefixes": [
-        "legacy/",
-    ],
-    "manual_review_prefixes": [
-        "legacy/",
-        "shared/",
-        "configs/",
-        "tools/",
-    ],
-    "high_risk_prefixes": [
-        "legacy/",
-        "shared/provider.py",
-        "shared/contracts.py",
-        "shared/foundation.py",
-    ],
-    "review_thresholds": {
-        "needs_review_total_touched": 5,
-        "high_risk_total_touched": 15,
-    },
-    "reviewer_map": {
-        "legacy/": ["platform", "architecture"],
-        "shared/": ["platform"],
-        "configs/": ["ops"],
-        "tools/": ["repo-owner"],
-        "default": ["repo-owner"],
-    },
-    "promotion_mode": "manual_only"
-}
+_DEFAULT_POLICY = {'max_total_touched': 250, 'allow_deletes': False, 'mandatory_reviewers': ['platform', 'repo-owner']}
 
-def default_policy():
-    return copy.deepcopy(DEFAULT_POLICY)
+def default_policy() -> dict[str, Any]:
+    return json.loads(json.dumps(_DEFAULT_POLICY))
 
-def load_policy(path=None):
+def _deep_merge(base: Mapping[str, Any], override: Mapping[str, Any]) -> dict[str, Any]:
+    merged: dict[str, Any] = dict(base)
+    for key, value in override.items():
+        if isinstance(value, Mapping) and isinstance(merged.get(key), Mapping):
+            merged[key] = _deep_merge(merged[key], value)
+        else:
+            merged[key] = value
+    return merged
+
+def load_policy(path: str | Path | None = None, overrides: Mapping[str, Any] | None = None) -> dict[str, Any]:
     policy = default_policy()
-
-    if not path:
-        return policy
-
-    path = Path(path)
-    if not path.exists():
-        raise RuntimeError(f"Promotion policy not found: {path}")
-
-    override = json.loads(path.read_text(encoding="utf-8"))
-    return _deep_merge(policy, override)
-
-def _deep_merge(base, override):
-    if isinstance(base, dict) and isinstance(override, dict):
-        merged = dict(base)
-        for key, value in override.items():
-            if key in merged:
-                merged[key] = _deep_merge(merged[key], value)
-            else:
-                merged[key] = value
-        return merged
-    return override
+    if path:
+        file_payload = json.loads(Path(path).read_text(encoding="utf-8"))
+        policy = _deep_merge(policy, file_payload)
+    if overrides:
+        policy = _deep_merge(policy, overrides)
+    return policy

@@ -1,24 +1,10 @@
-from .path_rules import normalize_relpath
+from __future__ import annotations
 
-def reviewers_for_paths(paths, policy):
-    mapping = policy.get("reviewer_map", {})
-    assigned = set()
+from .path_rules import classify_many
 
-    for relpath in paths:
-        relpath = normalize_relpath(relpath)
-        matched = False
-
-        for prefix, reviewers in mapping.items():
-            if prefix == "default":
-                continue
-            prefix_norm = normalize_relpath(prefix)
-            if relpath == prefix_norm or relpath.startswith(prefix_norm):
-                for reviewer in reviewers:
-                    assigned.add(reviewer)
-                matched = True
-
-        if not matched:
-            for reviewer in mapping.get("default", []):
-                assigned.add(reviewer)
-
-    return sorted(assigned)
+def reviewers_for_paths(paths: list[str]) -> list[str]:
+    buckets = classify_many(paths)
+    reviewers = {"platform", "repo-owner"}
+    if buckets["high"]:
+        reviewers.add("security-review")
+    return sorted(reviewers)

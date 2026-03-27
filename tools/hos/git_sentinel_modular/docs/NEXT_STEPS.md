@@ -1,17 +1,6 @@
-# Next Steps
+# Next steps
 
-## First coding pass
-
-- turn stubs in `shared/` into real modules first
-- create explicit dataclasses or typed payloads for scanner outputs
-- extract side-effect free logic out of `sentinel.py`
-- create adapters in `legacy/` only when you are ready to swap imports
-
-## Suggested contracts to define first
-
-- scan result payload
-- artifact classification payload
-- security finding payload
-- prediction payload
-- repair plan payload
-- cleanup plan payload
+1. Aplicar este bundle.
+2. Ejecutar `06_SCRIPT_VALIDAR_BUNDLE.ps1`.
+3. Si todo pasa, usar el CLI canónico como única superficie nueva.
+4. Después, conectar integraciones externas vía `plugins/` en lugar de invadir el paquete.

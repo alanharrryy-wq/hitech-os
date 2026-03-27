@@ -1,72 +1,54 @@
-from pathlib import Path
+from __future__ import annotations
+
 import json
-import shutil
+from pathlib import Path
+from typing import Any
 
-from .policies import default_policy
-from .safe_paths import assert_within_directory
-from .overlay_plan import build_overlay_plan
+from .policies import ApplyPolicy, default_policy
+from .safe_paths import assert_safe_relative_path, assert_within_directory
 
-def _write_json(path, payload):
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(payload, indent=2, sort_keys=True),
-        encoding="utf-8",
-    )
+def _write_json(path: str | Path, payload: dict[str, Any]) -> Path:
+    target = Path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+    return target
 
-def apply_overlay_to_candidate(workspace, overlay_source, policy=None):
-    policy = policy or default_policy()
-    plan = build_overlay_plan(overlay_source=overlay_source, policy=policy)
-
-    candidate_dir = Path(workspace.candidate_dir)
-    applied = []
-    rejected = []
-
-    for action in plan["actions"]:
-        relpath = action["relative_path"]
-        source = Path(action["source"])
-        target = assert_within_directory(candidate_dir, candidate_dir / relpath)
-
-        if target.exists() and target.is_dir():
-            rejected.append({
-                "path": relpath,
-                "reason": "target_is_directory",
-            })
-            continue
-
-        if target.exists() and not policy.allow_overwrite:
-            rejected.append({
-                "path": relpath,
-                "reason": "overwrite_not_allowed",
-            })
-            continue
-
-        target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source, target)
-
-        applied.append({
-            "path": relpath,
-            "bytes": source.stat().st_size,
-        })
-
-    payload = {
-        "run_id": workspace.run_id,
-        "overlay_source": plan["overlay_source"],
-        "applied": applied,
-        "skipped": plan["skipped"],
-        "rejected": rejected,
-        "counts": {
-            "applied": len(applied),
-            "skipped": len(plan["skipped"]),
-            "rejected": len(rejected),
-            "total_considered": len(applied) + len(plan["skipped"]) + len(rejected),
-        },
+def apply_overlay_to_candidate(
+    candidate_root: str | Path,
+    overlay_plan: list[dict[str, Any]],
+    policy: ApplyPolicy | None = None,
+    *,
+    dry_run: bool = False,
+) -> dict[str, Any]:
+    candidate = Path(candidate_root)
+    candidate.mkdir(parents=True, exist_ok=True)
+    active_policy = policy or default_policy()
+    manifest = {
+        "applied": 0,
+        "skipped": 0,
+        "rejected": 0,
+        "total_considered": len(overlay_plan),
     }
-
-    manifest_path = Path(workspace.manifests_dir) / "apply_manifest.json"
-    _write_json(manifest_path, payload)
-
-    return {
-        "manifest_path": manifest_path,
-        "manifest": payload,
-    }
+    decisions: list[dict[str, Any]] = []
+    for item in overlay_plan:
+        relpath = assert_safe_relative_path(item["relpath"])
+        if any(relpath.startswith(prefix) for prefix in active_policy.rejected_prefixes):
+            manifest["rejected"] += 1
+            decisions.append({"relpath": relpath, "decision": "rejected"})
+            continue
+        if item.get("action") == "delete" and not active_policy.allow_delete:
+            manifest["skipped"] += 1
+            decisions.append({"relpath": relpath, "decision": "skipped_delete"})
+            continue
+        target = assert_within_directory(candidate, candidate / relpath)
+        if not dry_run:
+            if item.get("action") == "delete":
+                if target.exists():
+                    target.unlink()
+            else:
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text(item.get("content", ""), encoding="utf-8")
+        manifest["applied"] += 1
+        decisions.append({"relpath": relpath, "decision": "applied"})
+    payload = {"manifest": manifest, "decisions": decisions, "dry_run": dry_run}
+    return payload

@@ -33,8 +33,10 @@ Used by the scheduled task every 5 minutes.
 
 Behavior:
 
+- Ensures Keystone origin is reachable on `127.0.0.1:3100`
+- If origin is down, attempts forced relaunch of origin before declaring failure
 - Reads tunnel active connections
-- If unhealthy, restarts service (cooldown-protected)
+- If tunnel connections are unhealthy, restarts service (cooldown-protected)
 - Writes setup/action logs
 
 ## Manual Validation

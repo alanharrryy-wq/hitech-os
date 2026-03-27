@@ -1,30 +1,11 @@
-from pathlib import Path
+from __future__ import annotations
 
-def build_rollback_instructions(plan_payload, execution_result, backup_manifest=None):
-    actions = []
-
-    if backup_manifest:
-        for relpath in backup_manifest.get("copied", []):
-            actions.append({
-                "action": "restore_from_backup",
-                "path": relpath,
-            })
-
-    for item in execution_result.get("applied", []):
-        if item["action"] == "add":
-            actions.append({
-                "action": "remove_applied_addition",
-                "path": item["path"],
-            })
-
+def build_rollback_instructions(backup_dir: str, target_root: str) -> dict:
     return {
-        "mode": "manual_only",
-        "actions": actions,
-        "counts": {
-            "actions": len(actions),
-        },
-        "notes": [
-            "Rollback instructions describe manual recovery steps.",
-            "This bundle does not auto-rollback.",
+        "backup_dir": backup_dir,
+        "target_root": target_root,
+        "steps": [
+            "delete changed files from target if needed",
+            "restore backup snapshot into target root",
         ],
     }

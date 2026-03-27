@@ -1,51 +1,32 @@
-from pathlib import Path
+from __future__ import annotations
+
 import argparse
 import json
 
 from .bundle import build_execution_bundle, execute_manual_promotion
 
-def main(argv=None):
-    parser = argparse.ArgumentParser(
-        description="Build or execute a manual promotion bundle from a shadow workspace."
-    )
-    sub = parser.add_subparsers(dest="cmd", required=True)
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Build or execute an execution bundle.")
+    subparsers = parser.add_subparsers(dest="command", required=True)
 
-    p_plan = sub.add_parser("plan", help="Build execution bundle only.")
-    p_plan.add_argument("--workspace-root", required=True)
-    p_plan.add_argument("--target-root", required=True)
-    p_plan.add_argument("--policy", required=False)
+    plan_parser = subparsers.add_parser("plan")
+    plan_parser.add_argument("--workspace-root", required=True)
+    plan_parser.add_argument("--target-root", required=True)
 
-    p_exec = sub.add_parser("execute", help="Execute manual promotion.")
-    p_exec.add_argument("--workspace-root", required=True)
-    p_exec.add_argument("--target-root", required=True)
-    p_exec.add_argument("--policy", required=False)
-    p_exec.add_argument("--confirm-token", required=False)
-    p_exec.add_argument("--do-execute", action="store_true")
+    run_parser = subparsers.add_parser("run")
+    run_parser.add_argument("--workspace-root", required=True)
+    run_parser.add_argument("--target-root", required=True)
+    run_parser.add_argument("--confirm-token", required=True)
 
     args = parser.parse_args(argv)
-
-    if args.cmd == "plan":
-        result = build_execution_bundle(
-            workspace_root=Path(args.workspace_root),
-            target_root=Path(args.target_root),
-            policy_path=Path(args.policy) if args.policy else None,
-        )
-        print(json.dumps({
-            "execution_dir": str(result["execution_dir"]),
-            "planned_actions": result["plan_payload"]["counts"]["actions"],
-            "blocked": result["plan_payload"]["counts"]["blocked"],
-        }, indent=2, sort_keys=True))
-        return 0
-
-    if args.cmd == "execute":
-        result = execute_manual_promotion(
-            workspace_root=Path(args.workspace_root),
-            target_root=Path(args.target_root),
-            policy_path=Path(args.policy) if args.policy else None,
-            do_execute=args.do_execute,
+    if args.command == "plan":
+        payload = build_execution_bundle(args.workspace_root, args.target_root, plan_only=True)
+    else:
+        payload = execute_manual_promotion(
+            args.workspace_root,
+            args.target_root,
+            do_execute=True,
             confirm_token=args.confirm_token,
         )
-        print(json.dumps(result["summary"], indent=2, sort_keys=True))
-        return 0
-
-    return 1
+    print(json.dumps(payload, indent=2, sort_keys=True))
+    return 0

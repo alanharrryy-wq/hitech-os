@@ -1,39 +1,23 @@
+from __future__ import annotations
+
 from pathlib import Path
 
-def normalize_relpath(relpath):
-    return str(Path(relpath)).replace("\\", "/")
+def normalize_relpath(path: str) -> str:
+    return path.replace("\\", "/").strip("/")
 
-def assert_safe_relpath(relpath, policy):
-    relpath = normalize_relpath(relpath)
-    path = Path(relpath)
+def assert_safe_relpath(path: str) -> str:
+    normalized = normalize_relpath(path)
+    if not normalized or normalized.startswith("../") or "/../" in normalized:
+        raise ValueError(f"Unsafe relpath: {path}")
+    return normalized
 
-    if path.is_absolute():
-        raise RuntimeError(f"Absolute path not allowed: {relpath}")
+def is_protected_path(path: str, protected_prefixes: list[str] | tuple[str, ...]) -> bool:
+    normalized = normalize_relpath(path)
+    return any(normalized.startswith(prefix) for prefix in protected_prefixes)
 
-    for part in path.parts:
-        if part in ("", ".."):
-            raise RuntimeError(f"Unsafe relative path: {relpath}")
-        if part in set(policy.get("blocked_path_parts", [])):
-            raise RuntimeError(f"Blocked path part in relative path: {relpath}")
-
-    if path.suffix.lower() in {x.lower() for x in policy.get("blocked_suffixes", [])}:
-        raise RuntimeError(f"Blocked suffix in relative path: {relpath}")
-
-    return relpath
-
-def is_protected_path(relpath, policy):
-    relpath = normalize_relpath(relpath)
-    prefixes = [normalize_relpath(x) for x in policy.get("protected_prefixes", [])]
-    for prefix in prefixes:
-        if relpath == prefix or relpath.startswith(prefix):
-            return True
-    return False
-
-def resolve_target_path(target_root, relpath):
-    target_root = Path(target_root).resolve()
-    target = (target_root / relpath).resolve()
-    try:
-        target.relative_to(target_root)
-    except ValueError as exc:
-        raise RuntimeError(f"Resolved path escapes target root: {target}") from exc
+def resolve_target_path(target_root: str | Path, relpath: str) -> Path:
+    root = Path(target_root).resolve()
+    target = (root / assert_safe_relpath(relpath)).resolve()
+    if root not in target.parents and target != root:
+        raise ValueError(f"{target} escapes {root}")
     return target

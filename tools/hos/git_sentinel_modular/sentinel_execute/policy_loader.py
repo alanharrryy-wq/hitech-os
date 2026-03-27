@@ -1,45 +1,28 @@
-from pathlib import Path
-import copy
+from __future__ import annotations
+
 import json
+from pathlib import Path
+from typing import Any, Mapping
 
-DEFAULT_POLICY = {
-    "cutover_status_allowed_for_execution": ["ready", "needs_attention"],
-    "blocked_path_parts": ["_local", ".git", "__pycache__", ".pytest_cache", ".mypy_cache"],
-    "blocked_suffixes": [".tmp", ".bak", ".pyc", ".pyo"],
-    "protected_prefixes": ["legacy/"],
-    "allow_delete": False,
-    "require_confirm_token": True,
-    "confirm_token": "EXECUTE_MANUAL_PROMOTION",
-    "backup_enabled": True,
-    "verify_python_parse_after_apply": True,
-    "post_smoke_required": True,
-    "execution_mode": "manual_only",
-    "backup_dir_name": "backups",
-    "execution_dir_name": "execution_bundle"
-}
+_DEFAULT_POLICY = {'protected_prefixes': ['.git/', '.github/'], 'allow_delete': False}
 
-def default_policy():
-    return copy.deepcopy(DEFAULT_POLICY)
+def default_policy() -> dict[str, Any]:
+    return json.loads(json.dumps(_DEFAULT_POLICY))
 
-def load_policy(path=None):
+def _deep_merge(base: Mapping[str, Any], override: Mapping[str, Any]) -> dict[str, Any]:
+    merged: dict[str, Any] = dict(base)
+    for key, value in override.items():
+        if isinstance(value, Mapping) and isinstance(merged.get(key), Mapping):
+            merged[key] = _deep_merge(merged[key], value)
+        else:
+            merged[key] = value
+    return merged
+
+def load_policy(path: str | Path | None = None, overrides: Mapping[str, Any] | None = None) -> dict[str, Any]:
     policy = default_policy()
-    if not path:
-        return policy
-
-    path = Path(path)
-    if not path.exists():
-        raise RuntimeError(f"Execution policy not found: {path}")
-
-    override = json.loads(path.read_text(encoding="utf-8"))
-    return _deep_merge(policy, override)
-
-def _deep_merge(base, override):
-    if isinstance(base, dict) and isinstance(override, dict):
-        merged = dict(base)
-        for key, value in override.items():
-            if key in merged:
-                merged[key] = _deep_merge(merged[key], value)
-            else:
-                merged[key] = value
-        return merged
-    return override
+    if path:
+        file_payload = json.loads(Path(path).read_text(encoding="utf-8"))
+        policy = _deep_merge(policy, file_payload)
+    if overrides:
+        policy = _deep_merge(policy, overrides)
+    return policy

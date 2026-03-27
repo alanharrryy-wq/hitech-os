@@ -1,33 +1,29 @@
-from pathlib import Path
+from __future__ import annotations
+
 import json
-import time
+from pathlib import Path
+from typing import Any
 
-def read_manifest(path: str | Path):
-    path = Path(path)
-    return json.loads(path.read_text(encoding="utf-8"))
+from ..shared.status_payloads import utc_now_iso
 
-def write_manifest(path: str | Path, payload: dict):
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(payload, indent=2, sort_keys=True),
-        encoding="utf-8",
-    )
+def read_manifest(path: str | Path) -> dict[str, Any]:
+    return json.loads(Path(path).read_text(encoding="utf-8"))
 
-def build_run_manifest(workspace, source_root, runtime_root):
+def write_manifest(path: str | Path, payload: dict[str, Any]) -> Path:
+    target = Path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+    return target
+
+def build_run_manifest(workspace, run_id: str | None = None, extra: dict[str, Any] | None = None) -> dict[str, Any]:
+    metadata_root = Path(workspace.metadata_root if hasattr(workspace, "metadata_root") else Path(workspace) / "metadata")
+    workspace_root = Path(workspace.workspace_root if hasattr(workspace, "workspace_root") else workspace)
     payload = {
-        "run_id": workspace.run_id,
-        "created_at_epoch": time.time(),
-        "source_root": str(source_root),
-        "runtime_root": str(runtime_root),
-        "workspace_root": str(workspace.root),
-        "baseline_dir": str(workspace.baseline_dir),
-        "candidate_dir": str(workspace.candidate_dir),
-        "manifests_dir": str(workspace.manifests_dir),
-        "mode": "shadow",
-        "promotion": "disabled_by_default",
+        "run_id": run_id or getattr(workspace, "run_id", workspace_root.name),
+        "workspace_root": str(workspace_root),
+        "created_at": utc_now_iso(),
     }
-
-    path = workspace.manifests_dir / "run_manifest.json"
-    write_manifest(path, payload)
-    return path, payload
+    if extra:
+        payload.update(extra)
+    write_manifest(metadata_root / "run_manifest.json", payload)
+    return payload

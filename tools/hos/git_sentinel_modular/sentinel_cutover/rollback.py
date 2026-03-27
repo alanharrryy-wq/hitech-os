@@ -1,40 +1,19 @@
-def build_rollback_manifest(preflight_payload):
-    diff = preflight_payload["diff_manifest"]
+from __future__ import annotations
 
-    actions = []
+from pathlib import Path
+import json
 
-    for relpath in diff.get("added", []):
-        actions.append({
-            "action": "remove_candidate_addition",
-            "path": relpath,
-            "source_of_truth": "baseline_absent",
-        })
-
-    for relpath in diff.get("removed", []):
-        actions.append({
-            "action": "restore_from_baseline",
-            "path": relpath,
-            "source_of_truth": "baseline",
-        })
-
-    for relpath in diff.get("changed", []):
-        actions.append({
-            "action": "restore_from_baseline",
-            "path": relpath,
-            "source_of_truth": "baseline",
-        })
-
-    return {
-        "mode": "manual_only",
-        "actions": actions,
-        "counts": {
-            "actions": len(actions),
-            "added": len(diff.get("added", [])),
-            "removed": len(diff.get("removed", [])),
-            "changed": len(diff.get("changed", [])),
-        },
-        "notes": [
-            "Rollback manifest describes how to revert candidate state back to baseline.",
-            "This bundle never performs rollback automatically.",
+def build_rollback_manifest(workspace_root: str | Path) -> dict:
+    workspace = Path(workspace_root)
+    payload = {
+        "workspace_root": str(workspace),
+        "rollback_dir": str(workspace / "rollback_bundle"),
+        "steps": [
+            "restore backup before cutover",
+            "rebuild execution bundle after rollback",
         ],
     }
+    target = workspace / "rollback_bundle" / "rollback_manifest.json"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+    return payload

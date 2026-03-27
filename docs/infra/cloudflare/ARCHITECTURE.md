@@ -27,6 +27,8 @@ Provide a permanent, self-healing setup that prevents Cloudflare Error 1033 by e
   - Validate full state (local origin + tunnel connection + public edge) and persist JSON
   - If service-mode drift pattern is detected (`local/tunnel OK` + `public FAIL`), force-reinstall service and re-validate once
 - Guard mode:
+  - Ensure origin availability (`127.0.0.1:3100`)
+  - Attempt forced origin relaunch when origin is down
   - Check active tunnel connections
   - Restart service on unhealthy state with cooldown guard
 

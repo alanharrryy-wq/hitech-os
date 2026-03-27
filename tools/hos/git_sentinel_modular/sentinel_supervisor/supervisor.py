@@ -1,55 +1,39 @@
+from __future__ import annotations
+
+import os
 from pathlib import Path
+from typing import Any, Callable
+
+from .heartbeat import Heartbeat
 from .runtime_repair import ensure_runtime_health
 from .stale_lock_cleanup import cleanup_stale_locks
 from .zombie_guard import detect_zombie_state
-from .heartbeat import Heartbeat
+from ..shared.runtime_paths import RuntimePaths, build_runtime_paths
 
 class SentinelSupervisor:
-    def __init__(
-        self,
-        runtime_root,
-        max_lock_age_seconds=1800,
-        zombie_after_seconds=900,
-    ):
-        self.runtime_root = Path(runtime_root)
-        self.max_lock_age_seconds = max_lock_age_seconds
-        self.zombie_after_seconds = zombie_after_seconds
-        self.heartbeat = Heartbeat(self.runtime_root)
+    def __init__(self, paths: RuntimePaths | None = None) -> None:
+        self.paths = (paths or build_runtime_paths()).ensure()
 
-    def preflight(self):
-        runtime_status = ensure_runtime_health(self.runtime_root)
-        zombie_status = detect_zombie_state(
-            self.runtime_root,
-            zombie_after_seconds=self.zombie_after_seconds,
-        )
-        cleaned_locks = cleanup_stale_locks(
-            self.runtime_root,
-            max_lock_age_seconds=self.max_lock_age_seconds,
-        )
-
+    def supervised_run(self, task: Callable[[], Any], run_id: str) -> dict[str, Any]:
+        ensure_runtime_health(self.paths)
+        heartbeat_path = self.paths.state_root / "heartbeat.json"
+        heartbeat = Heartbeat(run_id=run_id, pid=os.getpid())
+        heartbeat.write(heartbeat_path)
+        result = task()
+        heartbeat.status = "completed"
+        heartbeat.touch()
+        heartbeat.write(heartbeat_path)
         return {
-            "runtime_status": runtime_status,
-            "zombie_status": zombie_status,
-            "cleaned_locks": cleaned_locks,
-        }
-
-    def beat(self):
-        self.heartbeat.touch()
-
-def supervised_run(run_callable, runtime_root, on_tick=None):
-    supervisor = SentinelSupervisor(runtime_root=runtime_root)
-    status = supervisor.preflight()
-
-    supervisor.beat()
-
-    try:
-        result = run_callable(supervisor)
-        supervisor.beat()
-        return {
-            "ok": True,
-            "status": status,
+            "run_id": run_id,
             "result": result,
+            "heartbeat_file": str(heartbeat_path),
+            "zombie_detected": detect_zombie_state(heartbeat_path),
         }
-    except Exception:
-        supervisor.beat()
-        raise
+
+def supervised_run(task: Callable[[], Any], run_id: str, paths: RuntimePaths | None = None) -> dict[str, Any]:
+    supervisor = SentinelSupervisor(paths=paths)
+    lock_dir = supervisor.paths.state_root / "locks"
+    cleaned = cleanup_stale_locks(lock_dir)
+    payload = supervisor.supervised_run(task, run_id=run_id)
+    payload["cleaned_locks"] = cleaned
+    return payload

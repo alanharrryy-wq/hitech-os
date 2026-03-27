@@ -1,28 +1,13 @@
+from __future__ import annotations
+
 from pathlib import Path
 
-REQUIRED_RUNTIME_DIRS = [
-    "locks",
-    "state",
-    "failures",
-    "logs",
-]
+from ..shared.runtime_paths import RuntimePaths, build_runtime_paths
 
-def ensure_runtime_health(runtime_root):
-    runtime_root = Path(runtime_root)
-    runtime_root.mkdir(parents=True, exist_ok=True)
-
-    created = []
-    for rel in REQUIRED_RUNTIME_DIRS:
-        path = runtime_root / rel
-        if not path.exists():
-            path.mkdir(parents=True, exist_ok=True)
-            created.append(str(path))
-
-    probe = runtime_root / "state" / "runtime_probe.tmp"
-    probe.write_text("ok", encoding="utf-8")
-    probe.unlink(missing_ok=True)
-
+def ensure_runtime_health(paths: RuntimePaths | None = None) -> dict[str, str]:
+    runtime_paths = (paths or build_runtime_paths()).ensure()
     return {
-        "runtime_root": str(runtime_root),
-        "created": created,
+        "runtime_root": str(runtime_paths.runtime_root),
+        "state_root": str(runtime_paths.state_root),
+        "logs_root": str(runtime_paths.logs_root),
     }

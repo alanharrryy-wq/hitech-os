@@ -1,50 +1,35 @@
-# Git Sentinel Modular Scaffold
+# git_sentinel_modular
 
-Generated at: 2026-03-15T00:42:44-06:00
+`git_sentinel_modular` already contains real sentinel lifecycle logic. This bundle closes the seams that still caused drift and confusing ownership:
 
-## Purpose
+- one package-aware bootstrap model for `tools.hos.git_sentinel_modular`
+- one canonical runtime/path contract
+- one internal control plane owned by `operations`
+- one package-level CLI surface
+- one minimal plugin seam for future external integrations
+- one coherent plan-only rollout flow from `shadow -> promotion -> cutover -> execute`
 
-This workspace is a **non-destructive modularization scaffold** for Git Sentinel.
-It does **not** rewrite the live runtime. It prepares a clean package layout so the team can refactor hard without losing safety.
+## Current boundary
 
-## Legacy source
+This package stays focused on its own modular sentinel lifecycle. `engine_guardian`, Cloudflare, Keystone, Repo Analyzer, scheduled tasks, and other external systems remain outside the package boundary.
 
-- Legacy package: `tools/hos/git_sentinel`
-- Backup ZIP: `F:\OneDrive\Descargas\sentinel_legacy_backup_20260315_004243.zip`
-- Scaffold ZIP: `F:\OneDrive\Descargas\sentinel_modular_scaffold_20260315_004244.zip`
+## Canonical entrypoints
 
-## Why this exists
+- `python -m tools.hos.git_sentinel_modular --help`
+- `python -m tools.hos.git_sentinel_modular shadow-prepare --run-id demo`
+- `python -m tools.hos.git_sentinel_modular promotion --workspace-root <path>`
+- `python -m tools.hos.git_sentinel_modular cutover --workspace-root <path>`
+- `python -m tools.hos.git_sentinel_modular execute-plan --workspace-root <path> --target-root <path>`
+- `python -m tools.hos.git_sentinel_modular execute-run --workspace-root <path> --target-root <path> --confirm-token EXECUTE_MANUAL_PROMOTION`
+- `python -m tools.hos.git_sentinel_modular status`
+- `python -m tools.hos.git_sentinel_modular plugin-list`
 
-The current Sentinel codebase already has meaningful separation of concerns, but the live package still mixes orchestration, dashboard, scanning, remediation and shared helpers in one flat folder.
-This scaffold creates a safe parallel package so migration can happen in phases.
+## Testing
 
-## High level stats from the legacy package
+- `python -m pytest tools/hos/git_sentinel_modular/tests/sentinel_shadow`
+- `python -m pytest tools/hos/git_sentinel_modular/tests/sentinel_shadow_apply`
+- `python -m pytest tools/hos/git_sentinel_modular/tests/sentinel_supervisor`
+- `python -m pytest tools/hos/git_sentinel_modular/tests/sentinel_observability`
+- `python -m pytest tools/hos/git_sentinel_modular/tests/integration/test_rollout_pipeline_plan_only.py`
 
-- Modules discovered: **26**
-- Code-like lines (excluding comments/blank lines): **5857**
-- Functions: **171**
-- Classes: **9**
-
-## Package layout
-
-- `app/`: CLI, dashboard y capa de presentacion.
-- `analysis/`: Prediccion, scoring y diagnostico.
-- `core/`: Orquestacion principal del sistema.
-- `learning/`: Memoria, telemetria historica y aprendizaje.
-- `legacy/`: Puentes y referencias al layout viejo. No ejecutar en vivo.
-- `operations/`: Scheduler, locks y gates operativos.
-- `remediation/`: Repair y cleanup, siempre opt-in.
-- `reporting/`: Reportes, alertas y visualizaciones serializadas.
-- `scanning/`: Escaneo del repo y deteccion de artefactos.
-- `security/`: Seguridad, secretos, reglas y calidad de scanner.
-- `shared/`: Config, utilidades, git helpers y contratos compartidos.
-- `docs/`: Documentacion viva del rediseño modular.
-- `tests/`: Espacio preparado para contratos y pruebas futuras.
-
-## Safety rules
-
-- Legacy package remains untouched.
-- No import rewiring is done by this generator.
-- Cleanup and repair stay opt-in during migration.
-- Dashboard work should happen after core contracts are isolated.
-- Every moved module should preserve a legacy compatibility shim until tests pass.
+See `docs/TESTING_AND_EXECUTION.md` for the validation path used by the bundle.

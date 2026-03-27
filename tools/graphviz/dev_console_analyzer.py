@@ -1,140 +1,127 @@
-import os
-import re
+
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import json
 from pathlib import Path
-from graphviz import Digraph
 
-# ==============================
-# CONFIG
-# ==============================
+from build_scope_index import build_scope_index
+from graphviz_repo_engine import (
+    DEFAULT_BACKUP_ROOT,
+    DEFAULT_REPO_PATH,
+    GraphRunConfig,
+    iter_repo_files,
+    read_text,
+    run_graph_refresh,
+    safe_print,
+)
 
-REPO = Path(r"F:\repos\hitech-os")
-
-OUT = REPO / "tools" / "graphviz" / "graphs"
-OUT.mkdir(parents=True, exist_ok=True)
-
-FILE_TYPES = (".ts", ".tsx", ".js", ".jsx")
-
-IMPORT_PATTERN = r'import\s+.*?\s+from\s+[\'"](.*?)[\'"]'
-
-DEV_CONSOLE_PATTERNS = [
+ANALYZER_PATTERNS = (
     "DevConsole",
     "PitchLayerDevTools",
     "PitchDevConsoleMount",
     "DevConsoleRegistry",
-    "use-dev-console-runtime"
-]
-
-VISUAL_PATTERNS = [
+    "use-dev-console-runtime",
+    "SceneStudio",
     "FloatingWindow",
-    "layout",
-    "panel",
-    "style",
-    "position",
-]
+    "PitchRuntimeBridge",
+)
 
-# ==============================
-# SCAN REPO
-# ==============================
 
-files = []
+def discover_prefixes(repo_path: Path) -> tuple[str, ...]:
+    config = GraphRunConfig(
+        repo_path=repo_path,
+        include_path_prefixes=(),
+        ignore_path_prefixes=(),
+        only_connected_folders=False,
+        only_connected_files=False,
+        open_index_on_finish=False,
+    )
 
-for root, dirs, filenames in os.walk(REPO):
+    matched_prefixes: set[str] = set()
+    matched_files: list[str] = []
 
-    if ".git" in root or "node_modules" in root:
-        continue
+    for file_path in iter_repo_files(config):
+        try:
+            text = read_text(file_path)
+        except Exception:
+            continue
 
-    for f in filenames:
+        if not any(pattern in text for pattern in ANALYZER_PATTERNS):
+            continue
 
-        if f.endswith(FILE_TYPES):
+        rel_file = file_path.relative_to(repo_path).as_posix()
+        matched_files.append(rel_file)
+        parts = rel_file.split("/")
+        if len(parts) >= 2:
+            matched_prefixes.add("/".join(parts[:2]))
+        elif parts:
+            matched_prefixes.add(parts[0])
 
-            files.append(Path(root) / f)
+    report = {
+        "patterns": list(ANALYZER_PATTERNS),
+        "matched_prefixes": sorted(matched_prefixes),
+        "matched_files_sample": matched_files[:250],
+        "matched_file_count": len(matched_files),
+    }
 
-print("Files scanned:", len(files))
+    report_path = repo_path / "tools" / "graphviz" / "dev_console_analyzer_report.json"
+    report_path.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+    safe_print(f"Analyzer report: {report_path}")
+    return tuple(sorted(matched_prefixes))
 
-# ==============================
-# DETECT SYSTEM
-# ==============================
 
-dev_console_files = []
-visual_files = []
+def main() -> int:
+    repo_path = DEFAULT_REPO_PATH
+    tools_root = repo_path / "tools" / "graphviz"
+    output_root = tools_root / "graphs_dev_console_analyzer"
 
-for file in files:
+    discovered_prefixes = discover_prefixes(repo_path)
+    if not discovered_prefixes:
+        safe_print("No se detectaron prefijos relacionados con Dev Console. No se generaron graphs.")
+        return 0
 
-    try:
-        text = file.read_text(encoding="utf-8")
-    except:
-        continue
+    config = GraphRunConfig(
+        repo_path=repo_path,
+        tools_root=tools_root,
+        output_root=output_root,
+        state_file=tools_root / ".graphviz_state_dev_console_analyzer.json",
+        manifest_file=tools_root / ".graphviz_manifest_dev_console_analyzer.json",
+        index_file=output_root / "index.html",
+        scope_index_file=output_root / "scope_index.html",
+        run_summary_file=output_root / "run_summary.json",
+        backup_root=DEFAULT_BACKUP_ROOT,
+        backup_prefix="dev_console_analyzer_backup",
+        output_label="dev_console_analyzer_graphs",
+        include_path_prefixes=discovered_prefixes,
+        only_connected_folders=True,
+        only_connected_files=True,
+        min_edge_count=1,
+        open_index_on_finish=True,
+        pause_on_exit=False,
+        extra_metadata={
+            "policy": "analyzer_discovered_prefixes_full_refresh",
+            "discovered_prefixes": list(discovered_prefixes),
+            "patterns": list(ANALYZER_PATTERNS),
+        },
+    )
 
-    for pattern in DEV_CONSOLE_PATTERNS:
+    safe_print("HITECH Dev Console analyzer graph refresh")
+    safe_print(f"Discovered prefixes: {', '.join(discovered_prefixes)}")
+    result = run_graph_refresh(config)
+    scope_result = build_scope_index(
+        repo_root=config.repo_path,
+        output_root=config.output_root,
+        manifest_path=config.manifest_file,
+        scope_index_path=config.scope_index_file,
+    )
 
-        if pattern in text:
-            dev_console_files.append(file)
-            break
+    safe_print(f"Folders generated: {result['folders_generated']}")
+    safe_print(f"Backup zip:        {result['backup_zip'] or '(no previous output to back up)'}")
+    safe_print(f"Index:             {result['index_path']}")
+    safe_print(f"Scoped index:      {scope_result['scope_index_path']}")
+    return 0
 
-    for pattern in VISUAL_PATTERNS:
 
-        if pattern in text:
-            visual_files.append(file)
-            break
-
-print("DevConsole related files:", len(dev_console_files))
-
-# ==============================
-# BUILD GRAPH
-# ==============================
-
-g = Digraph("DevConsoleSystem")
-g.attr(rankdir="LR")
-
-for file in dev_console_files:
-
-    rel = file.relative_to(REPO).as_posix()
-
-    g.node(rel)
-
-    try:
-        text = file.read_text(encoding="utf-8")
-    except:
-        continue
-
-    imports = re.findall(IMPORT_PATTERN, text)
-
-    for imp in imports:
-
-        if imp.startswith("."):
-
-            try:
-
-                target = (file.parent / imp).resolve()
-
-                if target.exists():
-
-                    rel_target = target.relative_to(REPO).as_posix()
-
-                    g.edge(rel, rel_target)
-
-            except:
-                pass
-
-# ==============================
-# OUTPUT
-# ==============================
-
-out_file = OUT / "dev_console_system"
-
-g.render(out_file.as_posix(), format="svg", cleanup=True)
-
-print("\nGraph generado:")
-print(out_file.with_suffix(".svg"))
-
-# ==============================
-# VISUAL CONFIG REPORT
-# ==============================
-
-print("\nPossible visual configuration files:\n")
-
-for f in visual_files[:20]:
-
-    print("•", f.relative_to(REPO))
-
-input("\nENTER para cerrar")
+if __name__ == "__main__":
+    raise SystemExit(main())

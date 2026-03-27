@@ -2,7 +2,7 @@
 
 import { useLayerFlags } from "@hitech/ui-kit";
 import { PITCH_VALUATION_ECONOMICS } from "@hitech/contracts";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 const VALUATION_BLUE = {
   start: "#78ccff",
@@ -72,6 +72,10 @@ function useCountUp(target: number, durationMs: number, motionEnabled: boolean):
 
 function formatUsd(value: number): string {
   return `$${value.toLocaleString("en-US")}`;
+}
+
+function formatUsdMillions(value: number): string {
+  return `$${(value / 1000000).toFixed(2)}M`;
 }
 
 export function ValuationTimelineVisual() {
@@ -270,24 +274,24 @@ export function ValuationEquityVisual() {
 
   const economics = PITCH_VALUATION_ECONOMICS;
   const totalCash = economics.deal.totalCashUsd;
-  const totalEffective = economics.deal.totalEffectiveUsd;
-  const boost = totalEffective - totalCash;
-  const equityAtLowCap = (totalEffective / economics.deal.capRangeUsd.low) * 100;
-  const equityAtHighCap = (totalEffective / economics.deal.capRangeUsd.high) * 100;
+  const projectedFreeProfitLow = 3821282;
+  const projectedFreeProfitHigh = 4378553;
+  const participation = 17;
+  const participationMonths = 36;
+  const estimatedLowPayout = Math.round(projectedFreeProfitLow * (participation / 100));
+  const estimatedHighPayout = Math.round(projectedFreeProfitHigh * (participation / 100));
+  const freeProfitRangeLabel = `${formatUsdMillions(projectedFreeProfitLow)} - ${formatUsdMillions(projectedFreeProfitHigh)}`;
 
   const radius = 44;
   const circumference = 2 * Math.PI * radius;
-  const cashArc = (totalCash / totalEffective) * circumference;
-  const boostArc = circumference - cashArc;
+  const participationArc = (participation / 100) * circumference;
+  const remainingArc = circumference - participationArc;
 
-  const cashAnimated = useCountUp(totalCash, 600, motionEnabled);
-  const effectiveAnimated = useCountUp(totalEffective, 750, motionEnabled);
+  const lowPayoutAnimated = useCountUp(estimatedLowPayout, 680, motionEnabled);
+  const highPayoutAnimated = useCountUp(estimatedHighPayout, 760, motionEnabled);
 
   const showTooltip = tooltipPinned || tooltipHover;
-  const percentageLabel = useMemo(
-    () => `${equityAtHighCap.toFixed(1)}% - ${equityAtLowCap.toFixed(1)}%`,
-    [equityAtHighCap, equityAtLowCap]
-  );
+  const participationLabel = `${participation}%`;
 
   return (
     <figure
@@ -297,18 +301,20 @@ export function ValuationEquityVisual() {
     >
       <div className="pitch-valuation-meta-strip">
         <span className="pitch-valuation-meta-item">
-          <span className="pitch-valuation-meta-label">Cash comprometido</span>
+          <span className="pitch-valuation-meta-label">CASH APORTADO</span>
           <span className="pitch-valuation-meta-value">{formatUsd(totalCash)}</span>
         </span>
         <span className="pitch-valuation-meta-item">
-          <span className="pitch-valuation-meta-label">Efectivo equity</span>
-          <span className="pitch-valuation-meta-value">{formatUsd(totalEffective)}</span>
+          <span className="pitch-valuation-meta-label">UTILIDAD LIBRE PROYECTADA</span>
+          <span className="pitch-valuation-meta-value">{freeProfitRangeLabel}</span>
         </span>
         <span className="pitch-valuation-meta-item">
-          <span className="pitch-valuation-meta-label">Rango de equity</span>
-          <span className="pitch-valuation-meta-value">{percentageLabel}</span>
+          <span className="pitch-valuation-meta-label">PARTICIPACIÓN</span>
+          <span className="pitch-valuation-meta-value">{participationLabel}</span>
         </span>
       </div>
+
+      <p className="m-0 text-xs">Escenario sobre utilidad libre proyectada</p>
 
       <div className="pitch-valuation-equity-layout">
         <div className="pitch-valuation-equity-ring">
@@ -316,7 +322,7 @@ export function ValuationEquityVisual() {
             viewBox="0 0 120 120"
             className="pitch-valuation-svg pitch-valuation-svg--premium"
             role="img"
-            aria-label="Meter de equity"
+            aria-label="Medidor de participación Guardian"
           >
             <defs>
               <linearGradient id="pitch-equity-cash-gradient" x1="16" y1="16" x2="104" y2="104" gradientUnits="userSpaceOnUse">
@@ -336,7 +342,7 @@ export function ValuationEquityVisual() {
                 stroke="url(#pitch-equity-cash-gradient)"
                 strokeWidth="11.5"
                 strokeLinecap="round"
-                strokeDasharray={`${cashArc} ${circumference}`}
+                strokeDasharray={`${participationArc} ${circumference}`}
                 className={motionEnabled ? "pitch-draw-circle" : undefined}
               />
               <circle
@@ -345,33 +351,47 @@ export function ValuationEquityVisual() {
                 stroke="url(#pitch-equity-boost-gradient)"
                 strokeWidth="11.5"
                 strokeLinecap="round"
-                strokeDasharray={`${boostArc} ${circumference}`}
-                strokeDashoffset={-cashArc}
+                strokeDasharray={`${remainingArc} ${circumference}`}
+                strokeDashoffset={-participationArc}
                 className={motionEnabled ? "pitch-draw-circle" : undefined}
               />
             </g>
-            <text x="60" y="55" textAnchor="middle" className="pitch-valuation-node-label">Equity</text>
-            <text x="60" y="73" textAnchor="middle" className="pitch-valuation-node-copy">{percentageLabel}</text>
+            <text x="60" y="55" textAnchor="middle" className="pitch-valuation-node-label">GUARDIAN</text>
+            <text x="60" y="73" textAnchor="middle" className="pitch-valuation-node-copy">{participationLabel}</text>
           </svg>
         </div>
 
         <div className="pitch-valuation-equity-metrics text-sm text-[color:var(--pitch-ink)]">
           <div className="pitch-valuation-equity-metric">
-            <p className="m-0 text-[10px] uppercase tracking-[0.08em] text-[color:var(--pitch-muted)]">Cash</p>
-            <p className="m-0 text-base font-semibold text-[color:var(--pitch-neutral-ink-950)]">{formatUsd(cashAnimated)}</p>
+            <p className="m-0 text-[10px] uppercase tracking-[0.08em] text-[color:var(--pitch-muted)]">
+              PAGO ESTIMADO BAJO
+            </p>
+            <p className="m-0 text-base font-semibold text-[color:var(--pitch-neutral-ink-950)]">
+              {formatUsd(lowPayoutAnimated)}
+            </p>
           </div>
           <div className="pitch-valuation-equity-metric">
-            <p className="m-0 text-[10px] uppercase tracking-[0.08em] text-[color:var(--pitch-muted)]">Efectivo equity</p>
-            <p className="m-0 text-base font-semibold text-[color:var(--pitch-neutral-ink-950)]">{formatUsd(effectiveAnimated)}</p>
+            <p className="m-0 text-[10px] uppercase tracking-[0.08em] text-[color:var(--pitch-muted)]">
+              PAGO ESTIMADO ALTO
+            </p>
+            <p className="m-0 text-base font-semibold text-[color:var(--pitch-neutral-ink-950)]">
+              {formatUsd(highPayoutAnimated)}
+            </p>
           </div>
           <div className="pitch-valuation-equity-metric">
-            <p className="m-0 text-[10px] uppercase tracking-[0.08em] text-[color:var(--pitch-muted)]">Cap sensitivity</p>
+            <p className="m-0 text-[10px] uppercase tracking-[0.08em] text-[color:var(--pitch-muted)]">
+              PLAZO
+            </p>
             <p className="m-0 text-sm font-medium text-[color:var(--pitch-neutral-ink-950)]">
-              Cap 6M → {equityAtHighCap.toFixed(1)}% | Cap 4M → {equityAtLowCap.toFixed(1)}%
+              {participationMonths} meses
             </p>
           </div>
         </div>
       </div>
+
+      <p className="m-0 text-xs">
+        Participación económica limitada al contrato Guardian. No implica equity permanente en la empresa.
+      </p>
 
       <button
         type="button"
@@ -383,8 +403,8 @@ export function ValuationEquityVisual() {
 
       {showTooltip ? (
         <figcaption className="pitch-equity-tooltip">
-          {formatUsd(totalEffective)} = {formatUsd(totalCash)} cash + {formatUsd(boost)} boost de conversión.
-          Equity = efectivo/cap.
+          {formatUsd(projectedFreeProfitLow)} x {participation}% = {formatUsd(estimatedLowPayout)}.{" "}
+          {formatUsd(projectedFreeProfitHigh)} x {participation}% = {formatUsd(estimatedHighPayout)}.
         </figcaption>
       ) : null}
     </figure>

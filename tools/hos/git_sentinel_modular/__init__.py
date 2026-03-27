@@ -1,5 +1,3 @@
-from __future__ import annotations
+"""git_sentinel_modular package."""
 
-__all__ = [
-    "shared",
-]
+__version__ = "0.1.0"

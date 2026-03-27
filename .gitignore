@@ -166,8 +166,12 @@ tools/_local/git_sentinel/
 # Graphviz generated artifacts
 
 tools/graphviz/graphs/**
-tools/graphviz/.graphviz_manifest.json
-tools/graphviz/.graphviz_state.json
+tools/graphviz/graphs_dev_console/**
+tools/graphviz/graphs_dev_console_runtime/**
+tools/graphviz/graphs_dev_console_analyzer/**
+tools/graphviz/.graphviz_manifest*.json
+tools/graphviz/.graphviz_state*.json
+tools/graphviz/dev_console_analyzer_report.json
 tools/graphviz/.repo_analyzer_settings.json
 
 # Keep repo analyzer tracked

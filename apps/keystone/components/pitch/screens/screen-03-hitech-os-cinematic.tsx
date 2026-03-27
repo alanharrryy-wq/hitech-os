@@ -31,6 +31,12 @@ const CATEGORY_SPREAD_PERCENT: Record<string, number> = {
   vertical: 83
 };
 
+const PLATFORM_OUTCOME_CHIPS = [
+  { icon: "🛡", label: "Reduced operational risk" },
+  { icon: "⚡", label: "Faster response time" },
+  { icon: "✓", label: "Audit-ready evidence" }
+] as const;
+
 function modeLabel(mode: RevealMode): string {
   if (mode === "control") {
     return "Control";
@@ -143,9 +149,12 @@ export function Screen03HiTechOsCinematic({ className }: Screen03HiTechOsCinemat
             <p className="pitch-hitech-story-kicker">DIGITAL MOAT</p>
             <p className="pitch-hitech-story-quote">“{model.strongLine}”</p>
             <div className="pitch-hitech-story-tags" aria-label="Platform strengths">
-              {model.derived.capabilityChips.slice(0, 3).map((chip) => (
-                <span key={chip} className="pitch-hitech-story-tag">
-                  {chip}
+              {PLATFORM_OUTCOME_CHIPS.map((chip) => (
+                <span key={chip.label} className="pitch-hitech-story-tag">
+                  <span className="pitch-hitech-story-tag-icon" aria-hidden>
+                    {chip.icon}
+                  </span>
+                  {chip.label}
                 </span>
               ))}
             </div>

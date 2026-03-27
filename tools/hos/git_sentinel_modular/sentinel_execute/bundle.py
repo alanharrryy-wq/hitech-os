@@ -1,101 +1,73 @@
-from pathlib import Path
-import time
+from __future__ import annotations
 
+from pathlib import Path
+
+from .backup import create_backup
 from .executor import execute_plan
-from .manifest_io import write_json
 from .plan import build_execution_plan
-from .policy_loader import load_policy
+from .policy_loader import default_policy
 from .post_smoke import run_post_execution_smoke
 from .report import write_execution_reports
 from .rollback import build_rollback_instructions
-from .target_snapshot import snapshot_target_paths
+from .workspace import load_workspace_context
 
-def build_execution_bundle(workspace_root, target_root, policy_path=None):
-    policy = load_policy(policy_path)
-    plan_payload = build_execution_plan(workspace_root, target_root, policy)
+def _final_status(result: dict) -> str:
+    return result["status"]
 
-    workspace_root = Path(workspace_root)
-    execution_dir = workspace_root / policy.get("execution_dir_name", "execution_bundle")
+def build_execution_bundle(
+    workspace_root: str | Path,
+    target_root: str | Path,
+    policy: dict | None = None,
+    *,
+    plan_only: bool = True,
+) -> dict:
+    context = load_workspace_context(workspace_root)
+    plan = build_execution_plan(context["diff_manifest"], target_root, context["candidate_root"], policy=policy or default_policy())
+    execution_dir = Path(workspace_root) / "execution_bundle"
     execution_dir.mkdir(parents=True, exist_ok=True)
-
-    touched = [x["path"] for x in plan_payload.get("actions", [])]
-    pre_snapshot = snapshot_target_paths(target_root, touched)
-    write_json(execution_dir / "target_snapshot.before.json", pre_snapshot)
-    write_json(execution_dir / "execution_plan.json", plan_payload)
-
-    return {
-        "execution_dir": execution_dir,
-        "plan_payload": plan_payload,
-        "pre_snapshot": pre_snapshot,
+    backup_dir = create_backup(target_root, execution_dir)
+    rollback = build_rollback_instructions(str(backup_dir), str(target_root))
+    payload = {
+        "execution_dir": str(execution_dir),
+        "blocked": plan["blocked"],
+        "planned_actions": len(plan["actions"]),
+        "counts": plan["counts"],
+        "rollback": rollback,
+        "mode": "plan_only" if plan_only else "execute",
     }
+    write_execution_reports(execution_dir, {
+        "status": "planned_only" if plan_only else "ready_to_execute",
+        "counts": {"planned_actions": len(plan["actions"])},
+    })
+    return payload
 
-def execute_manual_promotion(workspace_root, target_root, policy_path=None, *, do_execute=False, confirm_token=None):
-    policy = load_policy(policy_path)
-    bundle = build_execution_bundle(workspace_root, target_root, policy_path=policy_path)
-
-    execution_dir = bundle["execution_dir"]
-    plan_payload = bundle["plan_payload"]
-
-    execution_result, backup_manifest = execute_plan(
-        plan_payload=plan_payload,
-        target_root=target_root,
-        execution_dir=execution_dir,
-        policy=policy,
-        do_execute=do_execute,
-        confirm_token=confirm_token,
-    )
-
-    post_smoke_payload = run_post_execution_smoke(
-        target_root=target_root,
-        execution_result=execution_result,
-        policy=policy,
-    )
-
-    rollback_payload = build_rollback_instructions(
-        plan_payload=plan_payload,
-        execution_result=execution_result,
-        backup_manifest=backup_manifest,
-    )
-
-    post_snapshot = snapshot_target_paths(target_root, [x["path"] for x in plan_payload.get("actions", [])])
-    write_json(execution_dir / "target_snapshot.after.json", post_snapshot)
-    if backup_manifest is not None:
-        write_json(execution_dir / "backup_manifest.copy.json", backup_manifest)
-
-    report_paths = write_execution_reports(
-        execution_dir=execution_dir,
-        plan_payload=plan_payload,
-        execution_result=execution_result,
-        post_smoke_payload=post_smoke_payload,
-        rollback_payload=rollback_payload,
-    )
-
-    summary = {
-        "status": _final_status(execution_result, post_smoke_payload),
-        "mode": execution_result.get("mode"),
-        "run_id": plan_payload.get("run_id"),
-        "target_root": str(Path(target_root)),
+def execute_manual_promotion(
+    workspace_root: str | Path,
+    target_root: str | Path,
+    *,
+    do_execute: bool = False,
+    confirm_token: str | None = None,
+) -> dict:
+    if do_execute and confirm_token != "EXECUTE_MANUAL_PROMOTION":
+        raise ValueError("Missing or invalid confirm token.")
+    context = load_workspace_context(workspace_root)
+    execution_dir = Path(workspace_root) / "execution_bundle"
+    execution_dir.mkdir(parents=True, exist_ok=True)
+    plan = build_execution_plan(context["diff_manifest"], target_root, context["candidate_root"], policy=default_policy())
+    result = execute_plan(plan, target_root, do_execute=do_execute)
+    smoke = run_post_execution_smoke(target_root) if do_execute else {"status": "skipped"}
+    payload = {
+        "status": _final_status(result),
+        "mode": "manual_execute" if do_execute else "dry_run",
+        "run_id": Path(workspace_root).name,
+        "target_root": str(target_root),
         "execution_dir": str(execution_dir),
         "counts": {
-            "planned_actions": plan_payload.get("counts", {}).get("actions", 0),
-            "applied": execution_result.get("counts", {}).get("applied", 0),
-            "post_smoke_failures": post_smoke_payload.get("counts", {}).get("failures", 0),
-            "post_smoke_warnings": post_smoke_payload.get("counts", {}).get("warnings", 0),
+            "planned_actions": len(plan["actions"]),
+            "applied": result["applied"],
+            "post_smoke_failures": 0 if smoke["status"] in {"ok", "skipped"} else 1,
+            "post_smoke_warnings": 0,
         },
     }
-    write_json(execution_dir / "execution_summary.json", summary)
-
-    return {
-        "execution_dir": execution_dir,
-        "summary": summary,
-        "report_paths": report_paths,
-    }
-
-def _final_status(execution_result, post_smoke_payload):
-    if execution_result.get("mode") == "blocked_before_execution":
-        return "blocked"
-    if post_smoke_payload.get("failures"):
-        return "needs_attention"
-    if execution_result.get("mode") == "dry_run":
-        return "planned_only"
-    return "executed"
+    write_execution_reports(execution_dir, payload)
+    return payload

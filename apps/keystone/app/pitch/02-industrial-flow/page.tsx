@@ -1,5 +1,7 @@
 import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "@hitech/contracts";
 import { LayerFlagsProvider } from "@hitech/ui-kit";
+import { headers } from "next/headers";
+import { notFound } from "next/navigation";
 import { PitchShell, ScreenIndustrialFlow } from "../../../components/pitch";
 import { buildPitchShellFrameModel } from "../../../components/pitch/view-model/pitch-shell-model";
 import {
@@ -10,7 +12,21 @@ import {
 
 export const dynamic = "force-dynamic";
 
+function isCloudflareEngineHost(host: string): boolean {
+  return host.toLowerCase().includes("engine.hitechrts.com");
+}
+
 export default async function PitchIndustrialFlowPage({ searchParams }: PitchSearchParamsProps) {
+  try {
+    const requestHeaders = await headers();
+    const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "";
+    if (host && isCloudflareEngineHost(host)) {
+      notFound();
+    }
+  } catch {
+    // Ignore header access failures outside request scope.
+  }
+
   const resolved = resolvePitchLayerFlags(await resolvePitchSearchParams(searchParams));
   const deck = PITCH_DECK_FIXTURE;
   const screen = PITCH_SCREEN_FIXTURES["02-industrial-flow"];

@@ -1,53 +1,33 @@
-from pathlib import Path
-import json
+from __future__ import annotations
 
-FORBIDDEN_PARTS = {
-    "_local",
-    ".git",
-    "__pycache__",
-}
+from typing import Any
 
-FORBIDDEN_SUFFIXES = {
-    ".tmp",
-    ".bak",
-}
+DEFAULT_MAX_TOUCHED = 250
 
-def evaluate_promotion_gate(candidate_root, diff_payload: dict) -> dict:
-    candidate_root = Path(candidate_root)
-
-    violations = []
-
-    for path in candidate_root.rglob("*"):
-        rel = path.relative_to(candidate_root)
-
-        if any(part in FORBIDDEN_PARTS for part in rel.parts):
-            violations.append({
-                "type": "forbidden_path_part",
-                "path": str(rel).replace("\\", "/"),
-            })
-
-        if path.is_file() and path.suffix.lower() in FORBIDDEN_SUFFIXES:
-            violations.append({
-                "type": "forbidden_suffix",
-                "path": str(rel).replace("\\", "/"),
-            })
-
-    total_touched = diff_payload.get("counts", {}).get("total_touched", 0)
-
+def evaluate_promotion_gate(
+    diff_manifest: dict[str, Any],
+    apply_result: dict[str, Any] | None = None,
+    *,
+    max_changed: int = DEFAULT_MAX_TOUCHED,
+    allow_deletes: bool = False,
+) -> dict[str, Any]:
+    counts = diff_manifest.get("counts", {})
+    reasons: list[str] = []
+    if counts.get("total_touched", 0) > max_changed:
+        reasons.append("too_many_changes")
+    if not allow_deletes and counts.get("removed", 0) > 0:
+        reasons.append("deletes_require_review")
+    if apply_result:
+        manifest = apply_result.get("manifest", apply_result)
+        if manifest.get("rejected", 0) > 0:
+            reasons.append("overlay_rejections_present")
+    allowed = not reasons
     return {
-        "allowed": len(violations) == 0,
-        "violations": violations,
-        "total_touched": total_touched,
-        "promotion_mode": "manual_only",
-        "notes": [
-            "Shadow foundation never promotes automatically.",
-            "Manual review is required before any real apply path exists.",
-        ],
+        "allowed": allowed,
+        "status": "ready_for_manual_review" if allowed else "blocked",
+        "reasons": reasons,
     }
 
-def assert_promotion_ready(gate_payload: dict):
-    if not gate_payload.get("allowed", False):
-        raise RuntimeError(
-            "Promotion gate blocked candidate changes: "
-            + json.dumps(gate_payload.get("violations", []), ensure_ascii=False)
-        )
+def assert_promotion_ready(gate: dict[str, Any]) -> None:
+    if not gate.get("allowed"):
+        raise RuntimeError(f"Promotion gate blocked: {gate.get('reasons', [])}")

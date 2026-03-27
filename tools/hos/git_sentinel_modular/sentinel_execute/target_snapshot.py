@@ -1,46 +1,17 @@
-from pathlib import Path
+from __future__ import annotations
+
 import hashlib
+from pathlib import Path
 
-from .path_guard import resolve_target_path
+def _sha256(path: str | Path) -> str:
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
-def snapshot_target_paths(target_root, relative_paths):
-    records = {}
-    for relpath in sorted(set(relative_paths)):
-        target = resolve_target_path(target_root, relpath)
-        records[relpath] = _file_state(target)
-    return records
+def _file_state(path: str | Path) -> dict:
+    file_path = Path(path)
+    return {"sha256": _sha256(file_path), "size": file_path.stat().st_size}
 
-def _file_state(path):
-    path = Path(path)
-    if not path.exists():
-        return {
-            "exists": False,
-            "type": "missing",
-            "size": 0,
-            "sha256": None,
-        }
-
-    if path.is_dir():
-        return {
-            "exists": True,
-            "type": "dir",
-            "size": 0,
-            "sha256": None,
-        }
-
-    return {
-        "exists": True,
-        "type": "file",
-        "size": path.stat().st_size,
-        "sha256": _sha256(path),
-    }
-
-def _sha256(path):
-    h = hashlib.sha256()
-    with open(path, "rb") as f:
-        while True:
-            chunk = f.read(1024 * 1024)
-            if not chunk:
-                break
-            h.update(chunk)
-    return h.hexdigest()
+def snapshot_target_paths(target_root: str | Path) -> dict[str, dict]:
+    root = Path(target_root)
+    if not root.exists():
+        return {}
+    return {file_path.relative_to(root).as_posix(): _file_state(file_path) for file_path in root.rglob("*") if file_path.is_file()}

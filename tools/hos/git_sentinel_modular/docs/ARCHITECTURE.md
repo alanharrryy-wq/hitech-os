@@ -1,33 +1,20 @@
-# Architecture Target
+# Arquitectura vigente
 
-## Goal
+## Dueño canónico
+`operations/` es la fachada interna canónica del paquete. No reemplaza la lógica de dominio ya existente, pero sí concentra las preguntas de runtime, supervisión, observabilidad y estado combinado.
 
-Split the flat legacy package into domain folders with a clear rule:
+## Contratos nuevos
+- `shared/runtime_paths.py`: única verdad de rutas, runtime y salidas
+- `shared/status_payloads.py`: payloads canónicos para estado, supervisor, scheduler y health summary
+- `plugins/`: seam mínima para integraciones externas futuras
 
-- `core/` owns orchestration
-- `scanning/` owns repo scanning and artifact detection
-- `security/` owns secrets and scanner quality
-- `learning/` owns historical memory
-- `analysis/` owns prediction and scoring
-- `remediation/` owns cleanup and repair
-- `operations/` owns scheduling and runtime control
-- `reporting/` owns alerts, reports and serialized outputs
-- `app/` owns dashboard, CLI and presentation
-- `shared/` owns config, git helpers and cross-cutting utilities
+## Pipeline canónico
+1. `sentinel_shadow.prepare_shadow_run`
+2. `sentinel_shadow_apply.run_shadow_apply_engine`
+3. `sentinel_promotion.build_promotion_bundle`
+4. `sentinel_cutover.build_cutover_readiness_bundle`
+5. `sentinel_execute.build_execution_bundle`
+6. `sentinel_execute.execute_manual_promotion`
 
-## Migration order
-
-1. Freeze the live runtime and keep using `tools/hos/git_sentinel` as source of truth.
-2. Move shared contracts first: config, git helpers, utils, telemetry, false positives.
-3. Move scanners and security modules.
-4. Move learning and prediction.
-5. Move cleanup/repair behind explicit guards.
-6. Move dashboard last, after interfaces are stable.
-
-## Definition of done per module
-
-- public inputs/outputs documented
-- side effects documented
-- unit test placeholders replaced with real tests
-- compatibility shim added if the legacy runtime still imports it
-- CLI and dashboard paths still work in scan-only mode
+## Frontera explícita
+`engine_guardian` queda fuera del paquete. Aquí solo existe el seam de plugins y la superficie limpia para conectarlo después.

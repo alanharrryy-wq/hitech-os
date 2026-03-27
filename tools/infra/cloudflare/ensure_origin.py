@@ -59,10 +59,11 @@ def _is_port_open(port: int) -> bool:
 def _launch_keystone_process(repo_root: Path, port: int, runtime_log_path: Path) -> int:
     ensure_directory(runtime_log_path.parent)
     runtime_err_path = runtime_log_path.with_suffix(".err.log")
-    startup_cmd = (
-        f"Set-Location -LiteralPath {_ps_single_quote(str(repo_root))}; "
-        f"pnpm --filter @hitech/keystone exec next start -p {port}"
-    )
+    if port == DEFAULT_ORIGIN_PORT:
+        launch_cmd = "pnpm -C apps/keystone start"
+    else:
+        launch_cmd = f"pnpm -C apps/keystone exec next start -- --port {port}"
+    startup_cmd = f"Set-Location -LiteralPath {_ps_single_quote(str(repo_root))}; {launch_cmd}"
     ps_command = (
         f"$argList = @('-NoProfile','-ExecutionPolicy','Bypass','-Command',{_ps_single_quote(startup_cmd)}); "
         f"$p = Start-Process -FilePath 'pwsh' -ArgumentList $argList "
@@ -127,7 +128,7 @@ def ensure_keystone_origin(
                 "-ExecutionPolicy",
                 "Bypass",
                 "-Command",
-                f"Set-Location -LiteralPath {_ps_single_quote(str(repo_root))}; pnpm --filter @hitech/keystone build",
+                f"Set-Location -LiteralPath {_ps_single_quote(str(repo_root))}; pnpm -C apps/keystone build",
             ],
             timeout=1800,
             action_name="keystone_build",
@@ -142,15 +143,29 @@ def ensure_keystone_origin(
     existing_pid = int(state.get("pid", 0) or 0)
     now = time.time()
     should_launch = True
-    if existing_pid > 0 and _pid_alive(existing_pid):
-        # Existing process still alive; likely warming up.
+    port_open = _is_port_open(port)
+    if port_open:
         should_launch = False
-    if now - last_launch_epoch < launch_cooldown_seconds:
+    elif now - last_launch_epoch < launch_cooldown_seconds and not (existing_pid > 0 and _pid_alive(existing_pid)):
         should_launch = False
 
     launched = False
     pid = existing_pid
     if should_launch:
+        if existing_pid > 0 and _pid_alive(existing_pid):
+            kill_old = run_logged(
+                ctx,
+                ["taskkill", "/PID", str(existing_pid), "/F"],
+                timeout=30,
+                action_name="keystone_kill_stale_pid",
+            )
+            if kill_old.returncode != 0:
+                ctx.action(
+                    "keystone_kill_stale_pid",
+                    "warning",
+                    {"pid": existing_pid, "stderr": kill_old.stderr.strip() or kill_old.stdout.strip() or "n/a"},
+                )
+            time.sleep(1)
         try:
             pid = _launch_keystone_process(repo_root, port, runtime_log_path)
             launched = True

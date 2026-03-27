@@ -1,14 +1,22 @@
+from __future__ import annotations
+
+import json
 import traceback
 from pathlib import Path
-import time
+from typing import Any
 
-def capture_failure(runtime_root, exc):
-    snapshot_dir = Path(runtime_root) / "failures"
-    snapshot_dir.mkdir(parents=True, exist_ok=True)
+from ..shared.status_payloads import utc_now_iso
 
-    name = f"failure_{int(time.time())}.txt"
-    path = snapshot_dir / name
-
-    with open(path, "w", encoding="utf-8") as f:
-        f.write("SENTINEL FAILURE SNAPSHOT\n")
-        f.write(traceback.format_exc())
+def capture_failure(output_dir: str | Path, exc: BaseException, context: dict[str, Any] | None = None) -> Path:
+    root = Path(output_dir)
+    root.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "captured_at": utc_now_iso(),
+        "error_type": type(exc).__name__,
+        "message": str(exc),
+        "context": context or {},
+        "traceback": traceback.format_exception(type(exc), exc, exc.__traceback__),
+    }
+    target = root / f"failure_snapshot_{type(exc).__name__}.json"
+    target.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+    return target

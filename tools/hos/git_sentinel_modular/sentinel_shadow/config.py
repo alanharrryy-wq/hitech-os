@@ -1,21 +1,14 @@
+from __future__ import annotations
+
 from pathlib import Path
-import os
+
+from ..shared.runtime_paths import build_runtime_paths
 
 def runtime_root() -> Path:
-    return Path(
-        os.getenv(
-            "HITECH_SENTINEL_RUNTIME",
-            r"C:\Users\alanh\AppData\Local\HITECH-OS\git_sentinel\runtime",
-        )
-    )
+    return build_runtime_paths().ensure().runtime_root
 
 def modular_root() -> Path:
-    return Path(
-        os.getenv(
-            "HITECH_SENTINEL_MODULAR_ROOT",
-            r"F:\repos\hitech-os\tools\hos\git_sentinel_modular",
-        )
-    )
+    return build_runtime_paths().package_root
 
 def shadow_root() -> Path:
-    return runtime_root() / "shadow_mode"
+    return build_runtime_paths().ensure().shadow_root

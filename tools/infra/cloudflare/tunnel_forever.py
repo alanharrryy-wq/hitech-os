@@ -134,6 +134,26 @@ def run_guard_only(
     except TunnelSetupError as err:
         origin_status = {"origin_reachable": False, "error": str(err)}
 
+    origin_healthy = bool(origin_status.get("origin_reachable", False))
+    if not origin_healthy:
+        try:
+            origin_status = ensure_keystone_origin(
+                ctx,
+                repo_root=repo_root,
+                origin_url=origin_url,
+                state_path=ctx.log_dir / "keystone_origin_state.json",
+                runtime_log_path=ctx.log_dir / "keystone_origin_runtime.log",
+                wait_seconds=60,
+                launch_cooldown_seconds=0,
+            )
+        except TunnelSetupError as err:
+            origin_status = {
+                "origin_reachable": False,
+                "error": str(err),
+                "forced_relaunch_attempted": True,
+            }
+    origin_healthy = bool(origin_status.get("origin_reachable", False))
+
     try:
         connections_count = get_tunnel_connections_count(ctx, tunnel_name)
         connection_error = ""
@@ -141,11 +161,12 @@ def run_guard_only(
         connections_count = 0
         connection_error = str(err)
 
-    healthy = connections_count > 0
+    healthy = connections_count > 0 and origin_healthy
     if healthy:
         payload = {
             "guard_ok": True,
             "connections_count": connections_count,
+            "origin_healthy": origin_healthy,
             "restarted": False,
             "reason": "",
             "origin": origin_status,
@@ -153,24 +174,33 @@ def run_guard_only(
         ctx.action("guard_check", "ok", payload)
         return payload
 
-    reason = "guard: no active tunnel connections"
-    if connection_error:
-        reason = f"{reason}; info_error={connection_error}"
-    restart_result = restart_cloudflared_service(
-        ctx,
-        reason=reason,
-        cooldown_state_path=cooldown_state_path,
-        cooldown_seconds=cooldown_seconds,
-        allow_elevation=True,
-    )
+    if connections_count <= 0:
+        reason = "guard: no active tunnel connections"
+        if connection_error:
+            reason = f"{reason}; info_error={connection_error}"
+        restart_result = restart_cloudflared_service(
+            ctx,
+            reason=reason,
+            cooldown_state_path=cooldown_state_path,
+            cooldown_seconds=cooldown_seconds,
+            allow_elevation=True,
+        )
+    else:
+        restart_result = {
+            "restarted": False,
+            "cooldown_active": False,
+            "reason": "guard: origin unreachable while tunnel connected",
+        }
     try:
         after_count = get_tunnel_connections_count(ctx, tunnel_name)
     except TunnelSetupError:
         after_count = 0
+    final_origin_healthy = bool(origin_status.get("origin_reachable", False))
     payload = {
-        "guard_ok": after_count > 0,
+        "guard_ok": after_count > 0 and final_origin_healthy,
         "connections_count_before": connections_count,
         "connections_count_after": after_count,
+        "origin_healthy": final_origin_healthy,
         "origin": origin_status,
         **restart_result,
     }
