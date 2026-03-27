@@ -4,7 +4,7 @@ import zipfile
 from pathlib import Path
 from typing import Any
 
-from .common import Issue, extract_zip_to_temp, normalize_relpath, read_json, sha256_file
+from .common import Issue, extract_zip_to_temp, is_safe_relative_path, normalize_relpath, read_json, sha256_file
 from .config import load_path_policies
 from .validators import validate_against_patterns, validate_payload_items, validate_required_fields
 
@@ -18,8 +18,18 @@ REQUIRED_BUNDLE_FILES = [
 
 def inspect_bundle_structure(zip_path: Path) -> list[Issue]:
     issues: list[Issue] = []
+    names: set[str] = set()
     with zipfile.ZipFile(zip_path, "r") as zf:
-        names = {normalize_relpath(name) for name in zf.namelist()}
+        for info in zf.infolist():
+            normalized = normalize_relpath(info.filename)
+            if info.is_dir():
+                normalized = normalized.rstrip("/")
+                if not normalized:
+                    continue
+            if not is_safe_relative_path(normalized):
+                issues.append(Issue("unsafe_archive_member", f"Bundle contains unsafe archive path '{info.filename}'", path=normalized))
+                continue
+            names.add(normalized)
     for required in REQUIRED_BUNDLE_FILES:
         if required not in names:
             issues.append(Issue("missing_bundle_file", f"Bundle is missing '{required}'"))
@@ -31,7 +41,6 @@ def inspect_bundle_structure(zip_path: Path) -> list[Issue]:
 
 def validate_bundle_zip(zip_path: Path, repo_root: Path) -> dict[str, Any]:
     path_policies = load_path_policies(repo_root)
-    extracted = extract_zip_to_temp(zip_path)
     result: dict[str, Any] = {
         "bundle_path": str(zip_path),
         "schema_errors": [],
@@ -43,6 +52,12 @@ def validate_bundle_zip(zip_path: Path, repo_root: Path) -> dict[str, Any]:
     }
     structure_issues = inspect_bundle_structure(zip_path)
     result["structure_errors"] = [issue.to_dict() for issue in structure_issues]
+    try:
+        extracted = extract_zip_to_temp(zip_path)
+    except ValueError as exc:
+        result["structure_errors"].append({"code": "unsafe_archive", "message": str(exc)})
+        return result
+
     manifest_path = extracted / "bundle_manifest.json"
     report_path = extracted / "package_report.json"
     if not manifest_path.exists() or not report_path.exists():
@@ -104,7 +119,11 @@ def validate_bundle_zip(zip_path: Path, repo_root: Path) -> dict[str, Any]:
     if payload_dir.exists():
         for file_path in sorted(payload_dir.rglob("*")):
             if file_path.is_file():
-                payload_paths.append(normalize_relpath(file_path.relative_to(payload_dir)))
+                rel = normalize_relpath(file_path.relative_to(payload_dir))
+                if not is_safe_relative_path(rel):
+                    result["payload_mismatches"].append({"code": "invalid_payload_path", "path": rel})
+                    continue
+                payload_paths.append(rel)
     declared_paths = [normalize_relpath(item["repo_path"]) for item in manifest.get("payload_files", []) if isinstance(item, dict) and "repo_path" in item]
 
     if not policy:
@@ -125,6 +144,8 @@ def validate_bundle_zip(zip_path: Path, repo_root: Path) -> dict[str, Any]:
         if not isinstance(item, dict) or "repo_path" not in item:
             continue
         rel = normalize_relpath(item["repo_path"])
+        if not is_safe_relative_path(rel):
+            continue
         file_path = payload_dir / rel
         if file_path.exists():
             actual_hash = sha256_file(file_path)

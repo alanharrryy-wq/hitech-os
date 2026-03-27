@@ -19,6 +19,15 @@ class ManifestValidationTests(unittest.TestCase):
         issues = validate_payload_items([{}])
         self.assertTrue(any(item.code == "missing_field" for item in issues))
 
+    def test_payload_item_rejects_traversal_path(self):
+        issues = validate_payload_items([{"repo_path": "../escape.txt", "sha256": "a" * 64, "size_bytes": 1}])
+        self.assertTrue(any(item.code == "invalid_path" for item in issues))
+
+    def test_payload_item_rejects_invalid_hash_and_size(self):
+        issues = validate_payload_items([{"repo_path": "safe/path.txt", "sha256": "zz", "size_bytes": -1}])
+        self.assertTrue(any(item.code == "invalid_sha256" for item in issues))
+        self.assertTrue(any(item.code == "invalid_size" for item in issues))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import Any
-from .common import Issue, match_any, normalize_relpath
+from .common import Issue, is_safe_relative_path, match_any, normalize_relpath
 
 
 TYPE_MAP = {
@@ -34,9 +34,18 @@ def validate_payload_items(payload_items: list[dict[str, Any]]) -> list[Issue]:
             if key not in item:
                 issues.append(Issue("missing_field", f"payload_files[{index}] missing '{key}'"))
         if "repo_path" in item:
-            path = normalize_relpath(item["repo_path"])
-            if path.startswith("/") or path.startswith("../"):
-                issues.append(Issue("invalid_path", "repo_path must be repo-relative", path=path))
+            if not isinstance(item["repo_path"], str):
+                issues.append(Issue("wrong_type", f"payload_files[{index}].repo_path must be string"))
+            else:
+                path = normalize_relpath(item["repo_path"])
+                if not is_safe_relative_path(path):
+                    issues.append(Issue("invalid_path", "repo_path must be a safe repo-relative path", path=path))
+        if "sha256" in item and isinstance(item["sha256"], str):
+            if len(item["sha256"]) != 64 or any(ch not in "0123456789abcdef" for ch in item["sha256"].lower()):
+                issues.append(Issue("invalid_sha256", f"payload_files[{index}].sha256 must be a lowercase or uppercase hex sha256 digest"))
+        if "size_bytes" in item:
+            if not isinstance(item["size_bytes"], int) or item["size_bytes"] < 0:
+                issues.append(Issue("invalid_size", f"payload_files[{index}].size_bytes must be a non-negative integer"))
     return issues
 
 

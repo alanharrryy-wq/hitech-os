@@ -8,7 +8,7 @@ import tempfile
 import zipfile
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 from typing import Any, Iterable
 
 
@@ -52,8 +52,51 @@ def sha256_file(path: Path) -> str:
 
 def normalize_relpath(path: str | Path) -> str:
     value = str(path).replace("\\", "/")
-    value = value.lstrip("./")
+    while value.startswith("./"):
+        value = value[2:]
+    while "//" in value:
+        value = value.replace("//", "/")
     return value
+
+
+def is_safe_relative_path(path: str | Path) -> bool:
+    normalized = normalize_relpath(path)
+    if not normalized or "\x00" in normalized:
+        return False
+    if normalized.endswith("/"):
+        normalized = normalized.rstrip("/")
+        if not normalized:
+            return False
+    if normalized.startswith("/") or normalized.startswith("../"):
+        return False
+    posix_parts = PurePosixPath(normalized).parts
+    if not posix_parts or any(part in {"", ".", ".."} for part in posix_parts):
+        return False
+    if ":" in posix_parts[0]:
+        return False
+    if PureWindowsPath(normalized).is_absolute():
+        return False
+    return True
+
+
+def _is_within_root(root: Path, target: Path) -> bool:
+    root_resolved = root.resolve()
+    target_resolved = target.resolve()
+    try:
+        target_resolved.relative_to(root_resolved)
+        return True
+    except ValueError:
+        return False
+
+
+def resolve_under_root(root: Path, rel_path: str | Path) -> Path:
+    normalized = normalize_relpath(rel_path)
+    if not is_safe_relative_path(normalized):
+        raise ValueError(f"Unsafe relative path: {rel_path}")
+    candidate = (root / normalized).resolve()
+    if not _is_within_root(root, candidate):
+        raise ValueError(f"Resolved path escapes root: {rel_path}")
+    return candidate
 
 
 def match_any(path: str, patterns: Iterable[str]) -> bool:
@@ -97,7 +140,25 @@ def deterministic_zip_dir(source_dir: Path, zip_path: Path) -> None:
 def extract_zip_to_temp(zip_path: Path) -> Path:
     tmp = Path(tempfile.mkdtemp(prefix="uef_"))
     with zipfile.ZipFile(zip_path, "r") as zf:
-        zf.extractall(tmp)
+        for info in zf.infolist():
+            raw_name = info.filename
+            normalized = normalize_relpath(raw_name)
+            if info.is_dir():
+                normalized = normalized.rstrip("/")
+                if not normalized:
+                    continue
+            if not is_safe_relative_path(normalized):
+                raise ValueError(f"Unsafe archive member path: {raw_name}")
+            # Reject symlink entries to avoid writing outside extraction root.
+            if ((info.external_attr >> 16) & 0o170000) == 0o120000:
+                raise ValueError(f"Symlink entries are not allowed in bundles: {raw_name}")
+            target = resolve_under_root(tmp, normalized)
+            if info.is_dir():
+                target.mkdir(parents=True, exist_ok=True)
+                continue
+            target.parent.mkdir(parents=True, exist_ok=True)
+            with zf.open(info, "r") as source, target.open("wb") as dest:
+                shutil.copyfileobj(source, dest)
     return tmp
 
 
@@ -123,7 +184,7 @@ def copy_payload(payload_dir: Path, repo_root: Path, dry_run: bool = False) -> l
     copied: list[str] = []
     for file_path in collect_files(payload_dir):
         rel = normalize_relpath(file_path.relative_to(payload_dir))
-        target = repo_root / rel
+        target = resolve_under_root(repo_root, rel)
         copied.append(rel)
         if dry_run:
             continue
