@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import socket
 import subprocess
 import time
@@ -56,43 +57,55 @@ def _is_port_open(port: int) -> bool:
         return sock.connect_ex(("127.0.0.1", port)) == 0
 
 
+def _resolve_node_executable() -> str:
+    node_from_path = shutil.which("node")
+    if node_from_path:
+        return node_from_path
+
+    candidates = [
+        Path(os.environ.get("ProgramFiles", r"C:\Program Files")) / "nodejs" / "node.exe",
+        Path(os.environ.get("ProgramFiles(x86)", r"C:\Program Files (x86)")) / "nodejs" / "node.exe",
+    ]
+    for candidate in candidates:
+        if candidate.exists():
+            return str(candidate)
+    raise TunnelSetupError(
+        "Node.js executable was not found. Install Node.js system-wide so origin auto-start works under SYSTEM tasks."
+    )
+
+
 def _launch_keystone_process(repo_root: Path, port: int, runtime_log_path: Path) -> int:
     ensure_directory(runtime_log_path.parent)
     runtime_err_path = runtime_log_path.with_suffix(".err.log")
-    if port == DEFAULT_ORIGIN_PORT:
-        launch_cmd = "pnpm -C apps/keystone start"
-    else:
-        launch_cmd = f"pnpm -C apps/keystone exec next start -- --port {port}"
-    startup_cmd = f"Set-Location -LiteralPath {_ps_single_quote(str(repo_root))}; {launch_cmd}"
-    ps_command = (
-        f"$argList = @('-NoProfile','-ExecutionPolicy','Bypass','-Command',{_ps_single_quote(startup_cmd)}); "
-        f"$p = Start-Process -FilePath 'pwsh' -ArgumentList $argList "
-        f"-WorkingDirectory {_ps_single_quote(str(repo_root))} "
-        f"-WindowStyle Hidden "
-        f"-RedirectStandardOutput {_ps_single_quote(str(runtime_log_path))} "
-        f"-RedirectStandardError {_ps_single_quote(str(runtime_err_path))} "
-        "-PassThru; "
-        "if ($null -eq $p) { exit 9001 }; "
-        "Write-Output $p.Id"
-    )
-    launched = subprocess.run(
-        ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", ps_command],
-        capture_output=True,
-        text=True,
-        timeout=90,
-        check=False,
-    )
-    if launched.returncode != 0:
+    node_exe = _resolve_node_executable()
+    app_dir = repo_root / "apps" / "keystone"
+    next_cli = app_dir / "node_modules" / "next" / "dist" / "bin" / "next"
+    if not next_cli.exists():
         raise TunnelSetupError(
-            f"Failed to spawn Keystone process. stderr: {launched.stderr.strip() or launched.stdout.strip() or 'n/a'}"
+            f"Cannot launch Keystone origin because Next CLI is missing at '{next_cli}'. "
+            "Run dependency install/build first."
         )
-    pid_text = (launched.stdout or "").strip().splitlines()
-    if not pid_text:
-        raise TunnelSetupError("Keystone process spawn returned no PID.")
+    cmd = [node_exe, str(next_cli), "start", "-p", str(port)]
+    creationflags = 0
+    if hasattr(subprocess, "CREATE_NEW_PROCESS_GROUP"):
+        creationflags |= subprocess.CREATE_NEW_PROCESS_GROUP
+    if hasattr(subprocess, "CREATE_NO_WINDOW"):
+        creationflags |= subprocess.CREATE_NO_WINDOW
     try:
-        return int(pid_text[-1].strip())
-    except ValueError as err:
-        raise TunnelSetupError(f"Unexpected PID output while starting Keystone: {launched.stdout!r}") from err
+        with runtime_log_path.open("a", encoding="utf-8") as out_log, runtime_err_path.open(
+            "a", encoding="utf-8"
+        ) as err_log:
+            proc = subprocess.Popen(
+                cmd,
+                cwd=str(app_dir),
+                stdout=out_log,
+                stderr=err_log,
+                creationflags=creationflags,
+                close_fds=True,
+            )
+    except OSError as err:
+        raise TunnelSetupError(f"Failed to spawn Keystone process: {err}") from err
+    return int(proc.pid)
 
 
 def ensure_keystone_origin(
@@ -144,9 +157,10 @@ def ensure_keystone_origin(
     now = time.time()
     should_launch = True
     port_open = _is_port_open(port)
+    existing_pid_alive = existing_pid > 0 and _pid_alive(existing_pid)
     if port_open:
         should_launch = False
-    elif now - last_launch_epoch < launch_cooldown_seconds and not (existing_pid > 0 and _pid_alive(existing_pid)):
+    elif existing_pid_alive:
         should_launch = False
 
     launched = False

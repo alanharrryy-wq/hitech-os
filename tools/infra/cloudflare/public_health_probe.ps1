@@ -18,10 +18,15 @@ if ([string]::IsNullOrWhiteSpace($LogDir)) {
 }
 
 $ValidatePy = Join-Path $RepoRoot "tools\infra\cloudflare\validate_tunnel.py"
+$GuardSetupPs1 = Join-Path $RepoRoot "tools\infra\cloudflare\setup_tunnel_forever.ps1"
 $statePath = Join-Path $LogDir "public_health_alert_state.json"
 $summaryPath = Join-Path $LogDir "public_health_probe_last.json"
 $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
 $validateOutPath = Join-Path $LogDir ("public_health_validate_{0}.json" -f $timestamp)
+
+$autoRecoveryAttempted = $false
+$autoRecoveryExitCode = $null
+$autoRecoveryOutputTail = ""
 
 function Ensure-Directory {
   param([string]$PathLiteral)
@@ -139,6 +144,54 @@ if ($validatePayload -and ($validatePayload.PSObject.Properties.Name -contains "
 
 $isHealthy = ($validateExit -eq 0) -and $publicHealthy
 $statusText = if ($isHealthy) { "healthy" } else { "unhealthy" }
+
+if (-not $isHealthy -and (Test-Path -LiteralPath $GuardSetupPs1)) {
+  $autoRecoveryAttempted = $true
+  try {
+    $guardOutput = (& pwsh -NoProfile -ExecutionPolicy Bypass -File $GuardSetupPs1 -GuardOnly 2>&1 | Out-String)
+    $autoRecoveryExitCode = $LASTEXITCODE
+    $autoRecoveryOutputTail = $guardOutput
+  } catch {
+    $autoRecoveryExitCode = 9010
+    $autoRecoveryOutputTail = ($_ | Out-String)
+  }
+  if ($autoRecoveryOutputTail.Length -gt 4000) {
+    $autoRecoveryOutputTail = $autoRecoveryOutputTail.Substring($autoRecoveryOutputTail.Length - 4000)
+  }
+
+  if ($autoRecoveryExitCode -eq 0) {
+    $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
+    $validateOutPath = Join-Path $LogDir ("public_health_validate_{0}.json" -f $timestamp)
+    & $pythonExe $ValidatePy `
+      --tunnel-name $TunnelName `
+      --hostname $Hostname `
+      --origin-url $OriginUrl `
+      --log-dir $LogDir `
+      --json-out $validateOutPath
+    $validateExit = $LASTEXITCODE
+
+    $validatePayload = Read-JsonOrDefault -PathLiteral $validateOutPath -Default @{}
+    $localHealthy = $false
+    $tunnelConnected = $false
+    $publicHealthy = $false
+    $publicStatusCode = $null
+    if ($validatePayload -and ($validatePayload.PSObject.Properties.Name -contains "local_origin_healthy")) {
+      $localHealthy = [bool]$validatePayload.local_origin_healthy
+    }
+    if ($validatePayload -and ($validatePayload.PSObject.Properties.Name -contains "tunnel_connected")) {
+      $tunnelConnected = [bool]$validatePayload.tunnel_connected
+    }
+    if ($validatePayload -and ($validatePayload.PSObject.Properties.Name -contains "public_hostname_healthy")) {
+      $publicHealthy = [bool]$validatePayload.public_hostname_healthy
+    }
+    if ($validatePayload -and ($validatePayload.PSObject.Properties.Name -contains "public_status_code")) {
+      $publicStatusCode = $validatePayload.public_status_code
+    }
+    $isHealthy = ($validateExit -eq 0) -and $publicHealthy
+    $statusText = if ($isHealthy) { "healthy" } else { "unhealthy" }
+  }
+}
+
 $nowUtc = (Get-Date).ToUniversalTime().ToString("o")
 $stateDefault = @{
   consecutive_failures = 0
@@ -225,6 +278,9 @@ $summaryPayload = @{
   tunnel_connected = $tunnelConnected
   public_hostname_healthy = $publicHealthy
   public_status_code = $publicStatusCode
+  auto_recovery_attempted = $autoRecoveryAttempted
+  auto_recovery_exit_code = $autoRecoveryExitCode
+  auto_recovery_output_tail = $autoRecoveryOutputTail
   validate_json = $validateOutPath
   state_path = $statePath
   webhook_enabled = -not [string]::IsNullOrWhiteSpace($WebhookUrl)
