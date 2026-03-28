@@ -30,6 +30,11 @@ if str(_APP_ROOT) not in sys.path:
     sys.path.insert(0, str(_APP_ROOT))
 
 from app.gui_qt.plugins.plugin_base import Plugin, PluginContext
+try:
+    from app.gui_qt.event_bus import Events
+except Exception:  # pragma: no cover - plugin test harness fallback
+    class Events:  # type: ignore
+        PROCESS_SESSION_STATE_CHANGED = "process_session_state_changed"
 
 
 QT_API = ""
@@ -47,6 +52,7 @@ try:  # pragma: no cover
         QPlainTextEdit,
         QProgressBar,
         QPushButton,
+        QScrollArea,
         QSizePolicy,
         QTextEdit,
         QVBoxLayout,
@@ -69,6 +75,7 @@ except Exception:  # pragma: no cover
             QPlainTextEdit,
             QProgressBar,
             QPushButton,
+            QScrollArea,
             QSizePolicy,
             QTextEdit,
             QVBoxLayout,
@@ -91,6 +98,7 @@ except Exception:  # pragma: no cover
                 QPlainTextEdit,
                 QProgressBar,
                 QPushButton,
+                QScrollArea,
                 QSizePolicy,
                 QTextEdit,
                 QVBoxLayout,
@@ -113,6 +121,7 @@ except Exception:  # pragma: no cover
                     QPlainTextEdit,
                     QProgressBar,
                     QPushButton,
+                    QScrollArea,
                     QSizePolicy,
                     QTextEdit,
                     QVBoxLayout,
@@ -301,6 +310,14 @@ except Exception:  # pragma: no cover
                     Expanding = 0
                     Preferred = 0
 
+                class QScrollArea(QWidget):  # type: ignore
+                    def __init__(self, *args: Any, **kwargs: Any) -> None:
+                        super().__init__(*args, **kwargs)
+                    def setWidget(self, *args: Any, **kwargs: Any) -> None:
+                        return None
+                    def setWidgetResizable(self, *args: Any, **kwargs: Any) -> None:
+                        return None
+
                 class QTimer:  # type: ignore
                     def __init__(self, *args: Any, **kwargs: Any) -> None:
                         self.timeout = _SignalStub()
@@ -342,6 +359,39 @@ except Exception:  # pragma: no cover
                         return b""
 
 
+from .bridge_config import (
+    BridgeConfig,
+    DEFAULT_CONFIG,
+    DEFAULT_HANDOFF_DIR,
+    DEFAULT_ONE_BUTTON_PATH,
+    DEFAULT_RUNTIME_ROOT,
+    ORCHESTRATOR_ROOT,
+    PLUGIN_HOST_ROOT,
+    REPO_ROOT,
+    load_bridge_config,
+    load_plugin_manifest,
+)
+from .bridge_contract import (
+    BLOCKED_RE,
+    ERROR_RE,
+    MODE_EXISTING,
+    MODE_NEW,
+    POLICY_OPEN_NEW,
+    POLICY_RESUME_LATEST,
+    POLICY_UPGRADE,
+    WARNING_RE,
+    VALID_POLICIES,
+    derive_project_id_from_name,
+    map_exit_code_to_contract_detail,
+    normalize_mode,
+    normalize_policy,
+    normalize_contract_detail_to_ui_status,
+    validate_request_payload,
+)
+from .bridge_history import BridgeHistoryStore
+from .bridge_output import OutputParser
+from .process_session_controller import ProcessSessionController
+
 PLUGIN_ID = "orchestrator_bridge"
 PLUGIN_NAME = "Orchestrator Bridge"
 PLUGIN_VERSION = "0.6.0"
@@ -349,14 +399,7 @@ DOCK_TITLE = "Orchestrator Bridge"
 MENU_TEXT = "Orchestrator Bridge"
 TOOLBAR_TEXT = "Orchestrator Bridge"
 
-REPO_ROOT = r"F:\repos\hitech-os"
-PLUGIN_HOST_ROOT = r"F:\repos\hitech-os\tools\graphviz\repo_analizer"
-ORCHESTRATOR_ROOT = r"F:\repos\hitech-os\tools\orchestrator_factory"
-DEFAULT_ONE_BUTTON_PATH = r"F:\repos\hitech-os\tools\orchestrator_factory\tools\one_button.ps1"
-DEFAULT_HANDOFF_DIR = r"F:\OneDrive\Descargas"
-DEFAULT_RUNTIME_ROOT = r"F:\repos\hitech-os\tools\_local\orchestrator_bridge"
 PLUGIN_CONFIG_FILENAME = "bridge_config.json"
-HISTORY_FILENAME = "last_runs.json"
 
 DEFAULT_BADGE = "Idle"
 DEFAULT_DETAIL = "Waiting for configuration and environment validation."
@@ -364,40 +407,6 @@ DEFAULT_RESULT = "not_run"
 DEFAULT_CONTRACT_DETAIL = "NOT_RUN"
 DEFAULT_EXIT_CODE = "<none>"
 DEFAULT_ZIP_PATH = "<none>"
-
-ZIP_FALLBACK_RE = re.compile(r"([A-Za-z]:\\[^\r\n|]*?\.zip)", re.IGNORECASE)
-REUSE_RE = re.compile(r"\b(reused?|re-using|using existing|already exists?|existing artifact)\b", re.IGNORECASE)
-WARNING_RE = re.compile(r"\b(warn(?:ing)?|caution)\b", re.IGNORECASE)
-ERROR_RE = re.compile(r"\b(error|failed?|exception|fatal|traceback)\b", re.IGNORECASE)
-BLOCKED_RE = re.compile(r"\b(blocked|denied|forbidden|policy violation|not allowed)\b", re.IGNORECASE)
-SUCCESS_RE = re.compile(r"\b(success(?:ful|fully)?|completed?|done|finished)\b", re.IGNORECASE)
-WINDOWS_ABS_RE = re.compile(r"^[A-Za-z]:\\")
-PROJECT_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
-CONTROL_CHAR_RE = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f]")
-
-EXIT_CODE_MAP: Dict[int, str] = {
-    0: "Succeeded",
-    10: "FailedRetryable",
-    20: "Failed",
-    30: "Blocked",
-    40: "Failed",
-    50: "Blocked",
-    60: "FailedRetryable",
-}
-
-DEFAULT_CONFIG: Dict[str, Any] = {
-    "one_button_path": DEFAULT_ONE_BUTTON_PATH,
-    "default_handoff_dir": DEFAULT_HANDOFF_DIR,
-    "runtime_root": DEFAULT_RUNTIME_ROOT,
-    "timeouts": {
-        "startup_ms": 15000,
-        "run_ms": 1800000,
-        "kill_after_timeout_ms": 3000,
-    },
-    "history": {
-        "max_runs": 25,
-    },
-}
 
 THEME_TOKENS: Dict[str, str] = {
     "font_family": "Segoe UI, Arial, sans-serif",
@@ -433,8 +442,10 @@ THEME_TOKENS: Dict[str, str] = {
 STATE_VISUALS: Dict[str, Dict[str, str]] = {
     "idle": {"chip": "#8c9bb3", "soft": "rgba(140,155,179,0.16)", "title": "Idle"},
     "ready": {"chip": "#67b7ff", "soft": "rgba(103,183,255,0.16)", "title": "Ready"},
+    "validating": {"chip": "#9ec1ff", "soft": "rgba(158,193,255,0.20)", "title": "Validating"},
     "running": {"chip": "#67b7ff", "soft": "rgba(103,183,255,0.22)", "title": "Running"},
     "success": {"chip": "#42d392", "soft": "rgba(66,211,146,0.18)", "title": "Success"},
+    "succeeded": {"chip": "#42d392", "soft": "rgba(66,211,146,0.18)", "title": "Succeeded"},
     "reused": {"chip": "#7dd3fc", "soft": "rgba(125,211,252,0.18)", "title": "Reused"},
     "blocked": {"chip": "#ff9e58", "soft": "rgba(255,158,88,0.20)", "title": "Blocked"},
     "failed": {"chip": "#ff6b7a", "soft": "rgba(255,107,122,0.20)", "title": "Failed"},
@@ -465,437 +476,28 @@ def _line_wrap_no_wrap() -> Any:
     return 0
 
 
-def _normalize_windows_path(path_value: str) -> str:
-    return ntpath.normcase(ntpath.normpath((path_value or "").strip().strip('"')))
-
-
-def _is_windows_abs(path_value: str) -> bool:
-    return bool(path_value and WINDOWS_ABS_RE.match(path_value.strip().strip('"')))
-
-
-def _is_under_any_root(path_value: str, roots: Iterable[str]) -> bool:
-    normalized_path = _normalize_windows_path(path_value)
-    for root in roots:
-        normalized_root = _normalize_windows_path(root)
-        if not normalized_root:
-            continue
-        if normalized_path == normalized_root:
-            return True
-        if normalized_path.startswith(normalized_root + "\\"):
-            return True
-    return False
-
-
-def _safe_json_load(path_value: str) -> Dict[str, Any]:
-    try:
-        if not path_value or not os.path.isfile(path_value):
-            return {}
-        with open(path_value, "r", encoding="utf-8") as handle:
-            data = json.load(handle)
-        return data if isinstance(data, dict) else {}
-    except Exception:
-        return {}
-
-
-def _safe_json_dump(path_value: str, payload: Any) -> Tuple[bool, str]:
-    directory = os.path.dirname(path_value)
-    try:
-        if directory:
-            os.makedirs(directory, exist_ok=True)
-        with open(path_value, "w", encoding="utf-8") as handle:
-            json.dump(payload, handle, indent=2, ensure_ascii=False)
-        return True, "ok"
-    except Exception as exc:
-        return False, str(exc)
-
-
-def _coerce_int(value: Any, default_value: int, minimum: int, maximum: int) -> int:
-    try:
-        parsed = int(value)
-    except Exception:
-        return default_value
-    return max(minimum, min(maximum, parsed))
-
-
 def _quote_ps_arg(arg: str) -> str:
     return arg.replace("\x00", " ").strip()
 
 
-def map_exit_code_to_contract_detail(
-    exit_code: int,
-    warnings_present: bool = False,
-    timed_out: bool = False,
-    contract_violations_present: bool = False,
-    status_hint: str = "",
-) -> str:
-    if timed_out:
-        return "LaunchTimeout"
-    if contract_violations_present:
-        return "Blocked"
-    detail = EXIT_CODE_MAP.get(exit_code, "Failed")
-    if exit_code not in EXIT_CODE_MAP and (status_hint or "").strip().lower() in ("success", "reused", "blocked", "failed"):
-        detail = {
-            "success": "Succeeded",
-            "reused": "Succeeded",
-            "blocked": "Blocked",
-            "failed": "Failed",
-        }[(status_hint or "").strip().lower()]
-    if detail == "Succeeded" and warnings_present:
-        return "SucceededWithWarnings"
-    return detail
+def _format_process_error_code(error_code: Any) -> str:
+    if error_code is None:
+        return "process_error"
+    if isinstance(error_code, bool):
+        return "1" if error_code else "0"
+    if isinstance(error_code, int):
+        return str(error_code)
+    value = getattr(error_code, "value", None)
+    if isinstance(value, int):
+        return str(value)
+    text = str(error_code).strip()
+    if not text:
+        return "process_error"
+    return text
 
 
-def normalize_contract_detail_to_ui_status(
-    contract_detail: str,
-    reused_detected: bool = False,
-    status_hint: str = "",
-) -> str:
-    if contract_detail in ("Succeeded", "SucceededWithWarnings"):
-        if reused_detected or (status_hint or "").strip().lower() == "reused":
-            return "reused"
-        return "success"
-    if contract_detail == "Blocked":
-        return "blocked"
-    return "failed"
-
-
-def validate_request_payload(payload: Dict[str, Any]) -> List[str]:
-    errors: List[str] = []
-    mode = str(payload.get("mode") or "").strip().lower()
-    project_id = str(payload.get("project_id") or "").strip()
-    policy = str(payload.get("policy") or "").strip()
-    intent = str(payload.get("intent") or "").strip()
-    non_interactive = bool(payload.get("non_interactive"))
-
-    if mode not in ("existing", "new", "existing_project", "new_project"):
-        errors.append("Mode must be either 'existing'/'new' or 'existing_project'/'new_project'.")
-    if non_interactive and not project_id:
-        errors.append("Project ID is required when Non-interactive is enabled.")
-    if project_id and not PROJECT_ID_RE.match(project_id):
-        errors.append(
-            "Project ID contains invalid characters. Use letters, numbers, dot, dash, or underscore only."
-        )
-    if policy and CONTROL_CHAR_RE.search(policy):
-        errors.append("Policy contains control characters. Clean the value and try again.")
-    if intent and CONTROL_CHAR_RE.search(intent):
-        errors.append("Intent contains control characters. Clean the text and try again.")
-    return errors
-
-
-def load_plugin_manifest(plugin_dir: str) -> Dict[str, Any]:
-    manifest_path = os.path.join(plugin_dir, 'plugin.json')
-    data = _safe_json_load(manifest_path)
-    return data if isinstance(data, dict) else {}
-
-
-@dataclass
-class BridgeConfig:
-    one_button_path: str
-    default_handoff_dir: str
-    runtime_root: str
-    startup_timeout_ms: int
-    run_timeout_ms: int
-    kill_after_timeout_ms: int
-    max_runs: int
-    config_path: str = ""
-
-    @property
-    def history_path(self) -> str:
-        return ntpath.join(self.runtime_root, HISTORY_FILENAME)
-
-    @property
-    def allowed_output_roots(self) -> List[str]:
-        roots = [REPO_ROOT, PLUGIN_HOST_ROOT, ORCHESTRATOR_ROOT, self.default_handoff_dir, self.runtime_root]
-        return [root for root in roots if root]
-
-    def validate(self) -> List[str]:
-        problems: List[str] = []
-        if not self.one_button_path:
-            problems.append("Configuration missing one_button_path.")
-        elif not _is_windows_abs(self.one_button_path):
-            problems.append(f"Configured one_button_path must be an absolute Windows path: {self.one_button_path}")
-        elif not self.one_button_path.lower().endswith(".ps1"):
-            problems.append(f"Configured one_button_path must point to a .ps1 file: {self.one_button_path}")
-        elif not _is_under_any_root(self.one_button_path, [ORCHESTRATOR_ROOT]):
-            problems.append(
-                f"Configured one_button_path is outside the approved orchestrator root: {self.one_button_path}"
-            )
-
-        if not self.default_handoff_dir:
-            problems.append("Configuration missing default_handoff_dir.")
-        elif not _is_windows_abs(self.default_handoff_dir):
-            problems.append(
-                f"Configured default_handoff_dir must be an absolute Windows path: {self.default_handoff_dir}"
-            )
-
-        if not self.runtime_root:
-            problems.append("Configuration missing runtime_root.")
-        elif not _is_windows_abs(self.runtime_root):
-            problems.append(f"Configured runtime_root must be an absolute Windows path: {self.runtime_root}")
-        elif not _is_under_any_root(self.runtime_root, [ntpath.join(REPO_ROOT, "tools", "_local")]):
-            problems.append(f"Configured runtime_root must stay under tools\\_local: {self.runtime_root}")
-
-        if self.startup_timeout_ms <= 0:
-            problems.append("Configured startup timeout must be greater than zero.")
-        if self.run_timeout_ms <= 0:
-            problems.append("Configured run timeout must be greater than zero.")
-        if self.kill_after_timeout_ms <= 0:
-            problems.append("Configured kill_after_timeout_ms must be greater than zero.")
-        if self.max_runs <= 0:
-            problems.append("Configured history.max_runs must be greater than zero.")
-        return problems
-
-
-@dataclass
-class ParseState:
-    phases: List[Tuple[str, str]] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    errors: List[str] = field(default_factory=list)
-    contract_violations: List[str] = field(default_factory=list)
-    raw_zip_path: str = ""
-    accepted_zip_path: str = ""
-    reused_detected: bool = False
-    status_hint: str = ""
-    last_status_message: str = ""
-    total_lines: int = 0
-
-    def note_warning(self, message: str) -> None:
-        if message and message not in self.warnings:
-            self.warnings.append(message)
-
-    def note_error(self, message: str) -> None:
-        if message and message not in self.errors:
-            self.errors.append(message)
-
-    def note_contract_violation(self, message: str) -> None:
-        if message and message not in self.contract_violations:
-            self.contract_violations.append(message)
-
-    def note_status_hint(self, candidate: str) -> None:
-        normalized = (candidate or "").strip().lower()
-        if normalized in ("success", "reused", "blocked", "failed"):
-            self.status_hint = normalized
-
-
-class _OutputParser:
-    def __init__(self, config: BridgeConfig) -> None:
-        self._config = config
-        self.state = ParseState()
-
-    def ingest_line(self, line: str, source: str) -> None:
-        text = (line or "").rstrip("\r\n")
-        if not text:
-            return
-
-        self.state.total_lines += 1
-        if self._try_structured(text):
-            return
-
-        self._try_zip_fallback(text)
-        self._try_warning_fallback(text, source)
-        self._try_error_fallback(text, source)
-        self._try_reuse_fallback(text)
-        self._try_status_fallback(text)
-
-    def finalize(self, exit_code: int, timed_out: bool = False) -> Dict[str, Any]:
-        contract_detail = map_exit_code_to_contract_detail(
-            exit_code=exit_code,
-            warnings_present=bool(self.state.warnings),
-            timed_out=timed_out,
-            contract_violations_present=bool(self.state.contract_violations),
-            status_hint=self.state.status_hint,
-        )
-        normalized_status = normalize_contract_detail_to_ui_status(
-            contract_detail=contract_detail,
-            reused_detected=bool(self.state.reused_detected),
-            status_hint=self.state.status_hint,
-        )
-
-        final_message = self.state.last_status_message or contract_detail
-        if timed_out:
-            final_message = "Execution timed out before the bridge received a final completion signal."
-        elif self.state.contract_violations:
-            final_message = self.state.contract_violations[-1]
-        elif contract_detail == "SucceededWithWarnings" and self.state.warnings:
-            final_message = self.state.warnings[-1]
-        elif normalized_status in ("failed", "blocked") and self.state.errors:
-            final_message = self.state.errors[-1]
-
-        return {
-            "normalized_status": normalized_status,
-            "contract_detail": contract_detail,
-            "zip_path": self.state.accepted_zip_path or self.state.raw_zip_path,
-            "zip_path_publicable": bool(self.state.accepted_zip_path),
-            "warnings": list(self.state.warnings),
-            "errors": list(self.state.errors),
-            "contract_violations": list(self.state.contract_violations),
-            "reused_detected": bool(self.state.reused_detected),
-            "last_status_message": final_message,
-            "structured_status_count": len(self.state.phases),
-            "total_lines": self.state.total_lines,
-        }
-
-    def _try_structured(self, text: str) -> bool:
-        if text.startswith("OB_STATUS|"):
-            parts = text.split("|", 2)
-            if len(parts) != 3 or not parts[1].strip() or not parts[2].strip():
-                self.state.note_contract_violation(f"Malformed OB_STATUS line: {text}")
-                return True
-            phase = parts[1].strip()
-            message = parts[2].strip()
-            self.state.phases.append((phase, message))
-            self.state.last_status_message = f"{phase}: {message}"
-            self._try_reuse_fallback(message)
-            self._try_status_fallback(phase)
-            self._try_status_fallback(message)
-            return True
-
-        if text.startswith("OB_ZIP|"):
-            parts = text.split("|", 1)
-            if len(parts) != 2 or not parts[1].strip():
-                self.state.note_contract_violation(f"Malformed OB_ZIP line: {text}")
-                return True
-            self._register_zip_candidate(parts[1].strip(), exact_contract=True)
-            return True
-
-        if text.startswith("OB_WARNING|"):
-            parts = text.split("|", 1)
-            if len(parts) != 2 or not parts[1].strip():
-                self.state.note_contract_violation(f"Malformed OB_WARNING line: {text}")
-                return True
-            self.state.note_warning(parts[1].strip())
-            return True
-
-        if text.startswith("OB_ERROR|"):
-            parts = text.split("|", 1)
-            if len(parts) != 2 or not parts[1].strip():
-                self.state.note_contract_violation(f"Malformed OB_ERROR line: {text}")
-                return True
-            self.state.note_error(parts[1].strip())
-            return True
-
-        return False
-
-    def _register_zip_candidate(self, candidate: str, exact_contract: bool) -> None:
-        candidate = candidate.strip().strip('"')
-        if not candidate:
-            return
-
-        if not _is_windows_abs(candidate):
-            if exact_contract:
-                self.state.note_contract_violation(f"OB_ZIP is not an absolute Windows path: {candidate}")
-            return
-
-        if not candidate.lower().endswith(".zip"):
-            if exact_contract:
-                self.state.note_contract_violation(f"OB_ZIP is not a .zip path: {candidate}")
-            return
-
-        if not self.state.raw_zip_path:
-            self.state.raw_zip_path = candidate
-
-        if self._is_publicable_zip_path(candidate):
-            if not self.state.accepted_zip_path:
-                self.state.accepted_zip_path = candidate
-            elif _normalize_windows_path(self.state.accepted_zip_path) != _normalize_windows_path(candidate):
-                self.state.note_contract_violation(
-                    f"Conflicting ZIP paths received: {self.state.accepted_zip_path} vs {candidate}"
-                )
-        elif exact_contract:
-            self.state.note_warning(f"ZIP path outside allowed roots or not found yet: {candidate}")
-
-    def _is_publicable_zip_path(self, path_value: str) -> bool:
-        if not path_value or not _is_windows_abs(path_value):
-            return False
-        if not path_value.lower().endswith(".zip"):
-            return False
-        if not _is_under_any_root(path_value, self._config.allowed_output_roots):
-            return False
-        return os.path.exists(path_value)
-
-    def _try_zip_fallback(self, text: str) -> None:
-        match = ZIP_FALLBACK_RE.search(text)
-        if match:
-            self._register_zip_candidate(match.group(1), exact_contract=False)
-
-    def _try_warning_fallback(self, text: str, source: str) -> None:
-        if WARNING_RE.search(text):
-            self.state.note_warning(f"{source}: {text}")
-
-    def _try_error_fallback(self, text: str, source: str) -> None:
-        if ERROR_RE.search(text) or BLOCKED_RE.search(text):
-            self.state.note_error(f"{source}: {text}")
-
-    def _try_reuse_fallback(self, text: str) -> None:
-        if REUSE_RE.search(text):
-            self.state.reused_detected = True
-            self.state.note_status_hint("reused")
-
-    def _try_status_fallback(self, text: str) -> None:
-        if REUSE_RE.search(text):
-            self.state.note_status_hint("reused")
-            return
-        if BLOCKED_RE.search(text):
-            self.state.note_status_hint("blocked")
-            return
-        if ERROR_RE.search(text):
-            self.state.note_status_hint("failed")
-            return
-        if SUCCESS_RE.search(text):
-            self.state.note_status_hint("success")
-
-    def _contract_detail_from_exit(self, exit_code: int) -> str:
-        detail = EXIT_CODE_MAP.get(exit_code, "Failed")
-        if exit_code == 0 and self.state.warnings:
-            return "SucceededWithWarnings"
-        if exit_code not in EXIT_CODE_MAP:
-            self.state.note_error(f"UnknownExitCode: {exit_code}")
-        return detail
-
-
-def _load_bridge_config(plugin_dir: str) -> Tuple[BridgeConfig, List[str]]:
-    config_path = os.path.join(plugin_dir, PLUGIN_CONFIG_FILENAME)
-    raw = _safe_json_load(config_path)
-
-    one_button_path = str(raw.get("one_button_path") or DEFAULT_CONFIG["one_button_path"]).strip()
-    default_handoff_dir = str(raw.get("default_handoff_dir") or DEFAULT_CONFIG["default_handoff_dir"]).strip()
-    runtime_root = str(raw.get("runtime_root") or DEFAULT_CONFIG["runtime_root"]).strip()
-
-    timeouts_raw = raw.get("timeouts") if isinstance(raw.get("timeouts"), dict) else {}
-    history_raw = raw.get("history") if isinstance(raw.get("history"), dict) else {}
-
-    config = BridgeConfig(
-        one_button_path=one_button_path,
-        default_handoff_dir=default_handoff_dir,
-        runtime_root=runtime_root,
-        startup_timeout_ms=_coerce_int(
-            timeouts_raw.get("startup_ms"),
-            int(DEFAULT_CONFIG["timeouts"]["startup_ms"]),
-            1000,
-            600000,
-        ),
-        run_timeout_ms=_coerce_int(
-            timeouts_raw.get("run_ms"),
-            int(DEFAULT_CONFIG["timeouts"]["run_ms"]),
-            5000,
-            28800000,
-        ),
-        kill_after_timeout_ms=_coerce_int(
-            timeouts_raw.get("kill_after_timeout_ms"),
-            int(DEFAULT_CONFIG["timeouts"]["kill_after_timeout_ms"]),
-            1000,
-            30000,
-        ),
-        max_runs=_coerce_int(
-            history_raw.get("max_runs"),
-            int(DEFAULT_CONFIG["history"]["max_runs"]),
-            1,
-            500,
-        ),
-        config_path=config_path,
-    )
-    return config, config.validate()
-
+_OutputParser = OutputParser
+_load_bridge_config = load_bridge_config
 
 class _BridgePanel(QWidget):
     """Premium dock content for the bridge runner."""
@@ -911,15 +513,22 @@ class _BridgePanel(QWidget):
         self._parser: Optional[_OutputParser] = None
         self._stdout_buffer = ""
         self._stderr_buffer = ""
+        self._session_controller = ProcessSessionController(
+            logger=lambda message: self._append_log(f"[{_utc_now()}] SESSION {message}"),
+            transition_notifier=self._on_session_transition,
+        )
         self._run_in_progress = False
         self._current_payload: Dict[str, Any] = {}
         self._last_launched_payload: Dict[str, Any] = {}
         self._last_result: Dict[str, Any] = {}
+        self._active_zip_path: str = ""
         self._terminal_error_handled = False
         self._timeout_triggered = False
+        self._launch_error_recorded = False
         self._history_records: List[Dict[str, Any]] = []
         self._timeline_records: List[str] = []
         self._pulse_phase = 0
+        self._project_id_manual_override = False
 
         self._startup_timer = QTimer(self)
         self._startup_timer.setSingleShot(True)
@@ -938,9 +547,15 @@ class _BridgePanel(QWidget):
 
         self._build_ui()
         self._wire_events()
+        self._refresh_mode_ui()
+        self._history_store = BridgeHistoryStore(
+            self._config,
+            logger=lambda msg: self._append_log(f"[{_utc_now()}] {msg}"),
+        )
         self._ensure_runtime_ready(log_if_ok=True)
         self._history_records = self._load_history_records()
         self._hydrate_last_payload_from_history()
+        self._sync_session_flags_from_controller()
         self._render_history_records()
         self._refresh_ready_state()
         self._append_log(f"[{_utc_now()}] UI ready on {QT_API}. Wave 6 premium UI active.")
@@ -1090,9 +705,16 @@ class _BridgePanel(QWidget):
 
     def _build_ui(self) -> None:
         self.setStyleSheet(self._build_stylesheet())
-        root = QVBoxLayout(self)
-        root.setContentsMargins(14, 14, 14, 14)
-        root.setSpacing(12)
+        host_layout = QVBoxLayout(self)
+        host_layout.setContentsMargins(0, 0, 0, 0)
+        host_layout.setSpacing(0)
+
+        scroll_area = QScrollArea(self)
+        scroll_area.setWidgetResizable(True)
+        content = QWidget()
+        root = QVBoxLayout(content)
+        root.setContentsMargins(14, 14, 14, 18)
+        root.setSpacing(14)
 
         self.header_group = QGroupBox("Bridge Status")
         header_layout = QVBoxLayout(self.header_group)
@@ -1162,6 +784,10 @@ class _BridgePanel(QWidget):
         bottom_layout.addWidget(self._build_timeline_group(), 1)
         bottom_layout.addWidget(self._build_log_group(), 1)
         root.addWidget(bottom_row, 1)
+        root.addStretch(1)
+
+        scroll_area.setWidget(content)
+        host_layout.addWidget(scroll_area)
 
     def _build_form_group(self) -> QGroupBox:
         group = QGroupBox("Run Request")
@@ -1170,25 +796,35 @@ class _BridgePanel(QWidget):
         form.setSpacing(10)
 
         self.mode_combo = QComboBox()
-        self.mode_combo.addItems(["existing", "new"])
+        self.mode_combo.addItems([MODE_EXISTING, MODE_NEW])
 
-        self.policy_edit = QLineEdit()
-        self.policy_edit.setPlaceholderText("safe-default or approved policy name")
+        self.policy_combo = QComboBox()
+        self.policy_combo.addItems([POLICY_RESUME_LATEST, POLICY_OPEN_NEW, POLICY_UPGRADE])
 
         self.project_id_edit = QLineEdit()
-        self.project_id_edit.setPlaceholderText("HITECH-OS")
+        self.project_id_edit.setPlaceholderText("project-id (auto-generated for new_project)")
+        self.project_id_hint = QLabel("Auto from Project Name unless overridden.")
+        self.project_id_hint.setObjectName("bridgeSubtle")
+        self.project_id_hint.setWordWrap(True)
+
+        self.project_name_edit = QLineEdit()
+        self.project_name_edit.setPlaceholderText("Smoke Local")
+
+        self.initiative_type_edit = QLineEdit()
+        self.initiative_type_edit.setPlaceholderText("operations")
 
         self.intent_edit = QTextEdit()
         self.intent_edit.setPlaceholderText("Describe the orchestration intent that the external one_button runner should execute...")
-        self.intent_edit.setFixedHeight(88)
+        self.intent_edit.setFixedHeight(80)
         if hasattr(self.intent_edit, "setAcceptRichText"):
             self.intent_edit.setAcceptRichText(False)
 
         self.dry_run_checkbox = QCheckBox("Dry run")
         self.dry_run_checkbox.setChecked(True)
 
-        self.non_interactive_checkbox = QCheckBox("Non-interactive")
+        self.non_interactive_checkbox = QCheckBox("Non-interactive (required)")
         self.non_interactive_checkbox.setChecked(True)
+        self.non_interactive_checkbox.setEnabled(False)
 
         checks = QWidget()
         checks_layout = QHBoxLayout(checks)
@@ -1203,8 +839,11 @@ class _BridgePanel(QWidget):
         helper.setWordWrap(True)
 
         form.addRow("Mode", self.mode_combo)
-        form.addRow("Policy", self.policy_edit)
+        form.addRow("Policy", self.policy_combo)
+        form.addRow("Project Name", self.project_name_edit)
+        form.addRow("Initiative Type", self.initiative_type_edit)
         form.addRow("Project ID", self.project_id_edit)
+        form.addRow("", self.project_id_hint)
         form.addRow("Intent", self.intent_edit)
         form.addRow("Flags", checks)
         form.addRow("Notes", helper)
@@ -1218,7 +857,7 @@ class _BridgePanel(QWidget):
 
         self.run_button = QPushButton("Run Bridge")
         self.run_button.setObjectName("bridgeRunButton")
-        self.rerun_button = QPushButton("Rerun Last")
+        self.rerun_button = QPushButton("Load Last")
         self.clear_button = QPushButton("Clear Panels")
         self.clear_button.setObjectName("bridgeDangerGhost")
 
@@ -1255,9 +894,9 @@ class _BridgePanel(QWidget):
         header_layout.addWidget(self.result_status_value, 0)
         header_layout.addWidget(self.result_hint_label, 1)
 
-        form = QFormLayout()
-        form.setContentsMargins(0, 0, 0, 0)
-        form.setSpacing(10)
+        details_form = QFormLayout()
+        details_form.setContentsMargins(0, 0, 0, 0)
+        details_form.setSpacing(10)
 
         self.result_contract_detail_value = QLabel(DEFAULT_CONTRACT_DETAIL)
         self.result_contract_detail_value.setTextInteractionFlags(selectable)
@@ -1266,14 +905,81 @@ class _BridgePanel(QWidget):
         self.result_exit_code_value = QLabel(DEFAULT_EXIT_CODE)
         self.result_exit_code_value.setTextInteractionFlags(selectable)
 
-        self.result_zip_path_value = QLabel(DEFAULT_ZIP_PATH)
-        self.result_zip_path_value.setWordWrap(True)
-        self.result_zip_path_value.setTextInteractionFlags(selectable)
-        self.result_zip_path_value.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.result_session_id_value = QLabel("<none>")
+        self.result_session_id_value.setWordWrap(True)
+        self.result_session_id_value.setTextInteractionFlags(selectable)
 
-        form.addRow("Contract Detail", self.result_contract_detail_value)
-        form.addRow("Exit Code", self.result_exit_code_value)
-        form.addRow("ZIP Path", self.result_zip_path_value)
+        self.result_mode_value = QLabel("<none>")
+        self.result_mode_value.setTextInteractionFlags(selectable)
+        self.result_policy_value = QLabel("<none>")
+        self.result_policy_value.setTextInteractionFlags(selectable)
+        self.result_dry_run_value = QLabel("<none>")
+        self.result_dry_run_value.setTextInteractionFlags(selectable)
+        self.result_project_id_value = QLabel("<none>")
+        self.result_project_id_value.setTextInteractionFlags(selectable)
+        self.result_project_name_value = QLabel("<none>")
+        self.result_project_name_value.setWordWrap(True)
+        self.result_project_name_value.setTextInteractionFlags(selectable)
+        self.result_initiative_value = QLabel("<none>")
+        self.result_initiative_value.setTextInteractionFlags(selectable)
+        self.result_run_id_value = QLabel("<none>")
+        self.result_run_id_value.setTextInteractionFlags(selectable)
+        self.result_round_id_value = QLabel("<none>")
+        self.result_round_id_value.setTextInteractionFlags(selectable)
+        self.result_canonical_zip_value = QLabel(DEFAULT_ZIP_PATH)
+        self.result_canonical_zip_value.setWordWrap(True)
+        self.result_canonical_zip_value.setTextInteractionFlags(selectable)
+        self.result_handoff_zip_value = QLabel("<none>")
+        self.result_handoff_zip_value.setWordWrap(True)
+        self.result_handoff_zip_value.setTextInteractionFlags(selectable)
+        self.result_project_manifest_value = QLabel("<none>")
+        self.result_project_manifest_value.setWordWrap(True)
+        self.result_project_manifest_value.setTextInteractionFlags(selectable)
+        self.result_run_manifest_value = QLabel("<none>")
+        self.result_run_manifest_value.setWordWrap(True)
+        self.result_run_manifest_value.setTextInteractionFlags(selectable)
+        self.result_round_manifest_value = QLabel("<none>")
+        self.result_round_manifest_value.setWordWrap(True)
+        self.result_round_manifest_value.setTextInteractionFlags(selectable)
+        self.result_lock_path_value = QLabel("<none>")
+        self.result_lock_path_value.setWordWrap(True)
+        self.result_lock_path_value.setTextInteractionFlags(selectable)
+        self.result_ledger_path_value = QLabel("<none>")
+        self.result_ledger_path_value.setWordWrap(True)
+        self.result_ledger_path_value.setTextInteractionFlags(selectable)
+        self.result_message_value = QLabel("<none>")
+        self.result_message_value.setWordWrap(True)
+        self.result_message_value.setTextInteractionFlags(selectable)
+
+        details_form.addRow("Contract Detail", self.result_contract_detail_value)
+        details_form.addRow("Exit Code", self.result_exit_code_value)
+        details_form.addRow("Session ID", self.result_session_id_value)
+        details_form.addRow("Mode", self.result_mode_value)
+        details_form.addRow("Policy", self.result_policy_value)
+        details_form.addRow("Dry Run", self.result_dry_run_value)
+        details_form.addRow("Project ID", self.result_project_id_value)
+        details_form.addRow("Project Name", self.result_project_name_value)
+        details_form.addRow("Initiative", self.result_initiative_value)
+        details_form.addRow("Run ID", self.result_run_id_value)
+        details_form.addRow("Round ID", self.result_round_id_value)
+        details_form.addRow("Canonical ZIP", self.result_canonical_zip_value)
+        details_form.addRow("Handoff ZIP", self.result_handoff_zip_value)
+        details_form.addRow("Project Manifest", self.result_project_manifest_value)
+        details_form.addRow("Run Manifest", self.result_run_manifest_value)
+        details_form.addRow("Round Manifest", self.result_round_manifest_value)
+        details_form.addRow("Lock Path", self.result_lock_path_value)
+        details_form.addRow("Ledger Path", self.result_ledger_path_value)
+        details_form.addRow("Message", self.result_message_value)
+
+        details_widget = QWidget()
+        details_widget.setLayout(details_form)
+        details_scroll = QScrollArea()
+        details_scroll.setWidgetResizable(True)
+        details_scroll.setWidget(details_widget)
+        if hasattr(details_scroll, "setMinimumHeight"):
+            details_scroll.setMinimumHeight(180)
+        if hasattr(details_scroll, "setMaximumHeight"):
+            details_scroll.setMaximumHeight(320)
 
         action_row = QWidget()
         action_layout = QHBoxLayout(action_row)
@@ -1281,20 +987,23 @@ class _BridgePanel(QWidget):
         action_layout.setSpacing(10)
 
         self.copy_zip_path_button = QPushButton("Copy ZIP Path")
+        self.copy_session_id_button = QPushButton("Copy Session ID")
         self.open_zip_button = QPushButton("Open ZIP")
         self.open_folder_button = QPushButton("Open Folder")
 
         self.open_zip_button.setEnabled(False)
         self.open_folder_button.setEnabled(False)
         self.copy_zip_path_button.setEnabled(False)
+        self.copy_session_id_button.setEnabled(False)
 
         action_layout.addWidget(self.copy_zip_path_button)
+        action_layout.addWidget(self.copy_session_id_button)
         action_layout.addWidget(self.open_zip_button)
         action_layout.addWidget(self.open_folder_button)
         action_layout.addStretch(1)
 
         outer.addWidget(header_row)
-        outer.addLayout(form)
+        outer.addWidget(details_scroll)
         outer.addWidget(action_row)
         return group
 
@@ -1311,6 +1020,8 @@ class _BridgePanel(QWidget):
         self.session_history_output = QPlainTextEdit()
         self.session_history_output.setReadOnly(True)
         self.session_history_output.setLineWrapMode(_line_wrap_no_wrap())
+        if hasattr(self.session_history_output, "setMinimumHeight"):
+            self.session_history_output.setMinimumHeight(180)
 
         layout.addWidget(helper)
         layout.addWidget(self.session_history_output)
@@ -1329,6 +1040,8 @@ class _BridgePanel(QWidget):
         self.timeline_output = QPlainTextEdit()
         self.timeline_output.setReadOnly(True)
         self.timeline_output.setLineWrapMode(_line_wrap_no_wrap())
+        if hasattr(self.timeline_output, "setMinimumHeight"):
+            self.timeline_output.setMinimumHeight(180)
 
         layout.addWidget(helper)
         layout.addWidget(self.timeline_output)
@@ -1347,6 +1060,8 @@ class _BridgePanel(QWidget):
         self.log_output = QPlainTextEdit()
         self.log_output.setReadOnly(True)
         self.log_output.setLineWrapMode(_line_wrap_no_wrap())
+        if hasattr(self.log_output, "setMinimumHeight"):
+            self.log_output.setMinimumHeight(180)
 
         layout.addWidget(helper)
         layout.addWidget(self.log_output)
@@ -1358,17 +1073,132 @@ class _BridgePanel(QWidget):
         self.copy_zip_path_button.clicked.connect(self._on_copy_zip_path_clicked)
         self.open_zip_button.clicked.connect(self._on_open_zip_clicked)
         self.open_folder_button.clicked.connect(self._on_open_folder_clicked)
+        self.copy_session_id_button.clicked.connect(self._on_copy_session_id_clicked)
         self.clear_button.clicked.connect(self._on_clear_clicked)
+        self.mode_combo.currentTextChanged.connect(self._on_mode_changed)
+        self.policy_combo.currentTextChanged.connect(self._on_policy_changed)
+        self.project_name_edit.textChanged.connect(self._on_project_name_changed)
+        self.project_id_edit.textEdited.connect(self._on_project_id_edited)
 
     def collect_payload(self) -> Dict[str, Any]:
+        mode = normalize_mode(self.mode_combo.currentText().strip())
+        policy = normalize_policy(self.policy_combo.currentText().strip(), mode)
         return {
-            "mode": self.mode_combo.currentText().strip(),
-            "policy": self.policy_edit.text().strip(),
+            "mode": mode,
+            "policy": policy,
+            "project_name": self.project_name_edit.text().strip(),
+            "initiative_type": self.initiative_type_edit.text().strip(),
             "project_id": self.project_id_edit.text().strip(),
             "intent": self.intent_edit.toPlainText().strip(),
             "dry_run": bool(self.dry_run_checkbox.isChecked()),
-            "non_interactive": bool(self.non_interactive_checkbox.isChecked()),
+            "non_interactive": True,
         }
+
+    def _on_mode_changed(self, _value: str) -> None:
+        if normalize_mode(self.mode_combo.currentText()) == MODE_NEW:
+            self._project_id_manual_override = False
+        self._refresh_mode_ui()
+
+    def _on_policy_changed(self, _value: str) -> None:
+        mode = normalize_mode(self.mode_combo.currentText())
+        policy = normalize_policy(self.policy_combo.currentText(), mode)
+        if self.policy_combo.currentText() != policy:
+            self.policy_combo.blockSignals(True)
+            self.policy_combo.setCurrentText(policy)
+            self.policy_combo.blockSignals(False)
+        intent_required = policy in {POLICY_OPEN_NEW, POLICY_UPGRADE}
+        self.intent_edit.setPlaceholderText(
+            "Describe the orchestration intent that the external one_button runner should execute..."
+            if intent_required
+            else "Optional intent for resume_latest_round."
+        )
+
+    def _on_project_name_changed(self, _value: str) -> None:
+        self._sync_project_id_from_name()
+
+    def _on_project_id_edited(self, _value: str) -> None:
+        self._project_id_manual_override = True
+
+    def _sync_project_id_from_name(self) -> None:
+        mode = normalize_mode(self.mode_combo.currentText())
+        if mode != MODE_NEW:
+            return
+        if self._project_id_manual_override:
+            return
+        project_name = self.project_name_edit.text().strip()
+        if not project_name:
+            self.project_id_edit.setText("")
+            return
+        generated = derive_project_id_from_name(project_name)
+        self.project_id_edit.setText(generated)
+
+    def _refresh_mode_ui(self) -> None:
+        mode = normalize_mode(self.mode_combo.currentText())
+        self.mode_combo.blockSignals(True)
+        self.mode_combo.setCurrentText(mode)
+        self.mode_combo.blockSignals(False)
+
+        self.project_name_edit.setEnabled(mode == MODE_NEW and not self._run_in_progress)
+        self.initiative_type_edit.setEnabled(mode == MODE_NEW and not self._run_in_progress)
+        self.project_id_hint.setText(
+            "Auto from Project Name unless overridden."
+            if mode == MODE_NEW
+            else "Required for existing_project mode."
+        )
+
+        selected_policy = normalize_policy(self.policy_combo.currentText(), mode)
+        self.policy_combo.blockSignals(True)
+        self.policy_combo.clear()
+        if mode == MODE_NEW:
+            self.policy_combo.addItems([POLICY_OPEN_NEW])
+            self.policy_combo.setCurrentText(POLICY_OPEN_NEW)
+            if not self.project_id_edit.text().strip():
+                self._project_id_manual_override = False
+            if not self._project_id_manual_override:
+                self._sync_project_id_from_name()
+        else:
+            self.policy_combo.addItems([POLICY_RESUME_LATEST, POLICY_OPEN_NEW, POLICY_UPGRADE])
+            selected_policy = selected_policy if selected_policy in VALID_POLICIES else POLICY_RESUME_LATEST
+            self.policy_combo.setCurrentText(selected_policy)
+        self.policy_combo.blockSignals(False)
+
+        intent_required = self.policy_combo.currentText() in {POLICY_OPEN_NEW, POLICY_UPGRADE}
+        intent_hint = (
+            "Describe the orchestration intent that the external one_button runner should execute..."
+            if intent_required
+            else "Optional intent for resume_latest_round."
+        )
+        self.intent_edit.setPlaceholderText(intent_hint)
+
+    def set_tool_context(self, payload: Dict[str, Any]) -> None:
+        if not isinstance(payload, dict):
+            return
+        local = payload.get("local")
+        if not isinstance(local, dict):
+            return
+        policy = str(local.get("policy") or "").strip()
+        project_id = str(local.get("project_id") or "").strip()
+        project_name = str(local.get("project_name") or "").strip()
+        initiative_type = str(local.get("initiative_type") or "").strip()
+        intent = str(local.get("intent") or "").strip()
+        mode = str(local.get("mode") or "").strip()
+        if not any((policy, project_id, project_name, initiative_type, intent, mode)):
+            return
+        patch: Dict[str, Any] = {}
+        if mode:
+            patch["mode"] = mode
+        if policy:
+            patch["policy"] = policy
+        if project_name:
+            patch["project_name"] = project_name
+        if initiative_type:
+            patch["initiative_type"] = initiative_type
+        if project_id:
+            patch["project_id"] = project_id
+        if intent:
+            patch["intent"] = intent
+        if patch:
+            self._apply_payload_to_form(patch)
 
     def show_panel(self) -> None:
         self.show()
@@ -1454,25 +1284,80 @@ class _BridgePanel(QWidget):
             {
                 "idle": "Bridge-only runner • Waiting for request",
                 "ready": "Bridge-only runner • Validated and ready",
+                "validating": "Bridge-only runner • Validating payload and runtime",
                 "running": "Bridge-only runner • Streaming live process output",
                 "success": "Bridge-only runner • Approved handoff published",
+                "succeeded": "Bridge-only runner • Approved handoff published",
                 "reused": "Bridge-only runner • Existing artifact reused",
                 "blocked": "Bridge-only runner • Guardrail prevented launch",
                 "failed": "Bridge-only runner • Execution ended with errors",
             }.get(normalized, "Bridge-only runner")
         )
 
-    def _set_result(self, normalized_status: str, contract_detail: str, exit_code: Any, zip_path: str) -> None:
+    def _set_result(
+        self,
+        normalized_status: str,
+        contract_detail: str,
+        exit_code: Any,
+        zip_path: str,
+        result: Optional[Dict[str, Any]] = None,
+    ) -> None:
+        payload = dict(result or {})
+        request_payload: Dict[str, Any] = dict(self._session_controller.snapshot.current_payload or {})
+        if not request_payload:
+            request_payload = dict(self._last_launched_payload or {})
+        if not request_payload:
+            try:
+                request_payload = dict(self.collect_payload())
+            except Exception:
+                request_payload = {}
+
+        def _pick(*keys: str, default: str = "<none>") -> str:
+            for key in keys:
+                candidate = payload.get(key)
+                if candidate not in (None, ""):
+                    return str(candidate)
+            for key in keys:
+                candidate = request_payload.get(key)
+                if candidate not in (None, ""):
+                    return str(candidate)
+            return default
+
         normalized = (normalized_status or DEFAULT_RESULT).strip().lower()
+        if normalized == "success":
+            normalized = "succeeded"
         state_for_chip = normalized if normalized in STATE_VISUALS else "idle"
         self.result_status_value.setText(normalized or DEFAULT_RESULT)
         self.result_status_value.setStyleSheet(self._status_style(state_for_chip))
         self.result_contract_detail_value.setText(contract_detail or DEFAULT_CONTRACT_DETAIL)
         self.result_exit_code_value.setText(str(exit_code) if exit_code is not None else DEFAULT_EXIT_CODE)
-        self.result_zip_path_value.setText(zip_path or DEFAULT_ZIP_PATH)
+        self.result_session_id_value.setText(_pick("session_id"))
+        self.result_mode_value.setText(_pick("session_mode", "mode"))
+        self.result_policy_value.setText(_pick("policy"))
+        if "dry_run" in payload:
+            self.result_dry_run_value.setText(str(bool(payload.get("dry_run"))))
+        elif "dry_run" in request_payload:
+            self.result_dry_run_value.setText(str(bool(request_payload.get("dry_run"))))
+        else:
+            self.result_dry_run_value.setText("<none>")
+        self.result_project_id_value.setText(_pick("project_id"))
+        self.result_project_name_value.setText(_pick("project_name"))
+        self.result_initiative_value.setText(_pick("initiative_type"))
+        self.result_run_id_value.setText(_pick("run_id"))
+        self.result_round_id_value.setText(_pick("round_id"))
+        self.result_canonical_zip_value.setText(
+            str(payload.get("canonical_zip_path") or zip_path or DEFAULT_ZIP_PATH)
+        )
+        self.result_handoff_zip_value.setText(_pick("handoff_copy_path"))
+        self.result_project_manifest_value.setText(_pick("project_manifest_path"))
+        self.result_run_manifest_value.setText(_pick("run_manifest_path"))
+        self.result_round_manifest_value.setText(_pick("round_manifest_path"))
+        self.result_lock_path_value.setText(_pick("lock_path"))
+        self.result_ledger_path_value.setText(_pick("ledger_path"))
+        self.result_message_value.setText(_pick("message", "last_status_message"))
         self.result_hint_label.setText(
             {
-                "success": "Artifact available. Quick actions are enabled when the ZIP remains publicable.",
+                "succeeded": "Artifact available. Quick actions are enabled when the ZIP remains available.",
                 "reused": "Artifact reused from a prior successful path. Review the ZIP before handing off.",
                 "blocked": "Bridge guardrails stopped the run before it could invoke business logic.",
                 "failed": "Execution finished without a consumable success artifact.",
@@ -1483,13 +1368,56 @@ class _BridgePanel(QWidget):
         self._refresh_zip_actions()
 
     def _refresh_zip_actions(self) -> None:
-        zip_path = str(self._last_result.get("zip_path") or "")
-        publicable = bool(self._last_result.get("zip_path_publicable"))
-        exists_now = bool(zip_path and os.path.exists(zip_path))
-        self.copy_zip_path_button.setEnabled(bool(zip_path))
-        self.open_zip_button.setEnabled(bool(zip_path and publicable and exists_now))
-        folder_exists = bool(zip_path and publicable and exists_now and os.path.isdir(ntpath.dirname(zip_path)))
+        canonical_zip = str(self._last_result.get("canonical_zip_path") or "")
+        handoff_zip = str(self._last_result.get("handoff_copy_path") or "")
+        fallback_zip = str(self._last_result.get("zip_path") or "")
+
+        if canonical_zip and os.path.exists(canonical_zip):
+            preferred = canonical_zip
+        elif handoff_zip and os.path.exists(handoff_zip):
+            preferred = handoff_zip
+        else:
+            preferred = fallback_zip
+
+        self._active_zip_path = preferred
+        exists_now = bool(preferred and os.path.exists(preferred))
+
+        self.copy_zip_path_button.setEnabled(exists_now)
+        self.open_zip_button.setEnabled(exists_now)
+        folder_exists = bool(exists_now and os.path.isdir(ntpath.dirname(preferred)))
         self.open_folder_button.setEnabled(folder_exists)
+        self.copy_session_id_button.setEnabled(bool(str(self._last_result.get("session_id") or "").strip()))
+
+    def _sync_session_flags_from_controller(self) -> None:
+        snapshot = self._session_controller.snapshot
+        self._run_in_progress = bool(snapshot.run_in_progress)
+        self._timeout_triggered = bool(snapshot.timeout_triggered)
+        self._terminal_error_handled = bool(snapshot.terminal_error_handled)
+        self._current_payload = dict(snapshot.current_payload)
+        self._last_launched_payload = dict(snapshot.last_launched_payload)
+
+    def _on_session_transition(self, payload: Dict[str, Any]) -> None:
+        event_payload = dict(payload)
+        event_payload["timestamp_utc"] = _utc_now()
+        self._publish_process_session_event(event_payload)
+        state = str(event_payload.get("state") or "").strip()
+        reason = str(event_payload.get("reason") or "").strip()
+        if state:
+            self._push_timeline_event(
+                "Session state",
+                f"{state} ({reason or 'no-reason'})",
+                "run" if state in {"validating", "running"} else "info",
+            )
+
+    def _publish_process_session_event(self, payload: Dict[str, Any]) -> None:
+        host = self.window()
+        bus = getattr(host, "event_bus", None)
+        if bus is None or not hasattr(bus, "publish"):
+            return
+        try:
+            bus.publish(Events.PROCESS_SESSION_STATE_CHANGED, dict(payload))
+        except Exception:
+            return
 
     def _refresh_rerun_state(self) -> None:
         self.rerun_button.setEnabled(bool(self._last_launched_payload) and not self._run_in_progress)
@@ -1502,6 +1430,8 @@ class _BridgePanel(QWidget):
             self._refresh_rerun_state()
             return
         if ok:
+            self._session_controller.mark_ready(reason="environment-ok")
+            self._sync_session_flags_from_controller()
             self._set_status_badge("ready", detail)
             self.run_button.setEnabled(True)
         else:
@@ -1511,37 +1441,20 @@ class _BridgePanel(QWidget):
         self._refresh_zip_actions()
 
     def _ensure_runtime_ready(self, log_if_ok: bool = False) -> Tuple[bool, str]:
-        try:
-            os.makedirs(self._config.runtime_root, exist_ok=True)
-            if log_if_ok:
-                self._append_log(f"[{_utc_now()}] Runtime directory ready: {self._config.runtime_root}")
-            return True, "ok"
-        except Exception as exc:
-            return False, f"Could not create runtime directory {self._config.runtime_root}: {exc}"
+        ok, detail = self._history_store.ensure_runtime_ready()
+        if ok and log_if_ok:
+            self._append_log(f"[{_utc_now()}] Runtime directory ready: {self._config.runtime_root}")
+        return ok, detail
 
     def _load_history_records(self) -> List[Dict[str, Any]]:
-        ok, detail = self._ensure_runtime_ready(log_if_ok=False)
-        if not ok:
-            self._append_log(f"[{_utc_now()}] ERROR: {detail}")
-            return []
-        try:
-            if not os.path.isfile(self._config.history_path):
-                return []
-            with open(self._config.history_path, "r", encoding="utf-8") as handle:
-                data = json.load(handle)
-            if not isinstance(data, list):
-                raise ValueError("History file is not a JSON list.")
-            records = [item for item in data if isinstance(item, dict)]
-            trimmed = records[-self._config.max_runs :]
-            self._append_log(f"[{_utc_now()}] Loaded {len(trimmed)} persisted run records.")
-            return trimmed
-        except Exception as exc:
-            self._append_log(f"[{_utc_now()}] ERROR: Could not load persisted history: {exc}")
-            return []
+        records = self._history_store.load_records()
+        if records:
+            self._append_log(f"[{_utc_now()}] Loaded {len(records)} persisted run records.")
+        return [dict(item) for item in records]
 
     def _persist_history_records(self) -> None:
-        payload = self._history_records[-self._config.max_runs :]
-        ok, detail = _safe_json_dump(self._config.history_path, payload)
+        payload = [dict(item) for item in self._history_records[-self._config.max_runs :]]
+        ok, detail = self._history_store.save_records(payload)
         if ok:
             self._append_log(
                 f"[{_utc_now()}] Persisted {len(payload)} run records to {self._config.history_path}"
@@ -1550,11 +1463,24 @@ class _BridgePanel(QWidget):
             self._append_log(f"[{_utc_now()}] ERROR: Could not persist history: {detail}")
 
     def _hydrate_last_payload_from_history(self) -> None:
-        for item in reversed(self._history_records):
-            request = item.get("request")
-            if isinstance(request, dict):
-                self._last_launched_payload = dict(request)
-                break
+        candidate_payload = {
+            str(k): v
+            for k, v in self._history_store.extract_last_payload(
+                [dict(item) for item in self._history_records]
+            ).items()
+        }
+        ok, detail = self._session_controller.restore_last_payload(
+            candidate_payload,
+            validator=self._validate_payload,
+        )
+        if not ok:
+            if candidate_payload:
+                self._append_log(
+                    f"[{_utc_now()}] WARN: Skipping partial/invalid session restore payload ({detail})."
+                )
+            self._last_launched_payload = {}
+        else:
+            self._sync_session_flags_from_controller()
         self._refresh_rerun_state()
 
     def _render_history_records(self) -> None:
@@ -1564,15 +1490,17 @@ class _BridgePanel(QWidget):
             return
         lines: List[str] = []
         for item in reversed(self._history_records[-self._config.max_runs :]):
+            zip_path = item.get("canonical_zip_path") or item.get("handoff_copy_path") or item.get("zip_path", "")
             lines.append(
-                "[{timestamp}] {parsed_status} • exit={exit_code} • mode={mode} • policy={policy} • project_id={project_id} • zip={zip_path}".format(
+                "[{timestamp}] {status} • exit={exit_code} • mode={mode} • policy={policy} • project_id={project_id} • session_id={session_id} • zip={zip_path}".format(
                     timestamp=item.get("timestamp", "<unknown>"),
-                    parsed_status=item.get("parsed_status", "<unknown>"),
+                    status=item.get("status") or item.get("parsed_status", "<unknown>"),
                     exit_code=item.get("exit_code", "<unknown>"),
                     mode=item.get("mode", "<none>"),
                     policy=item.get("policy", "<none>"),
                     project_id=item.get("project_id", "<none>"),
-                    zip_path=item.get("zip_path", "<none>") or "<none>",
+                    session_id=item.get("session_id", "<none>") or "<none>",
+                    zip_path=zip_path or "<none>",
                 )
             )
         self.session_history_output.setPlainText("\n".join(lines))
@@ -1593,42 +1521,45 @@ class _BridgePanel(QWidget):
         return True, "Environment and configuration validated. Ready to launch approved one_button.ps1."
 
     def _validate_payload(self, payload: Dict[str, Any]) -> List[str]:
+        payload["mode"] = normalize_mode(payload.get("mode"))
+        payload["policy"] = normalize_policy(payload.get("policy"), payload["mode"])
+        payload["non_interactive"] = True
+        if payload["mode"] == MODE_NEW:
+            project_name = str(payload.get("project_name") or "").strip()
+            generated = derive_project_id_from_name(project_name) if project_name else ""
+            if generated and not str(payload.get("project_id") or "").strip():
+                payload["project_id"] = generated
         return validate_request_payload(payload)
 
     def _apply_payload_to_form(self, payload: Dict[str, Any]) -> None:
-        mode = str(payload.get("mode") or "existing").strip().lower()
-        if mode in ("existing_project",):
-            mode = "existing"
-        elif mode in ("new_project",):
-            mode = "new"
-        if mode not in ("existing", "new"):
-            mode = "existing"
+        mode = normalize_mode(payload.get("mode"))
         index = self.mode_combo.findText(mode)
         if index >= 0:
             self.mode_combo.setCurrentIndex(index)
-        self.policy_edit.setText(str(payload.get("policy") or ""))
+        self._project_id_manual_override = bool(str(payload.get("project_id") or "").strip())
+        self.project_name_edit.setText(str(payload.get("project_name") or ""))
+        self.initiative_type_edit.setText(str(payload.get("initiative_type") or ""))
         self.project_id_edit.setText(str(payload.get("project_id") or ""))
         self.intent_edit.setPlainText(str(payload.get("intent") or ""))
+        self._refresh_mode_ui()
+        policy = normalize_policy(payload.get("policy"), mode)
+        self.policy_combo.setCurrentText(policy)
         self.dry_run_checkbox.setChecked(bool(payload.get("dry_run", True)))
-        self.non_interactive_checkbox.setChecked(bool(payload.get("non_interactive", True)))
+        self.non_interactive_checkbox.setChecked(True)
 
     def _build_process_arguments(self, payload: Dict[str, Any]) -> List[str]:
         args = ["-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-File", self._config.one_button_path]
-        mode_raw = _quote_ps_arg(str(payload.get("mode") or "existing")).lower()
-        session_mode = "new_project" if mode_raw in ("new", "new_project") else "existing_project"
+        session_mode = normalize_mode(payload.get("mode"))
         args.extend(["--session-mode", session_mode])
 
-        policy_raw = _quote_ps_arg(str(payload.get("policy") or "open_new_round"))
-        policy = policy_raw if policy_raw in ("resume_latest_round", "open_new_round", "upgrade") else "open_new_round"
-        if session_mode == "new_project":
-            policy = "open_new_round"
+        policy = normalize_policy(payload.get("policy"), session_mode)
         args.extend(["--policy", policy])
 
         project_id = _quote_ps_arg(str(payload.get("project_id") or ""))
         if project_id:
             args.extend(["--project-id", project_id])
 
-        if session_mode == "new_project":
+        if session_mode == MODE_NEW:
             project_name = _quote_ps_arg(str(payload.get("project_name") or project_id or "new_project"))
             initiative_type = _quote_ps_arg(str(payload.get("initiative_type") or "general"))
             args.extend(["--project-name", project_name])
@@ -1638,8 +1569,7 @@ class _BridgePanel(QWidget):
             args.extend(["--intent", _quote_ps_arg(str(payload["intent"]))])
         if payload.get("dry_run"):
             args.append("--dry-run")
-        if payload.get("non_interactive"):
-            args.append("--non-interactive")
+        args.append("--non-interactive")
         return args
 
     def _resolve_powershell_program(self) -> str:
@@ -1656,13 +1586,15 @@ class _BridgePanel(QWidget):
         self.run_button.setText("Running…" if running else "Run Bridge")
         for widget in (
             self.mode_combo,
-            self.policy_edit,
+            self.policy_combo,
+            self.project_name_edit,
+            self.initiative_type_edit,
             self.project_id_edit,
             self.intent_edit,
             self.dry_run_checkbox,
-            self.non_interactive_checkbox,
         ):
             widget.setEnabled(not running)
+        self.non_interactive_checkbox.setEnabled(False)
         self.running_bar.setVisible(bool(running))
         if running:
             self.running_bar.setRange(0, 0)
@@ -1676,16 +1608,23 @@ class _BridgePanel(QWidget):
             self._pulse_timer.stop()
             self.running_bar.setRange(0, 1)
             self._refresh_ready_state()
+        self._refresh_mode_ui()
         self._refresh_rerun_state()
 
     def _start_process(self, payload: Dict[str, Any], from_rerun: bool = False) -> None:
+        payload = dict(payload or {})
+        self._sync_session_flags_from_controller()
         if self._run_in_progress:
             self._append_log(f"[{_utc_now()}] Run ignored: a process is already active in this dock.")
             self._flash_feedback("Run already in progress", "warning")
             return
+        self._set_status_badge("validating", "Validating request and runtime before launch.")
+        self._push_timeline_event("Validation", "Checking environment and payload guardrails.", "info")
 
         ok, detail = self._validate_environment()
         if not ok:
+            self._session_controller.mark_blocked(f"environment:{detail}")
+            self._sync_session_flags_from_controller()
             self._last_result = {"zip_path": "", "zip_path_publicable": False}
             self._set_status_badge("blocked", detail)
             self._set_result("blocked", "Blocked", None, "")
@@ -1696,6 +1635,8 @@ class _BridgePanel(QWidget):
         validation_errors = self._validate_payload(payload)
         if validation_errors:
             detail = validation_errors[0]
+            self._session_controller.mark_blocked(f"payload:{detail}")
+            self._sync_session_flags_from_controller()
             self._last_result = {"zip_path": "", "zip_path_publicable": False}
             self._set_status_badge("blocked", detail)
             self._set_result("blocked", "InvalidInput", None, "")
@@ -1706,6 +1647,8 @@ class _BridgePanel(QWidget):
 
         program = self._resolve_powershell_program()
         if not program:
+            self._session_controller.mark_blocked("missing-powershell")
+            self._sync_session_flags_from_controller()
             self._last_result = {"zip_path": "", "zip_path_publicable": False}
             self._set_status_badge("failed", "PowerShell executable not found in PATH.")
             self._set_result("failed", "LaunchFailure", None, "")
@@ -1713,15 +1656,19 @@ class _BridgePanel(QWidget):
             self._flash_feedback("PowerShell missing", "danger")
             return
 
-        self._current_payload = dict(payload)
-        self._last_launched_payload = dict(payload)
+        session_ok, session_detail = self._session_controller.begin_launch(dict(payload))
+        if not session_ok:
+            self._append_log(f"[{_utc_now()}] SESSION_BLOCKED: {session_detail}")
+            self._flash_feedback("Session blocked", "warning")
+            return
+        self._sync_session_flags_from_controller()
+
         self._stdout_buffer = ""
         self._stderr_buffer = ""
         self._parser = _OutputParser(self._config)
         self._last_result = {}
-        self._terminal_error_handled = False
-        self._timeout_triggered = False
-        self._set_result(DEFAULT_RESULT, "RUNNING", None, "")
+        self._launch_error_recorded = False
+        self._set_result(DEFAULT_RESULT, "RUNNING", None, "", {})
         self._set_running_ui(True)
 
         args = self._build_process_arguments(payload)
@@ -1749,8 +1696,9 @@ class _BridgePanel(QWidget):
         if error_signal is not None:
             error_signal.connect(self._on_process_error)
 
-        process.start()
+        self._startup_timer.stop()
         self._startup_timer.start(self._config.startup_timeout_ms)
+        process.start()
 
     def _consume_output_chunk(self, chunk: str, source: str) -> None:
         if not chunk:
@@ -1845,23 +1793,41 @@ class _BridgePanel(QWidget):
         except Exception as exc:
             self._append_log(f"[{_utc_now()}] ERROR: Could not force kill timed out process: {exc}")
 
-    def _record_run(self, exit_code: Optional[int], result: Dict[str, Any]) -> None:
+    def _record_run(self, exit_code: Any, result: Dict[str, Any]) -> None:
+        current_payload = dict(self._session_controller.snapshot.current_payload)
+        exit_code_display = "<none>"
+        if exit_code is not None:
+            text_value = str(exit_code).strip()
+            if text_value:
+                exit_code_display = text_value
+        if exit_code_display == "<none>" and str(result.get("contract_detail") or "").strip() == "LaunchFailure":
+            exit_code_display = "process_error"
         record = {
             "timestamp": _utc_now(),
-            "mode": self._current_payload.get("mode", ""),
-            "policy": self._current_payload.get("policy", ""),
-            "project_id": self._current_payload.get("project_id", ""),
-            "intent": self._current_payload.get("intent", ""),
-            "dry_run": bool(self._current_payload.get("dry_run", False)),
-            "non_interactive": bool(self._current_payload.get("non_interactive", False)),
-            "exit_code": exit_code if exit_code is not None else "<none>",
+            "mode": current_payload.get("mode", ""),
+            "policy": current_payload.get("policy", ""),
+            "project_name": current_payload.get("project_name", ""),
+            "initiative_type": current_payload.get("initiative_type", ""),
+            "project_id": current_payload.get("project_id", ""),
+            "intent": current_payload.get("intent", ""),
+            "dry_run": bool(current_payload.get("dry_run", False)),
+            "non_interactive": bool(current_payload.get("non_interactive", False)),
+            "exit_code": exit_code_display,
+            "status": result.get("status") or result.get("normalized_status", "failed"),
             "parsed_status": result.get("normalized_status", "failed"),
             "contract_detail": result.get("contract_detail", "Failed"),
             "zip_path": result.get("zip_path", ""),
-            "request": dict(self._current_payload),
+            "canonical_zip_path": result.get("canonical_zip_path", ""),
+            "handoff_copy_path": result.get("handoff_copy_path", ""),
+            "session_id": result.get("session_id", ""),
+            "run_id": result.get("run_id", ""),
+            "round_id": result.get("round_id", ""),
+            "request": current_payload,
         }
-        self._history_records.append(record)
-        self._history_records = self._history_records[-self._config.max_runs :]
+        self._history_records = self._history_store.append_record(
+            [dict(item) for item in self._history_records],
+            record,
+        )
         self._render_history_records()
         self._persist_history_records()
         self._hydrate_last_payload_from_history()
@@ -1874,13 +1840,20 @@ class _BridgePanel(QWidget):
             self._append_log(f"[{_utc_now()}] Rerun ignored: no previous payload is available.")
             self._flash_feedback("No previous run", "warning")
             return
+        if self._run_in_progress:
+            self._append_log(f"[{_utc_now()}] Rerun ignored: process still running.")
+            self._flash_feedback("Run still in progress", "warning")
+            return
         self._apply_payload_to_form(self._last_launched_payload)
-        self._flash_feedback("Replaying last parameters", "info")
-        self._start_process(dict(self._last_launched_payload), from_rerun=True)
+        self._set_status_badge("ready", "Last payload loaded. Review and click Run Bridge.")
+        self._push_timeline_event("Last payload loaded", "Parameters restored from the latest persisted run.", "info")
+        self._flash_feedback("Last payload loaded. Click Run Bridge.", "info")
 
     def _on_process_started(self) -> None:
         self._startup_timer.stop()
         self._run_timer.start(self._config.run_timeout_ms)
+        self._session_controller.mark_started()
+        self._sync_session_flags_from_controller()
         self._append_log(f"[{_utc_now()}] Process started successfully.")
         self._flash_feedback("Runner started", "info")
 
@@ -1899,7 +1872,8 @@ class _BridgePanel(QWidget):
     def _on_startup_timeout(self) -> None:
         if self._process is None or not self._run_in_progress:
             return
-        self._timeout_triggered = True
+        self._session_controller.mark_startup_timeout()
+        self._sync_session_flags_from_controller()
         self._append_log(
             f"[{_utc_now()}] ERROR: Process did not report startup within {self._config.startup_timeout_ms} ms."
         )
@@ -1913,7 +1887,8 @@ class _BridgePanel(QWidget):
     def _on_run_timeout(self) -> None:
         if self._process is None or not self._run_in_progress:
             return
-        self._timeout_triggered = True
+        self._session_controller.mark_run_timeout()
+        self._sync_session_flags_from_controller()
         self._append_log(f"[{_utc_now()}] ERROR: Run timeout exceeded {self._config.run_timeout_ms} ms.")
         self._flash_feedback("Run timeout", "danger")
         try:
@@ -1943,27 +1918,48 @@ class _BridgePanel(QWidget):
         if process_state_enum is not None and hasattr(process_state_enum, "NotRunning"):
             not_running_markers.add(process_state_enum.NotRunning)
 
-        if state_value in not_running_markers or state_value is None:
-            self._terminal_error_handled = True
+        process_not_running = bool(state_value in not_running_markers or state_value is None)
+        if self._session_controller.mark_process_error(
+            error_code,
+            process_not_running=process_not_running,
+        ):
+            self._sync_session_flags_from_controller()
+            self._launch_error_recorded = True
             self._stop_timers()
             self._flush_remaining_buffers()
             self._set_running_ui(False)
+            resolved_error_code = _format_process_error_code(error_code)
             self._last_result = {"zip_path_publicable": False, "zip_path": ""}
             result = {
                 "normalized_status": "failed",
                 "contract_detail": "LaunchFailure",
                 "zip_path": "",
                 "zip_path_publicable": False,
+                "message": f"Process launch failed: {resolved_error_code}",
             }
-            self._set_result(result["normalized_status"], result["contract_detail"], None, "")
-            self._set_status_badge("failed", f"Process launch failed: {error_code}")
-            self._record_run(None, result)
+            self._set_result(
+                result["normalized_status"],
+                result["contract_detail"],
+                resolved_error_code,
+                "",
+                result,
+            )
+            self._set_status_badge("failed", f"Process launch failed: {resolved_error_code}")
+            self._record_run(resolved_error_code, result)
             self._flash_feedback("Launch failed", "danger")
             if self._process is not None:
                 self._process.deleteLater()
                 self._process = None
 
     def _on_process_finished(self, exit_code: int, _exit_status: Any = None) -> None:
+        self._sync_session_flags_from_controller()
+        if self._launch_error_recorded:
+            self._launch_error_recorded = False
+            self._stop_timers()
+            if self._process is not None:
+                self._process.deleteLater()
+                self._process = None
+            return
         if self._terminal_error_handled:
             return
         self._stop_timers()
@@ -1978,10 +1974,13 @@ class _BridgePanel(QWidget):
             result.get("contract_detail", "Failed"),
             exit_code,
             result.get("zip_path", ""),
+            result,
         )
 
         detail_message = result.get("last_status_message") or result.get("contract_detail", "Finished")
         badge_title = str(result.get("normalized_status", "failed")).lower()
+        if badge_title == "success":
+            badge_title = "succeeded"
         self._set_status_badge(badge_title, detail_message)
 
         if result.get("warnings"):
@@ -1995,10 +1994,21 @@ class _BridgePanel(QWidget):
         if result.get("contract_violations"):
             for item in result["contract_violations"]:
                 self._append_log(f"[{_utc_now()}] CONTRACT_VIOLATION {item}")
+        if result.get("notes"):
+            self._append_log(f"[{_utc_now()}] NOTES: {len(result['notes'])}")
+            for item in result["notes"]:
+                self._append_log(f"[{_utc_now()}] NOTE {item}")
+        if bool(result.get("contract_mismatch")):
+            self._append_log(f"[{_utc_now()}] CONTRACT_MISMATCH runner output violated bridge contract.")
+            self._push_timeline_event(
+                "Contract mismatch",
+                "Runner output did not satisfy expected bridge contract.",
+                "blocked",
+            )
 
         self._record_run(int(exit_code), result)
         self._append_log(f"[{_utc_now()}] Process finished with exit code {exit_code}.")
-        self._push_timeline_event("Run finished", detail_message, "success" if result.get("normalized_status") in ("success", "reused") else "danger")
+        self._push_timeline_event("Run finished", detail_message, "success" if result.get("normalized_status") in ("success", "reused", "succeeded") else "danger")
         if result.get("normalized_status") in ("success", "reused"):
             self._flash_feedback("Run completed", "success")
         elif result.get("normalized_status") == "blocked":
@@ -2006,14 +2016,17 @@ class _BridgePanel(QWidget):
         else:
             self._flash_feedback("Run failed", "danger")
 
+        self._session_controller.mark_finished(str(result.get("normalized_status", "failed")))
+        self._sync_session_flags_from_controller()
+        self._refresh_rerun_state()
+
         if self._process is not None:
             self._process.deleteLater()
             self._process = None
-        self._timeout_triggered = False
 
     def _on_copy_zip_path_clicked(self) -> None:
-        zip_path = str(self._last_result.get("zip_path") or "")
-        if not zip_path:
+        zip_path = str(self._active_zip_path or self._last_result.get("zip_path") or "")
+        if not zip_path or not os.path.exists(zip_path):
             self._append_log(f"[{_utc_now()}] Copy ZIP Path ignored: no ZIP path is available.")
             self._flash_feedback("No ZIP path yet", "warning")
             return
@@ -2031,9 +2044,29 @@ class _BridgePanel(QWidget):
             self._append_log(f"[{_utc_now()}] ERROR: Could not copy ZIP path: {exc}")
             self._flash_feedback("Copy failed", "danger")
 
+    def _on_copy_session_id_clicked(self) -> None:
+        session_id = str(self._last_result.get("session_id") or "")
+        if not session_id:
+            self._append_log(f"[{_utc_now()}] Copy Session ID ignored: no session id is available.")
+            self._flash_feedback("No session id yet", "warning")
+            return
+        try:
+            app = QApplication.instance()
+            if app is None:
+                raise RuntimeError("QApplication instance not available.")
+            clipboard = app.clipboard()
+            if clipboard is None:
+                raise RuntimeError("Clipboard is not available.")
+            clipboard.setText(session_id)
+            self._append_log(f"[{_utc_now()}] Session ID copied to clipboard: {session_id}")
+            self._flash_feedback("Session ID copied", "success")
+        except Exception as exc:
+            self._append_log(f"[{_utc_now()}] ERROR: Could not copy Session ID: {exc}")
+            self._flash_feedback("Copy failed", "danger")
+
     def _on_open_zip_clicked(self) -> None:
-        zip_path = str(self._last_result.get("zip_path") or "")
-        if not zip_path or not bool(self._last_result.get("zip_path_publicable")) or not os.path.exists(zip_path):
+        zip_path = str(self._active_zip_path or self._last_result.get("zip_path") or "")
+        if not zip_path or not os.path.exists(zip_path):
             self._append_log(f"[{_utc_now()}] Open ZIP blocked: no accepted ZIP path is available.")
             self._flash_feedback("ZIP not available", "warning")
             return
@@ -2046,8 +2079,8 @@ class _BridgePanel(QWidget):
             self._flash_feedback("Open ZIP failed", "danger")
 
     def _on_open_folder_clicked(self) -> None:
-        zip_path = str(self._last_result.get("zip_path") or "")
-        if not zip_path or not bool(self._last_result.get("zip_path_publicable")):
+        zip_path = str(self._active_zip_path or self._last_result.get("zip_path") or "")
+        if not zip_path:
             self._append_log(f"[{_utc_now()}] Open Folder blocked: no accepted ZIP path is available.")
             self._flash_feedback("Folder not available", "warning")
             return
@@ -2065,10 +2098,13 @@ class _BridgePanel(QWidget):
             self._flash_feedback("Open folder failed", "danger")
 
     def _on_clear_clicked(self) -> None:
+        self._session_controller.cancel(reason="manual-clear")
+        self._sync_session_flags_from_controller()
         self.log_output.clear()
         self.timeline_output.clear()
         self._timeline_records = []
         self._last_result = {}
+        self._active_zip_path = ""
         self._set_result(DEFAULT_RESULT, DEFAULT_CONTRACT_DETAIL, None, "")
         self._refresh_ready_state()
         self._push_timeline_event("Panels cleared", "Visual panels were reset. Persisted run history remains available.", "info")
@@ -2092,6 +2128,7 @@ class PluginImplementation(Plugin):
     plugin_id = PLUGIN_ID
     plugin_name = PLUGIN_NAME
     version = PLUGIN_VERSION
+    description = "Orchestrator Bridge tool for controlled asynchronous orchestration runs."
 
     def __init__(self, context: Optional[PluginContext] = None) -> None:
         try:
@@ -2138,6 +2175,9 @@ class PluginImplementation(Plugin):
         if self._panel is None:
             self._panel = _BridgePanel()
         return self._panel
+
+    def get_panel(self) -> _BridgePanel:
+        return self._get_or_create_panel()
 
     def open_dock(self) -> None:
         panel = self._get_or_create_panel()
@@ -2190,3 +2230,4 @@ class PluginImplementation(Plugin):
             tooltip="Open Orchestrator Bridge dock.",
         )
         return None
+

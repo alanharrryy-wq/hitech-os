@@ -16,7 +16,7 @@ plugin = importlib.import_module("orchestrator_bridge.plugin")
 class ValidationAndConfigTests(TestCase):
     def test_validate_request_payload_rejects_empty_project_id_in_non_interactive(self):
         errors = plugin.validate_request_payload({
-            "mode": "existing",
+            "mode": "existing_project",
             "policy": "safe-default",
             "project_id": "",
             "intent": "run it",
@@ -26,13 +26,41 @@ class ValidationAndConfigTests(TestCase):
 
     def test_validate_request_payload_rejects_bad_project_id(self):
         errors = plugin.validate_request_payload({
-            "mode": "existing",
-            "policy": "safe-default",
+            "mode": "existing_project",
+            "policy": "resume_latest_round",
             "project_id": "bad id!",
             "intent": "run it",
             "non_interactive": True,
         })
         self.assertTrue(any("Project ID contains invalid characters" in item for item in errors))
+
+    def test_validate_request_payload_requires_new_project_core_fields(self):
+        errors = plugin.validate_request_payload({
+            "mode": "new_project",
+            "policy": "open_new_round",
+            "project_name": "",
+            "initiative_type": "",
+            "project_id": "",
+            "intent": "",
+            "non_interactive": True,
+        })
+        self.assertTrue(any("Project name is required" in item for item in errors))
+        self.assertTrue(any("Initiative type is required" in item for item in errors))
+        self.assertTrue(any("Intent is required" in item for item in errors))
+
+    def test_validate_request_payload_requires_intent_for_open_new_round(self):
+        errors = plugin.validate_request_payload({
+            "mode": "existing_project",
+            "policy": "open_new_round",
+            "project_id": "alpha-project",
+            "intent": "",
+            "non_interactive": True,
+        })
+        self.assertTrue(any("Intent is required when policy is 'open_new_round'" in item for item in errors))
+
+    def test_derive_project_id_from_name_is_deterministic(self):
+        slug = plugin.derive_project_id_from_name("  Smoke_Local  -- Ops  ")
+        self.assertEqual(slug, "smoke-local-ops")
 
     def test_bridge_config_rejects_one_button_outside_approved_root(self):
         config = plugin.BridgeConfig(

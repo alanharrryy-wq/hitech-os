@@ -68,3 +68,41 @@ class OutputParserTests(TestCase):
         result = self._parse("runtime_error_stderr.txt", source="stderr", exit_code=20)
         self.assertEqual(result["normalized_status"], "failed")
         self.assertTrue(result["errors"])
+
+    def test_success_without_zip_triggers_contract_mismatch(self):
+        parser = plugin._OutputParser(_make_config())
+        parser.ingest_line("OB_STATUS|DONE|Succeeded but no zip", "stdout")
+        result = parser.finalize(exit_code=0)
+        self.assertEqual(result["normalized_status"], "failed")
+        self.assertTrue(result["contract_mismatch"])
+        self.assertTrue(result["contract_violations"])
+
+    def test_noisy_output_with_final_json_payload_is_bound(self):
+        parser = plugin._OutputParser(_make_config())
+        lines = [
+            "Launching one-button runtime core...",
+            "OB_STATUS|RUNNING|Executing approved runner",
+            "{",
+            '  "status": "ready_for_dispatch",',
+            '  "message": "done",',
+            '  "session_mode": "new_project",',
+            '  "policy": "open_new_round",',
+            '  "project_id": "smoke-local",',
+            '  "project_name": "Smoke Local",',
+            '  "initiative_type": "operations",',
+            '  "run_id": "run_001",',
+            '  "round_id": "round_001",',
+            '  "session_id": "session_123",',
+            r'  "canonical_zip_path": "F:\\repos\\hitech-os\\tools\\orchestrator_factory\\ops\\projects\\smoke-local\\bundles\\sessions\\session_123.zip",',
+            r'  "handoff_copy_path": "F:\\OneDrive\\Descargas\\session_123.zip"',
+            "}",
+        ]
+        with mock.patch.object(plugin.os.path, "exists", return_value=True):
+            for line in lines:
+                parser.ingest_line(line, "stdout")
+            result = parser.finalize(exit_code=0)
+        self.assertEqual(result["normalized_status"], "success")
+        self.assertEqual(result["status"], "ready_for_dispatch")
+        self.assertEqual(result["project_id"], "smoke-local")
+        self.assertEqual(result["session_id"], "session_123")
+        self.assertTrue(result["canonical_zip_publicable"])
