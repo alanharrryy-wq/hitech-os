@@ -1,0 +1,101 @@
+{
+  "allowed_chat_id_values": [
+    "governance-control",
+    "chat.01-identity-access-and-trust",
+    "chat.02-domain-data-and-persistence",
+    "chat.03-service-contracts-and-orchestration",
+    "chat.04-experience-clients-and-interactions",
+    "chat.05-platform-infrastructure-and-delivery",
+    "chat.06-quality-release-and-operations"
+  ],
+  "allowed_decision_status_values": [
+    "pending",
+    "approved",
+    "denied",
+    "expired",
+    "revoked"
+  ],
+  "allowed_severity_values": [
+    "sev1",
+    "sev2",
+    "sev3",
+    "sev4"
+  ],
+  "allowed_status_values": [
+    "planned",
+    "in_progress",
+    "blocked",
+    "done"
+  ],
+  "allowed_target_ref_type_values": [
+    "run_manifest",
+    "round_manifest",
+    "bundle_manifest",
+    "handoff_ticket",
+    "dependency_request",
+    "dependency_response",
+    "blocker_report",
+    "sync_checkpoint",
+    "merge_window",
+    "repo_path_set"
+  ],
+  "allowed_waiver_scope_values": [
+    "single_item",
+    "single_round",
+    "single_run"
+  ],
+  "history_item_optional_fields": {
+    "decision_status": "string",
+    "evidence_refs": "array",
+    "related_entity_ids": "array",
+    "summary": "string"
+  },
+  "history_item_required_fields": {
+    "action": "string",
+    "actor_chat_id": "string",
+    "at_utc": "string",
+    "status": "string"
+  },
+  "name": "waiver_request",
+  "optional_fields": {
+    "affected_paths": "array",
+    "approval_summary": "string",
+    "approved_at_utc": "string",
+    "compensating_controls": "array",
+    "denial_reason": "string",
+    "denied_at_utc": "string",
+    "expires_at_utc": "string",
+    "last_reviewed_at_utc": "string",
+    "owner_acknowledged_at_utc": "string",
+    "package_id": "string",
+    "project_id": "string",
+    "revocation_reason": "string",
+    "revoked_at_utc": "string",
+    "tags": "array",
+    "waiver_scope": "string"
+  },
+  "required_fields": {
+    "business_impact": "string",
+    "decision_due_at_utc": "string",
+    "decision_owner_chat_id": "string",
+    "decision_status": "string",
+    "evidence_refs": "array",
+    "history": "array",
+    "mitigation_plan": "string",
+    "related_entity_ids": "array",
+    "requested_at_utc": "string",
+    "requested_by_chat_id": "string",
+    "requested_deviation": "string",
+    "risk_summary": "string",
+    "rollback_plan": "string",
+    "round_id": "string",
+    "rule_refs": "array",
+    "run_id": "string",
+    "schema_version": "string",
+    "severity": "string",
+    "status": "string",
+    "target_ref_type": "string",
+    "target_refs": "array",
+    "waiver_id": "string"
+  }
+}

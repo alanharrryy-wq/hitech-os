@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "feature_version": "one-button-v1.2",
+  "handoff_copy": {
+    "enabled": true,
+    "handoff_copy_dir": "F:\\OneDrive\\Descargas",
+    "fallback_directories": [
+      "F:\\OneDrive\\Descargas",
+      "%USERPROFILE%\\Downloads"
+    ],
+    "fail_session_if_copy_fails": false
+  },
+  "session_export": {
+    "validate_zip_before_publish": true,
+    "canonical_zip_name_template": "{session_id}.zip",
+    "emit_sha256_sidecar": true,
+    "emit_manifest_sidecar": true,
+    "require_session_file_index": true
+  },
+  "validation": {
+    "contract_schema_relpath": "schemas\\execution_framework\\session_zip_contract.schema.json",
+    "manifest_schema_relpath": "schemas\\execution_framework\\session_manifest.schema.json",
+    "acceptance_schema_relpath": "schemas\\execution_framework\\acceptance_result.schema.json",
+    "allow_warning_only_publish": true
+  },
+  "locking": {
+    "ttl_seconds": 60,
+    "heartbeat_interval_seconds": 15,
+    "allow_force_lock_steal_for_stale": true,
+    "cross_host_rule": "ttl_then_stale_safe"
+  },
+  "idempotency": {
+    "use_session_ledger": true,
+    "sentinel_none_value": "none"
+  },
+  "acceptance_stub": {
+    "schema_version": "1.0",
+    "default_overall_status": "pending",
+    "default_has_bundles": false,
+    "default_notes": [
+      "Acceptance report stub emitted because no integration bundles were present at session export time."
+    ]
+  }
+}

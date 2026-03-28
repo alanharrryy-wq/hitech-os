@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "message_id": "dep-auth-cache-readiness",
+  "message_type": "dependency_request",
+  "run_id": "run-20260327-170000",
+  "round_id": "round-017",
+  "channel_id": "channel.dependencies",
+  "from_chat_id": "chat.01-identity-access-and-trust",
+  "to_chat_id": "governance-control",
+  "current_owner_chat_id": "chat.01-identity-access-and-trust",
+  "package_id": "01-identity-access-and-trust",
+  "task_ref": "packet-auth-session-policy-v2",
+  "request_summary": "Identity package needs cache readiness confirmation before publishing the session policy contract.",
+  "requested_outcome": "Return a confirmed readiness signal or a governed handoff for the cache integration dependency.",
+  "scope_refs": [
+    "01-identity-access-and-trust/contracts/session_policy.json",
+    "05-platform-infrastructure-and-delivery/runtime/cache/readiness.md"
+  ],
+  "acceptance_criteria": [
+    "The dependency response names the responsible chat and package.",
+    "The response includes concrete refs that prove readiness or a bounded next action.",
+    "The response arrives before the due time or an escalation event is opened."
+  ],
+  "published_at_utc": "2026-03-27T16:42:00Z",
+  "response_due_at_utc": "2026-03-27T17:12:00Z",
+  "severity": "sev2",
+  "status": "planned",
+  "status_summary": "Dependency request opened and awaiting governed routing.",
+  "related_blocker_ids": [
+    "blocker-auth-session-readiness"
+  ],
+  "related_handoff_ids": [
+    "handoff-auth-session-policy"
+  ],
+  "evidence_refs": [
+    "ops/runs/run-20260327-170000/rounds/round-017/reports/auth_validation_report.json"
+  ],
+  "history": [
+    {
+      "action": "opened",
+      "actor_chat_id": "chat.01-identity-access-and-trust",
+      "at_utc": "2026-03-27T16:42:00Z",
+      "status": "planned",
+      "summary": "Dependency request published to governance for routing."
+    }
+  ],
+  "dependency_kind": "readiness_signal",
+  "requested_artifacts": [
+    "runtime cache readiness decision",
+    "supporting validation refs"
+  ],
+  "next_action_owner": "governance-control",
+  "tags": [
+    "dependency",
+    "identity",
+    "cache"
+  ]
+}

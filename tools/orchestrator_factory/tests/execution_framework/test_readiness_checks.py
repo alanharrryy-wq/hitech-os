@@ -49,6 +49,15 @@ class ReadinessTests(unittest.TestCase):
             (repo / '00-governance-core/docs/control/inter_chat_communication_policy.md').write_text('x', encoding='utf-8')
             (repo / '00-governance-core/docs/control/waiver_and_exception_policy.md').write_text('x', encoding='utf-8')
             (repo / '00-governance-core/docs/contracts/contract_versioning_policy.md').write_text('x', encoding='utf-8')
+            (repo / 'docs/parallel_execution/21_one_page_operator_flow.md').write_text('x', encoding='utf-8')
+            (repo / 'docs/parallel_execution/22_install_bootstrap_run_boundaries.md').write_text('x', encoding='utf-8')
+            (repo / 'docs/parallel_execution/23_inter_chat_communication_policy.md').write_text('x', encoding='utf-8')
+            (repo / 'docs/parallel_execution/24_exception_and_waiver_policy.md').write_text('x', encoding='utf-8')
+            (repo / 'docs/parallel_execution/25_contract_versioning_policy.md').write_text('x', encoding='utf-8')
+            (repo / 'docs/parallel_execution/26_go_live_readiness_gates.md').write_text('x', encoding='utf-8')
+            (repo / 'schemas/execution_framework/waiver_request.schema.json').write_text(json.dumps({'name': 'waiver_request', 'required_fields': {}}), encoding='utf-8')
+            (repo / 'templates/execution_framework/run').mkdir(parents=True, exist_ok=True)
+            (repo / 'templates/execution_framework/run/waiver_request.template.json').write_text(json.dumps({'schema_version': '1.0'}), encoding='utf-8')
             (repo / 'configs/execution_framework/system_config.json').write_text(json.dumps({
                 'projects_root': 'ops/projects',
                 'tree_hygiene_config': 'configs/execution_framework/canonical_tree_excludes.json',

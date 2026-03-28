@@ -5,6 +5,13 @@
     "reject_on_payload_mismatch": true,
     "reject_on_schema_error": true
   },
+  "bundle_security": {
+    "max_bundle_size_bytes": 52428800,
+    "max_payload_file_size_bytes": 10485760,
+    "require_manifest_signature": false,
+    "signature_algorithm": "hmac-sha256",
+    "signature_env_var": "UEF_BUNDLE_SIGNING_KEY"
+  },
   "active_package_ids": [
     "01-identity-access-and-trust",
     "02-domain-data-and-persistence",

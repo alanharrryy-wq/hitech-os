@@ -67,6 +67,14 @@ def build_readiness_report(repo_root: Path, project_id: str | None = None, run_i
         '00-governance-core/docs/control/inter_chat_communication_policy.md',
         '00-governance-core/docs/control/waiver_and_exception_policy.md',
         '00-governance-core/docs/contracts/contract_versioning_policy.md',
+        'docs/parallel_execution/21_one_page_operator_flow.md',
+        'docs/parallel_execution/22_install_bootstrap_run_boundaries.md',
+        'docs/parallel_execution/23_inter_chat_communication_policy.md',
+        'docs/parallel_execution/24_exception_and_waiver_policy.md',
+        'docs/parallel_execution/25_contract_versioning_policy.md',
+        'docs/parallel_execution/26_go_live_readiness_gates.md',
+        'schemas/execution_framework/waiver_request.schema.json',
+        'templates/execution_framework/run/waiver_request.template.json',
         'universal_execution_starter_kit_v1.zip',
     ]
     missing_files = [rel for rel in required_files if not (repo_root / rel).exists()]
@@ -129,6 +137,7 @@ def build_readiness_report(repo_root: Path, project_id: str | None = None, run_i
         acceptance_checks.append(_check('validate_worker_bundle_tool', (repo_root / 'tools/execution_framework/validate_worker_bundle.py').exists(), 'validation tool must exist'))
         acceptance_checks.append(_check('emit_acceptance_report_tool', (repo_root / 'tools/execution_framework/emit_acceptance_report.py').exists(), 'acceptance tool must exist'))
         acceptance_checks.append(_check('compute_overlap_report_tool', (repo_root / 'tools/execution_framework/compute_overlap_report.py').exists(), 'overlap tool must exist'))
+        acceptance_checks.append(_check('record_waiver_request_tool', (repo_root / 'tools/execution_framework/record_waiver_request.py').exists(), 'waiver request tool must exist'))
         acceptance_checks.append(_check('incoming_dir', (round_root / system['incoming_dir_name']).exists(), 'incoming directory must exist'))
         acceptance_checks.append(_check('reports_dir', (round_root / system['reports_dir_name']).exists(), 'reports directory must exist'))
         acceptance_status = 'ready' if all(item['ok'] for item in acceptance_checks) else 'not_ready'

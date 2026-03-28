@@ -1,0 +1,52 @@
+name: orchestrator-factory
+
+on:
+  pull_request:
+    paths:
+      - "tools/orchestrator_factory/**"
+      - ".github/workflows/orchestrator-factory.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "tools/orchestrator_factory/**"
+      - ".github/workflows/orchestrator-factory.yml"
+  workflow_dispatch:
+
+jobs:
+  verify-orchestrator-factory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile Scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall tools/orchestrator_factory/tools/execution_framework
+
+      - name: Validate Contracts
+        shell: bash
+        working-directory: tools/orchestrator_factory
+        run: |
+          set -euo pipefail
+          python tools/execution_framework/validate_framework_contracts.py
+
+      - name: Framework Smoke
+        shell: bash
+        working-directory: tools/orchestrator_factory
+        run: |
+          set -euo pipefail
+          python tools/execution_framework/smoke_framework_checks.py
+          python tools/execution_framework/check_framework_readiness.py
+
+      - name: Framework Tests
+        shell: bash
+        working-directory: tools/orchestrator_factory
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests/execution_framework -p "test_*.py"
