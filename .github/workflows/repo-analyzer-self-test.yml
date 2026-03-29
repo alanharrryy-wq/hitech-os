@@ -78,6 +78,7 @@ jobs:
     env:
       QT_QPA_PLATFORM: offscreen
       HITECH_QT_SKIP_AUTO_INDEX: "1"
+      HITECH_QT_INCLUDE_DEV_TOOLS: "1"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -119,4 +120,3 @@ jobs:
             --query plugin \
             --timeout-seconds 120 \
             --failure-mode "${{ matrix.mode }}"
-
