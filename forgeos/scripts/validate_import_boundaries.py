@@ -26,7 +26,7 @@ class Violation:
     line: int
 
 
-FORGEOS_ROOT = Path(r"F:\repos\hitech-os\forgeos")
+FORGEOS_ROOT = Path(__file__).resolve().parents[1]
 
 
 def build_module_index(root: Path) -> dict[str, ModuleNode]:
@@ -226,7 +226,7 @@ def main() -> int:
     )
     parser.add_argument(
         "--report",
-        default=str(Path(r"F:\repos\hitech-os\tools\_local\evidence\forgeos_import_boundaries_report.json")),
+        default=str(FORGEOS_ROOT.parent / "tools" / "_local" / "evidence" / "forgeos_import_boundaries_report.json"),
         help="Path to write JSON report.",
     )
     args = parser.parse_args()

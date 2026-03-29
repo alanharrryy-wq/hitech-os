@@ -1,0 +1,75 @@
+name: ForgeOS Release Candidate
+
+on:
+  workflow_dispatch:
+    inputs:
+      kernel_version:
+        description: "Kernel version used for package compatibility validation."
+        required: false
+        default: "0.1.0"
+        type: string
+      rc_label:
+        description: "Release candidate label (for traceability)."
+        required: false
+        default: "manual"
+        type: string
+  push:
+    branches: ["main"]
+    paths:
+      - "forgeos/**"
+      - ".github/workflows/forgeos-release-candidate.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: forgeos-release-candidate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  forgeos-release-candidate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build release candidate evidence
+        shell: pwsh
+        run: |
+          $kernelVersion = "${{ github.event.inputs.kernel_version }}"
+          if ([string]::IsNullOrWhiteSpace($kernelVersion)) {
+            $kernelVersion = "0.1.0"
+          }
+
+          $rcLabel = "${{ github.event.inputs.rc_label }}"
+          if ([string]::IsNullOrWhiteSpace($rcLabel)) {
+            $rcLabel = "auto"
+          }
+
+          python forgeos/scripts/package_dry_run.py `
+            --root "${{ github.workspace }}/forgeos" `
+            --kernel-version "$kernelVersion" `
+            --report "${{ github.workspace }}/tools/_local/evidence/forgeos_package_dry_run_report.json"
+
+          python forgeos/scripts/generate_release_candidate_manifest.py `
+            --root "${{ github.workspace }}/forgeos" `
+            --output "${{ github.workspace }}/tools/_local/evidence/forgeos_release_candidate_manifest.json" `
+            --git-sha "${{ github.sha }}" `
+            --rc-label "$rcLabel" `
+            --kernel-version "$kernelVersion"
+
+      - name: Upload release candidate evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: forgeos-release-candidate-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          path: |
+            tools/_local/evidence/forgeos_package_dry_run_report.json
+            tools/_local/evidence/forgeos_release_candidate_manifest.json
+            forgeos/packages/**/PACKAGE_MANIFEST.json
+            forgeos/packages/**/BOM.md
+            forgeos/packages/**/RELEASE_NOTES.md
+            forgeos/packages/**/ROLLBACK_PLAN.md

@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
-FORGEOS_ROOT = Path(r"F:\repos\hitech-os\forgeos")
+FORGEOS_ROOT = Path(__file__).resolve().parents[1]
 KERNEL_SRC = FORGEOS_ROOT / "platform" / "forge_kernel" / "src"
 if str(KERNEL_SRC) not in sys.path:
     sys.path.insert(0, str(KERNEL_SRC))
@@ -131,9 +131,7 @@ def main() -> int:
     parser.add_argument("--kernel-version", default="0.1.0")
     parser.add_argument(
         "--report",
-        default=str(
-            Path(r"F:\repos\hitech-os\tools\_local\evidence\forgeos_package_dry_run_report.json")
-        ),
+        default=str(FORGEOS_ROOT.parent / "tools" / "_local" / "evidence" / "forgeos_package_dry_run_report.json"),
     )
     args = parser.parse_args()
 

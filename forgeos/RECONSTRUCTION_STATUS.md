@@ -39,3 +39,9 @@
 2. `cloudflare_guardian`
 3. `orchestrator_bridge`
 4. Dev/demo/legacy tools (default quarantine or delete)
+
+## Post-reconstruction initiatives
+
+| Initiative | Status | Notes |
+| --- | --- | --- |
+| 9 | Operational industrialization baseline | DONE | CI quality gate, RC workflow, PR evidence checklist, and operations playbook are established. |

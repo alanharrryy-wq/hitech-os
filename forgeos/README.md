@@ -30,6 +30,7 @@ Execution entrypoint for this workspace:
 - `RECONSTRUCTION_STATUS.md`
 - `governance/decisions/PHASE0_TRUTH_CAPTURE.md`
 - `governance/contracts/INITIAL_CONTRACT_SET.md`
+- `docs/INDUSTRIALIZATION_PLAYBOOK.md`
 
 Authoritative doctrine source remains under:
 
