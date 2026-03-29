@@ -1,0 +1,76 @@
+name: promotion
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "docs/_generated/**"
+      - "tools/docs_governor/**"
+      - ".github/workflows/promotion.yml"
+
+jobs:
+  promote-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run docs governor
+        run: |
+          python tools/docs_governor/docs_governor.py --repo . --report-dir tools/docs_governor/reports
+
+      - name: Validate generated docs promotion manifests
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path('.')
+          generated = root / 'docs' / '_generated'
+          errors = []
+
+          if generated.exists():
+              for run_dir in sorted(generated.iterdir()):
+                  if not run_dir.is_dir():
+                      continue
+                  index_file = run_dir / 'index.md'
+                  manifest_file = run_dir / 'promotion_manifest.json'
+                  if not index_file.exists():
+                      errors.append(f"missing index.md in {run_dir.as_posix()}")
+                  if not manifest_file.exists():
+                      errors.append(f"missing promotion_manifest.json in {run_dir.as_posix()}")
+                      continue
+                  try:
+                      payload = json.loads(manifest_file.read_text(encoding='utf-8'))
+                  except Exception as exc:
+                      errors.append(f"invalid json {manifest_file.as_posix()}: {exc}")
+                      continue
+                  required = {'schema_version', 'run_id', 'generated_at_utc', 'items'}
+                  missing = [key for key in sorted(required) if key not in payload]
+                  if missing:
+                      errors.append(f"missing keys in {manifest_file.as_posix()}: {','.join(missing)}")
+                  if str(payload.get('run_id', '')).strip() != run_dir.name:
+                      errors.append(f"run_id mismatch in {manifest_file.as_posix()}")
+
+          if errors:
+              for item in errors:
+                  print(f"[FAIL] {item}")
+              raise SystemExit(1)
+
+          print('promotion manifest checks passed')
+          PY
+
+      - name: Upload reports on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: promotion-validation-reports
+          path: |
+            tools/docs_governor/reports/*.json
+            docs/_generated/**/promotion_manifest.json
+          if-no-files-found: ignore

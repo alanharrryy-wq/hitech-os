@@ -1,0 +1,888 @@
+{
+  "description": "Live fallback backlog for automatic worker rework with deterministic scoring and reserve targets.",
+  "generated_at_utc": "2026-03-05T10:18:57+00:00",
+  "min_value_score": 70,
+  "summary": {
+    "errors": [],
+    "ready_by_category": {
+      "automation": 4,
+      "dx": 2,
+      "performance": 2,
+      "reliability": 2,
+      "security": 3
+    },
+    "ready_count": 13,
+    "reserve_targets": {
+      "automation": 4,
+      "dx": 2,
+      "performance": 2,
+      "reliability": 3,
+      "security": 2
+    },
+    "task_count": 28
+  },
+  "tasks": [
+    {
+      "acceptance_checks": [
+        "python tools/codex/dispatch/validator.py queue-wait-outbox --run-id <RUN_ID> --workers A_core --cycle 1 --timeout-seconds 5"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "docs/factory/**",
+        "tools/codex/dispatch/**",
+        "tools/codex/factory/**"
+      ],
+      "category": "automation",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Add deterministic queue metrics and lag dashboards for rework inbox/outbox.",
+      "estimated_mloc": 2200,
+      "expires_at": "2030-01-01T00:00:00+00:00",
+      "fingerprint": "5dd86f1438f2dd645410",
+      "id": "LIVE-AUTO-001",
+      "metrics": {
+        "confidence": 8,
+        "frequency": 7,
+        "impact": 8,
+        "risk_reduction": 9,
+        "unblock": 8
+      },
+      "owner": "factory",
+      "priority": 92,
+      "source": "seed_config",
+      "status": "ready",
+      "title": "Factory queue observability",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 86,
+      "worker_affinity": [
+        "B_tooling",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python tools/codex/dispatch/validator.py queue-wait-outbox --run-id <RUN_ID> --workers A_core --cycle 1 --timeout-seconds 5"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "apps/**",
+        "docs/factory/**",
+        "packages/**",
+        "tools/codex/dispatch/**",
+        "tools/codex/factory/**"
+      ],
+      "category": "automation",
+      "created_at_utc": "2026-03-05T10:18:57+00:00",
+      "description": "Add deterministic queue metrics and lag dashboards for rework inbox/outbox.",
+      "estimated_mloc": 2200,
+      "expires_at": "2030-01-01T00:00:00+00:00",
+      "fingerprint": "4db875765d4a51a655c4",
+      "id": "LIVE-AUTO-001",
+      "metrics": {
+        "confidence": 8,
+        "frequency": 7,
+        "impact": 8,
+        "risk_reduction": 9,
+        "unblock": 8
+      },
+      "owner": "factory",
+      "priority": 92,
+      "source": "seed_config",
+      "status": "ready",
+      "title": "Factory queue observability",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 86,
+      "worker_affinity": [
+        "B_tooling",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory doctor"
+      ],
+      "active": true,
+      "allowed_paths": [
+        ".github/workflows/**",
+        "docs/security/**",
+        "tools/**"
+      ],
+      "category": "security",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Automate risk grouping and remediation backlog from security scan output.",
+      "estimated_mloc": 1800,
+      "expires_at": "2030-01-01T00:00:00+00:00",
+      "fingerprint": "61fbdbeffcdde2faf770",
+      "id": "LIVE-SEC-001",
+      "metrics": {
+        "confidence": 7,
+        "frequency": 6,
+        "impact": 8,
+        "risk_reduction": 9,
+        "unblock": 6
+      },
+      "owner": "security",
+      "priority": 85,
+      "source": "seed_config",
+      "status": "ready",
+      "title": "Dependency security triage automation",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 80,
+      "worker_affinity": [
+        "B_tooling",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory doctor"
+      ],
+      "active": true,
+      "allowed_paths": [
+        ".github/workflows/**",
+        "apps/**",
+        "docs/security/**",
+        "packages/**",
+        "tools/**"
+      ],
+      "category": "security",
+      "created_at_utc": "2026-03-05T10:18:57+00:00",
+      "description": "Automate risk grouping and remediation backlog from security scan output.",
+      "estimated_mloc": 1800,
+      "expires_at": "2030-01-01T00:00:00+00:00",
+      "fingerprint": "7e085fd1fffd2b06db28",
+      "id": "LIVE-SEC-001",
+      "metrics": {
+        "confidence": 7,
+        "frequency": 6,
+        "impact": 8,
+        "risk_reduction": 9,
+        "unblock": 6
+      },
+      "owner": "security",
+      "priority": 85,
+      "source": "seed_config",
+      "status": "ready",
+      "title": "Dependency security triage automation",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 80,
+      "worker_affinity": [
+        "B_tooling",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory self-test"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "apps/**/tests/**",
+        "tools/codex/factory/**"
+      ],
+      "category": "reliability",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Create deterministic regression harness for flaky/failed pipeline paths.",
+      "estimated_mloc": 1700,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "9c856384b7d701703bb5",
+      "id": "SEED-RELI-7e6db8f9",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 80,
+      "source": "auto_seed",
+      "status": "ready",
+      "title": "Reliability regression harness fallback",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 78,
+      "worker_affinity": [
+        "C_features",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory self-test"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "apps/**/tests/**",
+        "packages/**/tests/**",
+        "tools/codex/factory/**"
+      ],
+      "category": "reliability",
+      "created_at_utc": "2026-03-05T10:18:57+00:00",
+      "description": "Create deterministic regression harness for flaky/failed pipeline paths.",
+      "estimated_mloc": 1700,
+      "expires_at": "2026-04-04T10:18:57+00:00",
+      "fingerprint": "c5eb7737692f054aa42e",
+      "id": "SEED-RELI-7e6db8f9",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 80,
+      "source": "auto_seed",
+      "status": "ready",
+      "title": "Reliability regression harness fallback",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 78,
+      "worker_affinity": [
+        "C_features",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory contracts-check"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "docs/factory/**",
+        "tools/codex/**"
+      ],
+      "category": "automation",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Improve deterministic orchestration and reporting for multicodex runs.",
+      "estimated_mloc": 1600,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "2489acb5ddd52482d641",
+      "id": "SEED-AUTO-ae2eafa0",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 78,
+      "source": "auto_seed",
+      "status": "ready",
+      "title": "Automation fallback pipeline hardening",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 76,
+      "worker_affinity": [
+        "A_core",
+        "B_tooling",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory contracts-check"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "apps/**",
+        "docs/factory/**",
+        "packages/**",
+        "tools/codex/**"
+      ],
+      "category": "automation",
+      "created_at_utc": "2026-03-05T10:18:57+00:00",
+      "description": "Improve deterministic orchestration and reporting for multicodex runs.",
+      "estimated_mloc": 1600,
+      "expires_at": "2026-04-04T10:18:57+00:00",
+      "fingerprint": "381e9bc17f339b8acd20",
+      "id": "SEED-AUTO-ae2eafa0",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 78,
+      "source": "auto_seed",
+      "status": "ready",
+      "title": "Automation fallback pipeline hardening",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 76,
+      "worker_affinity": [
+        "A_core",
+        "B_tooling",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory doctor"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "docs/security/**",
+        "tools/**"
+      ],
+      "category": "security",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Add deterministic security checks to pipeline with reproducible outputs.",
+      "estimated_mloc": 1500,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "974c1615d87eb05c4691",
+      "id": "SEED-SECU-959ac7e1",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 75,
+      "source": "auto_seed",
+      "status": "ready",
+      "title": "Security check automation fallback",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 74,
+      "worker_affinity": [
+        "B_tooling",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory doctor"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "apps/**",
+        "tools/**"
+      ],
+      "category": "performance",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Automate perf budget validation and actionable reporting.",
+      "estimated_mloc": 1400,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "a4ed1001a8a72d8effb6",
+      "id": "SEED-PERF-c8b6a683",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 74,
+      "source": "auto_seed",
+      "status": "ready",
+      "title": "Performance guardrail fallback",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 73,
+      "worker_affinity": [
+        "B_tooling",
+        "C_features"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory doctor"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "apps/**",
+        "packages/**",
+        "tools/**"
+      ],
+      "category": "performance",
+      "created_at_utc": "2026-03-05T10:18:57+00:00",
+      "description": "Automate perf budget validation and actionable reporting.",
+      "estimated_mloc": 1400,
+      "expires_at": "2026-04-04T10:18:57+00:00",
+      "fingerprint": "b2af81d817220724f577",
+      "id": "SEED-PERF-c8b6a683",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 74,
+      "source": "auto_seed",
+      "status": "ready",
+      "title": "Performance guardrail fallback",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 73,
+      "worker_affinity": [
+        "B_tooling",
+        "C_features"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory doctor"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "docs/factory/**",
+        "tools/**"
+      ],
+      "category": "dx",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Improve local run ergonomics and deterministic troubleshooting docs.",
+      "estimated_mloc": 1300,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "06835a37132f727e63a2",
+      "id": "SEED-DX-b05bcc99",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 72,
+      "source": "auto_seed",
+      "status": "ready",
+      "title": "Developer experience fallback",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 72,
+      "worker_affinity": [
+        "A_core",
+        "B_tooling"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory doctor"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "apps/**",
+        "docs/factory/**",
+        "packages/**",
+        "tools/**"
+      ],
+      "category": "dx",
+      "created_at_utc": "2026-03-05T10:18:57+00:00",
+      "description": "Improve local run ergonomics and deterministic troubleshooting docs.",
+      "estimated_mloc": 1300,
+      "expires_at": "2026-04-04T10:18:57+00:00",
+      "fingerprint": "eaf0e85d9822d818ff61",
+      "id": "SEED-DX-b05bcc99",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 72,
+      "source": "auto_seed",
+      "status": "ready",
+      "title": "Developer experience fallback",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 72,
+      "worker_affinity": [
+        "A_core",
+        "B_tooling"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory.contracts-check",
+        "python -m tools.codex.factory.doctor"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "docs/factory/**",
+        "tools/codex/dispatch/**",
+        "tools/codex/factory/**"
+      ],
+      "category": "automation",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Generate a deterministic exporter that summarizes stage durations, rc, and retry trends into JSON and Markdown.",
+      "estimated_mloc": 2400,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "091d715854a05ea44a45",
+      "id": "TB-AUTO-001",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 100,
+      "source": "legacy_bank",
+      "status": "backlog",
+      "title": "Factory stage telemetry exporter",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 68,
+      "worker_affinity": [
+        "A_core",
+        "B_tooling",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python tools/codex/dispatch/validator.py validate-prompts --run-id <RUN_ID>"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "docs/dispatcher/**",
+        "tools/codex/dispatch/**",
+        "tools/codex/verify/**"
+      ],
+      "category": "automation",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Add deterministic lint checks for prompt headers, worker ownership tags, and rework markers.",
+      "estimated_mloc": 2200,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "21c0e61f5801cb0b6039",
+      "id": "TB-AUTO-002",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 96,
+      "source": "legacy_bank",
+      "status": "backlog",
+      "title": "Prompt contract linter",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 67,
+      "worker_affinity": [
+        "A_core",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "pwsh -NoProfile -File tools/scripts/Invoke-HitechRunsDoctor.ps1 -Quiet"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "docs/factory/**",
+        "tools/codex/dispatch/**",
+        "tools/scripts/**"
+      ],
+      "category": "automation",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Expand diagnostics and deterministic repair logs around runs-root canonicalization.",
+      "estimated_mloc": 1800,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "4c34ce15636c4ce6d15f",
+      "id": "TB-AUTO-003",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 92,
+      "source": "legacy_bank",
+      "status": "backlog",
+      "title": "Runs root drift auto-remediation checks",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 66,
+      "worker_affinity": [
+        "B_tooling",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "pnpm --filter @hitech/keystone test"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "apps/keystone/lib/pitch-engine/**",
+        "apps/keystone/tests/pitch-engine-core/**",
+        "docs/design/pitch-engine/**"
+      ],
+      "category": "reliability",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Add reusable deterministic scenario generators and contracts for pitch-engine workflows.",
+      "estimated_mloc": 3000,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "2e287d8133e56673281e",
+      "id": "TB-CORE-001",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 90,
+      "source": "legacy_bank",
+      "status": "backlog",
+      "title": "Pitch engine deterministic scenario pack",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 65,
+      "worker_affinity": [
+        "A_core"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "pnpm --filter @hitech/keystone typecheck"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "apps/keystone/lib/pitch-engine/capabilities/**",
+        "apps/keystone/tests/pitch-engine-core/**"
+      ],
+      "category": "reliability",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Add audit utilities for capability registry diffs and deterministic validation.",
+      "estimated_mloc": 2100,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "71138d0e268422e9d75a",
+      "id": "TB-CORE-002",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 88,
+      "source": "legacy_bank",
+      "status": "backlog",
+      "title": "Capability registry hardening utilities",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 64,
+      "worker_affinity": [
+        "A_core"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "pnpm --filter @hitech/ui-kit lint"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "docs/constitution/**",
+        "packages/ui-kit/**",
+        "tools/hos/**"
+      ],
+      "category": "automation",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Implement a checker that validates token usage consistency across ui-kit components.",
+      "estimated_mloc": 2600,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "9676e228ff328d88bc5a",
+      "id": "TB-TOOL-001",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 86,
+      "source": "legacy_bank",
+      "status": "backlog",
+      "title": "UI token conformance checker",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 64,
+      "worker_affinity": [
+        "B_tooling",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python tools/hos/visual/cli_visual.py --help"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "docs/factory/**",
+        "packages/ui-kit/**",
+        "tools/hos/visual/**"
+      ],
+      "category": "automation",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Add scripts and docs to classify visual baseline diffs and triage false positives deterministically.",
+      "estimated_mloc": 1700,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "37d2e4c25c085f4b2df8",
+      "id": "TB-TOOL-002",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 84,
+      "source": "legacy_bank",
+      "status": "backlog",
+      "title": "Visual baseline drift triage scripts",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 63,
+      "worker_affinity": [
+        "B_tooling"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "pnpm --filter @hitech/keystone test"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "apps/keystone/components/pitch/**",
+        "apps/keystone/tests/**",
+        "docs/runbooks/**"
+      ],
+      "category": "reliability",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Generate deterministic, parameterized fixtures for inventory and receiving simulations.",
+      "estimated_mloc": 2800,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "78f83c206026a48c646c",
+      "id": "TB-FEAT-001",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 82,
+      "source": "legacy_bank",
+      "status": "backlog",
+      "title": "Inventory simulation fixtures",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 63,
+      "worker_affinity": [
+        "C_features",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "pnpm --filter @hitech/keystone build"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "apps/keystone/app/pitch/**",
+        "apps/keystone/components/pitch/**",
+        "apps/keystone/tests/**"
+      ],
+      "category": "reliability",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Add harnesses for anomaly scenarios in receiving workflows with deterministic replay.",
+      "estimated_mloc": 2300,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "cd1132d6b0d42248cf67",
+      "id": "TB-FEAT-002",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 80,
+      "source": "legacy_bank",
+      "status": "backlog",
+      "title": "Receiving flow anomaly harness",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 62,
+      "worker_affinity": [
+        "C_features"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "pnpm --filter @hitech/contracts test",
+        "pnpm --filter @hitech/keystone test"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "apps/keystone/tests/**",
+        "packages/contracts/tests/**",
+        "tools/codex/verify/**"
+      ],
+      "category": "reliability",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Build additional regression suites for contract shape compatibility and deterministic snapshots.",
+      "estimated_mloc": 2500,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "f2854c66cc5a3f5ac6a4",
+      "id": "TB-VAL-001",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 78,
+      "source": "legacy_bank",
+      "status": "backlog",
+      "title": "Contract regression bundle",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 61,
+      "worker_affinity": [
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m unittest tools.codex.factory.tests.test_support"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "docs/factory/**",
+        "tools/codex/factory/tests/**",
+        "tools/codex/verify/**"
+      ],
+      "category": "reliability",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Expand meaningful execution gate tests for empty patch, phantom paths, and declaration mismatch edge cases.",
+      "estimated_mloc": 1900,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "cd64d4be9ec9ce701b62",
+      "id": "TB-VAL-002",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 76,
+      "source": "legacy_bank",
+      "status": "backlog",
+      "title": "Meaningful gate edge-case pack",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 61,
+      "worker_affinity": [
+        "A_core",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory watch --run-id <RUN_ID>"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "docs/factory/**",
+        "tools/codex/runs/<RUN_ID>/Z_aggregator/**"
+      ],
+      "category": "automation",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Add deterministic report generators for overlap maps, risk matrices, and merge-order narratives.",
+      "estimated_mloc": 2600,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "4a2fcc88f5edcc120710",
+      "id": "TB-Z-001",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 70,
+      "source": "legacy_bank",
+      "status": "backlog",
+      "title": "Integrator report expansion pack",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 59,
+      "worker_affinity": [
+        "Z_aggregator"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory ledger --run-id <RUN_ID> --raw-events --limit 50"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "tools/codex/factory/**",
+        "tools/codex/runs/<RUN_ID>/Z_aggregator/**"
+      ],
+      "category": "automation",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Generate deterministic ledger digest outputs that correlate stage events with artifact evidence.",
+      "estimated_mloc": 1700,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "56d7abbc5d032e5f9dbb",
+      "id": "TB-Z-002",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 68,
+      "source": "legacy_bank",
+      "status": "backlog",
+      "title": "Ledger evidence compiler",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 58,
+      "worker_affinity": [
+        "Z_aggregator"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python tools/docs_governor/docs_governor.py --repo . --report-dir tools/docs_governor/reports"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "docs/GOVERNANCE_DOCS.md",
+        "tools/codex/dispatch/**",
+        "tools/docs_governor/**"
+      ],
+      "category": "automation",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Create bridge tooling that links docs governor findings with worker run evidence for triage automation.",
+      "estimated_mloc": 1800,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "4b2aba8004b1c158922b",
+      "id": "TB-AUTO-005",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 64,
+      "source": "legacy_bank",
+      "status": "backlog",
+      "title": "Docs governor evidence bridge",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 57,
+      "worker_affinity": [
+        "B_tooling",
+        "D_validation"
+      ]
+    },
+    {
+      "acceptance_checks": [
+        "python -m tools.codex.factory integrate --run-id <RUN_ID> --workers A_core,B_tooling,C_features,D_validation,Z_aggregator"
+      ],
+      "active": true,
+      "allowed_paths": [
+        "docs/factory/**",
+        "tools/codex/dispatch/**",
+        "tools/codex/factory/**"
+      ],
+      "category": "automation",
+      "created_at_utc": "2026-03-04T13:08:08+00:00",
+      "description": "Add a deterministic explainer tool that translates overlap/scope blockers into fix recipes.",
+      "estimated_mloc": 2100,
+      "expires_at": "2026-04-03T13:08:08+00:00",
+      "fingerprint": "9c9e5830fefebf18ee6c",
+      "id": "TB-AUTO-004",
+      "metrics": {},
+      "owner": "factory",
+      "priority": 66,
+      "source": "legacy_bank",
+      "status": "backlog",
+      "title": "Scope lock conflict explainer",
+      "updated_at_utc": "2026-03-05T10:18:57+00:00",
+      "value_score": 38,
+      "worker_affinity": [
+        "A_core",
+        "B_tooling",
+        "D_validation"
+      ]
+    }
+  ],
+  "version": "2.0.0"
+}

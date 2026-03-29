@@ -46,6 +46,10 @@ Must include:
 
 Template: `templates/CODEX_OUTPUT_TEMPLATE.md`.
 
+Automation rule:
+
+- If worker output is incomplete, factory auto-closeout must generate/repair `CODEX_OUTPUT` and bundle artifacts before `bundle-validate`.
+
 ### 2) Bundle directory (recommended)
 
 Path (recommended):
@@ -60,14 +64,15 @@ Must include:
 - `DIFF.patch`
 - `LOGS/` (typecheck/build/tests)
 - `SUGGESTIONS.md`
+- `CODEX_OUTPUT.txt`
 
 Schema: `templates/BUNDLE_SCHEMA.md`.
 
 ---
 
-## Z Integrator Output — Required
+## Z_aggregator Output — Required
 
-Z must produce:
+Z_aggregator must produce:
 
 ### 1) FINAL_REPORT.txt
 
@@ -87,7 +92,7 @@ Template: `templates/FINAL_REPORT_TEMPLATE.md`.
 
 Path (recommended):
 
-- `tools/codex/runs/<RUN_ID>/Z_integrator/`
+- `tools/codex/runs/<RUN_ID>/Z_aggregator/`
 
 Must include:
 
@@ -96,15 +101,34 @@ Must include:
 - `MERGE_PLAN.md`
 - `FILES_CHANGED.json`
 - `DIFF.patch`
+- `LOGS/INDEX.json`
+- `GRAVITY_REPORT.json`
+- `PROTECTED_NODES.json`
+- `IMPACT_CONE_REPORT.json`
+- `DEPENDENCY_DIFF.json`
+- `DISPATCH_RECOMMENDATIONS.json`
+- `GRAVITY_SUMMARY.md`
+- `DISPATCH_RECOMMENDATIONS.md`
 - validation logs
+
+Canonicality rule:
+
+- Graph-analysis JSON artifacts are canonical.
+- Markdown mirrors summarize JSON and must not contradict canonical JSON.
+- `GRAVITY_REPORT.json` must carry typed centrality and derived planning/risk sections (`centrality_summary`, `refactor_candidates`, `protected_node_recommendations`, `architecture_risk_flags`) in current-runtime emissions.
 
 ---
 
 ## Naming Rules (Deterministic)
 
 - Run IDs: `run_YYYYMMDD_HHMMSS` or monotonic counter
-- Agent IDs: `A_core`, `B_surface`, `C_tooling`, `D_validation`, `Z_integrator`
+- Agent IDs: `A_core`, `B_tooling`, `C_features`, `D_validation`, `Z_aggregator`, `R_reviewer`, `E_planner`
 - JSON: stable key order if possible; sort file lists
+
+Compatibility note:
+
+- Readers/parsers may accept legacy aliases (`A_worker`, `B_worker`, `C_worker`, `D_worker`, `Z_integrator`, `R_worker`, `E_worker`).
+- Writers/generators/new artifacts must emit canonical IDs only.
 
 ---
 
@@ -126,3 +150,4 @@ If a delete/move/rename is necessary:
 ✅ Z produced FINAL_REPORT and STATUS.json  
 ✅ Validations were executed and logged  
 ✅ No undocumented deletes/moves/renames
+

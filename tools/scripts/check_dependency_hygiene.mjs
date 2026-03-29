@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -41,11 +41,19 @@ function isSorted(keys) {
 }
 
 const issues = [];
+const skippedManifests = [];
+let scannedManifestCount = 0;
 
 for (const relativePath of packageFiles) {
   const absolutePath = path.join(repoRoot, relativePath);
+  if (!existsSync(absolutePath)) {
+    skippedManifests.push(relativePath);
+    continue;
+  }
+
   const content = readFileSync(absolutePath, "utf8");
   const parsed = JSON.parse(content);
+  scannedManifestCount += 1;
 
   for (const section of dependencySections) {
     const deps = parsed[section];
@@ -74,7 +82,13 @@ if (issues.length > 0) {
   for (const issue of issues) {
     console.error(` - ${issue}`);
   }
+  if (skippedManifests.length > 0) {
+    console.error(` - skipped missing manifests: ${skippedManifests.join(", ")}`);
+  }
   process.exit(1);
 }
 
-console.log(`[deps:check] OK (${packageFiles.length} package manifests)`);
+if (skippedManifests.length > 0) {
+  console.warn(`[deps:check] skipped missing manifests: ${skippedManifests.join(", ")}`);
+}
+console.log(`[deps:check] OK (${scannedManifestCount} package manifests)`);

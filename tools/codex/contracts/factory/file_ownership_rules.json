@@ -6,39 +6,44 @@
         "apps/**",
         "packages/**"
       ],
-      "worker": "A_worker"
+      "worker": "A_core"
     },
     {
       "allowed": [
         "apps/**",
-        "docs/**"
+        "docs/**",
+        "docs/visual-baselines/**",
+        "packages/**",
+        "tools/_local/visual/**"
       ],
-      "worker": "B_worker"
+      "worker": "C_features"
     },
     {
       "allowed": [
         "tools/**",
-        "packages/**"
+        "packages/**",
+        "docs/**"
       ],
-      "worker": "C_worker"
+      "worker": "B_tooling"
     },
     {
       "allowed": [
         "docs/**",
         "tools/**"
       ],
-      "worker": "D_worker"
+      "worker": "D_validation"
     },
     {
       "allowed": [
         "tools/codex/runs/**"
       ],
-      "worker": "Z_integrator"
+      "worker": "Z_aggregator"
     }
   ],
   "schema_version": 1,
   "shared_allowlist": [
     "docs/factory/**",
+    "docs/visual-baselines/**",
     "tools/codex/runs/**"
   ]
 }

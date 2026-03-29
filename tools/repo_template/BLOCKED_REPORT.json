@@ -1,0 +1,10 @@
+﻿{
+    "blocked":  true,
+    "reason":  "Template overlay process aborted.",
+    "details":  [
+                    "No se puede llamar a un método en una expresión con valor NULL.",
+                    "En F:\\repos\\hitech-os\\tools\\repo_template\\apply_hitech_template.ps1: 148 Carácter: 5\r\n+     $branchExists = (git -C $RepoPath branch --list $overlayBranch).T ...\r\n+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+                    "en Ensure-OverlayBranchIfDirty, F:\\repos\\hitech-os\\tools\\repo_template\\apply_hitech_template.ps1: línea 148\r\nen \u003cScriptBlock\u003e, F:\\repos\\hitech-os\\tools\\repo_template\\apply_hitech_template.ps1: línea 314"
+                ],
+    "timestamp":  "2026-03-04T06:47:49.0046856Z"
+}

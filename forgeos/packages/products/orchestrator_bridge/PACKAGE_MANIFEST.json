@@ -1,0 +1,18 @@
+{
+  "package_id": "forge.product.orchestrator_bridge",
+  "layer": "product",
+  "owner": "forge_products_orchestrator_bridge",
+  "version": "0.1.0",
+  "required_kernel_range": ">=0.1.0,<1.0.0",
+  "integrity_hash": "sha256:56ae7dcb2e2c91aab48d5472489348241fe8b90d152e8cc063cd22979ff40e82",
+  "source_anchor": "products/orchestrator_bridge/PRODUCT_MANIFEST.json",
+  "compatibility": {
+    "kernel": ">=0.1.0,<1.0.0",
+    "commons": ">=0.1.0,<1.0.0"
+  },
+  "install_policy": {
+    "validate_integrity": true,
+    "validate_compatibility": true,
+    "rollback_supported": true
+  }
+}

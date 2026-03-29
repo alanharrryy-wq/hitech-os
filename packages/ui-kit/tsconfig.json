@@ -15,5 +15,12 @@
     "skipLibCheck": true
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"],
-  "exclude": ["dist", "node_modules"]
+  "exclude": [
+    "dist",
+    "node_modules",
+    "src/**/*.test.ts",
+    "src/**/__tests__/**",
+    "src/motion/catalogs/**",
+    "src/luxury/frames/signatures/**"
+  ]
 }

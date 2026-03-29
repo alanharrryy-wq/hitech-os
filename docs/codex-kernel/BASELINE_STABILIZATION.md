@@ -31,7 +31,7 @@ Optional checks (example: dependency install bootstrap) do not decide final PASS
 
 All run evidence is stored under:
 
-`tools/codex/runs/<RUN_ID>/Z_integrator/`
+`tools/codex/runs/<RUN_ID>/Z_aggregator/`
 
 Required files:
 
@@ -70,3 +70,4 @@ If still blocked, report exact failing step, log path, and one next action.
 - Do not write build/test artifacts under `src/**`.
 - Do not enable feature flags by default.
 - Do not bypass required validation checks using `allow_fail`.
+

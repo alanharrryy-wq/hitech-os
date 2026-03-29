@@ -1,0 +1,11 @@
+name: Labels
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  labels:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "TODO"

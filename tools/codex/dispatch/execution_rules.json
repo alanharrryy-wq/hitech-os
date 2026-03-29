@@ -1,0 +1,79 @@
+{
+  "version": "1.0.0",
+  "mandatory_reads": [
+    "KERNEL_CONTEXT.md",
+    "docs/factory/FACTORY_RUNTIME_EXPLAINED.md",
+    "MODULE_BOUNDARIES.md",
+    "ARCHITECTURE_DECISIONS.md"
+  ],
+  "allowed_top_level_domains": [
+    "apps",
+    "packages",
+    "tools",
+    "docs"
+  ],
+  "forbidden_top_level_layers": [
+    "engine",
+    "framework",
+    "runtime",
+    "platform",
+    "orchestrator",
+    "manager",
+    "controller",
+    "pipeline"
+  ],
+  "product_impact_required_domains": [
+    "apps",
+    "packages"
+  ],
+  "low_product_impact_domains": [
+    "tools",
+    "scripts",
+    "infra"
+  ],
+  "max_new_files_per_run": 20,
+  "file_size_recommended_min_loc": 200,
+  "file_size_recommended_max_loc": 800,
+  "file_size_hard_max_loc": 1500,
+  "generic_utility_names": [
+    "utils.ts",
+    "helpers.ts",
+    "common.ts",
+    "shared.ts",
+    "utils.js",
+    "helpers.js",
+    "common.js",
+    "shared.js",
+    "utils.py",
+    "helpers.py",
+    "common.py",
+    "shared.py"
+  ],
+  "real_code_extensions": [
+    ".ts",
+    ".tsx",
+    ".js",
+    ".mjs",
+    ".py",
+    ".ps1"
+  ],
+  "artifact_extensions": [
+    ".json",
+    ".md",
+    ".snapshot",
+    ".lock",
+    ".generated"
+  ],
+  "min_real_code_ratio": 0.4,
+  "max_artifact_ratio": 0.3,
+  "min_test_ratio": 0.1,
+  "max_test_ratio": 0.3,
+  "change_density_min_files": 10,
+  "change_density_max_files": 80,
+  "module_rules": {
+    "min_import_usages": 2,
+    "require_runtime_or_test_path": true,
+    "require_test_reference": true,
+    "strict_orphan_fail": false
+  }
+}

@@ -1,3 +1,4 @@
+import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import type { HTMLAttributes, PropsWithChildren } from "react";
 import { cn } from "../../lib/cn.js";
@@ -20,6 +21,9 @@ export interface GridProps
     HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof gridVariants> {
   readonly cols?: number;
+  readonly className?: string;
+  readonly children?: React.ReactNode;
+  readonly style?: React.CSSProperties;
 }
 
 export interface GridItemProps extends PropsWithChildren, HTMLAttributes<HTMLDivElement> {
@@ -28,6 +32,8 @@ export interface GridItemProps extends PropsWithChildren, HTMLAttributes<HTMLDiv
   readonly spanMd?: number;
   readonly spanLg?: number;
   readonly spanXl?: number;
+  readonly className?: string;
+  readonly children?: React.ReactNode;
 }
 
 function clampSpan(span: number | undefined): number | undefined {

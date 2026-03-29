@@ -45,7 +45,19 @@
     "run": {
       "additionalProperties": false,
       "properties": {
+        "auto_closeout_workers": {
+          "type": "boolean"
+        },
+        "auto_preflight_repair": {
+          "type": "boolean"
+        },
+        "auto_repair_missing_folders": {
+          "type": "boolean"
+        },
         "allow_identical_patch_overlap": {
+          "type": "boolean"
+        },
+        "enforce_anti_padding_gate": {
           "type": "boolean"
         },
         "base_ref": {
@@ -53,6 +65,15 @@
         },
         "branch_prefix": {
           "type": "string"
+        },
+        "chat_hygiene_policy": {
+          "type": "string"
+        },
+        "integrator_wait_for_workers": {
+          "type": "boolean"
+        },
+        "integrator_watch_ledger": {
+          "type": "boolean"
         },
         "kind": {
           "type": "string"
@@ -65,6 +86,12 @@
         },
         "strict_collision_mode": {
           "type": "boolean"
+        },
+        "visual_baseline_owner": {
+          "type": "string"
+        },
+        "visual_baseline_update_default": {
+          "type": "boolean"
         }
       },
       "required": [
@@ -74,7 +101,15 @@
         "base_ref",
         "strict_collision_mode",
         "allow_identical_patch_overlap",
-        "quarantine_on_suspicious_bundle"
+        "quarantine_on_suspicious_bundle",
+        "auto_closeout_workers",
+        "auto_preflight_repair",
+        "auto_repair_missing_folders",
+        "integrator_watch_ledger",
+        "integrator_wait_for_workers",
+        "visual_baseline_owner",
+        "visual_baseline_update_default",
+        "chat_hygiene_policy"
       ],
       "type": "object"
     },
@@ -128,6 +163,15 @@
             "type": "string"
           },
           "type": "array"
+        },
+        "required_post_run_files": {
+          "additionalProperties": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "type": "object"
         },
         "required_worker_files": {
           "items": {

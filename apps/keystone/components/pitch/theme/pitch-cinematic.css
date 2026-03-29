@@ -1,0 +1,6395 @@
+/* Keystone Pitch Hybrid Theme: Luxury Liquid-Glass + Neon Halo */
+.pitch-shell-root {
+  --pitch-gold: #AB7B26;
+  --pitch-deep-teal: #026F86;
+  --pitch-cyan: #02A7CA;
+  --pitch-brown: #553E13;
+  --pitch-ink: #041219;
+  --pitch-paper: #f5f7f8;
+  --pitch-glass-alpha-strong: 0.82;
+  --pitch-glass-alpha-soft: 0.66;
+  --pitch-blur-strong: 18px;
+  --pitch-blur-soft: 10px;
+  --pitch-radius-xl: 22px;
+  --pitch-radius-lg: 16px;
+  --pitch-radius-md: 12px;
+  --pitch-shadow-soft: 0 14px 40px rgba(4, 18, 25, 0.16);
+  --pitch-shadow-strong: 0 24px 70px rgba(4, 18, 25, 0.23);
+  --pitch-border-soft: rgba(2, 111, 134, 0.20);
+  --pitch-border-strong: rgba(2, 111, 134, 0.34);
+  --pitch-noise-opacity: 0.08;
+  --pitch-stage-gradient: radial-gradient(circle at 20% 0%, rgba(2, 167, 202, 0.12) 0%, rgba(2, 111, 134, 0.1) 30%, rgba(4, 18, 25, 0.04) 60%, rgba(255, 255, 255, 0.96) 100%);
+}
+
+.pitch-shell-root {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+}
+
+.pitch-shell-root::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--pitch-stage-gradient);
+  pointer-events: none;
+  z-index: -2;
+}
+
+.pitch-shell-root::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(2, 111, 134, 0.06) 1px, transparent 1px);
+  background-size: 3px 3px;
+  opacity: var(--pitch-noise-opacity);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.pitch-glass-card {
+  position: relative;
+  border-radius: var(--pitch-radius-xl);
+  border: 1px solid var(--pitch-border-soft);
+  background: linear-gradient(145deg, rgba(255, 255, 255, var(--pitch-glass-alpha-strong)) 0%, rgba(255, 255, 255, var(--pitch-glass-alpha-soft)) 100%);
+  box-shadow: var(--pitch-shadow-soft);
+  backdrop-filter: blur(var(--pitch-blur-soft));
+  -webkit-backdrop-filter: blur(var(--pitch-blur-soft));
+}
+
+.pitch-glass-card[data-tone="elevated"] {
+  border-color: var(--pitch-border-strong);
+  box-shadow: var(--pitch-shadow-strong);
+}
+
+.pitch-glass-card[data-tone="dark"] {
+  background: linear-gradient(145deg, rgba(4, 18, 25, 0.92) 0%, rgba(2, 48, 59, 0.84) 100%);
+  border-color: rgba(2, 167, 202, 0.44);
+  color: #f8ffff;
+}
+
+.pitch-neon-edge {
+  position: relative;
+}
+
+.pitch-neon-edge::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(120deg, rgba(171, 123, 38, 0.34), rgba(2, 167, 202, 0.32), rgba(2, 111, 134, 0.34));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.pitch-focus-ring:focus-visible {
+  outline: 2px solid rgba(2, 167, 202, 0.84);
+  outline-offset: 2px;
+}
+
+.pitch-hero-title {
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  margin: 0;
+  color: var(--pitch-ink);
+}
+
+.pitch-hero-subtitle {
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  line-height: 1.6;
+  margin: 0;
+  color: rgba(4, 18, 25, 0.75);
+}
+
+@keyframes pitchHaloPulse {
+  0% { opacity: 0.45; transform: scale(0.98); }
+  50% { opacity: 0.85; transform: scale(1); }
+  100% { opacity: 0.45; transform: scale(0.98); }
+}
+
+@keyframes pitchRailSweep {
+  0% { transform: translateX(-18%); opacity: 0; }
+  100% { transform: translateX(0%); opacity: 1; }
+}
+
+@keyframes pitchRise {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.pitch-halo-level-1 {
+  box-shadow: 0 0 0.12px rgba(2, 167, 202, 0.041), 0 0 4.06px rgba(171, 123, 38, 0.041);
+}
+.pitch-halo-level-2 {
+  box-shadow: 0 0 0.25px rgba(2, 167, 202, 0.042), 0 0 4.12px rgba(171, 123, 38, 0.042);
+}
+.pitch-halo-level-3 {
+  box-shadow: 0 0 0.38px rgba(2, 167, 202, 0.043), 0 0 4.19px rgba(171, 123, 38, 0.043);
+}
+.pitch-halo-level-4 {
+  box-shadow: 0 0 0.5px rgba(2, 167, 202, 0.044), 0 0 4.25px rgba(171, 123, 38, 0.044);
+}
+.pitch-halo-level-5 {
+  box-shadow: 0 0 0.62px rgba(2, 167, 202, 0.045), 0 0 4.31px rgba(171, 123, 38, 0.045);
+}
+.pitch-halo-level-6 {
+  box-shadow: 0 0 0.75px rgba(2, 167, 202, 0.046), 0 0 4.38px rgba(171, 123, 38, 0.046);
+}
+.pitch-halo-level-7 {
+  box-shadow: 0 0 0.88px rgba(2, 167, 202, 0.047), 0 0 4.44px rgba(171, 123, 38, 0.047);
+}
+.pitch-halo-level-8 {
+  box-shadow: 0 0 1px rgba(2, 167, 202, 0.048), 0 0 4.5px rgba(171, 123, 38, 0.048);
+}
+.pitch-halo-level-9 {
+  box-shadow: 0 0 1.12px rgba(2, 167, 202, 0.049), 0 0 4.56px rgba(171, 123, 38, 0.049);
+}
+.pitch-halo-level-10 {
+  box-shadow: 0 0 1.25px rgba(2, 167, 202, 0.05), 0 0 4.62px rgba(171, 123, 38, 0.05);
+}
+.pitch-halo-level-11 {
+  box-shadow: 0 0 1.38px rgba(2, 167, 202, 0.051), 0 0 4.69px rgba(171, 123, 38, 0.051);
+}
+.pitch-halo-level-12 {
+  box-shadow: 0 0 1.5px rgba(2, 167, 202, 0.052), 0 0 4.75px rgba(171, 123, 38, 0.052);
+}
+.pitch-halo-level-13 {
+  box-shadow: 0 0 1.62px rgba(2, 167, 202, 0.053), 0 0 4.81px rgba(171, 123, 38, 0.053);
+}
+.pitch-halo-level-14 {
+  box-shadow: 0 0 1.75px rgba(2, 167, 202, 0.054), 0 0 4.88px rgba(171, 123, 38, 0.054);
+}
+.pitch-halo-level-15 {
+  box-shadow: 0 0 1.88px rgba(2, 167, 202, 0.055), 0 0 4.94px rgba(171, 123, 38, 0.055);
+}
+.pitch-halo-level-16 {
+  box-shadow: 0 0 2px rgba(2, 167, 202, 0.056), 0 0 5px rgba(171, 123, 38, 0.056);
+}
+.pitch-halo-level-17 {
+  box-shadow: 0 0 2.12px rgba(2, 167, 202, 0.057), 0 0 5.06px rgba(171, 123, 38, 0.057);
+}
+.pitch-halo-level-18 {
+  box-shadow: 0 0 2.25px rgba(2, 167, 202, 0.058), 0 0 5.12px rgba(171, 123, 38, 0.058);
+}
+.pitch-halo-level-19 {
+  box-shadow: 0 0 2.38px rgba(2, 167, 202, 0.059), 0 0 5.19px rgba(171, 123, 38, 0.059);
+}
+.pitch-halo-level-20 {
+  box-shadow: 0 0 2.5px rgba(2, 167, 202, 0.06), 0 0 5.25px rgba(171, 123, 38, 0.06);
+}
+.pitch-halo-level-21 {
+  box-shadow: 0 0 2.62px rgba(2, 167, 202, 0.061), 0 0 5.31px rgba(171, 123, 38, 0.061);
+}
+.pitch-halo-level-22 {
+  box-shadow: 0 0 2.75px rgba(2, 167, 202, 0.062), 0 0 5.38px rgba(171, 123, 38, 0.062);
+}
+.pitch-halo-level-23 {
+  box-shadow: 0 0 2.88px rgba(2, 167, 202, 0.063), 0 0 5.44px rgba(171, 123, 38, 0.063);
+}
+.pitch-halo-level-24 {
+  box-shadow: 0 0 3px rgba(2, 167, 202, 0.064), 0 0 5.5px rgba(171, 123, 38, 0.064);
+}
+.pitch-halo-level-25 {
+  box-shadow: 0 0 3.12px rgba(2, 167, 202, 0.065), 0 0 5.56px rgba(171, 123, 38, 0.065);
+}
+.pitch-halo-level-26 {
+  box-shadow: 0 0 3.25px rgba(2, 167, 202, 0.066), 0 0 5.62px rgba(171, 123, 38, 0.066);
+}
+.pitch-halo-level-27 {
+  box-shadow: 0 0 3.38px rgba(2, 167, 202, 0.067), 0 0 5.69px rgba(171, 123, 38, 0.067);
+}
+.pitch-halo-level-28 {
+  box-shadow: 0 0 3.5px rgba(2, 167, 202, 0.068), 0 0 5.75px rgba(171, 123, 38, 0.068);
+}
+.pitch-halo-level-29 {
+  box-shadow: 0 0 3.62px rgba(2, 167, 202, 0.069), 0 0 5.81px rgba(171, 123, 38, 0.069);
+}
+.pitch-halo-level-30 {
+  box-shadow: 0 0 3.75px rgba(2, 167, 202, 0.07), 0 0 5.88px rgba(171, 123, 38, 0.07);
+}
+.pitch-halo-level-31 {
+  box-shadow: 0 0 3.88px rgba(2, 167, 202, 0.071), 0 0 5.94px rgba(171, 123, 38, 0.071);
+}
+.pitch-halo-level-32 {
+  box-shadow: 0 0 4px rgba(2, 167, 202, 0.072), 0 0 6px rgba(171, 123, 38, 0.072);
+}
+.pitch-halo-level-33 {
+  box-shadow: 0 0 4.12px rgba(2, 167, 202, 0.073), 0 0 6.06px rgba(171, 123, 38, 0.073);
+}
+.pitch-halo-level-34 {
+  box-shadow: 0 0 4.25px rgba(2, 167, 202, 0.074), 0 0 6.12px rgba(171, 123, 38, 0.074);
+}
+.pitch-halo-level-35 {
+  box-shadow: 0 0 4.38px rgba(2, 167, 202, 0.075), 0 0 6.19px rgba(171, 123, 38, 0.075);
+}
+.pitch-halo-level-36 {
+  box-shadow: 0 0 4.5px rgba(2, 167, 202, 0.076), 0 0 6.25px rgba(171, 123, 38, 0.076);
+}
+.pitch-halo-level-37 {
+  box-shadow: 0 0 4.62px rgba(2, 167, 202, 0.077), 0 0 6.31px rgba(171, 123, 38, 0.077);
+}
+.pitch-halo-level-38 {
+  box-shadow: 0 0 4.75px rgba(2, 167, 202, 0.078), 0 0 6.38px rgba(171, 123, 38, 0.078);
+}
+.pitch-halo-level-39 {
+  box-shadow: 0 0 4.88px rgba(2, 167, 202, 0.079), 0 0 6.44px rgba(171, 123, 38, 0.079);
+}
+.pitch-halo-level-40 {
+  box-shadow: 0 0 5px rgba(2, 167, 202, 0.08), 0 0 6.5px rgba(171, 123, 38, 0.08);
+}
+.pitch-halo-level-41 {
+  box-shadow: 0 0 5.12px rgba(2, 167, 202, 0.081), 0 0 6.56px rgba(171, 123, 38, 0.081);
+}
+.pitch-halo-level-42 {
+  box-shadow: 0 0 5.25px rgba(2, 167, 202, 0.082), 0 0 6.62px rgba(171, 123, 38, 0.082);
+}
+.pitch-halo-level-43 {
+  box-shadow: 0 0 5.38px rgba(2, 167, 202, 0.083), 0 0 6.69px rgba(171, 123, 38, 0.083);
+}
+.pitch-halo-level-44 {
+  box-shadow: 0 0 5.5px rgba(2, 167, 202, 0.084), 0 0 6.75px rgba(171, 123, 38, 0.084);
+}
+.pitch-halo-level-45 {
+  box-shadow: 0 0 5.62px rgba(2, 167, 202, 0.085), 0 0 6.81px rgba(171, 123, 38, 0.085);
+}
+.pitch-halo-level-46 {
+  box-shadow: 0 0 5.75px rgba(2, 167, 202, 0.086), 0 0 6.88px rgba(171, 123, 38, 0.086);
+}
+.pitch-halo-level-47 {
+  box-shadow: 0 0 5.88px rgba(2, 167, 202, 0.087), 0 0 6.94px rgba(171, 123, 38, 0.087);
+}
+.pitch-halo-level-48 {
+  box-shadow: 0 0 6px rgba(2, 167, 202, 0.088), 0 0 7px rgba(171, 123, 38, 0.088);
+}
+.pitch-halo-level-49 {
+  box-shadow: 0 0 6.12px rgba(2, 167, 202, 0.089), 0 0 7.06px rgba(171, 123, 38, 0.089);
+}
+.pitch-halo-level-50 {
+  box-shadow: 0 0 6.25px rgba(2, 167, 202, 0.09), 0 0 7.12px rgba(171, 123, 38, 0.09);
+}
+.pitch-halo-level-51 {
+  box-shadow: 0 0 6.38px rgba(2, 167, 202, 0.091), 0 0 7.19px rgba(171, 123, 38, 0.091);
+}
+.pitch-halo-level-52 {
+  box-shadow: 0 0 6.5px rgba(2, 167, 202, 0.092), 0 0 7.25px rgba(171, 123, 38, 0.092);
+}
+.pitch-halo-level-53 {
+  box-shadow: 0 0 6.62px rgba(2, 167, 202, 0.093), 0 0 7.31px rgba(171, 123, 38, 0.093);
+}
+.pitch-halo-level-54 {
+  box-shadow: 0 0 6.75px rgba(2, 167, 202, 0.094), 0 0 7.38px rgba(171, 123, 38, 0.094);
+}
+.pitch-halo-level-55 {
+  box-shadow: 0 0 6.88px rgba(2, 167, 202, 0.095), 0 0 7.44px rgba(171, 123, 38, 0.095);
+}
+.pitch-halo-level-56 {
+  box-shadow: 0 0 7px rgba(2, 167, 202, 0.096), 0 0 7.5px rgba(171, 123, 38, 0.096);
+}
+.pitch-halo-level-57 {
+  box-shadow: 0 0 7.12px rgba(2, 167, 202, 0.097), 0 0 7.56px rgba(171, 123, 38, 0.097);
+}
+.pitch-halo-level-58 {
+  box-shadow: 0 0 7.25px rgba(2, 167, 202, 0.098), 0 0 7.62px rgba(171, 123, 38, 0.098);
+}
+.pitch-halo-level-59 {
+  box-shadow: 0 0 7.38px rgba(2, 167, 202, 0.099), 0 0 7.69px rgba(171, 123, 38, 0.099);
+}
+.pitch-halo-level-60 {
+  box-shadow: 0 0 7.5px rgba(2, 167, 202, 0.1), 0 0 7.75px rgba(171, 123, 38, 0.1);
+}
+.pitch-halo-level-61 {
+  box-shadow: 0 0 7.62px rgba(2, 167, 202, 0.101), 0 0 7.81px rgba(171, 123, 38, 0.101);
+}
+.pitch-halo-level-62 {
+  box-shadow: 0 0 7.75px rgba(2, 167, 202, 0.102), 0 0 7.88px rgba(171, 123, 38, 0.102);
+}
+.pitch-halo-level-63 {
+  box-shadow: 0 0 7.88px rgba(2, 167, 202, 0.103), 0 0 7.94px rgba(171, 123, 38, 0.103);
+}
+.pitch-halo-level-64 {
+  box-shadow: 0 0 8px rgba(2, 167, 202, 0.104), 0 0 8px rgba(171, 123, 38, 0.104);
+}
+.pitch-halo-level-65 {
+  box-shadow: 0 0 8.12px rgba(2, 167, 202, 0.105), 0 0 8.06px rgba(171, 123, 38, 0.105);
+}
+.pitch-halo-level-66 {
+  box-shadow: 0 0 8.25px rgba(2, 167, 202, 0.106), 0 0 8.12px rgba(171, 123, 38, 0.106);
+}
+.pitch-halo-level-67 {
+  box-shadow: 0 0 8.38px rgba(2, 167, 202, 0.107), 0 0 8.19px rgba(171, 123, 38, 0.107);
+}
+.pitch-halo-level-68 {
+  box-shadow: 0 0 8.5px rgba(2, 167, 202, 0.108), 0 0 8.25px rgba(171, 123, 38, 0.108);
+}
+.pitch-halo-level-69 {
+  box-shadow: 0 0 8.62px rgba(2, 167, 202, 0.109), 0 0 8.31px rgba(171, 123, 38, 0.109);
+}
+.pitch-halo-level-70 {
+  box-shadow: 0 0 8.75px rgba(2, 167, 202, 0.11), 0 0 8.38px rgba(171, 123, 38, 0.11);
+}
+.pitch-halo-level-71 {
+  box-shadow: 0 0 8.88px rgba(2, 167, 202, 0.111), 0 0 8.44px rgba(171, 123, 38, 0.111);
+}
+.pitch-halo-level-72 {
+  box-shadow: 0 0 9px rgba(2, 167, 202, 0.112), 0 0 8.5px rgba(171, 123, 38, 0.112);
+}
+.pitch-halo-level-73 {
+  box-shadow: 0 0 9.12px rgba(2, 167, 202, 0.113), 0 0 8.56px rgba(171, 123, 38, 0.113);
+}
+.pitch-halo-level-74 {
+  box-shadow: 0 0 9.25px rgba(2, 167, 202, 0.114), 0 0 8.62px rgba(171, 123, 38, 0.114);
+}
+.pitch-halo-level-75 {
+  box-shadow: 0 0 9.38px rgba(2, 167, 202, 0.115), 0 0 8.69px rgba(171, 123, 38, 0.115);
+}
+.pitch-halo-level-76 {
+  box-shadow: 0 0 9.5px rgba(2, 167, 202, 0.116), 0 0 8.75px rgba(171, 123, 38, 0.116);
+}
+.pitch-halo-level-77 {
+  box-shadow: 0 0 9.62px rgba(2, 167, 202, 0.117), 0 0 8.81px rgba(171, 123, 38, 0.117);
+}
+.pitch-halo-level-78 {
+  box-shadow: 0 0 9.75px rgba(2, 167, 202, 0.118), 0 0 8.88px rgba(171, 123, 38, 0.118);
+}
+.pitch-halo-level-79 {
+  box-shadow: 0 0 9.88px rgba(2, 167, 202, 0.119), 0 0 8.94px rgba(171, 123, 38, 0.119);
+}
+.pitch-halo-level-80 {
+  box-shadow: 0 0 10px rgba(2, 167, 202, 0.12), 0 0 9px rgba(171, 123, 38, 0.12);
+}
+.pitch-halo-level-81 {
+  box-shadow: 0 0 10.12px rgba(2, 167, 202, 0.121), 0 0 9.06px rgba(171, 123, 38, 0.121);
+}
+.pitch-halo-level-82 {
+  box-shadow: 0 0 10.25px rgba(2, 167, 202, 0.122), 0 0 9.12px rgba(171, 123, 38, 0.122);
+}
+.pitch-halo-level-83 {
+  box-shadow: 0 0 10.38px rgba(2, 167, 202, 0.123), 0 0 9.19px rgba(171, 123, 38, 0.123);
+}
+.pitch-halo-level-84 {
+  box-shadow: 0 0 10.5px rgba(2, 167, 202, 0.124), 0 0 9.25px rgba(171, 123, 38, 0.124);
+}
+.pitch-halo-level-85 {
+  box-shadow: 0 0 10.62px rgba(2, 167, 202, 0.125), 0 0 9.31px rgba(171, 123, 38, 0.125);
+}
+.pitch-halo-level-86 {
+  box-shadow: 0 0 10.75px rgba(2, 167, 202, 0.126), 0 0 9.38px rgba(171, 123, 38, 0.126);
+}
+.pitch-halo-level-87 {
+  box-shadow: 0 0 10.88px rgba(2, 167, 202, 0.127), 0 0 9.44px rgba(171, 123, 38, 0.127);
+}
+.pitch-halo-level-88 {
+  box-shadow: 0 0 11px rgba(2, 167, 202, 0.128), 0 0 9.5px rgba(171, 123, 38, 0.128);
+}
+.pitch-halo-level-89 {
+  box-shadow: 0 0 11.12px rgba(2, 167, 202, 0.129), 0 0 9.56px rgba(171, 123, 38, 0.129);
+}
+.pitch-halo-level-90 {
+  box-shadow: 0 0 11.25px rgba(2, 167, 202, 0.13), 0 0 9.62px rgba(171, 123, 38, 0.13);
+}
+.pitch-halo-level-91 {
+  box-shadow: 0 0 11.38px rgba(2, 167, 202, 0.131), 0 0 9.69px rgba(171, 123, 38, 0.131);
+}
+.pitch-halo-level-92 {
+  box-shadow: 0 0 11.5px rgba(2, 167, 202, 0.132), 0 0 9.75px rgba(171, 123, 38, 0.132);
+}
+.pitch-halo-level-93 {
+  box-shadow: 0 0 11.62px rgba(2, 167, 202, 0.133), 0 0 9.81px rgba(171, 123, 38, 0.133);
+}
+.pitch-halo-level-94 {
+  box-shadow: 0 0 11.75px rgba(2, 167, 202, 0.134), 0 0 9.88px rgba(171, 123, 38, 0.134);
+}
+.pitch-halo-level-95 {
+  box-shadow: 0 0 11.88px rgba(2, 167, 202, 0.135), 0 0 9.94px rgba(171, 123, 38, 0.135);
+}
+.pitch-halo-level-96 {
+  box-shadow: 0 0 12px rgba(2, 167, 202, 0.136), 0 0 10px rgba(171, 123, 38, 0.136);
+}
+.pitch-halo-level-97 {
+  box-shadow: 0 0 12.12px rgba(2, 167, 202, 0.137), 0 0 10.06px rgba(171, 123, 38, 0.137);
+}
+.pitch-halo-level-98 {
+  box-shadow: 0 0 12.25px rgba(2, 167, 202, 0.138), 0 0 10.12px rgba(171, 123, 38, 0.138);
+}
+.pitch-halo-level-99 {
+  box-shadow: 0 0 12.38px rgba(2, 167, 202, 0.139), 0 0 10.19px rgba(171, 123, 38, 0.139);
+}
+.pitch-halo-level-100 {
+  box-shadow: 0 0 12.5px rgba(2, 167, 202, 0.14), 0 0 10.25px rgba(171, 123, 38, 0.14);
+}
+.pitch-halo-level-101 {
+  box-shadow: 0 0 12.62px rgba(2, 167, 202, 0.141), 0 0 10.31px rgba(171, 123, 38, 0.141);
+}
+.pitch-halo-level-102 {
+  box-shadow: 0 0 12.75px rgba(2, 167, 202, 0.142), 0 0 10.38px rgba(171, 123, 38, 0.142);
+}
+.pitch-halo-level-103 {
+  box-shadow: 0 0 12.88px rgba(2, 167, 202, 0.143), 0 0 10.44px rgba(171, 123, 38, 0.143);
+}
+.pitch-halo-level-104 {
+  box-shadow: 0 0 13px rgba(2, 167, 202, 0.144), 0 0 10.5px rgba(171, 123, 38, 0.144);
+}
+.pitch-halo-level-105 {
+  box-shadow: 0 0 13.12px rgba(2, 167, 202, 0.145), 0 0 10.56px rgba(171, 123, 38, 0.145);
+}
+.pitch-halo-level-106 {
+  box-shadow: 0 0 13.25px rgba(2, 167, 202, 0.146), 0 0 10.62px rgba(171, 123, 38, 0.146);
+}
+.pitch-halo-level-107 {
+  box-shadow: 0 0 13.38px rgba(2, 167, 202, 0.147), 0 0 10.69px rgba(171, 123, 38, 0.147);
+}
+.pitch-halo-level-108 {
+  box-shadow: 0 0 13.5px rgba(2, 167, 202, 0.148), 0 0 10.75px rgba(171, 123, 38, 0.148);
+}
+.pitch-halo-level-109 {
+  box-shadow: 0 0 13.62px rgba(2, 167, 202, 0.149), 0 0 10.81px rgba(171, 123, 38, 0.149);
+}
+.pitch-halo-level-110 {
+  box-shadow: 0 0 13.75px rgba(2, 167, 202, 0.15), 0 0 10.88px rgba(171, 123, 38, 0.15);
+}
+.pitch-halo-level-111 {
+  box-shadow: 0 0 13.88px rgba(2, 167, 202, 0.151), 0 0 10.94px rgba(171, 123, 38, 0.151);
+}
+.pitch-halo-level-112 {
+  box-shadow: 0 0 14px rgba(2, 167, 202, 0.152), 0 0 11px rgba(171, 123, 38, 0.152);
+}
+.pitch-halo-level-113 {
+  box-shadow: 0 0 14.12px rgba(2, 167, 202, 0.153), 0 0 11.06px rgba(171, 123, 38, 0.153);
+}
+.pitch-halo-level-114 {
+  box-shadow: 0 0 14.25px rgba(2, 167, 202, 0.154), 0 0 11.12px rgba(171, 123, 38, 0.154);
+}
+.pitch-halo-level-115 {
+  box-shadow: 0 0 14.38px rgba(2, 167, 202, 0.155), 0 0 11.19px rgba(171, 123, 38, 0.155);
+}
+.pitch-halo-level-116 {
+  box-shadow: 0 0 14.5px rgba(2, 167, 202, 0.156), 0 0 11.25px rgba(171, 123, 38, 0.156);
+}
+.pitch-halo-level-117 {
+  box-shadow: 0 0 14.62px rgba(2, 167, 202, 0.157), 0 0 11.31px rgba(171, 123, 38, 0.157);
+}
+.pitch-halo-level-118 {
+  box-shadow: 0 0 14.75px rgba(2, 167, 202, 0.158), 0 0 11.38px rgba(171, 123, 38, 0.158);
+}
+.pitch-halo-level-119 {
+  box-shadow: 0 0 14.88px rgba(2, 167, 202, 0.159), 0 0 11.44px rgba(171, 123, 38, 0.159);
+}
+.pitch-halo-level-120 {
+  box-shadow: 0 0 15px rgba(2, 167, 202, 0.16), 0 0 11.5px rgba(171, 123, 38, 0.16);
+}
+.pitch-halo-level-121 {
+  box-shadow: 0 0 15.12px rgba(2, 167, 202, 0.161), 0 0 11.56px rgba(171, 123, 38, 0.161);
+}
+.pitch-halo-level-122 {
+  box-shadow: 0 0 15.25px rgba(2, 167, 202, 0.162), 0 0 11.62px rgba(171, 123, 38, 0.162);
+}
+.pitch-halo-level-123 {
+  box-shadow: 0 0 15.38px rgba(2, 167, 202, 0.163), 0 0 11.69px rgba(171, 123, 38, 0.163);
+}
+.pitch-halo-level-124 {
+  box-shadow: 0 0 15.5px rgba(2, 167, 202, 0.164), 0 0 11.75px rgba(171, 123, 38, 0.164);
+}
+.pitch-halo-level-125 {
+  box-shadow: 0 0 15.62px rgba(2, 167, 202, 0.165), 0 0 11.81px rgba(171, 123, 38, 0.165);
+}
+.pitch-halo-level-126 {
+  box-shadow: 0 0 15.75px rgba(2, 167, 202, 0.166), 0 0 11.88px rgba(171, 123, 38, 0.166);
+}
+.pitch-halo-level-127 {
+  box-shadow: 0 0 15.88px rgba(2, 167, 202, 0.167), 0 0 11.94px rgba(171, 123, 38, 0.167);
+}
+.pitch-halo-level-128 {
+  box-shadow: 0 0 16px rgba(2, 167, 202, 0.168), 0 0 12px rgba(171, 123, 38, 0.168);
+}
+.pitch-halo-level-129 {
+  box-shadow: 0 0 16.12px rgba(2, 167, 202, 0.169), 0 0 12.06px rgba(171, 123, 38, 0.169);
+}
+.pitch-halo-level-130 {
+  box-shadow: 0 0 16.25px rgba(2, 167, 202, 0.17), 0 0 12.12px rgba(171, 123, 38, 0.17);
+}
+.pitch-halo-level-131 {
+  box-shadow: 0 0 16.38px rgba(2, 167, 202, 0.171), 0 0 12.19px rgba(171, 123, 38, 0.171);
+}
+.pitch-halo-level-132 {
+  box-shadow: 0 0 16.5px rgba(2, 167, 202, 0.172), 0 0 12.25px rgba(171, 123, 38, 0.172);
+}
+.pitch-halo-level-133 {
+  box-shadow: 0 0 16.62px rgba(2, 167, 202, 0.173), 0 0 12.31px rgba(171, 123, 38, 0.173);
+}
+.pitch-halo-level-134 {
+  box-shadow: 0 0 16.75px rgba(2, 167, 202, 0.174), 0 0 12.38px rgba(171, 123, 38, 0.174);
+}
+.pitch-halo-level-135 {
+  box-shadow: 0 0 16.88px rgba(2, 167, 202, 0.175), 0 0 12.44px rgba(171, 123, 38, 0.175);
+}
+.pitch-halo-level-136 {
+  box-shadow: 0 0 17px rgba(2, 167, 202, 0.176), 0 0 12.5px rgba(171, 123, 38, 0.176);
+}
+.pitch-halo-level-137 {
+  box-shadow: 0 0 17.12px rgba(2, 167, 202, 0.177), 0 0 12.56px rgba(171, 123, 38, 0.177);
+}
+.pitch-halo-level-138 {
+  box-shadow: 0 0 17.25px rgba(2, 167, 202, 0.178), 0 0 12.62px rgba(171, 123, 38, 0.178);
+}
+.pitch-halo-level-139 {
+  box-shadow: 0 0 17.38px rgba(2, 167, 202, 0.179), 0 0 12.69px rgba(171, 123, 38, 0.179);
+}
+.pitch-halo-level-140 {
+  box-shadow: 0 0 17.5px rgba(2, 167, 202, 0.18), 0 0 12.75px rgba(171, 123, 38, 0.18);
+}
+.pitch-halo-level-141 {
+  box-shadow: 0 0 17.62px rgba(2, 167, 202, 0.181), 0 0 12.81px rgba(171, 123, 38, 0.181);
+}
+.pitch-halo-level-142 {
+  box-shadow: 0 0 17.75px rgba(2, 167, 202, 0.182), 0 0 12.88px rgba(171, 123, 38, 0.182);
+}
+.pitch-halo-level-143 {
+  box-shadow: 0 0 17.88px rgba(2, 167, 202, 0.183), 0 0 12.94px rgba(171, 123, 38, 0.183);
+}
+.pitch-halo-level-144 {
+  box-shadow: 0 0 18px rgba(2, 167, 202, 0.184), 0 0 13px rgba(171, 123, 38, 0.184);
+}
+.pitch-halo-level-145 {
+  box-shadow: 0 0 18.12px rgba(2, 167, 202, 0.185), 0 0 13.06px rgba(171, 123, 38, 0.185);
+}
+.pitch-halo-level-146 {
+  box-shadow: 0 0 18.25px rgba(2, 167, 202, 0.186), 0 0 13.12px rgba(171, 123, 38, 0.186);
+}
+.pitch-halo-level-147 {
+  box-shadow: 0 0 18.38px rgba(2, 167, 202, 0.187), 0 0 13.19px rgba(171, 123, 38, 0.187);
+}
+.pitch-halo-level-148 {
+  box-shadow: 0 0 18.5px rgba(2, 167, 202, 0.188), 0 0 13.25px rgba(171, 123, 38, 0.188);
+}
+.pitch-halo-level-149 {
+  box-shadow: 0 0 18.62px rgba(2, 167, 202, 0.189), 0 0 13.31px rgba(171, 123, 38, 0.189);
+}
+.pitch-halo-level-150 {
+  box-shadow: 0 0 18.75px rgba(2, 167, 202, 0.19), 0 0 13.38px rgba(171, 123, 38, 0.19);
+}
+.pitch-halo-level-151 {
+  box-shadow: 0 0 18.88px rgba(2, 167, 202, 0.191), 0 0 13.44px rgba(171, 123, 38, 0.191);
+}
+.pitch-halo-level-152 {
+  box-shadow: 0 0 19px rgba(2, 167, 202, 0.192), 0 0 13.5px rgba(171, 123, 38, 0.192);
+}
+.pitch-halo-level-153 {
+  box-shadow: 0 0 19.12px rgba(2, 167, 202, 0.193), 0 0 13.56px rgba(171, 123, 38, 0.193);
+}
+.pitch-halo-level-154 {
+  box-shadow: 0 0 19.25px rgba(2, 167, 202, 0.194), 0 0 13.62px rgba(171, 123, 38, 0.194);
+}
+.pitch-halo-level-155 {
+  box-shadow: 0 0 19.38px rgba(2, 167, 202, 0.195), 0 0 13.69px rgba(171, 123, 38, 0.195);
+}
+.pitch-halo-level-156 {
+  box-shadow: 0 0 19.5px rgba(2, 167, 202, 0.196), 0 0 13.75px rgba(171, 123, 38, 0.196);
+}
+.pitch-halo-level-157 {
+  box-shadow: 0 0 19.62px rgba(2, 167, 202, 0.197), 0 0 13.81px rgba(171, 123, 38, 0.197);
+}
+.pitch-halo-level-158 {
+  box-shadow: 0 0 19.75px rgba(2, 167, 202, 0.198), 0 0 13.88px rgba(171, 123, 38, 0.198);
+}
+.pitch-halo-level-159 {
+  box-shadow: 0 0 19.88px rgba(2, 167, 202, 0.199), 0 0 13.94px rgba(171, 123, 38, 0.199);
+}
+.pitch-halo-level-160 {
+  box-shadow: 0 0 20px rgba(2, 167, 202, 0.2), 0 0 14px rgba(171, 123, 38, 0.2);
+}
+.pitch-halo-level-161 {
+  box-shadow: 0 0 20.12px rgba(2, 167, 202, 0.201), 0 0 14.06px rgba(171, 123, 38, 0.201);
+}
+.pitch-halo-level-162 {
+  box-shadow: 0 0 20.25px rgba(2, 167, 202, 0.202), 0 0 14.12px rgba(171, 123, 38, 0.202);
+}
+.pitch-halo-level-163 {
+  box-shadow: 0 0 20.38px rgba(2, 167, 202, 0.203), 0 0 14.19px rgba(171, 123, 38, 0.203);
+}
+.pitch-halo-level-164 {
+  box-shadow: 0 0 20.5px rgba(2, 167, 202, 0.204), 0 0 14.25px rgba(171, 123, 38, 0.204);
+}
+.pitch-halo-level-165 {
+  box-shadow: 0 0 20.62px rgba(2, 167, 202, 0.205), 0 0 14.31px rgba(171, 123, 38, 0.205);
+}
+.pitch-halo-level-166 {
+  box-shadow: 0 0 20.75px rgba(2, 167, 202, 0.206), 0 0 14.38px rgba(171, 123, 38, 0.206);
+}
+.pitch-halo-level-167 {
+  box-shadow: 0 0 20.88px rgba(2, 167, 202, 0.207), 0 0 14.44px rgba(171, 123, 38, 0.207);
+}
+.pitch-halo-level-168 {
+  box-shadow: 0 0 21px rgba(2, 167, 202, 0.208), 0 0 14.5px rgba(171, 123, 38, 0.208);
+}
+.pitch-halo-level-169 {
+  box-shadow: 0 0 21.12px rgba(2, 167, 202, 0.209), 0 0 14.56px rgba(171, 123, 38, 0.209);
+}
+.pitch-halo-level-170 {
+  box-shadow: 0 0 21.25px rgba(2, 167, 202, 0.21), 0 0 14.62px rgba(171, 123, 38, 0.21);
+}
+.pitch-halo-level-171 {
+  box-shadow: 0 0 21.38px rgba(2, 167, 202, 0.211), 0 0 14.69px rgba(171, 123, 38, 0.211);
+}
+.pitch-halo-level-172 {
+  box-shadow: 0 0 21.5px rgba(2, 167, 202, 0.212), 0 0 14.75px rgba(171, 123, 38, 0.212);
+}
+.pitch-halo-level-173 {
+  box-shadow: 0 0 21.62px rgba(2, 167, 202, 0.213), 0 0 14.81px rgba(171, 123, 38, 0.213);
+}
+.pitch-halo-level-174 {
+  box-shadow: 0 0 21.75px rgba(2, 167, 202, 0.214), 0 0 14.88px rgba(171, 123, 38, 0.214);
+}
+.pitch-halo-level-175 {
+  box-shadow: 0 0 21.88px rgba(2, 167, 202, 0.215), 0 0 14.94px rgba(171, 123, 38, 0.215);
+}
+.pitch-halo-level-176 {
+  box-shadow: 0 0 22px rgba(2, 167, 202, 0.216), 0 0 15px rgba(171, 123, 38, 0.216);
+}
+.pitch-halo-level-177 {
+  box-shadow: 0 0 22.12px rgba(2, 167, 202, 0.217), 0 0 15.06px rgba(171, 123, 38, 0.217);
+}
+.pitch-halo-level-178 {
+  box-shadow: 0 0 22.25px rgba(2, 167, 202, 0.218), 0 0 15.12px rgba(171, 123, 38, 0.218);
+}
+.pitch-halo-level-179 {
+  box-shadow: 0 0 22.38px rgba(2, 167, 202, 0.219), 0 0 15.19px rgba(171, 123, 38, 0.219);
+}
+.pitch-halo-level-180 {
+  box-shadow: 0 0 22.5px rgba(2, 167, 202, 0.22), 0 0 15.25px rgba(171, 123, 38, 0.22);
+}
+.pitch-halo-level-181 {
+  box-shadow: 0 0 22.62px rgba(2, 167, 202, 0.221), 0 0 15.31px rgba(171, 123, 38, 0.221);
+}
+.pitch-halo-level-182 {
+  box-shadow: 0 0 22.75px rgba(2, 167, 202, 0.222), 0 0 15.38px rgba(171, 123, 38, 0.222);
+}
+.pitch-halo-level-183 {
+  box-shadow: 0 0 22.88px rgba(2, 167, 202, 0.223), 0 0 15.44px rgba(171, 123, 38, 0.223);
+}
+.pitch-halo-level-184 {
+  box-shadow: 0 0 23px rgba(2, 167, 202, 0.224), 0 0 15.5px rgba(171, 123, 38, 0.224);
+}
+.pitch-halo-level-185 {
+  box-shadow: 0 0 23.12px rgba(2, 167, 202, 0.225), 0 0 15.56px rgba(171, 123, 38, 0.225);
+}
+.pitch-halo-level-186 {
+  box-shadow: 0 0 23.25px rgba(2, 167, 202, 0.226), 0 0 15.62px rgba(171, 123, 38, 0.226);
+}
+.pitch-halo-level-187 {
+  box-shadow: 0 0 23.38px rgba(2, 167, 202, 0.227), 0 0 15.69px rgba(171, 123, 38, 0.227);
+}
+.pitch-halo-level-188 {
+  box-shadow: 0 0 23.5px rgba(2, 167, 202, 0.228), 0 0 15.75px rgba(171, 123, 38, 0.228);
+}
+.pitch-halo-level-189 {
+  box-shadow: 0 0 23.62px rgba(2, 167, 202, 0.229), 0 0 15.81px rgba(171, 123, 38, 0.229);
+}
+.pitch-halo-level-190 {
+  box-shadow: 0 0 23.75px rgba(2, 167, 202, 0.23), 0 0 15.88px rgba(171, 123, 38, 0.23);
+}
+.pitch-halo-level-191 {
+  box-shadow: 0 0 23.88px rgba(2, 167, 202, 0.231), 0 0 15.94px rgba(171, 123, 38, 0.231);
+}
+.pitch-halo-level-192 {
+  box-shadow: 0 0 24px rgba(2, 167, 202, 0.232), 0 0 16px rgba(171, 123, 38, 0.232);
+}
+.pitch-halo-level-193 {
+  box-shadow: 0 0 24.12px rgba(2, 167, 202, 0.233), 0 0 16.06px rgba(171, 123, 38, 0.233);
+}
+.pitch-halo-level-194 {
+  box-shadow: 0 0 24.25px rgba(2, 167, 202, 0.234), 0 0 16.12px rgba(171, 123, 38, 0.234);
+}
+.pitch-halo-level-195 {
+  box-shadow: 0 0 24.38px rgba(2, 167, 202, 0.235), 0 0 16.19px rgba(171, 123, 38, 0.235);
+}
+.pitch-halo-level-196 {
+  box-shadow: 0 0 24.5px rgba(2, 167, 202, 0.236), 0 0 16.25px rgba(171, 123, 38, 0.236);
+}
+.pitch-halo-level-197 {
+  box-shadow: 0 0 24.62px rgba(2, 167, 202, 0.237), 0 0 16.31px rgba(171, 123, 38, 0.237);
+}
+.pitch-halo-level-198 {
+  box-shadow: 0 0 24.75px rgba(2, 167, 202, 0.238), 0 0 16.38px rgba(171, 123, 38, 0.238);
+}
+.pitch-halo-level-199 {
+  box-shadow: 0 0 24.88px rgba(2, 167, 202, 0.239), 0 0 16.44px rgba(171, 123, 38, 0.239);
+}
+.pitch-halo-level-200 {
+  box-shadow: 0 0 25px rgba(2, 167, 202, 0.24), 0 0 16.5px rgba(171, 123, 38, 0.24);
+}
+.pitch-halo-level-201 {
+  box-shadow: 0 0 25.12px rgba(2, 167, 202, 0.241), 0 0 16.56px rgba(171, 123, 38, 0.241);
+}
+.pitch-halo-level-202 {
+  box-shadow: 0 0 25.25px rgba(2, 167, 202, 0.242), 0 0 16.62px rgba(171, 123, 38, 0.242);
+}
+.pitch-halo-level-203 {
+  box-shadow: 0 0 25.38px rgba(2, 167, 202, 0.243), 0 0 16.69px rgba(171, 123, 38, 0.243);
+}
+.pitch-halo-level-204 {
+  box-shadow: 0 0 25.5px rgba(2, 167, 202, 0.244), 0 0 16.75px rgba(171, 123, 38, 0.244);
+}
+.pitch-halo-level-205 {
+  box-shadow: 0 0 25.62px rgba(2, 167, 202, 0.245), 0 0 16.81px rgba(171, 123, 38, 0.245);
+}
+.pitch-halo-level-206 {
+  box-shadow: 0 0 25.75px rgba(2, 167, 202, 0.246), 0 0 16.88px rgba(171, 123, 38, 0.246);
+}
+.pitch-halo-level-207 {
+  box-shadow: 0 0 25.88px rgba(2, 167, 202, 0.247), 0 0 16.94px rgba(171, 123, 38, 0.247);
+}
+.pitch-halo-level-208 {
+  box-shadow: 0 0 26px rgba(2, 167, 202, 0.248), 0 0 17px rgba(171, 123, 38, 0.248);
+}
+.pitch-halo-level-209 {
+  box-shadow: 0 0 26.12px rgba(2, 167, 202, 0.249), 0 0 17.06px rgba(171, 123, 38, 0.249);
+}
+.pitch-halo-level-210 {
+  box-shadow: 0 0 26.25px rgba(2, 167, 202, 0.25), 0 0 17.12px rgba(171, 123, 38, 0.25);
+}
+.pitch-halo-level-211 {
+  box-shadow: 0 0 26.38px rgba(2, 167, 202, 0.251), 0 0 17.19px rgba(171, 123, 38, 0.251);
+}
+.pitch-halo-level-212 {
+  box-shadow: 0 0 26.5px rgba(2, 167, 202, 0.252), 0 0 17.25px rgba(171, 123, 38, 0.252);
+}
+.pitch-halo-level-213 {
+  box-shadow: 0 0 26.62px rgba(2, 167, 202, 0.253), 0 0 17.31px rgba(171, 123, 38, 0.253);
+}
+.pitch-halo-level-214 {
+  box-shadow: 0 0 26.75px rgba(2, 167, 202, 0.254), 0 0 17.38px rgba(171, 123, 38, 0.254);
+}
+.pitch-halo-level-215 {
+  box-shadow: 0 0 26.88px rgba(2, 167, 202, 0.255), 0 0 17.44px rgba(171, 123, 38, 0.255);
+}
+.pitch-halo-level-216 {
+  box-shadow: 0 0 27px rgba(2, 167, 202, 0.256), 0 0 17.5px rgba(171, 123, 38, 0.256);
+}
+.pitch-halo-level-217 {
+  box-shadow: 0 0 27.12px rgba(2, 167, 202, 0.257), 0 0 17.56px rgba(171, 123, 38, 0.257);
+}
+.pitch-halo-level-218 {
+  box-shadow: 0 0 27.25px rgba(2, 167, 202, 0.258), 0 0 17.62px rgba(171, 123, 38, 0.258);
+}
+.pitch-halo-level-219 {
+  box-shadow: 0 0 27.38px rgba(2, 167, 202, 0.259), 0 0 17.69px rgba(171, 123, 38, 0.259);
+}
+.pitch-halo-level-220 {
+  box-shadow: 0 0 27.5px rgba(2, 167, 202, 0.26), 0 0 17.75px rgba(171, 123, 38, 0.26);
+}
+.pitch-halo-level-221 {
+  box-shadow: 0 0 27.62px rgba(2, 167, 202, 0.261), 0 0 17.81px rgba(171, 123, 38, 0.261);
+}
+.pitch-halo-level-222 {
+  box-shadow: 0 0 27.75px rgba(2, 167, 202, 0.262), 0 0 17.88px rgba(171, 123, 38, 0.262);
+}
+.pitch-halo-level-223 {
+  box-shadow: 0 0 27.88px rgba(2, 167, 202, 0.263), 0 0 17.94px rgba(171, 123, 38, 0.263);
+}
+.pitch-halo-level-224 {
+  box-shadow: 0 0 28px rgba(2, 167, 202, 0.264), 0 0 18px rgba(171, 123, 38, 0.264);
+}
+.pitch-halo-level-225 {
+  box-shadow: 0 0 28.12px rgba(2, 167, 202, 0.265), 0 0 18.06px rgba(171, 123, 38, 0.265);
+}
+.pitch-halo-level-226 {
+  box-shadow: 0 0 28.25px rgba(2, 167, 202, 0.266), 0 0 18.12px rgba(171, 123, 38, 0.266);
+}
+.pitch-halo-level-227 {
+  box-shadow: 0 0 28.38px rgba(2, 167, 202, 0.267), 0 0 18.19px rgba(171, 123, 38, 0.267);
+}
+.pitch-halo-level-228 {
+  box-shadow: 0 0 28.5px rgba(2, 167, 202, 0.268), 0 0 18.25px rgba(171, 123, 38, 0.268);
+}
+.pitch-halo-level-229 {
+  box-shadow: 0 0 28.62px rgba(2, 167, 202, 0.269), 0 0 18.31px rgba(171, 123, 38, 0.269);
+}
+.pitch-halo-level-230 {
+  box-shadow: 0 0 28.75px rgba(2, 167, 202, 0.27), 0 0 18.38px rgba(171, 123, 38, 0.27);
+}
+.pitch-halo-level-231 {
+  box-shadow: 0 0 28.88px rgba(2, 167, 202, 0.271), 0 0 18.44px rgba(171, 123, 38, 0.271);
+}
+.pitch-halo-level-232 {
+  box-shadow: 0 0 29px rgba(2, 167, 202, 0.272), 0 0 18.5px rgba(171, 123, 38, 0.272);
+}
+.pitch-halo-level-233 {
+  box-shadow: 0 0 29.12px rgba(2, 167, 202, 0.273), 0 0 18.56px rgba(171, 123, 38, 0.273);
+}
+.pitch-halo-level-234 {
+  box-shadow: 0 0 29.25px rgba(2, 167, 202, 0.274), 0 0 18.62px rgba(171, 123, 38, 0.274);
+}
+.pitch-halo-level-235 {
+  box-shadow: 0 0 29.38px rgba(2, 167, 202, 0.275), 0 0 18.69px rgba(171, 123, 38, 0.275);
+}
+.pitch-halo-level-236 {
+  box-shadow: 0 0 29.5px rgba(2, 167, 202, 0.276), 0 0 18.75px rgba(171, 123, 38, 0.276);
+}
+.pitch-halo-level-237 {
+  box-shadow: 0 0 29.62px rgba(2, 167, 202, 0.277), 0 0 18.81px rgba(171, 123, 38, 0.277);
+}
+.pitch-halo-level-238 {
+  box-shadow: 0 0 29.75px rgba(2, 167, 202, 0.278), 0 0 18.88px rgba(171, 123, 38, 0.278);
+}
+.pitch-halo-level-239 {
+  box-shadow: 0 0 29.88px rgba(2, 167, 202, 0.279), 0 0 18.94px rgba(171, 123, 38, 0.279);
+}
+.pitch-halo-level-240 {
+  box-shadow: 0 0 30px rgba(2, 167, 202, 0.28), 0 0 19px rgba(171, 123, 38, 0.28);
+}
+
+.pitch-orbit-dot-1 {
+  position: absolute;
+  left: 4.8%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-2 {
+  position: absolute;
+  left: 9.6%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-3 {
+  position: absolute;
+  left: 14.4%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-4 {
+  position: absolute;
+  left: 19.2%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-5 {
+  position: absolute;
+  left: 24%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-6 {
+  position: absolute;
+  left: 28.8%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-7 {
+  position: absolute;
+  left: 33.6%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-8 {
+  position: absolute;
+  left: 38.4%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-9 {
+  position: absolute;
+  left: 43.2%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-10 {
+  position: absolute;
+  left: 48%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-11 {
+  position: absolute;
+  left: 52.8%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-12 {
+  position: absolute;
+  left: 57.6%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-13 {
+  position: absolute;
+  left: 62.4%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-14 {
+  position: absolute;
+  left: 67.2%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-15 {
+  position: absolute;
+  left: 72%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-16 {
+  position: absolute;
+  left: 76.8%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-17 {
+  position: absolute;
+  left: 81.6%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-18 {
+  position: absolute;
+  left: 86.4%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-19 {
+  position: absolute;
+  left: 91.2%;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-20 {
+  position: absolute;
+  left: 0%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-21 {
+  position: absolute;
+  left: 4.8%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-22 {
+  position: absolute;
+  left: 9.6%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-23 {
+  position: absolute;
+  left: 14.4%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-24 {
+  position: absolute;
+  left: 19.2%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-25 {
+  position: absolute;
+  left: 24%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-26 {
+  position: absolute;
+  left: 28.8%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-27 {
+  position: absolute;
+  left: 33.6%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-28 {
+  position: absolute;
+  left: 38.4%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-29 {
+  position: absolute;
+  left: 43.2%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-30 {
+  position: absolute;
+  left: 48%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-31 {
+  position: absolute;
+  left: 52.8%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-32 {
+  position: absolute;
+  left: 57.6%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-33 {
+  position: absolute;
+  left: 62.4%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-34 {
+  position: absolute;
+  left: 67.2%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-35 {
+  position: absolute;
+  left: 72%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-36 {
+  position: absolute;
+  left: 76.8%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-37 {
+  position: absolute;
+  left: 81.6%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-38 {
+  position: absolute;
+  left: 86.4%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-39 {
+  position: absolute;
+  left: 91.2%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-40 {
+  position: absolute;
+  left: 0%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-41 {
+  position: absolute;
+  left: 4.8%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-42 {
+  position: absolute;
+  left: 9.6%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-43 {
+  position: absolute;
+  left: 14.4%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-44 {
+  position: absolute;
+  left: 19.2%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-45 {
+  position: absolute;
+  left: 24%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-46 {
+  position: absolute;
+  left: 28.8%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-47 {
+  position: absolute;
+  left: 33.6%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-48 {
+  position: absolute;
+  left: 38.4%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-49 {
+  position: absolute;
+  left: 43.2%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-50 {
+  position: absolute;
+  left: 48%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-51 {
+  position: absolute;
+  left: 52.8%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-52 {
+  position: absolute;
+  left: 57.6%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-53 {
+  position: absolute;
+  left: 62.4%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-54 {
+  position: absolute;
+  left: 67.2%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-55 {
+  position: absolute;
+  left: 72%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-56 {
+  position: absolute;
+  left: 76.8%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-57 {
+  position: absolute;
+  left: 81.6%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-58 {
+  position: absolute;
+  left: 86.4%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-59 {
+  position: absolute;
+  left: 91.2%;
+  top: 16%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-60 {
+  position: absolute;
+  left: 0%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-61 {
+  position: absolute;
+  left: 4.8%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-62 {
+  position: absolute;
+  left: 9.6%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-63 {
+  position: absolute;
+  left: 14.4%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-64 {
+  position: absolute;
+  left: 19.2%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-65 {
+  position: absolute;
+  left: 24%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-66 {
+  position: absolute;
+  left: 28.8%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-67 {
+  position: absolute;
+  left: 33.6%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-68 {
+  position: absolute;
+  left: 38.4%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-69 {
+  position: absolute;
+  left: 43.2%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-70 {
+  position: absolute;
+  left: 48%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-71 {
+  position: absolute;
+  left: 52.8%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-72 {
+  position: absolute;
+  left: 57.6%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-73 {
+  position: absolute;
+  left: 62.4%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-74 {
+  position: absolute;
+  left: 67.2%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-75 {
+  position: absolute;
+  left: 72%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-76 {
+  position: absolute;
+  left: 76.8%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-77 {
+  position: absolute;
+  left: 81.6%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-78 {
+  position: absolute;
+  left: 86.4%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-79 {
+  position: absolute;
+  left: 91.2%;
+  top: 24%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-80 {
+  position: absolute;
+  left: 0%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-81 {
+  position: absolute;
+  left: 4.8%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-82 {
+  position: absolute;
+  left: 9.6%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-83 {
+  position: absolute;
+  left: 14.4%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-84 {
+  position: absolute;
+  left: 19.2%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-85 {
+  position: absolute;
+  left: 24%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-86 {
+  position: absolute;
+  left: 28.8%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-87 {
+  position: absolute;
+  left: 33.6%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-88 {
+  position: absolute;
+  left: 38.4%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-89 {
+  position: absolute;
+  left: 43.2%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-90 {
+  position: absolute;
+  left: 48%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-91 {
+  position: absolute;
+  left: 52.8%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-92 {
+  position: absolute;
+  left: 57.6%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-93 {
+  position: absolute;
+  left: 62.4%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-94 {
+  position: absolute;
+  left: 67.2%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-95 {
+  position: absolute;
+  left: 72%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-96 {
+  position: absolute;
+  left: 76.8%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-97 {
+  position: absolute;
+  left: 81.6%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-98 {
+  position: absolute;
+  left: 86.4%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-99 {
+  position: absolute;
+  left: 91.2%;
+  top: 32%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-100 {
+  position: absolute;
+  left: 0%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-101 {
+  position: absolute;
+  left: 4.8%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-102 {
+  position: absolute;
+  left: 9.6%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-103 {
+  position: absolute;
+  left: 14.4%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-104 {
+  position: absolute;
+  left: 19.2%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-105 {
+  position: absolute;
+  left: 24%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-106 {
+  position: absolute;
+  left: 28.8%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-107 {
+  position: absolute;
+  left: 33.6%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-108 {
+  position: absolute;
+  left: 38.4%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-109 {
+  position: absolute;
+  left: 43.2%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-110 {
+  position: absolute;
+  left: 48%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-111 {
+  position: absolute;
+  left: 52.8%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-112 {
+  position: absolute;
+  left: 57.6%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-113 {
+  position: absolute;
+  left: 62.4%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-114 {
+  position: absolute;
+  left: 67.2%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-115 {
+  position: absolute;
+  left: 72%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-116 {
+  position: absolute;
+  left: 76.8%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-117 {
+  position: absolute;
+  left: 81.6%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-118 {
+  position: absolute;
+  left: 86.4%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-119 {
+  position: absolute;
+  left: 91.2%;
+  top: 40%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-120 {
+  position: absolute;
+  left: 0%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-121 {
+  position: absolute;
+  left: 4.8%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-122 {
+  position: absolute;
+  left: 9.6%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-123 {
+  position: absolute;
+  left: 14.4%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-124 {
+  position: absolute;
+  left: 19.2%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-125 {
+  position: absolute;
+  left: 24%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-126 {
+  position: absolute;
+  left: 28.8%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-127 {
+  position: absolute;
+  left: 33.6%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-128 {
+  position: absolute;
+  left: 38.4%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-129 {
+  position: absolute;
+  left: 43.2%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-130 {
+  position: absolute;
+  left: 48%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-131 {
+  position: absolute;
+  left: 52.8%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-132 {
+  position: absolute;
+  left: 57.6%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-133 {
+  position: absolute;
+  left: 62.4%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-134 {
+  position: absolute;
+  left: 67.2%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-135 {
+  position: absolute;
+  left: 72%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-136 {
+  position: absolute;
+  left: 76.8%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-137 {
+  position: absolute;
+  left: 81.6%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-138 {
+  position: absolute;
+  left: 86.4%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-139 {
+  position: absolute;
+  left: 91.2%;
+  top: 48%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-140 {
+  position: absolute;
+  left: 0%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-141 {
+  position: absolute;
+  left: 4.8%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-142 {
+  position: absolute;
+  left: 9.6%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-143 {
+  position: absolute;
+  left: 14.4%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-144 {
+  position: absolute;
+  left: 19.2%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-145 {
+  position: absolute;
+  left: 24%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-146 {
+  position: absolute;
+  left: 28.8%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-147 {
+  position: absolute;
+  left: 33.6%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-148 {
+  position: absolute;
+  left: 38.4%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-149 {
+  position: absolute;
+  left: 43.2%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-150 {
+  position: absolute;
+  left: 48%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-151 {
+  position: absolute;
+  left: 52.8%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-152 {
+  position: absolute;
+  left: 57.6%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-153 {
+  position: absolute;
+  left: 62.4%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-154 {
+  position: absolute;
+  left: 67.2%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-155 {
+  position: absolute;
+  left: 72%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-156 {
+  position: absolute;
+  left: 76.8%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-157 {
+  position: absolute;
+  left: 81.6%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-158 {
+  position: absolute;
+  left: 86.4%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-159 {
+  position: absolute;
+  left: 91.2%;
+  top: 56%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-160 {
+  position: absolute;
+  left: 0%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-161 {
+  position: absolute;
+  left: 4.8%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-162 {
+  position: absolute;
+  left: 9.6%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-163 {
+  position: absolute;
+  left: 14.4%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-164 {
+  position: absolute;
+  left: 19.2%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-165 {
+  position: absolute;
+  left: 24%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-166 {
+  position: absolute;
+  left: 28.8%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-167 {
+  position: absolute;
+  left: 33.6%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-168 {
+  position: absolute;
+  left: 38.4%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-169 {
+  position: absolute;
+  left: 43.2%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-170 {
+  position: absolute;
+  left: 48%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-171 {
+  position: absolute;
+  left: 52.8%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-172 {
+  position: absolute;
+  left: 57.6%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-173 {
+  position: absolute;
+  left: 62.4%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-174 {
+  position: absolute;
+  left: 67.2%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-175 {
+  position: absolute;
+  left: 72%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-176 {
+  position: absolute;
+  left: 76.8%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-177 {
+  position: absolute;
+  left: 81.6%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-178 {
+  position: absolute;
+  left: 86.4%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-179 {
+  position: absolute;
+  left: 91.2%;
+  top: 64%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-180 {
+  position: absolute;
+  left: 0%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-181 {
+  position: absolute;
+  left: 4.8%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-182 {
+  position: absolute;
+  left: 9.6%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-183 {
+  position: absolute;
+  left: 14.4%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-184 {
+  position: absolute;
+  left: 19.2%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-185 {
+  position: absolute;
+  left: 24%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-186 {
+  position: absolute;
+  left: 28.8%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-187 {
+  position: absolute;
+  left: 33.6%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-188 {
+  position: absolute;
+  left: 38.4%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-189 {
+  position: absolute;
+  left: 43.2%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-190 {
+  position: absolute;
+  left: 48%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-191 {
+  position: absolute;
+  left: 52.8%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+.pitch-orbit-dot-192 {
+  position: absolute;
+  left: 57.6%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.05);
+  pointer-events: none;
+}
+.pitch-orbit-dot-193 {
+  position: absolute;
+  left: 62.4%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.06);
+  pointer-events: none;
+}
+.pitch-orbit-dot-194 {
+  position: absolute;
+  left: 67.2%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.07);
+  pointer-events: none;
+}
+.pitch-orbit-dot-195 {
+  position: absolute;
+  left: 72%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.08);
+  pointer-events: none;
+}
+.pitch-orbit-dot-196 {
+  position: absolute;
+  left: 76.8%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.09);
+  pointer-events: none;
+}
+.pitch-orbit-dot-197 {
+  position: absolute;
+  left: 81.6%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.1);
+  pointer-events: none;
+}
+.pitch-orbit-dot-198 {
+  position: absolute;
+  left: 86.4%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.02);
+  pointer-events: none;
+}
+.pitch-orbit-dot-199 {
+  position: absolute;
+  left: 91.2%;
+  top: 72%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.03);
+  pointer-events: none;
+}
+.pitch-orbit-dot-200 {
+  position: absolute;
+  left: 0%;
+  top: 80%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(2, 111, 134, 0.04);
+  pointer-events: none;
+}
+
+.pitch-ring-anim-1 {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 7s ease-in-out 0.06s infinite;
+}
+.pitch-ring-anim-2 {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 8s ease-in-out 0.12s infinite;
+}
+.pitch-ring-anim-3 {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 9s ease-in-out 0.18s infinite;
+}
+.pitch-ring-anim-4 {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 10s ease-in-out 0.24s infinite;
+}
+.pitch-ring-anim-5 {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 11s ease-in-out 0.3s infinite;
+}
+.pitch-ring-anim-6 {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 12s ease-in-out 0.36s infinite;
+}
+.pitch-ring-anim-7 {
+  position: absolute;
+  width: 17px;
+  height: 17px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 13s ease-in-out 0.42s infinite;
+}
+.pitch-ring-anim-8 {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 14s ease-in-out 0.48s infinite;
+}
+.pitch-ring-anim-9 {
+  position: absolute;
+  width: 19px;
+  height: 19px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 15s ease-in-out 0.54s infinite;
+}
+.pitch-ring-anim-10 {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 16s ease-in-out 0.6s infinite;
+}
+.pitch-ring-anim-11 {
+  position: absolute;
+  width: 21px;
+  height: 21px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 6s ease-in-out 0.66s infinite;
+}
+.pitch-ring-anim-12 {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 7s ease-in-out 0.72s infinite;
+}
+.pitch-ring-anim-13 {
+  position: absolute;
+  width: 23px;
+  height: 23px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 8s ease-in-out 0.78s infinite;
+}
+.pitch-ring-anim-14 {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 9s ease-in-out 0.84s infinite;
+}
+.pitch-ring-anim-15 {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 10s ease-in-out 0.9s infinite;
+}
+.pitch-ring-anim-16 {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 11s ease-in-out 0.96s infinite;
+}
+.pitch-ring-anim-17 {
+  position: absolute;
+  width: 27px;
+  height: 27px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 12s ease-in-out 0s infinite;
+}
+.pitch-ring-anim-18 {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 13s ease-in-out 0.06s infinite;
+}
+.pitch-ring-anim-19 {
+  position: absolute;
+  width: 29px;
+  height: 29px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 14s ease-in-out 0.12s infinite;
+}
+.pitch-ring-anim-20 {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 15s ease-in-out 0.18s infinite;
+}
+.pitch-ring-anim-21 {
+  position: absolute;
+  width: 31px;
+  height: 31px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 16s ease-in-out 0.24s infinite;
+}
+.pitch-ring-anim-22 {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 6s ease-in-out 0.3s infinite;
+}
+.pitch-ring-anim-23 {
+  position: absolute;
+  width: 33px;
+  height: 33px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 7s ease-in-out 0.36s infinite;
+}
+.pitch-ring-anim-24 {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 8s ease-in-out 0.42s infinite;
+}
+.pitch-ring-anim-25 {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 9s ease-in-out 0.48s infinite;
+}
+.pitch-ring-anim-26 {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 10s ease-in-out 0.54s infinite;
+}
+.pitch-ring-anim-27 {
+  position: absolute;
+  width: 37px;
+  height: 37px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 11s ease-in-out 0.6s infinite;
+}
+.pitch-ring-anim-28 {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 12s ease-in-out 0.66s infinite;
+}
+.pitch-ring-anim-29 {
+  position: absolute;
+  width: 39px;
+  height: 39px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 13s ease-in-out 0.72s infinite;
+}
+.pitch-ring-anim-30 {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 14s ease-in-out 0.78s infinite;
+}
+.pitch-ring-anim-31 {
+  position: absolute;
+  width: 41px;
+  height: 41px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 15s ease-in-out 0.84s infinite;
+}
+.pitch-ring-anim-32 {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 16s ease-in-out 0.9s infinite;
+}
+.pitch-ring-anim-33 {
+  position: absolute;
+  width: 43px;
+  height: 43px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 6s ease-in-out 0.96s infinite;
+}
+.pitch-ring-anim-34 {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 7s ease-in-out 0s infinite;
+}
+.pitch-ring-anim-35 {
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 8s ease-in-out 0.06s infinite;
+}
+.pitch-ring-anim-36 {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 9s ease-in-out 0.12s infinite;
+}
+.pitch-ring-anim-37 {
+  position: absolute;
+  width: 47px;
+  height: 47px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 10s ease-in-out 0.18s infinite;
+}
+.pitch-ring-anim-38 {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 11s ease-in-out 0.24s infinite;
+}
+.pitch-ring-anim-39 {
+  position: absolute;
+  width: 49px;
+  height: 49px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 12s ease-in-out 0.3s infinite;
+}
+.pitch-ring-anim-40 {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 13s ease-in-out 0.36s infinite;
+}
+.pitch-ring-anim-41 {
+  position: absolute;
+  width: 51px;
+  height: 51px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 14s ease-in-out 0.42s infinite;
+}
+.pitch-ring-anim-42 {
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 15s ease-in-out 0.48s infinite;
+}
+.pitch-ring-anim-43 {
+  position: absolute;
+  width: 53px;
+  height: 53px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 16s ease-in-out 0.54s infinite;
+}
+.pitch-ring-anim-44 {
+  position: absolute;
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 6s ease-in-out 0.6s infinite;
+}
+.pitch-ring-anim-45 {
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 7s ease-in-out 0.66s infinite;
+}
+.pitch-ring-anim-46 {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 8s ease-in-out 0.72s infinite;
+}
+.pitch-ring-anim-47 {
+  position: absolute;
+  width: 57px;
+  height: 57px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 9s ease-in-out 0.78s infinite;
+}
+.pitch-ring-anim-48 {
+  position: absolute;
+  width: 58px;
+  height: 58px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 10s ease-in-out 0.84s infinite;
+}
+.pitch-ring-anim-49 {
+  position: absolute;
+  width: 59px;
+  height: 59px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 11s ease-in-out 0.9s infinite;
+}
+.pitch-ring-anim-50 {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 12s ease-in-out 0.96s infinite;
+}
+.pitch-ring-anim-51 {
+  position: absolute;
+  width: 61px;
+  height: 61px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 13s ease-in-out 0s infinite;
+}
+.pitch-ring-anim-52 {
+  position: absolute;
+  width: 62px;
+  height: 62px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 14s ease-in-out 0.06s infinite;
+}
+.pitch-ring-anim-53 {
+  position: absolute;
+  width: 63px;
+  height: 63px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 15s ease-in-out 0.12s infinite;
+}
+.pitch-ring-anim-54 {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 16s ease-in-out 0.18s infinite;
+}
+.pitch-ring-anim-55 {
+  position: absolute;
+  width: 65px;
+  height: 65px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 6s ease-in-out 0.24s infinite;
+}
+.pitch-ring-anim-56 {
+  position: absolute;
+  width: 66px;
+  height: 66px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 7s ease-in-out 0.3s infinite;
+}
+.pitch-ring-anim-57 {
+  position: absolute;
+  width: 67px;
+  height: 67px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 8s ease-in-out 0.36s infinite;
+}
+.pitch-ring-anim-58 {
+  position: absolute;
+  width: 68px;
+  height: 68px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 9s ease-in-out 0.42s infinite;
+}
+.pitch-ring-anim-59 {
+  position: absolute;
+  width: 69px;
+  height: 69px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 10s ease-in-out 0.48s infinite;
+}
+.pitch-ring-anim-60 {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 11s ease-in-out 0.54s infinite;
+}
+.pitch-ring-anim-61 {
+  position: absolute;
+  width: 71px;
+  height: 71px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 12s ease-in-out 0.6s infinite;
+}
+.pitch-ring-anim-62 {
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 13s ease-in-out 0.66s infinite;
+}
+.pitch-ring-anim-63 {
+  position: absolute;
+  width: 73px;
+  height: 73px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 14s ease-in-out 0.72s infinite;
+}
+.pitch-ring-anim-64 {
+  position: absolute;
+  width: 74px;
+  height: 74px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 15s ease-in-out 0.78s infinite;
+}
+.pitch-ring-anim-65 {
+  position: absolute;
+  width: 75px;
+  height: 75px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 16s ease-in-out 0.84s infinite;
+}
+.pitch-ring-anim-66 {
+  position: absolute;
+  width: 76px;
+  height: 76px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 6s ease-in-out 0.9s infinite;
+}
+.pitch-ring-anim-67 {
+  position: absolute;
+  width: 77px;
+  height: 77px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 7s ease-in-out 0.96s infinite;
+}
+.pitch-ring-anim-68 {
+  position: absolute;
+  width: 78px;
+  height: 78px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 8s ease-in-out 0s infinite;
+}
+.pitch-ring-anim-69 {
+  position: absolute;
+  width: 79px;
+  height: 79px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 9s ease-in-out 0.06s infinite;
+}
+.pitch-ring-anim-70 {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 10s ease-in-out 0.12s infinite;
+}
+.pitch-ring-anim-71 {
+  position: absolute;
+  width: 81px;
+  height: 81px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 11s ease-in-out 0.18s infinite;
+}
+.pitch-ring-anim-72 {
+  position: absolute;
+  width: 82px;
+  height: 82px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 12s ease-in-out 0.24s infinite;
+}
+.pitch-ring-anim-73 {
+  position: absolute;
+  width: 83px;
+  height: 83px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 13s ease-in-out 0.3s infinite;
+}
+.pitch-ring-anim-74 {
+  position: absolute;
+  width: 84px;
+  height: 84px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 14s ease-in-out 0.36s infinite;
+}
+.pitch-ring-anim-75 {
+  position: absolute;
+  width: 85px;
+  height: 85px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 15s ease-in-out 0.42s infinite;
+}
+.pitch-ring-anim-76 {
+  position: absolute;
+  width: 86px;
+  height: 86px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 16s ease-in-out 0.48s infinite;
+}
+.pitch-ring-anim-77 {
+  position: absolute;
+  width: 87px;
+  height: 87px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 6s ease-in-out 0.54s infinite;
+}
+.pitch-ring-anim-78 {
+  position: absolute;
+  width: 88px;
+  height: 88px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 7s ease-in-out 0.6s infinite;
+}
+.pitch-ring-anim-79 {
+  position: absolute;
+  width: 89px;
+  height: 89px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 8s ease-in-out 0.66s infinite;
+}
+.pitch-ring-anim-80 {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 9s ease-in-out 0.72s infinite;
+}
+.pitch-ring-anim-81 {
+  position: absolute;
+  width: 91px;
+  height: 91px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 10s ease-in-out 0.78s infinite;
+}
+.pitch-ring-anim-82 {
+  position: absolute;
+  width: 92px;
+  height: 92px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 11s ease-in-out 0.84s infinite;
+}
+.pitch-ring-anim-83 {
+  position: absolute;
+  width: 93px;
+  height: 93px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 12s ease-in-out 0.9s infinite;
+}
+.pitch-ring-anim-84 {
+  position: absolute;
+  width: 94px;
+  height: 94px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 13s ease-in-out 0.96s infinite;
+}
+.pitch-ring-anim-85 {
+  position: absolute;
+  width: 95px;
+  height: 95px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 14s ease-in-out 0s infinite;
+}
+.pitch-ring-anim-86 {
+  position: absolute;
+  width: 96px;
+  height: 96px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 15s ease-in-out 0.06s infinite;
+}
+.pitch-ring-anim-87 {
+  position: absolute;
+  width: 97px;
+  height: 97px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 16s ease-in-out 0.12s infinite;
+}
+.pitch-ring-anim-88 {
+  position: absolute;
+  width: 98px;
+  height: 98px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 6s ease-in-out 0.18s infinite;
+}
+.pitch-ring-anim-89 {
+  position: absolute;
+  width: 99px;
+  height: 99px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 7s ease-in-out 0.24s infinite;
+}
+.pitch-ring-anim-90 {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 8s ease-in-out 0.3s infinite;
+}
+.pitch-ring-anim-91 {
+  position: absolute;
+  width: 101px;
+  height: 101px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 9s ease-in-out 0.36s infinite;
+}
+.pitch-ring-anim-92 {
+  position: absolute;
+  width: 102px;
+  height: 102px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 10s ease-in-out 0.42s infinite;
+}
+.pitch-ring-anim-93 {
+  position: absolute;
+  width: 103px;
+  height: 103px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 11s ease-in-out 0.48s infinite;
+}
+.pitch-ring-anim-94 {
+  position: absolute;
+  width: 104px;
+  height: 104px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 12s ease-in-out 0.54s infinite;
+}
+.pitch-ring-anim-95 {
+  position: absolute;
+  width: 105px;
+  height: 105px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 13s ease-in-out 0.6s infinite;
+}
+.pitch-ring-anim-96 {
+  position: absolute;
+  width: 106px;
+  height: 106px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 14s ease-in-out 0.66s infinite;
+}
+.pitch-ring-anim-97 {
+  position: absolute;
+  width: 107px;
+  height: 107px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 15s ease-in-out 0.72s infinite;
+}
+.pitch-ring-anim-98 {
+  position: absolute;
+  width: 108px;
+  height: 108px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 16s ease-in-out 0.78s infinite;
+}
+.pitch-ring-anim-99 {
+  position: absolute;
+  width: 109px;
+  height: 109px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 6s ease-in-out 0.84s infinite;
+}
+.pitch-ring-anim-100 {
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 7s ease-in-out 0.9s infinite;
+}
+.pitch-ring-anim-101 {
+  position: absolute;
+  width: 111px;
+  height: 111px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 8s ease-in-out 0.96s infinite;
+}
+.pitch-ring-anim-102 {
+  position: absolute;
+  width: 112px;
+  height: 112px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 9s ease-in-out 0s infinite;
+}
+.pitch-ring-anim-103 {
+  position: absolute;
+  width: 113px;
+  height: 113px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 10s ease-in-out 0.06s infinite;
+}
+.pitch-ring-anim-104 {
+  position: absolute;
+  width: 114px;
+  height: 114px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 11s ease-in-out 0.12s infinite;
+}
+.pitch-ring-anim-105 {
+  position: absolute;
+  width: 115px;
+  height: 115px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 12s ease-in-out 0.18s infinite;
+}
+.pitch-ring-anim-106 {
+  position: absolute;
+  width: 116px;
+  height: 116px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 13s ease-in-out 0.24s infinite;
+}
+.pitch-ring-anim-107 {
+  position: absolute;
+  width: 117px;
+  height: 117px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 14s ease-in-out 0.3s infinite;
+}
+.pitch-ring-anim-108 {
+  position: absolute;
+  width: 118px;
+  height: 118px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 15s ease-in-out 0.36s infinite;
+}
+.pitch-ring-anim-109 {
+  position: absolute;
+  width: 119px;
+  height: 119px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 16s ease-in-out 0.42s infinite;
+}
+.pitch-ring-anim-110 {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 6s ease-in-out 0.48s infinite;
+}
+.pitch-ring-anim-111 {
+  position: absolute;
+  width: 121px;
+  height: 121px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 7s ease-in-out 0.54s infinite;
+}
+.pitch-ring-anim-112 {
+  position: absolute;
+  width: 122px;
+  height: 122px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 8s ease-in-out 0.6s infinite;
+}
+.pitch-ring-anim-113 {
+  position: absolute;
+  width: 123px;
+  height: 123px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 9s ease-in-out 0.66s infinite;
+}
+.pitch-ring-anim-114 {
+  position: absolute;
+  width: 124px;
+  height: 124px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 10s ease-in-out 0.72s infinite;
+}
+.pitch-ring-anim-115 {
+  position: absolute;
+  width: 125px;
+  height: 125px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 11s ease-in-out 0.78s infinite;
+}
+.pitch-ring-anim-116 {
+  position: absolute;
+  width: 126px;
+  height: 126px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 12s ease-in-out 0.84s infinite;
+}
+.pitch-ring-anim-117 {
+  position: absolute;
+  width: 127px;
+  height: 127px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 13s ease-in-out 0.9s infinite;
+}
+.pitch-ring-anim-118 {
+  position: absolute;
+  width: 128px;
+  height: 128px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 14s ease-in-out 0.96s infinite;
+}
+.pitch-ring-anim-119 {
+  position: absolute;
+  width: 129px;
+  height: 129px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 15s ease-in-out 0s infinite;
+}
+.pitch-ring-anim-120 {
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 16s ease-in-out 0.06s infinite;
+}
+.pitch-ring-anim-121 {
+  position: absolute;
+  width: 131px;
+  height: 131px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 6s ease-in-out 0.12s infinite;
+}
+.pitch-ring-anim-122 {
+  position: absolute;
+  width: 132px;
+  height: 132px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 7s ease-in-out 0.18s infinite;
+}
+.pitch-ring-anim-123 {
+  position: absolute;
+  width: 133px;
+  height: 133px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 8s ease-in-out 0.24s infinite;
+}
+.pitch-ring-anim-124 {
+  position: absolute;
+  width: 134px;
+  height: 134px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 9s ease-in-out 0.3s infinite;
+}
+.pitch-ring-anim-125 {
+  position: absolute;
+  width: 135px;
+  height: 135px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 10s ease-in-out 0.36s infinite;
+}
+.pitch-ring-anim-126 {
+  position: absolute;
+  width: 136px;
+  height: 136px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 11s ease-in-out 0.42s infinite;
+}
+.pitch-ring-anim-127 {
+  position: absolute;
+  width: 137px;
+  height: 137px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 12s ease-in-out 0.48s infinite;
+}
+.pitch-ring-anim-128 {
+  position: absolute;
+  width: 138px;
+  height: 138px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 13s ease-in-out 0.54s infinite;
+}
+.pitch-ring-anim-129 {
+  position: absolute;
+  width: 139px;
+  height: 139px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 14s ease-in-out 0.6s infinite;
+}
+.pitch-ring-anim-130 {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 15s ease-in-out 0.66s infinite;
+}
+.pitch-ring-anim-131 {
+  position: absolute;
+  width: 141px;
+  height: 141px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 16s ease-in-out 0.72s infinite;
+}
+.pitch-ring-anim-132 {
+  position: absolute;
+  width: 142px;
+  height: 142px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 6s ease-in-out 0.78s infinite;
+}
+.pitch-ring-anim-133 {
+  position: absolute;
+  width: 143px;
+  height: 143px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 7s ease-in-out 0.84s infinite;
+}
+.pitch-ring-anim-134 {
+  position: absolute;
+  width: 144px;
+  height: 144px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 8s ease-in-out 0.9s infinite;
+}
+.pitch-ring-anim-135 {
+  position: absolute;
+  width: 145px;
+  height: 145px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 9s ease-in-out 0.96s infinite;
+}
+.pitch-ring-anim-136 {
+  position: absolute;
+  width: 146px;
+  height: 146px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 10s ease-in-out 0s infinite;
+}
+.pitch-ring-anim-137 {
+  position: absolute;
+  width: 147px;
+  height: 147px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 11s ease-in-out 0.06s infinite;
+}
+.pitch-ring-anim-138 {
+  position: absolute;
+  width: 148px;
+  height: 148px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 12s ease-in-out 0.12s infinite;
+}
+.pitch-ring-anim-139 {
+  position: absolute;
+  width: 149px;
+  height: 149px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 13s ease-in-out 0.18s infinite;
+}
+.pitch-ring-anim-140 {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 14s ease-in-out 0.24s infinite;
+}
+.pitch-ring-anim-141 {
+  position: absolute;
+  width: 151px;
+  height: 151px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 15s ease-in-out 0.3s infinite;
+}
+.pitch-ring-anim-142 {
+  position: absolute;
+  width: 152px;
+  height: 152px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 16s ease-in-out 0.36s infinite;
+}
+.pitch-ring-anim-143 {
+  position: absolute;
+  width: 153px;
+  height: 153px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 6s ease-in-out 0.42s infinite;
+}
+.pitch-ring-anim-144 {
+  position: absolute;
+  width: 154px;
+  height: 154px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 7s ease-in-out 0.48s infinite;
+}
+.pitch-ring-anim-145 {
+  position: absolute;
+  width: 155px;
+  height: 155px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 8s ease-in-out 0.54s infinite;
+}
+.pitch-ring-anim-146 {
+  position: absolute;
+  width: 156px;
+  height: 156px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 9s ease-in-out 0.6s infinite;
+}
+.pitch-ring-anim-147 {
+  position: absolute;
+  width: 157px;
+  height: 157px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 10s ease-in-out 0.66s infinite;
+}
+.pitch-ring-anim-148 {
+  position: absolute;
+  width: 158px;
+  height: 158px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 11s ease-in-out 0.72s infinite;
+}
+.pitch-ring-anim-149 {
+  position: absolute;
+  width: 159px;
+  height: 159px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 12s ease-in-out 0.78s infinite;
+}
+.pitch-ring-anim-150 {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 13s ease-in-out 0.84s infinite;
+}
+.pitch-ring-anim-151 {
+  position: absolute;
+  width: 161px;
+  height: 161px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 14s ease-in-out 0.9s infinite;
+}
+.pitch-ring-anim-152 {
+  position: absolute;
+  width: 162px;
+  height: 162px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 15s ease-in-out 0.96s infinite;
+}
+.pitch-ring-anim-153 {
+  position: absolute;
+  width: 163px;
+  height: 163px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 16s ease-in-out 0s infinite;
+}
+.pitch-ring-anim-154 {
+  position: absolute;
+  width: 164px;
+  height: 164px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 6s ease-in-out 0.06s infinite;
+}
+.pitch-ring-anim-155 {
+  position: absolute;
+  width: 165px;
+  height: 165px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 7s ease-in-out 0.12s infinite;
+}
+.pitch-ring-anim-156 {
+  position: absolute;
+  width: 166px;
+  height: 166px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 8s ease-in-out 0.18s infinite;
+}
+.pitch-ring-anim-157 {
+  position: absolute;
+  width: 167px;
+  height: 167px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 9s ease-in-out 0.24s infinite;
+}
+.pitch-ring-anim-158 {
+  position: absolute;
+  width: 168px;
+  height: 168px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 10s ease-in-out 0.3s infinite;
+}
+.pitch-ring-anim-159 {
+  position: absolute;
+  width: 169px;
+  height: 169px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 11s ease-in-out 0.36s infinite;
+}
+.pitch-ring-anim-160 {
+  position: absolute;
+  width: 170px;
+  height: 170px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 167, 202, 0.24);
+  transform-origin: center;
+  animation: pitchHaloPulse 12s ease-in-out 0.42s infinite;
+}
+
+.pitch-grid-density-1 {
+  display: grid;
+  gap: 0.21rem;
+}
+.pitch-grid-density-2 {
+  display: grid;
+  gap: 0.22rem;
+}
+.pitch-grid-density-3 {
+  display: grid;
+  gap: 0.23rem;
+}
+.pitch-grid-density-4 {
+  display: grid;
+  gap: 0.24rem;
+}
+.pitch-grid-density-5 {
+  display: grid;
+  gap: 0.25rem;
+}
+.pitch-grid-density-6 {
+  display: grid;
+  gap: 0.26rem;
+}
+.pitch-grid-density-7 {
+  display: grid;
+  gap: 0.27rem;
+}
+.pitch-grid-density-8 {
+  display: grid;
+  gap: 0.28rem;
+}
+.pitch-grid-density-9 {
+  display: grid;
+  gap: 0.29rem;
+}
+.pitch-grid-density-10 {
+  display: grid;
+  gap: 0.3rem;
+}
+.pitch-grid-density-11 {
+  display: grid;
+  gap: 0.31rem;
+}
+.pitch-grid-density-12 {
+  display: grid;
+  gap: 0.32rem;
+}
+.pitch-grid-density-13 {
+  display: grid;
+  gap: 0.33rem;
+}
+.pitch-grid-density-14 {
+  display: grid;
+  gap: 0.34rem;
+}
+.pitch-grid-density-15 {
+  display: grid;
+  gap: 0.35rem;
+}
+.pitch-grid-density-16 {
+  display: grid;
+  gap: 0.36rem;
+}
+.pitch-grid-density-17 {
+  display: grid;
+  gap: 0.37rem;
+}
+.pitch-grid-density-18 {
+  display: grid;
+  gap: 0.38rem;
+}
+.pitch-grid-density-19 {
+  display: grid;
+  gap: 0.39rem;
+}
+.pitch-grid-density-20 {
+  display: grid;
+  gap: 0.4rem;
+}
+.pitch-grid-density-21 {
+  display: grid;
+  gap: 0.41rem;
+}
+.pitch-grid-density-22 {
+  display: grid;
+  gap: 0.42rem;
+}
+.pitch-grid-density-23 {
+  display: grid;
+  gap: 0.43rem;
+}
+.pitch-grid-density-24 {
+  display: grid;
+  gap: 0.44rem;
+}
+.pitch-grid-density-25 {
+  display: grid;
+  gap: 0.45rem;
+}
+.pitch-grid-density-26 {
+  display: grid;
+  gap: 0.46rem;
+}
+.pitch-grid-density-27 {
+  display: grid;
+  gap: 0.47rem;
+}
+.pitch-grid-density-28 {
+  display: grid;
+  gap: 0.48rem;
+}
+.pitch-grid-density-29 {
+  display: grid;
+  gap: 0.49rem;
+}
+.pitch-grid-density-30 {
+  display: grid;
+  gap: 0.5rem;
+}
+.pitch-grid-density-31 {
+  display: grid;
+  gap: 0.51rem;
+}
+.pitch-grid-density-32 {
+  display: grid;
+  gap: 0.52rem;
+}
+.pitch-grid-density-33 {
+  display: grid;
+  gap: 0.53rem;
+}
+.pitch-grid-density-34 {
+  display: grid;
+  gap: 0.54rem;
+}
+.pitch-grid-density-35 {
+  display: grid;
+  gap: 0.55rem;
+}
+.pitch-grid-density-36 {
+  display: grid;
+  gap: 0.56rem;
+}
+.pitch-grid-density-37 {
+  display: grid;
+  gap: 0.57rem;
+}
+.pitch-grid-density-38 {
+  display: grid;
+  gap: 0.58rem;
+}
+.pitch-grid-density-39 {
+  display: grid;
+  gap: 0.59rem;
+}
+.pitch-grid-density-40 {
+  display: grid;
+  gap: 0.6rem;
+}
+.pitch-grid-density-41 {
+  display: grid;
+  gap: 0.61rem;
+}
+.pitch-grid-density-42 {
+  display: grid;
+  gap: 0.62rem;
+}
+.pitch-grid-density-43 {
+  display: grid;
+  gap: 0.63rem;
+}
+.pitch-grid-density-44 {
+  display: grid;
+  gap: 0.64rem;
+}
+.pitch-grid-density-45 {
+  display: grid;
+  gap: 0.65rem;
+}
+.pitch-grid-density-46 {
+  display: grid;
+  gap: 0.66rem;
+}
+.pitch-grid-density-47 {
+  display: grid;
+  gap: 0.67rem;
+}
+.pitch-grid-density-48 {
+  display: grid;
+  gap: 0.68rem;
+}
+.pitch-grid-density-49 {
+  display: grid;
+  gap: 0.69rem;
+}
+.pitch-grid-density-50 {
+  display: grid;
+  gap: 0.7rem;
+}
+.pitch-grid-density-51 {
+  display: grid;
+  gap: 0.71rem;
+}
+.pitch-grid-density-52 {
+  display: grid;
+  gap: 0.72rem;
+}
+.pitch-grid-density-53 {
+  display: grid;
+  gap: 0.73rem;
+}
+.pitch-grid-density-54 {
+  display: grid;
+  gap: 0.74rem;
+}
+.pitch-grid-density-55 {
+  display: grid;
+  gap: 0.75rem;
+}
+.pitch-grid-density-56 {
+  display: grid;
+  gap: 0.76rem;
+}
+.pitch-grid-density-57 {
+  display: grid;
+  gap: 0.77rem;
+}
+.pitch-grid-density-58 {
+  display: grid;
+  gap: 0.78rem;
+}
+.pitch-grid-density-59 {
+  display: grid;
+  gap: 0.79rem;
+}
+.pitch-grid-density-60 {
+  display: grid;
+  gap: 0.8rem;
+}
+.pitch-grid-density-61 {
+  display: grid;
+  gap: 0.81rem;
+}
+.pitch-grid-density-62 {
+  display: grid;
+  gap: 0.82rem;
+}
+.pitch-grid-density-63 {
+  display: grid;
+  gap: 0.83rem;
+}
+.pitch-grid-density-64 {
+  display: grid;
+  gap: 0.84rem;
+}
+.pitch-grid-density-65 {
+  display: grid;
+  gap: 0.85rem;
+}
+.pitch-grid-density-66 {
+  display: grid;
+  gap: 0.86rem;
+}
+.pitch-grid-density-67 {
+  display: grid;
+  gap: 0.87rem;
+}
+.pitch-grid-density-68 {
+  display: grid;
+  gap: 0.88rem;
+}
+.pitch-grid-density-69 {
+  display: grid;
+  gap: 0.89rem;
+}
+.pitch-grid-density-70 {
+  display: grid;
+  gap: 0.9rem;
+}
+.pitch-grid-density-71 {
+  display: grid;
+  gap: 0.91rem;
+}
+.pitch-grid-density-72 {
+  display: grid;
+  gap: 0.92rem;
+}
+.pitch-grid-density-73 {
+  display: grid;
+  gap: 0.93rem;
+}
+.pitch-grid-density-74 {
+  display: grid;
+  gap: 0.94rem;
+}
+.pitch-grid-density-75 {
+  display: grid;
+  gap: 0.95rem;
+}
+.pitch-grid-density-76 {
+  display: grid;
+  gap: 0.96rem;
+}
+.pitch-grid-density-77 {
+  display: grid;
+  gap: 0.97rem;
+}
+.pitch-grid-density-78 {
+  display: grid;
+  gap: 0.98rem;
+}
+.pitch-grid-density-79 {
+  display: grid;
+  gap: 0.99rem;
+}
+.pitch-grid-density-80 {
+  display: grid;
+  gap: 1rem;
+}
+.pitch-grid-density-81 {
+  display: grid;
+  gap: 1.01rem;
+}
+.pitch-grid-density-82 {
+  display: grid;
+  gap: 1.02rem;
+}
+.pitch-grid-density-83 {
+  display: grid;
+  gap: 1.03rem;
+}
+.pitch-grid-density-84 {
+  display: grid;
+  gap: 1.04rem;
+}
+.pitch-grid-density-85 {
+  display: grid;
+  gap: 1.05rem;
+}
+.pitch-grid-density-86 {
+  display: grid;
+  gap: 1.06rem;
+}
+.pitch-grid-density-87 {
+  display: grid;
+  gap: 1.07rem;
+}
+.pitch-grid-density-88 {
+  display: grid;
+  gap: 1.08rem;
+}
+.pitch-grid-density-89 {
+  display: grid;
+  gap: 1.09rem;
+}
+.pitch-grid-density-90 {
+  display: grid;
+  gap: 1.1rem;
+}
+.pitch-grid-density-91 {
+  display: grid;
+  gap: 1.11rem;
+}
+.pitch-grid-density-92 {
+  display: grid;
+  gap: 1.12rem;
+}
+.pitch-grid-density-93 {
+  display: grid;
+  gap: 1.13rem;
+}
+.pitch-grid-density-94 {
+  display: grid;
+  gap: 1.14rem;
+}
+.pitch-grid-density-95 {
+  display: grid;
+  gap: 1.15rem;
+}
+.pitch-grid-density-96 {
+  display: grid;
+  gap: 1.16rem;
+}
+.pitch-grid-density-97 {
+  display: grid;
+  gap: 1.17rem;
+}
+.pitch-grid-density-98 {
+  display: grid;
+  gap: 1.18rem;
+}
+.pitch-grid-density-99 {
+  display: grid;
+  gap: 1.19rem;
+}
+.pitch-grid-density-100 {
+  display: grid;
+  gap: 1.2rem;
+}
+.pitch-grid-density-101 {
+  display: grid;
+  gap: 1.21rem;
+}
+.pitch-grid-density-102 {
+  display: grid;
+  gap: 1.22rem;
+}
+.pitch-grid-density-103 {
+  display: grid;
+  gap: 1.23rem;
+}
+.pitch-grid-density-104 {
+  display: grid;
+  gap: 1.24rem;
+}
+.pitch-grid-density-105 {
+  display: grid;
+  gap: 1.25rem;
+}
+.pitch-grid-density-106 {
+  display: grid;
+  gap: 1.26rem;
+}
+.pitch-grid-density-107 {
+  display: grid;
+  gap: 1.27rem;
+}
+.pitch-grid-density-108 {
+  display: grid;
+  gap: 1.28rem;
+}
+.pitch-grid-density-109 {
+  display: grid;
+  gap: 1.29rem;
+}
+.pitch-grid-density-110 {
+  display: grid;
+  gap: 1.3rem;
+}
+.pitch-grid-density-111 {
+  display: grid;
+  gap: 1.31rem;
+}
+.pitch-grid-density-112 {
+  display: grid;
+  gap: 1.32rem;
+}
+.pitch-grid-density-113 {
+  display: grid;
+  gap: 1.33rem;
+}
+.pitch-grid-density-114 {
+  display: grid;
+  gap: 1.34rem;
+}
+.pitch-grid-density-115 {
+  display: grid;
+  gap: 1.35rem;
+}
+.pitch-grid-density-116 {
+  display: grid;
+  gap: 1.36rem;
+}
+.pitch-grid-density-117 {
+  display: grid;
+  gap: 1.37rem;
+}
+.pitch-grid-density-118 {
+  display: grid;
+  gap: 1.38rem;
+}
+.pitch-grid-density-119 {
+  display: grid;
+  gap: 1.39rem;
+}
+.pitch-grid-density-120 {
+  display: grid;
+  gap: 1.4rem;
+}
+.pitch-grid-density-121 {
+  display: grid;
+  gap: 1.41rem;
+}
+.pitch-grid-density-122 {
+  display: grid;
+  gap: 1.42rem;
+}
+.pitch-grid-density-123 {
+  display: grid;
+  gap: 1.43rem;
+}
+.pitch-grid-density-124 {
+  display: grid;
+  gap: 1.44rem;
+}
+.pitch-grid-density-125 {
+  display: grid;
+  gap: 1.45rem;
+}
+.pitch-grid-density-126 {
+  display: grid;
+  gap: 1.46rem;
+}
+.pitch-grid-density-127 {
+  display: grid;
+  gap: 1.47rem;
+}
+.pitch-grid-density-128 {
+  display: grid;
+  gap: 1.48rem;
+}
+.pitch-grid-density-129 {
+  display: grid;
+  gap: 1.49rem;
+}
+.pitch-grid-density-130 {
+  display: grid;
+  gap: 1.5rem;
+}
+.pitch-grid-density-131 {
+  display: grid;
+  gap: 1.51rem;
+}
+.pitch-grid-density-132 {
+  display: grid;
+  gap: 1.52rem;
+}
+.pitch-grid-density-133 {
+  display: grid;
+  gap: 1.53rem;
+}
+.pitch-grid-density-134 {
+  display: grid;
+  gap: 1.54rem;
+}
+.pitch-grid-density-135 {
+  display: grid;
+  gap: 1.55rem;
+}
+.pitch-grid-density-136 {
+  display: grid;
+  gap: 1.56rem;
+}
+.pitch-grid-density-137 {
+  display: grid;
+  gap: 1.57rem;
+}
+.pitch-grid-density-138 {
+  display: grid;
+  gap: 1.58rem;
+}
+.pitch-grid-density-139 {
+  display: grid;
+  gap: 1.59rem;
+}
+.pitch-grid-density-140 {
+  display: grid;
+  gap: 1.6rem;
+}
+.pitch-grid-density-141 {
+  display: grid;
+  gap: 1.61rem;
+}
+.pitch-grid-density-142 {
+  display: grid;
+  gap: 1.62rem;
+}
+.pitch-grid-density-143 {
+  display: grid;
+  gap: 1.63rem;
+}
+.pitch-grid-density-144 {
+  display: grid;
+  gap: 1.64rem;
+}
+.pitch-grid-density-145 {
+  display: grid;
+  gap: 1.65rem;
+}
+.pitch-grid-density-146 {
+  display: grid;
+  gap: 1.66rem;
+}
+.pitch-grid-density-147 {
+  display: grid;
+  gap: 1.67rem;
+}
+.pitch-grid-density-148 {
+  display: grid;
+  gap: 1.68rem;
+}
+.pitch-grid-density-149 {
+  display: grid;
+  gap: 1.69rem;
+}
+.pitch-grid-density-150 {
+  display: grid;
+  gap: 1.7rem;
+}
+.pitch-grid-density-151 {
+  display: grid;
+  gap: 1.71rem;
+}
+.pitch-grid-density-152 {
+  display: grid;
+  gap: 1.72rem;
+}
+.pitch-grid-density-153 {
+  display: grid;
+  gap: 1.73rem;
+}
+.pitch-grid-density-154 {
+  display: grid;
+  gap: 1.74rem;
+}
+.pitch-grid-density-155 {
+  display: grid;
+  gap: 1.75rem;
+}
+.pitch-grid-density-156 {
+  display: grid;
+  gap: 1.76rem;
+}
+.pitch-grid-density-157 {
+  display: grid;
+  gap: 1.77rem;
+}
+.pitch-grid-density-158 {
+  display: grid;
+  gap: 1.78rem;
+}
+.pitch-grid-density-159 {
+  display: grid;
+  gap: 1.79rem;
+}
+.pitch-grid-density-160 {
+  display: grid;
+  gap: 1.8rem;
+}
+.pitch-grid-density-161 {
+  display: grid;
+  gap: 1.81rem;
+}
+.pitch-grid-density-162 {
+  display: grid;
+  gap: 1.82rem;
+}
+.pitch-grid-density-163 {
+  display: grid;
+  gap: 1.83rem;
+}
+.pitch-grid-density-164 {
+  display: grid;
+  gap: 1.84rem;
+}
+.pitch-grid-density-165 {
+  display: grid;
+  gap: 1.85rem;
+}
+.pitch-grid-density-166 {
+  display: grid;
+  gap: 1.86rem;
+}
+.pitch-grid-density-167 {
+  display: grid;
+  gap: 1.87rem;
+}
+.pitch-grid-density-168 {
+  display: grid;
+  gap: 1.88rem;
+}
+.pitch-grid-density-169 {
+  display: grid;
+  gap: 1.89rem;
+}
+.pitch-grid-density-170 {
+  display: grid;
+  gap: 1.9rem;
+}
+.pitch-grid-density-171 {
+  display: grid;
+  gap: 1.91rem;
+}
+.pitch-grid-density-172 {
+  display: grid;
+  gap: 1.92rem;
+}
+.pitch-grid-density-173 {
+  display: grid;
+  gap: 1.93rem;
+}
+.pitch-grid-density-174 {
+  display: grid;
+  gap: 1.94rem;
+}
+.pitch-grid-density-175 {
+  display: grid;
+  gap: 1.95rem;
+}
+.pitch-grid-density-176 {
+  display: grid;
+  gap: 1.96rem;
+}
+.pitch-grid-density-177 {
+  display: grid;
+  gap: 1.97rem;
+}
+.pitch-grid-density-178 {
+  display: grid;
+  gap: 1.98rem;
+}
+.pitch-grid-density-179 {
+  display: grid;
+  gap: 1.99rem;
+}
+.pitch-grid-density-180 {
+  display: grid;
+  gap: 2rem;
+}
+
+.pitch-gradient-preset-1 {
+  background-image: linear-gradient(7deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-2 {
+  background-image: linear-gradient(14deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-3 {
+  background-image: linear-gradient(21deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-4 {
+  background-image: linear-gradient(28deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.12));
+}
+.pitch-gradient-preset-5 {
+  background-image: linear-gradient(35deg, rgba(171, 123, 38, 0.13), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.13));
+}
+.pitch-gradient-preset-6 {
+  background-image: linear-gradient(42deg, rgba(171, 123, 38, 0.14), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.14));
+}
+.pitch-gradient-preset-7 {
+  background-image: linear-gradient(49deg, rgba(171, 123, 38, 0.15), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.15));
+}
+.pitch-gradient-preset-8 {
+  background-image: linear-gradient(56deg, rgba(171, 123, 38, 0.16), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.16));
+}
+.pitch-gradient-preset-9 {
+  background-image: linear-gradient(63deg, rgba(171, 123, 38, 0.17), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.17));
+}
+.pitch-gradient-preset-10 {
+  background-image: linear-gradient(70deg, rgba(171, 123, 38, 0.18), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.18));
+}
+.pitch-gradient-preset-11 {
+  background-image: linear-gradient(77deg, rgba(171, 123, 38, 0.19), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.19));
+}
+.pitch-gradient-preset-12 {
+  background-image: linear-gradient(84deg, rgba(171, 123, 38, 0.08), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.08));
+}
+.pitch-gradient-preset-13 {
+  background-image: linear-gradient(91deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-14 {
+  background-image: linear-gradient(98deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-15 {
+  background-image: linear-gradient(105deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-16 {
+  background-image: linear-gradient(112deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.12));
+}
+.pitch-gradient-preset-17 {
+  background-image: linear-gradient(119deg, rgba(171, 123, 38, 0.13), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.13));
+}
+.pitch-gradient-preset-18 {
+  background-image: linear-gradient(126deg, rgba(171, 123, 38, 0.14), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.14));
+}
+.pitch-gradient-preset-19 {
+  background-image: linear-gradient(133deg, rgba(171, 123, 38, 0.15), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.15));
+}
+.pitch-gradient-preset-20 {
+  background-image: linear-gradient(140deg, rgba(171, 123, 38, 0.16), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.16));
+}
+.pitch-gradient-preset-21 {
+  background-image: linear-gradient(147deg, rgba(171, 123, 38, 0.17), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.17));
+}
+.pitch-gradient-preset-22 {
+  background-image: linear-gradient(154deg, rgba(171, 123, 38, 0.18), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.18));
+}
+.pitch-gradient-preset-23 {
+  background-image: linear-gradient(161deg, rgba(171, 123, 38, 0.19), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.19));
+}
+.pitch-gradient-preset-24 {
+  background-image: linear-gradient(168deg, rgba(171, 123, 38, 0.08), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.08));
+}
+.pitch-gradient-preset-25 {
+  background-image: linear-gradient(175deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-26 {
+  background-image: linear-gradient(182deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-27 {
+  background-image: linear-gradient(189deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-28 {
+  background-image: linear-gradient(196deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.12));
+}
+.pitch-gradient-preset-29 {
+  background-image: linear-gradient(203deg, rgba(171, 123, 38, 0.13), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.13));
+}
+.pitch-gradient-preset-30 {
+  background-image: linear-gradient(210deg, rgba(171, 123, 38, 0.14), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.14));
+}
+.pitch-gradient-preset-31 {
+  background-image: linear-gradient(217deg, rgba(171, 123, 38, 0.15), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.15));
+}
+.pitch-gradient-preset-32 {
+  background-image: linear-gradient(224deg, rgba(171, 123, 38, 0.16), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.16));
+}
+.pitch-gradient-preset-33 {
+  background-image: linear-gradient(231deg, rgba(171, 123, 38, 0.17), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.17));
+}
+.pitch-gradient-preset-34 {
+  background-image: linear-gradient(238deg, rgba(171, 123, 38, 0.18), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.18));
+}
+.pitch-gradient-preset-35 {
+  background-image: linear-gradient(245deg, rgba(171, 123, 38, 0.19), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.19));
+}
+.pitch-gradient-preset-36 {
+  background-image: linear-gradient(252deg, rgba(171, 123, 38, 0.08), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.08));
+}
+.pitch-gradient-preset-37 {
+  background-image: linear-gradient(259deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-38 {
+  background-image: linear-gradient(266deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-39 {
+  background-image: linear-gradient(273deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-40 {
+  background-image: linear-gradient(280deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.12));
+}
+.pitch-gradient-preset-41 {
+  background-image: linear-gradient(287deg, rgba(171, 123, 38, 0.13), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.13));
+}
+.pitch-gradient-preset-42 {
+  background-image: linear-gradient(294deg, rgba(171, 123, 38, 0.14), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.14));
+}
+.pitch-gradient-preset-43 {
+  background-image: linear-gradient(301deg, rgba(171, 123, 38, 0.15), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.15));
+}
+.pitch-gradient-preset-44 {
+  background-image: linear-gradient(308deg, rgba(171, 123, 38, 0.16), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.16));
+}
+.pitch-gradient-preset-45 {
+  background-image: linear-gradient(315deg, rgba(171, 123, 38, 0.17), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.17));
+}
+.pitch-gradient-preset-46 {
+  background-image: linear-gradient(322deg, rgba(171, 123, 38, 0.18), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.18));
+}
+.pitch-gradient-preset-47 {
+  background-image: linear-gradient(329deg, rgba(171, 123, 38, 0.19), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.19));
+}
+.pitch-gradient-preset-48 {
+  background-image: linear-gradient(336deg, rgba(171, 123, 38, 0.08), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.08));
+}
+.pitch-gradient-preset-49 {
+  background-image: linear-gradient(343deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-50 {
+  background-image: linear-gradient(350deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-51 {
+  background-image: linear-gradient(357deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-52 {
+  background-image: linear-gradient(4deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.12));
+}
+.pitch-gradient-preset-53 {
+  background-image: linear-gradient(11deg, rgba(171, 123, 38, 0.13), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.13));
+}
+.pitch-gradient-preset-54 {
+  background-image: linear-gradient(18deg, rgba(171, 123, 38, 0.14), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.14));
+}
+.pitch-gradient-preset-55 {
+  background-image: linear-gradient(25deg, rgba(171, 123, 38, 0.15), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.15));
+}
+.pitch-gradient-preset-56 {
+  background-image: linear-gradient(32deg, rgba(171, 123, 38, 0.16), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.16));
+}
+.pitch-gradient-preset-57 {
+  background-image: linear-gradient(39deg, rgba(171, 123, 38, 0.17), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.17));
+}
+.pitch-gradient-preset-58 {
+  background-image: linear-gradient(46deg, rgba(171, 123, 38, 0.18), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.18));
+}
+.pitch-gradient-preset-59 {
+  background-image: linear-gradient(53deg, rgba(171, 123, 38, 0.19), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.19));
+}
+.pitch-gradient-preset-60 {
+  background-image: linear-gradient(60deg, rgba(171, 123, 38, 0.08), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.08));
+}
+.pitch-gradient-preset-61 {
+  background-image: linear-gradient(67deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-62 {
+  background-image: linear-gradient(74deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-63 {
+  background-image: linear-gradient(81deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-64 {
+  background-image: linear-gradient(88deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.12));
+}
+.pitch-gradient-preset-65 {
+  background-image: linear-gradient(95deg, rgba(171, 123, 38, 0.13), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.13));
+}
+.pitch-gradient-preset-66 {
+  background-image: linear-gradient(102deg, rgba(171, 123, 38, 0.14), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.14));
+}
+.pitch-gradient-preset-67 {
+  background-image: linear-gradient(109deg, rgba(171, 123, 38, 0.15), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.15));
+}
+.pitch-gradient-preset-68 {
+  background-image: linear-gradient(116deg, rgba(171, 123, 38, 0.16), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.16));
+}
+.pitch-gradient-preset-69 {
+  background-image: linear-gradient(123deg, rgba(171, 123, 38, 0.17), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.17));
+}
+.pitch-gradient-preset-70 {
+  background-image: linear-gradient(130deg, rgba(171, 123, 38, 0.18), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.18));
+}
+.pitch-gradient-preset-71 {
+  background-image: linear-gradient(137deg, rgba(171, 123, 38, 0.19), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.19));
+}
+.pitch-gradient-preset-72 {
+  background-image: linear-gradient(144deg, rgba(171, 123, 38, 0.08), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.08));
+}
+.pitch-gradient-preset-73 {
+  background-image: linear-gradient(151deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-74 {
+  background-image: linear-gradient(158deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-75 {
+  background-image: linear-gradient(165deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-76 {
+  background-image: linear-gradient(172deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.12));
+}
+.pitch-gradient-preset-77 {
+  background-image: linear-gradient(179deg, rgba(171, 123, 38, 0.13), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.13));
+}
+.pitch-gradient-preset-78 {
+  background-image: linear-gradient(186deg, rgba(171, 123, 38, 0.14), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.14));
+}
+.pitch-gradient-preset-79 {
+  background-image: linear-gradient(193deg, rgba(171, 123, 38, 0.15), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.15));
+}
+.pitch-gradient-preset-80 {
+  background-image: linear-gradient(200deg, rgba(171, 123, 38, 0.16), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.16));
+}
+.pitch-gradient-preset-81 {
+  background-image: linear-gradient(207deg, rgba(171, 123, 38, 0.17), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.17));
+}
+.pitch-gradient-preset-82 {
+  background-image: linear-gradient(214deg, rgba(171, 123, 38, 0.18), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.18));
+}
+.pitch-gradient-preset-83 {
+  background-image: linear-gradient(221deg, rgba(171, 123, 38, 0.19), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.19));
+}
+.pitch-gradient-preset-84 {
+  background-image: linear-gradient(228deg, rgba(171, 123, 38, 0.08), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.08));
+}
+.pitch-gradient-preset-85 {
+  background-image: linear-gradient(235deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-86 {
+  background-image: linear-gradient(242deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-87 {
+  background-image: linear-gradient(249deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-88 {
+  background-image: linear-gradient(256deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.12));
+}
+.pitch-gradient-preset-89 {
+  background-image: linear-gradient(263deg, rgba(171, 123, 38, 0.13), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.13));
+}
+.pitch-gradient-preset-90 {
+  background-image: linear-gradient(270deg, rgba(171, 123, 38, 0.14), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.14));
+}
+.pitch-gradient-preset-91 {
+  background-image: linear-gradient(277deg, rgba(171, 123, 38, 0.15), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.15));
+}
+.pitch-gradient-preset-92 {
+  background-image: linear-gradient(284deg, rgba(171, 123, 38, 0.16), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.16));
+}
+.pitch-gradient-preset-93 {
+  background-image: linear-gradient(291deg, rgba(171, 123, 38, 0.17), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.17));
+}
+.pitch-gradient-preset-94 {
+  background-image: linear-gradient(298deg, rgba(171, 123, 38, 0.18), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.18));
+}
+.pitch-gradient-preset-95 {
+  background-image: linear-gradient(305deg, rgba(171, 123, 38, 0.19), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.19));
+}
+.pitch-gradient-preset-96 {
+  background-image: linear-gradient(312deg, rgba(171, 123, 38, 0.08), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.08));
+}
+.pitch-gradient-preset-97 {
+  background-image: linear-gradient(319deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-98 {
+  background-image: linear-gradient(326deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-99 {
+  background-image: linear-gradient(333deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-100 {
+  background-image: linear-gradient(340deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.12));
+}
+.pitch-gradient-preset-101 {
+  background-image: linear-gradient(347deg, rgba(171, 123, 38, 0.13), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.13));
+}
+.pitch-gradient-preset-102 {
+  background-image: linear-gradient(354deg, rgba(171, 123, 38, 0.14), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.14));
+}
+.pitch-gradient-preset-103 {
+  background-image: linear-gradient(1deg, rgba(171, 123, 38, 0.15), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.15));
+}
+.pitch-gradient-preset-104 {
+  background-image: linear-gradient(8deg, rgba(171, 123, 38, 0.16), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.16));
+}
+.pitch-gradient-preset-105 {
+  background-image: linear-gradient(15deg, rgba(171, 123, 38, 0.17), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.17));
+}
+.pitch-gradient-preset-106 {
+  background-image: linear-gradient(22deg, rgba(171, 123, 38, 0.18), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.18));
+}
+.pitch-gradient-preset-107 {
+  background-image: linear-gradient(29deg, rgba(171, 123, 38, 0.19), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.19));
+}
+.pitch-gradient-preset-108 {
+  background-image: linear-gradient(36deg, rgba(171, 123, 38, 0.08), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.08));
+}
+.pitch-gradient-preset-109 {
+  background-image: linear-gradient(43deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-110 {
+  background-image: linear-gradient(50deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-111 {
+  background-image: linear-gradient(57deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-112 {
+  background-image: linear-gradient(64deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.12));
+}
+.pitch-gradient-preset-113 {
+  background-image: linear-gradient(71deg, rgba(171, 123, 38, 0.13), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.13));
+}
+.pitch-gradient-preset-114 {
+  background-image: linear-gradient(78deg, rgba(171, 123, 38, 0.14), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.14));
+}
+.pitch-gradient-preset-115 {
+  background-image: linear-gradient(85deg, rgba(171, 123, 38, 0.15), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.15));
+}
+.pitch-gradient-preset-116 {
+  background-image: linear-gradient(92deg, rgba(171, 123, 38, 0.16), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.16));
+}
+.pitch-gradient-preset-117 {
+  background-image: linear-gradient(99deg, rgba(171, 123, 38, 0.17), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.17));
+}
+.pitch-gradient-preset-118 {
+  background-image: linear-gradient(106deg, rgba(171, 123, 38, 0.18), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.18));
+}
+.pitch-gradient-preset-119 {
+  background-image: linear-gradient(113deg, rgba(171, 123, 38, 0.19), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.19));
+}
+.pitch-gradient-preset-120 {
+  background-image: linear-gradient(120deg, rgba(171, 123, 38, 0.08), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.08));
+}
+.pitch-gradient-preset-121 {
+  background-image: linear-gradient(127deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-122 {
+  background-image: linear-gradient(134deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-123 {
+  background-image: linear-gradient(141deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-124 {
+  background-image: linear-gradient(148deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.12));
+}
+.pitch-gradient-preset-125 {
+  background-image: linear-gradient(155deg, rgba(171, 123, 38, 0.13), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.13));
+}
+.pitch-gradient-preset-126 {
+  background-image: linear-gradient(162deg, rgba(171, 123, 38, 0.14), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.14));
+}
+.pitch-gradient-preset-127 {
+  background-image: linear-gradient(169deg, rgba(171, 123, 38, 0.15), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.15));
+}
+.pitch-gradient-preset-128 {
+  background-image: linear-gradient(176deg, rgba(171, 123, 38, 0.16), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.16));
+}
+.pitch-gradient-preset-129 {
+  background-image: linear-gradient(183deg, rgba(171, 123, 38, 0.17), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.17));
+}
+.pitch-gradient-preset-130 {
+  background-image: linear-gradient(190deg, rgba(171, 123, 38, 0.18), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.18));
+}
+.pitch-gradient-preset-131 {
+  background-image: linear-gradient(197deg, rgba(171, 123, 38, 0.19), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.19));
+}
+.pitch-gradient-preset-132 {
+  background-image: linear-gradient(204deg, rgba(171, 123, 38, 0.08), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.08));
+}
+.pitch-gradient-preset-133 {
+  background-image: linear-gradient(211deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-134 {
+  background-image: linear-gradient(218deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-135 {
+  background-image: linear-gradient(225deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-136 {
+  background-image: linear-gradient(232deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.12));
+}
+.pitch-gradient-preset-137 {
+  background-image: linear-gradient(239deg, rgba(171, 123, 38, 0.13), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.13));
+}
+.pitch-gradient-preset-138 {
+  background-image: linear-gradient(246deg, rgba(171, 123, 38, 0.14), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.14));
+}
+.pitch-gradient-preset-139 {
+  background-image: linear-gradient(253deg, rgba(171, 123, 38, 0.15), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.15));
+}
+.pitch-gradient-preset-140 {
+  background-image: linear-gradient(260deg, rgba(171, 123, 38, 0.16), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.16));
+}
+.pitch-gradient-preset-141 {
+  background-image: linear-gradient(267deg, rgba(171, 123, 38, 0.17), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.17));
+}
+.pitch-gradient-preset-142 {
+  background-image: linear-gradient(274deg, rgba(171, 123, 38, 0.18), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.18));
+}
+.pitch-gradient-preset-143 {
+  background-image: linear-gradient(281deg, rgba(171, 123, 38, 0.19), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.19));
+}
+.pitch-gradient-preset-144 {
+  background-image: linear-gradient(288deg, rgba(171, 123, 38, 0.08), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.08));
+}
+.pitch-gradient-preset-145 {
+  background-image: linear-gradient(295deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-146 {
+  background-image: linear-gradient(302deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-147 {
+  background-image: linear-gradient(309deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-148 {
+  background-image: linear-gradient(316deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.12));
+}
+.pitch-gradient-preset-149 {
+  background-image: linear-gradient(323deg, rgba(171, 123, 38, 0.13), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.13));
+}
+.pitch-gradient-preset-150 {
+  background-image: linear-gradient(330deg, rgba(171, 123, 38, 0.14), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.14));
+}
+.pitch-gradient-preset-151 {
+  background-image: linear-gradient(337deg, rgba(171, 123, 38, 0.15), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.15));
+}
+.pitch-gradient-preset-152 {
+  background-image: linear-gradient(344deg, rgba(171, 123, 38, 0.16), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.16));
+}
+.pitch-gradient-preset-153 {
+  background-image: linear-gradient(351deg, rgba(171, 123, 38, 0.17), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.17));
+}
+.pitch-gradient-preset-154 {
+  background-image: linear-gradient(358deg, rgba(171, 123, 38, 0.18), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.18));
+}
+.pitch-gradient-preset-155 {
+  background-image: linear-gradient(5deg, rgba(171, 123, 38, 0.19), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.19));
+}
+.pitch-gradient-preset-156 {
+  background-image: linear-gradient(12deg, rgba(171, 123, 38, 0.08), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.08));
+}
+.pitch-gradient-preset-157 {
+  background-image: linear-gradient(19deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-158 {
+  background-image: linear-gradient(26deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-159 {
+  background-image: linear-gradient(33deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-160 {
+  background-image: linear-gradient(40deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.12));
+}
+.pitch-gradient-preset-161 {
+  background-image: linear-gradient(47deg, rgba(171, 123, 38, 0.13), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.13));
+}
+.pitch-gradient-preset-162 {
+  background-image: linear-gradient(54deg, rgba(171, 123, 38, 0.14), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.14));
+}
+.pitch-gradient-preset-163 {
+  background-image: linear-gradient(61deg, rgba(171, 123, 38, 0.15), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.15));
+}
+.pitch-gradient-preset-164 {
+  background-image: linear-gradient(68deg, rgba(171, 123, 38, 0.16), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.16));
+}
+.pitch-gradient-preset-165 {
+  background-image: linear-gradient(75deg, rgba(171, 123, 38, 0.17), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.17));
+}
+.pitch-gradient-preset-166 {
+  background-image: linear-gradient(82deg, rgba(171, 123, 38, 0.18), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.18));
+}
+.pitch-gradient-preset-167 {
+  background-image: linear-gradient(89deg, rgba(171, 123, 38, 0.19), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.19));
+}
+.pitch-gradient-preset-168 {
+  background-image: linear-gradient(96deg, rgba(171, 123, 38, 0.08), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.08));
+}
+.pitch-gradient-preset-169 {
+  background-image: linear-gradient(103deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-170 {
+  background-image: linear-gradient(110deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-171 {
+  background-image: linear-gradient(117deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-172 {
+  background-image: linear-gradient(124deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.12));
+}
+.pitch-gradient-preset-173 {
+  background-image: linear-gradient(131deg, rgba(171, 123, 38, 0.13), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.13));
+}
+.pitch-gradient-preset-174 {
+  background-image: linear-gradient(138deg, rgba(171, 123, 38, 0.14), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.14));
+}
+.pitch-gradient-preset-175 {
+  background-image: linear-gradient(145deg, rgba(171, 123, 38, 0.15), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.15));
+}
+.pitch-gradient-preset-176 {
+  background-image: linear-gradient(152deg, rgba(171, 123, 38, 0.16), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.16));
+}
+.pitch-gradient-preset-177 {
+  background-image: linear-gradient(159deg, rgba(171, 123, 38, 0.17), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.17));
+}
+.pitch-gradient-preset-178 {
+  background-image: linear-gradient(166deg, rgba(171, 123, 38, 0.18), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.18));
+}
+.pitch-gradient-preset-179 {
+  background-image: linear-gradient(173deg, rgba(171, 123, 38, 0.19), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.19));
+}
+.pitch-gradient-preset-180 {
+  background-image: linear-gradient(180deg, rgba(171, 123, 38, 0.08), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.08));
+}
+.pitch-gradient-preset-181 {
+  background-image: linear-gradient(187deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-182 {
+  background-image: linear-gradient(194deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-183 {
+  background-image: linear-gradient(201deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-184 {
+  background-image: linear-gradient(208deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.12));
+}
+.pitch-gradient-preset-185 {
+  background-image: linear-gradient(215deg, rgba(171, 123, 38, 0.13), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.13));
+}
+.pitch-gradient-preset-186 {
+  background-image: linear-gradient(222deg, rgba(171, 123, 38, 0.14), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.14));
+}
+.pitch-gradient-preset-187 {
+  background-image: linear-gradient(229deg, rgba(171, 123, 38, 0.15), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.15));
+}
+.pitch-gradient-preset-188 {
+  background-image: linear-gradient(236deg, rgba(171, 123, 38, 0.16), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.16));
+}
+.pitch-gradient-preset-189 {
+  background-image: linear-gradient(243deg, rgba(171, 123, 38, 0.17), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.17));
+}
+.pitch-gradient-preset-190 {
+  background-image: linear-gradient(250deg, rgba(171, 123, 38, 0.18), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.18));
+}
+.pitch-gradient-preset-191 {
+  background-image: linear-gradient(257deg, rgba(171, 123, 38, 0.19), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.19));
+}
+.pitch-gradient-preset-192 {
+  background-image: linear-gradient(264deg, rgba(171, 123, 38, 0.08), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.08));
+}
+.pitch-gradient-preset-193 {
+  background-image: linear-gradient(271deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-194 {
+  background-image: linear-gradient(278deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-195 {
+  background-image: linear-gradient(285deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-196 {
+  background-image: linear-gradient(292deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.12));
+}
+.pitch-gradient-preset-197 {
+  background-image: linear-gradient(299deg, rgba(171, 123, 38, 0.13), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.13));
+}
+.pitch-gradient-preset-198 {
+  background-image: linear-gradient(306deg, rgba(171, 123, 38, 0.14), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.14));
+}
+.pitch-gradient-preset-199 {
+  background-image: linear-gradient(313deg, rgba(171, 123, 38, 0.15), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.15));
+}
+.pitch-gradient-preset-200 {
+  background-image: linear-gradient(320deg, rgba(171, 123, 38, 0.16), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.16));
+}
+.pitch-gradient-preset-201 {
+  background-image: linear-gradient(327deg, rgba(171, 123, 38, 0.17), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.17));
+}
+.pitch-gradient-preset-202 {
+  background-image: linear-gradient(334deg, rgba(171, 123, 38, 0.18), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.18));
+}
+.pitch-gradient-preset-203 {
+  background-image: linear-gradient(341deg, rgba(171, 123, 38, 0.19), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.19));
+}
+.pitch-gradient-preset-204 {
+  background-image: linear-gradient(348deg, rgba(171, 123, 38, 0.08), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.08));
+}
+.pitch-gradient-preset-205 {
+  background-image: linear-gradient(355deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-206 {
+  background-image: linear-gradient(2deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-207 {
+  background-image: linear-gradient(9deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-208 {
+  background-image: linear-gradient(16deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.12));
+}
+.pitch-gradient-preset-209 {
+  background-image: linear-gradient(23deg, rgba(171, 123, 38, 0.13), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.13));
+}
+.pitch-gradient-preset-210 {
+  background-image: linear-gradient(30deg, rgba(171, 123, 38, 0.14), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.14));
+}
+.pitch-gradient-preset-211 {
+  background-image: linear-gradient(37deg, rgba(171, 123, 38, 0.15), rgba(2, 167, 202, 0.07), rgba(2, 111, 134, 0.15));
+}
+.pitch-gradient-preset-212 {
+  background-image: linear-gradient(44deg, rgba(171, 123, 38, 0.16), rgba(2, 167, 202, 0.08), rgba(2, 111, 134, 0.16));
+}
+.pitch-gradient-preset-213 {
+  background-image: linear-gradient(51deg, rgba(171, 123, 38, 0.17), rgba(2, 167, 202, 0.09), rgba(2, 111, 134, 0.17));
+}
+.pitch-gradient-preset-214 {
+  background-image: linear-gradient(58deg, rgba(171, 123, 38, 0.18), rgba(2, 167, 202, 0.1), rgba(2, 111, 134, 0.18));
+}
+.pitch-gradient-preset-215 {
+  background-image: linear-gradient(65deg, rgba(171, 123, 38, 0.19), rgba(2, 167, 202, 0.11), rgba(2, 111, 134, 0.19));
+}
+.pitch-gradient-preset-216 {
+  background-image: linear-gradient(72deg, rgba(171, 123, 38, 0.08), rgba(2, 167, 202, 0.12), rgba(2, 111, 134, 0.08));
+}
+.pitch-gradient-preset-217 {
+  background-image: linear-gradient(79deg, rgba(171, 123, 38, 0.09), rgba(2, 167, 202, 0.13), rgba(2, 111, 134, 0.09));
+}
+.pitch-gradient-preset-218 {
+  background-image: linear-gradient(86deg, rgba(171, 123, 38, 0.1), rgba(2, 167, 202, 0.14), rgba(2, 111, 134, 0.1));
+}
+.pitch-gradient-preset-219 {
+  background-image: linear-gradient(93deg, rgba(171, 123, 38, 0.11), rgba(2, 167, 202, 0.15), rgba(2, 111, 134, 0.11));
+}
+.pitch-gradient-preset-220 {
+  background-image: linear-gradient(100deg, rgba(171, 123, 38, 0.12), rgba(2, 167, 202, 0.06), rgba(2, 111, 134, 0.12));
+}
+
+.pitch-scroll-affordance {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 60;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 111, 134, 0.3);
+  background: rgba(255, 255, 255, 0.82);
+  color: #026f86;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.pitch-collapsible-panel[aria-expanded="true"] {
+  border-color: rgba(2, 167, 202, 0.5);
+  box-shadow: 0 10px 30px rgba(2, 167, 202, 0.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pitch-shell-root *, .pitch-shell-root *::before, .pitch-shell-root *::after {
+    animation: none !important;
+    transition-duration: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.pitch-shell-brand-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.pitch-shell-brand-watermark {
+  position: absolute;
+  inset: 0;
+}
+
+/* Aurora Pearl v2.3 pitch-scoped overrides */
+.pitch-shell-root {
+  --pitch-neutral-ink-950: #18212b;
+  --pitch-neutral-ink-900: #1f252f;
+  --pitch-neutral-ink-700: #4e596b;
+  --pitch-neutral-ink-500: #6d7788;
+  --pitch-surface-0: #f8f6f2;
+  --pitch-surface-1: #f2f0ec;
+  --pitch-surface-2: rgba(255, 255, 255, 0.58);
+  --pitch-surface-3: rgba(255, 255, 255, 0.44);
+  --pitch-border-0: rgba(81, 91, 107, 0.22);
+  --pitch-border-1: rgba(81, 91, 107, 0.34);
+  --pitch-focus-token: rgba(52, 116, 178, 0.55);
+  --pitch-elevation-0: 0 1px 2px rgba(20, 28, 38, 0.03);
+  --pitch-elevation-1: 0 8px 24px rgba(24, 33, 45, 0.08);
+  --pitch-elevation-2: 0 18px 44px rgba(19, 27, 38, 0.06);
+  --pitch-elevation-3: 0 2px 8px rgba(19, 27, 38, 0.05);
+  --pitch-governance-cobalt: #3d5f99;
+  --pitch-evidence-teal: #3f7e87;
+  --pitch-outcome-violet: #6a6d94;
+  --pitch-risk-coral: #b66f63;
+  --pitch-accent-amber-muted: #8f7241;
+  --pitch-governance-fill: rgba(61, 95, 153, 0.18);
+  --pitch-accent-amber-fill: rgba(143, 114, 65, 0.18);
+  --pitch-glass-fill-base: rgba(255, 255, 255, 0.15);
+  --pitch-glass-fill-overlay: rgba(255, 255, 255, 0.08);
+  --pitch-glass-fallback-base: rgba(255, 255, 255, 0.88);
+  --pitch-glass-fallback-overlay: rgba(255, 255, 255, 0.74);
+  --pitch-muted: var(--pitch-neutral-ink-700);
+  --pitch-ink: var(--pitch-neutral-ink-900);
+  --pitch-deep-teal: var(--pitch-governance-cobalt);
+  --pitch-gold: var(--pitch-accent-amber-muted);
+  --pitch-cyan: var(--pitch-evidence-teal);
+  --pitch-brown: #4d3d23;
+  position: relative;
+  overflow-x: clip;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+.pitch-shell-root::before {
+  background:
+    radial-gradient(130% 86% at 8% -26%, rgba(61, 95, 153, 0.12) 0%, rgba(61, 95, 153, 0) 58%),
+    radial-gradient(120% 88% at 92% -20%, rgba(63, 126, 135, 0.1) 0%, rgba(63, 126, 135, 0) 56%),
+    radial-gradient(110% 80% at 54% 4%, rgba(143, 114, 65, 0.08) 0%, rgba(143, 114, 65, 0) 62%),
+    radial-gradient(130% 110% at 52% 120%, rgba(24, 33, 45, 0.14) 0%, rgba(24, 33, 45, 0) 66%),
+    linear-gradient(180deg, var(--pitch-surface-0) 0%, var(--pitch-surface-1) 50%, #efede8 100%);
+}
+
+.pitch-shell-root::after {
+  background-image:
+    radial-gradient(rgba(33, 43, 59, 0.048) 0.8px, transparent 1px),
+    radial-gradient(rgba(255, 255, 255, 0.32) 0.6px, transparent 1px),
+    radial-gradient(130% 90% at 50% 50%, rgba(24, 33, 45, 0) 58%, rgba(24, 33, 45, 0.11) 100%);
+  background-size: 3px 3px, 4px 4px, 100% 100%;
+  opacity: 0.58;
+  mix-blend-mode: multiply;
+}
+
+.pitch-shell-root .pitch-shell-brand-layer {
+  display: none;
+}
+
+.pitch-shell-root .pitch-glass-card,
+.pitch-shell-root .pitch-collapsible-panel {
+  position: relative;
+  border: 1px solid var(--pitch-border-0);
+  background:
+    linear-gradient(164deg, var(--pitch-glass-fill-base) 0%, var(--pitch-glass-fill-overlay) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.03) 100%);
+  box-shadow: var(--pitch-elevation-1), var(--pitch-elevation-2), var(--pitch-elevation-3), var(--pitch-elevation-0);
+}
+
+@supports ((backdrop-filter: blur(16px)) or (-webkit-backdrop-filter: blur(16px))) {
+  .pitch-shell-root .pitch-glass-card,
+  .pitch-shell-root .pitch-collapsible-panel {
+    backdrop-filter: blur(18px) saturate(132%);
+    -webkit-backdrop-filter: blur(18px) saturate(132%);
+  }
+}
+
+@supports not ((backdrop-filter: blur(16px)) or (-webkit-backdrop-filter: blur(16px))) {
+  .pitch-shell-root .pitch-glass-card,
+  .pitch-shell-root .pitch-collapsible-panel {
+    background:
+      linear-gradient(164deg, var(--pitch-glass-fallback-base) 0%, var(--pitch-glass-fallback-overlay) 100%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.1) 100%);
+  }
+}
+
+html:not([data-layer-card-blur]) .pitch-shell-root .pitch-glass-card,
+html:not([data-layer-card-blur]) .pitch-shell-root .pitch-collapsible-panel,
+.pitch-shell-root[data-layer-card-blur="off"] .pitch-glass-card,
+.pitch-shell-root[data-layer-card-blur="off"] .pitch-collapsible-panel {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.pitch-shell-root .pitch-glass-card::before,
+.pitch-shell-root .pitch-collapsible-panel::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    126deg,
+    rgba(255, 255, 255, 0.42) 0%,
+    rgba(255, 255, 255, 0.16) 17%,
+    rgba(255, 255, 255, 0.04) 44%,
+    transparent 72%
+  );
+  opacity: 0.64;
+  transition: opacity 240ms ease;
+}
+
+.pitch-shell-root .pitch-glass-card::after,
+.pitch-shell-root .pitch-collapsible-panel::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  pointer-events: none;
+}
+
+.pitch-shell-root .pitch-neon-edge::after {
+  display: none !important;
+}
+
+.pitch-shell-root [class^="pitch-halo-level-"],
+.pitch-shell-root [class*=" pitch-halo-level-"] {
+  box-shadow: none !important;
+  animation: none !important;
+}
+
+.pitch-shell-root [class^="pitch-ring-anim-"],
+.pitch-shell-root [class*=" pitch-ring-anim-"] {
+  display: none !important;
+}
+
+.pitch-shell-root .pitch-kpi-card,
+.pitch-shell-root .pitch-static-card,
+.pitch-shell-root .pitch-rail-static-card,
+.pitch-shell-root .pitch-glass-card,
+.pitch-shell-root .pitch-collapsible-panel {
+  cursor: default;
+  font-variant-numeric: tabular-nums;
+  transition:
+    border-color 240ms ease,
+    box-shadow 300ms ease,
+    transform 240ms ease,
+    background-color 240ms ease;
+}
+
+.pitch-shell-root .pitch-kpi-card,
+.pitch-shell-root .pitch-static-card,
+.pitch-shell-root .pitch-rail-static-card,
+.pitch-shell-root .pitch-collapsible-panel {
+  border-color: var(--pitch-border-0);
+}
+
+.pitch-shell-root .pitch-kpi-card:hover,
+.pitch-shell-root .pitch-kpi-card:focus-visible,
+.pitch-shell-root .pitch-static-card:hover,
+.pitch-shell-root .pitch-static-card:focus-visible,
+.pitch-shell-root .pitch-rail-static-card:hover,
+.pitch-shell-root .pitch-rail-static-card:focus-visible,
+.pitch-shell-root .pitch-glass-card:hover,
+.pitch-shell-root .pitch-glass-card:focus-visible,
+.pitch-shell-root .pitch-collapsible-panel:hover,
+.pitch-shell-root .pitch-collapsible-panel:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--pitch-border-1);
+  box-shadow: 0 14px 32px rgba(19, 28, 40, 0.1), 0 22px 52px rgba(19, 28, 40, 0.07);
+}
+
+.pitch-shell-root .pitch-kpi-card:hover::before,
+.pitch-shell-root .pitch-kpi-card:focus-visible::before,
+.pitch-shell-root .pitch-static-card:hover::before,
+.pitch-shell-root .pitch-static-card:focus-visible::before,
+.pitch-shell-root .pitch-rail-static-card:hover::before,
+.pitch-shell-root .pitch-rail-static-card:focus-visible::before,
+.pitch-shell-root .pitch-glass-card:hover::before,
+.pitch-shell-root .pitch-glass-card:focus-visible::before {
+  opacity: 0.8;
+}
+
+.pitch-shell-root .pitch-focus-ring:focus-visible {
+  outline: 2px solid var(--pitch-focus-token);
+  outline-offset: 2px;
+}
+
+.pitch-shell-root .pitch-kpi-card--amber {
+  color: var(--pitch-ink);
+  background: linear-gradient(160deg, rgba(143, 114, 65, 0.13), rgba(255, 255, 255, 0.08));
+}
+
+.pitch-shell-root .pitch-kpi-card--teal {
+  color: var(--pitch-ink);
+  background: linear-gradient(160deg, rgba(61, 95, 153, 0.12), rgba(255, 255, 255, 0.08));
+}
+
+.pitch-shell-root .pitch-kpi-card--violet {
+  color: var(--pitch-ink);
+  background: linear-gradient(160deg, rgba(63, 126, 135, 0.12), rgba(255, 255, 255, 0.08));
+}
+
+.pitch-shell-root .pitch-kpi-card--neutral {
+  color: var(--pitch-ink);
+  background: linear-gradient(160deg, rgba(78, 89, 107, 0.09), rgba(255, 255, 255, 0.08));
+}
+
+.pitch-shell-root .pitch-stage2-kpi-halo {
+  position: relative;
+  isolation: isolate;
+}
+
+.pitch-shell-root[data-pitch-screen="02-industrial-flow"] #industrial-flow aside > article:first-child {
+  position: relative;
+  isolation: isolate;
+}
+
+.pitch-shell-root[data-pitch-screen="02-industrial-flow"] #industrial-flow aside > article:first-child::after {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  z-index: -1;
+  border-radius: calc(var(--pitch-radius-lg) + 14px);
+  background: radial-gradient(circle at 54% 48%, rgba(61, 95, 153, 0.11) 0%, rgba(61, 95, 153, 0) 74%);
+  filter: blur(20px);
+}
+
+.pitch-shell-root .pitch-hero-title,
+.pitch-shell-root .pitch-hero-subtitle,
+.pitch-shell-root h2,
+.pitch-shell-root h3,
+.pitch-shell-root p,
+.pitch-shell-root li {
+  color: var(--pitch-ink);
+}
+
+.pitch-shell-root .pitch-hero-title {
+  color: var(--pitch-neutral-ink-950);
+  font-weight: 700;
+}
+
+.pitch-shell-root .pitch-hero-subtitle {
+  color: var(--pitch-muted);
+}
+
+.pitch-shell-root .pitch-valuation-svg {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.pitch-shell-root .pitch-valuation-figure {
+  position: relative;
+  border: 1px solid rgba(2, 111, 134, 0.18);
+  border-radius: 14px;
+  padding: 10px;
+  background:
+    radial-gradient(circle at 0% -10%, rgba(2, 167, 202, 0.08), transparent 38%),
+    linear-gradient(165deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.62));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 10px 30px rgba(4, 18, 25, 0.08);
+}
+
+.pitch-shell-root .pitch-valuation-svg--premium {
+  border: 1px solid rgba(2, 111, 134, 0.14);
+  border-radius: 12px;
+  padding: 8px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.46));
+}
+
+.pitch-shell-root .pitch-valuation-meta-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pitch-shell-root .pitch-valuation-meta-item {
+  display: grid;
+  gap: 2px;
+  border: 1px solid rgba(2, 111, 134, 0.14);
+  border-radius: 10px;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.pitch-shell-root .pitch-valuation-meta-label {
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--pitch-muted);
+  line-height: 1.2;
+}
+
+.pitch-shell-root .pitch-valuation-meta-value {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--pitch-neutral-ink-950);
+  letter-spacing: 0.01em;
+}
+
+.pitch-shell-root .pitch-valuation-kpi-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.pitch-shell-root .pitch-valuation-kpi-card {
+  border-radius: 10px;
+  border: 1px solid rgba(2, 111, 134, 0.15);
+  padding: 8px;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(2, 167, 202, 0.1), transparent 52%),
+    rgba(255, 255, 255, 0.58);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.62);
+}
+
+.pitch-shell-root .pitch-valuation-kpi-label {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pitch-muted);
+}
+
+.pitch-shell-root .pitch-valuation-kpi-value {
+  margin: 4px 0 0;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--pitch-neutral-ink-950);
+  font-weight: 600;
+}
+
+.pitch-shell-root .pitch-valuation-figure--equity {
+  background:
+    radial-gradient(circle at 0% -10%, rgba(47, 158, 255, 0.12), transparent 40%),
+    linear-gradient(162deg, rgba(255, 255, 255, 0.84), rgba(245, 250, 255, 0.64));
+}
+
+.pitch-shell-root .pitch-valuation-equity-layout {
+  display: grid;
+  gap: 10px;
+  align-items: start;
+  grid-template-columns: minmax(0, 132px) minmax(0, 1fr);
+}
+
+.pitch-shell-root .pitch-valuation-equity-ring {
+  border: 1px solid rgba(47, 158, 255, 0.2);
+  border-radius: 12px;
+  padding: 6px;
+  background: linear-gradient(180deg, rgba(248, 253, 255, 0.86), rgba(236, 246, 255, 0.56));
+}
+
+.pitch-shell-root .pitch-valuation-equity-metrics {
+  display: grid;
+  gap: 8px;
+}
+
+.pitch-shell-root .pitch-valuation-equity-metric {
+  border: 1px solid rgba(47, 158, 255, 0.16);
+  border-radius: 10px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.pitch-shell-root .pitch-valuation-equity-subtitle {
+  color: rgba(54, 76, 104, 0.9);
+  font-weight: 560;
+  letter-spacing: 0.02em;
+}
+
+.pitch-shell-root .pitch-valuation-equity-value {
+  color: #0c4a8f;
+  letter-spacing: 0.01em;
+}
+
+.pitch-shell-root .pitch-valuation-equity-note {
+  color: rgba(40, 60, 85, 0.86);
+  line-height: 1.55;
+}
+
+.pitch-shell-root .pitch-valuation-block-grid {
+  gap: 14px;
+}
+
+.pitch-shell-root .pitch-valuation-block-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  border-width: 1.2px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 14px 28px rgba(4, 18, 25, 0.1);
+}
+
+.pitch-shell-root .pitch-valuation-block-item > p:first-of-type {
+  font-size: 0.66rem;
+  line-height: 1.2;
+  font-weight: 620;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(69, 86, 108, 0.86);
+}
+
+.pitch-shell-root .pitch-valuation-block-item > h3 {
+  font-size: 1.18rem;
+  line-height: 1.36;
+  letter-spacing: -0.01em;
+  font-weight: 710;
+  color: #12273d;
+}
+
+.pitch-shell-root .pitch-valuation-block-item > p:nth-of-type(2) {
+  font-size: 0.84rem;
+  line-height: 1.5;
+  font-weight: 520;
+  color: rgba(63, 84, 109, 0.9);
+}
+
+.pitch-shell-root .pitch-valuation-block-item::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(120, 204, 255, 0.18), rgba(47, 158, 255, 0.62), rgba(13, 113, 232, 0.18));
+  pointer-events: none;
+}
+
+.pitch-shell-root .pitch-valuation-block-list {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  padding: 0;
+}
+
+.pitch-shell-root .pitch-valuation-block-list-item {
+  position: relative;
+  padding-left: 16px;
+  font-size: 0.95rem;
+  line-height: 1.58;
+  color: rgba(26, 43, 62, 0.86);
+}
+
+.pitch-shell-root .pitch-valuation-block-list-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #78ccff, #2f9eff);
+  box-shadow: 0 0 0 2px rgba(47, 158, 255, 0.16);
+}
+
+.pitch-shell-root .pitch-valuation-inline-emphasis {
+  color: #0f4f96;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.pitch-shell-root .pitch-valuation-phase-pill {
+  border-radius: 10px;
+  border: 1px solid rgba(47, 158, 255, 0.26);
+  padding: 7px 9px;
+  background: linear-gradient(180deg, rgba(248, 253, 255, 0.9), rgba(235, 246, 255, 0.62));
+  color: rgba(17, 38, 64, 0.9);
+  font-size: 0.82rem;
+  font-weight: 520;
+  line-height: 1.5;
+}
+
+.pitch-shell-root .pitch-valuation-phase-pill .pitch-valuation-inline-emphasis {
+  display: inline-block;
+  margin-bottom: 2px;
+  color: #0c4a8f;
+  font-weight: 700;
+}
+
+.pitch-shell-root .pitch-hitech-story-panel {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(47, 158, 255, 0.34);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(13, 113, 232, 0.2), transparent 38%),
+    radial-gradient(circle at 0% 0%, rgba(120, 204, 255, 0.24), transparent 42%),
+    linear-gradient(165deg, rgba(247, 252, 255, 0.9), rgba(234, 246, 255, 0.72));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    0 18px 38px rgba(12, 68, 139, 0.14);
+}
+
+.pitch-shell-root .pitch-hitech-story-shell {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(47, 158, 255, 0.22);
+  padding: 12px;
+  background:
+    linear-gradient(170deg, rgba(255, 255, 255, 0.88), rgba(235, 246, 255, 0.62)),
+    radial-gradient(circle at 0% 0%, rgba(120, 204, 255, 0.14), transparent 40%);
+}
+
+.pitch-shell-root .pitch-hitech-story-glow {
+  pointer-events: none;
+  position: absolute;
+  right: -30px;
+  top: -32px;
+  width: 130px;
+  height: 130px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(47, 158, 255, 0.4) 0%, rgba(47, 158, 255, 0.06) 55%, transparent 100%);
+}
+
+.pitch-shell-root .pitch-hitech-story-kicker {
+  margin: 0;
+  width: fit-content;
+  border-radius: 999px;
+  border: 1px solid rgba(13, 113, 232, 0.28);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(221, 239, 255, 0.68));
+  padding: 5px 10px;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #0b4db3;
+}
+
+.pitch-shell-root .pitch-hitech-story-quote {
+  margin: 0;
+  font-size: clamp(1.06rem, 1.15vw, 1.22rem);
+  line-height: 1.56;
+  font-weight: 640;
+  color: #0f253f;
+  text-wrap: pretty;
+}
+
+.pitch-shell-root .pitch-hitech-story-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pitch-shell-root .pitch-hitech-story-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(13, 113, 232, 0.34);
+  padding: 5px 10px;
+  font-size: 10px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #0a3463;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(120, 204, 255, 0.26), transparent 40%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(226, 241, 255, 0.74));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 6px 14px rgba(11, 77, 179, 0.12);
+  transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+.pitch-shell-root .pitch-hitech-story-tag:hover {
+  border-color: rgba(13, 113, 232, 0.48);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.86),
+    0 10px 18px rgba(11, 77, 179, 0.18);
+  transform: translateY(-1px);
+}
+
+.pitch-shell-root .pitch-hitech-story-tag-icon {
+  font-size: 11px;
+  line-height: 1;
+  opacity: 0.82;
+}
+
+.pitch-shell-root .pitch-valuation-node-label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  fill: var(--pitch-muted);
+  font-weight: 700;
+}
+
+.pitch-shell-root .pitch-valuation-node-copy {
+  font-size: 10px;
+  fill: var(--pitch-ink);
+}
+
+.pitch-shell-root .pitch-equity-tooltip-trigger {
+  border-color: var(--pitch-border-0);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(247, 252, 255, 0.62));
+  color: var(--pitch-ink);
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(4, 18, 25, 0.1);
+  transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+.pitch-shell-root .pitch-equity-tooltip-trigger:hover {
+  border-color: rgba(2, 111, 134, 0.34);
+  box-shadow: 0 10px 20px rgba(4, 18, 25, 0.13);
+  transform: translateY(-1px);
+}
+
+.pitch-shell-root .pitch-equity-tooltip {
+  margin: 0;
+  border: 1px solid var(--pitch-border-0);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 8px 10px;
+  font-size: 12px;
+  color: var(--pitch-ink);
+}
+
+@media (max-width: 1199px) {
+  .pitch-shell-root .pitch-valuation-meta-strip,
+  .pitch-shell-root .pitch-valuation-kpi-grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .pitch-shell-root .pitch-valuation-equity-layout {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+@keyframes pitchHeroTitleIn {
+  from {
+    transform: translateY(6px);
+    opacity: 0.78;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.pitch-shell-root[data-pitch-screen="02-industrial-flow"] .pitch-hero-title {
+  animation: pitchHeroTitleIn 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Stabilize stage overlays on screen 02 to avoid visible flashing with motion-enabled layer profiles. */
+.pitch-shell-root[data-pitch-screen="02-industrial-flow"] {
+  --fx-grain-op: 0.06;
+  --fx-haze-op: 0.08;
+  --fx-vignette-op: 0.14;
+}
+
+.pitch-shell-root[data-pitch-screen="02-industrial-flow"] .stage-overlays > .noise,
+.pitch-shell-root[data-pitch-screen="02-industrial-flow"] .stage-overlays > .scanlines {
+  animation: none !important;
+  transform: none !important;
+}
+
+.pitch-shell-root[data-pitch-screen="02-industrial-flow"] .stage-overlays > .noise,
+.pitch-shell-root[data-pitch-screen="02-industrial-flow"] .stage-overlays > .scanlines,
+.pitch-shell-root[data-pitch-screen="02-industrial-flow"] .stage-overlays > .haze,
+.pitch-shell-root[data-pitch-screen="02-industrial-flow"] .stage-overlays > .vignette {
+  transition: opacity 120ms ease-out;
+}
+
+@media (max-width: 767px) {
+  .pitch-shell-root {
+    padding-left: max(10px, env(safe-area-inset-left));
+    padding-right: max(10px, env(safe-area-inset-right));
+  }
+
+  .pitch-shell-root::after {
+    background-size: 6px 6px, 7px 7px, 100% 100%;
+    opacity: 0.34;
+  }
+}

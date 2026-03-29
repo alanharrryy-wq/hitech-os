@@ -1,0 +1,56 @@
+{
+  "capability_id": "forge.commons.diagnostics",
+  "owner": "forge_commons_diagnostics",
+  "package_id": "forge.commons.diagnostics",
+  "version": "0.1.0",
+  "layer": "commons",
+  "state_authority": {
+    "slice_id": "commons.diagnostics.runtime",
+    "source_of_truth": "diagnostics_runtime_store",
+    "writers": [
+      "forge_commons_diagnostics"
+    ],
+    "readers": [
+      "forge_kernel",
+      "forge_products"
+    ]
+  },
+  "lifecycle": {
+    "states": [
+      "declared",
+      "validated",
+      "ready",
+      "serving",
+      "degraded",
+      "disposing",
+      "disposed"
+    ],
+    "authority": "forge_kernel + forge_commons_diagnostics"
+  },
+  "contract_bindings": [
+    {
+      "contract_id": "forge.capability.diagnostics.emit.v1",
+      "status": "planned"
+    },
+    {
+      "contract_id": "forge.capability.diagnostics.health_snapshot.v1",
+      "status": "planned"
+    }
+  ],
+  "packaging": {
+    "bom_required": true,
+    "rollback_plan_required": true,
+    "compatibility_required": true,
+    "manifest_kind": "commons_capability_manifest"
+  },
+  "runtime_module": "forge_commons.diagnostics.DiagnosticsCapability",
+  "teardown": {
+    "required": true,
+    "disposal_steps": [
+      "clear_runtime_state",
+      "release_handles",
+      "finalize_disposed_state"
+    ],
+    "evidence_log_required": true
+  }
+}

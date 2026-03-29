@@ -7,8 +7,8 @@ Provide deterministic evidence for run diagnosis, replay, and audit.
 ## Core Artifacts
 
 - `tools/codex/runs/<RUN_ID>/RUN_MANIFEST.json`
-- `tools/codex/runs/<RUN_ID>/Z_integrator/FINAL_REPORT.txt`
-- `tools/codex/runs/<RUN_ID>/Z_integrator/STATUS.json`
+- `tools/codex/runs/<RUN_ID>/Z_aggregator/FINAL_REPORT.txt`
+- `tools/codex/runs/<RUN_ID>/Z_aggregator/STATUS.json`
 - `tools/codex/runs/<RUN_ID>/attestations/bundles.sha256`
 - `tools/codex/runs/<RUN_ID>/attestations/ledger.sha256`
 - `tools/codex/runs/<RUN_ID>/attestations/report.sha256`
@@ -92,3 +92,4 @@ python -m tools.codex.factory integrate --run-id <RUN_ID>
 ```powershell
 python -m unittest tools.codex.factory.tests.integration.test_determinism
 ```
+

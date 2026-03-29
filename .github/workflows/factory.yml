@@ -112,9 +112,9 @@ jobs:
             factory-smoke-output.json
             tools/codex/runs/factory_ledger.jsonl
             tools/codex/runs/factory_ledger.sha256
-            tools/codex/runs/${{ env.RUN_ID }}/Z_integrator/FINAL_REPORT.txt
-            tools/codex/runs/${{ env.RUN_ID }}/Z_integrator/STATUS.json
-            tools/codex/runs/${{ env.RUN_ID }}/Z_integrator/MERGE_PLAN.md
-            tools/codex/runs/${{ env.RUN_ID }}/Z_integrator/LOGS/**
+            tools/codex/runs/${{ env.RUN_ID }}/Z_aggregator/FINAL_REPORT.txt
+            tools/codex/runs/${{ env.RUN_ID }}/Z_aggregator/STATUS.json
+            tools/codex/runs/${{ env.RUN_ID }}/Z_aggregator/MERGE_PLAN.md
+            tools/codex/runs/${{ env.RUN_ID }}/Z_aggregator/LOGS/**
             tools/codex/runs/${{ env.RUN_ID }}/attestations/**
             tools/codex/runs/${{ env.RUN_ID }}/logs/**

@@ -2,13 +2,14 @@
   "schema_version": 1,
   "defaults": {
     "branch_prefix": "codex/factory",
-    "integrator": "Z_integrator",
+    "integrator": "Z_aggregator",
     "run_prefix": "factory",
+    "visual_baseline_owner": "C_features",
     "workers": [
-      "A_worker",
-      "B_worker",
-      "C_worker",
-      "D_worker"
+      "A_core",
+      "B_tooling",
+      "C_features",
+      "D_validation"
     ]
   },
   "feature_flags": {
@@ -25,12 +26,19 @@
   },
   "policies": {
     "additive_only": true,
+    "auto_closeout_workers": true,
+    "auto_preflight_repair": true,
+    "auto_repair_missing_folders": true,
     "block_on_overlap": true,
     "deterministic_default": true,
     "feature_flags_default_off": true,
+    "integrator_watch_ledger": true,
+    "integrator_wait_for_workers": true,
     "idempotent_commands": true,
     "machine_readable_logs": true,
+    "session_hygiene_clean_start": true,
     "stable_sorting": true,
+    "visual_baseline_update_default": true,
     "z_no_feature_creation": true
   }
 }

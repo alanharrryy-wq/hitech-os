@@ -6,7 +6,7 @@ import re
 from collections import defaultdict
 from typing import Any
 
-from .common import WORKERS, read_json
+from .common import WORKERS, canonicalize_workers, read_json
 from .contracts import bundle_dir
 from .path_guard import PathGuardError, PathIssue, canonical_path_key, detect_scope_violations_for_paths, normalize_rel_path
 
@@ -81,7 +81,7 @@ def detect_file_overlaps(
     strict_mode: bool = True,
     allow_identical_patch_overlap: bool = False,
 ) -> dict[str, Any]:
-    chosen = list(workers or WORKERS)
+    chosen = canonicalize_workers(workers)
     owners: dict[str, list[dict[str, Any]]] = defaultdict(list)
     scope_locks = {worker: _load_scope_lock(run_id, worker) for worker in chosen}
     hidden_overlaps: list[dict[str, Any]] = []
@@ -176,7 +176,7 @@ def detect_file_overlaps(
 
 
 def detect_scope_violations(run_id: str, workers: list[str] | None = None) -> dict[str, Any]:
-    chosen = list(workers or WORKERS)
+    chosen = canonicalize_workers(workers)
     violations: list[dict[str, Any]] = []
 
     for worker in chosen:

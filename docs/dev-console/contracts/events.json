@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "events": [
+    {
+      "symbol": "DEV_CONSOLE_REQUEST_DIAGNOSTICS_EVENT",
+      "must_have_emitter": true,
+      "must_have_listener": true
+    },
+    {
+      "symbol": "DEV_CONSOLE_DIAGNOSTICS_EVENT",
+      "must_have_emitter": true,
+      "must_have_listener": true
+    },
+    {
+      "symbol": "DEV_CONSOLE_ACTION_RESULT_EVENT",
+      "must_have_emitter": true,
+      "must_have_listener": true
+    },
+    {
+      "symbol": "DEV_CONSOLE_SNAPSHOT_EVENT",
+      "must_have_emitter": true,
+      "must_have_listener": true
+    },
+    {
+      "symbol": "DEV_CONSOLE_OPEN_SCENE_EVENT",
+      "must_have_emitter": true,
+      "must_have_listener": true
+    },
+    {
+      "symbol": "DEV_CONSOLE_VALIDATE_SCENE_EVENT",
+      "must_have_emitter": true,
+      "must_have_listener": true
+    },
+    {
+      "symbol": "DEV_CONSOLE_SCENE_LOOK_MODEL_EVENT",
+      "must_have_emitter": true,
+      "must_have_listener": false
+    }
+  ]
+}

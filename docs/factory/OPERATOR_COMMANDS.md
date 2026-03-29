@@ -3,9 +3,22 @@
 - `python tools/codex/factory_cli.py --help`
 - `python tools/codex/factory_cli.py contracts-check`
 - `python tools/codex/factory_cli.py launch --dry-run`
+- `python tools/codex/factory_cli.py auto-closeout --run-id <RUN_ID>`
+- `python tools/codex/factory_cli.py bundle-validate --run-id <RUN_ID>`
+- `python tools/codex/factory_cli.py integrate --run-id <RUN_ID>`
 - `python tools/codex/factory_cli.py self-test`
 - `python tools/codex/factory_cli.py ledger --limit 10`
 - `python tools/codex/factory_cli.py watch --run-id <RUN_ID>`
+- `python tools/codex/factory/context_layer.py --run-id <RUN_ID> --workers A_core,B_tooling,C_features,D_validation,Z_aggregator`
+- `python tools/codex/factory/memory_layer.py init`
+- `python tools/codex/factory/memory_layer.py record-run --run-id <RUN_ID>`
+- `python tools/codex/dispatch/validator.py prepare-manual-run --pack-path <PROMPTS_PACK_PATH> [--run-id <RUN_ID>]`
+- `python tools/codex/dispatch/validator.py wait-done --run-id <RUN_ID> --workers A_core,B_tooling,C_features,D_validation,Z_aggregator`
+- `python tools/codex/dispatch/task_bank_refresh.py --repo . --task-bank tools/codex/dispatch/rework_task_bank.json --sources tools/codex/dispatch/task_bank_sources.json --state tools/codex/dispatch/task_bank_state.json --report tools/codex/dispatch/reports/task_bank_health.json --apply --run-id <RUN_ID>`
+- `python tools/codex/dispatch/validator.py execution-audit --run-id <RUN_ID> --workers A_core,B_tooling,C_features,D_validation,Z_aggregator`
+- `python tools/codex/dispatch/validator.py validate-guardrails --run-id <RUN_ID>`
+- `python tools/codex/dispatch/validator.py queue-wait-outbox --run-id <RUN_ID> --workers A_core --cycle 1 --timeout-seconds 300`
+- `python tools/codex/dispatch/validator.py queue-ack --run-id <RUN_ID> --worker A_core --cycle 1 --message-id <MESSAGE_ID> --status PASS`
 - `pwsh -NoProfile -ExecutionPolicy Bypass -File tools/scripts/Invoke-HitechRunsDoctor.ps1`
 - `pwsh -NoProfile -ExecutionPolicy Bypass -File tools/scripts/Invoke-HitechRunsEnsure.ps1 --dry-run`
 - `pwsh -NoProfile -ExecutionPolicy Bypass -File tools/scripts/Invoke-HitechRunsEnsure.ps1 --write`

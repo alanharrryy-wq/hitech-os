@@ -10,6 +10,7 @@
 - `SCOPE_LOCK.json`
 - `HANDOFF_NOTE.json`
 - `LOGS/INDEX.json`
+- `CODEX_OUTPUT.txt`
 
 ## Z -> Operator Required Artifacts
 
@@ -20,8 +21,18 @@
 - `MERGE_PLAN.md`
 - `LOGS/*`
 
+## Automation Rules
+
+- Worker closeout artifacts are auto-generated and auto-repaired before `bundle-validate`.
+- Preflight runs in auto-repair mode by default.
+- Missing worker folders must trigger auto-heal first; blocking is only allowed when recovery fails.
+- Prompt hygiene is mandatory: clean-session contract headers are injected during prompt materialization.
+- Visual baseline owner default is `C_features` (`--update-baseline` responsibility).
+- Z_aggregator must run with ledger/watch visibility (`watch` + `ledger`).
+
 ## Anti-Ambiguity Conventions
 
 - Use repo-relative paths.
 - Provide deterministic file ordering.
 - Include SHA256 per changed file entry.
+

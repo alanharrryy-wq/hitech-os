@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import type { HTMLAttributes, PropsWithChildren, ReactNode } from "react";
 import { cn } from "../../lib/cn.js";
 import { mergeLayerFlags, type LayerFlags } from "../../layers/layerIds.js";
@@ -12,6 +13,8 @@ export interface InsetPanelProps
   readonly description?: ReactNode;
   readonly actions?: ReactNode;
   readonly layerOverrides?: Partial<Pick<LayerFlags, "inset.shadow" | "motion.enabled">>;
+  readonly className?: string;
+  readonly children?: React.ReactNode;
 }
 
 function onOff(value: boolean): "on" | "off" {

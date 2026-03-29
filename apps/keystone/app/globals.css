@@ -1,9 +1,14 @@
+@import "../components/pitch/theme/pitch-cinematic.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
   color-scheme: light;
+  --keystone-shell-grad-a: rgba(2, 167, 202, 0.16);
+  --keystone-shell-grad-b: rgba(171, 123, 38, 0.14);
+  --keystone-shell-grad-c: rgba(2, 111, 134, 0.2);
 }
 
 html,
@@ -14,6 +19,113 @@ body {
 body {
   background: hsl(var(--ui-bg));
   color: hsl(var(--ui-text-1));
+  font-family: "Avenir Next", "Segoe UI Variable Display", "IBM Plex Sans", "Trebuchet MS",
+    "Segoe UI", sans-serif;
+  margin: 0;
+}
+
+.keystone-app-shell {
+  position: relative;
+  min-height: 100dvh;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 0% 0%, var(--keystone-shell-grad-a), transparent 44%),
+    radial-gradient(circle at 100% 0%, var(--keystone-shell-grad-b), transparent 48%),
+    radial-gradient(circle at 50% 100%, var(--keystone-shell-grad-c), transparent 52%),
+    hsl(var(--ui-bg));
+}
+
+.keystone-app-watermark {
+  position: absolute;
+  inset: 0;
+}
+
+.keystone-app-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem clamp(1rem, 3vw, 2.5rem);
+  border-bottom: 1px solid rgba(2, 111, 134, 0.24);
+  background: linear-gradient(90deg, rgba(244, 248, 251, 0.82) 0%, rgba(221, 231, 239, 0.44) 100%);
+  backdrop-filter: blur(10px) saturate(1.06);
+  -webkit-backdrop-filter: blur(10px) saturate(1.06);
+}
+
+.keystone-app-brand {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.2rem 0.35rem;
+  text-decoration: none;
+}
+
+.keystone-app-brand-mark-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.keystone-app-header-mark {
+  inset: -0.4rem;
+}
+
+.keystone-app-logo {
+  position: relative;
+  z-index: 1;
+}
+
+.keystone-app-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.keystone-app-nav-link {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 111, 134, 0.26);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: hsl(var(--ui-text-2));
+  background: linear-gradient(120deg, rgba(244, 248, 251, 0.6), rgba(221, 231, 239, 0.18));
+}
+
+.keystone-app-nav-link:hover {
+  border-color: rgba(2, 167, 202, 0.42);
+  color: hsl(var(--ui-text-1));
+}
+
+.keystone-app-main {
+  position: relative;
+  z-index: 1;
+}
+
+.keystone-app-signature {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0.75rem 1rem 1.2rem;
+}
+
+@media (max-width: 720px) {
+  .keystone-app-topbar {
+    flex-wrap: wrap;
+  }
+
+  .keystone-app-nav {
+    width: 100%;
+    justify-content: flex-start;
+  }
 }
 
 * {

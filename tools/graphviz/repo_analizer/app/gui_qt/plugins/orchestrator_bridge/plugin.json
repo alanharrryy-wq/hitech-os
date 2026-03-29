@@ -1,0 +1,18 @@
+{
+  "id": "orchestrator_bridge",
+  "name": "Orchestrator Bridge",
+  "version": "0.6.0",
+  "description": "Wave 6 premium UI and motion pass for repo_analizer. Keeps the plugin as a bridge-only async runner while adding a premium visual system, animated status header, execution timeline, refined result affordances, and sober responsive styling without new dependencies.",
+  "author": "OpenAI",
+  "enabled": true,
+  "module": "plugin",
+  "class_name": "PluginImplementation",
+  "dependencies": [],
+  "ui": {
+    "dock": true,
+    "toolbar": true,
+    "menu": true,
+    "status": true,
+    "reports": true
+  }
+}

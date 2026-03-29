@@ -1,0 +1,3 @@
+# Versioning
+
+SemVer where applicable.

@@ -1,0 +1,49 @@
+========================================================================
+LIVE SCENE COMPOSER DOCS ARCHITECTURE GUARD
+========================================================================
+Repo root : F:\repos\hitech-os
+Docs root : F:\repos\hitech-os\docs\live-scene-composer
+Result    : FAIL
+Passes    : 9
+Fails     : 2
+Warnings  : 0
+
+[PASS] AGR-001 :: Docs root exists: docs/live-scene-composer
+
+[PASS] AGR-001A :: All expected docs 00-41 and index files are present
+
+[PASS] AGR-001B :: All critical architecture docs are present
+
+[FAIL] AGR-002 :: Legacy shared-core path exists and must not be reintroduced
+  - apps/keystone/components/dev-console/core
+
+[FAIL] AGR-003 :: Legacy dev-console core import references detected
+  - apps/keystone/components/dev-console/DevConsole.tsx -> ./core/console-core-layout
+  - apps/keystone/components/dev-console/DevConsole.tsx -> ./core/console-core-lifecycle
+  - apps/keystone/components/dev-console/DevConsole.tsx -> ./core/console-core-shell
+  - apps/keystone/components/dev-console/DevConsoleContext.tsx -> ./core/console-core-diagnostics
+  - apps/keystone/components/dev-console/DevConsoleContext.tsx -> ./core/console-core-events
+  - apps/keystone/components/dev-console/DevConsoleRegistry.tsx -> ./core/console-core-registry
+  - apps/keystone/components/dev-console/DevConsoleRegistry.tsx -> ./core/core-console-panels
+  - apps/keystone/components/dev-console/index.ts -> ./core
+  - apps/keystone/components/dev-console/domains/inspect/InspectEventMonitorPanel.tsx -> ../../core/console-core-contracts
+  - apps/keystone/components/dev-console/domains/inspect/InspectEventMonitorPanel.tsx -> ../../core/console-core-events
+  - apps/keystone/components/pitch/debug/pitch-dev-console-stability-helpers.tsx -> ../../dev-console/core/console-core-events
+  - apps/keystone/components/pitch/debug/pitch-layer-dev-tools.tsx -> ../../dev-console/core/console-core-runtime-invariants
+  - apps/keystone/components/pitch/debug/pitch-scene-look-runtime.tsx -> ../../dev-console/core/console-core-events
+  - apps/keystone/components/pitch/debug/pitch-scene-runtime-bridge.tsx -> ../../dev-console/core/console-core-events
+  - apps/keystone/tests/dev-console-platform-architecture.test.ts -> ../components/dev-console/core/console-core-contracts
+
+[PASS] AGR-004 :: Runtime Debug Console boundary does not import Composer product logic
+
+[PASS] AGR-005 :: Composer does not import Runtime Debug Console product logic
+
+[PASS] AGR-006 :: README.md references the critical docs
+
+[PASS] AGR-006 :: 00_TOC.md references the critical docs
+
+[PASS] AGR-006 :: 00_READING_PATHS.md references the critical docs
+
+[PASS] AGR-007 :: Guard rules doc names all canonical boundaries
+
+JSON report written to: F:\repos\hitech-os\tools\_local\evidence\live_scene_composer_docs_arch_guard_report.json

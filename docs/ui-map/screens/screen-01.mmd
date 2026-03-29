@@ -1,0 +1,76 @@
+%% screen-01 graph
+flowchart TD
+  n_cmp_133d7dec91["PitchComparisonMeter\npitch-comparison-meter.tsx"]
+  n_cmp_24e728f035["PitchCardGrid\npitch-card-grid.tsx"]
+  n_cmp_262a7f305a["PitchDataChip\npitch-data-chip.tsx"]
+  n_cmp_26819c9f9a["PitchSection\npitch-section.tsx"]
+  n_cmp_5628844317["usePitchSectionContext\npitch-shell-context.tsx"]
+  n_cmp_73815c5199["PitchExpandablePanel\npitch-expandable-panel.tsx"]
+  n_cmp_90fb220e30["PitchCardGridItem\npitch-card-grid.tsx"]
+  n_cmp_934d4e8c97["PitchMiniBars\npitch-mini-bars.tsx"]
+  n_cmp_a56a27fc43["cn\ncn.ts"]
+  n_cmp_ad4bf2dc06["PitchKpiChipCloud\npitch-kpi-chip-cloud.tsx"]
+  n_cmp_ade61a11b0["PitchVsDivider\npitch-vs-divider.tsx"]
+  n_cmp_b3decd4d6e["Screen01DoubleEngineCinematic\nscreen-01-double-engine-cinematic.tsx"]
+  n_cmp_cbf3af2004["PitchSparkline\npitch-sparkline.tsx"]
+  n_cmp_ddfd33abd4["Badge\nBadge.tsx"]
+  n_cmp_de3f8d1ee9["buildScreen01ViewModel\ndeck-view-model.ts"]
+  n_cmp_f14bfffde5["ScreenDoubleEngine\nscreen-double-engine.tsx"]
+  n_cmp_f2b3612ca2["PitchBulletCards\npitch-bullet-cards.tsx"]
+  n_cmp_f5c8a56456["PitchRadialGauge\npitch-radial-gauge.tsx"]
+  n_rte_9225911e8f(("/pitch/01-double-engine"))
+  n_cmp_133d7dec91 -->|imports| n_cmp_a56a27fc43
+  n_cmp_24e728f035 -->|imports| n_cmp_a56a27fc43
+  n_cmp_262a7f305a -->|imports| n_cmp_a56a27fc43
+  n_cmp_26819c9f9a -->|imports| n_cmp_5628844317
+  n_cmp_26819c9f9a -->|imports| n_cmp_a56a27fc43
+  n_cmp_26819c9f9a -->|imports| n_cmp_ddfd33abd4
+  n_cmp_73815c5199 -->|imports| n_cmp_a56a27fc43
+  n_cmp_90fb220e30 -->|imports| n_cmp_a56a27fc43
+  n_cmp_934d4e8c97 -->|imports| n_cmp_a56a27fc43
+  n_cmp_ad4bf2dc06 -->|imports| n_cmp_262a7f305a
+  n_cmp_ad4bf2dc06 -->|imports| n_cmp_a56a27fc43
+  n_cmp_ade61a11b0 -->|imports| n_cmp_73815c5199
+  n_cmp_ade61a11b0 -->|imports| n_cmp_a56a27fc43
+  n_cmp_b3decd4d6e -->|imports| n_cmp_133d7dec91
+  n_cmp_b3decd4d6e -->|imports| n_cmp_24e728f035
+  n_cmp_b3decd4d6e -->|imports| n_cmp_262a7f305a
+  n_cmp_b3decd4d6e -->|imports| n_cmp_26819c9f9a
+  n_cmp_b3decd4d6e -->|imports| n_cmp_73815c5199
+  n_cmp_b3decd4d6e -->|imports| n_cmp_90fb220e30
+  n_cmp_b3decd4d6e -->|imports| n_cmp_934d4e8c97
+  n_cmp_b3decd4d6e -->|imports| n_cmp_ad4bf2dc06
+  n_cmp_b3decd4d6e -->|imports| n_cmp_ade61a11b0
+  n_cmp_b3decd4d6e -->|imports| n_cmp_cbf3af2004
+  n_cmp_b3decd4d6e -->|imports| n_cmp_ddfd33abd4
+  n_cmp_b3decd4d6e -->|imports| n_cmp_de3f8d1ee9
+  n_cmp_b3decd4d6e -->|imports| n_cmp_f2b3612ca2
+  n_cmp_b3decd4d6e -->|imports| n_cmp_f5c8a56456
+  n_cmp_cbf3af2004 -->|imports| n_cmp_a56a27fc43
+  n_cmp_ddfd33abd4 -->|imports| n_cmp_a56a27fc43
+  n_cmp_f14bfffde5 -->|imports| n_cmp_b3decd4d6e
+  n_cmp_f2b3612ca2 -->|imports| n_cmp_a56a27fc43
+  n_cmp_f5c8a56456 -->|imports| n_cmp_a56a27fc43
+  n_cmp_26819c9f9a ==>|renders| n_cmp_ddfd33abd4
+  n_cmp_ad4bf2dc06 ==>|renders| n_cmp_262a7f305a
+  n_cmp_ade61a11b0 ==>|renders| n_cmp_73815c5199
+  n_cmp_b3decd4d6e ==>|renders| n_cmp_133d7dec91
+  n_cmp_b3decd4d6e ==>|renders| n_cmp_24e728f035
+  n_cmp_b3decd4d6e ==>|renders| n_cmp_262a7f305a
+  n_cmp_b3decd4d6e ==>|renders| n_cmp_26819c9f9a
+  n_cmp_b3decd4d6e ==>|renders| n_cmp_73815c5199
+  n_cmp_b3decd4d6e ==>|renders| n_cmp_90fb220e30
+  n_cmp_b3decd4d6e ==>|renders| n_cmp_934d4e8c97
+  n_cmp_b3decd4d6e ==>|renders| n_cmp_ad4bf2dc06
+  n_cmp_b3decd4d6e ==>|renders| n_cmp_ade61a11b0
+  n_cmp_b3decd4d6e ==>|renders| n_cmp_cbf3af2004
+  n_cmp_b3decd4d6e ==>|renders| n_cmp_ddfd33abd4
+  n_cmp_b3decd4d6e ==>|renders| n_cmp_f2b3612ca2
+  n_cmp_b3decd4d6e ==>|renders| n_cmp_f5c8a56456
+  n_cmp_f14bfffde5 ==>|renders| n_cmp_b3decd4d6e
+  n_rte_9225911e8f ==>|route_to_screen| n_cmp_f14bfffde5
+
+%% Where-to-edit
+%% If you want to change layout -> apps/keystone/app/pitch/01-double-engine/page.tsx
+%% If you want to change interactions -> apps/keystone/components/pitch/screen-double-engine.tsx
+%% If you want to change brand -> central config files only (do not override :root)

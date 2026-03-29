@@ -17,10 +17,10 @@ from factory.tests.test_support import isolated_factory_env  # noqa: E402
 
 class WorktreeHardeningTests(unittest.TestCase):
     def test_worktree_path_under_codex_worktrees(self) -> None:
-        with isolated_factory_env() as env:
+        with isolated_factory_env():
             run_id = "worktree_hard_20260218_000001"
-            path = worktrees.worktree_path(run_id, "A_worker")
-            expected = env["codex_dir"] / "worktrees" / run_id / "A_worker"
+            path = worktrees.worktree_path(run_id, "A_core")
+            expected = worktrees.fixed_worker_path("A_core")
             self.assertEqual(expected, path)
 
     def test_create_worktrees_writes_state_file(self) -> None:
@@ -171,3 +171,4 @@ class WorktreeHardeningTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

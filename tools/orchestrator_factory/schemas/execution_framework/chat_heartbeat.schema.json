@@ -1,0 +1,66 @@
+{
+  "allowed_channel_values": [
+    "channel.heartbeats"
+  ],
+  "allowed_chat_id_values": [
+    "governance-control",
+    "chat.01-identity-access-and-trust",
+    "chat.02-domain-data-and-persistence",
+    "chat.03-service-contracts-and-orchestration",
+    "chat.04-experience-clients-and-interactions",
+    "chat.05-platform-infrastructure-and-delivery",
+    "chat.06-quality-release-and-operations"
+  ],
+  "allowed_message_type_values": [
+    "chat_heartbeat"
+  ],
+  "allowed_silence_state_values": [
+    "ok",
+    "warning",
+    "escalated",
+    "missing"
+  ],
+  "allowed_status_values": [
+    "planned",
+    "in_progress",
+    "blocked",
+    "done"
+  ],
+  "history_item_optional_fields": {
+    "evidence_refs": "array",
+    "related_entity_ids": "array",
+    "summary": "string"
+  },
+  "history_item_required_fields": {
+    "action": "string",
+    "actor_chat_id": "string",
+    "at_utc": "string",
+    "status": "string"
+  },
+  "name": "chat_heartbeat",
+  "optional_fields": {
+    "evidence_refs": "array",
+    "heartbeat_age_minutes": "integer",
+    "next_planned_action": "string",
+    "package_id": "string",
+    "project_id": "string",
+    "silence_state": "string",
+    "tags": "array",
+    "to_chat_id": "string"
+  },
+  "required_fields": {
+    "channel_id": "string",
+    "current_item_refs": "array",
+    "from_chat_id": "string",
+    "history": "array",
+    "last_progress_at_utc": "string",
+    "message_id": "string",
+    "message_type": "string",
+    "published_at_utc": "string",
+    "round_id": "string",
+    "run_id": "string",
+    "schema_version": "string",
+    "status": "string",
+    "status_summary": "string"
+  }
+}

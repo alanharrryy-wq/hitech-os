@@ -1,0 +1,44 @@
+{
+  "acceptance_rules": {
+    "reject_on_exact_path_conflict": true,
+    "reject_on_ownership_violation": true,
+    "reject_on_payload_mismatch": true,
+    "reject_on_schema_error": true
+  },
+  "bundle_security": {
+    "max_bundle_size_bytes": 52428800,
+    "max_payload_file_size_bytes": 10485760,
+    "require_manifest_signature": false,
+    "signature_algorithm": "hmac-sha256",
+    "signature_env_var": "UEF_BUNDLE_SIGNING_KEY"
+  },
+  "active_package_ids": [
+    "01-identity-access-and-trust",
+    "02-domain-data-and-persistence",
+    "03-service-contracts-and-orchestration",
+    "04-experience-clients-and-interactions",
+    "05-platform-infrastructure-and-delivery",
+    "06-quality-release-and-operations"
+  ],
+  "allow_delete_operations": false,
+  "decisions_dir_name": "decisions",
+  "examples_dir": "examples/execution_framework",
+  "governance_package_id": "00-governance-core",
+  "incoming_dir_name": "incoming",
+  "mission_control": {
+    "id": "governance-control",
+    "prompt_template": "prompts/execution_framework/mission_control_prompt.md"
+  },
+  "packets_dir_name": "packets",
+  "parallel_manifest_path": "parallel_manifest.json",
+  "projects_root": "ops/projects",
+  "prompts_dir_name": "prompts",
+  "reports_dir_name": "reports",
+  "retry_prompt_template": "prompts/execution_framework/retry_prompt.md",
+  "rounds_dir_name": "rounds",
+  "runs_root": "ops/runs",
+  "schema_version": "1.0",
+  "system_name": "universal_execution_framework",
+  "tree_hygiene_config": "configs/execution_framework/canonical_tree_excludes.json",
+  "worker_prompt_template": "prompts/execution_framework/package_worker_prompt.md"
+}

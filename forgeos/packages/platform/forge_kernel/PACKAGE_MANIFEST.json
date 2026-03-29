@@ -1,0 +1,18 @@
+{
+  "package_id": "forge.platform.kernel",
+  "layer": "kernel",
+  "owner": "forge_kernel",
+  "version": "0.1.0",
+  "required_kernel_range": ">=0.1.0,<1.0.0",
+  "integrity_hash": "sha256:75dca23ac36e8f4f4ee9c39553a37705e6cf204b143ba2d95e8443eb12b1d6ff",
+  "source_anchor": "platform/forge_kernel/src/forge_kernel/kernel_session.py",
+  "compatibility": {
+    "kernel": ">=0.1.0,<1.0.0",
+    "commons": ">=0.1.0,<1.0.0"
+  },
+  "install_policy": {
+    "validate_integrity": true,
+    "validate_compatibility": true,
+    "rollback_supported": true
+  }
+}

@@ -20,6 +20,12 @@ __pycache__/
 *.pyd
 .venv/
 venv/
+**/.venv/
+**/venv/
+**/__pycache__/
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
 
 # Environment / secrets
 .env
@@ -27,11 +33,11 @@ venv/
 !.env.example
 
 # Logs and temp
-*.log
-*.tmp
-*.temp
 *.cache
 .cache/
+logs/
+# ui_map timestamped runs are ephemeral diagnostics
+tools/ui_map/_logs/[0-9]*/
 
 # OS/editor
 .DS_Store
@@ -67,6 +73,12 @@ tools/codex/runs/**
 tools/codex/**/LOGS/
 tools/codex/**/LOGS/**
 tools/codex/**
+!tools/codex/
+!tools/codex/factory/
+tools/codex/factory/**
+!tools/codex/factory/unicodex.py
+!tools/codex/factory/tests/
+!tools/codex/factory/tests/test_post_run_intelligence.py
 **/worktrees/
 **/worktrees/**
 *.log.txt
@@ -91,7 +103,152 @@ exports/
 qa/
 tools/codex/prompt_zips/
 tools/codex/prompts/
-tools/codex/dispatch/
+!tools/codex/
+!tools/codex/dispatch/
+tools/codex/dispatch/*
+!tools/codex/dispatch/execution_rules.json
+!tools/codex/dispatch/post_run_intelligence.py
 tools/codex/verify/
 .husky/_/
 factory/01 Mirror/
+
+# --- HITECH ROOT CLUTTER (auto) ---
+# Root should stay clean: move reports/logs/packs into _attic/docs_dump or tools/_local
+/FINAL_REPORT*.txt
+/FINAL_REPORT*.md
+/DISPATCH_*DIFF*.txt
+/factory_*.log
+/FILES_CREATED*.txt
+/FILES_MODIFIED*.txt
+/PROMPTS_PACK_*.txt
+/STATUS.json
+*.bak
+# --- /HITECH ROOT CLUTTER (auto) ---
+tools/_local/context_exporter/export_repo_context.py
+
+# Playwright UI improvement runtime outputs
+artifacts/ui-improvement-reports/
+artifacts/keystone-scene-studio/
+apps/keystone/playwright-report/
+apps/keystone/test-results/
+tools/_local/context_exports/
+
+# --- Docs Governor hygiene ---
+docs/_root_archive/
+docs/_archive/
+docs/**/run-reports/
+docs/**/*.zip
+docs/**/*.7z
+docs/**/*.rar
+docs/**/*.tar
+docs/**/*.gz
+tools/_outputs/
+tools/**/_outputs/
+tools/**/logs/
+tools/**/logs/**
+
+# HITECH-OS artifacts
+*.dot
+*.backup_*
+*.restorecheck_*
+_dev_console_zips/
+tools/ui_map/_logs/*.zip
+
+# Agent factory temp bundles/logs/backups
+.agents/*.zip
+.agents/_merge_backups/
+.agents/_merge_logs/
+.agents/_rebuild_logs/
+.agents/agents_chatgpt/
+.agents/_runs/
+tools/_local/git_sentinel/
+
+# Graphviz generated artifacts
+
+tools/graphviz/graphs/**
+tools/graphviz/graphs_dev_console/**
+tools/graphviz/graphs_dev_console_runtime/**
+tools/graphviz/graphs_dev_console_analyzer/**
+tools/graphviz/.graphviz_manifest*.json
+tools/graphviz/.graphviz_state*.json
+tools/graphviz/dev_console_analyzer_report.json
+tools/graphviz/.repo_analyzer_settings.json
+
+# Keep repo analyzer tracked
+
+!tools/graphviz/repo_analizer/
+!tools/graphviz/repo_analizer/**
+# But never track local/runtime byproducts inside repo_analizer
+tools/graphviz/repo_analizer/**/__pycache__/
+tools/graphviz/repo_analizer/**/*.pyc
+tools/graphviz/repo_analizer/**/*.pyo
+tools/graphviz/repo_analizer/**/*.pyd
+tools/graphviz/repo_analizer/.repo_analyzer_settings.json
+tools/graphviz/repo_analizer/**/.pytest_cache/
+tools/graphviz/repo_analizer/**/.mypy_cache/
+tools/graphviz/repo_analizer/**/.ruff_cache/
+tools/ui_map/_logs/
+tools/ui_map/_logs/**
+*_backup*/
+*backup*/
+*archived*/
+
+# === COMPREHENSIVE TEMPORARY FILES ===
+# Covers all temporary/ephemeral files across all tools and environments
+# Existing rules above already cover Python, venv, graphviz, backups, and OS noise
+
+# Extended temporary file patterns
+*.tmp
+*.tmp.*
+*.temp
+*.temp.*
+*~
+*.bak
+*.backup
+*.orig
+*.swp
+*.swo
+.*.swp
+
+# Partial/downloading files (from interrupted transfers)
+*.partial
+*.downloading
+*.incomplete
+*.part
+
+# Lock/state files
+.lock
+*.lock
+
+# IDE runtime cache
+.history/
+
+# System/environment files
+desktop.ini
+$RECYCLE.BIN/
+.AppleDouble
+.LSOverride
+.TemporaryItems
+
+# junk dumps and temp directories
+_attic/
+tools/_local/tmp/
+tools/_local/evidence/
+
+# --- Orchestrator / Factory runtime artifacts (ephemeral) ---
+# Local bridge state (machine-specific, regenerated each run)
+tools/_local/orchestrator_bridge/
+tools/_local/orchestrator_bridge/**
+
+# Per-project runtime outputs (session bundles, run snapshots, ledgers, manifests)
+tools/orchestrator_factory/ops/projects/**/bundles/
+tools/orchestrator_factory/ops/projects/**/bundles/**
+tools/orchestrator_factory/ops/projects/**/runs/
+tools/orchestrator_factory/ops/projects/**/runs/**
+tools/orchestrator_factory/ops/projects/**/state/
+tools/orchestrator_factory/ops/projects/**/state/**
+tools/orchestrator_factory/ops/projects/**/project_manifest.json
+
+# Keep the projects tree addressable if we ever need placeholders
+!tools/orchestrator_factory/ops/projects/
+!tools/orchestrator_factory/ops/projects/**/.gitkeep

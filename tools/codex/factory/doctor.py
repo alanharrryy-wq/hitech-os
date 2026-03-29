@@ -9,6 +9,14 @@ from typing import Any
 from .common import REPO_ROOT, RUNS_DIR, iso_utc
 from .config import load_factory_config, resolve_config_path
 from .schemas import contracts_check
+from .skills_index import (
+    DEFAULT_SKILLS_ROOT,
+    EXPECTED_FACTORY_ROLES,
+    SKILLS_ROOT_CANDIDATES,
+    build_skills_index,
+    generate_and_write_skills_index,
+    resolve_skills_root,
+)
 
 
 def _check_command(name: str) -> dict[str, Any]:
@@ -63,6 +71,88 @@ def _check_meaningful_gate_contract() -> dict[str, Any]:
     }
 
 
+def _check_skills_root() -> dict[str, Any]:
+    root_info = resolve_skills_root(repo_root=REPO_ROOT)
+    skills_root = Path(str(root_info["path"]))
+    exists = skills_root.exists() and skills_root.is_dir()
+    candidates = ", ".join(SKILLS_ROOT_CANDIDATES)
+    return {
+        "check": "skills_autoload_root",
+        "status": "PASS" if exists else "WARN",
+        "detail": skills_root.as_posix() if exists else f"missing candidates: {candidates}",
+        "next_action": ""
+        if exists
+        else f"Create `{DEFAULT_SKILLS_ROOT}` (preferred) with role folders and SKILL.md files.",
+    }
+
+
+def _check_skills_docs() -> dict[str, Any]:
+    root_info = resolve_skills_root(repo_root=REPO_ROOT)
+    skills_root = Path(str(root_info["path"]))
+    if not skills_root.exists() or not skills_root.is_dir():
+        return {
+            "check": "skills_autoload_docs",
+            "status": "WARN",
+            "detail": "skills root is missing",
+            "next_action": f"Create `{DEFAULT_SKILLS_ROOT}` before enabling role-skills auto-load.",
+        }
+    docs = sorted(skills_root.rglob("SKILL.md"), key=lambda path: (path.as_posix().lower(), path.as_posix()))
+    return {
+        "check": "skills_autoload_docs",
+        "status": "PASS" if len(docs) > 0 else "WARN",
+        "detail": f"skill_docs={len(docs)}",
+        "next_action": "" if docs else f"Add at least one `SKILL.md` under `{skills_root.as_posix()}/<role>/`.",
+    }
+
+
+def _check_skills_role_coverage() -> dict[str, Any]:
+    try:
+        index = build_skills_index(repo_root=REPO_ROOT)
+    except Exception as exc:
+        return {
+            "check": "skills_autoload_role_coverage",
+            "status": "BLOCKED",
+            "detail": f"index error: {exc}",
+            "next_action": "Fix skills indexing errors before running factory flows.",
+        }
+    sources = index.get("role_sources", {}) if isinstance(index, dict) else {}
+    missing = [role for role in EXPECTED_FACTORY_ROLES if not str(sources.get(role, "")).strip()]
+    mapped = [role for role in EXPECTED_FACTORY_ROLES if str(sources.get(role, "")).strip()]
+    if not mapped:
+        return {
+            "check": "skills_autoload_role_coverage",
+            "status": "WARN",
+            "detail": "no role mappings discovered (skills root unavailable)",
+            "next_action": f"Add role folders under `{DEFAULT_SKILLS_ROOT}` to enable skills injection.",
+        }
+    return {
+        "check": "skills_autoload_role_coverage",
+        "status": "PASS" if not missing else "BLOCKED",
+        "detail": "all roles mapped" if not missing else f"missing role mappings: {','.join(missing)}",
+        "next_action": ""
+        if not missing
+        else "Add direct role folders or legacy-mapped folders under the active skills root.",
+    }
+
+
+def _check_skills_index_generation() -> dict[str, Any]:
+    try:
+        payload = generate_and_write_skills_index(repo_root=REPO_ROOT)
+    except Exception as exc:
+        return {
+            "check": "skills_autoload_index_generation",
+            "status": "BLOCKED",
+            "detail": f"generation error: {exc}",
+            "next_action": "Run `python -m tools.codex.factory skills:index` and fix reported errors.",
+        }
+    return {
+        "check": "skills_autoload_index_generation",
+        "status": "PASS",
+        "detail": f"index_json={payload.get('index_json', '')} index_md={payload.get('index_md', '')}",
+        "next_action": "",
+    }
+
+
 def run_doctor(config_path: str | None = None) -> dict[str, Any]:
     checks: list[dict[str, Any]] = []
     checks.append(
@@ -80,6 +170,10 @@ def run_doctor(config_path: str | None = None) -> dict[str, Any]:
     checks.append(_check_path(REPO_ROOT / "tools" / "codex" / "validation.json", required=True))
     checks.append(_check_path(REPO_ROOT / "tools" / "codex" / "verify" / "meaningful_gate.py", required=True))
     checks.append(_check_path(RUNS_DIR, required=False))
+    checks.append(_check_skills_root())
+    checks.append(_check_skills_docs())
+    checks.append(_check_skills_role_coverage())
+    checks.append(_check_skills_index_generation())
 
     config_errors: list[str] = []
     try:

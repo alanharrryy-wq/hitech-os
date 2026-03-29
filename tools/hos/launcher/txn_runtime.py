@@ -21,6 +21,8 @@ WORKERS: tuple[str, ...] = (
     "C_features",
     "D_validation",
     "Z_aggregator",
+    "R_reviewer",
+    "E_planner",
 )
 
 RUN_ID_OLD_RE = re.compile(r"^\d{8}_\d+$")

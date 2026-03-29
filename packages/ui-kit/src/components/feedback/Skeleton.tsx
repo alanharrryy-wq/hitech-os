@@ -1,3 +1,4 @@
+import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import type { HTMLAttributes } from "react";
 import { cn } from "../../lib/cn.js";
@@ -20,6 +21,8 @@ export interface SkeletonProps
     VariantProps<typeof skeletonVariants> {
   readonly width?: number | string;
   readonly height?: number | string;
+  readonly className?: string;
+  readonly style?: React.CSSProperties;
 }
 
 export function Skeleton({ className, shape, width, height, style, ...props }: SkeletonProps) {

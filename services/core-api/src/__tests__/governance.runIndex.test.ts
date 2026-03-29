@@ -25,6 +25,9 @@ async function createTempRunsRoot(): Promise<string> {
   await mkdir(path.join(root, "factory_20260224_100001_aaaaaaaa_002", "A_worker"), {
     recursive: true
   });
+  await mkdir(path.join(root, "factory_20260224_100001_aaaaaaaa_002", "R_worker"), {
+    recursive: true
+  });
   await mkdir(path.join(root, "factory_20260224_100001_aaaaaaaa_002", "E_worker"), {
     recursive: true
   });
@@ -73,9 +76,20 @@ describe("RunIndex", () => {
       );
       assert.ok(withBundles);
       assert.equal(withBundles?.hasRunManifest, true);
-      assert.equal(withBundles?.hasEWorkerBundle, true);
-      assert.equal(withBundles?.hasZIntegratorBundle, true);
-      assert.deepEqual(withBundles?.bundleDirectories, ["A_worker", "E_worker", "Z_integrator"]);
+      assert.equal(withBundles?.hasLegacyAliasBundles, true);
+      assert.equal(withBundles?.hasZAggregatorBundle, true);
+      assert.deepEqual(withBundles?.bundleDirectories, [
+        "A_core",
+        "E_planner",
+        "R_reviewer",
+        "Z_aggregator"
+      ]);
+      assert.deepEqual(withBundles?.legacyAliasBundles, [
+        "A_worker",
+        "E_worker",
+        "R_worker",
+        "Z_integrator"
+      ]);
       assert.equal(
         payload.warnings.some((warning) => warning.code === "RUN_ID_SKIPPED_UNSAFE"),
         true

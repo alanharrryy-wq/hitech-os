@@ -1,0 +1,30 @@
+name: dev-console-architecture-guard
+
+on:
+  pull_request:
+    paths:
+      - "apps/keystone/**"
+      - "packages/ui-kit/**"
+      - "tools/dev-console/**"
+      - "tools/codex/guards/**"
+      - ".github/workflows/dev-console-architecture-guard.yml"
+  push:
+    branches: ["main", "master"]
+    paths:
+      - "apps/keystone/**"
+      - "packages/ui-kit/**"
+      - "tools/dev-console/**"
+      - "tools/codex/guards/**"
+      - ".github/workflows/dev-console-architecture-guard.yml"
+
+jobs:
+  architecture-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run architecture guard
+        run: python tools/dev-console/architecture_guard.py --repo-root . --strict

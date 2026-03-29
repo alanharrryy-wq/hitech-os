@@ -1,0 +1,30 @@
+{
+  "script_version": "1.1.0",
+  "generated_at_epoch": 1773556543,
+  "source": "F:\\repos\\hitech-os\\tools\\graphviz\\repo_analyzer.py",
+  "output": "F:\\repos\\hitech-os\\tools\\graphviz\\repo_analizer",
+  "root_policy": "only main.py at project root",
+  "files_written": [
+    "_source_backup\\repo_analyzer.original.py",
+    "app\\__init__.py",
+    "app\\cli\\__init__.py",
+    "app\\cli\\cli_mode.py",
+    "app\\config.py",
+    "app\\gui\\__init__.py",
+    "app\\gui\\app_gui.py",
+    "app\\helpers.py",
+    "app\\models.py",
+    "docs\\01_overview\\README.md",
+    "docs\\02_architecture\\ARCHITECTURE.md",
+    "docs\\02_architecture\\LAYOUT_RULES.md",
+    "docs\\03_operations\\RUNBOOK.md",
+    "docs\\04_inventory\\FILE_TREE.md",
+    "main.py"
+  ],
+  "strategy": "safe-phase-1-modularization-clean-root",
+  "notes": [
+    "La raíz queda limpia con un solo launcher.",
+    "La GUI sigue concentrada en app/gui/app_gui.py para evitar reescritura masiva.",
+    "La documentación queda ordenada por tema y numerada."
+  ]
+}

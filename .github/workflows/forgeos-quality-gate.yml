@@ -1,0 +1,48 @@
+name: ForgeOS Quality Gate
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "forgeos/**"
+      - "docs/forgeos-foundation/**"
+      - ".github/workflows/forgeos-quality-gate.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "forgeos/**"
+      - "docs/forgeos-foundation/**"
+      - ".github/workflows/forgeos-quality-gate.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: forgeos-quality-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  forgeos-quality-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run ForgeOS quality gate
+        shell: pwsh
+        run: |
+          ./forgeos/scripts/Run-ForgeOSQualityGate.ps1 `
+            -ForgeOSRoot "${{ github.workspace }}/forgeos" `
+            -EvidenceDir "${{ github.workspace }}/tools/_local/evidence"
+
+      - name: Upload ForgeOS quality evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: forgeos-quality-gate-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          path: |
+            tools/_local/evidence/forgeos_import_boundaries_report.json
+            tools/_local/evidence/forgeos_package_dry_run_report.json

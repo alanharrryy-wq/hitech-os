@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "forge.schema.envelopes.response.v1",
+  "title": "forge response envelope v1",
+  "type": "object",
+  "required": ["contract_id", "version", "payload", "metadata", "correlation_id", "issued_at_utc"],
+  "properties": {
+    "contract_id": {"type": "string", "minLength": 1},
+    "version": {"type": "integer", "minimum": 1},
+    "payload": {"type": "object"},
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {"type": "string"}
+    },
+    "correlation_id": {"type": "string", "minLength": 1},
+    "issued_at_utc": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": false
+}

@@ -1,14 +1,15 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
 from .attestations import write_all_attestations
-from .common import INTEGRATOR, RUNS_DIR, WORKERS, iso_utc, read_json, read_text, stable_sha256_text
+from .common import INTEGRATOR, REPO_ROOT, RUNS_DIR, WORKERS, canonicalize_workers, iso_utc, read_json, read_text, stable_sha256_text
 from .config import load_factory_config
 from .contracts import bundle_dir, scaffold_integrator_bundle, validate_bundle
 from .fs_guard import WriteGuard, WritePolicyError
-from .ledger import append_event, verify_ledger_signature
+from .ledger import append_event, query_events, verify_ledger_signature
 from .overlap import detect_file_overlaps, detect_scope_violations
 from .schemas import validate_payload
 from .status_eval import BLOCKED, FAIL, PASS, evaluate_status, make_check, status_exit_code
@@ -27,6 +28,132 @@ except Exception:  # pragma: no cover - package mode fallback
     from tools.codex.verify.meaningful_gate import run_meaningful_gate
 
 
+ANTI_PADDING_POLICY_PRIMARY = REPO_ROOT / "tools" / "codex" / "factory" / "anti_padding_policy.json"
+ANTI_PADDING_POLICY_FALLBACK = REPO_ROOT / "tools" / "codex" / "dispatch" / "rework_policy.json"
+
+
+def _safe_read_json_dict(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def _to_int(value: Any, default: int) -> int:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return int(default)
+
+
+def _to_float(value: Any, default: float) -> float:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return float(default)
+
+
+def _count_patch_added_loc(path: Path) -> int:
+    if not path.exists() or not path.is_file():
+        return 0
+    try:
+        text = path.read_text(encoding="utf-8", errors="replace")
+    except Exception:
+        return 0
+    added = 0
+    for line in text.splitlines():
+        if line.startswith("+++"):
+            continue
+        if line.startswith("+"):
+            added += 1
+    return int(added)
+
+
+def _load_anti_padding_policy() -> dict[str, Any]:
+    defaults = {
+        "version": "1.0.0",
+        "max_reworks": 3,
+        "base_loc_target": 10000,
+        "loc_increment_per_rework": 5000,
+        "required_sanction_level": "OK",
+    }
+    for candidate in (ANTI_PADDING_POLICY_PRIMARY, ANTI_PADDING_POLICY_FALLBACK):
+        payload = _safe_read_json_dict(candidate)
+        if payload:
+            merged = dict(defaults)
+            for key in defaults:
+                if key in payload:
+                    merged[key] = payload[key]
+            merged["_source"] = candidate.as_posix()
+            return merged
+    merged = dict(defaults)
+    merged["_source"] = "<defaults>"
+    return merged
+
+
+def _evaluate_anti_padding_gate(run_id: str, workers: list[str]) -> dict[str, Any]:
+    policy = _load_anti_padding_policy()
+    required_level = str(policy.get("required_sanction_level", "OK")).upper()
+    base_target = max(0, _to_int(policy.get("base_loc_target"), 10000))
+    increment = max(0, _to_int(policy.get("loc_increment_per_rework"), 5000))
+    max_reworks = max(1, _to_int(policy.get("max_reworks"), 3))
+
+    rows: list[dict[str, Any]] = []
+    blocked: list[dict[str, Any]] = []
+    for worker in workers:
+        root = bundle_dir(run_id, worker)
+        score_payload = _safe_read_json_dict(root / "SANCTION_SCORE.json")
+        state_payload = _safe_read_json_dict(root / "REWORK_STATE.json")
+        score_level = str(score_payload.get("sanction_level", "WARN")).upper()
+        score_value = _to_float(score_payload.get("sanction_score"), 1.0)
+        loc_score = max(0, _to_int(score_payload.get("loc_delta"), 0))
+        loc_patch = max(0, _count_patch_added_loc(root / "DIFF.patch"))
+        loc_state = max(0, _to_int(state_payload.get("effective_mloc"), 0))
+        effective_loc = max(loc_score, loc_patch, loc_state)
+
+        cycle = max(0, _to_int(state_payload.get("cycle"), 0))
+        configured_cycle = min(cycle, max_reworks)
+        target_mloc = max(0, _to_int(state_payload.get("target_mloc"), base_target + (configured_cycle * increment)))
+        state_status = str(state_payload.get("status", "")).upper()
+
+        reasons: list[str] = []
+        if score_level != required_level:
+            reasons.append(f"sanction_level={score_level} expected={required_level}")
+        if effective_loc < target_mloc:
+            reasons.append(f"effective_mloc={effective_loc} below target_mloc={target_mloc}")
+        if state_status in {BLOCKED, "REWORK_REQUIRED"}:
+            reasons.append(f"rework_state={state_status}")
+
+        row = {
+            "worker": worker,
+            "sanction_level": score_level,
+            "sanction_score": score_value,
+            "effective_mloc": effective_loc,
+            "target_mloc": target_mloc,
+            "rework_cycle": configured_cycle,
+            "rework_state": state_status or "N/A",
+            "ok": not reasons,
+            "reasons": reasons,
+        }
+        rows.append(row)
+        if reasons:
+            blocked.append(row)
+
+    return {
+        "policy_source": str(policy.get("_source", "<defaults>")),
+        "required_sanction_level": required_level,
+        "base_loc_target": base_target,
+        "loc_increment_per_rework": increment,
+        "max_reworks": max_reworks,
+        "workers": rows,
+        "blocked": blocked,
+        "blocked_count": len(blocked),
+    }
+
+
 def _collect_worker_inputs(run_id: str, workers: list[str]) -> list[dict[str, Any]]:
     collected: list[dict[str, Any]] = []
     for worker in workers:
@@ -35,6 +162,7 @@ def _collect_worker_inputs(run_id: str, workers: list[str]) -> list[dict[str, An
             "worker": worker,
             "bundle": root.as_posix(),
             "status": "MISSING",
+            "worker_status": "PENDING",
             "validation": validate_bundle(run_id, worker),
             "files_changed": [],
             "summary": "",
@@ -54,6 +182,10 @@ def _collect_worker_inputs(run_id: str, workers: list[str]) -> list[dict[str, An
                 record["noop"] = bool(payload.get("noop", False))
                 record["noop_reason"] = str(payload.get("noop_reason", "")).strip()
                 record["noop_ack"] = str(payload.get("noop_ack", "")).strip()
+            status_path = root / "STATUS.json"
+            if status_path.exists():
+                status_payload = read_json(status_path)
+                record["worker_status"] = str(status_payload.get("status", "PENDING")).upper()
             if summary_path.exists():
                 record["summary"] = read_text(summary_path).strip()
             if diff_path.exists():
@@ -167,8 +299,15 @@ def _render_final_report(
     internal_errors: Iterable[str] | None = None,
     ledger_signature_status: Mapping[str, Any] | None = None,
     meaningful_gate: Mapping[str, Any] | None = None,
+    anti_padding: Mapping[str, Any] | None = None,
+    worker_completion: Mapping[str, Any] | None = None,
+    ledger_watch: Mapping[str, Any] | None = None,
 ) -> str:
     gate = meaningful_gate or {}
+    anti = anti_padding or {}
+    anti_blocked_effective = int(anti.get("effective_blocked_count", anti.get("blocked_count", 0)))
+    completion = worker_completion or {}
+    watch = ledger_watch or {}
     gate_verdict = str(gate.get("verdict", "N/A"))
     gate_noop = bool(gate.get("noop", False))
     lines = [
@@ -183,7 +322,10 @@ def _render_final_report(
         f"- Hidden overlaps: {len(overlap_report.get('hidden_overlaps', []))}",
         f"- Invalid FILES_CHANGED paths: {len(overlap_report.get('invalid_paths', []))}",
         f"- Meaningful gate verdict: {gate_verdict}",
+        f"- Anti-padding blocked workers: {anti_blocked_effective}",
         f"- NOOP declared: {str(gate_noop).lower()}",
+        f"- Workers completed: {completion.get('done', 0)}/{completion.get('total', len(collected))}",
+        f"- Ledger watch events: {watch.get('count', 0)}",
         "",
         "## Required Checks",
     ]
@@ -224,6 +366,15 @@ def _render_final_report(
         blockers.append(f"internal: {item}")
     for mode in gate.get("fail_modes", []) if isinstance(gate.get("fail_modes", []), list) else []:
         blockers.append(f"meaningful_gate: {mode}")
+    for row in anti.get("blocked", []) if isinstance(anti.get("blocked", []), list) else []:
+        if not isinstance(row, Mapping):
+            continue
+        worker = str(row.get("worker", "unknown"))
+        reasons = row.get("reasons", [])
+        if isinstance(reasons, list) and reasons:
+            blockers.append(f"anti_padding: {worker}: {'; '.join(str(item) for item in reasons)}")
+        else:
+            blockers.append(f"anti_padding: {worker}")
 
     if blockers:
         for blocker in sorted(set(blockers)):
@@ -246,6 +397,20 @@ def _render_final_report(
         ]
     )
 
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def _render_apply_instructions(run_id: str) -> str:
+    lines = [
+        "# APPLY_INSTRUCTIONS",
+        "",
+        f"RUN_ID: {run_id}",
+        "",
+        "1. Review `DIFF_MERGED.patch` and `FILES_CHANGED_MERGED.json`.",
+        "2. Use `tools/codex/runs/<RUN_ID>/_apply/` as staging area before applying.",
+        "3. Run project validation checks.",
+        "4. Commit and push only when checks pass.",
+    ]
     return "\n".join(lines).rstrip() + "\n"
 
 
@@ -297,7 +462,10 @@ def _build_status_payload(
             "FINAL_REPORT.txt",
             "MERGE_PLAN.md",
             "FILES_CHANGED.json",
+            "FILES_CHANGED_MERGED.json",
             "DIFF.patch",
+            "DIFF_MERGED.patch",
+            "APPLY_INSTRUCTIONS.md",
             "LOGS/integration.log.txt",
             "LOGS/INDEX.json",
         ],
@@ -317,9 +485,12 @@ def _write_standard_outputs(
     extra_writes: Iterable[Mapping[str, Any]] | None = None,
 ) -> None:
     guard.write_json(z_dir / "FILES_CHANGED.json", merged_files)
+    guard.write_json(z_dir / "FILES_CHANGED_MERGED.json", merged_files)
     guard.write_text(z_dir / "DIFF.patch", merged_patch)
+    guard.write_text(z_dir / "DIFF_MERGED.patch", merged_patch)
     guard.write_text(z_dir / "MERGE_PLAN.md", merge_plan)
     guard.write_text(z_dir / "FINAL_REPORT.txt", final_report)
+    guard.write_text(z_dir / "APPLY_INSTRUCTIONS.md", _render_apply_instructions(str(status_payload.get("run_id", ""))))
     guard.write_json(z_dir / "STATUS.json", status_payload)
     guard.write_json(z_dir / "LOGS" / "INDEX.json", log_index_payload)
 
@@ -342,11 +513,14 @@ def integrate_run(
     config: Mapping[str, Any] | None = None,
     extra_writes: Iterable[Mapping[str, Any]] | None = None,
 ) -> dict[str, Any]:
-    chosen = list(workers or WORKERS)
+    chosen = canonicalize_workers(workers)
     cfg = dict(config or load_factory_config(strict=False))
     run_cfg = dict(cfg.get("run", {})) if isinstance(cfg.get("run"), Mapping) else {}
     strict_mode = bool(run_cfg.get("strict_collision_mode", True))
     allow_identical_patch_overlap = bool(run_cfg.get("allow_identical_patch_overlap", False))
+    enforce_anti_padding_gate = bool(run_cfg.get("enforce_anti_padding_gate", False))
+    integrator_watch_ledger = bool(run_cfg.get("integrator_watch_ledger", True))
+    integrator_wait_for_workers = bool(run_cfg.get("integrator_wait_for_workers", True))
     started_at = iso_utc()
     scaffold_integrator_bundle(run_id)
 
@@ -382,6 +556,22 @@ def integrate_run(
         scope_report = detect_scope_violations(run_id, workers=chosen)
         merged_files = _merge_files_changed(run_id, collected)
         merged_patch = _merge_patch(collected)
+        pending_workers = sorted(
+            str(item.get("worker", ""))
+            for item in collected
+            if str(item.get("worker_status", "PENDING")).upper() in {"PENDING", ""}
+        )
+        worker_completion = {
+            "done": len(chosen) - len(pending_workers),
+            "pending": pending_workers,
+            "total": len(chosen),
+        }
+        ledger_tail = query_events(run_id=run_id, limit=25) if integrator_watch_ledger else []
+        ledger_watch = {
+            "count": len(ledger_tail),
+            "last_event": str(ledger_tail[-1].get("event_type", "")) if ledger_tail else "",
+            "enabled": integrator_watch_ledger,
+        }
 
         worker_blockers = [item for item in collected if item.get("validation", {}).get("status") != PASS]
         overlap_blockers = [item for item in overlap_report.get("overlaps", []) if item.get("status") == BLOCKED]
@@ -396,9 +586,30 @@ def integrate_run(
             f"invalid path blockers={len(invalid_path_blockers)}",
             f"scope blockers={len(scope_blockers)}",
         ]
+        if integrator_wait_for_workers and pending_workers:
+            blockers.append(f"pending workers={','.join(pending_workers)}")
         blockers = [item for item in blockers if not item.endswith("=0")]
 
+        optional_checks: list[dict[str, Any]] = []
+        if integrator_watch_ledger:
+            optional_checks.append(
+                make_check(
+                    "ledger_watch",
+                    rc=0,
+                    required=False,
+                    detail=f"events={len(ledger_tail)} last={ledger_watch['last_event'] or '<none>'}",
+                    actor=INTEGRATOR,
+                )
+            )
+
         required_checks = [
+            make_check(
+                "workers_done",
+                rc=0 if not (integrator_wait_for_workers and pending_workers) else 2,
+                required=True,
+                detail=f"pending={len(pending_workers)}",
+                actor=INTEGRATOR,
+            ),
             make_check(
                 "worker_bundle_validation",
                 rc=0 if not worker_blockers else 2,
@@ -441,11 +652,36 @@ def integrate_run(
         else:
             required_checks.append(make_check("schema_files_changed", rc=0, required=True, actor=INTEGRATOR))
 
+        anti_padding_payload = _evaluate_anti_padding_gate(run_id, chosen)
+        anti_padding_blockers = [
+            f"anti_padding:{row.get('worker', 'unknown')}:{';'.join(str(item) for item in row.get('reasons', []))}"
+            for row in anti_padding_payload.get("blocked", [])
+            if isinstance(row, Mapping)
+        ]
+        effective_anti_padding_blockers = anti_padding_blockers if enforce_anti_padding_gate else []
+        anti_padding_payload["enforced"] = bool(enforce_anti_padding_gate)
+        anti_padding_payload["effective_blocked_count"] = len(effective_anti_padding_blockers)
+        required_checks.append(
+            make_check(
+                "anti_padding_gate",
+                rc=0 if not effective_anti_padding_blockers else 2,
+                required=True,
+                detail=(
+                    f"enforced={str(enforce_anti_padding_gate).lower()} "
+                    f"blocked={len(anti_padding_blockers)} "
+                    f"required_level={anti_padding_payload.get('required_sanction_level', 'OK')} "
+                    f"base_target={anti_padding_payload.get('base_loc_target', 0)} "
+                    f"increment={anti_padding_payload.get('loc_increment_per_rework', 0)}"
+                ),
+                actor=INTEGRATOR,
+            )
+        )
+
         evaluation = evaluate_status(
             required_checks=required_checks,
-            optional_checks=[],
+            optional_checks=optional_checks,
             schema_errors=schema_errors,
-            blockers=blockers,
+            blockers=blockers + effective_anti_padding_blockers,
             internal_errors=[],
         )
 
@@ -501,7 +737,7 @@ def integrate_run(
         # Re-evaluate after schema checks.
         evaluation = evaluate_status(
             required_checks=required_checks,
-            optional_checks=[],
+            optional_checks=optional_checks,
             schema_errors=schema_errors,
             blockers=blockers,
             internal_errors=[],
@@ -525,6 +761,9 @@ def integrate_run(
             internal_errors=[],
             ledger_signature_status={},
             meaningful_gate={},
+            anti_padding=anti_padding_payload,
+            worker_completion=worker_completion,
+            ledger_watch=ledger_watch,
         )
 
         policy_errors: list[str] = []
@@ -555,9 +794,9 @@ def integrate_run(
             )
             evaluation = evaluate_status(
                 required_checks=required_checks,
-                optional_checks=[],
+                optional_checks=optional_checks,
                 schema_errors=schema_errors,
-                blockers=blockers + policy_errors,
+                blockers=blockers + policy_errors + effective_anti_padding_blockers,
                 internal_errors=[],
             )
             final_status = evaluation.status
@@ -576,6 +815,9 @@ def integrate_run(
                 internal_errors=[],
                 ledger_signature_status={},
                 meaningful_gate={},
+                anti_padding=anti_padding_payload,
+                worker_completion=worker_completion,
+                ledger_watch=ledger_watch,
             )
             _write_standard_outputs(
                 guard=guard,
@@ -589,7 +831,12 @@ def integrate_run(
                 extra_writes=None,
             )
 
-        repo_root_candidate = Path(str(cfg.get("paths", {}).get("repo_root", Path.cwd().as_posix()))).resolve(strict=False)
+        configured_repo_root = Path(str(cfg.get("paths", {}).get("repo_root", REPO_ROOT.as_posix()))).expanduser()
+        resolved_repo_root = configured_repo_root.resolve(strict=False)
+        if resolved_repo_root.exists() and (resolved_repo_root / ".git").exists():
+            repo_root_candidate = resolved_repo_root
+        else:
+            repo_root_candidate = REPO_ROOT.resolve(strict=False)
         gate_payload = run_meaningful_gate(
             run_id,
             repo_root=repo_root_candidate,
@@ -616,9 +863,9 @@ def integrate_run(
             gate_blockers.append(f"meaningful_gate:{gate_verdict}")
         evaluation = evaluate_status(
             required_checks=required_checks,
-            optional_checks=[],
+            optional_checks=optional_checks,
             schema_errors=schema_errors,
-            blockers=blockers + policy_errors + gate_blockers,
+            blockers=blockers + policy_errors + effective_anti_padding_blockers + gate_blockers,
             internal_errors=[],
         )
         final_status = evaluation.status
@@ -642,6 +889,9 @@ def integrate_run(
             internal_errors=[],
             ledger_signature_status={},
             meaningful_gate=gate_payload,
+            anti_padding=anti_padding_payload,
+            worker_completion=worker_completion,
+            ledger_watch=ledger_watch,
         )
         guard.write_json(z_dir / "STATUS.json", status_payload)
         guard.write_json(z_dir / "LOGS" / "INDEX.json", _build_log_index(run_id, status_exit_code(final_status)))
@@ -664,6 +914,9 @@ def integrate_run(
             internal_errors=[],
             ledger_signature_status=ledger_sig,
             meaningful_gate=gate_payload,
+            anti_padding=anti_padding_payload,
+            worker_completion=worker_completion,
+            ledger_watch=ledger_watch,
         )
         guard.write_text(z_dir / "FINAL_REPORT.txt", final_report)
         report_hash = stable_sha256_text(final_report)
@@ -689,6 +942,7 @@ def integrate_run(
                     "worker_blockers": len(worker_blockers),
                     "overlap_blockers": len(overlap_blockers),
                     "scope_blockers": len(scope_blockers),
+                    "anti_padding_blockers": len(effective_anti_padding_blockers),
                     "report": (z_dir / "FINAL_REPORT.txt").as_posix(),
                     "path": (RUNS_DIR / run_id).as_posix(),
                     "attestations": attestations,
@@ -722,9 +976,11 @@ def integrate_run(
             "hidden_overlap_blockers": len(hidden_overlap_blockers),
             "invalid_path_blockers": len(invalid_path_blockers),
             "scope_blockers": len(scope_blockers),
+            "anti_padding_blockers": len(anti_padding_blockers),
             "report": (z_dir / "FINAL_REPORT.txt").as_posix(),
             "attestations": attestations,
             "meaningful_gate": gate_payload,
+            "anti_padding_gate": anti_padding_payload,
         }
     except Exception as exc:  # pragma: no cover - integration fallback path
         ended_at = iso_utc()

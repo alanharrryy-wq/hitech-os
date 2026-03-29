@@ -1,0 +1,47 @@
+{
+  "chat_a": {
+    "mission": "normative_write_side_governance_core",
+    "files": [
+      "F:\\repos\\hitech-os\\control_tower\\__init__.py",
+      "F:\\repos\\hitech-os\\control_tower\\boundaries.py",
+      "F:\\repos\\hitech-os\\control_tower\\ownership.py",
+      "F:\\repos\\hitech-os\\control_tower\\contracts.py",
+      "F:\\repos\\hitech-os\\control_tower\\dependency_graph.py",
+      "F:\\repos\\hitech-os\\control_tower\\promotion_gate.py",
+      "F:\\repos\\hitech-os\\control_tower\\work_orders.py"
+    ],
+    "docs_authority": [
+      "BOUNDARIES",
+      "OWNERSHIP_MAP",
+      "RULES_AND_RESTRICTIONS",
+      "PROMOTION_RULES"
+    ]
+  },
+  "chat_b": {
+    "mission": "read_side_state_registry_snapshot_assurance",
+    "files": [
+      "F:\\repos\\hitech-os\\control_tower\\state_model.py",
+      "F:\\repos\\hitech-os\\control_tower\\artifact_registry.py",
+      "F:\\repos\\hitech-os\\control_tower\\snapshot.py",
+      "F:\\repos\\hitech-os\\control_tower\\audit_log.py",
+      "F:\\repos\\hitech-os\\control_tower\\cli.py",
+      "F:\\repos\\hitech-os\\control_tower\\readers\\__init__.py",
+      "F:\\repos\\hitech-os\\control_tower\\readers\\engine_guardian_reader.py",
+      "F:\\repos\\hitech-os\\control_tower\\readers\\gsm_reader.py"
+    ],
+    "docs_authority": [
+      "ARTIFACT_REGISTRY",
+      "STATUS_SNAPSHOT",
+      "ASSURANCE_MODEL"
+    ]
+  },
+  "shared_binding_docs": [
+    "01_AUTHORITY_AND_USAGE.md",
+    "02_CONTROL_TOWER_SCOPE.md",
+    "03_SHARED_DICTIONARY.md",
+    "04_REPO_PLACEMENT_STRUCTURE.md",
+    "12_CHAT_SPLIT_AND_FILE_ALLOCATION.md",
+    "13_PATH_AUTHORITY_MATRIX.md",
+    "14_CHANGE_CONTROL_AND_DECISION_POLICY.md"
+  ]
+}

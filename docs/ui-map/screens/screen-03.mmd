@@ -1,0 +1,58 @@
+%% screen-03 graph
+flowchart TD
+  n_cmp_24e728f035["PitchCardGrid\npitch-card-grid.tsx"]
+  n_cmp_262a7f305a["PitchDataChip\npitch-data-chip.tsx"]
+  n_cmp_26819c9f9a["PitchSection\npitch-section.tsx"]
+  n_cmp_38addaa8a6["Screen03HiTechOsCinematic\nscreen-03-hitech-os-cinematic.tsx"]
+  n_cmp_4daf0963df["ScreenHiTechOs\nscreen-hitech-os.tsx"]
+  n_cmp_5628844317["usePitchSectionContext\npitch-shell-context.tsx"]
+  n_cmp_73815c5199["PitchExpandablePanel\npitch-expandable-panel.tsx"]
+  n_cmp_90fb220e30["PitchCardGridItem\npitch-card-grid.tsx"]
+  n_cmp_934d4e8c97["PitchMiniBars\npitch-mini-bars.tsx"]
+  n_cmp_a56a27fc43["cn\ncn.ts"]
+  n_cmp_ad4bf2dc06["PitchKpiChipCloud\npitch-kpi-chip-cloud.tsx"]
+  n_cmp_b4f71c4774["buildScreen03ViewModel\ndeck-view-model.ts"]
+  n_cmp_ddfd33abd4["Badge\nBadge.tsx"]
+  n_cmp_f2b3612ca2["PitchBulletCards\npitch-bullet-cards.tsx"]
+  n_rte_fe70914ec1(("/pitch/03-hitech-os"))
+  n_cmp_24e728f035 -->|imports| n_cmp_a56a27fc43
+  n_cmp_262a7f305a -->|imports| n_cmp_a56a27fc43
+  n_cmp_26819c9f9a -->|imports| n_cmp_5628844317
+  n_cmp_26819c9f9a -->|imports| n_cmp_a56a27fc43
+  n_cmp_26819c9f9a -->|imports| n_cmp_ddfd33abd4
+  n_cmp_38addaa8a6 -->|imports| n_cmp_24e728f035
+  n_cmp_38addaa8a6 -->|imports| n_cmp_262a7f305a
+  n_cmp_38addaa8a6 -->|imports| n_cmp_26819c9f9a
+  n_cmp_38addaa8a6 -->|imports| n_cmp_73815c5199
+  n_cmp_38addaa8a6 -->|imports| n_cmp_90fb220e30
+  n_cmp_38addaa8a6 -->|imports| n_cmp_934d4e8c97
+  n_cmp_38addaa8a6 -->|imports| n_cmp_ad4bf2dc06
+  n_cmp_38addaa8a6 -->|imports| n_cmp_b4f71c4774
+  n_cmp_38addaa8a6 -->|imports| n_cmp_ddfd33abd4
+  n_cmp_38addaa8a6 -->|imports| n_cmp_f2b3612ca2
+  n_cmp_4daf0963df -->|imports| n_cmp_38addaa8a6
+  n_cmp_73815c5199 -->|imports| n_cmp_a56a27fc43
+  n_cmp_90fb220e30 -->|imports| n_cmp_a56a27fc43
+  n_cmp_934d4e8c97 -->|imports| n_cmp_a56a27fc43
+  n_cmp_ad4bf2dc06 -->|imports| n_cmp_262a7f305a
+  n_cmp_ad4bf2dc06 -->|imports| n_cmp_a56a27fc43
+  n_cmp_ddfd33abd4 -->|imports| n_cmp_a56a27fc43
+  n_cmp_f2b3612ca2 -->|imports| n_cmp_a56a27fc43
+  n_cmp_26819c9f9a ==>|renders| n_cmp_ddfd33abd4
+  n_cmp_38addaa8a6 ==>|renders| n_cmp_24e728f035
+  n_cmp_38addaa8a6 ==>|renders| n_cmp_262a7f305a
+  n_cmp_38addaa8a6 ==>|renders| n_cmp_26819c9f9a
+  n_cmp_38addaa8a6 ==>|renders| n_cmp_73815c5199
+  n_cmp_38addaa8a6 ==>|renders| n_cmp_90fb220e30
+  n_cmp_38addaa8a6 ==>|renders| n_cmp_934d4e8c97
+  n_cmp_38addaa8a6 ==>|renders| n_cmp_ad4bf2dc06
+  n_cmp_38addaa8a6 ==>|renders| n_cmp_ddfd33abd4
+  n_cmp_38addaa8a6 ==>|renders| n_cmp_f2b3612ca2
+  n_cmp_4daf0963df ==>|renders| n_cmp_38addaa8a6
+  n_cmp_ad4bf2dc06 ==>|renders| n_cmp_262a7f305a
+  n_rte_fe70914ec1 ==>|route_to_screen| n_cmp_4daf0963df
+
+%% Where-to-edit
+%% If you want to change layout -> apps/keystone/app/pitch/03-hitech-os/page.tsx
+%% If you want to change interactions -> apps/keystone/components/pitch/screen-hitech-os.tsx
+%% If you want to change brand -> central config files only (do not override :root)

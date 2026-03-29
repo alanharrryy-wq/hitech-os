@@ -82,15 +82,15 @@ class PathGuardTests(unittest.TestCase):
                 {"path": "apps/demo/a.ts", "change_type": "modified", "reason": "ok", "sha256": "1"},
                 {"path": "../../bad.ts", "change_type": "modified", "reason": "bad", "sha256": "2"},
             ],
-            worker="A_worker",
+            worker="A_core",
         )
         self.assertEqual(1, len(cleaned))
         self.assertEqual(1, len(issues))
-        self.assertEqual("A_worker", issues[0].worker)
+        self.assertEqual("A_core", issues[0].worker)
 
     def test_scope_violation_detection(self) -> None:
         violations = detect_scope_violations_for_paths(
-            worker="A_worker",
+            worker="A_core",
             paths=["apps/demo/a.ts", ".git/config", "docs/private/note.md"],
             allow_globs=["apps/**"],
             deny_globs=["docs/private/**"],
@@ -131,4 +131,5 @@ class PathGuardTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
 

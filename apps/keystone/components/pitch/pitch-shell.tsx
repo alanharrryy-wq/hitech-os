@@ -1,14 +1,20 @@
+import * as React from "react";
 import type { PropsWithChildren, ReactNode } from "react";
-import { Grid, GridItem, Shell, Stage, cn } from "@hitech/ui-kit";
+import { cn } from "@hitech/ui-kit";
+import { buildPitchShellFrameModel } from "./view-model/pitch-shell-model";
+import { PitchShell as CorePitchShell, type PitchShellProps as CorePitchShellProps } from "./shell";
 import type { PitchNavModel } from "./types";
-import { PitchNav } from "./pitch-nav";
 
 export interface PitchShellProps extends PropsWithChildren {
-  readonly title: string;
+  readonly title?: string;
   readonly subtitle?: string;
-  readonly nav: PitchNavModel;
+  readonly nav?: PitchNavModel;
   readonly actions?: ReactNode;
   readonly className?: string;
+  readonly model?: CorePitchShellProps["model"];
+  readonly showScrollAffordance?: boolean;
+  readonly enableKeyboardNav?: boolean;
+  readonly children?: React.ReactNode;
 }
 
 export function PitchShell({
@@ -17,24 +23,38 @@ export function PitchShell({
   nav,
   actions,
   children,
-  className
+  className,
+  model,
+  showScrollAffordance = true,
+  enableKeyboardNav = false
 }: PitchShellProps) {
+  const resolvedModel =
+    model ??
+    (() => {
+      const shellModel = buildPitchShellFrameModel(nav?.activeSlug);
+      return {
+        ...shellModel,
+        hero: {
+          ...shellModel.hero,
+          title: title ?? shellModel.hero.title,
+          subtitle: subtitle ?? shellModel.hero.subtitle
+        },
+        nav: {
+          links: nav?.links ?? shellModel.nav.links,
+          ...(nav?.activeSlug ? { activeSlug: nav.activeSlug } : {})
+        }
+      };
+    })();
+
   return (
-    <Stage className="pitch-stage">
-      <Shell
-        title={title}
-        subtitle={subtitle}
-        actions={actions}
-        width="default"
-        className={cn("pb-12", className)}
-      >
-        <Grid cols={12} gap="md">
-          <GridItem span={12}>
-            <PitchNav model={nav} />
-          </GridItem>
-          <GridItem span={12}>{children}</GridItem>
-        </Grid>
-      </Shell>
-    </Stage>
+    <CorePitchShell
+      model={resolvedModel}
+      className={cn(className)}
+      showScrollAffordance={showScrollAffordance}
+      enableKeyboardNav={enableKeyboardNav}
+    >
+      {actions ? <div className="pitch-glass-card pitch-neon-edge rounded-[var(--pitch-radius-lg)] p-3">{actions}</div> : null}
+      {children}
+    </CorePitchShell>
   );
 }

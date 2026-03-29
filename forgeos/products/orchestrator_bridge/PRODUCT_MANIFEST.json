@@ -1,0 +1,27 @@
+{
+  "product_id": "orchestrator_bridge",
+  "package_id": "forge.product.orchestrator_bridge",
+  "version": "0.1.0",
+  "owner": "forge_products_orchestrator_bridge",
+  "layer": "product",
+  "lifecycle_contracts": [
+    "forge.lifecycle.product.activate.v1",
+    "forge.lifecycle.product.suspend.v1",
+    "forge.lifecycle.package.dispose.v1"
+  ],
+  "host_contributions": [
+    "contrib.orchestrator_bridge.main_surface"
+  ],
+  "state_slices": [
+    "product.orchestrator_bridge.workflows",
+    "product.orchestrator_bridge.last_report"
+  ],
+  "capability_contracts": [
+    "forge.capability.process.execute.v1",
+    "forge.capability.runs.append.v1"
+  ],
+  "compatibility": {
+    "kernel": ">=0.1.0,<1.0.0",
+    "commons": ">=0.1.0,<1.0.0"
+  }
+}

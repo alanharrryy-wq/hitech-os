@@ -1,0 +1,341 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any
+
+from tools.hos._core.stable_json import write_json
+from tools.hos._core.stable_text import write_text
+
+from .config import SentinelConfig
+from .utils import now_utc_iso
+
+
+def _artifact_volume_penalty(artifact_result: dict[str, Any]) -> tuple[int, dict[str, Any] | None]:
+    summary = artifact_result.get("summary", {})
+    total = int(summary.get("artifactCount", 0))
+    cleanup_candidates = int(summary.get("cleanupCandidateCount", total))
+    if cleanup_candidates <= 0:
+        return 0, None
+    penalty = min(25, cleanup_candidates // 20 + 1)
+    return penalty, {"cleanupCandidates": cleanup_candidates, "totalArtifacts": total}
+
+
+def _security_findings_penalty(security_result: dict[str, Any]) -> tuple[int, dict[str, Any] | None]:
+    findings = security_result.get("findings", [])
+    if isinstance(findings, list) and findings:
+        severity_weight = {
+            "critical": 12.0,
+            "high": 8.0,
+            "medium": 4.0,
+            "low": 1.0,
+        }
+        weighted_points = 0.0
+        for finding in findings:
+            severity = str(finding.get("severity", "low")).lower()
+            context = str(finding.get("context", "runtime")).lower()
+            confidence_raw = finding.get("confidence", 1.0)
+            try:
+                confidence = float(confidence_raw)
+            except (TypeError, ValueError):
+                confidence = 1.0
+            confidence = max(0.1, min(1.0, confidence))
+            context_multiplier = 0.2 if context == "documentation" else 1.0
+            weighted_points += severity_weight.get(severity, 1.0) * confidence * context_multiplier
+        penalty = min(30, int(round(weighted_points)))
+        return penalty, {"weightedRiskPoints": round(weighted_points, 4), "findingCount": len(findings)}
+
+    finding_count = int(security_result.get("summary", {}).get("findingCount", 0))
+    if finding_count <= 0:
+        return 0, None
+    penalty = min(30, finding_count * 2)
+    return penalty, {"findingCount": finding_count}
+
+
+def _prediction_penalty(prediction_result: dict[str, Any]) -> tuple[int, dict[str, Any] | None]:
+    actionable_kinds = {
+        "repository_bloat",
+        "artifact_accumulation",
+        "disk_usage_growth",
+        "problematic_files",
+    }
+    predictions = prediction_result.get("predictions", [])
+    if not isinstance(predictions, list) or not predictions:
+        high_risk_predictions = int(prediction_result.get("summary", {}).get("highRisk", 0))
+        if high_risk_predictions <= 0:
+            return 0, None
+        penalty = min(20, high_risk_predictions * 6)
+        return penalty, {"highRisk": high_risk_predictions}
+
+    high = 0
+    medium = 0
+    for row in predictions:
+        kind = str(row.get("kind", "")).strip()
+        if kind not in actionable_kinds:
+            continue
+        risk = str(row.get("risk", "low")).lower()
+        if risk == "high":
+            high += 1
+        elif risk == "medium":
+            medium += 1
+    penalty = min(16, high * 4 + medium * 2)
+    if penalty <= 0:
+        return 0, None
+    return penalty, {"actionableHighRisk": high, "actionableMediumRisk": medium}
+
+
+def compute_health_score(
+    scan_state: dict[str, Any],
+    artifact_result: dict[str, Any],
+    cleanup_result: dict[str, Any],
+    repair_result: dict[str, Any],
+    security_result: dict[str, Any],
+    prediction_result: dict[str, Any],
+    telemetry_payload: dict[str, Any] | None = None,
+) -> tuple[int, list[dict[str, Any]]]:
+    telemetry_payload = telemetry_payload or {}
+    score = 100
+    factors: list[dict[str, Any]] = []
+
+    nested = int(scan_state.get("summary", {}).get("nestedGitMarkers", 0))
+    if nested > 0:
+        penalty = min(40, nested * 10)
+        score -= penalty
+        factors.append({"factor": "unmanaged_nested_git", "delta": -penalty, "value": nested})
+
+    artifact_penalty, artifact_value = _artifact_volume_penalty(artifact_result=artifact_result)
+    if artifact_penalty > 0:
+        penalty = artifact_penalty
+        score -= penalty
+        factors.append({"factor": "artifact_volume", "delta": -penalty, "value": artifact_value})
+
+    security_penalty, security_value = _security_findings_penalty(security_result=security_result)
+    if security_penalty > 0:
+        penalty = security_penalty
+        score -= penalty
+        factors.append({"factor": "security_findings", "delta": -penalty, "value": security_value})
+
+    cleanup_deleted = int(cleanup_result.get("summary", {}).get("deletedFiles", 0))
+    if cleanup_deleted > 0:
+        bonus = min(10, cleanup_deleted // 20 + 1)
+        score += bonus
+        factors.append({"factor": "cleanup_effect", "delta": bonus, "value": cleanup_deleted})
+
+    repair_failed = int(repair_result.get("summary", {}).get("failedActions", 0))
+    if repair_failed > 0:
+        penalty = min(20, repair_failed * 4)
+        score -= penalty
+        factors.append({"factor": "repair_failures", "delta": -penalty, "value": repair_failed})
+
+    prediction_penalty, prediction_value = _prediction_penalty(prediction_result=prediction_result)
+    if prediction_penalty > 0:
+        penalty = prediction_penalty
+        score -= penalty
+        factors.append({"factor": "high_risk_predictions", "delta": -penalty, "value": prediction_value})
+
+    repo_size = int(telemetry_payload.get("repositorySizeBytes", 0))
+    if repo_size > 2 * 1024 * 1024 * 1024:
+        penalty = 10
+        score -= penalty
+        factors.append({"factor": "repository_size", "delta": -penalty, "value": repo_size})
+    elif repo_size > 1 * 1024 * 1024 * 1024:
+        penalty = 5
+        score -= penalty
+        factors.append({"factor": "repository_size", "delta": -penalty, "value": repo_size})
+
+    stale_branches = int(telemetry_payload.get("staleBranches30d", 0))
+    if stale_branches > 0:
+        penalty = min(10, stale_branches // 4 + 1)
+        score -= penalty
+        factors.append({"factor": "branch_hygiene", "delta": -penalty, "value": stale_branches})
+
+    top_modified = telemetry_payload.get("topModifiedFiles90d", [])
+    if isinstance(top_modified, list) and top_modified:
+        top_pressure = sum(int(row.get("commits", 0)) for row in top_modified[:10])
+        if top_pressure > 220:
+            penalty = min(8, top_pressure // 90)
+            score -= penalty
+            factors.append({"factor": "code_stability", "delta": -penalty, "value": top_pressure})
+
+    score = max(0, min(100, score))
+    return score, factors
+
+
+def _status_from_score(score: int) -> str:
+    if score >= 85:
+        return "healthy"
+    if score >= 65:
+        return "warning"
+    return "critical"
+
+
+def _markdown_report(payload: dict[str, Any]) -> str:
+    health = payload.get("health", {})
+    summary = payload.get("summary", {})
+    files = payload.get("files", {})
+    predictions = payload.get("predictions", {})
+    lines = [
+        "# Git Sentinel Report",
+        "",
+        f"- Timestamp: {payload.get('timestamp', '')}",
+        f"- Repository: {payload.get('repoRoot', '')}",
+        f"- Health score: {health.get('score', 0)} ({health.get('status', 'unknown')})",
+        f"- File count: {summary.get('fileCount', 0)}",
+        f"- Artifact count: {summary.get('artifactCount', 0)}",
+        f"- Nested git markers: {summary.get('nestedGitMarkers', 0)}",
+        f"- Security findings: {summary.get('securityFindings', 0)}",
+        f"- Security raw findings: {summary.get('securityRawFindings', 0)}",
+        f"- Security suppressed (false positives): {summary.get('securitySuppressedFindings', 0)}",
+        f"- Security false-positive rate: {summary.get('securityFalsePositiveRate', 0.0)}",
+        f"- Security eval precision: {summary.get('securityEvalPrecision', 0.0)}",
+        f"- Security eval recall: {summary.get('securityEvalRecall', 0.0)}",
+        f"- Security eval f1: {summary.get('securityEvalF1', 0.0)}",
+        "",
+        "## Predictions",
+        "",
+    ]
+    for row in predictions.get("predictions", []):
+        lines.append(
+            f"- {row.get('kind')}: risk={row.get('risk')} score={row.get('score')} detail={row.get('detail')}"
+        )
+    lines.extend(
+        [
+            "",
+            "## Artifacts",
+            "",
+            f"- Report JSON: {files.get('reportJson', '')}",
+            f"- Dashboard data: {files.get('dashboardJson', '')}",
+            f"- Telemetry latest: {files.get('telemetryLatest', '')}",
+            f"- False-positive metrics: {files.get('falsePositiveMetricsLatest', '')}",
+            f"- Security eval metrics: {files.get('securityEvalLatest', '')}",
+            "",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
+def write_reports(
+    config: SentinelConfig,
+    payload: dict[str, Any],
+) -> dict[str, str]:
+    timestamp_slug = payload.get("timestamp", now_utc_iso()).replace(":", "").replace("-", "")
+    report_json_path = (config.report_dir / f"git_sentinel_report_{timestamp_slug}.json").resolve()
+    report_md_path = (config.report_dir / f"git_sentinel_report_{timestamp_slug}.md").resolve()
+    latest_json_path = (config.report_dir / "git_sentinel_report_latest.json").resolve()
+    latest_md_path = (config.report_dir / "git_sentinel_report_latest.md").resolve()
+    dashboard_json_path = (config.dashboard_dir / "dashboard_data.json").resolve()
+
+    write_json(report_json_path, payload, indent=2, sort_keys=True)
+    write_json(latest_json_path, payload, indent=2, sort_keys=True)
+    write_text(report_md_path, _markdown_report(payload), trailing_newline=True)
+    write_text(latest_md_path, _markdown_report(payload), trailing_newline=True)
+    write_json(dashboard_json_path, payload.get("dashboard", {}), indent=2, sort_keys=True)
+    write_json(config.state_path, payload, indent=2, sort_keys=True)
+
+    return {
+        "reportJson": report_json_path.as_posix(),
+        "reportMarkdown": report_md_path.as_posix(),
+        "latestJson": latest_json_path.as_posix(),
+        "latestMarkdown": latest_md_path.as_posix(),
+        "dashboardJson": dashboard_json_path.as_posix(),
+        "stateJson": config.state_path.as_posix(),
+    }
+
+
+def build_report_payload(
+    config: SentinelConfig,
+    scan_state: dict[str, Any],
+    artifact_result: dict[str, Any],
+    ignore_result: dict[str, Any],
+    cleanup_result: dict[str, Any],
+    repair_result: dict[str, Any],
+    security_result: dict[str, Any],
+    security_eval_result: dict[str, Any] | None,
+    telemetry_payload: dict[str, Any],
+    prediction_result: dict[str, Any],
+    visualization_result: dict[str, Any],
+    errors: list[str],
+    telemetry_files: dict[str, str],
+) -> dict[str, Any]:
+    security_eval_result = security_eval_result or {}
+    health_score, health_factors = compute_health_score(
+        scan_state=scan_state,
+        artifact_result=artifact_result,
+        cleanup_result=cleanup_result,
+        repair_result=repair_result,
+        security_result=security_result,
+        prediction_result=prediction_result,
+        telemetry_payload=telemetry_payload,
+    )
+
+    summary = {
+        "fileCount": int(scan_state.get("summary", {}).get("fileCount", 0)),
+        "artifactCount": int(artifact_result.get("summary", {}).get("artifactCount", 0)),
+        "nestedGitMarkers": int(scan_state.get("summary", {}).get("nestedGitMarkers", 0)),
+        "securityFindings": int(security_result.get("summary", {}).get("findingCount", 0)),
+        "securityRawFindings": int(
+            security_result.get("summary", {}).get("rawFindingCount", security_result.get("summary", {}).get("findingCount", 0))
+        ),
+        "securitySuppressedFindings": int(security_result.get("summary", {}).get("suppressedFindingCount", 0)),
+        "securityFalsePositiveRate": float(security_result.get("summary", {}).get("falsePositiveRate", 0.0)),
+        "securityEvalStatus": str(security_eval_result.get("status", "skipped")),
+        "securityEvalPassed": bool(security_eval_result.get("passed", False)),
+        "securityEvalPrecision": float(security_eval_result.get("metrics", {}).get("precision", 0.0)),
+        "securityEvalRecall": float(security_eval_result.get("metrics", {}).get("recall", 0.0)),
+        "securityEvalF1": float(security_eval_result.get("metrics", {}).get("f1", 0.0)),
+        "cleanupDeletedFiles": int(cleanup_result.get("summary", {}).get("deletedFiles", 0)),
+        "repairExecutedActions": int(repair_result.get("summary", {}).get("executedActions", 0)),
+        "errorCount": len(errors),
+    }
+
+    dashboard = {
+        "metrics": {
+            "healthScore": health_score,
+            "repositorySizeBytes": telemetry_payload.get("repositorySizeBytes", 0),
+            "artifactCount": telemetry_payload.get("artifactCount", 0),
+            "cleanupDeleted": telemetry_payload.get("cleanupDeleted", 0),
+            "securityFindingCount": telemetry_payload.get("securityFindingCount", 0),
+            "securityRawFindingCount": telemetry_payload.get("securityRawFindingCount", 0),
+            "securitySuppressedFindingCount": telemetry_payload.get("securitySuppressedFindingCount", 0),
+            "securityFalsePositiveRate": telemetry_payload.get("securityFalsePositiveRate", 0.0),
+            "securityEvalPrecision": telemetry_payload.get("securityEvalPrecision", 0.0),
+            "securityEvalRecall": telemetry_payload.get("securityEvalRecall", 0.0),
+            "securityEvalF1": telemetry_payload.get("securityEvalF1", 0.0),
+            "securityEvalPassed": telemetry_payload.get("securityEvalPassed", False),
+        },
+        "alerts": security_result.get("findings", []),
+        "cleanupActions": cleanup_result.get("results", []),
+        "healthFactors": health_factors,
+        "predictions": prediction_result.get("predictions", []),
+    }
+
+    return {
+        "timestamp": telemetry_payload.get("timestamp", now_utc_iso()),
+        "repoRoot": config.repo_root.as_posix(),
+        "health": {
+            "score": health_score,
+            "status": _status_from_score(health_score),
+            "factors": health_factors,
+        },
+        "summary": summary,
+        "scan": scan_state.get("summary", {}),
+        "artifacts": artifact_result.get("summary", {}),
+        "ignore": ignore_result,
+        "cleanup": cleanup_result.get("summary", {}),
+        "repair": repair_result.get("summary", {}),
+        "security": security_result.get("summary", {}),
+        "securityEval": security_eval_result,
+        "telemetry": telemetry_payload,
+        "predictions": prediction_result,
+        "visualization": visualization_result,
+        "errors": errors,
+        "dashboard": dashboard,
+        "files": {
+            "telemetryLatest": telemetry_files.get("latest", ""),
+            "telemetrySnapshot": telemetry_files.get("snapshot", ""),
+            "falsePositiveMetricsLatest": telemetry_files.get("falsePositiveLatest", ""),
+            "falsePositiveMetricsSnapshot": telemetry_files.get("falsePositiveSnapshot", ""),
+            "securityEvalLatest": telemetry_files.get("securityEvalLatest", ""),
+            "securityEvalSnapshot": telemetry_files.get("securityEvalSnapshot", ""),
+        },
+    }

@@ -7,8 +7,8 @@ export const PITCH_SCREEN_SLUGS = [
   "02-industrial-flow",
   "03-hitech-os",
   "04-valuation",
-  "05-inventory-foundation",
-  "06-shipments-receiving"
+  "06-shipments-receiving",
+  "05-inventory-foundation"
 ] as const;
 
 export type PitchScreenSlug = (typeof PITCH_SCREEN_SLUGS)[number];
@@ -40,8 +40,8 @@ export const PITCH_SCREEN_TITLES: Readonly<Record<PitchScreenSlug, string>> = {
   "03-hitech-os": "MOTOR 2 — HITECH OS (Infraestructura Digital)",
   "04-valuation": "ESTRUCTURA FINANCIERA + VALUACIÓN",
   "05-inventory-foundation":
-    "RUN 1 - INVENTORY FOUNDATION (RBAC + SUPPLIERS + SKU + DOCUMENT VAULT)",
-  "06-shipments-receiving": "RUN 2 - IMPORT SHIPMENTS (CUSTOMS PACK + RECEIVING -> QUARANTINE)"
+    "INVENTORY FOUNDATION (RBAC + SUPPLIERS + SKU + DOCUMENT VAULT)",
+  "06-shipments-receiving": "IMPORT SHIPMENTS (CUSTOMS PACK + RECEIVING -> QUARANTINE)"
 };
 
 export const PITCH_ANCHORS: Readonly<Record<PitchScreenSlug, string>> = {
@@ -58,8 +58,8 @@ export const PITCH_SCREEN_NUMBERS: Readonly<Record<PitchScreenSlug, 1 | 2 | 3 | 
   "02-industrial-flow": 2,
   "03-hitech-os": 3,
   "04-valuation": 4,
-  "05-inventory-foundation": 5,
-  "06-shipments-receiving": 6
+  "05-inventory-foundation": 6,
+  "06-shipments-receiving": 5
 };
 
 export const PITCH_TABLE_HEADERS = ["Modelo", "Múltiplo", "Riesgo", "Escalabilidad"] as const;

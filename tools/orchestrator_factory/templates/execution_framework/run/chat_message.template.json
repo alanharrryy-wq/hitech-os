@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "message_id": "msg-sync-checkpoint-20260327-170500-auth",
+  "message_type": "sync_checkpoint",
+  "run_id": "run-20260327-170000",
+  "round_id": "round-017",
+  "channel_id": "channel.sync_checkpoints",
+  "from_chat_id": "chat.01-identity-access-and-trust",
+  "published_at_utc": "2026-03-27T17:05:00Z",
+  "status": "in_progress",
+  "status_summary": "Identity package is implementing session hardening and has completed validation wiring.",
+  "project_id": "hitech-os",
+  "package_id": "01-identity-access-and-trust",
+  "to_chat_id": "governance-control",
+  "severity": "sev3",
+  "current_item_refs": [
+    "01-identity-access-and-trust/contracts/session_policy.json",
+    "01-identity-access-and-trust/docs/session-hardening.md"
+  ],
+  "related_entity_ids": [
+    "handoff-auth-session-policy",
+    "dependency-auth-cache-readiness"
+  ],
+  "evidence_refs": [
+    "ops/runs/run-20260327-170000/rounds/round-017/reports/auth_validation_report.json"
+  ],
+  "next_action_owner": "chat.01-identity-access-and-trust",
+  "next_planned_action": "Publish completed checkpoint with evidence after schema verification passes.",
+  "payload_ref": "ops/runs/run-20260327-170000/rounds/round-017/checkpoints/msg-sync-checkpoint-20260327-170500-auth.json",
+  "tags": [
+    "coordination",
+    "checkpoint",
+    "identity"
+  ],
+  "history": [
+    {
+      "action": "published",
+      "actor_chat_id": "chat.01-identity-access-and-trust",
+      "at_utc": "2026-03-27T17:05:00Z",
+      "status": "in_progress",
+      "summary": "Checkpoint published for operator visibility.",
+      "related_entity_ids": [
+        "handoff-auth-session-policy"
+      ],
+      "evidence_refs": [
+        "ops/runs/run-20260327-170000/rounds/round-017/reports/auth_validation_report.json"
+      ]
+    }
+  ]
+}

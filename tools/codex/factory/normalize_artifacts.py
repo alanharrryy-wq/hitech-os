@@ -7,6 +7,7 @@ from typing import Any
 
 TIMESTAMP_RE = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z)")
 RUN_ID_RE = re.compile(r"\b[a-z0-9_]+_\d{8}_\d{6}(?:_[a-f0-9]{8})?(?:_\d{3})?\b", re.IGNORECASE)
+LEDGER_WATCH_EVENTS_RE = re.compile(r"(?m)^- Ledger watch events:\s+\d+\s*$")
 
 
 def normalize_value(value: Any) -> Any:
@@ -40,6 +41,7 @@ def normalize_json_text(text: str) -> str:
 def normalize_report_text(text: str) -> str:
     normalized = TIMESTAMP_RE.sub("<TS>", text)
     normalized = RUN_ID_RE.sub("<RUN_ID>", normalized)
+    normalized = LEDGER_WATCH_EVENTS_RE.sub("- Ledger watch events: <N>", normalized)
     return normalized
 
 

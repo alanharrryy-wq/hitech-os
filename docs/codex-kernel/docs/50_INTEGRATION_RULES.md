@@ -41,6 +41,39 @@ Z does **not**:
 
 ---
 
+## Graph Analysis Outputs (Required)
+
+Z_aggregator must generate schema-valid canonical JSON artifacts:
+
+- `GRAVITY_REPORT.json`
+- `PROTECTED_NODES.json`
+- `IMPACT_CONE_REPORT.json`
+- `DEPENDENCY_DIFF.json`
+- `DISPATCH_RECOMMENDATIONS.json`
+
+Operator mirrors:
+
+- `GRAVITY_SUMMARY.md`
+- `DISPATCH_RECOMMENDATIONS.md`
+
+Missing or schema-invalid required graph-analysis JSON artifacts => `BLOCKED`.
+
+---
+
+## Protected-Node Protocol
+
+If protected nodes are touched, Z_aggregator must verify evidence for:
+
+1. declaration
+2. impact cone
+3. dependency diff
+4. D_validation review
+5. Z_aggregator approval
+
+Missing protocol evidence => `BLOCKED`.
+
+---
+
 ## Merge Strategy (Default)
 
 Preferred order:

@@ -38,6 +38,12 @@ python -m tools.codex.factory launch --base-ref HEAD --dry-run
 python -m tools.codex.factory bundle-validate --run-id <RUN_ID>
 ```
 
+Optional explicit closeout:
+
+```powershell
+python -m tools.codex.factory auto-closeout --run-id <RUN_ID>
+```
+
 4. Integrate:
 
 ```powershell
@@ -80,11 +86,11 @@ All run artifacts must remain under:
 
 Expected directories:
 
-- `tools/codex/runs/<RUN_ID>/A_worker/`
-- `tools/codex/runs/<RUN_ID>/B_worker/`
-- `tools/codex/runs/<RUN_ID>/C_worker/`
-- `tools/codex/runs/<RUN_ID>/D_worker/`
-- `tools/codex/runs/<RUN_ID>/Z_integrator/`
+- `tools/codex/runs/<RUN_ID>/A_core/`
+- `tools/codex/runs/<RUN_ID>/B_tooling/`
+- `tools/codex/runs/<RUN_ID>/C_features/`
+- `tools/codex/runs/<RUN_ID>/D_validation/`
+- `tools/codex/runs/<RUN_ID>/Z_aggregator/`
 
 Required worker artifacts:
 
@@ -96,6 +102,7 @@ Required worker artifacts:
 - `SCOPE_LOCK.json`
 - `HANDOFF_NOTE.json`
 - `LOGS/INDEX.json`
+- `CODEX_OUTPUT.txt`
 
 Required integrator artifacts:
 
@@ -113,6 +120,14 @@ Required integrator artifacts:
 - `FAIL`: internal execution error.
 
 `FINAL_REPORT.txt`, `STATUS.json`, and CLI exit code must align.
+
+## Automation Defaults
+
+- Preflight auto-repair is ON by default.
+- Worker auto-closeout is ON by default (`bundle-validate`).
+- Missing worker folders trigger auto-heal attempts before blocking.
+- `C_features` is default visual baseline owner.
+- Z watch/ledger visibility is enabled in runtime and prompt contracts.
 
 ## Determinism Rules
 
@@ -133,19 +148,19 @@ Factory config precedence:
 
 ## Z Write Policy
 
-Z-integrator writes are restricted to:
+Z_aggregator writes are restricted to:
 `tools/codex/runs/<RUN_ID>/...`
 
 Any attempted write outside this root is blocked and reported in:
 
-- `Z_integrator/FINAL_REPORT.txt`
-- `Z_integrator/STATUS.json`
+- `Z_aggregator/FINAL_REPORT.txt`
+- `Z_aggregator/STATUS.json`
 
 ## Quick Troubleshooting
 
 If `oneshot` is blocked:
 
-1. Inspect `Z_integrator/FINAL_REPORT.txt`
+1. Inspect `Z_aggregator/FINAL_REPORT.txt`
 2. Inspect worker `STATUS.json` files
 3. Run `bundle-validate` manually for detail
 4. Run `ledger --limit 50` to inspect event timeline
@@ -159,3 +174,4 @@ If integration is blocked by scope:
 
 1. Correct `SCOPE_LOCK.json` or worker file paths.
 2. Re-run `bundle-validate` and `integrate`.
+

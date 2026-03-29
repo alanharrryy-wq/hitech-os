@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "policy_id": "dependencies",
+  "version": "2026-03-18",
+  "workspace_patterns": [
+    "apps/*",
+    "services/*",
+    "packages/*",
+    "tools/*"
+  ],
+  "workspace_roots": [
+    "apps",
+    "services",
+    "packages",
+    "tools"
+  ],
+  "retired_workspace_entries": [
+    "factory"
+  ],
+  "allowed_workspace_cycles": [],
+  "no_new_cycles": true,
+  "boundary_model": {
+    "apps": ["packages", "tools"],
+    "services": ["packages", "tools"],
+    "packages": ["packages", "tools"],
+    "tools": ["tools", "packages", "apps", "services"]
+  },
+  "boundary_source_scan_roots": [
+    "apps",
+    "services",
+    "packages"
+  ],
+  "policy_validation": {
+    "require_workspace_pattern_sync": true
+  },
+  "release_critical_hubs": [
+    "packages/contracts",
+    "packages/ui-kit",
+    "apps/keystone",
+    "services/core-api"
+  ]
+}

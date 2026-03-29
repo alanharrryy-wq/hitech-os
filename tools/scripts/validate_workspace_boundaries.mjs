@@ -1,20 +1,47 @@
 #!/usr/bin/env node
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import process from "node:process";
+import {
+  loadDependencyPolicyModel,
+  resolveRepoRoot,
+  rootOfProjectPath,
+  toPosix
+} from "./lib/dependency_policy.mjs";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const repoRoot = path.resolve(__dirname, "../..");
-
-const scanRoots = ["apps", "services", "packages"];
+const repoRoot = resolveRepoRoot(import.meta.url);
 const sourceExtensions = new Set([".ts", ".tsx", ".mts", ".cts", ".js", ".jsx", ".mjs", ".cjs"]);
 
-const serviceAliases = new Set(["core-api", "ai-agent"]);
-const appAliases = new Set(["web", "demo-engine"]);
+function parseArgs(argv) {
+  const args = {
+    policy: "policies/dependencies.json",
+    workspace: "pnpm-workspace.yaml",
+    output: null
+  };
 
-function toPosix(value) {
-  return value.replace(/\\/g, "/");
+  for (let index = 0; index < argv.length; index += 1) {
+    const token = argv[index];
+    const next = argv[index + 1];
+
+    if (token === "--policy" && next) {
+      args.policy = next;
+      index += 1;
+      continue;
+    }
+
+    if (token === "--workspace" && next) {
+      args.workspace = next;
+      index += 1;
+      continue;
+    }
+
+    if (token === "--output" && next) {
+      args.output = next;
+      index += 1;
+    }
+  }
+
+  return args;
 }
 
 function listFiles(dir) {
@@ -45,46 +72,8 @@ function listFiles(dir) {
   return files;
 }
 
-function getPackageArea(relativeFile) {
-  const segments = relativeFile.split("/");
-  const root = segments[0] ?? "";
-  const packageName = segments[1] ?? "";
-  return {
-    root,
-    packageName
-  };
-}
-
-function resolveRelativeTarget(relativeFile, specifier) {
-  const absoluteFile = path.join(repoRoot, relativeFile);
-  const absoluteTarget = path.resolve(path.dirname(absoluteFile), specifier);
-  const relativeTarget = toPosix(path.relative(repoRoot, absoluteTarget));
-  if (relativeTarget.startsWith("..")) {
-    return null;
-  }
-  return relativeTarget;
-}
-
-function resolveAliasTarget(specifier) {
-  const match = specifier.match(/^@hitech\/([a-z0-9-]+)/i);
-  if (!match) {
-    return null;
-  }
-
-  const aliasName = match[1];
-  if (serviceAliases.has(aliasName)) {
-    return { area: "services", name: aliasName };
-  }
-  if (appAliases.has(aliasName)) {
-    return { area: "apps", name: aliasName };
-  }
-
-  return { area: "packages", name: aliasName };
-}
-
 function collectSpecifiers(content) {
   const results = [];
-
   const importExportRegex = /(?:import|export)\s+(?:[^"'`]+?\s+from\s+)?["']([^"']+)["']/g;
   const requireRegex = /require\(\s*["']([^"']+)["']\s*\)/g;
 
@@ -104,107 +93,177 @@ function collectSpecifiers(content) {
   return results;
 }
 
-function validateSpecifier(relativeFile, specifier, line) {
-  const source = getPackageArea(relativeFile);
-  const violations = [];
+function detectTargetRoot({
+  relativeFile,
+  specifier,
+  workspaceRoots,
+  packageNameToProject
+}) {
+  if (specifier.startsWith(".")) {
+    const absoluteFile = path.join(repoRoot, relativeFile);
+    const absoluteTarget = path.resolve(path.dirname(absoluteFile), specifier);
+    const relativeTarget = toPosix(path.relative(repoRoot, absoluteTarget));
+    if (relativeTarget.startsWith("..")) {
+      return null;
+    }
+    return rootOfProjectPath(relativeTarget);
+  }
 
-  const pushViolation = (reason) => {
-    violations.push(`${relativeFile}:${line} imports '${specifier}' (${reason})`);
+  if (specifier.startsWith("@hitech/")) {
+    const targetProject = packageNameToProject.get(specifier);
+    if (!targetProject) {
+      return null;
+    }
+    return rootOfProjectPath(targetProject);
+  }
+
+  for (const root of workspaceRoots) {
+    if (specifier === root || specifier.startsWith(`${root}/`)) {
+      return root;
+    }
+  }
+
+  return null;
+}
+
+function main() {
+  const args = parseArgs(process.argv.slice(2));
+  const model = loadDependencyPolicyModel({
+    repoRoot,
+    policyPath: args.policy,
+    workspacePath: args.workspace
+  });
+
+  const policyValidationErrors = [...model.validation.errors];
+  const policyValidationWarnings = [...model.validation.warnings];
+  if (
+    model.workspace.pattern_sync.only_in_policy.length > 0 ||
+    model.workspace.pattern_sync.only_in_pnpm_workspace.length > 0
+  ) {
+    policyValidationErrors.push(
+      "workspace pattern drift between dependencies policy and pnpm-workspace.yaml"
+    );
+  }
+
+  const boundaryModel = model.policy.boundary_model ?? {};
+  const workspaceRoots = model.workspace.roots;
+  const configuredScanRoots = Array.isArray(model.policy.boundary_source_scan_roots)
+    ? model.policy.boundary_source_scan_roots
+        .map((value) => String(value).trim())
+        .filter((value) => value.length > 0)
+    : [];
+  const sourceScanRoots =
+    configuredScanRoots.length > 0
+      ? configuredScanRoots.filter((root) => workspaceRoots.includes(root))
+      : workspaceRoots;
+  const boundaryViolations = [];
+  const unmatchedSpecifiers = [];
+  const filesScanned = [];
+
+  for (const root of sourceScanRoots) {
+    const absoluteRoot = path.join(repoRoot, root);
+    if (!statSync(absoluteRoot, { throwIfNoEntry: false })) {
+      continue;
+    }
+
+    const files = listFiles(absoluteRoot)
+      .map((filePath) => toPosix(path.relative(repoRoot, filePath)))
+      .sort((left, right) => left.localeCompare(right));
+
+    for (const relativeFile of files) {
+      filesScanned.push(relativeFile);
+      const sourceRoot = rootOfProjectPath(relativeFile);
+      const allowedTargets = Array.isArray(boundaryModel[sourceRoot]) ? boundaryModel[sourceRoot] : [];
+
+      const content = readFileSync(path.join(repoRoot, relativeFile), "utf8");
+      const specifiers = collectSpecifiers(content);
+
+      for (const { specifier, line } of specifiers) {
+        const targetRoot = detectTargetRoot({
+          relativeFile,
+          specifier,
+          workspaceRoots,
+          packageNameToProject: model.packageNameToProject
+        });
+
+        if (!targetRoot || targetRoot === sourceRoot) {
+          continue;
+        }
+
+        if (allowedTargets.length === 0) {
+          unmatchedSpecifiers.push(`${relativeFile}:${line} imports '${specifier}' (no boundary model for ${sourceRoot})`);
+          continue;
+        }
+
+        if (!allowedTargets.includes(targetRoot)) {
+          boundaryViolations.push(
+            `${relativeFile}:${line} imports '${specifier}' (${sourceRoot} -> ${targetRoot} not allowed by dependencies policy)`
+          );
+        }
+      }
+    }
+  }
+
+  boundaryViolations.sort((left, right) => left.localeCompare(right));
+  unmatchedSpecifiers.sort((left, right) => left.localeCompare(right));
+
+  const report = {
+    schema_version: 2,
+    generated_at_utc: new Date().toISOString(),
+    policy_path: toPosix(path.relative(repoRoot, path.resolve(repoRoot, args.policy))),
+    workspace_path: toPosix(path.relative(repoRoot, path.resolve(repoRoot, args.workspace))),
+    workspace_model: {
+      roots: model.workspace.roots,
+      source_scan_roots: sourceScanRoots,
+      effective_patterns: model.workspace.effective_patterns,
+      pattern_sync: model.workspace.pattern_sync,
+      retired_entries_present: model.workspace.retired_entries_present
+    },
+    validation: {
+      policy_error_count: policyValidationErrors.length,
+      policy_warning_count: policyValidationWarnings.length,
+      policy_errors: policyValidationErrors,
+      policy_warnings: policyValidationWarnings
+    },
+    scan: {
+      file_count: filesScanned.length
+    },
+    boundary_violations: {
+      count: boundaryViolations.length,
+      entries: boundaryViolations
+    },
+    unresolved_boundary_sources: {
+      count: unmatchedSpecifiers.length,
+      entries: unmatchedSpecifiers
+    },
+    status:
+      policyValidationErrors.length > 0 || boundaryViolations.length > 0 || unmatchedSpecifiers.length > 0
+        ? "fail"
+        : "pass"
   };
 
-  if (specifier.startsWith(".")) {
-    const target = resolveRelativeTarget(relativeFile, specifier);
-    if (!target) {
-      return violations;
+  if (args.output) {
+    const serialized = `${JSON.stringify(report, null, 2)}\n`;
+    const outputPath = path.resolve(repoRoot, args.output);
+    mkdirSync(path.dirname(outputPath), { recursive: true });
+    writeFileSync(outputPath, serialized, "utf8");
+  }
+
+  if (report.status !== "pass") {
+    process.stderr.write("[workspace:validate] FAILED\n");
+    for (const error of policyValidationErrors) {
+      process.stderr.write(` - policy: ${error}\n`);
     }
-
-    const targetArea = getPackageArea(target);
-
-    if (
-      source.root === "packages" &&
-      (targetArea.root === "apps" || targetArea.root === "services")
-    ) {
-      pushViolation("packages may not import from apps/services");
-      return violations;
+    for (const violation of boundaryViolations) {
+      process.stderr.write(` - ${violation}\n`);
     }
-
-    if (
-      source.root === "services" &&
-      targetArea.root === "services" &&
-      source.packageName !== targetArea.packageName
-    ) {
-      pushViolation("services may not import from other services directly");
-      return violations;
+    for (const unresolved of unmatchedSpecifiers.slice(0, 200)) {
+      process.stderr.write(` - ${unresolved}\n`);
     }
-
-    if (source.root === "apps" && targetArea.root === "services") {
-      pushViolation("apps may not import services directly");
-      return violations;
-    }
-
-    return violations;
+    process.exit(1);
   }
 
-  const aliasTarget = resolveAliasTarget(specifier);
-  if (!aliasTarget) {
-    return violations;
-  }
-
-  if (
-    source.root === "packages" &&
-    (aliasTarget.area === "apps" || aliasTarget.area === "services")
-  ) {
-    pushViolation("packages may only depend on packages");
-    return violations;
-  }
-
-  if (
-    source.root === "services" &&
-    aliasTarget.area === "services" &&
-    source.packageName !== aliasTarget.name
-  ) {
-    pushViolation("services may not depend on sibling services");
-    return violations;
-  }
-
-  if (source.root === "apps" && aliasTarget.area === "services") {
-    pushViolation("apps may not depend on services");
-    return violations;
-  }
-
-  return violations;
+  process.stdout.write(`[workspace:validate] OK (${filesScanned.length} files scanned)\n`);
 }
 
-const violations = [];
-
-for (const root of scanRoots) {
-  const absoluteRoot = path.join(repoRoot, root);
-  if (!statSync(absoluteRoot, { throwIfNoEntry: false })) {
-    continue;
-  }
-
-  const files = listFiles(absoluteRoot)
-    .map((filePath) => toPosix(path.relative(repoRoot, filePath)))
-    .sort((left, right) => left.localeCompare(right));
-
-  for (const relativeFile of files) {
-    const content = readFileSync(path.join(repoRoot, relativeFile), "utf8");
-    const specifiers = collectSpecifiers(content);
-
-    for (const { specifier, line } of specifiers) {
-      violations.push(...validateSpecifier(relativeFile, specifier, line));
-    }
-  }
-}
-
-violations.sort((left, right) => left.localeCompare(right));
-
-if (violations.length > 0) {
-  console.error("[workspace:validate] FAILED");
-  for (const violation of violations) {
-    console.error(` - ${violation}`);
-  }
-  process.exit(1);
-}
-
-console.log("[workspace:validate] OK");
+main();

@@ -1,0 +1,1295 @@
+{
+  "generated_at_utc": "2026-03-18T03:26:04.435810Z",
+  "package_name": "live_scene_composer_end_to_end_mutation_ui_wiring_pack_v3_cleanup_safe",
+  "purpose": "Single-zip cleanup-safe end-to-end mutation UI wiring package for Live Scene Composer with one main PowerShell script that installs, verifies, reports, and cleans legacy wave clutter.",
+  "entry_files": [
+    "00_PACKAGE_README.md",
+    "02_INSTALL_GUIDE.md",
+    "106_CLEANUP_SAFE_INSTALL_MODEL.md",
+    "107_LEGACY_WAVE_CLEANUP_SCOPE.md",
+    "109_SINGLE_SCRIPT_OPERATION_MODES.md",
+    "apply_live_scene_composer_end_to_end_mutation_ui_wiring_v3_cleanup_safe.ps1",
+    "cleanup-metadata/cleanup_scope.json",
+    "source/end-to-end-ui-wiring/index.ts"
+  ],
+  "single_main_script": "apply_live_scene_composer_end_to_end_mutation_ui_wiring_v3_cleanup_safe.ps1",
+  "default_install_behavior": {
+    "cleanup_legacy_wave": true,
+    "install_package_docs_to_canonical_root": false,
+    "summary_dir": "F:\\OneDrive\\Descargas\\live_scene_composer_end_to_end_mutation_ui_wiring_v3_cleanup_safe_summary",
+    "staging_root": "F:\\repos\\hitech-os\\tools\\live-scene-composer\\end-to-end-mutation-ui-wiring-v3-cleanup-safe"
+  },
+  "file_count": 254,
+  "files": [
+    {
+      "path": "00_PACKAGE_README.md",
+      "size_bytes": 1017,
+      "sha256": "bccb7786499a3da1c3c5568f22b73ebeea92cab9885550d8c3c00bc56c145f0a"
+    },
+    {
+      "path": "01_PACKAGE_CONTENTS.md",
+      "size_bytes": 467,
+      "sha256": "2f62c011d9546c2b6ee126e7d2aad6ec74e69bba88848c6df53154ef02502eec"
+    },
+    {
+      "path": "02_INSTALL_GUIDE.md",
+      "size_bytes": 733,
+      "sha256": "ea43915436ee9b0c422a348a417862e218b3893a12557e6db07f579d3874d9bb"
+    },
+    {
+      "path": "03_IMPLEMENTATION_NOTES.md",
+      "size_bytes": 463,
+      "sha256": "18af0399c4a9f5b6d9b41dc887ff6e8604eef4ac6bda31799e9392ea430c9f7a"
+    },
+    {
+      "path": "04_STACKING_AND_SCOPE.md",
+      "size_bytes": 342,
+      "sha256": "c045bd564d05a69623ab0074b15a897db7557d3cb47bc1eb7af76c6fde0c2678"
+    },
+    {
+      "path": "05_PACKAGE_MANIFEST.json",
+      "size_bytes": 48713,
+      "sha256": "0fe907ec7c20961f82b006174983bcfc821b093e813012e5aa392b3f0071ee24"
+    },
+    {
+      "path": "100_END_TO_END_UI_SMOKE_PLAN.md",
+      "size_bytes": 356,
+      "sha256": "18e4a5e86e2e349395816268a1365f88753a996267925b516f5ee4b4a87826c9"
+    },
+    {
+      "path": "101_MUTATION_UI_EVIDENCE_MODEL.md",
+      "size_bytes": 274,
+      "sha256": "b9cd9945bae3ce8ed3277ba0ae6e8e43f52a8f4eac875a3c627046d3a6acbde1"
+    },
+    {
+      "path": "102_MUTATION_UI_FAILURE_ATLAS.md",
+      "size_bytes": 383,
+      "sha256": "2c2c7e4550ae094c3a84622ed5760d6303d761dfffdfdeec9fb1f861eda5900f"
+    },
+    {
+      "path": "103_REPO_STACKING_AND_MIRROR_RULES.md",
+      "size_bytes": 295,
+      "sha256": "6695d6f952842a6defbef8feab76e0ccf372ac41dace781a6c593c63e225b6a1"
+    },
+    {
+      "path": "104_OPERATOR_RUNBOOK_UI_WIRING.md",
+      "size_bytes": 275,
+      "sha256": "70295b9847d0035e36068c492d8dcd8520d113062f3293d2c9f1f0c15f546018"
+    },
+    {
+      "path": "105_NEXT_WAVE_RECOMMENDATIONS.md",
+      "size_bytes": 274,
+      "sha256": "bd4cbdf624bd623b460edf9cd25e0d3da2f6108e357fcc9ac7b56f87b16c6b4b"
+    },
+    {
+      "path": "106_CLEANUP_SAFE_INSTALL_MODEL.md",
+      "size_bytes": 872,
+      "sha256": "f6f529ead74874542484817b3b6f1377a29521b6debf6c4369188b047186b2f8"
+    },
+    {
+      "path": "107_LEGACY_WAVE_CLEANUP_SCOPE.md",
+      "size_bytes": 1105,
+      "sha256": "990529d5585ce1f2a9e739752bbe78a294eb4b4b2d8caa2b9817195d76a735df"
+    },
+    {
+      "path": "108_PACKAGE_OWNERSHIP_AND_DELETE_RULES.md",
+      "size_bytes": 833,
+      "sha256": "f3800386920359c0fae1ed8d12f7c89a1cbb65c9a8068f357b650a60bdf5864d"
+    },
+    {
+      "path": "109_SINGLE_SCRIPT_OPERATION_MODES.md",
+      "size_bytes": 610,
+      "sha256": "87a215ce1fb749aa402174f80511891be01bfc4a6fb838cca2af9d0845652d16"
+    },
+    {
+      "path": "110_CANONICAL_DOC_PROTECTION_RULES.md",
+      "size_bytes": 472,
+      "sha256": "48f83b419d787da4dde476f1879bbcb3c37acf467f28077dfba8fd475dba79ed"
+    },
+    {
+      "path": "111_CLEANUP_REPORT_SCHEMA.md",
+      "size_bytes": 339,
+      "sha256": "f11fee0f13f796092ab8a1171de238590c7b7545584869d1f57ea9f35b1119bc"
+    },
+    {
+      "path": "112_OPERATOR_CLEANUP_RUNBOOK.md",
+      "size_bytes": 644,
+      "sha256": "081b18d84aaf06f5f44c2161cd36bfd68f22eb48f060259c912c3066d1dd560f"
+    },
+    {
+      "path": "50_MUTATION_CLIENT_BRIDGE_CONTRACT.md",
+      "size_bytes": 2326,
+      "sha256": "47d2c7af4a67ccde616e3b87698acf1d08f65e3e1f438a9ac3422af254c9fd64"
+    },
+    {
+      "path": "51_PREVIEW_SESSION_MODEL.md",
+      "size_bytes": 1176,
+      "sha256": "db4504e8cdfc232b2e2b8ec3cbd2f13b7585f2cb8a20e925ad53a2d0dd7212d3"
+    },
+    {
+      "path": "52_COMMIT_REVERT_DISCARD_FLOW.md",
+      "size_bytes": 925,
+      "sha256": "76611d1cc167104f1ba443c4294253fc9017951e02d499b909996da9f8b0c8f3"
+    },
+    {
+      "path": "53_MUTATION_POLICY_MODE_MATRIX.md",
+      "size_bytes": 864,
+      "sha256": "18098efe1e59c60719a21ba136808ac370553e45a2c2b004df4995111de5be62"
+    },
+    {
+      "path": "54_BRIDGE_ADAPTER_ROUTING_RULES.md",
+      "size_bytes": 799,
+      "sha256": "2deb2deb7be4fce0c9a5b138416c0518e2441678d5fe23caff2811be7c9b30dc"
+    },
+    {
+      "path": "55_PREVIEW_DIFF_AND_BASELINE_COMPARE.md",
+      "size_bytes": 619,
+      "sha256": "114d770a312466214adf829726b1b8bf38309bbf2e1413101283845a0bc9a917"
+    },
+    {
+      "path": "56_MUTATION_REJECTION_AND_DIAGNOSTICS.md",
+      "size_bytes": 666,
+      "sha256": "669d9549e5aae2185021cae8241589dd04834e04fadf963be526c152bc03e981"
+    },
+    {
+      "path": "57_MUTATION_CLIENT_TEST_PLAN.md",
+      "size_bytes": 673,
+      "sha256": "eda5015a3478b59aa3579a9e7c7ad81e465d4819c8de2f57cb0ca61bca3b930a"
+    },
+    {
+      "path": "58_MUTATION_CLIENT_PACKAGE_DECISIONS.md",
+      "size_bytes": 430,
+      "sha256": "e3146c45ac961cbfff514db0362d130f29ba7dbf99dae04da96438fe5e91ac19"
+    },
+    {
+      "path": "59_MUTATION_CLIENT_EVENT_SCENARIOS.md",
+      "size_bytes": 387,
+      "sha256": "435c2175a5399e056fee2386d26b25a29949852e995a46cd219e49f460bdcb0b"
+    },
+    {
+      "path": "60_MUTATION_CLIENT_REPO_INTEGRATION_PLAYBOOK.md",
+      "size_bytes": 577,
+      "sha256": "f75fc9a26bf32eb53c87fe78b976b82bb8e50ce0de61af8b0f5404c23cd67485"
+    },
+    {
+      "path": "61_MUTATION_CLIENT_FIELD_MANUAL.md",
+      "size_bytes": 529,
+      "sha256": "cd5ff50c88d1406df976947db629a60c8c343d106480688210675f5c0f884798"
+    },
+    {
+      "path": "62_MUTATION_CLIENT_MIGRATION_STEPS.md",
+      "size_bytes": 415,
+      "sha256": "9551b9608b6b351cd927f4ebc8b2a55c2e61413df73e1c32291dbfacb3a6bc0a"
+    },
+    {
+      "path": "63_MUTATION_CLIENT_FAILURE_ATLAS.md",
+      "size_bytes": 381,
+      "sha256": "a4c58c5fa1328b53979b84cf1c73dd510fa266b5e12ad6126a0881c028dcf7f7"
+    },
+    {
+      "path": "70_MUTATION_INTEGRATION_HARDENING_OVERVIEW.md",
+      "size_bytes": 950,
+      "sha256": "98214632317f82c1aeea3a7a260f10fbd75f5759d0b3429bee35c3e1a96b67e1"
+    },
+    {
+      "path": "71_INSTALLER_HARDENING_RULES.md",
+      "size_bytes": 686,
+      "sha256": "b4cec1d0e9a7fac252f71bcbb33dd4b559d0187dc5c1ebbffd9d7e24d4d707e3"
+    },
+    {
+      "path": "72_POST_INSTALL_VERIFICATION_MODEL.md",
+      "size_bytes": 710,
+      "sha256": "3c2aee426ae9872607c5312ebc9c53e46d3adf866dd9e6706406c0fd567f01a5"
+    },
+    {
+      "path": "73_SMOKE_CHECKS_AND_EVIDENCE.md",
+      "size_bytes": 487,
+      "sha256": "13a2a6b639d89a7ed6cb045e92cd27dd16fdd42ed384e2439313c0b97edc2e25"
+    },
+    {
+      "path": "74_BRIDGE_INTEGRATION_ACCEPTANCE.md",
+      "size_bytes": 421,
+      "sha256": "acb875f53f753708fd637f313c0d872c2fe626c0657c33ca76fc5ea1840c44ca"
+    },
+    {
+      "path": "75_PREVIEW_COMMIT_REVERT_ASSERTIONS.md",
+      "size_bytes": 294,
+      "sha256": "7c8e567df17f2dd8e083f8510ff7eab28e57ae053c16c722f16eace246e43780"
+    },
+    {
+      "path": "76_TARGET_SCOPE_AND_POLICY_ASSERTIONS.md",
+      "size_bytes": 316,
+      "sha256": "5fc7ca15ab3fac481c20931f06f8233ffddf6fed1add0ba454550dbb7d611502"
+    },
+    {
+      "path": "77_RUNTIME_ADAPTER_BINDING_ASSUMPTIONS.md",
+      "size_bytes": 373,
+      "sha256": "8020e058539350c9f2d89ca2b6f33604ca39e17ffcf74d72de6d2bc45230e279"
+    },
+    {
+      "path": "78_MUTATION_INTEGRATION_TEST_PLAN.md",
+      "size_bytes": 372,
+      "sha256": "3489dc9837d87b6b97189e033d669775ad4858dae65e3167668fc2eeb05db030"
+    },
+    {
+      "path": "79_MUTATION_INTEGRATION_FAILURE_ATLAS.md",
+      "size_bytes": 359,
+      "sha256": "d05b302c6fba5311104e22c5d96228551d15d323e3f6d929f95d04ac01296732"
+    },
+    {
+      "path": "80_REPO_STACKING_PLAYBOOK.md",
+      "size_bytes": 391,
+      "sha256": "f0e7bdf589b4c9afd92e700ad4b02d49674e4ec8129f5cb12f580ff66a75f952"
+    },
+    {
+      "path": "81_OPERATOR_RUNBOOK.md",
+      "size_bytes": 308,
+      "sha256": "ac9d0c8f992932b71147b30ba375c08687aba3ab54cf05f1ced200184a41177c"
+    },
+    {
+      "path": "82_EVIDENCE_SCHEMA.md",
+      "size_bytes": 296,
+      "sha256": "271ab30e737e4b09979e247ec263ea6d16bcadc7b37a52845ee43b00cee00e5f"
+    },
+    {
+      "path": "83_FOLLOW_UP_IMPLEMENTATION_ORDER.md",
+      "size_bytes": 410,
+      "sha256": "797dd7ccc494c6641ca06a4b4d237042e36039480c6d759f7871f7fcaab63c80"
+    },
+    {
+      "path": "84_MUTATION_HARDENING_TOUCHPOINTS.md",
+      "size_bytes": 291,
+      "sha256": "92bda5990d790fac364b3b928db53fe60d6df1aeb2d8786ec9825d6d853b9f27"
+    },
+    {
+      "path": "85_MUTATION_VERIFICATION_HANDOFF_TEMPLATE.md",
+      "size_bytes": 257,
+      "sha256": "898c7c01714a1c734c50991e61594a9734088ba253aef958c6c8cf8d8a0d5f58"
+    },
+    {
+      "path": "90_END_TO_END_MUTATION_UI_WIRING_OVERVIEW.md",
+      "size_bytes": 658,
+      "sha256": "3b0e84a2fab30142ad2df0ac9e2973771d942fa7e7fcc6957e87a6e245936528"
+    },
+    {
+      "path": "91_SURFACE_ACTION_TO_MUTATION_MAP.md",
+      "size_bytes": 694,
+      "sha256": "a3e20ada20088993f613bbcdf98e692372caf69b0618be49de75f0b2d8e1c430"
+    },
+    {
+      "path": "92_CANVAS_INTERACTION_TO_INTENT_PIPELINE.md",
+      "size_bytes": 380,
+      "sha256": "6fc75b8ed34ad9ef84342652718589e29167073275a3cbfac390129c234ac48f"
+    },
+    {
+      "path": "93_STRUCTURE_TREE_ACTION_ROUTING.md",
+      "size_bytes": 287,
+      "sha256": "7f88a74a3d2c6d1e6803b81c9b674270455ded3357b7f805f66ede31eaf53dab"
+    },
+    {
+      "path": "94_INSPECTOR_PREVIEW_COMMIT_CONTROLLER.md",
+      "size_bytes": 338,
+      "sha256": "55b1cd4f0ac402c84eddb07654d84d92a2960676205cadf86d35059b680650b5"
+    },
+    {
+      "path": "95_SELECTION_CONTEXT_AND_TARGET_RESOLUTION.md",
+      "size_bytes": 374,
+      "sha256": "16c130ea3bc53b563fa88b72edd56371bbfee603959f8b5343585648f03c0833"
+    },
+    {
+      "path": "96_UI_WIRING_STATE_MACHINE.md",
+      "size_bytes": 244,
+      "sha256": "f13b165551f1c48b0ff671bce526e543a40db2aad048b4ba72325b368fc7806e"
+    },
+    {
+      "path": "97_KEYBOARD_POINTER_AND_TOOLBAR_BINDINGS.md",
+      "size_bytes": 401,
+      "sha256": "bbf04f7abf4d53821f46a15894e754f894c38dca59cbb502335adc6c39fe2a08"
+    },
+    {
+      "path": "98_PREVIEW_COMPARE_APPLYBAR_DESIGN.md",
+      "size_bytes": 298,
+      "sha256": "cffc10b83859239218cb36a85bf97b78ca6fc87b104971ee374214b0976100d1"
+    },
+    {
+      "path": "99_UI_WIRING_ADAPTER_BOUNDARIES.md",
+      "size_bytes": 327,
+      "sha256": "9bcc3334b321bde15ad155e75bcc88c6ea3631b49187bdd728005d7d80bade4c"
+    },
+    {
+      "path": "apply_live_scene_composer_end_to_end_mutation_ui_wiring_v3_cleanup_safe.ps1",
+      "size_bytes": 22674,
+      "sha256": "308d4cb9f9234fefc1ba832ed1d7f67edc20a8f9771e4691ed2eba3215afa864"
+    },
+    {
+      "path": "artifacts/diagnostics/bridge_diagnostics_walkthrough_01.jsonl",
+      "size_bytes": 520542,
+      "sha256": "65d33afbb9fe63e50c332e3cbd39aa2914e50e2c717228c8ea9bd32747dda27e"
+    },
+    {
+      "path": "artifacts/diagnostics/bridge_diagnostics_walkthrough_02.jsonl",
+      "size_bytes": 520609,
+      "sha256": "e861f3e73a66046a255c1aea887a4c205ffa149f31340ed33d9b587df6bfadde"
+    },
+    {
+      "path": "artifacts/diagnostics/bridge_verification_diagnostic_01.jsonl",
+      "size_bytes": 129048,
+      "sha256": "f65042d7ad6cb1bb9404870b1553e7d9296216c4423ca1584e4f7439e638ffaf"
+    },
+    {
+      "path": "artifacts/diagnostics/bridge_verification_diagnostic_02.jsonl",
+      "size_bytes": 129048,
+      "sha256": "973af4dfaf875a34b0778a09c1f9eb707439d307254a1bafe0ebad1b3487e405"
+    },
+    {
+      "path": "artifacts/diagnostics/bridge_verification_diagnostic_03.jsonl",
+      "size_bytes": 129048,
+      "sha256": "d384593820c3f6cc82582abffa22f55dc5b72a479751624f426002771be23707"
+    },
+    {
+      "path": "artifacts/diagnostics/bridge_verification_diagnostic_04.jsonl",
+      "size_bytes": 129048,
+      "sha256": "0d1fe523b0aefccaba9c0bbeda85aa39bb786a2f4f2b21326c95718d3fadb4d1"
+    },
+    {
+      "path": "artifacts/diagnostics/end_to_end_ui_wiring_diagnostic_01.jsonl",
+      "size_bytes": 13871,
+      "sha256": "3b030d9aa34a353b26011e2047a0a89a581eaf7428ff4e04d28725e3f1d45f72"
+    },
+    {
+      "path": "artifacts/diagnostics/end_to_end_ui_wiring_diagnostic_02.jsonl",
+      "size_bytes": 14359,
+      "sha256": "3dd0477e2e9bbf8691c005836ceb91d197400f21ad0834a9ecf619c7ec9495d9"
+    },
+    {
+      "path": "artifacts/diagnostics/end_to_end_ui_wiring_diagnostic_03.jsonl",
+      "size_bytes": 13963,
+      "sha256": "83efded51660fc9889ddf520d61b03d2c9b208626cefbafdcbcf9d7576fa8fdf"
+    },
+    {
+      "path": "artifacts/diagnostics/end_to_end_ui_wiring_diagnostic_04.jsonl",
+      "size_bytes": 15106,
+      "sha256": "942df3124909446e0206f7691b24b400010c073ae2982aeb07f9d0dead211268"
+    },
+    {
+      "path": "artifacts/examples/evidence_bundle_example_01.json",
+      "size_bytes": 855,
+      "sha256": "75e2c2d7618972be508e6176803bc36613099857651fc882e8bfa15272ea3d0e"
+    },
+    {
+      "path": "artifacts/examples/evidence_bundle_example_02.json",
+      "size_bytes": 850,
+      "sha256": "0eeb729161f2c8b14b4839e451ea51e7ebf4de09c2648fc84f1380fa9339f19c"
+    },
+    {
+      "path": "artifacts/examples/evidence_bundle_example_03.json",
+      "size_bytes": 851,
+      "sha256": "6ade88bd00b2b69435a9dad539fee057a467e8aa49afa6960a3e5773f3c472ad"
+    },
+    {
+      "path": "artifacts/examples/ui_wiring_evidence_example_01.json",
+      "size_bytes": 588,
+      "sha256": "b7c0e2282b84807cdd0af5ecbe1b6feeb4ab4c43c53ef04fd239ca73a21758ba"
+    },
+    {
+      "path": "artifacts/examples/ui_wiring_evidence_example_02.json",
+      "size_bytes": 588,
+      "sha256": "74c33491740044942259a878a2959dfcb51b5eb9eaf05c98b41175610f21c6cf"
+    },
+    {
+      "path": "artifacts/examples/ui_wiring_evidence_example_03.json",
+      "size_bytes": 588,
+      "sha256": "cf6a2bd6cc56766d45f86d02b38c3a8ea7e5cef0aaab82c00cd1910125197dba"
+    },
+    {
+      "path": "artifacts/fixtures/end_to_end_ui_wiring_fixture_01.json",
+      "size_bytes": 59242,
+      "sha256": "c3780ed913c60ed4256ba41d59178fd5da7de1e0dd52e76e62246581bc6f7d83"
+    },
+    {
+      "path": "artifacts/fixtures/end_to_end_ui_wiring_fixture_02.json",
+      "size_bytes": 52080,
+      "sha256": "cead3f4d31e6d961d7991ccc5bf9f54d8590ae7f829d0a8a93fd1c53e81fe7b5"
+    },
+    {
+      "path": "artifacts/fixtures/end_to_end_ui_wiring_fixture_03.json",
+      "size_bytes": 62879,
+      "sha256": "2a38c26613dcab44a70a19a7373fd2721a9dbc64986ad188fb0e1bdbe5f5218b"
+    },
+    {
+      "path": "artifacts/fixtures/end_to_end_ui_wiring_fixture_04.json",
+      "size_bytes": 58297,
+      "sha256": "5cb1565c544684c63d3f8df7fb3986b312fd39739855dbebbb5f615a0e943caf"
+    },
+    {
+      "path": "artifacts/fixtures/end_to_end_ui_wiring_fixture_05.json",
+      "size_bytes": 57734,
+      "sha256": "ca1a07f915e7d7306a5e6920d59dc0a4ee830186229a28b9204b13cac54236b9"
+    },
+    {
+      "path": "artifacts/fixtures/end_to_end_ui_wiring_fixture_06.json",
+      "size_bytes": 53159,
+      "sha256": "972418bae5b7789d7fdf003ea88111b0e29313e519666ccc4ebb3227c06638b6"
+    },
+    {
+      "path": "artifacts/fixtures/end_to_end_ui_wiring_fixture_07.json",
+      "size_bytes": 58086,
+      "sha256": "aa138defb8d3e1288a80a3e54bcae44a1c5e996f0453e781892c3f9dc7e9493f"
+    },
+    {
+      "path": "artifacts/fixtures/end_to_end_ui_wiring_fixture_08.json",
+      "size_bytes": 61007,
+      "sha256": "e76d98b94cdd7a10bab95d0cf001af4af3b9acc40384e0b3e21b1d654123f870"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_integration_fixture_01.json",
+      "size_bytes": 105120,
+      "sha256": "6ded45db1c2d447b3e0b4c3f7a286ffcf279cda39037071d1db9e9f31bc58fcc"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_integration_fixture_02.json",
+      "size_bytes": 110164,
+      "sha256": "6797812fd310574259c34d8ad7dd1bb2260ada010d37855abe9b8bb6b7822b26"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_integration_fixture_03.json",
+      "size_bytes": 105120,
+      "sha256": "66232d6636f17cc935311aacb359cf42dda5c5ddb472ed0a37178a3993532bb1"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_integration_fixture_04.json",
+      "size_bytes": 105120,
+      "sha256": "66073c2b0766330fe09c09d09aef4afac7350a78d100e2b3990c5c56a2f22993"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_integration_fixture_05.json",
+      "size_bytes": 103859,
+      "sha256": "822464bf1636eeaf0c600502416a2c9a26a04a6f2c47f067b967931d90d64ab6"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_integration_fixture_06.json",
+      "size_bytes": 105120,
+      "sha256": "38bac7c236e2e3d9913dba39f63f1ab81ac5680800c7802e0b85f8c5c5824cf8"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_integration_fixture_07.json",
+      "size_bytes": 110164,
+      "sha256": "270fa0f607d3bc30a634b627fda1d44cd7ca18489fb238cb5ca7d0efed9c25c8"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_integration_fixture_08.json",
+      "size_bytes": 106381,
+      "sha256": "2ed58fbdc673c58a6f2d8ccf3fb1d3cdd1c6524dbea9ed45cc669f09697a623d"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_session_fixture_01.json",
+      "size_bytes": 256023,
+      "sha256": "ee9b4ff625d570a7fe82041c482626d31eeb07caf1d3f45dc2573a3ceca2a6b7"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_session_fixture_02.json",
+      "size_bytes": 255973,
+      "sha256": "bc5b17c58ece3dd643b09aa2f392c619111fc73edba9e9609fbd7b346c8ac21a"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_session_fixture_03.json",
+      "size_bytes": 256064,
+      "sha256": "54048161ccca3376e27ccb05e54fdb9d218458b74d5c7a88f6a04cdd1bb5568b"
+    },
+    {
+      "path": "artifacts/fixtures/mutation_session_fixture_04.json",
+      "size_bytes": 256012,
+      "sha256": "a2c6f799189d604a695e1c6a1006d67e78e18530c88c439ba724c73f31b2e577"
+    },
+    {
+      "path": "artifacts/matrices/apply_bar_state_matrix.csv",
+      "size_bytes": 182,
+      "sha256": "2c406677b6be7d812eac38ae3eac06f0a1eec3b417af0cd7168649287744dc16"
+    },
+    {
+      "path": "artifacts/matrices/hotkey_routing_matrix.csv",
+      "size_bytes": 165,
+      "sha256": "74294f1a4daee5df75b2f8a20da4d3e62f054005dcc89d8192500e2320f76491"
+    },
+    {
+      "path": "artifacts/matrices/installer_phase_matrix.csv",
+      "size_bytes": 393,
+      "sha256": "3dcc31802c11b8e61ec1ac2a2a8a7629ebacb4147294c51c411d6a93019738e0"
+    },
+    {
+      "path": "artifacts/matrices/mirror_status_matrix.csv",
+      "size_bytes": 187,
+      "sha256": "c76d38ae5349dec4f87d0958878577f10afb8c106a715c81fc2c6a57a145b784"
+    },
+    {
+      "path": "artifacts/matrices/mutation_integration_smoke_matrix.csv",
+      "size_bytes": 257,
+      "sha256": "96cb1c8e13fa79e329fce34d71481be6ceea3576496aa5645eada5dfb36e4f63"
+    },
+    {
+      "path": "artifacts/matrices/mutation_policy_matrix_advanced.csv",
+      "size_bytes": 626,
+      "sha256": "d69230da8aabddb7928870bf9ad73e761e0837136864396ad373494c0a75e8d3"
+    },
+    {
+      "path": "artifacts/matrices/mutation_policy_matrix_safe.csv",
+      "size_bytes": 590,
+      "sha256": "288f028db2f4720bf8cb46063428224ccf735ae67a73ad20147bec7cbaf98d1a"
+    },
+    {
+      "path": "artifacts/matrices/preview_commit_assertion_matrix.csv",
+      "size_bytes": 270,
+      "sha256": "46d02f7736638a9b55eccfac901c6e797b8c74c7fd9eb62391caf3603e2061b0"
+    },
+    {
+      "path": "artifacts/matrices/preview_commit_scope_matrix.csv",
+      "size_bytes": 272,
+      "sha256": "8b009dab12afdf2b3f4183c2124130d2cfd3de0ba58f0d011da7b5a324680a29"
+    },
+    {
+      "path": "artifacts/matrices/surface_action_to_mutation_matrix.csv",
+      "size_bytes": 794,
+      "sha256": "076a17d1b28f0d28254b267712f07925d99dff654cf1ac2c6f1d7d290e8dbc8a"
+    },
+    {
+      "path": "artifacts/matrices/ui_wiring_smoke_matrix.csv",
+      "size_bytes": 201,
+      "sha256": "8ca56e03a2fd80edccc49d7cb2829867fe0066b4536cf956bd1d9eac5a32f750"
+    },
+    {
+      "path": "artifacts/matrices/verification_status_matrix.csv",
+      "size_bytes": 164,
+      "sha256": "5931f36131195578e6a5a38c364f90cc423bd07d16a0afd581d37f9ac2953b99"
+    },
+    {
+      "path": "artifacts/playbacks/commit_revert_playback_01.jsonl",
+      "size_bytes": 244462,
+      "sha256": "e7bc5fdd8b11b1910f84fa0ab57687e6c0af731b7948023cd2175d360705e50a"
+    },
+    {
+      "path": "artifacts/playbacks/commit_revert_playback_02.jsonl",
+      "size_bytes": 244558,
+      "sha256": "7e9124eac9a386d478c2241cca85795f0375bc982b0d49132170a5d16049e4c7"
+    },
+    {
+      "path": "artifacts/playbacks/mutation_commit_playback_01.jsonl",
+      "size_bytes": 115590,
+      "sha256": "ad0271536e3f9f3d9d08ab59b54ea2599129e383ee8ff4df397c3b4eda3a7c1f"
+    },
+    {
+      "path": "artifacts/playbacks/mutation_commit_playback_02.jsonl",
+      "size_bytes": 115590,
+      "sha256": "b3e6b6966c0fe5628e9ec20b84cdf85d4badc6ac968166987fe6534e446fc091"
+    },
+    {
+      "path": "artifacts/playbacks/mutation_commit_playback_03.jsonl",
+      "size_bytes": 115590,
+      "sha256": "2f4a56460a682b5849acdc8b614d754f89f957437466b86a08a3d979f0fd6504"
+    },
+    {
+      "path": "artifacts/playbacks/mutation_commit_playback_04.jsonl",
+      "size_bytes": 115590,
+      "sha256": "ac245a6fe4bdaba0f75805176ac28917d70a08396135adfa95b5dbb21297cc05"
+    },
+    {
+      "path": "artifacts/reviews/bridge_review_questions.md",
+      "size_bytes": 310,
+      "sha256": "7a634b24c7c2e7483e90ea902f92626ea65f8fc22a6f756525e5026c11e64291"
+    },
+    {
+      "path": "artifacts/reviews/protected_entrypoints.md",
+      "size_bytes": 132,
+      "sha256": "b7fe2bca92193568cf5e3ed5175920fdec0faf214d66357f5151182c4696016d"
+    },
+    {
+      "path": "artifacts/reviews/protected_nodes_and_touchpoints.md",
+      "size_bytes": 336,
+      "sha256": "a19ae21aff22e4e8e28bc0dd40a46e38b622671d6d79b9b667a8eb4d39c5718d"
+    },
+    {
+      "path": "artifacts/reviews/review_checklist_01.md",
+      "size_bytes": 279,
+      "sha256": "f25daefd4883a8e3671a8a4f7c20b6c77ac9ecb82553394717194e7e0a43d51a"
+    },
+    {
+      "path": "artifacts/reviews/review_checklist_02.md",
+      "size_bytes": 279,
+      "sha256": "e6fb19168247de6fea9496bdb6c67a4149d665b1218833a5b9330e9587cf367c"
+    },
+    {
+      "path": "artifacts/reviews/review_checklist_03.md",
+      "size_bytes": 279,
+      "sha256": "062862cb80a3a1d484cdca31ecf429cdef9218ee11abf29ba0e8f7df4ad2621b"
+    },
+    {
+      "path": "artifacts/reviews/review_checklist_04.md",
+      "size_bytes": 279,
+      "sha256": "01385918cd09e64b54a406361117ae1998ed99bfb6ed08f4ca12e7e046966643"
+    },
+    {
+      "path": "artifacts/reviews/smoke_questions.md",
+      "size_bytes": 185,
+      "sha256": "017e24b04612f0cf325aed7fc99b72243c5cf1fcb3d07b5bb16cdbd613c20b67"
+    },
+    {
+      "path": "artifacts/reviews/ui_wiring_review_checklist.md",
+      "size_bytes": 252,
+      "sha256": "fb88b11f3465fee019e887959dbadc0a5b4f205a3465c3c825cac41655dee9ea"
+    },
+    {
+      "path": "artifacts/schemas/install_summary.schema.json",
+      "size_bytes": 466,
+      "sha256": "ae07414aa2b1289cc3658cec7156bd86915c34ef99b4033c88b877dbaa20e8ec"
+    },
+    {
+      "path": "artifacts/schemas/smoke_report.schema.json",
+      "size_bytes": 222,
+      "sha256": "5315cd9e37e84db203bd66aa816cb2f9f6c3ae0079b858410c9e0306b5a6ff01"
+    },
+    {
+      "path": "artifacts/schemas/ui_wiring_evidence.schema.json",
+      "size_bytes": 691,
+      "sha256": "6bd381d3a6ee138963e1fc4f757f32093a5445832ecc30ad59022925b73217ff"
+    },
+    {
+      "path": "artifacts/schemas/verification_report.schema.json",
+      "size_bytes": 243,
+      "sha256": "70a6229dff1a55d648d855ad30479b9b47e564029e26754d0079defb7f7e8332"
+    },
+    {
+      "path": "artifacts/snapshots/end_to_end_ui_overlay_snapshot_01.json",
+      "size_bytes": 378,
+      "sha256": "65618dacd2685e4967ada4da77bea72cd95917015d9405b7b750dd947335a1e0"
+    },
+    {
+      "path": "artifacts/snapshots/end_to_end_ui_overlay_snapshot_02.json",
+      "size_bytes": 375,
+      "sha256": "e64ef5eb484ecfcb3edf1a1571ede5d9f3ffb3852ee084cd9898eb0223762d33"
+    },
+    {
+      "path": "artifacts/snapshots/end_to_end_ui_overlay_snapshot_03.json",
+      "size_bytes": 377,
+      "sha256": "b798d1eb40b5c74b544e7e3af654ecda6dfb53ac0e141163925128d68cc84c37"
+    },
+    {
+      "path": "artifacts/snapshots/end_to_end_ui_overlay_snapshot_04.json",
+      "size_bytes": 376,
+      "sha256": "4ef7c376a1a04973a55d6a29fc652b21dcf0f6dbc13cebb2f71d222acf618e14"
+    },
+    {
+      "path": "artifacts/snapshots/mutation_integration_snapshot_01.json",
+      "size_bytes": 67354,
+      "sha256": "85517a8527fffcd2b0c2b4b2d8469e7e9c20efa5fdd3283b3d96bfd2653772e1"
+    },
+    {
+      "path": "artifacts/snapshots/mutation_integration_snapshot_02.json",
+      "size_bytes": 67354,
+      "sha256": "6254f9bfd7cae58a1d7f433497cf60f3d7ac3fc5873b457f76f0b90edd9d9a0d"
+    },
+    {
+      "path": "artifacts/snapshots/mutation_integration_snapshot_03.json",
+      "size_bytes": 67354,
+      "sha256": "939d586f54f946d363d54a7eedef5946141fc92c72b9d70de9d76e2101890433"
+    },
+    {
+      "path": "artifacts/snapshots/mutation_integration_snapshot_04.json",
+      "size_bytes": 67354,
+      "sha256": "1f059072e8f234b4ff7878368dbd050e5d5465c2139441899328a0a0648d0389"
+    },
+    {
+      "path": "artifacts/snapshots/preview_session_snapshot_catalog_01.json",
+      "size_bytes": 615999,
+      "sha256": "11fe09c0b706a29fac6b0b289f374310790d054a8c51c39d5587947b7c35bf9c"
+    },
+    {
+      "path": "artifacts/snapshots/preview_session_snapshot_catalog_02.json",
+      "size_bytes": 616030,
+      "sha256": "555ac13cde958910d2e1242170b65904299f6a7c830d7e5fd45186f1d5ca92b1"
+    },
+    {
+      "path": "artifacts/snapshots/preview_session_snapshot_catalog_03.json",
+      "size_bytes": 616054,
+      "sha256": "e7a0b79c97fda28e60cbe1d7e84f1f548005b0bb2982d713f80e43c16f5c82a7"
+    },
+    {
+      "path": "artifacts/telemetry/end_to_end_ui_wiring_telemetry_01.csv",
+      "size_bytes": 219,
+      "sha256": "cb4d3c3d2881cc6a5f927126a200420ca099b0fab66fe82d274d54a9b2ba6084"
+    },
+    {
+      "path": "artifacts/telemetry/end_to_end_ui_wiring_telemetry_02.csv",
+      "size_bytes": 218,
+      "sha256": "5cca5c236f792f8a82a26f3b4c6f3c720622791a4c1a8c292898763279b844e5"
+    },
+    {
+      "path": "artifacts/telemetry/end_to_end_ui_wiring_telemetry_03.csv",
+      "size_bytes": 218,
+      "sha256": "32fb36ca1621e01bdb0062bb101082336b9a5465ed9d5705cd9c1eaf8b27544c"
+    },
+    {
+      "path": "artifacts/telemetry/end_to_end_ui_wiring_telemetry_04.csv",
+      "size_bytes": 218,
+      "sha256": "a34e02ec7824bfdb05507353098167e25466039a6f83361e80b383bbc4560b5a"
+    },
+    {
+      "path": "artifacts/telemetry/mutation_integration_telemetry_01.csv",
+      "size_bytes": 23861,
+      "sha256": "3089f60c0404211546df9ba5203a72e02cb79b4acb471c365f9abb96a1a9bc72"
+    },
+    {
+      "path": "artifacts/telemetry/mutation_integration_telemetry_02.csv",
+      "size_bytes": 23861,
+      "sha256": "3089f60c0404211546df9ba5203a72e02cb79b4acb471c365f9abb96a1a9bc72"
+    },
+    {
+      "path": "artifacts/telemetry/mutation_integration_telemetry_03.csv",
+      "size_bytes": 23861,
+      "sha256": "3089f60c0404211546df9ba5203a72e02cb79b4acb471c365f9abb96a1a9bc72"
+    },
+    {
+      "path": "artifacts/telemetry/mutation_integration_telemetry_04.csv",
+      "size_bytes": 23861,
+      "sha256": "3089f60c0404211546df9ba5203a72e02cb79b4acb471c365f9abb96a1a9bc72"
+    },
+    {
+      "path": "artifacts/telemetry/preview_commit_telemetry_01.csv",
+      "size_bytes": 290430,
+      "sha256": "87f37133fcd348528824dc40429bea98663cb3cb3fd8bbe5ae13224b8fce1b43"
+    },
+    {
+      "path": "artifacts/telemetry/preview_commit_telemetry_02.csv",
+      "size_bytes": 290389,
+      "sha256": "aed7f24514d727af9a8efcbaffa446e600c3dac8b8e5605f6c8602774c5e7b30"
+    },
+    {
+      "path": "artifacts/traces/end_to_end_ui_wiring_trace_01.jsonl",
+      "size_bytes": 23621,
+      "sha256": "e6fa5fae1b56374d4615dc7d691c0664939442414711ef1a97407b15a0e167d8"
+    },
+    {
+      "path": "artifacts/traces/end_to_end_ui_wiring_trace_02.jsonl",
+      "size_bytes": 23107,
+      "sha256": "27a10e7729f209e2eee57c0030c7b7a1f4f18912cd791a3aa69e2b4a0dbe5481"
+    },
+    {
+      "path": "artifacts/traces/end_to_end_ui_wiring_trace_03.jsonl",
+      "size_bytes": 23551,
+      "sha256": "d0a463d1c8f56d423a6911cb5914c62fe7ce2bda078bbabc52b8f54a35ba0e16"
+    },
+    {
+      "path": "artifacts/traces/end_to_end_ui_wiring_trace_04.jsonl",
+      "size_bytes": 23577,
+      "sha256": "0a89c61f2de7bcd0a27bd9e71196083965cf4d1fa72bc8b59e4333c9c897b5c4"
+    },
+    {
+      "path": "artifacts/traces/end_to_end_ui_wiring_trace_05.jsonl",
+      "size_bytes": 23599,
+      "sha256": "d37c543e7970d472a98a598cc11c238038fca5480cadb6e8c4a5bb61dc034e16"
+    },
+    {
+      "path": "artifacts/traces/end_to_end_ui_wiring_trace_06.jsonl",
+      "size_bytes": 22792,
+      "sha256": "6ce8447fa8d2d7466676f25e48c98e2ae45ec157ff9f1d328cdfef06148bf154"
+    },
+    {
+      "path": "artifacts/traces/mutation_integration_trace_01.jsonl",
+      "size_bytes": 146378,
+      "sha256": "0ba9a17ffc452c6cafcc45306f43b32c6ab8639a77f0e497ff75930b3e9bbd81"
+    },
+    {
+      "path": "artifacts/traces/mutation_integration_trace_02.jsonl",
+      "size_bytes": 146378,
+      "sha256": "0ec13d4c699596a49d0ee40823702acf24749d459922ce9194dec20576ddcdac"
+    },
+    {
+      "path": "artifacts/traces/mutation_integration_trace_03.jsonl",
+      "size_bytes": 146378,
+      "sha256": "05aee63aef9ca6dc1e7f6b2818af3d5a6d3f557582abc8d6f3403016e7cb93ca"
+    },
+    {
+      "path": "artifacts/traces/mutation_integration_trace_04.jsonl",
+      "size_bytes": 146378,
+      "sha256": "3c1703e92cd8d8785956666143132b4f60d738ac0578ea0e38f2ceeea3a89caa"
+    },
+    {
+      "path": "artifacts/traces/mutation_integration_trace_05.jsonl",
+      "size_bytes": 146378,
+      "sha256": "440e80d660e54d08b311e0f3f053c6468d89b82339946167fd271757ed3ce3c4"
+    },
+    {
+      "path": "artifacts/traces/mutation_preview_commit_trace_01.jsonl",
+      "size_bytes": 217324,
+      "sha256": "d74e54b46bb434641ea0d625f5ce2121d08b4a9fb5f0d1ec80ba0b9c6ff11abb"
+    },
+    {
+      "path": "artifacts/traces/mutation_preview_commit_trace_02.jsonl",
+      "size_bytes": 217270,
+      "sha256": "4113901550493bd347632b6fb70fe0d4c67644ba216a3403e4eb920c48500d52"
+    },
+    {
+      "path": "artifacts/traces/mutation_preview_commit_trace_03.jsonl",
+      "size_bytes": 217341,
+      "sha256": "20309ea9bd8f260383bd9261cd04f34e9b9183974b576cfc29e4c2c7708012a6"
+    },
+    {
+      "path": "cleanup-metadata/cleanup_scope.json",
+      "size_bytes": 4635,
+      "sha256": "c8dc180ec7df3068549999981ea618141da20b6367171a65772a0e1550b4b80a"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/README.md",
+      "size_bytes": 81,
+      "sha256": "3ed14fc96d07d0728200463d4c87686a41a16c8f6cf6d02c743e40c4f5a5d0dd"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/__tests__/commit-controls.spec.ts",
+      "size_bytes": 74,
+      "sha256": "f12503c95c69b248a6ae10a99b716c34602a9c9ddc692bba16641e0ec537840f"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/__tests__/contracts.spec.ts",
+      "size_bytes": 63,
+      "sha256": "04f9b5266357a5848359e9fb40e9e7095c674d6916245fe7f60ea6fbbfa6151b"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/__tests__/intent-builders.spec.ts",
+      "size_bytes": 74,
+      "sha256": "e33e0ec6a2062131b28b9b401d55a66bcadf7173e9be00da9fdf7a9f3656c1e5"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/__tests__/keyboard-shortcuts.spec.ts",
+      "size_bytes": 80,
+      "sha256": "1f136d17d73e85d1dc489e310dd02237b68ece7257bf1cf528d3a2f29d53a77d"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/__tests__/pipeline.spec.ts",
+      "size_bytes": 61,
+      "sha256": "74bae455300190959ca63850be287d9ca54f2748d078c169ddb9f39f1622dfc6"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/__tests__/preview-compare.spec.ts",
+      "size_bytes": 74,
+      "sha256": "834b91b65946582fa3bf72c76bc6b271886ed0f035f526486e34b75f8df43907"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/__tests__/render-state.spec.ts",
+      "size_bytes": 68,
+      "sha256": "736c378f45eec25a1e00cf3759bfe568c4eeeca9de023558565ab27afca451cf"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/__tests__/surface-coordinator.spec.ts",
+      "size_bytes": 82,
+      "sha256": "447c9254cf9f7230e84ccc78a8e7f20e24fe922e8b651555f1cd9fa3be98c382"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/apply-bar.ts",
+      "size_bytes": 584,
+      "sha256": "3487356a6a7f17e1848ec72814312c008cc310ed22be6120a0088b7aded4a261"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/bridge-route-gate.ts",
+      "size_bytes": 721,
+      "sha256": "ed140203e42bfb82fe0c5bbe29a960349091281ce1167f21986ffc4ca17e61f8"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/canvas-surface.ts",
+      "size_bytes": 1575,
+      "sha256": "e5d2080b6b34fdc6e07b732a7ffb0379fd95d10c41d9e0af34d2767d9070fd28"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/commit-controls.ts",
+      "size_bytes": 597,
+      "sha256": "57077d30b8de9c0684f6323d212c427254fa9332b86c290ec9b6d2848cc590dd"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/contracts.ts",
+      "size_bytes": 3062,
+      "sha256": "87059997feb92ffbc4f4f9e7369c30bcb0477559680b0b45fe7a0ac8e24a04d4"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/evidence-contracts.ts",
+      "size_bytes": 389,
+      "sha256": "2e1dbef491063a69223f23c9ef09d7cbd13859bdec569269bb4bc0d637141d8a"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/examples/e2e-ui-wiring-demo.ts",
+      "size_bytes": 770,
+      "sha256": "d639c42e84214cf86f22b5ca554ec5053375da0aaf6a8ea3e47f8f35c44b5b72"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/focus-sync.ts",
+      "size_bytes": 578,
+      "sha256": "bbc489a70c9fb4e40dc6f2bde89ff31ca4491a4c7a88d661ca8316751a76d918"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/index.ts",
+      "size_bytes": 669,
+      "sha256": "2c0498af2d8dca676a4d1c4e37355bba28b4aec23edb42dcedbc2a52792750bd"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/inspector-surface.ts",
+      "size_bytes": 2309,
+      "sha256": "6c5df705ee5efd8ab64f5b40a60444134ccb52b6d4330943bdb569ccf78df752"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/intent-builders.ts",
+      "size_bytes": 2919,
+      "sha256": "7fdafd0267663cebb9f2b342db4f0b34d03bf45aef3d22610b9317b121b30d80"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/keyboard-shortcuts.ts",
+      "size_bytes": 1259,
+      "sha256": "b4449c23d20ec11b9fe8ec26215e0f956187b34efea6520b69c10b2c6680fc92"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/mutation-pipeline.ts",
+      "size_bytes": 4646,
+      "sha256": "67a8ae4e73e63d444e838a06e60c3cdf4466b69891d60f24d3a42f97e2281b80"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/preview-compare.ts",
+      "size_bytes": 826,
+      "sha256": "04b009c6a1edad04f8a3b498a384ed7e95fa2efd5cb6715b0a52b188fa0704b1"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/render-state.ts",
+      "size_bytes": 608,
+      "sha256": "93b907d3491113e02a099a618af08c494b0543086977dadf701a866dfc588474"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/selection-context.ts",
+      "size_bytes": 1971,
+      "sha256": "7396e26321b99edf754b3cbceb48026d6c4452b64c0776ff3fd3bd994bb3ba4a"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/structure-tree-surface.ts",
+      "size_bytes": 1935,
+      "sha256": "e11b457f79da2da2f8553417caae27b70b600c9273b5e8639fdaba848d6650ce"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/surface-action-types.ts",
+      "size_bytes": 1132,
+      "sha256": "949374b750c008e19a77ab416e3d05d2061cf75722925c378603857e0e038fb3"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/surface-coordinator.ts",
+      "size_bytes": 1370,
+      "sha256": "976a3394f15a0701f432a41df676ec768d65b73ff1d45bde92e274accd1210da"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/toolbar-surface.ts",
+      "size_bytes": 1750,
+      "sha256": "67a9a9b175947921653dda32c9f1f0f6c68fa0db8f46bdaddf9b36db2c240b0c"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/types/react-shim.d.ts",
+      "size_bytes": 172,
+      "sha256": "cc9196ce7bc78f78612f24c4b32f16d9b6b33ad47824b919190cc3b63c81b0d7"
+    },
+    {
+      "path": "source/end-to-end-ui-wiring/ui-session.ts",
+      "size_bytes": 536,
+      "sha256": "cf477a6e872111236e73130300acc46f76dd08c828ef3ec0eb19ccfe0b0b1765"
+    },
+    {
+      "path": "source/mutation-client/README.md",
+      "size_bytes": 335,
+      "sha256": "10c7a6b04b3e39b3c79459ae9ab1e9135048712ac84b2f9cdd823c6392dd4c5d"
+    },
+    {
+      "path": "source/mutation-client/__tests__/bridge-adapter.spec.ts",
+      "size_bytes": 633,
+      "sha256": "ce0d89cbcde6d58f90e50f12a8f926f69f5a92ce6a9d70d8ff80d5744bdd2901"
+    },
+    {
+      "path": "source/mutation-client/__tests__/bridge-client.spec.ts",
+      "size_bytes": 635,
+      "sha256": "d8a49b62e6c924e2b64822a59a6af630b4e36f1bb0575c06c4d4574e4fd37831"
+    },
+    {
+      "path": "source/mutation-client/__tests__/commit-orchestrator.spec.ts",
+      "size_bytes": 910,
+      "sha256": "1765959ed44cd963d86f913d88cb095578922bc5b600a419f9d2b12695160bf3"
+    },
+    {
+      "path": "source/mutation-client/__tests__/contracts.spec.ts",
+      "size_bytes": 257,
+      "sha256": "c6591cad2564329acdd5cb247ca35bbd93a726f323f9982927c6e2ad1e6af10c"
+    },
+    {
+      "path": "source/mutation-client/__tests__/diagnostics.spec.ts",
+      "size_bytes": 333,
+      "sha256": "825109bd6750af5652a455cb5cd1ff8611f4ae8e055bfd235a6c5950cded941d"
+    },
+    {
+      "path": "source/mutation-client/__tests__/history-log.spec.ts",
+      "size_bytes": 692,
+      "sha256": "527a168ee9ed425b2082812f9e99da1cc8438d9b8877ccefb2116ac663f26ea6"
+    },
+    {
+      "path": "source/mutation-client/__tests__/integration-flow.spec.ts",
+      "size_bytes": 570,
+      "sha256": "20a5af769c4ab661c21aa12399d1fbf4a0350dc3cb7d07a5c2fe3147754f15e2"
+    },
+    {
+      "path": "source/mutation-client/__tests__/mode-policy.spec.ts",
+      "size_bytes": 567,
+      "sha256": "cf4b26036fca1eaaa3c010339ca21bed0b7dc2005b4c959053e271686e48aae6"
+    },
+    {
+      "path": "source/mutation-client/__tests__/preview-diff.spec.ts",
+      "size_bytes": 310,
+      "sha256": "818381393804b6a90e5b4769233208b676caaa888d3cbd7cbd8bc26034750cc5"
+    },
+    {
+      "path": "source/mutation-client/__tests__/preview-session.spec.ts",
+      "size_bytes": 741,
+      "sha256": "0a0502a104a0aff2751f36b27c9e3282f877215a97a7ee6cb4241b8c508889b4"
+    },
+    {
+      "path": "source/mutation-client/__tests__/revert-planner.spec.ts",
+      "size_bytes": 630,
+      "sha256": "8d7453a1184067b1bb773b92b192be73f99f53ca973f76665e306730b764d228"
+    },
+    {
+      "path": "source/mutation-client/__tests__/validation.spec.ts",
+      "size_bytes": 614,
+      "sha256": "5c39b0657641388377cfb498242ffb1ad63e336509459ced92e373f0caf77c78"
+    },
+    {
+      "path": "source/mutation-client/bridge-adapter.ts",
+      "size_bytes": 1332,
+      "sha256": "0e742a455c17ec2322866dab085b6801deb542ffc4a99fb7dff1424e1bb4d08f"
+    },
+    {
+      "path": "source/mutation-client/bridge-client.ts",
+      "size_bytes": 2554,
+      "sha256": "325a53d0167e9b7833d9d4b4c9828d45eb94b1eb891ba7b79749f9b78b02ec75"
+    },
+    {
+      "path": "source/mutation-client/commit-orchestrator.ts",
+      "size_bytes": 1832,
+      "sha256": "f2037e8763a8a8df15631e8c6ce8b8dc57d32ef14268e413ae5f8f4e18cae9e1"
+    },
+    {
+      "path": "source/mutation-client/contracts.ts",
+      "size_bytes": 5699,
+      "sha256": "dc6b78315a5c2c8f5c466f05a888f6a49624e09733717d0260fdf6626f9ffd13"
+    },
+    {
+      "path": "source/mutation-client/diagnostics.ts",
+      "size_bytes": 1388,
+      "sha256": "66ead110f96987c67d7756ee027049d8f2884cd936c83815d1ca3886de6c60c0"
+    },
+    {
+      "path": "source/mutation-client/examples/mutation-client-demo.ts",
+      "size_bytes": 951,
+      "sha256": "4552db3d8a7f52cd0e9fd60bb1eb5ab3280049349a4764690fa7ff0220be69e2"
+    },
+    {
+      "path": "source/mutation-client/history-log.ts",
+      "size_bytes": 987,
+      "sha256": "787fe697b9fe8c8830eaad6167011d31d99ba21630e46c3ce06471e00e0203bd"
+    },
+    {
+      "path": "source/mutation-client/index.ts",
+      "size_bytes": 463,
+      "sha256": "68abace239aead77c3af53543b83300ed04f08392f8c6d4f5148517a5a76cc3f"
+    },
+    {
+      "path": "source/mutation-client/mode-policy.ts",
+      "size_bytes": 1702,
+      "sha256": "1a855469aa566ff62e2fd3acdc1ec2c65a5c8d26e62fbe9c7e996bc28ab66d80"
+    },
+    {
+      "path": "source/mutation-client/mutation-intents.ts",
+      "size_bytes": 2807,
+      "sha256": "b15e049c812f3b5c5ed8f16c866b254b436fca022e3d80d458302c5a452e77a2"
+    },
+    {
+      "path": "source/mutation-client/preview-diff.ts",
+      "size_bytes": 913,
+      "sha256": "bf7a24ebf4deded23b01d6f04960a3c207f1fe125e8d53fe0c22f69d34fd898e"
+    },
+    {
+      "path": "source/mutation-client/preview-session.ts",
+      "size_bytes": 2487,
+      "sha256": "c274d3fd6b53eab89ae557fe830d5e4ed020b8953829dad827ac7d04e12f9500"
+    },
+    {
+      "path": "source/mutation-client/react-hooks.ts",
+      "size_bytes": 526,
+      "sha256": "c95a18e5f72b743e92469ca761e8476af8da3216f6f44f5a8cf843aefb5befca"
+    },
+    {
+      "path": "source/mutation-client/revert-planner.ts",
+      "size_bytes": 1698,
+      "sha256": "a234d073a7686d0376a00ff43f67f99e489cc19e9ddf33e78de30b79288429d1"
+    },
+    {
+      "path": "source/mutation-client/scenario-fixtures.ts",
+      "size_bytes": 1867,
+      "sha256": "dfd07c49a0bc2ae75f412cbf240a419ee7c0a2ec808555d163ce0a939db28e0f"
+    },
+    {
+      "path": "source/mutation-client/types/react-shim.d.ts",
+      "size_bytes": 196,
+      "sha256": "6af5f0b2241cf1cdaa4ab4e212950a82be78926b9399bf17ec5ee9db600c33c5"
+    },
+    {
+      "path": "source/mutation-client/validation.ts",
+      "size_bytes": 2820,
+      "sha256": "d335ced642a4d0fa9d342ea26c39da11623a11f113995cd006608e9a1dcea719"
+    },
+    {
+      "path": "source/mutation-integration/README.md",
+      "size_bytes": 126,
+      "sha256": "6bb0418230a40595cf80970a28017f756a7efcc2c0ac8f17c45fe4a3d7f7e915"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/artifacts-index.spec.ts",
+      "size_bytes": 159,
+      "sha256": "52e2e05cffb82d64ce48cad23a28e3df1f0a68fc660c23bd69ba213ca7529dd7"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/bridge-policy-assertions.spec.ts",
+      "size_bytes": 158,
+      "sha256": "0726263f12145c5743d2af65c054b3d604efd4f85fb8daddf5d0938aff661758"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/bridge-routing-assertions.spec.ts",
+      "size_bytes": 191,
+      "sha256": "b11e375def4c13e32aac2b9f5ce8626811230caeed21e81f0b3451dc60ad645f"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/contracts.spec.ts",
+      "size_bytes": 179,
+      "sha256": "db27b774db58c94d0b34aed70d6a40824ea1851cc2029ebb606d5d206da9e1f6"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/entrypoint-map.spec.ts",
+      "size_bytes": 211,
+      "sha256": "e95f35827dadc50e587c826c918cb6623e13c70276e71d8f6945f6532e918d4f"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/integration-seam.spec.ts",
+      "size_bytes": 255,
+      "sha256": "007b1af075495e2c291ca27f06e10deb50ad2bda7140734d577bdd91d9a9c552"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/path-hardening.spec.ts",
+      "size_bytes": 159,
+      "sha256": "4c753e3d9beedc9d2431a6e78cae8061dba117b358e903ed5026e03a56f0ea9f"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/preview-commit-assertions.spec.ts",
+      "size_bytes": 152,
+      "sha256": "7efd60e29bd302cd9188d792d4ecb37092df21339bf58c0e4ca98df9d1a5c1f5"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/repo-probes.spec.ts",
+      "size_bytes": 214,
+      "sha256": "5a727284d3de2c2759ccfae3bfbb95426e005ba9f5a59afbbd9633d0fb47dd20"
+    },
+    {
+      "path": "source/mutation-integration/__tests__/smoke-checks.spec.ts",
+      "size_bytes": 191,
+      "sha256": "7a869d16e0e581286e4c3c5abff78b363ec0e5452022e05d66a1643069ad07da"
+    },
+    {
+      "path": "source/mutation-integration/artifacts-index.ts",
+      "size_bytes": 709,
+      "sha256": "162e16dcd558e2ac0f9e98aeed64451454765a07ed700d13e89161ee04877606"
+    },
+    {
+      "path": "source/mutation-integration/bridge-policy-assertions.ts",
+      "size_bytes": 373,
+      "sha256": "c711d9ae3b6dcfd1ce304e0d3689981f2863e4fb82f6073f208e1819920229f8"
+    },
+    {
+      "path": "source/mutation-integration/bridge-routing-assertions.ts",
+      "size_bytes": 472,
+      "sha256": "0fa5fbd24b7350cfe83541815bdc197fb0c9f896f8df66d4c30ba444214c39f1"
+    },
+    {
+      "path": "source/mutation-integration/composer-entrypoint-map.ts",
+      "size_bytes": 276,
+      "sha256": "18bf9c2bb397ab7ea6d34b269fe74e6c96c2d22ec5fed27e7ae711a4b37393c7"
+    },
+    {
+      "path": "source/mutation-integration/contracts.ts",
+      "size_bytes": 951,
+      "sha256": "68e97caf911fa2059ae4dbbbfcf84183f03612d8f5d24b6ee7065451471f28e0"
+    },
+    {
+      "path": "source/mutation-integration/evidence-contracts.ts",
+      "size_bytes": 363,
+      "sha256": "969a2d39959989d69f6321f05d3400f02f289f466eefa793a40ce385a9ae183a"
+    },
+    {
+      "path": "source/mutation-integration/examples/report-shape-demo.ts",
+      "size_bytes": 640,
+      "sha256": "215074f4919be71c28dd5595a25bba8ba30a7803fce5d49fb849b8cb8c6ea363"
+    },
+    {
+      "path": "source/mutation-integration/examples/run-smoke-checks-demo.ts",
+      "size_bytes": 237,
+      "sha256": "f8a6bf31cdf9dbbdcd9fea86debb0212b18d07b1d5f29a98766ab067b7a85f95"
+    },
+    {
+      "path": "source/mutation-integration/index.ts",
+      "size_bytes": 523,
+      "sha256": "8e7884506279dc5c206a3f96ba5714ba571c2591f190dfd494d572084be9be0c"
+    },
+    {
+      "path": "source/mutation-integration/mutation-flow-map.ts",
+      "size_bytes": 206,
+      "sha256": "2d613bc891d3a34d32d514c0ec520b16809f874d1d835328b7449157c7dbac80"
+    },
+    {
+      "path": "source/mutation-integration/path-hardening.ts",
+      "size_bytes": 750,
+      "sha256": "3c7cef8403d14687f41ad7583883ce1d06f21ad52c1e19c9d7c663b3011c9867"
+    },
+    {
+      "path": "source/mutation-integration/post-install-report.ts",
+      "size_bytes": 462,
+      "sha256": "de1d52ff6e25bbb0b8bbd19af798f2ff7887f38499457def780c7fa181c1c066"
+    },
+    {
+      "path": "source/mutation-integration/preview-commit-assertions.ts",
+      "size_bytes": 580,
+      "sha256": "5cb53cad61fa75d5165fcbad164204a5d844fd4e29c6bca77f1d4ad0e2c666c2"
+    },
+    {
+      "path": "source/mutation-integration/repo-probes.ts",
+      "size_bytes": 322,
+      "sha256": "3099aeac0514b3221b77d3efa929de04b8317255e6c965ba44a9274554a7c599"
+    },
+    {
+      "path": "source/mutation-integration/smoke-checks.ts",
+      "size_bytes": 356,
+      "sha256": "54d802d26d19cee58d70bffe1dcc26f627fd22649df7ec18147a7dc388e62bec"
+    },
+    {
+      "path": "source/mutation-integration/types/react-shim.d.ts",
+      "size_bytes": 201,
+      "sha256": "818ba14ab430351bf9cd1bba97a88d5fe0f1c281d4186251b67b8160e47633ce"
+    },
+    {
+      "path": "source/mutation-integration/verification-plan.ts",
+      "size_bytes": 726,
+      "sha256": "19168093205bc42cfc06e82a5029234d33e9c3502f2d286f59f00425d652c65e"
+    },
+    {
+      "path": "source/mutation-integration/wiring-targets.ts",
+      "size_bytes": 549,
+      "sha256": "1843cea363698dccefe29c2a03da433d2db2c4f7803b3f6ee494abe735c07d4a"
+    },
+    {
+      "path": "tsconfig.package.json",
+      "size_bytes": 368,
+      "sha256": "55568a26d8fa1ef2cf95f7295752373a0241db661c82d8bd706044413db19f6e"
+    }
+  ]
+}

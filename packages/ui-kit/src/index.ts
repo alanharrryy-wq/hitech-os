@@ -3,8 +3,11 @@ export * from "./lib/focus-ring.js";
 export * from "./lib/motion.js";
 export * from "./lib/tokens.js";
 export * from "./lib/fx.js";
+export * from "./brand/index.js";
 export * from "./layers/layerIds.js";
+export * from "./layers/layerFlagsContract.js";
 export * from "./layers/resolveLayerFlags.js";
+export * from "./layers/applyLayerFlagsToDom.js";
 export { LayerFlagsProvider } from "./layers/LayerFlagsProvider.js";
 export type { LayerFlagsProviderProps } from "./layers/LayerFlagsProvider.js";
 export { useLayerFlags } from "./layers/useLayerFlags.js";
@@ -128,3 +131,16 @@ export type { SectionProps } from "./components/Section.js";
 
 export { Text } from "./components/Text.js";
 export type { TextProps } from "./components/Text.js";
+
+export * as luxury from "./luxury/index.js";
+export * as motionKit from "./motion/index.js";
+export * as kpi from "./kpi/index.js";
+export * as dataSpine from "./data-spine/index.js";
+
+export {
+  createMockProvider,
+  createSpine,
+  createStableQueryKey,
+  safeValidateDataShape,
+  validateDataShape
+} from "./data-spine/index.js";

@@ -39,36 +39,36 @@ A slice must be:
 ### 1) Web App / Product UI
 
 - A: domain + shared contracts
-- B: UI surface + routing + interaction
-- C: tooling + CI + guardrails + performance harness
+- B: tooling + CI + guardrails + performance harness
+- C: UI surface + routing + interaction
 - D: tests + docs + smoke e2e
 
 ### 2) API / Service Platform
 
 - A: domain + API schema + core services
-- B: client SDK / admin console / API explorer (or none)
-- C: infra (containers, deploy scaffolding, tracing) + guardrails
+- B: infra (containers, deploy scaffolding, tracing) + guardrails
+- C: client SDK / admin console / API explorer (or none)
 - D: integration tests + contract tests + docs
 
 ### 3) Database-Heavy System
 
 - A: schema design + migrations + constraints + invariants
-- B: query layer / repository adapters / admin UI (if present)
-- C: backup/restore tools + environment harness + performance checks
+- B: backup/restore tools + environment harness + performance checks
+- C: query layer / repository adapters / admin UI (if present)
 - D: migration tests + data integrity tests + runbooks
 
 ### 4) CRM / Workflow Engine
 
 - A: entities + permissions + audit + business rules
-- B: operator UI (pipelines, dashboards, forms)
-- C: automation tooling + import/export + guardrails
+- B: automation tooling + import/export + guardrails
+- C: operator UI (pipelines, dashboards, forms)
 - D: end-to-end workflow tests + docs + release checklist
 
 ### 5) Interactive Deck / Slides System
 
 - A: state machine / evidence / replay / contracts
-- B: slide surfaces / UI modules / test IDs
-- C: build/test determinism + guard scripts + runner tooling
+- B: build/test determinism + guard scripts + runner tooling
+- C: slide surfaces / UI modules / test IDs
 - D: e2e smoke + docs + operator runbooks
 
 ---

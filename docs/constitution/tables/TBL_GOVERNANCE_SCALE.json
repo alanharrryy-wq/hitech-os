@@ -1,0 +1,64 @@
+{
+  "table_id": "TBL_GOVERNANCE_SCALE",
+  "version": "1.0.0",
+  "status": "active",
+  "authority_level": "warning",
+  "scope": "Defines escalation ladder for governance enforcement and CI blocking",
+  "columns": [
+    {
+      "name": "level",
+      "type": "number",
+      "required": true
+    },
+    {
+      "name": "stage",
+      "type": "enum",
+      "required": true,
+      "enum_values": [
+        "lint_warning",
+        "deprecated_notice",
+        "build_warning",
+        "build_error",
+        "codemod_required"
+      ]
+    },
+    {
+      "name": "ci_blocking",
+      "type": "boolean",
+      "required": true
+    }
+  ],
+  "rows": [
+    {
+      "level": 1,
+      "stage": "lint_warning",
+      "ci_blocking": false
+    },
+    {
+      "level": 2,
+      "stage": "deprecated_notice",
+      "ci_blocking": false
+    },
+    {
+      "level": 3,
+      "stage": "build_warning",
+      "ci_blocking": false
+    },
+    {
+      "level": 4,
+      "stage": "build_error",
+      "ci_blocking": true
+    },
+    {
+      "level": 5,
+      "stage": "codemod_required",
+      "ci_blocking": true
+    }
+  ],
+  "change_policy": {
+    "requires_pr_approval": true,
+    "requires_migration_note": true,
+    "breaking_change_requires_version_bump": true
+  }
+}
+

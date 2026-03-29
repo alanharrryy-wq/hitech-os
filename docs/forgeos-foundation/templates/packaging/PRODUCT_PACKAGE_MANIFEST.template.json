@@ -1,0 +1,59 @@
+{
+  "schema_id": "forge.package.product.v1",
+  "package_id": "forge-product-<product_id>",
+  "package_type": "product",
+  "display_name": "<Nombre del producto>",
+  "version": "1.0.0",
+  "channel": "beta",
+  "owner_team": "<equipo-responsable>",
+  "includes": {
+    "product_manifest": "PRODUCT_MANIFEST.json",
+    "contracts_root": "contracts/",
+    "docs": [
+      "OWNERSHIP.md",
+      "STATE_AUTHORITY.md",
+      "LIFECYCLE.md",
+      "DEPENDENCIES.md",
+      "HOST_CONTRIBUTIONS.md",
+      "PACKAGING.md",
+      "COMPATIBILITY.md",
+      "ERROR_BOUNDARIES.md",
+      "TEARDOWN.md",
+      "CONTRACT_INDEX.md"
+    ],
+    "assets_root": "packaging/",
+    "state_migrations_root": "state/migrations/"
+  },
+  "compatibility": {
+    "forge_kernel_range": "^1.0.0",
+    "forge_commons_ranges": {
+      "forge-commons-<capability-id>": "^1.0.0"
+    }
+  },
+  "dependencies": {
+    "required_packages": [
+      "forge-kernel"
+    ],
+    "optional_packages": [],
+    "external_runtime_dependencies": [
+      {
+        "name": "<dependency>",
+        "version_range": "<range>",
+        "purpose": "<purpose>"
+      }
+    ]
+  },
+  "integrity": {
+    "signature_required": true,
+    "hash_algorithm": "sha256",
+    "bom_ref": "packaging/bom/BOM.md"
+  },
+  "install": {
+    "migrations_required": true,
+    "permissions_required": true,
+    "rollback_plan_ref": "packaging/release/ROLLBACK_PLAN.md"
+  },
+  "release": {
+    "release_notes_ref": "packaging/release/RELEASE_NOTES.md"
+  }
+}

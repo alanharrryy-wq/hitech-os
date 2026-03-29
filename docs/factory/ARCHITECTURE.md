@@ -2,11 +2,11 @@
 
 ## Roles
 
-- `A_worker`: primary domain changes
-- `B_worker`: secondary surface and UX
-- `C_worker`: tooling and infrastructure
-- `D_worker`: validation and hardening
-- `Z_integrator`: merge + consistency + report only
+- `A_core`: primary domain changes
+- `B_tooling`: tooling, pipelines, guardrails, runtime automation, and infra-facing support
+- `C_features`: product/features and operator/user surface ownership (UI/UX + visual behavior)
+- `D_validation`: validation and hardening
+- `Z_aggregator`: merge + consistency + report only
 
 ## Guarantees
 
@@ -14,3 +14,17 @@
 - Scope locks prevent overlap.
 - Z blocks integration on conflict.
 - Run ledger tracks all runs.
+- Z watch/ledger visibility is enabled by default.
+
+## Graph-Analysis Subsystem
+
+Z_aggregator owns publication of:
+
+- `GRAVITY_REPORT.json`
+- `PROTECTED_NODES.json`
+- `IMPACT_CONE_REPORT.json`
+- `DEPENDENCY_DIFF.json`
+- `DISPATCH_RECOMMENDATIONS.json`
+
+Dispatch output remains advisory-by-default for next iteration planning.
+

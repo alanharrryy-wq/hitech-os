@@ -1,0 +1,35 @@
+{
+  "managed_domains": [
+    "git_sentinel_modular",
+    "engine_guardian",
+    "repo_analizer",
+    "control_tower"
+  ],
+  "lifecycle_states": [
+    "bundle",
+    "validated",
+    "applied",
+    "activated",
+    "closed"
+  ],
+  "artifact_kinds": [
+    "zip_bundle",
+    "manifest",
+    "validation_report",
+    "activation_report",
+    "snapshot",
+    "audit_record",
+    "evidence"
+  ],
+  "verdicts": [
+    "pass",
+    "fail",
+    "blocked",
+    "not_applicable"
+  ],
+  "access_modes": [
+    "owned",
+    "read_only",
+    "forbidden"
+  ]
+}

@@ -1,0 +1,1871 @@
+KEY FILES FULL TEXT DUMP
+GeneratedAtUTC: 2026-03-01T09:56:22.0924659Z
+
+FILE: tools/hos/_core/repo_root.py
+----- BEGIN -----
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import os
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Iterable
+
+DEFAULT_ROOT_MARKERS: tuple[str, ...] = (
+    "package.json",
+    "pnpm-workspace.yaml",
+    "turbo.json",
+)
+
+
+@dataclass(frozen=True)
+class RootProbeResult:
+    root: Path
+    matched_markers: tuple[str, ...]
+
+
+def _candidate_starts(start: Path | None = None) -> list[Path]:
+    points: list[Path] = []
+
+    env_root = os.getenv("HOS_REPO_ROOT")
+    if env_root:
+        points.append(Path(env_root).resolve())
+
+    if start is not None:
+        points.append(start.resolve())
+    else:
+        points.append(Path.cwd().resolve())
+
+    unique: list[Path] = []
+    seen: set[str] = set()
+    for point in points:
+        key = point.as_posix().lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        unique.append(point)
+
+    return unique
+
+
+def _iter_ancestors(path: Path) -> Iterable[Path]:
+    current = path
+    if current.is_file():
+        current = current.parent
+    while True:
+        yield current
+        if current.parent == current:
+            break
+        current = current.parent
+
+
+def probe_repo_root(
+    start: Path | None = None,
+    markers: tuple[str, ...] = DEFAULT_ROOT_MARKERS,
+) -> RootProbeResult | None:
+    if not markers:
+        raise ValueError("markers must not be empty")
+
+    for start_point in _candidate_starts(start):
+        for candidate in _iter_ancestors(start_point):
+            matched = tuple(marker for marker in markers if (candidate / marker).exists())
+            if len(matched) == len(markers):
+                return RootProbeResult(root=candidate, matched_markers=matched)
+    return None
+
+
+def find_repo_root(
+    start: Path | None = None,
+    markers: tuple[str, ...] = DEFAULT_ROOT_MARKERS,
+) -> Path:
+    probed = probe_repo_root(start=start, markers=markers)
+    if probed is None:
+        marker_line = ", ".join(markers)
+        raise FileNotFoundError(f"unable to detect repository root, required markers: {marker_line}")
+    return probed.root
+
+
+def is_repo_root(path: Path, markers: tuple[str, ...] = DEFAULT_ROOT_MARKERS) -> bool:
+    candidate = path.resolve()
+    return all((candidate / marker).exists() for marker in markers)
+
+
+def relative_to_root(path: Path, root: Path) -> str:
+    return path.resolve().relative_to(root.resolve()).as_posix()
+
+
+----- END -----
+
+FILE: tools/hos/_core/paths.py
+----- BEGIN -----
+#!/usr/bin/env python3
+from __future__ import annotations
+
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Iterable
+
+from .stable_json import load_json
+
+DEFAULT_FORBIDDEN_PATHS: tuple[str, ...] = (
+    ".git",
+    "node_modules",
+    "tools/_local",
+    "docs/_root_archive",
+    "tools/codex/worktrees",
+    ".turbo",
+)
+
+
+@dataclass(frozen=True)
+class ForbiddenRegistry:
+    entries: tuple[str, ...]
+
+    def is_forbidden(self, relative_path: str) -> bool:
+        normalized = relative_path.replace("\\", "/").strip("/")
+        for entry in self.entries:
+            if not entry:
+                continue
+            if normalized == entry:
+                return True
+            if normalized.startswith(entry + "/"):
+                return True
+        return False
+
+
+def is_within(base: Path, target: Path) -> bool:
+    try:
+        target.resolve().relative_to(base.resolve())
+        return True
+    except ValueError:
+        return False
+
+
+def assert_within(base: Path, target: Path) -> Path:
+    resolved = target.resolve()
+    if not is_within(base, resolved):
+        raise ValueError(f"path escapes base directory: {resolved} not inside {base.resolve()}")
+    return resolved
+
+
+def safe_join(base: Path, *parts: str) -> Path:
+    if not parts:
+        return base.resolve()
+    candidate = base
+    for part in parts:
+        if part is None:
+            raise ValueError("path segment must not be None")
+        normalized = part.replace("\\", "/")
+        if normalized.startswith("../") or normalized == "..":
+            raise ValueError(f"path traversal not allowed: {part}")
+        candidate = candidate / normalized
+    return assert_within(base, candidate)
+
+
+def load_forbidden_registry(config_path: Path | None = None) -> ForbiddenRegistry:
+    if config_path is None or not config_path.exists():
+        return ForbiddenRegistry(entries=DEFAULT_FORBIDDEN_PATHS)
+
+    payload = load_json(config_path)
+    if not isinstance(payload, dict):
+        raise ValueError(f"forbidden registry must be object: {config_path}")
+
+    values = payload.get("forbidden", [])
+    if not isinstance(values, list):
+        raise ValueError("forbidden registry key 'forbidden' must be list")
+
+    entries = sorted(
+        {
+            item.replace("\\", "/").strip("/")
+            for item in values
+            if isinstance(item, str) and item.strip()
+        }
+    )
+    if not entries:
+        entries = list(DEFAULT_FORBIDDEN_PATHS)
+    return ForbiddenRegistry(entries=tuple(entries))
+
+
+def collect_forbidden_hits(
+    root: Path,
+    paths: Iterable[Path],
+    registry: ForbiddenRegistry,
+) -> list[str]:
+    hits: list[str] = []
+    for path in paths:
+        try:
+            rel = path.resolve().relative_to(root.resolve()).as_posix()
+        except ValueError:
+            continue
+        if registry.is_forbidden(rel):
+            hits.append(rel)
+    return sorted(set(hits))
+
+
+----- END -----
+
+FILE: tools/hos/_core/log.py
+----- BEGIN -----
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import datetime as dt
+import json
+import os
+import sys
+from dataclasses import dataclass
+from typing import Any, TextIO
+
+LEVELS: tuple[str, ...] = ("DEBUG", "INFO", "WARN", "ERROR")
+LEVEL_MAP: dict[str, int] = {name: idx for idx, name in enumerate(LEVELS)}
+
+
+def _timestamp(deterministic: bool = False) -> str:
+    fixed = os.getenv("HOS_LOG_FIXED_TIMESTAMP")
+    if deterministic and fixed:
+        return fixed
+    return dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+
+
+@dataclass
+class ToolLogger:
+    name: str
+    level: str = "INFO"
+    deterministic_time: bool = False
+    stream: TextIO = sys.stdout
+
+    def enabled(self, level: str) -> bool:
+        return LEVEL_MAP[level] >= LEVEL_MAP[self.level]
+
+    def _emit(self, level: str, message: str, **fields: Any) -> None:
+        if level not in LEVEL_MAP:
+            raise ValueError(f"unsupported log level: {level}")
+        if not self.enabled(level):
+            return
+        payload = {
+            "ts": _timestamp(deterministic=self.deterministic_time),
+            "level": level,
+            "logger": self.name,
+            "message": message,
+        }
+        for key in sorted(fields):
+            payload[key] = fields[key]
+        self.stream.write(json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n")
+        self.stream.flush()
+
+    def debug(self, message: str, **fields: Any) -> None:
+        self._emit("DEBUG", message, **fields)
+
+    def info(self, message: str, **fields: Any) -> None:
+        self._emit("INFO", message, **fields)
+
+    def warn(self, message: str, **fields: Any) -> None:
+        self._emit("WARN", message, **fields)
+
+    def error(self, message: str, **fields: Any) -> None:
+        self._emit("ERROR", message, **fields)
+
+
+def create_logger(name: str, level: str = "INFO", deterministic_time: bool = False) -> ToolLogger:
+    normalized = level.upper()
+    if normalized not in LEVEL_MAP:
+        raise ValueError(f"invalid level: {level}")
+    return ToolLogger(name=name, level=normalized, deterministic_time=deterministic_time)
+
+
+----- END -----
+
+FILE: tools/hos/_core/stable_json.py
+----- BEGIN -----
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import json
+import re
+from hashlib import sha256
+from pathlib import Path
+from typing import Any
+
+COMMENT_LINE_PATTERN = re.compile(r"//.*?$", re.MULTILINE)
+TRAILING_COMMA_PATTERN = re.compile(r",(?=\s*[}\]])")
+
+
+def _strip_block_comments(text: str) -> str:
+    out: list[str] = []
+    in_string = False
+    escaped = False
+    i = 0
+    while i < len(text):
+        ch = text[i]
+        nxt = text[i + 1] if i + 1 < len(text) else ""
+
+        if in_string:
+            out.append(ch)
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+            i += 1
+            continue
+
+        if ch == '"':
+            in_string = True
+            out.append(ch)
+            i += 1
+            continue
+
+        if ch == "/" and nxt == "*":
+            i += 2
+            while i + 1 < len(text) and not (text[i] == "*" and text[i + 1] == "/"):
+                i += 1
+            i += 2
+            continue
+
+        out.append(ch)
+        i += 1
+
+    return "".join(out)
+
+
+def load_json_text(text: str, allow_relaxed: bool = True) -> Any:
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        if not allow_relaxed:
+            raise
+    without_block = _strip_block_comments(text)
+    without_line = COMMENT_LINE_PATTERN.sub("", without_block)
+    normalized = TRAILING_COMMA_PATTERN.sub("", without_line)
+    return json.loads(normalized)
+
+
+def load_json(path: Path, allow_relaxed: bool = True) -> Any:
+    raw = path.read_text(encoding="utf-8")
+    return load_json_text(raw, allow_relaxed=allow_relaxed)
+
+
+def dump_json(data: Any, indent: int = 2, sort_keys: bool = True) -> str:
+    rendered = json.dumps(
+        data,
+        ensure_ascii=False,
+        indent=indent,
+        sort_keys=sort_keys,
+        separators=(",", ": "),
+    )
+    return rendered + "\n"
+
+
+def write_json(path: Path, data: Any, indent: int = 2, sort_keys: bool = True) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(dump_json(data, indent=indent, sort_keys=sort_keys), encoding="utf-8", newline="\n")
+
+
+def hash_json(data: Any) -> str:
+    return sha256(dump_json(data, indent=2, sort_keys=True).encode("utf-8")).hexdigest()
+
+
+----- END -----
+
+FILE: tools/hos/_core/stable_text.py
+----- BEGIN -----
+#!/usr/bin/env python3
+from __future__ import annotations
+
+from pathlib import Path
+
+
+def normalize_newlines(text: str) -> str:
+    return text.replace("\r\n", "\n").replace("\r", "\n")
+
+
+def ensure_trailing_newline(text: str) -> str:
+    if text.endswith("\n"):
+        return text
+    return text + "\n"
+
+
+def write_text(path: Path, content: str, trailing_newline: bool = True) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    normalized = normalize_newlines(content)
+    if trailing_newline:
+        normalized = ensure_trailing_newline(normalized)
+    path.write_text(normalized, encoding="utf-8", newline="\n")
+
+
+----- END -----
+
+FILE: tools/hos/_core/cli.py
+----- BEGIN -----
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Callable, Sequence
+
+Handler = Callable[[argparse.Namespace], int]
+Configure = Callable[[argparse.ArgumentParser], None]
+
+
+@dataclass(frozen=True)
+class Subcommand:
+    name: str
+    help: str
+    handler: Handler
+    configure: Configure | None = None
+
+
+class CommandRegistry:
+    def __init__(self, description: str) -> None:
+        self._description = description
+        self._commands: list[Subcommand] = []
+
+    def add(self, command: Subcommand) -> None:
+        if any(existing.name == command.name for existing in self._commands):
+            raise ValueError(f"duplicate subcommand: {command.name}")
+        self._commands.append(command)
+
+    def build(self) -> argparse.ArgumentParser:
+        parser = argparse.ArgumentParser(description=self._description)
+        parser.add_argument("--verbose", action="store_true", help="Enable verbose output.")
+        parser.add_argument(
+            "--deterministic-time",
+            action="store_true",
+            help="Emit deterministic timestamps when supported by tool logger.",
+        )
+        subs = parser.add_subparsers(dest="subcommand", required=True)
+
+        for command in sorted(self._commands, key=lambda item: item.name):
+            sub = subs.add_parser(command.name, help=command.help, description=command.help)
+            sub.set_defaults(_handler=command.handler)
+            if command.configure is not None:
+                command.configure(sub)
+        return parser
+
+    def run(self, argv: Sequence[str] | None = None) -> int:
+        parser = self.build()
+        args = parser.parse_args(argv)
+        handler: Handler | None = getattr(args, "_handler", None)
+        if handler is None:
+            parser.print_help()
+            return 2
+        return handler(args)
+
+
+def positive_int(value: str) -> int:
+    parsed = int(value)
+    if parsed <= 0:
+        raise argparse.ArgumentTypeError("value must be positive integer")
+    return parsed
+
+
+def existing_path(value: str) -> Path:
+    path = Path(value)
+    if not path.exists():
+        raise argparse.ArgumentTypeError(f"path does not exist: {value}")
+    return path
+
+
+----- END -----
+
+FILE: tools/hos/_core/progress.py
+----- BEGIN -----
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import sys
+from dataclasses import dataclass, field
+from time import monotonic
+
+
+@dataclass
+class Progress:
+    total: int
+    label: str = "progress"
+    stream: object = sys.stdout
+    _current: int = 0
+    _start: float = field(default_factory=monotonic)
+
+    def _tty(self) -> bool:
+        isatty = getattr(self.stream, "isatty", None)
+        return bool(isatty and isatty())
+
+    def _line(self, final: bool = False) -> str:
+        total = max(1, self.total)
+        percent = min(100.0, (self._current / total) * 100.0)
+        elapsed = max(0.0, monotonic() - self._start)
+        return (
+            f"{self.label}: {self._current}/{total} "
+            f"({percent:6.2f}%) elapsed={elapsed:7.2f}s"
+            + ("\n" if final or not self._tty() else "\r")
+        )
+
+    def update(self, current: int | None = None, increment: int = 1) -> None:
+        if current is None:
+            self._current += increment
+        else:
+            self._current = current
+        self._current = max(0, min(self._current, self.total))
+        self.stream.write(self._line())
+        self.stream.flush()
+
+    def done(self) -> None:
+        self._current = self.total
+        self.stream.write(self._line(final=True))
+        self.stream.flush()
+
+
+----- END -----
+
+FILE: tools/hos/_core/reports.py
+----- BEGIN -----
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import datetime as dt
+import os
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
+
+from .stable_json import write_json
+from .stable_text import write_text
+
+
+@dataclass(frozen=True)
+class ReportRoots:
+    docs_system: Path
+    local_reports: Path
+
+
+def detect_report_roots(repo_root: Path) -> ReportRoots:
+    return ReportRoots(
+        docs_system=(repo_root / "docs/system").resolve(),
+        local_reports=(repo_root / "tools/_local/reports").resolve(),
+    )
+
+
+def timestamp_slug() -> str:
+    fixed = os.getenv("HOS_FIXED_TIMESTAMP")
+    if fixed:
+        return fixed
+    return dt.datetime.now(dt.timezone.utc).strftime("%Y%m%d_%H%M%S")
+
+
+def write_markdown_report(
+    repo_root: Path,
+    file_name: str,
+    content: str,
+    local: bool = False,
+    subdir: str | None = None,
+) -> Path:
+    roots = detect_report_roots(repo_root)
+    base = roots.local_reports if local else roots.docs_system
+    if subdir:
+        base = base / subdir
+    path = base / file_name
+    write_text(path, content, trailing_newline=True)
+    return path
+
+
+def write_json_report(
+    repo_root: Path,
+    file_name: str,
+    payload: Any,
+    local: bool = False,
+    subdir: str | None = None,
+) -> Path:
+    roots = detect_report_roots(repo_root)
+    base = roots.local_reports if local else roots.docs_system
+    if subdir:
+        base = base / subdir
+    path = base / file_name
+    write_json(path, payload, indent=2, sort_keys=True)
+    return path
+
+
+----- END -----
+
+FILE: tools/hos/_core/exec.py
+----- BEGIN -----
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import shlex
+import subprocess
+import time
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Mapping, Sequence
+
+
+@dataclass(frozen=True)
+class CommandResult:
+    argv: tuple[str, ...]
+    cwd: str
+    returncode: int
+    stdout: str
+    stderr: str
+    elapsed_ms: int
+    timed_out: bool
+    classification: str
+
+    @property
+    def ok(self) -> bool:
+        return self.returncode == 0 and not self.timed_out
+
+
+def _classify(returncode: int, timed_out: bool, stderr: str) -> str:
+    if timed_out:
+        return "timeout"
+    if returncode == 0:
+        return "ok"
+    if returncode < 0:
+        return "signal"
+    lower = stderr.lower()
+    if "not found" in lower or "is not recognized" in lower:
+        return "not_found"
+    return "non_zero"
+
+
+def _normalize_argv(argv: Sequence[str] | str) -> tuple[str, ...]:
+    if isinstance(argv, str):
+        return tuple(shlex.split(argv, posix=False))
+    return tuple(str(part) for part in argv)
+
+
+def run_command(
+    argv: Sequence[str] | str,
+    cwd: Path | None = None,
+    timeout_seconds: float | None = None,
+    env: Mapping[str, str] | None = None,
+    check: bool = False,
+) -> CommandResult:
+    normalized = _normalize_argv(argv)
+    if not normalized:
+        raise ValueError("argv must not be empty")
+
+    run_cwd = str(cwd.resolve()) if cwd is not None else str(Path.cwd().resolve())
+    started = time.perf_counter()
+    timed_out = False
+
+    try:
+        completed = subprocess.run(
+            normalized,
+            cwd=run_cwd,
+            env=dict(env) if env is not None else None,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=timeout_seconds,
+            check=False,
+        )
+        returncode = completed.returncode
+        stdout = completed.stdout
+        stderr = completed.stderr
+    except subprocess.TimeoutExpired as exc:
+        timed_out = True
+        returncode = 124
+        stdout = exc.stdout or ""
+        stderr = exc.stderr or f"command timed out after {timeout_seconds} seconds"
+    except FileNotFoundError as exc:
+        returncode = 127
+        stdout = ""
+        stderr = str(exc)
+
+    elapsed_ms = int((time.perf_counter() - started) * 1000)
+    classification = _classify(returncode=returncode, timed_out=timed_out, stderr=stderr)
+
+    result = CommandResult(
+        argv=normalized,
+        cwd=run_cwd,
+        returncode=returncode,
+        stdout=stdout,
+        stderr=stderr,
+        elapsed_ms=elapsed_ms,
+        timed_out=timed_out,
+        classification=classification,
+    )
+    if check and not result.ok:
+        command_text = " ".join(result.argv)
+        raise RuntimeError(f"command failed ({result.classification}): {command_text}\n{result.stderr}".rstrip())
+    return result
+
+
+----- END -----
+
+FILE: tools/hos/_core/hashing.py
+----- BEGIN -----
+#!/usr/bin/env python3
+from __future__ import annotations
+
+from hashlib import sha256
+from pathlib import Path
+from typing import Iterable
+
+from .stable_json import dump_json
+
+DEFAULT_IGNORE_DIRS: tuple[str, ...] = (
+    ".git",
+    ".next",
+    ".turbo",
+    "node_modules",
+    "__pycache__",
+)
+
+
+def sha256_text(text: str) -> str:
+    return sha256(text.encode("utf-8")).hexdigest()
+
+
+def sha256_file(path: Path, chunk_size: int = 1024 * 64) -> str:
+    hasher = sha256()
+    with path.open("rb") as handle:
+        while True:
+            chunk = handle.read(chunk_size)
+            if not chunk:
+                break
+            hasher.update(chunk)
+    return hasher.hexdigest()
+
+
+def _iter_files(root: Path, ignore_dirs: Iterable[str]) -> list[Path]:
+    ignored = set(ignore_dirs)
+    files: list[Path] = []
+    for path in root.rglob("*"):
+        if path.is_dir():
+            continue
+        if any(part in ignored for part in path.parts):
+            continue
+        files.append(path)
+    files.sort(key=lambda item: item.relative_to(root).as_posix())
+    return files
+
+
+def hash_directory(root: Path, ignore_dirs: Iterable[str] = DEFAULT_IGNORE_DIRS) -> str:
+    root = root.resolve()
+    hasher = sha256()
+    for file_path in _iter_files(root, ignore_dirs=ignore_dirs):
+        rel = file_path.relative_to(root).as_posix().encode("utf-8")
+        hasher.update(rel)
+        hasher.update(b"\n")
+        hasher.update(sha256_file(file_path).encode("ascii"))
+        hasher.update(b"\n")
+    return hasher.hexdigest()
+
+
+def hash_json_stable(data: object) -> str:
+    return sha256_text(dump_json(data, indent=2, sort_keys=True))
+
+
+----- END -----
+
+FILE: tools/hos/turbo/profiles.json
+----- BEGIN -----
+{
+  "profiles": {
+    "aggressive": {
+      "concurrency": "auto",
+      "description": "Maximum available concurrency (delegates scheduling to Turbo).",
+      "intendedFor": "High-core local machines or dedicated CI runners."
+    },
+    "balanced": {
+      "concurrency": 6,
+      "description": "Balanced profile tuned to avoid CPU spikes while preserving throughput.",
+      "intendedFor": "Default developer profile for modern desktop CPUs."
+    },
+    "stable": {
+      "concurrency": 4,
+      "description": "Conservative profile for thermal stability and deterministic behavior.",
+      "intendedFor": "Lower noise and reproducible local execution."
+    }
+  },
+  "schemaVersion": 1
+}
+
+
+----- END -----
+
+FILE: tools/hos/turbo/turbo_wrap.py
+----- BEGIN -----
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import sys
+import argparse
+import os
+from pathlib import Path
+from typing import Sequence
+
+_BOOT = Path(__file__).resolve()
+for _parent in (_BOOT.parent, *_BOOT.parents):
+    if (_parent / "package.json").exists() and (_parent / "pnpm-workspace.yaml").exists():
+        if str(_parent) not in sys.path:
+            sys.path.insert(0, str(_parent))
+        break
+
+from tools.hos._core.exec import run_command
+from tools.hos._core.repo_root import find_repo_root
+from tools.hos._core.reports import timestamp_slug, write_json_report
+from tools.hos.turbo.remote_cache_check import evaluate_remote_cache_env
+from tools.hos.turbo.resolve_profile import resolve_profile
+
+
+def _has_concurrency_flag(args: Sequence[str]) -> bool:
+    return any(
+        token == "--concurrency"
+        or token.startswith("--concurrency=")
+        or token.startswith("-c=")
+        for token in args
+    )
+
+
+def _build_turbo_args(base_args: list[str], concurrency: int | str) -> list[str]:
+    args = list(base_args)
+    if not _has_concurrency_flag(args) and concurrency != "auto":
+        args.append(f"--concurrency={concurrency}")
+    return args
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Optional Turbo wrapper with deterministic profile defaults. "
+            "No existing scripts are modified automatically."
+        )
+    )
+    parser.add_argument("--profile", help="Profile name: stable|balanced|aggressive.")
+    parser.add_argument("--ci", action="store_true", help="Enable CI mode (requires remote cache env vars).")
+    parser.add_argument("--dry-run", action="store_true", help="Print command without executing.")
+    parser.add_argument("--timeout", type=float, default=0.0, help="Timeout in seconds. 0 disables timeout.")
+    parser.add_argument(
+        "--report",
+        action="store_true",
+        help="Write run report JSON into tools/_local/reports/turbo.",
+    )
+    parser.add_argument(
+        "turbo_args",
+        nargs=argparse.REMAINDER,
+        help="Arguments passed to turbo, example: -- run build --filter=@hitech/keystone",
+    )
+    return parser.parse_args()
+
+
+def _normalize_turbo_args(raw: Sequence[str]) -> list[str]:
+    if not raw:
+        return ["run", "build"]
+    if raw[0] == "--":
+        return list(raw[1:])
+    return list(raw)
+
+
+def main() -> int:
+    args = parse_args()
+    repo_root = find_repo_root()
+    resolution = resolve_profile(repo_root=repo_root, requested=args.profile)
+    turbo_args = _normalize_turbo_args(args.turbo_args)
+    turbo_args = _build_turbo_args(turbo_args, concurrency=resolution.concurrency)
+
+    remote_cache = evaluate_remote_cache_env()
+    if args.ci and not remote_cache.ok:
+        print("[turbo_wrap] FAIL CI mode requires TURBO_TOKEN and TURBO_TEAM env names.")
+        for missing in remote_cache.required_missing:
+            print(f" - missing: {missing}")
+        return 2
+    if not args.ci and not remote_cache.ok:
+        print("[turbo_wrap] WARN remote cache env vars not fully present (local mode continues).")
+
+    command = ["turbo", *turbo_args]
+    print(
+        f"[turbo_wrap] profile={resolution.profile} concurrency={resolution.concurrency} "
+        f"source={resolution.source} command={' '.join(command)}"
+    )
+
+    if args.dry_run:
+        return 0
+
+    timeout = args.timeout if args.timeout > 0 else None
+    result = run_command(command, cwd=repo_root, timeout_seconds=timeout, env=os.environ, check=False)
+    if result.stdout:
+        print(result.stdout, end="" if result.stdout.endswith("\n") else "\n")
+    if result.stderr:
+        print(result.stderr, end="" if result.stderr.endswith("\n") else "\n")
+
+    if args.report:
+        payload = {
+            "ok": result.ok,
+            "argv": list(result.argv),
+            "cwd": result.cwd,
+            "returnCode": result.returncode,
+            "classification": result.classification,
+            "elapsedMs": result.elapsed_ms,
+            "profile": resolution.profile,
+            "concurrency": resolution.concurrency,
+            "source": resolution.source,
+            "ciMode": args.ci,
+            "remoteCache": {
+                "ok": remote_cache.ok,
+                "requiredPresent": list(remote_cache.required_present),
+                "requiredMissing": list(remote_cache.required_missing),
+                "optionalPresent": list(remote_cache.optional_present),
+                "optionalMissing": list(remote_cache.optional_missing),
+            },
+        }
+        report_name = f"turbo_wrap_{timestamp_slug()}.json"
+        report_path = write_json_report(
+            repo_root=repo_root,
+            file_name=report_name,
+            payload=payload,
+            local=True,
+            subdir="turbo",
+        )
+        print(f"[turbo_wrap] report={report_path.as_posix()}")
+
+    return 0 if result.ok else result.returncode or 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+----- END -----
+
+FILE: tools/hos/turbo/resolve_profile.py
+----- BEGIN -----
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import sys
+import argparse
+import os
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
+
+_BOOT = Path(__file__).resolve()
+for _parent in (_BOOT.parent, *_BOOT.parents):
+    if (_parent / "package.json").exists() and (_parent / "pnpm-workspace.yaml").exists():
+        if str(_parent) not in sys.path:
+            sys.path.insert(0, str(_parent))
+        break
+
+from tools.hos._core.repo_root import find_repo_root
+from tools.hos._core.stable_json import load_json
+
+PROFILES_FILE = "tools/hos/turbo/profiles.json"
+PROFILE_ENV = "HOS_TURBO_PROFILE"
+VALID_PROFILE_NAMES = ("stable", "balanced", "aggressive")
+
+
+@dataclass(frozen=True)
+class ProfileResolution:
+    profile: str
+    concurrency: int | str
+    source: str
+    logical_cores: int
+    reason: str
+
+
+def load_profiles(repo_root: Path) -> dict[str, dict[str, Any]]:
+    path = repo_root / PROFILES_FILE
+    payload = load_json(path)
+    if not isinstance(payload, dict):
+        raise ValueError(f"invalid profile file: {path}")
+    profiles = payload.get("profiles", {})
+    if not isinstance(profiles, dict):
+        raise ValueError(f"invalid profile structure: {path}")
+    normalized: dict[str, dict[str, Any]] = {}
+    for name in sorted(profiles):
+        if name not in VALID_PROFILE_NAMES:
+            continue
+        config = profiles[name]
+        if not isinstance(config, dict):
+            continue
+        concurrency = config.get("concurrency")
+        if isinstance(concurrency, int) and concurrency > 0:
+            value: int | str = concurrency
+        elif isinstance(concurrency, str) and concurrency == "auto":
+            value = "auto"
+        else:
+            continue
+        normalized[name] = {"concurrency": value, "description": str(config.get("description", ""))}
+    if not normalized:
+        raise ValueError("no valid turbo profiles found")
+    return normalized
+
+
+def detect_logical_cores() -> int:
+    value = os.cpu_count()
+    return value if isinstance(value, int) and value > 0 else 1
+
+
+def recommend_profile(logical_cores: int) -> str:
+    if logical_cores <= 4:
+        return "stable"
+    if logical_cores <= 12:
+        return "balanced"
+    return "aggressive"
+
+
+def resolve_profile(
+    repo_root: Path,
+    requested: str | None = None,
+    env: dict[str, str] | None = None,
+) -> ProfileResolution:
+    env_map = env if env is not None else dict(os.environ)
+    profiles = load_profiles(repo_root)
+    logical = detect_logical_cores()
+    recommended = recommend_profile(logical)
+
+    if requested:
+        normalized = requested.strip().lower()
+        if normalized not in profiles:
+            raise ValueError(f"unknown turbo profile: {requested}")
+        source = "cli"
+        chosen = normalized
+        reason = "explicit CLI selection"
+    elif env_map.get(PROFILE_ENV):
+        normalized = env_map[PROFILE_ENV].strip().lower()
+        if normalized not in profiles:
+            raise ValueError(f"invalid {PROFILE_ENV} value: {env_map[PROFILE_ENV]}")
+        source = "env"
+        chosen = normalized
+        reason = f"environment override via {PROFILE_ENV}"
+    else:
+        chosen = recommended
+        source = "recommended"
+        reason = f"based on detected logical cores ({logical})"
+
+    return ProfileResolution(
+        profile=chosen,
+        concurrency=profiles[chosen]["concurrency"],
+        source=source,
+        logical_cores=logical,
+        reason=reason,
+    )
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Resolve Turbo profile for deterministic execution.")
+    parser.add_argument("--profile", choices=VALID_PROFILE_NAMES, help="Force profile from CLI.")
+    parser.add_argument("--json", action="store_true", help="Emit machine-readable JSON output.")
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    repo_root = find_repo_root()
+    resolution = resolve_profile(repo_root=repo_root, requested=args.profile)
+    payload = {
+        "profile": resolution.profile,
+        "concurrency": resolution.concurrency,
+        "source": resolution.source,
+        "logicalCores": resolution.logical_cores,
+        "reason": resolution.reason,
+    }
+    if args.json:
+        from tools.hos._core.stable_json import dump_json
+
+        print(dump_json(payload), end="")
+    else:
+        print(
+            f"[resolve_profile] profile={resolution.profile} concurrency={resolution.concurrency} "
+            f"source={resolution.source} cores={resolution.logical_cores} reason={resolution.reason}"
+        )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+----- END -----
+
+FILE: tools/hos/turbo/remote_cache_check.py
+----- BEGIN -----
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import sys
+import argparse
+import os
+from dataclasses import dataclass
+from pathlib import Path
+
+_BOOT = Path(__file__).resolve()
+for _parent in (_BOOT.parent, *_BOOT.parents):
+    if (_parent / "package.json").exists() and (_parent / "pnpm-workspace.yaml").exists():
+        if str(_parent) not in sys.path:
+            sys.path.insert(0, str(_parent))
+        break
+
+from tools.hos._core.stable_json import dump_json
+
+REQUIRED_ENV_VARS: tuple[str, ...] = ("TURBO_TOKEN", "TURBO_TEAM")
+OPTIONAL_ENV_VARS: tuple[str, ...] = ("TURBO_API",)
+
+
+@dataclass(frozen=True)
+class RemoteCacheStatus:
+    required_present: tuple[str, ...]
+    required_missing: tuple[str, ...]
+    optional_present: tuple[str, ...]
+    optional_missing: tuple[str, ...]
+
+    @property
+    def ok(self) -> bool:
+        return len(self.required_missing) == 0
+
+
+def evaluate_remote_cache_env(env: dict[str, str] | None = None) -> RemoteCacheStatus:
+    mapping = env if env is not None else dict(os.environ)
+    required_present = tuple(sorted(name for name in REQUIRED_ENV_VARS if mapping.get(name)))
+    required_missing = tuple(sorted(name for name in REQUIRED_ENV_VARS if not mapping.get(name)))
+    optional_present = tuple(sorted(name for name in OPTIONAL_ENV_VARS if mapping.get(name)))
+    optional_missing = tuple(sorted(name for name in OPTIONAL_ENV_VARS if not mapping.get(name)))
+
+    return RemoteCacheStatus(
+        required_present=required_present,
+        required_missing=required_missing,
+        optional_present=optional_present,
+        optional_missing=optional_missing,
+    )
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Check Turbo remote cache environment variable presence. "
+            "This command never prints secret values."
+        )
+    )
+    parser.add_argument("--require", action="store_true", help="Return non-zero when required vars are missing.")
+    parser.add_argument("--json", action="store_true", help="Emit JSON output.")
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    status = evaluate_remote_cache_env()
+    payload = {
+        "ok": status.ok,
+        "requiredPresent": list(status.required_present),
+        "requiredMissing": list(status.required_missing),
+        "optionalPresent": list(status.optional_present),
+        "optionalMissing": list(status.optional_missing),
+    }
+
+    if args.json:
+        print(dump_json(payload), end="")
+    else:
+        state = "PASS" if status.ok else "WARN"
+        print(
+            f"[remote_cache_check] {state} required_present={len(status.required_present)} "
+            f"required_missing={len(status.required_missing)}"
+        )
+        if status.required_missing:
+            print("Missing required env names:")
+            for name in status.required_missing:
+                print(f" - {name}")
+        if status.optional_missing:
+            print("Missing optional env names:")
+            for name in status.optional_missing:
+                print(f" - {name}")
+    if args.require and not status.ok:
+        return 2
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+----- END -----
+
+FILE: tools/hos/data/cli_simulate.py
+----- BEGIN -----
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import sys
+import argparse
+import datetime as dt
+from pathlib import Path
+from typing import Any
+
+_BOOT = Path(__file__).resolve()
+for _parent in (_BOOT.parent, *_BOOT.parents):
+    if (_parent / "package.json").exists() and (_parent / "pnpm-workspace.yaml").exists():
+        if str(_parent) not in sys.path:
+            sys.path.insert(0, str(_parent))
+        break
+
+from tools.hos._core.repo_root import find_repo_root
+from tools.hos._core.reports import timestamp_slug
+from tools.hos._core.stable_json import dump_json
+from tools.hos.data.export_api_mock import export_api_mock
+from tools.hos.data.export_json import export_series_csv, export_simulation_bundle
+from tools.hos.data.keystone_shapes import to_endpoint_payloads
+from tools.hos.data.scenarios import SCENARIOS
+from tools.hos.data.simulator_core import ScenarioDefinition, SimulationConfig, generate_simulation
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Deterministic Keystone-oriented data simulator.")
+    parser.add_argument("--scenario", choices=sorted(SCENARIOS), default="normal", help="Scenario name.")
+    parser.add_argument("--seed", type=int, default=1337, help="Deterministic seed.")
+    parser.add_argument("--run-count", type=int, default=0, help="Override run count.")
+    parser.add_argument("--duration-minutes", type=int, default=0, help="Override duration in minutes.")
+    parser.add_argument(
+        "--output-dir",
+        default="",
+        help="Output directory (default: tools/_local/data_sims/<timestamp>/<scenario>_seed<seed>).",
+    )
+    parser.add_argument("--export-api-mock", action="store_true", help="Emit mock endpoint JSON payloads.")
+    parser.add_argument("--json", action="store_true", help="Print summary JSON payload.")
+    return parser.parse_args()
+
+
+def scenario_with_overrides(base: ScenarioDefinition, run_count: int, duration_minutes: int) -> ScenarioDefinition:
+    return ScenarioDefinition(
+        name=base.name,
+        description=base.description,
+        run_count=run_count if run_count > 0 else base.run_count,
+        duration_minutes=duration_minutes if duration_minutes > 0 else base.duration_minutes,
+        baseline_cpu=base.baseline_cpu,
+        baseline_memory_mb=base.baseline_memory_mb,
+        baseline_throughput=base.baseline_throughput,
+        baseline_latency_ms=base.baseline_latency_ms,
+        error_ratio=base.error_ratio,
+        critical_event_ratio=base.critical_event_ratio,
+        burst_chance=base.burst_chance,
+        burst_scale=base.burst_scale,
+        queue_pressure_base=base.queue_pressure_base,
+        recovery_bias=base.recovery_bias,
+    )
+
+
+def resolve_output_dir(repo_root: Path, requested: str, scenario: str, seed: int) -> Path:
+    if requested:
+        path = Path(requested)
+        if not path.is_absolute():
+            path = (repo_root / path).resolve()
+        return path
+    slug = timestamp_slug()
+    return (repo_root / "tools/_local/data_sims" / slug / f"{scenario}_seed{seed}").resolve()
+
+
+def main() -> int:
+    args = parse_args()
+    repo_root = find_repo_root()
+    scenario = scenario_with_overrides(SCENARIOS[args.scenario], args.run_count, args.duration_minutes)
+    start_at = dt.datetime.now(dt.timezone.utc).replace(second=0, microsecond=0)
+
+    config = SimulationConfig(scenario=scenario, seed=args.seed, start_at=start_at)
+    bundle = generate_simulation(config)
+    payload = {
+        "metadata": bundle.metadata,
+        "series": bundle.series,
+        "runs": bundle.runs,
+        "activity": bundle.activity,
+        "widgets": bundle.widgets,
+        "layout": bundle.layout,
+    }
+
+    out_dir = resolve_output_dir(
+        repo_root=repo_root,
+        requested=args.output_dir,
+        scenario=scenario.name,
+        seed=args.seed,
+    )
+    bundle_path = export_simulation_bundle(output_dir=out_dir, payload=payload)
+    csv_path = export_series_csv(output_dir=out_dir, series=bundle.series)
+    api_files: list[Path] = []
+    if args.export_api_mock:
+        api_payloads = to_endpoint_payloads(bundle=bundle, seed=args.seed)
+        api_files = export_api_mock(output_dir=out_dir, payloads=api_payloads)
+
+    summary: dict[str, Any] = {
+        "scenario": scenario.name,
+        "seed": args.seed,
+        "runCount": len(bundle.runs),
+        "activityCount": len(bundle.activity),
+        "widgetCount": len(bundle.widgets),
+        "seriesCount": len(bundle.series),
+        "determinismHash": bundle.metadata.get("determinismHash"),
+        "outputDir": out_dir.as_posix(),
+        "bundleFile": bundle_path.as_posix(),
+        "seriesCsv": csv_path.as_posix(),
+        "apiMockFiles": [item.as_posix() for item in api_files],
+    }
+
+    if args.json:
+        print(dump_json(summary), end="")
+    else:
+        print(
+            f"[cli_simulate] scenario={scenario.name} seed={args.seed} runs={len(bundle.runs)} "
+            f"activity={len(bundle.activity)} widgets={len(bundle.widgets)}"
+        )
+        print(f"[cli_simulate] output={out_dir.as_posix()}")
+        print(f"[cli_simulate] determinismHash={bundle.metadata.get('determinismHash')}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+----- END -----
+
+FILE: tools/hos/visual/cli_visual.py
+----- BEGIN -----
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import sys
+import argparse
+from pathlib import Path
+from typing import Any
+
+_BOOT = Path(__file__).resolve()
+for _parent in (_BOOT.parent, *_BOOT.parents):
+    if (_parent / "package.json").exists() and (_parent / "pnpm-workspace.yaml").exists():
+        if str(_parent) not in sys.path:
+            sys.path.insert(0, str(_parent))
+        break
+
+from tools.hos._core.repo_root import find_repo_root
+from tools.hos._core.reports import timestamp_slug, write_json_report
+from tools.hos._core.stable_json import dump_json
+from tools.hos.visual.baseline_store import (
+    resolve_baseline_paths,
+    sync_captures_to_current,
+    update_baselines,
+)
+from tools.hos.visual.compare import compare_directories
+from tools.hos.visual.playwright_capture import capture_screenshots, parse_targets
+from tools.hos.visual.storybook_detect import detect_storybook_workspaces
+from tools.hos.visual.storybook_runner import start_storybook, stop_storybook
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Deterministic visual regression harness.")
+    parser.add_argument("--suite", default="default", help="Baseline suite key.")
+    parser.add_argument("--base-url", default="http://127.0.0.1:6007", help="Capture base URL.")
+    parser.add_argument("--target", action="append", default=[], help="Target page in name=/path format.")
+    parser.add_argument("--port", type=int, default=6007, help="Storybook port when auto-starting.")
+    parser.add_argument("--start-storybook", action="store_true", help="Auto-start detected storybook.")
+    parser.add_argument("--workspace", default="", help="Storybook workspace override.")
+    parser.add_argument("--package-name", default="", help="Storybook package name override.")
+    parser.add_argument("--threshold", type=float, default=0.0, help="Allowed visual diff ratio.")
+    parser.add_argument("--update-baseline", action="store_true", help="Update tracked baselines from current captures.")
+    parser.add_argument("--strict", action="store_true", help="Fail when capture cannot execute.")
+    parser.add_argument("--json", action="store_true", help="Emit JSON result.")
+    return parser.parse_args()
+
+
+def _select_storybook(repo_root: Path, workspace: str, package_name: str) -> tuple[str, str] | None:
+    if workspace and package_name:
+        return workspace, package_name
+    matches = detect_storybook_workspaces(repo_root=repo_root)
+    if not matches:
+        return None
+    first = matches[0]
+    return first.workspace_path, first.package_name
+
+
+def main() -> int:
+    args = parse_args()
+    repo_root = find_repo_root()
+    paths = resolve_baseline_paths(repo_root=repo_root, suite=args.suite)
+
+    runner = None
+    storybook_info = None
+    if args.start_storybook:
+        storybook_info = _select_storybook(
+            repo_root=repo_root,
+            workspace=args.workspace,
+            package_name=args.package_name,
+        )
+        if storybook_info is None:
+            message = "[cli_visual] no storybook workspace detected."
+            if args.strict:
+                print(message)
+                return 2
+            print(message + " capture continues against provided --base-url.")
+        else:
+            workspace, package = storybook_info
+            runner = start_storybook(
+                repo_root=repo_root,
+                workspace_name=workspace,
+                package_name=package,
+                port=args.port,
+                timeout_seconds=75.0,
+            )
+            print(f"[cli_visual] storybook started workspace={workspace} package={package} port={args.port}")
+
+    try:
+        capture_root = (repo_root / "tools/_local/visual/capture" / args.suite / timestamp_slug()).resolve()
+        targets = parse_targets(args.target) if args.target else [{"name": "root", "path": "/"}]
+        capture = capture_screenshots(
+            repo_root=repo_root,
+            base_url=args.base_url,
+            targets=targets,
+            output_dir=capture_root,
+        )
+        if not capture.get("ok"):
+            if args.strict:
+                print("[cli_visual] capture failed in strict mode.")
+                print(capture.get("stderr", "capture error"))
+                return 2
+            print("[cli_visual] capture failed but strict mode is off.")
+            print(capture.get("stderr", capture.get("classification", "unknown failure")))
+            payload: dict[str, Any] = {
+                "ok": False,
+                "capture": capture,
+                "strict": args.strict,
+            }
+            if args.json:
+                print(dump_json(payload), end="")
+            report_name = f"visual_{timestamp_slug()}.json"
+            write_json_report(repo_root=repo_root, file_name=report_name, payload=payload, local=True, subdir="visual")
+            return 0
+
+        copied = sync_captures_to_current(capture_root=capture_root, current_root=paths.current_dir)
+        compare_payload = compare_directories(
+            baseline_dir=paths.base_dir,
+            current_dir=paths.current_dir,
+            diff_dir=paths.diff_dir,
+            threshold=max(0.0, min(1.0, args.threshold)),
+        )
+        updated: list[str] = []
+        if args.update_baseline:
+            updated_paths = update_baselines(current_root=paths.current_dir, baseline_root=paths.base_dir)
+            updated = [item.as_posix() for item in updated_paths]
+
+        payload = {
+            "ok": compare_payload["failures"] == 0,
+            "suite": args.suite,
+            "captureCount": len(copied),
+            "captureRoot": capture_root.as_posix(),
+            "baselineDir": paths.base_dir.as_posix(),
+            "currentDir": paths.current_dir.as_posix(),
+            "diffDir": paths.diff_dir.as_posix(),
+            "compare": compare_payload,
+            "updatedBaselines": updated,
+            "updateBaselineRequested": args.update_baseline,
+            "strict": args.strict,
+        }
+        report_name = f"visual_{timestamp_slug()}.json"
+        report_path = write_json_report(
+            repo_root=repo_root,
+            file_name=report_name,
+            payload=payload,
+            local=True,
+            subdir="visual",
+        )
+
+        if args.json:
+            print(dump_json(payload), end="")
+        else:
+            print(
+                f"[cli_visual] suite={args.suite} captures={len(copied)} "
+                f"failures={compare_payload['failures']} updated={len(updated)}"
+            )
+            print(f"[cli_visual] report={report_path.as_posix()}")
+        return 0 if payload["ok"] else 1
+    finally:
+        if runner is not None:
+            stop_storybook(runner.process)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+----- END -----
+
+FILE: tools/hos/ui/scaffold_component.py
+----- BEGIN -----
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import sys
+import argparse
+import re
+from pathlib import Path
+
+_BOOT = Path(__file__).resolve()
+for _parent in (_BOOT.parent, *_BOOT.parents):
+    if (_parent / "package.json").exists() and (_parent / "pnpm-workspace.yaml").exists():
+        if str(_parent) not in sys.path:
+            sys.path.insert(0, str(_parent))
+        break
+
+from tools.hos._core.repo_root import find_repo_root
+from tools.hos._core.stable_text import write_text
+
+NAME_PATTERN = re.compile(r"^[A-Z][A-Za-z0-9]+$")
+
+
+def _component_tsx(name: str) -> str:
+    return f"""import "./{name}.styles.css";
+import type {{ ReactNode }} from "react";
+
+export interface {name}Props {{
+  readonly title: string;
+  readonly subtitle?: string;
+  readonly children?: ReactNode;
+}}
+
+export function {name}(props: {name}Props): JSX.Element {{
+  const {{ title, subtitle, children }} = props;
+  return (
+    <section className="{name.lower()}-root" data-component="{name}">
+      <header className="{name.lower()}-header">
+        <h3 className="{name.lower()}-title">{{title}}</h3>
+        {{subtitle ? <p className="{name.lower()}-subtitle">{{subtitle}}</p> : null}}
+      </header>
+      <div className="{name.lower()}-body">{{children}}</div>
+    </section>
+  );
+}}
+"""
+
+
+def _component_styles(name: str) -> str:
+    root = f".{name.lower()}-root"
+    return f"""{root} {{
+  --card-bg: var(--ui-surface-1, rgba(255, 255, 255, 0.92));
+  --card-border: var(--ui-border-1, rgba(229, 233, 240, 0.75));
+  --card-text: var(--ui-text-1, rgba(16, 24, 40, 1));
+  --card-muted: var(--ui-text-2, rgba(71, 84, 103, 1));
+  --card-radius: var(--ui-core-radius-lg, 16px);
+  --card-space: var(--ui-core-space-4, 16px);
+  --card-shadow: var(--ui-shadow-2, 0 18px 38px rgba(15, 23, 42, 0.09));
+  --glass-overlay: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.65),
+    rgba(255, 255, 255, 0.35)
+  );
+  position: relative;
+  border-radius: var(--card-radius);
+  border: 1px solid var(--card-border);
+  background: var(--glass-overlay), var(--card-bg);
+  backdrop-filter: blur(var(--ui-fx-blur-sm, 8px));
+  box-shadow: var(--card-shadow);
+  color: var(--card-text);
+  padding: var(--card-space);
+  overflow: hidden;
+}}
+
+.{name.lower()}-root::after {{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0));
+  mix-blend-mode: soft-light;
+}}
+
+.{name.lower()}-header {{
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-core-space-2, 8px);
+}}
+
+.{name.lower()}-title {{
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}}
+
+.{name.lower()}-subtitle {{
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  color: var(--card-muted);
+}}
+
+.{name.lower()}-body {{
+  margin-top: var(--ui-core-space-3, 12px);
+  display: grid;
+  gap: var(--ui-core-space-3, 12px);
+}}
+"""
+
+
+def _component_story(name: str) -> str:
+    return f"""import type {{ Meta, StoryObj }} from "@storybook/react";
+import {{ {name} }} from "./{name}";
+
+const meta: Meta<typeof {name}> = {{
+  title: "Generated/{name}",
+  component: {name},
+  args: {{
+    title: "{name} Title",
+    subtitle: "Generated by tools/hos/ui/scaffold_component.py"
+  }}
+}};
+
+export default meta;
+type Story = StoryObj<typeof {name}>;
+
+export const Default: Story = {{
+  render: (args) => (
+    <{name} {{...args}}>
+      <p>Replace this placeholder content with a real UI fragment.</p>
+    </{name}>
+  )
+}};
+"""
+
+
+def _component_test(name: str) -> str:
+    return f"""import {{ describe, expect, it }} from "vitest";
+import {{ renderToString }} from "react-dom/server";
+import {{ {name} }} from "./{name}";
+
+describe("{name}", () => {{
+  it("renders title and subtitle deterministically", () => {{
+    const html = renderToString(
+      <{name} title="A" subtitle="B">
+        <span>Body</span>
+      </{name}>
+    );
+    expect(html).toContain("A");
+    expect(html).toContain("B");
+    expect(html).toContain("Body");
+  }});
+}});
+"""
+
+
+def _index_file(name: str) -> str:
+    return f'export * from "./{name}";\n'
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Generate component skeleton for UI tooling flows.")
+    parser.add_argument("--name", required=True, help="Component name in PascalCase.")
+    parser.add_argument(
+        "--out-dir",
+        default="tools/_local/ui_scaffold/components",
+        help="Output parent directory.",
+    )
+    parser.add_argument("--force", action="store_true", help="Overwrite existing files.")
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    if not NAME_PATTERN.match(args.name):
+        raise ValueError("component name must be PascalCase and start with uppercase letter")
+
+    repo_root = find_repo_root()
+    out_dir = Path(args.out_dir)
+    if not out_dir.is_absolute():
+        out_dir = (repo_root / out_dir).resolve()
+    component_dir = out_dir / args.name
+
+    file_map = {
+        component_dir / f"{args.name}.tsx": _component_tsx(args.name),
+        component_dir / f"{args.name}.styles.css": _component_styles(args.name),
+        component_dir / f"{args.name}.stories.tsx": _component_story(args.name),
+        component_dir / f"{args.name}.test.tsx": _component_test(args.name),
+        component_dir / "index.ts": _index_file(args.name),
+    }
+
+    if component_dir.exists() and not args.force:
+        raise FileExistsError(f"component directory exists: {component_dir}")
+
+    for path in sorted(file_map):
+        write_text(path, file_map[path], trailing_newline=True)
+        print(f"[scaffold_component] wrote {path.as_posix()}")
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+----- END -----
+
+FILE: tools/hos/hygiene/cli_hygiene.py
+----- BEGIN -----
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import sys
+import argparse
+from pathlib import Path
+from typing import Any
+
+_BOOT = Path(__file__).resolve()
+for _parent in (_BOOT.parent, *_BOOT.parents):
+    if (_parent / "package.json").exists() and (_parent / "pnpm-workspace.yaml").exists():
+        if str(_parent) not in sys.path:
+            sys.path.insert(0, str(_parent))
+        break
+
+from tools.hos._core.reports import timestamp_slug, write_json_report
+from tools.hos._core.repo_root import find_repo_root
+from tools.hos._core.stable_json import dump_json
+from tools.hos.hygiene.scan_large_files import scan_large_files
+from tools.hos.hygiene.scan_root_artifacts import scan_root_artifacts
+from tools.hos.hygiene.scan_worktree_contamination import scan_worktree_contamination
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Optional hygiene scanner bundle.")
+    parser.add_argument("--include-large-files", action="store_true", help="Include large file scanner.")
+    parser.add_argument("--large-file-min-mb", type=float, default=10.0, help="Threshold for large file scan.")
+    parser.add_argument("--strict", action="store_true", help="Return non-zero when root/worktree issues exist.")
+    parser.add_argument("--json", action="store_true", help="Emit JSON output.")
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    repo_root = find_repo_root()
+    root_payload = scan_root_artifacts(repo_root=repo_root)
+    worktree_payload = scan_worktree_contamination(repo_root=repo_root)
+    large_payload: dict[str, Any] | None = None
+    if args.include_large_files:
+        threshold = max(1, int(args.large_file_min_mb * 1024 * 1024))
+        large_payload = scan_large_files(repo_root=repo_root, min_bytes=threshold, limit=200)
+
+    issues = 0
+    if not root_payload["ok"]:
+        issues += 1
+    if not worktree_payload.get("ok", True):
+        issues += 1
+
+    payload: dict[str, Any] = {
+        "ok": issues == 0,
+        "issues": issues,
+        "strict": args.strict,
+        "checks": {
+            "rootArtifacts": root_payload,
+            "worktreeContamination": worktree_payload,
+            "largeFiles": large_payload,
+        },
+    }
+
+    report_name = f"hygiene_{timestamp_slug()}.json"
+    report_path = write_json_report(
+        repo_root=repo_root,
+        file_name=report_name,
+        payload=payload,
+        local=True,
+        subdir="hygiene",
+    )
+
+    if args.json:
+        print(dump_json(payload), end="")
+    else:
+        print(f"[cli_hygiene] ok={payload['ok']} issues={payload['issues']} strict={args.strict}")
+        print(f"[cli_hygiene] report={report_path.as_posix()}")
+
+    if args.strict and issues > 0:
+        return 2
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+----- END -----
+
+FILE: docs/system/TOOLCHAIN_INDEX.md
+----- BEGIN -----
+# TOOLCHAIN_INDEX
+
+Status for all modules below: **OFF BY DEFAULT until Constitution**
+
+## Core
+
+- `tools/hos/_core/repo_root.py`: repo root detection from arbitrary cwd.
+- `tools/hos/_core/paths.py`: safe path joins and forbidden-path registry helpers.
+- `tools/hos/_core/log.py`: deterministic structured logger.
+- `tools/hos/_core/stable_json.py`: stable JSON read/write.
+- `tools/hos/_core/stable_text.py`: normalized text writing.
+- `tools/hos/_core/cli.py`: subcommand registry helpers.
+- `tools/hos/_core/progress.py`: terminal progress utility (Windows-friendly).
+- `tools/hos/_core/reports.py`: deterministic report writer for docs/system and tools/_local.
+- `tools/hos/_core/exec.py`: safe subprocess execution wrapper.
+- `tools/hos/_core/hashing.py`: deterministic hashing utilities.
+
+## Turbo
+
+- `tools/hos/turbo/resolve_profile.py`
+- `tools/hos/turbo/turbo_wrap.py`
+- `tools/hos/turbo/remote_cache_check.py`
+- `tools/hos/turbo/generate_ci_snippets.py`
+- `tools/hos/turbo/profiles.json`
+
+Reference docs:
+- `docs/system/REMOTE_CACHE_SETUP.md`
+- `docs/system/TURBO_PROFILES.md`
+
+## Data Simulation
+
+- `tools/hos/data/cli_simulate.py`
+- `tools/hos/data/simulator_core.py`
+- `tools/hos/data/keystone_shapes.py`
+- `tools/hos/data/export_json.py`
+- `tools/hos/data/export_api_mock.py`
+- `tools/hos/data/scenarios/*.py`
+
+Reference docs:
+- `docs/system/KEYSTONE_DATA_SIMULATOR.md`
+
+## Visual Regression
+
+- `tools/hos/visual/cli_visual.py`
+- `tools/hos/visual/storybook_detect.py`
+- `tools/hos/visual/storybook_runner.py`
+- `tools/hos/visual/playwright_capture.py`
+- `tools/hos/visual/baseline_store.py`
+- `tools/hos/visual/compare.py`
+
+Reference docs:
+- `docs/system/VISUAL_REGRESSION.md`
+- `docs/system/VISUAL_BASELINES_POLICY.md`
+
+## UI Scaffolding
+
+- `tools/hos/ui/scaffold_component.py`
+- `tools/hos/ui/mirror_state.py`
+- `tools/hos/ui/controls/generate_controls.py`
+- `tools/hos/ui/controls/templates/*`
+
+Reference docs:
+- `docs/system/UI_SCAFFOLDING.md`
+- `docs/system/MIRROR_INPUTS.md`
+
+## Hygiene + Doctor
+
+- `tools/hos/hygiene/cli_hygiene.py`
+- `tools/hos/hygiene/scan_root_artifacts.py`
+- `tools/hos/hygiene/scan_worktree_contamination.py`
+- `tools/hos/hygiene/scan_large_files.py`
+- `tools/hos/doctor/doctor.py`
+
+Reference docs:
+- `docs/system/REPO_HYGIENE.md`
+- `docs/system/HYGIENE_REPORT_SAMPLE.md`
+
+## Optional Scripts
+
+- `pnpm -w run hos:doctor`
+- `pnpm -w run hos:turbo`
+- `pnpm -w run hos:visual`
+- `pnpm -w run hos:simulate`
+- `pnpm -w run hos:hygiene`
+
+These scripts are optional entrypoints and do not enforce new CI steps.
+
+
+----- END -----
+

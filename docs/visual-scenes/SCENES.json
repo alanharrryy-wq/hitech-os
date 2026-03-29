@@ -1,0 +1,59 @@
+{
+  "pitch-01-double-engine-neutral-desktop": {
+    "title": "Pitch 01 Neutral Desktop",
+    "route": "/pitch/01-double-engine",
+    "query": "debug=1&layerProfile=neutral&layers=none&motion=off&sceneOverlay=1",
+    "viewport": "desktop",
+    "tags": ["smoke", "pitch", "01", "neutral", "desktop"]
+  },
+  "pitch-01-double-engine-fx-desktop": {
+    "title": "Pitch 01 FX Desktop",
+    "route": "/pitch/01-double-engine",
+    "query": "debug=1&layerProfile=fx&layers=all&motion=on",
+    "viewport": "desktop",
+    "tags": ["pitch", "01", "fx", "desktop"]
+  },
+  "pitch-02-industrial-flow-default-desktop": {
+    "title": "Pitch 02 Neutral Desktop",
+    "route": "/pitch/02-industrial-flow",
+    "query": "debug=1&layerProfile=neutral&layers=none&motion=off&sceneOverlay=1",
+    "viewport": "desktop",
+    "tags": ["smoke", "pitch", "02", "neutral", "desktop"]
+  },
+  "pitch-02-industrial-flow-layered-desktop": {
+    "title": "Pitch 02 Layered Desktop",
+    "route": "/pitch/02-industrial-flow",
+    "query": "debug=1&layers=stage.haze,stage.vignette,card.specular&layerProfile=neutral&motion=off",
+    "viewport": "desktop",
+    "tags": ["smoke", "pitch", "02", "layered", "desktop"],
+    "notes": "Primary regression-protection scene for URL layer overrides."
+  },
+  "pitch-03-hitech-os-fx-desktop": {
+    "title": "Pitch 03 FX Desktop",
+    "route": "/pitch/03-hitech-os",
+    "query": "debug=1&layerProfile=fx&layers=all&motion=on",
+    "viewport": "desktop",
+    "tags": ["pitch", "03", "fx", "desktop"]
+  },
+  "pitch-03-hitech-os-perf-mobile": {
+    "title": "Pitch 03 Perf Mobile",
+    "route": "/pitch/03-hitech-os",
+    "query": "debug=1&layerProfile=perf&layers=none&motion=off",
+    "viewport": "mobile",
+    "tags": ["pitch", "03", "perf", "mobile"]
+  },
+  "pitch-04-valuation-perf-mobile": {
+    "title": "Pitch 04 Perf Mobile",
+    "route": "/pitch/04-valuation",
+    "query": "debug=1&layerProfile=perf&layers=none&motion=off",
+    "viewport": "mobile",
+    "tags": ["pitch", "04", "perf", "mobile"]
+  },
+  "pitch-04-valuation-fx-tablet": {
+    "title": "Pitch 04 FX Tablet",
+    "route": "/pitch/04-valuation",
+    "query": "debug=1&layerProfile=fx&layers=all&motion=on",
+    "viewport": "tablet",
+    "tags": ["pitch", "04", "fx", "tablet"]
+  }
+}

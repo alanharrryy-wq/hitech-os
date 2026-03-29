@@ -6,13 +6,22 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping
 
-from .common import FACTORY_DIR, REPO_ROOT, ensure_dir, read_json, write_json
+from .common import (
+    FACTORY_DIR,
+    REPO_ROOT,
+    CANONICAL_POST_RUN_WORKERS,
+    canonical_worker_id,
+    ensure_dir,
+    read_json,
+    write_json,
+)
 from .schemas import validate_payload
 
 DEFAULT_CONFIG_PATH = FACTORY_DIR / "factory.config.json"
 ENV_PREFIX = "FACTORY_"
 IGNORED_ENV_KEYS = {
     "FACTORY_AHK_EXE",
+    "FACTORY_SLOW_TESTS",
     "FACTORY_WORKTREE_MODE",
 }
 IGNORED_ENV_PREFIXES = (
@@ -31,7 +40,16 @@ def default_factory_config() -> dict[str, Any]:
             "base_ref": "HEAD",
             "strict_collision_mode": True,
             "allow_identical_patch_overlap": False,
+            "enforce_anti_padding_gate": False,
             "quarantine_on_suspicious_bundle": True,
+            "auto_closeout_workers": True,
+            "auto_preflight_repair": True,
+            "auto_repair_missing_folders": True,
+            "integrator_watch_ledger": True,
+            "integrator_wait_for_workers": True,
+            "visual_baseline_owner": "C_features",
+            "visual_baseline_update_default": True,
+            "chat_hygiene_policy": "clean_start_required",
         },
         "paths": {
             "repo_root": REPO_ROOT.as_posix(),
@@ -48,6 +66,7 @@ def default_factory_config() -> dict[str, Any]:
                 "SCOPE_LOCK.json",
                 "HANDOFF_NOTE.json",
                 "LOGS/INDEX.json",
+                "CODEX_OUTPUT.txt",
             ],
             "required_integrator_files": [
                 "STATUS.json",
@@ -56,18 +75,49 @@ def default_factory_config() -> dict[str, Any]:
                 "DIFF.patch",
                 "MERGE_PLAN.md",
                 "LOGS/INDEX.json",
+                "GRAVITY_REPORT.json",
+                "PROTECTED_NODES.json",
+                "IMPACT_CONE_REPORT.json",
+                "DEPENDENCY_DIFF.json",
+                "DISPATCH_RECOMMENDATIONS.json",
+                "GRAVITY_SUMMARY.md",
+                "DISPATCH_RECOMMENDATIONS.md",
             ],
+            "required_post_run_files": {
+                "R_reviewer": [
+                    "REVIEW_REPORT.json",
+                    "REVIEW_FINDINGS.json",
+                    "REVIEW_RECOMMENDATIONS.json",
+                    "ARCH_REVIEW_SUMMARY.md",
+                ],
+                "E_planner": [
+                    "TASK_BANK_DELTA.json",
+                    "TASK_BANK_INGEST_REPORT.json",
+                    "PLANNER_RECOMMENDATIONS.json",
+                    "PLANNER_SUMMARY.md",
+                ],
+            },
             "allowlist_globs": {
-                "A_worker": ["apps/**", "packages/**", "docs/**"],
-                "B_worker": ["apps/**", "packages/**", "docs/**"],
-                "C_worker": ["tools/**", "docs/**", "packages/**"],
-                "D_worker": ["docs/**", "tools/**", "packages/**"],
+                "A_core": ["apps/**", "packages/**", "docs/**"],
+                "B_tooling": ["tools/**", "docs/**", "packages/**"],
+                "C_features": [
+                    "apps/**",
+                    "packages/**",
+                    "docs/**",
+                    "docs/visual-baselines/**",
+                    "tools/_local/visual/**",
+                ],
+                "D_validation": ["docs/**", "tools/**", "packages/**"],
+                "R_reviewer": ["tools/codex/runs/**", "tools/codex/dispatch/**", "docs/factory/**", "tools/codex/contracts/**", "tools/codex/schemas/**"],
+                "E_planner": ["tools/codex/runs/**", "tools/codex/dispatch/**", "docs/factory/**", "tools/codex/contracts/**", "tools/codex/schemas/**"],
             },
             "denylist_globs": {
-                "A_worker": [".github/workflows/**", ".git/**", ".env", ".env.*"],
-                "B_worker": [".github/workflows/**", ".git/**", ".env", ".env.*"],
-                "C_worker": [".github/workflows/**", ".git/**", ".env", ".env.*"],
-                "D_worker": [".github/workflows/**", ".git/**", ".env", ".env.*"],
+                "A_core": [".github/workflows/**", ".git/**", ".env", ".env.*"],
+                "B_tooling": [".github/workflows/**", ".git/**", ".env", ".env.*"],
+                "C_features": [".github/workflows/**", ".git/**", ".env", ".env.*"],
+                "D_validation": [".github/workflows/**", ".git/**", ".env", ".env.*"],
+                "R_reviewer": [".github/workflows/**", ".git/**", ".env", ".env.*", "apps/**", "packages/**"],
+                "E_planner": [".github/workflows/**", ".git/**", ".env", ".env.*", "apps/**", "packages/**"],
             },
         },
         "security": {
@@ -145,6 +195,63 @@ def _env_to_config(env: Mapping[str, str]) -> dict[str, Any]:
     return overlay
 
 
+def _canonicalize_worker_globs(section: Any) -> dict[str, Any]:
+    if not isinstance(section, Mapping):
+        return {}
+    normalized: dict[str, Any] = {}
+    for worker, value in section.items():
+        canonical = canonical_worker_id(str(worker).strip())
+        if not canonical:
+            continue
+        existing = normalized.get(canonical)
+        if isinstance(existing, list) and isinstance(value, list):
+            merged: list[Any] = [*existing]
+            for item in value:
+                if item not in merged:
+                    merged.append(item)
+            normalized[canonical] = merged
+        else:
+            normalized[canonical] = deepcopy(value)
+    return normalized
+
+
+def _canonicalize_post_run_required(section: Any) -> dict[str, list[str]]:
+    if not isinstance(section, Mapping):
+        return {}
+    normalized: dict[str, list[str]] = {}
+    for worker, value in section.items():
+        canonical = canonical_worker_id(str(worker).strip())
+        if canonical not in CANONICAL_POST_RUN_WORKERS:
+            continue
+        files = [str(item).strip() for item in value] if isinstance(value, list) else []
+        files = [item for item in files if item]
+        if files:
+            normalized[canonical] = sorted(set(files))
+    return normalized
+
+
+def _canonicalize_merged_config(payload: Mapping[str, Any]) -> dict[str, Any]:
+    merged = deepcopy(dict(payload))
+    run_block = merged.get("run", {})
+    if isinstance(run_block, Mapping):
+        run_obj = dict(run_block)
+        owner = run_obj.get("visual_baseline_owner")
+        if isinstance(owner, str):
+            run_obj["visual_baseline_owner"] = canonical_worker_id(owner)
+        merged["run"] = run_obj
+
+    workers_block = merged.get("workers", {})
+    if isinstance(workers_block, Mapping):
+        workers_obj = dict(workers_block)
+        workers_obj["allowlist_globs"] = _canonicalize_worker_globs(workers_obj.get("allowlist_globs", {}))
+        workers_obj["denylist_globs"] = _canonicalize_worker_globs(workers_obj.get("denylist_globs", {}))
+        workers_obj["required_post_run_files"] = _canonicalize_post_run_required(
+            workers_obj.get("required_post_run_files", {})
+        )
+        merged["workers"] = workers_obj
+    return merged
+
+
 def resolve_config_path(explicit_path: str | None = None) -> Path:
     if explicit_path:
         return Path(explicit_path).expanduser().resolve(strict=False)
@@ -180,6 +287,7 @@ def load_factory_config(
     merged = _deep_merge(defaults, file_payload)
     merged = _deep_merge(merged, env_payload)
     merged = _deep_merge(merged, cli_payload)
+    merged = _canonicalize_merged_config(merged)
 
     meta = {
         "config_path": resolved_path.as_posix(),

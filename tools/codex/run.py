@@ -12,7 +12,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 REPO_ROOT = Path(__file__).resolve().parents[2]
 CODEX_DIR = REPO_ROOT / "tools" / "codex"
 RUNS_DIR = CODEX_DIR / "runs"
-INTEGRATOR_DIR = "Z_integrator"
+INTEGRATOR_DIR = "Z_aggregator"
 LOGS_DIR = "LOGS"
 
 

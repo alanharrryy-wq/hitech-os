@@ -14,12 +14,12 @@ from factory.tests.test_support import isolated_factory_env, make_change, write_
 
 class AttestationTests(unittest.TestCase):
     def _seed_run(self, run_id: str) -> None:
-        write_worker_bundle(run_id=run_id, worker="A_worker", changes=[make_change("apps/a.ts", sha256="1")])
-        write_worker_bundle(run_id=run_id, worker="B_worker", changes=[make_change("apps/b.ts", sha256="2")])
-        write_worker_bundle(run_id=run_id, worker="C_worker", changes=[make_change("tools/c.py", sha256="3")])
-        write_worker_bundle(run_id=run_id, worker="D_worker", changes=[make_change("docs/d.md", sha256="4")])
+        write_worker_bundle(run_id=run_id, worker="A_core", changes=[make_change("apps/a.ts", sha256="1")])
+        write_worker_bundle(run_id=run_id, worker="B_tooling", changes=[make_change("apps/b.ts", sha256="2")])
+        write_worker_bundle(run_id=run_id, worker="C_features", changes=[make_change("tools/c.py", sha256="3")])
+        write_worker_bundle(run_id=run_id, worker="D_validation", changes=[make_change("docs/d.md", sha256="4")])
         contracts.scaffold_integrator_bundle(run_id)
-        report = contracts.bundle_dir(run_id, "Z_integrator") / "FINAL_REPORT.txt"
+        report = contracts.bundle_dir(run_id, "Z_aggregator") / "FINAL_REPORT.txt"
         report.write_text("# Final Report\n\n- stable\n", encoding="utf-8")
 
     def test_write_all_attestations(self) -> None:
@@ -52,7 +52,7 @@ class AttestationTests(unittest.TestCase):
         run_id = "attest_20260218_000003"
         with isolated_factory_env():
             contracts.scaffold_integrator_bundle(run_id)
-            report = contracts.bundle_dir(run_id, "Z_integrator") / "FINAL_REPORT.txt"
+            report = contracts.bundle_dir(run_id, "Z_aggregator") / "FINAL_REPORT.txt"
             report.unlink()
             manifest = attestations.write_report_attestation(run_id)
             self.assertEqual("", manifest.read_text(encoding="utf-8"))
@@ -67,4 +67,5 @@ class AttestationTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
 

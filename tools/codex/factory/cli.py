@@ -14,40 +14,66 @@ if __package__ in {None, ""}:
     if str(ROOT) not in sys.path:
         sys.path.insert(0, str(ROOT))
 
-    from factory.common import INTEGRATOR, RUNS_DIR, WORKERS, ensure_dir, stable_sha256_text, write_json
+    from factory.common import (
+        RUNTIME_WORKERS,
+        INTEGRATOR,
+        RUNS_DIR,
+        canonicalize_workers,
+        ensure_dir,
+        stable_sha256_text,
+        write_json,
+    )
     from factory.config import load_factory_config
-    from factory.contracts import load_registry, scaffold_all_bundles, validate_run
+    from factory.contracts import autocloseout_run, load_registry, scaffold_all_bundles, validate_run
     from factory.doctor import run_doctor
     from factory.integrator import integrate_run
     from factory.ledger import append_event, query_events, query_runs, replay_ledger, verify_ledger_signature
     from factory.preflight import run_preflight
     from factory.run_id import next_run_identity
     from factory.schemas import contracts_check, validate_payload
+    from factory.skills_index import DEFAULT_SKILLS_ROOT, EXPECTED_FACTORY_ROLES, generate_and_write_skills_index
     from factory.smoke import run_smoke
     from factory.status_eval import BLOCKED, PASS, evaluate_status, make_check, status_exit_code
+    from factory.unicodex import disable_unicodex, enable_unicodex, reconcile_unicodex, status_unicodex
     from factory.version import get_version
     from factory.worktrees import create_worktrees, open_worktrees, sync_worktrees, verify_worktrees
 else:
-    from .common import INTEGRATOR, RUNS_DIR, WORKERS, ensure_dir, stable_sha256_text, write_json
+    from .common import (
+        RUNTIME_WORKERS,
+        INTEGRATOR,
+        RUNS_DIR,
+        canonicalize_workers,
+        ensure_dir,
+        stable_sha256_text,
+        write_json,
+    )
     from .config import load_factory_config
-    from .contracts import load_registry, scaffold_all_bundles, validate_run
+    from .contracts import autocloseout_run, load_registry, scaffold_all_bundles, validate_run
     from .doctor import run_doctor
     from .integrator import integrate_run
     from .ledger import append_event, query_events, query_runs, replay_ledger, verify_ledger_signature
     from .preflight import run_preflight
     from .run_id import next_run_identity
     from .schemas import contracts_check, validate_payload
+    from .skills_index import DEFAULT_SKILLS_ROOT, EXPECTED_FACTORY_ROLES, generate_and_write_skills_index
     from .smoke import run_smoke
     from .status_eval import BLOCKED, PASS, evaluate_status, make_check, status_exit_code
+    from .unicodex import disable_unicodex, enable_unicodex, reconcile_unicodex, status_unicodex
     from .version import get_version
     from .worktrees import create_worktrees, open_worktrees, sync_worktrees, verify_worktrees
 
 
 def _parse_workers(raw: str | None) -> list[str]:
+    defaults = list(RUNTIME_WORKERS)
     if raw is None or not raw.strip():
-        return list(WORKERS)
+        return defaults
     parsed = [item.strip() for item in raw.split(",") if item.strip()]
-    return parsed or list(WORKERS)
+    return canonicalize_workers(
+        parsed,
+        include_integrator=True,
+        include_post_run=True,
+        keep_unknown=True,
+    ) or defaults
 
 
 def _emit(payload: dict[str, Any], json_out: str | None = None) -> None:
@@ -89,7 +115,7 @@ def _init_run(kind: str, explicit_run_id: str | None, *, base_ref: str, config: 
         "base_ref": base_ref,
         "base_ref_hash": identity.base_ref_hash if identity else "",
         "status": "PENDING",
-        "workers": list(WORKERS),
+        "workers": list(RUNTIME_WORKERS),
         "integrator": INTEGRATOR,
         "created_at": identity.stamp if identity else "",
         "paths": {
@@ -158,7 +184,12 @@ def _launch_run(
     init_result = _init_run("factory", run_id, base_ref=base_ref, config=config)
     chosen_run_id = str(init_result["run_id"])
 
-    preflight = run_preflight(chosen_run_id) if include_preflight else {"status": PASS, "checks": [], "run_id": chosen_run_id}
+    run_cfg = dict(config.get("run", {})) if isinstance(config.get("run"), dict) else {}
+    preflight = (
+        run_preflight(chosen_run_id, auto_repair=bool(run_cfg.get("auto_preflight_repair", True)))
+        if include_preflight
+        else {"status": PASS, "checks": [], "run_id": chosen_run_id}
+    )
     worktrees = create_worktrees(
         chosen_run_id,
         workers=workers,
@@ -241,7 +272,9 @@ def cmd_init_run(args: argparse.Namespace) -> int:
 
 
 def cmd_preflight(args: argparse.Namespace) -> int:
-    payload = run_preflight(args.run_id)
+    config = _load_runtime_config(args, cli_overrides={})
+    run_cfg = dict(config.get("run", {})) if isinstance(config.get("run"), dict) else {}
+    payload = run_preflight(args.run_id, auto_repair=bool(run_cfg.get("auto_preflight_repair", True)))
     _emit(payload, args.json_out)
     return status_exit_code(_status_from_payload(payload))
 
@@ -272,9 +305,22 @@ def cmd_bundle_init(args: argparse.Namespace) -> int:
 
 def cmd_bundle_validate(args: argparse.Namespace) -> int:
     workers = _parse_workers(args.workers)
-    payload = validate_run(args.run_id, workers=workers)
+    config = _load_runtime_config(args, cli_overrides={})
+    run_cfg = dict(config.get("run", {})) if isinstance(config.get("run"), dict) else {}
+    payload = validate_run(
+        args.run_id,
+        workers=workers,
+        auto_closeout=bool(run_cfg.get("auto_closeout_workers", True)),
+    )
     _emit(payload, args.json_out)
     return status_exit_code(_status_from_payload(payload))
+
+
+def cmd_auto_closeout(args: argparse.Namespace) -> int:
+    workers = _parse_workers(args.workers)
+    payload = autocloseout_run(args.run_id, workers=workers)
+    _emit(payload, args.json_out)
+    return status_exit_code(_status_from_payload(payload, fallback=PASS))
 
 
 def cmd_integrate(args: argparse.Namespace) -> int:
@@ -289,6 +335,7 @@ def cmd_integrate(args: argparse.Namespace) -> int:
         cli_overrides={"run": run_overrides} if run_overrides else {},
     )
     payload = integrate_run(args.run_id, workers=workers, config=config)
+    payload["unicodex"] = reconcile_unicodex(run_id=args.run_id)
     _emit(payload, args.json_out)
     return status_exit_code(_status_from_payload(payload))
 
@@ -318,12 +365,16 @@ def cmd_oneshot(args: argparse.Namespace) -> int:
         args,
         cli_overrides={"run": run_overrides},
     )
+    run_cfg = dict(config.get("run", {})) if isinstance(config.get("run"), dict) else {}
     run_id = args.run_id or next_run_identity("factory", base_ref=args.base_ref).run_id
 
     stage_payloads: dict[str, dict[str, Any]] = {}
     stage_checks: list[dict[str, Any]] = []
 
-    preflight_payload = run_preflight(run_id)
+    preflight_payload = run_preflight(
+        run_id,
+        auto_repair=bool(run_cfg.get("auto_preflight_repair", True) and not bool(args.dry_run)),
+    )
     append_event(
         {
             "schema_version": 1,
@@ -378,7 +429,11 @@ def cmd_oneshot(args: argparse.Namespace) -> int:
         _emit(payload, args.json_out)
         return evaluation.exit_code
 
-    validate_payload_result = validate_run(run_id, workers=workers)
+    validate_payload_result = validate_run(
+        run_id,
+        workers=workers,
+        auto_closeout=bool(run_cfg.get("auto_closeout_workers", True)),
+    )
     append_event(
         {
             "schema_version": 1,
@@ -419,6 +474,7 @@ def cmd_oneshot(args: argparse.Namespace) -> int:
     integrate_payload = integrate_run(run_id, workers=workers, config=config)
     stage_payloads["integrate"] = integrate_payload
     stage_checks.append(make_check("integrate", rc=0 if _status_from_payload(integrate_payload) == PASS else 2, required=True, actor=INTEGRATOR))
+    unicodex_payload = reconcile_unicodex(run_id=run_id)
 
     evaluation = evaluate_status(required_checks=stage_checks, blockers=[], schema_errors=[], internal_errors=[])
     final_report = str(integrate_payload.get("report", ""))
@@ -449,6 +505,7 @@ def cmd_oneshot(args: argparse.Namespace) -> int:
         "status": evaluation.status,
         "run_id": run_id,
         "stages": stage_payloads,
+        "unicodex": unicodex_payload,
         "summary": {
             "final_report": final_report,
             "required_checks": [dict(item) for item in evaluation.required_checks],
@@ -611,6 +668,9 @@ def cmd_watch(args: argparse.Namespace) -> int:
         "noop": bool(gate_payload.get("noop", False)),
         "phase_progress": bool(final_status == PASS and not gate_payload.get("noop", False)),
     }
+    ledger_rows = query_events(run_id=args.run_id, limit=25)
+    summary["ledger_events"] = len(ledger_rows)
+    summary["ledger_last_event"] = str(ledger_rows[-1].get("event_type", "")) if ledger_rows else ""
     payload = {
         "status": final_status,
         "run_id": args.run_id,
@@ -625,9 +685,74 @@ def cmd_watch(args: argparse.Namespace) -> int:
             "exists": gate_path.exists(),
             "payload": gate_payload,
         },
+        "ledger": {
+            "count": len(ledger_rows),
+            "tail": ledger_rows[-25:],
+        },
     }
+    payload["unicodex"] = reconcile_unicodex(run_id=args.run_id)
     _emit(payload, args.json_out)
     return status_exit_code(_status_from_payload(payload))
+
+
+def cmd_skills_index(args: argparse.Namespace) -> int:
+    payload = generate_and_write_skills_index()
+    _emit(payload, args.json_out)
+    return status_exit_code(_status_from_payload(payload, fallback=PASS))
+
+
+def cmd_skills_print(args: argparse.Namespace) -> int:
+    payload = generate_and_write_skills_index()
+    index = payload.get("index", {}) if isinstance(payload, dict) else {}
+    roles = index.get("roles", {}) if isinstance(index, dict) else {}
+    role_sources = index.get("role_sources", {}) if isinstance(index, dict) else {}
+    selected_role = str(args.role).strip() if getattr(args, "role", None) else ""
+    if selected_role:
+        selected = {
+            selected_role: {
+                "source_role": str(role_sources.get(selected_role, "")).strip(),
+                "skills": list(roles.get(selected_role, [])),
+            }
+        }
+    else:
+        selected = {
+            role: {
+                "source_role": str(role_sources.get(role, "")).strip(),
+                "skills": list(roles.get(role, [])),
+            }
+            for role in EXPECTED_FACTORY_ROLES
+        }
+    out = {
+        "status": PASS,
+        "repo_root": payload.get("repo_root", ""),
+        "skills_root": payload.get("skills_root", DEFAULT_SKILLS_ROOT),
+        "index_json": payload.get("index_json", ""),
+        "index_md": payload.get("index_md", ""),
+        "roles": selected,
+    }
+    _emit(out, args.json_out)
+    return status_exit_code(PASS)
+
+
+def cmd_unicodex(args: argparse.Namespace) -> int:
+    action = str(args.action).strip().lower()
+    if action == "enable":
+        payload = enable_unicodex(
+            defer_until_run_id=args.defer_until_run_id,
+            reason=args.reason,
+            requested_by=args.requested_by,
+            force_now=bool(args.force_now),
+        )
+    elif action == "disable":
+        payload = disable_unicodex(clear_pending=not bool(args.keep_pending), reason=args.reason)
+    elif action == "reconcile":
+        payload = reconcile_unicodex(run_id=args.run_id)
+    elif action == "status":
+        payload = status_unicodex(run_id=args.run_id)
+    else:
+        payload = {"status": BLOCKED, "detail": f"unsupported unicodex action: {args.action}"}
+    _emit(payload, args.json_out)
+    return status_exit_code(_status_from_payload(payload, fallback=PASS))
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -674,6 +799,11 @@ def build_parser() -> argparse.ArgumentParser:
     bundle_validate.add_argument("--run-id", required=True)
     bundle_validate.add_argument("--workers", help="Comma-separated worker IDs")
     bundle_validate.set_defaults(func=cmd_bundle_validate)
+
+    auto_closeout = sub.add_parser("auto-closeout", help="Auto-generate/repair worker closeout artifacts")
+    auto_closeout.add_argument("--run-id", required=True)
+    auto_closeout.add_argument("--workers", help="Comma-separated worker IDs")
+    auto_closeout.set_defaults(func=cmd_auto_closeout)
 
     integrate = sub.add_parser("integrate", help="Run Z integrator pipeline")
     integrate.add_argument("--run-id", required=True)
@@ -735,6 +865,26 @@ def build_parser() -> argparse.ArgumentParser:
     watch = sub.add_parser("watch", help="Summarize run status including meaningful gate verdict")
     watch.add_argument("--run-id", required=True)
     watch.set_defaults(func=cmd_watch)
+
+    unicodex = sub.add_parser("unicodex", help="Manage UNICODEX activation without interrupting active runs")
+    unicodex.add_argument("action", choices=["enable", "disable", "status", "reconcile"])
+    unicodex.add_argument("--run-id", help="Run id to inspect or reconcile")
+    unicodex.add_argument("--defer-until-run-id", help="Explicit run id to wait for before activation")
+    unicodex.add_argument("--force-now", action="store_true", help="Enable immediately even if there are active runs")
+    unicodex.add_argument("--reason", default="operator_request", help="Audit reason for state changes")
+    unicodex.add_argument("--requested-by", default="operator", help="Requester tag for deferred activation")
+    unicodex.add_argument("--keep-pending", action="store_true", help="Keep pending request when disabling")
+    unicodex.set_defaults(func=cmd_unicodex)
+
+    skills_index = sub.add_parser(
+        "skills:index",
+        help="Build deterministic skills index from repo-local skills roots (.codex/skills preferred)",
+    )
+    skills_index.set_defaults(func=cmd_skills_index)
+
+    skills_print = sub.add_parser("skills:print", help="Print indexed skills for one role or all roles")
+    skills_print.add_argument("--role", choices=EXPECTED_FACTORY_ROLES, help="Factory role to print")
+    skills_print.set_defaults(func=cmd_skills_print)
 
     return parser
 

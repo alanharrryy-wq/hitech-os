@@ -1,0 +1,16 @@
+{
+  "profile_name": "safe",
+  "retention_enabled": true,
+  "retention_max_age_days": 30,
+  "retention_max_files_per_dir": 500,
+  "autotune_enabled": false,
+  "default_guardian_interval_seconds": 600,
+  "alert_health_threshold": 65,
+  "false_positive_default_ttl_days": 30,
+  "security_eval_min_precision": 0.8,
+  "security_eval_min_recall": 0.8,
+  "security_eval_min_f1": 0.8,
+  "lock_stale_seconds": 7200,
+  "max_security_scan_files": 15000,
+  "prediction_window": 20
+}

@@ -1,0 +1,130 @@
+{
+  "schema_version": "1.0",
+  "system_name": "universal_execution_framework",
+  "config_name": "blocker_taxonomy",
+  "purpose": "Define a homogeneous blocker vocabulary for detection, triage, and reporting.",
+  "blocker_types": [
+    {
+      "blocker_type": "dependency",
+      "display_name": "Dependency Blocker",
+      "definition": "Execution is waiting on an artifact, contract, approval, or bounded deliverable from another owner.",
+      "entry_criteria": [
+        "a dependency request is open past its due time",
+        "a handoff needed for progress has not been accepted",
+        "the item cannot continue without an external deliverable"
+      ],
+      "exit_criteria": [
+        "required dependency artifact arrived",
+        "governance published an alternate path",
+        "ownership moved and the dependency is no longer external"
+      ],
+      "severity_guidance": {
+        "sev1": "The current round cannot complete without the dependency in the next hour.",
+        "sev2": "The package objective is at risk during the same work cycle.",
+        "sev3": "Progress pauses but the round still advances elsewhere.",
+        "sev4": "The item waits without immediate effect on round stability."
+      },
+      "detection_signals": [
+        "missed dependency_response due time",
+        "open handoff in blocked state",
+        "checkpoint states waiting on external owner"
+      ]
+    },
+    {
+      "blocker_type": "scope",
+      "display_name": "Scope Blocker",
+      "definition": "Execution is paused because the requested outcome, acceptance criteria, or ownership boundary is unclear or contradictory.",
+      "entry_criteria": [
+        "acceptance criteria conflict with packet scope",
+        "work item references paths outside ownership without a handoff",
+        "two active instructions point to different outcomes"
+      ],
+      "exit_criteria": [
+        "governance issues a clarified outcome",
+        "ownership and acceptance criteria match the packet",
+        "the item is re-scoped and re-published"
+      ],
+      "severity_guidance": {
+        "sev1": "Ambiguity threatens the entire round or could trigger unsafe changes.",
+        "sev2": "The package cannot proceed on a committed item.",
+        "sev3": "Clarification is needed before the next checkpoint.",
+        "sev4": "The ambiguity affects a queued item only."
+      },
+      "detection_signals": [
+        "handoff rejected for missing scope",
+        "checkpoint reports contradictory targets",
+        "validator detects out-of-scope ownership"
+      ]
+    },
+    {
+      "blocker_type": "infra",
+      "display_name": "Infrastructure Blocker",
+      "definition": "Execution is limited by environment, filesystem, runtime, or tooling conditions rather than by task content.",
+      "entry_criteria": [
+        "required filesystem root is unavailable",
+        "framework initialization fails",
+        "a deterministic tool path or config cannot be loaded"
+      ],
+      "exit_criteria": [
+        "environment condition restored",
+        "stable workaround published",
+        "impacted flow moved to a healthy path"
+      ],
+      "severity_guidance": {
+        "sev1": "Control-plane work is stopped or data safety is threatened.",
+        "sev2": "A package cannot complete planned execution in the current work cycle.",
+        "sev3": "A degraded path exists but throughput is reduced.",
+        "sev4": "The issue is localized and recoverable without schedule risk."
+      },
+      "detection_signals": [
+        "missing required directories",
+        "config load failure",
+        "bundle or snapshot tooling unavailable"
+      ]
+    },
+    {
+      "blocker_type": "quality",
+      "display_name": "Quality Blocker",
+      "definition": "Execution output exists but cannot proceed because validation, evidence, or readiness gates failed.",
+      "entry_criteria": [
+        "schema validation fails",
+        "required evidence refs are missing",
+        "integration safety checks reject the item"
+      ],
+      "exit_criteria": [
+        "validation passes",
+        "evidence is complete",
+        "governance accepts the corrected output"
+      ],
+      "severity_guidance": {
+        "sev1": "Unsafe output is about to enter integration.",
+        "sev2": "The item cannot be accepted in the current round.",
+        "sev3": "The item is conditionally acceptable pending corrective evidence.",
+        "sev4": "The issue is minor and does not threaten immediate flow."
+      },
+      "detection_signals": [
+        "schema_errors in validation report",
+        "payload mismatches",
+        "missing readiness evidence"
+      ]
+    }
+  ],
+  "classification_rules": [
+    {
+      "rule_id": "pick-primary-cause",
+      "statement": "Assign the blocker type that best describes the first external condition preventing progress."
+    },
+    {
+      "rule_id": "prefer-dependency-over-scope",
+      "statement": "When the outcome is clear but another owner is late, classify as dependency."
+    },
+    {
+      "rule_id": "prefer-scope-over-quality",
+      "statement": "When acceptance criteria are unclear, classify as scope even if validation also fails."
+    },
+    {
+      "rule_id": "prefer-infra-for-tool-failure",
+      "statement": "When the control-plane or execution environment is unavailable, classify as infra."
+    }
+  ]
+}

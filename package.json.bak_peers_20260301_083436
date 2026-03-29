@@ -1,0 +1,67 @@
+{
+  "name": "hitech-os",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20.0.0 <26.0.0",
+    "pnpm": ">=9.0.0 <10.0.0"
+  },
+  "scripts": {
+    "build": "pnpm -r --if-present build",
+    "lint": "pnpm -r --if-present lint",
+    "test": "pnpm -r --if-present test",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "quality": "pnpm run env:validate && pnpm run deps:check && pnpm run workspace:validate && pnpm run health && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build && pnpm run snapshot:hos:validate",
+    "ci": "pnpm run quality && pnpm run smoke && pnpm run snapshot:hos",
+    "smoke": "pnpm run smoke:core-api && pnpm run smoke:bridge",
+    "factory:build": "pnpm exec tsc -p configs/tsconfig.factory.json --pretty false",
+    "factory:smoke": "pnpm run factory:build && node --test dist/tests/smoke/factory.e2e.test.js",
+    "factory:create-worker": "pnpm run factory:build && node dist/tools/create-worker.js",
+    "lockfile:check": "pnpm install --frozen-lockfile --ignore-scripts",
+    "snapshot:hos": "pnpm exec tsx tools/snapshot/hos_snapshot.ts",
+    "snapshot:hos:validate": "pnpm exec tsx tools/snapshot/validate_snapshot.ts",
+    "dev": "pnpm -r --if-present dev",
+    "turbo:build": "turbo run build",
+    "turbo:lint": "turbo run lint",
+    "turbo:test": "turbo run test",
+    "turbo:typecheck": "turbo run typecheck",
+    "hos:doctor": "python tools/hos/doctor/doctor.py",
+    "hos:turbo": "python tools/hos/turbo/turbo_wrap.py",
+    "hos:visual": "python tools/hos/visual/cli_visual.py",
+    "hos:simulate": "python tools/hos/data/cli_simulate.py",
+    "hos:hygiene": "python tools/hos/hygiene/cli_hygiene.py",
+    "docs": "node tools/scripts/generate_docs_index.mjs",
+    "health": "python tools/codex/guards/no_js_src_imports.py --repo . --config tools/codex/guards/no_js_src_imports.allowlist.json && node tools/health/src/check_repo_health.mjs",
+    "schema:gen": "node packages/contracts/tools/gen_schemas.mjs",
+    "smoke:core-api": "node services/core-api/scripts/smoke-core-api.mjs",
+    "smoke:bridge": "node tools/scripts/smoke_node_python_bridge.mjs",
+    "deps:check": "node tools/scripts/check_dependency_hygiene.mjs",
+    "workspace:validate": "node tools/scripts/validate_workspace_boundaries.mjs",
+    "env:validate": "node tools/scripts/validate_env.mjs",
+    "lint-staged": "lint-staged",
+    "commitlint": "commitlint",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "19.8.1",
+    "@commitlint/config-conventional": "19.8.1",
+    "@eslint/js": "9.17.0",
+    "@types/node": "22.13.9",
+    "@typescript-eslint/eslint-plugin": "8.18.1",
+    "@typescript-eslint/parser": "8.18.1",
+    "ajv": "8.17.1",
+    "eslint": "9.17.0",
+    "husky": "9.1.7",
+    "lint-staged": "15.5.2",
+    "prettier": "3.5.3",
+    "tsx": "4.20.5",
+    "turbo": "2.3.3",
+    "typescript": "5.8.2"
+  },
+  "lint-staged": {
+    "*.{js,cjs,mjs,ts,tsx,json,md,yml,yaml}": [
+      "prettier --check"
+    ]
+  }
+}

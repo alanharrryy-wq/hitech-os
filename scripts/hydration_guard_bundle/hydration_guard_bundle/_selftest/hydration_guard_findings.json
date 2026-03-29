@@ -1,0 +1,1122 @@
+[
+  {
+    "category": "hydration_keyword",
+    "path": "README.md",
+    "line_number": 1,
+    "line": "# Hydration Guard Bundle",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "README.md",
+    "line_number": 3,
+    "line": "A hardened documentation-and-tooling bundle for isolating noisy React hydration warnings on internal, form-heavy tooling routes.",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "README.md",
+    "line_number": 3,
+    "line": "A hardened documentation-and-tooling bundle for isolating noisy React hydration warnings on internal, form-heavy tooling routes.",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "README.md",
+    "line_number": 7,
+    "line": "- `docs/architecture/hydration-isolation-standard.md`",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "README.md",
+    "line_number": 9,
+    "line": "- `docs/architecture/hydration-isolation-adoption-guide.md`",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "README.md",
+    "line_number": 11,
+    "line": "- `scripts/hydration_guard_audit.py`",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "README.md",
+    "line_number": 12,
+    "line": "- Python CLI that scans a repo for hydration-related patterns, risky broad client-only workarounds, and likely internal-tooling subtrees",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "README.md",
+    "line_number": 12,
+    "line": "- Python CLI that scans a repo for hydration-related patterns, risky broad client-only workarounds, and likely internal-tooling subtrees",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "README.md",
+    "line_number": 13,
+    "line": "- `scripts/hydration_guard_scaffold.py`",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "README.md",
+    "line_number": 26,
+    "line": "- Python tooling is standard-library only",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "README.md",
+    "line_number": 33,
+    "line": "python scripts/hydration_guard_audit.py --repo-root /path/to/repo --output-dir /path/to/output",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "README.md",
+    "line_number": 39,
+    "line": "python scripts/hydration_guard_scaffold.py --repo-root /path/to/repo --output-dir /path/to/output --force",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "README.md",
+    "line_number": 49,
+    "line": "- The reference templates are meant for internal tooling subtrees only.",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 1,
+    "line": "# Hydration Isolation Standard for Internal Tooling",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 1,
+    "line": "# Hydration Isolation Standard for Internal Tooling",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 8,
+    "line": "Reduce noisy or misleading React hydration warnings in internal, form-heavy tooling subtrees that are prone to third-party DOM mutation before hydration.",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 8,
+    "line": "Reduce noisy or misleading React hydration warnings in internal, form-heavy tooling subtrees that are prone to third-party DOM mutation before hydration.",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 12,
+    "line": "Some internal tooling routes emit hydration warnings where React reports unexpected attributes on form controls, including examples such as:",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 12,
+    "line": "Some internal tooling routes emit hydration warnings where React reports unexpected attributes on form controls, including examples such as:",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "dom_mutation_signature",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 14,
+    "line": "- `field_signature`",
+    "severity": "high",
+    "note": "signature often associated with external DOM mutation"
+  },
+  {
+    "category": "dom_mutation_signature",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 15,
+    "line": "- `form_signature`",
+    "severity": "high",
+    "note": "signature often associated with external DOM mutation"
+  },
+  {
+    "category": "dom_mutation_signature",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 16,
+    "line": "- `alternative_form_signature`",
+    "severity": "high",
+    "note": "signature often associated with external DOM mutation"
+  },
+  {
+    "category": "dom_mutation_signature",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 17,
+    "line": "- `visibility_annotation`",
+    "severity": "high",
+    "note": "signature often associated with external DOM mutation"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 19,
+    "line": "This signature strongly suggests the DOM was mutated before or during hydration, commonly by agents outside application control such as browser extensions, password managers, or browser autofill tooling.",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 19,
+    "line": "This signature strongly suggests the DOM was mutated before or during hydration, commonly by agents outside application control such as browser extensions, password managers, or browser autofill tooling.",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 24,
+    "line": "- Whether internal tooling subtrees are isolated behind a client-only boundary",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 31,
+    "line": "- Browser autofill engines mutating fields before hydration",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 33,
+    "line": "Because those mutation sources are external, the correct mitigation is **defensive isolation** of the affected internal subtree, not a claim of full prevention.",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 39,
+    "line": "- guarantee prevention of all hydration warnings",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 41,
+    "line": "- replace debugging of genuine app-side render divergence",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 42,
+    "line": "- treat all hydration warnings as extension-induced",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 46,
+    "line": "For internal-only, form-heavy debug or tooling subtrees with recurring hydration warnings consistent with pre-hydration DOM mutation, render the affected subtree behind `InternalToolClientOnlyBoundary`.",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 46,
+    "line": "For internal-only, form-heavy debug or tooling subtrees with recurring hydration warnings consistent with pre-hydration DOM mutation, render the affected subtree behind `InternalToolClientOnlyBoundary`.",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "client_boundary_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 46,
+    "line": "For internal-only, form-heavy debug or tooling subtrees with recurring hydration warnings consistent with pre-hydration DOM mutation, render the affected subtree behind `InternalToolClientOnlyBoundary`.",
+    "severity": "low",
+    "note": "existing boundary pattern or related naming"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 50,
+    "line": "Apply `InternalToolClientOnlyBoundary` only when the subtree satisfies most of the following:",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "client_boundary_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 50,
+    "line": "Apply `InternalToolClientOnlyBoundary` only when the subtree satisfies most of the following:",
+    "severity": "low",
+    "note": "existing boundary pattern or related naming"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 52,
+    "line": "- internal-only route or internal-only overlay/panel",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 65,
+    "line": "- tooling subtree only",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 66,
+    "line": "- debug HUD only",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 68,
+    "line": "- internal workspace panel only",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 79,
+    "line": "The application can decide whether a subtree is hydrated from SSR output. It cannot prevent extensions or browser autofill systems from mutating form nodes before hydration starts.",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 81,
+    "line": "That makes narrow client-only isolation the appropriate architectural mitigation for internal tooling routes that repeatedly produce environment-driven hydration noise.",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 81,
+    "line": "That makes narrow client-only isolation the appropriate architectural mitigation for internal tooling routes that repeatedly produce environment-driven hydration noise.",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 87,
+    "line": "- lowers false-positive hydration noise on internal tooling routes",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 87,
+    "line": "- lowers false-positive hydration noise on internal tooling routes",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 88,
+    "line": "- reduces wasted debugging time on environment-driven warnings",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 96,
+    "line": "- careless overuse can mask legitimate hydration defects",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 103,
+    "line": "- `InternalToolClientOnlyBoundary`",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "client_boundary_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 103,
+    "line": "- `InternalToolClientOnlyBoundary`",
+    "severity": "low",
+    "note": "existing boundary pattern or related naming"
+  },
+  {
+    "category": "client_boundary_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 107,
+    "line": "- `SceneStudioPageClientOnly`",
+    "severity": "low",
+    "note": "existing boundary pattern or related naming"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 108,
+    "line": "- `PitchLayerDevToolsClientOnly`",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "client_boundary_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 108,
+    "line": "- `PitchLayerDevToolsClientOnly`",
+    "severity": "low",
+    "note": "existing boundary pattern or related naming"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 109,
+    "line": "- `ControlRoomClientOnly`",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "client_boundary_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 109,
+    "line": "- `ControlRoomClientOnly`",
+    "severity": "low",
+    "note": "existing boundary pattern or related naming"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 117,
+    "line": "- query parameter: `?hydrationDiag=1`",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "diagnostic_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 117,
+    "line": "- query parameter: `?hydrationDiag=1`",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 118,
+    "line": "- environment flag: `NEXT_PUBLIC_INTERNAL_TOOL_HYDRATION_DIAGNOSTICS=1`",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 118,
+    "line": "- environment flag: `NEXT_PUBLIC_INTERNAL_TOOL_HYDRATION_DIAGNOSTICS=1`",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "diagnostic_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 118,
+    "line": "- environment flag: `NEXT_PUBLIC_INTERNAL_TOOL_HYDRATION_DIAGNOSTICS=1`",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 129,
+    "line": "1. Reproduce on the target internal route with the normal browser profile.",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 130,
+    "line": "2. Repeat with `?hydrationDiag=1` and confirm the protected subtree mount log appears.",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "diagnostic_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 130,
+    "line": "2. Repeat with `?hydrationDiag=1` and confirm the protected subtree mount log appears.",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-standard.md",
+    "line_number": 139,
+    "line": "- Warning remains outside protected subtrees: isolate the offending internal-only subtree and evaluate it against this standard.",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 1,
+    "line": "# Hydration Isolation Adoption Guide",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 7,
+    "line": "- The route is internal-only",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 8,
+    "line": "- The UI is form-heavy or debug-control-heavy",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 9,
+    "line": "- Hydration warnings appear only in normal browser profiles",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 25,
+    "line": "1. Audit the repo for hydration-related patterns and risky workarounds.",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 26,
+    "line": "2. Identify the smallest internal-only subtree that can be isolated.",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 27,
+    "line": "3. Introduce `InternalToolClientOnlyBoundary` only around that subtree.",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "client_boundary_hint",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 27,
+    "line": "3. Introduce `InternalToolClientOnlyBoundary` only around that subtree.",
+    "severity": "low",
+    "note": "existing boundary pattern or related naming"
+  },
+  {
+    "category": "dynamic_ssr_false",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 34,
+    "line": "- `dynamic(() => import(...), { ssr: false })` at full-route scope without explicit justification",
+    "severity": "medium",
+    "note": "broad client-only workaround candidate"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 35,
+    "line": "- global `suppressHydrationWarning`",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "suppress_hydration_warning",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 35,
+    "line": "- global `suppressHydrationWarning`",
+    "severity": "high",
+    "note": "suppression should be explicitly justified"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 37,
+    "line": "- claiming hydration is fully fixed when the root cause is environmental mutation",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 43,
+    "line": "- a reference to the hydration isolation standard",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 44,
+    "line": "- a narrow boundary scoped to internal tooling only",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 51,
+    "line": "- `docs/architecture/hydration-isolation-standard.md`",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 52,
+    "line": "- `apps/keystone/components/internal-tooling/internal-tool-client-only-boundary.tsx`",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 53,
+    "line": "- `apps/keystone/components/internal-tooling/use-internal-tool-hydration-diagnostics.ts`",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 53,
+    "line": "- `apps/keystone/components/internal-tooling/use-internal-tool-hydration-diagnostics.ts`",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "docs/architecture/hydration-isolation-adoption-guide.md",
+    "line_number": 54,
+    "line": "- optional route-local wrappers such as `scene-studio-page-client-only.tsx`",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "use_client",
+    "path": "templates/internal-tool-client-only-boundary.tsx",
+    "line_number": 1,
+    "line": "'use client';",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "templates/internal-tool-client-only-boundary.tsx",
+    "line_number": 4,
+    "line": "import { useInternalToolHydrationDiagnostics } from './use-internal-tool-hydration-diagnostics';",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "templates/internal-tool-client-only-boundary.tsx",
+    "line_number": 4,
+    "line": "import { useInternalToolHydrationDiagnostics } from './use-internal-tool-hydration-diagnostics';",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "diagnostic_hint",
+    "path": "templates/internal-tool-client-only-boundary.tsx",
+    "line_number": 4,
+    "line": "import { useInternalToolHydrationDiagnostics } from './use-internal-tool-hydration-diagnostics';",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "templates/internal-tool-client-only-boundary.tsx",
+    "line_number": 6,
+    "line": "type InternalToolClientOnlyBoundaryProps = {",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "client_boundary_hint",
+    "path": "templates/internal-tool-client-only-boundary.tsx",
+    "line_number": 6,
+    "line": "type InternalToolClientOnlyBoundaryProps = {",
+    "severity": "low",
+    "note": "existing boundary pattern or related naming"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "templates/internal-tool-client-only-boundary.tsx",
+    "line_number": 13,
+    "line": "export function InternalToolClientOnlyBoundary({",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "client_boundary_hint",
+    "path": "templates/internal-tool-client-only-boundary.tsx",
+    "line_number": 13,
+    "line": "export function InternalToolClientOnlyBoundary({",
+    "severity": "low",
+    "note": "existing boundary pattern or related naming"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "templates/internal-tool-client-only-boundary.tsx",
+    "line_number": 15,
+    "line": "componentName = 'InternalToolClientOnlyBoundary',",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "client_boundary_hint",
+    "path": "templates/internal-tool-client-only-boundary.tsx",
+    "line_number": 15,
+    "line": "componentName = 'InternalToolClientOnlyBoundary',",
+    "severity": "low",
+    "note": "existing boundary pattern or related naming"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "templates/internal-tool-client-only-boundary.tsx",
+    "line_number": 18,
+    "line": "}: InternalToolClientOnlyBoundaryProps) {",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "client_boundary_hint",
+    "path": "templates/internal-tool-client-only-boundary.tsx",
+    "line_number": 18,
+    "line": "}: InternalToolClientOnlyBoundaryProps) {",
+    "severity": "low",
+    "note": "existing boundary pattern or related naming"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "templates/internal-tool-client-only-boundary.tsx",
+    "line_number": 21,
+    "line": "useInternalToolHydrationDiagnostics({",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "templates/internal-tool-client-only-boundary.tsx",
+    "line_number": 21,
+    "line": "useInternalToolHydrationDiagnostics({",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "diagnostic_hint",
+    "path": "templates/internal-tool-client-only-boundary.tsx",
+    "line_number": 21,
+    "line": "useInternalToolHydrationDiagnostics({",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "use_client",
+    "path": "templates/use-internal-tool-hydration-diagnostics.ts",
+    "line_number": 1,
+    "line": "'use client';",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "templates/use-internal-tool-hydration-diagnostics.ts",
+    "line_number": 5,
+    "line": "type HydrationDiagnosticsOptions = {",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "diagnostic_hint",
+    "path": "templates/use-internal-tool-hydration-diagnostics.ts",
+    "line_number": 5,
+    "line": "type HydrationDiagnosticsOptions = {",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "templates/use-internal-tool-hydration-diagnostics.ts",
+    "line_number": 16,
+    "line": "const queryEnabled = searchParams.get('hydrationDiag') === '1';",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "diagnostic_hint",
+    "path": "templates/use-internal-tool-hydration-diagnostics.ts",
+    "line_number": 16,
+    "line": "const queryEnabled = searchParams.get('hydrationDiag') === '1';",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "templates/use-internal-tool-hydration-diagnostics.ts",
+    "line_number": 17,
+    "line": "const envEnabled = process.env.NEXT_PUBLIC_INTERNAL_TOOL_HYDRATION_DIAGNOSTICS === '1';",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "templates/use-internal-tool-hydration-diagnostics.ts",
+    "line_number": 17,
+    "line": "const envEnabled = process.env.NEXT_PUBLIC_INTERNAL_TOOL_HYDRATION_DIAGNOSTICS === '1';",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "diagnostic_hint",
+    "path": "templates/use-internal-tool-hydration-diagnostics.ts",
+    "line_number": 17,
+    "line": "const envEnabled = process.env.NEXT_PUBLIC_INTERNAL_TOOL_HYDRATION_DIAGNOSTICS === '1';",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "templates/use-internal-tool-hydration-diagnostics.ts",
+    "line_number": 22,
+    "line": "export function useInternalToolHydrationDiagnostics({",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "templates/use-internal-tool-hydration-diagnostics.ts",
+    "line_number": 22,
+    "line": "export function useInternalToolHydrationDiagnostics({",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "diagnostic_hint",
+    "path": "templates/use-internal-tool-hydration-diagnostics.ts",
+    "line_number": 22,
+    "line": "export function useInternalToolHydrationDiagnostics({",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "templates/use-internal-tool-hydration-diagnostics.ts",
+    "line_number": 25,
+    "line": "}: HydrationDiagnosticsOptions): void {",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "diagnostic_hint",
+    "path": "templates/use-internal-tool-hydration-diagnostics.ts",
+    "line_number": 25,
+    "line": "}: HydrationDiagnosticsOptions): void {",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "templates/use-internal-tool-hydration-diagnostics.ts",
+    "line_number": 34,
+    "line": "console.info('[hydration-diag]', {",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "diagnostic_hint",
+    "path": "templates/use-internal-tool-hydration-diagnostics.ts",
+    "line_number": 34,
+    "line": "console.info('[hydration-diag]', {",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "use_client",
+    "path": "templates/scene-studio-page-client-only.tsx",
+    "line_number": 1,
+    "line": "'use client';",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "templates/scene-studio-page-client-only.tsx",
+    "line_number": 4,
+    "line": "import { InternalToolClientOnlyBoundary } from './internal-tool-client-only-boundary';",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "client_boundary_hint",
+    "path": "templates/scene-studio-page-client-only.tsx",
+    "line_number": 4,
+    "line": "import { InternalToolClientOnlyBoundary } from './internal-tool-client-only-boundary';",
+    "severity": "low",
+    "note": "existing boundary pattern or related naming"
+  },
+  {
+    "category": "client_boundary_hint",
+    "path": "templates/scene-studio-page-client-only.tsx",
+    "line_number": 6,
+    "line": "type SceneStudioPageClientOnlyProps = {",
+    "severity": "low",
+    "note": "existing boundary pattern or related naming"
+  },
+  {
+    "category": "client_boundary_hint",
+    "path": "templates/scene-studio-page-client-only.tsx",
+    "line_number": 10,
+    "line": "export function SceneStudioPageClientOnly({ children }: SceneStudioPageClientOnlyProps) {",
+    "severity": "low",
+    "note": "existing boundary pattern or related naming"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "templates/scene-studio-page-client-only.tsx",
+    "line_number": 12,
+    "line": "<InternalToolClientOnlyBoundary",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "client_boundary_hint",
+    "path": "templates/scene-studio-page-client-only.tsx",
+    "line_number": 12,
+    "line": "<InternalToolClientOnlyBoundary",
+    "severity": "low",
+    "note": "existing boundary pattern or related naming"
+  },
+  {
+    "category": "client_boundary_hint",
+    "path": "templates/scene-studio-page-client-only.tsx",
+    "line_number": 13,
+    "line": "componentName=\"SceneStudioPageClientOnly\"",
+    "severity": "low",
+    "note": "existing boundary pattern or related naming"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "templates/scene-studio-page-client-only.tsx",
+    "line_number": 14,
+    "line": "strategy=\"scene-studio-internal-workspace-boundary\"",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "templates/scene-studio-page-client-only.tsx",
+    "line_number": 17,
+    "line": "</InternalToolClientOnlyBoundary>",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "client_boundary_hint",
+    "path": "templates/scene-studio-page-client-only.tsx",
+    "line_number": 17,
+    "line": "</InternalToolClientOnlyBoundary>",
+    "severity": "low",
+    "note": "existing boundary pattern or related naming"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "examples/sample_audit_report.md",
+    "line_number": 1,
+    "line": "# Hydration Guard Audit Report",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "examples/sample_audit_report.md",
+    "line_number": 14,
+    "line": "- `hydration_keyword`: 4",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "examples/sample_audit_report.md",
+    "line_number": 15,
+    "line": "- `tooling_route_hint`: 8",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "dynamic_ssr_false",
+    "path": "examples/sample_audit_report.md",
+    "line_number": 19,
+    "line": "- Review all `dynamic(..., { ssr: false })` usages and confirm they are scoped narrowly to internal tooling subtrees rather than full route trees.",
+    "severity": "medium",
+    "note": "broad client-only workaround candidate"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "examples/sample_audit_report.md",
+    "line_number": 19,
+    "line": "- Review all `dynamic(..., { ssr: false })` usages and confirm they are scoped narrowly to internal tooling subtrees rather than full route trees.",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "hydration_keyword",
+    "path": "examples/sample_audit_report.md",
+    "line_number": 20,
+    "line": "- Add opt-in hydration diagnostics for internal tooling boundaries so route, component, and strategy are logged only when explicitly enabled.",
+    "severity": "medium",
+    "note": "pattern match"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "examples/sample_audit_report.md",
+    "line_number": 20,
+    "line": "- Add opt-in hydration diagnostics for internal tooling boundaries so route, component, and strategy are logged only when explicitly enabled.",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "examples/sample_audit_report.md",
+    "line_number": 21,
+    "line": "- The repo appears to contain internal tooling route hints without an obvious client-only boundary naming convention. Consider standardizing a reusable `InternalToolClientOnlyBoundary`.",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "client_boundary_hint",
+    "path": "examples/sample_audit_report.md",
+    "line_number": 21,
+    "line": "- The repo appears to contain internal tooling route hints without an obvious client-only boundary naming convention. Consider standardizing a reusable `InternalToolClientOnlyBoundary`.",
+    "severity": "low",
+    "note": "existing boundary pattern or related naming"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "examples/sample_audit_report.md",
+    "line_number": 23,
+    "line": "## Likely internal tooling paths",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "examples/sample_audit_report.md",
+    "line_number": 25,
+    "line": "- `apps/keystone/app/dev/scene-studio/page.tsx`",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "examples/sample_audit_report.md",
+    "line_number": 26,
+    "line": "- `apps/keystone/components/internal-tooling/control-room.tsx`",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "examples/sample_audit_report.md",
+    "line_number": 27,
+    "line": "- `apps/keystone/components/pitch/pitch-layer-devtools.tsx`",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "examples/sample_audit_report.md",
+    "line_number": 31,
+    "line": "- `apps/keystone/app/dev/scene-studio/page.tsx`",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "dynamic_ssr_false",
+    "path": "examples/sample_audit_report.md",
+    "line_number": 35,
+    "line": "- **HIGH** `dynamic_ssr_false` in `apps/keystone/app/dev/scene-studio/page.tsx:12` -> `const StudioClient = dynamic(() => import('./scene-studio-client'), { ssr: false });` (broad client-only workaround candidate)",
+    "severity": "medium",
+    "note": "broad client-only workaround candidate"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "examples/sample_audit_report.md",
+    "line_number": 35,
+    "line": "- **HIGH** `dynamic_ssr_false` in `apps/keystone/app/dev/scene-studio/page.tsx:12` -> `const StudioClient = dynamic(() => import('./scene-studio-client'), { ssr: false });` (broad client-only workaround candidate)",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  },
+  {
+    "category": "tooling_route_hint",
+    "path": "examples/sample_audit_report.md",
+    "line_number": 36,
+    "line": "- **LOW** `tooling_route_hint` in `apps/keystone/components/internal-tooling/control-room.tsx:1` -> `export function ControlRoom() {` (likely internal tooling subtree)",
+    "severity": "low",
+    "note": "likely internal tooling subtree"
+  }
+]

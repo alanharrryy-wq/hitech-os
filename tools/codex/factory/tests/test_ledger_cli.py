@@ -23,7 +23,7 @@ class LedgerCliTests(unittest.TestCase):
                 "ts_utc": "2026-02-18T10:10:10+00:00",
                 "run_id": "run_a",
                 "event_type": "RUN_START",
-                "actor": "Z_integrator",
+                "actor": "Z_aggregator",
                 "hashes": {},
                 "rc": 0,
                 "details": {"status": "PASS", "kind": "factory"},
@@ -35,7 +35,7 @@ class LedgerCliTests(unittest.TestCase):
                 "ts_utc": "2026-02-18T10:10:11+00:00",
                 "run_id": "run_a",
                 "event_type": "RUN_END",
-                "actor": "Z_integrator",
+                "actor": "Z_aggregator",
                 "hashes": {},
                 "rc": 0,
                 "details": {"status": "PASS", "kind": "factory"},
@@ -47,7 +47,7 @@ class LedgerCliTests(unittest.TestCase):
                 "ts_utc": "2026-02-18T10:11:11+00:00",
                 "run_id": "run_b",
                 "event_type": "RUN_START",
-                "actor": "A_worker",
+                "actor": "A_core",
                 "hashes": {},
                 "rc": 2,
                 "details": {"status": "BLOCKED", "kind": "factory"},
@@ -59,7 +59,7 @@ class LedgerCliTests(unittest.TestCase):
             self._seed()
             stream = io.StringIO()
             with redirect_stdout(stream):
-                rc = cli.main(["ledger", "--raw-events", "--actor", "A_worker", "--rc", "2", "--limit", "50"])
+                rc = cli.main(["ledger", "--raw-events", "--actor", "A_core", "--rc", "2", "--limit", "50"])
             self.assertEqual(0, rc)
             payload = json.loads(stream.getvalue())
             self.assertEqual(1, payload["count"])
@@ -80,4 +80,5 @@ class LedgerCliTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
 

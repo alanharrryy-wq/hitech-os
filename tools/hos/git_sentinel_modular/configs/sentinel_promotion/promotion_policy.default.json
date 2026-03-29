@@ -1,0 +1,53 @@
+{
+  "blocked_path_parts": [
+    "_local",
+    ".git",
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache"
+  ],
+  "blocked_suffixes": [
+    ".tmp",
+    ".bak",
+    ".pyc",
+    ".pyo"
+  ],
+  "hard_block_removed_prefixes": [
+    "legacy/"
+  ],
+  "manual_review_prefixes": [
+    "legacy/",
+    "shared/",
+    "configs/",
+    "tools/"
+  ],
+  "high_risk_prefixes": [
+    "legacy/",
+    "shared/provider.py",
+    "shared/contracts.py",
+    "shared/foundation.py"
+  ],
+  "review_thresholds": {
+    "needs_review_total_touched": 5,
+    "high_risk_total_touched": 15
+  },
+  "reviewer_map": {
+    "legacy/": [
+      "platform",
+      "architecture"
+    ],
+    "shared/": [
+      "platform"
+    ],
+    "configs/": [
+      "ops"
+    ],
+    "tools/": [
+      "repo-owner"
+    ],
+    "default": [
+      "repo-owner"
+    ]
+  },
+  "promotion_mode": "manual_only"
+}

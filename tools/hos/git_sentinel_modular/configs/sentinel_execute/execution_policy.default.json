@@ -1,0 +1,31 @@
+{
+  "cutover_status_allowed_for_execution": [
+    "ready",
+    "needs_attention"
+  ],
+  "blocked_path_parts": [
+    "_local",
+    ".git",
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache"
+  ],
+  "blocked_suffixes": [
+    ".tmp",
+    ".bak",
+    ".pyc",
+    ".pyo"
+  ],
+  "protected_prefixes": [
+    "legacy/"
+  ],
+  "allow_delete": false,
+  "require_confirm_token": true,
+  "confirm_token": "EXECUTE_MANUAL_PROMOTION",
+  "backup_enabled": true,
+  "verify_python_parse_after_apply": true,
+  "post_smoke_required": true,
+  "execution_mode": "manual_only",
+  "backup_dir_name": "backups",
+  "execution_dir_name": "execution_bundle"
+}

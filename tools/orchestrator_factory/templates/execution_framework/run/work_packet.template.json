@@ -1,0 +1,35 @@
+{
+  "allowed_paths": [
+    "services/api/**"
+  ],
+  "baseline_refs": [
+    "ops/projects/prj-example/project_manifest.json",
+    "ops/projects/prj-example/homologation_record.md",
+    "ops/projects/prj-example/contract_register.md"
+  ],
+  "communication_rules": [
+    "Do not communicate directly with other package chats.",
+    "Route cross-package questions through governance using artifact references."
+  ],
+  "contract_refs": [],
+  "dependencies": [
+    "00-governance-core",
+    "02-domain-data-and-persistence"
+  ],
+  "forbidden_paths": [
+    "apps/**"
+  ],
+  "objective": "Describe the bounded package objective.",
+  "package_id": "03-service-contracts-and-orchestration",
+  "project_id": "prj-example",
+  "required_outputs": [
+    "bundle_manifest.json",
+    "package_report.json",
+    "notes/summary.md",
+    "payload/**"
+  ],
+  "round_id": "rd-001",
+  "run_id": "run-prj-example-20260327-01",
+  "schema_version": "1.0",
+  "waiver_refs": []
+}

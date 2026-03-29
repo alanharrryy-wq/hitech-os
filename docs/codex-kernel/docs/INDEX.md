@@ -6,11 +6,12 @@ RULE: If it’s not linked here, it doesn’t exist.
 
 ## 🔥 Start Here (Operator Path)
 
-1. **00_QUICKSTART.md** — copy/paste flow to run 4 builders + Z integrator
+1. **00_QUICKSTART.md** — copy/paste flow to run 4 builders + Z_aggregator
 2. **10_ROLES.md** — what each agent does (and must NOT do)
 3. **20_SCOPE_RULES.md** — how to slice ANY project into A/B/C/D
 4. **30_OUTPUT_CONTRACT.md** — what artifacts must be produced (evidence > vibes)
-5. **50_INTEGRATION_RULES.md** — how Z merges, repairs, validates, reports
+5. **35_ARCHITECTURAL_GRAVITY.md** — graph-analysis law and protected-node protocol
+6. **50_INTEGRATION_RULES.md** — how Z_aggregator merges, repairs, validates, reports
 
 ## 🧱 Core Kernel Docs
 
@@ -37,7 +38,7 @@ RULE: If it’s not linked here, it doesn’t exist.
 - Evidence-driven delivery (every run produces logs + diffs + validation outputs).
 - One agent = one worktree + one branch + one VS Code window (isolation).
 - Single Source of Truth per subsystem (no parallel implementations).
-- Z (Integrator) merges + repairs + validates + reports; Z does **not** invent features.
+- Z_aggregator merges + repairs + validates + reports; Z_aggregator does **not** invent features.
 
 ## When you add docs
 

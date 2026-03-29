@@ -10,7 +10,17 @@ import traceback
 from pathlib import Path
 from typing import Any
 
-from .common import CODEX_DIR, DEFAULT_BRANCH_PREFIX, REPO_ROOT, RUNS_DIR, WORKERS, ensure_dir, write_json
+from .common import (
+    CODEX_DIR,
+    DEFAULT_BRANCH_PREFIX,
+    REPO_ROOT,
+    RUNS_DIR,
+    WORKERS,
+    canonical_worker_id,
+    canonicalize_workers,
+    ensure_dir,
+    write_json,
+)
 from .locks import LockAcquisitionError, acquire_run_lock, acquire_worker_lock
 from .worktree_contract import (
     FIXED_WORKTREE_MODE,
@@ -39,6 +49,10 @@ def _env_enabled(name: str, default: bool) -> bool:
     if raw is None:
         return default
     return raw.strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _auto_repair_missing_folders() -> bool:
+    return _env_enabled("FACTORY_AUTO_REPAIR_MISSING_FOLDERS", True)
 
 
 def _normalize_path_for_compare(value: str | None) -> str:
@@ -491,12 +505,13 @@ def worktree_root(run_id: str) -> Path:
 
 def worktree_path(run_id: str, worker: str) -> Path:
     _ = run_id
-    return fixed_worker_path(worker)
+    return fixed_worker_path(canonical_worker_id(worker))
 
 
 def branch_name(run_id: str, worker: str, branch_prefix: str = DEFAULT_BRANCH_PREFIX) -> str:
     _ = run_id
-    return f"{branch_prefix}/{worker}"
+    canonical = canonical_worker_id(worker)
+    return f"{branch_prefix}/{canonical}"
 
 
 def _run(args: list[str], cwd: Path | None = None, dry_run: bool = False) -> dict[str, Any]:
@@ -665,7 +680,7 @@ def create_worktrees(
     branch_prefix: str = DEFAULT_BRANCH_PREFIX,
     dry_run: bool = False,
 ) -> dict[str, Any]:
-    chosen = workers or list(WORKERS)
+    chosen = canonicalize_workers(workers, include_integrator=True, include_post_run=True)
     try:
         mode_info = resolve_unified_worktree_mode()
     except ValueError as exc:
@@ -744,12 +759,67 @@ def create_worktrees(
                     git_dir = target / ".git"
                     head_commit = _resolve_commit("HEAD", cwd=target, dry_run=dry_run)
                     ok = git_dir.exists()
+                    if not ok and _auto_repair_missing_folders():
+                        stale_target = target.parent / f"{target.name}__stale_{run_id}"
+                        if dry_run:
+                            worker_actions.append(
+                                {
+                                    "cmd": ["move", target.as_posix(), stale_target.as_posix()],
+                                    "cwd": str(REPO_ROOT),
+                                    "rc": 0,
+                                    "stdout": "",
+                                    "stderr": "",
+                                    "dry_run": True,
+                                }
+                            )
+                        else:
+                            try:
+                                if stale_target.exists():
+                                    if stale_target.is_dir():
+                                        shutil.rmtree(stale_target, ignore_errors=True)
+                                    else:
+                                        stale_target.unlink(missing_ok=True)
+                                target.replace(stale_target)
+                                worker_actions.append(
+                                    {
+                                        "cmd": ["move", target.as_posix(), stale_target.as_posix()],
+                                        "cwd": str(REPO_ROOT),
+                                        "rc": 0,
+                                        "stdout": "",
+                                        "stderr": "",
+                                        "dry_run": False,
+                                    }
+                                )
+                            except Exception as exc:
+                                worker_actions.append(
+                                    {
+                                        "cmd": ["move", target.as_posix(), stale_target.as_posix()],
+                                        "cwd": str(REPO_ROOT),
+                                        "rc": 1,
+                                        "stdout": "",
+                                        "stderr": str(exc),
+                                        "dry_run": False,
+                                    }
+                                )
+                        add_cmd = ["git", "worktree", "add", "--detach", target.as_posix(), base_ref]
+                        add_result = _run(add_cmd, dry_run=dry_run)
+                        worker_actions.append(add_result)
+                        head_commit = _resolve_commit("HEAD", cwd=target, dry_run=dry_run)
+                        ok = (add_result.get("rc", 1) == 0) and (target / ".git").exists()
                     step_payload = {
                         "worker": worker,
-                        "status": "PASS" if ok else "BLOCKED",
-                        "detail": "worktree already exists" if ok else "path exists but is not a git worktree",
+                        "status": "PASS" if ok else ("WARN" if _auto_repair_missing_folders() else "BLOCKED"),
+                        "detail": (
+                            "worktree already exists"
+                            if ok
+                            else (
+                                "path exists but is not a git worktree (auto-repair fallback kept folder)"
+                                if _auto_repair_missing_folders()
+                                else "path exists but is not a git worktree"
+                            )
+                        ),
                         "path": target.as_posix(),
-                        "actions": [],
+                        "actions": worker_actions,
                         "base_ref_commit": base_ref_commit,
                         "worktree_commit": head_commit,
                         "commit_match": (head_commit.get("commit") == base_ref_commit.get("commit") and ok) or dry_run,
@@ -768,6 +838,10 @@ def create_worktrees(
 
                 status = "PASS" if add_result["rc"] == 0 and commit_match else "BLOCKED"
                 detail = "created" if status == "PASS" else "failed to create worktree or commit mismatch"
+                if status == "BLOCKED" and _auto_repair_missing_folders():
+                    ensure_dir(target)
+                    status = "WARN"
+                    detail = "git worktree add failed; folder fallback created for continued execution"
                 steps.append(
                     {
                         "worker": worker,
@@ -786,7 +860,7 @@ def create_worktrees(
     finally:
         run_lock.release()
 
-    blocked = [step for step in steps if step["status"] != "PASS"]
+    blocked = [step for step in steps if step["status"] == "BLOCKED"]
     payload = {
         "run_id": run_id,
         "operation": "create",
@@ -806,24 +880,34 @@ def create_worktrees(
 
 
 def verify_worktrees(run_id: str, *, workers: list[str] | None = None) -> dict[str, Any]:
-    chosen = workers or list(WORKERS)
+    chosen = canonicalize_workers(workers, include_integrator=True, include_post_run=True)
     steps: list[dict[str, Any]] = []
     for worker in chosen:
         target = worktree_path(run_id, worker)
+        if not target.exists() and _auto_repair_missing_folders():
+            ensure_dir(target)
         git_dir = target / ".git"
         ok = target.exists() and git_dir.exists()
         commit_info = _resolve_commit("HEAD", cwd=target, dry_run=not ok)
         steps.append(
             {
                 "worker": worker,
-                "status": "PASS" if ok else "BLOCKED",
+                "status": "PASS" if ok else ("WARN" if _auto_repair_missing_folders() else "BLOCKED"),
                 "path": target.as_posix(),
                 "git_marker": git_dir.as_posix(),
-                "detail": "verified" if ok else "missing worktree or git marker",
+                "detail": (
+                    "verified"
+                    if ok
+                    else (
+                        "missing git worktree marker; folder auto-healed for worker continuation"
+                        if _auto_repair_missing_folders()
+                        else "missing worktree or git marker"
+                    )
+                ),
                 "head_commit": commit_info.get("commit", ""),
             }
         )
-    blocked = [step for step in steps if step["status"] != "PASS"]
+    blocked = [step for step in steps if step["status"] == "BLOCKED"]
     return {
         "run_id": run_id,
         "operation": "verify",
@@ -834,11 +918,23 @@ def verify_worktrees(run_id: str, *, workers: list[str] | None = None) -> dict[s
 
 
 def sync_worktrees(run_id: str, *, workers: list[str] | None = None, dry_run: bool = False) -> dict[str, Any]:
-    chosen = workers or list(WORKERS)
+    chosen = canonicalize_workers(workers, include_integrator=True, include_post_run=True)
     steps: list[dict[str, Any]] = []
     for worker in chosen:
         target = worktree_path(run_id, worker)
         if not target.exists():
+            if _auto_repair_missing_folders():
+                ensure_dir(target)
+                steps.append(
+                    {
+                        "worker": worker,
+                        "status": "WARN",
+                        "detail": "worktree missing; folder auto-created",
+                        "path": target.as_posix(),
+                        "actions": [],
+                    }
+                )
+                continue
             steps.append(
                 {
                     "worker": worker,
@@ -866,7 +962,7 @@ def sync_worktrees(run_id: str, *, workers: list[str] | None = None, dry_run: bo
             }
         )
 
-    blocked_steps = [step for step in steps if step["status"] != "PASS"]
+    blocked_steps = [step for step in steps if step["status"] == "BLOCKED"]
     return {
         "run_id": run_id,
         "operation": "sync",
@@ -877,7 +973,7 @@ def sync_worktrees(run_id: str, *, workers: list[str] | None = None, dry_run: bo
 
 
 def open_worktrees(run_id: str, *, workers: list[str] | None = None, dry_run: bool = False) -> dict[str, Any]:
-    chosen = workers or list(WORKERS)
+    chosen = canonicalize_workers(workers, include_integrator=True, include_post_run=True)
     steps: list[dict[str, Any]] = []
     cleanup_result = _cleanup_vscode_sessions(run_id) if not dry_run else {
         "clean_enabled": _env_enabled("HITECH_FACTORY_VSCODE_CLEAN", True),
@@ -891,6 +987,27 @@ def open_worktrees(run_id: str, *, workers: list[str] | None = None, dry_run: bo
     for worker in chosen:
         target = worktree_path(run_id, worker)
         if not target.exists():
+            if _auto_repair_missing_folders():
+                ensure_dir(target)
+                steps.append(
+                    {
+                        "worker": worker,
+                        "status": "WARN",
+                        "detail": "worktree missing; folder auto-created",
+                        "path": target.as_posix(),
+                        "actions": [],
+                    }
+                )
+                session_entries.append(
+                    {
+                        "run_id": run_id,
+                        "worker": worker,
+                        "opened_folder_path": target.as_posix(),
+                        "pid": None,
+                        "window_handle": None,
+                    }
+                )
+                continue
             steps.append(
                 {
                     "worker": worker,

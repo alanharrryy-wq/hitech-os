@@ -1,0 +1,40 @@
+{
+  "schema_version": 2,
+  "generated_at_utc": "2026-03-18T00:36:17.287Z",
+  "policy_path": "policies/dependencies.json",
+  "workspace_path": "pnpm-workspace.yaml",
+  "policy_validation": {
+    "error_count": 0,
+    "warning_count": 0,
+    "errors": [],
+    "warnings": []
+  },
+  "workspace_model": {
+    "effective_patterns": [
+      "apps/*",
+      "packages/*",
+      "services/*",
+      "tools/*"
+    ],
+    "pattern_sync": {
+      "in_sync": true,
+      "only_in_policy": [],
+      "only_in_pnpm_workspace": []
+    },
+    "discovery_anomalies": {
+      "missing_patterns": [],
+      "entries_without_manifest": []
+    },
+    "retired_entries_present": []
+  },
+  "manifests": {
+    "checked_count": 11,
+    "missing_count": 0,
+    "missing": []
+  },
+  "issues": {
+    "count": 0,
+    "entries": []
+  },
+  "status": "pass"
+}

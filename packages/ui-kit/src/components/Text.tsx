@@ -26,6 +26,7 @@ const textVariants = cva("", {
 
 export interface TextProps extends HTMLAttributes<HTMLElement>, VariantProps<typeof textVariants> {
   readonly as?: "p" | "span" | "strong" | "small";
+  readonly className?: string;
 }
 
 export function Text({ as = "p", className, size, tone, ...props }: TextProps) {

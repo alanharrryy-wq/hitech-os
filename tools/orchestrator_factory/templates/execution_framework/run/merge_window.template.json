@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "message_id": "merge-window-round-017-core-packages",
+  "message_type": "merge_window",
+  "run_id": "run-20260327-170000",
+  "round_id": "round-017",
+  "channel_id": "channel.merge_windows",
+  "from_chat_id": "governance-control",
+  "published_at_utc": "2026-03-27T17:25:00Z",
+  "status": "planned",
+  "status_summary": "Governance reserved an integration window for packages that clear blockers and publish done checkpoints.",
+  "summary": "Integration window for identity, platform, and quality packages after dependency resolution.",
+  "target_package_ids": [
+    "01-identity-access-and-trust",
+    "05-platform-infrastructure-and-delivery",
+    "06-quality-release-and-operations"
+  ],
+  "window_start_utc": "2026-03-27T18:00:00Z",
+  "window_end_utc": "2026-03-27T18:40:00Z",
+  "admission_rules": [
+    "Every target package must publish a done checkpoint before window_start_utc.",
+    "No sev1 or sev2 blocker may remain open for target packages.",
+    "Each target package must attach at least one evidence ref proving readiness."
+  ],
+  "integration_order": [
+    "05-platform-infrastructure-and-delivery",
+    "01-identity-access-and-trust",
+    "06-quality-release-and-operations"
+  ],
+  "evidence_refs": [
+    "ops/runs/run-20260327-170000/rounds/round-017/coordination/snapshot-run-20260327-170000-round-017.json"
+  ],
+  "history": [
+    {
+      "action": "scheduled",
+      "actor_chat_id": "governance-control",
+      "at_utc": "2026-03-27T17:25:00Z",
+      "status": "planned",
+      "summary": "Merge window scheduled after reviewing blocker and handoff state."
+    }
+  ],
+  "project_id": "hitech-os",
+  "related_blocker_ids": [
+    "blocker-auth-session-readiness"
+  ],
+  "reserved_repo_paths": [
+    "01-identity-access-and-trust/**",
+    "05-platform-infrastructure-and-delivery/**",
+    "06-quality-release-and-operations/**"
+  ],
+  "tags": [
+    "merge",
+    "coordination",
+    "round-017"
+  ],
+  "to_chat_id": "chat.06-quality-release-and-operations"
+}

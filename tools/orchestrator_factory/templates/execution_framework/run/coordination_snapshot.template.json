@@ -1,0 +1,220 @@
+{
+  "schema_version": "1.0",
+  "snapshot_id": "snapshot-run-20260327-170000-round-017",
+  "run_id": "run-20260327-170000",
+  "round_id": "round-017",
+  "generated_at_utc": "2026-03-27T17:20:00Z",
+  "counts": {
+    "heartbeats": {
+      "expected": 7,
+      "present": 7,
+      "ok": 6,
+      "warning": 1,
+      "escalated": 0,
+      "missing": 0,
+      "active": 7
+    },
+    "handoffs": {
+      "total": 1,
+      "open": 1,
+      "planned": 0,
+      "in_progress": 1,
+      "blocked": 0,
+      "done": 0,
+      "overdue": 0,
+      "sev1_open": 0,
+      "sev2_open": 1
+    },
+    "blockers": {
+      "total": 1,
+      "open": 1,
+      "sev1_open": 0,
+      "sev2_open": 1,
+      "dependency": 1,
+      "scope": 0,
+      "infra": 0,
+      "quality": 0
+    },
+    "checkpoints": {
+      "planned": 0,
+      "in_progress": 4,
+      "blocked": 1,
+      "done": 2
+    }
+  },
+  "global_status": {
+    "status": "blocked",
+    "reasons": [
+      "One sev2 dependency blocker is still open.",
+      "The handoff queue contains work that must complete before merge readiness is green."
+    ]
+  },
+  "issues": [
+    {
+      "issue_id": "issue-open-dependency-blocker",
+      "severity": "sev2",
+      "summary": "Identity package is waiting on governed readiness confirmation.",
+      "owner_chat_id": "governance-control",
+      "related_entity_ids": [
+        "blocker-auth-session-readiness",
+        "dep-auth-cache-readiness"
+      ]
+    }
+  ],
+  "views": {
+    "coordination_overview": [
+      {
+        "chat_id": "governance-control",
+        "chat_kind": "mission_control",
+        "profile_id": "mission_control",
+        "owned_package_ids": [],
+        "heartbeat_every": "PT10M",
+        "checkpoint_every": "PT30M",
+        "warn_after": "PT15M",
+        "escalate_after": "PT20M",
+        "heartbeat_status": "ok",
+        "silence_state": "ok",
+        "status": "in_progress",
+        "status_summary": "Governance is routing dependencies and tracking blocker pressure.",
+        "current_item_refs": [
+          "ops/runs/run-20260327-170000/rounds/round-017/coordination"
+        ],
+        "risk_flag": "dependency_watch",
+        "heartbeat_age_minutes": 4,
+        "heartbeat_interval_minutes": 10,
+        "last_progress_at_utc": "2026-03-27T17:16:00Z",
+        "message_id": "hb-governance-20260327-171600",
+        "next_planned_action": "Publish updated snapshot when the dependency response is accepted.",
+        "published_at_utc": "2026-03-27T17:16:00Z"
+      },
+      {
+        "chat_id": "chat.01-identity-access-and-trust",
+        "chat_kind": "package_worker",
+        "profile_id": "profile.01-identity-access-and-trust",
+        "owned_package_ids": [
+          "01-identity-access-and-trust"
+        ],
+        "heartbeat_every": "PT15M",
+        "checkpoint_every": "PT60M",
+        "warn_after": "PT20M",
+        "escalate_after": "PT30M",
+        "heartbeat_status": "warning",
+        "silence_state": "warning",
+        "status": "blocked",
+        "status_summary": "Execution is paused on a governed dependency.",
+        "current_item_refs": [
+          "01-identity-access-and-trust/contracts/session_policy.json"
+        ],
+        "risk_flag": "blocked_dependency",
+        "heartbeat_age_minutes": 21,
+        "heartbeat_interval_minutes": 15,
+        "last_progress_at_utc": "2026-03-27T16:59:00Z",
+        "message_id": "hb-auth-20260327-165900",
+        "next_planned_action": "Resume contract publication immediately after dependency confirmation.",
+        "published_at_utc": "2026-03-27T16:59:00Z"
+      }
+    ],
+    "blocker_pressure": [
+      {
+        "blocker_id": "blocker-auth-session-readiness",
+        "message_id": "blocker-auth-session-readiness",
+        "run_id": "run-20260327-170000",
+        "round_id": "round-017",
+        "package_id": "01-identity-access-and-trust",
+        "owner_chat_id": "chat.01-identity-access-and-trust",
+        "status": "blocked",
+        "severity": "sev2",
+        "blocker_type": "dependency",
+        "status_summary": "Session policy publication is blocked until cache readiness is confirmed.",
+        "next_action_owner": "governance-control",
+        "opened_at_utc": "2026-03-27T16:43:00Z",
+        "age_minutes": 37,
+        "related_entity_ids": [
+          "dep-auth-cache-readiness",
+          "handoff-auth-session-policy"
+        ],
+        "evidence_refs": [
+          "ops/runs/run-20260327-170000/rounds/round-017/reports/auth_validation_report.json"
+        ],
+        "recommendation": {
+          "checkpoint_frequency": "PT30M",
+          "escalate_to": "governance-control",
+          "notify_within": "PT15M",
+          "required_action": "Reprioritize the dependency queue and publish the revised due time.",
+          "resolution_owner": "governance-control"
+        }
+      }
+    ],
+    "handoff_queue": [
+      {
+        "handoff_id": "handoff-auth-session-policy",
+        "from_chat_id": "governance-control",
+        "to_chat_id": "chat.01-identity-access-and-trust",
+        "package_id": "01-identity-access-and-trust",
+        "status": "in_progress",
+        "status_summary": "The receiving chat is producing the contract and evidence bundle.",
+        "severity": "sev2",
+        "requested_outcome": "Publish the session policy artifact and validation evidence for downstream consumption.",
+        "ownership_mode": "transfer",
+        "next_action_owner": "chat.01-identity-access-and-trust",
+        "response_due_at_utc": "2026-03-27T17:10:00Z",
+        "first_checkpoint_due_at_utc": "2026-03-27T17:18:00Z",
+        "resolution_due_at_utc": "2026-03-27T20:40:00Z",
+        "ack_state": "accepted",
+        "resolution_state": "active",
+        "acceptance_criteria_count": 3,
+        "evidence_refs_count": 1,
+        "run_id": "run-20260327-170000",
+        "round_id": "round-017",
+        "checkpoint_state": "published",
+        "is_overdue": "false"
+      }
+    ],
+    "latest_checkpoints": [
+      {
+        "chat_id": "chat.01-identity-access-and-trust",
+        "package_id": "01-identity-access-and-trust",
+        "published_at_utc": "2026-03-27T17:00:00Z",
+        "status": "in_progress",
+        "status_summary": "The identity package is integrating the session policy and validating contract refs.",
+        "next_planned_action": "Publish the final done checkpoint after attaching evidence refs."
+      }
+    ],
+    "merge_window_readiness": [
+      {
+        "chat_id": "chat.01-identity-access-and-trust",
+        "package_id": "01-identity-access-and-trust",
+        "checkpoint_status": "in_progress",
+        "open_blocker_count": 1,
+        "open_handoff_count": 1,
+        "evidence_refs_count": 1,
+        "latest_snapshot_ref": "ops/runs/run-20260327-170000/rounds/round-017/coordination/snapshot-run-20260327-170000-round-017.json",
+        "ready_for_integration": "false"
+      }
+    ]
+  },
+  "channel_id": "channel.sync_checkpoints",
+  "message_type": "coordination_snapshot",
+  "generated_by_chat_id": "governance-control",
+  "published_at_utc": "2026-03-27T17:20:00Z",
+  "status": "blocked",
+  "snapshot_summary": "Round 017 is operationally stable except for one dependency blocker in the identity package.",
+  "source_event_refs": [
+    "ops/runs/run-20260327-170000/rounds/round-017/heartbeats/hb-auth-20260327-165900.json",
+    "ops/runs/run-20260327-170000/rounds/round-017/blockers/blocker-auth-session-readiness.json",
+    "ops/runs/run-20260327-170000/rounds/round-017/handoffs/handoff-auth-session-policy.json"
+  ],
+  "evidence_refs": [
+    "ops/runs/run-20260327-170000/rounds/round-017/reports/auth_validation_report.json"
+  ],
+  "history": [
+    {
+      "action": "generated",
+      "actor_chat_id": "governance-control",
+      "at_utc": "2026-03-27T17:20:00Z",
+      "status": "blocked",
+      "summary": "Governance generated the round snapshot from current runtime events."
+    }
+  ],
+  "project_id": "hitech-os"
+}

@@ -1,0 +1,2271 @@
+{
+  "constitutional_roots": [
+    "00-governance-core/",
+    "parallel_manifest.json",
+    "parallel_launch_order.md",
+    "master_chat_routing.md"
+  ],
+  "default_operating_model": {
+    "default_mission_control_location": "governance_chat",
+    "governance_chats": 1,
+    "parallel_package_chats": 6
+  },
+  "design_principles": [
+    "zip_a_governs_by_default",
+    "zip_b_tactical_only",
+    "universal_package_topology",
+    "project_run_round_package_artifact_traceability",
+    "governance_chat_as_default_mission_control",
+    "core_separated_from_templates_and_examples"
+  ],
+  "files": [
+    {
+      "class": "constitutional",
+      "deps": [
+        "parallel_manifest.json"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/README.md",
+      "purpose": "Mission and authority statement for the constitutional governance package.",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/chat_prompt_codex_only.md",
+      "purpose": "Bounded governance-chat prompt that keeps constitutional work separate from package-local work.",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/contracts/cross_package_contracts.md",
+      "purpose": "Cross_package_contracts",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/contracts/dependency_contract_rules.md",
+      "purpose": "Dependency_contract_rules",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/contracts/interface_freeze_protocol.md",
+      "purpose": "Interface_freeze_protocol",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/contracts/package_contract_template.md",
+      "purpose": "Package_contract_template",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/canonical_source_rules.md",
+      "purpose": "Canonical_source_rules",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/codex_insert_only_policy.md",
+      "purpose": "Codex_insert_only_policy",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/codex_operating_model.md",
+      "purpose": "Codex_operating_model",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/codex_review_checklist.md",
+      "purpose": "Codex_review_checklist",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/codex_task_contract_template.md",
+      "purpose": "Codex_task_contract_template",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/conflict_resolution_and_escalation.md",
+      "purpose": "Conflict_resolution_and_escalation",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/decision_logging_rules.md",
+      "purpose": "Decision_logging_rules",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/definition_of_done_global.md",
+      "purpose": "Definition_of_done_global",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/documentation_layering.md",
+      "purpose": "Documentation_layering",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/idea_intake_and_homologation.md",
+      "purpose": "Idea_intake_and_homologation",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/project_bootstrap_checklist.md",
+      "purpose": "Project_bootstrap_checklist",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/prompt_usage_model.md",
+      "purpose": "Prompt_usage_model",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/review_model.md",
+      "purpose": "Review_model",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/run_id_standard.md",
+      "purpose": "Run_id_standard",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/run_lifecycle.md",
+      "purpose": "Run_lifecycle",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/dictionaries/global_dictionary.md",
+      "purpose": "Global_dictionary",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/dictionaries/naming_conventions.md",
+      "purpose": "Naming_conventions",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/parallelism/change_budget_matrix.yaml",
+      "purpose": "Change_budget_matrix.yaml",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/parallelism/dependency-graph.md",
+      "purpose": "Dependency graph",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/parallelism/merge-and-handoff-protocol.md",
+      "purpose": "Merge and handoff protocol",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/parallelism/package_topology_rationale.md",
+      "purpose": "Package_topology_rationale",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/parallelism/path-ownership-matrix.yaml",
+      "purpose": "Path ownership matrix.yaml",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/standards/acceptance-gates-shared.md",
+      "purpose": "Acceptance gates shared",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/standards/paths-and-boundaries.md",
+      "purpose": "Paths and boundaries",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/standards/traceability-model.md",
+      "purpose": "Traceability model",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core",
+        "00-governance-core/README.md"
+      ],
+      "layer": "package",
+      "path": "01-identity-access-and-trust/README.md",
+      "purpose": "README for package 01-identity-access-and-trust.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/standards/acceptance-gates-shared.md"
+      ],
+      "layer": "package",
+      "path": "01-identity-access-and-trust/acceptance-gates.md",
+      "purpose": "Acceptance gates and freeze gate for 01-identity-access-and-trust.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/chat_prompt_codex_only.md"
+      ],
+      "layer": "package",
+      "path": "01-identity-access-and-trust/chat_prompt_codex_only.md",
+      "purpose": "Package-specific bounded prompt for 01-identity-access-and-trust.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/standards/acceptance-gates-shared.md"
+      ],
+      "layer": "package",
+      "path": "01-identity-access-and-trust/deliverables-manifest.md",
+      "purpose": "Deliverables inventory and quality bar for 01-identity-access-and-trust.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core",
+        "00-governance-core/docs/contracts/dependency_contract_rules.md"
+      ],
+      "layer": "package",
+      "path": "01-identity-access-and-trust/dependency-contracts.md",
+      "purpose": "Dependency declaration and consumption rules for 01-identity-access-and-trust.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "01-identity-access-and-trust/deliverables-manifest.md"
+      ],
+      "layer": "package",
+      "path": "01-identity-access-and-trust/docs/seed-index.md",
+      "purpose": "Suggested first documents and first freeze target for 01-identity-access-and-trust.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/parallelism/merge-and-handoff-protocol.md"
+      ],
+      "layer": "package",
+      "path": "01-identity-access-and-trust/handoff-format.md",
+      "purpose": "Handoff metadata requirements for 01-identity-access-and-trust.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/standards/paths-and-boundaries.md"
+      ],
+      "layer": "package",
+      "path": "01-identity-access-and-trust/non-goals.md",
+      "purpose": "Explicit non-goals for 01-identity-access-and-trust.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/parallelism/path-ownership-matrix.yaml",
+        "00-governance-core"
+      ],
+      "layer": "package",
+      "path": "01-identity-access-and-trust/scope-and-boundaries.md",
+      "purpose": "Scope, out-of-scope limits, and write/read rules for 01-identity-access-and-trust.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core",
+        "00-governance-core/README.md"
+      ],
+      "layer": "package",
+      "path": "02-domain-data-and-persistence/README.md",
+      "purpose": "README for package 02-domain-data-and-persistence.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/standards/acceptance-gates-shared.md"
+      ],
+      "layer": "package",
+      "path": "02-domain-data-and-persistence/acceptance-gates.md",
+      "purpose": "Acceptance gates and freeze gate for 02-domain-data-and-persistence.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/chat_prompt_codex_only.md"
+      ],
+      "layer": "package",
+      "path": "02-domain-data-and-persistence/chat_prompt_codex_only.md",
+      "purpose": "Package-specific bounded prompt for 02-domain-data-and-persistence.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/standards/acceptance-gates-shared.md"
+      ],
+      "layer": "package",
+      "path": "02-domain-data-and-persistence/deliverables-manifest.md",
+      "purpose": "Deliverables inventory and quality bar for 02-domain-data-and-persistence.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core",
+        "00-governance-core/docs/contracts/dependency_contract_rules.md"
+      ],
+      "layer": "package",
+      "path": "02-domain-data-and-persistence/dependency-contracts.md",
+      "purpose": "Dependency declaration and consumption rules for 02-domain-data-and-persistence.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "02-domain-data-and-persistence/deliverables-manifest.md"
+      ],
+      "layer": "package",
+      "path": "02-domain-data-and-persistence/docs/seed-index.md",
+      "purpose": "Suggested first documents and first freeze target for 02-domain-data-and-persistence.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/parallelism/merge-and-handoff-protocol.md"
+      ],
+      "layer": "package",
+      "path": "02-domain-data-and-persistence/handoff-format.md",
+      "purpose": "Handoff metadata requirements for 02-domain-data-and-persistence.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/standards/paths-and-boundaries.md"
+      ],
+      "layer": "package",
+      "path": "02-domain-data-and-persistence/non-goals.md",
+      "purpose": "Explicit non-goals for 02-domain-data-and-persistence.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/parallelism/path-ownership-matrix.yaml",
+        "00-governance-core"
+      ],
+      "layer": "package",
+      "path": "02-domain-data-and-persistence/scope-and-boundaries.md",
+      "purpose": "Scope, out-of-scope limits, and write/read rules for 02-domain-data-and-persistence.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core",
+        "01-identity-access-and-trust",
+        "02-domain-data-and-persistence",
+        "00-governance-core/README.md"
+      ],
+      "layer": "package",
+      "path": "03-service-contracts-and-orchestration/README.md",
+      "purpose": "README for package 03-service-contracts-and-orchestration.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/standards/acceptance-gates-shared.md"
+      ],
+      "layer": "package",
+      "path": "03-service-contracts-and-orchestration/acceptance-gates.md",
+      "purpose": "Acceptance gates and freeze gate for 03-service-contracts-and-orchestration.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/chat_prompt_codex_only.md"
+      ],
+      "layer": "package",
+      "path": "03-service-contracts-and-orchestration/chat_prompt_codex_only.md",
+      "purpose": "Package-specific bounded prompt for 03-service-contracts-and-orchestration.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/standards/acceptance-gates-shared.md"
+      ],
+      "layer": "package",
+      "path": "03-service-contracts-and-orchestration/deliverables-manifest.md",
+      "purpose": "Deliverables inventory and quality bar for 03-service-contracts-and-orchestration.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core",
+        "01-identity-access-and-trust",
+        "02-domain-data-and-persistence",
+        "00-governance-core/docs/contracts/dependency_contract_rules.md"
+      ],
+      "layer": "package",
+      "path": "03-service-contracts-and-orchestration/dependency-contracts.md",
+      "purpose": "Dependency declaration and consumption rules for 03-service-contracts-and-orchestration.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "03-service-contracts-and-orchestration/deliverables-manifest.md"
+      ],
+      "layer": "package",
+      "path": "03-service-contracts-and-orchestration/docs/seed-index.md",
+      "purpose": "Suggested first documents and first freeze target for 03-service-contracts-and-orchestration.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/parallelism/merge-and-handoff-protocol.md"
+      ],
+      "layer": "package",
+      "path": "03-service-contracts-and-orchestration/handoff-format.md",
+      "purpose": "Handoff metadata requirements for 03-service-contracts-and-orchestration.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/standards/paths-and-boundaries.md"
+      ],
+      "layer": "package",
+      "path": "03-service-contracts-and-orchestration/non-goals.md",
+      "purpose": "Explicit non-goals for 03-service-contracts-and-orchestration.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/parallelism/path-ownership-matrix.yaml",
+        "00-governance-core",
+        "01-identity-access-and-trust",
+        "02-domain-data-and-persistence"
+      ],
+      "layer": "package",
+      "path": "03-service-contracts-and-orchestration/scope-and-boundaries.md",
+      "purpose": "Scope, out-of-scope limits, and write/read rules for 03-service-contracts-and-orchestration.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core",
+        "01-identity-access-and-trust",
+        "03-service-contracts-and-orchestration",
+        "00-governance-core/README.md"
+      ],
+      "layer": "package",
+      "path": "04-experience-clients-and-interactions/README.md",
+      "purpose": "README for package 04-experience-clients-and-interactions.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/standards/acceptance-gates-shared.md"
+      ],
+      "layer": "package",
+      "path": "04-experience-clients-and-interactions/acceptance-gates.md",
+      "purpose": "Acceptance gates and freeze gate for 04-experience-clients-and-interactions.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/chat_prompt_codex_only.md"
+      ],
+      "layer": "package",
+      "path": "04-experience-clients-and-interactions/chat_prompt_codex_only.md",
+      "purpose": "Package-specific bounded prompt for 04-experience-clients-and-interactions.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/standards/acceptance-gates-shared.md"
+      ],
+      "layer": "package",
+      "path": "04-experience-clients-and-interactions/deliverables-manifest.md",
+      "purpose": "Deliverables inventory and quality bar for 04-experience-clients-and-interactions.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core",
+        "01-identity-access-and-trust",
+        "03-service-contracts-and-orchestration",
+        "00-governance-core/docs/contracts/dependency_contract_rules.md"
+      ],
+      "layer": "package",
+      "path": "04-experience-clients-and-interactions/dependency-contracts.md",
+      "purpose": "Dependency declaration and consumption rules for 04-experience-clients-and-interactions.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "04-experience-clients-and-interactions/deliverables-manifest.md"
+      ],
+      "layer": "package",
+      "path": "04-experience-clients-and-interactions/docs/seed-index.md",
+      "purpose": "Suggested first documents and first freeze target for 04-experience-clients-and-interactions.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/parallelism/merge-and-handoff-protocol.md"
+      ],
+      "layer": "package",
+      "path": "04-experience-clients-and-interactions/handoff-format.md",
+      "purpose": "Handoff metadata requirements for 04-experience-clients-and-interactions.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/standards/paths-and-boundaries.md"
+      ],
+      "layer": "package",
+      "path": "04-experience-clients-and-interactions/non-goals.md",
+      "purpose": "Explicit non-goals for 04-experience-clients-and-interactions.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/parallelism/path-ownership-matrix.yaml",
+        "00-governance-core",
+        "01-identity-access-and-trust",
+        "03-service-contracts-and-orchestration"
+      ],
+      "layer": "package",
+      "path": "04-experience-clients-and-interactions/scope-and-boundaries.md",
+      "purpose": "Scope, out-of-scope limits, and write/read rules for 04-experience-clients-and-interactions.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core",
+        "03-service-contracts-and-orchestration",
+        "00-governance-core/README.md"
+      ],
+      "layer": "package",
+      "path": "05-platform-infrastructure-and-delivery/README.md",
+      "purpose": "README for package 05-platform-infrastructure-and-delivery.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/standards/acceptance-gates-shared.md"
+      ],
+      "layer": "package",
+      "path": "05-platform-infrastructure-and-delivery/acceptance-gates.md",
+      "purpose": "Acceptance gates and freeze gate for 05-platform-infrastructure-and-delivery.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/chat_prompt_codex_only.md"
+      ],
+      "layer": "package",
+      "path": "05-platform-infrastructure-and-delivery/chat_prompt_codex_only.md",
+      "purpose": "Package-specific bounded prompt for 05-platform-infrastructure-and-delivery.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/standards/acceptance-gates-shared.md"
+      ],
+      "layer": "package",
+      "path": "05-platform-infrastructure-and-delivery/deliverables-manifest.md",
+      "purpose": "Deliverables inventory and quality bar for 05-platform-infrastructure-and-delivery.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core",
+        "03-service-contracts-and-orchestration",
+        "00-governance-core/docs/contracts/dependency_contract_rules.md"
+      ],
+      "layer": "package",
+      "path": "05-platform-infrastructure-and-delivery/dependency-contracts.md",
+      "purpose": "Dependency declaration and consumption rules for 05-platform-infrastructure-and-delivery.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "05-platform-infrastructure-and-delivery/deliverables-manifest.md"
+      ],
+      "layer": "package",
+      "path": "05-platform-infrastructure-and-delivery/docs/seed-index.md",
+      "purpose": "Suggested first documents and first freeze target for 05-platform-infrastructure-and-delivery.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/parallelism/merge-and-handoff-protocol.md"
+      ],
+      "layer": "package",
+      "path": "05-platform-infrastructure-and-delivery/handoff-format.md",
+      "purpose": "Handoff metadata requirements for 05-platform-infrastructure-and-delivery.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/standards/paths-and-boundaries.md"
+      ],
+      "layer": "package",
+      "path": "05-platform-infrastructure-and-delivery/non-goals.md",
+      "purpose": "Explicit non-goals for 05-platform-infrastructure-and-delivery.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/parallelism/path-ownership-matrix.yaml",
+        "00-governance-core",
+        "03-service-contracts-and-orchestration"
+      ],
+      "layer": "package",
+      "path": "05-platform-infrastructure-and-delivery/scope-and-boundaries.md",
+      "purpose": "Scope, out-of-scope limits, and write/read rules for 05-platform-infrastructure-and-delivery.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core",
+        "01-identity-access-and-trust",
+        "02-domain-data-and-persistence",
+        "03-service-contracts-and-orchestration",
+        "04-experience-clients-and-interactions",
+        "05-platform-infrastructure-and-delivery",
+        "00-governance-core/README.md"
+      ],
+      "layer": "package",
+      "path": "06-quality-release-and-operations/README.md",
+      "purpose": "README for package 06-quality-release-and-operations.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/standards/acceptance-gates-shared.md"
+      ],
+      "layer": "package",
+      "path": "06-quality-release-and-operations/acceptance-gates.md",
+      "purpose": "Acceptance gates and freeze gate for 06-quality-release-and-operations.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/chat_prompt_codex_only.md"
+      ],
+      "layer": "package",
+      "path": "06-quality-release-and-operations/chat_prompt_codex_only.md",
+      "purpose": "Package-specific bounded prompt for 06-quality-release-and-operations.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/standards/acceptance-gates-shared.md"
+      ],
+      "layer": "package",
+      "path": "06-quality-release-and-operations/deliverables-manifest.md",
+      "purpose": "Deliverables inventory and quality bar for 06-quality-release-and-operations.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core",
+        "01-identity-access-and-trust",
+        "02-domain-data-and-persistence",
+        "03-service-contracts-and-orchestration",
+        "04-experience-clients-and-interactions",
+        "05-platform-infrastructure-and-delivery",
+        "00-governance-core/docs/contracts/dependency_contract_rules.md"
+      ],
+      "layer": "package",
+      "path": "06-quality-release-and-operations/dependency-contracts.md",
+      "purpose": "Dependency declaration and consumption rules for 06-quality-release-and-operations.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "06-quality-release-and-operations/deliverables-manifest.md"
+      ],
+      "layer": "package",
+      "path": "06-quality-release-and-operations/docs/seed-index.md",
+      "purpose": "Suggested first documents and first freeze target for 06-quality-release-and-operations.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/parallelism/merge-and-handoff-protocol.md"
+      ],
+      "layer": "package",
+      "path": "06-quality-release-and-operations/handoff-format.md",
+      "purpose": "Handoff metadata requirements for 06-quality-release-and-operations.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/standards/paths-and-boundaries.md"
+      ],
+      "layer": "package",
+      "path": "06-quality-release-and-operations/non-goals.md",
+      "purpose": "Explicit non-goals for 06-quality-release-and-operations.",
+      "scope": "per-package"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/parallelism/path-ownership-matrix.yaml",
+        "00-governance-core",
+        "01-identity-access-and-trust",
+        "02-domain-data-and-persistence",
+        "03-service-contracts-and-orchestration",
+        "04-experience-clients-and-interactions",
+        "05-platform-infrastructure-and-delivery"
+      ],
+      "layer": "package",
+      "path": "06-quality-release-and-operations/scope-and-boundaries.md",
+      "purpose": "Scope, out-of-scope limits, and write/read rules for 06-quality-release-and-operations.",
+      "scope": "per-package"
+    },
+    {
+      "class": "reference",
+      "deps": [
+        "parallel_manifest.json",
+        "00-governance-core/docs/parallelism/package_topology_rationale.md"
+      ],
+      "layer": "analysis",
+      "path": "COMPARATIVE_DIAGNOSTIC.md",
+      "purpose": "Rigorous comparison of Zip A and Zip B, including preserved strengths, extracted tactics, and design decisions.",
+      "scope": "global"
+    },
+    {
+      "class": "reference",
+      "deps": [
+        "COMPARATIVE_DIAGNOSTIC.md",
+        "parallel_manifest.json",
+        "00-governance-core/README.md"
+      ],
+      "layer": "analysis",
+      "path": "FINAL_FRAMEWORK_DESIGN.md",
+      "purpose": "Detailed structural design of the final unified framework, including tree, layering, topology, and classification rules.",
+      "scope": "global"
+    },
+    {
+      "class": "reference",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "analysis",
+      "path": "GOVERNANCE_CORE_EXPANSION.md",
+      "purpose": "Guide to the expanded governance core and where each constitutional capability lives in the bundle.",
+      "scope": "global"
+    },
+    {
+      "class": "reference",
+      "deps": [
+        "framework_manifest.json"
+      ],
+      "layer": "analysis",
+      "path": "MASTER_INDEX.md",
+      "purpose": "Master file catalog with scope, layer, purpose, and dependencies for the full outer bundle.",
+      "scope": "global"
+    },
+    {
+      "class": "reference",
+      "deps": [
+        "COMPARATIVE_DIAGNOSTIC.md"
+      ],
+      "layer": "analysis",
+      "path": "OVERRIDE_LEDGER.md",
+      "purpose": "Explicit record of the major generalizations and overrides applied during unification.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "STARTER_INDEX.md",
+        "parallel_manifest.json",
+        "00-governance-core/README.md"
+      ],
+      "layer": "starter",
+      "path": "README.md",
+      "purpose": "Primary human-facing overview of the framework, its layers, and how to start a new governed execution effort.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "README.md",
+        "00-governance-core/docs/control/project_bootstrap_checklist.md"
+      ],
+      "layer": "starter",
+      "path": "STARTER_INDEX.md",
+      "purpose": "Quick-start index for bootstrapping a new project from the starter kit.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "parallel_manifest.json"
+      ],
+      "layer": "starter",
+      "path": "STARTER_MANIFEST.json",
+      "purpose": "Machine-readable manifest for the nested starter zip.",
+      "scope": "global"
+    },
+    {
+      "class": "reference",
+      "deps": [
+        "docs/parallel_execution/README.md",
+        "tools/execution_framework/smoke_framework_checks.py"
+      ],
+      "layer": "analysis",
+      "path": "TACTICAL_EXECUTION_SUBSYSTEM.md",
+      "purpose": "Guide to the tactical parallel execution subsystem, its documents, schemas, prompts, and tools.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/parallelism/path-ownership-matrix.yaml"
+      ],
+      "layer": "tactical",
+      "path": "configs/execution_framework/path_policies.json",
+      "purpose": "Default active path policies. Replace these with real runtime paths during homologation.",
+      "scope": "per-project"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "README.md"
+      ],
+      "layer": "tactical",
+      "path": "configs/execution_framework/repo_target_layout.json",
+      "purpose": "Minimal directory layout the framework expects to exist.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "configs/execution_framework/system_config.json",
+      "purpose": "Active tactical subsystem configuration used by the tools.",
+      "scope": "global"
+    },
+    {
+      "class": "tactical",
+      "deps": [
+        "00-governance-core/README.md",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "docs/parallel_execution/00_architecture_overview.md",
+      "purpose": "00 architecture overview",
+      "scope": "global"
+    },
+    {
+      "class": "tactical",
+      "deps": [
+        "00-governance-core/README.md",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "docs/parallel_execution/01_operating_model.md",
+      "purpose": "01 operating model",
+      "scope": "global"
+    },
+    {
+      "class": "tactical",
+      "deps": [
+        "00-governance-core/README.md",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "docs/parallel_execution/02_round_protocol.md",
+      "purpose": "02 round protocol",
+      "scope": "global"
+    },
+    {
+      "class": "tactical",
+      "deps": [
+        "00-governance-core/README.md",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "docs/parallel_execution/03_work_packet_model.md",
+      "purpose": "03 work packet model",
+      "scope": "global"
+    },
+    {
+      "class": "tactical",
+      "deps": [
+        "00-governance-core/README.md",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "docs/parallel_execution/04_ownership_map_model.md",
+      "purpose": "04 ownership map model",
+      "scope": "global"
+    },
+    {
+      "class": "tactical",
+      "deps": [
+        "00-governance-core/README.md",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "docs/parallel_execution/05_acceptance_rubric.md",
+      "purpose": "05 acceptance rubric",
+      "scope": "global"
+    },
+    {
+      "class": "tactical",
+      "deps": [
+        "00-governance-core/README.md",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "docs/parallel_execution/06_bundle_contract.md",
+      "purpose": "06 bundle contract",
+      "scope": "global"
+    },
+    {
+      "class": "tactical",
+      "deps": [
+        "00-governance-core/README.md",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "docs/parallel_execution/07_failure_retry_playbook.md",
+      "purpose": "07 failure retry playbook",
+      "scope": "global"
+    },
+    {
+      "class": "tactical",
+      "deps": [
+        "00-governance-core/README.md",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "docs/parallel_execution/08_naming_conventions.md",
+      "purpose": "08 naming conventions",
+      "scope": "global"
+    },
+    {
+      "class": "tactical",
+      "deps": [
+        "00-governance-core/README.md",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "docs/parallel_execution/09_operator_handoff.md",
+      "purpose": "09 operator handoff",
+      "scope": "global"
+    },
+    {
+      "class": "tactical",
+      "deps": [
+        "00-governance-core/README.md",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "docs/parallel_execution/10_chat_operator_playbook.md",
+      "purpose": "10 chat operator playbook",
+      "scope": "global"
+    },
+    {
+      "class": "tactical",
+      "deps": [
+        "00-governance-core/README.md",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "docs/parallel_execution/11_run_round_01.md",
+      "purpose": "11 run round 01",
+      "scope": "global"
+    },
+    {
+      "class": "tactical",
+      "deps": [
+        "00-governance-core/README.md",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "docs/parallel_execution/12_run_round_n.md",
+      "purpose": "12 run round n",
+      "scope": "global"
+    },
+    {
+      "class": "tactical",
+      "deps": [
+        "00-governance-core/README.md",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "docs/parallel_execution/13_integration_readiness.md",
+      "purpose": "13 integration readiness",
+      "scope": "global"
+    },
+    {
+      "class": "tactical",
+      "deps": [
+        "00-governance-core/README.md",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "docs/parallel_execution/14_prompt_choreography.md",
+      "purpose": "14 prompt choreography",
+      "scope": "global"
+    },
+    {
+      "class": "tactical",
+      "deps": [
+        "00-governance-core/README.md",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "docs/parallel_execution/15_repo_shape_profiles.md",
+      "purpose": "15 repo shape profiles",
+      "scope": "global"
+    },
+    {
+      "class": "tactical",
+      "deps": [
+        "00-governance-core/README.md",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "docs/parallel_execution/README.md",
+      "purpose": "README",
+      "scope": "global"
+    },
+    {
+      "class": "optional-reference",
+      "deps": [
+        "00-governance-core/docs/control/canonical_source_rules.md"
+      ],
+      "layer": "examples",
+      "path": "examples/execution_framework/README.md",
+      "purpose": "Optional reference examples for operators adopting the framework.",
+      "scope": "example"
+    },
+    {
+      "class": "optional-reference",
+      "deps": [
+        "examples/execution_framework/README.md"
+      ],
+      "layer": "examples",
+      "path": "examples/execution_framework/example_project_saas_portal/README.md",
+      "purpose": "Example project showing one possible application of the universal framework.",
+      "scope": "example"
+    },
+    {
+      "class": "optional-reference",
+      "deps": [
+        "configs/execution_framework/path_policies.json"
+      ],
+      "layer": "examples",
+      "path": "examples/execution_framework/example_project_saas_portal/path_policies.sample.json",
+      "purpose": "Sample runtime path policy mapping for a SaaS portal reference project.",
+      "scope": "example"
+    },
+    {
+      "class": "optional-reference",
+      "deps": [
+        "templates/execution_framework/project/project_manifest.template.json"
+      ],
+      "layer": "examples",
+      "path": "examples/execution_framework/example_project_saas_portal/project_manifest.sample.json",
+      "purpose": "Sample project manifest for a SaaS portal reference project.",
+      "scope": "example"
+    },
+    {
+      "class": "optional-reference",
+      "deps": [
+        "schemas/execution_framework/acceptance_result.schema.json"
+      ],
+      "layer": "examples",
+      "path": "examples/execution_framework/example_project_saas_portal/sample_acceptance_report.json",
+      "purpose": "Sample acceptance report for the reference project.",
+      "scope": "example"
+    },
+    {
+      "class": "optional-reference",
+      "deps": [
+        "examples/execution_framework/example_project_saas_portal/sample_bundle_unzipped/bundle_manifest.json"
+      ],
+      "layer": "examples",
+      "path": "examples/execution_framework/example_project_saas_portal/sample_bundle.zip",
+      "purpose": "Sample worker bundle zip for the reference project.",
+      "scope": "example"
+    },
+    {
+      "class": "optional-reference",
+      "deps": [
+        "schemas/execution_framework/bundle_manifest.schema.json"
+      ],
+      "layer": "examples",
+      "path": "examples/execution_framework/example_project_saas_portal/sample_bundle_unzipped/bundle_manifest.json",
+      "purpose": "Bundle manifest inside the unzipped sample bundle.",
+      "scope": "example"
+    },
+    {
+      "class": "optional-reference",
+      "deps": [
+        "examples/execution_framework/example_project_saas_portal/sample_bundle_unzipped/bundle_manifest.json"
+      ],
+      "layer": "examples",
+      "path": "examples/execution_framework/example_project_saas_portal/sample_bundle_unzipped/notes/summary.md",
+      "purpose": "Human summary inside the unzipped sample bundle.",
+      "scope": "example"
+    },
+    {
+      "class": "optional-reference",
+      "deps": [
+        "schemas/execution_framework/package_report.schema.json"
+      ],
+      "layer": "examples",
+      "path": "examples/execution_framework/example_project_saas_portal/sample_bundle_unzipped/package_report.json",
+      "purpose": "Package report inside the unzipped sample bundle.",
+      "scope": "example"
+    },
+    {
+      "class": "optional-reference",
+      "deps": [
+        "examples/execution_framework/example_project_saas_portal/sample_bundle.zip"
+      ],
+      "layer": "examples",
+      "path": "examples/execution_framework/example_project_saas_portal/sample_bundle_unzipped/payload/services/api/contracts/customer_status.schema.json",
+      "purpose": "Payload file inside the unzipped sample bundle.",
+      "scope": "example"
+    },
+    {
+      "class": "optional-reference",
+      "deps": [
+        "examples/execution_framework/example_project_saas_portal/sample_acceptance_report.json"
+      ],
+      "layer": "examples",
+      "path": "examples/execution_framework/example_project_saas_portal/sample_integration_ready_summary.md",
+      "purpose": "Sample integration readiness summary for the reference project.",
+      "scope": "example"
+    },
+    {
+      "class": "optional-reference",
+      "deps": [
+        "templates/execution_framework/run/work_packet.template.json"
+      ],
+      "layer": "examples",
+      "path": "examples/execution_framework/example_project_saas_portal/sample_work_packet.json",
+      "purpose": "Sample work packet for the service package in the reference project.",
+      "scope": "example"
+    },
+    {
+      "class": "reference",
+      "deps": [
+        "STARTER_MANIFEST.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "analysis",
+      "path": "framework_manifest.json",
+      "purpose": "Machine-readable manifest for the final outer framework bundle.",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "parallel_manifest.json",
+        "parallel_launch_order.md"
+      ],
+      "layer": "constitution",
+      "path": "master_chat_routing.md",
+      "purpose": "Default chat routing for the 1 governance + 6 parallel package chat model.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/run_id_standard.md"
+      ],
+      "layer": "tactical",
+      "path": "ops/runs/README.md",
+      "purpose": "Operational location and conventions for real runs.",
+      "scope": "per-run"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "parallel_manifest.json",
+        "00-governance-core/docs/control/run_lifecycle.md"
+      ],
+      "layer": "constitution",
+      "path": "parallel_launch_order.md",
+      "purpose": "Recommended sequence for opening chats, freezing rules, and running rounds under the default 1+6 model.",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "parallel_manifest.json",
+      "purpose": "Default six-package topology and dependency manifest used by the framework and the tactical tooling.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "docs/parallel_execution/14_prompt_choreography.md"
+      ],
+      "layer": "tactical",
+      "path": "prompts/execution_framework/end_of_round_integration_prompt.md",
+      "purpose": "Prompt template for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "docs/parallel_execution/14_prompt_choreography.md"
+      ],
+      "layer": "tactical",
+      "path": "prompts/execution_framework/mission_control_prompt.md",
+      "purpose": "Prompt template for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "docs/parallel_execution/14_prompt_choreography.md"
+      ],
+      "layer": "tactical",
+      "path": "prompts/execution_framework/package_worker_prompt.md",
+      "purpose": "Prompt template for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "docs/parallel_execution/14_prompt_choreography.md"
+      ],
+      "layer": "tactical",
+      "path": "prompts/execution_framework/retry_prompt.md",
+      "purpose": "Prompt template for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "docs/parallel_execution/06_bundle_contract.md"
+      ],
+      "layer": "tactical",
+      "path": "schemas/execution_framework/acceptance_result.schema.json",
+      "purpose": "Lightweight schema definition for tactical manifests and reports.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "docs/parallel_execution/06_bundle_contract.md"
+      ],
+      "layer": "tactical",
+      "path": "schemas/execution_framework/bundle_manifest.schema.json",
+      "purpose": "Lightweight schema definition for tactical manifests and reports.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "docs/parallel_execution/06_bundle_contract.md"
+      ],
+      "layer": "tactical",
+      "path": "schemas/execution_framework/package_report.schema.json",
+      "purpose": "Lightweight schema definition for tactical manifests and reports.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "docs/parallel_execution/06_bundle_contract.md"
+      ],
+      "layer": "tactical",
+      "path": "schemas/execution_framework/project_manifest.schema.json",
+      "purpose": "Lightweight schema definition for tactical manifests and reports.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "docs/parallel_execution/06_bundle_contract.md"
+      ],
+      "layer": "tactical",
+      "path": "schemas/execution_framework/round_manifest.schema.json",
+      "purpose": "Lightweight schema definition for tactical manifests and reports.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "docs/parallel_execution/06_bundle_contract.md"
+      ],
+      "layer": "tactical",
+      "path": "schemas/execution_framework/run_manifest.schema.json",
+      "purpose": "Lightweight schema definition for tactical manifests and reports.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "docs/parallel_execution/06_bundle_contract.md"
+      ],
+      "layer": "tactical",
+      "path": "schemas/execution_framework/work_packet.schema.json",
+      "purpose": "Lightweight schema definition for tactical manifests and reports.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/package/README.template.md",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/package/acceptance-gates.template.md",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/package/chat_prompt_codex_only.template.md",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/package/deliverables-manifest.template.md",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/package/dependency-contracts.template.md",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/package/handoff-format.template.md",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/package/non-goals.template.md",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/package/scope-and-boundaries.template.md",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/project/canonical_source_register.template.md",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/project/decision_log.template.md",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/project/homologation_record.template.md",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/project/idea_intake.template.md",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/project/project_manifest.template.json",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/run/bundle_manifest.template.json",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/run/integration_ready_summary.template.md",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/run/package_report.template.json",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/run/round_manifest.template.json",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/run/run_manifest.template.json",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/run/work_packet.template.json",
+      "purpose": "Reusable template for project, package, or run artifacts.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "tools/execution_framework/lib/common.py"
+      ],
+      "layer": "tactical",
+      "path": "tests/execution_framework/__init__.py",
+      "purpose": "Automated test for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "tools/execution_framework/lib/common.py"
+      ],
+      "layer": "tactical",
+      "path": "tests/execution_framework/test_acceptance_logic.py",
+      "purpose": "Automated test for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "tools/execution_framework/lib/common.py"
+      ],
+      "layer": "tactical",
+      "path": "tests/execution_framework/test_dependency_order.py",
+      "purpose": "Automated test for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "tools/execution_framework/lib/common.py"
+      ],
+      "layer": "tactical",
+      "path": "tests/execution_framework/test_deterministic_zip.py",
+      "purpose": "Automated test for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "tools/execution_framework/lib/common.py"
+      ],
+      "layer": "tactical",
+      "path": "tests/execution_framework/test_manifest_validation.py",
+      "purpose": "Automated test for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "tools/execution_framework/lib/common.py"
+      ],
+      "layer": "tactical",
+      "path": "tests/execution_framework/test_ownership_enforcement.py",
+      "purpose": "Automated test for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "tools/execution_framework/lib/common.py"
+      ],
+      "layer": "tactical",
+      "path": "tests/execution_framework/test_zip_validation.py",
+      "purpose": "Automated test for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/__init__.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/apply_validated_bundle.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/assemble_round_summary.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/build_integration_ready_summary.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/compute_overlap_report.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/dry_run_bundle.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/emit_acceptance_report.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/enforce_ownership.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/generate_prompt_packets.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/generate_work_packets.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/init_round.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/init_run.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/lib/__init__.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/lib/bundles.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/lib/common.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/lib/config.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/lib/reports.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/lib/rounds.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/lib/validators.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/package_round_artifacts.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/prepare_next_round_prompts.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/qa/README.md",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/smoke_framework_checks.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "configs/execution_framework/system_config.json",
+        "parallel_manifest.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/validate_worker_bundle.py",
+      "purpose": "Executable tooling or library support for the tactical subsystem.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "STARTER_MANIFEST.json",
+        "README.md"
+      ],
+      "layer": "starter",
+      "path": "universal_execution_starter_kit_v1.zip",
+      "purpose": "Nested self-contained reusable starter zip for bootstrapping future projects without the outer bundle.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "STARTER_INDEX.md",
+        "parallel_launch_order.md"
+      ],
+      "layer": "starter",
+      "path": "OPERATOR_ONE_PAGE_FLOW.md",
+      "purpose": "Fast operator path from install to first integrated round.",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/framework_readiness_gates.md",
+      "purpose": "Stage-based readiness gates from install through integration.",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/install_bootstrap_run_separation.md",
+      "purpose": "Explicit separation between framework install, project bootstrap, run execution, and round execution.",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/inter_chat_communication_policy.md",
+      "purpose": "Artifact-only communication policy for governance and worker chats.",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/waiver_and_exception_policy.md",
+      "purpose": "Controlled exception process for waivers, overrides, and emergency paths.",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/README.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/control/canonical_tree_hygiene.md",
+      "purpose": "Exclusion and hygiene rules for canonical tree docs and starter assets.",
+      "scope": "global"
+    },
+    {
+      "class": "constitutional",
+      "deps": [
+        "00-governance-core/docs/contracts/interface_freeze_protocol.md"
+      ],
+      "layer": "constitution",
+      "path": "00-governance-core/docs/contracts/contract_versioning_policy.md",
+      "purpose": "Semantic versioning and freeze-state handling for shared contracts.",
+      "scope": "global"
+    },
+    {
+      "class": "tactical",
+      "deps": [
+        "docs/parallel_execution/README.md"
+      ],
+      "layer": "tactical",
+      "path": "docs/parallel_execution/16_pilot_run_001_playbook.md",
+      "purpose": "Controlled pilot guidance for real run-001 usage.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/documentation_layering.md"
+      ],
+      "layer": "starter",
+      "path": "ops/projects/README.md",
+      "purpose": "Canonical location for homologated per-project baselines.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/contracts/contract_versioning_policy.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/project/contract_register.template.md",
+      "purpose": "Template for project-level contract tracking.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/waiver_and_exception_policy.md"
+      ],
+      "layer": "templates",
+      "path": "templates/execution_framework/run/waiver_record.template.md",
+      "purpose": "Template for run-scoped waiver records.",
+      "scope": "template"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/canonical_tree_hygiene.md"
+      ],
+      "layer": "tactical",
+      "path": "configs/execution_framework/canonical_tree_excludes.json",
+      "purpose": "Machine-readable exclusion list for canonical tree hygiene.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/framework_readiness_gates.md"
+      ],
+      "layer": "tactical",
+      "path": "schemas/execution_framework/readiness_report.schema.json",
+      "purpose": "Schema for readiness reports.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "00-governance-core/docs/control/waiver_and_exception_policy.md"
+      ],
+      "layer": "tactical",
+      "path": "schemas/execution_framework/waiver_record.schema.json",
+      "purpose": "Schema for waiver records.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "templates/execution_framework/project/project_manifest.template.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/init_project.py",
+      "purpose": "Initializes a homologated project baseline skeleton under ops/projects.",
+      "scope": "global"
+    },
+    {
+      "class": "starter-kit",
+      "deps": [
+        "tools/execution_framework/lib/readiness.py",
+        "configs/execution_framework/canonical_tree_excludes.json"
+      ],
+      "layer": "tactical",
+      "path": "tools/execution_framework/check_framework_readiness.py",
+      "purpose": "Checks install, bootstrap, run, round, acceptance, and integration readiness.",
+      "scope": "global"
+    }
+  ],
+  "framework_id": "universal_execution_framework_v1",
+  "generated_at_utc": "2026-03-27T12:56:05Z",
+  "patch_history": [
+    {
+      "applied_intent": "operator_hardening_for_real_run_001",
+      "mode": "additive_only",
+      "patch_id": "uef-additive-hardening-20260327-01",
+      "summary": [
+        "added project baseline root under ops/projects",
+        "added readiness gates and readiness checker",
+        "added communication, waiver, and contract versioning policies",
+        "added canonical tree hygiene support",
+        "added pilot playbook and one-page flow"
+      ]
+    }
+  ],
+  "reference_only_roots": [
+    "examples/execution_framework/",
+    "COMPARATIVE_DIAGNOSTIC.md",
+    "OVERRIDE_LEDGER.md",
+    "FINAL_FRAMEWORK_DESIGN.md",
+    "GOVERNANCE_CORE_EXPANSION.md",
+    "TACTICAL_EXECUTION_SUBSYSTEM.md",
+    "MASTER_INDEX.md"
+  ],
+  "starter_kit_roots": [
+    "README.md",
+    "OPERATOR_ONE_PAGE_FLOW.md",
+    "STARTER_INDEX.md",
+    "STARTER_MANIFEST.json",
+    "universal_execution_starter_kit_v1.zip",
+    "00-governance-core/",
+    "01-identity-access-and-trust/",
+    "02-domain-data-and-persistence/",
+    "03-service-contracts-and-orchestration/",
+    "04-experience-clients-and-interactions/",
+    "05-platform-infrastructure-and-delivery/",
+    "06-quality-release-and-operations/",
+    "docs/parallel_execution/",
+    "configs/execution_framework/",
+    "prompts/execution_framework/",
+    "schemas/execution_framework/",
+    "tools/execution_framework/",
+    "tests/execution_framework/",
+    "templates/execution_framework/",
+    "ops/runs/README.md",
+    "ops/projects/README.md"
+  ],
+  "tactical_roots": [
+    "docs/parallel_execution/",
+    "configs/execution_framework/",
+    "prompts/execution_framework/",
+    "schemas/execution_framework/",
+    "tools/execution_framework/",
+    "tests/execution_framework/"
+  ]
+}

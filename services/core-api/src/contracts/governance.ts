@@ -50,9 +50,10 @@ export interface GovernanceRunSummary {
   runId: string;
   runPath: string;
   hasRunManifest: boolean;
-  hasEWorkerBundle: boolean;
-  hasZIntegratorBundle: boolean;
+  hasLegacyAliasBundles: boolean;
+  hasZAggregatorBundle: boolean;
   bundleDirectories: string[];
+  legacyAliasBundles: string[];
 }
 
 export interface GovernanceRunsListResponse {

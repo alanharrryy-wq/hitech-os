@@ -1,0 +1,22 @@
+{
+  "product_id": "dummy_product",
+  "package_id": "forge.product.dummy_product",
+  "version": "0.1.0",
+  "owner": "forge_products_dummy",
+  "layer": "product",
+  "lifecycle_contracts": [
+    "forge.lifecycle.product.activate.v1",
+    "forge.lifecycle.product.suspend.v1",
+    "forge.lifecycle.package.dispose.v1"
+  ],
+  "host_contributions": [
+    "contrib.dummy_product.main_surface"
+  ],
+  "state_slices": [
+    "product.dummy.runtime"
+  ],
+  "compatibility": {
+    "kernel": ">=0.1.0,<1.0.0",
+    "commons": ">=0.1.0,<1.0.0"
+  }
+}

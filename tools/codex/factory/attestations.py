@@ -5,6 +5,9 @@ from typing import Iterable
 
 from .common import RUNS_DIR, stable_sha256_bytes
 
+INTEGRATOR_DIR = "Z_aggregator"
+LEGACY_INTEGRATOR_DIR = "Z_integrator"
+
 
 def _hash_file(path: Path) -> str:
     return stable_sha256_bytes(path.read_bytes())
@@ -56,7 +59,14 @@ def write_ledger_attestation(run_id: str, *, ledger_path: Path | None = None) ->
 
 def write_report_attestation(run_id: str, *, report_path: Path | None = None) -> Path:
     run_root = RUNS_DIR / run_id
-    actual_report = report_path or (run_root / "Z_integrator" / "FINAL_REPORT.txt")
+    if report_path is not None:
+        actual_report = report_path
+    else:
+        actual_report = run_root / INTEGRATOR_DIR / "FINAL_REPORT.txt"
+        if not actual_report.exists():
+            legacy_report = run_root / LEGACY_INTEGRATOR_DIR / "FINAL_REPORT.txt"
+            if legacy_report.exists():
+                actual_report = legacy_report
     entries: list[tuple[str, str]] = []
     if actual_report.exists():
         rel = actual_report.relative_to(run_root).as_posix()
@@ -74,4 +84,3 @@ def write_all_attestations(run_id: str, *, report_path: Path | None = None, ledg
         "ledger": ledger.as_posix(),
         "report": report.as_posix(),
     }
-

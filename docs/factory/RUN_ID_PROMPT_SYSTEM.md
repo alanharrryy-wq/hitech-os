@@ -1,4 +1,4 @@
-# RUN_ID Prompt ZIP System and 5-Codex Dispatcher
+# RUN_ID Prompt ZIP System and 7-Worker Dispatcher
 
 ## Purpose
 
@@ -20,6 +20,8 @@ The dispatcher always uses exactly these workers:
 - `C_features`
 - `D_validation`
 - `Z_aggregator`
+- `R_reviewer`
+- `E_planner`
 
 ## Path Contract
 
@@ -39,11 +41,24 @@ The dispatcher always uses exactly these workers:
 - `C_features_<RUN_ID>.txt`
 - `D_validation_<RUN_ID>.txt`
 - `Z_aggregator_<RUN_ID>.txt`
+- `R_reviewer_<RUN_ID>.txt`
+- `E_planner_<RUN_ID>.txt`
 
 Each prompt file must include near the top:
 
 - `RUN_ID: <RUN_ID>`
 - `CODEX_ID: <WORKER>`
+- `SESSION_POLICY: CLEAN_START_REQUIRED`
+- `AUTO_REPORT_REQUIRED: true`
+
+`C_features` prompt must include:
+
+- `VISUAL_BASELINE_OWNER: true`
+
+`Z_aggregator` prompt must include:
+
+- `LEDGER_WATCH_REQUIRED: true`
+- `START_WORK_AFTER_WORKERS_DONE: true`
 
 Each prompt file must instruct completion marker creation:
 
@@ -64,19 +79,27 @@ powershell -ExecutionPolicy Bypass -File tools/codex/dispatch/run_iter.ps1 -RunI
 2. Confirm `tools/codex/prompt_zips/<RUN_ID>.zip` exists.
 3. Extract zip into `tools/codex/prompts/<RUN_ID>/` if prompt folder was not already present.
 4. Validate prompt shape and prompt content contracts.
-5. Run `python -m tools.codex.factory launch --run-id <RUN_ID> --workers A_core,B_tooling,C_features,D_validation,Z_aggregator`
+5. Run `python -m tools.codex.factory launch --run-id <RUN_ID> --workers A_core,B_tooling,C_features,D_validation,Z_aggregator,R_reviewer,E_planner`
 6. Run `python -m tools.codex.factory worktrees open --run-id <RUN_ID> --workers ...`
 7. Ensure AutoHotkey exists (attempt winget install if needed).
 8. Dispatch prompts by UI automation to window titles:
+   - execution phase first: A/B/C/D then Z_aggregator
+   - post-run phase next: R_reviewer then E_planner
    - `HITECHOS_A_core_<RUN_ID>`
    - `HITECHOS_B_tooling_<RUN_ID>`
    - `HITECHOS_C_features_<RUN_ID>`
    - `HITECHOS_D_validation_<RUN_ID>`
    - `HITECHOS_Z_aggregator_<RUN_ID>`
-9. Wait for all 5 `DONE.marker` files.
-10. Run `python -m tools.codex.factory bundle-validate --run-id <RUN_ID> --workers ...`
-11. Run `python -m tools.codex.factory integrate --run-id <RUN_ID> --workers ...`
-12. Write `tools/codex/prompts/<RUN_ID>/logs/DISPATCH_REPORT.md`
+   - `HITECHOS_R_reviewer_<RUN_ID>`
+   - `HITECHOS_E_planner_<RUN_ID>`
+9. Wait for pre-integration workers (`A/B/C/D`) `DONE.marker` files.
+10. Run `python -m tools.codex.factory watch --run-id <RUN_ID>` (ledger/watch visibility for Z).
+11. Wait for `Z_aggregator` `DONE.marker` and integrate execution bundles.
+12. Run post-run synthesis (`task_bank_refresh --emit-post-run-artifacts`) and dispatch `R_reviewer`/`E_planner`.
+13. Wait for `R_reviewer` and `E_planner` `DONE.marker`.
+14. Run `python -m tools.codex.factory auto-closeout --run-id <RUN_ID> --workers ...`.
+15. Run `python -m tools.codex.factory bundle-validate --run-id <RUN_ID> --workers ...`.
+16. Write `tools/codex/prompts/<RUN_ID>/logs/DISPATCH_REPORT.md`.
 
 ## Configuration
 

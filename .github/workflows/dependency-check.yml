@@ -1,0 +1,89 @@
+name: Dependency Check
+
+on:
+  pull_request:
+    paths:
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "apps/**/package.json"
+      - "services/**/package.json"
+      - "packages/**/package.json"
+      - "tools/**/package.json"
+      - "policies/dependencies.json"
+      - "tools/scripts/validate_dependencies_policy.mjs"
+      - "tools/scripts/check_dependency_hygiene.mjs"
+      - "tools/scripts/validate_workspace_boundaries.mjs"
+      - "tools/scripts/check_no_new_cycles.mjs"
+      - "tools/scripts/report_repo_hygiene.mjs"
+      - ".github/workflows/dependency-check.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "apps/**/package.json"
+      - "services/**/package.json"
+      - "packages/**/package.json"
+      - "tools/**/package.json"
+      - "policies/dependencies.json"
+      - "tools/scripts/validate_dependencies_policy.mjs"
+      - "tools/scripts/check_dependency_hygiene.mjs"
+      - "tools/scripts/validate_workspace_boundaries.mjs"
+      - "tools/scripts/check_no_new_cycles.mjs"
+      - "tools/scripts/report_repo_hygiene.mjs"
+      - ".github/workflows/dependency-check.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  deps:
+    runs-on: ubuntu-latest
+    env:
+      REPORT_DIR: tools/_local/reports/ci
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Dependency guardrails
+        run: |
+          mkdir -p "${REPORT_DIR}"
+          node tools/scripts/validate_dependencies_policy.mjs \
+            --strict \
+            --output "${REPORT_DIR}/dependencies_policy_validation.dependency_check.json"
+          node tools/scripts/validate_workspace_boundaries.mjs \
+            --output "${REPORT_DIR}/workspace_boundaries.dependency_check.json"
+          node tools/scripts/check_dependency_hygiene.mjs \
+            --output "${REPORT_DIR}/dependency_hygiene.dependency_check.json"
+          node tools/scripts/check_no_new_cycles.mjs \
+            --strict \
+            --output "${REPORT_DIR}/dependency_cycles.dependency_check.json"
+          node tools/scripts/report_repo_hygiene.mjs \
+            --output "${REPORT_DIR}/repo_hygiene.dependency_check.json"
+
+      - name: Upload dependency reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-check-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          path: |
+            tools/_local/reports/ci/dependencies_policy_validation.dependency_check.json
+            tools/_local/reports/ci/workspace_boundaries.dependency_check.json
+            tools/_local/reports/ci/dependency_hygiene.dependency_check.json
+            tools/_local/reports/ci/dependency_cycles.dependency_check.json
+            tools/_local/reports/ci/repo_hygiene.dependency_check.json

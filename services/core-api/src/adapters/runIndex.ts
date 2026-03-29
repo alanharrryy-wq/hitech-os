@@ -22,6 +22,47 @@ const NODE_FS: RunIndexFs = {
   readFile
 };
 
+const LEGACY_WORKER_ALIAS_TO_CANONICAL = Object.freeze({
+  A_worker: "A_core",
+  B_worker: "B_tooling",
+  C_worker: "C_features",
+  D_worker: "D_validation",
+  R_worker: "R_reviewer",
+  E_worker: "E_planner",
+  Z_integrator: "Z_aggregator"
+} as const);
+
+const CANONICAL_BUNDLE_DIRECTORIES = Object.freeze([
+  "A_core",
+  "B_tooling",
+  "C_features",
+  "D_validation",
+  "Z_aggregator",
+  "R_reviewer",
+  "E_planner"
+] as const);
+
+const LEGACY_BUNDLE_ALIAS_SET = new Set<string>(
+  Object.keys(LEGACY_WORKER_ALIAS_TO_CANONICAL)
+);
+const CANONICAL_BUNDLE_SET = new Set<string>(CANONICAL_BUNDLE_DIRECTORIES);
+
+function canonicalizeBundleDirectory(name: string): string {
+  return (
+    LEGACY_WORKER_ALIAS_TO_CANONICAL[
+      name as keyof typeof LEGACY_WORKER_ALIAS_TO_CANONICAL
+    ] ?? name
+  );
+}
+
+function isKnownBundleDirectory(name: string): boolean {
+  return (
+    CANONICAL_BUNDLE_SET.has(name) ||
+    LEGACY_BUNDLE_ALIAS_SET.has(name) ||
+    name.endsWith("_worker")
+  );
+}
+
 export interface RunIndexOptions {
   runsRoot: string;
   latestRunIdPath: string;
@@ -148,19 +189,25 @@ export class RunIndex {
     const hasRunManifest = entries.some(
       (entry) => entry.isFile() && entry.name === "RUN_MANIFEST.json"
     );
-    const bundleDirectories = entries
+    const bundleDirectoriesRaw = entries
       .filter((entry) => entry.isDirectory())
       .map((entry) => entry.name)
-      .filter((name) => name.endsWith("_worker") || name === "Z_integrator")
+      .filter((name) => isKnownBundleDirectory(name))
+      .sort((left, right) => left.localeCompare(right));
+    const bundleDirectories = [...new Set(bundleDirectoriesRaw.map(canonicalizeBundleDirectory))]
+      .sort((left, right) => left.localeCompare(right));
+    const legacyAliasBundles = bundleDirectoriesRaw
+      .filter((name) => LEGACY_BUNDLE_ALIAS_SET.has(name))
       .sort((left, right) => left.localeCompare(right));
 
     return {
       runId,
       runPath: toPosixPath(runPath),
       hasRunManifest,
-      hasEWorkerBundle: bundleDirectories.includes("E_worker"),
-      hasZIntegratorBundle: bundleDirectories.includes("Z_integrator"),
-      bundleDirectories
+      hasLegacyAliasBundles: legacyAliasBundles.length > 0,
+      hasZAggregatorBundle: bundleDirectories.includes("Z_aggregator"),
+      bundleDirectories,
+      legacyAliasBundles
     };
   }
 

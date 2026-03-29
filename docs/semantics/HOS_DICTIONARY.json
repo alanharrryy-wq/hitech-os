@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "system": "HITECH_OS",
+
+  "entities": {
+
+    "RUN_ID": {
+      "type": "string",
+      "description": "Unique execution identifier for a factory run"
+    },
+
+    "WORKER": {
+      "type": "enum",
+      "values": [
+        "A_core",
+        "B_tooling",
+        "C_features",
+        "D_validation",
+        "Z_aggregator"
+      ]
+    },
+
+    "SANCTION_LEVEL": {
+      "type": "enum",
+      "values": ["OK","WARN","FAIL"]
+    },
+
+    "SANCTION_SCORE": {
+      "type": "number",
+      "range": [0,1]
+    }
+
+  }
+}

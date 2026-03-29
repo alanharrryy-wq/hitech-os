@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import type { HTMLAttributes, PropsWithChildren } from "react";
 import { cn } from "../../lib/cn.js";
@@ -37,6 +38,8 @@ export interface StageProps
       | "motion.enabled"
     >
   >;
+  readonly className?: string;
+  readonly children?: React.ReactNode;
 }
 
 function onOff(value: boolean): "on" | "off" {

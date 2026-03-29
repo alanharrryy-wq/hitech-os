@@ -1,0 +1,72 @@
+:where([data-ui-motion-root]) {
+  --ui-motion-duration-micro: 120ms;
+  --ui-motion-duration-base: 220ms;
+  --ui-motion-duration-hero: 380ms;
+  --ui-motion-ease-premium: cubic-bezier(0.16, 0.84, 0.24, 1);
+  --ui-motion-ease-standard: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ui-motion-ease-sweep: cubic-bezier(0.2, 0.95, 0.3, 1);
+  --ui-motion-hover-distance: 2px;
+  --ui-motion-enter-distance: 8px;
+  --ui-motion-hero-travel: 120%;
+  --ui-motion-skeleton-travel: 160%;
+}
+
+:where([data-ui-motion-root][data-ui-perf-profile="perf"]) {
+  --ui-motion-duration-micro: 90ms;
+  --ui-motion-duration-base: 160ms;
+  --ui-motion-duration-hero: 240ms;
+  --ui-motion-hover-distance: 1px;
+  --ui-motion-enter-distance: 4px;
+}
+
+:where([data-ui-motion-root][data-ui-motion="reduced"]) {
+  --ui-motion-duration-micro: 0ms;
+  --ui-motion-duration-base: 0ms;
+  --ui-motion-duration-hero: 0ms;
+  --ui-motion-hover-distance: 0px;
+  --ui-motion-enter-distance: 0px;
+  --ui-motion-hero-travel: 0%;
+  --ui-motion-skeleton-travel: 0%;
+}
+
+@keyframes ui-motion-sheen-micro {
+  from {
+    background-position: 180% 50%;
+    opacity: 0.88;
+  }
+  to {
+    background-position: -20% 50%;
+    opacity: 1;
+  }
+}
+
+@keyframes ui-motion-enter-fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, var(--ui-motion-enter-distance), 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes ui-motion-hero-sweep {
+  from {
+    background-position: var(--ui-motion-hero-travel) 0;
+    opacity: 0.86;
+  }
+  to {
+    background-position: calc(var(--ui-motion-hero-travel) * -1) 0;
+    opacity: 1;
+  }
+}
+
+@keyframes ui-motion-skeleton-shimmer {
+  from {
+    background-position: var(--ui-motion-skeleton-travel) 0;
+  }
+  to {
+    background-position: calc(var(--ui-motion-skeleton-travel) * -1) 0;
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "repo": "F:\\repos\\hitech-os",
+  "status": "pass",
+  "start_time": "2026-03-04T07:32:27Z",
+  "end_time": "2026-03-04T07:32:28Z",
+  "new_docs": [
+    "docs/architecture"
+  ],
+  "all_docs_count": 245,
+  "new_docs_count": 1,
+  "violations": [],
+  "warnings": [],
+  "tool_warnings": [],
+  "rules": {
+    "allowed_doc_locations": [
+      "docs/",
+      "docs/adr/",
+      "docs/runbooks/",
+      "docs/playbooks/",
+      "docs/security/",
+      "docs/architecture/",
+      "docs/releases/",
+      "docs/_generated/<RUN_ID>/"
+    ],
+    "allowed_root_docs": [
+      "CHANGELOG.md",
+      "CLA.md",
+      "CONTRIBUTING.md",
+      "LICENSE",
+      "NOTICE",
+      "README.md",
+      "SECURITY.md"
+    ],
+    "allowed_docs_top_level_dirs": [
+      "_generated",
+      "adr",
+      "architecture",
+      "playbooks",
+      "releases",
+      "runbooks",
+      "security"
+    ],
+    "non_doc_zones": [
+      "_attic"
+    ],
+    "disallowed_dirs": [
+      "design_docs",
+      "docs2",
+      "documentation",
+      "notes",
+      "random_docs",
+      "wiki"
+    ],
+    "similarity_warn_threshold": 70.0,
+    "docs_max_depth": 5,
+    "max_new_docs": 50
+  }
+}

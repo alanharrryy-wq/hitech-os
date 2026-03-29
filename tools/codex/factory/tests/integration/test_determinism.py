@@ -16,10 +16,10 @@ from factory.tests.test_support import isolated_factory_env, make_change, write_
 
 class DeterminismIntegrationTests(unittest.TestCase):
     def _seed(self, run_id: str) -> None:
-        write_worker_bundle(run_id=run_id, worker="A_worker", changes=[make_change("apps/determinism/a.ts", sha256="a")])
-        write_worker_bundle(run_id=run_id, worker="B_worker", changes=[make_change("apps/determinism/b.ts", sha256="b")])
-        write_worker_bundle(run_id=run_id, worker="C_worker", changes=[make_change("tools/determinism/c.py", sha256="c")])
-        write_worker_bundle(run_id=run_id, worker="D_worker", changes=[make_change("docs/determinism/d.md", sha256="d")])
+        write_worker_bundle(run_id=run_id, worker="A_core", changes=[make_change("apps/determinism/a.ts", sha256="a")])
+        write_worker_bundle(run_id=run_id, worker="B_tooling", changes=[make_change("apps/determinism/b.ts", sha256="b")])
+        write_worker_bundle(run_id=run_id, worker="C_features", changes=[make_change("tools/determinism/c.py", sha256="c")])
+        write_worker_bundle(run_id=run_id, worker="D_validation", changes=[make_change("docs/determinism/d.md", sha256="d")])
         contracts.scaffold_integrator_bundle(run_id)
 
     def test_same_fixture_twice_yields_same_normalized_report(self) -> None:
@@ -52,4 +52,5 @@ class DeterminismIntegrationTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
 

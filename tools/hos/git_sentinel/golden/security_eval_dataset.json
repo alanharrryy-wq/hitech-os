@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "runtime_openai_key",
+      "path": "apps/service/runtime_config.py",
+      "content": "from os import getenv\nAPI_KEY = \"sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\nprint(getenv('X'))\n",
+      "expected": [
+        {
+          "kind": "openai_key",
+          "line": 2
+        },
+        {
+          "kind": "generic_api_key",
+          "line": 2
+        }
+      ]
+    },
+    {
+      "id": "docs_example_low_confidence",
+      "path": "docs/security/examples.md",
+      "content": "# Example\nconst apiKey = 'sk_live_abc123';\n",
+      "expected": [
+        {
+          "kind": "generic_api_key",
+          "line": 2
+        }
+      ]
+    },
+    {
+      "id": "dangerous_script_detected",
+      "path": "tools/scripts/cleanup.ps1",
+      "content": "Write-Host \"cleanup\"\ngit reset --hard\n",
+      "expected": [
+        {
+          "kind": "dangerous_script:destructive_git_reset",
+          "line": 2
+        }
+      ]
+    },
+    {
+      "id": "high_entropy_secret",
+      "path": "apps/api/auth.ts",
+      "content": "const token = \"A8f9K2LmQ1xZ7pV4nR6tY3wB5cD8eF1g\";\n",
+      "expected": [
+        {
+          "kind": "generic_api_key",
+          "line": 1
+        },
+        {
+          "kind": "high_entropy_secret",
+          "line": 1
+        }
+      ]
+    },
+    {
+      "id": "benign_config",
+      "path": "services/core/config.py",
+      "content": "DEBUG = True\nPORT = 3100\n",
+      "expected": []
+    }
+  ]
+}

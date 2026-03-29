@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "handoff_id": "handoff-auth-session-policy",
+  "run_id": "run-20260327-170000",
+  "round_id": "round-017",
+  "from_chat_id": "governance-control",
+  "to_chat_id": "chat.01-identity-access-and-trust",
+  "handoff_kind": "dependency_delivery",
+  "package_id": "01-identity-access-and-trust",
+  "task_ref": "packet-auth-session-policy-v2",
+  "handoff_summary": "Deliver the finalized session policy contract to unblock identity package integration.",
+  "requested_outcome": "Publish the session policy artifact and validation evidence for downstream consumption.",
+  "scope_refs": [
+    "01-identity-access-and-trust/contracts/session_policy.json",
+    "01-identity-access-and-trust/docs/session-hardening.md"
+  ],
+  "acceptance_criteria": [
+    "Session policy contract is committed in the owned package path.",
+    "Validation evidence is attached and references the produced artifact.",
+    "Completion summary states downstream consumers and next action."
+  ],
+  "status": "in_progress",
+  "severity": "sev2",
+  "opened_at_utc": "2026-03-27T16:40:00Z",
+  "response_due_at_utc": "2026-03-27T17:10:00Z",
+  "ownership_mode": "transfer",
+  "evidence_refs": [
+    "ops/runs/run-20260327-170000/rounds/round-017/reports/session_policy_contract_check.json"
+  ],
+  "dependency_refs": [
+    "dep-auth-cache-readiness"
+  ],
+  "related_blocker_ids": [
+    "blocker-auth-session-readiness"
+  ],
+  "history": [
+    {
+      "action": "opened",
+      "actor_chat_id": "governance-control",
+      "at_utc": "2026-03-27T16:40:00Z",
+      "status": "planned",
+      "summary": "Governance opened the handoff after dependency triage.",
+      "related_entity_ids": [
+        "dep-auth-cache-readiness"
+      ]
+    },
+    {
+      "action": "accepted",
+      "actor_chat_id": "chat.01-identity-access-and-trust",
+      "at_utc": "2026-03-27T16:48:00Z",
+      "status": "in_progress",
+      "summary": "Receiving chat accepted ownership and started execution."
+    }
+  ],
+  "project_id": "hitech-os",
+  "accepted_at_utc": "2026-03-27T16:48:00Z",
+  "updated_at_utc": "2026-03-27T17:05:00Z",
+  "status_summary": "The receiving chat is producing the contract and evidence bundle.",
+  "next_action_owner": "chat.01-identity-access-and-trust"
+}
