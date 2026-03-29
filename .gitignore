@@ -234,3 +234,21 @@ $RECYCLE.BIN/
 _attic/
 tools/_local/tmp/
 tools/_local/evidence/
+
+# --- Orchestrator / Factory runtime artifacts (ephemeral) ---
+# Local bridge state (machine-specific, regenerated each run)
+tools/_local/orchestrator_bridge/
+tools/_local/orchestrator_bridge/**
+
+# Per-project runtime outputs (session bundles, run snapshots, ledgers, manifests)
+tools/orchestrator_factory/ops/projects/**/bundles/
+tools/orchestrator_factory/ops/projects/**/bundles/**
+tools/orchestrator_factory/ops/projects/**/runs/
+tools/orchestrator_factory/ops/projects/**/runs/**
+tools/orchestrator_factory/ops/projects/**/state/
+tools/orchestrator_factory/ops/projects/**/state/**
+tools/orchestrator_factory/ops/projects/**/project_manifest.json
+
+# Keep the projects tree addressable if we ever need placeholders
+!tools/orchestrator_factory/ops/projects/
+!tools/orchestrator_factory/ops/projects/**/.gitkeep
