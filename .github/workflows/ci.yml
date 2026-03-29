@@ -85,6 +85,15 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Install Graphviz runtime for guardrails
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y graphviz
+          python -m pip install --upgrade pip
+          python -m pip install graphviz
+
       - name: Resolve diff base SHA
         id: base
         shell: bash
