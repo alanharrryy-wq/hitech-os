@@ -7,7 +7,7 @@ from PySide6.QtWidgets import QGraphicsOpacityEffect, QWidget
 
 
 class DeckStateAnimator(QObject):
-    """Optional widget-local motion helper for Aegis Deck.
+    """Optional widget-local motion helper for Cloudflare Guardian Diagnostics.
 
     Shared infrastructure rules:
     - no geometry animation
@@ -282,3 +282,4 @@ def _is_qobject_alive(target: QObject | None) -> bool:
 
 
 __all__ = ["DeckStateAnimator"]
+

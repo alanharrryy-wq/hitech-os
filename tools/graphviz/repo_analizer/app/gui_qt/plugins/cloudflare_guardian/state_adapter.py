@@ -8,7 +8,7 @@ from PySide6.QtCore import QObject
 
 
 @dataclass(frozen=True, slots=True)
-class AegisDeckSnapshot:
+class CloudflareGuardianDeckSnapshot:
     repo_root: str = ''
     repo_name: str = ''
     repo_ready: bool = False
@@ -36,12 +36,12 @@ class AegisDeckSnapshot:
     focus_node_id: str = ''
 
 
-_SNAPSHOT_FIELDS = tuple(item.name for item in fields(AegisDeckSnapshot))
+_SNAPSHOT_FIELDS = tuple(item.name for item in fields(CloudflareGuardianDeckSnapshot))
 _LIST_FIELDS = {'nodes', 'edges', 'hotspots'}
 _BOOL_FIELDS = {'repo_ready', 'nav_can_go_back', 'nav_can_go_forward'}
 _INT_FIELDS = {'index_file_count', 'index_ext_count', 'results_count', 'bookmarks_count', 'warning_count', 'plugin_count'}
 _FLOAT_FIELDS = {'index_elapsed_sec'}
-_EMPTY_SNAPSHOT = AegisDeckSnapshot()
+_EMPTY_SNAPSHOT = CloudflareGuardianDeckSnapshot()
 _EMPTY_PAYLOAD = asdict(_EMPTY_SNAPSHOT)
 _IMAGE_SUFFIXES = {'.png', '.jpg', '.jpeg', '.gif', '.webp', '.bmp'}
 _TEXT_SUFFIXES = {
@@ -52,7 +52,7 @@ _TEXT_SUFFIXES = {
 }
 
 
-class AegisStateAdapter(QObject):
+class CloudflareGuardianStateAdapter(QObject):
     """Conservative host reader that emits canonical empty-valid snapshots."""
 
     def __init__(self, parent: QObject | None = None) -> None:
@@ -60,7 +60,7 @@ class AegisStateAdapter(QObject):
         self._main_window: object | None = None
         self._container: object | None = None
         self._event_bus: object | None = None
-        self._last_snapshot = AegisDeckSnapshot()
+        self._last_snapshot = CloudflareGuardianDeckSnapshot()
 
     def attach_context(
         self,
@@ -77,7 +77,7 @@ class AegisStateAdapter(QObject):
         if event_bus is not None:
             self._event_bus = event_bus
 
-    def build_snapshot(self) -> AegisDeckSnapshot:
+    def build_snapshot(self) -> CloudflareGuardianDeckSnapshot:
         main_window = self._resolve_main_window()
         index_data = self._mapping_attr(main_window, 'index_data')
         startup_summary = self._startup_summary(main_window)
@@ -104,7 +104,7 @@ class AegisStateAdapter(QObject):
         plugin_count = self._resolve_plugin_count(main_window, startup_summary, plugin_report)
         repo_ready = bool(index_data.get('root') or index_file_count or repo_root)
 
-        snapshot = AegisDeckSnapshot(
+        snapshot = CloudflareGuardianDeckSnapshot(
             repo_root=repo_root,
             repo_name=repo_name,
             repo_ready=repo_ready,
@@ -136,11 +136,11 @@ class AegisStateAdapter(QObject):
         subtitle = self._resolve_subtitle(main_window, payload)
         return replace(snapshot, status_text=status_text, subtitle=subtitle)
 
-    def refresh_snapshot(self) -> AegisDeckSnapshot:
+    def refresh_snapshot(self) -> CloudflareGuardianDeckSnapshot:
         self._last_snapshot = self.build_snapshot()
         return self._last_snapshot
 
-    def get_last_snapshot(self) -> AegisDeckSnapshot:
+    def get_last_snapshot(self) -> CloudflareGuardianDeckSnapshot:
         return self._last_snapshot
 
     def snapshot_payload(self) -> dict[str, Any]:
@@ -150,7 +150,7 @@ class AegisStateAdapter(QObject):
         self._main_window = None
         self._container = None
         self._event_bus = None
-        self._last_snapshot = AegisDeckSnapshot()
+        self._last_snapshot = CloudflareGuardianDeckSnapshot()
 
     def _resolve_main_window(self) -> object | None:
         if self._main_window is not None:
@@ -410,7 +410,7 @@ class AegisStateAdapter(QObject):
 
     def _resolve_status_text(self, main_window: object | None, payload: Mapping[str, Any]) -> str:
         if main_window is None:
-            return 'Awaiting Aegis Deck host context'
+            return 'Awaiting Cloudflare Guardian Diagnostics host context'
 
         busy_status = self._busy_status_text(main_window)
         if busy_status:
@@ -556,8 +556,8 @@ class AegisStateAdapter(QObject):
 
 
 
-def snapshot_payload(snapshot: AegisDeckSnapshot | Mapping[str, Any] | object) -> dict[str, Any]:
-    if isinstance(snapshot, AegisDeckSnapshot):
+def snapshot_payload(snapshot: CloudflareGuardianDeckSnapshot | Mapping[str, Any] | object) -> dict[str, Any]:
+    if isinstance(snapshot, CloudflareGuardianDeckSnapshot):
         source: Mapping[str, Any] = asdict(snapshot)
     elif isinstance(snapshot, Mapping):
         source = snapshot
@@ -657,4 +657,5 @@ def _truncate(value: str, limit: int) -> str:
     return value[: max(0, limit - 1)].rstrip() + '…'
 
 
-__all__ = ['AegisDeckSnapshot', 'AegisStateAdapter', 'snapshot_payload']
+__all__ = ['CloudflareGuardianDeckSnapshot', 'CloudflareGuardianStateAdapter', 'snapshot_payload']
+

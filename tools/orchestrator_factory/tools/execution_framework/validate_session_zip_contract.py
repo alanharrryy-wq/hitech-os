@@ -308,6 +308,28 @@ def validate_session_manifest(
         ctx.error("session_manifest.json issues must be an array.")
         ok = False
 
+    artifacts = manifest_payload.get("artifacts", {})
+    session_zip_path = artifacts.get("session_zip_path")
+    if not isinstance(session_zip_path, str) or not session_zip_path.strip():
+        ctx.error("session_manifest.json artifacts.session_zip_path must be a non-empty string.")
+        ok = False
+
+    session_zip_sha256 = artifacts.get("session_zip_sha256")
+    if not isinstance(session_zip_sha256, str) or not re.fullmatch(r"[a-fA-F0-9]{64}", session_zip_sha256):
+        ctx.error("session_manifest.json artifacts.session_zip_sha256 must be a 64-char SHA256.")
+        ok = False
+
+    session_zip_size = artifacts.get("session_zip_size_bytes")
+    if not isinstance(session_zip_size, int) or session_zip_size < 0:
+        ctx.error("session_manifest.json artifacts.session_zip_size_bytes must be a non-negative integer.")
+        ok = False
+
+    # Authority boundary:
+    # The internal ZIP manifest is validated for shape only. The validator does not
+    # compare artifacts.session_zip_sha256/session_zip_size_bytes against the ZIP file
+    # itself because that would create a recursive self-reference requirement. Final
+    # artifact integrity is authored by the external sidecars emitted after ZIP finalize.
+
     return ok
 
 

@@ -48,7 +48,7 @@ class _ActionTile(QFrame):
         self._action_id = ''
         self._theme_bridge = DeckThemeBridge.coerce(None)
 
-        self.setObjectName('aegisActionRailTile')
+        self.setObjectName('cloudflare_guardianActionRailTile')
         self.setProperty('selected', False)
         self.setProperty('tone', 'ready')
 
@@ -62,23 +62,23 @@ class _ActionTile(QFrame):
         root.addLayout(top)
 
         self._title_label = QLabel(self)
-        self._title_label.setObjectName('aegisActionRailTileTitle')
+        self._title_label.setObjectName('cloudflare_guardianActionRailTileTitle')
         self._title_label.setWordWrap(True)
         top.addWidget(self._title_label, 1)
 
         self._badge_label = QLabel('READY', self)
-        self._badge_label.setObjectName('aegisActionRailTileBadge')
+        self._badge_label.setObjectName('cloudflare_guardianActionRailTileBadge')
         self._badge_label.setAlignment(Qt.AlignCenter)
         self._badge_label.setProperty('tone', 'ready')
         top.addWidget(self._badge_label, 0)
 
         self._description_label = QLabel(self)
-        self._description_label.setObjectName('aegisActionRailTileDescription')
+        self._description_label.setObjectName('cloudflare_guardianActionRailTileDescription')
         self._description_label.setWordWrap(True)
         root.addWidget(self._description_label)
 
         self._keywords_label = QLabel(self)
-        self._keywords_label.setObjectName('aegisActionRailTileKeywords')
+        self._keywords_label.setObjectName('cloudflare_guardianActionRailTileKeywords')
         self._keywords_label.setTextFormat(Qt.RichText)
         self._keywords_label.setWordWrap(True)
         root.addWidget(self._keywords_label)
@@ -89,12 +89,12 @@ class _ActionTile(QFrame):
         root.addLayout(footer)
 
         self._payload_label = QLabel(self)
-        self._payload_label.setObjectName('aegisActionRailTilePayload')
+        self._payload_label.setObjectName('cloudflare_guardianActionRailTilePayload')
         self._payload_label.setWordWrap(True)
         footer.addWidget(self._payload_label, 1)
 
         self._trigger_button = QPushButton('Run', self)
-        self._trigger_button.setObjectName('aegisActionRailTileButton')
+        self._trigger_button.setObjectName('cloudflare_guardianActionRailTileButton')
         self._trigger_button.setCursor(Qt.PointingHandCursor)
         self._trigger_button.clicked.connect(self._on_trigger_clicked)
         self._trigger_button.installEventFilter(self)
@@ -210,7 +210,7 @@ class _ActionTile(QFrame):
         widget.update()
 
 
-class AegisActionRail(QWidget):
+class CloudflareGuardianActionRail(QWidget):
     actionTriggered = Signal(str, object)
     actionFailed = Signal(str, object)
 
@@ -238,7 +238,7 @@ class AegisActionRail(QWidget):
         self._status_reset_serial = 0
         self._tile_reset_serial = 0
 
-        self.setObjectName('aegisActionRail')
+        self.setObjectName('cloudflare_guardianActionRail')
         self.setProperty('visualRole', 'action-surface')
         self.setProperty('visualTier', 'themed')
         self.setStyleSheet(self._build_stylesheet())
@@ -248,7 +248,7 @@ class AegisActionRail(QWidget):
         root.setSpacing(10)
 
         shell = QFrame(self)
-        shell.setObjectName('aegisActionRailShell')
+        shell.setObjectName('cloudflare_guardianActionRailShell')
         shell.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         shell.setMinimumHeight(250)
         root.addWidget(shell)
@@ -263,27 +263,27 @@ class AegisActionRail(QWidget):
         shell_layout.addLayout(header)
 
         self._header_label = QLabel('Action Rail', shell)
-        self._header_label.setObjectName('aegisActionRailHeader')
+        self._header_label.setObjectName('cloudflare_guardianActionRailHeader')
         header.addWidget(self._header_label, 1)
 
         self._count_label = QLabel('0', shell)
-        self._count_label.setObjectName('aegisActionRailCount')
+        self._count_label.setObjectName('cloudflare_guardianActionRailCount')
         self._count_label.setAlignment(Qt.AlignCenter)
         header.addWidget(self._count_label, 0)
 
         self._status_label = QLabel('Awaiting actions', shell)
-        self._status_label.setObjectName('aegisActionRailStatus')
+        self._status_label.setObjectName('cloudflare_guardianActionRailStatus')
         self._status_label.setAlignment(Qt.AlignCenter)
         self._status_label.setProperty('tone', 'idle')
         header.addWidget(self._status_label, 0)
 
         self._hint_label = QLabel('Arrow keys move between action buttons. Enter or Space triggers.', shell)
-        self._hint_label.setObjectName('aegisActionRailHint')
+        self._hint_label.setObjectName('cloudflare_guardianActionRailHint')
         self._hint_label.setWordWrap(True)
         shell_layout.addWidget(self._hint_label)
 
         self._scroll = QScrollArea(shell)
-        self._scroll.setObjectName('aegisActionRailScroll')
+        self._scroll.setObjectName('cloudflare_guardianActionRailScroll')
         self._scroll.setWidgetResizable(True)
         self._scroll.setFrameShape(QFrame.NoFrame)
         self._scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
@@ -292,7 +292,7 @@ class AegisActionRail(QWidget):
         shell_layout.addWidget(self._scroll, 1)
 
         self._content = QWidget(self._scroll)
-        self._content.setObjectName('aegisActionRailContent')
+        self._content.setObjectName('cloudflare_guardianActionRailContent')
         self._content.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self._scroll.setWidget(self._content)
 
@@ -301,14 +301,14 @@ class AegisActionRail(QWidget):
         self._content_layout.setSpacing(8)
 
         self._empty_label = QLabel('No actions available.', self._content)
-        self._empty_label.setObjectName('aegisActionRailEmpty')
+        self._empty_label.setObjectName('cloudflare_guardianActionRailEmpty')
         self._empty_label.setAlignment(Qt.AlignCenter)
         self._empty_label.setWordWrap(True)
         self._content_layout.addWidget(self._empty_label)
         self._content_layout.addStretch(1)
 
         self._detail_panel = QFrame(shell)
-        self._detail_panel.setObjectName('aegisActionRailDetail')
+        self._detail_panel.setObjectName('cloudflare_guardianActionRailDetail')
         self._detail_panel.setMinimumHeight(104)
         detail_layout = QVBoxLayout(self._detail_panel)
         detail_layout.setContentsMargins(12, 12, 12, 12)
@@ -321,22 +321,22 @@ class AegisActionRail(QWidget):
         detail_layout.addLayout(detail_header)
 
         self._detail_title = QLabel('No action selected', self._detail_panel)
-        self._detail_title.setObjectName('aegisActionRailDetailTitle')
+        self._detail_title.setObjectName('cloudflare_guardianActionRailDetailTitle')
         detail_header.addWidget(self._detail_title, 1)
 
         self._detail_badge = QLabel('IDLE', self._detail_panel)
-        self._detail_badge.setObjectName('aegisActionRailDetailBadge')
+        self._detail_badge.setObjectName('cloudflare_guardianActionRailDetailBadge')
         self._detail_badge.setAlignment(Qt.AlignCenter)
         self._detail_badge.setProperty('tone', 'idle')
         detail_header.addWidget(self._detail_badge, 0)
 
         self._detail_meta = QLabel('Load actions with set_actions(...) to begin.', self._detail_panel)
-        self._detail_meta.setObjectName('aegisActionRailDetailMeta')
+        self._detail_meta.setObjectName('cloudflare_guardianActionRailDetailMeta')
         self._detail_meta.setWordWrap(True)
         detail_layout.addWidget(self._detail_meta)
 
         self._detail_payload = QLabel('', self._detail_panel)
-        self._detail_payload.setObjectName('aegisActionRailDetailPayload')
+        self._detail_payload.setObjectName('cloudflare_guardianActionRailDetailPayload')
         self._detail_payload.setWordWrap(True)
         self._detail_payload.setTextFormat(Qt.RichText)
         detail_layout.addWidget(self._detail_payload)
@@ -525,7 +525,7 @@ class AegisActionRail(QWidget):
         self._tiles.clear()
         if not self._visible_actions:
             self._empty_label = QLabel('No actions available. The shell must call set_actions(...).', self._content)
-            self._empty_label.setObjectName('aegisActionRailEmpty')
+            self._empty_label.setObjectName('cloudflare_guardianActionRailEmpty')
             self._empty_label.setAlignment(Qt.AlignCenter)
             self._empty_label.setWordWrap(True)
             self._content_layout.addWidget(self._empty_label)
@@ -860,22 +860,22 @@ class AegisActionRail(QWidget):
         muted = bridge.status_palette('muted')
         accent = bridge.status_palette('accent')
         return f"""
-        QFrame#aegisActionRailShell {{
+        QFrame#cloudflare_guardianActionRailShell {{
             background:qlineargradient(x1:0, y1:0, x2:1, y2:1,
                 stop:0 {toolbar['surface']}, stop:0.55 {panel['surface']}, stop:1 {panel['surface_alt']});
             border:1px solid {panel['border']};
             border-radius:18px;
         }}
-        QLabel#aegisActionRailHeader {{
+        QLabel#cloudflare_guardianActionRailHeader {{
             color:{panel['text']};
             font-size:16px;
             font-weight:700;
             letter-spacing:0.3px;
         }}
-        QLabel#aegisActionRailCount,
-        QLabel#aegisActionRailStatus,
-        QLabel#aegisActionRailDetailBadge,
-        QLabel#aegisActionRailTileBadge {{
+        QLabel#cloudflare_guardianActionRailCount,
+        QLabel#cloudflare_guardianActionRailStatus,
+        QLabel#cloudflare_guardianActionRailDetailBadge,
+        QLabel#cloudflare_guardianActionRailTileBadge {{
             padding:4px 10px;
             border-radius:10px;
             border:1px solid {panel['border']};
@@ -884,95 +884,95 @@ class AegisActionRail(QWidget):
             font-size:11px;
             font-weight:600;
         }}
-        QLabel#aegisActionRailCount {{
+        QLabel#cloudflare_guardianActionRailCount {{
             background:{accent['soft']};
             color:{accent['ink']};
             min-width:56px;
         }}
-        QLabel#aegisActionRailStatus[tone="idle"],
-        QLabel#aegisActionRailDetailBadge[tone="idle"] {{
+        QLabel#cloudflare_guardianActionRailStatus[tone="idle"],
+        QLabel#cloudflare_guardianActionRailDetailBadge[tone="idle"] {{
             background:{muted['soft']};
             color:{muted['ink']};
             border-color:{muted['line']};
         }}
-        QLabel#aegisActionRailStatus[tone="ready"],
-        QLabel#aegisActionRailDetailBadge[tone="ready"],
-        QLabel#aegisActionRailTileBadge[tone="ready"] {{
+        QLabel#cloudflare_guardianActionRailStatus[tone="ready"],
+        QLabel#cloudflare_guardianActionRailDetailBadge[tone="ready"],
+        QLabel#cloudflare_guardianActionRailTileBadge[tone="ready"] {{
             background:{ready['soft']};
             color:{ready['ink']};
             border-color:{ready['line']};
         }}
-        QLabel#aegisActionRailStatus[tone="warning"],
-        QLabel#aegisActionRailDetailBadge[tone="busy"],
-        QLabel#aegisActionRailTileBadge[tone="busy"] {{
+        QLabel#cloudflare_guardianActionRailStatus[tone="warning"],
+        QLabel#cloudflare_guardianActionRailDetailBadge[tone="busy"],
+        QLabel#cloudflare_guardianActionRailTileBadge[tone="busy"] {{
             background:{warning['soft']};
             color:{warning['ink']};
             border-color:{warning['line']};
         }}
-        QLabel#aegisActionRailStatus[tone="danger"],
-        QLabel#aegisActionRailDetailBadge[tone="disabled"],
-        QLabel#aegisActionRailTileBadge[tone="disabled"],
-        QLabel#aegisActionRailTileBadge[tone="danger"] {{
+        QLabel#cloudflare_guardianActionRailStatus[tone="danger"],
+        QLabel#cloudflare_guardianActionRailDetailBadge[tone="disabled"],
+        QLabel#cloudflare_guardianActionRailTileBadge[tone="disabled"],
+        QLabel#cloudflare_guardianActionRailTileBadge[tone="danger"] {{
             background:{danger['soft']};
             color:{danger['ink']};
             border-color:{danger['line']};
         }}
-        QLabel#aegisActionRailStatus[tone="empty"] {{
+        QLabel#cloudflare_guardianActionRailStatus[tone="empty"] {{
             background:{muted['soft']};
             color:{panel['muted']};
             border-color:{panel['divider']};
         }}
-        QLabel#aegisActionRailTileBadge[tone="success"] {{
+        QLabel#cloudflare_guardianActionRailTileBadge[tone="success"] {{
             background:{ready['soft']};
             color:{ready['ink']};
             border-color:{ready['line']};
         }}
-        QLabel#aegisActionRailHint {{
+        QLabel#cloudflare_guardianActionRailHint {{
             color:{panel['soft_text']};
             font-size:11px;
         }}
-        QScrollArea#aegisActionRailScroll {{
+        QScrollArea#cloudflare_guardianActionRailScroll {{
             background:transparent;
             border:none;
         }}
-        QWidget#aegisActionRailContent {{
+        QWidget#cloudflare_guardianActionRailContent {{
             background:transparent;
         }}
-        QFrame#aegisActionRailTile {{
+        QFrame#cloudflare_guardianActionRailTile {{
             background:{panel['surface']};
             border:1px solid {panel['border']};
             border-radius:16px;
         }}
-        QFrame#aegisActionRailTile[selected="true"] {{
+        QFrame#cloudflare_guardianActionRailTile[selected="true"] {{
             background:qlineargradient(x1:0, y1:0, x2:1, y2:0,
                 stop:0 {panel['surface_active']}, stop:1 {panel['surface_hover']});
             border-color:{accent['line']};
         }}
-        QFrame#aegisActionRailTile[tone="busy"] {{
+        QFrame#cloudflare_guardianActionRailTile[tone="busy"] {{
             border-color:{warning['line']};
         }}
-        QFrame#aegisActionRailTile[tone="disabled"] {{
+        QFrame#cloudflare_guardianActionRailTile[tone="disabled"] {{
             background:{toolbar['surface']};
             border-color:{panel['border']};
         }}
-        QLabel#aegisActionRailTileTitle {{
+        QLabel#cloudflare_guardianActionRailTileTitle {{
             color:{panel['text']};
             font-size:14px;
             font-weight:700;
         }}
-        QLabel#aegisActionRailTileDescription {{
+        QLabel#cloudflare_guardianActionRailTileDescription {{
             color:{panel['muted']};
             font-size:12px;
         }}
-        QLabel#aegisActionRailTileKeywords {{
+        QLabel#cloudflare_guardianActionRailTileKeywords {{
             color:{panel['soft_text']};
             font-size:11px;
         }}
-        QLabel#aegisActionRailTilePayload {{
+        QLabel#cloudflare_guardianActionRailTilePayload {{
             color:{panel['soft_text']};
             font-size:11px;
         }}
-        QPushButton#aegisActionRailTileButton {{
+        QPushButton#cloudflare_guardianActionRailTileButton {{
             background:{panel['surface_active']};
             color:{panel['text']};
             border:1px solid {accent['line']};
@@ -980,22 +980,22 @@ class AegisActionRail(QWidget):
             padding:8px 14px;
             font-weight:700;
         }}
-        QPushButton#aegisActionRailTileButton:hover {{
+        QPushButton#cloudflare_guardianActionRailTileButton:hover {{
             background:{panel['surface_hover']};
             border-color:{panel['focus_ring']};
         }}
-        QPushButton#aegisActionRailTileButton:pressed {{
+        QPushButton#cloudflare_guardianActionRailTileButton:pressed {{
             background:{toolbar['surface']};
         }}
-        QPushButton#aegisActionRailTileButton:focus {{
+        QPushButton#cloudflare_guardianActionRailTileButton:focus {{
             border:1px solid {panel['focus_ring']};
         }}
-        QPushButton#aegisActionRailTileButton:disabled {{
+        QPushButton#cloudflare_guardianActionRailTileButton:disabled {{
             background:{toolbar['surface']};
             color:{panel['soft_text']};
             border-color:{panel['border']};
         }}
-        QLabel#aegisActionRailEmpty {{
+        QLabel#cloudflare_guardianActionRailEmpty {{
             color:{panel['soft_text']};
             border:1px dashed {panel['border']};
             border-radius:14px;
@@ -1003,21 +1003,21 @@ class AegisActionRail(QWidget):
             padding:22px;
             font-size:13px;
         }}
-        QFrame#aegisActionRailDetail {{
+        QFrame#cloudflare_guardianActionRailDetail {{
             background:{toolbar['surface']};
             border:1px solid {panel['border']};
             border-radius:14px;
         }}
-        QLabel#aegisActionRailDetailTitle {{
+        QLabel#cloudflare_guardianActionRailDetailTitle {{
             color:{panel['text']};
             font-size:14px;
             font-weight:700;
         }}
-        QLabel#aegisActionRailDetailMeta {{
+        QLabel#cloudflare_guardianActionRailDetailMeta {{
             color:{panel['muted']};
             font-size:12px;
         }}
-        QLabel#aegisActionRailDetailPayload {{
+        QLabel#cloudflare_guardianActionRailDetailPayload {{
             color:{panel['text']};
             background:{bridge.token('code_bg')};
             border:1px solid {bridge.token('code_line')};
@@ -1029,4 +1029,6 @@ class AegisActionRail(QWidget):
         """
 
 
-__all__ = ['AegisActionRail']
+__all__ = ['CloudflareGuardianActionRail']
+
+

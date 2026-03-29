@@ -30,7 +30,7 @@ class CentralWorkspaceBuilder:
         central.setProperty('visualRole', 'workspace-root')
         central.setProperty('visualTier', 'premium')
         outer = QVBoxLayout(central)
-        outer.setContentsMargins(8, 8, 8, 8)
+        outer.setContentsMargins(10, 10, 10, 10)
         outer.setSpacing(0)
         canvas_hint = QWidget(central)
         canvas_hint.setObjectName('workspaceCanvasSurface')
@@ -56,18 +56,18 @@ class CentralWorkspaceBuilder:
         card.setProperty('visualTier', 'premium')
         card.setProperty('premium', True)
         layout = QVBoxLayout(card)
-        layout.setContentsMargins(20, 18, 20, 18)
-        layout.setSpacing(14)
+        layout.setContentsMargins(18, 16, 18, 16)
+        layout.setSpacing(12)
 
         header_row = QHBoxLayout()
         header_left = QVBoxLayout()
         header_left.setContentsMargins(0, 0, 0, 0)
         header_left.setSpacing(2)
 
-        self.main.hero_repo_label = QLabel("Sin repo indexado", card)
+        self.main.hero_repo_label = QLabel("No repository indexed", card)
         self.main.hero_repo_label.setObjectName("heroTitleLabel")
         self.main.hero_scope_label = QLabel(
-            "Selecciona un repositorio para empezar el análisis estructural",
+            "Select a repository to start structural analysis",
             card,
         )
         self.main.hero_scope_label.setObjectName("workspaceMutedLabel")
@@ -75,7 +75,7 @@ class CentralWorkspaceBuilder:
         header_left.addWidget(self.main.hero_scope_label)
         header_row.addLayout(header_left, 1)
 
-        self.main.hero_mode_pill = QLabel("Workbench listo", card)
+        self.main.hero_mode_pill = QLabel("Workbench ready", card)
         self.main.hero_mode_pill.setObjectName("heroMetaPill")
         header_row.addWidget(self.main.hero_mode_pill, 0, Qt.AlignTop)
         layout.addLayout(header_row)

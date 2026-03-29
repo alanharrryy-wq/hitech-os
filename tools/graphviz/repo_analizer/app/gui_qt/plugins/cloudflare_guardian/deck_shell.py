@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from dataclasses import asdict, dataclass, is_dataclass
+from dataclasses import dataclass
 from importlib import import_module
 from typing import Any, Callable
 
@@ -20,45 +20,34 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from .snapshot_model import (
+    coerce_bool as _snapshot_coerce_bool,
+    coerce_float as _snapshot_coerce_float,
+    coerce_int as _snapshot_coerce_int,
+    coerce_list as _snapshot_coerce_list,
+    coerce_mapping as _snapshot_coerce_mapping,
+    coerce_string as _snapshot_coerce_string,
+    empty_snapshot as _snapshot_empty,
+    format_elapsed as _snapshot_format_elapsed,
+    normalize_snapshot as _normalize_snapshot_payload,
+)
+from .spec_factory import (
+    action_spec as _build_action_spec,
+    command_spec as _build_command_spec,
+)
+from .deck_host_runtime import DeckHostRuntimeCoordinator
+from .deck_runtime import DeckRuntimeCoordinator
 
-_SNAPSHOT_DEFAULTS: dict[str, Any] = {
-    'repo_root': '',
-    'repo_name': '',
-    'repo_ready': False,
-    'index_file_count': 0,
-    'index_ext_count': 0,
-    'index_elapsed_sec': 0.0,
-    'active_scope': '',
-    'active_extension': '',
-    'query_text': '',
-    'results_count': 0,
-    'current_preview_relpath': '',
-    'current_preview_path': '',
-    'current_preview_kind': '',
-    'nav_can_go_back': False,
-    'nav_can_go_forward': False,
-    'bookmarks_count': 0,
-    'startup_status': '',
-    'warning_count': 0,
-    'plugin_count': 0,
-    'status_text': '',
-    'subtitle': '',
-    'nodes': [],
-    'edges': [],
-    'hotspots': [],
-    'focus_node_id': '',
-}
-_SNAPSHOT_FIELDS: tuple[str, ...] = tuple(_SNAPSHOT_DEFAULTS.keys())
 _WIDGET_MODULES: dict[str, tuple[str, str]] = {
-    'command_bar': ('command_bar', 'AegisCommandBar'),
-    'action_rail': ('action_rail', 'AegisActionRail'),
-    'context_spine': ('context_spine', 'AegisContextSpine'),
-    'repo_pulse': ('repo_pulse', 'AegisRepoPulse'),
-    'graph_radar': ('graph_radar', 'AegisGraphRadar'),
-    'deck_surface': ('deck_surface', 'AegisDeckSurface'),
+    'command_bar': ('command_bar', 'CloudflareGuardianCommandBar'),
+    'action_rail': ('action_rail', 'CloudflareGuardianActionRail'),
+    'context_spine': ('context_spine', 'CloudflareGuardianContextSpine'),
+    'repo_pulse': ('repo_pulse', 'CloudflareGuardianRepoPulse'),
+    'graph_radar': ('graph_radar', 'CloudflareGuardianGraphRadar'),
+    'deck_surface': ('deck_surface', 'CloudflareGuardianDeckSurface'),
     'theme_bridge': ('theme_bridge', 'DeckThemeBridge'),
     'motion': ('motion', 'DeckStateAnimator'),
-    'state_adapter': ('state_adapter', 'AegisStateAdapter'),
+    'state_adapter': ('state_adapter', 'CloudflareGuardianStateAdapter'),
 }
 _THEME_DEFAULTS: dict[str, str] = {
     'bg': '#0d1118',
@@ -143,7 +132,7 @@ class _SectionBinding:
 class _TonePill(QLabel):
     def __init__(self, text: str = '', tone: str = 'muted', parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setObjectName('aegisDeckTonePill')
+        self.setObjectName('cloudflare_guardianDeckTonePill')
         self.setAlignment(Qt.AlignCenter)
         self.setTextInteractionFlags(Qt.NoTextInteraction)
         self.setProperty('tone', tone)
@@ -161,7 +150,7 @@ class _TonePill(QLabel):
 class _MetricCard(QFrame):
     def __init__(self, title: str, parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setObjectName('aegisDeckMetricCard')
+        self.setObjectName('cloudflare_guardianDeckMetricCard')
         self.setFrameShape(QFrame.NoFrame)
         self.setProperty('tone', 'muted')
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
@@ -171,20 +160,20 @@ class _MetricCard(QFrame):
         layout.setSpacing(3)
 
         self._eyebrow = QLabel(title, self)
-        self._eyebrow.setObjectName('aegisDeckMetricEyebrow')
+        self._eyebrow.setObjectName('cloudflare_guardianDeckMetricEyebrow')
         layout.addWidget(self._eyebrow)
 
         self._value = QLabel('0', self)
-        self._value.setObjectName('aegisDeckMetricValue')
+        self._value.setObjectName('cloudflare_guardianDeckMetricValue')
         layout.addWidget(self._value)
 
         self._caption = QLabel('', self)
-        self._caption.setObjectName('aegisDeckMetricCaption')
+        self._caption.setObjectName('cloudflare_guardianDeckMetricCaption')
         self._caption.setWordWrap(True)
         layout.addWidget(self._caption)
 
         self._detail = QLabel('', self)
-        self._detail.setObjectName('aegisDeckMetricDetail')
+        self._detail.setObjectName('cloudflare_guardianDeckMetricDetail')
         self._detail.setWordWrap(True)
         layout.addWidget(self._detail)
 
@@ -203,7 +192,7 @@ class _BridgeAmbientRibbon(QWidget):
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setObjectName('aegisDeckBridgeAmbient')
+        self.setObjectName('cloudflare_guardianDeckBridgeAmbient')
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.setFixedHeight(8)
         self._phase = 0.0
@@ -289,7 +278,7 @@ class _BridgeAmbientRibbon(QWidget):
 class _TopologyPlaceholder(QFrame):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setObjectName('aegisDeckTopologyPlaceholder')
+        self.setObjectName('cloudflare_guardianDeckTopologyPlaceholder')
         self.setFrameShape(QFrame.NoFrame)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
@@ -298,7 +287,7 @@ class _TopologyPlaceholder(QFrame):
         layout.setSpacing(6)
 
         self._title = QLabel('Topology radar is cold until first activation.', self)
-        self._title.setObjectName('aegisDeckTopologyPlaceholderTitle')
+        self._title.setObjectName('cloudflare_guardianDeckTopologyPlaceholderTitle')
         self._title.setWordWrap(True)
         layout.addWidget(self._title)
 
@@ -306,7 +295,7 @@ class _TopologyPlaceholder(QFrame):
             'Open the Topology tab to construct graph widgets lazily and avoid background churn while hidden.',
             self,
         )
-        self._detail.setObjectName('aegisDeckTopologyPlaceholderDetail')
+        self._detail.setObjectName('cloudflare_guardianDeckTopologyPlaceholderDetail')
         self._detail.setWordWrap(True)
         layout.addWidget(self._detail)
         layout.addStretch(1)
@@ -329,11 +318,11 @@ class _ColdStartPlaceholder(QFrame):
         layout.setContentsMargins(12, 12, 12, 12)
         layout.setSpacing(6)
         headline = QLabel(title, self)
-        headline.setObjectName('aegisDeckColdPlaceholderTitle')
+        headline.setObjectName('cloudflare_guardianDeckColdPlaceholderTitle')
         headline.setWordWrap(True)
         layout.addWidget(headline)
         subtitle = QLabel(detail, self)
-        subtitle.setObjectName('aegisDeckColdPlaceholderDetail')
+        subtitle.setObjectName('cloudflare_guardianDeckColdPlaceholderDetail')
         subtitle.setWordWrap(True)
         layout.addWidget(subtitle)
         layout.addStretch(1)
@@ -342,7 +331,7 @@ class _ColdStartPlaceholder(QFrame):
 class _FallbackSlate(QFrame):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setObjectName('aegisDeckFallbackSlate')
+        self.setObjectName('cloudflare_guardianDeckFallbackSlate')
         self.setFrameShape(QFrame.NoFrame)
         self.setProperty('tone', 'muted')
         self.setProperty('interactive', False)
@@ -353,17 +342,17 @@ class _FallbackSlate(QFrame):
         layout.setSpacing(5)
 
         self._headline = QLabel('', self)
-        self._headline.setObjectName('aegisDeckFallbackHeadline')
+        self._headline.setObjectName('cloudflare_guardianDeckFallbackHeadline')
         self._headline.setWordWrap(True)
         layout.addWidget(self._headline)
 
         self._detail = QLabel('', self)
-        self._detail.setObjectName('aegisDeckFallbackDetail')
+        self._detail.setObjectName('cloudflare_guardianDeckFallbackDetail')
         self._detail.setWordWrap(True)
         layout.addWidget(self._detail)
 
         self._footer = QLabel('', self)
-        self._footer.setObjectName('aegisDeckFallbackFooter')
+        self._footer.setObjectName('cloudflare_guardianDeckFallbackFooter')
         self._footer.setWordWrap(True)
         layout.addWidget(self._footer)
         layout.addStretch(1)
@@ -378,12 +367,12 @@ class _FallbackSlate(QFrame):
         self.style().polish(self)
 
 
-class AegisDeckShell(QWidget):
-    """Dock-local orchestrator for the Aegis Deck sibling slices."""
+class CloudflareGuardianDeckShell(QWidget):
+    """Dock-local orchestrator for the Cloudflare Guardian Diagnostics sibling slices."""
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setObjectName('aegisDeckShellRoot')
+        self.setObjectName('cloudflare_guardianDeckShellRoot')
         self.setProperty('visualRole', 'plugin-dock-root')
         self.setProperty('visualTier', 'themed')
         self.setProperty('premium', True)
@@ -393,10 +382,13 @@ class AegisDeckShell(QWidget):
         self._container = None
         self._event_bus = None
         self._main_window = None
+        self._host_runtime = DeckHostRuntimeCoordinator()
         self._snapshot_payload_fn: Callable[[Any], Any] | None = None
         self._state_adapter = None
-        self._snapshot: dict[str, Any] = self._empty_snapshot()
         self._compatibility_notes: list[str] = []
+        self._runtime = DeckRuntimeCoordinator(logger=self._trace_runtime)
+        self._snapshot: dict[str, Any] = self._empty_snapshot()
+        self._runtime.push_snapshot(self._snapshot)
         self._theme_tokens = dict(_THEME_DEFAULTS)
 
         self._surface_cls = self._optional_symbol(*_WIDGET_MODULES['deck_surface'])
@@ -432,8 +424,8 @@ class AegisDeckShell(QWidget):
         self._tabs: QTabWidget | None = None
         self._tab_scrolls: dict[str, QScrollArea] = {}
         self._tab_layouts: dict[str, QVBoxLayout] = {}
-        self._tab_dirty: set[str] = {'briefing', 'workbench', 'topology'}
-        self._active_tab_id = 'briefing'
+        self._tab_dirty: set[str] = self._runtime.tab_dirty
+        self._active_tab_id = self._runtime.active_tab_id
         self._topology_summary_label: QLabel | None = None
         self._workbench_strip_label: QLabel | None = None
         self._controls_layout: QBoxLayout | None = None
@@ -458,11 +450,13 @@ class AegisDeckShell(QWidget):
         if context is None:
             return
 
-        self._dispatcher = getattr(context, 'dispatcher', None)
+        self._host_runtime.bind_plugin_context(context)
+        self._dispatcher = self._host_runtime.dispatcher
         self._container = getattr(context, 'container', None)
         self._event_bus = getattr(context, 'event_bus', None)
         self._main_window = self._safe_container_get('main_window')
         self._snapshot_payload_fn = self._resolve_snapshot_payload_fn()
+        self._host_runtime.set_snapshot_payload_fn(self._snapshot_payload_fn)
         self._theme_tokens = self._resolve_theme_tokens()
 
         self._attach_optional_state_adapter()
@@ -493,6 +487,7 @@ class AegisDeckShell(QWidget):
             except Exception:
                 pass
         self._state_adapter = None
+        self._host_runtime.set_state_adapter(None)
         if self._animator is not None and hasattr(self._animator, 'stop'):
             try:
                 self._animator.stop()
@@ -547,7 +542,7 @@ class AegisDeckShell(QWidget):
         root.addWidget(self._make_metric_strip(), 0)
 
         self._tabs = QTabWidget(self)
-        self._tabs.setObjectName('aegisDeckTabs')
+        self._tabs.setObjectName('cloudflare_guardianDeckTabs')
         self._tabs.setDocumentMode(True)
         self._tabs.setUsesScrollButtons(False)
         self._tabs.setElideMode(Qt.ElideNone)
@@ -582,19 +577,19 @@ class AegisDeckShell(QWidget):
         briefing_layout.addStretch(1)
 
         workbench_strip = QFrame(self)
-        workbench_strip.setObjectName('aegisDeckWorkbenchStrip')
+        workbench_strip.setObjectName('cloudflare_guardianDeckWorkbenchStrip')
         workbench_strip.setFrameShape(QFrame.NoFrame)
         strip_layout = QHBoxLayout(workbench_strip)
         strip_layout.setContentsMargins(12, 10, 12, 10)
         strip_layout.setSpacing(8)
         self._workbench_strip_label = QLabel('', workbench_strip)
-        self._workbench_strip_label.setObjectName('aegisDeckWorkbenchStripText')
+        self._workbench_strip_label.setObjectName('cloudflare_guardianDeckWorkbenchStripText')
         self._workbench_strip_label.setWordWrap(True)
         strip_layout.addWidget(self._workbench_strip_label)
         workbench_layout.addWidget(workbench_strip)
 
         controls_row = QWidget(self)
-        controls_row.setObjectName('aegisDeckControlsRow')
+        controls_row.setObjectName('cloudflare_guardianDeckControlsRow')
         controls_row.setProperty('visualRole', 'deck-row')
         controls_row.setProperty('visualTier', 'themed')
         self._controls_layout = QHBoxLayout(controls_row)
@@ -603,9 +598,9 @@ class AegisDeckShell(QWidget):
 
         self._workbench_command_placeholder = _ColdStartPlaceholder(
             self,
-            object_name='aegisDeckWorkbenchCommandPlaceholder',
+            object_name='cloudflare_guardianDeckWorkbenchCommandPlaceholder',
             title='Command lane is cold until Workbench activation.',
-            detail='Aegis defers command-surface construction to reduce startup pressure and hidden-state churn.',
+            detail='CloudflareGuardian defers command-surface construction to reduce startup pressure and hidden-state churn.',
         )
         self._command_section_root = self._create_section(
             section_id='command_bar',
@@ -616,7 +611,7 @@ class AegisDeckShell(QWidget):
         ).root
         self._workbench_action_placeholder = _ColdStartPlaceholder(
             self,
-            object_name='aegisDeckWorkbenchActionPlaceholder',
+            object_name='cloudflare_guardianDeckWorkbenchActionPlaceholder',
             title='Action lane is cold until Workbench activation.',
             detail='The action rail is instantiated only when Workbench becomes foreground, keeping hidden tabs near-cold.',
         )
@@ -646,16 +641,16 @@ class AegisDeckShell(QWidget):
         workbench_layout.addWidget(controls_row, 1)
 
         topology_summary = QFrame(self)
-        topology_summary.setObjectName('aegisDeckTopologySummary')
+        topology_summary.setObjectName('cloudflare_guardianDeckTopologySummary')
         topology_summary.setFrameShape(QFrame.NoFrame)
         topology_layout_box = QVBoxLayout(topology_summary)
         topology_layout_box.setContentsMargins(12, 10, 12, 10)
         topology_layout_box.setSpacing(4)
         topology_title = QLabel('Topology focus', topology_summary)
-        topology_title.setObjectName('aegisDeckTopologySummaryTitle')
+        topology_title.setObjectName('cloudflare_guardianDeckTopologySummaryTitle')
         topology_layout_box.addWidget(topology_title)
         self._topology_summary_label = QLabel('', topology_summary)
-        self._topology_summary_label.setObjectName('aegisDeckTopologySummaryText')
+        self._topology_summary_label.setObjectName('cloudflare_guardianDeckTopologySummaryText')
         self._topology_summary_label.setWordWrap(True)
         topology_layout_box.addWidget(self._topology_summary_label)
         topology_layout.addWidget(topology_summary)
@@ -688,13 +683,13 @@ class AegisDeckShell(QWidget):
         if self._tabs is None:
             raise RuntimeError('Tab host is not initialized')
         page = QWidget(self._tabs)
-        page.setObjectName(f'aegisDeckTabPage_{tab_id}')
+        page.setObjectName(f'cloudflare_guardianDeckTabPage_{tab_id}')
         page_root = QVBoxLayout(page)
         page_root.setContentsMargins(0, 0, 0, 0)
         page_root.setSpacing(0)
 
         scroll = QScrollArea(page)
-        scroll.setObjectName(f'aegisDeckTabScroll_{tab_id}')
+        scroll.setObjectName(f'cloudflare_guardianDeckTabScroll_{tab_id}')
         scroll.setWidgetResizable(True)
         scroll.setFrameShape(QFrame.NoFrame)
         scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
@@ -704,7 +699,7 @@ class AegisDeckShell(QWidget):
         page_root.addWidget(scroll, 1)
 
         content = QWidget(scroll)
-        content.setObjectName(f'aegisDeckTabContent_{tab_id}')
+        content.setObjectName(f'cloudflare_guardianDeckTabContent_{tab_id}')
         scroll.setWidget(content)
         content_layout = QVBoxLayout(content)
         content_layout.setContentsMargins(6, 8, 6, 16)
@@ -717,7 +712,7 @@ class AegisDeckShell(QWidget):
 
     def _make_assembly_panel(self) -> QWidget:
         assembly_panel = QFrame(self)
-        assembly_panel.setObjectName('aegisDeckAssemblyPanel')
+        assembly_panel.setObjectName('cloudflare_guardianDeckAssemblyPanel')
         assembly_panel.setFrameShape(QFrame.NoFrame)
         assembly_panel.setProperty('visualRole', 'deck-status-strip')
         assembly_panel.setProperty('visualTier', 'themed')
@@ -726,23 +721,22 @@ class AegisDeckShell(QWidget):
         assembly_layout.setSpacing(6)
 
         assembly_title = QLabel('Assembly posture', assembly_panel)
-        assembly_title.setObjectName('aegisDeckAssemblyTitle')
+        assembly_title.setObjectName('cloudflare_guardianDeckAssemblyTitle')
         assembly_layout.addWidget(assembly_title)
 
         self._availability_label = QLabel('', assembly_panel)
-        self._availability_label.setObjectName('aegisDeckAssemblyAvailability')
+        self._availability_label.setObjectName('cloudflare_guardianDeckAssemblyAvailability')
         self._availability_label.setWordWrap(True)
         assembly_layout.addWidget(self._availability_label)
 
         self._compatibility_label = QLabel('', assembly_panel)
-        self._compatibility_label.setObjectName('aegisDeckAssemblyCompatibility')
+        self._compatibility_label.setObjectName('cloudflare_guardianDeckAssemblyCompatibility')
         self._compatibility_label.setWordWrap(True)
         assembly_layout.addWidget(self._compatibility_label)
         return assembly_panel
 
     def _on_tab_changed(self, index: int) -> None:
-        mapping = {0: 'briefing', 1: 'workbench', 2: 'topology'}
-        next_tab = mapping.get(int(index), 'briefing')
+        next_tab = self._runtime.set_active_tab_from_index(int(index))
         self._active_tab_id = next_tab
         if next_tab == 'workbench':
             self._ensure_workbench_controls()
@@ -765,7 +759,7 @@ class AegisDeckShell(QWidget):
             self._refresh_topology(snapshot)
         else:
             self._refresh_briefing(snapshot)
-        self._tab_dirty.discard(tab_id)
+        self._runtime.mark_refreshed(tab_id)
 
     def _ensure_workbench_controls(self) -> None:
         command_binding = self._section_bindings.get('command_bar')
@@ -866,22 +860,17 @@ class AegisDeckShell(QWidget):
 
     def showEvent(self, event) -> None:  # type: ignore[override]
         super().showEvent(event)
+        self._runtime.set_runtime_visible(True)
         self._update_tab_activity(runtime_visible=True)
 
     def hideEvent(self, event) -> None:  # type: ignore[override]
         super().hideEvent(event)
+        self._runtime.set_runtime_visible(False)
         self._update_tab_activity(runtime_visible=False)
 
     @staticmethod
     def _section_owner_tab(section_id: str) -> str:
-        mapping = {
-            'context_spine': 'briefing',
-            'repo_pulse': 'briefing',
-            'command_bar': 'workbench',
-            'action_rail': 'workbench',
-            'graph_radar': 'topology',
-        }
-        return mapping.get(section_id, '')
+        return DeckRuntimeCoordinator.SECTION_OWNER.get(section_id, '')
 
     def _animate_tab_entry(self, tab_id: str) -> None:
         if self._animator is None:
@@ -906,7 +895,7 @@ class AegisDeckShell(QWidget):
 
     def _make_hero_panel(self) -> QWidget:
         panel = QFrame(self)
-        panel.setObjectName('aegisDeckHeroPanel')
+        panel.setObjectName('cloudflare_guardianDeckHeroPanel')
         panel.setFrameShape(QFrame.NoFrame)
         panel.setProperty('visualRole', 'deck-hero')
         panel.setProperty('visualTier', 'themed')
@@ -924,22 +913,22 @@ class AegisDeckShell(QWidget):
         headline_column.setContentsMargins(0, 0, 0, 0)
         headline_column.setSpacing(3)
 
-        eyebrow = QLabel('Aegis Deck workstation bridge', panel)
-        eyebrow.setObjectName('aegisDeckHeroEyebrow')
+        eyebrow = QLabel('Cloudflare Guardian Diagnostics workstation bridge', panel)
+        eyebrow.setObjectName('cloudflare_guardianDeckHeroEyebrow')
         headline_column.addWidget(eyebrow)
 
-        self._hero_title_label = QLabel('Aegis Deck shell ready', panel)
-        self._hero_title_label.setObjectName('aegisDeckHeroTitle')
+        self._hero_title_label = QLabel('Cloudflare Guardian Diagnostics shell ready', panel)
+        self._hero_title_label.setObjectName('cloudflare_guardianDeckHeroTitle')
         self._hero_title_label.setWordWrap(True)
         headline_column.addWidget(self._hero_title_label)
 
         self._hero_subtitle_label = QLabel('', panel)
-        self._hero_subtitle_label.setObjectName('aegisDeckHeroSubtitle')
+        self._hero_subtitle_label.setObjectName('cloudflare_guardianDeckHeroSubtitle')
         self._hero_subtitle_label.setWordWrap(True)
         headline_column.addWidget(self._hero_subtitle_label)
 
         self._hero_summary_label = QLabel('', panel)
-        self._hero_summary_label.setObjectName('aegisDeckHeroSummary')
+        self._hero_summary_label.setObjectName('cloudflare_guardianDeckHeroSummary')
         self._hero_summary_label.setWordWrap(True)
         headline_column.addWidget(self._hero_summary_label)
 
@@ -959,17 +948,17 @@ class AegisDeckShell(QWidget):
         layout.addLayout(top_row)
 
         bridge_strip = QFrame(panel)
-        bridge_strip.setObjectName('aegisDeckBridgeStrip')
+        bridge_strip.setObjectName('cloudflare_guardianDeckBridgeStrip')
         bridge_strip.setFrameShape(QFrame.NoFrame)
         strip_layout = QHBoxLayout(bridge_strip)
         strip_layout.setContentsMargins(0, 0, 0, 0)
         strip_layout.setSpacing(8)
         self._hero_focus_label = QLabel('', bridge_strip)
-        self._hero_focus_label.setObjectName('aegisDeckHeroFocus')
+        self._hero_focus_label.setObjectName('cloudflare_guardianDeckHeroFocus')
         self._hero_focus_label.setWordWrap(True)
         strip_layout.addWidget(self._hero_focus_label, 1)
         self._bridge_tabs_summary = QLabel('Briefing / Workbench / Topology', bridge_strip)
-        self._bridge_tabs_summary.setObjectName('aegisDeckBridgeTabsSummary')
+        self._bridge_tabs_summary.setObjectName('cloudflare_guardianDeckBridgeTabsSummary')
         self._bridge_tabs_summary.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
         strip_layout.addWidget(self._bridge_tabs_summary, 0)
         layout.addWidget(bridge_strip)
@@ -980,7 +969,7 @@ class AegisDeckShell(QWidget):
 
     def _make_metric_strip(self) -> QWidget:
         strip = QFrame(self)
-        strip.setObjectName('aegisDeckMetricStrip')
+        strip.setObjectName('cloudflare_guardianDeckMetricStrip')
         strip.setFrameShape(QFrame.NoFrame)
         strip.setProperty('visualRole', 'deck-row')
         strip.setProperty('visualTier', 'themed')
@@ -1166,52 +1155,20 @@ class AegisDeckShell(QWidget):
             except Exception:
                 return
         self._state_adapter = adapter
+        self._host_runtime.set_state_adapter(adapter)
 
     def _build_current_snapshot(self) -> dict[str, Any]:
-        if self._state_adapter is None:
-            return self._empty_snapshot()
-
-        raw_snapshot = None
-        refresh_snapshot = getattr(self._state_adapter, 'refresh_snapshot', None)
-        if callable(refresh_snapshot):
-            try:
-                raw_snapshot = refresh_snapshot()
-            except Exception:
-                raw_snapshot = None
-
-        if raw_snapshot is None:
-            getter = getattr(self._state_adapter, 'get_last_snapshot', None)
-            if callable(getter):
-                try:
-                    raw_snapshot = getter()
-                except Exception:
-                    raw_snapshot = None
-
-        if raw_snapshot is None:
-            builder = getattr(self._state_adapter, 'build_snapshot', None)
-            if callable(builder):
-                try:
-                    raw_snapshot = builder()
-                except Exception:
-                    raw_snapshot = None
-
-        if raw_snapshot is None:
-            payload_method = getattr(self._state_adapter, 'snapshot_payload', None)
-            if callable(payload_method):
-                try:
-                    raw_snapshot = payload_method()
-                except Exception:
-                    raw_snapshot = None
-
-        return self._normalize_snapshot(raw_snapshot)
+        return self._host_runtime.build_current_snapshot(
+            normalize_snapshot=self._normalize_snapshot_with_payload_fn,
+        )
 
     def _push_snapshot(self, snapshot: Any) -> None:
         normalized = self._normalize_snapshot(snapshot)
-        changed = normalized != self._snapshot
-        self._snapshot = normalized
+        changed = self._runtime.push_snapshot(normalized)
+        self._snapshot = dict(self._runtime.snapshot)
         if changed:
             self._refresh_shell_chrome()
-            self._tab_dirty.update({'briefing', 'workbench', 'topology'})
+            self._runtime.mark_all_tabs_dirty()
         elif not self._tab_dirty:
             self._update_tab_activity(runtime_visible=self.isVisible())
             return
@@ -1239,140 +1196,16 @@ class AegisDeckShell(QWidget):
             snapshot['focus_node_id'],
         ):
             self._maybe_call(radar, 'set_focus_node', snapshot['focus_node_id'])
-            self._note_compatibility('AegisGraphRadar: set_graph_data(nodes, edges, focus_node_id) compatibility fallback used because set_snapshot was unavailable.')
+            self._note_compatibility('CloudflareGuardianGraphRadar: set_graph_data(nodes, edges, focus_node_id) compatibility fallback used because set_snapshot was unavailable.')
             return
         if self._maybe_call(radar, 'refresh_now', dict(snapshot)):
-            self._note_compatibility('AegisGraphRadar: refresh_now(snapshot) compatibility fallback used because canonical routes were unavailable.')
+            self._note_compatibility('CloudflareGuardianGraphRadar: refresh_now(snapshot) compatibility fallback used because canonical routes were unavailable.')
 
     def _build_command_specs(self, snapshot: dict[str, Any]) -> list[dict[str, Any]]:
-        specs = []
-        seen: set[str] = set()
-        preview_relpath = snapshot['current_preview_relpath']
-        preview_payload = {'relpath': preview_relpath, 'line': 0, 'add_history': True} if preview_relpath else {}
-        rows = (
-            self._command_spec(
-                'execute_search',
-                'Run Search',
-                'Execute the current repo search from host state.',
-                shortcut='Return',
-                keywords=['search', 'query', 'results'],
-                enabled=self._dispatcher_has('execute_search'),
-            ),
-            self._command_spec(
-                'export_results',
-                'Export Results',
-                'Export the active result set when results exist.',
-                shortcut='Ctrl+E',
-                keywords=['export', 'results', 'report'],
-                enabled=self._dispatcher_has('export_results') and int(snapshot['results_count']) > 0,
-            ),
-            self._command_spec(
-                'navigate_back',
-                'Navigate Back',
-                'Move to the previous preview item.',
-                shortcut='Alt+Left',
-                keywords=['back', 'history', 'preview'],
-                enabled=self._dispatcher_has('navigate_back') and bool(snapshot['nav_can_go_back']),
-            ),
-            self._command_spec(
-                'navigate_forward',
-                'Navigate Forward',
-                'Move to the next preview item.',
-                shortcut='Alt+Right',
-                keywords=['forward', 'history', 'preview'],
-                enabled=self._dispatcher_has('navigate_forward') and bool(snapshot['nav_can_go_forward']),
-            ),
-            self._command_spec(
-                'open_file',
-                'Open Preview File',
-                'Open the current preview file using the canonical preview relpath when available.',
-                shortcut='Ctrl+O',
-                keywords=['preview', 'open', 'file'],
-                payload=preview_payload,
-                enabled=self._dispatcher_has('open_file') and bool(preview_relpath),
-            ),
-            self._command_spec(
-                'add_bookmark',
-                'Add Bookmark',
-                'Bookmark the current preview target.',
-                shortcut='Ctrl+D',
-                keywords=['bookmark', 'save', 'preview'],
-                enabled=self._dispatcher_has('add_bookmark') and bool(preview_relpath),
-            ),
-            self._command_spec(
-                'remove_bookmark',
-                'Remove Bookmark',
-                'Remove the selected bookmark when the host exposes one.',
-                shortcut='',
-                keywords=['bookmark', 'remove', 'selection'],
-                enabled=self._dispatcher_has('remove_bookmark') and int(snapshot['bookmarks_count']) > 0,
-            ),
-        )
-        for spec in rows:
-            name = spec['name']
-            if name in seen:
-                continue
-            seen.add(name)
-            specs.append(spec)
-        return specs
+        return self._host_runtime.build_command_specs(snapshot)
 
     def _build_action_specs(self, snapshot: dict[str, Any]) -> list[dict[str, Any]]:
-        actions = []
-        seen: set[str] = set()
-        preview_relpath = snapshot['current_preview_relpath']
-        preview_payload = {'relpath': preview_relpath, 'line': 0, 'add_history': True} if preview_relpath else {}
-        rows = (
-            self._action_spec(
-                'execute_search',
-                'Search',
-                'Run the current query.',
-                keywords=['search', 'query'],
-                enabled=self._dispatcher_has('execute_search'),
-            ),
-            self._action_spec(
-                'export_results',
-                'Export',
-                'Export the active result set.',
-                keywords=['export', 'results'],
-                enabled=self._dispatcher_has('export_results') and int(snapshot['results_count']) > 0,
-            ),
-            self._action_spec(
-                'open_file',
-                'Preview',
-                'Open the canonical preview relpath.',
-                keywords=['preview', 'open'],
-                payload=preview_payload,
-                enabled=self._dispatcher_has('open_file') and bool(preview_relpath),
-            ),
-            self._action_spec(
-                'navigate_back',
-                'Back',
-                'Navigate backward in preview history.',
-                keywords=['back', 'history'],
-                enabled=self._dispatcher_has('navigate_back') and bool(snapshot['nav_can_go_back']),
-            ),
-            self._action_spec(
-                'navigate_forward',
-                'Forward',
-                'Navigate forward in preview history.',
-                keywords=['forward', 'history'],
-                enabled=self._dispatcher_has('navigate_forward') and bool(snapshot['nav_can_go_forward']),
-            ),
-            self._action_spec(
-                'add_bookmark',
-                'Bookmark',
-                'Save the current preview to bookmarks.',
-                keywords=['bookmark', 'save'],
-                enabled=self._dispatcher_has('add_bookmark') and bool(preview_relpath),
-            ),
-        )
-        for action in rows:
-            action_id = action['action_id']
-            if action_id in seen:
-                continue
-            seen.add(action_id)
-            actions.append(action)
-        return actions
+        return self._host_runtime.build_action_specs(snapshot)
 
     def _command_spec(
         self,
@@ -1385,16 +1218,15 @@ class AegisDeckShell(QWidget):
         enabled: bool,
         payload: Mapping[str, Any] | None = None,
     ) -> dict[str, Any]:
-        return {
-            'name': name,
-            'title': title,
-            'description': description,
-            'shortcut': shortcut,
-            'keywords': list(keywords),
-            'payload': dict(payload or {}),
-            'enabled': bool(enabled),
-            'visible': True,
-        }
+        return _build_command_spec(
+            name,
+            title,
+            description,
+            shortcut=shortcut,
+            keywords=keywords,
+            enabled=enabled,
+            payload=payload,
+        )
 
     def _action_spec(
         self,
@@ -1406,70 +1238,34 @@ class AegisDeckShell(QWidget):
         enabled: bool,
         payload: Mapping[str, Any] | None = None,
     ) -> dict[str, Any]:
-        return {
-            'action_id': action_id,
-            'title': title,
-            'description': description,
-            'keywords': list(keywords),
-            'payload': dict(payload or {}),
-            'enabled': bool(enabled),
-            'visible': True,
-        }
+        return _build_action_spec(
+            action_id,
+            title,
+            description,
+            keywords=keywords,
+            enabled=enabled,
+            payload=payload,
+        )
 
     def _normalize_snapshot(self, snapshot: Any) -> dict[str, Any]:
-        if snapshot is None:
-            return self._empty_snapshot()
+        return self._normalize_snapshot_with_payload_fn(snapshot, self._snapshot_payload_fn)
 
-        if isinstance(snapshot, Mapping):
-            raw = dict(snapshot)
-        elif self._snapshot_payload_fn is not None:
-            try:
-                raw = self._coerce_mapping(self._snapshot_payload_fn(snapshot))
-            except Exception:
-                raw = {}
-        elif is_dataclass(snapshot):
-            raw = asdict(snapshot)
-        else:
-            raw = {
-                key: getattr(snapshot, key)
-                for key in _SNAPSHOT_FIELDS
-                if hasattr(snapshot, key)
-            }
-
-        normalized = self._empty_snapshot()
-        normalized['repo_root'] = self._coerce_string(raw.get('repo_root'))
-        normalized['repo_name'] = self._coerce_string(raw.get('repo_name'))
-        normalized['repo_ready'] = self._coerce_bool(raw.get('repo_ready'))
-        normalized['index_file_count'] = self._coerce_int(raw.get('index_file_count'))
-        normalized['index_ext_count'] = self._coerce_int(raw.get('index_ext_count'))
-        normalized['index_elapsed_sec'] = self._coerce_float(raw.get('index_elapsed_sec'))
-        normalized['active_scope'] = self._coerce_string(raw.get('active_scope'))
-        normalized['active_extension'] = self._coerce_string(raw.get('active_extension'))
-        normalized['query_text'] = self._coerce_string(raw.get('query_text'))
-        normalized['results_count'] = self._coerce_int(raw.get('results_count'))
-        normalized['current_preview_relpath'] = self._coerce_string(raw.get('current_preview_relpath'))
-        normalized['current_preview_path'] = self._coerce_string(raw.get('current_preview_path'))
-        normalized['current_preview_kind'] = self._coerce_string(raw.get('current_preview_kind'))
-        normalized['nav_can_go_back'] = self._coerce_bool(raw.get('nav_can_go_back'))
-        normalized['nav_can_go_forward'] = self._coerce_bool(raw.get('nav_can_go_forward'))
-        normalized['bookmarks_count'] = self._coerce_int(raw.get('bookmarks_count'))
-        normalized['startup_status'] = self._coerce_string(raw.get('startup_status'))
-        normalized['warning_count'] = self._coerce_int(raw.get('warning_count'))
-        normalized['plugin_count'] = self._coerce_int(raw.get('plugin_count'))
-        normalized['status_text'] = self._coerce_string(raw.get('status_text'))
-        normalized['subtitle'] = self._coerce_string(raw.get('subtitle'))
-        normalized['nodes'] = self._coerce_list(raw.get('nodes'))
-        normalized['edges'] = self._coerce_list(raw.get('edges'))
-        normalized['hotspots'] = self._coerce_list(raw.get('hotspots'))
-        normalized['focus_node_id'] = self._coerce_string(raw.get('focus_node_id'))
-        return normalized
+    @staticmethod
+    def _normalize_snapshot_with_payload_fn(
+        snapshot: Any,
+        snapshot_payload_fn: Callable[[Any], Any] | None,
+    ) -> dict[str, Any]:
+        return _normalize_snapshot_payload(
+            snapshot,
+            snapshot_payload_fn=snapshot_payload_fn,
+        )
 
     def _refresh_shell_chrome(self) -> None:
         snapshot = self._snapshot
         available_slices = self._available_slice_names()
         missing_slices = self._missing_slice_names()
 
-        status_text = snapshot['status_text'] or 'Aegis Deck bridge online'
+        status_text = snapshot['status_text'] or 'Cloudflare Guardian Diagnostics bridge online'
         subtitle = snapshot['subtitle'] or self._default_subtitle(snapshot)
         summary = self._hero_detail(snapshot, available_slices)
         focus = self._hero_focus(snapshot)
@@ -1748,16 +1544,7 @@ class AegisDeckShell(QWidget):
         return theme_tokens
 
     def _dispatcher_has(self, name: str) -> bool:
-        dispatcher = self._dispatcher
-        if dispatcher is None:
-            return False
-        has_method = getattr(dispatcher, 'has', None)
-        if callable(has_method):
-            try:
-                return bool(has_method(name))
-            except Exception:
-                return False
-        return False
+        return self._host_runtime.dispatcher_has(name)
 
     def _available_slice_names(self) -> list[str]:
         names: list[str] = []
@@ -1859,6 +1646,11 @@ class AegisDeckShell(QWidget):
         if message not in self._compatibility_notes:
             self._compatibility_notes.append(message)
 
+    def _trace_runtime(self, message: str) -> None:
+        note = f"runtime:{message}"
+        if note not in self._compatibility_notes:
+            self._compatibility_notes.append(note)
+
     @staticmethod
     def _repolish_widget(widget: QWidget) -> None:
         style = widget.style()
@@ -1889,7 +1681,7 @@ class AegisDeckShell(QWidget):
         tab_focus = self._rgba(t['focus_ring'], 230)
         self.setStyleSheet(
             """
-            QWidget#aegisDeckShellRoot {
+            QWidget#cloudflare_guardianDeckShellRoot {
                 background: qlineargradient(
                     x1: 0, y1: 0, x2: 1, y2: 1,
                     stop: 0 %(bg)s,
@@ -1897,13 +1689,13 @@ class AegisDeckShell(QWidget):
                     stop: 1 %(bg_elevated)s
                 );
             }
-            QTabWidget#aegisDeckTabs::pane {
+            QTabWidget#cloudflare_guardianDeckTabs::pane {
                 border: 1px solid %(border)s;
                 border-radius: 14px;
                 background: %(pane_bg)s;
                 padding: 8px;
             }
-            QTabWidget#aegisDeckTabs QTabBar::tab {
+            QTabWidget#cloudflare_guardianDeckTabs QTabBar::tab {
                 background: %(tab_bg)s;
                 border: 1px solid %(border)s;
                 border-bottom-color: %(border_soft)s;
@@ -1915,85 +1707,85 @@ class AegisDeckShell(QWidget):
                 font-size: 11px;
                 font-weight: 600;
             }
-            QTabWidget#aegisDeckTabs QTabBar::tab:selected {
+            QTabWidget#cloudflare_guardianDeckTabs QTabBar::tab:selected {
                 background: %(tab_bg_selected)s;
                 color: %(text)s;
                 border-color: %(border_strong)s;
             }
-            QTabWidget#aegisDeckTabs QTabBar::tab:hover:!selected {
+            QTabWidget#cloudflare_guardianDeckTabs QTabBar::tab:hover:!selected {
                 color: %(text)s;
                 border-color: %(border_strong)s;
             }
-            QTabWidget#aegisDeckTabs QTabBar::tab:focus {
+            QTabWidget#cloudflare_guardianDeckTabs QTabBar::tab:focus {
                 border-color: %(tab_focus)s;
             }
-            QWidget#aegisDeckShellRoot[compactMode="true"] QTabWidget#aegisDeckTabs QTabBar::tab {
+            QWidget#cloudflare_guardianDeckShellRoot[compactMode="true"] QTabWidget#cloudflare_guardianDeckTabs QTabBar::tab {
                 padding: 5px 9px;
                 margin-right: 4px;
                 font-size: 10px;
             }
-            QScrollArea#aegisDeckTabScroll_briefing,
-            QScrollArea#aegisDeckTabScroll_workbench,
-            QScrollArea#aegisDeckTabScroll_topology,
-            QWidget#aegisDeckTabContent_briefing,
-            QWidget#aegisDeckTabContent_workbench,
-            QWidget#aegisDeckTabContent_topology,
-            QWidget#aegisDeckControlsRow,
-            QFrame#aegisDeckMetricStrip {
+            QScrollArea#cloudflare_guardianDeckTabScroll_briefing,
+            QScrollArea#cloudflare_guardianDeckTabScroll_workbench,
+            QScrollArea#cloudflare_guardianDeckTabScroll_topology,
+            QWidget#cloudflare_guardianDeckTabContent_briefing,
+            QWidget#cloudflare_guardianDeckTabContent_workbench,
+            QWidget#cloudflare_guardianDeckTabContent_topology,
+            QWidget#cloudflare_guardianDeckControlsRow,
+            QFrame#cloudflare_guardianDeckMetricStrip {
                 background: transparent;
                 border: none;
             }
-            QScrollArea#aegisDeckTabScroll_briefing QScrollBar:vertical,
-            QScrollArea#aegisDeckTabScroll_workbench QScrollBar:vertical,
-            QScrollArea#aegisDeckTabScroll_topology QScrollBar:vertical {
+            QScrollArea#cloudflare_guardianDeckTabScroll_briefing QScrollBar:vertical,
+            QScrollArea#cloudflare_guardianDeckTabScroll_workbench QScrollBar:vertical,
+            QScrollArea#cloudflare_guardianDeckTabScroll_topology QScrollBar:vertical {
                 background: %(scroll_track)s;
                 width: 10px;
                 border-radius: 5px;
                 margin: 6px 2px;
             }
-            QScrollArea#aegisDeckTabScroll_briefing QScrollBar::handle:vertical,
-            QScrollArea#aegisDeckTabScroll_workbench QScrollBar::handle:vertical,
-            QScrollArea#aegisDeckTabScroll_topology QScrollBar::handle:vertical {
+            QScrollArea#cloudflare_guardianDeckTabScroll_briefing QScrollBar::handle:vertical,
+            QScrollArea#cloudflare_guardianDeckTabScroll_workbench QScrollBar::handle:vertical,
+            QScrollArea#cloudflare_guardianDeckTabScroll_topology QScrollBar::handle:vertical {
                 background: %(scroll_handle)s;
                 min-height: 36px;
                 border-radius: 5px;
             }
-            QScrollArea#aegisDeckTabScroll_briefing QScrollBar::handle:vertical:hover,
-            QScrollArea#aegisDeckTabScroll_workbench QScrollBar::handle:vertical:hover,
-            QScrollArea#aegisDeckTabScroll_topology QScrollBar::handle:vertical:hover {
+            QScrollArea#cloudflare_guardianDeckTabScroll_briefing QScrollBar::handle:vertical:hover,
+            QScrollArea#cloudflare_guardianDeckTabScroll_workbench QScrollBar::handle:vertical:hover,
+            QScrollArea#cloudflare_guardianDeckTabScroll_topology QScrollBar::handle:vertical:hover {
                 background: %(scroll_handle_hover)s;
             }
-            QScrollArea#aegisDeckTabScroll_briefing QScrollBar::add-line:vertical,
-            QScrollArea#aegisDeckTabScroll_briefing QScrollBar::sub-line:vertical,
-            QScrollArea#aegisDeckTabScroll_briefing QScrollBar::add-page:vertical,
-            QScrollArea#aegisDeckTabScroll_briefing QScrollBar::sub-page:vertical,
-            QScrollArea#aegisDeckTabScroll_workbench QScrollBar::add-line:vertical,
-            QScrollArea#aegisDeckTabScroll_workbench QScrollBar::sub-line:vertical,
-            QScrollArea#aegisDeckTabScroll_workbench QScrollBar::add-page:vertical,
-            QScrollArea#aegisDeckTabScroll_workbench QScrollBar::sub-page:vertical,
-            QScrollArea#aegisDeckTabScroll_topology QScrollBar::add-line:vertical,
-            QScrollArea#aegisDeckTabScroll_topology QScrollBar::sub-line:vertical,
-            QScrollArea#aegisDeckTabScroll_topology QScrollBar::add-page:vertical,
-            QScrollArea#aegisDeckTabScroll_topology QScrollBar::sub-page:vertical {
+            QScrollArea#cloudflare_guardianDeckTabScroll_briefing QScrollBar::add-line:vertical,
+            QScrollArea#cloudflare_guardianDeckTabScroll_briefing QScrollBar::sub-line:vertical,
+            QScrollArea#cloudflare_guardianDeckTabScroll_briefing QScrollBar::add-page:vertical,
+            QScrollArea#cloudflare_guardianDeckTabScroll_briefing QScrollBar::sub-page:vertical,
+            QScrollArea#cloudflare_guardianDeckTabScroll_workbench QScrollBar::add-line:vertical,
+            QScrollArea#cloudflare_guardianDeckTabScroll_workbench QScrollBar::sub-line:vertical,
+            QScrollArea#cloudflare_guardianDeckTabScroll_workbench QScrollBar::add-page:vertical,
+            QScrollArea#cloudflare_guardianDeckTabScroll_workbench QScrollBar::sub-page:vertical,
+            QScrollArea#cloudflare_guardianDeckTabScroll_topology QScrollBar::add-line:vertical,
+            QScrollArea#cloudflare_guardianDeckTabScroll_topology QScrollBar::sub-line:vertical,
+            QScrollArea#cloudflare_guardianDeckTabScroll_topology QScrollBar::add-page:vertical,
+            QScrollArea#cloudflare_guardianDeckTabScroll_topology QScrollBar::sub-page:vertical {
                 background: transparent;
                 border: none;
                 height: 0px;
             }
-            QFrame#aegisDeckHeroPanel,
-            QFrame#aegisDeckAssemblyPanel,
-            QFrame#aegisDeck_command_bar,
-            QFrame#aegisDeck_action_rail,
-            QFrame#aegisDeck_context_spine,
-            QFrame#aegisDeck_repo_pulse,
-            QFrame#aegisDeck_graph_radar,
-            QFrame#aegisDeckMetricCard,
-            QFrame#aegisDeckFallbackSlate {
+            QFrame#cloudflare_guardianDeckHeroPanel,
+            QFrame#cloudflare_guardianDeckAssemblyPanel,
+            QFrame#cloudflare_guardianDeck_command_bar,
+            QFrame#cloudflare_guardianDeck_action_rail,
+            QFrame#cloudflare_guardianDeck_context_spine,
+            QFrame#cloudflare_guardianDeck_repo_pulse,
+            QFrame#cloudflare_guardianDeck_graph_radar,
+            QFrame#cloudflare_guardianDeckMetricCard,
+            QFrame#cloudflare_guardianDeckFallbackSlate {
                 background: %(panel)s;
                 border: 1px solid %(border)s;
                 border-radius: 16px;
             }
-            QFrame#aegisDeck_graph_radar,
-            QFrame#aegisDeckTopologySummary {
+            QFrame#cloudflare_guardianDeck_graph_radar,
+            QFrame#cloudflare_guardianDeckTopologySummary {
                 background: qlineargradient(
                     x1: 0, y1: 0, x2: 1, y2: 1,
                     stop: 0 %(code_bg)s,
@@ -2002,7 +1794,7 @@ class AegisDeckShell(QWidget):
                 );
                 border-color: %(code_line)s;
             }
-            QFrame#aegisDeckHeroPanel {
+            QFrame#cloudflare_guardianDeckHeroPanel {
                 background: qlineargradient(
                     x1: 0, y1: 0, x2: 1, y2: 1,
                     stop: 0 %(panel_alt)s,
@@ -2011,23 +1803,23 @@ class AegisDeckShell(QWidget):
                 );
                 border: 1px solid %(border_strong)s;
             }
-            QFrame#aegisDeckAssemblyPanel {
+            QFrame#cloudflare_guardianDeckAssemblyPanel {
                 border-radius: 14px;
             }
-            QFrame#aegisDeckMetricCard:hover,
-            QFrame#aegisDeckFallbackSlate:hover,
-            QFrame#aegisDeck_command_bar:hover,
-            QFrame#aegisDeck_action_rail:hover,
-            QFrame#aegisDeck_context_spine:hover,
-            QFrame#aegisDeck_repo_pulse:hover,
-            QFrame#aegisDeck_graph_radar:hover {
+            QFrame#cloudflare_guardianDeckMetricCard:hover,
+            QFrame#cloudflare_guardianDeckFallbackSlate:hover,
+            QFrame#cloudflare_guardianDeck_command_bar:hover,
+            QFrame#cloudflare_guardianDeck_action_rail:hover,
+            QFrame#cloudflare_guardianDeck_context_spine:hover,
+            QFrame#cloudflare_guardianDeck_repo_pulse:hover,
+            QFrame#cloudflare_guardianDeck_graph_radar:hover {
                 background: %(panel_hover)s;
                 border-color: %(border_strong)s;
             }
-            QLabel#aegisDeckHeroEyebrow,
-            QLabel#aegisDeckMetricEyebrow,
-            QLabel#aegisDeckAssemblyTitle,
-            QLabel#aegisDeckContractHintText {
+            QLabel#cloudflare_guardianDeckHeroEyebrow,
+            QLabel#cloudflare_guardianDeckMetricEyebrow,
+            QLabel#cloudflare_guardianDeckAssemblyTitle,
+            QLabel#cloudflare_guardianDeckContractHintText {
                 color: %(text_soft)s;
                 font-size: 11px;
                 font-weight: 600;
@@ -2036,35 +1828,35 @@ class AegisDeckShell(QWidget):
                 background: transparent;
                 border: none;
             }
-            QLabel#aegisDeckHeroTitle {
+            QLabel#cloudflare_guardianDeckHeroTitle {
                 color: %(text)s;
                 font-size: 20px;
                 font-weight: 700;
                 background: transparent;
                 border: none;
             }
-            QWidget#aegisDeckShellRoot[compactMode="true"] QLabel#aegisDeckHeroTitle {
+            QWidget#cloudflare_guardianDeckShellRoot[compactMode="true"] QLabel#cloudflare_guardianDeckHeroTitle {
                 font-size: 17px;
             }
-            QLabel#aegisDeckHeroSubtitle {
+            QLabel#cloudflare_guardianDeckHeroSubtitle {
                 color: %(text_muted)s;
                 font-size: 13px;
                 background: transparent;
                 border: none;
             }
-            QWidget#aegisDeckShellRoot[compactMode="true"] QLabel#aegisDeckHeroSubtitle {
+            QWidget#cloudflare_guardianDeckShellRoot[compactMode="true"] QLabel#cloudflare_guardianDeckHeroSubtitle {
                 font-size: 12px;
             }
-            QLabel#aegisDeckHeroSummary,
-            QLabel#aegisDeckHeroFocus,
-            QLabel#aegisDeckBridgeTabsSummary,
-            QLabel#aegisDeckAssemblyAvailability,
-            QLabel#aegisDeckAssemblyCompatibility,
-            QLabel#aegisDeckFallbackDetail,
-            QLabel#aegisDeckFallbackFooter,
-            QLabel#aegisDeckMetricDetail,
-            QLabel#aegisDeckWorkbenchStripText,
-            QLabel#aegisDeckTopologySummaryText,
+            QLabel#cloudflare_guardianDeckHeroSummary,
+            QLabel#cloudflare_guardianDeckHeroFocus,
+            QLabel#cloudflare_guardianDeckBridgeTabsSummary,
+            QLabel#cloudflare_guardianDeckAssemblyAvailability,
+            QLabel#cloudflare_guardianDeckAssemblyCompatibility,
+            QLabel#cloudflare_guardianDeckFallbackDetail,
+            QLabel#cloudflare_guardianDeckFallbackFooter,
+            QLabel#cloudflare_guardianDeckMetricDetail,
+            QLabel#cloudflare_guardianDeckWorkbenchStripText,
+            QLabel#cloudflare_guardianDeckTopologySummaryText,
             QLabel[slot="subtitle"],
             QLabel[slot="status"] {
                 color: %(text_muted)s;
@@ -2072,54 +1864,54 @@ class AegisDeckShell(QWidget):
                 background: transparent;
                 border: none;
             }
-            QLabel#aegisDeckBridgeTabsSummary {
+            QLabel#cloudflare_guardianDeckBridgeTabsSummary {
                 color: %(accent)s;
                 font-weight: 600;
             }
-            QFrame#aegisDeckWorkbenchStrip,
-            QFrame#aegisDeckTopologySummary {
+            QFrame#cloudflare_guardianDeckWorkbenchStrip,
+            QFrame#cloudflare_guardianDeckTopologySummary {
                 background: %(strip_bg)s;
                 border: 1px solid %(border_soft)s;
                 border-radius: 12px;
             }
-            QFrame#aegisDeckTopologyPlaceholder {
+            QFrame#cloudflare_guardianDeckTopologyPlaceholder {
                 background: %(strip_bg)s;
                 border: 1px dashed %(border_soft)s;
                 border-radius: 12px;
             }
-            QLabel#aegisDeckTopologyPlaceholderTitle {
+            QLabel#cloudflare_guardianDeckTopologyPlaceholderTitle {
                 color: %(text)s;
                 font-size: 13px;
                 font-weight: 700;
                 background: transparent;
                 border: none;
             }
-            QLabel#aegisDeckTopologyPlaceholderDetail {
+            QLabel#cloudflare_guardianDeckTopologyPlaceholderDetail {
                 color: %(text_muted)s;
                 font-size: 12px;
                 background: transparent;
                 border: none;
             }
-            QFrame#aegisDeckWorkbenchCommandPlaceholder,
-            QFrame#aegisDeckWorkbenchActionPlaceholder {
+            QFrame#cloudflare_guardianDeckWorkbenchCommandPlaceholder,
+            QFrame#cloudflare_guardianDeckWorkbenchActionPlaceholder {
                 background: %(strip_bg)s;
                 border: 1px dashed %(border_soft)s;
                 border-radius: 12px;
             }
-            QLabel#aegisDeckColdPlaceholderTitle {
+            QLabel#cloudflare_guardianDeckColdPlaceholderTitle {
                 color: %(text)s;
                 font-size: 12px;
                 font-weight: 700;
                 background: transparent;
                 border: none;
             }
-            QLabel#aegisDeckColdPlaceholderDetail {
+            QLabel#cloudflare_guardianDeckColdPlaceholderDetail {
                 color: %(text_muted)s;
                 font-size: 11px;
                 background: transparent;
                 border: none;
             }
-            QLabel#aegisDeckTopologySummaryTitle {
+            QLabel#cloudflare_guardianDeckTopologySummaryTitle {
                 color: %(text)s;
                 font-size: 12px;
                 font-weight: 700;
@@ -2128,15 +1920,15 @@ class AegisDeckShell(QWidget):
                 background: transparent;
                 border: none;
             }
-            QLabel#aegisDeckMetricValue {
+            QLabel#cloudflare_guardianDeckMetricValue {
                 color: %(text)s;
                 font-size: 21px;
                 font-weight: 700;
                 background: transparent;
                 border: none;
             }
-            QLabel#aegisDeckMetricCaption,
-            QLabel#aegisDeckFallbackHeadline,
+            QLabel#cloudflare_guardianDeckMetricCaption,
+            QLabel#cloudflare_guardianDeckFallbackHeadline,
             QLabel[slot="title"] {
                 color: %(text)s;
                 font-size: 13px;
@@ -2144,7 +1936,7 @@ class AegisDeckShell(QWidget):
                 background: transparent;
                 border: none;
             }
-            QLabel#aegisDeckTonePill {
+            QLabel#cloudflare_guardianDeckTonePill {
                 border-radius: 10px;
                 padding: 2px 7px;
                 font-size: 10px;
@@ -2153,46 +1945,46 @@ class AegisDeckShell(QWidget):
                 color: %(text)s;
                 border: 1px solid %(border)s;
             }
-            QLabel#aegisDeckTonePill[tone="muted"] {
+            QLabel#cloudflare_guardianDeckTonePill[tone="muted"] {
                 background: %(panel_active)s;
                 color: %(text_muted)s;
                 border-color: %(border)s;
             }
-            QLabel#aegisDeckTonePill[tone="accent"] {
+            QLabel#cloudflare_guardianDeckTonePill[tone="accent"] {
                 background: %(accent_soft)s;
                 color: %(accent)s;
                 border-color: %(accent_glow)s;
             }
-            QLabel#aegisDeckTonePill[tone="success"] {
+            QLabel#cloudflare_guardianDeckTonePill[tone="success"] {
                 background: %(success_bg)s;
                 color: %(success)s;
                 border-color: %(success_border)s;
             }
-            QLabel#aegisDeckTonePill[tone="warning"] {
+            QLabel#cloudflare_guardianDeckTonePill[tone="warning"] {
                 background: %(warning_bg)s;
                 color: %(warning)s;
                 border-color: %(warning_border)s;
             }
-            QLabel#aegisDeckTonePill[tone="danger"] {
+            QLabel#cloudflare_guardianDeckTonePill[tone="danger"] {
                 background: %(danger_bg)s;
                 color: %(danger)s;
                 border-color: %(danger_border)s;
             }
-            QFrame#aegisDeckContractHint {
+            QFrame#cloudflare_guardianDeckContractHint {
                 background: %(panel)s;
                 border: 1px solid %(border_soft)s;
                 border-radius: 11px;
             }
-            QFrame#aegisDeckFallbackSlate[tone="warning"],
-            QFrame#aegisDeckMetricCard[tone="warning"] {
+            QFrame#cloudflare_guardianDeckFallbackSlate[tone="warning"],
+            QFrame#cloudflare_guardianDeckMetricCard[tone="warning"] {
                 border-color: rgba(216, 178, 104, 0.28);
             }
-            QFrame#aegisDeckFallbackSlate[tone="accent"],
-            QFrame#aegisDeckMetricCard[tone="accent"] {
+            QFrame#cloudflare_guardianDeckFallbackSlate[tone="accent"],
+            QFrame#cloudflare_guardianDeckMetricCard[tone="accent"] {
                 border-color: rgba(220, 162, 105, 0.28);
             }
-            QFrame#aegisDeckFallbackSlate[tone="success"],
-            QFrame#aegisDeckMetricCard[tone="success"] {
+            QFrame#cloudflare_guardianDeckFallbackSlate[tone="success"],
+            QFrame#cloudflare_guardianDeckMetricCard[tone="success"] {
                 border-color: rgba(93, 196, 143, 0.28);
             }
             QLabel[tone="muted"] {
@@ -2252,85 +2044,41 @@ class AegisDeckShell(QWidget):
 
     @staticmethod
     def _empty_snapshot() -> dict[str, Any]:
-        snapshot = {}
-        for key, value in _SNAPSHOT_DEFAULTS.items():
-            snapshot[key] = list(value) if isinstance(value, list) else value
-        return snapshot
+        return _snapshot_empty()
 
     @staticmethod
     def _coerce_mapping(value: Any) -> dict[str, Any]:
-        if isinstance(value, Mapping):
-            return dict(value)
-        return {}
+        return _snapshot_coerce_mapping(value)
 
     @staticmethod
     def _coerce_string(value: Any) -> str:
-        if value is None:
-            return ''
-        if isinstance(value, str):
-            return value
-        return str(value)
+        return _snapshot_coerce_string(value)
 
     @staticmethod
     def _coerce_bool(value: Any) -> bool:
-        if isinstance(value, bool):
-            return value
-        if isinstance(value, (int, float)):
-            return bool(value)
-        if isinstance(value, str):
-            return value.strip().lower() in {'1', 'true', 'yes', 'on'}
-        return False
+        return _snapshot_coerce_bool(value)
 
     @staticmethod
     def _coerce_int(value: Any) -> int:
-        if isinstance(value, bool):
-            return int(value)
-        if isinstance(value, int):
-            return value
-        if isinstance(value, float):
-            return int(value)
-        if isinstance(value, str):
-            try:
-                return int(float(value.strip()))
-            except ValueError:
-                return 0
-        return 0
+        return _snapshot_coerce_int(value)
 
     @staticmethod
     def _coerce_float(value: Any) -> float:
-        if isinstance(value, bool):
-            return float(int(value))
-        if isinstance(value, (int, float)):
-            return float(value)
-        if isinstance(value, str):
-            try:
-                return float(value.strip())
-            except ValueError:
-                return 0.0
-        return 0.0
+        return _snapshot_coerce_float(value)
 
     @staticmethod
     def _coerce_list(value: Any) -> list[Any]:
-        if isinstance(value, list):
-            return list(value)
-        if isinstance(value, tuple):
-            return list(value)
-        return []
+        return _snapshot_coerce_list(value)
 
     @staticmethod
     def _format_elapsed(value: Any) -> str:
-        elapsed = AegisDeckShell._coerce_float(value)
-        if elapsed <= 0.0:
-            return '0.0s'
-        if elapsed < 10.0:
-            return f'{elapsed:.2f}s'
-        return f'{elapsed:.1f}s'
+        return _snapshot_format_elapsed(value)
 
     @staticmethod
     def _section_object_name(section_id: str) -> str:
         normalized = ''.join(ch if ch.isalnum() else '_' for ch in section_id.strip().lower())
         normalized = normalized.strip('_') or 'section'
-        return f'aegisDeck_{normalized}'
+        return f'cloudflare_guardianDeck_{normalized}'
 
     @staticmethod
     def _rgba(color_text: object, alpha: int) -> str:
@@ -2340,3 +2088,5 @@ class AegisDeckShell(QWidget):
         alpha_value = max(0, min(255, int(alpha)))
         color.setAlpha(alpha_value)
         return f'rgba({color.red()}, {color.green()}, {color.blue()}, {color.alpha()})'
+
+

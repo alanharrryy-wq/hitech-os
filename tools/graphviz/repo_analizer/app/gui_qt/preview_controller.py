@@ -47,15 +47,15 @@ class PreviewController:
         preview_title_box.setContentsMargins(0, 0, 0, 0)
         preview_title_box.setSpacing(3)
 
-        self.main.preview_title_label = QLabel('Sin archivo seleccionado', preview_card)
+        self.main.preview_title_label = QLabel('No file selected', preview_card)
         self.main.preview_title_label.setObjectName('heroTitleLabel')
-        self.main.preview_meta_label = QLabel('Selecciona algo del árbol o desde resultados', preview_card)
+        self.main.preview_meta_label = QLabel('Select an item from explorer or search results', preview_card)
         self.main.preview_meta_label.setObjectName('panelMutedLabel')
         preview_title_box.addWidget(self.main.preview_title_label)
         preview_title_box.addWidget(self.main.preview_meta_label)
         preview_header.addLayout(preview_title_box, 1)
 
-        self.main.open_system_btn = SecondaryButton('Abrir con sistema', skin_tokens, preview_card)
+        self.main.open_system_btn = SecondaryButton('Open with system', skin_tokens, preview_card)
         self.main.open_system_btn.clicked.connect(self.main.open_current_preview_with_system)
         preview_header.addWidget(self.main.open_system_btn)
 
@@ -82,7 +82,7 @@ class PreviewController:
         preview_layout.addWidget(self.main.preview, 1)
 
         self.main.preview_hint_label = QLabel(
-            'Doble clic en árbol o resultados para abrir en sistema. Alt+Left / Alt+Right para historial.',
+            'Double click explorer/results to open with system. Alt+Left / Alt+Right for history.',
             preview_card
         )
         self.main.preview_hint_label.setObjectName('panelMutedLabel')
@@ -99,7 +99,7 @@ class PreviewController:
 
         # Header
         insights_header = QHBoxLayout()
-        insights_title = QLabel('Inspector central', insights_card)
+        insights_title = QLabel('Context Inspector', insights_card)
         insights_title.setObjectName('heroTitleLabel')
         insights_header.addWidget(insights_title)
         insights_header.addStretch(1)
@@ -135,7 +135,7 @@ class PreviewController:
         self.main.imports_tree.setObjectName('importsTreeSurface')
         self.main.imports_tree.setProperty('visualRole', 'summary-surface')
         self.main.imports_tree.setProperty('visualTier', 'themed')
-        self.main.imports_tree.setHeaderLabels(['Import', 'Resuelto'])
+        self.main.imports_tree.setHeaderLabels(['Import', 'Resolved'])
         self.main.imports_tree.itemDoubleClicked.connect(self.on_import_double_click)
 
         # Dependents tab
@@ -143,7 +143,7 @@ class PreviewController:
         self.main.dependents_tree.setObjectName('dependentsTreeSurface')
         self.main.dependents_tree.setProperty('visualRole', 'summary-surface')
         self.main.dependents_tree.setProperty('visualTier', 'themed')
-        self.main.dependents_tree.setHeaderLabels(['Archivo dependiente'])
+        self.main.dependents_tree.setHeaderLabels(['Dependent file'])
         self.main.dependents_tree.itemDoubleClicked.connect(self.on_dependent_double_click)
 
         self.main.insights_tabs.addTab(self.main.stats_text, 'Stats')
@@ -159,7 +159,7 @@ class PreviewController:
         try:
             preview = self.main.backend.build_preview(self.main.index_data, relpath, line=line)
         except Exception as e:
-            QMessageBox.critical(self.main, 'Repo Analyzer', f'No se pudo abrir preview:\n{e}')
+            QMessageBox.critical(self.main, 'Workstation', f'Could not open preview:\n{e}')
             return
 
         self.main.current_preview_rel = preview.relpath
@@ -196,6 +196,10 @@ class PreviewController:
             Events.PREVIEW_OPENED,
             {'relpath': relpath, 'line': line, 'abspath': preview.abspath}
         )
+        self._update_workstation_context(
+            active_file_relpath=preview.relpath,
+            status_text="preview-open",
+        )
 
     def populate_imports(self, preview) -> None:
         """Populate imports tree tab."""
@@ -226,19 +230,19 @@ class PreviewController:
 
         lines = [
             f'Relpath: {preview.relpath}',
-            f'Ruta: {preview.abspath}',
-            f'Tamaño: {human_size(size)}',
-            f'Extensión: {path.suffix.lower() or "(sin extensión)"}',
-            f'Imports detectados: {len(preview.imports)}',
-            f'Dependents detectados: {len(preview.dependents)}',
+            f'Path: {preview.abspath}',
+            f'Size: {human_size(size)}',
+            f'Extension: {path.suffix.lower() or "(no extension)"}',
+            f'Imports detected: {len(preview.imports)}',
+            f'Dependents detected: {len(preview.dependents)}',
         ]
         if preview.line:
-            lines.append(f'Línea objetivo: {preview.line}')
+            lines.append(f'Target line: {preview.line}')
         if path.suffix.lower() == '.svg':
-            lines.append('Tip: usa SVG Workspace para paneo y zoom fino.')
+            lines.append('Tip: use SVG Workspace for pan/zoom.')
             canonical_path = self._legacy_graph_svg_candidate(path)
             if canonical_path is not None and canonical_path != path:
-                lines.append(f'Workspace SVG canónico: {canonical_path}')
+                lines.append(f'Canonical SVG Workspace path: {canonical_path}')
 
         self.main.file_summary.setPlainText('\n'.join(lines))
 
@@ -303,8 +307,8 @@ class PreviewController:
         if not svg_path.exists():
             QMessageBox.warning(
                 self.main,
-                'Repo Analyzer',
-                f'No se encontró el SVG para el workspace\n{svg_path}',
+                'Workstation',
+                f'SVG file was not found for workspace\n{svg_path}',
 
             )
             return
@@ -336,4 +340,13 @@ class PreviewController:
             else:
                 subprocess.Popen(['xdg-open', path])
         except Exception as e:
-            QMessageBox.warning(self.main, 'Repo Analyzer', f'No se pudo abrir con el sistema:\n{e}')
+            QMessageBox.warning(self.main, 'Workstation', f'Could not open with system:\n{e}')
+
+    def _update_workstation_context(self, **changes: object) -> None:
+        runtime = self.main.service_container.get("workstation_context")
+        if runtime is None:
+            return
+        try:
+            runtime.update(**changes)
+        except Exception:
+            return

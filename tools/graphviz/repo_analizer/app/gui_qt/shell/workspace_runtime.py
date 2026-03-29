@@ -16,6 +16,14 @@ if TYPE_CHECKING:
     from ..main_window import RepoAnalyzerMainWindow
 
 
+FOLDER_FILTER_ALL = "(all)"
+FOLDER_FILTER_ALL_LEGACY = "(todo)"
+EXT_FILTER_ALL = "(all)"
+EXT_FILTER_ALL_LEGACY = "(todas)"
+EXT_FILTER_NONE = "(no extension)"
+EXT_FILTER_NONE_LEGACY = "(sin extensión)"
+
+
 class WorkspaceRuntimeCoordinator(QObject):
     """Coordinate workspace runtime state: index, filters, stats and shell indicators."""
 
@@ -25,7 +33,7 @@ class WorkspaceRuntimeCoordinator(QObject):
 
     def choose_repo(self) -> None:
         start_dir = str(self.main.repo_combo.currentText() or Path.home())
-        folder = QFileDialog.getExistingDirectory(self.main, "Selecciona repo", start_dir)
+        folder = QFileDialog.getExistingDirectory(self.main, "Select repository", start_dir)
         if folder:
             self.main.repo_combo.setCurrentText(folder)
             self.main.backend.remember_repo(folder)
@@ -36,7 +44,7 @@ class WorkspaceRuntimeCoordinator(QObject):
         repo = self.main.repo_combo.currentText().strip()
         if not repo:
             if not auto:
-                QMessageBox.warning(self.main, APP_TITLE, "Ingresa una ruta de repo.")
+                QMessageBox.warning(self.main, APP_TITLE, "Enter a repository path.")
             return
 
         repo_path = Path(repo)
@@ -44,12 +52,12 @@ class WorkspaceRuntimeCoordinator(QObject):
             QMessageBox.critical(
                 self.main,
                 APP_TITLE,
-                "La ruta del repo no existe o no es una carpeta.",
+                "Repository path does not exist or is not a folder.",
             )
             return
 
         if self.main._index_thread is not None:
-            QMessageBox.information(self.main, APP_TITLE, "Ya hay un indexado en progreso.")
+            QMessageBox.information(self.main, APP_TITLE, "An indexing job is already running.")
             return
 
         self.main.backend.remember_repo(repo)
@@ -58,11 +66,20 @@ class WorkspaceRuntimeCoordinator(QObject):
 
         self.main.progress_bar.show()
         self.main.progress_bar.setRange(0, 0)
-        self.main.statusBar().showMessage("Indexando repo…")
+        self.main.statusBar().showMessage("Indexing repository…")
+        self.main.event_bus.publish(
+            Events.INDEX_STARTED,
+            {"root": str(repo_path)},
+        )
         self.main.hero_repo_label.setText(Path(repo).name or repo)
         self.main.hero_scope_label.setText(repo)
-        self.main.hero_mode_pill.setText("Indexando workspace")
-        self.main.log(f"Indexando: {repo_path}")
+        self.main.hero_mode_pill.setText("Indexing workspace")
+        self.main.log(f"Indexing: {repo_path}")
+        self._update_workstation_context(
+            repo_root=str(repo_path),
+            repo_name=repo_path.name or str(repo_path),
+            status_text="indexing",
+        )
 
         thread = QThread(self.main)
         worker = IndexWorker(
@@ -100,9 +117,9 @@ class WorkspaceRuntimeCoordinator(QObject):
         ext_counts = self.main.index_data.get("ext_counts", {})
         elapsed = self.main.index_data.get("stats", {}).get("elapsed_sec", 0)
 
-        self.main.status_summary.setText(f"{total_files} archivos | {len(ext_counts)} extensiones")
-        self.main.hero_mode_pill.setText("Workspace indexado")
-        self.main.log(f"Index listo: {total_files} archivos en {elapsed}s")
+        self.main.status_summary.setText(f"{total_files} files | {len(ext_counts)} extensions")
+        self.main.hero_mode_pill.setText("Workspace indexed")
+        self.main.log(f"Index ready: {total_files} files in {elapsed}s")
 
         self.main.tree_controller.rebuild_repo_tree()
         self.rebuild_filter_values()
@@ -120,9 +137,14 @@ class WorkspaceRuntimeCoordinator(QObject):
                 "elapsed_sec": elapsed,
             },
         )
+        self._update_workstation_context(
+            repo_root=str(self.main.index_data.get("root", "") or ""),
+            repo_name=Path(str(self.main.index_data.get("root", "") or "")).name,
+            status_text="indexed",
+        )
 
         self.main.statusBar().showMessage(
-            f'Repo indexado: {self.main.index_data.get("root", "")}',
+            f'Repository indexed: {self.main.index_data.get("root", "")}',
             3000,
         )
 
@@ -145,8 +167,8 @@ class WorkspaceRuntimeCoordinator(QObject):
         self.main.dependents_tree.clear()
         self.main.preview.clear()
         self.main.file_summary.clear()
-        self.main.preview_title_label.setText("Sin archivo seleccionado")
-        self.main.preview_meta_label.setText("Selecciona algo del árbol o desde resultados")
+        self.main.preview_title_label.setText("No file selected")
+        self.main.preview_meta_label.setText("Pick an item from explorer or search results")
         self.main.current_preview_rel = None
         self.main.current_preview_path = None
         self.main.search_results = []
@@ -161,32 +183,36 @@ class WorkspaceRuntimeCoordinator(QObject):
         self._update_metric_cards_idle()
 
     def rebuild_filter_values(self) -> None:
-        folders = ["(todo)", *sorted(self.main.index_data.get("folder_counts", {}).keys())]
+        folders = [FOLDER_FILTER_ALL, *sorted(self.main.index_data.get("folder_counts", {}).keys())]
         self.main.folder_combo.blockSignals(True)
         self.main.folder_combo.clear()
         self.main.folder_combo.addItems(folders)
-        existing = getattr(
+        existing = self._normalize_folder_filter(
+            getattr(
             self.main,
             "_pending_folder_filter",
-            self.main.backend.settings.get("last_folder_filter", "(todo)"),
+            self.main.backend.settings.get("last_folder_filter", FOLDER_FILTER_ALL),
+            )
         )
-        self.main.folder_combo.setCurrentText(existing if existing in folders else "(todo)")
+        self.main.folder_combo.setCurrentText(existing if existing in folders else FOLDER_FILTER_ALL)
         self.main.folder_combo.blockSignals(False)
 
         detected_exts = sorted(
             [ext for ext in self.main.index_data.get("ext_counts", {}).keys() if ext],
             key=str.lower,
         )
-        exts = ["(todas)", "TS/JS", "(sin extensión)", *detected_exts]
+        exts = [EXT_FILTER_ALL, "TS/JS", EXT_FILTER_NONE, *detected_exts]
         self.main.ext_combo.blockSignals(True)
         self.main.ext_combo.clear()
         self.main.ext_combo.addItems(exts)
-        current_ext = getattr(
+        current_ext = self._normalize_ext_filter(
+            getattr(
             self.main,
             "_pending_ext_filter",
-            self.main.backend.settings.get("last_ext_filter", "(todas)"),
+            self.main.backend.settings.get("last_ext_filter", EXT_FILTER_ALL),
+            )
         )
-        self.main.ext_combo.setCurrentText(current_ext if current_ext in exts else "(todas)")
+        self.main.ext_combo.setCurrentText(current_ext if current_ext in exts else EXT_FILTER_ALL)
         self.main.ext_combo.blockSignals(False)
 
         self.on_filter_inputs_changed()
@@ -194,7 +220,7 @@ class WorkspaceRuntimeCoordinator(QObject):
     def rebuild_quick_filters(self) -> None:
         counts = self.main.index_data.get("top_level_counts", {})
         values = [self.main.quick_filter_all_label]
-        self.main.quick_filter_map = {self.main.quick_filter_all_label: "(todo)"}
+        self.main.quick_filter_map = {self.main.quick_filter_all_label: FOLDER_FILTER_ALL}
 
         for folder, count in list(counts.items())[:30]:
             label = f"{folder} ({count})"
@@ -208,13 +234,15 @@ class WorkspaceRuntimeCoordinator(QObject):
         self.sync_quick_filter_combo()
 
     def sync_quick_filter_combo(self) -> None:
-        current_folder = self.main.folder_combo.currentText() or "(todo)"
+        current_folder = self._normalize_folder_filter(
+            self.main.folder_combo.currentText() or FOLDER_FILTER_ALL
+        )
         for label, folder in self.main.quick_filter_map.items():
             if folder == current_folder:
                 self.main.quick_filter_combo.setCurrentText(label)
                 return
 
-        if current_folder not in ("", "(todo)"):
+        if current_folder not in ("", FOLDER_FILTER_ALL):
             if self.main.quick_filter_combo.findText(self.main.quick_filter_manual_label) < 0:
                 self.main.quick_filter_combo.addItem(self.main.quick_filter_manual_label)
             self.main.quick_filter_combo.setCurrentText(self.main.quick_filter_manual_label)
@@ -223,24 +251,28 @@ class WorkspaceRuntimeCoordinator(QObject):
 
     def on_quick_filter_selected(self) -> None:
         label = self.main.quick_filter_combo.currentText().strip() or self.main.quick_filter_all_label
-        folder = self.main.quick_filter_map.get(label, "(todo)")
+        folder = self.main.quick_filter_map.get(label, FOLDER_FILTER_ALL)
         self.main.folder_combo.setCurrentText(folder)
         self.on_filter_inputs_changed()
 
     def on_filter_inputs_changed(self) -> None:
-        folder = self.main.folder_combo.currentText() or "(todo)"
-        ext = self.main.ext_combo.currentText() or "(todas)"
+        folder = self._normalize_folder_filter(self.main.folder_combo.currentText() or FOLDER_FILTER_ALL)
+        ext = self._normalize_ext_filter(self.main.ext_combo.currentText() or EXT_FILTER_ALL)
         self.main.backend.update_filter_settings(folder, ext)
         self.sync_quick_filter_combo()
 
-        scope = "todo el repo" if folder == "(todo)" else folder
+        scope = "full repository" if folder == FOLDER_FILTER_ALL else folder
         self.main.status_scope_label.setText(f"scope: {scope}")
         self.main.metric_scope.set_data(scope, f"ext: {ext}")
 
-        if folder == "(todo)":
-            self.main.statusBar().showMessage("Filtro de carpeta: todo el repo", 1600)
+        if folder == FOLDER_FILTER_ALL:
+            self.main.statusBar().showMessage("Folder filter: full repository", 1600)
         else:
-            self.main.statusBar().showMessage(f"Filtro de carpeta activo: {folder}", 1600)
+            self.main.statusBar().showMessage(f"Folder filter active: {folder}", 1600)
+        self._update_workstation_context(
+            active_scope=folder,
+            active_extension=ext,
+        )
 
     def on_include_hidden_changed(self) -> None:
         if self.main.index_data.get("root"):
@@ -250,8 +282,12 @@ class WorkspaceRuntimeCoordinator(QObject):
     def on_worker_error(self, error_text: str) -> None:
         self.main.progress_bar.hide()
         self.main.progress_bar.setRange(0, 1)
-        self.main.hero_mode_pill.setText("Error en pipeline")
+        self.main.hero_mode_pill.setText("Pipeline error")
         self.main.log(error_text)
+        self.main.event_bus.publish(
+            Events.INDEX_FAILED,
+            {"error": error_text},
+        )
         QMessageBox.critical(self.main, APP_TITLE, error_text)
 
     def render_stats(self) -> None:
@@ -262,11 +298,11 @@ class WorkspaceRuntimeCoordinator(QObject):
 
         stats = data.get("stats", {})
         lines = [
-            f"Repo: {data['root']}",
-            f"Archivos indexados: {len(data['files'])}",
-            f"Tiempo de indexado: {stats.get('elapsed_sec', 0)} s",
+            f"Repository: {data['root']}",
+            f"Indexed files: {len(data['files'])}",
+            f"Index time: {stats.get('elapsed_sec', 0)} s",
             "",
-            "Extensiones:",
+            "Extensions:",
         ]
 
         for ext, count in data.get("ext_counts", {}).items():
@@ -276,7 +312,7 @@ class WorkspaceRuntimeCoordinator(QObject):
         for folder, count in data.get("top_level_counts", {}).items():
             lines.append(f"  {folder:<28} {count}")
 
-        lines.extend(["", "Archivos más grandes:"])
+        lines.extend(["", "Largest files:"])
         for item in stats.get("largest_files", []):
             lines.append(f"  {human_size(item['size']).rjust(8)}   {item['relpath']}")
 
@@ -284,10 +320,10 @@ class WorkspaceRuntimeCoordinator(QObject):
 
     def _update_metric_cards_idle(self) -> None:
         repo_name = Path(self.main.repo_combo.currentText().strip() or "repo").name or "repo"
-        self.main.metric_repo.set_data(repo_name, "aún sin indexado")
-        self.main.metric_files.set_data("0", "archivos en memoria")
-        self.main.metric_scope.set_data("todo el repo", "scope inicial")
-        self.main.metric_results.set_data("0", "sin búsqueda")
+        self.main.metric_repo.set_data(repo_name, "not indexed yet")
+        self.main.metric_files.set_data("0", "files in memory")
+        self.main.metric_scope.set_data("full repository", "initial scope")
+        self.main.metric_results.set_data("0", "no search yet")
 
     def _update_metric_cards_after_index(self) -> None:
         repo_root = self.main.index_data.get("root", "")
@@ -300,16 +336,16 @@ class WorkspaceRuntimeCoordinator(QObject):
         total_ext = len(self.main.index_data.get("ext_counts", {}))
         elapsed = self.main.index_data.get("stats", {}).get("elapsed_sec", 0)
 
-        self.main.metric_repo.set_data(repo_name or "repo", repo_root or "ruta sin resolver")
-        self.main.metric_files.set_data(str(total_files), f"{total_ext} extensiones • {elapsed}s")
-        scope = self.main.folder_combo.currentText() or "(todo)"
+        self.main.metric_repo.set_data(repo_name or "repo", repo_root or "path not resolved")
+        self.main.metric_files.set_data(str(total_files), f"{total_ext} extensions • {elapsed}s")
+        scope = self._normalize_folder_filter(self.main.folder_combo.currentText() or FOLDER_FILTER_ALL)
         self.main.metric_scope.set_data(
-            "todo el repo" if scope == "(todo)" else scope,
-            self.main.ext_combo.currentText() or "(todas)",
+            "full repository" if scope == FOLDER_FILTER_ALL else scope,
+            self._normalize_ext_filter(self.main.ext_combo.currentText() or EXT_FILTER_ALL),
         )
         self.main.metric_results.set_data(
             str(len(self.main.search_results)),
-            self.main.search_box.text().strip() or "sin query activa",
+            self.main.search_box.text().strip() or "no active query",
         )
 
     def _update_preview_actions(self) -> None:
@@ -328,3 +364,28 @@ class WorkspaceRuntimeCoordinator(QObject):
             < len(self.main.navigation_controller._preview_history) - 1
         )
         self.main.bookmark_action.setEnabled(has_preview)
+
+    def _update_workstation_context(self, **changes: object) -> None:
+        runtime = self.main.service_container.get("workstation_context")
+        if runtime is None:
+            return
+        try:
+            runtime.update(**changes)
+        except Exception:
+            return
+
+    @staticmethod
+    def _normalize_folder_filter(value: str) -> str:
+        normalized = str(value or "").strip()
+        if normalized in {"", FOLDER_FILTER_ALL, FOLDER_FILTER_ALL_LEGACY}:
+            return FOLDER_FILTER_ALL
+        return normalized
+
+    @staticmethod
+    def _normalize_ext_filter(value: str) -> str:
+        normalized = str(value or "").strip()
+        if normalized in {"", EXT_FILTER_ALL, EXT_FILTER_ALL_LEGACY}:
+            return EXT_FILTER_ALL
+        if normalized in {EXT_FILTER_NONE, EXT_FILTER_NONE_LEGACY}:
+            return EXT_FILTER_NONE
+        return normalized

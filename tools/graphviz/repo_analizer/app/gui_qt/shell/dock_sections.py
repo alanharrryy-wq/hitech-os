@@ -56,7 +56,7 @@ class DockSectionFactory:
         file_layout = QVBoxLayout(file_tab)
         file_layout.setContentsMargins(8, 8, 8, 8)
         file_layout.setSpacing(8)
-        file_header = QLabel("Ficha del archivo", file_tab)
+        file_header = QLabel("File details", file_tab)
         file_header.setObjectName("heroTitleLabel")
         file_layout.addWidget(file_header)
 
@@ -98,9 +98,9 @@ class DockSectionFactory:
         button_row_layout.setContentsMargins(0, 0, 0, 0)
         button_row_layout.setSpacing(8)
 
-        self.main.bm_open_btn = SecondaryButton("Abrir", skin_tokens, button_row)
+        self.main.bm_open_btn = SecondaryButton("Open", skin_tokens, button_row)
         self.main.bm_open_btn.clicked.connect(self.main.open_selected_bookmark)
-        self.main.bm_remove_btn = GhostButton("Quitar", skin_tokens, button_row)
+        self.main.bm_remove_btn = GhostButton("Remove", skin_tokens, button_row)
         self.main.bm_remove_btn.clicked.connect(self.main.remove_selected_bookmark)
 
         for button in (self.main.bm_open_btn, self.main.bm_remove_btn):

@@ -312,7 +312,7 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
         selection-background-color: {tokens.selection};
         selection-color: {tokens.text};
         font-family: 'Segoe UI Variable Text', 'Segoe UI', sans-serif;
-        font-size: 10pt;
+        font-size: 11pt;
     }}
 
     QMainWindow {{
@@ -784,6 +784,9 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
         padding: 3px 4px;
     }}
 
+    QLabel#statusActivitySurface,
+    QLabel#statusToolSurface,
+    QLabel#statusRepoSurface,
     QLabel#statusScopeSurface,
     QLabel#statusSummarySurface {{
         color: {tokens.text_soft};
@@ -885,12 +888,12 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
     QLabel#svgHintLabel,
     QLabel#secondaryMetaLabel {{
         color: {tokens.text_muted};
-        font-size: 9pt;
+        font-size: 10pt;
     }}
 
     QLabel#toolbarSectionCaption {{
         color: {tokens.text_soft};
-        font-size: 8pt;
+        font-size: 9pt;
         font-weight: 700;
         letter-spacing: 1.0px;
         padding-left: 2px;
@@ -905,13 +908,13 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
         border: 1px solid {tokens.border_strong};
         border-radius: 999px;
         padding: 2px 9px;
-        font-size: 8.1pt;
+        font-size: 10pt;
         font-weight: 700;
     }}
 
     QLabel#svgStatusLabel {{
         color: {tokens.accent_hover};
-        font-size: 8.8pt;
+        font-size: 10pt;
         font-weight: 600;
     }}
 
@@ -923,13 +926,13 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
 
     QLabel#metricTitleLabel {{
         color: {tokens.text_soft};
-        font-size: 8.5pt;
+        font-size: 9.5pt;
         font-weight: 700;
     }}
 
     QLabel#metricCaptionLabel {{
         color: {tokens.text_muted};
-        font-size: 8.4pt;
+        font-size: 9.5pt;
     }}
 
     QLabel#sectionTitleLabel {{

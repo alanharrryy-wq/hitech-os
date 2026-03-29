@@ -1,6 +1,6 @@
-# Aegis Deck graph radar
+# Cloudflare Guardian Diagnostics graph radar
 
-`AegisGraphRadar` is a **graph consumer** for Aegis Deck.
+`CloudflareGuardianGraphRadar` is a **graph consumer** for Cloudflare Guardian Diagnostics.
 It renders graph state that already exists in the snapshot, normalizes sparse payloads deterministically, and does **not** invent upstream nodes, edges, hotspots-as-graph, or host-side graph semantics.
 
 ## Official public API
@@ -132,3 +132,4 @@ The widget reads only a narrow visual token subset:
 - keep alias handling local to the radar implementation
 - do not promote shell-local graph aliases into shared docs or summaries without a frozen-contract update first
 - treat this slice as a view over existing graph state, not as a hidden graph model builder
+

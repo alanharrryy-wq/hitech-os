@@ -33,12 +33,19 @@ class SkinRuntimeCoordinator:
 
         self.main._skin_tokens = apply_skin(app, self.main, skin_name)
 
-        settings = getattr(self.main, "settings", None)
-        if settings is not None:
+        preferences_runtime = getattr(self.main, "preferences_runtime", None)
+        if preferences_runtime is not None and hasattr(preferences_runtime, "update"):
             try:
-                settings.setValue("skin_name", skin_name)
+                preferences_runtime.update(skin_name=skin_name)
             except Exception:
-                self._log_runtime_warning("skin settings update failed")
+                self._log_runtime_warning("preferences runtime skin update failed")
+        else:
+            settings = getattr(self.main, "settings", None)
+            if settings is not None:
+                try:
+                    settings.setValue("skin_name", skin_name)
+                except Exception:
+                    self._log_runtime_warning("skin settings update failed")
 
         self._run_visual_runtime(force=True, reason='skin-change')
 
@@ -56,7 +63,7 @@ class SkinRuntimeCoordinator:
         if self._is_live_qt_object(status_bar):
             try:
                 status_bar.showMessage(
-                    f"Skin aplicada: {self.main._skin_tokens.display_name}",
+                    f"Skin applied: {self.main._skin_tokens.display_name}",
                     2400,
                 )
             except Exception:

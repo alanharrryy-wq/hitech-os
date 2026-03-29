@@ -4,6 +4,7 @@ from dataclasses import asdict, dataclass
 from typing import TYPE_CHECKING
 
 from .menu_shell import ShellMenuBuilder
+from ..ui_contribution_registry import MenuActionContribution, ToolbarActionContribution
 
 if TYPE_CHECKING:
     from ..main_window import RepoAnalyzerMainWindow
@@ -54,7 +55,12 @@ class ShellContributionBridge:
                 )
                 continue
             try:
-                self.main.dock_manager.add_plugin_dock(contribution, self.main._skin_tokens)
+                dock = self.main.dock_manager.add_plugin_dock(contribution, self.main._skin_tokens)
+                self._register_tool_surface(
+                    contribution_id=contribution_id,
+                    title=contribution.title,
+                    dock=dock,
+                )
             except Exception as exc:
                 self._log_apply_failure("dock", contribution_id, exc)
                 self._record_event(
@@ -82,7 +88,8 @@ class ShellContributionBridge:
                 )
                 continue
             try:
-                self.main.toolbar_controller.add_plugin_action(contribution)
+                routed_contribution = self._with_group_routing_for_toolbar(contribution)
+                self.main.toolbar_controller.add_plugin_action(routed_contribution)
             except Exception as exc:
                 self._log_apply_failure("toolbar", contribution_id, exc)
                 self._record_event(
@@ -110,7 +117,8 @@ class ShellContributionBridge:
                 )
                 continue
             try:
-                self.menu_builder.add_plugin_menu_action(contribution)
+                routed_contribution = self._with_group_routing_for_menu(contribution)
+                self.menu_builder.add_plugin_menu_action(routed_contribution)
             except Exception as exc:
                 self._log_apply_failure("menu", contribution_id, exc)
                 self._record_event(
@@ -128,6 +136,8 @@ class ShellContributionBridge:
             )
 
         self.main.menuBar().update()
+        self._restore_tool_workspace_state()
+        self.menu_builder.refresh_tool_entries()
 
     def get_integration_report(self) -> dict[str, object]:
         events = [asdict(event) for event in self._integration_events]
@@ -192,3 +202,105 @@ class ShellContributionBridge:
             except Exception:
                 pass
         print(message)
+
+    def _register_tool_surface(self, *, contribution_id: str, title: str, dock) -> None:
+        tool_workspace = self.main.service_container.get("tool_workspace")
+        if tool_workspace is None:
+            return
+        try:
+            tool_workspace.register_tool_surface(
+                contribution_id=contribution_id,
+                title=title,
+                dock=dock,
+            )
+        except Exception as exc:
+            self._record_event(
+                kind="tool-workspace",
+                contribution_id=contribution_id,
+                status="failed",
+                message=str(exc),
+            )
+
+    def _restore_tool_workspace_state(self) -> None:
+        tool_workspace = self.main.service_container.get("tool_workspace")
+        if tool_workspace is None:
+            return
+        try:
+            tool_workspace.restore_startup_state()
+        except Exception as exc:
+            self._record_event(
+                kind="tool-workspace",
+                contribution_id="startup",
+                status="failed",
+                message=str(exc),
+            )
+
+    def _with_group_routing_for_toolbar(
+        self,
+        contribution: ToolbarActionContribution,
+    ) -> ToolbarActionContribution:
+        tool_id = self._derive_tool_id_from_contribution(contribution.contribution_id)
+        callback = contribution.callback
+
+        def _wrapped_callback() -> None:
+            self._route_legacy_entry_to_group(
+                contribution_id=contribution.contribution_id,
+                tool_id=tool_id,
+                source="toolbar",
+            )
+            callback()
+
+        return ToolbarActionContribution(
+            contribution_id=contribution.contribution_id,
+            text=contribution.text,
+            callback=_wrapped_callback,
+            target=contribution.target,
+            tooltip=contribution.tooltip,
+            shortcut=contribution.shortcut,
+        )
+
+    def _with_group_routing_for_menu(
+        self,
+        contribution: MenuActionContribution,
+    ) -> MenuActionContribution:
+        tool_id = self._derive_tool_id_from_contribution(contribution.contribution_id)
+        callback = contribution.callback
+
+        def _wrapped_callback() -> None:
+            self._route_legacy_entry_to_group(
+                contribution_id=contribution.contribution_id,
+                tool_id=tool_id,
+                source="menu",
+            )
+            callback()
+
+        return MenuActionContribution(
+            contribution_id=contribution.contribution_id,
+            menu_path=contribution.menu_path,
+            text=contribution.text,
+            callback=_wrapped_callback,
+            tooltip=contribution.tooltip,
+            shortcut=contribution.shortcut,
+        )
+
+    def _derive_tool_id_from_contribution(self, contribution_id: str) -> str:
+        head = str(contribution_id or "").split(".", 1)[0]
+        normalized = "".join(ch if ch.isalnum() else "_" for ch in head.strip().lower())
+        return normalized.strip("_")
+
+    def _route_legacy_entry_to_group(
+        self,
+        *,
+        contribution_id: str,
+        tool_id: str,
+        source: str,
+    ) -> None:
+        if not tool_id:
+            return
+        runtime = self.main.service_container.get("shell_group_runtime")
+        if runtime is None or not hasattr(runtime, "activate_for_tool"):
+            return
+        try:
+            runtime.activate_for_tool(tool_id, reason=f"legacy-{source}:{contribution_id}")
+        except Exception:
+            return

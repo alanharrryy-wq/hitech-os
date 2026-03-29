@@ -58,10 +58,10 @@ class SearchController(QObject):
         results_table.setProperty('visualTier', 'themed')
         results_model = QStandardItemModel(0, 6, results_table)
         results_model.setHorizontalHeaderLabels([
-            'Ruta',
-            'Modificado',
-            'Tamaño',
-            'Extensión',
+            'Path',
+            'Modified',
+            'Size',
+            'Extension',
             'Hits',
             'Snippet',
         ])
@@ -100,14 +100,14 @@ class SearchController(QObject):
         # Folder combo
         self.main.folder_combo = QComboBox(search_tab)
         self.main.folder_combo.currentIndexChanged.connect(self.main.on_filter_inputs_changed)
-        search_form.addRow('Carpeta', self.main.folder_combo)
+        search_form.addRow('Folder', self.main.folder_combo)
 
         # Search options checkboxes
         self.main.case_check = QCheckBox('Case sensitive', search_tab)
         self.main.regex_check = QCheckBox('Regex', search_tab)
         self.main.word_check = QCheckBox('Whole word', search_tab)
-        self.main.names_only_check = QCheckBox('Solo nombres', search_tab)
-        self.main.include_hidden_check = QCheckBox('Incluir ocultos', search_tab)
+        self.main.names_only_check = QCheckBox('Names only', search_tab)
+        self.main.include_hidden_check = QCheckBox('Include hidden files', search_tab)
         self.main.include_hidden_check.toggled.connect(self.main.on_include_hidden_changed)
 
         checks_wrap = QWidget(search_tab)
@@ -125,14 +125,14 @@ class SearchController(QObject):
             self.main.include_hidden_check,
         ):
             checks_layout.addWidget(chk)
-        search_form.addRow('Opciones', checks_wrap)
+        search_form.addRow('Options', checks_wrap)
 
         # Max results spinner
         self.main.max_results_spin = QSpinBox(search_tab)
         self.main.max_results_spin.setRange(50, 10000)
         self.main.max_results_spin.setSingleStep(50)
         self.main.max_results_spin.setValue(DEFAULT_MAX_RESULTS)
-        search_form.addRow('Máx. resultados', self.main.max_results_spin)
+        search_form.addRow('Max results', self.main.max_results_spin)
 
         # Action buttons
         search_buttons_row = QWidget(search_tab)
@@ -143,16 +143,16 @@ class SearchController(QObject):
         row_layout.setContentsMargins(0, 0, 0, 0)
         row_layout.setSpacing(8)
 
-        self.main.search_now_btn = AccentButton('Buscar', skin_tokens, search_buttons_row, strong=True)
+        self.main.search_now_btn = AccentButton('Search', skin_tokens, search_buttons_row, strong=True)
         self.main.search_now_btn.clicked.connect(self.main.start_search)
         
-        self.main.clear_search_btn = GhostButton('Limpiar', skin_tokens, search_buttons_row)
+        self.main.clear_search_btn = GhostButton('Clear', skin_tokens, search_buttons_row)
         self.main.clear_search_btn.clicked.connect(self.clear_search)
         
-        self.main.export_btn = SecondaryButton('Exportar', skin_tokens, search_buttons_row)
+        self.main.export_btn = SecondaryButton('Export', skin_tokens, search_buttons_row)
         self.main.export_btn.clicked.connect(self.export_results)
         
-        self.main.open_repo_btn = SecondaryButton('Abrir carpeta', skin_tokens, search_buttons_row)
+        self.main.open_repo_btn = SecondaryButton('Open folder', skin_tokens, search_buttons_row)
         self.main.open_repo_btn.clicked.connect(self.main.open_current_repo_folder)
 
         for btn in (
@@ -170,29 +170,44 @@ class SearchController(QObject):
     def start_search(self) -> None:
         """Execute search with current parameters."""
         if not self.main.index_data.get('files'):
-            QMessageBox.warning(self.main, 'Repo Analyzer', 'Primero indexa un repo.')
+            QMessageBox.warning(self.main, 'Workstation', 'Index a repository first.')
             return
 
         if self._search_thread is not None:
-            QMessageBox.information(self.main, 'Repo Analyzer', 'Ya hay una búsqueda en progreso.')
+            QMessageBox.information(self.main, 'Workstation', 'A search is already running.')
             return
 
         query = self.main.search_box.text().strip()
-        folder = self.main.folder_combo.currentText() or '(todo)'
-        ext_filter = self.main.ext_combo.currentText() or '(todas)'
+        folder = self.main.folder_combo.currentText() or '(all)'
+        ext_filter = self.main.ext_combo.currentText() or '(all)'
         sort_mode = self.main.sort_combo.currentText() or 'path'
         max_results = max(1, int(self.main.max_results_spin.value() or DEFAULT_MAX_RESULTS))
 
         self.main.progress_bar.show()
         self.main.progress_bar.setRange(0, 0)
-        self.main.statusBar().showMessage('Buscando…')
-        self.main.hero_mode_pill.setText('Search pipeline activo')
+        self.main.statusBar().showMessage('Searching…')
+        self.main.hero_mode_pill.setText('Search pipeline active')
         self.main.log(
-            f"Buscar: '{query or '(vacío)'}' | folder={folder} | ext={ext_filter} | "
+            f"Search: '{query or '(empty)'}' | folder={folder} | ext={ext_filter} | "
             f"regex={self.main.regex_check.isChecked()} | names_only={self.main.names_only_check.isChecked()}"
         )
         self.main.backend.remember_search(query)
         self.main.backend.update_filter_settings(folder, ext_filter)
+        from .event_bus import Events
+        self.main.event_bus.publish(
+            Events.SEARCH_STARTED,
+            {
+                "query": query,
+                "folder": folder,
+                "ext_filter": ext_filter,
+            },
+        )
+        self._update_workstation_context(
+            active_query=query,
+            active_scope=folder,
+            active_extension=ext_filter,
+            status_text="searching",
+        )
 
         thread = QThread(self.main)
         worker = SearchWorker(
@@ -250,16 +265,16 @@ class SearchController(QObject):
 
         self.main.results_table.resizeRowsToContents()
         count = len(self.main.search_results)
-        self.main.metric_results.set_data(str(count), self.main.search_box.text().strip() or 'listado por filtros')
-        self.main.hero_mode_pill.setText('Search lista para inspección')
+        self.main.metric_results.set_data(str(count), self.main.search_box.text().strip() or 'filtered listing')
+        self.main.hero_mode_pill.setText('Search ready for inspection')
 
         if self.main.search_results:
             self.main.results_dock.show()
-            self.main.statusBar().showMessage(f'{count} resultados', 2500)
-            self.main.log(f'Búsqueda terminada: {count} resultados')
+            self.main.statusBar().showMessage(f'{count} results', 2500)
+            self.main.log(f'Search completed: {count} results')
         else:
-            self.main.statusBar().showMessage('Sin resultados', 2200)
-            self.main.log('Búsqueda sin resultados')
+            self.main.statusBar().showMessage('No results', 2200)
+            self.main.log('Search returned no results')
 
         # Publish event for extensibility
         from .event_bus import Events
@@ -273,6 +288,11 @@ class SearchController(QObject):
                     for r in self.main.search_results
                 ]
             }
+        )
+        self._update_workstation_context(
+            active_query=self.main.search_box.text().strip(),
+            results_count=count,
+            status_text="search-ready",
         )
 
     def on_results_clicked(self, index) -> None:
@@ -297,33 +317,49 @@ class SearchController(QObject):
         self.main.search_box.clear()
         self.main.results_model.removeRows(0, self.main.results_model.rowCount())
         self.main.search_results = []
-        self.main.metric_results.set_data('0', 'sin resultados cacheados')
-        self.main.statusBar().showMessage('Búsqueda limpia.', 1600)
+        self.main.metric_results.set_data('0', 'no cached results')
+        self.main.statusBar().showMessage('Search cleared.', 1600)
+        from .event_bus import Events
+        self.main.event_bus.publish(Events.SEARCH_CLEARED, {"results_count": 0})
+        self._update_workstation_context(
+            active_query="",
+            results_count=0,
+            status_text="search-cleared",
+        )
 
     def export_results(self) -> None:
         """Export search results to file."""
         if not self.main.search_results:
-            QMessageBox.information(self.main, 'Repo Analyzer', 'No hay resultados para exportar.')
+            QMessageBox.information(self.main, 'Workstation', 'No results to export.')
             return
 
         path, _ = QFileDialog.getSaveFileName(
             self.main,
-            'Exportar resultados',
+            'Export results',
             '',
-            'CSV (*.csv);;JSON (*.json);;TXT (*.txt);;Todos (*.*)',
+            'CSV (*.csv);;JSON (*.json);;TXT (*.txt);;All (*.*)',
         )
         if not path:
             return
 
         try:
             self.main.backend.export_results(self.main.search_results, Path(path))
-            self.main.log(f'Resultados exportados: {path}')
-            QMessageBox.information(self.main, 'Repo Analyzer', f'Exportado correctamente:\n{path}')
+            self.main.log(f'Results exported: {path}')
+            QMessageBox.information(self.main, 'Workstation', f'Export completed:\n{path}')
         except Exception as e:
-            QMessageBox.critical(self.main, 'Repo Analyzer', f'No se pudo exportar:\n{e}')
+            QMessageBox.critical(self.main, 'Workstation', f'Export failed:\n{e}')
 
     @Slot()
     def _clear_search_thread(self) -> None:
         """Clear search thread reference."""
         self._search_thread = None
         self._search_worker = None
+
+    def _update_workstation_context(self, **changes: object) -> None:
+        runtime = self.main.service_container.get("workstation_context")
+        if runtime is None:
+            return
+        try:
+            runtime.update(**changes)
+        except Exception:
+            return

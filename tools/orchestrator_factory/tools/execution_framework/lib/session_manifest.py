@@ -1,4 +1,13 @@
-"""Session manifest builder for one-button v1.2 exports."""
+"""Session manifest builder for one-button v1.2 exports.
+
+The payload produced here is used both as:
+1) `session/session_manifest.json` staged inside the canonical ZIP, and
+2) the starting shape for the external `<session_id>.manifest.json` sidecar.
+
+For export integrity, final ZIP hash/size authority lives in the external sidecar.
+The internal ZIP manifest is intentionally allowed to carry placeholder values for
+self-referential artifact checksum fields.
+"""
 
 from __future__ import annotations
 

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-"""Deterministic graph radar consumer for Aegis Deck.
+"""Deterministic graph radar consumer for Cloudflare Guardian Diagnostics.
 
 This module intentionally stays inside the frozen radar contract. It consumes
 canonical graph snapshot semantics, keeps compatibility aliases internal, and
@@ -15,7 +15,7 @@ from PySide6.QtCore import QPointF, QRectF, QSize, Qt, QTimer
 from PySide6.QtGui import QColor, QFont, QFontMetrics, QLinearGradient, QPainter, QPainterPath, QPen
 from PySide6.QtWidgets import QFrame, QLabel, QSizePolicy, QVBoxLayout, QWidget
 
-__all__ = ["AegisGraphRadar"]
+__all__ = ["CloudflareGuardianGraphRadar"]
 
 _DEFAULT_STATUS = "Radar has no data"
 _DEFAULT_SUBTITLE = "Awaiting canonical snapshot"
@@ -786,7 +786,7 @@ class _RadarCanvas(QWidget):
         )
 
 
-class AegisGraphRadar(QWidget):
+class CloudflareGuardianGraphRadar(QWidget):
     """Compact radar widget that consumes canonical snapshot graph keys.
 
     Public API is intentionally frozen to the shared contract:
@@ -812,13 +812,13 @@ class AegisGraphRadar(QWidget):
         self._sparse_note = ""
 
         self._frame = QFrame(self)
-        self._frame.setObjectName("aegisGraphRadarFrame")
+        self._frame.setObjectName("cloudflare_guardianGraphRadarFrame")
 
         self._title_label = QLabel("Graph Radar", self._frame)
-        self._title_label.setObjectName("aegisGraphRadarTitle")
+        self._title_label.setObjectName("cloudflare_guardianGraphRadarTitle")
 
         self._meta_label = QLabel(_DEFAULT_SUBTITLE, self._frame)
-        self._meta_label.setObjectName("aegisGraphRadarMeta")
+        self._meta_label.setObjectName("cloudflare_guardianGraphRadarMeta")
         self._meta_label.setWordWrap(True)
 
         self._canvas = _RadarCanvas(self._frame)
@@ -957,19 +957,19 @@ class AegisGraphRadar(QWidget):
     def _apply_styles(self) -> None:
         self._frame.setStyleSheet(
             f"""
-            QFrame#aegisGraphRadarFrame {{
+            QFrame#cloudflare_guardianGraphRadarFrame {{
                 background: {self._tokens.panel};
                 border: 1px solid {self._tokens.border};
                 border-radius: 18px;
             }}
-            QLabel#aegisGraphRadarTitle {{
+            QLabel#cloudflare_guardianGraphRadarTitle {{
                 color: {self._tokens.text};
                 font-size: 14px;
                 font-weight: 700;
                 letter-spacing: 0.7px;
                 text-transform: uppercase;
             }}
-            QLabel#aegisGraphRadarMeta {{
+            QLabel#cloudflare_guardianGraphRadarMeta {{
                 color: {self._tokens.text_muted};
                 font-size: 11px;
                 line-height: 1.25em;
@@ -1287,3 +1287,5 @@ class AegisGraphRadar(QWidget):
         text = self._coerce_text(value, default)
         color = QColor(text)
         return text if color.isValid() else default
+
+

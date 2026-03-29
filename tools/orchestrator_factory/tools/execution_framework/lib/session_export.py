@@ -17,7 +17,8 @@ import tempfile
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
+from copy import deepcopy
+from typing import Any, Dict, List, Optional
 
 from acceptance_stub import build_acceptance_stub
 from session_manifest import SessionManifestBuilder
@@ -40,6 +41,7 @@ class SessionExportResult:
 
 class SessionExporter:
     LAUNCHER_VERSION = '1.2.0-wave4'
+    INTERNAL_MANIFEST_PLACEHOLDER_SHA256 = '0' * 64
 
     def __init__(self, framework_root: Path) -> None:
         self.framework_root = framework_root
@@ -63,7 +65,6 @@ class SessionExporter:
         config = self._load_config()
         issues: List[Dict[str, Any]] = []
 
-        paths = plan.paths.project
         self._ensure_runtime_stubs(plan)
 
         with tempfile.TemporaryDirectory(prefix='one_button_export_') as tmp_dir_str:
@@ -71,9 +72,14 @@ class SessionExporter:
             stage_root = tmp_dir / 'stage'
             stage_root.mkdir(parents=True, exist_ok=True)
 
-            stage_map = self._stage_required_files(stage_root=stage_root, plan=plan)
+            self._stage_required_files(stage_root=stage_root, plan=plan)
             manifest_builder = SessionManifestBuilder()
-            manifest_payload = manifest_builder.build(
+            # Integrity source-of-truth model:
+            # - session/session_manifest.json (inside ZIP) is a staging/runtime record and does
+            #   not carry self-referential final ZIP hash/size values.
+            # - <session_id>.manifest.json (sidecar) is the authoritative record for final ZIP
+            #   bytes, checksum, and size.
+            internal_manifest_payload = manifest_builder.build(
                 plan=plan,
                 launcher_version=self.LAUNCHER_VERSION,
                 status='ready_for_dispatch',
@@ -86,13 +92,13 @@ class SessionExporter:
                 lock_pid=lock_pid,
                 lock_host=lock_host,
                 session_zip_path=str(plan.paths.export_hints.canonical_zip_path),
-                session_zip_sha256='pending',
+                session_zip_sha256=self.INTERNAL_MANIFEST_PLACEHOLDER_SHA256,
                 session_zip_size_bytes=0,
                 handoff_copy_path=None,
                 issues=[],
             )
             session_manifest_relpath = 'session/session_manifest.json'
-            self._write_json(stage_root / session_manifest_relpath, manifest_payload)
+            self._write_json(stage_root / session_manifest_relpath, internal_manifest_payload)
 
             file_index_relpath = 'session/session_file_index.json'
             self._write_json(stage_root / file_index_relpath, self._build_file_index(stage_root, exclude={file_index_relpath}))
@@ -101,21 +107,6 @@ class SessionExporter:
             canonical_zip_path.parent.mkdir(parents=True, exist_ok=True)
             self._write_zip(stage_root, canonical_zip_path)
 
-            zip_sha256 = self._sha256_file(canonical_zip_path)
-            zip_size = canonical_zip_path.stat().st_size
-
-            manifest_payload['artifacts']['session_zip_sha256'] = zip_sha256
-            manifest_payload['artifacts']['session_zip_size_bytes'] = zip_size
-            self._write_json(stage_root / session_manifest_relpath, manifest_payload)
-            self._write_json(stage_root / file_index_relpath, self._build_file_index(stage_root, exclude={file_index_relpath}))
-            self._write_zip(stage_root, canonical_zip_path)
-            zip_sha256 = self._sha256_file(canonical_zip_path)
-            zip_size = canonical_zip_path.stat().st_size
-            manifest_payload['artifacts']['session_zip_sha256'] = zip_sha256
-            manifest_payload['artifacts']['session_zip_size_bytes'] = zip_size
-            self._write_json(stage_root / session_manifest_relpath, manifest_payload)
-            self._write_json(stage_root / file_index_relpath, self._build_file_index(stage_root, exclude={file_index_relpath}))
-            self._write_zip(stage_root, canonical_zip_path)
             zip_sha256 = self._sha256_file(canonical_zip_path)
             zip_size = canonical_zip_path.stat().st_size
 
@@ -133,26 +124,20 @@ class SessionExporter:
                 issues=issues,
             )
 
-            manifest_payload['artifacts']['handoff_copy_path'] = handoff_copy_path
-            manifest_payload['issues'] = issues
-            self._write_json(stage_root / session_manifest_relpath, manifest_payload)
-            self._write_json(stage_root / file_index_relpath, self._build_file_index(stage_root, exclude={file_index_relpath}))
-            self._write_zip(stage_root, canonical_zip_path)
-            zip_sha256 = self._sha256_file(canonical_zip_path)
-            zip_size = canonical_zip_path.stat().st_size
-            manifest_payload['artifacts']['session_zip_sha256'] = zip_sha256
-            manifest_payload['artifacts']['session_zip_size_bytes'] = zip_size
-            self._write_json(stage_root / session_manifest_relpath, manifest_payload)
-            self._write_json(stage_root / file_index_relpath, self._build_file_index(stage_root, exclude={file_index_relpath}))
-            self._write_zip(stage_root, canonical_zip_path)
-            zip_sha256 = self._sha256_file(canonical_zip_path)
-            zip_size = canonical_zip_path.stat().st_size
+            sidecar_manifest_payload = self._build_authoritative_sidecar_manifest(
+                internal_manifest_payload=internal_manifest_payload,
+                canonical_zip_path=canonical_zip_path,
+                zip_sha256=zip_sha256,
+                zip_size=zip_size,
+                handoff_copy_path=handoff_copy_path,
+                issues=issues,
+            )
 
             self._emit_sidecars(
                 canonical_zip_path=canonical_zip_path,
                 canonical_sha256_sidecar_path=plan.paths.export_hints.canonical_sha256_sidecar_path,
                 canonical_manifest_sidecar_path=plan.paths.export_hints.canonical_manifest_sidecar_path,
-                manifest_payload=manifest_payload,
+                manifest_payload=sidecar_manifest_payload,
                 zip_sha256=zip_sha256,
                 config=config,
             )
@@ -165,6 +150,24 @@ class SessionExporter:
                 validation_report=validation_report,
                 issues=issues,
             )
+
+    def _build_authoritative_sidecar_manifest(
+        self,
+        *,
+        internal_manifest_payload: Dict[str, Any],
+        canonical_zip_path: Path,
+        zip_sha256: str,
+        zip_size: int,
+        handoff_copy_path: Optional[str],
+        issues: List[Dict[str, Any]],
+    ) -> Dict[str, Any]:
+        sidecar_payload = deepcopy(internal_manifest_payload)
+        sidecar_payload['artifacts']['session_zip_path'] = str(canonical_zip_path)
+        sidecar_payload['artifacts']['session_zip_sha256'] = zip_sha256
+        sidecar_payload['artifacts']['session_zip_size_bytes'] = zip_size
+        sidecar_payload['artifacts']['handoff_copy_path'] = handoff_copy_path
+        sidecar_payload['issues'] = list(issues)
+        return sidecar_payload
 
     def _load_config(self) -> Dict[str, Any]:
         with self.config_path.open('r', encoding='utf-8') as fh:

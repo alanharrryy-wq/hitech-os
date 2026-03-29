@@ -25,6 +25,13 @@ from app.helpers import extract_imports, human_size, read_text_safe, resolve_imp
 
 ProgressCallback = Callable[[str], None]
 
+FOLDER_FILTER_ALL = "(all)"
+FOLDER_FILTER_ALL_LEGACY = "(todo)"
+EXT_FILTER_ALL = "(all)"
+EXT_FILTER_ALL_LEGACY = "(todas)"
+EXT_FILTER_NONE = "(no extension)"
+EXT_FILTER_NONE_LEGACY = "(sin extensión)"
+
 
 @dataclass
 class SearchResult:
@@ -68,8 +75,8 @@ class AnalyzerBackend:
             "recent_repos": [],
             "recent_searches": [],
             "last_repo": "",
-            "last_folder_filter": "(todo)",
-            "last_ext_filter": "(todas)",
+            "last_folder_filter": FOLDER_FILTER_ALL,
+            "last_ext_filter": EXT_FILTER_ALL,
             "bookmarks": {},
         }
         if not self.settings_path.exists():
@@ -117,8 +124,8 @@ class AnalyzerBackend:
         self.save_settings()
 
     def update_filter_settings(self, folder_filter: str, ext_filter: str) -> None:
-        self.settings["last_folder_filter"] = folder_filter
-        self.settings["last_ext_filter"] = ext_filter
+        self.settings["last_folder_filter"] = self._normalize_folder_filter(folder_filter)
+        self.settings["last_ext_filter"] = self._normalize_ext_filter(ext_filter)
         self.save_settings()
 
     def get_repo_bookmarks(self, repo_path: str) -> list[str]:
@@ -166,7 +173,7 @@ class AnalyzerBackend:
 
         total_candidates = len(all_paths)
         if progress:
-            progress(f"Escaneando {total_candidates} archivos candidatos…")
+            progress(f"Scanning {total_candidates} candidate files…")
 
         for idx, path in enumerate(all_paths, start=1):
             try:
@@ -209,7 +216,7 @@ class AnalyzerBackend:
                     top_level_counts['(root)'] += 1
 
                 if progress and (idx % 100 == 0 or idx == total_candidates):
-                    progress(f"Indexando {idx}/{total_candidates}…")
+                    progress(f"Indexing {idx}/{total_candidates}…")
             except Exception:
                 skipped += 1
                 continue
@@ -260,15 +267,16 @@ class AnalyzerBackend:
         results: list[SearchResult] = []
 
         def file_allowed(rel: str, ext: str) -> bool:
-            normalized_ext_filter = ext_filter.strip() or '(todas)'
-            if folder != '(todo)':
-                if rel != folder and not rel.startswith(folder + '/'):
+            normalized_folder = self._normalize_folder_filter(folder)
+            normalized_ext_filter = self._normalize_ext_filter(ext_filter)
+            if normalized_folder != FOLDER_FILTER_ALL:
+                if rel != normalized_folder and not rel.startswith(normalized_folder + '/'):
                     return False
             if normalized_ext_filter == 'TS/JS':
                 return ext in {'.ts', '.tsx', '.js', '.jsx'}
-            if normalized_ext_filter == '(todas)':
+            if normalized_ext_filter == EXT_FILTER_ALL:
                 return True
-            if normalized_ext_filter == '(sin extensión)':
+            if normalized_ext_filter == EXT_FILTER_NONE:
                 return not ext
             return ext == normalized_ext_filter
 
@@ -296,7 +304,7 @@ class AnalyzerBackend:
             size = int(info.get('size', 0) or 0)
 
             if progress and (idx % 75 == 0 or idx == total):
-                progress(f'Buscando {idx}/{total}…')
+                progress(f'Searching {idx}/{total}…')
 
             if names_only:
                 haystack = rel if case_sensitive else rel.lower()
@@ -309,7 +317,7 @@ class AnalyzerBackend:
                         modified=modified,
                         modified_ts=modified_ts,
                         size=size,
-                        ext=ext or '(sin extensión)',
+                        ext=ext or EXT_FILTER_NONE,
                         line=0,
                         matches=1 if query else 0,
                         snippet=rel,
@@ -326,7 +334,7 @@ class AnalyzerBackend:
                     modified=modified,
                     modified_ts=modified_ts,
                     size=size,
-                    ext=ext or '(sin extensión)',
+                    ext=ext or EXT_FILTER_NONE,
                     line=0,
                     matches=0,
                     snippet=rel,
@@ -367,7 +375,7 @@ class AnalyzerBackend:
                     modified=modified,
                     modified_ts=modified_ts,
                     size=size,
-                    ext=ext or '(sin extensión)',
+                    ext=ext or EXT_FILTER_NONE,
                     line=first_line,
                     matches=total_hits,
                     snippet=first_snippet,
@@ -394,29 +402,29 @@ class AnalyzerBackend:
     ) -> PreviewData:
         info = index_data.get('files', {}).get(relpath)
         if not info:
-            raise FileNotFoundError(f'No existe relpath en índice: {relpath}')
+            raise FileNotFoundError(f'Relpath not found in index: {relpath}')
 
         abspath = info['abspath']
         path = Path(abspath)
         if not path.exists():
-            raise FileNotFoundError(f'El archivo ya no existe: {abspath}')
+            raise FileNotFoundError(f'File no longer exists: {abspath}')
 
         size = path.stat().st_size
         ext = path.suffix.lower()
 
         if self._is_probably_binary(path):
-            text = self._build_file_fact_sheet(relpath, path, size, 'archivo binario')
+            text = self._build_file_fact_sheet(relpath, path, size, 'binary file')
         elif size > MAX_PREVIEW_FILE_SIZE:
-            text = self._build_file_fact_sheet(relpath, path, size, 'archivo demasiado grande para preview completo')
+            text = self._build_file_fact_sheet(relpath, path, size, 'file too large for full preview')
         elif ext and ext not in self.preview_text_exts and size > 250_000:
-            text = self._build_file_fact_sheet(relpath, path, size, 'tipo no textual grande')
+            text = self._build_file_fact_sheet(relpath, path, size, 'large non-text file')
         else:
             raw_text = read_text_safe(path)
             if len(raw_text) > 300_000:
-                raw_text = raw_text[:300_000] + '\n\n[Preview truncado: archivo muy grande]'
+                raw_text = raw_text[:300_000] + '\n\n[Preview truncated: very large file]'
             lines = raw_text.splitlines()
             if len(lines) > 2000:
-                raw_text = '\n'.join(lines[:2000]) + '\n\n[Preview truncado: demasiadas líneas]'
+                raw_text = '\n'.join(lines[:2000]) + '\n\n[Preview truncated: too many lines]'
             text = raw_text
 
         imports: list[tuple[str, str]] = []
@@ -471,17 +479,33 @@ class AnalyzerBackend:
 
     @staticmethod
     def _build_file_fact_sheet(relpath: str, path: Path, size: int, reason: str) -> str:
-        ext = path.suffix.lower() or '(sin extensión)'
+        ext = path.suffix.lower() or EXT_FILTER_NONE
         return '\n'.join([
-            '[Preview no cargado]',
+            '[Preview not loaded]',
             f'Relpath: {relpath}',
-            f'Ruta: {path}',
-            f'Extensión: {ext}',
-            f'Tamaño: {human_size(size)}',
-            f'Motivo: {reason}',
+            f'Path: {path}',
+            f'Extension: {ext}',
+            f'Size: {human_size(size)}',
+            f'Reason: {reason}',
             '',
-            'Usa "Abrir con sistema" si quieres verlo completo.',
+            'Use "Open with system" to view the full file.',
         ])
+
+    @staticmethod
+    def _normalize_folder_filter(value: str) -> str:
+        normalized = str(value or "").strip()
+        if normalized in {"", FOLDER_FILTER_ALL_LEGACY, FOLDER_FILTER_ALL}:
+            return FOLDER_FILTER_ALL
+        return normalized
+
+    @staticmethod
+    def _normalize_ext_filter(value: str) -> str:
+        normalized = str(value or "").strip()
+        if normalized in {"", EXT_FILTER_ALL_LEGACY, EXT_FILTER_ALL}:
+            return EXT_FILTER_ALL
+        if normalized in {EXT_FILTER_NONE_LEGACY, EXT_FILTER_NONE}:
+            return EXT_FILTER_NONE
+        return normalized
 
     @staticmethod
     def _render_with_line_numbers(text: str) -> str:

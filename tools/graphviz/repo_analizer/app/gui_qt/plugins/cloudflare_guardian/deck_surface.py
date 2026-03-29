@@ -48,7 +48,7 @@ _STATE_COPY: dict[str, dict[str, str]] = {
 }
 
 
-class AegisDeckSurface(QFrame):
+class CloudflareGuardianDeckSurface(QFrame):
     """Reusable premium surface with metadata, one content widget, and local body states."""
 
     def __init__(
@@ -84,7 +84,7 @@ class AegisDeckSurface(QFrame):
         self._current_effective_state = "ready"
         self._current_state_tone = "muted"
 
-        self.setObjectName("aegisDeckSurface")
+        self.setObjectName("cloudflare_guardianDeckSurface")
         self.setProperty("visualRole", "panel-surface")
         self.setProperty("premium", True)
         self.setFrameShape(QFrame.NoFrame)
@@ -98,7 +98,7 @@ class AegisDeckSurface(QFrame):
         root_layout.setSpacing(0)
 
         self._chrome = QFrame(self)
-        self._chrome.setObjectName("aegisDeckSurfaceChrome")
+        self._chrome.setObjectName("cloudflare_guardianDeckSurfaceChrome")
         self._chrome.setFrameShape(QFrame.NoFrame)
         chrome_layout = QVBoxLayout(self._chrome)
         chrome_layout.setContentsMargins(1, 1, 1, 1)
@@ -106,12 +106,12 @@ class AegisDeckSurface(QFrame):
         root_layout.addWidget(self._chrome)
 
         self._accent_band = QFrame(self._chrome)
-        self._accent_band.setObjectName("aegisDeckSurfaceAccentBand")
+        self._accent_band.setObjectName("cloudflare_guardianDeckSurfaceAccentBand")
         self._accent_band.setFixedHeight(4)
         chrome_layout.addWidget(self._accent_band)
 
         self._header = QFrame(self._chrome)
-        self._header.setObjectName("aegisDeckSurfaceHeader")
+        self._header.setObjectName("cloudflare_guardianDeckSurfaceHeader")
         self._header.setFrameShape(QFrame.NoFrame)
         self._header_layout = QVBoxLayout(self._header)
         self._header_layout.setContentsMargins(18, 16, 18, 12)
@@ -124,7 +124,7 @@ class AegisDeckSurface(QFrame):
         self._header_layout.addLayout(self._eyebrow_row)
 
         self._role_chip = QLabel(self._header)
-        self._role_chip.setObjectName("aegisDeckSurfaceRoleChip")
+        self._role_chip.setObjectName("cloudflare_guardianDeckSurfaceRoleChip")
         self._role_chip.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         self._role_chip.setTextInteractionFlags(Qt.NoTextInteraction)
         self._eyebrow_row.addWidget(self._role_chip, 0, Qt.AlignLeft)
@@ -136,27 +136,27 @@ class AegisDeckSurface(QFrame):
         self._header_layout.addLayout(self._title_row)
 
         self._title_label = QLabel(self._header)
-        self._title_label.setObjectName("aegisDeckSurfaceTitle")
+        self._title_label.setObjectName("cloudflare_guardianDeckSurfaceTitle")
         self._title_label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         self._title_label.setWordWrap(True)
         self._title_label.setTextInteractionFlags(Qt.NoTextInteraction)
         self._title_row.addWidget(self._title_label, 1)
 
         self._status_label = QLabel(self._header)
-        self._status_label.setObjectName("aegisDeckSurfaceStatus")
+        self._status_label.setObjectName("cloudflare_guardianDeckSurfaceStatus")
         self._status_label.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
         self._status_label.setTextInteractionFlags(Qt.NoTextInteraction)
         self._title_row.addWidget(self._status_label, 0, Qt.AlignTop)
 
         self._subtitle_label = QLabel(self._header)
-        self._subtitle_label.setObjectName("aegisDeckSurfaceSubtitle")
+        self._subtitle_label.setObjectName("cloudflare_guardianDeckSurfaceSubtitle")
         self._subtitle_label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         self._subtitle_label.setWordWrap(True)
         self._subtitle_label.setTextInteractionFlags(Qt.NoTextInteraction)
         self._header_layout.addWidget(self._subtitle_label)
 
         self._body = QFrame(self._chrome)
-        self._body.setObjectName("aegisDeckSurfaceBody")
+        self._body.setObjectName("cloudflare_guardianDeckSurfaceBody")
         self._body.setFrameShape(QFrame.NoFrame)
         self._body.setProperty("visualRole", "panel-surface")
         body_layout = QVBoxLayout(self._body)
@@ -165,7 +165,7 @@ class AegisDeckSurface(QFrame):
         chrome_layout.addWidget(self._body, 1)
 
         self._body_stack_host = QFrame(self._body)
-        self._body_stack_host.setObjectName("aegisDeckSurfaceBodyStackHost")
+        self._body_stack_host.setObjectName("cloudflare_guardianDeckSurfaceBodyStackHost")
         self._body_stack_host.setFrameShape(QFrame.NoFrame)
         self._body_stack = QStackedLayout(self._body_stack_host)
         self._body_stack.setContentsMargins(0, 0, 0, 0)
@@ -173,7 +173,7 @@ class AegisDeckSurface(QFrame):
         body_layout.addWidget(self._body_stack_host, 1)
 
         self._content_page = QFrame(self._body_stack_host)
-        self._content_page.setObjectName("aegisDeckSurfaceContentPage")
+        self._content_page.setObjectName("cloudflare_guardianDeckSurfaceContentPage")
         self._content_page.setFrameShape(QFrame.NoFrame)
         self._content_layout = QVBoxLayout(self._content_page)
         self._content_layout.setContentsMargins(12, 12, 12, 12)
@@ -181,7 +181,7 @@ class AegisDeckSurface(QFrame):
         self._body_stack.addWidget(self._content_page)
 
         self._state_page = QFrame(self._body_stack_host)
-        self._state_page.setObjectName("aegisDeckSurfaceStatePage")
+        self._state_page.setObjectName("cloudflare_guardianDeckSurfaceStatePage")
         self._state_page.setFrameShape(QFrame.NoFrame)
         self._state_layout = QVBoxLayout(self._state_page)
         self._state_layout.setContentsMargins(14, 14, 14, 10)
@@ -189,20 +189,20 @@ class AegisDeckSurface(QFrame):
         self._state_layout.addStretch(1)
 
         self._state_badge = QLabel(self._state_page)
-        self._state_badge.setObjectName("aegisDeckSurfaceStateBadge")
+        self._state_badge.setObjectName("cloudflare_guardianDeckSurfaceStateBadge")
         self._state_badge.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         self._state_badge.setTextInteractionFlags(Qt.NoTextInteraction)
         self._state_layout.addWidget(self._state_badge, 0, Qt.AlignLeft)
 
         self._state_headline = QLabel(self._state_page)
-        self._state_headline.setObjectName("aegisDeckSurfaceStateHeadline")
+        self._state_headline.setObjectName("cloudflare_guardianDeckSurfaceStateHeadline")
         self._state_headline.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         self._state_headline.setWordWrap(True)
         self._state_headline.setTextInteractionFlags(Qt.NoTextInteraction)
         self._state_layout.addWidget(self._state_headline)
 
         self._state_detail = QLabel(self._state_page)
-        self._state_detail.setObjectName("aegisDeckSurfaceStateDetail")
+        self._state_detail.setObjectName("cloudflare_guardianDeckSurfaceStateDetail")
         self._state_detail.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         self._state_detail.setWordWrap(True)
         self._state_detail.setTextInteractionFlags(Qt.NoTextInteraction)
@@ -379,16 +379,16 @@ class AegisDeckSurface(QFrame):
 
         self.setStyleSheet(
             """
-            QFrame#aegisDeckSurface {
+            QFrame#cloudflare_guardianDeckSurface {
                 background: transparent;
                 border: none;
             }
-            QFrame#aegisDeckSurfaceChrome {
+            QFrame#cloudflare_guardianDeckSurfaceChrome {
                 background: %(surface_fill)s;
                 border: 1px solid %(border_color)s;
                 border-radius: 18px;
             }
-            QFrame#aegisDeckSurfaceAccentBand {
+            QFrame#cloudflare_guardianDeckSurfaceAccentBand {
                 background: qlineargradient(
                     x1: 0, y1: 0, x2: 1, y2: 0,
                     stop: 0 %(accent_band_left)s,
@@ -399,7 +399,7 @@ class AegisDeckSurface(QFrame):
                 border-top-right-radius: 18px;
                 border: none;
             }
-            QFrame#aegisDeckSurfaceHeader {
+            QFrame#cloudflare_guardianDeckSurfaceHeader {
                 background: qlineargradient(
                     x1: 0, y1: 0, x2: 0.92, y2: 1,
                     stop: 0 %(header_top)s,
@@ -409,7 +409,7 @@ class AegisDeckSurface(QFrame):
                 border: none;
                 border-bottom: 1px solid %(state_border)s;
             }
-            QLabel#aegisDeckSurfaceRoleChip {
+            QLabel#cloudflare_guardianDeckSurfaceRoleChip {
                 color: %(role_chip_text)s;
                 background: %(role_chip_bg)s;
                 border: 1px solid %(role_chip_border)s;
@@ -420,14 +420,14 @@ class AegisDeckSurface(QFrame):
                 padding: 4px 9px;
                 text-transform: uppercase;
             }
-            QLabel#aegisDeckSurfaceTitle {
+            QLabel#cloudflare_guardianDeckSurfaceTitle {
                 color: %(title_color)s;
                 font-size: 16px;
                 font-weight: 700;
                 background: transparent;
                 border: none;
             }
-            QLabel#aegisDeckSurfaceSubtitle {
+            QLabel#cloudflare_guardianDeckSurfaceSubtitle {
                 color: %(subtitle_color)s;
                 font-size: 12px;
                 line-height: 1.35em;
@@ -435,7 +435,7 @@ class AegisDeckSurface(QFrame):
                 border: none;
                 padding-top: 1px;
             }
-            QLabel#aegisDeckSurfaceStatus {
+            QLabel#cloudflare_guardianDeckSurfaceStatus {
                 color: %(status_ink)s;
                 background: %(status_bg)s;
                 border: 1px solid %(status_border)s;
@@ -446,23 +446,23 @@ class AegisDeckSurface(QFrame):
                 padding: 5px 10px;
                 min-height: 14px;
             }
-            QFrame#aegisDeckSurfaceBody {
+            QFrame#cloudflare_guardianDeckSurfaceBody {
                 background: transparent;
                 border: none;
                 border-bottom-left-radius: 18px;
                 border-bottom-right-radius: 18px;
             }
-            QFrame#aegisDeckSurfaceContentPage,
-            QFrame#aegisDeckSurfaceStatePage {
+            QFrame#cloudflare_guardianDeckSurfaceContentPage,
+            QFrame#cloudflare_guardianDeckSurfaceStatePage {
                 background: %(content_fill)s;
                 border: 1px solid %(header_hairline)s;
                 border-radius: 14px;
             }
-            QFrame#aegisDeckSurfaceStatePage {
+            QFrame#cloudflare_guardianDeckSurfaceStatePage {
                 background: %(state_panel_bg)s;
                 border-color: %(state_border)s;
             }
-            QLabel#aegisDeckSurfaceStateBadge {
+            QLabel#cloudflare_guardianDeckSurfaceStateBadge {
                 color: %(state_ink)s;
                 background: %(state_badge_bg)s;
                 border: 1px solid %(state_border)s;
@@ -473,7 +473,7 @@ class AegisDeckSurface(QFrame):
                 padding: 5px 10px;
                 min-height: 14px;
             }
-            QLabel#aegisDeckSurfaceStateHeadline {
+            QLabel#cloudflare_guardianDeckSurfaceStateHeadline {
                 color: %(title_color)s;
                 background: transparent;
                 border: none;
@@ -481,7 +481,7 @@ class AegisDeckSurface(QFrame):
                 font-weight: 700;
                 padding-top: 2px;
             }
-            QLabel#aegisDeckSurfaceStateDetail {
+            QLabel#cloudflare_guardianDeckSurfaceStateDetail {
                 color: %(empty_text)s;
                 background: transparent;
                 border: none;
@@ -489,14 +489,14 @@ class AegisDeckSurface(QFrame):
                 line-height: 1.45em;
                 padding-bottom: 2px;
             }
-            AegisDeckSurface:focus {
+            CloudflareGuardianDeckSurface:focus {
                 outline: none;
             }
-            AegisDeckSurface[enabled="false"] QFrame#aegisDeckSurfaceChrome {
+            CloudflareGuardianDeckSurface[enabled="false"] QFrame#cloudflare_guardianDeckSurfaceChrome {
                 border-color: %(disabled_border)s;
                 background: %(disabled_surface)s;
             }
-            AegisDeckSurface[enabled="false"] QLabel {
+            CloudflareGuardianDeckSurface[enabled="false"] QLabel {
                 color: %(disabled_text)s;
             }
             """
@@ -703,4 +703,6 @@ def _role_chip_text(role: str) -> str:
     return labels.get(role, "FOUNDATION SURFACE")
 
 
-__all__ = ["AegisDeckSurface"]
+__all__ = ["CloudflareGuardianDeckSurface"]
+
+

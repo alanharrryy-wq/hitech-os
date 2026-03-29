@@ -6,33 +6,33 @@ from typing import Any, Mapping
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QFrame, QGridLayout, QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
-from .state_adapter import AegisDeckSnapshot, snapshot_payload
+from .state_adapter import CloudflareGuardianDeckSnapshot, snapshot_payload
 from .theme_bridge import DeckThemeBridge
 
 
-class AegisContextSpine(QFrame):
+class CloudflareGuardianContextSpine(QFrame):
     """Read-only snapshot consumer that renders rich context blocks."""
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setObjectName('aegisContextSpine')
-        self._snapshot = AegisDeckSnapshot()
+        self.setObjectName('cloudflare_guardianContextSpine')
+        self._snapshot = CloudflareGuardianDeckSnapshot()
         self._theme_bridge = DeckThemeBridge.coerce(None)
 
         self._title_label = QLabel('Context spine', self)
-        self._title_label.setObjectName('aegisContextSpineTitle')
+        self._title_label.setObjectName('cloudflare_guardianContextSpineTitle')
 
         self._phase_chip = QLabel('', self)
-        self._phase_chip.setObjectName('aegisContextSpinePhaseChip')
+        self._phase_chip.setObjectName('cloudflare_guardianContextSpinePhaseChip')
         self._phase_chip.setAlignment(Qt.AlignCenter)
 
         self._subtitle_label = QLabel('', self)
-        self._subtitle_label.setObjectName('aegisContextSpineSubtitle')
+        self._subtitle_label.setObjectName('cloudflare_guardianContextSpineSubtitle')
         self._subtitle_label.setWordWrap(True)
         self._subtitle_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
 
         self._note_label = QLabel('', self)
-        self._note_label.setObjectName('aegisContextSpineNote')
+        self._note_label.setObjectName('cloudflare_guardianContextSpineNote')
         self._note_label.setWordWrap(True)
         self._note_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
 
@@ -85,7 +85,7 @@ class AegisContextSpine(QFrame):
         self._theme_bridge = DeckThemeBridge.coerce(tokens)
         self.setStyleSheet(_build_style_sheet(self._theme_bridge))
 
-    def set_snapshot(self, snapshot: AegisDeckSnapshot | Mapping[str, Any] | object) -> None:
+    def set_snapshot(self, snapshot: CloudflareGuardianDeckSnapshot | Mapping[str, Any] | object) -> None:
         self._snapshot = _coerce_snapshot(snapshot)
         payload = snapshot_payload(self._snapshot)
         tone = _resolve_tone(payload)
@@ -181,7 +181,7 @@ class AegisContextSpine(QFrame):
         for tile in self._tiles.values():
             tile.refresh_visual_state()
 
-    def refresh_now(self, snapshot: AegisDeckSnapshot | Mapping[str, Any] | object | None = None) -> None:
+    def refresh_now(self, snapshot: CloudflareGuardianDeckSnapshot | Mapping[str, Any] | object | None = None) -> None:
         if snapshot is not None:
             self.set_snapshot(snapshot)
         else:
@@ -191,18 +191,18 @@ class AegisContextSpine(QFrame):
 class _ContextTile(QFrame):
     def __init__(self, heading: str, parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setObjectName('aegisContextSpineTile')
+        self.setObjectName('cloudflare_guardianContextSpineTile')
 
         self._heading_label = QLabel(heading, self)
-        self._heading_label.setObjectName('aegisContextSpineTileHeading')
+        self._heading_label.setObjectName('cloudflare_guardianContextSpineTileHeading')
 
         self._value_label = QLabel('', self)
-        self._value_label.setObjectName('aegisContextSpineTileValue')
+        self._value_label.setObjectName('cloudflare_guardianContextSpineTileValue')
         self._value_label.setWordWrap(True)
         self._value_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
 
         self._meta_label = QLabel('', self)
-        self._meta_label.setObjectName('aegisContextSpineTileMeta')
+        self._meta_label.setObjectName('cloudflare_guardianContextSpineTileMeta')
         self._meta_label.setWordWrap(True)
         self._meta_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
 
@@ -224,8 +224,8 @@ class _ContextTile(QFrame):
 
 
 
-def _coerce_snapshot(snapshot: AegisDeckSnapshot | Mapping[str, Any] | object) -> AegisDeckSnapshot:
-    return AegisDeckSnapshot(**snapshot_payload(snapshot))
+def _coerce_snapshot(snapshot: CloudflareGuardianDeckSnapshot | Mapping[str, Any] | object) -> CloudflareGuardianDeckSnapshot:
+    return CloudflareGuardianDeckSnapshot(**snapshot_payload(snapshot))
 
 
 
@@ -287,7 +287,7 @@ def _build_style_sheet(theme: DeckThemeBridge) -> str:
     warn = theme.status_palette('warning')
     muted = theme.status_palette('muted')
     return f"""
-QFrame#aegisContextSpine {{
+QFrame#cloudflare_guardianContextSpine {{
     border: 1px solid {panel['border']};
     border-radius: 18px;
     background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
@@ -295,13 +295,13 @@ QFrame#aegisContextSpine {{
         stop:0.62 {panel['surface']},
         stop:1 {theme.token('bg')});
 }}
-QLabel#aegisContextSpineTitle {{
+QLabel#cloudflare_guardianContextSpineTitle {{
     color: {panel['text']};
     font-size: 16px;
     font-weight: 700;
     letter-spacing: 0.4px;
 }}
-QLabel#aegisContextSpinePhaseChip {{
+QLabel#cloudflare_guardianContextSpinePhaseChip {{
     min-width: 84px;
     padding: 4px 10px;
     border-radius: 999px;
@@ -312,59 +312,59 @@ QLabel#aegisContextSpinePhaseChip {{
     background: {muted['soft']};
     border: 1px solid {muted['line']};
 }}
-QLabel#aegisContextSpinePhaseChip[tone="ok"] {{
+QLabel#cloudflare_guardianContextSpinePhaseChip[tone="ok"] {{
     background: {ready['soft']};
     border-color: {ready['line']};
 }}
-QLabel#aegisContextSpinePhaseChip[tone="busy"] {{
+QLabel#cloudflare_guardianContextSpinePhaseChip[tone="busy"] {{
     background: {busy['soft']};
     border-color: {busy['line']};
 }}
-QLabel#aegisContextSpinePhaseChip[tone="warn"] {{
+QLabel#cloudflare_guardianContextSpinePhaseChip[tone="warn"] {{
     background: {warn['soft']};
     border-color: {warn['line']};
 }}
-QLabel#aegisContextSpineSubtitle {{
+QLabel#cloudflare_guardianContextSpineSubtitle {{
     color: {panel['muted']};
     font-size: 12px;
     line-height: 1.35;
 }}
-QLabel#aegisContextSpineNote {{
+QLabel#cloudflare_guardianContextSpineNote {{
     color: {panel['soft_text']};
     font-size: 11px;
     line-height: 1.35;
     padding-top: 2px;
 }}
-QFrame#aegisContextSpineTile {{
+QFrame#cloudflare_guardianContextSpineTile {{
     border-radius: 14px;
     border: 1px solid {panel['border']};
     background: {panel['surface']};
 }}
-QFrame#aegisContextSpineTile[tone="ok"] {{
+QFrame#cloudflare_guardianContextSpineTile[tone="ok"] {{
     border-color: {ready['line']};
     background: {ready['soft']};
 }}
-QFrame#aegisContextSpineTile[tone="busy"] {{
+QFrame#cloudflare_guardianContextSpineTile[tone="busy"] {{
     border-color: {busy['line']};
     background: {busy['soft']};
 }}
-QFrame#aegisContextSpineTile[tone="warn"] {{
+QFrame#cloudflare_guardianContextSpineTile[tone="warn"] {{
     border-color: {warn['line']};
     background: {warn['soft']};
 }}
-QLabel#aegisContextSpineTileHeading {{
+QLabel#cloudflare_guardianContextSpineTileHeading {{
     color: {panel['soft_text']};
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 1.0px;
     text-transform: uppercase;
 }}
-QLabel#aegisContextSpineTileValue {{
+QLabel#cloudflare_guardianContextSpineTileValue {{
     color: {panel['text']};
     font-size: 13px;
     font-weight: 700;
 }}
-QLabel#aegisContextSpineTileMeta {{
+QLabel#cloudflare_guardianContextSpineTileMeta {{
     color: {panel['muted']};
     font-size: 11px;
     line-height: 1.35;
@@ -372,4 +372,6 @@ QLabel#aegisContextSpineTileMeta {{
 """
 
 
-__all__ = ['AegisContextSpine']
+__all__ = ['CloudflareGuardianContextSpine']
+
+

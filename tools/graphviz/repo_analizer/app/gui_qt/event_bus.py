@@ -151,6 +151,27 @@ class Events:
     BOOKMARK_REMOVED = 'bookmark_removed'
     BOOKMARKS_REFRESHED = 'bookmarks_refreshed'
 
+    # Tool lifecycle events
+    TOOL_REGISTERED = 'tool_registered'
+    TOOL_ACTIVATED = 'tool_activated'
+    TOOL_DEACTIVATED = 'tool_deactivated'
+    TOOL_LIFECYCLE_TRANSITION = 'tool_lifecycle_transition'
+    TOOL_INVARIANT_CORRECTED = 'tool_invariant_corrected'
+    TOOL_CONTEXT_UPDATED = 'tool_context_updated'
+    SHELL_GROUP_CHANGED = 'shell_group_changed'
+
+    # Process/session runtime diagnostics
+    PROCESS_SESSION_STATE_CHANGED = 'process_session_state_changed'
+
+    # Command routing events
+    COMMAND_DISPATCH_REQUESTED = 'command_dispatch_requested'
+    COMMAND_WILL_EXECUTE = 'command_will_execute'
+    COMMAND_EXECUTED = 'command_executed'
+    COMMAND_FAILED = 'command_failed'
+
+    # Workstation context events
+    WORKSTATION_CONTEXT_CHANGED = 'workstation_context_changed'
+
     # General events
     ERROR_OCCURRED = 'error_occurred'
     STATUS_CHANGED = 'status_changed'

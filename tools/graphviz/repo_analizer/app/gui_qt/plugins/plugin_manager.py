@@ -22,6 +22,11 @@ if TYPE_CHECKING:
 
 
 _DEBUG_TRUE_VALUES = {'1', 'true', 'yes', 'on'}
+_DEV_PLUGIN_IDS = {'failure_injection', 'mi_plugin', 'demo_ui_validation'}
+_PRODUCT_PLUGIN_IDS = {'cloudflare_guardian', 'orchestrator_bridge'}
+_DEV_PLUGIN_KEYWORDS = {'demo', 'diagnostic', 'diagnostics', 'failure', 'inject', 'prueba', 'test'}
+_LEGACY_PLUGIN_ALLOW_ENV = 'HITECH_QT_ENABLE_LEGACY_PLUGINS'
+_DEV_PLUGIN_ALLOW_ENV = 'HITECH_QT_INCLUDE_DEV_TOOLS'
 
 
 @dataclass(slots=True)
@@ -68,6 +73,7 @@ class PluginManager:
         self._skipped_plugins: list[str] = []
         self._contract_warnings: list[str] = []
         self._manifest_validation_failures: list[str] = []
+        self._include_dev_tools, self._enable_legacy_plugins = self._resolve_plugin_load_flags()
 
     def _resolve_debug_mode(self) -> bool:
         env_value = os.environ.get('HITECH_QT_DEV_TRACE', '').strip().lower()
@@ -84,6 +90,61 @@ class PluginManager:
             except Exception:
                 pass
         return False
+
+    def _resolve_plugin_load_flags(self) -> tuple[bool, bool]:
+        include_dev_tools = self._coerce_flag(
+            os.environ.get(_DEV_PLUGIN_ALLOW_ENV, ''),
+            fallback=False,
+        )
+        enable_legacy_plugins = self._coerce_flag(
+            os.environ.get(_LEGACY_PLUGIN_ALLOW_ENV, ''),
+            fallback=False,
+        )
+
+        settings = self.container.get('settings') if self.container is not None else None
+        if settings is not None:
+            include_dev_tools = include_dev_tools or self._coerce_flag(
+                settings.value('preferences/include_dev_tools', False),
+                fallback=False,
+            )
+            enable_legacy_plugins = enable_legacy_plugins or self._coerce_flag(
+                settings.value('preferences/enable_legacy_plugins', False),
+                fallback=False,
+            )
+
+        if self._resolve_debug_mode():
+            include_dev_tools = True
+
+        return include_dev_tools, enable_legacy_plugins
+
+    def _coerce_flag(self, value: object, *, fallback: bool) -> bool:
+        if isinstance(value, bool):
+            return value
+        text = str(value or '').strip().lower()
+        if not text:
+            return fallback
+        return text in _DEBUG_TRUE_VALUES
+
+    def _is_manifest_dev_only(self, manifest: PluginManifest) -> bool:
+        if manifest.id in _PRODUCT_PLUGIN_IDS:
+            return False
+        if manifest.id in _DEV_PLUGIN_IDS:
+            return True
+        haystack = " ".join(
+            (
+                manifest.id,
+                manifest.name,
+                manifest.description,
+                manifest.author,
+            )
+        ).lower()
+        return any(keyword in haystack for keyword in _DEV_PLUGIN_KEYWORDS)
+
+    def _is_legacy_plugin_file_dev_only(self, filepath: Path) -> bool:
+        stem = filepath.stem.lower()
+        if stem in _DEV_PLUGIN_IDS:
+            return True
+        return any(keyword in stem for keyword in _DEV_PLUGIN_KEYWORDS)
 
     def _emit_log(self, message: str) -> None:
         main_window = self.container.get('main_window') if self.container is not None else None
@@ -114,7 +175,8 @@ class PluginManager:
         )
         self._diagnostic_events.append(event)
 
-        if status in {'failed', 'warning', 'skipped'} or self._resolve_debug_mode():
+        debug_mode = self._resolve_debug_mode()
+        if status in {'failed', 'warning'} or debug_mode:
             plugin_part = f' plugin={plugin}' if plugin else ''
             source_part = f' source={source}' if source else ''
             message_part = f' msg={message}' if message else ''
@@ -399,6 +461,15 @@ class PluginManager:
             return []
 
         loaded: list[str] = []
+        self._record_event(
+            phase='policy',
+            status='ok',
+            message=(
+                f'include_dev_tools={self._include_dev_tools} '
+                f'legacy_plugins={self._enable_legacy_plugins}'
+            ),
+            source=str(directory_path),
+        )
 
         manifest_dirs = self._discover_manifest_plugin_dirs(directory_path)
         self._record_event(
@@ -411,6 +482,18 @@ class PluginManager:
         for plugin_dir in manifest_dirs:
             manifest_path = plugin_dir / self.PLUGIN_MANIFEST_NAME
             try:
+                manifest_preview = PluginManifest.from_file(str(manifest_path))
+                if (not self._include_dev_tools) and self._is_manifest_dev_only(manifest_preview):
+                    msg = f"Skipping development tool manifest '{manifest_preview.id}' by policy"
+                    self._skipped_plugins.append(msg)
+                    self._record_event(
+                        phase='manifest',
+                        status='skipped',
+                        plugin=manifest_preview.id,
+                        message='development tool hidden by policy',
+                        source=str(manifest_path),
+                    )
+                    continue
                 plugin_name = self.load_plugin_from_manifest(str(manifest_path))
                 if plugin_name:
                     loaded.append(plugin_name)
@@ -439,6 +522,29 @@ class PluginManager:
         )
 
         for file_path in discoverable_files:
+            if not self._enable_legacy_plugins:
+                msg = (
+                    f"Skipping legacy plugin file '{file_path.name}' "
+                    "because legacy plugin loading is disabled"
+                )
+                self._skipped_plugins.append(msg)
+                self._record_event(
+                    phase='load',
+                    status='skipped',
+                    message='legacy plugin loading disabled by policy',
+                    source=str(file_path),
+                )
+                continue
+            if (not self._include_dev_tools) and self._is_legacy_plugin_file_dev_only(file_path):
+                msg = f"Skipping development legacy plugin '{file_path.name}' by policy"
+                self._skipped_plugins.append(msg)
+                self._record_event(
+                    phase='load',
+                    status='skipped',
+                    message='legacy development tool hidden by policy',
+                    source=str(file_path),
+                )
+                continue
             try:
                 plugin_name = self.load_plugin_from_file(str(file_path))
                 if plugin_name:
@@ -593,6 +699,8 @@ class PluginManager:
             'loaded_plugins_count': len(loaded_plugins),
             'initialized_plugins': initialized_plugins,
             'initialized_plugins_count': len(initialized_plugins),
+            'include_dev_tools': self._include_dev_tools,
+            'enable_legacy_plugins': self._enable_legacy_plugins,
             'load_failures': list(self._load_failures),
             'load_failures_count': len(self._load_failures),
             'init_failures': list(self._init_failures),
@@ -634,6 +742,13 @@ class PluginManager:
     def get_enabled_plugins(self) -> Dict[str, Plugin]:
         return {name: p for name, p in self._plugins.items() if p.enabled}
 
+    # Public compatibility aliases for product language.
+    def get_all_tools(self) -> Dict[str, Plugin]:
+        return self.get_all_plugins()
+
+    def get_enabled_tools(self) -> Dict[str, Plugin]:
+        return self.get_enabled_plugins()
+
     def enable_plugin(self, name: str) -> bool:
         if name in self._plugins:
             self._plugins[name].enabled = True
@@ -643,6 +758,9 @@ class PluginManager:
             return True
         return False
 
+    def enable_tool(self, name: str) -> bool:
+        return self.enable_plugin(name)
+
     def disable_plugin(self, name: str) -> bool:
         if name in self._plugins:
             self._plugins[name].enabled = False
@@ -651,3 +769,7 @@ class PluginManager:
                 manifest.enabled = False
             return True
         return False
+
+    def disable_tool(self, name: str) -> bool:
+        return self.disable_plugin(name)
+

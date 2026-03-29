@@ -5,38 +5,38 @@ from typing import Any, Mapping
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QFrame, QGridLayout, QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
-from .state_adapter import AegisDeckSnapshot, snapshot_payload
+from .state_adapter import CloudflareGuardianDeckSnapshot, snapshot_payload
 from .theme_bridge import DeckThemeBridge
 
 
-class AegisRepoPulse(QFrame):
+class CloudflareGuardianRepoPulse(QFrame):
     """Snapshot consumer for deterministic repo, search, nav, and graph counters."""
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setObjectName('aegisRepoPulse')
-        self._snapshot = AegisDeckSnapshot()
+        self.setObjectName('cloudflare_guardianRepoPulse')
+        self._snapshot = CloudflareGuardianDeckSnapshot()
         self._theme_bridge = DeckThemeBridge.coerce(None)
 
         self._title_label = QLabel('Repo pulse', self)
-        self._title_label.setObjectName('aegisRepoPulseTitle')
+        self._title_label.setObjectName('cloudflare_guardianRepoPulseTitle')
 
         self._phase_chip = QLabel('', self)
-        self._phase_chip.setObjectName('aegisRepoPulsePhaseChip')
+        self._phase_chip.setObjectName('cloudflare_guardianRepoPulsePhaseChip')
         self._phase_chip.setAlignment(Qt.AlignCenter)
 
         self._status_label = QLabel('', self)
-        self._status_label.setObjectName('aegisRepoPulseStatus')
+        self._status_label.setObjectName('cloudflare_guardianRepoPulseStatus')
         self._status_label.setWordWrap(True)
         self._status_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
 
         self._summary_label = QLabel('', self)
-        self._summary_label.setObjectName('aegisRepoPulseSummary')
+        self._summary_label.setObjectName('cloudflare_guardianRepoPulseSummary')
         self._summary_label.setWordWrap(True)
         self._summary_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
 
         self._footer_label = QLabel('', self)
-        self._footer_label.setObjectName('aegisRepoPulseFooter')
+        self._footer_label.setObjectName('cloudflare_guardianRepoPulseFooter')
         self._footer_label.setWordWrap(True)
         self._footer_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
 
@@ -90,7 +90,7 @@ class AegisRepoPulse(QFrame):
         self._theme_bridge = DeckThemeBridge.coerce(tokens)
         self.setStyleSheet(_build_style_sheet(self._theme_bridge))
 
-    def set_snapshot(self, snapshot: AegisDeckSnapshot | Mapping[str, Any] | object) -> None:
+    def set_snapshot(self, snapshot: CloudflareGuardianDeckSnapshot | Mapping[str, Any] | object) -> None:
         self._snapshot = _coerce_snapshot(snapshot)
         payload = snapshot_payload(self._snapshot)
         tone = _resolve_tone(payload)
@@ -138,7 +138,7 @@ class AegisRepoPulse(QFrame):
         for tile in self._metrics.values():
             tile.refresh_visual_state()
 
-    def refresh_now(self, snapshot: AegisDeckSnapshot | Mapping[str, Any] | object | None = None) -> None:
+    def refresh_now(self, snapshot: CloudflareGuardianDeckSnapshot | Mapping[str, Any] | object | None = None) -> None:
         if snapshot is not None:
             self.set_snapshot(snapshot)
         else:
@@ -148,17 +148,17 @@ class AegisRepoPulse(QFrame):
 class _MetricTile(QFrame):
     def __init__(self, heading: str, parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setObjectName('aegisRepoPulseMetricTile')
+        self.setObjectName('cloudflare_guardianRepoPulseMetricTile')
 
         self._heading_label = QLabel(heading, self)
-        self._heading_label.setObjectName('aegisRepoPulseMetricHeading')
+        self._heading_label.setObjectName('cloudflare_guardianRepoPulseMetricHeading')
 
         self._value_label = QLabel('', self)
-        self._value_label.setObjectName('aegisRepoPulseMetricValue')
+        self._value_label.setObjectName('cloudflare_guardianRepoPulseMetricValue')
         self._value_label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
 
         self._meta_label = QLabel('', self)
-        self._meta_label.setObjectName('aegisRepoPulseMetricMeta')
+        self._meta_label.setObjectName('cloudflare_guardianRepoPulseMetricMeta')
         self._meta_label.setWordWrap(True)
         self._meta_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
 
@@ -180,8 +180,8 @@ class _MetricTile(QFrame):
 
 
 
-def _coerce_snapshot(snapshot: AegisDeckSnapshot | Mapping[str, Any] | object) -> AegisDeckSnapshot:
-    return AegisDeckSnapshot(**snapshot_payload(snapshot))
+def _coerce_snapshot(snapshot: CloudflareGuardianDeckSnapshot | Mapping[str, Any] | object) -> CloudflareGuardianDeckSnapshot:
+    return CloudflareGuardianDeckSnapshot(**snapshot_payload(snapshot))
 
 
 
@@ -260,7 +260,7 @@ def _build_style_sheet(theme: DeckThemeBridge) -> str:
     warn = theme.status_palette('warning')
     muted = theme.status_palette('muted')
     return f"""
-QFrame#aegisRepoPulse {{
+QFrame#cloudflare_guardianRepoPulse {{
     border: 1px solid {panel['border']};
     border-radius: 18px;
     background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
@@ -268,13 +268,13 @@ QFrame#aegisRepoPulse {{
         stop:0.52 {panel['surface']},
         stop:1 {theme.token('bg')});
 }}
-QLabel#aegisRepoPulseTitle {{
+QLabel#cloudflare_guardianRepoPulseTitle {{
     color: {panel['text']};
     font-size: 16px;
     font-weight: 700;
     letter-spacing: 0.4px;
 }}
-QLabel#aegisRepoPulsePhaseChip {{
+QLabel#cloudflare_guardianRepoPulsePhaseChip {{
     min-width: 84px;
     padding: 4px 10px;
     border-radius: 999px;
@@ -285,64 +285,64 @@ QLabel#aegisRepoPulsePhaseChip {{
     background: {muted['soft']};
     border: 1px solid {muted['line']};
 }}
-QLabel#aegisRepoPulsePhaseChip[tone="ok"] {{
+QLabel#cloudflare_guardianRepoPulsePhaseChip[tone="ok"] {{
     background: {ready['soft']};
     border-color: {ready['line']};
 }}
-QLabel#aegisRepoPulsePhaseChip[tone="busy"] {{
+QLabel#cloudflare_guardianRepoPulsePhaseChip[tone="busy"] {{
     background: {busy['soft']};
     border-color: {busy['line']};
 }}
-QLabel#aegisRepoPulsePhaseChip[tone="warn"] {{
+QLabel#cloudflare_guardianRepoPulsePhaseChip[tone="warn"] {{
     background: {warn['soft']};
     border-color: {warn['line']};
 }}
-QLabel#aegisRepoPulseStatus {{
+QLabel#cloudflare_guardianRepoPulseStatus {{
     color: {panel['text']};
     font-size: 18px;
     font-weight: 700;
     line-height: 1.2;
 }}
-QLabel#aegisRepoPulseSummary {{
+QLabel#cloudflare_guardianRepoPulseSummary {{
     color: {panel['muted']};
     font-size: 12px;
     line-height: 1.35;
 }}
-QLabel#aegisRepoPulseFooter {{
+QLabel#cloudflare_guardianRepoPulseFooter {{
     color: {panel['soft_text']};
     font-size: 11px;
     line-height: 1.35;
 }}
-QFrame#aegisRepoPulseMetricTile {{
+QFrame#cloudflare_guardianRepoPulseMetricTile {{
     border-radius: 14px;
     border: 1px solid {panel['border']};
     background: {panel['surface']};
 }}
-QFrame#aegisRepoPulseMetricTile[tone="ok"] {{
+QFrame#cloudflare_guardianRepoPulseMetricTile[tone="ok"] {{
     border-color: {ready['line']};
     background: {ready['soft']};
 }}
-QFrame#aegisRepoPulseMetricTile[tone="busy"] {{
+QFrame#cloudflare_guardianRepoPulseMetricTile[tone="busy"] {{
     border-color: {busy['line']};
     background: {busy['soft']};
 }}
-QFrame#aegisRepoPulseMetricTile[tone="warn"] {{
+QFrame#cloudflare_guardianRepoPulseMetricTile[tone="warn"] {{
     border-color: {warn['line']};
     background: {warn['soft']};
 }}
-QLabel#aegisRepoPulseMetricHeading {{
+QLabel#cloudflare_guardianRepoPulseMetricHeading {{
     color: {panel['soft_text']};
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 1.0px;
     text-transform: uppercase;
 }}
-QLabel#aegisRepoPulseMetricValue {{
+QLabel#cloudflare_guardianRepoPulseMetricValue {{
     color: {panel['text']};
     font-size: 20px;
     font-weight: 800;
 }}
-QLabel#aegisRepoPulseMetricMeta {{
+QLabel#cloudflare_guardianRepoPulseMetricMeta {{
     color: {panel['muted']};
     font-size: 11px;
     line-height: 1.3;
@@ -350,4 +350,6 @@ QLabel#aegisRepoPulseMetricMeta {{
 """
 
 
-__all__ = ['AegisRepoPulse']
+__all__ = ['CloudflareGuardianRepoPulse']
+
+

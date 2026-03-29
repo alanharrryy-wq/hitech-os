@@ -59,7 +59,7 @@ class _CommandRowWidget(QFrame):
         self._hovered = False
         self._theme_bridge = DeckThemeBridge.coerce(None)
 
-        self.setObjectName('aegisCommandRow')
+        self.setObjectName('cloudflare_guardianCommandRow')
         self.setCursor(Qt.PointingHandCursor)
         self.setProperty('selected', False)
         self.setProperty('hovered', False)
@@ -75,14 +75,14 @@ class _CommandRowWidget(QFrame):
         root.addLayout(top)
 
         self._title_label = QLabel(self)
-        self._title_label.setObjectName('aegisCommandRowTitle')
+        self._title_label.setObjectName('cloudflare_guardianCommandRowTitle')
         self._title_label.setTextFormat(Qt.RichText)
         self._title_label.setWordWrap(True)
         self._title_label.setTextInteractionFlags(Qt.NoTextInteraction)
         top.addWidget(self._title_label, 1)
 
         self._shortcut_label = QLabel(self)
-        self._shortcut_label.setObjectName('aegisCommandRowShortcut')
+        self._shortcut_label.setObjectName('cloudflare_guardianCommandRowShortcut')
         self._shortcut_label.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
         top.addWidget(self._shortcut_label, 0)
 
@@ -92,20 +92,20 @@ class _CommandRowWidget(QFrame):
         root.addLayout(mid)
 
         self._description_label = QLabel(self)
-        self._description_label.setObjectName('aegisCommandRowDescription')
+        self._description_label.setObjectName('cloudflare_guardianCommandRowDescription')
         self._description_label.setTextFormat(Qt.RichText)
         self._description_label.setWordWrap(True)
         self._description_label.setTextInteractionFlags(Qt.NoTextInteraction)
         mid.addWidget(self._description_label, 1)
 
         self._state_label = QLabel(self)
-        self._state_label.setObjectName('aegisCommandRowState')
+        self._state_label.setObjectName('cloudflare_guardianCommandRowState')
         self._state_label.setAlignment(Qt.AlignCenter)
         self._state_label.setProperty('tone', 'ready')
         mid.addWidget(self._state_label, 0)
 
         self._keywords_label = QLabel(self)
-        self._keywords_label.setObjectName('aegisCommandRowKeywords')
+        self._keywords_label.setObjectName('cloudflare_guardianCommandRowKeywords')
         self._keywords_label.setTextFormat(Qt.RichText)
         self._keywords_label.setWordWrap(True)
         self._keywords_label.setTextInteractionFlags(Qt.NoTextInteraction)
@@ -222,7 +222,7 @@ class _CommandRowWidget(QFrame):
         widget.update()
 
 
-class AegisCommandBar(QWidget):
+class CloudflareGuardianCommandBar(QWidget):
     commandActivated = Signal(str, object)
     commandHighlighted = Signal(str, object)
     queryEdited = Signal(str)
@@ -252,7 +252,7 @@ class AegisCommandBar(QWidget):
         self._status_override: tuple[str, str] | None = None
         self._status_reset_serial = 0
 
-        self.setObjectName('aegisCommandBar')
+        self.setObjectName('cloudflare_guardianCommandBar')
         self.setProperty('visualRole', 'command-surface')
         self.setProperty('visualTier', 'themed')
         self.setStyleSheet(self._build_stylesheet())
@@ -262,7 +262,7 @@ class AegisCommandBar(QWidget):
         root.setSpacing(10)
 
         shell = QFrame(self)
-        shell.setObjectName('aegisCommandBarShell')
+        shell.setObjectName('cloudflare_guardianCommandBarShell')
         shell.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         shell.setMinimumHeight(260)
         root.addWidget(shell)
@@ -277,22 +277,22 @@ class AegisCommandBar(QWidget):
         shell_layout.addLayout(header_row)
 
         self._header_label = QLabel('Command Bar', shell)
-        self._header_label.setObjectName('aegisCommandBarHeader')
+        self._header_label.setObjectName('cloudflare_guardianCommandBarHeader')
         header_row.addWidget(self._header_label, 1)
 
         self._count_label = QLabel('0', shell)
-        self._count_label.setObjectName('aegisCommandBarCount')
+        self._count_label.setObjectName('cloudflare_guardianCommandBarCount')
         self._count_label.setAlignment(Qt.AlignCenter)
         header_row.addWidget(self._count_label, 0)
 
         self._status_label = QLabel('Awaiting commands', shell)
-        self._status_label.setObjectName('aegisCommandBarStatus')
+        self._status_label.setObjectName('cloudflare_guardianCommandBarStatus')
         self._status_label.setAlignment(Qt.AlignCenter)
         self._status_label.setProperty('tone', 'idle')
         header_row.addWidget(self._status_label, 0)
 
         self._query_edit = QLineEdit(shell)
-        self._query_edit.setObjectName('aegisCommandBarInput')
+        self._query_edit.setObjectName('cloudflare_guardianCommandBarInput')
         self._query_edit.setClearButtonEnabled(True)
         self._query_edit.setPlaceholderText('Search commands, shortcuts, or keywords')
         self._query_edit.textChanged.connect(self._on_query_changed)
@@ -300,11 +300,11 @@ class AegisCommandBar(QWidget):
         shell_layout.addWidget(self._query_edit)
 
         self._hint_label = QLabel('Enter runs the current command. Up/Down moves selection. Esc clears.', shell)
-        self._hint_label.setObjectName('aegisCommandBarHint')
+        self._hint_label.setObjectName('cloudflare_guardianCommandBarHint')
         shell_layout.addWidget(self._hint_label)
 
         self._list = QListWidget(shell)
-        self._list.setObjectName('aegisCommandBarList')
+        self._list.setObjectName('cloudflare_guardianCommandBarList')
         self._list.setAlternatingRowColors(False)
         self._list.setSelectionMode(QAbstractItemView.SingleSelection)
         self._list.setSelectionBehavior(QAbstractItemView.SelectRows)
@@ -318,13 +318,13 @@ class AegisCommandBar(QWidget):
         shell_layout.addWidget(self._list, 1)
 
         self._empty_label = QLabel('No commands available.', shell)
-        self._empty_label.setObjectName('aegisCommandBarEmpty')
+        self._empty_label.setObjectName('cloudflare_guardianCommandBarEmpty')
         self._empty_label.setAlignment(Qt.AlignCenter)
         self._empty_label.setWordWrap(True)
         shell_layout.addWidget(self._empty_label)
 
         self._detail_panel = QFrame(shell)
-        self._detail_panel.setObjectName('aegisCommandBarDetail')
+        self._detail_panel.setObjectName('cloudflare_guardianCommandBarDetail')
         self._detail_panel.setMinimumHeight(108)
         detail_layout = QVBoxLayout(self._detail_panel)
         detail_layout.setContentsMargins(12, 12, 12, 12)
@@ -337,22 +337,22 @@ class AegisCommandBar(QWidget):
         detail_layout.addLayout(detail_header)
 
         self._detail_title = QLabel('No command selected', self._detail_panel)
-        self._detail_title.setObjectName('aegisCommandBarDetailTitle')
+        self._detail_title.setObjectName('cloudflare_guardianCommandBarDetailTitle')
         detail_header.addWidget(self._detail_title, 1)
 
         self._detail_badge = QLabel('IDLE', self._detail_panel)
-        self._detail_badge.setObjectName('aegisCommandBarDetailBadge')
+        self._detail_badge.setObjectName('cloudflare_guardianCommandBarDetailBadge')
         self._detail_badge.setAlignment(Qt.AlignCenter)
         self._detail_badge.setProperty('tone', 'idle')
         detail_header.addWidget(self._detail_badge, 0)
 
         self._detail_meta = QLabel('Load command specs to begin.', self._detail_panel)
-        self._detail_meta.setObjectName('aegisCommandBarDetailMeta')
+        self._detail_meta.setObjectName('cloudflare_guardianCommandBarDetailMeta')
         self._detail_meta.setWordWrap(True)
         detail_layout.addWidget(self._detail_meta)
 
         self._detail_payload = QLabel('', self._detail_panel)
-        self._detail_payload.setObjectName('aegisCommandBarDetailPayload')
+        self._detail_payload.setObjectName('cloudflare_guardianCommandBarDetailPayload')
         self._detail_payload.setWordWrap(True)
         self._detail_payload.setTextFormat(Qt.RichText)
         detail_layout.addWidget(self._detail_payload)
@@ -959,23 +959,23 @@ class AegisCommandBar(QWidget):
         muted = bridge.status_palette('muted')
         accent = bridge.status_palette('accent')
         return f"""
-        QFrame#aegisCommandBarShell {{
+        QFrame#cloudflare_guardianCommandBarShell {{
             background:qlineargradient(x1:0, y1:0, x2:1, y2:1,
                 stop:0 {toolbar['surface']}, stop:0.55 {panel['surface']}, stop:1 {panel['surface_alt']});
             border:1px solid {panel['border']};
             border-radius:18px;
         }}
-        QLabel#aegisCommandBarHeader {{
+        QLabel#cloudflare_guardianCommandBarHeader {{
             color:{panel['text']};
             font-size:16px;
             font-weight:700;
             letter-spacing:0.3px;
         }}
-        QLabel#aegisCommandBarCount,
-        QLabel#aegisCommandBarStatus,
-        QLabel#aegisCommandBarDetailBadge,
-        QLabel#aegisCommandRowState,
-        QLabel#aegisCommandRowShortcut {{
+        QLabel#cloudflare_guardianCommandBarCount,
+        QLabel#cloudflare_guardianCommandBarStatus,
+        QLabel#cloudflare_guardianCommandBarDetailBadge,
+        QLabel#cloudflare_guardianCommandRowState,
+        QLabel#cloudflare_guardianCommandRowShortcut {{
             padding:4px 10px;
             border-radius:10px;
             border:1px solid {panel['border']};
@@ -984,42 +984,42 @@ class AegisCommandBar(QWidget):
             font-size:11px;
             font-weight:600;
         }}
-        QLabel#aegisCommandBarCount {{
+        QLabel#cloudflare_guardianCommandBarCount {{
             background:{accent['soft']};
             color:{accent['ink']};
             min-width:56px;
         }}
-        QLabel#aegisCommandBarStatus[tone="idle"],
-        QLabel#aegisCommandBarDetailBadge[tone="idle"] {{
+        QLabel#cloudflare_guardianCommandBarStatus[tone="idle"],
+        QLabel#cloudflare_guardianCommandBarDetailBadge[tone="idle"] {{
             background:{muted['soft']};
             color:{muted['ink']};
             border-color:{muted['line']};
         }}
-        QLabel#aegisCommandBarStatus[tone="ready"],
-        QLabel#aegisCommandBarDetailBadge[tone="ready"],
-        QLabel#aegisCommandRowState[tone="ready"] {{
+        QLabel#cloudflare_guardianCommandBarStatus[tone="ready"],
+        QLabel#cloudflare_guardianCommandBarDetailBadge[tone="ready"],
+        QLabel#cloudflare_guardianCommandRowState[tone="ready"] {{
             background:{ready['soft']};
             color:{ready['ink']};
             border-color:{ready['line']};
         }}
-        QLabel#aegisCommandBarStatus[tone="warning"] {{
+        QLabel#cloudflare_guardianCommandBarStatus[tone="warning"] {{
             background:{warning['soft']};
             color:{warning['ink']};
             border-color:{warning['line']};
         }}
-        QLabel#aegisCommandBarStatus[tone="danger"],
-        QLabel#aegisCommandRowState[tone="disabled"],
-        QLabel#aegisCommandBarDetailBadge[tone="disabled"] {{
+        QLabel#cloudflare_guardianCommandBarStatus[tone="danger"],
+        QLabel#cloudflare_guardianCommandRowState[tone="disabled"],
+        QLabel#cloudflare_guardianCommandBarDetailBadge[tone="disabled"] {{
             background:{danger['soft']};
             color:{danger['ink']};
             border-color:{danger['line']};
         }}
-        QLabel#aegisCommandBarStatus[tone="empty"] {{
+        QLabel#cloudflare_guardianCommandBarStatus[tone="empty"] {{
             background:{muted['soft']};
             color:{panel['muted']};
             border-color:{panel['divider']};
         }}
-        QLineEdit#aegisCommandBarInput {{
+        QLineEdit#cloudflare_guardianCommandBarInput {{
             background:{toolbar['surface']};
             color:{panel['text']};
             border:1px solid {panel['border']};
@@ -1029,56 +1029,56 @@ class AegisCommandBar(QWidget):
             selection-color:{panel['text']};
             font-size:13px;
         }}
-        QLineEdit#aegisCommandBarInput:focus {{
+        QLineEdit#cloudflare_guardianCommandBarInput:focus {{
             border:1px solid {panel['focus_ring']};
             background:{panel['surface']};
         }}
-        QLabel#aegisCommandBarHint {{
+        QLabel#cloudflare_guardianCommandBarHint {{
             color:{panel['soft_text']};
             font-size:11px;
             padding-left:2px;
         }}
-        QListWidget#aegisCommandBarList {{
+        QListWidget#cloudflare_guardianCommandBarList {{
             background:transparent;
             border:none;
             outline:none;
         }}
-        QListWidget#aegisCommandBarList::item {{
+        QListWidget#cloudflare_guardianCommandBarList::item {{
             margin:0px;
             padding:0px;
             border:none;
         }}
-        QFrame#aegisCommandRow {{
+        QFrame#cloudflare_guardianCommandRow {{
             background:{panel['surface']};
             border:1px solid {panel['border']};
             border-radius:14px;
         }}
-        QFrame#aegisCommandRow[hovered="true"] {{
+        QFrame#cloudflare_guardianCommandRow[hovered="true"] {{
             background:{panel['surface_hover']};
             border-color:{panel['divider']};
         }}
-        QFrame#aegisCommandRow[selected="true"] {{
+        QFrame#cloudflare_guardianCommandRow[selected="true"] {{
             background:qlineargradient(x1:0, y1:0, x2:1, y2:0,
                 stop:0 {panel['surface_active']}, stop:1 {panel['surface_hover']});
             border-color:{accent['line']};
         }}
-        QFrame#aegisCommandRow[enabledState="false"] {{
+        QFrame#cloudflare_guardianCommandRow[enabledState="false"] {{
             background:{toolbar['surface']};
             border-color:{panel['border']};
         }}
-        QLabel#aegisCommandRowTitle {{
+        QLabel#cloudflare_guardianCommandRowTitle {{
             color:{panel['text']};
             font-size:14px;
         }}
-        QLabel#aegisCommandRowDescription {{
+        QLabel#cloudflare_guardianCommandRowDescription {{
             color:{panel['muted']};
             font-size:12px;
         }}
-        QLabel#aegisCommandRowKeywords {{
+        QLabel#cloudflare_guardianCommandRowKeywords {{
             color:{panel['soft_text']};
             font-size:11px;
         }}
-        QLabel#aegisCommandBarEmpty {{
+        QLabel#cloudflare_guardianCommandBarEmpty {{
             color:{panel['soft_text']};
             border:1px dashed {panel['border']};
             border-radius:14px;
@@ -1086,21 +1086,21 @@ class AegisCommandBar(QWidget):
             padding:22px;
             font-size:13px;
         }}
-        QFrame#aegisCommandBarDetail {{
+        QFrame#cloudflare_guardianCommandBarDetail {{
             background:{toolbar['surface']};
             border:1px solid {panel['border']};
             border-radius:14px;
         }}
-        QLabel#aegisCommandBarDetailTitle {{
+        QLabel#cloudflare_guardianCommandBarDetailTitle {{
             color:{panel['text']};
             font-size:14px;
             font-weight:700;
         }}
-        QLabel#aegisCommandBarDetailMeta {{
+        QLabel#cloudflare_guardianCommandBarDetailMeta {{
             color:{panel['muted']};
             font-size:12px;
         }}
-        QLabel#aegisCommandBarDetailPayload {{
+        QLabel#cloudflare_guardianCommandBarDetailPayload {{
             color:{panel['text']};
             background:{bridge.token('code_bg')};
             border:1px solid {bridge.token('code_line')};
@@ -1112,4 +1112,6 @@ class AegisCommandBar(QWidget):
         """
 
 
-__all__ = ['AegisCommandBar']
+__all__ = ['CloudflareGuardianCommandBar']
+
+

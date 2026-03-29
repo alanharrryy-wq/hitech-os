@@ -21,9 +21,9 @@ class DockContribution:
     widget_factory: DockWidgetFactory
     area: DockAreaLike = 'right'
     visible: bool = True
-    closable: bool = True
-    floatable: bool = True
-    movable: bool = True
+    closable: bool = False
+    floatable: bool = False
+    movable: bool = False
     allowed_areas: Qt.DockWidgetAreas | None = None
 
 

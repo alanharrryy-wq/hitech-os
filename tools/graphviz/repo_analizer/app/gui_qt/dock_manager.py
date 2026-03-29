@@ -7,6 +7,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QDockWidget
 
 from .shell.dock_sections import DockSectionFactory
+from .shell.tool_launcher import ToolLauncherPanel
 
 if TYPE_CHECKING:
     from .main_window import RepoAnalyzerMainWindow
@@ -24,34 +25,55 @@ class DockManager:
     def build_docks(self, skin_tokens: SkinTokens) -> None:
         """Create and configure all dock widgets."""
         self.main.workspace_summary_dock = self.register_feature_panel(
-            title='Workspace Summary',
+            title='Repository Summary',
             area=Qt.TopDockWidgetArea,
-            widget_factory=lambda dock: self._prebuilt_panel('workspace_summary_panel', 'Workspace Summary'),
+            widget_factory=lambda dock: self._prebuilt_panel('workspace_summary_panel', 'Repository Summary'),
             skin_tokens=skin_tokens,
             object_name='dock_workspace_summary',
             reason='dock-manager-workspace-summary',
             visual_role='hero-surface',
+            closable=False,
+            floatable=False,
+            movable=False,
         )
         self.main.preview_workspace_dock = self.register_feature_panel(
-            title='Preview Workspace',
+            title='Preview',
             area=Qt.TopDockWidgetArea,
-            widget_factory=lambda dock: self._prebuilt_panel('preview_workspace_panel', 'Preview Workspace'),
+            widget_factory=lambda dock: self._prebuilt_panel('preview_workspace_panel', 'Preview'),
             skin_tokens=skin_tokens,
             object_name='dock_preview_workspace',
             reason='dock-manager-preview-workspace',
             visual_role='panel-surface',
+            closable=False,
+            floatable=False,
+            movable=False,
         )
         self.main.central_inspector_dock = self.register_feature_panel(
-            title='Inspector Central',
+            title='Context Inspector',
             area=Qt.TopDockWidgetArea,
-            widget_factory=lambda dock: self._prebuilt_panel('central_inspector_panel', 'Inspector Central'),
+            widget_factory=lambda dock: self._prebuilt_panel('central_inspector_panel', 'Context Inspector'),
             skin_tokens=skin_tokens,
             object_name='dock_central_inspector',
             reason='dock-manager-central-inspector',
             visual_role='panel-surface',
+            closable=False,
+            floatable=False,
+            movable=False,
         )
 
         self.main.explorer_dock = self._make_dock('Explorer', Qt.LeftDockWidgetArea)
+        self.main.tools_launcher_dock = self.register_feature_panel(
+            title='Tools',
+            area=Qt.LeftDockWidgetArea,
+            widget_factory=lambda dock: self._build_tool_launcher_panel(dock),
+            skin_tokens=skin_tokens,
+            object_name='dock_tools_launcher',
+            reason='dock-manager-tools-launcher',
+            visual_role='panel-surface',
+            closable=False,
+            floatable=False,
+            movable=False,
+        )
         self.main.results_dock = self._make_dock('Results', Qt.BottomDockWidgetArea)
 
         # Build explorer dock (via tree controller)
@@ -74,6 +96,9 @@ class DockManager:
             object_name='dock_inspector',
             reason='dock-manager-inspector-panel',
             visual_role='dock-content-root',
+            closable=False,
+            floatable=False,
+            movable=False,
         )
         self.main.bookmarks_dock = self.register_feature_panel(
             title='Bookmarks',
@@ -86,11 +111,16 @@ class DockManager:
             object_name='dock_bookmarks',
             reason='dock-manager-bookmarks-panel',
             visual_role='dock-content-root',
+            closable=False,
+            floatable=False,
+            movable=False,
         )
 
         # Tabify and finalize
         self.main.tabifyDockWidget(self.main.inspector_dock, self.main.bookmarks_dock)
         self.main.inspector_dock.raise_()
+        self.main.tabifyDockWidget(self.main.tools_launcher_dock, self.main.explorer_dock)
+        self.main.explorer_dock.raise_()
         self.main.splitDockWidget(
             self.main.workspace_summary_dock,
             self.main.preview_workspace_dock,
@@ -124,6 +154,7 @@ class DockManager:
             self.main.workspace_summary_dock,
             self.main.preview_workspace_dock,
             self.main.central_inspector_dock,
+            self.main.tools_launcher_dock,
             self.main.explorer_dock,
             self.main.results_dock,
             self.main.inspector_dock,
@@ -136,6 +167,13 @@ class DockManager:
         panel = getattr(self.main, attr_name, None)
         if panel is None:
             raise RuntimeError(f"Prebuilt panel '{label}' was not prepared before dock attach")
+        return panel
+
+    def _build_tool_launcher_panel(self, parent) -> ToolLauncherPanel:
+        panel = getattr(self.main, 'tool_launcher_panel', None)
+        if panel is None:
+            panel = ToolLauncherPanel(self.main, parent=parent)
+            self.main.tool_launcher_panel = panel
         return panel
 
     def add_plugin_dock(
@@ -182,12 +220,10 @@ class DockManager:
         """Create a dock widget."""
         dock = QDockWidget(title, self.main)
         dock.setObjectName(f'dock_{title.lower()}')
+        # Keep close behavior in hide-mode so tools can be reopened deterministically.
+        dock.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, False)
         dock.setProperty('visualTier', 'themed')
-        dock.setFeatures(
-            QDockWidget.DockWidgetMovable
-            | QDockWidget.DockWidgetFloatable
-            | QDockWidget.DockWidgetClosable
-        )
+        dock.setFeatures(QDockWidget.NoDockWidgetFeatures)
         dock.setAllowedAreas(Qt.AllDockWidgetAreas)
         dock.setProperty('visualRole', 'dock-shell')
         self.main.addDockWidget(area, dock)

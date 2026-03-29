@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 import sys
@@ -72,6 +73,52 @@ class TestSessionExportContract(OneButtonFrameworkTestCase):
         self.assertTrue(report['validation']['session_file_index_valid'])
         self.assertEqual(report['validation']['errors'], [])
 
+        zip_sha256 = self._sha256_file(zip_path)
+        zip_size = zip_path.stat().st_size
+        sidecar_sha256 = self._read_sha256_sidecar(zip_path.with_suffix('.sha256'))
+        self.assertEqual(sidecar_sha256, zip_sha256)
+
+        sidecar_manifest = json.loads(zip_path.with_suffix('.manifest.json').read_text(encoding='utf-8'))
+        artifacts = sidecar_manifest['artifacts']
+        self.assertEqual(artifacts['session_zip_path'], str(zip_path))
+        self.assertEqual(artifacts['session_zip_sha256'], zip_sha256)
+        self.assertEqual(artifacts['session_zip_size_bytes'], zip_size)
+
+        internal_manifest = self.read_zip_json(zip_path, 'session/session_manifest.json')
+        self.assertEqual(internal_manifest['artifacts']['session_zip_sha256'], '0' * 64)
+        self.assertEqual(internal_manifest['artifacts']['session_zip_size_bytes'], 0)
+
+    def test_rerun_keeps_each_export_integrity_consistent(self) -> None:
+        framework_root = self.make_temp_framework()
+        launch_args = (
+            '--session-mode', 'new_project',
+            '--policy', 'open_new_round',
+            '--project-id', 'zeta_reuse_project',
+            '--project-name', 'Zeta Reuse Project',
+            '--initiative-type', 'operations',
+            '--intent', 'Export once and then reuse without drift',
+            '--non-interactive',
+        )
+
+        first = self.run_launcher(framework_root, *launch_args)
+        self.assertEqual(first.returncode, 0, msg=first.stderr)
+        first_payload = self.parse_json_output(first)
+        self.assertEqual(first_payload['status'], 'ready_for_dispatch')
+        zip_path = Path(first_payload['canonical_zip_path'])
+        first_zip_sha, first_sidecar_sha, first_manifest_payload = self._read_export_integrity(zip_path)
+
+        second = self.run_launcher(framework_root, *launch_args)
+        self.assertEqual(second.returncode, 0, msg=second.stderr)
+        second_payload = self.parse_json_output(second)
+        self.assertIn(second_payload['status'], {'ready_for_dispatch', 'reused'})
+        second_zip_path = Path(second_payload['canonical_zip_path'])
+        second_zip_sha, second_sidecar_sha, second_manifest_payload = self._read_export_integrity(second_zip_path)
+
+        self.assertEqual(first_zip_sha, first_sidecar_sha)
+        self.assertEqual(second_zip_sha, second_sidecar_sha)
+        self.assertEqual(first_manifest_payload['artifacts']['session_zip_sha256'], first_zip_sha)
+        self.assertEqual(second_manifest_payload['artifacts']['session_zip_sha256'], second_zip_sha)
+
     def test_acceptance_stub_from_validator_matches_schema_required_fields(self) -> None:
         framework_root = self.make_temp_framework()
         validator = framework_root / 'tools' / 'execution_framework' / 'validate_session_zip_contract.py'
@@ -96,6 +143,31 @@ class TestSessionExportContract(OneButtonFrameworkTestCase):
         self.assertEqual(payload['project_id'], 'schema_demo')
         self.assertEqual(payload['run_id'], 'run_007')
         self.assertEqual(payload['round_id'], 'round_003')
+
+    @staticmethod
+    def _sha256_file(path: Path) -> str:
+        digest = hashlib.sha256()
+        with path.open('rb') as fh:
+            while True:
+                chunk = fh.read(65536)
+                if not chunk:
+                    break
+                digest.update(chunk)
+        return digest.hexdigest()
+
+    @staticmethod
+    def _read_sha256_sidecar(path: Path) -> str:
+        line = path.read_text(encoding='utf-8').strip()
+        return line.split()[0] if line else ''
+
+    def _read_export_integrity(self, zip_path: Path) -> tuple[str, str, dict]:
+        zip_sha = self._sha256_file(zip_path)
+        sidecar_sha = self._read_sha256_sidecar(zip_path.with_suffix('.sha256'))
+        sidecar_manifest = json.loads(zip_path.with_suffix('.manifest.json').read_text(encoding='utf-8'))
+        self.assertEqual(sidecar_manifest['artifacts']['session_zip_path'], str(zip_path))
+        self.assertEqual(sidecar_manifest['artifacts']['session_zip_sha256'], zip_sha)
+        self.assertEqual(sidecar_manifest['artifacts']['session_zip_size_bytes'], zip_path.stat().st_size)
+        return zip_sha, sidecar_sha, sidecar_manifest
 
 
 if __name__ == '__main__':

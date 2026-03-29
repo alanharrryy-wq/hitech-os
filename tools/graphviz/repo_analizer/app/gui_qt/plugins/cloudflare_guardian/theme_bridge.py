@@ -7,8 +7,8 @@ from typing import Any
 from PySide6.QtGui import QColor
 
 _DEFAULT_TOKENS: dict[str, str] = {
-    "name": "aegis_default",
-    "display_name": "Aegis Default",
+    "name": "cloudflare_guardian_default",
+    "display_name": "CloudflareGuardian Default",
     "bg": "#0f1318",
     "bg_alt": "#141a22",
     "bg_elevated": "#1a212c",
@@ -322,3 +322,5 @@ class DeckThemeBridge:
 
 
 __all__ = ["DeckThemeBridge"]
+
+
