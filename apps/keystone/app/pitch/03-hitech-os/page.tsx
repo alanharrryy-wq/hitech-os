@@ -1,26 +1,28 @@
 import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "@hitech/contracts";
 import { LayerFlagsProvider } from "@hitech/ui-kit";
-import { PitchShell, ScreenHiTechOs } from "../../../components/pitch";
-import { buildPitchShellFrameModel } from "../../../components/pitch/view-model/pitch-shell-model";
+import { PitchLayerDevTools, PitchShell, ScreenHiTechOs } from "../../../components/pitch";
 import {
-  resolvePitchSearchParams,
   resolvePitchLayerFlags,
   type PitchSearchParamsProps
 } from "../../../lib/pitch/layer-resolution";
 
 export const dynamic = "force-dynamic";
 
-export default async function PitchHiTechOsPage({ searchParams }: PitchSearchParamsProps) {
-  const resolved = resolvePitchLayerFlags(await resolvePitchSearchParams(searchParams));
+export default function PitchHiTechOsPage({ searchParams }: PitchSearchParamsProps) {
+  const resolved = resolvePitchLayerFlags(searchParams);
   const deck = PITCH_DECK_FIXTURE;
   const screen = PITCH_SCREEN_FIXTURES["03-hitech-os"];
-  const shellModel = buildPitchShellFrameModel(screen.slug);
 
   return (
     <LayerFlagsProvider initialResolved={resolved}>
-      <PitchShell model={{ ...shellModel, nav: { ...shellModel.nav, links: deck.navigation.links } }}>
+      <PitchShell
+        title="Keystone Pitch Deck"
+        subtitle="MOTOR 2 — HITECH OS (Infraestructura Digital)"
+        nav={{ links: deck.navigation.links, activeSlug: screen.slug }}
+      >
         <ScreenHiTechOs screen={screen} />
       </PitchShell>
-</LayerFlagsProvider>
+      <PitchLayerDevTools visible={resolved.debug} />
+    </LayerFlagsProvider>
   );
 }

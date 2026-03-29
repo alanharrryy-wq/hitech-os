@@ -1,167 +1,187 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useMemo,
-  useState,
-  type CSSProperties,
-  type PropsWithChildren
-} from "react";
-import {
-  buildCanonicalSceneQuery,
-  parseSceneQueryToObject,
-  type SceneRecord
-} from "../../../lib/scene-studio";
-import { SceneStudioEditor as SceneStudioEditorFields } from "../../../components/scene-studio/scene-studio-editor";
-import {
-  useSceneStudioState,
-  type SceneStudioState
-} from "../../../components/scene-studio/use-scene-studio-state";
+import { ALL_LAYERS, type LayerId } from "@hitech/ui-kit";
+import { KNOWN_PITCH_ROUTES, type SceneRecord } from "../../../lib/scene-studio";
+import styles from "./scene-studio.module.css";
+import { FloatingWindow } from "./FloatingWindow";
 
-const ROOT_STYLE: CSSProperties = {
-  display: "grid",
-  gap: "0.65rem"
+const cls = (name: string): string => styles[name] ?? "";
+
+const LAYER_GROUPS: Readonly<Record<string, readonly LayerId[]>> = {
+  stage: ALL_LAYERS.filter((id) => id.startsWith("stage.")),
+  card: ALL_LAYERS.filter((id) => id.startsWith("card.")),
+  inset: ALL_LAYERS.filter((id) => id.startsWith("inset.")),
+  motion: ["motion.enabled"]
 };
 
-const ROW_STYLE: CSSProperties = {
-  display: "flex",
-  flexWrap: "wrap",
-  gap: "0.45rem",
-  alignItems: "center"
-};
-
-const BUTTON_STYLE: CSSProperties = {
-  border: "1px solid hsl(var(--ui-border-2))",
-  borderRadius: "8px",
-  padding: "0.35rem 0.6rem",
-  fontSize: "0.72rem",
-  fontWeight: 650,
-  textTransform: "uppercase",
-  letterSpacing: "0.04em",
-  background: "hsl(var(--ui-surface-2))",
-  cursor: "pointer"
-};
-
-const INPUT_STYLE: CSSProperties = {
-  border: "1px solid hsl(var(--ui-border-2))",
-  borderRadius: "8px",
-  padding: "0.35rem 0.5rem",
-  background: "hsl(var(--ui-surface-1))",
-  color: "hsl(var(--ui-text-1))",
-  fontSize: "0.78rem"
-};
-
-const MUTED_STYLE: CSSProperties = {
-  margin: 0,
-  fontSize: "0.72rem",
-  color: "hsl(var(--ui-text-3))"
-};
-
-export interface SceneStudioRuntimeContextValue {
-  readonly state: SceneStudioState;
-  readonly currentScene: SceneRecord | undefined;
+export interface SceneStudioEditorProps {
+  readonly scene: SceneRecord | undefined;
+  readonly onChange: (scene: SceneRecord) => void;
+  readonly onResetToDefaults: () => void;
 }
 
-const SceneStudioRuntimeContext = createContext<SceneStudioRuntimeContextValue | null>(null);
-
-function syncSceneQuery(scene: SceneRecord): SceneRecord {
-  const query = buildCanonicalSceneQuery({
-    route: scene.route,
-    query: parseSceneQueryToObject(scene.query),
-    layerProfile: scene.layerProfile,
-    layersMode: scene.layers.mode,
-    layerIds: scene.layers.layerIds,
-    motion: scene.motion,
-    debug: true
-  });
-
-  return {
-    ...scene,
-    query,
-    updatedAt: new Date().toISOString()
-  };
+function toTagsInput(tags: readonly string[]): string {
+  return tags.join(", ");
 }
 
-export function SceneStudioRuntimeProvider({ children }: PropsWithChildren) {
-  const state = useSceneStudioState();
-  const currentScene = state.draftScene ?? state.selectedScene;
-
-  const contextValue = useMemo(
-    () => ({
-      state,
-      currentScene
-    }),
-    [currentScene, state]
-  );
-
-  return <SceneStudioRuntimeContext.Provider value={contextValue}>{children}</SceneStudioRuntimeContext.Provider>;
+function fromTagsInput(input: string): readonly string[] {
+  return input
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
 }
 
-export function useSceneStudioRuntime(): SceneStudioRuntimeContextValue {
-  const context = useContext(SceneStudioRuntimeContext);
-
-  if (!context) {
-    throw new Error("useSceneStudioRuntime must be used within SceneStudioRuntimeProvider.");
-  }
-
-  return context;
+function ensureRoute(route: string): string {
+  const trimmed = route.trim();
+  if (!trimmed) return "/";
+  if (!trimmed.startsWith("/")) return `/${trimmed}`;
+  return trimmed;
 }
 
-export function SceneStudioEditorPanel() {
-  const { state, currentScene } = useSceneStudioRuntime();
-  const [status, setStatus] = useState("ready");
+function updateScene(scene: SceneRecord, patch: Partial<SceneRecord>): SceneRecord {
+  return { ...scene, ...patch };
+}
 
-  const save = () => {
-    const saved = state.saveDraft();
-    setStatus(saved ? `saved ${saved.id}` : "nothing to save");
-  };
+function ensureLayerList(layers: readonly LayerId[]): readonly LayerId[] {
+  return Array.from(new Set(layers));
+}
+
+function sortLayers(layers: readonly LayerId[]): readonly LayerId[] {
+  return [...layers].sort((a, b) => a.localeCompare(b));
+}
+
+function isKnownRoute(route: string): boolean {
+  return KNOWN_PITCH_ROUTES.includes(route as (typeof KNOWN_PITCH_ROUTES)[number]);
+}
+
+export function SceneStudioEditor({ scene, onChange, onResetToDefaults }: SceneStudioEditorProps) {
+  if (!scene) return null;
+
+  const invalidRoute = scene.route.trim().length > 0 && !scene.route.startsWith("/");
+  const invalidListMode = scene.mode === "list" && (!scene.layers || scene.layers.length === 0);
 
   return (
-    <div style={ROOT_STYLE}>
-      <div style={ROW_STYLE}>
-        <button type="button" style={BUTTON_STYLE} onClick={() => {
-          state.createScene();
-          setStatus("new scene created");
-        }}>
-          New
-        </button>
-        <button type="button" style={BUTTON_STYLE} onClick={save}>
-          Save
-        </button>
-        <button type="button" style={BUTTON_STYLE} onClick={() => {
-          state.discardDraft();
-          setStatus("changes discarded");
-        }}>
-          Discard
-        </button>
-        <select
-          value={state.selectedScene?.id ?? ""}
-          style={INPUT_STYLE}
-          onChange={(event) => {
-            const ok = state.selectScene(event.currentTarget.value);
-            setStatus(ok ? `selected ${event.currentTarget.value}` : "selection cancelled");
-          }}
-          aria-label="Scene selector"
-        >
-          {state.scenes.map((scene) => (
-            <option key={scene.id} value={scene.id}>
-              {scene.title}
-            </option>
+    <FloatingWindow
+      id="scene-studio-editor"
+      title="Scene Studio · Editor"
+      defaultPos={{ x: 18, y: 18 }}
+      defaultSize={{ w: 520, h: 720 }}
+    >
+      <div className={cls("panelBody")}>
+        <div className={cls("actionsRow")}>
+          <button type="button" className={cls("button")} onClick={onResetToDefaults}>
+            Reset Defaults
+          </button>
+        </div>
+
+        {invalidRoute ? <p className={cls("warning")}>Route must start with '/'.</p> : null}
+        {invalidListMode ? (
+          <p className={cls("warning")}>List mode requires at least one layer.</p>
+        ) : null}
+
+        <div className={cls("fieldset")}>
+          <label className={cls("legend")} htmlFor="scene-id-input">
+            Scene Id
+          </label>
+          <input
+            id="scene-id-input"
+            className={cls("input")}
+            value={scene.id}
+            onChange={(event) => onChange(updateScene(scene, { id: event.currentTarget.value }))}
+          />
+
+          <label className={cls("legend")} htmlFor="scene-title-input">
+            Title
+          </label>
+          <input
+            id="scene-title-input"
+            className={cls("input")}
+            value={scene.title}
+            onChange={(event) => onChange(updateScene(scene, { title: event.currentTarget.value }))}
+          />
+
+          <label className={cls("legend")} htmlFor="scene-route-input">
+            Route
+          </label>
+          <input
+            id="scene-route-input"
+            className={cls("input")}
+            value={scene.route}
+            onChange={(event) =>
+              onChange(updateScene(scene, { route: ensureRoute(event.currentTarget.value) }))
+            }
+          />
+
+          <div className={cls("hintRow")}>
+            <span className={cls("hint")}>
+              {isKnownRoute(scene.route) ? "Known route" : "Custom route"}
+            </span>
+          </div>
+
+          <label className={cls("legend")} htmlFor="scene-tags-input">
+            Tags
+          </label>
+          <input
+            id="scene-tags-input"
+            className={cls("input")}
+            value={toTagsInput(scene.tags ?? [])}
+            onChange={(event) =>
+              onChange(updateScene(scene, { tags: fromTagsInput(event.currentTarget.value) }))
+            }
+          />
+        </div>
+
+        <div className={cls("fieldset")}>
+          <label className={cls("legend")} htmlFor="scene-mode-input">
+            Mode
+          </label>
+          <select
+            id="scene-mode-input"
+            className={cls("select")}
+            value={scene.mode}
+            onChange={(event) =>
+              onChange(
+                updateScene(scene, { mode: event.currentTarget.value as SceneRecord["mode"] })
+              )
+            }
+          >
+            <option value="single">single</option>
+            <option value="list">list</option>
+          </select>
+        </div>
+
+        <div className={cls("fieldset")}>
+          <div className={cls("legend")}>Layers</div>
+
+          {Object.entries(LAYER_GROUPS).map(([group, ids]) => (
+            <details key={group} className={cls("details")} open>
+              <summary className={cls("summary")}>{group}</summary>
+
+              <div className={cls("layerGrid")}>
+                {ids.map((layerId) => {
+                  const checked = (scene.layers ?? []).includes(layerId);
+                  return (
+                    <label key={layerId} className={cls("layerItem")}>
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={(event) => {
+                          const next = event.currentTarget.checked
+                            ? ensureLayerList([...(scene.layers ?? []), layerId])
+                            : (scene.layers ?? []).filter((id) => id !== layerId);
+
+                          onChange(updateScene(scene, { layers: sortLayers(next) }));
+                        }}
+                      />
+                      <span className={cls("layerLabel")}>{layerId}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </details>
           ))}
-        </select>
+        </div>
       </div>
-
-      <p style={MUTED_STYLE}>
-        status={status} dirty={state.dirty ? "1" : "0"}
-      </p>
-      <p style={MUTED_STYLE}>route={currentScene?.route ?? "n/a"}</p>
-
-      <SceneStudioEditorFields
-        scene={currentScene}
-        onChange={(next) => state.updateDraft(syncSceneQuery(next))}
-        onResetToDefaults={state.resetSelectedSceneToDefaults}
-      />
-    </div>
+    </FloatingWindow>
   );
 }

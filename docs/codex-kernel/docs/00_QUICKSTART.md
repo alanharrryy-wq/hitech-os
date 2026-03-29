@@ -6,7 +6,7 @@ STATUS: LAW
 
 1. 30‑second TL;DR path
 2. “Copy/paste only” operator commands
-3. Works for apps/web/DB/CRM/slides/CLI (not stack-locked)
+3. Works for apps/keystone/DB/CRM/slides/CLI (not stack-locked)
 4. Deterministic defaults and safe fallbacks
 5. Minimal required evidence outputs per run
 6. Preflight checks to avoid wasted runs

@@ -9,7 +9,7 @@ This file maps ownership, boundaries, and runtime entry points.
 
 | Path                 | Type    | Purpose                                            |
 | -------------------- | ------- | -------------------------------------------------- |
-| `apps/web`           | app     | User-facing React frontend                         |
+| `apps/keystone`      | app     | Keystone frontend (Cloudflare-targeted)            |
 | `apps/demo-engine`   | app     | Placeholder scaffold for future demo orchestration |
 | `services/core-api`  | service | Node Fastify API, contract gateway                 |
 | `services/ai-agent`  | service | Python FastAPI deterministic AI stub               |
@@ -34,18 +34,18 @@ This file maps ownership, boundaries, and runtime entry points.
 | Contracts      | Platform      | Core API        |
 | Core API       | Backend       | Platform        |
 | AI Agent       | Applied AI    | Backend         |
-| Web            | Frontend      | Product         |
+| Keystone App   | Frontend      | Product         |
 | UI Kit         | Frontend      | Platform        |
 | Health Tooling | Platform      | DevEx           |
 | Documentation  | Platform      | All teams       |
 
 ## Runtime entry points
 
-### apps/web
+### apps/keystone
 
-- Dev: `pnpm --filter @hitech/web dev`
-- Build: `pnpm --filter @hitech/web build`
-- Typecheck: `pnpm --filter @hitech/web typecheck`
+- Dev: `pnpm --filter @hitech/keystone dev`
+- Build: `pnpm --filter @hitech/keystone build`
+- Typecheck: `pnpm --filter @hitech/keystone typecheck`
 
 ### services/core-api
 
@@ -68,7 +68,7 @@ This file maps ownership, boundaries, and runtime entry points.
 
 ## Dependency graph (high level)
 
-1. `apps/web` -> `packages/ui-kit`, `packages/contracts`
+1. `apps/keystone` -> `packages/ui-kit`, `packages/contracts`
 2. `services/core-api` -> `packages/contracts`
 3. `services/ai-agent` -> mirrored schema shapes (no runtime TS import)
 4. `packages/ui-kit` -> React only
@@ -78,14 +78,12 @@ Constraint: `packages/*` cannot import from `apps/*` or `services/*`.
 
 ## Directory details
 
-### `apps/web`
+### `apps/keystone`
 
-- `src/main.tsx`: bootstraps React.
-- `src/App.tsx`: top-level page shell.
-- `src/pages/HomePage.tsx`: base overview page.
-- `src/pages/HealthPage.tsx`: health dashboard calling core API.
-- `src/lib/api.ts`: typed fetch helpers.
-- `src/styles.css`: app-level theme and layout.
+- `app/layout.tsx`: Next.js app shell.
+- `app/pitch/**`: pitch screens and routes.
+- `components/**`: presentational and composition components.
+- `lib/**`: helpers and deterministic tooling integrations.
 
 ### `apps/demo-engine`
 

@@ -1,17 +1,19 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import { useEffect, useState } from "react";
 import { ALL_LAYERS } from "./layerIds.js";
-import { createShareableLayerUrl } from "./resolveLayerFlags.js";
 import { useLayerFlags } from "./useLayerFlags.js";
 
-const PANEL_STYLE: CSSProperties = {
+export interface LayerDebugPanelProps {
+  readonly mode?: "floating" | "fixed";
+}
+
+const FIXED_PANEL_STYLE: CSSProperties = {
   position: "fixed",
   right: "1rem",
   bottom: "1rem",
   zIndex: 2147483640,
-  width: "min(460px, calc(100vw - 2rem))",
+  width: "min(420px, calc(100vw - 2rem))",
   maxHeight: "calc(100dvh - 2rem)",
   overflow: "auto",
   borderRadius: "12px",
@@ -21,15 +23,17 @@ const PANEL_STYLE: CSSProperties = {
   padding: "0.875rem"
 };
 
-const INLINE_PANEL_STYLE: CSSProperties = {
-  ...PANEL_STYLE,
+const FLOATING_PANEL_STYLE: CSSProperties = {
   position: "relative",
-  right: "auto",
-  bottom: "auto",
+  zIndex: 1,
   width: "100%",
-  maxHeight: "none",
-  boxShadow: "none",
-  borderRadius: "10px"
+  maxHeight: "unset",
+  overflow: "visible",
+  borderRadius: "12px",
+  border: "1px solid hsl(var(--ui-border-2))",
+  background: "hsl(var(--ui-surface-1) / 0.96)",
+  boxShadow: "var(--ui-shadow-2)",
+  padding: "0.875rem"
 };
 
 const SECTION_STYLE: CSSProperties = {
@@ -68,131 +72,38 @@ const SMALL_STYLE: CSSProperties = {
   color: "hsl(var(--ui-text-3))"
 };
 
-const WARNING_STYLE: CSSProperties = {
-  margin: "0.35rem 0 0",
-  fontSize: "0.72rem",
-  color: "hsl(25 86% 45%)"
-};
-
-const LAYER_TOGGLE_IDS = ALL_LAYERS.filter((id) => id !== "motion.enabled");
-
-function getCurrentShareUrl(
-  resolved: ReturnType<typeof useLayerFlags>["resolved"]
-): string | null {
-  if (typeof window === "undefined") {
-    return null;
-  }
-
-  return createShareableLayerUrl(resolved, {
-    origin: window.location.origin,
-    pathname: window.location.pathname,
-    search: window.location.search
-  });
-}
-
-export interface LayerDebugPanelProps {
-  readonly inline?: boolean;
-}
-
-export function LayerDebugPanel({ inline = false }: LayerDebugPanelProps) {
-  const { resolved, enabledLayers, setLayer, setAll, setProfile, setMotion, resetNeutral } =
-    useLayerFlags();
-  const [copyStatus, setCopyStatus] = useState<string>("idle");
-  const [shareUrl, setShareUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (process.env["NODE_ENV"] === "production" || !resolved.debug) {
-      setShareUrl(null);
-      return;
-    }
-
-    setShareUrl(getCurrentShareUrl(resolved));
-  }, [resolved]);
-
+export function LayerDebugPanel({ mode = "fixed" }: LayerDebugPanelProps) {
+  const { resolved, enabledLayers, setLayer, setAll, setProfile, resetNeutral } = useLayerFlags();
   if (process.env["NODE_ENV"] === "production" || !resolved.debug) {
     return null;
   }
 
-  const panelStyle = inline ? INLINE_PANEL_STYLE : PANEL_STYLE;
-
-  const handleCopyShareUrl = async () => {
-    if (!shareUrl || typeof navigator === "undefined" || !navigator.clipboard) {
-      setCopyStatus("copy-unavailable");
-      return;
-    }
-
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      setCopyStatus("copied");
-      window.setTimeout(() => setCopyStatus("idle"), 1300);
-    } catch {
-      setCopyStatus("copy-unavailable");
-    }
-  };
-
-  const handleExportSnapshot = () => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    const snapshot = {
-      route: window.location.pathname,
-      timestamp: new Date().toISOString(),
-      userAgent: navigator.userAgent,
-      resolved: {
-        source: resolved.source,
-        baseSource: resolved.baseSource,
-        motionSource: resolved.motionSource,
-        profile: resolved.profile,
-        debug: resolved.debug,
-        flags: resolved.flags,
-        unknownTokens: resolved.unknownTokens
-      },
-      url: shareUrl
-    };
-
-    const blob = new Blob([JSON.stringify(snapshot, null, 2)], {
-      type: "application/json"
-    });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    const now = new Date().toISOString().replaceAll(":", "-");
-
-    anchor.href = url;
-    anchor.download = `layer-diagnostic-${now}.json`;
-    anchor.click();
-    URL.revokeObjectURL(url);
-  };
+  const panelStyle = mode === "fixed" ? FIXED_PANEL_STYLE : FLOATING_PANEL_STYLE;
 
   return (
     <aside style={panelStyle} aria-label="Layer Debug Panel">
       <header>
-        <h2 style={{ margin: 0, fontSize: "0.96rem", lineHeight: 1.1 }}>Layer Flags Debug</h2>
+        <h2 style={{ margin: 0, fontSize: "0.96rem", lineHeight: 1.1 }}>Layer Toggle Debugging</h2>
         <p style={SMALL_STYLE}>
-          source={resolved.source} profile={resolved.profile} motion={resolved.flags["motion.enabled"] ? "on" : "off"}
+          source={resolved.source} profile={resolved.profile} debug=1
         </p>
-        <p style={SMALL_STYLE}>
-          enabled={enabledLayers.length} base={resolved.baseSource} motionSource={resolved.motionSource}
-        </p>
-        {resolved.unknownTokens.length > 0 ? (
-          <p style={WARNING_STYLE}>Unknown layer tokens ignored: {resolved.unknownTokens.join(", ")}</p>
-        ) : null}
+        <p style={SMALL_STYLE}>enabled={enabledLayers.length}</p>
       </header>
 
       <section style={SECTION_STYLE}>
         <p style={{ margin: 0, fontSize: "0.78rem", fontWeight: 600 }}>Profile Mode</p>
         <div style={BUTTON_ROW_STYLE}>
           <button type="button" style={BUTTON_STYLE} onClick={() => setProfile("neutral")}>
-            layerProfile=neutral
+            neutral
           </button>
           <button type="button" style={BUTTON_STYLE} onClick={() => setProfile("fx")}>
-            layerProfile=fx
+            fx
           </button>
           <button type="button" style={BUTTON_STYLE} onClick={() => setProfile("perf")}>
-            layerProfile=perf
+            perf
           </button>
           <button type="button" style={BUTTON_STYLE} onClick={resetNeutral}>
-            defaults
+            resetNeutral
           </button>
         </div>
       </section>
@@ -206,34 +117,12 @@ export function LayerDebugPanel({ inline = false }: LayerDebugPanelProps) {
           <button type="button" style={BUTTON_STYLE} onClick={() => setAll(false)}>
             layers=none
           </button>
-          <button type="button" style={BUTTON_STYLE} onClick={() => setMotion(true)}>
-            motion=on
-          </button>
-          <button type="button" style={BUTTON_STYLE} onClick={() => setMotion(false)}>
-            motion=off
-          </button>
         </div>
-      </section>
-
-      <section style={SECTION_STYLE}>
-        <p style={{ margin: 0, fontSize: "0.78rem", fontWeight: 600 }}>Share & Diagnostics</p>
-        <div style={BUTTON_ROW_STYLE}>
-          <button type="button" style={BUTTON_STYLE} onClick={handleCopyShareUrl}>
-            {copyStatus === "copied" ? "Copied" : "Copy Scene Link"}
-          </button>
-          <button type="button" style={BUTTON_STYLE} onClick={handleExportSnapshot}>
-            Export Diagnostic
-          </button>
-        </div>
-        {copyStatus === "copy-unavailable" ? (
-          <p style={WARNING_STYLE}>Clipboard unavailable in this runtime.</p>
-        ) : null}
-        {shareUrl ? <p style={SMALL_STYLE}>{shareUrl}</p> : null}
       </section>
 
       <section style={SECTION_STYLE}>
         <p style={{ margin: 0, fontSize: "0.78rem", fontWeight: 600 }}>Layer Flags</p>
-        {LAYER_TOGGLE_IDS.map((id) => {
+        {ALL_LAYERS.map((id) => {
           const checked = resolved.flags[id];
           return (
             <label key={id} style={ROW_STYLE}>
@@ -241,7 +130,6 @@ export function LayerDebugPanel({ inline = false }: LayerDebugPanelProps) {
               <input
                 type="checkbox"
                 checked={checked}
-                suppressHydrationWarning
                 onChange={(event) => {
                   setLayer(id, event.currentTarget.checked);
                 }}
