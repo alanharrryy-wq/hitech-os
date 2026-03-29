@@ -1,0 +1,81 @@
+{
+  "schema_id": "forge.product.manifest.v1",
+  "package_id": "forge-product-<product_id>",
+  "product_id": "<product_id>",
+  "display_name": "<Nombre legible del producto>",
+  "owner_team": "<equipo-responsable>",
+  "layer": "Forge Products",
+  "description": "<descripcion directa del producto y su dominio>",
+  "entrypoints": {
+    "prepare_contract": "forge.product.<product_id>.lifecycle.prepare.v1",
+    "activate_contract": "forge.product.<product_id>.lifecycle.activate.v1",
+    "suspend_contract": "forge.product.<product_id>.lifecycle.suspend.v1",
+    "dispose_contract": "forge.product.<product_id>.lifecycle.dispose.v1",
+    "host_contributions_manifest": "HOST_CONTRIBUTIONS.md"
+  },
+  "required_capabilities": [
+    {
+      "capability_id": "forge-commons-<capability-id>",
+      "version_range": "^1.0.0",
+      "required": true,
+      "purpose": "<por-que-la-necesita>"
+    }
+  ],
+  "required_permissions": [
+    {
+      "permission_id": "fs.read",
+      "scope": "<scope-explicito>",
+      "rationale": "<justificacion>"
+    }
+  ],
+  "published_context": [
+    {
+      "context_id": "forge.product.<product_id>.summary.v1",
+      "description": "<contexto minimo que el host puede leer>",
+      "owner": "<state-owner>"
+    }
+  ],
+  "contracts": {
+    "lifecycle": [
+      "forge.product.<product_id>.lifecycle.prepare.v1",
+      "forge.product.<product_id>.lifecycle.activate.v1",
+      "forge.product.<product_id>.lifecycle.suspend.v1",
+      "forge.product.<product_id>.lifecycle.dispose.v1"
+    ],
+    "state": [
+      "forge.product.<product_id>.state.snapshot.v1"
+    ],
+    "commands": [
+      "forge.product.<product_id>.command.primary_action.v1"
+    ],
+    "events": [
+      "forge.product.<product_id>.event.primary_state_changed.v1"
+    ],
+    "services": []
+  },
+  "packaging": {
+    "manifest_ref": "packaging/PRODUCT_PACKAGE_MANIFEST.json",
+    "bill_of_materials_ref": "packaging/bom/BOM.md",
+    "release_notes_ref": "packaging/release/RELEASE_NOTES.md",
+    "rollback_plan_ref": "packaging/release/ROLLBACK_PLAN.md"
+  },
+  "compatibility": {
+    "forge_kernel_range": "^1.0.0",
+    "forge_commons_ranges": {
+      "forge-commons-<capability-id>": "^1.0.0"
+    },
+    "supported_channels": [
+      "beta",
+      "stable"
+    ]
+  },
+  "integrity": {
+    "requires_signature": true,
+    "hash_algorithm": "sha256"
+  },
+  "status": "draft",
+  "notes": [
+    "No usar este manifiesto para declarar acceso a internals del host.",
+    "Todo capability listado aqui debe existir por contrato y por package."
+  ]
+}

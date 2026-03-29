@@ -1,0 +1,56 @@
+{
+  "capability_id": "forge.commons.history_runs",
+  "owner": "forge_commons_history_runs",
+  "package_id": "forge.commons.history_runs",
+  "version": "0.1.0",
+  "layer": "commons",
+  "state_authority": {
+    "slice_id": "commons.history_runs.ledger",
+    "source_of_truth": "history_runs_ledger_store",
+    "writers": [
+      "forge_commons_history_runs"
+    ],
+    "readers": [
+      "forge_kernel",
+      "forge_products"
+    ]
+  },
+  "lifecycle": {
+    "states": [
+      "declared",
+      "validated",
+      "ready",
+      "serving",
+      "degraded",
+      "disposing",
+      "disposed"
+    ],
+    "authority": "forge_kernel + forge_commons_history_runs"
+  },
+  "contract_bindings": [
+    {
+      "contract_id": "forge.capability.runs.append.v1",
+      "status": "registered"
+    },
+    {
+      "contract_id": "forge.capability.runs.query.v1",
+      "status": "planned"
+    }
+  ],
+  "packaging": {
+    "bom_required": true,
+    "rollback_plan_required": true,
+    "compatibility_required": true,
+    "manifest_kind": "commons_capability_manifest"
+  },
+  "runtime_module": "forge_commons.history_runs.HistoryRunsCapability",
+  "teardown": {
+    "required": true,
+    "disposal_steps": [
+      "clear_runtime_state",
+      "release_handles",
+      "finalize_disposed_state"
+    ],
+    "evidence_log_required": true
+  }
+}

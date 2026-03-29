@@ -1,0 +1,642 @@
+{
+  "bundle_name": "forgeos_foundation_bundle",
+  "bundle_version": "1.0.0",
+  "generated_at_utc": "2026-03-29T02:10:37Z",
+  "purpose": "Bundle de arquitectura y gobierno para reconstrucción limpia de ForgeOS con separación estricta entre kernel, commons y products.",
+  "architecture_doctrine_version": "1.0.0",
+  "intended_consumer": {
+    "primary": "Codex implementation operator",
+    "secondary": [
+      "arquitecto principal",
+      "owner de plataforma",
+      "revisores de gobierno"
+    ]
+  },
+  "authoritative_files": [
+    "00_PLATFORM_CONSTITUTION.md",
+    "01_FORGEOS_MASTER_BLUEPRINT.md",
+    "02_KERNEL_BOUNDARIES.md",
+    "05_CONTRACTS_CATALOG.md",
+    "06_HOST_INTEGRATION_SPEC.md",
+    "09_RECONSTRUCTION_ORDER.md",
+    "10_ACCEPTANCE_GATES.md",
+    "11_CODEX_EXECUTION_INSTRUCTIONS.md",
+    "manifest.json"
+  ],
+  "template_files": [
+    "templates/contracts/COMMAND_CONTRACT.template.md",
+    "templates/contracts/CONTRACT_REVIEW_CHECKLIST.md",
+    "templates/contracts/EVENT_CONTRACT.template.md",
+    "templates/contracts/LIFECYCLE_CONTRACT.template.md",
+    "templates/contracts/SERVICE_CONTRACT.template.md",
+    "templates/contracts/STATE_CONTRACT.template.md",
+    "templates/packaging/BOM.template.md",
+    "templates/packaging/PLATFORM_PACKAGE_MANIFEST.template.json",
+    "templates/packaging/PRODUCT_PACKAGE_MANIFEST.template.json",
+    "templates/packaging/RELEASE_NOTES.template.md",
+    "templates/packaging/ROLLBACK_PLAN.template.md",
+    "templates/product_module/COMPATIBILITY.template.md",
+    "templates/product_module/CONTRACT_INDEX.template.md",
+    "templates/product_module/DEPENDENCIES.template.md",
+    "templates/product_module/ERROR_BOUNDARIES.template.md",
+    "templates/product_module/HOST_CONTRIBUTIONS.template.md",
+    "templates/product_module/LIFECYCLE.template.md",
+    "templates/product_module/OWNERSHIP.template.md",
+    "templates/product_module/PACKAGING.template.md",
+    "templates/product_module/PRODUCT_MANIFEST.template.json",
+    "templates/product_module/README.md",
+    "templates/product_module/STATE_AUTHORITY.template.md",
+    "templates/product_module/TEARDOWN.template.md"
+  ],
+  "machine_facing_files": [
+    "manifest.json",
+    "templates/packaging/PLATFORM_PACKAGE_MANIFEST.template.json",
+    "templates/packaging/PRODUCT_PACKAGE_MANIFEST.template.json",
+    "templates/product_module/PRODUCT_MANIFEST.template.json"
+  ],
+  "human_facing_files": [
+    "00_PLATFORM_CONSTITUTION.md",
+    "01_FORGEOS_MASTER_BLUEPRINT.md",
+    "02_KERNEL_BOUNDARIES.md",
+    "03_SHARED_CAPABILITIES_CATALOG.md",
+    "04_PRODUCT_SKELETON_TEMPLATE.md",
+    "05_CONTRACTS_CATALOG.md",
+    "06_HOST_INTEGRATION_SPEC.md",
+    "07_PACKAGING_AND_RELEASE_SPEC.md",
+    "08_BOUNDARY_ENFORCEMENT_RULES.md",
+    "09_RECONSTRUCTION_ORDER.md",
+    "10_ACCEPTANCE_GATES.md",
+    "11_CODEX_EXECUTION_INSTRUCTIONS.md",
+    "12_ASSUMPTIONS_AND_DECISION_LOG.md",
+    "README_START_HERE.md",
+    "appendix/glossary.md",
+    "appendix/legacy_pathologies_catalog.md",
+    "appendix/legacy_to_target_mapping.md",
+    "matrices/boundary_matrix.md",
+    "matrices/contract_matrix.md",
+    "matrices/dependency_matrix.md",
+    "matrices/lifecycle_matrix.md",
+    "matrices/ownership_matrix.md",
+    "matrices/packaging_matrix.md",
+    "matrices/state_authority_matrix.md",
+    "templates/contracts/COMMAND_CONTRACT.template.md",
+    "templates/contracts/CONTRACT_REVIEW_CHECKLIST.md",
+    "templates/contracts/EVENT_CONTRACT.template.md",
+    "templates/contracts/LIFECYCLE_CONTRACT.template.md",
+    "templates/contracts/SERVICE_CONTRACT.template.md",
+    "templates/contracts/STATE_CONTRACT.template.md",
+    "templates/packaging/BOM.template.md",
+    "templates/packaging/RELEASE_NOTES.template.md",
+    "templates/packaging/ROLLBACK_PLAN.template.md",
+    "templates/product_module/COMPATIBILITY.template.md",
+    "templates/product_module/CONTRACT_INDEX.template.md",
+    "templates/product_module/DEPENDENCIES.template.md",
+    "templates/product_module/ERROR_BOUNDARIES.template.md",
+    "templates/product_module/HOST_CONTRIBUTIONS.template.md",
+    "templates/product_module/LIFECYCLE.template.md",
+    "templates/product_module/OWNERSHIP.template.md",
+    "templates/product_module/PACKAGING.template.md",
+    "templates/product_module/README.md",
+    "templates/product_module/STATE_AUTHORITY.template.md",
+    "templates/product_module/TEARDOWN.template.md"
+  ],
+  "top_level_items": [
+    {
+      "path": "README_START_HERE.md",
+      "type": "file",
+      "purpose": "Punto de entrada del bundle, orden de lectura y reglas de autoridad."
+    },
+    {
+      "path": "00_PLATFORM_CONSTITUTION.md",
+      "type": "file",
+      "purpose": "Constitución arquitectónica y leyes duras de ForgeOS."
+    },
+    {
+      "path": "01_FORGEOS_MASTER_BLUEPRINT.md",
+      "type": "file",
+      "purpose": "Blueprint maestro con capas, subsistemas, fuentes de verdad, contratos, lifecycle, dependencias, patologías y orden de reconstrucción."
+    },
+    {
+      "path": "02_KERNEL_BOUNDARIES.md",
+      "type": "file",
+      "purpose": "Definición formal de alcance, autoridad y límites de Forge Kernel."
+    },
+    {
+      "path": "03_SHARED_CAPABILITIES_CATALOG.md",
+      "type": "file",
+      "purpose": "Catálogo de capacidades que sí o no califican para Forge Commons."
+    },
+    {
+      "path": "04_PRODUCT_SKELETON_TEMPLATE.md",
+      "type": "file",
+      "purpose": "Esqueleto canónico de Forge Products y reglas por carpeta/archivo."
+    },
+    {
+      "path": "05_CONTRACTS_CATALOG.md",
+      "type": "file",
+      "purpose": "Sistema contractual oficial de ForgeOS."
+    },
+    {
+      "path": "06_HOST_INTEGRATION_SPEC.md",
+      "type": "file",
+      "purpose": "Especificación de integración con host sin contaminación de dominio."
+    },
+    {
+      "path": "07_PACKAGING_AND_RELEASE_SPEC.md",
+      "type": "file",
+      "purpose": "Modelo de empaquetado, versiones, compatibilidad, release y rollback."
+    },
+    {
+      "path": "08_BOUNDARY_ENFORCEMENT_RULES.md",
+      "type": "file",
+      "purpose": "Reglas de enforcement y smells para sostener la limpieza arquitectónica."
+    },
+    {
+      "path": "09_RECONSTRUCTION_ORDER.md",
+      "type": "file",
+      "purpose": "Secuencia oficial y obligatoria de reconstrucción."
+    },
+    {
+      "path": "10_ACCEPTANCE_GATES.md",
+      "type": "file",
+      "purpose": "Gates de aceptación antes de considerar válido cualquier avance."
+    },
+    {
+      "path": "11_CODEX_EXECUTION_INSTRUCTIONS.md",
+      "type": "file",
+      "purpose": "Instrucciones operativas directas para Codex."
+    },
+    {
+      "path": "12_ASSUMPTIONS_AND_DECISION_LOG.md",
+      "type": "file",
+      "purpose": "Registro de supuestos, apuestas, incertidumbres y decisiones."
+    },
+    {
+      "path": "manifest.json",
+      "type": "file",
+      "purpose": "Manifest machine-readable del bundle y sus artefactos."
+    },
+    {
+      "path": "templates/",
+      "type": "folder",
+      "purpose": "Templates listos para clonar para productos, contratos y packaging."
+    },
+    {
+      "path": "matrices/",
+      "type": "folder",
+      "purpose": "Matrices operativas de ownership, boundaries, dependencias, lifecycle, contratos, estado y packaging."
+    },
+    {
+      "path": "appendix/",
+      "type": "folder",
+      "purpose": "Apéndices con patologías legacy, mapping a target y glosario."
+    }
+  ],
+  "folders": {
+    "templates/product_module/": {
+      "purpose": "Plantillas canónicas para crear Forge Products con gobierno completo.",
+      "required_files": [
+        "templates/product_module/COMPATIBILITY.template.md",
+        "templates/product_module/CONTRACT_INDEX.template.md",
+        "templates/product_module/DEPENDENCIES.template.md",
+        "templates/product_module/ERROR_BOUNDARIES.template.md",
+        "templates/product_module/HOST_CONTRIBUTIONS.template.md",
+        "templates/product_module/LIFECYCLE.template.md",
+        "templates/product_module/OWNERSHIP.template.md",
+        "templates/product_module/PACKAGING.template.md",
+        "templates/product_module/PRODUCT_MANIFEST.template.json",
+        "templates/product_module/README.md",
+        "templates/product_module/STATE_AUTHORITY.template.md",
+        "templates/product_module/TEARDOWN.template.md"
+      ]
+    },
+    "templates/contracts/": {
+      "purpose": "Plantillas para definir contratos compatibles con el catálogo oficial.",
+      "required_files": [
+        "templates/contracts/COMMAND_CONTRACT.template.md",
+        "templates/contracts/CONTRACT_REVIEW_CHECKLIST.md",
+        "templates/contracts/EVENT_CONTRACT.template.md",
+        "templates/contracts/LIFECYCLE_CONTRACT.template.md",
+        "templates/contracts/SERVICE_CONTRACT.template.md",
+        "templates/contracts/STATE_CONTRACT.template.md"
+      ]
+    },
+    "templates/packaging/": {
+      "purpose": "Plantillas para manifests, BOM, release notes y rollback.",
+      "required_files": [
+        "templates/packaging/BOM.template.md",
+        "templates/packaging/PLATFORM_PACKAGE_MANIFEST.template.json",
+        "templates/packaging/PRODUCT_PACKAGE_MANIFEST.template.json",
+        "templates/packaging/RELEASE_NOTES.template.md",
+        "templates/packaging/ROLLBACK_PLAN.template.md"
+      ]
+    },
+    "matrices/": {
+      "purpose": "Matrices de referencia rápida y de enforcement.",
+      "required_files": [
+        "matrices/boundary_matrix.md",
+        "matrices/contract_matrix.md",
+        "matrices/dependency_matrix.md",
+        "matrices/lifecycle_matrix.md",
+        "matrices/ownership_matrix.md",
+        "matrices/packaging_matrix.md",
+        "matrices/state_authority_matrix.md"
+      ]
+    },
+    "appendix/": {
+      "purpose": "Evidencia analítica derivada y glosario del target.",
+      "required_files": [
+        "appendix/glossary.md",
+        "appendix/legacy_pathologies_catalog.md",
+        "appendix/legacy_to_target_mapping.md"
+      ]
+    }
+  },
+  "generated_files": [
+    {
+      "path": "00_PLATFORM_CONSTITUTION.md",
+      "purpose": "Constitución arquitectónica y leyes duras de ForgeOS.",
+      "authoritative": true,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "01_FORGEOS_MASTER_BLUEPRINT.md",
+      "purpose": "Blueprint maestro con capas, subsistemas, fuentes de verdad, contratos, lifecycle, dependencias, patologías y orden de reconstrucción.",
+      "authoritative": true,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "02_KERNEL_BOUNDARIES.md",
+      "purpose": "Definición formal de alcance, autoridad y límites de Forge Kernel.",
+      "authoritative": true,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "03_SHARED_CAPABILITIES_CATALOG.md",
+      "purpose": "Catálogo de capacidades que sí o no califican para Forge Commons.",
+      "authoritative": false,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "04_PRODUCT_SKELETON_TEMPLATE.md",
+      "purpose": "Esqueleto canónico de Forge Products y reglas por carpeta/archivo.",
+      "authoritative": false,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "05_CONTRACTS_CATALOG.md",
+      "purpose": "Sistema contractual oficial de ForgeOS.",
+      "authoritative": true,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "06_HOST_INTEGRATION_SPEC.md",
+      "purpose": "Especificación de integración con host sin contaminación de dominio.",
+      "authoritative": true,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "07_PACKAGING_AND_RELEASE_SPEC.md",
+      "purpose": "Modelo de empaquetado, versiones, compatibilidad, release y rollback.",
+      "authoritative": false,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "08_BOUNDARY_ENFORCEMENT_RULES.md",
+      "purpose": "Reglas de enforcement y smells para sostener la limpieza arquitectónica.",
+      "authoritative": false,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "09_RECONSTRUCTION_ORDER.md",
+      "purpose": "Secuencia oficial y obligatoria de reconstrucción.",
+      "authoritative": true,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "10_ACCEPTANCE_GATES.md",
+      "purpose": "Gates de aceptación antes de considerar válido cualquier avance.",
+      "authoritative": true,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "11_CODEX_EXECUTION_INSTRUCTIONS.md",
+      "purpose": "Instrucciones operativas directas para Codex.",
+      "authoritative": true,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "12_ASSUMPTIONS_AND_DECISION_LOG.md",
+      "purpose": "Registro de supuestos, apuestas, incertidumbres y decisiones.",
+      "authoritative": false,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "README_START_HERE.md",
+      "purpose": "Punto de entrada del bundle, orden de lectura y reglas de autoridad.",
+      "authoritative": false,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "appendix/glossary.md",
+      "purpose": "Glosario operativo y doctrinal del bundle.",
+      "authoritative": false,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "appendix/legacy_pathologies_catalog.md",
+      "purpose": "Catálogo detallado de patologías detectadas en el legado.",
+      "authoritative": false,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "appendix/legacy_to_target_mapping.md",
+      "purpose": "Mapa de traslado de piezas legacy hacia el target ForgeOS.",
+      "authoritative": false,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "matrices/boundary_matrix.md",
+      "purpose": "Matriz de fronteras permitidas/prohibidas entre capas.",
+      "authoritative": false,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "matrices/contract_matrix.md",
+      "purpose": "Matriz maestra de familias contractuales.",
+      "authoritative": false,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "matrices/dependency_matrix.md",
+      "purpose": "Matriz de dependencias permitidas/prohibidas.",
+      "authoritative": false,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "matrices/lifecycle_matrix.md",
+      "purpose": "Matriz de estados y transiciones lifecycle.",
+      "authoritative": false,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "matrices/ownership_matrix.md",
+      "purpose": "Matriz de ownership entre legado y target.",
+      "authoritative": false,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "matrices/packaging_matrix.md",
+      "purpose": "Matriz de paquetes, owners y validaciones.",
+      "authoritative": false,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "matrices/state_authority_matrix.md",
+      "purpose": "Matriz de autoridad de estado entre kernel, commons y productos.",
+      "authoritative": false,
+      "template": false,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/contracts/COMMAND_CONTRACT.template.md",
+      "purpose": "Plantilla para contratos de comando.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/contracts/CONTRACT_REVIEW_CHECKLIST.md",
+      "purpose": "Checklist de revisión contractual.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/contracts/EVENT_CONTRACT.template.md",
+      "purpose": "Plantilla para contratos de evento.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/contracts/LIFECYCLE_CONTRACT.template.md",
+      "purpose": "Plantilla para contratos de lifecycle.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/contracts/SERVICE_CONTRACT.template.md",
+      "purpose": "Plantilla para contratos de servicio/capability.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/contracts/STATE_CONTRACT.template.md",
+      "purpose": "Plantilla para contratos de estado.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/packaging/BOM.template.md",
+      "purpose": "Plantilla de bill of materials.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/packaging/PLATFORM_PACKAGE_MANIFEST.template.json",
+      "purpose": "Plantilla de manifiesto de paquete de plataforma.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": true,
+      "human_facing": false
+    },
+    {
+      "path": "templates/packaging/PRODUCT_PACKAGE_MANIFEST.template.json",
+      "purpose": "Plantilla de manifiesto de paquete de producto.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": true,
+      "human_facing": false
+    },
+    {
+      "path": "templates/packaging/RELEASE_NOTES.template.md",
+      "purpose": "Plantilla de release notes.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/packaging/ROLLBACK_PLAN.template.md",
+      "purpose": "Plantilla de plan de rollback.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/product_module/COMPATIBILITY.template.md",
+      "purpose": "Plantilla de compatibilidad del producto.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/product_module/CONTRACT_INDEX.template.md",
+      "purpose": "Plantilla índice maestro de contratos del producto.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/product_module/DEPENDENCIES.template.md",
+      "purpose": "Plantilla de dependencias declaradas por producto.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/product_module/ERROR_BOUNDARIES.template.md",
+      "purpose": "Plantilla de fronteras de error del producto.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/product_module/HOST_CONTRIBUTIONS.template.md",
+      "purpose": "Plantilla de contributions del producto al host.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/product_module/LIFECYCLE.template.md",
+      "purpose": "Plantilla de lifecycle oficial por producto.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/product_module/OWNERSHIP.template.md",
+      "purpose": "Plantilla de ownership por producto.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/product_module/PACKAGING.template.md",
+      "purpose": "Plantilla de packaging del producto.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/product_module/PRODUCT_MANIFEST.template.json",
+      "purpose": "Plantilla de manifiesto de producto.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": true,
+      "human_facing": false
+    },
+    {
+      "path": "templates/product_module/README.md",
+      "purpose": "Guía de uso del template canónico de producto.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/product_module/STATE_AUTHORITY.template.md",
+      "purpose": "Plantilla de autoridad de estado por producto.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "templates/product_module/TEARDOWN.template.md",
+      "purpose": "Plantilla de teardown explícito del producto.",
+      "authoritative": false,
+      "template": true,
+      "machine_facing": false,
+      "human_facing": true
+    },
+    {
+      "path": "manifest.json",
+      "purpose": "Manifest machine-readable del bundle y sus artefactos.",
+      "authoritative": true,
+      "template": false,
+      "machine_facing": true,
+      "human_facing": false
+    }
+  ],
+  "non_negotiable_rule": "Kernel de plataforma, capacidades compartidas y productos deben permanecer separados; ningún producto puede inyectar lógica de dominio dentro del host."
+}

@@ -1,0 +1,26 @@
+{
+  "product_id": "repo_analyzer",
+  "package_id": "forge.product.repo_analyzer",
+  "version": "0.1.0",
+  "owner": "forge_products_repo_analyzer",
+  "layer": "product",
+  "lifecycle_contracts": [
+    "forge.lifecycle.product.activate.v1",
+    "forge.lifecycle.product.suspend.v1",
+    "forge.lifecycle.package.dispose.v1"
+  ],
+  "host_contributions": [
+    "contrib.repo_analyzer.main_surface"
+  ],
+  "state_slices": [
+    "product.repo_analyzer.runtime",
+    "product.repo_analyzer.index"
+  ],
+  "capability_contracts": [
+    "forge.capability.runs.append.v1"
+  ],
+  "compatibility": {
+    "kernel": ">=0.1.0,<1.0.0",
+    "commons": ">=0.1.0,<1.0.0"
+  }
+}

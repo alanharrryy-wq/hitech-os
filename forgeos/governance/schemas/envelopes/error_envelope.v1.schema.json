@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "forge.schema.envelopes.error.v1",
+  "title": "forge error envelope v1",
+  "type": "object",
+  "required": ["contract_id", "error_code", "message", "classification", "retryable", "details", "correlation_id", "occurred_at_utc"],
+  "properties": {
+    "contract_id": {"type": "string", "minLength": 1},
+    "error_code": {"type": "string", "minLength": 1},
+    "message": {"type": "string", "minLength": 1},
+    "classification": {"type": "string", "minLength": 1},
+    "retryable": {"type": "boolean"},
+    "details": {"type": "object"},
+    "correlation_id": {"type": "string", "minLength": 1},
+    "occurred_at_utc": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": false
+}

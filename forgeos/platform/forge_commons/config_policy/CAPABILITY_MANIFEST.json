@@ -1,0 +1,56 @@
+{
+  "capability_id": "forge.commons.config_policy",
+  "owner": "forge_commons_config_policy",
+  "package_id": "forge.commons.config_policy",
+  "version": "0.1.0",
+  "layer": "commons",
+  "state_authority": {
+    "slice_id": "commons.config_policy.store",
+    "source_of_truth": "config_policy_store",
+    "writers": [
+      "forge_commons_config_policy"
+    ],
+    "readers": [
+      "forge_kernel",
+      "forge_products"
+    ]
+  },
+  "lifecycle": {
+    "states": [
+      "declared",
+      "validated",
+      "ready",
+      "serving",
+      "degraded",
+      "disposing",
+      "disposed"
+    ],
+    "authority": "forge_kernel + forge_commons_config_policy"
+  },
+  "contract_bindings": [
+    {
+      "contract_id": "forge.capability.config.resolve.v1",
+      "status": "planned"
+    },
+    {
+      "contract_id": "forge.capability.config.override.apply.v1",
+      "status": "planned"
+    }
+  ],
+  "packaging": {
+    "bom_required": true,
+    "rollback_plan_required": true,
+    "compatibility_required": true,
+    "manifest_kind": "commons_capability_manifest"
+  },
+  "runtime_module": "forge_commons.config_policy.ConfigPolicyCapability",
+  "teardown": {
+    "required": true,
+    "disposal_steps": [
+      "clear_runtime_state",
+      "release_handles",
+      "finalize_disposed_state"
+    ],
+    "evidence_log_required": true
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "forge.schema.contracts.forge.contribution.surface.register.v1",
+  "title": "forge.contribution.surface.register.v1",
+  "type": "object",
+  "required": [
+    "request",
+    "response",
+    "error"
+  ],
+  "properties": {
+    "request": {
+      "allOf": [
+        {
+          "$ref": "../envelopes/request_envelope.v1.schema.json"
+        },
+        {
+          "properties": {
+            "contract_id": {
+              "const": "forge.contribution.surface.register.v1"
+            },
+            "version": {
+              "const": 1
+            }
+          }
+        }
+      ]
+    },
+    "response": {
+      "allOf": [
+        {
+          "$ref": "../envelopes/response_envelope.v1.schema.json"
+        },
+        {
+          "properties": {
+            "contract_id": {
+              "const": "forge.contribution.surface.register.v1"
+            },
+            "version": {
+              "const": 1
+            }
+          }
+        }
+      ]
+    },
+    "error": {
+      "allOf": [
+        {
+          "$ref": "../envelopes/error_envelope.v1.schema.json"
+        },
+        {
+          "properties": {
+            "contract_id": {
+              "const": "forge.contribution.surface.register.v1"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "additionalProperties": false
+}

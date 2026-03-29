@@ -1,0 +1,49 @@
+{
+  "schema_id": "forge.package.platform.v1",
+  "package_id": "forge-platform-<channel>",
+  "package_type": "platform_release_bundle",
+  "display_name": "ForgeOS Platform Release",
+  "version": "1.0.0",
+  "channel": "stable",
+  "owner_team": "<equipo-release>",
+  "includes": {
+    "kernel_package": "forge-kernel",
+    "commons_packages": [
+      "forge-commons-config_policy",
+      "forge-commons-diagnostics",
+      "forge-commons-process_execution",
+      "forge-commons-history_runs",
+      "forge-commons-export_artifacts"
+    ],
+    "release_docs": [
+      "BOM.md",
+      "RELEASE_NOTES.md",
+      "ROLLBACK_PLAN.md"
+    ]
+  },
+  "compatibility_matrix": {
+    "kernel_version": "1.0.0",
+    "commons_versions": {
+      "forge-commons-config_policy": "1.0.0",
+      "forge-commons-diagnostics": "1.0.0",
+      "forge-commons-process_execution": "1.0.0",
+      "forge-commons-history_runs": "1.0.0",
+      "forge-commons-export_artifacts": "1.0.0"
+    },
+    "supported_product_ranges": {
+      "forge-product-<product_id>": "^1.0.0"
+    }
+  },
+  "integrity": {
+    "signature_required": true,
+    "hash_algorithm": "sha256",
+    "bom_ref": "BOM.md"
+  },
+  "install": {
+    "allow_partial_install": false,
+    "rollback_plan_ref": "ROLLBACK_PLAN.md"
+  },
+  "release": {
+    "release_notes_ref": "RELEASE_NOTES.md"
+  }
+}

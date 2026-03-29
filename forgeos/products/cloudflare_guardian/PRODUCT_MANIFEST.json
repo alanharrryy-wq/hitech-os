@@ -1,0 +1,26 @@
+{
+  "product_id": "cloudflare_guardian",
+  "package_id": "forge.product.cloudflare_guardian",
+  "version": "0.1.0",
+  "owner": "forge_products_cloudflare_guardian",
+  "layer": "product",
+  "lifecycle_contracts": [
+    "forge.lifecycle.product.activate.v1",
+    "forge.lifecycle.product.suspend.v1",
+    "forge.lifecycle.package.dispose.v1"
+  ],
+  "host_contributions": [
+    "contrib.cloudflare_guardian.main_surface"
+  ],
+  "state_slices": [
+    "product.cloudflare_guardian.snapshots",
+    "product.cloudflare_guardian.report"
+  ],
+  "capability_contracts": [
+    "forge.capability.runs.append.v1"
+  ],
+  "compatibility": {
+    "kernel": ">=0.1.0,<1.0.0",
+    "commons": ">=0.1.0,<1.0.0"
+  }
+}
