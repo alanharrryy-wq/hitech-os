@@ -8,6 +8,9 @@ on:
       - "tools/docs_governor/**"
       - ".github/workflows/promotion.yml"
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   promote-validation:
     runs-on: ubuntu-latest
@@ -74,3 +77,4 @@ jobs:
             tools/docs_governor/reports/*.json
             docs/_generated/**/promotion_manifest.json
           if-no-files-found: ignore
+

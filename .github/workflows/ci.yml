@@ -26,6 +26,9 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   guardrails:
     runs-on: ubuntu-latest
@@ -229,3 +232,4 @@ jobs:
           name: ci-observability-health-${{ github.run_id }}-${{ github.run_attempt }}
           if-no-files-found: warn
           path: tools/_local/reports/ci/engineering_health.json
+

@@ -16,6 +16,9 @@ on:
     paths-ignore:
       - "docs/knowledge/codex_chats/**"
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   docs-governor:
     runs-on: ubuntu-latest
@@ -39,3 +42,4 @@ jobs:
           name: docs-governor-report
           path: tools/docs_governor/reports/*.json
           if-no-files-found: ignore
+

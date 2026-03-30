@@ -17,6 +17,9 @@ on:
       - "tools/codex/guards/**"
       - ".github/workflows/dev-console-architecture-guard.yml"
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   architecture-guard:
     runs-on: ubuntu-latest
@@ -28,3 +31,4 @@ jobs:
           python-version: "3.11"
       - name: Run architecture guard
         run: python tools/dev-console/architecture_guard.py --repo-root . --strict
+

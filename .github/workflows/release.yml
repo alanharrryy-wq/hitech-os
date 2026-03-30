@@ -51,6 +51,9 @@ on:
 permissions:
   contents: read
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   release-governance:
     runs-on: ubuntu-latest
@@ -112,3 +115,4 @@ jobs:
           name: release-governance-${{ github.run_id }}-${{ github.run_attempt }}
           if-no-files-found: warn
           path: tools/_local/reports/ci/release_discipline.release_workflow.json
+
