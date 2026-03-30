@@ -66,9 +66,11 @@ class PathGuardTests(unittest.TestCase):
 
     def test_ensure_within_root(self) -> None:
         with tempfile.TemporaryDirectory(prefix="path_guard_root_") as temp_dir:
-            root = Path(temp_dir)
+            root = Path(temp_dir).resolve(strict=False)
             safe = ensure_within_root(root, "apps/demo/file.ts")
-            self.assertTrue(str(safe).startswith(str(root)))
+            safe_parts = [part.lower() for part in safe.parts]
+            root_parts = [part.lower() for part in root.parts]
+            self.assertEqual(root_parts, safe_parts[: len(root_parts)])
 
     def test_ensure_within_root_rejects_escape(self) -> None:
         with tempfile.TemporaryDirectory(prefix="path_guard_escape_") as temp_dir:
@@ -131,5 +133,4 @@ class PathGuardTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
 
