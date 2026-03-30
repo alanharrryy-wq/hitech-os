@@ -20,10 +20,10 @@ jobs:
       HITECH_QT_FAILURE_INJECTION_MODE: "off"
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: "pip"
@@ -84,10 +84,10 @@ jobs:
       HITECH_QT_INCLUDE_DEV_TOOLS: "1"
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: "pip"
@@ -123,4 +123,5 @@ jobs:
             --query plugin \
             --timeout-seconds 120 \
             --failure-mode "${{ matrix.mode }}"
+
 

@@ -43,7 +43,7 @@ jobs:
           echo "CI_METRIC_CHECKOUT_START=$(date +%s)" >> "$GITHUB_ENV"
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -62,14 +62,14 @@ jobs:
 
       - name: Setup Node
         id: setup-node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
           cache: "pnpm"
 
       - name: Restore turbo cache (optional)
         id: turbo-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .turbo
           key: turbo-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'turbo.json') }}
@@ -84,7 +84,7 @@ jobs:
           echo "CI_METRIC_PNPM_CACHE_HIT=${{ steps.setup-node.outputs.cache-hit }}" >> "$GITHUB_ENV"
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
@@ -192,7 +192,7 @@ jobs:
           echo "CI_METRIC_ARTIFACT_START=$(date +%s)" >> "$GITHUB_ENV"
 
       - name: Upload CI observability reports (core)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ci-observability-core-${{ github.run_id }}-${{ github.run_attempt }}
           if-no-files-found: warn
@@ -227,9 +227,10 @@ jobs:
             --output "${REPORT_DIR}/engineering_health.json"
 
       - name: Upload engineering health report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ci-observability-health-${{ github.run_id }}-${{ github.run_attempt }}
           if-no-files-found: warn
           path: tools/_local/reports/ci/engineering_health.json
+
 

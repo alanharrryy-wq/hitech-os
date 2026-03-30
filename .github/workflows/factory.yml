@@ -37,10 +37,10 @@ jobs:
       HITECH_FACTORY_STRESS_MAX_SECONDS: "10"
       FACTORY_SLOW_TESTS: "0"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: "pip"
@@ -104,7 +104,7 @@ jobs:
 
       - name: Upload Factory Artifacts On Failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: factory-artifacts-${{ matrix.os }}-${{ github.run_id }}-${{ github.run_attempt }}
           if-no-files-found: warn
@@ -121,4 +121,5 @@ jobs:
             tools/codex/runs/${{ env.RUN_ID }}/Z_aggregator/LOGS/**
             tools/codex/runs/${{ env.RUN_ID }}/attestations/**
             tools/codex/runs/${{ env.RUN_ID }}/logs/**
+
 
