@@ -26,6 +26,9 @@ concurrency:
   group: forgeos-release-candidate-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   forgeos-release-candidate:
     runs-on: ubuntu-latest
@@ -73,3 +76,4 @@ jobs:
             forgeos/packages/**/BOM.md
             forgeos/packages/**/RELEASE_NOTES.md
             forgeos/packages/**/ROLLBACK_PLAN.md
+

@@ -12,6 +12,9 @@ on:
       - ".github/workflows/orchestrator-factory.yml"
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   verify-orchestrator-factory:
     runs-on: ubuntu-latest
@@ -50,3 +53,4 @@ jobs:
         run: |
           set -euo pipefail
           python -m unittest discover -s tests/execution_framework -p "test_*.py"
+

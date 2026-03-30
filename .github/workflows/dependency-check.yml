@@ -38,6 +38,9 @@ on:
 permissions:
   contents: read
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   deps:
     runs-on: ubuntu-latest
@@ -87,3 +90,4 @@ jobs:
             tools/_local/reports/ci/dependency_hygiene.dependency_check.json
             tools/_local/reports/ci/dependency_cycles.dependency_check.json
             tools/_local/reports/ci/repo_hygiene.dependency_check.json
+

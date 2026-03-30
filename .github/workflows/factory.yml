@@ -17,6 +17,9 @@ on:
       - "docs/factory/**"
       - ".github/workflows/factory.yml"
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   factory-tests:
     strategy:
@@ -118,3 +121,4 @@ jobs:
             tools/codex/runs/${{ env.RUN_ID }}/Z_aggregator/LOGS/**
             tools/codex/runs/${{ env.RUN_ID }}/attestations/**
             tools/codex/runs/${{ env.RUN_ID }}/logs/**
+

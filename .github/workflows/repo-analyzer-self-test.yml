@@ -7,6 +7,9 @@ on:
 permissions:
   contents: read
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   self-test:
     name: Repo Analyzer Headless Self-Test
@@ -120,3 +123,4 @@ jobs:
             --query plugin \
             --timeout-seconds 120 \
             --failure-mode "${{ matrix.mode }}"
+
