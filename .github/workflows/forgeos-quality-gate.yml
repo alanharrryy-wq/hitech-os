@@ -20,7 +20,7 @@ jobs:
   forgeos-quality-gate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -45,7 +45,7 @@ jobs:
           fi
           echo "run_gate=false" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         if: steps.scope.outputs.run_gate == 'true'
         with:
           python-version: "3.11"
@@ -67,11 +67,10 @@ jobs:
 
       - name: Upload ForgeOS quality evidence
         if: steps.scope.outputs.run_gate == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: forgeos-quality-gate-${{ github.run_id }}-${{ github.run_attempt }}
           if-no-files-found: error
           path: |
             tools/_local/evidence/forgeos_import_boundaries_report.json
             tools/_local/evidence/forgeos_package_dry_run_report.json
-
