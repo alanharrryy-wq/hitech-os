@@ -18,6 +18,8 @@ env:
 jobs:
   verify-orchestrator-factory:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPYCACHEPREFIX: /tmp/hitech_orchestrator_pycache
     steps:
       - uses: actions/checkout@v6
 
@@ -53,5 +55,4 @@ jobs:
         run: |
           set -euo pipefail
           python -m unittest discover -s tests/execution_framework -p "test_*.py"
-
 
