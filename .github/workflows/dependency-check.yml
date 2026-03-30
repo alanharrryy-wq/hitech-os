@@ -47,7 +47,7 @@ jobs:
     env:
       REPORT_DIR: tools/_local/reports/ci
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -55,7 +55,7 @@ jobs:
         with:
           version: 9.15.0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: "20"
           cache: "pnpm"
@@ -80,7 +80,7 @@ jobs:
             --output "${REPORT_DIR}/repo_hygiene.dependency_check.json"
 
       - name: Upload dependency reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dependency-check-${{ github.run_id }}-${{ github.run_attempt }}
           if-no-files-found: warn
@@ -90,4 +90,5 @@ jobs:
             tools/_local/reports/ci/dependency_hygiene.dependency_check.json
             tools/_local/reports/ci/dependency_cycles.dependency_check.json
             tools/_local/reports/ci/repo_hygiene.dependency_check.json
+
 

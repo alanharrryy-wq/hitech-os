@@ -45,11 +45,11 @@ jobs:
     env:
       REPORT_DIR: tools/_local/reports/ci
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: "20"
 
@@ -80,11 +80,12 @@ jobs:
             --output "${REPORT_DIR}/codeowners_coverage.security_scan.json"
 
       - name: Upload security observability reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: security-scan-${{ github.run_id }}-${{ github.run_attempt }}
           if-no-files-found: warn
           path: |
             tools/_local/reports/ci/sensitive_paths.security_scan.json
             tools/_local/reports/ci/codeowners_coverage.security_scan.json
+
 
