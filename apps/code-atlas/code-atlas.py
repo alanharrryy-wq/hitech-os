@@ -60,7 +60,7 @@ VisibilityPreset = Literal["executive", "engineering", "raw"]
 
 APP_TITLE = "Dependency Graph SVG"
 
-DEFAULT_THEME_ID = "dark"
+DEFAULT_THEME_ID = "silver_frost_cyan"
 DEFAULT_VIEW: GraphView = "package"
 
 SUPPORTED_SOURCE_EXTENSIONS: tuple[str, ...] = (".py",)
@@ -1908,6 +1908,8 @@ class _GlassPalette:
     orb_b: QColor
     orb_c: QColor
     sparkle: QColor
+    star_soft: QColor
+    star_bright: QColor
 
 
 def _qcolor_from_value(value: Any, alpha: float = 1.0) -> QColor:
@@ -1919,12 +1921,47 @@ def _qcolor_from_value(value: Any, alpha: float = 1.0) -> QColor:
     return color
 
 
+def _is_silver_theme_id(theme_id: str) -> bool:
+    lowered = clean_text(theme_id).lower()
+    return any(tag in lowered for tag in ("silver", "frost", "argent", "mercury"))
+
+
 def _glass_palette(theme_id: str, variant: str = "selector") -> _GlassPalette:
     render = resolve_render_theme(theme_id)
     t = render.tokens
     dark = render.is_dark
+    silver_theme = _is_silver_theme_id(theme_id)
 
     selector_variant = clean_text(variant).lower() != "progress"
+
+    if silver_theme:
+        canvas_top = _qcolor_from_value("#0f1217", 1.0)
+        canvas_bottom = _qcolor_from_value("#2a3038", 1.0)
+        wash = _qcolor_from_value("#d9dee8", 0.09 if selector_variant else 0.10)
+        border = _qcolor_from_value("#98ecff", 0.22 if selector_variant else 0.18)
+        line = _qcolor_from_value("#b6c4d4", 0.12)
+        sheen = _qcolor_from_value("#ffffff", 0.18)
+        orb_a = _qcolor_from_value("#8ff2ff", 0.18 if selector_variant else 0.16)
+        orb_b = _qcolor_from_value("#f6fbff", 0.14 if selector_variant else 0.12)
+        orb_c = _qcolor_from_value("#7adfff", 0.13 if selector_variant else 0.11)
+        sparkle = _qcolor_from_value("#ffffff", 0.68)
+        star_soft = _qcolor_from_value("#eaf3ff", 0.24)
+        star_bright = _qcolor_from_value("#ffffff", 0.56)
+
+        return _GlassPalette(
+            canvas_top=canvas_top,
+            canvas_bottom=canvas_bottom,
+            wash=wash,
+            border=border,
+            line=line,
+            sheen=sheen,
+            orb_a=orb_a,
+            orb_b=orb_b,
+            orb_c=orb_c,
+            sparkle=sparkle,
+            star_soft=star_soft,
+            star_bright=star_bright,
+        )
 
     canvas_top = _qcolor_from_value(
         _mix_hex(t["canvas_bg"], t["header_fill"], 0.18 if dark else 0.05),
@@ -1957,6 +1994,8 @@ def _glass_palette(theme_id: str, variant: str = "selector") -> _GlassPalette:
         0.14 if dark else 0.09,
     )
     sparkle = _qcolor_from_value("#ffffff", 0.34 if dark else 0.42)
+    star_soft = _qcolor_from_value("#ffffff", 0.12 if dark else 0.18)
+    star_bright = _qcolor_from_value("#ffffff", 0.28 if dark else 0.34)
 
     return _GlassPalette(
         canvas_top=canvas_top,
@@ -1969,6 +2008,8 @@ def _glass_palette(theme_id: str, variant: str = "selector") -> _GlassPalette:
         orb_b=orb_b,
         orb_c=orb_c,
         sparkle=sparkle,
+        star_soft=star_soft,
+        star_bright=star_bright,
     )
 
 
@@ -2011,6 +2052,30 @@ class FrostedGlassBackdrop(QWidget):
             (self._palette.orb_c, rect.width() * 0.72, rect.height() * 0.88, rect.width() * 0.36),
         ]
 
+    def _paint_stars(self, painter: QPainter, rect: QRectF) -> None:
+        total = 54 if self._variant == "progress" else 96
+        for index in range(total):
+            x = rect.width() * (((index * 37) % 997) / 997.0)
+            y = rect.height() * (((index * 61 + 17) % 991) / 991.0)
+            size = 0.9 + (((index * 11) % 7) * 0.24)
+            color = QColor(self._palette.star_bright if index % 5 == 0 else self._palette.star_soft)
+            if index % 7 == 0:
+                color.setAlpha(max(0, int(color.alpha() * 1.18)))
+            painter.setBrush(color)
+            painter.drawEllipse(QRectF(x, y, size, size))
+
+        cluster_count = 26 if self._variant == "selector" else 14
+        for index in range(cluster_count):
+            factor = (index + 1) / float(cluster_count + 1)
+            x = rect.width() * (0.06 + (0.88 * factor))
+            band_y = 0.72 if self._variant == "selector" else 0.70
+            wobble = ((((index * 29) % 17) - 8) / 220.0)
+            y = rect.height() * (band_y + wobble)
+            size = 1.0 + ((index % 4) * 0.36)
+            color = QColor(self._palette.star_bright if index % 3 == 0 else self._palette.star_soft)
+            painter.setBrush(color)
+            painter.drawEllipse(QRectF(x, y, size, size))
+
     def paintEvent(self, event) -> None:  # type: ignore[override]
         rect = QRectF(self.rect())
         if rect.width() <= 1.0 or rect.height() <= 1.0:
@@ -2035,6 +2100,8 @@ class FrostedGlassBackdrop(QWidget):
             orb.setColorAt(1.0, edge)
             painter.setBrush(orb)
             painter.drawEllipse(QRectF(cx - radius, cy - radius, radius * 2.0, radius * 2.0))
+
+        self._paint_stars(painter, rect)
 
         glass_path = QPainterPath()
         glass_path.addRoundedRect(rect.adjusted(1.5, 1.5, -1.5, -1.5), 30.0, 30.0)
@@ -2120,6 +2187,34 @@ def build_glass_dialog_scene(
     stack.setCurrentWidget(content)
     outer.addWidget(stage)
     return outer, content, backdrop
+
+
+class _HoverCardFilter(QObject):
+    def eventFilter(self, watched: QObject, event: QEvent) -> bool:  # type: ignore[override]
+        if isinstance(watched, QWidget):
+            if event.type() in {QEvent.Enter, QEvent.HoverEnter}:
+                watched.setProperty("hover", True)
+                repolish(watched)
+            elif event.type() in {QEvent.Leave, QEvent.HoverLeave}:
+                watched.setProperty("hover", False)
+                repolish(watched)
+        return False
+
+
+_CARD_HOVER_FILTER: _HoverCardFilter | None = None
+
+
+def enable_card_hover(widget: QWidget) -> None:
+    global _CARD_HOVER_FILTER
+    if widget is None:
+        return
+    if _CARD_HOVER_FILTER is None:
+        _CARD_HOVER_FILTER = _HoverCardFilter()
+    widget.setAttribute(Qt.WA_Hover, True)
+    widget.setMouseTracking(True)
+    widget.setProperty("hoverable", True)
+    widget.setProperty("hover", False)
+    widget.installEventFilter(_CARD_HOVER_FILTER)
 
 
 _EDGE_NONE = 0
@@ -2630,6 +2725,7 @@ class SelectorDialog(QDialog):
         header = QFrame()
         header.setProperty("card", "hero")
         apply_shadow(header, blur=28.0, y_offset=10.0, alpha=36)
+        enable_card_hover(header)
         shell_layout.addWidget(header)
 
         header_layout = QVBoxLayout(header)
@@ -2690,12 +2786,14 @@ class SelectorDialog(QDialog):
         self.form_card.setProperty("card", "true")
         self.form_card.setProperty("surface", "crisp")
         apply_shadow(self.form_card, blur=24.0, y_offset=8.0, alpha=34)
+        enable_card_hover(self.form_card)
         content.addWidget(self.form_card, 6)
 
         self.preview_card = QFrame()
         self.preview_card.setProperty("card", "muted")
         self.preview_card.setProperty("surface", "soft")
         apply_shadow(self.preview_card, blur=22.0, y_offset=8.0, alpha=28)
+        enable_card_hover(self.preview_card)
         content.addWidget(self.preview_card, 5)
 
         self._build_form_panel()
@@ -2704,6 +2802,7 @@ class SelectorDialog(QDialog):
         footer = QFrame()
         footer.setProperty("card", "footer")
         apply_shadow(footer, blur=20.0, y_offset=8.0, alpha=22)
+        enable_card_hover(footer)
         shell_layout.addWidget(footer)
 
         footer_layout = QHBoxLayout(footer)
@@ -3123,6 +3222,7 @@ class ProgressUI(QDialog):
         hero = QFrame()
         hero.setProperty("card", "hero")
         apply_shadow(hero, blur=24.0, y_offset=8.0, alpha=30)
+        enable_card_hover(hero)
         shell_layout.addWidget(hero)
 
         hero_layout = QVBoxLayout(hero)
@@ -3177,6 +3277,7 @@ class ProgressUI(QDialog):
         body = QFrame()
         body.setProperty("card", "true")
         apply_shadow(body, blur=20.0, y_offset=8.0, alpha=24)
+        enable_card_hover(body)
         shell_layout.addWidget(body)
 
         layout = QVBoxLayout(body)
@@ -3200,6 +3301,7 @@ class ProgressUI(QDialog):
         footer = QFrame()
         footer.setProperty("card", "muted")
         apply_shadow(footer, blur=18.0, y_offset=6.0, alpha=18)
+        enable_card_hover(footer)
         shell_layout.addWidget(footer)
 
         footer_layout = QHBoxLayout(footer)
@@ -6611,7 +6713,120 @@ def theme_dark() -> ThemeBundle:
     return _build_semantic_theme(
         theme_id="dark",
         label="Dark",
+    )
+
+
+def theme_silver_frost_cyan() -> ThemeBundle:
+    return _build_semantic_theme(
+        theme_id="silver_frost_cyan",
+        label="Silver Frost Cyan",
         is_default=True,
+        token_overrides={
+            "surfaces": {
+                "canvas_start": "#101319",
+                "canvas_mid": "#1a1f27",
+                "canvas_end": "#2b3139",
+                "header_band": "#d6dce6",
+                "panel": "#cfd6e0",
+                "panel_alt": "#dbe2eb",
+                "panel_soft": "#b8c2ce",
+                "legend_panel": "#d6dde7",
+                "warning_panel": "#c7c1b8",
+                "lane_header_start": "#e1e6ee",
+                "lane_header_end": "#cfd6e0",
+                "node_package_start": "#d7e0ea",
+                "node_package_end": "#c7d1dd",
+                "node_module_start": "#dce4ee",
+                "node_module_end": "#ccd6e2",
+                "node_external_start": "#dee7f0",
+                "node_external_end": "#c8d4e0",
+                "node_note_start": "#d8d7d3",
+                "node_note_end": "#c7c4be",
+                "node_focus_hero_start": "#e7edf6",
+                "node_focus_hero_end": "#ced8e5",
+                "node_focus_inbound_start": "#dfe8f1",
+                "node_focus_inbound_end": "#cad7e3",
+                "node_focus_outbound_start": "#dde7f0",
+                "node_focus_outbound_end": "#c8d4df",
+                "node_focus_mixed_start": "#e3ebf4",
+                "node_focus_mixed_end": "#cdd8e4",
+                "node_context_muted_start": "#c6d0dc",
+                "node_context_muted_end": "#b8c3d0",
+                "node_hub_accent_start": "#e8eef7",
+                "node_hub_accent_end": "#d4dde8",
+            },
+            "text": {
+                "title": "#eef4fb",
+                "body": "#334556",
+                "muted": "#587086",
+                "soft": "#71869a",
+                "code": "#455b70",
+                "warning": "#8b6c4c",
+                "inverse": "#ffffff",
+                "badge_dark": "#102030",
+                "badge_light": "#ffffff",
+            },
+            "accents": {
+                "primary": "#84edff",
+                "secondary": "#a8f4ff",
+                "tertiary": "#c1d4ff",
+                "success": "#79d8ef",
+                "warning": "#c9a97a",
+                "danger": "#c78686",
+                "focus": "#82ebff",
+                "hub": "#a8f4ff",
+            },
+            "borders": {
+                "subtle": "#9fabb9",
+                "panel": "#dfe6ef",
+                "lane": "#d5dde8",
+                "strong": "#92f0ff",
+                "focus": "#82ebff",
+                "muted": "#92a1b1",
+                "node_package": "#9fd9ee",
+                "node_module": "#91d8eb",
+                "node_external": "#afd8f2",
+                "node_note": "#c5b79a",
+                "warning": "#c5b79a",
+            },
+            "ambient": {
+                "grid": "#dbe8f6",
+                "grid_opacity": 0.16,
+                "grid_size": 28,
+                "grid_stroke_width": 0.9,
+                "halo_a_color": "#93f4ff",
+                "halo_a_secondary": "#d7ecff",
+                "halo_a_opacity": 0.20,
+                "halo_a_fade_opacity": 0.07,
+                "halo_b_color": "#ffffff",
+                "halo_b_opacity": 0.14,
+                "header_glow": "#8defff",
+            },
+        },
+        effect_overrides={
+            "glow_intensity": {
+                "ambient": 0.09,
+                "edge": 0.07,
+                "focus": 0.16,
+                "header": 0.08,
+            },
+            "shadow_intensity": {
+                "node": 0.16,
+                "panel": 0.12,
+                "soft": 0.06,
+            },
+            "border_emphasis": {
+                "standard": 1.08,
+                "strong": 1.24,
+                "focus": 1.56,
+                "hub": 1.34,
+            },
+            "shine_intensity": {
+                "standard": 0.26,
+                "focus": 0.20,
+                "panel": 0.10,
+            },
+        },
     )
 
 
@@ -6842,6 +7057,7 @@ def theme_obsidian_liquid_glass() -> ThemeBundle:
 
 def collect_theme_bundles() -> list[ThemeBundle]:
     bundles: list[ThemeBundle] = [
+        theme_silver_frost_cyan(),
         theme_dark(),
         theme_light(),
         theme_obsidian_liquid_glass(),
@@ -6984,7 +7200,7 @@ def _build_theme_alias_to_id(manifests: Iterable[ThemeManifest]) -> dict[str, st
 
 def _is_dark_theme(theme_id: str) -> bool:
     lowered = clean_text(theme_id).lower()
-    return lowered not in {"light", "paper", "white"}
+    return lowered not in {"light", "paper", "white", "silver_frost_cyan", "silver", "frost"}
 
 
 def _bundle_section(bundle: ThemeBundle, section: str) -> dict[str, Any]:
@@ -7832,25 +8048,27 @@ def build_app_stylesheet(theme_id: str) -> str:
     render = resolve_render_theme(theme_id)
     t = render.tokens
     dark = render.is_dark
+    silver_theme = _is_silver_theme_id(theme_id)
 
     dialog_bg = "transparent"
-    shell_top = _with_alpha(_mix_hex(t["header_fill"], t["legend_fill"], 0.42 if dark else 0.16), 0.86 if dark else 0.94)
-    shell_bottom = _with_alpha(_mix_hex(t["canvas_bg"], t["header_fill"], 0.26 if dark else 0.08), 0.78 if dark else 0.90)
+    shell_top = _with_alpha(_mix_hex(t["header_fill"], t["legend_fill"], 0.42 if dark else 0.16), 0.80 if dark else 0.90 if silver_theme else 0.94)
+    shell_bottom = _with_alpha(_mix_hex(t["canvas_bg"], t["header_fill"], 0.26 if dark else 0.08), 0.72 if dark else 0.82 if silver_theme else 0.90)
     shell_border = _with_alpha(_mix_hex(t["focus"], t["legend_stroke"], 0.24 if dark else 0.10), 0.24 if dark else 0.42)
     shell_glow = _with_alpha("#ffffff", 0.07 if dark else 0.12)
+    shell_rim = _with_alpha(t["focus"], 0.20 if dark else 0.22)
 
     hero_top = _with_alpha(_mix_hex(t["focus"], t["header_fill"], 0.14 if dark else 0.04), 0.30 if dark else 0.78)
     hero_bottom = _with_alpha(_mix_hex(t["legend_fill"], t["canvas_bg"], 0.18 if dark else 0.05), 0.78 if dark else 0.92)
     hero_border = _with_alpha(t["focus"], 0.30 if dark else 0.36)
 
-    card_top = _with_alpha(_mix_hex(t["legend_fill"], t["header_fill"], 0.12 if dark else 0.04), 0.74 if dark else 0.92)
-    card_bottom = _with_alpha(_mix_hex(t["canvas_bg"], t["legend_fill"], 0.20 if dark else 0.05), 0.64 if dark else 0.88)
-    muted_top = _with_alpha(_mix_hex(t["canvas_bg"], t["legend_fill"], 0.26 if dark else 0.06), 0.54 if dark else 0.84)
-    muted_bottom = _with_alpha(_mix_hex(t["canvas_bg"], t["header_fill"], 0.18 if dark else 0.05), 0.46 if dark else 0.80)
-    footer_top = _with_alpha(_mix_hex(t["header_fill"], t["canvas_bg"], 0.18 if dark else 0.06), 0.58 if dark else 0.86)
-    footer_bottom = _with_alpha(_mix_hex(t["canvas_bg"], t["legend_fill"], 0.18 if dark else 0.06), 0.46 if dark else 0.82)
-    card_border = _with_alpha(t["legend_stroke"], 0.20 if dark else 0.38)
-    muted_border = _with_alpha(t["header_stroke"], 0.14 if dark else 0.26)
+    card_top = _with_alpha(_mix_hex(t["legend_fill"], t["header_fill"], 0.12 if dark else 0.04), 0.66 if dark else 0.78 if silver_theme else 0.92)
+    card_bottom = _with_alpha(_mix_hex(t["canvas_bg"], t["legend_fill"], 0.20 if dark else 0.05), 0.56 if dark else 0.70 if silver_theme else 0.88)
+    muted_top = _with_alpha(_mix_hex(t["canvas_bg"], t["legend_fill"], 0.26 if dark else 0.06), 0.48 if dark else 0.66 if silver_theme else 0.84)
+    muted_bottom = _with_alpha(_mix_hex(t["canvas_bg"], t["header_fill"], 0.18 if dark else 0.05), 0.42 if dark else 0.62 if silver_theme else 0.80)
+    footer_top = _with_alpha(_mix_hex(t["header_fill"], t["canvas_bg"], 0.18 if dark else 0.06), 0.50 if dark else 0.70 if silver_theme else 0.86)
+    footer_bottom = _with_alpha(_mix_hex(t["canvas_bg"], t["legend_fill"], 0.18 if dark else 0.06), 0.40 if dark else 0.62 if silver_theme else 0.82)
+    card_border = _with_alpha(t["legend_stroke"], 0.24 if dark else 0.42)
+    muted_border = _with_alpha(t["header_stroke"], 0.18 if dark else 0.30)
     line = _with_alpha(t["header_stroke"], 0.12 if dark else 0.22)
     line_glow = _with_alpha(t["focus"], 0.26 if dark else 0.18)
 
@@ -7874,7 +8092,7 @@ def build_app_stylesheet(theme_id: str) -> str:
     chrome_close_hover = _with_alpha(t["warning_fill"], 0.28 if dark else 0.24)
     chrome_close_border = _with_alpha(t["warning_stroke"], 0.36 if dark else 0.38)
 
-    neutral_chip_text = t["text_soft"] if dark else t["header_text"]
+    neutral_chip_text = t["text_soft"] if dark else _mix_hex(t["header_text"], t["text_main"], 0.34 if silver_theme else 0.16)
     neutral_chip_bg = _with_alpha(_mix_hex(t["legend_fill"], t["canvas_bg"], 0.24 if dark else 0.08), 0.36 if dark else 0.82)
     neutral_chip_border = _with_alpha(t["muted_stroke"], 0.18 if dark else 0.28)
     good_chip_text = _mix_hex(t["badge_out"], t["chip_light"], 0.72 if dark else 0.40)
@@ -7890,8 +8108,8 @@ def build_app_stylesheet(theme_id: str) -> str:
     input_bg = _with_alpha(_mix_hex(t["canvas_bg"], t["legend_fill"], 0.18 if dark else 0.04), 0.72 if dark else 0.90)
     input_fg = value
     input_border = _with_alpha(t["legend_stroke"], 0.18 if dark else 0.34)
-    input_hover = _with_alpha(t["focus"], 0.26 if dark else 0.34)
-    input_focus = _with_alpha(t["focus"], 0.72 if dark else 0.72)
+    input_hover = _with_alpha(t["focus"], 0.46 if dark else 0.54)
+    input_focus = _with_alpha(t["focus"], 0.84 if dark else 0.82)
     input_focus_bg = _with_alpha(_mix_hex(t["canvas_bg"], t["header_fill"], 0.16 if dark else 0.06), 0.78 if dark else 0.92)
     input_disabled_fg = _with_alpha(t["muted_text"], 0.82)
     input_disabled_bg = _with_alpha(_mix_hex(t["canvas_bg"], t["legend_fill"], 0.12 if dark else 0.04), 0.40 if dark else 0.72)
@@ -7955,6 +8173,10 @@ def build_app_stylesheet(theme_id: str) -> str:
         border-radius: 28px;
     }}
 
+    QFrame#Shell:hover {{
+        border: 1px solid {shell_rim};
+    }}
+
     QFrame#Shell[variant="progress"] {{
         border-radius: 26px;
     }}
@@ -7987,6 +8209,10 @@ def build_app_stylesheet(theme_id: str) -> str:
         background: {_qss_vertical_gradient(footer_top, footer_bottom)};
         border: 1px solid {muted_border};
         border-radius: 18px;
+    }}
+
+    QFrame[hoverable="true"][hover="true"] {{
+        border: 1px solid {input_hover};
     }}
 
     QFrame#Line {{
