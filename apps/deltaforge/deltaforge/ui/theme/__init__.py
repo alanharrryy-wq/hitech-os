@@ -1,4 +1,3 @@
-from deltaforge.ui.theme.styles import build_app_stylesheet
-from deltaforge.ui.theme.tokens import ThemeTokens, build_default_theme
+from .theme_api import ThemeSpec, apply_theme, resolve_theme
 
-__all__ = ["ThemeTokens", "build_default_theme", "build_app_stylesheet"]
+__all__ = ['ThemeSpec', 'apply_theme', 'resolve_theme']

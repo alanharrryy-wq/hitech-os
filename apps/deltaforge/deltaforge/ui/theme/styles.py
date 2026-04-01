@@ -61,39 +61,6 @@ def build_app_stylesheet(theme: ThemeTokens) -> str:
         font-family: "Cascadia Code", "Consolas", monospace;
     }}
 
-    QPushButton[variant="command"] {{
-        background: {c['surface']};
-        border: 1px solid {c['hairline']};
-        color: {c['text']};
-        border-radius: {r['md']}px;
-        padding: 7px 12px;
-        font-size: {t['body']}px;
-        font-weight: 600;
-    }}
-
-    QPushButton[variant="command"]:hover {{
-        border: 1px solid {c['focus_soft']};
-        background: {c['panel_alt']};
-    }}
-
-    QPushButton[variant="primary"] {{
-        background: {c['focus']};
-        border: 1px solid {c['focus']};
-        color: #081119;
-    }}
-
-    QPushButton[variant="warning"] {{
-        background: {c['warning']};
-        border: 1px solid {c['warning']};
-        color: #1f1403;
-    }}
-
-    QPushButton[variant="danger"] {{
-        background: {c['danger']};
-        border: 1px solid {c['danger']};
-        color: #23070b;
-    }}
-
     QLineEdit, QPlainTextEdit, QListWidget, QTreeWidget, QTextEdit {{
         background: {c['mono_bg']};
         color: {c['text']};

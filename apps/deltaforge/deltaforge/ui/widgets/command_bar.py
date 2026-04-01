@@ -1,71 +1,121 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 from PySide6.QtCore import Signal
-from PySide6.QtGui import QAction
-from PySide6.QtWidgets import QToolBar
+from PySide6.QtWidgets import (
+    QFrame,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QSizePolicy,
+    QVBoxLayout,
+    QWidget,
+)
 
 
-class CommandBar(QToolBar):
-    command_invoked = Signal(str)
+@dataclass(frozen=True)
+class CommandBarState:
+    root_dir: str = ''
+    mode_label: str = 'workspace'
+    busy: bool = False
 
-    ORDER: tuple[str | None, ...] = (
-        "new_session",
-        "clone_session",
-        "close_session",
-        None,
-        "choose_files",
-        "choose_folder",
-        "clear_scope",
-        None,
-        "load_ops",
-        "save_ops",
-        None,
-        "validate",
-        "plan",
-        "apply",
-        "rollback",
-        None,
-        "refresh",
-        "open_root",
-        "settings",
-    )
 
-    LABELS: dict[str, str] = {
-        "new_session": "New Session",
-        "clone_session": "Clone Session",
-        "close_session": "Close Session",
-        "choose_files": "Choose File(s)",
-        "choose_folder": "Choose Folder",
-        "clear_scope": "Clear Scope",
-        "load_ops": "Load Ops",
-        "save_ops": "Save Ops",
-        "validate": "Validate",
-        "plan": "Plan",
-        "apply": "Apply",
-        "rollback": "Rollback",
-        "refresh": "Refresh",
-        "open_root": "Open Root",
-        "settings": "Settings",
-    }
+class CommandBar(QWidget):
+    browseRequested = Signal()
+    validateRequested = Signal()
+    planRequested = Signal()
+    applyRequested = Signal()
+    rollbackRequested = Signal()
+    refreshRequested = Signal()
 
-    def __init__(self) -> None:
-        super().__init__("DeltaForge Command Bar")
-        self.setMovable(False)
-        self.setFloatable(False)
-        self.actions_by_id: dict[str, QAction] = {}
-        self._build()
+    def __init__(self, parent: QWidget | None = None) -> None:
+        super().__init__(parent)
+        self.setProperty('role', 'command-bar')
 
-    def _build(self) -> None:
-        for item in self.ORDER:
-            if item is None:
-                self.addSeparator()
-                continue
+        outer = QVBoxLayout(self)
+        outer.setContentsMargins(0, 0, 0, 0)
 
-            action = QAction(self.LABELS[item], self)
-            action.setData(item)
-            action.triggered.connect(lambda _checked=False, action_id=item: self.command_invoked.emit(action_id))
-            self.addAction(action)
-            self.actions_by_id[item] = action
+        frame = QFrame(self)
+        frame.setProperty('role', 'surface')
+        outer.addWidget(frame)
 
-    def action_for(self, action_id: str) -> QAction | None:
-        return self.actions_by_id.get(action_id)
+        layout = QVBoxLayout(frame)
+        layout.setContentsMargins(14, 14, 14, 14)
+        layout.setSpacing(10)
+
+        header = QHBoxLayout()
+        title = QLabel('Command Bar', frame)
+        title.setProperty('role', 'surface-title')
+        meta = QLabel('Projection-only UI surface.', frame)
+        meta.setProperty('role', 'surface-meta')
+        header.addWidget(title)
+        header.addStretch(1)
+        header.addWidget(meta)
+        layout.addLayout(header)
+
+        row = QHBoxLayout()
+        row.setSpacing(8)
+        self.root_dir_input = QLineEdit(frame)
+        self.root_dir_input.setPlaceholderText('Root dir projection')
+        self.root_dir_input.setReadOnly(True)
+        self.root_dir_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        row.addWidget(self.root_dir_input, 1)
+
+        self.browse_button = QPushButton('Browse', frame)
+        self.browse_button.setProperty('kind', 'secondary')
+        self.browse_button.clicked.connect(self.browseRequested.emit)
+        row.addWidget(self.browse_button)
+        layout.addLayout(row)
+
+        actions = QHBoxLayout()
+        actions.setSpacing(8)
+        self.validate_button = self._make_button('Validate', 'primary', self.validateRequested.emit)
+        self.plan_button = self._make_button('Plan', 'secondary', self.planRequested.emit)
+        self.apply_button = self._make_button('Apply', 'secondary', self.applyRequested.emit)
+        self.rollback_button = self._make_button('Rollback', 'ghost', self.rollbackRequested.emit)
+        self.refresh_button = self._make_button('Refresh', 'ghost', self.refreshRequested.emit)
+        for button in (
+            self.validate_button,
+            self.plan_button,
+            self.apply_button,
+            self.rollback_button,
+            self.refresh_button,
+        ):
+            actions.addWidget(button)
+        actions.addStretch(1)
+        self.mode_label = QLabel('workspace', frame)
+        self.mode_label.setProperty('role', 'status-chip')
+        self.mode_label.setProperty('tone', 'accent')
+        actions.addWidget(self.mode_label)
+        layout.addLayout(actions)
+
+    def _make_button(self, text: str, kind: str, callback) -> QPushButton:
+        button = QPushButton(text, self)
+        button.setProperty('kind', kind)
+        button.clicked.connect(callback)
+        return button
+
+    def set_state(self, state: CommandBarState | dict | None) -> None:
+        if state is None:
+            state = CommandBarState()
+        if isinstance(state, dict):
+            state = CommandBarState(
+                root_dir=str(state.get('root_dir', '')),
+                mode_label=str(state.get('mode_label', state.get('mode', 'workspace'))),
+                busy=bool(state.get('busy', False)),
+            )
+        self.root_dir_input.setText(state.root_dir)
+        self.root_dir_input.setCursorPosition(0)
+        self.mode_label.setText(state.mode_label)
+        enabled = not state.busy
+        for button in (
+            self.browse_button,
+            self.validate_button,
+            self.plan_button,
+            self.apply_button,
+            self.rollback_button,
+            self.refresh_button,
+        ):
+            button.setEnabled(enabled)
