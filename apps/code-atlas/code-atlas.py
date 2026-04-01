@@ -51,6 +51,7 @@ from typing import Any, Callable, Iterable, Iterator, Literal, Optional
 NodeKind = Literal["package", "module", "external", "note"]
 EdgeKind = Literal["import", "contains", "warning"]
 GraphView = Literal["package", "module", "focus"]
+VisibilityPreset = Literal["executive", "engineering", "raw"]
 
 
 # ----------------------------
@@ -83,6 +84,7 @@ EXCLUDED_DIR_NAMES: set[str] = {
     "dist",
     "build",
     "node_modules",
+    "_chatgpt_patch_backups",
 }
 
 # Límites de seguridad
@@ -113,6 +115,8 @@ LABEL_LIMIT = 42
 HUB_INBOUND_THRESHOLD = 6
 HUB_OUTBOUND_THRESHOLD = 6
 ISLAND_INBOUND_THRESHOLD = 0
+DEFAULT_VISIBILITY_PRESET: VisibilityPreset = "executive"
+MAX_VISIBLE_EXTERNAL_LABELS = 32
 
 # ============================================================
 # 02. MODELOS DE GRAFO Y ESTADO
@@ -188,6 +192,7 @@ class SelectionResult:
     theme: str = DEFAULT_THEME_ID
     view: GraphView = DEFAULT_VIEW
     focus_target: str = ""
+    visibility_preset: VisibilityPreset = DEFAULT_VISIBILITY_PRESET
 
 
 @dataclass(slots=True)
@@ -200,6 +205,7 @@ class AnalysisState:
     theme: str = DEFAULT_THEME_ID
     view: GraphView = DEFAULT_VIEW
     focus_target: str = ""
+    visibility_preset: VisibilityPreset = DEFAULT_VISIBILITY_PRESET
 
     total_files_seen: int = 0
     source_files_seen: int = 0
@@ -209,6 +215,13 @@ class AnalysisState:
 
     total_nodes: int = 0
     total_edges: int = 0
+
+    external_import_total: int = 0
+    external_roots_total: int = 0
+    external_top_roots: tuple[str, ...] = ()
+    hidden_issue_count: int = 0
+    visible_external_bucket_count: int = 0
+    visible_external_bucket_labels: tuple[str, ...] = ()
 
     truncated: bool = False
     limit_reason: str = ""
@@ -516,10 +529,406 @@ def build_state_summary(state: AnalysisState) -> str:
         f"tema {state.theme}",
     ]
 
+    if state.visibility_preset:
+        chunks.append(f"preset {state.visibility_preset}")
+
+    if state.hidden_issue_count > 0:
+        chunks.append(f"issues ocultos {state.hidden_issue_count}")
+
+    if state.external_roots_total > 0:
+        chunks.append(f"externos {state.external_roots_total} roots")
+
+    if state.visible_external_bucket_count > 0:
+        chunks.append(f"externos visibles {state.visible_external_bucket_count}")
+
     if state.truncated:
         chunks.append("análisis truncado")
 
     return " • ".join(chunks)
+
+
+def _top_external_roots_text(counts: dict[str, int], *, limit: int = 4) -> tuple[str, ...]:
+    ranked = sorted(
+        counts.items(),
+        key=lambda item: (-item[1], item[0].lower()),
+    )
+    return tuple(f"{name} ×{count}" for name, count in ranked[:limit])
+
+
+def resolve_visibility_preset(view: GraphView) -> VisibilityPreset:
+    if view == "package":
+        return "executive"
+    if view in {"module", "focus"}:
+        return "engineering"
+    return DEFAULT_VISIBILITY_PRESET
+
+
+def should_surface_issue_notes(state: AnalysisState) -> bool:
+    return state.visibility_preset == "raw"
+
+
+def clone_graph_for_visible_subset(
+    graph: DependencyGraph,
+    selected_node_keys: set[str],
+) -> DependencyGraph:
+    visible = DependencyGraph()
+
+    for node_key in selected_node_keys:
+        node = graph.nodes.get(node_key)
+        if node is None:
+            continue
+
+        visible.upsert_node(
+            key=node.key,
+            label=node.label,
+            path=node.path,
+            kind=node.kind,
+            group=node.group,
+            metadata=dict(node.metadata),
+        )
+
+    for edge in graph.edges.values():
+        if edge.source not in selected_node_keys or edge.target not in selected_node_keys:
+            continue
+
+        cloned = visible.add_edge(
+            edge.source,
+            edge.target,
+            kind=edge.kind,
+        )
+        cloned.weight = edge.weight
+        cloned.evidence.update(edge.evidence)
+
+    for issue in graph.issues:
+        visible.issues.append(issue)
+
+    visible.finalize_metrics()
+    return visible
+
+
+def _visible_node_sort_key(node: DependencyNode) -> tuple[int, int, int, str]:
+    return (
+        -(node.inbound + node.outbound),
+        -node.inbound,
+        -node.outbound,
+        node.label.lower(),
+    )
+
+
+def _capture_visible_external_state(
+    graph: DependencyGraph,
+    state: AnalysisState,
+) -> None:
+    external_nodes = sorted(
+        (node for node in graph.nodes.values() if node.kind == "external"),
+        key=lambda node: node.label.lower(),
+    )
+    state.visible_external_bucket_count = len(external_nodes)
+    state.visible_external_bucket_labels = tuple(
+        node.label
+        for node in external_nodes[:MAX_VISIBLE_EXTERNAL_LABELS]
+    )
+
+
+def _external_edge_sort_key(
+    edge: DependencyEdge,
+    graph: DependencyGraph,
+    focus_key: str,
+) -> tuple[int, int, int, int, str]:
+    touches_focus = 1 if focus_key and (edge.source == focus_key or edge.target == focus_key) else 0
+
+    internal_node: DependencyNode | None = None
+    if edge.source in graph.nodes and graph.nodes[edge.source].kind != "external":
+        internal_node = graph.nodes[edge.source]
+    elif edge.target in graph.nodes and graph.nodes[edge.target].kind != "external":
+        internal_node = graph.nodes[edge.target]
+
+    internal_degree = 0
+    internal_inbound = 0
+    label = ""
+    if internal_node is not None:
+        internal_degree = internal_node.inbound + internal_node.outbound
+        internal_inbound = internal_node.inbound
+        label = internal_node.label.lower()
+
+    return (
+        -touches_focus,
+        -edge.weight,
+        -internal_degree,
+        -internal_inbound,
+        label,
+    )
+
+
+def attach_engineering_external_buckets(
+    source_graph: DependencyGraph,
+    visible_graph: DependencyGraph,
+    state: AnalysisState,
+) -> DependencyGraph:
+    if state.visibility_preset != "engineering":
+        return visible_graph
+
+    if state.view not in {"module", "focus"}:
+        return visible_graph
+
+    internal_visible_keys = {
+        node.key
+        for node in visible_graph.nodes.values()
+        if node.kind not in {"external", "note"}
+    }
+    if not internal_visible_keys:
+        return visible_graph
+
+    focus_key = ""
+    if state.view == "focus":
+        focus_key = resolve_focus_node_key(visible_graph, state.focus_target)
+
+    candidate_edges: dict[str, list[DependencyEdge]] = {}
+    candidate_groups: dict[str, set[str]] = {}
+
+    for edge in source_graph.edges.values():
+        source_node = source_graph.nodes.get(edge.source)
+        target_node = source_graph.nodes.get(edge.target)
+        if source_node is None or target_node is None:
+            continue
+
+        external_node: DependencyNode | None = None
+        internal_node: DependencyNode | None = None
+
+        if source_node.kind == "external" and target_node.key in internal_visible_keys:
+            external_node = source_node
+            internal_node = target_node
+        elif target_node.kind == "external" and source_node.key in internal_visible_keys:
+            external_node = target_node
+            internal_node = source_node
+
+        if external_node is None or internal_node is None:
+            continue
+
+        candidate_edges.setdefault(external_node.key, []).append(edge)
+        if internal_node.group:
+            candidate_groups.setdefault(external_node.key, set()).add(internal_node.group)
+
+    if not candidate_edges:
+        return visible_graph
+
+    bucket_limit = 4 if state.view == "focus" else 6
+    max_edges_per_bucket = 2 if state.view == "focus" else 3
+    max_external_edges_total = 8 if state.view == "focus" else 12
+
+    ranked_external_keys = sorted(
+        candidate_edges,
+        key=lambda external_key: (
+            -(
+                1
+                if focus_key
+                and any(
+                    edge.source == focus_key or edge.target == focus_key
+                    for edge in candidate_edges[external_key]
+                )
+                else 0
+            ),
+            -len(candidate_groups.get(external_key, set())),
+            -sum(edge.weight for edge in candidate_edges[external_key]),
+            -max((edge.weight for edge in candidate_edges[external_key]), default=0),
+            source_graph.nodes[external_key].label.lower(),
+        ),
+    )
+
+    added_external_edges = 0
+    for external_key in ranked_external_keys[:bucket_limit]:
+        remaining_slots = max_external_edges_total - added_external_edges
+        if remaining_slots <= 0:
+            break
+
+        ranked_edges = sorted(
+            candidate_edges[external_key],
+            key=lambda edge: _external_edge_sort_key(edge, visible_graph, focus_key),
+        )
+        chosen_edges = ranked_edges[: min(max_edges_per_bucket, remaining_slots)]
+        if not chosen_edges:
+            continue
+
+        external_node = source_graph.nodes.get(external_key)
+        if external_node is None:
+            continue
+
+        visible_graph.upsert_node(
+            key=external_node.key,
+            label=external_node.label,
+            path=external_node.path,
+            kind=external_node.kind,
+            group=external_node.group,
+            metadata=dict(external_node.metadata),
+        )
+
+        for edge in chosen_edges:
+            if edge.source not in visible_graph.nodes or edge.target not in visible_graph.nodes:
+                continue
+
+            cloned = visible_graph.add_edge(
+                edge.source,
+                edge.target,
+                kind=edge.kind,
+            )
+            cloned.weight = edge.weight
+            cloned.evidence.update(edge.evidence)
+            added_external_edges += 1
+
+    return visible_graph
+
+
+def _trim_module_visible_graph(
+    graph: DependencyGraph,
+    *,
+    max_nodes_per_group: int = 12,
+    max_nodes_total: int = 48,
+) -> DependencyGraph:
+    if len(graph.nodes) <= max_nodes_total:
+        return graph
+
+    grouped: dict[str, list[DependencyNode]] = {}
+    for node in graph.nodes.values():
+        grouped.setdefault(node.group, []).append(node)
+
+    selected: set[str] = set()
+    for group_name, nodes in grouped.items():
+        keep = max_nodes_per_group
+        if group_name in {ISSUE_NOTE_GROUP, "[external]"}:
+            keep = min(keep, 4)
+
+        ranked = sorted(nodes, key=_visible_node_sort_key)
+        for node in ranked[:keep]:
+            selected.add(node.key)
+
+    if len(selected) > max_nodes_total:
+        ranked_selected = sorted(
+            (graph.nodes[node_key] for node_key in selected if node_key in graph.nodes),
+            key=_visible_node_sort_key,
+        )
+        selected = {node.key for node in ranked_selected[:max_nodes_total]}
+
+    return clone_graph_for_visible_subset(graph, selected)
+
+
+def _trim_focus_visible_graph(
+    graph: DependencyGraph,
+    state: AnalysisState,
+) -> DependencyGraph:
+    focus_key = resolve_focus_node_key(graph, state.focus_target)
+    if not focus_key or focus_key not in graph.nodes:
+        return graph
+
+    relation_map = _focus_relation_map(graph, focus_key)
+    selected = {focus_key}
+
+    budgets = {
+        "inbound": 8,
+        "outbound": 8,
+        "mixed": 6,
+        "context": 4,
+    }
+    if state.visibility_preset == "executive":
+        budgets = {
+            "inbound": 4,
+            "outbound": 4,
+            "mixed": 4,
+            "context": 2,
+        }
+
+    for relation, budget in budgets.items():
+        ranked = sorted(
+            (
+                node for node in graph.nodes.values()
+                if relation_map.get(node.key) == relation
+            ),
+            key=_visible_node_sort_key,
+        )
+        for node in ranked[:budget]:
+            selected.add(node.key)
+
+    if not selected:
+        return graph
+
+    return clone_graph_for_visible_subset(graph, selected)
+
+
+def simplify_visible_graph(
+    graph: DependencyGraph,
+    state: AnalysisState,
+) -> DependencyGraph:
+    """
+    Simplificación conservadora:
+    - jamás toca discovery
+    - jamás toca source_files_seen / parsed_files
+    - solo limpia ruido visual después de construir el grafo base
+    """
+    preset = state.visibility_preset
+
+    if preset == "raw":
+        state.hidden_issue_count = 0
+        graph.finalize_metrics()
+        _capture_visible_external_state(graph, state)
+        state.total_nodes = len(graph.nodes)
+        state.total_edges = len(graph.edges)
+        return graph
+
+    selected_node_keys = {
+        node.key
+        for node in graph.nodes.values()
+        if node.kind != "note"
+    }
+
+    if preset in {"executive", "engineering"}:
+        selected_node_keys = {
+            node_key
+            for node_key in selected_node_keys
+            if graph.nodes[node_key].kind != "external"
+            and graph.nodes[node_key].group != "[external]"
+        }
+
+    visible = clone_graph_for_visible_subset(graph, selected_node_keys)
+    state.hidden_issue_count = len(visible.issues)
+
+    if state.view in {"module", "focus"}:
+        visible.finalize_metrics()
+
+        focus_key = ""
+        if state.view == "focus":
+            focus_key = resolve_focus_node_key(visible, state.focus_target)
+
+        connected_keys = {edge.source for edge in visible.edges.values()}
+        connected_keys.update(edge.target for edge in visible.edges.values())
+
+        retained_node_keys = {
+            node.key
+            for node in visible.nodes.values()
+            if node.key in connected_keys
+            or node.kind == "package"
+            or node.key == focus_key
+        }
+
+        if not retained_node_keys and visible.nodes:
+            ranked = sorted(
+                visible.nodes.values(),
+                key=_visible_node_sort_key,
+            )
+            retained_node_keys.add(ranked[0].key)
+
+        visible = clone_graph_for_visible_subset(visible, retained_node_keys)
+
+        if state.view == "focus":
+            visible = _trim_focus_visible_graph(visible, state)
+        elif state.view == "module":
+            visible = _trim_module_visible_graph(visible)
+
+        visible = attach_engineering_external_buckets(graph, visible, state)
+
+    visible.finalize_metrics()
+    _capture_visible_external_state(visible, state)
+    state.total_nodes = len(visible.nodes)
+    state.total_edges = len(visible.edges)
+    return visible
 
 
 # ============================================================
@@ -623,6 +1032,44 @@ def choose_best_internal_target(
             return probe
 
     return ""
+
+
+def build_external_import_summary(
+    import_refs: Iterable[ImportReference],
+    module_catalog: dict[str, ModuleSourceInfo],
+) -> tuple[int, int, tuple[str, ...]]:
+    known_modules = set(module_catalog.keys())
+    counts: dict[str, int] = {}
+    total_refs = 0
+
+    for ref in import_refs:
+        imported_module = clean_text(ref.imported_module)
+        if not imported_module:
+            continue
+
+        if is_internal_module_name(imported_module, known_modules):
+            continue
+
+        external_root = imported_module.split(".", 1)[0]
+        if not external_root:
+            continue
+
+        total_refs += 1
+        counts[external_root] = counts.get(external_root, 0) + 1
+
+    return total_refs, len(counts), _top_external_roots_text(counts)
+
+
+def apply_analysis_summaries(
+    state: AnalysisState,
+    module_catalog: dict[str, ModuleSourceInfo],
+    import_refs: Iterable[ImportReference],
+) -> None:
+    (
+        state.external_import_total,
+        state.external_roots_total,
+        state.external_top_roots,
+    ) = build_external_import_summary(import_refs, module_catalog)
 
 
 def build_module_catalog(
@@ -1016,8 +1463,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping, Optional
 
-from PySide6.QtCore import Qt, QTimer
-from PySide6.QtGui import QColor
+from PySide6.QtCore import Qt, QEvent, QObject, QPoint, QRect, QRectF, QTimer
+from PySide6.QtGui import QColor, QLinearGradient, QPainter, QPainterPath, QPen, QRadialGradient
 from PySide6.QtWidgets import (
     QApplication,
     QComboBox,
@@ -1033,6 +1480,7 @@ from PySide6.QtWidgets import (
     QProgressBar,
     QPushButton,
     QSizePolicy,
+    QStackedLayout,
     QVBoxLayout,
     QWidget,
 )
@@ -1448,6 +1896,546 @@ def repolish(widget: QWidget, recursive: bool = False) -> None:
             child.update()
 
 
+@dataclass(frozen=True, slots=True)
+class _GlassPalette:
+    canvas_top: QColor
+    canvas_bottom: QColor
+    wash: QColor
+    border: QColor
+    line: QColor
+    sheen: QColor
+    orb_a: QColor
+    orb_b: QColor
+    orb_c: QColor
+    sparkle: QColor
+
+
+def _qcolor_from_value(value: Any, alpha: float = 1.0) -> QColor:
+    cleaned = clean_text(str(value or ""))
+    color = QColor(cleaned or "#808080")
+    if not color.isValid():
+        color = QColor("#808080")
+    color.setAlphaF(max(0.0, min(1.0, float(alpha))))
+    return color
+
+
+def _glass_palette(theme_id: str, variant: str = "selector") -> _GlassPalette:
+    render = resolve_render_theme(theme_id)
+    t = render.tokens
+    dark = render.is_dark
+
+    selector_variant = clean_text(variant).lower() != "progress"
+
+    canvas_top = _qcolor_from_value(
+        _mix_hex(t["canvas_bg"], t["header_fill"], 0.18 if dark else 0.05),
+        1.0,
+    )
+    canvas_bottom = _qcolor_from_value(
+        _mix_hex(t["canvas_bg"], t["legend_fill"], 0.32 if dark else 0.10),
+        1.0,
+    )
+    wash = _qcolor_from_value(
+        _mix_hex(t["header_fill"], t["legend_fill"], 0.50 if dark else 0.20),
+        0.30 if dark else 0.76,
+    )
+    border = _qcolor_from_value(
+        _mix_hex(t["focus"], t["legend_stroke"], 0.26 if dark else 0.12),
+        0.26 if dark else 0.42,
+    )
+    line = _qcolor_from_value(t["header_stroke"], 0.10 if dark else 0.18)
+    sheen = _qcolor_from_value("#ffffff", 0.09 if dark else 0.16)
+    orb_a = _qcolor_from_value(
+        t["halo_a"],
+        0.22 if selector_variant and dark else 0.16 if selector_variant else 0.18 if dark else 0.12,
+    )
+    orb_b = _qcolor_from_value(
+        t["halo_b"],
+        0.16 if selector_variant and dark else 0.11 if selector_variant else 0.14 if dark else 0.10,
+    )
+    orb_c = _qcolor_from_value(
+        t["focus"],
+        0.14 if dark else 0.09,
+    )
+    sparkle = _qcolor_from_value("#ffffff", 0.34 if dark else 0.42)
+
+    return _GlassPalette(
+        canvas_top=canvas_top,
+        canvas_bottom=canvas_bottom,
+        wash=wash,
+        border=border,
+        line=line,
+        sheen=sheen,
+        orb_a=orb_a,
+        orb_b=orb_b,
+        orb_c=orb_c,
+        sparkle=sparkle,
+    )
+
+
+class FrostedGlassBackdrop(QWidget):
+    def __init__(
+        self,
+        parent: Optional[QWidget] = None,
+        *,
+        theme_id: str = DEFAULT_THEME_ID,
+        variant: str = "selector",
+    ) -> None:
+        super().__init__(parent)
+        self._variant = clean_text(variant).lower() or "selector"
+        self._theme_id = normalize_theme(theme_id)
+        self._palette = _glass_palette(self._theme_id, self._variant)
+        self.setObjectName("FrostedGlassBackdrop")
+        self.setAttribute(Qt.WA_TransparentForMouseEvents, True)
+        self.setAttribute(Qt.WA_StyledBackground, True)
+        self.setAutoFillBackground(False)
+
+    def apply_theme(self, theme_id: str) -> None:
+        resolved = normalize_theme(theme_id or DEFAULT_THEME)
+        if resolved == self._theme_id:
+            return
+        self._theme_id = resolved
+        self._palette = _glass_palette(self._theme_id, self._variant)
+        self.update()
+
+    def _orb_specs(self, rect: QRectF) -> list[tuple[QColor, float, float, float]]:
+        if self._variant == "progress":
+            return [
+                (self._palette.orb_a, rect.width() * 0.78, rect.height() * 0.18, rect.width() * 0.42),
+                (self._palette.orb_b, rect.width() * 0.18, rect.height() * 0.82, rect.width() * 0.34),
+                (self._palette.orb_c, rect.width() * 0.54, rect.height() * 0.58, rect.width() * 0.22),
+            ]
+
+        return [
+            (self._palette.orb_a, rect.width() * 0.16, rect.height() * 0.14, rect.width() * 0.38),
+            (self._palette.orb_b, rect.width() * 0.86, rect.height() * 0.22, rect.width() * 0.32),
+            (self._palette.orb_c, rect.width() * 0.72, rect.height() * 0.88, rect.width() * 0.36),
+        ]
+
+    def paintEvent(self, event) -> None:  # type: ignore[override]
+        rect = QRectF(self.rect())
+        if rect.width() <= 1.0 or rect.height() <= 1.0:
+            return
+
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.Antialiasing)
+        painter.setRenderHint(QPainter.SmoothPixmapTransform)
+        painter.setPen(Qt.NoPen)
+
+        bg_gradient = QLinearGradient(rect.left(), rect.top(), rect.left(), rect.bottom())
+        bg_gradient.setColorAt(0.0, self._palette.canvas_top)
+        bg_gradient.setColorAt(1.0, self._palette.canvas_bottom)
+        painter.fillRect(rect, bg_gradient)
+
+        for color, cx, cy, radius in self._orb_specs(rect):
+            orb = QRadialGradient(cx, cy, radius)
+            edge = QColor(color)
+            edge.setAlpha(0)
+            orb.setColorAt(0.0, color)
+            orb.setColorAt(0.48, QColor(color.red(), color.green(), color.blue(), max(0, int(color.alpha() * 0.46))))
+            orb.setColorAt(1.0, edge)
+            painter.setBrush(orb)
+            painter.drawEllipse(QRectF(cx - radius, cy - radius, radius * 2.0, radius * 2.0))
+
+        glass_path = QPainterPath()
+        glass_path.addRoundedRect(rect.adjusted(1.5, 1.5, -1.5, -1.5), 30.0, 30.0)
+        painter.fillPath(glass_path, self._palette.wash)
+
+        painter.setPen(QPen(self._palette.border, 1.2))
+        painter.drawPath(glass_path)
+
+        sheen_path = QPainterPath()
+        sheen_path.moveTo(rect.width() * 0.06, rect.height() * 0.12)
+        sheen_path.cubicTo(
+            rect.width() * 0.32,
+            rect.height() * 0.02,
+            rect.width() * 0.56,
+            rect.height() * 0.10,
+            rect.width() * 0.88,
+            rect.height() * 0.04,
+        )
+        painter.setPen(QPen(self._palette.sheen, 1.4))
+        painter.drawPath(sheen_path)
+
+        painter.setPen(QPen(self._palette.line, 1.0))
+        if self._variant == "progress":
+            lines = (0.34, 0.58, 0.80)
+        else:
+            lines = (0.18, 0.46, 0.74)
+        for factor in lines:
+            y = rect.height() * factor
+            painter.drawLine(
+                rect.width() * 0.08,
+                y,
+                rect.width() * 0.92,
+                y - (rect.height() * 0.06),
+            )
+
+        painter.setBrush(self._palette.sparkle)
+        painter.setPen(Qt.NoPen)
+        sparkle_size = 8.0 if self._variant == "progress" else 10.0
+        painter.drawEllipse(
+            QRectF(
+                rect.width() * (0.84 if self._variant == "selector" else 0.72),
+                rect.height() * 0.12,
+                sparkle_size,
+                sparkle_size,
+            )
+        )
+        painter.end()
+
+
+def build_glass_dialog_scene(
+    host: QWidget,
+    *,
+    theme_id: str,
+    variant: str,
+    margins: tuple[int, int, int, int],
+) -> tuple[QVBoxLayout, QWidget, FrostedGlassBackdrop]:
+    host.setObjectName("GlassDialog")
+    host.setAttribute(Qt.WA_StyledBackground, True)
+    try:
+        host.setAttribute(Qt.WA_TranslucentBackground, True)
+    except Exception:
+        pass
+
+    outer = QVBoxLayout(host)
+    outer.setContentsMargins(*margins)
+    outer.setSpacing(0)
+
+    stage = QWidget(host)
+    stage.setObjectName("GlassStage")
+    stage.setAttribute(Qt.WA_StyledBackground, True)
+
+    stack = QStackedLayout(stage)
+    stack.setContentsMargins(0, 0, 0, 0)
+    stack.setStackingMode(QStackedLayout.StackAll)
+
+    backdrop = FrostedGlassBackdrop(stage, theme_id=theme_id, variant=variant)
+    content = QWidget(stage)
+    content.setObjectName("GlassContent")
+    content.setAttribute(Qt.WA_StyledBackground, True)
+
+    stack.addWidget(backdrop)
+    stack.addWidget(content)
+    stack.setCurrentWidget(content)
+    outer.addWidget(stage)
+    return outer, content, backdrop
+
+
+_EDGE_NONE = 0
+_EDGE_LEFT = 1
+_EDGE_TOP = 2
+_EDGE_RIGHT = 4
+_EDGE_BOTTOM = 8
+
+
+def _global_point_from_event(event: Any) -> QPoint:
+    try:
+        return event.globalPosition().toPoint()
+    except Exception:
+        return QPoint()
+
+
+def _local_point_from_event(event: Any) -> QPoint:
+    try:
+        return event.position().toPoint()
+    except Exception:
+        return QPoint()
+
+
+class FramelessResizeController(QObject):
+    def __init__(self, host: QDialog, *, margin: int = 8) -> None:
+        super().__init__(host)
+        self._host = host
+        self._margin = max(4, int(margin))
+        self._active_edges = _EDGE_NONE
+        self._resizing = False
+        self._press_global = QPoint()
+        self._start_geometry = QRect()
+        self._host.installEventFilter(self)
+        self._host.setMouseTracking(True)
+
+    def eventFilter(self, watched: QObject, event: QEvent) -> bool:  # type: ignore[override]
+        if watched is not self._host:
+            return False
+
+        event_type = event.type()
+        if event_type == QEvent.Type.MouseButtonPress:
+            return self._on_mouse_press(event)
+        if event_type == QEvent.Type.MouseMove:
+            return self._on_mouse_move(event)
+        if event_type == QEvent.Type.MouseButtonRelease:
+            return self._on_mouse_release(event)
+        if event_type == QEvent.Type.Leave:
+            if not self._resizing:
+                self._host.unsetCursor()
+            return False
+        return False
+
+    def _edge_mask_at(self, pos: QPoint) -> int:
+        if self._host.isMaximized():
+            return _EDGE_NONE
+
+        rect = self._host.rect()
+        if rect.width() <= 0 or rect.height() <= 0:
+            return _EDGE_NONE
+
+        left = pos.x() <= self._margin
+        right = pos.x() >= (rect.width() - self._margin)
+        top = pos.y() <= self._margin
+        bottom = pos.y() >= (rect.height() - self._margin)
+
+        mask = _EDGE_NONE
+        if left:
+            mask |= _EDGE_LEFT
+        if right:
+            mask |= _EDGE_RIGHT
+        if top:
+            mask |= _EDGE_TOP
+        if bottom:
+            mask |= _EDGE_BOTTOM
+        return mask
+
+    def _cursor_for_edges(self, edges: int) -> Qt.CursorShape:
+        if edges in {_EDGE_TOP | _EDGE_LEFT, _EDGE_BOTTOM | _EDGE_RIGHT}:
+            return Qt.SizeFDiagCursor
+        if edges in {_EDGE_TOP | _EDGE_RIGHT, _EDGE_BOTTOM | _EDGE_LEFT}:
+            return Qt.SizeBDiagCursor
+        if edges in {_EDGE_LEFT, _EDGE_RIGHT}:
+            return Qt.SizeHorCursor
+        if edges in {_EDGE_TOP, _EDGE_BOTTOM}:
+            return Qt.SizeVerCursor
+        return Qt.ArrowCursor
+
+    def _apply_resize_cursor(self, edges: int) -> None:
+        cursor_shape = self._cursor_for_edges(edges)
+        if cursor_shape == Qt.ArrowCursor:
+            self._host.unsetCursor()
+            return
+        self._host.setCursor(cursor_shape)
+
+    def _on_mouse_press(self, event: Any) -> bool:
+        if self._host.isMaximized():
+            return False
+        if event.button() != Qt.LeftButton:
+            return False
+
+        edges = self._edge_mask_at(_local_point_from_event(event))
+        if edges == _EDGE_NONE:
+            return False
+
+        self._active_edges = edges
+        self._resizing = True
+        self._press_global = _global_point_from_event(event)
+        self._start_geometry = self._host.geometry()
+        self._apply_resize_cursor(edges)
+        event.accept()
+        return True
+
+    def _on_mouse_move(self, event: Any) -> bool:
+        if self._host.isMaximized():
+            if not self._resizing:
+                self._host.unsetCursor()
+            return False
+
+        if self._resizing:
+            if not bool(event.buttons() & Qt.LeftButton):
+                self._resizing = False
+                self._active_edges = _EDGE_NONE
+                self._host.unsetCursor()
+                return False
+            self._resize_to(_global_point_from_event(event))
+            event.accept()
+            return True
+
+        edges = self._edge_mask_at(_local_point_from_event(event))
+        self._apply_resize_cursor(edges)
+        return False
+
+    def _on_mouse_release(self, event: Any) -> bool:
+        if not self._resizing or event.button() != Qt.LeftButton:
+            return False
+
+        self._resizing = False
+        self._active_edges = _EDGE_NONE
+        self._host.unsetCursor()
+        event.accept()
+        return True
+
+    def _resize_to(self, global_pos: QPoint) -> None:
+        if self._active_edges == _EDGE_NONE:
+            return
+
+        dx = global_pos.x() - self._press_global.x()
+        dy = global_pos.y() - self._press_global.y()
+
+        geom = QRect(self._start_geometry)
+        min_width = max(320, int(self._host.minimumWidth() or 0))
+        min_height = max(220, int(self._host.minimumHeight() or 0))
+
+        if self._active_edges & _EDGE_LEFT:
+            proposed_left = geom.left() + dx
+            max_left = geom.right() - min_width + 1
+            geom.setLeft(min(proposed_left, max_left))
+        if self._active_edges & _EDGE_RIGHT:
+            proposed_right = geom.right() + dx
+            min_right = geom.left() + min_width - 1
+            geom.setRight(max(proposed_right, min_right))
+        if self._active_edges & _EDGE_TOP:
+            proposed_top = geom.top() + dy
+            max_top = geom.bottom() - min_height + 1
+            geom.setTop(min(proposed_top, max_top))
+        if self._active_edges & _EDGE_BOTTOM:
+            proposed_bottom = geom.bottom() + dy
+            min_bottom = geom.top() + min_height - 1
+            geom.setBottom(max(proposed_bottom, min_bottom))
+
+        self._host.setGeometry(geom)
+
+
+class WindowChromeBar(QFrame):
+    def __init__(
+        self,
+        host: QDialog,
+        *,
+        title: str,
+        on_close: Optional[Callable[[], Any]] = None,
+        allow_minimize: bool = True,
+        allow_maximize: bool = True,
+    ) -> None:
+        super().__init__(host)
+        self._host = host
+        self._on_close = on_close
+        self._allow_maximize = bool(allow_maximize)
+        self._dragging = False
+        self._drag_offset = QPoint()
+
+        self.setObjectName("WindowChrome")
+        self.setFixedHeight(34)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.setCursor(Qt.ArrowCursor)
+
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(10, 5, 6, 5)
+        layout.setSpacing(6)
+
+        icon = QLabel("▣", self)
+        icon.setProperty("role", "window_icon")
+        icon.setAlignment(Qt.AlignCenter)
+        icon.setFixedWidth(18)
+        layout.addWidget(icon, 0)
+
+        self._title_label = QLabel(clean_text(title) or APP_TITLE, self)
+        self._title_label.setProperty("role", "window_title")
+        self._title_label.setAlignment(Qt.AlignVCenter | Qt.AlignLeft)
+        layout.addWidget(self._title_label, 1)
+
+        self._min_button = self._make_chrome_button("—", "min", "Minimizar")
+        self._max_button = self._make_chrome_button("□", "max", "Maximizar / Restaurar")
+        self._close_button = self._make_chrome_button("×", "close", "Cerrar")
+
+        if allow_minimize:
+            layout.addWidget(self._min_button, 0)
+        else:
+            self._min_button.hide()
+
+        if self._allow_maximize:
+            layout.addWidget(self._max_button, 0)
+        else:
+            self._max_button.hide()
+
+        layout.addWidget(self._close_button, 0)
+
+        self._min_button.clicked.connect(self._host.showMinimized)
+        self._max_button.clicked.connect(self._toggle_max_restore)
+        self._close_button.clicked.connect(self._handle_close)
+
+        self._host.installEventFilter(self)
+        self._sync_max_button()
+
+    def _make_chrome_button(self, text: str, kind: str, tooltip: str) -> QPushButton:
+        button = QPushButton(text, self)
+        button.setProperty("chrome", True)
+        button.setProperty("chrome_kind", kind)
+        button.setFocusPolicy(Qt.NoFocus)
+        button.setToolTip(tooltip)
+        button.setFixedSize(30, 22)
+        return button
+
+    def _handle_close(self) -> None:
+        if callable(self._on_close):
+            self._on_close()
+            return
+        self._host.close()
+
+    def _toggle_max_restore(self) -> None:
+        if not self._allow_maximize:
+            return
+        if self._host.isMaximized():
+            self._host.showNormal()
+        else:
+            self._host.showMaximized()
+        self._sync_max_button()
+
+    def _sync_max_button(self) -> None:
+        if not self._allow_maximize:
+            return
+        self._max_button.setText("❐" if self._host.isMaximized() else "□")
+        self._max_button.setToolTip("Restaurar" if self._host.isMaximized() else "Maximizar")
+
+    def eventFilter(self, watched: QObject, event: QEvent) -> bool:  # type: ignore[override]
+        if watched is not self._host:
+            return False
+
+        if event.type() == QEvent.Type.WindowTitleChange:
+            self._title_label.setText(clean_text(self._host.windowTitle()) or APP_TITLE)
+        elif event.type() == QEvent.Type.WindowStateChange:
+            self._sync_max_button()
+        return False
+
+    def _is_pointer_on_button(self, local_pos: QPoint) -> bool:
+        child = self.childAt(local_pos)
+        return isinstance(child, QPushButton)
+
+    def mouseDoubleClickEvent(self, event: Any) -> None:  # type: ignore[override]
+        if (
+            event.button() == Qt.LeftButton
+            and self._allow_maximize
+            and not self._is_pointer_on_button(_local_point_from_event(event))
+        ):
+            self._toggle_max_restore()
+            event.accept()
+            return
+        super().mouseDoubleClickEvent(event)
+
+    def mousePressEvent(self, event: Any) -> None:  # type: ignore[override]
+        if (
+            event.button() == Qt.LeftButton
+            and not self._is_pointer_on_button(_local_point_from_event(event))
+            and not self._host.isMaximized()
+        ):
+            self._dragging = True
+            self._drag_offset = _global_point_from_event(event) - self._host.frameGeometry().topLeft()
+            event.accept()
+            return
+        super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event: Any) -> None:  # type: ignore[override]
+        if self._dragging and bool(event.buttons() & Qt.LeftButton):
+            if self._host.isMaximized():
+                self._dragging = False
+            else:
+                self._host.move(_global_point_from_event(event) - self._drag_offset)
+            event.accept()
+            return
+        super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event: Any) -> None:  # type: ignore[override]
+        if event.button() == Qt.LeftButton:
+            self._dragging = False
+        super().mouseReleaseEvent(event)
+
+
 def app_stylesheet(theme_id: Optional[str] = None) -> str:
     resolved_theme = normalize_theme(theme_id or DEFAULT_THEME)
     return build_app_stylesheet(resolved_theme)
@@ -1479,7 +2467,15 @@ def create_button(
     if callable(callback):
         button.clicked.connect(callback)
 
-    apply_shadow(button, blur=18.0, y_offset=4.0, alpha=38)
+    shadow_alpha = {
+        "primary": 54,
+        "secondary": 26,
+        "success": 42,
+        "danger": 34,
+    }.get((variant or "secondary").strip().lower(), 28)
+    shadow_blur = 24.0 if (variant or "").strip().lower() == "primary" else 18.0
+
+    apply_shadow(button, blur=shadow_blur, y_offset=6.0, alpha=shadow_alpha)
     repolish(button)
     return button
 
@@ -1525,6 +2521,8 @@ class SelectorDialog(QDialog):
         self.setMinimumSize(920, 660)
         self.resize(980, 700)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowFlag(Qt.FramelessWindowHint, True)
+        self._resize_controller = FramelessResizeController(self, margin=8)
         self._applied_theme_id = ""
 
         self._build_ui()
@@ -1579,6 +2577,8 @@ class SelectorDialog(QDialog):
         if resolved_theme == self._applied_theme_id:
             return
         self.setStyleSheet(app_stylesheet(resolved_theme))
+        if getattr(self, "_glass_backdrop", None) is not None:
+            self._glass_backdrop.apply_theme(resolved_theme)
         self._applied_theme_id = resolved_theme
 
     def on_theme_changed(self) -> None:
@@ -1596,41 +2596,61 @@ class SelectorDialog(QDialog):
         )
 
     def _build_ui(self) -> None:
-        outer = QVBoxLayout(self)
-        outer.setContentsMargins(18, 18, 18, 18)
+        outer, content_layer, self._glass_backdrop = build_glass_dialog_scene(
+            self,
+            theme_id=self._theme_catalog.default_id,
+            variant="selector",
+            margins=(10, 10, 10, 10),
+        )
         outer.setSpacing(0)
+
+        scene_layout = QVBoxLayout(content_layer)
+        scene_layout.setContentsMargins(10, 10, 10, 10)
+        scene_layout.setSpacing(0)
 
         shell = QFrame()
         shell.setObjectName("Shell")
-        apply_shadow(shell, blur=34.0, y_offset=10.0, alpha=84)
-        outer.addWidget(shell)
+        shell.setProperty("variant", "selector")
+        apply_shadow(shell, blur=38.0, y_offset=14.0, alpha=98)
+        scene_layout.addWidget(shell)
 
         shell_layout = QVBoxLayout(shell)
-        shell_layout.setContentsMargins(20, 20, 20, 20)
-        shell_layout.setSpacing(16)
+        shell_layout.setContentsMargins(22, 22, 22, 22)
+        shell_layout.setSpacing(18)
+
+        self.window_chrome = WindowChromeBar(
+            self,
+            title=self.windowTitle(),
+            on_close=self.cancel,
+            allow_minimize=True,
+            allow_maximize=True,
+        )
+        shell_layout.addWidget(self.window_chrome)
 
         header = QFrame()
-        header.setProperty("card", "true")
-        apply_shadow(header, blur=18.0, y_offset=4.0, alpha=30)
+        header.setProperty("card", "hero")
+        apply_shadow(header, blur=28.0, y_offset=10.0, alpha=36)
         shell_layout.addWidget(header)
 
         header_layout = QVBoxLayout(header)
-        header_layout.setContentsMargins(18, 16, 18, 16)
-        header_layout.setSpacing(10)
+        header_layout.setContentsMargins(22, 20, 22, 20)
+        header_layout.setSpacing(12)
 
         top_row = QHBoxLayout()
-        top_row.setSpacing(10)
+        top_row.setSpacing(12)
         header_layout.addLayout(top_row)
+
+        title_stack = QVBoxLayout()
+        title_stack.setSpacing(6)
+        top_row.addLayout(title_stack, 1)
+
+        eyebrow = QLabel("Workspace")
+        eyebrow.setProperty("role", "eyebrow")
+        title_stack.addWidget(eyebrow, 0, Qt.AlignLeft)
 
         title = QLabel("Dependency Graph SVG")
         title.setProperty("role", "title")
-        top_row.addWidget(title, 1)
-
-        self.mode_chip = QLabel("Selector")
-        self.mode_chip.setProperty("chip", True)
-        self.mode_chip.setProperty("tone", "accent")
-        self.mode_chip.setAlignment(Qt.AlignCenter)
-        top_row.addWidget(self.mode_chip, 0)
+        title_stack.addWidget(title)
 
         subtitle = QLabel(
             "Elige la ruta, el tema y la vista. La ruta es editable para pegar, corregir o afinar "
@@ -1638,47 +2658,80 @@ class SelectorDialog(QDialog):
         )
         subtitle.setProperty("role", "subtitle")
         subtitle.setWordWrap(True)
-        header_layout.addWidget(subtitle)
+        title_stack.addWidget(subtitle)
+
+        chrome_stack = QVBoxLayout()
+        chrome_stack.setSpacing(8)
+        top_row.addLayout(chrome_stack, 0)
+
+        self.mode_chip = QLabel("Selector")
+        self.mode_chip.setProperty("chip", True)
+        self.mode_chip.setProperty("tone", "accent")
+        self.mode_chip.setAlignment(Qt.AlignCenter)
+        chrome_stack.addWidget(self.mode_chip, 0, Qt.AlignRight)
+
+        scene_chip = QLabel("PySide6 Glass")
+        scene_chip.setProperty("chip", True)
+        scene_chip.setProperty("tone", "neutral")
+        scene_chip.setAlignment(Qt.AlignCenter)
+        chrome_stack.addWidget(scene_chip, 0, Qt.AlignRight)
+        chrome_stack.addStretch(1)
+
+        header_line = make_separator()
+        header_line.setProperty("tone", "glow")
+        repolish(header_line)
+        header_layout.addWidget(header_line)
 
         content = QHBoxLayout()
-        content.setSpacing(16)
+        content.setSpacing(18)
         shell_layout.addLayout(content, 1)
 
         self.form_card = QFrame()
         self.form_card.setProperty("card", "true")
-        apply_shadow(self.form_card, blur=18.0, y_offset=4.0, alpha=28)
+        self.form_card.setProperty("surface", "crisp")
+        apply_shadow(self.form_card, blur=24.0, y_offset=8.0, alpha=34)
         content.addWidget(self.form_card, 6)
 
         self.preview_card = QFrame()
         self.preview_card.setProperty("card", "muted")
-        apply_shadow(self.preview_card, blur=18.0, y_offset=4.0, alpha=24)
+        self.preview_card.setProperty("surface", "soft")
+        apply_shadow(self.preview_card, blur=22.0, y_offset=8.0, alpha=28)
         content.addWidget(self.preview_card, 5)
 
         self._build_form_panel()
         self._build_preview_panel()
 
         footer = QFrame()
-        footer.setProperty("card", "muted")
+        footer.setProperty("card", "footer")
+        apply_shadow(footer, blur=20.0, y_offset=8.0, alpha=22)
         shell_layout.addWidget(footer)
 
         footer_layout = QHBoxLayout(footer)
-        footer_layout.setContentsMargins(16, 12, 16, 12)
-        footer_layout.setSpacing(10)
+        footer_layout.setContentsMargins(18, 14, 18, 14)
+        footer_layout.setSpacing(12)
+
+        footer_text_stack = QVBoxLayout()
+        footer_text_stack.setSpacing(4)
+        footer_layout.addLayout(footer_text_stack, 1)
+
+        footer_label = QLabel("Output")
+        footer_label.setProperty("role", "eyebrow")
+        footer_text_stack.addWidget(footer_label, 0, Qt.AlignLeft)
 
         footer_hint = QLabel(
             "La salida se guardará dentro de la carpeta analizada, en una subcarpeta dedicada."
         )
         footer_hint.setProperty("role", "hint")
         footer_hint.setWordWrap(True)
-        footer_layout.addWidget(footer_hint, 1)
+        footer_text_stack.addWidget(footer_hint)
 
-        self.cancel_button = create_button("Cancelar", "danger", self.cancel, minimum_width=120)
+        self.cancel_button = create_button("Cancelar", "danger", self.cancel, minimum_width=124)
         self.confirm_button = create_button(
             "Generar SVG",
             "primary",
             self.confirm,
             default=True,
-            minimum_width=144,
+            minimum_width=156,
         )
         footer_layout.addWidget(self.cancel_button, 0)
         footer_layout.addWidget(self.confirm_button, 0)
@@ -2010,13 +3063,16 @@ class ProgressUI(QDialog):
         self._finalized = False
         self._spinner_frames = ("Procesando", "Procesando.", "Procesando..", "Procesando...")
         self._spinner_index = 0
+        self._theme_id = normalize_theme(theme_id or DEFAULT_THEME)
 
         self.setWindowTitle(window_title or _app_title())
         self.setModal(False)
-        self.setMinimumSize(760, 260)
-        self.resize(820, 290)
+        self.setMinimumSize(780, 320)
+        self.resize(860, 340)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
-        self.setStyleSheet(app_stylesheet(theme_id or DEFAULT_THEME))
+        self.setWindowFlag(Qt.FramelessWindowHint, True)
+        self._resize_controller = FramelessResizeController(self, margin=8)
+        self.setStyleSheet(app_stylesheet(self._theme_id))
 
         self._build_ui()
         self.set_status(initial_status, initial_detail)
@@ -2033,41 +3089,99 @@ class ProgressUI(QDialog):
         self._pump_events(force=True)
 
     def _build_ui(self) -> None:
-        outer = QVBoxLayout(self)
-        outer.setContentsMargins(16, 16, 16, 16)
+        outer, content_layer, self._glass_backdrop = build_glass_dialog_scene(
+            self,
+            theme_id=self._theme_id,
+            variant="progress",
+            margins=(10, 10, 10, 10),
+        )
         outer.setSpacing(0)
 
- 
+        scene_layout = QVBoxLayout(content_layer)
+        scene_layout.setContentsMargins(10, 10, 10, 10)
+        scene_layout.setSpacing(0)
+
         shell = QFrame()
         shell.setObjectName("Shell")
-        apply_shadow(shell, blur=30.0, y_offset=10.0, alpha=82)
-        outer.addWidget(shell)
+        shell.setProperty("variant", "progress")
+        apply_shadow(shell, blur=34.0, y_offset=12.0, alpha=92)
+        scene_layout.addWidget(shell)
 
         shell_layout = QVBoxLayout(shell)
-        shell_layout.setContentsMargins(18, 18, 18, 18)
-        shell_layout.setSpacing(14)
+        shell_layout.setContentsMargins(20, 20, 20, 20)
+        shell_layout.setSpacing(16)
 
-        card = QFrame()
-        card.setProperty("card", "true")
-        apply_shadow(card, blur=18.0, y_offset=4.0, alpha=28)
-        shell_layout.addWidget(card)
+        self.window_chrome = WindowChromeBar(
+            self,
+            title=self.windowTitle(),
+            on_close=self.close,
+            allow_minimize=True,
+            allow_maximize=False,
+        )
+        shell_layout.addWidget(self.window_chrome)
 
-        layout = QVBoxLayout(card)
-        layout.setContentsMargins(18, 18, 18, 18)
-        layout.setSpacing(12)
+        hero = QFrame()
+        hero.setProperty("card", "hero")
+        apply_shadow(hero, blur=24.0, y_offset=8.0, alpha=30)
+        shell_layout.addWidget(hero)
+
+        hero_layout = QVBoxLayout(hero)
+        hero_layout.setContentsMargins(20, 18, 20, 18)
+        hero_layout.setSpacing(10)
+
+        hero_top = QHBoxLayout()
+        hero_top.setSpacing(12)
+        hero_layout.addLayout(hero_top)
+
+        hero_stack = QVBoxLayout()
+        hero_stack.setSpacing(6)
+        hero_top.addLayout(hero_stack, 1)
+
+        eyebrow = QLabel("Pipeline")
+        eyebrow.setProperty("role", "eyebrow")
+        hero_stack.addWidget(eyebrow, 0, Qt.AlignLeft)
 
         title = QLabel("Armando el grafo de dependencias")
         title.setProperty("role", "title")
-        layout.addWidget(title)
+        hero_stack.addWidget(title)
 
         subtitle = QLabel(
             "Escaneando estructura, resolviendo imports y preparando el SVG final."
         )
         subtitle.setProperty("role", "subtitle")
         subtitle.setWordWrap(True)
-        layout.addWidget(subtitle)
+        hero_stack.addWidget(subtitle)
 
-        layout.addWidget(make_separator())
+        chip_stack = QVBoxLayout()
+        chip_stack.setSpacing(8)
+        hero_top.addLayout(chip_stack, 0)
+
+        self.state_chip = QLabel("En curso")
+        self.state_chip.setProperty("chip", True)
+        self.state_chip.setProperty("tone", "accent")
+        self.state_chip.setAlignment(Qt.AlignCenter)
+        chip_stack.addWidget(self.state_chip, 0, Qt.AlignRight)
+
+        live_chip = QLabel("Glass Console")
+        live_chip.setProperty("chip", True)
+        live_chip.setProperty("tone", "neutral")
+        live_chip.setAlignment(Qt.AlignCenter)
+        chip_stack.addWidget(live_chip, 0, Qt.AlignRight)
+        chip_stack.addStretch(1)
+
+        hero_line = make_separator()
+        hero_line.setProperty("tone", "glow")
+        repolish(hero_line)
+        hero_layout.addWidget(hero_line)
+
+        body = QFrame()
+        body.setProperty("card", "true")
+        apply_shadow(body, blur=20.0, y_offset=8.0, alpha=24)
+        shell_layout.addWidget(body)
+
+        layout = QVBoxLayout(body)
+        layout.setContentsMargins(18, 18, 18, 18)
+        layout.setSpacing(14)
 
         self.status_label = QLabel("")
         self.status_label.setProperty("role", "section")
@@ -2083,11 +3197,19 @@ class ProgressUI(QDialog):
         self.progress.setTextVisible(True)
         layout.addWidget(self.progress)
 
-        self.state_chip = QLabel("En curso")
-        self.state_chip.setProperty("chip", True)
-        self.state_chip.setProperty("tone", "accent")
-        self.state_chip.setAlignment(Qt.AlignCenter)
-        layout.addWidget(self.state_chip, 0, Qt.AlignLeft)
+        footer = QFrame()
+        footer.setProperty("card", "muted")
+        apply_shadow(footer, blur=18.0, y_offset=6.0, alpha=18)
+        shell_layout.addWidget(footer)
+
+        footer_layout = QHBoxLayout(footer)
+        footer_layout.setContentsMargins(16, 12, 16, 12)
+        footer_layout.setSpacing(10)
+
+        footer_hint = QLabel("Esta consola se queda viva mientras corre el pipeline y luego te deja cerrar sin prisas.")
+        footer_hint.setProperty("role", "hint")
+        footer_hint.setWordWrap(True)
+        footer_layout.addWidget(footer_hint, 1)
 
     def _pump_events(self, *, force: bool = False) -> None:
         app = QApplication.instance()
@@ -2398,11 +3520,11 @@ def enrich_graph_for_presentation(
 ) -> DependencyGraph:
     """
     Ajustes finales antes de layout/render:
-    - mete issues como notes visibles
+    - mete issues como notes visibles solo cuando el preset lo permite
     - recalcula métricas
     - sincroniza totales en state
     """
-    if graph.issues:
+    if graph.issues and should_surface_issue_notes(state):
         add_issue_note_nodes(graph)
 
     graph.finalize_metrics()
@@ -6692,132 +7814,241 @@ def resolve_render_theme(theme_id: str) -> ThemeRenderContract:
 
 # PATCH_MINIMO_FALTANTES_MOD09_V2
 
+def _qss_vertical_gradient(top: str, bottom: str) -> str:
+    return (
+        "qlineargradient(x1:0, y1:0, x2:0, y2:1, "
+        f"stop:0 {top}, stop:0.55 {top}, stop:1 {bottom})"
+    )
+
+
+def _qss_horizontal_gradient(left: str, right: str) -> str:
+    return (
+        "qlineargradient(x1:0, y1:0, x2:1, y2:0, "
+        f"stop:0 {left}, stop:1 {right})"
+    )
+
+
 def build_app_stylesheet(theme_id: str) -> str:
     render = resolve_render_theme(theme_id)
     t = render.tokens
     dark = render.is_dark
 
-    dialog_bg = t["canvas_bg"]
-    shell_bg = _mix_hex(t["header_fill"], t["canvas_bg"], 0.34 if dark else 0.10)
-    card_bg = t["legend_fill"]
-    card_muted_bg = _mix_hex(card_bg, t["canvas_bg"], 0.26 if dark else 0.08)
-    soft_border = _with_alpha(t["header_stroke"], 0.14 if dark else 0.34)
-    card_border = _with_alpha(t["legend_stroke"], 0.18 if dark else 0.40)
-    line = _with_alpha(t["header_stroke"], 0.14 if dark else 0.28)
+    dialog_bg = "transparent"
+    shell_top = _with_alpha(_mix_hex(t["header_fill"], t["legend_fill"], 0.42 if dark else 0.16), 0.86 if dark else 0.94)
+    shell_bottom = _with_alpha(_mix_hex(t["canvas_bg"], t["header_fill"], 0.26 if dark else 0.08), 0.78 if dark else 0.90)
+    shell_border = _with_alpha(_mix_hex(t["focus"], t["legend_stroke"], 0.24 if dark else 0.10), 0.24 if dark else 0.42)
+    shell_glow = _with_alpha("#ffffff", 0.07 if dark else 0.12)
+
+    hero_top = _with_alpha(_mix_hex(t["focus"], t["header_fill"], 0.14 if dark else 0.04), 0.30 if dark else 0.78)
+    hero_bottom = _with_alpha(_mix_hex(t["legend_fill"], t["canvas_bg"], 0.18 if dark else 0.05), 0.78 if dark else 0.92)
+    hero_border = _with_alpha(t["focus"], 0.30 if dark else 0.36)
+
+    card_top = _with_alpha(_mix_hex(t["legend_fill"], t["header_fill"], 0.12 if dark else 0.04), 0.74 if dark else 0.92)
+    card_bottom = _with_alpha(_mix_hex(t["canvas_bg"], t["legend_fill"], 0.20 if dark else 0.05), 0.64 if dark else 0.88)
+    muted_top = _with_alpha(_mix_hex(t["canvas_bg"], t["legend_fill"], 0.26 if dark else 0.06), 0.54 if dark else 0.84)
+    muted_bottom = _with_alpha(_mix_hex(t["canvas_bg"], t["header_fill"], 0.18 if dark else 0.05), 0.46 if dark else 0.80)
+    footer_top = _with_alpha(_mix_hex(t["header_fill"], t["canvas_bg"], 0.18 if dark else 0.06), 0.58 if dark else 0.86)
+    footer_bottom = _with_alpha(_mix_hex(t["canvas_bg"], t["legend_fill"], 0.18 if dark else 0.06), 0.46 if dark else 0.82)
+    card_border = _with_alpha(t["legend_stroke"], 0.20 if dark else 0.38)
+    muted_border = _with_alpha(t["header_stroke"], 0.14 if dark else 0.26)
+    line = _with_alpha(t["header_stroke"], 0.12 if dark else 0.22)
+    line_glow = _with_alpha(t["focus"], 0.26 if dark else 0.18)
 
     title = t["header_title"]
-    subtitle = t["header_meta"]
+    subtitle = _mix_hex(t["header_meta"], t["text_soft"], 0.18)
     section = t["header_title"]
-    field = t["focus"]
+    field = _mix_hex(t["focus"], t["chip_light"], 0.74 if dark else 0.26)
+    eyebrow = _mix_hex(t["focus"], t["header_meta"], 0.42 if dark else 0.26)
     hint = t["footer_text"]
     value = t["text_main"]
     mono = t["text_soft"]
-    neutral_chip_text = t["text_soft"] if dark else t["header_text"]
-    neutral_chip_bg = _with_alpha(t["muted_stroke"], 0.10 if dark else 0.12)
-    neutral_chip_border = _with_alpha(t["muted_stroke"], 0.16 if dark else 0.24)
-    good_chip_text = _mix_hex(t["badge_out"], t["chip_light"], 0.72 if dark else 0.40)
-    good_chip_bg = _with_alpha(t["badge_out"], 0.12 if dark else 0.16)
-    good_chip_border = _with_alpha(t["badge_out"], 0.24 if dark else 0.30)
-    warn_chip_text = _mix_hex(t["warning_stroke"], t["chip_light"], 0.70 if dark else 0.24)
-    warn_chip_bg = _with_alpha(t["warning_stroke"], 0.12 if dark else 0.16)
-    warn_chip_border = _with_alpha(t["warning_stroke"], 0.26 if dark else 0.32)
-    accent_chip_text = _mix_hex(t["focus"], t["chip_light"], 0.78 if dark else 0.30)
-    accent_chip_bg = _with_alpha(t["focus"], 0.12 if dark else 0.14)
-    accent_chip_border = _with_alpha(t["focus"], 0.24 if dark else 0.30)
+    chrome_title = _mix_hex(t["header_title"], t["text_main"], 0.24 if dark else 0.12)
+    chrome_icon = _mix_hex(t["focus"], t["chip_light"], 0.56 if dark else 0.24)
+    chrome_bg_top = _with_alpha(_mix_hex(t["header_fill"], t["canvas_bg"], 0.26 if dark else 0.06), 0.72 if dark else 0.90)
+    chrome_bg_bottom = _with_alpha(_mix_hex(t["legend_fill"], t["canvas_bg"], 0.20 if dark else 0.04), 0.54 if dark else 0.82)
+    chrome_border = _with_alpha(t["legend_stroke"], 0.20 if dark else 0.30)
+    chrome_button_fg = _mix_hex(t["text_main"], t["chip_light"], 0.18 if dark else 0.10)
+    chrome_button_bg = _with_alpha(_mix_hex(t["canvas_bg"], t["legend_fill"], 0.20 if dark else 0.06), 0.62 if dark else 0.86)
+    chrome_button_border = _with_alpha(t["header_stroke"], 0.18 if dark else 0.30)
+    chrome_button_hover = _with_alpha(t["focus"], 0.18 if dark else 0.14)
+    chrome_close_hover = _with_alpha(t["warning_fill"], 0.28 if dark else 0.24)
+    chrome_close_border = _with_alpha(t["warning_stroke"], 0.36 if dark else 0.38)
 
-    input_bg = _mix_hex(t["canvas_bg"], t["legend_fill"], 0.18 if dark else 0.04)
+    neutral_chip_text = t["text_soft"] if dark else t["header_text"]
+    neutral_chip_bg = _with_alpha(_mix_hex(t["legend_fill"], t["canvas_bg"], 0.24 if dark else 0.08), 0.36 if dark else 0.82)
+    neutral_chip_border = _with_alpha(t["muted_stroke"], 0.18 if dark else 0.28)
+    good_chip_text = _mix_hex(t["badge_out"], t["chip_light"], 0.72 if dark else 0.40)
+    good_chip_bg = _with_alpha(t["badge_out"], 0.12 if dark else 0.18)
+    good_chip_border = _with_alpha(t["badge_out"], 0.24 if dark else 0.32)
+    warn_chip_text = _mix_hex(t["warning_stroke"], t["chip_light"], 0.70 if dark else 0.24)
+    warn_chip_bg = _with_alpha(t["warning_stroke"], 0.12 if dark else 0.18)
+    warn_chip_border = _with_alpha(t["warning_stroke"], 0.24 if dark else 0.32)
+    accent_chip_text = _mix_hex(t["focus"], t["chip_light"], 0.78 if dark else 0.30)
+    accent_chip_bg = _with_alpha(t["focus"], 0.13 if dark else 0.16)
+    accent_chip_border = _with_alpha(t["focus"], 0.28 if dark else 0.34)
+
+    input_bg = _with_alpha(_mix_hex(t["canvas_bg"], t["legend_fill"], 0.18 if dark else 0.04), 0.72 if dark else 0.90)
     input_fg = value
-    input_border = _with_alpha(t["legend_stroke"], 0.16 if dark else 0.36)
+    input_border = _with_alpha(t["legend_stroke"], 0.18 if dark else 0.34)
     input_hover = _with_alpha(t["focus"], 0.26 if dark else 0.34)
     input_focus = _with_alpha(t["focus"], 0.72 if dark else 0.72)
-    input_focus_bg = _mix_hex(input_bg, t["header_fill"], 0.12 if dark else 0.05)
+    input_focus_bg = _with_alpha(_mix_hex(t["canvas_bg"], t["header_fill"], 0.16 if dark else 0.06), 0.78 if dark else 0.92)
     input_disabled_fg = _with_alpha(t["muted_text"], 0.82)
-    input_disabled_bg = _mix_hex(input_bg, t["canvas_bg"], 0.22 if dark else 0.10)
+    input_disabled_bg = _with_alpha(_mix_hex(t["canvas_bg"], t["legend_fill"], 0.12 if dark else 0.04), 0.40 if dark else 0.72)
     input_disabled_border = _with_alpha(t["legend_stroke"], 0.08 if dark else 0.20)
-    dropdown_bg = _mix_hex(card_bg, t["canvas_bg"], 0.10 if dark else 0.02)
+    dropdown_bg = _with_alpha(_mix_hex(t["legend_fill"], t["canvas_bg"], 0.10 if dark else 0.03), 0.92 if dark else 0.96)
     selection_bg = t["focus"]
     selection_fg = t["chip_light"]
 
-    primary_bg = t["focus"]
-    primary_border = _with_alpha(t["focus"], 0.34 if dark else 0.38)
-    primary_hover = _mix_hex(t["focus"], t["chip_light"], 0.10 if dark else 0.12)
-    secondary_bg = _mix_hex(shell_bg, t["canvas_bg"], 0.14 if dark else 0.06)
-    secondary_border = _with_alpha(t["legend_stroke"], 0.14 if dark else 0.28)
-    secondary_hover = _mix_hex(secondary_bg, t["focus"], 0.10 if dark else 0.06)
-    success_bg = t["badge_out"]
+    primary_top = _mix_hex(t["focus"], t["chip_light"], 0.04 if dark else 0.12)
+    primary_bottom = _mix_hex(t["focus"], t["canvas_bg"], 0.12 if dark else 0.04)
+    primary_border = _with_alpha(t["focus"], 0.36 if dark else 0.40)
+    primary_hover_top = _mix_hex(t["focus"], t["chip_light"], 0.10 if dark else 0.16)
+    primary_hover_bottom = _mix_hex(t["focus"], t["chip_light"], 0.04 if dark else 0.10)
+
+    secondary_top = _with_alpha(_mix_hex(t["header_fill"], t["legend_fill"], 0.16 if dark else 0.06), 0.78 if dark else 0.92)
+    secondary_bottom = _with_alpha(_mix_hex(t["canvas_bg"], t["header_fill"], 0.18 if dark else 0.05), 0.62 if dark else 0.86)
+    secondary_border = _with_alpha(t["legend_stroke"], 0.16 if dark else 0.30)
+    secondary_hover_top = _with_alpha(_mix_hex(t["focus"], t["legend_fill"], 0.10 if dark else 0.05), 0.82 if dark else 0.94)
+    secondary_hover_bottom = _with_alpha(_mix_hex(t["focus"], t["canvas_bg"], 0.10 if dark else 0.04), 0.68 if dark else 0.88)
+
+    success_top = _mix_hex(t["badge_out"], t["chip_light"], 0.06 if dark else 0.12)
+    success_bottom = _mix_hex(t["badge_out"], t["canvas_bg"], 0.16 if dark else 0.04)
     success_border = _with_alpha(t["badge_out"], 0.28 if dark else 0.32)
-    success_hover = _mix_hex(t["badge_out"], t["chip_light"], 0.08 if dark else 0.10)
-    danger_bg = _mix_hex(shell_bg, t["warning_fill"], 0.18 if dark else 0.10)
-    danger_border = _with_alpha(t["warning_stroke"], 0.18 if dark else 0.28)
-    danger_hover = _mix_hex(danger_bg, t["warning_stroke"], 0.10 if dark else 0.08)
-    disabled_bg = _mix_hex(shell_bg, t["canvas_bg"], 0.18 if dark else 0.08)
+    success_hover_top = _mix_hex(t["badge_out"], t["chip_light"], 0.12 if dark else 0.18)
+    success_hover_bottom = _mix_hex(t["badge_out"], t["chip_light"], 0.04 if dark else 0.10)
+
+    danger_top = _with_alpha(_mix_hex(t["warning_fill"], t["header_fill"], 0.20 if dark else 0.10), 0.80 if dark else 0.92)
+    danger_bottom = _with_alpha(_mix_hex(t["warning_fill"], t["canvas_bg"], 0.26 if dark else 0.08), 0.68 if dark else 0.86)
+    danger_border = _with_alpha(t["warning_stroke"], 0.22 if dark else 0.30)
+    danger_hover_top = _with_alpha(_mix_hex(t["warning_fill"], t["warning_stroke"], 0.12 if dark else 0.08), 0.84 if dark else 0.94)
+    danger_hover_bottom = _with_alpha(_mix_hex(t["warning_fill"], t["warning_stroke"], 0.20 if dark else 0.12), 0.72 if dark else 0.90)
+
+    disabled_bg = _with_alpha(_mix_hex(t["header_fill"], t["canvas_bg"], 0.18 if dark else 0.08), 0.42 if dark else 0.76)
     disabled_fg = _with_alpha(t["muted_text"], 0.84)
     disabled_border = _with_alpha(t["legend_stroke"], 0.06 if dark else 0.18)
 
-    progress_bg = input_bg
-    progress_border = input_border
+    progress_bg = _with_alpha(_mix_hex(t["canvas_bg"], t["legend_fill"], 0.18 if dark else 0.06), 0.70 if dark else 0.92)
+    progress_border = _with_alpha(t["legend_stroke"], 0.18 if dark else 0.32)
     progress_text = value
-    progress_chunk = primary_bg
+    progress_chunk_top = _mix_hex(t["focus"], t["chip_light"], 0.10 if dark else 0.22)
+    progress_chunk_bottom = _mix_hex(t["focus"], t["canvas_bg"], 0.14 if dark else 0.08)
 
-    return f'''
-    QDialog {{
+    tooltip_bg = _with_alpha(_mix_hex(t["header_fill"], t["canvas_bg"], 0.14 if dark else 0.05), 0.94 if dark else 0.98)
+    tooltip_border = _with_alpha(t["focus"], 0.22 if dark else 0.28)
+
+    return f"""
+    QDialog,
+    QMessageBox {{
         background: {dialog_bg};
         color: {value};
     }}
 
+    QWidget#GlassStage,
+    QWidget#GlassContent {{
+        background: transparent;
+    }}
+
     QFrame#Shell {{
-        background: {shell_bg};
-        border: 1px solid {soft_border};
+        background: {_qss_vertical_gradient(shell_top, shell_bottom)};
+        border: 1px solid {shell_border};
+        border-radius: 28px;
+    }}
+
+    QFrame#Shell[variant="progress"] {{
+        border-radius: 26px;
+    }}
+
+    QFrame#WindowChrome {{
+        background: {_qss_vertical_gradient(chrome_bg_top, chrome_bg_bottom)};
+        border: 1px solid {chrome_border};
+        border-radius: 12px;
+    }}
+
+    QFrame[card="hero"] {{
+        background: {_qss_vertical_gradient(hero_top, hero_bottom)};
+        border: 1px solid {hero_border};
         border-radius: 22px;
     }}
 
     QFrame[card="true"] {{
-        background: {card_bg};
+        background: {_qss_vertical_gradient(card_top, card_bottom)};
         border: 1px solid {card_border};
-        border-radius: 16px;
+        border-radius: 18px;
     }}
 
     QFrame[card="muted"] {{
-        background: {card_muted_bg};
-        border: 1px solid {soft_border};
-        border-radius: 16px;
+        background: {_qss_vertical_gradient(muted_top, muted_bottom)};
+        border: 1px solid {muted_border};
+        border-radius: 18px;
+    }}
+
+    QFrame[card="footer"] {{
+        background: {_qss_vertical_gradient(footer_top, footer_bottom)};
+        border: 1px solid {muted_border};
+        border-radius: 18px;
     }}
 
     QFrame#Line {{
-        background: {line};
+        background: {_qss_horizontal_gradient(line_glow, line)};
         min-height: 1px;
         max-height: 1px;
         border-radius: 1px;
+        border: none;
     }}
 
     QLabel[role="title"] {{
         color: {title};
-        font-size: 26px;
+        font-size: 28px;
+        font-weight: 760;
+        letter-spacing: 0.25px;
+    }}
+
+    QLabel[role="eyebrow"] {{
+        color: {eyebrow};
+        font-size: 10px;
         font-weight: 700;
-        letter-spacing: 0.2px;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+    }}
+
+    QLabel[role="window_title"] {{
+        color: {chrome_title};
+        font-size: 12px;
+        font-weight: 740;
+        letter-spacing: 0.25px;
+    }}
+
+    QLabel[role="window_icon"] {{
+        color: {chrome_icon};
+        font-size: 11px;
+        font-weight: 700;
     }}
 
     QLabel[role="subtitle"] {{
         color: {subtitle};
         font-size: 12px;
+        line-height: 1.35em;
     }}
 
     QLabel[role="section"] {{
         color: {section};
-        font-size: 14px;
-        font-weight: 700;
+        font-size: 15px;
+        font-weight: 720;
     }}
 
     QLabel[role="field"] {{
         color: {field};
         font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.6px;
+        font-weight: 720;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
     }}
 
     QLabel[role="hint"] {{
         color: {hint};
         font-size: 11px;
+        line-height: 1.35em;
     }}
 
     QLabel[role="value"] {{
@@ -6832,10 +8063,10 @@ def build_app_stylesheet(theme_id: str) -> str:
     }}
 
     QLabel[chip="true"] {{
-        border-radius: 11px;
-        padding: 6px 10px;
+        border-radius: 12px;
+        padding: 7px 11px;
         font-size: 11px;
-        font-weight: 700;
+        font-weight: 760;
         letter-spacing: 0.4px;
     }}
 
@@ -6864,11 +8095,12 @@ def build_app_stylesheet(theme_id: str) -> str:
     }}
 
     QLineEdit,
-    QComboBox {{
+    QComboBox,
+    QMessageBox QLineEdit {{
         background: {input_bg};
         color: {input_fg};
         border: 1px solid {input_border};
-        border-radius: 12px;
+        border-radius: 14px;
         padding: 10px 12px;
         font-size: 12px;
         selection-background-color: {selection_bg};
@@ -6876,18 +8108,21 @@ def build_app_stylesheet(theme_id: str) -> str:
     }}
 
     QLineEdit:hover,
-    QComboBox:hover {{
+    QComboBox:hover,
+    QMessageBox QLineEdit:hover {{
         border: 1px solid {input_hover};
     }}
 
     QLineEdit:focus,
-    QComboBox:focus {{
+    QComboBox:focus,
+    QMessageBox QLineEdit:focus {{
         border: 1px solid {input_focus};
         background: {input_focus_bg};
     }}
 
     QLineEdit:disabled,
-    QComboBox:disabled {{
+    QComboBox:disabled,
+    QMessageBox QLineEdit:disabled {{
         color: {input_disabled_fg};
         background: {input_disabled_bg};
         border: 1px solid {input_disabled_border};
@@ -6895,7 +8130,7 @@ def build_app_stylesheet(theme_id: str) -> str:
 
     QComboBox::drop-down {{
         border: none;
-        width: 26px;
+        width: 28px;
         background: transparent;
     }}
 
@@ -6905,7 +8140,7 @@ def build_app_stylesheet(theme_id: str) -> str:
         height: 0px;
         border-left: 5px solid transparent;
         border-right: 5px solid transparent;
-        border-top: 6px solid {field};
+        border-top: 7px solid {field};
         margin-right: 8px;
     }}
 
@@ -6913,87 +8148,142 @@ def build_app_stylesheet(theme_id: str) -> str:
         background: {dropdown_bg};
         color: {value};
         border: 1px solid {card_border};
+        border-radius: 12px;
         selection-background-color: {selection_bg};
         selection-color: {selection_fg};
         outline: none;
         padding: 4px;
     }}
 
-    QPushButton {{
+    QPushButton,
+    QMessageBox QPushButton {{
         min-height: 18px;
-        border-radius: 12px;
+        border-radius: 14px;
         padding: 10px 16px;
         font-size: 12px;
-        font-weight: 700;
+        font-weight: 760;
         outline: none;
+        color: {value};
+        background: {_qss_vertical_gradient(secondary_top, secondary_bottom)};
+        border: 1px solid {secondary_border};
     }}
 
-    QPushButton[variant="primary"] {{
+    QPushButton:hover,
+    QMessageBox QPushButton:hover {{
+        background: {_qss_vertical_gradient(secondary_hover_top, secondary_hover_bottom)};
+        border: 1px solid {input_hover};
+    }}
+
+    QPushButton[variant="primary"],
+    QMessageBox QPushButton[variant="primary"] {{
         color: {selection_fg};
-        background: {primary_bg};
+        background: {_qss_vertical_gradient(primary_top, primary_bottom)};
         border: 1px solid {primary_border};
     }}
 
-    QPushButton[variant="primary"]:hover {{
-        background: {primary_hover};
+    QPushButton[variant="primary"]:hover,
+    QMessageBox QPushButton[variant="primary"]:hover {{
+        background: {_qss_vertical_gradient(primary_hover_top, primary_hover_bottom)};
         border: 1px solid {input_hover};
     }}
 
     QPushButton[variant="secondary"] {{
         color: {value};
-        background: {secondary_bg};
+        background: {_qss_vertical_gradient(secondary_top, secondary_bottom)};
         border: 1px solid {secondary_border};
     }}
 
     QPushButton[variant="secondary"]:hover {{
-        background: {secondary_hover};
+        background: {_qss_vertical_gradient(secondary_hover_top, secondary_hover_bottom)};
         border: 1px solid {input_hover};
     }}
 
     QPushButton[variant="success"] {{
         color: {selection_fg};
-        background: {success_bg};
+        background: {_qss_vertical_gradient(success_top, success_bottom)};
         border: 1px solid {success_border};
     }}
 
     QPushButton[variant="success"]:hover {{
-        background: {success_hover};
+        background: {_qss_vertical_gradient(success_hover_top, success_hover_bottom)};
         border: 1px solid {good_chip_border};
     }}
 
-    QPushButton[variant="danger"] {{
+    QPushButton[variant="danger"],
+    QMessageBox QPushButton[variant="danger"] {{
         color: {value};
-        background: {danger_bg};
+        background: {_qss_vertical_gradient(danger_top, danger_bottom)};
         border: 1px solid {danger_border};
     }}
 
-    QPushButton[variant="danger"]:hover {{
-        background: {danger_hover};
+    QPushButton[variant="danger"]:hover,
+    QMessageBox QPushButton[variant="danger"]:hover {{
+        background: {_qss_vertical_gradient(danger_hover_top, danger_hover_bottom)};
         border: 1px solid {warn_chip_border};
     }}
 
-    QPushButton:disabled {{
+    QPushButton:disabled,
+    QMessageBox QPushButton:disabled {{
         color: {disabled_fg};
         background: {disabled_bg};
         border: 1px solid {disabled_border};
     }}
 
+    QPushButton[chrome="true"] {{
+        min-width: 30px;
+        max-width: 30px;
+        min-height: 22px;
+        max-height: 22px;
+        border-radius: 8px;
+        padding: 0px;
+        font-size: 11px;
+        font-weight: 760;
+        color: {chrome_button_fg};
+        background: {chrome_button_bg};
+        border: 1px solid {chrome_button_border};
+    }}
+
+    QPushButton[chrome="true"]:hover {{
+        background: {chrome_button_hover};
+        border: 1px solid {input_hover};
+    }}
+
+    QPushButton[chrome="true"]:pressed {{
+        background: {_with_alpha(t["focus"], 0.28 if dark else 0.22)};
+        border: 1px solid {input_focus};
+    }}
+
+    QPushButton[chrome="true"][chrome_kind="close"]:hover {{
+        background: {chrome_close_hover};
+        border: 1px solid {chrome_close_border};
+    }}
+
     QProgressBar {{
-        min-height: 16px;
-        border-radius: 10px;
+        min-height: 18px;
+        border-radius: 11px;
         background: {progress_bg};
         border: 1px solid {progress_border};
         text-align: center;
         color: {progress_text};
         font-size: 11px;
-        font-weight: 700;
+        font-weight: 760;
+        padding: 2px;
     }}
 
     QProgressBar::chunk {{
         border-radius: 9px;
-        background: {progress_chunk};
+        background: {_qss_vertical_gradient(progress_chunk_top, progress_chunk_bottom)};
+        margin: 1px;
     }}
-    '''.strip()
+
+    QToolTip {{
+        background: {tooltip_bg};
+        color: {value};
+        border: 1px solid {tooltip_border};
+        border-radius: 10px;
+        padding: 6px 8px;
+    }}
+    """.strip()
 
 
 THEME_BUNDLES: list[ThemeBundle] = collect_theme_bundles()
@@ -9277,11 +10567,14 @@ def _graph_subtitle(state: AnalysisState, graph: DependencyGraph) -> str:
     parts = [
         primary,
         identity,
+        f"preset {state.visibility_preset}",
         f"{len(graph.nodes)} nodos",
         f"{len(graph.edges)} relaciones",
     ]
     if state.view == "focus":
         parts.append(f"foco {_clean_text(state.focus_target) or '(auto)'}")
+    if state.visible_external_bucket_count > 0:
+        parts.append(f"externos {state.visible_external_bucket_count}")
     if graph.issues:
         parts.append(f"issues {len(graph.issues)}")
     return " • ".join(parts)
@@ -9418,6 +10711,65 @@ def _draw_legend(width: int, graph: DependencyGraph, state: AnalysisState, theme
     """
 
 
+def _draw_visibility_panel(width: int, state: AnalysisState, theme: SemanticTheme) -> str:
+    show_panel = (
+        state.visibility_preset != "raw"
+        or state.external_roots_total > 0
+        or state.hidden_issue_count > 0
+    )
+    if not show_panel:
+        return ""
+
+    p = _resolve_panel_preset(theme, "legend")
+    x = max(LEFT_MARGIN + 12.0, width - 324.0)
+    y = 214.0
+    w = 286.0
+
+    top_roots = ", ".join(state.external_top_roots[:3]) if state.external_top_roots else "sin dominantes"
+    visible_buckets = ", ".join(state.visible_external_bucket_labels[:3]) if state.visible_external_bucket_labels else "ninguno"
+    if state.visibility_preset == "raw":
+        external_mode = "inline"
+    elif state.visible_external_bucket_count > 0:
+        external_mode = "bucket inline"
+    else:
+        external_mode = "fuera del canvas"
+    issue_mode = "inline" if should_surface_issue_notes(state) else "panel/footer"
+
+    lines = [
+        ("preset", state.visibility_preset),
+        ("externos", f"{state.external_import_total} refs • {state.external_roots_total} roots • {external_mode}"),
+        ("top externos", top_roots),
+        ("buckets visibles", visible_buckets),
+        ("issues", f"{state.hidden_issue_count} fuera del canvas • {issue_mode}"),
+    ]
+
+    h = 34.0 + (len(lines) * 22.0) + 10.0
+    rows: list[str] = []
+    y_cursor = 40.0
+    for label, value in lines:
+        rows.append(
+            f'<text class="panel-text" x="14" y="{y_cursor:.1f}" fill="{_escape(p.text)}">{_escape(label)}</text>'
+            f'<text class="panel-text" x="{w - 16.0:.1f}" y="{y_cursor:.1f}" text-anchor="end" fill="{_escape(p.title)}">{_escape(_safe_short(value, 42))}</text>'
+        )
+        y_cursor += 22.0
+
+    return f"""
+    <g class="visibilityPanel">
+      <rect x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}"
+            rx="{p.radius:.1f}" ry="{p.radius:.1f}"
+            fill="{_escape(p.fill)}" fill-opacity="{p.fill_opacity:.3f}"
+            stroke="{_escape(p.stroke)}" stroke-opacity="{p.stroke_opacity:.3f}" stroke-width="{p.border_width:.2f}"
+            filter="url(#shadowSoft)" />
+      <rect x="{x + 14.0:.1f}" y="{y + 14.0:.1f}" width="3.6" height="{h - 28.0:.1f}" rx="2" ry="2"
+            fill="{_escape(p.accent)}" opacity="0.70" />
+      <g transform="translate({x + 18.0:.1f},{y + 12.0:.1f})">
+        <text class="panel-title" x="10" y="10" fill="{_escape(p.title)}">Surface Control</text>
+        {''.join(rows)}
+      </g>
+    </g>
+    """
+
+
 def _build_state_summary(state: AnalysisState) -> str:
     parts = [
         f"{state.source_files_seen} fuentes",
@@ -9523,6 +10875,7 @@ def render_svg(
 
     header_markup = _draw_header(width, state, graph, semantic_theme)
     legend_markup = _draw_legend(width, graph, state, semantic_theme)
+    visibility_markup = _draw_visibility_panel(width, state, semantic_theme)
     warning_markup = _draw_warning_panel(width, state, semantic_theme)
     footer_markup = _draw_footer(width, height, state, semantic_theme)
 
@@ -9542,6 +10895,7 @@ def render_svg(
 
   {header_markup}
   {legend_markup}
+  {visibility_markup}
   {warning_markup}
 
   <g id="lanesLayer">{lanes_markup}</g>
@@ -9697,6 +11051,41 @@ def _finalize_progress(
     _refresh_progress(progress)
 
 
+def _wait_for_user_close(progress: object | None, detail: str = "") -> None:
+    if progress is None:
+        return
+
+    if detail:
+        _set_widget_text(progress, "detail_label", detail)
+        _refresh_progress(progress)
+
+    exec_method = getattr(progress, "exec", None)
+    if callable(exec_method):
+        try:
+            exec_method()
+            return
+        except Exception:
+            pass
+
+    is_visible = getattr(progress, "isVisible", None)
+    if not callable(is_visible):
+        return
+
+    while True:
+        try:
+            if not bool(is_visible()):
+                break
+        except Exception:
+            break
+
+        try:
+            ensure_app().processEvents()
+        except Exception:
+            break
+
+        time.sleep(0.05)
+
+
 def _progress_was_cancelled(progress: object | None) -> bool:
     if progress is None:
         return False
@@ -9749,6 +11138,7 @@ def _build_analysis_state(
         theme=normalize_theme(selection.theme),
         view=selection.view,
         focus_target=clean_text(effective_focus_target),
+        visibility_preset=resolve_visibility_preset(selection.view),
     )
 
 
@@ -9756,6 +11146,7 @@ def _initial_progress_detail(selection: SelectionResult, selected_path: Path) ->
     chunks = [
         short_path(str(selected_path), 92),
         f"vista {selection.view}",
+        f"preset {resolve_visibility_preset(selection.view)}",
         f"tema {normalize_theme(selection.theme)}",
     ]
 
@@ -9770,7 +11161,7 @@ def _ensure_graph_has_visible_content(
     graph: DependencyGraph,
     state: AnalysisState,
 ) -> DependencyGraph:
-    if graph.nodes or graph.issues:
+    if graph.nodes:
         return graph
 
     graph.add_issue(
@@ -9779,7 +11170,24 @@ def _ensure_graph_has_visible_content(
         "El análisis terminó sin nodos visibles.",
         state.project_root,
     )
-    return enrich_graph_for_presentation(graph, state)
+    graph.upsert_node(
+        key="note:empty_graph",
+        label="Sin nodos visibles",
+        path=state.project_root,
+        kind="note",
+        group=ISSUE_NOTE_GROUP,
+        metadata={
+            "full_message": "El análisis terminó sin nodos visibles.",
+            "issue_level": "warning",
+            "issue_code": "empty_graph",
+            "issue_path": state.project_root,
+            "root_group": ISSUE_NOTE_GROUP,
+        },
+    )
+    graph.finalize_metrics()
+    state.total_nodes = len(graph.nodes)
+    state.total_edges = len(graph.edges)
+    return graph
 
 
 def write_svg(
@@ -9821,14 +11229,23 @@ def show_message_dialog(
     title: str,
     message: str,
     parent: QWidget | None = None,
+    theme_id: str | None = None,
 ) -> None:
     ensure_app()
 
-    if level == "info":
-        QMessageBox.information(parent, title, message)
-        return
+    box = QMessageBox(parent)
+    box.setWindowTitle(title)
+    box.setText(message)
+    box.setTextFormat(Qt.PlainText)
+    box.setStandardButtons(QMessageBox.Ok)
+    box.setIcon(QMessageBox.Information if level == "info" else QMessageBox.Critical)
+    box.setStyleSheet(app_stylesheet(theme_id or DEFAULT_THEME))
 
-    QMessageBox.critical(parent, title, message)
+    for button in box.buttons():
+        button.setProperty("variant", "primary" if level == "info" else "danger")
+        repolish(button)
+
+    box.exec()
 
 
 def open_output_location(path: Path) -> None:
@@ -9873,9 +11290,22 @@ def build_success_message(
         "SVG generado con éxito.",
         "",
         f"Archivo: {output_path}",
-        f"Vista: {state.view} • Tema: {state.theme}",
+        f"Vista: {state.view} • Preset: {state.visibility_preset} • Tema: {state.theme}",
         f"Nodos: {len(graph.nodes)} • Relaciones: {len(graph.edges)}",
     ]
+
+    if state.external_roots_total > 0:
+        lines.append(
+            f"Externos detectados: {state.external_import_total} refs • {state.external_roots_total} roots"
+        )
+    if state.visible_external_bucket_count > 0:
+        lines.append(
+            "Buckets externos visibles: "
+            + ", ".join(state.visible_external_bucket_labels[:4])
+        )
+
+    if state.hidden_issue_count > 0:
+        lines.append(f"Issues fuera del canvas: {state.hidden_issue_count}")
 
     if state.view == "focus":
         lines.append(f"Foco: {state.focus_target or '(auto)'}")
@@ -9897,101 +11327,113 @@ def build_success_message(
 
 def main() -> int:
     progress: Optional[ProgressUI] = None
+    selected_theme = DEFAULT_THEME
 
     try:
         ensure_app()
+        while True:
+            # 1. Elegir opciones
+            selection = choose_options()
+            selected_theme = normalize_theme(selection.theme)
 
-        # 1. Elegir opciones
-        selection = choose_options()
+            # 2. Validar selección / ruta
+            selected_path = _resolve_selected_path(selection)
+            if selected_path is None:
+                return 0
 
-        # 2. Validar selección / ruta
-        selected_path = _resolve_selected_path(selection)
-        if selected_path is None:
-            return 0
-
-        # 3. Resolver foco efectivo
-        effective_focus_target = resolve_effective_focus_target(
-            selected_path=str(selected_path),
-            view=selection.view,
-            requested_focus_target=selection.focus_target,
-        )
-
- 
-  
-        # 4. Crear UI de progreso
-        progress = ProgressUI(theme_id=normalize_theme(selection.theme))
-        notify = _make_progress_notifier(progress)
-        notify(
-
-    "Preparando ejecución...",
-            _initial_progress_detail(selection, selected_path),
-        )
-
-        # 5. Construir AnalysisState
-        state = _build_analysis_state(selection, selected_path, effective_focus_target)
-        if state.view == "focus":
-            notify(
-                "Modo foco preparado.",
-                state.focus_target or "sin objetivo explícito, se elegirá por conectividad",
+            # 3. Resolver foco efectivo
+            effective_focus_target = resolve_effective_focus_target(
+                selected_path=str(selected_path),
+                view=selection.view,
+                requested_focus_target=selection.focus_target,
             )
 
-        # 6. Analizar dependencias del proyecto
-        module_catalog, import_refs, analysis_graph = analyze_project_dependencies(
-            selected_path=state.selected_path,
-            state=state,
-            notify=notify,
-        )
+            # 4. Crear UI de progreso
+            progress = ProgressUI(theme_id=selected_theme)
+            notify = _make_progress_notifier(progress)
+            notify(
+                "Preparando ejecución...",
+                _initial_progress_detail(selection, selected_path),
+            )
 
-        # 7. Construir grafo de dependencias
-        notify("Construyendo grafo final...", f"vista {state.view}")
-        graph = construct_dependency_graph(
-            state=state,
-            module_catalog=module_catalog,
-            import_refs=import_refs,
-            include_external_in_module_view=(state.view in {"module", "focus"}),
-        )
+            # 5. Construir AnalysisState
+            state = _build_analysis_state(selection, selected_path, effective_focus_target)
+            if state.view == "focus":
+                notify(
+                    "Modo foco preparado.",
+                    state.focus_target or "sin objetivo explícito, se elegirá por conectividad",
+                )
 
-        # 8. Fusionar issues
-        merge_analysis_issues_into_graph(graph, analysis_graph)
-
-        # 9. Enriquecer grafo para presentación
-        graph = enrich_graph_for_presentation(graph, state)
-        graph = _ensure_graph_has_visible_content(graph, state)
-
-        # 10. Calcular layout
-        notify("Calculando layout...", f"{len(graph.nodes)} nodos")
-        layout = layout_dependency_graph(graph, state, notify)
-
-        # 11. Renderizar SVG
-        svg_markup = render_svg(graph, layout, state, notify)
-
-        # 12. Guardar SVG
-        output_path = make_output_path(
-            selected_path=state.selected_path,
-            theme=state.theme,
-            view=state.view,
-            focus_target=state.focus_target,
-        )
-        write_svg(svg_markup, output_path, notify)
-
-        # 13. Mostrar éxito
-        _finalize_progress(progress, "Todo quedó listo.", str(output_path))
-        show_message_dialog(
-            "info",
-            APP_TITLE,
-            build_success_message(
-                output_path=output_path,
+            # 6. Analizar dependencias del proyecto
+            module_catalog, import_refs, analysis_graph = analyze_project_dependencies(
+                selected_path=state.selected_path,
                 state=state,
-                graph=graph,
-            ),
-            parent=_progress_parent(progress),
-        )
+                notify=notify,
+            )
+            apply_analysis_summaries(state, module_catalog, import_refs)
 
-        # 14. Abrir carpeta de salida
-        open_output_location(output_path.parent)
+            # 7. Construir grafo de dependencias
+            notify("Construyendo grafo final...", f"vista {state.view}")
+            graph = construct_dependency_graph(
+                state=state,
+                module_catalog=module_catalog,
+                import_refs=import_refs,
+                include_external_in_module_view=(
+                    state.visibility_preset in {"engineering", "raw"}
+                    and state.view in {"module", "focus"}
+                ),
+            )
 
-        # 15. Cierre limpio
-        return 0
+            # 8. Fusionar issues
+            merge_analysis_issues_into_graph(graph, analysis_graph)
+
+            # 9. Enriquecer grafo para presentación
+            graph = enrich_graph_for_presentation(graph, state)
+
+            # 10. Simplificar solo la capa visible, sin tocar discovery
+            graph = simplify_visible_graph(graph, state)
+            graph = _ensure_graph_has_visible_content(graph, state)
+
+            # 11. Calcular layout
+            notify("Calculando layout...", f"{len(graph.nodes)} nodos")
+            layout = layout_dependency_graph(graph, state, notify)
+
+            # 12. Renderizar SVG
+            svg_markup = render_svg(graph, layout, state, notify)
+
+            # 13. Guardar SVG
+            output_path = make_output_path(
+                selected_path=state.selected_path,
+                theme=state.theme,
+                view=state.view,
+                focus_target=state.focus_target,
+            )
+            write_svg(svg_markup, output_path, notify)
+
+            # 14. Mostrar éxito
+            _finalize_progress(progress, "Todo quedó listo.", str(output_path))
+            show_message_dialog(
+                "info",
+                APP_TITLE,
+                build_success_message(
+                    output_path=output_path,
+                    state=state,
+                    graph=graph,
+                ),
+                parent=_progress_parent(progress),
+                theme_id=state.theme,
+            )
+
+            # 15. Abrir carpeta de salida
+            open_output_location(output_path.parent)
+
+            # 16. Esperar cierre manual y volver al selector
+            _wait_for_user_close(
+                progress,
+                "Proceso terminado. Cierra esta ventana para generar otro grafo.",
+            )
+            destroy_progress_ui(progress)
+            progress = None
 
     except _PipelineCancelled:
         return 0
@@ -10004,7 +11446,7 @@ def main() -> int:
     except FileNotFoundError as exc:
         destroy_progress_ui(progress)
         progress = None
-        show_message_dialog("error", APP_TITLE, str(exc))
+        show_message_dialog("error", APP_TITLE, str(exc), theme_id=selected_theme)
         return 1
 
     except Exception:
@@ -10015,6 +11457,7 @@ def main() -> int:
             "error",
             APP_TITLE,
             f"Se produjo un error inesperado.\n\n{error_text}",
+            theme_id=selected_theme,
         )
         return 1
 
