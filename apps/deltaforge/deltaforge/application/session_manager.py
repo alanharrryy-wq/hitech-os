@@ -1,123 +1,189 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from itertools import count
+import copy
+import uuid
+from dataclasses import is_dataclass, replace
+from types import SimpleNamespace
+from typing import Any, Callable
 
-from deltaforge.domain.models import ScopeSelection, SessionWorkspace
-from deltaforge.domain.session_states import SessionState
+from deltaforge.application.state_machine import derive_idle_state, normalize_state
+
+try:
+    from deltaforge.domain.models.session import SessionWorkspace as DomainSessionWorkspace
+except Exception:
+    DomainSessionWorkspace = None
 
 
-@dataclass(slots=True)
-class SessionCollection:
-    ordered_ids: list[str]
-    by_id: dict[str, SessionWorkspace]
-    current_session_id: str = ""
+WorkspaceFactory = Callable[..., Any]
+
+
+def _clone_workspace(workspace: Any) -> Any:
+    try:
+        if is_dataclass(workspace):
+            return replace(workspace)
+        return copy.deepcopy(workspace)
+    except Exception:
+        return copy.copy(workspace)
 
 
 class SessionManager:
-    def __init__(self) -> None:
-        self._counter = count(1)
-        self._sessions = SessionCollection(ordered_ids=[], by_id={})
+    def __init__(
+        self,
+        repository: Any | None = None,
+        workspace_factory: WorkspaceFactory | None = None,
+    ) -> None:
+        self._repository = repository
+        self._workspace_factory = workspace_factory or DomainSessionWorkspace or SimpleNamespace
+        self._sessions: dict[object, Any] = {}
+        self._active_session_id: object | None = None
 
     @property
-    def current_session_id(self) -> str:
-        return self._sessions.current_session_id
+    def active_session_id(self) -> object | None:
+        return self._active_session_id
 
     @property
-    def sessions(self) -> list[SessionWorkspace]:
-        return [self._sessions.by_id[item] for item in self._sessions.ordered_ids]
+    def session_ids(self) -> tuple[object, ...]:
+        return tuple(self._sessions.keys())
 
-    def current(self) -> SessionWorkspace | None:
-        if not self._sessions.current_session_id:
-            return None
-        return self._sessions.by_id.get(self._sessions.current_session_id)
+    def list_workspaces(self) -> tuple[Any, ...]:
+        return tuple(self._sessions.values())
 
-    def get(self, session_id: str) -> SessionWorkspace | None:
-        return self._sessions.by_id.get(session_id)
+    def has_session(self, session_id: object) -> bool:
+        return session_id in self._sessions
 
-    def create_session(self, title: str = "") -> SessionWorkspace:
-        session_number = next(self._counter)
-        session_id = f"s{session_number:03d}"
-        resolved_title = title or f"Session {session_number}"
+    def get(self, session_id: object | None = None) -> Any | None:
+        resolved_id = self._active_session_id if session_id is None else session_id
+        return self._sessions.get(resolved_id)
 
-        session = SessionWorkspace(session_id=session_id, title=resolved_title)
-        self._sessions.by_id[session_id] = session
-        self._sessions.ordered_ids.append(session_id)
-        self._sessions.current_session_id = session_id
-        return session
+    def require(self, session_id: object | None = None) -> Any:
+        workspace = self.get(session_id)
+        if workspace is None:
+            raise KeyError(f"Unknown session_id: {session_id!r}")
+        return workspace
 
-    def clone_session(self, source_session_id: str) -> SessionWorkspace | None:
-        source = self.get(source_session_id)
-        if source is None:
-            return None
+    def build_workspace(
+        self,
+        *,
+        session_id: object | None = None,
+        initial_state: object | None = "IDLE",
+        **extra: Any,
+    ) -> Any:
+        actual_session_id = session_id or f"session-{uuid.uuid4().hex[:8]}"
+        payload: dict[str, Any] = {
+            "session_id": actual_session_id,
+            "state": normalize_state(initial_state),
+            "dirty": False,
+            "stale": False,
+            "busy": False,
+            "results": {},
+            "event_feed": [],
+            "selection": {},
+        }
+        payload.update(extra)
+        payload["state"] = normalize_state(payload.get("state"))
+        return self._instantiate_workspace(payload)
 
-        session_number = next(self._counter)
-        cloned_id = f"s{session_number:03d}"
-        cloned_title = f"Session {session_number}"
-        cloned = source.clone_for_new_session(session_id=cloned_id, title=cloned_title)
+    def add(self, session_id: object, workspace: Any, *, make_active: bool = False) -> Any:
+        if session_id in self._sessions:
+            raise ValueError(f"Session already exists: {session_id!r}")
 
-        self._sessions.by_id[cloned_id] = cloned
-        self._sessions.ordered_ids.append(cloned_id)
-        self._sessions.current_session_id = cloned_id
-        return cloned
+        self._sessions[session_id] = workspace
+        self._persist_save(session_id, workspace)
 
-    def activate(self, session_id: str) -> SessionWorkspace | None:
-        session = self.get(session_id)
-        if session is None:
-            return None
-        self._sessions.current_session_id = session_id
-        return session
+        if make_active or self._active_session_id is None:
+            self._active_session_id = session_id
+            self._persist_active_session(session_id)
+        return workspace
 
-    def close_session(self, session_id: str) -> SessionWorkspace | None:
-        if session_id not in self._sessions.by_id:
-            return None
+    def create(self, session_id: object | None = None, *, make_active: bool = True, **extra: Any) -> Any:
+        workspace = self.build_workspace(session_id=session_id, **extra)
+        actual_session_id = getattr(workspace, "session_id", session_id)
+        return self.add(actual_session_id, workspace, make_active=make_active)
 
-        self._sessions.by_id.pop(session_id)
-        self._sessions.ordered_ids = [item for item in self._sessions.ordered_ids if item != session_id]
+    def update(self, session_id: object, workspace: Any) -> Any:
+        if session_id not in self._sessions:
+            raise KeyError(f"Unknown session_id: {session_id!r}")
 
-        if not self._sessions.ordered_ids:
-            self._sessions.current_session_id = ""
-            return None
+        self._sessions[session_id] = workspace
+        self._persist_save(session_id, workspace)
+        return workspace
 
-        if self._sessions.current_session_id == session_id:
-            self._sessions.current_session_id = self._sessions.ordered_ids[-1]
+    def mutate(self, session_id: object, mutator: Callable[[Any], Any]) -> Any:
+        current = self.require(session_id)
+        candidate = _clone_workspace(current)
+        updated = mutator(candidate)
+        return self.update(session_id, updated)
 
-        return self._sessions.by_id[self._sessions.current_session_id]
+    def switch(self, session_id: object) -> Any:
+        workspace = self.require(session_id)
+        self._active_session_id = session_id
+        self._persist_active_session(session_id)
+        return workspace
 
-    def update_scope(self, session_id: str, targets: list[str], root_dir: str) -> SessionWorkspace | None:
-        session = self.get(session_id)
-        if session is None:
-            return None
+    def clone(
+        self,
+        source_session_id: object,
+        *,
+        new_session_id: object | None = None,
+        make_active: bool = True,
+    ) -> Any:
+        source = self.require(source_session_id)
+        cloned = _clone_workspace(source)
+        actual_session_id = new_session_id or f"session-{uuid.uuid4().hex[:8]}"
 
-        session.scope = ScopeSelection(targets=targets, root_dir=root_dir)
-        session.stale = False
-        session.dirty = False
-        session.state = SessionState.SCOPE_LOADED if targets else SessionState.EMPTY
-        return session
+        setattr(cloned, "session_id", actual_session_id)
+        setattr(cloned, "busy", False)
+        setattr(
+            cloned,
+            "state",
+            derive_idle_state(bool(getattr(cloned, "dirty", False)), bool(getattr(cloned, "stale", False))),
+        )
 
-    def clear_scope(self, session_id: str) -> SessionWorkspace | None:
-        session = self.get(session_id)
-        if session is None:
-            return None
+        return self.add(actual_session_id, cloned, make_active=make_active)
 
-        session.scope.clear()
-        session.state = SessionState.EMPTY
-        session.stale = False
-        session.dirty = False
-        return session
+    def close(self, session_id: object) -> Any:
+        workspace = self.require(session_id)
+        removed = self._sessions.pop(session_id)
+        self._persist_delete(session_id)
 
-    def set_state(self, session_id: str, state: SessionState) -> SessionWorkspace | None:
-        session = self.get(session_id)
-        if session is None:
-            return None
-        session.state = state
-        return session
+        if self._active_session_id == session_id:
+            self._active_session_id = next(iter(self._sessions), None)
+            self._persist_active_session(self._active_session_id)
+        return removed
 
-    def mark_stale(self, session_id: str) -> SessionWorkspace | None:
-        session = self.get(session_id)
-        if session is None:
-            return None
-        session.stale = True
-        session.dirty = True
-        session.state = SessionState.DIRTY_OR_STALE
-        return session
+    def _instantiate_workspace(self, payload: dict[str, Any]) -> Any:
+        factory = self._workspace_factory
+
+        try:
+            return factory(**payload)
+        except Exception:
+            try:
+                instance = factory()
+            except Exception:
+                instance = SimpleNamespace()
+
+            for key, value in payload.items():
+                setattr(instance, key, value)
+            return instance
+
+    def _persist_save(self, session_id: object, workspace: Any) -> None:
+        self._call_repository(("save_session", "save", "put"), session_id, workspace)
+
+    def _persist_delete(self, session_id: object) -> None:
+        self._call_repository(("delete_session", "delete", "remove"), session_id)
+
+    def _persist_active_session(self, session_id: object | None) -> None:
+        self._call_repository(("set_active_session", "set_active_session_id"), session_id)
+
+    def _call_repository(self, method_names: tuple[str, ...], *args: Any) -> None:
+        if self._repository is None:
+            return
+
+        for name in method_names:
+            method = getattr(self._repository, name, None)
+            if callable(method):
+                method(*args)
+                return
+
+
+__all__ = ["SessionManager"]

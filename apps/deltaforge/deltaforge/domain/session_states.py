@@ -10,4 +10,5 @@ class SessionState(str, Enum):
     APPLIED = "applied"
     ROLLBACK_AVAILABLE = "rollback_available"
     DIRTY_OR_STALE = "dirty_or_stale"
+    REFRESHING = "refreshing"
     ERROR = "error"

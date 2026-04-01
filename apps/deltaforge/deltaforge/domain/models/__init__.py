@@ -10,7 +10,7 @@ from deltaforge.domain.models.results import (
     ValidationIssue,
     ValidationResult,
 )
-from deltaforge.domain.models.scope import ScopeSelection
+from deltaforge.domain.models.scope import ScopeKind, ScopeSelection
 from deltaforge.domain.models.session import SessionSelection, SessionWorkspace
 from deltaforge.domain.models.settings import AppSettings
 
@@ -28,6 +28,7 @@ __all__ = [
     "PlanStep",
     "RefreshResult",
     "RollbackResult",
+    "ScopeKind",
     "ScopeSelection",
     "SessionSelection",
     "SessionWorkspace",

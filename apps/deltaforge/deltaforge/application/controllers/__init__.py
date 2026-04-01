@@ -1,4 +1,3 @@
-from deltaforge.application.controllers.command_controller import CommandController, CommandUiBridge
-from deltaforge.application.controllers.status_bar_controller import StatusBarController
+from .ui_command_controller import UiCommandController
 
-__all__ = ["CommandController", "CommandUiBridge", "StatusBarController"]
+__all__ = ["UiCommandController"]
