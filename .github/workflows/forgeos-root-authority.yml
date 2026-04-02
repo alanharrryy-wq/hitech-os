@@ -1,0 +1,48 @@
+name: forgeos-root-authority
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'forgeos/**'
+      - 'forgeos_entrypoint.py'
+      - 'Run-ForgeOS.ps1'
+      - 'FORGEOS.md'
+      - 'docs/forgeos/ROOT_AUTHORITY.md'
+      - '.github/workflows/forgeos-root-authority.yml'
+  pull_request:
+    paths:
+      - 'forgeos/**'
+      - 'forgeos_entrypoint.py'
+      - 'Run-ForgeOS.ps1'
+      - 'FORGEOS.md'
+      - 'docs/forgeos/ROOT_AUTHORITY.md'
+      - '.github/workflows/forgeos-root-authority.yml'
+
+jobs:
+  forgeos-quality-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run ForgeOS root quality gate
+        run: |
+          python forgeos_entrypoint.py quality-gate --evidence-dir tools/_local/evidence/ci
+
+      - name: Run ForgeOS repo analyzer through root authority
+        run: |
+          python forgeos_entrypoint.py repo-analyzer \
+            --target-root . \
+            --output tools/_local/evidence/ci/repo_analyzer_summary.json
+
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: forgeos-root-authority-evidence
+          path: tools/_local/evidence/ci
