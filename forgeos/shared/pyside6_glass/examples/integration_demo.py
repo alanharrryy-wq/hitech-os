@@ -5,89 +5,14 @@ from urllib.request import Request, urlopen
 
 from forgeos.shared.pyside6_glass.integration import (
     InProcessIntegrationAdapter,
-    IntegrationCommandEnvelope,
-    IntegrationQueryEnvelope,
-    IntegrationService,
-    IntegrationSnapshotRequest,
     LocalHttpIntegrationAdapter,
     LocalHttpIntegrationConfig,
+    create_reference_workspace_service,
 )
 
 
-def _create_demo_service() -> IntegrationService:
-    service = IntegrationService(debug=False)
-    state = {
-        "workspace_id": "workspace-demo",
-        "active_view": "overview",
-        "item_count": 0,
-        "panel_states": {
-            "main": "visible",
-            "side": "visible",
-        },
-        "items": {},
-    }
-
-    def command_upsert_item(envelope: IntegrationCommandEnvelope) -> dict[str, object]:
-        item_id = str(envelope.payload.get("item_id") or "").strip()
-        if not item_id:
-            raise ValueError("item_id is required")
-        item_payload = envelope.payload.get("item") or {}
-        if not isinstance(item_payload, dict):
-            raise ValueError("item must be a mapping")
-        state["items"][item_id] = dict(item_payload)
-        state["item_count"] = len(state["items"])
-        return {"item_id": item_id, "item_count": state["item_count"]}
-
-    def command_set_panel_state(envelope: IntegrationCommandEnvelope) -> dict[str, object]:
-        panel_id = str(envelope.payload.get("panel_id") or "").strip()
-        panel_state = str(envelope.payload.get("state") or "").strip()
-        if not panel_id:
-            raise ValueError("panel_id is required")
-        if not panel_state:
-            raise ValueError("state is required")
-        state["panel_states"][panel_id] = panel_state
-        return {"panel_id": panel_id, "state": panel_state}
-
-    def query_summary(_envelope: IntegrationQueryEnvelope) -> dict[str, object]:
-        return {
-            "workspace_id": state["workspace_id"],
-            "active_view": state["active_view"],
-            "item_count": state["item_count"],
-            "panel_states": dict(state["panel_states"]),
-        }
-
-    def snapshot_workspace(_request: IntegrationSnapshotRequest) -> dict[str, object]:
-        return {
-            "workspace": {
-                "workspace_id": state["workspace_id"],
-                "active_view": state["active_view"],
-                "panel_states": dict(state["panel_states"]),
-                "item_count": state["item_count"],
-            }
-        }
-
-    service.register_command(
-        "workspace.item.upsert",
-        command_upsert_item,
-        required_capabilities=("workspace.write",),
-        description="Insert or replace a generic workspace item.",
-    )
-    service.register_command(
-        "workspace.panel.state.set",
-        command_set_panel_state,
-        required_capabilities=("workspace.write",),
-        description="Set panel state using neutral workspace contract.",
-    )
-    service.register_query(
-        "workspace.summary.get",
-        query_summary,
-        description="Read workspace summary payload.",
-    )
-    service.register_snapshot_provider(
-        "workspace",
-        snapshot_workspace,
-        description="Get current workspace snapshot.",
-    )
+def _create_demo_service():
+    service, _ = create_reference_workspace_service(debug=False, namespace="workspace")
     return service
 
 

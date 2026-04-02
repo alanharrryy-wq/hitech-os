@@ -17,6 +17,11 @@ from .contracts import (
     IntegrationSnapshotRequest,
     IntegrationValidationError,
 )
+from .reference_workspace import (
+    ReferenceWorkspaceState,
+    create_reference_workspace_service,
+    register_reference_workspace_endpoints,
+)
 from .runtime_bridge import GlassRuntimeIntegrationBridge
 from .service import IntegrationEndpointSpec, IntegrationService
 
@@ -38,5 +43,8 @@ __all__ = [
     "IntegrationValidationError",
     "LocalHttpIntegrationAdapter",
     "LocalHttpIntegrationConfig",
+    "ReferenceWorkspaceState",
     "WebSocketIntegrationAdapterScaffold",
+    "create_reference_workspace_service",
+    "register_reference_workspace_endpoints",
 ]
