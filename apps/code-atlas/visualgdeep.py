@@ -36,7 +36,7 @@ from __future__ import annotations
 
 import ast
 import html
-import math
+import json
 import os
 import traceback
 from dataclasses import dataclass, field
@@ -98,6 +98,8 @@ MAX_PARSE_ERRORS = 120
 OUTPUT_SUBDIR_NAME = "_dependency_graphs"
 OUTPUT_FILE_PREFIX = "dependency_graph"
 DATE_STAMP_FORMAT = "%Y%m%d_%H%M%S"
+OPERATIONAL_INDEX_JSON_SUFFIX = "_operational_index"
+OPERATIONAL_INDEX_MD_SUFFIX = "_operational_notes"
 
 # Layout y presentación
 TOP_MARGIN = 140
@@ -445,6 +447,24 @@ def make_output_path(
         f"{OUTPUT_FILE_PREFIX}_{view}_{theme}_{base_name}{focus_suffix}_{stamp}.svg"
     )
     return output_dir / filename
+
+
+def make_operational_output_path_from_svg(
+    svg_output_path: Path,
+    *,
+    kind: Literal["json", "md"],
+) -> Path:
+    """
+    Sidecar estable para el índice operativo.
+    Vive junto al SVG final y reutiliza su stem para que todo quede amarrado.
+    """
+    suffix = (
+        OPERATIONAL_INDEX_JSON_SUFFIX
+        if kind == "json"
+        else OPERATIONAL_INDEX_MD_SUFFIX
+    )
+    extension = ".json" if kind == "json" else ".md"
+    return svg_output_path.with_name(f"{svg_output_path.stem}{suffix}{extension}")
 
 
 def is_excluded_dir_name(name: str) -> bool:
@@ -1464,7 +1484,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping, Optional
 
-from PySide6.QtCore import Qt, QEvent, QObject, QPoint, QPointF, QRect, QRectF, QTimer
+from PySide6.QtCore import Qt, QEvent, QObject, QPoint, QRect, QRectF, QTimer
 from PySide6.QtGui import QColor, QLinearGradient, QPainter, QPainterPath, QPen, QRadialGradient
 from PySide6.QtWidgets import (
     QApplication,
@@ -1936,18 +1956,18 @@ def _glass_palette(theme_id: str, variant: str = "selector") -> _GlassPalette:
     selector_variant = clean_text(variant).lower() != "progress"
 
     if silver_theme:
-        canvas_top = _qcolor_from_value("#04070d", 1.0)
-        canvas_bottom = _qcolor_from_value("#0f1824", 1.0)
-        wash = _qcolor_from_value("#eef6ff", 0.022 if selector_variant else 0.028)
-        border = _qcolor_from_value("#e8f6ff", 0.20 if selector_variant else 0.16)
-        line = _qcolor_from_value("#8cefff", 0.05)
-        sheen = _qcolor_from_value("#ffffff", 0.08)
-        orb_a = _qcolor_from_value("#eff7ff", 0.18 if selector_variant else 0.14)
-        orb_b = _qcolor_from_value("#8cefff", 0.15 if selector_variant else 0.12)
-        orb_c = _qcolor_from_value("#d7e1ff", 0.10 if selector_variant else 0.08)
-        sparkle = _qcolor_from_value("#ffffff", 0.88)
-        star_soft = _qcolor_from_value("#eef6ff", 0.18)
-        star_bright = _qcolor_from_value("#ffffff", 0.62)
+        canvas_top = _qcolor_from_value("#0f1217", 1.0)
+        canvas_bottom = _qcolor_from_value("#2a3038", 1.0)
+        wash = _qcolor_from_value("#d9dee8", 0.09 if selector_variant else 0.10)
+        border = _qcolor_from_value("#98ecff", 0.22 if selector_variant else 0.18)
+        line = _qcolor_from_value("#b6c4d4", 0.12)
+        sheen = _qcolor_from_value("#ffffff", 0.18)
+        orb_a = _qcolor_from_value("#8ff2ff", 0.18 if selector_variant else 0.16)
+        orb_b = _qcolor_from_value("#f6fbff", 0.14 if selector_variant else 0.12)
+        orb_c = _qcolor_from_value("#7adfff", 0.13 if selector_variant else 0.11)
+        sparkle = _qcolor_from_value("#ffffff", 0.68)
+        star_soft = _qcolor_from_value("#eaf3ff", 0.24)
+        star_bright = _qcolor_from_value("#ffffff", 0.56)
 
         return _GlassPalette(
             canvas_top=canvas_top,
@@ -2026,40 +2046,10 @@ class FrostedGlassBackdrop(QWidget):
         self._variant = clean_text(variant).lower() or "selector"
         self._theme_id = normalize_theme(theme_id)
         self._palette = _glass_palette(self._theme_id, self._variant)
-        self._motion_enabled = True
-        self._motion_epoch = time.monotonic()
-        self._motion_timer = QTimer(self)
-        self._motion_timer.setInterval(24)
-        self._motion_timer.timeout.connect(self._advance_motion)
         self.setObjectName("FrostedGlassBackdrop")
         self.setAttribute(Qt.WA_TransparentForMouseEvents, True)
         self.setAttribute(Qt.WA_StyledBackground, True)
         self.setAutoFillBackground(False)
-        self._sync_motion_timer()
-
-    def _advance_motion(self) -> None:
-        if not self.isVisible():
-            return
-        self.update()
-
-    def _motion_time(self) -> float:
-        return max(0.0, time.monotonic() - self._motion_epoch)
-
-    def _sync_motion_timer(self) -> None:
-        should_run = self._motion_enabled and _is_silver_theme_id(self._theme_id)
-        if should_run and not self._motion_timer.isActive():
-            self._motion_timer.start()
-        elif not should_run and self._motion_timer.isActive():
-            self._motion_timer.stop()
-
-    def showEvent(self, event) -> None:  # type: ignore[override]
-        self._sync_motion_timer()
-        super().showEvent(event)
-
-    def hideEvent(self, event) -> None:  # type: ignore[override]
-        if self._motion_timer.isActive():
-            self._motion_timer.stop()
-        super().hideEvent(event)
 
     def apply_theme(self, theme_id: str) -> None:
         resolved = normalize_theme(theme_id or DEFAULT_THEME)
@@ -2067,437 +2057,45 @@ class FrostedGlassBackdrop(QWidget):
             return
         self._theme_id = resolved
         self._palette = _glass_palette(self._theme_id, self._variant)
-        self._sync_motion_timer()
         self.update()
 
-    def _orb_specs(
-        self,
-        rect: QRectF,
-        *,
-        motion_phase: float = 0.0,
-    ) -> list[tuple[QColor, float, float, float]]:
+    def _orb_specs(self, rect: QRectF) -> list[tuple[QColor, float, float, float]]:
         if self._variant == "progress":
-            base_specs = [
-                (self._palette.orb_a, 0.76, 0.18, 0.46, 0.10, 0.08),
-                (self._palette.orb_b, 0.16, 0.82, 0.30, 0.12, 0.10),
-                (self._palette.orb_c, 0.50, 0.58, 0.24, 0.14, 0.09),
-            ]
-        else:
-            base_specs = [
-                (self._palette.orb_a, 0.58, 0.16, 0.54, 0.08, 0.06),
-                (self._palette.orb_b, 0.18, 0.72, 0.34, 0.12, 0.09),
-                (self._palette.orb_c, 0.90, 0.62, 0.38, 0.10, 0.07),
+            return [
+                (self._palette.orb_a, rect.width() * 0.78, rect.height() * 0.18, rect.width() * 0.42),
+                (self._palette.orb_b, rect.width() * 0.18, rect.height() * 0.82, rect.width() * 0.34),
+                (self._palette.orb_c, rect.width() * 0.54, rect.height() * 0.58, rect.width() * 0.22),
             ]
 
-        specs: list[tuple[QColor, float, float, float]] = []
-        for index, (color, x_factor, y_factor, radius_factor, x_speed, y_speed) in enumerate(base_specs, start=1):
-            x_wobble = math.sin((motion_phase * x_speed) + (index * 0.9)) * 0.026
-            y_wobble = math.cos((motion_phase * y_speed) + (index * 1.3)) * 0.033
-            radius_wobble = 1.0 + (0.055 * math.sin((motion_phase * 0.08) + (index * 1.7)))
-            specs.append(
-                (
-                    color,
-                    rect.width() * (x_factor + x_wobble),
-                    rect.height() * (y_factor + y_wobble),
-                    rect.width() * radius_factor * radius_wobble,
-                )
-            )
-        return specs
-
-    def _noise01(self, seed: float) -> float:
-        value = math.sin((seed * 12.9898) + 78.233) * 43758.5453123
-        return value - math.floor(value)
-
-    def _flash_interval_seconds(self, event_index: int) -> float:
-        step = event_index % 3
-        if step == 0:
-            return 20.0
-        if step == 1:
-            return 30.0
-        return 40.0
-
-    def _ensure_flash_events(self, until_time: float) -> None:
-        if not hasattr(self, '_flash_events'):
-            self._flash_events: list[dict[str, float]] = []
-            self._flash_schedule_cursor = 0.0
-            self._flash_schedule_index = 0
-
-        while self._flash_schedule_cursor <= until_time:
-            event_index = int(self._flash_schedule_index)
-            interval = self._flash_interval_seconds(event_index)
-            self._flash_schedule_cursor += interval
-
-            pair_count = 1 if self._noise01(8000.0 + (event_index * 1.91)) < 0.78 else 2
-            for pair_index in range(pair_count):
-                seed = 9100.0 + (event_index * 13.0) + (pair_index * 2.7)
-                start = self._flash_schedule_cursor + (0.0 if pair_index == 0 else (0.55 + (self._noise01(seed + 3.2) * 1.05)))
-                duration = 1.10 + (self._noise01(seed + 4.8) * 1.25)
-                self._flash_events.append(
-                    {
-                        'start': start,
-                        'end': start + duration,
-                        'x_factor': 0.08 + (self._noise01(seed + 7.1) * 0.84),
-                        'y_factor': 0.10 + (self._noise01(seed + 9.4) * 0.72),
-                        'radius': 12.0 + (self._noise01(seed + 12.7) * 20.0),
-                        'strength': 0.74 + (self._noise01(seed + 14.9) * 0.42),
-                        'cross': 4.0 + (self._noise01(seed + 17.3) * 5.6),
-                    }
-                )
-
-            self._flash_schedule_index += 1
-
-        prune_before = max(0.0, until_time - 48.0)
-        self._flash_events = [event for event in self._flash_events if event['end'] >= prune_before]
-
-    def _active_flash_events(self, at_time: float) -> list[dict[str, float]]:
-        self._ensure_flash_events(at_time + 45.0)
         return [
-            event
-            for event in getattr(self, '_flash_events', [])
-            if event['start'] <= at_time <= event['end']
+            (self._palette.orb_a, rect.width() * 0.16, rect.height() * 0.14, rect.width() * 0.38),
+            (self._palette.orb_b, rect.width() * 0.86, rect.height() * 0.22, rect.width() * 0.32),
+            (self._palette.orb_c, rect.width() * 0.72, rect.height() * 0.88, rect.width() * 0.36),
         ]
 
-    def _paint_spark_flashes(
-        self,
-        painter: QPainter,
-        rect: QRectF,
-        *,
-        motion_phase: float = 0.0,
-    ) -> None:
-        active_events = self._active_flash_events(motion_phase)
-        if not active_events:
-            return
-
-        for event in active_events:
-            start = event['start']
-            end = event['end']
-            duration = max(0.01, end - start)
-            progress = max(0.0, min(1.0, (motion_phase - start) / duration))
-
-            if progress < 0.24:
-                envelope = progress / 0.24
-            elif progress > 0.72:
-                envelope = max(0.0, 1.0 - ((progress - 0.72) / 0.28))
-            else:
-                envelope = 1.0
-
-            shimmer = 0.74 + (0.26 * math.sin((progress * math.tau * 2.0) + (event['x_factor'] * 8.0)))
-            strength = max(0.0, envelope * shimmer * event['strength'])
-            if strength <= 0.02:
-                continue
-
-            x = rect.width() * event['x_factor']
-            y = rect.height() * event['y_factor']
-            radius = event['radius'] * (0.84 + (0.44 * strength))
-
-            glow = QRadialGradient(x, y, radius)
-            glow_color = QColor(self._palette.star_bright)
-            glow_color.setAlpha(max(0, min(255, int(112 * strength))))
-            mid = QColor(self._palette.star_soft)
-            mid.setAlpha(max(0, min(255, int(48 * strength))))
-            edge = QColor(glow_color)
-            edge.setAlpha(0)
-            glow.setColorAt(0.0, glow_color)
-            glow.setColorAt(0.34, mid)
-            glow.setColorAt(1.0, edge)
-            painter.setBrush(glow)
-            painter.drawEllipse(QRectF(x - radius, y - radius, radius * 2.0, radius * 2.0))
-
-            core_size = 1.5 + (2.4 * strength)
-            painter.setBrush(QColor(255, 255, 255, max(0, min(255, int(205 * strength)))))
-            painter.drawEllipse(QRectF(x - (core_size / 2.0), y - (core_size / 2.0), core_size, core_size))
-
-            painter.setPen(QPen(QColor(255, 255, 255, max(0, min(255, int(94 * strength)))), 1.0))
-            cross = event['cross'] * (0.68 + (0.36 * strength))
-            painter.drawLine(QPointF(x - cross, y), QPointF(x + cross, y))
-            painter.drawLine(QPointF(x, y - cross), QPointF(x, y + cross))
-            painter.setPen(Qt.NoPen)
-
-    def _paint_star_layer(
-        self,
-        painter: QPainter,
-        rect: QRectF,
-        *,
-        layer_seed: float,
-        total: int,
-        size_base: float,
-        size_span: float,
-        alpha_scale: float,
-        drift_min: float,
-        drift_span: float,
-        wave_min: float,
-        wave_span: float,
-        sway_min: float,
-        sway_span: float,
-        motion_phase: float = 0.0,
-        band_bias: float = 0.0,
-    ) -> None:
+    def _paint_stars(self, painter: QPainter, rect: QRectF) -> None:
+        total = 54 if self._variant == "progress" else 96
         for index in range(total):
-            seed = layer_seed + (index * 1.0)
-            seed_a = self._noise01((seed * 1.173) + 0.31)
-            seed_b = self._noise01((seed * 2.417) + 1.17)
-            seed_c = self._noise01((seed * 3.191) + 2.29)
-            seed_d = self._noise01((seed * 4.883) + 0.73)
-            seed_e = self._noise01((seed * 5.731) + 1.91)
-            seed_f = self._noise01((seed * 6.419) + 3.07)
-            seed_g = self._noise01((seed * 7.117) + 0.43)
-            seed_h = self._noise01((seed * 8.411) + 2.61)
-            seed_i = self._noise01((seed * 9.067) + 1.33)
-            seed_j = self._noise01((seed * 10.233) + 0.57)
-            seed_k = self._noise01((seed * 11.521) + 4.11)
-            seed_l = self._noise01((seed * 12.019) + 2.03)
-            seed_m = self._noise01((seed * 13.337) + 5.37)
-            seed_n = self._noise01((seed * 14.907) + 6.73)
-
-            parallax = 0.70 + (seed_c * 1.45)
-            drift_x = (drift_min + (seed_d * drift_span)) * parallax
-            wave_speed = wave_min + (seed_e * wave_span)
-            wave_amp = 0.0020 + (seed_f * 0.0080)
-            wave_offset = seed_g * math.tau * 2.0
-            sway_amp = sway_min + (seed_h * sway_span)
-            sway_speed = 0.34 + (seed_i * 0.96)
-
-            x = rect.width() * ((seed_a + (motion_phase * drift_x)) % 1.0)
-            y_center = seed_b + ((band_bias * 0.34) * (seed_j - 0.5))
-            y_offset = math.sin((motion_phase * wave_speed) + wave_offset) * wave_amp
-            x_sway = math.cos((motion_phase * sway_speed) + (wave_offset * 0.68)) * sway_amp
-            y = rect.height() * ((y_center + y_offset) % 1.0)
-            x += rect.width() * x_sway
-
-            size = size_base + (seed_j * size_span)
-            if seed_k > 0.90:
-                size += 0.32
-
-            color = QColor(self._palette.star_bright if seed_l > 0.80 else self._palette.star_soft)
-            twinkle_phase = (motion_phase * (0.72 + (seed_m * 1.84))) + (seed_n * math.tau * 2.0)
-            twinkle = 0.64 + (0.38 * (0.5 + (0.5 * math.sin(twinkle_phase))))
-            shimmer = 0.86 + (0.16 * math.sin((motion_phase * 0.38 * parallax) + wave_offset))
-            alpha = int(color.alpha() * twinkle * shimmer * alpha_scale)
-            color.setAlpha(max(0, min(255, alpha)))
+            x = rect.width() * (((index * 37) % 997) / 997.0)
+            y = rect.height() * (((index * 61 + 17) % 991) / 991.0)
+            size = 0.9 + (((index * 11) % 7) * 0.24)
+            color = QColor(self._palette.star_bright if index % 5 == 0 else self._palette.star_soft)
+            if index % 7 == 0:
+                color.setAlpha(max(0, int(color.alpha() * 1.18)))
             painter.setBrush(color)
             painter.drawEllipse(QRectF(x, y, size, size))
 
-    def _paint_stars(
-        self,
-        painter: QPainter,
-        rect: QRectF,
-        *,
-        motion_phase: float = 0.0,
-    ) -> None:
-        if self._variant == 'progress':
-            back_total = 120
-            mid_total = 88
-            front_total = 54
-        else:
-            back_total = 212
-            mid_total = 146
-            front_total = 88
-
-        self._paint_star_layer(
-            painter,
-            rect,
-            layer_seed=1400.0,
-            total=back_total,
-            size_base=0.42,
-            size_span=0.78,
-            alpha_scale=0.70,
-            drift_min=0.00044,
-            drift_span=0.00092,
-            wave_min=0.22,
-            wave_span=0.40,
-            sway_min=0.0004,
-            sway_span=0.0012,
-            motion_phase=motion_phase,
-            band_bias=0.10,
-        )
-        self._paint_star_layer(
-            painter,
-            rect,
-            layer_seed=3200.0,
-            total=mid_total,
-            size_base=0.58,
-            size_span=1.06,
-            alpha_scale=0.92,
-            drift_min=0.00090,
-            drift_span=0.00155,
-            wave_min=0.34,
-            wave_span=0.62,
-            sway_min=0.0008,
-            sway_span=0.0018,
-            motion_phase=motion_phase,
-            band_bias=0.16,
-        )
-        self._paint_star_layer(
-            painter,
-            rect,
-            layer_seed=5100.0,
-            total=front_total,
-            size_base=0.76,
-            size_span=1.34,
-            alpha_scale=1.14,
-            drift_min=0.00126,
-            drift_span=0.00210,
-            wave_min=0.48,
-            wave_span=0.82,
-            sway_min=0.0011,
-            sway_span=0.0028,
-            motion_phase=motion_phase,
-            band_bias=0.20,
-        )
-
-        band_count = 42 if self._variant == 'selector' else 22
-        base_y = 0.60 if self._variant == 'selector' else 0.68
-        spread = 0.15 if self._variant == 'selector' else 0.11
-        for index in range(band_count):
-            seed = 7200.0 + (index * 5.0)
-            x = rect.width() * (
-                (
-                    0.02
-                    + (self._noise01(seed) * 0.96)
-                    + (motion_phase * (0.0011 + (self._noise01(seed + 1.7) * 0.0014)))
-                )
-                % 1.0
-            )
-            y = rect.height() * (
-                base_y
-                + ((self._noise01(seed + 2.3) - 0.5) * spread)
-                + (0.010 * math.sin((motion_phase * (0.46 + (self._noise01(seed + 3.9) * 0.38))) + (self._noise01(seed + 5.1) * math.tau * 2.0)))
-            )
-            size = 0.86 + (self._noise01(seed + 6.7) * 1.08)
-            color = QColor(self._palette.star_bright if self._noise01(seed + 8.1) > 0.76 else self._palette.star_soft)
-            alpha = int(color.alpha() * (0.68 + (0.26 * (0.5 + (0.5 * math.sin((motion_phase * (0.82 + (self._noise01(seed + 9.9) * 0.42))) + index))))))
-            color.setAlpha(max(0, min(255, alpha)))
+        cluster_count = 26 if self._variant == "selector" else 14
+        for index in range(cluster_count):
+            factor = (index + 1) / float(cluster_count + 1)
+            x = rect.width() * (0.06 + (0.88 * factor))
+            band_y = 0.72 if self._variant == "selector" else 0.70
+            wobble = ((((index * 29) % 17) - 8) / 220.0)
+            y = rect.height() * (band_y + wobble)
+            size = 1.0 + ((index % 4) * 0.36)
+            color = QColor(self._palette.star_bright if index % 3 == 0 else self._palette.star_soft)
             painter.setBrush(color)
             painter.drawEllipse(QRectF(x, y, size, size))
-
-    def _paint_star_band(
-        self,
-        painter: QPainter,
-        rect: QRectF,
-        *,
-        y_factor: float,
-        width_factor: float,
-        radius_factor: float,
-        color: QColor,
-        motion_phase: float = 0.0,
-        drift_speed: float = 0.0024,
-    ) -> None:
-        for index in range(16):
-            seed = 2100.0 + (index * 9.0)
-            cx = rect.width() * (
-                (0.04 + (self._noise01(seed) * max(0.24, width_factor)) + (motion_phase * drift_speed * (0.8 + (self._noise01(seed + 1.7) * 2.2)))) % 1.12
-            )
-            cy = rect.height() * (
-                y_factor
-                + ((self._noise01(seed + 2.9) - 0.5) * 0.10)
-                + (0.020 * math.sin((motion_phase * (0.54 + (self._noise01(seed + 3.8) * 0.50))) + (self._noise01(seed + 5.1) * math.tau * 2.0)))
-            )
-            radius = rect.width() * (radius_factor * (0.34 + (self._noise01(seed + 6.2) * 0.54)))
-            orb = QRadialGradient(cx, cy, radius)
-            edge = QColor(color)
-            edge.setAlpha(0)
-            mid = QColor(color)
-            mid.setAlpha(max(0, int(color.alpha() * (0.22 + (self._noise01(seed + 7.9) * 0.18)))))
-            core = QColor(color)
-            core.setAlpha(max(0, min(255, int(color.alpha() * (0.72 + (0.42 * math.sin((motion_phase * (0.72 + (self._noise01(seed + 8.6) * 0.42))) + index)))))))
-            orb.setColorAt(0.0, core)
-            orb.setColorAt(0.42, mid)
-            orb.setColorAt(1.0, edge)
-            painter.setBrush(orb)
-            painter.drawEllipse(QRectF(cx - radius, cy - radius, radius * 2.0, radius * 2.0))
-
-    def _paint_silver_field(self, painter: QPainter, rect: QRectF) -> None:
-        motion_phase = self._motion_time()
-
-        bg_gradient = QLinearGradient(rect.left(), rect.top(), rect.left(), rect.bottom())
-        bg_gradient.setColorAt(0.0, self._palette.canvas_top)
-        bg_gradient.setColorAt(1.0, self._palette.canvas_bottom)
-        painter.fillRect(rect, bg_gradient)
-
-        top_wash = QLinearGradient(rect.left(), rect.top(), rect.right(), rect.bottom())
-        top_wash.setColorAt(0.0, QColor(255, 255, 255, 18))
-        top_wash.setColorAt(0.38, QColor(156, 224, 255, 8))
-        top_wash.setColorAt(1.0, QColor(255, 255, 255, 0))
-        painter.fillRect(rect, top_wash)
-
-        for color, cx, cy, radius in self._orb_specs(rect, motion_phase=motion_phase):
-            orb = QRadialGradient(cx, cy, radius)
-            edge = QColor(color)
-            edge.setAlpha(0)
-            mid = QColor(color)
-            mid.setAlpha(max(0, int(color.alpha() * 0.42)))
-            orb.setColorAt(0.0, color)
-            orb.setColorAt(0.40, mid)
-            orb.setColorAt(1.0, edge)
-            painter.setBrush(orb)
-            painter.drawEllipse(QRectF(cx - radius, cy - radius, radius * 2.0, radius * 2.0))
-
-        self._paint_star_band(
-            painter,
-            rect,
-            y_factor=0.56 if self._variant == 'selector' else 0.68,
-            width_factor=0.90,
-            radius_factor=0.09 if self._variant == 'selector' else 0.07,
-            color=QColor(255, 255, 255, 34 if self._variant == 'selector' else 24),
-            motion_phase=motion_phase,
-            drift_speed=0.0040 if self._variant == 'selector' else 0.0028,
-        )
-        self._paint_star_band(
-            painter,
-            rect,
-            y_factor=0.22 if self._variant == 'selector' else 0.28,
-            width_factor=0.74,
-            radius_factor=0.07 if self._variant == 'selector' else 0.06,
-            color=QColor(140, 239, 255, 26 if self._variant == 'selector' else 18),
-            motion_phase=motion_phase,
-            drift_speed=0.0028 if self._variant == 'selector' else 0.0020,
-        )
-        self._paint_stars(
-            painter,
-            rect,
-            motion_phase=motion_phase,
-        )
-        self._paint_spark_flashes(
-            painter,
-            rect,
-            motion_phase=motion_phase,
-        )
-
-        vignette = QRadialGradient(rect.center(), max(rect.width(), rect.height()) * 0.78)
-        vignette.setColorAt(0.0, QColor(0, 0, 0, 0))
-        vignette.setColorAt(0.78, QColor(0, 0, 0, 0))
-        vignette.setColorAt(1.0, QColor(0, 0, 0, 76 if self._variant == 'selector' else 58))
-        painter.setBrush(vignette)
-        painter.drawRect(rect)
-
-        frame_path = QPainterPath()
-        frame_path.addRoundedRect(rect.adjusted(1.5, 1.5, -1.5, -1.5), 30.0, 30.0)
-        painter.fillPath(frame_path, self._palette.wash)
-        painter.setPen(QPen(self._palette.border, 1.15))
-        painter.drawPath(frame_path)
-
-        painter.setPen(QPen(self._palette.sheen, 1.0))
-        arc_start = int((18.0 + (math.sin(motion_phase * 0.24) * 14.0)) * 16)
-        arc_span = int((122.0 + (math.cos(motion_phase * 0.17) * 10.0)) * 16)
-        painter.drawArc(
-            QRectF(rect.width() * 0.06, rect.height() * 0.02, rect.width() * 0.88, rect.height() * 0.18),
-            arc_start,
-            arc_span,
-        )
-
-        painter.setBrush(self._palette.sparkle)
-        painter.setPen(Qt.NoPen)
-        sparkle_size = 8.0 if self._variant == 'progress' else 10.0
-        sparkle_x = rect.width() * ((0.88 if self._variant == 'selector' else 0.74) + (0.014 * math.sin(motion_phase * 0.54)))
-        sparkle_y = rect.height() * (0.12 + (0.016 * math.cos(motion_phase * 0.46)))
-        painter.drawEllipse(
-            QRectF(
-                sparkle_x,
-                sparkle_y,
-                sparkle_size,
-                sparkle_size,
-            )
-        )
 
     def paintEvent(self, event) -> None:  # type: ignore[override]
         rect = QRectF(self.rect())
@@ -2508,24 +2106,13 @@ class FrostedGlassBackdrop(QWidget):
         painter.setRenderHint(QPainter.Antialiasing)
         painter.setRenderHint(QPainter.SmoothPixmapTransform)
         painter.setPen(Qt.NoPen)
-        clip_path = QPainterPath()
-        clip_path.addRoundedRect(rect.adjusted(0.75, 0.75, -0.75, -0.75), 30.0, 30.0)
-        painter.save()
-        painter.setClipPath(clip_path)
 
-        if _is_silver_theme_id(self._theme_id):
-            self._paint_silver_field(painter, rect)
-            painter.restore()
-            painter.end()
-            return
-
-        motion_phase = self._motion_time()
         bg_gradient = QLinearGradient(rect.left(), rect.top(), rect.left(), rect.bottom())
         bg_gradient.setColorAt(0.0, self._palette.canvas_top)
         bg_gradient.setColorAt(1.0, self._palette.canvas_bottom)
         painter.fillRect(rect, bg_gradient)
 
-        for color, cx, cy, radius in self._orb_specs(rect, motion_phase=motion_phase):
+        for color, cx, cy, radius in self._orb_specs(rect):
             orb = QRadialGradient(cx, cy, radius)
             edge = QColor(color)
             edge.setAlpha(0)
@@ -2535,7 +2122,7 @@ class FrostedGlassBackdrop(QWidget):
             painter.setBrush(orb)
             painter.drawEllipse(QRectF(cx - radius, cy - radius, radius * 2.0, radius * 2.0))
 
-        self._paint_stars(painter, rect, motion_phase=motion_phase)
+        self._paint_stars(painter, rect)
 
         glass_path = QPainterPath()
         glass_path.addRoundedRect(rect.adjusted(1.5, 1.5, -1.5, -1.5), 30.0, 30.0)
@@ -2582,8 +2169,8 @@ class FrostedGlassBackdrop(QWidget):
                 sparkle_size,
             )
         )
-        painter.restore()
         painter.end()
+
 
 def build_glass_dialog_scene(
     host: QWidget,
@@ -2672,83 +2259,6 @@ def _local_point_from_event(event: Any) -> QPoint:
         return QPoint()
 
 
-class _FramelessResizeCorner(QWidget):
-    def __init__(
-        self,
-        host: QDialog,
-        controller: "FramelessResizeController",
-        *,
-        edges: int,
-        corner: str,
-    ) -> None:
-        super().__init__(host)
-        self._host = host
-        self._controller = controller
-        self._edges = edges
-        self._corner = corner
-        self._dragging = False
-        self.setObjectName(f"ResizeCorner_{corner}")
-        self.setFixedSize(12, 12)
-        self.setAttribute(Qt.WA_StyledBackground, False)
-        self.setAttribute(Qt.WA_TranslucentBackground, True)
-        self.setCursor(
-            Qt.SizeBDiagCursor if edges == (_EDGE_TOP | _EDGE_RIGHT) else Qt.SizeFDiagCursor
-        )
-        self.setToolTip("Arrastra para redimensionar")
-        self.hide()
-
-    def paintEvent(self, event: Any) -> None:  # type: ignore[override]
-        painter = QPainter(self)
-        painter.setRenderHint(QPainter.Antialiasing)
-        line = QColor("#dff8ff")
-        line.setAlpha(102)
-        pen = QPen(line, 1.0)
-        pen.setCapStyle(Qt.RoundCap)
-        painter.setPen(pen)
-        painter.setBrush(Qt.NoBrush)
-        w = self.width()
-        h = self.height()
-        if self._corner == "top_right":
-            painter.drawLine(w - 5, 3, w - 2, 6)
-            painter.drawLine(w - 8, 3, w - 2, 9)
-        else:
-            painter.drawLine(w - 5, h - 3, w - 2, h - 6)
-            painter.drawLine(w - 8, h - 3, w - 2, h - 9)
-        painter.end()
-
-    def mousePressEvent(self, event: Any) -> None:  # type: ignore[override]
-        if event.button() != Qt.LeftButton or self._host.isMaximized():
-            super().mousePressEvent(event)
-            return
-        self._dragging = True
-        self.grabMouse()
-        self._controller.start_corner_resize(self._edges, _global_point_from_event(event))
-        event.accept()
-
-    def mouseMoveEvent(self, event: Any) -> None:  # type: ignore[override]
-        if self._dragging and bool(event.buttons() & Qt.LeftButton):
-            self._controller.update_corner_resize(_global_point_from_event(event))
-            event.accept()
-            return
-        super().mouseMoveEvent(event)
-
-    def mouseReleaseEvent(self, event: Any) -> None:  # type: ignore[override]
-        if self._dragging and event.button() == Qt.LeftButton:
-            self._dragging = False
-            self.releaseMouse()
-            self._controller.finish_corner_resize()
-            event.accept()
-            return
-        super().mouseReleaseEvent(event)
-
-    def hideEvent(self, event: Any) -> None:  # type: ignore[override]
-        if self._dragging:
-            self._dragging = False
-            self.releaseMouse()
-            self._controller.finish_corner_resize()
-        super().hideEvent(event)
-
-
 class FramelessResizeController(QObject):
     def __init__(self, host: QDialog, *, margin: int = 8) -> None:
         super().__init__(host)
@@ -2758,21 +2268,8 @@ class FramelessResizeController(QObject):
         self._resizing = False
         self._press_global = QPoint()
         self._start_geometry = QRect()
-        self._top_right_corner = _FramelessResizeCorner(
-            host,
-            self,
-            edges=_EDGE_TOP | _EDGE_RIGHT,
-            corner="top_right",
-        )
-        self._bottom_right_corner = _FramelessResizeCorner(
-            host,
-            self,
-            edges=_EDGE_BOTTOM | _EDGE_RIGHT,
-            corner="bottom_right",
-        )
         self._host.installEventFilter(self)
         self._host.setMouseTracking(True)
-        self._layout_corner_handles()
 
     def eventFilter(self, watched: QObject, event: QEvent) -> bool:  # type: ignore[override]
         if watched is not self._host:
@@ -2785,9 +2282,6 @@ class FramelessResizeController(QObject):
             return self._on_mouse_move(event)
         if event_type == QEvent.Type.MouseButtonRelease:
             return self._on_mouse_release(event)
-        if event_type in {QEvent.Type.Resize, QEvent.Type.Show, QEvent.Type.WindowStateChange}:
-            self._layout_corner_handles()
-            return False
         if event_type == QEvent.Type.Leave:
             if not self._resizing:
                 self._host.unsetCursor()
@@ -2802,15 +2296,20 @@ class FramelessResizeController(QObject):
         if rect.width() <= 0 or rect.height() <= 0:
             return _EDGE_NONE
 
+        left = pos.x() <= self._margin
         right = pos.x() >= (rect.width() - self._margin)
         top = pos.y() <= self._margin
         bottom = pos.y() >= (rect.height() - self._margin)
 
         mask = _EDGE_NONE
-        if right and top:
-            mask = _EDGE_TOP | _EDGE_RIGHT
-        elif right and bottom:
-            mask = _EDGE_BOTTOM | _EDGE_RIGHT
+        if left:
+            mask |= _EDGE_LEFT
+        if right:
+            mask |= _EDGE_RIGHT
+        if top:
+            mask |= _EDGE_TOP
+        if bottom:
+            mask |= _EDGE_BOTTOM
         return mask
 
     def _cursor_for_edges(self, edges: int) -> Qt.CursorShape:
@@ -2841,7 +2340,11 @@ class FramelessResizeController(QObject):
         if edges == _EDGE_NONE:
             return False
 
-        self.start_corner_resize(edges, _global_point_from_event(event))
+        self._active_edges = edges
+        self._resizing = True
+        self._press_global = _global_point_from_event(event)
+        self._start_geometry = self._host.geometry()
+        self._apply_resize_cursor(edges)
         event.accept()
         return True
 
@@ -2869,44 +2372,11 @@ class FramelessResizeController(QObject):
         if not self._resizing or event.button() != Qt.LeftButton:
             return False
 
-        self.finish_corner_resize()
-        event.accept()
-        return True
-
-    def _layout_corner_handles(self) -> None:
-        if self._host.isMaximized():
-            self._top_right_corner.hide()
-            self._bottom_right_corner.hide()
-            return
-
-        size = self._top_right_corner.width()
-        inset = 8
-        width = self._host.width()
-        height = self._host.height()
-
-        self._top_right_corner.setGeometry(max(0, width - size - inset), inset, size, size)
-        self._bottom_right_corner.setGeometry(max(0, width - size - inset), max(0, height - size - inset), size, size)
-        self._top_right_corner.show()
-        self._bottom_right_corner.show()
-        self._top_right_corner.raise_()
-        self._bottom_right_corner.raise_()
-
-    def start_corner_resize(self, edges: int, global_pos: QPoint) -> None:
-        if self._host.isMaximized() or edges == _EDGE_NONE:
-            return
-        self._active_edges = edges
-        self._resizing = True
-        self._press_global = global_pos
-        self._start_geometry = self._host.geometry()
-        self._apply_resize_cursor(edges)
-
-    def update_corner_resize(self, global_pos: QPoint) -> None:
-        self._resize_to(global_pos)
-
-    def finish_corner_resize(self) -> None:
         self._resizing = False
         self._active_edges = _EDGE_NONE
         self._host.unsetCursor()
+        event.accept()
+        return True
 
     def _resize_to(self, global_pos: QPoint) -> None:
         if self._active_edges == _EDGE_NONE:
@@ -3114,14 +2584,14 @@ def create_button(
         button.clicked.connect(callback)
 
     shadow_alpha = {
-        "primary": 28,
-        "secondary": 14,
-        "success": 22,
-        "danger": 16,
-    }.get((variant or "secondary").strip().lower(), 14)
-    shadow_blur = 16.0 if (variant or "").strip().lower() == "primary" else 12.0
+        "primary": 54,
+        "secondary": 26,
+        "success": 42,
+        "danger": 34,
+    }.get((variant or "secondary").strip().lower(), 28)
+    shadow_blur = 24.0 if (variant or "").strip().lower() == "primary" else 18.0
 
-    apply_shadow(button, blur=shadow_blur, y_offset=4.0, alpha=shadow_alpha)
+    apply_shadow(button, blur=shadow_blur, y_offset=6.0, alpha=shadow_alpha)
     repolish(button)
     return button
 
@@ -3257,7 +2727,7 @@ class SelectorDialog(QDialog):
         shell = QFrame()
         shell.setObjectName("Shell")
         shell.setProperty("variant", "selector")
-        apply_shadow(shell, blur=30.0, y_offset=10.0, alpha=58)
+        apply_shadow(shell, blur=38.0, y_offset=14.0, alpha=98)
         scene_layout.addWidget(shell)
 
         shell_layout = QVBoxLayout(shell)
@@ -3275,7 +2745,7 @@ class SelectorDialog(QDialog):
 
         header = QFrame()
         header.setProperty("card", "hero")
-        apply_shadow(header, blur=22.0, y_offset=8.0, alpha=18)
+        apply_shadow(header, blur=28.0, y_offset=10.0, alpha=36)
         enable_card_hover(header)
         shell_layout.addWidget(header)
 
@@ -3336,14 +2806,14 @@ class SelectorDialog(QDialog):
         self.form_card = QFrame()
         self.form_card.setProperty("card", "true")
         self.form_card.setProperty("surface", "crisp")
-        apply_shadow(self.form_card, blur=18.0, y_offset=6.0, alpha=16)
+        apply_shadow(self.form_card, blur=24.0, y_offset=8.0, alpha=34)
         enable_card_hover(self.form_card)
         content.addWidget(self.form_card, 6)
 
         self.preview_card = QFrame()
         self.preview_card.setProperty("card", "muted")
         self.preview_card.setProperty("surface", "soft")
-        apply_shadow(self.preview_card, blur=18.0, y_offset=6.0, alpha=14)
+        apply_shadow(self.preview_card, blur=22.0, y_offset=8.0, alpha=28)
         enable_card_hover(self.preview_card)
         content.addWidget(self.preview_card, 5)
 
@@ -3352,7 +2822,7 @@ class SelectorDialog(QDialog):
 
         footer = QFrame()
         footer.setProperty("card", "footer")
-        apply_shadow(footer, blur=14.0, y_offset=5.0, alpha=10)
+        apply_shadow(footer, blur=20.0, y_offset=8.0, alpha=22)
         enable_card_hover(footer)
         shell_layout.addWidget(footer)
 
@@ -3754,7 +3224,7 @@ class ProgressUI(QDialog):
         shell = QFrame()
         shell.setObjectName("Shell")
         shell.setProperty("variant", "progress")
-        apply_shadow(shell, blur=28.0, y_offset=10.0, alpha=54)
+        apply_shadow(shell, blur=34.0, y_offset=12.0, alpha=92)
         scene_layout.addWidget(shell)
 
         shell_layout = QVBoxLayout(shell)
@@ -3772,7 +3242,7 @@ class ProgressUI(QDialog):
 
         hero = QFrame()
         hero.setProperty("card", "hero")
-        apply_shadow(hero, blur=20.0, y_offset=6.0, alpha=16)
+        apply_shadow(hero, blur=24.0, y_offset=8.0, alpha=30)
         enable_card_hover(hero)
         shell_layout.addWidget(hero)
 
@@ -3827,7 +3297,7 @@ class ProgressUI(QDialog):
 
         body = QFrame()
         body.setProperty("card", "true")
-        apply_shadow(body, blur=16.0, y_offset=6.0, alpha=12)
+        apply_shadow(body, blur=20.0, y_offset=8.0, alpha=24)
         enable_card_hover(body)
         shell_layout.addWidget(body)
 
@@ -3851,7 +3321,7 @@ class ProgressUI(QDialog):
 
         footer = QFrame()
         footer.setProperty("card", "muted")
-        apply_shadow(footer, blur=14.0, y_offset=5.0, alpha=10)
+        apply_shadow(footer, blur=18.0, y_offset=6.0, alpha=18)
         enable_card_hover(footer)
         shell_layout.addWidget(footer)
 
@@ -3859,11 +3329,10 @@ class ProgressUI(QDialog):
         footer_layout.setContentsMargins(16, 12, 16, 12)
         footer_layout.setSpacing(10)
 
-        self.footer_hint = QLabel("Esta consola se queda viva mientras corre el pipeline y luego te deja cerrar sin prisas.")
-        self.footer_hint.setProperty("role", "hint")
-        self.footer_hint.setWordWrap(True)
-        self.footer_hint.setTextInteractionFlags(Qt.TextSelectableByMouse)
-        footer_layout.addWidget(self.footer_hint, 1)
+        footer_hint = QLabel("Esta consola se queda viva mientras corre el pipeline y luego te deja cerrar sin prisas.")
+        footer_hint.setProperty("role", "hint")
+        footer_hint.setWordWrap(True)
+        footer_layout.addWidget(footer_hint, 1)
 
     def _pump_events(self, *, force: bool = False) -> None:
         app = QApplication.instance()
@@ -3937,11 +3406,6 @@ class ProgressUI(QDialog):
 
     def set_detail(self, detail: str) -> None:
         self.detail_label.setText(detail or "")
-        self._pump_events()
-
-    def set_footer_hint(self, text: str) -> None:
-        if getattr(self, "footer_hint", None) is not None:
-            self.footer_hint.setText(text or "")
         self._pump_events()
 
     def finalize(self, text: str, detail: str = "", success: bool = True) -> None:
@@ -4619,6 +4083,363 @@ def merge_analysis_issues_into_graph(
     """
     for issue in analysis_graph.issues:
         target_graph.issues.append(issue)
+
+
+# ============================================================
+# 08B. INDICE OPERATIVO
+# Capa semántica encima del grafo. No reemplaza el grafo.
+# ============================================================
+
+@dataclass(slots=True)
+class OperationalIndexEntry:
+    node_key: str
+    label: str
+    path: str
+    primary_role: str
+    secondary_role: str
+    blast_radius: str
+    start_here_score: int
+    change_intents: tuple[str, ...] = ()
+    notes: tuple[str, ...] = ()
+    inbound: int = 0
+    outbound: int = 0
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "node_key": self.node_key,
+            "label": self.label,
+            "path": self.path,
+            "primary_role": self.primary_role,
+            "secondary_role": self.secondary_role,
+            "blast_radius": self.blast_radius,
+            "start_here_score": self.start_here_score,
+            "change_intents": list(self.change_intents),
+            "notes": list(self.notes),
+            "inbound": self.inbound,
+            "outbound": self.outbound,
+        }
+
+
+def _operational_text_hints(node: DependencyNode) -> str:
+    hints = [
+        node.label,
+        node.path,
+        str(node.metadata.get("module_name", "")),
+        str(node.metadata.get("relative_path", "")),
+        str(node.metadata.get("root_group", "")),
+    ]
+    return clean_text(" ".join(hints)).lower()
+
+
+def _contains_any_token(text: str, tokens: Iterable[str]) -> bool:
+    return any(token in text for token in tokens)
+
+
+def _operational_focus_key(graph: DependencyGraph, state: AnalysisState) -> str:
+    if state.view != "focus":
+        return ""
+    return resolve_focus_node_key(graph, state.focus_target)
+
+
+def _infer_primary_operational_role(
+    node: DependencyNode,
+    graph: DependencyGraph,
+    state: AnalysisState,
+    focus_key: str,
+) -> str:
+    if node.kind == "note":
+        return "issue_note"
+    if node.kind == "external":
+        return "external_dependency"
+    if node.kind == "package":
+        return "package_aggregate"
+
+    hints = _operational_text_hints(node)
+
+    if focus_key and node.key == focus_key:
+        return "focus_entry_point"
+    if _contains_any_token(hints, ("theme", "skin", "stylesheet", "palette", "token", "color")):
+        return "theme_token"
+    if _contains_any_token(hints, ("layout", "lane", "grid", "position", "geometry", "arrange")):
+        return "layout_driver"
+    if _contains_any_token(hints, ("render", "svg", "draw", "paint", "canvas", "marker")):
+        return "render_surface"
+    if _contains_any_token(hints, ("widget", "button", "dialog", "panel", "card", "chip", "legend")):
+        return "ui_primitive"
+    if _contains_any_token(hints, ("focus", "preview", "controller", "toolbar", "window", "shell")):
+        return "interaction_shell"
+    if node.is_hub:
+        return "high_leverage_module"
+    return "module_logic"
+
+
+def _infer_secondary_operational_role(
+    node: DependencyNode,
+    primary_role: str,
+    graph: DependencyGraph,
+    state: AnalysisState,
+    focus_key: str,
+) -> str:
+    if node.kind == "package":
+        return "aggregate"
+    if node.kind == "external":
+        return "boundary"
+    if node.kind == "note":
+        return "warning"
+    if focus_key and node.key == focus_key:
+        return "focus_center"
+    if node.is_hub:
+        return "hub"
+    if node.inbound > 0 and node.outbound > 0:
+        return "bridge"
+    if node.inbound > node.outbound and node.inbound >= 2:
+        return "dependency_sink"
+    if node.outbound > node.inbound and node.outbound >= 2:
+        return "dependency_source"
+    if primary_role in {"theme_token", "render_surface", "layout_driver"}:
+        return "visual_core"
+    return "local"
+
+
+def _infer_change_intents(primary_role: str) -> tuple[str, ...]:
+    mapping: dict[str, tuple[str, ...]] = {
+        "theme_token": ("change_theme", "adjust_palette", "tune_visual_identity"),
+        "render_surface": ("change_render_output", "adjust_svg_output", "refine_visual_finish"),
+        "layout_driver": ("change_layout", "rebalance_structure", "move_geometry"),
+        "ui_primitive": ("change_component_surface", "adjust_common_widgets", "tune_reusable_ui"),
+        "interaction_shell": ("change_navigation_surface", "adjust_shell_behavior", "refine_focus_flows"),
+        "focus_entry_point": ("start_focus_audit", "inspect_main_target", "trace_visual_impact"),
+        "high_leverage_module": ("inspect_high_impact_module", "map_blast_radius", "stage_careful_change"),
+        "package_aggregate": ("review_group_surface", "inspect_package_dependencies"),
+        "external_dependency": ("check_external_boundary", "validate_dependency_usage"),
+        "issue_note": ("review_issue", "fix_pipeline_warning"),
+        "module_logic": ("inspect_local_module", "make_scoped_change"),
+    }
+    return mapping.get(primary_role, ("inspect_local_module",))
+
+
+def _infer_blast_radius(node: DependencyNode, primary_role: str) -> str:
+    degree = int(node.inbound + node.outbound)
+
+    if node.kind == "package":
+        return "HIGH"
+    if primary_role in {"theme_token", "render_surface"}:
+        return "HIGH"
+    if primary_role in {"layout_driver", "interaction_shell", "focus_entry_point", "high_leverage_module"}:
+        return "MEDIUM" if degree < 10 else "HIGH"
+    if node.is_hub or degree >= 10:
+        return "MEDIUM"
+    if node.kind in {"external", "note"}:
+        return "LOW"
+    return "LOW"
+
+
+def _build_operational_notes(
+    node: DependencyNode,
+    primary_role: str,
+    secondary_role: str,
+    focus_key: str,
+) -> tuple[str, ...]:
+    notes: list[str] = []
+
+    relative_path = clean_text(str(node.metadata.get("relative_path", "")))
+    if relative_path:
+        notes.append(f"path={relative_path}")
+    elif clean_text(node.path):
+        notes.append(f"path={node.path}")
+
+    if focus_key and node.key == focus_key:
+        notes.append("focus-node")
+    if node.is_hub:
+        notes.append("hub-connectivity")
+    if node.kind == "package":
+        notes.append("aggregate-node")
+    if primary_role in {"theme_token", "render_surface"}:
+        notes.append("global-visual-impact-likely")
+    if secondary_role == "bridge":
+        notes.append("cross-lane-bridge")
+
+    return tuple(dedupe_preserve_order(notes))
+
+
+def _compute_start_here_score(
+    node: DependencyNode,
+    primary_role: str,
+    secondary_role: str,
+    focus_key: str,
+) -> int:
+    score = (int(node.inbound) * 3) + (int(node.outbound) * 2)
+
+    primary_bonus = {
+        "focus_entry_point": 22,
+        "theme_token": 18,
+        "render_surface": 16,
+        "layout_driver": 14,
+        "interaction_shell": 12,
+        "ui_primitive": 10,
+        "high_leverage_module": 10,
+        "package_aggregate": 8,
+        "module_logic": 4,
+        "external_dependency": 1,
+        "issue_note": 0,
+    }
+    score += primary_bonus.get(primary_role, 0)
+
+    if secondary_role == "hub":
+        score += 6
+    if secondary_role == "bridge":
+        score += 4
+    if focus_key and node.key == focus_key:
+        score += 10
+
+    return score
+
+
+def _apply_operational_metadata(node: DependencyNode, entry: OperationalIndexEntry) -> None:
+    node.metadata["operational_role"] = entry.primary_role
+    node.metadata["operational_secondary_role"] = entry.secondary_role
+    node.metadata["operational_blast_radius"] = entry.blast_radius
+    node.metadata["operational_start_here_score"] = entry.start_here_score
+    node.metadata["operational_change_intents"] = list(entry.change_intents)
+    node.metadata["operational_notes"] = list(entry.notes)
+
+
+def build_operational_index(
+    graph: DependencyGraph,
+    state: AnalysisState,
+    notify: Callable[[str, str], None],
+) -> dict[str, Any]:
+    """
+    Índice enriquecido del grafo.
+    No altera discovery. Solo clasifica y anota el grafo base.
+    """
+    notify("Construyendo índice operativo...", f"{len(graph.nodes)} nodos base")
+    graph.finalize_metrics()
+
+    focus_key = _operational_focus_key(graph, state)
+    entries: list[OperationalIndexEntry] = []
+
+    for node in graph.iter_nodes_sorted():
+        primary_role = _infer_primary_operational_role(node, graph, state, focus_key)
+        secondary_role = _infer_secondary_operational_role(
+            node,
+            primary_role,
+            graph,
+            state,
+            focus_key,
+        )
+        blast_radius = _infer_blast_radius(node, primary_role)
+        change_intents = _infer_change_intents(primary_role)
+        notes = _build_operational_notes(node, primary_role, secondary_role, focus_key)
+        start_here_score = _compute_start_here_score(
+            node,
+            primary_role,
+            secondary_role,
+            focus_key,
+        )
+
+        entry = OperationalIndexEntry(
+            node_key=node.key,
+            label=node.label,
+            path=clean_text(str(node.metadata.get("relative_path", ""))) or node.path,
+            primary_role=primary_role,
+            secondary_role=secondary_role,
+            blast_radius=blast_radius,
+            start_here_score=start_here_score,
+            change_intents=change_intents,
+            notes=notes,
+            inbound=int(node.inbound),
+            outbound=int(node.outbound),
+        )
+        entries.append(entry)
+        _apply_operational_metadata(node, entry)
+
+    entries.sort(
+        key=lambda item: (
+            -item.start_here_score,
+            item.label.lower(),
+        )
+    )
+
+    top_start_here = [entry.node_key for entry in entries[:12]]
+
+    by_role: dict[str, list[str]] = {}
+    for entry in entries:
+        by_role.setdefault(entry.primary_role, []).append(entry.node_key)
+
+    return {
+        "summary": {
+            "view": state.view,
+            "theme": state.theme,
+            "focus_target": state.focus_target,
+            "node_count": len(entries),
+            "top_start_here": top_start_here,
+        },
+        "by_role": by_role,
+        "entries": [entry.as_dict() for entry in entries],
+    }
+
+
+def write_operational_index_json(
+    index_payload: dict[str, Any],
+    output_path: Path,
+    notify: Callable[[str, str], None],
+) -> None:
+    notify("Guardando índice operativo JSON...", str(output_path))
+    output_path.write_text(
+        json.dumps(index_payload, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+
+def render_operational_index_markdown(
+    index_payload: dict[str, Any],
+    state: AnalysisState,
+) -> str:
+    entries = list(index_payload.get("entries", []))
+    top_entries = entries[:12]
+
+    lines: list[str] = [
+        "# Operational Index",
+        "",
+        f"- View: `{state.view}`",
+        f"- Theme: `{state.theme}`",
+        f"- Focus target: `{state.focus_target or '(none)'}`",
+        f"- Nodes indexed: `{len(entries)}`",
+        "",
+        "## Start here",
+        "",
+    ]
+
+    for item in top_entries:
+        lines.extend(
+            [
+                f"### {item['label']}",
+                f"- Role: `{item['primary_role']}`",
+                f"- Secondary role: `{item['secondary_role']}`",
+                f"- Path: `{item['path']}`",
+                f"- Blast radius: `{item['blast_radius']}`",
+                f"- Start-here score: `{item['start_here_score']}`",
+                f"- Change intents: {', '.join(item.get('change_intents', [])) or '(none)'}",
+                f"- Notes: {', '.join(item.get('notes', [])) or '(none)'}",
+                "",
+            ]
+        )
+
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def write_operational_index_markdown(
+    index_payload: dict[str, Any],
+    state: AnalysisState,
+    output_path: Path,
+    notify: Callable[[str, str], None],
+) -> None:
+    notify("Guardando índice operativo Markdown...", str(output_path))
+    output_path.write_text(
+        render_operational_index_markdown(index_payload, state),
+        encoding="utf-8",
+    )
 
 
 # ============================================================
@@ -7280,107 +7101,107 @@ def theme_silver_frost_cyan() -> ThemeBundle:
         is_default=True,
         token_overrides={
             "surfaces": {
-                "canvas_start": "#050913",
-                "canvas_mid": "#0d1520",
-                "canvas_end": "#172332",
-                "header_band": "#182231",
-                "panel": "#17202c",
-                "panel_alt": "#1c2734",
-                "panel_soft": "#111923",
-                "legend_panel": "#16212c",
-                "warning_panel": "#2a241d",
-                "lane_header_start": "#1d2a39",
-                "lane_header_end": "#182330",
-                "node_package_start": "#213244",
-                "node_package_end": "#182534",
-                "node_module_start": "#1d2b39",
-                "node_module_end": "#162230",
-                "node_external_start": "#202b3c",
-                "node_external_end": "#182231",
-                "node_note_start": "#2f2a22",
-                "node_note_end": "#241f18",
-                "node_focus_hero_start": "#263748",
-                "node_focus_hero_end": "#1a2735",
-                "node_focus_inbound_start": "#203246",
-                "node_focus_inbound_end": "#172536",
-                "node_focus_outbound_start": "#1d2e3e",
-                "node_focus_outbound_end": "#15212d",
-                "node_focus_mixed_start": "#223042",
-                "node_focus_mixed_end": "#182433",
-                "node_context_muted_start": "#17202b",
-                "node_context_muted_end": "#111821",
-                "node_hub_accent_start": "#2a3949",
-                "node_hub_accent_end": "#1d2936",
+                "canvas_start": "#101319",
+                "canvas_mid": "#1a1f27",
+                "canvas_end": "#2b3139",
+                "header_band": "#d6dce6",
+                "panel": "#cfd6e0",
+                "panel_alt": "#dbe2eb",
+                "panel_soft": "#b8c2ce",
+                "legend_panel": "#d6dde7",
+                "warning_panel": "#c7c1b8",
+                "lane_header_start": "#e1e6ee",
+                "lane_header_end": "#cfd6e0",
+                "node_package_start": "#d7e0ea",
+                "node_package_end": "#c7d1dd",
+                "node_module_start": "#dce4ee",
+                "node_module_end": "#ccd6e2",
+                "node_external_start": "#dee7f0",
+                "node_external_end": "#c8d4e0",
+                "node_note_start": "#d8d7d3",
+                "node_note_end": "#c7c4be",
+                "node_focus_hero_start": "#e7edf6",
+                "node_focus_hero_end": "#ced8e5",
+                "node_focus_inbound_start": "#dfe8f1",
+                "node_focus_inbound_end": "#cad7e3",
+                "node_focus_outbound_start": "#dde7f0",
+                "node_focus_outbound_end": "#c8d4df",
+                "node_focus_mixed_start": "#e3ebf4",
+                "node_focus_mixed_end": "#cdd8e4",
+                "node_context_muted_start": "#c6d0dc",
+                "node_context_muted_end": "#b8c3d0",
+                "node_hub_accent_start": "#e8eef7",
+                "node_hub_accent_end": "#d4dde8",
             },
             "text": {
-                "title": "#f4fbff",
-                "body": "#d8e6f2",
-                "muted": "#a8bdd1",
-                "soft": "#91a8be",
-                "code": "#bed0e2",
-                "warning": "#d7c19f",
+                "title": "#eef4fb",
+                "body": "#334556",
+                "muted": "#587086",
+                "soft": "#71869a",
+                "code": "#455b70",
+                "warning": "#8b6c4c",
                 "inverse": "#ffffff",
-                "badge_dark": "#08111a",
+                "badge_dark": "#102030",
                 "badge_light": "#ffffff",
             },
             "accents": {
-                "primary": "#8feeff",
-                "secondary": "#b7f6ff",
-                "tertiary": "#ccd9ff",
-                "success": "#7fdbef",
-                "warning": "#c5ac84",
-                "danger": "#bda8a1",
-                "focus": "#8cefff",
-                "hub": "#b7f6ff",
+                "primary": "#84edff",
+                "secondary": "#a8f4ff",
+                "tertiary": "#c1d4ff",
+                "success": "#79d8ef",
+                "warning": "#c9a97a",
+                "danger": "#c78686",
+                "focus": "#82ebff",
+                "hub": "#a8f4ff",
             },
             "borders": {
-                "subtle": "#415366",
-                "panel": "#566b81",
-                "lane": "#4d6075",
-                "strong": "#8cefff",
-                "focus": "#8cefff",
-                "muted": "#5f7388",
-                "node_package": "#93d8ee",
-                "node_module": "#83d7ed",
-                "node_external": "#b6cff8",
-                "node_note": "#b9a37f",
-                "warning": "#b9a37f",
+                "subtle": "#9fabb9",
+                "panel": "#dfe6ef",
+                "lane": "#d5dde8",
+                "strong": "#92f0ff",
+                "focus": "#82ebff",
+                "muted": "#92a1b1",
+                "node_package": "#9fd9ee",
+                "node_module": "#91d8eb",
+                "node_external": "#afd8f2",
+                "node_note": "#c5b79a",
+                "warning": "#c5b79a",
             },
             "ambient": {
-                "grid": "#dceafb",
-                "grid_opacity": 0.05,
-                "grid_size": 32,
-                "grid_stroke_width": 0.8,
-                "halo_a_color": "#9af3ff",
-                "halo_a_secondary": "#d8edff",
-                "halo_a_opacity": 0.15,
-                "halo_a_fade_opacity": 0.04,
+                "grid": "#dbe8f6",
+                "grid_opacity": 0.16,
+                "grid_size": 28,
+                "grid_stroke_width": 0.9,
+                "halo_a_color": "#93f4ff",
+                "halo_a_secondary": "#d7ecff",
+                "halo_a_opacity": 0.20,
+                "halo_a_fade_opacity": 0.07,
                 "halo_b_color": "#ffffff",
-                "halo_b_opacity": 0.09,
-                "header_glow": "#92efff",
+                "halo_b_opacity": 0.14,
+                "header_glow": "#8defff",
             },
         },
         effect_overrides={
             "glow_intensity": {
-                "ambient": 0.10,
-                "edge": 0.08,
-                "focus": 0.18,
-                "header": 0.10,
+                "ambient": 0.09,
+                "edge": 0.07,
+                "focus": 0.16,
+                "header": 0.08,
             },
             "shadow_intensity": {
-                "node": 0.22,
-                "panel": 0.16,
-                "soft": 0.08,
+                "node": 0.16,
+                "panel": 0.12,
+                "soft": 0.06,
             },
             "border_emphasis": {
                 "standard": 1.08,
                 "strong": 1.24,
-                "focus": 1.62,
+                "focus": 1.56,
                 "hub": 1.34,
             },
             "shine_intensity": {
-                "standard": 0.16,
-                "focus": 0.22,
+                "standard": 0.26,
+                "focus": 0.20,
                 "panel": 0.10,
             },
         },
@@ -7757,7 +7578,7 @@ def _build_theme_alias_to_id(manifests: Iterable[ThemeManifest]) -> dict[str, st
 
 def _is_dark_theme(theme_id: str) -> bool:
     lowered = clean_text(theme_id).lower()
-    return lowered not in {"light", "paper", "white"}
+    return lowered not in {"light", "paper", "white", "silver_frost_cyan", "silver", "frost"}
 
 
 def _bundle_section(bundle: ThemeBundle, section: str) -> dict[str, Any]:
@@ -8712,111 +8533,6 @@ def build_app_stylesheet(theme_id: str) -> str:
     tooltip_bg = _with_alpha(_mix_hex(t["header_fill"], t["canvas_bg"], 0.14 if dark else 0.05), 0.94 if dark else 0.98)
     tooltip_border = _with_alpha(t["focus"], 0.22 if dark else 0.28)
 
-    if silver_theme:
-        shell_top = _with_alpha("#eef6ff", 0.08)
-        shell_bottom = _with_alpha("#94a8c1", 0.04)
-        shell_border = _with_alpha("#eef8ff", 0.24)
-        shell_glow = _with_alpha("#ffffff", 0.04)
-        shell_rim = _with_alpha(t["focus"], 0.42)
-
-        hero_top = _with_alpha("#eef7ff", 0.10)
-        hero_bottom = _with_alpha(t["focus"], 0.06)
-        hero_border = _with_alpha(t["focus"], 0.44)
-
-        card_top = _with_alpha("#edf6ff", 0.09)
-        card_bottom = _with_alpha("#a4b5ca", 0.05)
-        muted_top = _with_alpha("#e6f1fb", 0.10)
-        muted_bottom = _with_alpha("#9cb0c8", 0.06)
-        footer_top = _with_alpha("#eef6ff", 0.10)
-        footer_bottom = _with_alpha("#9caec5", 0.06)
-        card_border = _with_alpha("#eaf6ff", 0.18)
-        muted_border = _with_alpha("#eaf6ff", 0.15)
-        line = _with_alpha("#d8e7f6", 0.14)
-        line_glow = _with_alpha(t["focus"], 0.22)
-
-        title = "#f5fbff"
-        subtitle = "#c1d0df"
-        section = "#edf6ff"
-        field = "#95eeff"
-        eyebrow = "#7fc8df"
-        hint = "#98adc2"
-        value = "#e0edf9"
-        mono = "#b8cade"
-        chrome_title = "#dce8f3"
-        chrome_icon = "#86e9ff"
-        chrome_bg_top = _with_alpha("#edf6ff", 0.06)
-        chrome_bg_bottom = _with_alpha("#95aac3", 0.04)
-        chrome_border = _with_alpha("#eef8ff", 0.10)
-        chrome_button_fg = "#ebf4ff"
-        chrome_button_bg = _with_alpha("#0c1520", 0.44)
-        chrome_button_border = _with_alpha("#eef8ff", 0.08)
-        chrome_button_hover = _with_alpha(t["focus"], 0.16)
-        chrome_close_hover = _with_alpha(t["focus"], 0.18)
-        chrome_close_border = _with_alpha(t["focus"], 0.26)
-
-        neutral_chip_text = "#d7e6f3"
-        neutral_chip_bg = _with_alpha("#0c1520", 0.34)
-        neutral_chip_border = _with_alpha("#eef8ff", 0.12)
-        good_chip_text = "#d7f3fa"
-        good_chip_bg = _with_alpha(t["badge_out"], 0.12)
-        good_chip_border = _with_alpha(t["badge_out"], 0.28)
-        warn_chip_text = "#f0e5d4"
-        warn_chip_bg = _with_alpha(t["warning_stroke"], 0.12)
-        warn_chip_border = _with_alpha(t["warning_stroke"], 0.26)
-        accent_chip_text = "#ecfbff"
-        accent_chip_bg = _with_alpha(t["focus"], 0.14)
-        accent_chip_border = _with_alpha(t["focus"], 0.34)
-
-        input_bg = _with_alpha("#0a1320", 0.56)
-        input_fg = "#eff8ff"
-        input_border = _with_alpha("#e7f5ff", 0.14)
-        input_hover = _with_alpha(t["focus"], 0.52)
-        input_focus = _with_alpha(t["focus"], 0.84)
-        input_focus_bg = _with_alpha("#0e1824", 0.68)
-        input_disabled_fg = _with_alpha("#9db0c4", 0.76)
-        input_disabled_bg = _with_alpha("#0b121c", 0.28)
-        input_disabled_border = _with_alpha("#e7f5ff", 0.06)
-        dropdown_bg = _with_alpha("#0f1825", 0.96)
-        selection_bg = t["focus"]
-        selection_fg = "#08111a"
-
-        primary_top = _mix_hex(t["focus"], "#ffffff", 0.20)
-        primary_bottom = _mix_hex(t["focus"], "#74dcef", 0.08)
-        primary_border = _with_alpha(t["focus"], 0.40)
-        primary_hover_top = _mix_hex(t["focus"], "#ffffff", 0.28)
-        primary_hover_bottom = _mix_hex(t["focus"], "#8cefff", 0.18)
-
-        secondary_top = _with_alpha("#edf6ff", 0.10)
-        secondary_bottom = _with_alpha("#95aac1", 0.05)
-        secondary_border = _with_alpha("#eef8ff", 0.14)
-        secondary_hover_top = _with_alpha("#edf6ff", 0.14)
-        secondary_hover_bottom = _with_alpha(t["focus"], 0.07)
-
-        success_top = primary_top
-        success_bottom = primary_bottom
-        success_border = _with_alpha(t["focus"], 0.30)
-        success_hover_top = primary_hover_top
-        success_hover_bottom = primary_hover_bottom
-
-        danger_top = _with_alpha("#f2f6fb", 0.10)
-        danger_bottom = _with_alpha("#a6b4c3", 0.06)
-        danger_border = _with_alpha("#eef8ff", 0.14)
-        danger_hover_top = _with_alpha("#f2f6fb", 0.14)
-        danger_hover_bottom = _with_alpha(t["focus"], 0.05)
-
-        disabled_bg = _with_alpha("#0d141d", 0.22)
-        disabled_fg = _with_alpha("#9fb4c7", 0.64)
-        disabled_border = _with_alpha("#e7f5ff", 0.06)
-
-        progress_bg = _with_alpha("#0c1520", 0.44)
-        progress_border = _with_alpha("#eef8ff", 0.12)
-        progress_text = "#e4f0fb"
-        progress_chunk_top = _mix_hex(t["focus"], "#ffffff", 0.18)
-        progress_chunk_bottom = _mix_hex(t["focus"], "#6dd9ee", 0.06)
-
-        tooltip_bg = _with_alpha("#0f1825", 0.94)
-        tooltip_border = _with_alpha(t["focus"], 0.24)
-
     return f"""
     QDialog,
     QMessageBox {{
@@ -9144,22 +8860,6 @@ def build_app_stylesheet(theme_id: str) -> str:
     QPushButton[chrome="true"][chrome_kind="close"]:hover {{
         background: {chrome_close_hover};
         border: 1px solid {chrome_close_border};
-    }}
-
-    QLineEdit[readOnly="true"],
-    QLabel[role="mono"] {{
-        selection-background-color: {selection_bg};
-        selection-color: {selection_fg};
-    }}
-
-    QFrame[card="hero"] QLabel[role="subtitle"] {{
-        color: {subtitle};
-    }}
-
-    QFrame[card="muted"] QLabel[role="value"],
-    QFrame[card="muted"] QLabel[role="mono"],
-    QFrame[card="muted"] QLabel[role="hint"] {{
-        color: {mono};
     }}
 
     QProgressBar {{
@@ -11999,16 +11699,6 @@ def _set_progress_status(
     _refresh_progress(progress)
 
 
-def _set_progress_footer(
-    progress: object | None,
-    text: str,
-) -> None:
-    if progress is None:
-        return
-    _set_widget_text(progress, "footer_hint", text or "")
-    _refresh_progress(progress)
-
-
 def _finalize_progress(
     progress: object | None,
     status: str,
@@ -12314,25 +12004,6 @@ def build_success_message(
     return "\n".join(lines)
 
 
-def build_success_footer_text(
-    *,
-    output_path: Path,
-    state: AnalysisState,
-    graph: DependencyGraph,
-) -> str:
-    lines = [
-        f"Archivo: {short_path(str(output_path), 92)}",
-        f"Vista: {state.view} • Preset: {state.visibility_preset} • Tema: {state.theme}",
-        f"Nodos: {len(graph.nodes)} • Relaciones: {len(graph.edges)}",
-    ]
-    if state.external_roots_total > 0:
-        lines.append(
-            f"Externos detectados: {state.external_import_total} refs • {state.external_roots_total} roots"
-        )
-    lines.append("Cierra esta ventana para generar otro grafo. La carpeta de salida se abrirá al cerrar.")
-    return "\n".join(lines)
-
-
 def main() -> int:
     progress: Optional[ProgressUI] = None
     selected_theme = DEFAULT_THEME
@@ -12395,21 +12066,24 @@ def main() -> int:
             # 8. Fusionar issues
             merge_analysis_issues_into_graph(graph, analysis_graph)
 
-            # 9. Enriquecer grafo para presentación
+            # 9. Construir índice operativo sobre el grafo completo
+            operational_index = build_operational_index(graph, state, notify)
+
+            # 10. Enriquecer grafo para presentación
             graph = enrich_graph_for_presentation(graph, state)
 
-            # 10. Simplificar solo la capa visible, sin tocar discovery
+            # 11. Simplificar solo la capa visible, sin tocar discovery
             graph = simplify_visible_graph(graph, state)
             graph = _ensure_graph_has_visible_content(graph, state)
 
-            # 11. Calcular layout
+            # 12. Calcular layout
             notify("Calculando layout...", f"{len(graph.nodes)} nodos")
             layout = layout_dependency_graph(graph, state, notify)
 
-            # 12. Renderizar SVG
+            # 13. Renderizar SVG
             svg_markup = render_svg(graph, layout, state, notify)
 
-            # 13. Guardar SVG
+            # 14. Guardar SVG
             output_path = make_output_path(
                 selected_path=state.selected_path,
                 theme=state.theme,
@@ -12418,27 +12092,46 @@ def main() -> int:
             )
             write_svg(svg_markup, output_path, notify)
 
-            # 14. Mostrar éxito
-            success_detail = build_success_message(
-                output_path=output_path,
-                state=state,
-                graph=graph,
+            # 15. Guardar sidecars del índice operativo
+            operational_json_path = make_operational_output_path_from_svg(
+                output_path,
+                kind="json",
             )
-            _finalize_progress(progress, "Todo quedó listo.", success_detail)
-            _set_progress_footer(
-                progress,
-                build_success_footer_text(
+            write_operational_index_json(operational_index, operational_json_path, notify)
+
+            operational_md_path = make_operational_output_path_from_svg(
+                output_path,
+                kind="md",
+            )
+            write_operational_index_markdown(
+                operational_index,
+                state,
+                operational_md_path,
+                notify,
+            )
+
+            # 16. Mostrar éxito
+            _finalize_progress(progress, "Todo quedó listo.", str(output_path))
+            show_message_dialog(
+                "info",
+                APP_TITLE,
+                build_success_message(
                     output_path=output_path,
                     state=state,
                     graph=graph,
                 ),
+                parent=_progress_parent(progress),
+                theme_id=state.theme,
             )
 
-            # 15. Esperar cierre manual y volver al selector
-            _wait_for_user_close(progress)
-
-            # 16. Abrir carpeta de salida al cierre
+            # 17. Abrir carpeta de salida
             open_output_location(output_path.parent)
+
+            # 18. Esperar cierre manual y volver al selector
+            _wait_for_user_close(
+                progress,
+                "Proceso terminado. Cierra esta ventana para generar otro grafo.",
+            )
             destroy_progress_ui(progress)
             progress = None
 
