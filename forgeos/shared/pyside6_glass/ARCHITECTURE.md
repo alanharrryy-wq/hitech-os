@@ -2,7 +2,7 @@
 
 ## 1) Framework Core
 
-Path: `F:\repos\hitech-os\forgeos\shared\pyside6_glass`
+Path: `forgeos/shared/pyside6_glass`
 
 Responsibilities:
 
@@ -14,6 +14,7 @@ Responsibilities:
 - workspace persistence (`persistence.py`)
 - reusable widgets/primitives (`primitives.py`)
 - diagnostics (`diagnostics.py`)
+- catalog registry contracts (`catalog.py`)
 
 Rules:
 
@@ -94,7 +95,7 @@ Prepared/scaffold direction:
 
 Example:
 
-- `F:\repos\hitech-os\apps\deltaforge\ui\adapters\glass_framework_adapter.py`
+- `apps/deltaforge/ui/adapters/glass_framework_adapter.py`
 
 Responsibilities:
 
@@ -110,7 +111,7 @@ Rules:
 
 ## 6) Demo / Example Layer
 
-Path: `F:\repos\hitech-os\forgeos\shared\pyside6_glass\examples`
+Path: `forgeos/shared/pyside6_glass/examples`
 
 Purpose:
 
@@ -126,6 +127,114 @@ Included:
 - alternate preset sample
 - runtime orchestration sample (theme/layout/persistence/visibility)
 - integration sample (command/query/snapshot/event via adapters)
+- registry-driven catalog shell (category/search/preview/launch)
+
+## 7) Catalog Layer
+
+Implemented in:
+
+- `catalog.py` (registry + metadata contracts)
+- `examples/catalog_builtin.py` (built-in entry registration)
+- `examples/catalog_shell.py` (catalog browser UI)
+
+Responsibilities:
+
+- keep catalog entries discoverable and metadata-rich
+- provide shared registration API for built-ins and extension entries
+- decouple catalog content from catalog UI
+
+Key contracts:
+
+- `GlassCatalogEntry`
+- `register_catalog_entry`
+- `list_catalog_entries`
+- `get_catalog_entry`
+- `list_catalog_categories`
+- `list_catalog_tags`
+- `list_catalog_entries(tags=..., required_capabilities=..., limit=...)`
+- `register_builtin_catalog_entries`
+
+## 8) Data and Dashboard Layer
+
+Implemented in:
+
+- `data.py` (neutral query/result/provider contracts + registry)
+- `data_providers.py` (built-in mock + local SQLite providers)
+- `dashboard.py` (provider-bound UI surface for operational dashboards)
+- `examples/catalog_dashboard_entries.py` (catalog integration of provider-backed dashboards)
+
+Responsibilities:
+
+- keep data retrieval provider-based and transport-neutral
+- expose loading/empty/error/stale semantics consistently
+- keep query execution separate from widget composition
+- make local development practical via deterministic mock and SQLite providers
+- provide diagnostics and refresh metadata for operational visibility
+
+Core contracts:
+
+- `DataQuery`
+- `DataResult`
+- `DataState`
+- `RefreshPolicy`
+- `DataProviderMeta`
+- `DashboardDataProvider`
+- `DashboardQuerySpec`
+- `DashboardDataSurface`
+
+Behavior consistency goals implemented:
+
+- state-specific rendering contracts (`loading`, `empty`, `error`, `stale`)
+- filter-aware local rendering for rows/feed surfaces
+- refresh/policy visibility via status badges and diagnostics blocks
+
+Built-in providers:
+
+- `builtin.mock_dashboard` (`InMemoryDashboardProvider`)
+- `builtin.local_sqlite` (`LocalSQLiteDashboardProvider`)
+
+Extension model:
+
+1. register provider with `register_data_provider(...)`
+2. bind provider/query to UI with `DashboardDataSurface`
+3. register catalog entry that composes template + dashboard surface
+
+## 9) Reusable UI Assets Layer
+
+Implemented in:
+
+- `assets.py` (reusable premium controls and UI assets)
+- `theme.py` (asset role/variant style mapping)
+- `examples/catalog_assets_entries.py` (asset gallery catalog entries)
+
+Responsibilities:
+
+- provide reusable workstation-grade controls for dashboard/admin surfaces
+- keep controls neutral and extension-friendly
+- standardize interaction states and visual affordances
+- support fast composition of control-heavy panels
+
+Core assets:
+
+- `GlassIconButton`
+- `GlassSegmentedControl`
+- `TogglePill`
+- `FilterChipBar`
+- `SearchCommandBar`
+- `CompactToolbar`
+- `StatusPill`
+- `StatPill`
+- `ControlCard`
+- `CollapsibleSection`
+- `EnhancedSlider`
+- `ParameterPanel`
+- `MiniLegend`
+- `HeroPanel`
+
+Consolidation note:
+
+- `QuickActionsStrip` is preserved as a compatibility primitive and internally aligned with the shared toolbar asset path instead of diverging into a second toolbar implementation.
+- state cards now share a common internal base for consistent action/meta presentation across loading/empty/error variants.
 
 ## Config Resolution Model
 

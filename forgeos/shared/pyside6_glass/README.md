@@ -26,6 +26,7 @@ from forgeos.shared.pyside6_glass import (
     register_theme,
     register_template_preset,
     register_icon_pack,
+    list_button_variants,
 )
 ```
 
@@ -42,6 +43,11 @@ Core modules:
 - `persistence.py`: workspace state schema and migrations.
 - `primitives.py`: reusable higher-level UI blocks.
 - `diagnostics.py`: config/runtime inspection helpers.
+- `catalog.py`: registry-based framework catalog API (entries, categories, search).
+- `data.py`: neutral data query/result/provider contracts and provider registry.
+- `data_providers.py`: built-in mock and local SQLite providers for local dashboard development.
+- `dashboard.py`: provider-bound dashboard surface for metrics/table/feed/payload rendering.
+- `assets.py`: premium reusable controls/assets for workstation dashboards.
 
 ## Configuration Hierarchy
 
@@ -99,7 +105,200 @@ Current adapters:
 - `WebSocketIntegrationAdapterScaffold` (prepared)
 - `IpcIntegrationAdapterScaffold` (prepared)
 
-Read full details in [INTEGRATION.md](F:/repos/hitech-os/forgeos/shared/pyside6_glass/INTEGRATION.md).
+Read full details in [INTEGRATION.md](./INTEGRATION.md).
+
+## Glass Catalog
+
+The examples host is now a registry-driven **Glass Catalog**.
+
+It provides:
+
+- predefined built-in entries for compositions, presets, themes, primitives, and runtime/integration showcases
+- predefined provider-backed **Data Dashboards** entries for operational-style surfaces
+- predefined **Controls & Assets** gallery entries for reusable premium components
+- category browsing + search filtering
+- optional tag filtering for curated discovery
+- metadata-rich item details
+- preview and workspace launch actions
+
+Core catalog APIs:
+
+- `register_catalog_entry(...)`
+- `list_catalog_entries(...)`
+- `get_catalog_entry(...)`
+- `list_catalog_categories(...)`
+- `list_catalog_tags(...)`
+- `register_builtin_catalog_entries(...)`
+
+Catalog shell widgets:
+
+- `GlassCatalogShell` (new main browser widget)
+- `GlassExampleCatalog` (backward-compatible entry point)
+
+### Add a custom catalog entry
+
+```python
+from forgeos.shared.pyside6_glass import register_catalog_entry
+
+register_catalog_entry(
+    entry_id="custom.my_entry",
+    title="My Custom Entry",
+    subtitle="Short summary",
+    description="What this showcases.",
+    category="Custom",
+    tags=("custom", "starter"),
+    builder=lambda parent: MyCatalogWidget(parent),
+    sort_order=900,
+)
+```
+
+The catalog shell automatically picks up registered entries.
+
+### Built-in Data Dashboard entries
+
+The catalog includes provider-driven starter entries such as:
+
+- `Live Metrics Board`
+- `Service Health Monitor`
+- `Alerts and Incidents Surface`
+- `Jobs / Queue Monitor`
+- `Table + Detail Inspector`
+- `Time-Series Placeholder Dashboard`
+- `Operational Overview`
+- `Data Source Diagnostics`
+- `Refreshable KPI Surface` (state simulation: loading/empty/error/stale)
+- `Event Stream / Activity Feed`
+- `Filterable Control Center`
+- `Split View Operations Console`
+
+These entries run through the neutral provider contracts in `data.py`.
+
+### Built-in Controls and Assets entries
+
+The catalog includes a dedicated reusable controls gallery:
+
+- `Buttons Gallery`
+- `Icon Buttons`
+- `Segmented + Toggle Controls`
+- `Filter Chips + Status Badges`
+- `Enhanced Sliders`
+- `Search + Toolbar Shell`
+- `Stat Pills / Micro KPI`
+- `Control Cards`
+- `Collapsible Sections`
+- `Parameter Panel`
+- `Hero Header Panel`
+
+## Data and Dashboard Subsystem
+
+`pyside6_glass` now includes a neutral data layer for dashboard-style compositions.
+
+Key contracts:
+
+- `DataQuery`
+- `DataResult`
+- `DataState`
+- `RefreshPolicy`
+- `DataProviderMeta`
+- `DashboardDataProvider`
+
+Registry and execution APIs:
+
+- `register_data_provider(...)`
+- `list_data_providers()`
+- `get_data_provider(...)`
+- `execute_data_query(...)`
+- `data_provider_diagnostics(...)`
+- `describe_data_provider(...)`
+
+Built-in providers:
+
+- `InMemoryDashboardProvider` (`builtin.mock_dashboard`)
+- `LocalSQLiteDashboardProvider` (`builtin.local_sqlite`)
+
+Registration helper:
+
+- `register_builtin_data_providers(...)`
+
+Detailed reference: [DATA_DASHBOARD.md](./DATA_DASHBOARD.md)
+
+### Reusable dashboard rendering helper
+
+Use `DashboardDataSurface` + `DashboardQuerySpec` to bind provider output into a reusable dashboard panel with:
+
+- loading/empty/error handling
+- refresh action and optional polling behavior via `RefreshPolicy`
+- metric card rendering
+- table rendering
+- feed rendering
+- payload/diagnostics blocks
+- local search/filter chips for rows/feed slices
+- compact toolbar actions for refresh/clear filters
+
+## Premium UI Assets Layer
+
+`assets.py` provides reusable workstation controls with neutral semantics:
+
+- action controls: `GlassIconButton`, `CompactToolbar` (`primary`, `secondary`, `subtle`, `ghost`, semantic variants)
+- selection controls: `GlassSegmentedControl`, `TogglePill`, `FilterChipBar`
+- search/control surfaces: `SearchCommandBar`, `ParameterPanel`, `ControlCard`
+- status visualization: `StatusPill`, `StatPill`, `MiniLegend`
+- structure/shells: `CollapsibleSection`, `HeroPanel`, `EnhancedSlider`
+
+Consolidation note:
+
+- `QuickActionsStrip` remains available for backward compatibility but now follows the same toolbar asset path as `CompactToolbar` instead of maintaining a separate duplicate behavior surface.
+
+Usage pattern:
+
+1. compose assets in templates (`GlassPanelTemplate`)
+2. bind data using `DashboardDataSurface` when needed
+3. register final composition in catalog with `register_catalog_entry(...)`
+
+### Register a custom provider
+
+```python
+from forgeos.shared.pyside6_glass import (
+    DataProviderMeta,
+    DataResult,
+    FunctionDataProvider,
+    register_data_provider,
+)
+
+provider = FunctionDataProvider(
+    meta=DataProviderMeta(
+        provider_id="custom.local",
+        title="Custom Local Provider",
+        source_kind="in_memory",
+    ),
+    handler=lambda query: DataResult.success(query, metrics={"value": 42}),
+)
+
+register_data_provider(provider)
+```
+
+Inspect supported button variants:
+
+```python
+from forgeos.shared.pyside6_glass import list_button_variants
+
+print(list_button_variants())
+```
+
+### Local-development data source
+
+The local SQLite provider writes to:
+
+- `tools/_local/tmp/pyside6_glass_dashboard.sqlite3`
+
+Override path during registration:
+
+```python
+from pathlib import Path
+from forgeos.shared.pyside6_glass import register_builtin_data_providers
+
+register_builtin_data_providers(local_sqlite_path=Path("tools/_local/tmp/my_dashboard.sqlite3"))
+```
 
 ## Tabs and Panels
 
@@ -181,7 +380,16 @@ Use:
 python -m forgeos.shared.pyside6_glass.examples
 ```
 
+Optional example modes:
+
+```bash
+python -m forgeos.shared.pyside6_glass.examples --mode integration
+python -m forgeos.shared.pyside6_glass.examples --mode smoke
+```
+
 Demo catalog includes form, dashboard, inspector, tabbed workspace, alternate preset, and runtime orchestration examples.
+It also includes provider-backed data dashboards for metrics, health, incidents, queue, diagnostics and event feed scenarios.
+It now includes controls/assets gallery entries as a reusable starter library.
 
 Integration demo:
 

@@ -563,9 +563,37 @@ QPushButton:hover {{
 QPushButton:pressed {{
     background: {_gradient(p.button_bottom, p.button_top)};
 }}
+QPushButton:focus {{
+    border: {shell_border_px}px solid {p.accent};
+}}
 QPushButton:disabled {{
     color: {p.tab_text_muted};
     border-color: {p.input_border};
+    background: {_gradient(p.card_top, p.card_bottom)};
+}}
+QPushButton[variant="primary"] {{
+    background: {_gradient(p.button_top, p.button_bottom)};
+    border: {shell_border_px}px solid {p.accent};
+}}
+QPushButton[variant="secondary"] {{
+    background: {_gradient(p.card_top, p.card_bottom)};
+    border: {shell_border_px}px solid {p.button_border};
+}}
+QPushButton[variant="subtle"] {{
+    background: rgba(0, 0, 0, 0.0);
+    border: {shell_border_px}px solid {p.card_border};
+    color: {p.text_muted};
+}}
+QPushButton[variant="subtle"]:hover {{
+    color: {p.text_primary};
+    border-color: {p.button_border};
+}}
+QPushButton[variant="ghost"] {{
+    background: rgba(0, 0, 0, 0.0);
+    border: {shell_border_px}px solid {p.input_border};
+}}
+QPushButton[variant="ghost"]:hover {{
+    border-color: {p.accent};
 }}
 QPushButton[variant="danger"] {{
     background: {_gradient(p.danger_top, p.danger_bottom)};
@@ -638,5 +666,102 @@ QProgressBar {{
 QProgressBar::chunk {{
     border-radius: {r.progress - 1}px;
     background: {_gradient(p.progress_chunk_top, p.progress_chunk_bottom)};
+}}
+
+QToolButton[assetRole="icon_button"] {{
+    background: rgba(0, 0, 0, 0.0);
+    border: {shell_border_px}px solid {p.input_border};
+    border-radius: {r.button}px;
+    padding: 4px;
+}}
+QToolButton[assetRole="icon_button"]:hover {{
+    border-color: {p.accent};
+    background: {p.accent_soft};
+}}
+QToolButton[assetRole="icon_button"]:disabled {{
+    border-color: {p.input_border};
+    background: transparent;
+}}
+
+QFrame[assetRole="segmented"],
+QFrame[assetRole="filter_chip_bar"],
+QFrame[assetRole="compact_toolbar"],
+QFrame[assetRole="mini_legend"] {{
+    background: {_gradient(p.card_top, p.card_bottom)};
+    border: {shell_border_px}px solid {p.card_border};
+    border-radius: {r.card}px;
+}}
+QPushButton[assetRole="segment_button"],
+QPushButton[assetRole="filter_chip"],
+QPushButton[assetRole="toggle_pill"] {{
+    border-radius: {r.chip}px;
+    padding: 4px 10px;
+}}
+QPushButton[assetRole="segment_button"]:checked,
+QPushButton[assetRole="filter_chip"]:checked,
+QPushButton[assetRole="toggle_pill"]:checked {{
+    background: {p.tab_active_bg};
+    border-color: {p.accent};
+}}
+QPushButton[assetRole="segment_button"]:focus,
+QPushButton[assetRole="filter_chip"]:focus,
+QPushButton[assetRole="toggle_pill"]:focus {{
+    border-color: {p.accent};
+}}
+QPushButton[assetRole="collapsible_header"] {{
+    text-align: left;
+    padding-left: 10px;
+}}
+QPushButton[assetRole="toolbar_button"] {{
+    padding: 4px 10px;
+}}
+
+QFrame[assetRole="search_bar"] {{
+    background: {p.input_bg};
+    border: {shell_border_px}px solid {p.input_border};
+    border-radius: {r.input}px;
+}}
+QFrame[assetRole="search_bar"] QLineEdit {{
+    border: none;
+    background: transparent;
+}}
+
+QLabel[assetRole="status_pill"] {{
+    border-radius: {r.chip}px;
+    border: {shell_border_px}px solid {p.input_border};
+    padding: 2px 8px;
+    color: {p.text_primary};
+    background: {p.tab_bg};
+}}
+QLabel[assetRole="status_pill"][statusKind="info"] {{
+    background: {p.tab_active_bg};
+    border-color: {p.accent};
+}}
+QLabel[assetRole="status_pill"][statusKind="success"] {{
+    background: {_gradient(p.success_top, p.success_bottom)};
+    border-color: {p.success_border};
+}}
+QLabel[assetRole="status_pill"][statusKind="warning"] {{
+    background: {_gradient(p.warning_top, p.warning_bottom)};
+    border-color: {p.warning_border};
+}}
+QLabel[assetRole="status_pill"][statusKind="error"] {{
+    background: {_gradient(p.danger_top, p.danger_bottom)};
+    border-color: {p.danger_border};
+}}
+QLabel[assetRole="status_pill"][statusKind="pending"] {{
+    background: {p.tab_pending_bg};
+    border-color: {p.tab_border};
+}}
+
+QFrame[assetRole="stat_pill"],
+QFrame[assetRole="control_card"],
+QFrame[assetRole="collapsible_section"],
+QFrame[assetRole="enhanced_slider"],
+QFrame[assetRole="parameter_panel"],
+QFrame[assetRole="hero_panel"] {{
+    background: {_gradient(p.card_top, p.card_bottom)};
+    border: {shell_border_px}px solid {p.card_border};
+    border-radius: {r.card}px;
 }}
 """

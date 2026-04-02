@@ -13,6 +13,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from .assets import CompactToolbar
 from .controls import create_button
 from .icons import apply_icon
 
@@ -75,14 +76,17 @@ class PanelHeader(QFrame):
         return button
 
 
-class QuickActionsStrip(QFrame):
+class QuickActionsStrip(CompactToolbar):
+    """Backward-compatible alias of CompactToolbar with hidden title.
+
+    Existing code keeps using QuickActionsStrip while sharing the same
+    implementation path as the newer toolbar asset.
+    """
+
     def __init__(self, parent: QWidget | None = None) -> None:
-        super().__init__(parent)
+        super().__init__("", parent=parent)
+        self.title_label.setVisible(False)
         self.setProperty("card", "muted")
-        layout = QHBoxLayout(self)
-        layout.setContentsMargins(10, 8, 10, 8)
-        layout.setSpacing(8)
-        self._layout = layout
 
     def add_action(
         self,
@@ -92,16 +96,12 @@ class QuickActionsStrip(QFrame):
         variant: str = "secondary",
         on_click: Callable[[], None] | None = None,
     ) -> QWidget:
-        button = create_button(
+        return super().add_action(
             text,
-            variant,
-            on_click,
-            parent=self,
             icon_name=icon_name,
-            icon_size="small",
+            variant=variant,
+            on_click=on_click,
         )
-        self._layout.addWidget(button)
-        return button
 
 
 @dataclass(frozen=True, slots=True)
@@ -132,48 +132,93 @@ class StatCard(QFrame):
         layout.addWidget(trend)
 
 
-class EmptyStateCard(QFrame):
-    def __init__(self, title: str, message: str, *, icon_name: str = "info", parent: QWidget | None = None) -> None:
-        super().__init__(parent)
-        self.setProperty("card", "muted")
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(14, 12, 14, 12)
-        layout.setSpacing(6)
-        header = PanelHeader(title, subtitle=message, icon_name=icon_name, parent=self)
-        layout.addWidget(header)
-
-
-class LoadingStateCard(QFrame):
-    def __init__(self, title: str = "Loading", *, progress: int = 0, parent: QWidget | None = None) -> None:
-        super().__init__(parent)
-        self.setProperty("card", "muted")
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(14, 12, 14, 12)
-        layout.setSpacing(8)
-        layout.addWidget(PanelHeader(title, subtitle="Preparing content...", icon_name="loader", parent=self))
-        self.progress = QProgressBar(self)
-        self.progress.setRange(0, 100)
-        self.progress.setValue(max(0, min(100, int(progress))))
-        layout.addWidget(self.progress)
-
-
-class ErrorStateCard(QFrame):
+class _StateCardBase(QFrame):
     def __init__(
         self,
-        title: str = "Error",
-        message: str = "Something went wrong.",
+        title: str,
+        message: str,
         *,
-        retry: Callable[[], None] | None = None,
+        icon_name: str,
+        meta: str = "",
         parent: QWidget | None = None,
     ) -> None:
         super().__init__(parent)
         self.setProperty("card", "muted")
         layout = QVBoxLayout(self)
         layout.setContentsMargins(14, 12, 14, 12)
-        layout.setSpacing(8)
-        layout.addWidget(PanelHeader(title, subtitle=message, icon_name="alert-triangle", parent=self))
+        layout.setSpacing(6)
+        self.header = PanelHeader(title, subtitle=message, icon_name=icon_name, parent=self)
+        layout.addWidget(self.header)
+        self.meta_label = QLabel(meta, self)
+        self.meta_label.setProperty("role", "caption")
+        self.meta_label.setWordWrap(True)
+        self.meta_label.setVisible(bool(meta))
+        layout.addWidget(self.meta_label)
+        self.actions = QHBoxLayout()
+        self.actions.setContentsMargins(0, 0, 0, 0)
+        self.actions.setSpacing(8)
+        layout.addLayout(self.actions)
+
+    def add_action(
+        self,
+        text: str,
+        *,
+        variant: str = "secondary",
+        icon_name: str | None = None,
+        on_click: Callable[[], None] | None = None,
+    ) -> QWidget:
+        button = create_button(text, variant, on_click, parent=self, icon_name=icon_name, icon_size="small")
+        self.actions.addWidget(button)
+        return button
+
+
+class EmptyStateCard(_StateCardBase):
+    def __init__(
+        self,
+        title: str,
+        message: str,
+        *,
+        icon_name: str = "info",
+        meta: str = "",
+        action_label: str | None = None,
+        action: Callable[[], None] | None = None,
+        parent: QWidget | None = None,
+    ) -> None:
+        super().__init__(title, message, icon_name=icon_name, meta=meta, parent=parent)
+        if action_label and action is not None:
+            self.add_action(action_label, variant="ghost", icon_name="refresh-cw", on_click=action)
+
+
+class LoadingStateCard(_StateCardBase):
+    def __init__(
+        self,
+        title: str = "Loading",
+        *,
+        message: str = "Preparing content...",
+        meta: str = "",
+        progress: int = 0,
+        parent: QWidget | None = None,
+    ) -> None:
+        super().__init__(title, message, icon_name="loader", meta=meta, parent=parent)
+        self.progress = QProgressBar(self)
+        self.progress.setRange(0, 100)
+        self.progress.setValue(max(0, min(100, int(progress))))
+        self.layout().addWidget(self.progress)
+
+
+class ErrorStateCard(_StateCardBase):
+    def __init__(
+        self,
+        title: str = "Error",
+        message: str = "Something went wrong.",
+        *,
+        details: str = "",
+        retry: Callable[[], None] | None = None,
+        parent: QWidget | None = None,
+    ) -> None:
+        super().__init__(title, message, icon_name="alert-triangle", meta=details, parent=parent)
         if retry is not None:
-            layout.addWidget(create_button("Retry", "warning", retry, parent=self, icon_name="refresh-cw"))
+            self.add_action("Retry", variant="warning", icon_name="refresh-cw", on_click=retry)
 
 
 class FormSectionShell(QFrame):

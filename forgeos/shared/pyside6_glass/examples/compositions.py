@@ -332,52 +332,19 @@ def build_orchestration_example(parent: QWidget | None = None) -> GlassPanelTemp
 
 
 class GlassExampleCatalog(QWidget):
-    """Single widget that hosts all framework demos for manual exploration."""
+    """
+    Backward-compatible entry point.
+
+    Legacy imports keep working while the implementation is delegated to
+    the richer registry-based catalog shell.
+    """
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
+        from .catalog_shell import GlassCatalogShell
+
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(10)
-
-        header = QHBoxLayout()
-        title = QLabel("Glass Framework Example Catalog", self)
-        title.setProperty("role", "title")
-        subtitle = QLabel("Form, dashboard, inspector, tabbed and alternate preset samples.", self)
-        subtitle.setProperty("role", "subtitle")
-        subtitle.setWordWrap(True)
-        header_col = QVBoxLayout()
-        header_col.addWidget(title)
-        header_col.addWidget(subtitle)
-        header.addLayout(header_col, 1)
-        layout.addLayout(header)
-
-        catalog = GlassPanelTemplate(
-            self,
-            config=get_template_preset("tabbed_workspace"),
-            title="Examples",
-            subtitle="Use tabs to switch sample compositions.",
-            eyebrow="DEMO",
-        )
-        layout.addWidget(catalog, 1)
-
-        examples = [
-            ("form", "Form", build_form_example),
-            ("dashboard", "Dashboard", build_dashboard_example),
-            ("inspector", "Inspector", build_inspector_example),
-            ("workspace", "Workspace", build_tabbed_workspace_example),
-            ("alt", "Alternate", build_alternate_preset_example),
-            ("runtime", "Runtime", build_orchestration_example),
-        ]
-        if catalog.workspace_tabs is not None:
-            for tab_id, title_text, builder in examples:
-                widget = builder(catalog)
-                catalog.add_workspace_tab(
-                    tab_id=tab_id,
-                    title=title_text,
-                    widget=widget,
-                    state="visible",
-                )
-        catalog.set_status_text("Demo catalog ready.")
-        catalog.collapse_side_panel(True)
-        self._catalog = catalog
+        layout.setSpacing(0)
+        self._catalog = GlassCatalogShell(self)
+        layout.addWidget(self._catalog, 1)

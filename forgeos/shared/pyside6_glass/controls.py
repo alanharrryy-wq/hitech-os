@@ -7,6 +7,36 @@ from PySide6.QtWidgets import QPushButton, QWidget
 
 from .icons import apply_icon
 
+
+_BUTTON_VARIANT_ALIASES = {
+    "default": "secondary",
+    "neutral": "secondary",
+    "outline": "ghost",
+    "tertiary": "subtle",
+}
+_SUPPORTED_BUTTON_VARIANTS = {
+    "primary",
+    "secondary",
+    "subtle",
+    "ghost",
+    "danger",
+    "warning",
+    "success",
+}
+
+
+def _normalize_button_variant(value: str) -> str:
+    normalized = str(value or "").strip().lower() or "secondary"
+    normalized = _BUTTON_VARIANT_ALIASES.get(normalized, normalized)
+    if normalized in _SUPPORTED_BUTTON_VARIANTS:
+        return normalized
+    return "secondary"
+
+
+def list_button_variants() -> tuple[str, ...]:
+    return tuple(sorted(_SUPPORTED_BUTTON_VARIANTS))
+
+
 def create_button(
     text: str,
     variant: str = "secondary",
@@ -24,7 +54,7 @@ def create_button(
 ) -> QPushButton:
     button = QPushButton(text, parent)
     button.setCursor(Qt.PointingHandCursor)
-    button.setProperty("variant", variant)
+    button.setProperty("variant", _normalize_button_variant(variant))
     button.setAccessibleName(str(text or "action_button").strip())
     if tooltip:
         button.setToolTip(tooltip)
