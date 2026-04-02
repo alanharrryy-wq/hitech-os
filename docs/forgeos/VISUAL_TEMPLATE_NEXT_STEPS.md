@@ -50,3 +50,7 @@ Homologate PySide6 visuals across tools without copying style logic per app.
 - R2 started in `apps/deltaforge`:
   - `ui/window/main_window.py` mounts the shared glass scene wrapper.
   - `ui/theme/stylesheet.py` composes shared base stylesheet + local overrides.
+  - `ui/primitives/confirm_dialog.py` and `ui/primitives/busy_dialog.py` now render through the shared glass scene.
+  - `ui/dialogs/confirm_dialog.py` no longer uses `QMessageBox`; it routes through the canonical glass confirm dialog.
+  - `ui/dialogs/busy_dialog.py` is now a shim to the canonical primitive implementation.
+  - `ui/dialogs/rollback_dialog.py` adopts the shared shell/cards/button language.
