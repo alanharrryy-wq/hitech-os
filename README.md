@@ -35,3 +35,15 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/constitution_check.ps1 -Re
 - `TBL_GOVERNANCE_SCALE`
 - `TBL_DASHBOARD_STRUCTURE`
 - `TBL_VRT_POLICY`
+
+## External Interaction Template
+
+A new sibling web template is available at:
+
+- `apps/external_interaction_template`
+
+Purpose:
+
+- external collect/review/update/approve/dispatch/sync flows
+- schema-driven and domain-neutral
+- companion surface for external actors while desktop templates remain unchanged
