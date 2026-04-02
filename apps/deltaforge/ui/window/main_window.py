@@ -1,16 +1,27 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import sys
+from pathlib import Path
 from typing import Any
 
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QFrame, QMainWindow, QVBoxLayout, QWidget
 
 from ui.widgets.command_bar import CommandBar
 from ui.widgets.session_tabs import SessionTabs
 from ui.widgets.session_workspace import SessionWorkspace
 from ui.widgets.status_widgets import StatusStrip
 from ui.window.interop import ControllerBridge, WorkspaceFacadeBridge
+
+_REPO_ROOT = Path(__file__).resolve().parents[4]
+_repo_root_str = str(_REPO_ROOT)
+if _repo_root_str not in sys.path:
+    sys.path.insert(0, _repo_root_str)
+
+from forgeos.shared.pyside6_glass.scene import (
+    build_glass_dialog_scene as shared_build_glass_dialog_scene,
+)
 
 
 @dataclass(slots=True)
@@ -30,9 +41,25 @@ class DeltaForgeMainWindow(QMainWindow):
         self.setWindowTitle('DeltaForge')
         self.resize(1460, 940)
 
-        self.shell = QWidget(self)
-        self.shell.setObjectName('DeltaForgeShell')
-        self.setCentralWidget(self.shell)
+        self.shell_host = QWidget(self)
+        self.shell_host.setObjectName('DeltaForgeShell')
+        self.setCentralWidget(self.shell_host)
+
+        outer, content_layer, self._glass_backdrop = shared_build_glass_dialog_scene(
+            self.shell_host,
+            margins=(10, 10, 10, 10),
+            apply_stylesheet=False,
+        )
+        outer.setSpacing(0)
+
+        stage_layout = QVBoxLayout(content_layer)
+        stage_layout.setContentsMargins(8, 8, 8, 8)
+        stage_layout.setSpacing(0)
+
+        self.shell = QFrame(content_layer)
+        self.shell.setObjectName('Shell')
+        self.shell.setProperty('variant', 'selector')
+        stage_layout.addWidget(self.shell)
 
         layout = QVBoxLayout(self.shell)
         layout.setContentsMargins(16, 16, 16, 16)

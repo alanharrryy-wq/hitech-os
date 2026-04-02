@@ -44,3 +44,9 @@ Homologate PySide6 visuals across tools without copying style logic per app.
 - No duplicated visual systems after adoption in each target.
 - Any change to frozen visual radii/tokens must start in the shared package.
 
+## Progress snapshot
+
+- R1 started and bridged in `apps/code-atlas/code-atlas.py` (scene/theme/controls).
+- R2 started in `apps/deltaforge`:
+  - `ui/window/main_window.py` mounts the shared glass scene wrapper.
+  - `ui/theme/stylesheet.py` composes shared base stylesheet + local overrides.

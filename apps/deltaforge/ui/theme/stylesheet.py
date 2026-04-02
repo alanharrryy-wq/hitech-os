@@ -1,8 +1,19 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import sys
+from pathlib import Path
 
 from .theme_api import ThemeSpec, resolve_theme
+
+_REPO_ROOT = Path(__file__).resolve().parents[4]
+_repo_root_str = str(_REPO_ROOT)
+if _repo_root_str not in sys.path:
+    sys.path.insert(0, _repo_root_str)
+
+from forgeos.shared.pyside6_glass.theme import (
+    build_stylesheet as build_shared_glass_stylesheet,
+)
 
 
 @dataclass(frozen=True)
@@ -165,7 +176,7 @@ def build_fragments(theme_name: str = 'dark') -> StyleFragments:
 
 def build_stylesheet(theme_name: str = 'dark') -> str:
     fragments = build_fragments(theme_name)
-    return "\n".join(
+    local_styles = "\n".join(
         [
             fragments.shell,
             fragments.command_bar,
@@ -178,3 +189,5 @@ def build_stylesheet(theme_name: str = 'dark') -> str:
             fragments.text_area,
         ]
     )
+    # Shared visual base first, tool-specific stylesheet second for parity-safe overrides.
+    return f"{build_shared_glass_stylesheet('silver_frost_cyan')}\n{local_styles}"
