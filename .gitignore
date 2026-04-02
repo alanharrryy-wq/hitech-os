@@ -236,6 +236,9 @@ $RECYCLE.BIN/
 _attic/
 tools/_local/tmp/
 tools/_local/evidence/
+**/_dependency_graphs/
+**/_dependency_graphs/**
+apps/deltaforge/assets/icons/dependency_graph_module_*.svg
 
 # --- Orchestrator / Factory runtime artifacts (ephemeral) ---
 # Local bridge state (machine-specific, regenerated each run)
@@ -254,3 +257,8 @@ tools/orchestrator_factory/ops/projects/**/project_manifest.json
 # Keep the projects tree addressable if we ever need placeholders
 !tools/orchestrator_factory/ops/projects/
 !tools/orchestrator_factory/ops/projects/**/.gitkeep
+
+# Local handoff inbox (ephemeral; never commit)
+tools/_local/inbox/
+tools/_local/inbox/**
+

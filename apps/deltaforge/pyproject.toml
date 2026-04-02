@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deltaforge"
+version = "0.1.0"
+description = "DeltaForge session-based workstation shell"
+requires-python = ">=3.11"
+dependencies = [
+  "PySide6>=6.5",
+]
+
+[project.scripts]
+deltaforge = "bootstrap:run"
+
+[tool.setuptools]
+include-package-data = false
+py-modules = ["deltaforge_app", "version"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["application*", "bootstrap*", "domain*", "infrastructure*", "ui*"]
+namespaces = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -414,3 +414,138 @@ Even if no files changed, list the files inspected.
 This section is mandatory.
 
 ---
+
+# 1.5 — Collaboration Model (Important)
+
+Agents must not be treated as blind executors.
+
+The correct operating model is:
+- strict on invariants
+- flexible on implementation
+- proactive on aligned improvements
+- explicit about out-of-scope ideas
+
+This means agents must work as constrained collaborators.
+
+## Closed Zone (Must Be Obeyed)
+
+Agents must strictly preserve:
+- scope boundaries
+- compatibility requirements
+- architectural constraints
+- approved file boundaries
+- non-negotiable operator instructions
+
+Inside the Closed Zone, agents must not improvise.
+
+## Open Zone (Where Agents Add Value)
+
+Within the approved scope, agents are encouraged to:
+- improve local quality
+- increase consistency
+- reduce friction
+- refine structure
+- simplify awkward implementation details
+- elevate the result beyond the literal wording of the task
+
+Inside the Open Zone, agents should contribute judgment, not just obedience.
+
+## Proposal Boundary
+
+If an agent detects a valuable improvement that is outside the requested minimum scope, it must:
+1. keep that improvement out of the main change set
+2. surface it separately as a proposal
+3. explain why it may be worth doing
+
+Agents must never silently mix extra ideas into the requested implementation.
+
+## Operating Principle
+
+The goal is not to restrict the agent so hard that it loses usefulness.
+
+The goal is to prevent harmful deviation while preserving the agent’s strengths:
+- synthesis
+- refinement
+- consistency
+- pattern recognition
+- quality elevation
+
+Agents must behave like capable collaborators inside a defined field of play.
+Not like uncontrolled improvisers.
+Not like inert text injectors.
+# 1.6 — Change Set Discipline
+
+Agents must separate implementation from suggestion.
+
+Every meaningful task must produce two distinct outputs:
+
+## A) Required Change Set
+This contains only:
+- requested work
+- in-scope refinements
+- compatible improvements inside the approved boundaries
+
+This is the executable change set.
+
+## B) Optional Proposal Set
+This contains:
+- adjacent improvements
+- future-facing enhancements
+- structural cleanup ideas
+- quality upgrades that go beyond the requested minimum
+
+This is not part of the executable change set unless explicitly approved.
+
+## Mandatory Separation Rule
+
+Agents must never blend Optional Proposal Set items into the Required Change Set.
+
+If an improvement is:
+- useful
+- aligned
+- tempting
+- but outside the requested minimum
+
+it must be surfaced separately.
+
+Silent mixing is considered execution drift.
+
+## Review Standard
+
+Required Change Set items are judged by:
+- correctness
+- compatibility
+- scope discipline
+- execution quality
+
+Optional Proposal Set items are judged by:
+- leverage
+- clarity
+- expected upside
+- implementation risk
+
+Agents must optimize the main change set for reliability first.
+
+## Default Behavior
+
+When uncertainty exists:
+- keep the main change set narrow
+- keep extra ideas separate
+- make proposals explicit
+- do not force hidden ambition into delivered work
+
+The agent must be capable of initiative without becoming a source of scope creep.
+
+# 1.7 — External Diff Intake Protocol (V1)
+
+When the operator provides an external `.diff`, agents must follow:
+
+`F:\repos\hitech-os\docs\dev\EXTERNAL_DIFF_INTAKE_PROTOCOL_V1.md`
+
+Mandatory rules:
+- default `MODE=reference` for external attachments
+- `BASE_COMMIT` is required
+- inferred manifest fields must be tagged `INFERRED`
+- explicit user instructions override inferred values
+- `tools/_local/inbox/**` is ephemeral staging only
+- source-of-truth contracts/docs override diff proposals unless authoritative mode is explicitly requested

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Glass Web Shell</title>
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <div id="app" class="shell">
+      <header class="topbar">
+        <div class="topbar__title">
+          <div class="eyebrow">REFERENCE CLIENT</div>
+          <h1>Glass Integration Web Shell</h1>
+          <p class="hint">
+            Neutral lightweight shell consuming integration contracts via local HTTP.
+          </p>
+        </div>
+        <div class="status-card">
+          <div id="connection-pill" class="pill pill--pending">Connecting</div>
+          <div id="last-sync" class="small">No sync yet</div>
+          <button id="btn-refresh-all" class="btn btn--secondary">Refresh</button>
+        </div>
+      </header>
+
+      <nav class="nav" aria-label="Primary sections">
+        <button class="nav__item is-active" data-view="health">Health</button>
+        <button class="nav__item" data-view="snapshot">Snapshot</button>
+        <button class="nav__item" data-view="query">Query</button>
+        <button class="nav__item" data-view="command">Command</button>
+        <button class="nav__item" data-view="events">Events</button>
+      </nav>
+
+      <main class="main">
+        <section class="panel is-active" data-panel="health">
+          <h2>Integration Health</h2>
+          <p class="hint">Checks availability and diagnostics of the integration boundary.</p>
+          <div class="actions">
+            <button id="btn-health" class="btn">Load Health</button>
+            <button id="btn-contracts" class="btn btn--secondary">List Contracts</button>
+          </div>
+          <pre id="health-output" class="output output--empty">No health data loaded.</pre>
+        </section>
+
+        <section class="panel" data-panel="snapshot">
+          <h2>Snapshot Inspector</h2>
+          <p class="hint">Requests structured snapshot payloads from integration contracts.</p>
+          <label class="field">
+            <span>Snapshot ID</span>
+            <input id="snapshot-id" value="workspace" />
+          </label>
+          <label class="field">
+            <span>Selector JSON (optional)</span>
+            <textarea id="snapshot-selector" rows="4">{}</textarea>
+          </label>
+          <div class="actions">
+            <button id="btn-snapshot" class="btn">Request Snapshot</button>
+          </div>
+          <pre id="snapshot-output" class="output output--empty">No snapshot loaded.</pre>
+        </section>
+
+        <section class="panel" data-panel="query">
+          <h2>Query Explorer</h2>
+          <p class="hint">Runs neutral query contracts and renders structured responses.</p>
+          <label class="field">
+            <span>Query</span>
+            <input id="query-name" value="workspace.summary.get" />
+          </label>
+          <label class="field">
+            <span>Params JSON</span>
+            <textarea id="query-params" rows="4">{}</textarea>
+          </label>
+          <div class="actions">
+            <button id="btn-query" class="btn">Run Query</button>
+          </div>
+          <pre id="query-output" class="output output--empty">No query executed.</pre>
+        </section>
+
+        <section class="panel" data-panel="command">
+          <h2>Command Surface</h2>
+          <p class="hint">Submits commands through versioned envelopes and capability context.</p>
+          <label class="field">
+            <span>Command</span>
+            <input id="command-name" value="workspace.item.upsert" />
+          </label>
+          <label class="field">
+            <span>Payload JSON</span>
+            <textarea id="command-payload" rows="6">{
+  "item_id": "web-item",
+  "item": {
+    "label": "Web Shell Item",
+    "state": "active"
+  }
+}</textarea>
+          </label>
+          <label class="field">
+            <span>Context JSON</span>
+            <textarea id="command-context" rows="5">{
+  "client_id": "web-shell",
+  "capabilities": ["workspace.write"]
+}</textarea>
+          </label>
+          <label class="field">
+            <span>Idempotency Key</span>
+            <input id="command-idempotency" value="web-item-upsert-v1" />
+          </label>
+          <div class="actions">
+            <button id="btn-command" class="btn">Submit Command</button>
+          </div>
+          <pre id="command-output" class="output output--empty">No command submitted.</pre>
+        </section>
+
+        <section class="panel" data-panel="events">
+          <h2>Event Feed</h2>
+          <p class="hint">Polling-based activity feed using current integration update path.</p>
+          <div class="actions">
+            <button id="btn-events-once" class="btn">Poll Once</button>
+            <button id="btn-events-toggle" class="btn btn--secondary">Start Auto Poll</button>
+            <button id="btn-events-clear" class="btn btn--ghost">Clear</button>
+          </div>
+          <div class="event-meta">
+            <span id="events-cursor">Cursor: 0</span>
+            <span id="events-mode">Mode: Manual</span>
+          </div>
+          <pre id="events-output" class="output output--empty">No events yet.</pre>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
+

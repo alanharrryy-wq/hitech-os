@@ -1,10 +1,21 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from pathlib import Path
+import sys
 from typing import Any, Iterable
 
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QApplication, QMainWindow
+
+_REPO_ROOT = Path(__file__).resolve().parents[5]
+_repo_root_str = str(_REPO_ROOT)
+if _repo_root_str not in sys.path:
+    sys.path.insert(0, _repo_root_str)
+
+from forgeos.shared.pyside6_glass.theme import (
+    build_stylesheet as build_shared_glass_stylesheet,
+)
 
 try:
     from shiboken6 import isValid as qt_object_is_valid
@@ -305,7 +316,7 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
     tree_hover = _hex_rgba(tokens.panel_hover, 230)
     tree_selection = _hex_rgba(tokens.selection, 242)
     header_bg = _hex_rgba(tokens.panel_alt, 246)
-    return f"""
+    local_styles = f"""
     QWidget {{
         background: {tokens.bg};
         color: {tokens.text};
@@ -952,6 +963,8 @@ def _build_stylesheet(tokens: SkinTokens) -> str:
         border-radius: 2px;
     }}
     """
+    # Shared glass base first; repo-analyzer-specific skin rules remain as top-level overrides.
+    return f"{build_shared_glass_stylesheet('silver_frost_cyan')}\n{local_styles}"
 
 
 def apply_skin(
