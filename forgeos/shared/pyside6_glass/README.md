@@ -36,15 +36,31 @@ Provide one reusable shell and primitive set so new tools can be assembled fast 
 ```python
 from forgeos.shared.pyside6_glass import GlassPanelTemplate
 
-template = GlassPanelTemplate(title="My Tool")
+template = GlassPanelTemplate(
+    title="My Tool",
+    subtitle="Fast shell with reusable slots",
+    include_default_actions=True,
+)
 template.slots.hero_slot.addWidget(my_header_widget)
 template.slots.main_slot.addWidget(my_main_widget)
 template.slots.side_slot.addWidget(my_side_widget)
+template.set_status_text("Ready.")
+template.bind_submit(run_pipeline)
 ```
+
+## Template API highlights
+
+- `slots`: stable composition layouts (`hero`, `main`, `side`, `footer`, `status`).
+- `cards`: direct access to shell/card widgets for advanced composition.
+- `actions`: optional default cancel/submit buttons.
+- `set_title`, `set_subtitle`, `set_eyebrow`, `set_status_text`.
+- `set_side_visible`, `set_footer_visible`, `set_status_visible`.
+- `bind_cancel`, `bind_submit`, `set_submit_enabled`.
+- `add_footer_action` to append custom actions.
+- `clear_slot(slot_name)` to rebuild sections cleanly.
 
 ## Migration policy
 
 - Adapters in each tool compose slots and wire behavior.
 - Tool adapters must not redefine shared radii/palette/backdrop/chrome.
 - Any visual change to invariants must happen here first.
-

@@ -57,3 +57,6 @@ Homologate PySide6 visuals across tools without copying style logic per app.
 - R3 started in `tools/graphviz/repo_analizer`:
   - `app/gui_qt/shell/central_workspace.py` now mounts a shared `QFrame#Shell` via `build_glass_dialog_scene`.
   - `app/gui_qt/skins.py` now composes shared glass stylesheet base + local skin stylesheet overrides.
+- Shared template hardened in `forgeos/shared/pyside6_glass/template.py`:
+  - configurable header/status/actions and visibility toggles.
+  - stable `slots` contract preserved with additional `cards/actions` handles for adapters.

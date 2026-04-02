@@ -5,7 +5,12 @@ from .chrome import WindowChromeBar
 from .contracts import GLASS_RADIUS, GlassRadiusContract
 from .controls import create_button
 from .scene import build_glass_dialog_scene
-from .template import GlassPanelTemplate, GlassTemplateSlots
+from .template import (
+    GlassPanelTemplate,
+    GlassTemplateActions,
+    GlassTemplateCards,
+    GlassTemplateSlots,
+)
 from .theme import DEFAULT_THEME_ID, build_stylesheet
 
 __all__ = [
@@ -13,6 +18,8 @@ __all__ = [
     "FrostedGlassBackdrop",
     "GLASS_RADIUS",
     "GlassPanelTemplate",
+    "GlassTemplateActions",
+    "GlassTemplateCards",
     "GlassRadiusContract",
     "GlassTemplateSlots",
     "WindowChromeBar",
@@ -20,4 +27,3 @@ __all__ = [
     "build_stylesheet",
     "create_button",
 ]
-
