@@ -107,9 +107,9 @@ Current adapters:
 
 Read full details in [INTEGRATION.md](./INTEGRATION.md).
 
-## Glass Catalog
+## Glass Workbench
 
-The examples host is now a registry-driven **Glass Catalog**.
+The examples host is now a registry-driven **Glass Workbench** built on top of the catalog system.
 
 It provides:
 
@@ -120,6 +120,10 @@ It provides:
 - optional tag filtering for curated discovery
 - metadata-rich item details
 - preview and workspace launch actions
+- focused inspection tabs:
+  - `Entry`: metadata, related entries, layer boundaries, builder reference
+  - `Data`: provider list, provider diagnostics, selected query binding, live query probe
+  - `Runtime`: architecture boundaries and integration/runtime diagnostics summary
 
 Core catalog APIs:
 
@@ -130,7 +134,7 @@ Core catalog APIs:
 - `list_catalog_tags(...)`
 - `register_builtin_catalog_entries(...)`
 
-Catalog shell widgets:
+Workbench shell widgets:
 
 - `GlassCatalogShell` (new main browser widget)
 - `GlassExampleCatalog` (backward-compatible entry point)
@@ -152,7 +156,98 @@ register_catalog_entry(
 )
 ```
 
-The catalog shell automatically picks up registered entries.
+The workbench automatically picks up registered entries.
+
+### Inspecting live preview and runtime/data behavior
+
+1. Run `python -m forgeos.shared.pyside6_glass.examples`.
+2. Select an entry in the left rail.
+3. Use `Open Preview` to render the selected surface in the central canvas area.
+4. Open the `Data` tab to inspect provider/query wiring and run `Probe Selected Query`.
+5. Open the `Runtime` tab to inspect architecture boundaries, provider inventory, and integration contract diagnostics.
+
+### Interactive Composer (Workbench `Compose` tab)
+
+The workbench includes a live, non-destructive layout composer layered on top of preview/workspace contexts.
+
+Capabilities:
+
+- searchable insert palette with category filters and icon metadata
+- rich insertable object model (layout, content, input, action, data, diagnostic, state, utility)
+- structured property inspector (type, slot, state, variant, density, width policy, padding, data/query hints)
+- explicit edit actions: insert, duplicate, remove, reorder, move across slots, split adjustments
+- clone-aware persistence (`Save Clone`) and instant baseline rollback (`Reset Changes`)
+
+Lifecycle/budget safeguards:
+
+- only active workspace tab is mounted/live (`_LazyMountHost`)
+- inactive tabs unmount panel trees by default
+- heavy panel cap per tab (`heavy_panels_per_tab`)
+- live-data widget cap per tab (`live_data_widgets_per_tab`)
+- per-slot panel capacity policy (`main`, `side`, `status`)
+- overflow objects automatically move to `hold`/`background` instead of overloading active render paths
+
+Clone storage:
+
+- `tools/_local/pyside6_glass/workbench_clones`
+
+Original catalog entries remain pristine unless explicitly cloned and edited from clone source.
+
+### Sacred Contract and Release Gate
+
+Release blockers are formalized in:
+
+- `forgeos/shared/pyside6_glass/SACRED_CAPABILITIES_CONTRACT.md`
+- Full premium capability model (100): `forgeos/shared/pyside6_glass/contracts/premium_capabilities_100.md`
+- Operational capability matrix (status baseline + evidence tags): `forgeos/shared/pyside6_glass/contracts/premium_capability_matrix_v1.json`
+- Golden sessions spec: `forgeos/shared/pyside6_glass/golden_sessions/golden_sessions_v1.json`
+
+Run the release gate:
+
+```bash
+python forgeos/shared/pyside6_glass/release_gate.py
+```
+
+Quick mode (contract + compile only):
+
+```bash
+python forgeos/shared/pyside6_glass/release_gate.py --skip-tests --skip-proof
+```
+
+CI/headless mode:
+
+```bash
+python forgeos/shared/pyside6_glass/release_gate.py --ci
+```
+
+CI/headless + non-blocking nightly visual proof (screenshots enabled):
+
+```bash
+python forgeos/shared/pyside6_glass/release_gate.py --ci --nightly-visual-proof
+```
+
+Run UX proof directly:
+
+```bash
+python -m forgeos.shared.pyside6_glass.ux_flight_recorder.runner --no-screenshots
+```
+
+Refresh proof baseline intentionally (never automatic):
+
+```bash
+python -m forgeos.shared.pyside6_glass.ux_flight_recorder.runner --refresh-baseline --no-screenshots
+```
+
+Evidence is written to:
+
+- `tools/_local/evidence/pyside6_glass_release_gate_*.json`
+- `forgeos/shared/pyside6_glass/artifacts/ux_release_proof/<timestamp>/`
+- Operator workflow: `forgeos/shared/pyside6_glass/UX_RELEASE_PROOF.md`
+
+Baseline store ownership:
+
+- Semantic baseline (authoritative comparator source): `forgeos/shared/pyside6_glass/baselines/ux_release_proof/v1/semantic_baseline.json`
+- Visual baseline manifest (secondary screenshot metadata): `forgeos/shared/pyside6_glass/baselines/ux_release_proof/v1/visual_baseline_manifest.json`
 
 ### Built-in Data Dashboard entries
 
