@@ -54,3 +54,6 @@ Homologate PySide6 visuals across tools without copying style logic per app.
   - `ui/dialogs/confirm_dialog.py` no longer uses `QMessageBox`; it routes through the canonical glass confirm dialog.
   - `ui/dialogs/busy_dialog.py` is now a shim to the canonical primitive implementation.
   - `ui/dialogs/rollback_dialog.py` adopts the shared shell/cards/button language.
+- R3 started in `tools/graphviz/repo_analizer`:
+  - `app/gui_qt/shell/central_workspace.py` now mounts a shared `QFrame#Shell` via `build_glass_dialog_scene`.
+  - `app/gui_qt/skins.py` now composes shared glass stylesheet base + local skin stylesheet overrides.

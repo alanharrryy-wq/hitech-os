@@ -1,11 +1,22 @@
 from __future__ import annotations
 
+import sys
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
 from ..widgets import MetricTile, PanelCard
+
+_REPO_ROOT = Path(__file__).resolve().parents[6]
+_repo_root_str = str(_REPO_ROOT)
+if _repo_root_str not in sys.path:
+    sys.path.insert(0, _repo_root_str)
+
+from forgeos.shared.pyside6_glass.scene import (
+    build_glass_dialog_scene as shared_build_glass_dialog_scene,
+)
 
 if TYPE_CHECKING:
     from ..main_window import RepoAnalyzerMainWindow
@@ -29,14 +40,35 @@ class CentralWorkspaceBuilder:
         central.setObjectName('workspaceCanvasRootSurface')
         central.setProperty('visualRole', 'workspace-root')
         central.setProperty('visualTier', 'premium')
-        outer = QVBoxLayout(central)
-        outer.setContentsMargins(10, 10, 10, 10)
+        outer, content_layer, backdrop = shared_build_glass_dialog_scene(
+            central,
+            margins=(10, 10, 10, 10),
+            apply_stylesheet=False,
+            variant='selector',
+        )
         outer.setSpacing(0)
-        canvas_hint = QWidget(central)
+        self.main._glass_backdrop = backdrop
+
+        stage_layout = QVBoxLayout(content_layer)
+        stage_layout.setContentsMargins(8, 8, 8, 8)
+        stage_layout.setSpacing(0)
+
+        shell = QFrame(content_layer)
+        shell.setObjectName('Shell')
+        shell.setProperty('variant', 'selector')
+        shell.setProperty('visualRole', 'workspace-surface')
+        shell.setProperty('visualTier', 'premium')
+        stage_layout.addWidget(shell, 1)
+
+        shell_layout = QVBoxLayout(shell)
+        shell_layout.setContentsMargins(10, 10, 10, 10)
+        shell_layout.setSpacing(0)
+
+        canvas_hint = QWidget(shell)
         canvas_hint.setObjectName('workspaceCanvasSurface')
         canvas_hint.setProperty('visualRole', 'workspace-surface')
         canvas_hint.setProperty('visualTier', 'themed')
-        outer.addWidget(canvas_hint, 1)
+        shell_layout.addWidget(canvas_hint, 1)
         self.main.setCentralWidget(central)
 
         self.main.workspace_summary_panel = self._build_hero_card(skin_tokens, self.main)
