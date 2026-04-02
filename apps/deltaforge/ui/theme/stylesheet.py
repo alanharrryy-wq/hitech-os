@@ -80,7 +80,7 @@ def build_fragments(theme_name: str = 'dark') -> StyleFragments:
         QWidget[role="session-tabs"] {{
             background: transparent;
         }}
-        QTabBar::tab {{
+        QWidget[role="session-tabs"] QTabBar::tab {{
             background: {surface};
             color: {text_muted};
             border: 1px solid {border};
@@ -88,12 +88,12 @@ def build_fragments(theme_name: str = 'dark') -> StyleFragments:
             padding: 8px 12px;
             margin-right: 6px;
         }}
-        QTabBar::tab:selected {{
+        QWidget[role="session-tabs"] QTabBar::tab:selected {{
             background: {elevated};
             color: {text};
             border-color: {accent};
         }}
-        QTabBar::tab:hover {{
+        QWidget[role="session-tabs"] QTabBar::tab:hover {{
             color: {text};
         }}
         """,

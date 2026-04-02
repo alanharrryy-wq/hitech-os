@@ -6,6 +6,8 @@ from typing import Iterable
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QHBoxLayout, QPushButton, QTabBar, QWidget
 
+from forgeos.shared.pyside6_glass.icons import apply_icon
+
 
 @dataclass(frozen=True)
 class SessionTabView:
@@ -51,7 +53,8 @@ class SessionTabs(QWidget):
 
         self.new_button = QPushButton('+', self)
         self.new_button.setProperty('kind', 'secondary')
-        self.new_button.setFixedWidth(36)
+        self.new_button.setFixedWidth(40)
+        apply_icon(self.new_button, 'plus', size=14)
         self.new_button.clicked.connect(self.createRequested.emit)
         layout.addWidget(self.new_button, 0, Qt.AlignRight)
 

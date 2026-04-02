@@ -3,6 +3,8 @@ from __future__ import annotations
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QFrame, QLabel, QSplitter, QVBoxLayout, QWidget
 
+from forgeos.shared.pyside6_glass.template import GlassWorkspaceTabSpec, GlassWorkspaceTabs
+
 from .bottom_results_tabs import BottomResultsTabs
 from .detail_stack import DetailStack
 from .ops_list import OpsList
@@ -18,12 +20,27 @@ class SessionWorkspace(QWidget):
         super().__init__(parent)
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(10)
+        layout.setSpacing(8)
 
-        vertical = QSplitter(Qt.Vertical, self)
+        self.context_tabs = GlassWorkspaceTabs(
+            self,
+            tabs_closable=False,
+            movable=False,
+            document_mode=True,
+        )
+        layout.addWidget(self.context_tabs, 1)
+
+        workbench_page = QWidget(self.context_tabs)
+        workbench_layout = QVBoxLayout(workbench_page)
+        workbench_layout.setContentsMargins(0, 0, 0, 0)
+        workbench_layout.setSpacing(8)
+
+        vertical = QSplitter(Qt.Vertical, workbench_page)
         top = QSplitter(Qt.Horizontal, vertical)
 
         self.left_surface = self._make_surface('Scope / Ops')
+        self.left_surface.setProperty('panelRole', 'form')
+        self.left_surface.setProperty('panelState', 'visible')
         left_layout = self.left_surface.layout()
         self.target_list = TargetList(self.left_surface)
         self.ops_list = OpsList(self.left_surface)
@@ -33,11 +50,15 @@ class SessionWorkspace(QWidget):
         left_layout.addWidget(self.ops_list, 1)
 
         self.center_surface = self._make_surface('Center Preview')
+        self.center_surface.setProperty('panelRole', 'data')
+        self.center_surface.setProperty('panelState', 'visible')
         center_layout = self.center_surface.layout()
         self.plan_diff_stack = PlanDiffStack(self.center_surface)
         center_layout.addWidget(self.plan_diff_stack, 1)
 
         self.right_surface = self._make_surface('Detail')
+        self.right_surface.setProperty('panelRole', 'detail')
+        self.right_surface.setProperty('panelState', 'visible')
         right_layout = self.right_surface.layout()
         self.detail_stack = DetailStack(self.right_surface)
         right_layout.addWidget(self.detail_stack, 1)
@@ -48,6 +69,8 @@ class SessionWorkspace(QWidget):
         top.setSizes([260, 520, 340])
 
         self.bottom_surface = self._make_surface('Results Stream')
+        self.bottom_surface.setProperty('panelRole', 'summary')
+        self.bottom_surface.setProperty('panelState', 'visible')
         bottom_layout = self.bottom_surface.layout()
         self.bottom_results_tabs = BottomResultsTabs(self.bottom_surface)
         bottom_layout.addWidget(self.bottom_results_tabs, 1)
@@ -55,7 +78,35 @@ class SessionWorkspace(QWidget):
         vertical.addWidget(top)
         vertical.addWidget(self.bottom_surface)
         vertical.setSizes([540, 220])
-        layout.addWidget(vertical, 1)
+        workbench_layout.addWidget(vertical, 1)
+
+        results_page = self._make_surface('Results Focus')
+        results_page.setProperty('panelRole', 'summary')
+        results_page.setProperty('panelState', 'hold')
+        results_layout = results_page.layout()
+        self.results_focus_tabs = BottomResultsTabs(results_page)
+        results_layout.addWidget(self.results_focus_tabs, 1)
+
+        self.context_tabs.add_workspace_tab(
+            GlassWorkspaceTabSpec(
+                tab_id='workbench',
+                title='Workbench',
+                state='visible',
+                icon_name='layers',
+            ),
+            workbench_page,
+            make_current=True,
+        )
+        self.context_tabs.add_workspace_tab(
+            GlassWorkspaceTabSpec(
+                tab_id='results',
+                title='Results',
+                state='hold',
+                icon_name='activity',
+                tooltip='Focused event and result stream.',
+            ),
+            results_page,
+        )
 
     def _make_surface(self, title_text: str) -> QFrame:
         frame = QFrame(self)
@@ -74,4 +125,6 @@ class SessionWorkspace(QWidget):
         self.ops_list.set_items(projection.get('ops', []))
         self.plan_diff_stack.set_groups(projection.get('grouped_preview', []))
         self.detail_stack.set_detail(projection.get('detail'))
-        self.bottom_results_tabs.set_payloads(projection.get('results', {}))
+        results_payload = projection.get('results', {})
+        self.bottom_results_tabs.set_payloads(results_payload)
+        self.results_focus_tabs.set_payloads(results_payload)

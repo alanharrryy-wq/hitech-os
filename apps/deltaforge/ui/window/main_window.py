@@ -22,6 +22,7 @@ if _repo_root_str not in sys.path:
 from forgeos.shared.pyside6_glass.scene import (
     build_glass_dialog_scene as shared_build_glass_dialog_scene,
 )
+from ui.adapters.glass_framework_adapter import configure_deltaforge_glass_framework
 
 
 @dataclass(slots=True)
@@ -34,6 +35,7 @@ class WindowBindings:
 class DeltaForgeMainWindow(QMainWindow):
     def __init__(self, bindings: WindowBindings, parent: QWidget | None = None) -> None:
         super().__init__(parent)
+        configure_deltaforge_glass_framework()
         self.bindings = bindings
         self._facade_bridge = WorkspaceFacadeBridge(bindings.workspace_facade)
         self._controller_bridge = ControllerBridge(bindings.command_controller)

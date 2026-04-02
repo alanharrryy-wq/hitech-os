@@ -8,11 +8,12 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QLineEdit,
-    QPushButton,
     QSizePolicy,
     QVBoxLayout,
     QWidget,
 )
+
+from forgeos.shared.pyside6_glass.controls import create_button
 
 
 @dataclass(frozen=True)
@@ -63,19 +64,23 @@ class CommandBar(QWidget):
         self.root_dir_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         row.addWidget(self.root_dir_input, 1)
 
-        self.browse_button = QPushButton('Browse', frame)
-        self.browse_button.setProperty('kind', 'secondary')
-        self.browse_button.clicked.connect(self.browseRequested.emit)
+        self.browse_button = create_button(
+            'Browse',
+            'secondary',
+            self.browseRequested.emit,
+            parent=frame,
+            icon_name='folder-open',
+        )
         row.addWidget(self.browse_button)
         layout.addLayout(row)
 
         actions = QHBoxLayout()
         actions.setSpacing(8)
-        self.validate_button = self._make_button('Validate', 'primary', self.validateRequested.emit)
-        self.plan_button = self._make_button('Plan', 'secondary', self.planRequested.emit)
-        self.apply_button = self._make_button('Apply', 'secondary', self.applyRequested.emit)
-        self.rollback_button = self._make_button('Rollback', 'ghost', self.rollbackRequested.emit)
-        self.refresh_button = self._make_button('Refresh', 'ghost', self.refreshRequested.emit)
+        self.validate_button = self._make_button('Validate', 'primary', self.validateRequested.emit, icon_name='check-circle')
+        self.plan_button = self._make_button('Plan', 'secondary', self.planRequested.emit, icon_name='layers')
+        self.apply_button = self._make_button('Apply', 'secondary', self.applyRequested.emit, icon_name='play')
+        self.rollback_button = self._make_button('Rollback', 'ghost', self.rollbackRequested.emit, icon_name='arrow-left')
+        self.refresh_button = self._make_button('Refresh', 'ghost', self.refreshRequested.emit, icon_name='refresh-cw')
         for button in (
             self.validate_button,
             self.plan_button,
@@ -91,11 +96,14 @@ class CommandBar(QWidget):
         actions.addWidget(self.mode_label)
         layout.addLayout(actions)
 
-    def _make_button(self, text: str, kind: str, callback) -> QPushButton:
-        button = QPushButton(text, self)
-        button.setProperty('kind', kind)
-        button.clicked.connect(callback)
-        return button
+    def _make_button(self, text: str, kind: str, callback, *, icon_name: str | None = None):
+        return create_button(
+            text,
+            kind,
+            callback,
+            parent=self,
+            icon_name=icon_name,
+        )
 
     def set_state(self, state: CommandBarState | dict | None) -> None:
         if state is None:
