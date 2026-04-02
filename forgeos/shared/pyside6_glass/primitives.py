@@ -28,10 +28,10 @@ class PanelHeader(QFrame):
         parent: QWidget | None = None,
     ) -> None:
         super().__init__(parent)
-        self.setProperty("card", "muted")
+        self.setProperty("card", "clear")
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(10, 8, 10, 8)
-        layout.setSpacing(8)
+        layout.setContentsMargins(2, 2, 2, 2)
+        layout.setSpacing(6)
 
         self._icon = QLabel("", self)
         self._icon.setFixedWidth(18)
@@ -86,7 +86,7 @@ class QuickActionsStrip(CompactToolbar):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__("", parent=parent)
         self.title_label.setVisible(False)
-        self.setProperty("card", "muted")
+        self.setProperty("card", "clear")
 
     def add_action(
         self,
@@ -114,9 +114,9 @@ class MetricValue:
 class StatCard(QFrame):
     def __init__(self, metric: MetricValue, parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setProperty("card", "true")
+        self.setProperty("card", "muted")
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(12, 10, 12, 10)
+        layout.setContentsMargins(10, 8, 10, 8)
         layout.setSpacing(2)
 
         label = QLabel(metric.label, self)
@@ -224,10 +224,10 @@ class ErrorStateCard(_StateCardBase):
 class FormSectionShell(QFrame):
     def __init__(self, title: str, *, subtitle: str = "", parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setProperty("card", "true")
+        self.setProperty("card", "clear")
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(12, 10, 12, 10)
-        layout.setSpacing(8)
+        layout.setContentsMargins(6, 4, 6, 4)
+        layout.setSpacing(6)
         self.header = PanelHeader(title, subtitle=subtitle, icon_name="file-text", parent=self)
         layout.addWidget(self.header)
         self.content = QVBoxLayout()
@@ -239,10 +239,10 @@ class FormSectionShell(QFrame):
 class DashboardWidgetShell(QFrame):
     def __init__(self, title: str, *, subtitle: str = "", parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setProperty("card", "true")
+        self.setProperty("card", "clear")
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(12, 10, 12, 10)
-        layout.setSpacing(8)
+        layout.setContentsMargins(6, 4, 6, 4)
+        layout.setSpacing(6)
         self.header = PanelHeader(title, subtitle=subtitle, icon_name="activity", parent=self)
         layout.addWidget(self.header)
         self.content = QVBoxLayout()

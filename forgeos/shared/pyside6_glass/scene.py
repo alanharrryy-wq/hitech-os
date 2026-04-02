@@ -45,11 +45,21 @@ def build_glass_dialog_scene(
     stack.setStackingMode(QStackedLayout.StackAll)
 
     if backdrop_factory is None:
-        backdrop = FrostedGlassBackdrop(stage, motion_enabled=motion_enabled)
+        backdrop = FrostedGlassBackdrop(
+            stage,
+            theme_id=theme_id,
+            variant=variant,
+            motion_enabled=motion_enabled,
+        )
     else:
         backdrop = backdrop_factory(stage)
         if backdrop is None:
-            backdrop = FrostedGlassBackdrop(stage, motion_enabled=motion_enabled)
+            backdrop = FrostedGlassBackdrop(
+                stage,
+                theme_id=theme_id,
+                variant=variant,
+                motion_enabled=motion_enabled,
+            )
     content = QWidget(stage)
     content.setObjectName("GlassContent")
     content.setAttribute(Qt.WA_StyledBackground, True)

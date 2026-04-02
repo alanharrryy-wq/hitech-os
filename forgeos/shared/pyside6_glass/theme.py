@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
+import re
 from typing import Mapping
 
 from .contracts import (
@@ -81,53 +82,53 @@ class GlassThemeManifest:
 
 
 SILVER_FROST_CYAN = GlassPalette(
-    shell_top="rgba(20, 33, 54, 0.92)",
-    shell_bottom="rgba(10, 19, 37, 0.95)",
-    shell_border="rgba(157, 214, 255, 0.28)",
-    shell_border_hover="rgba(181, 233, 255, 0.42)",
-    chrome_top="rgba(72, 88, 112, 0.34)",
-    chrome_bottom="rgba(38, 48, 68, 0.30)",
-    chrome_border="rgba(205, 235, 255, 0.20)",
-    card_top="rgba(82, 102, 126, 0.36)",
-    card_bottom="rgba(46, 57, 75, 0.34)",
-    card_border="rgba(178, 224, 255, 0.22)",
-    text_primary="#e7f2fb",
-    text_muted="#b7cbdd",
+    shell_top="rgba(13, 14, 18, 0.9)",
+    shell_bottom="rgba(7, 8, 11, 0.93)",
+    shell_border="rgba(245, 248, 252, 0.2)",
+    shell_border_hover="rgba(245, 248, 252, 0.3)",
+    chrome_top="rgba(255, 255, 255, 0.06)",
+    chrome_bottom="rgba(255, 255, 255, 0.02)",
+    chrome_border="rgba(245, 248, 252, 0.12)",
+    card_top="rgba(255, 255, 255, 0.045)",
+    card_bottom="rgba(255, 255, 255, 0.02)",
+    card_border="rgba(245, 248, 252, 0.08)",
+    text_primary="#e7edf4",
+    text_muted="#b5bfcb",
     text_inverse="#081018",
-    accent="#8cefff",
-    accent_soft="rgba(140, 239, 255, 0.26)",
-    button_top="rgba(132, 213, 250, 0.34)",
-    button_bottom="rgba(102, 168, 212, 0.26)",
-    button_border="rgba(168, 229, 255, 0.36)",
-    danger_top="rgba(230, 165, 130, 0.18)",
-    danger_bottom="rgba(174, 110, 82, 0.14)",
-    danger_border="rgba(238, 177, 145, 0.28)",
-    warning_top="rgba(236, 201, 133, 0.18)",
-    warning_bottom="rgba(168, 130, 70, 0.13)",
-    warning_border="rgba(240, 213, 157, 0.28)",
-    success_top="rgba(133, 223, 173, 0.18)",
-    success_bottom="rgba(86, 157, 117, 0.13)",
-    success_border="rgba(157, 230, 187, 0.30)",
-    input_bg="rgba(21, 35, 56, 0.72)",
-    input_border="rgba(149, 204, 242, 0.24)",
-    input_border_hover="rgba(165, 227, 255, 0.40)",
-    progress_bg="rgba(19, 34, 52, 0.82)",
-    progress_chunk_top="#8cefff",
-    progress_chunk_bottom="#78d5f0",
-    tab_bg="rgba(28, 43, 64, 0.70)",
-    tab_active_bg="rgba(66, 103, 146, 0.55)",
-    tab_hold_bg="rgba(39, 54, 73, 0.55)",
-    tab_pending_bg="rgba(80, 98, 62, 0.56)",
-    tab_warning_bg="rgba(114, 86, 44, 0.56)",
-    tab_border="rgba(159, 211, 246, 0.34)",
-    tab_text="#dcefff",
-    tab_text_muted="#a8bed0",
-    panel_form_border="rgba(150, 212, 255, 0.38)",
-    panel_data_border="rgba(138, 227, 197, 0.32)",
-    panel_metrics_border="rgba(255, 208, 140, 0.32)",
-    panel_detail_border="rgba(204, 178, 255, 0.30)",
-    panel_summary_border="rgba(140, 220, 255, 0.30)",
-    panel_aux_border="rgba(154, 180, 204, 0.28)",
+    accent="#d7dde7",
+    accent_soft="rgba(248, 251, 255, 0.1)",
+    button_top="rgba(255, 255, 255, 0.085)",
+    button_bottom="rgba(255, 255, 255, 0.03)",
+    button_border="rgba(245, 248, 252, 0.15)",
+    danger_top="rgba(218, 170, 156, 0.17)",
+    danger_bottom="rgba(145, 98, 86, 0.13)",
+    danger_border="rgba(225, 182, 168, 0.26)",
+    warning_top="rgba(219, 191, 145, 0.16)",
+    warning_bottom="rgba(148, 120, 80, 0.12)",
+    warning_border="rgba(226, 198, 157, 0.25)",
+    success_top="rgba(151, 199, 176, 0.16)",
+    success_bottom="rgba(96, 134, 116, 0.12)",
+    success_border="rgba(171, 209, 189, 0.26)",
+    input_bg="rgba(5, 6, 10, 0.56)",
+    input_border="rgba(245, 248, 252, 0.13)",
+    input_border_hover="rgba(245, 248, 252, 0.25)",
+    progress_bg="rgba(5, 6, 10, 0.76)",
+    progress_chunk_top="#d8dfe9",
+    progress_chunk_bottom="#c2cbd8",
+    tab_bg="rgba(255, 255, 255, 0.04)",
+    tab_active_bg="rgba(255, 255, 255, 0.09)",
+    tab_hold_bg="rgba(255, 255, 255, 0.055)",
+    tab_pending_bg="rgba(181, 162, 124, 0.24)",
+    tab_warning_bg="rgba(176, 137, 106, 0.24)",
+    tab_border="rgba(245, 248, 252, 0.14)",
+    tab_text="#e8edf4",
+    tab_text_muted="#a7b0be",
+    panel_form_border="rgba(245, 248, 252, 0.1)",
+    panel_data_border="rgba(214, 232, 223, 0.1)",
+    panel_metrics_border="rgba(232, 210, 171, 0.1)",
+    panel_detail_border="rgba(225, 220, 237, 0.1)",
+    panel_summary_border="rgba(237, 241, 247, 0.1)",
+    panel_aux_border="rgba(245, 248, 252, 0.08)",
 )
 
 OBSIDIAN_ICE = GlassPalette(
@@ -184,7 +185,7 @@ THEME_REGISTRY: dict[str, GlassThemeManifest] = {
     "silver_frost_cyan": GlassThemeManifest(
         theme_id="silver_frost_cyan",
         palette=SILVER_FROST_CYAN,
-        description="Default low-saturation silver/cyan glass.",
+        description="Default low-saturation silver graphite glass.",
     ),
     "obsidian_ice": GlassThemeManifest(
         theme_id="obsidian_ice",
@@ -373,6 +374,62 @@ def _gradient(top: str, bottom: str) -> str:
     return f"qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 {top}, stop:1 {bottom})"
 
 
+_RGBA_PATTERN = re.compile(
+    r"^rgba\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*([01](?:\.\d+)?)\s*\)$",
+    re.IGNORECASE,
+)
+
+
+def _scale_rgba_alpha(color: str, scale: float) -> str:
+    token = str(color or "").strip()
+    match = _RGBA_PATTERN.match(token)
+    if match is None:
+        return token
+
+    r_raw, g_raw, b_raw, alpha_raw = match.groups()
+    r = max(0, min(255, int(r_raw)))
+    g = max(0, min(255, int(g_raw)))
+    b = max(0, min(255, int(b_raw)))
+    alpha = max(0.0, min(1.0, float(alpha_raw) * float(scale)))
+    alpha_text = f"{alpha:.3f}".rstrip("0").rstrip(".")
+    return f"rgba({r}, {g}, {b}, {alpha_text})"
+
+
+def _apply_surface_opacity_scale(palette: GlassPalette, scale: float) -> GlassPalette:
+    if abs(float(scale) - 1.0) < 0.0001:
+        return palette
+
+    surface_keys = (
+        "shell_top",
+        "shell_bottom",
+        "chrome_top",
+        "chrome_bottom",
+        "card_top",
+        "card_bottom",
+        "accent_soft",
+        "button_top",
+        "button_bottom",
+        "danger_top",
+        "danger_bottom",
+        "warning_top",
+        "warning_bottom",
+        "success_top",
+        "success_bottom",
+        "input_bg",
+        "progress_bg",
+        "tab_bg",
+        "tab_active_bg",
+        "tab_hold_bg",
+        "tab_pending_bg",
+        "tab_warning_bg",
+    )
+    overrides = {
+        key: _scale_rgba_alpha(getattr(palette, key), scale)
+        for key in surface_keys
+    }
+    return palette.with_overrides(overrides)
+
+
 def build_stylesheet(
     theme_id: str = DEFAULT_THEME_ID,
     *,
@@ -391,6 +448,7 @@ def build_stylesheet(
     variant = _coerce_tab_variant(tab_variant)
     border_scale = max(0.5, min(2.0, float(border_strength_scale)))
     surface_scale = max(0.5, min(1.4, float(surface_opacity_scale)))
+    p = _apply_surface_opacity_scale(p, surface_scale)
 
     tab_radius = r.input if variant != "pill" else r.chip
     tab_border_style = "solid" if variant in {"standard", "glass"} else "none"
@@ -422,8 +480,8 @@ QFrame#WindowChrome {{
 }}
 
 QFrame[card="hero"] {{
-    background: {_gradient(p.card_top, p.card_bottom)};
-    border: {shell_border_px}px solid {p.card_border};
+    background: rgba(0, 0, 0, 0.0);
+    border: none;
     border-radius: {r.hero_card}px;
 }}
 
@@ -431,7 +489,12 @@ QFrame[card="true"],
 QFrame[card="muted"],
 QFrame[card="footer"] {{
     background: {_gradient(p.card_top, p.card_bottom)};
-    border: {shell_border_px}px solid {p.card_border};
+    border: {shell_border_px}px solid rgba(255, 255, 255, 0.05);
+    border-radius: {r.card}px;
+}}
+QFrame[card="clear"] {{
+    background: transparent;
+    border: none;
     border-radius: {r.card}px;
 }}
 
@@ -505,12 +568,18 @@ QLabel[role="microcopy"] {{
     font-size: {sizes["caption"]}px;
 }}
 QLabel[role="eyebrow"],
-QLabel[role="field"],
-QLabel[role="panel_title"] {{
+QLabel[role="field"] {{
     color: {p.accent};
     font-size: {sizes["caption"]}px;
     font-weight: {GLASS_TYPOGRAPHY.weight_semibold};
     letter-spacing: 1px;
+    text-transform: uppercase;
+}}
+QLabel[role="panel_title"] {{
+    color: {p.text_primary};
+    font-size: {sizes["caption"]}px;
+    font-weight: {GLASS_TYPOGRAPHY.weight_semibold};
+    letter-spacing: 0.4px;
     text-transform: uppercase;
 }}
 QLabel[role="panel_subtitle"] {{
@@ -553,18 +622,21 @@ QPushButton {{
     border: {shell_border_px}px solid {p.button_border};
     border-radius: {r.button}px;
     color: {p.text_primary};
-    padding: {control_density["button_y"]}px 14px;
+    min-height: 22px;
+    padding: {control_density["button_y"]}px 12px;
     font-size: {sizes["body"]}px;
     font-weight: {GLASS_TYPOGRAPHY.weight_semibold};
 }}
 QPushButton:hover {{
-    border: {shell_border_px}px solid {p.accent};
+    border: {shell_border_px}px solid rgba(255, 255, 255, 0.30);
+    background: {_gradient("rgba(255, 255, 255, 0.12)", "rgba(255, 255, 255, 0.04)")};
 }}
 QPushButton:pressed {{
-    background: {_gradient(p.button_bottom, p.button_top)};
+    background: {_gradient("rgba(255, 255, 255, 0.09)", "rgba(255, 255, 255, 0.03)")};
 }}
 QPushButton:focus {{
-    border: {shell_border_px}px solid {p.accent};
+    border: {shell_border_px}px solid rgba(255, 255, 255, 0.35);
+    background: {_gradient("rgba(255, 255, 255, 0.12)", "rgba(255, 255, 255, 0.04)")};
 }}
 QPushButton:disabled {{
     color: {p.tab_text_muted};
@@ -593,7 +665,7 @@ QPushButton[variant="ghost"] {{
     border: {shell_border_px}px solid {p.input_border};
 }}
 QPushButton[variant="ghost"]:hover {{
-    border-color: {p.accent};
+    border-color: rgba(255, 255, 255, 0.28);
 }}
 QPushButton[variant="danger"] {{
     background: {_gradient(p.danger_top, p.danger_bottom)};
@@ -609,11 +681,11 @@ QPushButton[variant="success"] {{
 }}
 
 QTabWidget#GlassWorkspaceTabs::pane {{
-    border: {shell_border_px}px solid {p.tab_border};
+    border: none;
     border-radius: {r.card}px;
-    background: {_gradient(p.card_top, p.card_bottom)};
+    background: transparent;
     top: -1px;
-    padding: {control_density["panel_padding"]}px;
+    padding: 0px;
 }}
 QTabWidget#GlassWorkspaceTabs QTabBar::tab {{
     background: {p.tab_bg};
@@ -623,20 +695,30 @@ QTabWidget#GlassWorkspaceTabs QTabBar::tab {{
     border-top-left-radius: {tab_radius}px;
     border-top-right-radius: {tab_radius}px;
     padding: {tab_density_values["tab_y"]}px {tab_density_values["tab_x"]}px;
-    margin-right: 6px;
+    margin-right: 4px;
     font-size: {sizes["body"]}px;
 }}
 QTabWidget#GlassWorkspaceTabs QTabBar::tab:selected {{
     background: {p.tab_active_bg};
     color: {p.tab_text};
-    border-color: {tab_active_border};
+    border-color: rgba(255, 255, 255, 0.28);
 }}
 QTabWidget#GlassWorkspaceTabs QTabBar::tab:hover {{
     color: {p.tab_text};
+    border-color: rgba(255, 255, 255, 0.22);
 }}
 QTabWidget#GlassWorkspaceTabs QTabBar::tab:disabled {{
     background: {p.tab_hold_bg};
     color: {p.tab_text_muted};
+}}
+QTabWidget#GlassWorkspaceTabs QTabBar::close-button {{
+    border-radius: {r.chip}px;
+    margin-left: 6px;
+    padding: 1px;
+    background: rgba(255, 255, 255, 0.07);
+}}
+QTabWidget#GlassWorkspaceTabs QTabBar::close-button:hover {{
+    background: rgba(255, 255, 255, 0.20);
 }}
 QTabWidget#GlassWorkspaceTabs[tabVariant="segmented"] QTabBar::tab {{
     border-radius: {r.chip}px;
@@ -675,8 +757,8 @@ QToolButton[assetRole="icon_button"] {{
     padding: 4px;
 }}
 QToolButton[assetRole="icon_button"]:hover {{
-    border-color: {p.accent};
-    background: {p.accent_soft};
+    border-color: rgba(255, 255, 255, 0.32);
+    background: rgba(255, 255, 255, 0.09);
 }}
 QToolButton[assetRole="icon_button"]:disabled {{
     border-color: {p.input_border};
@@ -687,8 +769,8 @@ QFrame[assetRole="segmented"],
 QFrame[assetRole="filter_chip_bar"],
 QFrame[assetRole="compact_toolbar"],
 QFrame[assetRole="mini_legend"] {{
-    background: {_gradient(p.card_top, p.card_bottom)};
-    border: {shell_border_px}px solid {p.card_border};
+    background: transparent;
+    border: none;
     border-radius: {r.card}px;
 }}
 QPushButton[assetRole="segment_button"],
@@ -700,13 +782,13 @@ QPushButton[assetRole="toggle_pill"] {{
 QPushButton[assetRole="segment_button"]:checked,
 QPushButton[assetRole="filter_chip"]:checked,
 QPushButton[assetRole="toggle_pill"]:checked {{
-    background: {p.tab_active_bg};
-    border-color: {p.accent};
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.30);
 }}
 QPushButton[assetRole="segment_button"]:focus,
 QPushButton[assetRole="filter_chip"]:focus,
 QPushButton[assetRole="toggle_pill"]:focus {{
-    border-color: {p.accent};
+    border-color: rgba(255, 255, 255, 0.30);
 }}
 QPushButton[assetRole="collapsible_header"] {{
     text-align: left;
@@ -728,14 +810,14 @@ QFrame[assetRole="search_bar"] QLineEdit {{
 
 QLabel[assetRole="status_pill"] {{
     border-radius: {r.chip}px;
-    border: {shell_border_px}px solid {p.input_border};
+    border: {shell_border_px}px solid rgba(255, 255, 255, 0.14);
     padding: 2px 8px;
     color: {p.text_primary};
-    background: {p.tab_bg};
+    background: rgba(255, 255, 255, 0.05);
 }}
 QLabel[assetRole="status_pill"][statusKind="info"] {{
-    background: {p.tab_active_bg};
-    border-color: {p.accent};
+    background: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 255, 255, 0.28);
 }}
 QLabel[assetRole="status_pill"][statusKind="success"] {{
     background: {_gradient(p.success_top, p.success_bottom)};
@@ -761,7 +843,12 @@ QFrame[assetRole="enhanced_slider"],
 QFrame[assetRole="parameter_panel"],
 QFrame[assetRole="hero_panel"] {{
     background: {_gradient(p.card_top, p.card_bottom)};
-    border: {shell_border_px}px solid {p.card_border};
+    border: {shell_border_px}px solid rgba(255, 255, 255, 0.05);
+    border-radius: {r.card}px;
+}}
+QFrame[assetRole="hero_panel"] {{
+    background: transparent;
+    border: none;
     border-radius: {r.card}px;
 }}
 """

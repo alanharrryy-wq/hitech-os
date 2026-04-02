@@ -71,6 +71,17 @@ from .assets import (
     TogglePill,
 )
 from .controls import create_button, list_button_variants
+from .charts import (
+    GlassChartPalette,
+    GlassChartStyle,
+    get_chart_palette,
+    get_chart_style,
+    list_chart_palettes,
+    list_chart_styles,
+    register_builtin_chart_catalog,
+    register_chart_palette,
+    register_chart_style,
+)
 from .dashboard import DashboardDataSurface, DashboardQuerySpec
 from .data import (
     DATA_STATES,
@@ -233,6 +244,8 @@ __all__ = [
     "GlassAccessibilityConfig",
     "GlassActionConfig",
     "GlassCatalogEntry",
+    "GlassChartPalette",
+    "GlassChartStyle",
     "GlassCatalogShell",
     "GlassAnimationConfig",
     "GlassCapability",
@@ -322,6 +335,8 @@ __all__ = [
     "get_default_icon_pack",
     "get_icon",
     "get_catalog_entry",
+    "get_chart_palette",
+    "get_chart_style",
     "get_data_provider",
     "get_palette",
     "get_template_preset",
@@ -331,6 +346,8 @@ __all__ = [
     "list_catalog_categories",
     "list_catalog_entries",
     "list_catalog_tags",
+    "list_chart_palettes",
+    "list_chart_styles",
     "list_registered_capabilities",
     "list_template_presets",
     "list_theme_ids",
@@ -338,8 +355,11 @@ __all__ = [
     "merge_template_config",
     "register_capability",
     "register_builtin_data_providers",
+    "register_builtin_chart_catalog",
     "register_builtin_catalog_entries",
     "register_catalog_entry",
+    "register_chart_palette",
+    "register_chart_style",
     "register_data_provider",
     "register_icon_namespace",
     "register_icon_pack",

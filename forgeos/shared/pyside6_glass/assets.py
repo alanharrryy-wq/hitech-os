@@ -222,8 +222,8 @@ class SearchCommandBar(QFrame):
         super().__init__(parent)
         self.setProperty("assetRole", "search_bar")
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(8, 6, 8, 6)
-        layout.setSpacing(6)
+        layout.setContentsMargins(6, 4, 6, 4)
+        layout.setSpacing(4)
 
         self.input = QLineEdit(self)
         self.input.setPlaceholderText(placeholder)
@@ -248,8 +248,8 @@ class CompactToolbar(QFrame):
         super().__init__(parent)
         self.setProperty("assetRole", "compact_toolbar")
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(8, 6, 8, 6)
-        layout.setSpacing(6)
+        layout.setContentsMargins(4, 3, 4, 3)
+        layout.setSpacing(4)
 
         self.title_label = QLabel(title, self)
         self.title_label.setProperty("role", "panel_title")
@@ -298,8 +298,8 @@ class ControlCard(QFrame):
         super().__init__(parent)
         self.setProperty("assetRole", "control_card")
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(10, 8, 10, 8)
-        layout.setSpacing(8)
+        layout.setContentsMargins(6, 5, 6, 5)
+        layout.setSpacing(6)
 
         title_widget = QLabel(title, self)
         title_widget.setProperty("role", "panel_title")
@@ -330,7 +330,7 @@ class CollapsibleSection(QFrame):
         super().__init__(parent)
         self.setProperty("assetRole", "collapsible_section")
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(8, 6, 8, 6)
+        layout.setContentsMargins(4, 3, 4, 3)
         layout.setSpacing(6)
 
         self.header_button = create_button(title, "ghost", parent=self)
@@ -377,7 +377,7 @@ class EnhancedSlider(QFrame):
         super().__init__(parent)
         self.setProperty("assetRole", "enhanced_slider")
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(8, 6, 8, 6)
+        layout.setContentsMargins(4, 3, 4, 3)
         layout.setSpacing(4)
 
         top = QHBoxLayout()
@@ -413,7 +413,7 @@ class ParameterPanel(QFrame):
         super().__init__(parent)
         self.setProperty("assetRole", "parameter_panel")
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(10, 8, 10, 8)
+        layout.setContentsMargins(6, 5, 6, 5)
         layout.setSpacing(8)
 
         title_widget = QLabel(title, self)
@@ -478,8 +478,8 @@ class HeroPanel(QFrame):
         self.setProperty("assetRole", "hero_panel")
         self.setProperty("card", "hero")
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(12, 10, 12, 10)
-        layout.setSpacing(4)
+        layout.setContentsMargins(6, 4, 6, 4)
+        layout.setSpacing(3)
 
         if eyebrow:
             eyebrow_label = QLabel(eyebrow, self)
@@ -493,4 +493,3 @@ class HeroPanel(QFrame):
             subtitle_label.setProperty("role", "panel_subtitle")
             subtitle_label.setWordWrap(True)
             layout.addWidget(subtitle_label)
-

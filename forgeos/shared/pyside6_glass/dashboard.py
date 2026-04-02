@@ -103,7 +103,7 @@ class DashboardDataSurface(QFrame):
         on_result: Callable[[DataResult], None] | None = None,
     ) -> None:
         super().__init__(parent)
-        self.setProperty("card", "true")
+        self.setProperty("card", "clear")
         self.spec = spec
         self._on_result = on_result
         self._last_result: DataResult | None = None
@@ -112,8 +112,8 @@ class DashboardDataSurface(QFrame):
         self._current_filter = "all"
 
         root = QVBoxLayout(self)
-        root.setContentsMargins(10, 10, 10, 10)
-        root.setSpacing(8)
+        root.setContentsMargins(4, 4, 4, 4)
+        root.setSpacing(6)
 
         self.header = PanelHeader(
             spec.title,
@@ -440,10 +440,10 @@ class DashboardDataSurface(QFrame):
 
     def _metrics_widget(self, result: DataResult) -> QWidget:
         host = QFrame(self.body_host)
-        host.setProperty("card", "muted")
+        host.setProperty("card", "clear")
         layout = QVBoxLayout(host)
-        layout.setContentsMargins(10, 8, 10, 8)
-        layout.setSpacing(6)
+        layout.setContentsMargins(4, 4, 4, 4)
+        layout.setSpacing(4)
 
         title = QLabel("Metrics", host)
         title.setProperty("role", "panel_title")
@@ -463,10 +463,10 @@ class DashboardDataSurface(QFrame):
 
     def _table_widget(self, result: DataResult) -> QWidget:
         host = QFrame(self.body_host)
-        host.setProperty("card", "muted")
+        host.setProperty("card", "clear")
         layout = QVBoxLayout(host)
-        layout.setContentsMargins(10, 8, 10, 8)
-        layout.setSpacing(6)
+        layout.setContentsMargins(4, 4, 4, 4)
+        layout.setSpacing(4)
 
         title_host = QWidget(host)
         title_layout = QHBoxLayout(title_host)
@@ -498,10 +498,10 @@ class DashboardDataSurface(QFrame):
 
     def _feed_widget(self, result: DataResult) -> QWidget:
         host = QFrame(self.body_host)
-        host.setProperty("card", "muted")
+        host.setProperty("card", "clear")
         layout = QVBoxLayout(host)
-        layout.setContentsMargins(10, 8, 10, 8)
-        layout.setSpacing(6)
+        layout.setContentsMargins(4, 4, 4, 4)
+        layout.setSpacing(4)
 
         title_host = QWidget(host)
         title_layout = QHBoxLayout(title_host)
@@ -534,10 +534,10 @@ class DashboardDataSurface(QFrame):
 
     def _render_payload_block(self, title: str, payload: dict[str, Any]) -> None:
         host = QFrame(self.body_host)
-        host.setProperty("card", "muted")
+        host.setProperty("card", "clear")
         layout = QVBoxLayout(host)
-        layout.setContentsMargins(10, 8, 10, 8)
-        layout.setSpacing(6)
+        layout.setContentsMargins(4, 4, 4, 4)
+        layout.setSpacing(4)
         heading = QLabel(title, host)
         heading.setProperty("role", "panel_title")
         layout.addWidget(heading)

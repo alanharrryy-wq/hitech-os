@@ -4,8 +4,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, Mapping, Optional
 
-from PySide6.QtCore import QSize
-from PySide6.QtGui import QIcon
+from PySide6.QtCore import QEvent, QObject, QSize, Qt
+from PySide6.QtGui import QColor, QIcon, QPainter, QPixmap
 from PySide6.QtWidgets import QAbstractButton, QLabel, QWidget
 
 
@@ -174,9 +174,11 @@ class GlassIconRegistry:
         if icon.isNull():
             return
         resolved_size = self.resolve_size(size, fallback=fallback_size)
+        normal_icon, active_icon = _build_button_icon_variants(icon, resolved_size)
         if isinstance(target, QAbstractButton):
-            target.setIcon(icon)
+            target.setIcon(normal_icon)
             target.setIconSize(QSize(resolved_size, resolved_size))
+            _bind_hover_icon_state(target, normal_icon, active_icon)
             if tooltip:
                 target.setToolTip(tooltip)
             if accessible_name and not target.accessibleName():
@@ -185,15 +187,92 @@ class GlassIconRegistry:
         set_icon = getattr(target, "setIcon", None)
         set_icon_size = getattr(target, "setIconSize", None)
         if callable(set_icon):
-            set_icon(icon)
+            set_icon(normal_icon)
         if callable(set_icon_size):
             set_icon_size(QSize(resolved_size, resolved_size))
         if isinstance(target, QLabel):
-            target.setPixmap(icon.pixmap(QSize(resolved_size, resolved_size)))
+            target.setPixmap(_tint_pixmap(icon.pixmap(QSize(resolved_size, resolved_size)), QColor(246, 248, 252)))
         if accessible_name and not target.accessibleName():
             target.setAccessibleName(accessible_name)
         if tooltip and hasattr(target, "setToolTip"):
             target.setToolTip(tooltip)
+
+
+def _tint_pixmap(source: QPixmap, color: QColor) -> QPixmap:
+    if source.isNull():
+        return source
+    target = QPixmap(source.size())
+    target.fill(Qt.GlobalColor.transparent)
+    painter = QPainter(target)
+    painter.setRenderHint(QPainter.Antialiasing, True)
+    painter.setRenderHint(QPainter.SmoothPixmapTransform, True)
+    painter.drawPixmap(0, 0, source)
+    painter.setCompositionMode(QPainter.CompositionMode_SourceIn)
+    painter.fillRect(target.rect(), color)
+    painter.end()
+    return target
+
+
+def _build_button_icon_variants(icon: QIcon, size: int) -> tuple[QIcon, QIcon]:
+    base = icon.pixmap(QSize(size, size))
+    normal_pix = _tint_pixmap(base, QColor(246, 248, 252))
+    glow_base = _tint_pixmap(base, QColor(255, 255, 255, 108))
+    active_pix = QPixmap(base.size())
+    active_pix.fill(Qt.GlobalColor.transparent)
+    painter = QPainter(active_pix)
+    painter.setRenderHint(QPainter.Antialiasing, True)
+    painter.setRenderHint(QPainter.SmoothPixmapTransform, True)
+    for dx, dy in ((0, -1), (0, 1), (-1, 0), (1, 0)):
+        painter.drawPixmap(dx, dy, glow_base)
+    painter.drawPixmap(0, 0, _tint_pixmap(base, QColor(255, 255, 255)))
+    painter.end()
+    return QIcon(normal_pix), QIcon(active_pix)
+
+
+class _ButtonIconStateBinder(QObject):
+    def __init__(self, button: QAbstractButton, normal_icon: QIcon, active_icon: QIcon) -> None:
+        super().__init__(button)
+        self._button = button
+        self._normal_icon = normal_icon
+        self._active_icon = active_icon
+        self._hovered = False
+        self._button.installEventFilter(self)
+        toggled = getattr(self._button, "toggled", None)
+        if toggled is not None:
+            toggled.connect(self._sync_icon)
+        self._sync_icon()
+
+    def update_icons(self, normal_icon: QIcon, active_icon: QIcon) -> None:
+        self._normal_icon = normal_icon
+        self._active_icon = active_icon
+        self._sync_icon()
+
+    def eventFilter(self, watched: QObject, event: QEvent) -> bool:  # type: ignore[override]
+        if watched is self._button:
+            if event.type() in {QEvent.Type.Enter, QEvent.Type.HoverEnter}:
+                self._hovered = True
+                self._sync_icon()
+            elif event.type() in {QEvent.Type.Leave, QEvent.Type.HoverLeave}:
+                self._hovered = False
+                self._sync_icon()
+        return False
+
+    def _sync_icon(self) -> None:
+        is_checked = bool(self._button.isChecked()) if self._button.isCheckable() else False
+        active = self._hovered or is_checked or bool(self._button.isDown())
+        self._button.setIcon(self._active_icon if active else self._normal_icon)
+
+
+_BUTTON_ICON_BINDERS: dict[int, _ButtonIconStateBinder] = {}
+
+
+def _bind_hover_icon_state(button: QAbstractButton, normal_icon: QIcon, active_icon: QIcon) -> None:
+    key = id(button)
+    binder = _BUTTON_ICON_BINDERS.get(key)
+    if binder is None:
+        _BUTTON_ICON_BINDERS[key] = _ButtonIconStateBinder(button, normal_icon, active_icon)
+        return
+    binder.update_icons(normal_icon, active_icon)
 
 
 _REGISTRY = GlassIconRegistry()
@@ -276,3 +355,39 @@ def apply_icon(
         accessible_name=accessible_name,
         tooltip=tooltip,
     )
+
+
+def _bootstrap_builtin_icon_pack() -> None:
+    root = Path(__file__).resolve().parent / "assets" / "icons"
+    if not root.exists():
+        return
+    aliases = {
+        "minimize-2": "minus",
+        "maximize-2": "plus",
+        "square": "box",
+        "target": "sparkles",
+        "droplets": "sparkles",
+        "link": "git-branch",
+        "pin": "check",
+        "rotate-ccw": "refresh-cw",
+        "external-link": "arrow-right",
+        "alert-circle": "alert-triangle",
+        "minus-circle": "x-circle",
+        "list": "menu",
+        "trending-up": "arrow-up",
+        "layout-dashboard": "layers",
+        "panel-right": "menu",
+        "sliders-horizontal": "settings",
+        "mouse-pointer-click": "zap",
+        "circle-dot": "check-circle",
+        "toggle-left": "minus",
+        "tag": "filter",
+        "square-stack": "layers",
+        "chevrons-up-down": "chevron-up",
+        "heart": "check-circle",
+    }
+    register_icon_pack("glass", root, aliases=aliases, metadata={"origin": "builtin"}, override=True)
+    set_default_icon_pack("glass")
+
+
+_bootstrap_builtin_icon_pack()
