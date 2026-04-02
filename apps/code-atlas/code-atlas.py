@@ -1486,6 +1486,17 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+_repo_root_str = str(_REPO_ROOT)
+if _repo_root_str not in sys.path:
+    sys.path.insert(0, _repo_root_str)
+
+from forgeos.shared.pyside6_glass.controls import create_button as shared_create_button
+from forgeos.shared.pyside6_glass.scene import (
+    build_glass_dialog_scene as shared_build_glass_dialog_scene,
+)
+from forgeos.shared.pyside6_glass.theme import build_stylesheet as shared_build_stylesheet
+
 
 VIEW_LABEL_TO_ID: dict[str, GraphView] = {
     "Paquetes": "package",
@@ -2592,34 +2603,19 @@ def build_glass_dialog_scene(
     variant: str,
     margins: tuple[int, int, int, int],
 ) -> tuple[QVBoxLayout, QWidget, FrostedGlassBackdrop]:
-    host.setObjectName("GlassDialog")
-    host.setAttribute(Qt.WA_StyledBackground, True)
-    try:
-        host.setAttribute(Qt.WA_TranslucentBackground, True)
-    except Exception:
-        pass
+    # R1 bridge: use shared stage composer while keeping code-atlas backdrop behavior.
+    def _backdrop_factory(stage: QWidget) -> QWidget:
+        return FrostedGlassBackdrop(stage, theme_id=theme_id, variant=variant)
 
-    outer = QVBoxLayout(host)
-    outer.setContentsMargins(*margins)
-    outer.setSpacing(0)
-
-    stage = QWidget(host)
-    stage.setObjectName("GlassStage")
-    stage.setAttribute(Qt.WA_StyledBackground, True)
-
-    stack = QStackedLayout(stage)
-    stack.setContentsMargins(0, 0, 0, 0)
-    stack.setStackingMode(QStackedLayout.StackAll)
-
-    backdrop = FrostedGlassBackdrop(stage, theme_id=theme_id, variant=variant)
-    content = QWidget(stage)
-    content.setObjectName("GlassContent")
-    content.setAttribute(Qt.WA_StyledBackground, True)
-
-    stack.addWidget(backdrop)
-    stack.addWidget(content)
-    stack.setCurrentWidget(content)
-    outer.addWidget(stage)
+    outer, content, backdrop = shared_build_glass_dialog_scene(
+        host,
+        theme_id=theme_id,
+        variant=variant,
+        margins=margins,
+        motion_enabled=True,
+        apply_stylesheet=False,
+        backdrop_factory=_backdrop_factory,
+    )
     return outer, content, backdrop
 
 
@@ -3084,7 +3080,10 @@ class WindowChromeBar(QFrame):
 
 def app_stylesheet(theme_id: Optional[str] = None) -> str:
     resolved_theme = normalize_theme(theme_id or DEFAULT_THEME)
-    return build_app_stylesheet(resolved_theme)
+    # Shared template base first; local stylesheet keeps final parity by overriding specifics.
+    shared_base = shared_build_stylesheet(resolved_theme)
+    local_overrides = build_app_stylesheet(resolved_theme)
+    return f"{shared_base}\n{local_overrides}"
 
 
 def create_button(
@@ -3099,19 +3098,17 @@ def create_button(
     enabled: bool = True,
     parent: Optional[QWidget] = None,
 ) -> QPushButton:
-    button = QPushButton(text, parent)
-    button.setCursor(Qt.PointingHandCursor)
-    button.setProperty("variant", variant or "secondary")
+    button = shared_create_button(
+        text,
+        variant or "secondary",
+        callback,
+        parent=parent,
+        tooltip=tooltip or None,
+        default=bool(default),
+        minimum_width=int(minimum_width) if minimum_width > 0 else None,
+    )
     button.setEnabled(enabled)
-    button.setDefault(bool(default))
     button.setAutoDefault(bool(default) if auto_default is None else bool(auto_default))
-
-    if minimum_width > 0:
-        button.setMinimumWidth(int(minimum_width))
-    if tooltip:
-        button.setToolTip(tooltip)
-    if callable(callback):
-        button.clicked.connect(callback)
 
     shadow_alpha = {
         "primary": 28,
