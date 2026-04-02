@@ -9,6 +9,19 @@ cd F:\repos\hitech-os\apps\deltaforge
 python .\deltaforge_app.py
 ```
 
+Run from any working directory with an absolute path:
+
+```powershell
+python F:\repos\hitech-os\apps\deltaforge\deltaforge_app.py
+```
+
+Optional editable install + console script:
+
+```powershell
+python -m pip install -e F:\repos\hitech-os\apps\deltaforge
+deltaforge
+```
+
 ## Current shell capabilities
 
 - Session tabs (new/clone/close) with isolated state

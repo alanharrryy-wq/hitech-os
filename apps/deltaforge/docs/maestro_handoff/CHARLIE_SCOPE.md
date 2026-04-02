@@ -4,8 +4,8 @@
 UI, theme, primitives, panes/widgets, window y bootstrap final.
 
 ## Archivos propios
-- `deltaforge/ui/*`
-- `deltaforge/bootstrap/*`
+- `ui/*`
+- `bootstrap/*`
 - `tests/smoke/*`
 
 ## Prohibido
@@ -14,7 +14,7 @@ UI, theme, primitives, panes/widgets, window y bootstrap final.
 - `infrastructure/*` interno
 - mutar `SessionWorkspace` directo
 - tocar archivos ley congelados
-- tocar `deltaforge/application/selection_service.py` (owner Alpha)
+- tocar `application/selection_service.py` (owner Alpha)
 
 ## Entregables
 - theme oficial

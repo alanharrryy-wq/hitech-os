@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from deltaforge.infrastructure.event_bus_in_memory import InMemoryEventBus
+from infrastructure.event_bus_in_memory import InMemoryEventBus
 
 
 class EventBusContractTests(unittest.TestCase):

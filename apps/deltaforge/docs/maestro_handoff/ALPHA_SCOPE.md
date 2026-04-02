@@ -4,20 +4,20 @@
 Core de `domain/*` y `application/*` no UI.
 
 ## Ownership explícito
-- `deltaforge/application/selection_service.py` es **owner de Alpha**.
+- `application/selection_service.py` es **owner de Alpha**.
 - Ningún otro lane puede modificar `selection_service.py`.
 
 ## Archivos propios
-- `deltaforge/domain/*`
-- `deltaforge/domain/models/*`
-- `deltaforge/application/state_machine.py`
-- `deltaforge/application/stale_policy.py`
-- `deltaforge/application/refresh_policy.py`
-- `deltaforge/application/session_actions.py`
-- `deltaforge/application/workspace_facade.py`
-- `deltaforge/application/session_manager.py`
-- `deltaforge/application/selection_service.py`
-- `deltaforge/application/controllers/*.py` sin UI directa
+- `domain/*`
+- `domain/models/*`
+- `application/state_machine.py`
+- `application/stale_policy.py`
+- `application/refresh_policy.py`
+- `application/session_actions.py`
+- `application/workspace_facade.py`
+- `application/session_manager.py`
+- `application/selection_service.py`
+- `application/controllers/*.py` sin UI directa
 
 ## Prohibido
 - `ui/*`

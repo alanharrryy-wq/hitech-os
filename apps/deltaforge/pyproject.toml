@@ -12,4 +12,16 @@ dependencies = [
 ]
 
 [project.scripts]
-deltaforge = "deltaforge.bootstrap:run"
+deltaforge = "bootstrap:run"
+
+[tool.setuptools]
+include-package-data = false
+py-modules = ["deltaforge_app", "version"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["application*", "bootstrap*", "domain*", "infrastructure*", "ui*"]
+namespaces = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

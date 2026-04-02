@@ -1,7 +1,7 @@
 from types import SimpleNamespace
 
-from deltaforge.application.session_actions import SessionActions
-from deltaforge.application.session_manager import SessionManager
+from application.session_actions import SessionActions
+from application.session_manager import SessionManager
 
 
 def test_handle_filesystem_changed_marks_session_stale() -> None:

@@ -4,10 +4,10 @@ import pathlib
 
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[2]
-INTEROP_PATH = REPO_ROOT / 'deltaforge/ui/window/interop.py'
-BOOTSTRAP_PATH = REPO_ROOT / 'deltaforge/bootstrap/app_bootstrap.py'
-RESOLVER_BRIDGE_PATH = REPO_ROOT / 'deltaforge/bootstrap/resolver_bridge.py'
-EVENT_WIRING_PATH = REPO_ROOT / 'deltaforge/bootstrap/event_wiring.py'
+INTEROP_PATH = REPO_ROOT / 'ui/window/interop.py'
+BOOTSTRAP_PATH = REPO_ROOT / 'bootstrap/app_bootstrap.py'
+RESOLVER_BRIDGE_PATH = REPO_ROOT / 'bootstrap/resolver_bridge.py'
+EVENT_WIRING_PATH = REPO_ROOT / 'bootstrap/event_wiring.py'
 
 EXPECTED_ACTIONS = (
     'create_session',

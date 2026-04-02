@@ -5,14 +5,14 @@ import pathlib
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[2]
 CANONICAL_FILES = {
-    'deltaforge/bootstrap/app_bootstrap.py',
-    'deltaforge/bootstrap/event_wiring.py',
-    'deltaforge/bootstrap/resolver_bridge.py',
-    'deltaforge/ui/theme/theme_api.py',
-    'deltaforge/ui/window/interop.py',
-    'deltaforge/ui/window/main_window.py',
-    'deltaforge/ui/widgets/command_bar.py',
-    'deltaforge/ui/widgets/session_tabs.py',
+    'bootstrap/app_bootstrap.py',
+    'bootstrap/event_wiring.py',
+    'bootstrap/resolver_bridge.py',
+    'ui/theme/theme_api.py',
+    'ui/window/interop.py',
+    'ui/window/main_window.py',
+    'ui/widgets/command_bar.py',
+    'ui/widgets/session_tabs.py',
 }
 
 
@@ -32,7 +32,7 @@ def test_canonical_files_exist_and_compile() -> None:
 
 
 def test_bootstrap_targets_canonical_main_window() -> None:
-    bootstrap_path = REPO_ROOT / 'deltaforge/bootstrap/app_bootstrap.py'
+    bootstrap_path = REPO_ROOT / 'bootstrap/app_bootstrap.py'
     source = bootstrap_path.read_text(encoding='utf-8')
     assert 'ui.window.main_window' in source
     assert 'main_window_alt' not in source
@@ -40,7 +40,7 @@ def test_bootstrap_targets_canonical_main_window() -> None:
 
 
 def test_main_window_targets_canonical_widgets_and_bridge() -> None:
-    main_window_path = REPO_ROOT / 'deltaforge/ui/window/main_window.py'
+    main_window_path = REPO_ROOT / 'ui/window/main_window.py'
     source = main_window_path.read_text(encoding='utf-8')
     assert 'ui.widgets.command_bar' in source
     assert 'ui.widgets.session_tabs' in source

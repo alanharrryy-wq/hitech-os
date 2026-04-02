@@ -1,7 +1,7 @@
 from types import SimpleNamespace
 
-from deltaforge.application.session_manager import SessionManager
-from deltaforge.application.workspace_facade import WorkspaceFacade
+from application.session_manager import SessionManager
+from application.workspace_facade import WorkspaceFacade
 
 
 def _workspace(**overrides):

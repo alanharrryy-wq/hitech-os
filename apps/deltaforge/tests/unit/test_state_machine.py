@@ -1,6 +1,6 @@
 import pytest
 
-from deltaforge.application.state_machine import InvalidTransitionError, assert_transition, can_transition, derive_idle_state
+from application.state_machine import InvalidTransitionError, assert_transition, can_transition, derive_idle_state
 
 
 def test_idle_can_transition_to_dirty_or_stale() -> None:

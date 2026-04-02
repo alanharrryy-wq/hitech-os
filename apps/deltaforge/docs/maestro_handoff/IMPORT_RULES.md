@@ -4,14 +4,14 @@
 
 | Capa | Puede importar | Prohibido |
 |---|---|---|
-| `domain/*` | stdlib, `typing`, `dataclasses`, `enum`, `hashlib`, `datetime`, `deltaforge.domain.*` | `deltaforge.application.*`, `deltaforge.infrastructure.*`, `deltaforge.ui.*`, `PySide6.*` |
-| `application/contracts/*` | stdlib, `typing.Protocol`, `deltaforge.domain.*` | `deltaforge.ui.*`, `PySide6.*`, infraestructura concreta |
-| `application/*` core | stdlib, `deltaforge.domain.*`, `deltaforge.application.contracts.*` | `deltaforge.ui.*`, `deltaforge.infrastructure.*`, `PySide6.*` |
-| `application/controllers/*` | `deltaforge.application.*`, `deltaforge.domain.*` | `PySide6.*`, adapters concretos, watchers concretos |
-| `infrastructure/*` | stdlib, `deltaforge.application.contracts.*`, `deltaforge.domain.*` | `deltaforge.ui.*` |
-| `ui/theme/*` | stdlib, `deltaforge.ui.theme.*` | `application/*`, `infrastructure/*`, `domain/*` de negocio |
-| `ui/primitives/*` | `PySide6.*`, `deltaforge.ui.theme.*` | `infrastructure/*` |
-| `ui/panes/*` | `PySide6.*`, `deltaforge.application.workspace_facade`, controladores, `deltaforge.domain.*` solo lectura, primitives/widgets | `infrastructure/*` directo |
+| `domain/*` | stdlib, `typing`, `dataclasses`, `enum`, `hashlib`, `datetime`, `domain.*` | `application.*`, `infrastructure.*`, `ui.*`, `PySide6.*` |
+| `application/contracts/*` | stdlib, `typing.Protocol`, `domain.*` | `ui.*`, `PySide6.*`, infraestructura concreta |
+| `application/*` core | stdlib, `domain.*`, `application.contracts.*` | `ui.*`, `infrastructure.*`, `PySide6.*` |
+| `application/controllers/*` | `application.*`, `domain.*` | `PySide6.*`, adapters concretos, watchers concretos |
+| `infrastructure/*` | stdlib, `application.contracts.*`, `domain.*` | `ui.*` |
+| `ui/theme/*` | stdlib, `ui.theme.*` | `application/*`, `infrastructure/*`, `domain/*` de negocio |
+| `ui/primitives/*` | `PySide6.*`, `ui.theme.*` | `infrastructure/*` |
+| `ui/panes/*` | `PySide6.*`, `application.workspace_facade`, controladores, `domain.*` solo lectura, primitives/widgets | `infrastructure/*` directo |
 | `ui/widgets/*` | `PySide6.*`, panes/primitives, facade readonly | reglas de negocio, engine directo |
 | `bootstrap/*` | todas las capas solo para wiring | negocio, decisiones de estado |
 
@@ -25,7 +25,7 @@
 
 ## Comandos de verificación sugeridos
 ```powershell
-rg "from deltaforge\.ui" F:\repos\hitech-os\apps\deltaforge\deltaforge\domain
-rg "from deltaforge\.infrastructure" F:\repos\hitech-os\apps\deltaforge\deltaforge\application
-rg "from deltaforge\.ui" F:\repos\hitech-os\apps\deltaforge\deltaforge\infrastructure
+rg "from ui" F:\repos\hitech-os\apps\deltaforge\domain
+rg "from infrastructure" F:\repos\hitech-os\apps\deltaforge\application
+rg "from ui" F:\repos\hitech-os\apps\deltaforge\infrastructure
 ```

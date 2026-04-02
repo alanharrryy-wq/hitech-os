@@ -4,10 +4,10 @@
 Infraestructura, mock engine, persistence y tests de contrato/infra.
 
 ## Archivos propios
-- `deltaforge/infrastructure/*`
-- `deltaforge/infrastructure/engine/*`
-- `deltaforge/infrastructure/persistence/*`
-- `deltaforge/infrastructure/system/*`
+- `infrastructure/*`
+- `infrastructure/engine/*`
+- `infrastructure/persistence/*`
+- `infrastructure/system/*`
 - `tests/contracts/*`
 - `tests/smoke/*` solo smoke de wiring de infra
 
@@ -16,7 +16,7 @@ Infraestructura, mock engine, persistence y tests de contrato/infra.
 - lógica de negocio de sesión
 - tocar archivos ley congelados
 - decidir transiciones de estado
-- tocar `deltaforge/application/selection_service.py` (owner Alpha)
+- tocar `application/selection_service.py` (owner Alpha)
 
 ## Entregables
 - bus en memoria

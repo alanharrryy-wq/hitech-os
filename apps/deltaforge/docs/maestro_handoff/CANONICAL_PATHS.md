@@ -5,13 +5,13 @@ Este documento elimina ambigüedad de ownership por concepto.
 ## Canonical paths (obligatorio)
 | Concepto | Ruta canónica |
 |---|---|
-| Main window | `deltaforge/ui/window/main_window.py` |
-| Command bar | `deltaforge/ui/widgets/command_bar.py` |
-| Session tabs | `deltaforge/ui/widgets/session_tabs.py` |
-| Settings store | `deltaforge/infrastructure/settings_store.py` |
-| Chip primitive | `deltaforge/ui/primitives/chip.py` |
-| Section card primitive | `deltaforge/ui/primitives/section_card.py` |
-| Separator primitive | `deltaforge/ui/primitives/hairline_separator.py` |
+| Main window | `ui/window/main_window.py` |
+| Command bar | `ui/widgets/command_bar.py` |
+| Session tabs | `ui/widgets/session_tabs.py` |
+| Settings store | `infrastructure/settings_store.py` |
+| Chip primitive | `ui/primitives/chip.py` |
+| Section card primitive | `ui/primitives/section_card.py` |
+| Separator primitive | `ui/primitives/hairline_separator.py` |
 
 ## Duplicate ownership resolution
 | Duplicado | Decisión | Estado final |
@@ -34,8 +34,8 @@ Este documento elimina ambigüedad de ownership por concepto.
 
 ## Enforcement checks
 ```powershell
-rg -n "main_window_alt|ui\.panes\.command_bar|ui\.panes\.session_tabs|ui\.primitives\.chips|ui\.primitives\.cards|ui\.primitives\.separators|infrastructure\.persistence\.settings_store" F:\repos\hitech-os\apps\deltaforge\deltaforge
-rg -n "from deltaforge\.ui\.window import DeltaForgeMainWindow" F:\repos\hitech-os\apps\deltaforge\deltaforge\bootstrap
+rg -n "main_window_alt|ui\.panes\.command_bar|ui\.panes\.session_tabs|ui\.primitives\.chips|ui\.primitives\.cards|ui\.primitives\.separators|infrastructure\.persistence\.settings_store" F:\repos\hitech-os\apps\deltaforge
+rg -n "from ui\.window import DeltaForgeMainWindow" F:\repos\hitech-os\apps\deltaforge\bootstrap
 ```
 
 Si aparece un import nuevo a legacy path, el merge se bloquea.

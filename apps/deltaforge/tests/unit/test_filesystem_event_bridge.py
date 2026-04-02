@@ -1,9 +1,9 @@
 from types import SimpleNamespace
 
-from deltaforge.application.filesystem_event_bridge import bind_filesystem_changed
-from deltaforge.application.session_actions import SessionActions
-from deltaforge.application.session_manager import SessionManager
-from deltaforge.infrastructure.event_bus_in_memory import InMemoryEventBus
+from application.filesystem_event_bridge import bind_filesystem_changed
+from application.session_actions import SessionActions
+from application.session_manager import SessionManager
+from infrastructure.event_bus_in_memory import InMemoryEventBus
 
 
 def test_bind_filesystem_changed_routes_to_active_session() -> None:

@@ -1,7 +1,7 @@
 from types import SimpleNamespace
 
-from deltaforge.application.refresh_policy import begin_refresh, build_refresh_decision, finish_refresh
-from deltaforge.application.stale_policy import mark_stale
+from application.refresh_policy import begin_refresh, build_refresh_decision, finish_refresh
+from application.stale_policy import mark_stale
 
 
 def _workspace(**overrides):

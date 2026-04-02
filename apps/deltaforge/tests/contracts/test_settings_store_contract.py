@@ -4,10 +4,10 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from deltaforge.infrastructure.persistence.settings_store import (
+from infrastructure.persistence.settings_store import (
     SettingsStore as LegacySettingsStore,
 )
-from deltaforge.infrastructure.settings_store import SettingsStore
+from infrastructure.settings_store import SettingsStore
 
 
 class SettingsStoreContractTests(unittest.TestCase):

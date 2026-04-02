@@ -5,7 +5,7 @@ import time
 import unittest
 from pathlib import Path
 
-from deltaforge.infrastructure.file_watcher_polling import FileWatcherPolling
+from infrastructure.file_watcher_polling import FileWatcherPolling
 
 
 class FileWatcherPollingContractTests(unittest.TestCase):

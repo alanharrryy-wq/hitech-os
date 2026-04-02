@@ -4,9 +4,9 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from deltaforge.infrastructure.event_bus_in_memory import InMemoryEventBus
-from deltaforge.infrastructure.file_watcher_polling import FileWatcherPolling
-from deltaforge.infrastructure.settings_store import SettingsStore
+from infrastructure.event_bus_in_memory import InMemoryEventBus
+from infrastructure.file_watcher_polling import FileWatcherPolling
+from infrastructure.settings_store import SettingsStore
 
 
 class InfraWiringSmokeTests(unittest.TestCase):
