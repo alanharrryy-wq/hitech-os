@@ -21,7 +21,13 @@ from .host_shell import (
 )
 from .kernel_session import KernelBootstrap, KernelSession
 from .lifecycle_authority import LifecycleAuthority, LifecycleEvent, RuntimeState
-from .packaging_gate import GateResult, PackageLayer, PackageManifest, PackagingGate
+from .packaging_gate import (
+    GateResult,
+    PackageLayer,
+    PackageManifest,
+    PackagingGate,
+    compute_integrity_hash,
+)
 from .slot_manager import SlotManager, SlotSnapshot, SlotState
 from .state_authority_registry import StateAuthorityRegistry, StateSliceAuthority
 
@@ -49,6 +55,7 @@ __all__ = [
     "PackageLayer",
     "PackageManifest",
     "PackagingGate",
+    "compute_integrity_hash",
     "RuntimeState",
     "SlotManager",
     "SlotSnapshot",

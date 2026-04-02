@@ -1,9 +1,13 @@
-import hashlib
 import json
 import unittest
 from pathlib import Path
 
-from forge_kernel import PackageLayer, PackageManifest, PackagingGate
+from forge_kernel import (
+    PackageLayer,
+    PackageManifest,
+    PackagingGate,
+    compute_integrity_hash,
+)
 
 
 class PackagingHardeningPhase7Tests(unittest.TestCase):
@@ -33,7 +37,7 @@ class PackagingHardeningPhase7Tests(unittest.TestCase):
             data = json.loads(manifest_path.read_text(encoding="utf-8"))
             source_anchor = forgeos_root / data["source_anchor"]
             self.assertTrue(source_anchor.exists(), f"source anchor missing: {source_anchor}")
-            verified_hash = "sha256:" + hashlib.sha256(source_anchor.read_bytes()).hexdigest()
+            verified_hash = compute_integrity_hash(source_anchor)
 
             manifest = PackageManifest(
                 package_id=data["package_id"],

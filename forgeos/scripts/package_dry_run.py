@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import sys
 from dataclasses import dataclass
@@ -13,7 +12,12 @@ KERNEL_SRC = FORGEOS_ROOT / "platform" / "forge_kernel" / "src"
 if str(KERNEL_SRC) not in sys.path:
     sys.path.insert(0, str(KERNEL_SRC))
 
-from forge_kernel import PackageLayer, PackageManifest, PackagingGate  # noqa: E402
+from forge_kernel import (  # noqa: E402
+    PackageLayer,
+    PackageManifest,
+    PackagingGate,
+    compute_integrity_hash,
+)
 
 
 @dataclass(frozen=True)
@@ -22,14 +26,6 @@ class PackageResult:
     manifest_path: str
     status: str
     reasons: tuple[str, ...]
-
-
-def hash_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(65536), b""):
-            digest.update(chunk)
-    return "sha256:" + digest.hexdigest()
 
 
 def dry_run_package(manifest_path: Path, root: Path, kernel_version: str) -> PackageResult:
@@ -74,7 +70,7 @@ def dry_run_package(manifest_path: Path, root: Path, kernel_version: str) -> Pac
             reasons.append("compatibility.commons is required")
 
     if manifest is not None and source_anchor is not None and source_anchor.exists():
-        verified_hash = hash_file(source_anchor)
+        verified_hash = compute_integrity_hash(source_anchor)
         gate = PackagingGate()
         result = gate.validate(
             manifest=manifest,

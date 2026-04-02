@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
+import hashlib
+from pathlib import Path
 
 
 class PackageLayer(str, Enum):
@@ -48,6 +50,15 @@ class PackagingGate:
         if manifest.integrity_hash != verified_integrity_hash:
             reasons.append("integrity hash mismatch")
         return GateResult(approved=not reasons, reasons=tuple(reasons))
+
+
+def compute_integrity_hash(path: Path) -> str:
+    """Compute a deterministic source hash independent from host EOL settings."""
+
+    raw = path.read_bytes()
+    normalized = raw.replace(b"\r\n", b"\n")
+    digest = hashlib.sha256(normalized).hexdigest()
+    return "sha256:" + digest
 
 
 def _version_in_range(version: str, constraints: str) -> bool:
