@@ -7,7 +7,8 @@ from PySide6.QtWidgets import QStackedLayout, QVBoxLayout, QWidget
 
 from .backdrop import FrostedGlassBackdrop
 from .contracts import DEFAULT_THEME_ID
-from .theme import build_stylesheet
+from .frameless import FramelessResizeController
+from .theme import build_stylesheet_exact_atlas
 
 
 def build_glass_dialog_scene(
@@ -15,7 +16,7 @@ def build_glass_dialog_scene(
     *,
     theme_id: str = DEFAULT_THEME_ID,
     variant: str = "selector",
-    margins: tuple[int, int, int, int] = (10, 10, 10, 10),
+    margins: tuple[int, int, int, int] = (6, 6, 6, 6),
     motion_enabled: bool = True,
     apply_stylesheet: bool = True,
     backdrop_factory: Optional[Callable[[QWidget], QWidget]] = None,
@@ -30,7 +31,10 @@ def build_glass_dialog_scene(
         pass
 
     if apply_stylesheet:
-        host.setStyleSheet(build_stylesheet(theme_id))
+        host.setStyleSheet(build_stylesheet_exact_atlas(theme_id))
+
+    if bool(host.windowFlags() & Qt.FramelessWindowHint) and not hasattr(host, "_resize_controller"):
+        setattr(host, "_resize_controller", FramelessResizeController(host, margin=8))
 
     outer = QVBoxLayout(host)
     outer.setContentsMargins(*margins)

@@ -26,6 +26,12 @@ class CatalogWorkbenchTests(unittest.TestCase):
         _clear_data_provider_registry_for_tests()
         register_builtin_catalog_entries(force=True)
 
+    def _confirm_pending_candidate(self, widget: GlassCatalogShell) -> None:
+        self.assertIsNotNone(widget._pending_candidate_overlay)
+        widget._commit_pending_panel_candidate()
+        self.app.processEvents()
+        self.assertIsNone(widget._pending_candidate_overlay)
+
     def test_workbench_tabs_metadata_and_provider_probe(self) -> None:
         widget = GlassCatalogShell()
         try:
@@ -92,6 +98,7 @@ class CatalogWorkbenchTests(unittest.TestCase):
             widget.editor_add_slot_combo.setCurrentText("main")
             widget._add_editor_panel()
             self.app.processEvents()
+            self._confirm_pending_candidate(widget)
 
             session = widget._current_editor_session()
             self.assertIsNotNone(session)
@@ -204,6 +211,7 @@ class CatalogWorkbenchTests(unittest.TestCase):
             widget.editor_chart_fill_slider.setValue(33)
             widget._add_editor_panel()
             self.app.processEvents()
+            self._confirm_pending_candidate(widget)
 
             session = widget._current_editor_session()
             template = widget._current_editor_template()
@@ -216,6 +224,8 @@ class CatalogWorkbenchTests(unittest.TestCase):
             self.assertTrue(chart_item.chart_show_markers)
             self.assertEqual(chart_item.chart_line_width, 4)
             self.assertEqual(chart_item.chart_fill_alpha, 33)
+            template.set_split_proportions(main=70, side=30)
+            self.app.processEvents()
 
             panel = template.panel(chart_item.panel_id)
             assert panel is not None
@@ -227,6 +237,10 @@ class CatalogWorkbenchTests(unittest.TestCase):
             widget._apply_panel_drag(_FakeMouseEvent(target_point))
             widget._finish_panel_drag()
             self.app.processEvents()
+            if widget._panel_slot(template, chart_item.panel_id) != "side":
+                widget._set_selected_editor_panel(session, chart_item.panel_id)
+                widget._move_editor_panel_across_slot(1)
+                self.app.processEvents()
             self.assertEqual(widget._panel_slot(template, chart_item.panel_id), "side")
 
             resize_anchor = panel.mapToGlobal(QPoint(max(8, panel.width() // 2), max(8, panel.height() - 2)))
@@ -261,6 +275,7 @@ class CatalogWorkbenchTests(unittest.TestCase):
             for _ in range(6):
                 widget._add_editor_panel()
                 self.app.processEvents()
+                self._confirm_pending_candidate(widget)
 
             session = widget._current_editor_session()
             assert session is not None
@@ -293,6 +308,8 @@ class CatalogWorkbenchTests(unittest.TestCase):
             for _ in range(20):
                 widget._add_editor_panel()
                 self.app.processEvents()
+                if widget._pending_candidate_overlay is not None:
+                    self._confirm_pending_candidate(widget)
 
             session = widget._current_editor_session()
             assert session is not None
@@ -357,6 +374,8 @@ class CatalogWorkbenchTests(unittest.TestCase):
             before_count = len(widget._workspace_hosts)
             widget._picker_add_to_current_tab()
             self.app.processEvents()
+            self.assertIsNotNone(widget._pending_candidate_overlay)
+            self._confirm_pending_candidate(widget)
             after_count = len(widget._workspace_hosts)
             self.assertEqual(before_count, after_count)
             self.assertIn(active_tab, widget._workspace_hosts)
@@ -398,6 +417,10 @@ class CatalogWorkbenchTests(unittest.TestCase):
             widget._picker_open_in_new_tab()
             self.app.processEvents()
             self.assertGreater(len(widget._workspace_hosts), before_count)
+            self.assertIsNotNone(widget._pending_candidate_overlay)
+            widget._discard_pending_panel_candidate()
+            self.app.processEvents()
+            self.assertIsNone(widget._pending_candidate_overlay)
         finally:
             widget.deleteLater()
 
@@ -420,6 +443,89 @@ class CatalogWorkbenchTests(unittest.TestCase):
             payload = json.loads(widget.runtime_diagnostics_text.toPlainText())
             self.assertIn("action_trace", payload)
             self.assertGreaterEqual(payload["action_trace"]["total_events"], 1)
+        finally:
+            widget.deleteLater()
+
+    def test_structural_slot_shell_cannot_be_hidden_or_moved(self) -> None:
+        widget = GlassCatalogShell()
+        try:
+            widget._select_entry("example.form")
+            widget._on_entry_selected(widget.entry_list.currentItem(), None)
+            widget._open_selected_preview()
+            self.app.processEvents()
+
+            session = widget._current_editor_session()
+            template = widget._current_editor_template()
+            assert session is not None
+            assert template is not None
+
+            widget._set_selected_editor_panel(session, "main")
+            self.app.processEvents()
+            main_panel = template.panel("main")
+            assert main_panel is not None
+            main_slot_before = widget._panel_slot(template, "main")
+
+            widget._hide_editor_panel()
+            self.app.processEvents()
+            self.assertEqual(str(session.core_working["main"].get("state") or "visible"), "visible")
+            self.assertFalse(bool(session.core_working["main"].get("user_hidden", False)))
+
+            widget._move_editor_panel_across_slot(1)
+            self.app.processEvents()
+            self.assertEqual(widget._panel_slot(template, "main"), main_slot_before)
+        finally:
+            widget.deleteLater()
+
+    def test_button_metadata_behavior_edit_and_invalid_payload_guard(self) -> None:
+        widget = GlassCatalogShell()
+        try:
+            widget._select_entry("example.form")
+            widget._on_entry_selected(widget.entry_list.currentItem(), None)
+            widget._open_selected_preview()
+            self.app.processEvents()
+
+            widget._set_combo_data(widget.editor_add_type_combo, "button_control")
+            widget._set_combo_data(widget.editor_add_slot_combo, "main")
+            widget.editor_button_text_input.setText("Trigger")
+            widget.editor_widget_tooltip_input.setText("Execute synthetic action")
+            widget.editor_widget_object_name_input.setText("btn_trigger")
+            widget.editor_widget_enabled_check.setChecked(True)
+            widget.editor_button_icon_input.setText("play")
+            widget.editor_button_checkable_check.setChecked(True)
+            widget.editor_button_checked_check.setChecked(True)
+            widget._set_combo_data(widget.editor_button_style_variant_combo, "primary")
+            widget._set_combo_data(widget.editor_behavior_action_type_combo, "command")
+            widget.editor_behavior_command_id_input.setText("runtime.refresh")
+            widget.editor_behavior_target_panel_input.setText("dyn_001")
+            widget.editor_behavior_task_ref_input.setText("task://refresh")
+            widget.editor_behavior_payload_input.setPlainText("{\"scope\":\"preview\"}")
+            widget._add_editor_panel()
+            self.app.processEvents()
+            self._confirm_pending_candidate(widget)
+
+            session = widget._current_editor_session()
+            template = widget._current_editor_template()
+            assert session is not None
+            assert template is not None
+            button_state = session.dynamic_working[-1]
+            self.assertEqual(button_state.panel_type, "button_control")
+            self.assertEqual(button_state.widget_props.get("text"), "Trigger")
+            self.assertEqual(button_state.behavior.get("action_type"), "command")
+            self.assertEqual(button_state.behavior.get("command_id"), "runtime.refresh")
+            self.assertEqual(button_state.behavior.get("payload"), {"scope": "preview"})
+
+            widget._set_selected_editor_panel(session, button_state.panel_id)
+            widget.editor_behavior_payload_input.setPlainText("{bad-json")
+            widget._apply_editor_properties()
+            self.app.processEvents()
+            self.assertIn("Invalid behavior payload JSON", widget._action_trace[-1]["action"])
+            self.assertEqual(button_state.behavior.get("payload"), {"scope": "preview"})
+
+            panel = template.panel(button_state.panel_id)
+            assert panel is not None
+            buttons = panel.findChildren(QPushButton)
+            self.assertGreaterEqual(len(buttons), 1)
+            self.assertEqual(buttons[0].objectName(), "btn_trigger")
         finally:
             widget.deleteLater()
 

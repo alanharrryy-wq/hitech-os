@@ -1,0 +1,452 @@
+You are continuing work inside the existing PySide6 repository.
+
+Do NOT restart from scratch.
+Do NOT redesign the product.
+Do NOT create a parallel validation stack.
+Do NOT create a second release gate.
+Do NOT create a second proof system.
+Do NOT ask clarifying questions.
+Do NOT return a plan or proposal.
+Implement directly in code, validate it, generate real artifacts, and report with evidence.
+
+CONTEXT
+
+The repository already contains meaningful infrastructure under:
+
+forgeos/shared/pyside6_glass
+
+This existing system already includes:
+- sacred release-blocking capabilities contract
+- premium 100-capability contract and matrix
+- release gate
+- golden sessions
+- UX proof runner
+- baseline store
+- semantic comparator
+- proof bundle generation
+- critical regression coverage
+- RC-1 acceptance flow
+
+Treat all of that as real authoritative infrastructure.
+You must extend it.
+You must not replace it.
+You must not fork it into a separate runtime validation framework.
+
+MISSION
+
+Add and fully integrate a new authoritative layer of:
+
+RUNTIME HYGIENE / RUNTIME DIAGNOSTICS / LATENT FAILURE DETECTION
+
+inside the existing proof/gate stack.
+
+The goal is to catch and prevent runtime-level UI/system issues even when:
+- they do not immediately break visible behavior
+- they are not obvious in screenshots
+- no human has manually noticed them yet
+- tests would otherwise appear to pass
+
+This must become an automated, deterministic, evidence-producing part of the current release-quality system.
+
+PRIMARY OUTCOME
+
+By the end of this task, the repository must be able to automatically:
+1. detect runtime warnings/errors/signals of structural UI misuse
+2. classify them by severity
+3. record them into proof artifacts
+4. fail or downgrade release acceptance when policy requires it
+5. proactively surface latent runtime issues through automated inspection and exploration
+6. apply preventive hardening and targeted fixes for any runtime-structural issues found during implementation
+7. make this part of local and CI execution without manual inspection as the main decision path
+
+CRITICAL CONSTRAINT
+
+Do not claim magical detection of all future bugs.
+Instead:
+- implement strong proactive detection for important classes of latent runtime failures
+- widen automated exploration so hidden issues are more likely to be surfaced
+- convert structural runtime misuse into machine-visible evidence
+- add preventive assertions/guards/audits for classes of issues that should never silently pass
+
+That is the standard.
+
+NON-NEGOTIABLE RULES
+
+1. Extend the existing release gate and proof runner. Do not create a second one.
+2. Extend the existing artifact taxonomy. Do not create a parallel artifact tree.
+3. Extend the existing baseline/proof model. Do not create a separate baseline universe.
+4. Reuse existing sessions/tests/contracts/docs wherever possible.
+5. Prefer authoritative ownership over additional layers.
+6. Runtime hygiene evidence must be machine-readable and human-readable.
+7. Runtime hygiene must not depend on screenshots as the primary truth source.
+8. Local and CI commands must run this automatically.
+9. If you discover real runtime issues while building this, fix them in this pass where feasible.
+10. If something cannot be fully fixed now, detect it automatically and report it honestly with severity.
+
+PART 1 — IMPLEMENT THE RUNTIME HYGIENE LAYER
+
+Build this as an integrated subsystem inside the current proof/gate stack.
+
+At minimum, implement the following capabilities.
+
+A. RUNTIME SIGNAL CAPTURE
+
+Capture and normalize runtime signals from at least these sources where applicable:
+1. Qt message stream / Qt warnings / Qt critical messages
+2. Python warnings module
+3. uncaught exceptions during UI/runtime execution
+4. logged runtime errors/warnings emitted by relevant proof/session code
+5. structural audit failures discovered during widget/layout/tree inspection
+
+Examples of problems that must be detectable when they occur:
+- QLayout / QWidget parent-child misuse
+- adding a parent widget to its own child layout
+- duplicate or illegal layout ownership patterns
+- orphaned widgets or suspicious detached runtime objects where relevant
+- invalid or contradictory panel/workspace structural state
+- runtime state inconsistencies between visible UI model and semantic snapshot model
+- repeated warnings that suggest hidden instability
+- uncaught callback/event failures
+- policy-violating stale/dirty/runtime status mismatches where detectable
+
+B. SEVERITY POLICY
+
+Add an explicit runtime hygiene severity policy with classes:
+- blocker
+- major
+- minor
+- informational
+
+Implement deterministic classification rules for at least:
+1. forbidden Qt structural warnings
+2. uncaught exceptions
+3. repeated warnings
+4. audit invariant failures
+5. suspicious-but-nonfatal runtime drift
+
+At minimum:
+- structural Qt layout/ownership misuse must be at least major
+- uncaught exceptions during proof/session execution must be blocker
+- repeated nonfatal warnings above a threshold must escalate severity
+- invariant violations in core workbench/session state must be major or blocker depending on impact
+
+C. FORBIDDEN WARNING POLICY
+
+Create an authoritative machine-readable policy for disallowed runtime warnings/signals.
+This policy must support:
+- exact match patterns
+- regex or structured pattern matching
+- severity per pattern
+- optional allowlist / suppression with documented justification
+- threshold-based escalation for repeat occurrences
+
+Seed it with real patterns, including at minimum the class represented by:
+- QLayout: Cannot add parent widget ... to its child layout ...
+
+Do not stop at that one example.
+Add the meaningful runtime-structural classes you can reasonably cover from the current codebase.
+
+D. RUNTIME HYGIENE RECORDER INTEGRATION
+
+Extend the existing flight recorder / proof artifacts so that each proof run records:
+- runtime hygiene summary
+- captured signals
+- normalized warning/error entries
+- source/session/checkpoint association where possible
+- severity totals
+- forbidden pattern hits
+- uncaught exception records
+- invariant audit failures
+- final pass/fail contribution from runtime hygiene policy
+
+These must be written into the proof bundle in stable machine-readable form and summarized in markdown.
+
+E. PROACTIVE LATENT ISSUE DETECTION
+
+Do not wait only for existing visible failures.
+Add automated proactive checks that can surface hidden runtime problems even when nobody reported them.
+
+Implement proactive runtime audits such as:
+1. widget/layout tree integrity inspection
+2. layout ownership sanity checks
+3. panel/workspace structural invariants
+4. selected tab / active workspace / mounted panels consistency checks
+5. hidden vs mounted vs assigned slot consistency
+6. status/runtime/data state coherence checks where relevant
+7. repeated-warning aggregation across a run
+8. optional targeted exploratory session steps that increase the chance of surfacing hidden issues
+
+Important:
+- keep this deterministic
+- do not add flaky random fuzz as the primary method
+- controlled exploratory sequences are acceptable if stable and reproducible
+
+F. AUTOMATED DISCOVERY EXPANSION
+
+Extend the current golden session or proof execution layer so the system explores enough runtime state to catch more latent issues than current functional checks alone.
+
+This can include:
+- additional audit checkpoints after key actions
+- pre-close / post-close / post-reset runtime audits
+- audit after panel add/remove/drag/resize/open-in-new-tab flows
+- audit after data/runtime probe flows
+- audit after clone/reset flows
+- audit at proof run end for leftover structural issues
+
+Do not create redundant sessions unless necessary.
+Prefer extending existing authoritative sessions/checkpoints with runtime hygiene coverage.
+
+G. PREVENTIVE HARDENING / AUTO-CORRECTION OF DISCOVERED ISSUE CLASSES
+
+When you discover concrete runtime-structural issues during implementation:
+- fix them directly in code where reasonable
+- add assertions/guards/helpers to prevent recurrence
+- add coverage so they do not silently return
+
+Examples of acceptable preventive hardening:
+- central helper guards for parent/layout misuse
+- validation wrappers around panel/workspace composition
+- invariant checks around workbench mutations
+- safer ownership handling in UI assembly flows
+- fail-fast diagnostics in debug/proof mode when impossible UI composition occurs
+
+Do NOT implement a giant magical self-healing layer.
+Prefer:
+- prevention
+- detection
+- hard failure in proof/gate where appropriate
+- narrow safe corrections where deterministic
+
+PART 2 — INTEGRATE INTO THE CURRENT RELEASE SYSTEM
+
+You must wire runtime hygiene into the existing system end-to-end.
+
+A. RELEASE GATE INTEGRATION
+
+Extend the current release gate so it now also validates runtime hygiene results.
+
+The gate must:
+1. run the proof stack as it already does
+2. consume runtime hygiene results from proof artifacts or proof summary
+3. fail when blocker/major hygiene issues violate policy
+4. report hygiene outcome explicitly in machine-readable output
+5. preserve current contract/test/proof behavior
+
+Do not duplicate proof execution logic unnecessarily.
+Reuse the current proof runner contract.
+
+B. PROOF SUMMARY INTEGRATION
+
+The proof summary must now clearly include:
+- runtime_hygiene_passed
+- max_runtime_hygiene_severity
+- total runtime warnings/errors captured
+- forbidden warning hits
+- uncaught exceptions count
+- invariant failure count
+- hygiene findings summary
+- whether hygiene changed release acceptability
+
+C. ARTIFACT BUNDLE EXTENSION
+
+Extend the current proof artifact bundle under:
+forgeos/shared/pyside6_glass/artifacts/ux_release_proof/<timestamp>/
+
+At minimum add:
+- runtime_hygiene_summary.json
+- runtime_hygiene_events.jsonl or equivalent stable machine-readable log
+- runtime_hygiene_policy_used.json or equivalent exported policy snapshot
+- hygiene section in UX_RELEASE_PROOF.md
+- linkage from session manifests/checkpoints where relevant
+
+Do not invent a second artifact root.
+
+D. BASELINE / COMPARATOR INTEGRATION
+
+Integrate runtime hygiene into the comparator model where appropriate.
+This does NOT mean every warning becomes baseline data.
+Use good judgment.
+
+At minimum, comparator/release evidence should be able to distinguish:
+- new forbidden runtime warnings
+- new invariant failures
+- severity regressions
+- worsening repeated warning counts
+
+Do not make baseline refresh automatic.
+Do not normalize away serious runtime warnings.
+
+PART 3 — TESTING
+
+Add or extend automated tests so the runtime hygiene layer is itself protected.
+
+At minimum add coverage for:
+1. Qt/normalized warning capture
+2. forbidden warning classification
+3. repeated-warning escalation
+4. uncaught exception classification
+5. structural audit failure classification
+6. proof artifact writing for hygiene outputs
+7. release gate reaction to hygiene blocker/major conditions
+8. a representative injected runtime warning scenario
+9. a representative invariant/audit failure scenario
+
+Where feasible, add at least one integration-style test proving that a forbidden runtime signal causes the gate/proof result to downgrade appropriately.
+
+PART 4 — DOCUMENTATION / OWNERSHIP
+
+Update authoritative docs so an operator can understand and use the runtime hygiene system without guessing.
+
+You must clearly document:
+1. what runtime hygiene is responsible for
+2. what it captures
+3. what severities mean
+4. what patterns are forbidden
+5. how allowlists/suppressions are governed
+6. how it participates in proof and release acceptance
+7. local run commands
+8. CI/headless command
+9. where artifacts live
+10. where authoritative policy lives
+11. where operators review findings
+12. how new warnings should be triaged and promoted into policy
+
+AUTHORITATIVE OWNERSHIP TO ESTABLISH
+
+By the end of the task, ownership must be unambiguous for:
+- runtime hygiene policy
+- runtime hygiene artifact outputs
+- runtime hygiene summary in proof bundle
+- runtime hygiene gate interpretation
+- operator documentation for runtime hygiene
+
+PREFERRED FILES / AREAS TO INSPECT AND MODIFY
+
+At minimum inspect and modify, where needed:
+- forgeos/shared/pyside6_glass/release_gate.py
+- forgeos/shared/pyside6_glass/ux_flight_recorder/runner.py
+- forgeos/shared/pyside6_glass/ux_flight_recorder/recorder.py
+- forgeos/shared/pyside6_glass/ux_flight_recorder/comparator.py
+- forgeos/shared/pyside6_glass/ux_flight_recorder/specs.py
+- forgeos/shared/pyside6_glass/ux_flight_recorder/capabilities.py
+- forgeos/shared/pyside6_glass/examples/catalog_shell.py
+- forgeos/shared/pyside6_glass/template.py
+- forgeos/shared/pyside6_glass/chrome.py
+- forgeos/shared/pyside6_glass/primitives.py
+- forgeos/shared/pyside6_glass/tests/*
+- forgeos/shared/pyside6_glass/README.md
+- forgeos/shared/pyside6_glass/UX_RELEASE_PROOF.md
+- forgeos/shared/pyside6_glass/examples/README.md
+
+You may add focused modules/files if needed, for example:
+- forgeos/shared/pyside6_glass/ux_flight_recorder/runtime_hygiene.py
+- forgeos/shared/pyside6_glass/contracts/runtime_hygiene_policy_v1.json
+- forgeos/shared/pyside6_glass/tests/test_runtime_hygiene.py
+
+But do so only when that creates cleaner authoritative ownership.
+Do not create overlapping systems.
+
+MANDATORY ACCEPTANCE CRITERIA
+
+The work is acceptable only if all of the following are true:
+
+1. Existing release gate/proof infrastructure remains intact and extended, not replaced.
+2. A runtime hygiene layer exists and is automated.
+3. Runtime warnings/errors are captured and normalized.
+4. Forbidden runtime warning patterns are policy-driven and severity-classified.
+5. Runtime hygiene results are written into proof artifacts.
+6. Release gate uses runtime hygiene results in pass/fail decisioning.
+7. Local and CI commands run this automatically.
+8. At least one real class of structural Qt runtime warning is covered by policy.
+9. Automated tests verify hygiene capture/classification/gate behavior.
+10. Operator docs clearly explain usage, ownership, and policy.
+11. No duplicate truth sources or parallel validation stacks were introduced.
+12. If real runtime issues are discovered during implementation, they are either fixed now or surfaced automatically with honest severity.
+
+MANDATORY FINAL REPORT FORMAT
+
+At the end, return ALL of the following explicitly and separately:
+
+1. IMPLEMENTATION SUMMARY
+- what now exists end-to-end
+
+2. RUNTIME HYGIENE MODEL
+- what signals are captured
+- how they are normalized
+- where the policy lives
+- how severities are assigned
+- how repeated warnings escalate
+- how allowlist/suppressions work
+
+3. DISCOVERED AND FIXED RUNTIME ISSUES
+- exact issues found during implementation
+- exact fixes applied
+- exact files modified
+- exact remaining issues, if any
+
+4. REUSE / IMPROVEMENT AUDIT
+List explicitly:
+- what existing files/modules/tests/flows were reused as-is
+- what existing pieces were extended
+- what duplication was avoided
+- what had to be created new
+
+5. MODIFIED FILES
+- exact paths
+
+6. NEW FILES
+- exact paths
+
+7. REMOVED OR SUPERSEDED FLOWS
+- exact paths or logical flows
+- explain why
+
+8. LOCAL RUN COMMANDS
+- exact commands
+
+9. CI / HEADLESS COMMANDS
+- exact commands
+
+10. VALIDATION RESULTS
+- exact commands run
+- pass/fail
+- what they proved
+
+11. GENERATED ARTIFACTS
+- exact output paths
+- what each artifact contains
+
+12. TRADEOFFS
+- brief and honest
+
+13. OPEN LIMITATIONS
+- only real remaining limitations
+
+14. AUTHORITATIVE OWNERSHIP MAP
+State clearly:
+- where the runtime hygiene policy lives
+- where runtime hygiene artifacts are written
+- where runtime hygiene is summarized for operators
+- where release gate interprets runtime hygiene
+- where operator docs live
+
+ANTI-HUMO RULES
+
+Do not claim hidden-runtime detection unless you implemented actual capture/audit/policy logic.
+Do not claim proactive latent issue detection unless you added deterministic audits/exploration that can surface issues without manual discovery.
+Do not claim automated correction unless you either fixed discovered classes directly or added deterministic prevention/guardrails.
+Do not claim gate integration unless the gate actually consumes runtime hygiene results.
+Do not claim docs unless you name the files.
+Do not claim tests unless you list what passed.
+
+WORKSTYLE
+
+Be decisive.
+Continue from the current system.
+Extend it cleanly.
+Automate the runtime hygiene layer end-to-end.
+Use the existing proof/gate/baseline/artifact structure as the authority.
+Detect, classify, surface, and where feasible fix latent runtime issues.
+Validate everything and report with evidence.
+Do not stop at analysis.
+Ship the finished system.

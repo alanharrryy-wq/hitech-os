@@ -5,6 +5,7 @@ from typing import Callable, Optional
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QPushButton, QWidget
 
+from .effects import apply_shadow, repolish
 from .icons import apply_icon
 
 
@@ -22,6 +23,12 @@ _SUPPORTED_BUTTON_VARIANTS = {
     "danger",
     "warning",
     "success",
+}
+_SHADOW_ALPHA_BY_VARIANT = {
+    "primary": 28,
+    "secondary": 14,
+    "success": 22,
+    "danger": 16,
 }
 
 
@@ -54,7 +61,8 @@ def create_button(
 ) -> QPushButton:
     button = QPushButton(text, parent)
     button.setCursor(Qt.PointingHandCursor)
-    button.setProperty("variant", _normalize_button_variant(variant))
+    variant_name = _normalize_button_variant(variant)
+    button.setProperty("variant", variant_name)
     button.setAccessibleName(str(text or "action_button").strip())
     if tooltip:
         button.setToolTip(tooltip)
@@ -62,6 +70,8 @@ def create_button(
         button.setMinimumWidth(max(72, int(minimum_width)))
     if default:
         button.setDefault(True)
+    button.setEnabled(button.isEnabled())
+    button.setAutoDefault(bool(default))
     if on_click is not None:
         button.clicked.connect(on_click)
     if icon_name:
@@ -74,4 +84,8 @@ def create_button(
             accessible_name=icon_accessible_name,
             tooltip=tooltip,
         )
+    shadow_blur = 16.0 if variant_name == "primary" else 12.0
+    shadow_alpha = _SHADOW_ALPHA_BY_VARIANT.get(variant_name, 14)
+    apply_shadow(button, blur=shadow_blur, y_offset=4.0, alpha=shadow_alpha)
+    repolish(button)
     return button

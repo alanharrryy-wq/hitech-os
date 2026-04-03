@@ -82,6 +82,25 @@ def _prepare_editor_context(shell: Any) -> None:
     shell._refresh_editor_contexts(select_context="preview")
 
 
+def _resolve_pending_candidate(shell: Any) -> Any | None:
+    candidate = getattr(shell, "_pending_candidate_overlay", None)
+    if candidate is None:
+        return None
+    try:
+        candidate.parentWidget()
+    except RuntimeError:
+        return None
+    return candidate
+
+
+def _confirm_pending_candidate(shell: Any) -> bool:
+    candidate = _resolve_pending_candidate(shell)
+    if candidate is None:
+        return False
+    shell._commit_pending_panel_candidate()
+    return True
+
+
 def _insert_chart_panel(shell: Any) -> None:
     shell.editor_palette_search.setText("chart")
     shell._refresh_insert_palette()
@@ -89,6 +108,7 @@ def _insert_chart_panel(shell: Any) -> None:
         raise RuntimeError("insert palette has no chart entries")
     shell.editor_palette_list.setCurrentRow(0)
     shell._add_editor_panel()
+    _confirm_pending_candidate(shell)
     session = shell._current_editor_session()
     if session is None or not session.dynamic_working:
         raise RuntimeError("dynamic panel insert failed")
@@ -184,11 +204,13 @@ def _execute_action(
     if name == "picker_add_current":
         shell._picker_add_to_current_tab()
         _process_events(app)
+        _confirm_pending_candidate(shell)
         recorder.log_event("interaction", "Picker add to current tab")
         return
     if name == "picker_open_new_tab":
         shell._picker_open_in_new_tab()
         _process_events(app)
+        _confirm_pending_candidate(shell)
         recorder.log_event("interaction", "Picker open in new tab")
         return
     if name == "open_empty_tab":

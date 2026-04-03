@@ -10,6 +10,7 @@ from PySide6.QtCore import QPointF, QRectF, Qt, QTimer
 from PySide6.QtGui import QColor, QLinearGradient, QPainter, QPainterPath, QPen, QRadialGradient
 from PySide6.QtWidgets import QWidget
 
+from .atlas_theme_bridge import resolve_atlas_glass_palette
 from .contracts import DEFAULT_THEME_ID
 from .theme import get_theme_manifest
 
@@ -83,31 +84,21 @@ def _glass_palette(theme_id: str, variant: str = "selector") -> _GlassPalette:
             canvas_top=_qcolor_from_value("#04070d", 1.0),
             canvas_bottom=_qcolor_from_value("#0f1824", 1.0),
             wash=_qcolor_from_value("#eef6ff", 0.022 if selector_variant else 0.028),
-            border=_qcolor_from_value("#f0f5ff", 0.19 if selector_variant else 0.15),
-            line=_qcolor_from_value("#ffffff", 0.034),
+            border=_qcolor_from_value("#e8f6ff", 0.20 if selector_variant else 0.16),
+            line=_qcolor_from_value("#8cefff", 0.05),
             sheen=_qcolor_from_value("#ffffff", 0.08),
             orb_a=_qcolor_from_value("#eff7ff", 0.18 if selector_variant else 0.14),
-            orb_b=_qcolor_from_value("#d8e2f1", 0.13 if selector_variant else 0.10),
+            orb_b=_qcolor_from_value("#8cefff", 0.15 if selector_variant else 0.12),
             orb_c=_qcolor_from_value("#d7e1ff", 0.10 if selector_variant else 0.08),
             sparkle=_qcolor_from_value("#ffffff", 0.88),
             star_soft=_qcolor_from_value("#eef6ff", 0.18),
             star_bright=_qcolor_from_value("#ffffff", 0.62),
         )
 
-    palette = get_theme_manifest(theme_id).palette
-    return _GlassPalette(
-        canvas_top=_qcolor_from_token(getattr(palette, "shell_top", ""), alpha_override=1.0),
-        canvas_bottom=_qcolor_from_token(getattr(palette, "shell_bottom", ""), alpha_override=1.0),
-        wash=_qcolor_from_token(getattr(palette, "accent_soft", ""), alpha_override=0.22 if selector_variant else 0.18),
-        border=_qcolor_from_token(getattr(palette, "shell_border", ""), alpha_override=0.26),
-        line=_qcolor_from_token(getattr(palette, "input_border", ""), alpha_override=0.16),
-        sheen=_qcolor_from_value("#ffffff", 0.10),
-        orb_a=_qcolor_from_token(getattr(palette, "accent", ""), alpha_override=0.18 if selector_variant else 0.14),
-        orb_b=_qcolor_from_token(getattr(palette, "button_border", ""), alpha_override=0.14 if selector_variant else 0.11),
-        orb_c=_qcolor_from_token(getattr(palette, "tab_border", ""), alpha_override=0.11 if selector_variant else 0.09),
-        sparkle=_qcolor_from_value("#ffffff", 0.44),
-        star_soft=_qcolor_from_value("#ffffff", 0.18),
-        star_bright=_qcolor_from_value("#ffffff", 0.34),
+    return resolve_atlas_glass_palette(
+        theme_id=theme_id,
+        variant=variant,
+        palette_factory=_GlassPalette,
     )
 
 

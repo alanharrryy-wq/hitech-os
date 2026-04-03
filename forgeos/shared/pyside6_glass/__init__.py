@@ -71,6 +71,8 @@ from .assets import (
     TogglePill,
 )
 from .controls import create_button, list_button_variants
+from .effects import apply_shadow, enable_card_hover, repolish
+from .frameless import FramelessResizeController
 from .charts import (
     GlassChartPalette,
     GlassChartStyle,
@@ -199,6 +201,7 @@ from .theme import (
     GlassPalette,
     GlassThemeManifest,
     build_stylesheet,
+    build_stylesheet_exact_atlas,
     get_palette,
     get_theme_manifest,
     list_theme_ids,
@@ -235,6 +238,7 @@ __all__ = [
     "ErrorStateCard",
     "FilterChipBar",
     "FormSectionShell",
+    "FramelessResizeController",
     "FrostedGlassBackdrop",
     "GLASS_DENSITY",
     "GLASS_RADIUS",
@@ -321,8 +325,11 @@ __all__ = [
     "StatCard",
     "WindowChromeBar",
     "apply_icon",
+    "apply_shadow",
+    "enable_card_hover",
     "build_glass_dialog_scene",
     "build_stylesheet",
+    "build_stylesheet_exact_atlas",
     "config_snapshot",
     "create_button",
     "list_button_variants",
@@ -372,6 +379,7 @@ __all__ = [
     "register_theme_override_extension",
     "register_theme_overrides",
     "register_reference_workspace_endpoints",
+    "repolish",
     "resolve_template_config",
     "resolve_template_config_with_provenance",
     "resolved_snapshot",

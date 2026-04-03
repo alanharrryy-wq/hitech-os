@@ -86,20 +86,20 @@ SILVER_FROST_CYAN = GlassPalette(
     shell_bottom="rgba(7, 8, 11, 0.93)",
     shell_border="rgba(245, 248, 252, 0.2)",
     shell_border_hover="rgba(245, 248, 252, 0.3)",
-    chrome_top="rgba(255, 255, 255, 0.06)",
-    chrome_bottom="rgba(255, 255, 255, 0.02)",
-    chrome_border="rgba(245, 248, 252, 0.12)",
-    card_top="rgba(255, 255, 255, 0.045)",
-    card_bottom="rgba(255, 255, 255, 0.02)",
-    card_border="rgba(245, 248, 252, 0.08)",
+    chrome_top="rgba(255, 255, 255, 0.035)",
+    chrome_bottom="rgba(255, 255, 255, 0.012)",
+    chrome_border="rgba(245, 248, 252, 0.08)",
+    card_top="rgba(255, 255, 255, 0.032)",
+    card_bottom="rgba(255, 255, 255, 0.014)",
+    card_border="rgba(245, 248, 252, 0.06)",
     text_primary="#e7edf4",
     text_muted="#b5bfcb",
     text_inverse="#081018",
-    accent="#d7dde7",
-    accent_soft="rgba(248, 251, 255, 0.1)",
-    button_top="rgba(255, 255, 255, 0.085)",
-    button_bottom="rgba(255, 255, 255, 0.03)",
-    button_border="rgba(245, 248, 252, 0.15)",
+    accent="#dfe5ee",
+    accent_soft="rgba(245, 248, 252, 0.07)",
+    button_top="rgba(255, 255, 255, 0.02)",
+    button_bottom="rgba(255, 255, 255, 0.008)",
+    button_border="rgba(245, 248, 252, 0.10)",
     danger_top="rgba(218, 170, 156, 0.17)",
     danger_bottom="rgba(145, 98, 86, 0.13)",
     danger_border="rgba(225, 182, 168, 0.26)",
@@ -115,20 +115,20 @@ SILVER_FROST_CYAN = GlassPalette(
     progress_bg="rgba(5, 6, 10, 0.76)",
     progress_chunk_top="#d8dfe9",
     progress_chunk_bottom="#c2cbd8",
-    tab_bg="rgba(255, 255, 255, 0.04)",
-    tab_active_bg="rgba(255, 255, 255, 0.09)",
-    tab_hold_bg="rgba(255, 255, 255, 0.055)",
+    tab_bg="rgba(255, 255, 255, 0.03)",
+    tab_active_bg="rgba(255, 255, 255, 0.06)",
+    tab_hold_bg="rgba(255, 255, 255, 0.04)",
     tab_pending_bg="rgba(181, 162, 124, 0.24)",
     tab_warning_bg="rgba(176, 137, 106, 0.24)",
     tab_border="rgba(245, 248, 252, 0.14)",
     tab_text="#e8edf4",
     tab_text_muted="#a7b0be",
-    panel_form_border="rgba(245, 248, 252, 0.1)",
-    panel_data_border="rgba(214, 232, 223, 0.1)",
-    panel_metrics_border="rgba(232, 210, 171, 0.1)",
-    panel_detail_border="rgba(225, 220, 237, 0.1)",
-    panel_summary_border="rgba(237, 241, 247, 0.1)",
-    panel_aux_border="rgba(245, 248, 252, 0.08)",
+    panel_form_border="rgba(140, 235, 255, 0.12)",
+    panel_data_border="rgba(140, 235, 255, 0.15)",
+    panel_metrics_border="rgba(140, 235, 255, 0.14)",
+    panel_detail_border="rgba(140, 235, 255, 0.16)",
+    panel_summary_border="rgba(140, 235, 255, 0.14)",
+    panel_aux_border="rgba(140, 235, 255, 0.12)",
 )
 
 OBSIDIAN_ICE = GlassPalette(
@@ -474,9 +474,9 @@ QFrame#Shell[variant="progress"] {{
 }}
 
 QFrame#WindowChrome {{
-    background: {_gradient(p.chrome_top, p.chrome_bottom)};
-    border: {shell_border_px}px solid {p.chrome_border};
-    border-radius: {r.window_chrome}px;
+    background: transparent;
+    border: none;
+    border-radius: {max(0, r.window_chrome - 2)}px;
 }}
 
 QFrame[card="hero"] {{
@@ -489,7 +489,7 @@ QFrame[card="true"],
 QFrame[card="muted"],
 QFrame[card="footer"] {{
     background: {_gradient(p.card_top, p.card_bottom)};
-    border: {shell_border_px}px solid rgba(255, 255, 255, 0.05);
+    border: {shell_border_px}px solid rgba(245, 248, 252, 0.035);
     border-radius: {r.card}px;
 }}
 QFrame[card="clear"] {{
@@ -618,7 +618,7 @@ QPlainTextEdit:focus {{
 }}
 
 QPushButton {{
-    background: {_gradient(p.button_top, p.button_bottom)};
+    background: transparent;
     border: {shell_border_px}px solid {p.button_border};
     border-radius: {r.button}px;
     color: {p.text_primary};
@@ -628,44 +628,48 @@ QPushButton {{
     font-weight: {GLASS_TYPOGRAPHY.weight_semibold};
 }}
 QPushButton:hover {{
-    border: {shell_border_px}px solid rgba(255, 255, 255, 0.30);
-    background: {_gradient("rgba(255, 255, 255, 0.12)", "rgba(255, 255, 255, 0.04)")};
+    border: {shell_border_px}px solid rgba(245, 248, 252, 0.18);
+    background: rgba(255, 255, 255, 0.02);
 }}
 QPushButton:pressed {{
-    background: {_gradient("rgba(255, 255, 255, 0.09)", "rgba(255, 255, 255, 0.03)")};
+    background: rgba(255, 255, 255, 0.035);
 }}
 QPushButton:focus {{
-    border: {shell_border_px}px solid rgba(255, 255, 255, 0.35);
-    background: {_gradient("rgba(255, 255, 255, 0.12)", "rgba(255, 255, 255, 0.04)")};
+    border: {shell_border_px}px solid rgba(140, 235, 255, 0.24);
+    background: rgba(255, 255, 255, 0.02);
 }}
 QPushButton:disabled {{
     color: {p.tab_text_muted};
     border-color: {p.input_border};
-    background: {_gradient(p.card_top, p.card_bottom)};
+    background: transparent;
 }}
 QPushButton[variant="primary"] {{
-    background: {_gradient(p.button_top, p.button_bottom)};
-    border: {shell_border_px}px solid {p.accent};
+    background: transparent;
+    border-top: {shell_border_px}px solid rgba(245, 248, 252, 0.10);
+    border-right: {shell_border_px}px solid rgba(245, 248, 252, 0.10);
+    border-bottom: {shell_border_px}px solid rgba(245, 248, 252, 0.10);
+    border-left: 2px solid rgba(140, 235, 255, 0.28);
 }}
 QPushButton[variant="secondary"] {{
-    background: {_gradient(p.card_top, p.card_bottom)};
-    border: {shell_border_px}px solid {p.button_border};
+    background: transparent;
+    border: {shell_border_px}px solid rgba(245, 248, 252, 0.08);
 }}
 QPushButton[variant="subtle"] {{
-    background: rgba(0, 0, 0, 0.0);
-    border: {shell_border_px}px solid {p.card_border};
+    background: transparent;
+    border: {shell_border_px}px solid rgba(245, 248, 252, 0.05);
     color: {p.text_muted};
 }}
 QPushButton[variant="subtle"]:hover {{
     color: {p.text_primary};
-    border-color: {p.button_border};
+    border-color: rgba(245, 248, 252, 0.12);
 }}
 QPushButton[variant="ghost"] {{
-    background: rgba(0, 0, 0, 0.0);
-    border: {shell_border_px}px solid {p.input_border};
+    background: transparent;
+    border: {shell_border_px}px solid rgba(245, 248, 252, 0.035);
 }}
 QPushButton[variant="ghost"]:hover {{
-    border-color: rgba(255, 255, 255, 0.28);
+    border-color: rgba(245, 248, 252, 0.10);
+    background: rgba(255, 255, 255, 0.015);
 }}
 QPushButton[variant="danger"] {{
     background: {_gradient(p.danger_top, p.danger_bottom)};
@@ -852,3 +856,30 @@ QFrame[assetRole="hero_panel"] {{
     border-radius: {r.card}px;
 }}
 """
+
+
+def build_stylesheet_exact_atlas(
+    theme_id: str = DEFAULT_THEME_ID,
+    *,
+    density: str = "comfortable",
+    typography_scale: str = "md",
+    tab_density: str | None = None,
+    tab_variant: str = "glass",
+    border_strength_scale: float = 1.0,
+    surface_opacity_scale: float = 1.0,
+) -> str:
+    from .atlas_styles import build_app_stylesheet
+
+    base = build_stylesheet(
+        theme_id=theme_id,
+        density=density,
+        typography_scale=typography_scale,
+        tab_density=tab_density,
+        tab_variant=tab_variant,
+        border_strength_scale=border_strength_scale,
+        surface_opacity_scale=surface_opacity_scale,
+    )
+    overrides = build_app_stylesheet(theme_id)
+    if not str(overrides or "").strip():
+        return base
+    return f"{base}\n{overrides}"

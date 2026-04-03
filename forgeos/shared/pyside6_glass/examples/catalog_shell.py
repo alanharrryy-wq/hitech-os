@@ -60,6 +60,14 @@ from ..data_providers import register_builtin_data_providers
 from ..icons import apply_icon, get_icon
 from ..integration import InProcessIntegrationAdapter, create_reference_workspace_service
 from ..template import GlassPanelFrame, GlassPanelTemplate
+from ..workbench_editor_support import (
+    behavior_summary,
+    default_behavior_binding,
+    default_widget_props,
+    normalize_behavior_binding,
+    normalize_widget_props,
+    parse_behavior_payload,
+)
 from .catalog_dashboard_entries import DashboardCatalogEntrySpec, iter_dashboard_catalog_specs
 
 
@@ -180,6 +188,8 @@ class WorkbenchPanelState:
     height_policy: str = "auto"
     panel_height: int = 0
     list_options: tuple[str, ...] = ()
+    widget_props: dict[str, Any] = field(default_factory=dict)
+    behavior: dict[str, Any] = field(default_factory=default_behavior_binding)
     dynamic: bool = True
 
 
@@ -236,6 +246,8 @@ class WorkbenchEditorSession:
                     "height_policy": item.height_policy,
                     "panel_height": int(item.panel_height),
                     "list_options": list(item.list_options),
+                    "widget_props": normalize_widget_props(item.panel_type, item.widget_props),
+                    "behavior": normalize_behavior_binding(item.behavior),
                     "dynamic": bool(item.dynamic),
                 }
                 for item in self.dynamic_working
@@ -325,6 +337,144 @@ class _PanelResizeSession:
     min_height: int
     max_height: int
     active: bool = False
+
+
+class _WindowEdgeGrip(QFrame):
+    def __init__(self, host: QWidget, *, edges: Qt.Edge, cursor: Qt.CursorShape, parent: QWidget | None = None) -> None:
+        super().__init__(parent or host)
+        self._host = host
+        self._edges = edges
+        self._press_pos = QPoint(0, 0)
+        self._press_geometry = QRect()
+        self.setCursor(cursor)
+        self.setMouseTracking(True)
+        self.setStyleSheet("background: transparent;")
+
+    def mousePressEvent(self, event) -> None:  # type: ignore[override]
+        if event.button() == Qt.LeftButton and not self._host.isMaximized():
+            self._press_pos = event.globalPosition().toPoint()
+            self._press_geometry = QRect(self._host.geometry())
+            event.accept()
+            return
+        super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event) -> None:  # type: ignore[override]
+        if bool(event.buttons() & Qt.LeftButton) and not self._host.isMaximized():
+            self._resize_from_delta(event.globalPosition().toPoint() - self._press_pos)
+            event.accept()
+            return
+        super().mouseMoveEvent(event)
+
+    def _resize_from_delta(self, delta: QPoint) -> None:
+        rect = QRect(self._press_geometry)
+        minimum = self._host.minimumSize()
+        if bool(self._edges & Qt.LeftEdge):
+            target = rect.left() + int(delta.x())
+            max_left = rect.right() - minimum.width() + 1
+            rect.setLeft(min(target, max_left))
+        if bool(self._edges & Qt.RightEdge):
+            target = rect.right() + int(delta.x())
+            min_right = rect.left() + minimum.width() - 1
+            rect.setRight(max(target, min_right))
+        if bool(self._edges & Qt.TopEdge):
+            target = rect.top() + int(delta.y())
+            max_top = rect.bottom() - minimum.height() + 1
+            rect.setTop(min(target, max_top))
+        if bool(self._edges & Qt.BottomEdge):
+            target = rect.bottom() + int(delta.y())
+            min_bottom = rect.top() + minimum.height() - 1
+            rect.setBottom(max(target, min_bottom))
+        self._host.setGeometry(rect)
+
+
+class _PendingCandidateOverlay(QFrame):
+    """Ephemeral floating candidate with confirm/cancel actions."""
+
+    def __init__(
+        self,
+        parent: QWidget,
+        *,
+        title: str,
+        summary: str,
+        on_confirm: Callable[[], None],
+        on_cancel: Callable[[], None],
+    ) -> None:
+        super().__init__(parent)
+        self._on_confirm = on_confirm
+        self._on_cancel = on_cancel
+        self._dragging = False
+        self._drag_offset = QPoint(0, 0)
+        self.setObjectName("WorkbenchPendingCandidate")
+        self.setProperty("card", "clear")
+        self.setAttribute(Qt.WA_StyledBackground, True)
+        self.setFrameShape(QFrame.NoFrame)
+        self.setMouseTracking(True)
+
+        root = QVBoxLayout(self)
+        root.setContentsMargins(8, 8, 8, 8)
+        root.setSpacing(4)
+
+        heading = QLabel(str(title or "Pending Candidate"), self)
+        heading.setProperty("role", "panel_title")
+        heading.setWordWrap(True)
+        root.addWidget(heading)
+
+        detail = QLabel(str(summary or ""), self)
+        detail.setProperty("role", "caption")
+        detail.setWordWrap(True)
+        root.addWidget(detail)
+
+        actions = QHBoxLayout()
+        actions.setContentsMargins(0, 0, 0, 0)
+        actions.setSpacing(6)
+        confirm = QPushButton("Confirm", self)
+        confirm.setProperty("variant", "primary")
+        confirm.clicked.connect(self._on_confirm)
+        cancel = QPushButton("Cancel", self)
+        cancel.setProperty("variant", "subtle")
+        cancel.clicked.connect(self._on_cancel)
+        actions.addWidget(confirm)
+        actions.addWidget(cancel)
+        actions.addStretch(1)
+        root.addLayout(actions)
+
+    def _interactive_child(self, local_pos: QPoint) -> bool:
+        child = self.childAt(local_pos)
+        return isinstance(
+            child,
+            (QPushButton, QLineEdit, QTextEdit, QComboBox, QSlider, QCheckBox, QListWidget, QTabWidget, QTableWidget),
+        )
+
+    def _clamp_top_left(self, candidate: QPoint) -> QPoint:
+        parent = self.parentWidget()
+        if parent is None:
+            return candidate
+        bounds = parent.contentsRect().adjusted(2, 2, -2, -2)
+        if bounds.width() <= 0 or bounds.height() <= 0:
+            return candidate
+        x = max(bounds.left(), min(bounds.right() - self.width() + 1, candidate.x()))
+        y = max(bounds.top(), min(bounds.bottom() - self.height() + 1, candidate.y()))
+        return QPoint(int(x), int(y))
+
+    def mousePressEvent(self, event) -> None:  # type: ignore[override]
+        if event.button() == Qt.LeftButton and not self._interactive_child(event.position().toPoint()):
+            self._dragging = True
+            self._drag_offset = event.position().toPoint()
+            event.accept()
+            return
+        super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event) -> None:  # type: ignore[override]
+        if self._dragging and bool(event.buttons() & Qt.LeftButton):
+            top_left = self.mapToParent(event.position().toPoint() - self._drag_offset)
+            self.move(self._clamp_top_left(top_left))
+            event.accept()
+            return
+        super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event) -> None:  # type: ignore[override]
+        self._dragging = False
+        super().mouseReleaseEvent(event)
 
 
 class _ChartPreviewCanvas(QWidget):
@@ -523,6 +673,18 @@ class GlassCatalogShell(QWidget):
         self._status_autoclear_timer = QTimer(self)
         self._status_autoclear_timer.setSingleShot(True)
         self._status_autoclear_timer.timeout.connect(self._clear_status_feedback)
+        base_size = self.font().pointSizeF()
+        if base_size <= 0:
+            base_size = float(max(9, self.font().pointSize() or 10))
+        self._base_font_point_size = float(base_size)
+        self._window_dragging = False
+        self._window_drag_offset = QPoint(0, 0)
+        self._window_resize_grips: list[_WindowEdgeGrip] = []
+        self._window_resize_host: QWidget | None = None
+        self._window_resize_grip_size = 8
+        self._pending_candidate_overlay: _PendingCandidateOverlay | None = None
+        self._pending_candidate_commit: Callable[[], bool] | None = None
+        self._pending_candidate_context_id: str | None = None
 
         root = QVBoxLayout(self)
         root.setContentsMargins(0, 0, 0, 0)
@@ -537,8 +699,8 @@ class GlassCatalogShell(QWidget):
                 density="compact",
                 visual_scale=replace(
                     base_config.theme.visual_scale,
-                    border_strength_scale=0.84,
-                    surface_opacity_scale=0.62,
+                    border_strength_scale=0.78,
+                    surface_opacity_scale=0.74,
                 ),
                 typography=replace(
                     base_config.theme.typography,
@@ -584,6 +746,7 @@ class GlassCatalogShell(QWidget):
             "Blank workspace ready. Use Add / Browse or Ctrl+K to populate tabs."
         )
         self._refresh_action_trace_view()
+        QTimer.singleShot(0, self._install_window_shell_interactions)
 
     def _infer_status_level(self, message: str) -> str:
         normalized = str(message or "").strip().lower()
@@ -663,7 +826,7 @@ class GlassCatalogShell(QWidget):
         tools_bar.setProperty("card", "clear")
         tools_layout = QHBoxLayout(tools_bar)
         tools_layout.setContentsMargins(0, 0, 0, 0)
-        tools_layout.setSpacing(4)
+        tools_layout.setSpacing(2)
         self.tools_bar = tools_bar
         self.tools_layout = tools_layout
 
@@ -740,18 +903,19 @@ class GlassCatalogShell(QWidget):
         tools_layout.addStretch(1)
         scale_label = QLabel("Scale", tools_bar)
         scale_label.setProperty("role", "caption")
-        scale_label.hide()
-        self.scale_combo.hide()
+        self.scale_label = scale_label
+        tools_layout.addWidget(scale_label)
+        tools_layout.addWidget(self.scale_combo)
         shell_layout = self.catalog.cards.shell.layout()
         if isinstance(shell_layout, QVBoxLayout):
             shell_layout.insertWidget(1, tools_bar)
 
         split = QSplitter(Qt.Horizontal, self.catalog)
         split.setObjectName("WorkbenchMainSplitter")
-        split.setChildrenCollapsible(True)
-        split.setHandleWidth(6)
+        split.setChildrenCollapsible(False)
+        split.setHandleWidth(3)
         split.setStretchFactor(0, 2)
-        split.setStretchFactor(1, 4)
+        split.setStretchFactor(1, 6)
         split.setStretchFactor(2, 3)
 
         left = QFrame(split)
@@ -759,8 +923,8 @@ class GlassCatalogShell(QWidget):
         left.setProperty("card", "clear")
         self.catalog_browser_frame = left
         left_layout = QVBoxLayout(left)
-        left_layout.setContentsMargins(4, 4, 4, 4)
-        left_layout.setSpacing(4)
+        left_layout.setContentsMargins(0, 0, 0, 0)
+        left_layout.setSpacing(2)
 
         self.search_input = QLineEdit(left)
         self.search_input.setPlaceholderText("Search by title, tags, preset, theme, keyword...")
@@ -790,8 +954,8 @@ class GlassCatalogShell(QWidget):
         center.setProperty("card", "clear")
         self.workspace_center_frame = center
         center_layout = QVBoxLayout(center)
-        center_layout.setContentsMargins(2, 2, 2, 2)
-        center_layout.setSpacing(4)
+        center_layout.setContentsMargins(0, 0, 0, 0)
+        center_layout.setSpacing(2)
 
         self.preview_title = QLabel("Blank Editor Workspace", center)
         self.preview_title.setProperty("role", "section")
@@ -853,8 +1017,8 @@ class GlassCatalogShell(QWidget):
         inspector.setProperty("card", "clear")
         self.inspector_frame = inspector
         inspector_layout = QVBoxLayout(inspector)
-        inspector_layout.setContentsMargins(4, 4, 4, 4)
-        inspector_layout.setSpacing(4)
+        inspector_layout.setContentsMargins(0, 0, 0, 0)
+        inspector_layout.setSpacing(2)
         self.side_tabs = QTabWidget(inspector)
         self.side_tabs.setObjectName("WorkbenchInspectorTabs")
         inspector_layout.addWidget(self.side_tabs, 1)
@@ -1103,6 +1267,31 @@ class GlassCatalogShell(QWidget):
         self.editor_query_input.setPlaceholderText("query id (optional)")
         self.editor_options_input = QLineEdit(compose_tab)
         self.editor_options_input.setPlaceholderText("options csv (list/dropdown/chips)")
+        self.editor_widget_object_name_input = QLineEdit(compose_tab)
+        self.editor_widget_object_name_input.setPlaceholderText("button_object_name")
+        self.editor_widget_tooltip_input = QLineEdit(compose_tab)
+        self.editor_widget_tooltip_input.setPlaceholderText("Tooltip")
+        self.editor_widget_enabled_check = QCheckBox("Enabled", compose_tab)
+        self.editor_widget_enabled_check.setChecked(True)
+        self.editor_button_text_input = QLineEdit(compose_tab)
+        self.editor_button_text_input.setPlaceholderText("Button label")
+        self.editor_button_icon_input = QLineEdit(compose_tab)
+        self.editor_button_icon_input.setPlaceholderText("icon name")
+        self.editor_button_checkable_check = QCheckBox("Checkable", compose_tab)
+        self.editor_button_checked_check = QCheckBox("Checked", compose_tab)
+        self.editor_button_style_variant_combo = QComboBox(compose_tab)
+        self.editor_button_style_variant_combo.addItems(["default", "primary", "secondary", "subtle", "ghost", "danger"])
+        self.editor_behavior_action_type_combo = QComboBox(compose_tab)
+        self.editor_behavior_action_type_combo.addItems(["none", "command", "open_panel", "task", "navigate", "custom"])
+        self.editor_behavior_command_id_input = QLineEdit(compose_tab)
+        self.editor_behavior_command_id_input.setPlaceholderText("refresh.metrics")
+        self.editor_behavior_target_panel_input = QLineEdit(compose_tab)
+        self.editor_behavior_target_panel_input.setPlaceholderText("dyn_001")
+        self.editor_behavior_task_ref_input = QLineEdit(compose_tab)
+        self.editor_behavior_task_ref_input.setPlaceholderText("task://ops/check")
+        self.editor_behavior_payload_input = QTextEdit(compose_tab)
+        self.editor_behavior_payload_input.setPlaceholderText("{\"arg\": \"value\"}")
+        self.editor_behavior_payload_input.setMaximumHeight(74)
 
         height_row = QWidget(compose_tab)
         height_row_layout = QHBoxLayout(height_row)
@@ -1161,6 +1350,19 @@ class GlassCatalogShell(QWidget):
         panel_form.addRow("Provider", self.editor_provider_combo)
         panel_form.addRow("Query", self.editor_query_input)
         panel_form.addRow("Options", self.editor_options_input)
+        panel_form.addRow("Widget Name", self.editor_widget_object_name_input)
+        panel_form.addRow("Widget Tooltip", self.editor_widget_tooltip_input)
+        panel_form.addRow("Widget Enabled", self.editor_widget_enabled_check)
+        panel_form.addRow("Button Text", self.editor_button_text_input)
+        panel_form.addRow("Button Icon", self.editor_button_icon_input)
+        panel_form.addRow("Button Checkable", self.editor_button_checkable_check)
+        panel_form.addRow("Button Checked", self.editor_button_checked_check)
+        panel_form.addRow("Button Style", self.editor_button_style_variant_combo)
+        panel_form.addRow("Behavior Action", self.editor_behavior_action_type_combo)
+        panel_form.addRow("Behavior Command", self.editor_behavior_command_id_input)
+        panel_form.addRow("Behavior Target", self.editor_behavior_target_panel_input)
+        panel_form.addRow("Behavior Task Ref", self.editor_behavior_task_ref_input)
+        panel_form.addRow("Behavior Payload", self.editor_behavior_payload_input)
         panel_form.addRow("Visible", self.editor_visible_check)
         panel_form.addRow("Content", self.editor_text_input)
         compose_layout.addLayout(panel_form)
@@ -1310,7 +1512,7 @@ class GlassCatalogShell(QWidget):
         split.addWidget(left)
         split.addWidget(center)
         split.addWidget(inspector)
-        split.setSizes([0, 1200, 0])
+        split.setSizes([0, 1, 0])
         self.main_split = split
         self.catalog.slots.main_slot.addWidget(split, 1)
         self.catalog.cards.hero.hide()
@@ -1396,18 +1598,116 @@ class GlassCatalogShell(QWidget):
         if self.catalog.workspace_tabs is not None:
             self.catalog.workspace_tabs.currentChanged.connect(lambda _idx: self._on_workspace_tab_changed())
 
+    def _is_host_frameless(self, host: QWidget | None) -> bool:
+        if host is None:
+            return False
+        return bool(host.windowFlags() & Qt.FramelessWindowHint)
+
+    def _install_window_shell_interactions(self) -> None:
+        host = self.window() if isinstance(self.window(), QWidget) else None
+        if host is None:
+            return
+        self.tools_bar.installEventFilter(self)
+        host.installEventFilter(self)
+        if not self._is_host_frameless(host):
+            return
+        existing_grips = getattr(host, "_resize_grips", None)
+        if isinstance(existing_grips, list) and existing_grips:
+            return
+        self._window_resize_host = host
+        if self._window_resize_grips:
+            self._layout_window_resize_grips()
+            return
+        grip_specs = [
+            (Qt.LeftEdge, Qt.SizeHorCursor),
+            (Qt.RightEdge, Qt.SizeHorCursor),
+            (Qt.TopEdge, Qt.SizeVerCursor),
+            (Qt.BottomEdge, Qt.SizeVerCursor),
+            (Qt.LeftEdge | Qt.TopEdge, Qt.SizeFDiagCursor),
+            (Qt.RightEdge | Qt.TopEdge, Qt.SizeBDiagCursor),
+            (Qt.LeftEdge | Qt.BottomEdge, Qt.SizeBDiagCursor),
+            (Qt.RightEdge | Qt.BottomEdge, Qt.SizeFDiagCursor),
+        ]
+        for edges, cursor in grip_specs:
+            grip = _WindowEdgeGrip(host, edges=edges, cursor=cursor, parent=host)
+            grip.raise_()
+            grip.show()
+            self._window_resize_grips.append(grip)
+        self._layout_window_resize_grips()
+
+    def _layout_window_resize_grips(self) -> None:
+        host = self._window_resize_host
+        if host is None or not self._window_resize_grips:
+            return
+        if host.isMaximized() or not self._is_host_frameless(host):
+            for grip in self._window_resize_grips:
+                grip.hide()
+            return
+        for grip in self._window_resize_grips:
+            grip.show()
+            grip.raise_()
+        grip = int(self._window_resize_grip_size)
+        width = int(host.width())
+        height = int(host.height())
+        left, right, top, bottom, tl, tr, bl, br = self._window_resize_grips
+        left.setGeometry(0, grip, grip, max(0, height - (grip * 2)))
+        right.setGeometry(width - grip, grip, grip, max(0, height - (grip * 2)))
+        top.setGeometry(grip, 0, max(0, width - (grip * 2)), grip)
+        bottom.setGeometry(grip, height - grip, max(0, width - (grip * 2)), grip)
+        tl.setGeometry(0, 0, grip, grip)
+        tr.setGeometry(width - grip, 0, grip, grip)
+        bl.setGeometry(0, height - grip, grip, grip)
+        br.setGeometry(width - grip, height - grip, grip, grip)
+
+    def _can_begin_window_drag(self, event: QEvent) -> bool:
+        if not self._event_has_left_button(event):
+            return False
+        if self._event_modifiers(event) not in {Qt.NoModifier, Qt.AltModifier}:
+            return False
+        pos = self._event_local_point(event)
+        if pos.y() > max(42, int(self.tools_bar.height()) + 4):
+            return False
+        child = self.tools_bar.childAt(pos)
+        if isinstance(child, (QPushButton, QComboBox, QLineEdit, QTextEdit, QSlider, QCheckBox, QListWidget, QTabWidget)):
+            return False
+        return True
+
+    def _handle_window_drag_event(self, watched: QObject, event: QEvent) -> bool:
+        if watched is not self.tools_bar:
+            return False
+        host = self.window() if isinstance(self.window(), QWidget) else None
+        if host is None or not self._is_host_frameless(host) or host.isMaximized():
+            return False
+        event_type = event.type()
+        if event_type == QEvent.Type.MouseButtonPress:
+            if not self._can_begin_window_drag(event):
+                return False
+            self._window_dragging = True
+            self._window_drag_offset = self._event_global_point(event) - host.frameGeometry().topLeft()
+            return True
+        if event_type == QEvent.Type.MouseMove:
+            if not self._window_dragging or not self._event_has_left_button(event):
+                return False
+            host.move(self._event_global_point(event) - self._window_drag_offset)
+            return True
+        if event_type in {QEvent.Type.MouseButtonRelease, QEvent.Type.Leave}:
+            if self._window_dragging:
+                self._window_dragging = False
+                return True
+        return False
+
     def _tune_template_density(self) -> None:
         shell_layout = self.catalog.cards.shell.layout()
         if isinstance(shell_layout, QVBoxLayout):
-            shell_layout.setContentsMargins(2, 2, 2, 2)
-            shell_layout.setSpacing(3)
+            shell_layout.setContentsMargins(1, 1, 1, 1)
+            shell_layout.setSpacing(2)
         hero_layout = self.catalog.cards.hero.layout()
         if isinstance(hero_layout, QVBoxLayout):
-            hero_layout.setContentsMargins(2, 2, 2, 2)
+            hero_layout.setContentsMargins(1, 1, 1, 1)
             hero_layout.setSpacing(1)
         body_layout = self.catalog.cards.body.layout()
         if isinstance(body_layout, QVBoxLayout):
-            body_layout.setSpacing(3)
+            body_layout.setSpacing(2)
 
     def _set_preview_collapsed(self, collapsed: bool) -> None:
         self.preview_scroll.setVisible(not bool(collapsed))
@@ -1424,7 +1724,7 @@ class GlassCatalogShell(QWidget):
 
     def _set_catalog_panel_visible(self, visible: bool, *, initialize: bool = True) -> None:
         self._catalog_panel_visible = bool(visible)
-        self.catalog_browser_frame.setVisible(False)
+        self.catalog_browser_frame.setVisible(self._catalog_panel_visible)
         self.btn_toggle_catalog.blockSignals(True)
         self.btn_toggle_catalog.setChecked(False)
         self.btn_toggle_catalog.blockSignals(False)
@@ -1452,11 +1752,11 @@ class GlassCatalogShell(QWidget):
         if not hasattr(self, "main_split"):
             return
         sizes = self.main_split.sizes()
-        total = sum(sizes) if sum(sizes) > 0 else 1200
-        nav = 0
-        inspect = max(300, int(total * 0.27)) if self._inspector_panel_visible else 0
-        center = max(460, total - nav - inspect)
-        self.main_split.setSizes([0, center, inspect])
+        total = sum(sizes) if sum(sizes) > 0 else max(1200, int(self.width()))
+        nav = max(220, int(total * 0.20)) if self._catalog_panel_visible else 0
+        inspect = max(280, int(total * 0.24)) if self._inspector_panel_visible else 0
+        center = max(620, total - nav - inspect)
+        self.main_split.setSizes([nav, center, inspect])
 
     def _apply_workbench_icons(self) -> None:
         icon_map = {
@@ -1526,10 +1826,8 @@ QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard QPushButton {
     padding-top: 1px;
     padding-bottom: 1px;
     border-radius: 9px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-        stop:0 rgba(255, 255, 255, 0.07),
-        stop:1 rgba(255, 255, 255, 0.02));
+    border: 1px solid rgba(245, 248, 252, 0.08);
+    background: transparent;
     color: rgba(244, 247, 252, 0.95);
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard QComboBox {
@@ -1539,34 +1837,30 @@ QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard QComboBox {
     padding-bottom: 1px;
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard QPushButton:checked {
-    border-color: rgba(255, 255, 255, 0.28);
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-        stop:0 rgba(255, 255, 255, 0.11),
-        stop:1 rgba(255, 255, 255, 0.05));
+    border-color: rgba(245, 248, 252, 0.16);
+    background: rgba(255, 255, 255, 0.015);
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard QPushButton[commandRole="primary"] {
-    border-color: rgba(255, 255, 255, 0.20);
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-        stop:0 rgba(255, 255, 255, 0.12),
-        stop:1 rgba(255, 255, 255, 0.05));
+    background: transparent;
+    border-top: 1px solid rgba(245, 248, 252, 0.08);
+    border-right: 1px solid rgba(245, 248, 252, 0.08);
+    border-bottom: 1px solid rgba(245, 248, 252, 0.08);
+    border-left: 2px solid rgba(140, 235, 255, 0.28);
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard QPushButton[commandRole="toggle"] {
-    border-color: rgba(255, 255, 255, 0.14);
+    border-color: rgba(245, 248, 252, 0.10);
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard QPushButton[commandRole="secondary"] {
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-        stop:0 rgba(255, 255, 255, 0.06),
-        stop:1 rgba(255, 255, 255, 0.015));
+    background: transparent;
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard QPushButton:hover {
-    border-color: rgba(255, 255, 255, 0.24);
+    border-color: rgba(245, 248, 252, 0.16);
+    background: rgba(255, 255, 255, 0.012);
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchNavRail,
 QWidget#GlassCatalogShell QFrame#WorkbenchInspectorSurface {
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-        stop:0 rgba(255, 255, 255, 0.042),
-        stop:1 rgba(255, 255, 255, 0.014));
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.028);
+    border: 1px solid rgba(140, 235, 255, 0.14);
     border-radius: 12px;
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchCenterSurface {
@@ -1600,8 +1894,8 @@ QWidget#GlassCatalogShell QComboBox,
 QWidget#GlassCatalogShell QTextEdit,
 QWidget#GlassCatalogShell QListWidget,
 QWidget#GlassCatalogShell QTableWidget {
-    background: rgba(255, 255, 255, 0.035);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.048);
+    border: 1px solid rgba(255, 255, 255, 0.10);
     border-radius: 8px;
 }
 QWidget#GlassCatalogShell QLineEdit:hover,
@@ -1624,8 +1918,8 @@ QWidget#GlassCatalogShell QListWidget::item:hover {
     background: rgba(255, 255, 255, 0.065);
 }
 QWidget#GlassCatalogShell QListWidget::item:selected {
-    background: rgba(255, 255, 255, 0.10);
-    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.19);
 }
 QWidget#GlassCatalogShell QTabWidget#WorkbenchInspectorTabs::pane {
     border: none;
@@ -1642,8 +1936,8 @@ QWidget#GlassCatalogShell QFrame[editorSelected="true"] {
     border: 1px solid rgba(255, 255, 255, 0.30);
 }
 QWidget#GlassCatalogShell QListWidget#WorkbenchInsertPalette::item:selected {
-    background: rgba(255, 255, 255, 0.10);
-    border: 1px solid rgba(255, 255, 255, 0.24);
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.20);
 }
 QWidget#GlassCatalogShell QFrame[editorVariant="accent"] {
     border: 1px solid rgba(255, 255, 255, 0.28);
@@ -1676,15 +1970,15 @@ QWidget#GlassCatalogShell QFrame[panelInteraction="dragging"] {
     border-color: rgba(255, 255, 255, 0.36);
 }
 QWidget#GlassCatalogShell QFrame[panelInteraction="resizing"] {
-    border-color: rgba(232, 203, 162, 0.44);
+    border-color: rgba(255, 255, 255, 0.30);
 }
 QWidget#GlassCatalogShell QFrame[resizeAffordance="true"] {
-    border-bottom-width: 2px;
+    border-bottom-width: 1px;
     border-bottom-style: solid;
-    border-bottom-color: rgba(255, 255, 255, 0.08);
+    border-bottom-color: rgba(140, 235, 255, 0.10);
 }
 QWidget#GlassCatalogShell QFrame[resizeAffordance="true"]:hover {
-    border-bottom-color: rgba(255, 255, 255, 0.18);
+    border-bottom-color: rgba(140, 235, 255, 0.18);
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchCenterSurface {
     border: none;
@@ -1696,26 +1990,43 @@ QWidget#GlassCatalogShell QFrame#WorkbenchInspectorSurface {
 }
 QDialog#WorkbenchEntryPicker {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-        stop:0 rgba(16, 18, 24, 0.95),
-        stop:1 rgba(9, 10, 14, 0.95));
-    border: 1px solid rgba(255, 255, 255, 0.12);
+        stop:0 rgba(255, 255, 255, 0.11),
+        stop:1 rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.20);
     border-radius: 14px;
 }
 QDialog#WorkbenchEntryPicker QListWidget {
-    border: 1px solid rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.06);
 }
 QDialog#WorkbenchEntryPicker QListWidget::item {
     padding: 6px 8px;
     border-radius: 8px;
 }
 QDialog#WorkbenchEntryPicker QListWidget::item:selected {
-    background: rgba(255, 255, 255, 0.11);
-    border: 1px solid rgba(255, 255, 255, 0.24);
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+}
+QDialog#WorkbenchEntryPicker QLineEdit,
+QDialog#WorkbenchEntryPicker QComboBox,
+QDialog#WorkbenchEntryPicker QTextEdit {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+}
+QDialog#WorkbenchEntryPicker QPushButton {
+    border-radius: 9px;
+    border: 1px solid rgba(245, 248, 252, 0.08);
+    background: transparent;
 }
 QDialog#WorkbenchEntryPicker QPushButton {
     min-height: 24px;
+}
+QWidget#GlassCatalogShell QFrame#WorkbenchPendingCandidate {
+    background: rgba(255, 255, 255, 0.042);
+    border: 1px solid rgba(140, 235, 255, 0.16);
+    border-radius: 10px;
 }
 """
         )
@@ -1724,11 +2035,12 @@ QDialog#WorkbenchEntryPicker QPushButton {
         dialog = QDialog(self, Qt.Dialog)
         dialog.setModal(False)
         dialog.setWindowTitle("Browse Content")
-        dialog.resize(980, 680)
+        dialog.resize(960, 640)
         dialog.setObjectName("WorkbenchEntryPicker")
+        dialog.setAttribute(Qt.WA_TranslucentBackground, True)
         layout = QVBoxLayout(dialog)
-        layout.setContentsMargins(10, 10, 10, 10)
-        layout.setSpacing(8)
+        layout.setContentsMargins(8, 8, 8, 8)
+        layout.setSpacing(6)
 
         title = QLabel("Content Picker", dialog)
         title.setProperty("role", "panel_title")
@@ -1754,8 +2066,9 @@ QDialog#WorkbenchEntryPicker QPushButton {
 
         body_split = QSplitter(Qt.Horizontal, dialog)
         body_split.setChildrenCollapsible(False)
-        body_split.setHandleWidth(6)
+        body_split.setHandleWidth(4)
         list_host = QFrame(body_split)
+        list_host.setProperty("card", "clear")
         list_layout = QVBoxLayout(list_host)
         list_layout.setContentsMargins(0, 0, 0, 0)
         list_layout.setSpacing(6)
@@ -1763,6 +2076,7 @@ QDialog#WorkbenchEntryPicker QPushButton {
         list_layout.addWidget(self.picker_entry_list, 1)
 
         detail_host = QFrame(body_split)
+        detail_host.setProperty("card", "clear")
         detail_layout = QVBoxLayout(detail_host)
         detail_layout.setContentsMargins(0, 0, 0, 0)
         detail_layout.setSpacing(6)
@@ -1933,22 +2247,127 @@ QDialog#WorkbenchEntryPicker QPushButton {
         self.catalog.set_status_text(f"Added '{entry.title}' to current tab.")
         return True
 
+    def _pending_candidate_host(self, context_id: str) -> QWidget:
+        normalized = str(context_id or "").strip().lower()
+        template = self._editor_templates.get(normalized)
+        if isinstance(template, GlassPanelTemplate):
+            return template.cards.body
+        if normalized.startswith("workspace:"):
+            tab_id = normalized.split(":", 1)[1]
+            host = self._workspace_hosts.get(tab_id)
+            if host is not None:
+                host.set_active(True)
+                mounted = getattr(host, "_mounted", None)
+                if isinstance(mounted, GlassPanelTemplate):
+                    self._editor_templates[normalized] = mounted
+                    return mounted.cards.body
+        return self.catalog.cards.body
+
+    def _stage_pending_panel_candidate(
+        self,
+        *,
+        context_id: str,
+        title: str,
+        summary: str,
+        commit: Callable[[], bool],
+    ) -> None:
+        self._discard_pending_panel_candidate(announce=False)
+        host = self._pending_candidate_host(context_id)
+        overlay = _PendingCandidateOverlay(
+            host,
+            title=title,
+            summary=summary,
+            on_confirm=self._commit_pending_panel_candidate,
+            on_cancel=self._discard_pending_panel_candidate,
+        )
+        width = max(300, min(460, int(max(1, host.width()) * 0.42)))
+        overlay.resize(width, 114)
+        host_rect = host.contentsRect()
+        initial = QPoint(
+            host_rect.left() + max(0, (host_rect.width() - overlay.width()) // 2),
+            host_rect.top() + max(2, int(host_rect.height() * 0.14)),
+        )
+        overlay.move(overlay._clamp_top_left(initial))
+        overlay.show()
+        overlay.raise_()
+        self._pending_candidate_overlay = overlay
+        self._pending_candidate_commit = commit
+        self._pending_candidate_context_id = str(context_id or "").strip().lower()
+        self.catalog.set_status_text("Candidate staged. Confirm or cancel.")
+
+    def _commit_pending_panel_candidate(self) -> None:
+        overlay = self._pending_candidate_overlay
+        commit = self._pending_candidate_commit
+        if commit is None:
+            return
+        if overlay is not None:
+            try:
+                overlay.parentWidget()
+            except RuntimeError:
+                overlay = None
+                self._pending_candidate_overlay = None
+        if overlay is None:
+            return
+        try:
+            committed = bool(commit())
+        except Exception as exc:  # noqa: BLE001
+            self.catalog.set_status_text(f"Candidate commit failed: {exc}")
+            return
+        if not committed:
+            self.catalog.set_status_text("Candidate commit did not complete.")
+            return
+        self._discard_pending_panel_candidate(announce=False)
+
+    def _discard_pending_panel_candidate(self, *, announce: bool = True) -> None:
+        overlay = self._pending_candidate_overlay
+        self._pending_candidate_overlay = None
+        self._pending_candidate_commit = None
+        self._pending_candidate_context_id = None
+        if overlay is not None:
+            try:
+                overlay.setParent(None)
+                overlay.deleteLater()
+            except RuntimeError:
+                pass
+        if announce:
+            self.catalog.set_status_text("Candidate discarded.")
+
     def _picker_add_to_current_tab(self) -> None:
         entry = self._current_entry()
         if entry is None:
             return
         target_tab_id = self._resolve_target_workspace_tab()
         if not target_tab_id:
-            self._open_selected_in_workspace()
-            return
-        self._replace_workspace_host_with_entry(tab_id=target_tab_id, entry=entry)
+            self._open_empty_workspace_tab()
+            target_tab_id = self._resolve_target_workspace_tab()
+            if not target_tab_id:
+                self.catalog.set_status_text("No workspace tab available to stage candidate.")
+                return
+        context_id = f"workspace:{target_tab_id}"
+        self._stage_pending_panel_candidate(
+            context_id=context_id,
+            title=f"Stage '{entry.title}'",
+            summary="Drag within workspace bounds, then Confirm to apply or Cancel to discard.",
+            commit=lambda: self._replace_workspace_host_with_entry(tab_id=target_tab_id, entry=entry),
+        )
         self.entry_picker_dialog.close()
 
     def _picker_open_in_new_tab(self) -> None:
         entry = self._current_entry()
         if entry is None:
             return
-        self._open_selected_in_workspace()
+        self._open_empty_workspace_tab()
+        tabs = self.catalog.workspace_tabs
+        target_tab_id = tabs.active_tab_id() if tabs is not None else ""
+        if not target_tab_id:
+            return
+        context_id = f"workspace:{target_tab_id}"
+        self._stage_pending_panel_candidate(
+            context_id=context_id,
+            title=f"Stage '{entry.title}' in new tab",
+            summary="Confirm to commit into the new workspace tab or Cancel to keep it blank.",
+            commit=lambda: self._replace_workspace_host_with_entry(tab_id=target_tab_id, entry=entry),
+        )
         self.entry_picker_dialog.close()
 
     def _build_panel_type_registry(self) -> dict[str, WorkbenchPanelType]:
@@ -2526,6 +2945,19 @@ QDialog#WorkbenchEntryPicker QPushButton {
             self.editor_provider_combo,
             self.editor_query_input,
             self.editor_options_input,
+            self.editor_widget_object_name_input,
+            self.editor_widget_tooltip_input,
+            self.editor_widget_enabled_check,
+            self.editor_button_text_input,
+            self.editor_button_icon_input,
+            self.editor_button_checkable_check,
+            self.editor_button_checked_check,
+            self.editor_button_style_variant_combo,
+            self.editor_behavior_action_type_combo,
+            self.editor_behavior_command_id_input,
+            self.editor_behavior_target_panel_input,
+            self.editor_behavior_task_ref_input,
+            self.editor_behavior_payload_input,
             self.editor_text_input,
             self.editor_main_slider,
             self.editor_side_slider,
@@ -2554,6 +2986,25 @@ QDialog#WorkbenchEntryPicker QPushButton {
         ]
         for control in controls:
             control.setEnabled(bool(enabled))
+        if not enabled:
+            self._set_slot_shell_edit_lock(False)
+
+    def _set_slot_shell_edit_lock(self, locked: bool) -> None:
+        mutable_controls = [
+            self.editor_panel_type_combo,
+            self.editor_slot_combo,
+            self.editor_state_combo,
+            self.editor_visible_check,
+            self.editor_move_up_button,
+            self.editor_move_down_button,
+            self.editor_move_left_button,
+            self.editor_move_right_button,
+            self.editor_hide_button,
+            self.editor_remove_button,
+            self.editor_duplicate_button,
+        ]
+        for control in mutable_controls:
+            control.setEnabled(not bool(locked))
 
     def _on_editor_context_changed(self, _index: int) -> None:
         self._load_editor_for_current_context()
@@ -2575,6 +3026,7 @@ QDialog#WorkbenchEntryPicker QPushButton {
             self.editor_dirty_value.setText("clean")
             self.editor_hidden_summary.setText("Hidden panels: 0")
             self.editor_panel_combo.clear()
+            self._set_slot_shell_edit_lock(False)
             return
         self.editor_main_slider.setValue(int(session.split_working[0]))
         self.editor_side_slider.setValue(int(session.split_working[1]))
@@ -2585,6 +3037,8 @@ QDialog#WorkbenchEntryPicker QPushButton {
             session.selected_panel_id = str(self.editor_panel_combo.itemData(0) or "")
         if session.selected_panel_id:
             self._set_selected_editor_panel(session, session.selected_panel_id)
+        else:
+            self._set_slot_shell_edit_lock(False)
         self._sync_editor_status(session)
 
     def _current_editor_context_id(self) -> str:
@@ -2615,7 +3069,8 @@ QDialog#WorkbenchEntryPicker QPushButton {
             state = str(panel_state.get("state") or "visible")
             visible = bool(panel_state.get("visible", True))
             visibility = "hidden" if not visible else state
-            label = f"{panel_id} · {slot} · {panel_type} · {visibility}"
+            shell_tag = " · shell" if self._is_structural_slot_shell(template, panel_id) else ""
+            label = f"{panel_id} · {slot} · {panel_type} · {visibility}{shell_tag}"
             self.editor_panel_combo.addItem(label, panel_id)
         self.editor_panel_combo.blockSignals(False)
         if self.editor_panel_combo.count() == 0:
@@ -2631,6 +3086,11 @@ QDialog#WorkbenchEntryPicker QPushButton {
         panel = template.panel(panel_id)
         if panel is None:
             return "main"
+        if self._is_structural_slot_shell(template, panel_id):
+            normalized = str(panel_id or "").strip().lower()
+            if normalized == "side":
+                return "side"
+            return "main"
         for slot_name, layout in (
             ("main", template.slots.main_slot),
             ("side", template.slots.side_slot),
@@ -2640,6 +3100,9 @@ QDialog#WorkbenchEntryPicker QPushButton {
                 if layout.itemAt(index).widget() is panel:
                     return slot_name
         return "main"
+
+    def _is_structural_slot_shell(self, template: GlassPanelTemplate, panel_id: str) -> bool:
+        return bool(getattr(template, "panel_is_slot_shell", lambda _panel_id: False)(panel_id))
 
     def _slot_panel_ids(self, template: GlassPanelTemplate, slot: str) -> list[str]:
         layout = {
@@ -2672,14 +3135,27 @@ QDialog#WorkbenchEntryPicker QPushButton {
                 panel_type = "json_diag"
             elif role == "data":
                 panel_type = "table_grid"
+            slot_shell = bool(
+                getattr(template, "panel_is_slot_shell", lambda _panel_id: False)(panel_id)
+            )
+            state_value = str(panel.property("panelState") or "visible")
+            visible_value = bool(panel.isVisible())
+            if slot_shell:
+                state_value = "visible"
+                visible_value = True
+            widget_props = default_widget_props(
+                panel_type,
+                title=self._panel_title(panel),
+                text=self._panel_subtitle(panel),
+            )
             payload[panel_id] = {
                 "title": self._panel_title(panel),
                 "subtitle": self._panel_subtitle(panel),
                 "slot": self._panel_slot(template, panel_id),
                 "index": int(index_map.get(panel_id, 0)),
                 "role": role,
-                "state": str(panel.property("panelState") or "visible"),
-                "visible": bool(panel.isVisible()),
+                "state": state_value,
+                "visible": visible_value,
                 "panel_type": panel_type,
                 "icon_name": "",
                 "text": self._panel_subtitle(panel),
@@ -2701,6 +3177,9 @@ QDialog#WorkbenchEntryPicker QPushButton {
                 "height_policy": "auto",
                 "panel_height": 0,
                 "list_options": (),
+                "widget_props": normalize_widget_props(panel_type, widget_props),
+                "behavior": default_behavior_binding(),
+                "slot_shell": slot_shell,
                 "user_hidden": False,
                 "content_override": False,
                 "dynamic": False,
@@ -2735,32 +3214,44 @@ QDialog#WorkbenchEntryPicker QPushButton {
 
     def resizeEvent(self, event) -> None:  # type: ignore[override]
         super().resizeEvent(event)
+        self._layout_window_resize_grips()
         width = self.width()
         if not hasattr(self, "main_split"):
             return
+        sizes = self.main_split.sizes()
         bucket = "wide"
         if width < 1120:
             bucket = "narrow"
         elif width < 1360:
             bucket = "medium"
+        if not self._catalog_panel_visible and not self._inspector_panel_visible:
+            if sum(sizes) <= 0:
+                self.main_split.setSizes([0, 1, 0])
+            else:
+                self.main_split.setSizes([0, max(1, int(sizes[1] if len(sizes) > 1 else 1)), 0])
+            self._responsive_bucket = bucket
+            return
+
         if bucket == self._responsive_bucket:
             return
         self._responsive_bucket = bucket
-        if not self._catalog_panel_visible and not self._inspector_panel_visible:
-            self.main_split.setSizes([0, max(680, width - 80), 0])
-            return
 
         if bucket == "narrow":
-            nav, center, inspect = 200, 500, 270
+            default_nav, default_inspect = 180, 250
         elif bucket == "medium":
-            nav, center, inspect = 220, 590, 300
+            default_nav, default_inspect = 200, 280
         else:
-            nav, center, inspect = 260, 700, 340
-        if not self._catalog_panel_visible:
-            nav = 0
-        if not self._inspector_panel_visible:
-            inspect = 0
-        self.main_split.setSizes([nav, center, inspect])
+            default_nav, default_inspect = 220, 320
+
+        total = sum(sizes) if sum(sizes) > 0 else max(1, width)
+        nav = int(sizes[0]) if self._catalog_panel_visible and len(sizes) > 0 else 0
+        inspect = int(sizes[2]) if self._inspector_panel_visible and len(sizes) > 2 else 0
+        if self._catalog_panel_visible and nav <= 0:
+            nav = default_nav
+        if self._inspector_panel_visible and inspect <= 0:
+            inspect = default_inspect
+        center = max(620, total - nav - inspect)
+        self.main_split.setSizes([nav if self._catalog_panel_visible else 0, center, inspect if self._inspector_panel_visible else 0])
 
     def _refresh_categories(self) -> None:
         selected = self._selected_category()
@@ -3403,6 +3894,8 @@ QDialog#WorkbenchEntryPicker QPushButton {
         if self.catalog.remove_workspace_tab(tab_id):
             self._workspace_hosts.pop(tab_id, None)
             context_id = f"workspace:{tab_id}"
+            if str(self._pending_candidate_context_id or "") == context_id:
+                self._discard_pending_panel_candidate(announce=False)
             self._editor_sessions.pop(context_id, None)
             self._editor_templates.pop(context_id, None)
             self._enforce_workspace_budget()
@@ -3619,12 +4112,28 @@ QDialog#WorkbenchEntryPicker QPushButton {
             self.catalog.set_density("compact")
             self.catalog.set_typography_scale("sm")
             self.catalog.set_tab_density("compact")
-        else:
+        elif factor <= 1.18:
             self.catalog.set_density("cozy")
             self.catalog.set_typography_scale("md")
             self.catalog.set_tab_density("comfortable")
+        else:
+            self.catalog.set_density("cozy")
+            self.catalog.set_typography_scale("lg")
+            self.catalog.set_tab_density("comfortable")
+        self._apply_runtime_font_scale(factor)
         self._tune_template_density()
         self.catalog.set_status_text(f"Workbench scale set to {int(factor * 100)}%.")
+
+    def _apply_runtime_font_scale(self, factor: float) -> None:
+        clamped = max(0.86, min(1.36, float(factor)))
+        target_size = max(9.0, min(15.5, self._base_font_point_size * clamped))
+        font = self.font()
+        font.setPointSizeF(target_size)
+        self.setFont(font)
+        self.catalog.setFont(font)
+        dialog = getattr(self, "entry_picker_dialog", None)
+        if isinstance(dialog, QDialog):
+            dialog.setFont(font)
 
     def _toggle_data_debug(self) -> None:
         if not self._inspector_panel_visible:
@@ -3796,6 +4305,15 @@ QDialog#WorkbenchEntryPicker QPushButton {
                 child.installEventFilter(self)
 
     def eventFilter(self, watched: QObject, event: QEvent) -> bool:  # type: ignore[override]
+        if self._handle_window_drag_event(watched, event):
+            return True
+        host = self._window_resize_host
+        if host is not None and watched is host and event.type() in {
+            QEvent.Type.Resize,
+            QEvent.Type.WindowStateChange,
+            QEvent.Type.Show,
+        }:
+            self._layout_window_resize_grips()
         mapped = self._panel_click_map.get(id(watched))
         event_type = event.type()
         touch_begin = getattr(QEvent.Type, "TouchBegin", QEvent.Type.User)
@@ -3979,6 +4497,8 @@ QDialog#WorkbenchEntryPicker QPushButton {
     ) -> bool:
         if panel is None:
             return False
+        if bool(panel.property("slotShell")):
+            return False
         if not self._event_has_left_button(event):
             return False
         if self._event_modifiers(event) not in {Qt.NoModifier, Qt.AltModifier}:
@@ -4019,7 +4539,22 @@ QDialog#WorkbenchEntryPicker QPushButton {
             return
         slot = self._panel_slot(template, panel_id)
         slot_widget = self._slot_widget(template, slot)
-        max_height = max(150, int((slot_widget.height() if slot_widget is not None else panel.height() * 2) - 14))
+        available_height = 0
+        if slot_widget is not None:
+            try:
+                available_height = int(slot_widget.contentsRect().height())
+            except Exception:  # noqa: BLE001
+                available_height = int(slot_widget.height())
+        if available_height <= 0:
+            parent = panel.parentWidget()
+            if parent is not None:
+                try:
+                    available_height = int(parent.contentsRect().height())
+                except Exception:  # noqa: BLE001
+                    available_height = int(parent.height())
+        if available_height <= 0:
+            available_height = int(panel.height() * 2)
+        max_height = max(150, int(available_height - 4))
         start_height = max(panel.height(), panel.minimumHeight(), 96)
         self._panel_resize_session = _PanelResizeSession(
             context_id=str(context_id or "").strip().lower(),
@@ -4055,7 +4590,7 @@ QDialog#WorkbenchEntryPicker QPushButton {
     def _workspace_bounds(self, template: GlassPanelTemplate) -> QRect:
         target = template.cards.body if hasattr(template, "cards") else template
         top_left = target.mapToGlobal(QPoint(0, 0))
-        return QRect(top_left, target.size()).adjusted(6, 6, -6, -6)
+        return QRect(top_left, target.size()).adjusted(2, 2, -2, -2)
 
     def _clamped_workspace_point(self, template: GlassPanelTemplate, global_point: QPoint) -> QPoint:
         rect = self._workspace_bounds(template)
@@ -4105,6 +4640,9 @@ QDialog#WorkbenchEntryPicker QPushButton {
         session = self._editor_sessions.get(drag.context_id)
         if template is None or session is None:
             return
+        if self._is_structural_slot_shell(template, drag.panel_id):
+            self._finish_panel_drag()
+            return
         if not self._event_has_left_button(event):
             self._finish_panel_drag()
             return
@@ -4135,7 +4673,9 @@ QDialog#WorkbenchEntryPicker QPushButton {
         if drag.last_target == (target_slot, target_index):
             return
         drag.last_target = (target_slot, target_index)
-        template.move_panel(drag.panel_id, target_slot=target_slot, index=target_index)
+        moved = template.move_panel(drag.panel_id, target_slot=target_slot, index=target_index)
+        if not moved:
+            return
         if drag.panel_id in session.core_working:
             session.core_working[drag.panel_id]["slot"] = target_slot
         else:
@@ -4273,6 +4813,8 @@ QDialog#WorkbenchEntryPicker QPushButton {
                     "height_policy": dynamic.height_policy,
                     "panel_height": int(dynamic.panel_height),
                     "list_options": list(dynamic.list_options),
+                    "widget_props": normalize_widget_props(dynamic.panel_type, dynamic.widget_props),
+                    "behavior": normalize_behavior_binding(dynamic.behavior),
                     "dynamic": True,
                 }
         return None
@@ -4314,7 +4856,27 @@ QDialog#WorkbenchEntryPicker QPushButton {
             self.editor_options_input.setText(", ".join(str(item) for item in list_options))
         else:
             self.editor_options_input.setText(str(list_options or ""))
-        self.editor_text_input.setPlainText(str(state.get("text") or ""))
+        panel_type = str(state.get("panel_type") or "text_markdown")
+        widget_props = normalize_widget_props(panel_type, state.get("widget_props"))
+        behavior = normalize_behavior_binding(state.get("behavior"))
+        self.editor_widget_object_name_input.setText(str(widget_props.get("object_name") or ""))
+        self.editor_widget_tooltip_input.setText(str(widget_props.get("tooltip") or ""))
+        self.editor_widget_enabled_check.setChecked(bool(widget_props.get("enabled", True)))
+        self.editor_button_text_input.setText(str(widget_props.get("text") or state.get("text") or ""))
+        self.editor_button_icon_input.setText(str(widget_props.get("icon_name") or ""))
+        self.editor_button_checkable_check.setChecked(bool(widget_props.get("checkable", False)))
+        self.editor_button_checked_check.setChecked(bool(widget_props.get("checked", False)))
+        self._set_combo_data(self.editor_button_style_variant_combo, str(widget_props.get("style_variant") or "default"))
+        self._set_combo_data(self.editor_behavior_action_type_combo, str(behavior.get("action_type") or "none"))
+        self.editor_behavior_command_id_input.setText(str(behavior.get("command_id") or ""))
+        self.editor_behavior_target_panel_input.setText(str(behavior.get("target_panel_id") or ""))
+        self.editor_behavior_task_ref_input.setText(str(behavior.get("task_ref") or ""))
+        payload_text = json.dumps(behavior.get("payload") or {}, indent=2, ensure_ascii=True)
+        self.editor_behavior_payload_input.setPlainText(payload_text if payload_text != "{}" else "")
+        self.editor_text_input.setPlainText(str(state.get("text") or widget_props.get("text") or ""))
+        template = self._current_editor_template()
+        locked = bool(template is not None and self._is_structural_slot_shell(template, panel_id))
+        self._set_slot_shell_edit_lock(locked)
 
     def _set_combo_data(self, combo: QComboBox, value: str) -> None:
         target = str(value or "").strip().lower()
@@ -4404,6 +4966,8 @@ QDialog#WorkbenchEntryPicker QPushButton {
             height_policy="auto",
             panel_height=0,
             list_options=tuple(item.strip() for item in spec.default_text.split(",") if item.strip())[:8],
+            widget_props=default_widget_props(spec.panel_type, title=spec.title, text=spec.default_text),
+            behavior=default_behavior_binding(),
             dynamic=True,
         )
 
@@ -4413,8 +4977,9 @@ QDialog#WorkbenchEntryPicker QPushButton {
         if session is None or template is None:
             return
         panel_type = (
-            self._selected_palette_panel_type()
-            or str(self.editor_add_type_combo.currentData() or "text_markdown")
+            str(self.editor_add_type_combo.currentData() or "").strip().lower()
+            or self._selected_palette_panel_type()
+            or "text_markdown"
         )
         spec = self._panel_type_registry.get(panel_type)
         if spec is None:
@@ -4435,6 +5000,7 @@ QDialog#WorkbenchEntryPicker QPushButton {
         state.padding = str(self.editor_padding_combo.currentData() or self.editor_padding_combo.currentText() or "normal")
         state.data_provider_id = str(self.editor_provider_combo.currentData() or "")
         state.data_query_id = self.editor_query_input.text().strip()
+        state.text = self.editor_text_input.toPlainText().strip() or state.text
         state.chart_mode = str(self.editor_chart_mode_combo.currentData() or self.editor_chart_mode_combo.currentText() or "line")
         state.chart_style_id = str(
             self.editor_chart_style_combo.currentData() or self.editor_chart_style_combo.currentText() or "silver_line"
@@ -4455,32 +5021,103 @@ QDialog#WorkbenchEntryPicker QPushButton {
         option_values = [item.strip() for item in self.editor_options_input.text().split(",") if item.strip()]
         if option_values:
             state.list_options = tuple(option_values[:12])
+        behavior_payload: dict[str, Any]
+        try:
+            behavior_payload = parse_behavior_payload(self.editor_behavior_payload_input.toPlainText())
+        except Exception:
+            behavior_payload = {}
+        state.widget_props = normalize_widget_props(
+            state.panel_type,
+            {
+                "text": self.editor_button_text_input.text().strip() or state.text or state.title,
+                "tooltip": self.editor_widget_tooltip_input.text().strip(),
+                "object_name": self.editor_widget_object_name_input.text().strip(),
+                "enabled": bool(self.editor_widget_enabled_check.isChecked()),
+                "visible": bool(state.visible),
+                "checkable": bool(self.editor_button_checkable_check.isChecked()),
+                "checked": bool(self.editor_button_checked_check.isChecked()),
+                "icon_name": self.editor_button_icon_input.text().strip(),
+                "style_variant": str(
+                    self.editor_button_style_variant_combo.currentData()
+                    or self.editor_button_style_variant_combo.currentText()
+                    or "default"
+                ),
+            },
+        )
+        state.behavior = normalize_behavior_binding(
+            {
+                "event": "clicked",
+                "action_type": str(
+                    self.editor_behavior_action_type_combo.currentData()
+                    or self.editor_behavior_action_type_combo.currentText()
+                    or "none"
+                ),
+                "command_id": self.editor_behavior_command_id_input.text().strip(),
+                "target_panel_id": self.editor_behavior_target_panel_input.text().strip(),
+                "task_ref": self.editor_behavior_task_ref_input.text().strip(),
+                "payload": behavior_payload,
+            }
+        )
 
         insert_index = self._insert_index_for_slot(session=session, template=template, slot=slot)
-        panel = template.create_panel(
-            panel_id=state.panel_id,
-            title=state.title,
-            subtitle=state.subtitle,
-            target_slot=state.target_slot,
-            role=state.role,
-            state=state.state,
-            icon_name=state.icon_name or None,
-            card_kind="muted",
-        )
-        if insert_index is not None:
-            template.move_panel(state.panel_id, target_slot=slot, index=insert_index)
-        self._render_dynamic_panel_content(panel, state)
-        session.dynamic_working.append(state)
-        self._record_palette_recent(panel_type)
-        self._bind_editor_click_targets(template, session.context_id)
-        self._refresh_editor_panel_combo(session, template)
-        self._set_selected_editor_panel(session, state.panel_id)
-        self._enforce_tab_panel_budget(template, session, emit_warnings=True)
-        self._mark_session_dirty(session)
-        self.catalog.set_status_text(
-            f"Inserted '{state.title}' ({state.panel_type}) into '{state.target_slot}'"
-            + (f" @ index {insert_index}" if insert_index is not None else "")
-            + "."
+        state_snapshot = deepcopy(state)
+        context_id = session.context_id
+
+        def _commit_insert() -> bool:
+            current_session = self._editor_sessions.get(context_id)
+            current_template = self._editor_templates.get(context_id)
+            if current_session is None or current_template is None:
+                return False
+            spec_now = self._panel_type_registry.get(state_snapshot.panel_type)
+            if spec_now is None:
+                return False
+            if not self._can_add_panel_to_slot(
+                template=current_template,
+                slot=state_snapshot.target_slot,
+                spec=spec_now,
+                session=current_session,
+            ):
+                self.catalog.set_status_text(
+                    f"Cannot insert '{state_snapshot.title}' into '{state_snapshot.target_slot}' due to slot policy/budget."
+                )
+                return False
+            if current_template.panel(state_snapshot.panel_id) is not None:
+                return False
+            panel = current_template.create_panel(
+                panel_id=state_snapshot.panel_id,
+                title=state_snapshot.title,
+                subtitle=state_snapshot.subtitle,
+                target_slot=state_snapshot.target_slot,
+                role=state_snapshot.role,
+                state=state_snapshot.state,
+                icon_name=state_snapshot.icon_name or None,
+                card_kind="muted",
+            )
+            if insert_index is not None:
+                current_template.move_panel(state_snapshot.panel_id, target_slot=state_snapshot.target_slot, index=insert_index)
+            self._render_dynamic_panel_content(panel, state_snapshot)
+            current_session.dynamic_working.append(deepcopy(state_snapshot))
+            self._record_palette_recent(state_snapshot.panel_type)
+            self._bind_editor_click_targets(current_template, current_session.context_id)
+            self._refresh_editor_panel_combo(current_session, current_template)
+            self._set_selected_editor_panel(current_session, state_snapshot.panel_id)
+            self._enforce_tab_panel_budget(current_template, current_session, emit_warnings=True)
+            self._mark_session_dirty(current_session)
+            self.catalog.set_status_text(
+                f"Inserted '{state_snapshot.title}' ({state_snapshot.panel_type}) into '{state_snapshot.target_slot}'"
+                + (f" @ index {insert_index}" if insert_index is not None else "")
+                + "."
+            )
+            return True
+
+        self._stage_pending_panel_candidate(
+            context_id=context_id,
+            title=f"Stage '{state.title}'",
+            summary=(
+                "Candidate panel staged in workspace. Drag to reposition, then Confirm to commit "
+                "or Cancel to discard."
+            ),
+            commit=_commit_insert,
         )
 
     def _apply_editor_properties(self) -> None:
@@ -4494,6 +5131,7 @@ QDialog#WorkbenchEntryPicker QPushButton {
         panel = template.panel(panel_id)
         if panel is None:
             return
+        is_slot_shell = bool(getattr(template, "panel_is_slot_shell", lambda _panel_id: False)(panel_id))
 
         panel_type = str(self.editor_panel_type_combo.currentData() or "text_markdown").strip().lower()
         slot = str(self.editor_slot_combo.currentData() or self.editor_slot_combo.currentText() or "main").strip().lower()
@@ -4530,11 +5168,60 @@ QDialog#WorkbenchEntryPicker QPushButton {
         chart_line_width = int(self.editor_chart_line_slider.value())
         chart_fill_alpha = int(self.editor_chart_fill_slider.value())
         list_options = tuple(item.strip() for item in self.editor_options_input.text().split(",") if item.strip())
+        raw_behavior_payload = self.editor_behavior_payload_input.toPlainText()
+        try:
+            behavior_payload = parse_behavior_payload(raw_behavior_payload)
+        except Exception as exc:  # noqa: BLE001
+            self.catalog.set_status_text(f"Invalid behavior payload JSON: {exc}")
+            return
+        widget_props = normalize_widget_props(
+            panel_type,
+            {
+                "text": self.editor_button_text_input.text().strip() or text,
+                "tooltip": self.editor_widget_tooltip_input.text().strip(),
+                "object_name": self.editor_widget_object_name_input.text().strip(),
+                "enabled": bool(self.editor_widget_enabled_check.isChecked()),
+                "visible": visible,
+                "checkable": bool(self.editor_button_checkable_check.isChecked()),
+                "checked": bool(self.editor_button_checked_check.isChecked()),
+                "icon_name": self.editor_button_icon_input.text().strip(),
+                "style_variant": str(
+                    self.editor_button_style_variant_combo.currentData()
+                    or self.editor_button_style_variant_combo.currentText()
+                    or "default"
+                ),
+            },
+        )
+        if panel_type == "button_control":
+            text = str(widget_props.get("text") or text)
+        behavior = normalize_behavior_binding(
+            {
+                "event": "clicked",
+                "action_type": str(
+                    self.editor_behavior_action_type_combo.currentData()
+                    or self.editor_behavior_action_type_combo.currentText()
+                    or "none"
+                ),
+                "command_id": self.editor_behavior_command_id_input.text().strip(),
+                "target_panel_id": self.editor_behavior_target_panel_input.text().strip(),
+                "task_ref": self.editor_behavior_task_ref_input.text().strip(),
+                "payload": behavior_payload,
+            }
+        )
+
+        if is_slot_shell:
+            panel_state = self._panel_state_for_session(session, panel_id) or {}
+            panel_type = str(panel_state.get("panel_type") or panel_type)
+            slot = self._panel_slot(template, panel_id)
+            role = str(panel_state.get("role") or role)
+            state_value = "visible"
+            visible = True
+            self.catalog.set_status_text(f"'{panel_id}' is a structural slot shell; movement/hide/type change blocked.")
 
         spec = self._panel_type_registry.get(panel_type)
         if spec is not None and slot not in spec.allowed_slots:
             slot = spec.allowed_slots[0] if spec.allowed_slots else "main"
-        if slot != self._panel_slot(template, panel_id) and not self._can_add_panel_to_slot(
+        if (not is_slot_shell) and slot != self._panel_slot(template, panel_id) and not self._can_add_panel_to_slot(
             template=template,
             slot=slot,
             spec=spec or next(iter(self._panel_type_registry.values())),
@@ -4554,7 +5241,9 @@ QDialog#WorkbenchEntryPicker QPushButton {
             existing_ids = self._slot_panel_ids(template, slot)
             if panel_id in existing_ids:
                 target_index = existing_ids.index(panel_id)
-            template.move_panel(panel_id, target_slot=slot, index=target_index)
+            if not template.move_panel(panel_id, target_slot=slot, index=target_index):
+                self.catalog.set_status_text(f"Move rejected for panel '{panel_id}'.")
+                return
 
         if panel_id in session.core_working:
             core = session.core_working[panel_id]
@@ -4585,41 +5274,47 @@ QDialog#WorkbenchEntryPicker QPushButton {
             core["chart_line_width"] = chart_line_width
             core["chart_fill_alpha"] = chart_fill_alpha
             core["list_options"] = list_options
+            core["widget_props"] = normalize_widget_props(panel_type, widget_props)
+            core["behavior"] = normalize_behavior_binding(behavior)
+            core["slot_shell"] = is_slot_shell
             core["user_hidden"] = bool((not visible) or state_value in {"hidden", "collapsed"})
-            core["content_override"] = True
+            core["content_override"] = False if is_slot_shell else True
             self._apply_panel_visual_policy(panel, core)
-            core_state = WorkbenchPanelState(
-                panel_id=panel_id,
-                panel_type=panel_type,
-                title=title,
-                subtitle=subtitle,
-                target_slot=slot,
-                role=role,
-                state=state_value,
-                visible=visible,
-                text=text,
-                icon_name=icon_name,
-                variant=variant,
-                density=density,
-                width_policy=width_policy,
-                padding=padding,
-                data_provider_id=data_provider_id,
-                data_query_id=data_query_id,
-                chart_mode=chart_mode,
-                chart_style_id=chart_style_id,
-                chart_palette_id=chart_palette_id,
-                chart_show_grid=chart_show_grid,
-                chart_show_glow=chart_show_glow,
-                chart_show_markers=chart_show_markers,
-                chart_smooth=chart_smooth,
-                chart_line_width=chart_line_width,
-                chart_fill_alpha=chart_fill_alpha,
-                height_policy=height_policy,
-                panel_height=panel_height,
-                list_options=list_options,
-                dynamic=False,
-            )
-            self._render_dynamic_panel_content(panel, core_state)
+            if not is_slot_shell:
+                core_state = WorkbenchPanelState(
+                    panel_id=panel_id,
+                    panel_type=panel_type,
+                    title=title,
+                    subtitle=subtitle,
+                    target_slot=slot,
+                    role=role,
+                    state=state_value,
+                    visible=visible,
+                    text=text,
+                    icon_name=icon_name,
+                    variant=variant,
+                    density=density,
+                    width_policy=width_policy,
+                    padding=padding,
+                    data_provider_id=data_provider_id,
+                    data_query_id=data_query_id,
+                    chart_mode=chart_mode,
+                    chart_style_id=chart_style_id,
+                    chart_palette_id=chart_palette_id,
+                    chart_show_grid=chart_show_grid,
+                    chart_show_glow=chart_show_glow,
+                    chart_show_markers=chart_show_markers,
+                    chart_smooth=chart_smooth,
+                    chart_line_width=chart_line_width,
+                    chart_fill_alpha=chart_fill_alpha,
+                    height_policy=height_policy,
+                    panel_height=panel_height,
+                    list_options=list_options,
+                    widget_props=normalize_widget_props(panel_type, widget_props),
+                    behavior=normalize_behavior_binding(behavior),
+                    dynamic=False,
+                )
+                self._render_dynamic_panel_content(panel, core_state)
         else:
             for item in session.dynamic_working:
                 if item.panel_id != panel_id:
@@ -4651,6 +5346,8 @@ QDialog#WorkbenchEntryPicker QPushButton {
                 item.chart_line_width = chart_line_width
                 item.chart_fill_alpha = chart_fill_alpha
                 item.list_options = list_options
+                item.widget_props = normalize_widget_props(panel_type, widget_props)
+                item.behavior = normalize_behavior_binding(behavior)
                 self._apply_panel_visual_policy(panel, item)
                 self._render_dynamic_panel_content(panel, item)
                 break
@@ -4725,6 +5422,9 @@ QDialog#WorkbenchEntryPicker QPushButton {
             return
         panel_id = str(self.editor_panel_combo.currentData() or "").strip()
         if not panel_id:
+            return
+        if self._is_structural_slot_shell(template, panel_id):
+            self.catalog.set_status_text("Structural slot shells cannot be hidden.")
             return
         panel = template.panel(panel_id)
         if panel is None:
@@ -4805,6 +5505,9 @@ QDialog#WorkbenchEntryPicker QPushButton {
         panel_id = str(self.editor_panel_combo.currentData() or "").strip()
         if not panel_id:
             return
+        if self._is_structural_slot_shell(template, panel_id):
+            self.catalog.set_status_text("Structural slot shells cannot be reordered.")
+            return
         slot = self._panel_slot(template, panel_id)
         slot_panel_ids = self._slot_panel_ids(template, slot)
         if panel_id not in slot_panel_ids:
@@ -4813,7 +5516,9 @@ QDialog#WorkbenchEntryPicker QPushButton {
         target_index = max(0, min(len(slot_panel_ids) - 1, current_index + int(delta)))
         if target_index == current_index:
             return
-        template.move_panel(panel_id, target_slot=slot, index=target_index)
+        if not template.move_panel(panel_id, target_slot=slot, index=target_index):
+            self.catalog.set_status_text(f"Move rejected for panel '{panel_id}'.")
+            return
         self._refresh_core_indices(session, template)
         self._sync_dynamic_order_from_template(session, template)
         self._bind_editor_click_targets(template, session.context_id)
@@ -4828,6 +5533,9 @@ QDialog#WorkbenchEntryPicker QPushButton {
             return
         panel_id = str(self.editor_panel_combo.currentData() or "").strip()
         if not panel_id:
+            return
+        if self._is_structural_slot_shell(template, panel_id):
+            self.catalog.set_status_text("Structural slot shells cannot move across slots.")
             return
         slot_order = ("main", "side", "status")
         current_slot = self._panel_slot(template, panel_id)
@@ -4850,7 +5558,9 @@ QDialog#WorkbenchEntryPicker QPushButton {
         ):
             self.catalog.set_status_text(f"Slot '{target_slot}' is at capacity; move blocked.")
             return
-        template.move_panel(panel_id, target_slot=target_slot)
+        if not template.move_panel(panel_id, target_slot=target_slot):
+            self.catalog.set_status_text(f"Move rejected for panel '{panel_id}'.")
+            return
         if panel_id in session.core_working:
             session.core_working[panel_id]["slot"] = target_slot
         else:
@@ -4872,6 +5582,9 @@ QDialog#WorkbenchEntryPicker QPushButton {
             return
         panel_id = str(self.editor_panel_combo.currentData() or "").strip()
         if not panel_id:
+            return
+        if self._is_structural_slot_shell(template, panel_id):
+            self.catalog.set_status_text("Structural slot shells cannot be duplicated.")
             return
         source_state = self._panel_state_for_session(session, panel_id)
         if source_state is None:
@@ -4910,6 +5623,11 @@ QDialog#WorkbenchEntryPicker QPushButton {
         list_options = source_state.get("list_options", ())
         if isinstance(list_options, (tuple, list)):
             state.list_options = tuple(str(item) for item in list_options)
+        state.widget_props = normalize_widget_props(
+            panel_type,
+            source_state.get("widget_props") or default_widget_props(panel_type, title=state.title, text=state.text),
+        )
+        state.behavior = normalize_behavior_binding(source_state.get("behavior"))
 
         panel = template.create_panel(
             panel_id=state.panel_id,
@@ -5099,15 +5817,10 @@ QDialog#WorkbenchEntryPicker QPushButton {
 
     def _render_dynamic_panel_content(self, panel: GlassPanelFrame, state: WorkbenchPanelState) -> None:
         self._apply_panel_visual_policy(panel, state)
-        while panel.content_layout.count():
-            item = panel.content_layout.takeAt(0)
-            widget = item.widget()
-            if widget is not None:
-                widget.setParent(None)
-                widget.deleteLater()
+        panel.clear_content()
         content = self._build_panel_content_widget(state, panel)
         if content is not None:
-            panel.content_layout.addWidget(content)
+            panel.set_content_widget(content)
 
     def _apply_panel_visual_policy(self, panel: GlassPanelFrame, state: WorkbenchPanelState | dict[str, Any]) -> None:
         width_policy = str(state.get("width_policy") if isinstance(state, dict) else state.width_policy or "stretch")
@@ -5116,21 +5829,24 @@ QDialog#WorkbenchEntryPicker QPushButton {
         variant = str(state.get("variant") if isinstance(state, dict) else state.variant or "default")
         height_policy = str(state.get("height_policy") if isinstance(state, dict) else state.height_policy or "auto")
         panel_height = int(state.get("panel_height") if isinstance(state, dict) else state.panel_height or 0)
+        slot_shell = bool(state.get("slot_shell", False)) if isinstance(state, dict) else False
         if width_policy == "fit":
             panel.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         elif width_policy == "fixed":
             panel.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-            panel.setMinimumWidth(240)
+            panel.setMinimumWidth(220)
         else:
             panel.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
             panel.setMinimumWidth(0)
         margin_map = {
             "none": 0,
             "tight": 2,
-            "normal": 6,
-            "relaxed": 10,
+            "normal": 4,
+            "relaxed": 8,
         }
-        margin = margin_map.get(padding, 6)
+        margin = margin_map.get(padding, 4)
+        if slot_shell:
+            margin = 0
         panel.content_layout.setContentsMargins(margin, margin, margin, margin)
         if height_policy == "fixed" and panel_height > 0:
             clamped_height = max(96, min(760, int(panel_height)))
@@ -5141,8 +5857,8 @@ QDialog#WorkbenchEntryPicker QPushButton {
             panel.setMaximumHeight(16777215)
         panel.setProperty("editorVariant", variant)
         panel.setProperty("editorDensity", density)
-        panel.setProperty("resizeAffordance", "true")
-        panel.setToolTip("Drag top band to move panel. Drag bottom edge to resize.")
+        panel.setProperty("resizeAffordance", "false" if slot_shell else "true")
+        panel.setToolTip("" if slot_shell else "Drag top band to move panel. Drag bottom edge to resize.")
         panel.style().unpolish(panel)
         panel.style().polish(panel)
 
@@ -5198,8 +5914,32 @@ QDialog#WorkbenchEntryPicker QPushButton {
             host_layout.addRow("Status", QComboBox(host))
             return host
         if panel_type == "button_control":
-            button = QPushButton(state.text or "Execute", parent)
-            return button
+            props = normalize_widget_props(panel_type, state.widget_props)
+            binding = normalize_behavior_binding(state.behavior)
+            host = QFrame(parent)
+            host.setProperty("card", "clear")
+            host_layout = QVBoxLayout(host)
+            host_layout.setContentsMargins(0, 0, 0, 0)
+            host_layout.setSpacing(2)
+            button = QPushButton(props.get("text") or state.text or "Execute", host)
+            object_name = str(props.get("object_name") or "").strip()
+            if object_name:
+                button.setObjectName(object_name)
+            button.setToolTip(str(props.get("tooltip") or ""))
+            button.setEnabled(bool(props.get("enabled", True)))
+            button.setVisible(bool(props.get("visible", True)))
+            button.setCheckable(bool(props.get("checkable", False)))
+            button.setChecked(bool(props.get("checked", False) and button.isCheckable()))
+            button.setProperty("variant", str(props.get("style_variant") or "default"))
+            icon_name = str(props.get("icon_name") or "").strip()
+            if icon_name:
+                apply_icon(button, icon_name, size="small", tooltip=button.toolTip() or button.text())
+            host_layout.addWidget(button, 0, Qt.AlignLeft)
+            summary = QLabel(behavior_summary(binding), host)
+            summary.setProperty("role", "microcopy")
+            summary.setWordWrap(True)
+            host_layout.addWidget(summary)
+            return host
         if panel_type == "action_buttons":
             host = QFrame(parent)
             host_layout = QHBoxLayout(host)
@@ -5634,7 +6374,7 @@ QDialog#WorkbenchEntryPicker QPushButton {
             panel.set_panel_state(str(payload.get("state") or "visible"))
             panel.setVisible(bool(payload.get("visible", True)))
             self._apply_panel_visual_policy(panel, payload)
-            if bool(payload.get("content_override", False)):
+            if bool(payload.get("content_override", False)) and not self._is_structural_slot_shell(template, panel_id):
                 panel_state = WorkbenchPanelState(
                     panel_id=panel_id,
                     panel_type=str(payload.get("panel_type") or "text_markdown"),
@@ -5664,7 +6404,12 @@ QDialog#WorkbenchEntryPicker QPushButton {
                     height_policy=str(payload.get("height_policy") or "auto"),
                     panel_height=int(payload.get("panel_height") or 0),
                     list_options=tuple(payload.get("list_options") or ()),
-                    dynamic=False,
+                    widget_props=normalize_widget_props(
+                        str(payload.get("panel_type") or "text_markdown"),
+                        payload.get("widget_props"),
+                    ),
+                    behavior=normalize_behavior_binding(payload.get("behavior")),
+                    dynamic=bool(payload.get("dynamic", False)),
                 )
                 self._render_dynamic_panel_content(panel, panel_state)
             template.move_panel(
@@ -5830,6 +6575,11 @@ QDialog#WorkbenchEntryPicker QPushButton {
                     height_policy=str(item.get("height_policy") or "auto"),
                     panel_height=int(item.get("panel_height") or 0),
                     list_options=tuple(item.get("list_options") or ()),
+                    widget_props=normalize_widget_props(
+                        str(item.get("panel_type") or "text_markdown"),
+                        item.get("widget_props"),
+                    ),
+                    behavior=normalize_behavior_binding(item.get("behavior")),
                     dynamic=True,
                 )
             )
@@ -5929,9 +6679,13 @@ QDialog#WorkbenchEntryPicker QPushButton {
             return
         active_tab = tabs.active_tab_id()
         if not active_tab:
+            self._discard_pending_panel_candidate(announce=False)
             self._refresh_editor_contexts()
             return
         context_id = f"workspace:{active_tab}"
+        pending_context = str(self._pending_candidate_context_id or "")
+        if pending_context and pending_context != context_id:
+            self._discard_pending_panel_candidate(announce=False)
         self._refresh_editor_contexts(select_context=context_id)
 
     def _safe_json_parse(self, raw: str) -> dict[str, Any]:

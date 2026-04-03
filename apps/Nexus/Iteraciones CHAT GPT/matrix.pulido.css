@@ -1,0 +1,429 @@
+/* Matrix neon styling for VS Code (Custom CSS and JS Loader)
+   Pulido + GPU Bias Pack (120Hz friendly)
+*/
+
+/* ============================================================
+   TOKENS (single source of truth)
+   ============================================================ */
+:root {
+  --matrix-green: #00ff41;
+  --matrix-black: #000000;
+
+  --matrix-glow-strong: rgba(0, 255, 65, 0.85);
+  --matrix-glow-soft: rgba(0, 255, 65, 0.35);
+  --matrix-text-glow: 0 0 1px rgba(0, 255, 65, 0.35), 0 0 6px rgba(0, 255, 65, 0.18);
+
+  --matrix-border: rgba(0, 255, 65, 0.25);
+
+  /* Base translucency */
+  --matrix-ui-bg: rgba(0, 0, 0, 0.12);
+  --matrix-ui-bg-strong: rgba(0, 0, 0, 0.35);
+  --matrix-ui-bg-weak: rgba(0, 0, 0, 0.06);
+  --matrix-editor-bg: rgba(0, 0, 0, 0);
+
+  /* Glass system (menus + hovers) */
+  --mx-glass-bg: rgba(0, 0, 0, 0.84);
+  --mx-glass-bg2: rgba(0, 0, 0, 0.62);
+  --mx-glass-border: rgba(0, 255, 65, 0.30);
+  --mx-glass-shadow:
+    0 18px 55px rgba(0, 0, 0, 0.86),
+    0 0 18px rgba(0, 255, 65, 0.14),
+    0 0 0 1px rgba(0, 255, 65, 0.10);
+
+  /* VS Code theme variables override for translucency */
+  --vscode-editor-background: var(--matrix-editor-bg);
+  --vscode-editorGutter-background: var(--matrix-editor-bg);
+
+  --vscode-editorWidget-background: var(--matrix-ui-bg-strong);
+  --vscode-editorSuggestWidget-background: var(--matrix-ui-bg-strong);
+  --vscode-editorHoverWidget-background: var(--matrix-ui-bg-strong);
+  --vscode-editorMarkerNavigation-background: var(--matrix-ui-bg-strong);
+
+  --vscode-sideBar-background: var(--matrix-ui-bg);
+  --vscode-sideBarSectionHeader-background: var(--matrix-ui-bg);
+  --vscode-activityBar-background: var(--matrix-ui-bg);
+  --vscode-statusBar-background: var(--matrix-ui-bg);
+  --vscode-titleBar-activeBackground: var(--matrix-ui-bg);
+  --vscode-titleBar-inactiveBackground: var(--matrix-ui-bg);
+  --vscode-breadcrumb-background: var(--matrix-ui-bg);
+
+  --vscode-panel-background: var(--matrix-ui-bg-weak);
+  --vscode-panelSectionHeader-background: var(--matrix-ui-bg);
+
+  --vscode-editorGroupHeader-tabsBackground: var(--matrix-ui-bg);
+  --vscode-editorGroupHeader-noTabsBackground: var(--matrix-ui-bg);
+
+  --vscode-tab-activeBackground: var(--matrix-ui-bg);
+  --vscode-tab-inactiveBackground: var(--matrix-ui-bg);
+  --vscode-tab-unfocusedActiveBackground: var(--matrix-ui-bg);
+  --vscode-tab-unfocusedInactiveBackground: var(--matrix-ui-bg);
+
+  --vscode-input-background: var(--matrix-ui-bg-strong);
+  --vscode-dropdown-background: var(--matrix-ui-bg-strong);
+
+  --vscode-menu-background: var(--matrix-ui-bg-strong);
+  --vscode-menu-foreground: var(--matrix-green);
+  --vscode-menu-selectionBackground: rgba(0, 255, 65, 0.2);
+  --vscode-menu-selectionForeground: var(--matrix-green);
+  --vscode-menu-border: var(--matrix-border);
+
+  --vscode-menubar-selectionBackground: rgba(0, 255, 65, 0.2);
+  --vscode-menubar-selectionForeground: var(--matrix-green);
+
+  --vscode-quickInput-background: var(--matrix-ui-bg-strong);
+  --vscode-notifications-background: var(--matrix-ui-bg-strong);
+  --vscode-notificationCenterHeader-background: var(--matrix-ui-bg-strong);
+
+  --vscode-list-activeSelectionBackground: rgba(0, 255, 65, 0.12);
+  --vscode-list-hoverBackground: rgba(0, 255, 65, 0.08);
+  --vscode-list-inactiveSelectionBackground: rgba(0, 255, 65, 0.1);
+
+  --vscode-scrollbarSlider-background: rgba(0, 255, 65, 0.1);
+  --vscode-scrollbarSlider-hoverBackground: rgba(0, 255, 65, 0.18);
+  --vscode-scrollbarSlider-activeBackground: rgba(0, 255, 65, 0.22);
+
+  --vscode-editorGroup-border: var(--matrix-border);
+  --vscode-panel-border: var(--matrix-border);
+  --vscode-sideBar-border: var(--matrix-border);
+  --vscode-statusBar-border: var(--matrix-border);
+  --vscode-contrastBorder: var(--matrix-border);
+}
+
+html,
+body {
+  background-color: var(--matrix-black) !important;
+  color: var(--matrix-green) !important;
+}
+
+/* ============================================================
+   Canvas layer for digital rain (GPU hint)
+   ============================================================ */
+#matrix-rain-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+
+  transform: translate3d(0,0,0) !important;
+  will-change: transform, opacity !important;
+  backface-visibility: hidden !important;
+}
+
+/* Keep the workbench above the canvas */
+.monaco-workbench {
+  background: transparent !important;
+  color: var(--matrix-green) !important;
+  position: relative !important;
+  z-index: 1;
+
+  transform: translate3d(0,0,0);
+  will-change: transform, opacity;
+}
+
+/* Hard transparent outer workbench containers */
+#workbench,
+[id^="workbench.parts."] {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* ============================================================
+   UI CHROME (glass so rain shows through)
+   ============================================================ */
+.monaco-workbench .titlebar,
+.monaco-workbench .menubar,
+.monaco-workbench .activitybar,
+.monaco-workbench .sidebar,
+.monaco-workbench .statusbar,
+.monaco-workbench .tabs-container,
+.monaco-workbench .breadcrumbs,
+.monaco-workbench .panel,
+.monaco-workbench .monaco-list,
+.monaco-workbench .context-view,
+.monaco-workbench .notifications-center,
+.monaco-workbench .quick-input-widget,
+.monaco-workbench .suggest-widget,
+.monaco-workbench .parameter-hints-widget {
+  background-color: var(--matrix-ui-bg) !important;
+  color: var(--matrix-green) !important;
+  border-color: var(--matrix-border) !important;
+}
+
+/* popups stronger */
+.monaco-workbench .quick-input-widget,
+.monaco-workbench .suggest-widget,
+.monaco-workbench .parameter-hints-widget,
+.monaco-workbench .notifications-center {
+  background-color: var(--matrix-ui-bg-strong) !important;
+}
+
+/* Panels can show rain behind */
+.monaco-workbench .panel {
+  background: var(--matrix-ui-bg-weak) !important;
+}
+
+/* ============================================================
+   EDITOR + TERMINAL SURFACES
+   ============================================================ */
+#workbench\.parts\.editor,
+.monaco-workbench .part.editor,
+.monaco-workbench .part.editor > .content,
+.editor-group-container,
+.editor-container,
+.editor-instance,
+.monaco-editor,
+.monaco-editor .margin,
+.monaco-editor .view-lines,
+.monaco-editor-background,
+.terminal-outer-container,
+.terminal-wrapper,
+.xterm,
+.xterm .xterm-viewport,
+.xterm .xterm-rows {
+  background: var(--matrix-ui-bg-weak) !important;
+  background-color: var(--matrix-ui-bg-weak) !important;
+}
+
+/* empty editor areas transparent */
+.monaco-workbench .content.empty,
+.monaco-workbench .part.editor .content.empty,
+.monaco-workbench .editor-group-container .content.empty {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+#workbench\.parts\.editor .editor-group-watermark {
+  opacity: 0.35;
+}
+
+/* ============================================================
+   TEXT / CURSOR / SELECTION  (Glow solo donde importa)
+   ============================================================ */
+.monaco-editor .view-line,
+.monaco-editor span[class*="mtk"] {
+  color: var(--matrix-green) !important;
+  text-shadow: var(--matrix-text-glow);
+}
+
+/* Keywords glow only */
+.monaco-editor .mtk1,
+.monaco-editor .mtk3,
+.monaco-editor .mtk5 {
+  text-shadow: 0 0 2px rgba(0, 255, 65, 0.7), 0 0 6px rgba(0, 255, 65, 0.4);
+}
+
+/* Cursor glow */
+.monaco-editor .cursor {
+  background-color: var(--matrix-green) !important;
+  box-shadow: 0 0 6px var(--matrix-glow-strong), 0 0 12px var(--matrix-glow-soft);
+}
+
+.monaco-editor .cursors-layer .cursor {
+  border-left-color: var(--matrix-green) !important;
+}
+
+/* Selection + line highlight */
+.monaco-editor .selected-text,
+.monaco-editor .selectionHighlight {
+  background-color: rgba(0, 255, 65, 0.18) !important;
+}
+
+.monaco-editor .current-line,
+.monaco-editor .line-highlight {
+  background-color: rgba(0, 255, 65, 0.06) !important;
+  outline: 1px solid rgba(0, 255, 65, 0.12) !important;
+}
+
+/* Terminal glow */
+.xterm,
+.xterm .xterm-rows {
+  color: var(--matrix-green) !important;
+  text-shadow: var(--matrix-text-glow);
+}
+
+.xterm .xterm-cursor-layer .xterm-cursor-block,
+.xterm .xterm-cursor-layer .xterm-cursor-bar {
+  background-color: var(--matrix-green) !important;
+  box-shadow: 0 0 8px var(--matrix-glow-strong), 0 0 16px var(--matrix-glow-soft);
+}
+
+/* Icons/labels glow (sin wildcard global) */
+.monaco-workbench .codicon,
+.monaco-workbench .action-label,
+.monaco-workbench .label-name,
+.monaco-workbench .monaco-list-row,
+.monaco-workbench .titlebar * ,
+.monaco-workbench .menubar * ,
+.monaco-workbench .activitybar * ,
+.monaco-workbench .sidebar * ,
+.monaco-workbench .panel * {
+  color: var(--matrix-green) !important;
+  text-shadow: var(--matrix-text-glow);
+}
+
+/* ============================================================
+   MENUS (unified glass) + GPU compositing hints
+   ============================================================ */
+.monaco-workbench .context-view .monaco-menu-container,
+.monaco-workbench .monaco-menu-container,
+.monaco-workbench .menubar-menu-container {
+  background: var(--mx-glass-bg) !important;
+  background-color: var(--mx-glass-bg) !important;
+
+  backdrop-filter: blur(18px) saturate(1.25) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.25) !important;
+
+  border: 1px solid var(--mx-glass-border) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--mx-glass-shadow) !important;
+  overflow: hidden !important;
+
+  z-index: 2147483000 !important;
+
+  transform: translate3d(0,0,0);
+  will-change: transform, opacity;
+}
+
+.monaco-workbench .context-view .monaco-menu,
+.monaco-workbench .monaco-menu-container .monaco-menu,
+.monaco-workbench .menubar-menu-container .monaco-menu {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.monaco-workbench .monaco-menu .action-item .action-label,
+.monaco-workbench .monaco-menu .action-item .action-label * {
+  color: var(--matrix-green) !important;
+  text-shadow: var(--matrix-text-glow) !important;
+}
+
+.monaco-workbench .monaco-menu .action-item:hover,
+.monaco-workbench .monaco-menu .action-item.focused,
+.monaco-workbench .monaco-menu .action-item.active {
+  background: rgba(0, 255, 65, 0.14) !important;
+}
+
+/* ============================================================
+   HOVER / TOOLTIP (unified glass) + GPU hints
+   ============================================================ */
+.monaco-workbench .context-view {
+  background: transparent !important;
+}
+
+.monaco-workbench .monaco-hover,
+.monaco-workbench .editor-hover,
+.monaco-workbench .monaco-editor-hover,
+.monaco-workbench .monaco-hover .monaco-hover-content,
+.monaco-workbench .monaco-hover .hover-contents {
+  background: var(--mx-glass-bg) !important;
+  background-color: var(--mx-glass-bg) !important;
+
+  backdrop-filter: blur(18px) saturate(1.25) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.25) !important;
+
+  border: 1px solid var(--mx-glass-border) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--mx-glass-shadow) !important;
+  overflow: hidden !important;
+
+  transform: translate3d(0,0,0);
+  will-change: transform, opacity;
+}
+
+/* Keep wrappers transparent */
+.monaco-workbench .monaco-hover .hover-row,
+.monaco-workbench .monaco-hover .hover-row-contents,
+.monaco-workbench .monaco-hover .markdown-hover {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.monaco-workbench .monaco-hover,
+.monaco-workbench .monaco-hover * {
+  color: var(--matrix-green) !important;
+  text-shadow: var(--matrix-text-glow) !important;
+}
+
+/* Links inside hover */
+.monaco-workbench .monaco-hover a,
+.monaco-workbench .monaco-hover a * {
+  color: rgba(140, 255, 185, 0.95) !important;
+  text-decoration: none !important;
+}
+.monaco-workbench .monaco-hover a:hover { text-decoration: underline !important; }
+
+/* Code blocks inside hover */
+.monaco-workbench .monaco-hover pre,
+.monaco-workbench .monaco-hover code {
+  background: var(--mx-glass-bg2) !important;
+  border: 1px solid rgba(0, 255, 65, 0.18) !important;
+  border-radius: 10px !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+}
+
+/* ============================================================
+   Terminal: kill solid backgrounds (keep glass)
+   ============================================================ */
+:root {
+  --vscode-terminal-background: rgba(0, 0, 0, 0) !important;
+  --vscode-terminal-foreground: #00ff41 !important;
+}
+
+.monaco-workbench .part.panel,
+.monaco-workbench .part.panel .content,
+.monaco-workbench .panel .panel-body,
+.monaco-workbench .panel .composite,
+.monaco-workbench .panel .monaco-scrollable-element {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.monaco-workbench .terminal-outer-container,
+.monaco-workbench .terminal-wrapper,
+.monaco-workbench .terminal-instance,
+.monaco-workbench .terminal-group,
+.monaco-workbench .terminal-tabs-container,
+.monaco-workbench .terminal,
+.monaco-workbench .terminal-container,
+.monaco-workbench .xterm,
+.monaco-workbench .xterm-viewport,
+.monaco-workbench .xterm-screen,
+.monaco-workbench .xterm-rows {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.monaco-workbench .terminal-outer-container {
+  background: rgba(0, 0, 0, 0.10) !important;
+  border: 1px solid rgba(0, 255, 65, 0.16) !important;
+  backdrop-filter: blur(10px) saturate(1.2) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(1.2) !important;
+  border-radius: 12px !important;
+
+  transform: translate3d(0,0,0);
+  will-change: transform, opacity;
+}
+
+/* ============================================================
+   GPU BIAS PACK (último empujón)
+   ============================================================ */
+.monaco-workbench .titlebar,
+.monaco-workbench .menubar,
+.monaco-workbench .activitybar,
+.monaco-workbench .sidebar,
+.monaco-workbench .statusbar,
+.monaco-workbench .breadcrumbs,
+.monaco-workbench .panel,
+.monaco-workbench .monaco-list {
+  transform: translate3d(0,0,0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+/* Keep editor crisp */
+.monaco-editor,
+.monaco-editor-background,
+.monaco-editor .margin,
+.monaco-editor .view-lines {
+  filter: none !important;
+}
