@@ -8,6 +8,9 @@ from PySide6.QtCore import QEvent, QObject, QSize, Qt
 from PySide6.QtGui import QColor, QIcon, QPainter, QPixmap
 from PySide6.QtWidgets import QAbstractButton, QLabel, QWidget
 
+from .contracts import DEFAULT_THEME_ID
+from .theme import get_palette
+
 
 DEFAULT_ICON_SIZE_TOKENS: dict[str, int] = {
     "micro": 12,
@@ -174,7 +177,15 @@ class GlassIconRegistry:
         if icon.isNull():
             return
         resolved_size = self.resolve_size(size, fallback=fallback_size)
-        normal_icon, active_icon = _build_button_icon_variants(icon, resolved_size)
+        theme_id = _resolve_theme_id(target)
+        normal_tint, glow_tint, active_tint = _resolve_icon_tints(theme_id)
+        normal_icon, active_icon = _build_button_icon_variants(
+            icon,
+            resolved_size,
+            normal_tint=normal_tint,
+            glow_tint=glow_tint,
+            active_tint=active_tint,
+        )
         if isinstance(target, QAbstractButton):
             target.setIcon(normal_icon)
             target.setIconSize(QSize(resolved_size, resolved_size))
@@ -191,7 +202,7 @@ class GlassIconRegistry:
         if callable(set_icon_size):
             set_icon_size(QSize(resolved_size, resolved_size))
         if isinstance(target, QLabel):
-            target.setPixmap(_tint_pixmap(icon.pixmap(QSize(resolved_size, resolved_size)), QColor(246, 248, 252)))
+            target.setPixmap(_tint_pixmap(icon.pixmap(QSize(resolved_size, resolved_size)), normal_tint))
         if accessible_name and not target.accessibleName():
             target.setAccessibleName(accessible_name)
         if tooltip and hasattr(target, "setToolTip"):
@@ -213,10 +224,42 @@ def _tint_pixmap(source: QPixmap, color: QColor) -> QPixmap:
     return target
 
 
-def _build_button_icon_variants(icon: QIcon, size: int) -> tuple[QIcon, QIcon]:
+def _resolve_theme_id(target: QWidget | QAbstractButton | None) -> str:
+    current = target
+    while isinstance(current, QWidget):
+        for key in ("themeId", "theme_id"):
+            value = current.property(key)
+            if str(value or "").strip():
+                return str(value).strip().lower()
+        current = current.parentWidget()
+    return DEFAULT_THEME_ID
+
+
+def _resolve_icon_tints(theme_id: str) -> tuple[QColor, QColor, QColor]:
+    palette = get_palette(theme_id)
+    normal = QColor(palette.text_primary)
+    glow = QColor(palette.accent_soft)
+    active = QColor(palette.accent)
+    if normal.alpha() == 255:
+        normal.setAlpha(236)
+    if glow.alpha() == 255:
+        glow.setAlpha(108)
+    if active.alpha() == 255:
+        active.setAlpha(252)
+    return normal, glow, active
+
+
+def _build_button_icon_variants(
+    icon: QIcon,
+    size: int,
+    *,
+    normal_tint: QColor,
+    glow_tint: QColor,
+    active_tint: QColor,
+) -> tuple[QIcon, QIcon]:
     base = icon.pixmap(QSize(size, size))
-    normal_pix = _tint_pixmap(base, QColor(246, 248, 252))
-    glow_base = _tint_pixmap(base, QColor(255, 255, 255, 108))
+    normal_pix = _tint_pixmap(base, normal_tint)
+    glow_base = _tint_pixmap(base, glow_tint)
     active_pix = QPixmap(base.size())
     active_pix.fill(Qt.GlobalColor.transparent)
     painter = QPainter(active_pix)
@@ -224,7 +267,7 @@ def _build_button_icon_variants(icon: QIcon, size: int) -> tuple[QIcon, QIcon]:
     painter.setRenderHint(QPainter.SmoothPixmapTransform, True)
     for dx, dy in ((0, -1), (0, 1), (-1, 0), (1, 0)):
         painter.drawPixmap(dx, dy, glow_base)
-    painter.drawPixmap(0, 0, _tint_pixmap(base, QColor(255, 255, 255)))
+    painter.drawPixmap(0, 0, _tint_pixmap(base, active_tint))
     painter.end()
     return QIcon(normal_pix), QIcon(active_pix)
 

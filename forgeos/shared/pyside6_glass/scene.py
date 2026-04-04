@@ -8,13 +8,14 @@ from PySide6.QtWidgets import QStackedLayout, QVBoxLayout, QWidget
 from .backdrop import FrostedGlassBackdrop
 from .contracts import DEFAULT_THEME_ID
 from .frameless import FramelessResizeController
-from .theme import build_stylesheet_exact_atlas
+from .theme import build_stylesheet
 
 
 def build_glass_dialog_scene(
     host: QWidget,
     *,
     theme_id: str = DEFAULT_THEME_ID,
+    typography_scale: str = "lg",
     variant: str = "selector",
     margins: tuple[int, int, int, int] = (6, 6, 6, 6),
     motion_enabled: bool = True,
@@ -31,7 +32,7 @@ def build_glass_dialog_scene(
         pass
 
     if apply_stylesheet:
-        host.setStyleSheet(build_stylesheet_exact_atlas(theme_id))
+        host.setStyleSheet(build_stylesheet(theme_id, typography_scale=typography_scale))
 
     if bool(host.windowFlags() & Qt.FramelessWindowHint) and not hasattr(host, "_resize_controller"):
         setattr(host, "_resize_controller", FramelessResizeController(host, margin=8))
