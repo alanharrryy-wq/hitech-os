@@ -100,7 +100,10 @@ class WindowChromeBar(QFrame):
         self._host.close()
 
     def eventFilter(self, watched, event) -> bool:  # type: ignore[override]
-        if watched is self._host:
+        host = getattr(self, "_host", None)
+        if host is None:
+            return False
+        if watched is host:
             if event.type() == QEvent.Type.WindowTitleChange:
                 self._sync_host_title()
             elif event.type() == QEvent.Type.WindowStateChange:
@@ -154,4 +157,3 @@ class WindowChromeBar(QFrame):
         self._dragging = False
         self._drag_restore_pending = False
         super().mouseReleaseEvent(event)
-

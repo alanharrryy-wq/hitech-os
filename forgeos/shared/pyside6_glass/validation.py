@@ -66,7 +66,14 @@ def _is_source_file(path: Path) -> bool:
     if path.suffix != '.py':
         return False
     normalized = str(path).replace('\\', '/').lower()
-    for token in ('/__pycache__/', '/artifacts/', '/baselines/', '/tests/'):
+    for token in (
+        '/__pycache__/',
+        '/artifacts/',
+        '/baselines/',
+        '/tests/',
+        '/tools/',
+        '/_ui_baseline_bundle/',
+    ):
         if token in normalized:
             return False
     return True
