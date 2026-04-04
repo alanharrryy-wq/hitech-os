@@ -538,7 +538,7 @@ def build_command_center_example(parent: QWidget | None = None) -> GlassPanelTem
     template.setStyleSheet(f"{template.styleSheet()}\n{_showcase_overrides()}")
 
     hero = HeroPanel(
-        "PySide6 Glass operator console",
+        "code-atlas operator console",
         subtitle=(
             "Uses the real shell, tabs, cards, status lanes, and optional local libs like pyqtgraph / QtAwesome "
             "to make the example feel flagship instead of tutorial leftovers."

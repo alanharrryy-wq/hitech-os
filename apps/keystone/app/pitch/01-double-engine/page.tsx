@@ -2,14 +2,15 @@ import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "@hitech/contracts";
 import { LayerFlagsProvider } from "@hitech/ui-kit";
 import { PitchLayerDevTools, PitchShell, ScreenDoubleEngine } from "../../../components/pitch";
 import {
+  resolvePitchSearchParams,
   resolvePitchLayerFlags,
   type PitchSearchParamsProps
 } from "../../../lib/pitch/layer-resolution";
 
 export const dynamic = "force-dynamic";
 
-export default function PitchDoubleEnginePage({ searchParams }: PitchSearchParamsProps) {
-  const resolved = resolvePitchLayerFlags(searchParams);
+export default async function PitchDoubleEnginePage({ searchParams }: PitchSearchParamsProps) {
+  const resolved = resolvePitchLayerFlags(await resolvePitchSearchParams(searchParams));
   const deck = PITCH_DECK_FIXTURE;
   const screen = PITCH_SCREEN_FIXTURES["01-double-engine"];
 

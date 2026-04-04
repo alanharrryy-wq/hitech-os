@@ -1,4 +1,4 @@
-# ✨ PySide6 Glass
+# ✨ code-atlas
 ### A governed visual operating layer for premium PySide6 applications
 
 <p align="center">
@@ -15,14 +15,14 @@
 </p>
 
 <p align="center">
-  <b>PySide6 Glass</b> is a contract-driven visual operating layer for building premium, deterministic, and governable desktop interfaces in PySide6.
+  <b>code-atlas</b> is a contract-driven visual operating layer for building premium, deterministic, and governable desktop interfaces in PySide6.
 </p>
 
 ---
 
 ## 🌌 What this is
 
-PySide6 Glass exists to make sure a UI can be:
+code-atlas exists to make sure a UI can be:
 
 - **beautiful** without becoming ornamental fog
 - **premium** without becoming loud
@@ -44,7 +44,7 @@ This system provides a shared visual language for:
 
 In other words:
 
-> **PySide6 Glass is an operating layer for visual behavior, not just visual decoration.**
+> **code-atlas is an operating layer for visual behavior, not just visual decoration.**
 
 ---
 
@@ -472,7 +472,7 @@ This is how a design system stops being a mood board and becomes infrastructure.
 
 ## 🧩 Component governance
 
-A healthy PySide6 Glass system expects an approved component language.
+A healthy code-atlas system expects an approved component language.
 
 That means:
 
@@ -627,7 +627,7 @@ A new effect should:
 
 ## 💡 Design philosophy
 
-PySide6 Glass is built on one stubborn idea:
+code-atlas is built on one stubborn idea:
 
 > **A premium UI is not one that shouts louder. It is one that stays coherent under pressure.**
 
@@ -644,7 +644,7 @@ That means the framework values:
 
 ## ✅ Definition of done
 
-A PySide6 Glass implementation is healthy when:
+A code-atlas implementation is healthy when:
 
 - visual decisions flow through orchestration
 - token resolution owns final values
@@ -659,7 +659,7 @@ A PySide6 Glass implementation is healthy when:
 
 ## 🪞 One-line summary
 
-> **PySide6 Glass is a contract-driven visual operating system for PySide6, combining orchestration, tokenized appearance, controlled effects, homologated components, truthful data surfaces, and release-gated governance.**
+> **code-atlas is a contract-driven visual operating system for PySide6, combining orchestration, tokenized appearance, controlled effects, homologated components, truthful data surfaces, and release-gated governance.**
 
 ---
 

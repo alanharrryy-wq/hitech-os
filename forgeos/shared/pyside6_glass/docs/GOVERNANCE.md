@@ -1,5 +1,5 @@
 # 🛡 Governance
-### How PySide6 Glass protects quality, coherence, and product identity
+### How code-atlas protects quality, coherence, and product identity
 
 ---
 
@@ -16,7 +16,7 @@ Without governance, visual systems decay in a very predictable way:
 
 Governance exists to prevent that collapse.
 
-PySide6 Glass does not treat quality as a matter of taste.
+code-atlas does not treat quality as a matter of taste.
 It treats quality as a **release discipline**.
 
 ---
@@ -236,4 +236,4 @@ If the answer is “no” to any of those, the change is not ready.
 
 ## 🪙 Governance principle in one sentence
 
-> **PySide6 Glass treats visual quality as a protected system invariant, not as a fragile accident of good taste.**
+> **code-atlas treats visual quality as a protected system invariant, not as a fragile accident of good taste.**

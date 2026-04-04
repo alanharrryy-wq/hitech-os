@@ -216,7 +216,7 @@ class DeckSurface(QFrame):
         title.setObjectName("DeckTitle")
         header_layout.addWidget(title)
 
-        subtitle = QLabel("PySide6 Glass operator console", header)
+        subtitle = QLabel("code-atlas operator console", header)
         subtitle.setObjectName("DeckSubtitle")
         header_layout.addWidget(subtitle)
 

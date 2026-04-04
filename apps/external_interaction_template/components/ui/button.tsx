@@ -3,6 +3,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
+type ButtonSize = "sm" | "md" | "lg";
 
 const variantClass: Record<ButtonVariant, string> = {
   primary:
@@ -15,12 +16,19 @@ const variantClass: Record<ButtonVariant, string> = {
     "bg-danger/20 text-danger border border-danger/35 hover:bg-danger/30 active:bg-danger/40"
 };
 
+const sizeClass: Record<ButtonSize, string> = {
+  sm: "h-8 rounded-lg px-3 text-xs",
+  md: "h-9 rounded-xl px-3 text-sm",
+  lg: "h-11 rounded-xl px-4 text-sm"
+};
+
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
+  size?: ButtonSize;
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { className, variant = "secondary", type = "button", ...props },
+  { className, variant = "secondary", size = "md", type = "button", ...props },
   ref
 ) {
   return (
@@ -28,7 +36,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function 
       ref={ref}
       type={type}
       className={cn(
-        "inline-flex h-9 items-center justify-center rounded-xl px-3 text-sm font-medium tracking-wide transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 disabled:pointer-events-none disabled:opacity-45",
+        "inline-flex items-center justify-center font-medium tracking-wide transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 disabled:pointer-events-none disabled:opacity-45",
+        sizeClass[size],
         variantClass[variant],
         className
       )}

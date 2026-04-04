@@ -2,14 +2,15 @@ import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "@hitech/contracts";
 import { LayerFlagsProvider } from "@hitech/ui-kit";
 import { PitchLayerDevTools, PitchShell, ScreenHiTechOs } from "../../../components/pitch";
 import {
+  resolvePitchSearchParams,
   resolvePitchLayerFlags,
   type PitchSearchParamsProps
 } from "../../../lib/pitch/layer-resolution";
 
 export const dynamic = "force-dynamic";
 
-export default function PitchHiTechOsPage({ searchParams }: PitchSearchParamsProps) {
-  const resolved = resolvePitchLayerFlags(searchParams);
+export default async function PitchHiTechOsPage({ searchParams }: PitchSearchParamsProps) {
+  const resolved = resolvePitchLayerFlags(await resolvePitchSearchParams(searchParams));
   const deck = PITCH_DECK_FIXTURE;
   const screen = PITCH_SCREEN_FIXTURES["03-hitech-os"];
 

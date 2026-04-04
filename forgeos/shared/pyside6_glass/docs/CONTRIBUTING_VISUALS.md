@@ -1,11 +1,11 @@
 # 🎨 Contributing Visuals
-### How to extend PySide6 Glass without turning it into a stylish disaster
+### How to extend code-atlas without turning it into a stylish disaster
 
 ---
 
 ## Before you touch anything
 
-PySide6 Glass is not a loose styling playground.
+code-atlas is not a loose styling playground.
 
 It is a governed visual system with:
 
@@ -227,7 +227,7 @@ Before calling a visual change done, ask:
 - Does it preserve or improve state/freshness clarity?
 
 ### Cohesion
-- Does it feel like PySide6 Glass, not like an imported mood?
+- Does it feel like code-atlas, not like an imported mood?
 
 ### Governance
 - Would validation and release discipline still make sense after this change?
@@ -236,4 +236,4 @@ Before calling a visual change done, ask:
 
 ## 🪙 Final principle
 
-> **Contributing to PySide6 Glass means improving a system language, not decorating a screen in isolation.**
+> **Contributing to code-atlas means improving a system language, not decorating a screen in isolation.**

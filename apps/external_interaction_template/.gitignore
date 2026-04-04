@@ -1,4 +1,14 @@
-prisma/external-interaction.db
-prisma/external-interaction.db-journal
-storage/
+.next/
+node_modules/
+*.tsbuildinfo
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+storage/
+prisma/*.db
+prisma/*.db-journal
+coverage/
+dist/
+.DS_Store

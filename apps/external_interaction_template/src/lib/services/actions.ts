@@ -69,7 +69,7 @@ export async function applyRecordAction(request: ApplyActionRequest) {
       throw new Error(`Invalid transition from '${record.state}' to '${targetState}'`);
     }
 
-    const updatedRecord = await store.setRecordState(record.id, targetState);
+    let updatedRecord = await store.setRecordState(record.id, targetState);
     await store.createSubmission({
       recordId: record.id,
       actor: request.actor,
@@ -91,8 +91,11 @@ export async function applyRecordAction(request: ApplyActionRequest) {
       error: response.error
     });
 
-    if (response.ok) {
-      await store.setRecordState(record.id, "synced");
+    if (response.ok && updatedRecord.state !== "synced") {
+      if (!canTransition(updatedRecord.state, "synced")) {
+        throw new Error(`Invalid transition from '${updatedRecord.state}' to 'synced'`);
+      }
+      updatedRecord = await store.setRecordState(record.id, "synced");
     }
 
     return {
@@ -185,13 +188,37 @@ export async function retryDispatchJob(jobId: string, actor: ActorContext) {
     error: response.error
   });
 
+  let updatedRecord = record;
+  if (response.ok) {
+    const dispatchState = action.nextState ?? "dispatched";
+    if (updatedRecord.state !== dispatchState) {
+      if (!canTransition(updatedRecord.state, dispatchState)) {
+        throw new Error(`Invalid transition from '${updatedRecord.state}' to '${dispatchState}'`);
+      }
+      updatedRecord = await store.setRecordState(record.id, dispatchState);
+    }
+
+    if (updatedRecord.state !== "synced") {
+      if (!canTransition(updatedRecord.state, "synced")) {
+        throw new Error(`Invalid transition from '${updatedRecord.state}' to 'synced'`);
+      }
+      updatedRecord = await store.setRecordState(record.id, "synced");
+    }
+  } else if (updatedRecord.state !== "failed") {
+    if (!canTransition(updatedRecord.state, "failed")) {
+      throw new Error(`Invalid transition from '${updatedRecord.state}' to 'failed'`);
+    }
+    updatedRecord = await store.setRecordState(record.id, "failed");
+  }
+
   await store.createSubmission({
     recordId: record.id,
     actor,
     payload: {
       action: "dispatch_retry",
       jobId: job.id,
-      ok: response.ok
+      ok: response.ok,
+      state: updatedRecord.state
     }
   });
 
@@ -200,13 +227,14 @@ export async function retryDispatchJob(jobId: string, actor: ActorContext) {
     direction: "outbound",
     adapterId: adapter.id,
     status: response.ok ? "synced" : "retryable",
-    summary: response.ok ? "Retry succeeded" : "Retry failed",
+    summary: response.ok ? response.summary : response.summary || "Retry failed",
     payload: response.responsePayload,
     error: response.error
   });
 
   return {
     job: updatedJob,
+    record: updatedRecord,
     response
   };
 }

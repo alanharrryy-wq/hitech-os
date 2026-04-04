@@ -1,11 +1,11 @@
-import { describe, expect, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 
 import { getSchema, listSchemas } from "@/lib/core/schema-registry";
 import { recordPreviewFields } from "@/lib/core/record-view";
 import { isActionAvailable } from "@/lib/core/state";
 import { validateStepPayload } from "@/lib/core/validation";
 import { isFieldVisible } from "@/lib/core/visibility";
-import { applyRecordAction, listSyncCenterData } from "@/lib/services/actions";
+import { applyRecordAction, listSyncCenterData, retryDispatchJob } from "@/lib/services/actions";
 import { resetBootstrapFlagForTests } from "@/lib/services/bootstrap";
 import { createRecord, getRecordByToken, listRecords, updateRecord } from "@/lib/services/records";
 import { MemoryExternalStore } from "@/lib/store/memory-store";
@@ -156,6 +156,8 @@ describe("external interaction template core", () => {
     });
 
     expect(result.response.ok).toBe(true);
+    expect(result.record.state).toBe("synced");
+    expect(result.record.lastSyncAt).toBeDefined();
   });
 
   it("records retryable sync status when outbound adapter fails", async () => {
@@ -189,6 +191,67 @@ describe("external interaction template core", () => {
 
     const syncData = await listSyncCenterData();
     expect(syncData.events.some((event) => event.status === "retryable")).toBe(true);
+  });
+
+  it("reconciles record state when a failed dispatch retry later succeeds", async () => {
+    const originalFetch = globalThis.fetch;
+    const originalEndpoint = process.env.EXTERNAL_INTERACTION_WEBHOOK_URL;
+
+    try {
+      delete process.env.EXTERNAL_INTERACTION_WEBHOOK_URL;
+
+      const record = await createRecord({
+        schemaId: "service_request",
+        actor,
+        fields: {
+          request_title: "A",
+          request_description: "B",
+          request_priority: "high",
+          requester_name: "Kai",
+          requester_email: "kai@example.com"
+        },
+        stepId: "requester",
+        submit: true
+      });
+
+      await updateRecord({
+        recordId: record.id,
+        actor,
+        stepId: "context",
+        fields: {
+          region: "north",
+          needs_attachment: false
+        },
+        state: "in_review"
+      });
+
+      await applyRecordAction({ recordId: record.id, actionId: "approve", actor });
+      const failedDispatch = await applyRecordAction({ recordId: record.id, actionId: "dispatch", actor });
+      expect(failedDispatch.record.state).toBe("failed");
+
+      process.env.EXTERNAL_INTERACTION_WEBHOOK_URL = "https://example.invalid/webhook";
+      globalThis.fetch = async () => new Response("accepted", { status: 200 });
+
+      const syncData = await listSyncCenterData();
+      const failedJob = syncData.jobs.find((job) => job.recordId === record.id && job.status === "failed");
+      expect(failedJob).toBeTruthy();
+
+      const retryResult = await retryDispatchJob(failedJob!.id, actor);
+      expect(retryResult.response.ok).toBe(true);
+      expect(retryResult.record.state).toBe("synced");
+
+      const refreshed = await listRecords({ schemaId: "service_request" });
+      expect(refreshed.find((entry) => entry.id === record.id)?.state).toBe("synced");
+    } finally {
+      if (originalFetch) {
+        globalThis.fetch = originalFetch;
+      }
+      if (originalEndpoint === undefined) {
+        delete process.env.EXTERNAL_INTERACTION_WEBHOOK_URL;
+      } else {
+        process.env.EXTERNAL_INTERACTION_WEBHOOK_URL = originalEndpoint;
+      }
+    }
   });
 
   it("switches across schema examples without changing architecture", async () => {

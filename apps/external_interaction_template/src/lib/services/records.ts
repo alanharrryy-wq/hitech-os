@@ -51,7 +51,7 @@ export async function createRecord(request: CreateRecordRequest): Promise<Extern
 
   const validation = validateStepPayload(schema, stepId, currentValues, request.actor.role);
   if (!validation.ok) {
-    throw new Error(`Validation failed: ${JSON.stringify(validation.errors)}`);
+    throw new Error(`Validation failed: ${JSON.stringify("errors" in validation ? validation.errors : {})}`);
   }
   const primaryListField = schema.views.listFields[0] ?? schema.fields[0]?.id ?? "title";
 
@@ -112,7 +112,7 @@ export async function updateRecord(request: UpdateRecordRequest): Promise<Extern
 
   const validation = validateStepPayload(schema, stepId, merged, request.actor.role);
   if (!validation.ok) {
-    throw new Error(`Validation failed: ${JSON.stringify(validation.errors)}`);
+    throw new Error(`Validation failed: ${JSON.stringify("errors" in validation ? validation.errors : {})}`);
   }
 
   if (request.state && !canTransition(existing.state, request.state)) {

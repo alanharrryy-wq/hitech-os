@@ -138,7 +138,7 @@ class _ResizeGrip(QFrame):
 
 class _BaseGlassWindow(QDialog):
     object_name = "GlassWorkbenchWindow"
-    title_text = "PySide6 Glass Workbench"
+    title_text = "code-atlas Workbench"
     minimum_size = (1024, 640)
     default_size = (1260, 740)
 
@@ -254,7 +254,7 @@ class _BaseGlassWindow(QDialog):
 
 class GlassCatalogWindow(_BaseGlassWindow):
     object_name = "GlassWorkbenchWindow"
-    title_text = "PySide6 Glass Workbench"
+    title_text = "code-atlas Workbench"
 
     def _build_body(self, parent: QWidget) -> QWidget:
         return GlassExampleCatalog(parent)
@@ -262,7 +262,7 @@ class GlassCatalogWindow(_BaseGlassWindow):
 
 class GlassShowcaseWindow(_BaseGlassWindow):
     object_name = "GlassShowcaseWindow"
-    title_text = "PySide6 Glass Command Center"
+    title_text = "code-atlas Command Center"
     minimum_size = (1180, 720)
     default_size = (1360, 820)
 

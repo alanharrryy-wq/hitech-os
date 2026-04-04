@@ -17,8 +17,26 @@ export interface FloatingWindowProps {
   title: string;
   defaultPos?: Vec2;
   defaultSize?: Size;
+  homePos?: Vec2;
+  homeSize?: Size;
   minSize?: Size;
   maxSize?: Size;
+  minWidth?: number;
+  minHeight?: number;
+  initialZ?: number;
+  hideCloseButton?: boolean;
+  frameStyle?: "LIQUID_GLASS" | "GOLD_NOIR_TERMINAL" | "GRAPHITE_PRISM_ISO";
+  framePerfProfile?: "quality" | "perf";
+  headerRight?: React.ReactNode;
+  defaultState?: {
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+    z?: number;
+    collapsed?: boolean;
+    visible?: boolean;
+  };
   children: React.ReactNode;
   className?: string;
 }
@@ -78,11 +96,36 @@ export function FloatingWindow({
   title,
   defaultPos = { x: 24, y: 24 },
   defaultSize = { w: 420, h: 520 },
+  homePos,
+  homeSize,
   minSize = { w: 280, h: 180 },
   maxSize,
+  minWidth,
+  minHeight,
+  initialZ,
+  hideCloseButton,
+  frameStyle,
+  framePerfProfile,
+  headerRight,
+  defaultState,
   children,
   className
 }: FloatingWindowProps) {
+  // Legacy API compatibility (frame styling is intentionally handled by CSS vars elsewhere).
+  void hideCloseButton;
+  void frameStyle;
+  void framePerfProfile;
+
+  const resolvedDefaultPos = defaultState ? { x: defaultState.x, y: defaultState.y } : defaultPos;
+  const resolvedDefaultSize = defaultState ? { w: defaultState.w, h: defaultState.h } : defaultSize;
+  const resolvedMinSize = useMemo<Size>(
+    () => ({
+      w: Math.max(minSize.w, minWidth ?? 0),
+      h: Math.max(minSize.h, minHeight ?? 0)
+    }),
+    [minHeight, minSize.h, minSize.w, minWidth]
+  );
+
   const storageKey = useMemo(() => `keystone.floatingWindow.${id}`, [id]);
   const rootRef = useRef<HTMLDivElement | null>(null);
 
@@ -90,10 +133,10 @@ export function FloatingWindow({
     const saved = typeof window !== "undefined" ? readLS(storageKey) : null;
     return (
       saved ?? {
-        pos: defaultPos,
-        size: defaultSize,
-        z: 1000,
-        collapsed: false
+        pos: resolvedDefaultPos,
+        size: resolvedDefaultSize,
+        z: defaultState?.z ?? initialZ ?? 1000,
+        collapsed: defaultState?.collapsed ?? false
       }
     );
   });
@@ -105,7 +148,7 @@ export function FloatingWindow({
 
   useEffect(() => {
     setState((prev) => {
-      const next = clampState(prev, minSize, maxSize);
+      const next = clampState(prev, resolvedMinSize, maxSize);
       if (
         next.pos.x === prev.pos.x &&
         next.pos.y === prev.pos.y &&
@@ -116,7 +159,7 @@ export function FloatingWindow({
       }
       return { ...prev, ...next };
     });
-  }, [maxSize, minSize]);
+  }, [maxSize, resolvedMinSize]);
 
   useEffect(() => {
     writeLS(storageKey, state);
@@ -125,7 +168,7 @@ export function FloatingWindow({
   useEffect(() => {
     const onResize = () => {
       setState((prev) => {
-        const next = clampState(prev, minSize, maxSize);
+        const next = clampState(prev, resolvedMinSize, maxSize);
         if (
           next.pos.x === prev.pos.x &&
           next.pos.y === prev.pos.y &&
@@ -140,7 +183,7 @@ export function FloatingWindow({
 
     window.addEventListener("resize", onResize, { passive: true });
     return () => window.removeEventListener("resize", onResize);
-  }, [maxSize, minSize]);
+  }, [maxSize, resolvedMinSize]);
 
   const bringToFront = () => {
     setState((prev) => ({
@@ -198,8 +241,8 @@ export function FloatingWindow({
       const wMax = maxSize?.w ?? vw - VIEWPORT_GUTTER * 2;
       const hMax = maxSize?.h ?? vh - VIEWPORT_GUTTER * 2;
 
-      const w = clamp(startState.size.w + dx, minSize.w, Math.max(minSize.w, wMax));
-      const h = clamp(startState.size.h + dy, minSize.h, Math.max(minSize.h, hMax));
+      const w = clamp(startState.size.w + dx, resolvedMinSize.w, Math.max(resolvedMinSize.w, wMax));
+      const h = clamp(startState.size.h + dy, resolvedMinSize.h, Math.max(resolvedMinSize.h, hMax));
 
       setState((prev) => ({ ...prev, size: { w, h } }));
     };
@@ -217,6 +260,17 @@ export function FloatingWindow({
 
   const toggleCollapsed = () => {
     setState((prev) => ({ ...prev, collapsed: !prev.collapsed }));
+  };
+
+  const goHome = () => {
+    if (!homePos && !homeSize) return;
+
+    setState((prev) => ({
+      ...prev,
+      pos: homePos ?? prev.pos,
+      size: homeSize ?? prev.size,
+      collapsed: false
+    }));
   };
 
   const shellStyle: React.CSSProperties = {
@@ -303,7 +357,20 @@ export function FloatingWindow({
         <div style={titleStyle} title={title}>
           {title}
         </div>
+        {headerRight ? <div style={{ display: "flex", alignItems: "center" }}>{headerRight}</div> : null}
         <div style={{ display: "flex", gap: 8 }}>
+          {homePos || homeSize ? (
+            <button
+              type="button"
+              style={btnStyle}
+              onClick={(event) => {
+                event.stopPropagation();
+                goHome();
+              }}
+            >
+              Home
+            </button>
+          ) : null}
           <button
             type="button"
             style={btnStyle}

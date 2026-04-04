@@ -1,11 +1,11 @@
 # 🏗 Architecture
-### PySide6 Glass system structure and runtime behavior
+### code-atlas system structure and runtime behavior
 
 ---
 
 ## 🌠 Big picture
 
-PySide6 Glass is built as a **governed visual stack**, not as a loose bag of helpers.
+code-atlas is built as a **governed visual stack**, not as a loose bag of helpers.
 
 Its purpose is to turn runtime context into a coherent, premium, contract-compliant interface through a deterministic chain of orchestration, token resolution, rendering, and validation.
 
@@ -339,4 +339,4 @@ If the gate looks impressive but does not actually protect invariants, the archi
 
 ## 🪙 Architectural principle in one sentence
 
-> **PySide6 Glass turns visual quality into a system property rather than a screen-by-screen act of heroism.**
+> **code-atlas turns visual quality into a system property rather than a screen-by-screen act of heroism.**

@@ -1,4 +1,4 @@
-# PySide6 Glass Sacred Capabilities Contract
+# code-atlas Sacred Capabilities Contract
 
 This contract defines the **40 release-blocking capabilities** for the workbench/editor.
 

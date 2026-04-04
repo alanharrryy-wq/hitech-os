@@ -3,14 +3,15 @@ import { LayerFlagsProvider, GlassCard, InsetPanel } from "@hitech/ui-kit";
 import { PITCH_DECK_FIXTURE } from "@hitech/contracts";
 import { PitchLayerDevTools, PitchShell } from "../../components/pitch";
 import {
+  resolvePitchSearchParams,
   resolvePitchLayerFlags,
   type PitchSearchParamsProps
 } from "../../lib/pitch/layer-resolution";
 
 export const dynamic = "force-dynamic";
 
-export default function PitchIndexPage({ searchParams }: PitchSearchParamsProps) {
-  const resolved = resolvePitchLayerFlags(searchParams);
+export default async function PitchIndexPage({ searchParams }: PitchSearchParamsProps) {
+  const resolved = resolvePitchLayerFlags(await resolvePitchSearchParams(searchParams));
   const deck = PITCH_DECK_FIXTURE;
 
   return (

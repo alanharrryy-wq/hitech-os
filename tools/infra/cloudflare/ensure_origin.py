@@ -26,10 +26,6 @@ from cloudflared_helpers import (
 )
 
 
-def _ps_single_quote(value: str) -> str:
-    return "'" + value.replace("'", "''") + "'"
-
-
 def _port_from_origin(origin_url: str) -> int:
     parsed = urlparse(origin_url)
     if parsed.port is not None:
@@ -39,6 +35,10 @@ def _port_from_origin(origin_url: str) -> int:
         return int(candidate)
     except ValueError:
         return DEFAULT_ORIGIN_PORT
+
+
+def _ps_single_quote(value: str) -> str:
+    return "'" + value.replace("'", "''") + "'"
 
 
 def _pid_alive(pid: int) -> bool:
@@ -72,6 +72,81 @@ def _resolve_node_executable() -> str:
     raise TunnelSetupError(
         "Node.js executable was not found. Install Node.js system-wide so origin auto-start works under SYSTEM tasks."
     )
+
+
+def _run_keystone_build(ctx: RunContext, repo_root: Path) -> Any:
+    app_dir = repo_root / "apps" / "keystone"
+    build = run_logged(
+        ctx,
+        [
+            "pwsh",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-Command",
+            f"Set-Location -LiteralPath {_ps_single_quote(str(repo_root))}; pnpm -C apps/keystone build",
+        ],
+        timeout=1800,
+        action_name="keystone_build",
+    )
+    if build.returncode == 0:
+        return build
+
+    combined = f"{build.stderr}\n{build.stdout}".lower()
+    pnpm_shim_broken = "cannot find module" in combined and "pnpm.cjs" in combined
+    pnpm_not_found = "pnpm" in combined and ("is not recognized" in combined or "not found" in combined)
+    if not (pnpm_shim_broken or pnpm_not_found):
+        return build
+
+    npx_executable = shutil.which("npx")
+    if npx_executable:
+        npx_fallback = run_logged(
+            ctx,
+            [
+                "pwsh",
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-Command",
+                f"Set-Location -LiteralPath {_ps_single_quote(str(repo_root))}; "
+                f"& {_ps_single_quote(npx_executable)} pnpm@9 -C apps/keystone build",
+            ],
+            timeout=1800,
+            action_name="keystone_build_npx_pnpm_fallback",
+        )
+        if npx_fallback.returncode == 0:
+            ctx.action(
+                "keystone_build_fallback",
+                "ok",
+                {"mode": "npx_pnpm", "path": str(app_dir)},
+            )
+            return npx_fallback
+
+    npm_executable = shutil.which("npm")
+    if not npm_executable:
+        return build
+
+    fallback = run_logged(
+        ctx,
+        [
+            "pwsh",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-Command",
+            f"Set-Location -LiteralPath {_ps_single_quote(str(repo_root))}; "
+            f"& {_ps_single_quote(npm_executable)} --prefix {_ps_single_quote(str(app_dir))} run build",
+        ],
+        timeout=1800,
+        action_name="keystone_build_npm_fallback",
+    )
+    if fallback.returncode == 0:
+        ctx.action(
+            "keystone_build_fallback",
+            "ok",
+            {"mode": "npm_prefix", "path": str(app_dir)},
+        )
+    return fallback
 
 
 def _launch_keystone_process(repo_root: Path, port: int, runtime_log_path: Path) -> int:
@@ -133,19 +208,14 @@ def ensure_keystone_origin(
 
     build_id = repo_root / "apps" / "keystone" / ".next" / "BUILD_ID"
     if not build_id.exists():
-        build = run_logged(
-            ctx,
-            [
-                "pwsh",
-                "-NoProfile",
-                "-ExecutionPolicy",
-                "Bypass",
-                "-Command",
-                f"Set-Location -LiteralPath {_ps_single_quote(str(repo_root))}; pnpm -C apps/keystone build",
-            ],
-            timeout=1800,
-            action_name="keystone_build",
-        )
+        next_cli = repo_root / "apps" / "keystone" / "node_modules" / "next" / "dist" / "bin" / "next"
+        if not next_cli.exists():
+            raise TunnelSetupError(
+                "Keystone dependencies are missing at "
+                f"'{next_cli}'. Install workspace deps first (for example: "
+                "'pnpm install --frozen-lockfile' from repo root)."
+            )
+        build = _run_keystone_build(ctx, repo_root)
         if build.returncode != 0:
             raise TunnelSetupError(
                 f"Keystone build failed. stderr: {build.stderr.strip() or build.stdout.strip() or 'n/a'}"

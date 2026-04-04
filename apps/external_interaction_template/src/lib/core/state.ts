@@ -9,8 +9,8 @@ const terminalStates = new Set<RecordState>(["synced", "failed"]);
 
 export function canTransition(current: RecordState, target: RecordState): boolean {
   if (current === target) return true;
-  if (terminalStates.has(current) && target !== "dispatched") {
-    return false;
+  if (terminalStates.has(current) && target === "dispatched") {
+    return true;
   }
 
   const map: Record<RecordState, RecordState[]> = {

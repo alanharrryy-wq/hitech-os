@@ -42,7 +42,7 @@ function LayerDebugWindowContent() {
     return <p style={DEBUG_HINT_STYLE}>Enable `?debug=1` to use Layer Debug controls.</p>;
   }
 
-  return <LayerDebugPanel inline />;
+  return <LayerDebugPanel />;
 }
 
 function resolveFrameStyleFromQuery(
