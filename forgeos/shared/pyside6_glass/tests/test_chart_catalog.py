@@ -10,6 +10,8 @@ from forgeos.shared.pyside6_glass.charts import (
     get_chart_style,
     list_chart_palettes,
     list_chart_styles,
+    resolve_chart_contract,
+    resolve_chart_style,
     register_builtin_chart_catalog,
     register_chart_palette,
     register_chart_style,
@@ -51,6 +53,24 @@ class ChartCatalogTests(unittest.TestCase):
         self.assertEqual(style.style_id, "unit_style")
         self.assertEqual(style.palette_id, "unit_palette")
         self.assertEqual(list_chart_styles()[0].style_id, "unit_style")
+
+    def test_resolve_chart_contract_uses_registry_and_rejects_palette_mismatch(self) -> None:
+        register_builtin_chart_catalog(force=True)
+        style, palette = resolve_chart_contract(
+            style_id="ops_health",
+            palette_id="ops_emerald",
+            data_state="ready",
+            experience_mode="dashboard",
+            visual_level="premium",
+        )
+        self.assertEqual(style.style_id, "ops_health")
+        self.assertEqual(palette.palette_id, "ops_emerald")
+
+        with self.assertRaises(ValueError):
+            resolve_chart_style(
+                style_id="ops_health",
+                palette_id="signal_amber",
+            )
 
 
 if __name__ == "__main__":

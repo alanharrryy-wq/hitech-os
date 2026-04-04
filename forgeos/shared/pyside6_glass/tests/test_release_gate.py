@@ -23,6 +23,7 @@ class ReleaseGateTests(unittest.TestCase):
         payload = json.loads(evidence_path.read_text(encoding="utf-8"))
         self.assertEqual(payload["required_capabilities"], release_gate.REQUIRED_CAPABILITIES)
         self.assertGreaterEqual(payload["detected_capabilities"], release_gate.REQUIRED_CAPABILITIES)
+        self.assertTrue(bool(payload.get("validation", {}).get("passed", False)))
 
         # Keep local evidence, but ensure path stays under allowed local artifact root.
         allowed_root = Path("tools/_local/evidence").resolve()

@@ -19,9 +19,13 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from .appearance import AppearanceProfile, AppearanceSnapshot, EffectsProfile
 from .assets import CompactToolbar, FilterChipBar, SearchCommandBar, StatusPill
+from .charts import resolve_chart_contract
+from .component_governance import mark_component
 from .data import DataQuery, DataResult, DataState, RefreshPolicy, execute_data_query
 from .primitives import EmptyStateCard, ErrorStateCard, LoadingStateCard, MetricValue, PanelHeader, StatCard
+from .rendering import apply_surface_role, install_surface_renderer, sync_surface_renderer
 
 
 def _clear_layout(layout: QVBoxLayout | QGridLayout) -> None:
@@ -54,7 +58,97 @@ def _state_to_pill_kind(state: str) -> str:
         return "warning"
     if normalized in {DataState.LOADING}:
         return "pending"
+    if normalized in {DataState.READY}:
+        return "success"
     return "success"
+
+
+def _resolve_snapshot_for(widget: QWidget | None) -> AppearanceSnapshot:
+    cursor = widget
+    while cursor is not None:
+        snapshot_getter = getattr(cursor, "appearance_snapshot", None)
+        if callable(snapshot_getter):
+            try:
+                snapshot = snapshot_getter()
+            except Exception:  # noqa: BLE001
+                snapshot = None
+            if isinstance(snapshot, AppearanceSnapshot):
+                return snapshot
+        cursor = cursor.parentWidget()
+    profile = AppearanceProfile(theme_id="silver_frost_cyan")
+    return AppearanceSnapshot(
+        profile=profile,
+        effects=EffectsProfile.from_appearance(profile),
+        source="dashboard:fallback_snapshot",
+    )
+
+
+class _DashboardGovernedWidgetMixin:
+    _surface_role: str = "panel_data"
+    _surface_variant: str = "panel"
+    _surface_emphasis: str = "normal"
+    _surface_fx_level: str = "soft"
+
+    def _install_visual_contract(self) -> None:
+        if not isinstance(self, QWidget):
+            return
+        existing_key = str(self.property('componentKey') or '').strip().lower()
+        mark_component(
+            self,
+            component_key=existing_key or (self.objectName() or self.__class__.__name__),
+        )
+        apply_surface_role(
+            self,
+            role=self._surface_role,
+            variant=self._surface_variant,
+            emphasis=self._surface_emphasis,
+            fx_level=self._surface_fx_level,
+        )
+        install_surface_renderer(self)
+        sync_surface_renderer(self, _resolve_snapshot_for(self))
+
+
+class _DashboardDataTable(_DashboardGovernedWidgetMixin, QTableWidget):
+    _surface_role = "panel_data"
+    _surface_variant = "panel"
+    _surface_emphasis = "normal"
+    _surface_fx_level = "soft"
+
+    def __init__(self, rows: int, columns: int, parent: QWidget | None = None) -> None:
+        super().__init__(rows, columns, parent)
+        self.setObjectName("DashboardDataTable")
+        self.setProperty("card", "clear")
+        mark_component(self, component_key='dashboard_table')
+        self._install_visual_contract()
+
+
+class _DashboardFeedList(_DashboardGovernedWidgetMixin, QListWidget):
+    _surface_role = "panel_aux"
+    _surface_variant = "panel"
+    _surface_emphasis = "subtle"
+    _surface_fx_level = "soft"
+
+    def __init__(self, parent: QWidget | None = None) -> None:
+        super().__init__(parent)
+        self.setObjectName("DashboardFeedList")
+        self.setProperty("card", "clear")
+        mark_component(self, component_key='dashboard_feed')
+        self._install_visual_contract()
+
+
+class _DashboardPayloadViewer(_DashboardGovernedWidgetMixin, QTextEdit):
+    _surface_role = "panel_detail"
+    _surface_variant = "panel"
+    _surface_emphasis = "subtle"
+    _surface_fx_level = "soft"
+
+    def __init__(self, parent: QWidget | None = None) -> None:
+        super().__init__(parent)
+        self.setObjectName("DashboardPayloadViewer")
+        self.setProperty("card", "clear")
+        self.setReadOnly(True)
+        mark_component(self, component_key='dashboard_payload')
+        self._install_visual_contract()
 
 
 @dataclass(slots=True)
@@ -78,6 +172,10 @@ class DashboardQuerySpec:
     enable_filter_chips: bool = True
     enable_toolbar: bool = True
     refresh_policy: RefreshPolicy | None = None
+    chart_style_id: str | None = None
+    chart_palette_id: str | None = None
+    experience_mode: str = "dashboard"
+    visual_level: str = "standard"
 
     def build_query(self) -> DataQuery:
         return DataQuery.create(
@@ -104,12 +202,15 @@ class DashboardDataSurface(QFrame):
     ) -> None:
         super().__init__(parent)
         self.setProperty("card", "clear")
+        mark_component(self, component_key='dashboard_data_surface')
         self.spec = spec
         self._on_result = on_result
         self._last_result: DataResult | None = None
         self._reload_in_progress = False
         self._search_text = ""
         self._current_filter = "all"
+        self._chart_style = None
+        self._chart_palette = None
 
         root = QVBoxLayout(self)
         root.setContentsMargins(2, 2, 2, 2)
@@ -155,7 +256,8 @@ class DashboardDataSurface(QFrame):
         self.count_badge = StatusPill("0 rows", kind="info", parent=self.status_badges_host)
         self.refresh_badge = StatusPill("manual", kind="info", parent=self.status_badges_host)
         self.filter_badge = StatusPill("no filters", kind="pending", parent=self.status_badges_host)
-        for badge in (self.state_badge, self.count_badge, self.refresh_badge, self.filter_badge):
+        self.chart_badge = StatusPill("chart=auto", kind="info", parent=self.status_badges_host)
+        for badge in (self.state_badge, self.count_badge, self.refresh_badge, self.filter_badge, self.chart_badge):
             self.status_badges_layout.addWidget(badge, 0)
         self.status_badges_layout.addStretch(1)
         root.addWidget(self.status_badges_host)
@@ -195,17 +297,36 @@ class DashboardDataSurface(QFrame):
         if self._reload_in_progress:
             return
         self._reload_in_progress = True
-        self._render_loading()
-        result = execute_data_query(
-            self.spec.build_query(),
-            fallback_policy=self.spec.refresh_policy or RefreshPolicy(mode="manual"),
-        )
-        self._last_result = result
-        self._apply_refresh_policy(result.refresh_policy)
-        self._render_result(result)
-        if self._on_result is not None:
-            self._on_result(result)
-        self._reload_in_progress = False
+        try:
+            self._render_loading()
+            result = execute_data_query(
+                self.spec.build_query(),
+                fallback_policy=self.spec.refresh_policy or RefreshPolicy(mode="manual"),
+            )
+            self._last_result = result
+            self._apply_refresh_policy(result.refresh_policy)
+            self._render_result(result)
+            if self._on_result is not None:
+                self._on_result(result)
+        except Exception as exc:  # noqa: BLE001
+            failure = DataResult.failure(
+                self.spec.build_query(),
+                code="dashboard_render_contract_violation",
+                message=str(exc),
+                details={
+                    "provider_id": self.spec.provider_id,
+                    "query_id": self.spec.query_id,
+                    "chart_style_id": self.spec.chart_style_id,
+                    "chart_palette_id": self.spec.chart_palette_id,
+                },
+                policy=self.spec.refresh_policy or RefreshPolicy(mode="manual"),
+            )
+            self._last_result = failure
+            self._render_contract_failure(failure, message=str(exc))
+            if self._on_result is not None:
+                self._on_result(failure)
+        finally:
+            self._reload_in_progress = False
 
     def _on_search_changed(self, text: str) -> None:
         self._search_text = str(text or "").strip().lower()
@@ -227,6 +348,7 @@ class DashboardDataSurface(QFrame):
 
     def _render_loading(self) -> None:
         _clear_layout(self.body_layout)
+        self._resolve_chart_contract(DataState.LOADING)
         self.body_layout.addWidget(
             LoadingStateCard(
                 "Loading dashboard data",
@@ -243,6 +365,29 @@ class DashboardDataSurface(QFrame):
             refresh_mode="pending",
         )
         self.status_label.setText("Loading data...")
+
+    def _render_contract_failure(self, result: DataResult, *, message: str) -> None:
+        _clear_layout(self.body_layout)
+        self.chart_badge.setText("chart=contract_error")
+        self.chart_badge.setProperty("statusKind", "error")
+        self.chart_badge.style().unpolish(self.chart_badge)
+        self.chart_badge.style().polish(self.chart_badge)
+        self._update_status_labels(
+            state=DataState.ERROR,
+            result_counts={"metrics": 0, "rows": 0, "feed": 0},
+            filtered_counts={"rows": 0, "feed": 0},
+            refreshed_at=result.refreshed_at_utc,
+            refresh_mode=result.refresh_policy.mode,
+        )
+        self.body_layout.addWidget(
+            ErrorStateCard(
+                "Visual contract violation",
+                message,
+                details="Dashboard requested chart style/palette outside registry constraints.",
+                retry=self.reload,
+                parent=self.body_host,
+            )
+        )
 
     def _collect_filter_values(self, result: DataResult) -> tuple[str, ...]:
         found: set[str] = set()
@@ -270,6 +415,22 @@ class DashboardDataSurface(QFrame):
                 continue
             self.filter_chips.add_chip(normalized, normalized.title(), checked=(self._current_filter == normalized))
         self.filter_chips.blockSignals(False)
+
+    def _resolve_chart_contract(self, state: str) -> tuple[str, str]:
+        style, palette = resolve_chart_contract(
+            style_id=self.spec.chart_style_id,
+            palette_id=self.spec.chart_palette_id,
+            data_state=state,
+            experience_mode=self.spec.experience_mode,
+            visual_level=self.spec.visual_level,
+        )
+        self._chart_style = style
+        self._chart_palette = palette
+        self.chart_badge.setText(f"chart={style.style_id} · palette={palette.palette_id}")
+        self.chart_badge.setProperty("statusKind", "info")
+        self.chart_badge.style().unpolish(self.chart_badge)
+        self.chart_badge.style().polish(self.chart_badge)
+        return style.style_id, palette.palette_id
 
     def _apply_local_filters(self, result: DataResult) -> DataResult:
         search_text = self._search_text
@@ -345,6 +506,7 @@ class DashboardDataSurface(QFrame):
         _clear_layout(self.body_layout)
         state = filtered_result.normalized_state()
         state_for_display = DataState.STALE if filtered_result.is_stale() else state
+        self._resolve_chart_contract(state_for_display)
         self._update_status_labels(
             state=state_for_display,
             result_counts={
@@ -487,7 +649,7 @@ class DashboardDataSurface(QFrame):
                     columns.append(str(key))
         if not columns:
             columns = ["value"]
-        table = QTableWidget(len(table_rows), len(columns), host)
+        table = _DashboardDataTable(len(table_rows), len(columns), host)
         table.setHorizontalHeaderLabels(columns)
         for row_idx, row in enumerate(table_rows):
             for col_idx, key in enumerate(columns):
@@ -519,7 +681,7 @@ class DashboardDataSurface(QFrame):
         title_layout.addWidget(StatusPill(f"{len(result.feed)} events", kind=status_kind, parent=title_host), 0)
         layout.addWidget(title_host)
 
-        feed_widget = QListWidget(host)
+        feed_widget = _DashboardFeedList(host)
         for item in result.feed[: self.spec.max_feed]:
             severity = _as_text(item.get("level") or item.get("severity") or "info").upper()
             timestamp = _as_text(item.get("time") or item.get("created_at_utc") or item.get("created_at") or "")
@@ -541,8 +703,7 @@ class DashboardDataSurface(QFrame):
         heading = QLabel(title, host)
         heading.setProperty("role", "panel_title")
         layout.addWidget(heading)
-        viewer = QTextEdit(host)
-        viewer.setReadOnly(True)
+        viewer = _DashboardPayloadViewer(host)
         viewer.setPlainText(json.dumps(payload, indent=2, ensure_ascii=True, default=str))
         layout.addWidget(viewer, 1)
         self.body_layout.addWidget(host, 1)

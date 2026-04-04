@@ -23,7 +23,7 @@ class ThemeSurfaceOpacityTests(unittest.TestCase):
             re.MULTILINE,
         )
         self.assertIsNotNone(shell_match)
-        self.assertEqual(shell_match.group(1), "rgba(13, 14, 18, 0.558)")
+        self.assertEqual(shell_match.group(1), "rgba(78, 80, 86, 0.558)")
 
 
 if __name__ == "__main__":

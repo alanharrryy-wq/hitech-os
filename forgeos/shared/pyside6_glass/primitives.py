@@ -114,7 +114,7 @@ class MetricValue:
 class StatCard(QFrame):
     def __init__(self, metric: MetricValue, parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setProperty("card", "muted")
+        self.setProperty("card", "clear")
         layout = QVBoxLayout(self)
         layout.setContentsMargins(10, 8, 10, 8)
         layout.setSpacing(2)
@@ -143,7 +143,7 @@ class _StateCardBase(QFrame):
         parent: QWidget | None = None,
     ) -> None:
         super().__init__(parent)
-        self.setProperty("card", "muted")
+        self.setProperty("card", "clear")
         layout = QVBoxLayout(self)
         layout.setContentsMargins(14, 12, 14, 12)
         layout.setSpacing(6)

@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+"""Compatibility shim for historical Atlas-style callers.
+
+This module intentionally stays tiny. The visual system now lives in
+`theme.py`, `appearance/`, `effects.py`, `rendering/`, and `backdrop.py`.
+Keep this file as a thin API surface only.
+"""
+
 from .theme import get_palette
 
 
@@ -31,20 +38,16 @@ QFrame#WindowChrome QPushButton {{
     border-radius: 8px;
     padding: 0px;
     color: {p.text_primary};
-    background: rgba(12, 21, 32, 0.44);
-    border: 1px solid {p.input_border};
+    background: {p.button_top};
+    border: 1px solid {p.button_border};
 }}
 QFrame#WindowChrome QPushButton:hover {{
     background: {p.accent_soft};
-    border: 1px solid {p.accent};
+    border: 1px solid {p.shell_border_hover};
 }}
 QFrame#WindowChrome QPushButton:pressed {{
-    background: rgba(140, 235, 255, 0.28);
-    border: 1px solid rgba(140, 235, 255, 0.82);
-}}
-QFrame#WindowChrome QPushButton[chrome_kind="close"]:hover {{
-    background: rgba(140, 235, 255, 0.18);
-    border: 1px solid rgba(140, 235, 255, 0.26);
+    background: {p.button_bottom};
+    border: 1px solid {p.shell_border};
 }}
 QFrame[hoverable="true"][hover="true"] {{
     border-color: {p.shell_border_hover};
@@ -52,7 +55,4 @@ QFrame[hoverable="true"][hover="true"] {{
 """
 
 
-__all__ = [
-    "build_app_stylesheet",
-]
-
+__all__ = ['build_app_stylesheet']

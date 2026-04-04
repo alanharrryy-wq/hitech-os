@@ -7,6 +7,14 @@ from typing import Any, Callable
 from PySide6.QtGui import QKeySequence, QShortcut
 from PySide6.QtWidgets import QWidget
 
+from .appearance import (
+    AppearanceCoordinator,
+    AppearanceProfile,
+    EffectsProfile,
+    VisualIntelligenceBundle,
+    VisualIntelligenceContext,
+    select_visual_bundle,
+)
 from .config import (
     GlassResolvedConfig,
     GlassTemplateConfig,
@@ -80,6 +88,8 @@ class GlassWorkspaceRuntime:
         runtime_overrides: GlassTemplateConfig | None = None,
         explicit_config: GlassTemplateConfig | None = None,
         visibility_policy: GlassVisibilityPolicy | None = None,
+        appearance_coordinator: AppearanceCoordinator | None = None,
+        visual_context: VisualIntelligenceContext | None = None,
     ) -> None:
         self.template = template
         self.visibility_policy = visibility_policy or GlassVisibilityPolicy()
@@ -101,6 +111,14 @@ class GlassWorkspaceRuntime:
             self._resolved.config.layout.named_layouts
         )
         self._shortcuts: list[QShortcut] = []
+        self._visual_context = visual_context.normalized() if visual_context is not None else None
+        self._visual_intelligence: VisualIntelligenceBundle | None = None
+        self._appearance_coordinator = appearance_coordinator or AppearanceCoordinator.from_template_config(
+            self._resolved.config
+        )
+        if hasattr(self.template, 'set_appearance_coordinator'):
+            self.template.set_appearance_coordinator(self._appearance_coordinator, apply_current=False)
+        self._sync_appearance_from_resolved_config(source='runtime_init', emit=False)
 
     @property
     def resolved(self) -> GlassResolvedConfig:
@@ -109,14 +127,123 @@ class GlassWorkspaceRuntime:
     def current_config(self) -> GlassTemplateConfig:
         return self._resolved.config
 
+    @property
+    def appearance_coordinator(self) -> AppearanceCoordinator:
+        return self._appearance_coordinator
+
+    def appearance_snapshot(self):
+        return self._appearance_coordinator.snapshot(source='runtime_snapshot')
+
+    @property
+    def visual_context(self) -> VisualIntelligenceContext | None:
+        return self._visual_context
+
+    @property
+    def visual_intelligence(self) -> VisualIntelligenceBundle | None:
+        return self._visual_intelligence
+
+    def set_visual_context(self, context: VisualIntelligenceContext | None) -> None:
+        self._visual_context = context.normalized() if context is not None else None
+        self.apply_resolved_config()
+
+    def set_visual_level(self, level: str) -> None:
+        current = self._visual_context or VisualIntelligenceContext(
+            experience_mode=self._resolved.config.theme.experience_mode,
+            reduced_motion=self._resolved.config.theme.animation.reduced_motion,
+            high_contrast_mode=self._resolved.config.accessibility.high_contrast_mode,
+            data_density_bias=self._resolved.config.theme.visual_scale.data_density_bias,
+        )
+        self.set_visual_context(
+            VisualIntelligenceContext(
+                experience_mode=current.experience_mode,
+                requested_visual_level=level,
+                preferred_preset=current.preferred_preset,
+                data_state=current.data_state,
+                reduced_motion=current.reduced_motion,
+                high_contrast_mode=current.high_contrast_mode,
+                data_density_bias=current.data_density_bias,
+                performance_sensitive=current.performance_sensitive,
+                source=current.source,
+            )
+        )
+
+    def set_data_state(self, state: str) -> None:
+        current = self._visual_context or VisualIntelligenceContext(
+            experience_mode=self._resolved.config.theme.experience_mode,
+            reduced_motion=self._resolved.config.theme.animation.reduced_motion,
+            high_contrast_mode=self._resolved.config.accessibility.high_contrast_mode,
+            data_density_bias=self._resolved.config.theme.visual_scale.data_density_bias,
+        )
+        self.set_visual_context(
+            VisualIntelligenceContext(
+                experience_mode=current.experience_mode,
+                requested_visual_level=current.requested_visual_level,
+                preferred_preset=current.preferred_preset,
+                data_state=state,
+                reduced_motion=current.reduced_motion,
+                high_contrast_mode=current.high_contrast_mode,
+                data_density_bias=current.data_density_bias,
+                performance_sensitive=current.performance_sensitive,
+                source=current.source,
+            )
+        )
+
+    def set_appearance_coordinator(self, coordinator: AppearanceCoordinator, *, apply_current: bool = True) -> None:
+        self._appearance_coordinator = coordinator
+        if hasattr(self.template, 'set_appearance_coordinator'):
+            self.template.set_appearance_coordinator(coordinator, apply_current=apply_current)
+        if apply_current:
+            self._sync_appearance_from_resolved_config(source='runtime_rebind', emit=False)
+
+    def _sync_appearance_from_resolved_config(self, *, source: str, emit: bool) -> None:
+        profile = AppearanceProfile.from_template_config(self._resolved.config)
+        effects = EffectsProfile.from_appearance(profile)
+        preset_name = self._appearance_coordinator.preset_name
+        source_label = source
+        if self._visual_context is not None:
+            context = self._visual_context
+            context_bias = (
+                profile.data_density_bias
+                if abs(float(context.data_density_bias)) < 1e-9
+                else context.data_density_bias
+            )
+            resolved_context = VisualIntelligenceContext(
+                experience_mode=context.experience_mode or profile.experience_mode,
+                requested_visual_level=context.requested_visual_level,
+                preferred_preset=context.preferred_preset,
+                data_state=context.data_state,
+                reduced_motion=bool(context.reduced_motion or profile.reduced_motion),
+                high_contrast_mode=bool(context.high_contrast_mode or profile.high_contrast_mode),
+                data_density_bias=context_bias,
+                performance_sensitive=context.performance_sensitive,
+                source=context.source,
+            ).normalized()
+            intelligence = select_visual_bundle(
+                resolved_context,
+                base_profile=profile,
+                base_effects=effects,
+            )
+            self._visual_intelligence = intelligence
+            profile = intelligence.profile
+            effects = intelligence.effects
+            preset_name = intelligence.preset_name or preset_name
+            source_label = f'{source}|{intelligence.source}'
+        else:
+            self._visual_intelligence = None
+        snapshot = self._appearance_coordinator.replace(
+            profile=profile,
+            effects=effects,
+            preset_name=preset_name,
+            source=source_label,
+            emit=emit,
+        )
+        if not emit and hasattr(self.template, 'apply_appearance_snapshot'):
+            self.template.apply_appearance_snapshot(snapshot)
+
     def apply_resolved_config(self) -> None:
         config = self._resolved.config
-        self.template.set_theme(config.theme.theme_id)
-        self.template.set_density(config.theme.density)
-        self.template.set_typography_scale(config.theme.typography.scale)
+        self._sync_appearance_from_resolved_config(source='resolved_config', emit=True)
         self.template.set_tab_placement(config.tabs.placement)
-        self.template.set_tab_variant(config.tabs.variant)
-        self.template.set_tab_density(config.tabs.density)
         self.template.set_tab_icon_mode(config.tabs.icon_mode)
         self.template.set_hide_single_tab_bar(config.tabs.hide_if_single_visible)
         self.template.set_side_visible(config.regions.show_side)
@@ -232,10 +359,13 @@ class GlassWorkspaceRuntime:
     def export_workspace_state(self, *, metadata: dict[str, Any] | None = None) -> GlassWorkspaceState:
         config = self._resolved.config
         payload = dict(metadata or {})
-        payload.setdefault("active_theme_id", config.theme.theme_id)
-        payload.setdefault("active_density", config.theme.density)
-        payload.setdefault("active_preset", config.theme.experience_mode)
+        appearance = self.appearance_snapshot()
+        payload.setdefault("active_theme_id", appearance.profile.theme_id)
+        payload.setdefault("active_density", appearance.profile.density)
+        payload.setdefault("active_typography_scale", appearance.profile.typography_scale)
+        payload.setdefault("active_preset", appearance.preset_name or config.theme.experience_mode)
         payload.setdefault("active_layout", config.layout.active_layout)
+        payload.setdefault("active_glow_intensity", appearance.effects.glow_intensity)
         return self.template.export_workspace_state(metadata=payload)
 
     def save_workspace_state(self, path: str | Path | None = None) -> Path | None:
@@ -259,10 +389,26 @@ class GlassWorkspaceRuntime:
 
     def diagnostics(self) -> dict[str, Any]:
         config = self._resolved.config
+        appearance = self.appearance_snapshot()
         return {
-            "theme_id": config.theme.theme_id,
-            "density": config.theme.density,
+            "theme_id": appearance.profile.theme_id,
+            "density": appearance.profile.density,
             "experience_mode": config.theme.experience_mode,
+            "appearance_preset": appearance.preset_name,
+            "visual_context_level": (
+                self._visual_context.requested_visual_level if self._visual_context is not None else None
+            ),
+            "visual_context_data_state": (
+                self._visual_context.data_state if self._visual_context is not None else None
+            ),
+            "effective_visual_level": (
+                self._visual_intelligence.effective_level if self._visual_intelligence is not None else None
+            ),
+            "visual_intelligence_source": (
+                self._visual_intelligence.source if self._visual_intelligence is not None else None
+            ),
+            "glow_intensity": appearance.effects.glow_intensity,
+            "blur_intensity_scale": appearance.profile.blur_intensity_scale,
             "layout_active": config.layout.active_layout,
             "layouts_registered": sorted(self._layout_registry.keys()),
             "tabs_enabled": config.tabs.enabled,

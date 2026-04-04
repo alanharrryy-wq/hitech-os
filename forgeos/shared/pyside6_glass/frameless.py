@@ -43,7 +43,9 @@ class _FramelessResizeCorner(QFrame):
         self._press_geometry = QRect()
         self.setCursor(cursor)
         self.setMouseTracking(True)
-        self.setStyleSheet("background: transparent;")
+        self.setAttribute(Qt.WA_TranslucentBackground, True)
+        self.setAutoFillBackground(False)
+        self.setProperty("framelessResizeGrip", True)
 
     def mousePressEvent(self, event) -> None:  # type: ignore[override]
         if event.button() == Qt.LeftButton and not self._host.isMaximized():
@@ -137,4 +139,3 @@ class FramelessResizeController(QObject):
 __all__ = [
     "FramelessResizeController",
 ]
-

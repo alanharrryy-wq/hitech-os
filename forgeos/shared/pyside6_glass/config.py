@@ -132,7 +132,7 @@ class GlassVisualScaleConfig:
 
 @dataclass(frozen=True, slots=True)
 class GlassTypographyConfig:
-    scale: str = "md"
+    scale: str = "lg"
     primary_family: str = "Segoe UI"
     secondary_family: str = "Segoe UI"
     monospace_family: str = "Consolas"
@@ -145,7 +145,7 @@ class GlassTypographyConfig:
         mode = _choice(self.line_height_mode, ("compact", "regular", "relaxed"), "regular")
         return replace(
             self,
-            scale=_choice(self.scale, SUPPORTED_TYPOGRAPHY_SCALE, "md"),
+            scale=_choice(self.scale, SUPPORTED_TYPOGRAPHY_SCALE, "lg"),
             primary_family=str(self.primary_family or "Segoe UI"),
             secondary_family=str(self.secondary_family or "Segoe UI"),
             monospace_family=str(self.monospace_family or "Consolas"),

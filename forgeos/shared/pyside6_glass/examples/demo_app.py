@@ -4,17 +4,19 @@ import sys
 
 from PySide6.QtCore import QPoint, QRect, Qt
 from PySide6.QtGui import QGuiApplication
-from PySide6.QtWidgets import QApplication, QDialog, QFrame, QVBoxLayout
+from PySide6.QtWidgets import QApplication, QDialog, QFrame, QVBoxLayout, QWidget
 
 from .compositions import GlassExampleCatalog
+from .showcase_app import build_command_center_example
 from ..chrome import WindowChromeBar
 from ..scene import build_glass_dialog_scene
 from ..theme import build_stylesheet
 
 
-def _workbench_shell_overrides() -> str:
+def _window_overrides() -> str:
     return """
-QDialog#GlassWorkbenchWindow {
+QDialog#GlassWorkbenchWindow,
+QDialog#GlassShowcaseWindow {
     background: transparent;
 }
 QWidget#GlassStage,
@@ -23,62 +25,35 @@ QWidget#GlassContent {
 }
 QFrame#Shell {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-        stop:0 rgba(234, 242, 250, 0.08),
-        stop:1 rgba(141, 159, 180, 0.04));
-    border: 1px solid rgba(223, 235, 247, 0.22);
+        stop:0 rgba(18, 22, 28, 0.42),
+        stop:1 rgba(8, 10, 14, 0.30));
+    border: 1px solid rgba(228, 235, 242, 0.12);
     border-radius: 28px;
 }
 QFrame#Shell:hover {
-    border: 1px solid rgba(143, 188, 213, 0.40);
-}
-QFrame[card="hero"] {
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-        stop:0 rgba(236, 244, 252, 0.10),
-        stop:1 rgba(143, 188, 213, 0.06));
-    border: 1px solid rgba(143, 188, 213, 0.40);
-    border-radius: 22px;
-}
-QFrame[card="true"] {
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-        stop:0 rgba(232, 241, 250, 0.09),
-        stop:1 rgba(159, 173, 192, 0.05));
-    border: 1px solid rgba(221, 233, 245, 0.18);
-    border-radius: 18px;
-}
-QFrame[card="muted"] {
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-        stop:0 rgba(226, 236, 246, 0.10),
-        stop:1 rgba(146, 162, 182, 0.06));
-    border: 1px solid rgba(221, 233, 245, 0.15);
-    border-radius: 18px;
-}
-QFrame[card="footer"] {
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-        stop:0 rgba(232, 241, 250, 0.10),
-        stop:1 rgba(147, 162, 181, 0.06));
-    border: 1px solid rgba(221, 233, 245, 0.15);
-    border-radius: 18px;
+    border: 1px solid rgba(236, 241, 246, 0.16);
 }
 QFrame#WindowChrome {
     min-height: 34px;
     max-height: 34px;
     border-radius: 10px;
-    border: 1px solid rgba(219, 232, 245, 0.10);
+    border: 1px solid rgba(219, 232, 245, 0.08);
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-        stop:0 rgba(237, 246, 255, 0.06),
-        stop:1 rgba(149, 170, 195, 0.04));
+        stop:0 rgba(248, 251, 255, 0.04),
+        stop:1 rgba(120, 134, 152, 0.02));
 }
 QFrame#WindowChrome QLabel[role="window_title"] {
     font-size: 12px;
     font-weight: 740;
-    color: #dce8f3;
+    color: #eef2f6;
     letter-spacing: 0.2px;
 }
 QFrame#WindowChrome QLabel[role="window_icon"] {
-    color: #8cbcd5;
+    color: #d8dee6;
     font-size: 11px;
     font-weight: 700;
 }
+QFrame#WindowChrome QPushButton,
 QFrame#WindowChrome QToolButton {
     min-width: 30px;
     max-width: 30px;
@@ -86,21 +61,19 @@ QFrame#WindowChrome QToolButton {
     max-height: 22px;
     border-radius: 8px;
     padding: 0px;
-    color: #ebf4ff;
-    background: rgba(12, 21, 32, 0.44);
-    border: 1px solid rgba(238, 248, 255, 0.08);
+    color: #f5f7fa;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(238, 248, 255, 0.06);
 }
+QFrame#WindowChrome QPushButton:hover,
 QFrame#WindowChrome QToolButton:hover {
-    background: rgba(143, 188, 213, 0.16);
-    border: 1px solid rgba(143, 188, 213, 0.52);
+    background: rgba(245, 248, 252, 0.10);
+    border: 1px solid rgba(245, 248, 252, 0.18);
 }
+QFrame#WindowChrome QPushButton:pressed,
 QFrame#WindowChrome QToolButton:pressed {
-    background: rgba(143, 188, 213, 0.28);
-    border: 1px solid rgba(143, 188, 213, 0.82);
-}
-QFrame#WindowChrome QToolButton[chrome_kind="close"]:hover {
-    background: rgba(143, 188, 213, 0.18);
-    border: 1px solid rgba(143, 188, 213, 0.26);
+    background: rgba(245, 248, 252, 0.16);
+    border: 1px solid rgba(245, 248, 252, 0.26);
 }
 QWidget#GlassWorkbenchResizeGrip {
     background: transparent;
@@ -158,38 +131,43 @@ class _ResizeGrip(QFrame):
         self._host.setGeometry(rect)
 
 
-class GlassWorkbenchWindow(QDialog):
+class _BaseGlassWindow(QDialog):
+    object_name = "GlassWorkbenchWindow"
+    title_text = "PySide6 Glass Workbench"
+    minimum_size = (1024, 640)
+    default_size = (1260, 740)
+
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
-        self.setObjectName("GlassWorkbenchWindow")
-        self.setWindowTitle("PySide6 Glass Workbench")
-        self.setMinimumSize(1024, 640)
-        self.resize(1260, 740)
+        self.setObjectName(self.object_name)
+        self.setWindowTitle(self.title_text)
+        self.setMinimumSize(*self.minimum_size)
+        self.resize(*self.default_size)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowFlag(Qt.FramelessWindowHint, True)
         self.setAttribute(Qt.WA_TranslucentBackground, True)
         self._fit_applied = False
 
         base_styles = build_stylesheet(
-            "silver_frost_cyan",
+            "obsidian_ice",
             density="compact",
-            typography_scale="sm",
-            border_strength_scale=0.84,
-            surface_opacity_scale=0.62,
+            typography_scale="lg",
+            border_strength_scale=0.78,
+            surface_opacity_scale=0.86,
             tab_density="compact",
         )
-        self.setStyleSheet(f"{base_styles}\n{_workbench_shell_overrides()}")
+        self.setStyleSheet(f"{base_styles}\n{_window_overrides()}")
 
-        outer, content_layer, _backdrop = build_glass_dialog_scene(
+        outer, content_layer, backdrop = build_glass_dialog_scene(
             self,
-            theme_id="silver_frost_cyan",
+            theme_id="obsidian_ice",
             variant="selector",
             margins=(4, 4, 4, 4),
             motion_enabled=True,
             apply_stylesheet=False,
         )
         outer.setSpacing(0)
-        self._backdrop = _backdrop
+        self._backdrop = backdrop
 
         scene_layout = QVBoxLayout(content_layer)
         scene_layout.setContentsMargins(12, 10, 12, 12)
@@ -204,10 +182,9 @@ class GlassWorkbenchWindow(QDialog):
         )
         scene_layout.addWidget(self.window_chrome)
 
-        self.workbench = GlassExampleCatalog(content_layer)
-        scene_layout.addWidget(self.workbench, 1)
+        self.body = self._build_body(content_layer)
+        scene_layout.addWidget(self.body, 1)
 
-        grip = 8
         self._resize_grips = [
             _ResizeGrip(self, edges=Qt.LeftEdge, cursor=Qt.SizeHorCursor),
             _ResizeGrip(self, edges=Qt.RightEdge, cursor=Qt.SizeHorCursor),
@@ -218,8 +195,11 @@ class GlassWorkbenchWindow(QDialog):
             _ResizeGrip(self, edges=Qt.LeftEdge | Qt.BottomEdge, cursor=Qt.SizeBDiagCursor),
             _ResizeGrip(self, edges=Qt.RightEdge | Qt.BottomEdge, cursor=Qt.SizeFDiagCursor),
         ]
-        self._grip_size = grip
+        self._grip_size = 8
         self._layout_resize_grips()
+
+    def _build_body(self, parent: QWidget) -> QWidget:
+        raise NotImplementedError
 
     def showEvent(self, event) -> None:  # type: ignore[override]
         super().showEvent(event)
@@ -236,8 +216,8 @@ class GlassWorkbenchWindow(QDialog):
         if screen is None:
             return
         available = screen.availableGeometry()
-        target_w = min(available.width() - 20, 1320)
-        target_h = min(available.height() - 24, 760)
+        target_w = min(available.width() - 20, 1440)
+        target_h = min(available.height() - 24, 860)
         target_w = max(self.minimumWidth(), target_w)
         target_h = max(self.minimumHeight(), target_h)
         self.resize(target_w, target_h)
@@ -267,15 +247,57 @@ class GlassWorkbenchWindow(QDialog):
         br.setGeometry(width - grip, height - grip, grip, grip)
 
 
-def create_workbench_window(parent=None) -> GlassWorkbenchWindow:
-    return GlassWorkbenchWindow(parent)
+class GlassCatalogWindow(_BaseGlassWindow):
+    object_name = "GlassWorkbenchWindow"
+    title_text = "PySide6 Glass Workbench"
+
+    def _build_body(self, parent: QWidget) -> QWidget:
+        return GlassExampleCatalog(parent)
+
+
+class GlassShowcaseWindow(_BaseGlassWindow):
+    object_name = "GlassShowcaseWindow"
+    title_text = "PySide6 Glass Command Center"
+    minimum_size = (1180, 720)
+    default_size = (1360, 820)
+
+    def _build_body(self, parent: QWidget) -> QWidget:
+        return build_command_center_example(parent)
+
+
+# Backward-compatible aliases.
+GlassWorkbenchWindow = GlassCatalogWindow
+
+
+def create_catalog_window(parent=None) -> GlassCatalogWindow:
+    return GlassCatalogWindow(parent)
+
+
+def create_showcase_window(parent=None) -> GlassShowcaseWindow:
+    return GlassShowcaseWindow(parent)
+
+
+def create_workbench_window(parent=None) -> GlassCatalogWindow:
+    return create_catalog_window(parent)
+
+
+def _run_window(factory) -> int:
+    app = QApplication.instance() or QApplication(sys.argv)
+    window = factory()
+    window.show()
+    return app.exec()
+
+
+def run_catalog() -> int:
+    return _run_window(create_catalog_window)
+
+
+def run_showcase() -> int:
+    return _run_window(create_showcase_window)
 
 
 def run() -> int:
-    app = QApplication.instance() or QApplication(sys.argv)
-    window = create_workbench_window()
-    window.show()
-    return app.exec()
+    return run_catalog()
 
 
 if __name__ == "__main__":

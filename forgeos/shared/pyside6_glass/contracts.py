@@ -51,6 +51,7 @@ PANEL_ROLES = (
     "aux",
 )
 SUPPORTED_ANIMATION_LEVELS = ("off", "subtle", "standard", "rich")
+SUPPORTED_VISUAL_LEVELS = ("performance", "standard", "premium", "showcase")
 
 
 @dataclass(frozen=True, slots=True)

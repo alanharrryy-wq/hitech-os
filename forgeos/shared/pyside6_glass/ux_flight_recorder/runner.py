@@ -51,11 +51,33 @@ def _contract_digest(path: Path) -> str:
 
 
 def _find_shell(window: QWidget) -> Any:
+    def _is_shell_candidate(value: Any) -> bool:
+        if value is None:
+            return False
+        required = (
+            "_open_entry_picker",
+            "_select_entry",
+            "capture_semantic_checkpoint",
+        )
+        return all(hasattr(value, key) for key in required)
+
     workbench = getattr(window, "workbench", None)
-    shell = getattr(workbench, "_catalog", None)
-    if shell is not None:
-        return shell
-    return workbench
+    body = getattr(window, "body", None)
+    candidates = [
+        getattr(workbench, "_catalog", None),
+        workbench,
+        getattr(window, "_catalog", None),
+        getattr(body, "_catalog", None),
+        body,
+    ]
+    for candidate in candidates:
+        if _is_shell_candidate(candidate):
+            return candidate
+
+    for child in window.findChildren(QWidget):
+        if _is_shell_candidate(child):
+            return child
+    return None
 
 
 def _process_events(app: QApplication) -> None:

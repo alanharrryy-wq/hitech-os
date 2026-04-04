@@ -704,11 +704,12 @@ class GlassCatalogShell(QWidget):
                 ),
                 typography=replace(
                     base_config.theme.typography,
-                    scale="sm",
+                    scale="lg",
                 ),
             ),
             tabs=replace(base_config.tabs, density="compact", variant="segmented", icon_mode="icon_text"),
         )
+        self._text_size = "lg"
 
         self.catalog = GlassPanelTemplate(
             self,
@@ -870,12 +871,12 @@ class GlassCatalogShell(QWidget):
         self.btn_quick_search.setProperty("variant", "ghost")
 
         self.scale_combo = QComboBox(tools_bar)
-        self.scale_combo.addItem("90%", 0.90)
-        self.scale_combo.addItem("100%", 1.00)
-        self.scale_combo.addItem("110%", 1.10)
-        self.scale_combo.addItem("120%", 1.20)
-        self.scale_combo.setCurrentIndex(1)
-        self.scale_combo.setToolTip("Workbench UI scale")
+        self.scale_combo.addItem("SM", "sm")
+        self.scale_combo.addItem("MD", "md")
+        self.scale_combo.addItem("LG", "lg")
+        self.scale_combo.addItem("XL", "xl")
+        self.scale_combo.setCurrentIndex(2)
+        self.scale_combo.setToolTip("Text Size")
 
         def _separator() -> QFrame:
             line = QFrame(tools_bar)
@@ -901,7 +902,7 @@ class GlassCatalogShell(QWidget):
         tools_layout.addWidget(self.btn_quick_search)
         tools_layout.addWidget(self.btn_tools)
         tools_layout.addStretch(1)
-        scale_label = QLabel("Scale", tools_bar)
+        scale_label = QLabel("Text Size", tools_bar)
         scale_label.setProperty("role", "caption")
         self.scale_label = scale_label
         tools_layout.addWidget(scale_label)
@@ -1818,7 +1819,7 @@ QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard {
     border-radius: 0px;
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard QFrame[workbenchSep="true"] {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(245, 248, 252, 0.14);
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard QPushButton {
     min-height: 22px;
@@ -1826,9 +1827,9 @@ QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard QPushButton {
     padding-top: 1px;
     padding-bottom: 1px;
     border-radius: 9px;
-    border: 1px solid rgba(245, 248, 252, 0.08);
-    background: transparent;
-    color: rgba(244, 247, 252, 0.95);
+    border: none;
+    background: rgba(255, 255, 255, 0.01);
+    color: rgba(247, 249, 252, 0.95);
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard QComboBox {
     min-height: 22px;
@@ -1837,30 +1838,27 @@ QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard QComboBox {
     padding-bottom: 1px;
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard QPushButton:checked {
-    border-color: rgba(245, 248, 252, 0.16);
-    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid rgba(245, 248, 252, 0.58);
+    background: rgba(245, 248, 252, 0.10);
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard QPushButton[commandRole="primary"] {
-    background: transparent;
-    border-top: 1px solid rgba(245, 248, 252, 0.08);
-    border-right: 1px solid rgba(245, 248, 252, 0.08);
-    border-bottom: 1px solid rgba(245, 248, 252, 0.08);
-    border-left: 2px solid rgba(140, 235, 255, 0.28);
+    background: rgba(245, 248, 252, 0.07);
+    border: none;
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard QPushButton[commandRole="toggle"] {
-    border-color: rgba(245, 248, 252, 0.10);
+    border: none;
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard QPushButton[commandRole="secondary"] {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.01);
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchToolbarCard QPushButton:hover {
-    border-color: rgba(245, 248, 252, 0.16);
-    background: rgba(255, 255, 255, 0.012);
+    border: 1px solid rgba(245, 248, 252, 0.54);
+    background: rgba(245, 248, 252, 0.09);
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchNavRail,
 QWidget#GlassCatalogShell QFrame#WorkbenchInspectorSurface {
     background: rgba(255, 255, 255, 0.028);
-    border: 1px solid rgba(140, 235, 255, 0.14);
+    border: 1px solid rgba(245, 248, 252, 0.14);
     border-radius: 12px;
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchCenterSurface {
@@ -1895,7 +1893,7 @@ QWidget#GlassCatalogShell QTextEdit,
 QWidget#GlassCatalogShell QListWidget,
 QWidget#GlassCatalogShell QTableWidget {
     background: rgba(255, 255, 255, 0.048);
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(245, 248, 252, 0.16);
     border-radius: 8px;
 }
 QWidget#GlassCatalogShell QLineEdit:hover,
@@ -1904,7 +1902,7 @@ QWidget#GlassCatalogShell QComboBox:hover,
 QWidget#GlassCatalogShell QComboBox:focus,
 QWidget#GlassCatalogShell QTextEdit:hover,
 QWidget#GlassCatalogShell QTextEdit:focus {
-    border-color: rgba(255, 255, 255, 0.22);
+    border-color: rgba(245, 248, 252, 0.58);
 }
 QWidget#GlassCatalogShell QListWidget {
     padding: 2px;
@@ -1918,8 +1916,8 @@ QWidget#GlassCatalogShell QListWidget::item:hover {
     background: rgba(255, 255, 255, 0.065);
 }
 QWidget#GlassCatalogShell QListWidget::item:selected {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.19);
+    background: rgba(245, 248, 252, 0.12);
+    border: 1px solid rgba(245, 248, 252, 0.62);
 }
 QWidget#GlassCatalogShell QTabWidget#WorkbenchInspectorTabs::pane {
     border: none;
@@ -1930,34 +1928,34 @@ QWidget#GlassCatalogShell QTabWidget#WorkbenchInspectorTabs QTabBar::tab {
     margin-right: 3px;
 }
 QWidget#GlassCatalogShell QFrame[hoverable="true"][hover="true"] {
-    border-color: rgba(255, 255, 255, 0.22);
+    border-color: rgba(245, 248, 252, 0.56);
 }
 QWidget#GlassCatalogShell QFrame[editorSelected="true"] {
-    border: 1px solid rgba(255, 255, 255, 0.30);
+    border: 1px solid rgba(245, 248, 252, 0.78);
 }
 QWidget#GlassCatalogShell QListWidget#WorkbenchInsertPalette::item:selected {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.20);
+    background: rgba(245, 248, 252, 0.12);
+    border: 1px solid rgba(245, 248, 252, 0.64);
 }
 QWidget#GlassCatalogShell QFrame[editorVariant="accent"] {
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    border: 1px solid rgba(245, 248, 252, 0.62);
 }
 QWidget#GlassCatalogShell QFrame[editorVariant="warning"] {
-    border: 1px solid rgba(224, 198, 162, 0.40);
+    border: 1px solid rgba(245, 248, 252, 0.42);
 }
 QWidget#GlassCatalogShell QFrame[editorVariant="success"] {
-    border: 1px solid rgba(194, 217, 203, 0.38);
+    border: 1px solid rgba(245, 248, 252, 0.46);
 }
 QWidget#GlassCatalogShell QPushButton[variant="subtle"] {
     padding-left: 8px;
     padding-right: 8px;
 }
 QWidget#GlassCatalogShell QPushButton[editorAction="danger"] {
-    border-color: rgba(231, 189, 173, 0.28);
+    border-color: rgba(245, 248, 252, 0.64);
 }
 QWidget#GlassCatalogShell QLabel#MetricChip {
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.13);
+    background: rgba(245, 248, 252, 0.08);
+    border: 1px solid rgba(245, 248, 252, 0.22);
     border-radius: 10px;
     padding: 1px 7px;
     color: rgba(243, 247, 252, 0.92);
@@ -1967,18 +1965,18 @@ QWidget#GlassCatalogShell QWidget#WorkbenchChartCanvas {
     border: none;
 }
 QWidget#GlassCatalogShell QFrame[panelInteraction="dragging"] {
-    border-color: rgba(255, 255, 255, 0.36);
+    border-color: rgba(245, 248, 252, 0.84);
 }
 QWidget#GlassCatalogShell QFrame[panelInteraction="resizing"] {
-    border-color: rgba(255, 255, 255, 0.30);
+    border-color: rgba(245, 248, 252, 0.74);
 }
 QWidget#GlassCatalogShell QFrame[resizeAffordance="true"] {
     border-bottom-width: 1px;
     border-bottom-style: solid;
-    border-bottom-color: rgba(140, 235, 255, 0.10);
+    border-bottom-color: rgba(245, 248, 252, 0.14);
 }
 QWidget#GlassCatalogShell QFrame[resizeAffordance="true"]:hover {
-    border-bottom-color: rgba(140, 235, 255, 0.18);
+    border-bottom-color: rgba(245, 248, 252, 0.42);
 }
 QWidget#GlassCatalogShell QFrame#WorkbenchCenterSurface {
     border: none;
@@ -1992,11 +1990,11 @@ QDialog#WorkbenchEntryPicker {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
         stop:0 rgba(255, 255, 255, 0.11),
         stop:1 rgba(255, 255, 255, 0.05));
-    border: 1px solid rgba(255, 255, 255, 0.20);
+    border: 1px solid rgba(245, 248, 252, 0.24);
     border-radius: 14px;
 }
 QDialog#WorkbenchEntryPicker QListWidget {
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(245, 248, 252, 0.18);
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.06);
 }
@@ -2005,27 +2003,31 @@ QDialog#WorkbenchEntryPicker QListWidget::item {
     border-radius: 8px;
 }
 QDialog#WorkbenchEntryPicker QListWidget::item:selected {
-    background: rgba(255, 255, 255, 0.14);
-    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(245, 248, 252, 0.14);
+    border: 1px solid rgba(245, 248, 252, 0.64);
 }
 QDialog#WorkbenchEntryPicker QLineEdit,
 QDialog#WorkbenchEntryPicker QComboBox,
 QDialog#WorkbenchEntryPicker QTextEdit {
     background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(245, 248, 252, 0.18);
     border-radius: 8px;
 }
 QDialog#WorkbenchEntryPicker QPushButton {
     border-radius: 9px;
-    border: 1px solid rgba(245, 248, 252, 0.08);
-    background: transparent;
+    border: none;
+    background: rgba(255, 255, 255, 0.01);
 }
 QDialog#WorkbenchEntryPicker QPushButton {
     min-height: 24px;
 }
+QDialog#WorkbenchEntryPicker QPushButton:hover {
+    border: 1px solid rgba(245, 248, 252, 0.56);
+    background: rgba(245, 248, 252, 0.09);
+}
 QWidget#GlassCatalogShell QFrame#WorkbenchPendingCandidate {
     background: rgba(255, 255, 255, 0.042);
-    border: 1px solid rgba(140, 235, 255, 0.16);
+    border: 1px solid rgba(245, 248, 252, 0.28);
     border-radius: 10px;
 }
 """
@@ -3972,7 +3974,7 @@ QWidget#GlassCatalogShell QFrame#WorkbenchPendingCandidate {
             show_status=False,
             with_chrome=False,
             density="compact",
-            typography_scale="sm",
+            typography_scale="lg",
         )
         template.cards.hero.hide()
         shell_layout = template.cards.shell.layout()
@@ -4031,7 +4033,7 @@ QWidget#GlassCatalogShell QFrame#WorkbenchPendingCandidate {
         widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         if isinstance(widget, GlassPanelTemplate):
             widget.set_density("compact")
-            widget.set_typography_scale("sm")
+            widget.set_typography_scale(self._text_size)
             widget.set_hide_single_tab_bar(True)
             if not for_workspace:
                 widget.set_footer_visible(False)
@@ -4103,26 +4105,25 @@ QWidget#GlassCatalogShell QFrame#WorkbenchPendingCandidate {
             self.catalog.set_status_text("Backdrop motion disabled." if enabled else "Backdrop motion enabled.")
 
     def _on_scale_changed(self, _index: int) -> None:
-        factor = float(self.scale_combo.currentData() or 1.0)
-        if factor <= 0.92:
+        scale = str(self.scale_combo.currentData() or "lg").strip().lower() or "lg"
+        factor_map = {
+            "sm": 0.92,
+            "md": 1.00,
+            "lg": 1.12,
+            "xl": 1.24,
+        }
+        self._text_size = scale if scale in factor_map else "lg"
+        factor = float(factor_map.get(self._text_size, 1.12))
+        if self._text_size in {"sm", "md"}:
             self.catalog.set_density("compact")
-            self.catalog.set_typography_scale("sm")
             self.catalog.set_tab_density("compact")
-        elif factor <= 1.06:
-            self.catalog.set_density("compact")
-            self.catalog.set_typography_scale("sm")
-            self.catalog.set_tab_density("compact")
-        elif factor <= 1.18:
-            self.catalog.set_density("cozy")
-            self.catalog.set_typography_scale("md")
-            self.catalog.set_tab_density("comfortable")
         else:
             self.catalog.set_density("cozy")
-            self.catalog.set_typography_scale("lg")
             self.catalog.set_tab_density("comfortable")
+        self.catalog.set_typography_scale(self._text_size)
         self._apply_runtime_font_scale(factor)
         self._tune_template_density()
-        self.catalog.set_status_text(f"Workbench scale set to {int(factor * 100)}%.")
+        self.catalog.set_status_text(f"Text Size set to {self._text_size.upper()}.")
 
     def _apply_runtime_font_scale(self, factor: float) -> None:
         clamped = max(0.86, min(1.36, float(factor)))
