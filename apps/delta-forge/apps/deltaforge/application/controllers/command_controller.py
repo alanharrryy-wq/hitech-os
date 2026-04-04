@@ -2,12 +2,21 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
-from typing import Protocol
+from typing import Any, Protocol
 
 from application.contracts import EngineAdapter
 from application.session_manager import SessionManager
 from domain import AppEvent
-from domain.models import OpsDocument, SessionWorkspace
+from domain.models import (
+    ApplyResult,
+    OpsDocument,
+    RefreshResult,
+    RollbackResult,
+    SessionWorkspace,
+    ValidationResult,
+)
+from domain.models.plan import PlanResult
+from domain.models.process_report import ProcessReport
 from domain.session_states import SessionState
 from infrastructure.event_bus import EventBus
 from infrastructure.watcher import FileWatcherService
@@ -175,6 +184,7 @@ class CommandController:
             return
 
         session.ops_document = doc
+        session.ops_metadata = doc.summary_payload()
         session.state = SessionState.OPS_LOADED
         session.dirty = False
         self._emit("ops_loaded", session, {"path": doc.source_path})
@@ -187,6 +197,7 @@ class CommandController:
 
         text = self._ui.current_ops_text()
         session.ops_document = OpsDocument(text=text, source_path=session.ops_document.source_path)
+        session.ops_metadata = session.ops_document.summary_payload()
 
         path = self._ui.pick_ops_to_save()
         if not path:
@@ -200,6 +211,7 @@ class CommandController:
 
         if io_result.ok:
             session.ops_document.source_path = io_result.path
+            session.ops_metadata = session.ops_document.summary_payload()
             session.state = SessionState.OPS_LOADED
             session.dirty = False
             self._emit("ops_saved", session, {"path": io_result.path})
@@ -215,8 +227,20 @@ class CommandController:
 
         self._sync_ops_from_ui(session)
         self._emit("validation_started", session)
-        result = self._engine.validate(session)
+
+        try:
+            result = self._engine.validate(session)
+        except Exception as exc:
+            result = ValidationResult(
+                ok=False,
+                status="failed",
+                summary="Validation execution failed",
+                errors=[str(exc)],
+                process=ProcessReport(engine_name="controller", mode="validate", stderr_tail=[str(exc)]),
+            )
+
         session.validation_result = result
+        session.ops_metadata = session.ops_document.summary_payload()
         session.state = SessionState.VALIDATED if result.ok else SessionState.ERROR
         self._emit("validation_finished", session, {"ok": result.ok, "summary": result.summary})
         self._ui.refresh_ui(session)
@@ -228,8 +252,20 @@ class CommandController:
 
         self._sync_ops_from_ui(session)
         self._emit("plan_started", session)
-        result = self._engine.plan(session)
+
+        try:
+            result = self._engine.plan(session)
+        except Exception as exc:
+            result = PlanResult(
+                ok=False,
+                status="failed",
+                summary="Plan execution failed",
+                errors=[str(exc)],
+                process=ProcessReport(engine_name="controller", mode="plan", stderr_tail=[str(exc)]),
+            )
+
         session.plan_result = result
+        session.ops_metadata = session.ops_document.summary_payload()
         session.state = SessionState.PLAN_GENERATED if result.ok else SessionState.ERROR
         self._emit("plan_finished", session, {"ok": result.ok, "summary": result.summary})
         self._ui.refresh_ui(session)
@@ -241,11 +277,24 @@ class CommandController:
 
         self._sync_ops_from_ui(session)
         self._emit("apply_started", session)
-        result = self._engine.apply(session)
-        session.apply_result = result
 
+        try:
+            result = self._engine.apply(session)
+        except Exception as exc:
+            result = ApplyResult(
+                ok=False,
+                status="failed",
+                summary="Apply execution failed",
+                errors=[str(exc)],
+                process=ProcessReport(engine_name="controller", mode="apply", stderr_tail=[str(exc)]),
+            )
+
+        session.apply_result = result
         if result.rollback_token:
             session.rollback_tokens.append(result.rollback_token)
+            session.rollback_token = result.rollback_token
+
+        if result.rollback_token and result.ok:
             session.state = SessionState.ROLLBACK_AVAILABLE
         else:
             session.state = SessionState.APPLIED if result.ok else SessionState.ERROR
@@ -260,13 +309,35 @@ class CommandController:
 
         token = self._ui.choose_rollback_token(session.rollback_tokens)
         if not token:
+            token = session.rollback_token
+
+        if not token:
             self._ui.show_warning("No se seleccionó rollback.")
             return
 
         self._emit("rollback_started", session, {"token": token})
-        result = self._engine.rollback(session, token)
+
+        try:
+            result = self._engine.rollback(session, token)
+        except Exception as exc:
+            result = RollbackResult(
+                ok=False,
+                status="failed",
+                summary="Rollback execution failed",
+                errors=[str(exc)],
+                rollback_token=token,
+                process=ProcessReport(engine_name="controller", mode="rollback", stderr_tail=[str(exc)]),
+            )
+
         session.rollback_result = result
-        session.state = SessionState.ROLLBACK_AVAILABLE if result.ok else SessionState.ERROR
+        session.rollback_token = ""
+        if result.ok:
+            session.state = SessionState.ROLLBACK_AVAILABLE
+            session.dirty = False
+            session.stale = False
+        else:
+            session.state = SessionState.ERROR
+
         self._emit("rollback_finished", session, {"ok": result.ok, "summary": result.summary})
         self._ui.refresh_ui(session)
 
@@ -275,8 +346,19 @@ class CommandController:
         if session is None:
             return
 
-        result = self._engine.refresh(session)
+        try:
+            result = self._engine.refresh(session)
+        except Exception as exc:
+            result = RefreshResult(
+                ok=False,
+                status="failed",
+                summary="Refresh execution failed",
+                errors=[str(exc)],
+                process=ProcessReport(engine_name="controller", mode="refresh", stderr_tail=[str(exc)]),
+            )
+
         session.refresh_result = result
+        session.ops_metadata = session.ops_document.summary_payload()
         if result.ok and session.state == SessionState.DIRTY_OR_STALE:
             session.state = SessionState.SCOPE_LOADED
             session.stale = False
@@ -304,6 +386,7 @@ class CommandController:
             return
 
         session.ops_document.text = new_text
+        session.ops_metadata = session.ops_document.summary_payload()
         session.dirty = True
         if new_text.strip():
             session.state = SessionState.OPS_LOADED
@@ -357,6 +440,7 @@ class CommandController:
     def _sync_ops_from_ui(self, session: SessionWorkspace) -> None:
         text = self._ui.current_ops_text()
         session.ops_document.text = text
+        session.ops_metadata = session.ops_document.summary_payload()
         if text.strip() and session.state == SessionState.SCOPE_LOADED:
             session.state = SessionState.OPS_LOADED
 

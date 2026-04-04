@@ -11,7 +11,7 @@ from application.session_actions import SessionActions
 from application.session_manager import SessionManager
 from application.workspace_facade import WorkspaceFacade
 from bootstrap.event_wiring import wire_optional_filesystem_bridge
-from bootstrap.resolver_bridge import resolve_command_controller, resolve_workspace_facade
+from bootstrap.resolver_bridge import resolve_command_controller, resolve_engine_adapter, resolve_workspace_facade
 from infrastructure.event_bus_in_memory import InMemoryEventBus
 from ui.theme import apply_theme
 from ui.window.main_window import DeltaForgeMainWindow, WindowBindings
@@ -30,7 +30,6 @@ class BootstrapConfig:
     argv: Sequence[str] | None = None
 
 
-
 def create_application(config: BootstrapConfig | None = None) -> QApplication:
     config = config or BootstrapConfig()
     QCoreApplication.setOrganizationName(config.organization_name)
@@ -39,7 +38,6 @@ def create_application(config: BootstrapConfig | None = None) -> QApplication:
     if app is not None:
         return app
     return QApplication(list(config.argv or []))
-
 
 
 def build_main_window(
@@ -61,12 +59,23 @@ def build_main_window(
     return window
 
 
-
 def build_from_resolver(
     resolver: DependencyResolverLike,
     config: BootstrapConfig | None = None,
 ) -> DeltaForgeMainWindow:
     workspace_facade = resolve_workspace_facade(resolver)
+    engine_adapter = resolve_engine_adapter(
+        resolver,
+        root_dir=getattr(resolver, 'root_dir', None),
+        use_mock_engine=bool(getattr(resolver, 'use_mock_engine', False)),
+    )
+
+    if getattr(resolver, 'engine_adapter', None) is None:
+        try:
+            setattr(resolver, 'engine_adapter', engine_adapter)
+        except Exception:
+            pass
+
     command_controller = resolve_command_controller(resolver, workspace_facade)
     wire_optional_filesystem_bridge(resolver, workspace_facade=workspace_facade)
     return build_main_window(
@@ -74,7 +83,6 @@ def build_from_resolver(
         command_controller=command_controller,
         config=config,
     )
-
 
 
 def bootstrap(

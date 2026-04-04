@@ -1,5 +1,5 @@
 from infrastructure.event_bus import EventBus
-from infrastructure.engine import MockEngineAdapter
+from infrastructure.engine import LocalPatchEngine, MockEngineAdapter
 from infrastructure.event_bus_in_memory import InMemoryEventBus
 from infrastructure.file_watcher_polling import FileWatcherPolling as PollingFileWatcherService
 from infrastructure.persistence import SessionLayoutStore, SettingsStore as PersistenceSettingsStore
@@ -14,6 +14,7 @@ __all__ = [
     "EventBus",
     "FileWatcherService",
     "InMemoryEventBus",
+    "LocalPatchEngine",
     "MockEngineAdapter",
     "PersistenceSettingsStore",
     "PollingFileWatcherService",

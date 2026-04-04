@@ -22,6 +22,9 @@ class EngineIoResult:
 
 
 class EngineAdapter(Protocol):
+    def load_ops(self, path: str) -> OpsDocument:
+        ...
+
     def validate(self, session: SessionWorkspace) -> ValidationResult:
         ...
 
@@ -35,9 +38,6 @@ class EngineAdapter(Protocol):
         ...
 
     def refresh(self, session: SessionWorkspace) -> RefreshResult:
-        ...
-
-    def load_ops(self, path: str) -> OpsDocument:
         ...
 
     def save_ops(self, path: str, document: OpsDocument) -> EngineIoResult:

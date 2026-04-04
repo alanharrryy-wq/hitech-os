@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import inspect
+from pathlib import Path
 from typing import Any
 
+from infrastructure.engine.local_patch_engine import LocalPatchEngine
+from infrastructure.engine.mock_engine_adapter import MockEngineAdapter
 
 
 def resolve_workspace_facade(resolver: Any) -> Any:
@@ -15,7 +18,6 @@ def resolve_workspace_facade(resolver: Any) -> Any:
     raise AttributeError('resolver must expose create_workspace_facade() or workspace_facade')
 
 
-
 def resolve_command_controller(resolver: Any, workspace_facade: Any) -> Any:
     factory = getattr(resolver, 'create_command_controller', None)
     if callable(factory):
@@ -26,6 +28,32 @@ def resolve_command_controller(resolver: Any, workspace_facade: Any) -> Any:
     raise AttributeError('resolver must expose create_command_controller(...) or command_controller')
 
 
+def resolve_engine_adapter(
+    resolver: Any,
+    *,
+    root_dir: str | Path | None = None,
+    use_mock_engine: bool = False,
+) -> Any:
+    factory = getattr(resolver, 'create_engine_adapter', None)
+    if callable(factory):
+        return invoke_factory(factory)
+
+    engine = getattr(resolver, 'engine_adapter', None)
+    if engine is not None:
+        return engine
+
+    explicit_use_mock = bool(getattr(resolver, 'use_mock_engine', False))
+    if use_mock_engine or explicit_use_mock:
+        return MockEngineAdapter()
+
+    effective_root = root_dir
+    if effective_root is None:
+        resolver_root = getattr(resolver, 'root_dir', None)
+        if resolver_root:
+            effective_root = str(resolver_root)
+
+    return LocalPatchEngine(root_dir=effective_root)
+
 
 def resolve_optional(resolver: Any, *names: str) -> Any | None:
     for name in names:
@@ -35,7 +63,6 @@ def resolve_optional(resolver: Any, *names: str) -> Any | None:
         if member is not None:
             return member
     return None
-
 
 
 def invoke_factory(factory: Any, *preferred_args: Any) -> Any:

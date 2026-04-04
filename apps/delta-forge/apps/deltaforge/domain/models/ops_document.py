@@ -1,15 +1,17 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from dataclasses import dataclass, field
 from datetime import datetime
+from typing import Any
 
 
 @dataclass(slots=True, init=False)
 class OpsDocument:
     source_path: str
     loaded_at: datetime | None
-    metadata: dict[str, str]
+    metadata: dict[str, Any]
     revision: int
     content_hash: str
     updated_at: datetime | None
@@ -20,7 +22,7 @@ class OpsDocument:
         text: str = "",
         source_path: str = "",
         loaded_at: datetime | None = None,
-        metadata: dict[str, str] | None = None,
+        metadata: dict[str, Any] | None = None,
         revision: int = 0,
         content_hash: str = "",
         updated_at: datetime | None = None,
@@ -48,8 +50,28 @@ class OpsDocument:
         self._assign_text(str(value or ""), bump_revision=True, timestamp=datetime.utcnow())
 
     @property
+    def content(self) -> str:
+        return self._text
+
+    @content.setter
+    def content(self, value: str) -> None:
+        self._assign_text(str(value or ""), bump_revision=True, timestamp=datetime.utcnow())
+
+    @property
     def is_loaded(self) -> bool:
         return bool(self._text.strip())
+
+    @property
+    def has_source_path(self) -> bool:
+        return bool(self.source_path.strip())
+
+    @property
+    def operation_count(self) -> int:
+        return len(self.operation_items())
+
+    @property
+    def has_operations(self) -> bool:
+        return self.operation_count > 0
 
     def set_text(
         self,
@@ -66,15 +88,53 @@ class OpsDocument:
         *,
         source_path: str | None = None,
         loaded_at: datetime | None = None,
-        metadata: dict[str, str] | None = None,
+        metadata: dict[str, Any] | None = None,
     ) -> None:
         if source_path is not None:
-            self.source_path = source_path
+            self.source_path = str(source_path)
         if loaded_at is not None:
             self.loaded_at = loaded_at
         if metadata is not None:
             self.metadata = dict(metadata)
         self._assign_text(str(text or ""), bump_revision=True, timestamp=datetime.utcnow())
+
+    def parsed_payload(self) -> dict[str, Any]:
+        raw_text = self._text.strip()
+        if not raw_text:
+            return {}
+
+        try:
+            parsed: Any = json.loads(raw_text)
+        except json.JSONDecodeError:
+            return {}
+
+        if isinstance(parsed, dict):
+            return parsed
+        if isinstance(parsed, list):
+            return {"ops": parsed}
+        return {"value": parsed}
+
+    def operation_items(self) -> list[Any]:
+        payload = self.parsed_payload()
+        for key in ("ops", "operations", "items"):
+            value = payload.get(key)
+            if isinstance(value, list):
+                return list(value)
+        return []
+
+    def summary_payload(self) -> dict[str, Any]:
+        payload = self.parsed_payload()
+        operation_items = self.operation_items()
+        return {
+            "source_path": self.source_path,
+            "has_source_path": self.has_source_path,
+            "is_loaded": self.is_loaded,
+            "revision": self.revision,
+            "content_hash": self.content_hash,
+            "operation_count": len(operation_items),
+            "has_operations": bool(operation_items),
+            "payload_keys": sorted(payload.keys()),
+        }
 
     def _assign_text(self, value: str, *, bump_revision: bool, timestamp: datetime | None) -> None:
         changed = value != self._text

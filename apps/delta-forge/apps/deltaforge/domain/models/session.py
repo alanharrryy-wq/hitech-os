@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from dataclasses import dataclass, field
+from typing import Any
 
 from domain.ids import SessionId, parse_session_id
 from domain.models.ops_document import OpsDocument
@@ -31,7 +32,7 @@ class SessionWorkspace:
     scope: ScopeSelection = field(default_factory=ScopeSelection)
     ops_document: OpsDocument = field(default_factory=OpsDocument)
     state: SessionState = SessionState.EMPTY
-    mode: str = "mock"
+    mode: str = "local"
     stale: bool = False
     dirty: bool = False
     busy: bool = False
@@ -45,11 +46,15 @@ class SessionWorkspace:
     rollback_result: RollbackResult | None = None
     refresh_result: RefreshResult | None = None
     rollback_tokens: list[str] = field(default_factory=list)
+    rollback_token: str = ""
     refresh_origin_state: SessionState | None = None
+    ops_metadata: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         self.session_id = parse_session_id(self.session_id)
         self.state = SessionState(self.state)
+        if not self.ops_metadata:
+            self.ops_metadata = self.ops_document.summary_payload()
 
     @property
     def is_busy(self) -> bool:
@@ -68,6 +73,10 @@ class SessionWorkspace:
 
     def set_busy(self, value: bool) -> None:
         self.busy = bool(value)
+
+    def sync_ops_metadata(self) -> dict[str, Any]:
+        self.ops_metadata = self.ops_document.summary_payload()
+        return dict(self.ops_metadata)
 
     def add_event(self, event: EventLogEntry) -> None:
         entry = deepcopy(event)
@@ -102,6 +111,8 @@ class SessionWorkspace:
             rollback_result=deepcopy(self.rollback_result),
             refresh_result=deepcopy(self.refresh_result),
             rollback_tokens=deepcopy(self.rollback_tokens),
+            rollback_token=self.rollback_token,
             refresh_origin_state=self.refresh_origin_state,
+            ops_metadata=deepcopy(self.ops_metadata),
         )
         return cloned
