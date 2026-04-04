@@ -1,0 +1,1646 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg" width="8975" height="492" viewBox="0 0 8975 492">
+  <defs>
+      
+      <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#04060b" />
+        <stop offset="45%" stop-color="#0a1020" />
+        <stop offset="100%" stop-color="#111827" />
+      </linearGradient>
+
+      <linearGradient id="laneHeaderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#10192d" />
+        <stop offset="100%" stop-color="#18233b" />
+      </linearGradient>
+
+      <linearGradient id="packageNodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#15253d" />
+        <stop offset="100%" stop-color="#0d1628" />
+      </linearGradient>
+
+      <linearGradient id="moduleNodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#10231d" />
+        <stop offset="100%" stop-color="#0b1715" />
+      </linearGradient>
+
+      <linearGradient id="externalNodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#1b1730" />
+        <stop offset="100%" stop-color="#120f23" />
+      </linearGradient>
+
+      <linearGradient id="noteNodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#2a2114" />
+        <stop offset="100%" stop-color="#1f180f" />
+      </linearGradient>
+
+      <linearGradient id="focusHeroNodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#18263d" />
+        <stop offset="100%" stop-color="#0f1a2d" />
+      </linearGradient>
+
+      <linearGradient id="focusInboundNodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#12263a" />
+        <stop offset="100%" stop-color="#0d1929" />
+      </linearGradient>
+
+      <linearGradient id="focusOutboundNodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#10261d" />
+        <stop offset="100%" stop-color="#0b1714" />
+      </linearGradient>
+
+      <linearGradient id="focusMixedNodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#211836" />
+        <stop offset="100%" stop-color="#141126" />
+      </linearGradient>
+
+      <linearGradient id="contextMutedNodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#151b27" />
+        <stop offset="100%" stop-color="#0f141f" />
+      </linearGradient>
+
+      <linearGradient id="hubAccentNodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#2a2e3f" />
+        <stop offset="100%" stop-color="#191d2c" />
+      </linearGradient>
+
+      <radialGradient id="haloA" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#9ed8ff" stop-opacity="0.14" />
+        <stop offset="38%" stop-color="#79c6ff" stop-opacity="0.07" />
+        <stop offset="100%" stop-color="#79c6ff" stop-opacity="0.05" />
+      </radialGradient>
+
+      <radialGradient id="haloB" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#bca7ff" stop-opacity="0.1" />
+        <stop offset="38%" stop-color="#bca7ff" stop-opacity="0.02" />
+        <stop offset="100%" stop-color="#bca7ff" stop-opacity="0" />
+      </radialGradient>
+      
+      <pattern id="gridPattern" width="28" height="28" patternUnits="userSpaceOnUse">
+        <path d="M 28 0 L 0 0 0 28" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.06" />
+      </pattern>
+      
+      <filter id="nodeShadow" x="-30%" y="-30%" width="160%" height="170%">
+        <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#020617" flood-opacity="0.28" />
+      </filter>
+      <filter id="edgeBlur" x="-35%" y="-35%" width="170%" height="170%">
+        <feGaussianBlur stdDeviation="3.84" />
+      </filter>
+      <filter id="headerGlow" x="-40%" y="-40%" width="180%" height="180%">
+        <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#dce8ff" flood-opacity="0.16" />
+      </filter>
+      
+      <marker id="arrowHead" viewBox="0 0 12 12" refX="11" refY="6.0" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+        <path d="M0,0 L12,6 L0,12 z" fill="none" fill-opacity="0.92" />
+      </marker>
+
+      <marker id="subtleArrowHead" viewBox="0 0 11 11" refX="10" refY="5.5" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+        <path d="M0,0 L11,5.5 L0,11 z" fill="none" fill-opacity="0.86" />
+      </marker>
+
+      <marker id="focusArrowHead" viewBox="0 0 13 13" refX="12" refY="6.5" markerWidth="13" markerHeight="13" orient="auto-start-reverse">
+        <path d="M0,0 L13,6.5 L0,13 z" fill="none" fill-opacity="0.89" />
+      </marker>
+      <style>
+.svg-root { background: #0a1020; color: #dbe5f2; }
+
+        .svg-title { font: 700 26px 'Segoe UI Variable Text', 'Segoe UI', Arial, sans-serif; fill: #f5f7fb; letter-spacing: 0.25px; }
+        .svg-subtitle { font: 500 12px 'Segoe UI', Arial, sans-serif; fill: #6f8298; }
+        .svg-meta { font: 600 11px 'Segoe UI', Arial, sans-serif; fill: #97a8bc; letter-spacing: 0.35px; text-transform: uppercase; }
+        .svg-footer { font: 500 10.5px 'Segoe UI', Arial, sans-serif; fill: #6f8298; }
+
+        .lane-band { stroke-width: 1.0; }
+        .lane-standard { fill: url(#laneHeaderGrad); fill-opacity: 0.2; stroke: #25324a; }
+        .lane-focus-center { fill: url(#laneHeaderGrad); fill-opacity: 0.28; stroke: #9ed8ff; }
+        .lane-focus-side { fill: #0a1220; fill-opacity: 0.18; stroke: #9ed8ff; }
+        .lane-issue { fill: #22170f; fill-opacity: 0.22; stroke: #f2c078; }
+        .lane-external { fill: #101a2e; fill-opacity: 0.18; stroke: #c2b6ff; }
+
+        .laneHeaderText { font: 700 12px 'Segoe UI', Arial, sans-serif; fill: #f5f7fb; }
+        .laneMetaText { font: 600 10px 'Segoe UI', Arial, sans-serif; fill: #6f8298; }
+
+        .edge { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+        .edgeGlow { fill: none; filter: url(#edgeBlur); stroke-linecap: round; stroke-linejoin: round; }
+
+        .edge-default { stroke: #8ed7ff; marker-end: url(#arrowHead); opacity: 0.68; }
+        .edge-default-glow { stroke: #79c6ff; opacity: 0.06; }
+
+        .edge-muted { stroke: #6f8298; marker-end: url(#subtleArrowHead); opacity: 0.34; }
+        .edge-muted-glow { stroke: #6f8298; opacity: 0.04; }
+
+        .edge-focus-inbound { stroke: #9ed8ff; marker-end: url(#focusArrowHead); opacity: 0.82; }
+        .edge-focus-inbound-glow { stroke: #79c6ff; opacity: 0.14; }
+
+        .edge-focus-outbound { stroke: #67d6a3; marker-end: url(#focusArrowHead); opacity: 0.82; }
+        .edge-focus-outbound-glow { stroke: #67d6a3; opacity: 0.14; }
+
+        .edge-self-loop { stroke: #f2c078; marker-end: url(#arrowHead); opacity: 0.74; }
+        .edge-self-loop-glow { stroke: #f2c078; opacity: 0.12; }
+
+        .edge-cross-lane { stroke: #8ed7ff; marker-end: url(#arrowHead); opacity: 0.74; }
+        .edge-cross-lane-glow { stroke: #9ed8ff; opacity: 0.06; }
+
+        .edge-intra-lane { stroke: #97a8bc; marker-end: url(#subtleArrowHead); opacity: 0.54; }
+        .edge-intra-lane-glow { stroke: #97a8bc; opacity: 0.04; }
+
+        .node { transition: transform 140ms ease-out; transform-origin: center; }
+        .node:hover { transform: translateY(-1.4px); }
+
+        .nodeBody { stroke-width: 1.67; }
+        .node-package .nodeBody { fill: url(#packageNodeGrad); stroke: #7fcfff; }
+        .node-module .nodeBody { fill: url(#moduleNodeGrad); stroke: #79d8b0; }
+        .node-external .nodeBody { fill: url(#externalNodeGrad); stroke: #c2b6ff; }
+        .node-note .nodeBody { fill: url(#noteNodeGrad); stroke: #f2c078; }
+
+        .node-focus-hero .nodeBody { fill: url(#focusHeroNodeGrad); stroke: #9ed8ff; stroke-width: 2.42; }
+        .node-focus-inbound .nodeBody { fill: url(#focusInboundNodeGrad); stroke: #9ed8ff; stroke-width: 1.98; }
+        .node-focus-outbound .nodeBody { fill: url(#focusOutboundNodeGrad); stroke: #67d6a3; stroke-width: 1.98; }
+        .node-focus-mixed .nodeBody { fill: url(#focusMixedNodeGrad); stroke: #bca7ff; stroke-width: 1.98; }
+        .node-context-muted .nodeBody { fill: url(#contextMutedNodeGrad); stroke: #55677c; stroke-width: 1.67; }
+        .node-hub-accent .nodeBody { fill: url(#hubAccentNodeGrad); stroke: #d8deff; stroke-width: 2.05; }
+
+        .nodeShine { fill: #ffffff; opacity: 0.18; }
+        .nodeLabel { font: 700 13px 'Segoe UI Variable Text', 'Segoe UI', Arial, sans-serif; fill: #dbe5f2; }
+        .nodeSubLabel { font: 600 10.5px 'Segoe UI', Arial, sans-serif; fill: #97a8bc; }
+        .nodeIcon { font-size: 14px; opacity: 0.98; }
+
+        .node-island .nodeBody { stroke-dasharray: 5 4; }
+        .node-hub .nodeBody { stroke-width: 2.05; }
+        .node-focus-hero .nodeShine { opacity: 0.22; }
+
+        .badgeBox { stroke-width: 0; }
+        .badgeInbound { fill: #9ed8ff; }
+        .badgeOutbound { fill: #67d6a3; }
+             .badgeStateHub { fill: #d8deff; }
+        .badgeStateIsland { fill: #bca7ff; }
+        .badgeTextDark { font: 700 10px 'Segoe UI', Arial, sans-serif; fill: #06101d; letter-spacing: 0.25px; }
+        .badgeTextLight { font: 700 10px 'Segoe UI', Arial, sans-serif; fill: #f8fbff; letter-spacing: 0.25px; }
+
+        .legendPanel { fill: #0d1526; fill-opacity: 0.72; stroke: #31405c; stroke-width: 1.15; }
+        .legendTitle { font: 700 12px 'Segoe UI', Arial, sans-serif; fill: #dbe5f2; }
+        .legendLabel { font: 600 11.2px 'Segoe UI', Arial, sans-serif; fill: #dbe5f2; }
+        .legendValue { font: 700 11.2px 'Segoe UI', Arial, sans-serif; fill: #f5f7fb; }
+        .legendHint { font: 600 10px 'Segoe UI', Arial, sans-serif; fill: #6f8298; }
+
+        .legendChipPackage { fill: #7fcfff; }
+        .legendChipModule { fill: #79d8b0; }
+        .legendChipExternal { fill: #c2b6ff; }
+        .legendChipWarning { fill: #f2c078; }
+
+        .footer { font: 500 10.5px 'Segoe UI', Arial, sans-serif; fill: #6f8298; }
+
+        .panel-header { fill: #0b1120; fill-opacity: 0.54; stroke: #31405c; stroke-width: 1.05; }
+        .panel-legend { fill: #0d1526; fill-opacity: 0.72; stroke: #31405c; stroke-width: 1.15; }
+        .panel-warning { fill: #22170f; fill-opacity: 0.82; stroke: #f2c078; stroke-width: 1.0; }
+        .panel-footer { fill: #0a1220; fill-opacity: 1; stroke: #273347; stroke-width: 0.0; }
+      </style>
+    </defs>
+  
+    <defs>
+      <linearGradient id="semanticCanvasGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#07101b" />
+        <stop offset="58%" stop-color="#07101c" />
+        <stop offset="100%" stop-color="#081422" />
+      </linearGradient>
+
+      <radialGradient id="semanticHaloA" cx="0.18" cy="0.06" r="0.95">
+        <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.180" />
+        <stop offset="100%" stop-color="#22d3ee" stop-opacity="0" />
+      </radialGradient>
+
+      <radialGradient id="semanticHaloB" cx="0.86" cy="0.14" r="0.70">
+        <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.130" />
+        <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0" />
+      </radialGradient>
+
+      <pattern id="semanticGrid" width="28.00" height="28.00" patternUnits="userSpaceOnUse">
+        <path d="M28.00 0 L0 0 0 28.00" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.080" />
+      </pattern>
+
+      <filter id="shadowSoft" x="-30%" y="-30%" width="180%" height="220%">
+        <feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="#020617" flood-opacity="0.36" />
+      </filter>
+
+      <filter id="shadowNode" x="-35%" y="-40%" width="200%" height="240%">
+        <feDropShadow dx="0" dy="14" stdDeviation="11" flood-color="#020617" flood-opacity="0.44" />
+      </filter>
+
+      <filter id="glowStrong" x="-40%" y="-40%" width="220%" height="220%">
+        <feGaussianBlur stdDeviation="6.0" />
+      </filter>
+
+      <filter id="glowSoft" x="-35%" y="-35%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="3.2" />
+      </filter>
+
+      <filter id="laneGlow" x="-30%" y="-20%" width="180%" height="160%">
+        <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#7dd3fc" flood-opacity="0.08" />
+      </filter>
+
+      <marker id="arrowHead" markerWidth="12.00" markerHeight="12.00" refX="10.00" refY="6.00" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L12,6 L0,12 z" fill="none" opacity="0.920" /></marker>
+      <marker id="subtleArrowHead" markerWidth="11.00" markerHeight="11.00" refX="9.00" refY="5.50" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L12,6 L0,12 z" fill="none" opacity="0.860" /></marker>
+      <marker id="focusArrowHead" markerWidth="14.00" markerHeight="14.00" refX="11.50" refY="7.00" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L12,6 L0,12 z" fill="none" opacity="0.890" /></marker>
+      <marker id="arrow_focus_out" markerWidth="14.00" markerHeight="14.00" refX="11.50" refY="7.00" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L12,6 L0,12 z" fill="none" opacity="0.890" /></marker>
+
+      <style>
+        .svg-title {
+          font: 700 31px 'Segoe UI Variable Display', 'Segoe UI', Arial, sans-serif;
+          fill: #f5fbff;
+          letter-spacing: 0.2px;
+        }
+        .svg-subtitle {
+          font: 600 13px 'Segoe UI Variable Text', 'Segoe UI', Arial, sans-serif;
+          fill: #b8c8df;
+        }
+        .svg-meta {
+          font: 500 11.5px 'Consolas', 'Cascadia Mono', monospace;
+          fill: #8fa4c2;
+        }
+        .svg-footer {
+          font: 500 10.5px 'Segoe UI', Arial, sans-serif;
+          fill: #8ba0bd;
+        }
+        .lane-title {
+          font: 700 12px 'Segoe UI', Arial, sans-serif;
+          letter-spacing: 0.25px;
+        }
+        .lane-meta {
+          font: 600 10px 'Segoe UI', Arial, sans-serif;
+        }
+        .node-label {
+          font-family: 'Segoe UI Variable Text', 'Segoe UI', Arial, sans-serif;
+        }
+        .node-subtitle {
+          font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .node-icon {
+          font: 700 12px 'Segoe UI', Arial, sans-serif;
+        }
+        .chip-text {
+          font: 700 9.4px 'Segoe UI', Arial, sans-serif;
+          letter-spacing: 0.45px;
+        }
+        .badge-text {
+          font: 700 9.6px 'Segoe UI', Arial, sans-serif;
+          letter-spacing: 0.18px;
+        }
+        .panel-title {
+          font: 700 12.2px 'Segoe UI', Arial, sans-serif;
+        }
+        .panel-text {
+          font: 600 11px 'Segoe UI', Arial, sans-serif;
+        }
+        .panel-meta {
+          font: 500 10px 'Segoe UI', Arial, sans-serif;
+        }
+      </style>
+    </defs>
+    
+
+  <rect x="0" y="0" width="8975" height="492" fill="none" />
+  <rect x="0" y="0" width="8975" height="492" fill="none" />
+  <circle cx="1436" cy="39" r="5564" fill="none" />
+  <circle cx="7718" cy="78" r="3231" fill="none" />
+
+  
+    <g class="headerPanel">
+      <rect x="52.0" y="18.0" width="8837.0" height="96.0"
+            rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.540"
+            stroke="currentColor" stroke-opacity="0.900" stroke-width="1.5"
+            filter="url(#shadowSoft)" />
+      <rect x="64.0" y="30.0" width="4.0" height="72.0"
+            rx="2" ry="2" fill="none" opacity="0.84" />
+      <text class="svg-title" x="70.0" y="56.0">Dependency Graph · primitives</text>
+      <text class="svg-subtitle" x="70.0" y="76.0">Module View • technical • breathable • controlled • 25 nodos • 48 relaciones</text>
+      <text class="svg-meta" x="70.0" y="96.0">F:\repos\hitech-os\apps\deltaforge\deltaforge\ui\primitives</text>
+
+      <g transform="translate(8738.4,34.0)">
+        <rect x="0" y="0" width="134.6" height="26" rx="13" ry="13"
+              fill="none" opacity="0.92" />
+        <circle cx="16" cy="13" r="4.2" fill="none" />
+        <text class="chip-text" x="75.3" y="16.0" text-anchor="middle"
+              fill="none">MODULE VIEW</text>
+      </g>
+      <text class="panel-meta" x="8873.0" y="74.0" text-anchor="end" fill="none">technical • breathable • controlled</text>
+    </g>
+    
+  
+    <g class="legendPanel">
+      <rect x="8651.0" y="28.0" width="286.0" height="176.0"
+            rx="16.0" ry="16.0"
+            fill="none" fill-opacity="0.720"
+            stroke="currentColor" stroke-opacity="0.920" stroke-width="1.5"
+            filter="url(#shadowSoft)" />
+      <rect x="8665.0" y="42.0" width="3.6" height="148.0" rx="2" ry="2"
+            fill="none" opacity="0.70" />
+      <g transform="translate(8669.0,40.0)">
+        <text class="panel-title" x="10" y="10" fill="none">Resumen</text>
+        <circle cx="18" cy="40.0" r="5" fill="none" /><text class="panel-text" x="32" y="44.0" fill="none">paquetes</text><text class="panel-text" x="270.0" y="44.0" text-anchor="end" fill="none">0</text><circle cx="18" cy="62.0" r="5" fill="none" /><text class="panel-text" x="32" y="66.0" fill="none">módulos</text><text class="panel-text" x="270.0" y="66.0" text-anchor="end" fill="none">21</text><circle cx="18" cy="84.0" r="5" fill="none" /><text class="panel-text" x="32" y="88.0" fill="none">externos</text><text class="panel-text" x="270.0" y="88.0" text-anchor="end" fill="none">4</text><circle cx="18" cy="106.0" r="5" fill="none" /><text class="panel-text" x="32" y="110.0" fill="none">notas</text><text class="panel-text" x="270.0" y="110.0" text-anchor="end" fill="none">0</text><text class="panel-text" x="14" y="136.0" fill="none">relaciones</text><text class="panel-text" x="270.0" y="136.0" text-anchor="end" fill="none">48</text><text class="panel-text" x="14" y="160.0" fill="none">vista</text><text class="panel-text" x="270.0" y="160.0" text-anchor="end" fill="none">module</text><text class="panel-meta" x="14" y="182.0" fill="none">sin issues relevantes</text>
+      </g>
+    </g>
+    
+  
+
+  <g id="lanesLayer">
+    <g class="laneGroup">
+      <rect x="60.0" y="118.0" width="273.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.780" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="68.0" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.140" />
+      <rect x="68.0" y="126.0" width="257.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.860" stroke-width="1.5" />
+      <text class="lane-title" x="78.0" y="142.0" fill="none">shell</text>
+      <text class="lane-meta" x="78.0" y="157.0" fill="none">1 nodos • in 0 • out 1 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="419.0" y="118.0" width="319.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.780" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="427.0" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.140" />
+      <rect x="427.0" y="126.0" width="303.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.860" stroke-width="1.5" />
+      <text class="lane-title" x="437.0" y="142.0" fill="none">separators</text>
+      <text class="lane-meta" x="437.0" y="157.0" fill="none">1 nodos • in 0 • out 1 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="824.0" y="118.0" width="273.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.780" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="832.0" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.140" />
+      <rect x="832.0" y="126.0" width="257.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.860" stroke-width="1.5" />
+      <text class="lane-title" x="842.0" y="142.0" fill="none">chips</text>
+      <text class="lane-meta" x="842.0" y="157.0" fill="none">1 nodos • in 0 • out 1 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="1183.0" y="118.0" width="328.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.780" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="1191.0" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.140" />
+      <rect x="1191.0" y="126.0" width="312.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.860" stroke-width="1.5" />
+      <text class="lane-title" x="1201.0" y="142.0" fill="none">status_pill</text>
+      <text class="lane-meta" x="1201.0" y="157.0" fill="none">1 nodos • in 0 • out 3 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="1597.0" y="118.0" width="328.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.780" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="1605.0" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.140" />
+      <rect x="1605.0" y="126.0" width="312.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.860" stroke-width="1.5" />
+      <text class="lane-title" x="1615.0" y="142.0" fill="none">empty_state</text>
+      <text class="lane-meta" x="1615.0" y="157.0" fill="none">1 nodos • in 0 • out 3 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="2011.0" y="118.0" width="319.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.780" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="2019.0" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.140" />
+      <rect x="2019.0" y="126.0" width="303.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.860" stroke-width="1.5" />
+      <text class="lane-title" x="2029.0" y="142.0" fill="none">diff_block</text>
+      <text class="lane-meta" x="2029.0" y="157.0" fill="none">1 nodos • in 0 • out 3 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="2416.0" y="118.0" width="264.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.780" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="2424.0" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.140" />
+      <rect x="2424.0" y="126.0" width="248.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.860" stroke-width="1.5" />
+      <text class="lane-title" x="2434.0" y="142.0" fill="none">chip</text>
+      <text class="lane-meta" x="2434.0" y="157.0" fill="none">1 nodos • in 0 • out 3 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="2766.0" y="118.0" width="309.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.780" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="2774.0" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.140" />
+      <rect x="2774.0" y="126.0" width="293.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.860" stroke-width="1.5" />
+      <text class="lane-title" x="2784.0" y="142.0" fill="none">tab_style</text>
+      <text class="lane-meta" x="2784.0" y="157.0" fill="none">1 nodos • in 0 • out 4 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="3161.0" y="118.0" width="337.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.780" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="3169.0" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.140" />
+      <rect x="3169.0" y="126.0" width="321.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.860" stroke-width="1.5" />
+      <text class="lane-title" x="3179.0" y="142.0" fill="none">section_card</text>
+      <text class="lane-meta" x="3179.0" y="157.0" fill="none">1 nodos • in 0 • out 4 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="3584.0" y="118.0" width="391.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.780" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="3592.0" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.140" />
+      <rect x="3592.0" y="126.0" width="375.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.860" stroke-width="1.5" />
+      <text class="lane-title" x="3602.0" y="142.0" fill="none">hairline_separator</text>
+      <text class="lane-meta" x="3602.0" y="157.0" fill="none">1 nodos • in 0 • out 4 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="4061.0" y="118.0" width="337.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.780" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="4069.0" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.140" />
+      <rect x="4069.0" y="126.0" width="321.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.860" stroke-width="1.5" />
+      <text class="lane-title" x="4079.0" y="142.0" fill="none">detail_block</text>
+      <text class="lane-meta" x="4079.0" y="157.0" fill="none">1 nodos • in 0 • out 4 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="4484.0" y="118.0" width="355.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.780" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="4492.0" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.140" />
+      <rect x="4492.0" y="126.0" width="339.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.860" stroke-width="1.5" />
+      <text class="lane-title" x="4502.0" y="142.0" fill="none">confirm_dialog</text>
+      <text class="lane-meta" x="4502.0" y="157.0" fill="none">1 nodos • in 0 • out 4 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="4925.0" y="118.0" width="273.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.780" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="4933.0" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.140" />
+      <rect x="4933.0" y="126.0" width="257.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.860" stroke-width="1.5" />
+      <text class="lane-title" x="4943.0" y="142.0" fill="none">cards</text>
+      <text class="lane-meta" x="4943.0" y="157.0" fill="none">1 nodos • in 0 • out 4 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="5284.0" y="118.0" width="328.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.780" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="5292.0" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.140" />
+      <rect x="5292.0" y="126.0" width="312.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.860" stroke-width="1.5" />
+      <text class="lane-title" x="5302.0" y="142.0" fill="none">busy_dialog</text>
+      <text class="lane-meta" x="5302.0" y="157.0" fill="none">1 nodos • in 0 • out 4 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="5698.0" y="118.0" width="328.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.780" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="5706.0" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.140" />
+      <rect x="5706.0" y="126.0" width="312.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.860" stroke-width="1.5" />
+      <text class="lane-title" x="5716.0" y="142.0" fill="none">log_surface</text>
+      <text class="lane-meta" x="5716.0" y="157.0" fill="none">1 nodos • in 0 • out 5 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="6112.0" y="118.0" width="355.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.780" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="6120.0" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.140" />
+      <rect x="6120.0" y="126.0" width="339.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.860" stroke-width="1.5" />
+      <text class="lane-title" x="6130.0" y="142.0" fill="none">command_button</text>
+      <text class="lane-meta" x="6130.0" y="157.0" fill="none">1 nodos • in 0 • out 5 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="6553.6" y="118.0" width="337.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.789" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="6561.6" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.192" />
+      <rect x="6561.6" y="126.0" width="321.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.869" stroke-width="1.5" />
+      <text class="lane-title" x="6571.6" y="142.0" fill="none">list_surface</text>
+      <text class="lane-meta" x="6571.6" y="157.0" fill="none">1 nodos • in 0 • out 6 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="6977.3" y="118.0" width="300.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.789" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="6985.3" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.192" />
+      <rect x="6985.3" y="126.0" width="284.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.869" stroke-width="1.5" />
+      <text class="lane-title" x="6995.3" y="142.0" fill="none">kv_block</text>
+      <text class="lane-meta" x="6995.3" y="157.0" fill="none">1 nodos • in 0 • out 6 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="7363.9" y="118.0" width="355.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.789" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="7371.9" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.192" />
+      <rect x="7371.9" y="126.0" width="339.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.869" stroke-width="1.5" />
+      <text class="lane-title" x="7381.9" y="142.0" fill="none">buttons_pretty</text>
+      <text class="lane-meta" x="7381.9" y="157.0" fill="none">1 nodos • in 0 • out 13 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="7805.6" y="118.0" width="291.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.789" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="7813.6" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.192" />
+      <rect x="7813.6" y="126.0" width="275.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.869" stroke-width="1.5" />
+      <text class="lane-title" x="7823.6" y="142.0" fill="none">buttons</text>
+      <text class="lane-meta" x="7823.6" y="157.0" fill="none">1 nodos • in 0 • out 15 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="8183.2" y="118.0" width="319.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.200"
+            stroke="currentColor" stroke-opacity="0.789" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="8191.2" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.192" />
+      <rect x="8191.2" y="126.0" width="303.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.940"
+            stroke="currentColor" stroke-opacity="0.869" stroke-width="1.5" />
+      <text class="lane-title" x="8201.2" y="142.0" fill="none">primitives</text>
+      <text class="lane-meta" x="8201.2" y="157.0" fill="none">1 nodos • in 0 • out 20 • AIRY / BREATHIN</text>
+      
+    </g>
+    
+    <g class="laneGroup">
+      <rect x="8580.8" y="118.0" width="323.0" height="330.0" rx="18.0" ry="18.0"
+            fill="none" fill-opacity="0.180"
+            stroke="currentColor" stroke-opacity="0.760" stroke-width="1.5"
+            filter="url(#laneGlow)" />
+      <rect x="8588.8" y="128.0" width="3.5" height="308.0" rx="2" ry="2"
+            fill="none" opacity="0.160" />
+      <rect x="8588.8" y="126.0" width="307.0" height="40.0" rx="14.0" ry="14.0"
+            fill="none" fill-opacity="0.950"
+            stroke="currentColor" stroke-opacity="0.840" stroke-width="1.5" />
+      <text class="lane-title" x="8598.8" y="142.0" fill="none">[external]</text>
+      <text class="lane-meta" x="8598.8" y="157.0" fill="none">4 nodos • in 113 • out 0 • COMPACT / SUPPORT</text>
+      
+    </g>
+    </g>
+  <g id="edgesLayer">
+    <g class="edgeGroup">
+      <title>busy_dialog -&gt; __future__ | role=cross_lane | weight=1 | busy_dialog -&gt; external:__future__ @L1</title>
+      <path d="M5596.0,209.0 C6705.6,209.0 7485.3,407.0 8594.8,407.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M5596.0,209.0 C6705.6,209.0 7485.3,407.0 8594.8,407.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>busy_dialog -&gt; typing | role=cross_lane | weight=1 | busy_dialog -&gt; external:typing @L3</title>
+      <path d="M5596.0,209.0 C6705.6,209.0 7485.3,345.0 8594.8,345.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M5596.0,209.0 C6705.6,209.0 7485.3,345.0 8594.8,345.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>buttons -&gt; __future__ | role=cross_lane | weight=1 | buttons -&gt; external:__future__ @L1</title>
+      <path d="M8080.6,209.0 C8270.8,209.0 8404.6,407.0 8594.8,407.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M8080.6,209.0 C8270.8,209.0 8404.6,407.0 8594.8,407.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>buttons -&gt; deltaforge | role=cross_lane | weight=1 | buttons -&gt; external:deltaforge @L234</title>
+      <path d="M8080.6,209.0 C8270.8,209.0 8404.6,283.0 8594.8,283.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M8080.6,209.0 C8270.8,209.0 8404.6,283.0 8594.8,283.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>buttons -&gt; typing | role=cross_lane | weight=1 | buttons -&gt; external:typing @L3</title>
+      <path d="M8080.6,209.0 C8270.8,209.0 8404.6,345.0 8594.8,345.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M8080.6,209.0 C8270.8,209.0 8404.6,345.0 8594.8,345.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>buttons_pretty -&gt; __future__ | role=cross_lane | weight=1 | buttons_pretty -&gt; external:__future__ @L1</title>
+      <path d="M7702.9,209.0 C8032.9,209.0 8264.8,407.0 8594.8,407.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M7702.9,209.0 C8032.9,209.0 8264.8,407.0 8594.8,407.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>chip -&gt; __future__ | role=cross_lane | weight=1 | chip -&gt; external:__future__ @L1</title>
+      <path d="M2664.0,209.0 C4858.4,209.0 6400.4,407.0 8594.8,407.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M2664.0,209.0 C4858.4,209.0 6400.4,407.0 8594.8,407.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>chip -&gt; PySide6 | role=cross_lane | weight=1 | chip -&gt; external:PySide6 @L5</title>
+      <path d="M2664.0,209.0 C4858.4,209.0 6400.4,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M2664.0,209.0 C4858.4,209.0 6400.4,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>chip -&gt; typing | role=cross_lane | weight=1 | chip -&gt; external:typing @L3</title>
+      <path d="M2664.0,209.0 C4858.4,209.0 6400.4,345.0 8594.8,345.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M2664.0,209.0 C4858.4,209.0 6400.4,345.0 8594.8,345.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>chips -&gt; PySide6 | role=cross_lane | weight=1 | chips -&gt; external:PySide6 @L1</title>
+      <path d="M1081.0,209.0 C3861.1,209.0 5814.7,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M1081.0,209.0 C3861.1,209.0 5814.7,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>command_button -&gt; __future__ | role=cross_lane | weight=1 | command_button -&gt; external:__future__ @L1</title>
+      <path d="M6451.0,209.0 C7244.2,209.0 7801.6,407.0 8594.8,407.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M6451.0,209.0 C7244.2,209.0 7801.6,407.0 8594.8,407.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>command_button -&gt; typing | role=cross_lane | weight=1 | command_button -&gt; external:typing @L3</title>
+      <path d="M6451.0,209.0 C7244.2,209.0 7801.6,345.0 8594.8,345.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M6451.0,209.0 C7244.2,209.0 7801.6,345.0 8594.8,345.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>confirm_dialog -&gt; __future__ | role=cross_lane | weight=1 | confirm_dialog -&gt; external:__future__ @L1</title>
+      <path d="M4823.0,209.0 C6218.6,209.0 7199.3,407.0 8594.8,407.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M4823.0,209.0 C6218.6,209.0 7199.3,407.0 8594.8,407.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>confirm_dialog -&gt; deltaforge | role=cross_lane | weight=1 | confirm_dialog -&gt; external:deltaforge @L7</title>
+      <path d="M4823.0,209.0 C6218.6,209.0 7199.3,283.0 8594.8,283.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M4823.0,209.0 C6218.6,209.0 7199.3,283.0 8594.8,283.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>confirm_dialog -&gt; PySide6 | role=cross_lane | weight=1 | confirm_dialog -&gt; external:PySide6 @L5</title>
+      <path d="M4823.0,209.0 C6218.6,209.0 7199.3,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M4823.0,209.0 C6218.6,209.0 7199.3,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>confirm_dialog -&gt; typing | role=cross_lane | weight=1 | confirm_dialog -&gt; external:typing @L3</title>
+      <path d="M4823.0,209.0 C6218.6,209.0 7199.3,345.0 8594.8,345.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M4823.0,209.0 C6218.6,209.0 7199.3,345.0 8594.8,345.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>hairline_separator -&gt; __future__ | role=cross_lane | weight=1 | hairline_separator -&gt; external:__future__ @L1</title>
+      <path d="M3959.0,209.0 C5674.3,209.0 6879.6,407.0 8594.8,407.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M3959.0,209.0 C5674.3,209.0 6879.6,407.0 8594.8,407.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>hairline_separator -&gt; typing | role=cross_lane | weight=1 | hairline_separator -&gt; external:typing @L3</title>
+      <path d="M3959.0,209.0 C5674.3,209.0 6879.6,345.0 8594.8,345.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M3959.0,209.0 C5674.3,209.0 6879.6,345.0 8594.8,345.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>kv_block -&gt; __future__ | role=cross_lane | weight=1 | kv_block -&gt; external:__future__ @L1</title>
+      <path d="M7261.3,209.0 C7754.7,209.0 8101.4,407.0 8594.8,407.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M7261.3,209.0 C7754.7,209.0 8101.4,407.0 8594.8,407.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>list_surface -&gt; __future__ | role=cross_lane | weight=1 | list_surface -&gt; external:__future__ @L1</title>
+      <path d="M6874.6,209.0 C7511.1,209.0 7958.4,407.0 8594.8,407.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M6874.6,209.0 C7511.1,209.0 7958.4,407.0 8594.8,407.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>log_surface -&gt; __future__ | role=cross_lane | weight=1 | log_surface -&gt; external:__future__ @L1</title>
+      <path d="M6010.0,209.0 C6966.4,209.0 7638.4,407.0 8594.8,407.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M6010.0,209.0 C6966.4,209.0 7638.4,407.0 8594.8,407.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>section_card -&gt; __future__ | role=cross_lane | weight=1 | section_card -&gt; external:__future__ @L1</title>
+      <path d="M3482.0,209.0 C5373.8,209.0 6703.1,407.0 8594.8,407.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M3482.0,209.0 C5373.8,209.0 6703.1,407.0 8594.8,407.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>section_card -&gt; typing | role=cross_lane | weight=1 | section_card -&gt; external:typing @L3</title>
+      <path d="M3482.0,209.0 C5373.8,209.0 6703.1,345.0 8594.8,345.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M3482.0,209.0 C5373.8,209.0 6703.1,345.0 8594.8,345.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>separators -&gt; PySide6 | role=cross_lane | weight=1 | separators -&gt; external:PySide6 @L1</title>
+      <path d="M722.0,209.0 C3635.0,209.0 5681.9,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M722.0,209.0 C3635.0,209.0 5681.9,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>shell -&gt; PySide6 | role=cross_lane | weight=1 | shell -&gt; external:PySide6 @L1</title>
+      <path d="M317.0,209.0 C3379.8,209.0 5532.0,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M317.0,209.0 C3379.8,209.0 5532.0,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>status_pill -&gt; __future__ | role=cross_lane | weight=1 | status_pill -&gt; external:__future__ @L1</title>
+      <path d="M1495.0,209.0 C4121.9,209.0 5967.9,407.0 8594.8,407.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M1495.0,209.0 C4121.9,209.0 5967.9,407.0 8594.8,407.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>status_pill -&gt; PySide6 | role=cross_lane | weight=1 | status_pill -&gt; external:PySide6 @L5</title>
+      <path d="M1495.0,209.0 C4121.9,209.0 5967.9,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M1495.0,209.0 C4121.9,209.0 5967.9,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>status_pill -&gt; typing | role=cross_lane | weight=1 | status_pill -&gt; external:typing @L3</title>
+      <path d="M1495.0,209.0 C4121.9,209.0 5967.9,345.0 8594.8,345.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M1495.0,209.0 C4121.9,209.0 5967.9,345.0 8594.8,345.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>tab_style -&gt; __future__ | role=cross_lane | weight=1 | tab_style -&gt; external:__future__ @L1</title>
+      <path d="M3059.0,209.0 C5107.3,209.0 6546.6,407.0 8594.8,407.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M3059.0,209.0 C5107.3,209.0 6546.6,407.0 8594.8,407.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>tab_style -&gt; PySide6 | role=cross_lane | weight=1 | tab_style -&gt; external:PySide6 @L5</title>
+      <path d="M3059.0,209.0 C5107.3,209.0 6546.6,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M3059.0,209.0 C5107.3,209.0 6546.6,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.740"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>busy_dialog -&gt; PySide6 | role=cross_lane | weight=2 | busy_dialog -&gt; external:PySide6 @L5</title>
+      <path d="M5596.0,209.0 C6705.6,209.0 7485.3,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M5596.0,209.0 C6705.6,209.0 7485.3,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.770"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>hairline_separator -&gt; PySide6 | role=cross_lane | weight=2 | hairline_separator -&gt; external:PySide6 @L5</title>
+      <path d="M3959.0,209.0 C5674.3,209.0 6879.6,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M3959.0,209.0 C5674.3,209.0 6879.6,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.770"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>kv_block -&gt; PySide6 | role=cross_lane | weight=2 | kv_block -&gt; external:PySide6 @L5</title>
+      <path d="M7261.3,209.0 C7754.7,209.0 8101.4,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M7261.3,209.0 C7754.7,209.0 8101.4,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.770"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>list_surface -&gt; PySide6 | role=cross_lane | weight=2 | list_surface -&gt; external:PySide6 @L5</title>
+      <path d="M6874.6,209.0 C7511.1,209.0 7958.4,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M6874.6,209.0 C7511.1,209.0 7958.4,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.770"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>log_surface -&gt; PySide6 | role=cross_lane | weight=2 | log_surface -&gt; external:PySide6 @L5</title>
+      <path d="M6010.0,209.0 C6966.4,209.0 7638.4,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M6010.0,209.0 C6966.4,209.0 7638.4,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.770"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>log_surface -&gt; typing | role=cross_lane | weight=2 | log_surface -&gt; external:typing @L3</title>
+      <path d="M6010.0,209.0 C6966.4,209.0 7638.4,345.0 8594.8,345.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M6010.0,209.0 C6966.4,209.0 7638.4,345.0 8594.8,345.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.770"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>section_card -&gt; PySide6 | role=cross_lane | weight=2 | section_card -&gt; external:PySide6 @L5</title>
+      <path d="M3482.0,209.0 C5373.8,209.0 6703.1,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M3482.0,209.0 C5373.8,209.0 6703.1,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.770"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>tab_style -&gt; typing | role=cross_lane | weight=2 | tab_style -&gt; external:typing @L3</title>
+      <path d="M3059.0,209.0 C5107.3,209.0 6546.6,345.0 8594.8,345.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M3059.0,209.0 C5107.3,209.0 6546.6,345.0 8594.8,345.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.770"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>command_button -&gt; PySide6 | role=cross_lane | weight=3 | command_button -&gt; external:PySide6 @L5</title>
+      <path d="M6451.0,209.0 C7244.2,209.0 7801.6,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M6451.0,209.0 C7244.2,209.0 7801.6,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.800"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>diff_block -&gt; PySide6 | role=cross_lane | weight=3 | diff_block -&gt; external:PySide6 @L1</title>
+      <path d="M2314.0,209.0 C4637.9,209.0 6270.9,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M2314.0,209.0 C4637.9,209.0 6270.9,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.800"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>empty_state -&gt; PySide6 | role=cross_lane | weight=3 | empty_state -&gt; external:PySide6 @L1</title>
+      <path d="M1909.0,209.0 C4382.8,209.0 6121.1,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M1909.0,209.0 C4382.8,209.0 6121.1,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.800"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>kv_block -&gt; typing | role=cross_lane | weight=3 | kv_block -&gt; external:typing @L3</title>
+      <path d="M7261.3,209.0 C7754.7,209.0 8101.4,345.0 8594.8,345.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M7261.3,209.0 C7754.7,209.0 8101.4,345.0 8594.8,345.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.800"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>list_surface -&gt; typing | role=cross_lane | weight=3 | list_surface -&gt; external:typing @L3</title>
+      <path d="M6874.6,209.0 C7511.1,209.0 7958.4,345.0 8594.8,345.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M6874.6,209.0 C7511.1,209.0 7958.4,345.0 8594.8,345.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.800"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>cards -&gt; PySide6 | role=cross_lane | weight=4 | cards -&gt; external:PySide6 @L1</title>
+      <path d="M5182.0,209.0 C6444.8,209.0 7332.1,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M5182.0,209.0 C6444.8,209.0 7332.1,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.830"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>detail_block -&gt; PySide6 | role=cross_lane | weight=4 | detail_block -&gt; external:PySide6 @L1</title>
+      <path d="M4382.0,209.0 C5940.8,209.0 7036.1,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M4382.0,209.0 C5940.8,209.0 7036.1,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.830"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>buttons -&gt; PySide6 | role=cross_lane | weight=12 | buttons -&gt; external:PySide6 @L39 | buttons -&gt; external:PySide6 @L5 | buttons -&gt; external:PySide6 @L6 | buttons -&gt; external:PySide6 @L7</title>
+      <path d="M8080.6,209.0 C8270.8,209.0 8404.6,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M8080.6,209.0 C8270.8,209.0 8404.6,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.920"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>buttons_pretty -&gt; PySide6 | role=cross_lane | weight=12 | buttons_pretty -&gt; external:PySide6 @L270 | buttons_pretty -&gt; external:PySide6 @L280 | buttons_pretty -&gt; external:PySide6 @L3 | buttons_pretty -&gt; external:PySide6 @L4 | buttons_pretty -&gt; external:PySide6 @L5</title>
+      <path d="M7702.9,209.0 C8032.9,209.0 8264.8,221.0 8594.8,221.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M7702.9,209.0 C8032.9,209.0 8264.8,221.0 8594.8,221.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.920"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    
+    <g class="edgeGroup">
+      <title>primitives -&gt; deltaforge | role=cross_lane | weight=20 | primitives -&gt; external:deltaforge @L1 | primitives -&gt; external:deltaforge @L10 | primitives -&gt; external:deltaforge @L11 | primitives -&gt; external:deltaforge @L12 | primitives -&gt; external:deltaforge @L13 | primitives -&gt; external:deltaforge @L14</title>
+      <path d="M8486.2,209.0 C8526.4,209.0 8554.6,283.0 8594.8,283.0" fill="none" stroke="currentColor" stroke-opacity="0.060" stroke-width="1.5" stroke-linecap="round" filter="url(#glowSoft)" />
+      <path d="M8486.2,209.0 C8526.4,209.0 8554.6,283.0 8594.8,283.0" fill="none"
+            stroke="currentColor" stroke-opacity="0.920"
+            stroke-width="1.5" stroke-linecap="round"
+            marker-end="url(#arrowHead)" />
+    </g>
+    </g>
+  <g id="nodesLayer">
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=shell | kind=module | role=module | in=0 | out=1 | module=shell | lane=shell | shell.py</title>
+      
+      
+      <rect x="73.0" y="187.0" width="245.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.080" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="74.0" y="188.0" width="243.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="75.2" y="189.2" width="240.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="83.0" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      
+      <g class="nodeBadge"><rect x="271.8" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="288.4" y="210.4" text-anchor="middle" fill="none">↗ 1</text></g><g class="nodeBadge"><rect x="232.6" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="249.2" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="88.0" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="106.0" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">shell</text>
+      <text class="node-subtitle" x="106.0" y="225.5" font-size="10.6" font-weight="600" fill="none">shell.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=separators | kind=module | role=module | in=0 | out=1 | module=separators | lane=separators | separators.py</title>
+      
+      
+      <rect x="432.0" y="187.0" width="291.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.080" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="433.0" y="188.0" width="289.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="434.2" y="189.2" width="286.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="442.0" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      
+      <g class="nodeBadge"><rect x="676.8" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="693.4" y="210.4" text-anchor="middle" fill="none">↗ 1</text></g><g class="nodeBadge"><rect x="637.6" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="654.2" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="447.0" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="465.0" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">separators</text>
+      <text class="node-subtitle" x="465.0" y="225.5" font-size="10.6" font-weight="600" fill="none">separators.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=chips | kind=module | role=module | in=0 | out=1 | module=chips | lane=chips | chips.py</title>
+      
+      
+      <rect x="837.0" y="187.0" width="245.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.080" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="838.0" y="188.0" width="243.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="839.2" y="189.2" width="240.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="847.0" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      
+      <g class="nodeBadge"><rect x="1035.8" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="1052.4" y="210.4" text-anchor="middle" fill="none">↗ 1</text></g><g class="nodeBadge"><rect x="996.6" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="1013.2" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="852.0" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="870.0" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">chips</text>
+      <text class="node-subtitle" x="870.0" y="225.5" font-size="10.6" font-weight="600" fill="none">chips.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=status_pill | kind=module | role=module | in=0 | out=3 | module=status_pill | lane=status_pill | status_pill.py</title>
+      
+      
+      <rect x="1196.0" y="187.0" width="300.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.080" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="1197.0" y="188.0" width="298.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="1198.2" y="189.2" width="295.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="1206.0" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      
+      <g class="nodeBadge"><rect x="1449.8" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="1466.4" y="210.4" text-anchor="middle" fill="none">↗ 3</text></g><g class="nodeBadge"><rect x="1410.6" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="1427.2" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="1211.0" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="1229.0" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">status_pill</text>
+      <text class="node-subtitle" x="1229.0" y="225.5" font-size="10.6" font-weight="600" fill="none">status_pill.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=empty_state | kind=module | role=module | in=0 | out=3 | module=empty_state | lane=empty_state | empty_state.py</title>
+      
+      
+      <rect x="1610.0" y="187.0" width="300.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.080" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="1611.0" y="188.0" width="298.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="1612.2" y="189.2" width="295.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="1620.0" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      
+      <g class="nodeBadge"><rect x="1863.8" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="1880.4" y="210.4" text-anchor="middle" fill="none">↗ 3</text></g><g class="nodeBadge"><rect x="1824.6" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="1841.2" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="1625.0" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="1643.0" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">empty_state</text>
+      <text class="node-subtitle" x="1643.0" y="225.5" font-size="10.6" font-weight="600" fill="none">empty_state.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=diff_block | kind=module | role=module | in=0 | out=3 | module=diff_block | lane=diff_block | diff_block.py</title>
+      
+      
+      <rect x="2024.0" y="187.0" width="291.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.080" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="2025.0" y="188.0" width="289.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="2026.2" y="189.2" width="286.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="2034.0" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      
+      <g class="nodeBadge"><rect x="2268.8" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="2285.4" y="210.4" text-anchor="middle" fill="none">↗ 3</text></g><g class="nodeBadge"><rect x="2229.6" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="2246.2" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="2039.0" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="2057.0" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">diff_block</text>
+      <text class="node-subtitle" x="2057.0" y="225.5" font-size="10.6" font-weight="600" fill="none">diff_block.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=chip | kind=module | role=module | in=0 | out=3 | module=chip | lane=chip | chip.py</title>
+      
+      
+      <rect x="2429.0" y="187.0" width="236.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.080" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="2430.0" y="188.0" width="234.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="2431.2" y="189.2" width="231.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="2439.0" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      
+      <g class="nodeBadge"><rect x="2618.8" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="2635.4" y="210.4" text-anchor="middle" fill="none">↗ 3</text></g><g class="nodeBadge"><rect x="2579.6" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="2596.2" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="2444.0" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="2462.0" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">chip</text>
+      <text class="node-subtitle" x="2462.0" y="225.5" font-size="10.6" font-weight="600" fill="none">chip.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=tab_style | kind=module | role=module | in=0 | out=4 | module=tab_style | lane=tab_style | tab_style.py</title>
+      
+      
+      <rect x="2779.0" y="187.0" width="281.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.080" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="2780.0" y="188.0" width="279.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="2781.2" y="189.2" width="276.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="2789.0" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      
+      <g class="nodeBadge"><rect x="3013.8" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="3030.4" y="210.4" text-anchor="middle" fill="none">↗ 4</text></g><g class="nodeBadge"><rect x="2974.6" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="2991.2" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="2794.0" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="2812.0" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">tab_style</text>
+      <text class="node-subtitle" x="2812.0" y="225.5" font-size="10.6" font-weight="600" fill="none">tab_style.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=section_card | kind=module | role=module | in=0 | out=4 | module=section_card | lane=section_card | section_card.py</title>
+      
+      
+      <rect x="3174.0" y="187.0" width="309.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.080" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="3175.0" y="188.0" width="307.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="3176.2" y="189.2" width="304.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="3184.0" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      
+      <g class="nodeBadge"><rect x="3436.8" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="3453.4" y="210.4" text-anchor="middle" fill="none">↗ 4</text></g><g class="nodeBadge"><rect x="3397.6" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="3414.2" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="3189.0" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="3207.0" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">section_card</text>
+      <text class="node-subtitle" x="3207.0" y="225.5" font-size="10.6" font-weight="600" fill="none">section_card.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=hairline_separator | kind=module | role=module | in=0 | out=4 | module=hairline_separator | lane=hairline_separator | hairline_separator.py</title>
+      
+      
+      <rect x="3597.0" y="187.0" width="363.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.080" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="3598.0" y="188.0" width="361.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="3599.2" y="189.2" width="358.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="3607.0" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      
+      <g class="nodeBadge"><rect x="3913.8" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="3930.4" y="210.4" text-anchor="middle" fill="none">↗ 4</text></g><g class="nodeBadge"><rect x="3874.6" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="3891.2" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="3612.0" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="3630.0" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">hairline_separator</text>
+      <text class="node-subtitle" x="3630.0" y="225.5" font-size="10.6" font-weight="600" fill="none">hairline_separator.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=detail_block | kind=module | role=module | in=0 | out=4 | module=detail_block | lane=detail_block | detail_block.py</title>
+      
+      
+      <rect x="4074.0" y="187.0" width="309.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.080" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="4075.0" y="188.0" width="307.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="4076.2" y="189.2" width="304.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="4084.0" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      
+      <g class="nodeBadge"><rect x="4336.8" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="4353.4" y="210.4" text-anchor="middle" fill="none">↗ 4</text></g><g class="nodeBadge"><rect x="4297.6" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="4314.2" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="4089.0" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="4107.0" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">detail_block</text>
+      <text class="node-subtitle" x="4107.0" y="225.5" font-size="10.6" font-weight="600" fill="none">detail_block.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=confirm_dialog | kind=module | role=module | in=0 | out=4 | module=confirm_dialog | lane=confirm_dialog | confirm_dialog.py</title>
+      
+      
+      <rect x="4497.0" y="187.0" width="327.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.080" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="4498.0" y="188.0" width="325.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="4499.2" y="189.2" width="322.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="4507.0" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      
+      <g class="nodeBadge"><rect x="4777.8" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="4794.4" y="210.4" text-anchor="middle" fill="none">↗ 4</text></g><g class="nodeBadge"><rect x="4738.6" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="4755.2" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="4512.0" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="4530.0" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">confirm_dialog</text>
+      <text class="node-subtitle" x="4530.0" y="225.5" font-size="10.6" font-weight="600" fill="none">confirm_dialog.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=cards | kind=module | role=module | in=0 | out=4 | module=cards | lane=cards | cards.py</title>
+      
+      
+      <rect x="4938.0" y="187.0" width="245.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.080" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="4939.0" y="188.0" width="243.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="4940.2" y="189.2" width="240.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="4948.0" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      
+      <g class="nodeBadge"><rect x="5136.8" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="5153.4" y="210.4" text-anchor="middle" fill="none">↗ 4</text></g><g class="nodeBadge"><rect x="5097.6" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="5114.2" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="4953.0" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="4971.0" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">cards</text>
+      <text class="node-subtitle" x="4971.0" y="225.5" font-size="10.6" font-weight="600" fill="none">cards.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=busy_dialog | kind=module | role=module | in=0 | out=4 | module=busy_dialog | lane=busy_dialog | busy_dialog.py</title>
+      
+      
+      <rect x="5297.0" y="187.0" width="300.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.080" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="5298.0" y="188.0" width="298.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="5299.2" y="189.2" width="295.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="5307.0" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      
+      <g class="nodeBadge"><rect x="5550.8" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="5567.4" y="210.4" text-anchor="middle" fill="none">↗ 4</text></g><g class="nodeBadge"><rect x="5511.6" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="5528.2" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="5312.0" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="5330.0" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">busy_dialog</text>
+      <text class="node-subtitle" x="5330.0" y="225.5" font-size="10.6" font-weight="600" fill="none">busy_dialog.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=log_surface | kind=module | role=module | in=0 | out=5 | module=log_surface | lane=log_surface | log_surface.py</title>
+      
+      
+      <rect x="5711.0" y="187.0" width="300.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.080" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="5712.0" y="188.0" width="298.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="5713.2" y="189.2" width="295.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="5721.0" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      
+      <g class="nodeBadge"><rect x="5964.8" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="5981.4" y="210.4" text-anchor="middle" fill="none">↗ 5</text></g><g class="nodeBadge"><rect x="5925.6" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="5942.2" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="5726.0" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="5744.0" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">log_surface</text>
+      <text class="node-subtitle" x="5744.0" y="225.5" font-size="10.6" font-weight="600" fill="none">log_surface.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=command_button | kind=module | role=module | in=0 | out=5 | module=command_button | lane=command_button | command_button.py</title>
+      
+      
+      <rect x="6125.0" y="187.0" width="327.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.080" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="6126.0" y="188.0" width="325.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="6127.2" y="189.2" width="322.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="6135.0" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      
+      <g class="nodeBadge"><rect x="6405.8" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="6422.4" y="210.4" text-anchor="middle" fill="none">↗ 5</text></g><g class="nodeBadge"><rect x="6366.6" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="6383.2" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="6140.0" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="6158.0" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">command_button</text>
+      <text class="node-subtitle" x="6158.0" y="225.5" font-size="10.6" font-weight="600" fill="none">command_button.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=list_surface | kind=module | role=module | in=0 | out=6 | module=list_surface | lane=list_surface | list_surface.py</title>
+      
+      
+      <rect x="6566.6" y="187.0" width="309.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.100" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="6567.6" y="188.0" width="307.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="6568.8" y="189.2" width="304.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="6576.6" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      <g class="nodeChip"><rect x="6579.6" y="179.0" width="46.0" height="18.0" rx="9" ry="9" fill="none" opacity="0.98" /><text class="chip-text" x="6602.6" y="191.2" text-anchor="middle" fill="none">HUB</text></g>
+      <g class="nodeBadge"><rect x="6832.6" y="199.0" width="30.0" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="6847.6" y="210.4" text-anchor="middle" fill="none">H</text></g><g class="nodeBadge"><rect x="6793.4" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="6810.0" y="210.4" text-anchor="middle" fill="none">↗ 6</text></g><g class="nodeBadge"><rect x="6754.2" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="6770.8" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="6581.6" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="6599.6" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">list_surface</text>
+      <text class="node-subtitle" x="6599.6" y="225.5" font-size="10.6" font-weight="600" fill="none">list_surface.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=kv_block | kind=module | role=module | in=0 | out=6 | module=kv_block | lane=kv_block | kv_block.py</title>
+      
+      
+      <rect x="6990.3" y="187.0" width="272.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.100" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="6991.3" y="188.0" width="270.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="6992.5" y="189.2" width="267.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="7000.3" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      <g class="nodeChip"><rect x="7003.3" y="179.0" width="46.0" height="18.0" rx="9" ry="9" fill="none" opacity="0.98" /><text class="chip-text" x="7026.3" y="191.2" text-anchor="middle" fill="none">HUB</text></g>
+      <g class="nodeBadge"><rect x="7219.3" y="199.0" width="30.0" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="7234.3" y="210.4" text-anchor="middle" fill="none">H</text></g><g class="nodeBadge"><rect x="7180.1" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="7196.7" y="210.4" text-anchor="middle" fill="none">↗ 6</text></g><g class="nodeBadge"><rect x="7140.9" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="7157.5" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="7005.3" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="7023.3" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">kv_block</text>
+      <text class="node-subtitle" x="7023.3" y="225.5" font-size="10.6" font-weight="600" fill="none">kv_block.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=buttons_pretty | kind=module | role=module | in=0 | out=13 | module=buttons_pretty | lane=buttons_pretty | buttons_pretty.py</title>
+      
+      
+      <rect x="7376.9" y="187.0" width="327.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.100" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="7377.9" y="188.0" width="325.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="7379.1" y="189.2" width="322.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="7386.9" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      <g class="nodeChip"><rect x="7389.9" y="179.0" width="46.0" height="18.0" rx="9" ry="9" fill="none" opacity="0.98" /><text class="chip-text" x="7412.9" y="191.2" text-anchor="middle" fill="none">HUB</text></g>
+      <g class="nodeBadge"><rect x="7660.9" y="199.0" width="30.0" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="7675.9" y="210.4" text-anchor="middle" fill="none">H</text></g><g class="nodeBadge"><rect x="7615.3" y="199.0" width="39.6" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="7635.1" y="210.4" text-anchor="middle" fill="none">↗ 13</text></g><g class="nodeBadge"><rect x="7576.1" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="7592.7" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="7391.9" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="7409.9" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">buttons_pretty</text>
+      <text class="node-subtitle" x="7409.9" y="225.5" font-size="10.6" font-weight="600" fill="none">buttons_pretty.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=buttons | kind=module | role=module | in=0 | out=15 | module=buttons | lane=buttons | buttons.py</title>
+      
+      
+      <rect x="7818.6" y="187.0" width="263.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.100" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="7819.6" y="188.0" width="261.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="7820.8" y="189.2" width="258.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="7828.6" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      <g class="nodeChip"><rect x="7831.6" y="179.0" width="46.0" height="18.0" rx="9" ry="9" fill="none" opacity="0.98" /><text class="chip-text" x="7854.6" y="191.2" text-anchor="middle" fill="none">HUB</text></g>
+      <g class="nodeBadge"><rect x="8038.6" y="199.0" width="30.0" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="8053.6" y="210.4" text-anchor="middle" fill="none">H</text></g><g class="nodeBadge"><rect x="7993.0" y="199.0" width="39.6" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="8012.8" y="210.4" text-anchor="middle" fill="none">↗ 15</text></g><g class="nodeBadge"><rect x="7953.8" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="7970.4" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="7833.6" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="7851.6" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">buttons</text>
+      <text class="node-subtitle" x="7851.6" y="225.5" font-size="10.6" font-weight="600" fill="none">buttons.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=primitives | kind=module | role=module | in=0 | out=20 | module=primitives | lane=primitives | __init__.py</title>
+      
+      
+      <rect x="8196.2" y="187.0" width="291.0" height="44.0" rx="15.0" ry="15.0" fill="none" stroke="currentColor" stroke-opacity="0.100" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="8197.2" y="188.0" width="289.0" height="42.0"
+              rx="14.0" ry="14.0"
+              fill="none" fill-opacity="1.000"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" />
+        <rect x="8198.4" y="189.2" width="286.6" height="19.3" rx="13.0" ry="13.0" fill="none" opacity="0.180" />
+        <rect x="8206.2" y="197.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      <g class="nodeChip"><rect x="8209.2" y="179.0" width="46.0" height="18.0" rx="9" ry="9" fill="none" opacity="0.98" /><text class="chip-text" x="8232.2" y="191.2" text-anchor="middle" fill="none">HUB</text></g>
+      <g class="nodeBadge"><rect x="8444.2" y="199.0" width="30.0" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="8459.2" y="210.4" text-anchor="middle" fill="none">H</text></g><g class="nodeBadge"><rect x="8398.6" y="199.0" width="39.6" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="8418.4" y="210.4" text-anchor="middle" fill="none">↗ 20</text></g><g class="nodeBadge"><rect x="8359.4" y="199.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="8376.0" y="210.4" text-anchor="middle" fill="none">↙ 0</text></g>
+      <text class="node-icon" x="8211.2" y="211.0" fill="none">◫</text>
+      <text class="node-label" x="8229.2" y="211.0"
+            font-size="13.0" font-weight="700" fill="none">primitives</text>
+      <text class="node-subtitle" x="8229.2" y="225.5" font-size="10.6" font-weight="600" fill="none">__init__.py</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=PySide6 | kind=external | role=external | in=60 | out=0 | module=PySide6 | lane=[external] | PySide6</title>
+      
+      
+      <rect x="8593.8" y="199.0" width="269.0" height="44.0" rx="17.0" ry="17.0" fill="none" stroke="currentColor" stroke-opacity="0.100" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="8594.8" y="200.0" width="267.0" height="42.0"
+              rx="16.0" ry="16.0"
+              fill="none" fill-opacity="0.920"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" stroke-dasharray="7 5" />
+        <rect x="8596.0" y="201.2" width="264.6" height="19.3" rx="15.0" ry="15.0" fill="none" opacity="0.180" />
+        <rect x="8603.8" y="209.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      <g class="nodeChip"><rect x="8606.8" y="191.0" width="70.8" height="18.0" rx="9" ry="9" fill="none" opacity="0.98" /><text class="chip-text" x="8642.2" y="203.2" text-anchor="middle" fill="none">EXTERNAL</text></g>
+      <g class="nodeBadge"><rect x="8819.8" y="211.0" width="30.0" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="8834.8" y="222.4" text-anchor="middle" fill="none">H</text></g><g class="nodeBadge"><rect x="8780.6" y="211.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="8797.2" y="222.4" text-anchor="middle" fill="none">↗ 0</text></g><g class="nodeBadge"><rect x="8735.0" y="211.0" width="39.6" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="8754.8" y="222.4" text-anchor="middle" fill="none">↙ 60</text></g>
+      <text class="node-icon" x="8608.8" y="223.0" fill="none">◎</text>
+      <text class="node-label" x="8626.8" y="223.0"
+            font-size="13.0" font-weight="700" fill="none">PySide6</text>
+      <text class="node-subtitle" x="8626.8" y="237.5" font-size="10.6" font-weight="600" fill="none">boundary system</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=deltaforge | kind=external | role=external | in=22 | out=0 | module=deltaforge | lane=[external] | deltaforge</title>
+      
+      
+      <rect x="8593.8" y="261.0" width="297.0" height="44.0" rx="17.0" ry="17.0" fill="none" stroke="currentColor" stroke-opacity="0.100" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="8594.8" y="262.0" width="295.0" height="42.0"
+              rx="16.0" ry="16.0"
+              fill="none" fill-opacity="0.920"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" stroke-dasharray="7 5" />
+        <rect x="8596.0" y="263.2" width="292.6" height="19.3" rx="15.0" ry="15.0" fill="none" opacity="0.180" />
+        <rect x="8603.8" y="271.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      <g class="nodeChip"><rect x="8606.8" y="253.0" width="70.8" height="18.0" rx="9" ry="9" fill="none" opacity="0.98" /><text class="chip-text" x="8642.2" y="265.2" text-anchor="middle" fill="none">EXTERNAL</text></g>
+      <g class="nodeBadge"><rect x="8847.8" y="273.0" width="30.0" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="8862.8" y="284.4" text-anchor="middle" fill="none">H</text></g><g class="nodeBadge"><rect x="8808.6" y="273.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="8825.2" y="284.4" text-anchor="middle" fill="none">↗ 0</text></g><g class="nodeBadge"><rect x="8763.0" y="273.0" width="39.6" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="8782.8" y="284.4" text-anchor="middle" fill="none">↙ 22</text></g>
+      <text class="node-icon" x="8608.8" y="285.0" fill="none">◎</text>
+      <text class="node-label" x="8626.8" y="285.0"
+            font-size="13.0" font-weight="700" fill="none">deltaforge</text>
+      <text class="node-subtitle" x="8626.8" y="299.5" font-size="10.6" font-weight="600" fill="none">boundary system</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=typing | kind=external | role=external | in=18 | out=0 | module=typing | lane=[external] | typing</title>
+      
+      
+      <rect x="8593.8" y="323.0" width="260.0" height="44.0" rx="17.0" ry="17.0" fill="none" stroke="currentColor" stroke-opacity="0.100" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="8594.8" y="324.0" width="258.0" height="42.0"
+              rx="16.0" ry="16.0"
+              fill="none" fill-opacity="0.920"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" stroke-dasharray="7 5" />
+        <rect x="8596.0" y="325.2" width="255.6" height="19.3" rx="15.0" ry="15.0" fill="none" opacity="0.180" />
+        <rect x="8603.8" y="333.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      <g class="nodeChip"><rect x="8606.8" y="315.0" width="70.8" height="18.0" rx="9" ry="9" fill="none" opacity="0.98" /><text class="chip-text" x="8642.2" y="327.2" text-anchor="middle" fill="none">EXTERNAL</text></g>
+      <g class="nodeBadge"><rect x="8810.8" y="335.0" width="30.0" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="8825.8" y="346.4" text-anchor="middle" fill="none">H</text></g><g class="nodeBadge"><rect x="8771.6" y="335.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="8788.2" y="346.4" text-anchor="middle" fill="none">↗ 0</text></g><g class="nodeBadge"><rect x="8726.0" y="335.0" width="39.6" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="8745.8" y="346.4" text-anchor="middle" fill="none">↙ 18</text></g>
+      <text class="node-icon" x="8608.8" y="347.0" fill="none">◎</text>
+      <text class="node-label" x="8626.8" y="347.0"
+            font-size="13.0" font-weight="700" fill="none">typing</text>
+      <text class="node-subtitle" x="8626.8" y="361.5" font-size="10.6" font-weight="600" fill="none">boundary system</text>
+    </g>
+    
+    <g class="nodeGroup" opacity="1.000">
+      <title>label=__future__ | kind=external | role=external | in=13 | out=0 | module=__future__ | lane=[external] | __future__</title>
+      
+      
+      <rect x="8593.8" y="385.0" width="297.0" height="44.0" rx="17.0" ry="17.0" fill="none" stroke="currentColor" stroke-opacity="0.100" stroke-width="1.5" filter="url(#glowStrong)" />
+      <g filter="url(#shadowNode)">
+        <rect x="8594.8" y="386.0" width="295.0" height="42.0"
+              rx="16.0" ry="16.0"
+              fill="none" fill-opacity="0.920"
+              stroke="currentColor" stroke-opacity="1.000" stroke-width="1.5" stroke-dasharray="7 5" />
+        <rect x="8596.0" y="387.2" width="292.6" height="19.3" rx="15.0" ry="15.0" fill="none" opacity="0.180" />
+        <rect x="8603.8" y="395.0" width="3.8" height="24.0" rx="2" ry="2" fill="none" opacity="0.95" />
+      </g>
+      <g class="nodeChip"><rect x="8606.8" y="377.0" width="70.8" height="18.0" rx="9" ry="9" fill="none" opacity="0.98" /><text class="chip-text" x="8642.2" y="389.2" text-anchor="middle" fill="none">EXTERNAL</text></g>
+      <g class="nodeBadge"><rect x="8847.8" y="397.0" width="30.0" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="8862.8" y="408.4" text-anchor="middle" fill="none">H</text></g><g class="nodeBadge"><rect x="8808.6" y="397.0" width="33.2" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="8825.2" y="408.4" text-anchor="middle" fill="none">↗ 0</text></g><g class="nodeBadge"><rect x="8763.0" y="397.0" width="39.6" height="16.5" rx="8.2" ry="8.2" fill="none" opacity="0.96" /><text class="badge-text" x="8782.8" y="408.4" text-anchor="middle" fill="none">↙ 13</text></g>
+      <text class="node-icon" x="8608.8" y="409.0" fill="none">◎</text>
+      <text class="node-label" x="8626.8" y="409.0"
+            font-size="13.0" font-weight="700" fill="none">__future__</text>
+      <text class="node-subtitle" x="8626.8" y="423.5" font-size="10.6" font-weight="600" fill="none">boundary system</text>
+    </g>
+    </g>
+
+  
+  
+    <g class="footerPanel">
+      <rect x="58.0" y="456.0" width="8859.0" height="22.0"
+            rx="12.0" ry="12.0"
+            fill="none" fill-opacity="1.000"
+            stroke="currentColor" stroke-opacity="0.720" stroke-width="1.5" />
+      <text class="svg-footer" x="70.0" y="470.5">21 fuentes • 21 parseados • 25 nodos • 48 relaciones • vista module • tema obsidian_liquid_glass</text>
+      <text class="svg-footer" x="8903.0" y="470.5" text-anchor="end">Generado: 2026-03-31 12:58:49</text>
+    </g>
+    
+</svg>

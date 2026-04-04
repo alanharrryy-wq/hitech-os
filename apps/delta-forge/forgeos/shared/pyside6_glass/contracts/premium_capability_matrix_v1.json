@@ -1,0 +1,979 @@
+{
+  "version": "v1",
+  "description": "Operational premium capability matrix (before-status baseline + required evidence tags).",
+  "total_capabilities": 100,
+  "release_blocker_capabilities": 40,
+  "rows": [
+    {
+      "capability_id": 1,
+      "pillar": "Base de interacción y control",
+      "capability": "La app abre rápido y se siente viva desde el primer segundo",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:startup_blank_workspace:pass"
+      ]
+    },
+    {
+      "capability_id": 2,
+      "pillar": "Base de interacción y control",
+      "capability": "La ventana completa se puede redimensionar por esquinas y bordes sin glitches",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 3,
+      "pillar": "Base de interacción y control",
+      "capability": "Los paneles internos se pueden arrastrar cuando eso forma parte del producto",
+      "release_blocker": true,
+      "before_status": "missing",
+      "required_evidence_tags": [
+        "session:drag_panel_cross_slot:pass"
+      ]
+    },
+    {
+      "capability_id": 4,
+      "pillar": "Base de interacción y control",
+      "capability": "Los paneles internos se pueden redimensionar con handles claros y consistentes",
+      "release_blocker": true,
+      "before_status": "missing",
+      "required_evidence_tags": [
+        "session:resize_panel_and_clamp:pass"
+      ]
+    },
+    {
+      "capability_id": 5,
+      "pillar": "Base de interacción y control",
+      "capability": "Todo movimiento respeta límites del workspace y no se sale del canvas",
+      "release_blocker": true,
+      "before_status": "missing",
+      "required_evidence_tags": [
+        "session:resize_panel_and_clamp:pass",
+        "session:drag_panel_cross_slot:pass"
+      ]
+    },
+    {
+      "capability_id": 6,
+      "pillar": "Base de interacción y control",
+      "capability": "Los elementos interactivos responden igual con mouse, trackpad y touch si aplica",
+      "release_blocker": true,
+      "before_status": "missing",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 7,
+      "pillar": "Base de interacción y control",
+      "capability": "No hay zonas muertas donde parece clickeable pero no pasa nada",
+      "release_blocker": true,
+      "before_status": "missing",
+      "required_evidence_tags": [
+        "session:picker_search_and_category:pass"
+      ]
+    },
+    {
+      "capability_id": 8,
+      "pillar": "Base de interacción y control",
+      "capability": "El foco visual siempre deja claro qué elemento está activo",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:startup_blank_workspace:pass"
+      ]
+    },
+    {
+      "capability_id": 9,
+      "pillar": "Base de interacción y control",
+      "capability": "Los estados hover, pressed, selected y focused están bien diferenciados",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 10,
+      "pillar": "Base de interacción y control",
+      "capability": "No hay acciones visibles que se sientan decorativas o inútiles",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:add_to_current_tab:pass"
+      ]
+    },
+    {
+      "capability_id": 11,
+      "pillar": "Layout y composición",
+      "capability": "El workspace principal domina visualmente la pantalla",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:startup_blank_workspace:pass"
+      ]
+    },
+    {
+      "capability_id": 12,
+      "pillar": "Layout y composición",
+      "capability": "No hay contenedores inútiles dentro de contenedores inútiles",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 13,
+      "pillar": "Layout y composición",
+      "capability": "Las barras laterales no roban espacio si no son necesarias",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:startup_blank_workspace:pass"
+      ]
+    },
+    {
+      "capability_id": 14,
+      "pillar": "Layout y composición",
+      "capability": "El layout se adapta bien cuando ocultas o abres paneles secundarios",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:open_in_new_tab:pass"
+      ]
+    },
+    {
+      "capability_id": 15,
+      "pillar": "Layout y composición",
+      "capability": "Los márgenes y paddings se sienten intencionales, no acumulados",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 16,
+      "pillar": "Layout y composición",
+      "capability": "El contenido importante nunca queda aplastado por chrome innecesario",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:startup_blank_workspace:pass"
+      ]
+    },
+    {
+      "capability_id": 17,
+      "pillar": "Layout y composición",
+      "capability": "La jerarquía visual se entiende en 3 segundos",
+      "release_blocker": true,
+      "before_status": "missing",
+      "required_evidence_tags": [
+        "session:startup_blank_workspace:pass"
+      ]
+    },
+    {
+      "capability_id": 18,
+      "pillar": "Layout y composición",
+      "capability": "El sistema soporta bien vistas vacías sin verse roto",
+      "release_blocker": true,
+      "before_status": "solid",
+      "required_evidence_tags": [
+        "session:startup_blank_workspace:pass"
+      ]
+    },
+    {
+      "capability_id": 19,
+      "pillar": "Layout y composición",
+      "capability": "La app no colapsa feo en tamaños chicos o medianos",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 20,
+      "pillar": "Layout y composición",
+      "capability": "Hay equilibrio entre densidad de información y aire visual",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 21,
+      "pillar": "Navegación premium",
+      "capability": "Siempre sabes dónde estás dentro de la app",
+      "release_blocker": true,
+      "before_status": "solid",
+      "required_evidence_tags": [
+        "session:startup_blank_workspace:pass"
+      ]
+    },
+    {
+      "capability_id": 22,
+      "pillar": "Navegación premium",
+      "capability": "Siempre sabes qué puedes hacer después",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:startup_blank_workspace:pass"
+      ]
+    },
+    {
+      "capability_id": 23,
+      "pillar": "Navegación premium",
+      "capability": "Las rutas principales son pocas, claras y memorables",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:picker_search_and_category:pass"
+      ]
+    },
+    {
+      "capability_id": 24,
+      "pillar": "Navegación premium",
+      "capability": "Existe una forma rápida global de buscar o invocar cosas importantes",
+      "release_blocker": true,
+      "before_status": "solid",
+      "required_evidence_tags": [
+        "session:picker_search_and_category:pass"
+      ]
+    },
+    {
+      "capability_id": 25,
+      "pillar": "Navegación premium",
+      "capability": "Los cambios de vista no se sienten abruptos ni confusos",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:picker_search_and_category:pass"
+      ]
+    },
+    {
+      "capability_id": 26,
+      "pillar": "Navegación premium",
+      "capability": "El back / close / cancel siempre hace algo esperable",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:open_in_new_tab:pass"
+      ]
+    },
+    {
+      "capability_id": 27,
+      "pillar": "Navegación premium",
+      "capability": "La navegación no depende de aprenderte el truco oculto",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:add_to_current_tab:pass"
+      ]
+    },
+    {
+      "capability_id": 28,
+      "pillar": "Navegación premium",
+      "capability": "Hay accesos rápidos para usuarios intensivos",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:picker_search_and_category:pass"
+      ]
+    },
+    {
+      "capability_id": 29,
+      "pillar": "Navegación premium",
+      "capability": "Las herramientas avanzadas están accesibles sin dominar toda la UI",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:data_runtime_probe_states:pass"
+      ]
+    },
+    {
+      "capability_id": 30,
+      "pillar": "Navegación premium",
+      "capability": "La navegación secundaria no compite con la principal",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:open_in_new_tab:pass"
+      ]
+    },
+    {
+      "capability_id": 31,
+      "pillar": "Flujo de trabajo y productividad",
+      "capability": "Crear algo nuevo es obvio y no da miedo",
+      "release_blocker": true,
+      "before_status": "solid",
+      "required_evidence_tags": [
+        "session:startup_blank_workspace:pass"
+      ]
+    },
+    {
+      "capability_id": 32,
+      "pillar": "Flujo de trabajo y productividad",
+      "capability": "Editar algo existente es directo y no te manda por tres menús",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:add_to_current_tab:pass"
+      ]
+    },
+    {
+      "capability_id": 33,
+      "pillar": "Flujo de trabajo y productividad",
+      "capability": "Reemplazar, mover, duplicar o borrar elementos es consistente",
+      "release_blocker": true,
+      "before_status": "solid",
+      "required_evidence_tags": [
+        "session:drag_panel_cross_slot:pass"
+      ]
+    },
+    {
+      "capability_id": 34,
+      "pillar": "Flujo de trabajo y productividad",
+      "capability": "Los flujos comunes requieren pocos clics",
+      "release_blocker": true,
+      "before_status": "solid",
+      "required_evidence_tags": [
+        "session:add_to_current_tab:pass"
+      ]
+    },
+    {
+      "capability_id": 35,
+      "pillar": "Flujo de trabajo y productividad",
+      "capability": "Las acciones pesadas tienen confirmación clara",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:clone_reset_isolation:pass"
+      ]
+    },
+    {
+      "capability_id": 36,
+      "pillar": "Flujo de trabajo y productividad",
+      "capability": "Las acciones frecuentes tienen shortcuts o paths rápidos",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:picker_search_and_category:pass"
+      ]
+    },
+    {
+      "capability_id": 37,
+      "pillar": "Flujo de trabajo y productividad",
+      "capability": "El sistema favorece continuidad, no reinicios pendejos",
+      "release_blocker": true,
+      "before_status": "solid",
+      "required_evidence_tags": [
+        "session:clone_reset_isolation:pass"
+      ]
+    },
+    {
+      "capability_id": 38,
+      "pillar": "Flujo de trabajo y productividad",
+      "capability": "Puedes retomar trabajo sin perder contexto",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:clone_reset_isolation:pass"
+      ]
+    },
+    {
+      "capability_id": 39,
+      "pillar": "Flujo de trabajo y productividad",
+      "capability": "La app tolera interrupciones sin romper el estado",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:clone_reset_isolation:pass"
+      ]
+    },
+    {
+      "capability_id": 40,
+      "pillar": "Flujo de trabajo y productividad",
+      "capability": "El usuario siente progreso constante, no fricción constante",
+      "release_blocker": true,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:open_in_new_tab:pass",
+        "session:drag_panel_cross_slot:pass"
+      ]
+    },
+    {
+      "capability_id": 41,
+      "pillar": "Claridad de acciones",
+      "capability": "Cada botón tiene una intención clara y específica",
+      "release_blocker": false,
+      "before_status": "solid",
+      "required_evidence_tags": []
+    },
+    {
+      "capability_id": 42,
+      "pillar": "Claridad de acciones",
+      "capability": "Los CTAs principales se distinguen sin gritar",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:add_to_current_tab:pass"
+      ]
+    },
+    {
+      "capability_id": 43,
+      "pillar": "Claridad de acciones",
+      "capability": "Las acciones secundarias no roban protagonismo",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 44,
+      "pillar": "Claridad de acciones",
+      "capability": "Las acciones destructivas están claramente separadas",
+      "release_blocker": false,
+      "before_status": "solid",
+      "required_evidence_tags": []
+    },
+    {
+      "capability_id": 45,
+      "pillar": "Claridad de acciones",
+      "capability": "Si una acción no está disponible, la UI explica por qué",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:add_to_current_tab:pass"
+      ]
+    },
+    {
+      "capability_id": 46,
+      "pillar": "Claridad de acciones",
+      "capability": "Las acciones contextuales aparecen cuando importan, no siempre",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:picker_search_and_category:pass"
+      ]
+    },
+    {
+      "capability_id": 47,
+      "pillar": "Claridad de acciones",
+      "capability": "No hay duplicidad rara entre botones que hacen casi lo mismo",
+      "release_blocker": false,
+      "before_status": "solid",
+      "required_evidence_tags": []
+    },
+    {
+      "capability_id": 48,
+      "pillar": "Claridad de acciones",
+      "capability": "El lenguaje de acciones es consistente en toda la app",
+      "release_blocker": false,
+      "before_status": "solid",
+      "required_evidence_tags": []
+    },
+    {
+      "capability_id": 49,
+      "pillar": "Claridad de acciones",
+      "capability": "La app no te obliga a adivinar qué botón era el bueno",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:picker_search_and_category:pass"
+      ]
+    },
+    {
+      "capability_id": 50,
+      "pillar": "Claridad de acciones",
+      "capability": "Ningún flujo clave depende de un botón escondido en un panel oscuro",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:add_to_current_tab:pass"
+      ]
+    },
+    {
+      "capability_id": 51,
+      "pillar": "Estados vacíos, loading y feedback",
+      "capability": "Los empty states se ven premium, no como abandono",
+      "release_blocker": false,
+      "before_status": "solid",
+      "required_evidence_tags": []
+    },
+    {
+      "capability_id": 52,
+      "pillar": "Estados vacíos, loading y feedback",
+      "capability": "Los empty states explican qué hacer después",
+      "release_blocker": false,
+      "before_status": "solid",
+      "required_evidence_tags": []
+    },
+    {
+      "capability_id": 53,
+      "pillar": "Estados vacíos, loading y feedback",
+      "capability": "Los skeletons/loading states se sienten elegantes y útiles",
+      "release_blocker": false,
+      "before_status": "missing",
+      "required_evidence_tags": [
+        "session:data_runtime_probe_states:pass"
+      ]
+    },
+    {
+      "capability_id": 54,
+      "pillar": "Estados vacíos, loading y feedback",
+      "capability": "Nunca hay pantallas congeladas sin feedback",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:data_runtime_probe_states:pass"
+      ]
+    },
+    {
+      "capability_id": 55,
+      "pillar": "Estados vacíos, loading y feedback",
+      "capability": "Guardar, enviar, cargar o sincronizar muestran progreso entendible",
+      "release_blocker": false,
+      "before_status": "solid",
+      "required_evidence_tags": []
+    },
+    {
+      "capability_id": 56,
+      "pillar": "Estados vacíos, loading y feedback",
+      "capability": "Los errores se explican con lenguaje humano",
+      "release_blocker": false,
+      "before_status": "solid",
+      "required_evidence_tags": []
+    },
+    {
+      "capability_id": 57,
+      "pillar": "Estados vacíos, loading y feedback",
+      "capability": "Los éxitos confirman sin interrumpir de más",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 58,
+      "pillar": "Estados vacíos, loading y feedback",
+      "capability": "Los warnings no parecen errores fatales",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 59,
+      "pillar": "Estados vacíos, loading y feedback",
+      "capability": "El feedback temporal desaparece cuando debe desaparecer",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 60,
+      "pillar": "Estados vacíos, loading y feedback",
+      "capability": "El sistema comunica claramente cuando una acción sigue corriendo",
+      "release_blocker": false,
+      "before_status": "missing",
+      "required_evidence_tags": [
+        "session:data_runtime_probe_states:pass"
+      ]
+    },
+    {
+      "capability_id": 61,
+      "pillar": "Consistencia visual",
+      "capability": "Hay un solo lenguaje visual dominante",
+      "release_blocker": false,
+      "before_status": "solid",
+      "required_evidence_tags": []
+    },
+    {
+      "capability_id": 62,
+      "pillar": "Consistencia visual",
+      "capability": "Los bordes están controlados y no ensucian todo",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 63,
+      "pillar": "Consistencia visual",
+      "capability": "Los radios, sombras y transparencias siguen reglas claras",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 64,
+      "pillar": "Consistencia visual",
+      "capability": "La paleta no se siente accidental ni saturada",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 65,
+      "pillar": "Consistencia visual",
+      "capability": "Los colores de estado tienen significado consistente",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:data_runtime_probe_states:pass"
+      ]
+    },
+    {
+      "capability_id": 66,
+      "pillar": "Consistencia visual",
+      "capability": "No hay componentes viejos mezclados con otros nuevos",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_theme_surface_opacity:pass"
+      ]
+    },
+    {
+      "capability_id": 67,
+      "pillar": "Consistencia visual",
+      "capability": "Los íconos tienen el mismo estilo y peso visual",
+      "release_blocker": false,
+      "before_status": "solid",
+      "required_evidence_tags": []
+    },
+    {
+      "capability_id": 68,
+      "pillar": "Consistencia visual",
+      "capability": "Los tabs, chips, cards y panels hablan el mismo idioma visual",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 69,
+      "pillar": "Consistencia visual",
+      "capability": "El contraste está bien cuidado sin verse gritón",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 70,
+      "pillar": "Consistencia visual",
+      "capability": "La UI se ve fina tanto en screenshot como en uso real",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 71,
+      "pillar": "Belleza percibida y delight",
+      "capability": "La app tiene un wow factor sobrio, no cirquero",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": []
+    },
+    {
+      "capability_id": 72,
+      "pillar": "Belleza percibida y delight",
+      "capability": "Las animaciones son suaves y útiles, no mamadoras",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 73,
+      "pillar": "Belleza percibida y delight",
+      "capability": "Hay profundidad visual sin ensuciar legibilidad",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 74,
+      "pillar": "Belleza percibida y delight",
+      "capability": "El vidrio, blur o glow, si existen, se usan con disciplina",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 75,
+      "pillar": "Belleza percibida y delight",
+      "capability": "El contenido importante siempre se ve más fuerte que los adornos",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": []
+    },
+    {
+      "capability_id": 76,
+      "pillar": "Belleza percibida y delight",
+      "capability": "La interfaz se siente moderna, no retro-utilitaria",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": []
+    },
+    {
+      "capability_id": 77,
+      "pillar": "Belleza percibida y delight",
+      "capability": "La estética aguanta muchas horas de uso sin cansar",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": []
+    },
+    {
+      "capability_id": 78,
+      "pillar": "Belleza percibida y delight",
+      "capability": "La app se siente cara aunque haga cosas simples",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": []
+    },
+    {
+      "capability_id": 79,
+      "pillar": "Belleza percibida y delight",
+      "capability": "La identidad visual es memorable",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": []
+    },
+    {
+      "capability_id": 80,
+      "pillar": "Belleza percibida y delight",
+      "capability": "La UI no parece plantilla genérica con maquillaje oscuro",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": []
+    },
+    {
+      "capability_id": 81,
+      "pillar": "Datos, verdad y confianza",
+      "capability": "Siempre está claro qué datos estás viendo",
+      "release_blocker": false,
+      "before_status": "solid",
+      "required_evidence_tags": [
+        "session:data_runtime_probe_states:pass"
+      ]
+    },
+    {
+      "capability_id": 82,
+      "pillar": "Datos, verdad y confianza",
+      "capability": "Siempre está claro de dónde vienen esos datos",
+      "release_blocker": false,
+      "before_status": "solid",
+      "required_evidence_tags": [
+        "session:data_runtime_probe_states:pass"
+      ]
+    },
+    {
+      "capability_id": 83,
+      "pillar": "Datos, verdad y confianza",
+      "capability": "Siempre está claro cuándo fueron actualizados",
+      "release_blocker": false,
+      "before_status": "missing",
+      "required_evidence_tags": [
+        "session:data_runtime_probe_states:pass"
+      ]
+    },
+    {
+      "capability_id": 84,
+      "pillar": "Datos, verdad y confianza",
+      "capability": "Las acciones sobre datos dejan rastro o confirmación visible",
+      "release_blocker": false,
+      "before_status": "solid",
+      "required_evidence_tags": [
+        "session:data_runtime_probe_states:pass"
+      ]
+    },
+    {
+      "capability_id": 85,
+      "pillar": "Datos, verdad y confianza",
+      "capability": "Los estados de sync/dispatch/error no están escondidos",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:data_runtime_probe_states:pass"
+      ]
+    },
+    {
+      "capability_id": 86,
+      "pillar": "Datos, verdad y confianza",
+      "capability": "Puedes distinguir entre draft, activo, fallido, pendiente, aprobado, etc.",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:data_runtime_probe_states:pass"
+      ]
+    },
+    {
+      "capability_id": 87,
+      "pillar": "Datos, verdad y confianza",
+      "capability": "No hay ambigüedad entre preview, estado actual y estado guardado",
+      "release_blocker": false,
+      "before_status": "solid",
+      "required_evidence_tags": [
+        "session:clone_reset_isolation:pass"
+      ]
+    },
+    {
+      "capability_id": 88,
+      "pillar": "Datos, verdad y confianza",
+      "capability": "La app evita que tomes decisiones con información vieja sin avisarte",
+      "release_blocker": false,
+      "before_status": "missing",
+      "required_evidence_tags": [
+        "session:data_runtime_probe_states:pass"
+      ]
+    },
+    {
+      "capability_id": 89,
+      "pillar": "Datos, verdad y confianza",
+      "capability": "Los cambios tienen persistencia clara o rollback claro",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:clone_reset_isolation:pass"
+      ]
+    },
+    {
+      "capability_id": 90,
+      "pillar": "Datos, verdad y confianza",
+      "capability": "El usuario siente confianza operativa, no incertidumbre",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "session:data_runtime_probe_states:pass"
+      ]
+    },
+    {
+      "capability_id": 91,
+      "pillar": "Robustez, accesibilidad y calidad total",
+      "capability": "La app soporta bien sesiones largas sin degradarse culero",
+      "release_blocker": false,
+      "before_status": "missing",
+      "required_evidence_tags": [
+        "check:test_ux_flight_recorder:pass"
+      ]
+    },
+    {
+      "capability_id": 92,
+      "pillar": "Robustez, accesibilidad y calidad total",
+      "capability": "Los componentes no se rompen al cambiar tamaño, zoom o densidad",
+      "release_blocker": false,
+      "before_status": "missing",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 93,
+      "pillar": "Robustez, accesibilidad y calidad total",
+      "capability": "El teclado permite operar flujos importantes",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 94,
+      "pillar": "Robustez, accesibilidad y calidad total",
+      "capability": "El foco accesible está bien resuelto",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 95,
+      "pillar": "Robustez, accesibilidad y calidad total",
+      "capability": "El texto sigue siendo legible en todos los estados",
+      "release_blocker": false,
+      "before_status": "partial",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass"
+      ]
+    },
+    {
+      "capability_id": 96,
+      "pillar": "Robustez, accesibilidad y calidad total",
+      "capability": "El sistema tolera errores parciales sin colapsar toda la experiencia",
+      "release_blocker": false,
+      "before_status": "missing",
+      "required_evidence_tags": [
+        "session:data_runtime_probe_states:pass"
+      ]
+    },
+    {
+      "capability_id": 97,
+      "pillar": "Robustez, accesibilidad y calidad total",
+      "capability": "Las funcionalidades chidas tienen protección contra regresión",
+      "release_blocker": false,
+      "before_status": "missing",
+      "required_evidence_tags": [
+        "check:test_ux_flight_recorder:pass"
+      ]
+    },
+    {
+      "capability_id": 98,
+      "pillar": "Robustez, accesibilidad y calidad total",
+      "capability": "Hay tests o checks para interacción crítica, no solo para lógica interna",
+      "release_blocker": false,
+      "before_status": "solid",
+      "required_evidence_tags": [
+        "check:test_catalog_workbench:pass",
+        "check:test_ux_flight_recorder:pass"
+      ]
+    },
+    {
+      "capability_id": 99,
+      "pillar": "Robustez, accesibilidad y calidad total",
+      "capability": "El producto tiene un contrato claro de capacidades sagradas",
+      "release_blocker": false,
+      "before_status": "solid",
+      "required_evidence_tags": [
+        "check:release_gate:pass"
+      ]
+    },
+    {
+      "capability_id": 100,
+      "pillar": "Robustez, accesibilidad y calidad total",
+      "capability": "Cada release puede demostrar que no rompió lo que hacía amada a la app",
+      "release_blocker": false,
+      "before_status": "missing",
+      "required_evidence_tags": [
+        "check:proof_runner:pass",
+        "check:session_suite_complete:pass",
+        "check:compile:pass"
+      ]
+    }
+  ]
+}

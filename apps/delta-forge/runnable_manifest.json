@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-04-03T01:25:36",
+  "input_dir": "F:\\repos\\hitech-os\\apps\\Nexus\\Iteraciones CHAT GPT",
+  "output_root": "F:\\repos\\hitech-os\\apps\\delta-forge",
+  "runnable_root": "F:\\repos\\hitech-os\\apps\\delta-forge\\_deltaforge_runnable_repo",
+  "app_entry": "F:\\repos\\hitech-os\\apps\\delta-forge\\_deltaforge_runnable_repo\\apps\\deltaforge\\deltaforge_app.py",
+  "launchers": {
+    "powershell": "F:\\repos\\hitech-os\\apps\\delta-forge\\_deltaforge_runnable_repo\\run_deltaforge.ps1",
+    "cmd": "F:\\repos\\hitech-os\\apps\\delta-forge\\_deltaforge_runnable_repo\\run_deltaforge.cmd"
+  },
+  "source_plan": {
+    "mode": "prepared_workspace",
+    "deltaforge_source": "F:\\repos\\hitech-os\\apps\\delta-forge\\_migration_workspace\\extracted\\deltaforge_zip_extracted\\deltaforge",
+    "shared_source": "F:\\repos\\hitech-os\\apps\\delta-forge\\_migration_workspace\\extracted\\shared_zip_extracted\\shared"
+  },
+  "notes": [
+    "Workspace administrado e idempotente.",
+    "No depende del directorio actual de ejecución.",
+    "La estructura final satisface imports forgeos.shared.* y assets bajo apps/deltaforge."
+  ]
+}
