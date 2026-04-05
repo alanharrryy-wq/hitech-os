@@ -32,6 +32,7 @@ UUID_RE = re.compile(
     r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b"
 )
 HOSTNAME_RE = re.compile(r"\b(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}\b")
+_TUNNEL_INFO_JSON_SUPPORTED: bool | None = None
 
 
 class TunnelSetupError(RuntimeError):
@@ -277,7 +278,33 @@ def get_connections_count_from_info_json(payload: dict[str, Any]) -> int:
         return len(payload["connectors"])
     if isinstance(payload.get("haConnections"), list):
         return len(payload["haConnections"])
+    if isinstance(payload.get("conns"), list):
+        conns = payload["conns"]
+        nested_counts = [
+            len(item.get("conns"))
+            for item in conns
+            if isinstance(item, dict) and isinstance(item.get("conns"), list)
+        ]
+        if nested_counts:
+            return sum(nested_counts)
+        return len(conns)
     return 0
+
+
+def _supports_tunnel_info_json(ctx: RunContext) -> bool:
+    global _TUNNEL_INFO_JSON_SUPPORTED
+    if _TUNNEL_INFO_JSON_SUPPORTED is not None:
+        return _TUNNEL_INFO_JSON_SUPPORTED
+
+    help_result = cloudflared(ctx, ["tunnel", "info", "--help"], timeout=120)
+    combined = f"{help_result.stdout}\n{help_result.stderr}".lower()
+    _TUNNEL_INFO_JSON_SUPPORTED = help_result.returncode == 0 and "--output" in combined and "json" in combined
+    ctx.action(
+        "cloudflared_capability",
+        "ok",
+        {"tunnel_info_json_supported": _TUNNEL_INFO_JSON_SUPPORTED},
+    )
+    return _TUNNEL_INFO_JSON_SUPPORTED
 
 
 def parse_connections_count_from_text(output: str) -> int:
@@ -314,15 +341,16 @@ def parse_connections_count_from_text(output: str) -> int:
 
 
 def get_tunnel_connections_count(ctx: RunContext, tunnel_name: str) -> int:
-    info_json = cloudflared(ctx, ["tunnel", "info", tunnel_name, "--output", "json"], timeout=180)
-    if info_json.returncode == 0:
-        try:
-            payload = json.loads(info_json.stdout)
-            count = get_connections_count_from_info_json(payload)
-            ctx.action("tunnel_connections", "ok", {"mode": "json", "connections_count": count})
-            return count
-        except json.JSONDecodeError:
-            pass
+    if _supports_tunnel_info_json(ctx):
+        info_json = cloudflared(ctx, ["tunnel", "info", "--output", "json", tunnel_name], timeout=180)
+        if info_json.returncode == 0:
+            try:
+                payload = json.loads(info_json.stdout)
+                count = get_connections_count_from_info_json(payload)
+                ctx.action("tunnel_connections", "ok", {"mode": "json", "connections_count": count})
+                return count
+            except json.JSONDecodeError:
+                pass
 
     info_text = cloudflared(ctx, ["tunnel", "info", tunnel_name], timeout=180)
     if info_text.returncode != 0:
