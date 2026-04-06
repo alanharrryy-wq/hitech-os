@@ -26,9 +26,19 @@ def configure_deltaforge_glass_framework() -> None:
         return
 
     repo_root = Path(__file__).resolve().parents[4]
-    icon_dir = repo_root / "apps" / "deltaforge" / "assets" / "icons"
-    if icon_dir.exists():
-        register_icon_pack("deltaforge", icon_dir, metadata={"owner": "deltaforge"})
+    shared_icon_dir = repo_root / "forgeos" / "shared" / "pyside6_glass" / "assets" / "icons"
+    app_icon_dir = repo_root / "apps" / "deltaforge" / "assets" / "icons"
+
+    selected_icon_dir = shared_icon_dir if shared_icon_dir.exists() else app_icon_dir
+    if selected_icon_dir.exists():
+        register_icon_pack(
+            "deltaforge",
+            selected_icon_dir,
+            metadata={
+                "owner": "deltaforge",
+                "source": "shared" if selected_icon_dir == shared_icon_dir else "app",
+            },
+        )
         set_default_icon_pack("deltaforge")
     _CONFIGURED = True
 
