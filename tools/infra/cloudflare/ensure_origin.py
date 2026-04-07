@@ -155,18 +155,14 @@ def ensure_keystone_origin(
     last_launch_epoch = float(state.get("last_launch_epoch", 0) or 0)
     existing_pid = int(state.get("pid", 0) or 0)
     now = time.time()
-    should_launch = True
     port_open = _is_port_open(port)
     existing_pid_alive = existing_pid > 0 and _pid_alive(existing_pid)
-    if port_open:
-        should_launch = False
-    elif existing_pid_alive:
-        should_launch = False
+    should_launch = not port_open
 
     launched = False
     pid = existing_pid
     if should_launch:
-        if existing_pid > 0 and _pid_alive(existing_pid):
+        if existing_pid > 0 and existing_pid_alive:
             kill_old = run_logged(
                 ctx,
                 ["taskkill", "/PID", str(existing_pid), "/F"],
@@ -180,6 +176,19 @@ def ensure_keystone_origin(
                     {"pid": existing_pid, "stderr": kill_old.stderr.strip() or kill_old.stdout.strip() or "n/a"},
                 )
             time.sleep(1)
+
+        if existing_pid_alive and now - last_launch_epoch < launch_cooldown_seconds:
+            ctx.action(
+                "keystone_launch_cooldown",
+                "warning",
+                {
+                    "existing_pid": existing_pid,
+                    "last_launch_epoch": last_launch_epoch,
+                    "seconds_since_last_launch": now - last_launch_epoch,
+                    "launch_cooldown_seconds": launch_cooldown_seconds,
+                },
+            )
+
         try:
             pid = _launch_keystone_process(repo_root, port, runtime_log_path)
             launched = True
