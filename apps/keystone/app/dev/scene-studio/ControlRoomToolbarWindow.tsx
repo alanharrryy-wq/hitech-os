@@ -16,20 +16,8 @@ export function ControlRoomToolbarWindow({
     <FloatingWindow
       id="control-room-toolbar"
       title="Control Room"
-      hideCloseButton
-      frameStyle={frameStyle}
-      framePerfProfile={framePerfProfile}
-      minWidth={300}
-      minHeight={220}
-      defaultState={{
-        x: 16,
-        y: 16,
-        w: 360,
-        h: 280,
-        z: 1100,
-        visible: true,
-        collapsed: false
-      }}
+      defaultPos={{ x: 16, y: 16 }}
+      defaultSize={{ w: 360, h: 280 }}
     >
       <ControlRoomToolbar />
     </FloatingWindow>

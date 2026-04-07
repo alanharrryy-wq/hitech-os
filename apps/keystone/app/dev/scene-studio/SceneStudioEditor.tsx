@@ -24,11 +24,11 @@ function toTagsInput(tags: readonly string[]): string {
   return tags.join(", ");
 }
 
-function fromTagsInput(input: string): readonly string[] {
+function fromTagsInput(input: string): string[] {
   return input
     .split(",")
     .map((value) => value.trim())
-    .filter(Boolean);
+    .filter(Boolean) as string[];
 }
 
 function ensureRoute(route: string): string {
@@ -46,7 +46,7 @@ function ensureLayerList(layers: readonly LayerId[]): readonly LayerId[] {
   return Array.from(new Set(layers));
 }
 
-function sortLayers(layers: readonly LayerId[]): readonly LayerId[] {
+function sortLayers(layers: readonly LayerId[]): LayerId[] {
   return [...layers].sort((a, b) => a.localeCompare(b));
 }
 
@@ -58,7 +58,7 @@ export function SceneStudioEditor({ scene, onChange, onResetToDefaults }: SceneS
   if (!scene) return null;
 
   const invalidRoute = scene.route.trim().length > 0 && !scene.route.startsWith("/");
-  const invalidListMode = scene.mode === "list" && (!scene.layers || scene.layers.length === 0);
+  const invalidListMode = scene.layers.mode === "list" && scene.layers.layerIds.length === 0;
 
   return (
     <FloatingWindow
@@ -132,25 +132,6 @@ export function SceneStudioEditor({ scene, onChange, onResetToDefaults }: SceneS
         </div>
 
         <div className={cls("fieldset")}>
-          <label className={cls("legend")} htmlFor="scene-mode-input">
-            Mode
-          </label>
-          <select
-            id="scene-mode-input"
-            className={cls("select")}
-            value={scene.mode}
-            onChange={(event) =>
-              onChange(
-                updateScene(scene, { mode: event.currentTarget.value as SceneRecord["mode"] })
-              )
-            }
-          >
-            <option value="single">single</option>
-            <option value="list">list</option>
-          </select>
-        </div>
-
-        <div className={cls("fieldset")}>
           <div className={cls("legend")}>Layers</div>
 
           {Object.entries(LAYER_GROUPS).map(([group, ids]) => (
@@ -159,18 +140,18 @@ export function SceneStudioEditor({ scene, onChange, onResetToDefaults }: SceneS
 
               <div className={cls("layerGrid")}>
                 {ids.map((layerId) => {
-                  const checked = (scene.layers ?? []).includes(layerId);
+                  const checked = scene.layers.layerIds.includes(layerId);
                   return (
                     <label key={layerId} className={cls("layerItem")}>
                       <input
                         type="checkbox"
                         checked={checked}
                         onChange={(event) => {
-                          const next = event.currentTarget.checked
-                            ? ensureLayerList([...(scene.layers ?? []), layerId])
-                            : (scene.layers ?? []).filter((id) => id !== layerId);
-
-                          onChange(updateScene(scene, { layers: sortLayers(next) }));
+                          const nextLayerIds = event.currentTarget.checked
+                            ? ensureLayerList([...scene.layers.layerIds, layerId])
+                            : scene.layers.layerIds.filter((id) => id !== layerId);
+                          const nextMode = nextLayerIds.length > 0 ? "list" as const : "none" as const;
+                          onChange(updateScene(scene, { layers: { mode: nextMode, layerIds: sortLayers(nextLayerIds) } }));
                         }}
                       />
                       <span className={cls("layerLabel")}>{layerId}</span>

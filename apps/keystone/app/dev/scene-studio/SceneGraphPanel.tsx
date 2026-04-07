@@ -4,7 +4,7 @@ import { useMemo, type CSSProperties } from "react";
 import { usePathname } from "next/navigation";
 import { useLayerFlags } from "@hitech/ui-kit";
 import { KNOWN_PITCH_ROUTES } from "../../../lib/scene-studio";
-import { useSceneStudioRuntime } from "./SceneStudioEditor";
+import { useOptionalDevConsole } from "../../../components/dev-console/DevConsoleContext";
 import { useWindowManager } from "./window-manager/useWindowManager";
 
 const ROOT_STYLE: CSSProperties = {
@@ -44,7 +44,8 @@ export function SceneGraphPanel() {
   const pathname = usePathname();
   const { resolved, enabledLayers } = useLayerFlags();
   const { state, duplicateWindowIds } = useWindowManager();
-  const { currentScene } = useSceneStudioRuntime();
+  const devConsole = useOptionalDevConsole();
+  const currentScene = devConsole?.bindings.sceneStudio?.scene;
 
   const activeRoute = currentScene?.route ?? pathname;
 

@@ -9,8 +9,9 @@ import {
 
 export const dynamic = "force-dynamic";
 
-export default function PitchIndexPage({ searchParams }: PitchSearchParamsProps) {
-  const resolved = resolvePitchLayerFlags(searchParams);
+export default async function PitchIndexPage({ searchParams }: PitchSearchParamsProps) {
+  const resolvedSearchParams = await Promise.resolve(searchParams ?? {});
+  const resolved = resolvePitchLayerFlags(resolvedSearchParams as any);
   const deck = PITCH_DECK_FIXTURE;
 
   return (

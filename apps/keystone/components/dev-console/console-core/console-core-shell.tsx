@@ -62,15 +62,7 @@ export function ConsoleCoreShell({
       title="HITECH Dev Console"
       defaultPos={{ x: 20, y: 20 }}
       defaultSize={{ w: 980, h: 760 }}
-      homePos={{ x: 20, y: 20 }}
-      homeSize={{ w: 980, h: 760 }}
       minSize={{ w: 760, h: 420 }}
-      initialZ={2_100_000_000}
-      headerRight={
-        <div style={{ fontSize: 11, opacity: 0.82, whiteSpace: "nowrap" }}>
-          {diagnosticsLabel}
-        </div>
-      }
     >
       <div className={cls("root")}>
         <div className={cls("rail")} {...noDragAttr}>

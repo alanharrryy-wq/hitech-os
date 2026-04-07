@@ -1,5 +1,3 @@
-import type { LayerId } from "@hitech/ui-kit";
-
 export const KNOWN_PITCH_ROUTES = [
   "/pitch",
   "/pitch/01-double-engine",
@@ -8,13 +6,67 @@ export const KNOWN_PITCH_ROUTES = [
   "/pitch/04-valuation"
 ] as const;
 
-export type SceneMode = "single" | "list";
+// Import the correct SceneRecord type from scene-schema
+export type { SceneRecord } from "./scene-studio/scene-schema";
 
-export interface SceneRecord {
-  readonly id: string;
-  readonly title: string;
-  readonly route: string;
-  readonly tags?: readonly string[];
-  readonly mode: SceneMode;
-  readonly layers?: readonly LayerId[];
-}
+// Re-export from scene-bridge
+export {
+  isDiagnosticsResponseMessage,
+  isAllowedSceneStudioOrigin,
+  SCENE_STUDIO_RESPONSE_DIAGNOSTICS,
+  isDiagnosticsRequestMessage,
+  SCENE_STUDIO_REQUEST_DIAGNOSTICS,
+  type SceneDiagnosticsPayload,
+} from "./scene-studio/scene-bridge";
+
+// Re-export from scene-url
+export {
+  buildCanonicalSceneQuery,
+  buildCanonicalSceneUrl,
+  parseSceneUrlState,
+  resolveSceneQueryPrecedence,
+} from "./scene-studio/scene-url";
+
+// Re-export from scene-query
+export { parseSceneQueryToObject } from "./scene-studio/scene-query";
+
+// Re-export from scene-access
+export { resolveSceneStudioAccess } from "./scene-studio/scene-access";
+
+// Re-export from scene-store
+export {
+  InMemorySceneStore,
+  LocalSceneStore,
+  parseSceneExport,
+  serializeSceneExport,
+  type SceneImportMode,
+  type SceneImportResult,
+} from "./scene-studio/scene-store";
+
+// Re-export from default-scenes
+export { createDefaultSceneLibrary } from "./scene-studio/default-scenes";
+
+// Re-export from scene-id
+export {
+  createDuplicateSceneId,
+  ensureSceneId,
+} from "./scene-studio/scene-id";
+
+// Re-export from scene-diagnostics
+export { buildSceneDiagnosticsPayload } from "./scene-studio/scene-diagnostics";
+
+// Re-export from scene-validator
+export { validateSceneDiagnostics } from "./scene-studio/scene-validator";
+
+// Re-export from scene-tags
+export { buildSceneTagIndex, searchScenes } from "./scene-studio/scene-tags";
+
+// Re-export from scene-schema
+export {
+  inferLayersFromQuery,
+  normalizeSceneInput,
+  validateScene,
+} from "./scene-studio/scene-schema";
+
+// Re-export from scene-migrations
+export { migrateScene, migrateScenes } from "./scene-studio/scene-migrations";

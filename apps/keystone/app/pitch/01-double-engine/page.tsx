@@ -8,8 +8,9 @@ import {
 
 export const dynamic = "force-dynamic";
 
-export default function PitchDoubleEnginePage({ searchParams }: PitchSearchParamsProps) {
-  const resolved = resolvePitchLayerFlags(searchParams);
+export default async function PitchDoubleEnginePage({ searchParams }: PitchSearchParamsProps) {
+  const resolvedSearchParams = await Promise.resolve(searchParams ?? {});
+  const resolved = resolvePitchLayerFlags(resolvedSearchParams as any);
   const deck = PITCH_DECK_FIXTURE;
   const screen = PITCH_SCREEN_FIXTURES["01-double-engine"];
 

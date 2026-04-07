@@ -8,8 +8,9 @@ import {
 
 export const dynamic = "force-dynamic";
 
-export default function PitchHiTechOsPage({ searchParams }: PitchSearchParamsProps) {
-  const resolved = resolvePitchLayerFlags(searchParams);
+export default async function PitchHiTechOsPage({ searchParams }: PitchSearchParamsProps) {
+  const resolvedSearchParams = await Promise.resolve(searchParams ?? {});
+  const resolved = resolvePitchLayerFlags(resolvedSearchParams as any);
   const deck = PITCH_DECK_FIXTURE;
   const screen = PITCH_SCREEN_FIXTURES["03-hitech-os"];
 

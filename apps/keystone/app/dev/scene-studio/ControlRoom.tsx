@@ -9,9 +9,8 @@ import { SceneGraphPanel } from "./SceneGraphPanel";
 import { useOptionalDevConsole } from "../../../components/dev-console/DevConsoleContext";
 import { InternalToolClientOnlyBoundary } from "../../../components/internal-tooling/internal-tool-client-only-boundary";
 import {
-  SceneStudioEditorPanel,
-  SceneStudioRuntimeProvider
-} from "./SceneStudioEditor";
+  SceneStudioEditorPanel
+} from "../../../components/dev-console/panels/SceneStudioEditorPanel";
 import { useStudioHotkeys } from "./useStudioHotkeys";
 import { SnapPreviewOverlay } from "./window-manager/SnapPreviewOverlay";
 import { WindowManagerProvider } from "./window-manager/WindowManagerProvider";
@@ -42,7 +41,7 @@ function LayerDebugWindowContent() {
     return <p style={DEBUG_HINT_STYLE}>Enable `?debug=1` to use Layer Debug controls.</p>;
   }
 
-  return <LayerDebugPanel inline />;
+  return <LayerDebugPanel />;
 }
 
 function resolveFrameStyleFromQuery(
@@ -83,7 +82,7 @@ export function ControlRoom({ children }: PropsWithChildren) {
           <InternalToolClientOnlyBoundary componentName={LEGACY_OVERLAY_PANEL_NAME}>
             <div aria-label="Control Room overlay" style={OVERLAY_ROOT_STYLE}>
               <SnapPreviewOverlay />
-              <SceneStudioRuntimeProvider>
+              
                 <ControlRoomToolbarWindow
                   frameStyle={frameStyle}
                   framePerfProfile={framePerfProfile}
@@ -92,39 +91,21 @@ export function ControlRoom({ children }: PropsWithChildren) {
                 <FloatingWindow
                   id="scene-editor"
                   title="Scene Editor"
-                  frameStyle={frameStyle}
-                  framePerfProfile={framePerfProfile}
-                  minWidth={360}
-                  minHeight={320}
-                  defaultState={{
-                    x: 20,
-                    y: 112,
-                    w: 500,
-                    h: 700,
-                    z: 1101,
-                    visible: true,
-                    collapsed: false
-                  }}
+                  defaultPos={{ x: 20, y: 112 }}
+                  defaultSize={{ w: 500, h: 700 }}
                 >
-                  <SceneStudioEditorPanel />
+                  {devConsole?.bindings.sceneStudio ? (
+                    <SceneStudioEditorPanel {...devConsole.bindings.sceneStudio} />
+                  ) : (
+                    <div>Scene Studio not available</div>
+                  )}
                 </FloatingWindow>
 
                 <FloatingWindow
                   id="layer-debug"
                   title="Layer Debug"
-                  frameStyle={frameStyle}
-                  framePerfProfile={framePerfProfile}
-                  minWidth={340}
-                  minHeight={240}
-                  defaultState={{
-                    x: 980,
-                    y: 20,
-                    w: 400,
-                    h: 520,
-                    z: 1102,
-                    visible: true,
-                    collapsed: false
-                  }}
+                  defaultPos={{ x: 980, y: 20 }}
+                  defaultSize={{ w: 400, h: 520 }}
                 >
                   <LayerDebugWindowContent />
                 </FloatingWindow>
@@ -132,23 +113,12 @@ export function ControlRoom({ children }: PropsWithChildren) {
                 <FloatingWindow
                   id="scene-graph"
                   title="Scene Graph"
-                  frameStyle={frameStyle}
-                  framePerfProfile={framePerfProfile}
-                  minWidth={340}
-                  minHeight={220}
-                  defaultState={{
-                    x: 980,
-                    y: 560,
-                    w: 400,
-                    h: 300,
-                    z: 1103,
-                    visible: true,
-                    collapsed: false
-                  }}
+                  defaultPos={{ x: 980, y: 560 }}
+                  defaultSize={{ w: 400, h: 300 }}
                 >
                   <SceneGraphPanel />
                 </FloatingWindow>
-              </SceneStudioRuntimeProvider>
+              
             </div>
           </InternalToolClientOnlyBoundary>
         )}
