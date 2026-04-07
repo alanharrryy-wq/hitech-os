@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hitech-os.local/schemas/deltaforge/patch-result.schema.json",
+  "title": "DeltaForge Patch Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "ok",
+    "status",
+    "summary",
+    "warnings",
+    "errors",
+    "touched_files",
+    "backups",
+    "rollback_token",
+    "duration_ms",
+    "process"
+  ],
+  "properties": {
+    "ok": {
+      "type": "boolean"
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string"
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "touched_files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "backups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "original_path",
+          "backup_path"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "original_path": {
+            "type": "string"
+          },
+          "backup_path": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "rollback_token": {
+      "type": "string"
+    },
+    "duration_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "process": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "engine_name",
+        "mode",
+        "stdout_tail",
+        "stderr_tail"
+      ],
+      "properties": {
+        "engine_name": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string"
+        },
+        "stdout_tail": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "stderr_tail": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "exit_code": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      }
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "details": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

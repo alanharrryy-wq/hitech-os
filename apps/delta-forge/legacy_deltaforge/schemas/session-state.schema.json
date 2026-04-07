@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hitech-os.local/schemas/deltaforge/session-state.schema.json",
+  "title": "DeltaForge Session State Snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "session_id",
+    "root_dir",
+    "state",
+    "busy",
+    "dirty",
+    "stale",
+    "target_count",
+    "selection",
+    "results",
+    "can_refresh"
+  ],
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "root_dir": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "busy": {
+      "type": "boolean"
+    },
+    "dirty": {
+      "type": "boolean"
+    },
+    "stale": {
+      "type": "boolean"
+    },
+    "target_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "targets",
+        "op",
+        "detail",
+        "surface",
+        "view"
+      ],
+      "properties": {
+        "targets": {
+          "type": "array",
+          "items": {}
+        },
+        "op": {},
+        "detail": {},
+        "surface": {
+          "type": "string"
+        },
+        "view": {
+          "type": "string"
+        }
+      }
+    },
+    "results": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "events",
+        "validation",
+        "plan",
+        "apply",
+        "rollback"
+      ],
+      "properties": {
+        "events": {},
+        "validation": {},
+        "plan": {},
+        "apply": {},
+        "rollback": {}
+      }
+    },
+    "can_refresh": {
+      "type": "boolean"
+    }
+  }
+}

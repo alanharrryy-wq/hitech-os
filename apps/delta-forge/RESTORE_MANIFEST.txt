@@ -1,0 +1,45 @@
+created_at: 2026-04-06T14:10:30
+source_dir: F:\descargasf
+target_dir: F:\repos\hitech-os\apps\delta-forge
+backup_dir: [none]
+success: True
+
+used_zips:
+- capatch_system.zip
+- 1.original.zip
+- delta-forge.zip
+
+missing_optional_zips:
+- [none]
+
+warnings:
+- Sin archivos copiados para: 1.original.zip :: 1.original/launcher_support/
+
+copied_entries:
+- capatch_system.zip :: capatch_system/capatch.py -> engine/capatch_system/capatch.py :: copied_files=1
+- capatch_system.zip :: capatch_system/capatch_plugins/ -> engine/capatch_system/capatch_plugins/ :: copied_files=6
+- capatch_system.zip :: capatch_system/tooling/ -> engine/capatch_system/tooling/ :: copied_files=4
+- capatch_system.zip :: capatch_system/docs/ -> engine/capatch_system/docs/ :: copied_files=1
+- 1.original.zip :: 1.original/starter.py -> ui_shell/starter.py :: copied_files=1
+- 1.original.zip :: 1.original/launcher_support/ -> ui_shell/launcher_support/ :: copied_files=0
+- 1.original.zip :: 1.original/visuals/ -> ui_shell/visuals/ :: copied_files=51
+- delta-forge.zip :: delta-forge/apps/deltaforge/__init__.py -> legacy_deltaforge/__init__.py :: copied_files=1
+- delta-forge.zip :: delta-forge/apps/deltaforge/README.md -> legacy_deltaforge/README.md :: copied_files=1
+- delta-forge.zip :: delta-forge/apps/deltaforge/requirements.txt -> legacy_deltaforge/requirements.txt :: copied_files=1
+- delta-forge.zip :: delta-forge/apps/deltaforge/pyproject.toml -> legacy_deltaforge/pyproject.toml :: copied_files=1
+- delta-forge.zip :: delta-forge/apps/deltaforge/deltaforge_app.py -> legacy_deltaforge/deltaforge_app.py :: copied_files=1
+- delta-forge.zip :: delta-forge/apps/deltaforge/version.py -> legacy_deltaforge/version.py :: copied_files=1
+- delta-forge.zip :: delta-forge/apps/deltaforge/application/ -> legacy_deltaforge/application/ :: copied_files=17
+- delta-forge.zip :: delta-forge/apps/deltaforge/bootstrap/ -> legacy_deltaforge/bootstrap/ :: copied_files=4
+- delta-forge.zip :: delta-forge/apps/deltaforge/domain/ -> legacy_deltaforge/domain/ :: copied_files=15
+- delta-forge.zip :: delta-forge/apps/deltaforge/infrastructure/ -> legacy_deltaforge/infrastructure/ :: copied_files=19
+- delta-forge.zip :: delta-forge/apps/deltaforge/ui/ -> legacy_deltaforge/ui/ :: copied_files=69
+- delta-forge.zip :: delta-forge/apps/deltaforge/assets/ -> legacy_deltaforge/assets/ :: copied_files=59
+- delta-forge.zip :: delta-forge/apps/deltaforge/docs/ -> legacy_deltaforge/docs/ :: copied_files=18
+- delta-forge.zip :: delta-forge/apps/deltaforge/schemas/ -> legacy_deltaforge/schemas/ :: copied_files=3
+- delta-forge.zip :: delta-forge/apps/deltaforge/tests/ -> legacy_deltaforge/tests/ :: copied_files=24
+- delta-forge.zip :: delta-forge/forgeos/shared/pyside6_glass/ -> shared/pyside6_glass/ :: copied_files=131
+- delta-forge.zip :: delta-forge/run_deltaforge.cmd -> legacy_deltaforge/run_deltaforge.cmd :: copied_files=1
+- delta-forge.zip :: delta-forge/run_deltaforge.ps1 -> legacy_deltaforge/run_deltaforge.ps1 :: copied_files=1
+- delta-forge.zip :: delta-forge/runnable_manifest.json -> legacy_deltaforge/runnable_manifest.json :: copied_files=1
+- delta-forge.zip :: delta-forge/README_PRIMERO.txt -> legacy_deltaforge/README_PRIMERO.txt :: copied_files=1

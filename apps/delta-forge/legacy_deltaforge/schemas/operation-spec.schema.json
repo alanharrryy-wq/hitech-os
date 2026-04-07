@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hitech-os.local/schemas/deltaforge/operation-spec.schema.json",
+  "title": "DeltaForge Operation Spec",
+  "oneOf": [
+    {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/operation"
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "ops"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "created_by": {
+          "type": "string"
+        },
+        "root_dir": {
+          "type": "string"
+        },
+        "metadata": {
+          "type": "object",
+          "default": {},
+          "additionalProperties": true
+        },
+        "ops": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/operation"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "label",
+        "file"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ReplaceLineRange",
+            "ReplaceExactOnce",
+            "InsertAfterExact"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "file": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start_line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "end_line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "new_text": {
+          "type": "string"
+        },
+        "old_text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "anchor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "insert_text": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "ReplaceLineRange"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "start_line",
+              "end_line",
+              "new_text"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "ReplaceExactOnce"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "old_text",
+              "new_text"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "InsertAfterExact"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "anchor",
+              "insert_text"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
