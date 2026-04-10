@@ -79,12 +79,18 @@ Additional safety rules:
 
 Agents must never run destructive commands:
 
-
 rm -rf
 del /s /q
 git clean -fdx
+git clean -fd
 git reset --hard
 
+Default local-files policy (mandatory):
+- Do not move or delete operator/local files as a cleanup strategy.
+- Use .gitignore rules first to keep local content on disk and out of commits.
+- If a file is tracked but should stay local only, use git rm --cached <path> and add an ignore rule.
+- Temporary relocation is allowed only with explicit operator request and must be restored before closing the task.
+- Never run automated bulk cleanup against ignored or untracked paths.
 
 Never rewrite git history.
 
@@ -549,3 +555,4 @@ Mandatory rules:
 - explicit user instructions override inferred values
 - `tools/_local/inbox/**` is ephemeral staging only
 - source-of-truth contracts/docs override diff proposals unless authoritative mode is explicitly requested
+
