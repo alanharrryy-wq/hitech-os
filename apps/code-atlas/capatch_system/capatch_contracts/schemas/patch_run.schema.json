@@ -1,0 +1,214 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "capatch.patch_run.schema.json",
+  "title": "PatchRunRecord",
+  "type": "object",
+  "required": [
+    "run_id",
+    "schema_version",
+    "started_at",
+    "root_dir",
+    "cwd",
+    "invocation_mode",
+    "patch_status",
+    "system_status",
+    "execution_mode",
+    "git_dirty_before",
+    "git_dirty_after",
+    "target_files",
+    "operation_count",
+    "operation_results",
+    "risk_summary",
+    "required_verifiers",
+    "verifier_results"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "2.0.0"
+    },
+    "started_at": {
+      "type": "string"
+    },
+    "finished_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "root_dir": {
+      "type": "string"
+    },
+    "cwd": {
+      "type": "string"
+    },
+    "invocation_mode": {
+      "type": "string"
+    },
+    "patch_status": {
+      "type": "string",
+      "enum": [
+        "applied",
+        "noop",
+        "skipped",
+        "failed",
+        "rolled_back"
+      ]
+    },
+    "system_status": {
+      "type": "string",
+      "enum": [
+        "verified",
+        "caution",
+        "failed",
+        "rolled_back",
+        "not_verified"
+      ]
+    },
+    "execution_mode": {
+      "type": "string"
+    },
+    "git_branch": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "git_head": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "git_dirty_before": {
+      "type": "boolean"
+    },
+    "git_dirty_after": {
+      "type": "boolean"
+    },
+    "target_files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "operation_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "operation_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "operation_label",
+          "operation_type",
+          "target_path",
+          "patch_status",
+          "message",
+          "changed_line_count",
+          "support_notes"
+        ],
+        "properties": {
+          "operation_label": {
+            "type": "string"
+          },
+          "operation_type": {
+            "type": "string"
+          },
+          "target_path": {
+            "type": "string"
+          },
+          "patch_status": {
+            "type": "string",
+            "enum": [
+              "applied",
+              "noop",
+              "skipped",
+              "failed",
+              "rolled_back"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "before_hash": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "after_hash": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "preview_hash": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "bytes_before": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "bytes_after": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "changed_line_count": {
+            "type": "integer"
+          },
+          "support_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "risk_summary": {
+      "type": "object"
+    },
+    "required_verifiers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "verifier_results": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "rollback_target": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "baseline_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "capatch.plugin_payload.schema.json",
+  "title": "PluginPayload",
+  "type": "object",
+  "required": [
+    "plugin_id",
+    "plugin_kind",
+    "plugin_phase",
+    "schema_version"
+  ],
+  "properties": {
+    "plugin_id": {
+      "type": "string"
+    },
+    "plugin_kind": {
+      "type": "string"
+    },
+    "plugin_phase": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "2.0.0"
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "fix_proposals": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "verification_results": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "metadata": {
+      "type": "object"
+    }
+  }
+}
