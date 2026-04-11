@@ -1,0 +1,56 @@
+name: repo-navigation-guard
+
+on:
+  pull_request:
+    paths:
+      - "README.md"
+      - "README_START_HERE.md"
+      - "docs/**"
+      - "tools/health/**"
+      - "tools/scripts/**"
+      - "tools/codex/**"
+      - "tools/snapshot/**"
+      - ".github/workflows/**"
+      - "apps/keystone/**"
+      - "apps/demo-engine/**"
+      - "services/core-api/**"
+      - "services/ai-agent/**"
+      - "packages/contracts/**"
+      - "packages/ui-kit/**"
+      - "packages/tooling/**"
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - "README.md"
+      - "README_START_HERE.md"
+      - "docs/**"
+      - "tools/health/**"
+      - "tools/scripts/**"
+      - "tools/codex/**"
+      - "tools/snapshot/**"
+      - ".github/workflows/**"
+      - "apps/keystone/**"
+      - "apps/demo-engine/**"
+      - "services/core-api/**"
+      - "services/ai-agent/**"
+      - "packages/contracts/**"
+      - "packages/ui-kit/**"
+      - "packages/tooling/**"
+  workflow_dispatch:
+
+jobs:
+  navigation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run repo navigation guard
+        run: python tools/scripts/check_repo_navigation.py --repo-root . --strict

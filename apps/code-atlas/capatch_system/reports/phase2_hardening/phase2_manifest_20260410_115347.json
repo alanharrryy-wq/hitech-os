@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0.0",
+  "phase_id": "phase2-transactional-hardening",
+  "created_at_utc": "2026-04-10T17:53:47Z",
+  "root_dir": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system",
+  "mode": "dry-run",
+  "backup_dir": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system\\.capatch\\backups\\phase2_transactional_hardening\\20260410_115347",
+  "log_file": "F:\\OneDrive\\Descargas\\capatch_phase2_transactional_hardening_20260410_115347.log",
+  "actions": [
+    {
+      "kind": "full_replacement",
+      "relative_path": "capatch_engine/transaction.py",
+      "changed": true,
+      "before_sha256": "602690e3a4f716f651c1984c5c7e1487b811ef0e87a6ab63a1af4067240ee22a",
+      "after_sha256": "cbb8cd2eb089cca7652a5c6ebfc2c28b099b56df60caad057a778a852445625e",
+      "backup_path": null,
+      "note": "full replacement planned"
+    },
+    {
+      "kind": "full_replacement",
+      "relative_path": "capatch_audit/manifest.py",
+      "changed": true,
+      "before_sha256": "7f02a2f3b45547549ebeef71f864b17ce92e589cf93bfbddc4a168db1801fea2",
+      "after_sha256": "99e26275e65da03e0681215160d5ba36a113dd0c45a80d7ce56ca232cdd315b3",
+      "backup_path": null,
+      "note": "full replacement planned"
+    },
+    {
+      "kind": "full_replacement",
+      "relative_path": "capatch_audit/run_store.py",
+      "changed": true,
+      "before_sha256": "54c1ba51a9bb420914e1f9b3deddf1fff5b83525e03d44bef3eb69736c5eb777",
+      "after_sha256": "0868863bab22ddd1f7cd09cf60fdf2fd2d9feee58ae616664fd01deaf2e9ffbb",
+      "backup_path": null,
+      "note": "full replacement planned"
+    },
+    {
+      "kind": "full_replacement",
+      "relative_path": "capatch_engine/patch_pipeline.py",
+      "changed": true,
+      "before_sha256": "9d53c55450304d616bfbbc4a5621530b98c9747fddeb0dd91f3f3e46f6feea38",
+      "after_sha256": "985228ad30724cfc7dd3d17d7fc91413ba3d2c2947c77e22508d5ad4dec14459",
+      "backup_path": null,
+      "note": "full replacement planned"
+    },
+    {
+      "kind": "full_replacement",
+      "relative_path": "capatch_engine/fixer_bridge.py",
+      "changed": true,
+      "before_sha256": "e12ec482dda360a1c89eaaf2aea410a2fa88b2d62498ba451f213ef98d7a3f25",
+      "after_sha256": "e099a42de4082b001cb04e4c684cd6fde18b62d5ed54a27947ab7ebc61c9dedb",
+      "backup_path": null,
+      "note": "full replacement planned"
+    },
+    {
+      "kind": "full_replacement",
+      "relative_path": "tooling/recover_patch_transaction.py",
+      "changed": true,
+      "before_sha256": null,
+      "after_sha256": "aae8dcb328415be8bed29d071ff7ac1d56b6191c911ad4f29ae99278e199c32f",
+      "backup_path": null,
+      "note": "full replacement planned"
+    },
+    {
+      "kind": "full_replacement",
+      "relative_path": "tests/test_patch_pipeline.py",
+      "changed": true,
+      "before_sha256": "6c96748553066bdbdb928c7cde4a445116bd887053d03b67bd5f149bb641cf21",
+      "after_sha256": "9b84f6e8938de98e81e3a53323e014fcced1a6943a7f4b1eb2e0ec77adf96831",
+      "backup_path": null,
+      "note": "full replacement planned"
+    },
+    {
+      "kind": "full_replacement",
+      "relative_path": "tests/test_phase2_transaction_journal.py",
+      "changed": true,
+      "before_sha256": null,
+      "after_sha256": "ef6fc7e44b3005a2d11d66a32e4032968a524cb99345d7a72dacf5c09bd7bc10",
+      "backup_path": null,
+      "note": "full replacement planned"
+    },
+    {
+      "kind": "full_replacement",
+      "relative_path": "tests/test_phase2_autofix_lifecycle.py",
+      "changed": true,
+      "before_sha256": null,
+      "after_sha256": "977a204356b06165be769ab02b0178fb56821c7ec2b14358368f3bb159218773",
+      "backup_path": null,
+      "note": "full replacement planned"
+    }
+  ],
+  "focused_tests": [
+    "tests/test_phase1_python_verifiers.py",
+    "tests/test_patch_pipeline.py",
+    "tests/test_audit_rollback.py",
+    "tests/test_autofix_e2e.py",
+    "tests/test_phase2_transaction_journal.py",
+    "tests/test_phase2_autofix_lifecycle.py"
+  ]
+}

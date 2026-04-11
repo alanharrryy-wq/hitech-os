@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "capatch.verification_result.schema.json",
+  "title": "VerificationResult",
+  "type": "object",
+  "required": [
+    "verifier_id",
+    "ok",
+    "title",
+    "detail",
+    "source_plugin",
+    "checked_at",
+    "evidence_refs",
+    "metrics",
+    "severity_if_failed",
+    "verification_class"
+  ],
+  "properties": {
+    "verifier_id": {
+      "type": "string"
+    },
+    "ok": {
+      "type": "boolean"
+    },
+    "title": {
+      "type": "string"
+    },
+    "detail": {
+      "type": "string"
+    },
+    "source_plugin": {
+      "type": "string"
+    },
+    "checked_at": {
+      "type": "string"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "metrics": {
+      "type": "object"
+    },
+    "severity_if_failed": {
+      "type": "string"
+    },
+    "verification_class": {
+      "type": "string"
+    }
+  }
+}

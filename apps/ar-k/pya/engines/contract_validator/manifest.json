@@ -1,0 +1,89 @@
+{
+  "area": "validation",
+  "compatibility": {
+    "contracts": {
+      "boundary_entry": "1.0.0",
+      "contract_health_summary": "1.0.0",
+      "contract_registry_entry": "1.0.0",
+      "execution_summary": "1.0.0",
+      "module_registry_entry": "1.0.0",
+      "query_index": "1.0.0",
+      "switch_registry_entry": "1.0.0",
+      "switch_resolution": "1.0.0",
+      "validation_violation": "1.0.0"
+    },
+    "kernel": "^1.0.0"
+  },
+  "dependencies": [
+    "switch_engine"
+  ],
+  "engine_id": "contract_validator",
+  "engine_type": "contract_validator",
+  "entrypoint": "pya.engines.contract_validator.engine:ContractValidatorEngine",
+  "error_contract": {
+    "typed_errors": [
+      "ValueError"
+    ]
+  },
+  "events_emitted": [
+    "contract_validator.started",
+    "contract_validator.completed"
+  ],
+  "execution_modes": [
+    "batch"
+  ],
+  "feature_flags_used": [],
+  "health_contract": {
+    "required_metrics": [
+      "violation_count",
+      "error_count",
+      "critical_count"
+    ]
+  },
+  "inputs_declared": [
+    "module_registry",
+    "boundary_registry",
+    "contract_registry",
+    "switch_registry",
+    "switch_resolutions",
+    "query_index"
+  ],
+  "observability_contract": {
+    "artifact_families": [
+      "validation_report"
+    ]
+  },
+  "outputs_declared": [
+    "validation_report"
+  ],
+  "owner": "Ar-k",
+  "permissions": {
+    "reads": [
+      "module_registry",
+      "boundary_registry",
+      "contract_registry",
+      "switch_registry",
+      "switch_resolutions",
+      "query_index"
+    ],
+    "writes": [
+      "validation_report"
+    ]
+  },
+  "purpose": "Validate schema, references, and policy without rewriting canonical registries.",
+  "registries_touched": {
+    "reads": [
+      "module_registry",
+      "boundary_registry",
+      "contract_registry",
+      "switch_registry",
+      "switch_resolutions",
+      "query_index"
+    ],
+    "writes": [
+      "validation_report"
+    ]
+  },
+  "stage": "validate",
+  "version": "1.0.0"
+}

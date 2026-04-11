@@ -7,9 +7,16 @@ import net from "node:net";
 import path from "node:path";
 
 const basePortRaw = process.env.KEYSTONE_PORT ?? process.env.PORT ?? "3100";
-const scanWindowRaw = process.env.KEYSTONE_PORT_SCAN ?? "20";
+const scanWindowRaw = process.env.KEYSTONE_PORT_SCAN ?? "99";
+const reservedPortsRaw = process.env.KEYSTONE_RESERVED_PORTS ?? "3110,3200";
 const basePort = Number.parseInt(basePortRaw, 10);
 const scanWindow = Number.parseInt(scanWindowRaw, 10);
+const reservedPorts = new Set(
+  reservedPortsRaw
+    .split(",")
+    .map((candidate) => Number.parseInt(candidate.trim(), 10))
+    .filter((candidate) => Number.isInteger(candidate) && candidate > 0),
+);
 const extraArgs = process.argv.slice(2);
 const require = createRequire(import.meta.url);
 
@@ -67,6 +74,10 @@ async function handleNextDevLock() {
 async function pickPort() {
   for (let i = 0; i <= scanWindow; i += 1) {
     const candidate = basePort + i;
+    if (candidate !== basePort && reservedPorts.has(candidate)) {
+      continue;
+    }
+
     const available = await isPortAvailable(candidate);
     if (available) {
       return candidate;

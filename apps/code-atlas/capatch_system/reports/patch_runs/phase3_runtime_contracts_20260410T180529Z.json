@@ -1,0 +1,123 @@
+{
+  "phase": "phase3_runtime_contracts",
+  "root_dir": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system",
+  "applied_at_utc": "20260410T180528Z",
+  "backups": {
+    "capatch_contracts/plugin_runtime.py": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system\\_chatgpt_patch_backups\\phase3_runtime_contracts_20260410T180528Z\\capatch_contracts\\plugin_runtime.py",
+    "capatch_diagnostics/targeting.py": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system\\_chatgpt_patch_backups\\phase3_runtime_contracts_20260410T180528Z\\capatch_diagnostics\\targeting.py",
+    "tooling/run_windows_smoke.py": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system\\_chatgpt_patch_backups\\phase3_runtime_contracts_20260410T180528Z\\tooling\\run_windows_smoke.py",
+    "tooling/run_plugin_contract_smoke.py": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system\\_chatgpt_patch_backups\\phase3_runtime_contracts_20260410T180528Z\\tooling\\run_plugin_contract_smoke.py",
+    "tests/test_plugin_runtime_contracts.py": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system\\_chatgpt_patch_backups\\phase3_runtime_contracts_20260410T180528Z\\tests\\test_plugin_runtime_contracts.py",
+    "capatch_diagnostics/loader.py": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system\\_chatgpt_patch_backups\\phase3_runtime_contracts_20260410T180528Z\\capatch_diagnostics\\loader.py",
+    "capatch_diagnostics/runtime.py": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system\\_chatgpt_patch_backups\\phase3_runtime_contracts_20260410T180528Z\\capatch_diagnostics\\runtime.py"
+  },
+  "created": [
+    "capatch_runtime/environment_guard.py",
+    "tests/test_windows_smoke_required_plugins_default.py",
+    "tests/test_phase3_environment_guard.py"
+  ],
+  "results": [
+    {
+      "path": "capatch_runtime/environment_guard.py",
+      "kind": "full_replace",
+      "exists": false,
+      "changed": true,
+      "status": "applied"
+    },
+    {
+      "path": "capatch_contracts/plugin_runtime.py",
+      "kind": "full_replace",
+      "exists": true,
+      "changed": true,
+      "status": "applied"
+    },
+    {
+      "path": "capatch_diagnostics/targeting.py",
+      "kind": "full_replace",
+      "exists": true,
+      "changed": true,
+      "status": "applied"
+    },
+    {
+      "path": "tooling/run_windows_smoke.py",
+      "kind": "full_replace",
+      "exists": true,
+      "changed": true,
+      "status": "applied"
+    },
+    {
+      "path": "tooling/run_plugin_contract_smoke.py",
+      "kind": "full_replace",
+      "exists": true,
+      "changed": true,
+      "status": "applied"
+    },
+    {
+      "path": "tests/test_windows_smoke_required_plugins_default.py",
+      "kind": "full_replace",
+      "exists": false,
+      "changed": true,
+      "status": "applied"
+    },
+    {
+      "path": "tests/test_phase3_environment_guard.py",
+      "kind": "full_replace",
+      "exists": false,
+      "changed": true,
+      "status": "applied"
+    },
+    {
+      "path": "tests/test_plugin_runtime_contracts.py",
+      "kind": "full_replace",
+      "exists": true,
+      "changed": true,
+      "status": "applied"
+    },
+    {
+      "path": "capatch_diagnostics/loader.py",
+      "kind": "text_patch",
+      "label": "loader-import-plugin-runtime",
+      "already_applied": false,
+      "contains_old": true,
+      "status": "applied"
+    },
+    {
+      "path": "capatch_diagnostics/loader.py",
+      "kind": "text_patch",
+      "label": "loader-build-capability-map",
+      "already_applied": false,
+      "contains_old": true,
+      "status": "applied"
+    },
+    {
+      "path": "capatch_diagnostics/loader.py",
+      "kind": "text_patch",
+      "label": "loader-summarize-runtime-status",
+      "already_applied": false,
+      "contains_old": true,
+      "status": "applied"
+    },
+    {
+      "path": "capatch_diagnostics/runtime.py",
+      "kind": "text_patch",
+      "label": "runtime-environment-guard-hook",
+      "already_applied": false,
+      "contains_old": true,
+      "status": "applied"
+    }
+  ],
+  "tests": {
+    "argv": [
+      "C:\\Users\\alanh\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/test_plugin_runtime_contracts.py",
+      "tests/test_windows_smoke_required_plugins_default.py",
+      "tests/test_phase3_environment_guard.py"
+    ],
+    "returncode": 0,
+    "stdout": "...........                                                              [100%]\n11 passed in 0.39s\n",
+    "stderr": ""
+  }
+}

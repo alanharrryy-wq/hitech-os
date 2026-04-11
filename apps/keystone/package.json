@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node ./scripts/dev-next.mjs",
+    "dev:multi": "pnpm run keystone:scene:studio",
     "build": "next build",
     "start": "next start -p 3100",
     "lint": "eslint \"app/**/*.{ts,tsx}\" \"components/**/*.{ts,tsx}\" \"lib/**/*.{ts,tsx}\" \"providers/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\" \"visual-tests/**/*.{ts,tsx}\" \"playwright.config.ts\" \"scripts/ui-improvement-runner.mjs\" \"scripts/scene-studio-runner.mjs\" \"scripts/scene-studio-report.mjs\" \"scripts/scene-studio-dev.mjs\" \"scripts/scene-proof-gate.mjs\" \"scripts/scene-proof-ci.mjs\"",

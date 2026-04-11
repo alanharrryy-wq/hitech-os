@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { Badge, Button, IconButton, Input, Separator } from "@hitech/ui-kit";
 import { useMemo } from "react";
+import { externalAppLinks } from "../../lib/config/external-app-links";
 import { useKeystoneUiStore } from "../../lib/store/ui-store";
 
 export interface MissionHeaderProps {
@@ -43,12 +43,24 @@ export function MissionHeader({ totalRuns, runningRuns }: MissionHeaderProps) {
         <div className="flex flex-wrap items-center gap-2">
           <Badge tone="accent">{runningRuns} running</Badge>
           <Badge tone="neutral">{totalRuns} total runs</Badge>
-          <Link
-            href="/pitch"
+          {externalAppLinks.showOperatorEntry ? (
+            <a
+              href={externalAppLinks.operatorAppUrl!}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex h-9 items-center rounded-[var(--ui-core-radius-sm)] border border-[hsl(var(--ui-border-2))] px-3 text-sm font-medium text-[hsl(var(--ui-text-2))] transition-colors hover:bg-[hsl(var(--ui-surface-2))]"
+            >
+              Interfaz operativa
+            </a>
+          ) : null}
+          <a
+            href={externalAppLinks.formsAppUrl}
+            target="_blank"
+            rel="noreferrer"
             className="inline-flex h-9 items-center rounded-[var(--ui-core-radius-sm)] border border-[hsl(var(--ui-border-2))] px-3 text-sm font-medium text-[hsl(var(--ui-text-2))] transition-colors hover:bg-[hsl(var(--ui-surface-2))]"
           >
-            Pitch
-          </Link>
+            Formularios públicos
+          </a>
           <Button variant="outline" onClick={toggleSidebar}>
             {sidebarOpen ? "Hide Sidebar" : "Show Sidebar"}
           </Button>

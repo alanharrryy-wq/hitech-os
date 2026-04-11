@@ -1,0 +1,76 @@
+{
+  "area": "annotation",
+  "compatibility": {
+    "contracts": {
+      "annotation": "1.0.0",
+      "execution_summary": "1.0.0",
+      "validation_violation": "1.0.0"
+    },
+    "kernel": "^1.0.0"
+  },
+  "dependencies": [
+    "contract_validator"
+  ],
+  "engine_id": "ai_annotator",
+  "engine_type": "ai_annotator",
+  "entrypoint": "pya.engines.ai_annotator.engine:AIAnnotatorEngine",
+  "error_contract": {
+    "typed_errors": [
+      "ValueError"
+    ]
+  },
+  "events_emitted": [
+    "ai_annotator.started",
+    "ai_annotator.completed"
+  ],
+  "execution_modes": [
+    "batch"
+  ],
+  "feature_flags_used": [],
+  "health_contract": {
+    "required_metrics": [
+      "annotation_count",
+      "average_confidence"
+    ]
+  },
+  "inputs_declared": [
+    "module_registry",
+    "boundary_registry",
+    "validation_report",
+    "switch_resolutions"
+  ],
+  "observability_contract": {
+    "artifact_families": [
+      "annotations"
+    ]
+  },
+  "outputs_declared": [
+    "annotations"
+  ],
+  "owner": "Ar-k",
+  "permissions": {
+    "reads": [
+      "module_registry",
+      "boundary_registry",
+      "validation_report",
+      "switch_resolutions"
+    ],
+    "writes": [
+      "annotations"
+    ]
+  },
+  "purpose": "Generate suggested annotations from evidence without mutating canonical truth.",
+  "registries_touched": {
+    "reads": [
+      "module_registry",
+      "boundary_registry",
+      "validation_report",
+      "switch_resolutions"
+    ],
+    "writes": [
+      "annotations"
+    ]
+  },
+  "stage": "annotate",
+  "version": "1.0.0"
+}

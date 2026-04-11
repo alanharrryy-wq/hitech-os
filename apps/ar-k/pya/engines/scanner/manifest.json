@@ -1,0 +1,69 @@
+{
+  "area": "discovery",
+  "compatibility": {
+    "contracts": {
+      "event": "1.0.0",
+      "execution_summary": "1.0.0",
+      "signal": "1.0.0"
+    },
+    "kernel": "^1.0.0"
+  },
+  "dependencies": [],
+  "engine_id": "scanner",
+  "engine_type": "scanner",
+  "entrypoint": "pya.engines.scanner.engine:ScannerEngine",
+  "error_contract": {
+    "typed_errors": [
+      "SyntaxError",
+      "ValueError"
+    ]
+  },
+  "events_emitted": [
+    "scanner.started",
+    "scanner.parse_warning",
+    "scanner.completed"
+  ],
+  "execution_modes": [
+    "batch"
+  ],
+  "feature_flags_used": [],
+  "health_contract": {
+    "required_metrics": [
+      "files_scanned",
+      "python_files",
+      "signals_emitted"
+    ]
+  },
+  "inputs_declared": [
+    "target_tree"
+  ],
+  "observability_contract": {
+    "artifact_families": [
+      "inventory",
+      "graph",
+      "metrics"
+    ]
+  },
+  "outputs_declared": [
+    "signals",
+    "inventory",
+    "dependency_graph",
+    "scanner_metrics"
+  ],
+  "owner": "Ar-k",
+  "permissions": {
+    "reads": [],
+    "writes": [
+      "signals"
+    ]
+  },
+  "purpose": "Discover files, imports, exports, and emit non-canonical signals.",
+  "registries_touched": {
+    "reads": [],
+    "writes": [
+      "signals"
+    ]
+  },
+  "stage": "scan",
+  "version": "1.0.0"
+}

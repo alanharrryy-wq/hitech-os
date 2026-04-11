@@ -35,3 +35,28 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/constitution_check.ps1 -Re
 - `TBL_GOVERNANCE_SCALE`
 - `TBL_DASHBOARD_STRUCTURE`
 - `TBL_VRT_POLICY`
+
+## Multi-app local run (Keystone + Operator + Forms)
+
+Ports:
+- Keystone: `http://127.0.0.1:3100`
+- Operator UI (`external_interaction_template`): `http://127.0.0.1:3110`
+- Public Forms (`external_interaction_forms`): `http://127.0.0.1:3200`
+
+Commands:
+```powershell
+pnpm run dev:keystone
+pnpm run dev:operator
+pnpm run dev:forms
+pnpm run dev:multi-app
+```
+
+Production URL targets:
+- Keystone: `https://engine.hitechrts.com`
+- Forms: `https://forms.hitechrts.com`
+- Operator UI: keep private/non-public unless explicitly protected
+
+Cloudflare multi-host setup command:
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File tools/infra/cloudflare/setup_tunnel_forever.ps1
+```

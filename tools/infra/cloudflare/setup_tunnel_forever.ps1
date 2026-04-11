@@ -1,7 +1,9 @@
 [CmdletBinding()]
 param(
   [switch]$GuardOnly,
-  [string]$OriginUrl = $(if ($env:HITECH_CLOUDFLARE_ORIGIN_URL) { $env:HITECH_CLOUDFLARE_ORIGIN_URL } else { "http://127.0.0.1:3100" })
+  [string]$OriginUrl = $(if ($env:HITECH_CLOUDFLARE_ORIGIN_URL) { $env:HITECH_CLOUDFLARE_ORIGIN_URL } else { "http://127.0.0.1:3100" }),
+  [string]$FormsHostname = $(if ($env:HITECH_CLOUDFLARE_FORMS_HOSTNAME) { $env:HITECH_CLOUDFLARE_FORMS_HOSTNAME } else { "forms.hitechrts.com" }),
+  [string]$FormsOriginUrl = $(if ($env:HITECH_CLOUDFLARE_FORMS_ORIGIN_URL) { $env:HITECH_CLOUDFLARE_FORMS_ORIGIN_URL } else { "http://127.0.0.1:3200" })
 )
 
 Set-StrictMode -Version Latest
@@ -107,7 +109,9 @@ $coreArgs = @(
   "--repo-root", $RepoRoot,
   "--tunnel-name", $TunnelName,
   "--hostname", $Hostname,
+  "--forms-hostname", $FormsHostname,
   "--origin-url", $OriginUrl,
+  "--forms-origin-url", $FormsOriginUrl,
   "--log-dir", $LogDir,
   "--validate-json-out", $validateJsonPath,
   "--final-report", $FinalReportPath
@@ -129,6 +133,8 @@ Write-MagentaProgress -Id 1 -Activity "Cloudflare Industrial Setup" -Status "Run
   --tunnel-name $TunnelName `
   --hostname $Hostname `
   --origin-url $OriginUrl `
+  --extra-route "$FormsHostname=$FormsOriginUrl" `
+  --extra-public-url "$FormsHostname=https://$FormsHostname" `
   --log-dir $LogDir `
   --json-out $validateJsonPath
 $validateExit = $LASTEXITCODE
@@ -147,9 +153,10 @@ $dnsListResult = Invoke-NativeCapture -FilePath "cloudflared" -ArgumentList @("t
 $dnsOutput = $dnsListResult.Output
 $dnsExit = $dnsListResult.ExitCode
 if ($dnsExit -ne 0 -and $dnsOutput -match "expects the format") {
-  $dnsFallbackResult = Invoke-NativeCapture -FilePath "cloudflared" -ArgumentList @("tunnel", "route", "dns", $TunnelName, $Hostname)
-  $dnsFallbackOutput = $dnsFallbackResult.Output
-  if ($dnsFallbackResult.ExitCode -eq 0) {
+  $dnsFallbackResultPrimary = Invoke-NativeCapture -FilePath "cloudflared" -ArgumentList @("tunnel", "route", "dns", $TunnelName, $Hostname)
+  $dnsFallbackResultForms = Invoke-NativeCapture -FilePath "cloudflared" -ArgumentList @("tunnel", "route", "dns", $TunnelName, $FormsHostname)
+  $dnsFallbackOutput = $dnsFallbackResultPrimary.Output + "`n" + $dnsFallbackResultForms.Output
+  if ($dnsFallbackResultPrimary.ExitCode -eq 0 -and $dnsFallbackResultForms.ExitCode -eq 0) {
     $dnsOutput = $dnsOutput + "`n[FALLBACK]" + "`n" + $dnsFallbackOutput
     $dnsExit = 0
   }
@@ -177,10 +184,13 @@ $publicTaskAccessDenied = ($publicTaskOutputLower -match "acceso denegado") -or 
 $publicTaskInstalled = ($publicTaskExit -eq 0) -or $publicTaskAccessDenied
 
 $publicUrl = "https://$Hostname"
+$formsPublicUrl = "https://$FormsHostname"
 $localOriginHealthy = $false
 $tunnelConnected = $false
 $publicHostnameHealthy = $false
 $publicStatusCode = "unknown"
+$formsPublicHealthy = $false
+$formsPublicStatusCode = "unknown"
 if ($validateJson -and ($validateJson.PSObject.Properties.Name -contains "public_url")) {
   $publicUrl = [string]$validateJson.public_url
 }
@@ -195,6 +205,15 @@ if ($validateJson -and ($validateJson.PSObject.Properties.Name -contains "public
 }
 if ($validateJson -and ($validateJson.PSObject.Properties.Name -contains "public_status_code")) {
   $publicStatusCode = [string]$validateJson.public_status_code
+}
+if ($validateJson -and ($validateJson.PSObject.Properties.Name -contains "public_hosts")) {
+  $publicHostProps = $validateJson.public_hosts.PSObject.Properties
+  $formsEntry = $publicHostProps | Where-Object { $_.Name -eq $FormsHostname }
+  if ($formsEntry) {
+    $formsPublicUrl = [string]$formsEntry.Value.public_url
+    $formsPublicHealthy = [bool]$formsEntry.Value.healthy
+    $formsPublicStatusCode = [string]$formsEntry.Value.status_code
+  }
 }
 
 $status = "PASS"
@@ -214,6 +233,7 @@ if (
 }
 
 $hostnameRouteStatus = if ($dnsOutput -match [regex]::Escape($Hostname) -or $dnsOutput -match "already configured") { "BOUND" } else { "MISSING" }
+$formsHostnameRouteStatus = if ($dnsOutput -match [regex]::Escape($FormsHostname) -or $dnsOutput -match "already configured") { "BOUND" } else { "MISSING" }
 $watchdogStatus = if ($taskInstalled) {
   if ($taskAccessDenied -and $taskExit -ne 0) { "INSTALLED (QUERY RESTRICTED)" } else { "INSTALLED" }
 } else {
@@ -235,7 +255,10 @@ GuardOnly: $GuardOnly
 Tunnel Name: $TunnelName
 Hostname: $Hostname
 Public URL: $publicUrl
+Forms Hostname: $FormsHostname
+Forms Public URL: $formsPublicUrl
 Origin URL: $OriginUrl
+Forms Origin URL: $FormsOriginUrl
 
 Core Exit Code: $coreExit
 Validation Exit Code: $validateExit
@@ -243,6 +266,7 @@ DNS List Exit Code: $dnsExit
 
 Tunnel UUID: (see $validateJsonPath)
 Hostname Route Status: $hostnameRouteStatus
+Forms Hostname Route Status: $formsHostnameRouteStatus
 Service Status: $serviceStatus
 Watchdog Task Status: $watchdogStatus
 Public Health Task Status: $publicWatchdogStatus
@@ -250,6 +274,8 @@ Local Origin Healthy: $localOriginHealthy
 Tunnel Connected: $tunnelConnected
 Public Hostname Healthy (2xx/3xx): $publicHostnameHealthy
 Public Status Code: $publicStatusCode
+Forms Hostname Healthy (2xx/3xx): $formsPublicHealthy
+Forms Status Code: $formsPublicStatusCode
 
 Log Directory: $LogDir
 Validation JSON: $validateJsonPath
@@ -280,6 +306,18 @@ if ($validateJson -and ($validateJson.PSObject.Properties.Name -contains "hostna
   }
 }
 
+if ($validateJson -and ($validateJson.PSObject.Properties.Name -contains "hostnames_bound")) {
+  $boundProps = $validateJson.hostnames_bound.PSObject.Properties
+  $formsBoundEntry = $boundProps | Where-Object { $_.Name -eq $FormsHostname }
+  if ($formsBoundEntry) {
+    if ([bool]$formsBoundEntry.Value) {
+      $formsHostnameRouteStatus = "BOUND"
+    } elseif ($formsHostnameRouteStatus -ne "BOUND") {
+      $formsHostnameRouteStatus = "MISSING"
+    }
+  }
+}
+
 $tunnelUuidOut = "UNKNOWN"
 if ($validateJson -and ($validateJson.PSObject.Properties.Name -contains "tunnel_uuid")) {
   $rawUuid = [string]$validateJson.tunnel_uuid
@@ -291,12 +329,14 @@ if ($validateJson -and ($validateJson.PSObject.Properties.Name -contains "tunnel
 Write-Host "CLOUDFLARE INDUSTRIAL MODE: ACTIVE" -ForegroundColor Green
 Write-Host ("Tunnel UUID: {0}" -f $tunnelUuidOut)
 Write-Host ("Hostname route status: {0}" -f $hostnameRouteStatus)
+Write-Host ("Forms hostname route status: {0}" -f $formsHostnameRouteStatus)
 Write-Host ("Service status: {0}" -f $serviceStatus)
 Write-Host ("Watchdog task status: {0}" -f $watchdogStatus)
 Write-Host ("Public health task status: {0}" -f $publicWatchdogStatus)
 Write-Host ("Origin healthy: {0}" -f $localOriginHealthy)
 Write-Host ("Tunnel connected: {0}" -f $tunnelConnected)
 Write-Host ("Public hostname healthy: {0} (status={1})" -f $publicHostnameHealthy, $publicStatusCode)
+Write-Host ("Forms hostname healthy: {0} (status={1})" -f $formsPublicHealthy, $formsPublicStatusCode)
 Write-Host ("Logs stored at: {0}" -f $LogDir)
 
 if ($status -ne "PASS") {

@@ -1,0 +1,98 @@
+[
+  {
+    "allowed_overrides": [
+      "switch_id",
+      "target_id"
+    ],
+    "applicable_rules": [
+      "default_true",
+      "switch_override",
+      "target_override"
+    ],
+    "default_value": true,
+    "metadata": {
+      "module_name": "app.flags"
+    },
+    "rollout": {
+      "owner": "registry_builder",
+      "strategy": "static"
+    },
+    "state": "canonical",
+    "switch_id": "module.enabled:mod_006637bf5fd89d6e",
+    "target_id": "mod_006637bf5fd89d6e",
+    "target_type": "module",
+    "updated_at": "2026-04-11T20:15:45Z"
+  },
+  {
+    "allowed_overrides": [
+      "switch_id",
+      "target_id"
+    ],
+    "applicable_rules": [
+      "default_true",
+      "switch_override",
+      "target_override"
+    ],
+    "default_value": true,
+    "metadata": {
+      "module_name": "app.__init__"
+    },
+    "rollout": {
+      "owner": "registry_builder",
+      "strategy": "static"
+    },
+    "state": "canonical",
+    "switch_id": "module.enabled:mod_9cec7b11237bc29d",
+    "target_id": "mod_9cec7b11237bc29d",
+    "target_type": "module",
+    "updated_at": "2026-04-11T20:15:45Z"
+  },
+  {
+    "allowed_overrides": [
+      "switch_id",
+      "target_id"
+    ],
+    "applicable_rules": [
+      "default_true",
+      "switch_override",
+      "target_override"
+    ],
+    "default_value": true,
+    "metadata": {
+      "module_name": "app.repository"
+    },
+    "rollout": {
+      "owner": "registry_builder",
+      "strategy": "static"
+    },
+    "state": "canonical",
+    "switch_id": "module.enabled:mod_b3c2b671598a92b5",
+    "target_id": "mod_b3c2b671598a92b5",
+    "target_type": "module",
+    "updated_at": "2026-04-11T20:15:45Z"
+  },
+  {
+    "allowed_overrides": [
+      "switch_id",
+      "target_id"
+    ],
+    "applicable_rules": [
+      "default_true",
+      "switch_override",
+      "target_override"
+    ],
+    "default_value": true,
+    "metadata": {
+      "module_name": "app.service"
+    },
+    "rollout": {
+      "owner": "registry_builder",
+      "strategy": "static"
+    },
+    "state": "canonical",
+    "switch_id": "module.enabled:mod_fb9baf6216d85a2e",
+    "target_id": "mod_fb9baf6216d85a2e",
+    "target_type": "module",
+    "updated_at": "2026-04-11T20:15:45Z"
+  }
+]
