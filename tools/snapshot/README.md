@@ -1,12 +1,12 @@
-# tools/snapshot
+# Snapshot Tooling
 
 ## Purpose
-Utilities and scripts for snapshot creation, validation, and related repo workflows.
+This directory contains snapshot-related tooling and support assets for this repository.
 
-## What lives here
+## Contents
 - Snapshot generation helpers
-- Validation scripts
-- Snapshot-related repo tooling
+- Snapshot validation scripts
+- Repo-specific operational utilities
 
 ## Notes
-This README exists to satisfy repo navigation requirements and to provide a stable entrypoint for this tool area.
+This README exists as the required navigation entrypoint for this directory.
