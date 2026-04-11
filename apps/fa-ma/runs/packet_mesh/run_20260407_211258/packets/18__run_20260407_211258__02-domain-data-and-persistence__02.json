@@ -1,0 +1,160 @@
+{
+  "packet_id": "run_20260407_211258:02-domain-data-and-persistence:02",
+  "run_id": "run_20260407_211258",
+  "order": 18,
+  "worker_id": "pkg_02-domain-data-and-persistence_02",
+  "stage": "implementation",
+  "package": "02-domain-data-and-persistence",
+  "goal": "Diseña la primera ola de trabajo para FA-MA",
+  "objective": "Advance the global goal for package '02-domain-data-and-persistence' by producing a precise, mergeable slice. Use the listed candidate files as the main surface. Goal: Diseña la primera ola de trabajo para FA-MA. Primary file set: packages/ui-kit/src/data-spine/providers/http.ts, packages/ui-kit/src/data-spine/providers/jsonVault.ts, packages/ui-kit/src/data-spine/providers/localStorage.ts, packages/ui-kit/src/data-spine/providers/mock.ts.",
+  "scope_summary": "Package surface: 02-domain-data-and-persistence. This packet covers 48 candidate files from a package with 189 indexed files. Runtime files in scope: packages/ui-kit/src/data-spine/providers/http.ts, packages/ui-kit/src/data-spine/providers/jsonVault.ts, packages/ui-kit/src/data-spine/providers/localStorage.ts, packages/ui-kit/src/data-spine/providers/mock.ts, packages/ui-kit/src/data-spine/schema/guards.ts, packages/ui-kit/src/data-spine/schema/registry.ts, packages/ui-kit/src/data-spine/schema/shapes.ts, packages/ui-kit/src/data-spine/spine.ts, packages/ui-kit/src/data-spine/types.ts, packages/ui-kit/src/kpi/a11y/aria.ts, packages/ui-kit/src/kpi/motion/useReducedMotion.ts, packages/ui-kit/src/kpi/registry/catalog.ts, packages/ui-kit/src/kpi/scoring/scoring.ts, packages/ui-kit/src/kpi/snippets.ts, packages/ui-kit/src/kpi/theme/useKpiTheme.ts, packages/ui-kit/src/kpi/types.ts, packages/ui-kit/src/layers/applyLayerFlagsToDom.ts, packages/ui-kit/src/layers/layerFlagsContract.ts, packages/ui-kit/src/layers/layerIds.ts, packages/ui-kit/src/layers/resolveLayerFlags.ts, packages/ui-kit/src/layers/useLayerFlags.ts, packages/ui-kit/src/lib/cn.ts, packages/ui-kit/src/lib/focus-ring.ts, packages/ui-kit/src/lib/fx.ts, packages/ui-kit/src/lib/motion.ts, packages/ui-kit/src/lib/tokens.ts, packages/ui-kit/src/luxury/applyLuxuryMaterial.ts, packages/ui-kit/src/luxury/applyLuxuryStyle.ts, packages/ui-kit/src/luxury/fixtures.ts, packages/ui-kit/src/luxury/frames/applyFrame.ts, packages/ui-kit/src/luxury/frames/frames.ts, packages/ui-kit/src/luxury/frames/signatures/goldNoirSignatureCatalog.ts, packages/ui-kit/src/luxury/frames/signatures/graphitePrismSignatureCatalog.ts, packages/ui-kit/src/luxury/governancePolicy.ts, packages/ui-kit/src/luxury/materials/materialEngine.ts, packages/ui-kit/src/luxury/materials/materialRegistry.ts, packages/ui-kit/src/luxury/queryNormalization.ts, packages/ui-kit/src/luxury/semantics/semanticMap.ts, packages/ui-kit/src/luxury/tokens/goldNoirTerminal.ts, packages/ui-kit/src/luxury/tokens/graphitePrismIso.ts, packages/ui-kit/src/luxury/tokens/liquidGlass.ts, packages/ui-kit/src/luxury/tokens/tokenCatalog.ts, packages/ui-kit/src/luxury/tokens/types.ts, packages/ui-kit/src/luxury/types.ts, packages/ui-kit/src/motion/applyMotion.ts, packages/ui-kit/src/motion/catalogs/basePerfCatalog.ts, packages/ui-kit/src/motion/catalogs/baseQualityCatalog.ts, packages/ui-kit/src/motion/catalogs/heroQualityCatalog.ts. Test files in scope: n/a. Docs/config in scope: n/a.",
+  "owned_paths": [
+    "packages/"
+  ],
+  "candidate_files": [
+    "packages/ui-kit/src/data-spine/providers/http.ts",
+    "packages/ui-kit/src/data-spine/providers/jsonVault.ts",
+    "packages/ui-kit/src/data-spine/providers/localStorage.ts",
+    "packages/ui-kit/src/data-spine/providers/mock.ts",
+    "packages/ui-kit/src/data-spine/schema/guards.ts",
+    "packages/ui-kit/src/data-spine/schema/registry.ts",
+    "packages/ui-kit/src/data-spine/schema/shapes.ts",
+    "packages/ui-kit/src/data-spine/spine.ts",
+    "packages/ui-kit/src/data-spine/types.ts",
+    "packages/ui-kit/src/kpi/a11y/aria.ts",
+    "packages/ui-kit/src/kpi/motion/useReducedMotion.ts",
+    "packages/ui-kit/src/kpi/registry/catalog.ts",
+    "packages/ui-kit/src/kpi/scoring/scoring.ts",
+    "packages/ui-kit/src/kpi/snippets.ts",
+    "packages/ui-kit/src/kpi/theme/useKpiTheme.ts",
+    "packages/ui-kit/src/kpi/types.ts",
+    "packages/ui-kit/src/layers/applyLayerFlagsToDom.ts",
+    "packages/ui-kit/src/layers/layerFlagsContract.ts",
+    "packages/ui-kit/src/layers/layerIds.ts",
+    "packages/ui-kit/src/layers/resolveLayerFlags.ts",
+    "packages/ui-kit/src/layers/useLayerFlags.ts",
+    "packages/ui-kit/src/lib/cn.ts",
+    "packages/ui-kit/src/lib/focus-ring.ts",
+    "packages/ui-kit/src/lib/fx.ts",
+    "packages/ui-kit/src/lib/motion.ts",
+    "packages/ui-kit/src/lib/tokens.ts",
+    "packages/ui-kit/src/luxury/applyLuxuryMaterial.ts",
+    "packages/ui-kit/src/luxury/applyLuxuryStyle.ts",
+    "packages/ui-kit/src/luxury/fixtures.ts",
+    "packages/ui-kit/src/luxury/frames/applyFrame.ts",
+    "packages/ui-kit/src/luxury/frames/frames.ts",
+    "packages/ui-kit/src/luxury/frames/signatures/goldNoirSignatureCatalog.ts",
+    "packages/ui-kit/src/luxury/frames/signatures/graphitePrismSignatureCatalog.ts",
+    "packages/ui-kit/src/luxury/governancePolicy.ts",
+    "packages/ui-kit/src/luxury/materials/materialEngine.ts",
+    "packages/ui-kit/src/luxury/materials/materialRegistry.ts",
+    "packages/ui-kit/src/luxury/queryNormalization.ts",
+    "packages/ui-kit/src/luxury/semantics/semanticMap.ts",
+    "packages/ui-kit/src/luxury/tokens/goldNoirTerminal.ts",
+    "packages/ui-kit/src/luxury/tokens/graphitePrismIso.ts",
+    "packages/ui-kit/src/luxury/tokens/liquidGlass.ts",
+    "packages/ui-kit/src/luxury/tokens/tokenCatalog.ts",
+    "packages/ui-kit/src/luxury/tokens/types.ts",
+    "packages/ui-kit/src/luxury/types.ts",
+    "packages/ui-kit/src/motion/applyMotion.ts",
+    "packages/ui-kit/src/motion/catalogs/basePerfCatalog.ts",
+    "packages/ui-kit/src/motion/catalogs/baseQualityCatalog.ts",
+    "packages/ui-kit/src/motion/catalogs/heroQualityCatalog.ts"
+  ],
+  "context_files": [
+    {
+      "rel_path": "packages/ui-kit/src/data-spine/providers/http.ts",
+      "language": "typescript",
+      "size_bytes": 8902,
+      "sha1": "df8bcefd77d25df09ac813273f3a3687c73c43f1",
+      "package": "02-domain-data-and-persistence",
+      "role": "runtime",
+      "importance": 75,
+      "headings": [],
+      "imports": [
+        "import type {"
+      ],
+      "excerpt": "0001: import type {\n0002:   DataProvider,\n0003:   DataSetId,\n0004:   ProviderId,\n0005:   ProviderResponse,\n0006:   Query,\n0007:   QueryPrimitive,\n0008:   QueryValue\n0009: } from \"../types.js\";\n0010: \n0011: const HTTP_PROVIDER_ID: ProviderId = \"http\";\n0012: \n0013: export interface HttpRequestDescriptor {\n0014:   readonly url: string;\n0015:   readonly init?: RequestInit;\n0016: }\n0017: \n0018: export interface HttpProviderOptions {\n0019:   readonly id?: ProviderId;\n0020:   readonly baseUrl?: string;\n0021:   readonly defaultRetries?: number;\n0022:   readonly retryBackoffMs?: number;\n0023:   readonly cacheTtlMs?: number;\n0024:   readonly fetchImpl?: typeof fetch;\n0025:   readonly buildRequest?: (query: Query) => HttpRequestDescriptor;\n0026: }\n0027: \n0028: class RetryableHttpError extends Error {\n0029:   readonly status: number;\n0030: \n0031:   constructor(status: number, message: string) {\n0032:     super(message);\n0033:     this.name = \"RetryableHttpError\";\n0034:     this.status = status;\n0035:   }\n0036: }\n0037: \n0038: function isRecord(value: unknown): value is Record<string, unknown> {\n0039:   return value !== null && typeof value === \"object\" && !Array.isArray(value);\n0040: }\n0041: \n0042: function isRetryableStatus(status: number): boolean {\n0043:   return status === 408 || status === 425 || status === 429 || status >= 500;\n0044: }\n0045: \n0046: function toPrimitiveMetadata(value: unknown): QueryPrimitive | undefined {\n0047:   if (value === null || typeof value === \"string\" || typeof value === \"number\" || typeof value === \"boolean\") {\n0048:     return value;\n0049:   }\n0050:   return undefined;\n0051: }\n0052: \n0053: function pickStringParam(params: Query[\"params\"], key: string): string | undefined {\n0054:   if (params === undefined) {\n0055:     return undefined;\n0056:   }\n0057: \n0058:   const value = params[key];\n0059:   const candidate = Array.isArray(value) ? value[0] : value;\n0060:   return typeof candidate === \"string\" ? candidate : undefined;\n0061: }\n0062: \n0063: function resolveBaseUrl(input: string | undefined): string {\n0064:   if (input && input.length > 0) {\n0065:     return input;\n0066:   }\n0067: \n0068:   if (typeof window !== \"undefined\" && window.location?.origin) {\n0069:     return window.location.origin;\n0070:   }\n0071: \n0072:   return \"http://127.0.0.1\";\n0073: }\n0074: \n0075: function defaultBuildRequestFactory(baseUrl: string): (query: Query) => HttpRequestDescriptor {\n0076:   return (query: Query) => {\n0077:     const path = pickStringParam(query.params, \"path\") ??\n0078:       (query.datasetId ? `/api/dev/kpi/datasets/${query.datasetId}` : undefined);\n0079: \n0080:     if (path === undefined) {\n0081:       throw new Error(\"http provider requires params.path or query.datasetId.\");\n0082:     }\n0083: \n0084:     const url = new URL(path, baseUrl).toString();\n0085:     const method = pickStringParam(query.params, \"method\") ?? \"GET\";\n0086: \n0087:     return {\n0088:       url,\n0089:       init: {\n0090:         method\n0091:       }\n0092:     };\n0093:   };\n0094: }\n0095: \n0096: function mergeSignals(signal: AbortSignal | undefined, timeoutMs: number | undefined): AbortSignal | undefined {\n0097:   if (signal === undefined && timeoutMs === undefined) {\n0098:     return undefined;\n0099:   }\n0100: \n0101:   if (timeoutMs === undefined) {\n0102:     return signal;\n0103:   }\n0104: \n0105:   const controller = new AbortController();\n0106:   const timer = setTimeout(() => {\n0107:     controller.abort(`request timed out after ${timeoutMs}ms`);\n0108:   }, timeoutMs);\n0109: \n0110:   if (signal !== undefined) {\n0111:     if (signal.aborted) {\n0112:       clearTimeout(timer);\n0113:       controller.abort(signal.reason);\n0114:     } else {\n0115:       signal.addEventListener(\n0116:         \"abort\",\n0117:         () => {\n0118:           clearTimeout(timer);\n0119:           controller.abort(signal.reason);\n0120:         },",
+      "notes": [
+        "Runtime-bearing file; suitable as primary implementation context."
+      ]
+    },
+    {
+      "rel_path": "packages/ui-kit/src/data-spine/providers/jsonVault.ts",
+      "language": "typescript",
+      "size_bytes": 4807,
+      "sha1": "5b89a85695bc581c403e37b67ff6c806bead1f19",
+      "package": "02-domain-data-and-persistence",
+      "role": "runtime",
+      "importance": 75,
+      "headings": [],
+      "imports": [
+        "import type {"
+      ],
+      "excerpt": "0001: import type {\n0002:   DataProvider,\n0003:   DataSetId,\n0004:   ProviderId,\n0005:   ProviderResponse,\n0006:   Query\n0007: } from \"../types.js\";\n0008: \n0009: const JSON_VAULT_PROVIDER_ID: ProviderId = \"jsonVault\";\n0010: \n0011: interface JsonVaultRegistryEntry {\n0012:   readonly datasetId: string;\n0013:   readonly dataShapeId?: string;\n0014: }\n0015: \n0016: interface JsonVaultRegistryResponse {\n0017:   readonly datasets: readonly JsonVaultRegistryEntry[];\n0018: }\n0019: \n0020: export interface JsonVaultProviderOptions {\n0021:   readonly id?: ProviderId;\n0022:   readonly basePath?: string;\n0023:   readonly listPath?: string;\n0024:   readonly datasetPath?: (datasetId: DataSetId) => string;\n0025:   readonly fetchImpl?: typeof fetch;\n0026:   readonly cacheTtlMs?: number;\n0027: }\n0028: \n0029: function isRecord(value: unknown): value is Record<string, unknown> {\n0030:   return value !== null && typeof value === \"object\" && !Array.isArray(value);\n0031: }\n0032: \n0033: function normalizePath(basePath: string, path: string): string {\n0034:   const normalizedBase = basePath.endsWith(\"/\") ? basePath.slice(0, -1) : basePath;\n0035:   const normalizedPath = path.startsWith(\"/\") ? path : `/${path}`;\n0036:   return `${normalizedBase}${normalizedPath}`;\n0037: }\n0038: \n0039: function parseRegistry(input: unknown): JsonVaultRegistryResponse {\n0040:   if (!isRecord(input) || !Array.isArray(input[\"datasets\"])) {\n0041:     return { datasets: [] };\n0042:   }\n0043: \n0044:   const datasets = input[\"datasets\"]\n0045:     .filter((item): item is Record<string, unknown> => isRecord(item))\n0046:     .map((item) => ({\n0047:       datasetId: typeof item[\"datasetId\"] === \"string\" ? item[\"datasetId\"] : \"\",\n0048:       ...(typeof item[\"dataShapeId\"] === \"string\" ? { dataShapeId: item[\"dataShapeId\"] } : {})\n0049:     }))\n0050:     .filter((item) => item.datasetId.length > 0);\n0051: \n0052:   return { datasets };\n0053: }\n0054: \n0055: export function createJsonVaultProvider(options: JsonVaultProviderOptions = {}): DataProvider {\n0056:   const providerId = options.id ?? JSON_VAULT_PROVIDER_ID;\n0057:   const basePath = options.basePath ?? \"\";\n0058:   const listPath = options.listPath ?? \"/api/dev/kpi/datasets\";\n0059:   const datasetPath = options.datasetPath ?? ((datasetId: DataSetId) => `/api/dev/kpi/datasets/${datasetId}`);\n0060:   const fetchImpl = options.fetchImpl ?? fetch;\n0061:   const cacheTtlMs = options.cacheTtlMs ?? 20_000;\n0062: \n0063:   let registryMap = new Map<string, JsonVaultRegistryEntry>();\n0064:   let registryPromise: Promise<void> | undefined;\n0065: \n0066:   async function loadRegistry(signal?: AbortSignal): Promise<void> {\n0067:     if (registryPromise !== undefined) {\n0068:       await registryPromise;\n0069:       return;\n0070:     }\n0071: \n0072:     registryPromise = (async () => {\n0073:       const listRequest: RequestInit = {\n0074:         method: \"GET\",\n0075:         cache: \"no-store\"\n0076:       };\n0077:       if (signal !== undefined) {\n0078:         listRequest.signal = signal;\n0079:       }\n0080: \n0081:       const response = await fetchImpl(normalizePath(basePath, listPath), listRequest);\n0082: \n0083:       if (!response.ok) {\n0084:         throw new Error(`jsonVault list request failed with status ${response.status}.`);\n0085:       }\n0086: \n0087:       const parsed = parseRegistry((await response.json()) as unknown);\n0088:       registryMap = new Map(parsed.datasets.map((entry) => [entry.datasetId, entry]));\n0089:     })();\n0090: \n0091:     await registryPromise;\n0092:   }\n0093: \n0094:   return {\n0095:     id: providerId,\n0096:     async query(input: Query): Promise<ProviderResponse> {\n0097:       const datasetId = input.datasetId;\n0098:       if (datasetId === undefined || datasetId.trim().length === 0) {\n0099:         throw new Error(\"jsonVault provider requires query.datasetId.\");\n0100:       }\n0101: \n0102:       await loadRegistry(input.signal);\n0103: \n0104:       const datasetRequest: RequestInit = {\n0105:         method: \"GET\",\n0106:         cache: \"no-store\"\n0107:       };\n0108:       if (input.signal !== undefined) {\n0109:         datasetRequest.signal = input.signal;\n0110:       }\n0111: \n0112:       const response = await fetchImpl(normalizePath(basePath, datasetPath(datasetId)), datasetRequest);\n0113: \n0114:       if (!response.ok) {\n0115:         throw new Error(`jsonVault dataset request failed for '${datasetId}' with status ${response.status}.`);\n0116:       }\n0117: \n0118:       const json = (await response.json()) as unknown;\n0119:       if (!isRecord(json)) {\n0120:         throw new Error(`jsonVault dataset '${datasetId}' returned a non-object payload.`);",
+      "notes": [
+        "Runtime-bearing file; suitable as primary implementation context."
+      ]
+    },
+    {
+      "rel_path": "packages/ui-kit/src/data-spine/schema/shapes.ts",
+      "language": "typescript",
+      "size_bytes": 1533,
+      "sha1": "2610df3c493b06ef6f188603f7c3e8a39dadbd77",
+      "package": "02-domain-data-and-persistence",
+      "role": "runtime",
+      "importance": 75,
+      "headings": [],
+      "imports": [],
+      "excerpt": "0001: export const DATA_SHAPE_IDS = [\"timeSeries\", \"breakdown\", \"matrix\", \"gauge\", \"tableMini\"] as const;\n0002: \n0003: export interface TimeSeriesPoint {\n0004:   readonly timestamp: string;\n0005:   readonly value: number;\n0006:   readonly label?: string;\n0007: }\n0008: \n0009: export interface TimeSeriesData {\n0010:   readonly points: readonly TimeSeriesPoint[];\n0011:   readonly unit?: string;\n0012:   readonly seriesLabel?: string;\n0013: }\n0014: \n0015: export interface BreakdownSlice {\n0016:   readonly key: string;\n0017:   readonly label: string;\n0018:   readonly value: number;\n0019:   readonly color?: string;\n0020: }\n0021: \n0022: export interface BreakdownData {\n0023:   readonly slices: readonly BreakdownSlice[];\n0024:   readonly total?: number;\n0025:   readonly unit?: string;\n0026: }\n0027: \n0028: export interface MatrixData {\n0029:   readonly rows: readonly string[];\n0030:   readonly columns: readonly string[];\n0031:   readonly values: readonly (readonly number[])[];\n0032:   readonly unit?: string;\n0033: }\n0034: \n0035: export interface GaugeData {\n0036:   readonly value: number;\n0037:   readonly min: number;\n0038:   readonly max: number;\n0039:   readonly target?: number;\n0040:   readonly unit?: string;\n0041:   readonly status?: \"neutral\" | \"good\" | \"warning\" | \"critical\";\n0042: }\n0043: \n0044: export type TableMiniCell = string | number | null;\n0045: \n0046: export interface TableMiniRow {\n0047:   readonly label: string;\n0048:   readonly cells: readonly TableMiniCell[];\n0049: }\n0050: \n0051: export interface TableMiniData {\n0052:   readonly columns: readonly string[];\n0053:   readonly rows: readonly TableMiniRow[];\n0054: }\n0055: \n0056: export interface DataShapeMap {\n0057:   readonly timeSeries: TimeSeriesData;\n0058:   readonly breakdown: BreakdownData;\n0059:   readonly matrix: MatrixData;\n0060:   readonly gauge: GaugeData;\n0061:   readonly tableMini: TableMiniData;\n0062: }\n0063: ",
+      "notes": [
+        "Runtime-bearing file; suitable as primary implementation context."
+      ]
+    }
+  ],
+  "acceptance_gates": [
+    "State the exact files or surfaces you touched or propose to touch.",
+    "Preserve ownership boundaries and avoid edits outside packet scope.",
+    "Return deterministic markdown with explicit headings.",
+    "List blockers, assumptions, and verification ideas.",
+    "Propose next packet handoff in 3 bullets max."
+  ],
+  "constraints": [
+    "Do not dump whole large files; summarize and cite targeted slices.",
+    "Prefer small, composable changes that can be merged independently.",
+    "Respect repo conventions and monorepo entrypoint reality.",
+    "Output must be useful even if the next packet runs on a smaller model."
+  ],
+  "handoff_inputs": [
+    "packages/ui-kit/src/data-spine/providers/http.ts",
+    "packages/ui-kit/src/data-spine/providers/jsonVault.ts",
+    "packages/ui-kit/src/data-spine/providers/localStorage.ts",
+    "docs/contracts/work_packet_contract.md",
+    "docs/ops/packet_mesh_quickstart.md"
+  ],
+  "output_contract": [
+    "Section: Goal Restatement",
+    "Section: Scope and Owned Paths",
+    "Section: Recommended File Changes",
+    "Section: Risks and Assumptions",
+    "Section: Verification and Next Packet",
+    "Include a compact checklist with [x]/[ ] items"
+  ],
+  "risk_notes": [
+    "Context window is intentionally bounded; summarize rather than dumping everything.",
+    "Do not infer monorepo entrypoints blindly; name the probable entrypoints and uncertainty.",
+    "Shard is near max file count; stay strict about scope."
+  ],
+  "char_budget": 12000,
+  "metadata": {
+    "package_file_count": 189,
+    "shard_index": 2,
+    "shard_count": 4,
+    "languages": [
+      "typescript"
+    ],
+    "roles": [
+      "runtime"
+    ]
+  }
+}

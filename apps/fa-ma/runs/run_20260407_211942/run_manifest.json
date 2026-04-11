@@ -1,0 +1,22 @@
+{
+  "run_id": "run_20260407_211942",
+  "goal": "Diseña el primer slice funcional de FA-MA",
+  "settings": {
+    "host": "http://localhost:11434",
+    "model": "qwen3:14b",
+    "temperature": 0.2,
+    "keep_alive": "30m"
+  },
+  "workers": [
+    "governance",
+    "planner",
+    "pkg01_identity_access_trust",
+    "pkg02_domain_data_persistence",
+    "pkg03_service_contracts_orchestration",
+    "pkg04_experience_clients_interactions",
+    "pkg05_platform_infra_delivery",
+    "pkg06_quality_release_operations",
+    "reviewer",
+    "integrator"
+  ]
+}

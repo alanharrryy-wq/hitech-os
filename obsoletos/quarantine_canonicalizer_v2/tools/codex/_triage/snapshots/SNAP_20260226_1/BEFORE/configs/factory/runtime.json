@@ -1,0 +1,28 @@
+{
+  "run": {
+    "kind": "run",
+    "baseRef": "HEAD"
+  },
+  "paths": {
+    "runRoot": "tools/codex/runs",
+    "reportPath": "tools/codex/runs/<RUN_ID>/Z_aggregator/FINAL_REPORT.txt"
+  },
+  "workers": [
+    "A_core",
+    "B_tooling",
+    "C_features",
+    "D_validation",
+    "Z_aggregator"
+  ],
+  "security": {
+    "forbidTemporalDependencies": true,
+    "forbidCrossModuleImports": true,
+    "forbidAbsolutePaths": true
+  },
+  "featureFlags": {
+    "allowExperimentalWorkers": false,
+    "allowCrossModuleImports": false,
+    "allowTemporalSignals": false,
+    "allowNonDeterministicApis": false
+  }
+}

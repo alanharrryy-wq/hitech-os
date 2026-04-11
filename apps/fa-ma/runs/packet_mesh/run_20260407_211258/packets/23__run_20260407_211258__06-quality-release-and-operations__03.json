@@ -1,0 +1,188 @@
+{
+  "packet_id": "run_20260407_211258:06-quality-release-and-operations:03",
+  "run_id": "run_20260407_211258",
+  "order": 23,
+  "worker_id": "pkg_06-quality-release-and-operations_03",
+  "stage": "validation",
+  "package": "06-quality-release-and-operations",
+  "goal": "Diseña la primera ola de trabajo para FA-MA",
+  "objective": "Advance the global goal for package '06-quality-release-and-operations' by producing a precise, mergeable slice. Use the listed candidate files as the main surface. Goal: Diseña la primera ola de trabajo para FA-MA. Primary file set: forgeos/platform/forge_commons/tests/test_diagnostics_capability.py, forgeos/platform/forge_commons/tests/test_export_artifacts_capability.py, forgeos/platform/forge_commons/tests/test_history_runs_capability.py, forgeos/platform/forge_commons/tests/test_process_execution_capability.py.",
+  "scope_summary": "Package surface: 06-quality-release-and-operations. This packet covers 20 candidate files from a package with 78 indexed files. Runtime files in scope: n/a. Test files in scope: forgeos/platform/forge_commons/tests/test_diagnostics_capability.py, forgeos/platform/forge_commons/tests/test_export_artifacts_capability.py, forgeos/platform/forge_commons/tests/test_history_runs_capability.py, forgeos/platform/forge_commons/tests/test_process_execution_capability.py, forgeos/platform/forge_kernel/tests/test_commons_capability_manifests.py, forgeos/platform/forge_kernel/tests/test_contract_runtime.py, forgeos/platform/forge_kernel/tests/test_contract_schema_coverage.py, forgeos/platform/forge_kernel/tests/test_full_runtime_shutdown.py, forgeos/platform/forge_kernel/tests/test_host_shell_runtime.py, forgeos/platform/forge_kernel/tests/test_kernel_bootstrap.py, forgeos/platform/forge_kernel/tests/test_lifecycle_authority.py, forgeos/platform/forge_kernel/tests/test_packaging_gate.py, forgeos/platform/forge_kernel/tests/test_packaging_hardening_phase7.py, forgeos/platform/forge_kernel/tests/test_product_skeleton_dummy.py, forgeos/platform/forge_kernel/tests/test_slot_manager.py, forgeos/platform/forge_kernel/tests/test_state_authority_registry.py, forgeos/products/cloudflare_guardian/tests/test_cloudflare_guardian_runtime.py, forgeos/products/repo_analyzer/tests/test_repo_analyzer_runtime.py, forgeos/shared/pyside6_glass/tests/test_assets_smoke.py, forgeos/shared/pyside6_glass/tests/test_builtin_data_providers.py. Docs/config in scope: n/a.",
+  "owned_paths": [
+    "forgeos/",
+    "tests/",
+    "docs/"
+  ],
+  "candidate_files": [
+    "forgeos/platform/forge_commons/tests/test_diagnostics_capability.py",
+    "forgeos/platform/forge_commons/tests/test_export_artifacts_capability.py",
+    "forgeos/platform/forge_commons/tests/test_history_runs_capability.py",
+    "forgeos/platform/forge_commons/tests/test_process_execution_capability.py",
+    "forgeos/platform/forge_kernel/tests/test_commons_capability_manifests.py",
+    "forgeos/platform/forge_kernel/tests/test_contract_runtime.py",
+    "forgeos/platform/forge_kernel/tests/test_contract_schema_coverage.py",
+    "forgeos/platform/forge_kernel/tests/test_full_runtime_shutdown.py",
+    "forgeos/platform/forge_kernel/tests/test_host_shell_runtime.py",
+    "forgeos/platform/forge_kernel/tests/test_kernel_bootstrap.py",
+    "forgeos/platform/forge_kernel/tests/test_lifecycle_authority.py",
+    "forgeos/platform/forge_kernel/tests/test_packaging_gate.py",
+    "forgeos/platform/forge_kernel/tests/test_packaging_hardening_phase7.py",
+    "forgeos/platform/forge_kernel/tests/test_product_skeleton_dummy.py",
+    "forgeos/platform/forge_kernel/tests/test_slot_manager.py",
+    "forgeos/platform/forge_kernel/tests/test_state_authority_registry.py",
+    "forgeos/products/cloudflare_guardian/tests/test_cloudflare_guardian_runtime.py",
+    "forgeos/products/repo_analyzer/tests/test_repo_analyzer_runtime.py",
+    "forgeos/shared/pyside6_glass/tests/test_assets_smoke.py",
+    "forgeos/shared/pyside6_glass/tests/test_builtin_data_providers.py"
+  ],
+  "context_files": [
+    {
+      "rel_path": "forgeos/platform/forge_commons/tests/test_diagnostics_capability.py",
+      "language": "python",
+      "size_bytes": 1257,
+      "sha1": "b5560b1b51f287e2a7e1cdb2e29f9159d69dff6d",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [
+        "import unittest",
+        "from forge_commons import DiagnosticsCapability",
+        "from forge_commons.lifecycle import CapabilityRuntimeState"
+      ],
+      "excerpt": "0001: import unittest\n0002: \n0003: from forge_commons import DiagnosticsCapability\n0004: from forge_commons.lifecycle import CapabilityRuntimeState\n0005: \n0006: \n0007: class DiagnosticsCapabilityTests(unittest.TestCase):\n0008:     def test_emit_and_health_snapshot(self) -> None:\n0009:         capability = DiagnosticsCapability()\n0010:         capability.activate()\n0011:         capability.emit(\n0012:             severity=\"info\",\n0013:             component=\"kernel\",\n0014:             message=\"boot completed\",\n0015:             actor=\"runtime\",\n0016:         )\n0017:         capability.emit(\n0018:             severity=\"error\",\n0019:             component=\"commons\",\n0020:             message=\"failure\",\n0021:             actor=\"runtime\",\n0022:         )\n0023:         snapshot = capability.health_snapshot()\n0024:         self.assertEqual(snapshot[\"info\"], 1)\n0025:         self.assertEqual(snapshot[\"error\"], 1)\n0026: \n0027:     def test_dispose_clears_events(self) -> None:\n0028:         capability = DiagnosticsCapability()\n0029:         capability.activate()\n0030:         capability.emit(\n0031:             severity=\"warning\",\n0032:             component=\"commons\",\n0033:             message=\"degraded\",\n0034:             actor=\"runtime\",\n0035:         )\n0036:         state = capability.dispose()\n0037:         self.assertEqual(state, CapabilityRuntimeState.DISPOSED)\n0038:         self.assertEqual(capability.events(), [])\n0039: \n0040: \n0041: if __name__ == \"__main__\":\n0042:     unittest.main()",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": "forgeos/platform/forge_commons/tests/test_export_artifacts_capability.py",
+      "language": "python",
+      "size_bytes": 1494,
+      "sha1": "b7357d6257549b3c717199d9eaf5c6b50ac9c9e3",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [
+        "import json",
+        "import tempfile",
+        "import unittest",
+        "from pathlib import Path",
+        "from forge_commons import ExportArtifactsCapability",
+        "from forge_commons.lifecycle import CapabilityRuntimeState"
+      ],
+      "excerpt": "0001: import json\n0002: import tempfile\n0003: import unittest\n0004: from pathlib import Path\n0005: \n0006: from forge_commons import ExportArtifactsCapability\n0007: from forge_commons.lifecycle import CapabilityRuntimeState\n0008: \n0009: \n0010: class ExportArtifactsCapabilityTests(unittest.TestCase):\n0011:     def test_export_bundle_creates_zip_and_manifest(self) -> None:\n0012:         capability = ExportArtifactsCapability()\n0013:         capability.activate()\n0014:         with tempfile.TemporaryDirectory() as tmp:\n0015:             temp_root = Path(tmp)\n0016:             source_file = temp_root / \"sample.txt\"\n0017:             source_file.write_text(\"hello\", encoding=\"utf-8\")\n0018:             result = capability.export_bundle(\n0019:                 output_dir=str(temp_root / \"out\"),\n0020:                 bundle_name=\"artifact_bundle\",\n0021:                 manifest={\"name\": \"artifact_bundle\", \"version\": \"0.1.0\"},\n0022:                 file_paths=[str(source_file)],\n0023:             )\n0024:             self.assertTrue(Path(result.bundle_path).exists())\n0025:             self.assertTrue(Path(result.manifest_path).exists())\n0026:             manifest = json.loads(Path(result.manifest_path).read_text(encoding=\"utf-8\"))\n0027:             self.assertEqual(manifest[\"name\"], \"artifact_bundle\")\n0028:             self.assertEqual(result.included_files, 1)\n0029: \n0030:     def test_dispose_transitions_to_disposed(self) -> None:\n0031:         capability = ExportArtifactsCapability()\n0032:         capability.activate()\n0033:         state = capability.dispose()\n0034:         self.assertEqual(state, CapabilityRuntimeState.DISPOSED)\n0035: \n0036: \n0037: if __name__ == \"__main__\":\n0038:     unittest.main()",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": "forgeos/platform/forge_commons/tests/test_history_runs_capability.py",
+      "language": "python",
+      "size_bytes": 1327,
+      "sha1": "b97f345aea83e41a6a275dc54e98e458baf03d1d",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [
+        "import unittest",
+        "from forge_commons import HistoryRunsCapability",
+        "from forge_commons.lifecycle import CapabilityRuntimeState",
+        "from forge_kernel import KernelBootstrap"
+      ],
+      "excerpt": "0001: import unittest\n0002: \n0003: from forge_commons import HistoryRunsCapability\n0004: from forge_commons.lifecycle import CapabilityRuntimeState\n0005: from forge_kernel import KernelBootstrap\n0006: \n0007: \n0008: class HistoryRunsCapabilityTests(unittest.TestCase):\n0009:     def test_append_adds_run_record(self) -> None:\n0010:         contracts = KernelBootstrap.start().contracts\n0011:         capability = HistoryRunsCapability(contracts=contracts)\n0012:         capability.activate()\n0013:         record = capability.append(\n0014:             run_id=\"run-001\",\n0015:             producer=\"unit-test\",\n0016:             status=\"finished\",\n0017:             actor=\"test\",\n0018:             correlation_id=\"hist-001\",\n0019:         )\n0020:         self.assertEqual(record.run_id, \"run-001\")\n0021:         self.assertEqual(len(capability.all_runs()), 1)\n0022: \n0023:     def test_dispose_clears_runs(self) -> None:\n0024:         contracts = KernelBootstrap.start().contracts\n0025:         capability = HistoryRunsCapability(contracts=contracts)\n0026:         capability.activate()\n0027:         capability.append(\n0028:             run_id=\"run-002\",\n0029:             producer=\"unit-test\",\n0030:             status=\"failed\",\n0031:             actor=\"test\",\n0032:             correlation_id=\"hist-002\",\n0033:         )\n0034:         state = capability.dispose()\n0035:         self.assertEqual(state, CapabilityRuntimeState.DISPOSED)\n0036:         self.assertEqual(capability.all_runs(), [])\n0037: \n0038: \n0039: if __name__ == \"__main__\":\n0040:     unittest.main()",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": "forgeos/platform/forge_commons/tests/test_process_execution_capability.py",
+      "language": "python",
+      "size_bytes": 1938,
+      "sha1": "65cfaa0e618cc2eca49498382635b2c3c039c682",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [
+        "import sys",
+        "import unittest",
+        "from forge_commons import ProcessExecutionCapability",
+        "from forge_commons.lifecycle import CapabilityRuntimeState",
+        "from forge_kernel import KernelBootstrap"
+      ],
+      "excerpt": "0001: import sys\n0002: import unittest\n0003: \n0004: from forge_commons import ProcessExecutionCapability\n0005: from forge_commons.lifecycle import CapabilityRuntimeState\n0006: from forge_kernel import KernelBootstrap\n0007: \n0008: \n0009: class ProcessExecutionCapabilityTests(unittest.TestCase):\n0010:     def test_execute_command_records_finished_status(self) -> None:\n0011:         contracts = KernelBootstrap.start().contracts\n0012:         capability = ProcessExecutionCapability(contracts=contracts)\n0013:         capability.activate()\n0014:         result = capability.execute(\n0015:             command=[sys.executable, \"-c\", \"print('ok')\"],\n0016:             actor=\"test\",\n0017:             correlation_id=\"proc-001\",\n0018:             timeout_seconds=5,\n0019:         )\n0020:         self.assertEqual(result.status, \"finished\")\n0021:         self.assertEqual(result.return_code, 0)\n0022:         self.assertIn(\"ok\", result.stdout)\n0023: \n0024:     def test_execute_timeout_records_timed_out(self) -> None:\n0025:         contracts = KernelBootstrap.start().contracts\n0026:         capability = ProcessExecutionCapability(contracts=contracts)\n0027:         capability.activate()\n0028:         result = capability.execute(\n0029:             command=[sys.executable, \"-c\", \"import time; time.sleep(2)\"],\n0030:             actor=\"test\",\n0031:             correlation_id=\"proc-002\",\n0032:             timeout_seconds=0.2,\n0033:         )\n0034:         self.assertEqual(result.status, \"timed_out\")\n0035:         self.assertIsNone(result.return_code)\n0036: \n0037:     def test_dispose_clears_ledger(self) -> None:\n0038:         contracts = KernelBootstrap.start().contracts\n0039:         capability = ProcessExecutionCapability(contracts=contracts)\n0040:         capability.activate()\n0041:         capability.execute(\n0042:             command=[sys.executable, \"-c\", \"print('x')\"],\n0043:             actor=\"test\",\n0044:             correlation_id=\"proc-003\",\n0045:             timeout_seconds=5,\n0046:         )\n0047:         state = capability.dispose()\n0048:         self.assertEqual(state, CapabilityRuntimeState.DISPOSED)\n0049:         self.assertEqual(capability.ledger(), [])\n0050: \n0051: \n0052: if __name__ == \"__main__\":\n0053:     unittest.main()",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": "forgeos/platform/forge_kernel/tests/test_commons_capability_manifests.py",
+      "language": "python",
+      "size_bytes": 1943,
+      "sha1": "df8c831bd326d87a0436e0f56430465fb0c286c9",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [
+        "import json",
+        "import unittest",
+        "from pathlib import Path",
+        "from forge_kernel import KernelBootstrap"
+      ],
+      "excerpt": "0001: import json\n0002: import unittest\n0003: from pathlib import Path\n0004: \n0005: from forge_kernel import KernelBootstrap\n0006: \n0007: \n0008: class CommonsCapabilityManifestTests(unittest.TestCase):\n0009:     def test_commons_registry_and_manifests_are_consistent(self) -> None:\n0010:         forgeos_root = Path(__file__).resolve().parents[3]\n0011:         commons_root = forgeos_root / \"platform\" / \"forge_commons\"\n0012:         registry_path = commons_root / \"CAPABILITY_REGISTRY.json\"\n0013:         self.assertTrue(registry_path.exists(), \"commons capability registry must exist\")\n0014: \n0015:         registry = json.loads(registry_path.read_text(encoding=\"utf-8\"))\n0016:         capabilities = registry[\"capabilities\"]\n0017:         self.assertEqual(len(capabilities), 5)\n0018: \n0019:         kernel_contracts = {\n0020:             definition.contract_id\n0021:             for definition in KernelBootstrap.start().contracts.known_contracts()\n0022:         }\n0023: \n0024:         for item in capabilities:\n0025:             capability_dir = commons_root / item[\"directory\"]\n0026:             manifest_path = capability_dir / \"CAPABILITY_MANIFEST.json\"\n0027:             self.assertTrue(manifest_path.exists(), f\"manifest missing for {item['directory']}\")\n0028: \n0029:             manifest = json.loads(manifest_path.read_text(encoding=\"utf-8\"))\n0030:             self.assertEqual(manifest[\"capability_id\"], item[\"capability_id\"])\n0031:             self.assertEqual(manifest[\"owner\"], item[\"owner\"])\n0032:             self.assertIn(\"state_authority\", manifest)\n0033:             self.assertIn(\"lifecycle\", manifest)\n0034:             self.assertIn(\"contract_bindings\", manifest)\n0035:             self.assertIn(\"packaging\", manifest)\n0036: \n0037:             for binding in manifest[\"contract_bindings\"]:\n0038:                 if binding[\"status\"] == \"registered\":\n0039:                     self.assertIn(\n0040:                         binding[\"contract_id\"],\n0041:                         kernel_contracts,\n0042:                         f\"registered contract {binding['contract_id']} must exist in kernel runtime\",\n0043:                     )\n0044: \n0045: \n0046: if __name__ == \"__main__\":\n0047:     unittest.main()",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    }
+  ],
+  "acceptance_gates": [
+    "State the exact files or surfaces you touched or propose to touch.",
+    "Preserve ownership boundaries and avoid edits outside packet scope.",
+    "Return deterministic markdown with explicit headings.",
+    "List blockers, assumptions, and verification ideas.",
+    "Describe how tests validate or need updates for this slice.",
+    "Propose next packet handoff in 3 bullets max."
+  ],
+  "constraints": [
+    "Do not dump whole large files; summarize and cite targeted slices.",
+    "Prefer small, composable changes that can be merged independently.",
+    "Respect repo conventions and monorepo entrypoint reality.",
+    "Output must be useful even if the next packet runs on a smaller model."
+  ],
+  "handoff_inputs": [
+    "forgeos/platform/forge_commons/tests/test_diagnostics_capability.py",
+    "forgeos/platform/forge_commons/tests/test_export_artifacts_capability.py",
+    "forgeos/platform/forge_commons/tests/test_history_runs_capability.py",
+    "docs/contracts/work_packet_contract.md",
+    "docs/ops/packet_mesh_quickstart.md"
+  ],
+  "output_contract": [
+    "Section: Goal Restatement",
+    "Section: Scope and Owned Paths",
+    "Section: Recommended File Changes",
+    "Section: Risks and Assumptions",
+    "Section: Verification and Next Packet",
+    "Include a compact checklist with [x]/[ ] items"
+  ],
+  "risk_notes": [
+    "Context window is intentionally bounded; summarize rather than dumping everything.",
+    "Do not infer monorepo entrypoints blindly; name the probable entrypoints and uncertainty.",
+    "Shard is near max file count; stay strict about scope."
+  ],
+  "char_budget": 12000,
+  "metadata": {
+    "package_file_count": 78,
+    "shard_index": 3,
+    "shard_count": 4,
+    "languages": [
+      "python"
+    ],
+    "roles": [
+      "test"
+    ]
+  }
+}

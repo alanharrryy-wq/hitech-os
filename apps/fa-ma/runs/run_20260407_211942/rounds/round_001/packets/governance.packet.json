@@ -1,0 +1,18 @@
+{
+  "packet_id": "run_20260407_211942:governance",
+  "worker_id": "governance",
+  "round_id": "round_001",
+  "role": "constitutional-governance",
+  "package": "global",
+  "objective": "Diseña el primer slice funcional de FA-MA",
+  "constraints": [
+    "Respect config/path_policies.json ownership surfaces.",
+    "Prefer stable markdown sections and explicit file targets.",
+    "Do not mutate imported reference docs."
+  ],
+  "inputs": [
+    "docs/reference/REFERENCE_INDEX.md",
+    "docs/architecture/00_fa_ma_architecture.md"
+  ],
+  "expected_output": "A deterministic markdown response with headings and actionable next steps."
+}

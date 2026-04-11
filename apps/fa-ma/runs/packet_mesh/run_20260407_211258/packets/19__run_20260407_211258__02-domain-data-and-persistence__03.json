@@ -1,0 +1,180 @@
+{
+  "packet_id": "run_20260407_211258:02-domain-data-and-persistence:03",
+  "run_id": "run_20260407_211258",
+  "order": 19,
+  "worker_id": "pkg_02-domain-data-and-persistence_03",
+  "stage": "implementation",
+  "package": "02-domain-data-and-persistence",
+  "goal": "Diseña la primera ola de trabajo para FA-MA",
+  "objective": "Advance the global goal for package '02-domain-data-and-persistence' by producing a precise, mergeable slice. Use the listed candidate files as the main surface. Goal: Diseña la primera ola de trabajo para FA-MA. Primary file set: packages/ui-kit/src/motion/catalogs/microPerfCatalog.ts, packages/ui-kit/src/motion/catalogs/microQualityCatalog.ts, packages/ui-kit/src/motion/primitives.ts, packages/ui-kit/src/motion/reducedMotion.ts.",
+  "scope_summary": "Package surface: 02-domain-data-and-persistence. This packet covers 48 candidate files from a package with 189 indexed files. Runtime files in scope: packages/ui-kit/src/motion/catalogs/microPerfCatalog.ts, packages/ui-kit/src/motion/catalogs/microQualityCatalog.ts, packages/ui-kit/src/motion/primitives.ts, packages/ui-kit/src/motion/reducedMotion.ts, packages/ui-kit/src/motion/tokens.ts, packages/ui-kit/src/types/next-navigation.d.ts, packages/ui-kit/vitest.config.ts, packages/ui-kit/src/luxury/frames/signatures/liquidGlassSignatureCatalog.ts. Test files in scope: packages/contracts/tests/mission-control.contracts.test.ts, packages/contracts/tests/pitch.contracts.test.ts, packages/ui-kit/src/luxury/frames/__tests__/frameCatalog.spec.ts, packages/ui-kit/src/luxury/luxuryKernel.test.ts, packages/ui-kit/src/motion/__tests__/motionCatalog.spec.ts, packages/ui-kit/tests/data-spine/mock-provider.test.ts, packages/ui-kit/tests/data-spine/schema-guards.test.ts, packages/ui-kit/tests/layers/applyLayerFlagsToDom.test.ts, packages/ui-kit/tests/layers/layerFlagsContract.test.ts, packages/ui-kit/tests/layers/resolveLayerFlags.test.ts. Docs/config in scope: n/a.",
+  "owned_paths": [
+    "packages/"
+  ],
+  "candidate_files": [
+    "packages/ui-kit/src/motion/catalogs/microPerfCatalog.ts",
+    "packages/ui-kit/src/motion/catalogs/microQualityCatalog.ts",
+    "packages/ui-kit/src/motion/primitives.ts",
+    "packages/ui-kit/src/motion/reducedMotion.ts",
+    "packages/ui-kit/src/motion/tokens.ts",
+    "packages/ui-kit/src/types/next-navigation.d.ts",
+    "packages/ui-kit/vitest.config.ts",
+    "packages/ui-kit/src/luxury/frames/signatures/liquidGlassSignatureCatalog.ts",
+    "packages/contracts/tests/mission-control.contracts.test.ts",
+    "packages/contracts/tests/pitch.contracts.test.ts",
+    "packages/ui-kit/src/luxury/frames/__tests__/frameCatalog.spec.ts",
+    "packages/ui-kit/src/luxury/luxuryKernel.test.ts",
+    "packages/ui-kit/src/motion/__tests__/motionCatalog.spec.ts",
+    "packages/ui-kit/tests/data-spine/mock-provider.test.ts",
+    "packages/ui-kit/tests/data-spine/schema-guards.test.ts",
+    "packages/ui-kit/tests/layers/applyLayerFlagsToDom.test.ts",
+    "packages/ui-kit/tests/layers/layerFlagsContract.test.ts",
+    "packages/ui-kit/tests/layers/resolveLayerFlags.test.ts",
+    "packages/contracts/package.json",
+    "packages/contracts/schemas/generated/agent-capabilities.schema.json",
+    "packages/contracts/schemas/generated/feature-flags.schema.json",
+    "packages/contracts/schemas/generated/health-report.schema.json",
+    "packages/contracts/schemas/generated/job-request.schema.json",
+    "packages/contracts/schemas/generated/job-result.schema.json",
+    "packages/contracts/schemas/generated/manifest.json",
+    "packages/contracts/schemas/generated/python-sync-map.json",
+    "packages/contracts/schemas/generated/schema-version.json",
+    "packages/contracts/tools/gen_schemas.mjs",
+    "packages/contracts/tsconfig.json",
+    "packages/tooling/_smoke/SENTINEL_RUN_SMOKE_VERIFICATION_001.txt",
+    "packages/tooling/eslint/base.cjs",
+    "packages/tooling/package.json",
+    "packages/tooling/prettier/prettier.config.cjs",
+    "packages/tooling/tsconfig/base.json",
+    "packages/ui-kit/package.json",
+    "packages/ui-kit/src/brand/BrandPresenceLayer.tsx",
+    "packages/ui-kit/src/brand/HitechLogo.tsx",
+    "packages/ui-kit/src/brand/assets/hitech-phoenix.svg",
+    "packages/ui-kit/src/components/Button.tsx",
+    "packages/ui-kit/src/components/Card.tsx",
+    "packages/ui-kit/src/components/Section.tsx",
+    "packages/ui-kit/src/components/Text.tsx",
+    "packages/ui-kit/src/components/data/Table.tsx",
+    "packages/ui-kit/src/components/feedback/Badge.tsx",
+    "packages/ui-kit/src/components/feedback/EmptyState.tsx",
+    "packages/ui-kit/src/components/feedback/Skeleton.tsx",
+    "packages/ui-kit/src/components/feedback/Spinner.tsx",
+    "packages/ui-kit/src/components/forms/Button.tsx"
+  ],
+  "context_files": [
+    {
+      "rel_path": "packages/ui-kit/src/motion/catalogs/microPerfCatalog.ts",
+      "language": "typescript",
+      "size_bytes": 95202,
+      "sha1": "0eb52a94c1d2f86213429f034ecf433e2395ea2a",
+      "package": "02-domain-data-and-persistence",
+      "role": "runtime",
+      "importance": 75,
+      "headings": [],
+      "imports": [],
+      "excerpt": "0001: /* Auto-generated deterministic tuning catalog for motion calibration. */\n0002: \n0003: export const MICRO_PERF_CATALOG = Object.freeze([\n0004:   \"mp-0001;nudge=1.4312;glint=1.2727;compress=0.0532;tempo=0.017\",\n0005:   \"mp-0002;nudge=1.4454;glint=1.2723;compress=0.0645;tempo=0.022\",\n0006:   \"mp-0003;nudge=1.4595;glint=1.2719;compress=0.0757;tempo=0.027\",\n0007:   \"mp-0004;nudge=1.4734;glint=1.2713;compress=0.087;tempo=0.0321\",\n0008:   \"mp-0005;nudge=1.4871;glint=1.2706;compress=0.0982;tempo=0.0371\",\n0009:   \"mp-0006;nudge=1.5007;glint=1.2698;compress=0.1094;tempo=0.0421\",\n0010:   \"mp-0007;nudge=1.5141;glint=1.269;compress=0.1207;tempo=0.0471\",\n0011:   \"mp-0008;nudge=1.5274;glint=1.268;compress=0.1319;tempo=0.0521\",\n0012:   \"mp-0009;nudge=1.5405;glint=1.2669;compress=0.1432;tempo=0.0571\",\n0013:   \"mp-0010;nudge=1.5534;glint=1.2657;compress=0.1544;tempo=0.0622\",\n0014:   \"mp-0011;nudge=1.5662;glint=1.2644;compress=0.1656;tempo=0.0672\",\n0015:   \"mp-0012;nudge=1.5787;glint=1.2631;compress=0.1769;tempo=0.0722\",\n0016:   \"mp-0013;nudge=1.5911;glint=1.2616;compress=0.1881;tempo=0.0772\",\n0017:   \"mp-0014;nudge=1.6033;glint=1.26;compress=0.1993;tempo=0.0822\",\n0018:   \"mp-0015;nudge=1.6153;glint=1.2584;compress=0.2106;tempo=0.0872\",\n0019:   \"mp-0016;nudge=1.6271;glint=1.2566;compress=0.2218;tempo=0.0922\",\n0020:   \"mp-0017;nudge=1.6387;glint=1.2548;compress=0.2331;tempo=0.0973\",\n0021:   \"mp-0018;nudge=1.6501;glint=1.2528;compress=0.2443;tempo=0.1023\",\n0022:   \"mp-0019;nudge=1.6613;glint=1.1938;compress=0.2555;tempo=0.1073\",\n0023:   \"mp-0020;nudge=1.6723;glint=1.1916;compress=0.2668;tempo=0.1123\",\n0024:   \"mp-0021;nudge=1.683;glint=1.1894;compress=0.278;tempo=0.1173\",\n0025:   \"mp-0022;nudge=1.6936;glint=1.1871;compress=0.2893;tempo=0.1223\",\n0026:   \"mp-0023;nudge=1.7039;glint=1.1847;compress=0.3005;tempo=0.1273\",\n0027:   \"mp-0024;nudge=1.714;glint=1.1822;compress=0.3117;tempo=0.1324\",\n0028:   \"mp-0025;nudge=1.7239;glint=1.1796;compress=0.323;tempo=0.1374\",\n0029:   \"mp-0026;nudge=1.7336;glint=1.177;compress=0.3342;tempo=0.1424\",\n0030:   \"mp-0027;nudge=1.743;glint=1.1742;compress=0.3455;tempo=0.1474\",\n0031:   \"mp-0028;nudge=1.7522;glint=1.1714;compress=0.3567;tempo=0.1524\",\n0032:   \"mp-0029;nudge=1.7611;glint=1.1685;compress=0.3679;tempo=0.1574\",\n0033:   \"mp-0030;nudge=1.7699;glint=1.1655;compress=0.3792;tempo=0.1625\",\n0034:   \"mp-0031;nudge=1.7783;glint=1.1624;compress=0.3904;tempo=0.1675\",\n0035:   \"mp-0032;nudge=1.7865;glint=1.1593;compress=0.4016;tempo=0.1725\",\n0036:   \"mp-0033;nudge=1.7945;glint=1.156;compress=0.4129;tempo=0.1775\",\n0037:   \"mp-0034;nudge=1.8023;glint=1.1527;compress=0.4241;tempo=0.1825\",\n0038:   \"mp-0035;nudge=1.8097;glint=1.1493;compress=0.4354;tempo=0.1875\",\n0039:   \"mp-0036;nudge=1.8169;glint=1.1458;compress=0.4466;tempo=0.1925\",\n0040:   \"mp-0037;nudge=1.8239;glint=1.1423;compress=0.4578;tempo=0.1976\",\n0041:   \"mp-0038;nudge=1.8306;glint=1.0817;compress=0.4691;tempo=0.2026\",\n0042:   \"mp-0039;nudge=1.8371;glint=1.078;compress=0.4803;tempo=0.2076\",\n0043:   \"mp-0040;nudge=1.8433;glint=1.0742;compress=0.4916;tempo=0.2126\",\n0044:   \"mp-0041;nudge=1.8492;glint=1.0704;compress=0.5028;tempo=0.2176\",\n0045:   \"mp-0042;nudge=1.8548;glint=1.0665;compress=0.514;tempo=0.2226\",\n0046:   \"mp-0043;nudge=1.8602;glint=1.0626;compress=0.5253;tempo=0.2276\",\n0047:   \"mp-0044;nudge=1.8653;glint=1.0585;compress=0.5365;tempo=0.2327\",\n0048:   \"mp-0045;nudge=1.8702;glint=1.0544;compress=0.5478;tempo=0.2377\",\n0049:   \"mp-0046;nudge=1.8747;glint=1.0503;compress=0.559;tempo=0.2427\",\n0050:   \"mp-0047;nudge=1.879;glint=1.046;compress=0.5702;tempo=0.2477\",\n0051:   \"mp-0048;nudge=1.8831;glint=1.0418;compress=0.5815;tempo=0.2527\",\n0052:   \"mp-0049;nudge=1.8868;glint=1.0374;compress=0.5927;tempo=0.2577\",\n0053:   \"mp-0050;nudge=1.8903;glint=1.033;compress=0.6039;tempo=0.2628\",\n0054:   \"mp-0051;nudge=1.8935;glint=1.0285;compress=0.6152;tempo=0.2678\",\n0055:   \"mp-0052;nudge=1.8964;glint=1.024;compress=0.6264;tempo=0.2728\",\n0056:   \"mp-0053;nudge=1.899;glint=1.0194;compress=0.6377;tempo=0.2778\",\n0057:   \"mp-0054;nudge=1.9014;glint=1.0148;compress=0.6489;tempo=0.2828\",\n0058:   \"mp-0055;nudge=1.9034;glint=1.0101;compress=0.6601;tempo=0.2878\",\n0059:   \"mp-0056;nudge=1.9052;glint=1.0054;compress=0.6714;tempo=0.2928\",\n0060:   \"mp-0057;nudge=1.9067;glint=0.9436;compress=0.6826;tempo=0.2979\",\n0061:   \"mp-0058;nudge=1.908;glint=0.9388;compress=0.6939;tempo=0.3029\",\n0062:   \"mp-0059;nudge=1.9089;glint=0.9339;compress=0.7051;tempo=0.3079\",\n0063:   \"mp-0060;nudge=1.9095;glint=0.929;compress=0.7163;tempo=0.3129\",\n0064:   \"mp-0061;nudge=1.9099;glint=0.924;compress=0.7276;tempo=0.3179\",\n0065:   \"mp-0062;nudge=1.91;glint=0.919;compress=0.7388;tempo=0.3229\",\n0066:   \"mp-0063;nudge=1.9098;glint=0.914;compress=0.7501;tempo=0.3279\",\n0067:   \"mp-0064;nudge=1.9093;glint=0.9089;compress=0.7613;tempo=0.333\",\n0068:   \"mp-0065;nudge=1.9085;glint=0.9037;compress=0.7725;tempo=0.338\",\n0069:   \"mp-0066;nudge=1.9075;glint=0.8986;compress=0.7838;tempo=0.343\",\n0070:   \"mp-0067;nudge=1.9062;glint=0.8933;compress=0.795;tempo=0.348\",\n0071:   \"mp-0068;nudge=1.9045;glint=0.8881;compress=0.8062;tempo=0.353\",\n0072:   \"mp-0069;nudge=1.9026;glint=0.8828;compress=0.8175;tempo=0.358\",\n0073:   \"mp-0070;nudge=1.9005;glint=0.8775;compress=0.8287;tempo=0.3631\",\n0074:   \"mp-0071;nudge=1.898;glint=0.8722;compress=0.84;tempo=0.3681\",\n0075:   \"mp-0072;nudge=1.8952;glint=0.8668;compress=0.8512;tempo=0.3731\",\n0076:   \"mp-0073;nudge=1.8922;glint=0.8614;compress=0.8624;tempo=0.3781\",\n0077:   \"mp-0074;nudge=1.8889;glint=0.856;compress=0.8737;tempo=0.3831\",\n0078:   \"mp-0075;nudge=1.8853;glint=0.8505;compress=0.8849;tempo=0.3881\",\n0079:   \"mp-0076;nudge=1.8815;glint=0.7881;compress=0.8962;tempo=0.3931\",\n0080:   \"mp-0077;nudge=1.8773;glint=0.7826;compress=0.9074;tempo=0.3982\",\n0081:   \"mp-0078;nudge=1.8729;glint=0.7771;compress=0.9186;tempo=0.4032\",\n0082:   \"mp-0079;nudge=1.8682;glint=0.7715;compress=0.9299;tempo=0.4082\",\n0083:   \"mp-0080;nudge=1.8633;glint=0.766;compress=0.9411;tempo=0.4132\",\n0084:   \"mp-0081;nudge=1.8581;glint=0.7604;compress=0.9524;tempo=0.4182\",\n0085:   \"mp-0082;nudge=1.8526;glint=0.7548;compress=0.9636;tempo=0.4232\",\n0086:   \"mp-0083;nudge=1.8468;glint=0.7493;compress=0.9748;tempo=0.4282\",\n0087:   \"mp-0084;nudge=1.8408;glint=0.7436;compress=0.9861;tempo=0.4333\",\n0088:   \"mp-0085;nudge=1.8345;glint=0.738;compress=0.9973;tempo=0.4383\",\n0089:   \"mp-0086;nudge=1.8279;glint=0.7324;compress=1.0085;tempo=0.4433\",\n0090:   \"mp-0087;nudge=1.8211;glint=0.7268;compress=1.0198;tempo=0.4483\",\n0091:   \"mp-0088;nudge=1.8141;glint=0.7211;compress=1.031;tempo=0.4533\",\n0092:   \"mp-0089;nudge=1.8067;glint=0.7155;compress=1.0423;tempo=0.4583\",\n0093:   \"mp-0090;nudge=1.7992;glint=0.7099;compress=1.0535;tempo=0.4634\",\n0094:   \"mp-0091;nudge=1.7913;glint=0.7042;compress=1.0647;tempo=0.4684\",\n0095:   \"mp-0092;nudge=1.7832;glint=0.6986;compress=1.076;tempo=0.4734\",\n0096:   \"mp-0093;nudge=1.7749;glint=0.6929;compress=1.0872;tempo=0.4784\",\n0097:   \"mp-0094;nudge=1.7664;glint=0.6873;compress=1.0985;tempo=0.4834\",\n0098:   \"mp-0095;nudge=1.7575;glint=0.6246;compress=1.1097;tempo=0.4884\",\n0099:   \"mp-0096;nudge=1.7485;glint=0.619;compress=1.1209;tempo=0.4934\",\n0100:   \"mp-0097;nudge=1.7392;glint=0.6134;compress=1.1322;tempo=0.4985\",\n0101:   \"mp-0098;nudge=1.7297;glint=0.6078;compress=1.1434;tempo=0.5035\",\n0102:   \"mp-0099;nudge=1.7199;glint=0.6022;compress=1.1547;tempo=0.5085\",\n0103:   \"mp-0100;nudge=1.71;glint=0.5966;compress=1.1659;tempo=0.5135\",\n0104:   \"mp-0101;nudge=1.6998;glint=0.591;compress=1.1771;tempo=0.5185\",\n0105:   \"mp-0102;nudge=1.6893;glint=0.5854;compress=1.1884;tempo=0.5235\",\n0106:   \"mp-0103;nudge=1.6787;glint=0.5799;compress=1.1996;tempo=0.5285\",\n0107:   \"mp-0104;nudge=1.6678;glint=0.5744;compress=1.2108;tempo=0.5336\",\n0108:   \"mp-0105;nudge=1.6568;glint=0.5689;compress=1.2221;tempo=0.5386\",\n0109:   \"mp-0106;nudge=1.6455;glint=0.5634;compress=1.2333;tempo=0.5436\",\n0110:   \"mp-0107;nudge=1.634;glint=0.5579;compress=1.2446;tempo=0.5486\",\n0111:   \"mp-0108;nudge=1.6223;glint=0.5525;compress=1.2558;tempo=0.5536\",\n0112:   \"mp-0109;nudge=1.6105;glint=0.547;compress=1.267;tempo=0.5586\",\n0113:   \"mp-0110;nudge=1.5984;glint=0.5416;compress=1.2783;tempo=0.5637\",\n0114:   \"mp-0111;nudge=1.5861;glint=0.5363;compress=1.2895;tempo=0.5687\",\n0115:   \"mp-0112;nudge=1.5737;glint=0.531;compress=1.3008;tempo=0.5737\",\n0116:   \"mp-0113;nudge=1.561;glint=0.5256;compress=0.042;tempo=0.5787\",\n0117:   \"mp-0114;nudge=1.5482;glint=0.4634;compress=0.0532;tempo=0.5837\",\n0118:   \"mp-0115;nudge=1.5352;glint=0.4581;compress=0.0645;tempo=0.5887\",\n0119:   \"mp-0116;nudge=1.5221;glint=0.4529;compress=0.0757;tempo=0.5937\",\n0120:   \"mp-0117;nudge=1.5087;glint=0.4478;compress=0.087;tempo=0.5988\",",
+      "notes": [
+        "Runtime-bearing file; suitable as primary implementation context."
+      ]
+    },
+    {
+      "rel_path": "packages/ui-kit/src/types/next-navigation.d.ts",
+      "language": "typescript",
+      "size_bytes": 291,
+      "sha1": "a21a17facc20595f4e1f2575780e1fd31a6ba17d",
+      "package": "02-domain-data-and-persistence",
+      "role": "runtime",
+      "importance": 75,
+      "headings": [],
+      "imports": [],
+      "excerpt": "0001: declare module \"next/navigation\" {\n0002:   export interface AppRouterInstance {\n0003:     replace(href: string, options?: { scroll?: boolean }): void;\n0004:   }\n0005: \n0006:   export function useRouter(): AppRouterInstance;\n0007:   export function usePathname(): string;\n0008:   export function useSearchParams(): URLSearchParams;\n0009: }",
+      "notes": [
+        "Runtime-bearing file; suitable as primary implementation context."
+      ]
+    },
+    {
+      "rel_path": "packages/ui-kit/vitest.config.ts",
+      "language": "typescript",
+      "size_bytes": 502,
+      "sha1": "799e3d8ed60515de6302c87f05c219bfe3096a2e",
+      "package": "02-domain-data-and-persistence",
+      "role": "runtime",
+      "importance": 75,
+      "headings": [],
+      "imports": [
+        "import { defineConfig } from \"vitest/config\";"
+      ],
+      "excerpt": "0001: import { defineConfig } from \"vitest/config\";\n0002: \n0003: export default defineConfig({\n0004:   test: {\n0005:     include: [\"tests/**/*.test.ts\", \"tests/**/*.test.tsx\"],\n0006:     exclude: [\n0007:       \"tests/layers/layerIds.contract.test.ts\",\n0008:       \"tests/layers/layersCss.budget.test.ts\",\n0009:       \"tests/layers/resolveLayerFlags.allowlist.exhaustive.test.ts\",\n0010:       \"tests/layers/resolveLayerFlags.perf-budget.test.ts\",\n0011:       \"tests/layers/resolveLayerFlags.precedence.test.ts\"\n0012:     ],\n0013:     environment: \"node\",\n0014:     globals: true\n0015:   }\n0016: });",
+      "notes": [
+        "Runtime-bearing file; suitable as primary implementation context."
+      ]
+    },
+    {
+      "rel_path": "packages/contracts/schemas/generated/schema-version.json",
+      "language": "json",
+      "size_bytes": 120,
+      "sha1": "9d4824772465e4c509d74d4aa082350480c842e3",
+      "package": "02-domain-data-and-persistence",
+      "role": "configuration",
+      "importance": 50,
+      "headings": [],
+      "imports": [],
+      "excerpt": "0001: {\n0002:   \"schemaVersion\": \"0.1.0\",\n0003:   \"generatedAt\": \"static\",\n0004:   \"note\": \"Deterministic marker file for repo health checks.\"\n0005: }",
+      "notes": [
+        "Configuration-bearing file; mind compatibility and schema drift."
+      ]
+    }
+  ],
+  "acceptance_gates": [
+    "State the exact files or surfaces you touched or propose to touch.",
+    "Preserve ownership boundaries and avoid edits outside packet scope.",
+    "Return deterministic markdown with explicit headings.",
+    "List blockers, assumptions, and verification ideas.",
+    "Describe how tests validate or need updates for this slice.",
+    "Propose next packet handoff in 3 bullets max."
+  ],
+  "constraints": [
+    "Do not dump whole large files; summarize and cite targeted slices.",
+    "Prefer small, composable changes that can be merged independently.",
+    "Respect repo conventions and monorepo entrypoint reality.",
+    "Output must be useful even if the next packet runs on a smaller model."
+  ],
+  "handoff_inputs": [
+    "packages/ui-kit/src/motion/catalogs/microPerfCatalog.ts",
+    "packages/ui-kit/src/motion/catalogs/microQualityCatalog.ts",
+    "packages/ui-kit/src/motion/primitives.ts",
+    "docs/contracts/work_packet_contract.md",
+    "docs/ops/packet_mesh_quickstart.md"
+  ],
+  "output_contract": [
+    "Section: Goal Restatement",
+    "Section: Scope and Owned Paths",
+    "Section: Recommended File Changes",
+    "Section: Risks and Assumptions",
+    "Section: Verification and Next Packet",
+    "Include a compact checklist with [x]/[ ] items"
+  ],
+  "risk_notes": [
+    "Context window is intentionally bounded; summarize rather than dumping everything.",
+    "Do not infer monorepo entrypoints blindly; name the probable entrypoints and uncertainty.",
+    "Shard is near max file count; stay strict about scope."
+  ],
+  "char_budget": 12000,
+  "metadata": {
+    "package_file_count": 189,
+    "shard_index": 3,
+    "shard_count": 4,
+    "languages": [
+      "json",
+      "text",
+      "typescript",
+      "typescript-react"
+    ],
+    "roles": [
+      "configuration",
+      "reference",
+      "runtime",
+      "test"
+    ]
+  }
+}

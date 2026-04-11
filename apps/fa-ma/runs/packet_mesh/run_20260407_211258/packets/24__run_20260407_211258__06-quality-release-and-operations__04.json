@@ -1,0 +1,187 @@
+{
+  "packet_id": "run_20260407_211258:06-quality-release-and-operations:04",
+  "run_id": "run_20260407_211258",
+  "order": 24,
+  "worker_id": "pkg_06-quality-release-and-operations_04",
+  "stage": "validation",
+  "package": "06-quality-release-and-operations",
+  "goal": "Diseña la primera ola de trabajo para FA-MA",
+  "objective": "Advance the global goal for package '06-quality-release-and-operations' by producing a precise, mergeable slice. Use the listed candidate files as the main surface. Goal: Diseña la primera ola de trabajo para FA-MA. Primary file set: forgeos/shared/pyside6_glass/tests/test_catalog_registry.py, forgeos/shared/pyside6_glass/tests/test_controls.py, forgeos/shared/pyside6_glass/tests/test_data_registry.py, forgeos/shared/pyside6_glass/tests/test_data_result_states.py.",
+  "scope_summary": "Package surface: 06-quality-release-and-operations. This packet covers 18 candidate files from a package with 78 indexed files. Runtime files in scope: n/a. Test files in scope: forgeos/shared/pyside6_glass/tests/test_catalog_registry.py, forgeos/shared/pyside6_glass/tests/test_controls.py, forgeos/shared/pyside6_glass/tests/test_data_registry.py, forgeos/shared/pyside6_glass/tests/test_data_result_states.py, .agents/agents_chatgpt/01_iterations/iteration_06_repo_analyzer_full_package/.agents/repo_analyzer/tests/README.md, .agents/agents_chatgpt/01_iterations/iteration_06_repo_analyzer_full_package/.agents/repo_analyzer/tests/TEST_PLAN.md, .agents/agents_chatgpt/01_iterations/iteration_06_repo_analyzer_full_package/.agents/repo_analyzer/tests/fixtures/sample_repo_broken/README.md, .agents/agents_chatgpt/01_iterations/iteration_06_repo_analyzer_full_package/.agents/repo_analyzer/tests/fixtures/sample_repo_clean/README.md, .agents/agents_chatgpt/01_iterations/iteration_07_repo_analyzer_runtime_hardened/.agents/repo_analyzer/tests/README.md, .agents/agents_chatgpt/01_iterations/iteration_07_repo_analyzer_runtime_hardened/.agents/repo_analyzer/tests/fixtures/sample_repo_clean/README.md, .agents/agents_chatgpt/01_iterations/iteration_07_repo_analyzer_runtime_hardened/.agents/repo_analyzer/tests/fixtures/sample_repo_problematic/README.md, .agents/agents_chatgpt/01_iterations/iteration_09_coordinator_agent_mvp/.agents/coordinator_agent/tests/README.md, .agents/agents_chatgpt/02_current_snapshot/.agents/coordinator_agent/tests/README.md, .agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/README.md, .agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/TEST_PLAN.md, .agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_broken/README.md, .agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_clean/README.md, .agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_problematic/README.md. Docs/config in scope: n/a.",
+  "owned_paths": [
+    ".agents/",
+    "forgeos/",
+    "tests/",
+    "docs/"
+  ],
+  "candidate_files": [
+    "forgeos/shared/pyside6_glass/tests/test_catalog_registry.py",
+    "forgeos/shared/pyside6_glass/tests/test_controls.py",
+    "forgeos/shared/pyside6_glass/tests/test_data_registry.py",
+    "forgeos/shared/pyside6_glass/tests/test_data_result_states.py",
+    ".agents/agents_chatgpt/01_iterations/iteration_06_repo_analyzer_full_package/.agents/repo_analyzer/tests/README.md",
+    ".agents/agents_chatgpt/01_iterations/iteration_06_repo_analyzer_full_package/.agents/repo_analyzer/tests/TEST_PLAN.md",
+    ".agents/agents_chatgpt/01_iterations/iteration_06_repo_analyzer_full_package/.agents/repo_analyzer/tests/fixtures/sample_repo_broken/README.md",
+    ".agents/agents_chatgpt/01_iterations/iteration_06_repo_analyzer_full_package/.agents/repo_analyzer/tests/fixtures/sample_repo_clean/README.md",
+    ".agents/agents_chatgpt/01_iterations/iteration_07_repo_analyzer_runtime_hardened/.agents/repo_analyzer/tests/README.md",
+    ".agents/agents_chatgpt/01_iterations/iteration_07_repo_analyzer_runtime_hardened/.agents/repo_analyzer/tests/fixtures/sample_repo_clean/README.md",
+    ".agents/agents_chatgpt/01_iterations/iteration_07_repo_analyzer_runtime_hardened/.agents/repo_analyzer/tests/fixtures/sample_repo_problematic/README.md",
+    ".agents/agents_chatgpt/01_iterations/iteration_09_coordinator_agent_mvp/.agents/coordinator_agent/tests/README.md",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/coordinator_agent/tests/README.md",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/README.md",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/TEST_PLAN.md",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_broken/README.md",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_clean/README.md",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_problematic/README.md"
+  ],
+  "context_files": [
+    {
+      "rel_path": "forgeos/shared/pyside6_glass/tests/test_catalog_registry.py",
+      "language": "python",
+      "size_bytes": 3568,
+      "sha1": "6513d2b6d5b51f3c42906d102fd7a8e796b32ecb",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [
+        "from __future__ import annotations",
+        "import unittest",
+        "from forgeos.shared.pyside6_glass.catalog import ("
+      ],
+      "excerpt": "0001: from __future__ import annotations\n0002: \n0003: import unittest\n0004: \n0005: from forgeos.shared.pyside6_glass.catalog import (\n0006:     GlassCatalogEntry,\n0007:     _clear_catalog_registry_for_tests,\n0008:     get_catalog_entry,\n0009:     list_catalog_categories,\n0010:     list_catalog_entries,\n0011:     list_catalog_tags,\n0012:     register_builtin_catalog_entries,\n0013:     register_catalog_entry,\n0014: )\n0015: \n0016: \n0017: class CatalogRegistryTests(unittest.TestCase):\n0018:     def setUp(self) -> None:\n0019:         _clear_catalog_registry_for_tests()\n0020: \n0021:     def test_register_and_query_custom_entry(self) -> None:\n0022:         register_catalog_entry(\n0023:             entry_id=\"custom.alpha\",\n0024:             title=\"Custom Alpha\",\n0025:             subtitle=\"custom subtitle\",\n0026:             description=\"custom description\",\n0027:             category=\"Custom\",\n0028:             tags=(\"alpha\", \"custom\"),\n0029:             keywords=(\"hello\", \"world\"),\n0030:             best_for=\"Custom best-for note\",\n0031:             use_when=\"Custom use-when note\",\n0032:             sort_order=5,\n0033:             status=\"preview\",\n0034:             required_capabilities=(\"catalog.read\",),\n0035:         )\n0036: \n0037:         entry = get_catalog_entry(\"custom.alpha\", include_builtins=False)\n0038:         self.assertIsNotNone(entry)\n0039:         self.assertEqual(entry.title, \"Custom Alpha\")\n0040:         self.assertEqual(entry.best_for, \"Custom best-for note\")\n0041:         self.assertEqual(entry.use_when, \"Custom use-when note\")\n0042: \n0043:         all_entries = list_catalog_entries(include_builtins=False)\n0044:         self.assertEqual(len(all_entries), 1)\n0045:         self.assertEqual(all_entries[0].entry_id, \"custom.alpha\")\n0046: \n0047:         categories = list_catalog_categories(include_builtins=False)\n0048:         self.assertEqual(categories, (\"Custom\",))\n0049:         tags = list_catalog_tags(include_builtins=False)\n0050:         self.assertEqual(tags, (\"alpha\", \"custom\"))\n0051: \n0052:         search_hits = list_catalog_entries(search=\"hello\", include_builtins=False)\n0053:         self.assertEqual(len(search_hits), 1)\n0054:         self.assertEqual(search_hits[0].entry_id, \"custom.alpha\")\n0055:         tag_hits = list_catalog_entries(tags=(\"alpha\",), include_builtins=False)\n0056:         self.assertEqual(len(tag_hits), 1)\n0057:         capability_hits = list_catalog_entries(\n0058:             required_capabilities=(\"catalog.read\",),\n0059:             include_builtins=False,\n0060:         )\n0061:         self.assertEqual(len(capability_hits), 1)\n0062: \n0063:     def test_duplicate_registration_requires_override(self) -> None:\n0064:         entry = GlassCatalogEntry(entry_id=\"duplicate.entry\", title=\"Duplicate\")\n0065:         register_catalog_entry(entry=entry)\n0066:         with self.assertRaises(ValueError):\n0067:             register_catalog_entry(entry=entry)\n0068:         register_catalog_entry(entry=entry, override=True)\n0069:         self.assertIsNotNone(get_catalog_entry(\"duplicate.entry\", include_builtins=False))\n0070: \n0071:     def test_builtin_registration_provides_substantial_catalog(self) -> None:\n0072:         register_builtin_catalog_entries()\n0073:         entries = list_catalog_entries()\n0074:         self.assertGreaterEqual(len(entries), 30)\n0075:         categories = set(list_catalog_categories())\n0076:         self.assertTrue(\n0077:             {\n0078:                 \"Compositions\",\n0079:                 \"Presets\",\n0080:                 \"Themes\",\n0081:                 \"Primitives\",\n0082:                 \"Controls & Assets\",\n0083:                 \"Runtime & Integration\",\n0084:                 \"Data Dashboards\",\n0085:             }.issubset(categories)\n0086:         )\n0087:         data_entries = list_catalog_entries(category=\"Data Dashboards\")\n0088:         asset_entries = list_catalog_entries(category=\"Controls & Assets\")\n0089:         self.assertGreaterEqual(len(data_entries), 12)\n0090:         self.assertGreaterEqual(len(asset_entries), 10)\n0091: \n0092: \n0093: if __name__ == \"__main__\":\n0094:     unittest.main()",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": "forgeos/shared/pyside6_glass/tests/test_controls.py",
+      "language": "python",
+      "size_bytes": 860,
+      "sha1": "44e5d43bd6042a6b213c158ae524a61575343ba4",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [
+        "from __future__ import annotations",
+        "import os",
+        "import unittest",
+        "from PySide6.QtWidgets import QApplication",
+        "from forgeos.shared.pyside6_glass.controls import create_button, list_button_variants"
+      ],
+      "excerpt": "0001: from __future__ import annotations\n0002: \n0003: import os\n0004: import unittest\n0005: \n0006: from PySide6.QtWidgets import QApplication\n0007: \n0008: from forgeos.shared.pyside6_glass.controls import create_button, list_button_variants\n0009: \n0010: \n0011: class ControlsTests(unittest.TestCase):\n0012:     @classmethod\n0013:     def setUpClass(cls) -> None:\n0014:         os.environ.setdefault(\"QT_QPA_PLATFORM\", \"offscreen\")\n0015:         cls.app = QApplication.instance() or QApplication([])\n0016: \n0017:     def test_button_variant_normalization(self) -> None:\n0018:         button = create_button(\"Action\", variant=\"outline\")\n0019:         self.assertEqual(button.property(\"variant\"), \"ghost\")\n0020:         button.deleteLater()\n0021: \n0022:     def test_list_button_variants_includes_subtle(self) -> None:\n0023:         variants = list_button_variants()\n0024:         self.assertIn(\"subtle\", variants)\n0025:         self.assertIn(\"primary\", variants)\n0026: \n0027: \n0028: if __name__ == \"__main__\":\n0029:     unittest.main()",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": "forgeos/shared/pyside6_glass/tests/test_data_registry.py",
+      "language": "python",
+      "size_bytes": 2489,
+      "sha1": "ab4d04d3ef94c424f918992afcaba15f4b07dffe",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [
+        "from __future__ import annotations",
+        "import unittest",
+        "from forgeos.shared.pyside6_glass.data import ("
+      ],
+      "excerpt": "0001: from __future__ import annotations\n0002: \n0003: import unittest\n0004: \n0005: from forgeos.shared.pyside6_glass.data import (\n0006:     DataProviderMeta,\n0007:     DataQuery,\n0008:     DataResult,\n0009:     FunctionDataProvider,\n0010:     describe_data_provider,\n0011:     execute_data_query,\n0012:     get_data_provider,\n0013:     list_data_providers,\n0014:     register_data_provider,\n0015:     _clear_data_provider_registry_for_tests,\n0016: )\n0017: \n0018: \n0019: class DataRegistryTests(unittest.TestCase):\n0020:     def setUp(self) -> None:\n0021:         _clear_data_provider_registry_for_tests()\n0022: \n0023:     def test_register_and_execute_query(self) -> None:\n0024:         provider = FunctionDataProvider(\n0025:             meta=DataProviderMeta(provider_id=\"custom.mock\", title=\"Custom Mock Provider\"),\n0026:             handler=lambda query: DataResult.success(\n0027:                 query,\n0028:                 summary={\"ok\": True},\n0029:                 metrics={\"items\": 3},\n0030:                 rows=[{\"id\": \"row-1\", \"state\": \"ready\"}],\n0031:             ),\n0032:         )\n0033:         register_data_provider(provider)\n0034: \n0035:         query = DataQuery.create(\"custom.mock\", query_id=\"default\")\n0036:         result = execute_data_query(query)\n0037:         self.assertEqual(result.normalized_state(), \"ready\")\n0038:         self.assertEqual(result.metrics.get(\"items\"), 3)\n0039:         self.assertEqual(len(result.rows), 1)\n0040: \n0041:     def test_missing_provider_returns_structured_error(self) -> None:\n0042:         query = DataQuery.create(\"missing.provider\", query_id=\"default\")\n0043:         result = execute_data_query(query)\n0044:         self.assertEqual(result.normalized_state(), \"error\")\n0045:         self.assertIsNotNone(result.error)\n0046:         self.assertEqual(result.error.code, \"provider_not_found\")\n0047: \n0048:     def test_provider_listing_and_describe(self) -> None:\n0049:         provider = FunctionDataProvider(\n0050:             meta=DataProviderMeta(\n0051:                 provider_id=\"custom.describe\",\n0052:                 title=\"Describe Provider\",\n0053:                 capabilities=(\"query.metrics\",),\n0054:                 requirements=(\"none\",),\n0055:             ),\n0056:             handler=lambda query: DataResult.empty(query),\n0057:         )\n0058:         register_data_provider(provider)\n0059:         self.assertIsNotNone(get_data_provider(\"custom.describe\"))\n0060: \n0061:         listed = list_data_providers()\n0062:         self.assertEqual(len(listed), 1)\n0063:         self.assertEqual(listed[0].provider_id, \"custom.describe\")\n0064: \n0065:         described = describe_data_provider(\"custom.describe\")\n0066:         self.assertTrue(described.get(\"registered\"))\n0067:         self.assertEqual(described.get(\"meta\", {}).get(\"provider_id\"), \"custom.describe\")\n0068: \n0069: \n0070: if __name__ == \"__main__\":\n0071:     unittest.main()\n0072: ",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": ".agents/agents_chatgpt/01_iterations/iteration_06_repo_analyzer_full_package/.agents/repo_analyzer/tests/README.md",
+      "language": "markdown",
+      "size_bytes": 413,
+      "sha1": "06f56fbc02a680178fe780ec0c9292032e756ede",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 50,
+      "headings": [
+        "# repo_analyzer tests",
+        "## Test Layers",
+        "## Immediate Goals",
+        "## Non-Goal"
+      ],
+      "imports": [],
+      "excerpt": "0001: # repo_analyzer tests\n0002: \n0003: This folder contains starter test materials for the first concrete agent.\n0004: \n0005: ## Test Layers\n0006: 1. unit\n0007: 2. integration\n0008: 3. fixture-based repo scenarios\n0009: \n0010: ## Immediate Goals\n0011: - validate contracts-to-agent alignment\n0012: - validate baseline scan behavior\n0013: - validate degraded and blocked paths\n0014: - validate artifact creation expectations\n0015: \n0016: ## Non-Goal\n0017: These starter tests are not full production coverage yet.",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": ".agents/agents_chatgpt/01_iterations/iteration_06_repo_analyzer_full_package/.agents/repo_analyzer/tests/TEST_PLAN.md",
+      "language": "markdown",
+      "size_bytes": 668,
+      "sha1": "9f29f59f40cf50a4a5c7c1690361ca2af6125e1f",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 50,
+      "headings": [
+        "# TEST_PLAN · repo_analyzer",
+        "## Goals",
+        "## Test Families",
+        "### Unit",
+        "### Integration",
+        "### Review-Oriented Tests"
+      ],
+      "imports": [],
+      "excerpt": "0001: # TEST_PLAN · repo_analyzer\n0002: \n0003: ## Goals\n0004: 1. prove the agent can scan a small clean fixture\n0005: 2. prove the agent can classify common file extensions\n0006: 3. prove blocked behavior on missing/unreadable roots\n0007: 4. prove degraded or partial handling for fixture problems\n0008: 5. prove required artifact skeleton can be produced\n0009: \n0010: ## Test Families\n0011: ### Unit\n0012: - scanner path handling\n0013: - classifier extension mapping\n0014: - finding severity normalization\n0015: - verifier status decision helpers\n0016: \n0017: ### Integration\n0018: - clean sample repo\n0019: - broken sample repo\n0020: - missing repo path\n0021: - artifact output path preparation\n0022: \n0023: ### Review-Oriented Tests\n0024: - report content sanity\n0025: - trace sequence sanity\n0026: - metric keys sanity",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    }
+  ],
+  "acceptance_gates": [
+    "State the exact files or surfaces you touched or propose to touch.",
+    "Preserve ownership boundaries and avoid edits outside packet scope.",
+    "Return deterministic markdown with explicit headings.",
+    "List blockers, assumptions, and verification ideas.",
+    "Describe how tests validate or need updates for this slice.",
+    "Propose next packet handoff in 3 bullets max."
+  ],
+  "constraints": [
+    "Do not dump whole large files; summarize and cite targeted slices.",
+    "Prefer small, composable changes that can be merged independently.",
+    "Respect repo conventions and monorepo entrypoint reality.",
+    "Output must be useful even if the next packet runs on a smaller model."
+  ],
+  "handoff_inputs": [
+    "forgeos/shared/pyside6_glass/tests/test_catalog_registry.py",
+    "forgeos/shared/pyside6_glass/tests/test_controls.py",
+    "forgeos/shared/pyside6_glass/tests/test_data_registry.py",
+    "docs/contracts/work_packet_contract.md",
+    "docs/ops/packet_mesh_quickstart.md"
+  ],
+  "output_contract": [
+    "Section: Goal Restatement",
+    "Section: Scope and Owned Paths",
+    "Section: Recommended File Changes",
+    "Section: Risks and Assumptions",
+    "Section: Verification and Next Packet",
+    "Include a compact checklist with [x]/[ ] items"
+  ],
+  "risk_notes": [
+    "Context window is intentionally bounded; summarize rather than dumping everything.",
+    "Do not infer monorepo entrypoints blindly; name the probable entrypoints and uncertainty.",
+    "Shard is near max file count; stay strict about scope."
+  ],
+  "char_budget": 12000,
+  "metadata": {
+    "package_file_count": 78,
+    "shard_index": 4,
+    "shard_count": 4,
+    "languages": [
+      "markdown",
+      "python"
+    ],
+    "roles": [
+      "test"
+    ]
+  }
+}

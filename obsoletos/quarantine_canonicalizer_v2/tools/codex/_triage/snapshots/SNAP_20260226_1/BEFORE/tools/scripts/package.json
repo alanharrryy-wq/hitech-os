@@ -1,0 +1,21 @@
+{
+  "name": "@hitech/scripts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "docs": "node generate_docs_index.mjs",
+    "smoke:bridge": "node smoke_node_python_bridge.mjs",
+    "deps:check": "node check_dependency_hygiene.mjs",
+    "workspace:validate": "node validate_workspace_boundaries.mjs",
+    "env:validate": "node validate_env.mjs",
+    "build": "node -e \"console.log('scripts package: no build step required')\"",
+    "lint": "node -e \"console.log('scripts package: lint delegated to root')\"",
+    "test": "node --test",
+    "typecheck": "node -e \"console.log('scripts package: no typecheck step required')\""
+  },
+  "engines": {
+    "node": ">=20.0.0 <26.0.0",
+    "pnpm": ">=9.0.0 <10.0.0"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "$id": "HealthReport",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "checks": {
+      "additionalProperties": {
+        "enum": [
+          "ok",
+          "degraded",
+          "error"
+        ],
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "service": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "ok",
+        "degraded",
+        "error"
+      ],
+      "type": "string"
+    },
+    "timestamp": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "version": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "checks",
+    "service",
+    "status",
+    "timestamp",
+    "version"
+  ],
+  "type": "object"
+}

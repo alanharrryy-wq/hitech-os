@@ -1,0 +1,26 @@
+# HITECH Factory Docs
+
+- `../CONTRACT.md` - monorepo enforcement authority
+- `../CONSTITUTION.md` - monorepo intent authority
+- `../snapshots/HITECH_OS__SNAPSHOT_MINI.json` - deterministic snapshot mini
+- `QUICKSTART.md` - first command path
+- `RUNBOOK.md` - full operator flow
+- `AUDIT.md` - audit checklist and reproducibility checks
+- `CONTRACT.md` - current factory contracts and interfaces
+- `CHANGES.md` - contract and interface change log
+- `FORENSICS.md` - forensic replay and attestation verification
+- `SECURITY.md` - security guardrails and incident handling
+- `ARCHITECTURE.md` - A/B/C/D/Z model
+- `COMMUNICATION_PROTOCOL.md` - bundle artifacts and expectations
+- `CONTRACTS_REGISTRY.md` - schemas/contracts and how tooling consumes them
+- `ROLE_HARDENING.md` - role boundaries and anti-patterns
+- `WORKTREE_OPERATIONS.md` - isolation commands and branch naming
+- `DETERMINISM_POLICY.md` - stable-output rules
+- `RUNS_ROOT_POLICY.md` - canonical shared runs root contract and enforcement
+- `TROUBLESHOOTING.md` - failure handling
+- `ADD_WORKERS.md` - scaling beyond 4 workers
+- `ADD_CONTRACTS.md` - extending contract surfaces safely
+- `OPERATOR_COMMANDS.md` - copy/paste command list
+- `BEST_PRACTICES.md` - quality and evidence rules
+- `DO_NOT_REPEAT.md` - common mistakes to avoid
+- `AGENTS_FALLBACK.md` - fallback context if `AGENTS.md` is missing

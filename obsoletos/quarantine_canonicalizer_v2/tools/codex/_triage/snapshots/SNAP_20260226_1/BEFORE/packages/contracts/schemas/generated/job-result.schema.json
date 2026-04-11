@@ -1,0 +1,62 @@
+{
+  "$id": "JobResult",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "error": {
+      "type": "string"
+    },
+    "jobId": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "output": {
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          }
+        ]
+      },
+      "type": "object"
+    },
+    "processedAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "requestId": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "source": {
+      "enum": [
+        "core-api",
+        "ai-agent"
+      ],
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "queued",
+        "running",
+        "completed",
+        "failed"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "jobId",
+    "processedAt",
+    "requestId",
+    "source",
+    "status"
+  ],
+  "type": "object"
+}
