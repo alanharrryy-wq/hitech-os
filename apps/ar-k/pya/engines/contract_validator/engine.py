@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import importlib.util
+
 from collections import Counter
 from dataclasses import dataclass
 from typing import Any, Callable
@@ -65,6 +67,25 @@ class ContractValidatorEngine:
             violations.extend(_safe_validate("boundary_entry", entry, "boundary", entry.get("boundary_id", "unknown"), "boundary_registry", context.execution_id))
         for entry in contract_registry:
             violations.extend(_safe_validate("contract_registry_entry", entry, "contract", entry.get("contract_id", "unknown"), "contract_registry", context.execution_id))
+            module_name = entry.get("module", "")
+            try:
+                spec = importlib.util.find_spec(module_name) if module_name else None
+            except (ImportError, ModuleNotFoundError, ValueError):
+                spec = None
+            if spec is None:
+                violations.append(
+                    build_validation_violation(
+                        rule_id="reference:contract.module",
+                        severity=Severity.ERROR.value,
+                        entity_type="contract",
+                        entity_id=entry.get("contract_id", "unknown"),
+                        location="contract_registry.module",
+                        message="Contract registry module is not importable",
+                        expected="importable module path",
+                        observed=module_name,
+                        snapshot_id=context.execution_id,
+                    )
+                )
         for entry in switch_registry:
             violations.extend(_safe_validate("switch_registry_entry", entry, "switch", entry.get("switch_id", "unknown"), "switch_registry", context.execution_id))
         for entry in switch_resolutions:
@@ -204,7 +225,7 @@ class ContractValidatorEngine:
         severity_counts.update(violation["severity"] for violation in violations)
         summary_payload = build_contract_health_summary(
             snapshot_id=context.execution_id,
-            total_rules=6,
+            total_rules=7,
             total_violations=len(violations),
             counts_by_severity=dict(severity_counts),
             validated_at=context.execution_time,

@@ -39,6 +39,26 @@ CONTRACT_VERSIONS = {
     "contract_health_summary": "1.0.0",
 }
 
+CONTRACT_MODULES = {
+    "annotation": "pya.contracts.annotation_contracts",
+    "artifact": "pya.contracts.artifact_contracts",
+    "boundary_entry": "pya.contracts.registry_contracts",
+    "contract_health_summary": "pya.contracts.validation_contracts",
+    "contract_registry_entry": "pya.contracts.registry_contracts",
+    "delta": "pya.contracts.snapshot_contracts",
+    "engine_manifest": "pya.contracts.engine_contracts",
+    "event": "pya.contracts.event_contracts",
+    "execution_summary": "pya.contracts.engine_contracts",
+    "module_registry_entry": "pya.contracts.registry_contracts",
+    "query_index": "pya.contracts.index_contracts",
+    "registry_build_summary": "pya.contracts.registry_contracts",
+    "signal": "pya.contracts.signal_contract",
+    "snapshot": "pya.contracts.snapshot_contracts",
+    "switch_registry_entry": "pya.contracts.switch_contracts",
+    "switch_resolution": "pya.contracts.switch_contracts",
+    "validation_violation": "pya.contracts.validation_contracts",
+}
+
 CONTRACT_VALIDATORS: dict[str, Callable[[Mapping[str, object]], Mapping[str, object]]] = {
     "signal": validate_signal,
     "module_registry_entry": validate_module_registry_entry,
@@ -61,12 +81,15 @@ CONTRACT_VALIDATORS: dict[str, Callable[[Mapping[str, object]], Mapping[str, obj
 
 
 def get_contract_registry_entries() -> list[dict[str, object]]:
+    missing_modules = sorted(set(CONTRACT_VERSIONS) - set(CONTRACT_MODULES))
+    if missing_modules:
+        raise ValueError(f"Missing contract module mapping for: {', '.join(missing_modules)}")
     return [
         build_contract_registry_entry(
             contract_id=name,
             version=version,
             owner="contracts",
-            module=f"pya.contracts.{name}",
+            module=CONTRACT_MODULES[name],
             description=f"Canonical contract for {name.replace('_', ' ')}",
         )
         for name, version in sorted(CONTRACT_VERSIONS.items())

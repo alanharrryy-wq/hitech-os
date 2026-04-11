@@ -16,6 +16,14 @@ from pathlib import Path
 
 STATE_DIRNAME = ".ark_install"
 STATE_FILE = "last_apply.json"
+IGNORED_PAYLOAD_PARTS = {STATE_DIRNAME, "__pycache__", "reports"}
+IGNORED_PAYLOAD_SUFFIXES = {".pyc", ".pyo"}
+
+
+def should_include_in_payload(relative: Path) -> bool:
+    return not any(
+        part in IGNORED_PAYLOAD_PARTS for part in relative.parts
+    ) and relative.suffix not in IGNORED_PAYLOAD_SUFFIXES
 
 
 @dataclass
@@ -43,7 +51,7 @@ def parse_args() -> argparse.Namespace:
     mode.add_argument("--verify", action="store_true")
     mode.add_argument("--rollback", action="store_true")
     parser.add_argument("--root", required=True, help="Absolute project root")
-    parser.add_argument("--payload", required=True, help="ZIP payload path")
+    parser.add_argument("--payload", required=True, help="ZIP payload path rooted at the project tree or wrapped in a single top-level folder")
     parser.add_argument(
         "--log-dir",
         default=r"F:\descargasf",
@@ -86,15 +94,27 @@ def extract_payload(payload_zip: Path) -> Path:
     return workdir
 
 
+def resolve_payload_root(extracted_root: Path) -> Path:
+    entries = sorted(extracted_root.iterdir(), key=lambda item: item.name)
+    directories = [entry for entry in entries if entry.is_dir()]
+    files = [entry for entry in entries if entry.is_file()]
+    if len(directories) == 1 and not files:
+        return directories[0]
+    return extracted_root
+
+
 def compare_files(source: Path, target: Path) -> bool:
     return target.exists() and filecmp.cmp(source, target, shallow=False)
 
 
 def plan_changes(root: Path, payload_zip: Path, log_dir: Path) -> tuple[InstallPlan, Path]:
     extracted = extract_payload(payload_zip)
+    payload_root = resolve_payload_root(extracted)
     changes: list[Change] = []
-    for source in sorted(path for path in extracted.rglob("*") if path.is_file()):
-        relative = source.relative_to(extracted)
+    for source in sorted(path for path in payload_root.rglob("*") if path.is_file()):
+        relative = source.relative_to(payload_root)
+        if not should_include_in_payload(relative):
+            continue
         target = root / relative
         if compare_files(source, target):
             action = "skip"
@@ -206,7 +226,7 @@ def run_validation_commands(root: Path) -> bool:
             "--out",
             str(root / "reports"),
         ],
-        [sys.executable, "-m", "unittest", "tests.test_smoke"],
+        [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-v"],
     ]
     env = os.environ.copy()
     env["PYTHONPATH"] = str(root)

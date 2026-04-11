@@ -7,9 +7,9 @@ Ar-k now ships as a governed System + Kernel + Contracts platform with five engi
 - `pya/system/`: sovereign rules, compatibility, ownership, state model, determinism policy, admission rules
 - `pya/kernel/`: runtime context, governed storage, event bus, pipeline coordinator, barriers, loader, contract checks
 - `pya/contracts/`: canonical shapes and validators for signals, registries, switches, validation, annotations, artifacts, snapshots, engine manifests, events, indices
-- `pya/engines/`: the five governed engines with manifest, entrypoint, internal README, and useful iteration-1 behavior
+- `pya/engines/`: the five governed engines with manifest, entrypoint, internal README, useful iteration-1 behavior, and a frontend observation slice that can inspect TS/JS/JSON/HTML/CSS surfaces without promoting them directly to truth inside the scanner
 - `docs/`: constitution, admission, contracts, ownership, integration, parallel development, and per-engine operating notes
-- `installer/install_ar_k_integration.py`: controlled installer with dry-run, apply, verify, rollback, backup, auto-rollback, and one main log target
+- `installer/install_ar_k_integration.py`: controlled installer with dry-run, apply, verify, rollback, backup, auto-rollback, one main log target, and payload filtering that excludes generated runtime state such as `reports/`, `.ark_install/`, and `__pycache__/`
 
 ## Canonical stage order
 
@@ -32,7 +32,7 @@ Ar-k now ships as a governed System + Kernel + Contracts platform with five engi
 
 ### A. Qué motor hace qué
 
-- **Scanner** descubre estructura real y emite `signal`.
+- **Scanner** descubre estructura real, emite `signal`, y ahora también observa superficies frontend, rutas y boundaries sin canonicalizar por su cuenta.
 - **Registry Builder** consolida señales en registries canónicos, snapshots, deltas y query index.
 - **Switch Engine** resuelve el estado efectivo de switches con precedencia auditable.
 - **Contract Validator** protege la forma, referencias y política.
@@ -64,7 +64,7 @@ Ar-k now ships as a governed System + Kernel + Contracts platform with five engi
 
 ### E. Qué artifacts debe emitir cada motor
 
-- **Scanner**: `artifacts/inventory/scanner_inventory.json`, `artifacts/graph/dependency_graph.json`, `artifacts/metrics/scanner_metrics.json`
+- **Scanner**: `artifacts/inventory/scanner_inventory.json`, `artifacts/routes/route_candidates.json`, `artifacts/boundaries/boundary_candidates.json`, `artifacts/graph/dependency_graph.json`, `artifacts/metrics/scanner_metrics.json`
 - **Registry Builder**: `artifacts/metrics/registry_build_summary.json`, `snapshots/registry_bundle_<execution>.json`, `deltas/registry_bundle_<execution>.json`
 - **Switch Engine**: `artifacts/decision_trace/switch_decision_trace.json`
 - **Contract Validator**: `artifacts/validation_report/validation_report.json`
@@ -127,7 +127,7 @@ $env:PYTHONPATH = $root
 python -m compileall "$root\pya"
 python -m pya.tools.pya doctor --root $root
 python -m pya.tools.pya run --root $root --target "$root\examples\sample_app" --out "$root\reports"
-python -m unittest tests.test_smoke
+python -m unittest discover -s "$root\tests" -v
 ```
 
 ## Docs map

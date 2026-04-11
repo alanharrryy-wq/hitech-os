@@ -7,7 +7,7 @@ from pathlib import Path
 from pya.contracts.signal_contract import build_signal
 from pya.engines.registry_builder.engine import RegistryBuilderEngine
 
-from tests.helpers import build_context, load_manifest, read_json
+from tests.helpers import build_context, build_frontend_target, load_manifest, read_json
 
 
 class RegistryBuilderEngineTests(unittest.TestCase):
@@ -60,6 +60,25 @@ class RegistryBuilderEngineTests(unittest.TestCase):
             self.assertEqual(len(summary["conflicts"]), 1)
         finally:
             temp_dir.cleanup()
+
+    def test_frontend_surface_candidates_become_canonical_modules(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            target = build_frontend_target(Path(temp))
+            temp_dir, context = build_context(target=target)
+            try:
+                from pya.engines.scanner.engine import ScannerEngine
+                ScannerEngine(manifest=load_manifest("scanner")).run(context)
+                engine = RegistryBuilderEngine(manifest=load_manifest("registry_builder"))
+                engine.run(context)
+                module_registry = read_json(context.paths.registries / "module_registry.json")
+                boundary_registry = read_json(context.paths.registries / "boundary_registry.json")
+                query_index = read_json(context.paths.indices / "query_index.json")
+                self.assertTrue(any(item["kind"] == "entrypoint" for item in module_registry))
+                self.assertTrue(any(item["kind"] == "component" for item in module_registry))
+                self.assertTrue(any(item["boundary_type"] == "desktop_bridge_boundary" for item in boundary_registry))
+                self.assertTrue(any("route-aware" in item["lookup_keys"] for item in query_index))
+            finally:
+                temp_dir.cleanup()
 
 
 if __name__ == "__main__":

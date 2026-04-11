@@ -3,7 +3,7 @@ from __future__ import annotations
 import unittest
 
 from pya.contracts.index_contracts import build_query_index_entry
-from pya.contracts.registry_contracts import build_boundary_entry, build_module_registry_entry
+from pya.contracts.registry_contracts import build_boundary_entry, build_contract_registry_entry, build_module_registry_entry
 from pya.contracts.switch_contracts import build_switch_registry_entry, build_switch_resolution
 from pya.engines.contract_validator.engine import ContractValidatorEngine
 
@@ -88,6 +88,31 @@ class ContractValidatorEngineTests(unittest.TestCase):
             severities = {item["severity"] for item in report["violations"]}
             self.assertIn("error", severities)
             self.assertIn("critical", severities)
+        finally:
+            temp_dir.cleanup()
+
+    def test_non_importable_contract_module_is_reported(self) -> None:
+        temp_dir, context = build_context()
+        try:
+            bad_contract = build_contract_registry_entry(
+                contract_id="annotation",
+                version="1.0.0",
+                owner="contracts",
+                module="pya.contracts.this_does_not_exist",
+                description="Broken contract module reference",
+                updated_at=context.execution_time,
+            )
+            context.storage.write_registry("registry_builder", "module_registry", [])
+            context.storage.write_registry("registry_builder", "boundary_registry", [])
+            context.storage.write_registry("registry_builder", "contract_registry", [bad_contract])
+            context.storage.write_registry("registry_builder", "switch_registry", [])
+            context.storage.write_registry("switch_engine", "switch_resolutions", [])
+            context.storage.write_index("registry_builder", "query_index", [])
+            engine = ContractValidatorEngine(manifest=load_manifest("contract_validator"))
+            engine.run(context)
+            report = read_json(context.paths.registries / "validation_report.json")
+            rule_ids = {item["rule_id"] for item in report["violations"]}
+            self.assertIn("reference:contract.module", rule_ids)
         finally:
             temp_dir.cleanup()
 

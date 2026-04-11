@@ -6,7 +6,7 @@ from pathlib import Path
 
 from pya.engines.scanner.engine import ScannerEngine
 
-from tests.helpers import build_context, load_manifest, read_json
+from tests.helpers import build_context, build_frontend_target, load_manifest, read_json
 
 
 class ScannerEngineTests(unittest.TestCase):
@@ -40,6 +40,28 @@ class ScannerEngineTests(unittest.TestCase):
                     if item["source_path"].endswith("bad.py") and item["state"] == "ambiguous"
                 ]
                 self.assertTrue(bad_signals)
+            finally:
+                temp_dir.cleanup()
+
+    def test_detects_frontend_observation_slice(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            target = build_frontend_target(Path(temp))
+            temp_dir, context = build_context(target=target)
+            try:
+                engine = ScannerEngine(manifest=load_manifest("scanner"))
+                engine.run(context)
+                inventory = read_json(context.paths.artifacts / "inventory" / "scanner_inventory.json")
+                metrics = read_json(context.paths.artifacts / "metrics" / "scanner_metrics.json")
+                routes = read_json(context.paths.artifacts / "routes" / "route_candidates.json")
+                boundaries = read_json(context.paths.artifacts / "boundaries" / "boundary_candidates.json")
+                signals = read_json(context.paths.registries / "signals.json")
+                self.assertTrue(any(item["surface_kind"] == "entrypoint" for item in inventory))
+                self.assertTrue(any(item["surface_kind"] == "component" for item in inventory))
+                self.assertGreaterEqual(metrics["route_candidate_count"], 2)
+                self.assertGreaterEqual(metrics["boundary_candidate_count"], 4)
+                self.assertTrue(any(item["route_path"] == "/" for item in routes))
+                self.assertTrue(any(item["boundary_kind"] == "desktop_bridge_boundary" for item in boundaries))
+                self.assertTrue(any(item["signal_type"] == "boundary_candidate" for item in signals))
             finally:
                 temp_dir.cleanup()
 

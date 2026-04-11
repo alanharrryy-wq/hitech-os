@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import importlib.util
+
 import unittest
 from pathlib import Path
 
+from pya.contracts.contract_registry import get_contract_registry_entries
 from pya.contracts.event_contracts import build_event, validate_event
 from pya.contracts.signal_contract import build_signal, validate_signal
 from pya.kernel.barriers import BARRIER_REQUIREMENTS
@@ -67,6 +70,10 @@ class SystemKernelContractsTests(unittest.TestCase):
         readme = (project_root() / "README.md").read_text(encoding="utf-8")
         self.assertIn("## Developing the 5 engines in parallel", readme)
         self.assertIn("scanner", readme.lower())
+
+    def test_contract_registry_modules_are_importable(self) -> None:
+        for entry in get_contract_registry_entries():
+            self.assertIsNotNone(importlib.util.find_spec(entry["module"]), msg=entry["module"])
 
 
 if __name__ == "__main__":
