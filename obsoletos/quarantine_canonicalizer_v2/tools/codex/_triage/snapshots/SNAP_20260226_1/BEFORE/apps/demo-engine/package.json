@@ -1,0 +1,17 @@
+{
+  "name": "@hitech/demo-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node src/index.mjs",
+    "build": "node src/index.mjs --build",
+    "typecheck": "node -e \"console.log('demo-engine placeholder: no typecheck yet')\"",
+    "lint": "node -e \"console.log('demo-engine placeholder: no lint rules yet')\"",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20.0.0 <26.0.0",
+    "pnpm": ">=9.0.0 <10.0.0"
+  }
+}

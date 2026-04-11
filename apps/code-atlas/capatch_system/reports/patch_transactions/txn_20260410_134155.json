@@ -1,0 +1,72 @@
+{
+  "attempts": 1,
+  "checkpoint_dir": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system\\.capatch\\backups\\patches\\session_20260410_134155",
+  "error": null,
+  "execution_mode": "patch-run",
+  "final_state": null,
+  "finished_at": null,
+  "invocation_mode": "patch-run",
+  "journal_path": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system\\reports\\patch_transactions\\txn_20260410_134155.json",
+  "last_exception_class": null,
+  "metadata": {
+    "phase": "phase5"
+  },
+  "operation_count": 1,
+  "operation_results": [],
+  "phase": "committed",
+  "phase_history": [
+    {
+      "extra": {},
+      "note": "transaction created",
+      "phase": "planned",
+      "status": "active",
+      "timestamp": "2026-04-10T13:41:55-06:00"
+    },
+    {
+      "extra": {
+        "required_verifiers": [
+          "python-parse",
+          "python-compile-smoke",
+          "python-import-smoke"
+        ],
+        "target_files": [
+          ".capatch/canary/sample_canary.py"
+        ]
+      },
+      "note": "preflight complete",
+      "phase": "preflight_ok",
+      "status": "active",
+      "timestamp": "2026-04-10T13:41:55-06:00"
+    },
+    {
+      "extra": {},
+      "note": "dry-run preview only",
+      "phase": "checkpoint_created",
+      "status": "active",
+      "timestamp": "2026-04-10T13:41:55-06:00"
+    },
+    {
+      "extra": {
+        "dry_run": true
+      },
+      "note": "dry-run completed",
+      "phase": "committed",
+      "status": "committed",
+      "timestamp": "2026-04-10T13:41:55-06:00"
+    }
+  ],
+  "recovery_hint": null,
+  "rollback_event": null,
+  "root_dir": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system",
+  "run_id": "None",
+  "schema_version": "2.0.0",
+  "started_at": "2026-04-10T13:41:55-06:00",
+  "target_files": [
+    ".capatch/canary/sample_canary.py"
+  ],
+  "transaction_id": "txn_20260410_134155",
+  "transaction_status": "committed",
+  "updated_at": "2026-04-10T13:41:55-06:00",
+  "verification_outcome": null,
+  "verifier_results": []
+}

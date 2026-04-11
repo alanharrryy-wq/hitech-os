@@ -10,6 +10,7 @@ import {
 import "@hitech/ui-kit/styles.css";
 import "./globals.css";
 import { AppProviders } from "../providers/app-providers";
+import { externalAppLinks } from "../lib/config/external-app-links";
 
 export const metadata: Metadata = {
   title: "Keystone Mission Control",
@@ -52,9 +53,24 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <Link href="/" className="keystone-app-nav-link">
                   Mission
                 </Link>
-                <Link href="/pitch" className="keystone-app-nav-link">
-                  Pitch
-                </Link>
+                {externalAppLinks.showOperatorEntry ? (
+                  <a
+                    href={externalAppLinks.operatorAppUrl!}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="keystone-app-nav-link"
+                  >
+                    Operator UI
+                  </a>
+                ) : null}
+                <a
+                  href={externalAppLinks.formsAppUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="keystone-app-nav-link"
+                >
+                  Public Forms
+                </a>
                 {showSceneStudioLink ? (
                   <Link href="/dev/scene-studio?debug=1" className="keystone-app-nav-link">
                     Scene Studio

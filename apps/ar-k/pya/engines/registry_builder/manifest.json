@@ -1,0 +1,91 @@
+{
+  "area": "registry",
+  "compatibility": {
+    "contracts": {
+      "boundary_entry": "1.0.0",
+      "execution_summary": "1.0.0",
+      "module_registry_entry": "1.0.0",
+      "query_index": "1.0.0",
+      "signal": "1.0.0",
+      "switch_registry_entry": "1.0.0"
+    },
+    "kernel": "^1.0.0"
+  },
+  "dependencies": [
+    "scanner"
+  ],
+  "engine_id": "registry_builder",
+  "engine_type": "registry_builder",
+  "entrypoint": "pya.engines.registry_builder.engine:RegistryBuilderEngine",
+  "error_contract": {
+    "typed_errors": [
+      "ValueError"
+    ]
+  },
+  "events_emitted": [
+    "registry_builder.started",
+    "registry_builder.completed"
+  ],
+  "execution_modes": [
+    "batch"
+  ],
+  "feature_flags_used": [],
+  "health_contract": {
+    "required_metrics": [
+      "module_count",
+      "boundary_count",
+      "contract_count"
+    ]
+  },
+  "inputs_declared": [
+    "signals"
+  ],
+  "observability_contract": {
+    "artifact_families": [
+      "metrics",
+      "snapshot",
+      "delta"
+    ]
+  },
+  "outputs_declared": [
+    "module_registry",
+    "boundary_registry",
+    "contract_registry",
+    "switch_registry",
+    "query_index",
+    "snapshot",
+    "delta"
+  ],
+  "owner": "Ar-k",
+  "permissions": {
+    "reads": [
+      "signals"
+    ],
+    "writes": [
+      "module_registry",
+      "boundary_registry",
+      "contract_registry",
+      "switch_registry",
+      "query_index",
+      "snapshots",
+      "deltas"
+    ]
+  },
+  "purpose": "Consolidate signals into canonical registries, indices, snapshots, and deltas.",
+  "registries_touched": {
+    "reads": [
+      "signals"
+    ],
+    "writes": [
+      "module_registry",
+      "boundary_registry",
+      "contract_registry",
+      "switch_registry",
+      "query_index",
+      "snapshots",
+      "deltas"
+    ]
+  },
+  "stage": "registry",
+  "version": "1.0.0"
+}

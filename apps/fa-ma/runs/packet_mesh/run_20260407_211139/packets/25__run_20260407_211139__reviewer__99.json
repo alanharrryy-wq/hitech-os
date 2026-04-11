@@ -1,0 +1,44 @@
+{
+  "packet_id": "run_20260407_211139:reviewer:99",
+  "run_id": "run_20260407_211139",
+  "order": 25,
+  "worker_id": "reviewer_cross_packet",
+  "stage": "review",
+  "package": "06-quality-release-and-operations",
+  "goal": "Diseña la primera ola de trabajo para FA-MA",
+  "objective": "Review the packet wave outputs, identify collisions, missing validations, and integration risks.",
+  "scope_summary": "Cross-packet review. Uses packet outputs and manifests rather than raw repo surfaces.",
+  "owned_paths": [
+    "runs/",
+    "docs/",
+    "tests/"
+  ],
+  "candidate_files": [],
+  "context_files": [],
+  "acceptance_gates": [
+    "Call out overlaps or collisions across packet scopes.",
+    "Name missing tests, missing docs, and risky assumptions.",
+    "Return a prioritized next-wave recommendation."
+  ],
+  "constraints": [
+    "Do not dump whole large files; summarize and cite targeted slices.",
+    "Prefer small, composable changes that can be merged independently.",
+    "Respect repo conventions and monorepo entrypoint reality.",
+    "Output must be useful even if the next packet runs on a smaller model."
+  ],
+  "handoff_inputs": [
+    "runs/<run_id>/packet_index.json",
+    "runs/<run_id>/responses/"
+  ],
+  "output_contract": [
+    "Section: Wave Audit",
+    "Section: Overlaps and Gaps",
+    "Section: Verification Debt",
+    "Section: Next Wave"
+  ],
+  "risk_notes": [
+    "Do not re-implement code here; synthesize and challenge."
+  ],
+  "char_budget": 9000,
+  "metadata": {}
+}

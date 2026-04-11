@@ -1,0 +1,75 @@
+{
+  "area": "switch",
+  "compatibility": {
+    "contracts": {
+      "event": "1.0.0",
+      "execution_summary": "1.0.0",
+      "switch_registry_entry": "1.0.0",
+      "switch_resolution": "1.0.0"
+    },
+    "kernel": "^1.0.0"
+  },
+  "dependencies": [
+    "registry_builder"
+  ],
+  "engine_id": "switch_engine",
+  "engine_type": "switch_engine",
+  "entrypoint": "pya.engines.switch_engine.engine:SwitchEngine",
+  "error_contract": {
+    "typed_errors": [
+      "ValueError"
+    ]
+  },
+  "events_emitted": [
+    "switch_engine.started",
+    "switch_engine.override_warning",
+    "switch_engine.completed"
+  ],
+  "execution_modes": [
+    "batch"
+  ],
+  "feature_flags_used": [
+    "switch_overrides"
+  ],
+  "health_contract": {
+    "required_metrics": [
+      "switch_count",
+      "resolved_count"
+    ]
+  },
+  "inputs_declared": [
+    "module_registry",
+    "switch_registry"
+  ],
+  "observability_contract": {
+    "artifact_families": [
+      "decision_trace"
+    ]
+  },
+  "outputs_declared": [
+    "switch_resolutions",
+    "decision_trace"
+  ],
+  "owner": "Ar-k",
+  "permissions": {
+    "reads": [
+      "module_registry",
+      "switch_registry"
+    ],
+    "writes": [
+      "switch_resolutions"
+    ]
+  },
+  "purpose": "Resolve effective switch state with deterministic precedence and traceability.",
+  "registries_touched": {
+    "reads": [
+      "module_registry",
+      "switch_registry"
+    ],
+    "writes": [
+      "switch_resolutions"
+    ]
+  },
+  "stage": "switch",
+  "version": "1.0.0"
+}

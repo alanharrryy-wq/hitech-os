@@ -26,6 +26,10 @@
     "snapshot:hos:validate": "pnpm exec tsx tools/snapshot/validate_snapshot.ts",
 
     "dev": "pnpm -r --if-present dev",
+    "dev:keystone": "pnpm -C apps/keystone keystone:scene:studio",
+    "dev:operator": "pnpm --filter @hitech/external_interaction_template dev",
+    "dev:forms": "pnpm --filter @hitech/external_interaction_forms dev",
+    "dev:multi-app": "pnpm -r --parallel --filter @hitech/keystone --filter @hitech/external_interaction_template --filter @hitech/external_interaction_forms dev:multi",
 
     "turbo:build": "turbo run build",
     "turbo:lint": "turbo run lint",

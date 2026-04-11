@@ -4,6 +4,8 @@ param(
   [string]$TunnelName = "engine",
   [string]$Hostname = "engine.hitechrts.com",
   [string]$OriginUrl = "http://127.0.0.1:3100",
+  [string]$FormsHostname = "forms.hitechrts.com",
+  [string]$FormsOriginUrl = "http://127.0.0.1:3200",
   [string]$LogDir = "",
   [int]$FailureThreshold = 2,
   [string]$WebhookUrl = $(if ($env:HITECH_CLOUDFLARE_ALERT_WEBHOOK) { $env:HITECH_CLOUDFLARE_ALERT_WEBHOOK } else { "" }),
@@ -120,6 +122,8 @@ if (-not (Test-Path -LiteralPath $ValidatePy)) {
   --tunnel-name $TunnelName `
   --hostname $Hostname `
   --origin-url $OriginUrl `
+  --extra-route "$FormsHostname=$FormsOriginUrl" `
+  --extra-public-url "$FormsHostname=https://$FormsHostname" `
   --log-dir $LogDir `
   --json-out $validateOutPath
 $validateExit = $LASTEXITCODE
@@ -129,6 +133,8 @@ $localHealthy = $false
 $tunnelConnected = $false
 $publicHealthy = $false
 $publicStatusCode = $null
+$formsPublicHealthy = $false
+$formsPublicStatusCode = $null
 if ($validatePayload -and ($validatePayload.PSObject.Properties.Name -contains "local_origin_healthy")) {
   $localHealthy = [bool]$validatePayload.local_origin_healthy
 }
@@ -140,6 +146,14 @@ if ($validatePayload -and ($validatePayload.PSObject.Properties.Name -contains "
 }
 if ($validatePayload -and ($validatePayload.PSObject.Properties.Name -contains "public_status_code")) {
   $publicStatusCode = $validatePayload.public_status_code
+}
+if ($validatePayload -and ($validatePayload.PSObject.Properties.Name -contains "public_hosts")) {
+  $publicHostProps = $validatePayload.public_hosts.PSObject.Properties
+  $formsEntry = $publicHostProps | Where-Object { $_.Name -eq $FormsHostname }
+  if ($formsEntry) {
+    $formsPublicHealthy = [bool]$formsEntry.Value.healthy
+    $formsPublicStatusCode = $formsEntry.Value.status_code
+  }
 }
 
 $isHealthy = ($validateExit -eq 0) -and $publicHealthy
@@ -166,6 +180,8 @@ if (-not $isHealthy -and (Test-Path -LiteralPath $GuardSetupPs1)) {
       --tunnel-name $TunnelName `
       --hostname $Hostname `
       --origin-url $OriginUrl `
+      --extra-route "$FormsHostname=$FormsOriginUrl" `
+      --extra-public-url "$FormsHostname=https://$FormsHostname" `
       --log-dir $LogDir `
       --json-out $validateOutPath
     $validateExit = $LASTEXITCODE
@@ -175,6 +191,8 @@ if (-not $isHealthy -and (Test-Path -LiteralPath $GuardSetupPs1)) {
     $tunnelConnected = $false
     $publicHealthy = $false
     $publicStatusCode = $null
+    $formsPublicHealthy = $false
+    $formsPublicStatusCode = $null
     if ($validatePayload -and ($validatePayload.PSObject.Properties.Name -contains "local_origin_healthy")) {
       $localHealthy = [bool]$validatePayload.local_origin_healthy
     }
@@ -186,6 +204,14 @@ if (-not $isHealthy -and (Test-Path -LiteralPath $GuardSetupPs1)) {
     }
     if ($validatePayload -and ($validatePayload.PSObject.Properties.Name -contains "public_status_code")) {
       $publicStatusCode = $validatePayload.public_status_code
+    }
+    if ($validatePayload -and ($validatePayload.PSObject.Properties.Name -contains "public_hosts")) {
+      $publicHostProps = $validatePayload.public_hosts.PSObject.Properties
+      $formsEntry = $publicHostProps | Where-Object { $_.Name -eq $FormsHostname }
+      if ($formsEntry) {
+        $formsPublicHealthy = [bool]$formsEntry.Value.healthy
+        $formsPublicStatusCode = $formsEntry.Value.status_code
+      }
     }
     $isHealthy = ($validateExit -eq 0) -and $publicHealthy
     $statusText = if ($isHealthy) { "healthy" } else { "unhealthy" }
@@ -226,6 +252,8 @@ if ($isHealthy) {
       tunnel = $TunnelName
       hostname = $Hostname
       public_status = $publicStatusCode
+      forms_hostname = $FormsHostname
+      forms_public_status = $formsPublicStatusCode
       local_origin_healthy = $localHealthy
       tunnel_connected = $tunnelConnected
       validate_json = $validateOutPath
@@ -252,6 +280,8 @@ if ($isHealthy) {
       tunnel = $TunnelName
       hostname = $Hostname
       public_status = $publicStatusCode
+      forms_hostname = $FormsHostname
+      forms_public_status = $formsPublicStatusCode
       local_origin_healthy = $localHealthy
       tunnel_connected = $tunnelConnected
       consecutive_failures = $failures
@@ -278,6 +308,10 @@ $summaryPayload = @{
   tunnel_connected = $tunnelConnected
   public_hostname_healthy = $publicHealthy
   public_status_code = $publicStatusCode
+  forms_hostname = $FormsHostname
+  forms_origin_url = $FormsOriginUrl
+  forms_public_healthy = $formsPublicHealthy
+  forms_public_status_code = $formsPublicStatusCode
   auto_recovery_attempted = $autoRecoveryAttempted
   auto_recovery_exit_code = $autoRecoveryExitCode
   auto_recovery_output_tail = $autoRecoveryOutputTail

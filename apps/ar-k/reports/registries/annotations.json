@@ -1,0 +1,86 @@
+[
+  {
+    "annotation_id": "ann_717a8462c40c0fa1",
+    "annotation_kind": "module_summary",
+    "confidence": 0.8,
+    "created_at": "2026-04-11T21:07:58Z",
+    "model_info": {
+      "model": "rule-based-baseline",
+      "owner": "ai_annotator"
+    },
+    "rationale": "Based on registry state canonical, 0 validator findings, and 1 observed import boundaries.",
+    "snapshot_id": "run_ff2b8a412789d225",
+    "source_basis": {
+      "module": "app.__init__",
+      "switch": "module.enabled:mod_9cec7b11237bc29d",
+      "validation_status": "validated"
+    },
+    "status": "suggested",
+    "summary": "Module app.__init__ in area app exposes 1 boundary links and is currently enabled.",
+    "target_id": "mod_9cec7b11237bc29d",
+    "target_type": "module"
+  },
+  {
+    "annotation_id": "ann_e38c2b9207816b11",
+    "annotation_kind": "module_summary",
+    "confidence": 0.8,
+    "created_at": "2026-04-11T21:07:58Z",
+    "model_info": {
+      "model": "rule-based-baseline",
+      "owner": "ai_annotator"
+    },
+    "rationale": "Based on registry state canonical, 0 validator findings, and 0 observed import boundaries.",
+    "snapshot_id": "run_ff2b8a412789d225",
+    "source_basis": {
+      "module": "app.flags",
+      "switch": "module.enabled:mod_006637bf5fd89d6e",
+      "validation_status": "validated"
+    },
+    "status": "suggested",
+    "summary": "Module app.flags in area app exposes 0 boundary links and is currently enabled.",
+    "target_id": "mod_006637bf5fd89d6e",
+    "target_type": "module"
+  },
+  {
+    "annotation_id": "ann_e832df35a17c1586",
+    "annotation_kind": "module_summary",
+    "confidence": 0.8,
+    "created_at": "2026-04-11T21:07:58Z",
+    "model_info": {
+      "model": "rule-based-baseline",
+      "owner": "ai_annotator"
+    },
+    "rationale": "Based on registry state canonical, 0 validator findings, and 1 observed import boundaries.",
+    "snapshot_id": "run_ff2b8a412789d225",
+    "source_basis": {
+      "module": "app.repository",
+      "switch": "module.enabled:mod_b3c2b671598a92b5",
+      "validation_status": "validated"
+    },
+    "status": "suggested",
+    "summary": "Module app.repository in area app exposes 1 boundary links and is currently enabled.",
+    "target_id": "mod_b3c2b671598a92b5",
+    "target_type": "module"
+  },
+  {
+    "annotation_id": "ann_7cfc0e79d6f84934",
+    "annotation_kind": "module_summary",
+    "confidence": 0.8,
+    "created_at": "2026-04-11T21:07:58Z",
+    "model_info": {
+      "model": "rule-based-baseline",
+      "owner": "ai_annotator"
+    },
+    "rationale": "Based on registry state canonical, 0 validator findings, and 2 observed import boundaries.",
+    "snapshot_id": "run_ff2b8a412789d225",
+    "source_basis": {
+      "module": "app.service",
+      "switch": "module.enabled:mod_fb9baf6216d85a2e",
+      "validation_status": "validated"
+    },
+    "status": "suggested",
+    "summary": "Module app.service in area app exposes 2 boundary links and is currently enabled.",
+    "target_id": "mod_fb9baf6216d85a2e",
+    "target_type": "module"
+  }
+]

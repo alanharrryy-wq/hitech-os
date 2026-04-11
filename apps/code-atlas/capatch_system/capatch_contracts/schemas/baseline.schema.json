@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "capatch.baseline.schema.json",
+  "title": "BaselineRecord",
+  "type": "object",
+  "required": [
+    "baseline_id",
+    "label",
+    "created_at",
+    "root_dir",
+    "target_files",
+    "hashes",
+    "verification_snapshot",
+    "notes",
+    "schema_version"
+  ],
+  "properties": {
+    "baseline_id": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "root_dir": {
+      "type": "string"
+    },
+    "git_branch": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "git_head": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "target_files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "hashes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "verification_snapshot": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "notes": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "capatch.intervention_gate.schema.json",
+  "title": "InterventionGateReport",
+  "type": "object",
+  "required": [
+    "status",
+    "allow_apply",
+    "risk_tier",
+    "checks",
+    "git_summary",
+    "required_verifiers",
+    "blocked_reasons"
+  ],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "caution",
+        "fail"
+      ]
+    },
+    "allow_apply": {
+      "type": "boolean"
+    },
+    "risk_tier": {
+      "type": "string",
+      "enum": [
+        "safe",
+        "guarded",
+        "high-risk",
+        "blocked"
+      ]
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "git_summary": {
+      "type": "object"
+    },
+    "required_verifiers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blocked_reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

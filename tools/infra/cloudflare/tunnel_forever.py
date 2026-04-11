@@ -10,6 +10,8 @@ from typing import Any
 from cloudflared_helpers import (
     DEFAULT_CLOUDFLARED_DIR,
     DEFAULT_CONFIG_PATH,
+    DEFAULT_FORMS_HOSTNAME,
+    DEFAULT_FORMS_ORIGIN_URL,
     DEFAULT_HOSTNAME,
     DEFAULT_LOG_DIR,
     DEFAULT_ORIGIN_URL,
@@ -24,8 +26,8 @@ from cloudflared_helpers import (
     run_logged,
     write_json,
 )
-from ensure_config import ensure_tunnel_config
-from ensure_origin import ensure_keystone_origin
+from ensure_config import compose_ingress_routes, ensure_tunnel_config
+from ensure_origin import ensure_forms_origin, ensure_keystone_origin
 from ensure_service import ensure_cloudflared_service, get_service_status, restart_cloudflared_service
 from ensure_watchdog import WATCHDOG_TASK_NAME, ensure_watchdog_task, inspect_watchdog_task
 from ensure_public_watchdog import (
@@ -53,16 +55,29 @@ def _build_report_text(
     tunnel_uuid: str,
     hostname: str,
     dns_status: bool,
+    dns_status_by_hostname: dict[str, bool],
     ingress_ok: bool,
     service_status: dict[str, Any],
     watchdog_status: dict[str, Any],
     public_watchdog_status: dict[str, Any],
+    forms_origin_result: dict[str, Any],
     validation_payload: dict[str, Any],
     validation_path: Path,
     setup_log_path: Path,
     actions_log_path: Path,
     summary_status: str,
 ) -> str:
+    hostname_lines = "\n".join(
+        f"  - {route_hostname}: {'BOUND' if route_bound else 'MISSING'}"
+        for route_hostname, route_bound in dns_status_by_hostname.items()
+    )
+    public_host_lines = "\n".join(
+        (
+            f"  - {route_hostname}: healthy={details.get('healthy', False)} "
+            f"status={details.get('status_code')} url={details.get('public_url')}"
+        )
+        for route_hostname, details in (validation_payload.get("public_hosts", {}) or {}).items()
+    )
     return (
         "HITECH Cloudflare Tunnel Forever Report\n"
         "======================================\n"
@@ -72,14 +87,19 @@ def _build_report_text(
         "\n"
         f"Tunnel Name: {tunnel_name}\n"
         f"Tunnel UUID: {tunnel_uuid}\n"
-        f"Hostname: {hostname}\n"
+        f"Primary Hostname: {hostname}\n"
         f"Public URL: {validation_payload.get('public_url', _public_url(hostname))}\n"
         f"Hostname Route Bound: {dns_status}\n"
+        "Route Bindings:\n"
+        f"{hostname_lines}\n"
         f"Ingress OK: {ingress_ok}\n"
         f"Tunnel Connected: {validation_payload.get('tunnel_connected', False)}\n"
         f"Origin Healthy: {validation_payload.get('local_origin_healthy', False)}\n"
-        f"Public Hostname Healthy (2xx/3xx): {validation_payload.get('public_hostname_healthy', False)}\n"
+        f"Forms Origin Healthy: {forms_origin_result.get('origin_reachable', False)}\n"
+        f"All Public Hostnames Healthy (2xx/3xx): {validation_payload.get('public_hostname_healthy', False)}\n"
         f"Public Status Code: {validation_payload.get('public_status_code', 'n/a')}\n"
+        "Public Host Checks:\n"
+        f"{public_host_lines}\n"
         "\n"
         f"Service Installed: {service_status.get('installed', False)}\n"
         f"Service Running: {str(service_status.get('status', '')).lower() == 'running' or str(service_status.get('state', '')).lower() == 'running'}\n"
@@ -115,6 +135,7 @@ def run_guard_only(
     repo_root: Path,
     tunnel_name: str,
     origin_url: str,
+    forms_origin_url: str,
     cooldown_state_path: Path,
     cooldown_seconds: int,
 ) -> dict[str, Any]:
@@ -154,6 +175,39 @@ def run_guard_only(
             }
     origin_healthy = bool(origin_status.get("origin_reachable", False))
 
+    forms_origin_status: dict[str, Any] = {}
+    try:
+        forms_origin_status = ensure_forms_origin(
+            ctx,
+            repo_root=repo_root,
+            origin_url=forms_origin_url,
+            state_path=ctx.log_dir / "forms_origin_state.json",
+            runtime_log_path=ctx.log_dir / "forms_origin_runtime.log",
+            wait_seconds=45,
+            launch_cooldown_seconds=120,
+        )
+    except TunnelSetupError as err:
+        forms_origin_status = {"origin_reachable": False, "error": str(err)}
+    forms_origin_healthy = bool(forms_origin_status.get("origin_reachable", False))
+    if not forms_origin_healthy:
+        try:
+            forms_origin_status = ensure_forms_origin(
+                ctx,
+                repo_root=repo_root,
+                origin_url=forms_origin_url,
+                state_path=ctx.log_dir / "forms_origin_state.json",
+                runtime_log_path=ctx.log_dir / "forms_origin_runtime.log",
+                wait_seconds=60,
+                launch_cooldown_seconds=0,
+            )
+        except TunnelSetupError as err:
+            forms_origin_status = {
+                "origin_reachable": False,
+                "error": str(err),
+                "forced_relaunch_attempted": True,
+            }
+    forms_origin_healthy = bool(forms_origin_status.get("origin_reachable", False))
+
     try:
         connections_count = get_tunnel_connections_count(ctx, tunnel_name)
         connection_error = ""
@@ -161,15 +215,17 @@ def run_guard_only(
         connections_count = 0
         connection_error = str(err)
 
-    healthy = connections_count > 0 and origin_healthy
+    healthy = connections_count > 0 and origin_healthy and forms_origin_healthy
     if healthy:
         payload = {
             "guard_ok": True,
             "connections_count": connections_count,
             "origin_healthy": origin_healthy,
+            "forms_origin_healthy": forms_origin_healthy,
             "restarted": False,
             "reason": "",
             "origin": origin_status,
+            "forms_origin": forms_origin_status,
         }
         ctx.action("guard_check", "ok", payload)
         return payload
@@ -196,12 +252,15 @@ def run_guard_only(
     except TunnelSetupError:
         after_count = 0
     final_origin_healthy = bool(origin_status.get("origin_reachable", False))
+    final_forms_origin_healthy = bool(forms_origin_status.get("origin_reachable", False))
     payload = {
-        "guard_ok": after_count > 0 and final_origin_healthy,
+        "guard_ok": after_count > 0 and final_origin_healthy and final_forms_origin_healthy,
         "connections_count_before": connections_count,
         "connections_count_after": after_count,
         "origin_healthy": final_origin_healthy,
+        "forms_origin_healthy": final_forms_origin_healthy,
         "origin": origin_status,
+        "forms_origin": forms_origin_status,
         **restart_result,
     }
     status = "ok" if payload["guard_ok"] else "error"
@@ -215,7 +274,9 @@ def run_full_setup(
     repo_root: Path,
     tunnel_name: str,
     hostname: str,
+    forms_hostname: str,
     origin_url: str,
+    forms_origin_url: str,
     config_path: Path,
     cloudflared_dir: Path,
     validate_json_out: Path,
@@ -225,7 +286,15 @@ def run_full_setup(
 ) -> dict[str, Any]:
     ensure_cloudflared_available(ctx)
     tunnel_uuid = get_tunnel_uuid(ctx, tunnel_name)
-    dns_result = ensure_dns_binding(ctx, tunnel_name, hostname)
+    ingress_routes = compose_ingress_routes(
+        hostname,
+        origin_url,
+        [(forms_hostname, forms_origin_url)],
+    )
+    dns_results: dict[str, dict[str, Any]] = {}
+    for route_hostname, _ in ingress_routes:
+        dns_results[route_hostname] = ensure_dns_binding(ctx, tunnel_name, route_hostname)
+
     config_result = ensure_tunnel_config(
         ctx,
         tunnel_name=tunnel_name,
@@ -233,6 +302,7 @@ def run_full_setup(
         origin_url=origin_url,
         config_path=config_path,
         cloudflared_dir=cloudflared_dir,
+        ingress_routes=ingress_routes,
     )
     service_result = ensure_cloudflared_service(
         ctx,
@@ -273,8 +343,21 @@ def run_full_setup(
         wait_seconds=120,
         launch_cooldown_seconds=120,
     )
+    forms_origin_result = ensure_forms_origin(
+        ctx,
+        repo_root=repo_root,
+        origin_url=forms_origin_url,
+        state_path=ctx.log_dir / "forms_origin_state.json",
+        runtime_log_path=ctx.log_dir / "forms_origin_runtime.log",
+        wait_seconds=120,
+        launch_cooldown_seconds=120,
+    )
 
     public_url = _public_url(hostname)
+    public_url_by_host = {
+        hostname.lower(): _public_url(hostname),
+        forms_hostname.lower(): _public_url(forms_hostname),
+    }
     validation_payload, critical_ok = validate_tunnel_state(
         ctx,
         tunnel_name=tunnel_name,
@@ -283,7 +366,13 @@ def run_full_setup(
         origin_url=origin_url,
         config_path=config_path,
         cloudflared_dir=cloudflared_dir,
+        ingress_routes=ingress_routes,
+        public_url_by_host=public_url_by_host,
     )
+    primary_public_host = (
+        validation_payload.get("public_hosts", {}).get(hostname.lower(), {}) or {}
+    )
+    primary_public_healthy = bool(primary_public_host.get("healthy", False))
     force_reinstall_applied = False
     likely_service_mode_drift = bool(
         validation_payload.get("hostname_bound", False)
@@ -292,7 +381,7 @@ def run_full_setup(
         and validation_payload.get("service_running", False)
         and validation_payload.get("tunnel_connected", False)
         and validation_payload.get("local_origin_healthy", False)
-        and not validation_payload.get("public_hostname_healthy", False)
+        and not primary_public_healthy
     )
     if not critical_ok and likely_service_mode_drift:
         ctx.action(
@@ -319,6 +408,8 @@ def run_full_setup(
             origin_url=origin_url,
             config_path=config_path,
             cloudflared_dir=cloudflared_dir,
+            ingress_routes=ingress_routes,
+            public_url_by_host=public_url_by_host,
         )
     validation_payload["service_force_reinstall_applied"] = force_reinstall_applied
     write_json(validate_json_out, validation_payload)
@@ -345,11 +436,16 @@ def run_full_setup(
         tunnel_name=tunnel_name,
         tunnel_uuid=tunnel_uuid,
         hostname=hostname,
-        dns_status=dns_result["hostname_bound"],
+        dns_status=bool(dns_results.get(hostname, {}).get("hostname_bound", False)),
+        dns_status_by_hostname={
+            route_hostname: bool(route_payload.get("hostname_bound", False))
+            for route_hostname, route_payload in dns_results.items()
+        },
         ingress_ok=bool(validation_payload.get("ingress_ok", False)),
         service_status=service_snapshot,
         watchdog_status=watchdog_snapshot,
         public_watchdog_status=public_watchdog_snapshot,
+        forms_origin_result=forms_origin_result,
         validation_payload=validation_payload,
         validation_path=validate_json_out,
         setup_log_path=ctx.setup_log_path,
@@ -370,12 +466,13 @@ def run_full_setup(
     summary = {
         "critical_ok": critical_ok,
         "tunnel_uuid": tunnel_uuid,
-        "dns_result": dns_result,
+        "dns_results": dns_results,
         "config_result": config_result,
         "service_result": service_result,
         "watchdog_result": watchdog_result,
         "public_watchdog_result": public_watchdog_result,
         "origin_result": origin_result,
+        "forms_origin_result": forms_origin_result,
         "validation": validation_payload,
         "service_force_reinstall_applied": force_reinstall_applied,
         "dns_list_stdout": dns_list_after.stdout,
@@ -393,7 +490,9 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--repo-root", default=str(DEFAULT_REPO_ROOT))
     parser.add_argument("--tunnel-name", default=DEFAULT_TUNNEL_NAME)
     parser.add_argument("--hostname", default=DEFAULT_HOSTNAME)
+    parser.add_argument("--forms-hostname", default=DEFAULT_FORMS_HOSTNAME)
     parser.add_argument("--origin-url", default=DEFAULT_ORIGIN_URL)
+    parser.add_argument("--forms-origin-url", default=DEFAULT_FORMS_ORIGIN_URL)
     parser.add_argument("--config-path", default=str(DEFAULT_CONFIG_PATH))
     parser.add_argument("--cloudflared-dir", default=str(DEFAULT_CLOUDFLARED_DIR))
     parser.add_argument("--log-dir", default=str(DEFAULT_LOG_DIR))
@@ -425,6 +524,7 @@ def main() -> int:
                 repo_root=repo_root,
                 tunnel_name=args.tunnel_name,
                 origin_url=args.origin_url,
+                forms_origin_url=args.forms_origin_url,
                 cooldown_state_path=cooldown_state,
                 cooldown_seconds=args.cooldown_seconds,
             )
@@ -436,7 +536,9 @@ def main() -> int:
             repo_root=repo_root,
             tunnel_name=args.tunnel_name,
             hostname=args.hostname,
+            forms_hostname=args.forms_hostname,
             origin_url=args.origin_url,
+            forms_origin_url=args.forms_origin_url,
             config_path=Path(args.config_path),
             cloudflared_dir=Path(args.cloudflared_dir),
             validate_json_out=validate_json_out,

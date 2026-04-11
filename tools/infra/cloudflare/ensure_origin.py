@@ -74,15 +74,20 @@ def _resolve_node_executable() -> str:
     )
 
 
-def _launch_keystone_process(repo_root: Path, port: int, runtime_log_path: Path) -> int:
+def _launch_next_process(
+    repo_root: Path,
+    app_relative_path: str,
+    port: int,
+    runtime_log_path: Path,
+) -> int:
     ensure_directory(runtime_log_path.parent)
     runtime_err_path = runtime_log_path.with_suffix(".err.log")
     node_exe = _resolve_node_executable()
-    app_dir = repo_root / "apps" / "keystone"
+    app_dir = repo_root / app_relative_path
     next_cli = app_dir / "node_modules" / "next" / "dist" / "bin" / "next"
     if not next_cli.exists():
         raise TunnelSetupError(
-            f"Cannot launch Keystone origin because Next CLI is missing at '{next_cli}'. "
+            f"Cannot launch origin because Next CLI is missing at '{next_cli}'. "
             "Run dependency install/build first."
         )
     cmd = [node_exe, str(next_cli), "start", "-p", str(port)]
@@ -104,14 +109,17 @@ def _launch_keystone_process(repo_root: Path, port: int, runtime_log_path: Path)
                 close_fds=True,
             )
     except OSError as err:
-        raise TunnelSetupError(f"Failed to spawn Keystone process: {err}") from err
+        raise TunnelSetupError(f"Failed to spawn Next process: {err}") from err
     return int(proc.pid)
 
 
-def ensure_keystone_origin(
+def ensure_next_origin(
     ctx: RunContext,
     *,
     repo_root: Path,
+    app_relative_path: str,
+    app_display_name: str,
+    app_build_command: str,
     origin_url: str,
     state_path: Path,
     runtime_log_path: Path,
@@ -127,11 +135,13 @@ def ensure_keystone_origin(
             "origin_status_code": status_code,
             "origin_error": origin_error,
             "port": port,
+            "app": app_display_name,
+            "app_relative_path": app_relative_path,
         }
         ctx.action("ensure_origin", "ok", payload)
         return payload
 
-    build_id = repo_root / "apps" / "keystone" / ".next" / "BUILD_ID"
+    build_id = repo_root / app_relative_path / ".next" / "BUILD_ID"
     if not build_id.exists():
         build = run_logged(
             ctx,
@@ -141,47 +151,56 @@ def ensure_keystone_origin(
                 "-ExecutionPolicy",
                 "Bypass",
                 "-Command",
-                f"Set-Location -LiteralPath {_ps_single_quote(str(repo_root))}; pnpm -C apps/keystone build",
+                f"Set-Location -LiteralPath {_ps_single_quote(str(repo_root))}; {app_build_command}",
             ],
             timeout=1800,
-            action_name="keystone_build",
+            action_name=f"{app_display_name.lower()}_build",
         )
         if build.returncode != 0:
             raise TunnelSetupError(
-                f"Keystone build failed. stderr: {build.stderr.strip() or build.stdout.strip() or 'n/a'}"
+                f"{app_display_name} build failed. stderr: {build.stderr.strip() or build.stdout.strip() or 'n/a'}"
             )
 
     state = read_json(state_path, default={})
     last_launch_epoch = float(state.get("last_launch_epoch", 0) or 0)
     existing_pid = int(state.get("pid", 0) or 0)
     now = time.time()
-    should_launch = True
     port_open = _is_port_open(port)
     existing_pid_alive = existing_pid > 0 and _pid_alive(existing_pid)
-    if port_open:
-        should_launch = False
-    elif existing_pid_alive:
-        should_launch = False
+    should_launch = not port_open
 
     launched = False
     pid = existing_pid
     if should_launch:
-        if existing_pid > 0 and _pid_alive(existing_pid):
+        if existing_pid > 0 and existing_pid_alive:
             kill_old = run_logged(
                 ctx,
                 ["taskkill", "/PID", str(existing_pid), "/F"],
                 timeout=30,
-                action_name="keystone_kill_stale_pid",
+                action_name=f"{app_display_name.lower()}_kill_stale_pid",
             )
             if kill_old.returncode != 0:
                 ctx.action(
-                    "keystone_kill_stale_pid",
+                    f"{app_display_name.lower()}_kill_stale_pid",
                     "warning",
                     {"pid": existing_pid, "stderr": kill_old.stderr.strip() or kill_old.stdout.strip() or "n/a"},
                 )
             time.sleep(1)
+
+        if existing_pid_alive and now - last_launch_epoch < launch_cooldown_seconds:
+            ctx.action(
+                f"{app_display_name.lower()}_launch_cooldown",
+                "warning",
+                {
+                    "existing_pid": existing_pid,
+                    "last_launch_epoch": last_launch_epoch,
+                    "seconds_since_last_launch": now - last_launch_epoch,
+                    "launch_cooldown_seconds": launch_cooldown_seconds,
+                },
+            )
+
         try:
-            pid = _launch_keystone_process(repo_root, port, runtime_log_path)
+            pid = _launch_next_process(repo_root, app_relative_path, port, runtime_log_path)
             launched = True
             write_json(
                 state_path,
@@ -191,10 +210,12 @@ def ensure_keystone_origin(
                     "last_launch_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)),
                     "port": port,
                     "origin_url": origin_url,
+                    "app": app_display_name,
+                    "app_relative_path": app_relative_path,
                 },
             )
         except Exception as err:  # noqa: BLE001
-            raise TunnelSetupError(f"Failed to launch Keystone origin: {err}") from err
+            raise TunnelSetupError(f"Failed to launch {app_display_name} origin: {err}") from err
 
     deadline = time.time() + max(wait_seconds, 1)
     final_reachable = False
@@ -219,10 +240,12 @@ def ensure_keystone_origin(
             "port": port,
             "runtime_log_path": str(runtime_log_path),
             "state_path": str(state_path),
+            "app": app_display_name,
+            "app_relative_path": app_relative_path,
         }
         ctx.action("ensure_origin", "error", payload)
         raise TunnelSetupError(
-            f"Keystone origin is still unreachable at {origin_url}. "
+            f"{app_display_name} origin is still unreachable at {origin_url}. "
             f"Inspect runtime log: {runtime_log_path}"
         )
 
@@ -235,9 +258,59 @@ def ensure_keystone_origin(
         "port": port,
         "runtime_log_path": str(runtime_log_path),
         "state_path": str(state_path),
+        "app": app_display_name,
+        "app_relative_path": app_relative_path,
     }
     ctx.action("ensure_origin", "ok", payload)
     return payload
+
+
+def ensure_keystone_origin(
+    ctx: RunContext,
+    *,
+    repo_root: Path,
+    origin_url: str,
+    state_path: Path,
+    runtime_log_path: Path,
+    wait_seconds: int = 90,
+    launch_cooldown_seconds: int = 120,
+) -> dict[str, Any]:
+    return ensure_next_origin(
+        ctx,
+        repo_root=repo_root,
+        app_relative_path="apps/keystone",
+        app_display_name="Keystone",
+        app_build_command="pnpm -C apps/keystone build",
+        origin_url=origin_url,
+        state_path=state_path,
+        runtime_log_path=runtime_log_path,
+        wait_seconds=wait_seconds,
+        launch_cooldown_seconds=launch_cooldown_seconds,
+    )
+
+
+def ensure_forms_origin(
+    ctx: RunContext,
+    *,
+    repo_root: Path,
+    origin_url: str,
+    state_path: Path,
+    runtime_log_path: Path,
+    wait_seconds: int = 90,
+    launch_cooldown_seconds: int = 120,
+) -> dict[str, Any]:
+    return ensure_next_origin(
+        ctx,
+        repo_root=repo_root,
+        app_relative_path="apps/external_interaction_forms",
+        app_display_name="ExternalInteractionForms",
+        app_build_command="pnpm -C apps/external_interaction_forms build",
+        origin_url=origin_url,
+        state_path=state_path,
+        runtime_log_path=runtime_log_path,
+        wait_seconds=wait_seconds,
+        launch_cooldown_seconds=launch_cooldown_seconds,
+    )
 
 
 def _build_parser() -> argparse.ArgumentParser:

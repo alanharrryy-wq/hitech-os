@@ -1,0 +1,21 @@
+{
+  "name": "@hitech/tooling",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./eslint/base": "./eslint/base.cjs",
+    "./prettier/base": "./prettier/prettier.config.cjs",
+    "./tsconfig/base": "./tsconfig/base.json"
+  },
+  "scripts": {
+    "build": "node -e \"console.log('tooling package: config only')\"",
+    "lint": "node -e \"console.log('tooling package: config only')\"",
+    "test": "node --test",
+    "typecheck": "node -e \"console.log('tooling package: config only')\""
+  },
+  "engines": {
+    "node": ">=20.0.0 <26.0.0",
+    "pnpm": ">=9.0.0 <10.0.0"
+  }
+}

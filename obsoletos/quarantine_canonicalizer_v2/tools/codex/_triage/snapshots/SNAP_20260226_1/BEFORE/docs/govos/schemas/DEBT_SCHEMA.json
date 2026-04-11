@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hitech.govos.debt.v1",
+  "title": "GOVOS Debt Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["items"],
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["debt_id", "source", "status", "action"],
+        "properties": {
+          "debt_id": {
+            "type": "string",
+            "minLength": 3
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": ["OPEN", "CLOSED"]
+          },
+          "action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "due_on": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          }
+        }
+      }
+    }
+  }
+}

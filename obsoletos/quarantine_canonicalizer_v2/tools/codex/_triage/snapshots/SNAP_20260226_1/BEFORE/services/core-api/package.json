@@ -1,0 +1,20 @@
+{
+  "name": "@hitech/core-api",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "node --experimental-strip-types src/index.ts",
+    "build": "node --experimental-strip-types -e \"import('./src/contracts.ts').then(()=>console.log('core-api build placeholder: runtime-validated'))\"",
+    "typecheck": "node --experimental-strip-types -e \"import('./src/contracts.ts').then(()=>console.log('core-api typecheck placeholder: strip-types mode'))\"",
+    "lint": "node --experimental-strip-types -e \"import('./src/contracts.ts').then(()=>console.log('core-api lint placeholder: no external linter required offline'))\"",
+    "test": "node --experimental-strip-types --test src/__tests__/*.test.ts",
+    "smoke": "node scripts/smoke-core-api.mjs"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=20.0.0 <26.0.0",
+    "pnpm": ">=9.0.0 <10.0.0"
+  }
+}

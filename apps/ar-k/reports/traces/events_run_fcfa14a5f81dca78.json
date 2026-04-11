@@ -1,0 +1,144 @@
+[
+  {
+    "correlation_id": null,
+    "event_id": "evt_af2f3b7f7cfbfe2f",
+    "name": "scanner.started",
+    "payload": {
+      "execution_id": "run_fcfa14a5f81dca78",
+      "stage": "scan"
+    },
+    "producer": "scanner",
+    "severity": "info",
+    "target": "F:\\repos\\hitech-os\\apps\\ar-k\\examples\\sample_app",
+    "timestamp": "2026-04-11T19:04:08Z"
+  },
+  {
+    "correlation_id": null,
+    "event_id": "evt_efe997562d8d65a1",
+    "name": "scanner.completed",
+    "payload": {
+      "execution_id": "run_fcfa14a5f81dca78",
+      "files_scanned": 4,
+      "parse_errors": 0,
+      "python_files": 4,
+      "signals_emitted": 12
+    },
+    "producer": "scanner",
+    "severity": "info",
+    "target": "F:\\repos\\hitech-os\\apps\\ar-k\\examples\\sample_app",
+    "timestamp": "2026-04-11T19:04:08Z"
+  },
+  {
+    "correlation_id": null,
+    "event_id": "evt_54431a9743d4941f",
+    "name": "registry_builder.started",
+    "payload": {
+      "execution_id": "run_fcfa14a5f81dca78",
+      "signal_count": 12
+    },
+    "producer": "registry_builder",
+    "severity": "info",
+    "target": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\registries",
+    "timestamp": "2026-04-11T19:04:08Z"
+  },
+  {
+    "correlation_id": null,
+    "event_id": "evt_292234cbe36839d5",
+    "name": "registry_builder.completed",
+    "payload": {
+      "boundary_count": 4,
+      "conflict_count": 0,
+      "contract_count": 17,
+      "execution_id": "run_fcfa14a5f81dca78",
+      "module_count": 4
+    },
+    "producer": "registry_builder",
+    "severity": "info",
+    "target": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\registries",
+    "timestamp": "2026-04-11T19:04:08Z"
+  },
+  {
+    "correlation_id": null,
+    "event_id": "evt_51d38901f7ef600e",
+    "name": "switch_engine.started",
+    "payload": {
+      "execution_id": "run_fcfa14a5f81dca78",
+      "switch_count": 4
+    },
+    "producer": "switch_engine",
+    "severity": "info",
+    "target": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\registries",
+    "timestamp": "2026-04-11T19:04:08Z"
+  },
+  {
+    "correlation_id": null,
+    "event_id": "evt_5944e609750858b0",
+    "name": "switch_engine.completed",
+    "payload": {
+      "execution_id": "run_fcfa14a5f81dca78",
+      "resolved_count": 4,
+      "switch_count": 4,
+      "warning_count": 0
+    },
+    "producer": "switch_engine",
+    "severity": "info",
+    "target": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\registries",
+    "timestamp": "2026-04-11T19:04:08Z"
+  },
+  {
+    "correlation_id": null,
+    "event_id": "evt_2cda5595da197349",
+    "name": "contract_validator.started",
+    "payload": {
+      "execution_id": "run_fcfa14a5f81dca78",
+      "module_count": 4
+    },
+    "producer": "contract_validator",
+    "severity": "info",
+    "target": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\registries",
+    "timestamp": "2026-04-11T19:04:08Z"
+  },
+  {
+    "correlation_id": null,
+    "event_id": "evt_90b0a5effa788fd8",
+    "name": "contract_validator.completed",
+    "payload": {
+      "critical_count": 0,
+      "error_count": 0,
+      "execution_id": "run_fcfa14a5f81dca78",
+      "violation_count": 0,
+      "warning_count": 0
+    },
+    "producer": "contract_validator",
+    "severity": "info",
+    "target": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\registries",
+    "timestamp": "2026-04-11T19:04:08Z"
+  },
+  {
+    "correlation_id": null,
+    "event_id": "evt_07d1d0d9c29abe24",
+    "name": "ai_annotator.started",
+    "payload": {
+      "execution_id": "run_fcfa14a5f81dca78",
+      "module_count": 4
+    },
+    "producer": "ai_annotator",
+    "severity": "info",
+    "target": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\annotations",
+    "timestamp": "2026-04-11T19:04:08Z"
+  },
+  {
+    "correlation_id": null,
+    "event_id": "evt_8650059ecfd28f6c",
+    "name": "ai_annotator.completed",
+    "payload": {
+      "annotation_count": 4,
+      "average_confidence": 0.8,
+      "execution_id": "run_fcfa14a5f81dca78"
+    },
+    "producer": "ai_annotator",
+    "severity": "info",
+    "target": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\annotations",
+    "timestamp": "2026-04-11T19:04:08Z"
+  }
+]

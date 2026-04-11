@@ -1,0 +1,92 @@
+[2026-04-09 12:53:23] [INFO] Objetivo resuelto: F:\repos\hitech-os\forgeos\shared\pyside6_glass\templates\1.original
+[2026-04-09 12:53:23] [INFO] Modo dry_only=False
+[2026-04-09 12:53:23] [INFO] Copia de dry-run montada en: C:\Users\alanh\AppData\Local\Temp\pyside6_glass_fix_v0kt87pd\1.original
+[2026-04-09 12:53:23] [INFO] Patch listo en starter.py: starter.py queda sin escape inválido y sin ruta hardcodeada
+[2026-04-09 12:53:23] [INFO] Patch listo en visuals/common/helpers.py: helpers.py agrega guard para fuente inválida de Qt
+[2026-04-09 12:53:23] [INFO] Patch listo en visuals/style/stylesheet.py: stylesheet.py endurece font-size para que jamás baje de 1px
+[2026-04-09 12:53:23] [INFO] RUN > C:\Users\alanh\AppData\Local\Programs\Python\Python313\python.exe -W error::SyntaxWarning -m py_compile C:\Users\alanh\AppData\Local\Temp\pyside6_glass_fix_v0kt87pd\1.original\starter.py C:\Users\alanh\AppData\Local\Temp\pyside6_glass_fix_v0kt87pd\1.original\visuals\common\helpers.py C:\Users\alanh\AppData\Local\Temp\pyside6_glass_fix_v0kt87pd\1.original\visuals\style\stylesheet.py
+[2026-04-09 12:53:23] [INFO] EXIT CODE: 0
+[2026-04-09 12:53:23] [INFO] RUN > C:\Users\alanh\AppData\Local\Programs\Python\Python313\python.exe -c 
+import re
+import sys
+from pathlib import Path
+
+root = Path(sys.argv[1]).resolve()
+sys.path.insert(0, str(root))
+
+from visuals.common.helpers import ensure_app
+from visuals.common.types import TemplateConsoleConfig
+from visuals.style.stylesheet import build_stylesheet
+from visuals.screens.template_console import TemplateConsoleWindow
+
+app = ensure_app()
+font = app.font()
+point_size = int(font.pointSize())
+pixel_size = int(font.pixelSize())
+if point_size <= 0 and pixel_size <= 0:
+    raise RuntimeError(f"La fuente global sigue inválida: point={point_size}, pixel={pixel_size}")
+
+stylesheet = build_stylesheet("silver_frost_cyan", "100")
+bad_sizes = [int(x) for x in re.findall(r"font-size:\s*(-?\d+)px", stylesheet)]
+if any(size <= 0 for size in bad_sizes):
+    raise RuntimeError(f"El stylesheet todavía genera font-size inválidos: {bad_sizes}")
+
+window = TemplateConsoleWindow(TemplateConsoleConfig())
+window.resize(1200, 800)
+window.show()
+app.processEvents()
+window.close()
+app.processEvents()
+print("runtime validation ok")
+ C:\Users\alanh\AppData\Local\Temp\pyside6_glass_fix_v0kt87pd\1.original
+[2026-04-09 12:53:25] [INFO] STDOUT:
+runtime validation ok
+[2026-04-09 12:53:25] [INFO] EXIT CODE: 0
+[2026-04-09 12:53:25] [INFO] Dry-run pasó completo ✅
+[2026-04-09 12:53:25] [INFO] Backup creado: F:\repos\hitech-os\forgeos\shared\pyside6_glass\templates\1.original\starter.py.bak.fix_20260409_125325
+[2026-04-09 12:53:25] [INFO] Aplicado: F:\repos\hitech-os\forgeos\shared\pyside6_glass\templates\1.original\starter.py
+[2026-04-09 12:53:25] [INFO] Backup creado: F:\repos\hitech-os\forgeos\shared\pyside6_glass\templates\1.original\visuals\common\helpers.py.bak.fix_20260409_125325
+[2026-04-09 12:53:25] [INFO] Aplicado: F:\repos\hitech-os\forgeos\shared\pyside6_glass\templates\1.original\visuals\common\helpers.py
+[2026-04-09 12:53:25] [INFO] Backup creado: F:\repos\hitech-os\forgeos\shared\pyside6_glass\templates\1.original\visuals\style\stylesheet.py.bak.fix_20260409_125325
+[2026-04-09 12:53:25] [INFO] Aplicado: F:\repos\hitech-os\forgeos\shared\pyside6_glass\templates\1.original\visuals\style\stylesheet.py
+[2026-04-09 12:53:25] [INFO] RUN > C:\Users\alanh\AppData\Local\Programs\Python\Python313\python.exe -W error::SyntaxWarning -m py_compile F:\repos\hitech-os\forgeos\shared\pyside6_glass\templates\1.original\starter.py F:\repos\hitech-os\forgeos\shared\pyside6_glass\templates\1.original\visuals\common\helpers.py F:\repos\hitech-os\forgeos\shared\pyside6_glass\templates\1.original\visuals\style\stylesheet.py
+[2026-04-09 12:53:25] [INFO] EXIT CODE: 0
+[2026-04-09 12:53:25] [INFO] RUN > C:\Users\alanh\AppData\Local\Programs\Python\Python313\python.exe -c 
+import re
+import sys
+from pathlib import Path
+
+root = Path(sys.argv[1]).resolve()
+sys.path.insert(0, str(root))
+
+from visuals.common.helpers import ensure_app
+from visuals.common.types import TemplateConsoleConfig
+from visuals.style.stylesheet import build_stylesheet
+from visuals.screens.template_console import TemplateConsoleWindow
+
+app = ensure_app()
+font = app.font()
+point_size = int(font.pointSize())
+pixel_size = int(font.pixelSize())
+if point_size <= 0 and pixel_size <= 0:
+    raise RuntimeError(f"La fuente global sigue inválida: point={point_size}, pixel={pixel_size}")
+
+stylesheet = build_stylesheet("silver_frost_cyan", "100")
+bad_sizes = [int(x) for x in re.findall(r"font-size:\s*(-?\d+)px", stylesheet)]
+if any(size <= 0 for size in bad_sizes):
+    raise RuntimeError(f"El stylesheet todavía genera font-size inválidos: {bad_sizes}")
+
+window = TemplateConsoleWindow(TemplateConsoleConfig())
+window.resize(1200, 800)
+window.show()
+app.processEvents()
+window.close()
+app.processEvents()
+print("runtime validation ok")
+ F:\repos\hitech-os\forgeos\shared\pyside6_glass\templates\1.original
+[2026-04-09 12:53:26] [INFO] STDOUT:
+runtime validation ok
+[2026-04-09 12:53:26] [INFO] EXIT CODE: 0
+[2026-04-09 12:53:26] [INFO] Validación post-aplicación pasó ✅
+[2026-04-09 12:53:26] [INFO] Parche aplicado con éxito.
+[2026-04-09 12:53:26] [INFO] LOG_PATH=F:\OneDrive\Descargas\pyside6_glass_template_fix_20260409_125323.log

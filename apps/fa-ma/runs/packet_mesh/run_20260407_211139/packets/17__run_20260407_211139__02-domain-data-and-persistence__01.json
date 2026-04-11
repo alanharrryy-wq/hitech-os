@@ -1,0 +1,178 @@
+{
+  "packet_id": "run_20260407_211139:02-domain-data-and-persistence:01",
+  "run_id": "run_20260407_211139",
+  "order": 17,
+  "worker_id": "pkg_02-domain-data-and-persistence_01",
+  "stage": "planning",
+  "package": "02-domain-data-and-persistence",
+  "goal": "Diseña la primera ola de trabajo para FA-MA",
+  "objective": "Advance the global goal for package '02-domain-data-and-persistence' by producing a precise, mergeable slice. Use the listed candidate files as the main surface. Goal: Diseña la primera ola de trabajo para FA-MA. Primary file set: packages/contracts/src/domain/pitch/constants.ts, packages/contracts/src/domain/pitch/fixtures.ts, packages/contracts/src/domain/pitch/helpers.ts, packages/contracts/src/domain/pitch/index.ts.",
+  "scope_summary": "Package surface: 02-domain-data-and-persistence. This packet covers 48 candidate files from a package with 189 indexed files. Runtime files in scope: packages/contracts/src/domain/pitch/constants.ts, packages/contracts/src/domain/pitch/fixtures.ts, packages/contracts/src/domain/pitch/helpers.ts, packages/contracts/src/domain/pitch/index.ts, packages/contracts/src/domain/pitch/schemas.ts, packages/contracts/src/domain/pitch/selectors.ts, packages/contracts/src/domain/pitch/types.ts, packages/contracts/src/fixtures/index.ts, packages/contracts/src/index.ts, packages/contracts/src/mission-control/index.ts, packages/ui-kit/src/brand/index.ts, packages/ui-kit/src/components/premium/controls/index.ts, packages/ui-kit/src/data-spine/index.ts, packages/ui-kit/src/index.ts, packages/ui-kit/src/kpi/index.ts, packages/ui-kit/src/luxury/index.ts, packages/ui-kit/src/luxury/tokens/index.ts, packages/ui-kit/src/motion/index.ts, packages/contracts/src/__checks__/exports.check.ts, packages/contracts/src/brands.ts, packages/contracts/src/capabilities.ts, packages/contracts/src/errors.ts, packages/contracts/src/featureFlags.ts, packages/contracts/src/fixtures/activity.ts, packages/contracts/src/fixtures/api.ts, packages/contracts/src/fixtures/evidence.ts, packages/contracts/src/fixtures/filters.ts, packages/contracts/src/fixtures/layout.ts, packages/contracts/src/fixtures/runs.ts, packages/contracts/src/fixtures/widgets.ts, packages/contracts/src/health.ts, packages/contracts/src/job.ts, packages/contracts/src/mission-control/activity.ts, packages/contracts/src/mission-control/api.ts, packages/contracts/src/mission-control/evidence.ts, packages/contracts/src/mission-control/filters.ts, packages/contracts/src/mission-control/layout.ts, packages/contracts/src/mission-control/run.ts, packages/contracts/src/mission-control/shared.ts, packages/contracts/src/mission-control/widgets.ts, packages/contracts/src/parsing.ts, packages/contracts/src/result.ts, packages/contracts/src/version.ts, packages/contracts/tools/gen_schemas.ts, packages/ui-kit/src/brand/brand-presence.config.ts, packages/ui-kit/src/brand/hitech-theme.ts, packages/ui-kit/src/data-spine/hooks/useDataQuery.ts, packages/ui-kit/src/data-spine/hooks/useLiveData.ts. Test files in scope: n/a. Docs/config in scope: n/a.",
+  "owned_paths": [
+    "packages/"
+  ],
+  "candidate_files": [
+    "packages/contracts/src/domain/pitch/constants.ts",
+    "packages/contracts/src/domain/pitch/fixtures.ts",
+    "packages/contracts/src/domain/pitch/helpers.ts",
+    "packages/contracts/src/domain/pitch/index.ts",
+    "packages/contracts/src/domain/pitch/schemas.ts",
+    "packages/contracts/src/domain/pitch/selectors.ts",
+    "packages/contracts/src/domain/pitch/types.ts",
+    "packages/contracts/src/fixtures/index.ts",
+    "packages/contracts/src/index.ts",
+    "packages/contracts/src/mission-control/index.ts",
+    "packages/ui-kit/src/brand/index.ts",
+    "packages/ui-kit/src/components/premium/controls/index.ts",
+    "packages/ui-kit/src/data-spine/index.ts",
+    "packages/ui-kit/src/index.ts",
+    "packages/ui-kit/src/kpi/index.ts",
+    "packages/ui-kit/src/luxury/index.ts",
+    "packages/ui-kit/src/luxury/tokens/index.ts",
+    "packages/ui-kit/src/motion/index.ts",
+    "packages/contracts/src/__checks__/exports.check.ts",
+    "packages/contracts/src/brands.ts",
+    "packages/contracts/src/capabilities.ts",
+    "packages/contracts/src/errors.ts",
+    "packages/contracts/src/featureFlags.ts",
+    "packages/contracts/src/fixtures/activity.ts",
+    "packages/contracts/src/fixtures/api.ts",
+    "packages/contracts/src/fixtures/evidence.ts",
+    "packages/contracts/src/fixtures/filters.ts",
+    "packages/contracts/src/fixtures/layout.ts",
+    "packages/contracts/src/fixtures/runs.ts",
+    "packages/contracts/src/fixtures/widgets.ts",
+    "packages/contracts/src/health.ts",
+    "packages/contracts/src/job.ts",
+    "packages/contracts/src/mission-control/activity.ts",
+    "packages/contracts/src/mission-control/api.ts",
+    "packages/contracts/src/mission-control/evidence.ts",
+    "packages/contracts/src/mission-control/filters.ts",
+    "packages/contracts/src/mission-control/layout.ts",
+    "packages/contracts/src/mission-control/run.ts",
+    "packages/contracts/src/mission-control/shared.ts",
+    "packages/contracts/src/mission-control/widgets.ts",
+    "packages/contracts/src/parsing.ts",
+    "packages/contracts/src/result.ts",
+    "packages/contracts/src/version.ts",
+    "packages/contracts/tools/gen_schemas.ts",
+    "packages/ui-kit/src/brand/brand-presence.config.ts",
+    "packages/ui-kit/src/brand/hitech-theme.ts",
+    "packages/ui-kit/src/data-spine/hooks/useDataQuery.ts",
+    "packages/ui-kit/src/data-spine/hooks/useLiveData.ts"
+  ],
+  "context_files": [
+    {
+      "rel_path": "packages/contracts/src/domain/pitch/constants.ts",
+      "language": "typescript",
+      "size_bytes": 3239,
+      "sha1": "ac31af8fd86b2b3869e5b269672c5d34698b5470",
+      "package": "02-domain-data-and-persistence",
+      "role": "runtime",
+      "importance": 90,
+      "headings": [],
+      "imports": [],
+      "excerpt": "0001: export const PITCH_DECK_ID = \"hitech-pitch-terraform-v1\" as const;\n0002: export const PITCH_DECK_VERSION = \"1.0.0\" as const;\n0003: export const PITCH_LOCALE = \"es-MX\" as const;\n0004: \n0005: export const PITCH_SCREEN_SLUGS = [\n0006:   \"01-double-engine\",\n0007:   \"02-industrial-flow\",\n0008:   \"03-hitech-os\",\n0009:   \"04-valuation\",\n0010:   \"06-shipments-receiving\",\n0011:   \"05-inventory-foundation\"\n0012: ] as const;\n0013: \n0014: export type PitchScreenSlug = (typeof PITCH_SCREEN_SLUGS)[number];\n0015: \n0016: export const PITCH_ROUTE_BASE = \"/pitch\" as const;\n0017: \n0018: export const PITCH_ROUTES: Readonly<\n0019:   Record<PitchScreenSlug, `${typeof PITCH_ROUTE_BASE}/${PitchScreenSlug}`>\n0020: > = {\n0021:   \"01-double-engine\": \"/pitch/01-double-engine\",\n0022:   \"02-industrial-flow\": \"/pitch/02-industrial-flow\",\n0023:   \"03-hitech-os\": \"/pitch/03-hitech-os\",\n0024:   \"04-valuation\": \"/pitch/04-valuation\",\n0025:   \"05-inventory-foundation\": \"/pitch/05-inventory-foundation\",\n0026:   \"06-shipments-receiving\": \"/pitch/06-shipments-receiving\"\n0027: };\n0028: \n0029: export const PITCH_SCREEN_ORDER: readonly PitchScreenSlug[] = PITCH_SCREEN_SLUGS;\n0030: \n0031: export const PITCH_LAYER_PROFILE_HINTS = [\"neutral\", \"fx\", \"perf\"] as const;\n0032: export type PitchLayerProfileHint = (typeof PITCH_LAYER_PROFILE_HINTS)[number];\n0033: \n0034: export const PITCH_COPY_LOCK_NOTICE =\n0035:   \"Canonical copy is contract-locked. Do not mutate strings outside contract fixtures.\" as const;\n0036: \n0037: export const PITCH_SCREEN_TITLES: Readonly<Record<PitchScreenSlug, string>> = {\n0038:   \"01-double-engine\": \"HITECH — ARQUITECTURA DE DOBLE MOTOR\",\n0039:   \"02-industrial-flow\": \"MOTOR 1 — FLUJO INDUSTRIAL RECURRENTE\",\n0040:   \"03-hitech-os\": \"MOTOR 2 — HITECH OS (Infraestructura Digital)\",\n0041:   \"04-valuation\": \"ESTRUCTURA FINANCIERA + VALUACIÓN\",\n0042:   \"05-inventory-foundation\":\n0043:     \"INVENTORY FOUNDATION (RBAC + SUPPLIERS + SKU + DOCUMENT VAULT)\",\n0044:   \"06-shipments-receiving\": \"IMPORT SHIPMENTS (CUSTOMS PACK + RECEIVING -> QUARANTINE)\"\n0045: };\n0046: \n0047: export const PITCH_ANCHORS: Readonly<Record<PitchScreenSlug, string>> = {\n0048:   \"01-double-engine\": \"double-engine\",\n0049:   \"02-industrial-flow\": \"industrial-flow\",\n0050:   \"03-hitech-os\": \"hitech-os\",\n0051:   \"04-valuation\": \"valuation\",\n0052:   \"05-inventory-foundation\": \"inventory-foundation\",\n0053:   \"06-shipments-receiving\": \"shipments-receiving\"\n0054: };\n0055: \n0056: export const PITCH_SCREEN_NUMBERS: Readonly<Record<PitchScreenSlug, 1 | 2 | 3 | 4 | 5 | 6>> = {\n0057:   \"01-double-engine\": 1,\n0058:   \"02-industrial-flow\": 2,\n0059:   \"03-hitech-os\": 3,\n0060:   \"04-valuation\": 4,\n0061:   \"05-inventory-foundation\": 6,\n0062:   \"06-shipments-receiving\": 5\n0063: };\n0064: \n0065: export const PITCH_TABLE_HEADERS = [\"Modelo\", \"Múltiplo\", \"Riesgo\", \"Escalabilidad\"] as const;\n0066: \n0067: export const PITCH_COMPARISON_ROWS = [\n0068:   [\"Industrial tradicional\", \"Bajo\", \"Medio\", \"Limitada\"],\n0069:   [\"Industrial + Software\", \"Alto\", \"Controlado\", \"Alta\"]\n0070: ] as const;\n0071: \n0072: export const PITCH_VALIDATION_MESSAGES = {\n0073:   missingScreen: \"Pitch screen fixture is missing.\",\n0074:   duplicatedSlug: \"Pitch deck has duplicated screen slugs.\",\n0075:   invalidOrder: \"Pitch deck screen order is not canonical.\",\n0076:   routeMismatch: \"Pitch route table does not match canonical route list.\"\n0077: } as const;\n0078: \n0079: export const PITCH_SCHEMA_TAGS = {\n0080:   deck: \"pitch.deck\",\n0081:   screen: \"pitch.screen\",\n0082:   screen01: \"pitch.screen.01\",\n0083:   screen02: \"pitch.screen.02\",\n0084:   screen03: \"pitch.screen.03\",\n0085:   screen04: \"pitch.screen.04\",\n0086:   screen05: \"pitch.screen.05\",\n0087:   screen06: \"pitch.screen.06\"\n0088: } as const;",
+      "notes": [
+        "Runtime-bearing file; suitable as primary implementation context."
+      ]
+    },
+    {
+      "rel_path": "packages/contracts/src/domain/pitch/fixtures.ts",
+      "language": "typescript",
+      "size_bytes": 23127,
+      "sha1": "6b9d8d09f1440f64dc0199aa78c539599da165e4",
+      "package": "02-domain-data-and-persistence",
+      "role": "runtime",
+      "importance": 90,
+      "headings": [
+        "PITCH_TABLE_HEADERS"
+      ],
+      "imports": [
+        "import {",
+        "import {"
+      ],
+      "excerpt": "0001: import {\n0002:   PITCH_COMPARISON_ROWS,\n0003:   PITCH_COPY_LOCK_NOTICE,\n0004:   PITCH_DECK_ID,\n0005:   PITCH_DECK_VERSION,\n0006:   PITCH_LAYER_PROFILE_HINTS,\n0007:   PITCH_LOCALE,\n0008:   PITCH_ROUTES,\n0009:   PITCH_SCREEN_ORDER,\n0010:   PITCH_SCREEN_TITLES,\n0011:   PITCH_TABLE_HEADERS\n0012: } from \"./constants.js\";\n0013: import {\n0014:   type PitchCopyDigest,\n0015:   type PitchDeck,\n0016:   type PitchDeckResponse,\n0017:   type PitchScreen,\n0018:   type PitchScreen01,\n0019:   type PitchScreen02,\n0020:   type PitchScreen03,\n0021:   type PitchScreen04,\n0022:   type PitchScreen05,\n0023:   type PitchScreen06,\n0024:   PitchCopyDigestSchema,\n0025:   PitchDeckResponseSchema,\n0026:   PitchDeckSchema,\n0027:   PitchScreenMapSchema,\n0028:   PitchScreenSchema\n0029: } from \"./schemas.js\";\n0030: \n0031: export const unitPricePerModule = 19000;\n0032: export const profitMargin = 0.4;\n0033: export const monthlyCadenceModules = 12;\n0034: export const wedgeModules = 6;\n0035: export const tractionInvoicedModules = 19;\n0036: export const targetModules = 420;\n0037: \n0038: export const stage1CashUsd = 100000;\n0039: export const stage2CashUsd = 200000;\n0040: export const stage1ConversionBoost = 0.25;\n0041: \n0042: export function calcRevenue(modules: number): number {\n0043:   return modules * unitPricePerModule;\n0044: }\n0045: \n0046: export function calcProfit(revenue: number): number {\n0047:   return Math.round(revenue * profitMargin);\n0048: }\n0049: \n0050: export function annualize(monthlyProfit: number): number {\n0051:   return monthlyProfit * 12;\n0052: }\n0053: \n0054: function formatUsdWhole(value: number): string {\n0055:   return `$${value.toLocaleString(\"en-US\")}`;\n0056: }\n0057: \n0058: function formatUsdK(value: number): string {\n0059:   const thousands = value / 1000;\n0060:   const fixed = Number.isInteger(thousands) ? `${thousands}` : thousands.toFixed(1);\n0061:   return `$${fixed}k`;\n0062: }\n0063: \n0064: function formatUsdM(value: number): string {\n0065:   return `~$${(value / 1000000).toFixed(2)}M`;\n0066: }\n0067: \n0068: export const PITCH_VALUATION_ECONOMICS = {\n0069:   params: {\n0070:     unitPricePerModule,\n0071:     profitMargin,\n0072:     monthlyCadenceModules,\n0073:     wedgeModules,\n0074:     tractionInvoicedModules,\n0075:     targetModules\n0076:   },\n0077:   derived: {\n0078:     monthlyRevenue: calcRevenue(monthlyCadenceModules),\n0079:     monthlyProfit: calcProfit(calcRevenue(monthlyCadenceModules)),\n0080:     annualProfit: annualize(calcProfit(calcRevenue(monthlyCadenceModules))),\n0081:     wedgeRevenue: calcRevenue(wedgeModules),\n0082:     wedgeProfit: calcProfit(calcRevenue(wedgeModules))\n0083:   },\n0084:   deal: {\n0085:     stage1CashUsd,\n0086:     stage2CashUsd,\n0087:     totalCashUsd: stage1CashUsd + stage2CashUsd,\n0088:     stage1EffectiveUsd: Math.round(stage1CashUsd * (1 + stage1ConversionBoost)),\n0089:     totalEffectiveUsd: Math.round(stage1CashUsd * (1 + stage1ConversionBoost)) + stage2CashUsd,\n0090:     capRangeUsd: {\n0091:       low: 4000000,\n0092:       high: 6000000\n0093:     }\n0094:   }\n0095: } as const;\n0096: \n0097: const SCREEN_01_FIXTURE: PitchScreen01 = {\n0098:   slug: \"01-double-engine\",\n0099:   route: PITCH_ROUTES[\"01-double-engine\"],\n0100:   order: 1,\n0101:   tag: \"pitch.screen.01\",\n0102:   title: \"HITECH — ARQUITECTURA DE DOBLE MOTOR\",\n0103:   leftColumn: {\n0104:     id: \"screen01-engine-left\",\n0105:     heading: \"MOTOR 1 — INFRAESTRUCTURA INDUSTRIAL\",\n0106:     bullets: [\n0107:       {\n0108:         id: \"screen01-left-b01\",\n0109:         text: \"19 módulos facturados\",\n0110:         emphasis: \"positive\",\n0111:         weight: \"anchor\"\n0112:       },\n0113:       {\n0114:         id: \"screen01-left-b02\",\n0115:         text: \"6 módulos listos (requieren 100k)\",\n0116:         emphasis: \"positive\",\n0117:         weight: \"core\"\n0118:       },\n0119:       {\n0120:         id: \"screen01-left-b03\",",
+      "notes": [
+        "Runtime-bearing file; suitable as primary implementation context."
+      ]
+    },
+    {
+      "rel_path": "packages/contracts/src/domain/pitch/index.ts",
+      "language": "typescript",
+      "size_bytes": 183,
+      "sha1": "258962cdb923b970b094b5b26c80a686b786aae7",
+      "package": "02-domain-data-and-persistence",
+      "role": "runtime",
+      "importance": 90,
+      "headings": [],
+      "imports": [],
+      "excerpt": "0001: export * from \"./constants.js\";\n0002: export * from \"./schemas.js\";\n0003: export * from \"./types.js\";\n0004: export * from \"./fixtures.js\";\n0005: export * from \"./helpers.js\";\n0006: export * from \"./selectors.js\";",
+      "notes": [
+        "Runtime-bearing file; suitable as primary implementation context."
+      ]
+    },
+    {
+      "rel_path": "packages/contracts/src/domain/pitch/types.ts",
+      "language": "typescript",
+      "size_bytes": 1531,
+      "sha1": "5a9a2b00b376ac5f4d7cc9499184a90177cf7ca0",
+      "package": "02-domain-data-and-persistence",
+      "role": "runtime",
+      "importance": 90,
+      "headings": [],
+      "imports": [
+        "import type {"
+      ],
+      "excerpt": "0001: import type {\n0002:   PitchDeck,\n0003:   PitchDeckResponse,\n0004:   PitchNavigation,\n0005:   PitchNavigationLink,\n0006:   PitchScreen,\n0007:   PitchScreen01,\n0008:   PitchScreen02,\n0009:   PitchScreen03,\n0010:   PitchScreen04,\n0011:   PitchScreen05,\n0012:   PitchScreen06,\n0013:   PitchScreenMap\n0014: } from \"./schemas.js\";\n0015: \n0016: export type PitchDeckModel = PitchDeck;\n0017: export type PitchDeckResponseModel = PitchDeckResponse;\n0018: export type PitchNavigationModel = PitchNavigation;\n0019: export type PitchNavigationLinkModel = PitchNavigationLink;\n0020: export type PitchScreenModel = PitchScreen;\n0021: export type PitchScreen01Model = PitchScreen01;\n0022: export type PitchScreen02Model = PitchScreen02;\n0023: export type PitchScreen03Model = PitchScreen03;\n0024: export type PitchScreen04Model = PitchScreen04;\n0025: export type PitchScreen05Model = PitchScreen05;\n0026: export type PitchScreen06Model = PitchScreen06;\n0027: export type PitchScreenMapModel = PitchScreenMap;\n0028: \n0029: export interface PitchTextFragment {\n0030:   readonly id: string;\n0031:   readonly text: string;\n0032:   readonly scope:\n0033:     | \"title\"\n0034:     | \"heading\"\n0035:     | \"bullet\"\n0036:     | \"microcopy\"\n0037:     | \"strong-line\"\n0038:     | \"kpi\"\n0039:     | \"phase\"\n0040:     | \"table-header\"\n0041:     | \"table-cell\";\n0042:   readonly screenSlug: string;\n0043: }\n0044: \n0045: export interface PitchScreenSummary {\n0046:   readonly slug: string;\n0047:   readonly route: string;\n0048:   readonly order: number;\n0049:   readonly title: string;\n0050:   readonly fragmentCount: number;\n0051: }\n0052: \n0053: export interface PitchDeckSummary {\n0054:   readonly deckId: string;\n0055:   readonly version: string;\n0056:   readonly locale: string;\n0057:   readonly screenCount: number;\n0058:   readonly bulletLikeCount: number;\n0059:   readonly totalTextFragments: number;\n0060: }",
+      "notes": [
+        "Runtime-bearing file; suitable as primary implementation context."
+      ]
+    }
+  ],
+  "acceptance_gates": [
+    "State the exact files or surfaces you touched or propose to touch.",
+    "Preserve ownership boundaries and avoid edits outside packet scope.",
+    "Return deterministic markdown with explicit headings.",
+    "List blockers, assumptions, and verification ideas.",
+    "Propose next packet handoff in 3 bullets max."
+  ],
+  "constraints": [
+    "Do not dump whole large files; summarize and cite targeted slices.",
+    "Prefer small, composable changes that can be merged independently.",
+    "Respect repo conventions and monorepo entrypoint reality.",
+    "Output must be useful even if the next packet runs on a smaller model."
+  ],
+  "handoff_inputs": [
+    "packages/contracts/src/domain/pitch/constants.ts",
+    "packages/contracts/src/domain/pitch/fixtures.ts",
+    "packages/contracts/src/domain/pitch/helpers.ts",
+    "docs/contracts/work_packet_contract.md",
+    "docs/ops/packet_mesh_quickstart.md"
+  ],
+  "output_contract": [
+    "Section: Goal Restatement",
+    "Section: Scope and Owned Paths",
+    "Section: Recommended File Changes",
+    "Section: Risks and Assumptions",
+    "Section: Verification and Next Packet",
+    "Include a compact checklist with [x]/[ ] items"
+  ],
+  "risk_notes": [
+    "Context window is intentionally bounded; summarize rather than dumping everything.",
+    "Do not infer monorepo entrypoints blindly; name the probable entrypoints and uncertainty.",
+    "Shard is near max file count; stay strict about scope."
+  ],
+  "char_budget": 12000,
+  "metadata": {
+    "package_file_count": 189,
+    "shard_index": 1,
+    "shard_count": 4,
+    "languages": [
+      "typescript"
+    ],
+    "roles": [
+      "runtime"
+    ]
+  }
+}

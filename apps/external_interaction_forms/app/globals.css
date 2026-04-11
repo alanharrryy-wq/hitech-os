@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --forms-canvas: 246 244 241;
+  --forms-panel: 255 255 253;
+  --forms-soft: 242 236 230;
+  --forms-ink: 32 29 34;
+  --forms-muted: 108 101 109;
+  --forms-line: 207 196 183;
+  --forms-accent: 137 93 56;
+  --forms-accent-soft: 236 222 206;
+  --forms-success: 59 128 98;
+  --forms-danger: 167 62 77;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body.forms-root {
+  margin: 0;
+  min-height: 100%;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(176, 136, 101, 0.15), transparent 36%),
+    radial-gradient(circle at 100% 8%, rgba(111, 126, 172, 0.12), transparent 42%),
+    linear-gradient(180deg, rgba(255, 250, 245, 0.96), rgba(246, 244, 241, 0.98));
+  color: rgb(var(--forms-ink));
+  font-family: var(--font-forms-body), "Segoe UI Variable Text", "Segoe UI", sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-forms-display), "Times New Roman", serif;
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: rgba(137, 93, 56, 0.22);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

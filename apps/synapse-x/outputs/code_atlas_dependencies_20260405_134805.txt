@@ -1,0 +1,1551 @@
+🧠 CODE ATLAS - DEPENDENCY SCAN
+======================================
+Fecha: 04/05/2026 13:48:05
+
+📦 IMPORTS DETECTADOS
+-------------------------------
+__future__  (4720)
+_test_support  (25)
+.  (27)
+._template_helpers  (4)
+._template_layout  (3)
+._template_panels  (3)
+._template_shell  (1)
+._template_shell_appearance  (1)
+._template_shell_build  (1)
+._template_shell_state  (1)
+._template_shell_workspace  (1)
+._template_specs  (5)
+._template_tabs  (4)
+..aegis_deck.guardian_contract  (1)
+..analysis.advanced_pipeline  (3)
+..analysis.prediction  (8)
+..app.visualization  (4)
+..appearance  (5)
+..assets  (5)
+..baseline.baseline_manager  (4)
+..catalog  (4)
+..charts  (2)
+..chrome  (3)
+..command_dispatcher  (276)
+..config  (14)
+..config.config_loader  (3)
+..contract_runtime  (4)
+..contracts  (4)
+..controls  (3)
+..core.orchestrator  (12)
+..dashboard  (2)
+..data  (5)
+..data_providers  (6)
+..diff.git_diff_scanner  (3)
+..engine.client_index  (8)
+..engine.context  (30)
+..engine.runner  (6)
+..event_bus  (163)
+..examples.demo_app  (2)
+..exceptions  (12)
+..health  (8)
+..history.snapshot_store  (6)
+..history.trend_analyzer  (3)
+..icons  (2)
+..integration  (4)
+..integration.module  (2)
+..learning.engine  (8)
+..main_window  (256)
+..navigation_controller  (48)
+..operations.ci_gate  (8)
+..operations.scheduler  (4)
+..operations.status  (4)
+..paths  (12)
+..plugins.registry  (8)
+..policy  (12)
+..preview_controller  (24)
+..primitives  (4)
+..react_graph.boundary_analyzer  (3)
+..react_graph.graph_builder  (3)
+..react_graph.models  (9)
+..remediation.cleanup  (8)
+..remediation.repair  (8)
+..reporting.alerting  (4)
+..reporting.generator  (8)
+..reporting.report_builder  (3)
+..risk.regression_detector  (3)
+..risk.risk_scoring_engine  (7)
+..rules_engine.executor  (3)
+..rules_engine.registry  (7)
+..rules.browser_api_non_client  (3)
+..rules.dom_mutation_signature  (3)
+..rules.dynamic_ssr_false  (3)
+..rules.nondeterministic_render  (3)
+..rules.server_client_import  (3)
+..rules.storage_hydration  (3)
+..rules.suppress_hydration_warning  (3)
+..runtime  (5)
+..runtime.engine  (4)
+..scanning.artifacts  (8)
+..scanning.repository  (8)
+..scene  (3)
+..search_controller  (48)
+..security.scanner  (8)
+..sentinel_cutover.bundle  (4)
+..sentinel_execute.bundle  (4)
+..sentinel_observability.failure_snapshot  (4)
+..sentinel_observability.run_metrics  (4)
+..sentinel_observability.structured_logger  (4)
+..sentinel_promotion.bundle  (4)
+..sentinel_promotion.path_rules  (4)
+..sentinel_shadow_apply.engine  (4)
+..sentinel_shadow_apply.overlay_plan  (4)
+..sentinel_shadow_apply.safe_paths  (4)
+..sentinel_shadow.promotion_gate  (4)
+..sentinel_shadow.runner  (8)
+..sentinel_supervisor.runtime_repair  (4)
+..sentinel_supervisor.stale_lock_cleanup  (4)
+..sentinel_supervisor.zombie_guard  (4)
+..services  (56)
+..shared  (3)
+..shared.contracts  (64)
+..shared.errors  (16)
+..shared.foundation  (20)
+..shared.interfaces  (4)
+..shared.provider  (4)
+..shared.runtime_paths  (16)
+..shared.status_payloads  (32)
+..skins  (100)
+..slot_manager  (4)
+..state_store  (12)
+..template  (12)
+..theme  (6)
+..tools.models  (4)
+..ui_contribution_registry  (140)
+..ux_flight_recorder.runner  (3)
+..visual_contracts  (2)
+..widgets  (48)
+..workbench_editor_support  (2)
+..workers  (24)
+.adapters  (11)
+.add_bookmark  (24)
+.advanced_pipeline  (1)
+.agent  (9)
+.alerting  (8)
+.alerts  (4)
+.analyze_repo  (4)
+.analyzer_backend  (24)
+.app_bootstrap  (2)
+.app.modular_cli  (4)
+.appearance  (9)
+.applicator  (4)
+.artifact_detector  (4)
+.artifacts  (8)
+.assets  (5)
+.atlas_styles  (1)
+.atlas_theme_bridge  (1)
+.attestations  (9)
+.backdrop  (6)
+.backdrop_spec  (1)
+.backup  (4)
+.base  (72)
+.bookmark_runtime  (25)
+.bootstrap  (4)
+.bottom_results_tabs  (4)
+.boundary_analyzer  (1)
+.bridge_config  (13)
+.bridge_contract  (13)
+.bridge_history  (5)
+.bridge_output  (5)
+.bundle  (24)
+.bundles  (7)
+.capabilities  (4)
+.catalog  (8)
+.catalog_assets_entries  (5)
+.catalog_builtin  (3)
+.catalog_dashboard_entries  (7)
+.catalog_shell  (5)
+.central_workspace  (25)
+.charts  (2)
+.checklist  (4)
+.chrome  (5)
+.chrome_spec  (2)
+.ci_integration  (1)
+.classifier  (3)
+.cleanup  (4)
+.cleanup_engine  (4)
+.cli  (25)
+.client_index  (6)
+.cloudflare  (4)
+.color_tokens  (8)
+.command_bar  (3)
+.command_dispatcher  (25)
+.command_runtime  (5)
+.commands  (25)
+.common  (228)
+.comparator  (4)
+.component_governance  (1)
+.compositions  (8)
+.config  (177)
+.config_policy  (8)
+.constants  (133)
+.context  (9)
+.context_adapter  (1)
+.context_bridge  (5)
+.contract_runtime  (8)
+.contracts  (104)
+.contribution_bridge  (25)
+.controls  (10)
+.coordination  (15)
+.coordinator  (1)
+.dashboard  (1)
+.data  (5)
+.data_providers  (1)
+.debt_parser  (19)
+.decision  (8)
+.deck_host_runtime  (4)
+.deck_runtime  (4)
+.deck_shell  (42)
+.defaults  (13)
+.degraded  (4)
+.demo_app  (10)
+.detail_stack  (4)
+.dev_diagnostics  (25)
+.diagnostics  (10)
+.diagnostics_formatter  (3)
+.dialog  (4)
+.diff_manifest  (8)
+.diffing  (9)
+.dock_manager  (25)
+.dock_sections  (25)
+.doctor  (9)
+.docx  (24)
+.downstream_adapter  (2)
+.drift_detector  (4)
+.dry_apply  (8)
+.effects  (4)
+.elevations  (8)
+.emit_dictionary  (4)
+.emit_docs  (4)
+.emit_mermaid  (4)
+.engine  (15)
+.error_envelope  (8)
+.errors  (8)
+.event_bus  (109)
+.examples  (1)
+.examples.catalog_builtin  (2)
+.exceptions  (28)
+.exec  (4)
+.execute_search  (24)
+.execution_lock  (4)
+.executor  (4)
+.export_artifacts  (8)
+.export_results  (24)
+.extensions  (2)
+.failure_snapshot  (4)
+.false_positive  (8)
+.federation  (19)
+.file_statistics_plugin  (24)
+.findings  (3)
+.foundation  (4)
+.frameless  (3)
+.fs_guard  (9)
+.generator  (5)
+.git_utils  (28)
+.glass_framework_adapter  (1)
+.glass_painter  (2)
+.graph  (8)
+.graph_builder  (1)
+.graph_report  (3)
+.group_shell  (5)
+.guardian_contract  (5)
+.guardian_widget  (9)
+.handlers  (18)
+.hashing  (61)
+.health  (4)
+.heartbeat  (8)
+.heartbeats  (5)
+.history_runs  (8)
+.host_shell  (8)
+.host.window  (2)
+.icons  (14)
+.ids  (8)
+.ignore_manager  (4)
+.incident  (4)
+.integration  (2)
+.integration_demo  (3)
+.integration.module  (2)
+.integrator  (18)
+.intelligence  (1)
+.intent  (4)
+.interfaces  (4)
+.io_ops  (38)
+.io_utils  (32)
+.json_report  (3)
+.kernel_session  (4)
+.layout_manager  (25)
+.learning_engine  (12)
+.ledger  (31)
+.levels  (2)
+.lifecycle  (24)
+.lifecycle_authority  (8)
+.locks  (9)
+.log  (4)
+.logging_utils  (9)
+.main_window  (195)
+.manifest  (8)
+.manifest_io  (12)
+.markdown_report  (3)
+.materializer  (1)
+.matrix  (4)
+.meaningful_gate  (1)
+.menu_shell  (49)
+.metrics  (2)
+.metrics_report  (3)
+.models  (121)
+.module  (2)
+.motion  (18)
+.navigate_back  (24)
+.navigate_forward  (24)
+.navigation_controller  (25)
+.normal  (4)
+.observability  (12)
+.open_file  (24)
+.ops_list  (4)
+.orchestrator  (8)
+.origin  (4)
+.overlap  (9)
+.overlay_plan  (4)
+.overlays  (2)
+.packaging_gate  (8)
+.palette  (24)
+.palette_registry  (5)
+.path_finder  (1)
+.path_guard  (17)
+.path_rules  (4)
+.pathing  (38)
+.paths  (24)
+.persistence  (8)
+.plan  (8)
+.plan_diff_stack  (4)
+.plugin  (77)
+.plugin_base  (76)
+.plugin_manager  (24)
+.plugin_manifest  (28)
+.plugins  (25)
+.policies  (12)
+.policy  (24)
+.policy_loader  (20)
+.post_run_intelligence  (4)
+.post_smoke  (4)
+.pptx  (24)
+.prediction  (4)
+.prediction_engine  (4)
+.preferences  (5)
+.preflight  (21)
+.presets  (3)
+.preview  (1)
+.preview_controller  (25)
+.primitives  (4)
+.process_execution  (8)
+.process_session_controller  (5)
+.profile  (6)
+.progress  (4)
+.promotion_gate  (4)
+.quality  (4)
+.query_engine  (4)
+.recipe  (3)
+.recorder  (2)
+.recovery  (4)
+.redlining  (24)
+.reference_workspace  (3)
+.registry  (53)
+.registry_adapter  (2)
+.remove_bookmark  (24)
+.rendering  (5)
+.repair  (4)
+.repair_engine  (4)
+.repo_analyzer  (4)
+.repo_root  (4)
+.report  (4)
+.report_builder  (3)
+.report_generator  (4)
+.report_parser  (19)
+.report_writer  (19)
+.reports  (4)
+.repository  (4)
+.resolver  (3)
+.retention  (4)
+.review_pack  (8)
+.reviewers  (8)
+.ritual_dashboard_orchestrator  (1)
+.ritual_dashboard_state  (2)
+.rollback  (8)
+.run_id  (18)
+.run_metrics  (4)
+.runner  (6)
+.runtime  (53)
+.runtime_bridge  (3)
+.runtime_checks  (4)
+.runtime_repair  (8)
+.runtime.engine  (2)
+.safe_paths  (12)
+.scanner  (18)
+.scene  (5)
+.scheduler  (4)
+.schema_engine  (9)
+.schemas  (54)
+.screen_template  (1)
+.search_controller  (25)
+.security_quality  (8)
+.security_scanner  (12)
+.sentinel  (8)
+.service  (21)
+.service_container  (24)
+.services  (25)
+.session_tabs  (3)
+.shadow_spec  (1)
+.shell  (25)
+.shell.dock_sections  (24)
+.shell.tool_launcher  (4)
+.showcase_app  (4)
+.signal_extractor  (1)
+.skills_index  (8)
+.skin_runtime  (25)
+.skin.backdrop_spec  (1)
+.skin.materializer  (1)
+.skin.palette_registry  (1)
+.skin.shadow_spec  (1)
+.skin.surface_spec  (1)
+.skins  (265)
+.slot_manager  (8)
+.smoke  (13)
+.snapshot_model  (4)
+.snapshot_store  (1)
+.spacing_system  (8)
+.spec_factory  (8)
+.specs  (4)
+.spike  (4)
+.stable_json  (16)
+.stable_text  (8)
+.stale_lock_cleanup  (8)
+.state_adapter  (38)
+.state_authority_registry  (8)
+.state_store  (16)
+.statistics_command  (24)
+.status  (4)
+.status_eval  (27)
+.status_strip  (25)
+.structured_logger  (4)
+.stylesheet  (2)
+.summary  (8)
+.supervision  (8)
+.supervisor  (4)
+.surface_renderer  (1)
+.surface_spec  (2)
+.surfaces  (2)
+.svg_viewer  (49)
+.target_list  (4)
+.telemetry  (4)
+.template  (8)
+.theme  (18)
+.theme_api  (5)
+.theme_bridge  (34)
+.tokens  (1)
+.tool_launcher  (5)
+.tool_workspace  (5)
+.toolbar_controller  (25)
+.tools  (5)
+.tracing  (4)
+.tree_controller  (25)
+.trend_analyzer  (1)
+.typography_system  (8)
+.ui_command_controller  (2)
+.ui_contribution_registry  (73)
+.ui_runtime  (1)
+.unicodex  (4)
+.unified_palette  (4)
+.utils  (59)
+.ux_flight_recorder  (2)
+.validation  (1)
+.validator  (16)
+.validators  (16)
+.verifier  (3)
+.version  (9)
+.visual_contracts  (1)
+.visual_runtime  (25)
+.visualization  (4)
+.wave1_catalog  (4)
+.widgets  (144)
+.window  (2)
+.workers  (49)
+.workspace  (12)
+.workspace_runtime  (25)
+.workstation_context  (10)
+.worktree_contract  (12)
+.worktrees  (9)
+.zombie_guard  (8)
+abc  (64)
+acceptance_stub  (5)
+anthropic  (8)
+app.backend  (49)
+app.config  (97)
+app.engine  (9)
+app.gui_qt.design_system  (20)
+app.gui_qt.event_bus  (24)
+app.gui_qt.hybrid_design_tokens  (4)
+app.gui_qt.main_window  (10)
+app.gui_qt.plugin_api  (2)
+app.gui_qt.plugins.aegis_deck.guardian_contract  (1)
+app.gui_qt.plugins.api  (2)
+app.gui_qt.plugins.cloudflare_guardian.guardian_contract  (4)
+app.gui_qt.plugins.plugin_base  (101)
+app.gui_qt.preferences  (4)
+app.gui_qt.shell.context_bridge  (5)
+app.gui_qt.shell.group_shell  (5)
+app.gui_qt.shell.tool_workspace  (4)
+app.gui_qt.shell.workstation_context  (10)
+app.gui_qt.toolbar_controller  (4)
+app.gui_qt.tools.catalog  (4)
+app.handlers  (9)
+app.helpers  (121)
+app.models  (18)
+app.service  (9)
+application.command_controller  (2)
+application.contracts  (1)
+application.contracts.engine_adapter  (6)
+application.contracts.event_bus  (5)
+application.contracts.session_repository  (4)
+application.controllers.ui_command_controller  (2)
+application.filesystem_event_bridge  (2)
+application.refresh_policy  (6)
+application.selection_service  (6)
+application.session_actions  (10)
+application.session_manager  (17)
+application.stale_policy  (4)
+application.state_machine  (13)
+application.workspace_facade  (6)
+argparse  (872)
+ast  (21)
+asyncio  (16)
+base64  (25)
+bootstrap  (1)
+bootstrap.event_wiring  (1)
+bootstrap.resolver_bridge  (2)
+build_scope_index  (16)
+cloudflare_guardian  (8)
+cloudflared_helpers  (32)
+collections  (160)
+collections.abc  (105)
+concurrent.futures  (4)
+connections  (8)
+contextlib  (66)
+coordinator_agent._compat  (12)
+coordinator_agent.src.agent  (4)
+coordinator_agent.src.models  (6)
+coordinator_agent.src.registry  (2)
+coordinator_agent.src.validator  (2)
+copy  (32)
+csv  (57)
+ctypes  (8)
+dataclasses  (1258)
+datetime  (451)
+defusedxml.minidom  (168)
+deltaforge.application.controllers.ui_command_controller  (1)
+deltaforge.application.filesystem_event_bridge  (2)
+deltaforge.application.refresh_policy  (3)
+deltaforge.application.selection_service  (2)
+deltaforge.application.session_actions  (6)
+deltaforge.application.session_manager  (9)
+deltaforge.application.stale_policy  (2)
+deltaforge.application.state_machine  (6)
+deltaforge.application.workspace_facade  (3)
+deltaforge.bootstrap.event_wiring  (1)
+deltaforge.bootstrap.resolver_bridge  (2)
+deltaforge.domain.models.session  (1)
+deltaforge.infrastructure.event_bus_in_memory  (4)
+deltaforge.infrastructure.file_watcher_polling  (2)
+deltaforge.infrastructure.persistence.settings_store  (1)
+deltaforge.infrastructure.settings_store  (3)
+deltaforge.ui.theme  (1)
+deltaforge.ui.theme.theme_api  (1)
+deltaforge.ui.widgets.command_bar  (2)
+deltaforge.ui.widgets.session_tabs  (2)
+deltaforge.ui.widgets.session_workspace  (2)
+deltaforge.ui.widgets.status_widgets  (2)
+deltaforge.ui.window.interop  (1)
+deltaforge.ui.window.main_window  (2)
+difflib  (13)
+domain  (5)
+domain.events  (5)
+domain.ids  (26)
+domain.models  (9)
+domain.models.diff  (6)
+domain.models.ops_document  (11)
+domain.models.plan  (7)
+domain.models.plan_preview  (2)
+domain.models.process_report  (6)
+domain.models.results  (7)
+domain.models.rollback_manifest  (2)
+domain.models.scope  (10)
+domain.models.session  (12)
+domain.models.settings  (3)
+domain.session_states  (6)
+dummy_product  (4)
+dynamic  (2)
+engine_guardian.orchestrator  (4)
+engine_guardian.paths  (4)
+engine_guardian.preflight  (4)
+ensure_config  (8)
+ensure_origin  (4)
+ensure_public_watchdog  (4)
+ensure_service  (8)
+ensure_watchdog  (4)
+enum  (70)
+factory  (104)
+factory.cli  (9)
+factory.common  (18)
+factory.config  (18)
+factory.contracts  (9)
+factory.diffing  (9)
+factory.doctor  (18)
+factory.fs_guard  (9)
+factory.integrator  (27)
+factory.ledger  (27)
+factory.normalize_artifacts  (9)
+factory.overlap  (9)
+factory.path_guard  (13)
+factory.preflight  (9)
+factory.run_id  (18)
+factory.schema_engine  (18)
+factory.schemas  (9)
+factory.skills_index  (4)
+factory.smoke  (18)
+factory.status_eval  (18)
+factory.tests.test_support  (87)
+factory.unicodex  (4)
+factory.version  (9)
+factory.worktree_contract  (4)
+factory.worktrees  (9)
+faulthandler  (9)
+fix_dns  (4)
+fnmatch  (58)
+forge_commons  (41)
+forge_commons.lifecycle  (24)
+forge_kernel  (89)
+forgeos.core  (3)
+forgeos.shared.pyside6_glass  (5)
+forgeos.shared.pyside6_glass.assets  (2)
+forgeos.shared.pyside6_glass.catalog  (4)
+forgeos.shared.pyside6_glass.charts  (2)
+forgeos.shared.pyside6_glass.component_governance  (1)
+forgeos.shared.pyside6_glass.controls  (4)
+forgeos.shared.pyside6_glass.dashboard  (1)
+forgeos.shared.pyside6_glass.data  (10)
+forgeos.shared.pyside6_glass.data_providers  (2)
+forgeos.shared.pyside6_glass.examples.catalog_shell  (2)
+forgeos.shared.pyside6_glass.icons  (1)
+forgeos.shared.pyside6_glass.integration  (8)
+forgeos.shared.pyside6_glass.orchestrators.ritual_dashboard_orchestrator  (3)
+forgeos.shared.pyside6_glass.orchestrators.ritual_dashboard_state  (3)
+forgeos.shared.pyside6_glass.runtime  (2)
+forgeos.shared.pyside6_glass.scene  (6)
+forgeos.shared.pyside6_glass.template  (2)
+forgeos.shared.pyside6_glass.theme  (5)
+forgeos.shared.pyside6_glass.tools.ui_baseline.validate_ui_baseline  (1)
+forgeos.shared.pyside6_glass.ui_baseline.builder.catalog  (1)
+forgeos.shared.pyside6_glass.ui_baseline.builder.generator  (2)
+forgeos.shared.pyside6_glass.ui_baseline.builder.preview  (1)
+forgeos.shared.pyside6_glass.ui_baseline.builder.recipe  (2)
+forgeos.shared.pyside6_glass.ui_baseline.defaults  (1)
+forgeos.shared.pyside6_glass.ui_baseline.screen_template  (6)
+forgeos.shared.pyside6_glass.ux_flight_recorder  (4)
+forgeos.shared.pyside6_glass.ux_flight_recorder.recorder  (2)
+forgeos.shared.pyside6_glass.validation  (1)
+functools  (2)
+generate_openai_yaml  (8)
+github_utils  (16)
+graphviz  (4)
+graphviz_repo_engine  (20)
+hashlib  (210)
+helpers.merge_runs  (24)
+helpers.simplify_redlines  (24)
+hmac  (4)
+html  (44)
+http.server  (22)
+imageio.v3  (8)
+importlib  (102)
+importlib.util  (33)
+infrastructure.adapters.mock_engine  (2)
+infrastructure.engine  (1)
+infrastructure.engine.backup_store  (1)
+infrastructure.engine.local_patch_engine  (5)
+infrastructure.engine.mock_engine_adapter  (4)
+infrastructure.engine.operation_validator  (1)
+infrastructure.event_bus  (3)
+infrastructure.event_bus_in_memory  (6)
+infrastructure.event_bus.in_memory_event_bus  (1)
+infrastructure.file_watcher_polling  (3)
+infrastructure.persistence  (1)
+infrastructure.persistence.session_layout_store  (2)
+infrastructure.persistence.settings_store  (2)
+infrastructure.settings_store  (5)
+infrastructure.system  (2)
+infrastructure.system.file_dialogs  (2)
+infrastructure.system.open_path  (2)
+infrastructure.watcher  (2)
+infrastructure.watcher.file_watcher_service  (1)
+inspect  (5)
+io  (35)
+IPython  (4)
+itertools  (4)
+json  (1203)
+jsonschema  (5)
+lib.blockers  (5)
+lib.bundles  (54)
+lib.common  (167)
+lib.config  (74)
+lib.coordination  (19)
+lib.handoffs  (5)
+lib.heartbeats  (10)
+lib.projects  (12)
+lib.readiness  (20)
+lib.reports  (36)
+lib.rounds  (24)
+lib.validators  (16)
+logging  (32)
+lxml.etree  (168)
+main_window  (1)
+math  (64)
+mcp  (8)
+mcp.client.sse  (8)
+mcp.client.stdio  (8)
+mcp.client.streamable_http  (8)
+mimetypes  (10)
+networkx  (16)
+networkx.algorithms  (8)
+networkx.readwrite  (8)
+nexus.host.window  (2)
+ntpath  (11)
+numpy  (17)
+office.soffice  (48)
+openai  (40)
+openpyxl  (40)
+openpyxl.formatting.rule  (8)
+openpyxl.styles  (16)
+openpyxl.utils  (16)
+orchestrator_bridge  (8)
+os  (747)
+os.path  (8)
+pathlib  (2967)
+pdf2image  (8)
+perlin_noise  (1)
+PIL  (44)
+platform  (41)
+playwright.sync_api  (24)
+post_run_intelligence  (4)
+psutil  (27)
+py_compile  (1)
+PyQt5.QtCore  (7)
+PyQt5.QtWidgets  (7)
+PyQt6.QtCore  (7)
+PyQt6.QtWidgets  (7)
+pyqtgraph  (3)
+PySide2.QtCore  (13)
+PySide2.QtGui  (1)
+PySide2.QtWidgets  (13)
+PySide6  (29)
+pyside6_glass.appearance  (9)
+pyside6_glass.atlas_styles  (1)
+pyside6_glass.atlas_theme_bridge  (1)
+pyside6_glass.backdrop  (2)
+pyside6_glass.config  (3)
+pyside6_glass.legacy_cleanup  (1)
+pyside6_glass.rendering  (1)
+pyside6_glass.rendering.glass_painter  (1)
+pyside6_glass.runtime  (1)
+pyside6_glass.template  (2)
+pyside6_glass.theme_resolver  (1)
+pyside6_glass.ui_baseline  (1)
+pyside6_glass.visual_contracts  (1)
+pyside6_glass.visual_runtime  (1)
+PySide6.QtCore  (694)
+PySide6.QtGui  (370)
+PySide6.QtSvg  (24)
+PySide6.QtSvgWidgets  (24)
+PySide6.QtTest  (2)
+PySide6.QtWidgets  (966)
+pytest  (23)
+qtawesome  (3)
+random  (73)
+re  (582)
+repo_analyzer  (9)
+repo_analyzer.src.agent  (8)
+repo_analyzer.src.classifier  (3)
+repo_analyzer.src.config  (2)
+repo_analyzer.src.models  (10)
+repo_analyzer.src.verifier  (3)
+runpy  (8)
+secrets  (4)
+sentinel_cutover  (8)
+sentinel_cutover.bundle  (4)
+sentinel_cutover.preflight  (4)
+sentinel_cutover.rollback  (4)
+sentinel_cutover.summary  (4)
+sentinel_execute  (8)
+sentinel_execute.bundle  (8)
+sentinel_execute.plan  (8)
+sentinel_execute.policy_loader  (12)
+sentinel_execute.post_smoke  (4)
+sentinel_promotion  (8)
+sentinel_promotion.bundle  (4)
+sentinel_promotion.decision  (4)
+sentinel_promotion.path_rules  (4)
+sentinel_promotion.policy_loader  (4)
+sentinel_shadow  (12)
+sentinel_shadow_apply  (4)
+sentinel_shadow.workspace  (4)
+session_cli  (12)
+session_export  (5)
+session_flow  (6)
+session_idempotency  (10)
+session_ledger  (15)
+session_lock  (10)
+session_manifest  (5)
+session_paths  (5)
+session_state  (16)
+shiboken6  (100)
+shlex  (8)
+shutil  (302)
+signal  (4)
+socket  (45)
+sqlite3  (10)
+src.cli  (1)
+stat  (4)
+string  (50)
+subprocess  (472)
+superqt  (1)
+sys  (1264)
+tempfile  (511)
+textwrap  (8)
+threading  (43)
+time  (267)
+tomllib  (1)
+tools.codex.factory.path_guard  (4)
+tools.codex.factory.skills_index  (12)
+tools.codex.guards.no_js_src_imports  (9)
+tools.codex.verify.meaningful_gate  (45)
+tools.hos._core.exec  (16)
+tools.hos._core.hashing  (20)
+tools.hos._core.paths  (8)
+tools.hos._core.repo_root  (72)
+tools.hos._core.reports  (20)
+tools.hos._core.stable_json  (132)
+tools.hos._core.stable_text  (28)
+tools.hos.data.export_api_mock  (4)
+tools.hos.data.export_json  (4)
+tools.hos.data.keystone_shapes  (4)
+tools.hos.data.reference_catalog  (4)
+tools.hos.data.scenarios  (4)
+tools.hos.data.simulator_core  (28)
+tools.hos.git_sentinel_modular.analysis.prediction  (8)
+tools.hos.git_sentinel_modular.app.cli  (4)
+tools.hos.git_sentinel_modular.app.dashboard  (8)
+tools.hos.git_sentinel_modular.app.modular_cli  (4)
+tools.hos.git_sentinel_modular.app.visualization  (8)
+tools.hos.git_sentinel_modular.core.orchestrator  (8)
+tools.hos.git_sentinel_modular.learning.engine  (16)
+tools.hos.git_sentinel_modular.legacy  (4)
+tools.hos.git_sentinel_modular.legacy.adapters  (4)
+tools.hos.git_sentinel_modular.operations.ci_gate  (4)
+tools.hos.git_sentinel_modular.operations.execution_lock  (8)
+tools.hos.git_sentinel_modular.operations.scheduler  (8)
+tools.hos.git_sentinel_modular.operations.status  (4)
+tools.hos.git_sentinel_modular.plugins  (4)
+tools.hos.git_sentinel_modular.remediation.cleanup  (4)
+tools.hos.git_sentinel_modular.remediation.repair  (4)
+tools.hos.git_sentinel_modular.reporting.alerting  (8)
+tools.hos.git_sentinel_modular.reporting.generator  (28)
+tools.hos.git_sentinel_modular.scanning.artifacts  (4)
+tools.hos.git_sentinel_modular.scanning.repository  (4)
+tools.hos.git_sentinel_modular.security.quality  (4)
+tools.hos.git_sentinel_modular.security.scanner  (4)
+tools.hos.git_sentinel_modular.sentinel_observability.drift_detector  (4)
+tools.hos.git_sentinel_modular.sentinel_observability.failure_snapshot  (4)
+tools.hos.git_sentinel_modular.sentinel_observability.run_metrics  (4)
+tools.hos.git_sentinel_modular.sentinel_observability.structured_logger  (4)
+tools.hos.git_sentinel_modular.sentinel_shadow_apply.dry_apply  (4)
+tools.hos.git_sentinel_modular.sentinel_shadow_apply.engine  (4)
+tools.hos.git_sentinel_modular.sentinel_shadow_apply.overlay_plan  (8)
+tools.hos.git_sentinel_modular.sentinel_shadow_apply.review_pack  (4)
+tools.hos.git_sentinel_modular.sentinel_shadow_apply.safe_paths  (4)
+tools.hos.git_sentinel_modular.sentinel_shadow.diff_manifest  (4)
+tools.hos.git_sentinel_modular.sentinel_shadow.promotion_gate  (4)
+tools.hos.git_sentinel_modular.sentinel_shadow.runner  (12)
+tools.hos.git_sentinel_modular.sentinel_shadow.workspace  (4)
+tools.hos.git_sentinel_modular.sentinel_supervisor.stale_lock_cleanup  (4)
+tools.hos.git_sentinel_modular.sentinel_supervisor.supervisor  (4)
+tools.hos.git_sentinel_modular.sentinel_supervisor.zombie_guard  (4)
+tools.hos.git_sentinel_modular.shared.contracts  (68)
+tools.hos.git_sentinel_modular.shared.foundation  (8)
+tools.hos.git_sentinel_modular.shared.interfaces  (4)
+tools.hos.git_sentinel_modular.shared.provider  (8)
+tools.hos.git_sentinel_modular.shared.runtime_checks  (8)
+tools.hos.git_sentinel.ci_gate  (8)
+tools.hos.git_sentinel.config  (16)
+tools.hos.git_sentinel.false_positive  (4)
+tools.hos.git_sentinel.git_utils  (4)
+tools.hos.git_sentinel.learning_engine  (4)
+tools.hos.git_sentinel.report_generator  (4)
+tools.hos.git_sentinel.scheduler  (4)
+tools.hos.git_sentinel.security_quality  (8)
+tools.hos.git_sentinel.security_scanner  (4)
+tools.hos.git_sentinel.sentinel  (8)
+tools.hos.git_sentinel.utils  (8)
+tools.hos.hygiene.scan_large_files  (4)
+tools.hos.hygiene.scan_root_artifacts  (4)
+tools.hos.hygiene.scan_worktree_contamination  (4)
+tools.hos.launcher.txn_runtime  (8)
+tools.hos.turbo.remote_cache_check  (4)
+tools.hos.turbo.resolve_profile  (4)
+tools.hos.visual.baseline_store  (8)
+tools.hos.visual.compare  (4)
+tools.hos.visual.playwright_capture  (4)
+tools.hos.visual.storybook_detect  (8)
+tools.hos.visual.storybook_runner  (4)
+tools.hydration_sentinel.cli.sentinel_cli  (1)
+tools.hydration_sentinel.engine.runner  (3)
+tools.hydration_sentinel.reporting.report_builder  (4)
+tools.meta.constants  (15)
+tools.meta.debt_parser  (34)
+tools.meta.federation  (34)
+tools.meta.hashing  (34)
+tools.meta.io_ops  (15)
+tools.meta.meta_orchestrator  (19)
+tools.meta.pathing  (15)
+tools.meta.registry  (15)
+tools.meta.report_writer  (15)
+tools.ui_map.analyze_repo  (8)
+tools.ui_map.emit_docs  (4)
+tools.ui_map.ids  (4)
+tools.ui_map.validators  (4)
+traceback  (56)
+type  (4)
+types  (23)
+typing  (2792)
+ui_foundation.ui_runtime  (1)
+ui_foundation.visual_screen_template  (2)
+ui.adapters.glass_framework_adapter  (1)
+ui.dialogs.busy_dialog  (1)
+ui.dialogs.confirm_dialog  (1)
+ui.dialogs.rollback_dialog  (1)
+ui.panes.bottom_apply_panel  (1)
+ui.panes.bottom_events_panel  (1)
+ui.panes.bottom_pane  (1)
+ui.panes.bottom_plan_panel  (1)
+ui.panes.bottom_rollback_panel  (1)
+ui.panes.bottom_validation_panel  (1)
+ui.panes.center_diff_panel  (1)
+ui.panes.center_pane  (1)
+ui.panes.center_plan_panel  (1)
+ui.panes.command_bar  (1)
+ui.panes.left_ops_panel  (1)
+ui.panes.left_pane  (1)
+ui.panes.left_scope_panel  (1)
+ui.panes.right_detail_panel  (1)
+ui.panes.right_pane  (1)
+ui.panes.session_tabs  (1)
+ui.panes.status_bar  (2)
+ui.primitives  (4)
+ui.primitives.busy_dialog  (2)
+ui.primitives.buttons  (4)
+ui.primitives.chip  (2)
+ui.primitives.command_button  (1)
+ui.primitives.confirm_dialog  (2)
+ui.primitives.detail_block  (1)
+ui.primitives.diff_block  (1)
+ui.primitives.empty_state  (1)
+ui.primitives.hairline_separator  (2)
+ui.primitives.kv_block  (1)
+ui.primitives.list_surface  (1)
+ui.primitives.log_surface  (1)
+ui.primitives.section_card  (2)
+ui.primitives.shell  (2)
+ui.primitives.status_pill  (2)
+ui.primitives.tab_style  (1)
+ui.theme  (1)
+ui.theme.palette  (1)
+ui.theme.presets  (1)
+ui.theme.semantic_roles  (4)
+ui.theme.stylesheet  (1)
+ui.theme.theme_api  (2)
+ui.theme.tokens  (7)
+ui.widgets.command_bar  (3)
+ui.widgets.session_tabs  (3)
+ui.widgets.session_workspace  (1)
+ui.widgets.status_widgets  (2)
+ui.window.interop  (1)
+ui.window.main_window  (2)
+unittest  (656)
+unittest.mock  (48)
+urllib  (9)
+urllib.error  (42)
+urllib.parse  (27)
+urllib.request  (38)
+uuid  (19)
+validate_framework_contracts  (4)
+validate_tunnel  (4)
+validator  (8)
+validators  (48)
+verify.meaningful_gate  (54)
+version  (1)
+webbrowser  (14)
+widgets.session_workspace  (1)
+X  (3)
+xml.etree.ElementTree  (96)
+yaml  (16)
+zipfile  (250)
+zlib  (4)
+zoneinfo  (19)
+
+⚠️ POSIBLES DEPENDENCIAS EXTERNAS / ROTAS
+-------------------------------
+[code-atlas.py] # 05. UI: SELECTOR Y PROGRESO (PySide6)
+[code-atlas.py] from PySide6.QtCore import Qt, QEvent, QObject, QPoint, QPointF, QRect, QRectF, QTimer
+[code-atlas.py] from PySide6.QtGui import QColor, QLinearGradient, QPainter, QPainterPath, QPen, QRadialGradient
+[code-atlas.py] from PySide6.QtWidgets import (
+[code-atlas.py] from forgeos.shared.pyside6_glass.controls import create_button as shared_create_button
+[code-atlas.py] from forgeos.shared.pyside6_glass.scene import (
+[code-atlas.py]     build_glass_dialog_scene as shared_build_glass_dialog_scene,
+[code-atlas.py] from forgeos.shared.pyside6_glass.theme import build_stylesheet as shared_build_stylesheet
+[code-atlas.py] def build_glass_dialog_scene(
+[code-atlas.py]     outer, content, backdrop = shared_build_glass_dialog_scene(
+[code-atlas.py]         outer, content_layer, self._glass_backdrop = build_glass_dialog_scene(
+[code-atlas.py]         scene_chip = QLabel("PySide6 Glass")
+[code-atlas.before_hard_repair_20260330_215444.py] # 05. UI: SELECTOR Y PROGRESO (PySide6)
+[code-atlas.before_hard_repair_20260330_215444.py] from PySide6.QtCore import Qt, QTimer
+[code-atlas.before_hard_repair_20260330_215444.py] from PySide6.QtGui import QColor
+[code-atlas.before_hard_repair_20260330_215444.py] from PySide6.QtWidgets import (
+[code-atlas.before_total_titanium_rebuild_20260330_205640.py] # 05. UI: SELECTOR Y PROGRESO (PySide6)
+[code-atlas.before_total_titanium_rebuild_20260330_205640.py] from PySide6.QtCore import Qt, QTimer
+[code-atlas.before_total_titanium_rebuild_20260330_205640.py] from PySide6.QtGui import QColor
+[code-atlas.before_total_titanium_rebuild_20260330_205640.py] from PySide6.QtWidgets import (
+[app_bootstrap.py] from PySide6.QtCore import QCoreApplication
+[app_bootstrap.py] from PySide6.QtWidgets import QApplication
+[watcher.py] from PySide6.QtCore import QFileSystemWatcher, QObject
+[file_dialogs.py]     from PySide6.QtWidgets import QFileDialog, QWidget
+[file_dialogs.py]         raise RuntimeError("PySide6 is required for infrastructure.system.file_dialogs") from _IMPORT_ERROR
+[shortcuts.py] from PySide6.QtGui import QKeySequence, QShortcut
+[glass_framework_adapter.py] from forgeos.shared.pyside6_glass import (
+[confirm_dialog.py] from PySide6 import QtWidgets
+[rollback_dialog.py] from PySide6 import QtCore, QtWidgets
+[rollback_dialog.py] from forgeos.shared.pyside6_glass.scene import (
+[rollback_dialog.py]     build_glass_dialog_scene as shared_build_glass_dialog_scene,
+[rollback_dialog.py]         outer, content_layer, self._glass_backdrop = shared_build_glass_dialog_scene(
+[bottom_apply_panel.py] from PySide6.QtCore import Qt
+[bottom_apply_panel.py] from PySide6.QtWidgets import (
+[bottom_events_panel.py] from PySide6.QtCore import Qt
+[bottom_events_panel.py] from PySide6.QtWidgets import (
+[bottom_pane.py] from PySide6.QtWidgets import QListWidget, QPlainTextEdit, QTabWidget, QVBoxLayout, QWidget
+[bottom_plan_panel.py] from PySide6.QtCore import Qt
+[bottom_plan_panel.py] from PySide6.QtWidgets import (
+[bottom_rollback_panel.py] from PySide6.QtCore import Qt
+[bottom_rollback_panel.py] from PySide6.QtWidgets import (
+[bottom_validation_panel.py] from PySide6.QtCore import Qt
+[bottom_validation_panel.py] from PySide6.QtWidgets import (
+[center_diff_panel.py] from PySide6.QtCore import Qt, Signal
+[center_diff_panel.py] from PySide6.QtWidgets import (
+[center_pane.py] from PySide6.QtCore import Qt, Signal
+[center_pane.py] from PySide6.QtWidgets import QSplitter, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget
+[center_plan_panel.py] from PySide6.QtCore import Qt, Signal
+[center_plan_panel.py] from PySide6.QtWidgets import (
+[left_ops_panel.py] from PySide6.QtCore import Qt, Signal
+[left_ops_panel.py] from PySide6.QtWidgets import QFormLayout, QGroupBox, QHBoxLayout, QLabel, QPlainTextEdit, QVBoxLayout, QWidget
+[left_pane.py] from PySide6.QtCore import Signal
+[left_pane.py] from PySide6.QtWidgets import QLabel, QListWidget, QPlainTextEdit, QVBoxLayout, QWidget
+[left_scope_panel.py] from PySide6.QtCore import Qt, Signal
+[left_scope_panel.py] from PySide6.QtWidgets import (
+[right_detail_panel.py] from PySide6.QtCore import Qt, Signal
+[right_detail_panel.py] from PySide6.QtWidgets import (
+[right_pane.py] from PySide6.QtWidgets import QLabel, QPlainTextEdit, QVBoxLayout, QWidget
+[status_bar.py] from PySide6.QtCore import Qt, Signal
+[status_bar.py] from PySide6.QtWidgets import QHBoxLayout, QLabel, QProgressBar, QSizePolicy, QToolButton, QWidget
+[busy_dialog.py] from PySide6 import QtCore, QtWidgets
+[busy_dialog.py] from forgeos.shared.pyside6_glass.scene import (
+[busy_dialog.py]     build_glass_dialog_scene as shared_build_glass_dialog_scene,
+[busy_dialog.py]         outer, content_layer, self._glass_backdrop = shared_build_glass_dialog_scene(
+[buttons.py] from PySide6.QtCore import QEasingCurve, Property, QPropertyAnimation, QRectF, QSize, Qt
+[buttons.py] from PySide6.QtGui import QColor, QFont, QIcon, QLinearGradient, QPainter, QPainterPath, QPen
+[buttons.py] from PySide6.QtWidgets import QPushButton, QWidget
+[chip.py] from PySide6 import QtWidgets
+[confirm_dialog.py] from forgeos.shared.pyside6_glass.scene import (
+[confirm_dialog.py]     build_glass_dialog_scene as shared_build_glass_dialog_scene,
+[confirm_dialog.py]         outer, content_layer, self._glass_backdrop = shared_build_glass_dialog_scene(
+[detail_block.py] from PySide6.QtWidgets import QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+[diff_block.py] from PySide6.QtWidgets import QPlainTextEdit, QVBoxLayout, QWidget
+[empty_state.py] from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget
+[hairline_separator.py] from PySide6 import QtCore, QtWidgets
+[kv_block.py] from PySide6 import QtCore, QtWidgets
+[list_surface.py] from PySide6 import QtCore, QtWidgets
+[log_surface.py] from PySide6 import QtGui, QtWidgets
+[section_card.py] from PySide6 import QtCore, QtWidgets
+[shell.py] from PySide6.QtWidgets import QFrame
+[status_pill.py] from PySide6 import QtWidgets
+[tab_style.py] from PySide6 import QtWidgets
+[stylesheet.py] from forgeos.shared.pyside6_glass.theme import (
+[theme_api.py] from PySide6.QtGui import QColor, QPalette
+[theme_api.py] from PySide6.QtWidgets import QApplication, QWidget
+[bottom_results_tabs.py] from PySide6.QtWidgets import QTextEdit, QVBoxLayout, QWidget
+[bottom_results_tabs.py] from forgeos.shared.pyside6_glass.template import GlassWorkspaceTabSpec, GlassWorkspaceTabs
+[command_bar.py] from PySide6.QtCore import Signal
+[command_bar.py] from PySide6.QtWidgets import (
+[command_bar.py] from forgeos.shared.pyside6_glass.controls import create_button
+[detail_stack.py] from PySide6.QtWidgets import QLabel, QTextEdit, QVBoxLayout, QWidget
+[ops_list.py] from PySide6.QtCore import Signal
+[ops_list.py] from PySide6.QtWidgets import QListWidget, QListWidgetItem, QWidget
+[plan_diff_stack.py] from PySide6.QtWidgets import QLabel, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget
+[session_tabs.py] from PySide6.QtCore import Qt, Signal
+[session_tabs.py] from PySide6.QtWidgets import QHBoxLayout, QPushButton, QTabBar, QWidget
+[session_tabs.py] from forgeos.shared.pyside6_glass.icons import apply_icon
+[session_workspace.py] from PySide6.QtCore import Qt, Signal
+[session_workspace.py] from PySide6.QtWidgets import QFrame, QLabel, QSplitter, QVBoxLayout, QWidget
+[session_workspace.py] from forgeos.shared.pyside6_glass.template import GlassWorkspaceTabSpec, GlassWorkspaceTabs
+[status_widgets.py] from PySide6.QtCore import Qt
+[status_widgets.py] from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QVBoxLayout, QWidget
+[target_list.py] from PySide6.QtCore import Signal
+[target_list.py] from PySide6.QtWidgets import QListWidget, QListWidgetItem, QWidget
+[main_window.py] from PySide6.QtCore import Qt
+[main_window.py] from PySide6.QtWidgets import QFrame, QMainWindow, QVBoxLayout, QWidget
+[main_window.py] from forgeos.shared.pyside6_glass.scene import (
+[main_window.py]     build_glass_dialog_scene as shared_build_glass_dialog_scene,
+[main_window.py]         outer, content_layer, self._glass_backdrop = shared_build_glass_dialog_scene(
+[__init__.py] """Reusable PySide6 glass framework for ForgeOS tools."""
+[__init__.py] from .scene import build_glass_dialog_scene
+[__init__.py]     "build_glass_dialog_scene",
+[assets.py] from PySide6.QtCore import Qt, Signal
+[assets.py] from PySide6.QtWidgets import (
+[atlas_theme_bridge.py] from PySide6.QtGui import QColor
+[backdrop.py] from PySide6.QtCore import QPointF, QRectF, Qt, QTimer
+[backdrop.py] from PySide6.QtGui import QColor, QLinearGradient, QPainter, QPainterPath, QPen, QRadialGradient
+[backdrop.py] from PySide6.QtWidgets import QWidget
+[chrome.py] from PySide6.QtCore import QEvent, QPoint, Qt
+[chrome.py] from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QPushButton, QSizePolicy, QWidget
+[controls.py] from PySide6.QtCore import Qt
+[controls.py] from PySide6.QtWidgets import QPushButton, QWidget
+[dashboard.py] from PySide6.QtCore import QTimer
+[dashboard.py] from PySide6.QtWidgets import (
+[data_providers.py]     return _repo_root() / "tools" / "_local" / "tmp" / "pyside6_glass_dashboard.sqlite3"
+[effects.py] from PySide6.QtCore import QEvent, QObject, Qt
+[effects.py] from PySide6.QtGui import QColor
+[effects.py] from PySide6.QtWidgets import QGraphicsDropShadowEffect, QWidget
+[frameless.py] from PySide6.QtCore import QEvent, QObject, QPoint, QRect, Qt
+[frameless.py] from PySide6.QtWidgets import QFrame, QWidget
+[icons.py] from PySide6.QtCore import QEvent, QObject, QSize, Qt
+[icons.py] from PySide6.QtGui import QColor, QIcon, QPainter, QPixmap
+[icons.py] from PySide6.QtWidgets import QAbstractButton, QLabel, QWidget
+[primitives.py] from PySide6.QtCore import Qt
+[primitives.py] from PySide6.QtWidgets import (
+[release_gate.py]     from forgeos.shared.pyside6_glass.ux_flight_recorder import load_capability_contract  # type: ignore
+[release_gate.py]     "forgeos/shared/pyside6_glass/examples/catalog_shell.py",
+[release_gate.py]     "forgeos/shared/pyside6_glass/template.py",
+[release_gate.py]     "forgeos/shared/pyside6_glass/theme.py",
+[release_gate.py]     "forgeos/shared/pyside6_glass/data.py",
+[release_gate.py]     "forgeos/shared/pyside6_glass/release_gate.py",
+[release_gate.py]     "forgeos/shared/pyside6_glass/ux_flight_recorder/runner.py",
+[release_gate.py]     "forgeos.shared.pyside6_glass.tests.test_catalog_workbench",
+[release_gate.py]     "forgeos.shared.pyside6_glass.tests.test_data_result_states",
+[release_gate.py]     "forgeos.shared.pyside6_glass.tests.test_data_registry",
+[release_gate.py]     "forgeos.shared.pyside6_glass.tests.test_theme_surface_opacity",
+[release_gate.py]     "forgeos.shared.pyside6_glass.tests.test_ux_flight_recorder",
+[release_gate.py]         "forgeos.shared.pyside6_glass.ux_flight_recorder.runner",
+[release_gate.py]     evidence_path = EVIDENCE_ROOT / f"pyside6_glass_release_gate_{stamp}.json"
+[release_gate.py]     parser = argparse.ArgumentParser(description="Run pyside6_glass sacred release gate checks.")
+[runtime.py] from PySide6.QtGui import QKeySequence, QShortcut
+[runtime.py] from PySide6.QtWidgets import QWidget
+[scene.py] from PySide6.QtCore import Qt
+[scene.py] from PySide6.QtWidgets import QStackedLayout, QVBoxLayout, QWidget
+[scene.py] def build_glass_dialog_scene(
+[template.py] from PySide6.QtCore import Qt
+[template.py] from PySide6.QtWidgets import (
+[template.py] from .scene import build_glass_dialog_scene
+[template.py]         outer, content, self._glass_backdrop = build_glass_dialog_scene(
+[__main__.py]     from PySide6.QtWidgets import QApplication
+[__main__.py]     parser = argparse.ArgumentParser(description="Run pyside6_glass examples.")
+[catalog_assets_entries.py] from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget
+[catalog_builtin.py] from PySide6.QtWidgets import (
+[catalog_dashboard_entries.py] from PySide6.QtWidgets import QHBoxLayout, QLabel, QTextEdit, QWidget
+[catalog_shell.py] from PySide6.QtCore import QEvent, QObject, QPoint, QPointF, QRect, QRectF, Qt, QTimer
+[catalog_shell.py] from PySide6.QtGui import QColor, QBrush, QKeySequence, QLinearGradient, QPainter, QPainterPath, QPen, QShortcut
+[catalog_shell.py] from PySide6.QtWidgets import (
+[catalog_shell.py]     Interactive framework workbench for pyside6_glass capabilities.
+[catalog_shell.py]         root = Path(__file__).resolve().parents[4] / "tools" / "_local" / "pyside6_glass" / "workbench_clones"
+[compositions.py] from PySide6.QtWidgets import (
+[demo_app.py] from PySide6.QtCore import QPoint, QRect, Qt
+[demo_app.py] from PySide6.QtGui import QGuiApplication
+[demo_app.py] from PySide6.QtWidgets import QApplication, QDialog, QFrame, QVBoxLayout
+[demo_app.py] from ..scene import build_glass_dialog_scene
+[demo_app.py]         self.setWindowTitle("PySide6 Glass Workbench")
+[demo_app.py]         outer, content_layer, _backdrop = build_glass_dialog_scene(
+[integration_demo.py] from forgeos.shared.pyside6_glass.integration import (
+[test_assets_smoke.py] from PySide6.QtWidgets import QApplication
+[test_assets_smoke.py] from forgeos.shared.pyside6_glass.assets import (
+[test_builtin_data_providers.py] from forgeos.shared.pyside6_glass.data import (
+[test_builtin_data_providers.py] from forgeos.shared.pyside6_glass.data_providers import register_builtin_data_providers
+[test_catalog_registry.py] from forgeos.shared.pyside6_glass.catalog import (
+[test_catalog_workbench.py] from PySide6.QtCore import QPoint, QPointF, Qt
+[test_catalog_workbench.py] from PySide6.QtTest import QTest
+[test_catalog_workbench.py] from PySide6.QtWidgets import QApplication, QMessageBox, QPushButton
+[test_catalog_workbench.py] from forgeos.shared.pyside6_glass.catalog import _clear_catalog_registry_for_tests, register_builtin_catalog_entries
+[test_catalog_workbench.py] from forgeos.shared.pyside6_glass.data import DataQuery, DataResult, RefreshPolicy
+[test_catalog_workbench.py] from forgeos.shared.pyside6_glass.data import _clear_data_provider_registry_for_tests
+[test_catalog_workbench.py] from forgeos.shared.pyside6_glass.examples.catalog_shell import GlassCatalogShell
+[test_catalog_workbench.py]                 "forgeos.shared.pyside6_glass.examples.catalog_shell.QInputDialog.getItem",
+[test_catalog_workbench.py]                 "forgeos.shared.pyside6_glass.examples.catalog_shell.QMessageBox.question",
+[test_catalog_workbench.py]                 "forgeos.shared.pyside6_glass.examples.catalog_shell.QInputDialog.getText",
+[test_catalog_workbench.py]                 "forgeos.shared.pyside6_glass.examples.catalog_shell.execute_data_query",
+[test_chart_catalog.py] from forgeos.shared.pyside6_glass.charts import (
+[test_controls.py] from PySide6.QtWidgets import QApplication
+[test_controls.py] from forgeos.shared.pyside6_glass.controls import create_button, list_button_variants
+[test_data_registry.py] from forgeos.shared.pyside6_glass.data import (
+[test_data_result_states.py] from forgeos.shared.pyside6_glass.data import DataQuery, DataResult, DataState, RefreshPolicy
+[test_release_gate.py] from forgeos.shared.pyside6_glass import release_gate
+[test_release_gate.py]         with mock.patch("forgeos.shared.pyside6_glass.release_gate._run", side_effect=_fake_run):
+[test_release_gate.py]         self.assertIn("forgeos.shared.pyside6_glass.ux_flight_recorder.runner", " ".join(command))
+[test_theme_surface_opacity.py] from forgeos.shared.pyside6_glass.theme import _scale_rgba_alpha, build_stylesheet
+[test_ux_flight_recorder.py] from forgeos.shared.pyside6_glass.ux_flight_recorder import comparator, runner, specs
+[test_ux_flight_recorder.py] from forgeos.shared.pyside6_glass.ux_flight_recorder.recorder import SessionRecorder
+[test_ux_flight_recorder.py]                 "forgeos.shared.pyside6_glass.ux_flight_recorder.runner",
+[runner.py] from PySide6.QtCore import QPoint, QPointF, Qt
+[runner.py] from PySide6.QtWidgets import QApplication, QMessageBox, QWidget
+[runner.py]             "forgeos.shared.pyside6_glass.examples.catalog_shell.QMessageBox.question",
+[runner.py]             "forgeos.shared.pyside6_glass.examples.catalog_shell.QInputDialog.getText",
+[runner.py]     parser = argparse.ArgumentParser(description="Run pyside6_glass UX release proof golden sessions.")
+[web_shell_app.py] from forgeos.shared.pyside6_glass.integration import (  # noqa: E402
+[nexus_app.py] from PySide6.QtWidgets import QApplication
+[patch_browse_content_code_atlas_parity.py] Objetivo: quitar el look negro/cian feo y empujar el shared pyside6_glass
+[patch_browse_content_code_atlas_parity.py]     base = root / "forgeos" / "shared" / "pyside6_glass"
+[patch_silver_case_hitech.py] DEFAULT_ROOT = Path(r"F:\repos\hitech-os\forgeos\shared\pyside6_glass")
+[surfaces.py] from PySide6.QtCore import Qt
+[surfaces.py] from PySide6.QtWidgets import (
+[window.py] from PySide6.QtGui import QCloseEvent
+[window.py] from PySide6.QtWidgets import (
+[window.py] from forgeos.shared.pyside6_glass import (
+[window.py]         from PySide6.QtWidgets import QTextEdit
+[module.py] from forgeos.shared.pyside6_glass.integration import (
+[module.py] from forgeos.shared.pyside6_glass.runtime import GlassWorkspaceRuntime
+[__init__.py] """Contratos y tooling para superficies PySide6 gobernadas por el core visual."""
+[_template_helpers.py] from PySide6.QtWidgets import QLayout, QWidget
+[_template_layout.py] from PySide6.QtWidgets import QFrame, QHBoxLayout, QPushButton, QSplitter, QVBoxLayout, QWidget
+[_template_panels.py] from PySide6.QtCore import Qt
+[_template_panels.py] from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QLayout, QVBoxLayout, QWidget
+[_template_shell_appearance.py] from PySide6.QtCore import Qt
+[_template_shell_appearance.py] from PySide6.QtWidgets import QPushButton, QWidget
+[_template_shell_build.py] from PySide6.QtCore import Qt
+[_template_shell_build.py] from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QPushButton, QSplitter, QVBoxLayout, QWidget
+[_template_shell_build.py] from .scene import build_glass_dialog_scene
+[_template_shell_build.py]         outer, content, self._glass_backdrop = build_glass_dialog_scene(
+[_template_shell_state.py] from PySide6.QtWidgets import QLayout
+[_template_shell_workspace.py] from PySide6.QtWidgets import QLayout, QWidget
+[_template_shell.py] from PySide6.QtWidgets import QLabel, QWidget
+[_template_specs.py] from PySide6.QtWidgets import QWidget
+[_template_tabs.py] from PySide6.QtCore import Qt
+[_template_tabs.py] from PySide6.QtWidgets import QTabWidget, QWidget
+[charts.py] from PySide6.QtCore import Qt, Signal
+[charts.py] from PySide6.QtGui import QColor, QBrush, QFont, QLinearGradient, QPainter, QPen
+[charts.py] from PySide6.QtWidgets import (
+[charts.py]     from PySide6.QtWidgets import QApplication
+[component_governance.py] from PySide6.QtWidgets import QListWidget, QTableWidget, QTextEdit, QWidget
+[effects.py] from PySide6.QtCore import QEasingCurve, Property, QEvent, QObject, Qt, QPropertyAnimation
+[legacy_cleanup.py]     'shared/pyside6_glass/.pytest_cache',
+[legacy_cleanup.py]     'shared/pyside6_glass/__pycache__',
+[legacy_cleanup.py]     'shared/pyside6_glass/tests/__pycache__',
+[legacy_cleanup.py]     'shared/pyside6_glass/examples/__pycache__',
+[legacy_cleanup.py]     'shared/pyside6_glass/atlas_styles.py.bak_silver_case',
+[legacy_cleanup.py]     'shared/pyside6_glass/atlas_theme_bridge.py.bak_silver_case',
+[legacy_cleanup.py]     'shared/pyside6_glass/backdrop.py.bak_silver_case',
+[legacy_cleanup.py]     'shared/pyside6_glass/theme.py.bak_silver_case',
+[legacy_cleanup.py]     'shared/pyside6_glass/examples/catalog_shell.py.bak_silver_case',
+[legacy_cleanup.py]     'shared/pyside6_glass/examples/demo_app.py.bak_silver_case',
+[legacy_cleanup.py]     'shared/pyside6_glass/README.md',
+[legacy_cleanup.py]     'shared/pyside6_glass/ARCHITECTURE.md',
+[legacy_cleanup.py]     'shared/pyside6_glass/INTEGRATION.md',
+[legacy_cleanup.py]     'shared/pyside6_glass/backdrop.py',
+[legacy_cleanup.py]     'shared/pyside6_glass/atlas_styles.py',
+[legacy_cleanup.py]     'shared/pyside6_glass/atlas_theme_bridge.py',
+[legacy_cleanup.py]     'shared/pyside6_glass/__init__.py',
+[release_gate.py]     from forgeos.shared.pyside6_glass.validation import run_validation  # type: ignore
+[release_gate.py]     "forgeos/shared/pyside6_glass/runtime.py",
+[release_gate.py]     "forgeos/shared/pyside6_glass/visual_runtime.py",
+[release_gate.py]     "forgeos/shared/pyside6_glass/appearance/intelligence.py",
+[release_gate.py]     "forgeos/shared/pyside6_glass/appearance/levels.py",
+[release_gate.py]     "forgeos/shared/pyside6_glass/validation.py",
+[release_gate.py]     "forgeos.shared.pyside6_glass.tests.test_component_governance",
+[theme.py] `pyside6_glass.theme` remains as a stable import target, but the actual visual
+[theme.py] material authority now lives in `pyside6_glass.skin.*`.
+[visual_contracts.py] from PySide6.QtWidgets import QWidget
+[coordinator.py] from PySide6.QtCore import QObject, Signal
+[customers_dashboard.py] from PySide6.QtWidgets import QApplication, QLabel, QListWidget, QVBoxLayout, QWidget
+[ui_runtime.py] from PySide6.QtCore import Qt
+[ui_runtime.py] from PySide6.QtGui import QFont
+[ui_runtime.py] from PySide6.QtWidgets import QApplication
+[visual_screen_template.py] from PySide6.QtCore import Qt
+[visual_screen_template.py] from PySide6.QtWidgets import (
+[new_ui_screen.py] from PySide6.QtWidgets import QLabel, QPushButton, QTextEdit, QVBoxLayout, QWidget
+[customers_dashboard_ritual_screen.py]         if (candidate / "forgeos" / "shared" / "pyside6_glass").exists():
+[customers_dashboard_ritual_screen.py] from PySide6.QtWidgets import (
+[customers_dashboard_ritual_screen.py] from forgeos.shared.pyside6_glass.orchestrators.ritual_dashboard_orchestrator import RitualDashboardOrchestrator
+[customers_dashboard_ritual_screen.py] from forgeos.shared.pyside6_glass.orchestrators.ritual_dashboard_state import RitualDashboardState
+[customers_dashboard_ritual_screen.py] from forgeos.shared.pyside6_glass.ui_baseline.screen_template import VisualScreenTemplate
+[customers_dashboard_ritual_v2.py]         if (candidate / "forgeos" / "shared" / "pyside6_glass").exists():
+[customers_dashboard_ritual_v2.py] from PySide6.QtCore import QPointF, QRectF, Qt, QSize, QTimer
+[customers_dashboard_ritual_v2.py] from PySide6.QtGui import QColor, QFont, QLinearGradient, QPainter, QPainterPath, QPen, QRadialGradient
+[customers_dashboard_ritual_v2.py] from PySide6.QtWidgets import (
+[customers_dashboard_ritual_v2.py] from forgeos.shared.pyside6_glass.orchestrators.ritual_dashboard_orchestrator import RitualDashboardOrchestrator
+[customers_dashboard_ritual_v2.py] from forgeos.shared.pyside6_glass.orchestrators.ritual_dashboard_state import RitualDashboardState
+[customers_dashboard_ritual_v2.py] from forgeos.shared.pyside6_glass.ui_baseline.screen_template import VisualScreenTemplate
+[customers_dashboard_ritual_v4.py]         if (candidate / "forgeos" / "shared" / "pyside6_glass").exists():
+[customers_dashboard_ritual_v4.py] from PySide6.QtCore import QPointF, QRectF, Qt, QSize, QTimer
+[customers_dashboard_ritual_v4.py] from PySide6.QtGui import QColor, QFont, QLinearGradient, QPainter, QPainterPath, QPen, QRadialGradient
+[customers_dashboard_ritual_v4.py] from PySide6.QtWidgets import (
+[customers_dashboard_ritual_v4.py] from forgeos.shared.pyside6_glass.orchestrators.ritual_dashboard_orchestrator import RitualDashboardOrchestrator
+[customers_dashboard_ritual_v4.py] from forgeos.shared.pyside6_glass.orchestrators.ritual_dashboard_state import RitualDashboardState
+[customers_dashboard_ritual_v4.py] from forgeos.shared.pyside6_glass.ui_baseline.screen_template import VisualScreenTemplate
+[demo_app.py] from PySide6.QtWidgets import QApplication, QDialog, QFrame, QVBoxLayout, QWidget
+[demo_app.py]         outer, content_layer, backdrop = build_glass_dialog_scene(
+[showcase_app.py] from PySide6.QtCore import Qt
+[showcase_app.py] from PySide6.QtGui import QColor, QFont, QLinearGradient, QPainter, QPainterPath, QPen
+[showcase_app.py] from PySide6.QtWidgets import (
+[ui_baseline_customers_dashboard.py] from PySide6.QtWidgets import (
+[ui_baseline_customers_dashboard.py] from forgeos.shared.pyside6_glass.ui_baseline.screen_template import VisualScreenTemplate
+[showcase_app.py] from PySide6.QtCore import QTimer, Qt
+[showcase_app.py] from PySide6.QtGui import QColor, QFont
+[customers_dashboard_placeholder_screen.py] from PySide6.QtWidgets import QApplication, QGroupBox, QLabel, QVBoxLayout, QWidget
+[customers_dashboard_placeholder_screen.py] from forgeos.shared.pyside6_glass.ui_baseline.screen_template import VisualScreenTemplate
+[ritual_dashboard_orchestrator.py] from PySide6.QtCore import QObject, Signal
+[glass_painter.py] from PySide6.QtCore import QRectF, QPointF, Qt
+[glass_painter.py] from PySide6.QtGui import QColor, QLinearGradient, QPainter, QPainterPath, QPen, QRadialGradient
+[overlays.py] from PySide6.QtCore import QEvent, QObject, QRect, Qt
+[overlays.py] from PySide6.QtWidgets import QWidget
+[overlays.py]         from PySide6.QtGui import QPainter
+[surface_renderer.py] from PySide6.QtWidgets import QWidget
+[backdrop_spec.py] from PySide6.QtGui import QColor
+[test_appearance_coordinator.py] pytest.importorskip('PySide6')
+[test_appearance_coordinator.py] from pyside6_glass.appearance import AppearanceCoordinator
+[test_appearance_profiles.py] pytest.importorskip('PySide6')
+[test_appearance_profiles.py] from pyside6_glass.appearance import AppearanceProfile, EffectsProfile
+[test_appearance_profiles.py] from pyside6_glass.config import GlassTemplateConfig, GlassThemeConfig, GlassVisualScaleConfig
+[test_atlas_bridge_compat.py] from pyside6_glass.atlas_styles import build_app_stylesheet
+[test_atlas_bridge_compat.py] from pyside6_glass.atlas_theme_bridge import resolve_atlas_glass_palette
+[test_backdrop_appearance.py] from PySide6.QtWidgets import QApplication
+[test_backdrop_appearance.py] from pyside6_glass.appearance import AppearanceProfile, EffectsProfile
+[test_backdrop_appearance.py] from pyside6_glass.backdrop import FrostedGlassBackdrop
+[test_backdrop_final.py] from PySide6.QtWidgets import QApplication
+[test_backdrop_final.py] from pyside6_glass.appearance import AppearanceProfile, AppearanceSnapshot, EffectsProfile
+[test_backdrop_final.py] from pyside6_glass.backdrop import FrostedGlassBackdrop
+[test_component_governance.py] from PySide6.QtWidgets import QApplication, QFrame, QVBoxLayout
+[test_component_governance.py] from forgeos.shared.pyside6_glass.component_governance import mark_component, validate_widget_tree
+[test_component_governance.py] from forgeos.shared.pyside6_glass.dashboard import DashboardDataSurface, DashboardQuerySpec
+[test_component_governance.py]         from PySide6.QtWidgets import QTableWidget
+[test_glass_painter.py] from pyside6_glass.appearance import AppearanceProfile, EffectsProfile, resolve_appearance_tokens
+[test_glass_painter.py] from pyside6_glass.rendering.glass_painter import GlassSurfaceSpec, build_surface_spec
+[test_legacy_cleanup_manifest.py] from pyside6_glass.legacy_cleanup import (
+[test_legacy_cleanup_manifest.py]     assert 'shared/pyside6_glass/.pytest_cache' in LEGACY_DELETE_PATHS
+[test_legacy_cleanup_manifest.py]     assert 'shared/pyside6_glass/backdrop.py' in LEGACY_REPLACE_PATHS
+[test_legacy_cleanup_manifest.py]     assert should_delete_path(r'shared\pyside6_glass\theme.py.bak_silver_case')
+[test_legacy_cleanup_manifest.py]     assert not should_delete_path('shared/pyside6_glass/theme.py')
+[test_surface_renderer.py] from PySide6.QtWidgets import QApplication, QFrame
+[test_surface_renderer.py] from pyside6_glass.appearance import AppearanceProfile, AppearanceSnapshot, EffectsProfile
+[test_surface_renderer.py] from pyside6_glass.rendering import apply_surface_role, install_surface_renderer, sync_surface_renderer
+[test_template_surface_roles.py] from PySide6.QtWidgets import QApplication
+[test_template_surface_roles.py] from pyside6_glass.template import GlassPanelTemplate
+[test_theme_resolver.py] pytest.importorskip('PySide6')
+[test_theme_resolver.py] from pyside6_glass.appearance import resolve_appearance_tokens
+[test_theme_resolver.py] from pyside6_glass.config import GlassTemplateConfig, GlassThemeConfig, GlassVisualScaleConfig
+[test_theme_resolver.py] from pyside6_glass.theme_resolver import appearance_from_template_config, resolve_appearance
+[test_visual_contracts.py] from PySide6.QtWidgets import QApplication, QWidget
+[test_visual_contracts.py] from pyside6_glass.visual_contracts import (
+[test_visual_intelligence.py] from pyside6_glass.appearance import VisualIntelligenceContext, select_visual_bundle
+[test_visual_runtime_wiring.py] from PySide6.QtWidgets import QApplication
+[test_visual_runtime_wiring.py] from pyside6_glass.appearance import (
+[test_visual_runtime_wiring.py] from pyside6_glass.config import GlassTemplateConfig, GlassThemeConfig, GlassVisualScaleConfig
+[test_visual_runtime_wiring.py] from pyside6_glass.runtime import GlassWorkspaceRuntime
+[test_visual_runtime_wiring.py] from pyside6_glass.template import GlassPanelTemplate
+[test_visual_runtime_wiring.py] from pyside6_glass.visual_runtime import create_visual_runtime
+[new_ui_screen.py]         if (candidate / "forgeos" / "shared" / "pyside6_glass").exists():
+[new_ui_screen.py] from forgeos.shared.pyside6_glass.ui_baseline.builder.generator import generate_screen
+[new_ui_screen.py] from forgeos.shared.pyside6_glass.ui_baseline.builder.recipe import ScreenRecipe
+[ui_baseline_builder.py] from PySide6.QtCore import Qt
+[ui_baseline_builder.py] from PySide6.QtWidgets import (
+[ui_baseline_builder.py] from forgeos.shared.pyside6_glass.tools.ui_baseline.validate_ui_baseline import render_report, validate_repository
+[ui_baseline_builder.py] from forgeos.shared.pyside6_glass.ui_baseline.builder.catalog import list_ingredients
+[ui_baseline_builder.py] from forgeos.shared.pyside6_glass.ui_baseline.builder.generator import generate_screen
+[ui_baseline_builder.py] from forgeos.shared.pyside6_glass.ui_baseline.builder.preview import preview_recipe
+[ui_baseline_builder.py] from forgeos.shared.pyside6_glass.ui_baseline.builder.recipe import ScreenRecipe, derive_class_name
+[__init__.py] """Baseline gobernado para pantallas PySide6.
+[context_adapter.py]     ("forgeos.shared.pyside6_glass.visual_context", "VisualIntelligenceContext"),
+[context_adapter.py]     ("forgeos.shared.pyside6_glass.core.visual_context", "VisualIntelligenceContext"),
+[context_adapter.py]     ("forgeos.shared.pyside6_glass.runtime.visual_context", "VisualIntelligenceContext"),
+[context_adapter.py]     ("forgeos.shared.pyside6_glass.runtime.context", "VisualIntelligenceContext"),
+[context_adapter.py]     ("forgeos.shared.pyside6_glass.core.context", "VisualIntelligenceContext"),
+[context_adapter.py]     ("forgeos.shared.pyside6_glass.runtime", "VisualIntelligenceContext"),
+[context_adapter.py]     ("forgeos.shared.pyside6_glass.core.runtime", "VisualIntelligenceContext"),
+[runtime.py]         "forgeos.shared.pyside6_glass.runtime",
+[runtime.py]         "forgeos.shared.pyside6_glass.runtime.factory",
+[runtime.py]         "forgeos.shared.pyside6_glass.runtime_factory",
+[runtime.py]         "forgeos.shared.pyside6_glass.visual_runtime",
+[runtime.py]         "forgeos.shared.pyside6_glass.core.runtime",
+[runtime.py]         "forgeos.shared.pyside6_glass.core.runtime.factory",
+[runtime.py]         "forgeos.shared.pyside6_glass.core.visual_runtime",
+[screen_template.py] from PySide6.QtWidgets import QFrame, QGridLayout, QLabel, QSizePolicy, QVBoxLayout, QWidget
+[generator.py] from PySide6.QtWidgets import QApplication, QGroupBox, QLabel, QVBoxLayout, QWidget
+[generator.py] from forgeos.shared.pyside6_glass.ui_baseline.screen_template import VisualScreenTemplate
+[recipe.py] from forgeos.shared.pyside6_glass.ui_baseline.defaults import normalize_intent
+[dev_self_test.py] from PySide6.QtCore import QEventLoop
+[dev_self_test.py] from PySide6.QtWidgets import QApplication
+[main.py] from PySide6.QtCore import Qt
+[main.py] from PySide6.QtWidgets import QApplication
+[__init__.py] """PySide6 UI package for Repo Analyzer."""
+[dev_diagnostics.py] from PySide6.QtCore import QRegularExpression, Qt
+[dev_diagnostics.py] from PySide6.QtWidgets import QDockWidget, QMainWindow, QToolBar
+[dock_manager.py] from PySide6.QtCore import Qt
+[dock_manager.py] from PySide6.QtWidgets import QDockWidget
+[effects.py] from PySide6.QtCore import QEasingCurve, QPropertyAnimation
+[effects.py] from PySide6.QtWidgets import QGraphicsDropShadowEffect, QGraphicsOpacityEffect, QWidget
+[layout_manager.py] from PySide6.QtCore import Qt
+[layout_manager.py] from PySide6.QtWidgets import QMessageBox
+[main_window.py] from PySide6.QtCore import QSettings, Qt, QThread
+[main_window.py] from PySide6.QtWidgets import (
+[palette.py] from PySide6.QtGui import QColor
+[preview_controller.py] from PySide6.QtGui import QFont, QTextCursor
+[preview_controller.py] from PySide6.QtWidgets import (
+[preview_controller.py]         from PySide6.QtWidgets import QTabWidget
+[search_controller.py] from PySide6.QtCore import QObject, Qt, QThread, Slot
+[search_controller.py] from PySide6.QtWidgets import (
+[search_controller.py] from PySide6.QtGui import QStandardItem, QStandardItemModel
+[skins.py] from PySide6.QtGui import QColor
+[skins.py] from PySide6.QtWidgets import QApplication, QMainWindow
+[skins.py] except ImportError:  # pragma: no cover - PySide6 ships shiboken6
+[svg_viewer.py] from PySide6.QtCore import QByteArray, QRectF, Qt, QTimer
+[svg_viewer.py] from PySide6.QtGui import QAction, QColor, QPainter
+[svg_viewer.py] from PySide6.QtWidgets import (
+[svg_viewer.py] from PySide6.QtSvg import QSvgRenderer
+[svg_viewer.py] from PySide6.QtSvgWidgets import QGraphicsSvgItem
+[toolbar_controller.py] from PySide6.QtCore import Qt
+[toolbar_controller.py] from PySide6.QtGui import QAction, QKeySequence
+[toolbar_controller.py] from PySide6.QtWidgets import (
+[tree_controller.py] from PySide6.QtWidgets import (
+[ui_contribution_registry.py] from PySide6.QtCore import Qt
+[ui_contribution_registry.py] from PySide6.QtWidgets import QWidget
+[visual_runtime.py] from PySide6.QtCore import QEasingCurve, QPropertyAnimation, QRegularExpression, Qt, QThread
+[visual_runtime.py] from PySide6.QtGui import QColor
+[visual_runtime.py] from PySide6.QtWidgets import (
+[visual_runtime.py] except ImportError:  # pragma: no cover - PySide6 ships shiboken6
+[widgets.py] from PySide6.QtCore import QEasingCurve, QEvent, QObject, QPropertyAnimation, QTimer, Qt, QVariantAnimation
+[widgets.py] from PySide6.QtGui import QColor, QFont, QLinearGradient, QPainter, QPainterPath, QPen
+[widgets.py] from PySide6.QtWidgets import (
+[workers.py] from PySide6.QtCore import QObject, Signal, Slot
+[elevations.py]             from PySide6.QtWidgets import QFrame
+[elevations.py]         from PySide6.QtGui import QColor
+[elevations.py]         from PySide6.QtWidgets import QGraphicsDropShadowEffect
+[typography_system.py] from PySide6.QtGui import QFont
+[demo_ui_validation_plugin.py] from PySide6.QtCore import Qt
+[demo_ui_validation_plugin.py] from PySide6.QtWidgets import (
+[action_rail.py] from PySide6.QtCore import QEvent, QObject, QTimer, Qt, Signal
+[action_rail.py] from PySide6.QtGui import QKeyEvent, QMouseEvent
+[action_rail.py] from PySide6.QtWidgets import (
+[command_bar.py] from PySide6.QtCore import QEvent, QObject, QTimer, Qt, Signal
+[command_bar.py] from PySide6.QtGui import QKeyEvent, QMouseEvent
+[context_spine.py] from PySide6.QtCore import Qt
+[context_spine.py] from PySide6.QtWidgets import QFrame, QGridLayout, QHBoxLayout, QLabel, QVBoxLayout, QWidget
+[deck_shell.py] from PySide6.QtCore import QRectF, QTimer, Qt
+[deck_shell.py] from PySide6.QtGui import QColor, QLinearGradient, QPainter
+[deck_shell.py] from PySide6.QtWidgets import (
+[deck_surface.py] from PySide6.QtCore import QEasingCurve, Qt
+[deck_surface.py] from PySide6.QtGui import QColor
+[deck_surface.py] from PySide6.QtWidgets import (
+[graph_radar.py] from PySide6.QtCore import QPointF, QRectF, QSize, Qt, QTimer
+[graph_radar.py] from PySide6.QtGui import QColor, QFont, QFontMetrics, QLinearGradient, QPainter, QPainterPath, QPen
+[graph_radar.py] from PySide6.QtWidgets import QFrame, QLabel, QSizePolicy, QVBoxLayout, QWidget
+[guardian_widget.py] from PySide6.QtWidgets import (
+[motion.py] from PySide6.QtCore import QEasingCurve, QObject, QVariantAnimation
+[motion.py] from PySide6.QtWidgets import QGraphicsOpacityEffect, QWidget
+[plugin.py] from PySide6.QtWidgets import QWidget
+[repo_pulse.py] from PySide6.QtCore import Qt
+[repo_pulse.py] from PySide6.QtWidgets import QFrame, QGridLayout, QHBoxLayout, QLabel, QVBoxLayout, QWidget
+[state_adapter.py] from PySide6.QtCore import QObject
+[theme_bridge.py] from PySide6.QtGui import QColor
+[plugin.py] from PySide6.QtWidgets import QLabel, QMessageBox, QVBoxLayout, QWidget
+[plugin.py]     from PySide6.QtCore import QProcess, QTimer, Qt
+[plugin.py]     from PySide6.QtWidgets import (
+[plugin.py]     QT_API = "PySide6"
+[dialog.py] from PySide6.QtCore import Qt
+[dialog.py] from PySide6.QtWidgets import (
+[runtime.py] from PySide6.QtCore import QSettings
+[runtime.py] from PySide6.QtGui import QFont, QFontDatabase
+[runtime.py] from PySide6.QtWidgets import QApplication
+[central_workspace.py] from PySide6.QtCore import Qt
+[central_workspace.py] from PySide6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
+[command_runtime.py] from PySide6.QtCore import QObject
+[context_bridge.py] from PySide6.QtCore import QObject
+[dock_sections.py] from PySide6.QtWidgets import (
+[dock_sections.py]         from PySide6.QtWidgets import QTabWidget
+[group_shell.py] from PySide6.QtCore import QObject
+[group_shell.py] from PySide6.QtWidgets import QDockWidget
+[menu_shell.py] from PySide6.QtGui import QAction, QKeySequence
+[menu_shell.py] from PySide6.QtWidgets import QDockWidget, QMenu
+[menu_shell.py] except ImportError:  # pragma: no cover - PySide6 ships shiboken6
+[skin_runtime.py] from PySide6.QtWidgets import QApplication
+[skin_runtime.py] except ImportError:  # pragma: no cover - PySide6 ships shiboken6
+[status_strip.py] from PySide6.QtWidgets import QLabel, QProgressBar, QStatusBar
+[tool_launcher.py] from PySide6.QtCore import Qt
+[tool_launcher.py] from PySide6.QtWidgets import (
+[tool_workspace.py] from PySide6.QtCore import QObject, Qt
+[tool_workspace.py] from PySide6.QtWidgets import QDockWidget
+[workspace_runtime.py] from PySide6.QtCore import QObject, QThread, Slot
+[workspace_runtime.py] from PySide6.QtWidgets import QFileDialog, QMessageBox
+[workstation_context.py] from PySide6.QtCore import QObject
+[test_shell_group_runtime.py] from PySide6.QtCore import QObject
+[test_tool_workspace_lifecycle.py] from PySide6.QtCore import QObject
+[catalog.py] from PySide6.QtCore import QSettings
+[skins.py] from forgeos.shared.pyside6_glass.theme import (
+[central_workspace.py] from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QVBoxLayout, QWidget
+[central_workspace.py] from forgeos.shared.pyside6_glass.scene import (
+[central_workspace.py]     build_glass_dialog_scene as shared_build_glass_dialog_scene,
+[central_workspace.py]         outer, content_layer, backdrop = shared_build_glass_dialog_scene(
+[tree_controller.py] from PySide6.QtWidgets import QLineEdit, QTreeWidget, QTreeWidgetItem, QVBoxLayout
+[deck_shell.py] from PySide6.QtCore import Qt
+[guardian_widget.py] from PySide6.QtCore import Qt
+[bottom_results_tabs.py] from PySide6.QtWidgets import QTabWidget, QTextEdit, QVBoxLayout, QWidget
+[main_window.py] from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QWidget
+[bootstrap.py]     from PySide6 import QtWidgets
+[main_window.py] from PySide6 import QtCore, QtGui, QtWidgets
+[command_bar.py] from PySide6.QtCore import Qt, Signal
+[command_bar.py] from PySide6.QtWidgets import QHBoxLayout, QLabel, QSizePolicy, QToolButton, QVBoxLayout, QWidget
+[session_tabs.py] from PySide6.QtWidgets import QHBoxLayout, QLabel, QTabBar, QVBoxLayout, QWidget
+[command_button.py] from PySide6 import QtCore, QtGui, QtWidgets
+[diff_block.py] from PySide6 import QtCore, QtWidgets
+[empty_state.py] from PySide6 import QtCore, QtWidgets
+[shell.py] from PySide6 import QtCore, QtWidgets
+[theme_api.py] from PySide6 import QtGui, QtWidgets
+[bottom_results_tabs.py]     from PySide6.QtCore import Qt
+[bottom_results_tabs.py]     from PySide6.QtWidgets import (
+[detail_stack.py]     from PySide6.QtCore import Qt
+[detail_stack.py]     from PySide6.QtWidgets import (
+[ops_list.py]     from PySide6.QtCore import Qt, Signal
+[ops_list.py]     from PySide6.QtWidgets import (
+[plan_diff_stack.py]     from PySide6.QtCore import Qt
+[plan_diff_stack.py]     from PySide6.QtWidgets import (
+[session_workspace.py]     from PySide6.QtCore import Qt, Signal
+[session_workspace.py]     from PySide6.QtWidgets import (
+[target_list.py]     from PySide6.QtCore import Qt, Signal
+[target_list.py]     from PySide6.QtGui import QColor, QBrush
+[target_list.py]     from PySide6.QtWidgets import (
+[session_workspace.py] from PySide6.QtCore import Qt
+[customers_dashboard_screen.py] from PySide6.QtWidgets import QLabel, QTextEdit, QVBoxLayout, QWidget
+[customers_dashboard_screen.py] from pyside6_glass.ui_baseline import ScreenActionSpec, VisualScreenTemplate
+
+💡 RECOMENDACION
+-------------------------------
+Crear stubs tipo:
+
+def build_stylesheet(...): return ''
+def create_button(...): return QPushButton(...)
+def build_glass_dialog_scene(...): return layout basico
+
+O copiar implementacion minima local.

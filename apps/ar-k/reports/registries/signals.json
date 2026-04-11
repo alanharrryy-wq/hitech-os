@@ -1,0 +1,267 @@
+[
+  {
+    "confidence": 0.8,
+    "created_at": "2026-04-11T21:07:58Z",
+    "evidence": {
+      "boundaries": [],
+      "exports": [
+        "Service"
+      ],
+      "imports": [
+        ".service"
+      ],
+      "kind": "python",
+      "routes": [],
+      "surface_kind": "python_module"
+    },
+    "module_name": "app.__init__",
+    "producer": "scanner",
+    "signal_id": "sig_407f6277c28378b7",
+    "signal_type": "module_candidate",
+    "snapshot_id": "run_ff2b8a412789d225",
+    "source_path": "app/__init__.py",
+    "state": "candidate",
+    "tags": [
+      "python",
+      "module"
+    ]
+  },
+  {
+    "confidence": 1.0,
+    "created_at": "2026-04-11T21:07:58Z",
+    "evidence": {
+      "boundaries": [],
+      "kind": "python",
+      "routes": [],
+      "surface_kind": "python_module",
+      "tags": []
+    },
+    "producer": "scanner",
+    "signal_id": "sig_ab2b75690abbbe4b",
+    "signal_type": "file_observed",
+    "snapshot_id": "run_ff2b8a412789d225",
+    "source_path": "app/__init__.py",
+    "state": "observed",
+    "tags": [
+      "python",
+      "python_module"
+    ]
+  },
+  {
+    "confidence": 0.7,
+    "created_at": "2026-04-11T21:07:58Z",
+    "evidence": {
+      "module_name": "app.__init__",
+      "surface_kind": "python_module",
+      "target_import": ".service"
+    },
+    "producer": "scanner",
+    "signal_id": "sig_38f815253273cd25",
+    "signal_type": "import_edge",
+    "snapshot_id": "run_ff2b8a412789d225",
+    "source_path": "app/__init__.py",
+    "state": "observed",
+    "tags": [
+      "dependency",
+      "python_module"
+    ]
+  },
+  {
+    "confidence": 0.8,
+    "created_at": "2026-04-11T21:07:58Z",
+    "evidence": {
+      "boundaries": [],
+      "exports": [],
+      "imports": [],
+      "kind": "python",
+      "routes": [],
+      "surface_kind": "python_module"
+    },
+    "module_name": "app.flags",
+    "producer": "scanner",
+    "signal_id": "sig_be856b4c22f99878",
+    "signal_type": "module_candidate",
+    "snapshot_id": "run_ff2b8a412789d225",
+    "source_path": "app/flags.py",
+    "state": "candidate",
+    "tags": [
+      "python",
+      "module"
+    ]
+  },
+  {
+    "confidence": 1.0,
+    "created_at": "2026-04-11T21:07:58Z",
+    "evidence": {
+      "boundaries": [],
+      "kind": "python",
+      "routes": [],
+      "surface_kind": "python_module",
+      "tags": []
+    },
+    "producer": "scanner",
+    "signal_id": "sig_07bd85fcda92a6bf",
+    "signal_type": "file_observed",
+    "snapshot_id": "run_ff2b8a412789d225",
+    "source_path": "app/flags.py",
+    "state": "observed",
+    "tags": [
+      "python",
+      "python_module"
+    ]
+  },
+  {
+    "confidence": 0.8,
+    "created_at": "2026-04-11T21:07:58Z",
+    "evidence": {
+      "boundaries": [],
+      "exports": [
+        "Repository"
+      ],
+      "imports": [
+        "json"
+      ],
+      "kind": "python",
+      "routes": [],
+      "surface_kind": "python_module"
+    },
+    "module_name": "app.repository",
+    "producer": "scanner",
+    "signal_id": "sig_86bdc2ecc10bcc32",
+    "signal_type": "module_candidate",
+    "snapshot_id": "run_ff2b8a412789d225",
+    "source_path": "app/repository.py",
+    "state": "candidate",
+    "tags": [
+      "python",
+      "module"
+    ]
+  },
+  {
+    "confidence": 1.0,
+    "created_at": "2026-04-11T21:07:58Z",
+    "evidence": {
+      "boundaries": [],
+      "kind": "python",
+      "routes": [],
+      "surface_kind": "python_module",
+      "tags": []
+    },
+    "producer": "scanner",
+    "signal_id": "sig_982888638b7c737d",
+    "signal_type": "file_observed",
+    "snapshot_id": "run_ff2b8a412789d225",
+    "source_path": "app/repository.py",
+    "state": "observed",
+    "tags": [
+      "python",
+      "python_module"
+    ]
+  },
+  {
+    "confidence": 0.7,
+    "created_at": "2026-04-11T21:07:58Z",
+    "evidence": {
+      "module_name": "app.repository",
+      "surface_kind": "python_module",
+      "target_import": "json"
+    },
+    "producer": "scanner",
+    "signal_id": "sig_dc47328eb4ca09fa",
+    "signal_type": "import_edge",
+    "snapshot_id": "run_ff2b8a412789d225",
+    "source_path": "app/repository.py",
+    "state": "observed",
+    "tags": [
+      "dependency",
+      "python_module"
+    ]
+  },
+  {
+    "confidence": 0.8,
+    "created_at": "2026-04-11T21:07:58Z",
+    "evidence": {
+      "boundaries": [],
+      "exports": [
+        "Service"
+      ],
+      "imports": [
+        ".flags",
+        ".repository"
+      ],
+      "kind": "python",
+      "routes": [],
+      "surface_kind": "python_module"
+    },
+    "module_name": "app.service",
+    "producer": "scanner",
+    "signal_id": "sig_b72ec9bdecc75cb2",
+    "signal_type": "module_candidate",
+    "snapshot_id": "run_ff2b8a412789d225",
+    "source_path": "app/service.py",
+    "state": "candidate",
+    "tags": [
+      "python",
+      "module"
+    ]
+  },
+  {
+    "confidence": 1.0,
+    "created_at": "2026-04-11T21:07:58Z",
+    "evidence": {
+      "boundaries": [],
+      "kind": "python",
+      "routes": [],
+      "surface_kind": "python_module",
+      "tags": []
+    },
+    "producer": "scanner",
+    "signal_id": "sig_eb2b06f9161f1a21",
+    "signal_type": "file_observed",
+    "snapshot_id": "run_ff2b8a412789d225",
+    "source_path": "app/service.py",
+    "state": "observed",
+    "tags": [
+      "python",
+      "python_module"
+    ]
+  },
+  {
+    "confidence": 0.7,
+    "created_at": "2026-04-11T21:07:58Z",
+    "evidence": {
+      "module_name": "app.service",
+      "surface_kind": "python_module",
+      "target_import": ".flags"
+    },
+    "producer": "scanner",
+    "signal_id": "sig_79c053e45160e5e5",
+    "signal_type": "import_edge",
+    "snapshot_id": "run_ff2b8a412789d225",
+    "source_path": "app/service.py",
+    "state": "observed",
+    "tags": [
+      "dependency",
+      "python_module"
+    ]
+  },
+  {
+    "confidence": 0.7,
+    "created_at": "2026-04-11T21:07:58Z",
+    "evidence": {
+      "module_name": "app.service",
+      "surface_kind": "python_module",
+      "target_import": ".repository"
+    },
+    "producer": "scanner",
+    "signal_id": "sig_79c053e45160e5e5",
+    "signal_type": "import_edge",
+    "snapshot_id": "run_ff2b8a412789d225",
+    "source_path": "app/service.py",
+    "state": "observed",
+    "tags": [
+      "dependency",
+      "python_module"
+    ]
+  }
+]

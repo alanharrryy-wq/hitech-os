@@ -1,0 +1,219 @@
+{
+  "packet_id": "run_20260407_211258:02-domain-data-and-persistence:04",
+  "run_id": "run_20260407_211258",
+  "order": 20,
+  "worker_id": "pkg_02-domain-data-and-persistence_04",
+  "stage": "integration",
+  "package": "02-domain-data-and-persistence",
+  "goal": "Diseña la primera ola de trabajo para FA-MA",
+  "objective": "Advance the global goal for package '02-domain-data-and-persistence' by producing a precise, mergeable slice. Use the listed candidate files as the main surface. Goal: Diseña la primera ola de trabajo para FA-MA. Primary file set: packages/ui-kit/src/components/forms/IconButton.tsx, packages/ui-kit/src/components/forms/Input.tsx, packages/ui-kit/src/components/forms/Select.tsx, packages/ui-kit/src/components/forms/Textarea.tsx.",
+  "scope_summary": "Package surface: 02-domain-data-and-persistence. This packet covers 45 candidate files from a package with 189 indexed files. Runtime files in scope: n/a. Test files in scope: n/a. Docs/config in scope: packages/contracts/README.md, packages/tooling/README.md, packages/ui-kit/README.md.",
+  "owned_paths": [
+    "packages/"
+  ],
+  "candidate_files": [
+    "packages/ui-kit/src/components/forms/IconButton.tsx",
+    "packages/ui-kit/src/components/forms/Input.tsx",
+    "packages/ui-kit/src/components/forms/Select.tsx",
+    "packages/ui-kit/src/components/forms/Textarea.tsx",
+    "packages/ui-kit/src/components/layout/GlassCard.tsx",
+    "packages/ui-kit/src/components/layout/Grid.tsx",
+    "packages/ui-kit/src/components/layout/InsetPanel.tsx",
+    "packages/ui-kit/src/components/layout/Panel.tsx",
+    "packages/ui-kit/src/components/layout/Separator.tsx",
+    "packages/ui-kit/src/components/layout/Shell.tsx",
+    "packages/ui-kit/src/components/layout/Stage.tsx",
+    "packages/ui-kit/src/components/navigation/DropdownMenu.tsx",
+    "packages/ui-kit/src/components/navigation/ScrollArea.tsx",
+    "packages/ui-kit/src/components/navigation/Tabs.tsx",
+    "packages/ui-kit/src/components/overlays/Dialog.tsx",
+    "packages/ui-kit/src/components/overlays/Tooltip.tsx",
+    "packages/ui-kit/src/components/premium/controls/DropdownSelect.tsx",
+    "packages/ui-kit/src/components/premium/controls/NeonButton.tsx",
+    "packages/ui-kit/src/components/premium/controls/SegmentedControl.tsx",
+    "packages/ui-kit/src/components/premium/controls/Slider.tsx",
+    "packages/ui-kit/src/components/premium/controls/ToggleSwitch.tsx",
+    "packages/ui-kit/src/components/premium/layout/GlassHeader.tsx",
+    "packages/ui-kit/src/components/premium/layout/GlassPanel.tsx",
+    "packages/ui-kit/src/components/premium/overlays/Popover.tsx",
+    "packages/ui-kit/src/kpi/charts/bar-matrix.tsx",
+    "packages/ui-kit/src/kpi/charts/common.tsx",
+    "packages/ui-kit/src/kpi/charts/finance.tsx",
+    "packages/ui-kit/src/kpi/charts/line-area.tsx",
+    "packages/ui-kit/src/kpi/charts/radial.tsx",
+    "packages/ui-kit/src/kpi/charts/sparklines.tsx",
+    "packages/ui-kit/src/kpi/frame/KpiFooter.tsx",
+    "packages/ui-kit/src/kpi/frame/KpiHeader.tsx",
+    "packages/ui-kit/src/kpi/frame/KpiWidgetFrame.tsx",
+    "packages/ui-kit/src/layers/LayerDebugPanel.tsx",
+    "packages/ui-kit/src/layers/LayerFlagsProvider.tsx",
+    "packages/ui-kit/src/luxury/frames/frames.css",
+    "packages/ui-kit/src/motion/keyframes.css",
+    "packages/ui-kit/src/styles.css",
+    "packages/ui-kit/src/styles/hitech-foundation.css",
+    "packages/ui-kit/src/styles/layers.css",
+    "packages/ui-kit/tsconfig.json",
+    "packages/ui-kit/src/styles/hitech-premium.css",
+    "packages/contracts/README.md",
+    "packages/tooling/README.md",
+    "packages/ui-kit/README.md"
+  ],
+  "context_files": [
+    {
+      "rel_path": "packages/ui-kit/src/components/forms/IconButton.tsx",
+      "language": "typescript-react",
+      "size_bytes": 1450,
+      "sha1": "bf7a9ecebc8d15697c27a74b9d7b0dd4be00dfb4",
+      "package": "02-domain-data-and-persistence",
+      "role": "reference",
+      "importance": 50,
+      "headings": [
+        "FOCUS_RING_CLASS"
+      ],
+      "imports": [
+        "import { cva, type VariantProps } from \"class-variance-authority\";",
+        "import { forwardRef, type ButtonHTMLAttributes } from \"react\";",
+        "import { cn } from \"../../lib/cn.js\";",
+        "import { FOCUS_RING_CLASS } from \"../../lib/focus-ring.js\";"
+      ],
+      "excerpt": "0001: import { cva, type VariantProps } from \"class-variance-authority\";\n0002: import { forwardRef, type ButtonHTMLAttributes } from \"react\";\n0003: import { cn } from \"../../lib/cn.js\";\n0004: import { FOCUS_RING_CLASS } from \"../../lib/focus-ring.js\";\n0005: \n0006: const iconButtonVariants = cva(\n0007:   [\n0008:     \"inline-flex items-center justify-center rounded-[var(--ui-core-radius-sm)] border\",\n0009:     \"transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50\",\n0010:     FOCUS_RING_CLASS\n0011:   ].join(\" \"),\n0012:   {\n0013:     variants: {\n0014:       variant: {\n0015:         subtle:\n0016:           \"border-[hsl(var(--ui-border-1))] bg-[hsl(var(--ui-surface-1))] hover:bg-[hsl(var(--ui-surface-2))]\",\n0017:         ghost: \"border-transparent bg-transparent hover:bg-[hsl(var(--ui-surface-2))]\"\n0018:       },\n0019:       size: {\n0020:         sm: \"h-8 w-8\",\n0021:         md: \"h-9 w-9\",\n0022:         lg: \"h-10 w-10\"\n0023:       }\n0024:     },\n0025:     defaultVariants: {\n0026:       variant: \"subtle\",\n0027:       size: \"md\"\n0028:     }\n0029:   }\n0030: );\n0031: \n0032: export interface IconButtonProps\n0033:   extends ButtonHTMLAttributes<HTMLButtonElement>,\n0034:     VariantProps<typeof iconButtonVariants> {\n0035:   readonly label: string;\n0036: }\n0037: \n0038: export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(\n0039:   { className, variant, size, type = \"button\", label, ...props },\n0040:   ref\n0041: ) {\n0042:   return (\n0043:     <button\n0044:       ref={ref}\n0045:       type={type}\n0046:       className={cn(iconButtonVariants({ variant, size }), className)}\n0047:       aria-label={label}\n0048:       title={label}\n0049:       {...props}\n0050:     />\n0051:   );\n0052: });",
+      "notes": []
+    },
+    {
+      "rel_path": "packages/ui-kit/src/components/forms/Input.tsx",
+      "language": "typescript-react",
+      "size_bytes": 901,
+      "sha1": "a06a48200e981901c077f4cef7734786cf18bb98",
+      "package": "02-domain-data-and-persistence",
+      "role": "reference",
+      "importance": 50,
+      "headings": [],
+      "imports": [
+        "import { forwardRef, type InputHTMLAttributes } from \"react\";",
+        "import { cn } from \"../../lib/cn.js\";",
+        "import { FOCUS_RING_CLASS } from \"../../lib/focus-ring.js\";"
+      ],
+      "excerpt": "0001: import { forwardRef, type InputHTMLAttributes } from \"react\";\n0002: import { cn } from \"../../lib/cn.js\";\n0003: import { FOCUS_RING_CLASS } from \"../../lib/focus-ring.js\";\n0004: \n0005: export type InputProps = InputHTMLAttributes<HTMLInputElement>;\n0006: \n0007: export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(\n0008:   { className, type = \"text\", suppressHydrationWarning = true, ...props },\n0009:   ref\n0010: ) {\n0011:   return (\n0012:     <input\n0013:       ref={ref}\n0014:       type={type}\n0015:       suppressHydrationWarning={suppressHydrationWarning}\n0016:       className={cn(\n0017:         \"h-9 w-full rounded-[var(--ui-core-radius-sm)] border border-[hsl(var(--ui-border-1))] bg-[hsl(var(--ui-surface-1))] px-3 text-sm text-[hsl(var(--ui-text-1))] placeholder:text-[hsl(var(--ui-text-3))]\",\n0018:         \"transition-colors duration-150 hover:border-[hsl(var(--ui-border-2))]\",\n0019:         FOCUS_RING_CLASS,\n0020:         className\n0021:       )}\n0022:       {...props}\n0023:     />\n0024:   );\n0025: });",
+      "notes": []
+    },
+    {
+      "rel_path": "packages/ui-kit/src/components/forms/Select.tsx",
+      "language": "typescript-react",
+      "size_bytes": 5422,
+      "sha1": "9f6f3db873cf586f72683d5ae46d4fb18c3a4707",
+      "package": "02-domain-data-and-persistence",
+      "role": "reference",
+      "importance": 50,
+      "headings": [
+        "FOCUS_RING_CLASS"
+      ],
+      "imports": [
+        "import * as SelectPrimitive from \"@radix-ui/react-select\";",
+        "import { cva, type VariantProps } from \"class-variance-authority\";",
+        "import { Check, ChevronDown, ChevronUp } from \"lucide-react\";",
+        "import { forwardRef } from \"react\";",
+        "import { cn } from \"../../lib/cn.js\";",
+        "import { FOCUS_RING_CLASS } from \"../../lib/focus-ring.js\";"
+      ],
+      "excerpt": "0001: \"use client\";\n0002: \n0003: import * as SelectPrimitive from \"@radix-ui/react-select\";\n0004: import { cva, type VariantProps } from \"class-variance-authority\";\n0005: import { Check, ChevronDown, ChevronUp } from \"lucide-react\";\n0006: import { forwardRef } from \"react\";\n0007: import { cn } from \"../../lib/cn.js\";\n0008: import { FOCUS_RING_CLASS } from \"../../lib/focus-ring.js\";\n0009: \n0010: const selectTriggerVariants = cva(\n0011:   [\n0012:     \"flex h-9 w-full items-center justify-between rounded-[var(--ui-core-radius-sm)] border border-[hsl(var(--ui-border-1))]\",\n0013:     \"bg-[hsl(var(--ui-surface-1))] px-3 text-sm text-[hsl(var(--ui-text-1))]\",\n0014:     \"hover:border-[hsl(var(--ui-border-2))]\",\n0015:     FOCUS_RING_CLASS\n0016:   ].join(\" \"),\n0017:   {\n0018:     variants: {\n0019:       size: {\n0020:         sm: \"h-8 text-xs\",\n0021:         md: \"h-9 text-sm\",\n0022:         lg: \"h-10 text-sm\"\n0023:       }\n0024:     },\n0025:     defaultVariants: {\n0026:       size: \"md\"\n0027:     }\n0028:   }\n0029: );\n0030: \n0031: export type SelectProps = SelectPrimitive.SelectProps;\n0032: export const Select = SelectPrimitive.Root;\n0033: export const SelectGroup = SelectPrimitive.Group;\n0034: export const SelectValue = SelectPrimitive.Value;\n0035: \n0036: export interface SelectTriggerProps\n0037:   extends SelectPrimitive.SelectTriggerProps,\n0038:     VariantProps<typeof selectTriggerVariants> {}\n0039: \n0040: export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(\n0041:   function SelectTrigger({ className, children, size, ...props }, ref) {\n0042:     return (\n0043:       <SelectPrimitive.Trigger\n0044:         ref={ref}\n0045:         className={cn(selectTriggerVariants({ size }), className)}\n0046:         {...props}\n0047:       >\n0048:         {children}\n0049:         <SelectPrimitive.Icon asChild>\n0050:           <ChevronDown className=\"h-4 w-4 text-[hsl(var(--ui-text-3))]\" />\n0051:         </SelectPrimitive.Icon>\n0052:       </SelectPrimitive.Trigger>\n0053:     );\n0054:   }\n0055: );\n0056: \n0057: export const SelectScrollUpButton = forwardRef<\n0058:   HTMLDivElement,\n0059:   SelectPrimitive.SelectScrollUpButtonProps\n0060: >(function SelectScrollUpButton({ className, ...props }, ref) {\n0061:   return (\n0062:     <SelectPrimitive.ScrollUpButton\n0063:       ref={ref}\n0064:       className={cn(\n0065:         \"flex cursor-default items-center justify-center py-1 text-[hsl(var(--ui-text-3))]\",\n0066:         className\n0067:       )}\n0068:       {...props}\n0069:     >\n0070:       <ChevronUp className=\"h-4 w-4\" />\n0071:     </SelectPrimitive.ScrollUpButton>\n0072:   );\n0073: });\n0074: \n0075: export const SelectScrollDownButton = forwardRef<\n0076:   HTMLDivElement,\n0077:   SelectPrimitive.SelectScrollDownButtonProps\n0078: >(function SelectScrollDownButton({ className, ...props }, ref) {\n0079:   return (\n0080:     <SelectPrimitive.ScrollDownButton\n0081:       ref={ref}\n0082:       className={cn(\n0083:         \"flex cursor-default items-center justify-center py-1 text-[hsl(var(--ui-text-3))]\",\n0084:         className\n0085:       )}\n0086:       {...props}\n0087:     >\n0088:       <ChevronDown className=\"h-4 w-4\" />\n0089:     </SelectPrimitive.ScrollDownButton>\n0090:   );\n0091: });\n0092: \n0093: export const SelectContent = forwardRef<HTMLDivElement, SelectPrimitive.SelectContentProps>(\n0094:   function SelectContent({ className, children, position = \"popper\", ...props }, ref) {\n0095:     return (\n0096:       <SelectPrimitive.Portal>\n0097:         <SelectPrimitive.Content\n0098:           ref={ref}\n0099:           className={cn(\n0100:             \"relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-[var(--ui-core-radius-md)] border border-[hsl(var(--ui-border-1))] bg-[hsl(var(--ui-surface-1))] shadow-[var(--ui-shadow-2)]\",\n0101:             className\n0102:           )}\n0103:           position={position}\n0104:           {...props}\n0105:         >\n0106:           <SelectScrollUpButton />\n0107:           <SelectPrimitive.Viewport\n0108:             className={cn(\n0109:               \"p-1\",\n0110:               position === \"popper\" &&\n0111:                 \"h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]\"\n0112:             )}\n0113:           >\n0114:             {children}\n0115:           </SelectPrimitive.Viewport>\n0116:           <SelectScrollDownButton />\n0117:         </SelectPrimitive.Content>\n0118:       </SelectPrimitive.Portal>\n0119:     );\n0120:   }",
+      "notes": []
+    },
+    {
+      "rel_path": "packages/ui-kit/src/components/forms/Textarea.tsx",
+      "language": "typescript-react",
+      "size_bytes": 833,
+      "sha1": "616014ffd937859563fc2dd94c0d453a78ff2c04",
+      "package": "02-domain-data-and-persistence",
+      "role": "reference",
+      "importance": 50,
+      "headings": [],
+      "imports": [
+        "import { forwardRef, type TextareaHTMLAttributes } from \"react\";",
+        "import { cn } from \"../../lib/cn.js\";",
+        "import { FOCUS_RING_CLASS } from \"../../lib/focus-ring.js\";"
+      ],
+      "excerpt": "0001: import { forwardRef, type TextareaHTMLAttributes } from \"react\";\n0002: import { cn } from \"../../lib/cn.js\";\n0003: import { FOCUS_RING_CLASS } from \"../../lib/focus-ring.js\";\n0004: \n0005: export type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement>;\n0006: \n0007: export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(\n0008:   { className, rows = 4, ...props },\n0009:   ref\n0010: ) {\n0011:   return (\n0012:     <textarea\n0013:       ref={ref}\n0014:       rows={rows}\n0015:       className={cn(\n0016:         \"w-full rounded-[var(--ui-core-radius-sm)] border border-[hsl(var(--ui-border-1))] bg-[hsl(var(--ui-surface-1))] px-3 py-2 text-sm text-[hsl(var(--ui-text-1))] placeholder:text-[hsl(var(--ui-text-3))]\",\n0017:         \"transition-colors duration-150 hover:border-[hsl(var(--ui-border-2))]\",\n0018:         FOCUS_RING_CLASS,\n0019:         className\n0020:       )}\n0021:       {...props}\n0022:     />\n0023:   );\n0024: });",
+      "notes": []
+    },
+    {
+      "rel_path": "packages/ui-kit/src/components/layout/Separator.tsx",
+      "language": "typescript-react",
+      "size_bytes": 603,
+      "sha1": "fe995966a4d3347979be85986ee25bd58b26ec0f",
+      "package": "02-domain-data-and-persistence",
+      "role": "reference",
+      "importance": 50,
+      "headings": [],
+      "imports": [
+        "import type { HTMLAttributes } from \"react\";",
+        "import { cn } from \"../../lib/cn.js\";"
+      ],
+      "excerpt": "0001: import type { HTMLAttributes } from \"react\";\n0002: import { cn } from \"../../lib/cn.js\";\n0003: \n0004: export interface SeparatorProps extends HTMLAttributes<HTMLHRElement> {\n0005:   readonly orientation?: \"horizontal\" | \"vertical\";\n0006:   readonly className?: string;\n0007: }\n0008: \n0009: export function Separator({ className, orientation = \"horizontal\", ...props }: SeparatorProps) {\n0010:   if (orientation === \"vertical\") {\n0011:     return (\n0012:       <span\n0013:         className={cn(\"inline-block h-full w-px bg-[hsl(var(--ui-border-1))]\", className)}\n0014:         {...props}\n0015:       />\n0016:     );\n0017:   }\n0018: \n0019:   return <hr className={cn(\"ui-separator\", className)} {...props} />;\n0020: }",
+      "notes": []
+    },
+    {
+      "rel_path": "packages/ui-kit/src/luxury/frames/frames.css",
+      "language": "text",
+      "size_bytes": 4949,
+      "sha1": "7b259a5ea0e46328ef96e7871a379ebf2e1943bd",
+      "package": "02-domain-data-and-persistence",
+      "role": "reference",
+      "importance": 50,
+      "headings": [],
+      "imports": [],
+      "excerpt": "",
+      "notes": []
+    }
+  ],
+  "acceptance_gates": [
+    "State the exact files or surfaces you touched or propose to touch.",
+    "Preserve ownership boundaries and avoid edits outside packet scope.",
+    "Return deterministic markdown with explicit headings.",
+    "List blockers, assumptions, and verification ideas.",
+    "Propose next packet handoff in 3 bullets max."
+  ],
+  "constraints": [
+    "Do not dump whole large files; summarize and cite targeted slices.",
+    "Prefer small, composable changes that can be merged independently.",
+    "Respect repo conventions and monorepo entrypoint reality.",
+    "Output must be useful even if the next packet runs on a smaller model."
+  ],
+  "handoff_inputs": [
+    "packages/ui-kit/src/components/forms/IconButton.tsx",
+    "packages/ui-kit/src/components/forms/Input.tsx",
+    "packages/ui-kit/src/components/forms/Select.tsx",
+    "docs/contracts/work_packet_contract.md",
+    "docs/ops/packet_mesh_quickstart.md"
+  ],
+  "output_contract": [
+    "Section: Goal Restatement",
+    "Section: Scope and Owned Paths",
+    "Section: Recommended File Changes",
+    "Section: Risks and Assumptions",
+    "Section: Verification and Next Packet",
+    "Include a compact checklist with [x]/[ ] items"
+  ],
+  "risk_notes": [
+    "Context window is intentionally bounded; summarize rather than dumping everything.",
+    "Do not infer monorepo entrypoints blindly; name the probable entrypoints and uncertainty.",
+    "Shard is near max file count; stay strict about scope.",
+    "At least one file is large; use targeted edits or slices only."
+  ],
+  "char_budget": 12000,
+  "metadata": {
+    "package_file_count": 189,
+    "shard_index": 4,
+    "shard_count": 4,
+    "languages": [
+      "json",
+      "markdown",
+      "text",
+      "typescript-react"
+    ],
+    "roles": [
+      "configuration",
+      "documentation",
+      "reference"
+    ]
+  }
+}

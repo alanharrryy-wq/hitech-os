@@ -1,0 +1,105 @@
+{
+  "session_id": "diag_20260410_172442",
+  "execution_mode": "support-bundle",
+  "target_path": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system",
+  "app_kind": "unknown",
+  "decision_ledger": {
+    "what_it_saw": [],
+    "what_it_discarded": [],
+    "what_it_concluded": [],
+    "why_this_fix": [],
+    "intervention_gates": {},
+    "confidence_summary_ref": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system\\reports\\confidence\\confidence_summary.json",
+    "patch_history_ref": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system\\reports\\patch_history\\index.json"
+  },
+  "confidence_summary": {
+    "session_id": "diag_20260410_172442",
+    "finding_confidence": [],
+    "fix_confidence": []
+  },
+  "fix_proposals": [],
+  "verification_results": [],
+  "patch_history": {
+    "schema_version": "2.0.0",
+    "patch_run_schema_version": "2.0.0",
+    "root_dir": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system",
+    "updated_at": "2026-04-10T13:51:36-06:00",
+    "events": [
+      {
+        "timestamp": "2026-04-10T13:51:36-06:00",
+        "event_type": "rollback",
+        "run_id": "patch_20260410_135134",
+        "checkpoint_id": "session_20260410_135134",
+        "status": "rolled_back",
+        "detail": "Restored 1 file(s); verified_hashes=True",
+        "event_id": "rollback::patch_20260410_135134::session_20260410_135134::::rolled_back",
+        "baseline_id": null,
+        "trace_id": "patch_20260410_135134",
+        "system_status": null,
+        "source_command": null,
+        "actor": null,
+        "report_refs": {}
+      },
+      {
+        "timestamp": "2026-04-10T13:51:35-06:00",
+        "event_type": "patch-run",
+        "run_id": "patch_20260410_135134",
+        "checkpoint_id": "session_20260410_135134",
+        "trace_id": "patch_20260410_135134",
+        "status": "applied",
+        "system_status": "verified",
+        "detail": "system_status=verified",
+        "source_command": "patch-run",
+        "actor": "alanh",
+        "report_refs": {
+          "json": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system\\reports\\patch_runs\\patch_20260410_135134.json",
+          "md": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system\\reports\\patch_runs\\patch_20260410_135134.md"
+        },
+        "event_id": "patch-run::patch_20260410_135134::session_20260410_135134::::applied",
+        "baseline_id": null
+      },
+      {
+        "timestamp": "2026-04-10T13:51:33-06:00",
+        "event_type": "rollback",
+        "run_id": "patch_20260410_135131",
+        "checkpoint_id": "session_20260410_135131",
+        "status": "rolled_back",
+        "detail": "Restored 1 file(s); verified_hashes=True",
+        "event_id": "rollback::patch_20260410_135131::session_20260410_135131::::rolled_back",
+        "baseline_id": null,
+        "trace_id": "patch_20260410_135131",
+        "system_status": null,
+        "source_command": null,
+        "actor": null,
+        "report_refs": {}
+      },
+      {
+        "timestamp": "2026-04-10T13:51:32-06:00",
+        "event_type": "patch-run",
+        "run_id": "patch_20260410_135131",
+        "checkpoint_id": "session_20260410_135131",
+        "trace_id": "patch_20260410_135131",
+        "status": "applied",
+        "system_status": "verified",
+        "detail": "system_status=verified",
+        "source_command": "patch-run",
+        "actor": "alanh",
+        "report_refs": {
+          "json": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system\\reports\\patch_runs\\patch_20260410_135131.json",
+          "md": "F:\\repos\\hitech-os\\apps\\code-atlas\\capatch_system\\reports\\patch_runs\\patch_20260410_135131.md"
+        },
+        "event_id": "patch-run::patch_20260410_135131::session_20260410_135131::::applied",
+        "baseline_id": null
+      }
+    ],
+    "stats": {
+      "total_events": 4,
+      "patch_runs": 2,
+      "rollbacks": 2,
+      "baselines": 0,
+      "applied": 2,
+      "failed": 0,
+      "rolled_back": 2
+    }
+  }
+}

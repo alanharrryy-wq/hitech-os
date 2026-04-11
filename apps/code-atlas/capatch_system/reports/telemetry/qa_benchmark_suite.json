@@ -1,0 +1,449 @@
+{
+  "name": "qa_benchmark_suite",
+  "status": "passed",
+  "quick": false,
+  "metrics": {
+    "fix_success_rate": 0.3333333333333333,
+    "degraded_rate": 0.3333333333333333,
+    "false_fix_rate": 0.3333333333333333,
+    "avg_time_to_first_useful_hypothesis_ms": 63.16,
+    "median_time_to_first_useful_hypothesis_ms": 16.231
+  },
+  "scenarios": [
+    {
+      "name": "batch_positive_control",
+      "kind": "fix",
+      "duration_ms": 156.916,
+      "success": true,
+      "applied": true,
+      "degraded": false,
+      "false_fix": false,
+      "verifier_rows": [
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_00.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_00.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_00.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_01.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_01.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_01.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_02.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_02.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_02.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_03.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_03.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_03.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_04.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_04.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_04.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_05.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_05.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_05.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_06.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_06.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_06.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_07.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_07.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_07.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_08.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_08.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_08.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_09.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_09.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_09.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_10.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_10.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_10.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_11.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_11.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_11.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_12.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_12.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_12.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_13.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_13.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_13.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_14.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_14.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_14.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_15.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_15.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_15.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_16.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_16.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_16.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_17.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_17.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_17.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_18.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_18.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_18.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_19.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_19.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_19.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_20.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_20.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_20.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_21.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_21.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_21.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_22.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_22.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_22.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: file_23.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_23.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:07-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_batch_4pf0l7d2\\pkg\\file_23.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        }
+      ],
+      "operation_count": 24
+    },
+    {
+      "name": "large_file_positive_control",
+      "kind": "fix",
+      "duration_ms": 154.302,
+      "success": false,
+      "applied": true,
+      "degraded": false,
+      "false_fix": false,
+      "bytes_after": 352014
+    },
+    {
+      "name": "false_fix_negative_control",
+      "kind": "fix",
+      "duration_ms": 11.984,
+      "success": false,
+      "applied": true,
+      "degraded": true,
+      "false_fix": true,
+      "verifier_rows": [
+        {
+          "verifier_id": "python-parse",
+          "ok": true,
+          "title": "Python parse OK: service.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_false_fix_pdn_pkdo\\service.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:08-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_false_fix_pdn_pkdo\\service.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        },
+        {
+          "verifier_id": "python-import-smoke",
+          "ok": true,
+          "title": "Python compile OK: service.py",
+          "detail": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_false_fix_pdn_pkdo\\service.py",
+          "source_plugin": "capatch_verify",
+          "checked_at": "2026-04-10T01:22:08-06:00",
+          "evidence_refs": [],
+          "metrics": {
+            "file": "C:\\Users\\alanh\\AppData\\Local\\Temp\\capatch_bench_false_fix_pdn_pkdo\\service.py"
+          },
+          "severity_if_failed": "error",
+          "verification_class": "builtin"
+        }
+      ]
+    },
+    {
+      "name": "diagnostic_python_case",
+      "kind": "diagnostic",
+      "duration_ms": 158.302,
+      "hypothesis_ms": 158.302,
+      "app_kind": "mixed",
+      "success": true,
+      "applied": false,
+      "degraded": false,
+      "false_fix": false
+    },
+    {
+      "name": "diagnostic_node_case",
+      "kind": "diagnostic",
+      "duration_ms": 16.231,
+      "hypothesis_ms": 16.231,
+      "app_kind": "mixed",
+      "success": true,
+      "applied": false,
+      "degraded": false,
+      "false_fix": false
+    },
+    {
+      "name": "diagnostic_web_case",
+      "kind": "diagnostic",
+      "duration_ms": 14.947,
+      "hypothesis_ms": 14.947,
+      "app_kind": "web",
+      "success": true,
+      "applied": false,
+      "degraded": false,
+      "false_fix": false
+    }
+  ],
+  "rollup": {
+    "plugin_contract_smoke": "passed",
+    "rollback_drill": "passed",
+    "windows_smoke": "passed"
+  }
+}

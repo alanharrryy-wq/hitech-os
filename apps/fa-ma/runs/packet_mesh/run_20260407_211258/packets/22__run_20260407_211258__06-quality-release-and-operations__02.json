@@ -1,0 +1,314 @@
+{
+  "packet_id": "run_20260407_211258:06-quality-release-and-operations:02",
+  "run_id": "run_20260407_211258",
+  "order": 22,
+  "worker_id": "pkg_06-quality-release-and-operations_02",
+  "stage": "validation",
+  "package": "06-quality-release-and-operations",
+  "goal": "Diseña la primera ola de trabajo para FA-MA",
+  "objective": "Advance the global goal for package '06-quality-release-and-operations' by producing a precise, mergeable slice. Use the listed candidate files as the main surface. Goal: Diseña la primera ola de trabajo para FA-MA. Primary file set: .agents/agents_chatgpt/01_iterations/iteration_09_coordinator_agent_mvp/.agents/coordinator_agent/tests/unit/test_registry.py, .agents/agents_chatgpt/01_iterations/iteration_09_coordinator_agent_mvp/.agents/coordinator_agent/tests/unit/test_validator.py, .agents/agents_chatgpt/02_current_snapshot/.agents/coordinator_agent/tests/integration/test_dispatch_blocked.py, .agents/agents_chatgpt/02_current_snapshot/.agents/coordinator_agent/tests/integration/test_dispatch_success.py.",
+  "scope_summary": "Package surface: 06-quality-release-and-operations. This packet covers 20 candidate files from a package with 78 indexed files. Runtime files in scope: n/a. Test files in scope: .agents/agents_chatgpt/01_iterations/iteration_09_coordinator_agent_mvp/.agents/coordinator_agent/tests/unit/test_registry.py, .agents/agents_chatgpt/01_iterations/iteration_09_coordinator_agent_mvp/.agents/coordinator_agent/tests/unit/test_validator.py, .agents/agents_chatgpt/02_current_snapshot/.agents/coordinator_agent/tests/integration/test_dispatch_blocked.py, .agents/agents_chatgpt/02_current_snapshot/.agents/coordinator_agent/tests/integration/test_dispatch_success.py, .agents/agents_chatgpt/02_current_snapshot/.agents/coordinator_agent/tests/unit/test_registry.py, .agents/agents_chatgpt/02_current_snapshot/.agents/coordinator_agent/tests/unit/test_validator.py, .agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_broken/src/broken_app.py, .agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_clean/pyproject.toml, .agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_clean/src/app.py, .agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_problematic/dist.bundle.js, .agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_problematic/src/problem.py, .agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/integration/test_clean_scan.py, .agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/integration/test_e2e_repo_analyzer.py, .agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/integration/test_missing_target.py, .agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/integration/test_problematic_fixture.py, .agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/unit/test_classifier.py, .agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/unit/test_config.py, .agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/unit/test_verifier.py, forgeos/platform/forge_commons/tests/test_commons_bootstrap.py, forgeos/platform/forge_commons/tests/test_config_policy_capability.py. Docs/config in scope: n/a.",
+  "owned_paths": [
+    ".agents/",
+    "forgeos/",
+    "tests/",
+    "docs/"
+  ],
+  "candidate_files": [
+    ".agents/agents_chatgpt/01_iterations/iteration_09_coordinator_agent_mvp/.agents/coordinator_agent/tests/unit/test_registry.py",
+    ".agents/agents_chatgpt/01_iterations/iteration_09_coordinator_agent_mvp/.agents/coordinator_agent/tests/unit/test_validator.py",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/coordinator_agent/tests/integration/test_dispatch_blocked.py",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/coordinator_agent/tests/integration/test_dispatch_success.py",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/coordinator_agent/tests/unit/test_registry.py",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/coordinator_agent/tests/unit/test_validator.py",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_broken/src/broken_app.py",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_clean/pyproject.toml",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_clean/src/app.py",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_problematic/dist.bundle.js",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_problematic/src/problem.py",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/integration/test_clean_scan.py",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/integration/test_e2e_repo_analyzer.py",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/integration/test_missing_target.py",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/integration/test_problematic_fixture.py",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/unit/test_classifier.py",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/unit/test_config.py",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/unit/test_verifier.py",
+    "forgeos/platform/forge_commons/tests/test_commons_bootstrap.py",
+    "forgeos/platform/forge_commons/tests/test_config_policy_capability.py"
+  ],
+  "context_files": [
+    {
+      "rel_path": ".agents/agents_chatgpt/01_iterations/iteration_09_coordinator_agent_mvp/.agents/coordinator_agent/tests/unit/test_registry.py",
+      "language": "python",
+      "size_bytes": 245,
+      "sha1": "e333fd0fee30e8a2c6358489eead3bed79221f2a",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [
+        "from coordinator_agent.src.registry import resolve_target"
+      ],
+      "excerpt": "0001: from coordinator_agent.src.registry import resolve_target\n0002: \n0003: def test_resolve_supported_target():\n0004:     assert resolve_target(\"repo_scan\") == \"repo_analyzer\"\n0005: \n0006: def test_resolve_unsupported_target():\n0007:     assert resolve_target(\"unknown_route\") is None",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": ".agents/agents_chatgpt/01_iterations/iteration_09_coordinator_agent_mvp/.agents/coordinator_agent/tests/unit/test_validator.py",
+      "language": "python",
+      "size_bytes": 870,
+      "sha1": "f41a1a633301b8dcab330ad221f7d0ef825eeb76",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [
+        "from pathlib import Path",
+        "import pytest",
+        "from coordinator_agent.src.models import WorkflowRequest",
+        "from coordinator_agent.src.validator import validate_workflow_request"
+      ],
+      "excerpt": "0001: from pathlib import Path\n0002: import pytest\n0003: from coordinator_agent.src.models import WorkflowRequest\n0004: from coordinator_agent.src.validator import validate_workflow_request\n0005: \n0006: def test_valid_workflow_request(tmp_path):\n0007:     req = WorkflowRequest(\n0008:         request_id=\"REQ-1\",\n0009:         run_id=\"RUN-1\",\n0010:         route_type=\"repo_scan\",\n0011:         target_agent=\"repo_analyzer\",\n0012:         downstream_payload={\"target_path\": str(tmp_path)},\n0013:         output_path=tmp_path / \"out\",\n0014:     )\n0015:     validate_workflow_request(req)\n0016: \n0017: def test_invalid_route_target_combo(tmp_path):\n0018:     req = WorkflowRequest(\n0019:         request_id=\"REQ-1\",\n0020:         run_id=\"RUN-1\",\n0021:         route_type=\"repo_scan\",\n0022:         target_agent=\"wrong_agent\",\n0023:         downstream_payload={\"target_path\": str(tmp_path)},\n0024:         output_path=tmp_path / \"out\",\n0025:     )\n0026:     with pytest.raises(ValueError):\n0027:         validate_workflow_request(req)",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": ".agents/agents_chatgpt/02_current_snapshot/.agents/coordinator_agent/tests/integration/test_dispatch_blocked.py",
+      "language": "python",
+      "size_bytes": 606,
+      "sha1": "103271c4bddfc55bbcd9cb84a0d783fac292513b",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [
+        "from pathlib import Path",
+        "from coordinator_agent.src.agent import CoordinatorAgent",
+        "from coordinator_agent.src.models import WorkflowRequest"
+      ],
+      "excerpt": "0001: from pathlib import Path\n0002: from coordinator_agent.src.agent import CoordinatorAgent\n0003: from coordinator_agent.src.models import WorkflowRequest\n0004: \n0005: def test_dispatch_blocked(tmp_path):\n0006:     req = WorkflowRequest(\n0007:         request_id=\"REQ-BLOCK-001\",\n0008:         run_id=\"RUN-BLOCK-001\",\n0009:         route_type=\"repo_scan\",\n0010:         target_agent=\"repo_analyzer\",\n0011:         downstream_payload={\"target_path\": \"missing://repo\", \"scan_mode\": \"standard\"},\n0012:         output_path=tmp_path / \"workflow_out\",\n0013:         metadata={\"source\": \"test\"},\n0014:     )\n0015:     result = CoordinatorAgent().run(req)\n0016:     assert result[\"final_state\"] == \"BLOCKED\"",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": ".agents/agents_chatgpt/02_current_snapshot/.agents/coordinator_agent/tests/integration/test_dispatch_success.py",
+      "language": "python",
+      "size_bytes": 672,
+      "sha1": "4b5584b6ac3929d6ff34ac3bf6584a21c16994fa",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [
+        "from pathlib import Path",
+        "from coordinator_agent.src.agent import CoordinatorAgent",
+        "from coordinator_agent.src.models import WorkflowRequest"
+      ],
+      "excerpt": "0001: from pathlib import Path\n0002: from coordinator_agent.src.agent import CoordinatorAgent\n0003: from coordinator_agent.src.models import WorkflowRequest\n0004: \n0005: def test_dispatch_success(tmp_path):\n0006:     req = WorkflowRequest(\n0007:         request_id=\"REQ-OK-001\",\n0008:         run_id=\"RUN-OK-001\",\n0009:         route_type=\"repo_scan\",\n0010:         target_agent=\"repo_analyzer\",\n0011:         downstream_payload={\"target_path\": str(tmp_path), \"scan_mode\": \"standard\"},\n0012:         output_path=tmp_path / \"workflow_out\",\n0013:         metadata={\"source\": \"test\"},\n0014:     )\n0015:     result = CoordinatorAgent().run(req)\n0016:     assert result[\"final_state\"] == \"COMPLETED\"\n0017:     assert (tmp_path / \"workflow_out\" / \"WORKFLOW_STATUS.json\").exists()",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": ".agents/agents_chatgpt/02_current_snapshot/.agents/coordinator_agent/tests/unit/test_registry.py",
+      "language": "python",
+      "size_bytes": 245,
+      "sha1": "e333fd0fee30e8a2c6358489eead3bed79221f2a",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [
+        "from coordinator_agent.src.registry import resolve_target"
+      ],
+      "excerpt": "0001: from coordinator_agent.src.registry import resolve_target\n0002: \n0003: def test_resolve_supported_target():\n0004:     assert resolve_target(\"repo_scan\") == \"repo_analyzer\"\n0005: \n0006: def test_resolve_unsupported_target():\n0007:     assert resolve_target(\"unknown_route\") is None",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": ".agents/agents_chatgpt/02_current_snapshot/.agents/coordinator_agent/tests/unit/test_validator.py",
+      "language": "python",
+      "size_bytes": 870,
+      "sha1": "f41a1a633301b8dcab330ad221f7d0ef825eeb76",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [
+        "from pathlib import Path",
+        "import pytest",
+        "from coordinator_agent.src.models import WorkflowRequest",
+        "from coordinator_agent.src.validator import validate_workflow_request"
+      ],
+      "excerpt": "0001: from pathlib import Path\n0002: import pytest\n0003: from coordinator_agent.src.models import WorkflowRequest\n0004: from coordinator_agent.src.validator import validate_workflow_request\n0005: \n0006: def test_valid_workflow_request(tmp_path):\n0007:     req = WorkflowRequest(\n0008:         request_id=\"REQ-1\",\n0009:         run_id=\"RUN-1\",\n0010:         route_type=\"repo_scan\",\n0011:         target_agent=\"repo_analyzer\",\n0012:         downstream_payload={\"target_path\": str(tmp_path)},\n0013:         output_path=tmp_path / \"out\",\n0014:     )\n0015:     validate_workflow_request(req)\n0016: \n0017: def test_invalid_route_target_combo(tmp_path):\n0018:     req = WorkflowRequest(\n0019:         request_id=\"REQ-1\",\n0020:         run_id=\"RUN-1\",\n0021:         route_type=\"repo_scan\",\n0022:         target_agent=\"wrong_agent\",\n0023:         downstream_payload={\"target_path\": str(tmp_path)},\n0024:         output_path=tmp_path / \"out\",\n0025:     )\n0026:     with pytest.raises(ValueError):\n0027:         validate_workflow_request(req)",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_broken/src/broken_app.py",
+      "language": "python",
+      "size_bytes": 63,
+      "sha1": "94802d948950ebc0241d55a8d5f6b03570167866",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [
+        "# intentionally sparse and awkward fixture"
+      ],
+      "imports": [],
+      "excerpt": "0001: # intentionally sparse and awkward fixture\n0002: BROKEN_VALUE = None",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_clean/pyproject.toml",
+      "language": "toml",
+      "size_bytes": 51,
+      "sha1": "6602c8c438bdfcccdc078335cfb0d8459caa8196",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [],
+      "excerpt": "0001: [project]\n0002: name='sample-repo-clean'\n0003: version='0.1.0'",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_clean/src/app.py",
+      "language": "python",
+      "size_bytes": 39,
+      "sha1": "f0541a181ca2de70f2c1a164c035e235897f35ab",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [],
+      "excerpt": "0001: def main():\n0002:     return 'clean fixture'",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_problematic/dist.bundle.js",
+      "language": "javascript",
+      "size_bytes": 32,
+      "sha1": "78e45392278d094a78922d3445955d52a92e3c93",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [],
+      "excerpt": "0001: console.log('generated noise');",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/fixtures/sample_repo_problematic/src/problem.py",
+      "language": "python",
+      "size_bytes": 13,
+      "sha1": "ed17de7285f3f883c581fffec523cd1938e9ba22",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [],
+      "excerpt": "0001: VALUE = None",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": ".agents/agents_chatgpt/02_current_snapshot/.agents/repo_analyzer/tests/integration/test_clean_scan.py",
+      "language": "python",
+      "size_bytes": 670,
+      "sha1": "6341fa7f8964bac981288e8dd56979613c6805a3",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [],
+      "imports": [
+        "from pathlib import Path",
+        "from repo_analyzer.src.agent import RepoAnalyzerAgent",
+        "from repo_analyzer.src.models import ScanRequest"
+      ],
+      "excerpt": "0001: from pathlib import Path\n0002: from repo_analyzer.src.agent import RepoAnalyzerAgent\n0003: from repo_analyzer.src.models import ScanRequest\n0004: \n0005: def test_clean_fixture_scan(tmp_path):\n0006:     fixture = Path(__file__).parents[1] / \"fixtures\" / \"sample_repo_clean\"\n0007:     out = tmp_path / \"run_out\"\n0008:     req = ScanRequest(\n0009:         request_id=\"REQ-CLEAN-001\",\n0010:         run_id=\"RUN-CLEAN-001\",\n0011:         target_path=fixture,\n0012:         output_path=out,\n0013:         scan_mode=\"standard\",\n0014:         metadata={\"source\": \"test\", \"environment\": \"test\"},\n0015:     )\n0016:     result = RepoAnalyzerAgent().run(req)\n0017:     assert result[\"final_state\"] in {\"COMPLETED\", \"DEGRADED\", \"PARTIAL\"}\n0018:     assert (out / \"REPORT.md\").exists()",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    },
+    {
+      "rel_path": ".agents/agents_chatgpt/01_iterations/iteration_06_repo_analyzer_full_package/.agents/repo_analyzer/tests/fixtures/sample_repo_broken/src/broken_app.py",
+      "language": "python",
+      "size_bytes": 63,
+      "sha1": "94802d948950ebc0241d55a8d5f6b03570167866",
+      "package": "06-quality-release-and-operations",
+      "role": "test",
+      "importance": 60,
+      "headings": [
+        "# intentionally sparse and awkward fixture"
+      ],
+      "imports": [],
+      "excerpt": "0001: # intentionally sparse and awkward fixture\n0002: BROKEN_VALUE = None",
+      "notes": [
+        "Useful for acceptance gates and regression-aware packet shaping."
+      ]
+    }
+  ],
+  "acceptance_gates": [
+    "State the exact files or surfaces you touched or propose to touch.",
+    "Preserve ownership boundaries and avoid edits outside packet scope.",
+    "Return deterministic markdown with explicit headings.",
+    "List blockers, assumptions, and verification ideas.",
+    "Describe how tests validate or need updates for this slice.",
+    "Propose next packet handoff in 3 bullets max."
+  ],
+  "constraints": [
+    "Do not dump whole large files; summarize and cite targeted slices.",
+    "Prefer small, composable changes that can be merged independently.",
+    "Respect repo conventions and monorepo entrypoint reality.",
+    "Output must be useful even if the next packet runs on a smaller model."
+  ],
+  "handoff_inputs": [
+    ".agents/agents_chatgpt/01_iterations/iteration_09_coordinator_agent_mvp/.agents/coordinator_agent/tests/unit/test_registry.py",
+    ".agents/agents_chatgpt/01_iterations/iteration_09_coordinator_agent_mvp/.agents/coordinator_agent/tests/unit/test_validator.py",
+    ".agents/agents_chatgpt/02_current_snapshot/.agents/coordinator_agent/tests/integration/test_dispatch_blocked.py",
+    "docs/contracts/work_packet_contract.md",
+    "docs/ops/packet_mesh_quickstart.md"
+  ],
+  "output_contract": [
+    "Section: Goal Restatement",
+    "Section: Scope and Owned Paths",
+    "Section: Recommended File Changes",
+    "Section: Risks and Assumptions",
+    "Section: Verification and Next Packet",
+    "Include a compact checklist with [x]/[ ] items"
+  ],
+  "risk_notes": [
+    "Context window is intentionally bounded; summarize rather than dumping everything.",
+    "Do not infer monorepo entrypoints blindly; name the probable entrypoints and uncertainty.",
+    "Shard is near max file count; stay strict about scope."
+  ],
+  "char_budget": 12000,
+  "metadata": {
+    "package_file_count": 78,
+    "shard_index": 2,
+    "shard_count": 4,
+    "languages": [
+      "javascript",
+      "python",
+      "toml"
+    ],
+    "roles": [
+      "test"
+    ]
+  }
+}

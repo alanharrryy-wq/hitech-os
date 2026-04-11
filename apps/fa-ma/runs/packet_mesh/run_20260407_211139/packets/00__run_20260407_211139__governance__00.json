@@ -1,0 +1,44 @@
+{
+  "packet_id": "run_20260407_211139:governance:00",
+  "run_id": "run_20260407_211139",
+  "order": 0,
+  "worker_id": "governance_bootstrap",
+  "stage": "governance",
+  "package": "00-governance-and-knowledge",
+  "goal": "Diseña la primera ola de trabajo para FA-MA",
+  "objective": "Create a governance lens, enumerate boundaries, and frame the packet wave order.",
+  "scope_summary": "Global preflight packet. No direct file edits. Shapes the rest of the wave.",
+  "owned_paths": [
+    "docs/",
+    "config/",
+    "prompts/"
+  ],
+  "candidate_files": [],
+  "context_files": [],
+  "acceptance_gates": [
+    "Summarize the repo objective and boundaries in <= 10 bullets.",
+    "Name the top 5 packages by expected relevance to the goal.",
+    "List red flags and hard constraints before code changes happen."
+  ],
+  "constraints": [
+    "Do not dump whole large files; summarize and cite targeted slices.",
+    "Prefer small, composable changes that can be merged independently.",
+    "Respect repo conventions and monorepo entrypoint reality.",
+    "Output must be useful even if the next packet runs on a smaller model."
+  ],
+  "handoff_inputs": [
+    "docs/architecture/packet_mesh_design.md",
+    "docs/contracts/work_packet_contract.md"
+  ],
+  "output_contract": [
+    "Section: Mission and Boundaries",
+    "Section: Wave Order",
+    "Section: Hard Constraints",
+    "Section: Package Priorities"
+  ],
+  "risk_notes": [
+    "This packet should shape, not overfit, the rest of the run."
+  ],
+  "char_budget": 8000,
+  "metadata": {}
+}
