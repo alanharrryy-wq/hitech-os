@@ -17,7 +17,7 @@ export interface PageLoadingProps {
 
 function SkeletonMetric() {
   return (
-    <div className="rounded-2xl border border-white/10 bg-canvas/32 p-4">
+    <div className="surface-muted p-4">
       <SkeletonBlock className="h-3 w-24" />
       <SkeletonBlock className="mt-3 h-8 w-16" />
       <SkeletonBlock className="mt-2 h-3 w-28" />

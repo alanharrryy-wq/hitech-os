@@ -42,7 +42,7 @@ export function InboxRecordCard({
     <Link
       href={href}
       className={
-        "group block rounded-[1.6rem] border border-white/10 bg-surface/56 p-4 shadow-glass transition duration-200 hover:border-accent/30 hover:bg-surface/70" +
+        "ui-card-link group block p-4" +
         (className ? ` ${className}` : "")
       }
     >
@@ -67,13 +67,13 @@ export function InboxRecordCard({
 
       {fields.length > 0 ? <DetailList items={fields} columns={layout === "grid" ? 2 : 2} dense className="mt-4" /> : null}
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-white/8 pt-3 text-xs text-muted">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t pt-3 text-xs text-muted" style={{ borderColor: "var(--theme-table-divider)" }}>
         <div className="inline-flex items-center gap-1.5">
           <Clock3 className="h-3.5 w-3.5" />
           {t("inbox.card.updated", { value: formatDateTime(record.updatedAt) })}
         </div>
         <div className="inline-flex items-center gap-2">
-          <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1">{record.id}</span>
+          <span className="shell-chip">{record.id}</span>
         </div>
       </div>
     </Link>

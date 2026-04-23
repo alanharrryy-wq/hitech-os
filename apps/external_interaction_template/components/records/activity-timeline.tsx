@@ -74,11 +74,16 @@ export function ActivityTimeline({
       <ol className="grid gap-2.5">
         {events.map((event, index) => (
           <li key={event.id} className="relative pl-10">
-            {index < events.length - 1 ? <div className="pointer-events-none absolute left-[0.9rem] top-9 h-[calc(100%-0.9rem)] w-px bg-gradient-to-b from-white/16 via-white/10 to-transparent" /> : null}
-            <div className="absolute left-0 top-1 inline-flex h-7 w-7 items-center justify-center rounded-xl border border-white/10 bg-surface/75 text-accent shadow-[0_8px_30px_rgba(0,0,0,0.18)]">
+            {index < events.length - 1 ? (
+              <div
+                className="pointer-events-none absolute left-[0.9rem] top-9 h-[calc(100%-0.9rem)] w-px"
+                style={{ background: "linear-gradient(to bottom, var(--theme-table-divider), var(--theme-table-divider), transparent)" }}
+              />
+            ) : null}
+            <div className="surface-muted absolute left-0 top-1 inline-flex h-7 w-7 items-center justify-center text-accent">
               {iconForKind(event.kind)}
             </div>
-            <div className="rounded-2xl border border-white/10 bg-surface/52 p-3.5 shadow-glass backdrop-blur-xl">
+            <div className="surface-panel p-3.5">
               <div className="flex flex-wrap items-start justify-between gap-2.5">
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.16em] text-muted">
@@ -98,7 +103,7 @@ export function ActivityTimeline({
                 {event.state ? <StateBadge state={event.state} /> : null}
               </div>
               {event.detail ? (
-                <div className="mt-3 rounded-xl border border-white/10 bg-canvas/30 p-2.5 text-xs text-muted">
+                <div className="surface-muted mt-3 p-2.5 text-xs text-muted">
                   <div className="grid gap-1.5">
                     {parseDetail(event.detail).map((line) => (
                       <div key={line.id} className="flex flex-wrap items-start gap-2 text-sm leading-5">

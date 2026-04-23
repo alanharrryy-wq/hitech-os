@@ -146,7 +146,7 @@ export function SyncCenter({ jobs, events }: SyncCenterProps) {
                   </div>
                   <div className="mt-2 text-xs text-muted">{t("sync.job.updated", { value: formatDateTime(job.updatedAt) })}</div>
                   {job.error ? (
-                    <div className="mt-2 rounded-[16px] border border-danger/25 bg-danger/10 px-3 py-2 text-xs text-danger">{job.error}</div>
+                    <div className="ui-notice ui-notice-danger mt-2 px-3 py-2 text-xs">{job.error}</div>
                   ) : null}
                   <div className="mt-3 flex gap-2">
                     <Button
@@ -221,7 +221,7 @@ export function SyncCenter({ jobs, events }: SyncCenterProps) {
       </div>
 
       {message ? (
-        <Surface className={message.tone === "success" ? "border-success/25" : "border-danger/25"}>
+        <Surface className={message.tone === "success" ? "border-success/30" : "border-danger/30"}>
           <p className={message.tone === "success" ? "text-sm text-success" : "text-sm text-danger"}>{message.text}</p>
         </Surface>
       ) : null}

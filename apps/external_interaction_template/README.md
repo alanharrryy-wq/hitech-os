@@ -64,6 +64,7 @@ Default URL:
 ## API Surface (template)
 
 - `GET /api/schemas`
+- `GET /api/public-forms`
 - `GET|POST /api/records`
 - `GET|PATCH /api/records/[recordId]`
 - `POST /api/records/[recordId]/action`
@@ -99,6 +100,25 @@ Each schema defines:
 - actions by state/role
 - view sections
 - adapter bindings
+
+## Public form governance registry
+
+External/public form sources are explicitly governed in:
+
+- `src/lib/integrations/public-forms/registry.ts`
+
+This registry binds:
+
+1. `formTypeId`
+2. `schemaId`
+3. allowed create/update steps
+4. attachment capability
+
+Requests with `x-form-type` are validated against this registry in:
+
+- `app/api/records/route.ts`
+- `app/api/records/token/[token]/route.ts`
+- `app/api/records/[recordId]/attachments/route.ts`
 
 ## Security / Access Model (template-level)
 

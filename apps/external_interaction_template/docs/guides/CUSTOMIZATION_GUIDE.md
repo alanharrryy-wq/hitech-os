@@ -1,166 +1,234 @@
-# CUSTOMIZATION_GUIDE
+# CUSTOMIZATION GUIDE
+**Scope:** safe visual customization without breaking schema/business/runtime behavior.
 
-## Goal
+## 0. Golden spec first
 
-Customize branding, theme, visual polish, and layout behavior **without** breaking the schema-driven core.
+Before any customization, align with:
 
-The safest rule is simple:
+1. `docs/architecture/GOLDEN_SPEC_UI_SHELL_V1.md`
+2. `docs/architecture/GOLDEN_SPEC_ACCEPTANCE_MATRIX_V1.md`
+3. `docs/architecture/GOLDEN_SPEC_APPROVAL_RECORD_V1.md`
 
-- treat record schemas, state logic, validation, actions, services, and sync behavior as the product engine
-- treat branding and presentation as a layer around that engine
+Customization is valid only if it keeps compliance with the approved golden spec set.
 
-## What to preserve
+## 1. Core rule
 
-Do not change these concepts just to achieve a visual goal:
+Visual changes must stay in visual ownership layers:
 
-- schema IDs
-- step IDs
-- field IDs
-- state names
-- action IDs
-- service contracts
-- adapter boundaries
-- token/resume behavior
+- `src/lib/ui/theme-system/*`
+- `app/globals.css`
+- `components/ui/*`
+- `components/layout/*`
 
-If the change is visual, keep it visual.
+Do not change API contracts, schema semantics, state machine rules, persistence behavior, or route contracts to solve appearance tasks.
 
-## Safe customization zones
+---
 
-### 1. Branding assets
+## 2. New theme architecture (where to edit)
 
-Safe changes:
+## A. Create/change a theme
 
-- product name and description metadata
-- logos, icons, favicons, and marketing assets under `public/`
-- route copy, empty-state copy, helper text, and labels that do not affect schema contracts
+Edit:
 
-Avoid:
+- `src/lib/ui/theme-system/theme-specs.ts`
 
-- coupling brand terms to generic domain entities in the core model
+Each theme has full typed sections:
 
-### 2. Theme tokens without editing shared global token files
+- `meta`
+- `color`
+- `material`
+- `chrome`
+- `motion`
+- `backdrop`
+- `widgets`
+- `typography`
+- `dataViz`
 
-If `globals.css` or `tailwind.config.mjs` are frozen, prefer local layering:
+This is the only place where theme identity should be authored.
 
-- add route-level wrappers with brand-specific utility classes
-- use CSS Modules or component-local styles for page-specific accents
-- create wrapper components that inject consistent className patterns
-- use composition around existing primitives instead of mutating the primitives themselves
+## B. Theme IDs, fallback, selector visibility
 
-Recommended pattern:
+Edit:
 
-- create `components/brand/` or `components/theme/`
-- keep brand-specific wrappers there
-- let shared primitives remain the stable baseline
+- `src/lib/ui/theme-system/theme-registry.ts`
 
-### 3. Visual primitives
+Owns:
 
-Safe approach:
+- default and fallback (`solstice`)
+- selector entries
+- persistence key compatibility
+- reserved slot visibility (`slot_01`, `slot_02`)
 
-- compose from existing primitives such as buttons, badges, inputs, cards/surfaces
-- add alternative wrappers like `BrandSurface`, `BrandSectionHeader`, `BrandHero`, `BrandSidebar`
-- keep props/contracts compatible with the shared primitives where possible
+Reserved slot toggles:
 
-Risky approach:
+- `NEXT_PUBLIC_EIT_THEME_SLOT_01_VISIBLE=1`
+- `NEXT_PUBLIC_EIT_THEME_SLOT_02_VISIBLE=1`
 
-- editing the foundational primitive in a way that changes spacing, semantics, or behavior for every consumer at once
+Use env flags instead of hardcoding visibility in components.
 
-### 4. Layout customization
+## C. DOM token application
 
-Safe approach:
+Edit:
 
-- add route-local containers
-- add optional brand panels, onboarding blocks, help rails, or dashboards around the existing schema-driven surfaces
-- introduce higher-level wrappers that call into the same flow/review/detail/sync components
+- `src/lib/ui/theme-system/css-vars.ts`
 
-Risky approach:
+If you add a new token section or token key, wire it here so `applyThemeToDocument` exports it as CSS variables.
 
-- changing shared shell/frame behavior in a way that breaks other streams or assumes only one product skin will exist
+## D. Backdrop motion and particles
 
-## Recommended customization strategy
+Edit:
 
-### Tier 1. Surface-only branding
+- `src/lib/ui/theme-system/backdrop-descriptors.ts`
+- `components/layout/ambient-backdrop.tsx`
 
-Use when the goal is a new visual identity without runtime risk.
+Rules:
 
-Examples:
+- keep descriptors deterministic (seeded/precomputed)
+- keep animation transform/opacity-first
+- keep decorative motion subtle
+- preserve reduced-motion behavior
 
-- logo swap
-- copy rewrite
-- background/hero treatments
-- status legend polish
-- branded wrappers around existing content blocks
+---
 
-### Tier 2. Presentation composition
+## 3. Global visual recipes
 
-Use when the goal is a premium product skin.
+Edit:
 
-Examples:
+- `app/globals.css`
 
-- custom dashboard page that links into the same flows
-- specialized landing page for a chosen schema family
-- branded review shell around the same record surfaces
-- alternate section headers or information rails
+Use this file to define reusable recipe classes that consume theme vars:
 
-### Tier 3. Controlled schema customization
+- shell/chrome recipes (`shell-*`)
+- material surfaces (`surface-*`)
+- primitive recipes (`ui-button*`, `ui-field`, `ui-pill`, `ui-badge`)
+- feedback recipes (`ui-notice*`)
+- ambient layer classes
 
-Use when the goal is domain adaptation while preserving engine behavior.
+Do not move business logic here.
 
-Examples:
+---
 
-- add or rename example schemas
-- change field labels, descriptions, or options
-- change view sections and list field projections
-- adjust conditional visibility within schema definitions
+## 4. Primitive-first customization order
 
-Keep this schema-driven. Do not fork the runtime just to support a new business vocabulary.
+When implementing broad visual changes:
 
-## Guardrails for schema-driven safety
+1. Update typed tokens in `theme-specs.ts`.
+2. Ensure vars are exported in `css-vars.ts`.
+3. Update recipe classes in `globals.css`.
+4. Update primitives in `components/ui/*`.
+5. Touch feature screens only for composition gaps.
 
-When customizing, verify all of the following remain true:
+This order avoids per-screen hardcoded drift.
 
-- field IDs remain stable where data continuity matters
-- flow steps still validate through the existing validation layer
-- visibility still comes from schema/config rules instead of page-specific hacks
-- actions still map to valid states/roles
-- record rendering still works from schema metadata rather than one-off component branching
+---
 
-## Suggested file organization for custom work
+## 5. Shell slot model and injection
 
-```text
-components/
-  brand/
-    brand-shell.tsx
-    brand-header.tsx
-    brand-surface.tsx
-    brand-hero.tsx
-  theme/
-    brand-tokens.ts
-    status-palette.ts
-public/
-  brand/
-    logo.svg
-    mark.svg
-    illustrations/
+Slot contracts are defined in:
+
+- `src/lib/ui/shell-system/types.ts`
+
+Validation gates:
+
+- `src/lib/ui/shell-system/validators.ts`
+
+Composition point:
+
+- `src/lib/ui/shell-system/composeShellModel.ts`
+
+Runtime rendering:
+
+- `components/layout/app-shell.tsx`
+- `components/layout/shell/*`
+
+The shell receives resolved slot payloads from registries/manifests. Customize shell content by editing client manifests and registries, not by hardcoding labels inside shell components.
+
+### Add or edit navigation safely
+
+1. Edit `src/lib/ui/shell-system/client/client.navigation.ts`.
+2. Keep `slot`, `mobilePolicy`, `collapsedLabelPolicy`, `permissions`, and `visibility` explicit.
+3. Validate route prefixes against `moduleRegistry`.
+
+### Add or edit actions safely
+
+1. Edit `src/lib/ui/shell-system/client/client.actions.ts`.
+2. Assign to one of:
+   - `quickActionSlot`
+   - `contextActionSlot`
+   - `utilitySlot`
+3. Keep permission and visibility policies aligned with module ownership.
+
+### Add or edit widgets safely
+
+1. Edit `src/lib/ui/shell-system/client/client.widgets.ts`.
+2. Assign to one of:
+   - `contextualPanelSlot`
+   - `quickFiltersSlot`
+   - `pluginTraySlot`
+3. Keep `componentId` stable for future renderer injection.
+
+### Add or edit module composition safely
+
+1. Edit `src/lib/ui/shell-system/registries/moduleRegistry.ts`.
+2. Reference existing nav/action/widget IDs.
+3. Keep `routePrefix` and permissions aligned with route contracts.
+
+---
+
+## 6. Reserved theme slots workflow
+
+Two internal scaffolds are ready:
+
+- `slot_01`
+- `slot_02`
+
+They are structurally complete but hidden by default. To activate safely:
+
+1. set env visibility flag to `1`
+2. update slot spec values in `theme-specs.ts`
+3. verify selector behavior and persistence
+4. remove placeholder labels only when theme is production-ready
+
+---
+
+## 7. Rollback (simple)
+
+From repo root, rollback only this app to last committed state:
+
+```powershell
+git restore --source=HEAD --worktree --staged apps/external_interaction_template
 ```
 
-This keeps custom presentation additive instead of invasive.
+Rollback only the visual system files:
 
-## What not to do
+```powershell
+git restore --source=HEAD --worktree --staged `
+  apps/external_interaction_template/app/layout.tsx `
+  apps/external_interaction_template/app/globals.css `
+  apps/external_interaction_template/components/layout/app-shell.tsx `
+  apps/external_interaction_template/components/layout/ambient-backdrop.tsx `
+  apps/external_interaction_template/src/lib/ui/theme-catalog.ts `
+  apps/external_interaction_template/src/lib/ui/runtime.ts `
+  apps/external_interaction_template/src/lib/ui/theme-system `
+  apps/external_interaction_template/components/ui `
+  apps/external_interaction_template/docs/architecture/FRONTEND_VISUAL_MAP.md `
+  apps/external_interaction_template/docs/guides/CUSTOMIZATION_GUIDE.md
+```
 
-Avoid these anti-patterns:
+---
 
-- baking a specific business domain into core record/service names
-- hardcoding schema-specific behavior into shared runtime components
-- changing validation/state logic to achieve a cosmetic outcome
-- modifying shared files owned by another stream just to move pixels around
-- relying on a bundled local DB as the long-term customization mechanism
+## 8. Validation checklist
 
-## Practical customization sequence
+After customization, run:
 
-1. Brand assets and metadata
-2. Wrapper components and route-local visual composition
-3. Schema labels/views/examples
-4. Only then consider shared visual primitive changes, and only with cross-stream coordination
+1. `pnpm -C apps/external_interaction_template run typecheck`
+2. `pnpm -C apps/external_interaction_template run test`
+3. `pnpm -C apps/external_interaction_template run build`
 
-That order keeps the engine reusable and sharply reduces merge pain with parallel work on shared shell/flow/review/sync files.
+Then verify:
+
+- `aurora`, `solstice`, `neon` still available
+- default stays `solstice` unless intentionally changed
+- persistence still works with existing key
+- reduced motion still respected
+- no business logic regressions introduced by visual edits

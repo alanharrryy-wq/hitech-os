@@ -1,16 +1,25 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowUpRight, RotateCcw } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
-import { FlowRunner } from "@components/flow/flow-runner";
-import { Button } from "@components/ui/button";
-import { Input } from "@components/ui/input";
-import { PageHeader } from "@components/ui/page-header";
-import { Surface } from "@components/ui/surface";
+import { FlowContextStack } from "@components/flow/flow-context-stack";
+import { FlowMainCard } from "@components/flow/flow-main-card";
+import { FlowRouteScreen } from "@components/flow/flow-route-screen";
+import { FlowRunner, type FlowRunnerContextSnapshot } from "@components/flow/flow-runner";
+import { FlowSummaryStrip } from "@components/flow/flow-summary-strip";
+import { FlowWorkbench } from "@components/flow/flow-workbench";
+import { ProgressOverviewCard } from "@components/flow/progress-overview-card";
+import { ResumeSessionCard } from "@components/flow/resume-session-card";
+import { SchemaMetaCard } from "@components/flow/schema-meta-card";
 import { useT } from "@/lib/i18n/use-t";
 import { type ExternalRecord, type RecordTypeSchema } from "@/lib/core/types";
-import { localizeSchemaAccessMode, localizeSchemaTitle } from "@/lib/ui/schema-display";
+import {
+  localizeSchemaAccessMode,
+  localizeSchemaCategory,
+  localizeSchemaSummary,
+  localizeSchemaTag,
+  localizeSchemaTitle
+} from "@/lib/ui/schema-display";
 
 interface FlowPageClientProps {
   schema: RecordTypeSchema;
@@ -18,70 +27,87 @@ interface FlowPageClientProps {
   queryToken?: string;
 }
 
+function createInitialSnapshot(schema: RecordTypeSchema, initialRecord?: ExternalRecord | null): FlowRunnerContextSnapshot {
+  const firstStep = schema.flow.steps[0];
+
+  return {
+    stepIndex: 0,
+    totalSteps: schema.flow.steps.length,
+    progress: 0,
+    remainingRequired: schema.flow.steps.length,
+    recordState: initialRecord?.state ?? "draft",
+    recordId: initialRecord?.id ?? null,
+    secureToken: initialRecord?.secureToken ?? null,
+    lastSavedAt: initialRecord?.updatedAt ?? null,
+    errorCount: 0,
+    activeStepId: firstStep?.id ?? "",
+    activeStepTitle: firstStep?.title ?? "",
+    stepSummaries: schema.flow.steps.map((step) => ({
+      id: step.id,
+      title: step.title,
+      complete: false,
+      requiredTotal: 0,
+      completedRequired: 0
+    }))
+  };
+}
+
 export function FlowPageClient({ schema, initialRecord, queryToken = "" }: FlowPageClientProps) {
   const t = useT();
   const schemaTitle = localizeSchemaTitle(schema, t);
+  const schemaSummary = localizeSchemaSummary(schema, t);
+  const categoryLabel = localizeSchemaCategory(schema.category, t);
   const accessModeLabel = localizeSchemaAccessMode(schema.flow.accessMode, t);
+  const localizedTags = useMemo(() => schema.tags.map((tag) => localizeSchemaTag(tag, t)), [schema.tags, t]);
+
+  const baseSnapshot = useMemo(() => createInitialSnapshot(schema, initialRecord), [schema, initialRecord]);
+  const [runnerContext, setRunnerContext] = useState<FlowRunnerContextSnapshot>(baseSnapshot);
+
+  useEffect(() => {
+    setRunnerContext(baseSnapshot);
+  }, [baseSnapshot]);
 
   return (
-    <div className="grid gap-5">
-      <PageHeader
-        eyebrow={t("flow.page.eyebrow")}
-        title={schemaTitle}
-        description={t("flow.page.description")}
-        children={
-          <>
-            <span className="rounded-full border border-border/70 bg-surface/80 px-3 py-1.5 text-sm text-muted">
-              {t("flow.page.accessChip", { value: accessModeLabel })}
-            </span>
-            <span className="rounded-full border border-border/70 bg-surface/80 px-3 py-1.5 text-sm text-muted">
-              {t("flow.page.stepsChip", { count: schema.flow.steps.length })}
-            </span>
-            <span className="rounded-full border border-border/70 bg-surface/80 px-3 py-1.5 text-sm text-muted">
-              {t(schema.flow.allowDrafts ? "flow.page.draftsChipEnabled" : "flow.page.draftsChipDisabled")}
-            </span>
-          </>
-        }
-        actions={
-          <>
-            <Link href={`/flow/${schema.id}`}>
-              <Button variant="ghost" size="sm">
-                <RotateCcw className="h-4 w-4" />
-                {t("flow.page.newSession")}
-              </Button>
-            </Link>
-            <Link href="/inbox">
-              <Button variant="secondary" size="sm">
-                <ArrowUpRight className="h-4 w-4" />
-                {t("flow.page.openInbox")}
-              </Button>
-            </Link>
-          </>
-        }
-      />
-
-      <Surface
-        title={t("flow.page.resume.title")}
-        subtitle={t("flow.page.resume.subtitle")}
-        variant="shell"
-      >
-        <form action={`/flow/${schema.id}`} method="get" className="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
-          <label className="grid gap-1.5 text-sm text-muted">
-            <span className="eyebrow">{t("flow.page.resume.label")}</span>
-            <Input name="token" placeholder={t("flow.page.resume.placeholder")} defaultValue={queryToken} />
-          </label>
-          <div className="flex flex-wrap gap-2">
-            <Button variant="secondary" type="submit">
-              {t("flow.page.resume.submit")}
-            </Button>
-            <Link href={`/flow/${schema.id}`}>
-              <Button variant="ghost">{t("flow.page.resume.clear")}</Button>
-            </Link>
-          </div>
-        </form>
-      </Surface>
-
-      <FlowRunner schema={schema} initialRecord={initialRecord} />
-    </div>
+    <FlowRouteScreen
+      summaryStrip={
+        <FlowSummaryStrip
+          schemaId={schema.id}
+          schemaTitle={schemaTitle}
+          schemaSummary={schemaSummary}
+          accessModeLabel={accessModeLabel}
+          stepCount={schema.flow.steps.length}
+          allowDrafts={schema.flow.allowDrafts}
+          t={t}
+        />
+      }
+      workbench={
+        <FlowWorkbench
+          main={
+            <FlowMainCard>
+              <FlowRunner
+                schema={schema}
+                initialRecord={initialRecord}
+                sidebarMode="none"
+                onContextChange={setRunnerContext}
+              />
+            </FlowMainCard>
+          }
+          context={
+            <FlowContextStack>
+              <ResumeSessionCard schemaId={schema.id} queryToken={queryToken} t={t} />
+              <ProgressOverviewCard context={runnerContext} t={t} />
+              <SchemaMetaCard
+                categoryLabel={categoryLabel}
+                accessModeLabel={accessModeLabel}
+                inboundAdapter={schema.adapterBindings.inbound}
+                outboundAdapter={schema.adapterBindings.outbound}
+                tags={localizedTags}
+                t={t}
+              />
+            </FlowContextStack>
+          }
+        />
+      }
+    />
   );
 }

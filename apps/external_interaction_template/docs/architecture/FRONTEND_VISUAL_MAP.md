@@ -1,399 +1,208 @@
 # Frontend Visual Map
 **Project:** `apps/external_interaction_template`  
-**Scope:** visual structure, safe edit points, and “where do I touch this without detonating the whole surface?”
+**Last update:** 2026-04-13
 
-## 1. Frontend truth in one breath
+## 0. Golden Spec Priority
 
-This app is a **Next.js App Router** surface with a global frame and a reusable visual system:
+Visual and functional shell behavior is governed by:
 
-- `app/layout.tsx` mounts the global shell
-- `components/layout/ambient-backdrop.tsx` paints the moving glassy backdrop
-- `components/layout/app-frame.tsx` bridges pathname + accessibility into the shell
-- `components/layout/app-shell.tsx` decides the current UI area and the chrome around every page
-- pages under `app/` render the actual business surfaces
-- `components/ui/*` gives the reusable atoms and cards
-- `src/lib/ui/runtime.ts` is the visual control brain for area, density, preset, role, motion, contrast, and brand
+1. `docs/architecture/GOLDEN_SPEC_UI_SHELL_V1.md`
+2. `docs/architecture/GOLDEN_SPEC_ACCEPTANCE_MATRIX_V1.md`
+3. `docs/architecture/GOLDEN_SPEC_APPROVAL_RECORD_V1.md`
 
-That means most visual changes fall into **five buckets**:
+If this map conflicts with the golden spec set, the golden spec set is authoritative.
 
-1. Global shell and page chrome
-2. Background and motion mood
-3. Runtime visual context
-4. Feature surfaces
-5. Shared UI primitives
+## 1. Visual ownership in one pass
+
+The app now uses a **typed theme system** with explicit boundaries:
+
+1. `src/lib/ui/theme-system/*` owns theme identity (tokens/specs).
+2. `app/globals.css` consumes tokens and exposes reusable visual recipes.
+3. `components/layout/app-shell.tsx` owns chrome composition and selector wiring.
+4. `components/layout/ambient-backdrop.tsx` owns deterministic atmosphere layers.
+5. `src/lib/ui/runtime.ts` owns runtime context (area/density/motion/contrast), not theme appearance.
+
+This separation prevents appearance logic from leaking into runtime/business modules.
 
 ---
 
-## 2. Frontend map
+## 2. Theme system map
 
 ```mermaid
 flowchart TD
-  A[app/layout.tsx] --> B[AmbientBackdrop]
-  A --> C[AppFrame]
-
-  C --> D[AppShell]
-  D --> E[src/lib/ui/runtime.ts]
-
-  D --> F[Launcher page]
-  D --> G[Inbox page]
-  D --> H[Flow page]
-  D --> I[Record page]
-  D --> J[Sync page]
-  D --> K[Playground page]
-
-  F --> L[PageHeader]
-  F --> M[StatCard]
-  F --> N[Surface]
-
-  G --> O[RecordInbox]
-  I --> P[RecordDetail]
-  H --> Q[FlowRunner]
-  J --> R[SyncCenter]
-
-  O --> S[FilterPills]
-  O --> T[InboxRecordCard]
-  P --> U[ActivityTimeline]
-  P --> V[StateBadge]
-  Q --> W[Input / Select / Textarea / Button]
-  R --> X[Badge / Button / Surface]
-
-  D --> Y[globals.css]
-  N --> Y
-  M --> Y
-  L --> Y
+  A[src/lib/ui/theme-system/theme-specs.ts] --> B[src/lib/ui/theme-system/theme-registry.ts]
+  B --> C[src/lib/ui/theme-system/css-vars.ts]
+  A --> D[src/lib/ui/theme-system/backdrop-descriptors.ts]
+  C --> E[documentElement CSS variables]
+  D --> F[AmbientBackdrop layers]
+  E --> G[app/globals.css recipes]
+  G --> H[components/ui/* primitives]
+  H --> I[feature surfaces]
 ```
 
 ---
 
-## 3. Safe visual edit points
+## 3. Safe edit points (new)
 
-## A. Global shell and chrome
+## A. Theme identity (source of truth)
 
-### File
-- `components/layout/app-shell.tsx`
+- `src/lib/ui/theme-system/theme-specs.ts`
 
-### Controls
-- top nav
-- “current surface” summary card
-- role / density / preset / motion / contrast chips
-- per-area copy
-- area switching by pathname
+Edit here when you need to change:
 
-### Touch this when
-- you want the header to look different
-- you want different top actions
-- you want new chrome, chips, or panel arrangement
-- you want page personality to change by area
+- theme palette and contrast
+- materials and shell recipe
+- motion cadence and hover language
+- backdrop atmosphere identity
+- widget family tokens
+- typography and data-viz language
 
-### High-value functions / blocks
-- `resolveArea(currentPath)`
-- `areaDescription(area)`
-- `AppShell(...)`
+Do **not** put theme-specific hardcoded selectors in feature components.
 
-### Risk
-Medium. This file wraps basically every page.
+## B. Selector, IDs, visibility, persistence
 
----
+- `src/lib/ui/theme-system/theme-registry.ts`
+- compatibility shim: `src/lib/ui/theme-catalog.ts`
 
-## B. Backdrop and motion atmosphere
+Owns:
 
-### File
+- public IDs: `aurora`, `solstice`, `neon`
+- reserved IDs: `slot_01`, `slot_02`
+- default theme (`solstice`)
+- storage key compatibility
+- selector visibility for reserved slots
+
+Reserved slot visibility flags:
+
+- `NEXT_PUBLIC_EIT_THEME_SLOT_01_VISIBLE`
+- `NEXT_PUBLIC_EIT_THEME_SLOT_02_VISIBLE`
+
+`"1"` shows slot in selector, anything else keeps it hidden.
+
+## C. Token application to runtime DOM
+
+- `src/lib/ui/theme-system/css-vars.ts`
+
+Owns:
+
+- mapping typed spec -> CSS custom properties
+- `applyThemeToDocument(themeId)`
+- `color-scheme` per theme
+
+## D. Backdrop and motion atmosphere
+
 - `components/layout/ambient-backdrop.tsx`
+- `src/lib/ui/theme-system/backdrop-descriptors.ts`
 
-### Controls
-- radial glows
-- animated blobs
-- reduced-motion behavior
-- background mood
+Owns:
 
-### Touch this when
-- you want the app to feel calmer, shinier, darker, or less animated
-- you want to reduce visual noise
-- you want to tune the premium/glass feel
+- layered atmosphere (base / mist / far particles / near particles / sparkles / noise / vignette)
+- deterministic particle descriptors (seeded)
+- cadence bands around 3s / 5s / 10s
+- reduced/none motion behavior
 
-### Risk
-Low to medium. Mostly visual, but easy to make the UI too loud.
+## E. Runtime context (non-theme)
 
----
-
-## C. Runtime visual contract
-
-### File
 - `src/lib/ui/runtime.ts`
 
-### Controls
-- `area`
-- `density`
-- `preset`
-- `role`
-- `motion`
-- `contrast`
-- `brandProfile`
+Owns:
 
-### The real power knobs
-- `UI_AREAS`
-- `UI_DENSITIES`
-- `UI_PRESETS`
-- `UI_ROLES`
-- `UI_MOTION_PREFERENCES`
-- `UI_CONTRAST_PREFERENCES`
-- `BRAND_PROFILES`
-- `createRuntimeUiContext(...)`
-- `runtimeDataAttributes(...)`
-- `runtimeSpacing(...)`
-- `runtimeMotionClass(...)`
-- `runtimeContrastClass(...)`
-- `runtimeShellClass(...)`
+- area/density/preset/role/motion/contrast selection
+- data attributes and runtime utility classes
 
-### Touch this when
-- you want visual behavior to vary by page type
-- you want compact vs comfortable vs spacious tuning
-- you want brand presets to change globally
-- you want accessibility-aware styling changes
+Does **not** own theme appearance anymore.
 
-### Risk
-Medium to high. This is the **frontend control brain**.
+## F. Shared visual recipes
 
----
+- `app/globals.css`
+- `components/ui/*`
 
-## D. Feature surfaces
+`globals.css` now provides generic classes that consume theme vars:
 
-### 1) Launcher
-**Files**
-- `app/page.tsx`
-- `components/ui/page-header.tsx`
-- `components/ui/stat-card.tsx`
-- `components/ui/surface.tsx`
+- surfaces: `surface-shell`, `surface-panel`, `surface-elevated`, `surface-muted`
+- controls: `ui-button*`, `ui-field`, `ui-pill`, `ui-badge`
+- shell: `shell-*` cluster/nav/chips
+- feedback: `ui-notice*`
+- ambient classes
 
-**Controls**
-- hero copy
-- stat tiles
-- available flow cards
-- CTA layout
+Primitives consume these classes; feature screens should reuse primitives/surfaces.
 
-**Touch this when**
-- you want the homepage/dashboard to change
+## G. Shell orchestration and injection
 
----
+- `src/lib/ui/shell-system/types.ts` defines contracts for:
+  - slots
+  - nav items
+  - actions
+  - widgets
+  - modules
+  - client manifests
+- `src/lib/ui/shell-system/validators.ts` is the fail-fast gate for invalid payload shapes.
+- `src/lib/ui/shell-system/registries/*` owns ordered validated registries.
+- `src/lib/ui/shell-system/client/*` owns client-specific manifests (labels, nav/actions/widgets, permissions, icon-family binding).
+- `src/lib/ui/shell-system/composeShellModel.ts` composes final shell state from:
+  - runtime context
+  - permissions
+  - route/area
+  - client registries
+  and then hydrates:
+  - `brandSlot`
+  - `workspaceSlot`
+  - `primaryNavSlot`
+  - `secondaryNavSlot`
+  - `quickActionSlot`
+  - `contextActionSlot`
+  - `utilitySlot`
+  - `footerSlot`
+  - `contextualPanelSlot`
+  - `quickFiltersSlot`
+  - `pluginTraySlot`
 
-### 2) Inbox
-**Files**
-- `app/inbox/page.tsx`
-- `components/records/record-inbox.tsx`
-- `components/records/inbox-record-card.tsx`
-
-**Controls**
-- triage layout
-- filters
-- queue cards
-- scan density
-
-**Touch this when**
-- you want review ergonomics to change
-
----
-
-### 3) Flow runner
-**Files**
-- `app/flow/[schemaId]/page.tsx`
-- `components/flow/flow-runner.tsx`
-
-**Controls**
-- stepper
-- save/submit notices
-- field rendering
-- token resume UX
-- progress summary
-- attachment handling UI
-
-**Touch this when**
-- you want external-user form UX to change
-
-**Important note**
-This surface mixes **visual composition** and **client behavior**. Treat it carefully.
-
----
-
-### 4) Record detail
-**Files**
-- `app/record/[recordId]/page.tsx`
-- `components/records/record-detail.tsx`
-- `components/records/activity-timeline.tsx`
-
-**Controls**
-- detail page layout
-- timeline
-- action area
-- status presentation
-- attachments / dispatch / sync sections
-
-**Touch this when**
-- you want operator review detail to change
-
----
-
-### 5) Sync center
-**Files**
-- `app/sync/page.tsx`
-- `components/sync/sync-center.tsx`
-
-**Controls**
-- metrics
-- retry controls
-- event list
-- failed-job visibility
-- filter pills
-
-**Touch this when**
-- you want operational visibility to change
-
----
-
-### 6) Schema playground
-**File**
-- `app/playground/page.tsx`
-
-**Controls**
-- side-by-side schema cards
-- design-system validation surface
-
-**Touch this when**
-- you want a safer place to compare schema visual differences
-
----
-
-## E. Shared UI primitives
-
-### Files
-- `components/ui/button.tsx`
-- `components/ui/badge.tsx`
-- `components/ui/input.tsx`
-- `components/ui/select.tsx`
-- `components/ui/textarea.tsx`
-- `components/ui/surface.tsx`
-- `components/ui/page-header.tsx`
-- `components/ui/stat-card.tsx`
-- `components/ui/state-badge.tsx`
-- `components/ui/status-panel.tsx`
-- `components/ui/filter-pills.tsx`
-
-### Touch this when
-- you want a broad, systematic visual change
-- the same issue appears in multiple screens
-- spacing, borders, shadow, typography, or variants feel off everywhere
-
-### Risk
-High leverage. Tiny changes here ripple across the app.
+The shell components under `components/layout/shell/*` render only resolved slot payloads. They do not own client-specific menu truth.
 
 ---
 
 ## 4. If you want X, touch Y
 
-| Goal | First file to touch | Second place to inspect |
+| Goal | First file | Second file |
 |---|---|---|
-| Change header / top chrome | `components/layout/app-shell.tsx` | `src/lib/ui/runtime.ts` |
-| Change backdrop glow / motion | `components/layout/ambient-backdrop.tsx` | `app/globals.css` |
-| Change density / contrast / preset logic | `src/lib/ui/runtime.ts` | `components/layout/app-shell.tsx` |
-| Change launcher cards and stats | `app/page.tsx` | `components/ui/stat-card.tsx` |
-| Change inbox review UX | `components/records/record-inbox.tsx` | `components/records/inbox-record-card.tsx` |
-| Change multi-step form UX | `components/flow/flow-runner.tsx` | `app/flow/[schemaId]/page.tsx` |
-| Change record detail experience | `components/records/record-detail.tsx` | `components/records/activity-timeline.tsx` |
-| Change sync dashboard | `components/sync/sync-center.tsx` | `components/ui/filter-pills.tsx` |
-| Change broad card styling | `components/ui/surface.tsx` | `app/globals.css` |
-| Change buttons globally | `components/ui/button.tsx` | screens that use variant props |
+| Redefine Aurora visual identity | `src/lib/ui/theme-system/theme-specs.ts` | `app/globals.css` |
+| Change default theme | `src/lib/ui/theme-system/theme-registry.ts` | `components/layout/app-shell.tsx` |
+| Show/hide reserved slots | `src/lib/ui/theme-system/theme-registry.ts` | `.env` (`NEXT_PUBLIC_EIT_THEME_SLOT_*_VISIBLE`) |
+| Adjust backdrop density or cadence | `src/lib/ui/theme-system/backdrop-descriptors.ts` | `components/layout/ambient-backdrop.tsx` |
+| Tune shell thickness/chrome feel | `components/layout/app-shell.tsx` | `app/globals.css` (`shell-*`) |
+| Change button/input family across app | `components/ui/button.tsx`, `input.tsx`, `select.tsx`, `textarea.tsx` | `app/globals.css` (`ui-*`) |
+| Tune reduced motion behavior | `components/layout/ambient-backdrop.tsx` | `app/globals.css` motion sections |
 
 ---
 
-## 5. Safe edit order
+## 5. Known anti-patterns to avoid
 
-When changing visuals, follow this order:
+Do not reintroduce:
 
-1. **Copy / labels / composition props**
-2. **Shared component variant**
-3. **Runtime visual rules**
-4. **Global shell**
-5. **Global CSS**
-6. **Behavior inside client components**
-
-That order keeps the blast radius smaller.
+- grid overlay background
+- giant `html[data-ui-theme="..."]` style branches in `globals.css`
+- shell as stacked heavy cards
+- border-first mini-card composition for every widget
+- theme values scattered in feature files
+- random client-only backdrop randomness (hydration risk)
 
 ---
 
-## 6. Frontend danger zones
+## 6. Validation checklist for visual changes
 
-These are the places where visual edits can secretly become logic bugs:
+After any theme/chrome/backdrop update, verify:
 
-### `components/flow/flow-runner.tsx`
-Why dangerous:
-- validation
-- persistence
-- attachment upload
-- step navigation
-- draft vs submit logic
+1. IDs remain compatible (`aurora`, `solstice`, `neon`).
+2. Theme persistence still works with local storage key.
+3. Reduced motion removes/simplifies decorative motion.
+4. No route/business logic was touched for cosmetic goals.
+5. Tokens changed in `theme-system` propagate without manual selector edits.
 
-### `components/sync/sync-center.tsx`
-Why dangerous:
-- retry button wires to backend
-- filters are stateful
-- refresh behavior matters
+## 7. Minimal extension workflow
 
-### `components/records/record-detail.tsx`
-Why dangerous:
-- action buttons likely reflect state availability
-- audit data needs consistent ordering and visibility
-
-### `src/lib/ui/runtime.ts`
-Why dangerous:
-- this changes the visual contract app-wide
-
----
-
-## 7. Recommended workflow for frontend changes
-
-### Cosmetic-only
-- change feature page component first
-- then shared primitive only if repetition appears
-
-### System-wide style
-- change UI primitive or runtime contract first
-- then inspect launcher, inbox, flow, record, sync surfaces
-
-### Big redesign
-- prototype in `playground`
-- validate `launcher`
-- validate `flow`
-- validate `record`
-- validate `sync`
-
-That sequence catches most ugly regressions before production.
-
----
-
-## 8. Suggested file ownership map
-
-| Layer | Files |
-|---|---|
-| Global frame | `app/layout.tsx`, `components/layout/app-frame.tsx`, `components/layout/app-shell.tsx` |
-| Ambient mood | `components/layout/ambient-backdrop.tsx`, `app/globals.css` |
-| Visual runtime contract | `src/lib/ui/runtime.ts` |
-| Launcher | `app/page.tsx` |
-| Inbox | `app/inbox/page.tsx`, `components/records/record-inbox.tsx` |
-| Flow | `app/flow/[schemaId]/page.tsx`, `components/flow/flow-runner.tsx` |
-| Record detail | `app/record/[recordId]/page.tsx`, `components/records/record-detail.tsx` |
-| Sync | `app/sync/page.tsx`, `components/sync/sync-center.tsx` |
-| System validation | `app/playground/page.tsx` |
-| Shared atoms | `components/ui/*` |
-
----
-
-## 9. Bottom line
-
-If the question is:
-
-- **“Where do I change the shell?”** → `app-shell.tsx`
-- **“Where do I change the mood?”** → `ambient-backdrop.tsx`
-- **“Where do I change density / preset / contrast?”** → `runtime.ts`
-- **“Where do I change a business surface?”** → the page component + its feature component
-- **“Where do I change the design system?”** → `components/ui/*`
-
-That is the cleanest frontend map for moving fast without editing blind.
+1. Add a module in `src/lib/ui/shell-system/registries/moduleRegistry.ts`.
+2. Register matching nav entries in `src/lib/ui/shell-system/client/client.navigation.ts`.
+3. Register contextual actions in `src/lib/ui/shell-system/client/client.actions.ts`.
+4. Register quick/context/plugin widgets in `src/lib/ui/shell-system/client/client.widgets.ts`.
+5. Add required permission keys in `src/lib/ui/shell-system/client/client.permissions.ts`.
+6. Validate by running `typecheck`, `test`, and `build`.

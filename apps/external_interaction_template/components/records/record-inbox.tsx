@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Filter, LayoutGrid, List, Search, SearchX, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { InboxRecordCard } from "@components/records/inbox-record-card";
 import { Button } from "@components/ui/button";
@@ -29,14 +29,19 @@ import { localizeSchemaTitle } from "@/lib/ui/schema-display";
 interface RecordInboxProps {
   records: ExternalRecord[];
   schemas: RecordTypeSchema[];
+  initialQuery?: string;
 }
 
-export function RecordInbox({ records, schemas }: RecordInboxProps) {
+export function RecordInbox({ records, schemas, initialQuery = "" }: RecordInboxProps) {
   const t = useT();
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery);
   const [schemaFilter, setSchemaFilter] = useState<string>("all");
   const [stateFilter, setStateFilter] = useState<ExternalRecord["state"] | "all">("all");
   const [view, setView] = useState<"list" | "grid">("list");
+
+  useEffect(() => {
+    setQuery(initialQuery);
+  }, [initialQuery]);
 
   const schemaMap = useMemo(() => new Map(schemas.map((schema) => [schema.id, schema])), [schemas]);
   const hasActiveFilters = query.trim().length > 0 || schemaFilter !== "all" || stateFilter !== "all";
@@ -142,7 +147,7 @@ export function RecordInbox({ records, schemas }: RecordInboxProps) {
                 {t("inbox.clearFilters")}
               </Button>
             ) : null}
-            <div className="flex items-center gap-2 rounded-[18px] border border-border/70 bg-surface/80 p-1 shadow-inset">
+            <div className="shell-control-cluster p-1">
               <Button variant={view === "list" ? "secondary" : "ghost"} size="sm" className="min-w-10 px-3" onClick={() => setView("list")}>
                 <List className="h-4 w-4" />
               </Button>

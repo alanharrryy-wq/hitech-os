@@ -6,32 +6,32 @@ import { cn } from "@/lib/utils";
 
 const toneClass = {
   default: {
-    shell: "border-white/10 bg-canvas/28",
-    icon: "border-white/10 bg-white/6 text-accent",
+    shell: "surface-panel",
+    icon: "surface-muted text-accent",
     title: "text-text",
     copy: "text-muted"
   },
   warning: {
-    shell: "border-warning/25 bg-warning/8",
-    icon: "border-warning/25 bg-warning/10 text-warning",
+    shell: "surface-panel border-warning/30 bg-warning/8",
+    icon: "surface-muted border-warning/30 bg-warning/10 text-warning",
     title: "text-warning",
     copy: "text-muted"
   },
   danger: {
-    shell: "border-danger/25 bg-danger/8",
-    icon: "border-danger/25 bg-danger/10 text-danger",
+    shell: "surface-panel border-danger/30 bg-danger/8",
+    icon: "surface-muted border-danger/30 bg-danger/10 text-danger",
     title: "text-danger",
     copy: "text-muted"
   },
   success: {
-    shell: "border-success/25 bg-success/8",
-    icon: "border-success/25 bg-success/10 text-success",
+    shell: "surface-panel border-success/30 bg-success/8",
+    icon: "surface-muted border-success/30 bg-success/10 text-success",
     title: "text-success",
     copy: "text-muted"
   },
   accent: {
-    shell: "border-accent/25 bg-accent/8",
-    icon: "border-accent/25 bg-accent/10 text-accent",
+    shell: "surface-panel border-accent/30 bg-accent/8",
+    icon: "surface-muted border-accent/30 bg-accent/10 text-accent",
     title: "text-accent",
     copy: "text-muted"
   }
@@ -74,14 +74,14 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-[1.55rem] border px-4 sm:px-5 text-center shadow-glass backdrop-blur-lg",
+        "relative overflow-hidden px-4 sm:px-5 text-center",
         compact ? "py-7" : "py-10",
         palette.shell,
         className
       )}
     >
-      <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/12 to-transparent" />
-      <div className={cn("mx-auto mb-4 inline-flex items-center justify-center rounded-2xl border", compact ? "h-11 w-11" : "h-13 w-13", palette.icon)}>
+      <div className="keyline pointer-events-none absolute inset-x-6 top-0" />
+      <div className={cn("mx-auto mb-4 inline-flex items-center justify-center rounded-2xl", compact ? "h-11 w-11" : "h-13 w-13", palette.icon)}>
         {icon ?? defaultIcon[resolvedTone]}
       </div>
       {eyebrow ? <div className="mb-1.5 text-[10px] uppercase tracking-[0.2em] text-muted">{eyebrow}</div> : null}

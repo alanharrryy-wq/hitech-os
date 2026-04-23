@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Actor {
+  id        String   @id @default(cuid())
+  label     String
+  role      String
+  token     String?  @unique
+  createdAt DateTime @default(now())
+
+  records     ExternalRecord[]
+  submissions Submission[]
+}
+
+model RecordType {
+  id          String   @id @default(cuid())
+  schemaId    String   @unique
+  title       String
+  summary     String
+  category    String
+  config      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  records ExternalRecord[]
+}
+
+model ExternalRecord {
+  id           String   @id @default(cuid())
+  recordTypeId String
+  actorId      String?
+  state        String   @default("draft")
+  title        String
+  secureToken  String   @unique
+  fields       String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  submittedAt  DateTime?
+  lastSyncAt   DateTime?
+
+  recordType RecordType @relation(fields: [recordTypeId], references: [id])
+  actor      Actor?     @relation(fields: [actorId], references: [id])
+
+  submissions  Submission[]
+  attachments  Attachment[]
+  dispatchJobs DispatchJob[]
+  syncEvents   SyncEvent[]
+
+  @@index([recordTypeId, state])
+}
+
+model Submission {
+  id        String   @id @default(cuid())
+  recordId  String
+  actorId   String?
+  stepId    String?
+  payload   String
+  createdAt DateTime @default(now())
+
+  record ExternalRecord @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  actor  Actor?         @relation(fields: [actorId], references: [id])
+}
+
+model Attachment {
+  id         String   @id @default(cuid())
+  recordId   String
+  name       String
+  mimeType   String?
+  size       Int?
+  storageKey String?
+  createdAt  DateTime @default(now())
+
+  record ExternalRecord @relation(fields: [recordId], references: [id], onDelete: Cascade)
+}
+
+model DispatchJob {
+  id         String   @id @default(cuid())
+  recordId   String
+  adapterId  String
+  status     String   @default("pending")
+  payload    String
+  response   String?
+  error      String?
+  attempts   Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  record ExternalRecord @relation(fields: [recordId], references: [id], onDelete: Cascade)
+}
+
+model SyncEvent {
+  id         String   @id @default(cuid())
+  recordId   String
+  direction  String
+  adapterId  String
+  status     String
+  summary    String
+  payload    String?
+  error      String?
+  createdAt  DateTime @default(now())
+
+  record ExternalRecord @relation(fields: [recordId], references: [id], onDelete: Cascade)
+
+  @@index([recordId, status])
+}
