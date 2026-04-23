@@ -1,6 +1,2 @@
-"""Report Parser."""
-
-
-def todo() -> None:
-    """TODO."""
-    return None
+def parse_report_text(text: str) -> str:
+    return text

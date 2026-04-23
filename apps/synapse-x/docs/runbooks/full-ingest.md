@@ -10,3 +10,9 @@ Rebuild state from configured sources.
 4. rebuild indexes
 5. regenerate metrics
 6. capture diagnostics
+
+## Command
+```powershell
+cd F:\repos\hitech-os\apps\synapse-x
+.\scripts\ops\full-ingest.ps1 -Path F:\repos\hitech-os\apps\synapse-x\sample_inputs
+```

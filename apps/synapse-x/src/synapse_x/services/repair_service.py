@@ -1,6 +1,7 @@
-"""Repair Service."""
+from __future__ import annotations
+
+from synapse_x.engine import SynapseEngine
 
 
-def todo() -> None:
-    """TODO."""
-    return None
+def run_repair(engine: SynapseEngine) -> dict:
+    return engine.repair()
