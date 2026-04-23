@@ -1,0 +1,149 @@
+[
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "hidden",
+    "path": ".shadow_tiered_lantern_025.md",
+    "reason": "hidden_root"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "app/identity_pulse/routes.py",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "app/identity_pulse/service.py",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "app/identity_pulse/worker.py",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "docs",
+    "path": "docs/identity_pulse_architecture.md",
+    "reason": "non_product_top_level:docs"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "examples",
+    "path": "examples/identity_pulse_example.py",
+    "reason": "non_product_top_level:examples"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "fixtures",
+    "path": "fixtures/identity_pulse_seed.py",
+    "reason": "non_product_top_level:fixtures"
+  },
+  {
+    "action": "exclude",
+    "canonical_source": false,
+    "non_product_class": "excluded",
+    "path": "generated/identity_pulse/snapshot.json",
+    "reason": "excluded_segment:generated"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "public/modules.config.json",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "exclude",
+    "canonical_source": false,
+    "non_product_class": "excluded",
+    "path": "reports/identity_pulse_run.md",
+    "reason": "excluded_segment:reports"
+  },
+  {
+    "action": "exclude",
+    "canonical_source": false,
+    "non_product_class": "excluded",
+    "path": "reports_real/identity_pulse_live.md",
+    "reason": "excluded_segment:reports_real"
+  },
+  {
+    "action": "exclude",
+    "canonical_source": false,
+    "non_product_class": "excluded",
+    "path": "runtime/identity_pulse/stream.log",
+    "reason": "excluded_segment:runtime"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "scripts",
+    "path": "scripts/rebuild_identity_pulse.py",
+    "reason": "non_product_top_level:scripts"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/bridges/IdentityPulseBridge.ts",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/components/IdentityPulsePanel.tsx",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/components/IdentityPulseStats.tsx",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/main.tsx",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/pages/IdentityPulseScreen.tsx",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/routes/register.ts",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "tests",
+    "path": "tests/identity_pulse.spec.ts",
+    "reason": "non_product_top_level:tests"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "tooling",
+    "path": "tools/enforce_identity_pulse_policy.py",
+    "reason": "non_product_top_level:tools"
+  }
+]

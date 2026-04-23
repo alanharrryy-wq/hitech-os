@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title>Form / formulario</title>
+  <desc>Set 01 · Nebula Midnight · Form / formulario</desc>
+  <defs>
+    <radialGradient id="bg" cx="32%" cy="28%" r="72%">
+      <stop offset="0%" stop-color="#5F8CFF" stop-opacity="0.96"/>
+      <stop offset="30%" stop-color="#334FE7" stop-opacity="0.96"/>
+      <stop offset="72%" stop-color="#1D2246" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#111423" stop-opacity="1"/>
+    </radialGradient>
+    <linearGradient id="rim" x1="18%" y1="18%" x2="86%" y2="88%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="55%" stop-color="#7FC7FF" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.12"/>
+    </linearGradient>
+    <linearGradient id="flare" x1="18%" y1="20%" x2="80%" y2="74%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#87BCFF" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="rgba(72,112,255,0.38)" flood-opacity="1"/>
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="0" stdDeviation="2.4" flood-color="#87BCFF" flood-opacity="0.28"/>
+    </filter>
+    <clipPath id="clip">
+      <circle cx="48" cy="48" r="34"/>
+    </clipPath>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <circle cx="48" cy="48" r="34" fill="url(#bg)"/>
+    <circle cx="48" cy="48" r="33" fill="none" stroke="url(#rim)" stroke-width="1.2"/>
+    <circle cx="48" cy="48" r="30.5" fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="0.8"/>
+    <g clip-path="url(#clip)">
+      <ellipse cx="36" cy="28" rx="16" ry="12" fill="url(#flare)" opacity="0.22"/>
+      <path d="M18 56c18-10 43-10 60 0" stroke="#8A6BFF" stroke-opacity="0.16" stroke-width="1.2" fill="none"/>
+      <path d="M26 64c10-2 24-1 44 2" stroke="#4BE6FF" stroke-opacity="0.10" stroke-width="1.2" fill="none"/>
+      <circle cx="61" cy="28" r="1.5" fill="#DDF3FF" opacity="0.6"/>
+      <circle cx="30" cy="56" r="1.1" fill="#DDF3FF" opacity="0.6"/>
+      <circle cx="66" cy="58" r="1.25" fill="#DDF3FF" opacity="0.6"/>
+    </g>
+  </g>
+
+  <g stroke="#F4F7FF" stroke-opacity="0.96" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#iconGlow)" color="#F4F7FF">
+    <rect x="38" y="35" width="20" height="26" rx="3" /><rect x="41" y="42" width="3" height="3" rx="0" /><line x1="47" y1="43.5" x2="55" y2="43.5"/><rect x="41" y="49" width="3" height="3" rx="0" /><line x1="47" y1="50.5" x2="55" y2="50.5"/><rect x="41" y="56" width="3" height="3" rx="0" /><line x1="47" y1="57.5" x2="55" y2="57.5"/>
+  </g>
+</svg>

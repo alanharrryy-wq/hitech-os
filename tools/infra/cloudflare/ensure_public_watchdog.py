@@ -13,6 +13,8 @@ from cloudflared_helpers import (
     DEFAULT_ORIGIN_URL,
     DEFAULT_LOG_DIR,
     DEFAULT_REPO_ROOT,
+    DEFAULT_TEMPLATE_HOSTNAME,
+    DEFAULT_TEMPLATE_ORIGIN_URL,
     RunContext,
     TunnelSetupError,
     atomic_write_text,
@@ -44,6 +46,8 @@ def _expected_runner_config(repo_root: Path) -> dict[str, Any]:
         "origin_url": DEFAULT_ORIGIN_URL,
         "forms_hostname": DEFAULT_FORMS_HOSTNAME,
         "forms_origin_url": DEFAULT_FORMS_ORIGIN_URL,
+        "template_hostname": DEFAULT_TEMPLATE_HOSTNAME,
+        "template_origin_url": DEFAULT_TEMPLATE_ORIGIN_URL,
         "log_dir": str(repo_root / "logs" / "cloudflare"),
         "failure_threshold": 2,
         "probe_script": str(_public_health_probe_script(repo_root)),
@@ -75,6 +79,8 @@ def _render_runner_script(config_path: Path) -> str:
         "  -OriginUrl ([string]$config.origin_url) `\n"
         "  -FormsHostname ([string]$config.forms_hostname) `\n"
         "  -FormsOriginUrl ([string]$config.forms_origin_url) `\n"
+        "  -TemplateHostname ([string]$config.template_hostname) `\n"
+        "  -TemplateOriginUrl ([string]$config.template_origin_url) `\n"
         "  -LogDir ([string]$config.log_dir) `\n"
         "  -FailureThreshold ([int]$config.failure_threshold)\n"
         "exit $LASTEXITCODE\n"

@@ -1,11 +1,11 @@
 from __future__ import annotations
 
+from collections import Counter
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import PurePosixPath
 from typing import Any
 
-from pya.contracts.base import deterministic_id
 from pya.contracts.engine_contracts import build_execution_summary
 from pya.contracts.enums import State
 from pya.contracts.index_contracts import build_query_index_entry
@@ -18,7 +18,19 @@ from pya.contracts.switch_contracts import build_switch_registry_entry
 from pya.contracts.contract_registry import get_contract_registry_entries
 from pya.kernel.identity import module_id_from_path
 from pya.kernel.models import EngineRunResult
+from pya.system.canon_policy import classify_source_path
 from pya.system.state_model import validate_state_producer
+
+PROMOTABLE_SURFACE_KINDS = {
+    "python_module",
+    "module",
+    "entrypoint",
+    "route_surface",
+    "screen",
+    "component",
+    "desktop_bridge",
+    "module_config",
+}
 
 
 @dataclass
@@ -60,6 +72,27 @@ class RegistryBuilderEngine:
                 base = base[:-len(suffix)]
         return base
 
+    def _promotion_decision(self, signal: dict[str, Any]) -> tuple[bool, str]:
+        evidence = signal.get("evidence", {})
+        source_path = str(signal.get("source_path", ""))
+        path_policy = classify_source_path(source_path)
+        if not path_policy.canonical_source:
+            reason = path_policy.non_product_class or "noncanonical_path"
+            return False, f"non_product:{reason}"
+        if evidence.get("canonical_source") is False:
+            reason = evidence.get("non_product_class") or path_policy.non_product_class or "scanner_noncanonical"
+            return False, f"non_product:{reason}"
+        if evidence.get("non_product_class"):
+            return False, f"non_product:{evidence['non_product_class']}"
+        for tag in signal.get("tags", []):
+            tag_text = str(tag)
+            if tag_text.startswith("non-product:"):
+                return False, tag_text.replace("non-product:", "non_product:")
+        surface_kind = str(evidence.get("surface_kind", ""))
+        if surface_kind and surface_kind not in PROMOTABLE_SURFACE_KINDS:
+            return False, f"unsupported_surface:{surface_kind}"
+        return True, "promoted"
+
     def run(self, context) -> EngineRunResult:
         started_at = context.execution_time
         emitted_events = []
@@ -77,7 +110,18 @@ class RegistryBuilderEngine:
         import_signals = [signal for signal in signals if signal["signal_type"] == "import_edge"]
         boundary_signals = [signal for signal in signals if signal["signal_type"] == "boundary_candidate"]
         grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        skipped_module_candidates: list[dict[str, str]] = []
         for signal in module_signals:
+            should_promote, reason = self._promotion_decision(signal)
+            if not should_promote:
+                skipped_module_candidates.append(
+                    {
+                        "source_path": str(signal["source_path"]),
+                        "module_name": self._module_name(signal),
+                        "reason": reason,
+                    }
+                )
+                continue
             grouped[self._module_name(signal)].append(signal)
 
         module_registry: list[dict[str, Any]] = []
@@ -184,8 +228,8 @@ class RegistryBuilderEngine:
             source_module_name = signal["evidence"].get("module_name") or self._module_name(signal)
             source_path = signal["source_path"]
             surface_kind = str(signal["evidence"].get("surface_kind", ""))
-            resolved_import = resolve_python_import_name(source_module_name, imported) if surface_kind == "python_module" or str(source_path).endswith('.py') else imported
-            path_candidate = None if surface_kind == "python_module" or str(source_path).endswith('.py') else resolve_text_import_path(str(source_path), imported)
+            resolved_import = resolve_python_import_name(source_module_name, imported) if surface_kind == "python_module" or str(source_path).endswith(".py") else imported
+            path_candidate = None if surface_kind == "python_module" or str(source_path).endswith(".py") else resolve_text_import_path(str(source_path), imported)
             target_module = canonical_by_name.get(resolved_import)
             if target_module is None and path_candidate:
                 target_module = canonical_by_path_no_ext.get(path_candidate)
@@ -267,12 +311,20 @@ class RegistryBuilderEngine:
             conflicts=conflicts,
             created_at=context.execution_time,
         )
+        skipped_paths = sorted({item["source_path"] for item in skipped_module_candidates})
+        summary_payload["skipped_module_candidate_paths"] = skipped_paths
+        summary_payload["skipped_module_candidates"] = sorted(
+            skipped_module_candidates,
+            key=lambda item: (item["reason"], item["source_path"], item["module_name"]),
+        )
+        summary_payload["skipped_module_candidate_reasons"] = dict(Counter(item["reason"] for item in skipped_module_candidates))
         artifacts.append(context.storage.write_artifact(self.engine_id, "metrics", "registry_build_summary.json", summary_payload))
         metrics = {
             "module_count": len(module_registry),
             "boundary_count": len(boundary_registry),
             "contract_count": len(contract_registry),
             "conflict_count": len(conflicts),
+            "skipped_module_candidate_count": len(skipped_paths),
         }
         context.event_bus.emit(
             name="registry_builder.completed",

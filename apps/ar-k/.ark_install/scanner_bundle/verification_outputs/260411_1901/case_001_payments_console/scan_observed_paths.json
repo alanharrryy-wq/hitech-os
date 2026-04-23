@@ -1,0 +1,149 @@
+[
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "hidden",
+    "path": ".shadow_steady_lantern_001.md",
+    "reason": "hidden_root"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "app/payments_console/routes.py",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "app/payments_console/service.py",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "app/payments_console/worker.py",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "docs",
+    "path": "docs/payments_console_architecture.md",
+    "reason": "non_product_top_level:docs"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "examples",
+    "path": "examples/payments_console_example.py",
+    "reason": "non_product_top_level:examples"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "fixtures",
+    "path": "fixtures/payments_console_seed.py",
+    "reason": "non_product_top_level:fixtures"
+  },
+  {
+    "action": "exclude",
+    "canonical_source": false,
+    "non_product_class": "excluded",
+    "path": "generated/payments_console/snapshot.json",
+    "reason": "excluded_segment:generated"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "public/modules.config.json",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "exclude",
+    "canonical_source": false,
+    "non_product_class": "excluded",
+    "path": "reports/payments_console_run.md",
+    "reason": "excluded_segment:reports"
+  },
+  {
+    "action": "exclude",
+    "canonical_source": false,
+    "non_product_class": "excluded",
+    "path": "reports_real/payments_console_live.md",
+    "reason": "excluded_segment:reports_real"
+  },
+  {
+    "action": "exclude",
+    "canonical_source": false,
+    "non_product_class": "excluded",
+    "path": "runtime/payments_console/stream.log",
+    "reason": "excluded_segment:runtime"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "scripts",
+    "path": "scripts/rebuild_payments_console.py",
+    "reason": "non_product_top_level:scripts"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/bridges/PaymentsConsoleBridge.ts",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/components/PaymentsConsolePanel.tsx",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/components/PaymentsConsoleStats.tsx",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/main.tsx",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/pages/PaymentsConsoleScreen.tsx",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/routes/register.ts",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "tests",
+    "path": "tests/payments_console.spec.ts",
+    "reason": "non_product_top_level:tests"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "tooling",
+    "path": "tools/enforce_payments_console_policy.py",
+    "reason": "non_product_top_level:tools"
+  }
+]

@@ -13,7 +13,7 @@ import {
   Sparkles,
   Workflow
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ComponentType } from "react";
 
 import { Button } from "@components/ui/button";
@@ -31,9 +31,34 @@ import { isFieldVisible } from "@/lib/core/visibility";
 import { cn, formatRelativeTime } from "@/lib/utils";
 import { useT } from "@/lib/i18n/use-t";
 
+export interface FlowRunnerStepSnapshot {
+  id: string;
+  title: string;
+  complete: boolean;
+  requiredTotal: number;
+  completedRequired: number;
+}
+
+export interface FlowRunnerContextSnapshot {
+  stepIndex: number;
+  totalSteps: number;
+  progress: number;
+  remainingRequired: number;
+  recordState: ExternalRecord["state"];
+  recordId: string | null;
+  secureToken: string | null;
+  lastSavedAt: string | Date | null;
+  errorCount: number;
+  activeStepId: string;
+  activeStepTitle: string;
+  stepSummaries: FlowRunnerStepSnapshot[];
+}
+
 interface FlowRunnerProps {
   schema: RecordTypeSchema;
   initialRecord?: ExternalRecord | null;
+  sidebarMode?: "embedded" | "none";
+  onContextChange?: (snapshot: FlowRunnerContextSnapshot) => void;
 }
 
 function hasMeaningfulValue(value: unknown): boolean {
@@ -57,7 +82,10 @@ function getStepSummary(schema: RecordTypeSchema, step: StepDefinition, values: 
   const visibleFieldIds = getVisibleStepFields(schema, step, values);
   const requiredFieldIds = visibleFieldIds.filter((fieldId) => getFieldById(schema, fieldId).required);
   const completedRequired = requiredFieldIds.filter((fieldId) => hasMeaningfulValue(values[fieldId])).length;
-  const complete = requiredFieldIds.length > 0 ? completedRequired === requiredFieldIds.length : visibleFieldIds.every((fieldId) => hasMeaningfulValue(values[fieldId]));
+  const complete =
+    requiredFieldIds.length > 0
+      ? completedRequired === requiredFieldIds.length
+      : visibleFieldIds.every((fieldId) => hasMeaningfulValue(values[fieldId]));
 
   return {
     visibleFieldIds,
@@ -84,7 +112,149 @@ function serializePersistableValues(values: Record<string, unknown>) {
   );
 }
 
-export function FlowRunner({ schema, initialRecord }: FlowRunnerProps) {
+function toRunnerContextSnapshot({
+  stepIndex,
+  totalSteps,
+  progress,
+  remainingRequired,
+  recordState,
+  recordId,
+  secureToken,
+  lastSavedAt,
+  errorCount,
+  activeStep,
+  stepSummaries
+}: {
+  stepIndex: number;
+  totalSteps: number;
+  progress: number;
+  remainingRequired: number;
+  recordState: ExternalRecord["state"];
+  recordId: string | null;
+  secureToken: string | null;
+  lastSavedAt: string | Date | null;
+  errorCount: number;
+  activeStep: StepDefinition | null;
+  stepSummaries: Array<{
+    step: StepDefinition;
+    requiredTotal: number;
+    completedRequired: number;
+    complete: boolean;
+  }>;
+}): FlowRunnerContextSnapshot {
+  return {
+    stepIndex,
+    totalSteps,
+    progress,
+    remainingRequired,
+    recordState,
+    recordId,
+    secureToken,
+    lastSavedAt,
+    errorCount,
+    activeStepId: activeStep?.id ?? "",
+    activeStepTitle: activeStep?.title ?? "",
+    stepSummaries: stepSummaries.map((entry) => ({
+      id: entry.step.id,
+      title: entry.step.title,
+      complete: entry.complete,
+      requiredTotal: entry.requiredTotal,
+      completedRequired: entry.completedRequired
+    }))
+  };
+}
+
+function FlowRunnerSidebar({
+  progress,
+  stepIndex,
+  totalSteps,
+  remainingRequired,
+  recordState,
+  recordId,
+  secureToken,
+  lastSavedAt,
+  t
+}: {
+  progress: number;
+  stepIndex: number;
+  totalSteps: number;
+  remainingRequired: number;
+  recordState: ExternalRecord["state"];
+  recordId: string | null;
+  secureToken: string | null;
+  lastSavedAt: string | Date | null;
+  t: (key: string, values?: Record<string, string | number>) => string;
+}) {
+  return (
+    <div className="grid gap-4 self-start xl:sticky xl:top-24">
+      <Surface title={t("flow.runner.sidebar.session.title")} subtitle={t("flow.runner.sidebar.session.subtitle")} padding="sm">
+        <div className="grid gap-2.5">
+          <StatCard
+            label={t("flow.runner.sidebar.progress.label")}
+            value={`${Math.round(progress)}%`}
+            meta={t("flow.runner.sidebar.progress.meta", { current: stepIndex + 1, total: totalSteps })}
+            tone="accent"
+            icon={<Workflow className="h-5 w-5" />}
+          />
+          <StatCard
+            label={t("flow.runner.sidebar.requiredRemaining.label")}
+            value={String(remainingRequired)}
+            meta={t("flow.runner.sidebar.requiredRemaining.meta")}
+            tone={remainingRequired === 0 ? "success" : "warning"}
+            icon={<Sparkles className="h-5 w-5" />}
+          />
+          <div className="surface-muted px-3 py-2.5">
+            <div className="metric-label">{t("flow.runner.sidebar.currentState")}</div>
+            <div className="mt-2">
+              <StateBadge state={recordState} />
+            </div>
+            <div className="mt-1.5 text-sm leading-5 text-muted">{stateDescription(recordState)}</div>
+          </div>
+          <div className="surface-muted px-3 py-2.5">
+            <div className="metric-label">{t("flow.runner.sidebar.recordId")}</div>
+            <div className="mt-1 break-all text-[13px] text-heading">{recordId ?? t("flow.runner.sidebar.recordIdFallback")}</div>
+          </div>
+          <div className="surface-muted px-3 py-2.5">
+            <div className="metric-label">{t("flow.runner.sidebar.resumeToken")}</div>
+            <div className="mt-1 break-all text-[13px] text-heading">{secureToken ?? t("flow.runner.sidebar.resumeTokenFallback")}</div>
+          </div>
+          <div className="surface-muted px-3 py-2.5">
+            <div className="metric-label">{t("flow.runner.sidebar.lastSave")}</div>
+            <div className="mt-1 text-[13px] text-heading">{lastSavedAt ? formatRelativeTime(lastSavedAt) : t("flow.runner.sidebar.lastSaveFallback")}</div>
+          </div>
+        </div>
+      </Surface>
+
+      <Surface title={t("flow.runner.sidebar.safe.title")} subtitle={t("flow.runner.sidebar.safe.subtitle")} padding="sm">
+        <div className="grid gap-2.5">
+          <div className="surface-muted flex gap-2.5 px-3 py-2.5">
+            <Shield className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+            <div>
+              <div className="text-sm font-medium text-heading">{t("flow.runner.safe.inlineValidation.title")}</div>
+              <div className="mt-1 text-sm leading-5 text-muted">{t("flow.runner.safe.inlineValidation.description")}</div>
+            </div>
+          </div>
+          <div className="surface-muted flex gap-2.5 px-3 py-2.5">
+            <LockKeyhole className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+            <div>
+              <div className="text-sm font-medium text-heading">{t("flow.runner.safe.resumeToken.title")}</div>
+              <div className="mt-1 text-sm leading-5 text-muted">{t("flow.runner.safe.resumeToken.description")}</div>
+            </div>
+          </div>
+          <div className="surface-muted flex gap-2.5 px-3 py-2.5">
+            <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+            <div>
+              <div className="text-sm font-medium text-heading">{t("flow.runner.safe.nextAction.title")}</div>
+              <div className="mt-1 text-sm leading-5 text-muted">{t("flow.runner.safe.nextAction.description")}</div>
+            </div>
+          </div>
+        </div>
+      </Surface>
+    </div>
+  );
+}
+
+export function FlowRunner({ schema, initialRecord, sidebarMode = "embedded", onContextChange }: FlowRunnerProps) {
   const initialValues = initialRecord?.fields ?? {};
   const [stepIndex, setStepIndex] = useState(() => resolveInitialStepIndex(schema, initialValues));
   const [recordId, setRecordId] = useState<string | null>(initialRecord?.id ?? null);
@@ -106,18 +276,13 @@ export function FlowRunner({ schema, initialRecord }: FlowRunnerProps) {
     [schema, values]
   );
 
-  if (!step) {
-    return (
-      <Surface title={t("flow.runner.configIssue.title")} variant="elevated">
-        <p className="text-sm text-danger">{t("flow.runner.configIssue.description")}</p>
-      </Surface>
-    );
-  }
-
-  const activeStep = step;
+  const activeStep = step ?? null;
   const isFinalStep = stepIndex === schema.flow.steps.length - 1;
-  const activeStepSummary = stepSummaries[stepIndex];
-  const remainingRequired = stepSummaries.reduce((total, entry) => total + Math.max(0, entry.requiredTotal - entry.completedRequired), 0);
+  const activeStepSummary = step ? stepSummaries[stepIndex] : null;
+  const remainingRequired = stepSummaries.reduce(
+    (total, entry) => total + Math.max(0, entry.requiredTotal - entry.completedRequired),
+    0
+  );
   const progressTotals = stepSummaries.reduce(
     (accumulator, entry) => {
       const weight = Math.max(1, entry.requiredTotal);
@@ -131,6 +296,49 @@ export function FlowRunner({ schema, initialRecord }: FlowRunnerProps) {
   const visibleFieldIds = activeStepSummary?.visibleFieldIds ?? [];
   const persistableValues = serializePersistableValues(values);
   const errorCount = Object.keys(errors).length;
+
+  const contextSnapshot = useMemo(
+    () =>
+      toRunnerContextSnapshot({
+        stepIndex,
+        totalSteps: schema.flow.steps.length,
+        progress,
+        remainingRequired,
+        recordState,
+        recordId,
+        secureToken,
+        lastSavedAt,
+        errorCount,
+        activeStep,
+        stepSummaries
+      }),
+    [
+      stepIndex,
+      schema.flow.steps.length,
+      progress,
+      remainingRequired,
+      recordState,
+      recordId,
+      secureToken,
+      lastSavedAt,
+      errorCount,
+      activeStep,
+      stepSummaries
+    ]
+  );
+
+  useEffect(() => {
+    onContextChange?.(contextSnapshot);
+  }, [contextSnapshot, onContextChange]);
+
+  if (!step) {
+    return (
+      <Surface title={t("flow.runner.configIssue.title")} variant="elevated">
+        <p className="text-sm text-danger">{t("flow.runner.configIssue.description")}</p>
+      </Surface>
+    );
+  }
+  const safeStep = step;
 
   function handleValue(fieldId: string, value: unknown) {
     setValues((current) => ({ ...current, [fieldId]: value }));
@@ -158,7 +366,9 @@ export function FlowRunner({ schema, initialRecord }: FlowRunnerProps) {
         });
 
         if (!response.ok) {
-          const body = await response.json().catch(() => ({ error: t("flow.runner.notice.attachmentUploadFailed") }));
+          const body = await response
+            .json()
+            .catch(() => ({ error: t("flow.runner.notice.attachmentUploadFailed") }));
           throw new Error(body.error ?? t("flow.runner.notice.attachmentUploadFailedForFile", { file: file.name }));
         }
       }
@@ -171,7 +381,7 @@ export function FlowRunner({ schema, initialRecord }: FlowRunnerProps) {
     setSubmitting(true);
     setNotice(null);
 
-    const validation = validateStepPayload(schema, activeStep.id, values, "external_user");
+    const validation = validateStepPayload(schema, safeStep.id, values, "external_user");
     if (!validation.ok) {
       setErrors("errors" in validation ? validation.errors : {});
       setNotice({ tone: "danger", message: t("flow.runner.notice.validation") });
@@ -181,7 +391,7 @@ export function FlowRunner({ schema, initialRecord }: FlowRunnerProps) {
 
     const payload = {
       schemaId: schema.id,
-      stepId: activeStep.id,
+      stepId: safeStep.id,
       submit,
       fields: persistableValues,
       title: typeof values[primaryListField] === "string" ? String(values[primaryListField]) : undefined
@@ -208,7 +418,7 @@ export function FlowRunner({ schema, initialRecord }: FlowRunnerProps) {
           headers: { "content-type": "application/json" },
           body: JSON.stringify({
             fields: persistableValues,
-            stepId: activeStep.id,
+            stepId: safeStep.id,
             state: submit ? "submitted" : recordState
           })
         });
@@ -252,304 +462,264 @@ export function FlowRunner({ schema, initialRecord }: FlowRunnerProps) {
     }
   }
 
-  return (
-    <div className="grid gap-4 xl:grid-cols-[minmax(0,1.58fr)_340px]">
-      <Surface variant="elevated" padding="sm" className="min-h-[26rem]">
-        <div className="flex flex-col gap-4 border-b border-border/70 pb-5">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-            <div className="space-y-1">
-              <div className="eyebrow">{t("flow.runner.stepOf", { current: stepIndex + 1, total: schema.flow.steps.length })}</div>
-              <h2 className="text-[1.6rem] sm:text-[1.72rem] font-semibold tracking-[-0.04em] text-heading">{activeStep.title}</h2>
-              {activeStep.description ? <p className="max-w-2xl text-sm leading-5 text-muted">{activeStep.description}</p> : null}
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2">
-              <StateBadge state={recordState} />
-              <div className="rounded-full border border-border/70 bg-surface/85 px-2.5 py-1 text-[13px] text-muted">
-                {t("flow.runner.progressComplete", { value: Math.round(progress) })}
-              </div>
-            </div>
+  const mainSurface = (
+    <Surface variant="elevated" padding="sm" className="min-h-[26rem]">
+      <div className="flex flex-col gap-4 pb-5">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div className="space-y-1">
+            <div className="eyebrow">{t("flow.runner.stepOf", { current: stepIndex + 1, total: schema.flow.steps.length })}</div>
+            <h2 className="text-[1.6rem] font-semibold tracking-[-0.04em] text-heading sm:text-[1.72rem]">{safeStep.title}</h2>
+            {safeStep.description ? <p className="max-w-2xl text-sm leading-5 text-muted">{safeStep.description}</p> : null}
           </div>
 
-          <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
-            {stepSummaries.map((entry, index) => {
-              const active = index === stepIndex;
-              const completed = entry.complete;
-              const statusLabel =
-                entry.requiredTotal === 0
-                  ? completed
-                    ? t("flow.runner.stepStatus.ready")
-                    : t("flow.runner.stepStatus.notStarted")
-                  : t("flow.runner.stepStatus.required", { done: entry.completedRequired, total: entry.requiredTotal });
+          <div className="flex flex-wrap items-center gap-2">
+            <StateBadge state={recordState} />
+            <div className="shell-chip">{t("flow.runner.progressComplete", { value: Math.round(progress) })}</div>
+          </div>
+        </div>
 
-              return (
-                <button
-                  key={entry.step.id}
-                  type="button"
-                  onClick={() => setStepIndex(index)}
-                  className={cn(
-                    "rounded-[18px] border p-2.5 text-left transition",
-                    active
-                      ? "border-accent/45 bg-accent/10 shadow-soft"
-                      : completed
-                        ? "border-success/25 bg-success/8 hover:border-success/35"
-                        : "border-border/70 bg-surface/72 hover:border-strong/80 hover:bg-surface/85"
-                  )}
-                >
-                  <div className="flex items-center gap-2">
-                    <div
+        <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+          {stepSummaries.map((entry, index) => {
+            const active = index === stepIndex;
+            const completed = entry.complete;
+            const statusLabel =
+              entry.requiredTotal === 0
+                ? completed
+                  ? t("flow.runner.stepStatus.ready")
+                  : t("flow.runner.stepStatus.notStarted")
+                : t("flow.runner.stepStatus.required", {
+                    done: entry.completedRequired,
+                    total: entry.requiredTotal
+                  });
+
+            return (
+              <button
+                key={entry.step.id}
+                type="button"
+                onClick={() => setStepIndex(index)}
+                className={cn(
+                  "surface-muted p-2.5 text-left transition",
+                  active
+                    ? "border-accent/45 bg-accent/12 shadow-soft"
+                    : completed
+                      ? "border-success/28 bg-success/10 hover:border-success/40"
+                      : "hover:border-strong/70 hover:bg-surface/90"
+                )}
+              >
+                <div className="flex items-center gap-2">
+                  <div
+                    className={cn(
+                      "flex h-7.5 w-7.5 items-center justify-center rounded-full border text-[13px] font-semibold",
+                      active
+                        ? "border-accent/35 bg-accent/12 text-accent"
+                        : completed
+                          ? "border-success/35 bg-success/12 text-success"
+                          : "border-border/55 bg-surface/90 text-muted"
+                    )}
+                  >
+                    {completed ? <CheckCircle2 className="h-4 w-4" /> : index + 1}
+                  </div>
+                  <div className="min-w-0">
+                    <div className="truncate text-[13px] font-medium text-heading">{entry.step.title}</div>
+                    <div className="truncate text-[11px] text-muted">{statusLabel}</div>
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="h-2 rounded-full" style={{ background: "var(--theme-loader-track)" }}>
+          <MotionDiv
+            className="h-full rounded-full bg-accent"
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+          />
+        </div>
+        <div className="keyline" />
+      </div>
+
+      {notice ? (
+        <div className={cn("ui-notice mt-4", notice.tone === "success" ? "ui-notice-success" : "ui-notice-danger")}>{notice.message}</div>
+      ) : null}
+
+      {errorCount > 0 ? (
+        <div className="ui-notice ui-notice-warning mt-4">
+          {t(errorCount === 1 ? "flow.runner.errors.one" : "flow.runner.errors.many", { count: errorCount })}
+        </div>
+      ) : null}
+
+      <AnimatePresence mode="wait">
+        <MotionDiv
+          key={safeStep.id}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.22 }}
+          className="mt-5 grid gap-3 md:grid-cols-2"
+        >
+          {visibleFieldIds.map((fieldId) => {
+            const field = getFieldById(schema, fieldId);
+            const value = values[field.id];
+            const error = errors[field.id];
+            const wideField = field.kind === "textarea" || field.kind === "file";
+
+            return (
+              <div key={field.id} className={cn("surface-muted p-3.5", wideField && "md:col-span-2")}>
+                <label className="grid gap-3">
+                  <div className="space-y-1">
+                    <div className="flex flex-wrap items-center gap-2 text-sm font-medium text-heading">
+                      {field.label}
+                      {field.required ? <span className="ui-badge ui-badge-danger">{t("flow.runner.required")}</span> : null}
+                    </div>
+                    {field.helpText ? <div className="text-xs leading-4.5 text-muted">{field.helpText}</div> : null}
+                  </div>
+
+                  {field.kind === "textarea" ? (
+                    <Textarea
+                      value={typeof value === "string" ? value : ""}
+                      onChange={(event) => handleValue(field.id, event.target.value)}
+                      placeholder={field.placeholder}
+                    />
+                  ) : field.kind === "select" ? (
+                    <Select value={typeof value === "string" ? value : ""} onChange={(event) => handleValue(field.id, event.target.value)}>
+                      <option value="">{t("flow.runner.selectPlaceholder")}</option>
+                      {(field.options ?? []).map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </Select>
+                  ) : field.kind === "checkbox" ? (
+                    <button
+                      type="button"
+                      onClick={() => handleValue(field.id, value !== true)}
                       className={cn(
-                        "flex h-7.5 w-7.5 items-center justify-center rounded-full border text-[13px] font-semibold",
-                        active
-                          ? "border-accent/35 bg-accent/12 text-accent"
-                          : completed
-                            ? "border-success/35 bg-success/12 text-success"
-                            : "border-border/70 bg-elevated/80 text-muted"
+                        "surface-muted flex min-h-12 items-center justify-between px-3.5 py-2.5 text-left transition",
+                        value === true ? "border-accent/45 bg-accent/12" : "hover:border-strong/70"
                       )}
                     >
-                      {completed ? <CheckCircle2 className="h-4 w-4" /> : index + 1}
-                    </div>
-                    <div className="min-w-0">
-                      <div className="truncate text-[13px] font-medium text-heading">{entry.step.title}</div>
-                      <div className="truncate text-[11px] text-muted">{statusLabel}</div>
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="h-2 rounded-full bg-surface/80">
-            <MotionDiv
-              className="h-full rounded-full bg-accent"
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-            />
-          </div>
-        </div>
-
-        {notice ? (
-          <div
-            className={cn(
-              "mt-4 rounded-[18px] border px-4 py-2.5 text-sm",
-              notice.tone === "success"
-                ? "border-success/25 bg-success/10 text-success"
-                : "border-danger/25 bg-danger/10 text-danger"
-            )}
-          >
-            {notice.message}
-          </div>
-        ) : null}
-
-        {errorCount > 0 ? (
-          <div className="mt-4 rounded-[18px] border border-warning/25 bg-warning/10 px-4 py-2.5 text-sm text-warning">
-            {t(errorCount === 1 ? "flow.runner.errors.one" : "flow.runner.errors.many", { count: errorCount })}
-          </div>
-        ) : null}
-
-        <AnimatePresence mode="wait">
-          <MotionDiv
-            key={activeStep.id}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.22 }}
-            className="mt-5 grid gap-3 md:grid-cols-2"
-          >
-            {visibleFieldIds.map((fieldId) => {
-              const field = getFieldById(schema, fieldId);
-              const value = values[field.id];
-              const error = errors[field.id];
-              const wideField = field.kind === "textarea" || field.kind === "file";
-
-              return (
-                <div key={field.id} className={cn("surface-muted p-3.5", wideField && "md:col-span-2")}>
-                  <label className="grid gap-3">
-                    <div className="space-y-1">
-                      <div className="flex flex-wrap items-center gap-2 text-sm font-medium text-heading">
-                        {field.label}
-                        {field.required ? <span className="rounded-full bg-danger/12 px-1.5 py-0.5 text-[10px] text-danger">{t("flow.runner.required")}</span> : null}
+                      <div>
+                        <div className="text-sm font-medium text-heading">
+                          {value === true ? t("flow.runner.toggle.enabled") : t("flow.runner.toggle.disabled")}
+                        </div>
+                        <div className="text-xs text-muted">{t("flow.runner.toggle.help")}</div>
                       </div>
-                      {field.helpText ? <div className="text-xs leading-4.5 text-muted">{field.helpText}</div> : null}
-                    </div>
-
-                    {field.kind === "textarea" ? (
-                      <Textarea
-                        value={typeof value === "string" ? value : ""}
-                        onChange={(event) => handleValue(field.id, event.target.value)}
-                        placeholder={field.placeholder}
-                      />
-                    ) : field.kind === "select" ? (
-                      <Select value={typeof value === "string" ? value : ""} onChange={(event) => handleValue(field.id, event.target.value)}>
-                        <option value="">{t("flow.runner.selectPlaceholder")}</option>
-                        {(field.options ?? []).map((option) => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </Select>
-                    ) : field.kind === "checkbox" ? (
-                      <button
-                        type="button"
-                        onClick={() => handleValue(field.id, value !== true)}
+                      <div
                         className={cn(
-                          "flex min-h-12 items-center justify-between rounded-[18px] border px-3.5 py-2.5 text-left transition",
-                          value === true
-                            ? "border-accent/40 bg-accent/10"
-                            : "border-border/75 bg-surface/92 hover:border-strong/80"
+                          "flex h-7 w-12 items-center rounded-full border px-1 transition",
+                          value === true ? "border-accent/42 bg-accent/16" : "border-border/60 bg-surface/90"
                         )}
                       >
-                        <div>
-                          <div className="text-sm font-medium text-heading">{value === true ? t("flow.runner.toggle.enabled") : t("flow.runner.toggle.disabled")}</div>
-                          <div className="text-xs text-muted">{t("flow.runner.toggle.help")}</div>
-                        </div>
-                        <div
-                          className={cn(
-                            "flex h-7 w-12 items-center rounded-full border px-1 transition",
-                            value === true ? "border-accent/40 bg-accent/14" : "border-border/70 bg-elevated/80"
-                          )}
-                        >
-                          <div className={cn("h-5 w-5 rounded-full bg-heading transition", value === true ? "translate-x-5" : "translate-x-0")} />
-                        </div>
-                      </button>
-                    ) : field.kind === "file" ? (
-                      <div className="rounded-[18px] border border-dashed border-border/80 bg-surface/80 p-3.5">
-                        <div className="mb-2 flex items-center gap-2 text-sm text-muted">
-                          <FileUp className="h-4 w-4" />
-                          {t("flow.runner.file.help")}
-                        </div>
-                        <Input type="file" multiple onChange={(event) => handleValue(field.id, event.target.files ?? null)} />
-                        {value instanceof FileList && value.length > 0 ? (
-                          <div className="mt-2 grid gap-1 text-xs text-muted">
-                            <div>{t(value.length === 1 ? "flow.runner.file.selected.one" : "flow.runner.file.selected.many", { count: value.length })}</div>
-                            {Array.from(value)
-                              .slice(0, 3)
-                              .map((file) => (
-                                <div key={file.name} className="truncate">{file.name}</div>
-                              ))}
-                          </div>
-                        ) : typeof value === "string" && value ? (
-                          <div className="mt-2 text-xs text-muted">{value}</div>
-                        ) : null}
+                        <div className={cn("h-5 w-5 rounded-full bg-heading transition", value === true ? "translate-x-5" : "translate-x-0")} />
                       </div>
-                    ) : field.kind === "number" ? (
-                      <Input
-                        type="number"
-                        value={typeof value === "number" ? value : typeof value === "string" ? value : ""}
-                        onChange={(event) => handleValue(field.id, event.target.value === "" ? "" : Number(event.target.value))}
-                        placeholder={field.placeholder}
-                      />
-                    ) : field.kind === "date" ? (
-                      <Input
-                        type="date"
-                        value={typeof value === "string" ? value : ""}
-                        onChange={(event) => handleValue(field.id, event.target.value)}
-                      />
-                    ) : (
-                      <Input
-                        value={typeof value === "string" ? value : ""}
-                        onChange={(event) => handleValue(field.id, event.target.value)}
-                        placeholder={field.placeholder}
-                      />
-                    )}
+                    </button>
+                  ) : field.kind === "file" ? (
+                    <div className="surface-muted rounded-[18px] border-dashed p-3.5">
+                      <div className="mb-2 flex items-center gap-2 text-sm text-muted">
+                        <FileUp className="h-4 w-4" />
+                        {t("flow.runner.file.help")}
+                      </div>
+                      <Input type="file" multiple onChange={(event) => handleValue(field.id, event.target.files ?? null)} />
+                      {value instanceof FileList && value.length > 0 ? (
+                        <div className="mt-2 grid gap-1 text-xs text-muted">
+                          <div>
+                            {t(value.length === 1 ? "flow.runner.file.selected.one" : "flow.runner.file.selected.many", {
+                              count: value.length
+                            })}
+                          </div>
+                          {Array.from(value)
+                            .slice(0, 3)
+                            .map((file) => (
+                              <div key={file.name} className="truncate">
+                                {file.name}
+                              </div>
+                            ))}
+                        </div>
+                      ) : typeof value === "string" && value ? (
+                        <div className="mt-2 text-xs text-muted">{value}</div>
+                      ) : null}
+                    </div>
+                  ) : field.kind === "number" ? (
+                    <Input
+                      type="number"
+                      value={typeof value === "number" ? value : typeof value === "string" ? value : ""}
+                      onChange={(event) => handleValue(field.id, event.target.value === "" ? "" : Number(event.target.value))}
+                      placeholder={field.placeholder}
+                    />
+                  ) : field.kind === "date" ? (
+                    <Input type="date" value={typeof value === "string" ? value : ""} onChange={(event) => handleValue(field.id, event.target.value)} />
+                  ) : (
+                    <Input
+                      value={typeof value === "string" ? value : ""}
+                      onChange={(event) => handleValue(field.id, event.target.value)}
+                      placeholder={field.placeholder}
+                    />
+                  )}
 
-                    {error ? <div className="text-xs font-medium text-danger">{error}</div> : null}
-                  </label>
-                </div>
-              );
-            })}
-          </MotionDiv>
-        </AnimatePresence>
-
-        <div className="mt-6 rounded-[20px] border border-border/70 bg-surface/84 p-3.5 shadow-inset">
-          <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
-            <div className="space-y-0.5">
-              <div className="text-sm font-medium text-heading">{t("flow.runner.footer.title")}</div>
-              <div className="text-[13px] leading-5 text-muted">
-                {t("flow.runner.footer.description")}
+                  {error ? <div className="text-xs font-medium text-danger">{error}</div> : null}
+                </label>
               </div>
-            </div>
+            );
+          })}
+        </MotionDiv>
+      </AnimatePresence>
 
-            <div className="flex flex-wrap items-center gap-2">
-              <Button
-                variant="ghost"
-                disabled={submitting || stepIndex === 0}
-                onClick={() => setStepIndex((current) => Math.max(0, current - 1))}
-              >
-                <ChevronLeft className="h-4 w-4" />
-                {t("flow.runner.footer.back")}
+      <div className="surface-muted mt-6 p-3.5">
+        <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="space-y-0.5">
+            <div className="text-sm font-medium text-heading">{t("flow.runner.footer.title")}</div>
+            <div className="text-[13px] leading-5 text-muted">{t("flow.runner.footer.description")}</div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              variant="ghost"
+              disabled={submitting || stepIndex === 0}
+              onClick={() => setStepIndex((current) => Math.max(0, current - 1))}
+            >
+              <ChevronLeft className="h-4 w-4" />
+              {t("flow.runner.footer.back")}
+            </Button>
+            <Button variant="secondary" disabled={submitting} onClick={() => persist(false)}>
+              <Save className="h-4 w-4" />
+              {t("flow.runner.footer.saveDraft")}
+            </Button>
+            {!isFinalStep ? (
+              <Button variant="primary" disabled={submitting} onClick={handleNext}>
+                {submitting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <ChevronRight className="h-4 w-4" />}
+                {t("flow.runner.footer.saveContinue")}
               </Button>
-              <Button variant="secondary" disabled={submitting} onClick={() => persist(false)}>
-                <Save className="h-4 w-4" />
-                {t("flow.runner.footer.saveDraft")}
+            ) : (
+              <Button variant="primary" disabled={submitting} onClick={handleSubmit}>
+                {submitting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
+                {t("flow.runner.footer.submitForReview")}
               </Button>
-              {!isFinalStep ? (
-                <Button variant="primary" disabled={submitting} onClick={handleNext}>
-                  {submitting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <ChevronRight className="h-4 w-4" />}
-                  {t("flow.runner.footer.saveContinue")}
-                </Button>
-              ) : (
-                <Button variant="primary" disabled={submitting} onClick={handleSubmit}>
-                  {submitting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
-                  {t("flow.runner.footer.submitForReview")}
-                </Button>
-              )}
-            </div>
+            )}
           </div>
         </div>
-      </Surface>
-
-      <div className="grid gap-4 self-start xl:sticky xl:top-24">
-        <Surface title={t("flow.runner.sidebar.session.title")} subtitle={t("flow.runner.sidebar.session.subtitle")} padding="sm">
-          <div className="grid gap-2.5">
-            <StatCard label={t("flow.runner.sidebar.progress.label")} value={`${Math.round(progress)}%`} meta={t("flow.runner.sidebar.progress.meta", { current: stepIndex + 1, total: schema.flow.steps.length })} tone="accent" icon={<Workflow className="h-5 w-5" />} />
-            <StatCard label={t("flow.runner.sidebar.requiredRemaining.label")} value={String(remainingRequired)} meta={t("flow.runner.sidebar.requiredRemaining.meta")} tone={remainingRequired === 0 ? "success" : "warning"} icon={<Sparkles className="h-5 w-5" />} />
-            <div className="surface-muted px-3 py-2.5">
-              <div className="metric-label">{t("flow.runner.sidebar.currentState")}</div>
-              <div className="mt-2"><StateBadge state={recordState} /></div>
-              <div className="mt-1.5 text-sm leading-5 text-muted">{stateDescription(recordState)}</div>
-            </div>
-            <div className="surface-muted px-3 py-2.5">
-              <div className="metric-label">{t("flow.runner.sidebar.recordId")}</div>
-              <div className="mt-1 break-all text-[13px] text-heading">{recordId ?? t("flow.runner.sidebar.recordIdFallback")}</div>
-            </div>
-            <div className="surface-muted px-3 py-2.5">
-              <div className="metric-label">{t("flow.runner.sidebar.resumeToken")}</div>
-              <div className="mt-1 break-all text-[13px] text-heading">{secureToken ?? t("flow.runner.sidebar.resumeTokenFallback")}</div>
-            </div>
-            <div className="surface-muted px-3 py-2.5">
-              <div className="metric-label">{t("flow.runner.sidebar.lastSave")}</div>
-              <div className="mt-1 text-[13px] text-heading">{lastSavedAt ? formatRelativeTime(lastSavedAt) : t("flow.runner.sidebar.lastSaveFallback")}</div>
-            </div>
-          </div>
-        </Surface>
-
-        <Surface title={t("flow.runner.sidebar.safe.title")} subtitle={t("flow.runner.sidebar.safe.subtitle")} padding="sm">
-          <div className="grid gap-2.5">
-            <div className="surface-muted flex gap-2.5 px-3 py-2.5">
-              <Shield className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-              <div>
-                <div className="text-sm font-medium text-heading">{t("flow.runner.safe.inlineValidation.title")}</div>
-                <div className="mt-1 text-sm leading-5 text-muted">{t("flow.runner.safe.inlineValidation.description")}</div>
-              </div>
-            </div>
-            <div className="surface-muted flex gap-2.5 px-3 py-2.5">
-              <LockKeyhole className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-              <div>
-                <div className="text-sm font-medium text-heading">{t("flow.runner.safe.resumeToken.title")}</div>
-                <div className="mt-1 text-sm leading-5 text-muted">{t("flow.runner.safe.resumeToken.description")}</div>
-              </div>
-            </div>
-            <div className="surface-muted flex gap-2.5 px-3 py-2.5">
-              <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-              <div>
-                <div className="text-sm font-medium text-heading">{t("flow.runner.safe.nextAction.title")}</div>
-                <div className="mt-1 text-sm leading-5 text-muted">{t("flow.runner.safe.nextAction.description")}</div>
-              </div>
-            </div>
-          </div>
-        </Surface>
       </div>
+    </Surface>
+  );
+
+  if (sidebarMode === "none") {
+    return mainSurface;
+  }
+
+  return (
+    <div className="grid gap-4 xl:grid-cols-[minmax(0,1.58fr)_340px]">
+      {mainSurface}
+      <FlowRunnerSidebar
+        progress={progress}
+        stepIndex={stepIndex}
+        totalSteps={schema.flow.steps.length}
+        remainingRequired={remainingRequired}
+        recordState={recordState}
+        recordId={recordId}
+        secureToken={secureToken}
+        lastSavedAt={lastSavedAt}
+        t={t}
+      />
     </div>
   );
 }

@@ -6,6 +6,8 @@ param(
   [string]$OriginUrl = "http://127.0.0.1:3100",
   [string]$FormsHostname = "forms.hitechrts.com",
   [string]$FormsOriginUrl = "http://127.0.0.1:3200",
+  [string]$TemplateHostname = "eit.hitechrts.com",
+  [string]$TemplateOriginUrl = "http://127.0.0.1:3110",
   [string]$LogDir = "",
   [int]$FailureThreshold = 2,
   [string]$WebhookUrl = $(if ($env:HITECH_CLOUDFLARE_ALERT_WEBHOOK) { $env:HITECH_CLOUDFLARE_ALERT_WEBHOOK } else { "" }),
@@ -123,7 +125,9 @@ if (-not (Test-Path -LiteralPath $ValidatePy)) {
   --hostname $Hostname `
   --origin-url $OriginUrl `
   --extra-route "$FormsHostname=$FormsOriginUrl" `
+  --extra-route "$TemplateHostname=$TemplateOriginUrl" `
   --extra-public-url "$FormsHostname=https://$FormsHostname" `
+  --extra-public-url "$TemplateHostname=https://$TemplateHostname" `
   --log-dir $LogDir `
   --json-out $validateOutPath
 $validateExit = $LASTEXITCODE
@@ -135,6 +139,8 @@ $publicHealthy = $false
 $publicStatusCode = $null
 $formsPublicHealthy = $false
 $formsPublicStatusCode = $null
+$templatePublicHealthy = $false
+$templatePublicStatusCode = $null
 if ($validatePayload -and ($validatePayload.PSObject.Properties.Name -contains "local_origin_healthy")) {
   $localHealthy = [bool]$validatePayload.local_origin_healthy
 }
@@ -153,6 +159,11 @@ if ($validatePayload -and ($validatePayload.PSObject.Properties.Name -contains "
   if ($formsEntry) {
     $formsPublicHealthy = [bool]$formsEntry.Value.healthy
     $formsPublicStatusCode = $formsEntry.Value.status_code
+  }
+  $templateEntry = $publicHostProps | Where-Object { $_.Name -eq $TemplateHostname }
+  if ($templateEntry) {
+    $templatePublicHealthy = [bool]$templateEntry.Value.healthy
+    $templatePublicStatusCode = $templateEntry.Value.status_code
   }
 }
 
@@ -181,7 +192,9 @@ if (-not $isHealthy -and (Test-Path -LiteralPath $GuardSetupPs1)) {
       --hostname $Hostname `
       --origin-url $OriginUrl `
       --extra-route "$FormsHostname=$FormsOriginUrl" `
+      --extra-route "$TemplateHostname=$TemplateOriginUrl" `
       --extra-public-url "$FormsHostname=https://$FormsHostname" `
+      --extra-public-url "$TemplateHostname=https://$TemplateHostname" `
       --log-dir $LogDir `
       --json-out $validateOutPath
     $validateExit = $LASTEXITCODE
@@ -193,6 +206,8 @@ if (-not $isHealthy -and (Test-Path -LiteralPath $GuardSetupPs1)) {
     $publicStatusCode = $null
     $formsPublicHealthy = $false
     $formsPublicStatusCode = $null
+    $templatePublicHealthy = $false
+    $templatePublicStatusCode = $null
     if ($validatePayload -and ($validatePayload.PSObject.Properties.Name -contains "local_origin_healthy")) {
       $localHealthy = [bool]$validatePayload.local_origin_healthy
     }
@@ -211,6 +226,11 @@ if (-not $isHealthy -and (Test-Path -LiteralPath $GuardSetupPs1)) {
       if ($formsEntry) {
         $formsPublicHealthy = [bool]$formsEntry.Value.healthy
         $formsPublicStatusCode = $formsEntry.Value.status_code
+      }
+      $templateEntry = $publicHostProps | Where-Object { $_.Name -eq $TemplateHostname }
+      if ($templateEntry) {
+        $templatePublicHealthy = [bool]$templateEntry.Value.healthy
+        $templatePublicStatusCode = $templateEntry.Value.status_code
       }
     }
     $isHealthy = ($validateExit -eq 0) -and $publicHealthy
@@ -254,6 +274,8 @@ if ($isHealthy) {
       public_status = $publicStatusCode
       forms_hostname = $FormsHostname
       forms_public_status = $formsPublicStatusCode
+      template_hostname = $TemplateHostname
+      template_public_status = $templatePublicStatusCode
       local_origin_healthy = $localHealthy
       tunnel_connected = $tunnelConnected
       validate_json = $validateOutPath
@@ -282,6 +304,8 @@ if ($isHealthy) {
       public_status = $publicStatusCode
       forms_hostname = $FormsHostname
       forms_public_status = $formsPublicStatusCode
+      template_hostname = $TemplateHostname
+      template_public_status = $templatePublicStatusCode
       local_origin_healthy = $localHealthy
       tunnel_connected = $tunnelConnected
       consecutive_failures = $failures
@@ -312,6 +336,10 @@ $summaryPayload = @{
   forms_origin_url = $FormsOriginUrl
   forms_public_healthy = $formsPublicHealthy
   forms_public_status_code = $formsPublicStatusCode
+  template_hostname = $TemplateHostname
+  template_origin_url = $TemplateOriginUrl
+  template_public_healthy = $templatePublicHealthy
+  template_public_status_code = $templatePublicStatusCode
   auto_recovery_attempted = $autoRecoveryAttempted
   auto_recovery_exit_code = $autoRecoveryExitCode
   auto_recovery_output_tail = $autoRecoveryOutputTail

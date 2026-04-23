@@ -1,0 +1,31 @@
+{
+  "name": "@hitech/tablet",
+  "version": "6.1.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3120",
+    "build": "next build --webpack",
+    "start": "next start -p 3120",
+    "typecheck": "tsc --noEmit",
+    "check:package": "python tools/validate_package.py .",
+    "check:all": "python tools/validate_package.py . && tsc --noEmit",
+    "db:summary": "python tools/db_summary.py prisma/dev.db"
+  },
+  "dependencies": {
+    "@prisma/client": "5.21.1",
+    "next": "16.1.6",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "22.13.9",
+    "@types/react": "19.2.14",
+    "prisma": "5.21.1",
+    "typescript": "5.8.2"
+  },
+  "engines": {
+    "node": ">=20.0.0 <26.0.0"
+  }
+}

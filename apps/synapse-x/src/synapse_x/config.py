@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass
+from dataclasses import asdict
 from pathlib import Path
 
 
@@ -50,3 +51,15 @@ class Settings:
             self.log_dir,
         ):
             path.mkdir(parents=True, exist_ok=True)
+
+
+def get_settings(root: Path | None = None) -> dict:
+    settings = Settings(root=root.resolve()) if root else Settings()
+    settings.ensure_dirs()
+    payload = asdict(settings)
+    for key, value in payload.items():
+        if isinstance(value, Path):
+            payload[key] = str(value)
+        if isinstance(value, tuple):
+            payload[key] = [str(item) for item in value]
+    return payload

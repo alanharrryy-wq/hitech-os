@@ -1,0 +1,231 @@
+{
+  "authoritative": "false",
+  "canonical_source": "registry_index.json",
+  "entries": [
+    {
+      "entity_id": "mod_0ed20e99508334b8",
+      "entity_type": "module",
+      "index_id": "idx_7de79c804263d42c",
+      "lookup_keys": [
+        "cell_06",
+        "conflict_python_service",
+        "mod_0ed20e99508334b8",
+        "scenario_001",
+        "services",
+        "services.svc_001_06",
+        "services/svc_001_06.py"
+      ],
+      "registry_source": "module_registry",
+      "snapshot_id": "scenario_001",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "mod_57fb2323bc4759be",
+      "entity_type": "module",
+      "index_id": "idx_13f9003de1cf9fb9",
+      "lookup_keys": [
+        "app",
+        "app.svc_001_05",
+        "app/svc_001_05.py",
+        "cell_05",
+        "conflict_python_service",
+        "mod_57fb2323bc4759be",
+        "scenario_001"
+      ],
+      "registry_source": "module_registry",
+      "snapshot_id": "scenario_001",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "mod_6e80a7419af11d7d",
+      "entity_type": "module",
+      "index_id": "idx_9f7ac819fd11f875",
+      "lookup_keys": [
+        "cell_02",
+        "conflict_python_service",
+        "mod_6e80a7419af11d7d",
+        "scenario_001",
+        "ui",
+        "ui.svc_001_02",
+        "ui/svc_001_02.py"
+      ],
+      "registry_source": "module_registry",
+      "snapshot_id": "scenario_001",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "mod_71172401badcab7e",
+      "entity_type": "module",
+      "index_id": "idx_bb6e16e02dedafa2",
+      "lookup_keys": [
+        "cell_01",
+        "conflict_python_service",
+        "mod_71172401badcab7e",
+        "scenario_001",
+        "services",
+        "services.svc_001_01",
+        "services/svc_001_01.py"
+      ],
+      "registry_source": "module_registry",
+      "snapshot_id": "scenario_001",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "mod_809612edadeb1e9c",
+      "entity_type": "module",
+      "index_id": "idx_e5dbeb0ac2b06968",
+      "lookup_keys": [
+        "cell_04",
+        "conflict_python_service",
+        "mod_809612edadeb1e9c",
+        "pkg",
+        "pkg.svc_001_04",
+        "pkg/svc_001_04.py",
+        "scenario_001"
+      ],
+      "registry_source": "module_registry",
+      "snapshot_id": "scenario_001",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "mod_92581a3ed3d445d5",
+      "entity_type": "module",
+      "index_id": "idx_14bb6e726b451bb6",
+      "lookup_keys": [
+        "cell_01",
+        "conflict_python_service",
+        "mod_92581a3ed3d445d5",
+        "scenario_001",
+        "services",
+        "services.svc_001_01",
+        "services/svc_001_01_shadow.py"
+      ],
+      "registry_source": "module_registry",
+      "snapshot_id": "scenario_001",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "mod_ff2e4f5b3a77e080",
+      "entity_type": "module",
+      "index_id": "idx_394181aed9094354",
+      "lookup_keys": [
+        "cell_03",
+        "conflict_python_service",
+        "mod_ff2e4f5b3a77e080",
+        "scenario_001",
+        "workers",
+        "workers.svc_001_03",
+        "workers/svc_001_03.py"
+      ],
+      "registry_source": "module_registry",
+      "snapshot_id": "scenario_001",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "bnd_010312e8c1e7f113",
+      "entity_type": "boundary",
+      "index_id": "idx_5e60f871e6d21872",
+      "lookup_keys": [
+        "import",
+        "mod_57fb2323bc4759be",
+        "mod_809612edadeb1e9c"
+      ],
+      "registry_source": "boundary_registry",
+      "snapshot_id": "scenario_001",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "bnd_4f3c67b3b252d60d",
+      "entity_type": "boundary",
+      "index_id": "idx_49e44f916d8f10da",
+      "lookup_keys": [
+        "import",
+        "mod_809612edadeb1e9c",
+        "mod_ff2e4f5b3a77e080"
+      ],
+      "registry_source": "boundary_registry",
+      "snapshot_id": "scenario_001",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "bnd_62414c4e854113f3",
+      "entity_type": "boundary",
+      "index_id": "idx_548bfabf60354f6d",
+      "lookup_keys": [
+        "capability:feature_flag",
+        "feature_flag",
+        "mod_6e80a7419af11d7d"
+      ],
+      "registry_source": "boundary_registry",
+      "snapshot_id": "scenario_001",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "bnd_8b03f32eceac6e7c",
+      "entity_type": "boundary",
+      "index_id": "idx_47ef1dafbd952616",
+      "lookup_keys": [
+        "capability:http",
+        "http",
+        "mod_809612edadeb1e9c"
+      ],
+      "registry_source": "boundary_registry",
+      "snapshot_id": "scenario_001",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "bnd_96dfebc7b4f1bbae",
+      "entity_type": "boundary",
+      "index_id": "idx_d9eda5c155853f12",
+      "lookup_keys": [
+        "import",
+        "mod_0ed20e99508334b8",
+        "mod_57fb2323bc4759be"
+      ],
+      "registry_source": "boundary_registry",
+      "snapshot_id": "scenario_001",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "bnd_971f5c3de4c598c2",
+      "entity_type": "boundary",
+      "index_id": "idx_b89eeb5197718389",
+      "lookup_keys": [
+        "import",
+        "mod_6e80a7419af11d7d",
+        "mod_ff2e4f5b3a77e080"
+      ],
+      "registry_source": "boundary_registry",
+      "snapshot_id": "scenario_001",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "bnd_cd6ad42ea577c912",
+      "entity_type": "boundary",
+      "index_id": "idx_823496a55f624856",
+      "lookup_keys": [
+        "import",
+        "mod_6e80a7419af11d7d",
+        "mod_71172401badcab7e"
+      ],
+      "registry_source": "boundary_registry",
+      "snapshot_id": "scenario_001",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "bnd_eb71ed743ac1d074",
+      "entity_type": "boundary",
+      "index_id": "idx_31fb744b3bd1de0c",
+      "lookup_keys": [
+        "capability:queue",
+        "mod_0ed20e99508334b8",
+        "queue"
+      ],
+      "registry_source": "boundary_registry",
+      "snapshot_id": "scenario_001",
+      "updated_at": "2026-04-11T00:00:00Z"
+    }
+  ],
+  "migration_note": "Legacy runtime callers may request query_index.json. The portable canonical artifact remains registry_index.json; this shim presents an alias view without renaming or duplicating the source of truth.",
+  "requested_name": "query_index.json"
+}

@@ -1,0 +1,600 @@
+{
+  "created_at": "2026-04-11T21:34:16Z",
+  "family": "registry_bundle",
+  "format": "json",
+  "hash": "c7a656cc6a3c0c18626ad1b70f0b0acacabe457bdc6c11d0ab9a6d2765ed1033",
+  "payload": {
+    "boundary_registry": [
+      {
+        "boundary_id": "bnd_87b180a815545e72",
+        "boundary_type": "import",
+        "evidence": {
+          "import": ".service",
+          "source_path": "app/__init__.py"
+        },
+        "snapshot_id": "run_5c587c71ada42d03",
+        "source_module_id": "mod_9cec7b11237bc29d",
+        "source_of_truth": "scanner.signals",
+        "status": "canonical",
+        "target_id": "mod_fb9baf6216d85a2e",
+        "target_type": "module",
+        "updated_at": "2026-04-11T21:34:16Z"
+      },
+      {
+        "boundary_id": "bnd_2b69b27c42ad7812",
+        "boundary_type": "import",
+        "evidence": {
+          "import": "json",
+          "source_path": "app/repository.py"
+        },
+        "snapshot_id": "run_5c587c71ada42d03",
+        "source_module_id": "mod_b3c2b671598a92b5",
+        "source_of_truth": "scanner.signals",
+        "status": "canonical",
+        "target_id": "external:json",
+        "target_type": "external",
+        "updated_at": "2026-04-11T21:34:16Z"
+      },
+      {
+        "boundary_id": "bnd_70dfc60d3b855948",
+        "boundary_type": "import",
+        "evidence": {
+          "import": ".flags",
+          "source_path": "app/service.py"
+        },
+        "snapshot_id": "run_5c587c71ada42d03",
+        "source_module_id": "mod_fb9baf6216d85a2e",
+        "source_of_truth": "scanner.signals",
+        "status": "canonical",
+        "target_id": "mod_006637bf5fd89d6e",
+        "target_type": "module",
+        "updated_at": "2026-04-11T21:34:16Z"
+      },
+      {
+        "boundary_id": "bnd_66844ad4fb79eda2",
+        "boundary_type": "import",
+        "evidence": {
+          "import": ".repository",
+          "source_path": "app/service.py"
+        },
+        "snapshot_id": "run_5c587c71ada42d03",
+        "source_module_id": "mod_fb9baf6216d85a2e",
+        "source_of_truth": "scanner.signals",
+        "status": "canonical",
+        "target_id": "mod_b3c2b671598a92b5",
+        "target_type": "module",
+        "updated_at": "2026-04-11T21:34:16Z"
+      }
+    ],
+    "contract_registry": [
+      {
+        "compatibility": {
+          "backward": [
+            "1.0.0"
+          ]
+        },
+        "contract_id": "annotation",
+        "description": "Canonical contract for annotation",
+        "module": "pya.contracts.annotation_contracts",
+        "owner": "contracts",
+        "state": "canonical",
+        "updated_at": "2026-04-11T21:34:16Z",
+        "version": "1.0.0"
+      },
+      {
+        "compatibility": {
+          "backward": [
+            "1.0.0"
+          ]
+        },
+        "contract_id": "artifact",
+        "description": "Canonical contract for artifact",
+        "module": "pya.contracts.artifact_contracts",
+        "owner": "contracts",
+        "state": "canonical",
+        "updated_at": "2026-04-11T21:34:16Z",
+        "version": "1.0.0"
+      },
+      {
+        "compatibility": {
+          "backward": [
+            "1.0.0"
+          ]
+        },
+        "contract_id": "boundary_entry",
+        "description": "Canonical contract for boundary entry",
+        "module": "pya.contracts.registry_contracts",
+        "owner": "contracts",
+        "state": "canonical",
+        "updated_at": "2026-04-11T21:34:16Z",
+        "version": "1.0.0"
+      },
+      {
+        "compatibility": {
+          "backward": [
+            "1.0.0"
+          ]
+        },
+        "contract_id": "contract_health_summary",
+        "description": "Canonical contract for contract health summary",
+        "module": "pya.contracts.validation_contracts",
+        "owner": "contracts",
+        "state": "canonical",
+        "updated_at": "2026-04-11T21:34:16Z",
+        "version": "1.0.0"
+      },
+      {
+        "compatibility": {
+          "backward": [
+            "1.0.0"
+          ]
+        },
+        "contract_id": "contract_registry_entry",
+        "description": "Canonical contract for contract registry entry",
+        "module": "pya.contracts.registry_contracts",
+        "owner": "contracts",
+        "state": "canonical",
+        "updated_at": "2026-04-11T21:34:16Z",
+        "version": "1.0.0"
+      },
+      {
+        "compatibility": {
+          "backward": [
+            "1.0.0"
+          ]
+        },
+        "contract_id": "delta",
+        "description": "Canonical contract for delta",
+        "module": "pya.contracts.snapshot_contracts",
+        "owner": "contracts",
+        "state": "canonical",
+        "updated_at": "2026-04-11T21:34:16Z",
+        "version": "1.0.0"
+      },
+      {
+        "compatibility": {
+          "backward": [
+            "1.0.0"
+          ]
+        },
+        "contract_id": "engine_manifest",
+        "description": "Canonical contract for engine manifest",
+        "module": "pya.contracts.engine_contracts",
+        "owner": "contracts",
+        "state": "canonical",
+        "updated_at": "2026-04-11T21:34:16Z",
+        "version": "1.0.0"
+      },
+      {
+        "compatibility": {
+          "backward": [
+            "1.0.0"
+          ]
+        },
+        "contract_id": "event",
+        "description": "Canonical contract for event",
+        "module": "pya.contracts.event_contracts",
+        "owner": "contracts",
+        "state": "canonical",
+        "updated_at": "2026-04-11T21:34:16Z",
+        "version": "1.0.0"
+      },
+      {
+        "compatibility": {
+          "backward": [
+            "1.0.0"
+          ]
+        },
+        "contract_id": "execution_summary",
+        "description": "Canonical contract for execution summary",
+        "module": "pya.contracts.engine_contracts",
+        "owner": "contracts",
+        "state": "canonical",
+        "updated_at": "2026-04-11T21:34:16Z",
+        "version": "1.0.0"
+      },
+      {
+        "compatibility": {
+          "backward": [
+            "1.0.0"
+          ]
+        },
+        "contract_id": "module_registry_entry",
+        "description": "Canonical contract for module registry entry",
+        "module": "pya.contracts.registry_contracts",
+        "owner": "contracts",
+        "state": "canonical",
+        "updated_at": "2026-04-11T21:34:16Z",
+        "version": "1.0.0"
+      },
+      {
+        "compatibility": {
+          "backward": [
+            "1.0.0"
+          ]
+        },
+        "contract_id": "query_index",
+        "description": "Canonical contract for query index",
+        "module": "pya.contracts.index_contracts",
+        "owner": "contracts",
+        "state": "canonical",
+        "updated_at": "2026-04-11T21:34:16Z",
+        "version": "1.0.0"
+      },
+      {
+        "compatibility": {
+          "backward": [
+            "1.0.0"
+          ]
+        },
+        "contract_id": "registry_build_summary",
+        "description": "Canonical contract for registry build summary",
+        "module": "pya.contracts.registry_contracts",
+        "owner": "contracts",
+        "state": "canonical",
+        "updated_at": "2026-04-11T21:34:16Z",
+        "version": "1.0.0"
+      },
+      {
+        "compatibility": {
+          "backward": [
+            "1.0.0"
+          ]
+        },
+        "contract_id": "signal",
+        "description": "Canonical contract for signal",
+        "module": "pya.contracts.signal_contract",
+        "owner": "contracts",
+        "state": "canonical",
+        "updated_at": "2026-04-11T21:34:16Z",
+        "version": "1.0.0"
+      },
+      {
+        "compatibility": {
+          "backward": [
+            "1.0.0"
+          ]
+        },
+        "contract_id": "snapshot",
+        "description": "Canonical contract for snapshot",
+        "module": "pya.contracts.snapshot_contracts",
+        "owner": "contracts",
+        "state": "canonical",
+        "updated_at": "2026-04-11T21:34:16Z",
+        "version": "1.0.0"
+      },
+      {
+        "compatibility": {
+          "backward": [
+            "1.0.0"
+          ]
+        },
+        "contract_id": "switch_registry_entry",
+        "description": "Canonical contract for switch registry entry",
+        "module": "pya.contracts.switch_contracts",
+        "owner": "contracts",
+        "state": "canonical",
+        "updated_at": "2026-04-11T21:34:16Z",
+        "version": "1.0.0"
+      },
+      {
+        "compatibility": {
+          "backward": [
+            "1.0.0"
+          ]
+        },
+        "contract_id": "switch_resolution",
+        "description": "Canonical contract for switch resolution",
+        "module": "pya.contracts.switch_contracts",
+        "owner": "contracts",
+        "state": "canonical",
+        "updated_at": "2026-04-11T21:34:16Z",
+        "version": "1.0.0"
+      },
+      {
+        "compatibility": {
+          "backward": [
+            "1.0.0"
+          ]
+        },
+        "contract_id": "validation_violation",
+        "description": "Canonical contract for validation violation",
+        "module": "pya.contracts.validation_contracts",
+        "owner": "contracts",
+        "state": "canonical",
+        "updated_at": "2026-04-11T21:34:16Z",
+        "version": "1.0.0"
+      }
+    ],
+    "module_registry": [
+      {
+        "area": "app",
+        "artifacts": [],
+        "boundaries": [
+          "bnd_87b180a815545e72"
+        ],
+        "confidence": 0.9,
+        "contracts": [
+          "signal",
+          "module_registry_entry"
+        ],
+        "declared_by": [
+          "registry_builder"
+        ],
+        "kind": "python_module",
+        "module_id": "mod_9cec7b11237bc29d",
+        "name": "app.__init__",
+        "observed_in": [
+          "app/__init__.py"
+        ],
+        "snapshot_id": "run_5c587c71ada42d03",
+        "source_of_truth": "scanner.signals",
+        "status": "canonical",
+        "switches": [
+          "module.enabled:mod_9cec7b11237bc29d"
+        ],
+        "tags": [
+          "python",
+          "module"
+        ],
+        "updated_at": "2026-04-11T21:34:16Z"
+      },
+      {
+        "area": "app",
+        "artifacts": [],
+        "boundaries": [],
+        "confidence": 0.9,
+        "contracts": [
+          "signal",
+          "module_registry_entry"
+        ],
+        "declared_by": [
+          "registry_builder"
+        ],
+        "kind": "python_module",
+        "module_id": "mod_006637bf5fd89d6e",
+        "name": "app.flags",
+        "observed_in": [
+          "app/flags.py"
+        ],
+        "snapshot_id": "run_5c587c71ada42d03",
+        "source_of_truth": "scanner.signals",
+        "status": "canonical",
+        "switches": [
+          "module.enabled:mod_006637bf5fd89d6e"
+        ],
+        "tags": [
+          "python",
+          "module"
+        ],
+        "updated_at": "2026-04-11T21:34:16Z"
+      },
+      {
+        "area": "app",
+        "artifacts": [],
+        "boundaries": [
+          "bnd_2b69b27c42ad7812"
+        ],
+        "confidence": 0.9,
+        "contracts": [
+          "signal",
+          "module_registry_entry"
+        ],
+        "declared_by": [
+          "registry_builder"
+        ],
+        "kind": "python_module",
+        "module_id": "mod_b3c2b671598a92b5",
+        "name": "app.repository",
+        "observed_in": [
+          "app/repository.py"
+        ],
+        "snapshot_id": "run_5c587c71ada42d03",
+        "source_of_truth": "scanner.signals",
+        "status": "canonical",
+        "switches": [
+          "module.enabled:mod_b3c2b671598a92b5"
+        ],
+        "tags": [
+          "python",
+          "module"
+        ],
+        "updated_at": "2026-04-11T21:34:16Z"
+      },
+      {
+        "area": "app",
+        "artifacts": [],
+        "boundaries": [
+          "bnd_66844ad4fb79eda2",
+          "bnd_70dfc60d3b855948"
+        ],
+        "confidence": 0.9,
+        "contracts": [
+          "signal",
+          "module_registry_entry"
+        ],
+        "declared_by": [
+          "registry_builder"
+        ],
+        "kind": "python_module",
+        "module_id": "mod_fb9baf6216d85a2e",
+        "name": "app.service",
+        "observed_in": [
+          "app/service.py"
+        ],
+        "snapshot_id": "run_5c587c71ada42d03",
+        "source_of_truth": "scanner.signals",
+        "status": "canonical",
+        "switches": [
+          "module.enabled:mod_fb9baf6216d85a2e"
+        ],
+        "tags": [
+          "python",
+          "module"
+        ],
+        "updated_at": "2026-04-11T21:34:16Z"
+      }
+    ],
+    "query_index": [
+      {
+        "entity_id": "mod_006637bf5fd89d6e",
+        "entity_type": "module",
+        "index_id": "idx_439d89dad3ad71db",
+        "lookup_keys": [
+          "app.flags",
+          "app/flags.py",
+          "mod_006637bf5fd89d6e",
+          "module",
+          "python"
+        ],
+        "registry_source": "module_registry",
+        "snapshot_id": "run_5c587c71ada42d03",
+        "updated_at": "2026-04-11T21:34:16Z"
+      },
+      {
+        "entity_id": "mod_9cec7b11237bc29d",
+        "entity_type": "module",
+        "index_id": "idx_c96ce4a7df563b55",
+        "lookup_keys": [
+          "app.__init__",
+          "app/__init__.py",
+          "mod_9cec7b11237bc29d",
+          "module",
+          "python"
+        ],
+        "registry_source": "module_registry",
+        "snapshot_id": "run_5c587c71ada42d03",
+        "updated_at": "2026-04-11T21:34:16Z"
+      },
+      {
+        "entity_id": "mod_b3c2b671598a92b5",
+        "entity_type": "module",
+        "index_id": "idx_c870dcf4d57234f4",
+        "lookup_keys": [
+          "app.repository",
+          "app/repository.py",
+          "mod_b3c2b671598a92b5",
+          "module",
+          "python"
+        ],
+        "registry_source": "module_registry",
+        "snapshot_id": "run_5c587c71ada42d03",
+        "updated_at": "2026-04-11T21:34:16Z"
+      },
+      {
+        "entity_id": "mod_fb9baf6216d85a2e",
+        "entity_type": "module",
+        "index_id": "idx_10d4e8293555cc38",
+        "lookup_keys": [
+          "app.service",
+          "app/service.py",
+          "mod_fb9baf6216d85a2e",
+          "module",
+          "python"
+        ],
+        "registry_source": "module_registry",
+        "snapshot_id": "run_5c587c71ada42d03",
+        "updated_at": "2026-04-11T21:34:16Z"
+      }
+    ],
+    "switch_registry": [
+      {
+        "allowed_overrides": [
+          "switch_id",
+          "target_id"
+        ],
+        "applicable_rules": [
+          "default_true",
+          "switch_override",
+          "target_override"
+        ],
+        "default_value": true,
+        "metadata": {
+          "module_name": "app.flags"
+        },
+        "rollout": {
+          "owner": "registry_builder",
+          "strategy": "static"
+        },
+        "state": "canonical",
+        "switch_id": "module.enabled:mod_006637bf5fd89d6e",
+        "target_id": "mod_006637bf5fd89d6e",
+        "target_type": "module",
+        "updated_at": "2026-04-11T21:34:16Z"
+      },
+      {
+        "allowed_overrides": [
+          "switch_id",
+          "target_id"
+        ],
+        "applicable_rules": [
+          "default_true",
+          "switch_override",
+          "target_override"
+        ],
+        "default_value": true,
+        "metadata": {
+          "module_name": "app.__init__"
+        },
+        "rollout": {
+          "owner": "registry_builder",
+          "strategy": "static"
+        },
+        "state": "canonical",
+        "switch_id": "module.enabled:mod_9cec7b11237bc29d",
+        "target_id": "mod_9cec7b11237bc29d",
+        "target_type": "module",
+        "updated_at": "2026-04-11T21:34:16Z"
+      },
+      {
+        "allowed_overrides": [
+          "switch_id",
+          "target_id"
+        ],
+        "applicable_rules": [
+          "default_true",
+          "switch_override",
+          "target_override"
+        ],
+        "default_value": true,
+        "metadata": {
+          "module_name": "app.repository"
+        },
+        "rollout": {
+          "owner": "registry_builder",
+          "strategy": "static"
+        },
+        "state": "canonical",
+        "switch_id": "module.enabled:mod_b3c2b671598a92b5",
+        "target_id": "mod_b3c2b671598a92b5",
+        "target_type": "module",
+        "updated_at": "2026-04-11T21:34:16Z"
+      },
+      {
+        "allowed_overrides": [
+          "switch_id",
+          "target_id"
+        ],
+        "applicable_rules": [
+          "default_true",
+          "switch_override",
+          "target_override"
+        ],
+        "default_value": true,
+        "metadata": {
+          "module_name": "app.service"
+        },
+        "rollout": {
+          "owner": "registry_builder",
+          "strategy": "static"
+        },
+        "state": "canonical",
+        "switch_id": "module.enabled:mod_fb9baf6216d85a2e",
+        "target_id": "mod_fb9baf6216d85a2e",
+        "target_type": "module",
+        "updated_at": "2026-04-11T21:34:16Z"
+      }
+    ]
+  },
+  "snapshot_id": "snp_39aed9777150f98f"
+}

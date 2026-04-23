@@ -6,37 +6,37 @@ import { cn } from "@/lib/utils";
 
 const toneClass = {
   default: {
-    shell: "border-white/10 bg-surface/58",
+    shell: "surface-panel",
     halo: "from-accent/14 via-accent/4 to-transparent",
-    icon: "border-white/10 bg-white/6 text-accent",
+    icon: "surface-muted text-accent",
     eyebrow: "text-accent/85",
     title: "text-text"
   },
   warning: {
-    shell: "border-warning/20 bg-warning/7",
+    shell: "surface-panel border-warning/30 bg-warning/8",
     halo: "from-warning/16 via-warning/4 to-transparent",
-    icon: "border-warning/20 bg-warning/12 text-warning",
+    icon: "surface-muted border-warning/30 bg-warning/12 text-warning",
     eyebrow: "text-warning",
     title: "text-warning"
   },
   danger: {
-    shell: "border-danger/22 bg-danger/8",
+    shell: "surface-panel border-danger/30 bg-danger/8",
     halo: "from-danger/16 via-danger/4 to-transparent",
-    icon: "border-danger/22 bg-danger/12 text-danger",
+    icon: "surface-muted border-danger/30 bg-danger/12 text-danger",
     eyebrow: "text-danger",
     title: "text-danger"
   },
   success: {
-    shell: "border-success/22 bg-success/8",
+    shell: "surface-panel border-success/30 bg-success/8",
     halo: "from-success/16 via-success/4 to-transparent",
-    icon: "border-success/22 bg-success/12 text-success",
+    icon: "surface-muted border-success/30 bg-success/12 text-success",
     eyebrow: "text-success",
     title: "text-success"
   },
   accent: {
-    shell: "border-accent/22 bg-accent/8",
+    shell: "surface-panel border-accent/30 bg-accent/8",
     halo: "from-accent/16 via-accent/4 to-transparent",
-    icon: "border-accent/22 bg-accent/12 text-accent",
+    icon: "surface-muted border-accent/30 bg-accent/12 text-accent",
     eyebrow: "text-accent",
     title: "text-accent"
   }
@@ -79,12 +79,12 @@ export function StatusPanel({
   const palette = toneClass[resolvedTone];
 
   return (
-    <section className={cn("relative isolate overflow-hidden rounded-[1.6rem] border px-4 sm:px-5 shadow-glass backdrop-blur-lg", size === "lg" ? "max-w-2xl py-7" : "py-5", palette.shell, className)}>
+    <section className={cn("relative isolate overflow-hidden px-4 sm:px-5", size === "lg" ? "max-w-2xl py-7" : "py-5", palette.shell, className)}>
       <div className={cn("pointer-events-none absolute inset-0 bg-gradient-to-br opacity-90", palette.halo)} />
-      <div className="pointer-events-none absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-white/14 to-transparent" />
+      <div className="keyline pointer-events-none absolute inset-x-5 top-0" />
       <div className="relative z-10">
         <div className="flex items-start gap-4">
-          <div className={cn("inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[1rem] border", palette.icon)}>
+          <div className={cn("inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[1rem]", palette.icon)}>
             {icon ?? defaultIcon[resolvedTone]}
           </div>
           <div className="min-w-0 flex-1">

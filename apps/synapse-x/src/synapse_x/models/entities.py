@@ -1,6 +1,3 @@
-"""Entities."""
+from synapse_x.models import FileFingerprint
 
-
-def todo() -> None:
-    """TODO."""
-    return None
+__all__ = ["FileFingerprint"]

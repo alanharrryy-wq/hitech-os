@@ -10,3 +10,9 @@ Restore consistency after failed or partial state.
 4. rebuild indexes
 5. retry failed inputs
 6. emit diagnostics
+
+## Command
+```powershell
+cd F:\repos\hitech-os\apps\synapse-x
+.\scripts\ops\repair.ps1
+```

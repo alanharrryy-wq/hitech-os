@@ -1,0 +1,197 @@
+[
+  {
+    "area": "app",
+    "boundaries": [
+      "bnd_010312e8c1e7f113"
+    ],
+    "confidence": 0.775,
+    "declared_by": [
+      "registry_builder"
+    ],
+    "kind": "python_module",
+    "module_id": "mod_57fb2323bc4759be",
+    "name": "app.svc_001_05",
+    "observed_in": [
+      "app/svc_001_05.py"
+    ],
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "switches": [
+      "module.enabled:mod_57fb2323bc4759be"
+    ],
+    "tags": [
+      "app",
+      "cell_05",
+      "conflict_python_service",
+      "scenario_001"
+    ],
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "area": "pkg",
+    "boundaries": [
+      "bnd_4f3c67b3b252d60d",
+      "bnd_8b03f32eceac6e7c"
+    ],
+    "confidence": 0.762,
+    "declared_by": [
+      "registry_builder"
+    ],
+    "kind": "python_module",
+    "module_id": "mod_809612edadeb1e9c",
+    "name": "pkg.svc_001_04",
+    "observed_in": [
+      "pkg/svc_001_04.py"
+    ],
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "switches": [
+      "module.enabled:mod_809612edadeb1e9c"
+    ],
+    "tags": [
+      "cell_04",
+      "conflict_python_service",
+      "pkg",
+      "scenario_001"
+    ],
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "area": "services",
+    "boundaries": [],
+    "confidence": 0.723,
+    "declared_by": [
+      "registry_builder"
+    ],
+    "kind": "python_module",
+    "module_id": "mod_71172401badcab7e",
+    "name": "services.svc_001_01",
+    "observed_in": [
+      "services/svc_001_01.py"
+    ],
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "switches": [
+      "module.enabled:mod_71172401badcab7e"
+    ],
+    "tags": [
+      "cell_01",
+      "conflict_python_service",
+      "scenario_001",
+      "services"
+    ],
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "area": "services",
+    "boundaries": [],
+    "confidence": 0.723,
+    "declared_by": [
+      "registry_builder"
+    ],
+    "kind": "python_module",
+    "module_id": "mod_92581a3ed3d445d5",
+    "name": "services.svc_001_01",
+    "observed_in": [
+      "services/svc_001_01_shadow.py"
+    ],
+    "source_of_truth": "scanner.signals",
+    "status": "superseded",
+    "switches": [
+      "module.enabled:mod_92581a3ed3d445d5"
+    ],
+    "tags": [
+      "cell_01",
+      "conflict_python_service",
+      "scenario_001",
+      "services"
+    ],
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "area": "services",
+    "boundaries": [
+      "bnd_96dfebc7b4f1bbae",
+      "bnd_eb71ed743ac1d074"
+    ],
+    "confidence": 0.788,
+    "declared_by": [
+      "registry_builder"
+    ],
+    "kind": "python_module",
+    "module_id": "mod_0ed20e99508334b8",
+    "name": "services.svc_001_06",
+    "observed_in": [
+      "services/svc_001_06.py"
+    ],
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "switches": [
+      "module.enabled:mod_0ed20e99508334b8"
+    ],
+    "tags": [
+      "cell_06",
+      "conflict_python_service",
+      "scenario_001",
+      "services"
+    ],
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "area": "ui",
+    "boundaries": [
+      "bnd_62414c4e854113f3",
+      "bnd_cd6ad42ea577c912"
+    ],
+    "confidence": 0.736,
+    "declared_by": [
+      "registry_builder"
+    ],
+    "kind": "frontend_surface",
+    "module_id": "mod_6e80a7419af11d7d",
+    "name": "ui.svc_001_02",
+    "observed_in": [
+      "ui/svc_001_02.py"
+    ],
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "switches": [
+      "module.enabled:mod_6e80a7419af11d7d"
+    ],
+    "tags": [
+      "cell_02",
+      "conflict_python_service",
+      "scenario_001",
+      "ui"
+    ],
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "area": "workers",
+    "boundaries": [
+      "bnd_971f5c3de4c598c2"
+    ],
+    "confidence": 0.749,
+    "declared_by": [
+      "registry_builder"
+    ],
+    "kind": "python_module",
+    "module_id": "mod_ff2e4f5b3a77e080",
+    "name": "workers.svc_001_03",
+    "observed_in": [
+      "workers/svc_001_03.py"
+    ],
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "switches": [
+      "module.enabled:mod_ff2e4f5b3a77e080"
+    ],
+    "tags": [
+      "cell_03",
+      "conflict_python_service",
+      "scenario_001",
+      "workers"
+    ],
+    "updated_at": "2026-04-11T00:00:00Z"
+  }
+]

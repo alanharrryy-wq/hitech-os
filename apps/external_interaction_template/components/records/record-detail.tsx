@@ -226,7 +226,7 @@ export function RecordDetail({
             </label>
 
             {requiresNote ? (
-              <div className="mt-3.5 rounded-[18px] border border-warning/20 bg-warning/10 px-4 py-2.5 text-sm text-warning">
+              <div className="ui-notice ui-notice-warning mt-3.5">
                 {t("record.controls.requiresNoteHint")}
               </div>
             ) : null}
@@ -258,10 +258,8 @@ export function RecordDetail({
             {feedback ? (
               <div
                 className={cn(
-                  "mt-3.5 rounded-[18px] border px-4 py-2.5 text-sm",
-                  feedback.tone === "success"
-                    ? "border-success/25 bg-success/10 text-success"
-                    : "border-danger/25 bg-danger/10 text-danger"
+                  "ui-notice mt-3.5",
+                  feedback.tone === "success" ? "ui-notice-success" : "ui-notice-danger"
                 )}
               >
                 {feedback.message}

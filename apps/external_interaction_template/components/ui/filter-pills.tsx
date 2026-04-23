@@ -77,17 +77,21 @@ export function FilterPills<TValue extends string>({
             onClick={() => onChange(option.value)}
             onKeyDown={(event) => onKeyDown(event, option.value)}
             className={cn(
-              "group inline-flex items-center gap-2 rounded-full border transition outline-none focus-visible:ring-2 focus-visible:ring-accent/55 disabled:pointer-events-none disabled:opacity-40",
+              "ui-pill group outline-none focus-visible:ring-2 focus-visible:ring-accent/55 disabled:pointer-events-none disabled:opacity-40",
               size === "sm" ? "h-7 px-2.5 text-[11px]" : "h-8 px-3 text-[13px]",
-              active
-                ? "border-accent/35 bg-accent/16 text-accent shadow-[0_0_24px_rgba(128,226,255,0.08)]"
-                : "border-white/10 bg-white/5 text-muted hover:border-white/15 hover:bg-white/7 hover:text-text"
+              active && "ui-pill-active"
             )}
           >
             {option.icon ? <span className="shrink-0">{option.icon}</span> : null}
             <span className="font-medium">{option.label}</span>
             {typeof option.count === "number" ? (
-              <span className={cn("inline-flex min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-semibold", active ? "bg-accent/18 text-accent" : "bg-white/8 text-muted")}>
+              <span
+                className={cn(
+                  "inline-flex min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-semibold",
+                  active ? "bg-accent/16 text-accent" : "text-muted"
+                )}
+                style={active ? undefined : { background: "var(--theme-pill-bg)" }}
+              >
                 {option.count}
               </span>
             ) : null}
