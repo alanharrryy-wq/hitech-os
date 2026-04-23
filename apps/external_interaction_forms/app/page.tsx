@@ -1,5 +1,13 @@
 import { FormsFlow } from "@/components/forms/forms-flow";
+import { resolveFormTypeId } from "@/lib/forms";
 
-export default function Page() {
-  return <FormsFlow />;
+interface FormsLandingPageProps {
+  searchParams: Promise<{ form?: string }>;
+}
+
+export default async function Page({ searchParams }: FormsLandingPageProps) {
+  const query = await searchParams;
+  const initialFormTypeId = resolveFormTypeId(query.form);
+
+  return <FormsFlow initialFormTypeId={initialFormTypeId} />;
 }
