@@ -1,0 +1,2576 @@
+{
+  "summary": {
+    "bundle_status_wording": "READY FOR HANDOFF",
+    "case_count": 16,
+    "counts_by_severity": {
+      "critical": 0,
+      "error": 0,
+      "info": 144,
+      "warning": 0
+    },
+    "mode": "verification_example_outputs",
+    "status": "READY"
+  },
+  "violations": [
+    {
+      "entity": "stage_order_case_001",
+      "expected": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "family": "stage_order",
+      "location": "stage_sequence",
+      "message": "Stage order matches the shared canon.",
+      "observed": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "remediation": "None.",
+      "rule_id": "stage_order.canonical_sequence",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_001",
+      "expected": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "family": "artifact_naming",
+      "location": "artifact_names",
+      "message": "Validator artifact naming is canonical.",
+      "observed": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "remediation": "None.",
+      "rule_id": "artifact_naming.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_001",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "reports_real/legacy_stage_order_1.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_001",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": ".ark_install/contract_validator_bundle/backups/260411_0001/snapshot.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_001",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "build/generated/stage_order_1/summary.tmp",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_001",
+      "expected": "validator-owned artifacts only",
+      "family": "write_limits",
+      "location": "writes",
+      "message": "Validator writes stay inside its owned scope.",
+      "observed": [
+        {
+          "family": "validation_report",
+          "path": "example_runtime/validator_outputs/validation_report.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "gate_decisions",
+          "path": "example_runtime/validator_outputs/gate_decisions.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "validator_summary",
+          "path": "example_runtime/validator_outputs/validator_summary.json",
+          "writer": "contract_validator"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "write_limits.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_001",
+      "expected": [],
+      "family": "promotion_policy",
+      "location": "promotion_actions",
+      "message": "Validator does not perform promotion actions.",
+      "observed": [],
+      "remediation": "None.",
+      "rule_id": "promotion_policy.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_001",
+      "expected": "known module and boundary ids",
+      "family": "cross_reference",
+      "location": "cross_refs",
+      "message": "Cross-reference integrity is intact.",
+      "observed": [
+        {
+          "source": "mod_stage_order_1_1",
+          "target_family": "module",
+          "target_id": "mod_stage_order_1_2"
+        },
+        {
+          "source": "mod_stage_order_1_2",
+          "target_family": "boundary",
+          "target_id": "bnd_stage_order_1_1"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "cross_reference.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_001",
+      "expected": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "family": "done_criteria",
+      "location": "done_flags",
+      "message": "Done criteria are explicit and complete.",
+      "observed": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "remediation": "None.",
+      "rule_id": "done_criteria.complete",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_002",
+      "expected": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "family": "stage_order",
+      "location": "stage_sequence",
+      "message": "Stage order matches the shared canon.",
+      "observed": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "remediation": "None.",
+      "rule_id": "stage_order.canonical_sequence",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_002",
+      "expected": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "family": "artifact_naming",
+      "location": "artifact_names",
+      "message": "Validator artifact naming is canonical.",
+      "observed": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "remediation": "None.",
+      "rule_id": "artifact_naming.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_002",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "reports_real/legacy_stage_order_2.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_002",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": ".ark_install/contract_validator_bundle/backups/260411_0002/snapshot.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_002",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "build/generated/stage_order_2/summary.tmp",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_002",
+      "expected": "validator-owned artifacts only",
+      "family": "write_limits",
+      "location": "writes",
+      "message": "Validator writes stay inside its owned scope.",
+      "observed": [
+        {
+          "family": "validation_report",
+          "path": "example_runtime/validator_outputs/validation_report.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "gate_decisions",
+          "path": "example_runtime/validator_outputs/gate_decisions.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "validator_summary",
+          "path": "example_runtime/validator_outputs/validator_summary.json",
+          "writer": "contract_validator"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "write_limits.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_002",
+      "expected": [],
+      "family": "promotion_policy",
+      "location": "promotion_actions",
+      "message": "Validator does not perform promotion actions.",
+      "observed": [],
+      "remediation": "None.",
+      "rule_id": "promotion_policy.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_002",
+      "expected": "known module and boundary ids",
+      "family": "cross_reference",
+      "location": "cross_refs",
+      "message": "Cross-reference integrity is intact.",
+      "observed": [
+        {
+          "source": "mod_stage_order_2_1",
+          "target_family": "module",
+          "target_id": "mod_stage_order_2_2"
+        },
+        {
+          "source": "mod_stage_order_2_2",
+          "target_family": "boundary",
+          "target_id": "bnd_stage_order_2_1"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "cross_reference.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_002",
+      "expected": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "family": "done_criteria",
+      "location": "done_flags",
+      "message": "Done criteria are explicit and complete.",
+      "observed": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "remediation": "None.",
+      "rule_id": "done_criteria.complete",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_003",
+      "expected": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "family": "stage_order",
+      "location": "stage_sequence",
+      "message": "Stage order matches the shared canon.",
+      "observed": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "remediation": "None.",
+      "rule_id": "stage_order.canonical_sequence",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_003",
+      "expected": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "family": "artifact_naming",
+      "location": "artifact_names",
+      "message": "Validator artifact naming is canonical.",
+      "observed": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "remediation": "None.",
+      "rule_id": "artifact_naming.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_003",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "reports_real/legacy_stage_order_3.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_003",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": ".ark_install/contract_validator_bundle/backups/260411_0003/snapshot.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_003",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "build/generated/stage_order_3/summary.tmp",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_003",
+      "expected": "validator-owned artifacts only",
+      "family": "write_limits",
+      "location": "writes",
+      "message": "Validator writes stay inside its owned scope.",
+      "observed": [
+        {
+          "family": "validation_report",
+          "path": "example_runtime/validator_outputs/validation_report.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "gate_decisions",
+          "path": "example_runtime/validator_outputs/gate_decisions.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "validator_summary",
+          "path": "example_runtime/validator_outputs/validator_summary.json",
+          "writer": "contract_validator"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "write_limits.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_003",
+      "expected": [],
+      "family": "promotion_policy",
+      "location": "promotion_actions",
+      "message": "Validator does not perform promotion actions.",
+      "observed": [],
+      "remediation": "None.",
+      "rule_id": "promotion_policy.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_003",
+      "expected": "known module and boundary ids",
+      "family": "cross_reference",
+      "location": "cross_refs",
+      "message": "Cross-reference integrity is intact.",
+      "observed": [
+        {
+          "source": "mod_stage_order_3_1",
+          "target_family": "module",
+          "target_id": "mod_stage_order_3_2"
+        },
+        {
+          "source": "mod_stage_order_3_2",
+          "target_family": "boundary",
+          "target_id": "bnd_stage_order_3_1"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "cross_reference.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_003",
+      "expected": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "family": "done_criteria",
+      "location": "done_flags",
+      "message": "Done criteria are explicit and complete.",
+      "observed": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "remediation": "None.",
+      "rule_id": "done_criteria.complete",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_005",
+      "expected": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "family": "stage_order",
+      "location": "stage_sequence",
+      "message": "Stage order matches the shared canon.",
+      "observed": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "remediation": "None.",
+      "rule_id": "stage_order.canonical_sequence",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_005",
+      "expected": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "family": "artifact_naming",
+      "location": "artifact_names",
+      "message": "Validator artifact naming is canonical.",
+      "observed": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "remediation": "None.",
+      "rule_id": "artifact_naming.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_005",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "reports_real/legacy_stage_order_5.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_005",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": ".ark_install/contract_validator_bundle/backups/260411_0005/snapshot.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_005",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "build/generated/stage_order_5/summary.tmp",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_005",
+      "expected": "validator-owned artifacts only",
+      "family": "write_limits",
+      "location": "writes",
+      "message": "Validator writes stay inside its owned scope.",
+      "observed": [
+        {
+          "family": "validation_report",
+          "path": "example_runtime/validator_outputs/validation_report.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "gate_decisions",
+          "path": "example_runtime/validator_outputs/gate_decisions.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "validator_summary",
+          "path": "example_runtime/validator_outputs/validator_summary.json",
+          "writer": "contract_validator"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "write_limits.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_005",
+      "expected": [],
+      "family": "promotion_policy",
+      "location": "promotion_actions",
+      "message": "Validator does not perform promotion actions.",
+      "observed": [],
+      "remediation": "None.",
+      "rule_id": "promotion_policy.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_005",
+      "expected": "known module and boundary ids",
+      "family": "cross_reference",
+      "location": "cross_refs",
+      "message": "Cross-reference integrity is intact.",
+      "observed": [
+        {
+          "source": "mod_stage_order_5_1",
+          "target_family": "module",
+          "target_id": "mod_stage_order_5_2"
+        },
+        {
+          "source": "mod_stage_order_5_2",
+          "target_family": "boundary",
+          "target_id": "bnd_stage_order_5_1"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "cross_reference.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_005",
+      "expected": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "family": "done_criteria",
+      "location": "done_flags",
+      "message": "Done criteria are explicit and complete.",
+      "observed": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "remediation": "None.",
+      "rule_id": "done_criteria.complete",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_006",
+      "expected": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "family": "stage_order",
+      "location": "stage_sequence",
+      "message": "Stage order matches the shared canon.",
+      "observed": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "remediation": "None.",
+      "rule_id": "stage_order.canonical_sequence",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_006",
+      "expected": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "family": "artifact_naming",
+      "location": "artifact_names",
+      "message": "Validator artifact naming is canonical.",
+      "observed": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "remediation": "None.",
+      "rule_id": "artifact_naming.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_006",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "reports_real/legacy_stage_order_6.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_006",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": ".ark_install/contract_validator_bundle/backups/260411_0006/snapshot.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_006",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "build/generated/stage_order_6/summary.tmp",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_006",
+      "expected": "validator-owned artifacts only",
+      "family": "write_limits",
+      "location": "writes",
+      "message": "Validator writes stay inside its owned scope.",
+      "observed": [
+        {
+          "family": "validation_report",
+          "path": "example_runtime/validator_outputs/validation_report.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "gate_decisions",
+          "path": "example_runtime/validator_outputs/gate_decisions.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "validator_summary",
+          "path": "example_runtime/validator_outputs/validator_summary.json",
+          "writer": "contract_validator"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "write_limits.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_006",
+      "expected": [],
+      "family": "promotion_policy",
+      "location": "promotion_actions",
+      "message": "Validator does not perform promotion actions.",
+      "observed": [],
+      "remediation": "None.",
+      "rule_id": "promotion_policy.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_006",
+      "expected": "known module and boundary ids",
+      "family": "cross_reference",
+      "location": "cross_refs",
+      "message": "Cross-reference integrity is intact.",
+      "observed": [
+        {
+          "source": "mod_stage_order_6_1",
+          "target_family": "module",
+          "target_id": "mod_stage_order_6_2"
+        },
+        {
+          "source": "mod_stage_order_6_2",
+          "target_family": "boundary",
+          "target_id": "bnd_stage_order_6_1"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "cross_reference.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_006",
+      "expected": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "family": "done_criteria",
+      "location": "done_flags",
+      "message": "Done criteria are explicit and complete.",
+      "observed": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "remediation": "None.",
+      "rule_id": "done_criteria.complete",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_007",
+      "expected": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "family": "stage_order",
+      "location": "stage_sequence",
+      "message": "Stage order matches the shared canon.",
+      "observed": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "remediation": "None.",
+      "rule_id": "stage_order.canonical_sequence",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_007",
+      "expected": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "family": "artifact_naming",
+      "location": "artifact_names",
+      "message": "Validator artifact naming is canonical.",
+      "observed": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "remediation": "None.",
+      "rule_id": "artifact_naming.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_007",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "reports_real/legacy_stage_order_7.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_007",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": ".ark_install/contract_validator_bundle/backups/260411_0007/snapshot.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_007",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "build/generated/stage_order_7/summary.tmp",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_007",
+      "expected": "validator-owned artifacts only",
+      "family": "write_limits",
+      "location": "writes",
+      "message": "Validator writes stay inside its owned scope.",
+      "observed": [
+        {
+          "family": "validation_report",
+          "path": "example_runtime/validator_outputs/validation_report.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "gate_decisions",
+          "path": "example_runtime/validator_outputs/gate_decisions.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "validator_summary",
+          "path": "example_runtime/validator_outputs/validator_summary.json",
+          "writer": "contract_validator"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "write_limits.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_007",
+      "expected": [],
+      "family": "promotion_policy",
+      "location": "promotion_actions",
+      "message": "Validator does not perform promotion actions.",
+      "observed": [],
+      "remediation": "None.",
+      "rule_id": "promotion_policy.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_007",
+      "expected": "known module and boundary ids",
+      "family": "cross_reference",
+      "location": "cross_refs",
+      "message": "Cross-reference integrity is intact.",
+      "observed": [
+        {
+          "source": "mod_stage_order_7_1",
+          "target_family": "module",
+          "target_id": "mod_stage_order_7_2"
+        },
+        {
+          "source": "mod_stage_order_7_2",
+          "target_family": "boundary",
+          "target_id": "bnd_stage_order_7_1"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "cross_reference.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_007",
+      "expected": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "family": "done_criteria",
+      "location": "done_flags",
+      "message": "Done criteria are explicit and complete.",
+      "observed": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "remediation": "None.",
+      "rule_id": "done_criteria.complete",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_009",
+      "expected": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "family": "stage_order",
+      "location": "stage_sequence",
+      "message": "Stage order matches the shared canon.",
+      "observed": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "remediation": "None.",
+      "rule_id": "stage_order.canonical_sequence",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_009",
+      "expected": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "family": "artifact_naming",
+      "location": "artifact_names",
+      "message": "Validator artifact naming is canonical.",
+      "observed": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "remediation": "None.",
+      "rule_id": "artifact_naming.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_009",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "reports_real/legacy_stage_order_9.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_009",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": ".ark_install/contract_validator_bundle/backups/260411_0009/snapshot.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_009",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "build/generated/stage_order_9/summary.tmp",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_009",
+      "expected": "validator-owned artifacts only",
+      "family": "write_limits",
+      "location": "writes",
+      "message": "Validator writes stay inside its owned scope.",
+      "observed": [
+        {
+          "family": "validation_report",
+          "path": "example_runtime/validator_outputs/validation_report.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "gate_decisions",
+          "path": "example_runtime/validator_outputs/gate_decisions.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "validator_summary",
+          "path": "example_runtime/validator_outputs/validator_summary.json",
+          "writer": "contract_validator"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "write_limits.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_009",
+      "expected": [],
+      "family": "promotion_policy",
+      "location": "promotion_actions",
+      "message": "Validator does not perform promotion actions.",
+      "observed": [],
+      "remediation": "None.",
+      "rule_id": "promotion_policy.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_009",
+      "expected": "known module and boundary ids",
+      "family": "cross_reference",
+      "location": "cross_refs",
+      "message": "Cross-reference integrity is intact.",
+      "observed": [
+        {
+          "source": "mod_stage_order_9_1",
+          "target_family": "module",
+          "target_id": "mod_stage_order_9_2"
+        },
+        {
+          "source": "mod_stage_order_9_2",
+          "target_family": "boundary",
+          "target_id": "bnd_stage_order_9_1"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "cross_reference.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_009",
+      "expected": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "family": "done_criteria",
+      "location": "done_flags",
+      "message": "Done criteria are explicit and complete.",
+      "observed": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "remediation": "None.",
+      "rule_id": "done_criteria.complete",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_010",
+      "expected": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "family": "stage_order",
+      "location": "stage_sequence",
+      "message": "Stage order matches the shared canon.",
+      "observed": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "remediation": "None.",
+      "rule_id": "stage_order.canonical_sequence",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_010",
+      "expected": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "family": "artifact_naming",
+      "location": "artifact_names",
+      "message": "Validator artifact naming is canonical.",
+      "observed": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "remediation": "None.",
+      "rule_id": "artifact_naming.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_010",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "reports_real/legacy_stage_order_10.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_010",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": ".ark_install/contract_validator_bundle/backups/260411_0010/snapshot.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_010",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "build/generated/stage_order_10/summary.tmp",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_010",
+      "expected": "validator-owned artifacts only",
+      "family": "write_limits",
+      "location": "writes",
+      "message": "Validator writes stay inside its owned scope.",
+      "observed": [
+        {
+          "family": "validation_report",
+          "path": "example_runtime/validator_outputs/validation_report.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "gate_decisions",
+          "path": "example_runtime/validator_outputs/gate_decisions.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "validator_summary",
+          "path": "example_runtime/validator_outputs/validator_summary.json",
+          "writer": "contract_validator"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "write_limits.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_010",
+      "expected": [],
+      "family": "promotion_policy",
+      "location": "promotion_actions",
+      "message": "Validator does not perform promotion actions.",
+      "observed": [],
+      "remediation": "None.",
+      "rule_id": "promotion_policy.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_010",
+      "expected": "known module and boundary ids",
+      "family": "cross_reference",
+      "location": "cross_refs",
+      "message": "Cross-reference integrity is intact.",
+      "observed": [
+        {
+          "source": "mod_stage_order_10_1",
+          "target_family": "module",
+          "target_id": "mod_stage_order_10_2"
+        },
+        {
+          "source": "mod_stage_order_10_2",
+          "target_family": "boundary",
+          "target_id": "bnd_stage_order_10_1"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "cross_reference.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_010",
+      "expected": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "family": "done_criteria",
+      "location": "done_flags",
+      "message": "Done criteria are explicit and complete.",
+      "observed": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "remediation": "None.",
+      "rule_id": "done_criteria.complete",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_011",
+      "expected": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "family": "stage_order",
+      "location": "stage_sequence",
+      "message": "Stage order matches the shared canon.",
+      "observed": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "remediation": "None.",
+      "rule_id": "stage_order.canonical_sequence",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_011",
+      "expected": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "family": "artifact_naming",
+      "location": "artifact_names",
+      "message": "Validator artifact naming is canonical.",
+      "observed": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "remediation": "None.",
+      "rule_id": "artifact_naming.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_011",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "reports_real/legacy_stage_order_11.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_011",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": ".ark_install/contract_validator_bundle/backups/260411_0011/snapshot.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_011",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "build/generated/stage_order_11/summary.tmp",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_011",
+      "expected": "validator-owned artifacts only",
+      "family": "write_limits",
+      "location": "writes",
+      "message": "Validator writes stay inside its owned scope.",
+      "observed": [
+        {
+          "family": "validation_report",
+          "path": "example_runtime/validator_outputs/validation_report.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "gate_decisions",
+          "path": "example_runtime/validator_outputs/gate_decisions.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "validator_summary",
+          "path": "example_runtime/validator_outputs/validator_summary.json",
+          "writer": "contract_validator"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "write_limits.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_011",
+      "expected": [],
+      "family": "promotion_policy",
+      "location": "promotion_actions",
+      "message": "Validator does not perform promotion actions.",
+      "observed": [],
+      "remediation": "None.",
+      "rule_id": "promotion_policy.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_011",
+      "expected": "known module and boundary ids",
+      "family": "cross_reference",
+      "location": "cross_refs",
+      "message": "Cross-reference integrity is intact.",
+      "observed": [
+        {
+          "source": "mod_stage_order_11_1",
+          "target_family": "module",
+          "target_id": "mod_stage_order_11_2"
+        },
+        {
+          "source": "mod_stage_order_11_2",
+          "target_family": "boundary",
+          "target_id": "bnd_stage_order_11_1"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "cross_reference.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "stage_order_case_011",
+      "expected": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "family": "done_criteria",
+      "location": "done_flags",
+      "message": "Done criteria are explicit and complete.",
+      "observed": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "remediation": "None.",
+      "rule_id": "done_criteria.complete",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_001",
+      "expected": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "family": "stage_order",
+      "location": "stage_sequence",
+      "message": "Stage order matches the shared canon.",
+      "observed": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "remediation": "None.",
+      "rule_id": "stage_order.canonical_sequence",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_001",
+      "expected": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "family": "artifact_naming",
+      "location": "artifact_names",
+      "message": "Validator artifact naming is canonical.",
+      "observed": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "remediation": "None.",
+      "rule_id": "artifact_naming.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_001",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "reports_real/legacy_ownership_1.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_001",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": ".ark_install/contract_validator_bundle/backups/260411_0001/snapshot.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_001",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "build/generated/ownership_1/summary.tmp",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_001",
+      "expected": "validator-owned artifacts only",
+      "family": "write_limits",
+      "location": "writes",
+      "message": "Validator writes stay inside its owned scope.",
+      "observed": [
+        {
+          "family": "validation_report",
+          "path": "example_runtime/validator_outputs/validation_report.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "gate_decisions",
+          "path": "example_runtime/validator_outputs/gate_decisions.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "validator_summary",
+          "path": "example_runtime/validator_outputs/validator_summary.json",
+          "writer": "contract_validator"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "write_limits.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_001",
+      "expected": [],
+      "family": "promotion_policy",
+      "location": "promotion_actions",
+      "message": "Validator does not perform promotion actions.",
+      "observed": [],
+      "remediation": "None.",
+      "rule_id": "promotion_policy.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_001",
+      "expected": "known module and boundary ids",
+      "family": "cross_reference",
+      "location": "cross_refs",
+      "message": "Cross-reference integrity is intact.",
+      "observed": [
+        {
+          "source": "mod_ownership_1_1",
+          "target_family": "module",
+          "target_id": "mod_ownership_1_2"
+        },
+        {
+          "source": "mod_ownership_1_2",
+          "target_family": "boundary",
+          "target_id": "bnd_ownership_1_1"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "cross_reference.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_001",
+      "expected": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "family": "done_criteria",
+      "location": "done_flags",
+      "message": "Done criteria are explicit and complete.",
+      "observed": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "remediation": "None.",
+      "rule_id": "done_criteria.complete",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_002",
+      "expected": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "family": "stage_order",
+      "location": "stage_sequence",
+      "message": "Stage order matches the shared canon.",
+      "observed": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "remediation": "None.",
+      "rule_id": "stage_order.canonical_sequence",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_002",
+      "expected": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "family": "artifact_naming",
+      "location": "artifact_names",
+      "message": "Validator artifact naming is canonical.",
+      "observed": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "remediation": "None.",
+      "rule_id": "artifact_naming.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_002",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "reports_real/legacy_ownership_2.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_002",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": ".ark_install/contract_validator_bundle/backups/260411_0002/snapshot.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_002",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "build/generated/ownership_2/summary.tmp",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_002",
+      "expected": "validator-owned artifacts only",
+      "family": "write_limits",
+      "location": "writes",
+      "message": "Validator writes stay inside its owned scope.",
+      "observed": [
+        {
+          "family": "validation_report",
+          "path": "example_runtime/validator_outputs/validation_report.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "gate_decisions",
+          "path": "example_runtime/validator_outputs/gate_decisions.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "validator_summary",
+          "path": "example_runtime/validator_outputs/validator_summary.json",
+          "writer": "contract_validator"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "write_limits.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_002",
+      "expected": [],
+      "family": "promotion_policy",
+      "location": "promotion_actions",
+      "message": "Validator does not perform promotion actions.",
+      "observed": [],
+      "remediation": "None.",
+      "rule_id": "promotion_policy.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_002",
+      "expected": "known module and boundary ids",
+      "family": "cross_reference",
+      "location": "cross_refs",
+      "message": "Cross-reference integrity is intact.",
+      "observed": [
+        {
+          "source": "mod_ownership_2_1",
+          "target_family": "module",
+          "target_id": "mod_ownership_2_2"
+        },
+        {
+          "source": "mod_ownership_2_2",
+          "target_family": "boundary",
+          "target_id": "bnd_ownership_2_1"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "cross_reference.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_002",
+      "expected": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "family": "done_criteria",
+      "location": "done_flags",
+      "message": "Done criteria are explicit and complete.",
+      "observed": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "remediation": "None.",
+      "rule_id": "done_criteria.complete",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_003",
+      "expected": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "family": "stage_order",
+      "location": "stage_sequence",
+      "message": "Stage order matches the shared canon.",
+      "observed": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "remediation": "None.",
+      "rule_id": "stage_order.canonical_sequence",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_003",
+      "expected": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "family": "artifact_naming",
+      "location": "artifact_names",
+      "message": "Validator artifact naming is canonical.",
+      "observed": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "remediation": "None.",
+      "rule_id": "artifact_naming.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_003",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "reports_real/legacy_ownership_3.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_003",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": ".ark_install/contract_validator_bundle/backups/260411_0003/snapshot.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_003",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "build/generated/ownership_3/summary.tmp",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_003",
+      "expected": "validator-owned artifacts only",
+      "family": "write_limits",
+      "location": "writes",
+      "message": "Validator writes stay inside its owned scope.",
+      "observed": [
+        {
+          "family": "validation_report",
+          "path": "example_runtime/validator_outputs/validation_report.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "gate_decisions",
+          "path": "example_runtime/validator_outputs/gate_decisions.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "validator_summary",
+          "path": "example_runtime/validator_outputs/validator_summary.json",
+          "writer": "contract_validator"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "write_limits.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_003",
+      "expected": [],
+      "family": "promotion_policy",
+      "location": "promotion_actions",
+      "message": "Validator does not perform promotion actions.",
+      "observed": [],
+      "remediation": "None.",
+      "rule_id": "promotion_policy.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_003",
+      "expected": "known module and boundary ids",
+      "family": "cross_reference",
+      "location": "cross_refs",
+      "message": "Cross-reference integrity is intact.",
+      "observed": [
+        {
+          "source": "mod_ownership_3_1",
+          "target_family": "module",
+          "target_id": "mod_ownership_3_2"
+        },
+        {
+          "source": "mod_ownership_3_2",
+          "target_family": "boundary",
+          "target_id": "bnd_ownership_3_1"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "cross_reference.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_003",
+      "expected": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "family": "done_criteria",
+      "location": "done_flags",
+      "message": "Done criteria are explicit and complete.",
+      "observed": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "remediation": "None.",
+      "rule_id": "done_criteria.complete",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_005",
+      "expected": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "family": "stage_order",
+      "location": "stage_sequence",
+      "message": "Stage order matches the shared canon.",
+      "observed": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "remediation": "None.",
+      "rule_id": "stage_order.canonical_sequence",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_005",
+      "expected": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "family": "artifact_naming",
+      "location": "artifact_names",
+      "message": "Validator artifact naming is canonical.",
+      "observed": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "remediation": "None.",
+      "rule_id": "artifact_naming.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_005",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "reports_real/legacy_ownership_5.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_005",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": ".ark_install/contract_validator_bundle/backups/260411_0005/snapshot.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_005",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "build/generated/ownership_5/summary.tmp",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_005",
+      "expected": "validator-owned artifacts only",
+      "family": "write_limits",
+      "location": "writes",
+      "message": "Validator writes stay inside its owned scope.",
+      "observed": [
+        {
+          "family": "validation_report",
+          "path": "example_runtime/validator_outputs/validation_report.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "gate_decisions",
+          "path": "example_runtime/validator_outputs/gate_decisions.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "validator_summary",
+          "path": "example_runtime/validator_outputs/validator_summary.json",
+          "writer": "contract_validator"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "write_limits.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_005",
+      "expected": [],
+      "family": "promotion_policy",
+      "location": "promotion_actions",
+      "message": "Validator does not perform promotion actions.",
+      "observed": [],
+      "remediation": "None.",
+      "rule_id": "promotion_policy.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_005",
+      "expected": "known module and boundary ids",
+      "family": "cross_reference",
+      "location": "cross_refs",
+      "message": "Cross-reference integrity is intact.",
+      "observed": [
+        {
+          "source": "mod_ownership_5_1",
+          "target_family": "module",
+          "target_id": "mod_ownership_5_2"
+        },
+        {
+          "source": "mod_ownership_5_2",
+          "target_family": "boundary",
+          "target_id": "bnd_ownership_5_1"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "cross_reference.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_005",
+      "expected": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "family": "done_criteria",
+      "location": "done_flags",
+      "message": "Done criteria are explicit and complete.",
+      "observed": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "remediation": "None.",
+      "rule_id": "done_criteria.complete",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_006",
+      "expected": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "family": "stage_order",
+      "location": "stage_sequence",
+      "message": "Stage order matches the shared canon.",
+      "observed": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "remediation": "None.",
+      "rule_id": "stage_order.canonical_sequence",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_006",
+      "expected": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "family": "artifact_naming",
+      "location": "artifact_names",
+      "message": "Validator artifact naming is canonical.",
+      "observed": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "remediation": "None.",
+      "rule_id": "artifact_naming.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_006",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "reports_real/legacy_ownership_6.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_006",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": ".ark_install/contract_validator_bundle/backups/260411_0006/snapshot.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_006",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "build/generated/ownership_6/summary.tmp",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_006",
+      "expected": "validator-owned artifacts only",
+      "family": "write_limits",
+      "location": "writes",
+      "message": "Validator writes stay inside its owned scope.",
+      "observed": [
+        {
+          "family": "validation_report",
+          "path": "example_runtime/validator_outputs/validation_report.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "gate_decisions",
+          "path": "example_runtime/validator_outputs/gate_decisions.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "validator_summary",
+          "path": "example_runtime/validator_outputs/validator_summary.json",
+          "writer": "contract_validator"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "write_limits.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_006",
+      "expected": [],
+      "family": "promotion_policy",
+      "location": "promotion_actions",
+      "message": "Validator does not perform promotion actions.",
+      "observed": [],
+      "remediation": "None.",
+      "rule_id": "promotion_policy.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_006",
+      "expected": "known module and boundary ids",
+      "family": "cross_reference",
+      "location": "cross_refs",
+      "message": "Cross-reference integrity is intact.",
+      "observed": [
+        {
+          "source": "mod_ownership_6_1",
+          "target_family": "module",
+          "target_id": "mod_ownership_6_2"
+        },
+        {
+          "source": "mod_ownership_6_2",
+          "target_family": "boundary",
+          "target_id": "bnd_ownership_6_1"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "cross_reference.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_006",
+      "expected": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "family": "done_criteria",
+      "location": "done_flags",
+      "message": "Done criteria are explicit and complete.",
+      "observed": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "remediation": "None.",
+      "rule_id": "done_criteria.complete",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_007",
+      "expected": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "family": "stage_order",
+      "location": "stage_sequence",
+      "message": "Stage order matches the shared canon.",
+      "observed": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "remediation": "None.",
+      "rule_id": "stage_order.canonical_sequence",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_007",
+      "expected": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "family": "artifact_naming",
+      "location": "artifact_names",
+      "message": "Validator artifact naming is canonical.",
+      "observed": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "remediation": "None.",
+      "rule_id": "artifact_naming.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_007",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "reports_real/legacy_ownership_7.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_007",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": ".ark_install/contract_validator_bundle/backups/260411_0007/snapshot.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_007",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "build/generated/ownership_7/summary.tmp",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_007",
+      "expected": "validator-owned artifacts only",
+      "family": "write_limits",
+      "location": "writes",
+      "message": "Validator writes stay inside its owned scope.",
+      "observed": [
+        {
+          "family": "validation_report",
+          "path": "example_runtime/validator_outputs/validation_report.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "gate_decisions",
+          "path": "example_runtime/validator_outputs/gate_decisions.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "validator_summary",
+          "path": "example_runtime/validator_outputs/validator_summary.json",
+          "writer": "contract_validator"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "write_limits.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_007",
+      "expected": [],
+      "family": "promotion_policy",
+      "location": "promotion_actions",
+      "message": "Validator does not perform promotion actions.",
+      "observed": [],
+      "remediation": "None.",
+      "rule_id": "promotion_policy.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_007",
+      "expected": "known module and boundary ids",
+      "family": "cross_reference",
+      "location": "cross_refs",
+      "message": "Cross-reference integrity is intact.",
+      "observed": [
+        {
+          "source": "mod_ownership_7_1",
+          "target_family": "module",
+          "target_id": "mod_ownership_7_2"
+        },
+        {
+          "source": "mod_ownership_7_2",
+          "target_family": "boundary",
+          "target_id": "bnd_ownership_7_1"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "cross_reference.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_007",
+      "expected": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "family": "done_criteria",
+      "location": "done_flags",
+      "message": "Done criteria are explicit and complete.",
+      "observed": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "remediation": "None.",
+      "rule_id": "done_criteria.complete",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_009",
+      "expected": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "family": "stage_order",
+      "location": "stage_sequence",
+      "message": "Stage order matches the shared canon.",
+      "observed": [
+        "stage_01_scan",
+        "stage_02_registry_build",
+        "stage_03_switch_resolve",
+        "stage_04_contract_validate",
+        "stage_05_ai_annotate"
+      ],
+      "remediation": "None.",
+      "rule_id": "stage_order.canonical_sequence",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_009",
+      "expected": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "family": "artifact_naming",
+      "location": "artifact_names",
+      "message": "Validator artifact naming is canonical.",
+      "observed": [
+        "gate_decisions.json",
+        "validation_report.json",
+        "validator_summary.json"
+      ],
+      "remediation": "None.",
+      "rule_id": "artifact_naming.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_009",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "reports_real/legacy_ownership_9.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_009",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": ".ark_install/contract_validator_bundle/backups/260411_0009/snapshot.json",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_009",
+      "expected": "excluded path stays outside validator authority",
+      "family": "exclusions",
+      "location": "paths_examined",
+      "message": "Generated or excluded path is recognised as out-of-scope.",
+      "observed": "build/generated/ownership_9/summary.tmp",
+      "remediation": "None.",
+      "rule_id": "exclusions.generated_path_filtered",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_009",
+      "expected": "validator-owned artifacts only",
+      "family": "write_limits",
+      "location": "writes",
+      "message": "Validator writes stay inside its owned scope.",
+      "observed": [
+        {
+          "family": "validation_report",
+          "path": "example_runtime/validator_outputs/validation_report.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "gate_decisions",
+          "path": "example_runtime/validator_outputs/gate_decisions.json",
+          "writer": "contract_validator"
+        },
+        {
+          "family": "validator_summary",
+          "path": "example_runtime/validator_outputs/validator_summary.json",
+          "writer": "contract_validator"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "write_limits.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_009",
+      "expected": [],
+      "family": "promotion_policy",
+      "location": "promotion_actions",
+      "message": "Validator does not perform promotion actions.",
+      "observed": [],
+      "remediation": "None.",
+      "rule_id": "promotion_policy.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_009",
+      "expected": "known module and boundary ids",
+      "family": "cross_reference",
+      "location": "cross_refs",
+      "message": "Cross-reference integrity is intact.",
+      "observed": [
+        {
+          "source": "mod_ownership_9_1",
+          "target_family": "module",
+          "target_id": "mod_ownership_9_2"
+        },
+        {
+          "source": "mod_ownership_9_2",
+          "target_family": "boundary",
+          "target_id": "bnd_ownership_9_1"
+        }
+      ],
+      "remediation": "None.",
+      "rule_id": "cross_reference.clean",
+      "severity": "info"
+    },
+    {
+      "entity": "ownership_case_009",
+      "expected": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "family": "done_criteria",
+      "location": "done_flags",
+      "message": "Done criteria are explicit and complete.",
+      "observed": [
+        "gates_executable",
+        "ownership_documented",
+        "read_only_canonical_state",
+        "reports_real_excluded",
+        "stage_order_documented",
+        "validator_artifacts_documented"
+      ],
+      "remediation": "None.",
+      "rule_id": "done_criteria.complete",
+      "severity": "info"
+    }
+  ]
+}

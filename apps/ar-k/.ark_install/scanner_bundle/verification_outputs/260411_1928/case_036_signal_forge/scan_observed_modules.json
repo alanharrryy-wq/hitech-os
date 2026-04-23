@@ -1,0 +1,252 @@
+[
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "exports": [],
+    "imports": [],
+    "kind": "markdown",
+    "non_product_class": "hidden",
+    "path": ".shadow_shippable_archive_036.md",
+    "routes": [],
+    "surface_kind": "module"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "error": null,
+    "exports": [],
+    "imports": [
+      "__future__"
+    ],
+    "kind": "python",
+    "non_product_class": null,
+    "parse_ok": true,
+    "path": "app/signal_forge/routes.py",
+    "routes": []
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "error": null,
+    "exports": [
+      "SignalForgeService",
+      "load_signal_forge_snapshot"
+    ],
+    "imports": [
+      "__future__",
+      "app.signal_forge.worker",
+      "dataclasses",
+      "json"
+    ],
+    "kind": "python",
+    "non_product_class": null,
+    "parse_ok": true,
+    "path": "app/signal_forge/service.py",
+    "routes": []
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "error": null,
+    "exports": [
+      "SignalForgeWorker",
+      "build_signal_forge_packet"
+    ],
+    "imports": [
+      "__future__",
+      "hashlib",
+      "math"
+    ],
+    "kind": "python",
+    "non_product_class": null,
+    "parse_ok": true,
+    "path": "app/signal_forge/worker.py",
+    "routes": []
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "exports": [],
+    "imports": [],
+    "kind": "markdown",
+    "non_product_class": "docs",
+    "path": "docs/signal_forge_architecture.md",
+    "routes": [],
+    "surface_kind": "module"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "error": null,
+    "exports": [],
+    "imports": [],
+    "kind": "python",
+    "non_product_class": "examples",
+    "parse_ok": true,
+    "path": "examples/signal_forge_example.py",
+    "routes": []
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "error": null,
+    "exports": [],
+    "imports": [],
+    "kind": "python",
+    "non_product_class": "fixtures",
+    "parse_ok": true,
+    "path": "fixtures/signal_forge_seed.py",
+    "routes": []
+  },
+  {
+    "boundaries": [
+      "public_registry_boundary"
+    ],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [],
+    "kind": "json",
+    "non_product_class": null,
+    "path": "public/modules.config.json",
+    "routes": [],
+    "surface_kind": "module_config"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "error": null,
+    "exports": [
+      "main"
+    ],
+    "imports": [
+      "__future__"
+    ],
+    "kind": "python",
+    "non_product_class": "scripts",
+    "parse_ok": true,
+    "path": "scripts/rebuild_signal_forge.py",
+    "routes": []
+  },
+  {
+    "boundaries": [
+      "desktop_bridge_boundary"
+    ],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/bridges/SignalForgeBridge.ts",
+    "routes": [],
+    "surface_kind": "desktop_bridge"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "react"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/components/SignalForgePanel.tsx",
+    "routes": [],
+    "surface_kind": "component"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "react"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/components/SignalForgeStats.tsx",
+    "routes": [],
+    "surface_kind": "component"
+  },
+  {
+    "boundaries": [
+      "runtime_entry"
+    ],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "./bridges/SignalForgeBridge",
+      "./pages/SignalForgeScreen",
+      "./routes/register",
+      "react",
+      "react-dom/client",
+      "react-router-dom"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/main.tsx",
+    "routes": [],
+    "surface_kind": "entrypoint"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "../components/SignalForgePanel",
+      "../components/SignalForgeStats",
+      "react"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/pages/SignalForgeScreen.tsx",
+    "routes": [],
+    "surface_kind": "screen"
+  },
+  {
+    "boundaries": [
+      "route_registration"
+    ],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "../pages/SignalForgeScreen"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/routes/register.ts",
+    "routes": [
+      "/signal-forge/shippable-036",
+      "/signal-forge/shippable-036/details",
+      "/signal-forge/shippable-036/history"
+    ],
+    "surface_kind": "route_surface"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "exports": [],
+    "imports": [
+      "vitest"
+    ],
+    "kind": "typescript",
+    "non_product_class": "tests",
+    "path": "tests/signal_forge.spec.ts",
+    "routes": [],
+    "surface_kind": "module"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "error": null,
+    "exports": [
+      "verify_signal_forge_policy"
+    ],
+    "imports": [
+      "__future__"
+    ],
+    "kind": "python",
+    "non_product_class": "tooling",
+    "parse_ok": true,
+    "path": "tools/enforce_signal_forge_policy.py",
+    "routes": []
+  }
+]

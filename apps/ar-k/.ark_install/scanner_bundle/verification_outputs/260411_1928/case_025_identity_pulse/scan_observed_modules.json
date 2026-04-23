@@ -1,0 +1,252 @@
+[
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "exports": [],
+    "imports": [],
+    "kind": "markdown",
+    "non_product_class": "hidden",
+    "path": ".shadow_tiered_lantern_025.md",
+    "routes": [],
+    "surface_kind": "module"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "error": null,
+    "exports": [],
+    "imports": [
+      "__future__"
+    ],
+    "kind": "python",
+    "non_product_class": null,
+    "parse_ok": true,
+    "path": "app/identity_pulse/routes.py",
+    "routes": []
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "error": null,
+    "exports": [
+      "IdentityPulseService",
+      "load_identity_pulse_snapshot"
+    ],
+    "imports": [
+      "__future__",
+      "app.identity_pulse.worker",
+      "dataclasses",
+      "json"
+    ],
+    "kind": "python",
+    "non_product_class": null,
+    "parse_ok": true,
+    "path": "app/identity_pulse/service.py",
+    "routes": []
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "error": null,
+    "exports": [
+      "IdentityPulseWorker",
+      "build_identity_pulse_packet"
+    ],
+    "imports": [
+      "__future__",
+      "hashlib",
+      "math"
+    ],
+    "kind": "python",
+    "non_product_class": null,
+    "parse_ok": true,
+    "path": "app/identity_pulse/worker.py",
+    "routes": []
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "exports": [],
+    "imports": [],
+    "kind": "markdown",
+    "non_product_class": "docs",
+    "path": "docs/identity_pulse_architecture.md",
+    "routes": [],
+    "surface_kind": "module"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "error": null,
+    "exports": [],
+    "imports": [],
+    "kind": "python",
+    "non_product_class": "examples",
+    "parse_ok": true,
+    "path": "examples/identity_pulse_example.py",
+    "routes": []
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "error": null,
+    "exports": [],
+    "imports": [],
+    "kind": "python",
+    "non_product_class": "fixtures",
+    "parse_ok": true,
+    "path": "fixtures/identity_pulse_seed.py",
+    "routes": []
+  },
+  {
+    "boundaries": [
+      "public_registry_boundary"
+    ],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [],
+    "kind": "json",
+    "non_product_class": null,
+    "path": "public/modules.config.json",
+    "routes": [],
+    "surface_kind": "module_config"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "error": null,
+    "exports": [
+      "main"
+    ],
+    "imports": [
+      "__future__"
+    ],
+    "kind": "python",
+    "non_product_class": "scripts",
+    "parse_ok": true,
+    "path": "scripts/rebuild_identity_pulse.py",
+    "routes": []
+  },
+  {
+    "boundaries": [
+      "desktop_bridge_boundary"
+    ],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/bridges/IdentityPulseBridge.ts",
+    "routes": [],
+    "surface_kind": "desktop_bridge"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "react"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/components/IdentityPulsePanel.tsx",
+    "routes": [],
+    "surface_kind": "component"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "react"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/components/IdentityPulseStats.tsx",
+    "routes": [],
+    "surface_kind": "component"
+  },
+  {
+    "boundaries": [
+      "runtime_entry"
+    ],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "./bridges/IdentityPulseBridge",
+      "./pages/IdentityPulseScreen",
+      "./routes/register",
+      "react",
+      "react-dom/client",
+      "react-router-dom"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/main.tsx",
+    "routes": [],
+    "surface_kind": "entrypoint"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "../components/IdentityPulsePanel",
+      "../components/IdentityPulseStats",
+      "react"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/pages/IdentityPulseScreen.tsx",
+    "routes": [],
+    "surface_kind": "screen"
+  },
+  {
+    "boundaries": [
+      "route_registration"
+    ],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "../pages/IdentityPulseScreen"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/routes/register.ts",
+    "routes": [
+      "/identity-pulse/tiered-025",
+      "/identity-pulse/tiered-025/details",
+      "/identity-pulse/tiered-025/history"
+    ],
+    "surface_kind": "route_surface"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "exports": [],
+    "imports": [
+      "vitest"
+    ],
+    "kind": "typescript",
+    "non_product_class": "tests",
+    "path": "tests/identity_pulse.spec.ts",
+    "routes": [],
+    "surface_kind": "module"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "error": null,
+    "exports": [
+      "verify_identity_pulse_policy"
+    ],
+    "imports": [
+      "__future__"
+    ],
+    "kind": "python",
+    "non_product_class": "tooling",
+    "parse_ok": true,
+    "path": "tools/enforce_identity_pulse_policy.py",
+    "routes": []
+  }
+]

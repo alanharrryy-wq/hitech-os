@@ -71,3 +71,40 @@ def build_frontend_target(target: Path) -> Path:
     )
     (target / "public" / "modules.config.json").write_text('{"modules": []}\n', encoding="utf-8")
     return target
+
+
+
+def build_noisy_frontend_target(target: Path) -> Path:
+    build_frontend_target(target)
+    (target / "docs" / "architecture").mkdir(parents=True, exist_ok=True)
+    (target / "reports" / "patch_runs").mkdir(parents=True, exist_ok=True)
+    (target / "_dependency_graphs").mkdir(parents=True, exist_ok=True)
+    (target / "tests").mkdir(parents=True, exist_ok=True)
+    (target / "tools").mkdir(parents=True, exist_ok=True)
+    (target / "src" / "lib" / "i18n" / "feature_contracts").mkdir(parents=True, exist_ok=True)
+
+    (target / "docs" / "architecture" / "BACKEND_FLOW_MAP.md").write_text(
+        '# backend flow\nlocale: es-MX\npath: "/fake-docs-route"\n',
+        encoding="utf-8",
+    )
+    (target / "reports" / "patch_runs" / "patch_20260410_155501.md").write_text(
+        '# patch report\ni18n translation summary\n',
+        encoding="utf-8",
+    )
+    (target / "_dependency_graphs" / "visual_control_map_external_interaction_template.md").write_text(
+        '# graph\npath: "/graph"\n',
+        encoding="utf-8",
+    )
+    (target / "tests" / "payments.i18n.contract.test.ts").write_text(
+        "import { describe } from 'vitest'\nexport const value = 1\n",
+        encoding="utf-8",
+    )
+    (target / "tools" / "enforce_i18n_guardrails.py").write_text(
+        "import json\n\ndef main():\n    return json.dumps({'ok': True})\n",
+        encoding="utf-8",
+    )
+    (target / "src" / "lib" / "i18n" / "feature_contracts" / "README.md").write_text(
+        '# i18n feature contracts\ntranslate locale contract\n',
+        encoding="utf-8",
+    )
+    return target

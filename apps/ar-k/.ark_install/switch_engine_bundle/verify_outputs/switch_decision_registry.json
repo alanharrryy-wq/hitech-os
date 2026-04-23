@@ -1,0 +1,57 @@
+[
+  {
+    "decision_source": "default",
+    "default_value": true,
+    "justification": "Resolved from switch default value.",
+    "precedence_path": [
+      "default"
+    ],
+    "resolved_value": true,
+    "switch_id": "switch.alpha",
+    "target_id": "module.alpha",
+    "target_type": "module",
+    "timestamp": "2026-04-11T23:59:59Z"
+  },
+  {
+    "decision_source": "switch_id",
+    "default_value": false,
+    "justification": "Resolved from switch_id override.",
+    "precedence_path": [
+      "default",
+      "switch_id"
+    ],
+    "resolved_value": true,
+    "switch_id": "switch.beta",
+    "target_id": "module.beta",
+    "target_type": "module",
+    "timestamp": "2026-04-11T23:59:59Z"
+  },
+  {
+    "decision_source": "default",
+    "default_value": false,
+    "justification": "Invalid override ignored; default retained.",
+    "precedence_path": [
+      "default",
+      "invalid_override_ignored"
+    ],
+    "resolved_value": false,
+    "switch_id": "switch.delta",
+    "target_id": "boundary.delta",
+    "target_type": "boundary",
+    "timestamp": "2026-04-11T23:59:59Z"
+  },
+  {
+    "decision_source": "target_id",
+    "default_value": true,
+    "justification": "Resolved from target_id override.",
+    "precedence_path": [
+      "default",
+      "target_id"
+    ],
+    "resolved_value": false,
+    "switch_id": "switch.gamma",
+    "target_id": "route.gamma",
+    "target_type": "route",
+    "timestamp": "2026-04-11T23:59:59Z"
+  }
+]

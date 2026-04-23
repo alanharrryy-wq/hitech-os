@@ -1,0 +1,114 @@
+[
+  {
+    "boundary_id": "bnd_010312e8c1e7f113",
+    "boundary_type": "import",
+    "evidence": {
+      "import": "pkg.svc_001_04",
+      "source_path": "app/svc_001_05.py"
+    },
+    "source_module_id": "mod_57fb2323bc4759be",
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "target_id": "mod_809612edadeb1e9c",
+    "target_type": "module",
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "boundary_id": "bnd_4f3c67b3b252d60d",
+    "boundary_type": "import",
+    "evidence": {
+      "import": "workers.svc_001_03",
+      "source_path": "pkg/svc_001_04.py"
+    },
+    "source_module_id": "mod_809612edadeb1e9c",
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "target_id": "mod_ff2e4f5b3a77e080",
+    "target_type": "module",
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "boundary_id": "bnd_96dfebc7b4f1bbae",
+    "boundary_type": "import",
+    "evidence": {
+      "import": "app.svc_001_05",
+      "source_path": "services/svc_001_06.py"
+    },
+    "source_module_id": "mod_0ed20e99508334b8",
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "target_id": "mod_57fb2323bc4759be",
+    "target_type": "module",
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "boundary_id": "bnd_cd6ad42ea577c912",
+    "boundary_type": "import",
+    "evidence": {
+      "import": "services.svc_001_01",
+      "source_path": "ui/svc_001_02.py"
+    },
+    "source_module_id": "mod_6e80a7419af11d7d",
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "target_id": "mod_71172401badcab7e",
+    "target_type": "module",
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "boundary_id": "bnd_971f5c3de4c598c2",
+    "boundary_type": "import",
+    "evidence": {
+      "import": "ui.svc_001_02",
+      "source_path": "workers/svc_001_03.py"
+    },
+    "source_module_id": "mod_ff2e4f5b3a77e080",
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "target_id": "mod_6e80a7419af11d7d",
+    "target_type": "module",
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "boundary_id": "bnd_8b03f32eceac6e7c",
+    "boundary_type": "http",
+    "evidence": {
+      "boundary_kind": "http",
+      "source_path": "pkg/svc_001_04.py"
+    },
+    "source_module_id": "mod_809612edadeb1e9c",
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "target_id": "capability:http",
+    "target_type": "external",
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "boundary_id": "bnd_eb71ed743ac1d074",
+    "boundary_type": "queue",
+    "evidence": {
+      "boundary_kind": "queue",
+      "source_path": "services/svc_001_06.py"
+    },
+    "source_module_id": "mod_0ed20e99508334b8",
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "target_id": "capability:queue",
+    "target_type": "external",
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "boundary_id": "bnd_62414c4e854113f3",
+    "boundary_type": "feature_flag",
+    "evidence": {
+      "boundary_kind": "feature_flag",
+      "source_path": "ui/svc_001_02.py"
+    },
+    "source_module_id": "mod_6e80a7419af11d7d",
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "target_id": "capability:feature_flag",
+    "target_type": "external",
+    "updated_at": "2026-04-11T00:00:00Z"
+  }
+]

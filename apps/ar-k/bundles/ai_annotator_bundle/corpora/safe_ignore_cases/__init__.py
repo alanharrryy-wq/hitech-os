@@ -1,0 +1,1 @@
+"""Safe Ignore Cases corpus."""

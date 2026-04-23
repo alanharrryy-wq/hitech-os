@@ -1,0 +1,434 @@
+[
+  {
+    "annotation_id": "ann_adv_001-rec-001",
+    "target_type": "module",
+    "target_id": "identity.client_001",
+    "summary": "Records evidence from catalog caching with single_source trace shape. Current upstream validation state is warning and ambiguity focus is late validation note. Primary risk under review is legacy alias confusion; annotator remains non-authoritative.",
+    "rationale": "Records evidence from catalog caching with single_source trace shape. Current upstream validation state is warning and ambiguity focus is late validation note. Primary risk under review is legacy alias confusion; annotator remains non-authoritative. Legacy index alias handling maps query_index.json to registry_index.json for identity.client_001.",
+    "confidence": 0.72,
+    "status": "suggested",
+    "advisory_only": true,
+    "evidence_sources": [
+      "module_registry.json",
+      "validation_report.json",
+      "switch_decision_trace.json",
+      "registry_index.json"
+    ],
+    "ignored_paths": [
+      "reports_real/annotations/ann_adv_001_do_not_write.json"
+    ],
+    "forbidden_actions": [
+      "rewrite module_registry.json",
+      "change gate_decisions.json",
+      "flip resolved_value in switch_decision_registry.json"
+    ]
+  },
+  {
+    "annotation_id": "ann_adv_002-rec-002",
+    "target_type": "module",
+    "target_id": "catalog.repository_002",
+    "summary": "Flags evidence from ops runbooks with single_source trace shape. Current upstream validation state is error_shadow and ambiguity focus is naming collision. Primary risk under review is false certainty; annotator remains non-authoritative.",
+    "rationale": "Flags evidence from ops runbooks with single_source trace shape. Current upstream validation state is error_shadow and ambiguity focus is naming collision. Primary risk under review is false certainty; annotator remains non-authoritative. Legacy index alias handling maps query_index.json to registry_index.json for catalog.repository_002.",
+    "confidence": 0.72,
+    "status": "suggested",
+    "advisory_only": true,
+    "evidence_sources": [
+      "module_registry.json",
+      "validation_report.json",
+      "switch_decision_trace.json",
+      "registry_index.json"
+    ],
+    "ignored_paths": [
+      "reports_real/annotations/ann_adv_002_do_not_write.json"
+    ],
+    "forbidden_actions": [
+      "rewrite module_registry.json",
+      "change gate_decisions.json",
+      "flip resolved_value in switch_decision_registry.json"
+    ]
+  },
+  {
+    "annotation_id": "ann_adv_003-rec-003",
+    "target_type": "module",
+    "target_id": "search.service_003",
+    "summary": "Captures evidence from identity linking with single_source trace shape. Current upstream validation state is gate_hold and ambiguity focus is late validation note. Primary risk under review is legacy alias confusion; annotator remains non-authoritative.",
+    "rationale": "Captures evidence from identity linking with single_source trace shape. Current upstream validation state is gate_hold and ambiguity focus is late validation note. Primary risk under review is legacy alias confusion; annotator remains non-authoritative. Legacy index alias handling maps query_index.json to registry_index.json for search.service_003.",
+    "confidence": 0.72,
+    "status": "suggested",
+    "advisory_only": true,
+    "evidence_sources": [
+      "module_registry.json",
+      "validation_report.json",
+      "switch_decision_trace.json",
+      "registry_index.json"
+    ],
+    "ignored_paths": [
+      "reports_real/annotations/ann_adv_003_do_not_write.json"
+    ],
+    "forbidden_actions": [
+      "rewrite module_registry.json",
+      "change gate_decisions.json",
+      "flip resolved_value in switch_decision_registry.json"
+    ]
+  },
+  {
+    "annotation_id": "ann_adv_004-rec-004",
+    "target_type": "module",
+    "target_id": "ops.client_004",
+    "summary": "Highlights evidence from search ranking with single_source trace shape. Current upstream validation state is ambiguous and ambiguity focus is naming collision. Primary risk under review is false certainty; annotator remains non-authoritative.",
+    "rationale": "Highlights evidence from search ranking with single_source trace shape. Current upstream validation state is ambiguous and ambiguity focus is naming collision. Primary risk under review is false certainty; annotator remains non-authoritative. Legacy index alias handling maps query_index.json to registry_index.json for ops.client_004.",
+    "confidence": 0.72,
+    "status": "suggested",
+    "advisory_only": true,
+    "evidence_sources": [
+      "module_registry.json",
+      "validation_report.json",
+      "switch_decision_trace.json",
+      "registry_index.json"
+    ],
+    "ignored_paths": [
+      "reports_real/annotations/ann_adv_004_do_not_write.json"
+    ],
+    "forbidden_actions": [
+      "rewrite module_registry.json",
+      "change gate_decisions.json",
+      "flip resolved_value in switch_decision_registry.json"
+    ]
+  },
+  {
+    "annotation_id": "ann_adv_005-rec-005",
+    "target_type": "module",
+    "target_id": "routing.repository_005",
+    "summary": "Records evidence from checkout toggles with single_source trace shape. Current upstream validation state is clean and ambiguity focus is late validation note. Primary risk under review is legacy alias confusion; annotator remains non-authoritative.",
+    "rationale": "Records evidence from checkout toggles with single_source trace shape. Current upstream validation state is clean and ambiguity focus is late validation note. Primary risk under review is legacy alias confusion; annotator remains non-authoritative. Legacy index alias handling maps query_index.json to registry_index.json for routing.repository_005.",
+    "confidence": 0.72,
+    "status": "suggested",
+    "advisory_only": true,
+    "evidence_sources": [
+      "module_registry.json",
+      "validation_report.json",
+      "switch_decision_trace.json",
+      "registry_index.json"
+    ],
+    "ignored_paths": [
+      "reports_real/annotations/ann_adv_005_do_not_write.json"
+    ],
+    "forbidden_actions": [
+      "rewrite module_registry.json",
+      "change gate_decisions.json",
+      "flip resolved_value in switch_decision_registry.json"
+    ]
+  },
+  {
+    "annotation_id": "ann_adv_006-rec-006",
+    "target_type": "module",
+    "target_id": "checkout.service_006",
+    "summary": "Flags evidence from catalog caching with single_source trace shape. Current upstream validation state is warning and ambiguity focus is naming collision. Primary risk under review is false certainty; annotator remains non-authoritative.",
+    "rationale": "Flags evidence from catalog caching with single_source trace shape. Current upstream validation state is warning and ambiguity focus is naming collision. Primary risk under review is false certainty; annotator remains non-authoritative. Legacy index alias handling maps query_index.json to registry_index.json for checkout.service_006.",
+    "confidence": 0.72,
+    "status": "suggested",
+    "advisory_only": true,
+    "evidence_sources": [
+      "module_registry.json",
+      "validation_report.json",
+      "switch_decision_trace.json",
+      "registry_index.json"
+    ],
+    "ignored_paths": [
+      "reports_real/annotations/ann_adv_006_do_not_write.json"
+    ],
+    "forbidden_actions": [
+      "rewrite module_registry.json",
+      "change gate_decisions.json",
+      "flip resolved_value in switch_decision_registry.json"
+    ]
+  },
+  {
+    "annotation_id": "ann_adv_007-rec-007",
+    "target_type": "module",
+    "target_id": "identity.client_007",
+    "summary": "Captures evidence from ops runbooks with single_source trace shape. Current upstream validation state is error_shadow and ambiguity focus is late validation note. Primary risk under review is legacy alias confusion; annotator remains non-authoritative.",
+    "rationale": "Captures evidence from ops runbooks with single_source trace shape. Current upstream validation state is error_shadow and ambiguity focus is late validation note. Primary risk under review is legacy alias confusion; annotator remains non-authoritative. Legacy index alias handling maps query_index.json to registry_index.json for identity.client_007.",
+    "confidence": 0.72,
+    "status": "suggested",
+    "advisory_only": true,
+    "evidence_sources": [
+      "module_registry.json",
+      "validation_report.json",
+      "switch_decision_trace.json",
+      "registry_index.json"
+    ],
+    "ignored_paths": [
+      "reports_real/annotations/ann_adv_007_do_not_write.json"
+    ],
+    "forbidden_actions": [
+      "rewrite module_registry.json",
+      "change gate_decisions.json",
+      "flip resolved_value in switch_decision_registry.json"
+    ]
+  },
+  {
+    "annotation_id": "ann_adv_008-rec-008",
+    "target_type": "module",
+    "target_id": "catalog.repository_008",
+    "summary": "Highlights evidence from identity linking with single_source trace shape. Current upstream validation state is gate_hold and ambiguity focus is naming collision. Primary risk under review is false certainty; annotator remains non-authoritative.",
+    "rationale": "Highlights evidence from identity linking with single_source trace shape. Current upstream validation state is gate_hold and ambiguity focus is naming collision. Primary risk under review is false certainty; annotator remains non-authoritative. Legacy index alias handling maps query_index.json to registry_index.json for catalog.repository_008.",
+    "confidence": 0.72,
+    "status": "suggested",
+    "advisory_only": true,
+    "evidence_sources": [
+      "module_registry.json",
+      "validation_report.json",
+      "switch_decision_trace.json",
+      "registry_index.json"
+    ],
+    "ignored_paths": [
+      "reports_real/annotations/ann_adv_008_do_not_write.json"
+    ],
+    "forbidden_actions": [
+      "rewrite module_registry.json",
+      "change gate_decisions.json",
+      "flip resolved_value in switch_decision_registry.json"
+    ]
+  },
+  {
+    "annotation_id": "ann_adv_009-rec-009",
+    "target_type": "module",
+    "target_id": "search.service_009",
+    "summary": "Records evidence from search ranking with single_source trace shape. Current upstream validation state is ambiguous and ambiguity focus is late validation note. Primary risk under review is legacy alias confusion; annotator remains non-authoritative.",
+    "rationale": "Records evidence from search ranking with single_source trace shape. Current upstream validation state is ambiguous and ambiguity focus is late validation note. Primary risk under review is legacy alias confusion; annotator remains non-authoritative. Legacy index alias handling maps query_index.json to registry_index.json for search.service_009.",
+    "confidence": 0.72,
+    "status": "suggested",
+    "advisory_only": true,
+    "evidence_sources": [
+      "module_registry.json",
+      "validation_report.json",
+      "switch_decision_trace.json",
+      "registry_index.json"
+    ],
+    "ignored_paths": [
+      "reports_real/annotations/ann_adv_009_do_not_write.json"
+    ],
+    "forbidden_actions": [
+      "rewrite module_registry.json",
+      "change gate_decisions.json",
+      "flip resolved_value in switch_decision_registry.json"
+    ]
+  },
+  {
+    "annotation_id": "ann_adv_010-rec-010",
+    "target_type": "module",
+    "target_id": "ops.client_010",
+    "summary": "Flags evidence from checkout toggles with single_source trace shape. Current upstream validation state is clean and ambiguity focus is naming collision. Primary risk under review is false certainty; annotator remains non-authoritative.",
+    "rationale": "Flags evidence from checkout toggles with single_source trace shape. Current upstream validation state is clean and ambiguity focus is naming collision. Primary risk under review is false certainty; annotator remains non-authoritative. Legacy index alias handling maps query_index.json to registry_index.json for ops.client_010.",
+    "confidence": 0.72,
+    "status": "suggested",
+    "advisory_only": true,
+    "evidence_sources": [
+      "module_registry.json",
+      "validation_report.json",
+      "switch_decision_trace.json",
+      "registry_index.json"
+    ],
+    "ignored_paths": [
+      "reports_real/annotations/ann_adv_010_do_not_write.json"
+    ],
+    "forbidden_actions": [
+      "rewrite module_registry.json",
+      "change gate_decisions.json",
+      "flip resolved_value in switch_decision_registry.json"
+    ]
+  },
+  {
+    "annotation_id": "ann_adv_011-rec-011",
+    "target_type": "module",
+    "target_id": "routing.repository_011",
+    "summary": "Captures evidence from catalog caching with single_source trace shape. Current upstream validation state is warning and ambiguity focus is late validation note. Primary risk under review is legacy alias confusion; annotator remains non-authoritative.",
+    "rationale": "Captures evidence from catalog caching with single_source trace shape. Current upstream validation state is warning and ambiguity focus is late validation note. Primary risk under review is legacy alias confusion; annotator remains non-authoritative. Legacy index alias handling maps query_index.json to registry_index.json for routing.repository_011.",
+    "confidence": 0.72,
+    "status": "suggested",
+    "advisory_only": true,
+    "evidence_sources": [
+      "module_registry.json",
+      "validation_report.json",
+      "switch_decision_trace.json",
+      "registry_index.json"
+    ],
+    "ignored_paths": [
+      "reports_real/annotations/ann_adv_011_do_not_write.json"
+    ],
+    "forbidden_actions": [
+      "rewrite module_registry.json",
+      "change gate_decisions.json",
+      "flip resolved_value in switch_decision_registry.json"
+    ]
+  },
+  {
+    "annotation_id": "ann_adv_012-rec-012",
+    "target_type": "module",
+    "target_id": "checkout.service_012",
+    "summary": "Highlights evidence from ops runbooks with single_source trace shape. Current upstream validation state is error_shadow and ambiguity focus is naming collision. Primary risk under review is false certainty; annotator remains non-authoritative.",
+    "rationale": "Highlights evidence from ops runbooks with single_source trace shape. Current upstream validation state is error_shadow and ambiguity focus is naming collision. Primary risk under review is false certainty; annotator remains non-authoritative. Legacy index alias handling maps query_index.json to registry_index.json for checkout.service_012.",
+    "confidence": 0.72,
+    "status": "suggested",
+    "advisory_only": true,
+    "evidence_sources": [
+      "module_registry.json",
+      "validation_report.json",
+      "switch_decision_trace.json",
+      "registry_index.json"
+    ],
+    "ignored_paths": [
+      "reports_real/annotations/ann_adv_012_do_not_write.json"
+    ],
+    "forbidden_actions": [
+      "rewrite module_registry.json",
+      "change gate_decisions.json",
+      "flip resolved_value in switch_decision_registry.json"
+    ]
+  },
+  {
+    "annotation_id": "ann_adv_013-rec-013",
+    "target_type": "module",
+    "target_id": "identity.client_013",
+    "summary": "Records evidence from identity linking with single_source trace shape. Current upstream validation state is gate_hold and ambiguity focus is late validation note. Primary risk under review is legacy alias confusion; annotator remains non-authoritative.",
+    "rationale": "Records evidence from identity linking with single_source trace shape. Current upstream validation state is gate_hold and ambiguity focus is late validation note. Primary risk under review is legacy alias confusion; annotator remains non-authoritative. Legacy index alias handling maps query_index.json to registry_index.json for identity.client_013.",
+    "confidence": 0.72,
+    "status": "suggested",
+    "advisory_only": true,
+    "evidence_sources": [
+      "module_registry.json",
+      "validation_report.json",
+      "switch_decision_trace.json",
+      "registry_index.json"
+    ],
+    "ignored_paths": [
+      "reports_real/annotations/ann_adv_013_do_not_write.json"
+    ],
+    "forbidden_actions": [
+      "rewrite module_registry.json",
+      "change gate_decisions.json",
+      "flip resolved_value in switch_decision_registry.json"
+    ]
+  },
+  {
+    "annotation_id": "ann_adv_014-rec-014",
+    "target_type": "module",
+    "target_id": "catalog.repository_014",
+    "summary": "Flags evidence from search ranking with single_source trace shape. Current upstream validation state is ambiguous and ambiguity focus is naming collision. Primary risk under review is false certainty; annotator remains non-authoritative.",
+    "rationale": "Flags evidence from search ranking with single_source trace shape. Current upstream validation state is ambiguous and ambiguity focus is naming collision. Primary risk under review is false certainty; annotator remains non-authoritative. Legacy index alias handling maps query_index.json to registry_index.json for catalog.repository_014.",
+    "confidence": 0.72,
+    "status": "suggested",
+    "advisory_only": true,
+    "evidence_sources": [
+      "module_registry.json",
+      "validation_report.json",
+      "switch_decision_trace.json",
+      "registry_index.json"
+    ],
+    "ignored_paths": [
+      "reports_real/annotations/ann_adv_014_do_not_write.json"
+    ],
+    "forbidden_actions": [
+      "rewrite module_registry.json",
+      "change gate_decisions.json",
+      "flip resolved_value in switch_decision_registry.json"
+    ]
+  },
+  {
+    "annotation_id": "ann_adv_015-rec-015",
+    "target_type": "module",
+    "target_id": "search.service_015",
+    "summary": "Captures evidence from checkout toggles with single_source trace shape. Current upstream validation state is clean and ambiguity focus is late validation note. Primary risk under review is legacy alias confusion; annotator remains non-authoritative.",
+    "rationale": "Captures evidence from checkout toggles with single_source trace shape. Current upstream validation state is clean and ambiguity focus is late validation note. Primary risk under review is legacy alias confusion; annotator remains non-authoritative. Legacy index alias handling maps query_index.json to registry_index.json for search.service_015.",
+    "confidence": 0.72,
+    "status": "suggested",
+    "advisory_only": true,
+    "evidence_sources": [
+      "module_registry.json",
+      "validation_report.json",
+      "switch_decision_trace.json",
+      "registry_index.json"
+    ],
+    "ignored_paths": [
+      "reports_real/annotations/ann_adv_015_do_not_write.json"
+    ],
+    "forbidden_actions": [
+      "rewrite module_registry.json",
+      "change gate_decisions.json",
+      "flip resolved_value in switch_decision_registry.json"
+    ]
+  },
+  {
+    "annotation_id": "ann_adv_016-rec-016",
+    "target_type": "module",
+    "target_id": "ops.client_016",
+    "summary": "Highlights evidence from catalog caching with single_source trace shape. Current upstream validation state is warning and ambiguity focus is naming collision. Primary risk under review is false certainty; annotator remains non-authoritative.",
+    "rationale": "Highlights evidence from catalog caching with single_source trace shape. Current upstream validation state is warning and ambiguity focus is naming collision. Primary risk under review is false certainty; annotator remains non-authoritative. Legacy index alias handling maps query_index.json to registry_index.json for ops.client_016.",
+    "confidence": 0.72,
+    "status": "suggested",
+    "advisory_only": true,
+    "evidence_sources": [
+      "module_registry.json",
+      "validation_report.json",
+      "switch_decision_trace.json",
+      "registry_index.json"
+    ],
+    "ignored_paths": [
+      "reports_real/annotations/ann_adv_016_do_not_write.json"
+    ],
+    "forbidden_actions": [
+      "rewrite module_registry.json",
+      "change gate_decisions.json",
+      "flip resolved_value in switch_decision_registry.json"
+    ]
+  },
+  {
+    "annotation_id": "ann_adv_017-rec-017",
+    "target_type": "module",
+    "target_id": "routing.repository_017",
+    "summary": "Records evidence from ops runbooks with single_source trace shape. Current upstream validation state is error_shadow and ambiguity focus is late validation note. Primary risk under review is legacy alias confusion; annotator remains non-authoritative.",
+    "rationale": "Records evidence from ops runbooks with single_source trace shape. Current upstream validation state is error_shadow and ambiguity focus is late validation note. Primary risk under review is legacy alias confusion; annotator remains non-authoritative. Legacy index alias handling maps query_index.json to registry_index.json for routing.repository_017.",
+    "confidence": 0.72,
+    "status": "suggested",
+    "advisory_only": true,
+    "evidence_sources": [
+      "module_registry.json",
+      "validation_report.json",
+      "switch_decision_trace.json",
+      "registry_index.json"
+    ],
+    "ignored_paths": [
+      "reports_real/annotations/ann_adv_017_do_not_write.json"
+    ],
+    "forbidden_actions": [
+      "rewrite module_registry.json",
+      "change gate_decisions.json",
+      "flip resolved_value in switch_decision_registry.json"
+    ]
+  },
+  {
+    "annotation_id": "ann_adv_018-rec-018",
+    "target_type": "module",
+    "target_id": "checkout.service_018",
+    "summary": "Flags evidence from identity linking with single_source trace shape. Current upstream validation state is gate_hold and ambiguity focus is naming collision. Primary risk under review is false certainty; annotator remains non-authoritative.",
+    "rationale": "Flags evidence from identity linking with single_source trace shape. Current upstream validation state is gate_hold and ambiguity focus is naming collision. Primary risk under review is false certainty; annotator remains non-authoritative. Legacy index alias handling maps query_index.json to registry_index.json for checkout.service_018.",
+    "confidence": 0.72,
+    "status": "suggested",
+    "advisory_only": true,
+    "evidence_sources": [
+      "module_registry.json",
+      "validation_report.json",
+      "switch_decision_trace.json",
+      "registry_index.json"
+    ],
+    "ignored_paths": [
+      "reports_real/annotations/ann_adv_018_do_not_write.json"
+    ],
+    "forbidden_actions": [
+      "rewrite module_registry.json",
+      "change gate_decisions.json",
+      "flip resolved_value in switch_decision_registry.json"
+    ]
+  }
+]
