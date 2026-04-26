@@ -1,12 +1,19 @@
 import { AppShell } from "@components/layout/app-shell";
 import { ActionChip } from "@components/ui/action-chip";
 import { SectionCard } from "@components/ui/section-card";
+import { StatCard } from "@components/ui/stat-card";
 import { StatusBadge } from "@components/ui/status-badge";
+import { TableSimple } from "@components/ui/table-simple";
+import { getReturnsConsole } from "@/lib/services/returns";
 import { getUxProKit } from "@/lib/services/ux-pro";
 import { tabletMessages } from "@/lib/i18n/messages/es";
+import { formatInt, formatMoney } from "@/lib/utils";
 
-export default function ReturnsPage() {
+export const dynamic = "force-dynamic";
+
+export default async function ReturnsPage() {
   const page = tabletMessages.pages.returns;
+  const returns = await getReturnsConsole();
   const ux = getUxProKit();
 
   return (
@@ -16,6 +23,13 @@ export default function ReturnsPage() {
         <h1 style={{ margin: 0 }}>{page.title}</h1>
         <div className="subtle">{page.subtitle}</div>
       </section>
+
+      <div className="grid cols-4">
+        <StatCard label="Devoluciones" value={formatInt(returns.kpis.returnCount)} note="SaleReturn" />
+        <StatCard label="Monto" value={formatMoney(returns.kpis.amountToday)} note="amountCents" />
+        <StatCard label="Promedio" value={formatMoney(returns.kpis.avgRefund)} note="calculado" />
+        <StatCard label="Motivo top" value={returns.topReason.reason} note={`${formatInt(returns.topReason.count)} casos`} />
+      </div>
 
       <div className="grid cols-2">
         <SectionCard title="Motivos de devolucion" subtitle="Set corto para clasificar sin tener que escribir biblia en plena fila.">
@@ -41,6 +55,19 @@ export default function ReturnsPage() {
             <StatusBadge key={item} tone={index === 0 ? "danger" : "ok"}>{item}</StatusBadge>
           ))}
         </div>
+      </SectionCard>
+
+      <SectionCard title="Devoluciones recientes" subtitle="Lectura runtime desde SaleReturn canónico.">
+        <TableSimple
+          columns={["Folio", "Motivo", "Monto", "Cajero", "Estado"]}
+          rows={returns.recentReturns.map((row) => ({
+            Folio: row.folio,
+            Motivo: row.reason,
+            Monto: formatMoney(row.amount),
+            Cajero: row.cashier,
+            Estado: <StatusBadge tone={row.tone}>{row.status}</StatusBadge>
+          }))}
+        />
       </SectionCard>
     </AppShell>
   );

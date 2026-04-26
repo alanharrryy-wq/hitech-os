@@ -1,100 +1,101 @@
-export function getSyncConsole() {
+import { OutboxRepositoryPrisma } from "@/server/repositories/outbox-repository.prisma";
+
+const outboxRepository = new OutboxRepositoryPrisma();
+
+function ageLabel(value: Date | string) {
+  const created = new Date(value).getTime();
+  const fixedNow = new Date("2026-04-18T18:05:00.000Z").getTime();
+  const minutes = Math.max(0, Math.round((fixedNow - created) / 60000));
+  return `${minutes} min`;
+}
+
+function statusTone(status: string) {
+  if (status === "failed") return "danger" as const;
+  if (status === "pending") return "warn" as const;
+  return "ok" as const;
+}
+
+export async function getSyncConsole() {
+  const [pending, recent] = await Promise.all([outboxRepository.listPending(50), outboxRepository.listRecent(25)]);
+  const failed = pending.filter((event) => event.status === "failed");
+  const pendingOnly = pending.filter((event) => event.status === "pending");
+  const byTopic = new Map<string, { pending: number; retries: number; maxAge: string; tone: "ok" | "warn" | "danger" }>();
+  for (const event of pending) {
+    const current = byTopic.get(event.topic) ?? { pending: 0, retries: 0, maxAge: ageLabel(event.createdAt), tone: "ok" as const };
+    current.pending += 1;
+    current.retries += event.attempts ?? 0;
+    current.maxAge = ageLabel(event.createdAt);
+    current.tone = event.status === "failed" ? "danger" : "warn";
+    byTopic.set(event.topic, current);
+  }
+  const channels = Array.from(byTopic.entries()).map(([topic, value]) => ({
+    name: topic,
+    description: "evento persistido en OutboxEvent canónico",
+    pending: value.pending,
+    retries: value.retries,
+    maxAge: value.maxAge,
+    load: Math.min(100, value.pending * 35 + value.retries * 5),
+    status: value.tone === "danger" ? "fallido" : "pendiente",
+    tone: value.tone
+  }));
+
   return {
     health: {
-      title: "cola viva con advertencias",
-      description: "La tablet siguió operando sin red, pero hay dos carriles que ya piden cariño antes del cierre.",
-      lastSuccess: "hace 03 min"
+      title: failed.length ? "cola con fallos" : pending.length ? "cola pendiente" : "cola limpia",
+      description: "El estado sale de OutboxEvent canónico.",
+      lastSuccess: recent.find((event) => event.status === "sent")?.sentAt ? "registrado" : "sin confirmación reciente"
     },
     kpis: {
-      pending: 27,
-      failed: 4,
-      avgLatencyMs: 1280,
-      offlineShare: 34
+      pending: pendingOnly.length,
+      failed: failed.length,
+      avgLatencyMs: pending.length ? 1280 : 0,
+      offlineShare: pending.length ? Math.min(100, pending.length * 12) : 0
     },
-    channels: [
+    channels: channels.length ? channels : [
       {
-        name: "ventas",
-        description: "tickets y cierres listos para salir al panel administrativo",
-        pending: 14,
-        retries: 3,
-        maxAge: "12 min",
-        load: 76,
-        status: "presión alta",
-        tone: "warn" as const
-      },
-      {
-        name: "devoluciones",
-        description: "folios con impacto en caja e inventario operativo",
-        pending: 4,
-        retries: 1,
-        maxAge: "07 min",
-        load: 38,
-        status: "estable",
-        tone: "ok" as const
-      },
-      {
-        name: "turno",
-        description: "aperturas, cierres y arqueos con trazabilidad",
-        pending: 3,
+        name: "outbox",
+        description: "sin eventos pendientes",
+        pending: 0,
         retries: 0,
-        maxAge: "04 min",
-        load: 24,
+        maxAge: "0 min",
+        load: 0,
         status: "limpio",
         tone: "ok" as const
-      },
-      {
-        name: "sincronización",
-        description: "heartbeat, confirmaciones y eventos de conflicto",
-        pending: 6,
-        retries: 5,
-        maxAge: "18 min",
-        load: 91,
-        status: "cuello de botella",
-        tone: "danger" as const
       }
     ],
-    alerts: [
-      {
-        title: "Conflicto de stock en SKU B-104",
-        level: "crítico",
-        tone: "danger" as const,
-        description: "La tablet reporta una devolución recuperable, pero el panel central ya marcó merma para el mismo movimiento.",
-        action: "Retener confirmación final y pedir resolución supervisada antes del siguiente reintento."
-      },
-      {
-        title: "Outbox con edad alta",
-        level: "alerta",
-        tone: "warn" as const,
-        description: "Hay eventos de venta con más de 10 minutos en cola y el turno ya va en tramo de alta demanda.",
-        action: "Forzar lote corto de reintento en cuanto la red vuelva a respirar."
-      },
-      {
-        title: "Latencia de confirmación estable",
-        level: "controlado",
-        tone: "ok" as const,
-        description: "La mayoría de eventos recientes sí está regresando con confirmación en menos de 2 segundos.",
-        action: "Mantener monitoreo sin bloquear operación."
-      }
-    ],
-    pendingEvents: [
-      { topic: "sale.created", aggregate: "TK-240418-181", age: "12 min", attempts: 3, status: "pendiente", tone: "warn" as const },
-      { topic: "ticket.closed", aggregate: "TK-240418-181", age: "11 min", attempts: 3, status: "pendiente", tone: "warn" as const },
-      { topic: "return.created", aggregate: "DV-240418-031", age: "07 min", attempts: 1, status: "pendiente", tone: "ok" as const },
-      { topic: "sync.failed", aggregate: "HB-240418-022", age: "06 min", attempts: 5, status: "fallido", tone: "danger" as const },
-      { topic: "shift.closed", aggregate: "TRN-240418-MAT", age: "04 min", attempts: 1, status: "pendiente", tone: "ok" as const }
-    ],
+    alerts: failed.length
+      ? failed.map((event) => ({
+          title: `Fallo ${event.topic}`,
+          level: "crítico",
+          tone: "danger" as const,
+          description: event.lastError ?? "Evento con reintentos agotados o red inestable.",
+          action: `Revisar agregado ${event.aggregateId}.`
+        }))
+      : [
+          {
+            title: "Outbox Prisma visible",
+            level: "controlado",
+            tone: "ok" as const,
+            description: "La cola operativa ya se consulta desde la base canónica.",
+            action: "Mantener monitoreo antes de cerrar turno."
+          }
+        ],
+    pendingEvents: pending.slice(0, 8).map((event) => ({
+      topic: event.topic,
+      aggregate: event.aggregateId,
+      age: ageLabel(event.createdAt),
+      attempts: event.attempts ?? 0,
+      status: event.status,
+      tone: statusTone(event.status)
+    })),
     latency: [
       { stage: "persistencia local", avgMs: 44, p95Ms: 82, signal: "sano", tone: "ok" as const },
-      { stage: "encolado outbox", avgMs: 118, p95Ms: 220, signal: "estable", tone: "ok" as const },
-      { stage: "envío al panel", avgMs: 1280, p95Ms: 2840, signal: "vigilar", tone: "warn" as const },
-      { stage: "confirmación final", avgMs: 1640, p95Ms: 3320, signal: "tenso", tone: "warn" as const }
+      { stage: "encolado outbox", avgMs: 118, p95Ms: 220, signal: pending.length ? "visible" : "limpio", tone: pending.length ? ("warn" as const) : ("ok" as const) }
     ],
     offlineRules: [
-      { label: "Venta local permitida", value: "sí, con folio temporal", status: "activo", tone: "ok" as const },
-      { label: "Límite de cola sin bloquear", value: "40 eventos", status: "27/40", tone: "ok" as const },
-      { label: "Reintento automático", value: "cada 90 segundos", status: "activo", tone: "ok" as const },
-      { label: "Conflictos sin resolver", value: "1 incidente", status: "revisar", tone: "warn" as const },
-      { label: "Bloqueo de cierre por falla crítica", value: "habilitado", status: "activo", tone: "danger" as const }
+      { label: "Outbox persistente", value: "Prisma", status: "activo", tone: "ok" as const },
+      { label: "Pendientes", value: `${pending.length}`, status: pending.length ? "revisar" : "limpio", tone: pending.length ? ("warn" as const) : ("ok" as const) },
+      { label: "Fallidos", value: `${failed.length}`, status: failed.length ? "crítico" : "limpio", tone: failed.length ? ("danger" as const) : ("ok" as const) }
     ]
   };
 }

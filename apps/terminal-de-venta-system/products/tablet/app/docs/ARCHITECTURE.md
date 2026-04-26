@@ -9,7 +9,8 @@ Entregar una base bootable y modular para POS en tablet sin imports fantasma.
 - `src/modules/`: manifest por dominio
 - `src/server/`: Prisma, repositorios y sync base
 - `shared/twin-kernel/`: contratos compartidos de referencia única para ambas apps
-- `prisma/`: esquema y DB de desarrollo
+- `..\..\..\prisma\*`: Prisma canónico del sistema
+- `prisma/schema.prisma`: stub local deprecado, sin modelos
 
 ## Decisión clave
-Este paquete incluye una copia local del `shared-kernel` para que **tablet.zip** sea autocontenido y verificable por sí solo.
+La tablet consume el mismo modelo Prisma canónico que PC; no mantiene un runtime de base de datos propio.

@@ -1,58 +1,88 @@
-export function getStockConsole() {
+import { ProductRepositoryPrisma } from "@/server/repositories/product-repository.prisma";
+
+const productRepository = new ProductRepositoryPrisma();
+
+function toneForDays(daysCover: number) {
+  if (daysCover < 1) return "danger" as const;
+  if (daysCover < 3) return "warn" as const;
+  return "ok" as const;
+}
+
+function signalForDays(daysCover: number) {
+  if (daysCover < 1) return "quiebre inminente";
+  if (daysCover < 3) return "vigilar";
+  return "estable";
+}
+
+export async function getStockConsole() {
+  const products = await productRepository.listActive(25);
+  const stockRows = products
+    .flatMap((product) =>
+      product.stockSnapshots.map((snapshot: { onHand: number; daysCover: number; location: string }) => ({
+        sku: product.sku,
+        name: product.name,
+        onHand: snapshot.onHand,
+        hoursLeft: Number((snapshot.daysCover * 24).toFixed(1)),
+        daysCover: snapshot.daysCover,
+        location: snapshot.location,
+        barcodeOk: product.barcodes.length > 0,
+        tone: toneForDays(snapshot.daysCover),
+        signal: signalForDays(snapshot.daysCover)
+      }))
+    )
+    .sort((a, b) => a.daysCover - b.daysCover);
+  const hotSpot = stockRows[0];
+
   return {
     hotSpot: {
-      sku: "PAP-ADOBO",
-      name: "Papas adobadas",
-      hoursLeft: 1.8,
-      suggestedUnits: 24,
-      suggestedSource: "reabasto desde bodega fría B-2"
+      sku: hotSpot?.sku ?? "-",
+      name: hotSpot?.name ?? "sin stock activo",
+      hoursLeft: hotSpot?.hoursLeft ?? 0,
+      suggestedUnits: hotSpot ? Math.max(12, 24 - hotSpot.onHand) : 0,
+      suggestedSource: hotSpot ? `reabasto hacia ${hotSpot.location}` : "-"
     },
     kpis: {
-      monitoredSkus: 84,
-      stockouts: 6,
-      lowCoverage: 14,
-      barcodeIssues: 5
+      monitoredSkus: products.length,
+      stockouts: stockRows.filter((row) => row.daysCover < 1).length,
+      lowCoverage: stockRows.filter((row) => row.daysCover < 3).length,
+      barcodeIssues: stockRows.filter((row) => !row.barcodeOk).length
     },
-    watchlist: [
-      { sku: "PAP-ADOBO", name: "Papas adobadas", onHand: 3, velocity: "7.2 uds", signal: "quiebre inminente", tone: "danger" as const },
-      { sku: "BOT-1L", name: "Agua 1 L", onHand: 9, velocity: "6.4 uds", signal: "vigilar", tone: "warn" as const },
-      { sku: "REF-355ML", name: "Refresco 355 ml", onHand: 5, velocity: "9.1 uds", signal: "caliente", tone: "danger" as const },
-      { sku: "GOM-MIX", name: "Gomitas mix", onHand: 11, velocity: "3.8 uds", signal: "estable", tone: "ok" as const },
-      { sku: "CAF-AMER", name: "Cafe americano", onHand: 7, velocity: "4.6 uds", signal: "vigilar", tone: "warn" as const }
-    ],
-    replenishment: [
-      { sku: "PAP-ADOBO", recommendedUnits: 24, coverage: "1.8 h", source: "bodega fria B-2" },
-      { sku: "REF-355ML", recommendedUnits: 36, coverage: "0.9 h", source: "rack rapido R-1" },
-      { sku: "BOT-1L", recommendedUnits: 18, coverage: "2.1 h", source: "pallet lateral L-3" },
-      { sku: "CHO-CLAS", recommendedUnits: 12, coverage: "3.7 h", source: "reserva mostrador" }
-    ],
-    barcodeAlerts: [
-      {
-        title: "SKU activo sin barcode limpio",
+    watchlist: stockRows.slice(0, 8).map((row) => ({
+      sku: row.sku,
+      name: row.name,
+      onHand: row.onHand,
+      velocity: `${(row.onHand / Math.max(row.hoursLeft, 1)).toFixed(1)} uds`,
+      signal: row.signal,
+      tone: row.tone
+    })),
+    replenishment: stockRows.slice(0, 4).map((row) => ({
+      sku: row.sku,
+      recommendedUnits: Math.max(12, 24 - row.onHand),
+      coverage: `${row.hoursLeft} h`,
+      source: `ubicación ${row.location}`
+    })),
+    barcodeAlerts: stockRows
+      .filter((row) => !row.barcodeOk)
+      .map((row) => ({
+        title: "SKU activo sin barcode",
         level: "alerta",
         tone: "warn" as const,
-        description: "BOT-1L sigue entrando por captura manual en 4 tickets del turno y eso ya huele a tropiezo repetido.",
-        action: "accion sugerida: reimprimir etiqueta y validar lectura antes del siguiente pico"
-      },
-      {
-        title: "Precio desfasado en anaquel",
-        level: "critico",
-        tone: "danger" as const,
-        description: "CHO-CLAS trae diferencia entre precio visible y precio de caja. Eso luego acaba en cara larga y devolucion.",
-        action: "accion sugerida: bloquear venta asistida hasta confirmar precio maestro"
-      },
-      {
-        title: "Duplicidad de barcode controlada",
-        level: "ok",
-        tone: "ok" as const,
-        description: "El cruce REF-355ML contra promo temporal ya fue aislado y no esta pegando a la fila.",
-        action: "accion sugerida: mantener monitoreo sin frenar operacion"
-      }
-    ],
-    aislePulse: [
-      { name: "bebidas frias", note: "alto arrastre en mostrador y ruta", pressure: 86, stockouts: 2, lowCoverage: 5, velocity: "18.3 uds", signal: "presion alta", tone: "danger" as const },
-      { name: "botanas", note: "canasta rapida y combo de impulso", pressure: 71, stockouts: 3, lowCoverage: 4, velocity: "13.8 uds", signal: "vigilar", tone: "warn" as const },
-      { name: "cafe y caloricos", note: "rotacion estable con un pico por la manana", pressure: 42, stockouts: 0, lowCoverage: 3, velocity: "6.4 uds", signal: "estable", tone: "ok" as const }
-    ]
+        description: `${row.sku} no tiene Barcode canónico.`,
+        action: "Capturar Barcode antes del siguiente pico."
+      })),
+    aislePulse: Array.from(new Set(products.map((product) => product.category))).map((category) => {
+      const categoryRows = stockRows.filter((row) => products.find((product) => product.sku === row.sku)?.category === category);
+      const pressure = Math.min(100, categoryRows.filter((row) => row.tone !== "ok").length * 35);
+      return {
+        name: category,
+        note: "lectura desde Product y StockSnapshot",
+        pressure,
+        stockouts: categoryRows.filter((row) => row.daysCover < 1).length,
+        lowCoverage: categoryRows.filter((row) => row.daysCover < 3).length,
+        velocity: `${categoryRows.length} SKUs`,
+        signal: pressure > 70 ? "presion alta" : pressure > 0 ? "vigilar" : "estable",
+        tone: pressure > 70 ? ("danger" as const) : pressure > 0 ? ("warn" as const) : ("ok" as const)
+      };
+    })
   };
 }

@@ -72,7 +72,11 @@ for json_rel in ['package.json', 'tsconfig.json', 'tsconfig.base.json']:
     except Exception as exc:
         errors.append(f'Invalid JSON {json_rel}: {exc}')
 
+SKIP_DIRS = {'node_modules', '.next', '.cache'}
+
 for path in ROOT.rglob('*'):
+    if any(part in SKIP_DIRS for part in path.parts):
+        continue
     if path.suffix not in TEXT_EXTS or not path.is_file():
         continue
     text = path.read_text(encoding='utf-8', errors='ignore')

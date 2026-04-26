@@ -10,7 +10,11 @@
     "typecheck": "tsc --noEmit",
     "check:package": "python tools/validate_package.py .",
     "check:all": "python tools/validate_package.py . && tsc --noEmit",
-    "db:summary": "python tools/db_summary.py prisma/dev.db"
+    "db:canonical:generate": "python ../../../tooling/scripts/generate_prisma_canonical.py tablet",
+    "db:canonical:migrate": "python ../../../tooling/scripts/migrate_prisma_canonical.py",
+    "db:canonical:seed": "node ../../../prisma/seed.mjs",
+    "db:canonical:validate": "python ../../../tooling/scripts/validate_prisma_canonical.py",
+    "db:summary": "python tools/db_summary.py ../../../../../tools/_local/data/terminal-de-venta-system/canonical.db"
   },
   "dependencies": {
     "@prisma/client": "5.21.1",

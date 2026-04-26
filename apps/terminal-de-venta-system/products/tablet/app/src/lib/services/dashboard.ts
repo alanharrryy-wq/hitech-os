@@ -6,15 +6,27 @@ import { getReturnsConsole } from "@/lib/services/returns";
 import { getSyncConsole } from "@/lib/services/sync";
 import { getStockConsole } from "@/lib/services/stock";
 
-export function getTabletDashboard() {
-  const sales = getSalesConsole();
-  const shift = getShiftConsole();
-  const returns = getReturnsConsole();
-  const sync = getSyncConsole();
-  const stock = getStockConsole();
+export async function getTabletDashboard() {
+  const [sales, shift, returns, sync, stock] = await Promise.all([
+    getSalesConsole(),
+    getShiftConsole(),
+    getReturnsConsole(),
+    getSyncConsole(),
+    getStockConsole()
+  ]);
 
   const stockPressure = stock.watchlist.filter((row) => row.tone !== "ok").length;
   const riskLane = sync.channels.find((row) => row.tone === "danger") ?? sync.channels[0];
+  const shiftAlert = shift.alerts[0];
+  const syncAlert = sync.alerts[0];
+  const stockAlert = stock.barcodeAlerts[0] ?? {
+    title: "Barcodes canónicos completos",
+    level: "ok",
+    description: "Los productos activos tienen Barcode asociado al mismo negocio.",
+    action: "Mantener validación de escaneo.",
+    tone: "ok" as const
+  };
+  const returnsAlert = returns.guardrails[1] ?? returns.guardrails[0];
 
   return {
     hero: {
@@ -47,32 +59,32 @@ export function getTabletDashboard() {
     }),
     risks: [
       {
-        title: shift.alerts[0].title,
-        level: shift.alerts[0].level,
-        description: shift.alerts[0].description,
-        action: shift.alerts[0].action,
-        tone: shift.alerts[0].tone
+        title: shiftAlert.title,
+        level: shiftAlert.level,
+        description: shiftAlert.description,
+        action: shiftAlert.action,
+        tone: shiftAlert.tone
       },
       {
-        title: sync.alerts[0].title,
-        level: sync.alerts[0].level,
-        description: sync.alerts[0].description,
-        action: sync.alerts[0].action,
-        tone: sync.alerts[0].tone
+        title: syncAlert.title,
+        level: syncAlert.level,
+        description: syncAlert.description,
+        action: syncAlert.action,
+        tone: syncAlert.tone
       },
       {
-        title: stock.barcodeAlerts[1].title,
-        level: stock.barcodeAlerts[1].level,
-        description: stock.barcodeAlerts[1].description,
-        action: stock.barcodeAlerts[1].action,
-        tone: stock.barcodeAlerts[1].tone
+        title: stockAlert.title,
+        level: stockAlert.level,
+        description: stockAlert.description,
+        action: stockAlert.action,
+        tone: stockAlert.tone
       },
       {
-        title: returns.guardrails[1].title,
-        level: returns.guardrails[1].level,
-        description: returns.guardrails[1].description,
-        action: returns.guardrails[1].action,
-        tone: returns.guardrails[1].tone
+        title: returnsAlert.title,
+        level: returnsAlert.level,
+        description: returnsAlert.description,
+        action: returnsAlert.action,
+        tone: returnsAlert.tone
       }
     ],
     shiftTable: shift.recentShifts,
