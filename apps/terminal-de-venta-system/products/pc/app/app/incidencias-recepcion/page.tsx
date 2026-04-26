@@ -1,8 +1,12 @@
 import { AppShell } from "@components/layout/app-shell";
 import { SectionCard } from "@components/ui/section-card";
-import { receivingIncidents } from "@/lib/i04/procurement-data";
+import { getProcurementConsole } from "@/lib/services/procurement";
 
-export default function Page() {
+export const dynamic = "force-dynamic";
+
+export default async function Page() {
+  const { receivingIncidents } = await getProcurementConsole();
+
   return (
     <AppShell currentPath="/receiving">
       <section className="hero">
@@ -11,7 +15,7 @@ export default function Page() {
         <div className="subtle">Faltantes, sobrantes y recibos con ruido antes de contaminar inventario.</div>
       </section>
       <SectionCard title="Bitácora breve" subtitle="Overlay aditivo para no tocar el módulo base">
-        <div className="list">{receivingIncidents.map((item) => <div key={item.purchaseId} className="list-item">{item.purchaseId} · {item.supplier} · {item.lines} líneas comprometidas</div>)}</div>
+        <div className="list">{receivingIncidents.map((item) => <div key={item.folio} className="list-item">{item.folio} · {item.supplier} · {item.lines} líneas comprometidas</div>)}</div>
       </SectionCard>
     </AppShell>
   );

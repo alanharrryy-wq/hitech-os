@@ -1,8 +1,12 @@
 import { AppShell } from "@components/layout/app-shell";
 import { SectionCard } from "@components/ui/section-card";
-import { pcI05Data } from "@/lib/i05/replenishment-sync-data";
+import { getOutboxConsole } from "@/lib/services/sync";
 
-export default function Page() {
+export const dynamic = "force-dynamic";
+
+export default async function Page() {
+  const outbox = await getOutboxConsole();
+
   return (
     <AppShell currentPath="/outbox-operativo">
       <section className="hero">
@@ -12,14 +16,14 @@ export default function Page() {
       </section>
       <SectionCard title="Estado de la cola" subtitle="Resumen por status.">
         <div className="list">
-          {pcI05Data.outboxStatusSummary.map((item) => (
+          {outbox.outboxStatusSummary.map((item) => (
             <div key={item.status} className="list-item">{item.status}: {item.total} eventos</div>
           ))}
         </div>
       </SectionCard>
       <SectionCard title="Pendientes recientes" subtitle="Muestra de outbox pendiente o fallido.">
         <div className="list">
-          {pcI05Data.outboxPending.slice(0, 8).map((item) => (
+          {outbox.outboxPending.slice(0, 8).map((item) => (
             <div key={item.id} className="list-item">{item.topic} · {item.status} · {item.aggregateId}</div>
           ))}
         </div>
