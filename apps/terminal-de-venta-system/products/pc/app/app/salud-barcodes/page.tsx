@@ -1,9 +1,13 @@
 import { AppShell } from "@components/layout/app-shell";
 import { SectionCard } from "@components/ui/section-card";
 import { TableSimple } from "@components/ui/table-simple";
-import { barcodeHealthRows } from "@/lib/i02/catalog-stock-data";
+import { getBarcodeHealthRows } from "@/lib/services/catalog";
 
-export default function Page() {
+export const dynamic = "force-dynamic";
+
+export default async function Page() {
+  const barcodeHealthRows = await getBarcodeHealthRows();
+
   return (
     <AppShell currentPath="/salud-barcodes">
       <section className="hero">

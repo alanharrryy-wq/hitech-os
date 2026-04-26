@@ -1,21 +1,28 @@
-# Terminal de Venta System
+# PRISMA Twin Runtime Kernel Package
 
-Professional twin-product repository for Terminal de Venta.
+Entrega maciza para pasar de propuesta de paridad a contrato técnico compartido entre PC y Tablet.
 
-## Real Structure
-- `products/pc/app`: real PC product source (Next.js + TypeScript + Prisma integration layer).
-- `products/tablet/app`: real Tablet product source (Next.js + TypeScript + Prisma integration layer).
-- `shared/twin-kernel`: real shared twin contract code used by both products.
-- `architecture/prisma-lab`: exploratory Prisma architecture material only.
-- `tooling/scripts`: repository-level operational scripts.
-- `docs`: repository documentation and structural diagrams.
-- `out`: local temporary area only (`tmp`, `archive`), not canonical source.
+## Qué instala
 
-## Launcher
-Use:
-`F:\repos\hitech-os\apps\terminal-de-venta-system\terminal_de_venta.cmd`
+- Tipos TypeScript para `TwinCapabilityManifest`.
+- Validador puro y sin side effects.
+- Registry runtime para buscar por id, dominio, surface y módulo.
+- Manifest canónico con 14 capabilities PC/Tablet.
+- Catálogo de eventos runtime conectado a `SHARED_SYNC_EVENTS`.
+- Bridges de composición para PC y Tablet.
+- Validador Python semántico ligero.
+- Documentación de contrato, smoke e integración.
 
-## Cleanup Guarantees
-- No zip artifacts inside this repository tree.
-- No delivery/package folders pretending to be source-of-truth.
-- Canonical source is directly visible under `products/*/app`.
+## Modos del instalador
+
+```powershell
+py install_prisma_twin_runtime_kernel.py --root F:\repos\hitech-os\apps\terminal-de-venta-system --smoke
+py install_prisma_twin_runtime_kernel.py --root F:\repos\hitech-os\apps\terminal-de-venta-system --dry-run
+py install_prisma_twin_runtime_kernel.py --root F:\repos\hitech-os\apps\terminal-de-venta-system --apply
+py install_prisma_twin_runtime_kernel.py --root F:\repos\hitech-os\apps\terminal-de-venta-system --verify
+py install_prisma_twin_runtime_kernel.py --root F:\repos\hitech-os\apps\terminal-de-venta-system --rollback
+```
+
+## Nota operativa
+
+La entrega no modifica `package.json`, no instala dependencias y no toca pantallas existentes. Esto es deliberado: primero se instala columna vertebral, después se enchufan pantallas. Andar al revés es construir segundo piso sobre puesto de lámina.

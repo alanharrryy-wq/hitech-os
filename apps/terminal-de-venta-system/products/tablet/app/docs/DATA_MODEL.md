@@ -1,11 +1,16 @@
 # Modelo de datos base
 
-Entidades principales:
+Modelo canónico: `F:\repos\hitech-os\apps\terminal-de-venta-system\prisma\schema.prisma`.
+
+Entidades principales para tablet:
 - Product
-- Shift
+- Barcode
+- StockSnapshot
 - Sale
 - SaleLine
 - SaleReturn
+- CashSession
+- CashMovement
 - OutboxEvent
 
-La DB sembrada sirve para demo, query design y wiring de repositorios.
+`Shift` quedó reemplazado por `CashSession` en la base canónica.

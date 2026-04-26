@@ -1,5 +1,7 @@
 # Checkpoint de calidad 02
 
+Nota historica: este checkpoint describe el estado previo a la promocion canonica. El estado vigente esta en `F:\repos\hitech-os\apps\terminal-de-venta-system\docs\PRISMA_CANONICAL_STATUS.md`.
+
 ## Alcance revisado
 Este checkpoint cubre el segundo bloque de tres zips:
 

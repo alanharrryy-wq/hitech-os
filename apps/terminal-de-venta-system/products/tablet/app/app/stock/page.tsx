@@ -7,9 +7,11 @@ import { getStockConsole } from "@/lib/services/stock";
 import { formatInt, formatMoney } from "@/lib/utils";
 import { tabletMessages } from "@/lib/i18n/messages/es";
 
-export default function Page() {
+export const dynamic = "force-dynamic";
+
+export default async function Page() {
   const page = tabletMessages.pages.stock;
-  const stock = getStockConsole();
+  const stock = await getStockConsole();
 
   return (
     <AppShell currentPath="/stock">

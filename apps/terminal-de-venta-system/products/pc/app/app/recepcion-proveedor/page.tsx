@@ -1,9 +1,13 @@
 import { AppShell } from "@components/layout/app-shell";
 import { SectionCard } from "@components/ui/section-card";
 import { StatCard } from "@components/ui/stat-card";
-import { procurementStats, receivingIncidents } from "@/lib/i04/procurement-data";
+import { getProcurementConsole } from "@/lib/services/procurement";
 
-export default function Page() {
+export const dynamic = "force-dynamic";
+
+export default async function Page() {
+  const { stats, receivingIncidents } = await getProcurementConsole();
+
   return (
     <AppShell currentPath="/receiving">
       <section className="hero">
@@ -12,11 +16,11 @@ export default function Page() {
         <div className="subtle">Confirmación física, incidencias y trazabilidad ligera para entradas de mercancía.</div>
       </section>
       <section style={{ display: 'grid', gap: 16, gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
-        <StatCard label="Incidencias" value={String(procurementStats.recepcionesConIncidencia)} note="recibos con bandera de incidente" />
-        <StatCard label="Líneas planeación" value={String(procurementStats.lineasPlaneacion)} note="dataset útil para recepción futura" />
+        <StatCard label="Incidencias" value={String(stats.recepcionesConIncidencia)} note="recibos con bandera de incidente" />
+        <StatCard label="Líneas planeación" value={String(stats.lineasPlaneacion)} note="PurchaseOrderLine canónico" />
       </section>
       <SectionCard title="Recepciones calientes" subtitle="Lo que merece atención antes de que se esconda bajo la alfombra">
-        <div className="list">{receivingIncidents.map((item) => <div key={item.purchaseId} className="list-item">{item.purchaseId} · {item.supplier} · {item.lines} líneas · {item.receivedAt}</div>)}</div>
+        <div className="list">{receivingIncidents.map((item) => <div key={item.folio} className="list-item">{item.folio} · {item.supplier} · {item.lines} líneas · ${item.total} · {item.receivedAt}</div>)}</div>
       </SectionCard>
     </AppShell>
   );

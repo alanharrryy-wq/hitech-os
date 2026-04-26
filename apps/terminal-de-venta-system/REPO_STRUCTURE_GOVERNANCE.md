@@ -7,8 +7,9 @@ Keep `terminal-de-venta-system` structurally truthful, maintainable, and twin-sa
 - `products\pc\app`
 - `products\tablet\app`
 - `shared\twin-kernel`
+- `prisma`
 
-These are the only source-of-truth areas for runtime behavior and shared twin contracts.
+These are the only source-of-truth areas for runtime behavior, shared twin contracts, and canonical database foundation.
 
 ## Shared / Twin-Sensitive Surfaces
 Treat these files as contract-critical:
@@ -19,10 +20,19 @@ Treat these files as contract-critical:
 
 Changes here require cross-product review (PC + Tablet).
 
+## Prisma Canonical Foundation
+- `prisma\schema.prisma`
+- `prisma\migrations\**`
+- `prisma\seeds\**`
+- `prisma\sql\**`
+- `tooling\scripts\*prisma*.py`
+
+The app-local `products\*\app\prisma\schema.prisma` files are deprecated stubs only.
+
 ## Architecture Incubation
 - `architecture\prisma-lab\**`
 
-This area is exploratory only. It must not be merged into live runtime unless direct dependency proof is documented.
+This area is historical only. Its modular direction has been promoted into `prisma\**`.
 
 ## Tooling
 - `tooling\scripts\**` for repo operations and maintenance scripts.

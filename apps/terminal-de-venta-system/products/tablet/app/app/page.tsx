@@ -14,8 +14,10 @@ import { getUxProKit } from "@/lib/services/ux-pro";
 import { formatInt, formatMoney } from "@/lib/utils";
 import { tabletMessages } from "@/lib/i18n/messages/es";
 
-export default function HomePage() {
-  const dashboard = getTabletDashboard();
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const dashboard = await getTabletDashboard();
   const hardening = getHardeningConsole();
   const ux = getUxProKit();
 

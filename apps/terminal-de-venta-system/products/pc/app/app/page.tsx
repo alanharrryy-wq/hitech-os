@@ -15,8 +15,10 @@ const toneByStatus: Record<string, "ok" | "warn" | "danger"> = {
   [pcMessages.statuses.partial]: "warn"
 };
 
-export default function HomePage() {
-  const dashboard = getPcDashboard();
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const dashboard = await getPcDashboard();
 
   return (
     <AppShell currentPath="/">

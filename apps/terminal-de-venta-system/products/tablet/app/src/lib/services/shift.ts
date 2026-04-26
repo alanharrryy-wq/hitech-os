@@ -1,64 +1,73 @@
-export function getShiftConsole() {
+import { ShiftRepositoryPrisma } from "@/server/repositories/shift-repository.prisma";
+
+const shiftRepository = new ShiftRepositoryPrisma();
+
+function pesos(cents: number | null | undefined) {
+  return (cents ?? 0) / 100;
+}
+
+function timeLabel(value: Date | string | null | undefined) {
+  if (!value) return "-";
+  return new Intl.DateTimeFormat("es-MX", { hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(value));
+}
+
+function shiftTone(status: string, varianceCents: number | null | undefined) {
+  if (status === "OPEN" && Math.abs(varianceCents ?? 0) > 0) return "warn" as const;
+  return "ok" as const;
+}
+
+export async function getShiftConsole() {
+  const [activeShift, recentShifts] = await Promise.all([
+    shiftRepository.findOpenSessionByTerminal("terminal_tablet_01"),
+    shiftRepository.listRecent(5)
+  ]);
+
+  const open = activeShift ?? recentShifts[0];
+
   return {
     activeShift: {
-      cashier: "Mariela Soto",
+      cashier: open?.cashier ?? "sin operador",
       store: "Sucursal Obrera 04",
-      openedAt: "06:55",
-      status: "abierto y estable",
-      pendingIncidents: 2
+      openedAt: timeLabel(open?.openedAt),
+      status: open?.status === "OPEN" ? "abierto" : "sin turno abierto",
+      pendingIncidents: Math.abs(open?.varianceCents ?? 0) > 0 ? 1 : 0
     },
     kpis: {
-      cashStart: 2500,
-      salesTotal: 18340,
-      expectedCash: 9630,
-      variance: -120
+      cashStart: pesos(open?.cashStartCents),
+      salesTotal: pesos((open?.expectedCashCents ?? 0) - (open?.cashStartCents ?? 0)),
+      expectedCash: pesos(open?.expectedCashCents),
+      variance: pesos(open?.varianceCents)
     },
     snapshot: [
-      { label: "Tickets cerrados", value: "146", status: "al día", tone: "ok" as const },
-      { label: "Tiempo promedio de venta", value: "01:48", status: "estable", tone: "ok" as const },
-      { label: "Retiros de efectivo", value: "2", status: "revisar último retiro", tone: "warn" as const },
-      { label: "Eventos offline", value: "3", status: "pendientes de sync", tone: "warn" as const },
-      { label: "Conteo parcial", value: "$9,510", status: "desfase detectado", tone: "danger" as const }
+      { label: "Turno canónico", value: open?.id ?? "-", status: open?.status ?? "sin datos", tone: shiftTone(open?.status ?? "", open?.varianceCents) },
+      { label: "Terminal", value: open?.terminalId ?? "terminal_tablet_01", status: "Prisma", tone: "ok" as const },
+      { label: "Fondo inicial", value: `$${pesos(open?.cashStartCents).toFixed(2)}`, status: "persistido", tone: "ok" as const },
+      { label: "Variación", value: `$${pesos(open?.varianceCents).toFixed(2)}`, status: "calculada", tone: shiftTone(open?.status ?? "", open?.varianceCents) }
     ],
-    cashEvents: [
-      { time: "07:00", label: "Apertura con fondo", amount: 2500, status: "confirmado", tone: "ok" as const },
-      { time: "10:35", label: "Retiro por seguridad", amount: -3000, status: "validado", tone: "ok" as const },
-      { time: "13:10", label: "Ingreso por cambio", amount: 400, status: "capturado", tone: "ok" as const },
-      { time: "16:22", label: "Arqueo parcial", amount: 9510, status: "requiere ajuste", tone: "warn" as const }
-    ],
+    cashEvents: [],
     alerts: [
       {
-        title: "Variación contra conteo parcial",
-        level: "alerta",
-        tone: "warn" as const,
-        description: "Hay una diferencia de $120 MXN entre el efectivo esperado y el conteo parcial del turno.",
-        action: "Pedir reconteo antes del cierre y registrar comentario del operador."
-      },
-      {
-        title: "Tickets offline por enviar",
-        level: "pendiente",
-        tone: "warn" as const,
-        description: "Tres tickets siguen en cola local y pueden contaminar el cierre si no se sincronizan.",
-        action: "Forzar reintento de sync antes de imprimir corte final."
-      },
-      {
-        title: "Retiro sin firma de supervisor",
-        level: "crítico",
-        tone: "danger" as const,
-        description: "El retiro de las 10:35 no tiene evidencia de autorización adjunta.",
-        action: "Bloquear cierre hasta capturar supervisor o justificar incidente."
+        title: "CashSession abierta única",
+        level: open?.status === "OPEN" ? "ok" : "pendiente",
+        tone: open?.status === "OPEN" ? ("ok" as const) : ("warn" as const),
+        description: "La vista lee el turno desde CashSession canónico por terminal.",
+        action: "No abrir segundo turno para la misma terminal."
       }
     ],
     quickActions: [
-      { kicker: "atajo", title: "Abrir turno", description: "Configura fondo inicial y operador en menos toques." },
+      { kicker: "atajo", title: "Abrir turno", description: "Configura fondo inicial y operador." },
       { kicker: "atajo", title: "Registrar retiro", description: "Salida de efectivo con motivo y autorización." },
       { kicker: "atajo", title: "Corte parcial", description: "Conteo rápido sin cerrar caja completa." },
       { kicker: "atajo", title: "Cerrar turno", description: "Resumen final con diferencias y pendientes." }
     ],
-    recentShifts: [
-      { label: "Matutino", cashier: "Mariela Soto", tickets: 146, netSales: 18340, variance: -120, status: "en curso", tone: "warn" as const },
-      { label: "Nocturno", cashier: "Luis Tovar", tickets: 158, netSales: 20120, variance: 0, status: "cerrado limpio", tone: "ok" as const },
-      { label: "Especial promo", cashier: "Diana Reyna", tickets: 97, netSales: 12310, variance: 80, status: "ajustado", tone: "warn" as const }
-    ]
+    recentShifts: recentShifts.map((shift) => ({
+      label: shift.id,
+      cashier: shift.cashier,
+      tickets: 0,
+      netSales: pesos((shift.expectedCashCents ?? 0) - shift.cashStartCents),
+      variance: pesos(shift.varianceCents),
+      status: shift.status,
+      tone: shiftTone(shift.status, shift.varianceCents)
+    }))
   };
 }

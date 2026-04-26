@@ -1,9 +1,13 @@
 import { AppShell } from "@components/layout/app-shell";
 import { SectionCard } from "@components/ui/section-card";
 import { TableSimple } from "@components/ui/table-simple";
-import { criticalStockRows } from "@/lib/i02/catalog-stock-data";
+import { getCriticalStockRows } from "@/lib/services/catalog";
 
-export default function Page() {
+export const dynamic = "force-dynamic";
+
+export default async function Page() {
+  const criticalStockRows = await getCriticalStockRows();
+
   return (
     <AppShell currentPath="/existencias-criticas">
       <section className="hero">

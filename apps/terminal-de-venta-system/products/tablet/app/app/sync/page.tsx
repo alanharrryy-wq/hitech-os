@@ -7,9 +7,11 @@ import { getSyncConsole } from "@/lib/services/sync";
 import { formatInt } from "@/lib/utils";
 import { tabletMessages } from "@/lib/i18n/messages/es";
 
-export default function Page() {
+export const dynamic = "force-dynamic";
+
+export default async function Page() {
   const page = tabletMessages.pages.sync;
-  const sync = getSyncConsole();
+  const sync = await getSyncConsole();
 
   return (
     <AppShell currentPath="/sync">
