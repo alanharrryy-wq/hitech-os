@@ -1,0 +1,64 @@
+export type PosCartLineInput = {
+  productId?: string;
+  sku?: string;
+  barcode?: string;
+  qty: number;
+};
+
+export type CompleteLocalSaleInput = {
+  businessId?: string;
+  terminalId?: string;
+  cashSessionId?: string | null;
+  cashier?: string;
+  location?: string;
+  allowNegativeStock?: boolean;
+  lowStockThreshold?: number;
+  lines: PosCartLineInput[];
+  clientRequestId?: string;
+};
+
+export type PosResolvedProduct = {
+  id: string;
+  businessId: string;
+  sku: string;
+  name: string;
+  category: string;
+  priceCents: number;
+  stockOnHand: number;
+  isActive: boolean;
+};
+
+export type PosSaleLineResult = {
+  id: string;
+  productId: string;
+  sku: string;
+  productName: string;
+  qty: number;
+  priceCents: number;
+  totalCents: number;
+  stockAfter: number;
+};
+
+export type PosEngineEvent = {
+  topic: string;
+  aggregateId: string;
+  payload: Record<string, unknown>;
+};
+
+export type CompleteLocalSaleResult = {
+  saleId: string;
+  folio: string;
+  businessId: string;
+  terminalId: string;
+  cashSessionId: string | null;
+  cashier: string;
+  totalCents: number;
+  status: "COMPLETED";
+  createdAt: Date;
+  lines: PosSaleLineResult[];
+  events: PosEngineEvent[];
+};
+
+export type PosEngineRepository = {
+  completeLocalSale(input: CompleteLocalSaleInput): Promise<CompleteLocalSaleResult>;
+};
