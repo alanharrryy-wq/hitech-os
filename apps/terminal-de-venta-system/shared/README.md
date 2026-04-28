@@ -1,4 +1,4 @@
-# PRISMA PC Backoffice
+# PRISMA Shared
 
 Regla madre:
 
@@ -13,6 +13,6 @@ PRISMA tiene Tablet POS standalone, PC Backoffice y contratos compartidos. Table
 Toda entrega relevante debe ser reversible y verificable. ZIP + installer `.py` sigue siendo el modelo preferido para futuras integraciones empaquetadas cuando el flujo pida entrega por paquete.
 
 
-PC es backoffice/gobierno: catalogo, stock, conteos, compras, recepcion, reabasto, auditoria, sync, dashboard y settings.
+Shared es contrato compartido, no utileria generica. Incluye `F:\repos\hitech-os\apps\terminal-de-venta-system\shared\contracts` y `F:\repos\hitech-os\apps\terminal-de-venta-system\shared\twin-kernel`.
 
-PC puede definir politicas, publicar catalogos, ingestar eventos, reconciliar conflictos y consolidar informacion. PC no debe ser requisito para venta local basica Tablet.
+No incluir helpers locales Tablet, helpers locales PC, queries especificas, UI especifica, logica touch POS, logica backoffice ni parches temporales.

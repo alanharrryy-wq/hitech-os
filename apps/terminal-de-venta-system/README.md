@@ -1,28 +1,25 @@
-# PRISMA Twin Runtime Kernel Package
+# PRISMA Terminal de Venta System
 
-Entrega maciza para pasar de propuesta de paridad a contrato técnico compartido entre PC y Tablet.
+Regla madre:
 
-## Qué instala
+Tablet vende sola.
+PC gobierna cuando existe.
+Shared Kernel es contrato.
+Sync es puente.
+Eventos son verdad operacional.
 
-- Tipos TypeScript para `TwinCapabilityManifest`.
-- Validador puro y sin side effects.
-- Registry runtime para buscar por id, dominio, surface y módulo.
-- Manifest canónico con 14 capabilities PC/Tablet.
-- Catálogo de eventos runtime conectado a `SHARED_SYNC_EVENTS`.
-- Bridges de composición para PC y Tablet.
-- Validador Python semántico ligero.
-- Documentación de contrato, smoke e integración.
+PRISMA tiene Tablet POS standalone, PC Backoffice y contratos compartidos. Tablet no requiere PC para vender. PC no bloquea ventas locales de Tablet. Sync reconcilia eventos. Eventos son verdad operacional. Tablet usa DB local para operacion standalone.
 
-## Modos del instalador
+Toda entrega relevante debe ser reversible y verificable. ZIP + installer `.py` sigue siendo el modelo preferido para futuras integraciones empaquetadas cuando el flujo pida entrega por paquete.
 
-```powershell
-py install_prisma_twin_runtime_kernel.py --root F:\repos\hitech-os\apps\terminal-de-venta-system --smoke
-py install_prisma_twin_runtime_kernel.py --root F:\repos\hitech-os\apps\terminal-de-venta-system --dry-run
-py install_prisma_twin_runtime_kernel.py --root F:\repos\hitech-os\apps\terminal-de-venta-system --apply
-py install_prisma_twin_runtime_kernel.py --root F:\repos\hitech-os\apps\terminal-de-venta-system --verify
-py install_prisma_twin_runtime_kernel.py --root F:\repos\hitech-os\apps\terminal-de-venta-system --rollback
-```
 
-## Nota operativa
+## Superficies
 
-La entrega no modifica `package.json`, no instala dependencias y no toca pantallas existentes. Esto es deliberado: primero se instala columna vertebral, después se enchufan pantallas. Andar al revés es construir segundo piso sobre puesto de lámina.
+- Tablet POS standalone: `F:\repos\hitech-os\apps\terminal-de-venta-system\products\tablet\app`
+- PC Backoffice: `F:\repos\hitech-os\apps\terminal-de-venta-system\products\pc\app`
+- Shared contracts: `F:\repos\hitech-os\apps\terminal-de-venta-system\shared\contracts`
+- Canon: `F:\repos\hitech-os\apps\terminal-de-venta-system\docs\architecture\PRISMA_ARQUITECTURA_FINAL_PC_TABLET.md`
+
+Preferir `F:\repos\hitech-os\apps\terminal-de-venta-system\terminal_de_venta.cmd` para flujos de operador.
+
+Siguiente etapa: `PRISMA_TABLET_POS_STANDALONE_FULL_ENGINE_01`, `PRISMA_TABLET_POS_TOUCH_UI_FULL_02`, `PRISMA_PC_BACKOFFICE_SYNC_DASHBOARD_03`.

@@ -1,3 +1,8 @@
+> DEPRECATED.
+> Reemplazado por docs/architecture/PRISMA_ARQUITECTURA_FINAL_PC_TABLET.md.
+> Razon: Tablet ya no se define como terminal subordinada a PC.
+> Tablet es POS standalone vendible por si solo; PC es backoffice/gobierno.
+
 # PRISMA Twin App Parity Blueprint
 
 ## Decisión madre

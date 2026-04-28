@@ -1,8 +1,13 @@
+> DEPRECATED.
+> Reemplazado por docs/architecture/PRISMA_ARQUITECTURA_FINAL_PC_TABLET.md.
+> Razon: Tablet ya no se define como terminal subordinada a PC.
+> Tablet es POS standalone vendible por si solo; PC es backoffice/gobierno.
+
 # Pc Tablet Parity
 
-**Version:** 3.0.0  
-**Perspectiva:** gobernanza  
-**Estado:** documento modular vivo  
+**Version:** 3.0.0
+**Perspectiva:** gobernanza
+**Estado:** documento modular vivo
 **Regla madre:** crecer sin romper el core, sin secuestrar pantallas y sin meter logica de giro a martillazos.
 
 ## Proposito

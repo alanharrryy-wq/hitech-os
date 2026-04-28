@@ -1,3 +1,8 @@
+> DEPRECATED.
+> Reemplazado por docs/architecture/PRISMA_ARQUITECTURA_FINAL_PC_TABLET.md.
+> Razon: Tablet ya no se define como terminal subordinada a PC.
+> Tablet es POS standalone vendible por si solo; PC es backoffice/gobierno.
+
 # PRISMA Twin Runtime Integration
 
 Este documento explica cómo conectar el kernel real sin reventar las apps. La intervención es intencionalmente lateral: agrega contratos y bridges sin tocar pantallas existentes. Así se avanza sin meterle bisturí con pulso de taquero en hora pico.
@@ -107,4 +112,3 @@ Este documento explica cómo conectar el kernel real sin reventar las apps. La i
 - Tablet: `sales` en `/sales` como `observer`.
 - Eventos: catalog.updated.
 - Próximo refactor sano: leer capability antes de agregar botón, acción o métrica nueva.
-
