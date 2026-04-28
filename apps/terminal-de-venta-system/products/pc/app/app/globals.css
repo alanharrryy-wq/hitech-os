@@ -23,6 +23,11 @@
   --radius-lg: 22px;
   --radius-md: 18px;
   --radius-sm: 14px;
+  --prisma-ref-bg: #050706;
+  --prisma-ref-surface: #282b2a;
+  --prisma-ref-text: #00ff41;
+  --prisma-ref-chevron: #8a8f8b;
+  --prisma-ref-border: rgba(255,255,255,0.04);
 }
 
 * {
@@ -745,4 +750,61 @@ tr:hover td {
   .metric-card {
     grid-column: span 1;
   }
+}
+
+/* Prisma Dark Selector Component */
+.prisma-dark-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 52px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 2px;
+  background: var(--prisma-ref-surface);
+  border: 1px solid var(--prisma-ref-border);
+  box-shadow: none;
+}
+
+.prisma-dark-selector-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--prisma-ref-text);
+  letter-spacing: 0;
+}
+
+.prisma-dark-selector-chevron {
+  flex: 0 0 auto;
+  color: var(--prisma-ref-chevron);
+  width: 14px;
+  height: 14px;
+}
+
+/* Referencia Visual Page */
+.referencia-visual-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--prisma-ref-bg);
+}
+
+.referencia-visual-canvas {
+  padding: 40px;
+  text-align: left;
+}
+
+.referencia-visual-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.referencia-visual-label {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  color: #a0a0a0;
+  letter-spacing: 0;
 }
