@@ -35,13 +35,24 @@ Tablet executes sale -> writes `Sale`/`SaleLine`/`StockMovement` -> creates `Out
 
 ## Possible conflicts
 
-- sale with discontinued product
-- old local price
-- negative local stock
-- duplicated event
-- unregistered terminal
-- sale outside shift
-- inconsistent sequence
+- `product_discontinued`
+- `old_local_price`
+- `negative_stock`
+- `duplicate_event`
+- `terminal_not_registered`
+- `sale_outside_shift`
+- `inconsistent_sequence`
+- `invalid_schema`
+- `unknown_topic`
+
+## Canonical machine-readable source
+
+The canonical machine-readable source is:
+
+`shared/contracts/sync-event-contract.v1.json`
+
+All outbox states, conflict codes, event topics and required event envelope
+fields must match that file.
 
 ## Offline rule
 

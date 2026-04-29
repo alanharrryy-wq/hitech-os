@@ -633,6 +633,23 @@ tr:hover td {
   background: rgba(255,255,255,0.03);
 }
 
+.empty-state {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px dashed rgba(255, 151, 239, 0.22);
+  background: rgba(255,255,255,0.025);
+  color: var(--muted);
+}
+
+.empty-state strong {
+  color: var(--text);
+  font-size: 18px;
+}
+
 .alert-strip {
   display: flex;
   align-items: center;

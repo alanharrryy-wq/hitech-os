@@ -29,7 +29,7 @@ SQLite local DB is Tablet autonomy.
 - `SaleLine`
 - `StockMovement`
 - `OutboxEvent`
-- `Shift`
+- `CashSession` (operator-facing shift/turno)
 
 ## `Product`
 
@@ -51,7 +51,7 @@ SQLite local DB is Tablet autonomy.
 - `businessId`
 - `terminalId`
 - `operatorId`
-- `shiftId`
+- `cashSessionId`
 - `ticketNumber`
 - `status`
 - `subtotalCents`

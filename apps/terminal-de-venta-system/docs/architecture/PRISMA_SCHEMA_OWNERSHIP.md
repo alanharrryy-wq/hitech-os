@@ -29,7 +29,9 @@ Used for PC/backoffice, consolidation, advanced inventory, purchases, receiving,
 
 ### 2. Tablet local schema
 
-Allowed for standalone POS. Must cover only minimum local operation: `Business`, `Terminal`, `Product`, `Barcode`, `Sale`, `SaleLine`, `StockMovement`, `OutboxEvent`, `Shift`.
+Allowed for standalone POS. Must cover only minimum local operation: `Business`, `Terminal`, `Product`, `Barcode`, `Sale`, `SaleLine`, `StockMovement`, `OutboxEvent`, `CashSession`.
+
+Operator UI may still say "shift" or "turno", but the canonical data model name is `CashSession`.
 
 ## Tablet schema must not
 

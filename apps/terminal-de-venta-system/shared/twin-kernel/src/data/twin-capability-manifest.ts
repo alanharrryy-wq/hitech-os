@@ -24,7 +24,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
         "PC-02 catálogo maestro"
       ],
       "allowedEvents": [
-        "catalog.updated"
+        "catalog.product.updated"
       ],
       "offlineMode": "read_only",
       "auditLevel": "transaction"
@@ -39,7 +39,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
         "TAB-06 inventario rápido"
       ],
       "allowedEvents": [
-        "catalog.updated"
+        "catalog.product.updated"
       ],
       "offlineMode": "read_only",
       "auditLevel": "summary"
@@ -52,7 +52,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
   ],
   "events": [
     {
-      "name": "catalog.updated",
+      "name": "catalog.product.updated",
       "producedBy": [
         "pc"
       ],
@@ -98,7 +98,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
       ],
       "allowedEvents": [
         "stock.adjusted",
-        "stock.received"
+        "stock.adjusted"
       ],
       "offlineMode": "queue_required",
       "auditLevel": "transaction"
@@ -139,7 +139,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
       "notes": "Ajustes con origen claro y reconciliación por outbox."
     },
     {
-      "name": "stock.received",
+      "name": "stock.adjusted",
       "producedBy": [
         "pc"
       ],
@@ -184,7 +184,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
         "PC conteos"
       ],
       "allowedEvents": [
-        "audit.completed",
+        "sync.event.sent",
         "stock.adjusted"
       ],
       "offlineMode": "queue_required",
@@ -224,7 +224,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
       "notes": "Captura offline de conteos se vuelve propuesta de ajuste."
     },
     {
-      "name": "audit.completed",
+      "name": "sync.event.sent",
       "producedBy": [
         "pc"
       ],
@@ -269,7 +269,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
         "PC-05 pedidos y órdenes"
       ],
       "allowedEvents": [
-        "purchase_order.created"
+        "sync.event.sent"
       ],
       "offlineMode": "read_only",
       "auditLevel": "transaction"
@@ -284,7 +284,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
         "TAB-07 recepción compras"
       ],
       "allowedEvents": [
-        "purchase_order.created"
+        "sync.event.sent"
       ],
       "offlineMode": "read_only",
       "auditLevel": "summary"
@@ -297,7 +297,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
   ],
   "events": [
     {
-      "name": "purchase_order.created",
+      "name": "sync.event.sent",
       "producedBy": [
         "pc"
       ],
@@ -342,7 +342,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
         "PC recepción"
       ],
       "allowedEvents": [
-        "stock.received"
+        "stock.adjusted"
       ],
       "offlineMode": "queue_required",
       "auditLevel": "transaction"
@@ -357,7 +357,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
         "TAB-07 recepción compras"
       ],
       "allowedEvents": [
-        "stock.received"
+        "stock.adjusted"
       ],
       "offlineMode": "queue_required",
       "auditLevel": "transaction"
@@ -370,7 +370,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
   ],
   "events": [
     {
-      "name": "stock.received",
+      "name": "stock.adjusted",
       "producedBy": [
         "pc",
         "tablet"
@@ -417,7 +417,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
         "PC reabasto"
       ],
       "allowedEvents": [
-        "replenishment.requested"
+        "sync.event.sent"
       ],
       "offlineMode": "read_only",
       "auditLevel": "summary"
@@ -432,7 +432,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
         "TAB-06 inventario rápido"
       ],
       "allowedEvents": [
-        "replenishment.requested"
+        "sync.event.sent"
       ],
       "offlineMode": "queue_required",
       "auditLevel": "summary"
@@ -445,7 +445,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
   ],
   "events": [
     {
-      "name": "replenishment.requested",
+      "name": "sync.event.sent",
       "producedBy": [
         "pc",
         "tablet"
@@ -738,7 +738,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
         "PC auditoría"
       ],
       "allowedEvents": [
-        "return.created",
+        "sale.refunded",
         "stock.adjusted"
       ],
       "offlineMode": "read_only",
@@ -754,7 +754,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
         "TAB devoluciones"
       ],
       "allowedEvents": [
-        "return.created",
+        "sale.refunded",
         "stock.adjusted"
       ],
       "offlineMode": "queue_required",
@@ -768,7 +768,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
   ],
   "events": [
     {
-      "name": "return.created",
+      "name": "sale.refunded",
       "producedBy": [
         "tablet"
       ],
@@ -824,12 +824,12 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
         "PC-07 sync y eventos"
       ],
       "allowedEvents": [
-        "sync.started",
-        "sync.succeeded",
-        "sync.failed",
-        "sync.conflict_detected",
-        "outbox.enqueued",
-        "outbox.dispatched"
+        "sync.event.sent",
+        "sync.event.sent",
+        "sync.event.failed",
+        "sync.conflict.detected",
+        "sync.event.sent",
+        "sync.event.sent"
       ],
       "offlineMode": "queue_required",
       "auditLevel": "summary"
@@ -844,12 +844,12 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
         "TAB sync"
       ],
       "allowedEvents": [
-        "sync.started",
-        "sync.succeeded",
-        "sync.failed",
-        "sync.conflict_detected",
-        "outbox.enqueued",
-        "outbox.dispatched"
+        "sync.event.sent",
+        "sync.event.sent",
+        "sync.event.failed",
+        "sync.conflict.detected",
+        "sync.event.sent",
+        "sync.event.sent"
       ],
       "offlineMode": "queue_required",
       "auditLevel": "summary"
@@ -862,7 +862,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
   ],
   "events": [
     {
-      "name": "sync.started",
+      "name": "sync.event.sent",
       "producedBy": [
         "pc",
         "tablet"
@@ -875,7 +875,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
       "notes": "Inicio de ciclo."
     },
     {
-      "name": "sync.succeeded",
+      "name": "sync.event.sent",
       "producedBy": [
         "pc",
         "tablet"
@@ -888,7 +888,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
       "notes": "Checkpoint exitoso."
     },
     {
-      "name": "sync.failed",
+      "name": "sync.event.failed",
       "producedBy": [
         "pc",
         "tablet"
@@ -901,7 +901,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
       "notes": "Falla visible y accionable."
     },
     {
-      "name": "sync.conflict_detected",
+      "name": "sync.conflict.detected",
       "producedBy": [
         "pc",
         "tablet"
@@ -914,7 +914,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
       "notes": "Conflicto con entidad y estrategia de resolución."
     },
     {
-      "name": "outbox.enqueued",
+      "name": "sync.event.sent",
       "producedBy": [
         "pc",
         "tablet"
@@ -927,7 +927,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
       "notes": "Evento agregado a cola."
     },
     {
-      "name": "outbox.dispatched",
+      "name": "sync.event.sent",
       "producedBy": [
         "pc",
         "tablet"
@@ -974,9 +974,9 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
         "PC auditoría"
       ],
       "allowedEvents": [
-        "audit.completed",
+        "sync.event.sent",
         "sale.created",
-        "return.created",
+        "sale.refunded",
         "shift.closed"
       ],
       "offlineMode": "read_only",
@@ -993,7 +993,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
       ],
       "allowedEvents": [
         "sale.created",
-        "return.created",
+        "sale.refunded",
         "shift.closed"
       ],
       "offlineMode": "queue_required",
@@ -1007,7 +1007,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
   ],
   "events": [
     {
-      "name": "audit.completed",
+      "name": "sync.event.sent",
       "producedBy": [
         "pc"
       ],
@@ -1029,7 +1029,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
       "notes": "Evento auditable."
     },
     {
-      "name": "return.created",
+      "name": "sale.refunded",
       "producedBy": [
         "tablet"
       ],
@@ -1188,7 +1188,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
         "PC-03 clientes y cartera"
       ],
       "allowedEvents": [
-        "catalog.updated"
+        "catalog.product.updated"
       ],
       "offlineMode": "read_only",
       "auditLevel": "summary"
@@ -1203,7 +1203,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
         "TAB-04 clientes en piso"
       ],
       "allowedEvents": [
-        "catalog.updated"
+        "catalog.product.updated"
       ],
       "offlineMode": "read_only",
       "auditLevel": "summary"
@@ -1216,7 +1216,7 @@ export const TWIN_CAPABILITY_MANIFEST: TwinCapabilityManifest[] = [
   ],
   "events": [
     {
-      "name": "catalog.updated",
+      "name": "catalog.product.updated",
       "producedBy": [
         "pc"
       ],

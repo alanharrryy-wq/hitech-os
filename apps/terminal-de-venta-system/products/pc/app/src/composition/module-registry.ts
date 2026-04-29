@@ -9,13 +9,31 @@ import { ReplenishmentModule } from "@/modules/replenishment/module.manifest";
 import { AuditModule } from "@/modules/audit/module.manifest";
 import { SyncModule } from "@/modules/sync/module.manifest";
 
+const MovementsModule: TwinModuleManifest = {
+  key: "movements",
+  route: "/movements",
+  title: "Movimientos",
+  description: "Entradas, salidas, ajustes y trazabilidad de inventario.",
+  navGroup: "control"
+};
+
+const SettingsModule: TwinModuleManifest = {
+  key: "settings",
+  route: "/settings",
+  title: "Ajustes",
+  description: "Políticas, terminales, permisos y reglas offline.",
+  navGroup: "operation"
+};
+
 export const pcModuleRegistry: TwinModuleManifest[] = sortModules([
   CatalogModule,
   StockModule,
+  MovementsModule,
   CountsModule,
   PurchasingModule,
   ReceivingModule,
   ReplenishmentModule,
   AuditModule,
-  SyncModule
+  SyncModule,
+  SettingsModule
 ]);

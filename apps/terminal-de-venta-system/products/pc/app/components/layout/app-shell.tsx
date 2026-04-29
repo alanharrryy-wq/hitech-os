@@ -3,13 +3,31 @@ import { getNavigation } from "@/composition/navigation";
 import { NavLink } from "./nav-link";
 import { pcMessages } from "@/lib/i18n/messages/es";
 
-const NAV_ICONS = ["⌂", "◫", "▣", "◎", "↺", "⌁", "◌", "◴", "◈"] as const;
+const NAV_ICONS: Record<string, string> = {
+  "/": "⌂",
+  "/dashboard": "◫",
+  "/catalog": "▣",
+  "/stock": "▤",
+  "/movements": "↕",
+  "/counts": "◎",
+  "/purchasing": "◴",
+  "/receiving": "◌",
+  "/replenishment": "↺",
+  "/audit": "⌁",
+  "/sync": "⇄",
+  "/settings": "⚙"
+};
 
 export function AppShell({ currentPath, children }: { currentPath: string; children: ReactNode }) {
   const nav = getNavigation();
-  const current = currentPath === "/" ? { title: pcMessages.shell.home, description: pcMessages.home.subtitle } : nav.find((item) => item.href === currentPath);
-  const controlItems = nav.slice(0, 4);
-  const utilityItems = nav.slice(4);
+  const current =
+    currentPath === "/"
+      ? { title: pcMessages.shell.home, description: pcMessages.home.subtitle }
+      : currentPath === "/dashboard"
+        ? { title: "Dashboard", description: "KPIs y sync" }
+        : nav.find((item) => item.href === currentPath);
+  const controlItems = nav.filter((item) => item.navGroup === "control");
+  const utilityItems = nav.filter((item) => item.navGroup === "operation");
 
   return (
     <div className="shell">
@@ -29,15 +47,16 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
         <section className="sidebar-panel">
           <p className="nav-group-title">Navegación</p>
           <nav className="nav">
-            <NavLink href="/" title={pcMessages.shell.home} description="vista ejecutiva" active={currentPath === "/"} icon={NAV_ICONS[0]} />
-            {controlItems.map((item, index) => (
+            <NavLink href="/" title={pcMessages.shell.home} description="vista ejecutiva" active={currentPath === "/"} icon={NAV_ICONS["/"]} />
+            <NavLink href="/dashboard" title="Dashboard" description="KPIs y sync" active={currentPath === "/dashboard"} icon={NAV_ICONS["/dashboard"]} />
+            {controlItems.map((item) => (
               <NavLink
                 key={item.href}
                 href={item.href}
                 title={item.title}
                 description={item.description}
                 active={currentPath === item.href}
-                icon={NAV_ICONS[index + 1]}
+                icon={NAV_ICONS[item.href] ?? "•"}
               />
             ))}
           </nav>
@@ -46,14 +65,14 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
         <section className="sidebar-panel">
           <p className="nav-group-title">Utilidades</p>
           <nav className="nav">
-            {utilityItems.map((item, index) => (
+            {utilityItems.map((item) => (
               <NavLink
                 key={item.href}
                 href={item.href}
                 title={item.title}
                 description={item.description}
                 active={currentPath === item.href}
-                icon={NAV_ICONS[index + 5] ?? "✦"}
+                icon={NAV_ICONS[item.href] ?? "•"}
               />
             ))}
           </nav>

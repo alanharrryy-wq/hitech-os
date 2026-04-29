@@ -74,7 +74,9 @@ Reglas obligatorias:
 
 ## 5. Local Tablet DB
 
-SQLite local es autonomia Tablet. No es cache secundaria ni espejo fragil. La DB local cubre minimo: `Business`, `Terminal`, `Product`, `Barcode`, `Sale`, `SaleLine`, `StockMovement`, `OutboxEvent`, `Shift`.
+SQLite local es autonomia Tablet. No es cache secundaria ni espejo fragil. La DB local cubre minimo: `Business`, `Terminal`, `Product`, `Barcode`, `Sale`, `SaleLine`, `StockMovement`, `OutboxEvent`, `CashSession`.
+
+En UI y operacion puede llamarse turno/shift, pero en schema y tooling el nombre canonico es `CashSession`.
 
 ## 6. Tablet APIs
 
@@ -135,7 +137,7 @@ Regla twin: si cambia identidad compartida, naming compartido, eventos compartid
 - `SaleLine`
 - `StockMovement`
 - `OutboxEvent`
-- `Shift`
+- `CashSession`
 
 ## `Product`
 
@@ -157,7 +159,7 @@ Regla twin: si cambia identidad compartida, naming compartido, eventos compartid
 - `businessId`
 - `terminalId`
 - `operatorId`
-- `shiftId`
+- `cashSessionId`
 - `ticketNumber`
 - `status`
 - `subtotalCents`

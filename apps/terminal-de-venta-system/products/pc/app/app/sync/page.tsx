@@ -1,21 +1,14 @@
-import { AppShell } from "@components/layout/app-shell";
-import { SectionCard } from "@components/ui/section-card";
-import { pcMessages } from "@/lib/i18n/messages/es";
+import { IngestEventPanel } from "@components/backoffice/ingest-event-panel";
+import { ModuleOverviewPage } from "@components/backoffice/module-overview-page";
+import { getBackofficeModuleOverview } from "@/lib/backoffice/overview";
 
-export default function Page() {
-  const page = pcMessages.pages.sync;
+export const dynamic = "force-dynamic";
+
+export default async function SyncPage() {
+  const overview = await getBackofficeModuleOverview("sync");
   return (
-    <AppShell currentPath="/sync">
-      <section className="hero">
-        <div className="kicker">módulo</div>
-        <h1 style={{ margin: 0 }}>{page.title}</h1>
-        <div className="subtle">{page.subtitle}</div>
-      </section>
-      <SectionCard title="Qué ya viene listo" subtitle="Base modular pensada para seguir creciendo por inyección.">
-        <div className="list">
-          {page.bullets.map((item) => <div key={item} className="list-item">{item}</div>)}
-        </div>
-      </SectionCard>
-    </AppShell>
+    <ModuleOverviewPage overview={overview}>
+      <IngestEventPanel />
+    </ModuleOverviewPage>
   );
 }

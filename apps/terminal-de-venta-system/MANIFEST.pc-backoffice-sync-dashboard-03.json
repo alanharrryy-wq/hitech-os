@@ -1,0 +1,95 @@
+{
+  "integration": "PRISMA_PC_BACKOFFICE_SYNC_DASHBOARD_03",
+  "repoRoot": "F:\\repos\\hitech-os",
+  "pcRoot": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app",
+  "tabletRoot": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app",
+  "createdAt": "2026-04-28T09:11:34-06:00",
+  "filesChanged": [
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\app\\dashboard\\page.tsx",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\app\\movements\\page.tsx",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\app\\settings\\page.tsx",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\app\\api\\backoffice\\dashboard\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\app\\api\\backoffice\\sync\\ingest\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\app\\api\\backoffice\\sync\\conflicts\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\app\\api\\backoffice\\audit\\recent\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\app\\api\\backoffice\\catalog\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\app\\api\\backoffice\\stock\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\app\\api\\backoffice\\movements\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\components\\backoffice\\executive-dashboard.tsx",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\components\\backoffice\\module-overview-page.tsx",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\components\\backoffice\\ingest-event-panel.tsx",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\components\\backoffice\\kpi-card.tsx",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\components\\backoffice\\data-table.tsx",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\components\\backoffice\\empty-state.tsx",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\components\\backoffice\\status-badge.tsx",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\src\\lib\\backoffice\\dashboard.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\src\\lib\\backoffice\\overview.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\src\\lib\\backoffice\\event-contract.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\src\\lib\\backoffice\\conflicts.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\src\\lib\\backoffice\\api-response.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\tools\\verify_pc_backoffice_sync_dashboard_03.mjs",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\tools\\verify_pos_engine_01a.mjs",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\tools\\verify_pos_api_01b.mjs",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\tools\\verify_pos_events_reports_01d.mjs",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\tools\\verify_tablet_standalone_full_engine_01.mjs",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\tools\\verify_tablet_pos_touch_ui_02.mjs"
+  ],
+  "screensCompleted": [
+    "/",
+    "/dashboard",
+    "/catalog",
+    "/stock",
+    "/movements",
+    "/counts",
+    "/purchasing",
+    "/receiving",
+    "/replenishment",
+    "/audit",
+    "/sync",
+    "/settings"
+  ],
+  "apisAdded": [
+    "GET /api/backoffice/dashboard",
+    "GET /api/backoffice/catalog",
+    "GET /api/backoffice/stock",
+    "GET /api/backoffice/movements",
+    "GET /api/backoffice/audit/recent",
+    "GET /api/backoffice/sync/conflicts",
+    "GET /api/backoffice/sync/ingest",
+    "POST /api/backoffice/sync/ingest"
+  ],
+  "syncIngestBehavior": [
+    "Accepts a single event, an event array, or Tablet export JSON with events.",
+    "Returns deterministic statuses: accepted, rejected, duplicate, conflict.",
+    "Does not claim persisted ingest; current mode is validation_only."
+  ],
+  "eventValidationBehavior": [
+    "Requires eventId, topic, businessId, terminalId, actorId, source, occurredAt, payload, schemaVersion.",
+    "Uses canonical PRISMA event topics from EVENT_CONTRACT.",
+    "Supports schemaVersion 1.0.0 from Tablet POS event factory."
+  ],
+  "conflictBehavior": [
+    "Classifies malformed_event, unsupported_schema_version, missing_business_terminal_identity.",
+    "Classifies duplicate_event inside a received batch.",
+    "Classifies product_discontinued, old_local_price, negative_stock, sale_outside_shift, inconsistent_sequence from payload signals."
+  ],
+  "kpiDashboardBehavior": [
+    "Computes net sales, ticket count, average ticket, top SKUs, low stock count, pending events, failed events and conflict count from canonical Prisma when available.",
+    "Shows honest empty state when no consolidated events exist.",
+    "Reports lastIngestAt as unavailable until PC ingest persistence exists."
+  ],
+  "validationsExpected": [
+    "PC typecheck passes.",
+    "Tablet typecheck passes.",
+    "PC verifier passes.",
+    "Tablet verifiers pass after root resolution fix.",
+    "HTTP smoke returns 200 for Tablet and PC routes."
+  ],
+  "notes": [
+    "PC does not block Tablet local sales.",
+    "Tablet /pos remains the operational POS route.",
+    "/prisma-dark-pos-reference remains a visual reference route only.",
+    "No zip, db, sqlite, .next, node_modules, log or local data artifact is part of the implementation."
+  ],
+  "nextStage": "PRISMA_RELEASE_GATE_AND_REGRESSION_04"
+}

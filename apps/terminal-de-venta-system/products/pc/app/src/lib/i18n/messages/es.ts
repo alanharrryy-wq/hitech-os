@@ -9,10 +9,10 @@ export const pcMessages = {
     subtitle: "Inventario, SKUs, compras, recepción, auditoría y sincronización con la terminal twin.",
     footer: "Gemela: terminal de venta. Dominio: inventario y control operativo.",
     home: "Visión general",
-    twinStatus: "estable",
-    lastSync: "hace 2 min",
+    twinStatus: "Tablet independiente",
+    lastSync: "ingest no persistido",
     searchPlaceholder: "Buscar SKU, ID o escanear código",
-    syncChip: "Sincronizar",
+    syncChip: "Validar eventos",
     userChip: "Equipo interno"
   },
   home: {
