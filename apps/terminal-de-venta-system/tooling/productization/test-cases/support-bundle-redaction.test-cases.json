@@ -1,0 +1,20 @@
+{
+  "purpose": "Documental redaction cases for package 04",
+  "cases": [
+    {
+      "name": "database_url",
+      "input": "DATABASE_URL=postgres://user:pass@host/db",
+      "expected": "DATABASE_URL=<redacted:connection-string>"
+    },
+    {
+      "name": "bearer_token",
+      "input": "Authorization: Bearer abc.def.ghi",
+      "expected": "Authorization: Bearer <redacted:token:sha256-prefix-8>"
+    },
+    {
+      "name": "user_path",
+      "input": "C:\\Users\\Alan\\AppData\\Local\\PRISMA",
+      "expected": "C:\\Users\\<redacted>\\AppData\\Local\\PRISMA"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Local Message Outbox Mock",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "outboxItemId",
+    "threadId",
+    "messageId",
+    "status",
+    "createdAt",
+    "remoteEnabled"
+  ],
+  "properties": {
+    "outboxItemId": {
+      "type": "string"
+    },
+    "threadId": {
+      "type": "string"
+    },
+    "messageId": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "queued_mock",
+        "blocked_no_server",
+        "failed_mock",
+        "cleared_local"
+      ]
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "remoteEnabled": {
+      "const": false
+    },
+    "reason": {
+      "type": "string"
+    }
+  }
+}

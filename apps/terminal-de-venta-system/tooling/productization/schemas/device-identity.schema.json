@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/device-identity.schema.json",
+  "title": "device-identity",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "deviceId",
+    "businessId",
+    "deviceType",
+    "deviceName",
+    "installId",
+    "createdAt"
+  ],
+  "properties": {
+    "deviceId": {
+      "type": "string"
+    },
+    "businessId": {
+      "type": "string"
+    },
+    "deviceType": {
+      "type": "string",
+      "enum": [
+        "tablet",
+        "pc",
+        "local_agent",
+        "dev"
+      ]
+    },
+    "deviceName": {
+      "type": "string"
+    },
+    "installId": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "lastSeenAt": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

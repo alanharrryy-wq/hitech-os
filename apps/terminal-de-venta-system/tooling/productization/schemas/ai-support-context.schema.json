@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Ready Support Context",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contextId",
+    "businessId",
+    "deviceId",
+    "surface",
+    "generatedAt",
+    "redactionLevel",
+    "sourceRefs",
+    "summaries",
+    "constraints",
+    "allowedSuggestions",
+    "forbiddenActions"
+  ],
+  "properties": {
+    "contextId": {
+      "type": "string"
+    },
+    "businessId": {
+      "type": "string"
+    },
+    "deviceId": {
+      "type": "string"
+    },
+    "surface": {
+      "type": "string",
+      "enum": [
+        "pc",
+        "tablet",
+        "support"
+      ]
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "redactionLevel": {
+      "type": "string",
+      "enum": [
+        "public_support",
+        "internal_support",
+        "developer_debug"
+      ]
+    },
+    "sourceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "summaries": {
+      "type": "object"
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "allowedSuggestions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbiddenActions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "contains": {
+        "const": "EXECUTE_COMMAND"
+      }
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/local-agent-config.schema.json",
+  "title": "local-agent-config",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "enabled",
+    "pollingIntervalSeconds",
+    "allowRemoteCommands",
+    "allowedCommands",
+    "requireConsentForDiagnostics",
+    "channel"
+  ],
+  "properties": {
+    "enabled": {
+      "type": "boolean"
+    },
+    "pollingIntervalSeconds": {
+      "type": "integer",
+      "minimum": 60
+    },
+    "remoteOpsBaseUrl": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "allowRemoteCommands": {
+      "type": "boolean"
+    },
+    "allowedCommands": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requireConsentForDiagnostics": {
+      "type": "boolean"
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "stable",
+        "pilot",
+        "hotfix",
+        "internal"
+      ]
+    }
+  }
+}

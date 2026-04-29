@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Plan Catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "catalogVersion",
+    "plans"
+  ],
+  "properties": {
+    "catalogVersion": {
+      "type": "string"
+    },
+    "plans": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "plan",
+          "displayName",
+          "includedFeatures",
+          "includedPlugins",
+          "offlineGracePolicy"
+        ],
+        "properties": {
+          "plan": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "includedFeatures": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "includedPlugins": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "offlineGracePolicy": {
+            "type": "object"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

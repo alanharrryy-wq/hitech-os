@@ -1,0 +1,31 @@
+{
+  "allowedVariables": [
+    "PRISMA_RUNTIME_ROOT",
+    "PRISMA_CONFIG_ROOT",
+    "PRISMA_RUNTIME_CONFIG",
+    "PRISMA_BUSINESS_ID",
+    "PRISMA_DEVICE_ID",
+    "PRISMA_RUNTIME_MODE",
+    "PRISMA_LICENSE_FILE",
+    "PRISMA_TABLET_DATABASE_URL",
+    "PRISMA_PC_DATABASE_URL"
+  ],
+  "redactedVariables": [
+    "PRISMA_REMOTE_TOKEN",
+    "PRISMA_LICENSE_SIGNATURE",
+    "PRISMA_SUPPORT_TOKEN"
+  ],
+  "forbiddenInCommits": [
+    ".env",
+    ".env.local",
+    "license.json",
+    "*.token",
+    "*.secret"
+  ],
+  "precedence": [
+    "cli_flag",
+    "runtime_json",
+    "environment_variable",
+    "safe_dev_fallback"
+  ]
+}

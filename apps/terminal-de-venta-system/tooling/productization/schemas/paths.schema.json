@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/paths.schema.json",
+  "title": "paths",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "runtimeRoot",
+    "configRoot",
+    "businessRoot",
+    "tabletDataRoot",
+    "pcDataRoot",
+    "syncRoot",
+    "supportRoot",
+    "updatesRoot",
+    "rollbackRoot",
+    "logsRoot",
+    "exportsRoot",
+    "backupsRoot",
+    "licenseFile"
+  ],
+  "properties": {
+    "runtimeRoot": {
+      "type": "string",
+      "minLength": 3
+    },
+    "configRoot": {
+      "type": "string",
+      "minLength": 3
+    },
+    "businessRoot": {
+      "type": "string",
+      "minLength": 3
+    },
+    "tabletDataRoot": {
+      "type": "string",
+      "minLength": 3
+    },
+    "pcDataRoot": {
+      "type": "string",
+      "minLength": 3
+    },
+    "syncRoot": {
+      "type": "string",
+      "minLength": 3
+    },
+    "supportRoot": {
+      "type": "string",
+      "minLength": 3
+    },
+    "updatesRoot": {
+      "type": "string",
+      "minLength": 3
+    },
+    "rollbackRoot": {
+      "type": "string",
+      "minLength": 3
+    },
+    "logsRoot": {
+      "type": "string",
+      "minLength": 3
+    },
+    "exportsRoot": {
+      "type": "string",
+      "minLength": 3
+    },
+    "backupsRoot": {
+      "type": "string",
+      "minLength": 3
+    },
+    "licenseFile": {
+      "type": "string",
+      "minLength": 3
+    }
+  }
+}

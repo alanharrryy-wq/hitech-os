@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA License",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "licenseId",
+    "businessId",
+    "plan",
+    "status",
+    "features",
+    "plugins",
+    "validUntil",
+    "offlineGraceUntil",
+    "lastRemoteCheckAt",
+    "signature"
+  ],
+  "properties": {
+    "licenseId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "businessId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deviceIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "plan": {
+      "type": "string",
+      "enum": [
+        "TABLET_SOLO",
+        "TABLET_PRO",
+        "PC_BACKOFFICE",
+        "TABLET_PC_MANAGED",
+        "DEV"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "dev",
+        "trial",
+        "active",
+        "offline_grace",
+        "past_due_external",
+        "suspended",
+        "revoked",
+        "expired"
+      ]
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "plugins": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "validUntil": {
+      "type": "string"
+    },
+    "offlineGraceUntil": {
+      "type": "string"
+    },
+    "lastRemoteCheckAt": {
+      "type": "string"
+    },
+    "signature": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "type": "string",
+      "default": "1.0.0"
+    }
+  }
+}

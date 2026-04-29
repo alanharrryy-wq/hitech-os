@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Plugin Compatibility Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "pluginId",
+    "status",
+    "reasons"
+  ],
+  "properties": {
+    "pluginId": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "valid",
+        "incompatible_version",
+        "missing_permission",
+        "not_entitled",
+        "invalid_signature",
+        "unsafe_declaration"
+      ]
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "checkedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

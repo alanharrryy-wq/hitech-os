@@ -1,0 +1,545 @@
+{
+  "packageId": "PRISMA_ANNOUNCEMENTS_PLUGIN_LOCAL_06_07_FULL_DOCS",
+  "cases": [
+    {
+      "id": "ANN-CASE-001",
+      "area": "announcements",
+      "input": {
+        "surface": "tablet",
+        "checkoutActive": false,
+        "severity": "warning"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-002",
+      "area": "announcements",
+      "input": {
+        "surface": "pc",
+        "checkoutActive": false,
+        "severity": "critical"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-003",
+      "area": "announcements",
+      "input": {
+        "surface": "tablet",
+        "checkoutActive": false,
+        "severity": "info"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-004",
+      "area": "announcements",
+      "input": {
+        "surface": "pc",
+        "checkoutActive": false,
+        "severity": "warning"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-005",
+      "area": "announcements",
+      "input": {
+        "surface": "tablet",
+        "checkoutActive": true,
+        "severity": "critical"
+      },
+      "expected": "hide",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-006",
+      "area": "announcements",
+      "input": {
+        "surface": "pc",
+        "checkoutActive": false,
+        "severity": "info"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-007",
+      "area": "announcements",
+      "input": {
+        "surface": "tablet",
+        "checkoutActive": false,
+        "severity": "warning"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-008",
+      "area": "announcements",
+      "input": {
+        "surface": "pc",
+        "checkoutActive": false,
+        "severity": "critical"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-009",
+      "area": "announcements",
+      "input": {
+        "surface": "tablet",
+        "checkoutActive": false,
+        "severity": "info"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-010",
+      "area": "announcements",
+      "input": {
+        "surface": "pc",
+        "checkoutActive": true,
+        "severity": "warning"
+      },
+      "expected": "hide",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-011",
+      "area": "announcements",
+      "input": {
+        "surface": "tablet",
+        "checkoutActive": false,
+        "severity": "critical"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-012",
+      "area": "announcements",
+      "input": {
+        "surface": "pc",
+        "checkoutActive": false,
+        "severity": "info"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-013",
+      "area": "announcements",
+      "input": {
+        "surface": "tablet",
+        "checkoutActive": false,
+        "severity": "warning"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-014",
+      "area": "announcements",
+      "input": {
+        "surface": "pc",
+        "checkoutActive": false,
+        "severity": "critical"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-015",
+      "area": "announcements",
+      "input": {
+        "surface": "tablet",
+        "checkoutActive": true,
+        "severity": "info"
+      },
+      "expected": "hide",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-016",
+      "area": "announcements",
+      "input": {
+        "surface": "pc",
+        "checkoutActive": false,
+        "severity": "warning"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-017",
+      "area": "announcements",
+      "input": {
+        "surface": "tablet",
+        "checkoutActive": false,
+        "severity": "critical"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-018",
+      "area": "announcements",
+      "input": {
+        "surface": "pc",
+        "checkoutActive": false,
+        "severity": "info"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-019",
+      "area": "announcements",
+      "input": {
+        "surface": "tablet",
+        "checkoutActive": false,
+        "severity": "warning"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-020",
+      "area": "announcements",
+      "input": {
+        "surface": "pc",
+        "checkoutActive": true,
+        "severity": "critical"
+      },
+      "expected": "hide",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-021",
+      "area": "announcements",
+      "input": {
+        "surface": "tablet",
+        "checkoutActive": false,
+        "severity": "info"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-022",
+      "area": "announcements",
+      "input": {
+        "surface": "pc",
+        "checkoutActive": false,
+        "severity": "warning"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-023",
+      "area": "announcements",
+      "input": {
+        "surface": "tablet",
+        "checkoutActive": false,
+        "severity": "critical"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-024",
+      "area": "announcements",
+      "input": {
+        "surface": "pc",
+        "checkoutActive": false,
+        "severity": "info"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-025",
+      "area": "announcements",
+      "input": {
+        "surface": "tablet",
+        "checkoutActive": true,
+        "severity": "warning"
+      },
+      "expected": "hide",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-026",
+      "area": "announcements",
+      "input": {
+        "surface": "pc",
+        "checkoutActive": false,
+        "severity": "critical"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-027",
+      "area": "announcements",
+      "input": {
+        "surface": "tablet",
+        "checkoutActive": false,
+        "severity": "info"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-028",
+      "area": "announcements",
+      "input": {
+        "surface": "pc",
+        "checkoutActive": false,
+        "severity": "warning"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-029",
+      "area": "announcements",
+      "input": {
+        "surface": "tablet",
+        "checkoutActive": false,
+        "severity": "critical"
+      },
+      "expected": "evaluate",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "ANN-CASE-030",
+      "area": "announcements",
+      "input": {
+        "surface": "pc",
+        "checkoutActive": true,
+        "severity": "info"
+      },
+      "expected": "hide",
+      "rule": "no checkout popup when checkoutActive"
+    },
+    {
+      "id": "PLUGIN-CASE-001",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-002",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-003",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-004",
+      "area": "plugin-loader",
+      "manifestHint": "execute.powershell",
+      "expected": "reject",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-005",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-006",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-007",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-008",
+      "area": "plugin-loader",
+      "manifestHint": "paymentProcessor",
+      "expected": "reject",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-009",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-010",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-011",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-012",
+      "area": "plugin-loader",
+      "manifestHint": "openInboundPort",
+      "expected": "reject",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-013",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-014",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-015",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-016",
+      "area": "plugin-loader",
+      "manifestHint": "rawSql",
+      "expected": "reject",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-017",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-018",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-019",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-020",
+      "area": "plugin-loader",
+      "manifestHint": "runCommand",
+      "expected": "reject",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-021",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-022",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-023",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-024",
+      "area": "plugin-loader",
+      "manifestHint": "execute.powershell",
+      "expected": "reject",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-025",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-026",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-027",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-028",
+      "area": "plugin-loader",
+      "manifestHint": "paymentProcessor",
+      "expected": "reject",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-029",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    },
+    {
+      "id": "PLUGIN-CASE-030",
+      "area": "plugin-loader",
+      "manifestHint": "safe_manifest",
+      "expected": "validate",
+      "rule": "declarative only no arbitrary execution"
+    }
+  ]
+}

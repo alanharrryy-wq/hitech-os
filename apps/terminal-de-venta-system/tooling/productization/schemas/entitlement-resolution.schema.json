@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Entitlement Resolution",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "businessId",
+    "resolvedAt",
+    "entitlements"
+  ],
+  "properties": {
+    "businessId": {
+      "type": "string"
+    },
+    "resolvedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "licenseStatus": {
+      "type": "string"
+    },
+    "entitlements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "featureKey",
+          "status",
+          "source"
+        ],
+        "properties": {
+          "featureKey": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "inactive",
+              "pending_activation",
+              "suspended",
+              "expired"
+            ]
+          },
+          "source": {
+            "enum": [
+              "plan",
+              "plugin",
+              "trial",
+              "override",
+              "dev"
+            ]
+          },
+          "expiresAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}

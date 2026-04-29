@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/update-state.schema.json",
+  "title": "update-state",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "currentVersion",
+    "channel",
+    "state",
+    "rollbackAvailable"
+  ],
+  "properties": {
+    "currentVersion": {
+      "type": "string"
+    },
+    "targetVersion": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "stable",
+        "pilot",
+        "hotfix",
+        "internal"
+      ]
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "idle",
+        "available",
+        "downloaded",
+        "staged",
+        "applying",
+        "applied",
+        "failed",
+        "rolled_back"
+      ]
+    },
+    "lastCheckedAt": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "lastAppliedAt": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "rollbackAvailable": {
+      "type": "boolean"
+    }
+  }
+}

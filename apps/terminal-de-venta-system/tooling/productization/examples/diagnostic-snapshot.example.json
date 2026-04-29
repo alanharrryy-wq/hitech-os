@@ -1,0 +1,41 @@
+{
+  "snapshotId": "diag_demo_001",
+  "schemaVersion": "1.0.0",
+  "createdAt": "2026-04-28T09:30:00-06:00",
+  "runtimeMode": "standalone",
+  "surface": "tablet",
+  "businessIdMasked": "biz_****001",
+  "deviceIdMasked": "dev_****001",
+  "sections": {
+    "version": {
+      "appVersion": "0.0.0-docs",
+      "packageIds": [
+        "PRISMA_CENTRO_PRISMA_UI_SHELL_03"
+      ]
+    },
+    "runtimePaths": {
+      "runtimeRoot": "C:\\ProgramData\\PRISMA\\businesses\\<businessId>",
+      "repoRootDetected": false
+    },
+    "database": {
+      "exists": true,
+      "sizeBytes": 123456,
+      "integrityStatus": "unknown"
+    },
+    "outbox": {
+      "pending": 0,
+      "sent": 0,
+      "failed": 0,
+      "acked": 0,
+      "conflict": 0
+    },
+    "plugins": [
+      {
+        "pluginId": "demo.plugin",
+        "version": "0.0.0",
+        "status": "mock",
+        "manifestHash": "sha256-demo"
+      }
+    ]
+  }
+}

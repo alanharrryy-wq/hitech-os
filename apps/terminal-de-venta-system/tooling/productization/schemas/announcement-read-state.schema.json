@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Announcement Read State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "announcementId",
+    "businessId",
+    "deviceId",
+    "surface",
+    "state",
+    "updatedAt"
+  ],
+  "properties": {
+    "announcementId": {
+      "type": "string"
+    },
+    "businessId": {
+      "type": "string"
+    },
+    "deviceId": {
+      "type": "string"
+    },
+    "surface": {
+      "type": "string",
+      "enum": [
+        "pc",
+        "tablet"
+      ]
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "unseen",
+        "seen",
+        "dismissed",
+        "snoozed",
+        "acknowledged",
+        "expired"
+      ]
+    },
+    "firstSeenAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "lastSeenAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "snoozedUntil": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

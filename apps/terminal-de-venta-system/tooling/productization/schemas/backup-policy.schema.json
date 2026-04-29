@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/backup-policy.schema.json",
+  "title": "backup-policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "enabled",
+    "beforeUpdate",
+    "beforeMigration",
+    "retentionDays",
+    "backupRoot"
+  ],
+  "properties": {
+    "enabled": {
+      "type": "boolean"
+    },
+    "beforeUpdate": {
+      "type": "boolean"
+    },
+    "beforeMigration": {
+      "type": "boolean"
+    },
+    "retentionDays": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "backupRoot": {
+      "type": "string"
+    },
+    "includeConfig": {
+      "type": "boolean"
+    },
+    "includeDb": {
+      "type": "boolean"
+    }
+  }
+}

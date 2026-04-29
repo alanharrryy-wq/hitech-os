@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Entitlement",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "entitlementId",
+    "businessId",
+    "featureKey",
+    "status",
+    "source"
+  ],
+  "properties": {
+    "entitlementId": {
+      "type": "string"
+    },
+    "businessId": {
+      "type": "string"
+    },
+    "featureKey": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "requested",
+        "pending",
+        "suspended",
+        "revoked",
+        "expired"
+      ]
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "license",
+        "trial",
+        "manual_provider",
+        "plugin",
+        "system"
+      ]
+    },
+    "expiresAt": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

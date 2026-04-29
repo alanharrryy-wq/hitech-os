@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Center Route",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "routeId",
+    "surface",
+    "pathKey",
+    "title",
+    "permission",
+    "initialMode",
+    "blocksCheckout"
+  ],
+  "properties": {
+    "routeId": {
+      "type": "string",
+      "minLength": 3
+    },
+    "surface": {
+      "enum": [
+        "pc",
+        "tablet"
+      ]
+    },
+    "pathKey": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "permission": {
+      "type": "string",
+      "minLength": 1
+    },
+    "initialMode": {
+      "enum": [
+        "mock_local",
+        "read_only",
+        "disabled_until_package",
+        "blocked_by_plan"
+      ]
+    },
+    "requiresRuntime": {
+      "type": "boolean"
+    },
+    "blocksCheckout": {
+      "type": "boolean"
+    },
+    "relatedPackage": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

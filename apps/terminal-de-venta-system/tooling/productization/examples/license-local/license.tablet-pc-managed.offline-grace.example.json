@@ -1,0 +1,35 @@
+{
+  "licenseId": "lic_demo_tablet_pc_managed",
+  "customerId": "cust_demo_prisma",
+  "businessId": "biz_demo_store",
+  "deviceScope": {
+    "mode": "business",
+    "allowedDeviceIds": []
+  },
+  "plan": "TABLET_PC_MANAGED",
+  "status": "offline_grace",
+  "features": [
+    "pos.sales.complete",
+    "pos.ticket.local",
+    "inventory.local.decrement",
+    "catalog.write",
+    "dashboard.kpis",
+    "sync.ingest",
+    "sync.managed",
+    "sync.conflict.resolve",
+    "catalog.snapshot.publish",
+    "license.remote.refresh",
+    "plugin.remote.activate",
+    "support.remote"
+  ],
+  "plugins": [
+    "promotions.basic"
+  ],
+  "validUntil": "2027-04-28T00:00:00Z",
+  "offlineGraceUntil": "2027-05-12T00:00:00Z",
+  "issuedAt": "2026-04-28T00:00:00Z",
+  "lastRemoteCheckAt": "2026-04-28T06:00:00Z",
+  "signature": "MOCK_SIGNATURE_NOT_FOR_PRODUCTION",
+  "publicKeyVersion": "mock-v0",
+  "notes": "Archivo de ejemplo. No usar como licencia real."
+}

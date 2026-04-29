@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/license-local.schema.json",
+  "title": "PRISMA Local License",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "licenseId",
+    "businessId",
+    "plan",
+    "status",
+    "features",
+    "plugins",
+    "validUntil",
+    "offlineGraceUntil",
+    "issuedAt",
+    "lastRemoteCheckAt",
+    "signature"
+  ],
+  "properties": {
+    "licenseId": {
+      "type": "string",
+      "minLength": 3
+    },
+    "customerId": {
+      "type": "string"
+    },
+    "businessId": {
+      "type": "string",
+      "minLength": 3
+    },
+    "deviceScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "allowedDeviceIds"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "business",
+            "device_list",
+            "single_device",
+            "dev"
+          ]
+        },
+        "allowedDeviceIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "plan": {
+      "enum": [
+        "DEV",
+        "TRIAL",
+        "TABLET_SOLO",
+        "TABLET_PRO",
+        "PC_BACKOFFICE",
+        "TABLET_PC_MANAGED"
+      ]
+    },
+    "status": {
+      "enum": [
+        "dev",
+        "trial",
+        "active",
+        "offline_grace",
+        "past_due_external",
+        "suspended",
+        "revoked",
+        "expired"
+      ]
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "plugins": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "validUntil": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "offlineGraceUntil": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "lastRemoteCheckAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "signature": {
+      "type": "string"
+    },
+    "publicKeyVersion": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

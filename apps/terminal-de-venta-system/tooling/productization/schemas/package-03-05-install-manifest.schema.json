@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA 03-05 Docs Package Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "packageId",
+    "version",
+    "bundleLabel",
+    "files"
+  ],
+  "properties": {
+    "packageId": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "bundleLabel": {
+      "type": "string"
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  }
+}

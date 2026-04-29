@@ -1,0 +1,27 @@
+{
+  "pluginId": "promotions.basic",
+  "name": "Promociones básicas",
+  "version": "0.1.0",
+  "compatiblePrismaVersions": [
+    ">=1.0.0"
+  ],
+  "requiredPlan": "TABLET_PRO",
+  "permissions": [
+    "catalog.read",
+    "sales.read",
+    "ui.surface.register"
+  ],
+  "runtimeSurfaces": [
+    "pc.settings.panel",
+    "tablet.status.badge"
+  ],
+  "dbMigrations": [],
+  "events": [
+    "plugin.enabled",
+    "promotion.applied"
+  ],
+  "rollbackPlan": {
+    "disableOnly": true
+  },
+  "signature": "demo-signature-not-for-production"
+}

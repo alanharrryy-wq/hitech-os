@@ -1,0 +1,52 @@
+{
+  "schema": "prisma-center-route.schema.json",
+  "positive": [
+    {
+      "routeId": "pc.center.home",
+      "surface": "pc",
+      "pathKey": "centro-prisma",
+      "title": "Centro PRISMA",
+      "permission": "center.view",
+      "initialMode": "mock_local",
+      "requiresRuntime": false,
+      "blocksCheckout": false,
+      "relatedPackage": "03"
+    },
+    {
+      "routeId": "tablet.center.announcements",
+      "surface": "tablet",
+      "pathKey": "novedades",
+      "title": "Novedades",
+      "permission": "tablet.announcements.view",
+      "initialMode": "mock_local",
+      "requiresRuntime": false,
+      "blocksCheckout": false,
+      "relatedPackage": "06"
+    }
+  ],
+  "negative": [
+    {
+      "name": "missing_permission",
+      "case": {
+        "routeId": "bad",
+        "surface": "pc",
+        "pathKey": "x",
+        "title": "Bad",
+        "initialMode": "mock_local",
+        "blocksCheckout": false
+      }
+    },
+    {
+      "name": "tablet_blocks_checkout",
+      "case": {
+        "routeId": "bad.tablet",
+        "surface": "tablet",
+        "pathKey": "estado",
+        "title": "Estado",
+        "permission": "tablet.status.view",
+        "initialMode": "mock_local",
+        "blocksCheckout": true
+      }
+    }
+  ]
+}

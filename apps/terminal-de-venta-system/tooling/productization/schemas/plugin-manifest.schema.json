@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Plugin Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "pluginId",
+    "name",
+    "version",
+    "compatiblePrismaVersions",
+    "requiredPlan",
+    "permissions",
+    "runtimeSurfaces",
+    "rollbackPlan",
+    "signature"
+  ],
+  "properties": {
+    "pluginId": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "compatiblePrismaVersions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requiredPlan": {
+      "type": "string"
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "runtimeSurfaces": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dbMigrations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rollbackPlan": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "signature": {
+      "type": "string"
+    }
+  }
+}

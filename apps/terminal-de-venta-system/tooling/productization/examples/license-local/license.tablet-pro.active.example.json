@@ -1,0 +1,37 @@
+{
+  "licenseId": "lic_demo_tablet_pro",
+  "customerId": "cust_demo_prisma",
+  "businessId": "biz_demo_store",
+  "deviceScope": {
+    "mode": "business",
+    "allowedDeviceIds": []
+  },
+  "plan": "TABLET_PRO",
+  "status": "active",
+  "features": [
+    "pos.sales.complete",
+    "pos.ticket.local",
+    "inventory.local.decrement",
+    "report.today.basic",
+    "export.local.basic",
+    "support.basic",
+    "pos.returns.create",
+    "pos.sale.cancel",
+    "shift.open",
+    "shift.close",
+    "inventory.local.adjust",
+    "event.outbox.view",
+    "export.local.advanced",
+    "backup.local.scheduled"
+  ],
+  "plugins": [
+    "promotions.basic"
+  ],
+  "validUntil": "2027-04-28T00:00:00Z",
+  "offlineGraceUntil": "2027-05-12T00:00:00Z",
+  "issuedAt": "2026-04-28T00:00:00Z",
+  "lastRemoteCheckAt": "2026-04-28T06:00:00Z",
+  "signature": "MOCK_SIGNATURE_NOT_FOR_PRODUCTION",
+  "publicKeyVersion": "mock-v0",
+  "notes": "Archivo de ejemplo. No usar como licencia real."
+}

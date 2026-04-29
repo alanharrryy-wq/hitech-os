@@ -1,0 +1,52 @@
+{
+  "cases": [
+    {
+      "caseId": "active-feature-allowed",
+      "licenseStatus": "active",
+      "plan": "TABLET_PRO",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "solo-feature-denied",
+      "licenseStatus": "active",
+      "plan": "TABLET_SOLO",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "offline-grace-preserves-local-sale",
+      "licenseStatus": "offline_grace",
+      "plan": "TABLET_SOLO",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": true,
+      "expectedReason": "OFFLINE_GRACE_PRESERVES_LOCAL_SALE"
+    },
+    {
+      "caseId": "suspended-blocks-premium",
+      "licenseStatus": "suspended",
+      "plan": "TABLET_PRO",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "revoked-allows-export",
+      "licenseStatus": "revoked",
+      "plan": "TABLET_PRO",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": true,
+      "expectedReason": "CUSTOMER_DATA_EXPORT_PROTECTED"
+    },
+    {
+      "caseId": "expired-allows-support",
+      "licenseStatus": "expired",
+      "plan": "TABLET_PRO",
+      "featureKey": "support.basic",
+      "expectedAllowed": true,
+      "expectedReason": "SUPPORT_REMAINS_AVAILABLE"
+    }
+  ]
+}
