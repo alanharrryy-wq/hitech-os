@@ -12,7 +12,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
           <InlineAlert
             tone="danger"
             title="La terminal se tropezó, pero no se fue de hocico"
-            description="Se disparó un error en runtime. La idea aquí es que el operador tenga contexto y una salida limpia, no una pantalla muerta estilo película de terror."
+            description="Se disparó un error de ejecución. La idea aquí es que el operador tenga contexto y una salida limpia, no una pantalla muerta estilo película de terror."
             note={error.digest ? `digest: ${error.digest}` : "sin digest disponible"}
           />
           <SectionCard title="Qué hacer ahorita" subtitle="Secuencia corta para recuperar operación sin perder el control.">

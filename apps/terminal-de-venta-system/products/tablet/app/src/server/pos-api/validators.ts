@@ -1,7 +1,7 @@
 import type { CompleteLocalSaleInput, PosCartLineInput } from "../pos-engine/types";
 
 export const DEFAULT_POS_API_BUSINESS_ID = "biz_tablet_standalone";
-export const DEFAULT_POS_API_TERMINAL_ID = "terminal_tablet_001";
+export const DEFAULT_POS_API_TERMINAL_ID = "terminal_tablet_local_01";
 export const DEFAULT_POS_API_CASHIER = "tablet-cashier";
 
 export type ProductSearchInput = {
@@ -20,6 +20,19 @@ export type SalesTodayInput = {
   businessId: string;
   terminalId?: string;
   date?: string;
+};
+
+export type PosListInput = {
+  businessId: string;
+  terminalId?: string;
+  date?: string;
+  limit: number;
+  status?: string;
+  threshold: number;
+};
+
+export type PosExportInput = PosListInput & {
+  format: "json" | "csv";
 };
 
 function asString(value: unknown, fallback = "") {
@@ -63,6 +76,28 @@ export function readSalesTodayInput(searchParams: URLSearchParams): SalesTodayIn
     businessId: asString(searchParams.get("businessId"), DEFAULT_POS_API_BUSINESS_ID),
     terminalId: asString(searchParams.get("terminalId"), "") || undefined,
     date: asString(searchParams.get("date"), "") || undefined
+  };
+}
+
+export function readPosListInput(searchParams: URLSearchParams, defaultLimit = 50, maxLimit = 200): PosListInput {
+  return {
+    businessId: asString(searchParams.get("businessId"), DEFAULT_POS_API_BUSINESS_ID),
+    terminalId: asString(searchParams.get("terminalId"), "") || undefined,
+    date: asString(searchParams.get("date"), "") || undefined,
+    limit: asPositiveInteger(searchParams.get("limit"), defaultLimit, maxLimit),
+    status: asString(searchParams.get("status"), "") || undefined,
+    threshold: asPositiveInteger(searchParams.get("threshold"), 5, 9999)
+  };
+}
+
+export function readPosExportInput(searchParams: URLSearchParams): PosExportInput {
+  const format = asString(searchParams.get("format"), "json").toLowerCase();
+  if (format !== "json" && format !== "csv") {
+    throw new Error("INVALID_EXPORT_FORMAT");
+  }
+  return {
+    ...readPosListInput(searchParams, 500, 1000),
+    format
   };
 }
 
@@ -116,6 +151,7 @@ export function validatorErrorToMessage(error: unknown) {
   if (message === "INVALID_JSON_BODY") return { code: "INVALID_JSON_BODY", message: "El cuerpo JSON no es valido." };
   if (message === "EMPTY_CART") return { code: "EMPTY_CART", message: "El carrito esta vacio." };
   if (message === "MISSING_PRODUCT_CODE") return { code: "MISSING_PRODUCT_CODE", message: "Falta el parametro code para resolver producto." };
+  if (message === "INVALID_EXPORT_FORMAT") return { code: "INVALID_EXPORT_FORMAT", message: "Usa format=json o format=csv." };
   if (message.startsWith("INVALID_LINE_QUANTITY:")) return { code: "INVALID_QUANTITY", message: "Cada linea debe traer cantidad entera mayor a cero." };
   if (message.startsWith("MISSING_LINE_PRODUCT_REF:")) return { code: "PRODUCT_REF_REQUIRED", message: "Cada linea debe traer productId, sku o barcode." };
   return { code: "POS_API_VALIDATION_ERROR", message: "Solicitud POS invalida." };

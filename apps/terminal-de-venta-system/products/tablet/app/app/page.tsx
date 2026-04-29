@@ -1,4 +1,4 @@
-import { AppShell } from "@components/layout/app-shell";
+import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
 import { ActionChip } from "@components/ui/action-chip";
 import { EmptyState } from "@components/ui/empty-state";
 import { FlowStep } from "@components/ui/flow-step";
@@ -22,7 +22,13 @@ export default async function HomePage() {
   const ux = getUxProKit();
 
   return (
-    <AppShell currentPath="/">
+    <PrismaTabletShellUnified
+      currentPath="/"
+      kicker={tabletMessages.home.kicker}
+      title={dashboard.hero.title}
+      subtitle={dashboard.hero.subtitle}
+      status={<TabletShellStatusPill tone={hardening.releaseTone}>Listo para operar</TabletShellStatusPill>}
+    >
       <section className="hero hero-split">
         <div>
           <div className="kicker">{tabletMessages.home.kicker}</div>
@@ -85,7 +91,7 @@ export default async function HomePage() {
           </div>
         </SectionCard>
 
-        <SectionCard title="Top SKU y presion de venta" subtitle="Vista rapida de los productos que si jalan y donde el stock ya chifla feo.">
+        <SectionCard title="Top productos y presión de venta" subtitle="Vista rapida de los productos que si jalan y donde el existencias ya chifla feo.">
           <TableSimple
             columns={["SKU", "Producto", "Unidades", "Ventas", "Senal"]}
             rows={dashboard.topSkus.map((row) => ({
@@ -114,7 +120,7 @@ export default async function HomePage() {
           )}
         </SectionCard>
 
-        <SectionCard title="Smoke checks" subtitle="Verificacion corta para saber si ventas, devoluciones, sync y stock siguen enteros.">
+        <SectionCard title="Smoke checks" subtitle="Verificacion corta para saber si ventas, devoluciones, sync y existencias siguen enteros.">
           <TableSimple
             columns={["Check", "Resultado", "Evidencia", "Senal"]}
             rows={hardening.smokeChecks.map((row) => ({
@@ -126,6 +132,6 @@ export default async function HomePage() {
           />
         </SectionCard>
       </div>
-    </AppShell>
+    </PrismaTabletShellUnified>
   );
 }

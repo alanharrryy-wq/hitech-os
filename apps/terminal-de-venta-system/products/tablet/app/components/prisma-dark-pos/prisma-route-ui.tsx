@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { PrismaIcon } from "./prisma-dark-pos-icons";
 import type { PrismaIconName } from "./prisma-dark-pos-data";
+import { PrismaTabletShellUnified } from "@components/tablet-shell/prisma-tablet-shell";
 import styles from "./prisma-dark-pos.module.css";
 
 type Tone = "ok" | "warn" | "danger" | "neutral";
@@ -11,16 +12,7 @@ type ShellNavItem = {
   icon: PrismaIconName;
 };
 
-const shellNavItems: ShellNavItem[] = [
-  { href: "/", label: "Inicio", icon: "dashboard" },
-  { href: "/sales", label: "Ventas", icon: "cart" },
-  { href: "/checkout", label: "Cobro", icon: "credit-card" },
-  { href: "/returns", label: "Devoluciones", icon: "receipt" },
-  { href: "/stock", label: "Stock", icon: "package" },
-  { href: "/shift", label: "Turno", icon: "terminal" },
-  { href: "/sync", label: "Sync", icon: "chart" },
-  { href: "/prisma-dark-pos-reference", label: "Referencia", icon: "sparkle" }
-];
+const shellNavItems: ShellNavItem[] = [];
 
 export function PrismaTabletShell({
   currentPath,
@@ -40,66 +32,9 @@ export function PrismaTabletShell({
   actions?: ReactNode;
 }) {
   return (
-    <div className={styles.routeShell}>
-      <aside className={styles.routeNavRail} aria-label="Navegación PRISMA">
-        <a className={styles.routeBrand} href="/prisma-dark-pos-reference" aria-label="PRISMA Dark POS">
-          <span className={styles.routeBrandMark}>
-            <span />
-          </span>
-          <span className={styles.routeBrandText}>
-            <strong>PRISMA</strong>
-            <small>Dark POS</small>
-          </span>
-        </a>
-
-        <nav className={styles.routeNavList}>
-          {shellNavItems.map((item) => {
-            const active = currentPath === item.href;
-            return (
-              <a key={item.href} className={active ? styles.routeNavActive : styles.routeNavItem} href={item.href}>
-                <PrismaIcon name={item.icon} size={20} />
-                <span>{item.label}</span>
-              </a>
-            );
-          })}
-        </nav>
-
-        <div className={styles.routeTerminalCard}>
-          <span className={styles.routeTerminalIcon}>
-            <PrismaIcon name="terminal" size={18} />
-          </span>
-          <span>
-            <strong>Terminal 01</strong>
-            <small>En línea</small>
-          </span>
-        </div>
-      </aside>
-
-      <main className={styles.routeViewport}>
-        <header className={styles.routeTopbar}>
-          <div className={styles.routeTitleGroup}>
-            <span>{kicker}</span>
-            <h1>{title}</h1>
-            <p>{subtitle}</p>
-          </div>
-          <div className={styles.routeTopbarRight}>
-            {context}
-            <button className={styles.routeTopIcon} type="button" aria-label="Tema">
-              <PrismaIcon name="sun" size={19} />
-            </button>
-            <button className={styles.routeTopIcon} type="button" aria-label="Notificaciones">
-              <PrismaIcon name="bell" size={19} />
-            </button>
-            <div className={styles.routeUserChip}>
-              <span>AR</span>
-              <strong>Administrador</strong>
-            </div>
-          </div>
-        </header>
-        {actions ? <div className={styles.routeActionBand}>{actions}</div> : null}
-        <div className={styles.routeContent}>{children}</div>
-      </main>
-    </div>
+    <PrismaTabletShellUnified currentPath={currentPath} title={title} kicker={kicker} subtitle={subtitle} status={context} actions={actions}>
+      {children}
+    </PrismaTabletShellUnified>
   );
 }
 
@@ -174,12 +109,12 @@ export function PrismaSearchActionStrip({
         <input aria-label={placeholder} placeholder={placeholder} />
         <PrismaIcon name="scan" size={21} />
       </label>
-      <button className={styles.routeGoldGhostButton} type="button">
+      <button className={styles.routeGoldGhostButton} type="button" disabled title="Acción pendiente de conectar en una ronda funcional">
         <PrismaIcon name="scan" size={20} />
         <span>{primaryLabel}</span>
       </button>
       {secondaryLabel ? (
-        <button className={styles.routeDarkButton} type="button">
+        <button className={styles.routeDarkButton} type="button" disabled title="Acción pendiente de conectar en una ronda funcional">
           <PrismaIcon name="more" size={20} />
           <span>{secondaryLabel}</span>
         </button>
@@ -329,7 +264,7 @@ export function PrismaPrimaryButton({ href, children, shortcut }: { href?: strin
   }
 
   return (
-    <button className={styles.routePrimaryButton} type="button">
+    <button className={styles.routePrimaryButton} type="button" disabled title="Acción pendiente de conectar en una ronda funcional">
       {content}
     </button>
   );
@@ -337,7 +272,7 @@ export function PrismaPrimaryButton({ href, children, shortcut }: { href?: strin
 
 export function PrismaSecondaryButton({ children, icon = "sparkle" }: { children: ReactNode; icon?: PrismaIconName }) {
   return (
-    <button className={styles.routeSecondaryButton} type="button">
+    <button className={styles.routeSecondaryButton} type="button" disabled title="Acción pendiente de conectar en una ronda funcional">
       <PrismaIcon name={icon} size={18} />
       <span>{children}</span>
     </button>

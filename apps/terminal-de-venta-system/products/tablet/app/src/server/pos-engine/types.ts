@@ -36,12 +36,20 @@ export type PosSaleLineResult = {
   qty: number;
   priceCents: number;
   totalCents: number;
+  stockBefore: number;
   stockAfter: number;
 };
 
 export type PosEngineEvent = {
+  eventId: string;
   topic: string;
+  businessId: string;
+  terminalId: string;
+  actorId: string;
+  source: string;
+  occurredAt: string;
   aggregateId: string;
+  schemaVersion: string;
   payload: Record<string, unknown>;
 };
 

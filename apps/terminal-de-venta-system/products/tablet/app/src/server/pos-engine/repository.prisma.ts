@@ -94,12 +94,13 @@ async function persistOutboxEvents(tx: TxClient, businessId: string, events: Pos
   for (const event of events) {
     await tx.outboxEvent.create({
       data: {
-        id: makePosId("outbox"),
+        id: event.eventId,
         businessId,
         topic: event.topic,
         aggregateId: event.aggregateId,
-        payloadJson: JSON.stringify(event.payload),
-        status: OUTBOX_STATUS_PENDING
+        payloadJson: JSON.stringify(event),
+        status: OUTBOX_STATUS_PENDING,
+        createdAt: new Date(event.occurredAt)
       }
     });
   }
@@ -134,6 +135,29 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
           businessId,
           terminalId
         });
+      }
+
+      // PRISMA HARDENING 01: sale idempotency by businessId + clientRequestId.
+      if (input.clientRequestId) {
+        const existingSale = await tx.sale.findFirst({
+          where: { businessId, clientRequestId: input.clientRequestId },
+          include: { lines: true }
+        });
+        if (existingSale) {
+          return {
+            saleId: existingSale.id,
+            folio: existingSale.folio,
+            businessId,
+            terminalId: existingSale.terminalId,
+            cashSessionId: existingSale.cashSessionId ?? null,
+            cashier: existingSale.cashier,
+            totalCents: existingSale.totalCents,
+            status: SALE_STATUS_COMPLETED as "COMPLETED",
+            createdAt: existingSale.createdAt,
+            lines: existingSale.lines.map((line: any) => ({ id: line.id, productId: line.productId, sku: line.sku, productName: line.productName, qty: line.qty, priceCents: line.priceCents, totalCents: line.totalCents, stockBefore: 0, stockAfter: 0 })),
+            events: []
+          };
+        }
       }
 
       const now = new Date();
@@ -174,6 +198,7 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
           qty: line.qty,
           priceCents: product.priceCents,
           totalCents,
+          stockBefore: product.stockOnHand,
           stockAfter
         });
       }
@@ -186,6 +211,7 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
           businessId,
           terminalId,
           cashSessionId,
+          clientRequestId: input.clientRequestId ?? null,
           folio,
           cashier,
           totalCents,
@@ -224,12 +250,13 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
         lines: lineResults
       };
 
+      const eventContext = { businessId, terminalId, actorId: cashier, occurredAt: now };
       const events: PosEngineEvent[] = [
-        saleCreatedEvent(saleId, folio, businessId),
-        saleCompletedEvent(resultWithoutEvents),
-        ticketClosedEvent(resultWithoutEvents),
-        ...stockDecrementedEvents(saleId, lineResults),
-        ...lowStockEvents(saleId, lowStockThreshold, lineResults)
+        saleCreatedEvent(saleId, folio, eventContext),
+        saleCompletedEvent(resultWithoutEvents, eventContext),
+        ticketClosedEvent(resultWithoutEvents, eventContext),
+        ...stockDecrementedEvents(saleId, lineResults, eventContext),
+        ...lowStockEvents(saleId, lowStockThreshold, lineResults, eventContext)
       ];
 
       await persistOutboxEvents(tx, businessId, events);

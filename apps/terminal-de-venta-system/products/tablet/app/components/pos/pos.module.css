@@ -1,0 +1,345 @@
+.posWorkspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 430px);
+  gap: 18px;
+  align-items: start;
+}
+
+.catalogArea,
+.ticketPanel,
+.searchCard,
+.successCard {
+  border: 1px solid rgba(248, 220, 145, 0.16);
+  background: linear-gradient(135deg, rgba(16, 18, 26, 0.94), rgba(8, 10, 15, 0.97));
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.36);
+  border-radius: 26px;
+}
+
+.catalogArea {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+}
+
+.searchCard {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+}
+
+.searchLabel {
+  display: grid;
+  gap: 8px;
+  color: rgba(248, 250, 252, 0.72);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+}
+
+.searchInputWrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 62px;
+  padding: 0 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(248, 220, 145, 0.24);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.searchInputWrap input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #fffaf0;
+  font-size: 1.12rem;
+}
+
+.searchActions,
+.shortcuts {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.primaryButton,
+.secondaryButton,
+.ghostButton,
+.addButton,
+.checkoutLink,
+.checkoutLinkDisabled {
+  min-height: 46px;
+  border-radius: 999px;
+  border: 1px solid rgba(248, 220, 145, 0.24);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.primaryButton,
+.addButton,
+.checkoutLink {
+  background: linear-gradient(135deg, #f8dc91, #d8a83f);
+  color: #17120a;
+}
+
+.secondaryButton,
+.ghostButton,
+.shortcuts a {
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff8e7;
+}
+
+.ghostButton {
+  color: rgba(248, 250, 252, 0.76);
+}
+
+.shortcuts a {
+  min-height: 42px;
+  border-radius: 999px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.productList {
+  display: grid;
+  gap: 10px;
+}
+
+.productRow {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.productIcon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: rgba(248, 220, 145, 0.12);
+  color: #f8dc91;
+}
+
+.productText {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.productText strong,
+.ticketLineText strong {
+  color: #fffaf0;
+}
+
+.productText span,
+.ticketLineText span,
+.emptyTicket span,
+.statePanel span,
+.successCard span,
+.successCard p {
+  color: rgba(248, 250, 252, 0.66);
+}
+
+.rowSignals {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badgeOk,
+.badgeWarn,
+.badgeDanger,
+.badgeNeutral {
+  border-radius: 999px;
+  padding: 4px 9px;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.badgeOk { background: rgba(74, 222, 128, 0.14); color: #8ff3b2; }
+.badgeWarn { background: rgba(251, 191, 36, 0.14); color: #f8dc91; }
+.badgeDanger { background: rgba(248, 113, 113, 0.14); color: #fca5a5; }
+.badgeNeutral { background: rgba(148, 163, 184, 0.14); color: #cbd5e1; }
+
+.productAside {
+  display: grid;
+  gap: 10px;
+  justify-items: end;
+}
+
+.productAside strong {
+  color: #f8dc91;
+  font-size: 1.2rem;
+}
+
+.ticketPanel {
+  position: sticky;
+  top: 18px;
+  padding: 16px;
+  display: grid;
+  gap: 14px;
+}
+
+.ticketHeader,
+.successCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ticketHeader span,
+.successCard span {
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  font-size: 0.76rem;
+}
+
+.ticketHeader h2,
+.successCard h2 {
+  margin: 2px 0 0;
+  color: #fffaf0;
+}
+
+.ticketLines {
+  display: grid;
+  gap: 10px;
+  min-height: 240px;
+}
+
+.emptyTicket,
+.statePanel {
+  min-height: 220px;
+  border-radius: 22px;
+  border: 1px dashed rgba(248, 220, 145, 0.22);
+  display: grid;
+  place-items: center;
+  align-content: center;
+  text-align: center;
+  gap: 8px;
+  padding: 22px;
+}
+
+.ticketLine {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.24);
+}
+
+.stepper button,
+.removeButton {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fffaf0;
+}
+
+.lineTotal {
+  color: #f8dc91;
+}
+
+.ticketTotal {
+  display: grid;
+  gap: 4px;
+  padding: 18px;
+  border-radius: 22px;
+  background: radial-gradient(circle at top right, rgba(248, 220, 145, 0.2), rgba(255, 255, 255, 0.06));
+}
+
+.ticketTotal span {
+  color: rgba(248, 250, 252, 0.7);
+}
+
+.ticketTotal strong {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  color: #fffaf0;
+}
+
+.checkoutLink,
+.checkoutLinkDisabled {
+  min-height: 62px;
+  justify-content: space-between;
+  font-size: 1.05rem;
+}
+
+.checkoutLinkDisabled {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(248, 250, 252, 0.45);
+  pointer-events: none;
+}
+
+.errorBanner {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  background: rgba(127, 29, 29, 0.22);
+  color: #fecaca;
+}
+
+.successCard {
+  margin-top: 18px;
+  padding: 18px;
+}
+
+.successCard > strong {
+  color: #f8dc91;
+  font-size: 1.5rem;
+}
+@media (max-width: 1100px) {
+  .posWorkspace {
+    grid-template-columns: 1fr;
+  }
+
+  .ticketPanel {
+    position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .productRow,
+  .ticketLine {
+    grid-template-columns: 1fr;
+  }
+
+  .productAside {
+    justify-items: stretch;
+  }
+}
+
+

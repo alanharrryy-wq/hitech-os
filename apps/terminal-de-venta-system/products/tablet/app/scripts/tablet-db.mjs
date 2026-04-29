@@ -110,10 +110,39 @@ function runPrisma(args) {
   process.exit(1);
 }
 
-async function seed() {
+function configureDatabaseEnv() {
   process.env.DATABASE_URL = databaseUrl;
   process.env.TABLET_DATABASE_URL = databaseUrl;
   process.env.TABLET_APP_ROOT = appRoot;
+}
+
+async function ensureSaleClientRequestIdSchema() {
+  configureDatabaseEnv();
+
+  const { PrismaClient } = await import("@prisma/client");
+  const prisma = new PrismaClient({ datasources: { db: { url: databaseUrl } } });
+
+  try {
+    const columns = await prisma.$queryRawUnsafe(`PRAGMA table_info("Sale")`).catch(() => []);
+    if (!Array.isArray(columns) || columns.length === 0) return;
+
+    const hasClientRequestId = columns.some((column) => column?.name === "clientRequestId");
+    if (!hasClientRequestId) {
+      await prisma.$executeRawUnsafe(`ALTER TABLE "Sale" ADD COLUMN "clientRequestId" TEXT`);
+      console.log("[tablet-db] Added nullable Sale.clientRequestId for idempotent local sales.");
+    }
+
+    await prisma.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "Sale_businessId_clientRequestId_key" ON "Sale" ("businessId", "clientRequestId")`);
+    console.log("[tablet-db] Sale businessId + clientRequestId uniqueness is present.");
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+async function seed() {
+  // PRISMA HARDENING 01: safe seed, no stock reset after operation unless --reset-demo-stock is explicit.
+  const resetDemoStock = process.argv.includes("--reset-demo-stock");
+  configureDatabaseEnv();
 
   const { PrismaClient } = await import("@prisma/client");
   const prisma = new PrismaClient({ datasources: { db: { url: databaseUrl } } });
@@ -154,6 +183,10 @@ async function seed() {
       { id: "prd_demo_galleta", sku: "GAL-001", name: "Galleta individual", category: "Dulces", priceCents: 1500, costCents: 700, stockOnHand: 30, barcode: "7501000000035" }
     ];
 
+    const operationalSales = await prisma.sale.count().catch(() => 0);
+    const operationalMovements = await prisma.stockMovement.count().catch(() => 0);
+    const canResetDemoStock = resetDemoStock && operationalSales === 0 && operationalMovements === 0;
+
     for (const product of products) {
       await prisma.product.upsert({
         where: { id: product.id },
@@ -163,7 +196,7 @@ async function seed() {
           category: product.category,
           priceCents: product.priceCents,
           costCents: product.costCents,
-          stockOnHand: product.stockOnHand,
+          ...(canResetDemoStock ? { stockOnHand: product.stockOnHand } : {}),
           taxRateId,
           isActive: true
         },
@@ -175,7 +208,7 @@ async function seed() {
           category: product.category,
           priceCents: product.priceCents,
           costCents: product.costCents,
-          stockOnHand: product.stockOnHand,
+          ...(canResetDemoStock ? { stockOnHand: product.stockOnHand } : {}),
           taxRateId,
           isActive: true
         }
@@ -190,9 +223,7 @@ async function seed() {
       await prisma.stockSnapshot.upsert({
         where: { businessId_productId_location: { businessId, productId: product.id, location: "LOCAL" } },
         update: {
-          onHand: product.stockOnHand,
-          reserved: 0,
-          available: product.stockOnHand,
+          ...(canResetDemoStock ? { onHand: product.stockOnHand, reserved: 0, available: product.stockOnHand } : {}),
           daysCover: 7,
           snapshotAt: new Date()
         },
@@ -201,9 +232,7 @@ async function seed() {
           businessId,
           productId: product.id,
           location: "LOCAL",
-          onHand: product.stockOnHand,
-          reserved: 0,
-          available: product.stockOnHand,
+          ...(canResetDemoStock ? { onHand: product.stockOnHand, reserved: 0, available: product.stockOnHand } : {}),
           daysCover: 7,
           snapshotAt: new Date()
         }
@@ -211,6 +240,7 @@ async function seed() {
     }
 
     console.log(`[tablet-db] Seed OK: ${dbPath}`);
+    if (!canResetDemoStock) console.log('[tablet-db] Safe seed preserved operational stock. Use --reset-demo-stock only on empty demo DB.');
   } finally {
     await prisma.$disconnect();
   }
@@ -230,6 +260,7 @@ async function main() {
       runPrisma(["generate", "--schema", schemaPath]);
       return;
     case "push":
+      await ensureSaleClientRequestIdSchema();
       runPrisma(["db", "push", "--schema", schemaPath]);
       return;
     case "seed":
@@ -237,6 +268,7 @@ async function main() {
       return;
     case "init":
       runPrisma(["generate", "--schema", schemaPath]);
+      await ensureSaleClientRequestIdSchema();
       runPrisma(["db", "push", "--schema", schemaPath]);
       await seed();
       return;

@@ -2230,3 +2230,13 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+.routeGoldGhostButton:disabled,
+.routeDarkButton:disabled,
+.routePrimaryButton:disabled,
+.routeSecondaryButton:disabled {
+  opacity: 0.54;
+  cursor: not-allowed;
+  filter: grayscale(0.15);
+}

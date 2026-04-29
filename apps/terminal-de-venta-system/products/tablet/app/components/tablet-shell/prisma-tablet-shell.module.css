@@ -1,0 +1,54 @@
+.shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 236px minmax(0, 1fr);
+  color: #f5f0e6;
+  background:
+    radial-gradient(circle at 16% -4%, rgba(223, 181, 92, 0.2), transparent 32%),
+    radial-gradient(circle at 84% 106%, rgba(53, 139, 119, 0.15), transparent 30%),
+    linear-gradient(180deg, #15161c 0%, #090a0e 58%, #050608 100%);
+  font-family: Inter, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+}
+
+.skipLink { position: fixed; left: 14px; top: -56px; z-index: 20; padding: 10px 12px; border-radius: 10px; color: #201708; background: #f5d991; font-weight: 900; }
+.skipLink:focus { top: 14px; }
+.sidebar { min-height: 100vh; padding: 22px 14px; background: rgba(4, 5, 8, 0.9); border-right: 1px solid rgba(255, 255, 255, 0.08); display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 18px; }
+.brand, .navItem, .navActive, .terminalCard { display: grid; grid-template-columns: 40px minmax(0, 1fr); align-items: center; gap: 10px; text-decoration: none; }
+.brand { min-height: 58px; color: #f5f0e6; }
+.brandMark { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border-radius: 14px; background: linear-gradient(180deg, #f5d991, #b47b2d); color: #201708; font-weight: 950; box-shadow: 0 14px 30px rgba(180, 123, 45, 0.22); }
+.brandText strong, .terminalCard strong { display: block; font-size: 14px; letter-spacing: 0; }
+.brandText small, .terminalCard small { display: block; color: #97948e; font-size: 12px; }
+.navList { display: grid; align-content: start; gap: 8px; overflow: auto; padding-right: 2px; }
+.navItem, .navActive { min-height: 48px; padding: 0 12px; border-radius: 14px; color: #b9b4aa; border: 1px solid transparent; transition: 160ms ease; }
+.navItem:hover, .navItem:focus-visible { color: #f4eedf; background: rgba(255, 255, 255, 0.055); outline: none; }
+.navActive { color: #f8e4af; background: rgba(223, 181, 92, 0.13); border-color: rgba(223, 181, 92, 0.27); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+.terminalCard { padding: 12px; border-radius: 16px; background: rgba(255, 255, 255, 0.045); color: #e9e1d1; }
+.terminalIcon { width: 36px; min-height: 36px; display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; color: #f5d991; background: rgba(223, 181, 92, 0.1); }
+.main { min-width: 0; padding: 22px; display: grid; grid-template-rows: auto auto minmax(0, 1fr); align-content: start; gap: 18px; }
+.header { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: center; }
+.titleGroup h1 { margin: 2px 0 4px; font-size: clamp(30px, 3vw, 46px); letter-spacing: 0; }
+.titleGroup p { margin: 0; color: #bdb6aa; }
+.kicker { color: #d8b467; font-size: 12px; font-weight: 850; text-transform: uppercase; letter-spacing: 0.12em; }
+.statusArea { display: flex; justify-content: end; }
+.actionBand { min-width: 0; }
+.content { min-width: 0; display: grid; gap: 18px; }
+.statusPill { display: inline-flex; align-items: center; min-height: 30px; padding: 0 10px; border-radius: 999px; font-size: 12px; font-weight: 850; border: 1px solid rgba(255, 255, 255, 0.09); background: rgba(255, 255, 255, 0.055); color: #d6d2ca; white-space: nowrap; }
+.status_ok { color: #a8f0c4; background: rgba(64, 196, 116, 0.13); border-color: rgba(64, 196, 116, 0.22); }
+.status_warn { color: #f6d381; background: rgba(223, 181, 92, 0.14); border-color: rgba(223, 181, 92, 0.26); }
+.status_danger { color: #ffb0a8; background: rgba(255, 107, 94, 0.13); border-color: rgba(255, 107, 94, 0.26); }
+.status_neutral { color: #d6d2ca; }
+
+@media (max-width: 1180px) {
+  .shell { grid-template-columns: 92px minmax(0, 1fr); }
+  .brand, .navItem, .navActive, .terminalCard { grid-template-columns: 1fr; justify-items: center; }
+  .brandText, .navItem span, .navActive span, .terminalCard span:last-child { display: none; }
+  .header { grid-template-columns: 1fr; }
+  .statusArea { justify-content: start; }
+}
+
+@media (max-width: 900px) {
+  .shell { grid-template-columns: 1fr; }
+  .sidebar { min-height: auto; position: sticky; top: 0; z-index: 10; grid-template-rows: auto auto; }
+  .navList { grid-template-columns: repeat(5, minmax(64px, 1fr)); }
+  .terminalCard { display: none; }
+}

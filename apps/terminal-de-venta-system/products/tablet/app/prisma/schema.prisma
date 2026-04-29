@@ -382,6 +382,7 @@ model Sale {
   businessId    String
   terminalId    String
   cashSessionId String?
+  clientRequestId String?
   folio         String
   cashier       String
   totalCents    Int
@@ -394,6 +395,7 @@ model Sale {
   lines       SaleLine[]
 
   @@unique([businessId, folio])
+  @@unique([businessId, clientRequestId])
   @@unique([id, businessId])
   @@index([businessId, createdAt])
 }

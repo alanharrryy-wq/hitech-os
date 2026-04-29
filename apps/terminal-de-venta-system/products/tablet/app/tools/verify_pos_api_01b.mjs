@@ -1,7 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = process.cwd();
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const checks = [
   ["app/api/pos/products/search/route.ts", "searchProducts"],
   ["app/api/pos/products/search/route.ts", "GET /api/pos/products/search"],

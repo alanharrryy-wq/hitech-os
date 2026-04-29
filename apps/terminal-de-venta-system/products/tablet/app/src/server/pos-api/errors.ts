@@ -8,6 +8,8 @@ const POS_ENGINE_HTTP_STATUS: Record<string, number> = {
   PRODUCT_INACTIVE: 409,
   INSUFFICIENT_STOCK: 409,
   TERMINAL_NOT_FOUND: 409,
+  NETWORK_UNAVAILABLE: 503,
+  SYNC_PENDING: 202,
   BUSINESS_NOT_FOUND: 409,
   ENGINE_INVARIANT_FAILED: 500
 };
@@ -19,6 +21,8 @@ const POS_ENGINE_PUBLIC_MESSAGE: Record<string, string> = {
   PRODUCT_INACTIVE: "Producto inactivo; no puede venderse desde Tablet.",
   INSUFFICIENT_STOCK: "Stock insuficiente para cerrar la venta local.",
   TERMINAL_NOT_FOUND: "No hay terminal local activa para cerrar la venta.",
+  NETWORK_UNAVAILABLE: "La red no esta disponible; la venta local puede continuar si la regla lo permite.",
+  SYNC_PENDING: "La sincronizacion queda pendiente; la operacion local fue registrada.",
   BUSINESS_NOT_FOUND: "No hay negocio local configurado para cerrar la venta.",
   ENGINE_INVARIANT_FAILED: "El motor POS detecto una inconsistencia interna."
 };

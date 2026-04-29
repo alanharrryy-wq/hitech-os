@@ -15,7 +15,10 @@
     "db:tablet:generate": "node scripts/tablet-db.mjs generate",
     "db:tablet:push": "node scripts/tablet-db.mjs push",
     "db:tablet:seed": "node scripts/tablet-db.mjs seed",
-    "db:tablet:info": "node scripts/tablet-db.mjs info"
+    "db:tablet:info": "node scripts/tablet-db.mjs info",
+    "verify:ux-operable-01": "node tools/verify_tablet_ux_operable_01.mjs",
+    "verify:pos-checkout-02": "node tools/verify_tablet_pos_checkout_02.mjs",
+    "verify:catalog-products-03": "node tools/verify_tablet_catalog_products_03.mjs"
   },
   "dependencies": {
     "@prisma/client": "5.21.1",

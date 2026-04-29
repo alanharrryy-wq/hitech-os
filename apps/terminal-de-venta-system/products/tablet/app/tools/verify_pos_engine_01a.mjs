@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const appRoot = process.cwd();
+const appRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const checks = [
   ["src/server/pos-engine/repository.prisma.ts", "completeLocalSale"],
   ["src/server/pos-engine/repository.prisma.ts", "tx.sale.create"],
@@ -10,6 +11,9 @@ const checks = [
   ["src/server/pos-engine/repository.prisma.ts", "tx.product.update"],
   ["src/server/pos-engine/repository.prisma.ts", "tx.stockMovement.create"],
   ["src/server/pos-engine/repository.prisma.ts", "tx.outboxEvent.create"],
+  ["src/server/pos-engine/repository.prisma.ts", "clientRequestId: input.clientRequestId"],
+  ["src/server/pos-engine/repository.prisma.ts", "tx.sale.findFirst"],
+  ["src/server/pos-engine/repository.prisma.ts", "events: []"],
   ["src/server/pos-engine/event-factory.ts", "sale.completed"],
   ["src/server/pos-engine/event-factory.ts", "ticket.closed"],
   ["src/server/pos-engine/event-factory.ts", "stock.decremented"],

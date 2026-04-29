@@ -2,14 +2,16 @@ import type { SharedSyncEvent } from "@shared-kernel/sync/events";
 
 export const TABLET_SYNC_EVENTS: ReadonlyArray<SharedSyncEvent> = [
   "sale.created",
+  "sale.completed",
   "ticket.closed",
-  "return.created",
+  "stock.decremented",
+  "inventory.low_stock_detected",
+  "sale.cancelled",
+  "sale.refunded",
   "shift.opened",
   "shift.closed",
-  "sync.started",
-  "sync.succeeded",
-  "sync.failed",
-  "sync.conflict_detected",
-  "outbox.enqueued",
-  "outbox.dispatched"
+  "stock.adjusted",
+  "sync.event.sent",
+  "sync.event.failed",
+  "sync.conflict.detected"
 ];

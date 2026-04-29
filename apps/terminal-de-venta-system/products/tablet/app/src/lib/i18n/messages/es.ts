@@ -1,19 +1,19 @@
 export const tabletMessages = {
   metadata: {
     title: "Terminal de venta 6.1.1",
-    description: "Base operativa con ventas, cobro, turno, devoluciones, stock operativo, sincronizacion visible, tablero KPI, hardening y capa UX pro touch-first."
+    description: "Base operativa con ventas, cobro, turno, devoluciones, existencias operativas, sincronización visible, tablero KPI, seguridad operativa y capa touch-first."
   },
   productName: "Terminal de venta",
   shell: {
     brand: "Terminal de venta",
-    subtitle: "Ventas, cobro, turno, devoluciones, stock, sync, tablero KPI y UX pro touch-first.",
+    subtitle: "Ventas, cobro, turno, devoluciones, existencias, sincronización, tablero KPI y operación touch-first.",
     footer: "Gemela: panel administrativo de inventario. Dominio: terminal de venta.",
     home: "Inicio"
   },
   home: {
     kicker: "tablero operativo",
     title: "Terminal de venta",
-    subtitle: "Ahora con lectura KPI, hardening y una capa UX pro para que el flujo diario no se sienta como pelea con impresora vieja."
+    subtitle: "Ahora con lectura KPI, seguridad operativa y una capa experiencia operativa para que el flujo diario no se sienta como pelea con impresora vieja."
   },
   pages: {
     sales: {
@@ -40,9 +40,9 @@ export const tabletMessages = {
       subtitle: "Checklist corto, arqueo visible y notas del turno para que la jornada no se vaya chueca.",
       bullets: ["apertura", "corte intermedio", "arqueo", "cierre"]
     },
-    stock: {
+    existencias: {
       kicker: "senal operativa",
-      title: "Stock operativo",
+      title: "Existencias",
       subtitle: "Existencias ligeras, quiebres y reabasto express para no vender humo con ticket bonito.",
       quickActions: [
         { kicker: "atajo", title: "Buscar SKU critico", description: "Abrir consulta rapida por barcode, SKU o nombre." },
@@ -51,15 +51,15 @@ export const tabletMessages = {
         { kicker: "atajo", title: "Bloquear venta asistida", description: "Poner candado temporal cuando el riesgo ya esta cantado." }
       ]
     },
-    sync: {
+    sincronización: {
       kicker: "motor offline",
-      title: "Centro de sincronizacion",
-      subtitle: "Cola visible, reintentos, conflictos y latencia para que el modo offline no sea caja negra.",
-      bullets: ["bandeja de salida", "reintentos", "conflictos", "confirmacion"],
+      title: "Sincronización",
+      subtitle: "Pendientes visibles, reintentos, conflictos y latencia para que operar sin red no sea caja negra.",
+      bullets: ["pendientes por enviar", "reintentos", "conflictos", "confirmacion"],
       quickActions: [
         { kicker: "atajo", title: "Forzar reintento", description: "Disparar lote corto cuando regresa la red." },
         { kicker: "atajo", title: "Ver conflictos", description: "Abrir la lista de movimientos atorados o incompatibles." },
-        { kicker: "atajo", title: "Congelar cierre", description: "Bloquear corte hasta que el outbox baje de nivel rojo." },
+        { kicker: "atajo", title: "Congelar cierre", description: "Bloquear corte hasta que el pendientes baje de nivel rojo." },
         { kicker: "atajo", title: "Exportar bitacora", description: "Sacar foto operativa para supervisor o soporte." }
       ]
     }

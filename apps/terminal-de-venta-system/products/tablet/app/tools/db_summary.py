@@ -5,7 +5,7 @@ path = Path(sys.argv[1])
 conn = sqlite3.connect(path)
 cur = conn.cursor()
 summary = {}
-for table in ["Product", "Shift", "Sale", "SaleLine", "SaleReturn", "OutboxEvent"]:
+for table in ["Product", "CashSession", "Sale", "SaleLine", "SaleReturn", "OutboxEvent"]:
     try:
         summary[table] = cur.execute(f"select count(*) from {table}").fetchone()[0]
     except sqlite3.Error:

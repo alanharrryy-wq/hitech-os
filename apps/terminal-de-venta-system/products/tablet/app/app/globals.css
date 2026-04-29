@@ -149,3 +149,17 @@ th { color: var(--muted); font-weight: 600; }
   color: #a0a0a0;
   letter-spacing: 0;
 }
+
+/* PRISMA global disabled controls */
+button:disabled {
+  opacity: 0.52;
+  cursor: not-allowed;
+}
+
+/* PRISMA global focus-visible controls */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 3px solid rgba(214, 189, 134, 0.92);
+  outline-offset: 3px;
+}
