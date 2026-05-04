@@ -1,0 +1,35 @@
+{
+  "packageId": "PRISMA_APP_MOBILE_06_API_CONTRACTS",
+  "createdAt": "2026-05-02T00:00:00-06:00",
+  "product": "PRISMA App Mobile",
+  "surface": "prisma.mobile.app",
+  "twinImpact": "mobile-local-only",
+  "summary": "Agrega contratos API y route handlers demo para PRISMA App Mobile.",
+  "files": [
+    "INSTALL_MANIFEST_PRISMA_APP_MOBILE_06_API_CONTRACTS.json",
+    "docs/mobile/PRISMA_APP_MOBILE_06_API_CONTRACTS.md",
+    "manifests/mobile/INSTALL_MANIFEST_PRISMA_APP_MOBILE_06_API_CONTRACTS.json",
+    "products/mobile/app/app/api/mobile/alerts/route.ts",
+    "products/mobile/app/app/api/mobile/branches/route.ts",
+    "products/mobile/app/app/api/mobile/cash/current/route.ts",
+    "products/mobile/app/app/api/mobile/health/route.ts",
+    "products/mobile/app/app/api/mobile/inventory/watchlist/route.ts",
+    "products/mobile/app/app/api/mobile/reports/daily/route.ts",
+    "products/mobile/app/app/api/mobile/sales/today/route.ts",
+    "products/mobile/app/app/api/mobile/summary/route.ts",
+    "products/mobile/app/docs/README_PRISMA_APP_MOBILE_06_API_CONTRACTS.md",
+    "products/mobile/app/package.json",
+    "products/mobile/app/src/lib/prisma-app/prisma-app-api-contracts.ts",
+    "products/mobile/app/src/lib/prisma-app/prisma-app-api-demo-source.ts",
+    "products/mobile/app/tools/verify_prisma_app_mobile_06_api_contracts.mjs"
+  ],
+  "verify": [
+    "node products/mobile/app/tools/verify_prisma_app_mobile_03_product_root_rebase.mjs",
+    "node products/mobile/app/tools/verify_prisma_app_mobile_06_api_contracts.mjs"
+  ],
+  "nonGoals": [
+    "No conecta base de datos real.",
+    "No agrega autenticación.",
+    "No toca PC, Tablet, shared-kernel ni shared/contracts."
+  ]
+}

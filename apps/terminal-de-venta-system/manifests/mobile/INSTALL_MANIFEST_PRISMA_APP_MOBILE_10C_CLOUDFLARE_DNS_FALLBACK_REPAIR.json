@@ -1,0 +1,20 @@
+{
+  "packageId": "PRISMA_APP_MOBILE_10C_CLOUDFLARE_DNS_FALLBACK_REPAIR",
+  "version": "10C",
+  "targetRoot": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "writes": [
+    "INSTALL_MANIFEST_PRISMA_APP_MOBILE_10C_CLOUDFLARE_DNS_FALLBACK_REPAIR.json",
+    "docs/mobile/PRISMA_APP_MOBILE_10C_CLOUDFLARE_DNS_FALLBACK_REPAIR.md",
+    "manifests/mobile/INSTALL_MANIFEST_PRISMA_APP_MOBILE_10C_CLOUDFLARE_DNS_FALLBACK_REPAIR.json",
+    "products/mobile/app/tools/verify_prisma_app_mobile_10c_cloudflare_dns_fallback_repair.mjs",
+    "products/mobile/infra/cloudflare/README_PRISMA_MOBILE_10C_DNS_FALLBACK_REPAIR.md",
+    "products/mobile/infra/cloudflare/repair_prisma_mobile_cloudflare_live_route.ps1",
+    "products/mobile/infra/cloudflare/repair_prisma_mobile_cloudflare_live_route.py",
+    "products/mobile/infra/cloudflare/smoke_prisma_mobile_public_strict.ps1"
+  ],
+  "sensitiveExternalFiles": [
+    "C:\\Users\\alanh\\.cloudflared\\config.yml",
+    "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\cloudflared\\ImagePath"
+  ],
+  "notes": "The installed repair script may backup and mutate Cloudflare config and service ImagePath only when executed manually with -Apply. The installer only writes repo files."
+}

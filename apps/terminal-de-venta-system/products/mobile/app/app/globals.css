@@ -1,0 +1,30 @@
+@import "../../../shared-ui/prisma/tokens/prisma-theme.css";
+@import "../../../shared-ui/prisma/components/prisma-components.css";
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--prisma-text-primary);
+  font-family: var(--prisma-font-family);
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input {
+  font: inherit;
+}

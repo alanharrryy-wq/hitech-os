@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">PRISMA App monochrome icon</title>
+  <desc id="desc">PRISMA app monochrome icon for PWA install surfaces.</desc>
+  <defs>
+    <radialGradient id="bgGlow" cx="50%" cy="36%" r="72%">
+      <stop offset="0%" stop-color="#15171a"/>
+      <stop offset="52%" stop-color="#050607"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+
+    <linearGradient id="edgeMetal" x1="120" y1="70" x2="390" y2="405" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f5efe0"/>
+      <stop offset="16%" stop-color="#9d8d72"/>
+      <stop offset="34%" stop-color="#ebe7dd"/>
+      <stop offset="53%" stop-color="#51483a"/>
+      <stop offset="72%" stop-color="#c8b58e"/>
+      <stop offset="100%" stop-color="#1b1712"/>
+    </linearGradient>
+
+    <linearGradient id="leftTop" x1="171" y1="110" x2="265" y2="286" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#45433d"/>
+      <stop offset="35%" stop-color="#1b1b18"/>
+      <stop offset="100%" stop-color="#090a09"/>
+    </linearGradient>
+
+    <linearGradient id="rightMirror" x1="242" y1="92" x2="371" y2="280" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="18%" stop-color="#f6f8f8"/>
+      <stop offset="38%" stop-color="#bfc6c9"/>
+      <stop offset="58%" stop-color="#f1f2ef"/>
+      <stop offset="77%" stop-color="#6e7678"/>
+      <stop offset="100%" stop-color="#1b2021"/>
+    </linearGradient>
+
+    <linearGradient id="bottomLeft" x1="153" y1="285" x2="260" y2="388" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3b3832"/>
+      <stop offset="50%" stop-color="#151514"/>
+      <stop offset="100%" stop-color="#050505"/>
+    </linearGradient>
+
+    <linearGradient id="bottomRight" x1="255" y1="282" x2="355" y2="385" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4b4840"/>
+      <stop offset="45%" stop-color="#262622"/>
+      <stop offset="100%" stop-color="#080808"/>
+    </linearGradient>
+
+    <linearGradient id="rimDark" x1="150" y1="95" x2="370" y2="390" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0a0a0a"/>
+      <stop offset="55%" stop-color="#343026"/>
+      <stop offset="100%" stop-color="#060606"/>
+    </linearGradient>
+
+    <linearGradient id="whiteGlint" x1="280" y1="103" x2="350" y2="225" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <pattern id="matteNoise" width="22" height="22" patternUnits="userSpaceOnUse">
+      <path d="M0 12 C4 8 8 16 12 11 S19 9 22 13" fill="none" stroke="#ffffff" stroke-opacity="0.035" stroke-width="1"/>
+      <path d="M3 3 C8 7 13 1 19 5" fill="none" stroke="#c9b98f" stroke-opacity="0.035" stroke-width="0.8"/>
+    </pattern>
+  </defs>
+
+  <!-- Full square background. Google Play applies final rounded mask and outer shadow. -->
+  <rect width="512" height="512" fill="url(#bgGlow)"/>
+
+  <!-- Soft internal halo, not an external icon shadow. -->
+  <ellipse cx="256" cy="278" rx="130" ry="168" fill="#ffffff" opacity="0.028"/>
+  <ellipse cx="256" cy="298" rx="100" ry="122" fill="#c9b98f" opacity="0.035"/>
+
+  <!-- Prism outer silhouette rim -->
+  <path d="M256 66 L366 281 L256 398 L146 281 Z" fill="url(#rimDark)"/>
+
+  <!-- Facets -->
+  <path d="M256 76 L156 281 L256 279 Z" fill="url(#leftTop)"/>
+  <path d="M256 76 L356 281 L256 279 Z" fill="url(#rightMirror)"/>
+  <path d="M156 281 L256 279 L256 388 Z" fill="url(#bottomLeft)"/>
+  <path d="M256 279 L356 281 L256 388 Z" fill="url(#bottomRight)"/>
+
+  <!-- Matte micro-texture on the non-mirror faces -->
+  <path d="M256 76 L156 281 L256 279 Z" fill="url(#matteNoise)" opacity="0.7"/>
+  <path d="M156 281 L256 279 L256 388 Z" fill="url(#matteNoise)" opacity="0.8"/>
+  <path d="M256 279 L356 281 L256 388 Z" fill="url(#matteNoise)" opacity="0.45"/>
+
+  <!-- Single mirror/glass face highlight -->
+  <path d="M275 94 L346 274 L260 275 Z" fill="url(#whiteGlint)" opacity="0.78"/>
+  <path d="M311 152 C329 183 339 215 346 255 C326 231 301 202 285 171 C277 156 276 139 278 121 C287 130 299 137 311 152 Z" fill="#ffffff" opacity="0.13"/>
+
+  <!-- Metallic structure lines -->
+  <path d="M256 66 L366 281 L256 398 L146 281 Z" fill="none" stroke="#080808" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M256 66 L366 281 L256 398 L146 281 Z" fill="none" stroke="url(#edgeMetal)" stroke-width="4.8" stroke-linejoin="round"/>
+  <path d="M256 76 L256 388" stroke="#070707" stroke-width="8" stroke-linecap="round"/>
+  <path d="M256 76 L256 388" stroke="url(#edgeMetal)" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M156 281 L256 279 L356 281" fill="none" stroke="#070707" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M156 281 L256 279 L356 281" fill="none" stroke="url(#edgeMetal)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Fine white edge on mirror face only -->
+  <path d="M256 77 L356 281" stroke="#ffffff" stroke-opacity="0.72" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M356 281 L256 388" stroke="#ffffff" stroke-opacity="0.28" stroke-width="1.2" stroke-linecap="round"/>
+</svg>

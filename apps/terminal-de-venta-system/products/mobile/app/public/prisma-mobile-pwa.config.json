@@ -1,0 +1,22 @@
+{
+  "contractId": "PRISMA_APP_MOBILE_10_CLOUDFLARE_PWA_DOMAIN_BRIDGE",
+  "mode": "pwa-cloudflare-domain",
+  "domain": "prisma.hitechrts.com",
+  "origin": "https://prisma.hitechrts.com",
+  "appPath": "/prisma-app",
+  "installPath": "/prisma-app/install",
+  "offlinePath": "/prisma-offline.html",
+  "manifestPath": "/manifest.webmanifest",
+  "serviceWorkerPath": "/prisma-mobile-sw.js",
+  "localOrigin": "http://127.0.0.1:3140",
+  "tunnelName": "engine",
+  "cloudflareTunnelHostname": "prisma.hitechrts.com",
+  "supportContact": "soporte@hitechrts.com",
+  "lastConfiguredAt": "2026-05-03T13:20:14",
+  "notes": [
+    "Play Store queda postergado.",
+    "La app se instala desde navegador como PWA.",
+    "Cloudflare Tunnel publica prisma.hitechrts.com hacia el origen local 3140.",
+    "No guardar credenciales ni llaves dentro del repo."
+  ]
+}

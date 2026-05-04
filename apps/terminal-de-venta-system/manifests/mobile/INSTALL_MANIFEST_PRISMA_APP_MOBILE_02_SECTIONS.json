@@ -1,0 +1,16 @@
+{
+  "package_id": "PRISMA_APP_MOBILE_02_SECTIONS",
+  "version": "1.0.0",
+  "created_at": "2026-04-30T12:30:00-06:00",
+  "intent": "Convert PRISMA App into mobile sections: Hoy, Ventas, Caja, Inventario, Alertas, Reportes, MultiSucursal separado.",
+  "route": "/prisma-app",
+  "touches": [
+    "products/pc/app only"
+  ],
+  "does_not_touch": [
+    "products/tablet",
+    "pc business logic outside route/navigation",
+    "shared kernel contracts beyond local app docs"
+  ],
+  "minimum_zip_size_policy": ">= 300 KB with real docs and fixtures, not filler."
+}
