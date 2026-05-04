@@ -1,0 +1,11 @@
+flowchart TD
+  A[start] --> B[load manifest]
+  B --> C[verify checksums]
+  C --> D{mode}
+  D -->|dry-run| E[print plan]
+  D -->|apply| F[backup]
+  F --> G[install]
+  G --> H[verify]
+  H -->|fail| I[rollback]
+  H -->|ok| J[success]
+  D -->|rollback| I

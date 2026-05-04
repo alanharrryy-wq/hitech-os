@@ -1,0 +1,119 @@
+{
+  "schema": "prisma.visual-os.golden-screens.00c",
+  "package": "PRISMA_VISUAL_OS_POS_GOLDEN_QA_00C_20260503_v01",
+  "purpose": "Define pantallas canónicas de Tablet POS para captura, comparación visual y score operativo.",
+  "defaults": {
+    "baseUrl": "http://127.0.0.1:3120",
+    "outputRoot": "F:/descargasf/prisma-visual-os/00c",
+    "waitUntil": "networkidle",
+    "timeoutMs": 30000,
+    "reducedMotion": "reduce"
+  },
+  "screens": [
+    {
+      "id": "tablet_pos_sales_primary",
+      "surface": "tablet-pos",
+      "preset": "POS_TOUCH",
+      "route": "/pos",
+      "viewport": {
+        "width": 1365,
+        "height": 768
+      },
+      "requiredSelector": "[data-prisma-vsurface=\"tablet-pos\"]",
+      "focus": [
+        "buscador",
+        "producto-card",
+        "carrito",
+        "cta-cobrar"
+      ],
+      "acceptance": {
+        "primaryCtaMustBeVisible": true,
+        "cartPanelMustBeVisible": true,
+        "productGridMustBeVisible": true,
+        "minTapTargetPx": 44,
+        "maxAtmosphereDominance": "medium"
+      }
+    },
+    {
+      "id": "tablet_pos_reference_dark",
+      "surface": "tablet-pos-reference",
+      "preset": "BLACK_PREMIUM",
+      "route": "/prisma-dark-pos-reference",
+      "viewport": {
+        "width": 1490,
+        "height": 992
+      },
+      "requiredSelector": "body",
+      "focus": [
+        "shell",
+        "glass-depth",
+        "gold-accent",
+        "premium-atmosphere"
+      ],
+      "acceptance": {
+        "referenceOnly": true,
+        "mustNotBlockRelease": true,
+        "visualTarget": "premium-dark-glass-prisma"
+      }
+    },
+    {
+      "id": "tablet_pos_sales_compact",
+      "surface": "tablet-pos",
+      "preset": "POS_TOUCH",
+      "route": "/pos",
+      "viewport": {
+        "width": 1180,
+        "height": 820
+      },
+      "requiredSelector": "[data-prisma-vsurface=\"tablet-pos\"]",
+      "focus": [
+        "touch-density",
+        "cart-readability",
+        "cashier-speed"
+      ],
+      "acceptance": {
+        "primaryCtaMustBeVisible": true,
+        "noHorizontalOverflow": true,
+        "minTapTargetPx": 44
+      }
+    }
+  ],
+  "scoreAxes": [
+    {
+      "id": "premium",
+      "weight": 0.18,
+      "description": "Profundidad PRISMA Black sin casino barato."
+    },
+    {
+      "id": "clarity",
+      "weight": 0.22,
+      "description": "Lectura rápida de producto, precio, stock y total."
+    },
+    {
+      "id": "operation",
+      "weight": 0.24,
+      "description": "Velocidad touch-first para vender sin pensar demasiado."
+    },
+    {
+      "id": "hierarchy",
+      "weight": 0.16,
+      "description": "Buscar, agregar, revisar carrito y cobrar dominan la escena."
+    },
+    {
+      "id": "consistency",
+      "weight": 0.12,
+      "description": "Respeta Visual OS, tokens y preset POS_TOUCH."
+    },
+    {
+      "id": "risk",
+      "weight": 0.08,
+      "description": "No rompe layout, ruta, shell ni operación standalone."
+    }
+  ],
+  "releaseGate": {
+    "staticScoreMinimum": 90,
+    "captureManifestRequiredForVisualSignoff": true,
+    "manualApprovalRequired": true,
+    "notes": "00C instala el arnés. El bloqueo visual completo se activa cuando haya capturas reales del entorno local."
+  }
+}

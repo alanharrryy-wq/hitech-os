@@ -1,0 +1,82 @@
+{
+  "meta": {
+    "system": "PRISMA Visual OS Runtime",
+    "package": "PRISMA_VISUAL_OS_CORE_00D_00E_20260503_v01",
+    "schemaVersion": "00E"
+  },
+  "requiredTopLevel": [
+    "preset",
+    "surface",
+    "controls",
+    "layers",
+    "safety"
+  ],
+  "presetEnum": [
+    "BLACK_PREMIUM",
+    "LIGHT_OPERATIONAL",
+    "DUAL_BALANCE",
+    "POS_TOUCH_REFERENCE",
+    "PC_DENSE_ADMIN",
+    "MOBILE_PULSE"
+  ],
+  "surfaceEnum": [
+    "tablet-pos",
+    "tablet-checkout",
+    "tablet-shell",
+    "pc-backoffice",
+    "mobile-pulse"
+  ],
+  "controlRanges": {
+    "glass": [
+      0,
+      100
+    ],
+    "glow": [
+      0,
+      100
+    ],
+    "depth": [
+      0,
+      100
+    ],
+    "density": [
+      0,
+      100
+    ],
+    "contrast": [
+      0,
+      100
+    ],
+    "motion": [
+      0,
+      100
+    ],
+    "touch": [
+      0,
+      100
+    ]
+  },
+  "blockedCombinations": [
+    {
+      "when": {
+        "contrastLessThan": 68,
+        "glowGreaterThan": 75
+      },
+      "reason": "Glow alto con contraste bajo vuelve ilegible contenido operativo."
+    },
+    {
+      "when": {
+        "surface": "tablet-pos",
+        "touchLessThan": 80
+      },
+      "reason": "Tablet POS no puede bajar seguridad touch."
+    },
+    {
+      "when": {
+        "surface": "tablet-checkout",
+        "actionWeightLessThan": 86
+      },
+      "reason": "Cobro necesita CTA dominante."
+    }
+  ]
+}

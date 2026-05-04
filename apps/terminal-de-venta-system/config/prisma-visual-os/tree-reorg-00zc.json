@@ -1,0 +1,30 @@
+{
+  "package": "PRISMA_VISUAL_OS_TREE_REORG_DOCTORS_VERIFIERS_SHIMS_00ZC_20260504_v01",
+  "version": "20260504_v01",
+  "stage": "00ZC",
+  "mode": "dry-run-plan-only",
+  "candidateDirs": {
+    "doctors": "tools/prisma-visual-os/doctors",
+    "verifiers": "tools/prisma-visual-os/verifiers"
+  },
+  "forbidden": [
+    "runtime POS",
+    "Tablet UI",
+    "CSS",
+    "cobro",
+    "stock",
+    "ticket",
+    "ventas",
+    "outbox",
+    "root launcher movement"
+  ],
+  "futureGates": [
+    "00X",
+    "00Y",
+    "00T",
+    "04H",
+    "/pos",
+    "/visual-os/pro",
+    "realtime /health"
+  ]
+}

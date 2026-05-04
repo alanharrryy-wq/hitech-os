@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "system": "PRISMA Visual Operating System",
+    "package": "PRISMA_VISUAL_QA_RELEASE_GATE_00L_00M_00N_20260503_v01",
+    "block": "00L",
+    "mutation": "static_governance_only"
+  },
+  "required_public_contract": [
+    "config/prisma-visual-os/prisma-visual-controls.active.json",
+    "styles/prisma-visual-os/prisma-visual-layers.css",
+    "styles/prisma-visual-os/prisma-visual-controls.generated.css",
+    "docs/design/PRISMA_VISUAL_OS_00D_00E_CONTRACT.md"
+  ],
+  "surfaces": {
+    "tablet": {
+      "role": "POS standalone touch-first",
+      "expected_recipe": "POS_TOUCH_REFERENCE",
+      "must_not": [
+        "require PC to sell",
+        "hide checkout action",
+        "become dense backoffice"
+      ],
+      "minimums": {
+        "touch_safety": 88,
+        "critical_action_weight": 86,
+        "state_visibility": 82,
+        "data_legibility": 84
+      }
+    },
+    "pc": {
+      "role": "Backoffice dense admin",
+      "expected_recipe": "PC_DENSE_ADMIN",
+      "must_not": [
+        "copy Tablet spacing",
+        "look like POS",
+        "lose table scannability"
+      ],
+      "minimums": {
+        "density_fit": 76,
+        "data_legibility": 88,
+        "state_visibility": 84,
+        "surface_separation": 76
+      }
+    },
+    "mobile": {
+      "role": "Owner pulse supervisor",
+      "expected_recipe": "MOBILE_PULSE",
+      "must_not": [
+        "become tiny PC",
+        "show long admin tables",
+        "bury urgent alerts"
+      ],
+      "minimums": {
+        "touch_safety": 88,
+        "state_visibility": 86,
+        "summary_scan_speed": 84,
+        "critical_action_weight": 78
+      }
+    }
+  },
+  "shared_quality_axes": [
+    {
+      "id": "visual_contract_present",
+      "weight": 16
+    },
+    {
+      "id": "surface_role_fit",
+      "weight": 16
+    },
+    {
+      "id": "state_visibility",
+      "weight": 14
+    },
+    {
+      "id": "data_legibility",
+      "weight": 14
+    },
+    {
+      "id": "action_hierarchy",
+      "weight": 14
+    },
+    {
+      "id": "brand_consistency",
+      "weight": 12
+    },
+    {
+      "id": "forbidden_touch_absence",
+      "weight": 14
+    }
+  ],
+  "blocked_if": [
+    "00D/00E public contract missing during release gate",
+    "payload touches forbidden zones",
+    "PC uses Tablet POS recipe",
+    "Mobile uses PC dense recipe",
+    "states are hidden",
+    "critical actions lose hierarchy"
+  ]
+}

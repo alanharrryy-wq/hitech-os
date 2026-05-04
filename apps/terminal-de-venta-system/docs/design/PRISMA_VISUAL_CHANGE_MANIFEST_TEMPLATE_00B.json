@@ -1,0 +1,53 @@
+{
+  "package": "PRISMA_BLACK_VISUAL_REFINEMENT_01G",
+  "changeType": "visual",
+  "contract": "PRISMA_TRI_SURFACE_VISUAL_GUARDIAN_00B",
+  "autonomyPolicy": {
+    "tabletSellsStandalone": true,
+    "tabletDoesNotRequirePc": true,
+    "tabletDoesNotRequireMobile": true,
+    "pcIsBackofficeAsset": true,
+    "mobileIsPulseAsset": true,
+    "noAssetRequiredForTabletSale": true
+  },
+  "changedFiles": [],
+  "surfaceCoverage": [
+    {
+      "surface": "prisma.tablet.pos",
+      "state": "VALIDATED",
+      "reviewedFiles": [
+        "products/tablet/app/app/globals.css"
+      ],
+      "touchedFiles": [],
+      "evidence": "Guardian check plus visual diff review. Replace this with actual evidence.",
+      "exclusionReason": null,
+      "reevaluation": null,
+      "owner": "visual-governance"
+    },
+    {
+      "surface": "prisma.pc.backoffice",
+      "state": "VALIDATED",
+      "reviewedFiles": [
+        "products/pc/app/app/globals.css"
+      ],
+      "touchedFiles": [],
+      "evidence": "Guardian check plus visual diff review. Replace this with actual evidence.",
+      "exclusionReason": null,
+      "reevaluation": null,
+      "owner": "visual-governance"
+    },
+    {
+      "surface": "prisma.mobile.app",
+      "state": "VALIDATED",
+      "reviewedFiles": [
+        "products/mobile/app/app/prisma-app/prisma-app.module.css"
+      ],
+      "touchedFiles": [],
+      "evidence": "Guardian check plus visual diff review. Replace this with actual evidence.",
+      "exclusionReason": null,
+      "reevaluation": null,
+      "owner": "visual-governance"
+    }
+  ],
+  "notes": "Do not remove a surface from this matrix. Use EXCLUDED only with concrete reason and no shared visual impact."
+}
