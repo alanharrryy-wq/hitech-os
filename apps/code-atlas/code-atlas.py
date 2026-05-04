@@ -17343,5 +17343,63 @@ def main() -> int:
         destroy_progress_ui(progress)
 
 
+
+
+# CODE_ATLAS_NO_BLACK_CONSOLE_V1: relanza la app sin consola negra en Windows.
+def _code_atlas_relaunch_without_black_console() -> bool:
+    """Relaunch this GUI script without a console window on Windows.
+
+    This is intentionally tiny and isolated: it does not modify the UI, the
+    glass scene, the selector, the progress window, or any rendering code.
+    It only changes the launcher behavior when the script starts under
+    python.exe, because Windows loves opening a black rectangle like it owns
+    the place.
+    """
+    try:
+        import os as _os
+        import subprocess as _subprocess
+        import sys as _sys
+        from pathlib import Path as _Path
+
+        if _os.name != "nt":
+            return False
+
+        if _os.environ.get("CODE_ATLAS_NO_BLACK_CONSOLE_V1") == "1":
+            return False
+
+        if _os.environ.get("CODE_ATLAS_KEEP_CONSOLE", "").strip().lower() in {"1", "true", "yes", "on"}:
+            return False
+
+        executable = _Path(_sys.executable)
+        if executable.name.lower() == "pythonw.exe":
+            return False
+
+        script_path = _Path(__file__).resolve()
+        pythonw = executable.with_name("pythonw.exe")
+        launch_exe = pythonw if pythonw.exists() else executable
+
+        env = _os.environ.copy()
+        env["CODE_ATLAS_NO_BLACK_CONSOLE_V1"] = "1"
+
+        creationflags = 0
+        for flag_name in ("DETACHED_PROCESS", "CREATE_NEW_PROCESS_GROUP", "CREATE_NO_WINDOW"):
+            creationflags |= int(getattr(_subprocess, flag_name, 0))
+
+        _subprocess.Popen(
+            [str(launch_exe), str(script_path), *_sys.argv[1:]],
+            cwd=str(script_path.parent),
+            env=env,
+            stdin=_subprocess.DEVNULL,
+            stdout=_subprocess.DEVNULL,
+            stderr=_subprocess.DEVNULL,
+            close_fds=True,
+            creationflags=creationflags,
+        )
+        return True
+    except Exception:
+        return False
+
 if __name__ == "__main__":
+    if _code_atlas_relaunch_without_black_console():
+        raise SystemExit(0)
     raise SystemExit(main())
