@@ -1,13 +1,25 @@
-import { LauncherPageClient } from "@components/home/launcher-page-client";
-import { listSchemas } from "@/lib/core/schema-registry";
-import { listRecords } from "@/lib/services/records";
-import { listSyncCenterData } from "@/lib/services/actions";
+import { Benefits } from "@/components/prisma/Benefits";
+import { CtaBand } from "@/components/prisma/CtaBand";
+import { Faq } from "@/components/prisma/Faq";
+import { FlowBand } from "@/components/prisma/FlowBand";
+import { Footer } from "@/components/prisma/Footer";
+import { Hero } from "@/components/prisma/Hero";
+import { Nav } from "@/components/prisma/Nav";
+import { TriAppModel } from "@/components/prisma/TriAppModel";
+import { VerticalCards } from "@/components/prisma/VerticalCards";
 
-export const dynamic = "force-dynamic";
-
-export default async function LauncherPage() {
-  const schemas = listSchemas();
-  const [records, syncData] = await Promise.all([listRecords(), listSyncCenterData()]);
-
-  return <LauncherPageClient schemas={schemas} records={records} syncData={syncData} />;
+export default function HomePage() {
+  return (
+    <main className="site-shell">
+      <Nav />
+      <Hero />
+      <TriAppModel />
+      <VerticalCards />
+      <FlowBand />
+      <Benefits />
+      <Faq />
+      <CtaBand />
+      <Footer />
+    </main>
+  );
 }

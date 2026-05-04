@@ -1,49 +1,28 @@
 import type { Metadata } from "next";
-import { Fraunces, IBM_Plex_Mono, Manrope, Space_Grotesk } from "next/font/google";
 import type { ReactNode } from "react";
-
-import { AmbientBackdrop } from "@components/layout/ambient-backdrop";
-import { AppFrame } from "@components/layout/app-frame";
-
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "External Interaction Template",
-  description: "Plantilla neutral para interacciones externas con flujos de captura, revisión, actualización, aprobación, despacho y sincronización."
+  title: "PRISMA | Tablet opera, PC gobierna, Mobile supervisa",
+  description:
+    "PRISMA conecta punto de venta, administración y supervisión móvil para operar con menos caos y más control.",
+  metadataBase: new URL("https://eit.hitechrts.com"),
+  openGraph: {
+    title: "PRISMA",
+    description:
+      "Vende en Tablet. Controla en PC. Supervisa desde el celular.",
+    url: "https://eit.hitechrts.com",
+    siteName: "PRISMA",
+    images: [{ url: "/prisma/brand/prisma-og.svg", width: 1200, height: 630 }],
+    locale: "es_MX",
+    type: "website"
+  }
 };
 
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-manrope",
-  display: "swap"
-});
-
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  variable: "--font-fraunces",
-  display: "swap"
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-space-grotesk",
-  display: "swap"
-});
-
-const ibmPlexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  variable: "--font-ibm-plex-mono",
-  display: "swap",
-  weight: ["400", "500"]
-});
-
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="es">
-      <body className={`${manrope.variable} ${fraunces.variable} ${spaceGrotesk.variable} ${ibmPlexMono.variable}`}>
-        <AmbientBackdrop />
-        <AppFrame>{children}</AppFrame>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
