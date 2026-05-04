@@ -1,9 +1,1 @@
-export default function SyncPage() {
-  return (
-    <main style={{ padding: "24px", fontFamily: "system-ui, sans-serif" }}>
-      <h1>Sincronización</h1>
-      <p>Estado de sincronización y operación administrada de Tablet.</p>
-      <p>La venta básica local debe seguir disponible aunque la sincronización falle.</p>
-    </main>
-  );
-}
+import { PendingOfflineSyncPanelScreen } from "@components/sync/pending-offline-sync-panel-screen";import { ContextualExportBand } from "@components/reports/contextual-export-band";export const dynamic="force-dynamic";export const metadata={title:"Pendientes y conexión - PRISMA Tablet",description:"Panel operativo de pendientes, fallidos y trabajo local por enviar."};export default function SyncPage(){return <><ContextualExportBand surface="sync"/><PendingOfflineSyncPanelScreen/></>}

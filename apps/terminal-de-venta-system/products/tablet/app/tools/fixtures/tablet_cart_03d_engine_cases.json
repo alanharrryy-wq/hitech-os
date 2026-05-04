@@ -1,0 +1,607 @@
+{
+  "schemaVersion": "tablet-cart-engine-cases.03d",
+  "products": [
+    {
+      "id": "coca600",
+      "sku": "BEB-COCA-600",
+      "name": "Coca-Cola 600 ml",
+      "priceCents": 1800,
+      "stockOnHand": 24,
+      "isActive": true
+    },
+    {
+      "id": "agua1l",
+      "sku": "BEB-AGUA-1L",
+      "name": "Agua 1 L",
+      "priceCents": 1400,
+      "stockOnHand": 8,
+      "isActive": true
+    },
+    {
+      "id": "papas",
+      "sku": "BOT-PAP-45",
+      "name": "Papas 45 g",
+      "priceCents": 1700,
+      "stockOnHand": 0,
+      "isActive": true
+    },
+    {
+      "id": "inactivo",
+      "sku": "OLD-001",
+      "name": "Producto inactivo",
+      "priceCents": 1000,
+      "stockOnHand": 10,
+      "isActive": false
+    }
+  ],
+  "cases": [
+    {
+      "name": "agregar coca600",
+      "command": "add",
+      "product": {
+        "id": "coca600",
+        "sku": "BEB-COCA-600",
+        "name": "Coca-Cola 600 ml",
+        "priceCents": 1800,
+        "stockOnHand": 24,
+        "isActive": true
+      },
+      "initial": [],
+      "expected": {
+        "changed": true,
+        "qty": 1
+      }
+    },
+    {
+      "name": "agregar agua1l",
+      "command": "add",
+      "product": {
+        "id": "agua1l",
+        "sku": "BEB-AGUA-1L",
+        "name": "Agua 1 L",
+        "priceCents": 1400,
+        "stockOnHand": 8,
+        "isActive": true
+      },
+      "initial": [],
+      "expected": {
+        "changed": true,
+        "qty": 1
+      }
+    },
+    {
+      "name": "agregar papas",
+      "command": "add",
+      "product": {
+        "id": "papas",
+        "sku": "BOT-PAP-45",
+        "name": "Papas 45 g",
+        "priceCents": 1700,
+        "stockOnHand": 0,
+        "isActive": true
+      },
+      "initial": [],
+      "expected": {
+        "changed": true,
+        "qty": 1
+      }
+    },
+    {
+      "name": "agregar inactivo",
+      "command": "add",
+      "product": {
+        "id": "inactivo",
+        "sku": "OLD-001",
+        "name": "Producto inactivo",
+        "priceCents": 1000,
+        "stockOnHand": 10,
+        "isActive": false
+      },
+      "initial": [],
+      "expected": {
+        "changed": false,
+        "qty": 0
+      }
+    },
+    {
+      "name": "normalizar cantidad 1",
+      "command": "sanitize",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 1
+        }
+      ],
+      "expected": {
+        "qty": 1
+      }
+    },
+    {
+      "name": "normalizar cantidad 2",
+      "command": "sanitize",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 2
+        }
+      ],
+      "expected": {
+        "qty": 2
+      }
+    },
+    {
+      "name": "normalizar cantidad 5",
+      "command": "sanitize",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 5
+        }
+      ],
+      "expected": {
+        "qty": 5
+      }
+    },
+    {
+      "name": "normalizar cantidad 998",
+      "command": "sanitize",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 998
+        }
+      ],
+      "expected": {
+        "qty": 998
+      }
+    },
+    {
+      "name": "normalizar cantidad 999",
+      "command": "sanitize",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 999
+        }
+      ],
+      "expected": {
+        "qty": 999
+      }
+    },
+    {
+      "name": "normalizar cantidad 1000",
+      "command": "sanitize",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 1000
+        }
+      ],
+      "expected": {
+        "qty": 999
+      }
+    },
+    {
+      "name": "normalizar cantidad -3",
+      "command": "sanitize",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": -3
+        }
+      ],
+      "expected": {
+        "qty": 1
+      }
+    },
+    {
+      "name": "normalizar cantidad 0",
+      "command": "sanitize",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 0
+        }
+      ],
+      "expected": {
+        "qty": 1
+      }
+    },
+    {
+      "name": "decrementar desde 1",
+      "command": "decrement",
+      "productId": "coca600",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 1
+        }
+      ],
+      "expected": {
+        "qty": 0
+      }
+    },
+    {
+      "name": "decrementar desde 2",
+      "command": "decrement",
+      "productId": "coca600",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 2
+        }
+      ],
+      "expected": {
+        "qty": 1
+      }
+    },
+    {
+      "name": "decrementar desde 3",
+      "command": "decrement",
+      "productId": "coca600",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 3
+        }
+      ],
+      "expected": {
+        "qty": 2
+      }
+    },
+    {
+      "name": "checkout stock qty 1",
+      "command": "readiness",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 1
+        }
+      ],
+      "expected": {
+        "ready": true,
+        "totalCents": 1800
+      }
+    },
+    {
+      "name": "checkout stock qty 2",
+      "command": "readiness",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 2
+        }
+      ],
+      "expected": {
+        "ready": true,
+        "totalCents": 3600
+      }
+    },
+    {
+      "name": "checkout stock qty 23",
+      "command": "readiness",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 23
+        }
+      ],
+      "expected": {
+        "ready": true,
+        "totalCents": 41400
+      }
+    },
+    {
+      "name": "checkout stock qty 24",
+      "command": "readiness",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 24
+        }
+      ],
+      "expected": {
+        "ready": true,
+        "totalCents": 43200
+      }
+    },
+    {
+      "name": "checkout stock qty 25",
+      "command": "readiness",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 25
+        }
+      ],
+      "expected": {
+        "ready": false,
+        "totalCents": 45000
+      }
+    },
+    {
+      "name": "dos productos validos suman total",
+      "command": "readiness",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 2
+        },
+        {
+          "product": {
+            "id": "agua1l",
+            "sku": "BEB-AGUA-1L",
+            "name": "Agua 1 L",
+            "priceCents": 1400,
+            "stockOnHand": 8,
+            "isActive": true
+          },
+          "qty": 3
+        }
+      ],
+      "expected": {
+        "ready": true,
+        "totalCents": 7800,
+        "totalQty": 5
+      }
+    },
+    {
+      "name": "producto sin stock bloquea cobro",
+      "command": "readiness",
+      "initial": [
+        {
+          "product": {
+            "id": "papas",
+            "sku": "BOT-PAP-45",
+            "name": "Papas 45 g",
+            "priceCents": 1700,
+            "stockOnHand": 0,
+            "isActive": true
+          },
+          "qty": 1
+        }
+      ],
+      "expected": {
+        "ready": false,
+        "blocking": [
+          "papas"
+        ]
+      }
+    },
+    {
+      "name": "duplicados se consolidan",
+      "command": "sanitize",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 2
+        },
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 4
+        }
+      ],
+      "expected": {
+        "qty": 6
+      }
+    },
+    {
+      "name": "producto inactivo se limpia",
+      "command": "sanitize",
+      "initial": [
+        {
+          "product": {
+            "id": "inactivo",
+            "sku": "OLD-001",
+            "name": "Producto inactivo",
+            "priceCents": 1000,
+            "stockOnHand": 10,
+            "isActive": false
+          },
+          "qty": 2
+        }
+      ],
+      "expected": {
+        "qty": 0
+      }
+    },
+    {
+      "name": "remove elimina linea",
+      "command": "remove",
+      "productId": "agua1l",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 1
+        },
+        {
+          "product": {
+            "id": "agua1l",
+            "sku": "BEB-AGUA-1L",
+            "name": "Agua 1 L",
+            "priceCents": 1400,
+            "stockOnHand": 8,
+            "isActive": true
+          },
+          "qty": 1
+        }
+      ],
+      "expected": {
+        "remaining": [
+          "coca600"
+        ]
+      }
+    },
+    {
+      "name": "clear vacia ticket",
+      "command": "clear",
+      "initial": [
+        {
+          "product": {
+            "id": "coca600",
+            "sku": "BEB-COCA-600",
+            "name": "Coca-Cola 600 ml",
+            "priceCents": 1800,
+            "stockOnHand": 24,
+            "isActive": true
+          },
+          "qty": 1
+        },
+        {
+          "product": {
+            "id": "agua1l",
+            "sku": "BEB-AGUA-1L",
+            "name": "Agua 1 L",
+            "priceCents": 1400,
+            "stockOnHand": 8,
+            "isActive": true
+          },
+          "qty": 1
+        }
+      ],
+      "expected": {
+        "qty": 0
+      }
+    }
+  ]
+}

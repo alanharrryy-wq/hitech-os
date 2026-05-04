@@ -8,9 +8,9 @@ export function CheckoutPaymentMethods({ value, onChange }: { value: PaymentMeth
   return (
     <section className={styles.paymentMethods} aria-label="Método de pago">
       {PAYMENT_METHODS.map((method) => (
-        <button key={method.value} className={value === method.value ? styles.paymentActive : styles.paymentButton} type="button" onClick={() => onChange(method.value)}>
+        <button key={method.id} className={value === method.id ? styles.paymentActive : styles.paymentButton} type="button" onClick={() => onChange(method.id)}>
           <strong>{method.label}</strong>
-          <span>{method.helper}</span>
+          <span>{method.visibleConfirmation}</span>
         </button>
       ))}
     </section>

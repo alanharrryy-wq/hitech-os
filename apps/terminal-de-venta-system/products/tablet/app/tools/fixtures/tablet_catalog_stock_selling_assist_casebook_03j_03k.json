@@ -1,0 +1,224 @@
+{
+  "package": "PRISMA_TABLET_CATALOG_STOCK_SELLING_ASSIST_03J_03K",
+  "version": "03J_03K",
+  "businessGoal": "Catalogo y existencias alimentan venta local sin duplicar POS.",
+  "products": [
+    {
+      "id": "p_available",
+      "sku": "REF-600",
+      "name": "Refresco cola 600 ml",
+      "category": "Bebidas",
+      "barcode": "7501000000010",
+      "barcodes": [
+        "7501000000010"
+      ],
+      "priceCents": 1800,
+      "stockOnHand": 24,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAdd": true
+    },
+    {
+      "id": "p_low",
+      "sku": "AGU-1L",
+      "name": "Agua natural 1 L",
+      "category": "Bebidas",
+      "barcode": "7501000000027",
+      "barcodes": [
+        "7501000000027"
+      ],
+      "priceCents": 1500,
+      "stockOnHand": 3,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "low_stock",
+      "canAdd": true
+    },
+    {
+      "id": "p_zero",
+      "sku": "PAN-BIM",
+      "name": "Pan blanco chico",
+      "category": "Panaderia",
+      "barcode": "7501000000034",
+      "barcodes": [
+        "7501000000034"
+      ],
+      "priceCents": 4200,
+      "stockOnHand": 0,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "out_of_stock",
+      "canAdd": false
+    },
+    {
+      "id": "p_inactive",
+      "sku": "CAF-DESC",
+      "name": "Cafe descafeinado retirado",
+      "category": "Abarrotes",
+      "barcode": "7501000000041",
+      "barcodes": [
+        "7501000000041"
+      ],
+      "priceCents": 8900,
+      "stockOnHand": 12,
+      "lowStockThreshold": 4,
+      "isActive": false,
+      "expectedSignal": "inactive",
+      "canAdd": false
+    },
+    {
+      "id": "p_available_2",
+      "sku": "PAP-45",
+      "name": "Papas saladas 45 g",
+      "category": "Botanas",
+      "barcode": "7501000000058",
+      "barcodes": [
+        "7501000000058",
+        "SKU-PAP-45"
+      ],
+      "priceCents": 1700,
+      "stockOnHand": 9,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAdd": true
+    },
+    {
+      "id": "p_low_2",
+      "sku": "LEC-1L",
+      "name": "Leche entera 1 L",
+      "category": "Lacteos",
+      "barcode": "7501000000065",
+      "barcodes": [
+        "7501000000065"
+      ],
+      "priceCents": 3100,
+      "stockOnHand": 1,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "low_stock",
+      "canAdd": true
+    },
+    {
+      "id": "p_zero_2",
+      "sku": "HIE-5KG",
+      "name": "Hielo bolsa 5 kg",
+      "category": "Congelados",
+      "barcode": "7501000000072",
+      "barcodes": [
+        "7501000000072"
+      ],
+      "priceCents": 3200,
+      "stockOnHand": 0,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "out_of_stock",
+      "canAdd": false
+    },
+    {
+      "id": "p_inactive_2",
+      "sku": "PROM-VIEJA",
+      "name": "Combo promocion anterior",
+      "category": "Promociones",
+      "barcode": "7501000000089",
+      "barcodes": [
+        "7501000000089"
+      ],
+      "priceCents": 9900,
+      "stockOnHand": 99,
+      "lowStockThreshold": 5,
+      "isActive": false,
+      "expectedSignal": "inactive",
+      "canAdd": false
+    }
+  ],
+  "cases": [
+    {
+      "id": "C01",
+      "title": "catalog route uses selling assist mode catalog",
+      "route": "/catalog",
+      "expect": [
+        "CatalogStockSellingAssistScreen",
+        "mode=\"catalog\"",
+        "Catálogo que sí vende"
+      ]
+    },
+    {
+      "id": "C02",
+      "title": "stock route uses selling assist mode stock",
+      "route": "/stock",
+      "expect": [
+        "CatalogStockSellingAssistScreen",
+        "mode=\"stock\"",
+        "Existencias para vender"
+      ]
+    },
+    {
+      "id": "C03",
+      "title": "existencias route renders stock mode",
+      "route": "/existencias",
+      "expect": [
+        "CatalogStockSellingAssistScreen",
+        "mode=\"stock\""
+      ]
+    },
+    {
+      "id": "C04",
+      "title": "available product can be added",
+      "productId": "p_available",
+      "expectedSignal": "available",
+      "canAdd": true
+    },
+    {
+      "id": "C05",
+      "title": "low stock product can be added with warning",
+      "productId": "p_low",
+      "expectedSignal": "low_stock",
+      "canAdd": true
+    },
+    {
+      "id": "C06",
+      "title": "out of stock product is blocked",
+      "productId": "p_zero",
+      "expectedSignal": "out_of_stock",
+      "canAdd": false
+    },
+    {
+      "id": "C07",
+      "title": "inactive product is blocked",
+      "productId": "p_inactive",
+      "expectedSignal": "inactive",
+      "canAdd": false
+    },
+    {
+      "id": "C08",
+      "title": "cart handoff uses existing POS storage key",
+      "expect": [
+        "POS_CART_STORAGE_KEY",
+        "addProductToCart",
+        "prisma:tablet-cart-updated"
+      ]
+    },
+    {
+      "id": "C09",
+      "title": "screen exposes offline strip",
+      "expect": [
+        "navigator.onLine",
+        "online",
+        "offline",
+        "Sin conexión visible"
+      ]
+    },
+    {
+      "id": "C10",
+      "title": "filters expose stock states",
+      "expect": [
+        "available",
+        "low_stock",
+        "out_of_stock",
+        "inactive"
+      ]
+    }
+  ]
+}

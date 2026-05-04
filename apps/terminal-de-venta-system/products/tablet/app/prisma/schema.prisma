@@ -386,6 +386,9 @@ model Sale {
   folio         String
   cashier       String
   totalCents    Int
+  paymentMethod String   @default("cash")
+  cashReceivedCents Int?
+  changeCents   Int      @default(0)
   status        String
   createdAt     DateTime @default(now())
 

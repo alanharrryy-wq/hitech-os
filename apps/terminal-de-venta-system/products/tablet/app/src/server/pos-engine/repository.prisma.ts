@@ -116,12 +116,15 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
   async completeLocalSale(input: CompleteLocalSaleInput): Promise<CompleteLocalSaleResult> {
     const businessId = input.businessId ?? DEFAULT_BUSINESS_ID;
     const terminalId = input.terminalId ?? DEFAULT_TERMINAL_ID;
-    const cashSessionId = input.cashSessionId ?? null;
+    const requestedCashSessionId = input.cashSessionId ?? null;
     const cashier = input.cashier ?? DEFAULT_CASHIER;
     const location = input.location ?? DEFAULT_LOCATION;
     const allowNegativeStock = input.allowNegativeStock ?? false;
     const lowStockThreshold = input.lowStockThreshold ?? DEFAULT_LOW_STOCK_THRESHOLD;
     const normalizedLines = normalizeLines(input.lines);
+    const paymentMethod = input.paymentMethod ?? "cash";
+    const cashReceivedCents = input.cashReceivedCents ?? null;
+    const changeCents = input.changeCents ?? 0;
 
     return this.db.$transaction(async (tx: TxClient) => {
       const business = await tx.business.findUnique({ where: { id: businessId } });
@@ -152,6 +155,9 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
             cashSessionId: existingSale.cashSessionId ?? null,
             cashier: existingSale.cashier,
             totalCents: existingSale.totalCents,
+            paymentMethod: existingSale.paymentMethod ?? "cash",
+            cashReceivedCents: existingSale.cashReceivedCents ?? null,
+            changeCents: existingSale.changeCents ?? 0,
             status: SALE_STATUS_COMPLETED as "COMPLETED",
             createdAt: existingSale.createdAt,
             lines: existingSale.lines.map((line: any) => ({ id: line.id, productId: line.productId, sku: line.sku, productName: line.productName, qty: line.qty, priceCents: line.priceCents, totalCents: line.totalCents, stockBefore: 0, stockAfter: 0 })),
@@ -159,6 +165,16 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
           };
         }
       }
+
+      const activeCashSession = requestedCashSessionId
+        ? await tx.cashSession.findFirst({ where: { id: requestedCashSessionId, businessId, terminalId, status: "OPEN" } })
+        : await tx.cashSession.findFirst({ where: { businessId, terminalId, status: "OPEN" }, orderBy: { openedAt: "desc" } });
+
+      if (!activeCashSession) {
+        throw new PosEngineError("SHIFT_NOT_OPEN", "Abre turno antes de cerrar ventas en esta terminal.", { businessId, terminalId, requestedCashSessionId });
+      }
+
+      const cashSessionId = activeCashSession.id;
 
       const now = new Date();
       const saleId = makePosId("sale");
@@ -215,6 +231,9 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
           folio,
           cashier,
           totalCents,
+          paymentMethod,
+          cashReceivedCents,
+          changeCents,
           status: SALE_STATUS_COMPLETED,
           createdAt: now
         }
@@ -245,6 +264,9 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
         cashSessionId,
         cashier,
         totalCents,
+        paymentMethod,
+        cashReceivedCents,
+        changeCents,
         status: SALE_STATUS_COMPLETED as "COMPLETED",
         createdAt: now,
         lines: lineResults

@@ -1,0 +1,1 @@
+import { SalesTicketDetailScreen } from "@components/sales/sales-ticket-detail-screen";export default function Page({params}:{params:{saleId:string}}){return <SalesTicketDetailScreen saleId={decodeURIComponent(params.saleId)}/>}

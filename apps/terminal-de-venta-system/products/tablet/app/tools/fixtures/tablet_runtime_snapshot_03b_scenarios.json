@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "tablet-runtime-snapshot-fixtures.03b",
+  "cases": [
+    {
+      "name": "turno abierto y sin pendientes",
+      "input": {
+        "openShift": true,
+        "pendingEvents": 0,
+        "failedEvents": 0,
+        "conflictEvents": 0,
+        "activeProducts": 120,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno abierto",
+        "connection": "En linea",
+        "catalog": "Catalogo listo"
+      }
+    },
+    {
+      "name": "turno cerrado",
+      "input": {
+        "openShift": false,
+        "pendingEvents": 0,
+        "failedEvents": 0,
+        "conflictEvents": 0,
+        "activeProducts": 120,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno cerrado",
+        "connection": "En linea",
+        "catalog": "Catalogo listo"
+      }
+    },
+    {
+      "name": "pendientes por enviar",
+      "input": {
+        "openShift": true,
+        "pendingEvents": 8,
+        "failedEvents": 0,
+        "conflictEvents": 0,
+        "activeProducts": 120,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno abierto",
+        "connection": "Pendientes por enviar",
+        "catalog": "Catalogo listo"
+      }
+    },
+    {
+      "name": "pendientes con error",
+      "input": {
+        "openShift": true,
+        "pendingEvents": 2,
+        "failedEvents": 1,
+        "conflictEvents": 0,
+        "activeProducts": 120,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno abierto",
+        "connection": "Revisar pendientes",
+        "catalog": "Catalogo listo"
+      }
+    },
+    {
+      "name": "catalogo vacio",
+      "input": {
+        "openShift": true,
+        "pendingEvents": 0,
+        "failedEvents": 0,
+        "conflictEvents": 0,
+        "activeProducts": 0,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno abierto",
+        "connection": "En linea",
+        "catalog": "Catalogo vacio"
+      }
+    },
+    {
+      "name": "existencias bajas",
+      "input": {
+        "openShift": true,
+        "pendingEvents": 0,
+        "failedEvents": 0,
+        "conflictEvents": 0,
+        "activeProducts": 120,
+        "lowStockProducts": 7
+      },
+      "expected": {
+        "shift": "Turno abierto",
+        "connection": "En linea",
+        "catalog": "Revisar existencias"
+      }
+    }
+  ]
+}

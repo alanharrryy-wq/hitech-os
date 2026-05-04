@@ -58,6 +58,9 @@ export function saleCompletedEvent(result: Omit<CompleteLocalSaleResult, "events
       cashSessionId: result.cashSessionId,
       cashier: result.cashier,
       totalCents: result.totalCents,
+      paymentMethod: result.paymentMethod,
+      cashReceivedCents: result.cashReceivedCents,
+      changeCents: result.changeCents,
       status: result.status,
       lineCount: result.lines.length,
       createdAt: result.createdAt.toISOString()
@@ -69,6 +72,8 @@ export function ticketClosedEvent(result: Omit<CompleteLocalSaleResult, "events"
       saleId: result.saleId,
       folio: result.folio,
       totalCents: result.totalCents,
+      paymentMethod: result.paymentMethod,
+      changeCents: result.changeCents,
       items: result.lines.map((line) => ({
         productId: line.productId,
         sku: line.sku,

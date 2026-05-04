@@ -3,6 +3,7 @@ import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { TABLET_CONVENIENCE_PRODUCTS_04B } from "./tablet-seed-catalog.mjs";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const appRoot = path.resolve(scriptDir, "..");
@@ -140,6 +141,7 @@ async function ensureSaleClientRequestIdSchema() {
 }
 
 async function seed() {
+  // PRISMA_TABLET_SEED_STORE_UPSERT_HOTFIX_04C: Store/Terminal/TaxRate seed uses compound unique upserts.
   // PRISMA HARDENING 01: safe seed, no stock reset after operation unless --reset-demo-stock is explicit.
   const resetDemoStock = process.argv.includes("--reset-demo-stock");
   configureDatabaseEnv();
@@ -149,9 +151,9 @@ async function seed() {
 
   try {
     const businessId = "biz_tablet_standalone";
-    const storeId = "store_tablet_local";
-    const terminalId = "terminal_tablet_local_01";
-    const taxRateId = "tax_mx_iva_16";
+    const defaultStoreId = "store_tablet_local";
+    const defaultTerminalId = "terminal_tablet_local_01";
+    const defaultTaxRateId = "tax_mx_iva_16";
 
     await prisma.business.upsert({
       where: { id: businessId },
@@ -159,29 +161,30 @@ async function seed() {
       create: { id: businessId, name: "PRISMA Tablet Standalone", taxId: null, currency: "MXN" }
     });
 
-    await prisma.store.upsert({
-      where: { id: storeId },
-      update: { name: "Tienda local", code: "LOCAL" },
-      create: { id: storeId, businessId, code: "LOCAL", name: "Tienda local" }
+    const localStore = await prisma.store.upsert({
+      where: { businessId_code: { businessId, code: "LOCAL" } },
+      update: { name: "Tienda local" },
+      create: { id: defaultStoreId, businessId, code: "LOCAL", name: "Tienda local" }
     });
+    const storeId = localStore.id;
 
-    await prisma.terminal.upsert({
-      where: { id: terminalId },
-      update: { name: "Tablet POS local", code: "TBL-LOCAL", isActive: true },
-      create: { id: terminalId, businessId, storeId, code: "TBL-LOCAL", name: "Tablet POS local", isActive: true }
+    const localTerminal = await prisma.terminal.upsert({
+      where: { businessId_code: { businessId, code: "TBL-LOCAL" } },
+      update: { storeId, name: "Tablet POS local", isActive: true },
+      create: { id: defaultTerminalId, businessId, storeId, code: "TBL-LOCAL", name: "Tablet POS local", isActive: true }
     });
+    const terminalId = localTerminal.id;
 
-    await prisma.taxRate.upsert({
-      where: { id: taxRateId },
-      update: { name: "IVA 16%", rateBps: 1600, isDefault: true, isActive: true },
-      create: { id: taxRateId, businessId, name: "IVA 16%", rateBps: 1600, isDefault: true, isActive: true }
+    const ivaTaxRate = await prisma.taxRate.upsert({
+      where: { businessId_name: { businessId, name: "IVA 16%" } },
+      update: { rateBps: 1600, isDefault: true, isActive: true },
+      create: { id: defaultTaxRateId, businessId, name: "IVA 16%", rateBps: 1600, isDefault: true, isActive: true }
     });
+    const taxRateId = ivaTaxRate.id;
 
-    const products = [
-      { id: "prd_demo_refresco_355", sku: "REF-355", name: "Refresco 355 ml", category: "Bebidas", priceCents: 3000, costCents: 1600, stockOnHand: 24, barcode: "7501000000011" },
-      { id: "prd_demo_papas_45", sku: "PAP-045", name: "Papas 45 g", category: "Botanas", priceCents: 2200, costCents: 1200, stockOnHand: 18, barcode: "7501000000028" },
-      { id: "prd_demo_galleta", sku: "GAL-001", name: "Galleta individual", category: "Dulces", priceCents: 1500, costCents: 700, stockOnHand: 30, barcode: "7501000000035" }
-    ];
+    const products = TABLET_CONVENIENCE_PRODUCTS_04B;
+    const publicBarcodeCount = products.filter((product) => product.barcodeSource === "public").length;
+    const internalBarcodeCount = products.length - publicBarcodeCount;
 
     const operationalSales = await prisma.sale.count().catch(() => 0);
     const operationalMovements = await prisma.stockMovement.count().catch(() => 0);
@@ -208,7 +211,7 @@ async function seed() {
           category: product.category,
           priceCents: product.priceCents,
           costCents: product.costCents,
-          ...(canResetDemoStock ? { stockOnHand: product.stockOnHand } : {}),
+          stockOnHand: product.stockOnHand,
           taxRateId,
           isActive: true
         }
@@ -232,7 +235,9 @@ async function seed() {
           businessId,
           productId: product.id,
           location: "LOCAL",
-          ...(canResetDemoStock ? { onHand: product.stockOnHand, reserved: 0, available: product.stockOnHand } : {}),
+          onHand: product.stockOnHand,
+          reserved: 0,
+          available: product.stockOnHand,
           daysCover: 7,
           snapshotAt: new Date()
         }
@@ -240,7 +245,8 @@ async function seed() {
     }
 
     console.log(`[tablet-db] Seed OK: ${dbPath}`);
-    if (!canResetDemoStock) console.log('[tablet-db] Safe seed preserved operational stock. Use --reset-demo-stock only on empty demo DB.');
+    console.log(`[tablet-db] Catalogo operativo: ${products.length} productos (${publicBarcodeCount} codigos publicos, ${internalBarcodeCount} codigos internos validos).`);
+    if (!canResetDemoStock) console.log('[tablet-db] Safe seed preserved existing operational stock. New products still receive initial stock. Use --reset-demo-stock only on empty demo DB.');
   } finally {
     await prisma.$disconnect();
   }

@@ -1,0 +1,93 @@
+{
+  "package": "PRISMA_TABLET_CATALOG_STOCK_SELLING_ASSIST_03J_03K",
+  "gates": [
+    {
+      "id": "R01",
+      "name": "no shared kernel changes",
+      "forbiddenTargets": [
+        "packages/shared-kernel/",
+        "shared/TWIN_CHAT_SHARED_CONTEXT_6.1.json"
+      ]
+    },
+    {
+      "id": "R02",
+      "name": "no pc product changes",
+      "forbiddenTargets": [
+        "products/pc/"
+      ]
+    },
+    {
+      "id": "R03",
+      "name": "no checkout mutation",
+      "forbiddenTargets": [
+        "components/checkout/",
+        "app/checkout/",
+        "src/lib/pos/payment-flow.ts"
+      ]
+    },
+    {
+      "id": "R04",
+      "name": "visible copy stays operator friendly",
+      "forbiddenVisibleTerms": [
+        "payload",
+        "outbox",
+        "runtime",
+        "fixture",
+        "mock",
+        "demo",
+        "TODO"
+      ]
+    },
+    {
+      "id": "R05",
+      "name": "router coverage",
+      "requiredRoutes": [
+        "app/catalog/page.tsx",
+        "app/stock/page.tsx",
+        "app/existencias/page.tsx"
+      ]
+    },
+    {
+      "id": "R06",
+      "name": "business states",
+      "requiredStates": [
+        "available",
+        "low_stock",
+        "out_of_stock",
+        "inactive"
+      ]
+    }
+  ],
+  "acceptanceMatrix": [
+    {
+      "screen": "/catalog",
+      "query": "refresco",
+      "expected": "producto seleccionado y agregable"
+    },
+    {
+      "screen": "/catalog",
+      "query": "PROM-VIEJA",
+      "expected": "producto visible pero bloqueado por inactivo"
+    },
+    {
+      "screen": "/stock",
+      "filter": "low_stock",
+      "expected": "productos con existencia menor o igual al umbral"
+    },
+    {
+      "screen": "/stock",
+      "filter": "out_of_stock",
+      "expected": "productos bloqueados por cero existencia"
+    },
+    {
+      "screen": "/existencias",
+      "filter": "all",
+      "expected": "alias operativo en modo stock"
+    },
+    {
+      "screen": "/catalog",
+      "action": "Agregar a venta",
+      "expected": "persistencia en carrito local de /pos"
+    }
+  ]
+}

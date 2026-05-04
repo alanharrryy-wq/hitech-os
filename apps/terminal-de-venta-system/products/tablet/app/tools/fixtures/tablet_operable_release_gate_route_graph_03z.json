@@ -1,0 +1,48 @@
+{
+  "package": "PRISMA_TABLET_OPERABLE_RELEASE_GATE_03Z",
+  "requiredRoutes": [
+    {
+      "route": "/",
+      "purpose": "gate"
+    },
+    {
+      "route": "/pos",
+      "purpose": "gate"
+    },
+    {
+      "route": "/sales/today",
+      "purpose": "gate"
+    },
+    {
+      "route": "/catalog",
+      "purpose": "gate"
+    },
+    {
+      "route": "/stock",
+      "purpose": "gate"
+    },
+    {
+      "route": "/existencias",
+      "purpose": "gate"
+    },
+    {
+      "route": "/shift",
+      "purpose": "gate"
+    },
+    {
+      "route": "/sync",
+      "purpose": "gate"
+    },
+    {
+      "route": "/release-gate",
+      "purpose": "gate"
+    }
+  ],
+  "previousVerifiers": [
+    "verify_tablet_catalog_stock_selling_assist_03j_03k.mjs",
+    "verify_tablet_shift_cash_closure_03l.mjs",
+    "verify_tablet_pending_offline_sync_panel_03m.mjs",
+    "verify_tablet_contextual_export_reports_03n.mjs"
+  ],
+  "routeSmokeCount": 9
+}

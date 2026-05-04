@@ -1,0 +1,1 @@
+export const RETURN_REASONS=[{id:"customer_request",label:"Solicitud del cliente"},{id:"capture_error",label:"Error de captura"},{id:"damaged_product",label:"Producto dañado"},{id:"other",label:"Otro motivo"}] as const;export function returnReasonLabel(id:string){return RETURN_REASONS.find(x=>x.id===id)?.label??"Otro motivo"}

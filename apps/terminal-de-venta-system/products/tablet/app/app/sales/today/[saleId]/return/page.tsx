@@ -1,0 +1,1 @@
+import { ReturnFromTicketScreen } from "@components/returns/return-from-ticket-screen";export default function Page({params}:{params:{saleId:string}}){return <ReturnFromTicketScreen saleId={decodeURIComponent(params.saleId)}/>}

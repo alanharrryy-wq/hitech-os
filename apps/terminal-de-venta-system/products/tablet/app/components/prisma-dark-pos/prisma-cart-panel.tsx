@@ -74,24 +74,24 @@ export function PrismaCartPanel() {
 
       <button className={styles.chargeButton} type="button">
         <span>COBRAR</span>
-        <strong>F2</strong>
+        <strong>Tocar</strong>
       </button>
 
       <footer className={styles.secondaryActions}>
         <button type="button">
           <PrismaIcon name="receipt" size={20} />
           <span>COTIZACIÓN</span>
-          <strong>F3</strong>
+          <strong>Pronto</strong>
         </button>
         <button type="button">
           <PrismaIcon name="save" size={20} />
           <span>GUARDAR</span>
-          <strong>F4</strong>
+          <strong>Ticket</strong>
         </button>
         <button type="button">
           <PrismaIcon name="trash" size={20} />
           <span>LIMPIAR</span>
-          <strong>F5</strong>
+          <strong>Actual</strong>
         </button>
       </footer>
     </aside>

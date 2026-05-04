@@ -64,8 +64,10 @@ export function CheckoutScreen() {
       title="Cobro"
       subtitle="Confirma el pago, cierra el ticket y deja la venta registrada localmente."
       status={<TabletShellStatusPill tone={state === "error" ? "danger" : state === "success" ? "ok" : "neutral"}>{state === "loading" ? "Cerrando ticket" : state === "success" ? "Ticket cerrado" : "Listo para cobrar"}</TabletShellStatusPill>}
+      visualSurface="tablet-checkout"
+      visualPreset="POS_TOUCH_REFERENCE"
     >
-      <div className={styles.checkoutGrid}>
+      <div className={styles.checkoutGrid} data-prisma-vos-stage="00F_00I" data-prisma-vsurface="tablet-checkout" data-prisma-layer="surface">
         <CheckoutSummary lines={lines} />
         <section className={styles.paymentCard} aria-label="Cobro del ticket">
           <div className={styles.totalHero}>
@@ -76,8 +78,9 @@ export function CheckoutScreen() {
           <CheckoutPaymentMethods value={paymentMethod} onChange={setPaymentMethod} />
           {paymentMethod === "cash" ? <CheckoutCashCalculator totalCents={totalCents} receivedCents={receivedCents} onReceivedCents={setReceivedCents} /> : null}
           <PosErrorBanner error={error} />
-          <button className={styles.confirmButton} type="button" onClick={() => void completeSale()} disabled={!lines.length || state === "loading" || cashIsShort}>
-            <span>{state === "loading" ? "Cerrando venta..." : "Confirmar cobro"}</span>
+          <button className={styles.confirmButton} type="button" onClick={() => void completeSale()} disabled={!lines.length || state === "loading" || cashIsShort} data-prisma-component="CheckoutButton" aria-label="Confirmar cobro">
+            <span className={styles.visuallyHidden}>Confirmar cobro</span>
+            <span>{state === "loading" ? "Cerrando venta..." : "COBRAR"}</span>
             <PrismaIcon name="receipt" size={20} />
           </button>
           {!lines.length ? <a className={styles.backLink} href="/pos">Agregar productos para cobrar</a> : null}

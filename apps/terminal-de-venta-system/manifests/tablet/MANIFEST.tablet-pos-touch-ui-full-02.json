@@ -1,0 +1,84 @@
+{
+  "integration": "PRISMA_TABLET_POS_TOUCH_UI_FULL_02",
+  "repoRoot": "F:\\repos\\hitech-os",
+  "tabletRoot": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app",
+  "pcRoot": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app",
+  "purpose": "Complete Tablet touch POS UI that consumes real standalone POS APIs and preserves visual reference routes.",
+  "filesChanged": [
+    "products/tablet/app/app/pos/page.tsx",
+    "products/tablet/app/app/checkout/page.tsx",
+    "products/tablet/app/app/catalog/page.tsx",
+    "products/tablet/app/app/sales/today/page.tsx",
+    "products/tablet/app/app/inventory/low-stock/page.tsx",
+    "products/tablet/app/app/events/outbox/page.tsx",
+    "products/tablet/app/app/settings/export/page.tsx",
+    "products/tablet/app/components/tablet-pos/touch-pos-ui.tsx",
+    "products/tablet/app/components/tablet-pos/touch-pos.module.css",
+    "products/tablet/app/src/modules/pos/module.manifest.ts",
+    "products/tablet/app/src/composition/module-registry.ts",
+    "products/tablet/app/types/framework-shims.d.ts",
+    "products/tablet/app/tools/verify_tablet_pos_touch_ui_02.mjs"
+  ],
+  "screensCompleted": [
+    "/pos",
+    "/checkout",
+    "/catalog",
+    "/sales/today",
+    "/inventory/low-stock",
+    "/events/outbox",
+    "/settings/export"
+  ],
+  "referenceRoutesPreserved": [
+    "/prisma-dark-pos-reference",
+    "/referencia-visual"
+  ],
+  "componentsCompleted": [
+    "TouchProductSearch",
+    "TouchProductList",
+    "TouchCart",
+    "CheckoutButton",
+    "TicketSummary",
+    "RuntimeStatus",
+    "OutboxMiniPanel",
+    "OperationalError",
+    "ExportPanel",
+    "ExportButton"
+  ],
+  "apiEndpointsConsumed": [
+    "GET /api/pos/products/search?q=",
+    "GET /api/pos/products/resolve?code=",
+    "POST /api/pos/sales/complete",
+    "GET /api/pos/sales/today",
+    "GET /api/pos/events/outbox",
+    "GET /api/pos/inventory/low-stock",
+    "GET /api/pos/reports/operational-today",
+    "GET /api/pos/export/sales-today?format=json|csv",
+    "GET /api/pos/export/events?format=json|csv",
+    "GET /api/pos/export/inventory-movements?format=json|csv"
+  ],
+  "runtimeSmokeUrls": [
+    "http://127.0.0.1:3120/prisma-dark-pos-reference",
+    "http://127.0.0.1:3120/pos",
+    "http://127.0.0.1:3120/checkout",
+    "http://127.0.0.1:3120/catalog",
+    "http://127.0.0.1:3120/sales/today",
+    "http://127.0.0.1:3120/inventory/low-stock",
+    "http://127.0.0.1:3120/events/outbox",
+    "http://127.0.0.1:3120/settings/export",
+    "http://127.0.0.1:3130/"
+  ],
+  "notes": [
+    "/prisma-dark-pos-reference remains visual reference only.",
+    "/pos is the functional operational Tablet POS route.",
+    "/checkout is a compatibility route that renders the same operational POS experience.",
+    "Tablet UI calls local POS APIs and does not require PC to sell."
+  ],
+  "validationsExpected": [
+    "pnpm -C F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app run typecheck",
+    "pnpm -C F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app run typecheck",
+    "node F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\tools\\verify_tablet_pos_touch_ui_02.mjs",
+    "git diff --check",
+    "HTTP smoke on Tablet and PC routes"
+  ],
+  "nextStage": "PRISMA_PC_BACKOFFICE_SYNC_DASHBOARD_03"
+}

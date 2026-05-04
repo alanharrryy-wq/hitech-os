@@ -7,8 +7,10 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }: { children: any }) {
+  const prismaTheme = process.env.NEXT_PUBLIC_PRISMA_THEME === "prisma-light" ? "prisma-light" : "prisma-dark";
+
   return (
-    <html lang="es-MX">
+    <html lang="es-MX" data-theme={prismaTheme}>
       <body>{children}</body>
     </html>
   );

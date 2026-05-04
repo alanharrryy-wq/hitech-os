@@ -1,0 +1,28 @@
+{
+  "package": "PRISMA_TABLET_POS_STANDALONE_CORE_01B_API",
+  "version": "01B_API_R1",
+  "createdAt": "2026-04-26T15:26:51.737881Z",
+  "targetRoot": "F:/repos/hitech-os/apps/terminal-de-venta-system",
+  "requires": [
+    "PRISMA_TABLET_STANDALONE_UNCOUPLING_00",
+    "PRISMA_TABLET_POS_STANDALONE_CORE_01A_ENGINE_R2"
+  ],
+  "files": [
+    "products/tablet/app/app/api/pos/products/resolve/route.ts",
+    "products/tablet/app/app/api/pos/products/search/route.ts",
+    "products/tablet/app/app/api/pos/sales/complete/route.ts",
+    "products/tablet/app/app/api/pos/sales/today/route.ts",
+    "products/tablet/app/docs/pos/STANDALONE_CORE_01B_API.md",
+    "products/tablet/app/docs/qa/pos-01b/acceptance.md",
+    "products/tablet/app/docs/qa/pos-01b/fixtures/product_search_fixture.json",
+    "products/tablet/app/docs/qa/pos-01b/fixtures/sale_api_cases.json",
+    "products/tablet/app/docs/qa/pos-01b/scenarios.csv",
+    "products/tablet/app/src/server/pos-api/README.md",
+    "products/tablet/app/src/server/pos-api/errors.ts",
+    "products/tablet/app/src/server/pos-api/product-queries.prisma.ts",
+    "products/tablet/app/src/server/pos-api/responses.ts",
+    "products/tablet/app/src/server/pos-api/sales-summary.prisma.ts",
+    "products/tablet/app/src/server/pos-api/validators.ts",
+    "products/tablet/app/tools/verify_pos_api_01b.mjs"
+  ]
+}

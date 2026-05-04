@@ -90,7 +90,35 @@ export async function requestJson<T>(url: string, init?: RequestInit): Promise<A
       ...(init?.headers ?? {})
     }
   });
-  const payload = (await response.json()) as ApiResponse<T>;
+
+  let payload: ApiResponse<T> | null = null;
+  try {
+    payload = (await response.json()) as ApiResponse<T>;
+  } catch {
+    payload = null;
+  }
+
+  if (!payload) {
+    throw {
+      ok: false,
+      code: response.ok ? "POS_API_INVALID_RESPONSE" : "POS_API_HTTP_ERROR",
+      message: response.ok ? "La respuesta del punto de venta no fue JSON valido." : `El punto de venta respondio HTTP ${response.status}.`,
+      details: { status: response.status, url }
+    } satisfies ApiFail;
+  }
+
   if (!payload.ok) throw payload;
+
+  if (!response.ok) {
+    throw {
+      ok: false,
+      code: "POS_API_HTTP_ERROR",
+      message: `El punto de venta respondio HTTP ${response.status}.`,
+      details: { status: response.status, url }
+    } satisfies ApiFail;
+  }
+
   return payload;
 }
+
+export type CompletedSaleReceipt = CompletedSale & { paymentMethod?: string; cashReceivedCents?: number; changeCents?: number; clientRequestId?: string };

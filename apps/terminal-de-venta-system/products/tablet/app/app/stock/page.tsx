@@ -1,9 +1,1 @@
-export default function StockPage() {
-  return (
-    <main style={{ padding: "24px", fontFamily: "system-ui, sans-serif" }}>
-      <h1>Stock local</h1>
-      <p>Consulta operativa del inventario local disponible en Tablet.</p>
-      <p>Los ajustes avanzados de inventario pueden depender del plan activo.</p>
-    </main>
-  );
-}
+import { CatalogStockSellingAssistScreen } from "@components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen";import { ContextualExportBand } from "@components/reports/contextual-export-band";export const dynamic="force-dynamic";export const metadata={title:"Existencias para vender - PRISMA Tablet",description:"Stock operativo local con bajo stock, sin stock, inactivos y envío al carrito de venta."};export default function StockPage(){return <><ContextualExportBand surface="stock"/><CatalogStockSellingAssistScreen mode="stock"/></>}

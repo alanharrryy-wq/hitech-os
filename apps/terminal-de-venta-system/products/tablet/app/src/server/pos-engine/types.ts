@@ -5,6 +5,8 @@ export type PosCartLineInput = {
   qty: number;
 };
 
+export type PosPaymentMethod = "cash" | "card" | "transfer";
+
 export type CompleteLocalSaleInput = {
   businessId?: string;
   terminalId?: string;
@@ -15,6 +17,9 @@ export type CompleteLocalSaleInput = {
   lowStockThreshold?: number;
   lines: PosCartLineInput[];
   clientRequestId?: string;
+  paymentMethod?: PosPaymentMethod;
+  cashReceivedCents?: number | null;
+  changeCents?: number | null;
 };
 
 export type PosResolvedProduct = {
@@ -61,6 +66,9 @@ export type CompleteLocalSaleResult = {
   cashSessionId: string | null;
   cashier: string;
   totalCents: number;
+  paymentMethod: PosPaymentMethod;
+  cashReceivedCents: number | null;
+  changeCents: number;
   status: "COMPLETED";
   createdAt: Date;
   lines: PosSaleLineResult[];
