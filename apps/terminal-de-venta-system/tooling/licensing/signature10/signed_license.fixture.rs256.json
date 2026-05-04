@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "format": "PRISMA_SIGNED_LICENSE_CANONICAL_JSON",
+  "payload": {
+    "schemaVersion": "1.0.0",
+    "licenseId": "lic_fixture_prod_signature_10",
+    "customerId": "cust_signature_demo",
+    "businessId": "biz_signature_demo",
+    "plan": "TABLET_PC_REQUIRED",
+    "state": "active",
+    "validFrom": "2026-01-01T00:00:00.000Z",
+    "validUntil": "2099-12-31T23:59:59.000Z",
+    "issuedAt": "2026-04-29T00:00:00.000Z",
+    "offlineGraceDays": 14,
+    "features": [
+      "pos.open",
+      "pos.sale.create",
+      "pc.open",
+      "license.refresh.remote"
+    ],
+    "limits": {
+      "terminals": 6,
+      "branches": 3
+    }
+  },
+  "signature": {
+    "alg": "RS256_PROD",
+    "keyId": "prod-demo-rs256-2026-q2",
+    "value": "B-ZlbovWeuqdSvzqYJXuA93xjuB9OxZ9Mjym59XAfJurU4FxIgwM5mVLEfJCS6Sg-RnEpu2q_gDK54wKbLxTjV_-CZJ7-nDEWi0oHV4aBO3FFfqeN5yyNG2nJquimgVzFUhJeSK10tA0-sPklbZGyGvRJ7-lJQP2Y-LDODy0gvX1e1u90TLgTH1qbFNYnClo6-RpI2AmVTWyF1eKN4cHnXQ_6A5ioJXtX3J6ayMog22uMxoZUIiJSHReqycApepv6-Xf8TQ-kxOdwNfctnGV7eg3ex3ybtg3VJWHtj8kiyXvgvh34STcMuY9nE4jp8XP9zJR2tMjL5HhXBvCzYCcJQ",
+    "canonicalization": "json-sort-keys-separators-v1"
+  },
+  "meta": {
+    "fixtureOnly": true,
+    "privateKeyPackaged": false,
+    "note": "Public fixture for verifier smoke. The private key used to sign it was generated transiently and discarded."
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "package": "PRISMA_LICENSE_SYSTEM_PRO_ROADMAP_05",
+  "modules": [
+    {
+      "key": "customers",
+      "actions": [
+        "create",
+        "view",
+        "update"
+      ]
+    },
+    {
+      "key": "businesses",
+      "actions": [
+        "create",
+        "assign_plan",
+        "view_limits"
+      ]
+    },
+    {
+      "key": "licenses",
+      "actions": [
+        "issue",
+        "renew",
+        "suspend",
+        "revoke",
+        "upgrade",
+        "downgrade",
+        "download_signed"
+      ]
+    },
+    {
+      "key": "devices",
+      "actions": [
+        "view",
+        "suspend",
+        "reset_controlled",
+        "view_last_seen"
+      ]
+    },
+    {
+      "key": "audit",
+      "actions": [
+        "filter",
+        "view_detail",
+        "export"
+      ]
+    },
+    {
+      "key": "support",
+      "actions": [
+        "copy_diagnostic",
+        "view_refresh_status",
+        "view_license_state"
+      ]
+    }
+  ],
+  "criticalActions": [
+    "license.revoke",
+    "license.suspend",
+    "device.reset",
+    "plan.downgrade",
+    "terminal.limit.reduce"
+  ]
+}

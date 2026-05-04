@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "package": "PRISMA_LICENSE_SERVER_SIGNING_MATERIAL_COMPAT_11B",
+  "version": "0.11.1",
+  "purpose": "Make Server Signing 11 compatible with 10D local dev signing material and normalize it safely.",
+  "fixes": [
+    "Accept keyId as alias for key_id.",
+    "Accept secretMaterialBase64Url as alias for secret_b64url.",
+    "Accept legacy HS256_DEV_ONLY local material and normalize envelope algorithm to HS256_DEV_LOCAL.",
+    "Rewrite local runtime material to canonical non-PEM shape.",
+    "Preserve repo private-key scan and production refusal behavior."
+  ],
+  "commands": [
+    "license-server-signing-material-migrate",
+    "license-server-signing-material-smoke",
+    "license-server-signing-smoke"
+  ],
+  "acceptance": [
+    "Existing 10D dev-signing-secret.local.json passes material smoke.",
+    "license-server-signing-smoke exits FINAL READY after migration.",
+    "No PEM private key block is generated in repo.",
+    "Production signing still refuses dev-local material."
+  ]
+}

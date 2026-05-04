@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "11D",
+  "package": "PRISMA_LICENSE_SERVER_SIGNING_SCAN_POLICY_11D",
+  "purpose": "Harden repository private-key scanning so approved regression fixtures do not block server signing smoke while real secrets still block.",
+  "commands": [
+    "license-server-signing-smoke",
+    "license-server-signing-scan",
+    "license-server-signing-fixture-audit",
+    "license-server-signing-material-smoke",
+    "license-server-signing-sanitize",
+    "license-server-signing-sign-license",
+    "license-server-signing-hardening-contract"
+  ],
+  "securityInvariants": [
+    "Production must not sign with dev-local material.",
+    "Repo-resident private key PEM blocks are blocked unless the file is an approved regression fixture.",
+    "Approved fixture PEMs are counted separately and surfaced in reports.",
+    "Payload, signature, and keyId tampering must be rejected.",
+    "No private key PEM is generated in local-runtime dev signing material."
+  ]
+}
