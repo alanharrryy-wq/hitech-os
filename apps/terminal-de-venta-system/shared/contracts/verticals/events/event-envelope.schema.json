@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.verticals.event-envelope.v0",
+  "type": "object",
+  "required": [
+    "eventId",
+    "topic",
+    "businessId",
+    "terminalId",
+    "actorId",
+    "source",
+    "occurredAt",
+    "schemaVersion",
+    "payload"
+  ],
+  "properties": {
+    "eventId": {
+      "type": "string",
+      "minLength": 8
+    },
+    "topic": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$"
+    },
+    "businessId": {
+      "type": "string"
+    },
+    "terminalId": {
+      "type": "string"
+    },
+    "actorId": {
+      "type": "string"
+    },
+    "source": {
+      "enum": [
+        "tablet",
+        "pc",
+        "sync",
+        "import",
+        "system"
+      ]
+    },
+    "occurredAt": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "payload": {
+      "type": "object"
+    },
+    "audit": {
+      "type": "object"
+    },
+    "sync": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

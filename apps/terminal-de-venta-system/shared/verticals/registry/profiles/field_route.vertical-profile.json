@@ -1,0 +1,93 @@
+{
+  "id": "field_route",
+  "displayName": "Venta en campo / ruta",
+  "market": "mobile_sales",
+  "status": "draft",
+  "priority": "phase_2",
+  "tabletRole": "Operacion rapida del giro desde Tablet sin convertirla en backoffice.",
+  "pcRole": "Gobierno profundo del giro, auditoria, configuracion, compras, reportes y consolidacion.",
+  "capabilities": [
+    "sales.products",
+    "delivery.routes",
+    "customers.basic",
+    "customer.credit.basic",
+    "inventory.mobile_stock",
+    "offline.sales",
+    "offline.strong",
+    "sync.outbox",
+    "payments.cash",
+    "export.local"
+  ],
+  "tabletNavigation": [
+    "Ruta",
+    "Vender",
+    "Clientes",
+    "Cobros",
+    "Ventas de hoy",
+    "Pendientes por enviar"
+  ],
+  "pcNavigation": [
+    "Rutas",
+    "Clientes",
+    "Credito",
+    "Inventario movil",
+    "Auditoria",
+    "Dashboard",
+    "Sincronizacion"
+  ],
+  "tabletBlockedCapabilities": [
+    "credit_policy.full",
+    "route_planning.deep",
+    "multi_branch.reconciliation",
+    "supplier.management"
+  ],
+  "events": [
+    "field_route.route.started",
+    "field_route.customer.visited",
+    "sale.completed",
+    "payment.collected",
+    "mobile_stock.decremented",
+    "sync.event.pending"
+  ],
+  "permissions": [
+    "customer.use",
+    "customers.use",
+    "delivery.use",
+    "export.use",
+    "inventory.use",
+    "offline.use",
+    "payment.receive",
+    "payments.use",
+    "pos.sale.complete",
+    "sales.use",
+    "sync.use"
+  ],
+  "offlinePolicy": {
+    "mode": "strong",
+    "allowed": [
+      "venta local permitida",
+      "consulta de datos locales",
+      "registro de pendientes por enviar"
+    ],
+    "blocked": [
+      "credit_policy.full",
+      "route_planning.deep",
+      "multi_branch.reconciliation",
+      "supplier.management"
+    ],
+    "cashierMessage": "Puedes seguir operando con datos locales; lo pendiente se enviara cuando haya conexion."
+  },
+  "kpis": [
+    "ventas netas",
+    "numero de tickets",
+    "ticket promedio",
+    "errores de captura",
+    "pendientes por enviar"
+  ],
+  "acceptanceCriteria": [
+    "El cajero entiende la accion principal en menos de 5 segundos.",
+    "Tablet no muestra administracion pesada del vertical.",
+    "Los eventos minimos quedan registrados.",
+    "Los estados offline y pendiente por enviar son claros."
+  ]
+}

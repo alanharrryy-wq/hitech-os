@@ -1,0 +1,486 @@
+{
+  "suiteVersion": "0.0.1",
+  "caseCount": 60,
+  "cases": [
+    {
+      "id": "smoke.convenience.scenario.01.quick_sale",
+      "verticalId": "convenience",
+      "scenarioId": "convenience.scenario.01.quick_sale",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.convenience.scenario.02.barcode_sale",
+      "verticalId": "convenience",
+      "scenarioId": "convenience.scenario.02.barcode_sale",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.convenience.scenario.03.cash_change",
+      "verticalId": "convenience",
+      "scenarioId": "convenience.scenario.03.cash_change",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.convenience.scenario.04.return_ticket",
+      "verticalId": "convenience",
+      "scenarioId": "convenience.scenario.04.return_ticket",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.convenience.scenario.05.shift_close",
+      "verticalId": "convenience",
+      "scenarioId": "convenience.scenario.05.shift_close",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.convenience.scenario.06.offline_sale",
+      "verticalId": "convenience",
+      "scenarioId": "convenience.scenario.06.offline_sale",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.restaurant.scenario.01.open_table",
+      "verticalId": "restaurant",
+      "scenarioId": "restaurant.scenario.01.open_table",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.restaurant.scenario.02.send_to_kitchen",
+      "verticalId": "restaurant",
+      "scenarioId": "restaurant.scenario.02.send_to_kitchen",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.restaurant.scenario.03.split_bill",
+      "verticalId": "restaurant",
+      "scenarioId": "restaurant.scenario.03.split_bill",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.restaurant.scenario.04.cash_change",
+      "verticalId": "restaurant",
+      "scenarioId": "restaurant.scenario.04.cash_change",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.restaurant.scenario.05.table_close",
+      "verticalId": "restaurant",
+      "scenarioId": "restaurant.scenario.05.table_close",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.restaurant.scenario.06.offline_order",
+      "verticalId": "restaurant",
+      "scenarioId": "restaurant.scenario.06.offline_order",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.pharmacy.scenario.01.barcode_sale",
+      "verticalId": "pharmacy",
+      "scenarioId": "pharmacy.scenario.01.barcode_sale",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.pharmacy.scenario.02.lot_expiry_check",
+      "verticalId": "pharmacy",
+      "scenarioId": "pharmacy.scenario.02.lot_expiry_check",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.pharmacy.scenario.03.prescription_gate",
+      "verticalId": "pharmacy",
+      "scenarioId": "pharmacy.scenario.03.prescription_gate",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.pharmacy.scenario.04.sensitive_return",
+      "verticalId": "pharmacy",
+      "scenarioId": "pharmacy.scenario.04.sensitive_return",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.pharmacy.scenario.05.cash_change",
+      "verticalId": "pharmacy",
+      "scenarioId": "pharmacy.scenario.05.cash_change",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.pharmacy.scenario.06.offline_limited_sale",
+      "verticalId": "pharmacy",
+      "scenarioId": "pharmacy.scenario.06.offline_limited_sale",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.beauty.scenario.01.book_appointment",
+      "verticalId": "beauty",
+      "scenarioId": "beauty.scenario.01.book_appointment",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.beauty.scenario.02.sell_service",
+      "verticalId": "beauty",
+      "scenarioId": "beauty.scenario.02.sell_service",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.beauty.scenario.03.assign_staff",
+      "verticalId": "beauty",
+      "scenarioId": "beauty.scenario.03.assign_staff",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.beauty.scenario.04.commission_capture",
+      "verticalId": "beauty",
+      "scenarioId": "beauty.scenario.04.commission_capture",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.beauty.scenario.05.cash_change",
+      "verticalId": "beauty",
+      "scenarioId": "beauty.scenario.05.cash_change",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.beauty.scenario.06.reschedule",
+      "verticalId": "beauty",
+      "scenarioId": "beauty.scenario.06.reschedule",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.hardware.scenario.01.quote_create",
+      "verticalId": "hardware",
+      "scenarioId": "hardware.scenario.01.quote_create",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.hardware.scenario.02.measure_sale",
+      "verticalId": "hardware",
+      "scenarioId": "hardware.scenario.02.measure_sale",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.hardware.scenario.03.stock_check",
+      "verticalId": "hardware",
+      "scenarioId": "hardware.scenario.03.stock_check",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.hardware.scenario.04.cash_change",
+      "verticalId": "hardware",
+      "scenarioId": "hardware.scenario.04.cash_change",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.hardware.scenario.05.partial_return",
+      "verticalId": "hardware",
+      "scenarioId": "hardware.scenario.05.partial_return",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.hardware.scenario.06.offline_quote",
+      "verticalId": "hardware",
+      "scenarioId": "hardware.scenario.06.offline_quote",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.apparel.scenario.01.variant_lookup",
+      "verticalId": "apparel",
+      "scenarioId": "apparel.scenario.01.variant_lookup",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.apparel.scenario.02.size_color_sale",
+      "verticalId": "apparel",
+      "scenarioId": "apparel.scenario.02.size_color_sale",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.apparel.scenario.03.exchange_flow",
+      "verticalId": "apparel",
+      "scenarioId": "apparel.scenario.03.exchange_flow",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.apparel.scenario.04.cash_change",
+      "verticalId": "apparel",
+      "scenarioId": "apparel.scenario.04.cash_change",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.apparel.scenario.05.stock_check",
+      "verticalId": "apparel",
+      "scenarioId": "apparel.scenario.05.stock_check",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.apparel.scenario.06.return_ticket",
+      "verticalId": "apparel",
+      "scenarioId": "apparel.scenario.06.return_ticket",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.repair.scenario.01.work_order_create",
+      "verticalId": "repair",
+      "scenarioId": "repair.scenario.01.work_order_create",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.repair.scenario.02.parts_add",
+      "verticalId": "repair",
+      "scenarioId": "repair.scenario.02.parts_add",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.repair.scenario.03.labor_add",
+      "verticalId": "repair",
+      "scenarioId": "repair.scenario.03.labor_add",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.repair.scenario.04.deposit_payment",
+      "verticalId": "repair",
+      "scenarioId": "repair.scenario.04.deposit_payment",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.repair.scenario.05.delivery_close",
+      "verticalId": "repair",
+      "scenarioId": "repair.scenario.05.delivery_close",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.repair.scenario.06.offline_intake",
+      "verticalId": "repair",
+      "scenarioId": "repair.scenario.06.offline_intake",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.field_route.scenario.01.route_start",
+      "verticalId": "field_route",
+      "scenarioId": "field_route.scenario.01.route_start",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.field_route.scenario.02.customer_visit",
+      "verticalId": "field_route",
+      "scenarioId": "field_route.scenario.02.customer_visit",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.field_route.scenario.03.preorder_capture",
+      "verticalId": "field_route",
+      "scenarioId": "field_route.scenario.03.preorder_capture",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.field_route.scenario.04.delivery_confirm",
+      "verticalId": "field_route",
+      "scenarioId": "field_route.scenario.04.delivery_confirm",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.field_route.scenario.05.cash_collection",
+      "verticalId": "field_route",
+      "scenarioId": "field_route.scenario.05.cash_collection",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.field_route.scenario.06.offline_sync_later",
+      "verticalId": "field_route",
+      "scenarioId": "field_route.scenario.06.offline_sync_later",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.grocery_scale.scenario.01.weighed_item_sale",
+      "verticalId": "grocery_scale",
+      "scenarioId": "grocery_scale.scenario.01.weighed_item_sale",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.grocery_scale.scenario.02.label_scan",
+      "verticalId": "grocery_scale",
+      "scenarioId": "grocery_scale.scenario.02.label_scan",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.grocery_scale.scenario.03.manual_weight_capture",
+      "verticalId": "grocery_scale",
+      "scenarioId": "grocery_scale.scenario.03.manual_weight_capture",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.grocery_scale.scenario.04.cash_change",
+      "verticalId": "grocery_scale",
+      "scenarioId": "grocery_scale.scenario.04.cash_change",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.grocery_scale.scenario.05.stock_adjust_light",
+      "verticalId": "grocery_scale",
+      "scenarioId": "grocery_scale.scenario.05.stock_adjust_light",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.grocery_scale.scenario.06.offline_scale_sale",
+      "verticalId": "grocery_scale",
+      "scenarioId": "grocery_scale.scenario.06.offline_scale_sale",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.food_truck.scenario.01.menu_sale",
+      "verticalId": "food_truck",
+      "scenarioId": "food_truck.scenario.01.menu_sale",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.food_truck.scenario.02.combo_sale",
+      "verticalId": "food_truck",
+      "scenarioId": "food_truck.scenario.02.combo_sale",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.food_truck.scenario.03.rush_order",
+      "verticalId": "food_truck",
+      "scenarioId": "food_truck.scenario.03.rush_order",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.food_truck.scenario.04.cash_change",
+      "verticalId": "food_truck",
+      "scenarioId": "food_truck.scenario.04.cash_change",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.food_truck.scenario.05.close_shift",
+      "verticalId": "food_truck",
+      "scenarioId": "food_truck.scenario.05.close_shift",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    },
+    {
+      "id": "smoke.food_truck.scenario.06.offline_sale",
+      "verticalId": "food_truck",
+      "scenarioId": "food_truck.scenario.06.offline_sale",
+      "commandIntent": "validacion contractual sin runtime externo",
+      "passCondition": "scenario declared, event declared, permission declared, acceptance rows present",
+      "failureMode": "bloquear implementacion del vertical hasta completar fixture"
+    }
+  ]
+}

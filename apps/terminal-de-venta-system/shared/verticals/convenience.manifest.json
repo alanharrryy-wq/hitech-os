@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "verticalId": "convenience",
+  "displayName": "Tienda de conveniencia",
+  "coreRequired": true,
+  "capabilities": {
+    "required": [
+      "core.sales",
+      "core.payments",
+      "core.ticket",
+      "core.catalog",
+      "core.inventory.basic",
+      "core.shift"
+    ],
+    "optional": [
+      "core.returns",
+      "core.sync",
+      "core.export"
+    ]
+  },
+  "surfaces": {
+    "tablet": {
+      "enabled": true,
+      "routes": [
+        "Vender",
+        "Cobro",
+        "Ventas de hoy",
+        "Existencias",
+        "Devoluciones",
+        "Turno",
+        "Pendientes por enviar"
+      ]
+    },
+    "pc": {
+      "enabled": true,
+      "routes": [
+        "Dashboard",
+        "Catalogo",
+        "Inventario",
+        "Auditoria",
+        "Configuracion"
+      ]
+    }
+  },
+  "offline": {
+    "salesAllowed": true,
+    "sensitiveActionsRequireConnection": false
+  }
+}

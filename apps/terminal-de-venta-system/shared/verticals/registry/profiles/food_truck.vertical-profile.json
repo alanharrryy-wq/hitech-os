@@ -1,0 +1,86 @@
+{
+  "id": "food_truck",
+  "displayName": "Food truck / punto movil de comida",
+  "market": "mobile_food_service",
+  "status": "draft",
+  "priority": "phase_2",
+  "tabletRole": "Operacion rapida del giro desde Tablet sin convertirla en backoffice.",
+  "pcRole": "Gobierno profundo del giro, auditoria, configuracion, compras, reportes y consolidacion.",
+  "capabilities": [
+    "sales.products",
+    "sales.services",
+    "menu.combos",
+    "payments.tips",
+    "offline.sales",
+    "shift.cash_control",
+    "sync.outbox",
+    "export.local"
+  ],
+  "tabletNavigation": [
+    "Vender",
+    "Menu",
+    "Ventas de hoy",
+    "Turno",
+    "Pendientes por enviar"
+  ],
+  "pcNavigation": [
+    "Menu",
+    "Costos",
+    "Inventario",
+    "Eventos",
+    "Dashboard",
+    "Sincronizacion"
+  ],
+  "tabletBlockedCapabilities": [
+    "recipe.costing.deep",
+    "supplier.management",
+    "event_planning.full",
+    "payroll.full"
+  ],
+  "events": [
+    "menu.combo.sold",
+    "sale.completed",
+    "tip.recorded",
+    "shift.closed",
+    "sync.event.pending"
+  ],
+  "permissions": [
+    "export.use",
+    "menu.use",
+    "offline.use",
+    "payment.receive",
+    "payments.use",
+    "pos.sale.complete",
+    "sales.use",
+    "shift.use",
+    "sync.use"
+  ],
+  "offlinePolicy": {
+    "mode": "strong",
+    "allowed": [
+      "venta local permitida",
+      "consulta de datos locales",
+      "registro de pendientes por enviar"
+    ],
+    "blocked": [
+      "recipe.costing.deep",
+      "supplier.management",
+      "event_planning.full",
+      "payroll.full"
+    ],
+    "cashierMessage": "Puedes seguir operando con datos locales; lo pendiente se enviara cuando haya conexion."
+  },
+  "kpis": [
+    "ventas netas",
+    "numero de tickets",
+    "ticket promedio",
+    "errores de captura",
+    "pendientes por enviar"
+  ],
+  "acceptanceCriteria": [
+    "El cajero entiende la accion principal en menos de 5 segundos.",
+    "Tablet no muestra administracion pesada del vertical.",
+    "Los eventos minimos quedan registrados.",
+    "Los estados offline y pendiente por enviar son claros."
+  ]
+}

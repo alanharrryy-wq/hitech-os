@@ -1,0 +1,183 @@
+{
+  "verticalId": "food_truck",
+  "label": "Food truck / comida movil",
+  "version": "0.3.0",
+  "principle": "Punto movil de comida con menu simple, combos, propina opcional y offline tolerante.",
+  "extensions": [
+    {
+      "extensionId": "food_truck.MenuCombo",
+      "entityName": "MenuCombo",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.food_truck.MenuCombo.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.food_truck.MenuCombo.created",
+        "vertical.food_truck.MenuCombo.updated"
+      ],
+      "fixtures": [
+        "food_truck_MenuCombo_happy_path.json",
+        "food_truck_MenuCombo_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "prescriptionId",
+        "sizeColorMatrix",
+        "repairOrderId",
+        "routeCreditLimit"
+      ]
+    },
+    {
+      "extensionId": "food_truck.ServiceWindow",
+      "entityName": "ServiceWindow",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.food_truck.ServiceWindow.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.food_truck.ServiceWindow.created",
+        "vertical.food_truck.ServiceWindow.updated"
+      ],
+      "fixtures": [
+        "food_truck_ServiceWindow_happy_path.json",
+        "food_truck_ServiceWindow_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "prescriptionId",
+        "sizeColorMatrix",
+        "repairOrderId",
+        "routeCreditLimit"
+      ]
+    },
+    {
+      "extensionId": "food_truck.PrepStatus",
+      "entityName": "PrepStatus",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.food_truck.PrepStatus.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.food_truck.PrepStatus.created",
+        "vertical.food_truck.PrepStatus.updated"
+      ],
+      "fixtures": [
+        "food_truck_PrepStatus_happy_path.json",
+        "food_truck_PrepStatus_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "prescriptionId",
+        "sizeColorMatrix",
+        "repairOrderId",
+        "routeCreditLimit"
+      ]
+    },
+    {
+      "extensionId": "food_truck.MobileLocation",
+      "entityName": "MobileLocation",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.food_truck.MobileLocation.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.food_truck.MobileLocation.created",
+        "vertical.food_truck.MobileLocation.updated"
+      ],
+      "fixtures": [
+        "food_truck_MobileLocation_happy_path.json",
+        "food_truck_MobileLocation_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "prescriptionId",
+        "sizeColorMatrix",
+        "repairOrderId",
+        "routeCreditLimit"
+      ]
+    },
+    {
+      "extensionId": "food_truck.TipAllocation",
+      "entityName": "TipAllocation",
+      "extensionType": "sale_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.food_truck.TipAllocation.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.food_truck.TipAllocation.created",
+        "vertical.food_truck.TipAllocation.updated"
+      ],
+      "fixtures": [
+        "food_truck_TipAllocation_happy_path.json",
+        "food_truck_TipAllocation_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "prescriptionId",
+        "sizeColorMatrix",
+        "repairOrderId",
+        "routeCreditLimit"
+      ]
+    }
+  ]
+}

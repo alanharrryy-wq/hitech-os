@@ -1,0 +1,19 @@
+{
+  "migrationBoundaryId": "prisma.verticals.migration-boundaries.v0",
+  "version": "0.3.0",
+  "rules": [
+    "No vertical package may destructively alter core tables.",
+    "Vertical schema additions must be additive in first release.",
+    "Rollback must remove vertical artifacts or restore previous contract versions.",
+    "Data migrations that affect money or inventory require dry-run summary.",
+    "Tablet local migrations must tolerate offline devices and delayed sync.",
+    "PC migrations must not block Tablet standalone sales."
+  ],
+  "releaseGates": [
+    "contract_validates",
+    "fixtures_present",
+    "owner_declared",
+    "events_declared",
+    "rollback_documented"
+  ]
+}

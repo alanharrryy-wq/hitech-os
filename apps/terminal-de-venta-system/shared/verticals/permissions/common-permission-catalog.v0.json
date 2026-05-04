@@ -1,0 +1,116 @@
+{
+  "version": 0,
+  "kind": "common-permission-catalog",
+  "permissions": [
+    {
+      "id": "pos.sale.create",
+      "scope": "core",
+      "sensitive": false
+    },
+    {
+      "id": "pos.sale.complete",
+      "scope": "core",
+      "sensitive": false
+    },
+    {
+      "id": "pos.ticket.view",
+      "scope": "core",
+      "sensitive": false
+    },
+    {
+      "id": "pos.ticket.cancel",
+      "scope": "core",
+      "sensitive": false
+    },
+    {
+      "id": "payment.cash.receive",
+      "scope": "core",
+      "sensitive": false
+    },
+    {
+      "id": "payment.card.confirm",
+      "scope": "core",
+      "sensitive": false
+    },
+    {
+      "id": "payment.transfer.confirm",
+      "scope": "core",
+      "sensitive": false
+    },
+    {
+      "id": "return.create",
+      "scope": "core",
+      "sensitive": false
+    },
+    {
+      "id": "return.approve",
+      "scope": "core",
+      "sensitive": true
+    },
+    {
+      "id": "shift.open",
+      "scope": "core",
+      "sensitive": false
+    },
+    {
+      "id": "shift.close",
+      "scope": "core",
+      "sensitive": true
+    },
+    {
+      "id": "shift.view",
+      "scope": "core",
+      "sensitive": false
+    },
+    {
+      "id": "inventory.local.view",
+      "scope": "core",
+      "sensitive": false
+    },
+    {
+      "id": "inventory.local.adjust",
+      "scope": "core",
+      "sensitive": true
+    },
+    {
+      "id": "catalog.product.view",
+      "scope": "core",
+      "sensitive": false
+    },
+    {
+      "id": "catalog.product.create_basic",
+      "scope": "core",
+      "sensitive": false
+    },
+    {
+      "id": "catalog.product.update_basic",
+      "scope": "core",
+      "sensitive": false
+    },
+    {
+      "id": "sync.pending.view",
+      "scope": "core",
+      "sensitive": false
+    },
+    {
+      "id": "sync.retry",
+      "scope": "core",
+      "sensitive": false
+    },
+    {
+      "id": "export.local.create",
+      "scope": "core",
+      "sensitive": true
+    },
+    {
+      "id": "audit.local.view",
+      "scope": "core",
+      "sensitive": false
+    },
+    {
+      "id": "settings.vertical.view",
+      "scope": "core",
+      "sensitive": false
+    }
+  ]
+}

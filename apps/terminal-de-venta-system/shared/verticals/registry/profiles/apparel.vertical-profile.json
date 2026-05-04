@@ -1,0 +1,89 @@
+{
+  "id": "apparel",
+  "displayName": "Ropa / boutique",
+  "market": "retail_variants",
+  "status": "draft",
+  "priority": "phase_2",
+  "tabletRole": "Operacion rapida del giro desde Tablet sin convertirla en backoffice.",
+  "pcRole": "Gobierno profundo del giro, auditoria, configuracion, compras, reportes y consolidacion.",
+  "capabilities": [
+    "sales.products",
+    "inventory.stock",
+    "inventory.variants",
+    "returns.exchange",
+    "customers.basic",
+    "discounts.basic",
+    "offline.sales",
+    "sync.outbox"
+  ],
+  "tabletNavigation": [
+    "Vender",
+    "Cambios",
+    "Existencias",
+    "Ventas de hoy",
+    "Turno",
+    "Pendientes por enviar"
+  ],
+  "pcNavigation": [
+    "Catalogo",
+    "Variantes",
+    "Existencias",
+    "Temporadas",
+    "Compras",
+    "Auditoria",
+    "Dashboard"
+  ],
+  "tabletBlockedCapabilities": [
+    "variant_matrix_admin.deep",
+    "supplier.management",
+    "season_planning.full",
+    "price_rules.deep"
+  ],
+  "events": [
+    "apparel.variant.sold",
+    "apparel.exchange.created",
+    "sale.completed",
+    "stock.decremented",
+    "discount.applied",
+    "sync.event.pending"
+  ],
+  "permissions": [
+    "customers.use",
+    "discounts.use",
+    "inventory.use",
+    "offline.use",
+    "payment.receive",
+    "pos.sale.complete",
+    "returns.use",
+    "sales.use",
+    "sync.use"
+  ],
+  "offlinePolicy": {
+    "mode": "medium",
+    "allowed": [
+      "venta local permitida",
+      "consulta de datos locales",
+      "registro de pendientes por enviar"
+    ],
+    "blocked": [
+      "variant_matrix_admin.deep",
+      "supplier.management",
+      "season_planning.full",
+      "price_rules.deep"
+    ],
+    "cashierMessage": "Puedes seguir operando con datos locales; lo pendiente se enviara cuando haya conexion."
+  },
+  "kpis": [
+    "ventas netas",
+    "numero de tickets",
+    "ticket promedio",
+    "errores de captura",
+    "pendientes por enviar"
+  ],
+  "acceptanceCriteria": [
+    "El cajero entiende la accion principal en menos de 5 segundos.",
+    "Tablet no muestra administracion pesada del vertical.",
+    "Los eventos minimos quedan registrados.",
+    "Los estados offline y pendiente por enviar son claros."
+  ]
+}

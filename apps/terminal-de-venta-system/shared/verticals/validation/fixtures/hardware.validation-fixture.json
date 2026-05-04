@@ -1,0 +1,624 @@
+{
+  "verticalId": "hardware",
+  "verticalName": "Ferreteria",
+  "fixtureVersion": "0.0.1",
+  "purpose": "unidades variables, cotizacion, precio por medida y venta asistida",
+  "requiredBlocks": [
+    "00A_CORE_CONTRACTS",
+    "00B_VERTICAL_REGISTRY",
+    "00C_VERTICAL_DATA_MODELS",
+    "00D_VERTICAL_EVENTS_PERMISSIONS",
+    "00E_VERTICAL_UX_OPERATIONS"
+  ],
+  "businessProfile": {
+    "tabletRole": "operacion principal o captura rapida segun vertical",
+    "pcRole": "gobierno, auditoria, configuracion y consolidacion",
+    "forbiddenTabletBehaviors": [
+      "backoffice_profundo",
+      "permisos_globales",
+      "compras_formales_sin_pc",
+      "auditoria_pesada"
+    ]
+  },
+  "screensUnderTest": [
+    "Vender",
+    "Cobro",
+    "Ticket actual",
+    "Ventas de hoy",
+    "Turno",
+    "Sincronizacion",
+    "Cotizaciones",
+    "Unidades de medida",
+    "Existencias asistidas"
+  ],
+  "flowsUnderTest": [
+    "quote_create",
+    "measure_sale",
+    "stock_check",
+    "cash_change",
+    "partial_return",
+    "offline_quote"
+  ],
+  "seedData": {
+    "business": {
+      "id": "biz_hardware",
+      "name": "Demo Ferreteria",
+      "verticalId": "hardware",
+      "mode": "standalone_or_managed"
+    },
+    "terminal": {
+      "id": "terminal_hardware_01",
+      "kind": "tablet_pos",
+      "offlineAllowed": true
+    },
+    "operator": {
+      "id": "operator_hardware_01",
+      "role": "cajero",
+      "permissions": [
+        "pos.sale.create",
+        "pos.sale.complete",
+        "pos.ticket.view",
+        "shift.view",
+        "sync.status.view",
+        "pos.return.create",
+        "inventory.adjust.local"
+      ]
+    },
+    "products": [
+      {
+        "sku": "HARDWARE-SKU-001",
+        "name": "Producto 1 Ferreteria",
+        "barcode": "7500672261419",
+        "priceCents": 1125,
+        "stockOnHand": 21,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "04ff4fcd90c3f7ff47f8cf34"
+        }
+      },
+      {
+        "sku": "HARDWARE-SKU-002",
+        "name": "Producto 2 Ferreteria",
+        "barcode": "7506935291772",
+        "priceCents": 1250,
+        "stockOnHand": 22,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "7cb19b389216cf0daec33f5a"
+        }
+      },
+      {
+        "sku": "HARDWARE-SKU-003",
+        "name": "Producto 3 Ferreteria",
+        "barcode": "7504817195350",
+        "priceCents": 1375,
+        "stockOnHand": 23,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "260d9ba967578775f08badd3"
+        }
+      },
+      {
+        "sku": "HARDWARE-SKU-004",
+        "name": "Producto 4 Ferreteria",
+        "barcode": "7500919193775",
+        "priceCents": 1500,
+        "stockOnHand": 24,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "33d135be1cc590c4462ae40b"
+        }
+      },
+      {
+        "sku": "HARDWARE-SKU-005",
+        "name": "Producto 5 Ferreteria",
+        "barcode": "7501946497409",
+        "priceCents": 1625,
+        "stockOnHand": 25,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "0f9abb44d723cb7bfaa61bc3"
+        }
+      },
+      {
+        "sku": "HARDWARE-SKU-006",
+        "name": "Producto 6 Ferreteria",
+        "barcode": "7505661055782",
+        "priceCents": 1750,
+        "stockOnHand": 26,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "49beb4119bdd0a96b5085f80"
+        }
+      },
+      {
+        "sku": "HARDWARE-SKU-007",
+        "name": "Producto 7 Ferreteria",
+        "barcode": "7502543425485",
+        "priceCents": 1875,
+        "stockOnHand": 27,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "bc78b0956bc5e75cc5a2c442"
+        }
+      },
+      {
+        "sku": "HARDWARE-SKU-008",
+        "name": "Producto 8 Ferreteria",
+        "barcode": "7502193429765",
+        "priceCents": 2000,
+        "stockOnHand": 28,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "443e730e845b78b3b71c8d61"
+        }
+      }
+    ],
+    "services": [
+      {
+        "serviceCode": "HARDWARE-SVC-01",
+        "name": "Servicio 1 Ferreteria",
+        "priceCents": 1800,
+        "durationMinutes": 15,
+        "verticalTraits": {
+          "fixtureTrait": "8fbcdf4362e91679c5819c43"
+        }
+      },
+      {
+        "serviceCode": "HARDWARE-SVC-02",
+        "name": "Servicio 2 Ferreteria",
+        "priceCents": 2100,
+        "durationMinutes": 30,
+        "verticalTraits": {
+          "fixtureTrait": "508a1e8687a5c322b892a6bb"
+        }
+      },
+      {
+        "serviceCode": "HARDWARE-SVC-03",
+        "name": "Servicio 3 Ferreteria",
+        "priceCents": 2400,
+        "durationMinutes": 45,
+        "verticalTraits": {
+          "fixtureTrait": "ff6dab01a543e44850d9bce7"
+        }
+      },
+      {
+        "serviceCode": "HARDWARE-SVC-04",
+        "name": "Servicio 4 Ferreteria",
+        "priceCents": 2700,
+        "durationMinutes": 60,
+        "verticalTraits": {
+          "fixtureTrait": "0fe0b682f95b394d3009c00d"
+        }
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "hardware.scenario.01.quote_create",
+      "title": "Validar quote create para Ferreteria",
+      "verticalId": "hardware",
+      "primaryScreen": "Cobro",
+      "flowKey": "quote_create",
+      "initialState": "loading",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Cobro.",
+        "Ejecutar flujo quote create.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo quote_create termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "hardware.quote_create.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.complete"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:hardware:quote_create:1",
+        "42ea9d57e894dc51"
+      ]
+    },
+    {
+      "id": "hardware.scenario.02.measure_sale",
+      "title": "Validar measure sale para Ferreteria",
+      "verticalId": "hardware",
+      "primaryScreen": "Ticket actual",
+      "flowKey": "measure_sale",
+      "initialState": "ready",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ticket actual.",
+        "Ejecutar flujo measure sale.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo measure_sale termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.ticket.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:hardware:measure_sale:2",
+        "36d8637d15fa0507"
+      ]
+    },
+    {
+      "id": "hardware.scenario.03.stock_check",
+      "title": "Validar stock check para Ferreteria",
+      "verticalId": "hardware",
+      "primaryScreen": "Ventas de hoy",
+      "flowKey": "stock_check",
+      "initialState": "error",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ventas de hoy.",
+        "Ejecutar flujo stock check.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo stock_check termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "hardware.stock_check.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.retry"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:hardware:stock_check:3",
+        "90adaf5cff00cd85"
+      ]
+    },
+    {
+      "id": "hardware.scenario.04.cash_change",
+      "title": "Validar cash change para Ferreteria",
+      "verticalId": "hardware",
+      "primaryScreen": "Turno",
+      "flowKey": "cash_change",
+      "initialState": "offline",
+      "actor": "supervisor",
+      "mode": "pc",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Turno.",
+        "Ejecutar flujo cash change.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo cash_change termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.status.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:hardware:cash_change:4",
+        "c78b790cfb537b4e"
+      ]
+    },
+    {
+      "id": "hardware.scenario.05.partial_return",
+      "title": "Validar partial return para Ferreteria",
+      "verticalId": "hardware",
+      "primaryScreen": "Sincronizacion",
+      "flowKey": "partial_return",
+      "initialState": "sync_pending",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Sincronizacion.",
+        "Ejecutar flujo partial return.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo partial_return termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "hardware.partial_return.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.create"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:hardware:partial_return:5",
+        "dec5efe9b092d765"
+      ]
+    },
+    {
+      "id": "hardware.scenario.06.offline_quote",
+      "title": "Validar offline quote para Ferreteria",
+      "verticalId": "hardware",
+      "primaryScreen": "Cotizaciones",
+      "flowKey": "offline_quote",
+      "initialState": "success",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Cotizaciones.",
+        "Ejecutar flujo offline quote.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo offline_quote termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "hardware.offline_quote.completed",
+        "sync.event.queued"
+      ],
+      "requiredPermissions": [
+        "inventory.adjust.local"
+      ],
+      "offlineExpectation": "queda pendiente por enviar",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:hardware:offline_quote:6",
+        "cff1775f47c3bc1e"
+      ]
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "scenarioId": "hardware.scenario.01.quote_create",
+      "checks": [
+        {
+          "id": "hardware.scenario.01.quote_create.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "hardware.scenario.01.quote_create.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "hardware.scenario.01.quote_create.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "hardware.scenario.01.quote_create.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "hardware.scenario.01.quote_create.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "hardware.scenario.02.measure_sale",
+      "checks": [
+        {
+          "id": "hardware.scenario.02.measure_sale.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "hardware.scenario.02.measure_sale.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "hardware.scenario.02.measure_sale.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "hardware.scenario.02.measure_sale.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "hardware.scenario.02.measure_sale.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "hardware.scenario.03.stock_check",
+      "checks": [
+        {
+          "id": "hardware.scenario.03.stock_check.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "hardware.scenario.03.stock_check.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "hardware.scenario.03.stock_check.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "hardware.scenario.03.stock_check.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "hardware.scenario.03.stock_check.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "hardware.scenario.04.cash_change",
+      "checks": [
+        {
+          "id": "hardware.scenario.04.cash_change.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "hardware.scenario.04.cash_change.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "hardware.scenario.04.cash_change.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "hardware.scenario.04.cash_change.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "hardware.scenario.04.cash_change.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "hardware.scenario.05.partial_return",
+      "checks": [
+        {
+          "id": "hardware.scenario.05.partial_return.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "hardware.scenario.05.partial_return.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "hardware.scenario.05.partial_return.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "hardware.scenario.05.partial_return.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "hardware.scenario.05.partial_return.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "hardware.scenario.06.offline_quote",
+      "checks": [
+        {
+          "id": "hardware.scenario.06.offline_quote.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "hardware.scenario.06.offline_quote.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "hardware.scenario.06.offline_quote.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "hardware.scenario.06.offline_quote.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "hardware.scenario.06.offline_quote.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    }
+  ],
+  "fixtureIntegrity": {
+    "anchor": "0d9730791942140cc4df759373578ab1ec73f158a08b5eabcbcaa850ed2722b5",
+    "noiseProofCorpus": "792be8a9d9af731eab3d6fa7aba6c4b4247a11e8bebca41508f6ecceecf0cb7433b357e8376d36934de09795959f9b35c1f3d2d3cca0882d559fab44c47fbe70a3056b9e83a43428ce753815398c0cb0e9143472dc666c2b26675e0db470e890310fee50fd3dd400ac6a2b514af94f664db05f90a57544078e6b9e89bd4a95467f8dac7b7c31abffb0bba15b4c3b961da02b0bb1477e80e0f98692013e3b05245e0630ef2f616ffff34f76efc8a1cd910dcdffb4c2c4b2f731790f46d42ae45e19e6ee93aa139f2fecb79777ef232d9fe192a812447df17a319922ff801e00456492e48c934da4fe781de0b026bc951bcbc70dc89d2bb42b1b329d19f544d227f0901db94b2ecf7e399f7bcd1aa9693192d6be3e4f175ab3018ad8b617b03ae35f2a29adc2d90cbf5693f8a7fe30dab94defdf968fe1c3669c472eb441f5b5c4eaa6832202bc4dcd9b9ed9cd6dff2a3206fb6e17d6846b768c8b34e810ccacf0506669384bf68edeb0180b113990bf944b014ce3bdd7a70fc51e7842329a20a76f5b8f323ee1e5a55d502562e8e6e500d6ae3e2c2032044b309fdb5a32d3fb7401d2ef830424080f4c0d82ceec66edc3b2c81a38b44dfd21467ad79fb5bce3f0a5ea490cf3922aeca07180a49c465f0a3197e8cb201fc12158687e9662b751583baf3cf7ef74660174956fc250a6874aaaa0affcbd7bc0cf723db9e2308957709e6919dd7f9855bc68768f686eccaa34405243bef0f4ddb9aa250542ef4366488043fc3e5dad77f952955c8145bd625ae0d4d9f9b52e97f7c1111cdbadd3c7c8baea5b9578313333b4e74d65a04bfcbd00ce8b13dfe1c70e07c4a520a5a77ffb9dd5db413d6477500d5c5197f111a41003a6bd6cd46c8031a00236ebcaec0bc13adaaa3d778a755047560f2e3b8bacab2d6bb8923612fa24fa2240511a320d42e0d7ebfd3ac537801836933c529fef8c1163170cf3d773fe88510da6760e2cfe2634c6883db9fd74f9975e76d4cbf2ffa8def62ff3f09390a71dbee439cae4c217dbfc09752fcd28bf2a1908acacc7d9644533876b56a2ded0f410719376b240511ed030be4048162227fea64f830aeb01a7ec4f0a6c27df1dea8fb6351a7c05a229973d1bd5544a420297619d0496ac223eb71d484a0a7c6bb1cfda4953d3f7f58b8ac5fd11b698e967077ebb32372620ddbe082038027beadbb1e9d90e235106ca9fb0904f12c3e7d69f37af2876a53823af645fb33673ccb1fb29e522dab4cc9ce2244bdbba30effaf351b0dd6cc992cf81ed68edf15346fb092b87f02b23ff13f1b67090d275de2dae9e872d6a18c3f125c6f3c52ec55b7d8e34982ec7c75bd648f5bf5838ffca2ba566589c0c7cd534e1b56b06eb7dfbce9b5d514aa924296dabead12f941f0d9b4b558e57e520dc0fcaca9179ec4318d2b3b9b76a7b12fdb4adaf96279a79e8fc8234961b5443fee292a9c029e9642556015e4badeda35c0796d7caf533dcb3383b40ea6aea26f22be83b44ecd8ab463d2ddb02beb07942e721a5ce654804925f826994eac837c82bc67f4b937224da251fe5bee96a4f8b85f4866ffa6d236861d38ddd1d7680d90152eae20fd08f458e8b6e053e4ff9ecb35cb31c3d59c6d0b3a434deacefa8597768d357a8f5fb13e0f80a646c0d4709bc0ab61c237e28fb1f04c27c72b9daef45c4d74e94e46498032f6ed9e6fef7caea78bc8a53377dab62aa828019c29b6d84af25f814f9d47cd07b8784a0f63cb8f9c6dcece9e1f39a228eb64ede272c9f38696ea670511bf64882eb2ccf33a0c0298db091c23da1be01f9571bf70f418788473e5df5b2e2c3637b2894dc689a3bd9d53cb4afde8a2759c02ced64313182f7a368322288bea2309ecac65cdd00ec3edc32fa2dea9c9031d479865fd8220eda627d33974e2270cbf5c193a9c9a4a759954e2baede71e1320e1c15bba34412f1a0e53ac7081f64795fbeec28f8675436ca8fd291f1c41bba253a5d1e96fb60301c067d72631064ddb134e32ff32b4ee0341a2eaa4737864d58fbb106d03f491409309fa650615c745e974e13d6619cec428dec3aaef0442d9825cc5438e56733a69e587b07702ba98c75059e6d8bb1af198eccc0f01dbe57db3281e4bb8dab2a5b323ec3c56bf52743d5c9f40653f539e9ab4f14c2d208d5aee1b00abe56404c6913272e1863fe3ba2cfbd69e41a491a6435aec35fbe2bb0bbc75c626e65117c7fde8b10791507b6a999befc05cfbb69567438048e57622ba6a8650d9f0ff6516861be798a0ecd25a988da0fbac11467381adf0f308abba791386e745b6aaaed6e5f62acfe41e2b1d5ea88956d816bbb29dc4cbdfce6310dfaf8d41681229c694801f7c5044f6531e953c044cf25e2589115b54e3e53cbba53f6f61da8d4edc5b2e4bb6b9503fb5b4822830dde000903116efa5b709f193161309c32fbd79b3598d67d7cc15936fefcefe6736d0e805322cbc382589059ccbd73358e07eccf107dfe7f6186b5a5ba379f69112bc043b8e7e386055209d1e668030ef53b4484943eb1103b98646fc286f86b965a70b468b86af41455e4873e80f48249ff0a5cd20559f08147782f4ea16356b4a111b0f15f5d6d4b84c60f8326c2e3c08d531655ddce438f18ae5bc3531a97569c88540ae380595ae8dc73599b5d5e721dfc14e19e2e93be39b49c21f100c508d48aa96ccbe354019ae2011633954b2d467200005817eacd0963585d8d580790e40298ac6ef5a38f79ac89bb87c13b0f78cb358b12003f9386c4051053a15f9e42e5b0ec0588cade0bb8b046ffa32293e0c89e596fb976ae940e8833c929f37dcb978ff7033e1a400e9978ad11f765808ba5d71a6334c98faf811bcef40b34115ea232d17e10f80fcf5973b59a98330f492fa5eaf8e95956e6eafb30152bb5678232e3aec56fe812168ee62816abba83b7581c33de13aed37f86244e427aa3aa44713587403e1abb8b287c6e666bc833ec3311732c8c8b5e71cde99f34558ac3f84524ac83acd6ce2c8d1bb85db705595ce3e70eb0016abaea2bd08981928ef815e1ca3e8a994966a8ff81465aa048dc23c0729e6277a8f1b4979730dcaff8237d2b7d7cf05b1843d0819a9e640171ea4b6db1a0559e623f7977117cd3ad2f4852a02e2fb3abe9ef7e906e8342e0b2f51eb08621c47ca11938c392687008d000f97349bef46d048420a3d0d66a78478692331ec391d5c748cb460d7cce000f789db427ff98ad6c813d24e0c926fc749548726fc2a46f387f447c46c39a7e75bf3befe7249abb759779b4a52bcfc16f172b37fb7e92a5aa2b7ff11047ce572d0517a9e73453a829fab7d02fac1da5e5b27ee417ab8791f447a65d767074aafe3bbb379b9ea144b920621750fb7151e075814e18208b927ba494feba28e0d1b17d00970a33b7c5b181b9a585d628c82f65c5e10774f71535dcbefcf6ef4289a4ac9dd92b01b645996d7869722afbac2d168a50ba86630b65ee3994b745533bb74ae5c6fa6eea92d3014854e2ecb5ddf30669d48bb31c2e5cfa6855b1ba0614131706704d9e9c81f47b406ab9d3da159c08456559156376edc94e0ebedab37b256462ee"
+  }
+}

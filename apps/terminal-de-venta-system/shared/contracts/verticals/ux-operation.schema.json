@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Vertical UX Operation Profile",
+  "type": "object",
+  "required": [
+    "verticalId",
+    "name",
+    "tablet",
+    "pc",
+    "screens",
+    "flows",
+    "microcopy",
+    "forbiddenVisibleTerms",
+    "acceptance"
+  ],
+  "properties": {
+    "verticalId": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "name": {
+      "type": "string"
+    },
+    "tablet": {
+      "type": "object",
+      "required": [
+        "primaryEntry",
+        "navigation",
+        "blockedModules",
+        "offlinePolicy"
+      ]
+    },
+    "pc": {
+      "type": "object",
+      "required": [
+        "navigation",
+        "governanceModules"
+      ]
+    },
+    "screens": {
+      "type": "array",
+      "minItems": 3
+    },
+    "flows": {
+      "type": "array",
+      "minItems": 2
+    },
+    "microcopy": {
+      "type": "object"
+    },
+    "forbiddenVisibleTerms": {
+      "type": "array"
+    },
+    "acceptance": {
+      "type": "array",
+      "minItems": 5
+    }
+  }
+}

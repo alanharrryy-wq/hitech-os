@@ -1,0 +1,382 @@
+{
+  "schemaVersion": "1.0.0",
+  "verticals": [
+    {
+      "schemaVersion": "1.0.0",
+      "verticalId": "convenience",
+      "displayName": "Tienda de conveniencia",
+      "coreRequired": true,
+      "capabilities": {
+        "required": [
+          "core.sales",
+          "core.payments",
+          "core.ticket",
+          "core.catalog",
+          "core.inventory.basic",
+          "core.shift"
+        ],
+        "optional": [
+          "core.returns",
+          "core.sync",
+          "core.export"
+        ]
+      },
+      "surfaces": {
+        "tablet": {
+          "enabled": true,
+          "routes": [
+            "Vender",
+            "Cobro",
+            "Ventas de hoy",
+            "Existencias",
+            "Devoluciones",
+            "Turno",
+            "Pendientes por enviar"
+          ]
+        },
+        "pc": {
+          "enabled": true,
+          "routes": [
+            "Dashboard",
+            "Catalogo",
+            "Inventario",
+            "Auditoria",
+            "Configuracion"
+          ]
+        }
+      },
+      "offline": {
+        "salesAllowed": true,
+        "sensitiveActionsRequireConnection": false
+      }
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "verticalId": "restaurant",
+      "displayName": "Restaurante / cafeteria",
+      "coreRequired": true,
+      "capabilities": {
+        "required": [
+          "core.sales",
+          "core.payments",
+          "core.ticket",
+          "core.shift",
+          "restaurant.tables"
+        ],
+        "optional": [
+          "restaurant.kitchen_orders",
+          "restaurant.tips",
+          "core.sync"
+        ]
+      },
+      "surfaces": {
+        "tablet": {
+          "enabled": true,
+          "routes": [
+            "Vender",
+            "Mesas",
+            "Comandas",
+            "Cobro",
+            "Ventas de hoy",
+            "Turno",
+            "Pendientes por enviar"
+          ]
+        },
+        "pc": {
+          "enabled": true,
+          "routes": [
+            "Dashboard",
+            "Catalogo",
+            "Inventario",
+            "Auditoria",
+            "Configuracion"
+          ]
+        }
+      },
+      "offline": {
+        "salesAllowed": true,
+        "sensitiveActionsRequireConnection": false
+      }
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "verticalId": "pharmacy",
+      "displayName": "Farmacia",
+      "coreRequired": true,
+      "capabilities": {
+        "required": [
+          "core.sales",
+          "core.payments",
+          "core.ticket",
+          "core.inventory.basic",
+          "pharmacy.lots"
+        ],
+        "optional": [
+          "pharmacy.prescription",
+          "core.returns",
+          "core.sync"
+        ]
+      },
+      "surfaces": {
+        "tablet": {
+          "enabled": true,
+          "routes": [
+            "Vender",
+            "Catalogo",
+            "Existencias",
+            "Caducidades",
+            "Devoluciones",
+            "Turno",
+            "Pendientes por enviar"
+          ]
+        },
+        "pc": {
+          "enabled": true,
+          "routes": [
+            "Dashboard",
+            "Catalogo",
+            "Inventario",
+            "Auditoria",
+            "Configuracion"
+          ]
+        }
+      },
+      "offline": {
+        "salesAllowed": true,
+        "sensitiveActionsRequireConnection": true
+      }
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "verticalId": "beauty",
+      "displayName": "Estetica / barberia",
+      "coreRequired": true,
+      "capabilities": {
+        "required": [
+          "core.sales",
+          "core.payments",
+          "core.ticket",
+          "sales.services",
+          "beauty.appointments"
+        ],
+        "optional": [
+          "beauty.commissions",
+          "customer.profile",
+          "core.sync"
+        ]
+      },
+      "surfaces": {
+        "tablet": {
+          "enabled": true,
+          "routes": [
+            "Vender",
+            "Citas",
+            "Servicios",
+            "Clientes",
+            "Cobro",
+            "Turno",
+            "Pendientes por enviar"
+          ]
+        },
+        "pc": {
+          "enabled": true,
+          "routes": [
+            "Dashboard",
+            "Catalogo",
+            "Inventario",
+            "Auditoria",
+            "Configuracion"
+          ]
+        }
+      },
+      "offline": {
+        "salesAllowed": true,
+        "sensitiveActionsRequireConnection": false
+      }
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "verticalId": "hardware",
+      "displayName": "Ferreteria",
+      "coreRequired": true,
+      "capabilities": {
+        "required": [
+          "core.sales",
+          "core.payments",
+          "core.ticket",
+          "core.inventory.basic",
+          "hardware.measure_units"
+        ],
+        "optional": [
+          "hardware.quote",
+          "core.sync"
+        ]
+      },
+      "surfaces": {
+        "tablet": {
+          "enabled": true,
+          "routes": [
+            "Vender",
+            "Cotizaciones",
+            "Existencias",
+            "Cobro",
+            "Ventas de hoy",
+            "Turno"
+          ]
+        },
+        "pc": {
+          "enabled": true,
+          "routes": [
+            "Dashboard",
+            "Catalogo",
+            "Inventario",
+            "Auditoria",
+            "Configuracion"
+          ]
+        }
+      },
+      "offline": {
+        "salesAllowed": true,
+        "sensitiveActionsRequireConnection": false
+      }
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "verticalId": "apparel",
+      "displayName": "Ropa / boutique",
+      "coreRequired": true,
+      "capabilities": {
+        "required": [
+          "core.sales",
+          "core.payments",
+          "core.ticket",
+          "apparel.variants"
+        ],
+        "optional": [
+          "core.returns",
+          "customer.profile",
+          "core.sync"
+        ]
+      },
+      "surfaces": {
+        "tablet": {
+          "enabled": true,
+          "routes": [
+            "Vender",
+            "Catalogo",
+            "Cambios",
+            "Existencias",
+            "Cobro",
+            "Ventas de hoy"
+          ]
+        },
+        "pc": {
+          "enabled": true,
+          "routes": [
+            "Dashboard",
+            "Catalogo",
+            "Inventario",
+            "Auditoria",
+            "Configuracion"
+          ]
+        }
+      },
+      "offline": {
+        "salesAllowed": true,
+        "sensitiveActionsRequireConnection": false
+      }
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "verticalId": "repair",
+      "displayName": "Taller / reparacion",
+      "coreRequired": true,
+      "capabilities": {
+        "required": [
+          "core.sales",
+          "core.payments",
+          "repair.work_orders"
+        ],
+        "optional": [
+          "core.inventory.basic",
+          "customer.profile",
+          "core.sync"
+        ]
+      },
+      "surfaces": {
+        "tablet": {
+          "enabled": true,
+          "routes": [
+            "Ordenes",
+            "Vender",
+            "Clientes",
+            "Refacciones",
+            "Cobro",
+            "Turno"
+          ]
+        },
+        "pc": {
+          "enabled": true,
+          "routes": [
+            "Dashboard",
+            "Catalogo",
+            "Inventario",
+            "Auditoria",
+            "Configuracion"
+          ]
+        }
+      },
+      "offline": {
+        "salesAllowed": true,
+        "sensitiveActionsRequireConnection": true
+      }
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "verticalId": "field_route",
+      "displayName": "Ruta / campo",
+      "coreRequired": true,
+      "capabilities": {
+        "required": [
+          "core.sales",
+          "core.payments",
+          "core.ticket",
+          "field_route.routes",
+          "core.sync"
+        ],
+        "optional": [
+          "customer.credit",
+          "delivery.proof",
+          "core.export"
+        ]
+      },
+      "surfaces": {
+        "tablet": {
+          "enabled": true,
+          "routes": [
+            "Ruta",
+            "Vender",
+            "Clientes",
+            "Pendientes por enviar",
+            "Ventas de hoy",
+            "Exportar"
+          ]
+        },
+        "pc": {
+          "enabled": true,
+          "routes": [
+            "Dashboard",
+            "Catalogo",
+            "Inventario",
+            "Auditoria",
+            "Configuracion"
+          ]
+        }
+      },
+      "offline": {
+        "salesAllowed": true,
+        "sensitiveActionsRequireConnection": false
+      }
+    }
+  ]
+}

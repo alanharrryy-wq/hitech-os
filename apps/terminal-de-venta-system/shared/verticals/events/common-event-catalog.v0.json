@@ -1,0 +1,125 @@
+{
+  "version": 0,
+  "kind": "common-event-catalog",
+  "events": [
+    {
+      "topic": "sale.created",
+      "description": "Se crea una venta local o administrada.",
+      "scope": "core",
+      "sensitivity": "low",
+      "requiresPermission": "sale.use"
+    },
+    {
+      "topic": "sale.completed",
+      "description": "Se completa una venta y queda lista para ticket.",
+      "scope": "core",
+      "sensitivity": "low",
+      "requiresPermission": "sale.use"
+    },
+    {
+      "topic": "ticket.closed",
+      "description": "Se cierra el ticket visible del cliente.",
+      "scope": "core",
+      "sensitivity": "low",
+      "requiresPermission": "ticket.use"
+    },
+    {
+      "topic": "payment.received",
+      "description": "Se registra pago recibido.",
+      "scope": "core",
+      "sensitivity": "medium",
+      "requiresPermission": "payment.use"
+    },
+    {
+      "topic": "payment.failed",
+      "description": "Fallo un intento de pago.",
+      "scope": "core",
+      "sensitivity": "medium",
+      "requiresPermission": "payment.use"
+    },
+    {
+      "topic": "return.created",
+      "description": "Se inicia una devolucion.",
+      "scope": "core",
+      "sensitivity": "medium",
+      "requiresPermission": "return.use"
+    },
+    {
+      "topic": "return.completed",
+      "description": "Se completa una devolucion.",
+      "scope": "core",
+      "sensitivity": "medium",
+      "requiresPermission": "return.use"
+    },
+    {
+      "topic": "shift.opened",
+      "description": "Se abre turno de caja.",
+      "scope": "core",
+      "sensitivity": "low",
+      "requiresPermission": "shift.use"
+    },
+    {
+      "topic": "shift.closed",
+      "description": "Se cierra turno de caja.",
+      "scope": "core",
+      "sensitivity": "low",
+      "requiresPermission": "shift.use"
+    },
+    {
+      "topic": "stock.decremented",
+      "description": "Se descuenta existencia por venta.",
+      "scope": "core",
+      "sensitivity": "low",
+      "requiresPermission": "stock.use"
+    },
+    {
+      "topic": "stock.adjusted",
+      "description": "Se ajusta inventario local o administrado.",
+      "scope": "core",
+      "sensitivity": "low",
+      "requiresPermission": "stock.use"
+    },
+    {
+      "topic": "sync.event.pending",
+      "description": "Un evento queda pendiente por enviar.",
+      "scope": "core",
+      "sensitivity": "low",
+      "requiresPermission": "sync.use"
+    },
+    {
+      "topic": "sync.event.sent",
+      "description": "Un evento fue enviado.",
+      "scope": "core",
+      "sensitivity": "low",
+      "requiresPermission": "sync.use"
+    },
+    {
+      "topic": "sync.event.failed",
+      "description": "Fallo el envio de un evento.",
+      "scope": "core",
+      "sensitivity": "low",
+      "requiresPermission": "sync.use"
+    },
+    {
+      "topic": "sync.conflict.detected",
+      "description": "Se detecto conflicto de sincronizacion.",
+      "scope": "core",
+      "sensitivity": "low",
+      "requiresPermission": "sync.use"
+    },
+    {
+      "topic": "catalog.product.created",
+      "description": "Se crea producto basico.",
+      "scope": "core",
+      "sensitivity": "low",
+      "requiresPermission": "catalog.use"
+    },
+    {
+      "topic": "catalog.product.updated",
+      "description": "Se actualiza producto.",
+      "scope": "core",
+      "sensitivity": "low",
+      "requiresPermission": "catalog.use"
+    }
+  ]
+}

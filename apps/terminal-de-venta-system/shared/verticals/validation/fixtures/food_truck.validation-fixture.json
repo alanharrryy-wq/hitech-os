@@ -1,0 +1,624 @@
+{
+  "verticalId": "food_truck",
+  "verticalName": "Food truck / punto movil",
+  "fixtureVersion": "0.0.1",
+  "purpose": "menu corto, flujo rapido, propina opcional y offline",
+  "requiredBlocks": [
+    "00A_CORE_CONTRACTS",
+    "00B_VERTICAL_REGISTRY",
+    "00C_VERTICAL_DATA_MODELS",
+    "00D_VERTICAL_EVENTS_PERMISSIONS",
+    "00E_VERTICAL_UX_OPERATIONS"
+  ],
+  "businessProfile": {
+    "tabletRole": "operacion principal o captura rapida segun vertical",
+    "pcRole": "gobierno, auditoria, configuracion y consolidacion",
+    "forbiddenTabletBehaviors": [
+      "backoffice_profundo",
+      "permisos_globales",
+      "compras_formales_sin_pc",
+      "auditoria_pesada"
+    ]
+  },
+  "screensUnderTest": [
+    "Vender",
+    "Cobro",
+    "Ticket actual",
+    "Ventas de hoy",
+    "Turno",
+    "Sincronizacion",
+    "Menu",
+    "Orden rapida",
+    "Cierre movil"
+  ],
+  "flowsUnderTest": [
+    "menu_sale",
+    "combo_sale",
+    "rush_order",
+    "cash_change",
+    "close_shift",
+    "offline_sale"
+  ],
+  "seedData": {
+    "business": {
+      "id": "biz_food_truck",
+      "name": "Demo Food truck / punto movil",
+      "verticalId": "food_truck",
+      "mode": "standalone_or_managed"
+    },
+    "terminal": {
+      "id": "terminal_food_truck_01",
+      "kind": "tablet_pos",
+      "offlineAllowed": true
+    },
+    "operator": {
+      "id": "operator_food_truck_01",
+      "role": "cajero",
+      "permissions": [
+        "pos.sale.create",
+        "pos.sale.complete",
+        "pos.ticket.view",
+        "shift.view",
+        "sync.status.view",
+        "pos.return.create",
+        "inventory.adjust.local"
+      ]
+    },
+    "products": [
+      {
+        "sku": "FOOD_TRUCK-SKU-001",
+        "name": "Producto 1 Food truck / punto movil",
+        "barcode": "7506203231645",
+        "priceCents": 1125,
+        "stockOnHand": 21,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "ee52d24c7b485d407e60a86b"
+        }
+      },
+      {
+        "sku": "FOOD_TRUCK-SKU-002",
+        "name": "Producto 2 Food truck / punto movil",
+        "barcode": "7501404321546",
+        "priceCents": 1250,
+        "stockOnHand": 22,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "d4e02bf4ce8ec2fd5fce94a6"
+        }
+      },
+      {
+        "sku": "FOOD_TRUCK-SKU-003",
+        "name": "Producto 3 Food truck / punto movil",
+        "barcode": "7500348165576",
+        "priceCents": 1375,
+        "stockOnHand": 23,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "78c25d6b2647ef3796f549cc"
+        }
+      },
+      {
+        "sku": "FOOD_TRUCK-SKU-004",
+        "name": "Producto 4 Food truck / punto movil",
+        "barcode": "7506450164001",
+        "priceCents": 1500,
+        "stockOnHand": 24,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "c7ab03def2924bc45722fd0f"
+        }
+      },
+      {
+        "sku": "FOOD_TRUCK-SKU-005",
+        "name": "Producto 5 Food truck / punto movil",
+        "barcode": "7501157389190",
+        "priceCents": 1625,
+        "stockOnHand": 25,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "e678182b21de256b23c57fec"
+        }
+      },
+      {
+        "sku": "FOOD_TRUCK-SKU-006",
+        "name": "Producto 6 Food truck / punto movil",
+        "barcode": "7500130085556",
+        "priceCents": 1750,
+        "stockOnHand": 26,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "4900467d826fe08e033b7101"
+        }
+      },
+      {
+        "sku": "FOOD_TRUCK-SKU-007",
+        "name": "Producto 7 Food truck / punto movil",
+        "barcode": "7507012455259",
+        "priceCents": 1875,
+        "stockOnHand": 27,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "f826103029e376f58789922d"
+        }
+      },
+      {
+        "sku": "FOOD_TRUCK-SKU-008",
+        "name": "Producto 8 Food truck / punto movil",
+        "barcode": "7507724399991",
+        "priceCents": 2000,
+        "stockOnHand": 28,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "8708684a6431ca4ceb1baf32"
+        }
+      }
+    ],
+    "services": [
+      {
+        "serviceCode": "FOOD_TRUCK-SVC-01",
+        "name": "Servicio 1 Food truck / punto movil",
+        "priceCents": 1800,
+        "durationMinutes": 15,
+        "verticalTraits": {
+          "fixtureTrait": "d61dcf9bfecfd5a982d133bc"
+        }
+      },
+      {
+        "serviceCode": "FOOD_TRUCK-SVC-02",
+        "name": "Servicio 2 Food truck / punto movil",
+        "priceCents": 2100,
+        "durationMinutes": 30,
+        "verticalTraits": {
+          "fixtureTrait": "7c00c2bd0b9622723f053e8b"
+        }
+      },
+      {
+        "serviceCode": "FOOD_TRUCK-SVC-03",
+        "name": "Servicio 3 Food truck / punto movil",
+        "priceCents": 2400,
+        "durationMinutes": 45,
+        "verticalTraits": {
+          "fixtureTrait": "89a25190c3497576e0feeca8"
+        }
+      },
+      {
+        "serviceCode": "FOOD_TRUCK-SVC-04",
+        "name": "Servicio 4 Food truck / punto movil",
+        "priceCents": 2700,
+        "durationMinutes": 60,
+        "verticalTraits": {
+          "fixtureTrait": "367baef05fb9b7302f774f5b"
+        }
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "food_truck.scenario.01.menu_sale",
+      "title": "Validar menu sale para Food truck / punto movil",
+      "verticalId": "food_truck",
+      "primaryScreen": "Cobro",
+      "flowKey": "menu_sale",
+      "initialState": "loading",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Cobro.",
+        "Ejecutar flujo menu sale.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo menu_sale termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.complete"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:food_truck:menu_sale:1",
+        "acaf925de5ec1b7d"
+      ]
+    },
+    {
+      "id": "food_truck.scenario.02.combo_sale",
+      "title": "Validar combo sale para Food truck / punto movil",
+      "verticalId": "food_truck",
+      "primaryScreen": "Ticket actual",
+      "flowKey": "combo_sale",
+      "initialState": "ready",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ticket actual.",
+        "Ejecutar flujo combo sale.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo combo_sale termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.ticket.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:food_truck:combo_sale:2",
+        "1eb58bfcb71887dd"
+      ]
+    },
+    {
+      "id": "food_truck.scenario.03.rush_order",
+      "title": "Validar rush order para Food truck / punto movil",
+      "verticalId": "food_truck",
+      "primaryScreen": "Ventas de hoy",
+      "flowKey": "rush_order",
+      "initialState": "error",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ventas de hoy.",
+        "Ejecutar flujo rush order.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo rush_order termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "food_truck.rush_order.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.retry"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:food_truck:rush_order:3",
+        "af9915b464cf401d"
+      ]
+    },
+    {
+      "id": "food_truck.scenario.04.cash_change",
+      "title": "Validar cash change para Food truck / punto movil",
+      "verticalId": "food_truck",
+      "primaryScreen": "Turno",
+      "flowKey": "cash_change",
+      "initialState": "offline",
+      "actor": "supervisor",
+      "mode": "pc",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Turno.",
+        "Ejecutar flujo cash change.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo cash_change termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.status.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:food_truck:cash_change:4",
+        "a7b89947f152db17"
+      ]
+    },
+    {
+      "id": "food_truck.scenario.05.close_shift",
+      "title": "Validar close shift para Food truck / punto movil",
+      "verticalId": "food_truck",
+      "primaryScreen": "Sincronizacion",
+      "flowKey": "close_shift",
+      "initialState": "sync_pending",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Sincronizacion.",
+        "Ejecutar flujo close shift.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo close_shift termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "food_truck.close_shift.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.create"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:food_truck:close_shift:5",
+        "03e97972f1b88694"
+      ]
+    },
+    {
+      "id": "food_truck.scenario.06.offline_sale",
+      "title": "Validar offline sale para Food truck / punto movil",
+      "verticalId": "food_truck",
+      "primaryScreen": "Menu",
+      "flowKey": "offline_sale",
+      "initialState": "success",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Menu.",
+        "Ejecutar flujo offline sale.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo offline_sale termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "sync.event.queued"
+      ],
+      "requiredPermissions": [
+        "inventory.adjust.local"
+      ],
+      "offlineExpectation": "queda pendiente por enviar",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:food_truck:offline_sale:6",
+        "c05ffe42090a2145"
+      ]
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "scenarioId": "food_truck.scenario.01.menu_sale",
+      "checks": [
+        {
+          "id": "food_truck.scenario.01.menu_sale.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "food_truck.scenario.01.menu_sale.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "food_truck.scenario.01.menu_sale.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "food_truck.scenario.01.menu_sale.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "food_truck.scenario.01.menu_sale.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "food_truck.scenario.02.combo_sale",
+      "checks": [
+        {
+          "id": "food_truck.scenario.02.combo_sale.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "food_truck.scenario.02.combo_sale.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "food_truck.scenario.02.combo_sale.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "food_truck.scenario.02.combo_sale.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "food_truck.scenario.02.combo_sale.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "food_truck.scenario.03.rush_order",
+      "checks": [
+        {
+          "id": "food_truck.scenario.03.rush_order.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "food_truck.scenario.03.rush_order.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "food_truck.scenario.03.rush_order.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "food_truck.scenario.03.rush_order.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "food_truck.scenario.03.rush_order.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "food_truck.scenario.04.cash_change",
+      "checks": [
+        {
+          "id": "food_truck.scenario.04.cash_change.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "food_truck.scenario.04.cash_change.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "food_truck.scenario.04.cash_change.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "food_truck.scenario.04.cash_change.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "food_truck.scenario.04.cash_change.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "food_truck.scenario.05.close_shift",
+      "checks": [
+        {
+          "id": "food_truck.scenario.05.close_shift.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "food_truck.scenario.05.close_shift.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "food_truck.scenario.05.close_shift.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "food_truck.scenario.05.close_shift.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "food_truck.scenario.05.close_shift.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "food_truck.scenario.06.offline_sale",
+      "checks": [
+        {
+          "id": "food_truck.scenario.06.offline_sale.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "food_truck.scenario.06.offline_sale.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "food_truck.scenario.06.offline_sale.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "food_truck.scenario.06.offline_sale.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "food_truck.scenario.06.offline_sale.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    }
+  ],
+  "fixtureIntegrity": {
+    "anchor": "61e0d83ef403df840ed7486600ece5e91fd4c80b7a2e8824638f295fbe531185",
+    "noiseProofCorpus": "6ce12d55d621dee2155d2a4b9ca9c082f760d52226a1d02915eb1d84f972504e7dde3e52352e93f380fdca3045126189d9db98fecc3740c324face84e402edc5a716557f5f20f8cdac0d42b4d0f644132800578863909e7785529f6147dd74cf817556f082eed01eb3ea937e6613b51d1bc99fdadfb26976ef81a1e576862e36fe73767b062503352cbb170bab5522340f2f2aa4b9804bbe2f26818be64333346b43f00cd49a9dc7147a62393513f5fd86b79ca8eaf1605773ddd84ff59bdb2b32bc2546d15e404bd9d5f6dc6e8e26bdd1d7f6a8c7c7fffe9629dab9757342890f26bb1fc09ebd284208a7a77f81233ff1d567a0e9d06756d84e9f45782a528909fe079369cbd4f9e19a32a5bdaaedcfa91d67bac95dcefd6c69d4e154fef01f95704e9e57a5c1cb05dd9412c688517026dad8aa2244346977faee570f03900df4a75309f690d07fa076012d39678a6b7e95b42134e89b6dec8e83e38f9c980204bf9f66fa0992dc80a297d58d95541f99cca26387e6a0edf70072acc25b078f917f9e7d7ae66640aa82eaf8f3f8cadbae0525d0f54ed5e1affa3ebb840cccf614b807d3d0554c9cfc73e0eb9b87eec8090dbeee5f87cece3977b154e4cb2ed77d658f62445c1df91f6181698bd87fd006f045fa3e369173a2d5a6c06cfbc5cff7cff2a8d67d3203f28608e76c800cc0596859eec3f78bd60e33f1f0f73851fbd3fdd7eb56ad96adb9719c89264a891d1106f84f54441a9a30010f4634389ba917cd4c091011e005bfca632935fef6cf6a7af929cd00573769134daa7ec754998d9d4ea690e448052150f19cb124672175f4dcd207f05644edeba2c7e038d723a0c419cd3ae9d89f80f2f0c151a6b84dd9da24deca306fb13dee6fcefea48068b20169825151d9b1a19c467e30bb61e3bc37c979bec926d2e8e7535a187b24e85fab943c05d147ec5596a848669edae9246bb90172ffa2f9757b6afffc46add6ace4035bd257412b432a4828810e43c3c96ca9a2b0d0630a7f97c06c9414e0abac5726850b2a07e445dd0c0bdaa6f5089eca03bb6883f59afc1eac8191fea3c10d1f9724ab934b7155fe81ef6de05ab34d033e9fb2b0a0f3edb55ae20049939510fb89beb620818e461b0a1f4abc640c9ca77cc8e887afb372285e951b850c536582821699c6605a0fc644d1644cebaebd6245fdf3519092e4e4846893ca2509bd26176c15e3bf7a281dcbe654a0d3cc3f7bab6e329f36bfbbc3b4d2f2ad58d2f00b456e0d9c16803d85e6ba02f94f3f302a9b0c62235449ea3b05717079b42220571ad963e14f7942b570e4c03cc84a09f4200a70e259aa88cf6ecb57e76499bc1f9746f5e995ea17e95da21d111564766586d111c6f53ec0d2666b3afa3db22a27c472f43e0843706fb7ccfe184e3c6189780e65c91be9155f040cec61c579d9d9662b6f53837434afb68a76296aa6ed66f1f20ff98760bf6355cb4c19390bbcb2dad1488a69446051816996bbf0aa399353873c23123e88bd64f3ae041d693d113ab8f16b03e447007bbe7ff6be463482938b591231400b8758bf0413e40c60668465ab6b7252488440620db47c0dcc9346c0d5f675a694f8dd695d030a7c5b47e884d23e91c2de777ad47922b6c56e83c2d91979da93b6aac90064a7307fa8d54f3b6804e5cd2e271540147355bd8df476f69edb6f384f6182f8c3f8e66a193da11a96e9fea68c4a2a2cba4cd4c7718ea59a0e2cd39d84d190f4cc56a6b002d1ba3cb67a4bdd996b4591eb0d930426b2b3406eb00c2c82c4d8175f4c1683db8ee9038dc3f8cbd8e80e2532842311b3363d0bceb7b00bc9e1ba64ef642da8f53680f3ad9387a12e20c648ca9fa338c2fec46d78793889bfaf371d95c921b3d457c1954415653be2a7b1749c084ac114cbb0789d1dfca8c95878e26de4847204fe7bcc379a9e7163275a5bd3a35c8cb7e367e604c38176f8787e406d08cbfd2eda0db755191e88fcf3668a15b1ecc28cee9716922a2aef793fbc09afef54e276bfb855335d4e1d2b2e0010b851823be7e1e477172dba3fcf1b9eb3aa91992f68f52e5e88305998c1b533fed0923fcb1718b627ea0b98fb09af296c4db8c49481370c6c27c0e9b7bce6345bbda207eadc88f37e3266aa0de746799e197eafe0b3781bdcb768ae410fa538de5e5e8dc7ddabdfdfc763a861b89732a2ed3c7057970f8dbc29a47454ed411209da07666cf476070f190368201d54ccead8b6d0faf8a227343e1a10709091c57bab770d15bef8967d4788ef41ec7bd33295d908df6f3bbc60216281039b24fb13ed01dd127e53677cdf0a01a6faf265c34b4e454d86ed693f8e2188725db35081e34303baa8c6bafdd3663e330443245f66024cc89ba3c148f932f0461c9421a8b2ab750c9738d815998e93c64b098dc228e632a027853db5534a86dcaee56546ba88de69bb5c0cda2ada39cbfade143e3916b756ee9f714d070d822292171b644f8cf7dc41425717e1aed4ad321554629d3b6acdff3ff4813ac0502b8e59b94d975592ef99cdc6081ec0df8797222af8ad197ee80034d7fc9d48d762141450479132022b577f6654047356cb3c47b5fedde6c844e088b6302149701716aa3945692bfb1b55298a90452e30f5acb659d854d0e443794ff5eaf80ed1eded4af24a51ed992c4b45c51dbce8e08236a9b772fb5a3e6233bd3070a628e75e321e545ede2e968b1a78debe7957702506697fb9ddce713af7c22eca9720927da2deb6e00608b1164523a20713e257cd922aad9c3b594dcea01f5b464ead7501d69aad58542f9a02000e1005ac622b21b28b30ca947f9ef632e4d578ab5033bcb85ca4f235ecb24bce2b1ffad2f3e880c737d02e4b7b009378c8c1bd0b9a72208868ec967875bed1d39251b756b479922b9bd3e94dfd8a7c638df70c4a1b15c2443f4ec34c6caed749bf734b7dcae98b38e1e2bf5f28a611e0af5a2987b14113fc6f313b888fca88203bee9afd8293dd1225f2095ab2640da008b6d7818344187d29ccae620203ba3d79020622ef1093a6374370f9e5e17f69ef468ba49c9e137e0dc9af91b14a1ee93c8372d5c57da23518db132874d9b5663c3031c381da2386f90803adc033c897b5bfe73f1a596683ded47636c82549c1ea781ff2627d0bc7adedc74880264744fcb5200816335bde168378b33373b936591b8c148b7910e968798ff1bdb9b382d386b9abdc148002198e5da54d7dfeabb61387b400c10417048dfe2b141888b85fa8cbdc41260adb2674b16668397e2d3f2a1dee414fab23e91a3efea566d4241b00efc005461c208131f961adc9055896b23a47ecbb18c122dc808614652d184d107b3a8b9209e6ea3580a33814ac2d4c98fa90360ae4feab860ed21f135e77a8b584e7b126cc823ef23f5f692edc2cd6ae226bb8f2cb5e2ca6e1bc39f27e5067d24931657a6d94bcc32fa7527f88a4c9cf7897e8e21702e895fdd5fcdfcd342f34a0cf373e9dee957808191e8b63582b492e7e2499d2e55a23e339eada59dfa890c1940a4f3286fbf6be16163a336cd12806161eb4a9de131e79455fbd31da5397c71e7a74af40b90454266c0696"
+  }
+}

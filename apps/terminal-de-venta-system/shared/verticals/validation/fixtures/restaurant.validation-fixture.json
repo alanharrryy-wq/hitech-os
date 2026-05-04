@@ -1,0 +1,625 @@
+{
+  "verticalId": "restaurant",
+  "verticalName": "Restaurante / cafeteria",
+  "fixtureVersion": "0.0.1",
+  "purpose": "mesas, comandas, cocina, cuenta abierta y propina",
+  "requiredBlocks": [
+    "00A_CORE_CONTRACTS",
+    "00B_VERTICAL_REGISTRY",
+    "00C_VERTICAL_DATA_MODELS",
+    "00D_VERTICAL_EVENTS_PERMISSIONS",
+    "00E_VERTICAL_UX_OPERATIONS"
+  ],
+  "businessProfile": {
+    "tabletRole": "operacion principal o captura rapida segun vertical",
+    "pcRole": "gobierno, auditoria, configuracion y consolidacion",
+    "forbiddenTabletBehaviors": [
+      "backoffice_profundo",
+      "permisos_globales",
+      "compras_formales_sin_pc",
+      "auditoria_pesada"
+    ]
+  },
+  "screensUnderTest": [
+    "Vender",
+    "Cobro",
+    "Ticket actual",
+    "Ventas de hoy",
+    "Turno",
+    "Sincronizacion",
+    "Mesas",
+    "Comandas",
+    "Cocina",
+    "Cuenta"
+  ],
+  "flowsUnderTest": [
+    "open_table",
+    "send_to_kitchen",
+    "split_bill",
+    "cash_change",
+    "table_close",
+    "offline_order"
+  ],
+  "seedData": {
+    "business": {
+      "id": "biz_restaurant",
+      "name": "Demo Restaurante / cafeteria",
+      "verticalId": "restaurant",
+      "mode": "standalone_or_managed"
+    },
+    "terminal": {
+      "id": "terminal_restaurant_01",
+      "kind": "tablet_pos",
+      "offlineAllowed": true
+    },
+    "operator": {
+      "id": "operator_restaurant_01",
+      "role": "cajero",
+      "permissions": [
+        "pos.sale.create",
+        "pos.sale.complete",
+        "pos.ticket.view",
+        "shift.view",
+        "sync.status.view",
+        "pos.return.create",
+        "inventory.adjust.local"
+      ]
+    },
+    "products": [
+      {
+        "sku": "RESTAURANT-SKU-001",
+        "name": "Producto 1 Restaurante / cafeteria",
+        "barcode": "7502539340877",
+        "priceCents": 1125,
+        "stockOnHand": 21,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "acbc1c4ba4227b3a575a8846"
+        }
+      },
+      {
+        "sku": "RESTAURANT-SKU-002",
+        "name": "Producto 2 Restaurante / cafeteria",
+        "barcode": "7503562657548",
+        "priceCents": 1250,
+        "stockOnHand": 22,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "10577e61ab1cfdfc21a911b0"
+        }
+      },
+      {
+        "sku": "RESTAURANT-SKU-003",
+        "name": "Producto 3 Restaurante / cafeteria",
+        "barcode": "7504044895643",
+        "priceCents": 1375,
+        "stockOnHand": 23,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "0e5aaa6dce2b6d7c647b3c16"
+        }
+      },
+      {
+        "sku": "RESTAURANT-SKU-004",
+        "name": "Producto 4 Restaurante / cafeteria",
+        "barcode": "7507707591479",
+        "priceCents": 1500,
+        "stockOnHand": 24,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "6f8b6099305f334de112e2ca"
+        }
+      },
+      {
+        "sku": "RESTAURANT-SKU-005",
+        "name": "Producto 5 Restaurante / cafeteria",
+        "barcode": "7509899961712",
+        "priceCents": 1625,
+        "stockOnHand": 25,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "2aac6195a33d0682c1e4aaec"
+        }
+      },
+      {
+        "sku": "RESTAURANT-SKU-006",
+        "name": "Producto 6 Restaurante / cafeteria",
+        "barcode": "7504836893538",
+        "priceCents": 1750,
+        "stockOnHand": 26,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "bfa048637a7a6ac91524b8f7"
+        }
+      },
+      {
+        "sku": "RESTAURANT-SKU-007",
+        "name": "Producto 7 Restaurante / cafeteria",
+        "barcode": "7502770659653",
+        "priceCents": 1875,
+        "stockOnHand": 27,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "4ad8065dd7307056c62ed124"
+        }
+      },
+      {
+        "sku": "RESTAURANT-SKU-008",
+        "name": "Producto 8 Restaurante / cafeteria",
+        "barcode": "7509653029356",
+        "priceCents": 2000,
+        "stockOnHand": 28,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "eb169e1596b5bc55a4c61f7d"
+        }
+      }
+    ],
+    "services": [
+      {
+        "serviceCode": "RESTAURANT-SVC-01",
+        "name": "Servicio 1 Restaurante / cafeteria",
+        "priceCents": 1800,
+        "durationMinutes": 15,
+        "verticalTraits": {
+          "fixtureTrait": "4e4209231f28b1d4d20fe6d7"
+        }
+      },
+      {
+        "serviceCode": "RESTAURANT-SVC-02",
+        "name": "Servicio 2 Restaurante / cafeteria",
+        "priceCents": 2100,
+        "durationMinutes": 30,
+        "verticalTraits": {
+          "fixtureTrait": "8d499f6a7c26ea148be8ecf7"
+        }
+      },
+      {
+        "serviceCode": "RESTAURANT-SVC-03",
+        "name": "Servicio 3 Restaurante / cafeteria",
+        "priceCents": 2400,
+        "durationMinutes": 45,
+        "verticalTraits": {
+          "fixtureTrait": "3ea8cfd6741d18ea620e7cbd"
+        }
+      },
+      {
+        "serviceCode": "RESTAURANT-SVC-04",
+        "name": "Servicio 4 Restaurante / cafeteria",
+        "priceCents": 2700,
+        "durationMinutes": 60,
+        "verticalTraits": {
+          "fixtureTrait": "25f5393bef31c389505b8dc2"
+        }
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "restaurant.scenario.01.open_table",
+      "title": "Validar open table para Restaurante / cafeteria",
+      "verticalId": "restaurant",
+      "primaryScreen": "Cobro",
+      "flowKey": "open_table",
+      "initialState": "loading",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Cobro.",
+        "Ejecutar flujo open table.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo open_table termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "restaurant.open_table.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.complete"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:restaurant:open_table:1",
+        "e86f7a73311da6d0"
+      ]
+    },
+    {
+      "id": "restaurant.scenario.02.send_to_kitchen",
+      "title": "Validar send to kitchen para Restaurante / cafeteria",
+      "verticalId": "restaurant",
+      "primaryScreen": "Ticket actual",
+      "flowKey": "send_to_kitchen",
+      "initialState": "ready",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ticket actual.",
+        "Ejecutar flujo send to kitchen.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo send_to_kitchen termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "restaurant.send_to_kitchen.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.ticket.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:restaurant:send_to_kitchen:2",
+        "4a534402697eee25"
+      ]
+    },
+    {
+      "id": "restaurant.scenario.03.split_bill",
+      "title": "Validar split bill para Restaurante / cafeteria",
+      "verticalId": "restaurant",
+      "primaryScreen": "Ventas de hoy",
+      "flowKey": "split_bill",
+      "initialState": "error",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ventas de hoy.",
+        "Ejecutar flujo split bill.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo split_bill termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "restaurant.split_bill.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.retry"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:restaurant:split_bill:3",
+        "b9a4c284cd58bd83"
+      ]
+    },
+    {
+      "id": "restaurant.scenario.04.cash_change",
+      "title": "Validar cash change para Restaurante / cafeteria",
+      "verticalId": "restaurant",
+      "primaryScreen": "Turno",
+      "flowKey": "cash_change",
+      "initialState": "offline",
+      "actor": "supervisor",
+      "mode": "pc",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Turno.",
+        "Ejecutar flujo cash change.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo cash_change termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.status.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:restaurant:cash_change:4",
+        "685b04840ae177db"
+      ]
+    },
+    {
+      "id": "restaurant.scenario.05.table_close",
+      "title": "Validar table close para Restaurante / cafeteria",
+      "verticalId": "restaurant",
+      "primaryScreen": "Sincronizacion",
+      "flowKey": "table_close",
+      "initialState": "sync_pending",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Sincronizacion.",
+        "Ejecutar flujo table close.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo table_close termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "restaurant.table_close.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.create"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:restaurant:table_close:5",
+        "d1f9a2aca31d41d2"
+      ]
+    },
+    {
+      "id": "restaurant.scenario.06.offline_order",
+      "title": "Validar offline order para Restaurante / cafeteria",
+      "verticalId": "restaurant",
+      "primaryScreen": "Mesas",
+      "flowKey": "offline_order",
+      "initialState": "success",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Mesas.",
+        "Ejecutar flujo offline order.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo offline_order termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "restaurant.offline_order.completed",
+        "sync.event.queued"
+      ],
+      "requiredPermissions": [
+        "inventory.adjust.local"
+      ],
+      "offlineExpectation": "queda pendiente por enviar",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:restaurant:offline_order:6",
+        "ae778b0148c6f32c"
+      ]
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "scenarioId": "restaurant.scenario.01.open_table",
+      "checks": [
+        {
+          "id": "restaurant.scenario.01.open_table.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "restaurant.scenario.01.open_table.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "restaurant.scenario.01.open_table.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "restaurant.scenario.01.open_table.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "restaurant.scenario.01.open_table.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "restaurant.scenario.02.send_to_kitchen",
+      "checks": [
+        {
+          "id": "restaurant.scenario.02.send_to_kitchen.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "restaurant.scenario.02.send_to_kitchen.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "restaurant.scenario.02.send_to_kitchen.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "restaurant.scenario.02.send_to_kitchen.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "restaurant.scenario.02.send_to_kitchen.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "restaurant.scenario.03.split_bill",
+      "checks": [
+        {
+          "id": "restaurant.scenario.03.split_bill.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "restaurant.scenario.03.split_bill.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "restaurant.scenario.03.split_bill.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "restaurant.scenario.03.split_bill.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "restaurant.scenario.03.split_bill.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "restaurant.scenario.04.cash_change",
+      "checks": [
+        {
+          "id": "restaurant.scenario.04.cash_change.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "restaurant.scenario.04.cash_change.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "restaurant.scenario.04.cash_change.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "restaurant.scenario.04.cash_change.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "restaurant.scenario.04.cash_change.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "restaurant.scenario.05.table_close",
+      "checks": [
+        {
+          "id": "restaurant.scenario.05.table_close.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "restaurant.scenario.05.table_close.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "restaurant.scenario.05.table_close.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "restaurant.scenario.05.table_close.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "restaurant.scenario.05.table_close.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "restaurant.scenario.06.offline_order",
+      "checks": [
+        {
+          "id": "restaurant.scenario.06.offline_order.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "restaurant.scenario.06.offline_order.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "restaurant.scenario.06.offline_order.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "restaurant.scenario.06.offline_order.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "restaurant.scenario.06.offline_order.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    }
+  ],
+  "fixtureIntegrity": {
+    "anchor": "1b0c0960b1291e6ce51dd7ec21a849d85c52968d140e9d36d864bb1d34d42892",
+    "noiseProofCorpus": "2651823dacd00395e5ed71eed3a4485b677619ea0167b1f9e5922ceb2bd59ed2ba1f492745fb3c3f4ca6fb7b9f9143bf6d938e498ea12492ed0647e717bc70ab5455b9b0227891b49ff44d5fd5f244a379e2ae4d637b96b6223824559d94dd4c7dc598a934329fb577b7e0c0091e95ccb366bceac694beb5738bf2623198e7881d411fa8db646479e2d8de323f0ed00c1d558d86eef4166663bbb8104cfef904bae773b97ecf8cee7d4c3735b2d4d30b3d63adf45ffe39babc50647044d301ab204342aa931f0018c58228e86bf67e446874f0cab822cda088f73119cd2a802478ca56675a8a1317d4b707ab7f963af438f093d2d9dd949b8d24f283bad087576fa22cb8a1a14fb1b2b8e9ea4a2cdffb1c0d58929629fe5a4ff2c11da45bbfccdd253d9dbc83587c5bff312d683d0e6a3f87a2731dbd18ccf9d3242f7be6b718f70897f3d8159850d4bd31c49a1f7f2d2e505b12786660998d33214da353a388f95bb8609c7797e4126c06f003137075c278736ba875fc38ad829878c91f35af058eebf5707b2913200b7d9201ea73be4372358df18a9b2ca537c52b40157cb5de7ee4571e0d2e5be40b778d4c7e4ab98684f67e360af3a00fbdd6a84e46d373b3ed3a7a06a0feedf7242fc28066b3562a63741cc9f0399a754281d2aa041b5515f6b334c4627b16ba65b65691f235572690e6d629a8c8a819cf812c111e2684f29d05efb7aa3d8822fdc7006dd21b12f05cb4172991c1b00a5acea7774e577712b864d6cfaaa9a5a2337ed4f198fd8ee706bfefac6ce1ef2adffc92b2a0f614a44e10c7c129c5c6f408aabf241f2fadc09a47bff316a4e575cefdb2c6626df7301585964cc3f11c58ef8fbe976d0174ee70b05e1bad1f20df91e78cc48ce92836a6c89591a71d44b10f7d5851b3da0d46b9a5b5461977fb06adfef44082569047f97e588cae34b54eb106a88f0a2aac1310b8af631010e9c299df9cdf84ecd1c38c5b0f567e210847a5566c8a732a47f9503239fd44d5f21fdeee65633742850093549f2aaa0674a0add7448609cbeb3cccca550995c8f868212c6092f29ba513d5e98c2a8c93e239fa8af905031fc720444ffb5b7f35e972e7e9c51eb8163798c542c405470801fea980e5a849e967add192ae6d6626cc35d3d0e6b52edea43fa549ba6a021d3d4e2275c464b97e5e947f173dcb9dffab6327cfbc59018170933fd4ba5d09d479518359351498303b8c978031a7f237cc241c567ffe0ffed4bcd3c79b2cc5ba6deaf3d4e34051a42489adc6a4e7537a5111d74738cb10056cc13a726a55f7077919a2d1158e2a6bea7ed21a6b44af34ce6a2f1b9dae0085b5c78ed028b794b2089e4e3f4ebb3ca3b7616142751cb116bf1208f6c7426c4b4593958e2ecfac9fca079aa2c168c7918cef1bf4b17b6ad15afb7a46a4062738554506e8df0d6dda2762a99db565094aeae9a163667e081163d84ee20d30a1fdb9104be42395f946a8fa3a0e4a9442b6ad2815cce96e31494a6b1769ed22cb97b785a082239ee2ea6912e6437d216fd60cae11826d93cda8388c15169b7f7c0953c2978f6988fbb49b208a55b89dc88ac39965a2a57a6e846c36d64ad92150acf9ddd5cdb05aaeabb2bf0dc9de40b957f825b4f5643161de680a7e9e5308415073dc6680a8d65b882604f23fbea6ec5be6f65a7c1db60ee8f1dac2824ae5f1a939f93f26439055ed50fcd07f167374a98698aa5ea2e88fe9b79527e9e3993905d335a5a64e72acf6aa679bb66c3752bd88256cd207967314638d9d6bf9a2cfd684b2e0dfa817a297d3aaf5c65b57d2fbd67a1197cc3bb6bd70f7b5f4d25665a07967c73f18d4791ec2a068500d9fe52ac7ae769a56b7fc771890c487caa152e29c93b17f25bfdc182141562a59ab127d652733e04e4bdbfafd5484b5594fdc656b982be492fdda27d6dcbd484ffaad5786e6a0331e366d12af6863256a70c4128b1f2ba9f8ffbb9da508ac47d20522c16a0e8ef5b752335b28ce72d137414648dabeabe005e3fb1cb0bd1fcc39098c7e87919af20cbab2bb15d28ddbb35023bcb4a0a01ab9e92bd1a268200d9c0ed06a6cddde79cc00fdd59f0e18f99fd04cfd96fcdb08e5288c13e598089539b1ad074f76dd87d1756b7834538d493752a99d3183a5f707ff5b7df3d7fa0cb295e7d03e5905d75ef5cfce3d41f8950ac5b33ae2218486c0c72675ce57c8b41f5c7b1d439fbf4f16f9165b00bd91d064653620463709be7e32c87c34654e678da1614a7b6d5502b8706c0c2678349f572e787ba7f619f78b88cbadaeee0fbc9b9acde60b6b47952b58d6402278d0da3a4e1e381510983b1df0f5b8924d7366b4033658eca1dbc7a991676937ec9538088e58aca1c7b10a2499ba9a3e6cb3f34d9ef333b48d89fae0214e130010721ca4e5412679a4e0c4c813d415c315d5bfe6776368a398b571d7293fd5bc417a35e490e8b2c597ba3ce211b91c6186996b09c4d84a80a0d5391026969441244a75af3ff05ab699089e3325fa5d98d835243d22bcb488367ebe2212b296442fe53685c4435f84b4a0657c09f6fabda656785e0ae55a3d7bc729845ad1cf7c948651c41699540eae7b44828c1597c3506ae4187b7154eb5ca7fa9ef3cc7824a4861869f4d57a9c412b8a91998fa6c2366c735d892dc12df6e511d06f8b923af7ccba4dc9c3ef719455d060417f9e2ecd69bfd13f1e7722b32cbf761b72fc00d40daf2dcad48a1c3e9823051a18848973998332e25324a1bc3697cb37473ce0322f0998699e6ef0079db4adc2a15c97c229040946f94c67a2c4e952eaac943376b4eb81aacf5f525241749b188218dbe77c9f97eb6bf20423a3ad4bb842b897129ad441e42dc9e5389b827745a49c6ffa806eebaa28d515a745395b60264f52b1f6e4cbc8ad2c85ee1b0917a2c9b06b6fcfe85ef7328e7e902763d1f088bd6f27236c1d4ac1e8ce84513d628c4c7f455b61b80bf9b059b5b92f6bc972b9a747aab3f980427aedc082bd64b3dde4ee34b137dbcc840ea130ecf71533409d19794a7e04fc109a3362c187cc06005e5634530fb1ee304dac6064c707873435291adcda844793657a706f4e08cb93950c38f2a6d46537b882f689875b3e38891f4989a0fb5a49aabf6197dcacaafd7f9fc5ec59c5094e132fb7cc4f3861c013da48c6ba96e8cdf173797e947249ca67108755d3519c4ed95f4190aaa232f3baade5cabb59d464f0d94a23deeeff074f439ea76c832c867895f04320e4d806326003b1674aa458d5e8c2017861509fba8560432b7aa21a4110c2879d6230001cb2f023fe962d8e4a0e93fbb4679000af28ffd876cd77c4cb7790bc56fd9f47525feb6b021b2a862013df062c01d2a46e700fee7dd954499057b4cf80abea02e23d338ef96bff72ad7752558538fb41fc29aa60a864b14dd6504855418ad7135ee3e549ad3137f86c6abc0ddcaf67547587a852b6c134a976c3022ded90f49d9b431d7ccd5c7db5e8fa7d0bd71e7e4ba03e65f1698a8304702bb4438ab9c5de8c3f7cc7e4da35f68838091d3eade3188fccb3acb9a44e50156286e0b8963c5c5532b59c2a17ab0b65d462"
+  }
+}

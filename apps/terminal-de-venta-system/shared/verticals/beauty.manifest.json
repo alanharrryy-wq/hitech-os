@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0.0",
+  "verticalId": "beauty",
+  "displayName": "Estetica / barberia",
+  "coreRequired": true,
+  "capabilities": {
+    "required": [
+      "core.sales",
+      "core.payments",
+      "core.ticket",
+      "sales.services",
+      "beauty.appointments"
+    ],
+    "optional": [
+      "beauty.commissions",
+      "customer.profile",
+      "core.sync"
+    ]
+  },
+  "surfaces": {
+    "tablet": {
+      "enabled": true,
+      "routes": [
+        "Vender",
+        "Citas",
+        "Servicios",
+        "Clientes",
+        "Cobro",
+        "Turno",
+        "Pendientes por enviar"
+      ]
+    },
+    "pc": {
+      "enabled": true,
+      "routes": [
+        "Dashboard",
+        "Catalogo",
+        "Inventario",
+        "Auditoria",
+        "Configuracion"
+      ]
+    }
+  },
+  "offline": {
+    "salesAllowed": true,
+    "sensitiveActionsRequireConnection": false
+  }
+}

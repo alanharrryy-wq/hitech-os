@@ -1,0 +1,183 @@
+{
+  "verticalId": "apparel",
+  "label": "Ropa / boutique",
+  "version": "0.3.0",
+  "principle": "Variantes de talla/color y cambios; no meter talla y color como columnas eternas en Product.",
+  "extensions": [
+    {
+      "extensionId": "apparel.VariantMatrix",
+      "entityName": "VariantMatrix",
+      "extensionType": "inventory_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_cache",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.apparel.VariantMatrix.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "Product"
+      ],
+      "requiredEvents": [
+        "vertical.apparel.VariantMatrix.created",
+        "vertical.apparel.VariantMatrix.updated"
+      ],
+      "fixtures": [
+        "apparel_VariantMatrix_happy_path.json",
+        "apparel_VariantMatrix_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "lotExpiration",
+        "tableNumber",
+        "repairOrderId",
+        "routeStopId"
+      ]
+    },
+    {
+      "extensionId": "apparel.Size",
+      "entityName": "Size",
+      "extensionType": "inventory_extension",
+      "ownerSurface": "pc_backoffice",
+      "storagePolicy": "local_cache",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.apparel.Size.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "Product"
+      ],
+      "requiredEvents": [
+        "vertical.apparel.Size.created",
+        "vertical.apparel.Size.updated"
+      ],
+      "fixtures": [
+        "apparel_Size_happy_path.json",
+        "apparel_Size_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "lotExpiration",
+        "tableNumber",
+        "repairOrderId",
+        "routeStopId"
+      ]
+    },
+    {
+      "extensionId": "apparel.Color",
+      "entityName": "Color",
+      "extensionType": "inventory_extension",
+      "ownerSurface": "pc_backoffice",
+      "storagePolicy": "local_cache",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.apparel.Color.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "Product"
+      ],
+      "requiredEvents": [
+        "vertical.apparel.Color.created",
+        "vertical.apparel.Color.updated"
+      ],
+      "fixtures": [
+        "apparel_Color_happy_path.json",
+        "apparel_Color_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "lotExpiration",
+        "tableNumber",
+        "repairOrderId",
+        "routeStopId"
+      ]
+    },
+    {
+      "extensionId": "apparel.ExchangePolicy",
+      "entityName": "ExchangePolicy",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.apparel.ExchangePolicy.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.apparel.ExchangePolicy.created",
+        "vertical.apparel.ExchangePolicy.updated"
+      ],
+      "fixtures": [
+        "apparel_ExchangePolicy_happy_path.json",
+        "apparel_ExchangePolicy_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "lotExpiration",
+        "tableNumber",
+        "repairOrderId",
+        "routeStopId"
+      ]
+    },
+    {
+      "extensionId": "apparel.SeasonTag",
+      "entityName": "SeasonTag",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.apparel.SeasonTag.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.apparel.SeasonTag.created",
+        "vertical.apparel.SeasonTag.updated"
+      ],
+      "fixtures": [
+        "apparel_SeasonTag_happy_path.json",
+        "apparel_SeasonTag_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "lotExpiration",
+        "tableNumber",
+        "repairOrderId",
+        "routeStopId"
+      ]
+    }
+  ]
+}

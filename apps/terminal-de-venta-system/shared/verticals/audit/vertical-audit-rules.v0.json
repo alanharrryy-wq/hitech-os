@@ -1,0 +1,44 @@
+{
+  "version": 0,
+  "kind": "vertical-audit-rules",
+  "requiredFor": [
+    "money",
+    "inventory",
+    "shift",
+    "return",
+    "customer",
+    "permission",
+    "sync_conflict"
+  ],
+  "minimumFields": [
+    "actorId",
+    "role",
+    "terminalId",
+    "businessId",
+    "action",
+    "entityType",
+    "entityId",
+    "createdAt"
+  ],
+  "beforeAfterRequiredFor": [
+    "inventory.local.adjust",
+    "catalog.product.update_basic",
+    "return.approve",
+    "shift.close"
+  ],
+  "forbiddenVisibleTerms": [
+    "payload",
+    "endpoint",
+    "outbox",
+    "ack",
+    "conflict resolver",
+    "retry worker"
+  ],
+  "humanTerms": [
+    "Pendiente por enviar",
+    "Enviado",
+    "Fallo el envio",
+    "Se intentara de nuevo",
+    "Requiere revision"
+  ]
+}

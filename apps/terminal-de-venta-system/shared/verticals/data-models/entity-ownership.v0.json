@@ -1,0 +1,194 @@
+{
+  "ownershipModel": "prisma.verticals.entity-ownership.v0",
+  "version": "0.3.0",
+  "rules": [
+    {
+      "surface": "Tablet",
+      "owns": "local operational write path for sales, payments, shifts, outbox and required vertical capture"
+    },
+    {
+      "surface": "PC",
+      "owns": "policy, advanced configuration, global reconciliation, analytics, long history and conflict resolution"
+    },
+    {
+      "surface": "Shared",
+      "owns": "contracts, names, event topics and compatibility rules only"
+    }
+  ],
+  "verticalOwnership": {
+    "convenience": {
+      "tablet": [
+        "Product",
+        "Barcode",
+        "Sale",
+        "SaleLine",
+        "Payment",
+        "Shift",
+        "StockMovement",
+        "LowStockSignal"
+      ],
+      "pc": [
+        "Product",
+        "Barcode",
+        "StockSnapshot",
+        "PriceRule",
+        "SimplePromotion",
+        "AuditEntry"
+      ]
+    },
+    "restaurant": {
+      "tablet": [
+        "DiningSession",
+        "Table",
+        "Sale",
+        "SaleLine",
+        "Payment",
+        "KitchenTicket",
+        "TipAllocation"
+      ],
+      "pc": [
+        "MenuItem",
+        "RecipeCost",
+        "KitchenStation",
+        "TipPolicy",
+        "AuditEntry"
+      ]
+    },
+    "pharmacy": {
+      "tablet": [
+        "Product",
+        "Lot",
+        "Sale",
+        "SaleLine",
+        "Payment",
+        "PrescriptionReference",
+        "Return"
+      ],
+      "pc": [
+        "Lot",
+        "ExpirationPolicy",
+        "ControlledProductFlag",
+        "SupplierBatch",
+        "AuditEntry"
+      ]
+    },
+    "beauty": {
+      "tablet": [
+        "Service",
+        "Appointment",
+        "Sale",
+        "SaleLine",
+        "Payment",
+        "StaffCommission"
+      ],
+      "pc": [
+        "ServiceCatalog",
+        "StaffCommissionPolicy",
+        "ClientProfile",
+        "AppointmentBook",
+        "AuditEntry"
+      ]
+    },
+    "hardware": {
+      "tablet": [
+        "Product",
+        "MeasureUnit",
+        "Quote",
+        "Sale",
+        "SaleLine",
+        "Payment",
+        "StockMovement"
+      ],
+      "pc": [
+        "BulkUnitPricing",
+        "SupplierCatalog",
+        "MeasurePolicy",
+        "QuoteApproval",
+        "AuditEntry"
+      ]
+    },
+    "apparel": {
+      "tablet": [
+        "VariantMatrix",
+        "Sale",
+        "SaleLine",
+        "Payment",
+        "Return",
+        "ExchangePolicy"
+      ],
+      "pc": [
+        "VariantMatrix",
+        "SeasonTag",
+        "InventoryByVariant",
+        "ExchangePolicy",
+        "AuditEntry"
+      ]
+    },
+    "repair": {
+      "tablet": [
+        "WorkOrder",
+        "LaborLine",
+        "PartReservation",
+        "Sale",
+        "Payment",
+        "DiagnosticNote"
+      ],
+      "pc": [
+        "WorkOrder",
+        "TechnicianQueue",
+        "PartsInventory",
+        "WarrantyPolicy",
+        "AuditEntry"
+      ]
+    },
+    "field_route": {
+      "tablet": [
+        "Route",
+        "RouteStop",
+        "Sale",
+        "Payment",
+        "DeliveryAttempt",
+        "OutboxEvent"
+      ],
+      "pc": [
+        "RoutePlanner",
+        "CustomerCredit",
+        "MobileSettlement",
+        "RouteReconciliation",
+        "AuditEntry"
+      ]
+    },
+    "grocery_scale": {
+      "tablet": [
+        "ScaleReading",
+        "WeightedSaleLine",
+        "Sale",
+        "Payment",
+        "Product"
+      ],
+      "pc": [
+        "ScaleDevice",
+        "TarePolicy",
+        "UnitPriceByWeight",
+        "AuditEntry"
+      ]
+    },
+    "food_truck": {
+      "tablet": [
+        "MenuCombo",
+        "Sale",
+        "SaleLine",
+        "Payment",
+        "PrepStatus",
+        "MobileLocation"
+      ],
+      "pc": [
+        "MenuCatalog",
+        "MobileLocation",
+        "SalesByStop",
+        "PrepPolicy",
+        "AuditEntry"
+      ]
+    }
+  }
+}

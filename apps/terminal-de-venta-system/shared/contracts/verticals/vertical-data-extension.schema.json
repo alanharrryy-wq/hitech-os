@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.vertical-data-extension.schema.v0",
+  "title": "PRISMA Vertical Data Extension",
+  "type": "object",
+  "required": [
+    "verticalId",
+    "version",
+    "extensions"
+  ],
+  "properties": {
+    "verticalId": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "extensionId",
+          "entityName",
+          "extensionType",
+          "ownerSurface",
+          "storagePolicy",
+          "tabletAccess",
+          "pcAuthority",
+          "syncPolicy",
+          "auditImpact",
+          "offlineImpact",
+          "coreRelations",
+          "requiredEvents",
+          "fixtures",
+          "acceptanceCriteria"
+        ],
+        "properties": {
+          "extensionId": {
+            "type": "string"
+          },
+          "entityName": {
+            "type": "string"
+          },
+          "extensionType": {
+            "type": "string"
+          },
+          "ownerSurface": {
+            "type": "string"
+          },
+          "storagePolicy": {
+            "type": "string"
+          },
+          "tabletAccess": {
+            "type": "string"
+          },
+          "pcAuthority": {
+            "type": "string"
+          },
+          "syncPolicy": {
+            "type": "string"
+          },
+          "auditImpact": {
+            "type": "string"
+          },
+          "offlineImpact": {
+            "type": "string"
+          },
+          "coreRelations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiredEvents": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "fixtures": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "acceptanceCriteria": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "forbiddenCoreFields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "package": "PRISMA_BLACK_CSS_LAYER_NORMALIZATION_01F",
+  "version": "1.0.0",
+  "visualIntent": "preserve-current-visuals",
+  "sourceGovernance": [
+    "KEYSTONE_LUXURY_KERNEL.md",
+    "KEYSTONE_LUXURY_STYLES.md",
+    "LAYERS.md",
+    "LAYER_FLAGS_SYSTEM.md"
+  ],
+  "rules": {
+    "deriveDoNotInvent": true,
+    "semanticsOverDecoration": true,
+    "noLayoutChanges": true,
+    "noTsTsxChanges": true,
+    "noNewMotion": true,
+    "noNewBackground": true,
+    "noAggressiveVisualDedupe": true
+  },
+  "zones": {
+    "background": [
+      "stage.haze",
+      "stage.vignette",
+      "stage.noise",
+      "stage.horizon"
+    ],
+    "panel": [
+      "card.blur",
+      "card.innerStroke",
+      "card.specular",
+      "card.shadowAmbient"
+    ],
+    "card": [
+      "card.innerStroke",
+      "card.specular",
+      "card.shadowAmbient"
+    ],
+    "productStage": [
+      "bounded local glow island"
+    ],
+    "cta": [
+      "semantic accent budget"
+    ],
+    "activeState": [
+      "semantic accent budget"
+    ],
+    "motion": [
+      "motion.enabled"
+    ]
+  },
+  "cssFiles": [
+    {
+      "path": "products/shared-ui/prisma/tokens/prisma-theme.css",
+      "role": "tokens",
+      "requiredMarker": "PRISMA_BLACK_CSS_LAYER_NORMALIZATION_01F",
+      "inventory": {
+        "radial-gradient": 62,
+        "linear-gradient": 43,
+        "mix-blend-mode": 0,
+        "backdrop-filter": 0,
+        "filter:": 0,
+        "animation": 0,
+        "transition": 0,
+        "box-shadow": 0
+      }
+    },
+    {
+      "path": "products/shared-ui/prisma/components/prisma-components.css",
+      "role": "shared-components",
+      "requiredMarker": "PRISMA_BLACK_CSS_LAYER_NORMALIZATION_01F",
+      "inventory": {
+        "radial-gradient": 14,
+        "linear-gradient": 12,
+        "mix-blend-mode": 11,
+        "backdrop-filter": 24,
+        "filter:": 33,
+        "animation": 8,
+        "transition": 3,
+        "box-shadow": 15
+      }
+    },
+    {
+      "path": "products/tablet/app/components/pos/pos.module.css",
+      "role": "tablet-pos",
+      "requiredMarker": "PRISMA_BLACK_CSS_LAYER_NORMALIZATION_01F",
+      "inventory": {
+        "radial-gradient": 18,
+        "linear-gradient": 30,
+        "mix-blend-mode": 5,
+        "backdrop-filter": 32,
+        "filter:": 45,
+        "animation": 0,
+        "transition": 0,
+        "box-shadow": 30
+      }
+    },
+    {
+      "path": "products/tablet/app/components/tablet-shell/prisma-tablet-shell.module.css",
+      "role": "tablet-shell",
+      "requiredMarker": "PRISMA_BLACK_CSS_LAYER_NORMALIZATION_01F",
+      "inventory": {
+        "radial-gradient": 3,
+        "linear-gradient": 9,
+        "mix-blend-mode": 3,
+        "backdrop-filter": 16,
+        "filter:": 18,
+        "animation": 5,
+        "transition": 1,
+        "box-shadow": 13
+      }
+    },
+    {
+      "path": "products/pc/app/app/globals.css",
+      "role": "pc-globals",
+      "requiredMarker": "PRISMA_BLACK_CSS_LAYER_NORMALIZATION_01F",
+      "inventory": {
+        "radial-gradient": 12,
+        "linear-gradient": 11,
+        "mix-blend-mode": 3,
+        "backdrop-filter": 18,
+        "filter:": 20,
+        "animation": 4,
+        "transition": 0,
+        "box-shadow": 15
+      }
+    },
+    {
+      "path": "products/tablet/app/app/globals.css",
+      "role": "tablet-globals",
+      "requiredMarker": "PRISMA_BLACK_CSS_LAYER_NORMALIZATION_01F",
+      "inventory": {
+        "radial-gradient": 0,
+        "linear-gradient": 0,
+        "mix-blend-mode": 0,
+        "backdrop-filter": 2,
+        "filter:": 2,
+        "animation": 1,
+        "transition": 0,
+        "box-shadow": 7
+      }
+    }
+  ],
+  "deferredTo01G": [
+    "radial-gradient dedupe in theme tokens",
+    "mix-blend-mode replacement in shared components",
+    "runtime layer toggles",
+    "premium aesthetic pass"
+  ]
+}

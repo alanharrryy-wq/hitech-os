@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0.0",
+  "verticalId": "pharmacy",
+  "displayName": "Farmacia",
+  "coreRequired": true,
+  "capabilities": {
+    "required": [
+      "core.sales",
+      "core.payments",
+      "core.ticket",
+      "core.inventory.basic",
+      "pharmacy.lots"
+    ],
+    "optional": [
+      "pharmacy.prescription",
+      "core.returns",
+      "core.sync"
+    ]
+  },
+  "surfaces": {
+    "tablet": {
+      "enabled": true,
+      "routes": [
+        "Vender",
+        "Catalogo",
+        "Existencias",
+        "Caducidades",
+        "Devoluciones",
+        "Turno",
+        "Pendientes por enviar"
+      ]
+    },
+    "pc": {
+      "enabled": true,
+      "routes": [
+        "Dashboard",
+        "Catalogo",
+        "Inventario",
+        "Auditoria",
+        "Configuracion"
+      ]
+    }
+  },
+  "offline": {
+    "salesAllowed": true,
+    "sensitiveActionsRequireConnection": true
+  }
+}

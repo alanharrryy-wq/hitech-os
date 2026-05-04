@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "verticalId": "field_route",
+  "displayName": "Ruta / campo",
+  "coreRequired": true,
+  "capabilities": {
+    "required": [
+      "core.sales",
+      "core.payments",
+      "core.ticket",
+      "field_route.routes",
+      "core.sync"
+    ],
+    "optional": [
+      "customer.credit",
+      "delivery.proof",
+      "core.export"
+    ]
+  },
+  "surfaces": {
+    "tablet": {
+      "enabled": true,
+      "routes": [
+        "Ruta",
+        "Vender",
+        "Clientes",
+        "Pendientes por enviar",
+        "Ventas de hoy",
+        "Exportar"
+      ]
+    },
+    "pc": {
+      "enabled": true,
+      "routes": [
+        "Dashboard",
+        "Catalogo",
+        "Inventario",
+        "Auditoria",
+        "Configuracion"
+      ]
+    }
+  },
+  "offline": {
+    "salesAllowed": true,
+    "sensitiveActionsRequireConnection": false
+  }
+}

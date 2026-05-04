@@ -1,0 +1,625 @@
+{
+  "verticalId": "field_route",
+  "verticalName": "Venta en ruta / campo",
+  "fixtureVersion": "0.0.1",
+  "purpose": "ruta, visita, preventa, entrega y offline fuerte",
+  "requiredBlocks": [
+    "00A_CORE_CONTRACTS",
+    "00B_VERTICAL_REGISTRY",
+    "00C_VERTICAL_DATA_MODELS",
+    "00D_VERTICAL_EVENTS_PERMISSIONS",
+    "00E_VERTICAL_UX_OPERATIONS"
+  ],
+  "businessProfile": {
+    "tabletRole": "operacion principal o captura rapida segun vertical",
+    "pcRole": "gobierno, auditoria, configuracion y consolidacion",
+    "forbiddenTabletBehaviors": [
+      "backoffice_profundo",
+      "permisos_globales",
+      "compras_formales_sin_pc",
+      "auditoria_pesada"
+    ]
+  },
+  "screensUnderTest": [
+    "Vender",
+    "Cobro",
+    "Ticket actual",
+    "Ventas de hoy",
+    "Turno",
+    "Sincronizacion",
+    "Ruta",
+    "Cliente de ruta",
+    "Entrega",
+    "Cobranza"
+  ],
+  "flowsUnderTest": [
+    "route_start",
+    "customer_visit",
+    "preorder_capture",
+    "delivery_confirm",
+    "cash_collection",
+    "offline_sync_later"
+  ],
+  "seedData": {
+    "business": {
+      "id": "biz_field_route",
+      "name": "Demo Venta en ruta / campo",
+      "verticalId": "field_route",
+      "mode": "standalone_or_managed"
+    },
+    "terminal": {
+      "id": "terminal_field_route_01",
+      "kind": "tablet_pos",
+      "offlineAllowed": true
+    },
+    "operator": {
+      "id": "operator_field_route_01",
+      "role": "cajero",
+      "permissions": [
+        "pos.sale.create",
+        "pos.sale.complete",
+        "pos.ticket.view",
+        "shift.view",
+        "sync.status.view",
+        "pos.return.create",
+        "inventory.adjust.local"
+      ]
+    },
+    "products": [
+      {
+        "sku": "FIELD_ROUTE-SKU-001",
+        "name": "Producto 1 Venta en ruta / campo",
+        "barcode": "7503883954901",
+        "priceCents": 1125,
+        "stockOnHand": 21,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "7e6aa1bb270b73106c8031a7"
+        }
+      },
+      {
+        "sku": "FIELD_ROUTE-SKU-002",
+        "name": "Producto 2 Venta en ruta / campo",
+        "barcode": "7505088741465",
+        "priceCents": 1250,
+        "stockOnHand": 22,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "8a500ee8ab1bca9e279a04bf"
+        }
+      },
+      {
+        "sku": "FIELD_ROUTE-SKU-003",
+        "name": "Producto 3 Venta en ruta / campo",
+        "barcode": "7501971111168",
+        "priceCents": 1375,
+        "stockOnHand": 23,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "c17a9ea0d621af424cd85339"
+        }
+      },
+      {
+        "sku": "FIELD_ROUTE-SKU-004",
+        "name": "Producto 4 Venta en ruta / campo",
+        "barcode": "7500943807534",
+        "priceCents": 1500,
+        "stockOnHand": 24,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "c4e594e06a0d0fefb2a6622d"
+        }
+      },
+      {
+        "sku": "FIELD_ROUTE-SKU-005",
+        "name": "Producto 5 Venta en ruta / campo",
+        "barcode": "7504841809109",
+        "priceCents": 1625,
+        "stockOnHand": 25,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "23d7021c45980173543486ba"
+        }
+      },
+      {
+        "sku": "FIELD_ROUTE-SKU-006",
+        "name": "Producto 6 Venta en ruta / campo",
+        "barcode": "7503814505475",
+        "priceCents": 1750,
+        "stockOnHand": 26,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "d5b65134b8eead2af416a767"
+        }
+      },
+      {
+        "sku": "FIELD_ROUTE-SKU-007",
+        "name": "Producto 7 Venta en ruta / campo",
+        "barcode": "7500696875178",
+        "priceCents": 1875,
+        "stockOnHand": 27,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "ea144fa727ae08a1c21e5d6c"
+        }
+      },
+      {
+        "sku": "FIELD_ROUTE-SKU-008",
+        "name": "Producto 8 Venta en ruta / campo",
+        "barcode": "7505405123247",
+        "priceCents": 2000,
+        "stockOnHand": 28,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "94afd21d351805ca5add542f"
+        }
+      }
+    ],
+    "services": [
+      {
+        "serviceCode": "FIELD_ROUTE-SVC-01",
+        "name": "Servicio 1 Venta en ruta / campo",
+        "priceCents": 1800,
+        "durationMinutes": 15,
+        "verticalTraits": {
+          "fixtureTrait": "ccef03affec979221c926e96"
+        }
+      },
+      {
+        "serviceCode": "FIELD_ROUTE-SVC-02",
+        "name": "Servicio 2 Venta en ruta / campo",
+        "priceCents": 2100,
+        "durationMinutes": 30,
+        "verticalTraits": {
+          "fixtureTrait": "ac128980cc20bffc541fea8b"
+        }
+      },
+      {
+        "serviceCode": "FIELD_ROUTE-SVC-03",
+        "name": "Servicio 3 Venta en ruta / campo",
+        "priceCents": 2400,
+        "durationMinutes": 45,
+        "verticalTraits": {
+          "fixtureTrait": "759de8670017dc1a0bd89026"
+        }
+      },
+      {
+        "serviceCode": "FIELD_ROUTE-SVC-04",
+        "name": "Servicio 4 Venta en ruta / campo",
+        "priceCents": 2700,
+        "durationMinutes": 60,
+        "verticalTraits": {
+          "fixtureTrait": "179ff44172f868b55bbd8e1f"
+        }
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "field_route.scenario.01.route_start",
+      "title": "Validar route start para Venta en ruta / campo",
+      "verticalId": "field_route",
+      "primaryScreen": "Cobro",
+      "flowKey": "route_start",
+      "initialState": "loading",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Cobro.",
+        "Ejecutar flujo route start.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo route_start termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "field_route.route_start.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.complete"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:field_route:route_start:1",
+        "5b9b6a189fda6783"
+      ]
+    },
+    {
+      "id": "field_route.scenario.02.customer_visit",
+      "title": "Validar customer visit para Venta en ruta / campo",
+      "verticalId": "field_route",
+      "primaryScreen": "Ticket actual",
+      "flowKey": "customer_visit",
+      "initialState": "ready",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ticket actual.",
+        "Ejecutar flujo customer visit.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo customer_visit termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "field_route.customer_visit.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.ticket.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:field_route:customer_visit:2",
+        "cfab8102768b1672"
+      ]
+    },
+    {
+      "id": "field_route.scenario.03.preorder_capture",
+      "title": "Validar preorder capture para Venta en ruta / campo",
+      "verticalId": "field_route",
+      "primaryScreen": "Ventas de hoy",
+      "flowKey": "preorder_capture",
+      "initialState": "error",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ventas de hoy.",
+        "Ejecutar flujo preorder capture.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo preorder_capture termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "field_route.preorder_capture.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.retry"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:field_route:preorder_capture:3",
+        "9cd34af6cf89cbcd"
+      ]
+    },
+    {
+      "id": "field_route.scenario.04.delivery_confirm",
+      "title": "Validar delivery confirm para Venta en ruta / campo",
+      "verticalId": "field_route",
+      "primaryScreen": "Turno",
+      "flowKey": "delivery_confirm",
+      "initialState": "offline",
+      "actor": "supervisor",
+      "mode": "pc",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Turno.",
+        "Ejecutar flujo delivery confirm.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo delivery_confirm termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "field_route.delivery_confirm.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.status.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:field_route:delivery_confirm:4",
+        "340441c75f651b0c"
+      ]
+    },
+    {
+      "id": "field_route.scenario.05.cash_collection",
+      "title": "Validar cash collection para Venta en ruta / campo",
+      "verticalId": "field_route",
+      "primaryScreen": "Sincronizacion",
+      "flowKey": "cash_collection",
+      "initialState": "sync_pending",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Sincronizacion.",
+        "Ejecutar flujo cash collection.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo cash_collection termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.create"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:field_route:cash_collection:5",
+        "8789f1329035c251"
+      ]
+    },
+    {
+      "id": "field_route.scenario.06.offline_sync_later",
+      "title": "Validar offline sync later para Venta en ruta / campo",
+      "verticalId": "field_route",
+      "primaryScreen": "Ruta",
+      "flowKey": "offline_sync_later",
+      "initialState": "success",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ruta.",
+        "Ejecutar flujo offline sync later.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo offline_sync_later termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "field_route.offline_sync_later.completed",
+        "sync.event.queued"
+      ],
+      "requiredPermissions": [
+        "inventory.adjust.local"
+      ],
+      "offlineExpectation": "queda pendiente por enviar",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:field_route:offline_sync_later:6",
+        "73cd24f7f5c56d70"
+      ]
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "scenarioId": "field_route.scenario.01.route_start",
+      "checks": [
+        {
+          "id": "field_route.scenario.01.route_start.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "field_route.scenario.01.route_start.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "field_route.scenario.01.route_start.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "field_route.scenario.01.route_start.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "field_route.scenario.01.route_start.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "field_route.scenario.02.customer_visit",
+      "checks": [
+        {
+          "id": "field_route.scenario.02.customer_visit.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "field_route.scenario.02.customer_visit.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "field_route.scenario.02.customer_visit.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "field_route.scenario.02.customer_visit.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "field_route.scenario.02.customer_visit.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "field_route.scenario.03.preorder_capture",
+      "checks": [
+        {
+          "id": "field_route.scenario.03.preorder_capture.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "field_route.scenario.03.preorder_capture.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "field_route.scenario.03.preorder_capture.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "field_route.scenario.03.preorder_capture.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "field_route.scenario.03.preorder_capture.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "field_route.scenario.04.delivery_confirm",
+      "checks": [
+        {
+          "id": "field_route.scenario.04.delivery_confirm.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "field_route.scenario.04.delivery_confirm.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "field_route.scenario.04.delivery_confirm.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "field_route.scenario.04.delivery_confirm.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "field_route.scenario.04.delivery_confirm.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "field_route.scenario.05.cash_collection",
+      "checks": [
+        {
+          "id": "field_route.scenario.05.cash_collection.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "field_route.scenario.05.cash_collection.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "field_route.scenario.05.cash_collection.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "field_route.scenario.05.cash_collection.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "field_route.scenario.05.cash_collection.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "field_route.scenario.06.offline_sync_later",
+      "checks": [
+        {
+          "id": "field_route.scenario.06.offline_sync_later.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "field_route.scenario.06.offline_sync_later.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "field_route.scenario.06.offline_sync_later.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "field_route.scenario.06.offline_sync_later.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "field_route.scenario.06.offline_sync_later.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    }
+  ],
+  "fixtureIntegrity": {
+    "anchor": "b4e0e53d8b09cae00e7d0278a1c59ec779f728d32612c92a31c487ac04b28c91",
+    "noiseProofCorpus": "4ae4989ee55174bc6066f813422bcff5a5c69dbb1e2533568f99f735b6cb8ddb712767fc30049949fbd07d00533e52fce29db968b95b4e41c1121d18ca972bf3acdcf4b499d0ee497275419e9be366478ca7d95cb9c0e93118193736ded4773cc9d3cb21271e1062b06698739c2610044a781c4abdd53e4badeef151a8fa75aba7cc1f12260ad79ff62afd22cd60a488e975925ac6978e4c7d9d01e322fa46d675180eae8063a6cb8b3d6c71583f220b97ea8bcce996cd67755ecb5f8a92daf1ac556b4a359ef1454f5d2e6c667d4c04aecdc8eb3302e1b91575b93cbc00cb2c340cfb18da9b04cf550481ed93379d44326b22bcef8992a74eedbe2f500b28a875b3761ae6c722a58d1c31eb6c58241b0e33c53bf526f0c1173275b87525d4654d6bd800ad27ab59c473e92a086af07abcfa6b664537738830e0c0713bd81542212dcea3f4193cb1825e2d90d1cce48a81a2900580a12bee96ba2bb9e8e304f0cb69a16cc827ec489987d46cccac9ad6612397b516972762bce805882634b3327775c60a9e212ce0be83f4dab3a9ac891168c3d64a812b82dcf8ee0d493214fb4555253134c01db909d21e5eb57f9196399110785129f2ca8451797cdfd205ce31a0577680cdb152d03deb38806ae5d8dcbda2fcb7f62e90307eb3680234fd8156a7afc0bfaee6b9113aa05f25c7ecc1e7ca82c868f69925bd6adf91c2f19baa046f94bea5a6a1e1652463e59c020d6b5efea6448eee8648947a263ddc7d7c5b422aa2b5a9d6586899cb0fc0f34cbc3b2a5afee92c63174c217e28bfd160f5f2d7a9f0364aea45504f4b7d23c4f1f97869521df88246eb455ae050ae6a31fa68df2916e44ed45fd04c2b337d69e9f5cb05a81c1b0ba3444f8dcdcdbaadeea536eba31e4a6db95c16b9b653b4a2b663428cca23ddc39812b764b9509e1aeebd504fbcfdb38255eca757fb04a3f729d5bb913f04d8a6ea74907a1d104d6e371fef96f4b0204b8841d968037296835435b2c50a1e581f7776d9fe5e4cb3e4dc42de7a52560f87c7720dd9a6aa0c82842417ab21b945a6d922f89c610f0881b2b2ec0e1f07b6b0885e8b2b2dae00a435884995db5c2d61372a5968423b0fbe918215a070da4d5eb50ec530994849efa0133063bd472ced88b87932c23a76441e35f8102bd557f3dd989c8c4f4ad0fdd7cc55606d769aab58b5fb02982360bd4e9cafa8938fabcf173a1ab73cc57edf2209614aecf6c34d0c246afc2735c6792796d12aa0725244cfa58726a56eeb180ffd46386f27121b43bc9b8017bd59aef20a3f7f3c4f8fa7cba8ccdd52d3004241a410f9cad309405ff7a09c8bbfab5c088c3934c502507fa894a402d42698136f80e7f02a76e17aeea2122e7a95b16f354d4c05f49796330859c090cc4c8a1ac9464ac6643b52e9b1304e8c43621ed6e387d00c5d7ceae646f6ce9d9ae32b971c1c68567060e794a649ab26c14ea09c935feae996fd76f4f9c5758d43566196e0bc5e1066255f6d9ed1ab4e9c99342e55761310767b94c90f1410bcb0899dd9b9944c298d85ae0b99f51c271dd3107612eed91360bc9a44f9876d823a01b31a502a7052f697050906b927de9edd75b04bd864643c177e0eab9bc3253bba548168d75828f97ab9384f868c679c16f1f5752b38375d3dca731a1b0a33793b90b5b329ca3cd6df15b810bf3d5bf3abac981d49a9c3efc340cf1553fc3063a0b13d3be62d8b926ba6ba0fe84498c4f3a0e8e9a14a47e8e1e9b208ad094cbe763014b6dedc43263481b875d8019d0af923b9960e0acb164300848b6de79a838d8d8062351a7d9e0a6d9a1d5f328287fcc6b17ee7445be4ffd8be49135df6e7219ad621bee66bdd1103232ba5d865b7f7638b50dddeb3ed7778ceb4f0126be9c5b19cfe70ab5d573e55aa273f354ca2f5872f412f9490116e49c5b627a3b385da2fadcfdc0b8ea55cad02e4654c52c110e71d51c16865a0209c8b69cbc15646a483a3ec2d8b9086c977d0d8883699d62c77d5238df4a6092d671f03c0181b5110c289ee979009146cddabcabb8b279e60ba726d62120a6abf79248045284dfac6ef853d68e93cd8099471fd357d68f1bf3e8f38e5f3924cd71f6b8894969eba48cb2be4fd0c92f7e84d7b27c216149bd2833fc0e9bc187711465ff8a6381c2fa6603ecb4aa6850744dea35aa22e75da08cfbcd810ff0ce4ed47b5a9471c9c4773077ea6f6385cdc48c4e653cc9f4cf0e09ebdaf12a0c5231c670b88522006535f878aa02b893cd43b0c1027134fc8e0fc2378759d2fd78816d40a67844727b165d39665e66c8193d2e7fe09f30640d3e2b6c9c54363ea7338087a140fc6b31e3baf959a51b66c8625cb8037c1efe0787dfb755a8bc9beb2b23f65011f3da26b38585066676b50a639787af7ebf3d4a9b4d4cdd1373ce28415402a78739e010b5325ea560ac208ee0fd28eefb943119dbca831ee3b1a2ab58a6807c9652d430e0a1c49160be385342883b32b4d3ebeedc1f9bf7cf2ec634dc39273a364f08b0ab870033d7e50f5de876f0aabeaf89a0ef5c9d8a82b38e36070c980817b9d4a1759296a54cb29ee4408015c2263f42409034d4e5402ca66aacec66155e30023f3984d7a40067957e1dd2a4e22f827afdcf3367b977446b9e5ab9a661aa842e92ac9bf6c49e831bb196e6ac9ae5101c2dfa4b88b7b50dc196d2789eb080bfb25f22c3ba9e3d5bc71473a743ce18e4b91391874ce6dab0cad5ae479d97ddd8aeaf8b9e90c93087411ea5c98324bebbe9fdfb099e6154bf321902a54d66476579cd5c5d03c28942118661240ef90ea27ee77615c79de9915e513b9869bf5b33acadf504016ac06c7d2ebf1a05eaff4d7e31f7ef4ebfd0ee6e43b7faa1854b77bdf23aa85e7f631f52942a89bd1948d94c72fcafe9ec3cf22fd868621e7258abb24655c19fa42914e1abbfc8f490238b2bde3d9bdfe47868fa73e2fec24d7bdccf0ffb516951c872711d22783ef5374fdaf1da6e4f7e66d4983579ccf3cc7dacb8f3e6219fe68c642ed237413994f251f5b278728e8454bd9ffe5395878f9a6fd3b0eb7d0f31e88ddac12626ac2e5722ab39c21f0a9e766a419d30e23718dba3aae5da92237b9cbfaa57af4f0b5905add0518c182cb0c163d33f54f3dff34f9dbd65aa6bc76d831887fe090a1e74315ce0e969c17c2f9ca50c75bf9cd97b58ed2151ddaf6e23d808ece1c3ecb9c2178319014cd3f10c3ea21ec9bd9323b1245baffa54219214eacc2d9f72168f351e0605f712056de4db4d19f30548b7a9138f3d4c77ae49977d697881a1058eb0163961ab9085f7900ff9c3fcaeef2ba933f0620033985434452a16bff7948d3c985d213f0a25d350b504ddef40cc31045576d6f5cc2925f6f729d0bfc7ddea9cb3978500a3c9ca22a1f9faf20be9b9c168e0c0d40f32acc225627d81fef25b50a43be01b250b7139344b8775c59c8c1a87828bb319f8493aef495065f26a25518d1ea581cff53045f225625af2fe350be471f489275fa1bd2dd4eea56e43f41ae507b4a89eb822eb97816005bb78013ac80c3352e6983147ee3f120b0bafba18fb44d5d61076160f964d4"
+  }
+}

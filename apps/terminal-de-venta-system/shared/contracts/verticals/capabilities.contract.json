@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "1.0.0",
+  "package": "PRISMA_VERTICALS_ARCHITECTURE_00A_CORE_CONTRACTS",
+  "coreCapabilities": [
+    {
+      "id": "core.sales",
+      "displayName": "Vender",
+      "tablet": "primary",
+      "pc": "reporting"
+    },
+    {
+      "id": "core.payments",
+      "displayName": "Cobro",
+      "tablet": "primary",
+      "pc": "audit"
+    },
+    {
+      "id": "core.ticket",
+      "displayName": "Ticket",
+      "tablet": "primary",
+      "pc": "audit"
+    },
+    {
+      "id": "core.catalog",
+      "displayName": "Catalogo basico",
+      "tablet": "operational",
+      "pc": "governance"
+    },
+    {
+      "id": "core.inventory.basic",
+      "displayName": "Existencias basicas",
+      "tablet": "operational",
+      "pc": "governance"
+    },
+    {
+      "id": "core.returns",
+      "displayName": "Devoluciones",
+      "tablet": "guided",
+      "pc": "audit"
+    },
+    {
+      "id": "core.shift",
+      "displayName": "Turno",
+      "tablet": "primary",
+      "pc": "audit"
+    },
+    {
+      "id": "core.reports.today",
+      "displayName": "Ventas de hoy",
+      "tablet": "operational",
+      "pc": "consolidated"
+    },
+    {
+      "id": "core.events",
+      "displayName": "Eventos",
+      "tablet": "local",
+      "pc": "consolidated"
+    },
+    {
+      "id": "core.sync",
+      "displayName": "Pendientes por enviar",
+      "tablet": "visible",
+      "pc": "reconcile"
+    },
+    {
+      "id": "core.export",
+      "displayName": "Exportar",
+      "tablet": "permissioned",
+      "pc": "admin"
+    }
+  ],
+  "verticalCapabilities": [
+    {
+      "id": "restaurant.tables",
+      "vertical": "restaurant",
+      "displayName": "Mesas"
+    },
+    {
+      "id": "restaurant.kitchen_orders",
+      "vertical": "restaurant",
+      "displayName": "Comandas"
+    },
+    {
+      "id": "pharmacy.lots",
+      "vertical": "pharmacy",
+      "displayName": "Lotes y caducidad"
+    },
+    {
+      "id": "pharmacy.prescription",
+      "vertical": "pharmacy",
+      "displayName": "Receta o autorizacion"
+    },
+    {
+      "id": "beauty.appointments",
+      "vertical": "beauty",
+      "displayName": "Citas"
+    },
+    {
+      "id": "beauty.commissions",
+      "vertical": "beauty",
+      "displayName": "Comisiones"
+    },
+    {
+      "id": "hardware.measure_units",
+      "vertical": "hardware",
+      "displayName": "Unidades variables"
+    },
+    {
+      "id": "apparel.variants",
+      "vertical": "apparel",
+      "displayName": "Tallas y colores"
+    },
+    {
+      "id": "repair.work_orders",
+      "vertical": "repair",
+      "displayName": "Ordenes de trabajo"
+    },
+    {
+      "id": "field_route.routes",
+      "vertical": "field_route",
+      "displayName": "Rutas"
+    }
+  ]
+}

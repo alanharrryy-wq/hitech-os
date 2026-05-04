@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "verticalId": "apparel",
+  "displayName": "Ropa / boutique",
+  "coreRequired": true,
+  "capabilities": {
+    "required": [
+      "core.sales",
+      "core.payments",
+      "core.ticket",
+      "apparel.variants"
+    ],
+    "optional": [
+      "core.returns",
+      "customer.profile",
+      "core.sync"
+    ]
+  },
+  "surfaces": {
+    "tablet": {
+      "enabled": true,
+      "routes": [
+        "Vender",
+        "Catalogo",
+        "Cambios",
+        "Existencias",
+        "Cobro",
+        "Ventas de hoy"
+      ]
+    },
+    "pc": {
+      "enabled": true,
+      "routes": [
+        "Dashboard",
+        "Catalogo",
+        "Inventario",
+        "Auditoria",
+        "Configuracion"
+      ]
+    }
+  },
+  "offline": {
+    "salesAllowed": true,
+    "sensitiveActionsRequireConnection": false
+  }
+}

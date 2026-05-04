@@ -1,0 +1,93 @@
+{
+  "id": "pharmacy",
+  "displayName": "Farmacia",
+  "market": "regulated_retail",
+  "status": "available",
+  "priority": "phase_1",
+  "tabletRole": "Operacion rapida del giro desde Tablet sin convertirla en backoffice.",
+  "pcRole": "Gobierno profundo del giro, auditoria, configuracion, compras, reportes y consolidacion.",
+  "capabilities": [
+    "sales.products",
+    "barcode.scan",
+    "inventory.stock",
+    "inventory.lots",
+    "inventory.expiration",
+    "pharmacy.prescription_flag",
+    "returns.controlled",
+    "offline.sales.restricted",
+    "sync.outbox",
+    "audit.sensitive"
+  ],
+  "tabletNavigation": [
+    "Vender",
+    "Buscar producto",
+    "Existencias",
+    "Devoluciones",
+    "Turno",
+    "Pendientes por enviar"
+  ],
+  "pcNavigation": [
+    "Catalogo",
+    "Lotes",
+    "Caducidades",
+    "Compras",
+    "Recepcion",
+    "Auditoria",
+    "Dashboard",
+    "Sincronizacion"
+  ],
+  "tabletBlockedCapabilities": [
+    "controlled_catalog.full_admin",
+    "supplier.management",
+    "catalog.bulk_price_change",
+    "audit.deep"
+  ],
+  "events": [
+    "sale.completed",
+    "pharmacy.lot.decremented",
+    "pharmacy.expiration.warning_shown",
+    "pharmacy.controlled_item.blocked",
+    "return.created",
+    "sync.event.pending"
+  ],
+  "permissions": [
+    "audit.use",
+    "barcode.use",
+    "inventory.use",
+    "offline.use",
+    "payment.receive",
+    "pharmacy.use",
+    "pos.sale.complete",
+    "returns.use",
+    "sales.use",
+    "sync.use"
+  ],
+  "offlinePolicy": {
+    "mode": "restricted",
+    "allowed": [
+      "venta local permitida",
+      "consulta de datos locales",
+      "registro de pendientes por enviar"
+    ],
+    "blocked": [
+      "controlled_catalog.full_admin",
+      "supplier.management",
+      "catalog.bulk_price_change",
+      "audit.deep"
+    ],
+    "cashierMessage": "Puedes seguir operando con datos locales; lo pendiente se enviara cuando haya conexion."
+  },
+  "kpis": [
+    "ventas netas",
+    "numero de tickets",
+    "ticket promedio",
+    "errores de captura",
+    "pendientes por enviar"
+  ],
+  "acceptanceCriteria": [
+    "El cajero entiende la accion principal en menos de 5 segundos.",
+    "Tablet no muestra administracion pesada del vertical.",
+    "Los eventos minimos quedan registrados.",
+    "Los estados offline y pendiente por enviar son claros."
+  ]
+}

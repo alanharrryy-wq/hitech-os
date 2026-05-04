@@ -1,0 +1,351 @@
+{
+  "verticalId": "repair",
+  "name": "Taller / reparaciones",
+  "tablet": {
+    "primaryEntry": "Órdenes",
+    "navigation": [
+      "Órdenes",
+      "Cobro",
+      "Refacciones",
+      "Anticipos",
+      "Ventas de hoy",
+      "Turno",
+      "Pendientes por enviar"
+    ],
+    "blockedModules": [
+      "diagnóstico técnico profundo en caja",
+      "garantías complejas sin PC",
+      "compras desde Tablet"
+    ],
+    "offlinePolicy": {
+      "canContinueSelling": true,
+      "copy": "Puedes seguir trabajando si la operación local está permitida.",
+      "mustShowPending": true
+    }
+  },
+  "pc": {
+    "navigation": [
+      "Órdenes avanzadas",
+      "Diagnóstico",
+      "Garantías",
+      "Inventario",
+      "Compras",
+      "Auditoría",
+      "Dashboard"
+    ],
+    "governanceModules": [
+      "Garantías",
+      "Inventario",
+      "Compras",
+      "Auditoría",
+      "Dashboard"
+    ],
+    "copy": "PC administra configuración, auditoría y control profundo."
+  },
+  "screens": [
+    {
+      "id": "órdenes",
+      "label": "Órdenes",
+      "purpose": "operar órdenes para Taller / reparaciones",
+      "primaryAction": "Continuar con Órdenes",
+      "secondaryActions": [
+        "Volver",
+        "Cancelar",
+        "Ver detalle"
+      ],
+      "mustDisableWhen": [
+        "faltan datos obligatorios",
+        "no hay permiso",
+        "la operación es sensible y requiere autorización"
+      ],
+      "states": {
+        "empty": "No hay información para órdenes.",
+        "loading": "Un momento, estamos cargando.",
+        "error": "No pudimos completar la acción. Intenta otra vez.",
+        "success": "Listo. Operación completada.",
+        "disabled": "Completa lo necesario para continuar.",
+        "offline": "Puedes seguir trabajando si la operación local está permitida.",
+        "pending_sync": "Se enviará cuando haya conexión."
+      }
+    },
+    {
+      "id": "cobro",
+      "label": "Cobro",
+      "purpose": "cerrar venta y registrar pago",
+      "primaryAction": "Confirmar cobro",
+      "secondaryActions": [
+        "Volver",
+        "Cancelar",
+        "Ver detalle"
+      ],
+      "mustDisableWhen": [
+        "faltan datos obligatorios",
+        "no hay permiso",
+        "la operación es sensible y requiere autorización"
+      ],
+      "states": {
+        "empty": "No hay ticket para cobrar.",
+        "loading": "Un momento, estamos cargando.",
+        "error": "No pudimos completar la acción. Intenta otra vez.",
+        "success": "Listo. Operación completada.",
+        "disabled": "Completa lo necesario para continuar.",
+        "offline": "Puedes seguir trabajando si la operación local está permitida.",
+        "pending_sync": "Se enviará cuando haya conexión."
+      }
+    },
+    {
+      "id": "refacciones",
+      "label": "Refacciones",
+      "purpose": "operar refacciones para Taller / reparaciones",
+      "primaryAction": "Continuar con Refacciones",
+      "secondaryActions": [
+        "Volver",
+        "Cancelar",
+        "Ver detalle"
+      ],
+      "mustDisableWhen": [
+        "faltan datos obligatorios",
+        "no hay permiso",
+        "la operación es sensible y requiere autorización"
+      ],
+      "states": {
+        "empty": "No hay información para refacciones.",
+        "loading": "Un momento, estamos cargando.",
+        "error": "No pudimos completar la acción. Intenta otra vez.",
+        "success": "Listo. Operación completada.",
+        "disabled": "Completa lo necesario para continuar.",
+        "offline": "Puedes seguir trabajando si la operación local está permitida.",
+        "pending_sync": "Se enviará cuando haya conexión."
+      }
+    },
+    {
+      "id": "anticipos",
+      "label": "Anticipos",
+      "purpose": "operar anticipos para Taller / reparaciones",
+      "primaryAction": "Continuar con Anticipos",
+      "secondaryActions": [
+        "Volver",
+        "Cancelar",
+        "Ver detalle"
+      ],
+      "mustDisableWhen": [
+        "faltan datos obligatorios",
+        "no hay permiso",
+        "la operación es sensible y requiere autorización"
+      ],
+      "states": {
+        "empty": "No hay información para anticipos.",
+        "loading": "Un momento, estamos cargando.",
+        "error": "No pudimos completar la acción. Intenta otra vez.",
+        "success": "Listo. Operación completada.",
+        "disabled": "Completa lo necesario para continuar.",
+        "offline": "Puedes seguir trabajando si la operación local está permitida.",
+        "pending_sync": "Se enviará cuando haya conexión."
+      }
+    },
+    {
+      "id": "ventas_de_hoy",
+      "label": "Ventas de hoy",
+      "purpose": "consultar tickets cerrados",
+      "primaryAction": "Ver detalle de ticket",
+      "secondaryActions": [
+        "Volver",
+        "Cancelar",
+        "Ver detalle"
+      ],
+      "mustDisableWhen": [
+        "faltan datos obligatorios",
+        "no hay permiso",
+        "la operación es sensible y requiere autorización"
+      ],
+      "states": {
+        "empty": "Todavía no hay ventas hoy.",
+        "loading": "Un momento, estamos cargando.",
+        "error": "No pudimos completar la acción. Intenta otra vez.",
+        "success": "Listo. Operación completada.",
+        "disabled": "Completa lo necesario para continuar.",
+        "offline": "Puedes seguir trabajando si la operación local está permitida.",
+        "pending_sync": "Se enviará cuando haya conexión."
+      }
+    },
+    {
+      "id": "turno",
+      "label": "Turno",
+      "purpose": "abrir, revisar o cerrar caja",
+      "primaryAction": "Abrir o cerrar turno",
+      "secondaryActions": [
+        "Volver",
+        "Cancelar",
+        "Ver detalle"
+      ],
+      "mustDisableWhen": [
+        "faltan datos obligatorios",
+        "no hay permiso",
+        "la operación es sensible y requiere autorización"
+      ],
+      "states": {
+        "empty": "No hay turno abierto.",
+        "loading": "Un momento, estamos cargando.",
+        "error": "No pudimos completar la acción. Intenta otra vez.",
+        "success": "Listo. Operación completada.",
+        "disabled": "Completa lo necesario para continuar.",
+        "offline": "Puedes seguir trabajando si la operación local está permitida.",
+        "pending_sync": "Se enviará cuando haya conexión."
+      }
+    },
+    {
+      "id": "pendientes_por_enviar",
+      "label": "Pendientes por enviar",
+      "purpose": "explicar operaciones locales no enviadas",
+      "primaryAction": "Reintentar envío",
+      "secondaryActions": [
+        "Volver",
+        "Cancelar",
+        "Ver detalle"
+      ],
+      "mustDisableWhen": [
+        "faltan datos obligatorios",
+        "no hay permiso",
+        "la operación es sensible y requiere autorización"
+      ],
+      "states": {
+        "empty": "Todo está enviado.",
+        "loading": "Un momento, estamos cargando.",
+        "error": "No pudimos completar la acción. Intenta otra vez.",
+        "success": "Listo. Operación completada.",
+        "disabled": "Completa lo necesario para continuar.",
+        "offline": "Puedes seguir trabajando si la operación local está permitida.",
+        "pending_sync": "Se enviará cuando haya conexión."
+      }
+    }
+  ],
+  "flows": [
+    {
+      "id": "repair.happy_path",
+      "name": "Flujo principal",
+      "steps": [
+        "Entrar a Órdenes",
+        "Ejecutar orden de trabajo, diagnóstico simple, refacción, mano de obra, anticipo y cierre",
+        "Corregir errores simples",
+        "Confirmar operación",
+        "Ver resultado claro"
+      ],
+      "blockedBy": [
+        "permiso insuficiente",
+        "dato obligatorio faltante"
+      ],
+      "successMessage": "Operación completada."
+    },
+    {
+      "id": "repair.offline_path",
+      "name": "Operación sin conexión",
+      "steps": [
+        "Mostrar aviso simple",
+        "Guardar operación local",
+        "Marcar pendiente por enviar",
+        "Permitir continuar si la política lo permite"
+      ],
+      "blockedBy": [
+        "operación crítica no permitida sin conexión"
+      ],
+      "successMessage": "Guardado en esta Tablet. Se enviará después."
+    },
+    {
+      "id": "repair.error.orden_incompleta",
+      "name": "Manejo de orden incompleta",
+      "steps": [
+        "Detectar orden incompleta",
+        "Mostrar mensaje simple",
+        "Ofrecer corrección o regreso",
+        "Evitar cierre silencioso"
+      ],
+      "blockedBy": [
+        "orden incompleta"
+      ],
+      "successMessage": "Dato corregido."
+    },
+    {
+      "id": "repair.error.anticipo_insuficiente",
+      "name": "Manejo de anticipo insuficiente",
+      "steps": [
+        "Detectar anticipo insuficiente",
+        "Mostrar mensaje simple",
+        "Ofrecer corrección o regreso",
+        "Evitar cierre silencioso"
+      ],
+      "blockedBy": [
+        "anticipo insuficiente"
+      ],
+      "successMessage": "Dato corregido."
+    },
+    {
+      "id": "repair.error.refacción_sin_stock",
+      "name": "Manejo de refacción sin stock",
+      "steps": [
+        "Detectar refacción sin stock",
+        "Mostrar mensaje simple",
+        "Ofrecer corrección o regreso",
+        "Evitar cierre silencioso"
+      ],
+      "blockedBy": [
+        "refacción sin stock"
+      ],
+      "successMessage": "Dato corregido."
+    },
+    {
+      "id": "repair.error.garantía_requerida",
+      "name": "Manejo de garantía requerida",
+      "steps": [
+        "Detectar garantía requerida",
+        "Mostrar mensaje simple",
+        "Ofrecer corrección o regreso",
+        "Evitar cierre silencioso"
+      ],
+      "blockedBy": [
+        "garantía requerida"
+      ],
+      "successMessage": "Dato corregido."
+    }
+  ],
+  "microcopy": {
+    "primary": "Órdenes",
+    "success": "Operación completada.",
+    "error": "No pudimos completar la acción. Intenta otra vez.",
+    "offline": "La operación quedó guardada en esta Tablet. Se enviará después.",
+    "pending": "Pendiente por enviar.",
+    "disabled": "Completa lo necesario para continuar.",
+    "special": {
+      "orden incompleta": "No se puede continuar: orden incompleta.",
+      "anticipo insuficiente": "No se puede continuar: anticipo insuficiente.",
+      "refacción sin stock": "No se puede continuar: refacción sin stock.",
+      "garantía requerida": "No se puede continuar: garantía requerida."
+    }
+  },
+  "forbiddenVisibleTerms": [
+    "checkout",
+    "cart",
+    "sync",
+    "outbox",
+    "runtime",
+    "lookup",
+    "guardrails",
+    "SaleReturn",
+    "amountCents",
+    "restock",
+    "payload",
+    "API",
+    "endpoint",
+    "worker",
+    "ack",
+    "schema",
+    "queue"
+  ],
+  "acceptance": [
+    "La acción principal se entiende en menos de cinco segundos.",
+    "Cada pantalla tiene vacío, carga, error, éxito, deshabilitado, offline y pendiente por enviar.",
+    "No aparecen términos técnicos visibles.",
+    "Tablet no muestra módulos de administración pesada.",
+    "PC conserva el gobierno avanzado.",
+    "El usuario puede volver a la acción principal sin perder contexto."
+  ]
+}

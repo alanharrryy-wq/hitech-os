@@ -1,0 +1,624 @@
+{
+  "verticalId": "grocery_scale",
+  "verticalName": "Abarrotes con bascula",
+  "fixtureVersion": "0.0.1",
+  "purpose": "pesaje, precio por kilo, etiqueta y merma ligera",
+  "requiredBlocks": [
+    "00A_CORE_CONTRACTS",
+    "00B_VERTICAL_REGISTRY",
+    "00C_VERTICAL_DATA_MODELS",
+    "00D_VERTICAL_EVENTS_PERMISSIONS",
+    "00E_VERTICAL_UX_OPERATIONS"
+  ],
+  "businessProfile": {
+    "tabletRole": "operacion principal o captura rapida segun vertical",
+    "pcRole": "gobierno, auditoria, configuracion y consolidacion",
+    "forbiddenTabletBehaviors": [
+      "backoffice_profundo",
+      "permisos_globales",
+      "compras_formales_sin_pc",
+      "auditoria_pesada"
+    ]
+  },
+  "screensUnderTest": [
+    "Vender",
+    "Cobro",
+    "Ticket actual",
+    "Ventas de hoy",
+    "Turno",
+    "Sincronizacion",
+    "Bascula",
+    "Pesaje",
+    "Etiqueta"
+  ],
+  "flowsUnderTest": [
+    "weighed_item_sale",
+    "label_scan",
+    "manual_weight_capture",
+    "cash_change",
+    "stock_adjust_light",
+    "offline_scale_sale"
+  ],
+  "seedData": {
+    "business": {
+      "id": "biz_grocery_scale",
+      "name": "Demo Abarrotes con bascula",
+      "verticalId": "grocery_scale",
+      "mode": "standalone_or_managed"
+    },
+    "terminal": {
+      "id": "terminal_grocery_scale_01",
+      "kind": "tablet_pos",
+      "offlineAllowed": true
+    },
+    "operator": {
+      "id": "operator_grocery_scale_01",
+      "role": "cajero",
+      "permissions": [
+        "pos.sale.create",
+        "pos.sale.complete",
+        "pos.ticket.view",
+        "shift.view",
+        "sync.status.view",
+        "pos.return.create",
+        "inventory.adjust.local"
+      ]
+    },
+    "products": [
+      {
+        "sku": "GROCERY_SCALE-SKU-001",
+        "name": "Producto 1 Abarrotes con bascula",
+        "barcode": "7501567898466",
+        "priceCents": 1125,
+        "stockOnHand": 21,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "2edf1ecb450c9e740328a14b"
+        }
+      },
+      {
+        "sku": "GROCERY_SCALE-SKU-002",
+        "name": "Producto 2 Abarrotes con bascula",
+        "barcode": "7504685528763",
+        "priceCents": 1250,
+        "stockOnHand": 22,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "95dc2eff49ab4f659405d7a2"
+        }
+      },
+      {
+        "sku": "GROCERY_SCALE-SKU-003",
+        "name": "Producto 3 Abarrotes con bascula",
+        "barcode": "7502922024428",
+        "priceCents": 1375,
+        "stockOnHand": 23,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "bff36bef14d943c2958a9ecb"
+        }
+      },
+      {
+        "sku": "GROCERY_SCALE-SKU-004",
+        "name": "Producto 4 Abarrotes con bascula",
+        "barcode": "7501894720794",
+        "priceCents": 1500,
+        "stockOnHand": 24,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "25db990d688ae2ee191f7c89"
+        }
+      },
+      {
+        "sku": "GROCERY_SCALE-SKU-005",
+        "name": "Producto 5 Abarrotes con bascula",
+        "barcode": "7505792722369",
+        "priceCents": 1625,
+        "stockOnHand": 25,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "3df89e64aa39b524c3cdef6e"
+        }
+      },
+      {
+        "sku": "GROCERY_SCALE-SKU-006",
+        "name": "Producto 6 Abarrotes con bascula",
+        "barcode": "7505959764753",
+        "priceCents": 1750,
+        "stockOnHand": 26,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "62b5ca6a4484aa3e1fcb912d"
+        }
+      },
+      {
+        "sku": "GROCERY_SCALE-SKU-007",
+        "name": "Producto 7 Abarrotes con bascula",
+        "barcode": "7501647788438",
+        "priceCents": 1875,
+        "stockOnHand": 27,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "42d7e8a42b9e4d7dace62d96"
+        }
+      },
+      {
+        "sku": "GROCERY_SCALE-SKU-008",
+        "name": "Producto 8 Abarrotes con bascula",
+        "barcode": "7503089066812",
+        "priceCents": 2000,
+        "stockOnHand": 28,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "987f31ce311350231840bff0"
+        }
+      }
+    ],
+    "services": [
+      {
+        "serviceCode": "GROCERY_SCALE-SVC-01",
+        "name": "Servicio 1 Abarrotes con bascula",
+        "priceCents": 1800,
+        "durationMinutes": 15,
+        "verticalTraits": {
+          "fixtureTrait": "8de7f3e6ff06fbd701c06d3e"
+        }
+      },
+      {
+        "serviceCode": "GROCERY_SCALE-SVC-02",
+        "name": "Servicio 2 Abarrotes con bascula",
+        "priceCents": 2100,
+        "durationMinutes": 30,
+        "verticalTraits": {
+          "fixtureTrait": "18c0ea26c8a0f64fdedd91f3"
+        }
+      },
+      {
+        "serviceCode": "GROCERY_SCALE-SVC-03",
+        "name": "Servicio 3 Abarrotes con bascula",
+        "priceCents": 2400,
+        "durationMinutes": 45,
+        "verticalTraits": {
+          "fixtureTrait": "7d3eb893d12cf267d3c91d9c"
+        }
+      },
+      {
+        "serviceCode": "GROCERY_SCALE-SVC-04",
+        "name": "Servicio 4 Abarrotes con bascula",
+        "priceCents": 2700,
+        "durationMinutes": 60,
+        "verticalTraits": {
+          "fixtureTrait": "8a983e68a93f5ec57667342e"
+        }
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "grocery_scale.scenario.01.weighed_item_sale",
+      "title": "Validar weighed item sale para Abarrotes con bascula",
+      "verticalId": "grocery_scale",
+      "primaryScreen": "Cobro",
+      "flowKey": "weighed_item_sale",
+      "initialState": "loading",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Cobro.",
+        "Ejecutar flujo weighed item sale.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo weighed_item_sale termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.complete"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:grocery_scale:weighed_item_sale:1",
+        "e5e18e2e523e80a5"
+      ]
+    },
+    {
+      "id": "grocery_scale.scenario.02.label_scan",
+      "title": "Validar label scan para Abarrotes con bascula",
+      "verticalId": "grocery_scale",
+      "primaryScreen": "Ticket actual",
+      "flowKey": "label_scan",
+      "initialState": "ready",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ticket actual.",
+        "Ejecutar flujo label scan.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo label_scan termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "grocery_scale.label_scan.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.ticket.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:grocery_scale:label_scan:2",
+        "13c7449250ef8b3e"
+      ]
+    },
+    {
+      "id": "grocery_scale.scenario.03.manual_weight_capture",
+      "title": "Validar manual weight capture para Abarrotes con bascula",
+      "verticalId": "grocery_scale",
+      "primaryScreen": "Ventas de hoy",
+      "flowKey": "manual_weight_capture",
+      "initialState": "error",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ventas de hoy.",
+        "Ejecutar flujo manual weight capture.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo manual_weight_capture termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "grocery_scale.manual_weight_capture.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.retry"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:grocery_scale:manual_weight_capture:3",
+        "c3dd033a8809c67b"
+      ]
+    },
+    {
+      "id": "grocery_scale.scenario.04.cash_change",
+      "title": "Validar cash change para Abarrotes con bascula",
+      "verticalId": "grocery_scale",
+      "primaryScreen": "Turno",
+      "flowKey": "cash_change",
+      "initialState": "offline",
+      "actor": "supervisor",
+      "mode": "pc",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Turno.",
+        "Ejecutar flujo cash change.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo cash_change termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.status.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:grocery_scale:cash_change:4",
+        "18c6f9a15486832e"
+      ]
+    },
+    {
+      "id": "grocery_scale.scenario.05.stock_adjust_light",
+      "title": "Validar stock adjust light para Abarrotes con bascula",
+      "verticalId": "grocery_scale",
+      "primaryScreen": "Sincronizacion",
+      "flowKey": "stock_adjust_light",
+      "initialState": "sync_pending",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Sincronizacion.",
+        "Ejecutar flujo stock adjust light.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo stock_adjust_light termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "grocery_scale.stock_adjust_light.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.create"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:grocery_scale:stock_adjust_light:5",
+        "1ddc958c0c41fdcd"
+      ]
+    },
+    {
+      "id": "grocery_scale.scenario.06.offline_scale_sale",
+      "title": "Validar offline scale sale para Abarrotes con bascula",
+      "verticalId": "grocery_scale",
+      "primaryScreen": "Bascula",
+      "flowKey": "offline_scale_sale",
+      "initialState": "success",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Bascula.",
+        "Ejecutar flujo offline scale sale.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo offline_scale_sale termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "sync.event.queued"
+      ],
+      "requiredPermissions": [
+        "inventory.adjust.local"
+      ],
+      "offlineExpectation": "queda pendiente por enviar",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:grocery_scale:offline_scale_sale:6",
+        "491d284cde915302"
+      ]
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "scenarioId": "grocery_scale.scenario.01.weighed_item_sale",
+      "checks": [
+        {
+          "id": "grocery_scale.scenario.01.weighed_item_sale.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "grocery_scale.scenario.01.weighed_item_sale.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "grocery_scale.scenario.01.weighed_item_sale.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "grocery_scale.scenario.01.weighed_item_sale.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "grocery_scale.scenario.01.weighed_item_sale.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "grocery_scale.scenario.02.label_scan",
+      "checks": [
+        {
+          "id": "grocery_scale.scenario.02.label_scan.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "grocery_scale.scenario.02.label_scan.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "grocery_scale.scenario.02.label_scan.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "grocery_scale.scenario.02.label_scan.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "grocery_scale.scenario.02.label_scan.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "grocery_scale.scenario.03.manual_weight_capture",
+      "checks": [
+        {
+          "id": "grocery_scale.scenario.03.manual_weight_capture.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "grocery_scale.scenario.03.manual_weight_capture.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "grocery_scale.scenario.03.manual_weight_capture.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "grocery_scale.scenario.03.manual_weight_capture.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "grocery_scale.scenario.03.manual_weight_capture.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "grocery_scale.scenario.04.cash_change",
+      "checks": [
+        {
+          "id": "grocery_scale.scenario.04.cash_change.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "grocery_scale.scenario.04.cash_change.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "grocery_scale.scenario.04.cash_change.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "grocery_scale.scenario.04.cash_change.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "grocery_scale.scenario.04.cash_change.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "grocery_scale.scenario.05.stock_adjust_light",
+      "checks": [
+        {
+          "id": "grocery_scale.scenario.05.stock_adjust_light.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "grocery_scale.scenario.05.stock_adjust_light.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "grocery_scale.scenario.05.stock_adjust_light.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "grocery_scale.scenario.05.stock_adjust_light.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "grocery_scale.scenario.05.stock_adjust_light.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "grocery_scale.scenario.06.offline_scale_sale",
+      "checks": [
+        {
+          "id": "grocery_scale.scenario.06.offline_scale_sale.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "grocery_scale.scenario.06.offline_scale_sale.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "grocery_scale.scenario.06.offline_scale_sale.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "grocery_scale.scenario.06.offline_scale_sale.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "grocery_scale.scenario.06.offline_scale_sale.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    }
+  ],
+  "fixtureIntegrity": {
+    "anchor": "b928a4878adf42434548858c519d199d3a4c8106249068f7bb278fbbe573fde0",
+    "noiseProofCorpus": "df518bc769cbcf35b0629dcbd6bb5c982d3887996272df49860060982b2ca3ac656c8ea76b88e6710359f3530fc550bbfcffd9531c8794405dfe2a2d30a71b55f51753930eec9d211c7c854d2b5fd4abc11fd9d1ccab18c1dfe7eedfaa66f98e757d4114085b7ddaea53195e3589837528683867df51440814a24410f8a6a32e770150d18253ec4c501f43fcc2bf4275b2877e38f643bcd81e8442461e3a6f6bae3c423e3f94ded7803e6e0eed80ae185891426a850b836de0508b4b2d14554718a8e86044a96efd27f262e70d29479686ee0d9d1d069b205a307952a5865952c28d825a79d8a3e1ccb6935793aaa45747c06679b980b227fe8193aee188dcdcd4ce421bbace149e39fdf7e32ef6e300de0908c22ed9aba5a9d57aed78d209a6dce32a8fd431db979b7aa0c9d642d9012f1b328d250c665d2b674775fb2e0b4bbe8926b26f1884ccb875472aab64b7a2c71fc11a592125e20952cafba4e1ada5460fef7660f21145ac1c58739ca72bc5fa2be7d7fb0d8f7cac025d35d553d8e02daeb31ced691bab06b0d0f8ff9f5821b9a4c734462e3a45302e605a3b1ccc18fe6dbe9d6ffd2e2551c866cde450843c8c685c7736293f7d25ebe03a9dcaab71112257bf818289c19735de1c4c8097bc452fe31bc7147bd2bf9d9235e4d91ef83946f7af0a44709938e338c0482687ae57f19f091399b499a06d3afc6b6adeb99e8aa14993c0436262fa74ad0b48c81baefdf1e82d2f363e8feb1b29dd2ca45b863f5887ca7947006d699b72f03dac060a0f9bb2a2add060eebb04780e7c0f19b657d6850f87052fb34ad48b80f96a3f8c93bcb773d97c91f4263f09cec1108d3f93d8783fb8707ab34c202e3b86770b7c33aefded75608caa02eb70641c515040d4be4b74a45d2a9ba5e2fb5444bc0b536f8f38b9423bf849623eea281e3607879776fe3d3bccd9f82602107a13eb5f5521c194b156ea55deb4c9cbaee6828c262a16d3e215794965350ef27e6c0bdd8cdd517d4b5f0b6f72b50399e3af113af276f416b1f5bd250395b74b55560a26fcf975f7554fc4d3f1e431757c13d6c2dacc3ad9fd54fefdb65db53b8f14b7e487638168e1746d86eeaeb6b4d521efcb3423aa4172ba9a4eb323ef8a350206aa1cde6ca713f1192d662ba45e781c09d3f37bce17f0fde8c5b1e24e3463640248f5cccd73fe341e9636b5edc317fb0d80151ec5bef4681bd67bde12eeb6ea124e087d342c428e06bbf08e186813ed46ca5cdc072535f6c0c60dc710e10563ce802891a006cfadec0b80ae1bd3b73eaaf4d324b208751c92be2501b0a6aa851a2d9cb89aa9fb32d78820c42c9b47e91675abc9f148c36f865c7925e06685423323ed324e8ac962d8b78c2312edcb7f8dd5230b758ce9f5c4ecd201653e9ec61fff1ea19cf98a1578c1fa6bbd3c652b6796fc13d5a223367cfd233ac7bc84261c201eb53a786646b5ff8b1e40c33ec0f8866c8931c358ba138d446ebb586d3c92aa9d1651896bdd70c3c3f577270fa155c87ab28ec9fb150334933e7c99baac8a7ff2d754f888405f862eca74a990435a305b4065facebbcb77818ceb0dd89431670f64716f5053d5c83042d8b41bcef9d08441493994efbee6c978756417da3351f8d1acc991d27e410ad96de7493c50d92bdf601b35fe50e8f5902cd5991955be675d023e7f359cb95c2190dc6cbe0c9a05dea83543b2a1827ac3e499ae566215a4d486fc6ca72527ad20ac7b41c485bf412ac65676312534c0bde56f8b6d63bda35bfc0b6804729ab87dd298ef63fb589c0d5f7350dd00944db8a5b4a7b98ded97173df2f8003ee990ade957faa599922d84ec1b352555fdedbf3aacd10ea4e169178a73f9888b98b42619f4fea0bf6744c35bd8f250c48cf1c7f830b5faab72d612bdaae5ee45439eae2df8f583c049b77b37c888825c3ca7c82718d81c037b57eea8fba3e78ad707aa6de243ea1c3a5ca4e23d47594e814b85bc932080677f13910b85a05817a1ed1b01a5f143f12c8e4667671f38928544c946c2d00a714e05956efe870b50a0d3a38c8506682d796e4689b5180d1e68f9439ec459fcd860a21787b5e96708d9f48a2e492f21554c6fc18d8289460cbe8e438fe6c4649c570aa5776b25db2685db0bdb9f36c7d924b127671adf7894ee25dd6b9a2ff65b96f8b6ff09f435df178d34bf5c69e907094db39b7cac63a09ea62c5efd5c1b4302005cdb008b804c0b0109769ef510479cbf509949dd076bf3b1b1c96e8e6d01d4627ed420e1003152f57fcb4fec1becf57c79db6fcd57a8478cc752bd2a4d8aedecd4b987efa73819f581241280855aec55b9e4ca174d33bb9c79e34abedcf74693769dd366d494364e7a1007c24e6347b2873d0c26574e41beb11fd3a3454ab64dc8fc9562c9df782601c49c1255ebaffb817e3ff09fe96643fd1ab8d7b83149453976fd5b5ab94a5d4454067b0094e9c99705c0a2093315dadac2c5239bf964ab0064ea3ffcd5e8bfdf908a7f1d2ff4e2cbe06380c1b0d86f6a61aff1c6d265830256e27855ae16d50770416a26d680ae866f6877ffe8797ed946a8c3534e17a5138a3c39bbd70e880073094f9b921da17d61d6e85adb03135b7e9f41150bb64154009e1e205264d3453788e824e38b664de8d21772b376d43e55e87c1a24d087fb6b3dedce79d18516aae55b77dbbc38247721e6cf55dfbdf1788f6afaf48b10bccb974e885bd9c95224c1379f3d42cca77ea7254c1b01ec92b0f8cc887cdb64d2d6c6abb467fe9fc19d9b557829349e02efd7276d2fdfb6c0bb7b60ac6ce7b78f201c31a7b5b8ff460d10f948aaf311505c586dec0f8cd06b3950cbbd7f6b3af00fd51ce5b9e0351be5e14c21ad70f468ba3a4bbf68748381362328d90447eee596810857b58b4eb230d5b452cd768bac91bcf04b850a5dbd0d0214c03755054123cb6fc35f2d1bad6936fcd31f59fe00bb1c6db66532e24d799047ff8aad9c1f66505ac1fbcac2900d4ac9522d0964a125a2d228448e88add28cc4d59cdd9e59cdf619a3f923533e88a562b8b2d8db8db4d5f2fd3e33075686c768e4ff2521196bfd4a877d55743d340e0622b500dc45617c8158c66396d249c99c0313457e432ff63a0eb94dd4510edfb1ead937fe155a90d9775abd06a9fb45ae2105d332939c6bde9a6757fbc6250d04f830746d3c21107e36a3e9c10db3def89b9081555f2e187d2b7cfdc53bcf911024b5041e05659b2fb34d738dfccdbf85f1238f2984d906e1ce054dc5ecd95c9bf6b8dd1c148d334cd81ae74a3e9efc5c2ccfef722f58b79681aa49e9f6815cfa3eb087fc516d9b4c4178fbc0d3f5630d8a59b4dcad783e5ee9fa10a69f4d876342a5572263bf222614eafbe8ca483076d0b51c033bbea29f024cf3ed6d08e4c55bdb320968c6bbd81a12c76b6dc8be78c0371023d395c221741e5741d5ff575c682d3545a8ebecfcc3fe16a3002f0a611739e48a33da76f52fed4ccef97e9a48c7e4e18ab4e3bd2a260cce6d87a15c7d256214b10a695af152e9546e54b6a56116a88cca09fd7a729146282c419630efed19586d82d692c37ff98fc630f4d294f2d179"
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "id": "hardware",
+  "displayName": "Ferreteria",
+  "market": "specialized_retail",
+  "status": "available",
+  "priority": "phase_1",
+  "tabletRole": "Operacion rapida del giro desde Tablet sin convertirla en backoffice.",
+  "pcRole": "Gobierno profundo del giro, auditoria, configuracion, compras, reportes y consolidacion.",
+  "capabilities": [
+    "sales.products",
+    "barcode.scan",
+    "inventory.stock",
+    "inventory.units_variable",
+    "quotes.basic",
+    "customer.credit.basic",
+    "returns.basic",
+    "offline.sales",
+    "sync.outbox"
+  ],
+  "tabletNavigation": [
+    "Vender",
+    "Cotizar",
+    "Existencias",
+    "Ventas de hoy",
+    "Devoluciones",
+    "Turno",
+    "Pendientes por enviar"
+  ],
+  "pcNavigation": [
+    "Catalogo",
+    "Unidades",
+    "Existencias",
+    "Compras",
+    "Recepcion",
+    "Clientes",
+    "Auditoria",
+    "Dashboard"
+  ],
+  "tabletBlockedCapabilities": [
+    "unit_conversion_admin.deep",
+    "supplier.management",
+    "purchase_order.full",
+    "credit_policy.full"
+  ],
+  "events": [
+    "quote.created",
+    "sale.completed",
+    "stock.decremented",
+    "unit_quantity.sold",
+    "return.created",
+    "sync.event.pending"
+  ],
+  "permissions": [
+    "barcode.use",
+    "customer.use",
+    "inventory.use",
+    "offline.use",
+    "payment.receive",
+    "pos.sale.complete",
+    "quotes.use",
+    "returns.use",
+    "sales.use",
+    "sync.use"
+  ],
+  "offlinePolicy": {
+    "mode": "medium",
+    "allowed": [
+      "venta local permitida",
+      "consulta de datos locales",
+      "registro de pendientes por enviar"
+    ],
+    "blocked": [
+      "unit_conversion_admin.deep",
+      "supplier.management",
+      "purchase_order.full",
+      "credit_policy.full"
+    ],
+    "cashierMessage": "Puedes seguir operando con datos locales; lo pendiente se enviara cuando haya conexion."
+  },
+  "kpis": [
+    "ventas netas",
+    "numero de tickets",
+    "ticket promedio",
+    "errores de captura",
+    "pendientes por enviar"
+  ],
+  "acceptanceCriteria": [
+    "El cajero entiende la accion principal en menos de 5 segundos.",
+    "Tablet no muestra administracion pesada del vertical.",
+    "Los eventos minimos quedan registrados.",
+    "Los estados offline y pendiente por enviar son claros."
+  ]
+}
