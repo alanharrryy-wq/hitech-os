@@ -8,12 +8,10 @@ declare namespace JSX {
 
 declare const process: { env: Record<string, string | undefined>; cwd(): string };
 
-declare module "react" {
-  export type ReactNode = any;
-}
-
 declare module "next/server" {
   export class NextResponse {
     static json(body: any, init?: any): any;
   }
 }
+
+// PRISMA 04F: no local react module shim; @types/react owns hook exports.

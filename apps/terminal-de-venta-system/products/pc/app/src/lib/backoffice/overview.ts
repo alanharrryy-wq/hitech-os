@@ -13,6 +13,17 @@ export type BackofficeModuleKey =
   | "sync"
   | "settings";
 
+
+
+type CatalogProductOverviewRow = {
+  sku: string;
+  name: string;
+  category: string;
+  priceCents: number;
+  isActive: boolean;
+  barcodes: Array<unknown>;
+};
+
 export type BackofficeModuleOverview = {
   key: BackofficeModuleKey;
   route: string;
@@ -150,20 +161,23 @@ function unavailable(key: BackofficeModuleKey, error: unknown): BackofficeModule
 export async function getBackofficeModuleOverview(key: BackofficeModuleKey): Promise<BackofficeModuleOverview> {
   try {
     if (key === "catalog") {
-      const products: any[] = await prisma.product.findMany({ include: { barcodes: true }, orderBy: { updatedAt: "desc" }, take: 25 });
-      const active = products.filter((product) => product.isActive).length;
-      const categories = new Set(products.map((product) => product.category));
+      const [totalProducts, activeProducts, products] = await Promise.all([
+        prisma.product.count(),
+        prisma.product.count({ where: { isActive: true } }),
+        prisma.product.findMany({ include: { barcodes: true }, orderBy: { updatedAt: "desc" }, take: 200 })
+      ]) as [number, number, CatalogProductOverviewRow[]];
+      const categories = new Set(products.map((product: CatalogProductOverviewRow) => product.category));
       return {
         ...baseOverview(key),
         metrics: [
-          { label: "SKUs leídos", value: String(products.length), note: "Muestra reciente de Product." },
-          { label: "Activos", value: String(active), note: "isActive=true." },
-          { label: "Categorías", value: String(categories.size), note: "Agrupación visible." }
+          { label: "SKUs totales", value: String(totalProducts), note: "Conteo completo de Product." },
+          { label: "Activos", value: String(activeProducts), note: "isActive=true en persistencia canónica." },
+          { label: "Categorías visibles", value: String(categories.size), note: "Agrupación de la muestra visible." }
         ],
         table: {
-          title: "Productos recientes",
+          title: "Productos consolidados recientes",
           columns: ["SKU", "Producto", "Categoría", "Precio", "Barcodes", "Estado"],
-          rows: products.map((product) => ({
+          rows: products.map((product: CatalogProductOverviewRow) => ({
             SKU: product.sku,
             Producto: product.name,
             Categoría: product.category,
@@ -171,9 +185,12 @@ export async function getBackofficeModuleOverview(key: BackofficeModuleKey): Pro
             Barcodes: product.barcodes.length,
             Estado: product.isActive ? "activo" : "inactivo"
           })),
-          emptyMessage: "No hay productos consolidados en PC todavía."
+          emptyMessage: "No hay productos consolidados en PC todavía. Ejecuta pnpm run db:pc:mass-catalog si ya cargaste Tablet."
         },
-        notes: ["Catálogo PC gobierna productos; Tablet puede vender con su catálogo local activo."]
+        notes: [
+          "Catálogo PC gobierna productos consolidados; Tablet conserva su catálogo local para vender aunque PC no exista.",
+          "La carga masiva 04D espejea el catálogo operativo de Tablet en la base canónica de PC sin resetear stock existente por defecto."
+        ]
       };
     }
 

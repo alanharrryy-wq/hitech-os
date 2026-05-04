@@ -5,13 +5,15 @@ export const pcMessages = {
   },
   productName: "Panel administrativo de inventario",
   shell: {
-    brand: "Ops Console",
-    subtitle: "Inventario, SKUs, compras, recepción, auditoría y sincronización con la terminal twin.",
+    brand: "Consola operativa",
+    subtitle: "Inventario, SKUs, compras, recepción, auditoría y sincronización con la terminal gemela.",
     footer: "Gemela: terminal de venta. Dominio: inventario y control operativo.",
     home: "Visión general",
     twinStatus: "Tablet independiente",
-    lastSync: "ingest no persistido",
+    lastSincronización: "sin respaldo consolidado",
+    lastSync: "sin respaldo consolidado",
     searchPlaceholder: "Buscar SKU, ID o escanear código",
+    sincronizaciónChip: "Validar eventos",
     syncChip: "Validar eventos",
     userChip: "Equipo interno"
   },
@@ -25,11 +27,11 @@ export const pcMessages = {
     openOrdersSubtitle: "Lectura rápida del catálogo que sí está empujando venta y margen.",
     categoryMixTitle: "Señales operativas",
     categoryMixSubtitle: "Atajos para moverse por las áreas con más fricción del turno.",
-    pendingSyncTitle: "Sincronización pendiente",
-    pendingSyncSubtitle: "Eventos listos o pendientes para sincronizar con la terminal de venta.",
+    pendingSincronizaciónTitle: "Sincronización pendiente",
+    pendingSincronizaciónSubtitle: "Eventos listos o pendientes para sincronizar con la terminal de venta.",
     lowStockColumns: ["SKU", "Producto", "Ubicación", "Días", "Estado"],
     openOrdersColumns: ["SKU", "Producto", "Unidades", "Ingreso", "Margen"],
-    pendingSyncColumns: ["Evento", "Tipo", "Antigüedad", "Estado"]
+    pendingSincronizaciónColumns: ["Evento", "Tipo", "Antigüedad", "Estado"]
   },
   pages: {
     counts: {
@@ -47,7 +49,7 @@ export const pcMessages = {
       subtitle: "Foto operativa de existencias, cobertura y quiebres de stock.",
       bullets: ["existencias actuales", "días de inventario", "quiebres de stock", "sobreinventario"]
     },
-    sync: {
+    sincronización: {
       title: "Sincronización",
       subtitle: "Intercambio de eventos con la terminal de venta.",
       bullets: ["bandeja de salida", "reintentos", "conflictos", "confirmación"]

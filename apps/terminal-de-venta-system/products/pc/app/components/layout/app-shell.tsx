@@ -24,31 +24,33 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
     currentPath === "/"
       ? { title: pcMessages.shell.home, description: pcMessages.home.subtitle }
       : currentPath === "/dashboard"
-        ? { title: "Dashboard", description: "KPIs y sync" }
+        ? { title: "Tablero", description: "KPIs y sincronización" }
         : nav.find((item) => item.href === currentPath);
   const controlItems = nav.filter((item) => item.navGroup === "control");
   const utilityItems = nav.filter((item) => item.navGroup === "operation");
 
   return (
-    <div className="shell">
-      <aside className="sidebar">
-        <div className="brand-block">
+    <div className="shell" data-prisma-component="AppShell" data-prisma-product="pc">
+      <a className="skip-link" href="#prisma-main-content">Saltar al contenido</a>
+      <aside className="sidebar" data-prisma-component="Sidebar" aria-label="Navegación principal PC">
+        <div className="brand-block" data-prisma-component="BrandBlock">
           <div className="brand-row">
-            <span className="brand-mark" aria-hidden="true">
-              ✦
+            <span className="brand-mark prisma-mark" aria-hidden="true">
+              <span className="prisma-shard" />
             </span>
             <div>
-              <div className="brand">{pcMessages.shell.brand}</div>
-              <div className="subtle">{pcMessages.shell.subtitle}</div>
+              <div className="brand">PRISMA</div>
+              <div className="subtle">Sistema de gestión inteligente</div>
             </div>
           </div>
         </div>
 
-        <section className="sidebar-panel">
+        <div className="sidebar-main-scroll" role="region" aria-label="Módulos de navegación PC">
+        <section className="sidebar-panel sidebar-nav-panel" data-prisma-component="SecondaryActionCard">
           <p className="nav-group-title">Navegación</p>
           <nav className="nav">
             <NavLink href="/" title={pcMessages.shell.home} description="vista ejecutiva" active={currentPath === "/"} icon={NAV_ICONS["/"]} />
-            <NavLink href="/dashboard" title="Dashboard" description="KPIs y sync" active={currentPath === "/dashboard"} icon={NAV_ICONS["/dashboard"]} />
+            <NavLink href="/dashboard" title="Tablero" description="KPIs y sincronización" active={currentPath === "/dashboard"} icon={NAV_ICONS["/dashboard"]} />
             {controlItems.map((item) => (
               <NavLink
                 key={item.href}
@@ -62,7 +64,7 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
           </nav>
         </section>
 
-        <section className="sidebar-panel">
+        <section className="sidebar-panel sidebar-utility-panel" data-prisma-component="SecondaryActionCard">
           <p className="nav-group-title">Utilidades</p>
           <nav className="nav">
             {utilityItems.map((item) => (
@@ -78,39 +80,39 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
           </nav>
         </section>
 
-        <div className="sidebar-spacer" />
+        </div>
 
         <div className="footer-stack">
-          <div className="footer-pill">
-            <span className="subtle">Twin</span>
+          <div className="footer-pill" data-prisma-component="TerminalStatusCard">
+            <span className="subtle">Gemelo</span>
             <strong>{pcMessages.shell.twinStatus}</strong>
           </div>
-          <div className="footer-pill">
-            <span className="subtle">Última sync</span>
+          <div className="footer-pill" data-prisma-component="TerminalStatusCard">
+            <span className="subtle">Última sincronización</span>
             <strong>{pcMessages.shell.lastSync}</strong>
           </div>
           <div className="footer-actions">
-            <div className="footer-chip">Docs</div>
-            <div className="footer-chip">Sync</div>
+            <div className="footer-chip">Guías</div>
+            <div className="footer-chip">Sincronización</div>
           </div>
         </div>
       </aside>
 
-      <main className="main">
-        <header className="topbar">
+      <main className="main" id="prisma-main-content">
+        <header className="topbar" data-prisma-component="TopBar">
           <div className="topbar-brand">
             <span className="brand-mark" aria-hidden="true" style={{ width: 28, height: 28, fontSize: 14 }}>
-              ⬢
+              ●
             </span>
             <span>{current?.title ?? pcMessages.shell.home}</span>
           </div>
 
-          <label className="search-shell" aria-label="Buscar">
+          <label className="search-shell" aria-label="Buscar" data-prisma-component="SearchBar">
             <span aria-hidden="true">⌕</span>
             <input readOnly value={pcMessages.shell.searchPlaceholder} />
           </label>
 
-          <div className="user-shell">
+          <div className="user-shell" data-prisma-component="UserMenu">
             <div className="sync-chip">{pcMessages.shell.syncChip}</div>
             <div className="user-chip">
               <span className="avatar">PC</span>

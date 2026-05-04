@@ -6,6 +6,7 @@ import { CountsModule } from "@/modules/counts/module.manifest";
 import { PurchasingModule } from "@/modules/purchasing/module.manifest";
 import { ReceivingModule } from "@/modules/receiving/module.manifest";
 import { ReplenishmentModule } from "@/modules/replenishment/module.manifest";
+import { SuppliersModule } from "@/modules/suppliers/module.manifest";
 import { AuditModule } from "@/modules/audit/module.manifest";
 import { SyncModule } from "@/modules/sync/module.manifest";
 
@@ -21,7 +22,7 @@ const SettingsModule: TwinModuleManifest = {
   key: "settings",
   route: "/settings",
   title: "Ajustes",
-  description: "Políticas, terminales, permisos y reglas offline.",
+  description: "Políticas, terminales, permisos y reglas sin conexión.",
   navGroup: "operation"
 };
 
@@ -33,6 +34,7 @@ export const pcModuleRegistry: TwinModuleManifest[] = sortModules([
   PurchasingModule,
   ReceivingModule,
   ReplenishmentModule,
+  SuppliersModule,
   AuditModule,
   SyncModule,
   SettingsModule

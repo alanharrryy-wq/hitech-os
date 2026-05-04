@@ -12,7 +12,7 @@ export function NavLink({
   icon?: string;
 }) {
   return (
-    <a href={href} className={active ? "active" : ""}>
+    <a href={href} className={active ? "active" : ""} aria-current={active ? "page" : undefined} data-prisma-component="NavItem" data-active={active ? "true" : undefined}>
       <span className="nav-icon" aria-hidden="true">
         {icon ?? "•"}
       </span>
