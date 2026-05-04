@@ -1,0 +1,14 @@
+{
+  "id": "PRISMA_CHATGPT_SHARE_DOC_SYNC_FIX_01A",
+  "kind": "sync_tool_hotfix",
+  "summary": "Fix ChatGPT share mirror so new docs and Mobile product files are mirrored from the canonical project root, while stale legacy repo/products mirrors are removed.",
+  "files": [
+    "tooling/scripts/sync_chatgpt_share.py",
+    "tools/verify_chatgpt_share_sync_coverage.py",
+    "docs/qa/PRISMA_CHATGPT_SHARE_DOC_SYNC_FIX_01A_QA.md"
+  ],
+  "verify_commands": [
+    "python F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\tooling\\scripts\\sync_chatgpt_share.py --sync --verify",
+    "python F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\tools\\verify_chatgpt_share_sync_coverage.py"
+  ]
+}

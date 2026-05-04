@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma-pos.local/contracts/vertical-manifest.schema.json",
+  "title": "PRISMA Vertical Manifest",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "verticalId",
+    "displayName",
+    "capabilities",
+    "surfaces",
+    "offline"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string"
+    },
+    "verticalId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "displayName": {
+      "type": "string",
+      "minLength": 3
+    },
+    "capabilities": {
+      "type": "object",
+      "required": [
+        "required",
+        "optional"
+      ],
+      "properties": {
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "optional": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "surfaces": {
+      "type": "object",
+      "required": [
+        "tablet",
+        "pc"
+      ],
+      "properties": {
+        "tablet": {
+          "type": "object",
+          "required": [
+            "enabled"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "routes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "pc": {
+          "type": "object",
+          "required": [
+            "enabled"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "routes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "offline": {
+      "type": "object",
+      "required": [
+        "salesAllowed",
+        "sensitiveActionsRequireConnection"
+      ],
+      "properties": {
+        "salesAllowed": {
+          "type": "boolean"
+        },
+        "sensitiveActionsRequireConnection": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

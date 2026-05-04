@@ -1,0 +1,24 @@
+{
+  "package": "PRISMA_VISUAL_OS_POS_LIVE_BINDING_00T_20260504_v01",
+  "version": "20260504_v01",
+  "kind": "visual-os-pos-live-binding",
+  "targetRootDefault": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "logRootDefault": "F:\\descargasf",
+  "requires": [
+    "PRISMA_VISUAL_OS_STUDIO_PRO_QA_00R_00S",
+    "live-preview-server-00q.mjs"
+  ],
+  "forbidden": [
+    "packages/shared-kernel/*",
+    "shared/contracts/*",
+    "shared/TWIN_CHAT_SHARED_CONTEXT_6.1.json"
+  ],
+  "ownedResetPaths": [
+    "products/tablet/app/components/pos/pos-live-binding.tsx",
+    "products/tablet/app/components/pos/pos-screen.tsx",
+    "products/tablet/app/components/pos/pos.module.css",
+    "tools/prisma-visual-os/verify_prisma_visual_os_pos_live_binding_00t.mjs",
+    "docs/design/PRISMA_VISUAL_OS_POS_LIVE_BINDING_00T.md",
+    "manifests/PRISMA_VISUAL_OS_POS_LIVE_BINDING_00T_20260504_v01.json"
+  ]
+}

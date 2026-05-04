@@ -1,0 +1,33 @@
+{
+  "contractId": "prisma-tri-surface-visual-guardian-00c",
+  "baseContract": "PRISMA_TRI_SURFACE_VISUAL_CHANGE_CONTRACT_00A",
+  "patch": "PRISMA_TRI_SURFACE_VISUAL_CHANGE_CONTRACT_00B_PRODUCT_ROOT_AUTONOMY_PATCH",
+  "canonicalSurfaceIds": [
+    "prisma.pc.backoffice",
+    "prisma.tablet.pos",
+    "prisma.mobile.app"
+  ],
+  "productRoots": {
+    "prisma.pc.backoffice": "products/pc/app",
+    "prisma.tablet.pos": "products/tablet/app",
+    "prisma.mobile.app": "products/mobile/app"
+  },
+  "legacyMobileRoots": [
+    "products/pc/app/app/prisma-app",
+    "products/pc/app/src/lib/prisma-app",
+    "products/pc/app/docs/prisma-app",
+    "products/pc/app/app/pulso",
+    "products/pc/app/src/lib/pulso"
+  ],
+  "states": [
+    "TOUCHED",
+    "VALIDATED",
+    "EXCLUDED"
+  ],
+  "forbiddenState": "OMITTED",
+  "invariants": [
+    "tablet_autonomy",
+    "no_visual_hierarchy",
+    "mobile_not_pc_child"
+  ]
+}

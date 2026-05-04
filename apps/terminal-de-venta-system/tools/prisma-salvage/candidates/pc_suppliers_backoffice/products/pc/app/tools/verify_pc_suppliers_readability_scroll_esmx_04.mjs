@@ -1,0 +1,14 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+const root = process.argv[2];
+if (!root) process.exit(2);
+const read = (rel) => readFileSync(join(root, rel), 'utf8');
+const has = (rel, text) => { if (!read(rel).includes(text)) throw new Error(`${rel} no contiene ${text}`); console.log(`OK ${rel} contiene ${text}`); };
+const lacks = (rel, text) => { if (read(rel).includes(text)) throw new Error(`${rel} todavía contiene ${text}`); console.log(`OK ${rel} no contiene ${text}`); };
+has('components/layout/app-shell.tsx','sidebar-main-scroll'); has('components/layout/app-shell.tsx','Tablero'); has('components/layout/app-shell.tsx','Última sincronización'); lacks('components/layout/app-shell.tsx','title="Dashboard"'); lacks('components/layout/app-shell.tsx','KPIs y sync');
+has('app/globals.css','PRISMA_PC_READABILITY_SCROLL_ESMX_04 START'); has('app/globals.css','.sidebar-main-scroll'); has('app/globals.css','overflow-y: auto');
+has('components/suppliers/smart-purchase-workbench.tsx','supplier-readable-v04'); has('components/suppliers/smart-purchase-workbench.tsx','action-table'); has('components/suppliers/smart-purchase-workbench.tsx','calendar-table'); has('components/suppliers/smart-purchase-workbench.tsx','labelCalendarKind'); lacks('components/suppliers/smart-purchase-workbench.tsx','POST'); lacks('components/suppliers/smart-purchase-workbench.tsx','/api/proveedores/compra-inteligente'); lacks('components/suppliers/smart-purchase-workbench.tsx','order_cutoff'); lacks('components/suppliers/smart-purchase-workbench.tsx','expected_receiving');
+has('app/suppliers.css','PRISMA_PC_SUPPLIERS_READABILITY_ESMX_04 START'); has('app/suppliers.css','.calendar-table'); has('app/suppliers.css','.action-table');
+has('src/lib/suppliers/server.ts','Revisar antes de comprar'); has('src/lib/suppliers/server.ts','Fecha límite de pedido'); lacks('src/lib/suppliers/server.ts','Bloqueada'); lacks('src/lib/suppliers/server.ts','Bloqueado');
+has('src/lib/suppliers/lifecycle-engine.ts','${kind}_${supplierId}_${title}_${startsAt}'); has('src/lib/suppliers/lifecycle-engine.ts','Recepción esperada'); has('src/lib/suppliers/smart-purchase-engine.ts','Compra para revisar');
+console.log('VERIFY OK prisma pc suppliers readability scroll esmx v04');

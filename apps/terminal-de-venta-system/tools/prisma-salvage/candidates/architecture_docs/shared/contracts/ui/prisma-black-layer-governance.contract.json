@@ -1,0 +1,130 @@
+{
+  "contract": "prisma-black-layer-governance",
+  "version": "01E",
+  "type": "non_visual_baseline",
+  "noVisualChange": true,
+  "scope": "PRISMA Black visual layer governance for future CSS passes",
+  "targetFiles": [
+    "products/shared-ui/prisma/tokens/prisma-theme.css",
+    "products/shared-ui/prisma/components/prisma-components.css",
+    "products/tablet/app/components/tablet-shell/prisma-tablet-shell.module.css",
+    "products/tablet/app/components/pos/pos.module.css",
+    "products/pc/app/app/globals.css",
+    "products/tablet/app/app/globals.css"
+  ],
+  "layerModel": [
+    {
+      "order": 1,
+      "name": "global_background",
+      "owns": [
+        "haze",
+        "vignette",
+        "noise",
+        "ambient_motion"
+      ]
+    },
+    {
+      "order": 2,
+      "name": "large_panels",
+      "owns": [
+        "strong_glass",
+        "panel_blur",
+        "edge_light",
+        "inner_highlight"
+      ]
+    },
+    {
+      "order": 3,
+      "name": "cards",
+      "owns": [
+        "light_glass",
+        "thin_border",
+        "legible_content"
+      ]
+    },
+    {
+      "order": 4,
+      "name": "product_stage",
+      "owns": [
+        "local_pedestal",
+        "product_shadow",
+        "local_glow"
+      ]
+    },
+    {
+      "order": 5,
+      "name": "content_actions",
+      "owns": [
+        "contrast",
+        "focus",
+        "primary_cta"
+      ]
+    }
+  ],
+  "budgets": {
+    "strongGlowsPerScreenMax": 3,
+    "heroMotionPerScreenMax": 1,
+    "globalNoiseLayersMax": 1,
+    "globalHazeLayersMax": 1,
+    "strongSpecularAllowedOn": [
+      "large_panels"
+    ],
+    "heavyBlurAllowedOn": [
+      "large_panels"
+    ]
+  },
+  "flags": [
+    "stage.haze",
+    "stage.vignette",
+    "stage.noise",
+    "stage.motion",
+    "panel.blur",
+    "panel.innerStroke",
+    "panel.specular",
+    "card.blur",
+    "card.innerStroke",
+    "card.specular",
+    "card.shadowAmbient",
+    "product.glow",
+    "product.pedestal",
+    "cta.glow"
+  ],
+  "profiles": {
+    "neutral": {
+      "motion": "off",
+      "noise": "soft",
+      "haze": "soft",
+      "glows": "minimal"
+    },
+    "fx": {
+      "motion": "subtle",
+      "noise": "on",
+      "haze": "on",
+      "glows": "budgeted"
+    },
+    "perf": {
+      "motion": "off",
+      "noise": "off",
+      "haze": "low",
+      "blur": "reduced",
+      "specular": "off"
+    }
+  },
+  "prohibitedPatterns": [
+    "haze per card",
+    "noise per card",
+    "motion per card",
+    "duplicated atmospheric background in body shell panel card",
+    "uniform gold border on every component",
+    "same blur strength for panel and card",
+    "strong glow on every card"
+  ],
+  "acceptance": [
+    "visual pass centralizes atmospheric background",
+    "cards do not recreate global atmosphere",
+    "large panels have stronger glass than cards",
+    "product stage owns local product glow",
+    "reduced motion disables animation",
+    "perf profile remains legible"
+  ]
+}

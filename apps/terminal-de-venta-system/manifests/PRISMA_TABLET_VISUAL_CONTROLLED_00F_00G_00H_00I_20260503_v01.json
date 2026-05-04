@@ -1,0 +1,15 @@
+{
+  "package": "PRISMA_TABLET_VISUAL_CONTROLLED_00F_00G_00H_00I_20260503_v01",
+  "scope": "00F Visual Controls UI Panel + 00G POS Calibration + 00H Checkout Focus + 00I Tablet Shell Governance",
+  "depends_on": "PRISMA_VISUAL_OS_CORE_00D_00E_20260503_v01",
+  "routes": [
+    "/visual-os",
+    "/pos",
+    "/checkout"
+  ],
+  "forbidden_paths": [
+    "packages/shared-kernel",
+    "shared/contracts",
+    "shared/TWIN_CHAT_SHARED_CONTEXT_6.1.json"
+  ]
+}

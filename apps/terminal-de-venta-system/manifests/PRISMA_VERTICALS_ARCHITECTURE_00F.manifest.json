@@ -1,0 +1,190 @@
+{
+  "package": "PRISMA_VERTICALS_ARCHITECTURE_00F_VERTICAL_VALIDATION_FIXTURES",
+  "version": "0.0.1",
+  "createdAt": "2026-04-30T04:06:21Z",
+  "description": "Validation fixtures, smoke suite, acceptance matrix and cross-coverage for PRISMA vertical architecture.",
+  "installer": "install_prisma_verticals_00f.py",
+  "manifestPath": "manifests/PRISMA_VERTICALS_ARCHITECTURE_00F.manifest.json",
+  "requires": [
+    "00A",
+    "00B",
+    "00C",
+    "00D",
+    "00E"
+  ],
+  "files": [
+    {
+      "path": "docs/architecture/PRISMA_VERTICALS_ARCHITECTURE_00F_VALIDATION_FIXTURES.md",
+      "sha256": "b5919818b9fac4d791a4cefa109a51db72c47591a836d6ae45b3d4920027a9e7",
+      "bytes": 11730
+    },
+    {
+      "path": "docs/qa/PRISMA_VERTICALS_00F_ACCEPTANCE_CRITERIA.md",
+      "sha256": "bc7f3a4e11ed47b89ce55aca1cca674d22c24af6a2f24a226936c966e5a3fbcb",
+      "bytes": 1766
+    },
+    {
+      "path": "docs/qa/PRISMA_VERTICALS_00F_CROSS_COVERAGE_MATRIX.md",
+      "sha256": "319ada6801165f619c8b3cf4ed706e6c2b5808a9dd0ebd080ede2f3de058aa04",
+      "bytes": 1068
+    },
+    {
+      "path": "docs/qa/PRISMA_VERTICALS_00F_FIXTURE_AUTHORING_GUIDE.md",
+      "sha256": "19b40201f0fcf642e1919c2d6ee0a29ad4f97bd8c1a8910eed1fd7ab14d320d4",
+      "bytes": 1923
+    },
+    {
+      "path": "docs/qa/PRISMA_VERTICALS_00F_SMOKE_PLAYBOOK.md",
+      "sha256": "391cc975e6789691017a4b8e7dd395ed63fc4afe16aedc88ba63c97801293353",
+      "bytes": 1629
+    },
+    {
+      "path": "shared/contracts/verticals/vertical-validation-fixture.schema.json",
+      "sha256": "ad36e5e4fb19bbf041e698d92530717644fac946a62680ebca03761b70510049",
+      "bytes": 1006
+    },
+    {
+      "path": "shared/contracts/verticals/vertical-validation-scenario.schema.json",
+      "sha256": "a9cdd91808bbb68c3e8d267032db5fa8c132db2257ef4fda4fa0d13dafc0a45d",
+      "bytes": 908
+    },
+    {
+      "path": "shared/verticals/validation/acceptance/vertical-acceptance-matrix.v0.json",
+      "sha256": "22e7b92f8b2949b92d39b5b04145debf5fa2a3a2814080e87a0005a9316dffab",
+      "bytes": 75066
+    },
+    {
+      "path": "shared/verticals/validation/coverage/vertical-cross-coverage.v0.json",
+      "sha256": "adea3f60eaff3203b9fcd96afd3f78234274784267bc9658c355d1f3b857fc30",
+      "bytes": 169338
+    },
+    {
+      "path": "shared/verticals/validation/evidence/vertical-fixture-evidence-corpus.v0.json",
+      "sha256": "8f05a93c9b231047f6582d79f6bf89c4858e627caf154f30e0360f7dce2784fd",
+      "bytes": 731597
+    },
+    {
+      "path": "shared/verticals/validation/fixtures/apparel.validation-fixture.json",
+      "sha256": "ba7a09941159c509fe92e0c2ef6c3239e23739d47c307afc2242f9d06bd55a58",
+      "bytes": 25097
+    },
+    {
+      "path": "shared/verticals/validation/fixtures/beauty.validation-fixture.json",
+      "sha256": "6722e7af47ac7a618378746907f4b5dd79b8f39f05662844626d514d1a79a320",
+      "bytes": 25160
+    },
+    {
+      "path": "shared/verticals/validation/fixtures/convenience.validation-fixture.json",
+      "sha256": "4df623fb3300eaac95d8e1c5a0ac6f4e572b9d526874ec9722195bf55f5eaca0",
+      "bytes": 25366
+    },
+    {
+      "path": "shared/verticals/validation/fixtures/field_route.validation-fixture.json",
+      "sha256": "96da33603712f14ce45a9ae7fa05353d90fbf5b50ddf143581a0622df4fec2bd",
+      "bytes": 25675
+    },
+    {
+      "path": "shared/verticals/validation/fixtures/food_truck.validation-fixture.json",
+      "sha256": "1d0379668b025d1ed11fc22aef3f159ae111be8bed245d9ce151559c7b0d64a3",
+      "bytes": 25223
+    },
+    {
+      "path": "shared/verticals/validation/fixtures/grocery_scale.validation-fixture.json",
+      "sha256": "1152c8425075b8556465670d87802264c1ed175307fb95780c8a0629eaa87866",
+      "bytes": 25831
+    },
+    {
+      "path": "shared/verticals/validation/fixtures/hardware.validation-fixture.json",
+      "sha256": "50ca878f43f2fe71967a837206fbb2c845e12e9fc0c14d371ca46a6199d80a8b",
+      "bytes": 25019
+    },
+    {
+      "path": "shared/verticals/validation/fixtures/pharmacy.validation-fixture.json",
+      "sha256": "c1266d63d7732b869300fb0622e6578cb3a050a4b386341fc54ccf9e0bcba4fd",
+      "bytes": 25220
+    },
+    {
+      "path": "shared/verticals/validation/fixtures/repair.validation-fixture.json",
+      "sha256": "c367faac3073bcaf5c42266e63f5503b57dab0436435f032e8704ac78607d89c",
+      "bytes": 25126
+    },
+    {
+      "path": "shared/verticals/validation/fixtures/restaurant.validation-fixture.json",
+      "sha256": "ba077b9d3ae778cd64ecce7aa877a0c92724c3e1b1f99d073ea0fd90d6f076cc",
+      "bytes": 25357
+    },
+    {
+      "path": "shared/verticals/validation/scenarios/apparel.validation-scenarios.json",
+      "sha256": "8774cae89a094830e4e39145defe2f3bf1f7c33539951e8724dcef1764ae81d0",
+      "bytes": 9052
+    },
+    {
+      "path": "shared/verticals/validation/scenarios/beauty.validation-scenarios.json",
+      "sha256": "106bd2eaebdd4830bce7edeb60424561ccbc995ee3d1b90b47ff062960b618ed",
+      "bytes": 9079
+    },
+    {
+      "path": "shared/verticals/validation/scenarios/convenience.validation-scenarios.json",
+      "sha256": "8bc5787cf3be86058650f7a88348abd3673564f14d2317eaecccd4cdc0df9406",
+      "bytes": 9068
+    },
+    {
+      "path": "shared/verticals/validation/scenarios/field_route.validation-scenarios.json",
+      "sha256": "62730f02b6d115c2173495ca48e48393ded67b9dd5b431ccc59ce779cad21db6",
+      "bytes": 9249
+    },
+    {
+      "path": "shared/verticals/validation/scenarios/food_truck.validation-scenarios.json",
+      "sha256": "f963123d19d6d256b3ae1ebe185d96c150e4fa9ce86e9e22c1681abf8c9d081d",
+      "bytes": 9006
+    },
+    {
+      "path": "shared/verticals/validation/scenarios/grocery_scale.validation-scenarios.json",
+      "sha256": "86d3700bd98095f6d96b74c41130bff21c8bdd5f7e92603a6419867d9b025fb5",
+      "bytes": 9287
+    },
+    {
+      "path": "shared/verticals/validation/scenarios/hardware.validation-scenarios.json",
+      "sha256": "298ada6c09e99e71d2f89b86e896e3f03fbf2dd5bb56a2783b9c4a2d2899f6d9",
+      "bytes": 8995
+    },
+    {
+      "path": "shared/verticals/validation/scenarios/pharmacy.validation-scenarios.json",
+      "sha256": "fed69d50e6dd53b6cbd21d8d2898f91d1dec00c4c2fa345b296b6ef7b6255b9c",
+      "bytes": 9101
+    },
+    {
+      "path": "shared/verticals/validation/scenarios/repair.validation-scenarios.json",
+      "sha256": "fe43fa0f94945553f5e83d7a281053e0e839afd5a952b538d7ef2ae04ae1fdc0",
+      "bytes": 9075
+    },
+    {
+      "path": "shared/verticals/validation/scenarios/restaurant.validation-scenarios.json",
+      "sha256": "890fcb1ee796fe4fd3eb3f115fb1549c307d8d7d3dcdf7fb1c35d1244507a4bc",
+      "bytes": 9103
+    },
+    {
+      "path": "shared/verticals/validation/smoke/vertical-smoke-suite.v0.json",
+      "sha256": "96ab33d6356505044994696d83cf1eb56bf95d6856ea6aa66333a8ada7ee4942",
+      "bytes": 25338
+    },
+    {
+      "path": "shared/verticals/validation/vertical-validation-fixture.registry.v0.json",
+      "sha256": "d372c786f704e9dba76aa9c0702c7fa4b71d5464a8eb42c9d5a0b43f895d8f28",
+      "bytes": 2033
+    },
+    {
+      "path": "tools/verticals/validate_vertical_validation_fixtures_00f.py",
+      "sha256": "10fd370371411465b0257d565bb5b49b58ecabb9f450bf933f5e62b66a054251",
+      "bytes": 5624
+    }
+  ],
+  "manifestSelfHash": null,
+  "validation": {
+    "validator": "tools/verticals/validate_vertical_validation_fixtures_00f.py",
+    "expectedVerticals": 10,
+    "minimumScenarios": 60,
+    "minimumAcceptanceChecks": 300,
+    "minimumCoverageRows": 420
+  }
+}

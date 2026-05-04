@@ -1,0 +1,180 @@
+{
+  "package": "PRISMA_VERTICALS_ARCHITECTURE_00D_VERTICAL_EVENTS_PERMISSIONS",
+  "version": "00D",
+  "createdAt": "2026-04-29T18:52:30.756029Z",
+  "description": "Vertical events, permissions, audit and sync policies for PRISMA multi-business architecture.",
+  "selfHashPolicy": "manifest is intentionally not self-hashed; installer verifies listed payload files and manifest readability.",
+  "files": [
+    {
+      "path": "docs/architecture/PRISMA_VERTICALS_00D_EVENT_CATALOG.md",
+      "bytes": 20271,
+      "sha256": "0375e2f02f394a7be4fb7c52b64c58a8956a09a3e9ae8da1306faebfa2492bb3"
+    },
+    {
+      "path": "docs/architecture/PRISMA_VERTICALS_00D_PERMISSION_MODEL.md",
+      "bytes": 3003,
+      "sha256": "1fa8114bf53ef9683fbc5f08a1cd1421331e770a26638d695319809d3d7f4da5"
+    },
+    {
+      "path": "docs/architecture/PRISMA_VERTICALS_00D_SYNC_AUDIT_POLICY.md",
+      "bytes": 4263,
+      "sha256": "df9814ff4731dcb5d50cb914f5d5fc4e63b6cd2605afbe515e8538aabae0a7b8"
+    },
+    {
+      "path": "docs/architecture/PRISMA_VERTICALS_ARCHITECTURE_00D_VERTICAL_EVENTS_PERMISSIONS.md",
+      "bytes": 11203,
+      "sha256": "83d2d12cd5f8a6d63beee35567f09004cecd443521d31977ab91be104b190490"
+    },
+    {
+      "path": "docs/qa/PRISMA_VERTICALS_00D_QA_MATRIX.md",
+      "bytes": 214373,
+      "sha256": "f56ca773d8e79f68b32f4ff8e9253247f241322cabe431774ba7e44defda9192"
+    },
+    {
+      "path": "shared/contracts/verticals/events/event-envelope.schema.json",
+      "bytes": 1062,
+      "sha256": "acc4870ecc9f329f546501d67c83b9a619977a0db2037dfd5c1c45d3ca0b95b4"
+    },
+    {
+      "path": "shared/contracts/verticals/events/vertical-event-policy.schema.json",
+      "bytes": 691,
+      "sha256": "846c74050dcf0711028bb9a0f204ad703b22ddb75d199da24478cd96fc5cfb2a"
+    },
+    {
+      "path": "shared/contracts/verticals/permissions/permission-policy.schema.json",
+      "bytes": 633,
+      "sha256": "f034cbeaccd81ae1ed6fdd7b5b411d0afab01eb11c3ab95a05cbb04e94f28e50"
+    },
+    {
+      "path": "shared/verticals/audit/vertical-audit-rules.v0.json",
+      "bytes": 757,
+      "sha256": "99fede6427e60c8cca24e8249a37981bc7b2f41a06d17191d7ec82efbbfb9ecd"
+    },
+    {
+      "path": "shared/verticals/events/common-event-catalog.v0.json",
+      "bytes": 3400,
+      "sha256": "e570d7cd755cfa3c3071c3ddde77eca3e4f03edede194ee63c3dc08783d7d69d"
+    },
+    {
+      "path": "shared/verticals/events/policies/apparel.event-policy.json",
+      "bytes": 6580,
+      "sha256": "650033497f5dba4e30b7fc50d48ddaca5635fa46cc82a80db992b28ae9b5c354"
+    },
+    {
+      "path": "shared/verticals/events/policies/beauty.event-policy.json",
+      "bytes": 6621,
+      "sha256": "33d939ee916e76fa2c364ef25113b90794216ec59c3c591576988a72b27d6898"
+    },
+    {
+      "path": "shared/verticals/events/policies/convenience.event-policy.json",
+      "bytes": 6648,
+      "sha256": "5e7df935f2018b400d34f6ff4469fe205fdc4facec5011c394bc4abd1fd19acc"
+    },
+    {
+      "path": "shared/verticals/events/policies/field_route.event-policy.json",
+      "bytes": 6613,
+      "sha256": "e8ab802f0e21f896bd0afa264618297ca0bf7f166e82bc0a4cb2f58cbd91cb4e"
+    },
+    {
+      "path": "shared/verticals/events/policies/food_truck.event-policy.json",
+      "bytes": 6628,
+      "sha256": "bdbf2fabffd64602d8bce14a543638b20e2842c4c9511c53632c6b33a86dad34"
+    },
+    {
+      "path": "shared/verticals/events/policies/grocery_scale.event-policy.json",
+      "bytes": 6676,
+      "sha256": "efddeac7ae34279095723e2aa747bc19c7ace236cc3124ccbf8fb950c379bf26"
+    },
+    {
+      "path": "shared/verticals/events/policies/hardware.event-policy.json",
+      "bytes": 6589,
+      "sha256": "08d762f9c02fed3e2e957257170e891d897791cd096fdf888373a551852fa7de"
+    },
+    {
+      "path": "shared/verticals/events/policies/pharmacy.event-policy.json",
+      "bytes": 6620,
+      "sha256": "8ce2fefe02c5565c311f98f05ca6fb7653f92c32c201535d2eceff4dd95f9d86"
+    },
+    {
+      "path": "shared/verticals/events/policies/repair.event-policy.json",
+      "bytes": 6592,
+      "sha256": "487109d4e20149528fb61f9d7c61b1e2905a61916f9c834cbf3c7ebd3f1b4514"
+    },
+    {
+      "path": "shared/verticals/events/policies/restaurant.event-policy.json",
+      "bytes": 6904,
+      "sha256": "baff6781f7187a71ca5dceb519420ea1f6b0066bd2215aee03abddf650562e05"
+    },
+    {
+      "path": "shared/verticals/permissions/common-permission-catalog.v0.json",
+      "bytes": 2159,
+      "sha256": "f3faf06e6ea97ad207882bdf818f89b610340bb0a6de5f1897ca59c13fb60749"
+    },
+    {
+      "path": "shared/verticals/permissions/policies/apparel.permission-policy.json",
+      "bytes": 4574,
+      "sha256": "98449ac5f997c4c28e8b5f41eecac052697aa2332d5ae33a19cb245e4f8078a6"
+    },
+    {
+      "path": "shared/verticals/permissions/policies/beauty.permission-policy.json",
+      "bytes": 4625,
+      "sha256": "0ea2e08c7a0cbbec75c80ba844c4d148b47a14ac2e560cc49378126d20a2cb9c"
+    },
+    {
+      "path": "shared/verticals/permissions/policies/convenience.permission-policy.json",
+      "bytes": 4539,
+      "sha256": "6b780fb3d5ff87fcbe1e921d1ad0d6b4fd09361e97b784248a36e0f5a9a8245d"
+    },
+    {
+      "path": "shared/verticals/permissions/policies/field_route.permission-policy.json",
+      "bytes": 4689,
+      "sha256": "6efbe437184c42d2dd8238120b02d57fcbd20ba1c522e03da9bdb50b46b4f2bb"
+    },
+    {
+      "path": "shared/verticals/permissions/policies/food_truck.permission-policy.json",
+      "bytes": 4460,
+      "sha256": "985a74372ae92dcc912c98d49560fbfd6039e5d9b65ce58877e326a14e11945b"
+    },
+    {
+      "path": "shared/verticals/permissions/policies/grocery_scale.permission-policy.json",
+      "bytes": 4464,
+      "sha256": "dc5c177f51c3926c01ca839905c94b0e5dd0fd9c620f179b0944e4aa38c8edb4"
+    },
+    {
+      "path": "shared/verticals/permissions/policies/hardware.permission-policy.json",
+      "bytes": 4588,
+      "sha256": "98d8346fd4bca24c6ce11ded624ba14ba576f3e52eba7071190cbb1c955db6fb"
+    },
+    {
+      "path": "shared/verticals/permissions/policies/pharmacy.permission-policy.json",
+      "bytes": 4659,
+      "sha256": "ad2b2cd39865369a0668798e092e67489410dd696d912ed56f38bb70e72fc415"
+    },
+    {
+      "path": "shared/verticals/permissions/policies/repair.permission-policy.json",
+      "bytes": 4609,
+      "sha256": "fb38b494477c5ca9481ab095251513cdd9678764a7ee8778d08f74a7dd35ce06"
+    },
+    {
+      "path": "shared/verticals/permissions/policies/restaurant.permission-policy.json",
+      "bytes": 4646,
+      "sha256": "808ce2d99065f07192fdd83757b0a2032af77fb571969563e85c4a0dea47253d"
+    },
+    {
+      "path": "shared/verticals/sync/vertical-sync-policy.v0.json",
+      "bytes": 5215,
+      "sha256": "4b5029b1ec1e8917e2428ec1910f6e411f5282773b9842628640566e7040f7e7"
+    },
+    {
+      "path": "tools/verticals/validate_vertical_events_permissions_00d.py",
+      "bytes": 3845,
+      "sha256": "cb1e19e5a06379212a3d9cec00314e2363dbdcd20f7235d9aa32a5dffac66df9"
+    }
+  ],
+  "verifyCommand": "python tools/verticals/validate_vertical_events_permissions_00d.py <root>",
+  "requiresAfter": [
+    "PRISMA_VERTICALS_ARCHITECTURE_00A_CORE_CONTRACTS",
+    "PRISMA_VERTICALS_ARCHITECTURE_00B_VERTICAL_REGISTRY",
+    "PRISMA_VERTICALS_ARCHITECTURE_00C_VERTICAL_DATA_MODELS"
+  ]
+}

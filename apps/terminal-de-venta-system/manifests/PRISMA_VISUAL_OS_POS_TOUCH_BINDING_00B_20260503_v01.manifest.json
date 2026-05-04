@@ -1,0 +1,67 @@
+{
+  "package": "PRISMA_VISUAL_OS_POS_TOUCH_BINDING_00B_20260503_v01",
+  "version": "v01",
+  "created_at": "2026-05-03T09:58:09",
+  "intent": "Bind Tablet /pos to PRISMA Visual Operating System 00A through scoped data hooks, POS visual recipe CSS, and verification tools.",
+  "targets_root": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "files": [
+    {
+      "target": "docs/design/PRISMA_VISUAL_OS_POS_TOUCH_BINDING_00B.md",
+      "sha256": "ef24396e9d974b0bca94d8e1da46d8975a01f7d851d990676c88f6201829cb9f",
+      "size_bytes": 1330
+    },
+    {
+      "target": "products/tablet/app/components/pos/pos-screen.tsx",
+      "sha256": "2c39534327ea99158e096209c5791e08202bc5aa0da4d24bed7bba634219a0b6",
+      "size_bytes": 9342
+    },
+    {
+      "target": "products/tablet/app/components/pos/pos.module.css",
+      "sha256": "60aa1e9f19c1161076173799ded0e8b9053a2d1937c8b33e6b34ed0629858d30",
+      "size_bytes": 69105
+    },
+    {
+      "target": "products/tablet/app/components/tablet-shell/prisma-tablet-shell.module.css",
+      "sha256": "35498191051c07bdad8b28502d243c039800b3077a6cb9c1073c1e1a5444dd3e",
+      "size_bytes": 24226
+    },
+    {
+      "target": "products/tablet/app/components/tablet-shell/prisma-tablet-shell.tsx",
+      "sha256": "4c4df22486c30f3a7697ff68e830d6f4ce6442818362852b977d7229dfd78d38",
+      "size_bytes": 4748
+    },
+    {
+      "target": "products/tablet/app/docs/qa/PRISMA_VISUAL_OS_POS_TOUCH_BINDING_00B.md",
+      "sha256": "0c9123167829070015de479da583449ab5a271efb085e057ea7395d128bc3897",
+      "size_bytes": 1859
+    },
+    {
+      "target": "products/tablet/app/package.json",
+      "sha256": "9a9e67b7468830dcaa98e5526d19a868ad6d4329e22d716e56a652e1d99b4662",
+      "size_bytes": 2023
+    },
+    {
+      "target": "products/tablet/app/tools/score_prisma_visual_os_pos_touch_binding_00b.mjs",
+      "sha256": "ca8e8e88fd67ab4553c387e96d433cdf8c799068a90a2e2a280e0a1bbcff7f70",
+      "size_bytes": 2430
+    },
+    {
+      "target": "products/tablet/app/tools/verify_prisma_visual_os_pos_touch_binding_00b.mjs",
+      "sha256": "442e302d7958ab9fd09e05f25050a03e724330df8e566a3c613aee5d1720497b",
+      "size_bytes": 4179
+    }
+  ],
+  "forbidden_prefixes": [
+    "products/pc/app/",
+    "products/mobile/app/",
+    "packages/shared-kernel/"
+  ],
+  "validation": [
+    "python installer --dry-run",
+    "python installer --apply",
+    "python installer --verify",
+    "node products/tablet/app/tools/verify_prisma_visual_os_pos_touch_binding_00b.mjs --root <target>",
+    "node products/tablet/app/tools/score_prisma_visual_os_pos_touch_binding_00b.mjs --root <target>",
+    "python installer --rollback"
+  ]
+}

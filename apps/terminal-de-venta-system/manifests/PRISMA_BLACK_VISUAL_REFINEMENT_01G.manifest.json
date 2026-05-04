@@ -1,0 +1,58 @@
+{
+  "name": "PRISMA_BLACK_VISUAL_REFINEMENT_01G",
+  "version": "01G",
+  "kind": "tri_surface_visual_refinement",
+  "createdAt": "2026-04-30T00:00:00Z",
+  "coverage": {
+    "tablet": {
+      "status": "TOUCHED",
+      "paths": [
+        "products/tablet/app/app/globals.css",
+        "products/tablet/app/components/pos/pos.module.css",
+        "products/tablet/app/components/tablet-shell/prisma-tablet-shell.module.css"
+      ],
+      "role": "primary_standalone_pos"
+    },
+    "pc": {
+      "status": "TOUCHED",
+      "paths": [
+        "products/pc/app/app/globals.css"
+      ],
+      "role": "backoffice_asset"
+    },
+    "mobile": {
+      "status": "TOUCHED",
+      "paths": [
+        "products/pc/app/app/pulso/prisma-pulso.module.css"
+      ],
+      "role": "companion_asset"
+    }
+  },
+  "autonomyInvariants": {
+    "tabletStandalone": true,
+    "pcRequiredForTabletSale": false,
+    "mobileRequiredForTabletSale": false,
+    "coverageDoesNotImplyHierarchy": true
+  },
+  "changedFiles": [
+    "products/shared-ui/prisma/tokens/prisma-theme.css",
+    "products/shared-ui/prisma/components/prisma-components.css",
+    "products/tablet/app/app/globals.css",
+    "products/tablet/app/components/pos/pos.module.css",
+    "products/tablet/app/components/tablet-shell/prisma-tablet-shell.module.css",
+    "products/pc/app/app/globals.css",
+    "products/pc/app/app/pulso/prisma-pulso.module.css",
+    "docs/design/PRISMA_BLACK_VISUAL_REFINEMENT_01G.md",
+    "docs/qa/PRISMA_BLACK_VISUAL_REFINEMENT_01G_QA.md",
+    "shared/contracts/ui/prisma-black-visual-refinement-01g.contract.json",
+    "manifests/PRISMA_BLACK_VISUAL_REFINEMENT_01G.manifest.json",
+    "tools/prisma/prisma_black_visual_guardian_01g.py"
+  ],
+  "sharedVisualFiles": [
+    "products/shared-ui/prisma/tokens/prisma-theme.css",
+    "products/shared-ui/prisma/components/prisma-components.css"
+  ],
+  "marker": "PRISMA_BLACK_VISUAL_REFINEMENT_01G",
+  "rollbackPolicy": "restore previous versions from backup or delete files created by this integration",
+  "logPolicy": "single operational log under F:/descargasf on Windows"
+}

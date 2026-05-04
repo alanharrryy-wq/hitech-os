@@ -1,0 +1,50 @@
+{
+  "name": "PRISMA_BLACK_VISUAL_REFINEMENT_01G",
+  "version": "01G",
+  "kind": "visual_refinement_contract",
+  "coverage": {
+    "tablet": {
+      "status": "TOUCHED",
+      "paths": [
+        "products/tablet/app/app/globals.css",
+        "products/tablet/app/components/pos/pos.module.css",
+        "products/tablet/app/components/tablet-shell/prisma-tablet-shell.module.css"
+      ],
+      "role": "primary_standalone_pos"
+    },
+    "pc": {
+      "status": "TOUCHED",
+      "paths": [
+        "products/pc/app/app/globals.css"
+      ],
+      "role": "backoffice_asset"
+    },
+    "mobile": {
+      "status": "TOUCHED",
+      "paths": [
+        "products/pc/app/app/pulso/prisma-pulso.module.css"
+      ],
+      "role": "companion_asset"
+    }
+  },
+  "sharedPaths": [
+    "products/shared-ui/prisma/tokens/prisma-theme.css",
+    "products/shared-ui/prisma/components/prisma-components.css"
+  ],
+  "autonomyInvariants": {
+    "tabletStandalone": true,
+    "pcRequiredForTabletSale": false,
+    "mobileRequiredForTabletSale": false,
+    "coverageDoesNotImplyHierarchy": true
+  },
+  "allowedStatuses": [
+    "TOUCHED",
+    "VALIDATED",
+    "EXCLUDED"
+  ],
+  "forbiddenStatuses": [
+    "OMITTED"
+  ],
+  "marker": "PRISMA_BLACK_VISUAL_REFINEMENT_01G",
+  "notes": "Mobile vive actualmente bajo products/pc/app/app/pulso, pero se trata como superficie independiente."
+}

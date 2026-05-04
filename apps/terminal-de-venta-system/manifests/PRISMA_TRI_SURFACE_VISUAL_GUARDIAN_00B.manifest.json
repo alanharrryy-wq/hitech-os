@@ -1,0 +1,81 @@
+{
+  "package": "PRISMA_TRI_SURFACE_VISUAL_GUARDIAN_00B",
+  "changeType": "visual-governance",
+  "contract": "PRISMA_TRI_SURFACE_VISUAL_GUARDIAN_00B",
+  "summary": "Installs a tri-surface visual guardian that preserves Tablet standalone autonomy and requires PC, Tablet, and App móvil visual coverage in future visual packages.",
+  "canonicalStatement": "Tablet es el POS autónomo de venta. PC es un asset de backoffice y control avanzado. App móvil es un asset de pulso, consulta y alertas. Shared contracts mantienen consistencia sin imponer dependencia runtime. Ningún asset debe convertirse en requisito para que Tablet venda localmente.",
+  "autonomyPolicy": {
+    "tabletSellsStandalone": true,
+    "tabletDoesNotRequirePc": true,
+    "tabletDoesNotRequireMobile": true,
+    "pcIsBackofficeAsset": true,
+    "mobileIsPulseAsset": true,
+    "noAssetRequiredForTabletSale": true,
+    "triSurfaceCoverageDoesNotImplyHierarchy": true
+  },
+  "legacyMobilePathsReviewed": true,
+  "changedFiles": [
+    "docs/design/PRISMA_TRI_SURFACE_VISUAL_GUARDIAN_00B.md",
+    "docs/design/PRISMA_VISUAL_CHANGE_MANIFEST_TEMPLATE_00B.json",
+    "docs/qa/PRISMA_TRI_SURFACE_VISUAL_GUARDIAN_00B_QA.md",
+    "manifests/PRISMA_TRI_SURFACE_VISUAL_GUARDIAN_00B.manifest.json",
+    "shared/contracts/ui/prisma-tri-surface-visual-guardian-00b.contract.json",
+    "tools/prisma/prisma_tri_surface_visual_guardian_00b.py",
+    "tools/prisma/verify_prisma_tri_surface_visual_guardian_00b.mjs"
+  ],
+  "surfaceCoverage": [
+    {
+      "surface": "prisma.tablet.pos",
+      "state": "VALIDATED",
+      "reviewedFiles": [
+        "docs/design/PRISMA_TRI_SURFACE_VISUAL_GUARDIAN_00B.md",
+        "shared/contracts/ui/prisma-tri-surface-visual-guardian-00b.contract.json"
+      ],
+      "touchedFiles": [],
+      "evidence": "Contract explicitly preserves Tablet standalone sale autonomy and requires Tablet coverage in future visual packages.",
+      "exclusionReason": null,
+      "reevaluation": null,
+      "owner": "visual-governance"
+    },
+    {
+      "surface": "prisma.pc.backoffice",
+      "state": "VALIDATED",
+      "reviewedFiles": [
+        "docs/design/PRISMA_TRI_SURFACE_VISUAL_GUARDIAN_00B.md",
+        "shared/contracts/ui/prisma-tri-surface-visual-guardian-00b.contract.json"
+      ],
+      "touchedFiles": [],
+      "evidence": "Contract classifies PC as a backoffice/control asset and requires PC coverage in future visual packages without making PC the authority over Tablet sale.",
+      "exclusionReason": null,
+      "reevaluation": null,
+      "owner": "visual-governance"
+    },
+    {
+      "surface": "prisma.mobile.app",
+      "state": "VALIDATED",
+      "reviewedFiles": [
+        "docs/design/PRISMA_TRI_SURFACE_VISUAL_GUARDIAN_00B.md",
+        "shared/contracts/ui/prisma-tri-surface-visual-guardian-00b.contract.json",
+        "docs/design/PRISMA_VISUAL_CHANGE_MANIFEST_TEMPLATE_00B.json"
+      ],
+      "touchedFiles": [],
+      "evidence": "Contract classifies App móvil/Pulso as an independent mobile product root at products/mobile/app.",
+      "exclusionReason": null,
+      "reevaluation": null,
+      "owner": "visual-governance"
+    }
+  ],
+  "installedFiles": [
+    "docs/design/PRISMA_TRI_SURFACE_VISUAL_GUARDIAN_00B.md",
+    "docs/design/PRISMA_VISUAL_CHANGE_MANIFEST_TEMPLATE_00B.json",
+    "docs/qa/PRISMA_TRI_SURFACE_VISUAL_GUARDIAN_00B_QA.md",
+    "manifests/PRISMA_TRI_SURFACE_VISUAL_GUARDIAN_00B.manifest.json",
+    "shared/contracts/ui/prisma-tri-surface-visual-guardian-00b.contract.json",
+    "tools/prisma/prisma_tri_surface_visual_guardian_00b.py",
+    "tools/prisma/verify_prisma_tri_surface_visual_guardian_00b.mjs"
+  ],
+  "verify": {
+    "guardian": "python tools/prisma/prisma_tri_surface_visual_guardian_00b.py --root <target-root> --manifest manifests/PRISMA_TRI_SURFACE_VISUAL_GUARDIAN_00B.manifest.json --text",
+    "nodeWrapper": "node tools/prisma/verify_prisma_tri_surface_visual_guardian_00b.mjs --root <target-root> --manifest manifests/PRISMA_TRI_SURFACE_VISUAL_GUARDIAN_00B.manifest.json --text"
+  }
+}

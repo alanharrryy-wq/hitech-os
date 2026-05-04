@@ -1,0 +1,130 @@
+{
+  "package": "PRISMA_VERTICALS_ARCHITECTURE_00B_VERTICAL_REGISTRY",
+  "version": "0.2.2-fix2",
+  "createdAt": "2026-04-29T12:26:49.811Z",
+  "purpose": "Registro canonico de verticales PRISMA para escalar a varios giros de negocio.",
+  "requires": [
+    "PRISMA_VERTICALS_ARCHITECTURE_00A_CORE_CONTRACTS"
+  ],
+  "installs": [
+    {
+      "path": "docs/architecture/PRISMA_VERTICALS_00B_CAPABILITY_CATALOG.md",
+      "sha256": "f2998eead80dd37e4ed8d39646616294a8ad378180c14999f0ffce335fa2e1e1",
+      "bytes": 226593
+    },
+    {
+      "path": "docs/architecture/PRISMA_VERTICALS_00B_ROUTING_MATRIX.md",
+      "sha256": "339fea6cbf4c7af2dbd726c729da927acec8a2ee0e43c52679531da826e645c6",
+      "bytes": 956
+    },
+    {
+      "path": "docs/architecture/PRISMA_VERTICALS_00B_VERTICAL_PROFILE_STANDARD.md",
+      "sha256": "d02b7119366b18e9c3fa7a7b788193b75ecfb18e8a2ca9f27e91e032141cbdea",
+      "bytes": 791
+    },
+    {
+      "path": "docs/architecture/PRISMA_VERTICALS_ARCHITECTURE_00B_VERTICAL_REGISTRY.md",
+      "sha256": "676a7300fa31108499a85d2aa375ef5db6b34c9da0a18e8124badbca49e43ad9",
+      "bytes": 14786
+    },
+    {
+      "path": "docs/qa/PRISMA_VERTICALS_00B_QA_MATRIX.md",
+      "sha256": "e37a0ad5b012d71463c5ae57f89e3e8d25763e77f649b662a2671e1951442c04",
+      "bytes": 594
+    },
+    {
+      "path": "manifests/PRISMA_VERTICALS_ARCHITECTURE_00B.manifest.json",
+      "sha256": "SELF_REFERENTIAL_SHA_SKIPPED",
+      "bytes": 4966,
+      "selfReferentialHashPolicy": "skip_sha256_compare"
+    },
+    {
+      "path": "shared/contracts/verticals/vertical-profile.schema.json",
+      "sha256": "92e7ae3bd30900bbf1df00b43bc1684c41980e6ccc2fbe81731ad48899f682c1",
+      "bytes": 721
+    },
+    {
+      "path": "shared/contracts/verticals/vertical-registry.contract.json",
+      "sha256": "c2fe6e024c83c84706b5c03c00d5aaa8a9393840af3ebce2e5990ff638fcef0f",
+      "bytes": 416
+    },
+    {
+      "path": "shared/verticals/registry/profiles/apparel.vertical-profile.json",
+      "sha256": "b3a787f0fcf7612349bf2d20da90d0754bcbf40d62bc4c0c39e80bdd70fd31fd",
+      "bytes": 2188
+    },
+    {
+      "path": "shared/verticals/registry/profiles/beauty.vertical-profile.json",
+      "sha256": "3138881216e8afbbc771393f4bbe26edf6aa0c775f23d35da416a974306d762e",
+      "bytes": 2280
+    },
+    {
+      "path": "shared/verticals/registry/profiles/convenience.vertical-profile.json",
+      "sha256": "dda301468da431080a7b8687d1e13a33fe103a90f03db5b944dd7b6aaf980aef",
+      "bytes": 2223
+    },
+    {
+      "path": "shared/verticals/registry/profiles/field_route.vertical-profile.json",
+      "sha256": "c87020881b7b4151286f36c9d185eb9f8a27d32fd1c09e597f791612de5889b6",
+      "bytes": 2305
+    },
+    {
+      "path": "shared/verticals/registry/profiles/food_truck.vertical-profile.json",
+      "sha256": "377683db1386593f2bb984aac99c879c36c31087f6a5f0911be96edc48b14db9",
+      "bytes": 2081
+    },
+    {
+      "path": "shared/verticals/registry/profiles/grocery_scale.vertical-profile.json",
+      "sha256": "acf9b39575746d8da354cd3d891ee3e707c0a38503a90365ca9efff877d69610",
+      "bytes": 2108
+    },
+    {
+      "path": "shared/verticals/registry/profiles/hardware.vertical-profile.json",
+      "sha256": "7131ba67838d9cab1cac0158c26427ea3f722f54bd5987136573863d9525cf6b",
+      "bytes": 2255
+    },
+    {
+      "path": "shared/verticals/registry/profiles/pharmacy.vertical-profile.json",
+      "sha256": "7dfdb46df810bc13da9d2ace9288b1abc6360df16b58def7bc9d700cbc1055af",
+      "bytes": 2329
+    },
+    {
+      "path": "shared/verticals/registry/profiles/repair.vertical-profile.json",
+      "sha256": "82c207a39274801259321ed82bf77229c9d9a5a119c188621425bf94147e84f7",
+      "bytes": 2202
+    },
+    {
+      "path": "shared/verticals/registry/profiles/restaurant.vertical-profile.json",
+      "sha256": "5c787c7bc7dc8af2de7d4abdb9b474a3d63790a1de0a794c0e19c2f20c1116c4",
+      "bytes": 2235
+    },
+    {
+      "path": "shared/verticals/registry/vertical-compatibility.v0.json",
+      "sha256": "7f4a489fa35a9fac2df07e35038aa6ba5ef30ad1302c25f3d14d4d3b61713fe1",
+      "bytes": 646
+    },
+    {
+      "path": "shared/verticals/registry/vertical-registry.v0.json",
+      "sha256": "805448f8b771102271d940b9ccae5546751961db30e54f0d7e68c200dd2262e0",
+      "bytes": 3097
+    },
+    {
+      "path": "tools/verticals/validate_vertical_registry_00b.py",
+      "sha256": "2d7099870812709d3066de754d6a94ceed989d5c5c3a01525020a3c4e9c2a2d2",
+      "bytes": 1724
+    }
+  ],
+  "verify": [
+    "tools/verticals/validate_vertical_registry_00b.py",
+    "shared/verticals/registry/vertical-registry.v0.json"
+  ],
+  "notes": [
+    "No reemplaza README raiz.",
+    "No toca runtime Tablet/PC.",
+    "No modifica shared-kernel."
+  ],
+  "fixes": [
+    "Installer/manifest now skip SHA comparison for the self-referential manifest file.",
+    "Pharmacy blocked capability renamed from bulk_price_change to catalog.bulk_price_change to satisfy namespaced capability validation."
+  ]
+}

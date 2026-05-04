@@ -1,0 +1,13 @@
+# PRISMA_VERTICALS_00C_VERTICAL_ENTITY_MATRIX
+| Vertical | Tablet local | PC autoridad | Extensiones | Evento requerido |
+|---|---|---|---|---|
+| `convenience` | Product, Barcode, Sale, SaleLine, Payment, Shift, StockMovement, LowStockSignal | Product, Barcode, StockSnapshot, PriceRule, SimplePromotion, AuditEntry | ShelfLocation, QuickPriceOverride, SimplePromotion, LowStockSignal | `vertical.convenience.*` |
+| `restaurant` | DiningSession, Table, Sale, SaleLine, Payment, KitchenTicket, TipAllocation | MenuItem, RecipeCost, KitchenStation, TipPolicy, AuditEntry | Table, DiningSession, KitchenTicket, MenuModifier, TipAllocation | `vertical.restaurant.*` |
+| `pharmacy` | Product, Lot, Sale, SaleLine, Payment, PrescriptionReference, Return | Lot, ExpirationPolicy, ControlledProductFlag, SupplierBatch, AuditEntry | Lot, ExpirationPolicy, PrescriptionReference, ControlledProductFlag, SubstitutionRule | `vertical.pharmacy.*` |
+| `beauty` | Service, Appointment, Sale, SaleLine, Payment, StaffCommission | ServiceCatalog, StaffCommissionPolicy, ClientProfile, AppointmentBook, AuditEntry | Service, Appointment, StaffCommission, ClientProfile, ServicePackage | `vertical.beauty.*` |
+| `hardware` | Product, MeasureUnit, Quote, Sale, SaleLine, Payment, StockMovement | BulkUnitPricing, SupplierCatalog, MeasurePolicy, QuoteApproval, AuditEntry | MeasureUnit, CutLengthLine, Quote, BulkUnitPricing, SerialToolRentalFlag | `vertical.hardware.*` |
+| `apparel` | VariantMatrix, Sale, SaleLine, Payment, Return, ExchangePolicy | VariantMatrix, SeasonTag, InventoryByVariant, ExchangePolicy, AuditEntry | VariantMatrix, Size, Color, ExchangePolicy, SeasonTag | `vertical.apparel.*` |
+| `repair` | WorkOrder, LaborLine, PartReservation, Sale, Payment, DiagnosticNote | WorkOrder, TechnicianQueue, PartsInventory, WarrantyPolicy, AuditEntry | WorkOrder, RepairAsset, LaborLine, PartReservation, DiagnosticNote | `vertical.repair.*` |
+| `field_route` | Route, RouteStop, Sale, Payment, DeliveryAttempt, OutboxEvent | RoutePlanner, CustomerCredit, MobileSettlement, RouteReconciliation, AuditEntry | Route, RouteStop, DeliveryAttempt, CustomerCredit, MobileSettlement | `vertical.field_route.*` |
+| `grocery_scale` | ScaleReading, WeightedSaleLine, Sale, Payment, Product | ScaleDevice, TarePolicy, UnitPriceByWeight, AuditEntry | ScaleReading, WeightedSaleLine, TarePolicy, UnitPriceByWeight, ScaleDevice | `vertical.grocery_scale.*` |
+| `food_truck` | MenuCombo, Sale, SaleLine, Payment, PrepStatus, MobileLocation | MenuCatalog, MobileLocation, SalesByStop, PrepPolicy, AuditEntry | MenuCombo, ServiceWindow, PrepStatus, MobileLocation, TipAllocation | `vertical.food_truck.*` |

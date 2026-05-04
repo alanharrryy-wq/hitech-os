@@ -1,0 +1,92 @@
+{
+  "packageId": "PRISMA_APP_MOBILE_03_PRODUCT_ROOT_REBASE",
+  "version": "0.3.0",
+  "createdAt": "2026-04-30T19:08:15",
+  "goal": "Move PRISMA App / Mobile out of PC and into products/mobile/app as an independent product root.",
+  "visualContract": "PRISMA_TRI_SURFACE_VISUAL_CHANGE_CONTRACT_00A + 00B product-root autonomy patch",
+  "surfaceCoverage": [
+    {
+      "surfaceId": "prisma.pc.backoffice",
+      "surface": "PC",
+      "state": "TOUCHED",
+      "reviewedFiles": [
+        "products/pc/app/src/composition/module-registry.ts",
+        "products/pc/app/components/layout/app-shell.tsx"
+      ],
+      "touchedFiles": [
+        "products/pc/app/src/composition/module-registry.ts",
+        "products/pc/app/components/layout/app-shell.tsx"
+      ],
+      "evidence": "PC shell and registry updated to stop exposing Mobile as a PC child route.",
+      "exclusion": null
+    },
+    {
+      "surfaceId": "prisma.tablet.pos",
+      "surface": "Tablet",
+      "state": "EXCLUDED",
+      "reviewedFiles": [
+        "products/tablet/app/app/api/health/route.ts"
+      ],
+      "touchedFiles": [],
+      "evidence": "No Tablet files, shared-ui, tokens, globals, or tablet visual routes are changed by this package.",
+      "exclusion": {
+        "reason": "This package only migrates Mobile from PC tree to products/mobile/app and updates PC to remove the legacy mobile child route.",
+        "noSharedImpact": true,
+        "reevaluateIn": "next shared visual pass or first package touching products/shared-ui/prisma/tokens",
+        "owner": "prisma-mobile-product-root-governance"
+      }
+    },
+    {
+      "surfaceId": "prisma.mobile.app",
+      "surface": "Mobile",
+      "state": "TOUCHED",
+      "reviewedFiles": [
+        "products/mobile/app/app/prisma-app/page.tsx",
+        "products/mobile/app/app/prisma-app/prisma-app.module.css",
+        "products/mobile/app/src/lib/prisma-app/prisma-app-demo-data.ts"
+      ],
+      "touchedFiles": [
+        "products/mobile/app/package.json",
+        "products/mobile/app/app/layout.tsx",
+        "products/mobile/app/app/globals.css",
+        "products/mobile/app/app/page.tsx",
+        "products/mobile/app/app/prisma-app/page.tsx",
+        "products/mobile/app/app/prisma-app/prisma-app.module.css",
+        "products/mobile/app/src/lib/prisma-app/prisma-app-demo-data.ts",
+        "products/mobile/app/src/lib/prisma-app/prisma-app-section-contracts.ts",
+        "products/mobile/app/docs/README_PRISMA_APP_MOBILE_03_PRODUCT_ROOT_REBASE.md",
+        "products/mobile/app/tools/verify_prisma_app_mobile_03_product_root_rebase.mjs"
+      ],
+      "evidence": "Mobile now has its own product root and verifier under products/mobile/app.",
+      "exclusion": null
+    }
+  ],
+  "changedFiles": [
+    "products/pc/app/src/composition/module-registry.ts",
+    "products/pc/app/components/layout/app-shell.tsx",
+    "products/mobile/app/app/prisma-app/page.tsx",
+    "products/mobile/app/app/prisma-app/prisma-app.module.css",
+    "products/mobile/app/src/lib/prisma-app/prisma-app-demo-data.ts"
+  ],
+  "sharedVisualFilesTouched": [],
+  "cleanupPaths": [
+    "products/pc/app/app/prisma-app/page.tsx",
+    "products/pc/app/app/prisma-app/prisma-app.module.css",
+    "products/pc/app/src/lib/prisma-app/prisma-app-demo-data.ts",
+    "products/pc/app/src/lib/prisma-app/prisma-app-section-contracts.ts",
+    "products/pc/app/docs/prisma-app/PRISMA_APP_02_COMMERCIAL_PLAYBOOK.md",
+    "products/pc/app/docs/prisma-app/PRISMA_APP_02_INFORMATION_ARCHITECTURE.md",
+    "products/pc/app/docs/prisma-app/PRISMA_APP_02_ROADMAP.md",
+    "products/pc/app/docs/prisma-app/PRISMA_APP_02_SCREEN_CONTRACTS.md",
+    "products/pc/app/docs/prisma-app/fixtures/prisma-app-02-synthetic-business-fixtures.json",
+    "products/pc/app/docs/README_PRISMA_APP_MOBILE_02_SECTIONS.md",
+    "products/pc/app/docs/PRISMA_APP_MOBILE_02_SECTIONS.md",
+    "products/pc/app/tools/verify_prisma_app_mobile_01.mjs",
+    "products/pc/app/tools/verify_prisma_app_mobile_02_sections.mjs"
+  ],
+  "invariants": {
+    "tabletAutonomy": "Tablet sells alone and does not depend on PC or Mobile for basic local sale.",
+    "mobileProductRoot": "Mobile canonical root is products/mobile/app.",
+    "noHierarchy": "Tri-surface coverage is validation coverage, not product hierarchy."
+  }
+}

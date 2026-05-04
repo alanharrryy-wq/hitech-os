@@ -1,0 +1,108 @@
+{
+  "package": "PRISMA_VERTICALS_ARCHITECTURE_00E_VERTICAL_UX_OPERATIONS",
+  "version": "0.0.1",
+  "createdBy": "ChatGPT",
+  "description": "PRISMA vertical UX operations architecture: navigation, flows, microcopy, Tablet/PC boundaries, states and validation.",
+  "manifestPath": "manifests/PRISMA_VERTICALS_ARCHITECTURE_00E.manifest.json",
+  "files": [
+    {
+      "path": "docs/architecture/PRISMA_VERTICALS_00E_NAVIGATION_MICROCOPY_STANDARD.md",
+      "sha256": "e9488ff13fb1c7bf1434df5538730b2ea1139cde8cd3573cef32289c67c13d0d",
+      "bytes": 7418
+    },
+    {
+      "path": "docs/architecture/PRISMA_VERTICALS_00E_TABLET_PC_OPERATION_BOUNDARIES.md",
+      "sha256": "b89b38211dddc3da26c624d5a5b51f82580c2c3e6cb5094346d02942eac6d747",
+      "bytes": 9936
+    },
+    {
+      "path": "docs/architecture/PRISMA_VERTICALS_ARCHITECTURE_00E_VERTICAL_UX_OPERATIONS.md",
+      "sha256": "073105b9475f1a812fb7cd257c1c20e7e5875d8c6a60e1241bf3bab66daa8bf6",
+      "bytes": 16667
+    },
+    {
+      "path": "docs/qa/PRISMA_VERTICALS_00E_QA_MATRIX.md",
+      "sha256": "1fafd4259b78cb3728df6efa596e1f08ce9dcbbe43c48cba4c106b2c3079a385",
+      "bytes": 10048
+    },
+    {
+      "path": "docs/ux/PRISMA_VERTICALS_00E_VERTICAL_FLOW_PLAYBOOK.md",
+      "sha256": "bd953690130b8a753ed57eef63c6c86ab470464e7e099623c7c44b6a4ed86d9f",
+      "bytes": 10857
+    },
+    {
+      "path": "shared/contracts/verticals/ux-operation.schema.json",
+      "sha256": "829d251c97038def68308753a68a1b8417ce704640d20f4a9d0d9de11495be4c",
+      "bytes": 1053
+    },
+    {
+      "path": "shared/verticals/ux/profiles/apparel.ux-operation.json",
+      "sha256": "c25f40b5c543087e79e725489ef2d220a25391c3deb9b3d6f225977e241a7c83",
+      "bytes": 11011
+    },
+    {
+      "path": "shared/verticals/ux/profiles/beauty.ux-operation.json",
+      "sha256": "e3280ecf5c8b7a4fe6a9038670f0f7aa682686432e6d652ffbb0389a55932ad5",
+      "bytes": 11037
+    },
+    {
+      "path": "shared/verticals/ux/profiles/convenience.ux-operation.json",
+      "sha256": "7fc754b24609a9868d0d38e7469370e9f66f862761c9c44d4b9f47413f154d69",
+      "bytes": 11101
+    },
+    {
+      "path": "shared/verticals/ux/profiles/field_route.ux-operation.json",
+      "sha256": "838f7cd7b8b767a2916553a806036d621d7769e4181d8004f86951d285ad3add",
+      "bytes": 12035
+    },
+    {
+      "path": "shared/verticals/ux/profiles/food_truck.ux-operation.json",
+      "sha256": "fc2f370db85845795b04f401416fe2b24d65be8e78a1b10af4e926857d877982",
+      "bytes": 11023
+    },
+    {
+      "path": "shared/verticals/ux/profiles/grocery_scale.ux-operation.json",
+      "sha256": "800a13cf3580a98328169354c2d2d5a3da79506708b31d402d39165f0ba08e75",
+      "bytes": 11064
+    },
+    {
+      "path": "shared/verticals/ux/profiles/hardware.ux-operation.json",
+      "sha256": "3c966ed993d0829b7ae31d527a47762193c5672d04c42785bae3880298bc3e84",
+      "bytes": 11193
+    },
+    {
+      "path": "shared/verticals/ux/profiles/pharmacy.ux-operation.json",
+      "sha256": "2d9467362fa77be45909e5fd6ded102d5c17295791ae5a234e674a2f9b5d402e",
+      "bytes": 11176
+    },
+    {
+      "path": "shared/verticals/ux/profiles/repair.ux-operation.json",
+      "sha256": "1fb980636f5f656c6063cb5b1be3a3b3700e92d94f8aee1a420b7a2ce858567b",
+      "bytes": 11088
+    },
+    {
+      "path": "shared/verticals/ux/profiles/restaurant.ux-operation.json",
+      "sha256": "ee10c6641948e1915079a2736b590821086ec9a209a2e235e8f78c670bf8ef12",
+      "bytes": 11054
+    },
+    {
+      "path": "shared/verticals/ux/vertical-ux-operation.registry.v0.json",
+      "sha256": "e822fea3bacb6f302dac7d99d13169a6eefe27f8b4ce191898d328a9c1414b29",
+      "bytes": 2521
+    },
+    {
+      "path": "shared/verticals/ux/vertical-ux-operation.trace-matrix.v0.json",
+      "sha256": "40046665cb18292643d95833100e2a1e1a313b24fb252d7d48b3cc69e3cc5a1a",
+      "bytes": 418413
+    },
+    {
+      "path": "tools/verticals/validate_vertical_ux_operations_00e.py",
+      "sha256": "250e749ae4fde417475e74c4f618309f4f33360958e231225ed66a61ca12d243",
+      "bytes": 3600
+    }
+  ],
+  "verify": {
+    "validator": "tools/verticals/validate_vertical_ux_operations_00e.py",
+    "expectedVerticals": 10
+  }
+}

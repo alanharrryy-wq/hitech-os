@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/contracts/vertical-validation-scenario.schema.json",
+  "title": "PRISMA vertical validation scenario",
+  "type": "object",
+  "required": [
+    "id",
+    "verticalId",
+    "primaryScreen",
+    "flowKey",
+    "steps",
+    "expectedResult",
+    "expectedEvents",
+    "requiredPermissions"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "verticalId": {
+      "type": "string"
+    },
+    "primaryScreen": {
+      "type": "string"
+    },
+    "flowKey": {
+      "type": "string"
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "expectedEvents": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requiredPermissions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
