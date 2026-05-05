@@ -36,6 +36,7 @@ from __future__ import annotations
 
 import ast
 import html
+import json
 import math
 import os
 import traceback
@@ -53,6 +54,7 @@ NodeKind = Literal["package", "module", "external", "note"]
 EdgeKind = Literal["import", "contains", "warning"]
 GraphView = Literal["package", "module", "focus"]
 VisibilityPreset = Literal["executive", "engineering", "raw"]
+OutputMode = Literal["svg", "tree", "tree_html"]
 
 
 # ----------------------------
@@ -60,9 +62,22 @@ VisibilityPreset = Literal["executive", "engineering", "raw"]
 # ----------------------------
 
 APP_TITLE = "Dependency Graph SVG"
+CODE_ATLAS_FRAME_DEPTH_FIX_V1 = "outer-frame-transparent-dynamic-depth"
 
 DEFAULT_THEME_ID = "silver_frost_cyan"
 DEFAULT_VIEW: GraphView = "package"
+ENABLE_VISUAL_CONTROL_SIDECAR = (
+    os.environ.get("CODE_ATLAS_VISUAL_GUIDE", "1").strip().lower()
+    not in {"0", "false", "off", "no"}
+)
+ENABLE_EDGE_FORENSICS = (
+    os.environ.get("CODE_ATLAS_EDGE_FORENSICS", "1").strip().lower()
+    not in {"0", "false", "off", "no"}
+)
+EDGE_FORENSIC_EVIDENCE_LIMIT = max(
+    3,
+    int(os.environ.get("CODE_ATLAS_EDGE_EVIDENCE_LIMIT", "12") or "12"),
+)
 
 SUPPORTED_SOURCE_EXTENSIONS: tuple[str, ...] = (".py",)
 
@@ -97,7 +112,18 @@ MAX_PARSE_ERRORS = 120
 # Salida dinámica: se crea dentro de la ruta seleccionada
 OUTPUT_SUBDIR_NAME = "_dependency_graphs"
 OUTPUT_FILE_PREFIX = "dependency_graph"
+TREE_OUTPUT_DIR = Path(r"F:\trees")
+TREE_OUTPUT_FILE_PREFIX = "dependency_tree"
+TREE_HTML_OUTPUT_FILE_PREFIX = "dependency_tree_premium"
+# None means: scan until the filesystem naturally ends. No fake depth=10 ceiling.
+TREE_SCAN_MAX_DEPTH: int | None = None
 DATE_STAMP_FORMAT = "%Y%m%d_%H%M%S"
+
+TREE_EXCLUDED_DIR_NAMES: set[str] = EXCLUDED_DIR_NAMES | {
+    ".next",
+    ".turbo",
+    "coverage",
+}
 
 # Layout y presentación
 TOP_MARGIN = 140
@@ -194,6 +220,32 @@ class SelectionResult:
     view: GraphView = DEFAULT_VIEW
     focus_target: str = ""
     visibility_preset: VisibilityPreset = DEFAULT_VISIBILITY_PRESET
+    output_mode: OutputMode = "svg"
+
+
+@dataclass(slots=True)
+class FileTreeEntry:
+    path: Path
+    relative_path: str
+    name: str
+    depth: int
+    is_dir: bool
+    size_bytes: int
+    cumulative_size_bytes: int
+    modified_ts: float
+    child_count: int
+    file_count: int
+    folder_count: int
+    suffix: str
+
+
+@dataclass(slots=True)
+class FileTreeSummary:
+    total_files: int
+    total_folders: int
+    total_size_bytes: int
+    max_depth: int
+    scanned_at: str
 
 
 @dataclass(slots=True)
@@ -447,8 +499,50 @@ def make_output_path(
     return output_dir / filename
 
 
+def make_tree_output_path(
+    selected_path: str,
+    view: GraphView,
+    focus_target: str = "",
+) -> Path:
+    ensure_output_dir(TREE_OUTPUT_DIR)
+
+    stamp = datetime.now().strftime(DATE_STAMP_FORMAT)
+    anchor = derive_project_root(selected_path)
+    base_name = safe_slug(anchor.name or "project")
+    focus_suffix = f"_{safe_slug(focus_target)}" if focus_target else ""
+
+    filename = f"{TREE_OUTPUT_FILE_PREFIX}_{view}_{base_name}{focus_suffix}_{stamp}.txt"
+    return TREE_OUTPUT_DIR / filename
+
+
+def make_tree_html_output_path(
+    selected_path: str,
+    view: GraphView,
+    focus_target: str = "",
+) -> Path:
+    ensure_output_dir(TREE_OUTPUT_DIR)
+
+    stamp = datetime.now().strftime(DATE_STAMP_FORMAT)
+    anchor = derive_project_root(selected_path)
+    base_name = safe_slug(anchor.name or "project")
+    focus_suffix = f"_{safe_slug(focus_target)}" if focus_target else ""
+
+    filename = f"{TREE_HTML_OUTPUT_FILE_PREFIX}_{base_name}_{stamp}.html"
+    if view == "focus" and focus_suffix:
+        filename = f"{TREE_HTML_OUTPUT_FILE_PREFIX}_{base_name}{focus_suffix}_{stamp}.html"
+    return TREE_OUTPUT_DIR / filename
+
+
 def is_excluded_dir_name(name: str) -> bool:
     return name.strip() in EXCLUDED_DIR_NAMES
+
+
+def should_exclude_tree_dir(path: Path) -> bool:
+    return path.name.strip() in TREE_EXCLUDED_DIR_NAMES
+
+
+def should_exclude_tree_file(path: Path) -> bool:
+    return False
 
 
 def is_supported_source_file(path: Path) -> bool:
@@ -518,6 +612,1379 @@ def safe_relative_path(path: Path, root: Path) -> str:
         return str(path.resolve().relative_to(root.resolve()))
     except Exception:
         return str(path)
+
+
+def _module_path_from_info(item: ModuleSourceInfo, project_root: Path) -> Path:
+    file_path = Path(item.file_path)
+    if file_path.is_absolute():
+        return file_path
+    return project_root / file_path
+
+
+def collect_relevant_module_paths(
+    *,
+    graph: DependencyGraph,
+    module_catalog: dict[str, ModuleSourceInfo],
+    project_root: Path,
+) -> list[Path]:
+    module_names: set[str] = set()
+    root_groups: set[str] = set()
+    direct_paths: list[Path] = []
+
+    for node in graph.nodes.values():
+        if node.kind == "module":
+            module_name = clean_text(str(node.metadata.get("module_name", "")))
+            if module_name:
+                module_names.add(module_name)
+            elif node.path:
+                direct_paths.append(Path(node.path))
+            continue
+
+        if node.kind == "package":
+            root_group = clean_text(str(node.metadata.get("root_group", node.group)))
+            if root_group:
+                root_groups.add(root_group)
+
+    selected_paths: list[Path] = []
+    for module_name, item in module_catalog.items():
+        if module_names and module_name in module_names:
+            selected_paths.append(_module_path_from_info(item, project_root))
+            continue
+        if root_groups and item.root_group in root_groups:
+            selected_paths.append(_module_path_from_info(item, project_root))
+
+    if direct_paths:
+        selected_paths.extend(direct_paths)
+
+    if not selected_paths:
+        selected_paths = [
+            _module_path_from_info(item, project_root)
+            for item in module_catalog.values()
+        ]
+
+    resolved: dict[str, Path] = {}
+    for path in selected_paths:
+        try:
+            resolved[str(path.expanduser().resolve())] = path.expanduser().resolve()
+        except Exception:
+            resolved[str(path)] = path
+
+    return sorted(
+        resolved.values(),
+        key=lambda path: safe_relative_path(path, project_root).lower(),
+    )
+
+
+def _format_tree_path_lines(relative_paths: Iterable[str]) -> list[str]:
+    lines: list[str] = []
+    seen_dirs: set[tuple[str, ...]] = set()
+
+    for relative_path in relative_paths:
+        parts = [part for part in relative_path.replace("\\", "/").split("/") if part]
+        if not parts:
+            continue
+
+        for depth, part in enumerate(parts):
+            prefix = tuple(parts[: depth + 1])
+            is_file = depth == len(parts) - 1
+            if not is_file and prefix in seen_dirs:
+                continue
+            if not is_file:
+                seen_dirs.add(prefix)
+
+            indent = "  " * depth
+            marker = "- " if is_file else "+ "
+            lines.append(f"{indent}{marker}{part}")
+
+    return lines
+
+
+def format_size_bytes(size_bytes: int) -> str:
+    value = float(max(0, int(size_bytes)))
+    units = ("B", "KB", "MB", "GB", "TB")
+    unit_index = 0
+    while value >= 1024 and unit_index < len(units) - 1:
+        value /= 1024
+        unit_index += 1
+
+    if unit_index == 0:
+        return f"{int(value)} B"
+    if value >= 100:
+        return f"{value:.0f} {units[unit_index]}"
+    if value >= 10:
+        return f"{value:.1f} {units[unit_index]}"
+    return f"{value:.2f} {units[unit_index]}"
+
+
+def _safe_file_stat(path: Path) -> os.stat_result | None:
+    try:
+        return path.lstat() if path.is_symlink() else path.stat()
+    except OSError:
+        return None
+
+
+def _safe_modified_ts(path: Path) -> float:
+    stat = _safe_file_stat(path)
+    return float(stat.st_mtime) if stat is not None else 0.0
+
+
+def _format_modified_ts(modified_ts: float) -> str:
+    if modified_ts <= 0:
+        return "-"
+    try:
+        return datetime.fromtimestamp(modified_ts).strftime("%Y-%m-%d %H:%M")
+    except Exception:
+        return "-"
+
+
+def _tree_entry_type(entry: FileTreeEntry) -> str:
+    if entry.is_dir:
+        return "Folder"
+    suffix = clean_text(entry.suffix).lstrip(".")
+    return suffix.upper() if suffix else "File"
+
+
+def _tree_icon_class(entry: FileTreeEntry) -> str:
+    """Return CSS classes for premium Tree HTML icons.
+
+    Keep this dependency-free: icons are drawn with CSS/text badges in the
+    generated standalone HTML, so the report still works offline.
+    """
+    if entry.is_dir:
+        return "folder icon-folder"
+
+    suffix = clean_text(entry.suffix).lower().lstrip(".")
+    name = clean_text(entry.name).lower()
+
+    if name in {"package.json", "pnpm-lock.yaml", "package-lock.json", "yarn.lock"}:
+        return "file icon-package"
+    if name in {"readme.md", "readme"}:
+        return "file icon-readme"
+    if name in {"dockerfile"} or suffix in {"dockerfile"}:
+        return "file icon-docker"
+    if name.startswith(".env"):
+        return "file icon-env"
+
+    groups = {
+        "md": "icon-md",
+        "markdown": "icon-md",
+        "json": "icon-json",
+        "jsonc": "icon-json",
+        "py": "icon-py",
+        "pyw": "icon-py",
+        "ts": "icon-ts",
+        "tsx": "icon-tsx",
+        "js": "icon-js",
+        "jsx": "icon-jsx",
+        "mjs": "icon-js",
+        "cjs": "icon-js",
+        "css": "icon-css",
+        "scss": "icon-css",
+        "sass": "icon-css",
+        "html": "icon-html",
+        "htm": "icon-html",
+        "svg": "icon-svg",
+        "png": "icon-image",
+        "jpg": "icon-image",
+        "jpeg": "icon-image",
+        "webp": "icon-image",
+        "gif": "icon-image",
+        "ico": "icon-image",
+        "prisma": "icon-prisma",
+        "sql": "icon-sql",
+        "db": "icon-db",
+        "sqlite": "icon-db",
+        "sqlite3": "icon-db",
+        "toml": "icon-config",
+        "yaml": "icon-config",
+        "yml": "icon-config",
+        "ini": "icon-config",
+        "cfg": "icon-config",
+        "lock": "icon-lock",
+        "txt": "icon-text",
+        "log": "icon-log",
+        "zip": "icon-archive",
+        "7z": "icon-archive",
+        "rar": "icon-archive",
+    }
+
+    return f"file {groups.get(suffix, 'icon-generic')}"
+
+
+def collect_filesystem_tree_entries(
+    project_root: Path,
+) -> tuple[list[FileTreeEntry], FileTreeSummary]:
+    root = project_root.expanduser().resolve()
+    scanned_at = datetime.now().isoformat(timespec="seconds")
+    entries: list[FileTreeEntry] = []
+    visited_dirs: set[str] = set()
+
+    def scan(path: Path, depth: int) -> FileTreeEntry:
+        resolved_path = path.expanduser().resolve()
+        is_symlink = path.is_symlink()
+        is_dir = path.is_dir() and not is_symlink
+        stat = _safe_file_stat(path)
+        modified_ts = float(stat.st_mtime) if stat is not None else 0.0
+
+        if not is_dir:
+            size_bytes = int(stat.st_size) if stat is not None else 0
+            entry = FileTreeEntry(
+                path=resolved_path,
+                relative_path=safe_relative_path(resolved_path, root),
+                name=resolved_path.name or str(resolved_path),
+                depth=depth,
+                is_dir=False,
+                size_bytes=size_bytes,
+                cumulative_size_bytes=size_bytes,
+                modified_ts=modified_ts,
+                child_count=0,
+                file_count=1,
+                folder_count=0,
+                suffix=resolved_path.suffix.lower(),
+            )
+            entries.append(entry)
+            return entry
+
+        entry = FileTreeEntry(
+            path=resolved_path,
+            relative_path="." if resolved_path == root else safe_relative_path(resolved_path, root),
+            name=resolved_path.name or str(resolved_path),
+            depth=depth,
+            is_dir=True,
+            size_bytes=0,
+            cumulative_size_bytes=0,
+            modified_ts=modified_ts,
+            child_count=0,
+            file_count=0,
+            folder_count=1,
+            suffix="",
+        )
+        entries.append(entry)
+
+        visit_key = str(resolved_path).lower()
+        if visit_key in visited_dirs:
+            return entry
+        visited_dirs.add(visit_key)
+
+        if TREE_SCAN_MAX_DEPTH is not None and depth >= TREE_SCAN_MAX_DEPTH:
+            return entry
+
+        try:
+            children = sorted(
+                path.iterdir(),
+                key=lambda child: (not child.is_dir(), child.name.lower()),
+            )
+        except OSError:
+            children = []
+
+        for child in children:
+            if child.is_dir() and not child.is_symlink():
+                if should_exclude_tree_dir(child):
+                    continue
+            elif should_exclude_tree_file(child):
+                continue
+
+            child_entry = scan(child, depth + 1)
+            entry.child_count += 1
+            entry.file_count += child_entry.file_count
+            entry.folder_count += child_entry.folder_count
+            entry.cumulative_size_bytes += child_entry.cumulative_size_bytes
+
+        return entry
+
+    root_entry = scan(root, 0)
+    summary = FileTreeSummary(
+        total_files=root_entry.file_count,
+        total_folders=root_entry.folder_count,
+        total_size_bytes=root_entry.cumulative_size_bytes,
+        max_depth=max((entry.depth for entry in entries), default=0),
+        scanned_at=scanned_at,
+    )
+    return entries, summary
+
+
+def build_tree_node_model(entries: list[FileTreeEntry]) -> list[dict[str, Any]]:
+    node_ids: dict[str, str] = {}
+    nodes: list[dict[str, Any]] = []
+
+    for index, entry in enumerate(entries):
+        entry_id = f"node-{index}"
+        node_ids[entry.relative_path] = entry_id
+        parent_relative = "."
+        if entry.relative_path != ".":
+            parent = Path(entry.relative_path).parent
+            parent_relative = "." if str(parent) == "." else str(parent)
+
+        nodes.append(
+            {
+                "id": entry_id,
+                "parent_id": "" if entry.relative_path == "." else node_ids.get(parent_relative, ""),
+                "entry": entry,
+            }
+        )
+
+    return nodes
+
+
+def build_filesystem_tree_text(
+    *,
+    selected_path: str,
+    project_root: Path,
+    entries: list[FileTreeEntry],
+    summary: FileTreeSummary,
+) -> str:
+    lines = [
+        "Code Atlas Filesystem Tree",
+        f"Generated: {summary.scanned_at}",
+        f"Selected path: {selected_path}",
+        f"Project root: {project_root}",
+        f"Total folders: {summary.total_folders}",
+        f"Total files: {summary.total_files}",
+        f"Total size: {format_size_bytes(summary.total_size_bytes)}",
+        f"Max depth: {summary.max_depth}",
+        "",
+        "Tree:",
+    ]
+
+    for entry in entries:
+        indent = "  " * entry.depth
+        marker = "+ " if entry.is_dir else "- "
+        size = format_size_bytes(entry.cumulative_size_bytes if entry.is_dir else entry.size_bytes)
+        lines.append(f"{indent}{marker}{entry.name}  [{size}]")
+
+    return "\n".join(lines) + "\n"
+
+
+def _html_escape(value: Any) -> str:
+    return html.escape(str(value), quote=True)
+
+
+def _json_for_script(value: Any) -> str:
+    return json.dumps(value, ensure_ascii=False).replace("</", "<\\/")
+
+
+def build_premium_tree_html(
+    *,
+    selected_path: str,
+    project_root: Path,
+    entries: list[FileTreeEntry],
+    summary: FileTreeSummary,
+) -> str:
+    nodes = build_tree_node_model(entries)
+    tree_text = build_filesystem_tree_text(
+        selected_path=selected_path,
+        project_root=project_root,
+        entries=entries,
+        summary=summary,
+    )
+    rows: list[str] = []
+
+    for node in nodes:
+        entry: FileTreeEntry = node["entry"]
+        entry_id = str(node["id"])
+        parent_id = str(node["parent_id"])
+        kind = "folder" if entry.is_dir else "file"
+        size_bytes = entry.cumulative_size_bytes if entry.is_dir else entry.size_bytes
+        size_text = format_size_bytes(size_bytes)
+        modified_text = _format_modified_ts(entry.modified_ts)
+        type_text = _tree_entry_type(entry)
+        icon_class = _tree_icon_class(entry)
+        modified_sort_value = f"{entry.modified_ts:.6f}"
+        toggle = (
+            f'<button class="twisty" type="button" aria-label="Toggle {_html_escape(entry.name)}" '
+            f'data-toggle="{_html_escape(entry_id)}"></button>'
+            if entry.is_dir and entry.child_count > 0
+            else '<span class="twisty ghost"></span>'
+        )
+        selected_class = " is-selected" if entry.depth == 0 else ""
+        rows.append(
+            "\n".join(
+                [
+                    (
+                        f'<tr class="tree-row {kind}{selected_class}" '
+                        f'data-id="{_html_escape(entry_id)}" '
+                        f'data-parent="{_html_escape(parent_id)}" '
+                        f'data-depth="{entry.depth}" '
+                        f'data-kind="{kind}" '
+                        f'data-type="{_html_escape(type_text)}" '
+                        f'data-size-bytes="{size_bytes}" '
+                        f'data-modified-ts="{_html_escape(modified_sort_value)}" '
+                        f'data-path="{_html_escape(entry.relative_path)}" '
+                        f'data-name="{_html_escape(entry.name)}" '
+                        f'style="--depth:{entry.depth};">'
+                    ),
+                    (
+                        '<td class="name-cell">'
+                        f'<span class="indent"></span>{toggle}'
+                        f'<span class="tree-icon {icon_class}" aria-hidden="true"></span>'
+                        f'<span class="entry-name">{_html_escape(entry.name)}</span>'
+                        f'<span class="entry-path">{_html_escape(entry.relative_path)}</span>'
+                        '</td>'
+                    ),
+                    (
+                        f'<td class="size-cell" data-bytes="{size_bytes}">'
+                        f'{_html_escape(size_text)}</td>'
+                    ),
+                    f'<td class="type-cell">{_html_escape(type_text)}</td>',
+                    f'<td class="modified-cell">{_html_escape(modified_text)}</td>',
+                    '</tr>',
+                ]
+            )
+        )
+
+    html_rows = "\n".join(rows)
+    export_name = f"{TREE_HTML_OUTPUT_FILE_PREFIX}_{safe_slug(project_root.name or 'project')}_{datetime.now().strftime(DATE_STAMP_FORMAT)}.txt"
+
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Code Atlas Tree Premium</title>
+  <style>
+    :root {{
+      color-scheme: dark;
+      --bg: #090a0c;
+      --panel: rgba(22, 24, 27, 0.88);
+      --panel-strong: rgba(33, 35, 39, 0.92);
+      --line: rgba(220, 226, 235, 0.16);
+      --line-strong: rgba(232, 237, 245, 0.26);
+      --silver: #d8dde5;
+      --silver-soft: #aeb6c1;
+      --muted: #818a96;
+      --blue: #7fb3d5;
+      --blue-soft: rgba(96, 150, 190, 0.18);
+      --champagne: #d6bd86;
+      --shadow: rgba(0, 0, 0, 0.48);
+      --row-h: 2.35rem;
+      --radius: 0.5rem;
+      --mono: "Cascadia Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --sans: "Segoe UI", "Aptos", system-ui, sans-serif;
+    }}
+
+    * {{ box-sizing: border-box; }}
+
+    html {{
+      min-height: 100%;
+      background:
+        radial-gradient(circle at 20% -10%, rgba(116, 142, 164, 0.18), transparent 34rem),
+        linear-gradient(135deg, #060708 0%, #111316 42%, #08090b 100%);
+    }}
+
+    body {{
+      min-height: 100vh;
+      margin: 0;
+      color: var(--silver);
+      font-family: var(--sans);
+      letter-spacing: 0;
+      background:
+        repeating-linear-gradient(102deg, rgba(255,255,255,0.022) 0 1px, transparent 1px 11px),
+        linear-gradient(180deg, rgba(255,255,255,0.035), transparent 18rem);
+    }}
+
+    .report-shell {{
+      width: min(100%, 118rem);
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: clamp(1rem, 2vw, 2rem);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 0.85rem;
+    }}
+
+    .report-header,
+    .tree-panel,
+    .summary-strip {{
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.015)),
+        var(--panel);
+      box-shadow:
+        0 1.25rem 3.5rem var(--shadow),
+        inset 0 1px 0 rgba(255,255,255,0.16),
+        inset 0 -1px 0 rgba(0,0,0,0.5);
+    }}
+
+    .report-header::before,
+    .tree-panel::before {{
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(112deg, transparent 0%, rgba(255,255,255,0.08) 18%, transparent 34%),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 5px);
+      opacity: 0.38;
+    }}
+
+    .report-header {{
+      padding: 1rem;
+      display: grid;
+      grid-template-columns: minmax(16rem, 1fr) minmax(22rem, 38rem);
+      gap: 1rem;
+      align-items: end;
+    }}
+
+    .title-block,
+    .toolbar,
+    .tree-scroll,
+    .summary-strip > * {{
+      position: relative;
+      z-index: 1;
+    }}
+
+    .eyebrow {{
+      margin: 0 0 0.35rem;
+      color: var(--champagne);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }}
+
+    h1 {{
+      margin: 0;
+      color: #f2f4f7;
+      font-size: clamp(1.55rem, 2.5vw, 2.65rem);
+      font-weight: 650;
+      line-height: 1.05;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.08), 0 0 2rem rgba(152,175,193,0.18);
+    }}
+
+    .subtitle {{
+      margin: 0.45rem 0 0;
+      color: var(--silver-soft);
+      font-size: 0.95rem;
+    }}
+
+    .meta-line {{
+      margin: 0.65rem 0 0;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      overflow-wrap: anywhere;
+    }}
+
+    .toolbar {{
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      gap: 0.55rem;
+      align-items: center;
+    }}
+
+    .search {{
+      width: 100%;
+      min-width: 0;
+      height: 2.45rem;
+      padding: 0 0.85rem;
+      color: var(--silver);
+      border: 1px solid rgba(232, 237, 245, 0.18);
+      border-radius: 0.42rem;
+      outline: none;
+      background: rgba(4, 5, 7, 0.58);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+      font: 0.9rem var(--sans);
+    }}
+
+    .search:focus {{
+      border-color: rgba(127, 179, 213, 0.56);
+      box-shadow: 0 0 0 3px rgba(127, 179, 213, 0.12), inset 0 1px 0 rgba(255,255,255,0.1);
+    }}
+
+    .tool-button {{
+      height: 2.45rem;
+      border: 1px solid rgba(232, 237, 245, 0.2);
+      border-radius: 0.42rem;
+      color: var(--silver);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.095), rgba(255,255,255,0.02)),
+        rgba(18, 20, 23, 0.9);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.13);
+      cursor: pointer;
+      white-space: nowrap;
+      font: 700 0.78rem var(--sans);
+      padding: 0 0.78rem;
+    }}
+
+    .tool-button.export {{
+      color: #f4e4bd;
+      border-color: rgba(214, 189, 134, 0.34);
+      background:
+        linear-gradient(180deg, rgba(214,189,134,0.18), rgba(255,255,255,0.035)),
+        rgba(23, 21, 17, 0.88);
+    }}
+
+    .tool-button:hover {{
+      transform: translateY(-1px);
+      border-color: var(--line-strong);
+    }}
+
+    .tree-panel {{
+      min-height: 28rem;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }}
+
+    .table-head {{
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(26rem, 1fr) 9rem 8rem 11rem;
+      min-width: 54rem;
+      border-bottom: 1px solid var(--line-strong);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+        rgba(12, 14, 16, 0.92);
+    }}
+
+    .table-head span {{
+      padding: 0.72rem 0.85rem;
+      color: var(--silver-soft);
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }}
+
+    .table-head .right {{ text-align: right; }}
+
+
+    .head-button {{
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      max-width: 100%;
+      padding: 0;
+      color: inherit;
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+      font: inherit;
+      text-transform: inherit;
+      letter-spacing: inherit;
+    }}
+
+    .head-button.right {{
+      justify-content: flex-end;
+      width: 100%;
+    }}
+
+    .head-button:hover,
+    .head-button.is-active {{
+      color: #f4f7fb;
+      text-shadow: 0 0 0.9rem rgba(127, 179, 213, 0.20);
+    }}
+
+    .sort-mark::before {{
+      content: "↕";
+      color: rgba(174, 182, 193, 0.55);
+      font-size: 0.68rem;
+    }}
+
+    .head-button.is-active[data-dir="asc"] .sort-mark::before {{ content: "↑"; color: var(--blue); }}
+    .head-button.is-active[data-dir="desc"] .sort-mark::before {{ content: "↓"; color: var(--blue); }}
+
+    .type-head {{
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      min-width: 0;
+    }}
+
+    .type-filter {{
+      min-width: 4.7rem;
+      max-width: 6.4rem;
+      height: 1.55rem;
+      padding: 0 1.45rem 0 0.45rem;
+      color: rgba(232, 237, 245, 0.86);
+      border: 1px solid rgba(232, 237, 245, 0.16);
+      border-radius: 0.34rem;
+      background: rgba(6, 8, 10, 0.70);
+      font: 700 0.68rem var(--sans);
+      outline: none;
+    }}
+
+    .type-filter:focus {{
+      border-color: rgba(127, 179, 213, 0.52);
+      box-shadow: 0 0 0 3px rgba(127, 179, 213, 0.10);
+    }}
+
+    .tree-scroll {{
+      overflow: auto;
+      min-width: 0;
+    }}
+
+    table {{
+      width: max-content;
+      min-width: 100%;
+      border-collapse: collapse;
+      table-layout: auto;
+      font-size: 0.88rem;
+    }}
+
+    col.name {{ width: auto; min-width: 42rem; }}
+    col.size {{ width: 9rem; }}
+    col.type {{ width: 8rem; }}
+    col.modified {{ width: 11rem; }}
+
+    .tree-row {{
+      height: var(--row-h);
+      color: rgba(216, 221, 229, 0.72);
+      border-bottom: 1px solid rgba(232, 237, 245, 0.075);
+      background: rgba(255,255,255,0.012);
+      transition: background 160ms ease, color 160ms ease, box-shadow 160ms ease;
+    }}
+
+    .tree-row:hover {{
+      color: rgba(245,247,250,0.92);
+      background: rgba(255,255,255,0.045);
+    }}
+
+    .tree-row.is-selected {{
+      color: #f5f8fb;
+      background:
+        linear-gradient(90deg, rgba(192, 205, 219, 0.18), rgba(127, 179, 213, 0.13), rgba(255,255,255,0.035));
+      box-shadow:
+        inset 0 0 0 1px rgba(230, 235, 242, 0.28),
+        inset 0.28rem 0 0 rgba(214, 226, 238, 0.54),
+        0 0 1.4rem rgba(127, 179, 213, 0.12);
+    }}
+
+    .tree-row.is-selected .name-cell::after {{
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(108deg, transparent 0%, rgba(255,255,255,0.16) 45%, transparent 72%);
+      animation: selectedSweep 3.8s ease-in-out infinite;
+    }}
+
+    td {{
+      height: var(--row-h);
+      padding: 0 0.85rem;
+      vertical-align: middle;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }}
+
+    .name-cell {{
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: max-content;
+      overflow: visible;
+      text-overflow: clip;
+    }}
+
+    .name-cell::before {{
+      content: "";
+      position: absolute;
+      left: calc(1rem + (var(--depth) * 1.35rem));
+      top: 0;
+      bottom: 0;
+      border-left: 1px solid rgba(220, 226, 235, 0.12);
+    }}
+
+    .indent {{
+      flex: 0 0 calc(var(--depth) * 1.35rem);
+    }}
+
+    .twisty {{
+      width: 1.1rem;
+      height: 1.1rem;
+      flex: 0 0 1.1rem;
+      border: 1px solid rgba(220,226,235,0.18);
+      border-radius: 0.25rem;
+      background: rgba(255,255,255,0.035);
+      cursor: pointer;
+      position: relative;
+    }}
+
+    .twisty::before {{
+      content: "";
+      position: absolute;
+      left: 0.36rem;
+      top: 0.28rem;
+      width: 0.33rem;
+      height: 0.33rem;
+      border-right: 1px solid var(--silver-soft);
+      border-bottom: 1px solid var(--silver-soft);
+      transform: rotate(45deg);
+      transition: transform 160ms ease;
+    }}
+
+    .tree-row.is-collapsed .twisty::before {{
+      transform: rotate(-45deg) translate(-1px, 1px);
+    }}
+
+    .twisty.ghost {{
+      border-color: transparent;
+      background: transparent;
+      cursor: default;
+    }}
+
+    .twisty.ghost::before {{ display: none; }}
+
+    .tree-icon {{
+      width: 1.08rem;
+      height: 1.08rem;
+      flex: 0 0 1.08rem;
+      position: relative;
+      opacity: 0.92;
+      filter: drop-shadow(0 0 0.35rem rgba(160, 184, 205, 0.08));
+    }}
+
+    .tree-icon.folder::before {{
+      content: "";
+      position: absolute;
+      inset: 0.25rem 0.05rem 0.08rem;
+      border: 1px solid rgba(222, 229, 238, 0.44);
+      border-radius: 0.18rem;
+      background:
+        linear-gradient(180deg, rgba(230,235,242,0.34), rgba(86,98,111,0.18)),
+        rgba(90, 104, 118, 0.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.28), 0 0 0.55rem rgba(127,179,213,0.07);
+    }}
+
+    .tree-icon.folder::after {{
+      content: "";
+      position: absolute;
+      left: 0.13rem;
+      top: 0.11rem;
+      width: 0.5rem;
+      height: 0.25rem;
+      border-radius: 0.13rem 0.13rem 0 0;
+      background: linear-gradient(180deg, rgba(225, 233, 244, 0.62), rgba(128, 148, 168, 0.28));
+      border: 1px solid rgba(224, 231, 240, 0.22);
+      border-bottom: 0;
+    }}
+
+    .tree-icon.file::before {{
+      content: "";
+      position: absolute;
+      inset: 0.08rem 0.18rem;
+      border: 1px solid rgba(222, 229, 238, 0.34);
+      border-radius: 0.16rem;
+      background:
+        linear-gradient(145deg, rgba(235,239,245,0.26), rgba(72,82,94,0.16)),
+        rgba(255,255,255,0.02);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+    }}
+
+    .tree-icon.file::after {{
+      content: "";
+      position: absolute;
+      right: 0.18rem;
+      top: 0.08rem;
+      width: 0.28rem;
+      height: 0.28rem;
+      border-left: 1px solid rgba(222,229,238,0.35);
+      border-bottom: 1px solid rgba(222,229,238,0.35);
+      background: rgba(127,179,213,0.14);
+    }}
+
+    .tree-icon.file {{ --badge: ""; --accent: rgba(174, 182, 193, 0.48); }}
+    .tree-icon.file.icon-md {{ --badge: "MD"; --accent: rgba(118, 169, 210, 0.62); }}
+    .tree-icon.file.icon-readme {{ --badge: "RD"; --accent: rgba(127, 196, 159, 0.60); }}
+    .tree-icon.file.icon-json {{ --badge: "{{}}"; --accent: rgba(231, 191, 111, 0.66); }}
+    .tree-icon.file.icon-package {{ --badge: "PK"; --accent: rgba(233, 166, 113, 0.68); }}
+    .tree-icon.file.icon-py {{ --badge: "PY"; --accent: rgba(106, 156, 219, 0.68); }}
+    .tree-icon.file.icon-ts {{ --badge: "TS"; --accent: rgba(79, 154, 217, 0.70); }}
+    .tree-icon.file.icon-tsx {{ --badge: "TX"; --accent: rgba(96, 174, 225, 0.72); }}
+    .tree-icon.file.icon-js {{ --badge: "JS"; --accent: rgba(232, 203, 94, 0.66); }}
+    .tree-icon.file.icon-jsx {{ --badge: "JX"; --accent: rgba(232, 203, 94, 0.66); }}
+    .tree-icon.file.icon-css {{ --badge: "#"; --accent: rgba(104, 158, 230, 0.66); }}
+    .tree-icon.file.icon-html {{ --badge: "<>"; --accent: rgba(236, 136, 96, 0.68); }}
+    .tree-icon.file.icon-svg {{ --badge: "◈"; --accent: rgba(201, 143, 238, 0.64); }}
+    .tree-icon.file.icon-image {{ --badge: "IMG"; --accent: rgba(108, 194, 190, 0.64); }}
+    .tree-icon.file.icon-prisma {{ --badge: "PR"; --accent: rgba(120, 210, 194, 0.64); }}
+    .tree-icon.file.icon-sql {{ --badge: "SQL"; --accent: rgba(164, 144, 236, 0.64); }}
+    .tree-icon.file.icon-db {{ --badge: "DB"; --accent: rgba(178, 158, 230, 0.62); }}
+    .tree-icon.file.icon-config {{ --badge: "⚙"; --accent: rgba(184, 196, 207, 0.62); }}
+    .tree-icon.file.icon-env {{ --badge: "ENV"; --accent: rgba(117, 190, 140, 0.62); }}
+    .tree-icon.file.icon-lock {{ --badge: "LK"; --accent: rgba(209, 180, 118, 0.64); }}
+    .tree-icon.file.icon-text {{ --badge: "TXT"; --accent: rgba(174, 182, 193, 0.56); }}
+    .tree-icon.file.icon-log {{ --badge: "LOG"; --accent: rgba(178, 159, 124, 0.60); }}
+    .tree-icon.file.icon-archive {{ --badge: "ZIP"; --accent: rgba(207, 168, 108, 0.62); }}
+    .tree-icon.file.icon-docker {{ --badge: "DK"; --accent: rgba(95, 159, 220, 0.66); }}
+    .tree-icon.file.icon-generic {{ --badge: "•"; --accent: rgba(174, 182, 193, 0.48); }}
+
+    .tree-icon.file::before {{ border-color: color-mix(in srgb, var(--accent) 54%, rgba(222,229,238,0.28)); }}
+
+    .tree-icon.file > span {{ display: none; }}
+
+    .tree-icon.file::after {{
+      content: var(--badge);
+      right: -0.12rem;
+      top: 0.58rem;
+      width: auto;
+      min-width: 0.72rem;
+      height: 0.42rem;
+      padding: 0 0.08rem;
+      border: 1px solid color-mix(in srgb, var(--accent) 68%, rgba(255,255,255,0.16));
+      border-radius: 0.16rem;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 38%, rgba(12,14,16,0.96)), rgba(8,10,12,0.86));
+      color: rgba(244, 248, 252, 0.88);
+      font: 700 0.34rem/0.42rem var(--mono);
+      text-align: center;
+      letter-spacing: 0.015em;
+      box-shadow: 0 0 0.45rem color-mix(in srgb, var(--accent) 22%, transparent);
+    }}
+
+    .entry-name {{
+      overflow: visible;
+      text-overflow: clip;
+      min-width: max-content;
+    }}
+
+    .entry-path {{
+      color: rgba(174, 182, 193, 0.55);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }}
+
+    .size-cell {{
+      text-align: right;
+      color: rgba(232, 237, 245, 0.82);
+      font-family: var(--mono);
+      font-variant-numeric: tabular-nums;
+    }}
+
+    .type-cell,
+    .modified-cell {{
+      color: rgba(174, 182, 193, 0.7);
+      font-family: var(--mono);
+      font-size: 0.78rem;
+    }}
+
+    .summary-strip {{
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0;
+      min-height: 4.25rem;
+    }}
+
+    .summary-item {{
+      padding: 0.85rem 1rem;
+      border-right: 1px solid var(--line);
+    }}
+
+    .summary-item:last-child {{ border-right: 0; }}
+
+    .summary-label {{
+      color: var(--muted);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }}
+
+    .summary-value {{
+      margin-top: 0.25rem;
+      color: #f2f4f7;
+      font-family: var(--mono);
+      font-size: 0.94rem;
+      overflow-wrap: anywhere;
+    }}
+
+    @keyframes selectedSweep {{
+      0%, 46% {{ transform: translateX(-120%); opacity: 0; }}
+      58% {{ opacity: 0.55; }}
+      100% {{ transform: translateX(120%); opacity: 0; }}
+    }}
+
+    @media (max-width: 56rem) {{
+      .report-header {{
+        grid-template-columns: 1fr;
+      }}
+      .toolbar {{
+        grid-template-columns: 1fr 1fr;
+      }}
+      .search {{
+        grid-column: 1 / -1;
+      }}
+      .summary-strip {{
+        grid-template-columns: 1fr 1fr;
+      }}
+    }}
+
+    @media (prefers-reduced-motion: reduce) {{
+      *, *::before, *::after {{
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }}
+    }}
+
+    @media print {{
+      body, html {{ background: #fff; color: #111; }}
+      .report-header, .tree-panel, .summary-strip {{
+        box-shadow: none;
+        background: #fff;
+        border-color: #aaa;
+      }}
+      .toolbar {{ display: none; }}
+      .tree-row, .tree-row.is-selected {{ color: #111; background: #fff; box-shadow: none; }}
+      .entry-path, .type-cell, .modified-cell, .summary-label {{ color: #333; }}
+    }}
+  </style>
+</head>
+<body>
+  <main class="report-shell">
+    <header class="report-header">
+      <section class="title-block">
+        <p class="eyebrow">Filesystem inventory</p>
+        <h1>Code Atlas Tree Premium</h1>
+        <p class="subtitle">HTML Filesystem Tree Report</p>
+        <p class="meta-line">Selected: {_html_escape(selected_path)}</p>
+        <p class="meta-line">Root: {_html_escape(project_root)}</p>
+      </section>
+      <section class="toolbar" aria-label="Tree controls">
+        <input id="treeSearch" class="search" type="search" placeholder="Search folders and files" autocomplete="off">
+        <button id="expandAll" class="tool-button" type="button">Expand All</button>
+        <button id="collapseAll" class="tool-button" type="button">Collapse All</button>
+        <button id="exportTree" class="tool-button export" type="button">Export Tree</button>
+      </section>
+    </header>
+
+    <section class="tree-panel" aria-label="Filesystem tree">
+      <div class="table-head" role="row">
+        <span><button class="head-button sort-button" type="button" data-sort="name" aria-label="Sort by name">Name <b class="sort-mark" aria-hidden="true"></b></button></span>
+        <span class="right"><button class="head-button sort-button right" type="button" data-sort="size" aria-label="Sort by size">Size <b class="sort-mark" aria-hidden="true"></b></button></span>
+        <span class="type-head"><button class="head-button sort-button" type="button" data-sort="type" aria-label="Sort by type">Type <b class="sort-mark" aria-hidden="true"></b></button><select id="typeFilter" class="type-filter" aria-label="Filter by type"><option value="">All</option></select></span>
+        <span><button class="head-button sort-button" type="button" data-sort="modified" aria-label="Sort by modified date">Modified <b class="sort-mark" aria-hidden="true"></b></button></span>
+      </div>
+      <div class="tree-scroll">
+        <table>
+          <colgroup>
+            <col class="name">
+            <col class="size">
+            <col class="type">
+            <col class="modified">
+          </colgroup>
+          <tbody id="treeBody">
+{html_rows}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="summary-strip">
+      <section class="summary-item">
+        <div class="summary-label">Total Folders</div>
+        <div class="summary-value">{summary.total_folders}</div>
+      </section>
+      <section class="summary-item">
+        <div class="summary-label">Total Files</div>
+        <div class="summary-value">{summary.total_files}</div>
+      </section>
+      <section class="summary-item">
+        <div class="summary-label">Total Size</div>
+        <div class="summary-value">{_html_escape(format_size_bytes(summary.total_size_bytes))}</div>
+      </section>
+      <section class="summary-item">
+        <div class="summary-label">Max Depth</div>
+        <div class="summary-value">{summary.max_depth}</div>
+      </section>
+      <section class="summary-item">
+        <div class="summary-label">Scanned</div>
+        <div class="summary-value">{_html_escape(summary.scanned_at)}</div>
+      </section>
+    </footer>
+  </main>
+
+  <script>
+    const TREE_TEXT = {_json_for_script(tree_text)};
+    const EXPORT_NAME = {_json_for_script(export_name)};
+
+    (() => {{
+      const treeBody = document.getElementById("treeBody");
+      let rows = Array.from(document.querySelectorAll(".tree-row"));
+      const byId = new Map(rows.map((row) => [row.dataset.id, row]));
+      const search = document.getElementById("treeSearch");
+      const expandAll = document.getElementById("expandAll");
+      const collapseAll = document.getElementById("collapseAll");
+      const exportTree = document.getElementById("exportTree");
+      const typeFilter = document.getElementById("typeFilter");
+      const sortButtons = Array.from(document.querySelectorAll("[data-sort]"));
+      const sortState = {{ key: "name", direction: "asc" }};
+
+      function refreshRows() {{
+        rows = Array.from(treeBody.querySelectorAll(".tree-row"));
+      }}
+
+      function childrenOf(id) {{
+        return rows.filter((row) => row.dataset.parent === id);
+      }}
+
+      function descendantsOf(id) {{
+        const result = [];
+        const stack = childrenOf(id);
+        while (stack.length) {{
+          const row = stack.shift();
+          result.push(row);
+          stack.unshift(...childrenOf(row.dataset.id));
+        }}
+        return result;
+      }}
+
+      function ancestorIds(row) {{
+        const ids = [];
+        let parent = row.dataset.parent;
+        while (parent && byId.has(parent)) {{
+          ids.push(parent);
+          parent = byId.get(parent).dataset.parent;
+        }}
+        return ids;
+      }}
+
+      function isHiddenByCollapse(row) {{
+        let parent = row.dataset.parent;
+        while (parent && byId.has(parent)) {{
+          const parentRow = byId.get(parent);
+          if (parentRow.classList.contains("is-collapsed")) {{
+            return true;
+          }}
+          parent = parentRow.dataset.parent;
+        }}
+        return false;
+      }}
+
+      function normalizeText(value) {{
+        return String(value || "").trim().toLowerCase();
+      }}
+
+      function numericValue(row, field) {{
+        if (field === "size") {{ return Number(row.dataset.sizeBytes || "0"); }}
+        if (field === "modified") {{ return Number(row.dataset.modifiedTs || "0"); }}
+        return 0;
+      }}
+
+      function textValue(row, field) {{
+        if (field === "type") {{ return normalizeText(row.dataset.type); }}
+        if (field === "name") {{ return normalizeText(row.dataset.name); }}
+        return normalizeText(row.dataset.path);
+      }}
+
+      function compareRows(a, b) {{
+        const dir = sortState.direction === "desc" ? -1 : 1;
+        let result = 0;
+
+        if (sortState.key === "size" || sortState.key === "modified") {{
+          result = numericValue(a, sortState.key) - numericValue(b, sortState.key);
+        }} else {{
+          result = textValue(a, sortState.key).localeCompare(textValue(b, sortState.key), undefined, {{ numeric: true, sensitivity: "base" }});
+        }}
+
+        if (result === 0) {{
+          result = textValue(a, "name").localeCompare(textValue(b, "name"), undefined, {{ numeric: true, sensitivity: "base" }});
+        }}
+        if (result === 0) {{
+          result = textValue(a, "type").localeCompare(textValue(b, "type"), undefined, {{ numeric: true, sensitivity: "base" }});
+        }}
+        return result * dir;
+      }}
+
+      function appendSortedBranch(parentId, fragment) {{
+        const children = childrenOf(parentId).slice().sort(compareRows);
+        children.forEach((child) => {{
+          fragment.appendChild(child);
+          appendSortedBranch(child.dataset.id, fragment);
+        }});
+      }}
+
+      function sortTree() {{
+        const selectedId = (document.querySelector(".tree-row.is-selected") || {{ dataset: {{}} }}).dataset.id || "";
+        const fragment = document.createDocumentFragment();
+        appendSortedBranch("", fragment);
+        treeBody.appendChild(fragment);
+        refreshRows();
+        if (selectedId && byId.has(selectedId)) {{
+          rows.forEach((row) => row.classList.remove("is-selected"));
+          byId.get(selectedId).classList.add("is-selected");
+        }}
+        updateSortButtons();
+        applyVisibility();
+      }}
+
+      function updateSortButtons() {{
+        sortButtons.forEach((button) => {{
+          const active = button.dataset.sort === sortState.key;
+          button.classList.toggle("is-active", active);
+          button.dataset.dir = active ? sortState.direction : "";
+          button.setAttribute("aria-sort", active ? (sortState.direction === "asc" ? "ascending" : "descending") : "none");
+        }});
+      }}
+
+      function populateTypeFilter() {{
+        if (!typeFilter) return;
+        const types = Array.from(new Set(rows.map((row) => row.dataset.type || "").filter(Boolean)))
+          .sort((a, b) => a.localeCompare(b, undefined, {{ numeric: true, sensitivity: "base" }}));
+        const fragment = document.createDocumentFragment();
+        types.forEach((type) => {{
+          const option = document.createElement("option");
+          option.value = type;
+          option.textContent = type;
+          fragment.appendChild(option);
+        }});
+        typeFilter.appendChild(fragment);
+      }}
+
+      function applyVisibility() {{
+        const query = normalizeText(search.value);
+        const selectedType = typeFilter ? typeFilter.value : "";
+        const hasQuery = Boolean(query);
+        const hasType = Boolean(selectedType);
+        const activeFilter = hasQuery || hasType;
+        const visibleForFilter = new Set();
+
+        if (activeFilter) {{
+          rows.forEach((row) => {{
+            const haystack = `${{row.dataset.name || ""}} ${{row.dataset.path || ""}}`.toLowerCase();
+            const queryMatch = !hasQuery || haystack.includes(query);
+            const typeMatch = !hasType || row.dataset.type === selectedType;
+            if (queryMatch && typeMatch) {{
+              visibleForFilter.add(row.dataset.id);
+              ancestorIds(row).forEach((id) => visibleForFilter.add(id));
+              if (hasQuery && row.dataset.kind === "folder") {{
+                descendantsOf(row.dataset.id).forEach((desc) => visibleForFilter.add(desc.dataset.id));
+              }}
+            }}
+          }});
+        }}
+
+        rows.forEach((row) => {{
+          const filterHidden = activeFilter && !visibleForFilter.has(row.dataset.id);
+          const collapseHidden = !activeFilter && isHiddenByCollapse(row);
+          row.hidden = Boolean(filterHidden || collapseHidden);
+        }});
+      }}
+
+      rows.forEach((row) => {{
+        row.addEventListener("click", (event) => {{
+          if (event.target && event.target.matches("[data-toggle]")) {{
+            return;
+          }}
+          rows.forEach((item) => item.classList.remove("is-selected"));
+          row.classList.add("is-selected");
+        }});
+      }});
+
+      document.querySelectorAll("[data-toggle]").forEach((button) => {{
+        button.addEventListener("click", () => {{
+          const row = byId.get(button.dataset.toggle);
+          if (!row) return;
+          row.classList.toggle("is-collapsed");
+          applyVisibility();
+        }});
+      }});
+
+      sortButtons.forEach((button) => {{
+        button.addEventListener("click", () => {{
+          const nextKey = button.dataset.sort || "name";
+          if (sortState.key === nextKey) {{
+            sortState.direction = sortState.direction === "asc" ? "desc" : "asc";
+          }} else {{
+            sortState.key = nextKey;
+            sortState.direction = nextKey === "name" || nextKey === "type" ? "asc" : "desc";
+          }}
+          sortTree();
+        }});
+      }});
+
+      expandAll.addEventListener("click", () => {{
+        rows.forEach((row) => row.classList.remove("is-collapsed"));
+        applyVisibility();
+      }});
+
+      collapseAll.addEventListener("click", () => {{
+        rows.forEach((row) => {{
+          if (row.dataset.kind === "folder" && row.dataset.parent) {{
+            row.classList.add("is-collapsed");
+          }}
+        }});
+        applyVisibility();
+      }});
+
+      search.addEventListener("input", applyVisibility);
+      if (typeFilter) {{ typeFilter.addEventListener("change", applyVisibility); }}
+
+      exportTree.addEventListener("click", () => {{
+        const blob = new Blob([TREE_TEXT], {{ type: "text/plain;charset=utf-8" }});
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = EXPORT_NAME;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+      }});
+
+      populateTypeFilter();
+      sortTree();
+      applyVisibility();
+    }})();
+  </script>
+</body>
+</html>
+"""
+
+
+def build_relevant_tree_text(
+    *,
+    selected_path: str,
+    state: AnalysisState,
+    graph: DependencyGraph,
+    module_catalog: dict[str, ModuleSourceInfo],
+    import_refs: Iterable[ImportReference],
+    module_paths: Iterable[Path],
+) -> str:
+    project_root = Path(state.project_root or str(derive_project_root(selected_path)))
+    paths = list(module_paths)
+    relative_paths = [
+        safe_relative_path(path, project_root)
+        for path in paths
+    ]
+    relative_paths = sorted(dedupe_preserve_order(relative_paths), key=str.lower)
+    import_refs_list = list(import_refs)
+
+    lines = [
+        "Code Atlas Dependency Tree",
+        f"Generated: {datetime.now().isoformat(timespec='seconds')}",
+        f"Selected path: {selected_path}",
+        f"Project root: {project_root}",
+        f"View: {state.view}",
+        f"Theme: {state.theme}",
+        f"Visibility preset: {state.visibility_preset}",
+        f"Modules in catalog: {len(module_catalog)}",
+        f"Relevant modules: {len(relative_paths)}",
+        f"Import references: {len(import_refs_list)}",
+        f"Visible nodes: {len(graph.nodes)}",
+        f"Visible edges: {len(graph.edges)}",
+        "",
+        "Tree:",
+    ]
+
+    tree_lines = _format_tree_path_lines(relative_paths)
+    lines.extend(tree_lines or ["- (sin archivos relevantes)"])
+
+    if graph.issues:
+        lines.extend(["", "Issues:"])
+        for issue in graph.issues:
+            location = f" [{issue.path}]" if issue.path else ""
+            lines.append(f"- {issue.level.upper()} {issue.code}: {issue.message}{location}")
+
+    return "\n".join(lines) + "\n"
 
 
 def build_state_summary(state: AnalysisState) -> str:
@@ -1586,6 +3053,15 @@ def _coerce_view(value: Any) -> GraphView:
     return _default_view_id()
 
 
+def _coerce_output_mode(value: Any) -> OutputMode:
+    cleaned = _clean_text(value).lower()
+    if cleaned in {"tree_html", "html", "premium_html", "tree premium", "tree_html_premium"}:
+        return "tree_html"
+    if cleaned in {"tree", "txt", "text", "dependency_tree"}:
+        return "tree"
+    return "svg"
+
+
 def _coerce_theme_choice(item: Any) -> Optional[_ThemeChoice]:
     if item is None:
         return None
@@ -1847,12 +3323,14 @@ def _make_selection_result(
     theme: str,
     view: GraphView,
     focus_target: str,
+    output_mode: OutputMode = "svg",
 ) -> SelectionResult:
     return SelectionResult(
         path=path,
         theme=theme,
         view=view,
         focus_target=focus_target,
+        output_mode=_coerce_output_mode(output_mode),
     )
 
 
@@ -1906,6 +3384,17 @@ def repolish(widget: QWidget, recursive: bool = False) -> None:
             child_style.unpolish(child)
             child_style.polish(child)
             child.update()
+
+
+
+def apply_window_transparency(host: QWidget) -> None:
+    """Remove the rectangular OS/backdrop fill around frameless glass dialogs."""
+    if host is None:
+        return
+    host.setAttribute(Qt.WA_TranslucentBackground, True)
+    host.setAttribute(Qt.WA_NoSystemBackground, True)
+    host.setAutoFillBackground(False)
+    # CODE_ATLAS_FRAME_DEPTH_FIX_V1: keep the floating glass shell without the pale rectangular frame.
 
 
 @dataclass(frozen=True, slots=True)
@@ -2484,8 +3973,7 @@ class FrostedGlassBackdrop(QWidget):
         frame_path = QPainterPath()
         frame_path.addRoundedRect(rect.adjusted(1.5, 1.5, -1.5, -1.5), 30.0, 30.0)
         painter.fillPath(frame_path, self._palette.wash)
-        painter.setPen(QPen(self._palette.border, 1.15))
-        painter.drawPath(frame_path)
+        # CODE_ATLAS_FRAME_DEPTH_FIX_V1: outer stage rim intentionally not drawn.
 
         painter.setPen(QPen(self._palette.sheen, 1.0))
         arc_start = int((18.0 + (math.sin(motion_phase * 0.24) * 14.0)) * 16)
@@ -2552,8 +4040,7 @@ class FrostedGlassBackdrop(QWidget):
         glass_path.addRoundedRect(rect.adjusted(1.5, 1.5, -1.5, -1.5), 30.0, 30.0)
         painter.fillPath(glass_path, self._palette.wash)
 
-        painter.setPen(QPen(self._palette.border, 1.2))
-        painter.drawPath(glass_path)
+        # CODE_ATLAS_FRAME_DEPTH_FIX_V1: outer stage rim intentionally not drawn.
 
         sheen_path = QPainterPath()
         sheen_path.moveTo(rect.width() * 0.06, rect.height() * 0.12)
@@ -2747,8 +4234,8 @@ class _FramelessResizeCorner(QWidget):
 
 class FramelessResizeController(QObject):
     def __init__(self, host: QDialog, *, margin: int = 8) -> None:
-        super().__init__(host)
         self._host = host
+        super().__init__(host)
         self._margin = max(4, int(margin))
         self._active_edges = _EDGE_NONE
         self._resizing = False
@@ -2771,7 +4258,10 @@ class FramelessResizeController(QObject):
         self._layout_corner_handles()
 
     def eventFilter(self, watched: QObject, event: QEvent) -> bool:  # type: ignore[override]
-        if watched is not self._host:
+        host = getattr(self, "_host", None)
+        if host is None:
+            return False
+        if watched is not host:
             return False
 
         event_type = event.type()
@@ -2945,8 +4435,8 @@ class WindowChromeBar(QFrame):
         allow_minimize: bool = True,
         allow_maximize: bool = True,
     ) -> None:
-        super().__init__(host)
         self._host = host
+        super().__init__(host)
         self._on_close = on_close
         self._allow_maximize = bool(allow_maximize)
         self._dragging = False
@@ -3026,7 +4516,10 @@ class WindowChromeBar(QFrame):
         self._max_button.setToolTip("Restaurar" if self._host.isMaximized() else "Maximizar")
 
     def eventFilter(self, watched: QObject, event: QEvent) -> bool:  # type: ignore[override]
-        if watched is not self._host:
+        host = getattr(self, "_host", None)
+        if host is None:
+            return False
+        if watched is not host:
             return False
 
         if event.type() == QEvent.Type.WindowTitleChange:
@@ -3165,6 +4658,7 @@ class SelectorDialog(QDialog):
         self.resize(980, 700)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowFlag(Qt.FramelessWindowHint, True)
+        apply_window_transparency(self)
         self._resize_controller = FramelessResizeController(self, margin=8)
         self._applied_theme_id = ""
 
@@ -3243,12 +4737,12 @@ class SelectorDialog(QDialog):
             self,
             theme_id=self._theme_catalog.default_id,
             variant="selector",
-            margins=(10, 10, 10, 10),
+            margins=(0, 0, 0, 0),
         )
         outer.setSpacing(0)
 
         scene_layout = QVBoxLayout(content_layer)
-        scene_layout.setContentsMargins(10, 10, 10, 10)
+        scene_layout.setContentsMargins(0, 0, 0, 0)
         scene_layout.setSpacing(0)
 
         shell = QFrame()
@@ -3366,7 +4860,7 @@ class SelectorDialog(QDialog):
         footer_text_stack.addWidget(footer_label, 0, Qt.AlignLeft)
 
         footer_hint = QLabel(
-            "La salida se guardará dentro de la carpeta analizada, en una subcarpeta dedicada."
+            "SVG se guarda junto al proyecto; los Trees se guardan en F:\\trees."
         )
         footer_hint.setProperty("role", "hint")
         footer_hint.setWordWrap(True)
@@ -3380,7 +4874,21 @@ class SelectorDialog(QDialog):
             default=True,
             minimum_width=156,
         )
+        self.tree_button = create_button(
+            "Generar Tree .txt",
+            "secondary",
+            self.confirm_tree,
+            minimum_width=172,
+        )
+        self.tree_html_button = create_button(
+            "Generar Tree HTML Premium",
+            "secondary",
+            self.confirm_tree_html,
+            minimum_width=232,
+        )
         footer_layout.addWidget(self.cancel_button, 0)
+        footer_layout.addWidget(self.tree_button, 0)
+        footer_layout.addWidget(self.tree_html_button, 0)
         footer_layout.addWidget(self.confirm_button, 0)
 
     def _build_form_panel(self) -> None:
@@ -3679,6 +5187,61 @@ class SelectorDialog(QDialog):
             theme=self.selected_theme,
             view=self.selected_view,
             focus_target=self.selected_focus_target,
+            output_mode="svg",
+        )
+        self.accept()
+
+    def confirm_tree(self) -> None:
+        normalized_path = self.selected_path
+        if not normalized_path:
+            start_dir = _picker_start_directory(self.path_entry.text())
+            selected = QFileDialog.getExistingDirectory(
+                self,
+                "Selecciona la carpeta para generar Tree .txt",
+                start_dir,
+            )
+            if not selected:
+                return
+            self.path_entry.setText(selected)
+            normalized_path = self.selected_path
+
+        if not normalized_path:
+            QMessageBox.warning(self, _app_title(), "Primero indica una carpeta o archivo.")
+            return
+
+        self._selection_result = _make_selection_result(
+            path=normalized_path,
+            theme=self.selected_theme,
+            view=self.selected_view,
+            focus_target=self.selected_focus_target,
+            output_mode="tree",
+        )
+        self.accept()
+
+    def confirm_tree_html(self) -> None:
+        normalized_path = self.selected_path
+        if not normalized_path:
+            start_dir = _picker_start_directory(self.path_entry.text())
+            selected = QFileDialog.getExistingDirectory(
+                self,
+                "Selecciona la carpeta para generar Tree HTML Premium",
+                start_dir,
+            )
+            if not selected:
+                return
+            self.path_entry.setText(selected)
+            normalized_path = self.selected_path
+
+        if not normalized_path:
+            QMessageBox.warning(self, _app_title(), "Primero indica una carpeta o archivo.")
+            return
+
+        self._selection_result = _make_selection_result(
+            path=normalized_path,
+            theme=self.selected_theme,
+            view=self.selected_view,
+            focus_target=self.selected_focus_target,
+            output_mode="tree_html",
         )
         self.accept()
 
@@ -3718,6 +5281,7 @@ class ProgressUI(QDialog):
         self.resize(860, 340)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowFlag(Qt.FramelessWindowHint, True)
+        apply_window_transparency(self)
         self._resize_controller = FramelessResizeController(self, margin=8)
         self.setStyleSheet(app_stylesheet(self._theme_id))
 
@@ -3740,12 +5304,12 @@ class ProgressUI(QDialog):
             self,
             theme_id=self._theme_id,
             variant="progress",
-            margins=(10, 10, 10, 10),
+            margins=(0, 0, 0, 0),
         )
         outer.setSpacing(0)
 
         scene_layout = QVBoxLayout(content_layer)
-        scene_layout.setContentsMargins(10, 10, 10, 10)
+        scene_layout.setContentsMargins(0, 0, 0, 0)
         scene_layout.setSpacing(0)
 
         shell = QFrame()
@@ -6016,6 +7580,302 @@ def layout_dependency_graph(
         nodes=nodes,
         lanes=lanes,
         width=width,
+        height=height,
+    )
+def _hier_visible_dependency_maps(
+    graph: DependencyGraph,
+    visible_keys: set[str],
+) -> tuple[dict[str, set[str]], dict[str, set[str]]]:
+    parents: dict[str, set[str]] = {key: set() for key in visible_keys}
+    children: dict[str, set[str]] = {key: set() for key in visible_keys}
+
+    for edge in graph.iter_edges_sorted():
+        if edge.source not in visible_keys or edge.target not in visible_keys:
+            continue
+        if edge.source == edge.target:
+            continue
+
+        parent_key = edge.target
+        child_key = edge.source
+
+        parents.setdefault(child_key, set()).add(parent_key)
+        children.setdefault(parent_key, set()).add(child_key)
+
+    return parents, children
+
+
+def _hier_root_nodes(
+    nodes: list[DependencyNode],
+    parents: dict[str, set[str]],
+    children: dict[str, set[str]],
+) -> list[DependencyNode]:
+    roots = [node for node in nodes if not parents.get(node.key)]
+    if roots:
+        return sorted(
+            roots,
+            key=lambda node: (
+                -int(node.inbound),
+                int(node.outbound),
+                -len(children.get(node.key, set())),
+                node.group.lower(),
+                node.label.lower(),
+            ),
+        )
+
+    return sorted(
+        nodes,
+        key=lambda node: (
+            -int(node.inbound - node.outbound),
+            -len(children.get(node.key, set())),
+            node.group.lower(),
+            node.label.lower(),
+        ),
+    )
+
+
+def _hier_assign_levels(
+    nodes: list[DependencyNode],
+    parents: dict[str, set[str]],
+    children: dict[str, set[str]],
+) -> dict[str, int]:
+    visible_keys = {node.key for node in nodes}
+    indegree: dict[str, int] = {
+        key: len(parents.get(key, set()))
+        for key in visible_keys
+    }
+    levels: dict[str, int] = {}
+
+    queue: list[str] = [node.key for node in _hier_root_nodes(nodes, parents, children)]
+    if not queue and nodes:
+        queue = [nodes[0].key]
+
+    for key in queue:
+        levels[key] = 0
+
+    cursor = 0
+    while cursor < len(queue):
+        current = queue[cursor]
+        cursor += 1
+        current_level = levels.get(current, 0)
+
+        for child in sorted(children.get(current, set())):
+            next_level = current_level + 1
+            if next_level > levels.get(child, -1):
+                levels[child] = next_level
+
+            indegree[child] = max(0, indegree.get(child, 0) - 1)
+            if indegree[child] == 0 and child not in queue:
+                queue.append(child)
+
+    unresolved = [node for node in nodes if node.key not in levels]
+    if unresolved:
+        ordered_unresolved = sorted(
+            unresolved,
+            key=lambda node: (
+                -int(node.inbound),
+                int(node.outbound),
+                node.group.lower(),
+                node.label.lower(),
+            ),
+        )
+        for node in ordered_unresolved:
+            parent_levels = [
+                levels[parent_key]
+                for parent_key in parents.get(node.key, set())
+                if parent_key in levels
+            ]
+            levels[node.key] = (max(parent_levels) + 1) if parent_levels else 0
+
+        for _ in range(max(2, len(nodes))):
+            changed = False
+            for parent_key, child_keys in children.items():
+                parent_level = levels.get(parent_key, 0)
+                for child_key in child_keys:
+                    wanted = parent_level + 1
+                    if wanted > levels.get(child_key, 0):
+                        levels[child_key] = wanted
+                        changed = True
+            if not changed:
+                break
+
+    if levels:
+        min_level = min(levels.values())
+        if min_level != 0:
+            for key in list(levels.keys()):
+                levels[key] = max(0, levels[key] - min_level)
+
+    return levels
+
+
+def _hier_group_nodes_by_level(
+    nodes: list[DependencyNode],
+    levels: dict[str, int],
+) -> dict[int, list[DependencyNode]]:
+    grouped: dict[int, list[DependencyNode]] = {}
+    for node in nodes:
+        grouped.setdefault(levels.get(node.key, 0), []).append(node)
+    return grouped
+
+
+def _hier_order_rows(
+    grouped: dict[int, list[DependencyNode]],
+    parents: dict[str, set[str]],
+    children: dict[str, set[str]],
+) -> list[tuple[int, list[DependencyNode]]]:
+    ordered_rows: list[tuple[int, list[DependencyNode]]] = []
+    previous_order: dict[str, float] = {}
+
+    for level in sorted(grouped):
+        row_nodes = list(grouped[level])
+
+        def sort_key(node: DependencyNode) -> tuple[float, int, int, str, str]:
+            parent_positions = [
+                previous_order[parent_key]
+                for parent_key in parents.get(node.key, set())
+                if parent_key in previous_order
+            ]
+            bary = (sum(parent_positions) / len(parent_positions)) if parent_positions else 999999.0
+            return (
+                bary,
+                -len(children.get(node.key, set())),
+                -int(node.inbound),
+                node.group.lower(),
+                node.label.lower(),
+            )
+
+        row_nodes.sort(key=sort_key)
+
+        current_order: dict[str, float] = {}
+        for index, node in enumerate(row_nodes):
+            current_order[node.key] = float(index)
+
+        previous_order = current_order
+        ordered_rows.append((level, row_nodes))
+
+    return ordered_rows
+
+
+def _hier_chunk_rows(
+    ordered_rows: list[tuple[int, list[DependencyNode]]],
+    *,
+    max_nodes_per_row: int = 8,
+    max_row_width_hint: float = 1680.0,
+    gap_x: float = 56.0,
+) -> list[tuple[int, list[DependencyNode]]]:
+    final_rows: list[tuple[int, list[DependencyNode]]] = []
+
+    for level, row_nodes in ordered_rows:
+        current: list[DependencyNode] = []
+        current_width = 0.0
+
+        for node in row_nodes:
+            node_width = float(max(NODE_MIN_WIDTH, node.width or NODE_MIN_WIDTH))
+            proposed = node_width if not current else (current_width + gap_x + node_width)
+
+            if current and (len(current) >= max_nodes_per_row or proposed > max_row_width_hint):
+                final_rows.append((level, current))
+                current = [node]
+                current_width = node_width
+            else:
+                current.append(node)
+                current_width = proposed
+
+        if current:
+            final_rows.append((level, current))
+
+    return final_rows
+
+
+def relayout_dependency_graph_as_layered_hierarchy(
+    graph: DependencyGraph,
+    state: AnalysisState,
+    layout: LayoutResult,
+    notify: Callable[[str, str], None],
+) -> LayoutResult:
+    """
+    Reacomoda el grafo visible como jerarquÃ­a por capas:
+    - dependencias/fundaciones arriba
+    - consumidores abajo
+    - sin columnas verticales tipo lane
+    - inspirado en mapas conceptuales por filas
+    """
+    if not layout.nodes:
+        return layout
+
+    notify("Relayout jerÃ¡rquico...", f"{len(layout.nodes)} nodos")
+
+    nodes = list(layout.nodes)
+    visible_keys = {node.key for node in nodes}
+    parents, children = _hier_visible_dependency_maps(graph, visible_keys)
+    levels = _hier_assign_levels(nodes, parents, children)
+    grouped = _hier_group_nodes_by_level(nodes, levels)
+    ordered_rows = _hier_order_rows(grouped, parents, children)
+    chunked_rows = _hier_chunk_rows(ordered_rows)
+
+    if not chunked_rows:
+        return layout
+
+    horizontal_gap = 56.0
+    top_y = float(TOP_MARGIN + 34.0)
+
+    row_widths: list[float] = []
+    max_row_width = 0.0
+    for _, row_nodes in chunked_rows:
+        row_width = sum(float(max(NODE_MIN_WIDTH, node.width or NODE_MIN_WIDTH)) for node in row_nodes)
+        if len(row_nodes) > 1:
+            row_width += horizontal_gap * (len(row_nodes) - 1)
+        row_widths.append(row_width)
+        max_row_width = max(max_row_width, row_width)
+
+    content_width = int(
+        max(
+            DEFAULT_LAYOUT_WIDTH,
+            max_row_width + LEFT_MARGIN + RIGHT_MARGIN + 180.0,
+        )
+    )
+
+    y = top_y
+    positioned: list[DependencyNode] = []
+
+    for row_index, (level, row_nodes) in enumerate(chunked_rows):
+        row_width = row_widths[row_index]
+        start_x = max(float(LEFT_MARGIN), (content_width - row_width) / 2.0)
+        x = start_x
+
+        for index_in_row, node in enumerate(row_nodes):
+            node.width = float(max(NODE_MIN_WIDTH, node.width or NODE_MIN_WIDTH))
+            node.x = x
+            node.y = y
+
+            node.metadata["layout_lane_key"] = f"hier:{level}"
+            node.metadata["layout_lane_label"] = f"Nivel {level + 1}"
+            node.metadata["layout_lane_x"] = start_x
+            node.metadata["layout_lane_width"] = row_width
+            node.metadata["layout_index_in_lane"] = index_in_row
+            node.metadata["layout_lane_role"] = "hierarchy"
+            node.metadata["layout_lane_density"] = "layered"
+            node.metadata["layout_lane_spacing_mode"] = "layered"
+            node.metadata["layout_lane_visual_emphasis"] = max(0.80, 1.0 - (level * 0.05))
+            node.metadata["visual_priority"] = level
+
+            positioned.append(node)
+            x += node.width + horizontal_gap
+
+        current_level = level
+        next_level = chunked_rows[row_index + 1][0] if row_index + 1 < len(chunked_rows) else None
+        if next_level == current_level:
+            y += NODE_HEIGHT + 74.0
+        else:
+            y += NODE_HEIGHT + 132.0
+
+    height = int(max(DEFAULT_LAYOUT_HEIGHT, y + BOTTOM_MARGIN + 24.0))
+
+    positioned.sort(key=lambda node: (node.y, node.x, node.label.lower()))
+
+    return LayoutResult(
+        nodes=positioned,
+        lanes=[],
+        width=content_width,
         height=height,
     )
 
@@ -8828,12 +10688,12 @@ def build_app_stylesheet(theme_id: str) -> str:
 
     QFrame#Shell {{
         background: {_qss_vertical_gradient(shell_top, shell_bottom)};
-        border: 1px solid {shell_border};
+        border: 0px solid transparent;
         border-radius: 28px;
     }}
 
     QFrame#Shell:hover {{
-        border: 1px solid {shell_rim};
+        border: 0px solid transparent;
     }}
 
     QFrame#Shell[variant="progress"] {{
@@ -9356,6 +11216,13 @@ class ResolvedEdgeVisual:
     tooltip: str
     layer: int
     emphasis: float
+    forensic_id: str = ""
+    source_label: str = ""
+    target_label: str = ""
+    forensic_summary: str = ""
+    forensic_evidence: tuple[str, ...] = field(default_factory=tuple)
+    overlay_x: float = 0.0
+    overlay_y: float = 0.0
 
 
 @dataclass(slots=True)
@@ -10798,13 +12665,57 @@ def _node_tooltip(node: DependencyNode, role: str) -> str:
     return " | ".join(parts)
 
 
+def _edge_evidence_lines(
+    edge: DependencyEdge,
+    *,
+    limit: int = EDGE_FORENSIC_EVIDENCE_LIMIT,
+) -> tuple[str, ...]:
+    cleaned: list[str] = []
+    for item in sorted(edge.evidence):
+        text = _clean_text(item)
+        if text:
+            cleaned.append(text)
+
+    if not cleaned:
+        return ("sin evidencia textual capturada",)
+
+    return tuple(cleaned[: max(1, int(limit))])
+
+
+def _edge_forensic_id(edge: DependencyEdge, source_label: str, target_label: str) -> str:
+    left = _clean_text(source_label or edge.source).lower().replace(" ", "_")
+    right = _clean_text(target_label or edge.target).lower().replace(" ", "_")
+    return _safe_short(f"{left}__to__{right}", 96)
+
+
+def _edge_forensic_summary(
+    edge: DependencyEdge,
+    *,
+    source_label: str,
+    target_label: str,
+    role: str,
+) -> str:
+    evidence = _edge_evidence_lines(edge, limit=3)
+    head = evidence[0] if evidence else "sin evidencia textual capturada"
+    return (
+        f"{source_label} -> {target_label} | "
+        f"role={role} | weight={int(edge.weight)} | "
+        f"evidence={len(_edge_evidence_lines(edge))} | "
+        f"first={head}"
+    )
+
+
 def _edge_tooltip(edge: DependencyEdge, graph: DependencyGraph, role: str) -> str:
     source = graph.nodes.get(edge.source)
     target = graph.nodes.get(edge.target)
     source_label = _clean_text(source.label if source else edge.source)
     target_label = _clean_text(target.label if target else edge.target)
-    evidence = sorted(edge.evidence)[:6]
-    base = f"{source_label} -> {target_label} | role={role} | weight={int(edge.weight)}"
+    forensic_id = _edge_forensic_id(edge, source_label, target_label)
+    evidence = _edge_evidence_lines(edge, limit=6)
+    base = (
+        f"{source_label} -> {target_label} | "
+        f"role={role} | weight={int(edge.weight)} | forensic={forensic_id}"
+    )
     if evidence:
         base += " | " + " | ".join(_clean_text(item) for item in evidence)
     return base
@@ -11006,6 +12917,12 @@ def _resolve_edge_visuals(
 
         role = _resolve_edge_role(edge, graph, state, focus_key)
         preset = _resolve_edge_preset(theme, role, edge)
+        x1, y1, x2, y2 = _node_anchor_points(source, target)
+        source_label = _clean_text(source.label or edge.source)
+        target_label = _clean_text(target.label or edge.target)
+        forensic_evidence = _edge_evidence_lines(edge)
+        forensic_id = _edge_forensic_id(edge, source_label, target_label)
+
         visuals.append(
             ResolvedEdgeVisual(
                 edge=edge,
@@ -11015,6 +12932,18 @@ def _resolve_edge_visuals(
                 tooltip=_edge_tooltip(edge, graph, role),
                 layer=preset.layer,
                 emphasis=_edge_emphasis(role, edge),
+                forensic_id=forensic_id,
+                source_label=source_label,
+                target_label=target_label,
+                forensic_summary=_edge_forensic_summary(
+                    edge,
+                    source_label=source_label,
+                    target_label=target_label,
+                    role=role,
+                ),
+                forensic_evidence=forensic_evidence,
+                overlay_x=((x1 + x2) / 2.0),
+                overlay_y=((y1 + y2) / 2.0),
             )
         )
 
@@ -11172,6 +13101,43 @@ def _build_semantic_defs(theme: SemanticTheme, width: int, height: int) -> str:
         .panel-meta {{
           font: 500 10px 'Segoe UI', Arial, sans-serif;
         }}
+
+        .edgeGroup .edge-hit {{
+          fill: none;
+          stroke: transparent;
+          stroke-width: 18;
+          pointer-events: stroke;
+        }}
+        .edgeGroup .edge-arrow-core {{
+          opacity: 0.0;
+          transition: opacity 120ms ease;
+        }}
+        .edgeGroup .edge-glow-core {{
+          opacity: 0.0;
+          transition: opacity 120ms ease;
+        }}
+        .edgeGroup .edge-forensic-card {{
+          opacity: 0.0;
+          pointer-events: none;
+          transition: opacity 120ms ease;
+        }}
+        .edgeGroup:hover .edge-arrow-core,
+        .edgeGroup:hover .edge-glow-core,
+        .edgeGroup:hover .edge-forensic-card {{
+          opacity: 1.0;
+        }}
+        .edge-forensic-title {{
+          font: 700 10.2px 'Segoe UI', Arial, sans-serif;
+          fill: {_escape(t['header_title'])};
+        }}
+        .edge-forensic-text {{
+          font: 600 9.2px 'Consolas', 'Cascadia Mono', monospace;
+          fill: {_escape(t['header_text'])};
+        }}
+        .edge-forensic-meta {{
+          font: 500 8.6px 'Segoe UI', Arial, sans-serif;
+          fill: {_escape(t['header_meta'])};
+        }}
       </style>
     </defs>
     """
@@ -11283,22 +13249,67 @@ def _draw_lane(resolved: ResolvedLaneVisual, canvas_height: int) -> str:
 def _draw_edge(resolved: ResolvedEdgeVisual) -> str:
     p = resolved.preset
     dash = f' stroke-dasharray="{_escape(p.dasharray)}"' if p.dasharray else ""
+    edge_dom_id = safe_slug(resolved.forensic_id or f"{resolved.edge.source}_{resolved.edge.target}")
+    evidence_lines = list(resolved.forensic_evidence[:4])
+    while len(evidence_lines) < 4:
+        evidence_lines.append("")
+
     glow = ""
     if p.glow and p.glow_opacity > 0.0:
         glow = (
-            f'<path d="{resolved.path_d}" fill="none" stroke="{_escape(p.glow)}" '
+            f'<path class="edge-glow-core" d="{resolved.path_d}" fill="none" stroke="{_escape(p.glow)}" '
             f'stroke-opacity="{p.glow_opacity:.3f}" stroke-width="{p.glow_width:.2f}" '
             f'stroke-linecap="round" filter="url(#glowSoft)"{dash} />'
         )
 
+    card_w = 272.0
+    line_count = 2 + len([item for item in evidence_lines if item.strip()])
+    card_h = 28.0 + (line_count * 12.0)
+    card_x = max(LEFT_MARGIN, resolved.overlay_x - (card_w / 2.0))
+    card_y = max(TOP_MARGIN - 6.0, resolved.overlay_y - card_h - 12.0)
+
+    forensic_card = ""
+    if ENABLE_EDGE_FORENSICS:
+        evidence_markup: list[str] = []
+        y = card_y + 34.0
+        if evidence_lines and evidence_lines[0].strip():
+            for item in evidence_lines:
+                if not item.strip():
+                    continue
+                evidence_markup.append(
+                    f'<text class="edge-forensic-text" x="{card_x + 10.0:.1f}" y="{y:.1f}">â€¢ {_escape(_safe_short(item, 72))}</text>'
+                )
+                y += 12.0
+
+        forensic_card = f"""
+      <g class="edge-forensic-card">
+        <rect x="{card_x:.1f}" y="{card_y:.1f}" width="{card_w:.1f}" height="{card_h:.1f}"
+              rx="12" ry="12"
+              fill="#070c16" fill-opacity="0.94"
+              stroke="{_escape(p.stroke)}" stroke-opacity="0.70" stroke-width="1.0" />
+        <text class="edge-forensic-title" x="{card_x + 10.0:.1f}" y="{card_y + 16.0:.1f}">{_escape(_safe_short(resolved.source_label + ' -> ' + resolved.target_label, 40))}</text>
+        <text class="edge-forensic-meta" x="{card_x + 10.0:.1f}" y="{card_y + 28.0:.1f}">{_escape(_safe_short(resolved.forensic_summary, 82))}</text>
+        {''.join(evidence_markup)}
+      </g>
+"""
+
     return f"""
-    <g class="edgeGroup">
+    <g class="edgeGroup" id="edge_{_escape(edge_dom_id)}"
+       data-edge-id="{_escape(resolved.forensic_id)}"
+       data-source="{_escape(resolved.source_label)}"
+       data-target="{_escape(resolved.target_label)}"
+       data-role="{_escape(resolved.role)}"
+       data-weight="{int(resolved.edge.weight)}"
+       data-evidence-count="{len(resolved.forensic_evidence)}">
       <title>{_escape(resolved.tooltip)}</title>
+      <desc>{_escape(resolved.forensic_summary)}</desc>
+      <path class="edge-hit" d="{resolved.path_d}" />
       {glow}
-      <path d="{resolved.path_d}" fill="none"
+      <path class="edge-arrow-core" d="{resolved.path_d}" fill="none"
             stroke="{_escape(p.stroke)}" stroke-opacity="{p.opacity:.3f}"
             stroke-width="{p.width:.2f}" stroke-linecap="round"
             marker-end="url(#{_escape(p.marker_id)})"{dash} />
+      {forensic_card}
     </g>
     """
 
@@ -11883,6 +13894,963 @@ def render_svg(
 </svg>
 """
 
+
+# ============================================================
+# 10.B VISUAL CONTROL LAYER (SIDECAR)
+# ============================================================
+
+VisualSurfaceKind = Literal[
+    "qt_ui",
+    "qt_backdrop",
+    "svg_theme",
+    "svg_panel",
+    "svg_render",
+    "pipeline",
+    "guide",
+]
+
+VisualRelationKind = Literal[
+    "drives",
+    "styles",
+    "renders",
+    "exports",
+    "points_to",
+    "owns",
+]
+
+VISUAL_CONTROL_OUTPUT_PREFIX = "visual_control_map"
+VISUAL_CONTROL_NOTE_GROUP = "visual_guide"
+VISUAL_CONTROL_MODULE_NAMESPACE = "visual"
+
+
+@dataclass(slots=True)
+class VisualTargetRef:
+    symbol: str
+    kind: str = "function"
+    path_hint: str = "code-atlas.py"
+    note: str = ""
+
+
+@dataclass(slots=True)
+class VisualControlSpec:
+    key: str
+    label: str
+    group: str
+    surface_kind: VisualSurfaceKind
+    description: str
+    why: str
+    how_to_change: str
+    targets: list[VisualTargetRef] = field(default_factory=list)
+    tips: list[str] = field(default_factory=list)
+    tags: tuple[str, ...] = field(default_factory=tuple)
+    priority: int = 50
+
+
+@dataclass(slots=True)
+class VisualControlEdgeSpec:
+    source: str
+    target: str
+    label: str
+    relation: VisualRelationKind = "drives"
+    weight: int = 1
+
+
+@dataclass(slots=True)
+class VisualControlArtifactPaths:
+    svg_path: Path
+    markdown_path: Path
+    json_path: Path
+    forensics_json_path: Path
+
+
+@dataclass(slots=True)
+class VisualControlExportResult:
+    paths: VisualControlArtifactPaths
+    graph: Any
+    state: Any
+    registry: dict[str, VisualControlSpec]
+    forensics_summary: dict[str, Any] = field(default_factory=dict)
+
+
+def _vc_clean_text(value: Any) -> str:
+    return " ".join(str(value or "").replace("\n", " ").split()).strip()
+
+
+def _vc_safe_slug(value: Any) -> str:
+    text = _vc_clean_text(value)
+    if not text:
+        return "graph"
+
+    forbidden = '<>:"/\\|?*'
+    safe = "".join(ch if ch not in forbidden else "_" for ch in text)
+    safe = safe.replace(" ", "_").strip("._")
+    return safe or "graph"
+
+
+def _vc_date_stamp() -> str:
+    return datetime.now().strftime("%Y%m%d_%H%M%S")
+
+
+def _vc_notify(notify: Optional[Callable[[str, str], None]], title: str, detail: str = "") -> None:
+    if callable(notify):
+        notify(title, detail)
+
+
+def _vc_output_dir(selected_path: str) -> Path:
+    resolver = globals().get("resolve_output_dir")
+    if callable(resolver):
+        return Path(resolver(selected_path))
+
+    base = Path(selected_path).expanduser().resolve()
+    if base.is_file():
+        base = base.parent
+    return base / "_dependency_graphs"
+
+
+def _vc_ensure_output_dir(path: Path) -> None:
+    ensure = globals().get("ensure_output_dir")
+    if callable(ensure):
+        ensure(path)
+        return
+    path.mkdir(parents=True, exist_ok=True)
+
+
+def _vc_module_key(spec_key: str) -> str:
+    maker = globals().get("make_module_key")
+    dotted = f"{VISUAL_CONTROL_MODULE_NAMESPACE}.{spec_key}"
+    if callable(maker):
+        return maker(dotted)
+    return f"module:{dotted}"
+
+
+def _vc_note_key(name: str) -> str:
+    return f"note:{VISUAL_CONTROL_NOTE_GROUP}:{_vc_safe_slug(name)}"
+
+
+def _vc_group_label(group: str) -> str:
+    return group.replace("_", " ").strip().title()
+
+
+def build_visual_control_specs() -> dict[str, VisualControlSpec]:
+    specs: list[VisualControlSpec] = [
+        VisualControlSpec(
+            key="qt_shadow_blur",
+            label="Qt Blur / Shadow",
+            group="ui_qt",
+            surface_kind="qt_ui",
+            description="Controla el blur, offset, alpha y color de sombras para cards, botones, shells y paneles Qt.",
+            why="Si quieres que una pieza se vea más suave, más elevada o más pesada visualmente, aquí es donde realmente se mueve la aguja.",
+            how_to_change="Ajusta blur, x_offset, y_offset, alpha y color en apply_shadow(...). Luego revisa dónde lo invocan header, form_card, preview_card, footer, hero, body y create_button(...).",
+            targets=[
+                VisualTargetRef("apply_shadow", "function", note="Motor principal de sombra Qt"),
+                VisualTargetRef("create_button", "function", note="Aplica shadow por variante de botón"),
+            ],
+            tips=[
+                "Más blur y menos alpha = sombra más premium y más difusa.",
+                "Más y_offset con blur medio = sensación de elevación.",
+                "Si el botón se siente muy pesado, baja alpha antes de bajar blur.",
+            ],
+            tags=("blur", "shadow", "elevation", "qt"),
+            priority=100,
+        ),
+        VisualControlSpec(
+            key="qt_stylesheet_shell",
+            label="Qt Panel / Shell Styles",
+            group="ui_qt",
+            surface_kind="qt_ui",
+            description="Define bordes, radius, rellenos, gradientes y acabados visuales de shell, cards, footer y chrome en PySide.",
+            why="Si quieres tocar marco, fondo, radio de esquinas o lectura visual de un panel Qt, esta es la mesa de mezclas correcta.",
+            how_to_change="Edita build_app_stylesheet(theme_id). Si el cambio es global, empieza ahí; si es local, luego afina el QFrame o property correspondiente en _build_ui().",
+            targets=[
+                VisualTargetRef("build_app_stylesheet", "function", note="Catálogo CSS de la UI PySide"),
+                VisualTargetRef("app_stylesheet", "function", note="Une base compartida + overrides locales"),
+            ],
+            tips=[
+                "Para cambiar paneles Qt, toca primero CSS y luego el layout solo si de plano hace falta.",
+                "Si quieres diferenciar hero/card/footer, usa sus properties card=hero|true|footer|muted.",
+            ],
+            tags=("panel", "frame", "radius", "border", "qt", "stylesheet"),
+            priority=98,
+        ),
+        VisualControlSpec(
+            key="qt_selector_progress_layout",
+            label="Qt Selector / Progress Assembly",
+            group="ui_qt",
+            surface_kind="qt_ui",
+            description="Ensamble real de header, form_card, preview_card, footer, hero, body y chips dentro de SelectorDialog y ProgressUI.",
+            why="Si preguntas '¿ese panel cuál es?', la respuesta vive aquí, no en el theme y no en el render SVG.",
+            how_to_change="Ubica el widget exacto en SelectorDialog._build_ui(), SelectorDialog._build_form_panel(), SelectorDialog._build_preview_panel() o ProgressUI._build_ui().",
+            targets=[
+                VisualTargetRef("SelectorDialog._build_ui", "method", note="Shell principal y cards del selector"),
+                VisualTargetRef("SelectorDialog._build_form_panel", "method", note="Panel izquierdo / opciones"),
+                VisualTargetRef("SelectorDialog._build_preview_panel", "method", note="Panel derecho / preview"),
+                VisualTargetRef("ProgressUI._build_ui", "method", note="Consola de progreso"),
+            ],
+            tips=[
+                "Si quieres mover o renombrar paneles Qt, empieza aquí.",
+                "Si el panel correcto ya está ubicado, luego te vas a stylesheet o apply_shadow según el tipo de ajuste.",
+            ],
+            tags=("selector", "progress", "panel", "widget", "qt"),
+            priority=95,
+        ),
+        VisualControlSpec(
+            key="qt_hover_and_dividers",
+            label="Qt Hover / Dividers / Micro-UX",
+            group="ui_qt",
+            surface_kind="qt_ui",
+            description="Controla hover de cards, repolish y separadores visuales secundarios en la UI PySide.",
+            why="Sirve cuando el look general ya está bien, pero quieres afinar la respuesta al mouse y el micro-ritmo visual.",
+            how_to_change="Ajusta enable_card_hover(...), _HoverCardFilter y make_separator(). Si el widget necesita reaccionar más o menos, este es el corredor correcto.",
+            targets=[
+                VisualTargetRef("enable_card_hover", "function"),
+                VisualTargetRef("_HoverCardFilter", "class"),
+                VisualTargetRef("make_separator", "function"),
+                VisualTargetRef("repolish", "function"),
+            ],
+            tips=[
+                "Hover excesivo rompe elegancia antes que ayudar.",
+                "Los separadores ayudan más por contraste que por grosor.",
+            ],
+            tags=("hover", "divider", "separator", "micro ux", "qt"),
+            priority=72,
+        ),
+        VisualControlSpec(
+            key="qt_window_chrome",
+            label="Qt Window Chrome / Resize",
+            group="ui_qt",
+            surface_kind="qt_ui",
+            description="Barra de ventana, drag, maximize/restore y esquinas de resize para diálogos frameless.",
+            why="Cuando quieres tocar controles de ventana o sensación de app flotante, esto no vive en el backdrop ni en el stylesheet normal del panel.",
+            how_to_change="Edita WindowChromeBar, FramelessResizeController y _FramelessResizeCorner. Ahí vive el comportamiento del marco vivo.",
+            targets=[
+                VisualTargetRef("WindowChromeBar", "class"),
+                VisualTargetRef("FramelessResizeController", "class"),
+                VisualTargetRef("_FramelessResizeCorner", "class"),
+            ],
+            tips=[
+                "Si solo quieres color o fondo del chrome, ve primero a build_app_stylesheet().",
+                "Si quieres comportamiento, ve a estas clases, no al theme.",
+            ],
+            tags=("window", "chrome", "resize", "frameless", "qt"),
+            priority=68,
+        ),
+        VisualControlSpec(
+            key="qt_backdrop_palette",
+            label="Glass Backdrop Palette",
+            group="qt_backdrop",
+            surface_kind="qt_backdrop",
+            description="Paleta, mezclas, halos y decisión de variante selector/progress para el fondo glass de PySide.",
+            why="Si el mood del backdrop se siente demasiado frío, saturado o plano, aquí nace esa atmósfera.",
+            how_to_change="Modifica _glass_palette(...), _qcolor_from_value(...) y _is_silver_theme_id(...). Este bloque define el lenguaje cromático del backdrop.",
+            targets=[
+                VisualTargetRef("_glass_palette", "function"),
+                VisualTargetRef("_qcolor_from_value", "function"),
+                VisualTargetRef("_is_silver_theme_id", "function"),
+            ],
+            tips=[
+                "Si quieres cambio global del backdrop, toca paleta antes que paintEvent().",
+                "Los halos y sheens nacen aquí, no en build_app_stylesheet().",
+            ],
+            tags=("backdrop", "glass", "palette", "halo", "qt"),
+            priority=92,
+        ),
+        VisualControlSpec(
+            key="qt_backdrop_painter",
+            label="Glass Backdrop Painter",
+            group="qt_backdrop",
+            surface_kind="qt_backdrop",
+            description="Motor de dibujo del fondo glass: orbs, stars, spark flashes, sheen, vignette y campos de plata.",
+            why="Si quieres mover brillo, partículas, trayectorias o densidad del fondo, éste es el taller correcto.",
+            how_to_change="Ajusta FrostedGlassBackdrop.paintEvent(...) y sus helpers _orb_specs, _paint_stars, _paint_spark_flashes, _paint_silver_field y bandas asociadas.",
+            targets=[
+                VisualTargetRef("FrostedGlassBackdrop.paintEvent", "method"),
+                VisualTargetRef("FrostedGlassBackdrop._orb_specs", "method"),
+                VisualTargetRef("FrostedGlassBackdrop._paint_stars", "method"),
+                VisualTargetRef("FrostedGlassBackdrop._paint_spark_flashes", "method"),
+                VisualTargetRef("FrostedGlassBackdrop._paint_silver_field", "method"),
+            ],
+            tips=[
+                "Color = paleta. Movimiento y densidad = painter.",
+                "Si algo parpadea demasiado, suele estar aquí y no en el theme SVG.",
+            ],
+            tags=("backdrop", "particles", "stars", "glass", "qt"),
+            priority=94,
+        ),
+        VisualControlSpec(
+            key="svg_theme_root",
+            label="SVG Theme Root",
+            group="svg_theme",
+            surface_kind="svg_theme",
+            description="Raíz del contrato visual semántico del SVG. De aquí nacen presets de nodos, edges, lanes, panels, badges, markers y defs.",
+            why="Si el cambio es global y semántico, no se corrige parche por parche: se baja aquí y se propaga bonito.",
+            how_to_change="Empieza por _build_semantic_theme(...), ThemeBundle y resolve_render_theme(...). Este bloque decide qué bundle manda en render.",
+            targets=[
+                VisualTargetRef("ThemeBundle", "class"),
+                VisualTargetRef("_build_semantic_theme", "function"),
+                VisualTargetRef("resolve_render_theme", "function"),
+            ],
+            tips=[
+                "Tema completo = aquí. Ajuste puntual de panel SVG = _build_panel_presets().",
+                "No metas reglas de tema Qt aquí; esto gobierna el SVG semántico.",
+            ],
+            tags=("theme", "bundle", "svg", "semantic"),
+            priority=100,
+        ),
+        VisualControlSpec(
+            key="svg_panel_presets",
+            label="SVG Panel Presets",
+            group="svg_theme",
+            surface_kind="svg_panel",
+            description="Preset de header, legend, footer y warning del SVG con fill, stroke, text_fill, meta_fill, opacity y glow.",
+            why="Si la pregunta es 'quiero ese panel del SVG diferente', esta es la respuesta más directa.",
+            how_to_change="Edita _build_panel_presets(tokens). Cambia fill/stroke/text_fill/meta_fill/fill_opacity según el panel que quieras afinar.",
+            targets=[
+                VisualTargetRef("_build_panel_presets", "function"),
+            ],
+            tips=[
+                "Panel de SVG no es igual a panel de Qt. No cruces cables.",
+                "Header/legend/footer/warning salen de este catálogo.",
+            ],
+            tags=("svg", "panel", "legend", "header", "footer", "warning"),
+            priority=97,
+        ),
+        VisualControlSpec(
+            key="svg_filters",
+            label="SVG Filters / Glow",
+            group="svg_theme",
+            surface_kind="svg_theme",
+            description="Define glow, edge blur y node shadow del SVG mediante filters y preset intensities.",
+            why="Si quieres blur, glow o shadow del artefacto SVG final, aquí vive la perilla real.",
+            how_to_change="Ajusta _build_filters(bundle) y sus intensidades derivadas de effect_presets. Este bloque transforma presets en filtros SVG reales.",
+            targets=[
+                VisualTargetRef("_build_filters", "function"),
+            ],
+            tips=[
+                "Blur del SVG no pasa por apply_shadow().",
+                "Si el SVG está muy neón, baja glow_intensity o stdDeviation aquí.",
+            ],
+            tags=("svg", "filter", "glow", "blur", "shadow"),
+            priority=99,
+        ),
+        VisualControlSpec(
+            key="svg_theme_defs",
+            label="SVG Theme Defs",
+            group="svg_theme",
+            surface_kind="svg_theme",
+            description="Empaqueta gradients, grid pattern, filters, markers y CSS final en el bloque <defs> del SVG temático.",
+            why="Si un asset visual del theme no aparece en render, suele faltarle camino por aquí.",
+            how_to_change="Edita _build_theme_svg_defs(bundle) y revisa _build_gradients, _build_grid_pattern, _build_filters, _build_markers y _build_theme_css.",
+            targets=[
+                VisualTargetRef("_build_theme_svg_defs", "function"),
+                VisualTargetRef("_build_gradients", "function"),
+                VisualTargetRef("_build_grid_pattern", "function"),
+                VisualTargetRef("_build_markers", "function"),
+                VisualTargetRef("_build_theme_css", "function"),
+            ],
+            tips=[
+                "Si el preset existe pero no se ve, sigue la cadena hasta defs.",
+            ],
+            tags=("svg", "defs", "gradient", "marker", "css"),
+            priority=91,
+        ),
+        VisualControlSpec(
+            key="svg_header_legend_footer",
+            label="SVG Panels Drawn",
+            group="svg_render",
+            surface_kind="svg_panel",
+            description="Dibujo concreto de header, warning panel, legend, visibility panel y footer del SVG final.",
+            why="Aquí se decide geometría real, copy, tamaños y composición de paneles ya en pantalla.",
+            how_to_change="Toca _draw_header(...), _draw_warning_panel(...), _draw_legend(...), _draw_visibility_panel(...) y _draw_footer(...).",
+            targets=[
+                VisualTargetRef("_draw_header", "function"),
+                VisualTargetRef("_draw_warning_panel", "function"),
+                VisualTargetRef("_draw_legend", "function"),
+                VisualTargetRef("_draw_visibility_panel", "function"),
+                VisualTargetRef("_draw_footer", "function"),
+            ],
+            tips=[
+                "Preset define color. Draw decide tamaño, copy y posición.",
+            ],
+            tags=("svg", "header", "legend", "footer", "panel"),
+            priority=96,
+        ),
+        VisualControlSpec(
+            key="svg_nodes",
+            label="SVG Nodes Composition",
+            group="svg_render",
+            surface_kind="svg_render",
+            description="Resuelve la semántica visual de nodos y los dibuja con icono, label, subtitle, badges, chips y layers.",
+            why="Si quieres que 'el cuadrito' cambie de carácter, densidad o composición interna, este bloque manda.",
+            how_to_change="Modifica _resolve_node_visuals(...), _draw_nodes(...), _draw_single_node(...), _draw_role_chip(...) y _draw_badges(...).",
+            targets=[
+                VisualTargetRef("_resolve_node_visuals", "function"),
+                VisualTargetRef("_draw_nodes", "function"),
+                VisualTargetRef("_draw_single_node", "function"),
+                VisualTargetRef("_draw_role_chip", "function"),
+                VisualTargetRef("_draw_badges", "function"),
+            ],
+            tips=[
+                "Color/preset del nodo nace en theme. La anatomía visual del nodo vive aquí.",
+            ],
+            tags=("svg", "nodes", "badges", "chips", "labels"),
+            priority=97,
+        ),
+        VisualControlSpec(
+            key="svg_edges",
+            label="SVG Edges Composition",
+            group="svg_render",
+            surface_kind="svg_render",
+            description="Calcula y dibuja caminos, capas, tooltip, evidencia y acentos visuales de las relaciones del SVG.",
+            why="Si quieres líneas más tensas, suaves, prominentes o trazables a nivel forense, aquí está el telar.",
+            how_to_change="Edita _resolve_edge_visuals(...), _draw_edges(...), _draw_edge(...) y los presets que estos consumen.",
+            targets=[
+                VisualTargetRef("_resolve_edge_visuals", "function"),
+                VisualTargetRef("_draw_edges", "function"),
+                VisualTargetRef("_draw_edge", "function", note="Aquí vive el hover forense y la tarjeta de evidencia"),
+            ],
+            tips=[
+                "Si solo quieres glow de edge, revisa _build_filters(). Si quieres forma, layering y evidencia visual, ven acá.",
+            ],
+            tags=("svg", "edges", "relations", "paths", "forensics"),
+            priority=90,
+        ),
+        VisualControlSpec(
+            key="svg_lanes",
+            label="SVG Lanes Composition",
+            group="svg_render",
+            surface_kind="svg_render",
+            description="Resuelve y dibuja carriles, headers de lane y bandas de contexto dentro del SVG final.",
+            why="Si la pregunta es 'ese bloque vertical dónde se controla', la respuesta está aquí.",
+            how_to_change="Edita _resolve_lane_visuals(...), _draw_lanes(...) y presets de lanes en el theme.",
+            targets=[
+                VisualTargetRef("_resolve_lane_visuals", "function"),
+                VisualTargetRef("_draw_lanes", "function"),
+            ],
+            tips=[
+                "Layout decide distribución. draw_lanes decide presencia visual del carril.",
+            ],
+            tags=("svg", "lanes", "bands", "columns"),
+            priority=88,
+        ),
+        VisualControlSpec(
+            key="svg_orchestrator",
+            label="SVG Render Orchestrator",
+            group="svg_render",
+            surface_kind="svg_render",
+            description="Orquesta tema, capas, ancho/alto, fondo, header, legend, warning, lanes, edges, nodes y footer para producir el SVG final.",
+            why="Si quieres entender dónde entra todo al horno final, esta función es la cocina completa.",
+            how_to_change="Usa render_svg(...) como punto de verdad para todo el render. Aquí se enchufan theme, defs, draw functions y canvas global.",
+            targets=[
+                VisualTargetRef("render_svg", "function"),
+            ],
+            tips=[
+                "Cuando el cambio ya toca composición final o sidebars, entra por render_svg(...).",
+            ],
+            tags=("svg", "render", "orchestrator", "canvas"),
+            priority=100,
+        ),
+        VisualControlSpec(
+            key="pipeline_output",
+            label="Pipeline Output",
+            group="pipeline",
+            surface_kind="pipeline",
+            description="Punto donde el pipeline calcula layout, renderiza el SVG y escribe el archivo final en disco.",
+            why="Es el mejor punto para colgar una capa nueva sin reventar discovery ni el layout original.",
+            how_to_change="Hook recomendado: después de layout_dependency_graph(...) y antes o después de write_svg(...), según quieras sidecar o híbrido. También puedes exportar una guía paralela desde main().",
+            targets=[
+                VisualTargetRef("layout_dependency_graph", "function"),
+                VisualTargetRef("write_svg", "function"),
+                VisualTargetRef("main", "function"),
+            ],
+            tips=[
+                "Si quieres añadir una capa nueva sin tocar demasiado, este es el injerto más limpio.",
+            ],
+            tags=("pipeline", "output", "layout", "write", "hook"),
+            priority=100,
+        ),
+        VisualControlSpec(
+            key="visual_sidecar_exports",
+            label="Visual Guide Sidecar Exports",
+            group="pipeline",
+            surface_kind="guide",
+            description="Exporta sidecar SVG + JSON + Markdown con el mapa de control visual, sin tocar el análisis de dependencias real.",
+            why="Es la forma limpia de añadir la capa nueva: paralela, auditable y fácil de apagar o encender.",
+            how_to_change="Usa export_visual_control_sidecar(...) y cuélgalo después del write_svg(...) principal o detrás de un flag. Así no invades el core.",
+            targets=[
+                VisualTargetRef("export_visual_control_sidecar", "function", note="Nueva API recomendada"),
+                VisualTargetRef("render_visual_control_markdown", "function", note="Nueva guía Markdown"),
+                VisualTargetRef("render_visual_control_svg_markup", "function", note="Nuevo render sidecar SVG"),
+            ],
+            tips=[
+                "Sidecar separado = menos riesgo y más claridad.",
+            ],
+            tags=("sidecar", "markdown", "json", "svg", "guide"),
+            priority=100,
+        ),
+    ]
+    return {spec.key: spec for spec in specs}
+
+
+def build_visual_control_edges() -> list[VisualControlEdgeSpec]:
+    return [
+        VisualControlEdgeSpec("qt_stylesheet_shell", "qt_selector_progress_layout", "styles"),
+        VisualControlEdgeSpec("qt_shadow_blur", "qt_selector_progress_layout", "shadows"),
+        VisualControlEdgeSpec("qt_hover_and_dividers", "qt_selector_progress_layout", "micro-ux"),
+        VisualControlEdgeSpec("qt_window_chrome", "qt_selector_progress_layout", "wraps"),
+        VisualControlEdgeSpec("qt_backdrop_palette", "qt_backdrop_painter", "feeds"),
+        VisualControlEdgeSpec("qt_backdrop_painter", "qt_selector_progress_layout", "backdrops"),
+        VisualControlEdgeSpec("svg_theme_root", "svg_panel_presets", "builds"),
+        VisualControlEdgeSpec("svg_theme_root", "svg_filters", "builds"),
+        VisualControlEdgeSpec("svg_theme_root", "svg_theme_defs", "packages"),
+        VisualControlEdgeSpec("svg_theme_root", "svg_nodes", "styles"),
+        VisualControlEdgeSpec("svg_theme_root", "svg_edges", "styles"),
+        VisualControlEdgeSpec("svg_theme_root", "svg_lanes", "styles"),
+        VisualControlEdgeSpec("svg_panel_presets", "svg_header_legend_footer", "skins"),
+        VisualControlEdgeSpec("svg_filters", "svg_theme_defs", "injects"),
+        VisualControlEdgeSpec("svg_theme_defs", "svg_orchestrator", "mounts defs"),
+        VisualControlEdgeSpec("svg_nodes", "svg_orchestrator", "renders nodes"),
+        VisualControlEdgeSpec("svg_edges", "svg_orchestrator", "renders edges"),
+        VisualControlEdgeSpec("svg_lanes", "svg_orchestrator", "renders lanes"),
+        VisualControlEdgeSpec("svg_header_legend_footer", "svg_orchestrator", "renders panels"),
+        VisualControlEdgeSpec("pipeline_output", "visual_sidecar_exports", "hosts sidecar"),
+        VisualControlEdgeSpec("svg_orchestrator", "visual_sidecar_exports", "reused by"),
+        VisualControlEdgeSpec("pipeline_output", "svg_orchestrator", "calls"),
+    ]
+
+
+def build_visual_control_mermaid() -> str:
+    specs = build_visual_control_specs()
+    edges = build_visual_control_edges()
+
+    groups: dict[str, list[VisualControlSpec]] = {}
+    for spec in specs.values():
+        groups.setdefault(spec.group, []).append(spec)
+
+    lines = ["graph TD"]
+    for group_name, items in groups.items():
+        lines.append(f"  subgraph {group_name}[{_vc_group_label(group_name)}]")
+        for spec in sorted(items, key=lambda item: (-item.priority, item.label.lower())):
+            lines.append(f"    {spec.key}[\"{spec.label}\"]")
+        lines.append("  end")
+
+    for edge in edges:
+        lines.append(f"  {edge.source} -->|{edge.label}| {edge.target}")
+
+    return "\n".join(lines)
+
+
+def _visual_control_note_specs() -> list[tuple[str, str]]:
+    return [
+        ("Guía • blur/sombra → apply_shadow / create_button", "Si quieres blur o sombra Qt, empieza por apply_shadow(...) y luego revisa dónde se invoca."),
+        ("Guía • marco/fondo Qt → build_app_stylesheet", "Si quieres tocar marco, borde, radius o background de panel Qt, empieza por build_app_stylesheet(...)."),
+        ("Guía • backdrop glass → _glass_palette / FrostedGlassBackdrop", "Paleta del backdrop en _glass_palette(...); movimiento y partículas en FrostedGlassBackdrop."),
+        ("Guía • glow/blur SVG → _build_filters", "Glow, blur y shadow del SVG viven en _build_filters(...), no en apply_shadow(...)."),
+        ("Guía • panel SVG → _build_panel_presets / _draw_header|legend|footer", "Preset define skin; draw define geometría y copy."),
+        ("Guía • tema completo → _build_semantic_theme", "Si el cambio es global y semántico, baja a _build_semantic_theme(...)."),
+    ]
+
+
+def build_visual_control_dependency_graph(*, include_notes: bool = True) -> Any:
+    graph_cls = globals().get("DependencyGraph")
+    if graph_cls is None:
+        raise RuntimeError("DependencyGraph no está disponible. Esta capa debe vivir dentro de code-atlas.py o importar su core.")
+
+    graph = graph_cls()
+    specs = build_visual_control_specs()
+
+    for spec in specs.values():
+        targets_summary = ", ".join(target.symbol for target in spec.targets)
+        graph.upsert_node(
+            key=_vc_module_key(spec.key),
+            label=spec.label,
+            path=targets_summary or spec.group,
+            kind="module",
+            group=spec.group,
+            metadata={
+                "module_name": f"{VISUAL_CONTROL_MODULE_NAMESPACE}.{spec.key}",
+                "relative_path": targets_summary,
+                "root_group": spec.group,
+                "visual_control": True,
+                "visual_key": spec.key,
+                "visual_description": spec.description,
+                "visual_why": spec.why,
+                "visual_how_to_change": spec.how_to_change,
+                "visual_targets": [
+                    {
+                        "symbol": target.symbol,
+                        "kind": target.kind,
+                        "path_hint": target.path_hint,
+                        "note": target.note,
+                    }
+                    for target in spec.targets
+                ],
+                "visual_tips": list(spec.tips),
+                "visual_tags": list(spec.tags),
+                "visual_priority": spec.priority,
+            },
+        )
+
+    for edge in build_visual_control_edges():
+        graph.add_edge(
+            _vc_module_key(edge.source),
+            _vc_module_key(edge.target),
+            kind="import",
+            evidence=edge.label,
+        )
+
+    if include_notes:
+        for index, (title, message) in enumerate(_visual_control_note_specs(), start=1):
+            graph.upsert_node(
+                key=_vc_note_key(f"guide_{index}"),
+                label=title,
+                path="visual control guide",
+                kind="note",
+                group=VISUAL_CONTROL_NOTE_GROUP,
+                metadata={
+                    "full_message": message,
+                    "issue_level": "info",
+                    "issue_code": f"visual_guide_{index}",
+                    "issue_path": "visual-control",
+                    "root_group": VISUAL_CONTROL_NOTE_GROUP,
+                },
+            )
+
+    graph.finalize_metrics()
+    return graph
+
+
+def build_visual_control_state(
+    *,
+    selected_path: str,
+    theme_id: str,
+    view: GraphView = "module",
+    focus_target: str = "",
+) -> Any:
+    state_cls = globals().get("AnalysisState")
+    if state_cls is None:
+        raise RuntimeError("AnalysisState no está disponible. Esta capa debe vivir dentro de code-atlas.py o importar su core.")
+
+    root_resolver = globals().get("derive_project_root")
+    project_root = selected_path
+    if callable(root_resolver):
+        try:
+            project_root = str(root_resolver(selected_path))
+        except Exception:
+            project_root = selected_path
+
+    state = state_cls(
+        selected_path=str(selected_path),
+        project_root=str(project_root),
+        theme=_vc_clean_text(theme_id) or "silver_frost_cyan",
+        view=view,
+        focus_target=_vc_clean_text(focus_target),
+        visibility_preset="raw",
+    )
+    return state
+
+
+def _visual_control_file_stem(selected_path: str, theme_id: str) -> str:
+    base_name = Path(selected_path).expanduser().name if _vc_clean_text(selected_path) else "workspace"
+    base_name = _vc_safe_slug(base_name or "workspace")
+    theme_part = _vc_safe_slug(theme_id or "theme")
+    return f"{VISUAL_CONTROL_OUTPUT_PREFIX}_{base_name}_{theme_part}_{_vc_date_stamp()}"
+
+
+def build_visual_control_output_paths(selected_path: str, theme_id: str) -> VisualControlArtifactPaths:
+    out_dir = _vc_output_dir(selected_path)
+    _vc_ensure_output_dir(out_dir)
+    stem = _visual_control_file_stem(selected_path, theme_id)
+    return VisualControlArtifactPaths(
+        svg_path=out_dir / f"{stem}.svg",
+        markdown_path=out_dir / f"{stem}.md",
+        json_path=out_dir / f"{stem}.json",
+        forensics_json_path=out_dir / f"{stem}.forensics.json",
+    )
+
+
+def build_visual_control_registry_payload(registry: dict[str, VisualControlSpec]) -> dict[str, Any]:
+    return {
+        "generated_at": datetime.now().isoformat(timespec="seconds"),
+        "forensics": {
+            "enabled": bool(ENABLE_EDGE_FORENSICS),
+            "scope": "svg_edges",
+            "what_it_adds": [
+                "edge forensic id",
+                "hover card with evidence",
+                "json export with source-target evidence",
+                "svg data-* attributes per relation",
+            ],
+        },
+        "controls": [
+            {
+                "key": spec.key,
+                "label": spec.label,
+                "group": spec.group,
+                "surface_kind": spec.surface_kind,
+                "description": spec.description,
+                "why": spec.why,
+                "how_to_change": spec.how_to_change,
+                "targets": [
+                    {
+                        "symbol": target.symbol,
+                        "kind": target.kind,
+                        "path_hint": target.path_hint,
+                        "note": target.note,
+                    }
+                    for target in spec.targets
+                ],
+                "tips": list(spec.tips),
+                "tags": list(spec.tags),
+                "priority": spec.priority,
+            }
+            for spec in sorted(registry.values(), key=lambda item: (-item.priority, item.group, item.label.lower()))
+        ],
+        "edges": [
+            {
+                "source": edge.source,
+                "target": edge.target,
+                "label": edge.label,
+                "relation": edge.relation,
+                "weight": edge.weight,
+            }
+            for edge in build_visual_control_edges()
+        ],
+    }
+
+
+def write_visual_control_json(paths: VisualControlArtifactPaths, registry: dict[str, VisualControlSpec]) -> None:
+    payload = build_visual_control_registry_payload(registry)
+    paths.json_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+
+
+def build_edge_forensic_payload(graph: Any) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    iter_edges = getattr(graph, "iter_edges_sorted", None)
+    nodes = getattr(graph, "nodes", {}) or {}
+
+    if not callable(iter_edges):
+        return rows
+
+    for edge in iter_edges():
+        source = nodes.get(edge.source)
+        target = nodes.get(edge.target)
+        source_label = _clean_text(source.label if source else edge.source)
+        target_label = _clean_text(target.label if target else edge.target)
+        evidence = list(_edge_evidence_lines(edge, limit=EDGE_FORENSIC_EVIDENCE_LIMIT))
+
+        rows.append(
+            {
+                "edge_id": _edge_forensic_id(edge, source_label, target_label),
+                "source_key": edge.source,
+                "target_key": edge.target,
+                "source_label": source_label,
+                "target_label": target_label,
+                "kind": _clean_text(edge.kind),
+                "weight": int(edge.weight),
+                "evidence_count": len(tuple(sorted(edge.evidence))),
+                "evidence": evidence,
+                "summary": _edge_forensic_summary(
+                    edge,
+                    source_label=source_label,
+                    target_label=target_label,
+                    role="forensic",
+                ),
+            }
+        )
+
+    return rows
+
+
+def write_visual_control_forensics_json(paths: VisualControlArtifactPaths, graph: Any) -> dict[str, Any]:
+    edges = build_edge_forensic_payload(graph)
+    payload = {
+        "generated_at": datetime.now().isoformat(timespec="seconds"),
+        "edge_count": len(edges),
+        "edges": edges,
+    }
+    paths.forensics_json_path.write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    return payload
+
+
+def _render_visual_control_summary_markdown(registry: dict[str, VisualControlSpec]) -> str:
+    lines = [
+        "| Key | Label | Grupo | Si quieres tocar... | Targets |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for spec in sorted(registry.values(), key=lambda item: (-item.priority, item.group, item.label.lower())):
+        first_target = spec.targets[0].symbol if spec.targets else "-"
+        lines.append(
+            f"| `{spec.key}` | {spec.label} | `{spec.group}` | {spec.description} | `{first_target}` |"
+        )
+    return "\n".join(lines)
+
+
+def _render_visual_control_detail_markdown(registry: dict[str, VisualControlSpec]) -> str:
+    blocks: list[str] = []
+    for spec in sorted(registry.values(), key=lambda item: (-item.priority, item.group, item.label.lower())):
+        blocks.append(f"## {spec.label}")
+        blocks.append("")
+        blocks.append(f"**Grupo:** `{spec.group}`  ")
+        blocks.append(f"**Surface kind:** `{spec.surface_kind}`  ")
+        blocks.append(f"**Por qué existe:** {spec.why}")
+        blocks.append("")
+        blocks.append(f"**Qué controla:** {spec.description}")
+        blocks.append("")
+        blocks.append(f"**Cómo moverle:** {spec.how_to_change}")
+        blocks.append("")
+        blocks.append("**Targets reales:**")
+        blocks.append("")
+        for target in spec.targets:
+            note = f" - {target.note}" if target.note else ""
+            blocks.append(f"- `{target.symbol}` ({target.kind}){note}")
+        if spec.tips:
+            blocks.append("")
+            blocks.append("**Tips:**")
+            blocks.append("")
+            for tip in spec.tips:
+                blocks.append(f"- {tip}")
+        if spec.tags:
+            blocks.append("")
+            tags_line = ", ".join(f"`{tag}`" for tag in spec.tags)
+            blocks.append(f"**Tags:** {tags_line}")
+        blocks.append("")
+    return "\n".join(blocks).strip()
+
+
+def render_visual_control_markdown(*, selected_path: str, theme_id: str) -> str:
+    registry = build_visual_control_specs()
+    mermaid = build_visual_control_mermaid()
+    summary_table = _render_visual_control_summary_markdown(registry)
+    details = _render_visual_control_detail_markdown(registry)
+
+    return f"""# Visual Control Map Layer
+
+## Qué es
+
+Esta capa nueva **no toca el análisis de dependencias real**. Vive como sidecar y explica dónde modificar cada cosa visual del sistema.
+
+Objetivo:
+
+- saber **qué bloque tocar** si quieres cambiar blur, marco, panel, glow, backdrop o tema
+- generar un **SVG lateral** usando el motor existente (`layout_dependency_graph(...)` + `render_svg(...)`)
+- exponer un **trazador forense de relaciones** para saber por qué existe cada edge
+- exportar **JSON + Markdown** para que Codex o cualquier otra herramienta lo pueda ensamblar sin destruir el core
+
+## Estrategia de injerto
+
+Hook recomendado:
+
+1. corres el pipeline normal
+2. generas el SVG real del grafo
+3. llamas `export_visual_control_sidecar(...)`
+4. te deja un sidecar con:
+   - mapa visual en SVG
+   - registry en JSON
+   - guía en Markdown
+   - forensics JSON por relación
+
+Así la capa es **paralela**, **auditable** y fácil de apagar.
+
+## Grafo conceptual
+
+```mermaid
+{mermaid}
+```
+
+## Tabla rápida
+
+{summary_table}
+
+## Detalle de controles
+
+{details}
+""".strip() + "\n"
+
+
+def render_visual_control_svg_markup(
+    *,
+    selected_path: str,
+    theme_id: str,
+    notify: Optional[Callable[[str, str], None]] = None,
+) -> tuple[str, Any, Any, dict[str, VisualControlSpec]]:
+    registry = build_visual_control_specs()
+    graph = build_visual_control_dependency_graph(include_notes=True)
+    state = build_visual_control_state(
+        selected_path=selected_path,
+        theme_id=theme_id,
+        view="module",
+        focus_target="",
+    )
+
+    _vc_notify(notify, "Preparando sidecar visual...", f"{len(graph.nodes)} nodos")
+
+    enrich = globals().get("enrich_graph_for_presentation")
+    if callable(enrich):
+        graph = enrich(graph, state)
+
+    simplify = globals().get("simplify_visible_graph")
+    if callable(simplify):
+        graph = simplify(graph, state)
+
+    ensure_visible = globals().get("_ensure_graph_has_visible_content")
+    if callable(ensure_visible):
+        graph = ensure_visible(graph, state)
+
+    layout_fn = globals().get("layout_dependency_graph")
+    render_fn = globals().get("render_svg")
+    if not callable(layout_fn) or not callable(render_fn):
+        raise RuntimeError("layout_dependency_graph(...) y render_svg(...) son obligatorios para el sidecar visual.")
+
+    layout = layout_fn(graph, state, notify or (lambda *_args: None))
+    svg_markup = render_fn(graph, layout, state, notify or (lambda *_args: None))
+    return svg_markup, graph, state, registry
+
+
+def export_visual_control_sidecar(
+    *,
+    selected_path: str,
+    theme_id: str,
+    notify: Optional[Callable[[str, str], None]] = None,
+) -> VisualControlExportResult:
+    paths = build_visual_control_output_paths(selected_path, theme_id)
+
+    _vc_notify(notify, "Renderizando sidecar visual...", str(paths.svg_path))
+    svg_markup, graph, state, registry = render_visual_control_svg_markup(
+        selected_path=selected_path,
+        theme_id=theme_id,
+        notify=notify,
+    )
+
+    paths.svg_path.write_text(svg_markup, encoding="utf-8")
+    _vc_notify(notify, "SVG visual guardado.", str(paths.svg_path))
+
+    write_visual_control_json(paths, registry)
+    _vc_notify(notify, "Registry visual guardado.", str(paths.json_path))
+
+    forensic_payload = write_visual_control_forensics_json(paths, graph)
+    _vc_notify(notify, "Forensics JSON guardado.", str(paths.forensics_json_path))
+
+    markdown = render_visual_control_markdown(
+        selected_path=selected_path,
+        theme_id=theme_id,
+    )
+    paths.markdown_path.write_text(markdown, encoding="utf-8")
+    _vc_notify(notify, "Markdown visual guardado.", str(paths.markdown_path))
+
+    return VisualControlExportResult(
+        paths=paths,
+        graph=graph,
+        state=state,
+        registry=registry,
+        forensics_summary={
+            "edge_count": int(forensic_payload.get("edge_count", 0)),
+            "path": str(paths.forensics_json_path),
+        },
+    )
+
 # 11. ORQUESTACION PRINCIPAL
 # ============================================================
 
@@ -12101,6 +15069,22 @@ def _make_progress_notifier(progress: object | None) -> Callable[[str, str], Non
     return notify
 
 
+def _make_tree_analysis_notifier(
+    notify: Callable[[str, str], None],
+) -> Callable[[str, str], None]:
+    status_map = {
+        "Construyendo catálogo de módulos...": "Detectando archivos fuente...",
+        "Análisis de dependencias listo.": "Resolviendo archivos relevantes...",
+        "Construyendo grafo final...": "Resolviendo archivos relevantes...",
+        "Calculando layout...": "Construyendo tree...",
+    }
+
+    def tree_notify(status: str, detail: str = "") -> None:
+        notify(status_map.get(status, status), detail)
+
+    return tree_notify
+
+
 def _resolve_selected_path(selection: SelectionResult) -> Path | None:
     selected = clean_text(selection.path or "")
     if not selected:
@@ -12189,6 +15173,1672 @@ def write_svg(
     notify("SVG guardado.", str(resolved_path))
 
 
+def write_tree_txt(
+    tree_text: str,
+    output_path: Path,
+    notify: Callable[[str, str], None],
+) -> None:
+    resolved_path = output_path.expanduser().resolve()
+    ensure_output_dir(resolved_path.parent)
+
+    notify("Guardando tree .txt...", str(resolved_path))
+    resolved_path.write_text(tree_text, encoding="utf-8")
+    notify("Tree .txt guardado.", str(resolved_path))
+
+
+def write_tree_html(
+    html_markup: str,
+    output_path: Path,
+    notify: Callable[[str, str], None],
+) -> None:
+    resolved_path = output_path.expanduser().resolve()
+    ensure_output_dir(resolved_path.parent)
+
+    notify("Guardando HTML en F:\\trees...", str(resolved_path))
+    resolved_path.write_text(html_markup, encoding="utf-8")
+    notify("Tree HTML Premium guardado.", str(resolved_path))
+
+
+def _ca_svg_attr(opening_tag: str, name: str) -> str:
+    marker = f'{name}="'
+    start = opening_tag.find(marker)
+    if start < 0:
+        return ""
+    start += len(marker)
+    end = opening_tag.find('"', start)
+    if end < 0:
+        return ""
+    return opening_tag[start:end]
+
+
+def _ca_extract_svg_shell(svg_markup: str) -> tuple[str, str]:
+    start = svg_markup.find("<svg")
+    if start < 0:
+        return "", svg_markup
+
+    open_end = svg_markup.find(">", start)
+    close_start = svg_markup.rfind("</svg>")
+
+    if open_end < 0 or close_start < 0 or close_start <= open_end:
+        return "", svg_markup
+
+    opening_tag = svg_markup[start : open_end + 1]
+    body = svg_markup[open_end + 1 : close_start]
+    return opening_tag, body
+
+
+def _ca_split_defs_and_content(svg_body: str) -> tuple[str, str]:
+    defs_start = svg_body.find("<defs")
+    if defs_start < 0:
+        return "", svg_body.strip()
+
+    defs_open_end = svg_body.find(">", defs_start)
+    defs_end = svg_body.find("</defs>", defs_open_end)
+
+    if defs_open_end < 0 or defs_end < 0:
+        return "", svg_body.strip()
+
+    defs_markup = svg_body[defs_start : defs_end + len("</defs>")].strip()
+    content_markup = (svg_body[:defs_start] + svg_body[defs_end + len("</defs>"):]).strip()
+    return defs_markup, content_markup
+
+
+def _ca_svg_canvas(opening_tag: str) -> tuple[int, int, str]:
+    width_text = _ca_svg_attr(opening_tag, "width")
+    height_text = _ca_svg_attr(opening_tag, "height")
+    view_box = _ca_svg_attr(opening_tag, "viewBox")
+
+    def _as_int(value: str, default: int) -> int:
+        digits = "".join(ch for ch in str(value or "") if ch.isdigit())
+        return int(digits) if digits else default
+
+    width = _as_int(width_text, 1600)
+    height = _as_int(height_text, 980)
+
+    if not view_box:
+        view_box = f"0 0 {width} {height}"
+
+    return width, height, view_box
+
+
+def _ca_premium_style() -> str:
+    return """
+<style><![CDATA[
+  .caPremiumSvg {
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 14% 12%, rgba(170, 228, 255, 0.09), transparent 32%),
+      radial-gradient(circle at 82% 18%, rgba(116, 220, 255, 0.10), transparent 26%),
+      linear-gradient(180deg, rgba(4, 8, 16, 0.98), rgba(10, 18, 30, 1));
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  #caViewport {
+    cursor: grab;
+  }
+
+  .caPremiumSvg.is-panning #caViewport {
+    cursor: grabbing;
+  }
+
+  #lanesLayer {
+    opacity: 0.84;
+  }
+
+  #edgesLayer {
+    opacity: 0.82;
+  }
+
+  #nodesLayer {
+    opacity: 1.0;
+  }
+
+  .nodeGroup {
+    cursor: pointer;
+    transition: opacity 180ms ease, filter 180ms ease;
+  }
+
+  .nodeGroup.is-dim {
+    opacity: 0.22 !important;
+  }
+
+  .nodeGroup.is-hot,
+  .nodeGroup.is-focused {
+    opacity: 1 !important;
+  }
+
+  .nodeGroup.is-focused .node-label,
+  .nodeGroup.is-hot .node-label {
+    letter-spacing: 0.12px;
+  }
+
+  .caHudTitle {
+    font: 700 11px 'Segoe UI', Arial, sans-serif;
+    fill: #eaf8ff;
+    letter-spacing: 0.65px;
+  }
+
+  .caHudMeta {
+    font: 600 9.6px 'Segoe UI', Arial, sans-serif;
+    fill: rgba(234, 248, 255, 0.72);
+    letter-spacing: 0.20px;
+  }
+
+  .caHudHint {
+    font: 600 9.4px 'Segoe UI', Arial, sans-serif;
+    fill: rgba(234, 248, 255, 0.66);
+  }
+
+  .caHudButton rect {
+    fill: rgba(15, 25, 40, 0.88);
+    stroke: rgba(146, 235, 255, 0.40);
+    stroke-width: 1.0;
+    rx: 12;
+    ry: 12;
+  }
+
+  .caHudButton text {
+    font: 700 10px 'Segoe UI', Arial, sans-serif;
+    fill: #effbff;
+    letter-spacing: 0.45px;
+    text-anchor: middle;
+    dominant-baseline: middle;
+  }
+
+  .caHudButton:hover rect {
+    fill: rgba(20, 35, 54, 0.98);
+    stroke: rgba(158, 242, 255, 0.72);
+  }
+
+  .caHudBadge {
+    fill: rgba(255, 255, 255, 0.08);
+    stroke: rgba(255, 255, 255, 0.10);
+    stroke-width: 1.0;
+  }
+
+  .caViewportBackdrop {
+    fill: rgba(5, 10, 18, 1.0);
+  }
+]]></style>
+""".strip()
+
+
+def _ca_premium_script() -> str:
+    return """
+<script><![CDATA[
+(function () {
+  const root = document.documentElement;
+  const scene = document.getElementById('caScene');
+  const hud = document.getElementById('caHud');
+  const nodeGroups = Array.from(root.querySelectorAll('.nodeGroup'));
+  if (!scene) { return; }
+
+  let scale = 1;
+  let tx = 0;
+  let ty = 0;
+  let dragging = false;
+  let lastX = 0;
+  let lastY = 0;
+  let lockedNode = null;
+
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function viewportSize() {
+    const raw = (root.getAttribute('viewBox') || '0 0 1600 980').trim().split(/\\s+/).map(Number);
+    return {
+      w: raw[2] || 1600,
+      h: raw[3] || 980
+    };
+  }
+
+  function applyTransform() {
+    scene.setAttribute('transform', `translate(${tx} ${ty}) scale(${scale})`);
+  }
+
+  function svgPoint(clientX, clientY) {
+    const pt = root.createSVGPoint();
+    pt.x = clientX;
+    pt.y = clientY;
+    return pt.matrixTransform(root.getScreenCTM().inverse());
+  }
+
+  function fitScene() {
+    const box = scene.getBBox();
+    if (!box || !box.width || !box.height) { return; }
+
+    const size = viewportSize();
+    const pad = Math.max(42, Math.min(size.w, size.h) * 0.05);
+
+    scale = clamp(
+      Math.min((size.w - (pad * 2)) / box.width, (size.h - (pad * 2)) / box.height),
+      0.18,
+      2.25
+    );
+
+    tx = ((size.w - (box.width * scale)) / 2) - (box.x * scale);
+    ty = ((size.h - (box.height * scale)) / 2) - (box.y * scale);
+    applyTransform();
+  }
+
+  function normalizeScene() {
+    const box = scene.getBBox();
+    if (!box || !box.width || !box.height) { return; }
+
+    const size = viewportSize();
+    const pad = Math.max(42, Math.min(size.w, size.h) * 0.05);
+    const fitScale = Math.min(
+      (size.w - (pad * 2)) / box.width,
+      (size.h - (pad * 2)) / box.height
+    );
+
+    scale = clamp(fitScale * 8.0, 0.35, 12.0);
+    tx = ((size.w - (box.width * scale)) / 2) - (box.x * scale);
+    ty = ((size.h - (box.height * scale)) / 2) - (box.y * scale);
+    applyTransform();
+  }
+
+  function clearFocus() {
+    lockedNode = null;
+    root.classList.remove('has-focus');
+    nodeGroups.forEach((node) => {
+      node.classList.remove('is-dim', 'is-hot', 'is-focused');
+      node.removeAttribute('transform');
+    });
+  }
+
+  function applyLockedFocus() {
+    if (!lockedNode) {
+      clearFocus();
+      return;
+    }
+
+    root.classList.add('has-focus');
+    nodeGroups.forEach((node) => {
+      const active = node === lockedNode;
+      node.classList.toggle('is-focused', active);
+      node.classList.toggle('is-dim', !active);
+
+      if (active) {
+        node.setAttribute('transform', 'translate(0 -6)');
+      } else {
+        node.removeAttribute('transform');
+      }
+    });
+  }
+
+  nodeGroups.forEach((node) => {
+    node.addEventListener('pointerenter', () => {
+      if (lockedNode) { return; }
+      node.classList.add('is-hot');
+      node.setAttribute('transform', 'translate(0 -4)');
+      nodeGroups.forEach((other) => {
+        if (other !== node) {
+          other.classList.add('is-dim');
+        }
+      });
+    });
+
+    node.addEventListener('pointerleave', () => {
+      if (lockedNode) { return; }
+      node.classList.remove('is-hot');
+      node.removeAttribute('transform');
+      nodeGroups.forEach((other) => other.classList.remove('is-dim'));
+    });
+
+    node.addEventListener('click', (event) => {
+      event.stopPropagation();
+      lockedNode = (lockedNode === node) ? null : node;
+      applyLockedFocus();
+    });
+  });
+
+  root.addEventListener('click', (event) => {
+    if (hud && hud.contains(event.target)) {
+      return;
+    }
+    clearFocus();
+  });
+
+  root.addEventListener('wheel', (event) => {
+    if (hud && hud.contains(event.target)) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const point = svgPoint(event.clientX, event.clientY);
+    const px = (point.x - tx) / scale;
+    const py = (point.y - ty) / scale;
+    const factor = event.deltaY < 0 ? 1.26 : 0.78;
+    const nextScale = clamp(scale * factor, 0.05, 32.0);
+
+    tx = point.x - (px * nextScale);
+    ty = point.y - (py * nextScale);
+    scale = nextScale;
+    applyTransform();
+  }, { passive: false });
+
+  root.addEventListener('pointerdown', (event) => {
+    if (hud && hud.contains(event.target)) {
+      return;
+    }
+    dragging = true;
+    lastX = event.clientX;
+    lastY = event.clientY;
+    root.classList.add('is-panning');
+  });
+
+  window.addEventListener('pointermove', (event) => {
+    if (!dragging) {
+      return;
+    }
+    tx += event.clientX - lastX;
+    ty += event.clientY - lastY;
+    lastX = event.clientX;
+    lastY = event.clientY;
+    applyTransform();
+  });
+
+  window.addEventListener('pointerup', () => {
+    dragging = false;
+    root.classList.remove('is-panning');
+  });
+
+  root.addEventListener('dblclick', (event) => {
+    if (hud && hud.contains(event.target)) {
+      return;
+    }
+    clearFocus();
+    fitScene();
+  });
+
+  Array.from(root.querySelectorAll('[data-ca-action]')).forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const action = button.getAttribute('data-ca-action');
+
+      if (action === 'fit') {
+        clearFocus();
+        fitScene();
+        return;
+      }
+
+      if (action === 'one') {
+        clearFocus();
+        normalizeScene();
+        return;
+      }
+
+      if (action === 'reset') {
+        clearFocus();
+        fitScene();
+      }
+    });
+  });
+
+  window.addEventListener('resize', () => {
+    fitScene();
+  });
+
+  fitScene();
+})();
+]]></script>
+""".strip()
+
+
+def _ca_ultra_premium_style() -> str:
+    return """
+<style><![CDATA[
+  @keyframes caEdgeFlow {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: -48; }
+  }
+
+  @keyframes caNodeFrameFlow {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: -38; }
+  }
+
+  @keyframes caNodePulse {
+    0%, 100% { opacity: 0.82; }
+    50% { opacity: 1.0; }
+  }
+
+  #edgesLayer > * {
+    transition: opacity 180ms ease, filter 180ms ease;
+  }
+
+  #edgesLayer > *.is-dim {
+    opacity: 0.06 !important;
+    filter: saturate(0.55) blur(0.20px);
+  }
+
+  #edgesLayer > *.is-hidden {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  #edgesLayer > *.is-hot {
+    opacity: 1 !important;
+    filter:
+      brightness(1.18)
+      saturate(1.24)
+      drop-shadow(0 0 5px rgba(143, 238, 255, 0.30))
+      drop-shadow(0 0 10px rgba(143, 238, 255, 0.16));
+  }
+
+  #edgesLayer .ca-edge-path,
+  #edgesLayer > path {
+    transition:
+      opacity 180ms ease,
+      stroke 180ms ease,
+      stroke-width 180ms ease,
+      filter 180ms ease;
+  }
+
+  #edgesLayer > *.is-hot .ca-edge-path,
+  #edgesLayer > path.is-hot {
+    stroke: rgba(168, 244, 255, 0.96) !important;
+    stroke-width: 2.55px !important;
+    stroke-linecap: round;
+    stroke-dasharray: 12 10;
+    animation: caEdgeFlow 1.45s linear infinite;
+    filter:
+      drop-shadow(0 0 4px rgba(143, 238, 255, 0.55))
+      drop-shadow(0 0 9px rgba(143, 238, 255, 0.28));
+  }
+
+  #nodesLayer .nodeGroup {
+    transition: opacity 180ms ease, filter 180ms ease;
+  }
+
+  #nodesLayer .nodeGroup.is-neighbor {
+    opacity: 0.90 !important;
+    filter: brightness(1.04) saturate(1.06);
+  }
+
+  #nodesLayer .nodeGroup rect {
+    fill: rgba(8, 18, 28, 0.015) !important;
+    fill-opacity: 0.06 !important;
+    stroke-opacity: 0.56 !important;
+  }
+
+  #nodesLayer .nodeGroup > g[filter] > rect:first-child {
+    fill: rgba(8, 18, 28, 0.01) !important;
+    fill-opacity: 0.045 !important;
+    stroke: rgba(156, 242, 255, 0.78) !important;
+    stroke-width: 1.05px !important;
+    rx: 18;
+    ry: 18;
+  }
+
+  #nodesLayer .nodeGroup.is-hot > g[filter] > rect:first-child,
+  #nodesLayer .nodeGroup.is-focused > g[filter] > rect:first-child {
+    stroke: rgba(193, 249, 255, 0.98) !important;
+    stroke-width: 1.35px !important;
+    stroke-dasharray: 14 8;
+    animation:
+      caNodeFrameFlow 1.55s linear infinite,
+      caNodePulse 1.65s ease-in-out infinite;
+    filter:
+      drop-shadow(0 0 5px rgba(143, 238, 255, 0.42))
+      drop-shadow(0 0 12px rgba(143, 238, 255, 0.18));
+  }
+
+  #nodesLayer .nodeGroup.is-dim rect {
+    stroke-opacity: 0.16 !important;
+  }
+
+  #nodesLayer .nodeGroup .node-label {
+    fill: #f2fbff !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.18px;
+    filter:
+      drop-shadow(0 0 4px rgba(143, 238, 255, 0.32))
+      drop-shadow(0 0 8px rgba(143, 238, 255, 0.12));
+  }
+
+  #nodesLayer .nodeGroup .node-subtitle {
+    fill: rgba(181, 229, 240, 0.92) !important;
+    filter: drop-shadow(0 0 3px rgba(143, 238, 255, 0.14));
+  }
+
+  #nodesLayer .nodeGroup .node-icon {
+    fill: rgba(148, 243, 255, 0.98) !important;
+    filter: drop-shadow(0 0 5px rgba(143, 238, 255, 0.20));
+  }
+
+  #nodesLayer .nodeGroup.is-dim .node-label,
+  #nodesLayer .nodeGroup.is-dim .node-subtitle,
+  #nodesLayer .nodeGroup.is-dim .node-icon {
+    opacity: 0.30 !important;
+    filter: none !important;
+  }
+]]></style>
+""".strip()
+
+
+def _ca_ultra_premium_script() -> str:
+    return """
+<script><![CDATA[
+(() => {
+  const root = document.currentScript && document.currentScript.ownerSVGElement;
+  if (!root) {
+    return;
+  }
+
+  const nodesLayer = root.querySelector('#nodesLayer');
+  const edgesLayer = root.querySelector('#edgesLayer');
+  if (!nodesLayer || !edgesLayer) {
+    return;
+  }
+
+  const nodeGroups = Array.from(nodesLayer.querySelectorAll('.nodeGroup'));
+  const edgeGroups = Array.from(edgesLayer.children || []);
+
+  const closestSafe = (node, selector) => {
+    if (!node || typeof node.closest !== 'function') {
+      return null;
+    }
+    return node.closest(selector);
+  };
+
+  const parseNodeLabel = (el) => {
+    const titleText = ((el.querySelector('title') || {}).textContent || '').trim();
+    const match = titleText.match(/(?:^|\\|)\\s*label=([^|]+)/i);
+    if (match && match[1]) {
+      return match[1].trim();
+    }
+    const labelText = ((el.querySelector('.node-label') || {}).textContent || '').trim();
+    return labelText;
+  };
+
+  const parseEdgeEndpoints = (el) => {
+    const titleText = ((el.querySelector('title') || {}).textContent || '').trim();
+    const match = titleText.match(/^\\s*(.*?)\\s*->\\s*(.*?)\\s*(?:\\||$)/);
+    if (!match) {
+      return { source: '', target: '' };
+    }
+    return {
+      source: (match[1] || '').trim(),
+      target: (match[2] || '').trim(),
+    };
+  };
+
+  const nodeLabelToElements = new Map();
+  nodeGroups.forEach((el) => {
+    const label = parseNodeLabel(el);
+    if (!label) {
+      return;
+    }
+    el.dataset.caNodeLabel = label;
+    if (!nodeLabelToElements.has(label)) {
+      nodeLabelToElements.set(label, []);
+    }
+    nodeLabelToElements.get(label).push(el);
+  });
+
+  const edgeRecords = edgeGroups.map((el) => {
+    const ends = parseEdgeEndpoints(el);
+    const nestedPaths = Array.from(el.querySelectorAll('path'));
+    const paths = nestedPaths.length > 0 ? nestedPaths : (el.tagName && el.tagName.toLowerCase() === 'path' ? [el] : []);
+    paths.forEach((path) => path.classList.add('ca-edge-path'));
+    return {
+      el,
+      source: ends.source,
+      target: ends.target,
+      paths,
+    };
+  });
+
+  const relatedEdges = new Map();
+  const relatedLabels = new Map();
+
+  const pushRelated = (label, edgeEl, otherLabel) => {
+    if (!label) {
+      return;
+    }
+    if (!relatedEdges.has(label)) {
+      relatedEdges.set(label, new Set());
+    }
+    relatedEdges.get(label).add(edgeEl);
+
+    if (otherLabel) {
+      if (!relatedLabels.has(label)) {
+        relatedLabels.set(label, new Set());
+      }
+      relatedLabels.get(label).add(otherLabel);
+    }
+  };
+
+  edgeRecords.forEach((record) => {
+    pushRelated(record.source, record.el, record.target);
+    pushRelated(record.target, record.el, record.source);
+  });
+
+  let lockedLabel = '';
+
+  const clearVisualState = () => {
+    nodeGroups.forEach((el) => {
+      el.classList.remove('is-hot', 'is-neighbor', 'is-dim');
+    });
+    edgeRecords.forEach((record) => {
+      record.el.classList.remove('is-hot', 'is-dim', 'is-hidden');
+      record.paths.forEach((path) => path.classList.remove('is-hot'));
+    });
+  };
+
+  const applyRelationState = (label) => {
+    const activeLabel = (label || '').trim();
+    if (!activeLabel) {
+      clearVisualState();
+      return;
+    }
+
+    const hotEdges = relatedEdges.get(activeLabel) || new Set();
+    const neighborLabels = relatedLabels.get(activeLabel) || new Set();
+
+    nodeGroups.forEach((el) => {
+      const nodeLabel = (el.dataset.caNodeLabel || '').trim();
+      const isSelf = nodeLabel === activeLabel;
+      const isNeighbor = neighborLabels.has(nodeLabel);
+
+      el.classList.toggle('is-hot', isSelf);
+      el.classList.toggle('is-neighbor', !isSelf && isNeighbor);
+      el.classList.toggle('is-dim', !isSelf && !isNeighbor);
+    });
+
+    edgeRecords.forEach((record) => {
+      const isHot = hotEdges.has(record.el);
+      record.el.classList.toggle('is-hot', isHot);
+      record.el.classList.toggle('is-dim', !isHot);
+      record.paths.forEach((path) => path.classList.toggle('is-hot', isHot));
+    });
+  };
+
+  nodeGroups.forEach((el) => {
+    const label = (el.dataset.caNodeLabel || '').trim();
+    if (!label) {
+      return;
+    }
+
+    el.addEventListener('pointerenter', () => {
+      applyRelationState(label);
+    });
+
+    el.addEventListener('pointerleave', () => {
+      if (lockedLabel) {
+        applyRelationState(lockedLabel);
+        return;
+      }
+      clearVisualState();
+    });
+
+    el.addEventListener('click', (event) => {
+      event.stopPropagation();
+      lockedLabel = (lockedLabel === label) ? '' : label;
+      if (lockedLabel) {
+        applyRelationState(lockedLabel);
+      } else {
+        clearVisualState();
+      }
+    });
+  });
+
+  root.addEventListener('click', (event) => {
+    if (closestSafe(event.target, '.nodeGroup') || closestSafe(event.target, '#caHud')) {
+      return;
+    }
+    lockedLabel = '';
+    clearVisualState();
+  });
+})();
+]]></script>
+""".strip()
+
+
+def _ca_spectral_relation_style() -> str:
+    return """
+<style><![CDATA[
+  #nodesLayer .nodeGroup {
+    --ca-accent-rgb: 140, 239, 255;
+    --ca-accent-soft-rgb: 232, 249, 255;
+    --ca-accent-dim-rgb: 92, 182, 205;
+  }
+
+  #nodesLayer .nodeGroup > g[filter] > rect:first-child {
+    fill: rgba(8, 18, 28, 0.010) !important;
+    fill-opacity: 0.028 !important;
+    stroke: rgba(var(--ca-accent-rgb), 0.44) !important;
+    stroke-width: 0.96px !important;
+  }
+
+  #nodesLayer .nodeGroup .node-label {
+    fill: rgba(var(--ca-accent-soft-rgb), 0.98) !important;
+    filter:
+      drop-shadow(0 0 4px rgba(var(--ca-accent-rgb), 0.24))
+      drop-shadow(0 0 9px rgba(var(--ca-accent-rgb), 0.10));
+  }
+
+  #nodesLayer .nodeGroup .node-subtitle {
+    fill: rgba(var(--ca-accent-soft-rgb), 0.74) !important;
+    filter: drop-shadow(0 0 3px rgba(var(--ca-accent-rgb), 0.10));
+  }
+
+  #nodesLayer .nodeGroup .node-icon {
+    fill: rgba(var(--ca-accent-rgb), 0.98) !important;
+    filter:
+      drop-shadow(0 0 4px rgba(var(--ca-accent-rgb), 0.18))
+      drop-shadow(0 0 8px rgba(var(--ca-accent-rgb), 0.08));
+  }
+
+  #nodesLayer .nodeGroup.is-neighbor > g[filter] > rect:first-child {
+    stroke: rgba(var(--ca-accent-rgb), 0.66) !important;
+    stroke-width: 1.10px !important;
+    filter:
+      drop-shadow(0 0 4px rgba(var(--ca-accent-rgb), 0.18))
+      drop-shadow(0 0 8px rgba(var(--ca-accent-rgb), 0.08));
+  }
+
+  #nodesLayer .nodeGroup.is-hot > g[filter] > rect:first-child,
+  #nodesLayer .nodeGroup.is-focused > g[filter] > rect:first-child {
+    stroke: rgba(var(--ca-accent-soft-rgb), 0.98) !important;
+    stroke-width: 1.38px !important;
+    stroke-dasharray: 14 8;
+    animation:
+      caNodeFrameFlow 1.55s linear infinite,
+      caNodePulse 1.70s ease-in-out infinite;
+    filter:
+      drop-shadow(0 0 6px rgba(var(--ca-accent-rgb), 0.34))
+      drop-shadow(0 0 14px rgba(var(--ca-accent-rgb), 0.15));
+  }
+
+  #nodesLayer .nodeGroup.is-dim > g[filter] > rect:first-child {
+    stroke: rgba(var(--ca-accent-dim-rgb), 0.16) !important;
+  }
+
+  #nodesLayer .nodeGroup.is-dim .node-label,
+  #nodesLayer .nodeGroup.is-dim .node-subtitle,
+  #nodesLayer .nodeGroup.is-dim .node-icon {
+    opacity: 0.28 !important;
+    filter: none !important;
+  }
+
+  #edgesLayer > * {
+    --ca-edge-rgb: 140, 239, 255;
+    transition: opacity 180ms ease, filter 180ms ease;
+  }
+
+  #edgesLayer > *.is-dim {
+    opacity: 0.025 !important;
+    filter: saturate(0.42) blur(0.28px);
+  }
+
+  #edgesLayer > *.is-hot {
+    opacity: 1 !important;
+    filter:
+      brightness(1.05)
+      saturate(1.10)
+      drop-shadow(0 0 3px rgba(var(--ca-edge-rgb), 0.12))
+      drop-shadow(0 0 7px rgba(var(--ca-edge-rgb), 0.05));
+  }
+
+  #edgesLayer .ca-edge-path,
+  #edgesLayer > path {
+    transition:
+      opacity 180ms ease,
+      stroke 180ms ease,
+      stroke-width 180ms ease,
+      filter 180ms ease;
+  }
+
+  #edgesLayer > *.is-hot .ca-edge-path,
+  #edgesLayer > path.is-hot {
+    stroke: rgba(var(--ca-edge-rgb), 0.92) !important;
+    stroke-width: 1.55px !important;
+    stroke-linecap: round;
+    stroke-dasharray: 8 12;
+    animation: caEdgeFlow 2.05s linear infinite;
+    filter:
+      drop-shadow(0 0 2px rgba(var(--ca-edge-rgb), 0.14))
+      drop-shadow(0 0 6px rgba(var(--ca-edge-rgb), 0.06));
+  }
+]]></style>
+""".strip()
+
+
+def _ca_spectral_relation_script() -> str:
+    return """
+<script><![CDATA[
+(() => {
+  const root = document.currentScript && document.currentScript.ownerSVGElement;
+  if (!root) {
+    return;
+  }
+
+  const scene = root.querySelector('#caScene');
+  const nodesLayer = root.querySelector('#nodesLayer');
+  const edgesLayer = root.querySelector('#edgesLayer');
+  if (!scene || !nodesLayer || !edgesLayer) {
+    return;
+  }
+
+  const nodeGroups = Array.from(nodesLayer.querySelectorAll('.nodeGroup'));
+  const edgeGroups = Array.from(edgesLayer.children || []);
+
+  const hslToRgb = (h, s, l) => {
+    s /= 100;
+    l /= 100;
+    const k = (n) => (n + (h / 30)) % 12;
+    const a = s * Math.min(l, 1 - l);
+    const f = (n) => l - (a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1))));
+    return [
+      Math.round(255 * f(0)),
+      Math.round(255 * f(8)),
+      Math.round(255 * f(4)),
+    ];
+  };
+
+  const rgbText = (rgb) => rgb.join(', ');
+  const rgbaFromText = (rgbTextValue, alpha) => `rgba(${rgbTextValue}, ${alpha})`;
+
+  const closestSafe = (node, selector) => {
+    if (!node || typeof node.closest !== 'function') {
+      return null;
+    }
+    return node.closest(selector);
+  };
+
+  const parseNodeLabel = (el) => {
+    const titleText = ((el.querySelector('title') || {}).textContent || '').trim();
+    const match = titleText.match(/(?:^|\\|)\\s*label=([^|]+)/i);
+    if (match && match[1]) {
+      return match[1].trim();
+    }
+    const labelText = ((el.querySelector('.node-label') || {}).textContent || '').trim();
+    return labelText;
+  };
+
+  const parseEdgeEndpoints = (el) => {
+    const sourceAttr = (el.getAttribute('data-ca-source') || '').trim();
+    const targetAttr = (el.getAttribute('data-ca-target') || '').trim();
+    if (sourceAttr || targetAttr) {
+      return { source: sourceAttr, target: targetAttr };
+    }
+
+    const titleText = ((el.querySelector('title') || {}).textContent || '').trim();
+    const match = titleText.match(/^\\s*(.*?)\\s*->\\s*(.*?)\\s*(?:\\||$)/);
+    if (!match) {
+      return { source: '', target: '' };
+    }
+    return {
+      source: (match[1] || '').trim(),
+      target: (match[2] || '').trim(),
+    };
+  };
+
+  const parseNodeCounts = (el) => {
+    const values = Array.from(el.querySelectorAll('text'))
+      .map((node) => (node.textContent || '').trim())
+      .filter((text) => /^\\d+$/.test(text))
+      .map((text) => Number(text));
+
+    return {
+      inbound: values.length > 0 ? values[0] : 0,
+      outbound: values.length > 1 ? values[1] : 0,
+    };
+  };
+
+  const sceneBox = scene.getBBox();
+  const nodeLabelToElements = new Map();
+
+  nodeGroups.forEach((el, index) => {
+    const label = parseNodeLabel(el);
+    if (!label) {
+      return;
+    }
+
+    el.dataset.caNodeLabel = label;
+    if (!nodeLabelToElements.has(label)) {
+      nodeLabelToElements.set(label, []);
+    }
+    nodeLabelToElements.get(label).push(el);
+
+    const counts = parseNodeCounts(el);
+    const degree = (counts.inbound || 0) + (counts.outbound || 0);
+    const box = el.getBBox();
+    const normY = sceneBox.height > 0 ? Math.max(0, Math.min(1, (box.y - sceneBox.y) / sceneBox.height)) : 0;
+    const isHub = degree >= 16 || el.classList.contains('node-hub');
+    const isPackage = /package/i.test((el.querySelector('title') || {}).textContent || '');
+    const isExternal = /external/i.test((el.querySelector('title') || {}).textContent || '');
+
+    let hue = 194;
+    let sat = 92;
+    let light = 73;
+
+    if (isHub) {
+      hue = 34;
+      sat = 96;
+      light = 72;
+    } else if (isPackage) {
+      hue = 278;
+      sat = 90;
+      light = 76;
+    } else if (isExternal) {
+      hue = 332;
+      sat = 88;
+      light = 78;
+    } else if (degree >= 10) {
+      hue = 152;
+      sat = 86;
+      light = 74;
+    } else {
+      hue = 188 + Math.round(normY * 118.0);
+      sat = 86 + Math.round((1.0 - normY) * 8.0);
+      light = 72 + Math.round((degree > 4 ? 4 : degree) * 0.6);
+    }
+
+    const accent = hslToRgb(hue, sat, light);
+    const soft = hslToRgb(hue, Math.max(66, sat - 14), Math.min(90, light + 11));
+    const dim = hslToRgb(hue, Math.max(44, sat - 32), Math.max(54, light - 16));
+
+    el.style.setProperty('--ca-accent-rgb', rgbText(accent));
+    el.style.setProperty('--ca-accent-soft-rgb', rgbText(soft));
+    el.style.setProperty('--ca-accent-dim-rgb', rgbText(dim));
+    el.setAttribute('data-ca-degree', String(degree));
+    el.setAttribute('data-ca-inbound', String(counts.inbound || 0));
+    el.setAttribute('data-ca-outbound', String(counts.outbound || 0));
+    el.setAttribute('data-ca-color-family', String(hue));
+    el.setAttribute('data-ca-node-index', String(index));
+  });
+
+  const edgeRecords = edgeGroups.map((el) => {
+    const ends = parseEdgeEndpoints(el);
+    const nestedPaths = Array.from(el.querySelectorAll('path'));
+    const paths = nestedPaths.length > 0 ? nestedPaths : (el.tagName && el.tagName.toLowerCase() === 'path' ? [el] : []);
+    paths.forEach((path) => path.classList.add('ca-edge-path'));
+
+    if (ends.source) {
+      el.setAttribute('data-ca-source', ends.source);
+    }
+    if (ends.target) {
+      el.setAttribute('data-ca-target', ends.target);
+    }
+
+    return {
+      el,
+      source: ends.source,
+      target: ends.target,
+      paths,
+    };
+  });
+
+  const relatedEdges = new Map();
+  const relatedLabels = new Map();
+
+  const pushRelated = (label, edgeEl, otherLabel) => {
+    if (!label) {
+      return;
+    }
+    if (!relatedEdges.has(label)) {
+      relatedEdges.set(label, new Set());
+    }
+    relatedEdges.get(label).add(edgeEl);
+
+    if (otherLabel) {
+      if (!relatedLabels.has(label)) {
+        relatedLabels.set(label, new Set());
+      }
+      relatedLabels.get(label).add(otherLabel);
+    }
+  };
+
+  edgeRecords.forEach((record) => {
+    pushRelated(record.source, record.el, record.target);
+    pushRelated(record.target, record.el, record.source);
+  });
+
+  const accentForLabel = (label) => {
+    const group = (nodeLabelToElements.get(label) || [])[0];
+    if (!group) {
+      return '140, 239, 255';
+    }
+    return (group.style.getPropertyValue('--ca-accent-rgb') || '140, 239, 255').trim();
+  };
+
+  let lockedLabel = '';
+
+  const clearVisualState = () => {
+    nodeGroups.forEach((el) => {
+      el.classList.remove('is-hot', 'is-neighbor', 'is-dim');
+    });
+
+    edgeRecords.forEach((record) => {
+      record.el.classList.remove('is-hot', 'is-dim', 'is-hidden');
+      record.el.style.removeProperty('--ca-edge-rgb');
+      record.paths.forEach((path) => {
+        path.classList.remove('is-hot');
+        path.style.removeProperty('stroke');
+        path.style.removeProperty('filter');
+      });
+    });
+  };
+
+  const applyRelationState = (label) => {
+    const activeLabel = (label || '').trim();
+    if (!activeLabel) {
+      clearVisualState();
+      return;
+    }
+
+    const hotEdges = relatedEdges.get(activeLabel) || new Set();
+    const neighborLabels = relatedLabels.get(activeLabel) || new Set();
+    const accent = accentForLabel(activeLabel);
+
+    nodeGroups.forEach((el) => {
+      const nodeLabel = (el.dataset.caNodeLabel || '').trim();
+      const isSelf = nodeLabel === activeLabel;
+      const isNeighbor = neighborLabels.has(nodeLabel);
+
+      el.classList.toggle('is-hot', isSelf);
+      el.classList.toggle('is-neighbor', !isSelf && isNeighbor);
+      el.classList.toggle('is-dim', !isSelf && !isNeighbor);
+    });
+
+    edgeRecords.forEach((record) => {
+      const isHot = hotEdges.has(record.el);
+      record.el.classList.toggle('is-hot', isHot);
+      record.el.classList.toggle('is-dim', !isHot);
+      record.el.setAttribute('data-ca-source', record.source || '');
+      record.el.setAttribute('data-ca-target', record.target || '');
+
+      if (isHot) {
+        record.el.style.setProperty('--ca-edge-rgb', accent);
+      } else {
+        record.el.style.removeProperty('--ca-edge-rgb');
+      }
+
+      record.paths.forEach((path) => {
+        path.classList.toggle('is-hot', isHot);
+        if (isHot) {
+          path.style.stroke = rgbaFromText(accent, 0.98);
+          path.style.filter =
+            `drop-shadow(0 0 4px rgba(${accent}, 0.34)) ` +
+            `drop-shadow(0 0 10px rgba(${accent}, 0.16))`;
+        } else {
+          path.style.removeProperty('stroke');
+          path.style.removeProperty('filter');
+        }
+      });
+    });
+  };
+
+  nodeGroups.forEach((el) => {
+    const label = (el.dataset.caNodeLabel || '').trim();
+    if (!label) {
+      return;
+    }
+
+    el.addEventListener('pointerenter', () => {
+      applyRelationState(label);
+    });
+
+    el.addEventListener('pointerleave', () => {
+      if (lockedLabel) {
+        applyRelationState(lockedLabel);
+        return;
+      }
+      clearVisualState();
+    });
+
+    el.addEventListener('click', (event) => {
+      event.stopPropagation();
+      lockedLabel = (lockedLabel === label) ? '' : label;
+      if (lockedLabel) {
+        applyRelationState(lockedLabel);
+      } else {
+        clearVisualState();
+      }
+    });
+  });
+
+  root.addEventListener('click', (event) => {
+    if (closestSafe(event.target, '.nodeGroup') || closestSafe(event.target, '#caHud')) {
+      return;
+    }
+    lockedLabel = '';
+    clearVisualState();
+  });
+})();
+]]></script>
+""".strip()
+
+
+def _ca_glass_luxe_node_style() -> str:
+    return """
+<style><![CDATA[
+  @keyframes caGlassNodePulse {
+    0%, 100% {
+      opacity: 0.84;
+    }
+    50% {
+      opacity: 1.0;
+    }
+  }
+
+  @keyframes caGlassNodeBlink {
+    0%, 100% {
+      stroke-opacity: 0.88;
+    }
+    50% {
+      stroke-opacity: 0.58;
+    }
+  }
+
+  #nodesLayer .nodeGroup {
+    transition: opacity 180ms ease, filter 180ms ease;
+  }
+
+  #nodesLayer .nodeGroup rect {
+    fill: transparent !important;
+    fill-opacity: 0 !important;
+  }
+
+  #nodesLayer .nodeGroup > g[filter] > rect:first-child {
+    fill: transparent !important;
+    fill-opacity: 0 !important;
+    stroke: rgba(var(--ca-accent-rgb, 160, 236, 255), 0.42) !important;
+    stroke-width: 0.92px !important;
+    filter:
+      drop-shadow(0 0 3px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.12))
+      drop-shadow(0 0 8px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.05));
+  }
+
+  #nodesLayer .nodeGroup .ca-glass-inner-border {
+    fill: transparent !important;
+    fill-opacity: 0 !important;
+    stroke: rgba(var(--ca-accent-soft-rgb, 232, 248, 255), 0.24) !important;
+    stroke-width: 0.72px !important;
+    vector-effect: non-scaling-stroke;
+    pointer-events: none;
+    opacity: 0.84;
+    filter:
+      drop-shadow(0 0 2px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.08));
+  }
+
+  #nodesLayer .nodeGroup.is-dim > g[filter] > rect:first-child,
+  #nodesLayer .nodeGroup.is-dim .ca-glass-inner-border {
+    stroke-opacity: 0.12 !important;
+    filter: none !important;
+  }
+
+  #nodesLayer .nodeGroup.is-neighbor > g[filter] > rect:first-child {
+    stroke: rgba(var(--ca-accent-rgb, 160, 236, 255), 0.54) !important;
+    stroke-width: 0.98px !important;
+  }
+
+  #nodesLayer .nodeGroup.is-neighbor .ca-glass-inner-border {
+    stroke: rgba(var(--ca-accent-soft-rgb, 232, 248, 255), 0.30) !important;
+    stroke-width: 0.74px !important;
+  }
+
+  #nodesLayer .nodeGroup.is-hot > g[filter] > rect:first-child,
+  #nodesLayer .nodeGroup.is-focused > g[filter] > rect:first-child {
+    stroke: rgba(var(--ca-accent-soft-rgb, 232, 248, 255), 0.92) !important;
+    stroke-width: 1.08px !important;
+    stroke-dasharray: 10 12;
+    animation:
+      caNodeFrameFlow 2.35s linear infinite,
+      caGlassNodeBlink 2.8s ease-in-out infinite;
+    filter:
+      drop-shadow(0 0 4px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.18))
+      drop-shadow(0 0 10px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.08));
+  }
+
+  #nodesLayer .nodeGroup.is-hot .ca-glass-inner-border,
+  #nodesLayer .nodeGroup.is-focused .ca-glass-inner-border {
+    stroke: rgba(var(--ca-accent-soft-rgb, 232, 248, 255), 0.48) !important;
+    stroke-width: 0.82px !important;
+    stroke-dasharray: 8 14;
+    animation:
+      caNodeFrameFlow 3.0s linear infinite reverse,
+      caGlassNodePulse 3.4s ease-in-out infinite;
+    filter:
+      drop-shadow(0 0 3px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.12));
+  }
+
+  #nodesLayer .nodeGroup .node-label {
+    fill: rgba(var(--ca-accent-soft-rgb, 236, 248, 255), 0.96) !important;
+    font-weight: 700 !important;
+    font-size: 17px !important;
+    letter-spacing: 0.10px !important;
+    filter:
+      drop-shadow(0 0 2px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.10))
+      drop-shadow(0 0 5px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.05));
+  }
+
+  #nodesLayer .nodeGroup .node-subtitle {
+    fill: rgba(var(--ca-accent-soft-rgb, 236, 248, 255), 0.58) !important;
+    font-size: 10.6px !important;
+    letter-spacing: 0.04px !important;
+    filter:
+      drop-shadow(0 0 2px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.04));
+  }
+
+  #nodesLayer .nodeGroup .node-icon {
+    fill: rgba(var(--ca-accent-rgb, 160, 236, 255), 0.92) !important;
+    filter:
+      drop-shadow(0 0 3px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.10));
+  }
+
+  #nodesLayer .nodeGroup.is-hot .node-label,
+  #nodesLayer .nodeGroup.is-focused .node-label {
+    filter:
+      drop-shadow(0 0 3px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.16))
+      drop-shadow(0 0 8px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.07));
+  }
+
+  #nodesLayer .nodeGroup.is-hot .node-subtitle,
+  #nodesLayer .nodeGroup.is-focused .node-subtitle {
+    filter:
+      drop-shadow(0 0 2px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.08));
+  }
+
+  #nodesLayer .nodeGroup.is-dim .node-label,
+  #nodesLayer .nodeGroup.is-dim .node-subtitle,
+  #nodesLayer .nodeGroup.is-dim .node-icon {
+    opacity: 0.24 !important;
+    filter: none !important;
+  }
+]]></style>
+""".strip()
+
+
+def _ca_glass_luxe_node_script() -> str:
+    return """
+<script><![CDATA[
+(() => {
+  const root = document.currentScript && document.currentScript.ownerSVGElement;
+  if (!root) {
+    return;
+  }
+
+  const nodeGroups = Array.from(root.querySelectorAll('#nodesLayer .nodeGroup'));
+  if (!nodeGroups.length) {
+    return;
+  }
+
+  const toNum = (value, fallback = 0) => {
+    const parsed = Number.parseFloat(String(value ?? '').trim());
+    return Number.isFinite(parsed) ? parsed : fallback;
+  };
+
+  nodeGroups.forEach((el) => {
+    if (el.getAttribute('data-ca-glass-luxe') === '1') {
+      return;
+    }
+
+    const mainRect =
+      el.querySelector('g[filter] > rect:first-child') ||
+      el.querySelector('rect');
+
+    if (!mainRect) {
+      return;
+    }
+
+    const innerRect = mainRect.cloneNode(false);
+    const x = toNum(mainRect.getAttribute('x'), 0);
+    const y = toNum(mainRect.getAttribute('y'), 0);
+    const width = toNum(mainRect.getAttribute('width'), 0);
+    const height = toNum(mainRect.getAttribute('height'), 0);
+    const rx = toNum(mainRect.getAttribute('rx'), 18);
+    const ry = toNum(mainRect.getAttribute('ry'), 18);
+
+    if (width <= 18 || height <= 18) {
+      return;
+    }
+
+    innerRect.setAttribute('class', 'ca-glass-inner-border');
+    innerRect.setAttribute('x', String(x + 5.5));
+    innerRect.setAttribute('y', String(y + 5.5));
+    innerRect.setAttribute('width', String(Math.max(8, width - 11.0)));
+    innerRect.setAttribute('height', String(Math.max(8, height - 11.0)));
+    innerRect.setAttribute('rx', String(Math.max(6, rx - 5.0)));
+    innerRect.setAttribute('ry', String(Math.max(6, ry - 5.0)));
+    innerRect.setAttribute('fill', 'transparent');
+    innerRect.setAttribute('fill-opacity', '0');
+    innerRect.setAttribute('pointer-events', 'none');
+
+    mainRect.insertAdjacentElement('afterend', innerRect);
+    el.setAttribute('data-ca-glass-luxe', '1');
+  });
+})();
+]]></script>
+""".strip()
+
+
+def _ca_edge_cleanup_luxe_style() -> str:
+    return """
+<style><![CDATA[
+  .caPremiumSvg {
+    background:
+      radial-gradient(circle at 26% 24%, rgba(82, 214, 255, 0.045), transparent 24%),
+      radial-gradient(circle at 73% 33%, rgba(121, 98, 255, 0.040), transparent 18%),
+      linear-gradient(180deg, rgba(4, 8, 16, 0.99), rgba(7, 14, 24, 1));
+  }
+
+  .caViewportBackdrop {
+    fill: rgba(4, 10, 18, 0.92) !important;
+  }
+
+  #edgesLayer {
+    opacity: 0.96 !important;
+  }
+
+  #edgesLayer > * {
+    --ca-edge-rgb: 140, 239, 255;
+    opacity: 0.58 !important;
+    transition:
+      opacity 180ms ease,
+      filter 180ms ease,
+      transform 180ms ease;
+  }
+
+  #edgesLayer > *.is-dim {
+    opacity: 0.06 !important;
+    filter: blur(0.15px) saturate(0.62);
+  }
+
+  #edgesLayer > *.is-hot {
+    opacity: 1 !important;
+    filter:
+      brightness(1.08)
+      saturate(1.16)
+      drop-shadow(0 0 3px rgba(var(--ca-edge-rgb), 0.18))
+      drop-shadow(0 0 8px rgba(var(--ca-edge-rgb), 0.08));
+  }
+
+  #edgesLayer .ca-edge-path,
+  #edgesLayer > path {
+    fill: none !important;
+    stroke: rgba(var(--ca-edge-rgb), 0.42) !important;
+    stroke-width: 1.16px !important;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter:
+      drop-shadow(0 0 2px rgba(var(--ca-edge-rgb), 0.08));
+  }
+
+  #edgesLayer > *.is-hot .ca-edge-path,
+  #edgesLayer > path.is-hot {
+    stroke: rgba(var(--ca-edge-rgb), 0.96) !important;
+    stroke-width: 1.42px !important;
+    stroke-dasharray: 7 13;
+    animation: caEdgeFlow 2.35s linear infinite;
+    filter:
+      drop-shadow(0 0 3px rgba(var(--ca-edge-rgb), 0.18))
+      drop-shadow(0 0 7px rgba(var(--ca-edge-rgb), 0.07));
+  }
+
+  #nodesLayer .nodeGroup .node-label {
+    filter:
+      drop-shadow(0 0 2px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.08))
+      drop-shadow(0 0 5px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.03)) !important;
+  }
+
+  #nodesLayer .nodeGroup .node-subtitle {
+    filter:
+      drop-shadow(0 0 1px rgba(var(--ca-accent-rgb, 160, 236, 255), 0.03)) !important;
+  }
+]]></style>
+""".strip()
+
+
+def _ca_edge_cleanup_luxe_script() -> str:
+    return """
+<script><![CDATA[
+(() => {
+  const root = document.currentScript && document.currentScript.ownerSVGElement;
+  if (!root) {
+    return;
+  }
+
+  const scene = root.querySelector('#caScene');
+  const defs = root.querySelector('defs');
+  const edgesLayer = root.querySelector('#edgesLayer');
+  if (!scene || !defs || !edgesLayer) {
+    return;
+  }
+
+  const edgeGroups = Array.from(edgesLayer.children || []);
+  const palette = [
+    '140, 239, 255',
+    '88, 232, 156',
+    '255, 173, 92',
+    '218, 132, 255',
+    '255, 118, 190'
+  ];
+
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+  const hashText = (text) => {
+    let hash = 0;
+    const source = String(text || '');
+    for (let i = 0; i < source.length; i += 1) {
+      hash = ((hash << 5) - hash) + source.charCodeAt(i);
+      hash |= 0;
+    }
+    return Math.abs(hash);
+  };
+
+  const parseViewBox = () => {
+    const raw = (root.getAttribute('viewBox') || '0 0 1600 980')
+      .trim()
+      .split(/\\s+/)
+      .map(Number);
+    return {
+      x: raw[0] || 0,
+      y: raw[1] || 0,
+      w: raw[2] || 1600,
+      h: raw[3] || 980,
+    };
+  };
+
+  const parseEdgeEndpoints = (el) => {
+    const sourceAttr = (el.getAttribute('data-ca-source') || '').trim();
+    const targetAttr = (el.getAttribute('data-ca-target') || '').trim();
+    if (sourceAttr || targetAttr) {
+      return { source: sourceAttr, target: targetAttr };
+    }
+
+    const titleText = ((el.querySelector('title') || {}).textContent || '').trim();
+    const match = titleText.match(/^\\s*(.*?)\\s*->\\s*(.*?)\\s*(?:\\||$)/);
+    if (!match) {
+      return { source: '', target: '' };
+    }
+    return {
+      source: (match[1] || '').trim(),
+      target: (match[2] || '').trim(),
+    };
+  };
+
+  const colorForEdge = (source, target) => {
+    const index = hashText(`${source}->${target}`) % palette.length;
+    return palette[index];
+  };
+
+  let markerCounter = 0;
+
+  const restyleMarkerClone = (markerEl, rgbText) => {
+    markerEl.setAttribute('markerWidth', '6.2');
+    markerEl.setAttribute('markerHeight', '6.2');
+    markerEl.setAttribute('refX', '5.2');
+    markerEl.setAttribute('refY', '3.1');
+    markerEl.setAttribute('overflow', 'visible');
+
+    Array.from(markerEl.querySelectorAll('path, polygon, polyline')).forEach((shape) => {
+      shape.setAttribute('fill', 'none');
+      shape.setAttribute('stroke', `rgba(${rgbText}, 0.95)`);
+      shape.setAttribute('stroke-width', '1.05');
+      shape.setAttribute('stroke-linecap', 'round');
+      shape.setAttribute('stroke-linejoin', 'round');
+      shape.style.fill = 'none';
+      shape.style.stroke = `rgba(${rgbText}, 0.95)`;
+      shape.style.strokeWidth = '1.05px';
+      shape.style.strokeLinecap = 'round';
+      shape.style.strokeLinejoin = 'round';
+      shape.style.opacity = '0.98';
+    });
+  };
+
+  const cloneMarkerForPath = (pathEl, attrName, rgbText) => {
+    const raw = (pathEl.getAttribute(attrName) || '').trim();
+    const match = raw.match(/^url\\(#(.+)\\)$/);
+    if (!match) {
+      return;
+    }
+
+    const baseId = match[1];
+    const original = root.querySelector(`#${CSS.escape(baseId)}`);
+    if (!original) {
+      return;
+    }
+
+    const cloned = original.cloneNode(true);
+    const nextId = `${baseId}-ca-edge-${markerCounter++}`;
+    cloned.setAttribute('id', nextId);
+    restyleMarkerClone(cloned, rgbText);
+    defs.appendChild(cloned);
+    pathEl.setAttribute(attrName, `url(#${nextId})`);
+  };
+
+  const assignEdgeColor = (recordEl) => {
+    const ends = parseEdgeEndpoints(recordEl);
+    const rgbText = colorForEdge(ends.source, ends.target);
+    recordEl.style.setProperty('--ca-edge-rgb', rgbText);
+
+    Array.from(recordEl.querySelectorAll('path')).forEach((pathEl) => {
+      pathEl.classList.add('ca-edge-path');
+      pathEl.style.fill = 'none';
+      pathEl.style.stroke = `rgba(${rgbText}, 0.42)`;
+      pathEl.style.strokeWidth = '1.16px';
+      pathEl.style.strokeLinecap = 'round';
+      pathEl.style.strokeLinejoin = 'round';
+
+      cloneMarkerForPath(pathEl, 'marker-start', rgbText);
+      cloneMarkerForPath(pathEl, 'marker-end', rgbText);
+    });
+  };
+
+  const tightenInitialViewport = () => {
+    const box = scene.getBBox();
+    if (!box || !box.width || !box.height) {
+      return;
+    }
+
+    const view = parseViewBox();
+    const padX = view.w * 0.07;
+    const padY = view.h * 0.10;
+
+    const scale = clamp(
+      Math.min(
+        (view.w - (padX * 2)) / box.width,
+        (view.h - (padY * 2)) / box.height
+      ) * 1.46,
+      0.55,
+      9.5
+    );
+
+    const tx = ((view.w - (box.width * scale)) / 2) - (box.x * scale);
+    const ty = ((view.h * 0.46) - ((box.y + (box.height / 2)) * scale));
+
+    scene.setAttribute('transform', `translate(${tx} ${ty}) scale(${scale})`);
+  };
+
+  edgeGroups.forEach(assignEdgeColor);
+
+  requestAnimationFrame(() => {
+    tightenInitialViewport();
+  });
+})();
+]]></script>
+""".strip()
+
+
+def enhance_svg_markup_for_premium_viewer(
+    svg_markup: str,
+    *,
+    state: AnalysisState,
+) -> str:
+    opening_tag, body = _ca_extract_svg_shell(svg_markup)
+    if not opening_tag:
+        return svg_markup
+
+    width, height, view_box = _ca_svg_canvas(opening_tag)
+    defs_markup, content_markup = _ca_split_defs_and_content(body)
+
+    if not content_markup.strip():
+        return svg_markup
+
+    theme_label = html.escape(clean_text(getattr(state, "theme", "")).upper()[:24] or "THEME")
+    view_label = html.escape(clean_text(getattr(state, "view", "")).upper() or "VIEW")
+    aria_label = html.escape(f"Dependency Graph Premium Â· {clean_text(getattr(state, 'view', 'graph'))}")
+
+    hud_x = max(24.0, float(width) - 328.0)
+
+    hud_markup = f"""
+<g id="caHud" transform="translate({hud_x:.1f}, 18)">
+  <rect width="296" height="118" rx="18" ry="18" fill="rgba(8,14,24,0.86)" stroke="rgba(148,236,255,0.20)" stroke-width="1.0" />
+  <text class="caHudTitle" x="18" y="24">INTERACTIVE VIEWER</text>
+  <text class="caHudMeta" x="18" y="42">{theme_label} â€¢ {view_label}</text>
+
+  <g class="caHudButton" data-ca-action="fit" transform="translate(18, 58)">
+    <rect width="78" height="26" />
+    <text x="39" y="13">FIT</text>
+  </g>
+
+  <g class="caHudButton" data-ca-action="one" transform="translate(108, 58)">
+    <rect width="78" height="26" />
+    <text x="39" y="13">100%</text>
+  </g>
+
+  <g class="caHudButton" data-ca-action="reset" transform="translate(198, 58)">
+    <rect width="78" height="26" />
+    <text x="39" y="13">RESET</text>
+  </g>
+
+  <rect class="caHudBadge" x="18" y="92" width="258" height="16" rx="8" ry="8" />
+  <text class="caHudHint" x="28" y="103">drag pan â€¢ wheel zoom â€¢ click node focus â€¢ dblclick fit</text>
+</g>
+""".strip()
+
+    rebuilt = f"""<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="{view_box}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="{aria_label}" class="caPremiumSvg">
+  {defs_markup}
+  {_ca_premium_style()}
+  {_ca_ultra_premium_style()}
+  {_ca_spectral_relation_style()}
+  {_ca_edge_cleanup_luxe_style()}
+  <rect class="caViewportBackdrop" x="0" y="0" width="{width}" height="{height}" />
+  <g id="caViewport">
+    <g id="caScene">
+      {content_markup}
+    </g>
+  </g>
+  {hud_markup}
+  {_ca_premium_script()}
+  {_ca_ultra_premium_script()}
+  {_ca_spectral_relation_script()}
+  {_ca_edge_cleanup_luxe_script()}
+</svg>"""
+    return rebuilt
+
+
 def destroy_progress_ui(progress: Optional[ProgressUI]) -> None:
     if progress is None:
         return
@@ -12271,6 +16921,7 @@ def build_success_message(
     output_path: Path,
     state: AnalysisState,
     graph: DependencyGraph,
+    visual_sidecar: VisualControlExportResult | None = None,
 ) -> str:
     lines = [
         "SVG generado con éxito.",
@@ -12302,6 +16953,19 @@ def build_success_message(
     if state.truncated:
         lines.append("Aviso: el análisis fue truncado por límites de seguridad.")
 
+    if visual_sidecar is not None:
+        lines.extend(
+            [
+                (
+                    "Sidecar visual: "
+                    f"{visual_sidecar.paths.svg_path.name} | "
+                    f"{visual_sidecar.paths.markdown_path.name} | "
+                    f"{visual_sidecar.paths.json_path.name}"
+                ),
+                f"Mapa visual: {visual_sidecar.paths.svg_path}",
+            ]
+        )
+
     lines.extend(
         [
             "",
@@ -12316,6 +16980,7 @@ def build_success_footer_text(
     output_path: Path,
     state: AnalysisState,
     graph: DependencyGraph,
+    visual_sidecar: VisualControlExportResult | None = None,
 ) -> str:
     lines = [
         f"Archivo: {short_path(str(output_path), 92)}",
@@ -12326,8 +16991,111 @@ def build_success_footer_text(
         lines.append(
             f"Externos detectados: {state.external_import_total} refs • {state.external_roots_total} roots"
         )
+    if visual_sidecar is not None:
+        lines.append(
+            f"Sidecar visual: {short_path(str(visual_sidecar.paths.svg_path), 92)}"
+        )
     lines.append("Cierra esta ventana para generar otro grafo. La carpeta de salida se abrirá al cerrar.")
     return "\n".join(lines)
+
+
+def build_tree_success_message(
+    *,
+    output_path: Path,
+    state: AnalysisState,
+    graph: DependencyGraph,
+    relevant_path_count: int,
+) -> str:
+    lines = [
+        "Tree .txt generado con éxito.",
+        "",
+        f"Archivo: {output_path}",
+        f"Vista: {state.view} • Preset: {state.visibility_preset} • Tema: {state.theme}",
+        f"Archivos relevantes: {relevant_path_count}",
+        f"Nodos: {len(graph.nodes)} • Relaciones: {len(graph.edges)}",
+    ]
+
+    if state.external_roots_total > 0:
+        lines.append(
+            f"Externos detectados: {state.external_import_total} refs • {state.external_roots_total} roots"
+        )
+
+    if state.hidden_issue_count > 0:
+        lines.append(f"Issues fuera del tree visible: {state.hidden_issue_count}")
+
+    if state.view == "focus":
+        lines.append(f"Foco: {state.focus_target or '(auto)'}")
+
+    if graph.issues:
+        lines.append(f"Issues: {len(graph.issues)}")
+
+    if state.truncated:
+        lines.append("Aviso: el análisis fue truncado por límites de seguridad.")
+
+    lines.extend(
+        [
+            "",
+            "Se abrirá la carpeta de salida al cerrar esta ventana.",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def build_tree_success_footer_text(
+    *,
+    output_path: Path,
+    state: AnalysisState,
+    graph: DependencyGraph,
+    relevant_path_count: int,
+) -> str:
+    lines = [
+        f"Archivo: {short_path(str(output_path), 92)}",
+        f"Vista: {state.view} • Preset: {state.visibility_preset} • Tema: {state.theme}",
+        f"Archivos relevantes: {relevant_path_count} • Nodos: {len(graph.nodes)} • Relaciones: {len(graph.edges)}",
+    ]
+    lines.append("Cierra esta ventana para generar otro tree. La carpeta de salida se abrirá al cerrar.")
+    return "\n".join(lines)
+
+
+def build_filesystem_tree_success_message(
+    *,
+    output_path: Path,
+    state: AnalysisState,
+    summary: FileTreeSummary,
+    label: str,
+) -> str:
+    return "\n".join(
+        [
+            f"{label} generado con éxito.",
+            "",
+            f"Archivo: {output_path}",
+            f"Project root: {state.project_root}",
+            f"Total folders: {summary.total_folders}",
+            f"Total files: {summary.total_files}",
+            f"Total size: {format_size_bytes(summary.total_size_bytes)}",
+            f"Max depth: {summary.max_depth}",
+            f"Scanned: {summary.scanned_at}",
+            "",
+            "Se abrirá la carpeta de salida al cerrar esta ventana.",
+        ]
+    )
+
+
+def build_filesystem_tree_success_footer_text(
+    *,
+    output_path: Path,
+    summary: FileTreeSummary,
+) -> str:
+    return "\n".join(
+        [
+            f"Archivo: {short_path(str(output_path), 92)}",
+            (
+                f"Folders: {summary.total_folders} • Files: {summary.total_files} • "
+                f"Size: {format_size_bytes(summary.total_size_bytes)} • Max depth: {summary.max_depth}"
+            ),
+            "Cierra esta ventana para generar otro reporte. La carpeta F:\\trees se abrirá al cerrar.",
+        ]
+    )
 
 
 def main() -> int:
@@ -12340,6 +17108,7 @@ def main() -> int:
             # 1. Elegir opciones
             selection = choose_options()
             selected_theme = normalize_theme(selection.theme)
+            output_mode = _coerce_output_mode(selection.output_mode)
 
             # 2. Validar selección / ruta
             selected_path = _resolve_selected_path(selection)
@@ -12356,6 +17125,11 @@ def main() -> int:
             # 4. Crear UI de progreso
             progress = ProgressUI(theme_id=selected_theme)
             notify = _make_progress_notifier(progress)
+            analysis_notify = (
+                _make_tree_analysis_notifier(notify)
+                if output_mode == "tree"
+                else notify
+            )
             notify(
                 "Preparando ejecución...",
                 _initial_progress_detail(selection, selected_path),
@@ -12369,11 +17143,87 @@ def main() -> int:
                     state.focus_target or "sin objetivo explícito, se elegirá por conectividad",
                 )
 
+            if output_mode in {"tree", "tree_html"}:
+                project_root = Path(state.project_root)
+                notify("Detectando filesystem...", str(project_root))
+                notify("Escaneando carpetas y archivos...", str(project_root))
+                file_tree_entries, file_tree_summary = collect_filesystem_tree_entries(project_root)
+                notify(
+                    "Calculando tamaños...",
+                    (
+                        f"{file_tree_summary.total_folders} folders | "
+                        f"{file_tree_summary.total_files} files | "
+                        f"{format_size_bytes(file_tree_summary.total_size_bytes)}"
+                    ),
+                )
+
+                if output_mode == "tree_html":
+                    notify(
+                        "Construyendo Tree HTML Premium...",
+                        f"{file_tree_summary.total_folders} folders | {file_tree_summary.total_files} files",
+                    )
+                    html_markup = build_premium_tree_html(
+                        selected_path=state.selected_path,
+                        project_root=project_root,
+                        entries=file_tree_entries,
+                        summary=file_tree_summary,
+                    )
+                    output_path = make_tree_html_output_path(
+                        selected_path=state.selected_path,
+                        view=state.view,
+                        focus_target=state.focus_target,
+                    )
+                    write_tree_html(html_markup, output_path, notify)
+                    output_label = "Tree HTML Premium"
+                else:
+                    notify(
+                        "Construyendo tree...",
+                        f"{file_tree_summary.total_folders} folders | {file_tree_summary.total_files} files",
+                    )
+                    tree_text = build_filesystem_tree_text(
+                        selected_path=state.selected_path,
+                        project_root=project_root,
+                        entries=file_tree_entries,
+                        summary=file_tree_summary,
+                    )
+                    output_path = make_tree_output_path(
+                        selected_path=state.selected_path,
+                        view=state.view,
+                        focus_target=state.focus_target,
+                    )
+                    write_tree_txt(tree_text, output_path, notify)
+                    output_label = "Tree .txt"
+
+                notify("Validando salida...", str(output_path))
+                if not output_path.exists() or output_path.stat().st_size <= 0:
+                    raise RuntimeError(f"No se pudo validar la salida generada: {output_path}")
+
+                success_detail = build_filesystem_tree_success_message(
+                    output_path=output_path,
+                    state=state,
+                    summary=file_tree_summary,
+                    label=output_label,
+                )
+                _finalize_progress(progress, "Todo quedó listo.", success_detail)
+                _set_progress_footer(
+                    progress,
+                    build_filesystem_tree_success_footer_text(
+                        output_path=output_path,
+                        summary=file_tree_summary,
+                    ),
+                )
+
+                _wait_for_user_close(progress)
+                open_output_location(output_path.parent)
+                destroy_progress_ui(progress)
+                progress = None
+                continue
+
             # 6. Analizar dependencias del proyecto
             module_catalog, import_refs, analysis_graph = analyze_project_dependencies(
                 selected_path=state.selected_path,
                 state=state,
-                notify=notify,
+                notify=analysis_notify,
             )
             apply_analysis_summaries(state, module_catalog, import_refs)
 
@@ -12401,10 +17251,15 @@ def main() -> int:
 
             # 11. Calcular layout
             notify("Calculando layout...", f"{len(graph.nodes)} nodos")
-            layout = layout_dependency_graph(graph, state, notify)
+            layout = relayout_dependency_graph_as_layered_hierarchy(
+                graph,
+                state,
+                layout_dependency_graph(graph, state, notify),
+                notify,
+            )
 
             # 12. Renderizar SVG
-            svg_markup = render_svg(graph, layout, state, notify)
+            svg_markup = enhance_svg_markup_for_premium_viewer(render_svg(graph, layout, state, notify), state=state)
 
             # 13. Guardar SVG
             output_path = make_output_path(
@@ -12415,11 +17270,29 @@ def main() -> int:
             )
             write_svg(svg_markup, output_path, notify)
 
-            # 14. Mostrar éxito
+            visual_sidecar: VisualControlExportResult | None = None
+            if ENABLE_VISUAL_CONTROL_SIDECAR:
+                visual_sidecar = export_visual_control_sidecar(
+                    selected_path=state.selected_path,
+                    theme_id=state.theme,
+                    notify=notify,
+                )
+                notify(
+                    "Sidecar visual exportado.",
+                    (
+                        f"svg={visual_sidecar.paths.svg_path.name} | "
+                        f"md={visual_sidecar.paths.markdown_path.name} | "
+                        f"json={visual_sidecar.paths.json_path.name} | "
+                        f"forensics={visual_sidecar.paths.forensics_json_path.name}"
+                    ),
+                )
+
+            # 14. Mostrar éxito SVG
             success_detail = build_success_message(
                 output_path=output_path,
                 state=state,
                 graph=graph,
+                visual_sidecar=visual_sidecar,
             )
             _finalize_progress(progress, "Todo quedó listo.", success_detail)
             _set_progress_footer(
@@ -12428,6 +17301,7 @@ def main() -> int:
                     output_path=output_path,
                     state=state,
                     graph=graph,
+                    visual_sidecar=visual_sidecar,
                 ),
             )
 
@@ -12469,5 +17343,63 @@ def main() -> int:
         destroy_progress_ui(progress)
 
 
+
+
+# CODE_ATLAS_NO_BLACK_CONSOLE_V1: relanza la app sin consola negra en Windows.
+def _code_atlas_relaunch_without_black_console() -> bool:
+    """Relaunch this GUI script without a console window on Windows.
+
+    This is intentionally tiny and isolated: it does not modify the UI, the
+    glass scene, the selector, the progress window, or any rendering code.
+    It only changes the launcher behavior when the script starts under
+    python.exe, because Windows loves opening a black rectangle like it owns
+    the place.
+    """
+    try:
+        import os as _os
+        import subprocess as _subprocess
+        import sys as _sys
+        from pathlib import Path as _Path
+
+        if _os.name != "nt":
+            return False
+
+        if _os.environ.get("CODE_ATLAS_NO_BLACK_CONSOLE_V1") == "1":
+            return False
+
+        if _os.environ.get("CODE_ATLAS_KEEP_CONSOLE", "").strip().lower() in {"1", "true", "yes", "on"}:
+            return False
+
+        executable = _Path(_sys.executable)
+        if executable.name.lower() == "pythonw.exe":
+            return False
+
+        script_path = _Path(__file__).resolve()
+        pythonw = executable.with_name("pythonw.exe")
+        launch_exe = pythonw if pythonw.exists() else executable
+
+        env = _os.environ.copy()
+        env["CODE_ATLAS_NO_BLACK_CONSOLE_V1"] = "1"
+
+        creationflags = 0
+        for flag_name in ("DETACHED_PROCESS", "CREATE_NEW_PROCESS_GROUP", "CREATE_NO_WINDOW"):
+            creationflags |= int(getattr(_subprocess, flag_name, 0))
+
+        _subprocess.Popen(
+            [str(launch_exe), str(script_path), *_sys.argv[1:]],
+            cwd=str(script_path.parent),
+            env=env,
+            stdin=_subprocess.DEVNULL,
+            stdout=_subprocess.DEVNULL,
+            stderr=_subprocess.DEVNULL,
+            close_fds=True,
+            creationflags=creationflags,
+        )
+        return True
+    except Exception:
+        return False
+
 if __name__ == "__main__":
+    if _code_atlas_relaunch_without_black_console():
+        raise SystemExit(0)
     raise SystemExit(main())

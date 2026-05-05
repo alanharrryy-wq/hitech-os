@@ -16,9 +16,37 @@ from capatch_engine.support_resolution import SupportResolution
 from capatch_ops.base import CapatchError
 
 try:
-    from capatch_contracts.plugin_runtime import CAPATCH_PLUGIN_RUNTIME_VERSION as _CONTRACT_PLUGIN_RUNTIME_VERSION
+    from capatch_contracts.plugin_runtime import (
+        CAPATCH_PLUGIN_RUNTIME_VERSION as _CONTRACT_PLUGIN_RUNTIME_VERSION,
+        summarize_essential_runtime_health,
+    )
 except ImportError:
     from capatch_contracts.versions import CAPATCH_PLUGIN_RUNTIME_VERSION as _CONTRACT_PLUGIN_RUNTIME_VERSION
+
+    def summarize_essential_runtime_health(
+        runtime_version,
+        registry,
+        essential_plugin_ids=(),
+        capability_map=None,
+    ):
+        registry = registry if isinstance(registry, dict) else {}
+        missing = [
+            str(plugin_id)
+            for plugin_id in essential_plugin_ids
+            if str(plugin_id) not in registry
+        ]
+        return {
+            "status": "healthy" if not missing else "degraded",
+            "runtime_version": runtime_version,
+            "essential_plugin_ids": list(essential_plugin_ids),
+            "active": [],
+            "missing": missing,
+            "rejected": [],
+            "disabled": [],
+            "duplicate": [],
+            "healthy": not missing,
+            "missing_capabilities": [],
+        }
 
 
 def fail(message: str) -> NoReturn:
@@ -839,3 +867,4 @@ __all__ = [
     'run_plugins_after_apply',
     'run_plugins_before_apply',
 ]
+
