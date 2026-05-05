@@ -1,0 +1,41 @@
+{
+  "applied_at": "2026-04-11T15:39:12",
+  "backup_dir": "F:\\repos\\hitech-os\\apps\\ar-k\\.ark_install\\frontend_hardening_backups\\260411_153912",
+  "description": "Hardens scanner path handling, blocks placeholder target values, skips vendor trees, and adds frontend observation artifacts.",
+  "package_id": "ar_k_frontend_path_hardening_v1",
+  "payload": "F:\\descargasf\\ar-k_frontend_hardening_patch.zip",
+  "touched_files": [
+    {
+      "existed_before": true,
+      "relative_path": "pya/kernel/discovery.py"
+    },
+    {
+      "existed_before": true,
+      "relative_path": "pya/kernel/identity.py"
+    },
+    {
+      "existed_before": true,
+      "relative_path": "pya/tools/pya.py"
+    },
+    {
+      "existed_before": true,
+      "relative_path": "pya/engines/scanner/parser.py"
+    },
+    {
+      "existed_before": true,
+      "relative_path": "pya/engines/scanner/engine.py"
+    },
+    {
+      "existed_before": false,
+      "relative_path": "pya/engines/scanner/frontend_signals.py"
+    },
+    {
+      "existed_before": true,
+      "relative_path": "tests/test_scanner_engine.py"
+    },
+    {
+      "existed_before": false,
+      "relative_path": "tests/test_cli_path_hardening.py"
+    }
+  ]
+}

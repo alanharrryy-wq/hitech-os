@@ -1,0 +1,45 @@
+[
+  {
+    "decision_source": "default",
+    "evaluated_override_key": null,
+    "precedence_path": [
+      "default"
+    ],
+    "resolved_value": true,
+    "switch_id": "switch.alpha",
+    "warning": null
+  },
+  {
+    "decision_source": "switch_id",
+    "evaluated_override_key": "switch.beta",
+    "precedence_path": [
+      "default",
+      "switch_id"
+    ],
+    "resolved_value": true,
+    "switch_id": "switch.beta",
+    "warning": null
+  },
+  {
+    "decision_source": "default",
+    "evaluated_override_key": "switch.delta",
+    "precedence_path": [
+      "default",
+      "invalid_override_ignored"
+    ],
+    "resolved_value": false,
+    "switch_id": "switch.delta",
+    "warning": "Invalid override for switch.delta: expected bool, got str"
+  },
+  {
+    "decision_source": "target_id",
+    "evaluated_override_key": "route.gamma",
+    "precedence_path": [
+      "default",
+      "target_id"
+    ],
+    "resolved_value": false,
+    "switch_id": "switch.gamma",
+    "warning": null
+  }
+]

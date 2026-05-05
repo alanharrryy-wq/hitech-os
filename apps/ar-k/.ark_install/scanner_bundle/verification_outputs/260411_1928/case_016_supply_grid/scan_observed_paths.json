@@ -1,0 +1,149 @@
+[
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "hidden",
+    "path": ".shadow_shippable_tunnel_016.md",
+    "reason": "hidden_root"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "app/supply_grid/routes.py",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "app/supply_grid/service.py",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "app/supply_grid/worker.py",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "docs",
+    "path": "docs/supply_grid_architecture.md",
+    "reason": "non_product_top_level:docs"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "examples",
+    "path": "examples/supply_grid_example.py",
+    "reason": "non_product_top_level:examples"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "fixtures",
+    "path": "fixtures/supply_grid_seed.py",
+    "reason": "non_product_top_level:fixtures"
+  },
+  {
+    "action": "exclude",
+    "canonical_source": false,
+    "non_product_class": "excluded",
+    "path": "generated/supply_grid/snapshot.json",
+    "reason": "excluded_segment:generated"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "public/modules.config.json",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "exclude",
+    "canonical_source": false,
+    "non_product_class": "excluded",
+    "path": "reports/supply_grid_run.md",
+    "reason": "excluded_segment:reports"
+  },
+  {
+    "action": "exclude",
+    "canonical_source": false,
+    "non_product_class": "excluded",
+    "path": "reports_real/supply_grid_live.md",
+    "reason": "excluded_segment:reports_real"
+  },
+  {
+    "action": "exclude",
+    "canonical_source": false,
+    "non_product_class": "excluded",
+    "path": "runtime/supply_grid/stream.log",
+    "reason": "excluded_segment:runtime"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "scripts",
+    "path": "scripts/rebuild_supply_grid.py",
+    "reason": "non_product_top_level:scripts"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/bridges/SupplyGridBridge.ts",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/components/SupplyGridPanel.tsx",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/components/SupplyGridStats.tsx",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/main.tsx",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/pages/SupplyGridScreen.tsx",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/routes/register.ts",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "tests",
+    "path": "tests/supply_grid.spec.ts",
+    "reason": "non_product_top_level:tests"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "tooling",
+    "path": "tools/enforce_supply_grid_policy.py",
+    "reason": "non_product_top_level:tools"
+  }
+]

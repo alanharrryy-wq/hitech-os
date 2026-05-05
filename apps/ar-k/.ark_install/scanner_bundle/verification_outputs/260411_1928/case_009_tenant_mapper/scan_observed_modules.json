@@ -1,0 +1,252 @@
+[
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "exports": [],
+    "imports": [],
+    "kind": "markdown",
+    "non_product_class": "hidden",
+    "path": ".shadow_incremental_kernel_009.md",
+    "routes": [],
+    "surface_kind": "module"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "error": null,
+    "exports": [],
+    "imports": [
+      "__future__"
+    ],
+    "kind": "python",
+    "non_product_class": null,
+    "parse_ok": true,
+    "path": "app/tenant_mapper/routes.py",
+    "routes": []
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "error": null,
+    "exports": [
+      "TenantMapperService",
+      "load_tenant_mapper_snapshot"
+    ],
+    "imports": [
+      "__future__",
+      "app.tenant_mapper.worker",
+      "dataclasses",
+      "json"
+    ],
+    "kind": "python",
+    "non_product_class": null,
+    "parse_ok": true,
+    "path": "app/tenant_mapper/service.py",
+    "routes": []
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "error": null,
+    "exports": [
+      "TenantMapperWorker",
+      "build_tenant_mapper_packet"
+    ],
+    "imports": [
+      "__future__",
+      "hashlib",
+      "math"
+    ],
+    "kind": "python",
+    "non_product_class": null,
+    "parse_ok": true,
+    "path": "app/tenant_mapper/worker.py",
+    "routes": []
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "exports": [],
+    "imports": [],
+    "kind": "markdown",
+    "non_product_class": "docs",
+    "path": "docs/tenant_mapper_architecture.md",
+    "routes": [],
+    "surface_kind": "module"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "error": null,
+    "exports": [],
+    "imports": [],
+    "kind": "python",
+    "non_product_class": "examples",
+    "parse_ok": true,
+    "path": "examples/tenant_mapper_example.py",
+    "routes": []
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "error": null,
+    "exports": [],
+    "imports": [],
+    "kind": "python",
+    "non_product_class": "fixtures",
+    "parse_ok": true,
+    "path": "fixtures/tenant_mapper_seed.py",
+    "routes": []
+  },
+  {
+    "boundaries": [
+      "public_registry_boundary"
+    ],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [],
+    "kind": "json",
+    "non_product_class": null,
+    "path": "public/modules.config.json",
+    "routes": [],
+    "surface_kind": "module_config"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "error": null,
+    "exports": [
+      "main"
+    ],
+    "imports": [
+      "__future__"
+    ],
+    "kind": "python",
+    "non_product_class": "scripts",
+    "parse_ok": true,
+    "path": "scripts/rebuild_tenant_mapper.py",
+    "routes": []
+  },
+  {
+    "boundaries": [
+      "desktop_bridge_boundary"
+    ],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/bridges/TenantMapperBridge.ts",
+    "routes": [],
+    "surface_kind": "desktop_bridge"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "react"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/components/TenantMapperPanel.tsx",
+    "routes": [],
+    "surface_kind": "component"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "react"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/components/TenantMapperStats.tsx",
+    "routes": [],
+    "surface_kind": "component"
+  },
+  {
+    "boundaries": [
+      "runtime_entry"
+    ],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "./bridges/TenantMapperBridge",
+      "./pages/TenantMapperScreen",
+      "./routes/register",
+      "react",
+      "react-dom/client",
+      "react-router-dom"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/main.tsx",
+    "routes": [],
+    "surface_kind": "entrypoint"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "../components/TenantMapperPanel",
+      "../components/TenantMapperStats",
+      "react"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/pages/TenantMapperScreen.tsx",
+    "routes": [],
+    "surface_kind": "screen"
+  },
+  {
+    "boundaries": [
+      "route_registration"
+    ],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "../pages/TenantMapperScreen"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/routes/register.ts",
+    "routes": [
+      "/tenant-mapper/incremental-009",
+      "/tenant-mapper/incremental-009/details",
+      "/tenant-mapper/incremental-009/history"
+    ],
+    "surface_kind": "route_surface"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "exports": [],
+    "imports": [
+      "vitest"
+    ],
+    "kind": "typescript",
+    "non_product_class": "tests",
+    "path": "tests/tenant_mapper.spec.ts",
+    "routes": [],
+    "surface_kind": "module"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "error": null,
+    "exports": [
+      "verify_tenant_mapper_policy"
+    ],
+    "imports": [
+      "__future__"
+    ],
+    "kind": "python",
+    "non_product_class": "tooling",
+    "parse_ok": true,
+    "path": "tools/enforce_tenant_mapper_policy.py",
+    "routes": []
+  }
+]

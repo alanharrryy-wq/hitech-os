@@ -1,0 +1,228 @@
+[
+  {
+    "area": "app",
+    "boundaries": [
+      "bnd_ca6fa4bbcd8ac0fa"
+    ],
+    "confidence": 0.905,
+    "declared_by": [
+      "registry_builder"
+    ],
+    "kind": "python_module",
+    "module_id": "mod_8c515574df862523",
+    "name": "app.svc_003_05",
+    "observed_in": [
+      "app/svc_003_05.py"
+    ],
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "switches": [
+      "module.enabled:mod_8c515574df862523"
+    ],
+    "tags": [
+      "app",
+      "cell_05",
+      "scenario_003",
+      "unsupported_surface_quarantine"
+    ],
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "area": "pkg",
+    "boundaries": [
+      "bnd_062c6c59fb3e2a61",
+      "bnd_dc0067e12f08a6f4"
+    ],
+    "confidence": 0.866,
+    "declared_by": [
+      "registry_builder"
+    ],
+    "kind": "python_module",
+    "module_id": "mod_068079bd1d9c497a",
+    "name": "pkg.svc_003_04",
+    "observed_in": [
+      "pkg/svc_003_04.py"
+    ],
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "switches": [
+      "module.enabled:mod_068079bd1d9c497a"
+    ],
+    "tags": [
+      "cell_04",
+      "pkg",
+      "scenario_003",
+      "unsupported_surface_quarantine"
+    ],
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "area": "services",
+    "boundaries": [],
+    "confidence": 0.749,
+    "declared_by": [
+      "registry_builder"
+    ],
+    "kind": "python_module",
+    "module_id": "mod_7e4036b9eda86ee6",
+    "name": "services.svc_003_01",
+    "observed_in": [
+      "services/svc_003_01.py"
+    ],
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "switches": [
+      "module.enabled:mod_7e4036b9eda86ee6"
+    ],
+    "tags": [
+      "cell_01",
+      "scenario_003",
+      "services",
+      "unsupported_surface_quarantine"
+    ],
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "area": "services",
+    "boundaries": [
+      "bnd_2c2d6e89c21c33bf",
+      "bnd_ba63426110c2500a"
+    ],
+    "confidence": 0.723,
+    "declared_by": [
+      "registry_builder"
+    ],
+    "kind": "python_module",
+    "module_id": "mod_1c71763e7b3fe168",
+    "name": "services.svc_003_06",
+    "observed_in": [
+      "services/svc_003_06.py"
+    ],
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "switches": [
+      "module.enabled:mod_1c71763e7b3fe168"
+    ],
+    "tags": [
+      "cell_06",
+      "scenario_003",
+      "services",
+      "unsupported_surface_quarantine"
+    ],
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "area": "ui",
+    "boundaries": [
+      "bnd_43ce71bd6f537eed",
+      "bnd_9992a0ed1244ac54"
+    ],
+    "confidence": 0.788,
+    "declared_by": [
+      "registry_builder"
+    ],
+    "kind": "frontend_surface",
+    "module_id": "mod_57202cab6a9bd425",
+    "name": "ui.svc_003_02",
+    "observed_in": [
+      "ui/svc_003_02.py"
+    ],
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "switches": [
+      "module.enabled:mod_57202cab6a9bd425"
+    ],
+    "tags": [
+      "cell_02",
+      "scenario_003",
+      "ui",
+      "unsupported_surface_quarantine"
+    ],
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "area": "ui",
+    "boundaries": [
+      "bnd_104a1ef151e52aae"
+    ],
+    "confidence": 0.762,
+    "declared_by": [
+      "registry_builder"
+    ],
+    "kind": "frontend_surface",
+    "module_id": "mod_f57ede95739e8b54",
+    "name": "ui.svc_003_07",
+    "observed_in": [
+      "ui/svc_003_07.py"
+    ],
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "switches": [
+      "module.enabled:mod_f57ede95739e8b54"
+    ],
+    "tags": [
+      "cell_07",
+      "scenario_003",
+      "ui",
+      "unsupported_surface_quarantine"
+    ],
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "area": "workers",
+    "boundaries": [
+      "bnd_a68f0ecfad1aac10"
+    ],
+    "confidence": 0.827,
+    "declared_by": [
+      "registry_builder"
+    ],
+    "kind": "python_module",
+    "module_id": "mod_f7841bdb159823fa",
+    "name": "workers.svc_003_03",
+    "observed_in": [
+      "workers/svc_003_03.py"
+    ],
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "switches": [
+      "module.enabled:mod_f7841bdb159823fa"
+    ],
+    "tags": [
+      "cell_03",
+      "scenario_003",
+      "unsupported_surface_quarantine",
+      "workers"
+    ],
+    "updated_at": "2026-04-11T00:00:00Z"
+  },
+  {
+    "area": "workers",
+    "boundaries": [
+      "bnd_8faa308e453dfebd",
+      "bnd_921bbd949ae17ffe"
+    ],
+    "confidence": 0.801,
+    "declared_by": [
+      "registry_builder"
+    ],
+    "kind": "python_module",
+    "module_id": "mod_4e771b4a27add240",
+    "name": "workers.svc_003_08",
+    "observed_in": [
+      "workers/svc_003_08.py"
+    ],
+    "source_of_truth": "scanner.signals",
+    "status": "canonical",
+    "switches": [
+      "module.enabled:mod_4e771b4a27add240"
+    ],
+    "tags": [
+      "cell_08",
+      "scenario_003",
+      "unsupported_surface_quarantine",
+      "workers"
+    ],
+    "updated_at": "2026-04-11T00:00:00Z"
+  }
+]

@@ -1,0 +1,149 @@
+[
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "hidden",
+    "path": ".shadow_incremental_kernel_009.md",
+    "reason": "hidden_root"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "app/tenant_mapper/routes.py",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "app/tenant_mapper/service.py",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "app/tenant_mapper/worker.py",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "docs",
+    "path": "docs/tenant_mapper_architecture.md",
+    "reason": "non_product_top_level:docs"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "examples",
+    "path": "examples/tenant_mapper_example.py",
+    "reason": "non_product_top_level:examples"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "fixtures",
+    "path": "fixtures/tenant_mapper_seed.py",
+    "reason": "non_product_top_level:fixtures"
+  },
+  {
+    "action": "exclude",
+    "canonical_source": false,
+    "non_product_class": "excluded",
+    "path": "generated/tenant_mapper/snapshot.json",
+    "reason": "excluded_segment:generated"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "public/modules.config.json",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "exclude",
+    "canonical_source": false,
+    "non_product_class": "excluded",
+    "path": "reports/tenant_mapper_run.md",
+    "reason": "excluded_segment:reports"
+  },
+  {
+    "action": "exclude",
+    "canonical_source": false,
+    "non_product_class": "excluded",
+    "path": "reports_real/tenant_mapper_live.md",
+    "reason": "excluded_segment:reports_real"
+  },
+  {
+    "action": "exclude",
+    "canonical_source": false,
+    "non_product_class": "excluded",
+    "path": "runtime/tenant_mapper/stream.log",
+    "reason": "excluded_segment:runtime"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "scripts",
+    "path": "scripts/rebuild_tenant_mapper.py",
+    "reason": "non_product_top_level:scripts"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/bridges/TenantMapperBridge.ts",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/components/TenantMapperPanel.tsx",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/components/TenantMapperStats.tsx",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/main.tsx",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/pages/TenantMapperScreen.tsx",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "canonical",
+    "canonical_source": true,
+    "non_product_class": null,
+    "path": "src/routes/register.ts",
+    "reason": "scanner_readable_source"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "tests",
+    "path": "tests/tenant_mapper.spec.ts",
+    "reason": "non_product_top_level:tests"
+  },
+  {
+    "action": "observe_only",
+    "canonical_source": false,
+    "non_product_class": "tooling",
+    "path": "tools/enforce_tenant_mapper_policy.py",
+    "reason": "non_product_top_level:tools"
+  }
+]
