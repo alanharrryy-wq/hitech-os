@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "09.public-key-registry.1",
+  "issuer": "PRISMA_LICENSE_AUTHORITY",
+  "generatedFor": "example-only-public-registry",
+  "keys": [
+    {
+      "keyId": "prisma-prod-eddsa-2026-01",
+      "environment": "production",
+      "algorithm": "EdDSA",
+      "state": "next",
+      "notBefore": "2026-01-01T00:00:00Z",
+      "notAfter": "2027-01-01T00:00:00Z",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY-----\\nEXAMPLE_PUBLIC_KEY_ONLY_REPLACE_IN_DEPLOYMENT\\n-----END PUBLIC KEY-----",
+      "fingerprintSha256": "example-only-not-a-real-fingerprint"
+    },
+    {
+      "keyId": "prisma-staging-rs256-2026-01",
+      "environment": "staging",
+      "algorithm": "RS256",
+      "state": "next",
+      "notBefore": "2026-01-01T00:00:00Z",
+      "notAfter": "2027-01-01T00:00:00Z",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY-----\\nEXAMPLE_STAGING_PUBLIC_KEY_ONLY\\n-----END PUBLIC KEY-----",
+      "fingerprintSha256": "example-only-not-a-real-fingerprint"
+    }
+  ]
+}

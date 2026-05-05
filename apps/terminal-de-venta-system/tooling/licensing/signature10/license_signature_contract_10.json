@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "package": "PRISMA_LICENSE_PRODUCTION_SIGNATURE_10",
+  "commands": [
+    "license-signature-policy",
+    "license-signature-registry",
+    "license-signature-audit",
+    "license-signature-verify-fixture",
+    "license-signature-env-smoke",
+    "license-signature-smoke",
+    "license-signature-contract"
+  ],
+  "files": [
+    "docs/productization/PRISMA_LICENSE_PRODUCTION_SIGNATURE_10.md",
+    "docs/productization/PRISMA_LICENSE_PRODUCTION_SIGNATURE_10_RUNBOOK.md",
+    "docs/productization/PRISMA_LICENSE_PRODUCTION_SIGNATURE_10_ACCEPTANCE.md",
+    "tooling/licensing/signature10/signature_policy.json",
+    "tooling/licensing/signature10/public_key_registry.fixture.json",
+    "tooling/licensing/signature10/signed_license.fixture.rs256.json",
+    "tooling/licensing/signature10/license_signature_contract_10.json",
+    "tooling/licensing/signature10/license_signature_10.py"
+  ],
+  "acceptance": [
+    "Unsigned licenses are rejected in production.",
+    "HS256_DEV_ONLY is rejected in production.",
+    "RS256_PROD fixture verifies using public-key registry only.",
+    "No production private key is packaged.",
+    "terminal_de_venta.cmd exposes signature commands."
+  ]
+}

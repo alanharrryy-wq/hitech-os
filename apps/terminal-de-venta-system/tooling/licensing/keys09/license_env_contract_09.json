@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "09.env-contract.1",
+  "variables": {
+    "PRISMA_LICENSE_ENV": {
+      "values": [
+        "development",
+        "staging",
+        "production"
+      ],
+      "required": true
+    },
+    "PRISMA_LICENSE_SERVER_URL": {
+      "required": true,
+      "example": "http://127.0.0.1:3140"
+    },
+    "PRISMA_LICENSE_PUBLIC_KEY_REGISTRY_PATH": {
+      "requiredIn": [
+        "staging",
+        "production"
+      ]
+    },
+    "PRISMA_LICENSE_ACTIVE_KEY_ID": {
+      "requiredIn": [
+        "staging",
+        "production"
+      ]
+    },
+    "PRISMA_LICENSE_SIGNING_KEY_REF": {
+      "serverOnly": true,
+      "requiredIn": [
+        "staging",
+        "production"
+      ],
+      "note": "reference to external secret/KMS key, not key material"
+    },
+    "PRISMA_LICENSE_ALLOW_UNSIGNED_DEV": {
+      "allowedOnlyIn": [
+        "development"
+      ]
+    },
+    "PRISMA_LICENSE_ALLOW_DEV_SIGNATURE_IN_STAGING": {
+      "default": "0",
+      "requiresExplicitException": true
+    }
+  }
+}

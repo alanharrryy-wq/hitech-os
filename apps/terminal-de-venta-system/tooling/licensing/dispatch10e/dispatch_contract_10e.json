@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "10E.cmd-dispatch-repair.v1",
+  "package": "PRISMA_LICENSE_CMD_DISPATCH_REPAIR_10E",
+  "version": "10.0.5",
+  "repairs": [
+    "missing :unknown label",
+    "unreachable license-signature-smoke",
+    "private-key-smoke missing subcommand"
+  ],
+  "runtimeSmoke": [
+    "license-signature-verify-fixture",
+    "license-private-key-smoke",
+    "license-signature-smoke"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0.0",
+  "environment": "production",
+  "activeKeyId": "prod-demo-rs256-2026-q2",
+  "keys": [
+    {
+      "keyId": "prod-demo-rs256-2026-q2",
+      "status": "active",
+      "alg": "RS256_PROD",
+      "kty": "RSA",
+      "use": "sig",
+      "notBefore": "2026-01-01T00:00:00.000Z",
+      "notAfter": "2099-12-31T23:59:59.000Z",
+      "jwk": {
+        "kty": "RSA",
+        "n": "pIST56xZwgBYBNkcubMMu1I5s4K-3MetzRTjVzamY7kukHHSufvCaryaKtlA9KDUv4rDQn9-SEh4MZU6FdbsfGy8Xh0tNE1x8I-XLAuwT_8o-QQFXIb3PaaX6i0PKlgjPOYiqEwiHmOL3IN-Tb17IbtcWjmHnnqum8KhnHXjVlkoVutofJ4pJIRBSO5Zr_jAvyUK27323MVTUq6sKMifeDGL5qp8xNdkxVwCEvGdMjlym-xEPWiOqaaVBNv3Du-dhZr_o1FoOygmakeDZc3qXWsZ30aWQ92TJ2uB5sH2auZ_z0I0IFBzOouW4_5t8kEedkL60kT2Z3TSftc1DTm-4Q",
+        "e": "AQAB",
+        "alg": "RS256_PROD",
+        "use": "sig"
+      },
+      "fixtureOnly": true
+    }
+  ],
+  "notes": [
+    "This registry contains only public verification material.",
+    "Production private keys must live outside the repository in KMS/HSM/secret manager custody."
+  ]
+}

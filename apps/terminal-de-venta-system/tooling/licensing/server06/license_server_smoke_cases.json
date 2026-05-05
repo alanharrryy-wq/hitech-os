@@ -1,0 +1,9 @@
+[
+  {"name": "health", "method": "GET", "path": "/health", "expectOk": true},
+  {"name": "activate TABLET_PC_REQUIRED", "method": "POST", "path": "/licenses/activate", "expectOk": true},
+  {"name": "refresh by licenseId", "method": "POST", "path": "/licenses/refresh", "expectOk": true},
+  {"name": "current by deviceId", "method": "GET", "path": "/licenses/current", "expectOk": true},
+  {"name": "customer licenses", "method": "GET", "path": "/customers/cust_demo/licenses", "expectOk": true},
+  {"name": "suspend", "method": "POST", "path": "/licenses/suspend", "expectOk": true},
+  {"name": "revoke", "method": "POST", "path": "/licenses/revoke", "expectOk": true}
+]

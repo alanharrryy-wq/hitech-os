@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "08.device-activation.1",
+  "package": "PRISMA_LICENSE_DEVICE_ACTIVATION_HARDENING_08",
+  "requires": [
+    "PRISMA_LICENSE_SERVER_MVP_06",
+    "PRISMA_LICENSE_REMOTE_REFRESH_WIRING_07"
+  ],
+  "planLimits": {
+    "TABLET_SOLO": {
+      "terminalLimit": 1,
+      "branchLimit": 1,
+      "resetRequiresSupport": true
+    },
+    "TABLET_PRO": {
+      "terminalLimit": 2,
+      "branchLimit": 1,
+      "resetRequiresSupport": true
+    },
+    "TABLET_PC_REQUIRED": {
+      "terminalLimit": 6,
+      "branchLimit": 3,
+      "resetRequiresSupport": true
+    }
+  },
+  "deviceStates": [
+    "active",
+    "suspended",
+    "revoked",
+    "reset",
+    "replaced"
+  ],
+  "requiredActivationFields": [
+    "customerId",
+    "businessId",
+    "deviceId",
+    "terminalId",
+    "plan",
+    "activatedAt",
+    "status",
+    "licenseId"
+  ],
+  "recommendedActivationFields": [
+    "installationFingerprint",
+    "branchId",
+    "lastSeenAt",
+    "supportResetAt",
+    "supportResetBy"
+  ],
+  "supportReset": {
+    "allowedFromStates": [
+      "active",
+      "suspended",
+      "revoked"
+    ],
+    "targetDeviceState": "reset",
+    "targetLicenseState": "suspended",
+    "eventType": "device.support_reset",
+    "backupRequired": true
+  },
+  "events": [
+    "device.activation_requested",
+    "device.activated",
+    "device.activation_denied",
+    "device.support_reset",
+    "device.limit_violation_detected",
+    "license.suspended",
+    "license.revoked",
+    "license.refreshed"
+  ]
+}
