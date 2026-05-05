@@ -1,24 +1,28 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-
-import { AmbientBackdrop } from "@components/layout/ambient-backdrop";
-import { AppFrame } from "@components/layout/app-frame";
-
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "External Interaction Template",
-  description: "Plantilla neutral para interacciones externas con flujos de captura, revisión, actualización, aprobación, despacho y sincronización."
+  title: "PRISMA | Tablet opera, PC gobierna, Mobile supervisa",
+  description:
+    "PRISMA conecta punto de venta, administración y supervisión móvil para operar con menos caos y más control.",
+  metadataBase: new URL("https://eit.hitechrts.com"),
+  openGraph: {
+    title: "PRISMA",
+    description:
+      "Vende en Tablet. Controla en PC. Supervisa desde el celular.",
+    url: "https://eit.hitechrts.com",
+    siteName: "PRISMA",
+    images: [{ url: "/prisma/brand/prisma-og.svg", width: 1200, height: 630 }],
+    locale: "es_MX",
+    type: "website"
+  }
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="es">
-      <body>
-        <AmbientBackdrop />
-        <div className="pointer-events-none fixed inset-0 -z-10 grid-fade" />
-        <AppFrame>{children}</AppFrame>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

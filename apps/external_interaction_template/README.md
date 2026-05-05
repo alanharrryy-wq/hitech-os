@@ -1,143 +1,32 @@
-# External Interaction Template
+# PRISMA Web Clean Canvas - EIT
 
-`external_interaction_template` is the web/light companion to the desktop control-center template.
+Esta app reemplaza `apps/external_interaction_template` como lienzo limpio para la web pública de PRISMA.
 
-It provides a domain-neutral external interaction system for:
+## Rol
 
-1. Collect
-2. Review
-3. Update
-4. Approve
-5. Dispatch
-6. Sync
+- Host público inicial: `https://eit.hitechrts.com`
+- Origen local esperado: `http://127.0.0.1:3110`
+- Carpeta: `apps/external_interaction_template`
 
-## Scope
-
-This template is intentionally neutral. Core abstractions are:
-
-- `Actor`
-- `Record`
-- `RecordType`
-- `Flow`
-- `Step`
-- `Field`
-- `Action`
-- `Submission`
-- `Attachment`
-- `Adapter`
-- `DispatchJob`
-- `SyncEvent`
-
-No CRM-specific nouns are hardcoded in architecture.
-
-## Tech Stack
-
-- Next.js (App Router)
-- TypeScript
-- Tailwind CSS
-- shadcn-style reusable UI primitives
-- Framer Motion
-- Prisma + SQLite
-- REST APIs
-- Adapter boundaries for outbound dispatch
-
-## Included Example Schemas
-
-- `service_request`
-- `approval_packet`
-- `inspection_checklist`
-
-These examples demonstrate generality; the engine remains schema-driven and reusable.
-
-## Run Locally
+## Scripts
 
 ```powershell
-pnpm --filter @hitech/external_interaction_template install
-pnpm --filter @hitech/external_interaction_template db:setup
-pnpm --filter @hitech/external_interaction_template dev
+pnpm -C apps/external_interaction_template build
+pnpm -C apps/external_interaction_template start
+pnpm -C apps/external_interaction_template dev
+pnpm -C apps/external_interaction_template typecheck
 ```
 
-Default URL:
+## Modelo de producto
 
-- `http://127.0.0.1:3110`
-
-## API Surface (template)
-
-- `GET /api/schemas`
-- `GET|POST /api/records`
-- `GET|PATCH /api/records/[recordId]`
-- `POST /api/records/[recordId]/action`
-- `POST /api/records/[recordId]/attachments`
-- `GET|PATCH /api/records/token/[token]`
-- `GET /api/sync/events`
-- `POST /api/sync/jobs/[jobId]/retry`
-
-## Adapter Model
-
-Current built-ins:
-
-- `LocalAdapter`
-- `RestAdapter`
-- `WebhookAdapter`
-
-Environment variables for outbound adapters:
-
-- `EXTERNAL_INTERACTION_REST_ENDPOINT`
-- `EXTERNAL_INTERACTION_WEBHOOK_URL`
-
-## Schema Extension
-
-Add new record types in:
-
-- `src/lib/core/schema-registry.ts`
-
-Each schema defines:
-
-- flow steps
-- fields
-- conditional visibility
-- actions by state/role
-- view sections
-- adapter bindings
-
-## Security / Access Model (template-level)
-
-Supports:
-
-- public flow access
-- authenticated placeholder (header based)
-- secure token lookup and update
-- role-aware action availability
-
-## Tests
-
-```powershell
-pnpm --filter @hitech/external_interaction_template test
+```text
+Tablet opera.
+PC gobierna.
+Mobile supervisa.
+Core registra.
+Control audita.
 ```
 
-Covers schema-driven rendering/validation, conditional visibility, record create/update, token resume,
-action/state behavior, dispatch outcome handling, sync visibility, and schema switching.
+## Guardrails
 
-<!-- EXTERNAL_INTERACTION_TEMPLATE:ARCHITECTURE_MAPS:START -->
-## Architecture maps and safe change workflow
-
-This section is managed by `inject_external_interaction_template_maps.py`.
-
-### Managed docs
-- `docs/architecture/FRONTEND_VISUAL_MAP.md`
-- `docs/architecture/BACKEND_FLOW_MAP.md`
-- `docs/architecture/CHANGE_TRACKING.md`
-
-### Why this exists
-These docs give the team:
-- a frontend visual map
-- a backend flow map
-- a change tracking and rollback strategy
-
-### Safe workflow
-1. Run the injector in `--dry-run`.
-2. Apply the docs for real.
-3. Review the git diff.
-4. Validate the app or tests.
-5. Set a baseline if the result is clean.
-<!-- EXTERNAL_INTERACTION_TEMPLATE:ARCHITECTURE_MAPS:END -->
+Ver `PRISMA_WEB_GUARDRAILS.md`.
