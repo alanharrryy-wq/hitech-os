@@ -1,0 +1,33 @@
+{
+  "package": "PRISMA_VISUAL_OS_TREE_REORG_CLOSE_00ZE_20260505_v02",
+  "status": "tree_reorg_close",
+  "canonicalVisualRoot": "apps/terminal-de-venta-system/tools/prisma-visual-os",
+  "rootPolicy": "compat_shims_remain_in_root",
+  "implementationFolders": [
+    "doctors",
+    "verifiers",
+    "realtime",
+    "scoring",
+    "generators",
+    "gates",
+    "qa",
+    "tree"
+  ],
+  "reservedFoldersCreated": [
+    "launchers",
+    "docs",
+    "_plans"
+  ],
+  "notMoved": [
+    "root .cmd launchers",
+    "tools/visual",
+    "tools/prisma-pos-visual-control"
+  ],
+  "forbiddenTouch": [
+    "products/tablet/app/app",
+    "products/tablet/app/src",
+    "products/pc/app/app",
+    "packages/shared-kernel",
+    "styles"
+  ]
+}
