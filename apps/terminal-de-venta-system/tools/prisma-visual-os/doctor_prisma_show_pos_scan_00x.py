@@ -451,10 +451,16 @@ if ($conn) {{
             data = json.loads(path.read_text(encoding="utf-8", errors="replace"))
         except Exception:
             return None
-        status = data.get("status") or data.get("releaseVerdict") or "unknown"
-        criticals = data.get("criticalFailures") or []
-        warnings = data.get("warnings") or []
-        package = data.get("package", "unknown")
+        # PRISMA 00X classify-json guard patch
+        if not isinstance(data, dict):
+            return None
+        status_raw = data.get("status") or data.get("releaseVerdict") or "unknown"
+        status = str(status_raw)
+        criticals_raw = data.get("criticalFailures") or []
+        warnings_raw = data.get("warnings") or []
+        criticals = criticals_raw if isinstance(criticals_raw, list) else [criticals_raw]
+        warnings = warnings_raw if isinstance(warnings_raw, list) else [warnings_raw]
+        package = str(data.get("package", "unknown"))
         active_window = self.run_started - timedelta(minutes=self.args.active_log_grace_minutes)
         is_current_window = mtime >= active_window
         is_current_doctor = str(path) == str(self.json_path)
@@ -512,6 +518,19 @@ if ($conn) {{
             self.add_suppressed("structured report noise", "JSON report was ready; embedded historical strings ignored.", item)
 
     def build_gates(self) -> None:
+        # PRISMA 00X gate-normalizer safety patch
+        normalized_checks = []
+        for _prisma_check in self.report.checks:
+            if isinstance(_prisma_check, dict):
+                normalized_checks.append(_prisma_check)
+            elif isinstance(_prisma_check, list):
+                normalized_checks.extend(
+                    _nested_check
+                    for _nested_check in _prisma_check
+                    if isinstance(_nested_check, dict)
+                )
+        self.report.checks = normalized_checks
+
         gate_names = {
             "runtime_pos": ["route /pos"],
             "runtime_visual_os": ["route /visual-os/pro", "realtime health"],
@@ -521,8 +540,15 @@ if ($conn) {{
         }
         gates: dict[str, Any] = {}
         for gate, names in gate_names.items():
-            rows = [c for c in self.report.checks if c["name"] in names]
-            ok = bool(rows) and all(r.get("ok") or r.get("skipped") for r in rows)
+            rows = [
+                c for c in self.report.checks
+                if isinstance(c, dict) and c.get("name") in names
+            ]
+            ok = bool(rows) and all(
+                bool(r.get("ok") or r.get("skipped"))
+                for r in rows
+                if isinstance(r, dict)
+            )
             gates[gate] = {"ok": ok, "checks": rows}
         self.report.gates = gates
 
