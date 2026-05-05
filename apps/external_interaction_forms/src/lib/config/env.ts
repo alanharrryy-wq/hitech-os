@@ -5,7 +5,12 @@ export interface FormsPublicEnv {
   readonly publicAppUrl: string;
 }
 
+export interface FormsServerEnv {
+  readonly engineApiBaseUrl: string;
+}
+
 let cachedEnv: FormsPublicEnv | null = null;
+let cachedServerEnv: FormsServerEnv | null = null;
 
 function normalizeBaseUrl(value: string | undefined, fallback: string): string {
   const candidate = value?.trim();
@@ -40,4 +45,22 @@ export function getFormsPublicEnv(): FormsPublicEnv {
   };
 
   return cachedEnv;
+}
+
+export function getFormsServerEnv(): FormsServerEnv {
+  if (cachedServerEnv) {
+    return cachedServerEnv;
+  }
+
+  const isProduction = process.env["NODE_ENV"] === "production";
+  const fallback = isProduction ? brandConfig.defaults.prodApiBaseUrl : brandConfig.defaults.apiBaseUrl;
+
+  cachedServerEnv = {
+    engineApiBaseUrl: normalizeBaseUrl(
+      process.env["FORMS_ENGINE_API_BASE_URL"] ?? process.env["NEXT_PUBLIC_API_BASE_URL"],
+      fallback
+    )
+  };
+
+  return cachedServerEnv;
 }
