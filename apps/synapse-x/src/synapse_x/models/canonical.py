@@ -1,6 +1,3 @@
-"""Canonical."""
+from synapse_x.models import CanonicalRecord
 
-
-def todo() -> None:
-    """TODO."""
-    return None
+__all__ = ["CanonicalRecord"]

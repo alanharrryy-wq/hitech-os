@@ -292,6 +292,126 @@ class SynapseEngine:
         finally:
             conn.close()
 
+    def get_status(self) -> dict[str, Any]:
+        self.init_storage()
+        conn = connect(self.settings.db_path)
+        try:
+            last_run = conn.execute(
+                """
+                SELECT run_id, started_at, finished_at, mode, status, files_seen, files_processed, errors_count
+                FROM ingest_runs
+                ORDER BY run_id DESC
+                LIMIT 1
+                """
+            ).fetchone()
+            counts = {
+                "sessions": conn.execute("SELECT COUNT(*) FROM sessions").fetchone()[0],
+                "records": conn.execute("SELECT COUNT(*) FROM records").fetchone()[0],
+                "files": conn.execute("SELECT COUNT(*) FROM files").fetchone()[0],
+            }
+            return {
+                "status": "ok",
+                "root": str(self.settings.root),
+                "db_path": str(self.settings.db_path),
+                "log_dir": str(self.settings.log_dir),
+                "db_size_bytes": self.settings.db_path.stat().st_size if self.settings.db_path.exists() else 0,
+                "counts": counts,
+                "last_ingest_run": dict(last_run) if last_run else None,
+            }
+        finally:
+            conn.close()
+
+    def export_session_report(self, session_id: str, output_path: str | Path | None = None) -> dict[str, Any]:
+        detail = self.get_session_detail(session_id)
+        if not detail.get("session"):
+            return {"status": "not_found", "session_id": session_id}
+
+        session_payload = detail["session"]
+        insights = detail.get("session_insights") or {}
+        timeline = detail.get("timeline") or []
+        errors = detail.get("errors") or []
+        tools = detail.get("tools") or []
+        metrics = self.get_metrics(days=14)
+
+        if output_path:
+            target = Path(output_path).expanduser().resolve()
+            target.parent.mkdir(parents=True, exist_ok=True)
+        else:
+            stamp = utc_now_iso().replace(":", "").replace("-", "")
+            target = self.settings.export_dir / f"session_report_{slugify(session_id)}_{stamp}.md"
+            target.parent.mkdir(parents=True, exist_ok=True)
+
+        lines = [
+            f"# SYNAPSE-X Session Report: {session_id}",
+            "",
+            "## Session",
+            f"- session_id: {session_id}",
+            f"- first_seen_at: {session_payload.get('first_seen_at')}",
+            f"- last_seen_at: {session_payload.get('last_seen_at')}",
+            f"- source_count: {session_payload.get('source_count')}",
+            f"- confidence: {session_payload.get('confidence', {}).get('label', 'unknown')} ({session_payload.get('confidence', {}).get('score', 0)})",
+            "",
+            "## Root Causes",
+        ]
+
+        root_causes = insights.get("probable_root_causes") or []
+        if root_causes:
+            for item in root_causes[:8]:
+                evidence = "; ".join(item.get("evidence") or [])
+                lines.append(
+                    f"- {item.get('category')} | score={item.get('score')} | confidence={item.get('confidence')} | evidence={evidence}"
+                )
+        else:
+            lines.append("- none")
+
+        lines.extend(
+            [
+                "",
+                "## Error Groups",
+            ]
+        )
+        groups = insights.get("error_groups") or []
+        if groups:
+            for group in groups[:12]:
+                lines.append(
+                    f"- {group.get('error_type')} | count={group.get('count')} | signature={group.get('signature')} | sample={group.get('sample_message')}"
+                )
+        else:
+            lines.append("- none")
+
+        lines.extend(
+            [
+                "",
+                "## Timeline",
+            ]
+        )
+        for item in timeline[:120]:
+            lines.append(
+                f"- [{item.get('timestamp_utc')}] {item.get('kind')} | {item.get('phase')} | {item.get('severity')} | {item.get('headline')}"
+            )
+
+        lines.extend(
+            [
+                "",
+                "## Activity",
+                f"- timeline_items: {len(timeline)}",
+                f"- errors: {len(errors)}",
+                f"- tools: {len(tools)}",
+                f"- total_sessions: {metrics.get('totals', {}).get('sessions', 0)}",
+                f"- total_records: {metrics.get('totals', {}).get('records', 0)}",
+                "",
+            ]
+        )
+        target.write_text("\n".join(lines), encoding="utf-8")
+        return {
+            "status": "ok",
+            "session_id": session_id,
+            "path": str(target),
+            "timeline_items": len(timeline),
+            "error_groups": len(groups),
+            "root_causes": len(root_causes),
+        }
+
     def _fetch_existing_anchors(self, conn) -> list:
         rows = conn.execute(
             """
@@ -385,6 +505,7 @@ class SynapseEngine:
 def _search(conn, query: str, *, record_type: str | None, date_from: str | None, date_to: str | None, limit: int) -> list[dict[str, Any]]:
     params: list[Any] = []
     clauses: list[str] = []
+    fetch_limit = max(limit * 5, limit, 20)
 
     use_fts = has_fts(conn)
     if use_fts:
@@ -409,7 +530,7 @@ def _search(conn, query: str, *, record_type: str | None, date_from: str | None,
         sql += " AND " + " AND ".join(clauses)
 
     sql += " ORDER BY timestamp_utc DESC LIMIT ?"
-    params.append(limit)
+    params.append(fetch_limit)
 
     try:
         rows = conn.execute(sql, params).fetchall()
@@ -426,10 +547,86 @@ def _search(conn, query: str, *, record_type: str | None, date_from: str | None,
             fallback_sql += " AND timestamp_utc <= ?"
             fallback_params.append(date_to)
         fallback_sql += " ORDER BY timestamp_utc DESC LIMIT ?"
-        fallback_params.append(limit)
+        fallback_params.append(fetch_limit)
         rows = conn.execute(fallback_sql, fallback_params).fetchall()
 
-    return [dict(row) for row in rows]
+    return _rank_search_results(query, [dict(row) for row in rows], limit)
+
+
+def _rank_search_results(query: str, rows: list[dict[str, Any]], limit: int) -> list[dict[str, Any]]:
+    query_text = (query or "").strip().lower()
+    query_tokens = keyword_tokens(query_text, max_tokens=12)
+    ranked: list[dict[str, Any]] = []
+    for row in rows:
+        payload = dict(row)
+        score = _score_search_row(payload, query_text=query_text, query_tokens=query_tokens)
+        payload["score"] = round(score, 4)
+        payload["snippet"] = _search_snippet(payload.get("text") or "", query_tokens, query_text)
+        ranked.append(payload)
+    ranked.sort(key=lambda item: (item.get("score", 0.0), item.get("timestamp_utc", ""), item.get("session_id", "")))
+    ranked.reverse()
+    return ranked[:limit]
+
+
+def _score_search_row(row: dict[str, Any], *, query_text: str, query_tokens: list[str]) -> float:
+    text = str(row.get("text") or "").lower()
+    source_path = str(row.get("source_path") or "").lower()
+    record_type = str(row.get("record_type") or "").lower()
+
+    score = 0.2
+    if query_text and query_text in text:
+        score += 8.0
+
+    token_hits = 0
+    for token in query_tokens:
+        if token in text:
+            token_hits += 1
+            score += 1.8
+        if token in source_path:
+            score += 0.6
+
+    type_weight = {
+        "error": 2.2,
+        "event": 1.6,
+        "tool": 1.0,
+        "json": 1.2,
+        "jsonl": 1.2,
+        "report": 1.1,
+        "log": 1.0,
+    }
+    score += type_weight.get(record_type, 0.9)
+
+    if query_tokens:
+        coverage = token_hits / max(1, len(query_tokens))
+        score += coverage * 4.0
+
+    if query_text and text.startswith(query_text):
+        score += 0.8
+    return score
+
+
+def _search_snippet(text: str, query_tokens: list[str], query_text: str) -> str:
+    cleaned = " ".join(str(text).split())
+    if len(cleaned) <= 220:
+        return cleaned
+    lowered = cleaned.lower()
+    start = 0
+    if query_text:
+        index = lowered.find(query_text)
+        if index >= 0:
+            start = max(0, index - 60)
+    if start == 0 and query_tokens:
+        for token in query_tokens:
+            index = lowered.find(token)
+            if index >= 0:
+                start = max(0, index - 60)
+                break
+    snippet = cleaned[start:start + 220]
+    if start > 0:
+        snippet = "..." + snippet
+    if start + 220 < len(cleaned):
+        snippet += "..."
+    return snippet
 
 
 def _deserialize_record(row: Any) -> dict[str, Any]:
