@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Vertical Profile",
+  "type": "object",
+  "required": [
+    "id",
+    "displayName",
+    "market",
+    "status",
+    "priority",
+    "capabilities",
+    "tabletNavigation",
+    "pcNavigation",
+    "tabletBlockedCapabilities",
+    "events",
+    "permissions",
+    "offlinePolicy",
+    "kpis",
+    "acceptanceCriteria"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "displayName": {
+      "type": "string"
+    },
+    "capabilities": {
+      "type": "array"
+    },
+    "tabletNavigation": {
+      "type": "array"
+    },
+    "pcNavigation": {
+      "type": "array"
+    },
+    "events": {
+      "type": "array"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.verticals.event-policy.v0",
+  "type": "object",
+  "required": [
+    "verticalId",
+    "version",
+    "events",
+    "auditRules",
+    "syncRules"
+  ],
+  "properties": {
+    "verticalId": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer"
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "topic",
+          "scope",
+          "source",
+          "sensitivity",
+          "requiresPermission"
+        ]
+      }
+    },
+    "auditRules": {
+      "type": "array"
+    },
+    "syncRules": {
+      "type": "array"
+    }
+  }
+}

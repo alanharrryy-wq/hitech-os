@@ -1,0 +1,1674 @@
+{
+  "packageId": "PRISMA_APP_MOBILE_18_PRODUCTION_DATA_CLEANUP",
+  "scannedAt": "2026-05-02T00:00:00-06:00",
+  "sourceZip": "terminal_de_venta_chatgpt_share.zip",
+  "mobileAppRoot": "products/mobile/app",
+  "totalFilesScanned": 99,
+  "runtimeAssessment": {
+    "maturityBefore": 68,
+    "maturityAfterPlannedPatch": 76,
+    "mergeCall": "ready_with_caveats",
+    "mainCaveats": [
+      "Caja real aún requiere turnos/cortes",
+      "Auth/permisos no se resuelven en esta inyección",
+      "Smoke vivo requiere repo con dependencias y Tablet/PC corriendo"
+    ]
+  },
+  "records": [
+    {
+      "path": "README.md",
+      "sizeBytes": 530,
+      "sha256": "4639beb9ce80f08435d36320fcece812896e5543d92929789b4f5715e97ead23",
+      "issueHits": [
+        {
+          "line": 3,
+          "tokens": [
+            "pendiente"
+          ],
+          "excerpt": "Superficie independiente de producto para consulta, pulso, alertas y reportes ligeros desde celular."
+        }
+      ],
+      "issueHitCount": 1
+    },
+    {
+      "path": "app/api/mobile/alerts/route.ts",
+      "sizeBytes": 217,
+      "sha256": "395da4eba19df39f06ad468d012e8966715d7a4723f59e3cab9e94f810823a14",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "app/api/mobile/branches/route.ts",
+      "sizeBytes": 219,
+      "sha256": "2fe55632262b76403744bdbbd6fa39817ee210d72885c0b36cfb8d92e6562a73",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "app/api/mobile/cash/current/route.ts",
+      "sizeBytes": 223,
+      "sha256": "7f14436e734ca9e225833d5f9d164de4c2628a0df0fa3ac81f7d3d493cf0288d",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "app/api/mobile/health/route.ts",
+      "sizeBytes": 217,
+      "sha256": "5ce2c0ffc400d19cda82e79606742adbf7df237176dc4d00617e1c60ac02ce8b",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "app/api/mobile/inventory/watchlist/route.ts",
+      "sizeBytes": 230,
+      "sha256": "639910ec74adb0b167442e1882ba662fdbaeddf1ac473f1f4485ce221a21928e",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "app/api/mobile/reports/daily/route.ts",
+      "sizeBytes": 224,
+      "sha256": "98933f272090092bf94fe69874a3355b71f471c5ed098c8a984195ca73c70bb0",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "app/api/mobile/sales/today/route.ts",
+      "sizeBytes": 222,
+      "sha256": "198e63fc324c00015993e49a7a2b936e9479f78166dcae1b12cb98a01a15d349",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "app/api/mobile/snapshot/route.ts",
+      "sizeBytes": 225,
+      "sha256": "94b484416b09a9b180ec8655592e9a5b3c41cc6d61ddfe080e713993fd37b107",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "app/api/mobile/summary/route.ts",
+      "sizeBytes": 218,
+      "sha256": "600f3fe67cc8749c4054f9b190d6cc217bd6e01461002257156f6ea3372a33d9",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "app/globals.css",
+      "sizeBytes": 445,
+      "sha256": "24fd6a734f7399c9130ddf7f8528c2b7b3e5a3af17254830fa777b032af1bf67",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "app/layout.tsx",
+      "sizeBytes": 1739,
+      "sha256": "c057e8c58c29b84f08e5d2ac52baf899f7a95c8443ea3b3b860c5d1445fbbaeb",
+      "issueHits": [
+        {
+          "line": 9,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "template: \"%s | PRISMA App\","
+        },
+        {
+          "line": 13,
+          "tokens": [
+            "pendiente"
+          ],
+          "excerpt": "\"App móvil independiente para consulta, pulso, alertas y reportes ligeros de negocio.\","
+        }
+      ],
+      "issueHitCount": 2
+    },
+    {
+      "path": "app/page.tsx",
+      "sizeBytes": 1027,
+      "sha256": "c0cc9e891e64d395d2cbc3c23e308949d7b286b617c0f8e5b60fe7f8014ffbda",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "app/prisma-app/install/page.tsx",
+      "sizeBytes": 377,
+      "sha256": "3fa28acebf380ffa7fe5f781dd6922f35d1760986116baf06f1c5cab6e1b86f7",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "app/prisma-app/offline/page.tsx",
+      "sizeBytes": 303,
+      "sha256": "2402d939993883ad6bf38315e6d234da57b05fa10ac5ae434e97964447397620",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "app/prisma-app/page.tsx",
+      "sizeBytes": 520,
+      "sha256": "3899d986149daf93f1727570a1bc59a9c329c257fd30a38152a5e4d88f1a7fbe",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "app/prisma-app/prisma-app.module.css",
+      "sizeBytes": 13212,
+      "sha256": "9b5e2365641ae931b5a42c71ed0c353e6cf3fe5c363c7968a0dcb8e6eb46e7f5",
+      "issueHits": [
+        {
+          "line": 21,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);"
+        },
+        {
+          "line": 217,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "grid-template-columns: minmax(280px, 0.78fr) minmax(280px, 1.22fr);"
+        },
+        {
+          "line": 381,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "grid-template-columns: repeat(3, minmax(0, 1fr));"
+        },
+        {
+          "line": 412,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "grid-template-columns: 26px minmax(0, 1fr);"
+        },
+        {
+          "line": 472,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "grid-template-columns: 1fr 1fr;"
+        },
+        {
+          "line": 498,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "grid-template-columns: minmax(0, 1fr) auto;"
+        },
+        {
+          "line": 544,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) auto;"
+        },
+        {
+          "line": 555,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "grid-template-columns: 1fr;"
+        },
+        {
+          "line": 577,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "grid-template-columns: 1fr;"
+        }
+      ],
+      "issueHitCount": 9
+    },
+    {
+      "path": "deploy/cloudflare-prisma-mobile-domain.json",
+      "sizeBytes": 968,
+      "sha256": "b002193b838fff74c0ccf2f0d335fa189507ea6e18cc3a4aa5866a9c28c9cda1",
+      "issueHits": [
+        {
+          "line": 28,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "\"purpose\": \"existing template host\""
+        }
+      ],
+      "issueHitCount": 1
+    },
+    {
+      "path": "docs/PLAY_STORE_READINESS.md",
+      "sizeBytes": 1828,
+      "sha256": "f20351e1320606a91aad75adef45d589872c2ddbcee38154ff0f44a1b0520426",
+      "issueHits": [
+        {
+          "line": 47,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "products/mobile/app/public/.well-known/assetlinks.template.json"
+        }
+      ],
+      "issueHitCount": 1
+    },
+    {
+      "path": "docs/PRISMA_APP_MOBILE_02_SECTIONS.md",
+      "sizeBytes": 573,
+      "sha256": "087afd928af9b4c936d9e68d5ca8cb65a409c07548e5b12af953caec721fe80e",
+      "issueHits": [
+        {
+          "line": 3,
+          "tokens": [
+            "Iteración"
+          ],
+          "excerpt": "Entrega de iteración 02 para PRISMA App."
+        }
+      ],
+      "issueHitCount": 1
+    },
+    {
+      "path": "docs/PWA_READINESS.md",
+      "sizeBytes": 1505,
+      "sha256": "428e1e392eb7b67d31293faa73f3951eaa7b274c8e6bf4e3c47aebeb0509f11d",
+      "issueHits": [
+        {
+          "line": 9,
+          "tokens": [
+            "pendiente"
+          ],
+          "excerpt": "PRISMA App debe poder evolucionar como una app móvil independiente:"
+        },
+        {
+          "line": 24,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "products/mobile/app/public/.well-known/assetlinks.template.json"
+        }
+      ],
+      "issueHitCount": 2
+    },
+    {
+      "path": "docs/README_PRISMA_APP_MOBILE_02_SECTIONS.md",
+      "sizeBytes": 8637,
+      "sha256": "15cd1abbff845ce1f3f34b5ffe8dd45dbedafc3282d2cae9e4dce872cf1019dc",
+      "issueHits": [
+        {
+          "line": 5,
+          "tokens": [
+            "Iteración"
+          ],
+          "excerpt": "Esta iteración convierte `/prisma-app` en una app móvil conceptual organizada por secciones. La entrega anterior instaló la base visual y cambió la narrativa desde `Pulso` hacia `PRISMA App`. Esta segunda entrega ya sepa"
+        },
+        {
+          "line": 38,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "products/mobile/app/src/lib/prisma-app/prisma-app-demo-data.ts"
+        },
+        {
+          "line": 49,
+          "tokens": [
+            "Iteración"
+          ],
+          "excerpt": "## Qué cambia frente a la iteración 01"
+        },
+        {
+          "line": 51,
+          "tokens": [
+            "Iteración"
+          ],
+          "excerpt": "La iteración 01 mostraba una maqueta visual compacta. La 02 ya define una estructura navegable y comercialmente vendible. Antes la app era una vitrina. Ahora tiene anaqueles, pasillos y letreros; ya no es el local bonito"
+        },
+        {
+          "line": 173,
+          "tokens": [
+            "demo",
+            "Iteración"
+          ],
+          "excerpt": "En esta iteración los datos siguen siendo demo data local de frontend. El objetivo es consolidar UX, narrativa y estructura. En futuras iteraciones se conectará a APIs reales o endpoints agregadores."
+        },
+        {
+          "line": 250,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "La app móvil aumenta valor percibido porque convierte PRISMA en algo que acompaña al dueño fuera del local. No vendemos solo caja. Vendemos tranquilidad operativa."
+        },
+        {
+          "line": 264,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "Frase para demo:"
+        },
+        {
+          "line": 270,
+          "tokens": [
+            "Iteración"
+          ],
+          "excerpt": "## Criterios de aceptación de esta iteración"
+        },
+        {
+          "line": 272,
+          "tokens": [
+            "Iteración"
+          ],
+          "excerpt": "La iteración 02 se considera correcta si:"
+        },
+        {
+          "line": 279,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "- El demo data está en `src/lib/prisma-app`."
+        },
+        {
+          "line": 291,
+          "tokens": [
+            "Iteración"
+          ],
+          "excerpt": "## Próxima iteración recomendada"
+        },
+        {
+          "line": 296,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "PRISMA_APP_MOBILE_03_DEMO_DATA"
+        }
+      ],
+      "issueHitCount": 13
+    },
+    {
+      "path": "docs/README_PRISMA_APP_MOBILE_03_PRODUCT_ROOT_REBASE.md",
+      "sizeBytes": 6516,
+      "sha256": "bcca3dbeef94e04e8db3bd19660514f721048cd97903584816dc4d59a2479f85",
+      "issueHits": [
+        {
+          "line": 5,
+          "tokens": [
+            "pendiente"
+          ],
+          "excerpt": "Esta entrega saca **PRISMA App / Mobile** del árbol técnico de PC y la convierte en una superficie de producto independiente junto a PC y Tablet."
+        },
+        {
+          "line": 44,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "Eso sirvió para demo rápida, pero genera una ambigüedad peligrosa:"
+        },
+        {
+          "line": 51,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "Esta entrega corrige esa deuda antes de seguir con demo data, reportes, MultiSucursal o APIs."
+        },
+        {
+          "line": 61,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "products/mobile/app/src/lib/prisma-app/prisma-app-demo-data.ts"
+        },
+        {
+          "line": 187,
+          "tokens": [
+            "pendiente"
+          ],
+          "excerpt": "| Mobile | prisma.mobile.app | TOUCHED | products/mobile/app/** | products/mobile/app/** | verify confirma product root independiente | N/A |"
+        }
+      ],
+      "issueHitCount": 5
+    },
+    {
+      "path": "docs/README_PRISMA_APP_MOBILE_06_API_CONTRACTS.md",
+      "sizeBytes": 2857,
+      "sha256": "8952e670014e5ad5ca3d09e64fd145616b9f44a70e6728380423cede6a0e4a7a",
+      "issueHits": [
+        {
+          "line": 9,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "Convertir PRISMA App Mobile de maqueta visual a superficie móvil con contratos API reales, todavía alimentados por `demo-contract-fixture`."
+        },
+        {
+          "line": 11,
+          "tokens": [
+            "Iteración"
+          ],
+          "excerpt": "La intención de esta entrega no es conectar producción ni meter auth todavía. Es dejar la tubería limpia para que la siguiente iteración conecte PC/sync/servicios sin romper UI, como quien primero pone contactos antes de"
+        },
+        {
+          "line": 19,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "products/mobile/app/src/lib/prisma-app/prisma-app-api-demo-source.ts"
+        },
+        {
+          "line": 43,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"source\": \"demo-contract-fixture\","
+        },
+        {
+          "line": 44,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"runtimeMode\": \"demo\","
+        },
+        {
+          "line": 65,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "| `/api/mobile/summary` | Pantalla Hoy | demo data |"
+        },
+        {
+          "line": 66,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "| `/api/mobile/sales/today` | Ventas del día | demo data |"
+        },
+        {
+          "line": 67,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "| `/api/mobile/cash/current` | Caja actual | demo data |"
+        },
+        {
+          "line": 68,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "| `/api/mobile/inventory/watchlist` | Inventario prioritario | demo data |"
+        },
+        {
+          "line": 69,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "| `/api/mobile/alerts` | Cola de alertas | demo data |"
+        },
+        {
+          "line": 70,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "| `/api/mobile/reports/daily` | Reporte ejecutivo diario | demo data |"
+        },
+        {
+          "line": 71,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "| `/api/mobile/branches` | Vista multisucursal | demo data |"
+        }
+      ],
+      "issueHitCount": 14
+    },
+    {
+      "path": "docs/README_PRISMA_APP_MOBILE_07_API_CLIENT_UI_BINDING.md",
+      "sizeBytes": 1325,
+      "sha256": "f5831e3800c78c6aff04021ffeeba74104a0b599152306cdeb621d460dac9eda",
+      "issueHits": [
+        {
+          "line": 12,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "4. fixture demo contractual"
+        },
+        {
+          "line": 38,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "Incluye `docs/prisma-app/fixtures/prisma-app-mobile-07-client-ui-binding-scenarios.json` con 60 escenarios de validación para snapshot, endpoints paralelos, caché local y fallback demo. Se valida con `verify:ui-fixtures`"
+        }
+      ],
+      "issueHitCount": 2
+    },
+    {
+      "path": "docs/README_PRISMA_APP_MOBILE_08_ANDROID_PLAYSTORE_BUILD_READY.md",
+      "sizeBytes": 233,
+      "sha256": "8ddba3ed660b8570f6f282d9f3c89b60b9889c744680d5b249f9c40fb3902e12",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "docs/README_PRISMA_APP_MOBILE_09_PWA_DOMAIN_INSTALL_READY.md",
+      "sizeBytes": 1503,
+      "sha256": "8b7d9d4e12c7e9d4f9cf29419faeb4d1a76e61968122dd835bf35b8b466d491d",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "docs/README_PRISMA_APP_MOBILE_10_CLOUDFLARE_PWA_DOMAIN_BRIDGE.md",
+      "sizeBytes": 1019,
+      "sha256": "0bf29f27ae0981a34417529943b477a4d90ab21d06a6f512c1b2fb985421bed8",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "docs/TWA_ANDROID_READINESS.md",
+      "sizeBytes": 1139,
+      "sha256": "f241a6be2029e237555b83b119178beadd4f5b2463b233a56ac0367d31e41115",
+      "issueHits": [
+        {
+          "line": 39,
+          "tokens": [
+            "placeholder"
+          ],
+          "excerpt": "## Package placeholder"
+        },
+        {
+          "line": 45,
+          "tokens": [
+            "placeholder"
+          ],
+          "excerpt": "Ese package name es placeholder hasta decidir dominio/legal/branding definitivo."
+        }
+      ],
+      "issueHitCount": 2
+    },
+    {
+      "path": "docs/prisma-app/PRISMA_APP_02_COMMERCIAL_PLAYBOOK.md",
+      "sizeBytes": 2631,
+      "sha256": "3d96727d6829b9e450bbe630f09bf29e3f3f6a480c97584fb008e277d4781368",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "docs/prisma-app/PRISMA_APP_02_INFORMATION_ARCHITECTURE.md",
+      "sizeBytes": 2072,
+      "sha256": "692e4755498111dbd83c993d90023c29e7c64720f66e8131ec12c2ce9c0c9269",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "docs/prisma-app/PRISMA_APP_02_ROADMAP.md",
+      "sizeBytes": 1580,
+      "sha256": "e0cc419aa64720de628d322edc53239174f807d0dc4ac3cebbec4b3d6a406f80",
+      "issueHits": [
+        {
+          "line": 15,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "## Fase 03 - Demo data consumible"
+        }
+      ],
+      "issueHitCount": 1
+    },
+    {
+      "path": "docs/prisma-app/PRISMA_APP_02_SCREEN_CONTRACTS.md",
+      "sizeBytes": 2671,
+      "sha256": "921722794a69f26fd45accd9dfac4fdce6146576d11df0a0e4b8e89fbf857ddb",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "docs/prisma-app/fixtures/prisma-app-03-product-root-rebase-synthetic-fixture.json",
+      "sizeBytes": 360000,
+      "sha256": "2b1d332b5707f137e625077d261d6f2de78bcf2a54953a457fa3a47cc5ad684a",
+      "issueHits": [
+        {
+          "line": 3,
+          "tokens": [
+            "pendiente"
+          ],
+          "excerpt": "\"purpose\": \"Dataset sintetico de QA para validar que PRISMA App vive como product root independiente en products/mobile/app y no como hija de PC.\","
+        },
+        {
+          "line": 7,
+          "tokens": [
+            "sample"
+          ],
+          "excerpt": "\"sampleBusinessEvents\": ["
+        }
+      ],
+      "issueHitCount": 2
+    },
+    {
+      "path": "docs/prisma-app/fixtures/prisma-app-04-pwa-playstore-readiness-fixture.json",
+      "sizeBytes": 1257636,
+      "sha256": "706bda98871b0a2005091d8baaf0556a1aef7fffaa3207eb4fb256e8f6554685",
+      "issueHits": [
+        {
+          "line": 29,
+          "tokens": [
+            "pendiente"
+          ],
+          "excerpt": "\"hierarchy\": \"product root independiente\""
+        },
+        {
+          "line": 34,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "\"assetLinksTemplate\": \"products/mobile/app/public/.well-known/assetlinks.template.json\","
+        },
+        {
+          "line": 40,
+          "tokens": [
+            "placeholder"
+          ],
+          "excerpt": "\"packagePlaceholder\": \"com.prisma.mobile\","
+        },
+        {
+          "line": 55,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"businessId\": \"demo-business\","
+        },
+        {
+          "line": 68,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"businessId\": \"demo-business\","
+        },
+        {
+          "line": 81,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"businessId\": \"demo-business\","
+        },
+        {
+          "line": 94,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"businessId\": \"demo-business\","
+        },
+        {
+          "line": 107,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"businessId\": \"demo-business\","
+        },
+        {
+          "line": 120,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"businessId\": \"demo-business\","
+        },
+        {
+          "line": 133,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"businessId\": \"demo-business\","
+        },
+        {
+          "line": 146,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"businessId\": \"demo-business\","
+        },
+        {
+          "line": 159,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"businessId\": \"demo-business\","
+        }
+      ],
+      "issueHitCount": 843
+    },
+    {
+      "path": "docs/prisma-app/fixtures/prisma-app-mobile-07-client-ui-binding-scenarios.json",
+      "sizeBytes": 83891,
+      "sha256": "bdcadb1ab7010465893c5f401685218d5eb4cf82fab34c1e384c5f60c43d73f8",
+      "issueHits": [
+        {
+          "line": 27,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"fallback\": \"Debe mostrar respaldo local o demo contractual si falla la red.\""
+        },
+        {
+          "line": 29,
+          "tokens": [
+            "sample"
+          ],
+          "excerpt": "\"sampleBusinessState\": {"
+        },
+        {
+          "line": 66,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"fallback\": \"Debe mostrar respaldo local o demo contractual si falla la red.\""
+        },
+        {
+          "line": 68,
+          "tokens": [
+            "sample"
+          ],
+          "excerpt": "\"sampleBusinessState\": {"
+        },
+        {
+          "line": 88,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"inputMode\": \"demo-contract-fixture\","
+        },
+        {
+          "line": 105,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"fallback\": \"Debe mostrar respaldo local o demo contractual si falla la red.\""
+        },
+        {
+          "line": 107,
+          "tokens": [
+            "sample"
+          ],
+          "excerpt": "\"sampleBusinessState\": {"
+        },
+        {
+          "line": 144,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"fallback\": \"Debe mostrar respaldo local o demo contractual si falla la red.\""
+        },
+        {
+          "line": 146,
+          "tokens": [
+            "sample"
+          ],
+          "excerpt": "\"sampleBusinessState\": {"
+        },
+        {
+          "line": 183,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"fallback\": \"Debe mostrar respaldo local o demo contractual si falla la red.\""
+        },
+        {
+          "line": 185,
+          "tokens": [
+            "sample"
+          ],
+          "excerpt": "\"sampleBusinessState\": {"
+        },
+        {
+          "line": 222,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"fallback\": \"Debe mostrar respaldo local o demo contractual si falla la red.\""
+        }
+      ],
+      "issueHitCount": 135
+    },
+    {
+      "path": "docs/prisma-app/playstore-readiness.md",
+      "sizeBytes": 166,
+      "sha256": "44cbda95570c27278624d93adaff9a7cb98bf34a6e87168a1da238aea7362457",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "public/icons/prisma-app-monochrome.svg",
+      "sizeBytes": 5470,
+      "sha256": "5de27b26ebd81a45921131362aafbffddc4328f1557218c0f10d72738bc7c615",
+      "issueHits": [
+        {
+          "line": 3,
+          "tokens": [
+            "placeholder"
+          ],
+          "excerpt": "<desc id=\"desc\">PRISMA app monochrome icon placeholder for PWA monochrome install surfaces.</desc>"
+        }
+      ],
+      "issueHitCount": 1
+    },
+    {
+      "path": "src/components/prisma-app/PrismaMobileDashboard.tsx",
+      "sizeBytes": 7482,
+      "sha256": "f507d7871fb48f7d7525a25497d0d0c7618c43ed610bfdfd94c0fec60a688b30",
+      "issueHits": [
+        {
+          "line": 78,
+          "tokens": [
+            "Iteración"
+          ],
+          "excerpt": "<p className={styles.eyebrow}>PRISMA App · Iteración 09 · PWA instalable</p>"
+        }
+      ],
+      "issueHitCount": 1
+    },
+    {
+      "path": "src/components/prisma-app/PrismaMobileMetricCard.tsx",
+      "sizeBytes": 656,
+      "sha256": "f4a2f35e7ceecbb1ff631d7943b39009f4ef806f0eae59389729215701a79c3c",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/components/prisma-app/PrismaMobilePanels.tsx",
+      "sizeBytes": 5320,
+      "sha256": "af79ac72d5c7aa1f42e7d153733b58ab369cbe86ab117e1df4cded93077d50ed",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/components/prisma-app/PrismaMobilePwaInstallCard.tsx",
+      "sizeBytes": 6242,
+      "sha256": "ed3b8c965de2b83e3c21cc11d4f979b9754c4a5dbdbc42d8ee72184742ea48bb",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/components/prisma-app/PrismaMobilePwaInstallPage.tsx",
+      "sizeBytes": 1138,
+      "sha256": "bf71d9cc9bd6a90d9cd845fe5f3f29617289c0c07bc74d5faea20fd5ab4ee158",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/components/prisma-app/PrismaMobilePwaRuntime.tsx",
+      "sizeBytes": 949,
+      "sha256": "3adac6a09b30ac3bcf461c9c921227e52494a3fc40841ba71981221472e127ac",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/components/prisma-app/index.ts",
+      "sizeBytes": 282,
+      "sha256": "2b75aa1429b9b062a425a5aaa497f2ac6d4e4e889c541cde48d1c08c5170d5b9",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/components/prisma-app/prisma-mobile-dashboard.module.css",
+      "sizeBytes": 12278,
+      "sha256": "84db7a2fea5a57b39a1df0029d501a881c31dad564cf308bbc494bb5412f1d85",
+      "issueHits": [
+        {
+          "line": 1,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": ".mobileRoot{min-height:100vh;background:radial-gradient(circle at top left,rgba(74,146,255,.24),transparent 35rem),radial-gradient(circle at bottom right,rgba(216,184,94,.2),transparent 30rem),#06111f;color:#f6f0df;paddi"
+        }
+      ],
+      "issueHitCount": 1
+    },
+    {
+      "path": "src/components/prisma-app/prisma-mobile-pwa.module.css",
+      "sizeBytes": 7476,
+      "sha256": "80e92c13d44d27d5e98baceac506d87d3c94480d22c08b29dd7835f4db0e5655",
+      "issueHits": [
+        {
+          "line": 143,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "grid-template-columns: repeat(2, minmax(0, 1fr));"
+        },
+        {
+          "line": 300,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": ".platformChooserMinimal { grid-template-columns: 1fr; }"
+        }
+      ],
+      "issueHitCount": 2
+    },
+    {
+      "path": "src/lib/prisma-app/mobile-data-plane/alerts-policy.ts",
+      "sizeBytes": 2960,
+      "sha256": "00ae8a9e93cbb838b70da04478f7aef5b7dcd4b8a7621635ba3988d40062c8fd",
+      "issueHits": [
+        {
+          "line": 18,
+          "tokens": [
+            "pendiente"
+          ],
+          "excerpt": "if (input.outbox.pending > 0) alerts.push(alert(\"outbox-pending\", \"media\", \"Sincronización\", \"Eventos pendientes\", `${input.outbox.pending} eventos siguen en cola. Último sync: ${minutesAgoLabel(input.outbox.lastSyncedAt"
+        }
+      ],
+      "issueHitCount": 1
+    },
+    {
+      "path": "src/lib/prisma-app/mobile-data-plane/cash-policy.ts",
+      "sizeBytes": 1296,
+      "sha256": "a1e91ef07cc20c09fbd5b0c9e5fa050483c221bda5956205f1a262a00c595852",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/mobile-data-plane/config.ts",
+      "sizeBytes": 2654,
+      "sha256": "9cee972e65f02bb8c12913c576fc77df61ef5e9b6416c4b84977da74dcd5275b",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/mobile-data-plane/diagnostics.ts",
+      "sizeBytes": 1733,
+      "sha256": "474dc398289f55c393839d34125b690e0b5d59f8818dc979a422f00f4ce64e72",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/mobile-data-plane/endpoint-handlers.ts",
+      "sizeBytes": 1712,
+      "sha256": "b5812669b62f804ad9b7801e7e086146bdb13bc1cc19b121f638ec1a6e3c0635",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/mobile-data-plane/endpoints.ts",
+      "sizeBytes": 1271,
+      "sha256": "e670c51f6ea240e1f09efaaa20e6f45ff2cc5cb5004567e74e7751663cdc0c68",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/mobile-data-plane/extractors.ts",
+      "sizeBytes": 3363,
+      "sha256": "548c16172b09a47fdfc73f9cc5f95f862184caeff4a2bc35defb61f2e04139cd",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/mobile-data-plane/http.ts",
+      "sizeBytes": 2724,
+      "sha256": "d13e715602553e42f5c452ca2110d9fdf00e049ae079a6701079bb14e969e182",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/mobile-data-plane/index.ts",
+      "sizeBytes": 187,
+      "sha256": "31b100b8cc798cbed7ff98666043eb86ac7455547a10f1d2b5f804b8380f531f",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/mobile-data-plane/inventory-adapter.ts",
+      "sizeBytes": 2906,
+      "sha256": "a47479a9f2078fe0e931097feaa62be544b4808f0779f874e8dfa8a8489a3969",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/mobile-data-plane/money.ts",
+      "sizeBytes": 2101,
+      "sha256": "0c2c12ebd1118397df7a1eedc4237972a1d2de518a395d7dc61c002e4c2bfc5f",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/mobile-data-plane/outbox-adapter.ts",
+      "sizeBytes": 2084,
+      "sha256": "ba1441ac5317c16af55db66f3fc6d8e7e8f11989eed1558cd6b6d5d5abbc5d3d",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/mobile-data-plane/payload-builders.ts",
+      "sizeBytes": 8691,
+      "sha256": "15ee7dde4700a1b48f65283a2c2951c74f3f5c0535a5b784da8ebe13628ceefb",
+      "issueHits": [
+        {
+          "line": 79,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "{ title: \"Ticket promedio\", value: moneyLabel(state.salesToday.averageTicketCents), detail: state.salesToday.tickets > 0 ? \"promedio operativo\" : \"sin tickets\", footnote: \"No usa fixture demo\" },"
+        },
+        {
+          "line": 81,
+          "tokens": [
+            "pendiente"
+          ],
+          "excerpt": "{ title: \"Sync\", value: state.outbox.pending === 0 ? \"sin pendientes\" : `${state.outbox.pending} pendientes`, detail: `${state.outbox.failed} fallidos`, footnote: minutesAgoLabel(state.outbox.lastSyncedAt) }"
+        },
+        {
+          "line": 102,
+          "tokens": [
+            "pendiente"
+          ],
+          "excerpt": "{ key: \"sync\", label: \"Sync pendiente\", value: String(state.outbox.pending), note: `${state.outbox.failed} fallidos`, tone: state.outbox.failed > 0 ? \"red\" as const : \"neutral\" as const, numericValue: state.outbox.pendin"
+        },
+        {
+          "line": 107,
+          "tokens": [
+            "pendiente"
+          ],
+          "excerpt": "{ title: \"Confirmar sincronización\", detail: `${state.outbox.pending} pendientes y ${state.outbox.failed} fallidos`, owner: \"Operación\", priority: state.outbox.failed > 0 ? \"alta\" as const : \"baja\" as const }"
+        }
+      ],
+      "issueHitCount": 4
+    },
+    {
+      "path": "src/lib/prisma-app/mobile-data-plane/pc-adapter.ts",
+      "sizeBytes": 1712,
+      "sha256": "95e9d1f6364fe7c7077da6be7ba6e633e1acd1cf81794f9af51005c709621799",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/mobile-data-plane/sales-adapter.ts",
+      "sizeBytes": 4450,
+      "sha256": "bf01638561f3c56988ebd4c5d54a4fc9a8e8d8fc23347d6aeaa28b60364efbed",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/mobile-data-plane/state-loader.ts",
+      "sizeBytes": 3290,
+      "sha256": "9247aee7fbf7278aa1da02c36371e6beda537b87723e250d37b2d3fdbe24a5d4",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/mobile-data-plane/types.ts",
+      "sizeBytes": 4326,
+      "sha256": "4188e419b0e0809245825b9947ced44f476c0f1f3f4de227e3d632f28cab1e91",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/prisma-app-api-contracts.ts",
+      "sizeBytes": 9140,
+      "sha256": "ce6861c0d65b762f7e77072cf028c8ad29b0700c969d8f144d26fb8cf254161e",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/prisma-app-api-demo-source.ts",
+      "sizeBytes": 5856,
+      "sha256": "1491e7c27faba58d5e7f85d2c04d3cdae48134422bf1804ef25fd450b7b9517d",
+      "issueHits": [
+        {
+          "line": 10,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "} from \"./prisma-app-demo-data\";"
+        },
+        {
+          "line": 31,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "export const PRISMA_MOBILE_DEMO_SOURCE_MARKER = \"demo-contract-fixture\";"
+        },
+        {
+          "line": 73,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "businessName: \"Tienda PRISMA Demo\","
+        }
+      ],
+      "issueHitCount": 3
+    },
+    {
+      "path": "src/lib/prisma-app/prisma-app-demo-data.ts",
+      "sizeBytes": 9338,
+      "sha256": "eda4edf17c3a65019609ae577cd8b780b9ad0eb3af93ed1f26905a62a68fd672",
+      "issueHits": [
+        {
+          "line": 56,
+          "tokens": [
+            "pendiente"
+          ],
+          "excerpt": "description: \"Resume estado de caja, cortes pendientes, movimientos de efectivo y señales de diferencia.\","
+        },
+        {
+          "line": 152,
+          "tokens": [
+            "pendiente"
+          ],
+          "excerpt": "{ id: \"ALT-002\", severity: \"alta\", area: \"Caja\", title: \"Corte parcial pendiente\", detail: \"La caja sigue abierta después del horario recomendado.\", time: \"13:18\", action: \"Pedir corte parcial al encargado.\" },"
+        },
+        {
+          "line": 167,
+          "tokens": [
+            "pendiente"
+          ],
+          "excerpt": "{ name: \"Sur\", status: \"offline\", salesToday: \"$6,400\", salesDelta: \"sync pendiente\", cashState: \"Pendiente\", alerts: 2, syncLag: \"45 min\", tickets: 64 },"
+        }
+      ],
+      "issueHitCount": 3
+    },
+    {
+      "path": "src/lib/prisma-app/prisma-app-section-contracts.ts",
+      "sizeBytes": 1612,
+      "sha256": "77196b0b49956b68b80da2e59c0d0b3bb095beb49cafd6a65a5f9b95f6409ae9",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/prisma-mobile-api-client.ts",
+      "sizeBytes": 5881,
+      "sha256": "7cf8daf1f89baede196660739ab5aece9bab61e3ef51d57ee4fdfe96366728c0",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/prisma-mobile-cache.ts",
+      "sizeBytes": 1698,
+      "sha256": "2c57a1124db61133c3b0741118b8e46b120530bcf2640e4b0039bce14751c97f",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/prisma-mobile-connected-source.ts",
+      "sizeBytes": 16000,
+      "sha256": "3caf76e17969aba0f0f0ae40d14566d8b7587c0e814378f8c4521a1a414c731c",
+      "issueHits": [
+        {
+          "line": 199,
+          "tokens": [
+            "pendiente"
+          ],
+          "excerpt": "const status = failed > 0 ? \"Revisar sync\" : pending > 0 ? \"Sync pendiente\" : \"Sin diferencia visible\";"
+        },
+        {
+          "line": 222,
+          "tokens": [
+            "pendiente"
+          ],
+          "excerpt": "if (pending > 0) alerts.push({ id: \"SYNC-PENDING\", severity: \"media\", area: \"Sync\", title: \"Eventos pendientes\", detail: `${pending} eventos siguen pendientes.`, time: new Date().toLocaleTimeString(\"es-MX\", { hour: \"2-di"
+        },
+        {
+          "line": 242,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "{ title: \"Ventas reales\", value: sales.totalSalesLabel, detail: `${sales.tickets} tickets leídos desde Tablet/PC`, footnote: \"Sin fixture demo.\" },"
+        },
+        {
+          "line": 281,
+          "tokens": [
+            "pendiente"
+          ],
+          "excerpt": "{ key: \"cash\", label: \"Caja\", value: cash.status, note: \"Corte real pendiente de conectar\", tone: \"neutral\" },"
+        },
+        {
+          "line": 286,
+          "tokens": [
+            "pendiente"
+          ],
+          "excerpt": "{ title: \"Ver outbox\", detail: \"Confirmar eventos pendientes antes del cierre\", owner: \"Tablet\", priority: \"media\" },"
+        }
+      ],
+      "issueHitCount": 5
+    },
+    {
+      "path": "src/lib/prisma-app/prisma-mobile-formatters.ts",
+      "sizeBytes": 1220,
+      "sha256": "681925e01072db6fbb391be6e3ad67dd252f4fe9764e772098c0a0210485f256",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/prisma-mobile-pwa-client.ts",
+      "sizeBytes": 3844,
+      "sha256": "ca51ddbd42ab855a3bffe4e077935778553c48243983779389e95a16356bc918",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/prisma-mobile-pwa-contract.ts",
+      "sizeBytes": 1340,
+      "sha256": "dc59e76e4e1257ec618f9287989c7e450bf8348d0e77c6628559c5a7ed2de82d",
+      "issueHits": [
+        {
+          "line": 25,
+          "tokens": [
+            "placeholder"
+          ],
+          "excerpt": "export function isPlaceholderDomain(domain: string): boolean {"
+        }
+      ],
+      "issueHitCount": 1
+    },
+    {
+      "path": "src/lib/prisma-app/prisma-mobile-snapshot-contract.ts",
+      "sizeBytes": 4511,
+      "sha256": "8f5029dadd81e0652ab3f30d5080650481da23bd270e1cbff0f3c127bcbccdbe",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "src/lib/prisma-app/prisma-mobile-snapshot-source.ts",
+      "sizeBytes": 473,
+      "sha256": "917726027ca27a68028a42961670133e7c8e05d7c566077a6690b73e16e1bfe6",
+      "issueHits": [
+        {
+          "line": 9,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "throw new Error(\"PRISMA App Mobile 17 ya no expone snapshot síncrono demo. Usa /api/mobile/snapshot o loadMobileDataPlaneState().\");"
+        }
+      ],
+      "issueHitCount": 1
+    },
+    {
+      "path": "src/lib/prisma-app/prisma-mobile-view-model.ts",
+      "sizeBytes": 3119,
+      "sha256": "953cdd1534348671d807f28ee3c1242c87e3d708d5a477d1741ed2861a838de4",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "tools/configure_prisma_mobile_pwa_domain.mjs",
+      "sizeBytes": 1839,
+      "sha256": "0b0e75a572f34f166bf7360c7c0d24c4b44fb606f15f10a50002eb78a8831859",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "tools/print_prisma_mobile_10_domain_status.mjs",
+      "sizeBytes": 629,
+      "sha256": "7cb9ae9587f2b9b0cc37c34435d59b8dcd4aed168d71f15579ec5d813c8fdc8c",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "tools/print_prisma_mobile_pwa_install_status.mjs",
+      "sizeBytes": 1022,
+      "sha256": "df1714835776ac991504f8b51057438ccb061a75c8f1e22699f95f683e61a6f0",
+      "issueHits": [
+        {
+          "line": 10,
+          "tokens": [
+            "placeholder"
+          ],
+          "excerpt": "const placeholder = config.domain.includes(\"REPLACE_WITH\");"
+        },
+        {
+          "line": 13,
+          "tokens": [
+            "placeholder",
+            "pendiente"
+          ],
+          "excerpt": "console.log(`  domain:   ${config.domain}${placeholder ? \" (pendiente)\" : \"\"}`);"
+        },
+        {
+          "line": 18,
+          "tokens": [
+            "placeholder"
+          ],
+          "excerpt": "console.log(`  next:     ${placeholder ? \"configura dominio con pwa:configure-domain\" : \"deploy HTTPS y prueba desde celular\"}`);"
+        }
+      ],
+      "issueHitCount": 3
+    },
+    {
+      "path": "tools/smoke_prisma_mobile_public_url.mjs",
+      "sizeBytes": 631,
+      "sha256": "2d8694cc2a73ce15dfb55d54bccac0a11c95535896d4b090ca1c999e7b183954",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "tools/smoke_prisma_mobile_pwa_url.mjs",
+      "sizeBytes": 1054,
+      "sha256": "3dc4cb5a8745b299a03ddadc780062b9b21bc5c383d94df7c071a8220b9d35ca",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "tools/verify_prisma_app_mobile_03_product_root_rebase.mjs",
+      "sizeBytes": 5317,
+      "sha256": "30e9c9b2d6be25d90e6a6412f41e0fee94468fd8113e1eb4d1faffb0da42e0ca",
+      "issueHits": [
+        {
+          "line": 54,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "mustContain(\"products/mobile/app/src/lib/prisma-app/prisma-app-demo-data.ts\", [\"PRISMA App\", \"Tablet vende sola\", \"backoffice/control avanzado\"]);"
+        },
+        {
+          "line": 65,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "mustNotExist(\"products/pc/app/src/lib/prisma-app/prisma-app-demo-data.ts\");"
+        },
+        {
+          "line": 76,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"products/mobile/app/src/lib/prisma-app/prisma-app-demo-data.ts\","
+        }
+      ],
+      "issueHitCount": 3
+    },
+    {
+      "path": "tools/verify_prisma_app_mobile_06_api_contracts.mjs",
+      "sizeBytes": 4792,
+      "sha256": "9bcee09fb4e0be5c9fbdea4266ee59b8cdaa45d918a731218bd54c6d2111ee05",
+      "issueHits": [
+        {
+          "line": 67,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "mustContain(\"products/mobile/app/src/lib/prisma-app/prisma-app-api-demo-source.ts\", ["
+        },
+        {
+          "line": 76,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"demo-contract-fixture\""
+        },
+        {
+          "line": 93,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"demo-contract-fixture\""
+        }
+      ],
+      "issueHitCount": 3
+    },
+    {
+      "path": "tools/verify_prisma_app_mobile_07_api_client_ui_binding.mjs",
+      "sizeBytes": 1479,
+      "sha256": "a094c2bb4d9f4791692c35eb2cef28bf63dc6d856894eb6a42ba45c21b830bf7",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "tools/verify_prisma_app_mobile_07_fixture_scenarios.mjs",
+      "sizeBytes": 1623,
+      "sha256": "d891dd82eebd97e4af4c88cad0f39f041d91f204bb813e245cb475fa30e535e8",
+      "issueHits": [
+        {
+          "line": 20,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "for (const mode of [\"api-snapshot\", \"api-endpoints\", \"local-cache\", \"demo-contract-fixture\"]) {"
+        },
+        {
+          "line": 24,
+          "tokens": [
+            "sample"
+          ],
+          "excerpt": "for (const key of [\"id\", \"title\", \"purpose\", \"expectedVisibleSignals\", \"sampleBusinessState\", \"acceptance\"]) {"
+        }
+      ],
+      "issueHitCount": 2
+    },
+    {
+      "path": "tools/verify_prisma_app_mobile_09_pwa_domain_install_ready.mjs",
+      "sizeBytes": 1122,
+      "sha256": "d4eb5f06f6383fd25ad44944134cc6398d11219639f6d03627d583dc9747fdb0",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "tools/verify_prisma_app_mobile_10_cloudflare_pwa_domain_bridge.mjs",
+      "sizeBytes": 2497,
+      "sha256": "bb46f1d295aa10062ca83bd65fecf4b39af2fd15983e5917a15ccbdd72e7f5ea",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "tools/verify_prisma_app_mobile_10b_cloudflare_live_route_repair.mjs",
+      "sizeBytes": 1401,
+      "sha256": "9fd479e8479c62e15cba8e3e7e86b4fa62355612ff0f578f3003f6e9094d6287",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "tools/verify_prisma_app_mobile_10c_cloudflare_dns_fallback_repair.mjs",
+      "sizeBytes": 1185,
+      "sha256": "19ae8c0af76ed50c4d974aaa5d03430f9635167b60075842ff28ae4ede4b7a43",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "tools/verify_prisma_app_mobile_11_ios_home_icon_playstore.mjs",
+      "sizeBytes": 3029,
+      "sha256": "229c0387c87be168fb3d5214b14780106b180b55dc2ce2d29dbc8c789f59b500",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "tools/verify_prisma_app_mobile_12_ios_root_touch_icon.mjs",
+      "sizeBytes": 2457,
+      "sha256": "20aa81bdd45981cd9a0e8e1403afe4d25878410c50af1cb446553047a82cb15b",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "tools/verify_prisma_app_mobile_13_android_standalone_offline_shell.mjs",
+      "sizeBytes": 5404,
+      "sha256": "596b63c930f82d67ef2204e111781da6ddf1c2accd379f32a5f73c80439369ff",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "tools/verify_prisma_app_mobile_14_whatsapp_platform_install_selector.mjs",
+      "sizeBytes": 3576,
+      "sha256": "7b089eddfdc210b6272b8a01cf02136bda0c1993f3618d9bc028b22f859fe068",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "tools/verify_prisma_app_mobile_15_minimal_platform_install_selector.mjs",
+      "sizeBytes": 2722,
+      "sha256": "96b1d85c3a4c35f6f354f01ad782ea07645e1770a61da68d200422ba445afbb6",
+      "issueHits": [],
+      "issueHitCount": 0
+    },
+    {
+      "path": "tools/verify_prisma_app_mobile_16_connected_data_bridge.mjs",
+      "sizeBytes": 3208,
+      "sha256": "6b046c778bb92720156fc538c5bd1a2ed99cd6c673bd1faa4461acac5ba3454c",
+      "issueHits": [
+        {
+          "line": 42,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "mustNotContain(rel, [\"prisma-app-api-demo-source\"]);"
+        },
+        {
+          "line": 52,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"Sin fixture demo\""
+        },
+        {
+          "line": 57,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "mustNotContain(\"products/mobile/app/src/lib/prisma-app/prisma-mobile-api-client.ts\", [\"Demo fallback\", \"demoClientSnapshot\"]);"
+        },
+        {
+          "line": 58,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "mustContain(\"docs/mobile/PRISMA_APP_MOBILE_16_CONNECTED_DATA_BRIDGE.md\", [\"Connected Data Bridge\", \"PRISMA_MOBILE_TABLET_ORIGIN\", \"Regla anti-demo\"]);"
+        },
+        {
+          "line": 66,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "console.log(`[CONNECTED DATA BRIDGE OK] PRISMA App Mobile routes no longer use demo source. root=${root}`);"
+        }
+      ],
+      "issueHitCount": 5
+    },
+    {
+      "path": "tools/verify_prisma_app_mobile_17_data_plane.mjs",
+      "sizeBytes": 2897,
+      "sha256": "9b9495571b2c3ebc9e9e0c89f07e04241391ba59d4149fa6dae15238a5b526c0",
+      "issueHits": [
+        {
+          "line": 24,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"prisma-app-api-demo-source\","
+        },
+        {
+          "line": 25,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"prisma-app-demo-data\","
+        },
+        {
+          "line": 26,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "\"demo-contract-fixture\""
+        },
+        {
+          "line": 67,
+          "tokens": [
+            "demo"
+          ],
+          "excerpt": "if (content.includes(\"demo-contract-fixture\")) throw new Error(`${rel} conserva demo-contract-fixture.`);"
+        }
+      ],
+      "issueHitCount": 4
+    },
+    {
+      "path": "tools/verify_prisma_mobile_playstore_readiness.mjs",
+      "sizeBytes": 2597,
+      "sha256": "4d64d2d76d51bfd418bcdf680294d324d20de287030071044642ffdf50f0426c",
+      "issueHits": [
+        {
+          "line": 32,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "read(\"products/mobile/android/twa-manifest.template.json\");"
+        },
+        {
+          "line": 35,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "const assetlinks = readApp(\"public/.well-known/assetlinks.template.json\");"
+        },
+        {
+          "line": 36,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "assert(assetlinks.includes(\"delegate_permission/common.handle_all_urls\"), \"assetlinks template must include TWA relation\");"
+        },
+        {
+          "line": 37,
+          "tokens": [
+            "placeholder",
+            "template"
+          ],
+          "excerpt": "assert(assetlinks.includes(\"REPLACE_WITH_RELEASE_SIGNING_CERT_SHA256_FINGERPRINT\"), \"assetlinks template must keep fingerprint placeholder\");"
+        },
+        {
+          "line": 39,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "const twa = JSON.parse(read(\"products/mobile/android/twa-manifest.template.json\"));"
+        },
+        {
+          "line": 40,
+          "tokens": [
+            "placeholder"
+          ],
+          "excerpt": "assert(twa.packageId === \"com.prisma.mobile\", \"TWA packageId placeholder must be com.prisma.mobile\");"
+        },
+        {
+          "line": 42,
+          "tokens": [
+            "placeholder"
+          ],
+          "excerpt": "assert(twa.host === \"REPLACE_WITH_PRISMA_APP_DOMAIN\", \"TWA host must remain a placeholder until production domain is known\");"
+        }
+      ],
+      "issueHitCount": 7
+    },
+    {
+      "path": "tools/verify_prisma_mobile_pwa_readiness.mjs",
+      "sizeBytes": 2592,
+      "sha256": "95cab94ff1b4d39109866cb4ef6eb3444f030b4f619d9f90a1a709454e65bd24",
+      "issueHits": [
+        {
+          "line": 46,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "const assetlinks = readJson(\"public/.well-known/assetlinks.template.json\");"
+        },
+        {
+          "line": 47,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "assert(Array.isArray(assetlinks), \"assetlinks template must be an array\");"
+        },
+        {
+          "line": 48,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "assert(assetlinks.length > 0, \"assetlinks template must include at least one statement\");"
+        },
+        {
+          "line": 51,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "\"assetlinks template must include delegate_permission/common.handle_all_urls\","
+        },
+        {
+          "line": 55,
+          "tokens": [
+            "template"
+          ],
+          "excerpt": "\"assetlinks template target namespace must be android_app\","
+        }
+      ],
+      "issueHitCount": 5
+    }
+  ]
+}

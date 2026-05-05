@@ -1,0 +1,44 @@
+{
+  "id": "PRISMA_REFERENCE_VISUAL_FOUNDATION_01H",
+  "intent": "Create new visual-governance files only. No layout mutation.",
+  "root": "F:/repos/hitech-os/apps/terminal-de-venta-system",
+  "allowed_new_files": [
+    "products/shared-ui/prisma/effects/prisma-reference-effects.css",
+    "docs/design/PRISMA_REFERENCE_VISUAL_TARGET_01H.md",
+    "docs/design/PRISMA_REFERENCE_VISUAL_SCOPE_01H.json",
+    "docs/qa/PRISMA_REFERENCE_VISUAL_SCREENSHOT_MATRIX_01H.md",
+    "tools/visual/verify_prisma_reference_visual_scope_01h.mjs",
+    "tools/visual/capture_prisma_reference_screens_01h.mjs",
+    "manifests/PRISMA_REFERENCE_VISUAL_FOUNDATION_01H_NEW_FILES.manifest.json"
+  ],
+  "future_allowed_modify_for_visual_pass": [
+    "products/shared-ui/prisma/tokens/prisma-theme.css",
+    "products/shared-ui/prisma/components/prisma-components.css",
+    "products/tablet/app/app/globals.css",
+    "products/tablet/app/components/pos/pos.module.css",
+    "products/tablet/app/components/prisma-dark-pos/prisma-dark-pos.module.css",
+    "products/pc/app/app/globals.css",
+    "products/mobile/app/app/globals.css",
+    "products/mobile/app/app/prisma-app/prisma-app.module.css"
+  ],
+  "blocked_without_explicit_approval": [
+    "products/tablet/app/components/pos/pos-screen.tsx",
+    "products/tablet/app/components/pos/pos-product-list.tsx",
+    "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+    "products/tablet/app/components/prisma-dark-pos/*.tsx",
+    "products/pc/app/components/backoffice/executive-dashboard.tsx",
+    "products/pc/app/components/layout/app-shell.tsx",
+    "products/mobile/app/app/prisma-app/page.tsx",
+    "shared/**",
+    "packages/shared-kernel/**"
+  ],
+  "verification": {
+    "new_files_exist": true,
+    "no_layout_files_touched": true,
+    "screenshots_required_per_iteration": [
+      "prisma-app",
+      "tablet",
+      "pc"
+    ]
+  }
+}
