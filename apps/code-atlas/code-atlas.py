@@ -54,7 +54,7 @@ NodeKind = Literal["package", "module", "external", "note"]
 EdgeKind = Literal["import", "contains", "warning"]
 GraphView = Literal["package", "module", "focus"]
 VisibilityPreset = Literal["executive", "engineering", "raw"]
-OutputMode = Literal["svg", "tree", "tree_html"]
+OutputMode = Literal["svg", "tree", "tree_html", "black_glass"]
 
 
 # ----------------------------
@@ -3055,6 +3055,8 @@ def _coerce_view(value: Any) -> GraphView:
 
 def _coerce_output_mode(value: Any) -> OutputMode:
     cleaned = _clean_text(value).lower()
+    if cleaned in {"black_glass", "black_glass_atlas", "black glass", "atlas", "dependency_visual"}:
+        return "black_glass"
     if cleaned in {"tree_html", "html", "premium_html", "tree premium", "tree_html_premium"}:
         return "tree_html"
     if cleaned in {"tree", "txt", "text", "dependency_tree"}:
@@ -4860,7 +4862,7 @@ class SelectorDialog(QDialog):
         footer_text_stack.addWidget(footer_label, 0, Qt.AlignLeft)
 
         footer_hint = QLabel(
-            "SVG se guarda junto al proyecto; los Trees se guardan en F:\\trees."
+            "SVG se guarda junto al proyecto; Trees en F:\\trees; Black Glass Atlas en F:\\descargasf."
         )
         footer_hint.setProperty("role", "hint")
         footer_hint.setWordWrap(True)
@@ -4886,9 +4888,17 @@ class SelectorDialog(QDialog):
             self.confirm_tree_html,
             minimum_width=232,
         )
+        self.black_glass_button = create_button(
+            "Black Glass Atlas",
+            "success",
+            self.confirm_black_glass,
+            tooltip="Genera y abre el atlas de dependencias Black Glass desde dependency-map.",
+            minimum_width=190,
+        )
         footer_layout.addWidget(self.cancel_button, 0)
         footer_layout.addWidget(self.tree_button, 0)
         footer_layout.addWidget(self.tree_html_button, 0)
+        footer_layout.addWidget(self.black_glass_button, 0)
         footer_layout.addWidget(self.confirm_button, 0)
 
     def _build_form_panel(self) -> None:
@@ -5242,6 +5252,33 @@ class SelectorDialog(QDialog):
             view=self.selected_view,
             focus_target=self.selected_focus_target,
             output_mode="tree_html",
+        )
+        self.accept()
+
+    def confirm_black_glass(self) -> None:
+        normalized_path = self.selected_path
+        if not normalized_path:
+            start_dir = _picker_start_directory(self.path_entry.text())
+            selected = QFileDialog.getExistingDirectory(
+                self,
+                "Selecciona la carpeta para generar Black Glass Atlas",
+                start_dir,
+            )
+            if not selected:
+                return
+            self.path_entry.setText(selected)
+            normalized_path = self.selected_path
+
+        if not normalized_path:
+            QMessageBox.warning(self, _app_title(), "Primero indica una carpeta o archivo.")
+            return
+
+        self._selection_result = _make_selection_result(
+            path=normalized_path,
+            theme=self.selected_theme,
+            view=self.selected_view,
+            focus_target=self.selected_focus_target,
+            output_mode="black_glass",
         )
         self.accept()
 
@@ -17098,6 +17135,250 @@ def build_filesystem_tree_success_footer_text(
     )
 
 
+# CODE_ATLAS_BLACK_GLASS_BUTTON_V05: bridge from the PySide selector to the reusable dependency-map visual tools.
+# CODE_ATLAS_BLACK_GLASS_BUTTON_V05_2: selected scope is preserved; project root is used only to locate the analyzer.
+BLACK_GLASS_DOWNLOADS_ROOT = Path(os.environ.get("CODE_ATLAS_DOWNLOADS_ROOT", r"F:\descargasf"))
+BLACK_GLASS_CONSUMER_TOOL = "code_atlas_dependency_consumer_v03.py"
+BLACK_GLASS_VISUAL_TOOL = "code_atlas_dependency_visual_v04_2.py"
+
+
+def _black_glass_app_root() -> Path:
+    return Path(__file__).expanduser().resolve().parent
+
+
+def _black_glass_downloads_root() -> Path:
+    root = BLACK_GLASS_DOWNLOADS_ROOT.expanduser().resolve()
+    root.mkdir(parents=True, exist_ok=True)
+    return root
+
+
+def _black_glass_dependency_analyzer_path(project_root: Path) -> Path:
+    return project_root / "tools" / "dependency_map" / "analyze_project.py"
+
+
+def _black_glass_resolve_project_root(selected_scope: Path) -> Path:
+    anchor = selected_scope.expanduser().resolve()
+    if not anchor.exists():
+        raise FileNotFoundError(f"La ruta seleccionada para Black Glass Atlas no existe:\n\n{anchor}")
+
+    search_from = anchor if anchor.is_dir() else anchor.parent
+    checked: list[str] = []
+    for candidate in [search_from, *search_from.parents]:
+        if not candidate.exists() or not candidate.is_dir():
+            continue
+        analyzer = _black_glass_dependency_analyzer_path(candidate)
+        checked.append(str(analyzer))
+        if analyzer.exists() and analyzer.is_file():
+            return candidate
+
+    checked_preview = "\n".join(checked[:14])
+    if len(checked) > 14:
+        checked_preview += f"\n... {len(checked) - 14} rutas más"
+    raise FileNotFoundError(
+        "No se encontró el analyzer dependency-map subiendo desde la ruta seleccionada.\n\n"
+        f"Seleccionado: {selected_scope}\n"
+        f"Ancla resuelta: {search_from}\n\n"
+        "Busqué estos paths:\n"
+        f"{checked_preview}\n\n"
+        "Selecciona una carpeta dentro de un proyecto que tenga tools/dependency_map/analyze_project.py."
+    )
+
+
+def _black_glass_safe_scope_slug(path: Path) -> str:
+    raw = str(path.name or "selected_scope")
+    if raw in {"", ".", ".."}:
+        raw = "selected_scope"
+    cleaned = []
+    for ch in raw:
+        cleaned.append(ch if ch.isalnum() or ch in {"-", "_", "."} else "_")
+    slug = "".join(cleaned).strip("._-") or "selected_scope"
+    return slug[:80]
+
+
+def _black_glass_title_for_scope(project_root: Path, selected_scope: Path) -> str:
+    try:
+        rel = selected_scope.relative_to(project_root)
+    except ValueError:
+        rel = selected_scope.name
+    rel_text = str(rel).replace("\\", "/")
+    if rel_text in {"", "."}:
+        return f"{project_root.name} Black Glass Atlas"
+    return f"{project_root.name} / {rel_text} Black Glass Atlas"
+
+
+def _black_glass_latest_file_after(directory: Path, pattern: str, since_ts: float) -> Path:
+    candidates = [
+        path for path in directory.glob(pattern)
+        if path.is_file() and path.stat().st_mtime >= since_ts
+    ]
+    if not candidates:
+        candidates = [path for path in directory.glob(pattern) if path.is_file()]
+    if not candidates:
+        raise RuntimeError(f"No se encontró salida con patrón {pattern!r} en {directory}")
+    return max(candidates, key=lambda path: path.stat().st_mtime)
+
+
+def _black_glass_run_tool(command: list[str], *, cwd: Path, notify: Callable[[str, str], None] | None = None) -> str:
+    import subprocess
+
+    if notify is not None:
+        notify("Ejecutando herramienta...", " ".join(command[:3]))
+    completed = subprocess.run(
+        command,
+        cwd=str(cwd),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    if completed.returncode != 0:
+        stdout_tail = (completed.stdout or "")[-1600:]
+        stderr_tail = (completed.stderr or "")[-2200:]
+        raise RuntimeError(
+            "Falló una herramienta de Black Glass Atlas.\n\n"
+            f"Comando: {' '.join(command)}\n"
+            f"Exit code: {completed.returncode}\n\n"
+            f"STDOUT:\n{stdout_tail}\n\nSTDERR:\n{stderr_tail}"
+        )
+    return completed.stdout or ""
+
+
+def _black_glass_open_file(path: Path) -> None:
+    target = path.expanduser().resolve()
+    if not target.exists():
+        raise FileNotFoundError(f"No existe el HTML generado: {target}")
+    try:
+        if hasattr(os, "startfile"):
+            os.startfile(str(target))  # type: ignore[attr-defined]
+            return
+    except Exception:
+        pass
+    import webbrowser
+    webbrowser.open(target.as_uri())
+
+
+def run_black_glass_dependency_atlas(
+    selected_path: str,
+    *,
+    notify: Callable[[str, str], None] | None = None,
+) -> Path:
+    selected_scope = selection_anchor_path(selected_path).expanduser().resolve()
+    if not selected_scope.exists():
+        raise FileNotFoundError(f"La ruta para Black Glass Atlas no existe:\n\n{selected_scope}")
+
+    project_root = _black_glass_resolve_project_root(selected_scope)
+    downloads_root = _black_glass_downloads_root()
+    app_root = _black_glass_app_root()
+    tools_root = app_root / "tools"
+    consumer_tool = tools_root / BLACK_GLASS_CONSUMER_TOOL
+    visual_tool = tools_root / BLACK_GLASS_VISUAL_TOOL
+    analyzer_tool = _black_glass_dependency_analyzer_path(project_root)
+
+    missing = [str(path) for path in (consumer_tool, visual_tool, analyzer_tool) if not path.exists()]
+    if missing:
+        raise FileNotFoundError(
+            "Faltan herramientas para Black Glass Atlas:\n\n"
+            + "\n".join(missing)
+            + "\n\nInstala primero dependency-map, Code Atlas Consumer V03.1 y Visual V04.2."
+        )
+
+    scope_slug = _black_glass_safe_scope_slug(selected_scope)
+    stamp = time.strftime("%y%m%d_%H%M%S")
+    raw_json = downloads_root / f"dependency_map_raw_{scope_slug}_{stamp}.json"
+
+    if notify is not None:
+        notify("Analizando scope seleccionado...", str(selected_scope))
+    _black_glass_run_tool(
+        [
+            sys.executable,
+            str(analyzer_tool),
+            "--root",
+            str(selected_scope),
+            "--format",
+            "json",
+            "--output",
+            str(raw_json),
+            "--max-files",
+            "5000",
+            "--exclude-dir",
+            "prisma-salvage",
+        ],
+        cwd=project_root,
+        notify=notify,
+    )
+    if not raw_json.exists() or raw_json.stat().st_size <= 0:
+        raise RuntimeError(f"El analyzer no generó un raw JSON válido: {raw_json}")
+
+    since_ts = time.time() - 1.0
+    if notify is not None:
+        notify("Convirtiendo a grafo Code Atlas...", raw_json.name)
+    _black_glass_run_tool(
+        [
+            sys.executable,
+            str(consumer_tool),
+            "report",
+            "--report-json",
+            str(raw_json),
+            "--output-dir",
+            str(downloads_root),
+            "--format",
+            "all",
+        ],
+        cwd=app_root,
+        notify=notify,
+    )
+
+    graph_json = _black_glass_latest_file_after(
+        downloads_root,
+        "code_atlas_dependency_consumer_v03_*_graph.json",
+        since_ts,
+    )
+    summary_json = _black_glass_latest_file_after(
+        downloads_root,
+        "code_atlas_dependency_consumer_v03_*_summary.json",
+        since_ts,
+    )
+
+    if notify is not None:
+        notify("Renderizando Black Glass Atlas...", graph_json.name)
+    render_since_ts = time.time() - 1.0
+    _black_glass_run_tool(
+        [
+            sys.executable,
+            str(visual_tool),
+            "render",
+            "--graph-json",
+            str(graph_json),
+            "--summary-json",
+            str(summary_json),
+            "--output-dir",
+            str(downloads_root),
+            "--title",
+            _black_glass_title_for_scope(project_root, selected_scope),
+        ],
+        cwd=app_root,
+        notify=notify,
+    )
+
+    html_path = _black_glass_latest_file_after(
+        downloads_root,
+        "code_atlas_dependency_visual_v04_2_*.html",
+        render_since_ts,
+    )
+    if html_path.stat().st_size <= 0:
+        raise RuntimeError(f"El HTML generado está vacío: {html_path}")
+    return html_path
+
+
+def build_black_glass_success_footer_text(output_path: Path) -> str:
+    return "\n".join(
+        [
+            f"Archivo: {short_path(str(output_path), 92)}",
+            "Cierra esta ventana para generar otro reporte. El HTML Black Glass se abrirá al cerrar.",
+        ]
+    )
+
+
 def main() -> int:
     progress: Optional[ProgressUI] = None
     selected_theme = DEFAULT_THEME
@@ -17142,6 +17423,39 @@ def main() -> int:
                     "Modo foco preparado.",
                     state.focus_target or "sin objetivo explícito, se elegirá por conectividad",
                 )
+
+            if output_mode == "black_glass":
+                notify("Preparando Black Glass Atlas...", str(Path(state.project_root)))
+                output_path = run_black_glass_dependency_atlas(
+                    state.selected_path,
+                    notify=notify,
+                )
+                notify("Validando Black Glass Atlas...", str(output_path))
+                if not output_path.exists() or output_path.stat().st_size <= 0:
+                    raise RuntimeError(f"No se pudo validar el HTML Black Glass generado: {output_path}")
+
+                _finalize_progress(
+                    progress,
+                    "Black Glass Atlas listo.",
+                    "\n".join(
+                        [
+                            "HTML generado con éxito.",
+                            "",
+                            f"Archivo: {output_path}",
+                            f"Proyecto: {state.project_root}",
+                            "Salida: F:\\descargasf",
+                        ]
+                    ),
+                )
+                _set_progress_footer(
+                    progress,
+                    build_black_glass_success_footer_text(output_path),
+                )
+                _wait_for_user_close(progress)
+                _black_glass_open_file(output_path)
+                destroy_progress_ui(progress)
+                progress = None
+                continue
 
             if output_mode in {"tree", "tree_html"}:
                 project_root = Path(state.project_root)
