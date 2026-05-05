@@ -1,0 +1,1800 @@
+{
+  "meta": {
+    "system": "PRISMA POS Visual Control Plane",
+    "version": "260503_v01_control_tools",
+    "owner": "tools/prisma-pos-visual-control",
+    "scope": "Tablet POS /pos only",
+    "notes": "Extends existing visual lock with domain-mapped control tokens, coverage/audit tooling and reference-match preset recipes. Package 1 does not force final visual styling."
+  },
+  "tokens": [
+    {
+      "id": "pos.glass.blur",
+      "css": "--prisma-pos-glass-blur",
+      "group": "glass",
+      "type": "length",
+      "unit": "px",
+      "min": 12,
+      "max": 56,
+      "default": "34px",
+      "current": "34px",
+      "targets": [
+        "pos.surface",
+        "shell.surface"
+      ],
+      "description": "Primary blur for POS glass surfaces."
+    },
+    {
+      "id": "pos.glass.opacity",
+      "css": "--prisma-pos-glass-opacity",
+      "group": "glass",
+      "type": "number",
+      "unit": "",
+      "min": 0.36,
+      "max": 0.92,
+      "default": "0.72",
+      "current": "0.72",
+      "targets": [
+        "pos.surface"
+      ],
+      "description": "Glass surface opacity control."
+    },
+    {
+      "id": "pos.glass.border.opacity",
+      "css": "--prisma-pos-glass-border-opacity",
+      "group": "glass",
+      "type": "number",
+      "unit": "",
+      "min": 0.08,
+      "max": 0.42,
+      "default": "0.22",
+      "current": "0.22",
+      "targets": [
+        "pos.surface",
+        "shell.surface"
+      ],
+      "description": "Border visibility for glass panels."
+    },
+    {
+      "id": "pos.glow.intensity",
+      "css": "--prisma-pos-glow-intensity",
+      "group": "glow",
+      "type": "number",
+      "unit": "",
+      "min": 0.0,
+      "max": 0.8,
+      "default": "0.34",
+      "current": "0.34",
+      "targets": [
+        "product.stage",
+        "cta"
+      ],
+      "description": "General glow strength for premium highlights."
+    },
+    {
+      "id": "pos.highlight.opacity",
+      "css": "--prisma-pos-highlight-opacity",
+      "group": "glow",
+      "type": "number",
+      "unit": "",
+      "min": 0.0,
+      "max": 0.42,
+      "default": "0.18",
+      "current": "0.18",
+      "targets": [
+        "cards",
+        "ticket",
+        "controls"
+      ],
+      "description": "Opacity for highlight washes and hairline shines."
+    },
+    {
+      "id": "pos.shadow.depth",
+      "css": "--prisma-pos-shadow-depth",
+      "group": "shadow",
+      "type": "number",
+      "unit": "",
+      "min": 0.12,
+      "max": 0.72,
+      "default": "0.42",
+      "current": "0.42",
+      "targets": [
+        "cards",
+        "ticket",
+        "shell"
+      ],
+      "description": "Shadow depth multiplier."
+    },
+    {
+      "id": "pos.card.radius",
+      "css": "--prisma-pos-card-radius",
+      "group": "card",
+      "type": "length",
+      "unit": "px",
+      "min": 14,
+      "max": 34,
+      "default": "24px",
+      "current": "24px",
+      "targets": [
+        "cards"
+      ],
+      "description": "Product card radius."
+    },
+    {
+      "id": "pos.card.lift",
+      "css": "--prisma-pos-card-lift",
+      "group": "card",
+      "type": "length",
+      "unit": "px",
+      "min": 0,
+      "max": 10,
+      "default": "3px",
+      "current": "3px",
+      "targets": [
+        "cards:hover"
+      ],
+      "description": "Hover lift for touch/desktop polish."
+    },
+    {
+      "id": "pos.stage.height",
+      "css": "--prisma-pos-stage-height",
+      "group": "product_stage",
+      "type": "length",
+      "unit": "px",
+      "min": 118,
+      "max": 220,
+      "default": "168px",
+      "current": "168px",
+      "targets": [
+        "product.stage"
+      ],
+      "description": "Packshot stage height."
+    },
+    {
+      "id": "pos.stage.pedestal.opacity",
+      "css": "--prisma-pos-pedestal-opacity",
+      "group": "product_stage",
+      "type": "number",
+      "unit": "",
+      "min": 0.0,
+      "max": 0.76,
+      "default": "0.44",
+      "current": "0.44",
+      "targets": [
+        "product.stage"
+      ],
+      "description": "Pedestal shadow opacity under packshots."
+    },
+    {
+      "id": "pos.packshot.scale",
+      "css": "--prisma-pos-packshot-scale",
+      "group": "packshot",
+      "type": "number",
+      "unit": "",
+      "min": 0.82,
+      "max": 1.42,
+      "default": "1.08",
+      "current": "1.08",
+      "targets": [
+        "packshots"
+      ],
+      "description": "Packshot image scale multiplier."
+    },
+    {
+      "id": "pos.packshot.lift",
+      "css": "--prisma-pos-packshot-lift",
+      "group": "packshot",
+      "type": "length",
+      "unit": "px",
+      "min": -24,
+      "max": 10,
+      "default": "-6px",
+      "current": "-6px",
+      "targets": [
+        "packshots"
+      ],
+      "description": "Vertical packshot lift."
+    },
+    {
+      "id": "pos.packshot.shadow.opacity",
+      "css": "--prisma-pos-packshot-shadow-opacity",
+      "group": "packshot",
+      "type": "number",
+      "unit": "",
+      "min": 0.08,
+      "max": 0.72,
+      "default": "0.42",
+      "current": "0.42",
+      "targets": [
+        "packshots"
+      ],
+      "description": "Packshot local shadow strength."
+    },
+    {
+      "id": "pos.ticket.thumb.size",
+      "css": "--prisma-pos-ticket-thumb-size",
+      "group": "ticket",
+      "type": "length",
+      "unit": "px",
+      "min": 38,
+      "max": 70,
+      "default": "52px",
+      "current": "52px",
+      "targets": [
+        "ticket.thumb"
+      ],
+      "description": "Cart thumbnail square size."
+    },
+    {
+      "id": "pos.ticket.line.gap",
+      "css": "--prisma-pos-ticket-line-gap",
+      "group": "ticket",
+      "type": "length",
+      "unit": "px",
+      "min": 8,
+      "max": 22,
+      "default": "14px",
+      "current": "14px",
+      "targets": [
+        "ticket.lines"
+      ],
+      "description": "Gap between ticket rows."
+    },
+    {
+      "id": "pos.ticket.total.scale",
+      "css": "--prisma-pos-ticket-total-scale",
+      "group": "ticket",
+      "type": "number",
+      "unit": "",
+      "min": 0.9,
+      "max": 1.24,
+      "default": "1.06",
+      "current": "1.06",
+      "targets": [
+        "ticket.total"
+      ],
+      "description": "Scale emphasis for total block."
+    },
+    {
+      "id": "pos.cta.height",
+      "css": "--prisma-pos-cta-height",
+      "group": "cta",
+      "type": "length",
+      "unit": "px",
+      "min": 54,
+      "max": 86,
+      "default": "72px",
+      "current": "72px",
+      "targets": [
+        "checkoutLink"
+      ],
+      "description": "Primary checkout CTA height."
+    },
+    {
+      "id": "pos.cta.glow",
+      "css": "--prisma-pos-cta-glow",
+      "group": "cta",
+      "type": "number",
+      "unit": "",
+      "min": 0.0,
+      "max": 0.88,
+      "default": "0.28",
+      "current": "0.28",
+      "targets": [
+        "checkoutLink"
+      ],
+      "description": "Checkout CTA glow intensity."
+    },
+    {
+      "id": "pos.controls.height",
+      "css": "--prisma-pos-controls-height",
+      "group": "controls",
+      "type": "length",
+      "unit": "px",
+      "min": 42,
+      "max": 66,
+      "default": "54px",
+      "current": "54px",
+      "targets": [
+        "search",
+        "categories",
+        "buttons"
+      ],
+      "description": "Control height rhythm."
+    },
+    {
+      "id": "pos.motion.fast",
+      "css": "--prisma-pos-motion-fast",
+      "group": "motion",
+      "type": "time",
+      "unit": "ms",
+      "min": 80,
+      "max": 260,
+      "default": "160ms",
+      "current": "160ms",
+      "targets": [
+        "transitions"
+      ],
+      "description": "Fast motion duration."
+    },
+    {
+      "id": "pos.motion.normal",
+      "css": "--prisma-pos-motion-normal",
+      "group": "motion",
+      "type": "time",
+      "unit": "ms",
+      "min": 140,
+      "max": 420,
+      "default": "240ms",
+      "current": "240ms",
+      "targets": [
+        "transitions"
+      ],
+      "description": "Normal motion duration."
+    },
+    {
+      "id": "pos.motion.slow",
+      "css": "--prisma-pos-motion-slow",
+      "group": "motion",
+      "type": "time",
+      "unit": "ms",
+      "min": 220,
+      "max": 720,
+      "default": "360ms",
+      "current": "360ms",
+      "targets": [
+        "transitions"
+      ],
+      "description": "Slow motion duration."
+    },
+    {
+      "id": "pos.shell.bg.depth",
+      "css": "--prisma-pos-shell-bg-depth",
+      "group": "shell",
+      "type": "number",
+      "unit": "",
+      "min": 0.0,
+      "max": 1.0,
+      "default": "0.42",
+      "current": "0.42",
+      "targets": [
+        "shell.background"
+      ],
+      "description": "Shell background depth multiplier."
+    },
+    {
+      "id": "pos.shell.haze.opacity",
+      "css": "--prisma-pos-shell-haze-opacity",
+      "group": "shell",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.5,
+      "default": "0.10",
+      "current": "0.22",
+      "targets": [
+        "shell",
+        "background"
+      ],
+      "description": "Global haze opacity. Keep low to avoid washed UI."
+    },
+    {
+      "id": "pos.shell.sidebar.blur",
+      "css": "--prisma-pos-shell-sidebar-blur",
+      "group": "shell",
+      "type": "length",
+      "unit": "px",
+      "min": 10,
+      "max": 48,
+      "default": "28px",
+      "current": "28px",
+      "targets": [
+        "sidebar"
+      ],
+      "description": "Sidebar blur."
+    },
+    {
+      "id": "pos.shell.header.blur",
+      "css": "--prisma-pos-shell-header-blur",
+      "group": "shell",
+      "type": "length",
+      "unit": "px",
+      "min": 8,
+      "max": 42,
+      "default": "24px",
+      "current": "24px",
+      "targets": [
+        "header"
+      ],
+      "description": "Header blur."
+    },
+    {
+      "id": "pos.accessibility.focus.ring",
+      "css": "--prisma-pos-focus-ring",
+      "group": "accessibility",
+      "type": "length",
+      "unit": "px",
+      "min": 2,
+      "max": 6,
+      "default": "3px",
+      "current": "3px",
+      "targets": [
+        "focus"
+      ],
+      "description": "Focus ring thickness."
+    },
+    {
+      "id": "pos.shell.bloom.opacity",
+      "css": "--prisma-pos-shell-bloom-opacity",
+      "group": "shell",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.6,
+      "default": "0.16",
+      "current": "0.18",
+      "targets": [
+        "shell",
+        "background"
+      ],
+      "description": "Opacity of localized premium blooms."
+    },
+    {
+      "id": "pos.shell.vignette.opacity",
+      "css": "--prisma-pos-shell-vignette-opacity",
+      "group": "shell",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.85,
+      "default": "0.58",
+      "current": "0.46",
+      "targets": [
+        "shell",
+        "background"
+      ],
+      "description": "Edge vignette strength."
+    },
+    {
+      "id": "pos.shell.noise.opacity",
+      "css": "--prisma-pos-shell-noise-opacity",
+      "group": "shell",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.14,
+      "default": "0.035",
+      "current": "0.055",
+      "targets": [
+        "shell",
+        "background"
+      ],
+      "description": "Atmospheric grain/noise opacity."
+    },
+    {
+      "id": "pos.shell.sidebar.opacity",
+      "css": "--prisma-pos-shell-sidebar-opacity",
+      "group": "shell",
+      "type": "number",
+      "unit": "",
+      "min": 0.5,
+      "max": 0.98,
+      "default": "0.82",
+      "current": "0.82",
+      "targets": [
+        "sidebar"
+      ],
+      "description": "Sidebar glass fill opacity."
+    },
+    {
+      "id": "pos.shell.header.opacity",
+      "css": "--prisma-pos-shell-header-opacity",
+      "group": "shell",
+      "type": "number",
+      "unit": "",
+      "min": 0.5,
+      "max": 0.98,
+      "default": "0.76",
+      "current": "0.76",
+      "targets": [
+        "header"
+      ],
+      "description": "Top header glass fill opacity."
+    },
+    {
+      "id": "pos.shell.nav.active.glow",
+      "css": "--prisma-pos-shell-nav-active-glow",
+      "group": "shell",
+      "type": "number",
+      "unit": "",
+      "min": 0.0,
+      "max": 0.72,
+      "default": "0.34",
+      "current": "0.34",
+      "targets": [
+        "sidebar.nav.active"
+      ],
+      "description": "Active navigation glow strength."
+    },
+    {
+      "id": "pos.shell.brand.glow",
+      "css": "--prisma-pos-shell-brand-glow",
+      "group": "shell",
+      "type": "number",
+      "unit": "",
+      "min": 0.0,
+      "max": 0.72,
+      "default": "0.22",
+      "current": "0.22",
+      "targets": [
+        "sidebar.brand"
+      ],
+      "description": "PRISMA brand block glow strength."
+    },
+    {
+      "id": "pos.shell.content.lift",
+      "css": "--prisma-pos-shell-content-lift",
+      "group": "shell",
+      "type": "length",
+      "unit": "px",
+      "min": 0,
+      "max": 24,
+      "default": "8px",
+      "current": "8px",
+      "targets": [
+        "main.content"
+      ],
+      "description": "Subtle content lift/shadow separation from cinematic shell."
+    },
+    {
+      "id": "pos.shell.darkness",
+      "css": "--prisma-pos-shell-darkness",
+      "group": "shell",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "default": "0.82",
+      "current": "0.82",
+      "targets": [
+        "shell",
+        "background"
+      ],
+      "description": "Depth of black/navy base behind /pos."
+    },
+    {
+      "id": "pos.shell.bloom.size",
+      "css": "--prisma-pos-shell-bloom-size",
+      "group": "shell",
+      "type": "length",
+      "unit": "px",
+      "min": 180,
+      "max": 900,
+      "default": "520px",
+      "current": "520px",
+      "targets": [
+        "shell",
+        "background"
+      ],
+      "description": "Size of localized shell bloom gradients."
+    },
+    {
+      "id": "pos.shell.contrast",
+      "css": "--prisma-pos-shell-contrast",
+      "group": "shell",
+      "type": "number",
+      "unit": "",
+      "min": 0.7,
+      "max": 1.4,
+      "default": "1.08",
+      "current": "1.08",
+      "targets": [
+        "shell",
+        "background"
+      ],
+      "description": "Contrast multiplier for shell atmosphere."
+    },
+    {
+      "id": "pos.glass.structural.opacity",
+      "css": "--prisma-pos-glass-structural-opacity",
+      "group": "glass",
+      "type": "number",
+      "unit": "",
+      "min": 0.38,
+      "max": 0.96,
+      "default": "0.78",
+      "current": "0.78",
+      "targets": [
+        "catalogArea",
+        "ticketPanel"
+      ],
+      "description": "Primary structural glass opacity."
+    },
+    {
+      "id": "pos.glass.structural.blur",
+      "css": "--prisma-pos-glass-structural-blur",
+      "group": "glass",
+      "type": "length",
+      "unit": "px",
+      "min": 14,
+      "max": 64,
+      "default": "34px",
+      "current": "34px",
+      "targets": [
+        "catalogArea",
+        "ticketPanel"
+      ],
+      "description": "Primary structural glass blur."
+    },
+    {
+      "id": "pos.glass.structural.border",
+      "css": "--prisma-pos-glass-structural-border",
+      "group": "glass",
+      "type": "number",
+      "unit": "",
+      "min": 0.08,
+      "max": 0.5,
+      "default": "0.24",
+      "current": "0.24",
+      "targets": [
+        "catalogArea",
+        "ticketPanel"
+      ],
+      "description": "Primary glass border alpha."
+    },
+    {
+      "id": "pos.glass.interactive.opacity",
+      "css": "--prisma-pos-glass-interactive-opacity",
+      "group": "glass",
+      "type": "number",
+      "unit": "",
+      "min": 0.32,
+      "max": 0.92,
+      "default": "0.62",
+      "current": "0.62",
+      "targets": [
+        "searchCard",
+        "categoryButton",
+        "buttons"
+      ],
+      "description": "Interactive glass opacity."
+    },
+    {
+      "id": "pos.glass.interactive.blur",
+      "css": "--prisma-pos-glass-interactive-blur",
+      "group": "glass",
+      "type": "length",
+      "unit": "px",
+      "min": 8,
+      "max": 48,
+      "default": "24px",
+      "current": "24px",
+      "targets": [
+        "controls"
+      ],
+      "description": "Interactive control blur."
+    },
+    {
+      "id": "pos.glass.interactive.border",
+      "css": "--prisma-pos-glass-interactive-border",
+      "group": "glass",
+      "type": "number",
+      "unit": "",
+      "min": 0.06,
+      "max": 0.46,
+      "default": "0.20",
+      "current": "0.20",
+      "targets": [
+        "controls"
+      ],
+      "description": "Interactive control border alpha."
+    },
+    {
+      "id": "pos.glass.ornamental.opacity",
+      "css": "--prisma-pos-glass-ornamental-opacity",
+      "group": "glass",
+      "type": "number",
+      "unit": "",
+      "min": 0.05,
+      "max": 0.6,
+      "default": "0.18",
+      "current": "0.18",
+      "targets": [
+        "highlights",
+        "ornaments"
+      ],
+      "description": "Ornamental glass opacity."
+    },
+    {
+      "id": "pos.glass.ornamental.blur",
+      "css": "--prisma-pos-glass-ornamental-blur",
+      "group": "glass",
+      "type": "length",
+      "unit": "px",
+      "min": 4,
+      "max": 52,
+      "default": "28px",
+      "current": "28px",
+      "targets": [
+        "highlights",
+        "ornaments"
+      ],
+      "description": "Ornamental light blur."
+    },
+    {
+      "id": "pos.glass.ornamental.border",
+      "css": "--prisma-pos-glass-ornamental-border",
+      "group": "glass",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.4,
+      "default": "0.12",
+      "current": "0.12",
+      "targets": [
+        "highlights",
+        "ornaments"
+      ],
+      "description": "Ornamental border alpha."
+    },
+    {
+      "id": "pos.light.gold.intensity",
+      "css": "--prisma-pos-light-gold-intensity",
+      "group": "light",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "default": "0.42",
+      "current": "0.42",
+      "targets": [
+        "cta",
+        "active states"
+      ],
+      "description": "Gold light intensity."
+    },
+    {
+      "id": "pos.light.gold.spread",
+      "css": "--prisma-pos-light-gold-spread",
+      "group": "light",
+      "type": "length",
+      "unit": "px",
+      "min": 12,
+      "max": 220,
+      "default": "72px",
+      "current": "72px",
+      "targets": [
+        "cta",
+        "active states"
+      ],
+      "description": "Gold light spread radius."
+    },
+    {
+      "id": "pos.light.cyan.ambient",
+      "css": "--prisma-pos-light-cyan-ambient",
+      "group": "light",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.6,
+      "default": "0.12",
+      "current": "0.12",
+      "targets": [
+        "shell",
+        "cards"
+      ],
+      "description": "Cyan/blue ambient light."
+    },
+    {
+      "id": "pos.light.white.edge",
+      "css": "--prisma-pos-light-white-edge",
+      "group": "light",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.5,
+      "default": "0.18",
+      "current": "0.18",
+      "targets": [
+        "borders",
+        "top highlights"
+      ],
+      "description": "White edge highlight alpha."
+    },
+    {
+      "id": "pos.light.panel.edge",
+      "css": "--prisma-pos-light-panel-edge",
+      "group": "light",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.5,
+      "default": "0.16",
+      "current": "0.16",
+      "targets": [
+        "catalogArea",
+        "ticketPanel"
+      ],
+      "description": "Panel edge light alpha."
+    },
+    {
+      "id": "pos.light.card.topHighlight",
+      "css": "--prisma-pos-light-card-top-highlight",
+      "group": "light",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.55,
+      "default": "0.20",
+      "current": "0.20",
+      "targets": [
+        "productCard"
+      ],
+      "description": "Card top highlight alpha."
+    },
+    {
+      "id": "pos.light.ticket.focusGlow",
+      "css": "--prisma-pos-light-ticket-focus-glow",
+      "group": "light",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.8,
+      "default": "0.32",
+      "current": "0.32",
+      "targets": [
+        "ticketPanel"
+      ],
+      "description": "Ticket focus glow strength."
+    },
+    {
+      "id": "pos.light.cta.hotspot",
+      "css": "--prisma-pos-light-cta-hotspot",
+      "group": "light",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "default": "0.48",
+      "current": "0.48",
+      "targets": [
+        "checkoutLink"
+      ],
+      "description": "CTA hotspot strength."
+    },
+    {
+      "id": "pos.light.product.pedestalWarmth",
+      "css": "--prisma-pos-light-product-pedestal-warmth",
+      "group": "light",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "default": "0.46",
+      "current": "0.46",
+      "targets": [
+        "productPedestal"
+      ],
+      "description": "Product pedestal warmth."
+    },
+    {
+      "id": "pos.border.panel.alpha",
+      "css": "--prisma-pos-border-panel-alpha",
+      "group": "border",
+      "type": "number",
+      "unit": "",
+      "min": 0.04,
+      "max": 0.5,
+      "default": "0.20",
+      "current": "0.20",
+      "targets": [
+        "catalogArea",
+        "ticketPanel"
+      ],
+      "description": "Panel border alpha."
+    },
+    {
+      "id": "pos.border.card.alpha",
+      "css": "--prisma-pos-border-card-alpha",
+      "group": "border",
+      "type": "number",
+      "unit": "",
+      "min": 0.04,
+      "max": 0.5,
+      "default": "0.22",
+      "current": "0.22",
+      "targets": [
+        "productCard"
+      ],
+      "description": "Card border alpha."
+    },
+    {
+      "id": "pos.border.ticket.alpha",
+      "css": "--prisma-pos-border-ticket-alpha",
+      "group": "border",
+      "type": "number",
+      "unit": "",
+      "min": 0.04,
+      "max": 0.6,
+      "default": "0.28",
+      "current": "0.28",
+      "targets": [
+        "ticketPanel"
+      ],
+      "description": "Ticket border alpha."
+    },
+    {
+      "id": "pos.border.gold.alpha",
+      "css": "--prisma-pos-border-gold-alpha",
+      "group": "border",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.8,
+      "default": "0.34",
+      "current": "0.34",
+      "targets": [
+        "cta",
+        "active"
+      ],
+      "description": "Gold border alpha."
+    },
+    {
+      "id": "pos.border.inner.highlight",
+      "css": "--prisma-pos-border-inner-highlight",
+      "group": "border",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.5,
+      "default": "0.16",
+      "current": "0.16",
+      "targets": [
+        "cards",
+        "controls"
+      ],
+      "description": "Inner hairline highlight alpha."
+    },
+    {
+      "id": "pos.shadow.panel.depth",
+      "css": "--prisma-pos-shadow-panel-depth",
+      "group": "shadow",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "default": "0.50",
+      "current": "0.50",
+      "targets": [
+        "catalogArea"
+      ],
+      "description": "Panel shadow depth."
+    },
+    {
+      "id": "pos.shadow.card.depth",
+      "css": "--prisma-pos-shadow-card-depth",
+      "group": "shadow",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "default": "0.44",
+      "current": "0.44",
+      "targets": [
+        "productCard"
+      ],
+      "description": "Card shadow depth."
+    },
+    {
+      "id": "pos.shadow.ticket.depth",
+      "css": "--prisma-pos-shadow-ticket-depth",
+      "group": "shadow",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "default": "0.62",
+      "current": "0.62",
+      "targets": [
+        "ticketPanel"
+      ],
+      "description": "Ticket shadow depth."
+    },
+    {
+      "id": "pos.shadow.cta.depth",
+      "css": "--prisma-pos-shadow-cta-depth",
+      "group": "shadow",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "default": "0.58",
+      "current": "0.58",
+      "targets": [
+        "checkoutLink"
+      ],
+      "description": "CTA shadow depth."
+    },
+    {
+      "id": "pos.product.image.scale",
+      "css": "--prisma-pos-product-image-scale",
+      "group": "product-stage",
+      "type": "number",
+      "unit": "",
+      "min": 0.8,
+      "max": 1.5,
+      "default": "1.10",
+      "current": "1.10",
+      "targets": [
+        "productPackshot",
+        "productFigure"
+      ],
+      "description": "Product image scale."
+    },
+    {
+      "id": "pos.product.image.lift",
+      "css": "--prisma-pos-product-image-lift",
+      "group": "product-stage",
+      "type": "length",
+      "unit": "px",
+      "min": -36,
+      "max": 18,
+      "default": "-8px",
+      "current": "-8px",
+      "targets": [
+        "productPackshot",
+        "productFigure"
+      ],
+      "description": "Product image vertical lift."
+    },
+    {
+      "id": "pos.product.image.contrast",
+      "css": "--prisma-pos-product-image-contrast",
+      "group": "product-stage",
+      "type": "number",
+      "unit": "",
+      "min": 0.8,
+      "max": 1.35,
+      "default": "1.08",
+      "current": "1.08",
+      "targets": [
+        "productPackshot"
+      ],
+      "description": "Product image contrast."
+    },
+    {
+      "id": "pos.product.image.saturation",
+      "css": "--prisma-pos-product-image-saturation",
+      "group": "product-stage",
+      "type": "number",
+      "unit": "",
+      "min": 0.7,
+      "max": 1.5,
+      "default": "1.10",
+      "current": "1.10",
+      "targets": [
+        "productPackshot"
+      ],
+      "description": "Product image saturation."
+    },
+    {
+      "id": "pos.product.image.dropShadow",
+      "css": "--prisma-pos-product-image-drop-shadow",
+      "group": "product-stage",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "default": "0.52",
+      "current": "0.52",
+      "targets": [
+        "productPackshot"
+      ],
+      "description": "Packshot drop shadow strength."
+    },
+    {
+      "id": "pos.product.stage.auraSize",
+      "css": "--prisma-pos-product-stage-aura-size",
+      "group": "product-stage",
+      "type": "number",
+      "unit": "",
+      "min": 0.3,
+      "max": 1.4,
+      "default": "0.88",
+      "current": "0.88",
+      "targets": [
+        "productAura"
+      ],
+      "description": "Aura size multiplier."
+    },
+    {
+      "id": "pos.product.stage.auraOpacity",
+      "css": "--prisma-pos-product-stage-aura-opacity",
+      "group": "product-stage",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.9,
+      "default": "0.44",
+      "current": "0.44",
+      "targets": [
+        "productAura"
+      ],
+      "description": "Aura opacity."
+    },
+    {
+      "id": "pos.product.stage.pedestalWidth",
+      "css": "--prisma-pos-product-stage-pedestal-width",
+      "group": "product-stage",
+      "type": "length",
+      "unit": "px",
+      "min": 52,
+      "max": 180,
+      "default": "112px",
+      "current": "112px",
+      "targets": [
+        "productPedestal"
+      ],
+      "description": "Pedestal width."
+    },
+    {
+      "id": "pos.product.stage.pedestalBlur",
+      "css": "--prisma-pos-product-stage-pedestal-blur",
+      "group": "product-stage",
+      "type": "length",
+      "unit": "px",
+      "min": 2,
+      "max": 24,
+      "default": "8px",
+      "current": "8px",
+      "targets": [
+        "productPedestal"
+      ],
+      "description": "Pedestal blur."
+    },
+    {
+      "id": "pos.product.stage.pedestalOpacity",
+      "css": "--prisma-pos-product-stage-pedestal-opacity",
+      "group": "product-stage",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.9,
+      "default": "0.48",
+      "current": "0.48",
+      "targets": [
+        "productPedestal"
+      ],
+      "description": "Pedestal opacity."
+    },
+    {
+      "id": "pos.product.stage.reflectionOpacity",
+      "css": "--prisma-pos-product-stage-reflection-opacity",
+      "group": "product-stage",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.5,
+      "default": "0.14",
+      "current": "0.14",
+      "targets": [
+        "productImageStage"
+      ],
+      "description": "Reflection opacity."
+    },
+    {
+      "id": "pos.type.title.opacity",
+      "css": "--prisma-pos-type-title-opacity",
+      "group": "typography",
+      "type": "number",
+      "unit": "",
+      "min": 0.5,
+      "max": 1,
+      "default": "0.98",
+      "current": "0.98",
+      "targets": [
+        "headings"
+      ],
+      "description": "Title opacity."
+    },
+    {
+      "id": "pos.type.subtitle.opacity",
+      "css": "--prisma-pos-type-subtitle-opacity",
+      "group": "typography",
+      "type": "number",
+      "unit": "",
+      "min": 0.3,
+      "max": 1,
+      "default": "0.74",
+      "current": "0.74",
+      "targets": [
+        "subtitles"
+      ],
+      "description": "Subtitle opacity."
+    },
+    {
+      "id": "pos.type.body.opacity",
+      "css": "--prisma-pos-type-body-opacity",
+      "group": "typography",
+      "type": "number",
+      "unit": "",
+      "min": 0.45,
+      "max": 1,
+      "default": "0.88",
+      "current": "0.88",
+      "targets": [
+        "body text"
+      ],
+      "description": "Body text opacity."
+    },
+    {
+      "id": "pos.type.muted.opacity",
+      "css": "--prisma-pos-type-muted-opacity",
+      "group": "typography",
+      "type": "number",
+      "unit": "",
+      "min": 0.25,
+      "max": 0.9,
+      "default": "0.62",
+      "current": "0.62",
+      "targets": [
+        "muted text"
+      ],
+      "description": "Muted text opacity."
+    },
+    {
+      "id": "pos.type.price.weight",
+      "css": "--prisma-pos-type-price-weight",
+      "group": "typography",
+      "type": "number",
+      "unit": "",
+      "min": 500,
+      "max": 950,
+      "default": "860",
+      "current": "860",
+      "targets": [
+        "prices"
+      ],
+      "description": "Price font weight."
+    },
+    {
+      "id": "pos.type.price.glow",
+      "css": "--prisma-pos-type-price-glow",
+      "group": "typography",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.6,
+      "default": "0.14",
+      "current": "0.14",
+      "targets": [
+        "prices"
+      ],
+      "description": "Price glow strength."
+    },
+    {
+      "id": "pos.type.total.size",
+      "css": "--prisma-pos-type-total-size",
+      "group": "typography",
+      "type": "length",
+      "unit": "px",
+      "min": 24,
+      "max": 54,
+      "default": "38px",
+      "current": "38px",
+      "targets": [
+        "ticketTotal"
+      ],
+      "description": "Total size."
+    },
+    {
+      "id": "pos.type.total.weight",
+      "css": "--prisma-pos-type-total-weight",
+      "group": "typography",
+      "type": "number",
+      "unit": "",
+      "min": 600,
+      "max": 1000,
+      "default": "920",
+      "current": "920",
+      "targets": [
+        "ticketTotal"
+      ],
+      "description": "Total font weight."
+    },
+    {
+      "id": "pos.type.total.glow",
+      "css": "--prisma-pos-type-total-glow",
+      "group": "typography",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.8,
+      "default": "0.32",
+      "current": "0.32",
+      "targets": [
+        "ticketTotal"
+      ],
+      "description": "Total glow strength."
+    },
+    {
+      "id": "pos.type.nav.opacity",
+      "css": "--prisma-pos-type-nav-opacity",
+      "group": "typography",
+      "type": "number",
+      "unit": "",
+      "min": 0.35,
+      "max": 1,
+      "default": "0.78",
+      "current": "0.78",
+      "targets": [
+        "sidebar nav"
+      ],
+      "description": "Navigation text opacity."
+    },
+    {
+      "id": "pos.cta.radius",
+      "css": "--prisma-pos-cta-radius",
+      "group": "cta",
+      "type": "length",
+      "unit": "px",
+      "min": 12,
+      "max": 38,
+      "default": "18px",
+      "current": "18px",
+      "targets": [
+        "checkoutLink"
+      ],
+      "description": "CTA radius."
+    },
+    {
+      "id": "pos.cta.gold.fill",
+      "css": "--prisma-pos-cta-gold-fill",
+      "group": "cta",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "default": "0.78",
+      "current": "0.78",
+      "targets": [
+        "checkoutLink"
+      ],
+      "description": "CTA gold fill alpha."
+    },
+    {
+      "id": "pos.cta.gold.border",
+      "css": "--prisma-pos-cta-gold-border",
+      "group": "cta",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "default": "0.46",
+      "current": "0.46",
+      "targets": [
+        "checkoutLink"
+      ],
+      "description": "CTA gold border alpha."
+    },
+    {
+      "id": "pos.cta.highlight",
+      "css": "--prisma-pos-cta-highlight",
+      "group": "cta",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.75,
+      "default": "0.28",
+      "current": "0.28",
+      "targets": [
+        "checkoutLink"
+      ],
+      "description": "CTA top highlight alpha."
+    },
+    {
+      "id": "pos.control.secondary.opacity",
+      "css": "--prisma-pos-control-secondary-opacity",
+      "group": "controls",
+      "type": "number",
+      "unit": "",
+      "min": 0.18,
+      "max": 0.9,
+      "default": "0.46",
+      "current": "0.46",
+      "targets": [
+        "secondary controls"
+      ],
+      "description": "Secondary control opacity."
+    },
+    {
+      "id": "pos.control.secondary.border",
+      "css": "--prisma-pos-control-secondary-border",
+      "group": "controls",
+      "type": "number",
+      "unit": "",
+      "min": 0.04,
+      "max": 0.5,
+      "default": "0.18",
+      "current": "0.18",
+      "targets": [
+        "secondary controls"
+      ],
+      "description": "Secondary control border alpha."
+    },
+    {
+      "id": "pos.control.disabled.opacity",
+      "css": "--prisma-pos-control-disabled-opacity",
+      "group": "controls",
+      "type": "number",
+      "unit": "",
+      "min": 0.12,
+      "max": 0.7,
+      "default": "0.36",
+      "current": "0.36",
+      "targets": [
+        "disabled controls"
+      ],
+      "description": "Disabled control opacity."
+    },
+    {
+      "id": "pos.state.hover.lift",
+      "css": "--prisma-pos-state-hover-lift",
+      "group": "state-motion",
+      "type": "length",
+      "unit": "px",
+      "min": 0,
+      "max": 12,
+      "default": "4px",
+      "current": "4px",
+      "targets": [
+        "hover states"
+      ],
+      "description": "Hover lift."
+    },
+    {
+      "id": "pos.state.hover.scale",
+      "css": "--prisma-pos-state-hover-scale",
+      "group": "state-motion",
+      "type": "number",
+      "unit": "",
+      "min": 1,
+      "max": 1.08,
+      "default": "1.015",
+      "current": "1.015",
+      "targets": [
+        "hover states"
+      ],
+      "description": "Hover scale."
+    },
+    {
+      "id": "pos.state.hover.glow",
+      "css": "--prisma-pos-state-hover-glow",
+      "group": "state-motion",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.8,
+      "default": "0.24",
+      "current": "0.24",
+      "targets": [
+        "hover states"
+      ],
+      "description": "Hover glow."
+    },
+    {
+      "id": "pos.state.active.gold",
+      "css": "--prisma-pos-state-active-gold",
+      "group": "state-motion",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "default": "0.62",
+      "current": "0.62",
+      "targets": [
+        "active states"
+      ],
+      "description": "Active gold strength."
+    },
+    {
+      "id": "pos.state.disabled.opacity",
+      "css": "--prisma-pos-state-disabled-opacity",
+      "group": "state-motion",
+      "type": "number",
+      "unit": "",
+      "min": 0.1,
+      "max": 0.8,
+      "default": "0.42",
+      "current": "0.42",
+      "targets": [
+        "disabled states"
+      ],
+      "description": "Disabled opacity."
+    },
+    {
+      "id": "pos.state.focus.ring",
+      "css": "--prisma-pos-state-focus-ring",
+      "group": "state-motion",
+      "type": "length",
+      "unit": "px",
+      "min": 1,
+      "max": 6,
+      "default": "3px",
+      "current": "3px",
+      "targets": [
+        "focus-visible"
+      ],
+      "description": "Focus ring width."
+    },
+    {
+      "id": "pos.state.loading.shimmer",
+      "css": "--prisma-pos-state-loading-shimmer",
+      "group": "state-motion",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 0.8,
+      "default": "0.22",
+      "current": "0.22",
+      "targets": [
+        "loading states"
+      ],
+      "description": "Loading shimmer opacity."
+    },
+    {
+      "id": "pos.motion.reduced.enabled",
+      "css": "--prisma-pos-motion-reduced-enabled",
+      "group": "state-motion",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "default": "1",
+      "current": "1",
+      "targets": [
+        "reduced motion"
+      ],
+      "description": "Reduced motion safety flag."
+    },
+    {
+      "id": "pos.density.screen.scale",
+      "css": "--prisma-pos-density-screen-scale",
+      "group": "density",
+      "type": "number",
+      "unit": "",
+      "min": 0.86,
+      "max": 1.12,
+      "default": "1",
+      "current": "1",
+      "targets": [
+        "workspace"
+      ],
+      "description": "Overall POS density scale."
+    },
+    {
+      "id": "pos.density.search.height",
+      "css": "--prisma-pos-density-search-height",
+      "group": "density",
+      "type": "length",
+      "unit": "px",
+      "min": 48,
+      "max": 84,
+      "default": "64px",
+      "current": "64px",
+      "targets": [
+        "searchInputWrap"
+      ],
+      "description": "Search height."
+    },
+    {
+      "id": "pos.density.card.gap",
+      "css": "--prisma-pos-density-card-gap",
+      "group": "density",
+      "type": "length",
+      "unit": "px",
+      "min": 8,
+      "max": 24,
+      "default": "13px",
+      "current": "13px",
+      "targets": [
+        "productGrid"
+      ],
+      "description": "Card grid gap."
+    },
+    {
+      "id": "pos.density.card.padding",
+      "css": "--prisma-pos-density-card-padding",
+      "group": "density",
+      "type": "length",
+      "unit": "px",
+      "min": 10,
+      "max": 24,
+      "default": "13px",
+      "current": "13px",
+      "targets": [
+        "productCard"
+      ],
+      "description": "Card padding."
+    },
+    {
+      "id": "pos.density.ticket.compactness",
+      "css": "--prisma-pos-density-ticket-compactness",
+      "group": "density",
+      "type": "number",
+      "unit": "",
+      "min": 0.8,
+      "max": 1.25,
+      "default": "1.0",
+      "current": "1.0",
+      "targets": [
+        "ticketLine"
+      ],
+      "description": "Ticket compactness."
+    },
+    {
+      "id": "pos.density.sidebar.width",
+      "css": "--prisma-pos-density-sidebar-width",
+      "group": "density",
+      "type": "length",
+      "unit": "px",
+      "min": 190,
+      "max": 270,
+      "default": "220px",
+      "current": "220px",
+      "targets": [
+        "sidebar"
+      ],
+      "description": "Sidebar width."
+    },
+    {
+      "id": "pos.density.header.height",
+      "css": "--prisma-pos-density-header-height",
+      "group": "density",
+      "type": "length",
+      "unit": "px",
+      "min": 64,
+      "max": 110,
+      "default": "86px",
+      "current": "86px",
+      "targets": [
+        "header"
+      ],
+      "description": "Header height."
+    },
+    {
+      "id": "pos.layer.background",
+      "css": "--prisma-pos-layer-background",
+      "group": "layers",
+      "type": "number",
+      "unit": "",
+      "min": -5,
+      "max": 5,
+      "default": "0",
+      "current": "0",
+      "targets": [
+        "background"
+      ],
+      "description": "Background z-index."
+    },
+    {
+      "id": "pos.layer.haze",
+      "css": "--prisma-pos-layer-haze",
+      "group": "layers",
+      "type": "number",
+      "unit": "",
+      "min": -5,
+      "max": 10,
+      "default": "1",
+      "current": "1",
+      "targets": [
+        "haze"
+      ],
+      "description": "Haze z-index."
+    },
+    {
+      "id": "pos.layer.shell",
+      "css": "--prisma-pos-layer-shell",
+      "group": "layers",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 30,
+      "default": "5",
+      "current": "5",
+      "targets": [
+        "shell"
+      ],
+      "description": "Shell z-index."
+    },
+    {
+      "id": "pos.layer.panel",
+      "css": "--prisma-pos-layer-panel",
+      "group": "layers",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 40,
+      "default": "10",
+      "current": "10",
+      "targets": [
+        "panels"
+      ],
+      "description": "Panel z-index."
+    },
+    {
+      "id": "pos.layer.card",
+      "css": "--prisma-pos-layer-card",
+      "group": "layers",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 50,
+      "default": "20",
+      "current": "20",
+      "targets": [
+        "cards"
+      ],
+      "description": "Card z-index."
+    },
+    {
+      "id": "pos.layer.product",
+      "css": "--prisma-pos-layer-product",
+      "group": "layers",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 60,
+      "default": "30",
+      "current": "30",
+      "targets": [
+        "products"
+      ],
+      "description": "Product z-index."
+    },
+    {
+      "id": "pos.layer.text",
+      "css": "--prisma-pos-layer-text",
+      "group": "layers",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 70,
+      "default": "40",
+      "current": "40",
+      "targets": [
+        "text"
+      ],
+      "description": "Text z-index."
+    },
+    {
+      "id": "pos.layer.cta",
+      "css": "--prisma-pos-layer-cta",
+      "group": "layers",
+      "type": "number",
+      "unit": "",
+      "min": 0,
+      "max": 80,
+      "default": "50",
+      "current": "50",
+      "targets": [
+        "cta"
+      ],
+      "description": "CTA z-index."
+    },
+    {
+      "id": "pos.layer.overlay",
+      "css": "--prisma-pos-layer-overlay",
+      "group": "layers",
+      "type": "number",
+      "unit": "",
+      "min": 10,
+      "max": 200,
+      "default": "90",
+      "current": "90",
+      "targets": [
+        "overlays"
+      ],
+      "description": "Overlay z-index."
+    }
+  ]
+}
