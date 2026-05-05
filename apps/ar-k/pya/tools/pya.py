@@ -10,11 +10,23 @@ from pya.kernel.pipeline import PipelineCoordinator
 from pya.system.execution import CANONICAL_STAGE_ORDER
 from pya.system.root_manifest import get_root_manifest
 
+PLACEHOLDER_TOKENS = {"<real_frontend_target>", "<target>", "<path>"}
+
 
 def _section_exists(readme_path: Path, heading: str) -> bool:
     if not readme_path.exists():
         return False
     return heading in readme_path.read_text(encoding="utf-8")
+
+
+def _validate_cli_path_argument(name: str, value: Path) -> Path:
+    raw = str(value).strip()
+    lowered = raw.lower()
+    if any(token in lowered for token in PLACEHOLDER_TOKENS) or ("<" in raw and ">" in raw):
+        raise ValueError(
+            f"Invalid --{name} value: placeholder token detected. Replace it with a real absolute path. Got: {raw}"
+        )
+    return Path(raw).expanduser().resolve()
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -50,7 +62,7 @@ def _parse_overrides(items: list[str]) -> dict[str, bool]:
 
 
 def cmd_doctor(root: Path) -> int:
-    root = root.expanduser().resolve()
+    root = _validate_cli_path_argument("root", root)
     manifest = get_root_manifest()
     engines = discover_and_load_engines(root, manifest)
     ownership = manifest["ownership_policy"]
@@ -77,6 +89,9 @@ def cmd_doctor(root: Path) -> int:
 
 
 def cmd_run(root: Path, target: Path, out: Path, overrides: dict[str, bool]) -> int:
+    root = _validate_cli_path_argument("root", root)
+    target = _validate_cli_path_argument("target", target)
+    out = _validate_cli_path_argument("out", out)
     context = RuntimeContext.build(root=root, target=target, out=out, switch_overrides=overrides)
     coordinator = PipelineCoordinator(context)
     report = coordinator.run()
