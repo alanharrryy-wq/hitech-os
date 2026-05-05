@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/customer-runtime-layout.schema.json",
+  "title": "customer-runtime-layout",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "layoutVersion",
+    "root",
+    "folders",
+    "forbiddenInsideRelease",
+    "requiresBusinessId"
+  ],
+  "properties": {
+    "layoutVersion": {
+      "type": "string"
+    },
+    "root": {
+      "type": "string"
+    },
+    "folders": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbiddenInsideRelease": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requiresBusinessId": {
+      "type": "boolean"
+    }
+  }
+}

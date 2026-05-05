@@ -1,0 +1,41 @@
+{
+  "pluginId": "plugin_bad_actor_demo",
+  "name": "Bad Actor Demo",
+  "version": "0.0.1",
+  "publisher": "unknown",
+  "compatiblePrismaVersions": [
+    "*"
+  ],
+  "requiredPlan": "TABLET_SOLO",
+  "permissions": [
+    "execute.powershell"
+  ],
+  "runtimeSurfaces": [
+    "pc"
+  ],
+  "declaredRoutes": [],
+  "events": [],
+  "offlinePolicy": {
+    "allowedOffline": false,
+    "requiresReviewAfterSync": false,
+    "blockedOperations": [
+      "all"
+    ]
+  },
+  "syncPolicy": {
+    "syncsEvents": false,
+    "requiresConflictResolver": false,
+    "topics": []
+  },
+  "rollbackPlan": {
+    "canDisableWithoutDataLoss": false,
+    "steps": [
+      "reject"
+    ]
+  },
+  "signature": {
+    "algorithm": "sha256-placeholder",
+    "fingerprint": "bad_fingerprint"
+  },
+  "runCommand": "powershell.exe"
+}

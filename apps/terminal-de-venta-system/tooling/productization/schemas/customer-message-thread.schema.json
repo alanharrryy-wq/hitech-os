@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Customer Message Thread Mock",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "threadId",
+    "businessId",
+    "surface",
+    "category",
+    "status",
+    "title",
+    "createdAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "threadId": {
+      "type": "string"
+    },
+    "businessId": {
+      "type": "string"
+    },
+    "deviceId": {
+      "type": "string"
+    },
+    "surface": {
+      "enum": [
+        "pc",
+        "tablet"
+      ]
+    },
+    "category": {
+      "enum": [
+        "support",
+        "license",
+        "diagnostics",
+        "plugins",
+        "updates",
+        "general"
+      ]
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "local_only",
+        "queued_mock",
+        "read",
+        "closed_local",
+        "blocked_no_server"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string"
+    },
+    "lastMessagePreview": {
+      "type": "string"
+    },
+    "contextRefs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  }
+}

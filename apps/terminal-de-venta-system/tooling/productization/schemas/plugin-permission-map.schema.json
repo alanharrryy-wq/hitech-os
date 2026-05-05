@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Plugin Permission Map",
+  "type": "object",
+  "required": [
+    "permissions"
+  ],
+  "properties": {
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "key",
+          "surface",
+          "description"
+        ],
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "surface": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

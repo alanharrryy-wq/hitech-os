@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "runtimeMode": "standalone",
+  "runtimeRoot": "C:\\ProgramData\\PRISMA",
+  "configRoot": "C:\\ProgramData\\PRISMA\\config",
+  "businessId": "demo-prisma-store",
+  "deviceId": "tablet-001",
+  "packageType": "TABLET_SOLO",
+  "paths": {
+    "runtimeRoot": "C:\\ProgramData\\PRISMA",
+    "configRoot": "C:\\ProgramData\\PRISMA\\config",
+    "businessRoot": "C:\\ProgramData\\PRISMA\\businesses\\demo-prisma-store",
+    "tabletDataRoot": "C:\\ProgramData\\PRISMA\\businesses\\demo-prisma-store\\tablet\\data",
+    "pcDataRoot": "C:\\ProgramData\\PRISMA\\businesses\\demo-prisma-store\\pc\\data",
+    "syncRoot": "C:\\ProgramData\\PRISMA\\businesses\\demo-prisma-store\\sync",
+    "supportRoot": "C:\\ProgramData\\PRISMA\\businesses\\demo-prisma-store\\support",
+    "updatesRoot": "C:\\ProgramData\\PRISMA\\updates",
+    "rollbackRoot": "C:\\ProgramData\\PRISMA\\rollback",
+    "logsRoot": "C:\\ProgramData\\PRISMA\\businesses\\demo-prisma-store\\logs",
+    "exportsRoot": "C:\\ProgramData\\PRISMA\\businesses\\demo-prisma-store\\exports",
+    "backupsRoot": "C:\\ProgramData\\PRISMA\\businesses\\demo-prisma-store\\backups",
+    "licenseFile": "C:\\ProgramData\\PRISMA\\config\\license.json"
+  },
+  "license": {
+    "file": "C:\\ProgramData\\PRISMA\\config\\license.json",
+    "mode": "offline_grace_allowed"
+  },
+  "sync": {
+    "enabled": false,
+    "mode": "none"
+  },
+  "features": {
+    "pos.sales": true,
+    "exports.local": true,
+    "support.channel": true
+  },
+  "support": {
+    "diagnosticsEnabled": true,
+    "requiresConsent": true
+  },
+  "updates": {
+    "channel": "stable",
+    "allowDuringOpenSale": false
+  }
+}

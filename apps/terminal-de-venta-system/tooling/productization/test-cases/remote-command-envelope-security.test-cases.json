@@ -1,0 +1,1122 @@
+[
+  {
+    "id": "REMOTE-CASE-001",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-002",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-003",
+    "command": "DELETE_DATABASE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-004",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-005",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-006",
+    "command": "CHECK_HEALTH",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-007",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-008",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-009",
+    "command": "DELETE_DATABASE",
+    "expired": true,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-010",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-011",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": true,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-012",
+    "command": "CHECK_HEALTH",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-013",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-014",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-015",
+    "command": "DELETE_DATABASE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-016",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-017",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-018",
+    "command": "CHECK_HEALTH",
+    "expired": true,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-019",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-020",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-021",
+    "command": "DELETE_DATABASE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-022",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": true,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-023",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-024",
+    "command": "CHECK_HEALTH",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-025",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-026",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-027",
+    "command": "DELETE_DATABASE",
+    "expired": true,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-028",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-029",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-030",
+    "command": "CHECK_HEALTH",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-031",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-032",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-033",
+    "command": "DELETE_DATABASE",
+    "expired": false,
+    "wrongDevice": true,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-034",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-035",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-036",
+    "command": "CHECK_HEALTH",
+    "expired": true,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-037",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-038",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-039",
+    "command": "DELETE_DATABASE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-040",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-041",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-042",
+    "command": "CHECK_HEALTH",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-043",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-044",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": true,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-045",
+    "command": "DELETE_DATABASE",
+    "expired": true,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-046",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-047",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-048",
+    "command": "CHECK_HEALTH",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-049",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-050",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-051",
+    "command": "DELETE_DATABASE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-052",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-053",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-054",
+    "command": "CHECK_HEALTH",
+    "expired": true,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-055",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": true,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-056",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-057",
+    "command": "DELETE_DATABASE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-058",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-059",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-060",
+    "command": "CHECK_HEALTH",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-061",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-062",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-063",
+    "command": "DELETE_DATABASE",
+    "expired": true,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-064",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-065",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-066",
+    "command": "CHECK_HEALTH",
+    "expired": false,
+    "wrongDevice": true,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-067",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-068",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-069",
+    "command": "DELETE_DATABASE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-070",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-071",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-072",
+    "command": "CHECK_HEALTH",
+    "expired": true,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-073",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-074",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-075",
+    "command": "DELETE_DATABASE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-076",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-077",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": true,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-078",
+    "command": "CHECK_HEALTH",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-079",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-080",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-081",
+    "command": "DELETE_DATABASE",
+    "expired": true,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-082",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-083",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-084",
+    "command": "CHECK_HEALTH",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-085",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-086",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-087",
+    "command": "DELETE_DATABASE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-088",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": true,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-089",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-090",
+    "command": "CHECK_HEALTH",
+    "expired": true,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-091",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-092",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-093",
+    "command": "DELETE_DATABASE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-094",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-095",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-096",
+    "command": "CHECK_HEALTH",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-097",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-098",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-099",
+    "command": "DELETE_DATABASE",
+    "expired": true,
+    "wrongDevice": true,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-100",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-101",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-102",
+    "command": "CHECK_HEALTH",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-103",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-104",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-105",
+    "command": "DELETE_DATABASE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-106",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-107",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-108",
+    "command": "CHECK_HEALTH",
+    "expired": true,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-109",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-110",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": true,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-111",
+    "command": "DELETE_DATABASE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-112",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-113",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-114",
+    "command": "CHECK_HEALTH",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-115",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-116",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-117",
+    "command": "DELETE_DATABASE",
+    "expired": true,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-118",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-119",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-120",
+    "command": "CHECK_HEALTH",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-121",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": true,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-122",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-123",
+    "command": "DELETE_DATABASE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-124",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-125",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-126",
+    "command": "CHECK_HEALTH",
+    "expired": true,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-127",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-128",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-129",
+    "command": "DELETE_DATABASE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-130",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-131",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-132",
+    "command": "CHECK_HEALTH",
+    "expired": false,
+    "wrongDevice": true,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-133",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-134",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-135",
+    "command": "DELETE_DATABASE",
+    "expired": true,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-136",
+    "command": "RETRY_SYNC",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-137",
+    "command": "OPEN_INBOUND_PORT",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-138",
+    "command": "CHECK_HEALTH",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-139",
+    "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "validate",
+    "rule": "allowlist + expiry + device scope"
+  },
+  {
+    "id": "REMOTE-CASE-140",
+    "command": "RUN_ARBITRARY_COMMAND",
+    "expired": false,
+    "wrongDevice": false,
+    "expected": "reject",
+    "rule": "allowlist + expiry + device scope"
+  }
+]

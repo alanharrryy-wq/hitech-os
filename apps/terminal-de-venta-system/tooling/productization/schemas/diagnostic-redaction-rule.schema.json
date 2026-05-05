@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Diagnostic Redaction Rule",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "ruleId",
+    "matchType",
+    "pattern",
+    "action",
+    "replacement"
+  ],
+  "properties": {
+    "ruleId": {
+      "type": "string"
+    },
+    "matchType": {
+      "enum": [
+        "key",
+        "regex",
+        "contains",
+        "header"
+      ]
+    },
+    "pattern": {
+      "type": "string"
+    },
+    "action": {
+      "enum": [
+        "redact",
+        "exclude",
+        "hash"
+      ]
+    },
+    "replacement": {
+      "type": "string"
+    },
+    "severity": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    }
+  }
+}

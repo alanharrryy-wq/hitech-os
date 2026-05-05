@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Customer Message Mock",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "messageId",
+    "threadId",
+    "senderType",
+    "body",
+    "status",
+    "createdAt"
+  ],
+  "properties": {
+    "messageId": {
+      "type": "string"
+    },
+    "threadId": {
+      "type": "string"
+    },
+    "senderType": {
+      "enum": [
+        "customer",
+        "provider",
+        "system_mock"
+      ]
+    },
+    "body": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4000
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "created_local",
+        "queued_mock",
+        "failed_mock",
+        "read_local"
+      ]
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "contextRefs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  }
+}

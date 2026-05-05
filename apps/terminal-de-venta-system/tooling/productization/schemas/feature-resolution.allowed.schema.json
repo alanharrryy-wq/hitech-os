@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA feature-resolution.allowed.schema.json",
+  "description": "Audit-link schema generated for PRISMA license-local examples. It exists to make the example-to-schema relationship explicit for productization checks. The broader license contract remains governed by the package 02 license documentation and schemas.",
+  "x-prismaPackage": "PRISMA_FINALIZE_LICENSE_SCHEMA_LINKS_00_09",
+  "x-generatedFromExample": true,
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "featureKey",
+    "allowed",
+    "reason",
+    "source",
+    "licenseStatus",
+    "messageKey",
+    "blockedBy"
+  ],
+  "properties": {
+    "featureKey": {
+      "type": "string"
+    },
+    "allowed": {
+      "type": "boolean"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "licenseStatus": {
+      "type": "string"
+    },
+    "messageKey": {
+      "type": "null"
+    },
+    "blockedBy": {
+      "type": "null"
+    }
+  }
+}

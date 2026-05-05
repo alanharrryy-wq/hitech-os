@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Center Module Card",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "cardId",
+    "routeId",
+    "title",
+    "state",
+    "allowedActions",
+    "prohibitedActions"
+  ],
+  "properties": {
+    "cardId": {
+      "type": "string"
+    },
+    "routeId": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "available_mock",
+        "read_only",
+        "empty",
+        "blocked_by_plan",
+        "requires_permission",
+        "requires_consent",
+        "disabled"
+      ]
+    },
+    "allowedActions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "prohibitedActions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "emptyStateCopy": {
+      "type": "string"
+    },
+    "riskNote": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Remote Command Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "commandEnvelopeId",
+    "businessId",
+    "deviceId",
+    "issuedAt",
+    "expiresAt",
+    "nonce",
+    "allowedCommand",
+    "payload",
+    "signature",
+    "requiresHumanApproval"
+  ],
+  "properties": {
+    "commandEnvelopeId": {
+      "type": "string"
+    },
+    "businessId": {
+      "type": "string"
+    },
+    "deviceId": {
+      "type": "string"
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "nonce": {
+      "type": "string",
+      "minLength": 16
+    },
+    "allowedCommand": {
+      "type": "string",
+      "enum": [
+        "CHECK_HEALTH",
+        "GENERATE_DIAGNOSTIC_BUNDLE",
+        "REFRESH_LICENSE",
+        "CHECK_FOR_UPDATES",
+        "STAGE_UPDATE",
+        "APPLY_APPROVED_UPDATE",
+        "DISABLE_PLUGIN",
+        "ENABLE_PLUGIN",
+        "RETRY_SYNC"
+      ]
+    },
+    "payload": {
+      "type": "object"
+    },
+    "signature": {
+      "type": "object",
+      "required": [
+        "algorithm",
+        "fingerprint"
+      ],
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "enum": [
+            "ed25519",
+            "sha256-placeholder"
+          ]
+        },
+        "fingerprint": {
+          "type": "string",
+          "minLength": 16
+        }
+      }
+    },
+    "requiresHumanApproval": {
+      "type": "boolean"
+    }
+  }
+}

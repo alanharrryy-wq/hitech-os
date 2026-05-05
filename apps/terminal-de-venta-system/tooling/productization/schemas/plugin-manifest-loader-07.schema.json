@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/plugin-manifest-loader-07.schema.json",
+  "title": "PRISMA Plugin Manifest Loader 07 Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "pluginId",
+    "name",
+    "version",
+    "publisher",
+    "compatiblePrismaVersions",
+    "requiredPlan",
+    "permissions",
+    "runtimeSurfaces",
+    "declaredRoutes",
+    "events",
+    "offlinePolicy",
+    "syncPolicy",
+    "rollbackPlan",
+    "signature"
+  ],
+  "properties": {
+    "pluginId": {
+      "type": "string",
+      "pattern": "^plugin_[a-z0-9_\\-]{3,80}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+"
+    },
+    "publisher": {
+      "type": "string"
+    },
+    "compatiblePrismaVersions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "requiredPlan": {
+      "type": "string"
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z]+(\\.[a-z0-9_\\-]+)+$"
+      },
+      "uniqueItems": true
+    },
+    "runtimeSurfaces": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "pc",
+          "tablet",
+          "support",
+          "remote_ops"
+        ]
+      },
+      "minItems": 1
+    },
+    "declaredRoutes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "routeId",
+          "surface",
+          "path",
+          "label"
+        ],
+        "properties": {
+          "routeId": {
+            "type": "string"
+          },
+          "surface": {
+            "type": "string",
+            "enum": [
+              "pc",
+              "tablet"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^/[a-z0-9_/\\-]+$"
+          },
+          "label": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "configSchema": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "offlinePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowedOffline",
+        "requiresReviewAfterSync"
+      ],
+      "properties": {
+        "allowedOffline": {
+          "type": "boolean"
+        },
+        "requiresReviewAfterSync": {
+          "type": "boolean"
+        },
+        "blockedOperations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "syncPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "syncsEvents",
+        "requiresConflictResolver"
+      ],
+      "properties": {
+        "syncsEvents": {
+          "type": "boolean"
+        },
+        "requiresConflictResolver": {
+          "type": "boolean"
+        },
+        "topics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "rollbackPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canDisableWithoutDataLoss",
+        "steps"
+      ],
+      "properties": {
+        "canDisableWithoutDataLoss": {
+          "type": "boolean"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "fingerprint"
+      ],
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "enum": [
+            "ed25519",
+            "sha256-placeholder"
+          ]
+        },
+        "fingerprint": {
+          "type": "string",
+          "minLength": 16
+        }
+      }
+    },
+    "prohibited": {
+      "not": {
+        "anyOf": [
+          {
+            "required": [
+              "runCommand"
+            ]
+          },
+          {
+            "required": [
+              "rawSql"
+            ]
+          },
+          {
+            "required": [
+              "openInboundPort"
+            ]
+          },
+          {
+            "required": [
+              "paymentProcessor"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

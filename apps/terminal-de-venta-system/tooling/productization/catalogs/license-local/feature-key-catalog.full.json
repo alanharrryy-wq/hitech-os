@@ -1,0 +1,1015 @@
+{
+  "catalogVersion": "2026.04.license-local-mock-02",
+  "features": [
+    {
+      "featureKey": "pos.sales.complete",
+      "domain": "pos",
+      "riskLevel": "high",
+      "defaultPlans": [
+        "TABLET_SOLO"
+      ],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad pos.sales.complete dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 1 para dominio pos.",
+      "denialMessageKey": "license.denied.pos.sales_complete"
+    },
+    {
+      "featureKey": "pos.ticket.local",
+      "domain": "pos",
+      "riskLevel": "high",
+      "defaultPlans": [
+        "TABLET_SOLO"
+      ],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad pos.ticket.local dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 2 para dominio pos.",
+      "denialMessageKey": "license.denied.pos.ticket_local"
+    },
+    {
+      "featureKey": "pos.sale.cancel",
+      "domain": "pos",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad pos.sale.cancel dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 3 para dominio pos.",
+      "denialMessageKey": "license.denied.pos.sale_cancel"
+    },
+    {
+      "featureKey": "pos.returns.create",
+      "domain": "pos",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad pos.returns.create dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 4 para dominio pos.",
+      "denialMessageKey": "license.denied.pos.returns_create"
+    },
+    {
+      "featureKey": "pos.refund.review",
+      "domain": "pos",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad pos.refund.review dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 5 para dominio pos.",
+      "denialMessageKey": "license.denied.pos.refund_review"
+    },
+    {
+      "featureKey": "pos.cash.close",
+      "domain": "pos",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad pos.cash.close dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 6 para dominio pos.",
+      "denialMessageKey": "license.denied.pos.cash_close"
+    },
+    {
+      "featureKey": "pos.cash.count",
+      "domain": "pos",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad pos.cash.count dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 7 para dominio pos.",
+      "denialMessageKey": "license.denied.pos.cash_count"
+    },
+    {
+      "featureKey": "pos.operator.quick_actions",
+      "domain": "pos",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad pos.operator.quick_actions dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 8 para dominio pos.",
+      "denialMessageKey": "license.denied.pos.operator_quick_actions"
+    },
+    {
+      "featureKey": "pos.barcode.resolve",
+      "domain": "pos",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad pos.barcode.resolve dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 9 para dominio pos.",
+      "denialMessageKey": "license.denied.pos.barcode_resolve"
+    },
+    {
+      "featureKey": "pos.cart.discount.local",
+      "domain": "pos",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad pos.cart.discount.local dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 10 para dominio pos.",
+      "denialMessageKey": "license.denied.pos.cart_discount_local"
+    },
+    {
+      "featureKey": "inventory.local.decrement",
+      "domain": "inventory",
+      "riskLevel": "high",
+      "defaultPlans": [
+        "TABLET_SOLO"
+      ],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad inventory.local.decrement dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 1 para dominio inventory.",
+      "denialMessageKey": "license.denied.inventory.local_decrement"
+    },
+    {
+      "featureKey": "inventory.local.adjust",
+      "domain": "inventory",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad inventory.local.adjust dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 2 para dominio inventory.",
+      "denialMessageKey": "license.denied.inventory.local_adjust"
+    },
+    {
+      "featureKey": "inventory.low_stock.view",
+      "domain": "inventory",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad inventory.low_stock.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 3 para dominio inventory.",
+      "denialMessageKey": "license.denied.inventory.low_stock_view"
+    },
+    {
+      "featureKey": "inventory.stockout.mark",
+      "domain": "inventory",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad inventory.stockout.mark dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 4 para dominio inventory.",
+      "denialMessageKey": "license.denied.inventory.stockout_mark"
+    },
+    {
+      "featureKey": "inventory.movement.view",
+      "domain": "inventory",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad inventory.movement.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 5 para dominio inventory.",
+      "denialMessageKey": "license.denied.inventory.movement_view"
+    },
+    {
+      "featureKey": "inventory.count.quick",
+      "domain": "inventory",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad inventory.count.quick dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 6 para dominio inventory.",
+      "denialMessageKey": "license.denied.inventory.count_quick"
+    },
+    {
+      "featureKey": "inventory.count.approve",
+      "domain": "inventory",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad inventory.count.approve dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 7 para dominio inventory.",
+      "denialMessageKey": "license.denied.inventory.count_approve"
+    },
+    {
+      "featureKey": "inventory.merma.register",
+      "domain": "inventory",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad inventory.merma.register dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 8 para dominio inventory.",
+      "denialMessageKey": "license.denied.inventory.merma_register"
+    },
+    {
+      "featureKey": "inventory.expiration.view",
+      "domain": "inventory",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad inventory.expiration.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 9 para dominio inventory.",
+      "denialMessageKey": "license.denied.inventory.expiration_view"
+    },
+    {
+      "featureKey": "inventory.batch.view",
+      "domain": "inventory",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad inventory.batch.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 10 para dominio inventory.",
+      "denialMessageKey": "license.denied.inventory.batch_view"
+    },
+    {
+      "featureKey": "catalog.read",
+      "domain": "catalog",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad catalog.read dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 1 para dominio catalog.",
+      "denialMessageKey": "license.denied.catalog.read"
+    },
+    {
+      "featureKey": "catalog.write",
+      "domain": "catalog",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad catalog.write dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 2 para dominio catalog.",
+      "denialMessageKey": "license.denied.catalog.write"
+    },
+    {
+      "featureKey": "catalog.price.write",
+      "domain": "catalog",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad catalog.price.write dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 3 para dominio catalog.",
+      "denialMessageKey": "license.denied.catalog.price_write"
+    },
+    {
+      "featureKey": "catalog.barcode.write",
+      "domain": "catalog",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad catalog.barcode.write dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 4 para dominio catalog.",
+      "denialMessageKey": "license.denied.catalog.barcode_write"
+    },
+    {
+      "featureKey": "catalog.snapshot.import",
+      "domain": "catalog",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad catalog.snapshot.import dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 5 para dominio catalog.",
+      "denialMessageKey": "license.denied.catalog.snapshot_import"
+    },
+    {
+      "featureKey": "catalog.snapshot.publish",
+      "domain": "catalog",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad catalog.snapshot.publish dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 6 para dominio catalog.",
+      "denialMessageKey": "license.denied.catalog.snapshot_publish"
+    },
+    {
+      "featureKey": "catalog.category.write",
+      "domain": "catalog",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad catalog.category.write dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 7 para dominio catalog.",
+      "denialMessageKey": "license.denied.catalog.category_write"
+    },
+    {
+      "featureKey": "catalog.inactive.view",
+      "domain": "catalog",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad catalog.inactive.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 8 para dominio catalog.",
+      "denialMessageKey": "license.denied.catalog.inactive_view"
+    },
+    {
+      "featureKey": "catalog.duplicate_barcode.resolve",
+      "domain": "catalog",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad catalog.duplicate_barcode.resolve dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 9 para dominio catalog.",
+      "denialMessageKey": "license.denied.catalog.duplicate_barcode_resolve"
+    },
+    {
+      "featureKey": "catalog.bulk_import",
+      "domain": "catalog",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad catalog.bulk_import dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 10 para dominio catalog.",
+      "denialMessageKey": "license.denied.catalog.bulk_import"
+    },
+    {
+      "featureKey": "shift.open",
+      "domain": "shift",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad shift.open dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 1 para dominio shift.",
+      "denialMessageKey": "license.denied.shift.open"
+    },
+    {
+      "featureKey": "shift.close",
+      "domain": "shift",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad shift.close dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 2 para dominio shift.",
+      "denialMessageKey": "license.denied.shift.close"
+    },
+    {
+      "featureKey": "shift.summary.view",
+      "domain": "shift",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad shift.summary.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 3 para dominio shift.",
+      "denialMessageKey": "license.denied.shift.summary_view"
+    },
+    {
+      "featureKey": "shift.cashier.assign",
+      "domain": "shift",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad shift.cashier.assign dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 4 para dominio shift.",
+      "denialMessageKey": "license.denied.shift.cashier_assign"
+    },
+    {
+      "featureKey": "shift.incident.note",
+      "domain": "shift",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad shift.incident.note dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 5 para dominio shift.",
+      "denialMessageKey": "license.denied.shift.incident_note"
+    },
+    {
+      "featureKey": "shift.handoff.create",
+      "domain": "shift",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad shift.handoff.create dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 6 para dominio shift.",
+      "denialMessageKey": "license.denied.shift.handoff_create"
+    },
+    {
+      "featureKey": "shift.reopen.request",
+      "domain": "shift",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad shift.reopen.request dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 7 para dominio shift.",
+      "denialMessageKey": "license.denied.shift.reopen_request"
+    },
+    {
+      "featureKey": "report.today.basic",
+      "domain": "report",
+      "riskLevel": "low",
+      "defaultPlans": [
+        "TABLET_SOLO"
+      ],
+      "requiresAudit": false,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad report.today.basic dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 1 para dominio report.",
+      "denialMessageKey": "license.denied.report.today_basic"
+    },
+    {
+      "featureKey": "report.today.advanced",
+      "domain": "report",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad report.today.advanced dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 2 para dominio report.",
+      "denialMessageKey": "license.denied.report.today_advanced"
+    },
+    {
+      "featureKey": "report.sales.export",
+      "domain": "report",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad report.sales.export dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 3 para dominio report.",
+      "denialMessageKey": "license.denied.report.sales_export"
+    },
+    {
+      "featureKey": "report.inventory.export",
+      "domain": "report",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad report.inventory.export dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 4 para dominio report.",
+      "denialMessageKey": "license.denied.report.inventory_export"
+    },
+    {
+      "featureKey": "report.margin.view",
+      "domain": "report",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad report.margin.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 5 para dominio report.",
+      "denialMessageKey": "license.denied.report.margin_view"
+    },
+    {
+      "featureKey": "report.top_skus.view",
+      "domain": "report",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad report.top_skus.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 6 para dominio report.",
+      "denialMessageKey": "license.denied.report.top_skus_view"
+    },
+    {
+      "featureKey": "report.sync_latency.view",
+      "domain": "report",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad report.sync_latency.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 7 para dominio report.",
+      "denialMessageKey": "license.denied.report.sync_latency_view"
+    },
+    {
+      "featureKey": "report.audit.summary",
+      "domain": "report",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad report.audit.summary dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 8 para dominio report.",
+      "denialMessageKey": "license.denied.report.audit_summary"
+    },
+    {
+      "featureKey": "backup.local.manual",
+      "domain": "backup",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad backup.local.manual dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 1 para dominio backup.",
+      "denialMessageKey": "license.denied.backup.local_manual"
+    },
+    {
+      "featureKey": "backup.local.scheduled",
+      "domain": "backup",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad backup.local.scheduled dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 2 para dominio backup.",
+      "denialMessageKey": "license.denied.backup.local_scheduled"
+    },
+    {
+      "featureKey": "backup.pre_update.create",
+      "domain": "backup",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad backup.pre_update.create dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 3 para dominio backup.",
+      "denialMessageKey": "license.denied.backup.pre_update_create"
+    },
+    {
+      "featureKey": "backup.pre_migration.create",
+      "domain": "backup",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad backup.pre_migration.create dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 4 para dominio backup.",
+      "denialMessageKey": "license.denied.backup.pre_migration_create"
+    },
+    {
+      "featureKey": "backup.restore.request",
+      "domain": "backup",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad backup.restore.request dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 5 para dominio backup.",
+      "denialMessageKey": "license.denied.backup.restore_request"
+    },
+    {
+      "featureKey": "backup.retention.configure",
+      "domain": "backup",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "allowed-local",
+      "description": "Controla la capacidad backup.retention.configure dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 6 para dominio backup.",
+      "denialMessageKey": "license.denied.backup.retention_configure"
+    },
+    {
+      "featureKey": "sync.outbox.view",
+      "domain": "sync",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad sync.outbox.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 1 para dominio sync.",
+      "denialMessageKey": "license.denied.sync.outbox_view"
+    },
+    {
+      "featureKey": "sync.managed",
+      "domain": "sync",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad sync.managed dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 2 para dominio sync.",
+      "denialMessageKey": "license.denied.sync.managed"
+    },
+    {
+      "featureKey": "sync.ingest",
+      "domain": "sync",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad sync.ingest dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 3 para dominio sync.",
+      "denialMessageKey": "license.denied.sync.ingest"
+    },
+    {
+      "featureKey": "sync.conflict.resolve",
+      "domain": "sync",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad sync.conflict.resolve dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 4 para dominio sync.",
+      "denialMessageKey": "license.denied.sync.conflict_resolve"
+    },
+    {
+      "featureKey": "sync.retry",
+      "domain": "sync",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad sync.retry dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 5 para dominio sync.",
+      "denialMessageKey": "license.denied.sync.retry"
+    },
+    {
+      "featureKey": "sync.snapshot.receive",
+      "domain": "sync",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad sync.snapshot.receive dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 6 para dominio sync.",
+      "denialMessageKey": "license.denied.sync.snapshot_receive"
+    },
+    {
+      "featureKey": "sync.snapshot.publish",
+      "domain": "sync",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad sync.snapshot.publish dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 7 para dominio sync.",
+      "denialMessageKey": "license.denied.sync.snapshot_publish"
+    },
+    {
+      "featureKey": "sync.latency.view",
+      "domain": "sync",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad sync.latency.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 8 para dominio sync.",
+      "denialMessageKey": "license.denied.sync.latency_view"
+    },
+    {
+      "featureKey": "sync.degraded_mode.view",
+      "domain": "sync",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad sync.degraded_mode.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 9 para dominio sync.",
+      "denialMessageKey": "license.denied.sync.degraded_mode_view"
+    },
+    {
+      "featureKey": "dashboard.kpis",
+      "domain": "dashboard",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad dashboard.kpis dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 1 para dominio dashboard.",
+      "denialMessageKey": "license.denied.dashboard.kpis"
+    },
+    {
+      "featureKey": "dashboard.executive.view",
+      "domain": "dashboard",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad dashboard.executive.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 2 para dominio dashboard.",
+      "denialMessageKey": "license.denied.dashboard.executive_view"
+    },
+    {
+      "featureKey": "dashboard.alerts.view",
+      "domain": "dashboard",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad dashboard.alerts.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 3 para dominio dashboard.",
+      "denialMessageKey": "license.denied.dashboard.alerts_view"
+    },
+    {
+      "featureKey": "dashboard.scorecards.view",
+      "domain": "dashboard",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad dashboard.scorecards.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 4 para dominio dashboard.",
+      "denialMessageKey": "license.denied.dashboard.scorecards_view"
+    },
+    {
+      "featureKey": "dashboard.replenishment.view",
+      "domain": "dashboard",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad dashboard.replenishment.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 5 para dominio dashboard.",
+      "denialMessageKey": "license.denied.dashboard.replenishment_view"
+    },
+    {
+      "featureKey": "dashboard.exceptions.view",
+      "domain": "dashboard",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad dashboard.exceptions.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 6 para dominio dashboard.",
+      "denialMessageKey": "license.denied.dashboard.exceptions_view"
+    },
+    {
+      "featureKey": "support.basic",
+      "domain": "support",
+      "riskLevel": "medium",
+      "defaultPlans": [
+        "TABLET_SOLO"
+      ],
+      "requiresAudit": false,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad support.basic dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 1 para dominio support.",
+      "denialMessageKey": "license.denied.support.basic"
+    },
+    {
+      "featureKey": "support.advanced",
+      "domain": "support",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad support.advanced dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 2 para dominio support.",
+      "denialMessageKey": "license.denied.support.advanced"
+    },
+    {
+      "featureKey": "support.remote",
+      "domain": "support",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad support.remote dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 3 para dominio support.",
+      "denialMessageKey": "license.denied.support.remote"
+    },
+    {
+      "featureKey": "support.diagnostic.create",
+      "domain": "support",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad support.diagnostic.create dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 4 para dominio support.",
+      "denialMessageKey": "license.denied.support.diagnostic_create"
+    },
+    {
+      "featureKey": "support.diagnostic.send",
+      "domain": "support",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad support.diagnostic.send dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 5 para dominio support.",
+      "denialMessageKey": "license.denied.support.diagnostic_send"
+    },
+    {
+      "featureKey": "support.ticket.create",
+      "domain": "support",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad support.ticket.create dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 6 para dominio support.",
+      "denialMessageKey": "license.denied.support.ticket_create"
+    },
+    {
+      "featureKey": "support.message.channel",
+      "domain": "support",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad support.message.channel dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 7 para dominio support.",
+      "denialMessageKey": "license.denied.support.message_channel"
+    },
+    {
+      "featureKey": "support.session.request",
+      "domain": "support",
+      "riskLevel": "medium",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad support.session.request dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 8 para dominio support.",
+      "denialMessageKey": "license.denied.support.session_request"
+    },
+    {
+      "featureKey": "license.local.read",
+      "domain": "license",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad license.local.read dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 1 para dominio license.",
+      "denialMessageKey": "license.denied.license.local_read"
+    },
+    {
+      "featureKey": "license.remote.refresh",
+      "domain": "license",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad license.remote.refresh dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 2 para dominio license.",
+      "denialMessageKey": "license.denied.license.remote_refresh"
+    },
+    {
+      "featureKey": "license.status.view",
+      "domain": "license",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad license.status.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 3 para dominio license.",
+      "denialMessageKey": "license.denied.license.status_view"
+    },
+    {
+      "featureKey": "license.plan.view",
+      "domain": "license",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad license.plan.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 4 para dominio license.",
+      "denialMessageKey": "license.denied.license.plan_view"
+    },
+    {
+      "featureKey": "license.entitlements.view",
+      "domain": "license",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad license.entitlements.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 5 para dominio license.",
+      "denialMessageKey": "license.denied.license.entitlements_view"
+    },
+    {
+      "featureKey": "license.grace.evaluate",
+      "domain": "license",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad license.grace.evaluate dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 6 para dominio license.",
+      "denialMessageKey": "license.denied.license.grace_evaluate"
+    },
+    {
+      "featureKey": "license.activation.request",
+      "domain": "license",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad license.activation.request dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 7 para dominio license.",
+      "denialMessageKey": "license.denied.license.activation_request"
+    },
+    {
+      "featureKey": "plugin.local.enable",
+      "domain": "plugin",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad plugin.local.enable dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 1 para dominio plugin.",
+      "denialMessageKey": "license.denied.plugin.local_enable"
+    },
+    {
+      "featureKey": "plugin.local.disable",
+      "domain": "plugin",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad plugin.local.disable dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 2 para dominio plugin.",
+      "denialMessageKey": "license.denied.plugin.local_disable"
+    },
+    {
+      "featureKey": "plugin.remote.activate",
+      "domain": "plugin",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad plugin.remote.activate dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 3 para dominio plugin.",
+      "denialMessageKey": "license.denied.plugin.remote_activate"
+    },
+    {
+      "featureKey": "plugin.catalog.view",
+      "domain": "plugin",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad plugin.catalog.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 4 para dominio plugin.",
+      "denialMessageKey": "license.denied.plugin.catalog_view"
+    },
+    {
+      "featureKey": "plugin.permissions.view",
+      "domain": "plugin",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad plugin.permissions.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 5 para dominio plugin.",
+      "denialMessageKey": "license.denied.plugin.permissions_view"
+    },
+    {
+      "featureKey": "plugin.migration.apply",
+      "domain": "plugin",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad plugin.migration.apply dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 6 para dominio plugin.",
+      "denialMessageKey": "license.denied.plugin.migration_apply"
+    },
+    {
+      "featureKey": "plugin.rollback",
+      "domain": "plugin",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad plugin.rollback dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 7 para dominio plugin.",
+      "denialMessageKey": "license.denied.plugin.rollback"
+    },
+    {
+      "featureKey": "plugin.request.activation",
+      "domain": "plugin",
+      "riskLevel": "high",
+      "defaultPlans": [],
+      "requiresAudit": true,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad plugin.request.activation dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 8 para dominio plugin.",
+      "denialMessageKey": "license.denied.plugin.request_activation"
+    },
+    {
+      "featureKey": "announcement.view",
+      "domain": "announcement",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad announcement.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 1 para dominio announcement.",
+      "denialMessageKey": "license.denied.announcement.view"
+    },
+    {
+      "featureKey": "announcement.dismiss",
+      "domain": "announcement",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad announcement.dismiss dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 2 para dominio announcement.",
+      "denialMessageKey": "license.denied.announcement.dismiss"
+    },
+    {
+      "featureKey": "announcement.critical.modal",
+      "domain": "announcement",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad announcement.critical.modal dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 3 para dominio announcement.",
+      "denialMessageKey": "license.denied.announcement.critical_modal"
+    },
+    {
+      "featureKey": "announcement.commercial.card",
+      "domain": "announcement",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad announcement.commercial.card dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 4 para dominio announcement.",
+      "denialMessageKey": "license.denied.announcement.commercial_card"
+    },
+    {
+      "featureKey": "announcement.targeted.banner",
+      "domain": "announcement",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad announcement.targeted.banner dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 5 para dominio announcement.",
+      "denialMessageKey": "license.denied.announcement.targeted_banner"
+    },
+    {
+      "featureKey": "announcement.whats_new.view",
+      "domain": "announcement",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "cached",
+      "description": "Controla la capacidad announcement.whats_new.view dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 6 para dominio announcement.",
+      "denialMessageKey": "license.denied.announcement.whats_new_view"
+    },
+    {
+      "featureKey": "ai.support.readonly.future",
+      "domain": "ai",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad ai.support.readonly.future dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 1 para dominio ai.",
+      "denialMessageKey": "license.denied.ai.support_readonly_future"
+    },
+    {
+      "featureKey": "ai.diagnostic.summary.future",
+      "domain": "ai",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad ai.diagnostic.summary.future dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 2 para dominio ai.",
+      "denialMessageKey": "license.denied.ai.diagnostic_summary_future"
+    },
+    {
+      "featureKey": "ai.kpi.explain.future",
+      "domain": "ai",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad ai.kpi.explain.future dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 3 para dominio ai.",
+      "denialMessageKey": "license.denied.ai.kpi_explain_future"
+    },
+    {
+      "featureKey": "ai.catalog.assist.future",
+      "domain": "ai",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad ai.catalog.assist.future dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 4 para dominio ai.",
+      "denialMessageKey": "license.denied.ai.catalog_assist_future"
+    },
+    {
+      "featureKey": "ai.action.suggest.future",
+      "domain": "ai",
+      "riskLevel": "low",
+      "defaultPlans": [],
+      "requiresAudit": false,
+      "offlineBehavior": "requires-policy",
+      "description": "Controla la capacidad ai.action.suggest.future dentro de PRISMA. Debe resolverse por licencia local y no por condicionales regados en UI. Caso 5 para dominio ai.",
+      "denialMessageKey": "license.denied.ai.action_suggest_future"
+    }
+  ]
+}

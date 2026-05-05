@@ -1,0 +1,53 @@
+{
+  "package": "PRISMA_RUNTIME_CONFIG_BOUNDARY_01",
+  "matrixVersion": "1.0.0",
+  "runtimeModes": [
+    {
+      "mode": "dev",
+      "dbInsideRepoAllowed": true,
+      "requiresLicense": false,
+      "requiresInternet": false
+    },
+    {
+      "mode": "standalone",
+      "dbInsideRepoAllowed": false,
+      "requiresLicense": true,
+      "requiresInternet": false
+    },
+    {
+      "mode": "pro",
+      "dbInsideRepoAllowed": false,
+      "requiresLicense": true,
+      "requiresInternet": false
+    },
+    {
+      "mode": "pc_backoffice",
+      "dbInsideRepoAllowed": false,
+      "requiresLicense": true,
+      "requiresInternet": false
+    },
+    {
+      "mode": "managed",
+      "dbInsideRepoAllowed": false,
+      "requiresLicense": true,
+      "requiresInternet": "intermittent"
+    },
+    {
+      "mode": "degraded_managed",
+      "dbInsideRepoAllowed": false,
+      "requiresLicense": true,
+      "requiresInternet": false
+    }
+  ],
+  "forbiddenBundlePatterns": [
+    ".git",
+    "node_modules",
+    ".next/cache",
+    "*.db",
+    "*.log",
+    ".env",
+    "tmp",
+    "temp",
+    ".prisma_integration_backups"
+  ]
+}

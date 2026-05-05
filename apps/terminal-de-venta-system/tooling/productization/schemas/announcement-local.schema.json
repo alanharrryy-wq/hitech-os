@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/announcement-local.schema.json",
+  "title": "PRISMA Announcement Local",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "announcementId",
+    "type",
+    "title",
+    "body",
+    "severity",
+    "targetPlans",
+    "targetRoles",
+    "targetSurfaces",
+    "showFrom",
+    "dismissPolicy",
+    "frequencyPolicy"
+  ],
+  "properties": {
+    "announcementId": {
+      "type": "string",
+      "pattern": "^ann_[a-z0-9_\\-]{6,80}$"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "banner",
+        "modal",
+        "toast",
+        "release_note",
+        "support_notice",
+        "maintenance_notice"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "body": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "info",
+        "success",
+        "warning",
+        "critical"
+      ]
+    },
+    "targetPlans": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "targetRoles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "targetVersions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "*"
+      ]
+    },
+    "targetSurfaces": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "pc",
+          "tablet",
+          "remote_ops",
+          "support"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "showFrom": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "showUntil": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "dismissible": {
+      "type": "boolean",
+      "default": true
+    },
+    "dismissPolicy": {
+      "$ref": "#/$defs/dismissPolicy"
+    },
+    "frequencyPolicy": {
+      "$ref": "#/$defs/frequencyPolicy"
+    },
+    "cta": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "none",
+            "internal_route",
+            "support",
+            "release_notes"
+          ]
+        },
+        "target": {
+          "type": "string"
+        }
+      }
+    },
+    "blocksCheckout": {
+      "type": "boolean",
+      "const": false
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "dismissPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dismissible",
+        "requiresAcknowledgement"
+      ],
+      "properties": {
+        "dismissible": {
+          "type": "boolean"
+        },
+        "requiresAcknowledgement": {
+          "type": "boolean"
+        },
+        "snoozeAllowed": {
+          "type": "boolean"
+        },
+        "snoozeHours": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 720
+        }
+      }
+    },
+    "frequencyPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maxShows",
+        "cooldownHours"
+      ],
+      "properties": {
+        "maxShows": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
+        },
+        "cooldownHours": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 720
+        }
+      }
+    }
+  }
+}

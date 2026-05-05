@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Remote Command Result",
+  "type": "object",
+  "required": [
+    "commandEnvelopeId",
+    "status",
+    "reportedAt"
+  ],
+  "properties": {
+    "commandEnvelopeId": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "validated",
+        "rejected",
+        "expired",
+        "requires_approval",
+        "executed",
+        "failed"
+      ]
+    },
+    "reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "reportedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "details": {
+      "type": "object"
+    }
+  }
+}
