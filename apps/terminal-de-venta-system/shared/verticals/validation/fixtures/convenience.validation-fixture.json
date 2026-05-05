@@ -1,0 +1,624 @@
+{
+  "verticalId": "convenience",
+  "verticalName": "Tienda de conveniencia",
+  "fixtureVersion": "0.0.1",
+  "purpose": "venta rapida, barcode, ticket, stock local y turno",
+  "requiredBlocks": [
+    "00A_CORE_CONTRACTS",
+    "00B_VERTICAL_REGISTRY",
+    "00C_VERTICAL_DATA_MODELS",
+    "00D_VERTICAL_EVENTS_PERMISSIONS",
+    "00E_VERTICAL_UX_OPERATIONS"
+  ],
+  "businessProfile": {
+    "tabletRole": "operacion principal o captura rapida segun vertical",
+    "pcRole": "gobierno, auditoria, configuracion y consolidacion",
+    "forbiddenTabletBehaviors": [
+      "backoffice_profundo",
+      "permisos_globales",
+      "compras_formales_sin_pc",
+      "auditoria_pesada"
+    ]
+  },
+  "screensUnderTest": [
+    "Vender",
+    "Cobro",
+    "Ticket actual",
+    "Ventas de hoy",
+    "Turno",
+    "Sincronizacion",
+    "Existencias",
+    "Producto no encontrado",
+    "Devoluciones"
+  ],
+  "flowsUnderTest": [
+    "quick_sale",
+    "barcode_sale",
+    "cash_change",
+    "return_ticket",
+    "shift_close",
+    "offline_sale"
+  ],
+  "seedData": {
+    "business": {
+      "id": "biz_convenience",
+      "name": "Demo Tienda de conveniencia",
+      "verticalId": "convenience",
+      "mode": "standalone_or_managed"
+    },
+    "terminal": {
+      "id": "terminal_convenience_01",
+      "kind": "tablet_pos",
+      "offlineAllowed": true
+    },
+    "operator": {
+      "id": "operator_convenience_01",
+      "role": "cajero",
+      "permissions": [
+        "pos.sale.create",
+        "pos.sale.complete",
+        "pos.ticket.view",
+        "shift.view",
+        "sync.status.view",
+        "pos.return.create",
+        "inventory.adjust.local"
+      ]
+    },
+    "products": [
+      {
+        "sku": "CONVENIENCE-SKU-001",
+        "name": "Producto 1 Tienda de conveniencia",
+        "barcode": "7501713576474",
+        "priceCents": 1125,
+        "stockOnHand": 21,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "05d85a68fd4ba6b80c16103d"
+        }
+      },
+      {
+        "sku": "CONVENIENCE-SKU-002",
+        "name": "Producto 2 Tienda de conveniencia",
+        "barcode": "7503023278776",
+        "priceCents": 1250,
+        "stockOnHand": 22,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "ca5026ebdbf7b6a7d447a60e"
+        }
+      },
+      {
+        "sku": "CONVENIENCE-SKU-003",
+        "name": "Producto 3 Tienda de conveniencia",
+        "barcode": "7504584274415",
+        "priceCents": 1375,
+        "stockOnHand": 23,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "479d3e2e49b8ae804e94005c"
+        }
+      },
+      {
+        "sku": "CONVENIENCE-SKU-004",
+        "name": "Producto 4 Tienda de conveniencia",
+        "barcode": "7503556970781",
+        "priceCents": 1500,
+        "stockOnHand": 24,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "bb3d9bcbf4d5ae182a6371f6"
+        }
+      },
+      {
+        "sku": "CONVENIENCE-SKU-005",
+        "name": "Producto 5 Tienda de conveniencia",
+        "barcode": "7500439340484",
+        "priceCents": 1625,
+        "stockOnHand": 25,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "0649b8de58d75c28a3b6a3a4"
+        }
+      },
+      {
+        "sku": "CONVENIENCE-SKU-006",
+        "name": "Producto 6 Tienda de conveniencia",
+        "barcode": "7504297514766",
+        "priceCents": 1750,
+        "stockOnHand": 26,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "d4b0f735480333610d475c81"
+        }
+      },
+      {
+        "sku": "CONVENIENCE-SKU-007",
+        "name": "Producto 7 Tienda de conveniencia",
+        "barcode": "7503310038425",
+        "priceCents": 1875,
+        "stockOnHand": 27,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "b2c01124f0701cce307ced12"
+        }
+      },
+      {
+        "sku": "CONVENIENCE-SKU-008",
+        "name": "Producto 8 Tienda de conveniencia",
+        "barcode": "7502791960000",
+        "priceCents": 2000,
+        "stockOnHand": 28,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "61e0c2fd0fe0c7a187316683"
+        }
+      }
+    ],
+    "services": [
+      {
+        "serviceCode": "CONVENIENCE-SVC-01",
+        "name": "Servicio 1 Tienda de conveniencia",
+        "priceCents": 1800,
+        "durationMinutes": 15,
+        "verticalTraits": {
+          "fixtureTrait": "d6c037ef74b1c3a66ee456b0"
+        }
+      },
+      {
+        "serviceCode": "CONVENIENCE-SVC-02",
+        "name": "Servicio 2 Tienda de conveniencia",
+        "priceCents": 2100,
+        "durationMinutes": 30,
+        "verticalTraits": {
+          "fixtureTrait": "c73d0d861712429142dc3ba6"
+        }
+      },
+      {
+        "serviceCode": "CONVENIENCE-SVC-03",
+        "name": "Servicio 3 Tienda de conveniencia",
+        "priceCents": 2400,
+        "durationMinutes": 45,
+        "verticalTraits": {
+          "fixtureTrait": "e32fdd3804f80e0a3b649c7f"
+        }
+      },
+      {
+        "serviceCode": "CONVENIENCE-SVC-04",
+        "name": "Servicio 4 Tienda de conveniencia",
+        "priceCents": 2700,
+        "durationMinutes": 60,
+        "verticalTraits": {
+          "fixtureTrait": "ec7af0d7304fee236a797503"
+        }
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "convenience.scenario.01.quick_sale",
+      "title": "Validar quick sale para Tienda de conveniencia",
+      "verticalId": "convenience",
+      "primaryScreen": "Cobro",
+      "flowKey": "quick_sale",
+      "initialState": "loading",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Cobro.",
+        "Ejecutar flujo quick sale.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo quick_sale termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.complete"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:convenience:quick_sale:1",
+        "9dfec5b050f44e6b"
+      ]
+    },
+    {
+      "id": "convenience.scenario.02.barcode_sale",
+      "title": "Validar barcode sale para Tienda de conveniencia",
+      "verticalId": "convenience",
+      "primaryScreen": "Ticket actual",
+      "flowKey": "barcode_sale",
+      "initialState": "ready",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ticket actual.",
+        "Ejecutar flujo barcode sale.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo barcode_sale termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.ticket.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:convenience:barcode_sale:2",
+        "56676acd300494d5"
+      ]
+    },
+    {
+      "id": "convenience.scenario.03.cash_change",
+      "title": "Validar cash change para Tienda de conveniencia",
+      "verticalId": "convenience",
+      "primaryScreen": "Ventas de hoy",
+      "flowKey": "cash_change",
+      "initialState": "error",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ventas de hoy.",
+        "Ejecutar flujo cash change.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo cash_change termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.retry"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:convenience:cash_change:3",
+        "74ee0fea21cc2b25"
+      ]
+    },
+    {
+      "id": "convenience.scenario.04.return_ticket",
+      "title": "Validar return ticket para Tienda de conveniencia",
+      "verticalId": "convenience",
+      "primaryScreen": "Turno",
+      "flowKey": "return_ticket",
+      "initialState": "offline",
+      "actor": "supervisor",
+      "mode": "pc",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Turno.",
+        "Ejecutar flujo return ticket.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo return_ticket termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "convenience.return_ticket.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.status.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:convenience:return_ticket:4",
+        "3279e6a1463595ca"
+      ]
+    },
+    {
+      "id": "convenience.scenario.05.shift_close",
+      "title": "Validar shift close para Tienda de conveniencia",
+      "verticalId": "convenience",
+      "primaryScreen": "Sincronizacion",
+      "flowKey": "shift_close",
+      "initialState": "sync_pending",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Sincronizacion.",
+        "Ejecutar flujo shift close.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo shift_close termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "convenience.shift_close.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.create"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:convenience:shift_close:5",
+        "2fa4f110bd34b1c9"
+      ]
+    },
+    {
+      "id": "convenience.scenario.06.offline_sale",
+      "title": "Validar offline sale para Tienda de conveniencia",
+      "verticalId": "convenience",
+      "primaryScreen": "Existencias",
+      "flowKey": "offline_sale",
+      "initialState": "success",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Existencias.",
+        "Ejecutar flujo offline sale.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo offline_sale termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "sync.event.queued"
+      ],
+      "requiredPermissions": [
+        "inventory.adjust.local"
+      ],
+      "offlineExpectation": "queda pendiente por enviar",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:convenience:offline_sale:6",
+        "d6cbc73c1dca31e4"
+      ]
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "scenarioId": "convenience.scenario.01.quick_sale",
+      "checks": [
+        {
+          "id": "convenience.scenario.01.quick_sale.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "convenience.scenario.01.quick_sale.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "convenience.scenario.01.quick_sale.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "convenience.scenario.01.quick_sale.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "convenience.scenario.01.quick_sale.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "convenience.scenario.02.barcode_sale",
+      "checks": [
+        {
+          "id": "convenience.scenario.02.barcode_sale.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "convenience.scenario.02.barcode_sale.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "convenience.scenario.02.barcode_sale.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "convenience.scenario.02.barcode_sale.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "convenience.scenario.02.barcode_sale.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "convenience.scenario.03.cash_change",
+      "checks": [
+        {
+          "id": "convenience.scenario.03.cash_change.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "convenience.scenario.03.cash_change.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "convenience.scenario.03.cash_change.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "convenience.scenario.03.cash_change.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "convenience.scenario.03.cash_change.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "convenience.scenario.04.return_ticket",
+      "checks": [
+        {
+          "id": "convenience.scenario.04.return_ticket.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "convenience.scenario.04.return_ticket.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "convenience.scenario.04.return_ticket.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "convenience.scenario.04.return_ticket.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "convenience.scenario.04.return_ticket.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "convenience.scenario.05.shift_close",
+      "checks": [
+        {
+          "id": "convenience.scenario.05.shift_close.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "convenience.scenario.05.shift_close.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "convenience.scenario.05.shift_close.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "convenience.scenario.05.shift_close.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "convenience.scenario.05.shift_close.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "convenience.scenario.06.offline_sale",
+      "checks": [
+        {
+          "id": "convenience.scenario.06.offline_sale.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "convenience.scenario.06.offline_sale.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "convenience.scenario.06.offline_sale.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "convenience.scenario.06.offline_sale.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "convenience.scenario.06.offline_sale.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    }
+  ],
+  "fixtureIntegrity": {
+    "anchor": "24041797b26e23d8cd522542f6d439c959aa3ccb15a12b2f253663b15fd54daa",
+    "noiseProofCorpus": "6ee4ecb0acd6e8e1bb320c6588d36bc2afb2329d52f875fb962ec81a7298bc7363d80642d1e997d1f4cc662a9160f9e63363d9909e8097b729e7f224a3102a6a00baa992cca26b1188dd2015053398199494beea5b745967e7738e0d97e85929ddb2f1ca3731c6d88af30d430dd8b3f75d1ae59377ed269021e9883722b6e9d1980008409442ff85f34ac40b3be59e505a9e5acf5cafad19fe85edbea2a045d1ac4811f6c350fb7bd975790b77d0fb04aeebbb6781a530ac91ee11eedd2fec254bdea7619cd998ee8aba14162f1272476432bf945dcf3dcfc6e20b1db267712b3509b309b917b91d305ba4f238303822061470629a67e23d4813b7f82d2e2084525659739156ae71fad4ed7acc10dbb7203831acd8f7beb584888043de73f31a4a7a2f1090f617ee0cfcc8181b643c661ee60498a4838047e81cc6ad62d09783efbdaca1c6cadfdf599cf045916a287bd34537b6e70f763f32977c719b6e5c9d66056fe7b802ea280cb737dcbdf3655f5053f5b71302725af43a8c7b6200e94913728969a19ec2ac651b0bab33d160f26938f511cf68bdd17cacef8623d3445a96aec0a20671e694ef42fe77b4540227d55d57404ff504926043cd44c7990b045eb711848dcb7ecbf44f0d52cd775df4e4146e66816db78398355ec9c9209df765c24d59261b2d9bd2d16a2674ae80a0efadd6b939c47e623ee43721eb8f9219db69e8b267dba30ee1a47e2ebdc7e0480afe395ef9247a49a22fd9001a5c382893325c99ab3b8cd98944d78cef194acc9e3400945189fa105784cf791ecfeffe3fd2e0fbbef1accd2cd1b11fa598eff05433bfa8aeb93760b343dcd0dc4efc7edce039473162d44c2a0f7255c45bb3f85aabf9afb7104c2e5f5ee7149f85f69d8e8c5e91363ec4ada025be0519310a00c6d3047cda56315771ac9708014c43a0a869dc40da15596c03930f3223228e62d5d94d3dd3937bedd7fcee013db13125764a75d2c24b7f9063c74cce9bd874c1190e6dec5761085f7fe7057e059e1d20af6766983606d4a5aa3562a5b03bd10f7f080b2123c2429fef1419bedf67e2ddb46cb602e9c9c754e28b97eafb118b0b73ee8feedf50422231fb4e93f57cd0337c096badd84d2b5fdb0db2838d389363a58ef593d55e5ed75a5502b37178a28901844ac8c48d8b5797bba1b69446409a27674a404d0ad911e806ed90f36af1619ed285c7eadbe83d179b168e8c63c29751d8df0a162ac4619e901cb322f17232e90ab97f0aa8d7d7b13b4b205299f385354fcbdf2d39aefc2387ccbf8074acc7b1177b96e062f329909dbf136cb35273178a4e82c8d30158d5cc007e8cb09682c415a12310900c6ef197abd0f8945d0072e0a705aee15c6a37e582c5ff9db19a0ed3a045844dca5aaaf129b0586e567594b2a4888ca5528bf054892e32da58ed6cc6f850cc35fb5f90be704497f0d8daebc5e59783274b4ef4ed483fe39a72641bbecd0598aa0900879af752e9f1a2b7333c7e1260ca0f7e6ea55eaf706fc63a3274c32a98bef644cf9380953885bed0f7c52336c23fccbbeaebff5706ca8116fea0e4d82c954de4fa1c8183ea88d389ef0f1c7be9fcfa056b629f74cf2275c0f480b7be6797dd0219c39b3d4e578bdba83afa95ec78bb3326266824fc54a1e6ff8290c8393b16f6f4999cdff7245fe7e96e1df3071ed14dbba630d36e8148072d148cd114e7346bd27c8b5066625f6e659c42fbc7065ef4d1d40307d9dc9498ab8efcb104323e4906fbd859858e2dfa1b9095132269fd768da8785ff7ff0697c58b437fc27ae1b7e9010229e51142a0e5b330ffb2c0ccc15248bc12643deae796e37febf92001e38c3d24d58eb0bbb15501c9d0bad8838aa950e9309e7de34bf0ee1cf0987d2027abaf22eb6ee2c04b5b4500e08410f90405b486ed66a8d4b88b8b99cccfbe9575f2332d642918859a7b780874a9bdf12eb9c5dc28ba362dd71298985bb36802128bdf3fc0c5a9903375cc047aeec3c6d2d79b3bc28b1953db5cecad46671ce0b1c6fd972e87e7b118ab4575b54f126a3b4a0c641c56b6b93723d8517dc648944096a5a2137b8a70c80fe1a588642a971d787f04aa37c435f6ac884cccfc3497ae44ccdad5d8be58415f058d3faf923d3f9da16caf48d7fd6287f18c3d39a9dfd174be651488a6d3c0f378e9c853ac64e42a47198c7f73c653703f83109ac994ca39c89aafbc49c5db5ebad8985c1be730fc228a1bdafd2a97fb633fbb4c1cdd2fb0dc848e1e482190380cd46fb8e93fb709a2966c604aa962201e58e2f138ed8a7c9611bd9b15d9c331f22d6601bdcedcf61864f127792e3ef92a160e15d8ae46329c238f50f07d54f78db524e46502ff58df3fec9e4902e92321f1ddff07b859f663c7159fa7bb89154761838b43e36cb3113c49e438ca2f015f6f54b3c28ab47a1d3e1dab6ab3c96d9b2eaa5c6d307bddbbde608dcf7cacc91943a4a19e88e0e95f8aa0d16221fecbea372174375427e118c8158bdbf123cd1e5ddd84263267c11f2cd015e2704e67751d44f799f77cf5c4add6c8e9f5e0c269b9bb8bd61d06cbf5789ca36280e8eb7bc59dbd7d0788bd0f1c18b7eac2888a13c8aefc9035d4b6febcea5da7ab87681b7d09b4b04804e342a4b445c328c7225e72e766dbc2bd240efe603f86d0a75f47caff9cc0cb2bd702be86cc4a4d944da7f7d4adee41f4ed4086de47e8140e3a2827ba101ee97a8cf8eb4cff9dda1930d06f82d34fe0fd4cd8bd12452d6bf88f3a8db4c6a680d5da332b0f30b8f1737be32a187d156e6457bc3e99ec0081865178046e751699414afc0eca802cafd68b401848d9e9e7bef6c3989d6b5399e8f47e2f1e3e7ddb10c176233d67be4a5afac8b1995392d6562541006804f692849ea4a8667616e7680aeaa9dc8fa518a195e44dcd693d166268fed40b3256c05ba32eb4b41a84ab1998696b69ccedec71266d5940eaa82534800d8bee86b464a5525356d7131fac31bebce5b4a45672eec26d676afba3f93cb5766010221ce066dda3a93dc04925e8a8f6286bbcb9a8d57833f5fd4697376517cb7d4b72e8a68abd68da4ca92d2a218ccc2873a15d6278aba75f428968c5a8a68d25dc58332160a645767c38b4fdb5caf74476167d582733e2310aa7dc0e7f229a05a5fc967f02c276c7b8b1274ea5b9e951be85ba84955649a8f4c262e0805d55fd16f372ab1d45fe787ab9f5f41c8e50cae275f23a899ea73041debde3be3515bebfe3d12700ca44cef1437ef16ad1d193ac01aee01153df968c53cee2a4f2b4eb06e6bad3f75315b36efac69d1d0ca360d80433001e2bfc25a8e1727bcd3bf51718f5b05389f5fcde88b05a9d36d2594ea62e91d2380837c6cfb85c4322924f0b9185c0ed9dae419a958b8e89287c48ca7f4ddb7c8af2e2d9fff439e87c3a8a3df534f8bfeb88082a6b76485fe654acc2bd948e01015c52169135241f2bddf4428bc67fc91300602822c14a85d90a98e197d0ece837edd5a7b47d32217852b21eb64f3d9df3c9810ef1f66e42a528b18acbabd9f418366334df77d0fdbc01cfe46bf7d4944d474fd98e4527b5b242b677798039b52e"
+  }
+}

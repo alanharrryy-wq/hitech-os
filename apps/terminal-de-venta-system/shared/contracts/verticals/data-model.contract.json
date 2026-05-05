@@ -1,0 +1,99 @@
+{
+  "contractId": "prisma.verticals.data-model.contract.v0",
+  "version": "0.3.0",
+  "purpose": "Govern core and vertical data model boundaries for PRISMA multi-business verticals.",
+  "coreEntities": [
+    {
+      "name": "Business",
+      "description": "Identidad del negocio, regimen operativo, paquetes activos y politicas base."
+    },
+    {
+      "name": "Terminal",
+      "description": "Dispositivo autorizado para operar localmente y generar eventos."
+    },
+    {
+      "name": "Operator",
+      "description": "Persona o rol que ejecuta acciones sensibles en Tablet o PC."
+    },
+    {
+      "name": "Shift",
+      "description": "Turno de caja local con apertura, cierre, cortes y resumen."
+    },
+    {
+      "name": "Product",
+      "description": "Articulo vendible fisico base; no debe absorber servicios, mesas, recetas ni reparaciones."
+    },
+    {
+      "name": "Barcode",
+      "description": "Codigo de lectura asociado a producto, variante o unidad de venta."
+    },
+    {
+      "name": "PriceRule",
+      "description": "Regla basica de precio vigente, con alcance por negocio, terminal o vertical."
+    },
+    {
+      "name": "Sale",
+      "description": "Ticket o venta cerrable localmente por Tablet."
+    },
+    {
+      "name": "SaleLine",
+      "description": "Linea de venta con producto, servicio o item verticalizado normalizado."
+    },
+    {
+      "name": "Payment",
+      "description": "Registro de metodo, monto, referencia y estado de pago."
+    },
+    {
+      "name": "StockSnapshot",
+      "description": "Foto operativa de existencia disponible."
+    },
+    {
+      "name": "StockMovement",
+      "description": "Movimiento de inventario trazable."
+    },
+    {
+      "name": "Return",
+      "description": "Operacion de devolucion total o parcial."
+    },
+    {
+      "name": "OutboxEvent",
+      "description": "Evento local pendiente, enviado, fallido o reconocido."
+    },
+    {
+      "name": "AuditEntry",
+      "description": "Rastro de accion sensible con actor, antes/despues y razon."
+    },
+    {
+      "name": "ExportBatch",
+      "description": "Paquete de datos exportado localmente."
+    }
+  ],
+  "extensionTypes": [
+    "sale_extension",
+    "catalog_extension",
+    "workflow_extension",
+    "inventory_extension",
+    "compliance_extension",
+    "analytics_extension"
+  ],
+  "storagePolicies": [
+    "local_required",
+    "local_cache",
+    "pc_authoritative",
+    "event_only",
+    "shared_contract"
+  ],
+  "ownerSurfaces": [
+    "tablet_local",
+    "pc_backoffice",
+    "shared_contract"
+  ],
+  "rules": [
+    "Core entities must remain vertical-neutral.",
+    "Vertical-only fields must be modeled as extensions.",
+    "Tablet stores only what it needs to operate locally and safely.",
+    "PC governs advanced and cross-operation data.",
+    "Sensitive changes must emit events.",
+    "A vertical extension must declare fixtures and acceptance criteria."
+  ]
+}

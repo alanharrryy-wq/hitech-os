@@ -1,0 +1,246 @@
+{
+  "verticalId": "pharmacy",
+  "scenarioVersion": "0.0.1",
+  "scenarios": [
+    {
+      "id": "pharmacy.scenario.01.barcode_sale",
+      "title": "Validar barcode sale para Farmacia",
+      "verticalId": "pharmacy",
+      "primaryScreen": "Cobro",
+      "flowKey": "barcode_sale",
+      "initialState": "loading",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Cobro.",
+        "Ejecutar flujo barcode sale.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo barcode_sale termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.complete"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:pharmacy:barcode_sale:1",
+        "98f4c46f76ff55e2"
+      ]
+    },
+    {
+      "id": "pharmacy.scenario.02.lot_expiry_check",
+      "title": "Validar lot expiry check para Farmacia",
+      "verticalId": "pharmacy",
+      "primaryScreen": "Ticket actual",
+      "flowKey": "lot_expiry_check",
+      "initialState": "ready",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ticket actual.",
+        "Ejecutar flujo lot expiry check.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo lot_expiry_check termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "pharmacy.lot_expiry_check.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.ticket.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:pharmacy:lot_expiry_check:2",
+        "af81ca11681bf474"
+      ]
+    },
+    {
+      "id": "pharmacy.scenario.03.prescription_gate",
+      "title": "Validar prescription gate para Farmacia",
+      "verticalId": "pharmacy",
+      "primaryScreen": "Ventas de hoy",
+      "flowKey": "prescription_gate",
+      "initialState": "error",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ventas de hoy.",
+        "Ejecutar flujo prescription gate.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo prescription_gate termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "pharmacy.prescription_gate.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.retry"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:pharmacy:prescription_gate:3",
+        "c9c44d2afcdad7fa"
+      ]
+    },
+    {
+      "id": "pharmacy.scenario.04.sensitive_return",
+      "title": "Validar sensitive return para Farmacia",
+      "verticalId": "pharmacy",
+      "primaryScreen": "Turno",
+      "flowKey": "sensitive_return",
+      "initialState": "offline",
+      "actor": "supervisor",
+      "mode": "pc",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Turno.",
+        "Ejecutar flujo sensitive return.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo sensitive_return termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "pharmacy.sensitive_return.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.status.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:pharmacy:sensitive_return:4",
+        "3806d5c1136ddd2e"
+      ]
+    },
+    {
+      "id": "pharmacy.scenario.05.cash_change",
+      "title": "Validar cash change para Farmacia",
+      "verticalId": "pharmacy",
+      "primaryScreen": "Sincronizacion",
+      "flowKey": "cash_change",
+      "initialState": "sync_pending",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Sincronizacion.",
+        "Ejecutar flujo cash change.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo cash_change termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.create"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:pharmacy:cash_change:5",
+        "d6ebf61d4e35ff83"
+      ]
+    },
+    {
+      "id": "pharmacy.scenario.06.offline_limited_sale",
+      "title": "Validar offline limited sale para Farmacia",
+      "verticalId": "pharmacy",
+      "primaryScreen": "Producto sensible",
+      "flowKey": "offline_limited_sale",
+      "initialState": "success",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Producto sensible.",
+        "Ejecutar flujo offline limited sale.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo offline_limited_sale termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "sync.event.queued"
+      ],
+      "requiredPermissions": [
+        "inventory.adjust.local"
+      ],
+      "offlineExpectation": "queda pendiente por enviar",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:pharmacy:offline_limited_sale:6",
+        "3be30864cd0d9f76"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "id": "convenience",
+  "displayName": "Tienda de conveniencia",
+  "market": "retail",
+  "status": "available",
+  "priority": "foundation",
+  "tabletRole": "Operacion rapida del giro desde Tablet sin convertirla en backoffice.",
+  "pcRole": "Gobierno profundo del giro, auditoria, configuracion, compras, reportes y consolidacion.",
+  "capabilities": [
+    "sales.products",
+    "barcode.scan",
+    "inventory.stock",
+    "shift.cash_control",
+    "returns.basic",
+    "offline.sales",
+    "sync.outbox",
+    "reports.today",
+    "export.local"
+  ],
+  "tabletNavigation": [
+    "Vender",
+    "Ventas de hoy",
+    "Existencias",
+    "Devoluciones",
+    "Turno",
+    "Pendientes por enviar"
+  ],
+  "pcNavigation": [
+    "Catalogo",
+    "Existencias",
+    "Movimientos",
+    "Compras",
+    "Recepcion",
+    "Auditoria",
+    "Dashboard",
+    "Sincronizacion"
+  ],
+  "tabletBlockedCapabilities": [
+    "supplier.management",
+    "purchasing.full",
+    "receiving.full",
+    "audit.deep"
+  ],
+  "events": [
+    "sale.completed",
+    "ticket.closed",
+    "stock.decremented",
+    "return.created",
+    "shift.opened",
+    "shift.closed",
+    "sync.event.pending"
+  ],
+  "permissions": [
+    "barcode.use",
+    "export.use",
+    "inventory.use",
+    "offline.use",
+    "payment.receive",
+    "pos.sale.complete",
+    "reports.use",
+    "returns.use",
+    "sales.use",
+    "shift.use",
+    "sync.use"
+  ],
+  "offlinePolicy": {
+    "mode": "strong",
+    "allowed": [
+      "venta local permitida",
+      "consulta de datos locales",
+      "registro de pendientes por enviar"
+    ],
+    "blocked": [
+      "supplier.management",
+      "purchasing.full",
+      "receiving.full",
+      "audit.deep"
+    ],
+    "cashierMessage": "Puedes seguir operando con datos locales; lo pendiente se enviara cuando haya conexion."
+  },
+  "kpis": [
+    "ventas netas",
+    "numero de tickets",
+    "ticket promedio",
+    "errores de captura",
+    "pendientes por enviar"
+  ],
+  "acceptanceCriteria": [
+    "El cajero entiende la accion principal en menos de 5 segundos.",
+    "Tablet no muestra administracion pesada del vertical.",
+    "Los eventos minimos quedan registrados.",
+    "Los estados offline y pendiente por enviar son claros."
+  ]
+}

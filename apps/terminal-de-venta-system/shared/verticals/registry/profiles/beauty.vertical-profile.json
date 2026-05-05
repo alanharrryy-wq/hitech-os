@@ -1,0 +1,92 @@
+{
+  "id": "beauty",
+  "displayName": "Estetica / barberia / salon",
+  "market": "services",
+  "status": "available",
+  "priority": "phase_1",
+  "tabletRole": "Operacion rapida del giro desde Tablet sin convertirla en backoffice.",
+  "pcRole": "Gobierno profundo del giro, auditoria, configuracion, compras, reportes y consolidacion.",
+  "capabilities": [
+    "sales.services",
+    "sales.products",
+    "appointments.booking",
+    "staff.commissions.basic",
+    "customers.basic",
+    "payments.tips",
+    "shift.cash_control",
+    "offline.sales",
+    "sync.outbox"
+  ],
+  "tabletNavigation": [
+    "Cobrar servicio",
+    "Agenda de hoy",
+    "Productos",
+    "Ventas de hoy",
+    "Turno",
+    "Pendientes por enviar"
+  ],
+  "pcNavigation": [
+    "Agenda",
+    "Clientes",
+    "Servicios",
+    "Empleados",
+    "Comisiones",
+    "Inventario",
+    "Dashboard",
+    "Sincronizacion"
+  ],
+  "tabletBlockedCapabilities": [
+    "payroll.full",
+    "commission_rules.deep",
+    "customer_marketing.full",
+    "supplier.management"
+  ],
+  "events": [
+    "beauty.appointment.checked_in",
+    "beauty.service.completed",
+    "staff.commission.accrued",
+    "sale.completed",
+    "tip.recorded",
+    "sync.event.pending"
+  ],
+  "permissions": [
+    "appointments.use",
+    "customers.use",
+    "offline.use",
+    "payment.receive",
+    "payments.use",
+    "pos.sale.complete",
+    "sales.use",
+    "shift.use",
+    "staff.use",
+    "sync.use"
+  ],
+  "offlinePolicy": {
+    "mode": "medium",
+    "allowed": [
+      "venta local permitida",
+      "consulta de datos locales",
+      "registro de pendientes por enviar"
+    ],
+    "blocked": [
+      "payroll.full",
+      "commission_rules.deep",
+      "customer_marketing.full",
+      "supplier.management"
+    ],
+    "cashierMessage": "Puedes seguir operando con datos locales; lo pendiente se enviara cuando haya conexion."
+  },
+  "kpis": [
+    "ventas netas",
+    "numero de tickets",
+    "ticket promedio",
+    "errores de captura",
+    "pendientes por enviar"
+  ],
+  "acceptanceCriteria": [
+    "El cajero entiende la accion principal en menos de 5 segundos.",
+    "Tablet no muestra administracion pesada del vertical.",
+    "Los eventos minimos quedan registrados.",
+    "Los estados offline y pendiente por enviar son claros."
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "package": "PRISMA_VERTICALS_ARCHITECTURE_00E_VERTICAL_UX_OPERATIONS",
+  "version": "0.0.1",
+  "purpose": "Registro UX operativo por vertical para Tablet y PC.",
+  "profileCount": 10,
+  "profiles": [
+    {
+      "verticalId": "convenience",
+      "name": "Tienda de conveniencia",
+      "path": "shared/verticals/ux/profiles/convenience.ux-operation.json",
+      "primaryEntry": "Vender"
+    },
+    {
+      "verticalId": "restaurant",
+      "name": "Restaurante / cafetería",
+      "path": "shared/verticals/ux/profiles/restaurant.ux-operation.json",
+      "primaryEntry": "Vender"
+    },
+    {
+      "verticalId": "pharmacy",
+      "name": "Farmacia",
+      "path": "shared/verticals/ux/profiles/pharmacy.ux-operation.json",
+      "primaryEntry": "Vender"
+    },
+    {
+      "verticalId": "beauty",
+      "name": "Estética / barbería / salón",
+      "path": "shared/verticals/ux/profiles/beauty.ux-operation.json",
+      "primaryEntry": "Agenda"
+    },
+    {
+      "verticalId": "hardware",
+      "name": "Ferretería",
+      "path": "shared/verticals/ux/profiles/hardware.ux-operation.json",
+      "primaryEntry": "Vender"
+    },
+    {
+      "verticalId": "apparel",
+      "name": "Ropa / boutique",
+      "path": "shared/verticals/ux/profiles/apparel.ux-operation.json",
+      "primaryEntry": "Vender"
+    },
+    {
+      "verticalId": "repair",
+      "name": "Taller / reparaciones",
+      "path": "shared/verticals/ux/profiles/repair.ux-operation.json",
+      "primaryEntry": "Órdenes"
+    },
+    {
+      "verticalId": "field_route",
+      "name": "Venta en campo / ruta",
+      "path": "shared/verticals/ux/profiles/field_route.ux-operation.json",
+      "primaryEntry": "Ruta"
+    },
+    {
+      "verticalId": "grocery_scale",
+      "name": "Abarrotes con báscula",
+      "path": "shared/verticals/ux/profiles/grocery_scale.ux-operation.json",
+      "primaryEntry": "Vender"
+    },
+    {
+      "verticalId": "food_truck",
+      "name": "Food truck / punto móvil de comida",
+      "path": "shared/verticals/ux/profiles/food_truck.ux-operation.json",
+      "primaryEntry": "Vender"
+    }
+  ],
+  "requiredStates": [
+    "empty",
+    "loading",
+    "error",
+    "success",
+    "disabled",
+    "offline",
+    "pending_sync"
+  ],
+  "forbiddenVisibleTerms": [
+    "checkout",
+    "cart",
+    "sync",
+    "outbox",
+    "runtime",
+    "lookup",
+    "guardrails",
+    "SaleReturn",
+    "amountCents",
+    "restock",
+    "payload",
+    "API",
+    "endpoint",
+    "worker",
+    "ack",
+    "schema",
+    "queue"
+  ]
+}

@@ -1,0 +1,624 @@
+{
+  "verticalId": "pharmacy",
+  "verticalName": "Farmacia",
+  "fixtureVersion": "0.0.1",
+  "purpose": "lotes, caducidad, receta, producto sensible y devolucion controlada",
+  "requiredBlocks": [
+    "00A_CORE_CONTRACTS",
+    "00B_VERTICAL_REGISTRY",
+    "00C_VERTICAL_DATA_MODELS",
+    "00D_VERTICAL_EVENTS_PERMISSIONS",
+    "00E_VERTICAL_UX_OPERATIONS"
+  ],
+  "businessProfile": {
+    "tabletRole": "operacion principal o captura rapida segun vertical",
+    "pcRole": "gobierno, auditoria, configuracion y consolidacion",
+    "forbiddenTabletBehaviors": [
+      "backoffice_profundo",
+      "permisos_globales",
+      "compras_formales_sin_pc",
+      "auditoria_pesada"
+    ]
+  },
+  "screensUnderTest": [
+    "Vender",
+    "Cobro",
+    "Ticket actual",
+    "Ventas de hoy",
+    "Turno",
+    "Sincronizacion",
+    "Producto sensible",
+    "Receta",
+    "Lotes y caducidad"
+  ],
+  "flowsUnderTest": [
+    "barcode_sale",
+    "lot_expiry_check",
+    "prescription_gate",
+    "sensitive_return",
+    "cash_change",
+    "offline_limited_sale"
+  ],
+  "seedData": {
+    "business": {
+      "id": "biz_pharmacy",
+      "name": "Demo Farmacia",
+      "verticalId": "pharmacy",
+      "mode": "standalone_or_managed"
+    },
+    "terminal": {
+      "id": "terminal_pharmacy_01",
+      "kind": "tablet_pos",
+      "offlineAllowed": true
+    },
+    "operator": {
+      "id": "operator_pharmacy_01",
+      "role": "cajero",
+      "permissions": [
+        "pos.sale.create",
+        "pos.sale.complete",
+        "pos.ticket.view",
+        "shift.view",
+        "sync.status.view",
+        "pos.return.create",
+        "inventory.adjust.local"
+      ]
+    },
+    "products": [
+      {
+        "sku": "PHARMACY-SKU-001",
+        "name": "Producto 1 Farmacia",
+        "barcode": "7504634424590",
+        "priceCents": 1125,
+        "stockOnHand": 21,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "2882e9e7e4b6fa12638da5b1"
+        }
+      },
+      {
+        "sku": "PHARMACY-SKU-002",
+        "name": "Producto 2 Farmacia",
+        "barcode": "7503607120956",
+        "priceCents": 1250,
+        "stockOnHand": 22,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "afcc857ef6a67758f95c3bad"
+        }
+      },
+      {
+        "sku": "PHARMACY-SKU-003",
+        "name": "Producto 3 Farmacia",
+        "barcode": "7500489490659",
+        "priceCents": 1375,
+        "stockOnHand": 23,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "b8456e9415b5372f9cece8fe"
+        }
+      },
+      {
+        "sku": "PHARMACY-SKU-004",
+        "name": "Producto 4 Farmacia",
+        "barcode": "7504247364591",
+        "priceCents": 1500,
+        "stockOnHand": 24,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "ab31e4eba32d0e3e4e0465b2"
+        }
+      },
+      {
+        "sku": "PHARMACY-SKU-005",
+        "name": "Producto 5 Farmacia",
+        "barcode": "7503360188600",
+        "priceCents": 1625,
+        "stockOnHand": 25,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "b24b0d438ca25f46781193b8"
+        }
+      },
+      {
+        "sku": "PHARMACY-SKU-006",
+        "name": "Producto 6 Farmacia",
+        "barcode": "7502741809825",
+        "priceCents": 1750,
+        "stockOnHand": 26,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "ded688f6b45b2665891786ac"
+        }
+      },
+      {
+        "sku": "PHARMACY-SKU-007",
+        "name": "Producto 7 Farmacia",
+        "barcode": "7509215254669",
+        "priceCents": 1875,
+        "stockOnHand": 27,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "50c6d5c0be21bc9d78a02b32"
+        }
+      },
+      {
+        "sku": "PHARMACY-SKU-008",
+        "name": "Producto 8 Farmacia",
+        "barcode": "7506886743756",
+        "priceCents": 2000,
+        "stockOnHand": 28,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "294a2185b2c2bfb7168ad581"
+        }
+      }
+    ],
+    "services": [
+      {
+        "serviceCode": "PHARMACY-SVC-01",
+        "name": "Servicio 1 Farmacia",
+        "priceCents": 1800,
+        "durationMinutes": 15,
+        "verticalTraits": {
+          "fixtureTrait": "4663881e4e738d2995ac9f32"
+        }
+      },
+      {
+        "serviceCode": "PHARMACY-SVC-02",
+        "name": "Servicio 2 Farmacia",
+        "priceCents": 2100,
+        "durationMinutes": 30,
+        "verticalTraits": {
+          "fixtureTrait": "08ab3383b9064f4fa4a16732"
+        }
+      },
+      {
+        "serviceCode": "PHARMACY-SVC-03",
+        "name": "Servicio 3 Farmacia",
+        "priceCents": 2400,
+        "durationMinutes": 45,
+        "verticalTraits": {
+          "fixtureTrait": "781787385355e18b0f0c088a"
+        }
+      },
+      {
+        "serviceCode": "PHARMACY-SVC-04",
+        "name": "Servicio 4 Farmacia",
+        "priceCents": 2700,
+        "durationMinutes": 60,
+        "verticalTraits": {
+          "fixtureTrait": "3c01b90d126a8de18dd3916b"
+        }
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "pharmacy.scenario.01.barcode_sale",
+      "title": "Validar barcode sale para Farmacia",
+      "verticalId": "pharmacy",
+      "primaryScreen": "Cobro",
+      "flowKey": "barcode_sale",
+      "initialState": "loading",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Cobro.",
+        "Ejecutar flujo barcode sale.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo barcode_sale termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.complete"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:pharmacy:barcode_sale:1",
+        "98f4c46f76ff55e2"
+      ]
+    },
+    {
+      "id": "pharmacy.scenario.02.lot_expiry_check",
+      "title": "Validar lot expiry check para Farmacia",
+      "verticalId": "pharmacy",
+      "primaryScreen": "Ticket actual",
+      "flowKey": "lot_expiry_check",
+      "initialState": "ready",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ticket actual.",
+        "Ejecutar flujo lot expiry check.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo lot_expiry_check termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "pharmacy.lot_expiry_check.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.ticket.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:pharmacy:lot_expiry_check:2",
+        "af81ca11681bf474"
+      ]
+    },
+    {
+      "id": "pharmacy.scenario.03.prescription_gate",
+      "title": "Validar prescription gate para Farmacia",
+      "verticalId": "pharmacy",
+      "primaryScreen": "Ventas de hoy",
+      "flowKey": "prescription_gate",
+      "initialState": "error",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ventas de hoy.",
+        "Ejecutar flujo prescription gate.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo prescription_gate termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "pharmacy.prescription_gate.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.retry"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:pharmacy:prescription_gate:3",
+        "c9c44d2afcdad7fa"
+      ]
+    },
+    {
+      "id": "pharmacy.scenario.04.sensitive_return",
+      "title": "Validar sensitive return para Farmacia",
+      "verticalId": "pharmacy",
+      "primaryScreen": "Turno",
+      "flowKey": "sensitive_return",
+      "initialState": "offline",
+      "actor": "supervisor",
+      "mode": "pc",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Turno.",
+        "Ejecutar flujo sensitive return.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo sensitive_return termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "pharmacy.sensitive_return.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.status.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:pharmacy:sensitive_return:4",
+        "3806d5c1136ddd2e"
+      ]
+    },
+    {
+      "id": "pharmacy.scenario.05.cash_change",
+      "title": "Validar cash change para Farmacia",
+      "verticalId": "pharmacy",
+      "primaryScreen": "Sincronizacion",
+      "flowKey": "cash_change",
+      "initialState": "sync_pending",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Sincronizacion.",
+        "Ejecutar flujo cash change.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo cash_change termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.create"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:pharmacy:cash_change:5",
+        "d6ebf61d4e35ff83"
+      ]
+    },
+    {
+      "id": "pharmacy.scenario.06.offline_limited_sale",
+      "title": "Validar offline limited sale para Farmacia",
+      "verticalId": "pharmacy",
+      "primaryScreen": "Producto sensible",
+      "flowKey": "offline_limited_sale",
+      "initialState": "success",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Producto sensible.",
+        "Ejecutar flujo offline limited sale.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo offline_limited_sale termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "sync.event.queued"
+      ],
+      "requiredPermissions": [
+        "inventory.adjust.local"
+      ],
+      "offlineExpectation": "queda pendiente por enviar",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:pharmacy:offline_limited_sale:6",
+        "3be30864cd0d9f76"
+      ]
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "scenarioId": "pharmacy.scenario.01.barcode_sale",
+      "checks": [
+        {
+          "id": "pharmacy.scenario.01.barcode_sale.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "pharmacy.scenario.01.barcode_sale.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "pharmacy.scenario.01.barcode_sale.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "pharmacy.scenario.01.barcode_sale.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "pharmacy.scenario.01.barcode_sale.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "pharmacy.scenario.02.lot_expiry_check",
+      "checks": [
+        {
+          "id": "pharmacy.scenario.02.lot_expiry_check.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "pharmacy.scenario.02.lot_expiry_check.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "pharmacy.scenario.02.lot_expiry_check.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "pharmacy.scenario.02.lot_expiry_check.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "pharmacy.scenario.02.lot_expiry_check.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "pharmacy.scenario.03.prescription_gate",
+      "checks": [
+        {
+          "id": "pharmacy.scenario.03.prescription_gate.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "pharmacy.scenario.03.prescription_gate.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "pharmacy.scenario.03.prescription_gate.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "pharmacy.scenario.03.prescription_gate.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "pharmacy.scenario.03.prescription_gate.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "pharmacy.scenario.04.sensitive_return",
+      "checks": [
+        {
+          "id": "pharmacy.scenario.04.sensitive_return.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "pharmacy.scenario.04.sensitive_return.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "pharmacy.scenario.04.sensitive_return.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "pharmacy.scenario.04.sensitive_return.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "pharmacy.scenario.04.sensitive_return.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "pharmacy.scenario.05.cash_change",
+      "checks": [
+        {
+          "id": "pharmacy.scenario.05.cash_change.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "pharmacy.scenario.05.cash_change.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "pharmacy.scenario.05.cash_change.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "pharmacy.scenario.05.cash_change.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "pharmacy.scenario.05.cash_change.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "pharmacy.scenario.06.offline_limited_sale",
+      "checks": [
+        {
+          "id": "pharmacy.scenario.06.offline_limited_sale.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "pharmacy.scenario.06.offline_limited_sale.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "pharmacy.scenario.06.offline_limited_sale.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "pharmacy.scenario.06.offline_limited_sale.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "pharmacy.scenario.06.offline_limited_sale.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    }
+  ],
+  "fixtureIntegrity": {
+    "anchor": "4c33f36b1e45198819cb1625ac509d170c5617ce0eaef1fdc1327e98a27a50cb",
+    "noiseProofCorpus": "410b73acf98e34e10841c94a1796aab67990bf66faba9a1d98a12b3edc4a3bb754bdf763ec0e8a7cdfb325a5e06ab14fe34bc19714da414970b547fcea13b33f29ac8f078f0e4bfcdf6f495164c27939e4b425fb5330d634be45e86e16d52b0e18801139ce7440baa6671036da8297bd5470706c61ce739b63b0eb653b38253d31c9e8ca802f921127c3fc1ff591ed9fde8ea2da97bf48438753513e511cdfe955ed2e12d7c201735b4d75efc3dd95cc7d3bcf33b9d7db5c5e977a09120aea436b4d51bb23030742927fec051d02d3ed199cc36cc7b3061005e988294e6b1beb07ac9b75413412c93501acb7afb1f9a662cb30f794d8c43fb030efc256e902ff72ecbe9bace417211e448d9ec5ef92e4cc136ae637c2b179686acbb7fe6c45295b3ba43d61979ae3dc4d2937d306d8481c37387a1f7b49c9b93b7752fecbd30ef1e5bd748c0210870f59d618823a2e8f96c7ced692cffa2df2ea50094b4550599b92dc4addb87129c871d10a2a1309e6f0338afaa61a54ce71def64da68177d4098825b6b2a6489ce165239aae86dc3b27f457c3ebb796c1761e764bdec8cfa71028c0bf43cbe3f0ddcf14c407f151de62aeea27b66bdc724d785a4bfa3d3f2bf3b016f5f481c6c2786055082c90b1759dcf579665d6c26e1a11243fb1a767456ad7f316d15e7d294f3865f42afb5f0650e01f12167e01738e46b56a823f7484a7d90b614014b14f05cb1de20ab50c4f6a155ba48cc84f2cef3d3a9d60cc86f45937f0c17ed2efce31773fa8003e3a277e91db3ca228eaba7044295e4affbc73d239c48912c7a665234efc2083b56cb8af64ab92349a90a2583bdec48e1c8f87213400767e3ec2979a4333b32dd6475f5b92a37d23ef510ef77e17afebb2a804f30bf3f649f3aa88105fbc27df3433a9136b4150ec508b65c8e618a2b78a0a0c39bf7b3a8f8126a68446f4232ca4c440de7efe68feac48a4d82a89c663f8dd8727c5b645f0486f4eb084bc4a80f247326d87ce84afe64ff7b20228e472b1a3447f85b1f74cdd991aff8d992e13158c099fdc2720a0e071362dafa407f12c6e8f849b826a8f903012634889191d212bf6c613b5454365d6ae6819bea450761e6c5c806a7d7d2aae2ec53af5744013e6a56b1a690941a5ad0a0019d9909ff7a5f0ff1f48416f05581e4e2ccc7833eff3a5e200232c9bafac81ea3523e5ae5f762017e1df2a516378d8eb1484579d128fa31eaf9696c3b227b7fef047d4571ae87d409a8d23b9a14ac2907c4e180353b8584e3ef3d09c22b9e9ae7210e8a34e5fc87ce8b1ee1b9d98f6b61bf43a5031977283ebc35f45048472139bd019029e710ed68f0829a967e9a28ded1de1eebbd149572e2e6da5d7938cd87738a3d33214f86b7243e5699c6e22d4e14e1d875d0157ab1a7ddc4846d5786d8e248627b540623bbc4de1a2483c6b62ac6117ab81b5072c5158ab7d0531a72e7851d9c1d9f0b219ec2e6c232fc339e1328ce3d94108f037a089d6be7c39cc5a860491d582d9dd37d8c3dbb4968c6f3f1ad27f779c7ce241dd55e635d160e5f445618bb02abfe26f7e87509cbe54c3180123fc20c6c79f975a96237fe331c814c334f77cfa2c0283fa5af05752ff8f2423468fef32bd03ee6eacdef26b4f9ff82baaf9a78c6df0c984342dcf688058109fa7065cd126e99cbd9aa35fc5bd979b07cc7aaa433beb482db4c64d17cab501eebe8b8be228c02c4075efb8f4b78fa91589ef596962db98c6736e7f3a981eaf7287eca877822c772eb693ddc226bec8713858c0369640c39c28e15d1f59561b25524da4ebe57550247b6f1b8079008bbac97652e7a7ebad6c3d01f58f782fffb1eea465b031de428a196e155c03941d85b85585874ebf51045ba5c9943c86cdf467ef3510e8f40f0352969c5c79089d2f6c8e7652890306e614154c1ddfba560ef1f14c71e9805cc0c28e54ddde97bd18372a3c7aea728e86764e3b7aff5475c6061b18d1b93608bdb5853d76e70768bb0fd4aa688e1c517513264bb74463eda9d67d822b39bcbe2b5ada543e6e343f82424d2d59aa3b4aef4cad1542ebd2b72d761f6941c989dca351767f4c7f97a616d7570715fd94baf4890304283a0dfaa478b8914789220fade26c7d305b0db97a70d7bc2d13f9fb526c854d076fc44c5a8ebfa1fd8bb5c267ac24ab688c5f64bbb765ec94927a0f49d76b4df2243ceda45d4df974f5d2d736cdce9b5153df1320d999a6e79fa54de1d57db7160b2623f6122038bf07121aa6b6430d7961cb2a2a3568195a0d95fbbf6d899eee1bf7d0f8e06808b627c771dd3989979a239f973759adba28d78c4c067c115754f26fa6273a841f8b94935be9c42eeb0862a047b2f5d2e38f4d2f664f6a424ada9cab8f5f2104a9e38035ae517eefdc4a404c60390e0409ff5c881f0e23f770d88899a68dcaed80a2afcdb0b90621da8a83601a441e31fe86e798a8736fad8c69e9bfec8fdbfd60575f0cb9def2ca84b5c6262d1ecfe2dbc2fac1cba70e63067a9299dcf64a4b91007c25c7b373bd62c1282ad4b209682e83e4266b0e1d9d00cd2b350fb287fa76f5b60f149244b1b4744d8513c2f307df14e3e769aaf782ab6e12c4e9546b556e631d3a233e4f754cef3602b5c01b51495cdd352df09a641dc653502361c46016a7055b45a6e6d1f8b30a09413d8443d51e54547d93b1aacb4a91c7b4c06641931bd461d307f2c0ac3acce57491df2de7f5c73fc23f793437ea90ef32b026c4f23c8bbc7bc893010487cc513700372e95c4b8a3c299acc297f18c5c7aebab3e1dc09020c9bd1650b3401f5437680bdfff2ebf4f8f20aa75baab6362ee7aff864292bd68887ba484cb686c4eaf256599ad2c46eafed67d76a02de27958e240d741f4b926042f641f9502d792a510f78b728ec866df68477899b4b55e3354a303d984512497ab8ff121e398b39af00902fd54063eaf45a068d0305540b6ce5d6fb701e446c864c9e56714f69d35baea095634a0cc1db3e36dc2fd00b4dced96d930a881b18dd29e983999db34a73b8c6482b46f3d8c2dbab338f71cc9dbbce671016997ad6f637b43845e83bcd03f7015481144bbb3cc547e188cc5dac5c72230e0c7f10fb88999cdc5f0af300eed27f17ed4d025deedf37b6d145e08dbb64c0d977b244136de849d87fc8ff72c58e390be0901e1473bf28e475128c80dd0e9b183518d359ab0aa4239438fdef5d34de98500acd5bec54bf2f942fb99e5cac334f4570985c4e1872237365d208e5cab66837a3936baa148dbaf4d5409983813a318b1d86fb079c48e8aecbbd6e28bcd1268fb033cf4500ac2292c9299dbe809588abc6f86e73f23d2a3510a13867450a27d7898b44cbd23b7d87acb775a798f164e2db7dc93d5a0072e93767119d64c277172f7b333db463336b64c2d7181529157971ad7e20e087c338201a0a9fba826a91a1e61c4502ac42ddc65587d97447265b207666b9e68b989a17d63e208753c75deabb3360e33acddb32ba8d6e633dbb1751f6491cde62addb5e71276f1623937dac7d196a2fe3aeb530b1891b770755eedeb8c4a38a7da65ba95925aa99ad22330a0e3"
+  }
+}

@@ -1,0 +1,279 @@
+{
+  "verticalId": "apparel",
+  "label": "Ropa o boutique",
+  "version": 0,
+  "events": [
+    {
+      "topic": "sale.created",
+      "scope": "core",
+      "source": [
+        "tablet"
+      ],
+      "sensitivity": "medium",
+      "requiresPermission": "pos.sale.complete",
+      "visibleMicrocopy": "Operacion registrada."
+    },
+    {
+      "topic": "sale.completed",
+      "scope": "core",
+      "source": [
+        "tablet"
+      ],
+      "sensitivity": "medium",
+      "requiresPermission": "pos.sale.complete",
+      "visibleMicrocopy": "Operacion registrada."
+    },
+    {
+      "topic": "ticket.closed",
+      "scope": "core",
+      "source": [
+        "tablet"
+      ],
+      "sensitivity": "medium",
+      "requiresPermission": "audit.local.view",
+      "visibleMicrocopy": "Operacion registrada."
+    },
+    {
+      "topic": "payment.received",
+      "scope": "core",
+      "source": [
+        "tablet"
+      ],
+      "sensitivity": "high",
+      "requiresPermission": "audit.local.view",
+      "visibleMicrocopy": "Operacion registrada."
+    },
+    {
+      "topic": "payment.failed",
+      "scope": "core",
+      "source": [
+        "tablet"
+      ],
+      "sensitivity": "high",
+      "requiresPermission": "audit.local.view",
+      "visibleMicrocopy": "Operacion registrada."
+    },
+    {
+      "topic": "return.created",
+      "scope": "core",
+      "source": [
+        "tablet"
+      ],
+      "sensitivity": "high",
+      "requiresPermission": "audit.local.view",
+      "visibleMicrocopy": "Operacion registrada."
+    },
+    {
+      "topic": "return.completed",
+      "scope": "core",
+      "source": [
+        "tablet"
+      ],
+      "sensitivity": "high",
+      "requiresPermission": "audit.local.view",
+      "visibleMicrocopy": "Operacion registrada."
+    },
+    {
+      "topic": "shift.opened",
+      "scope": "core",
+      "source": [
+        "tablet"
+      ],
+      "sensitivity": "high",
+      "requiresPermission": "audit.local.view",
+      "visibleMicrocopy": "Operacion registrada."
+    },
+    {
+      "topic": "shift.closed",
+      "scope": "core",
+      "source": [
+        "tablet"
+      ],
+      "sensitivity": "high",
+      "requiresPermission": "audit.local.view",
+      "visibleMicrocopy": "Operacion registrada."
+    },
+    {
+      "topic": "stock.decremented",
+      "scope": "core",
+      "source": [
+        "tablet"
+      ],
+      "sensitivity": "high",
+      "requiresPermission": "audit.local.view",
+      "visibleMicrocopy": "Operacion registrada."
+    },
+    {
+      "topic": "stock.adjusted",
+      "scope": "core",
+      "source": [
+        "tablet"
+      ],
+      "sensitivity": "high",
+      "requiresPermission": "audit.local.view",
+      "visibleMicrocopy": "Operacion registrada."
+    },
+    {
+      "topic": "sync.event.pending",
+      "scope": "core",
+      "source": [
+        "tablet",
+        "pc"
+      ],
+      "sensitivity": "medium",
+      "requiresPermission": "audit.local.view",
+      "visibleMicrocopy": "Operacion registrada."
+    },
+    {
+      "topic": "sync.event.sent",
+      "scope": "core",
+      "source": [
+        "tablet",
+        "pc"
+      ],
+      "sensitivity": "medium",
+      "requiresPermission": "audit.local.view",
+      "visibleMicrocopy": "Operacion registrada."
+    },
+    {
+      "topic": "sync.event.failed",
+      "scope": "core",
+      "source": [
+        "tablet",
+        "pc"
+      ],
+      "sensitivity": "medium",
+      "requiresPermission": "audit.local.view",
+      "visibleMicrocopy": "Operacion registrada."
+    },
+    {
+      "topic": "sync.conflict.detected",
+      "scope": "core",
+      "source": [
+        "tablet",
+        "pc"
+      ],
+      "sensitivity": "medium",
+      "requiresPermission": "audit.local.view",
+      "visibleMicrocopy": "Operacion registrada."
+    },
+    {
+      "topic": "catalog.product.created",
+      "scope": "core",
+      "source": [
+        "tablet",
+        "pc"
+      ],
+      "sensitivity": "medium",
+      "requiresPermission": "audit.local.view",
+      "visibleMicrocopy": "Operacion registrada."
+    },
+    {
+      "topic": "catalog.product.updated",
+      "scope": "core",
+      "source": [
+        "tablet",
+        "pc"
+      ],
+      "sensitivity": "medium",
+      "requiresPermission": "audit.local.view",
+      "visibleMicrocopy": "Operacion registrada."
+    },
+    {
+      "topic": "apparel.variant.selected",
+      "scope": "vertical",
+      "source": [
+        "tablet"
+      ],
+      "sensitivity": "medium",
+      "requiresPermission": "variant.sell",
+      "visibleMicrocopy": "Accion registrada."
+    },
+    {
+      "topic": "apparel.exchange.created",
+      "scope": "vertical",
+      "source": [
+        "tablet"
+      ],
+      "sensitivity": "medium",
+      "requiresPermission": "variant.sell",
+      "visibleMicrocopy": "Accion registrada."
+    },
+    {
+      "topic": "apparel.size.unavailable",
+      "scope": "vertical",
+      "source": [
+        "tablet"
+      ],
+      "sensitivity": "medium",
+      "requiresPermission": "variant.sell",
+      "visibleMicrocopy": "Accion registrada."
+    },
+    {
+      "topic": "apparel.color.changed",
+      "scope": "vertical",
+      "source": [
+        "tablet"
+      ],
+      "sensitivity": "medium",
+      "requiresPermission": "variant.sell",
+      "visibleMicrocopy": "Accion registrada."
+    }
+  ],
+  "auditRules": [
+    {
+      "ruleId": "apparel.audit.money_inventory",
+      "when": "money_or_inventory_changes",
+      "requiredFields": [
+        "actorId",
+        "terminalId",
+        "businessId",
+        "entityType",
+        "entityId",
+        "before",
+        "after",
+        "occurredAt"
+      ]
+    },
+    {
+      "ruleId": "apparel.audit.permission_sensitive",
+      "when": "sensitive_permission_used",
+      "requiredFields": [
+        "actorId",
+        "permission",
+        "reason",
+        "occurredAt"
+      ]
+    },
+    {
+      "ruleId": "apparel.audit.offline_sensitive",
+      "when": "offline_sensitive_action",
+      "requiredFields": [
+        "actorId",
+        "terminalId",
+        "offlineReason",
+        "occurredAt"
+      ]
+    }
+  ],
+  "syncRules": [
+    {
+      "topicPattern": "apparel.*",
+      "offlineAllowed": true,
+      "retry": "automatic",
+      "humanStatus": "Pendiente por enviar"
+    },
+    {
+      "topicPattern": "payment.*",
+      "offlineAllowed": true,
+      "retry": "manual_if_failed",
+      "humanStatus": "Requiere revision si falla"
+    },
+    {
+      "topicPattern": "return.*",
+      "offlineAllowed": true,
+      "retry": "manual_if_failed",
+      "humanStatus": "Devolucion pendiente por enviar"
+    }
+  ]
+}

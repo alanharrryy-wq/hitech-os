@@ -1,0 +1,152 @@
+{
+  "modelId": "prisma.core-data-model.v0",
+  "version": "0.3.0",
+  "entities": [
+    {
+      "name": "Business",
+      "description": "Identidad del negocio, regimen operativo, paquetes activos y politicas base.",
+      "owner": "core_pos",
+      "tabletLocal": false,
+      "pcAuthoritative": true,
+      "extensionAllowed": false
+    },
+    {
+      "name": "Terminal",
+      "description": "Dispositivo autorizado para operar localmente y generar eventos.",
+      "owner": "core_pos",
+      "tabletLocal": true,
+      "pcAuthoritative": false,
+      "extensionAllowed": false
+    },
+    {
+      "name": "Operator",
+      "description": "Persona o rol que ejecuta acciones sensibles en Tablet o PC.",
+      "owner": "core_pos",
+      "tabletLocal": true,
+      "pcAuthoritative": true,
+      "extensionAllowed": false
+    },
+    {
+      "name": "Shift",
+      "description": "Turno de caja local con apertura, cierre, cortes y resumen.",
+      "owner": "core_pos",
+      "tabletLocal": true,
+      "pcAuthoritative": false,
+      "extensionAllowed": false
+    },
+    {
+      "name": "Product",
+      "description": "Articulo vendible fisico base; no debe absorber servicios, mesas, recetas ni reparaciones.",
+      "owner": "core_pos",
+      "tabletLocal": true,
+      "pcAuthoritative": true,
+      "extensionAllowed": true
+    },
+    {
+      "name": "Barcode",
+      "description": "Codigo de lectura asociado a producto, variante o unidad de venta.",
+      "owner": "core_pos",
+      "tabletLocal": true,
+      "pcAuthoritative": true,
+      "extensionAllowed": false
+    },
+    {
+      "name": "PriceRule",
+      "description": "Regla basica de precio vigente, con alcance por negocio, terminal o vertical.",
+      "owner": "core_pos",
+      "tabletLocal": false,
+      "pcAuthoritative": true,
+      "extensionAllowed": false
+    },
+    {
+      "name": "Sale",
+      "description": "Ticket o venta cerrable localmente por Tablet.",
+      "owner": "core_pos",
+      "tabletLocal": true,
+      "pcAuthoritative": false,
+      "extensionAllowed": true
+    },
+    {
+      "name": "SaleLine",
+      "description": "Linea de venta con producto, servicio o item verticalizado normalizado.",
+      "owner": "core_pos",
+      "tabletLocal": true,
+      "pcAuthoritative": false,
+      "extensionAllowed": true
+    },
+    {
+      "name": "Payment",
+      "description": "Registro de metodo, monto, referencia y estado de pago.",
+      "owner": "core_pos",
+      "tabletLocal": true,
+      "pcAuthoritative": false,
+      "extensionAllowed": true
+    },
+    {
+      "name": "StockSnapshot",
+      "description": "Foto operativa de existencia disponible.",
+      "owner": "core_pos",
+      "tabletLocal": true,
+      "pcAuthoritative": true,
+      "extensionAllowed": false
+    },
+    {
+      "name": "StockMovement",
+      "description": "Movimiento de inventario trazable.",
+      "owner": "core_pos",
+      "tabletLocal": true,
+      "pcAuthoritative": false,
+      "extensionAllowed": true
+    },
+    {
+      "name": "Return",
+      "description": "Operacion de devolucion total o parcial.",
+      "owner": "core_pos",
+      "tabletLocal": true,
+      "pcAuthoritative": false,
+      "extensionAllowed": true
+    },
+    {
+      "name": "OutboxEvent",
+      "description": "Evento local pendiente, enviado, fallido o reconocido.",
+      "owner": "shared_contract",
+      "tabletLocal": true,
+      "pcAuthoritative": false,
+      "extensionAllowed": false
+    },
+    {
+      "name": "AuditEntry",
+      "description": "Rastro de accion sensible con actor, antes/despues y razon.",
+      "owner": "shared_contract",
+      "tabletLocal": false,
+      "pcAuthoritative": true,
+      "extensionAllowed": false
+    },
+    {
+      "name": "ExportBatch",
+      "description": "Paquete de datos exportado localmente.",
+      "owner": "core_pos",
+      "tabletLocal": true,
+      "pcAuthoritative": false,
+      "extensionAllowed": false
+    }
+  ],
+  "forbiddenUniversalFields": [
+    "appointmentChair",
+    "appointmentTime",
+    "colorSizeGrid",
+    "kitchenStation",
+    "lotExpiration",
+    "prescriptionId",
+    "repairLaborHours",
+    "repairOrderId",
+    "repairVin",
+    "routeCreditLimit",
+    "routeStopId",
+    "scaleWeight",
+    "serialNumber",
+    "sizeColorMatrix",
+    "tableNumber"
+  ],
+  "boundaryPolicy": "vertical extensions must not mutate core entities directly"
+}

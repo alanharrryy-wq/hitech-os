@@ -1,0 +1,104 @@
+{
+  "contractId": "PRISMA_SYNC_EVENT_CONTRACT_V1",
+  "schemaVersion": "1.0.0",
+  "sourceOfTruth": "shared/contracts/sync-event-contract.v1.json",
+  "eventTopics": [
+    "sale.created",
+    "sale.completed",
+    "ticket.closed",
+    "stock.decremented",
+    "inventory.low_stock_detected",
+    "sale.cancelled",
+    "sale.refunded",
+    "shift.opened",
+    "shift.closed",
+    "stock.adjusted",
+    "catalog.product.created",
+    "catalog.product.updated",
+    "sync.event.sent",
+    "sync.event.failed",
+    "sync.conflict.detected",
+    "sync.conflict.resolved"
+  ],
+  "outboxStates": [
+    "pending",
+    "sent",
+    "failed",
+    "acked",
+    "conflict"
+  ],
+  "conflictCodes": [
+    "product_discontinued",
+    "old_local_price",
+    "negative_stock",
+    "duplicate_event",
+    "terminal_not_registered",
+    "sale_outside_shift",
+    "inconsistent_sequence",
+    "invalid_schema",
+    "unknown_topic"
+  ],
+  "envelopeFields": [
+    "eventId",
+    "topic",
+    "businessId",
+    "terminalId",
+    "actorId",
+    "source",
+    "occurredAt",
+    "payload",
+    "schemaVersion"
+  ],
+  "deprecatedAliases": [
+    {
+      "alias": "sync.conflict_detected",
+      "canonical": "sync.conflict.detected",
+      "status": "deprecated"
+    },
+    {
+      "alias": "sync.conflict_resolved",
+      "canonical": "sync.conflict.resolved",
+      "status": "deprecated"
+    },
+    {
+      "alias": "sync.started",
+      "canonical": "sync.event.sent",
+      "status": "deprecated"
+    },
+    {
+      "alias": "sync.succeeded",
+      "canonical": "sync.event.sent",
+      "status": "deprecated"
+    },
+    {
+      "alias": "sync.failed",
+      "canonical": "sync.event.failed",
+      "status": "deprecated"
+    },
+    {
+      "alias": "outbox.enqueued",
+      "canonical": "sync.event.sent",
+      "status": "deprecated"
+    },
+    {
+      "alias": "outbox.dispatched",
+      "canonical": "sync.event.sent",
+      "status": "deprecated"
+    },
+    {
+      "alias": "catalog.updated",
+      "canonical": "catalog.product.updated",
+      "status": "deprecated"
+    },
+    {
+      "alias": "stock.received",
+      "canonical": "stock.adjusted",
+      "status": "deprecated"
+    },
+    {
+      "alias": "return.created",
+      "canonical": "sale.refunded",
+      "status": "deprecated"
+    }
+  ]
+}

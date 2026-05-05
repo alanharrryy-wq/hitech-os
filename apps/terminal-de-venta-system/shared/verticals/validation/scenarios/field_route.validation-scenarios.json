@@ -1,0 +1,246 @@
+{
+  "verticalId": "field_route",
+  "scenarioVersion": "0.0.1",
+  "scenarios": [
+    {
+      "id": "field_route.scenario.01.route_start",
+      "title": "Validar route start para Venta en ruta / campo",
+      "verticalId": "field_route",
+      "primaryScreen": "Cobro",
+      "flowKey": "route_start",
+      "initialState": "loading",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Cobro.",
+        "Ejecutar flujo route start.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo route_start termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "field_route.route_start.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.complete"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:field_route:route_start:1",
+        "5b9b6a189fda6783"
+      ]
+    },
+    {
+      "id": "field_route.scenario.02.customer_visit",
+      "title": "Validar customer visit para Venta en ruta / campo",
+      "verticalId": "field_route",
+      "primaryScreen": "Ticket actual",
+      "flowKey": "customer_visit",
+      "initialState": "ready",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ticket actual.",
+        "Ejecutar flujo customer visit.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo customer_visit termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "field_route.customer_visit.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.ticket.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:field_route:customer_visit:2",
+        "cfab8102768b1672"
+      ]
+    },
+    {
+      "id": "field_route.scenario.03.preorder_capture",
+      "title": "Validar preorder capture para Venta en ruta / campo",
+      "verticalId": "field_route",
+      "primaryScreen": "Ventas de hoy",
+      "flowKey": "preorder_capture",
+      "initialState": "error",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ventas de hoy.",
+        "Ejecutar flujo preorder capture.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo preorder_capture termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "field_route.preorder_capture.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.retry"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:field_route:preorder_capture:3",
+        "9cd34af6cf89cbcd"
+      ]
+    },
+    {
+      "id": "field_route.scenario.04.delivery_confirm",
+      "title": "Validar delivery confirm para Venta en ruta / campo",
+      "verticalId": "field_route",
+      "primaryScreen": "Turno",
+      "flowKey": "delivery_confirm",
+      "initialState": "offline",
+      "actor": "supervisor",
+      "mode": "pc",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Turno.",
+        "Ejecutar flujo delivery confirm.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo delivery_confirm termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "field_route.delivery_confirm.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.status.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:field_route:delivery_confirm:4",
+        "340441c75f651b0c"
+      ]
+    },
+    {
+      "id": "field_route.scenario.05.cash_collection",
+      "title": "Validar cash collection para Venta en ruta / campo",
+      "verticalId": "field_route",
+      "primaryScreen": "Sincronizacion",
+      "flowKey": "cash_collection",
+      "initialState": "sync_pending",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Sincronizacion.",
+        "Ejecutar flujo cash collection.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo cash_collection termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.create"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:field_route:cash_collection:5",
+        "8789f1329035c251"
+      ]
+    },
+    {
+      "id": "field_route.scenario.06.offline_sync_later",
+      "title": "Validar offline sync later para Venta en ruta / campo",
+      "verticalId": "field_route",
+      "primaryScreen": "Ruta",
+      "flowKey": "offline_sync_later",
+      "initialState": "success",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ruta.",
+        "Ejecutar flujo offline sync later.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo offline_sync_later termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "field_route.offline_sync_later.completed",
+        "sync.event.queued"
+      ],
+      "requiredPermissions": [
+        "inventory.adjust.local"
+      ],
+      "offlineExpectation": "queda pendiente por enviar",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:field_route:offline_sync_later:6",
+        "73cd24f7f5c56d70"
+      ]
+    }
+  ]
+}

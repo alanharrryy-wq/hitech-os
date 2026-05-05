@@ -1,0 +1,64 @@
+{
+  "registryVersion": "0.0.1",
+  "package": "PRISMA_VERTICALS_ARCHITECTURE_00F_VERTICAL_VALIDATION_FIXTURES",
+  "fixtureCount": 10,
+  "scenarioCount": 60,
+  "fixtures": [
+    {
+      "verticalId": "convenience",
+      "path": "shared/verticals/validation/fixtures/convenience.validation-fixture.json",
+      "scenarioCount": 6
+    },
+    {
+      "verticalId": "restaurant",
+      "path": "shared/verticals/validation/fixtures/restaurant.validation-fixture.json",
+      "scenarioCount": 6
+    },
+    {
+      "verticalId": "pharmacy",
+      "path": "shared/verticals/validation/fixtures/pharmacy.validation-fixture.json",
+      "scenarioCount": 6
+    },
+    {
+      "verticalId": "beauty",
+      "path": "shared/verticals/validation/fixtures/beauty.validation-fixture.json",
+      "scenarioCount": 6
+    },
+    {
+      "verticalId": "hardware",
+      "path": "shared/verticals/validation/fixtures/hardware.validation-fixture.json",
+      "scenarioCount": 6
+    },
+    {
+      "verticalId": "apparel",
+      "path": "shared/verticals/validation/fixtures/apparel.validation-fixture.json",
+      "scenarioCount": 6
+    },
+    {
+      "verticalId": "repair",
+      "path": "shared/verticals/validation/fixtures/repair.validation-fixture.json",
+      "scenarioCount": 6
+    },
+    {
+      "verticalId": "field_route",
+      "path": "shared/verticals/validation/fixtures/field_route.validation-fixture.json",
+      "scenarioCount": 6
+    },
+    {
+      "verticalId": "grocery_scale",
+      "path": "shared/verticals/validation/fixtures/grocery_scale.validation-fixture.json",
+      "scenarioCount": 6
+    },
+    {
+      "verticalId": "food_truck",
+      "path": "shared/verticals/validation/fixtures/food_truck.validation-fixture.json",
+      "scenarioCount": 6
+    }
+  ],
+  "globalRules": [
+    "cada vertical nuevo requiere fixture antes de UI final",
+    "cada escenario sensible requiere evento y permiso",
+    "cada flujo principal requiere estado offline o razon explicita de bloqueo",
+    "Tablet no absorbe backoffice pesado"
+  ]
+}

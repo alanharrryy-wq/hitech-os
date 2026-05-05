@@ -1,0 +1,625 @@
+{
+  "verticalId": "beauty",
+  "verticalName": "Estetica / barberia",
+  "fixtureVersion": "0.0.1",
+  "purpose": "agenda, servicios, comisiones, cliente recurrente y cobro de servicio",
+  "requiredBlocks": [
+    "00A_CORE_CONTRACTS",
+    "00B_VERTICAL_REGISTRY",
+    "00C_VERTICAL_DATA_MODELS",
+    "00D_VERTICAL_EVENTS_PERMISSIONS",
+    "00E_VERTICAL_UX_OPERATIONS"
+  ],
+  "businessProfile": {
+    "tabletRole": "operacion principal o captura rapida segun vertical",
+    "pcRole": "gobierno, auditoria, configuracion y consolidacion",
+    "forbiddenTabletBehaviors": [
+      "backoffice_profundo",
+      "permisos_globales",
+      "compras_formales_sin_pc",
+      "auditoria_pesada"
+    ]
+  },
+  "screensUnderTest": [
+    "Vender",
+    "Cobro",
+    "Ticket actual",
+    "Ventas de hoy",
+    "Turno",
+    "Sincronizacion",
+    "Agenda",
+    "Servicios",
+    "Colaborador",
+    "Cliente"
+  ],
+  "flowsUnderTest": [
+    "book_appointment",
+    "sell_service",
+    "assign_staff",
+    "commission_capture",
+    "cash_change",
+    "reschedule"
+  ],
+  "seedData": {
+    "business": {
+      "id": "biz_beauty",
+      "name": "Demo Estetica / barberia",
+      "verticalId": "beauty",
+      "mode": "standalone_or_managed"
+    },
+    "terminal": {
+      "id": "terminal_beauty_01",
+      "kind": "tablet_pos",
+      "offlineAllowed": true
+    },
+    "operator": {
+      "id": "operator_beauty_01",
+      "role": "cajero",
+      "permissions": [
+        "pos.sale.create",
+        "pos.sale.complete",
+        "pos.ticket.view",
+        "shift.view",
+        "sync.status.view",
+        "pos.return.create",
+        "inventory.adjust.local"
+      ]
+    },
+    "products": [
+      {
+        "sku": "BEAUTY-SKU-001",
+        "name": "Producto 1 Estetica / barberia",
+        "barcode": "7508831371165",
+        "priceCents": 1125,
+        "stockOnHand": 21,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "ec2290aa6d6634db84e88f93"
+        }
+      },
+      {
+        "sku": "BEAUTY-SKU-002",
+        "name": "Producto 2 Estetica / barberia",
+        "barcode": "7501949001462",
+        "priceCents": 1250,
+        "stockOnHand": 22,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "c197a946c09f5b247ad72e41"
+        }
+      },
+      {
+        "sku": "BEAUTY-SKU-003",
+        "name": "Producto 3 Estetica / barberia",
+        "barcode": "7505658551729",
+        "priceCents": 1375,
+        "stockOnHand": 23,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "de9544cf42085764b7826013"
+        }
+      },
+      {
+        "sku": "BEAUTY-SKU-004",
+        "name": "Producto 4 Estetica / barberia",
+        "barcode": "7509078303521",
+        "priceCents": 1500,
+        "stockOnHand": 24,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "bff9b639dafc7ccde0251023"
+        }
+      },
+      {
+        "sku": "BEAUTY-SKU-005",
+        "name": "Producto 5 Estetica / barberia",
+        "barcode": "7508529249670",
+        "priceCents": 1625,
+        "stockOnHand": 25,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "d68a76b2560b294de4e4d79c"
+        }
+      },
+      {
+        "sku": "BEAUTY-SKU-006",
+        "name": "Producto 6 Estetica / barberia",
+        "barcode": "7503223237452",
+        "priceCents": 1750,
+        "stockOnHand": 26,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "b460a393fb32f7a02e39fe54"
+        }
+      },
+      {
+        "sku": "BEAUTY-SKU-007",
+        "name": "Producto 7 Estetica / barberia",
+        "barcode": "7509325235877",
+        "priceCents": 1875,
+        "stockOnHand": 27,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "8d1c5a455d53d655ebc941c8"
+        }
+      },
+      {
+        "sku": "BEAUTY-SKU-008",
+        "name": "Producto 8 Estetica / barberia",
+        "barcode": "7500352539511",
+        "priceCents": 2000,
+        "stockOnHand": 28,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "11abddc2403e626cda05109d"
+        }
+      }
+    ],
+    "services": [
+      {
+        "serviceCode": "BEAUTY-SVC-01",
+        "name": "Servicio 1 Estetica / barberia",
+        "priceCents": 1800,
+        "durationMinutes": 15,
+        "verticalTraits": {
+          "fixtureTrait": "48b42b21729edd7f53e3547d"
+        }
+      },
+      {
+        "serviceCode": "BEAUTY-SVC-02",
+        "name": "Servicio 2 Estetica / barberia",
+        "priceCents": 2100,
+        "durationMinutes": 30,
+        "verticalTraits": {
+          "fixtureTrait": "b463c56f6f4511bfdccabd99"
+        }
+      },
+      {
+        "serviceCode": "BEAUTY-SVC-03",
+        "name": "Servicio 3 Estetica / barberia",
+        "priceCents": 2400,
+        "durationMinutes": 45,
+        "verticalTraits": {
+          "fixtureTrait": "dfedb99781d7c6deaeae31fc"
+        }
+      },
+      {
+        "serviceCode": "BEAUTY-SVC-04",
+        "name": "Servicio 4 Estetica / barberia",
+        "priceCents": 2700,
+        "durationMinutes": 60,
+        "verticalTraits": {
+          "fixtureTrait": "4d6451f02561405200305faa"
+        }
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "beauty.scenario.01.book_appointment",
+      "title": "Validar book appointment para Estetica / barberia",
+      "verticalId": "beauty",
+      "primaryScreen": "Cobro",
+      "flowKey": "book_appointment",
+      "initialState": "loading",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Cobro.",
+        "Ejecutar flujo book appointment.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo book_appointment termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "beauty.book_appointment.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.complete"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:beauty:book_appointment:1",
+        "693956eeb0eb7d8c"
+      ]
+    },
+    {
+      "id": "beauty.scenario.02.sell_service",
+      "title": "Validar sell service para Estetica / barberia",
+      "verticalId": "beauty",
+      "primaryScreen": "Ticket actual",
+      "flowKey": "sell_service",
+      "initialState": "ready",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ticket actual.",
+        "Ejecutar flujo sell service.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo sell_service termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "beauty.sell_service.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.ticket.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:beauty:sell_service:2",
+        "5725b3f7fa6fed76"
+      ]
+    },
+    {
+      "id": "beauty.scenario.03.assign_staff",
+      "title": "Validar assign staff para Estetica / barberia",
+      "verticalId": "beauty",
+      "primaryScreen": "Ventas de hoy",
+      "flowKey": "assign_staff",
+      "initialState": "error",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ventas de hoy.",
+        "Ejecutar flujo assign staff.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo assign_staff termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "beauty.assign_staff.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.retry"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:beauty:assign_staff:3",
+        "2740140cc07111df"
+      ]
+    },
+    {
+      "id": "beauty.scenario.04.commission_capture",
+      "title": "Validar commission capture para Estetica / barberia",
+      "verticalId": "beauty",
+      "primaryScreen": "Turno",
+      "flowKey": "commission_capture",
+      "initialState": "offline",
+      "actor": "supervisor",
+      "mode": "pc",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Turno.",
+        "Ejecutar flujo commission capture.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo commission_capture termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "beauty.commission_capture.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.status.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:beauty:commission_capture:4",
+        "4963260c4e4cfe77"
+      ]
+    },
+    {
+      "id": "beauty.scenario.05.cash_change",
+      "title": "Validar cash change para Estetica / barberia",
+      "verticalId": "beauty",
+      "primaryScreen": "Sincronizacion",
+      "flowKey": "cash_change",
+      "initialState": "sync_pending",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Sincronizacion.",
+        "Ejecutar flujo cash change.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo cash_change termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.create"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:beauty:cash_change:5",
+        "2cab9665cf812885"
+      ]
+    },
+    {
+      "id": "beauty.scenario.06.reschedule",
+      "title": "Validar reschedule para Estetica / barberia",
+      "verticalId": "beauty",
+      "primaryScreen": "Agenda",
+      "flowKey": "reschedule",
+      "initialState": "success",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Agenda.",
+        "Ejecutar flujo reschedule.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo reschedule termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "beauty.reschedule.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "inventory.adjust.local"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:beauty:reschedule:6",
+        "adc53bef4d93c646"
+      ]
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "scenarioId": "beauty.scenario.01.book_appointment",
+      "checks": [
+        {
+          "id": "beauty.scenario.01.book_appointment.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "beauty.scenario.01.book_appointment.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "beauty.scenario.01.book_appointment.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "beauty.scenario.01.book_appointment.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "beauty.scenario.01.book_appointment.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "beauty.scenario.02.sell_service",
+      "checks": [
+        {
+          "id": "beauty.scenario.02.sell_service.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "beauty.scenario.02.sell_service.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "beauty.scenario.02.sell_service.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "beauty.scenario.02.sell_service.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "beauty.scenario.02.sell_service.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "beauty.scenario.03.assign_staff",
+      "checks": [
+        {
+          "id": "beauty.scenario.03.assign_staff.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "beauty.scenario.03.assign_staff.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "beauty.scenario.03.assign_staff.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "beauty.scenario.03.assign_staff.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "beauty.scenario.03.assign_staff.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "beauty.scenario.04.commission_capture",
+      "checks": [
+        {
+          "id": "beauty.scenario.04.commission_capture.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "beauty.scenario.04.commission_capture.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "beauty.scenario.04.commission_capture.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "beauty.scenario.04.commission_capture.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "beauty.scenario.04.commission_capture.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "beauty.scenario.05.cash_change",
+      "checks": [
+        {
+          "id": "beauty.scenario.05.cash_change.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "beauty.scenario.05.cash_change.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "beauty.scenario.05.cash_change.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "beauty.scenario.05.cash_change.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "beauty.scenario.05.cash_change.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "beauty.scenario.06.reschedule",
+      "checks": [
+        {
+          "id": "beauty.scenario.06.reschedule.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "beauty.scenario.06.reschedule.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "beauty.scenario.06.reschedule.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "beauty.scenario.06.reschedule.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "beauty.scenario.06.reschedule.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    }
+  ],
+  "fixtureIntegrity": {
+    "anchor": "3cd82546497cec6088655df8750af018bb223ca01025b9c04fe5efbdb754ab94",
+    "noiseProofCorpus": "c6cbacf4aa0a69ec05f125c8ca57ffdd98dd9ada9aa3700610640a0c655474898a113f02a0b2e781a3b260a7a84ca1f3a0d7f971f3a0858c219be5fa58ebc3cb0d7a6ae9f97f05497078f9ec9eb939a896fed4f940ba924e0aebf6a1c5ec2e6c312b576115b8400c7a54ae017d246327b0998a0d553cfe58b6e42e5061fe8aa3bf835fed5e3747f72762ebb2a44e90690d51e9bd5c12f8038cf20093e61ab8b81d4e1a26235c589248f2d9f344665c967c5be6b8bed40f821113b26582fea057406c18c870cebeaaf445f7ee16c8693f1a8b11f73e97a30f275c3fc69ee61028d8593a7c75834db36b974febfe53d9a0f959dba0cce77a1b6ba951b75610252607ac866659966a2a811f89c6cd5ec4e51648aa8ae5e1e80bb305426ff17916e3fb7e341ea6d5354e17d58dc63b0eb84f0ed15a7fe664b9acbc69854e44f5260f7ca680af60fa46698600e91be2ff5796d76b0c75b450f6387211ca7d780294c2b57dc5457633b2b6ca37cf16884d4d3c8dedef1b99deb056d47878d6e9e1ec46a3a7cf209cf6424745c27345cf69a5721aaf6880cf0a44e5854e2d9640cf7cea0fdd38d069d2855f1839b24acf589fac4092384709effb1b3caa124390cae787d5d43c6abc80b786325f75b7d05c122963325a28ab0c650caf5d039edfdef4d5494936c590fb69028271a828d016fde522e402cae35e77a6559edf06eaddb86ba4d0676f505f157ffe98d597b521f2ce78f11c68b86696cf66b02e5bf74448cfc8f70299dfc25f617da030704746971227be186a38cc91b118d1be4f99be659ff24861ec3717053bb38bfe39134a41ee9b1d39f30af6b1c513ce03b05279b5e7d40703d7a72e522288634ca99de1bae9aaf4e11677c420fed09503c0bd40d89194fc9bcb7b1ac8334a4029a7cacb2366a0c1603110db767265a605cf014340664ba4d8db7ecc584b1fa0a9d9264f1bb60cc5c3ab25bdb552759e567018f0363c0969ae6fe19fbf8100275e18ddf69b494a7a1a73b9a72070d5bb18fa30df0a83f6e3c581140f37b03686796ca8e2e6bf75a356929baaaa7fee03efa58b583da2efbd0e7a5118e63e355f986510a33457ccde6317c67ac0d5367ec6f5b976be755d87bb437cd5d7b105329382e8ff8f975c6f5701cb2cd361fe75d1aa95bdaa6a216354677f2f6a7528bf4369fb6eed5647c15aba41e18a8729a4feb6e14c1047f1fbda2b90eaa85a358b8a860f945350d2184e429254b19336631e4055bbbbd5857c2f8c0a3f55f6ed81b3e60335cb7a7302db8c3ae237625012a5596d2f2d9186b473f04245a1902f8b8bad56613f675dd40cc9a50b7afde9449e0414b7968467d090e7690ace678d11c00aad785baf5ba40f3daf46ea3acda1468fc4ad8b68352de873525bfdb73fdd62c2a50c62e0bf3d2c0cf341546302634e237b173203ce54b611236cc06fd9752b18313c7aae44cbcbd66b6e6afe6be18dc137037a801fce06b82349ca400c2bc9fa0b80890d3f004b3fd49f0f6fc34f9e2fdd900b9a9440c5ddce8715ab9f2cfa0181a64b76db69749f62aab71b81318a137913c42ed33eec7721f9e98287336e90aeeac80add60488361a7289b664668f40f5ac70a432c878e98ee5b5c47f4b19c9e813e60f14b1fdd1ababb6aacc6206dc7a239f77e03c4fccd6e2cb8302393b65117eae050cbcb178167089c93dbf3c08ad1941487a3739b2e6adf2f037cea12094851fb43c1411426f082387920ee4c692acf740996c44a55afe53e96a9d5f8de0240187fe0dcba286b3ee093e8fdda23683676dd65e1e351e4fc7fd465493783dc1e102b13a9e349a2e08fb181a5572ac091638eb50e9d21af573ea07ece3c7e173360508194c16dd7ed6ded0920fb62f5d8ed27507e3ca300a8321be43d6ad7c879113aaa4bdec36c39a685ff31798ec972a6eab552797c72e1ae786e5bf5f7fceff77dc7db59b55f0447125065d1c413b4233ca70667841f05ce39cb03d8f91bf124a4f06ef8336fecb1d60290236b64fed42d476be11b1c54ab4946e9afdc80a1f6aecbc9ff644bdf5936667a78b15af2a4bc2b34e56946b4202ec5761de5d40eeadb6df15be93717e44d03aa9dc5b205c2c5f55428720eee23ad45200d68dcd6cb5a3fe31afe615a088e5b54d70e66bfcd5b7676f02fd1b57e50b778022db0f3baf618b303ae9d24458e836a372de7623b4756c234b8b900f2fac9192db0dbe29a4c1e3cd95a2875439aad895fd9d98f31bc49357b7bfd526fb77cdf4058208c178e618f1223bb0499606113a29367b3cd5b08836c6cfcf87321aea2de59972f6d3c16992150c086555cda8ff02d66a7a4b4d2108403c2fa6c832af92b613d390aa4e440661f20f1cfd6dc9bb9c41400bd1f38bf29989aa00c3594bc322cb960207dd5d7f9fd2a04998fc2c11f6cfd729c1c494e602bbb5700c5a07b317f0155963858a8120c0d992ae74348907ee3fd1c8177a44c82c08a8a42fe8a14e3900ebe1696b251297dc0a3678586aca70da2e0d44f5dfd6d98bd8053fd7d922dd21f23d5b67ab0ddd04760125b876d82996f28d991759556be7ea4855893fbcb5c395ae2863c57865f466cc016698a43cbce162a26bf5a0d474305261dcef12dc2ffccfb0a1d864f853be45c17f9cac4d62b53c0d9eb3781a816bbb19acef72f00e3b33cee8735c9e707ca91554d5aeb0d51a9f919ddfe1e75bb4e1de10bf116e9f956e79c504fc20174fe05f940620aacb55da232a2bcfd22a303853b4cfc2ce764425f83a250b36ffede08364f1689935237aa7d614755446cabbe8d64789ce4a6d9d54f56f08952c2b59ab9475ec995b725aee93878d85820de5fa467d0d6b911ee4ee776a9110936efd2bb750e778c43cb1bd35f7242da8e98a2a15559e26f3fb125e77d6c53fe8d7fbd0b64e614697ba1f2cdc9da9daa23e3b1407b26f48876aa66b9cf39f8aad75f279254ee2a03e28e4562ea87064893ba810bafc1b7ba9a514a03a703cbc13676ba5c43893f1b577aedfbb63acbb478e0bdcf816e444a5d4ad18c3543263c8ff943c5c31af0bc7afaed4dd56fc45efaa10011727b83e2c94d0368cf6126fed5e461e2dae00068d2d06276b05d32e57d55bcee1864ac81ffbdc2ee2a03bd204774a52a1f88c7ccd6624e1fc774af8915632e9d1a8f7c121fa0235c3c7d1f512fe130ef0bcac38370738249e274becde1fdf6a8ebf4c476ae765f0afafc79948ffbd62112141fbad444f54ae171eb5bfcb630d6e9d46ecd0d05eff0ffd71f7fb6e41786ae3db4514779ede181752a3dd7c199fd240adc5a278e3abf4030697a1f6367bfb7ae1e9c00a01594a19d5c94b43fdc58e4b32e1fbbcc0cfd0e802092842f64d92fdc1f9d248bb4723ce2deb5c382d58aade0ed9a8538984ef6dc9d992643494f98f3d0547147032f24101546662a9bdeedb49363f579cc5c10c89173f41a72d4e4b986f83a7f6bd95846ad369b41f1d33b04862d0f1981832ae957454213f1a968e424fa5a5550860377de6cd65ea5baad8b67b2f65fd4e1818d1b86320a05f69a5c8dfe6d2a30561012315b4e1db02c8330a6bb80063bb117f2cb34df2db20f36a3d3c1c76a"
+  }
+}

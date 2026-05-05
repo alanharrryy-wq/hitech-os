@@ -1,0 +1,183 @@
+{
+  "verticalId": "field_route",
+  "label": "Campo / ruta",
+  "version": "0.3.0",
+  "principle": "Offline fuerte, preventa, entrega, cliente en ruta y consolidacion posterior.",
+  "extensions": [
+    {
+      "extensionId": "field_route.Route",
+      "entityName": "Route",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.field_route.Route.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.field_route.Route.created",
+        "vertical.field_route.Route.updated"
+      ],
+      "fixtures": [
+        "field_route_Route_happy_path.json",
+        "field_route_Route_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "appointmentChair",
+        "prescriptionId",
+        "kitchenStation"
+      ]
+    },
+    {
+      "extensionId": "field_route.RouteStop",
+      "entityName": "RouteStop",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.field_route.RouteStop.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.field_route.RouteStop.created",
+        "vertical.field_route.RouteStop.updated"
+      ],
+      "fixtures": [
+        "field_route_RouteStop_happy_path.json",
+        "field_route_RouteStop_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "appointmentChair",
+        "prescriptionId",
+        "kitchenStation"
+      ]
+    },
+    {
+      "extensionId": "field_route.DeliveryAttempt",
+      "entityName": "DeliveryAttempt",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.field_route.DeliveryAttempt.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.field_route.DeliveryAttempt.created",
+        "vertical.field_route.DeliveryAttempt.updated"
+      ],
+      "fixtures": [
+        "field_route_DeliveryAttempt_happy_path.json",
+        "field_route_DeliveryAttempt_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "appointmentChair",
+        "prescriptionId",
+        "kitchenStation"
+      ]
+    },
+    {
+      "extensionId": "field_route.CustomerCredit",
+      "entityName": "CustomerCredit",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.field_route.CustomerCredit.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.field_route.CustomerCredit.created",
+        "vertical.field_route.CustomerCredit.updated"
+      ],
+      "fixtures": [
+        "field_route_CustomerCredit_happy_path.json",
+        "field_route_CustomerCredit_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "appointmentChair",
+        "prescriptionId",
+        "kitchenStation"
+      ]
+    },
+    {
+      "extensionId": "field_route.MobileSettlement",
+      "entityName": "MobileSettlement",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.field_route.MobileSettlement.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.field_route.MobileSettlement.created",
+        "vertical.field_route.MobileSettlement.updated"
+      ],
+      "fixtures": [
+        "field_route_MobileSettlement_happy_path.json",
+        "field_route_MobileSettlement_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "appointmentChair",
+        "prescriptionId",
+        "kitchenStation"
+      ]
+    }
+  ]
+}

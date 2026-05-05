@@ -1,0 +1,183 @@
+{
+  "verticalId": "hardware",
+  "label": "Ferreteria",
+  "version": "0.3.0",
+  "principle": "Necesita unidades variables, medidas, cotizaciones y ventas parciales sin romper Product.",
+  "extensions": [
+    {
+      "extensionId": "hardware.MeasureUnit",
+      "entityName": "MeasureUnit",
+      "extensionType": "inventory_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_cache",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.hardware.MeasureUnit.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "Product"
+      ],
+      "requiredEvents": [
+        "vertical.hardware.MeasureUnit.created",
+        "vertical.hardware.MeasureUnit.updated"
+      ],
+      "fixtures": [
+        "hardware_MeasureUnit_happy_path.json",
+        "hardware_MeasureUnit_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "appointmentTime",
+        "kitchenStation",
+        "prescriptionId",
+        "colorSizeGrid"
+      ]
+    },
+    {
+      "extensionId": "hardware.CutLengthLine",
+      "entityName": "CutLengthLine",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.hardware.CutLengthLine.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.hardware.CutLengthLine.created",
+        "vertical.hardware.CutLengthLine.updated"
+      ],
+      "fixtures": [
+        "hardware_CutLengthLine_happy_path.json",
+        "hardware_CutLengthLine_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "appointmentTime",
+        "kitchenStation",
+        "prescriptionId",
+        "colorSizeGrid"
+      ]
+    },
+    {
+      "extensionId": "hardware.Quote",
+      "entityName": "Quote",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.hardware.Quote.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.hardware.Quote.created",
+        "vertical.hardware.Quote.updated"
+      ],
+      "fixtures": [
+        "hardware_Quote_happy_path.json",
+        "hardware_Quote_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "appointmentTime",
+        "kitchenStation",
+        "prescriptionId",
+        "colorSizeGrid"
+      ]
+    },
+    {
+      "extensionId": "hardware.BulkUnitPricing",
+      "entityName": "BulkUnitPricing",
+      "extensionType": "catalog_extension",
+      "ownerSurface": "pc_backoffice",
+      "storagePolicy": "local_cache",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.hardware.BulkUnitPricing.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "Product"
+      ],
+      "requiredEvents": [
+        "vertical.hardware.BulkUnitPricing.created",
+        "vertical.hardware.BulkUnitPricing.updated"
+      ],
+      "fixtures": [
+        "hardware_BulkUnitPricing_happy_path.json",
+        "hardware_BulkUnitPricing_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "appointmentTime",
+        "kitchenStation",
+        "prescriptionId",
+        "colorSizeGrid"
+      ]
+    },
+    {
+      "extensionId": "hardware.SerialToolRentalFlag",
+      "entityName": "SerialToolRentalFlag",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.hardware.SerialToolRentalFlag.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.hardware.SerialToolRentalFlag.created",
+        "vertical.hardware.SerialToolRentalFlag.updated"
+      ],
+      "fixtures": [
+        "hardware_SerialToolRentalFlag_happy_path.json",
+        "hardware_SerialToolRentalFlag_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "appointmentTime",
+        "kitchenStation",
+        "prescriptionId",
+        "colorSizeGrid"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "id": "grocery_scale",
+  "displayName": "Abarrotes con bascula",
+  "market": "retail_weighted",
+  "status": "draft",
+  "priority": "phase_2",
+  "tabletRole": "Operacion rapida del giro desde Tablet sin convertirla en backoffice.",
+  "pcRole": "Gobierno profundo del giro, auditoria, configuracion, compras, reportes y consolidacion.",
+  "capabilities": [
+    "sales.products",
+    "barcode.scan",
+    "inventory.stock",
+    "inventory.units_weight",
+    "scale.integration.basic",
+    "offline.sales",
+    "sync.outbox"
+  ],
+  "tabletNavigation": [
+    "Vender",
+    "Pesables",
+    "Existencias",
+    "Ventas de hoy",
+    "Turno",
+    "Pendientes por enviar"
+  ],
+  "pcNavigation": [
+    "Catalogo",
+    "Unidades",
+    "Bascula",
+    "Existencias",
+    "Compras",
+    "Dashboard"
+  ],
+  "tabletBlockedCapabilities": [
+    "scale_device_admin.deep",
+    "supplier.management",
+    "purchase_order.full",
+    "margin_rules.deep"
+  ],
+  "events": [
+    "weighted_item.sold",
+    "sale.completed",
+    "stock.decremented",
+    "scale.reading.captured",
+    "sync.event.pending"
+  ],
+  "permissions": [
+    "barcode.use",
+    "inventory.use",
+    "offline.use",
+    "payment.receive",
+    "pos.sale.complete",
+    "sales.use",
+    "scale.use",
+    "sync.use"
+  ],
+  "offlinePolicy": {
+    "mode": "medium",
+    "allowed": [
+      "venta local permitida",
+      "consulta de datos locales",
+      "registro de pendientes por enviar"
+    ],
+    "blocked": [
+      "scale_device_admin.deep",
+      "supplier.management",
+      "purchase_order.full",
+      "margin_rules.deep"
+    ],
+    "cashierMessage": "Puedes seguir operando con datos locales; lo pendiente se enviara cuando haya conexion."
+  },
+  "kpis": [
+    "ventas netas",
+    "numero de tickets",
+    "ticket promedio",
+    "errores de captura",
+    "pendientes por enviar"
+  ],
+  "acceptanceCriteria": [
+    "El cajero entiende la accion principal en menos de 5 segundos.",
+    "Tablet no muestra administracion pesada del vertical.",
+    "Los eventos minimos quedan registrados.",
+    "Los estados offline y pendiente por enviar son claros."
+  ]
+}

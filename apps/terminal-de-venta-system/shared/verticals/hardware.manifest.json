@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "verticalId": "hardware",
+  "displayName": "Ferreteria",
+  "coreRequired": true,
+  "capabilities": {
+    "required": [
+      "core.sales",
+      "core.payments",
+      "core.ticket",
+      "core.inventory.basic",
+      "hardware.measure_units"
+    ],
+    "optional": [
+      "hardware.quote",
+      "core.sync"
+    ]
+  },
+  "surfaces": {
+    "tablet": {
+      "enabled": true,
+      "routes": [
+        "Vender",
+        "Cotizaciones",
+        "Existencias",
+        "Cobro",
+        "Ventas de hoy",
+        "Turno"
+      ]
+    },
+    "pc": {
+      "enabled": true,
+      "routes": [
+        "Dashboard",
+        "Catalogo",
+        "Inventario",
+        "Auditoria",
+        "Configuracion"
+      ]
+    }
+  },
+  "offline": {
+    "salesAllowed": true,
+    "sensitiveActionsRequireConnection": false
+  }
+}

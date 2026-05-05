@@ -1,0 +1,183 @@
+{
+  "verticalId": "beauty",
+  "label": "Estetica / barberia / salon",
+  "version": "0.3.0",
+  "principle": "Vende servicios, citas y comisiones; inventario de producto existe pero no manda todo el negocio.",
+  "extensions": [
+    {
+      "extensionId": "beauty.Service",
+      "entityName": "Service",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.beauty.Service.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.beauty.Service.created",
+        "vertical.beauty.Service.updated"
+      ],
+      "fixtures": [
+        "beauty_Service_happy_path.json",
+        "beauty_Service_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "lotExpiration",
+        "tableNumber",
+        "repairVin",
+        "scaleWeight"
+      ]
+    },
+    {
+      "extensionId": "beauty.Appointment",
+      "entityName": "Appointment",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.beauty.Appointment.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.beauty.Appointment.created",
+        "vertical.beauty.Appointment.updated"
+      ],
+      "fixtures": [
+        "beauty_Appointment_happy_path.json",
+        "beauty_Appointment_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "lotExpiration",
+        "tableNumber",
+        "repairVin",
+        "scaleWeight"
+      ]
+    },
+    {
+      "extensionId": "beauty.StaffCommission",
+      "entityName": "StaffCommission",
+      "extensionType": "sale_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.beauty.StaffCommission.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.beauty.StaffCommission.created",
+        "vertical.beauty.StaffCommission.updated"
+      ],
+      "fixtures": [
+        "beauty_StaffCommission_happy_path.json",
+        "beauty_StaffCommission_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "lotExpiration",
+        "tableNumber",
+        "repairVin",
+        "scaleWeight"
+      ]
+    },
+    {
+      "extensionId": "beauty.ClientProfile",
+      "entityName": "ClientProfile",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.beauty.ClientProfile.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.beauty.ClientProfile.created",
+        "vertical.beauty.ClientProfile.updated"
+      ],
+      "fixtures": [
+        "beauty_ClientProfile_happy_path.json",
+        "beauty_ClientProfile_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "lotExpiration",
+        "tableNumber",
+        "repairVin",
+        "scaleWeight"
+      ]
+    },
+    {
+      "extensionId": "beauty.ServicePackage",
+      "entityName": "ServicePackage",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.beauty.ServicePackage.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.beauty.ServicePackage.created",
+        "vertical.beauty.ServicePackage.updated"
+      ],
+      "fixtures": [
+        "beauty_ServicePackage_happy_path.json",
+        "beauty_ServicePackage_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "lotExpiration",
+        "tableNumber",
+        "repairVin",
+        "scaleWeight"
+      ]
+    }
+  ]
+}

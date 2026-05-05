@@ -1,0 +1,624 @@
+{
+  "verticalId": "apparel",
+  "verticalName": "Ropa / boutique",
+  "fixtureVersion": "0.0.1",
+  "purpose": "variantes, tallas, colores, cambios y disponibilidad",
+  "requiredBlocks": [
+    "00A_CORE_CONTRACTS",
+    "00B_VERTICAL_REGISTRY",
+    "00C_VERTICAL_DATA_MODELS",
+    "00D_VERTICAL_EVENTS_PERMISSIONS",
+    "00E_VERTICAL_UX_OPERATIONS"
+  ],
+  "businessProfile": {
+    "tabletRole": "operacion principal o captura rapida segun vertical",
+    "pcRole": "gobierno, auditoria, configuracion y consolidacion",
+    "forbiddenTabletBehaviors": [
+      "backoffice_profundo",
+      "permisos_globales",
+      "compras_formales_sin_pc",
+      "auditoria_pesada"
+    ]
+  },
+  "screensUnderTest": [
+    "Vender",
+    "Cobro",
+    "Ticket actual",
+    "Ventas de hoy",
+    "Turno",
+    "Sincronizacion",
+    "Variantes",
+    "Cambios",
+    "Disponibilidad por talla"
+  ],
+  "flowsUnderTest": [
+    "variant_lookup",
+    "size_color_sale",
+    "exchange_flow",
+    "cash_change",
+    "stock_check",
+    "return_ticket"
+  ],
+  "seedData": {
+    "business": {
+      "id": "biz_apparel",
+      "name": "Demo Ropa / boutique",
+      "verticalId": "apparel",
+      "mode": "standalone_or_managed"
+    },
+    "terminal": {
+      "id": "terminal_apparel_01",
+      "kind": "tablet_pos",
+      "offlineAllowed": true
+    },
+    "operator": {
+      "id": "operator_apparel_01",
+      "role": "cajero",
+      "permissions": [
+        "pos.sale.create",
+        "pos.sale.complete",
+        "pos.ticket.view",
+        "shift.view",
+        "sync.status.view",
+        "pos.return.create",
+        "inventory.adjust.local"
+      ]
+    },
+    "products": [
+      {
+        "sku": "APPAREL-SKU-001",
+        "name": "Producto 1 Ropa / boutique",
+        "barcode": "7509213559564",
+        "priceCents": 1125,
+        "stockOnHand": 21,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "05c626a19c779107a8084fb5"
+        }
+      },
+      {
+        "sku": "APPAREL-SKU-002",
+        "name": "Producto 2 Ropa / boutique",
+        "barcode": "7508186255930",
+        "priceCents": 1250,
+        "stockOnHand": 22,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "a9a6fb644719b6a0ed888c34"
+        }
+      },
+      {
+        "sku": "APPAREL-SKU-003",
+        "name": "Producto 3 Ropa / boutique",
+        "barcode": "7507915742495",
+        "priceCents": 1375,
+        "stockOnHand": 23,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "0433810e0169df087ac5b692"
+        }
+      },
+      {
+        "sku": "APPAREL-SKU-004",
+        "name": "Producto 4 Ropa / boutique",
+        "barcode": "7504017740920",
+        "priceCents": 1500,
+        "stockOnHand": 24,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "efb49278ccb3664978af3241"
+        }
+      },
+      {
+        "sku": "APPAREL-SKU-005",
+        "name": "Producto 5 Ropa / boutique",
+        "barcode": "7507939323574",
+        "priceCents": 1625,
+        "stockOnHand": 25,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "209a1780e523314797ea5030"
+        }
+      },
+      {
+        "sku": "APPAREL-SKU-006",
+        "name": "Producto 6 Ropa / boutique",
+        "barcode": "7508162674851",
+        "priceCents": 1750,
+        "stockOnHand": 26,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "da8c25f3169d0e5dcd0af90c"
+        }
+      },
+      {
+        "sku": "APPAREL-SKU-007",
+        "name": "Producto 7 Ropa / boutique",
+        "barcode": "7500810021515",
+        "priceCents": 1875,
+        "stockOnHand": 27,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "73b55059605d34c34f729107"
+        }
+      },
+      {
+        "sku": "APPAREL-SKU-008",
+        "name": "Producto 8 Ropa / boutique",
+        "barcode": "7505291976910",
+        "priceCents": 2000,
+        "stockOnHand": 28,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "6ebf0c812abaf8b2e76f868f"
+        }
+      }
+    ],
+    "services": [
+      {
+        "serviceCode": "APPAREL-SVC-01",
+        "name": "Servicio 1 Ropa / boutique",
+        "priceCents": 1800,
+        "durationMinutes": 15,
+        "verticalTraits": {
+          "fixtureTrait": "46c27a9b78bbb73529280389"
+        }
+      },
+      {
+        "serviceCode": "APPAREL-SVC-02",
+        "name": "Servicio 2 Ropa / boutique",
+        "priceCents": 2100,
+        "durationMinutes": 30,
+        "verticalTraits": {
+          "fixtureTrait": "9d42ae89fff425b67a7ea94e"
+        }
+      },
+      {
+        "serviceCode": "APPAREL-SVC-03",
+        "name": "Servicio 3 Ropa / boutique",
+        "priceCents": 2400,
+        "durationMinutes": 45,
+        "verticalTraits": {
+          "fixtureTrait": "39dd5077a5bb567fa318a68b"
+        }
+      },
+      {
+        "serviceCode": "APPAREL-SVC-04",
+        "name": "Servicio 4 Ropa / boutique",
+        "priceCents": 2700,
+        "durationMinutes": 60,
+        "verticalTraits": {
+          "fixtureTrait": "ed1f2370af1be2f60b0f405e"
+        }
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "apparel.scenario.01.variant_lookup",
+      "title": "Validar variant lookup para Ropa / boutique",
+      "verticalId": "apparel",
+      "primaryScreen": "Cobro",
+      "flowKey": "variant_lookup",
+      "initialState": "loading",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Cobro.",
+        "Ejecutar flujo variant lookup.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo variant_lookup termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "apparel.variant_lookup.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.complete"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:apparel:variant_lookup:1",
+        "54fb440797232b66"
+      ]
+    },
+    {
+      "id": "apparel.scenario.02.size_color_sale",
+      "title": "Validar size color sale para Ropa / boutique",
+      "verticalId": "apparel",
+      "primaryScreen": "Ticket actual",
+      "flowKey": "size_color_sale",
+      "initialState": "ready",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ticket actual.",
+        "Ejecutar flujo size color sale.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo size_color_sale termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.ticket.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:apparel:size_color_sale:2",
+        "00df0434f0af912b"
+      ]
+    },
+    {
+      "id": "apparel.scenario.03.exchange_flow",
+      "title": "Validar exchange flow para Ropa / boutique",
+      "verticalId": "apparel",
+      "primaryScreen": "Ventas de hoy",
+      "flowKey": "exchange_flow",
+      "initialState": "error",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ventas de hoy.",
+        "Ejecutar flujo exchange flow.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo exchange_flow termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "apparel.exchange_flow.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.retry"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:apparel:exchange_flow:3",
+        "6e63be38e095d367"
+      ]
+    },
+    {
+      "id": "apparel.scenario.04.cash_change",
+      "title": "Validar cash change para Ropa / boutique",
+      "verticalId": "apparel",
+      "primaryScreen": "Turno",
+      "flowKey": "cash_change",
+      "initialState": "offline",
+      "actor": "supervisor",
+      "mode": "pc",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Turno.",
+        "Ejecutar flujo cash change.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo cash_change termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.status.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:apparel:cash_change:4",
+        "1d564bfd4b5699d7"
+      ]
+    },
+    {
+      "id": "apparel.scenario.05.stock_check",
+      "title": "Validar stock check para Ropa / boutique",
+      "verticalId": "apparel",
+      "primaryScreen": "Sincronizacion",
+      "flowKey": "stock_check",
+      "initialState": "sync_pending",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Sincronizacion.",
+        "Ejecutar flujo stock check.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo stock_check termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "apparel.stock_check.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.create"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:apparel:stock_check:5",
+        "fdc2c96f03eec3f3"
+      ]
+    },
+    {
+      "id": "apparel.scenario.06.return_ticket",
+      "title": "Validar return ticket para Ropa / boutique",
+      "verticalId": "apparel",
+      "primaryScreen": "Variantes",
+      "flowKey": "return_ticket",
+      "initialState": "success",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Variantes.",
+        "Ejecutar flujo return ticket.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo return_ticket termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "apparel.return_ticket.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "inventory.adjust.local"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:apparel:return_ticket:6",
+        "b6716b5f2b708729"
+      ]
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "scenarioId": "apparel.scenario.01.variant_lookup",
+      "checks": [
+        {
+          "id": "apparel.scenario.01.variant_lookup.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "apparel.scenario.01.variant_lookup.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "apparel.scenario.01.variant_lookup.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "apparel.scenario.01.variant_lookup.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "apparel.scenario.01.variant_lookup.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "apparel.scenario.02.size_color_sale",
+      "checks": [
+        {
+          "id": "apparel.scenario.02.size_color_sale.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "apparel.scenario.02.size_color_sale.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "apparel.scenario.02.size_color_sale.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "apparel.scenario.02.size_color_sale.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "apparel.scenario.02.size_color_sale.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "apparel.scenario.03.exchange_flow",
+      "checks": [
+        {
+          "id": "apparel.scenario.03.exchange_flow.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "apparel.scenario.03.exchange_flow.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "apparel.scenario.03.exchange_flow.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "apparel.scenario.03.exchange_flow.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "apparel.scenario.03.exchange_flow.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "apparel.scenario.04.cash_change",
+      "checks": [
+        {
+          "id": "apparel.scenario.04.cash_change.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "apparel.scenario.04.cash_change.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "apparel.scenario.04.cash_change.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "apparel.scenario.04.cash_change.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "apparel.scenario.04.cash_change.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "apparel.scenario.05.stock_check",
+      "checks": [
+        {
+          "id": "apparel.scenario.05.stock_check.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "apparel.scenario.05.stock_check.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "apparel.scenario.05.stock_check.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "apparel.scenario.05.stock_check.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "apparel.scenario.05.stock_check.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "apparel.scenario.06.return_ticket",
+      "checks": [
+        {
+          "id": "apparel.scenario.06.return_ticket.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "apparel.scenario.06.return_ticket.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "apparel.scenario.06.return_ticket.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "apparel.scenario.06.return_ticket.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "apparel.scenario.06.return_ticket.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    }
+  ],
+  "fixtureIntegrity": {
+    "anchor": "a5cf1bedff1401cb05ea0c0ec157bc32eb34b1e38eff7573579a647ff4b2a6cf",
+    "noiseProofCorpus": "d591e1349d0e181b6439de088da1edf3cfb2b282b7fea40aa1644ecd48a73b82617ee42f7d5cb752c97df554b2400d0a2ecbbb6005c1ce5fc2a23c939866516e3c735878a3edadfd9b4efb1b55ecfabac4cfa86af472360a4395767c0da6f9e9db4c6363ecb22b55a81b403af3455078672660c0b4a1dc3a678266ea5ead89a2ab06c69f2f50d7b4ce393657b347fcc88ef40c667ef8cf5791b71697feb5ae4f54a809d6366efd80605f03bf708b2e10272153cddbef2acbb0f459d1e506110a4ad807111fe56405aefbec9abf888dabbf260d05628b1a8d18526539b6c879c5e46358ad13830ee16989bbd658c5bb18938fb4f0c0486098f5565ee93215f433c5a375f44f782fa958672b67040a1db098e097761adcadb937ef6eabff538a3eb114a0bbc1275081a280a4769894002bd34559218cb2216335ffcfd63371515207a3e1162182bcca150fa8372a950306c774d3b9e0b2ddc1baf20ea6a2259850cfdd4845b2e993c6bfe709e3e86628d3646839e18d41fca6db7730aa2d1d044137bce8a10a2a7887472464ebe76bbda09038ea4ad7f68e4f4f2fae30d7acf9080147bbe057a5a16993b7c0ed08f6db8a68b65396c2577a8df452bf2a44022866473e547ab22f4aae9dff9e8e1b8a0b27fc62b97bbb23c8e9b25f9406960dca41cecf6835f36cddca0e2608279da03cf3934db1b89dca127403419f5c1b2dcd62bc1ec22c6d4bf45b419b43b637a4240d7ae09f5ec1ecce2752b05fe5ef45cf928ddf5c7cdfdd6499895fb0b1d5eea3ad77563216cbdea9821e4354b7710ee9eed35b19f2d815bd01b71adff570f6c4771b8d4fd213595f36ed9474d3bfdc44b938d0165b5f3c2ca831061949386f5ebf81cec4c21c0d4d4250c6d5be9357a20a41c5d6b8ff06d6b710529dfdac68802d5ff6fa789f54751d11049e9dbf10903861c75d6423834b9f5ca37d3257597591b6607df1e69614fd6a98d23e6756758adb5acb37f2a5d72a2f4061f1de9d87bc2546d00db148ccd5a3fc0366b7c813c247b340cce7fb299811e89456e1293bf9f9bd598ff73231bc36e2182fc3e57916a163c9c348c2d354e6757c7be8512472640de9daf48515bb5478f9252a18521a75cc0b8222997971768d1c0634e1fc2aa56401551e1cc7bd1308773688b6a41a2847a94761fdeb37f35cfc747ef6ad6169d9862d72de5e6c29bf3d52b30d661efafa59ac2e45a9cce468b2836e1069a9ec0005b4177467095ed6266d91491f27a3af41d308e9670a2c4563e0d91c4c6563a6eb1bc42f2dc3506e3db5cd5db3adcb03b1d534b855b45e3bce94179718a69f6384e2386f6762719d762a365d5b233e4ac0c1167e11820adcfbcf003ae98e4656b90885a1239688979558206333504efc7e3537c2fb9e8b3104187bf9e7e22438bcbcbee130c07a0797f233fb39486aa99893a9aea37b42eab0fe14a4f24e421987a476f61e05f27cbf26eda0e56b0d978ed6243af2113907dcc97fd59281528a95e12b7a75dd3f27e3323ffc7acafcaa6bd8f56b34071a1ce1ada964bc8d844a932dfca45db88579561f79441911168e8bfa8d4a9fe91af48674a89ad7ad9130498b4e3397857b97f6525dd8297fcb79fd81f1b6b756f7a594430cb303e7e99b2c42879a30fc8adece9093ad01658d367e38a984f5130610a68f67d2f2bb7e08ca58e3a27367eb381d24535db48678a8e6e3b2f2747601ed541555c0dc4c2367b81d3fd5e99b47bee8d016d47094bc32d1b9cde0d95b9979d496e66fe2c3e491c63b80bfba0f0377352270cc04c2132dcf65a2d7471e52d28343be93db8da23b48f27ffc138e311762ad1c6a88e9ae6eacc99df37486e34fb6747c5c318c8d1501fb7f9d1fb2039708bb1f78cf36de00581a6550c4dd729405d94c594141479ea3bb4e3e2fe089232bea45e922de589f11f2500de8b59fac85a31e68f333c8696f5d7662ee1a1552036716019775a4fbf052cfbf4e4a8715515d43993500c23c905b7b71fb5ccfbce64875ad8e2029ab394fb8f91e6d2911adc51781c1574e55974fca77e72a1d9d4d99d6008ef278d0ce00de584c1ae9850413664b5f6a17255575dfa6d4608ab1dddd371bd1b8446e23f7833e4f2dc2ebe58349d2d578d9b10ee3a16c1bc0836c0e2c8cb55018e22961c191b6ace983f672967c4666aea44a7f070e3a10286cb3203c4a68aa22eee5d34b5e8f14128f1cd1d3e72ebbd6009a768b60eb6105d056ea476b42809861b6f74146cc821e7ec793cc81f814ce50a8133bc4559a466228bb1e471ad4c2cf9dd1b3189dc5336ea322030b6ffe366c8f6f2063570909bfe8612244adf7f8492febe3e20a267f6bc4a62953664b781e4608aec8d2e8da12629b7b2bb110503552064ab5867fd3e4f528544a74e46826a2757cf0f030bfc534fd49e3766eb72e4735e5e1899dbc27893aad97450bd5ff6877f64a05e44e9717fe9ead222a52557cb0d1d5170ca88fbd7158e7f0d7c64a9ea66ae1aacedbc6377a5ee278f220f45ff3b412bc8c42a4604cae24a3ea1d7795ddd2d029802c1f8ab9749391827df93dbfe537d2ce170310f1a5d33152ebab1016675fabfcf58d19aff810afb988416d59c00c13fd26c90eb1f0628fdd47c34b2ea9e1fa5aeb16b44ac4ad507b66cfdf0890bb6cd38307bab2e4c75741e5938fde61e6cf01c6426e71d4a61c5525206b9f1ed77ddf4a30517cd178fe8a3745de261fb93c9da958faebdaff513466a903988b337f52f772935e202f50db62c6143ccf4aedd8c8a9d82e2c879511e2eb5cf673e986362fff87f66de659f2350e4b1b648ab4d675a61949f5b4a9c781018c4ae23b2226bb33581d7ffd95a7fb9949e5eabcc9391c4e84dd75fd8bbe30110167e8fad0d035d2ff41b3d0054af8d4ca8b16e700ebef577eb5507f4b2b642c65760c8f43e18720798326050eaf8792bec19a17a6e2083c6fca91697be990b29d3452df520a13b9960a71ce8f492d7c1032f32913827cc57773e0a6fc89e2e6885215df1bff0e234864ddcd9d89579c3526e4c1fb639d12f5f947ba555475d658134d50e4588ab72f9a3512dce68c9f4d3c4e8059ec62cd580f2dce4cf77f32fd2b2b924007e9ee0a0475b7a43dbf30ac047a747fb9f45617f4dcd3d5f6a6b372c3b991cfeb197fc57eaa66076bda9cbb9780e6c39491cda76de23ad73f7700f7a1c0ec19d632eb602c3f3320585eb446c82002a9ceb113e0e20ff2d62420ce975c8b06a15d75018f239b468f2bd813a0fc16567d6f49fd56ad53a5586d4b53d30dcc86708db4117979db50c67289e92e06ac0f32e2b1c77954145a2426cabcc9283e5296b58412d2a2f9c3c3ae2b44211bca608e68113d106ecc74505cf662029f99a36ed1dadeffc6b674fc88b8c48558ce8280ba69df304a79c837daf097ec5400805632a80f05d6a7f470b31fe76c6f3baf3e049d1e48bf76f889c44980505b1276b448aa2d8dc53ef498bfbe67b8ddfdef472a108a354641053de1a7af96f2d6c25f26bcbe2f8e27a1923927931cae1ac0278952c2d697f100fe3e9a701201a234ec823c64ee9ab6fd6e077e88787a1cd2cf5096e21af08bfab19980"
+  }
+}
