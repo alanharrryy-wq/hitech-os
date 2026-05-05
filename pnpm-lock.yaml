@@ -104,15 +104,9 @@ importers:
 
   apps/external_interaction_template:
     dependencies:
-      '@prisma/client':
-        specifier: 5.21.1
-        version: 5.21.1(prisma@5.21.1)
       clsx:
         specifier: 2.1.1
         version: 2.1.1
-      framer-motion:
-        specifier: 11.11.17
-        version: 11.11.17(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       lucide-react:
         specifier: 0.468.0
         version: 0.468.0(react@19.0.0)
@@ -128,9 +122,6 @@ importers:
       tailwind-merge:
         specifier: 2.6.0
         version: 2.6.0
-      zod:
-        specifier: 3.23.8
-        version: 3.23.8
     devDependencies:
       '@types/node':
         specifier: 22.13.9
@@ -141,27 +132,43 @@ importers:
       '@types/react-dom':
         specifier: 19.0.2
         version: 19.0.2(@types/react@19.0.2)
-      autoprefixer:
-        specifier: 10.4.20
-        version: 10.4.20(postcss@8.4.49)
-      postcss:
-        specifier: 8.4.49
-        version: 8.4.49
-      prisma:
-        specifier: 5.21.1
-        version: 5.21.1
-      tailwindcss:
-        specifier: 3.4.17
-        version: 3.4.17
-      tsx:
-        specifier: 4.20.5
-        version: 4.20.5
       typescript:
         specifier: 5.8.2
         version: 5.8.2
-      vitest:
-        specifier: 2.1.8
-        version: 2.1.8(@types/node@22.13.9)
+
+  apps/external_interaction_template_failed_260504_155351:
+    dependencies:
+      clsx:
+        specifier: 2.1.1
+        version: 2.1.1
+      lucide-react:
+        specifier: 0.468.0
+        version: 0.468.0(react@19.0.0)
+      next:
+        specifier: 16.1.6
+        version: 16.1.6(@playwright/test@1.51.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      react:
+        specifier: 19.0.0
+        version: 19.0.0
+      react-dom:
+        specifier: 19.0.0
+        version: 19.0.0(react@19.0.0)
+      tailwind-merge:
+        specifier: 2.6.0
+        version: 2.6.0
+    devDependencies:
+      '@types/node':
+        specifier: 22.13.9
+        version: 22.13.9
+      '@types/react':
+        specifier: 19.0.2
+        version: 19.0.2
+      '@types/react-dom':
+        specifier: 19.0.2
+        version: 19.0.2(@types/react@19.0.2)
+      typescript:
+        specifier: 5.8.2
+        version: 5.8.2
 
   apps/keystone:
     dependencies:
@@ -232,6 +239,12 @@ importers:
       vitest:
         specifier: 2.1.8
         version: 2.1.8(@types/node@22.13.9)
+
+  apps/terminal-de-venta-system:
+    devDependencies:
+      prisma:
+        specifier: 5.21.1
+        version: 5.21.1
 
   packages/contracts:
     dependencies:
@@ -998,15 +1011,6 @@ packages:
     resolution: {integrity: sha512-nM+kEaTSAoVlXmMPH10017vn3FSiFqr/bh4fKg9vmAdMfd9SDqRZNvPSiAHADc/itWak+qPvMPZQOPwCBW7k7Q==}
     engines: {node: '>=18'}
     hasBin: true
-
-  '@prisma/client@5.21.1':
-    resolution: {integrity: sha512-3n+GgbAZYjaS/k0M03yQsQfR1APbr411r74foknnsGpmhNKBG49VuUkxIU6jORgvJPChoD4WC4PqoHImN1FP0w==}
-    engines: {node: '>=16.13'}
-    peerDependencies:
-      prisma: '*'
-    peerDependenciesMeta:
-      prisma:
-        optional: true
 
   '@prisma/debug@5.21.1':
     resolution: {integrity: sha512-uY8SAhcnORhvgtOrNdvWS98Aq/nkQ9QDUxrWAgW8XrCZaI3j2X7zb7Xe6GQSh6xSesKffFbFlkw0c2luHQviZA==}
@@ -3562,10 +3566,6 @@ snapshots:
   '@playwright/test@1.51.1':
     dependencies:
       playwright: 1.51.1
-
-  '@prisma/client@5.21.1(prisma@5.21.1)':
-    optionalDependencies:
-      prisma: 5.21.1
 
   '@prisma/debug@5.21.1': {}
 

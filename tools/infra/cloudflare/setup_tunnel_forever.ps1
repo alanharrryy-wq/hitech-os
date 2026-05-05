@@ -3,7 +3,9 @@ param(
   [switch]$GuardOnly,
   [string]$OriginUrl = $(if ($env:HITECH_CLOUDFLARE_ORIGIN_URL) { $env:HITECH_CLOUDFLARE_ORIGIN_URL } else { "http://127.0.0.1:3100" }),
   [string]$FormsHostname = $(if ($env:HITECH_CLOUDFLARE_FORMS_HOSTNAME) { $env:HITECH_CLOUDFLARE_FORMS_HOSTNAME } else { "forms.hitechrts.com" }),
-  [string]$FormsOriginUrl = $(if ($env:HITECH_CLOUDFLARE_FORMS_ORIGIN_URL) { $env:HITECH_CLOUDFLARE_FORMS_ORIGIN_URL } else { "http://127.0.0.1:3200" })
+  [string]$FormsOriginUrl = $(if ($env:HITECH_CLOUDFLARE_FORMS_ORIGIN_URL) { $env:HITECH_CLOUDFLARE_FORMS_ORIGIN_URL } else { "http://127.0.0.1:3200" }),
+  [string]$TemplateHostname = $(if ($env:HITECH_CLOUDFLARE_TEMPLATE_HOSTNAME) { $env:HITECH_CLOUDFLARE_TEMPLATE_HOSTNAME } else { "eit.hitechrts.com" }),
+  [string]$TemplateOriginUrl = $(if ($env:HITECH_CLOUDFLARE_TEMPLATE_ORIGIN_URL) { $env:HITECH_CLOUDFLARE_TEMPLATE_ORIGIN_URL } else { "http://127.0.0.1:3110" })
 )
 
 Set-StrictMode -Version Latest
@@ -110,8 +112,10 @@ $coreArgs = @(
   "--tunnel-name", $TunnelName,
   "--hostname", $Hostname,
   "--forms-hostname", $FormsHostname,
+  "--template-hostname", $TemplateHostname,
   "--origin-url", $OriginUrl,
   "--forms-origin-url", $FormsOriginUrl,
+  "--template-origin-url", $TemplateOriginUrl,
   "--log-dir", $LogDir,
   "--validate-json-out", $validateJsonPath,
   "--final-report", $FinalReportPath
@@ -134,7 +138,9 @@ Write-MagentaProgress -Id 1 -Activity "Cloudflare Industrial Setup" -Status "Run
   --hostname $Hostname `
   --origin-url $OriginUrl `
   --extra-route "$FormsHostname=$FormsOriginUrl" `
+  --extra-route "$TemplateHostname=$TemplateOriginUrl" `
   --extra-public-url "$FormsHostname=https://$FormsHostname" `
+  --extra-public-url "$TemplateHostname=https://$TemplateHostname" `
   --log-dir $LogDir `
   --json-out $validateJsonPath
 $validateExit = $LASTEXITCODE
@@ -155,8 +161,9 @@ $dnsExit = $dnsListResult.ExitCode
 if ($dnsExit -ne 0 -and $dnsOutput -match "expects the format") {
   $dnsFallbackResultPrimary = Invoke-NativeCapture -FilePath "cloudflared" -ArgumentList @("tunnel", "route", "dns", $TunnelName, $Hostname)
   $dnsFallbackResultForms = Invoke-NativeCapture -FilePath "cloudflared" -ArgumentList @("tunnel", "route", "dns", $TunnelName, $FormsHostname)
-  $dnsFallbackOutput = $dnsFallbackResultPrimary.Output + "`n" + $dnsFallbackResultForms.Output
-  if ($dnsFallbackResultPrimary.ExitCode -eq 0 -and $dnsFallbackResultForms.ExitCode -eq 0) {
+  $dnsFallbackResultTemplate = Invoke-NativeCapture -FilePath "cloudflared" -ArgumentList @("tunnel", "route", "dns", $TunnelName, $TemplateHostname)
+  $dnsFallbackOutput = $dnsFallbackResultPrimary.Output + "`n" + $dnsFallbackResultForms.Output + "`n" + $dnsFallbackResultTemplate.Output
+  if ($dnsFallbackResultPrimary.ExitCode -eq 0 -and $dnsFallbackResultForms.ExitCode -eq 0 -and $dnsFallbackResultTemplate.ExitCode -eq 0) {
     $dnsOutput = $dnsOutput + "`n[FALLBACK]" + "`n" + $dnsFallbackOutput
     $dnsExit = 0
   }
@@ -185,12 +192,15 @@ $publicTaskInstalled = ($publicTaskExit -eq 0) -or $publicTaskAccessDenied
 
 $publicUrl = "https://$Hostname"
 $formsPublicUrl = "https://$FormsHostname"
+$templatePublicUrl = "https://$TemplateHostname"
 $localOriginHealthy = $false
 $tunnelConnected = $false
 $publicHostnameHealthy = $false
 $publicStatusCode = "unknown"
 $formsPublicHealthy = $false
 $formsPublicStatusCode = "unknown"
+$templatePublicHealthy = $false
+$templatePublicStatusCode = "unknown"
 if ($validateJson -and ($validateJson.PSObject.Properties.Name -contains "public_url")) {
   $publicUrl = [string]$validateJson.public_url
 }
@@ -214,6 +224,12 @@ if ($validateJson -and ($validateJson.PSObject.Properties.Name -contains "public
     $formsPublicHealthy = [bool]$formsEntry.Value.healthy
     $formsPublicStatusCode = [string]$formsEntry.Value.status_code
   }
+  $templateEntry = $publicHostProps | Where-Object { $_.Name -eq $TemplateHostname }
+  if ($templateEntry) {
+    $templatePublicUrl = [string]$templateEntry.Value.public_url
+    $templatePublicHealthy = [bool]$templateEntry.Value.healthy
+    $templatePublicStatusCode = [string]$templateEntry.Value.status_code
+  }
 }
 
 $status = "PASS"
@@ -234,6 +250,7 @@ if (
 
 $hostnameRouteStatus = if ($dnsOutput -match [regex]::Escape($Hostname) -or $dnsOutput -match "already configured") { "BOUND" } else { "MISSING" }
 $formsHostnameRouteStatus = if ($dnsOutput -match [regex]::Escape($FormsHostname) -or $dnsOutput -match "already configured") { "BOUND" } else { "MISSING" }
+$templateHostnameRouteStatus = if ($dnsOutput -match [regex]::Escape($TemplateHostname) -or $dnsOutput -match "already configured") { "BOUND" } else { "MISSING" }
 $watchdogStatus = if ($taskInstalled) {
   if ($taskAccessDenied -and $taskExit -ne 0) { "INSTALLED (QUERY RESTRICTED)" } else { "INSTALLED" }
 } else {
@@ -257,8 +274,11 @@ Hostname: $Hostname
 Public URL: $publicUrl
 Forms Hostname: $FormsHostname
 Forms Public URL: $formsPublicUrl
+Template Hostname: $TemplateHostname
+Template Public URL: $templatePublicUrl
 Origin URL: $OriginUrl
 Forms Origin URL: $FormsOriginUrl
+Template Origin URL: $TemplateOriginUrl
 
 Core Exit Code: $coreExit
 Validation Exit Code: $validateExit
@@ -267,6 +287,7 @@ DNS List Exit Code: $dnsExit
 Tunnel UUID: (see $validateJsonPath)
 Hostname Route Status: $hostnameRouteStatus
 Forms Hostname Route Status: $formsHostnameRouteStatus
+Template Hostname Route Status: $templateHostnameRouteStatus
 Service Status: $serviceStatus
 Watchdog Task Status: $watchdogStatus
 Public Health Task Status: $publicWatchdogStatus
@@ -276,6 +297,8 @@ Public Hostname Healthy (2xx/3xx): $publicHostnameHealthy
 Public Status Code: $publicStatusCode
 Forms Hostname Healthy (2xx/3xx): $formsPublicHealthy
 Forms Status Code: $formsPublicStatusCode
+Template Hostname Healthy (2xx/3xx): $templatePublicHealthy
+Template Status Code: $templatePublicStatusCode
 
 Log Directory: $LogDir
 Validation JSON: $validateJsonPath
@@ -316,6 +339,14 @@ if ($validateJson -and ($validateJson.PSObject.Properties.Name -contains "hostna
       $formsHostnameRouteStatus = "MISSING"
     }
   }
+  $templateBoundEntry = $boundProps | Where-Object { $_.Name -eq $TemplateHostname }
+  if ($templateBoundEntry) {
+    if ([bool]$templateBoundEntry.Value) {
+      $templateHostnameRouteStatus = "BOUND"
+    } elseif ($templateHostnameRouteStatus -ne "BOUND") {
+      $templateHostnameRouteStatus = "MISSING"
+    }
+  }
 }
 
 $tunnelUuidOut = "UNKNOWN"
@@ -330,6 +361,7 @@ Write-Host "CLOUDFLARE INDUSTRIAL MODE: ACTIVE" -ForegroundColor Green
 Write-Host ("Tunnel UUID: {0}" -f $tunnelUuidOut)
 Write-Host ("Hostname route status: {0}" -f $hostnameRouteStatus)
 Write-Host ("Forms hostname route status: {0}" -f $formsHostnameRouteStatus)
+Write-Host ("Template hostname route status: {0}" -f $templateHostnameRouteStatus)
 Write-Host ("Service status: {0}" -f $serviceStatus)
 Write-Host ("Watchdog task status: {0}" -f $watchdogStatus)
 Write-Host ("Public health task status: {0}" -f $publicWatchdogStatus)
@@ -337,6 +369,7 @@ Write-Host ("Origin healthy: {0}" -f $localOriginHealthy)
 Write-Host ("Tunnel connected: {0}" -f $tunnelConnected)
 Write-Host ("Public hostname healthy: {0} (status={1})" -f $publicHostnameHealthy, $publicStatusCode)
 Write-Host ("Forms hostname healthy: {0} (status={1})" -f $formsPublicHealthy, $formsPublicStatusCode)
+Write-Host ("Template hostname healthy: {0} (status={1})" -f $templatePublicHealthy, $templatePublicStatusCode)
 Write-Host ("Logs stored at: {0}" -f $LogDir)
 
 if ($status -ne "PASS") {
