@@ -204,6 +204,10 @@ model StockMovement {
   qty         Int
   reason      String
   location    String
+  beforeQty   Int?
+  afterQty    Int?
+  sourceType  String?
+  sourceId    String?
   createdAt   DateTime @default(now())
 
   business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
@@ -385,7 +389,10 @@ model Sale {
   clientRequestId String?
   folio         String
   cashier       String
+  subtotalCents Int      @default(0)
+  discountCents Int      @default(0)
   totalCents    Int
+  completedAt   DateTime?
   paymentMethod String   @default("cash")
   cashReceivedCents Int?
   changeCents   Int      @default(0)
@@ -455,13 +462,17 @@ model AuditCount {
 model OutboxEvent {
   id          String   @id
   businessId  String
+  terminalId  String?
   topic       String
   aggregateId String
   payloadJson String
+  source      String?
+  schemaVersion String?
   status      String
   attempts    Int      @default(0)
   createdAt   DateTime @default(now())
   sentAt      DateTime?
+  syncedAt    DateTime?
   lastError   String?
 
   business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)

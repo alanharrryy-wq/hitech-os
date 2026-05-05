@@ -1,0 +1,11 @@
+ALTER TABLE "Sale" ADD COLUMN "subtotalCents" INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE "Sale" ADD COLUMN "discountCents" INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE "Sale" ADD COLUMN "completedAt" DATETIME;
+ALTER TABLE "StockMovement" ADD COLUMN "beforeQty" INTEGER;
+ALTER TABLE "StockMovement" ADD COLUMN "afterQty" INTEGER;
+ALTER TABLE "StockMovement" ADD COLUMN "sourceType" TEXT;
+ALTER TABLE "StockMovement" ADD COLUMN "sourceId" TEXT;
+ALTER TABLE "OutboxEvent" ADD COLUMN "terminalId" TEXT;
+ALTER TABLE "OutboxEvent" ADD COLUMN "source" TEXT;
+ALTER TABLE "OutboxEvent" ADD COLUMN "schemaVersion" TEXT;
+ALTER TABLE "OutboxEvent" ADD COLUMN "syncedAt" DATETIME;

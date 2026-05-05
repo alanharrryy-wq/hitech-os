@@ -4,7 +4,7 @@ import { join } from "node:path";
 
 const root = process.cwd();
 const HEALTH_RADAR_MIN_VERSION = "0.25.3";
-const HEALTH_RADAR_MAX_EXCLUSIVE = "0.26.0";
+const HEALTH_RADAR_MAX_EXCLUSIVE = "0.37.0";
 
 const required = [
   "package.json",

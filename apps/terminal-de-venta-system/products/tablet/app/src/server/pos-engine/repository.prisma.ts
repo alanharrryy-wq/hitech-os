@@ -99,6 +99,9 @@ async function persistOutboxEvents(tx: TxClient, businessId: string, events: Pos
         topic: event.topic,
         aggregateId: event.aggregateId,
         payloadJson: JSON.stringify(event),
+        terminalId: event.terminalId,
+        source: event.source,
+        schemaVersion: event.schemaVersion,
         status: OUTBOX_STATUS_PENDING,
         createdAt: new Date(event.occurredAt)
       }
@@ -202,7 +205,11 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
             movement: STOCK_MOVEMENT_SALE,
             qty: -line.qty,
             reason: STOCK_REASON_SALE_COMPLETED,
-            location
+            location,
+            beforeQty: product.stockOnHand,
+            afterQty: stockAfter,
+            sourceType: "sale",
+            sourceId: saleId
           }
         });
 
@@ -230,7 +237,10 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
           clientRequestId: input.clientRequestId ?? null,
           folio,
           cashier,
+          subtotalCents: totalCents,
+          discountCents: 0,
           totalCents,
+          completedAt: now,
           paymentMethod,
           cashReceivedCents,
           changeCents,

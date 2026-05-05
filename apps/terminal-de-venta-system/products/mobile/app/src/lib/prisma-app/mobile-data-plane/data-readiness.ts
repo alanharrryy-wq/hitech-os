@@ -140,3 +140,5 @@ export function deriveMobileDataReadiness(state: MobileDataPlaneState): MobileDa
     actions: actions.slice(0, 4)
   };
 }
+
+// PRISMA_APP_MOBILE_32_DATA_PLANE_HYDRATION_RUNTIME_FINAL: No es error ni dato inventado; es lectura honesta de fuentes parciales.

@@ -1,3 +1,3 @@
-# PRISMA App Android TWA
+# Android TWA
 
-Proyecto TWA Gradle con target SDK 35, package com.prisma.pos.mobile, scripts de keystore/AAB y store listing.
+Android App Bundle .aab, API 35, HTTPS, Digital Asset Links, SHA-256 e internal testing requeridos.

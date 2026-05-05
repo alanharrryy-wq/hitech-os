@@ -35,7 +35,7 @@ export function getMobileDataPlaneConfig(): MobileDataPlaneConfig {
     businessName: readString("PRISMA_MOBILE_BUSINESS_NAME", "PRISMA Operación"),
     tabletOrigin: readOrigin("PRISMA_MOBILE_TABLET_ORIGIN", "http://127.0.0.1:3120"),
     pcOrigin: readOrigin("PRISMA_MOBILE_PC_ORIGIN", "http://127.0.0.1:3130"),
-    requestTimeoutMs: readInt("PRISMA_MOBILE_REQUEST_TIMEOUT_MS", 1800, 250, 15000),
+    requestTimeoutMs: readInt("PRISMA_MOBILE_SOURCE_TIMEOUT_MS", readInt("PRISMA_MOBILE_REQUEST_TIMEOUT_MS", 2500, 250, 15000), 250, 15000),
     retryCount: readInt("PRISMA_MOBILE_RETRY_COUNT", 1, 0, 4),
     staleAfterMs: readInt("PRISMA_MOBILE_STALE_AFTER_MS", 90000, 15000, 86400000),
     lowStockDefaultThreshold: readInt("PRISMA_MOBILE_LOW_STOCK_THRESHOLD", 4, 0, 999999),

@@ -1,0 +1,1 @@
+export const POS_ERROR_COPY={EMPTY_CART:{title:"Ticket vacío",message:"Agrega productos para cobrar."},INSUFFICIENT_STOCK:{title:"Stock insuficiente",message:"Ajusta cantidad."},MISSING_BUSINESS_ID:{title:"Falta negocio",message:"No se usa demo fallback."}} as const;

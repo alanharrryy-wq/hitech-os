@@ -32,7 +32,9 @@ assertIncludes("src/lib/prisma-app/prisma-mobile-action-inbox.ts", "buildPrismaM
 assertIncludes("src/lib/prisma-app/prisma-mobile-action-inbox.ts", "ownerMessage");
 assertIncludes("src/components/prisma-app/PrismaMobileActionInbox.tsx", "Bandeja del dueño");
 assertIncludes("src/components/prisma-app/PrismaMobileActionInbox.tsx", "Acciones operativas priorizadas");
-assertIncludes("src/components/prisma-app/PrismaMobileDashboard.tsx", "<PrismaMobileActionInbox clientSnapshot={clientSnapshot} />");
+const dash = read("src/components/prisma-app/PrismaMobileDashboard.tsx");
+const nav = read("src/components/prisma-app/PrismaMobilePremiumNavigator.tsx");
+if (!(dash.includes("<PrismaMobileActionInbox clientSnapshot={clientSnapshot} />") || (dash.includes("PrismaMobilePremiumNavigator") && nav.includes("<PrismaMobileActionInbox clientSnapshot={clientSnapshot} />")))) throw new Error("Bandeja del dueño no está montada");
 assertIncludes("app/api/mobile/action-inbox/route.ts", "action_inbox");
 assertIncludes("src/components/prisma-app/prisma-mobile-dashboard.module.css", "PRISMA_APP_MOBILE_21_OWNER_ACTION_INBOX START");
 assertIncludes("package.json", "verify:action-inbox");

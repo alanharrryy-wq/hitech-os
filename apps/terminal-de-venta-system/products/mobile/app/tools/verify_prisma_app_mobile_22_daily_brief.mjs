@@ -14,6 +14,16 @@ const required = [
   "docs/prisma-app/qa/prisma-app-mobile-22-daily-brief-regression-corpus.jsonl"
 ];
 
+function compareVersion(left, right) {
+  const a = String(left ?? "0.0.0").split(".").map(Number);
+  const b = String(right).split(".").map(Number);
+  for (let i = 0; i < 3; i += 1) {
+    const d = (a[i] || 0) - (b[i] || 0);
+    if (d !== 0) return d;
+  }
+  return 0;
+}
+
 function fail(message) {
   console.error(`[PRISMA APP MOBILE 22 FAIL] ${message}`);
   process.exit(1);

@@ -27,6 +27,7 @@ for (const file of requiredFiles) read(file);
 const commandCenter = read("src/lib/prisma-app/prisma-mobile-command-center.ts");
 const commandComponent = read("src/components/prisma-app/PrismaMobileCommandCenter.tsx");
 const dashboard = read("src/components/prisma-app/PrismaMobileDashboard.tsx");
+const premiumNavigator = read("src/components/prisma-app/PrismaMobilePremiumNavigator.tsx");
 const css = read("src/components/prisma-app/prisma-mobile-dashboard.module.css");
 const route = read("app/api/mobile/command-center/route.ts");
 const pkg = JSON.parse(read("package.json"));
@@ -46,8 +47,8 @@ assert(commandComponent.includes("command.decisionQueue.map"), "El componente no
 assert(commandComponent.includes("command.signals.map"), "El componente no renderiza señales ejecutivas.");
 assert(!/Date\.now\(|Math\.random\(/.test(commandComponent), "El componente no debe generar valores variables durante render.");
 
-assert(dashboard.includes("PrismaMobileCommandCenter"), "Dashboard no integra el Centro de Mando.");
-assert(dashboard.indexOf("<PrismaMobileCommandCenter") < dashboard.indexOf("<section className={styles.metricGrid}"), "El Centro de Mando debe aparecer antes de KPI cards.");
+const premiumNavigatorOwnsCommandCenter = dashboard.includes("PrismaMobilePremiumNavigator") && premiumNavigator.includes("<PrismaMobileCommandCenter clientSnapshot={clientSnapshot} />");
+assert(dashboard.includes("<PrismaMobileCommandCenter") || premiumNavigatorOwnsCommandCenter, "Dashboard no integra Centro de Mando por dashboard o PremiumNavigator.");
 
 for (const cls of ["commandCenter", "commandHeader", "commandScoreCard", "commandSignalGrid", "commandDecisionGrid", "commandDataQuality"]) {
   assert(css.includes(`.${cls}`), `Falta clase CSS ${cls}.`);

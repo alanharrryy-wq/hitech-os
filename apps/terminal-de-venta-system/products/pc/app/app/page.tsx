@@ -1,9 +1,5 @@
-import { ExecutiveDashboard } from "@components/backoffice/executive-dashboard";
-import { getBackofficeDashboard } from "@/lib/backoffice/dashboard";
+import { redirect } from "next/navigation";
 
-export const dynamic = "force-dynamic";
-
-export default async function HomePage() {
-  const dashboard = await getBackofficeDashboard();
-  return <ExecutiveDashboard dashboard={dashboard} currentPath="/" />;
+export default function Page() {
+  redirect("/dashboard");
 }

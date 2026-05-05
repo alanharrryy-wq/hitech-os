@@ -1,7 +1,3 @@
-# Android Build Readiness 08
+# Build readiness
 
-Validar con `verify:android-playstore`; generar AAB cuando existan dominio y firma reales.
-
-## Internal testing
-
-The Play Store release path must mention internal testing before production promotion.
+API 35, .aab firmado, HTTPS, Digital Asset Links y SHA-256 final.

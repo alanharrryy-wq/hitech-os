@@ -1,5 +1,3 @@
-# Android helper scripts
+# Scripts Android
 
-Reservado para scripts futuros de TWA/Bubblewrap.
-
-No instalar herramientas globales desde aquí. Si se agrega automatización, debe documentar exactamente qué requiere y no debe esconder signing keys.
+Readiness, no publicación automática.

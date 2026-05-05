@@ -50,7 +50,9 @@ export function getPrismaMobileDataReadiness(snapshot: PrismaMobileSnapshotPaylo
     dataReadiness?: PrismaMobileDataReadiness;
   };
 
-  return summary.dataReadiness ?? PRISMA_MOBILE_DATA_READINESS_FALLBACK;
+  const headline = summary.dataReadiness ? snapshot.summary.dataReadiness.headline : PRISMA_MOBILE_DATA_READINESS_FALLBACK.headline;
+  const label = summary.dataReadiness ? snapshot.summary.dataReadiness.label : PRISMA_MOBILE_DATA_READINESS_FALLBACK.label;
+  return summary.dataReadiness ? { ...summary.dataReadiness, headline, label } : PRISMA_MOBILE_DATA_READINESS_FALLBACK;
 }
 
 export function derivePrismaMobileHero(snapshot: PrismaMobileSnapshotPayload): PrismaMobileHeroViewModel {
