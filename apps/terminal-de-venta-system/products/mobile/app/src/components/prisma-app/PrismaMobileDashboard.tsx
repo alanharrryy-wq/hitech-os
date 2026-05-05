@@ -111,7 +111,14 @@ export function PrismaMobileDashboard() {
   const snapshot = clientSnapshot.snapshot;
 
   return (
-    <main className={styles.mobileRoot} data-prisma-product="mobile" data-prisma-surface="prisma.mobile.app">
+    <main
+      className={styles.mobileRoot}
+      data-prisma-product="mobile"
+      data-prisma-surface="prisma.mobile.app"
+      data-prisma-readiness={snapshot.summary.dataReadiness.level}
+      data-prisma-source={clientSnapshot.source}
+      data-prisma-stale={clientSnapshot.stale ? "true" : "false"}
+    >
       <section className={styles.dashboardShell} aria-labelledby="prisma-mobile-dashboard-title">
         <header className={styles.heroPanel}>
           <div className={styles.heroCopy}>
