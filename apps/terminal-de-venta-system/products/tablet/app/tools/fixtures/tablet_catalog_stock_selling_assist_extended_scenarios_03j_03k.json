@@ -1,0 +1,3265 @@
+{
+  "package": "PRISMA_TABLET_CATALOG_STOCK_SELLING_ASSIST_03J_03K",
+  "purpose": "Extended QA matrix for catalog, stock, status classification, search and cart handoff.",
+  "scenarioCount": 120,
+  "scenarios": [
+    {
+      "id": "qa_001",
+      "sku": "QA-BOT-001",
+      "name": "Refresco cola 001",
+      "category": "Botanas",
+      "barcode": "75026050300001",
+      "priceCents": 1037,
+      "stockOnHand": 7,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Refresco",
+        "QA-BOT",
+        "75026050300001",
+        "botanas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_002",
+      "sku": "QA-LAC-002",
+      "name": "Leche entera 002",
+      "category": "Lacteos",
+      "barcode": "75026050300002",
+      "priceCents": 1174,
+      "stockOnHand": 14,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Leche",
+        "QA-LAC",
+        "75026050300002",
+        "lacteos"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_003",
+      "sku": "QA-PAN-003",
+      "name": "Papas saladas 003",
+      "category": "Panaderia",
+      "barcode": "75026050300003",
+      "priceCents": 1311,
+      "stockOnHand": 21,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Papas",
+        "QA-PAN",
+        "75026050300003",
+        "panaderia"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_004",
+      "sku": "QA-ABA-004",
+      "name": "Pan dulce 004",
+      "category": "Abarrotes",
+      "barcode": "75026050300004",
+      "priceCents": 1448,
+      "stockOnHand": 28,
+      "lowStockThreshold": 7,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Pan",
+        "QA-ABA",
+        "75026050300004",
+        "abarrotes"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_005",
+      "sku": "QA-LIM-005",
+      "name": "Cafe soluble 005",
+      "category": "Limpieza",
+      "barcode": "75026050300005",
+      "priceCents": 1585,
+      "stockOnHand": 35,
+      "lowStockThreshold": 8,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Cafe",
+        "QA-LIM",
+        "75026050300005",
+        "limpieza"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_006",
+      "sku": "QA-CON-006",
+      "name": "Detergente polvo 006",
+      "category": "Congelados",
+      "barcode": "75026050300006",
+      "priceCents": 1722,
+      "stockOnHand": 5,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Detergente",
+        "QA-CON",
+        "75026050300006",
+        "congelados"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_007",
+      "sku": "QA-DUL-007",
+      "name": "Hielo bolsa 007",
+      "category": "Dulces",
+      "barcode": "75026050300007",
+      "priceCents": 1859,
+      "stockOnHand": 12,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Hielo",
+        "QA-DUL",
+        "75026050300007",
+        "dulces"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_008",
+      "sku": "QA-CIG-008",
+      "name": "Chocolate barra 008",
+      "category": "Cigarros",
+      "barcode": "75026050300008",
+      "priceCents": 1996,
+      "stockOnHand": 19,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Chocolate",
+        "QA-CIG",
+        "75026050300008",
+        "cigarros"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_009",
+      "sku": "QA-FAR-009",
+      "name": "Atun lata 009",
+      "category": "Farmacia ligera",
+      "barcode": "75026050300009",
+      "priceCents": 2133,
+      "stockOnHand": 26,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Atun",
+        "QA-FAR",
+        "75026050300009",
+        "farmacia ligera"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_010",
+      "sku": "QA-BEB-010",
+      "name": "Galleta vainilla 010",
+      "category": "Bebidas",
+      "barcode": "75026050300010",
+      "priceCents": 2270,
+      "stockOnHand": 33,
+      "lowStockThreshold": 7,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Galleta",
+        "QA-BEB",
+        "75026050300010",
+        "bebidas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_011",
+      "sku": "QA-BOT-011",
+      "name": "Jugo naranja 011",
+      "category": "Botanas",
+      "barcode": "75026050300011",
+      "priceCents": 2407,
+      "stockOnHand": 3,
+      "lowStockThreshold": 8,
+      "isActive": false,
+      "expectedSignal": "inactive",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Producto inactivo",
+      "searchTerms": [
+        "Jugo",
+        "QA-BOT",
+        "75026050300011",
+        "botanas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "inactive",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_012",
+      "sku": "QA-LAC-012",
+      "name": "Tortilla harina 012",
+      "category": "Lacteos",
+      "barcode": "75026050300012",
+      "priceCents": 2544,
+      "stockOnHand": 10,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Tortilla",
+        "QA-LAC",
+        "75026050300012",
+        "lacteos"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_013",
+      "sku": "QA-PAN-013",
+      "name": "Mayonesa chica 013",
+      "category": "Panaderia",
+      "barcode": "75026050300013",
+      "priceCents": 2681,
+      "stockOnHand": 0,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "out_of_stock",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Sin stock",
+      "searchTerms": [
+        "Mayonesa",
+        "QA-PAN",
+        "75026050300013",
+        "panaderia"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "out_of_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_014",
+      "sku": "QA-ABA-014",
+      "name": "Salsa botanera 014",
+      "category": "Abarrotes",
+      "barcode": "75026050300014",
+      "priceCents": 2818,
+      "stockOnHand": 24,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Salsa",
+        "QA-ABA",
+        "75026050300014",
+        "abarrotes"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_015",
+      "sku": "QA-LIM-015",
+      "name": "Cereal maiz 015",
+      "category": "Limpieza",
+      "barcode": "75026050300015",
+      "priceCents": 2955,
+      "stockOnHand": 31,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Cereal",
+        "QA-LIM",
+        "75026050300015",
+        "limpieza"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_016",
+      "sku": "QA-CON-016",
+      "name": "Yogurt bebible 016",
+      "category": "Congelados",
+      "barcode": "75026050300016",
+      "priceCents": 3092,
+      "stockOnHand": 1,
+      "lowStockThreshold": 7,
+      "isActive": true,
+      "expectedSignal": "low_stock",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Yogurt",
+        "QA-CON",
+        "75026050300016",
+        "congelados"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "low_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_017",
+      "sku": "QA-DUL-017",
+      "name": "Jabon barra 017",
+      "category": "Dulces",
+      "barcode": "75026050300017",
+      "priceCents": 3229,
+      "stockOnHand": 8,
+      "lowStockThreshold": 8,
+      "isActive": true,
+      "expectedSignal": "low_stock",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Jabon",
+        "QA-DUL",
+        "75026050300017",
+        "dulces"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "low_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_018",
+      "sku": "QA-CIG-018",
+      "name": "Servilletas 018",
+      "category": "Cigarros",
+      "barcode": "75026050300018",
+      "priceCents": 3366,
+      "stockOnHand": 15,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Servilletas",
+        "QA-CIG",
+        "75026050300018",
+        "cigarros"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_019",
+      "sku": "QA-FAR-019",
+      "name": "Te helado 019",
+      "category": "Farmacia ligera",
+      "barcode": "75026050300019",
+      "priceCents": 3503,
+      "stockOnHand": 22,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Te",
+        "QA-FAR",
+        "75026050300019",
+        "farmacia ligera"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_020",
+      "sku": "QA-BEB-020",
+      "name": "Agua natural 020",
+      "category": "Bebidas",
+      "barcode": "75026050300020",
+      "priceCents": 3640,
+      "stockOnHand": 29,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Agua",
+        "QA-BEB",
+        "75026050300020",
+        "bebidas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_021",
+      "sku": "QA-BOT-021",
+      "name": "Refresco cola 021",
+      "category": "Botanas",
+      "barcode": "75026050300021",
+      "priceCents": 3777,
+      "stockOnHand": 36,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Refresco",
+        "QA-BOT",
+        "75026050300021",
+        "botanas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_022",
+      "sku": "QA-LAC-022",
+      "name": "Leche entera 022",
+      "category": "Lacteos",
+      "barcode": "75026050300022",
+      "priceCents": 3914,
+      "stockOnHand": 6,
+      "lowStockThreshold": 7,
+      "isActive": false,
+      "expectedSignal": "inactive",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Producto inactivo",
+      "searchTerms": [
+        "Leche",
+        "QA-LAC",
+        "75026050300022",
+        "lacteos"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "inactive",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_023",
+      "sku": "QA-PAN-023",
+      "name": "Papas saladas 023",
+      "category": "Panaderia",
+      "barcode": "75026050300023",
+      "priceCents": 4051,
+      "stockOnHand": 13,
+      "lowStockThreshold": 8,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Papas",
+        "QA-PAN",
+        "75026050300023",
+        "panaderia"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_024",
+      "sku": "QA-ABA-024",
+      "name": "Pan dulce 024",
+      "category": "Abarrotes",
+      "barcode": "75026050300024",
+      "priceCents": 4188,
+      "stockOnHand": 20,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Pan",
+        "QA-ABA",
+        "75026050300024",
+        "abarrotes"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_025",
+      "sku": "QA-LIM-025",
+      "name": "Cafe soluble 025",
+      "category": "Limpieza",
+      "barcode": "75026050300025",
+      "priceCents": 4325,
+      "stockOnHand": 27,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Cafe",
+        "QA-LIM",
+        "75026050300025",
+        "limpieza"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_026",
+      "sku": "QA-CON-026",
+      "name": "Detergente polvo 026",
+      "category": "Congelados",
+      "barcode": "75026050300026",
+      "priceCents": 4462,
+      "stockOnHand": 0,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "out_of_stock",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Sin stock",
+      "searchTerms": [
+        "Detergente",
+        "QA-CON",
+        "75026050300026",
+        "congelados"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "out_of_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_027",
+      "sku": "QA-DUL-027",
+      "name": "Hielo bolsa 027",
+      "category": "Dulces",
+      "barcode": "75026050300027",
+      "priceCents": 4599,
+      "stockOnHand": 4,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "low_stock",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Hielo",
+        "QA-DUL",
+        "75026050300027",
+        "dulces"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "low_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_028",
+      "sku": "QA-CIG-028",
+      "name": "Chocolate barra 028",
+      "category": "Cigarros",
+      "barcode": "75026050300028",
+      "priceCents": 4736,
+      "stockOnHand": 11,
+      "lowStockThreshold": 7,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Chocolate",
+        "QA-CIG",
+        "75026050300028",
+        "cigarros"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_029",
+      "sku": "QA-FAR-029",
+      "name": "Atun lata 029",
+      "category": "Farmacia ligera",
+      "barcode": "75026050300029",
+      "priceCents": 4873,
+      "stockOnHand": 18,
+      "lowStockThreshold": 8,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Atun",
+        "QA-FAR",
+        "75026050300029",
+        "farmacia ligera"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_030",
+      "sku": "QA-BEB-030",
+      "name": "Galleta vainilla 030",
+      "category": "Bebidas",
+      "barcode": "75026050300030",
+      "priceCents": 5010,
+      "stockOnHand": 25,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Galleta",
+        "QA-BEB",
+        "75026050300030",
+        "bebidas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_031",
+      "sku": "QA-BOT-031",
+      "name": "Jugo naranja 031",
+      "category": "Botanas",
+      "barcode": "75026050300031",
+      "priceCents": 5147,
+      "stockOnHand": 32,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Jugo",
+        "QA-BOT",
+        "75026050300031",
+        "botanas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_032",
+      "sku": "QA-LAC-032",
+      "name": "Tortilla harina 032",
+      "category": "Lacteos",
+      "barcode": "75026050300032",
+      "priceCents": 5284,
+      "stockOnHand": 2,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "low_stock",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Tortilla",
+        "QA-LAC",
+        "75026050300032",
+        "lacteos"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "low_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_033",
+      "sku": "QA-PAN-033",
+      "name": "Mayonesa chica 033",
+      "category": "Panaderia",
+      "barcode": "75026050300033",
+      "priceCents": 5421,
+      "stockOnHand": 9,
+      "lowStockThreshold": 6,
+      "isActive": false,
+      "expectedSignal": "inactive",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Producto inactivo",
+      "searchTerms": [
+        "Mayonesa",
+        "QA-PAN",
+        "75026050300033",
+        "panaderia"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "inactive",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_034",
+      "sku": "QA-ABA-034",
+      "name": "Salsa botanera 034",
+      "category": "Abarrotes",
+      "barcode": "75026050300034",
+      "priceCents": 5558,
+      "stockOnHand": 16,
+      "lowStockThreshold": 7,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Salsa",
+        "QA-ABA",
+        "75026050300034",
+        "abarrotes"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_035",
+      "sku": "QA-LIM-035",
+      "name": "Cereal maiz 035",
+      "category": "Limpieza",
+      "barcode": "75026050300035",
+      "priceCents": 5695,
+      "stockOnHand": 23,
+      "lowStockThreshold": 8,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Cereal",
+        "QA-LIM",
+        "75026050300035",
+        "limpieza"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_036",
+      "sku": "QA-CON-036",
+      "name": "Yogurt bebible 036",
+      "category": "Congelados",
+      "barcode": "75026050300036",
+      "priceCents": 5832,
+      "stockOnHand": 30,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Yogurt",
+        "QA-CON",
+        "75026050300036",
+        "congelados"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_037",
+      "sku": "QA-DUL-037",
+      "name": "Jabon barra 037",
+      "category": "Dulces",
+      "barcode": "75026050300037",
+      "priceCents": 5969,
+      "stockOnHand": 0,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "out_of_stock",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Sin stock",
+      "searchTerms": [
+        "Jabon",
+        "QA-DUL",
+        "75026050300037",
+        "dulces"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "out_of_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_038",
+      "sku": "QA-CIG-038",
+      "name": "Servilletas 038",
+      "category": "Cigarros",
+      "barcode": "75026050300038",
+      "priceCents": 6106,
+      "stockOnHand": 7,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Servilletas",
+        "QA-CIG",
+        "75026050300038",
+        "cigarros"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_039",
+      "sku": "QA-FAR-039",
+      "name": "Te helado 039",
+      "category": "Farmacia ligera",
+      "barcode": "75026050300039",
+      "priceCents": 6243,
+      "stockOnHand": 0,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "out_of_stock",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Sin stock",
+      "searchTerms": [
+        "Te",
+        "QA-FAR",
+        "75026050300039",
+        "farmacia ligera"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "out_of_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_040",
+      "sku": "QA-BEB-040",
+      "name": "Agua natural 040",
+      "category": "Bebidas",
+      "barcode": "75026050300040",
+      "priceCents": 6380,
+      "stockOnHand": 21,
+      "lowStockThreshold": 7,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Agua",
+        "QA-BEB",
+        "75026050300040",
+        "bebidas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_041",
+      "sku": "QA-BOT-041",
+      "name": "Refresco cola 041",
+      "category": "Botanas",
+      "barcode": "75026050300041",
+      "priceCents": 6517,
+      "stockOnHand": 28,
+      "lowStockThreshold": 8,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Refresco",
+        "QA-BOT",
+        "75026050300041",
+        "botanas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_042",
+      "sku": "QA-LAC-042",
+      "name": "Leche entera 042",
+      "category": "Lacteos",
+      "barcode": "75026050300042",
+      "priceCents": 6654,
+      "stockOnHand": 35,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Leche",
+        "QA-LAC",
+        "75026050300042",
+        "lacteos"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_043",
+      "sku": "QA-PAN-043",
+      "name": "Papas saladas 043",
+      "category": "Panaderia",
+      "barcode": "75026050300043",
+      "priceCents": 6791,
+      "stockOnHand": 5,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Papas",
+        "QA-PAN",
+        "75026050300043",
+        "panaderia"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_044",
+      "sku": "QA-ABA-044",
+      "name": "Pan dulce 044",
+      "category": "Abarrotes",
+      "barcode": "75026050300044",
+      "priceCents": 6928,
+      "stockOnHand": 12,
+      "lowStockThreshold": 5,
+      "isActive": false,
+      "expectedSignal": "inactive",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Producto inactivo",
+      "searchTerms": [
+        "Pan",
+        "QA-ABA",
+        "75026050300044",
+        "abarrotes"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "inactive",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_045",
+      "sku": "QA-LIM-045",
+      "name": "Cafe soluble 045",
+      "category": "Limpieza",
+      "barcode": "75026050300045",
+      "priceCents": 7065,
+      "stockOnHand": 19,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Cafe",
+        "QA-LIM",
+        "75026050300045",
+        "limpieza"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_046",
+      "sku": "QA-CON-046",
+      "name": "Detergente polvo 046",
+      "category": "Congelados",
+      "barcode": "75026050300046",
+      "priceCents": 7202,
+      "stockOnHand": 26,
+      "lowStockThreshold": 7,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Detergente",
+        "QA-CON",
+        "75026050300046",
+        "congelados"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_047",
+      "sku": "QA-DUL-047",
+      "name": "Hielo bolsa 047",
+      "category": "Dulces",
+      "barcode": "75026050300047",
+      "priceCents": 7339,
+      "stockOnHand": 33,
+      "lowStockThreshold": 8,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Hielo",
+        "QA-DUL",
+        "75026050300047",
+        "dulces"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_048",
+      "sku": "QA-CIG-048",
+      "name": "Chocolate barra 048",
+      "category": "Cigarros",
+      "barcode": "75026050300048",
+      "priceCents": 7476,
+      "stockOnHand": 3,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "low_stock",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Chocolate",
+        "QA-CIG",
+        "75026050300048",
+        "cigarros"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "low_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_049",
+      "sku": "QA-FAR-049",
+      "name": "Atun lata 049",
+      "category": "Farmacia ligera",
+      "barcode": "75026050300049",
+      "priceCents": 7613,
+      "stockOnHand": 10,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Atun",
+        "QA-FAR",
+        "75026050300049",
+        "farmacia ligera"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_050",
+      "sku": "QA-BEB-050",
+      "name": "Galleta vainilla 050",
+      "category": "Bebidas",
+      "barcode": "75026050300050",
+      "priceCents": 7750,
+      "stockOnHand": 17,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Galleta",
+        "QA-BEB",
+        "75026050300050",
+        "bebidas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_051",
+      "sku": "QA-BOT-051",
+      "name": "Jugo naranja 051",
+      "category": "Botanas",
+      "barcode": "75026050300051",
+      "priceCents": 7887,
+      "stockOnHand": 24,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Jugo",
+        "QA-BOT",
+        "75026050300051",
+        "botanas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_052",
+      "sku": "QA-LAC-052",
+      "name": "Tortilla harina 052",
+      "category": "Lacteos",
+      "barcode": "75026050300052",
+      "priceCents": 8024,
+      "stockOnHand": 0,
+      "lowStockThreshold": 7,
+      "isActive": true,
+      "expectedSignal": "out_of_stock",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Sin stock",
+      "searchTerms": [
+        "Tortilla",
+        "QA-LAC",
+        "75026050300052",
+        "lacteos"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "out_of_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_053",
+      "sku": "QA-PAN-053",
+      "name": "Mayonesa chica 053",
+      "category": "Panaderia",
+      "barcode": "75026050300053",
+      "priceCents": 8161,
+      "stockOnHand": 1,
+      "lowStockThreshold": 8,
+      "isActive": true,
+      "expectedSignal": "low_stock",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Mayonesa",
+        "QA-PAN",
+        "75026050300053",
+        "panaderia"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "low_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_054",
+      "sku": "QA-ABA-054",
+      "name": "Salsa botanera 054",
+      "category": "Abarrotes",
+      "barcode": "75026050300054",
+      "priceCents": 8298,
+      "stockOnHand": 8,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Salsa",
+        "QA-ABA",
+        "75026050300054",
+        "abarrotes"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_055",
+      "sku": "QA-LIM-055",
+      "name": "Cereal maiz 055",
+      "category": "Limpieza",
+      "barcode": "75026050300055",
+      "priceCents": 8435,
+      "stockOnHand": 15,
+      "lowStockThreshold": 4,
+      "isActive": false,
+      "expectedSignal": "inactive",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Producto inactivo",
+      "searchTerms": [
+        "Cereal",
+        "QA-LIM",
+        "75026050300055",
+        "limpieza"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "inactive",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_056",
+      "sku": "QA-CON-056",
+      "name": "Yogurt bebible 056",
+      "category": "Congelados",
+      "barcode": "75026050300056",
+      "priceCents": 8572,
+      "stockOnHand": 22,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Yogurt",
+        "QA-CON",
+        "75026050300056",
+        "congelados"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_057",
+      "sku": "QA-DUL-057",
+      "name": "Jabon barra 057",
+      "category": "Dulces",
+      "barcode": "75026050300057",
+      "priceCents": 8709,
+      "stockOnHand": 29,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Jabon",
+        "QA-DUL",
+        "75026050300057",
+        "dulces"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_058",
+      "sku": "QA-CIG-058",
+      "name": "Servilletas 058",
+      "category": "Cigarros",
+      "barcode": "75026050300058",
+      "priceCents": 8846,
+      "stockOnHand": 36,
+      "lowStockThreshold": 7,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Servilletas",
+        "QA-CIG",
+        "75026050300058",
+        "cigarros"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_059",
+      "sku": "QA-FAR-059",
+      "name": "Te helado 059",
+      "category": "Farmacia ligera",
+      "barcode": "75026050300059",
+      "priceCents": 8983,
+      "stockOnHand": 6,
+      "lowStockThreshold": 8,
+      "isActive": true,
+      "expectedSignal": "low_stock",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Te",
+        "QA-FAR",
+        "75026050300059",
+        "farmacia ligera"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "low_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_060",
+      "sku": "QA-BEB-060",
+      "name": "Agua natural 060",
+      "category": "Bebidas",
+      "barcode": "75026050300060",
+      "priceCents": 9120,
+      "stockOnHand": 13,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Agua",
+        "QA-BEB",
+        "75026050300060",
+        "bebidas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_061",
+      "sku": "QA-BOT-061",
+      "name": "Refresco cola 061",
+      "category": "Botanas",
+      "barcode": "75026050300061",
+      "priceCents": 9257,
+      "stockOnHand": 20,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Refresco",
+        "QA-BOT",
+        "75026050300061",
+        "botanas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_062",
+      "sku": "QA-LAC-062",
+      "name": "Leche entera 062",
+      "category": "Lacteos",
+      "barcode": "75026050300062",
+      "priceCents": 9394,
+      "stockOnHand": 27,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Leche",
+        "QA-LAC",
+        "75026050300062",
+        "lacteos"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_063",
+      "sku": "QA-PAN-063",
+      "name": "Papas saladas 063",
+      "category": "Panaderia",
+      "barcode": "75026050300063",
+      "priceCents": 9531,
+      "stockOnHand": 34,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Papas",
+        "QA-PAN",
+        "75026050300063",
+        "panaderia"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_064",
+      "sku": "QA-ABA-064",
+      "name": "Pan dulce 064",
+      "category": "Abarrotes",
+      "barcode": "75026050300064",
+      "priceCents": 9668,
+      "stockOnHand": 4,
+      "lowStockThreshold": 7,
+      "isActive": true,
+      "expectedSignal": "low_stock",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Pan",
+        "QA-ABA",
+        "75026050300064",
+        "abarrotes"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "low_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_065",
+      "sku": "QA-LIM-065",
+      "name": "Cafe soluble 065",
+      "category": "Limpieza",
+      "barcode": "75026050300065",
+      "priceCents": 9805,
+      "stockOnHand": 0,
+      "lowStockThreshold": 8,
+      "isActive": true,
+      "expectedSignal": "out_of_stock",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Sin stock",
+      "searchTerms": [
+        "Cafe",
+        "QA-LIM",
+        "75026050300065",
+        "limpieza"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "out_of_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_066",
+      "sku": "QA-CON-066",
+      "name": "Detergente polvo 066",
+      "category": "Congelados",
+      "barcode": "75026050300066",
+      "priceCents": 9942,
+      "stockOnHand": 18,
+      "lowStockThreshold": 3,
+      "isActive": false,
+      "expectedSignal": "inactive",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Producto inactivo",
+      "searchTerms": [
+        "Detergente",
+        "QA-CON",
+        "75026050300066",
+        "congelados"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "inactive",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_067",
+      "sku": "QA-DUL-067",
+      "name": "Hielo bolsa 067",
+      "category": "Dulces",
+      "barcode": "75026050300067",
+      "priceCents": 10079,
+      "stockOnHand": 25,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Hielo",
+        "QA-DUL",
+        "75026050300067",
+        "dulces"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_068",
+      "sku": "QA-CIG-068",
+      "name": "Chocolate barra 068",
+      "category": "Cigarros",
+      "barcode": "75026050300068",
+      "priceCents": 10216,
+      "stockOnHand": 32,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Chocolate",
+        "QA-CIG",
+        "75026050300068",
+        "cigarros"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_069",
+      "sku": "QA-FAR-069",
+      "name": "Atun lata 069",
+      "category": "Farmacia ligera",
+      "barcode": "75026050300069",
+      "priceCents": 10353,
+      "stockOnHand": 2,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "low_stock",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Atun",
+        "QA-FAR",
+        "75026050300069",
+        "farmacia ligera"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "low_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_070",
+      "sku": "QA-BEB-070",
+      "name": "Galleta vainilla 070",
+      "category": "Bebidas",
+      "barcode": "75026050300070",
+      "priceCents": 990,
+      "stockOnHand": 9,
+      "lowStockThreshold": 7,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Galleta",
+        "QA-BEB",
+        "75026050300070",
+        "bebidas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_071",
+      "sku": "QA-BOT-071",
+      "name": "Jugo naranja 071",
+      "category": "Botanas",
+      "barcode": "75026050300071",
+      "priceCents": 1127,
+      "stockOnHand": 16,
+      "lowStockThreshold": 8,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Jugo",
+        "QA-BOT",
+        "75026050300071",
+        "botanas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_072",
+      "sku": "QA-LAC-072",
+      "name": "Tortilla harina 072",
+      "category": "Lacteos",
+      "barcode": "75026050300072",
+      "priceCents": 1264,
+      "stockOnHand": 23,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Tortilla",
+        "QA-LAC",
+        "75026050300072",
+        "lacteos"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_073",
+      "sku": "QA-PAN-073",
+      "name": "Mayonesa chica 073",
+      "category": "Panaderia",
+      "barcode": "75026050300073",
+      "priceCents": 1401,
+      "stockOnHand": 30,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Mayonesa",
+        "QA-PAN",
+        "75026050300073",
+        "panaderia"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_074",
+      "sku": "QA-ABA-074",
+      "name": "Salsa botanera 074",
+      "category": "Abarrotes",
+      "barcode": "75026050300074",
+      "priceCents": 1538,
+      "stockOnHand": 0,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "out_of_stock",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Sin stock",
+      "searchTerms": [
+        "Salsa",
+        "QA-ABA",
+        "75026050300074",
+        "abarrotes"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "out_of_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_075",
+      "sku": "QA-LIM-075",
+      "name": "Cereal maiz 075",
+      "category": "Limpieza",
+      "barcode": "75026050300075",
+      "priceCents": 1675,
+      "stockOnHand": 7,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Cereal",
+        "QA-LIM",
+        "75026050300075",
+        "limpieza"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_076",
+      "sku": "QA-CON-076",
+      "name": "Yogurt bebible 076",
+      "category": "Congelados",
+      "barcode": "75026050300076",
+      "priceCents": 1812,
+      "stockOnHand": 14,
+      "lowStockThreshold": 7,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Yogurt",
+        "QA-CON",
+        "75026050300076",
+        "congelados"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_077",
+      "sku": "QA-DUL-077",
+      "name": "Jabon barra 077",
+      "category": "Dulces",
+      "barcode": "75026050300077",
+      "priceCents": 1949,
+      "stockOnHand": 21,
+      "lowStockThreshold": 8,
+      "isActive": false,
+      "expectedSignal": "inactive",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Producto inactivo",
+      "searchTerms": [
+        "Jabon",
+        "QA-DUL",
+        "75026050300077",
+        "dulces"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "inactive",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_078",
+      "sku": "QA-CIG-078",
+      "name": "Servilletas 078",
+      "category": "Cigarros",
+      "barcode": "75026050300078",
+      "priceCents": 2086,
+      "stockOnHand": 0,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "out_of_stock",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Sin stock",
+      "searchTerms": [
+        "Servilletas",
+        "QA-CIG",
+        "75026050300078",
+        "cigarros"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "out_of_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_079",
+      "sku": "QA-FAR-079",
+      "name": "Te helado 079",
+      "category": "Farmacia ligera",
+      "barcode": "75026050300079",
+      "priceCents": 2223,
+      "stockOnHand": 35,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Te",
+        "QA-FAR",
+        "75026050300079",
+        "farmacia ligera"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_080",
+      "sku": "QA-BEB-080",
+      "name": "Agua natural 080",
+      "category": "Bebidas",
+      "barcode": "75026050300080",
+      "priceCents": 2360,
+      "stockOnHand": 5,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "low_stock",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Agua",
+        "QA-BEB",
+        "75026050300080",
+        "bebidas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "low_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_081",
+      "sku": "QA-BOT-081",
+      "name": "Refresco cola 081",
+      "category": "Botanas",
+      "barcode": "75026050300081",
+      "priceCents": 2497,
+      "stockOnHand": 12,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Refresco",
+        "QA-BOT",
+        "75026050300081",
+        "botanas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_082",
+      "sku": "QA-LAC-082",
+      "name": "Leche entera 082",
+      "category": "Lacteos",
+      "barcode": "75026050300082",
+      "priceCents": 2634,
+      "stockOnHand": 19,
+      "lowStockThreshold": 7,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Leche",
+        "QA-LAC",
+        "75026050300082",
+        "lacteos"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_083",
+      "sku": "QA-PAN-083",
+      "name": "Papas saladas 083",
+      "category": "Panaderia",
+      "barcode": "75026050300083",
+      "priceCents": 2771,
+      "stockOnHand": 26,
+      "lowStockThreshold": 8,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Papas",
+        "QA-PAN",
+        "75026050300083",
+        "panaderia"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_084",
+      "sku": "QA-ABA-084",
+      "name": "Pan dulce 084",
+      "category": "Abarrotes",
+      "barcode": "75026050300084",
+      "priceCents": 2908,
+      "stockOnHand": 33,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Pan",
+        "QA-ABA",
+        "75026050300084",
+        "abarrotes"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_085",
+      "sku": "QA-LIM-085",
+      "name": "Cafe soluble 085",
+      "category": "Limpieza",
+      "barcode": "75026050300085",
+      "priceCents": 3045,
+      "stockOnHand": 3,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "low_stock",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Cafe",
+        "QA-LIM",
+        "75026050300085",
+        "limpieza"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "low_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_086",
+      "sku": "QA-CON-086",
+      "name": "Detergente polvo 086",
+      "category": "Congelados",
+      "barcode": "75026050300086",
+      "priceCents": 3182,
+      "stockOnHand": 10,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Detergente",
+        "QA-CON",
+        "75026050300086",
+        "congelados"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_087",
+      "sku": "QA-DUL-087",
+      "name": "Hielo bolsa 087",
+      "category": "Dulces",
+      "barcode": "75026050300087",
+      "priceCents": 3319,
+      "stockOnHand": 17,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Hielo",
+        "QA-DUL",
+        "75026050300087",
+        "dulces"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_088",
+      "sku": "QA-CIG-088",
+      "name": "Chocolate barra 088",
+      "category": "Cigarros",
+      "barcode": "75026050300088",
+      "priceCents": 3456,
+      "stockOnHand": 24,
+      "lowStockThreshold": 7,
+      "isActive": false,
+      "expectedSignal": "inactive",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Producto inactivo",
+      "searchTerms": [
+        "Chocolate",
+        "QA-CIG",
+        "75026050300088",
+        "cigarros"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "inactive",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_089",
+      "sku": "QA-FAR-089",
+      "name": "Atun lata 089",
+      "category": "Farmacia ligera",
+      "barcode": "75026050300089",
+      "priceCents": 3593,
+      "stockOnHand": 31,
+      "lowStockThreshold": 8,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Atun",
+        "QA-FAR",
+        "75026050300089",
+        "farmacia ligera"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_090",
+      "sku": "QA-BEB-090",
+      "name": "Galleta vainilla 090",
+      "category": "Bebidas",
+      "barcode": "75026050300090",
+      "priceCents": 3730,
+      "stockOnHand": 1,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "low_stock",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Galleta",
+        "QA-BEB",
+        "75026050300090",
+        "bebidas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "low_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_091",
+      "sku": "QA-BOT-091",
+      "name": "Jugo naranja 091",
+      "category": "Botanas",
+      "barcode": "75026050300091",
+      "priceCents": 3867,
+      "stockOnHand": 0,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "out_of_stock",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Sin stock",
+      "searchTerms": [
+        "Jugo",
+        "QA-BOT",
+        "75026050300091",
+        "botanas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "out_of_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_092",
+      "sku": "QA-LAC-092",
+      "name": "Tortilla harina 092",
+      "category": "Lacteos",
+      "barcode": "75026050300092",
+      "priceCents": 4004,
+      "stockOnHand": 15,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Tortilla",
+        "QA-LAC",
+        "75026050300092",
+        "lacteos"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_093",
+      "sku": "QA-PAN-093",
+      "name": "Mayonesa chica 093",
+      "category": "Panaderia",
+      "barcode": "75026050300093",
+      "priceCents": 4141,
+      "stockOnHand": 22,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Mayonesa",
+        "QA-PAN",
+        "75026050300093",
+        "panaderia"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_094",
+      "sku": "QA-ABA-094",
+      "name": "Salsa botanera 094",
+      "category": "Abarrotes",
+      "barcode": "75026050300094",
+      "priceCents": 4278,
+      "stockOnHand": 29,
+      "lowStockThreshold": 7,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Salsa",
+        "QA-ABA",
+        "75026050300094",
+        "abarrotes"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_095",
+      "sku": "QA-LIM-095",
+      "name": "Cereal maiz 095",
+      "category": "Limpieza",
+      "barcode": "75026050300095",
+      "priceCents": 4415,
+      "stockOnHand": 36,
+      "lowStockThreshold": 8,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Cereal",
+        "QA-LIM",
+        "75026050300095",
+        "limpieza"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_096",
+      "sku": "QA-CON-096",
+      "name": "Yogurt bebible 096",
+      "category": "Congelados",
+      "barcode": "75026050300096",
+      "priceCents": 4552,
+      "stockOnHand": 6,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Yogurt",
+        "QA-CON",
+        "75026050300096",
+        "congelados"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_097",
+      "sku": "QA-DUL-097",
+      "name": "Jabon barra 097",
+      "category": "Dulces",
+      "barcode": "75026050300097",
+      "priceCents": 4689,
+      "stockOnHand": 13,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Jabon",
+        "QA-DUL",
+        "75026050300097",
+        "dulces"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_098",
+      "sku": "QA-CIG-098",
+      "name": "Servilletas 098",
+      "category": "Cigarros",
+      "barcode": "75026050300098",
+      "priceCents": 4826,
+      "stockOnHand": 20,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Servilletas",
+        "QA-CIG",
+        "75026050300098",
+        "cigarros"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_099",
+      "sku": "QA-FAR-099",
+      "name": "Te helado 099",
+      "category": "Farmacia ligera",
+      "barcode": "75026050300099",
+      "priceCents": 4963,
+      "stockOnHand": 27,
+      "lowStockThreshold": 6,
+      "isActive": false,
+      "expectedSignal": "inactive",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Producto inactivo",
+      "searchTerms": [
+        "Te",
+        "QA-FAR",
+        "75026050300099",
+        "farmacia ligera"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "inactive",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_100",
+      "sku": "QA-BEB-100",
+      "name": "Agua natural 100",
+      "category": "Bebidas",
+      "barcode": "75026050300100",
+      "priceCents": 5100,
+      "stockOnHand": 34,
+      "lowStockThreshold": 7,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Agua",
+        "QA-BEB",
+        "75026050300100",
+        "bebidas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_101",
+      "sku": "QA-BOT-101",
+      "name": "Refresco cola 101",
+      "category": "Botanas",
+      "barcode": "75026050300101",
+      "priceCents": 5237,
+      "stockOnHand": 4,
+      "lowStockThreshold": 8,
+      "isActive": true,
+      "expectedSignal": "low_stock",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Refresco",
+        "QA-BOT",
+        "75026050300101",
+        "botanas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "low_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_102",
+      "sku": "QA-LAC-102",
+      "name": "Leche entera 102",
+      "category": "Lacteos",
+      "barcode": "75026050300102",
+      "priceCents": 5374,
+      "stockOnHand": 11,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Leche",
+        "QA-LAC",
+        "75026050300102",
+        "lacteos"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_103",
+      "sku": "QA-PAN-103",
+      "name": "Papas saladas 103",
+      "category": "Panaderia",
+      "barcode": "75026050300103",
+      "priceCents": 5511,
+      "stockOnHand": 18,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Papas",
+        "QA-PAN",
+        "75026050300103",
+        "panaderia"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_104",
+      "sku": "QA-ABA-104",
+      "name": "Pan dulce 104",
+      "category": "Abarrotes",
+      "barcode": "75026050300104",
+      "priceCents": 5648,
+      "stockOnHand": 0,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "out_of_stock",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Sin stock",
+      "searchTerms": [
+        "Pan",
+        "QA-ABA",
+        "75026050300104",
+        "abarrotes"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "out_of_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_105",
+      "sku": "QA-LIM-105",
+      "name": "Cafe soluble 105",
+      "category": "Limpieza",
+      "barcode": "75026050300105",
+      "priceCents": 5785,
+      "stockOnHand": 32,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Cafe",
+        "QA-LIM",
+        "75026050300105",
+        "limpieza"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_106",
+      "sku": "QA-CON-106",
+      "name": "Detergente polvo 106",
+      "category": "Congelados",
+      "barcode": "75026050300106",
+      "priceCents": 5922,
+      "stockOnHand": 2,
+      "lowStockThreshold": 7,
+      "isActive": true,
+      "expectedSignal": "low_stock",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Detergente",
+        "QA-CON",
+        "75026050300106",
+        "congelados"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "low_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_107",
+      "sku": "QA-DUL-107",
+      "name": "Hielo bolsa 107",
+      "category": "Dulces",
+      "barcode": "75026050300107",
+      "priceCents": 6059,
+      "stockOnHand": 9,
+      "lowStockThreshold": 8,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Hielo",
+        "QA-DUL",
+        "75026050300107",
+        "dulces"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_108",
+      "sku": "QA-CIG-108",
+      "name": "Chocolate barra 108",
+      "category": "Cigarros",
+      "barcode": "75026050300108",
+      "priceCents": 6196,
+      "stockOnHand": 16,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Chocolate",
+        "QA-CIG",
+        "75026050300108",
+        "cigarros"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_109",
+      "sku": "QA-FAR-109",
+      "name": "Atun lata 109",
+      "category": "Farmacia ligera",
+      "barcode": "75026050300109",
+      "priceCents": 6333,
+      "stockOnHand": 23,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Atun",
+        "QA-FAR",
+        "75026050300109",
+        "farmacia ligera"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_110",
+      "sku": "QA-BEB-110",
+      "name": "Galleta vainilla 110",
+      "category": "Bebidas",
+      "barcode": "75026050300110",
+      "priceCents": 6470,
+      "stockOnHand": 30,
+      "lowStockThreshold": 5,
+      "isActive": false,
+      "expectedSignal": "inactive",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Producto inactivo",
+      "searchTerms": [
+        "Galleta",
+        "QA-BEB",
+        "75026050300110",
+        "bebidas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "inactive",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_111",
+      "sku": "QA-BOT-111",
+      "name": "Jugo naranja 111",
+      "category": "Botanas",
+      "barcode": "75026050300111",
+      "priceCents": 6607,
+      "stockOnHand": 0,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "out_of_stock",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Sin stock",
+      "searchTerms": [
+        "Jugo",
+        "QA-BOT",
+        "75026050300111",
+        "botanas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "out_of_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_112",
+      "sku": "QA-LAC-112",
+      "name": "Tortilla harina 112",
+      "category": "Lacteos",
+      "barcode": "75026050300112",
+      "priceCents": 6744,
+      "stockOnHand": 7,
+      "lowStockThreshold": 7,
+      "isActive": true,
+      "expectedSignal": "low_stock",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Tortilla",
+        "QA-LAC",
+        "75026050300112",
+        "lacteos"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "low_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_113",
+      "sku": "QA-PAN-113",
+      "name": "Mayonesa chica 113",
+      "category": "Panaderia",
+      "barcode": "75026050300113",
+      "priceCents": 6881,
+      "stockOnHand": 14,
+      "lowStockThreshold": 8,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Mayonesa",
+        "QA-PAN",
+        "75026050300113",
+        "panaderia"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_114",
+      "sku": "QA-ABA-114",
+      "name": "Salsa botanera 114",
+      "category": "Abarrotes",
+      "barcode": "75026050300114",
+      "priceCents": 7018,
+      "stockOnHand": 21,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Salsa",
+        "QA-ABA",
+        "75026050300114",
+        "abarrotes"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_115",
+      "sku": "QA-LIM-115",
+      "name": "Cereal maiz 115",
+      "category": "Limpieza",
+      "barcode": "75026050300115",
+      "priceCents": 7155,
+      "stockOnHand": 28,
+      "lowStockThreshold": 4,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Cereal",
+        "QA-LIM",
+        "75026050300115",
+        "limpieza"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_116",
+      "sku": "QA-CON-116",
+      "name": "Yogurt bebible 116",
+      "category": "Congelados",
+      "barcode": "75026050300116",
+      "priceCents": 7292,
+      "stockOnHand": 35,
+      "lowStockThreshold": 5,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Yogurt",
+        "QA-CON",
+        "75026050300116",
+        "congelados"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_117",
+      "sku": "QA-DUL-117",
+      "name": "Jabon barra 117",
+      "category": "Dulces",
+      "barcode": "75026050300117",
+      "priceCents": 7429,
+      "stockOnHand": 0,
+      "lowStockThreshold": 6,
+      "isActive": true,
+      "expectedSignal": "out_of_stock",
+      "canAddToSale": false,
+      "expectedOperatorCopy": "Sin stock",
+      "searchTerms": [
+        "Jabon",
+        "QA-DUL",
+        "75026050300117",
+        "dulces"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "out_of_stock",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": false,
+        "mustBlockWithReason": true
+      }
+    },
+    {
+      "id": "qa_118",
+      "sku": "QA-CIG-118",
+      "name": "Servilletas 118",
+      "category": "Cigarros",
+      "barcode": "75026050300118",
+      "priceCents": 7566,
+      "stockOnHand": 12,
+      "lowStockThreshold": 7,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Servilletas",
+        "QA-CIG",
+        "75026050300118",
+        "cigarros"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_119",
+      "sku": "QA-FAR-119",
+      "name": "Te helado 119",
+      "category": "Farmacia ligera",
+      "barcode": "75026050300119",
+      "priceCents": 7703,
+      "stockOnHand": 19,
+      "lowStockThreshold": 8,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Te",
+        "QA-FAR",
+        "75026050300119",
+        "farmacia ligera"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    },
+    {
+      "id": "qa_120",
+      "sku": "QA-BEB-120",
+      "name": "Agua natural 120",
+      "category": "Bebidas",
+      "barcode": "75026050300120",
+      "priceCents": 7840,
+      "stockOnHand": 26,
+      "lowStockThreshold": 3,
+      "isActive": true,
+      "expectedSignal": "available",
+      "canAddToSale": true,
+      "expectedOperatorCopy": "Se puede agregar a venta",
+      "searchTerms": [
+        "Agua",
+        "QA-BEB",
+        "75026050300120",
+        "bebidas"
+      ],
+      "acceptance": {
+        "visibleInCatalog": true,
+        "visibleInStockFilter": "available",
+        "requiresDetailBeforeSale": false,
+        "mustPersistToPosCart": true,
+        "mustBlockWithReason": false
+      }
+    }
+  ],
+  "manualSamplingPlan": [
+    {
+      "bucket": "available",
+      "sample": "first 5 products with expectedSignal available"
+    },
+    {
+      "bucket": "low_stock",
+      "sample": "first 5 products with expectedSignal low_stock"
+    },
+    {
+      "bucket": "out_of_stock",
+      "sample": "first 5 products with expectedSignal out_of_stock"
+    },
+    {
+      "bucket": "inactive",
+      "sample": "first 5 products with expectedSignal inactive"
+    }
+  ]
+}

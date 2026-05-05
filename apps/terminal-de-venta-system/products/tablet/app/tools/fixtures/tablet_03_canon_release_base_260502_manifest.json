@@ -1,0 +1,42 @@
+{
+  "package": "PRISMA_TABLET_03_CANON_RELEASE_BASE_260502",
+  "releaseDate": "2026-05-02",
+  "blocks": [
+    "03J_03K",
+    "03L",
+    "03M",
+    "03N",
+    "03Z"
+  ],
+  "criticalRoutes": [
+    "/pos",
+    "/catalog",
+    "/stock",
+    "/existencias",
+    "/shift",
+    "/sync",
+    "/release-gate"
+  ],
+  "criticalApis": [
+    "/api/pos/shift/current",
+    "/api/pos/shift/open",
+    "/api/pos/shift/close",
+    "/api/pos/sync/panel",
+    "/api/pos/sync/retry",
+    "/api/pos/export/contextual",
+    "/api/pos/release-gate"
+  ],
+  "expectedVectorCounts": {
+    "shiftCashMath": 5000,
+    "syncPanel": 4200,
+    "contextualExport": 3600,
+    "releaseGate": 9000
+  },
+  "noRawTechnicalCopySurfaces": [
+    "components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen.tsx",
+    "components/shift/shift-cash-closure-screen.tsx",
+    "components/sync/pending-offline-sync-panel-screen.tsx",
+    "components/reports/contextual-export-actions.tsx",
+    "components/release-gate/tablet-operable-release-gate-screen.tsx"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "tablet-operational-priorities.03c",
+  "cases": [
+    {
+      "name": "closed-shift-first",
+      "input": { "shift": "closed", "pending": 0, "failed": 0, "conflicts": 0, "activeProducts": 20, "lowStockProducts": 0, "ticketsClosed": 0 },
+      "expectedFirstKey": "shift_closed",
+      "expectedTitle": "Turno cerrado"
+    },
+    {
+      "name": "conflicts-beat-low-stock",
+      "input": { "shift": "open", "pending": 3, "failed": 0, "conflicts": 2, "activeProducts": 20, "lowStockProducts": 5, "ticketsClosed": 8 },
+      "expectedFirstKey": "connection_conflict",
+      "expectedTitle": "Revisar pendientes"
+    },
+    {
+      "name": "failed-beats-pending",
+      "input": { "shift": "open", "pending": 3, "failed": 1, "conflicts": 0, "activeProducts": 20, "lowStockProducts": 0, "ticketsClosed": 2 },
+      "expectedFirstKey": "connection_failed",
+      "expectedTitle": "Revisar sincronizacion"
+    },
+    {
+      "name": "pending-visible",
+      "input": { "shift": "open", "pending": 4, "failed": 0, "conflicts": 0, "activeProducts": 20, "lowStockProducts": 0, "ticketsClosed": 2 },
+      "expectedFirstKey": "connection_pending",
+      "expectedTitle": "Pendientes por enviar"
+    },
+    {
+      "name": "empty-catalog",
+      "input": { "shift": "open", "pending": 0, "failed": 0, "conflicts": 0, "activeProducts": 0, "lowStockProducts": 0, "ticketsClosed": 0 },
+      "expectedFirstKey": "catalog_empty",
+      "expectedTitle": "Catalogo por revisar"
+    },
+    {
+      "name": "stock-pressure",
+      "input": { "shift": "open", "pending": 0, "failed": 0, "conflicts": 0, "activeProducts": 30, "lowStockProducts": 6, "ticketsClosed": 9 },
+      "expectedFirstKey": "stock_pressure",
+      "expectedTitle": "Existencias con presion"
+    },
+    {
+      "name": "quiet-day",
+      "input": { "shift": "open", "pending": 0, "failed": 0, "conflicts": 0, "activeProducts": 30, "lowStockProducts": 0, "ticketsClosed": 0 },
+      "expectedFirstKey": "quiet_day",
+      "expectedTitle": "Arranque limpio"
+    }
+  ]
+}

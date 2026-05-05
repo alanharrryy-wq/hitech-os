@@ -1,0 +1,159 @@
+{
+  "paymentCases": [
+    {
+      "id": "cash-exact-small",
+      "method": "cash",
+      "totalCents": 1850,
+      "cashReceivedCents": 1850,
+      "canClose": true,
+      "changeCents": 0
+    },
+    {
+      "id": "cash-change-round",
+      "method": "cash",
+      "totalCents": 3750,
+      "cashReceivedCents": 5000,
+      "canClose": true,
+      "changeCents": 1250
+    },
+    {
+      "id": "cash-short",
+      "method": "cash",
+      "totalCents": 9800,
+      "cashReceivedCents": 5000,
+      "canClose": false,
+      "changeCents": 0
+    },
+    {
+      "id": "card-no-auth-warning",
+      "method": "card",
+      "totalCents": 14500,
+      "cashReceivedCents": 0,
+      "canClose": true,
+      "changeCents": 0
+    },
+    {
+      "id": "transfer-reference",
+      "method": "transfer",
+      "totalCents": 22100,
+      "cashReceivedCents": 0,
+      "canClose": true,
+      "changeCents": 0
+    },
+    {
+      "id": "mixed-phase-signal",
+      "method": "mixed",
+      "totalCents": 6400,
+      "cashReceivedCents": 0,
+      "canClose": true,
+      "changeCents": 0
+    }
+  ],
+  "returnCases": [
+    {
+      "id": "partial-one-line",
+      "ticketStatus": "COMPLETED",
+      "lineQty": 5,
+      "returnedAlready": 1,
+      "requested": 2,
+      "canReturn": true,
+      "amountCents": 2400
+    },
+    {
+      "id": "over-return-blocks",
+      "ticketStatus": "COMPLETED",
+      "lineQty": 2,
+      "returnedAlready": 1,
+      "requested": 3,
+      "canReturn": false,
+      "amountCents": 1200
+    },
+    {
+      "id": "empty-selection-blocks",
+      "ticketStatus": "COMPLETED",
+      "lineQty": 2,
+      "returnedAlready": 0,
+      "requested": 0,
+      "canReturn": false,
+      "amountCents": 0
+    },
+    {
+      "id": "cancelled-ticket-blocks",
+      "ticketStatus": "CANCELLED",
+      "lineQty": 2,
+      "returnedAlready": 0,
+      "requested": 1,
+      "canReturn": false,
+      "amountCents": 1200
+    }
+  ],
+  "offlinePolicyCases": [
+    {
+      "id": "standalone-online",
+      "runtimeMode": "standalone",
+      "connectionState": "online",
+      "hasLocalCatalog": true,
+      "hasOpenShift": true,
+      "pendingEvents": 0,
+      "cartTotalCents": 2500,
+      "canComplete": true
+    },
+    {
+      "id": "offline-with-catalog",
+      "runtimeMode": "standalone",
+      "connectionState": "offline",
+      "hasLocalCatalog": true,
+      "hasOpenShift": true,
+      "pendingEvents": 4,
+      "cartTotalCents": 2500,
+      "canComplete": true
+    },
+    {
+      "id": "offline-no-catalog",
+      "runtimeMode": "standalone",
+      "connectionState": "offline",
+      "hasLocalCatalog": false,
+      "hasOpenShift": true,
+      "pendingEvents": 0,
+      "cartTotalCents": 2500,
+      "canComplete": false
+    },
+    {
+      "id": "offline-too-large",
+      "runtimeMode": "managed",
+      "connectionState": "offline",
+      "hasLocalCatalog": true,
+      "hasOpenShift": true,
+      "pendingEvents": 0,
+      "cartTotalCents": 125000,
+      "maxOfflineSaleCents": 100000,
+      "canComplete": false
+    },
+    {
+      "id": "shift-closed",
+      "runtimeMode": "standalone",
+      "connectionState": "online",
+      "hasLocalCatalog": true,
+      "hasOpenShift": false,
+      "pendingEvents": 0,
+      "cartTotalCents": 2500,
+      "canComplete": false
+    }
+  ],
+  "salesKpiCases": [
+    {
+      "id": "basic-day",
+      "tickets": 3,
+      "grossCents": 31250,
+      "unitsSold": 9,
+      "returnedTickets": 1
+    },
+    {
+      "id": "empty-day",
+      "tickets": 0,
+      "grossCents": 0,
+      "unitsSold": 0,
+      "returnedTickets": 0
+    }
+  ]
+}

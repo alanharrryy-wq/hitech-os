@@ -1,0 +1,4 @@
+export type PosErrorCode = "EMPTY_CART"|"INVALID_QUANTITY"|"PRODUCT_NOT_FOUND"|"PRODUCT_INACTIVE"|"INSUFFICIENT_STOCK"|"TERMINAL_NOT_FOUND"|"SHIFT_NOT_OPEN"|"NETWORK_UNAVAILABLE"|"SYNC_PENDING"|"BUSINESS_NOT_FOUND"|"ENGINE_INVARIANT_FAILED";
+export class PosEngineError extends Error{readonly code:PosErrorCode;readonly details:Record<string,unknown>;constructor(code:PosErrorCode,message:string,details:Record<string,unknown>={}){super(message);this.name="PosEngineError";this.code=code;this.details=details;}}
+export function assertPositiveQuantity(qty:number,context:Record<string,unknown>={}){if(!Number.isInteger(qty)||qty<=0)throw new PosEngineError("INVALID_QUANTITY","La cantidad debe ser un entero mayor a cero.",{qty,...context});}
+export function assertNonEmpty<T>(items:T[],message="El carrito no puede cerrarse vacio."){if(!items.length)throw new PosEngineError("EMPTY_CART",message);}

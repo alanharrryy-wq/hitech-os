@@ -1,0 +1,982 @@
+[
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-001",
+    "kind": "no_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-002",
+    "kind": "open_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-003",
+    "kind": "cash_count",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-004",
+    "kind": "variance_positive",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-005",
+    "kind": "variance_negative",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-006",
+    "kind": "close_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-007",
+    "kind": "offline_visible",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-008",
+    "kind": "no_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-009",
+    "kind": "open_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-010",
+    "kind": "cash_count",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": true
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-011",
+    "kind": "variance_positive",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-012",
+    "kind": "variance_negative",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-013",
+    "kind": "close_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-014",
+    "kind": "offline_visible",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-015",
+    "kind": "no_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-016",
+    "kind": "open_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-017",
+    "kind": "cash_count",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-018",
+    "kind": "variance_positive",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-019",
+    "kind": "variance_negative",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-020",
+    "kind": "close_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": true
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-021",
+    "kind": "offline_visible",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-022",
+    "kind": "no_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-023",
+    "kind": "open_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-024",
+    "kind": "cash_count",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-025",
+    "kind": "variance_positive",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-026",
+    "kind": "variance_negative",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-027",
+    "kind": "close_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-028",
+    "kind": "offline_visible",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-029",
+    "kind": "no_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-030",
+    "kind": "open_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": true
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-031",
+    "kind": "cash_count",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-032",
+    "kind": "variance_positive",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-033",
+    "kind": "variance_negative",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-034",
+    "kind": "close_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-035",
+    "kind": "offline_visible",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-036",
+    "kind": "no_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-037",
+    "kind": "open_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-038",
+    "kind": "cash_count",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-039",
+    "kind": "variance_positive",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-040",
+    "kind": "variance_negative",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": true
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-041",
+    "kind": "close_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-042",
+    "kind": "offline_visible",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-043",
+    "kind": "no_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-044",
+    "kind": "open_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-045",
+    "kind": "cash_count",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-046",
+    "kind": "variance_positive",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-047",
+    "kind": "variance_negative",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-048",
+    "kind": "close_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-049",
+    "kind": "offline_visible",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-050",
+    "kind": "no_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": true
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-051",
+    "kind": "open_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-052",
+    "kind": "cash_count",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-053",
+    "kind": "variance_positive",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-054",
+    "kind": "variance_negative",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-055",
+    "kind": "close_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-056",
+    "kind": "offline_visible",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-057",
+    "kind": "no_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-058",
+    "kind": "open_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-059",
+    "kind": "cash_count",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-060",
+    "kind": "variance_positive",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": true
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-061",
+    "kind": "variance_negative",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-062",
+    "kind": "close_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-063",
+    "kind": "offline_visible",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-064",
+    "kind": "no_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-065",
+    "kind": "open_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-066",
+    "kind": "cash_count",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-067",
+    "kind": "variance_positive",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-068",
+    "kind": "variance_negative",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-069",
+    "kind": "close_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-070",
+    "kind": "offline_visible",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": true
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-071",
+    "kind": "no_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-072",
+    "kind": "open_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-073",
+    "kind": "cash_count",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-074",
+    "kind": "variance_positive",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-075",
+    "kind": "variance_negative",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-076",
+    "kind": "close_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-077",
+    "kind": "offline_visible",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-078",
+    "kind": "no_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-079",
+    "kind": "open_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-080",
+    "kind": "cash_count",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": true
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-081",
+    "kind": "variance_positive",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-082",
+    "kind": "variance_negative",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-083",
+    "kind": "close_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-084",
+    "kind": "offline_visible",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-085",
+    "kind": "no_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-086",
+    "kind": "open_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-087",
+    "kind": "cash_count",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-088",
+    "kind": "variance_positive",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-089",
+    "kind": "variance_negative",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-090",
+    "kind": "close_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": true
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-091",
+    "kind": "offline_visible",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-092",
+    "kind": "no_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-093",
+    "kind": "open_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-094",
+    "kind": "cash_count",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-095",
+    "kind": "variance_positive",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-096",
+    "kind": "variance_negative",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-097",
+    "kind": "close_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-098",
+    "kind": "offline_visible",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-099",
+    "kind": "no_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-100",
+    "kind": "open_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": true
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-101",
+    "kind": "cash_count",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-102",
+    "kind": "variance_positive",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-103",
+    "kind": "variance_negative",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-104",
+    "kind": "close_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-105",
+    "kind": "offline_visible",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-106",
+    "kind": "no_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-107",
+    "kind": "open_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-108",
+    "kind": "cash_count",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-109",
+    "kind": "variance_positive",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-110",
+    "kind": "variance_negative",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": true
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-111",
+    "kind": "close_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-112",
+    "kind": "offline_visible",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-113",
+    "kind": "no_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-114",
+    "kind": "open_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-115",
+    "kind": "cash_count",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-116",
+    "kind": "variance_positive",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-117",
+    "kind": "variance_negative",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-118",
+    "kind": "close_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-119",
+    "kind": "offline_visible",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-120",
+    "kind": "no_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": true
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-121",
+    "kind": "open_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-122",
+    "kind": "cash_count",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-123",
+    "kind": "variance_positive",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-124",
+    "kind": "variance_negative",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-125",
+    "kind": "close_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-126",
+    "kind": "offline_visible",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-127",
+    "kind": "no_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-128",
+    "kind": "open_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-129",
+    "kind": "cash_count",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-130",
+    "kind": "variance_positive",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": true
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-131",
+    "kind": "variance_negative",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-132",
+    "kind": "close_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-133",
+    "kind": "offline_visible",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-134",
+    "kind": "no_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-135",
+    "kind": "open_shift",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-136",
+    "kind": "cash_count",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-137",
+    "kind": "variance_positive",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-138",
+    "kind": "variance_negative",
+    "route": "/api/pos/shift/current",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-139",
+    "kind": "close_shift",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": false
+  },
+  {
+    "id": "tablet_shift_cash_closure_extended_scenarios_03l.json-140",
+    "kind": "offline_visible",
+    "route": "/shift",
+    "expected": "cashier-safe state and deterministic cash math",
+    "critical": true
+  }
+]

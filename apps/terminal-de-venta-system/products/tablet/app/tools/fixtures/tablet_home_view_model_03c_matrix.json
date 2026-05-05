@@ -1,0 +1,221 @@
+{
+  "schemaVersion": "home-view-model-matrix.03c",
+  "cases": [
+    {
+      "name": "open-0-0-0",
+      "input": {
+        "shift": "open",
+        "pending": 0,
+        "activeProducts": 0,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "primaryLabel": "Ir a vender",
+        "mustHaveMetrics": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ]
+      }
+    },
+    {
+      "name": "open-0-25-0",
+      "input": {
+        "shift": "open",
+        "pending": 0,
+        "activeProducts": 25,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "primaryLabel": "Ir a vender",
+        "mustHaveMetrics": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ]
+      }
+    },
+    {
+      "name": "open-0-25-3",
+      "input": {
+        "shift": "open",
+        "pending": 0,
+        "activeProducts": 25,
+        "lowStockProducts": 3
+      },
+      "expected": {
+        "primaryLabel": "Ver existencias",
+        "mustHaveMetrics": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ]
+      }
+    },
+    {
+      "name": "open-4-0-0",
+      "input": {
+        "shift": "open",
+        "pending": 4,
+        "activeProducts": 0,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "primaryLabel": "Ver pendientes",
+        "mustHaveMetrics": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ]
+      }
+    },
+    {
+      "name": "open-4-25-0",
+      "input": {
+        "shift": "open",
+        "pending": 4,
+        "activeProducts": 25,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "primaryLabel": "Ver pendientes",
+        "mustHaveMetrics": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ]
+      }
+    },
+    {
+      "name": "open-4-25-3",
+      "input": {
+        "shift": "open",
+        "pending": 4,
+        "activeProducts": 25,
+        "lowStockProducts": 3
+      },
+      "expected": {
+        "primaryLabel": "Ver pendientes",
+        "mustHaveMetrics": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ]
+      }
+    },
+    {
+      "name": "closed-0-0-0",
+      "input": {
+        "shift": "closed",
+        "pending": 0,
+        "activeProducts": 0,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "primaryLabel": "Abrir turno",
+        "mustHaveMetrics": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ]
+      }
+    },
+    {
+      "name": "closed-0-25-0",
+      "input": {
+        "shift": "closed",
+        "pending": 0,
+        "activeProducts": 25,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "primaryLabel": "Abrir turno",
+        "mustHaveMetrics": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ]
+      }
+    },
+    {
+      "name": "closed-0-25-3",
+      "input": {
+        "shift": "closed",
+        "pending": 0,
+        "activeProducts": 25,
+        "lowStockProducts": 3
+      },
+      "expected": {
+        "primaryLabel": "Abrir turno",
+        "mustHaveMetrics": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ]
+      }
+    },
+    {
+      "name": "closed-4-0-0",
+      "input": {
+        "shift": "closed",
+        "pending": 4,
+        "activeProducts": 0,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "primaryLabel": "Abrir turno",
+        "mustHaveMetrics": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ]
+      }
+    },
+    {
+      "name": "closed-4-25-0",
+      "input": {
+        "shift": "closed",
+        "pending": 4,
+        "activeProducts": 25,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "primaryLabel": "Abrir turno",
+        "mustHaveMetrics": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ]
+      }
+    },
+    {
+      "name": "closed-4-25-3",
+      "input": {
+        "shift": "closed",
+        "pending": 4,
+        "activeProducts": 25,
+        "lowStockProducts": 3
+      },
+      "expected": {
+        "primaryLabel": "Abrir turno",
+        "mustHaveMetrics": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ]
+      }
+    }
+  ]
+}

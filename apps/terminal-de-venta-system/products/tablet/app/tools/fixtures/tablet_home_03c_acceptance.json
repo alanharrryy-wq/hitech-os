@@ -1,0 +1,221 @@
+{
+  "schemaVersion": "tablet-home-acceptance.03c",
+  "cases": [
+    {
+      "name": "shift=open;pending=0;lowStock=0",
+      "snapshot": {
+        "shiftState": "open",
+        "pendingEvents": 0,
+        "lowStockProducts": 0,
+        "salesTotalCents": 125000,
+        "ticketsClosed": 18
+      },
+      "expected": {
+        "mustShow": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ],
+        "primaryAction": "Ir a vender",
+        "forbidden": [
+          "outbox",
+          "payload",
+          "schema",
+          "runtime",
+          "undefined",
+          "null"
+        ]
+      }
+    },
+    {
+      "name": "shift=open;pending=0;lowStock=5",
+      "snapshot": {
+        "shiftState": "open",
+        "pendingEvents": 0,
+        "lowStockProducts": 5,
+        "salesTotalCents": 125000,
+        "ticketsClosed": 18
+      },
+      "expected": {
+        "mustShow": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ],
+        "primaryAction": "Ver existencias",
+        "forbidden": [
+          "outbox",
+          "payload",
+          "schema",
+          "runtime",
+          "undefined",
+          "null"
+        ]
+      }
+    },
+    {
+      "name": "shift=open;pending=3;lowStock=0",
+      "snapshot": {
+        "shiftState": "open",
+        "pendingEvents": 3,
+        "lowStockProducts": 0,
+        "salesTotalCents": 125000,
+        "ticketsClosed": 18
+      },
+      "expected": {
+        "mustShow": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ],
+        "primaryAction": "Ver pendientes",
+        "forbidden": [
+          "outbox",
+          "payload",
+          "schema",
+          "runtime",
+          "undefined",
+          "null"
+        ]
+      }
+    },
+    {
+      "name": "shift=open;pending=3;lowStock=5",
+      "snapshot": {
+        "shiftState": "open",
+        "pendingEvents": 3,
+        "lowStockProducts": 5,
+        "salesTotalCents": 125000,
+        "ticketsClosed": 18
+      },
+      "expected": {
+        "mustShow": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ],
+        "primaryAction": "Ver pendientes",
+        "forbidden": [
+          "outbox",
+          "payload",
+          "schema",
+          "runtime",
+          "undefined",
+          "null"
+        ]
+      }
+    },
+    {
+      "name": "shift=closed;pending=0;lowStock=0",
+      "snapshot": {
+        "shiftState": "closed",
+        "pendingEvents": 0,
+        "lowStockProducts": 0,
+        "salesTotalCents": 125000,
+        "ticketsClosed": 18
+      },
+      "expected": {
+        "mustShow": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ],
+        "primaryAction": "Abrir turno",
+        "forbidden": [
+          "outbox",
+          "payload",
+          "schema",
+          "runtime",
+          "undefined",
+          "null"
+        ]
+      }
+    },
+    {
+      "name": "shift=closed;pending=0;lowStock=5",
+      "snapshot": {
+        "shiftState": "closed",
+        "pendingEvents": 0,
+        "lowStockProducts": 5,
+        "salesTotalCents": 125000,
+        "ticketsClosed": 18
+      },
+      "expected": {
+        "mustShow": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ],
+        "primaryAction": "Abrir turno",
+        "forbidden": [
+          "outbox",
+          "payload",
+          "schema",
+          "runtime",
+          "undefined",
+          "null"
+        ]
+      }
+    },
+    {
+      "name": "shift=closed;pending=3;lowStock=0",
+      "snapshot": {
+        "shiftState": "closed",
+        "pendingEvents": 3,
+        "lowStockProducts": 0,
+        "salesTotalCents": 125000,
+        "ticketsClosed": 18
+      },
+      "expected": {
+        "mustShow": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ],
+        "primaryAction": "Abrir turno",
+        "forbidden": [
+          "outbox",
+          "payload",
+          "schema",
+          "runtime",
+          "undefined",
+          "null"
+        ]
+      }
+    },
+    {
+      "name": "shift=closed;pending=3;lowStock=5",
+      "snapshot": {
+        "shiftState": "closed",
+        "pendingEvents": 3,
+        "lowStockProducts": 5,
+        "salesTotalCents": 125000,
+        "ticketsClosed": 18
+      },
+      "expected": {
+        "mustShow": [
+          "Ventas del dia",
+          "Ticket promedio",
+          "Pendientes",
+          "Catalogo"
+        ],
+        "primaryAction": "Abrir turno",
+        "forbidden": [
+          "outbox",
+          "payload",
+          "schema",
+          "runtime",
+          "undefined",
+          "null"
+        ]
+      }
+    }
+  ]
+}

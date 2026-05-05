@@ -1,0 +1,1606 @@
+{
+  "package": "PRISMA_TABLET_CATALOG_STOCK_SELLING_ASSIST_03J_03K",
+  "purpose": "Route smoke cases for manual and scripted validation",
+  "cases": [
+    {
+      "id": "SMOKE-001",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-001",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-002",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-002",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-003",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-003",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-004",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-004",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-005",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-005",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-006",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-006",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-007",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-007",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-008",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-008",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-009",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-009",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-010",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-010",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-011",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-011",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-012",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-012",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-013",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-013",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-014",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-014",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-015",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-015",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-016",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-016",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-017",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-017",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-018",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-018",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-019",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-019",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-020",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-020",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-021",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-021",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-022",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-022",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-023",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-023",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-024",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-024",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-025",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-025",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-026",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-026",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-027",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-027",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-028",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-028",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-029",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-029",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-030",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-030",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-031",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-031",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-032",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-032",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-033",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-033",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-034",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-034",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-035",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-035",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-036",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-036",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-037",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-037",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-038",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-038",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-039",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-039",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-040",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-040",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-041",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-041",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-042",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-042",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-043",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-043",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-044",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-044",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-045",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-045",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-046",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-046",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-047",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-047",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-048",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-048",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-049",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-049",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-050",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-050",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-051",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-051",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-052",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-052",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-053",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-053",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-054",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-054",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-055",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-055",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-056",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-056",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-057",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-057",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-058",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-058",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-059",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-059",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-060",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-060",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-061",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-061",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-062",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-062",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-063",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-063",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-064",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-064",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-065",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-065",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-066",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-066",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-067",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-067",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-068",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-068",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-069",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-069",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-070",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-070",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-071",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-071",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-072",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-072",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-073",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-073",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-074",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-074",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-075",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-075",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-076",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-076",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-077",
+      "route": "/stock",
+      "condition": "low_stock",
+      "query": "QA-077",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-078",
+      "route": "/existencias",
+      "condition": "out_of_stock",
+      "query": "QA-078",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-079",
+      "route": "/pos",
+      "condition": "inactive",
+      "query": "QA-079",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "confirm blocked state"
+      ],
+      "expected": "add action blocked with clear reason",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    },
+    {
+      "id": "SMOKE-080",
+      "route": "/catalog",
+      "condition": "available",
+      "query": "QA-080",
+      "steps": [
+        "open route",
+        "type query",
+        "select product",
+        "inspect detail",
+        "attempt add to sale"
+      ],
+      "expected": "cart updated and /pos can continue sale",
+      "evidence": [
+        "screen visible",
+        "status badge visible",
+        "no raw technical copy",
+        "no console crash"
+      ]
+    }
+  ]
+}
