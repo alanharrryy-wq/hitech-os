@@ -1,0 +1,1449 @@
+{
+  "meta": {
+    "system": "PRISMA POS Visual Control Plane",
+    "version": "260503_v01_control_tools",
+    "owner": "tools/prisma-pos-visual-control",
+    "scope": "Tablet POS /pos only",
+    "notes": "Extends existing visual lock with domain-mapped control tokens, coverage/audit tooling and reference-match preset recipes. Package 1 does not force final visual styling."
+  },
+  "matrix": [
+    {
+      "token": "pos.glass.blur",
+      "css": "--prisma-pos-glass-blur",
+      "selector_targets": [
+        "pos.surface",
+        "shell.surface"
+      ],
+      "component": "pos.surface/shell.surface",
+      "effect": "Primary blur for POS glass surfaces.",
+      "recommended_range": "12..56px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.glass.opacity",
+      "css": "--prisma-pos-glass-opacity",
+      "selector_targets": [
+        "pos.surface"
+      ],
+      "component": "pos.surface",
+      "effect": "Glass surface opacity control.",
+      "recommended_range": "0.36..0.92",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.glass.border.opacity",
+      "css": "--prisma-pos-glass-border-opacity",
+      "selector_targets": [
+        "pos.surface",
+        "shell.surface"
+      ],
+      "component": "pos.surface/shell.surface",
+      "effect": "Border visibility for glass panels.",
+      "recommended_range": "0.08..0.42",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.glow.intensity",
+      "css": "--prisma-pos-glow-intensity",
+      "selector_targets": [
+        "product.stage",
+        "cta"
+      ],
+      "component": "product.stage/cta",
+      "effect": "General glow strength for premium highlights.",
+      "recommended_range": "0.0..0.8",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.highlight.opacity",
+      "css": "--prisma-pos-highlight-opacity",
+      "selector_targets": [
+        "cards",
+        "ticket",
+        "controls"
+      ],
+      "component": "cards/ticket",
+      "effect": "Opacity for highlight washes and hairline shines.",
+      "recommended_range": "0.0..0.42",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shadow.depth",
+      "css": "--prisma-pos-shadow-depth",
+      "selector_targets": [
+        "cards",
+        "ticket",
+        "shell"
+      ],
+      "component": "cards/ticket",
+      "effect": "Shadow depth multiplier.",
+      "recommended_range": "0.12..0.72",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.card.radius",
+      "css": "--prisma-pos-card-radius",
+      "selector_targets": [
+        "cards"
+      ],
+      "component": "cards",
+      "effect": "Product card radius.",
+      "recommended_range": "14..34px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.card.lift",
+      "css": "--prisma-pos-card-lift",
+      "selector_targets": [
+        "cards:hover"
+      ],
+      "component": "cards:hover",
+      "effect": "Hover lift for touch/desktop polish.",
+      "recommended_range": "0..10px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.stage.height",
+      "css": "--prisma-pos-stage-height",
+      "selector_targets": [
+        "product.stage"
+      ],
+      "component": "product.stage",
+      "effect": "Packshot stage height.",
+      "recommended_range": "118..220px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.stage.pedestal.opacity",
+      "css": "--prisma-pos-pedestal-opacity",
+      "selector_targets": [
+        "product.stage"
+      ],
+      "component": "product.stage",
+      "effect": "Pedestal shadow opacity under packshots.",
+      "recommended_range": "0.0..0.76",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.packshot.scale",
+      "css": "--prisma-pos-packshot-scale",
+      "selector_targets": [
+        "packshots"
+      ],
+      "component": "packshots",
+      "effect": "Packshot image scale multiplier.",
+      "recommended_range": "0.82..1.42",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.packshot.lift",
+      "css": "--prisma-pos-packshot-lift",
+      "selector_targets": [
+        "packshots"
+      ],
+      "component": "packshots",
+      "effect": "Vertical packshot lift.",
+      "recommended_range": "-24..10px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.packshot.shadow.opacity",
+      "css": "--prisma-pos-packshot-shadow-opacity",
+      "selector_targets": [
+        "packshots"
+      ],
+      "component": "packshots",
+      "effect": "Packshot local shadow strength.",
+      "recommended_range": "0.08..0.72",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.ticket.thumb.size",
+      "css": "--prisma-pos-ticket-thumb-size",
+      "selector_targets": [
+        "ticket.thumb"
+      ],
+      "component": "ticket.thumb",
+      "effect": "Cart thumbnail square size.",
+      "recommended_range": "38..70px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.ticket.line.gap",
+      "css": "--prisma-pos-ticket-line-gap",
+      "selector_targets": [
+        "ticket.lines"
+      ],
+      "component": "ticket.lines",
+      "effect": "Gap between ticket rows.",
+      "recommended_range": "8..22px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.ticket.total.scale",
+      "css": "--prisma-pos-ticket-total-scale",
+      "selector_targets": [
+        "ticket.total"
+      ],
+      "component": "ticket.total",
+      "effect": "Scale emphasis for total block.",
+      "recommended_range": "0.9..1.24",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.cta.height",
+      "css": "--prisma-pos-cta-height",
+      "selector_targets": [
+        "checkoutLink"
+      ],
+      "component": "checkoutLink",
+      "effect": "Primary checkout CTA height.",
+      "recommended_range": "54..86px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.cta.glow",
+      "css": "--prisma-pos-cta-glow",
+      "selector_targets": [
+        "checkoutLink"
+      ],
+      "component": "checkoutLink",
+      "effect": "Checkout CTA glow intensity.",
+      "recommended_range": "0.0..0.88",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.controls.height",
+      "css": "--prisma-pos-controls-height",
+      "selector_targets": [
+        "search",
+        "categories",
+        "buttons"
+      ],
+      "component": "search/categories",
+      "effect": "Control height rhythm.",
+      "recommended_range": "42..66px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.motion.fast",
+      "css": "--prisma-pos-motion-fast",
+      "selector_targets": [
+        "transitions"
+      ],
+      "component": "transitions",
+      "effect": "Fast motion duration.",
+      "recommended_range": "80..260ms",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.motion.normal",
+      "css": "--prisma-pos-motion-normal",
+      "selector_targets": [
+        "transitions"
+      ],
+      "component": "transitions",
+      "effect": "Normal motion duration.",
+      "recommended_range": "140..420ms",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.motion.slow",
+      "css": "--prisma-pos-motion-slow",
+      "selector_targets": [
+        "transitions"
+      ],
+      "component": "transitions",
+      "effect": "Slow motion duration.",
+      "recommended_range": "220..720ms",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shell.bg.depth",
+      "css": "--prisma-pos-shell-bg-depth",
+      "selector_targets": [
+        "shell.background"
+      ],
+      "component": "shell.background",
+      "effect": "Shell background depth multiplier.",
+      "recommended_range": "0.0..1.0",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shell.haze.opacity",
+      "css": "--prisma-pos-shell-haze-opacity",
+      "selector_targets": [
+        "shell",
+        "background"
+      ],
+      "component": "shell/background",
+      "effect": "Global haze opacity. Keep low to avoid washed UI.",
+      "recommended_range": "0..0.5",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shell.sidebar.blur",
+      "css": "--prisma-pos-shell-sidebar-blur",
+      "selector_targets": [
+        "sidebar"
+      ],
+      "component": "sidebar",
+      "effect": "Sidebar blur.",
+      "recommended_range": "10..48px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shell.header.blur",
+      "css": "--prisma-pos-shell-header-blur",
+      "selector_targets": [
+        "header"
+      ],
+      "component": "header",
+      "effect": "Header blur.",
+      "recommended_range": "8..42px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.accessibility.focus.ring",
+      "css": "--prisma-pos-focus-ring",
+      "selector_targets": [
+        "focus"
+      ],
+      "component": "focus",
+      "effect": "Focus ring thickness.",
+      "recommended_range": "2..6px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shell.bloom.opacity",
+      "css": "--prisma-pos-shell-bloom-opacity",
+      "selector_targets": [
+        "shell",
+        "background"
+      ],
+      "component": "shell/background",
+      "effect": "Opacity of localized premium blooms.",
+      "recommended_range": "0..0.6",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shell.vignette.opacity",
+      "css": "--prisma-pos-shell-vignette-opacity",
+      "selector_targets": [
+        "shell",
+        "background"
+      ],
+      "component": "shell/background",
+      "effect": "Edge vignette strength.",
+      "recommended_range": "0..0.85",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shell.noise.opacity",
+      "css": "--prisma-pos-shell-noise-opacity",
+      "selector_targets": [
+        "shell",
+        "background"
+      ],
+      "component": "shell/background",
+      "effect": "Atmospheric grain/noise opacity.",
+      "recommended_range": "0..0.14",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shell.sidebar.opacity",
+      "css": "--prisma-pos-shell-sidebar-opacity",
+      "selector_targets": [
+        "sidebar"
+      ],
+      "component": "sidebar",
+      "effect": "Sidebar glass fill opacity.",
+      "recommended_range": "0.5..0.98",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shell.header.opacity",
+      "css": "--prisma-pos-shell-header-opacity",
+      "selector_targets": [
+        "header"
+      ],
+      "component": "header",
+      "effect": "Top header glass fill opacity.",
+      "recommended_range": "0.5..0.98",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shell.nav.active.glow",
+      "css": "--prisma-pos-shell-nav-active-glow",
+      "selector_targets": [
+        "sidebar.nav.active"
+      ],
+      "component": "sidebar.nav.active",
+      "effect": "Active navigation glow strength.",
+      "recommended_range": "0.0..0.72",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shell.brand.glow",
+      "css": "--prisma-pos-shell-brand-glow",
+      "selector_targets": [
+        "sidebar.brand"
+      ],
+      "component": "sidebar.brand",
+      "effect": "PRISMA brand block glow strength.",
+      "recommended_range": "0.0..0.72",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shell.content.lift",
+      "css": "--prisma-pos-shell-content-lift",
+      "selector_targets": [
+        "main.content"
+      ],
+      "component": "main.content",
+      "effect": "Subtle content lift/shadow separation from cinematic shell.",
+      "recommended_range": "0..24px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shell.darkness",
+      "css": "--prisma-pos-shell-darkness",
+      "selector_targets": [
+        "shell",
+        "background"
+      ],
+      "component": "shell/background",
+      "effect": "Depth of black/navy base behind /pos.",
+      "recommended_range": "0..1",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shell.bloom.size",
+      "css": "--prisma-pos-shell-bloom-size",
+      "selector_targets": [
+        "shell",
+        "background"
+      ],
+      "component": "shell/background",
+      "effect": "Size of localized shell bloom gradients.",
+      "recommended_range": "180..900px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shell.contrast",
+      "css": "--prisma-pos-shell-contrast",
+      "selector_targets": [
+        "shell",
+        "background"
+      ],
+      "component": "shell/background",
+      "effect": "Contrast multiplier for shell atmosphere.",
+      "recommended_range": "0.7..1.4",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.glass.structural.opacity",
+      "css": "--prisma-pos-glass-structural-opacity",
+      "selector_targets": [
+        "catalogArea",
+        "ticketPanel"
+      ],
+      "component": "catalogArea/ticketPanel",
+      "effect": "Primary structural glass opacity.",
+      "recommended_range": "0.38..0.96",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.glass.structural.blur",
+      "css": "--prisma-pos-glass-structural-blur",
+      "selector_targets": [
+        "catalogArea",
+        "ticketPanel"
+      ],
+      "component": "catalogArea/ticketPanel",
+      "effect": "Primary structural glass blur.",
+      "recommended_range": "14..64px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.glass.structural.border",
+      "css": "--prisma-pos-glass-structural-border",
+      "selector_targets": [
+        "catalogArea",
+        "ticketPanel"
+      ],
+      "component": "catalogArea/ticketPanel",
+      "effect": "Primary glass border alpha.",
+      "recommended_range": "0.08..0.5",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.glass.interactive.opacity",
+      "css": "--prisma-pos-glass-interactive-opacity",
+      "selector_targets": [
+        "searchCard",
+        "categoryButton",
+        "buttons"
+      ],
+      "component": "searchCard/categoryButton",
+      "effect": "Interactive glass opacity.",
+      "recommended_range": "0.32..0.92",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.glass.interactive.blur",
+      "css": "--prisma-pos-glass-interactive-blur",
+      "selector_targets": [
+        "controls"
+      ],
+      "component": "controls",
+      "effect": "Interactive control blur.",
+      "recommended_range": "8..48px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.glass.interactive.border",
+      "css": "--prisma-pos-glass-interactive-border",
+      "selector_targets": [
+        "controls"
+      ],
+      "component": "controls",
+      "effect": "Interactive control border alpha.",
+      "recommended_range": "0.06..0.46",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.glass.ornamental.opacity",
+      "css": "--prisma-pos-glass-ornamental-opacity",
+      "selector_targets": [
+        "highlights",
+        "ornaments"
+      ],
+      "component": "highlights/ornaments",
+      "effect": "Ornamental glass opacity.",
+      "recommended_range": "0.05..0.6",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.glass.ornamental.blur",
+      "css": "--prisma-pos-glass-ornamental-blur",
+      "selector_targets": [
+        "highlights",
+        "ornaments"
+      ],
+      "component": "highlights/ornaments",
+      "effect": "Ornamental light blur.",
+      "recommended_range": "4..52px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.glass.ornamental.border",
+      "css": "--prisma-pos-glass-ornamental-border",
+      "selector_targets": [
+        "highlights",
+        "ornaments"
+      ],
+      "component": "highlights/ornaments",
+      "effect": "Ornamental border alpha.",
+      "recommended_range": "0..0.4",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.light.gold.intensity",
+      "css": "--prisma-pos-light-gold-intensity",
+      "selector_targets": [
+        "cta",
+        "active states"
+      ],
+      "component": "cta/active states",
+      "effect": "Gold light intensity.",
+      "recommended_range": "0..1",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.light.gold.spread",
+      "css": "--prisma-pos-light-gold-spread",
+      "selector_targets": [
+        "cta",
+        "active states"
+      ],
+      "component": "cta/active states",
+      "effect": "Gold light spread radius.",
+      "recommended_range": "12..220px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.light.cyan.ambient",
+      "css": "--prisma-pos-light-cyan-ambient",
+      "selector_targets": [
+        "shell",
+        "cards"
+      ],
+      "component": "shell/cards",
+      "effect": "Cyan/blue ambient light.",
+      "recommended_range": "0..0.6",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.light.white.edge",
+      "css": "--prisma-pos-light-white-edge",
+      "selector_targets": [
+        "borders",
+        "top highlights"
+      ],
+      "component": "borders/top highlights",
+      "effect": "White edge highlight alpha.",
+      "recommended_range": "0..0.5",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.light.panel.edge",
+      "css": "--prisma-pos-light-panel-edge",
+      "selector_targets": [
+        "catalogArea",
+        "ticketPanel"
+      ],
+      "component": "catalogArea/ticketPanel",
+      "effect": "Panel edge light alpha.",
+      "recommended_range": "0..0.5",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.light.card.topHighlight",
+      "css": "--prisma-pos-light-card-top-highlight",
+      "selector_targets": [
+        "productCard"
+      ],
+      "component": "productCard",
+      "effect": "Card top highlight alpha.",
+      "recommended_range": "0..0.55",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.light.ticket.focusGlow",
+      "css": "--prisma-pos-light-ticket-focus-glow",
+      "selector_targets": [
+        "ticketPanel"
+      ],
+      "component": "ticketPanel",
+      "effect": "Ticket focus glow strength.",
+      "recommended_range": "0..0.8",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.light.cta.hotspot",
+      "css": "--prisma-pos-light-cta-hotspot",
+      "selector_targets": [
+        "checkoutLink"
+      ],
+      "component": "checkoutLink",
+      "effect": "CTA hotspot strength.",
+      "recommended_range": "0..1",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.light.product.pedestalWarmth",
+      "css": "--prisma-pos-light-product-pedestal-warmth",
+      "selector_targets": [
+        "productPedestal"
+      ],
+      "component": "productPedestal",
+      "effect": "Product pedestal warmth.",
+      "recommended_range": "0..1",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.border.panel.alpha",
+      "css": "--prisma-pos-border-panel-alpha",
+      "selector_targets": [
+        "catalogArea",
+        "ticketPanel"
+      ],
+      "component": "catalogArea/ticketPanel",
+      "effect": "Panel border alpha.",
+      "recommended_range": "0.04..0.5",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.border.card.alpha",
+      "css": "--prisma-pos-border-card-alpha",
+      "selector_targets": [
+        "productCard"
+      ],
+      "component": "productCard",
+      "effect": "Card border alpha.",
+      "recommended_range": "0.04..0.5",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.border.ticket.alpha",
+      "css": "--prisma-pos-border-ticket-alpha",
+      "selector_targets": [
+        "ticketPanel"
+      ],
+      "component": "ticketPanel",
+      "effect": "Ticket border alpha.",
+      "recommended_range": "0.04..0.6",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.border.gold.alpha",
+      "css": "--prisma-pos-border-gold-alpha",
+      "selector_targets": [
+        "cta",
+        "active"
+      ],
+      "component": "cta/active",
+      "effect": "Gold border alpha.",
+      "recommended_range": "0..0.8",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.border.inner.highlight",
+      "css": "--prisma-pos-border-inner-highlight",
+      "selector_targets": [
+        "cards",
+        "controls"
+      ],
+      "component": "cards/controls",
+      "effect": "Inner hairline highlight alpha.",
+      "recommended_range": "0..0.5",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shadow.panel.depth",
+      "css": "--prisma-pos-shadow-panel-depth",
+      "selector_targets": [
+        "catalogArea"
+      ],
+      "component": "catalogArea",
+      "effect": "Panel shadow depth.",
+      "recommended_range": "0..1",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shadow.card.depth",
+      "css": "--prisma-pos-shadow-card-depth",
+      "selector_targets": [
+        "productCard"
+      ],
+      "component": "productCard",
+      "effect": "Card shadow depth.",
+      "recommended_range": "0..1",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shadow.ticket.depth",
+      "css": "--prisma-pos-shadow-ticket-depth",
+      "selector_targets": [
+        "ticketPanel"
+      ],
+      "component": "ticketPanel",
+      "effect": "Ticket shadow depth.",
+      "recommended_range": "0..1",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.shadow.cta.depth",
+      "css": "--prisma-pos-shadow-cta-depth",
+      "selector_targets": [
+        "checkoutLink"
+      ],
+      "component": "checkoutLink",
+      "effect": "CTA shadow depth.",
+      "recommended_range": "0..1",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.product.image.scale",
+      "css": "--prisma-pos-product-image-scale",
+      "selector_targets": [
+        "productPackshot",
+        "productFigure"
+      ],
+      "component": "productPackshot/productFigure",
+      "effect": "Product image scale.",
+      "recommended_range": "0.8..1.5",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.product.image.lift",
+      "css": "--prisma-pos-product-image-lift",
+      "selector_targets": [
+        "productPackshot",
+        "productFigure"
+      ],
+      "component": "productPackshot/productFigure",
+      "effect": "Product image vertical lift.",
+      "recommended_range": "-36..18px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.product.image.contrast",
+      "css": "--prisma-pos-product-image-contrast",
+      "selector_targets": [
+        "productPackshot"
+      ],
+      "component": "productPackshot",
+      "effect": "Product image contrast.",
+      "recommended_range": "0.8..1.35",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.product.image.saturation",
+      "css": "--prisma-pos-product-image-saturation",
+      "selector_targets": [
+        "productPackshot"
+      ],
+      "component": "productPackshot",
+      "effect": "Product image saturation.",
+      "recommended_range": "0.7..1.5",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.product.image.dropShadow",
+      "css": "--prisma-pos-product-image-drop-shadow",
+      "selector_targets": [
+        "productPackshot"
+      ],
+      "component": "productPackshot",
+      "effect": "Packshot drop shadow strength.",
+      "recommended_range": "0..1",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.product.stage.auraSize",
+      "css": "--prisma-pos-product-stage-aura-size",
+      "selector_targets": [
+        "productAura"
+      ],
+      "component": "productAura",
+      "effect": "Aura size multiplier.",
+      "recommended_range": "0.3..1.4",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.product.stage.auraOpacity",
+      "css": "--prisma-pos-product-stage-aura-opacity",
+      "selector_targets": [
+        "productAura"
+      ],
+      "component": "productAura",
+      "effect": "Aura opacity.",
+      "recommended_range": "0..0.9",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.product.stage.pedestalWidth",
+      "css": "--prisma-pos-product-stage-pedestal-width",
+      "selector_targets": [
+        "productPedestal"
+      ],
+      "component": "productPedestal",
+      "effect": "Pedestal width.",
+      "recommended_range": "52..180px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.product.stage.pedestalBlur",
+      "css": "--prisma-pos-product-stage-pedestal-blur",
+      "selector_targets": [
+        "productPedestal"
+      ],
+      "component": "productPedestal",
+      "effect": "Pedestal blur.",
+      "recommended_range": "2..24px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.product.stage.pedestalOpacity",
+      "css": "--prisma-pos-product-stage-pedestal-opacity",
+      "selector_targets": [
+        "productPedestal"
+      ],
+      "component": "productPedestal",
+      "effect": "Pedestal opacity.",
+      "recommended_range": "0..0.9",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.product.stage.reflectionOpacity",
+      "css": "--prisma-pos-product-stage-reflection-opacity",
+      "selector_targets": [
+        "productImageStage"
+      ],
+      "component": "productImageStage",
+      "effect": "Reflection opacity.",
+      "recommended_range": "0..0.5",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.type.title.opacity",
+      "css": "--prisma-pos-type-title-opacity",
+      "selector_targets": [
+        "headings"
+      ],
+      "component": "headings",
+      "effect": "Title opacity.",
+      "recommended_range": "0.5..1",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.type.subtitle.opacity",
+      "css": "--prisma-pos-type-subtitle-opacity",
+      "selector_targets": [
+        "subtitles"
+      ],
+      "component": "subtitles",
+      "effect": "Subtitle opacity.",
+      "recommended_range": "0.3..1",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.type.body.opacity",
+      "css": "--prisma-pos-type-body-opacity",
+      "selector_targets": [
+        "body text"
+      ],
+      "component": "body text",
+      "effect": "Body text opacity.",
+      "recommended_range": "0.45..1",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.type.muted.opacity",
+      "css": "--prisma-pos-type-muted-opacity",
+      "selector_targets": [
+        "muted text"
+      ],
+      "component": "muted text",
+      "effect": "Muted text opacity.",
+      "recommended_range": "0.25..0.9",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.type.price.weight",
+      "css": "--prisma-pos-type-price-weight",
+      "selector_targets": [
+        "prices"
+      ],
+      "component": "prices",
+      "effect": "Price font weight.",
+      "recommended_range": "500..950",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.type.price.glow",
+      "css": "--prisma-pos-type-price-glow",
+      "selector_targets": [
+        "prices"
+      ],
+      "component": "prices",
+      "effect": "Price glow strength.",
+      "recommended_range": "0..0.6",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.type.total.size",
+      "css": "--prisma-pos-type-total-size",
+      "selector_targets": [
+        "ticketTotal"
+      ],
+      "component": "ticketTotal",
+      "effect": "Total size.",
+      "recommended_range": "24..54px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.type.total.weight",
+      "css": "--prisma-pos-type-total-weight",
+      "selector_targets": [
+        "ticketTotal"
+      ],
+      "component": "ticketTotal",
+      "effect": "Total font weight.",
+      "recommended_range": "600..1000",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.type.total.glow",
+      "css": "--prisma-pos-type-total-glow",
+      "selector_targets": [
+        "ticketTotal"
+      ],
+      "component": "ticketTotal",
+      "effect": "Total glow strength.",
+      "recommended_range": "0..0.8",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.type.nav.opacity",
+      "css": "--prisma-pos-type-nav-opacity",
+      "selector_targets": [
+        "sidebar nav"
+      ],
+      "component": "sidebar nav",
+      "effect": "Navigation text opacity.",
+      "recommended_range": "0.35..1",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.cta.radius",
+      "css": "--prisma-pos-cta-radius",
+      "selector_targets": [
+        "checkoutLink"
+      ],
+      "component": "checkoutLink",
+      "effect": "CTA radius.",
+      "recommended_range": "12..38px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.cta.gold.fill",
+      "css": "--prisma-pos-cta-gold-fill",
+      "selector_targets": [
+        "checkoutLink"
+      ],
+      "component": "checkoutLink",
+      "effect": "CTA gold fill alpha.",
+      "recommended_range": "0..1",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.cta.gold.border",
+      "css": "--prisma-pos-cta-gold-border",
+      "selector_targets": [
+        "checkoutLink"
+      ],
+      "component": "checkoutLink",
+      "effect": "CTA gold border alpha.",
+      "recommended_range": "0..1",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.cta.highlight",
+      "css": "--prisma-pos-cta-highlight",
+      "selector_targets": [
+        "checkoutLink"
+      ],
+      "component": "checkoutLink",
+      "effect": "CTA top highlight alpha.",
+      "recommended_range": "0..0.75",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.control.secondary.opacity",
+      "css": "--prisma-pos-control-secondary-opacity",
+      "selector_targets": [
+        "secondary controls"
+      ],
+      "component": "secondary controls",
+      "effect": "Secondary control opacity.",
+      "recommended_range": "0.18..0.9",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.control.secondary.border",
+      "css": "--prisma-pos-control-secondary-border",
+      "selector_targets": [
+        "secondary controls"
+      ],
+      "component": "secondary controls",
+      "effect": "Secondary control border alpha.",
+      "recommended_range": "0.04..0.5",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.control.disabled.opacity",
+      "css": "--prisma-pos-control-disabled-opacity",
+      "selector_targets": [
+        "disabled controls"
+      ],
+      "component": "disabled controls",
+      "effect": "Disabled control opacity.",
+      "recommended_range": "0.12..0.7",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.state.hover.lift",
+      "css": "--prisma-pos-state-hover-lift",
+      "selector_targets": [
+        "hover states"
+      ],
+      "component": "hover states",
+      "effect": "Hover lift.",
+      "recommended_range": "0..12px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.state.hover.scale",
+      "css": "--prisma-pos-state-hover-scale",
+      "selector_targets": [
+        "hover states"
+      ],
+      "component": "hover states",
+      "effect": "Hover scale.",
+      "recommended_range": "1..1.08",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.state.hover.glow",
+      "css": "--prisma-pos-state-hover-glow",
+      "selector_targets": [
+        "hover states"
+      ],
+      "component": "hover states",
+      "effect": "Hover glow.",
+      "recommended_range": "0..0.8",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.state.active.gold",
+      "css": "--prisma-pos-state-active-gold",
+      "selector_targets": [
+        "active states"
+      ],
+      "component": "active states",
+      "effect": "Active gold strength.",
+      "recommended_range": "0..1",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.state.disabled.opacity",
+      "css": "--prisma-pos-state-disabled-opacity",
+      "selector_targets": [
+        "disabled states"
+      ],
+      "component": "disabled states",
+      "effect": "Disabled opacity.",
+      "recommended_range": "0.1..0.8",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.state.focus.ring",
+      "css": "--prisma-pos-state-focus-ring",
+      "selector_targets": [
+        "focus-visible"
+      ],
+      "component": "focus-visible",
+      "effect": "Focus ring width.",
+      "recommended_range": "1..6px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.state.loading.shimmer",
+      "css": "--prisma-pos-state-loading-shimmer",
+      "selector_targets": [
+        "loading states"
+      ],
+      "component": "loading states",
+      "effect": "Loading shimmer opacity.",
+      "recommended_range": "0..0.8",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.motion.reduced.enabled",
+      "css": "--prisma-pos-motion-reduced-enabled",
+      "selector_targets": [
+        "reduced motion"
+      ],
+      "component": "reduced motion",
+      "effect": "Reduced motion safety flag.",
+      "recommended_range": "0..1",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.density.screen.scale",
+      "css": "--prisma-pos-density-screen-scale",
+      "selector_targets": [
+        "workspace"
+      ],
+      "component": "workspace",
+      "effect": "Overall POS density scale.",
+      "recommended_range": "0.86..1.12",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.density.search.height",
+      "css": "--prisma-pos-density-search-height",
+      "selector_targets": [
+        "searchInputWrap"
+      ],
+      "component": "searchInputWrap",
+      "effect": "Search height.",
+      "recommended_range": "48..84px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.density.card.gap",
+      "css": "--prisma-pos-density-card-gap",
+      "selector_targets": [
+        "productGrid"
+      ],
+      "component": "productGrid",
+      "effect": "Card grid gap.",
+      "recommended_range": "8..24px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.density.card.padding",
+      "css": "--prisma-pos-density-card-padding",
+      "selector_targets": [
+        "productCard"
+      ],
+      "component": "productCard",
+      "effect": "Card padding.",
+      "recommended_range": "10..24px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.density.ticket.compactness",
+      "css": "--prisma-pos-density-ticket-compactness",
+      "selector_targets": [
+        "ticketLine"
+      ],
+      "component": "ticketLine",
+      "effect": "Ticket compactness.",
+      "recommended_range": "0.8..1.25",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.density.sidebar.width",
+      "css": "--prisma-pos-density-sidebar-width",
+      "selector_targets": [
+        "sidebar"
+      ],
+      "component": "sidebar",
+      "effect": "Sidebar width.",
+      "recommended_range": "190..270px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.density.header.height",
+      "css": "--prisma-pos-density-header-height",
+      "selector_targets": [
+        "header"
+      ],
+      "component": "header",
+      "effect": "Header height.",
+      "recommended_range": "64..110px",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.layer.background",
+      "css": "--prisma-pos-layer-background",
+      "selector_targets": [
+        "background"
+      ],
+      "component": "background",
+      "effect": "Background z-index.",
+      "recommended_range": "-5..5",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.layer.haze",
+      "css": "--prisma-pos-layer-haze",
+      "selector_targets": [
+        "haze"
+      ],
+      "component": "haze",
+      "effect": "Haze z-index.",
+      "recommended_range": "-5..10",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.layer.shell",
+      "css": "--prisma-pos-layer-shell",
+      "selector_targets": [
+        "shell"
+      ],
+      "component": "shell",
+      "effect": "Shell z-index.",
+      "recommended_range": "0..30",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.layer.panel",
+      "css": "--prisma-pos-layer-panel",
+      "selector_targets": [
+        "panels"
+      ],
+      "component": "panels",
+      "effect": "Panel z-index.",
+      "recommended_range": "0..40",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.layer.card",
+      "css": "--prisma-pos-layer-card",
+      "selector_targets": [
+        "cards"
+      ],
+      "component": "cards",
+      "effect": "Card z-index.",
+      "recommended_range": "0..50",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.layer.product",
+      "css": "--prisma-pos-layer-product",
+      "selector_targets": [
+        "products"
+      ],
+      "component": "products",
+      "effect": "Product z-index.",
+      "recommended_range": "0..60",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.layer.text",
+      "css": "--prisma-pos-layer-text",
+      "selector_targets": [
+        "text"
+      ],
+      "component": "text",
+      "effect": "Text z-index.",
+      "recommended_range": "0..70",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.layer.cta",
+      "css": "--prisma-pos-layer-cta",
+      "selector_targets": [
+        "cta"
+      ],
+      "component": "cta",
+      "effect": "CTA z-index.",
+      "recommended_range": "0..80",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    },
+    {
+      "token": "pos.layer.overlay",
+      "css": "--prisma-pos-layer-overlay",
+      "selector_targets": [
+        "overlays"
+      ],
+      "component": "overlays",
+      "effect": "Overlay z-index.",
+      "recommended_range": "10..200",
+      "risk": "High visual drift if pushed to extremes; verify /pos screenshots and coverage report.",
+      "owner": "products/tablet/app/components/pos/pos.visual.tokens.json"
+    }
+  ]
+}

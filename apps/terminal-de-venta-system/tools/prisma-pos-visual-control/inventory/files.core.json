@@ -1,0 +1,74 @@
+[
+  {
+    "path": "products/tablet/app/app/pos/page.tsx",
+    "owner": "route",
+    "risk": "low",
+    "purpose": "Mounts PosScreen."
+  },
+  {
+    "path": "products/tablet/app/components/pos/pos-screen.tsx",
+    "owner": "pos orchestration",
+    "risk": "high",
+    "purpose": "State and layout."
+  },
+  {
+    "path": "products/tablet/app/components/pos/pos-product-search.tsx",
+    "owner": "pos controls",
+    "risk": "medium",
+    "purpose": "Search controls."
+  },
+  {
+    "path": "products/tablet/app/components/pos/pos-product-list.tsx",
+    "owner": "product grid",
+    "risk": "medium",
+    "purpose": "Cards and grid."
+  },
+  {
+    "path": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+    "owner": "ticket",
+    "risk": "medium-high",
+    "purpose": "Cart and checkout link."
+  },
+  {
+    "path": "products/tablet/app/components/pos/pos-packshots.ts",
+    "owner": "asset contract",
+    "risk": "medium",
+    "purpose": "Product image mapping."
+  },
+  {
+    "path": "products/tablet/app/components/pos/pos-error-banner.tsx",
+    "owner": "states",
+    "risk": "low",
+    "purpose": "Errors."
+  },
+  {
+    "path": "products/tablet/app/components/pos/pos.module.css",
+    "owner": "pos visual",
+    "risk": "high",
+    "purpose": "POS visual surface."
+  },
+  {
+    "path": "products/tablet/app/components/tablet-shell/prisma-tablet-shell.tsx",
+    "owner": "shell",
+    "risk": "medium",
+    "purpose": "Frame."
+  },
+  {
+    "path": "products/tablet/app/components/tablet-shell/prisma-tablet-shell.module.css",
+    "owner": "shell visual",
+    "risk": "medium",
+    "purpose": "Background and shell."
+  },
+  {
+    "path": "products/tablet/app/app/layout.tsx",
+    "owner": "global",
+    "risk": "medium",
+    "purpose": "Theme."
+  },
+  {
+    "path": "products/tablet/app/app/globals.css",
+    "owner": "global css",
+    "risk": "high",
+    "purpose": "Global styles."
+  }
+]
