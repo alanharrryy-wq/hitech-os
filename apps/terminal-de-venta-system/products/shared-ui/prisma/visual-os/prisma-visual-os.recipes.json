@@ -1,0 +1,247 @@
+{
+  "meta": {
+    "system": "PRISMA Visual Operating System",
+    "version": "00A_20260503_v01",
+    "description": "Component recipes bind master controls to real UI families."
+  },
+  "recipes": [
+    {
+      "id": "app_shell_scene",
+      "targets": [
+        "Tablet shell",
+        "PC shell",
+        "Mobile root shell"
+      ],
+      "controls": [
+        "brand_tone",
+        "depth_glass",
+        "ambient_noise",
+        "surface_separation"
+      ],
+      "outputs": [
+        "background",
+        "scene_haze",
+        "vignette",
+        "global_surface_depth"
+      ],
+      "must_not": [
+        "compete with primary content",
+        "hide offline/sync indicators"
+      ]
+    },
+    {
+      "id": "sidebar_navigation",
+      "targets": [
+        "Sidebar",
+        "Tablet nav",
+        "PC nav"
+      ],
+      "controls": [
+        "surface_density",
+        "operational_contrast",
+        "depth_glass",
+        "state_signal_strength"
+      ],
+      "outputs": [
+        "nav_item_height",
+        "active_state",
+        "icon_opacity",
+        "section_gap"
+      ],
+      "must_not": [
+        "steal visual priority from cart or primary data"
+      ]
+    },
+    {
+      "id": "search_and_scan",
+      "targets": [
+        "SearchBar",
+        "ScannerButton",
+        "FilterBar"
+      ],
+      "controls": [
+        "touch_safety",
+        "operational_contrast",
+        "critical_action_weight",
+        "motion_temper"
+      ],
+      "outputs": [
+        "input_height",
+        "focus_ring",
+        "scan_button_weight",
+        "press_feedback"
+      ],
+      "must_not": [
+        "be smaller than touch target minimum",
+        "look secondary in POS context"
+      ]
+    },
+    {
+      "id": "product_card",
+      "targets": [
+        "ProductCard",
+        "CatalogCard"
+      ],
+      "controls": [
+        "commercial_emphasis",
+        "depth_glass",
+        "data_legibility",
+        "surface_separation",
+        "motion_temper"
+      ],
+      "outputs": [
+        "image_stage",
+        "price_weight",
+        "stock_visibility",
+        "card_lift",
+        "add_button_priority"
+      ],
+      "must_not": [
+        "make product photo overpower price or add action"
+      ]
+    },
+    {
+      "id": "cart_panel",
+      "targets": [
+        "CartPanel",
+        "TicketPanel",
+        "CheckoutSummary"
+      ],
+      "controls": [
+        "commercial_emphasis",
+        "critical_action_weight",
+        "data_legibility",
+        "surface_separation"
+      ],
+      "outputs": [
+        "line_density",
+        "total_prominence",
+        "quantity_controls",
+        "checkout_hierarchy"
+      ],
+      "must_not": [
+        "bury total",
+        "make remove action look like primary action"
+      ]
+    },
+    {
+      "id": "primary_cta",
+      "targets": [
+        "Cobrar",
+        "Guardar",
+        "Sincronizar",
+        "Confirmar"
+      ],
+      "controls": [
+        "critical_action_weight",
+        "operational_contrast",
+        "touch_safety",
+        "motion_temper"
+      ],
+      "outputs": [
+        "height",
+        "glow",
+        "edge_light",
+        "label_weight",
+        "keyboard_hint_visibility"
+      ],
+      "must_not": [
+        "look disabled when enabled",
+        "compete with destructive secondary action"
+      ]
+    },
+    {
+      "id": "kpi_card",
+      "targets": [
+        "PC KPI card",
+        "Mobile metric card",
+        "Tablet day summary"
+      ],
+      "controls": [
+        "data_legibility",
+        "surface_density",
+        "brand_tone",
+        "state_signal_strength"
+      ],
+      "outputs": [
+        "metric_size",
+        "delta_badge",
+        "label_hierarchy",
+        "trend_signal"
+      ],
+      "must_not": [
+        "turn numbers into decoration"
+      ]
+    },
+    {
+      "id": "data_table",
+      "targets": [
+        "PC tables",
+        "Inventory lists",
+        "Audit tables"
+      ],
+      "controls": [
+        "surface_density",
+        "data_legibility",
+        "operational_contrast",
+        "state_signal_strength"
+      ],
+      "outputs": [
+        "row_height",
+        "header_weight",
+        "cell_padding",
+        "exception_badges"
+      ],
+      "must_not": [
+        "use POS-touch spacing on dense admin tables"
+      ]
+    },
+    {
+      "id": "mobile_pulse_card",
+      "targets": [
+        "Mobile overview",
+        "Action inbox",
+        "Daily brief"
+      ],
+      "controls": [
+        "touch_safety",
+        "data_legibility",
+        "state_signal_strength",
+        "surface_separation"
+      ],
+      "outputs": [
+        "thumb_zone",
+        "alert_weight",
+        "brief_density",
+        "owner_action_priority"
+      ],
+      "must_not": [
+        "force PC-level density on phone"
+      ]
+    },
+    {
+      "id": "state_badge",
+      "targets": [
+        "offline",
+        "sync_pending",
+        "low_stock",
+        "error",
+        "success"
+      ],
+      "controls": [
+        "state_signal_strength",
+        "operational_contrast",
+        "ambient_noise"
+      ],
+      "outputs": [
+        "badge_contrast",
+        "icon_weight",
+        "alert_border",
+        "status_motion"
+      ],
+      "must_not": [
+        "hide critical states behind gold accent"
+      ]
+    }
+  ]
+}

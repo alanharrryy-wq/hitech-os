@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "system": "PRISMA Visual Operating System",
+    "version": "00A_20260503_v01",
+    "description": "Operational visual scorecard for future visual gates."
+  },
+  "minimums": {
+    "overall_pass": 82,
+    "clarity_min": 84,
+    "touch_safety_min_tablet_mobile": 88,
+    "critical_action_min": 86,
+    "state_visibility_min": 82,
+    "risk_max": 24
+  },
+  "axes": [
+    {
+      "id": "premium_fit",
+      "weight": 12,
+      "question": "Does it feel like PRISMA and not generic SaaS?"
+    },
+    {
+      "id": "clarity",
+      "weight": 18,
+      "question": "Can price, total, stock and primary action be read fast?"
+    },
+    {
+      "id": "task_speed",
+      "weight": 16,
+      "question": "Does the visual hierarchy reduce time to act?"
+    },
+    {
+      "id": "hierarchy",
+      "weight": 14,
+      "question": "Is there one clear primary story per screen?"
+    },
+    {
+      "id": "consistency",
+      "weight": 12,
+      "question": "Are surfaces and controls using the same visual grammar?"
+    },
+    {
+      "id": "touch_safety",
+      "weight": 12,
+      "question": "Are touch targets and destructive actions safely separated?"
+    },
+    {
+      "id": "state_visibility",
+      "weight": 10,
+      "question": "Are error, offline, sync and stock states impossible to miss?"
+    },
+    {
+      "id": "risk",
+      "weight": -6,
+      "question": "How likely is this to break operation or readability? Lower is better."
+    }
+  ],
+  "blocked_if": [
+    "primary CTA is not visually dominant in POS checkout context",
+    "touch target is below 44px on tablet or mobile",
+    "error/offline/sync state is hidden or styled as decorative",
+    "visual effect obscures price, stock, total or action label",
+    "PC tables lose scannability because of decorative spacing"
+  ]
+}

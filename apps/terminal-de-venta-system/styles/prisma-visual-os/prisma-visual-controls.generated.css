@@ -1,0 +1,50 @@
+/*
+  PRISMA Visual OS 00E - generated from config/prisma-visual-os/prisma-visual-controls.active.json.
+  Regenerate with: node tools/prisma-visual-os/generate_prisma_visual_os_controls_00e.mjs
+*/
+:root,
+[data-prisma-vos-runtime="00E"] {
+  --prisma-vos-active-preset: POS_TOUCH_REFERENCE;
+  --prisma-vos-active-surface: tablet-pos;
+  --prisma-vos-control-glass: 76;
+  --prisma-vos-control-glow: 42;
+  --prisma-vos-control-depth: 78;
+  --prisma-vos-control-density: 44;
+  --prisma-vos-control-contrast: 84;
+  --prisma-vos-control-motion: 28;
+  --prisma-vos-control-touch: 94;
+  --prisma-vos-control-action-weight: 95;
+  --prisma-vos-control-state-signal: 86;
+  --prisma-vos-layer-background-strength: 74;
+  --prisma-vos-layer-atmosphere-strength: 42;
+  --prisma-vos-layer-shell-strength: 66;
+  --prisma-vos-layer-surface-strength: 78;
+  --prisma-vos-layer-content-strength: 88;
+  --prisma-vos-layer-action-strength: 96;
+  --prisma-vos-layer-state-strength: 86;
+  --prisma-vos-layer-focus-strength: 84;
+  --prisma-vos-layer-overlay-strength: 72;
+  --prisma-vos-layer-debug-strength: 0;
+  --prisma-vos-min-touch-target-runtime: 44px;
+  --prisma-vos-pos-primary-touch-target-runtime: 56px;
+  --prisma-vos-runtime-panel-blur: 24px;
+  --prisma-vos-runtime-card-radius: 22px;
+  --prisma-vos-runtime-action-shadow: 0 24px 64px rgba(232, 189, 103, 0.24);
+}
+
+[data-prisma-vsurface="tablet-pos"],
+[data-prisma-vsurface="tablet-checkout"],
+[data-prisma-visual-surface="tablet-pos"],
+[data-prisma-visual-surface="tablet-checkout"] {
+  --prisma-vos-runtime-surface-border: color-mix(in srgb, var(--prisma-accent-gold, #e8bd67) 30%, var(--prisma-border-soft, rgba(255,255,255,.1)));
+  --prisma-vos-runtime-action-border: color-mix(in srgb, var(--prisma-accent-gold, #e8bd67) 62%, var(--prisma-border-soft, rgba(255,255,255,.1)));
+  --prisma-vos-runtime-total-glow: 0 0 38px rgba(232, 189, 103, 0.16);
+  --prisma-vos-runtime-safe-motion: 180ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  [data-prisma-vos-runtime="00E"] {
+    --prisma-vos-runtime-safe-motion: 1ms;
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "manifestVersion": "00C",
+  "packageId": "EXAMPLE_VISUAL_PACKAGE",
+  "contractBase": "PRISMA_TRI_SURFACE_VISUAL_CHANGE_CONTRACT_00A",
+  "contractPatch": "PRISMA_TRI_SURFACE_VISUAL_CHANGE_CONTRACT_00B_PRODUCT_ROOT_AUTONOMY_PATCH",
+  "surfaceCoverage": [
+    {
+      "surfaceId": "prisma.pc.backoffice",
+      "surface": "PC",
+      "state": "VALIDATED",
+      "reviewedFiles": [
+        "products/pc/app/app/globals.css"
+      ],
+      "touchedFiles": [],
+      "evidence": "PC visual root reviewed; no package changes.",
+      "exclusion": null
+    },
+    {
+      "surfaceId": "prisma.tablet.pos",
+      "surface": "Tablet",
+      "state": "EXCLUDED",
+      "reviewedFiles": [],
+      "touchedFiles": [],
+      "evidence": "No tablet files, shared-ui, tokens or globals changed.",
+      "exclusion": {
+        "reason": "Package only updates Mobile local copy.",
+        "noSharedImpact": true,
+        "reevaluateIn": "next shared visual pass",
+        "owner": "visual-governance"
+      }
+    },
+    {
+      "surfaceId": "prisma.mobile.app",
+      "surface": "Mobile",
+      "state": "TOUCHED",
+      "reviewedFiles": [
+        "products/mobile/app/app/prisma-app/page.tsx"
+      ],
+      "touchedFiles": [
+        "products/mobile/app/app/prisma-app/page.tsx"
+      ],
+      "evidence": "Mobile product root updated.",
+      "exclusion": null
+    }
+  ],
+  "changedFiles": [
+    "products/mobile/app/app/prisma-app/page.tsx"
+  ],
+  "sharedVisualFilesTouched": [],
+  "languageInvariants": {
+    "tabletAutonomy": true,
+    "noProductHierarchy": true,
+    "forbiddenPhrases": [
+      "PC gobierna",
+      "Tablet depende de PC",
+      "Mobile es parte de PC"
+    ]
+  }
+}

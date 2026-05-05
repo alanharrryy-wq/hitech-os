@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "system": "PRISMA Visual Operating System",
+    "package": "PRISMA_VISUAL_QA_RELEASE_GATE_00L_00M_00N_20260503_v01",
+    "block": "00M",
+    "version": "20260503_v01"
+  },
+  "packs": {
+    "PRISMA_BLACK_PREMIUM_SYSTEM": {
+      "primaryPreset": "BLACK_PREMIUM",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "useFor": [
+        "hero",
+        "campaign",
+        "premium screenshots"
+      ],
+      "guardrails": [
+        "do not reduce readability",
+        "do not bury states"
+      ],
+      "visualIntent": "Deep navy/black cinematic PRISMA with warm gold focus."
+    },
+    "PRISMA_LIGHT_OPERATIONAL_SYSTEM": {
+      "primaryPreset": "LIGHT_OPERATIONAL",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "useFor": [
+        "tutorial",
+        "support",
+        "WhatsApp"
+      ],
+      "guardrails": [
+        "do not present as basic",
+        "keep hierarchy strong"
+      ],
+      "visualIntent": "Bright operational clarity for fast comprehension."
+    },
+    "PRISMA_DUAL_BALANCE_SYSTEM": {
+      "primaryPreset": "DUAL_BALANCE",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "useFor": [
+        "ecosystem overview",
+        "landing",
+        "cross-surface demo"
+      ],
+      "guardrails": [
+        "do not sell as three apps",
+        "respect each role"
+      ],
+      "visualIntent": "One governed ecosystem with specialized surfaces."
+    },
+    "PRISMA_PC_DENSE_BACKOFFICE": {
+      "primaryPreset": "PC_DENSE_ADMIN",
+      "surfaces": [
+        "pc"
+      ],
+      "useFor": [
+        "inventory",
+        "audit",
+        "purchasing",
+        "KPI dashboard"
+      ],
+      "guardrails": [
+        "no POS touch spacing",
+        "keep rows scannable"
+      ],
+      "visualIntent": "Dense calm administrative backoffice."
+    },
+    "PRISMA_MOBILE_OWNER_PULSE": {
+      "primaryPreset": "MOBILE_PULSE",
+      "surfaces": [
+        "mobile"
+      ],
+      "useFor": [
+        "owner summary",
+        "alerts",
+        "daily brief",
+        "health radar"
+      ],
+      "guardrails": [
+        "no PC tables",
+        "keep thumb-safe actions"
+      ],
+      "visualIntent": "Fast pulse for the owner: what matters and what needs action."
+    }
+  }
+}
