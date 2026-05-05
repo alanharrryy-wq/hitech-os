@@ -1,0 +1,54 @@
+{
+  "package": "PRISMA_VISUAL_QA_RELEASE_GATE_00L_00M_00N_20260503_v01",
+  "version": "20260503_v01",
+  "blocks": [
+    "00L",
+    "00M",
+    "00N"
+  ],
+  "defaultTargetRoot": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "defaultLogDir": "F:\\descargasf",
+  "requiredPublicContract": [
+    "config/prisma-visual-os/prisma-visual-controls.active.json",
+    "styles/prisma-visual-os/prisma-visual-layers.css",
+    "styles/prisma-visual-os/prisma-visual-controls.generated.css",
+    "docs/design/PRISMA_VISUAL_OS_00D_00E_CONTRACT.md"
+  ],
+  "forbiddenPayloadPrefixes": [
+    "packages/shared-kernel/",
+    "shared/contracts/",
+    "products/tablet/app/"
+  ],
+  "forbiddenPayloadExact": [
+    "shared/TWIN_CHAT_SHARED_CONTEXT_6.1.json"
+  ],
+  "files": [
+    {
+      "path": "docs/design/PRISMA_VISUAL_OS_QA_RELEASE_GATE_00L_00M_00N.md"
+    },
+    {
+      "path": "manifests/PRISMA_VISUAL_QA_RELEASE_GATE_00L_00M_00N_20260503_v01.json"
+    },
+    {
+      "path": "products/shared-ui/prisma/visual-os/prisma-visual-os.qa-matrix.00l.json"
+    },
+    {
+      "path": "products/shared-ui/prisma/visual-os/prisma-visual-os.release-gate.00n.json"
+    },
+    {
+      "path": "products/shared-ui/prisma/visual-os/prisma-visual-os.variant-packs.00m.json"
+    },
+    {
+      "path": "tools/prisma-visual-os/gate_prisma_visual_release_00n.mjs"
+    },
+    {
+      "path": "tools/prisma-visual-os/print_prisma_visual_variant_packs_00m.mjs"
+    },
+    {
+      "path": "tools/prisma-visual-os/run_prisma_visual_cross_surface_qa_00l.mjs"
+    },
+    {
+      "path": "tools/prisma-visual-os/verify_prisma_visual_qa_release_gate_00l_00m_00n.mjs"
+    }
+  ]
+}

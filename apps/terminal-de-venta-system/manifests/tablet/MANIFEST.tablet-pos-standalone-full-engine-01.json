@@ -1,0 +1,61 @@
+{
+  "integration": "PRISMA_TABLET_POS_STANDALONE_FULL_ENGINE_01",
+  "repoRoot": "F:\\repos\\hitech-os",
+  "tabletRoot": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app",
+  "purpose": "Complete Tablet standalone POS backend foundation for local sales, outbox, reports and exports without PC dependency.",
+  "filesChanged": [
+    "products/tablet/app/src/server/prisma/client.ts",
+    "products/tablet/app/src/server/pos-engine/constants.ts",
+    "products/tablet/app/src/server/pos-engine/errors.ts",
+    "products/tablet/app/src/server/pos-engine/types.ts",
+    "products/tablet/app/src/server/pos-engine/event-factory.ts",
+    "products/tablet/app/src/server/pos-engine/repository.prisma.ts",
+    "products/tablet/app/src/server/pos-api/responses.ts",
+    "products/tablet/app/src/server/pos-api/errors.ts",
+    "products/tablet/app/src/server/pos-api/validators.ts",
+    "products/tablet/app/src/server/pos-runtime/index.ts",
+    "products/tablet/app/src/server/pos-outbox/index.ts",
+    "products/tablet/app/src/server/pos-reports/index.ts",
+    "products/tablet/app/src/server/pos-export/index.ts",
+    "products/tablet/app/app/api/pos/events/recent/route.ts",
+    "products/tablet/app/app/api/pos/events/outbox/route.ts",
+    "products/tablet/app/app/api/pos/inventory/low-stock/route.ts",
+    "products/tablet/app/app/api/pos/inventory/movements/recent/route.ts",
+    "products/tablet/app/app/api/pos/reports/operational-today/route.ts",
+    "products/tablet/app/app/api/pos/export/sales-today/route.ts",
+    "products/tablet/app/app/api/pos/export/events/route.ts",
+    "products/tablet/app/app/api/pos/export/inventory-movements/route.ts",
+    "products/tablet/app/tools/verify_tablet_standalone_full_engine_01.mjs",
+    "products/tablet/app/tools/verify_pos_events_reports_01d.mjs"
+  ],
+  "apisAdded": [
+    "GET /api/pos/events/recent",
+    "GET /api/pos/events/outbox",
+    "GET /api/pos/inventory/low-stock",
+    "GET /api/pos/inventory/movements/recent",
+    "GET /api/pos/reports/operational-today",
+    "GET /api/pos/export/sales-today?format=json|csv",
+    "GET /api/pos/export/events?format=json|csv",
+    "GET /api/pos/export/inventory-movements?format=json|csv"
+  ],
+  "apisConfirmedExisting": [
+    "GET /api/pos/products/search?q=",
+    "GET /api/pos/products/resolve?code=",
+    "POST /api/pos/sales/complete",
+    "GET /api/pos/sales/today"
+  ],
+  "validationsExpected": [
+    "pnpm -C F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app run typecheck",
+    "node F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\tools\\verify_pos_engine_01a.mjs",
+    "node F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\tools\\verify_pos_api_01b.mjs",
+    "node F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\tools\\verify_tablet_standalone_full_engine_01.mjs",
+    "pnpm -C F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app run typecheck",
+    "git diff --check"
+  ],
+  "notes": [
+    "Tablet local sale path uses TABLET_DATABASE_URL or the local data/tablet-pos.db fallback, not PC canonical DB.",
+    "Runtime mode awareness never blocks local Tablet sale because PC is absent.",
+    "Outbox statuses are aligned to pending, sent, failed, acked and conflict."
+  ],
+  "nextStage": "PRISMA_TABLET_POS_TOUCH_UI_FULL_02"
+}

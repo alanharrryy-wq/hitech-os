@@ -1,0 +1,15 @@
+{
+  "name": "@hitech/terminal-de-venta-system",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "mobile:verify": "pnpm -C products/mobile/app verify:product-root && pnpm -C products/mobile/app verify:pwa && pnpm -C products/mobile/app verify:playstore-readiness",
+    "mobile:typecheck": "pnpm -C products/mobile/app typecheck",
+    "pc:typecheck": "pnpm -C products/pc/app typecheck",
+    "tri-surface:verify": "node tools/prisma/verify_prisma_tri_surface_visual_guardian_00c.mjs"
+  },
+  "devDependencies": {
+    "prisma": "5.21.1"
+  }
+}

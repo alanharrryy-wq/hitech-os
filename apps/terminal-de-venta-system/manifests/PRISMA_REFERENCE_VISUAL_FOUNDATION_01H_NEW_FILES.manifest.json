@@ -1,0 +1,17 @@
+{
+  "id": "PRISMA_REFERENCE_VISUAL_FOUNDATION_01H_NEW_FILES",
+  "version": "01H",
+  "kind": "new-files-only-foundation",
+  "description": "Visual target, scope, effect layer, QA matrix and visual verification/capture tools for PRISMA reference polish.",
+  "installs": [
+    "docs/design/PRISMA_REFERENCE_VISUAL_SCOPE_01H.json",
+    "docs/design/PRISMA_REFERENCE_VISUAL_TARGET_01H.md",
+    "docs/qa/PRISMA_REFERENCE_VISUAL_SCREENSHOT_MATRIX_01H.md",
+    "products/shared-ui/prisma/effects/prisma-reference-effects.css",
+    "tools/visual/capture_prisma_reference_screens_01h.mjs",
+    "tools/visual/verify_prisma_reference_visual_scope_01h.mjs"
+  ],
+  "does_not_modify_existing_files": true,
+  "requires_future_import_to_affect_ui": true,
+  "target_root": "F:/repos/hitech-os/apps/terminal-de-venta-system"
+}

@@ -1,0 +1,58 @@
+{
+  "packageId": "PRISMA_TABLET_POS_CHECKOUT_SHIFT_AUTOFIX_00S_20260503_v01",
+  "version": "v01",
+  "date": "20260503",
+  "targetRootDefault": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "logDirDefault": "F:\\descargasf",
+  "scope": "Auto-open local shift on SHIFT_NOT_OPEN during OK generar ticket and show real payment errors in POS modal.",
+  "requires": [
+    "PRISMA_TABLET_POS_REAL_CHECKOUT_FLOW_00R_20260503_v01"
+  ],
+  "allowedTargetPrefixes": [
+    "products/tablet/app/src/lib/pos/",
+    "products/tablet/app/components/pos/",
+    "products/tablet/app/tools/",
+    "manifests/"
+  ],
+  "forbiddenTargetPrefixes": [
+    "packages/shared-kernel/",
+    "shared/",
+    "products/pc/",
+    "products/mobile/",
+    "products/tablet/app/src/server/",
+    "products/tablet/app/prisma/"
+  ],
+  "targets": [
+    {
+      "source": "payload/products/tablet/app/components/pos/pos-payment-panel.tsx",
+      "target": "products/tablet/app/components/pos/pos-payment-panel.tsx"
+    },
+    {
+      "source": "payload/products/tablet/app/src/lib/pos/payment-flow.ts",
+      "target": "products/tablet/app/src/lib/pos/payment-flow.ts"
+    },
+    {
+      "source": "payload/products/tablet/app/src/lib/pos/pos-visible-errors.ts",
+      "target": "products/tablet/app/src/lib/pos/pos-visible-errors.ts"
+    },
+    {
+      "source": "payload/products/tablet/app/src/lib/pos/shift-flow.ts",
+      "target": "products/tablet/app/src/lib/pos/shift-flow.ts"
+    },
+    {
+      "source": "payload/products/tablet/app/tools/verify_prisma_tablet_pos_checkout_shift_autofix_00s.mjs",
+      "target": "products/tablet/app/tools/verify_prisma_tablet_pos_checkout_shift_autofix_00s.mjs"
+    },
+    {
+      "source": "payload/manifests/PRISMA_TABLET_POS_CHECKOUT_SHIFT_AUTOFIX_00S_20260503_v01.json",
+      "target": "manifests/PRISMA_TABLET_POS_CHECKOUT_SHIFT_AUTOFIX_00S_20260503_v01.json"
+    }
+  ],
+  "payloadSha256": {
+    "products/tablet/app/components/pos/pos-payment-panel.tsx": "a2e892bdfad7c7c3f76efe160ac49717a49ec031df540e9389a2d366eea06307",
+    "products/tablet/app/src/lib/pos/payment-flow.ts": "a0b50f3cfce57f825b2bfc71110e5132157d349d02dcb7af4fc51e4b832b02fb",
+    "products/tablet/app/src/lib/pos/pos-visible-errors.ts": "03d2b5ad5e765ca91ff2cabe0e40149d279afeb72b353d48c8a817a84eca5b8d",
+    "products/tablet/app/src/lib/pos/shift-flow.ts": "2ba263f4b2df1bb11b4c1ddd49088fe5b0c5b9dc64c7df0760c0ef839f0a4146",
+    "products/tablet/app/tools/verify_prisma_tablet_pos_checkout_shift_autofix_00s.mjs": "cdcaea7cafa3d69266963579e431ad95bdc7ce891d2726987857a3fd5addbf22"
+  }
+}

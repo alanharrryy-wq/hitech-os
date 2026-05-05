@@ -1,0 +1,35 @@
+{
+  "package": "PRISMA_VISUAL_OS_STUDIO_PRO_QA_00R_00S_20260503_v01",
+  "blocks": [
+    "00R Studio Pro UI",
+    "00S Live QA Score Snapshots Publish Gate"
+  ],
+  "targetRootDefault": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "safeWriteScope": [
+    "products/tablet/app/app/visual-os",
+    "products/tablet/app/src/visual-os/realtime",
+    "tools/prisma-visual-os",
+    "config/prisma-visual-os/recipes",
+    "config/prisma-visual-os/guards",
+    "docs/design",
+    "manifests"
+  ],
+  "forbidden": [
+    "packages/shared-kernel",
+    "shared/contracts",
+    "shared/TWIN_CHAT_SHARED_CONTEXT_6.1.json"
+  ],
+  "routes": [
+    "/visual-os",
+    "/visual-os/detached",
+    "/visual-os/pro",
+    "/visual-os/realtime"
+  ],
+  "installModes": [
+    "--dry-run",
+    "--apply",
+    "--verify",
+    "--rollback"
+  ],
+  "forceResetOwned": true
+}

@@ -1,0 +1,34 @@
+{
+  "package": "PRISMA_CROSS_SURFACE_BINDINGS_00J_00K_20260503_v01",
+  "version": "20260503_v01",
+  "front": "Chat B",
+  "blocks": [
+    "00J_PC_BACKOFFICE_BINDING",
+    "00K_MOBILE_PULSE_BINDING"
+  ],
+  "target_root_default": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "log_dir_default": "F:\\descargasf",
+  "required_dependencies": [
+    "config/prisma-visual-os/prisma-visual-controls.active.json",
+    "styles/prisma-visual-os/prisma-visual-layers.css",
+    "styles/prisma-visual-os/prisma-visual-controls.generated.css",
+    "docs/design/PRISMA_VISUAL_OS_00D_00E_CONTRACT.md"
+  ],
+  "forbidden_paths": [
+    "packages/shared-kernel/",
+    "shared/contracts/",
+    "shared/TWIN_CHAT_SHARED_CONTEXT_6.1.json",
+    "products/tablet/app/"
+  ],
+  "installed_files": [
+    "docs/design/PRISMA_VISUAL_OS_CROSS_SURFACE_BINDINGS_00J_00K.md",
+    "products/mobile/app/app/layout.tsx",
+    "products/mobile/app/app/prisma-mobile-pulse-binding.css",
+    "products/mobile/app/package.json",
+    "products/mobile/app/tools/verify_prisma_visual_os_mobile_pulse_00k.mjs",
+    "products/pc/app/app/layout.tsx",
+    "products/pc/app/app/prisma-visual-os-pc-binding.css",
+    "products/pc/app/package.json",
+    "products/pc/app/tools/verify_prisma_visual_os_pc_binding_00j.mjs"
+  ]
+}

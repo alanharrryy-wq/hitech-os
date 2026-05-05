@@ -1,0 +1,53 @@
+{
+  "packageId": "PRISMA_TABLET_POS_REAL_CHECKOUT_FLOW_00R_20260503_v01",
+  "version": "v01",
+  "date": "20260503",
+  "targetRootDefault": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "logDirDefault": "F:\\descargasf",
+  "scope": "Tablet POS real checkout flow: COBRAR opens payment modal, methods, cash tender/change, OK generates ticket, cancel/remove/refund visible.",
+  "nonGoals": [
+    "No backend POS engine change",
+    "No Prisma schema change",
+    "No shared-kernel change",
+    "No PC/Mobile change"
+  ],
+  "targets": [
+    {
+      "source": "payload/products/tablet/app/components/pos/pos-payment-panel.tsx",
+      "target": "products/tablet/app/components/pos/pos-payment-panel.tsx"
+    },
+    {
+      "source": "payload/products/tablet/app/components/pos/pos-ticket-panel.tsx",
+      "target": "products/tablet/app/components/pos/pos-ticket-panel.tsx"
+    },
+    {
+      "source": "payload/products/tablet/app/components/pos/pos.module.css",
+      "target": "products/tablet/app/components/pos/pos.module.css"
+    },
+    {
+      "source": "payload/products/tablet/app/src/lib/pos/payment-state.ts",
+      "target": "products/tablet/app/src/lib/pos/payment-state.ts"
+    },
+    {
+      "source": "payload/products/tablet/app/src/lib/pos/payment-tender.ts",
+      "target": "products/tablet/app/src/lib/pos/payment-tender.ts"
+    },
+    {
+      "source": "payload/products/tablet/app/tools/verify_prisma_tablet_pos_real_checkout_flow_00r.mjs",
+      "target": "products/tablet/app/tools/verify_prisma_tablet_pos_real_checkout_flow_00r.mjs"
+    },
+    {
+      "source": "payload/manifests/PRISMA_TABLET_POS_REAL_CHECKOUT_FLOW_00R_20260503_v01.json",
+      "target": "manifests/PRISMA_TABLET_POS_REAL_CHECKOUT_FLOW_00R_20260503_v01.json"
+    }
+  ],
+  "payloadSha256": {
+    "products/tablet/app/components/pos/pos-payment-panel.tsx": "cefe693542df95bf3ba5e2972ef684563fb3446e9330732ab2a1ffeac79c244a",
+    "products/tablet/app/components/pos/pos-ticket-panel.tsx": "cc8f8112970250691b5ad8c326a06a01f6b8290848e465c67a8e6511e451e37b",
+    "products/tablet/app/components/pos/pos.module.css": "462d6a46ef968ee669b7c58d681f910dcfbdffdb6d1df60b5b82d44843648ef0",
+    "products/tablet/app/src/lib/pos/payment-state.ts": "f0d9b1af37fb6960fe4e984a6f49fcb63a228c46e89e7edad256efd06cd63fba",
+    "products/tablet/app/src/lib/pos/payment-tender.ts": "53127ab260da96526e0724f78fe1f3c70289159465e1f45d44aa360e36d3f71c",
+    "products/tablet/app/tools/verify_prisma_tablet_pos_real_checkout_flow_00r.mjs": "0cea4ba3676e57d8d1dd1f1b73486cfbfe642095a77560cd461ea630581e4812"
+  },
+  "verify": "node products/tablet/app/tools/verify_prisma_tablet_pos_real_checkout_flow_00r.mjs <target-root>"
+}

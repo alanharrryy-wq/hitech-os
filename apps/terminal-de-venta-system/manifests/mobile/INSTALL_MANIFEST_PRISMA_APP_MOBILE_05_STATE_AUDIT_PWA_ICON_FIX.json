@@ -1,0 +1,42 @@
+{
+  "package": "PRISMA_APP_MOBILE_05_STATE_AUDIT_PWA_ICON_FIX",
+  "version": "1.0.0",
+  "createdAt": "2026-05-02",
+  "targetRoot": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "goal": "Fix PRISMA App Mobile PWA icon readiness mismatch and add a grounded state audit document.",
+  "writes": [
+    "products/mobile/app/public/icons/prisma-app-icon.svg",
+    "products/mobile/app/public/icons/prisma-app-maskable.svg",
+    "products/mobile/app/public/icons/prisma-app-monochrome.svg",
+    "docs/mobile/PRISMA_APP_MOBILE_05_STATE_AUDIT_PWA_ICON_FIX.md",
+    "manifests/mobile/INSTALL_MANIFEST_PRISMA_APP_MOBILE_05_STATE_AUDIT_PWA_ICON_FIX.json",
+    "INSTALL_MANIFEST_PRISMA_APP_MOBILE_05_STATE_AUDIT_PWA_ICON_FIX.json"
+  ],
+  "deletes": [],
+  "validation": [
+    "verify product-root passes",
+    "verify pwa passes after expected icon files exist",
+    "verify playstore-readiness passes",
+    "no PC, Tablet, shared-kernel changes"
+  ],
+  "surfaceCoverage": [
+    {
+      "surfaceId": "prisma.mobile.app",
+      "surface": "Mobile",
+      "state": "TOUCHED",
+      "reason": "PWA icon files and mobile state audit doc only"
+    },
+    {
+      "surfaceId": "prisma.pc.backoffice",
+      "surface": "PC",
+      "state": "EXCLUDED",
+      "reason": "No PC files touched"
+    },
+    {
+      "surfaceId": "prisma.tablet.pos",
+      "surface": "Tablet",
+      "state": "EXCLUDED",
+      "reason": "No Tablet files touched"
+    }
+  ]
+}

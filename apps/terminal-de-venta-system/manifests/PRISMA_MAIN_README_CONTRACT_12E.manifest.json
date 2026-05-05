@@ -1,0 +1,24 @@
+{
+  "package": "PRISMA_MAIN_README_GUARD_12E",
+  "version": "12E",
+  "purpose": "Install a root README.md contract guard and terminal_de_venta.cmd alias.",
+  "installed_files": [
+    "tools\\prisma\\verify_prisma_main_readme_contract_12e.py",
+    "manifests\\PRISMA_MAIN_README_CONTRACT_12E.manifest.json",
+    "docs\\qa\\PRISMA_MAIN_README_CONTRACT_12E_QA.md"
+  ],
+  "cmd_aliases": [
+    "readme-contract"
+  ],
+  "acceptance": [
+    "python tools/prisma/verify_prisma_main_readme_contract_12e.py --root <root> --text returns FINAL READY",
+    "terminal_de_venta.cmd contains PRISMA_MAIN_README_CONTRACT_12E markers"
+  ],
+  "protected_contracts": [
+    "Tablet vende sola",
+    "PC no es permiso para vender",
+    "App móvil no es PC chiquita",
+    "Licenciamiento, activación y entitlements",
+    "ZIP + instalador .py"
+  ]
+}

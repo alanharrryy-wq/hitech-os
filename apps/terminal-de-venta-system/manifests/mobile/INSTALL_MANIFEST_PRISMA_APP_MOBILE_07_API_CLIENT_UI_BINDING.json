@@ -1,0 +1,151 @@
+{
+  "packageId": "PRISMA_APP_MOBILE_07_API_CLIENT_UI_BINDING",
+  "createdAt": "2026-05-02T00:00:00-06:00",
+  "targetRoot": "F:/repos/hitech-os/apps/terminal-de-venta-system",
+  "summary": "PRISMA App Mobile API client, snapshot route, offline cache, connected UI dashboard, and QA fixtures.",
+  "dependsOn": [
+    "PRISMA_APP_MOBILE_05_STATE_AUDIT_PWA_ICON_FIX",
+    "PRISMA_APP_MOBILE_06_API_CONTRACTS"
+  ],
+  "twinImpact": "mobile-local-only",
+  "touches": [
+    "docs/mobile/PRISMA_APP_MOBILE_07_API_CLIENT_UI_BINDING.md",
+    "products/mobile/app/app/api/mobile/snapshot/route.ts",
+    "products/mobile/app/app/prisma-app/page.tsx",
+    "products/mobile/app/docs/README_PRISMA_APP_MOBILE_07_API_CLIENT_UI_BINDING.md",
+    "products/mobile/app/docs/prisma-app/fixtures/prisma-app-mobile-07-client-ui-binding-scenarios.json",
+    "products/mobile/app/package.json",
+    "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
+    "products/mobile/app/src/components/prisma-app/PrismaMobileMetricCard.tsx",
+    "products/mobile/app/src/components/prisma-app/PrismaMobilePanels.tsx",
+    "products/mobile/app/src/components/prisma-app/index.ts",
+    "products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css",
+    "products/mobile/app/src/lib/prisma-app/prisma-mobile-api-client.ts",
+    "products/mobile/app/src/lib/prisma-app/prisma-mobile-cache.ts",
+    "products/mobile/app/src/lib/prisma-app/prisma-mobile-formatters.ts",
+    "products/mobile/app/src/lib/prisma-app/prisma-mobile-snapshot-contract.ts",
+    "products/mobile/app/src/lib/prisma-app/prisma-mobile-snapshot-source.ts",
+    "products/mobile/app/src/lib/prisma-app/prisma-mobile-view-model.ts",
+    "products/mobile/app/tools/verify_prisma_app_mobile_07_api_client_ui_binding.mjs",
+    "products/mobile/app/tools/verify_prisma_app_mobile_07_fixture_scenarios.mjs"
+  ],
+  "doesNotTouch": [
+    "products/pc/*",
+    "products/tablet/*",
+    "packages/shared-kernel/*",
+    "shared/contracts/*"
+  ],
+  "validation": [
+    "node products/mobile/app/tools/verify_prisma_app_mobile_03_product_root_rebase.mjs",
+    "node products/mobile/app/tools/verify_prisma_app_mobile_06_api_contracts.mjs",
+    "node products/mobile/app/tools/verify_prisma_app_mobile_07_api_client_ui_binding.mjs",
+    "node products/mobile/app/tools/verify_prisma_app_mobile_07_fixture_scenarios.mjs"
+  ],
+  "files": [
+    {
+      "path": "INSTALL_MANIFEST_PRISMA_APP_MOBILE_07_API_CLIENT_UI_BINDING.json",
+      "sha256": "f1bd642283bc9680c643e72d2aa8c109b40fc9a1655f58c35731113dac59e7e9",
+      "bytes": 5487
+    },
+    {
+      "path": "docs/mobile/PRISMA_APP_MOBILE_07_API_CLIENT_UI_BINDING.md",
+      "sha256": "cb6e39af8954f52eebfbf595a06e578519114a8521301f798743dc81b9ba7bec",
+      "bytes": 1407
+    },
+    {
+      "path": "manifests/mobile/INSTALL_MANIFEST_PRISMA_APP_MOBILE_07_API_CLIENT_UI_BINDING.json",
+      "sha256": "f1bd642283bc9680c643e72d2aa8c109b40fc9a1655f58c35731113dac59e7e9",
+      "bytes": 5487
+    },
+    {
+      "path": "products/mobile/app/app/api/mobile/snapshot/route.ts",
+      "sha256": "0bb5b35fe65bfc19bf8114dc18f66a477e53adf1d76334067ca734706f758d3f",
+      "bytes": 473
+    },
+    {
+      "path": "products/mobile/app/app/prisma-app/page.tsx",
+      "sha256": "d3d701ec59cb0f7fce10127820c03a11e1360983218adbd217c20606fcba0b74",
+      "bytes": 501
+    },
+    {
+      "path": "products/mobile/app/docs/README_PRISMA_APP_MOBILE_07_API_CLIENT_UI_BINDING.md",
+      "sha256": "f5831e3800c78c6aff04021ffeeba74104a0b599152306cdeb621d460dac9eda",
+      "bytes": 1325
+    },
+    {
+      "path": "products/mobile/app/docs/prisma-app/fixtures/prisma-app-mobile-07-client-ui-binding-scenarios.json",
+      "sha256": "bdcadb1ab7010465893c5f401685218d5eb4cf82fab34c1e384c5f60c43d73f8",
+      "bytes": 83891
+    },
+    {
+      "path": "products/mobile/app/package.json",
+      "sha256": "31cd3f84aca1f6336d372cf7176e5a4464aa423b4b952d973b2f61d8ce570404",
+      "bytes": 1339
+    },
+    {
+      "path": "products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx",
+      "sha256": "9dd7b5abd99449012cd40270452bed1e47c587c3b1b8ffbf8f6aa041b740e2ce",
+      "bytes": 7357
+    },
+    {
+      "path": "products/mobile/app/src/components/prisma-app/PrismaMobileMetricCard.tsx",
+      "sha256": "f4a2f35e7ceecbb1ff631d7943b39009f4ef806f0eae59389729215701a79c3c",
+      "bytes": 656
+    },
+    {
+      "path": "products/mobile/app/src/components/prisma-app/PrismaMobilePanels.tsx",
+      "sha256": "af79ac72d5c7aa1f42e7d153733b58ab369cbe86ab117e1df4cded93077d50ed",
+      "bytes": 5320
+    },
+    {
+      "path": "products/mobile/app/src/components/prisma-app/index.ts",
+      "sha256": "84a7ba948150bdd453bdd1109a0a422922dcaaeb97860f555d7f2be6a9e2e6dd",
+      "bytes": 65
+    },
+    {
+      "path": "products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css",
+      "sha256": "c9cbac2b70f1eaaa09769ec285fed1d4d4fc905b2012810fef1e5bbe47104db9",
+      "bytes": 8496
+    },
+    {
+      "path": "products/mobile/app/src/lib/prisma-app/prisma-mobile-api-client.ts",
+      "sha256": "a0468a13941f9dcade31d11120b7cfa84e61797b47e6a04a8827416875b95e70",
+      "bytes": 4849
+    },
+    {
+      "path": "products/mobile/app/src/lib/prisma-app/prisma-mobile-cache.ts",
+      "sha256": "2c57a1124db61133c3b0741118b8e46b120530bcf2640e4b0039bce14751c97f",
+      "bytes": 1698
+    },
+    {
+      "path": "products/mobile/app/src/lib/prisma-app/prisma-mobile-formatters.ts",
+      "sha256": "681925e01072db6fbb391be6e3ad67dd252f4fe9764e772098c0a0210485f256",
+      "bytes": 1220
+    },
+    {
+      "path": "products/mobile/app/src/lib/prisma-app/prisma-mobile-snapshot-contract.ts",
+      "sha256": "6099a875fe40db9db284584e1f45cb2ca5e05000271b27f7a94ed3939c87769a",
+      "bytes": 4181
+    },
+    {
+      "path": "products/mobile/app/src/lib/prisma-app/prisma-mobile-snapshot-source.ts",
+      "sha256": "474d77ada814cb8b408d50235595e510d838a8a36de1ac9b288b7c530a6743f5",
+      "bytes": 913
+    },
+    {
+      "path": "products/mobile/app/src/lib/prisma-app/prisma-mobile-view-model.ts",
+      "sha256": "953cdd1534348671d807f28ee3c1242c87e3d708d5a477d1741ed2861a838de4",
+      "bytes": 3119
+    },
+    {
+      "path": "products/mobile/app/tools/verify_prisma_app_mobile_07_api_client_ui_binding.mjs",
+      "sha256": "75ee73efc41bbb8d9fe680afba4751807576f3e520562fbd9380767d8cb25b2e",
+      "bytes": 4041
+    },
+    {
+      "path": "products/mobile/app/tools/verify_prisma_app_mobile_07_fixture_scenarios.mjs",
+      "sha256": "d891dd82eebd97e4af4c88cad0f39f041d91f204bb813e245cb475fa30e535e8",
+      "bytes": 1623
+    }
+  ]
+}

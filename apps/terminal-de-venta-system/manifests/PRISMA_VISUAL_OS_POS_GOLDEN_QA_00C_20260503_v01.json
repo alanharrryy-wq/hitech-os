@@ -1,0 +1,68 @@
+{
+  "package": "PRISMA_VISUAL_OS_POS_GOLDEN_QA_00C_20260503_v01",
+  "version": "v01",
+  "created_at": "2026-05-03T10:16:29.010729",
+  "target_root_default": "F:/repos/hitech-os/apps/terminal-de-venta-system",
+  "log_dir_default": "F:/descargasf",
+  "summary": "Agrega Golden Screens, arnés de captura y score para PRISMA Visual OS POS Tablet 00C.",
+  "safety": {
+    "allowed_prefixes": [
+      "products/tablet/app/tools/",
+      "products/tablet/app/docs/qa/",
+      "products/tablet/app/package.json",
+      "products/shared-ui/prisma/visual-os/",
+      "docs/design/",
+      "manifests/"
+    ],
+    "forbidden_prefixes": [
+      "products/pc/app/",
+      "products/mobile/app/",
+      "packages/shared-kernel/"
+    ],
+    "rollback": true
+  },
+  "files": [
+    {
+      "source": "payload/products/tablet/app/package.json",
+      "target": "products/tablet/app/package.json",
+      "sha256": "e1f4e7efe95662d1bd44bb2c3263a611d5555497c4fd6e772842b89ea3c46b45",
+      "size_bytes": 2471
+    },
+    {
+      "source": "payload/products/shared-ui/prisma/visual-os/prisma-visual-os.golden-screens.00c.json",
+      "target": "products/shared-ui/prisma/visual-os/prisma-visual-os.golden-screens.00c.json",
+      "sha256": "b07f050eee39471806feb0dc316e26ee1872e439dc9e1122290dca642804439f",
+      "size_bytes": 3223
+    },
+    {
+      "source": "payload/products/tablet/app/tools/verify_prisma_visual_os_pos_golden_qa_00c.mjs",
+      "target": "products/tablet/app/tools/verify_prisma_visual_os_pos_golden_qa_00c.mjs",
+      "sha256": "7ac233156ce163ee25aceea10b92b6055f4cec0f0dd753e8e8a6749dd7130d01",
+      "size_bytes": 4809
+    },
+    {
+      "source": "payload/products/tablet/app/tools/score_prisma_visual_os_pos_golden_qa_00c.mjs",
+      "target": "products/tablet/app/tools/score_prisma_visual_os_pos_golden_qa_00c.mjs",
+      "sha256": "bf152023c1647377098a63207c74f7f3ddbb8fa1d31d6eac2a5866e365575d2d",
+      "size_bytes": 3890
+    },
+    {
+      "source": "payload/products/tablet/app/tools/capture_prisma_visual_os_pos_golden_qa_00c.mjs",
+      "target": "products/tablet/app/tools/capture_prisma_visual_os_pos_golden_qa_00c.mjs",
+      "sha256": "6490175413452cce01acf162c77b281242299e261cf3cf4f2fa4139a11e71918",
+      "size_bytes": 4359
+    },
+    {
+      "source": "payload/docs/design/PRISMA_VISUAL_OS_POS_GOLDEN_QA_00C.md",
+      "target": "docs/design/PRISMA_VISUAL_OS_POS_GOLDEN_QA_00C.md",
+      "sha256": "86b3003f2465c3a8650a98e67df9dba772e876b096f95a4ae89d2ce9b073efd0",
+      "size_bytes": 2152
+    },
+    {
+      "source": "payload/products/tablet/app/docs/qa/PRISMA_VISUAL_OS_POS_GOLDEN_QA_00C.md",
+      "target": "products/tablet/app/docs/qa/PRISMA_VISUAL_OS_POS_GOLDEN_QA_00C.md",
+      "sha256": "86b3003f2465c3a8650a98e67df9dba772e876b096f95a4ae89d2ce9b073efd0",
+      "size_bytes": 2152
+    }
+  ]
+}
