@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA POS Visual Token Contract",
+  "type": "object",
+  "required": [
+    "meta",
+    "tokens"
+  ],
+  "properties": {
+    "meta": {
+      "type": "object"
+    },
+    "tokens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "css",
+          "group",
+          "type",
+          "unit",
+          "min",
+          "max",
+          "default",
+          "current",
+          "targets",
+          "description"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^pos\\."
+          },
+          "css": {
+            "type": "string",
+            "pattern": "^--prisma-pos-"
+          },
+          "group": {
+            "type": "string",
+            "enum": [
+              "shell",
+              "glass",
+              "light",
+              "border",
+              "shadow",
+              "card",
+              "product_stage",
+              "product-stage",
+              "packshot",
+              "ticket",
+              "typography",
+              "cta",
+              "controls",
+              "state-motion",
+              "motion",
+              "density",
+              "layers",
+              "glow"
+            ]
+          },
+          "type": {
+            "enum": [
+              "length",
+              "number",
+              "time",
+              "color",
+              "shadow",
+              "string"
+            ]
+          },
+          "unit": {
+            "type": "string"
+          },
+          "min": {
+            "type": "number"
+          },
+          "max": {
+            "type": "number"
+          },
+          "default": {
+            "type": "string"
+          },
+          "current": {
+            "type": "string"
+          },
+          "targets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

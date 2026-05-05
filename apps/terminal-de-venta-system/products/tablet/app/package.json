@@ -1,0 +1,49 @@
+{
+  "name": "@hitech/tablet",
+  "version": "6.1.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3120",
+    "build": "next build --webpack",
+    "start": "next start -p 3120",
+    "typecheck": "tsc --noEmit",
+    "check:package": "python tools/validate_package.py .",
+    "check:all": "python tools/validate_package.py . && tsc --noEmit",
+    "db:summary": "python tools/db_summary.py data/tablet-pos.db",
+    "db:tablet:init": "node scripts/tablet-db.mjs init",
+    "db:tablet:generate": "node scripts/tablet-db.mjs generate",
+    "db:tablet:push": "node scripts/tablet-db.mjs push",
+    "db:tablet:seed": "node scripts/tablet-db.mjs seed",
+    "db:tablet:info": "node scripts/tablet-db.mjs info",
+    "verify:ux-operable-01": "node tools/verify_tablet_ux_operable_01.mjs",
+    "verify:pos-checkout-02": "node tools/verify_tablet_pos_checkout_02.mjs",
+    "verify:catalog-products-03": "node tools/verify_tablet_catalog_products_03.mjs",
+    "verify:screen-standard-01a": "node tools/verify_tablet_screen_standard_01a.mjs",
+    "verify:tablet-release-gate-03z": "node tools/verify_tablet_operable_release_gate_03z.mjs && node tools/verify_tablet_operable_release_gate_integral_03z.mjs && node tools/verify_tablet_operable_release_gate_route_graph_03z.mjs && node tools/verify_tablet_operable_release_gate_no_placeholder_03z.mjs && node tools/verify_tablet_operable_release_gate_vectors_03z.mjs && node tools/verify_tablet_operable_release_gate_visual_tokens_03z.mjs && node tools/verify_tablet_operable_release_gate_capture_manifest_03z.mjs",
+    "verify:visual-os-pos-touch-00b": "node tools/verify_prisma_visual_os_pos_touch_binding_00b.mjs",
+    "verify:visual-os-pos-golden-00c": "node tools/verify_prisma_visual_os_pos_golden_qa_00c.mjs",
+    "score:visual-os-pos-golden-00c": "node tools/score_prisma_visual_os_pos_golden_qa_00c.mjs",
+    "capture:visual-os-pos-golden-00c": "node tools/capture_prisma_visual_os_pos_golden_qa_00c.mjs",
+    "visual-os:pos-golden-00c": "node tools/verify_prisma_visual_os_pos_golden_qa_00c.mjs && node tools/score_prisma_visual_os_pos_golden_qa_00c.mjs",
+    "verify:visual-os-core-00d-00e": "node ../../../tools/prisma-visual-os/verify_prisma_visual_os_core_00d_00e.mjs",
+    "generate:visual-os-controls-00e": "node ../../../tools/prisma-visual-os/generate_prisma_visual_os_controls_00e.mjs",
+    "verify:visual-os-tablet-00f-00i": "node tools/verify_prisma_tablet_visual_controlled_00f_00i.mjs"
+  },
+  "dependencies": {
+    "@prisma/client": "5.21.1",
+    "next": "16.1.6",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "22.13.9",
+    "@types/react": "19.2.14",
+    "prisma": "5.21.1",
+    "typescript": "5.8.2"
+  },
+  "engines": {
+    "node": ">=20.0.0 <26.0.0"
+  }
+}

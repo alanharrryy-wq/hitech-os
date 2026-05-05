@@ -1,0 +1,128 @@
+.panel {
+  display: grid;
+  gap: 18px;
+}
+
+.heroCard,
+.controlCard,
+.layerMap {
+  border: 1px solid var(--prisma-vos-runtime-surface-border, var(--prisma-border-soft));
+  border-radius: var(--prisma-vos-runtime-card-radius, var(--prisma-radius-xl));
+  background:
+    radial-gradient(circle at 82% 12%, color-mix(in srgb, var(--prisma-accent-gold) 14%, transparent), transparent 42%),
+    var(--prisma-panel-gradient);
+  box-shadow: var(--prisma-shadow-glass);
+  backdrop-filter: blur(var(--prisma-vos-runtime-panel-blur, 24px)) saturate(1.1);
+}
+
+.heroCard {
+  padding: 22px;
+  display: grid;
+  gap: 8px;
+}
+
+.heroCard span,
+.controlCard span,
+.layerMap span {
+  color: var(--prisma-accent-gold);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.heroCard strong {
+  color: var(--prisma-accent-gold-soft);
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: .95;
+  text-shadow: var(--prisma-vos-runtime-total-glow);
+}
+
+.heroCard p,
+.controlCard p {
+  margin: 0;
+  color: var(--prisma-text-secondary);
+}
+
+.heroCard code {
+  color: var(--prisma-text-primary);
+}
+
+.controlGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.controlCard {
+  min-height: 190px;
+  padding: 16px;
+  display: grid;
+  gap: 14px;
+  align-content: space-between;
+}
+
+.controlCard strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--prisma-text-primary);
+  font-size: 1.35rem;
+}
+
+.controlCard meter {
+  width: 100%;
+  min-height: 14px;
+  accent-color: var(--prisma-accent-gold);
+}
+
+.controlCard b {
+  color: var(--prisma-accent-gold-soft);
+  font-size: 1.7rem;
+}
+
+.layerMap {
+  padding: 18px;
+}
+
+.layerMap h2 {
+  margin: 0 0 14px;
+  color: var(--prisma-text-primary);
+}
+
+.layerMap ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.layerMap li {
+  min-height: 68px;
+  padding: 12px;
+  display: grid;
+  gap: 6px;
+  border: 1px solid var(--prisma-border-soft);
+  border-radius: var(--prisma-radius-md);
+  background: color-mix(in srgb, var(--prisma-glass-surface) 66%, transparent);
+}
+
+.layerMap strong {
+  color: var(--prisma-text-primary);
+  text-transform: capitalize;
+}
+
+@media (max-width: 1180px) {
+  .controlGrid,
+  .layerMap ol {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .controlGrid,
+  .layerMap ol {
+    grid-template-columns: 1fr;
+  }
+}

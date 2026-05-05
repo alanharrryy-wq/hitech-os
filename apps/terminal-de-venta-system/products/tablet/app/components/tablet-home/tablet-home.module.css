@@ -1,0 +1,302 @@
+.homeShell {
+  display: grid;
+  gap: 18px;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.heroMain,
+.heroAside,
+.metricCard,
+.actionCard,
+.alertCard,
+.checklistCard {
+  border: 1px solid var(--prisma-border-soft);
+  border-radius: var(--prisma-radius-xl);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.025)),
+    rgba(7, 15, 24, 0.66);
+  box-shadow: var(--prisma-shadow-glass);
+  backdrop-filter: blur(18px);
+}
+
+.heroMain {
+  position: relative;
+  overflow: hidden;
+  min-height: 250px;
+  padding: 28px;
+  display: grid;
+  align-content: end;
+  gap: 18px;
+}
+
+.heroMain::before {
+  content: "";
+  position: absolute;
+  inset: -40% -20% auto auto;
+  width: 360px;
+  height: 360px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(232, 189, 103, 0.28), transparent 62%);
+  pointer-events: none;
+}
+
+.heroCopy {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  max-width: 760px;
+}
+
+.heroCopy span {
+  color: var(--prisma-accent-gold-soft);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.heroCopy h2 {
+  margin: 0;
+  color: var(--prisma-text-primary);
+  font-size: clamp(34px, 4vw, 62px);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+}
+
+.heroCopy p {
+  margin: 0;
+  color: var(--prisma-text-secondary);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.heroActions {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.primaryButton,
+.secondaryButton {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  border-radius: var(--prisma-radius-md);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.primaryButton {
+  color: var(--prisma-text-on-gold);
+  background: var(--prisma-gold-gradient);
+  box-shadow: 0 18px 38px rgba(232, 189, 103, 0.26);
+}
+
+.secondaryButton {
+  color: var(--prisma-text-primary);
+  border: 1px solid var(--prisma-border-soft);
+  background: color-mix(in srgb, var(--prisma-glass-surface) 54%, transparent);
+}
+
+.heroAside {
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.readinessItem {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-radius: var(--prisma-radius-lg);
+  background: color-mix(in srgb, var(--prisma-glass-surface) 45%, transparent);
+}
+
+.readinessItem strong {
+  display: block;
+  color: var(--prisma-text-primary);
+}
+
+.readinessItem span {
+  color: var(--prisma-text-muted);
+  font-size: 12px;
+}
+
+.readyDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 99px;
+  background: var(--prisma-success);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--prisma-success) 15%, transparent);
+}
+
+.warnDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 99px;
+  background: var(--prisma-warning);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--prisma-warning) 15%, transparent);
+}
+
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.metricCard {
+  min-height: 128px;
+  padding: 16px;
+  display: grid;
+  align-content: space-between;
+  gap: 10px;
+}
+
+.metricCard span {
+  color: var(--prisma-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.metricCard strong {
+  color: var(--prisma-text-primary);
+  font-size: clamp(22px, 2.3vw, 34px);
+  line-height: 1;
+}
+
+.metricCard small {
+  color: var(--prisma-text-secondary);
+  font-size: 12px;
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.actionGrid {
+  display: grid;
+  gap: 12px;
+}
+
+.actionCard {
+  padding: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  transition: transform var(--prisma-motion-base) ease, border-color var(--prisma-motion-base) ease, background var(--prisma-motion-base) ease;
+}
+
+.actionCard:hover,
+.actionCard:focus-visible {
+  outline: none;
+  transform: translateY(-1px);
+  background: var(--prisma-hover-surface);
+}
+
+.actionCard h3,
+.alertCard h3,
+.checklistCard h3 {
+  margin: 0;
+  color: var(--prisma-text-primary);
+  font-size: 17px;
+}
+
+.actionCard p,
+.alertCard p {
+  margin: 5px 0 0;
+  color: var(--prisma-text-secondary);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.actionCard span {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  border-radius: var(--prisma-radius-sm);
+  color: var(--prisma-text-on-gold);
+  background: var(--prisma-gold-gradient);
+  font-weight: 900;
+}
+
+.sideStack {
+  display: grid;
+  gap: 12px;
+}
+
+.alertCard,
+.checklistCard {
+  padding: 16px;
+}
+
+.alertList {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.alertItem {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border-radius: var(--prisma-radius-lg);
+  border: 1px solid var(--prisma-border-soft);
+  background: color-mix(in srgb, var(--prisma-glass-surface) 42%, transparent);
+}
+
+.alertItem a {
+  color: var(--prisma-accent-gold-soft);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.emptyAlert {
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: var(--prisma-radius-lg);
+  color: var(--prisma-success);
+  background: color-mix(in srgb, var(--prisma-success) 10%, transparent);
+}
+
+@media (max-width: 1180px) {
+  .hero,
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .metricGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .metricGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .heroMain {
+    min-height: 220px;
+    padding: 20px;
+  }
+}
