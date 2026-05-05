@@ -1,0 +1,576 @@
+.pulsoPage {
+  display: grid;
+  gap: 28px;
+}
+
+.heroPanel {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+  gap: 24px;
+  padding: clamp(24px, 3vw, 38px);
+  border: 1px solid var(--prisma-border-soft);
+  border-radius: calc(var(--prisma-radius-xl) + 10px);
+  background:
+    radial-gradient(circle at 16% 10%, rgba(245, 209, 131, 0.22), transparent 34%),
+    radial-gradient(circle at 84% 18%, rgba(255, 255, 255, 0.1), transparent 30%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(232, 189, 103, 0.05) 45%, rgba(0, 0, 0, 0.2)),
+    var(--prisma-glass-gradient);
+  box-shadow: var(--prisma-shadow-glass);
+}
+
+.heroPanel::after {
+  content: "";
+  position: absolute;
+  inset: auto -9% -44% 45%;
+  height: 340px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(232, 189, 103, 0.2), transparent 66%);
+  pointer-events: none;
+}
+
+.heroCopy {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  align-content: center;
+  gap: 18px;
+}
+
+.eyebrow,
+.phoneMeta span {
+  margin: 0;
+  color: var(--prisma-accent-gold);
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.heroCopy h1 {
+  max-width: 840px;
+  margin: 0;
+  color: var(--prisma-text-primary);
+  font-size: clamp(34px, 5vw, 76px);
+  line-height: 0.93;
+  letter-spacing: -0.06em;
+}
+
+.heroCopy p {
+  max-width: 760px;
+  margin: 0;
+  color: var(--prisma-text-secondary);
+  font-size: 16px;
+  line-height: 1.72;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.heroActions span,
+.healthStrip span,
+.compareCard span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 7px 11px;
+  border: 1px solid var(--prisma-border-soft);
+  border-radius: 999px;
+  color: var(--prisma-text-secondary);
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 12px;
+  font-weight: 760;
+}
+
+.heroMetrics {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 13px;
+}
+
+.heroMetrics article,
+.summaryGrid article,
+.detailCards article,
+.compareCard {
+  border: 1px solid var(--prisma-border-soft);
+  border-radius: var(--prisma-radius-lg);
+  background: rgba(0, 0, 0, 0.22);
+  box-shadow: inset 0 1px 0 var(--prisma-soft-highlight);
+}
+
+.heroMetrics article {
+  min-height: 122px;
+  padding: 18px;
+  display: grid;
+  align-content: center;
+  gap: 5px;
+}
+
+.heroMetrics span,
+.summaryGrid span,
+.detailCards span,
+.phoneHeader span,
+.detailHero span,
+.productRow span,
+.alertCard span,
+.taskList h3,
+.miniSection h3 {
+  color: var(--prisma-text-muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.heroMetrics strong {
+  color: var(--prisma-text-primary);
+  font-size: 32px;
+  line-height: 1;
+}
+
+.heroMetrics small,
+.summaryGrid small,
+.detailHero small,
+.rankRow small,
+.alertCard small,
+.phoneWrap p,
+.compareCard p {
+  color: var(--prisma-text-muted);
+  line-height: 1.5;
+}
+
+.screenGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(238px, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+
+.phoneWrap {
+  display: grid;
+  gap: 12px;
+}
+
+.phoneMeta {
+  min-height: 58px;
+  display: grid;
+  align-content: end;
+  gap: 5px;
+}
+
+.phoneMeta strong {
+  color: var(--prisma-text-primary);
+  font-size: 19px;
+  letter-spacing: -0.03em;
+}
+
+.phoneFrame {
+  position: relative;
+  overflow: hidden;
+  min-height: 640px;
+  border: 1px solid rgba(245, 209, 131, 0.28);
+  border-radius: 42px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 9%),
+    linear-gradient(145deg, rgba(8, 10, 10, 0.98), rgba(22, 20, 16, 0.96));
+  box-shadow:
+    0 28px 80px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -30px 60px rgba(0, 0, 0, 0.18);
+}
+
+.phoneNotch {
+  position: absolute;
+  z-index: 3;
+  top: 13px;
+  left: 50%;
+  width: 92px;
+  height: 22px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.phoneScreen {
+  min-height: 640px;
+  padding: 46px 15px 18px;
+  display: grid;
+  align-content: start;
+  gap: 13px;
+  background:
+    radial-gradient(circle at 80% 0%, rgba(232, 189, 103, 0.18), transparent 28%),
+    radial-gradient(circle at 12% 24%, rgba(255, 255, 255, 0.06), transparent 20%);
+}
+
+.phoneHeader,
+.detailHero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 15px;
+  border: 1px solid var(--prisma-border-soft);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.phoneHeader strong,
+.detailHero strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--prisma-text-primary);
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.healthStrip {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.healthStrip span {
+  min-height: 30px;
+  white-space: nowrap;
+  font-size: 11px;
+}
+
+.branchList,
+.alertFeed,
+.rankingList,
+.taskList,
+.miniSection {
+  display: grid;
+  gap: 9px;
+}
+
+.branchRow,
+.productRow,
+.rankRow {
+  display: grid;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--prisma-border-soft);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.branchRow {
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 10px;
+  border-radius: 18px;
+}
+
+.branchRow div:first-child {
+  grid-column: 1;
+}
+
+.branchRow div:nth-child(2) {
+  grid-column: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.branchRow strong,
+.productRow strong,
+.rankRow strong,
+.compareCard strong,
+.alertCard strong,
+.taskList p,
+.miniSection h3,
+.taskList h3 {
+  color: var(--prisma-text-primary);
+}
+
+.branchRow span,
+.productRow span,
+.rankRow small {
+  display: block;
+  margin-top: 2px;
+  color: var(--prisma-text-muted);
+  font-size: 11px;
+}
+
+.branchRow em,
+.alertCard em {
+  justify-self: end;
+  grid-row: 1;
+  grid-column: 2;
+  min-width: 62px;
+  padding: 5px 7px;
+  border-radius: 999px;
+  text-align: center;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.statusOk {
+  color: #9ef1bd;
+  background: rgba(22, 163, 74, 0.18);
+  border: 1px solid rgba(74, 222, 128, 0.24);
+}
+
+.statusReview,
+.alertHigh {
+  color: #f7d987;
+  background: rgba(217, 119, 6, 0.16);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.statusUrgent,
+.alertCritical {
+  color: #ffaaa5;
+  background: rgba(225, 29, 72, 0.17);
+  border: 1px solid rgba(251, 113, 133, 0.28);
+}
+
+.statusOffline,
+.alertMedium {
+  color: #b8c5d8;
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(203, 213, 225, 0.18);
+}
+
+.detailHero {
+  align-items: center;
+}
+
+.ring {
+  width: 66px;
+  height: 66px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--prisma-text-primary);
+  font-size: 19px;
+  font-weight: 900;
+  background:
+    radial-gradient(circle, rgba(0, 0, 0, 0.86) 54%, transparent 55%),
+    conic-gradient(from -45deg, rgba(245, 209, 131, 0.95) 0 72%, rgba(255, 255, 255, 0.13) 72% 100%);
+}
+
+.detailCards,
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.detailCards article,
+.summaryGrid article {
+  min-height: 86px;
+  padding: 12px;
+  display: grid;
+  align-content: center;
+  gap: 5px;
+}
+
+.detailCards strong,
+.summaryGrid strong {
+  color: var(--prisma-text-primary);
+  font-size: 20px;
+  line-height: 1.1;
+}
+
+.miniSection,
+.taskList {
+  padding: 14px;
+  border: 1px solid var(--prisma-border-soft);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.productRow {
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 10px;
+  border-radius: 14px;
+}
+
+.productRow strong {
+  color: var(--prisma-accent-gold);
+  font-size: 12px;
+}
+
+.alertCard {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 20px;
+}
+
+.alertCard div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+
+.alertCard strong {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.alertCard p {
+  margin: 0;
+  color: var(--prisma-text-secondary);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.alertCard em {
+  min-width: auto;
+  padding-inline: 8px;
+  font-size: 9px;
+}
+
+.alertCard small {
+  display: block;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--prisma-text-primary);
+  font-size: 11px;
+}
+
+.rankRow {
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  padding: 11px;
+  border-radius: 18px;
+}
+
+.rankRow > span {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  color: var(--prisma-text-on-gold);
+  background: var(--prisma-gold-gradient);
+  font-weight: 900;
+}
+
+.rankRow em {
+  color: var(--prisma-accent-gold);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 850;
+}
+
+.compareCard {
+  padding: 14px;
+  display: grid;
+  gap: 9px;
+}
+
+.compareCard strong {
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.compareCard p {
+  margin: 0;
+  font-size: 12px;
+}
+
+.taskList h3,
+.miniSection h3 {
+  margin: 0 0 3px;
+  font-size: 12px;
+}
+
+.taskList p {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 9px;
+  align-items: start;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.taskList p span {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: var(--prisma-text-on-gold);
+  background: var(--prisma-gold-gradient);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+@media (max-width: 1380px) {
+  .screenGrid {
+    grid-template-columns: repeat(3, minmax(238px, 1fr));
+  }
+}
+
+@media (max-width: 980px) {
+  .heroPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .screenGrid {
+    grid-template-columns: repeat(2, minmax(238px, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .screenGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .phoneFrame,
+  .phoneScreen {
+    min-height: 590px;
+  }
+}
+
+/* PRISMA_BLACK_VISUAL_REFINEMENT_01G::START */
+
+.heroPanel,
+.heroMetrics article,
+.summaryGrid article,
+.detailCards article,
+.compareCard,
+.miniSection,
+.taskList,
+.alertCard {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0) 22%),
+    var(--prisma-glass-gradient);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    var(--prisma-shadow-glass),
+    0 18px 44px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(var(--prisma-glass-blur)) saturate(1.08);
+}
+
+.heroPanel::after {
+  opacity: 0.82;
+  filter: blur(8px);
+}
+
+.phoneFrame {
+  box-shadow:
+    0 28px 64px rgba(0, 0, 0, 0.38),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.heroActions span,
+.healthStrip span,
+.compareCard span {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--prisma-text-primary);
+}
+/* PRISMA_BLACK_VISUAL_REFINEMENT_01G::END */
