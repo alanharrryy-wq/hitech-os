@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#07080d" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <title>PRISMA App sin conexión</title>
+  <style>
+    :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 14% 8%,rgba(75,117,196,.26),transparent 34rem),radial-gradient(circle at 86% 86%,rgba(255,213,106,.14),transparent 26rem),#07080d;color:#f6f0df;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif}.card{width:min(620px,calc(100% - 28px));border:1px solid rgba(246,240,223,.16);border-radius:32px;background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.04));box-shadow:0 24px 90px rgba(0,0,0,.38);padding:clamp(24px,6vw,42px);backdrop-filter:blur(18px)}.eyebrow{color:#aab8cc;text-transform:uppercase;letter-spacing:.1em;font-size:.78rem}h1{margin:.25rem 0 1rem;font-size:clamp(2.3rem,10vw,5rem);line-height:.9;letter-spacing:-.08em}p{color:#d7dfed;line-height:1.58}.pill{display:inline-flex;border:1px solid rgba(255,213,106,.32);border-radius:999px;padding:10px 14px;color:#ffd56a;background:rgba(255,213,106,.09);font-weight:800}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.actions a,.actions button{border-radius:999px;border:1px solid rgba(255,255,255,.16);padding:12px 16px;color:#f6f0df;text-decoration:none;background:rgba(255,255,255,.08);font-weight:800}.actions button{background:#ffd56a;color:#07080d;border:0;cursor:pointer}.hint{font-size:.92rem;color:#aab8cc}</style>
+</head>
+<body>
+  <main class="card">
+    <span class="eyebrow">PRISMA App · modo app offline</span>
+    <h1>Sin conexión, pero con piso.</h1>
+    <p>La app no pudo consultar la red. Si PRISMA ya fue instalada en Android o iPhone, este respaldo mantiene una pantalla útil en vez de dejarte una página blanca, porque aparentemente la civilización exige eso.</p>
+    <p class="pill">PWA instalada · app shell activo</p>
+    <p class="hint">Cuando vuelva internet, abre el tablero y se refrescarán ventas, caja, inventario y alertas.</p>
+    <div class="actions">
+      <a href="/prisma-app">Volver al tablero</a>
+      <button type="button" onclick="window.location.reload()">Reintentar</button>
+    </div>
+  </main>
+</body>
+</html>

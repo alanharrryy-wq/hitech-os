@@ -1,0 +1,24 @@
+{
+  "name": "PRISMA App",
+  "shortName": "PRISMA",
+  "packageId": "com.prisma.mobile",
+  "host": "REPLACE_WITH_PRISMA_APP_DOMAIN",
+  "startUrl": "/prisma-app",
+  "themeColor": "#07080d",
+  "navigationColor": "#07080d",
+  "backgroundColor": "#07080d",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "targetSdkVersion": 35,
+  "iconUrl": "https://REPLACE_WITH_PRISMA_APP_DOMAIN/icons/prisma-app-icon.svg",
+  "maskableIconUrl": "https://REPLACE_WITH_PRISMA_APP_DOMAIN/icons/prisma-app-maskable.svg",
+  "signingKey": {
+    "status": "placeholder",
+    "sha256CertFingerprint": "REPLACE_WITH_RELEASE_SIGNING_CERT_SHA256_FINGERPRINT"
+  },
+  "notes": [
+    "Template only. Do not treat as production Bubblewrap config until host and signing fingerprint are real.",
+    "Digital Asset Links must be served from HTTPS production domain.",
+    "Google Play release should produce Android App Bundle (.aab)."
+  ]
+}

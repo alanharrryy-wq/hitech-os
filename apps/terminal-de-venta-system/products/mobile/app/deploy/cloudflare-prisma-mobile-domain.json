@@ -1,0 +1,31 @@
+{
+  "contractId": "PRISMA_APP_MOBILE_10_CLOUDFLARE_PWA_DOMAIN_BRIDGE",
+  "domain": "prisma.hitechrts.com",
+  "publicUrl": "https://prisma.hitechrts.com/prisma-app",
+  "installUrl": "https://prisma.hitechrts.com/prisma-app/install",
+  "originUrl": "http://127.0.0.1:3140",
+  "tunnelName": "engine",
+  "tunnelConfigPath": "C:\\Users\\alanh\\.cloudflared\\config.yml",
+  "cloudflareRoutes": [
+    {
+      "hostname": "prisma.hitechrts.com",
+      "service": "http://127.0.0.1:3140",
+      "purpose": "PRISMA Mobile PWA"
+    },
+    {
+      "hostname": "engine.hitechrts.com",
+      "service": "http://127.0.0.1:3100",
+      "purpose": "existing engine host"
+    },
+    {
+      "hostname": "forms.hitechrts.com",
+      "service": "http://127.0.0.1:3200",
+      "purpose": "existing forms host"
+    },
+    {
+      "hostname": "eit.hitechrts.com",
+      "service": "http://127.0.0.1:3110",
+      "purpose": "existing PRISMA mobile host"
+    }
+  ]
+}
