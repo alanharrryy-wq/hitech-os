@@ -28,7 +28,19 @@
     "visual-os:pos-golden-00c": "node tools/verify_prisma_visual_os_pos_golden_qa_00c.mjs && node tools/score_prisma_visual_os_pos_golden_qa_00c.mjs",
     "verify:visual-os-core-00d-00e": "node ../../../tools/prisma-visual-os/verify_prisma_visual_os_core_00d_00e.mjs",
     "generate:visual-os-controls-00e": "node ../../../tools/prisma-visual-os/generate_prisma_visual_os_controls_00e.mjs",
-    "verify:visual-os-tablet-00f-00i": "node tools/verify_prisma_tablet_visual_controlled_00f_00i.mjs"
+    "verify:visual-os-tablet-00f-00i": "node tools/verify_prisma_tablet_visual_controlled_00f_00i.mjs",
+    "tablet:i01:runtime": "node scripts/tablet-runtime-gates.mjs --mode=verify",
+    "verify:i01-runtime": "node tools/verify_tablet_i01_runtime.mjs",
+    "db:tablet:init:safe": "node scripts/tablet-runtime-gates.mjs --mode=db-init",
+    "typecheck:i01": "node scripts/tablet-runtime-gates.mjs --mode=typecheck",
+    "tablet:i02:catalogo": "node tools/verify_tablet_i02_catalogo.mjs",
+    "verify:i02-catalogo": "node tools/verify_tablet_i02_catalogo.mjs",
+    "tablet:i03a:ticket-detail": "node tools/verify_tablet_i03a_ticket_detail.mjs",
+    "verify:i03a-ticket-detail": "node tools/verify_tablet_i03a_ticket_detail.mjs",
+    "tablet:03:pos": "node tools/verify_tablet_03_pos_unificado.mjs",
+    "verify:03-pos": "node tools/verify_tablet_03_pos_unificado.mjs",
+    "tablet:04:offline": "node tools/verify_tablet_04_offline_export.mjs",
+    "verify:04-offline": "node tools/verify_tablet_04_offline_export.mjs"
   },
   "dependencies": {
     "@prisma/client": "5.21.1",

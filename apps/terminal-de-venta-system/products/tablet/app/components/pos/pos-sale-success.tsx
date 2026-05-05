@@ -1,6 +1,6 @@
-
 "use client";
 
+import Link from "next/link";
 import type { CompletedSaleReceipt } from "@/lib/pos/cart-state";
 import { buildTicketSuccessViewModel } from "@/lib/pos/ticket-success-view-model";
 import styles from "./pos.module.css";
@@ -8,6 +8,7 @@ import styles from "./pos.module.css";
 export function PosSaleSuccess({ sale, onNewSale }: { sale: CompletedSaleReceipt | null; onNewSale: () => void }) {
   if (!sale) return null;
   const view = buildTicketSuccessViewModel(sale);
+  const detailHref = `/sales/today/${encodeURIComponent(sale.saleId || sale.folio)}`;
 
   return (
     <section className={styles.successCard} aria-label="Ticket cerrado">
@@ -27,9 +28,14 @@ export function PosSaleSuccess({ sale, onNewSale }: { sale: CompletedSaleReceipt
         <strong>{view.syncLabel}</strong>
         <small>{view.syncDetail}</small>
       </div>
-      <button className={styles.primaryButton} type="button" onClick={onNewSale}>
-        Nueva venta
-      </button>
+      <div className={styles.successActions}>
+        <Link className={styles.secondaryButton} href={detailHref} prefetch={false}>
+          Ver detalle
+        </Link>
+        <button className={styles.primaryButton} type="button" onClick={onNewSale}>
+          Nueva venta
+        </button>
+      </div>
     </section>
   );
 }

@@ -2633,3 +2633,31 @@ html[data-layer-profile="perf"] .productAura {
 .paymentOkButton[disabled]{cursor:not-allowed;filter:saturate(.74);opacity:.72}
 
 /* PRISMA 00T SAFE NO-LAYOUT LIVE MARKER */
+
+
+/* TABLET_03_POS_UNIFICADO: acciones posteriores a ticket cerrado */
+.successActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.secondaryButton {
+  border: 1px solid rgba(250, 204, 21, 0.35);
+  border-radius: 14px;
+  color: #facc15;
+  display: inline-flex;
+  font-weight: 900;
+  justify-content: center;
+  min-height: 44px;
+  padding: 12px 14px;
+  text-decoration: none;
+}
+
+.secondaryButton:hover,
+.secondaryButton:focus-visible {
+  background: rgba(250, 204, 21, 0.12);
+  outline: none;
+}

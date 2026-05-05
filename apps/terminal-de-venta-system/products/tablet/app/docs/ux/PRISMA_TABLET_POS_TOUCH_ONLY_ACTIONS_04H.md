@@ -1,23 +1,40 @@
-# PRISMA Tablet POS Touch Only Actions 04H Fix 00V
+# PRISMA Tablet POS - Touch Only Actions 04H
 
-## Objetivo
+**Paquete:** PRISMA_TABLET_POS_TOUCH_ONLY_ACTIONS_04H_20260503_v01
+**Superficie:** Tablet POS / Vender
+**Tipo:** refinamiento funcional touch-first
+**No toca:** PC, shared-kernel, Prisma schema ni contratos twin.
 
-Cerrar el gate `verify_pos_touch_only_actions_04h.mjs` sin tocar Visual OS 00T, realtime ni layout live.
+## 1. Decisión
 
-## Decisión
+La Tablet no debe comunicar operación primaria con teclas de función. En una pantalla touch el flujo debe hablar en acciones táctiles visibles: cobrar, guardar, limpiar y recuperar.
 
-El POS conserva operación touch-first explícita:
+La iteración 04G dejó buena base con tickets guardados, pero conservó copys tipo F2, F3, F4, F5 y F6. Eso sirve para PC o teclado físico; en Tablet se siente como instructivo pegado en microondas de fonda: técnicamente dice algo, pero no pertenece ahí.
 
-- no usa `PosPaymentKeyboardBridge`;
-- no muestra teclas de función como acción principal;
-- marca `pos-screen.tsx` con `data-prisma-golden-flow="touch-only-actions-04h"` mediante marker oculto no intrusivo;
-- mantiene el CTA de checkout como botón táctil visible;
-- conserva `COBRAR` y agrega señal de acción táctil `Tocar`;
-- mantiene recuperación de tickets guardados como acción explícita.
+## 2. Cambios de esta ronda
 
-## Fuera de alcance
+- Se elimina el puente de teclado `PosPaymentKeyboardBridge`.
+- Se desmontan los listeners globales de `keydown` en `/pos`.
+- Se retiran etiquetas visibles F2/F3/F4/F5/F6 del ticket real.
+- Se retiran etiquetas visibles F2/F3/F4/F5 de la referencia `prisma-dark-pos`.
+- El CTA principal queda como acción táctil: `COBRAR` con indicador `Tocar`.
+- Acciones secundarias quedan expresadas como botones touch: `Cotización`, `Guardar`, `Limpiar`.
+- La recuperación de tickets guardados queda como botón explícito `Recuperar` dentro de cada tarjeta.
 
-- No modifica `pos-live-binding.tsx`.
-- No modifica `pos.module.css`.
-- No modifica Visual OS 00T.
-- No modifica el realtime server.
+## 3. Contrato UX
+
+| Acción | Control touch | Regla |
+|---|---|---|
+| Cobrar | Botón grande `COBRAR` | solo activo con ticket válido |
+| Guardar ticket | Botón `Guardar` | requiere ticket activo |
+| Limpiar ticket | Botón `Limpiar` | requiere ticket activo |
+| Recuperar ticket | Botón `Recuperar` en tarjeta guardada | bloqueado si ya hay ticket activo |
+| Cotización | Botón visible deshabilitado | reservado para siguiente bloque |
+
+## 4. Criterio visual
+
+El cajero no debe leer una tecla. Debe ver una acción. La interfaz debe funcionar como mostrador real: dedo, mirada, confirmación.
+
+## 5. Riesgo controlado
+
+Este paquete no cambia la lógica de guardado ni el almacenamiento local de tickets. Solo corrige la superficie de interacción para Tablet y elimina el listener de teclado que no pertenece a este dispositivo.

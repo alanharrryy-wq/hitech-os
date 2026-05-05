@@ -46,7 +46,6 @@ export function PrismaTabletShellUnified({
       data-prisma-flow-stage={flowStage}
       data-prisma-visual-surface={visualSurface}
       data-prisma-visual-preset={visualPreset}
-      data-prisma-preset={visualPreset}
     >
       <a className={styles.skipLink} href="#contenido-principal">Saltar al contenido</a>
       <aside className={styles.sidebar} aria-label="Navegacion principal de Tablet" data-prisma-component="Sidebar">

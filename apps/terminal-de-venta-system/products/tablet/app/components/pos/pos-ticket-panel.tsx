@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
 import type { CartLine } from "@/lib/pos/cart-state";
 import { cartTotalCents, cartTotalQty, formatMoney } from "@/lib/pos/cart-state";
@@ -75,7 +74,7 @@ export function PosTicketPanel({
           <h2>{qty} piezas</h2>
         </div>
         <button className={styles.ghostButton} type="button" onClick={onClear} disabled={!lines.length || checkoutBusy} data-prisma-component="IconButton">
-          Cancelar venta
+          Limpiar
         </button>
       </header>
 
@@ -174,7 +173,6 @@ export function PosTicketPanel({
         disabled={checkoutDisabled}
         aria-disabled={checkoutDisabled}
         data-prisma-component="CheckoutButton"
-        data-prisma-touch-only-actions="checkout-cta-04h"
         onClick={onCheckout}
       >
         <span className={styles.visuallyHidden}>Abrir cobro</span>
@@ -182,11 +180,11 @@ export function PosTicketPanel({
         <strong>Tocar</strong>
       </button>
       <div className={styles.secondaryCheckoutActions} aria-label="Acciones secundarias">
-        <Link href="/returns" aria-disabled={checkoutBusy} data-prisma-component="RefundActionCard">
+        <button type="button" disabled data-prisma-component="SecondaryActionCard">
           <PrismaIcon name="receipt" size={18} />
-          <span>Reembolso</span>
-          <small>Buscar ticket</small>
-        </Link>
+          <span>Cotización</span>
+          <small>Pronto</small>
+        </button>
         <button type="button" onClick={onHold} disabled={!lines.length || checkoutBusy} data-prisma-component="HoldCartButton">
           <PrismaIcon name="save" size={18} />
           <span>Guardar</span>
@@ -194,8 +192,8 @@ export function PosTicketPanel({
         </button>
         <button type="button" onClick={onClear} disabled={!lines.length || checkoutBusy} data-prisma-component="SecondaryActionCard">
           <PrismaIcon name="broom" size={18} />
-          <span>Cancelar</span>
-          <small>Venta</small>
+          <span>Limpiar</span>
+          <small>Limpiar</small>
         </button>
       </div>
 
@@ -228,6 +226,3 @@ export function PosTicketPanel({
     </aside>
   );
 }
-
-
-export const PRISMA_TABLET_POS_CHECKOUT_02_CLEAR_ACTION_LABEL = "Ir a cobro";

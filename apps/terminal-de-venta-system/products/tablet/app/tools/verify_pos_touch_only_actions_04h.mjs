@@ -1,31 +1,17 @@
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-function findTabletRoot() {
-  const cwd = process.cwd();
-  const candidates = [
-    cwd,
-    resolve(cwd, "products/tablet/app"),
-    resolve(cwd, "apps/terminal-de-venta-system/products/tablet/app")
-  ];
-  for (const candidate of candidates) {
-    if (existsSync(resolve(candidate, "components/pos/pos-screen.tsx"))) return candidate;
-  }
-  console.error(JSON.stringify({ ok: false, error: "TABLET_ROOT_NOT_FOUND", cwd, candidates }, null, 2));
-  process.exit(1);
-}
-
-const tabletRoot = findTabletRoot();
+const root = process.cwd();
 const files = {
-  posScreen: resolve(tabletRoot, "components/pos/pos-screen.tsx"),
-  ticket: resolve(tabletRoot, "components/pos/pos-ticket-panel.tsx"),
-  darkCart: resolve(tabletRoot, "components/prisma-dark-pos/prisma-cart-panel.tsx"),
-  keyboard: resolve(tabletRoot, "components/pos/pos-payment-keyboard-bridge.tsx"),
-  ux: resolve(tabletRoot, "docs/ux/PRISMA_TABLET_POS_TOUCH_ONLY_ACTIONS_04H.md"),
-  qa: resolve(tabletRoot, "docs/qa/PRISMA_TABLET_POS_TOUCH_ONLY_ACTIONS_04H_ACCEPTANCE.md")
+  posScreen: resolve(root, "components/pos/pos-screen.tsx"),
+  ticket: resolve(root, "components/pos/pos-ticket-panel.tsx"),
+  darkCart: resolve(root, "components/prisma-dark-pos/prisma-cart-panel.tsx"),
+  keyboard: resolve(root, "components/pos/pos-payment-keyboard-bridge.tsx"),
+  ux: resolve(root, "docs/ux/PRISMA_TABLET_POS_TOUCH_ONLY_ACTIONS_04H.md"),
+  qa: resolve(root, "docs/qa/PRISMA_TABLET_POS_TOUCH_ONLY_ACTIONS_04H_ACCEPTANCE.md")
 };
 
-function read(filePath) { return readFileSync(filePath, "utf8"); }
+function read(path) { return readFileSync(path, "utf8"); }
 const posScreen = read(files.posScreen);
 const ticket = read(files.ticket);
 const darkCart = read(files.darkCart);
@@ -34,7 +20,7 @@ const qa = read(files.qa);
 
 const checks = [];
 function check(name, ok) { checks.push({ name, ok: Boolean(ok) }); }
-function noFunctionKeyCopy(text) { return !/\bF[2-9]\b/.test(text); }
+function noFunctionKeyCopy(text) { return !/F[2-9]/.test(text); }
 
 check("keyboard bridge file removed", !existsSync(files.keyboard));
 check("pos screen no keyboard bridge import", !posScreen.includes("PosPaymentKeyboardBridge"));
@@ -48,7 +34,7 @@ check("04h acceptance installed", qa.includes("Acceptance 04H"));
 
 const failed = checks.filter((item) => !item.ok);
 if (failed.length) {
-  console.error(JSON.stringify({ ok: false, tabletRoot, failed, checks }, null, 2));
+  console.error(JSON.stringify({ ok: false, failed, checks }, null, 2));
   process.exit(1);
 }
-console.log(JSON.stringify({ ok: true, tabletRoot, package: "PRISMA_TABLET_POS_TOUCH_ONLY_ACTIONS_04H", checks }, null, 2));
+console.log(JSON.stringify({ ok: true, package: "PRISMA_TABLET_POS_TOUCH_ONLY_ACTIONS_04H", checks }, null, 2));
