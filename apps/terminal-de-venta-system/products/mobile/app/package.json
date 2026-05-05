@@ -27,7 +27,7 @@
     "cloudflare:pwa:bridge": "pwsh -NoProfile -ExecutionPolicy Bypass -File ../infra/cloudflare/ensure_prisma_mobile_cloudflare_bridge.ps1 -Apply",
     "cloudflare:pwa:verify": "pwsh -NoProfile -ExecutionPolicy Bypass -File ../infra/cloudflare/ensure_prisma_mobile_cloudflare_bridge.ps1 -VerifyOnly",
     "cloudflare:pwa:start-origin": "pwsh -NoProfile -ExecutionPolicy Bypass -File ../infra/cloudflare/start_prisma_mobile_origin.ps1",
-    "verify:production-data": "node tools/verify_prisma_app_mobile_20_command_center.mjs",
+    "verify:production-data": "node tools/verify_prisma_app_mobile_19_hydration_guard.mjs --production-data",
     "verify:hydration": "node tools/verify_prisma_app_mobile_19_hydration_guard.mjs --hydration",
     "dev:clean-cache": "node tools/reset_prisma_mobile_next_cache_19.mjs",
     "verify:command-center": "node tools/verify_prisma_app_mobile_20_command_center.mjs",

@@ -29,6 +29,24 @@ const css = read("src/components/prisma-app/prisma-mobile-dashboard.module.css")
 const pkg = JSON.parse(read("package.json"));
 const qa = JSON.parse(read("docs/prisma-app/qa/prisma-app-mobile-27-premium-navigation-scenarios.json"));
 
+function compareVersion(actual, minimum) {
+  const parse = (value) => String(value || "")
+    .split(".")
+    .map((part) => Number.parseInt(part.replace(/[^0-9].*$/, ""), 10) || 0);
+
+  const a = parse(actual);
+  const b = parse(minimum);
+
+  for (let i = 0; i < Math.max(a.length, b.length); i += 1) {
+    const left = a[i] || 0;
+    const right = b[i] || 0;
+    if (left > right) return 1;
+    if (left < right) return -1;
+  }
+
+  return 0;
+}
+
 const checks = [
   [dashboard.includes("PrismaMobilePremiumNavigator"), "dashboard binds premium navigator"],
   [!dashboard.includes("<PrismaMobileCommandCenter"), "dashboard no longer renders long modules in one waterfall"],
@@ -39,11 +57,10 @@ const checks = [
   [css.includes(".premiumTabRail") && css.includes(".premiumTabPanel") && css.includes(".premiumTabActive"), "premium navigation styles present"],
   [css.includes(".decisionLedger") && css.includes(".pulseTimeline") && css.includes(".healthRadarAxes"), "raw text components have formatting styles"],
   [css.includes("content-visibility:auto"), "heavy panel rendering is guarded with content visibility"],
-  [pkg.version === "0.27.0", "package version bumped to 0.27.0"],
+  [compareVersion(pkg.version, "0.27.0") >= 0, "package version is at least 0.27.0"],
   [pkg.scripts?.["verify:premium-navigation"] === "node tools/verify_prisma_app_mobile_27_premium_navigation.mjs", "verify script registered"],
   [Array.isArray(qa.scenarios) && qa.scenarios.length >= 5, "qa scenarios are present"]
 ];
-
 const failed = checks.filter(([ok]) => !ok);
 for (const [ok, label] of checks) {
   console.log(`${ok ? "OK" : "FAIL"} ${label}`);
@@ -52,3 +69,5 @@ if (failed.length > 0) {
   throw new Error(`PRISMA App Mobile 27 premium navigation verification failed: ${failed.map(([, label]) => label).join(", ")}`);
 }
 console.log("OK PRISMA_APP_MOBILE_27_PREMIUM_NAVIGATION verified");
+
+

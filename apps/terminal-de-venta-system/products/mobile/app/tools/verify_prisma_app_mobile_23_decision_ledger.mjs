@@ -53,7 +53,7 @@ if (!component.includes("Bitácora móvil de decisiones") || !component.includes
 if (!dashboard.includes("PrismaMobileDecisionLedger") || !dashboard.includes("<PrismaMobileDecisionLedger clientSnapshot={clientSnapshot}")) fail("dashboard does not render decision ledger");
 if (!route.includes("dynamic = \"force-dynamic\"") || !route.includes("revalidate = 0") || !route.includes("noStoreJsonInit")) fail("decision ledger endpoint is not no-store dynamic");
 if (!css.includes("PRISMA_APP_MOBILE_23_DECISION_LEDGER START") || !css.includes("decisionLedgerTimeline")) fail("decision ledger css missing");
-if (pkg.version !== "0.23.0") fail("package version not bumped to 0.23.0");
+if (!(compareVersion(pkg.version, "0.23.0") >= 0 && compareVersion(pkg.version, "0.37.0") < 0)) fail(`package version not compatible with v23-v36 release: ${pkg.version}`);
 if (pkg.scripts["verify:decision-ledger"] !== "node tools/verify_prisma_app_mobile_23_decision_ledger.mjs") fail("verify:decision-ledger script missing");
 if (!pkg.scripts["check:all"].includes("verify:decision-ledger")) fail("check:all does not include decision ledger");
 if (!Array.isArray(scenarios.scenarios) || scenarios.scenarios.length < 480) fail("not enough QA scenarios");

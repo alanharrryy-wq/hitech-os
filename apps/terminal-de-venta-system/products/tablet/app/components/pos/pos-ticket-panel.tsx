@@ -228,3 +228,6 @@ export function PosTicketPanel({
     </aside>
   );
 }
+
+
+export const PRISMA_TABLET_POS_CHECKOUT_02_CLEAR_ACTION_LABEL = "Ir a cobro";

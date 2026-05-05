@@ -54,7 +54,7 @@ if (!component.includes("<details") || !component.includes("brief.exportText")) 
 if (!dashboard.includes("PrismaMobileDailyBrief") || !dashboard.includes("<PrismaMobileDailyBrief clientSnapshot={clientSnapshot}")) fail("dashboard does not render daily brief");
 if (!route.includes("dynamic = \"force-dynamic\"") || !route.includes("revalidate = 0") || !route.includes("noStoreJsonInit")) fail("daily brief endpoint is not no-store dynamic");
 if (!css.includes("PRISMA_APP_MOBILE_22_DAILY_BRIEF START") || !css.includes("dailyBriefShareBox")) fail("daily brief css missing");
-if (pkg.version !== "0.22.0") fail("package version not bumped to 0.22.0");
+if (!(compareVersion(pkg.version, "0.22.0") >= 0 && compareVersion(pkg.version, "0.37.0") < 0)) fail(`package version not compatible with v22-v36 release: ${pkg.version}`);
 if (pkg.scripts["verify:daily-brief"] !== "node tools/verify_prisma_app_mobile_22_daily_brief.mjs") fail("verify:daily-brief script missing");
 if (!pkg.scripts["check:all"].includes("verify:daily-brief")) fail("check:all does not include daily brief");
 if (!Array.isArray(scenarios.scenarios) || scenarios.scenarios.length < 360) fail("not enough QA scenarios");

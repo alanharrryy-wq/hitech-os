@@ -10,6 +10,16 @@ const ok = (message) => console.log(`[PRISMA 28] OK ${message}`);
 const read = (path) => readFileSync(join(root, path), "utf8");
 const exists = (path) => existsSync(join(root, path));
 
+function compareVersion(left, right) {
+  const a = String(left ?? "0.0.0").split(".").map(Number);
+  const b = String(right).split(".").map(Number);
+  for (let i = 0; i < 3; i += 1) {
+    const d = (a[i] || 0) - (b[i] || 0);
+    if (d !== 0) return d;
+  }
+  return 0;
+}
+
 const requiredFiles = [
   "src/lib/prisma-app/mobile-data-plane/data-readiness.ts",
   "src/lib/prisma-app/mobile-data-plane/payload-builders.ts",

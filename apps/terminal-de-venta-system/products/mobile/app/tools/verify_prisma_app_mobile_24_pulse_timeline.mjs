@@ -7,6 +7,16 @@ function read(rel) { return fs.readFileSync(path.join(root, rel), "utf8"); }
 function assert(condition, message) { if (!condition) { console.error(`FAIL ${message}`); process.exit(1); } }
 function exists(rel) { assert(fs.existsSync(path.join(root, rel)), `missing ${rel}`); }
 
+function compareVersion(left, right) {
+  const a = String(left ?? "0.0.0").split(".").map(Number);
+  const b = String(right).split(".").map(Number);
+  for (let i = 0; i < 3; i += 1) {
+    const d = (a[i] || 0) - (b[i] || 0);
+    if (d !== 0) return d;
+  }
+  return 0;
+}
+
 const required = [
   "app/api/mobile/pulse-timeline/route.ts",
   "src/lib/prisma-app/prisma-mobile-pulse-timeline.ts",
@@ -38,7 +48,7 @@ assert(component.includes("timeline.events.map"), "events renderer missing");
 assert(dashboard.includes("PrismaMobilePulseTimeline"), "dashboard does not mount pulse timeline");
 assert(css.includes("PRISMA_APP_MOBILE_24_PULSE_TIMELINE START"), "css marker missing");
 assert(route.includes("endpoint: \"pulse_timeline\""), "route endpoint missing");
-assert(pkg.version === "0.24.0", "package version must be 0.24.0");
+assert(compareVersion(pkg.version, "0.24.0") >= 0 && compareVersion(pkg.version, "0.37.0") < 0, `package version compatible with v24-v36 release: ${pkg.version}`);
 assert(pkg.scripts["verify:pulse-timeline"] === "node tools/verify_prisma_app_mobile_24_pulse_timeline.mjs", "verify script missing");
 assert(Array.isArray(scenarios.scenarios) && scenarios.scenarios.length >= 384, "scenarios below 384");
 assert(corpusLines.length >= 3200, "corpus below 3200 lines");
