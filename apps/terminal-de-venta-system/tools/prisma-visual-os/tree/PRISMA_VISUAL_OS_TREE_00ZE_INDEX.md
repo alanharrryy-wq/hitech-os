@@ -1,7 +1,7 @@
 # PRISMA Visual OS Tree Reorg Close 00ZE
 
-**Paquete:** `PRISMA_VISUAL_OS_TREE_REORG_CLOSE_00ZE_20260505_v02`  
-**Estado:** cierre de migración de árbol Visual OS.  
+**Paquete:** `PRISMA_VISUAL_OS_TREE_REORG_CLOSE_00ZE_20260505_v02`
+**Estado:** cierre de migración de árbol Visual OS.
 **Regla:** la raíz de `tools/prisma-visual-os` conserva shims de compatibilidad; la implementación vive en subcarpetas gobernadas.
 
 ## Qué cierra
