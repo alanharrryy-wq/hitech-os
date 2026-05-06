@@ -1,18 +1,18 @@
 export const faqs = [
   {
     question: "¿PRISMA es solo un punto de venta?",
-    answer: "No. Commerce usa punto de venta, pero PRISMA está diseñado como plataforma de operación: entidades, eventos, evidencias, alertas, reportes e historial."
+    answer: "No. PRISMA une venta, caja e inventario en una plataforma operativa con eventos, alertas y trazabilidad, no sólo un módulo de venta."
   },
   {
-    question: "¿La app móvil reemplaza la PC?",
-    answer: "No. Mobile supervisa y alerta. La PC gobierna configuración, reportes, catálogos, reglas y auditoría. Cada superficie tiene su chamba, porque mezclar todo termina como cajón de cables."
+    question: "¿Requiere instalación en PC y tablet?",
+    answer: "Sí. Se instala en los dispositivos clave del negocio y se configura según tu flujo. La demo define si arrancas con Tablet, PC o Mobile primero."
   },
   {
-    question: "¿Qué está listo y qué es roadmap?",
-    answer: "La web separa claims actuales, demo y roadmap. Ninguna promesa comercial debe venderse como terminada si todavía vive en especificación."
+    question: "¿Sirve para restaurantes, retail y gimnasios?",
+    answer: "Sí. Está pensado para giros con caja e inventario que requieren vender, registrar y supervisar sin perder control ni visibilidad."
   },
   {
-    question: "¿Por qué Tablet + PC + Mobile?",
-    answer: "Porque la operación ocurre en piso, la administración necesita profundidad y el dueño necesita supervisión rápida. Una sola pantalla para todo sería una licuadora con volante."
+    question: "¿Puedo empezar por partes?",
+    answer: "Sí. Se puede iniciar con la superficie más urgente y luego conectar Tablet, PC y Mobile para que no queden islas en la operación."
   }
 ];

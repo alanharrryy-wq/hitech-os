@@ -4,7 +4,7 @@ export function Benefits() {
   return (
     <section className="section">
       <div className="eyebrow">Beneficios</div>
-      <h2 className="large-title">Orden operativo sin vender humo con moñito.</h2>
+      <h2 className="large-title">Menos pérdidas de control, más trazabilidad y supervisión real.</h2>
       <div className="grid-3" style={{ marginTop: 26 }}>
         {home.benefits.map((benefit) => (
           <article className="card" key={benefit.title}>

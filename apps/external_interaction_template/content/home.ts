@@ -10,15 +10,15 @@ export const home = {
   benefits: [
     {
       title: "Vende sin perder el control",
-      body: "Cada venta, movimiento de caja y ajuste queda registrado con responsable, estado e historial. Se acabó la libreta misteriosa con letra de doctor cansado."
+      body: "Cada venta, movimiento de caja e inventario queda registrado con responsable, estado e historial. Adiós al cierre en sombra y a los descuadres que aparecen en la madrugada."
     },
     {
       title: "Gobierna desde la PC",
-      body: "Administra catálogo, inventario, usuarios, reglas, reportes y operación desde un centro de mando claro, sin perseguir archivos sueltos como palomas en plaza."
+      body: "Administra catálogo, inventario, usuarios, reglas, reportes y operación desde un centro de mando claro. Nada de archivos sueltos ni decisiones en notas dispersas."
     },
     {
       title: "Supervisa desde el celular",
-      body: "Consulta alertas, ventas, caja e inventario bajo desde fuera del negocio. PRISMA te avisa lo importante antes de que el problema llegue con sombrero."
+      body: "Consulta alertas, ventas, caja e inventario desde fuera del negocio. PRISMA avisa lo importante antes de que un descuadre se convierta en pérdida real."
     }
   ],
 
@@ -26,17 +26,17 @@ export const home = {
     {
       name: "Tablet",
       rule: "Vende",
-      body: "La Tablet atiende la operación diaria: ventas, tickets, captura rápida y flujo en mostrador."
+      body: "La Tablet atiende la operación diaria: ventas, tickets, cobros y caja, con captura rápida en mostrador."
     },
     {
       name: "PC",
       rule: "Gobierna",
-      body: "La PC administra el negocio: inventario, reportes, usuarios, catálogo, reglas y decisiones."
+      body: "La PC administra el negocio: inventario, reportes, usuarios, catálogo, reglas y cierre con control de caja."
     },
     {
       name: "Mobile",
       rule: "Supervisa",
-      body: "El celular muestra el pulso del negocio: alertas, resumen de ventas, caja e inventario bajo."
+      body: "El celular muestra el pulso del negocio: alertas, ventas, caja e inventario bajo, desde donde estés."
     }
   ]
 };
