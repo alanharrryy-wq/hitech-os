@@ -267,10 +267,10 @@ export function VerticalPage({ slug }: { slug: string }) {
     return (
       <>
         <section className="industrial-v2-page">
-          <div className="industrial-v2-hero">
-            <div className="industrial-v2-copy">
+          <div className="industrial-v2-hero" style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", textAlign: "center", width: "100%", maxWidth: 1240, marginInline: "auto", padding: "56px 32px 64px", gap: 32, boxSizing: "border-box", overflow: "hidden"}}>
+            <div className="industrial-v2-copy" style={{width: "100%", maxWidth: 980, marginInline: "auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", position: "relative", zIndex: 2}}>
               <p className="industrial-v2-eyebrow">PRISMA INDUSTRIAL</p>
-              <h1>{vertical.headline}</h1>
+              <h1 style={{ width: "100%", maxWidth: 980, margin: "0 auto 24px", textAlign: "center", fontSize: "clamp(3rem, 6vw, 6.6rem)", lineHeight: 0.9, letterSpacing: "-0.075em" }}>{vertical.headline}</h1>
               <p>{vertical.promise}</p>
 
               <div className="industrial-v2-specs" aria-label="Resumen industrial">
@@ -292,15 +292,15 @@ export function VerticalPage({ slug }: { slug: string }) {
               </div>
             </div>
 
-            <div className="industrial-v2-stage" aria-label={`PRISMA ${vertical.name}`}>
-              <div className="industrial-v2-frame">
-                <img src={vertical.image} alt={`Pantalla de PRISMA ${vertical.name}`} />
+            <div className="industrial-v2-stage" aria-label={`PRISMA ${vertical.name}`} style={{width: "min(100%, 520px)", maxWidth: 520, marginInline: "auto", justifySelf: "center", alignSelf: "center", position: "relative", zIndex: 1, transform: "none"}}>
+              <div className="industrial-v2-frame" style={{width: "100%", maxWidth: 520, marginInline: "auto", padding: "0.65rem", boxSizing: "border-box"}}>
+                <img src={vertical.image} alt={`Pantalla de PRISMA ${vertical.name}`} style={{ display: "block", width: "100%", maxWidth: "100%", height: "auto", maxHeight: 620, objectFit: "contain", marginInline: "auto" }} />
                 <span className="industrial-v2-tag tag-a">Lectura activa</span>
                 <span className="industrial-v2-tag tag-b">Rango crítico</span>
                 <span className="industrial-v2-tag tag-c">Bitácora lista</span>
               </div>
 
-              <div className="industrial-v2-meters">
+              <div className="industrial-v2-meters" style={{width: "100%", maxWidth: 520, margin: "10px auto 0", display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "0.58rem", padding: "0.6rem", boxSizing: "border-box"}}>
                 <div>
                   <span>24</span>
                   <small>activos</small>
@@ -382,9 +382,11 @@ export function VerticalPage({ slug }: { slug: string }) {
             max-width: 1360px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: minmax(360px, 0.68fr) minmax(620px, 1.32fr);
-            gap: clamp(2.5rem, 5vw, 5.5rem);
+            grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+            gap: clamp(22px, 3.2vw, 44px);
             align-items: center;
+  overflow: hidden;
+
           }
 
           .industrial-v2-eyebrow {
@@ -398,11 +400,15 @@ export function VerticalPage({ slug }: { slug: string }) {
 
           .industrial-v2-copy h1 {
             margin: 0;
-            max-width: 640px;
-            font-size: clamp(3.35rem, 5.6vw, 6.8rem);
-            line-height: 0.9;
-            letter-spacing: -0.065em;
+            max-width: 680px;
+            font-size: clamp(2.45rem, 4.7vw, 4.55rem);
+            line-height: 0.98;
+            letter-spacing: -0.07em;
             font-weight: 950;
+  text-wrap: balance;
+  overflow-wrap: normal;
+  hyphens: none;
+
           }
 
           .industrial-v2-copy > p:not(.industrial-v2-eyebrow) {
@@ -456,11 +462,17 @@ export function VerticalPage({ slug }: { slug: string }) {
             position: relative;
             display: grid;
             place-items: center;
+  z-index: 1;
+  width: min(100%, 540px);
+  max-width: 540px;
+  justify-self: end;
+  transform: none;
+
           }
 
           .industrial-v2-frame {
             position: relative;
-            width: min(100%, 900px);
+            width: 100%;
             padding: 1rem;
             border-radius: 2rem;
             background:
@@ -469,6 +481,8 @@ export function VerticalPage({ slug }: { slug: string }) {
             border: 1px solid rgba(251,191,36,0.28);
             box-shadow: 0 64px 150px rgba(15,23,42,0.42), 0 0 100px rgba(251,191,36,0.18);
             animation: industrialV2Float 7s ease-in-out infinite;
+  max-width: 540px;
+
           }
 
           .industrial-v2-frame img {
@@ -476,6 +490,8 @@ export function VerticalPage({ slug }: { slug: string }) {
             width: 100%;
             border-radius: 1.35rem;
             box-shadow: 0 20px 65px rgba(0,0,0,0.45);
+  height: auto;
+
           }
 
           .industrial-v2-tag {
@@ -3073,7 +3089,305 @@ export function VerticalPage({ slug }: { slug: string }) {
           }
         }
 
-      `}</style>
+      
+.industrial-v2-copy {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  max-width: 680px;
+}
+
+/* Industrial V2 centered hero FINAL BEGIN */
+
+/*
+  Decisión final:
+  Industrial deja de forzar dos columnas.
+  Texto arriba centrado, imagen abajo centrada.
+  Menos pleito, más landing premium, menos tianguis CSS.
+*/
+
+.industrial-v2-page {
+  overflow-x: hidden !important;
+}
+
+.industrial-v2-page .industrial-v2-hero {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  justify-items: center !important;
+  align-items: start !important;
+  width: 100% !important;
+  max-width: 1280px !important;
+  margin-inline: auto !important;
+  box-sizing: border-box !important;
+  padding: clamp(44px, 6vw, 78px) clamp(22px, 5vw, 72px) clamp(42px, 5vw, 68px) !important;
+  gap: clamp(28px, 4vw, 44px) !important;
+  text-align: center !important;
+}
+
+.industrial-v2-page .industrial-v2-copy {
+  width: 100% !important;
+  max-width: 980px !important;
+  min-width: 0 !important;
+  margin-inline: auto !important;
+  display: grid !important;
+  justify-items: center !important;
+  text-align: center !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.industrial-v2-page .industrial-v2-copy h1 {
+  width: 100% !important;
+  max-width: 980px !important;
+  margin: 0 auto clamp(18px, 2.4vw, 28px) !important;
+  font-size: clamp(3.25rem, 6.2vw, 7.1rem) !important;
+  line-height: 0.9 !important;
+  letter-spacing: -0.075em !important;
+  text-align: center !important;
+  text-wrap: balance !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  hyphens: none !important;
+  transform: none !important;
+}
+
+.industrial-v2-page .industrial-v2-copy p {
+  max-width: 720px !important;
+  margin-inline: auto !important;
+  margin-bottom: clamp(24px, 3vw, 34px) !important;
+  font-size: clamp(1.02rem, 1.35vw, 1.28rem) !important;
+  line-height: 1.58 !important;
+  text-align: center !important;
+}
+
+.industrial-v2-page .industrial-v2-specs {
+  width: min(100%, 980px) !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  margin-inline: auto !important;
+}
+
+.industrial-v2-page .industrial-v2-specs article {
+  text-align: left !important;
+  min-height: 0 !important;
+  padding: 16px 18px !important;
+  border-radius: 18px !important;
+}
+
+.industrial-v2-page .industrial-v2-specs article p {
+  text-align: left !important;
+  margin: 5px 0 0 !important;
+  font-size: 0.88rem !important;
+  line-height: 1.38 !important;
+}
+
+.industrial-v2-page .industrial-v2-stage {
+  width: min(100%, 520px) !important;
+  max-width: 520px !important;
+  justify-self: center !important;
+  align-self: start !important;
+  margin-inline: auto !important;
+  margin-top: 2px !important;
+  transform: none !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.industrial-v2-page .industrial-v2-frame {
+  width: 100% !important;
+  max-width: 520px !important;
+  padding: 0.65rem !important;
+  border-radius: 1.8rem !important;
+  box-sizing: border-box !important;
+}
+
+.industrial-v2-page .industrial-v2-frame img {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 620px !important;
+  object-fit: contain !important;
+  border-radius: 1.15rem !important;
+}
+
+.industrial-v2-page .industrial-v2-tag {
+  font-size: 0.68rem !important;
+  padding: 0.42rem 0.72rem !important;
+}
+
+.industrial-v2-page .industrial-v2-meters {
+  width: 100% !important;
+  max-width: 520px !important;
+  margin: 10px auto 0 !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 0.58rem !important;
+  padding: 0.6rem !important;
+  border-radius: 1.25rem !important;
+  box-sizing: border-box !important;
+}
+
+.industrial-v2-page .industrial-v2-meters div {
+  padding: 0.68rem 0.72rem !important;
+  border-radius: 0.88rem !important;
+  text-align: left !important;
+}
+
+.industrial-v2-page .industrial-v2-meters span {
+  font-size: clamp(1.45rem, 2.4vw, 2rem) !important;
+  line-height: 0.95 !important;
+}
+
+.industrial-v2-page .industrial-v2-meters small {
+  font-size: 0.56rem !important;
+  letter-spacing: 0.1em !important;
+}
+
+/* Laptop: sigue centrado, solo baja escala */
+@media (max-width: 1180px) {
+  .industrial-v2-page .industrial-v2-copy h1 {
+    max-width: 860px !important;
+    font-size: clamp(3rem, 7vw, 5.8rem) !important;
+  }
+
+  .industrial-v2-page .industrial-v2-specs {
+    max-width: 860px !important;
+  }
+
+  .industrial-v2-page .industrial-v2-stage,
+  .industrial-v2-page .industrial-v2-frame,
+  .industrial-v2-page .industrial-v2-meters {
+    max-width: 460px !important;
+  }
+
+  .industrial-v2-page .industrial-v2-frame img {
+    max-height: 540px !important;
+  }
+}
+
+/* Tablet/móvil: cards apiladas y todo centrado */
+@media (max-width: 820px) {
+  .industrial-v2-page .industrial-v2-hero {
+    padding-inline: clamp(18px, 6vw, 34px) !important;
+    padding-top: 40px !important;
+  }
+
+  .industrial-v2-page .industrial-v2-copy h1 {
+    font-size: clamp(2.45rem, 11vw, 4rem) !important;
+    line-height: 0.94 !important;
+    letter-spacing: -0.06em !important;
+  }
+
+  .industrial-v2-page .industrial-v2-copy p {
+    font-size: 1rem !important;
+  }
+
+  .industrial-v2-page .industrial-v2-specs {
+    grid-template-columns: 1fr !important;
+    max-width: 520px !important;
+  }
+
+  .industrial-v2-page .industrial-v2-stage,
+  .industrial-v2-page .industrial-v2-frame,
+  .industrial-v2-page .industrial-v2-meters {
+    width: min(100%, 420px) !important;
+    max-width: 420px !important;
+  }
+
+  .industrial-v2-page .industrial-v2-frame img {
+    max-height: 500px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .industrial-v2-page .industrial-v2-stage,
+  .industrial-v2-page .industrial-v2-frame,
+  .industrial-v2-page .industrial-v2-meters {
+    max-width: 360px !important;
+  }
+
+  .industrial-v2-page .industrial-v2-frame img {
+    max-height: 430px !important;
+  }
+
+  .industrial-v2-page .industrial-v2-meters {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Industrial V2 centered hero FINAL END */
+
+
+/* Industrial V2 inline centered support BEGIN */
+
+.industrial-v2-page {
+  overflow-x: hidden !important;
+}
+
+.industrial-v2-page .industrial-v2-copy > p {
+  max-width: 720px !important;
+  margin-inline: auto !important;
+  text-align: center !important;
+}
+
+.industrial-v2-page .industrial-v2-specs {
+  width: min(100%, 980px) !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  margin: 10px auto 0 !important;
+}
+
+.industrial-v2-page .industrial-v2-specs article {
+  text-align: left !important;
+  padding: 16px 18px !important;
+  border-radius: 18px !important;
+}
+
+.industrial-v2-page .industrial-v2-specs article p {
+  text-align: left !important;
+  margin: 5px 0 0 !important;
+  font-size: 0.88rem !important;
+  line-height: 1.38 !important;
+}
+
+@media (max-width: 820px) {
+  .industrial-v2-page .industrial-v2-hero {
+    padding: 42px 20px 52px !important;
+  }
+
+  .industrial-v2-page .industrial-v2-copy h1 {
+    font-size: clamp(2.45rem, 11vw, 4rem) !important;
+  }
+
+  .industrial-v2-page .industrial-v2-specs {
+    grid-template-columns: 1fr !important;
+    max-width: 520px !important;
+  }
+
+  .industrial-v2-page .industrial-v2-stage,
+  .industrial-v2-page .industrial-v2-frame,
+  .industrial-v2-page .industrial-v2-meters {
+    max-width: 420px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .industrial-v2-page .industrial-v2-stage,
+  .industrial-v2-page .industrial-v2-frame,
+  .industrial-v2-page .industrial-v2-meters {
+    max-width: 360px !important;
+  }
+
+  .industrial-v2-page .industrial-v2-meters {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Industrial V2 inline centered support END */
+
+`}</style>
     </>
   );
 }
