@@ -1,8 +1,8 @@
 # PRISMA Two Skin Visual Contract
 
-**Proyecto:** PRISMA POS / Terminal de Venta System  
-**Alcance:** dos skins visuales para la misma experiencia POS  
-**Skins canónicos:** `dark` y `light`  
+**Proyecto:** PRISMA POS / Terminal de Venta System
+**Alcance:** dos skins visuales para la misma experiencia POS
+**Skins canónicos:** `dark` y `light`
 **No incluye:** PC Backoffice, Slate, Mobile, rediseño de layout o lógica funcional.
 
 ---

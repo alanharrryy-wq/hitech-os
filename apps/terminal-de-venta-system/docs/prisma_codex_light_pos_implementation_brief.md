@@ -1,11 +1,11 @@
 # PRISMA_CODEX_LIGHT_POS_IMPLEMENTATION_BRIEF.md
 
-**Project:** PRISMA POS / Terminal de Venta System  
-**Repo root:** `F:\repos\hitech-os`  
-**System root:** `F:\repos\hitech-os\apps\terminal-de-venta-system`  
-**Target document path:** `F:\repos\hitech-os\apps\terminal-de-venta-system\docs\PRISMA_CODEX_LIGHT_POS_IMPLEMENTATION_BRIEF.md`  
-**Audience:** Codex / implementation agent  
-**Status:** `READY_FOR_CODEX_EXECUTION`  
+**Project:** PRISMA POS / Terminal de Venta System
+**Repo root:** `F:\repos\hitech-os`
+**System root:** `F:\repos\hitech-os\apps\terminal-de-venta-system`
+**Target document path:** `F:\repos\hitech-os\apps\terminal-de-venta-system\docs\PRISMA_CODEX_LIGHT_POS_IMPLEMENTATION_BRIEF.md`
+**Audience:** Codex / implementation agent
+**Status:** `READY_FOR_CODEX_EXECUTION`
 **Primary goal:** implement the premium white PRISMA Light visual system across the Tablet operational surfaces with the existing theme selector, starting with POS/Vender but not stopping there, without breaking PRISMA Dark POS.
 
 ---
@@ -970,4 +970,3 @@ Deliver:
 
 Stop if scope expands beyond POS visual skin or if screenshots cannot be produced.
 ```
-

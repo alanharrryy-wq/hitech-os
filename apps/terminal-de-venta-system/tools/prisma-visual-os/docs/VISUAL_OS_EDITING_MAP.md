@@ -1,7 +1,7 @@
 # PRISMA Visual OS Editing Map 00ZI
 
-**Package:** `PRISMA_VISUAL_OS_EDITING_WORKBENCH_00ZI`  
-**Version:** `20260505_v01`  
+**Package:** `PRISMA_VISUAL_OS_EDITING_WORKBENCH_00ZI`
+**Version:** `20260505_v01`
 **Purpose:** make Visual OS editing fast, boring, and safe.
 
 ## Executive summary
@@ -35,48 +35,48 @@ tools/prisma-visual-os/config/visual-os-editing-map.json
 
 ### Realtime API
 
-Edit lane: `realtime-api`  
-Primary file: `tools/prisma-visual-os/realtime/live-preview-server-00q.mjs`  
+Edit lane: `realtime-api`
+Primary file: `tools/prisma-visual-os/realtime/live-preview-server-00q.mjs`
 Keep: `http://127.0.0.1:4177/health` and `http://127.0.0.1:4177/state`.
 
 Do not make Tablet sales depend on this API. Realtime is observability/editing, not POS life support.
 
 ### Visual OS realtime UI
 
-Edit lane: `tablet-realtime-ui`  
-Primary file: `products/tablet/app/app/visual-os/realtime/page.tsx`  
+Edit lane: `tablet-realtime-ui`
+Primary file: `products/tablet/app/app/visual-os/realtime/page.tsx`
 Canonical URL: `http://127.0.0.1:3120/visual-os/realtime`
 
 ### Visual OS Pro UI
 
-Edit lane: `tablet-pro-ui`  
-Primary file: `products/tablet/app/app/visual-os/pro/page.tsx`  
+Edit lane: `tablet-pro-ui`
+Primary file: `products/tablet/app/app/visual-os/pro/page.tsx`
 Canonical URL: `http://127.0.0.1:3120/visual-os/pro`
 
 ### Doctors
 
-Edit lane: `doctors`  
+Edit lane: `doctors`
 Primary folder: `tools/prisma-visual-os/doctors`
 
 Compatibility shims may exist at the root of `tools/prisma-visual-os`. Do not delete them just because they offend your sense of order.
 
 ### AI doctor
 
-Edit lane: `ai-doctor`  
+Edit lane: `ai-doctor`
 Primary file: `tools/prisma-visual-os/doctors/ai_doctor_prisma_show_pos_00y.py`
 
 Keep it offline. No paid API calls. No OpenAI imports. This doctor reads local evidence and recommends next actions.
 
 ### Scoring
 
-Edit lane: `scoring`  
+Edit lane: `scoring`
 Primary folder: `tools/prisma-visual-os/scoring`
 
 Scoring changes must be deterministic and documented.
 
 ### QA/gates
 
-Edit lanes: `qa` and `gates`  
+Edit lanes: `qa` and `gates`
 Primary folders: `tools/prisma-visual-os/qa` and `tools/prisma-visual-os/gates`
 
 The release gate must keep blockers explicit. A failed gate is not a caveat wearing sunglasses.
