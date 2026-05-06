@@ -716,3 +716,154 @@ textarea {
     align-items: flex-start;
   }
 }
+
+/* PRISMA DYNAMIC SECTION SYSTEM */
+.prisma-section-shell {
+  position: relative;
+  background: linear-gradient(180deg, rgba(243, 247, 251, 0.96), rgba(234, 242, 251, 0.88));
+  border: 1px solid rgba(13, 32, 58, 0.08);
+  border-radius: 32px;
+  box-shadow: 0 22px 54px rgba(17, 42, 82, 0.08);
+  padding: 40px 32px;
+  overflow: hidden;
+}
+
+.prisma-section-shell::before {
+  content: "";
+  position: absolute;
+  inset: -18% auto auto 10%;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(76, 201, 255, 0.18), transparent 55%);
+  filter: blur(14px);
+  pointer-events: none;
+}
+
+.prisma-section-shell::after {
+  content: "";
+  position: absolute;
+  inset: auto 12% 10% auto;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(215, 168, 77, 0.12), transparent 55%);
+  filter: blur(12px);
+  pointer-events: none;
+}
+
+.prisma-section-orb {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(76, 201, 255, 0.28), rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 12px 28px rgba(76, 201, 255, 0.14);
+}
+
+.prisma-command-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.prisma-connected-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(13, 32, 58, 0.08);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 18px 42px rgba(17, 42, 82, 0.08);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.prisma-connected-card:hover,
+.prisma-connected-card:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 0 28px 58px rgba(17, 42, 82, 0.12);
+  border-color: rgba(13, 32, 58, 0.14);
+}
+
+.prisma-live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(76, 201, 255, 0.14);
+  border: 1px solid rgba(76, 201, 255, 0.24);
+  color: var(--blue-deep);
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.prisma-flow-line {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+}
+
+.prisma-flow-line::before {
+  content: "";
+  position: absolute;
+  inset: 50% 0 auto 0;
+  width: 100%;
+  height: 1px;
+  background: rgba(13, 32, 58, 0.08);
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+.prisma-flow-node {
+  position: relative;
+  z-index: 1;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(13, 32, 58, 0.10);
+  box-shadow: 0 6px 18px rgba(17, 42, 82, 0.08);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.prisma-visual-card {
+  background: rgba(255, 255, 255, 0.93);
+  border: 1px solid rgba(13, 32, 58, 0.08);
+  border-radius: 30px;
+  padding: 28px;
+  box-shadow: 0 24px 64px rgba(17, 42, 82, 0.10);
+}
+
+.prisma-card-glow {
+  position: relative;
+}
+
+.prisma-card-glow::after {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  border-radius: inherit;
+  background: radial-gradient(circle at top center, rgba(76, 201, 255, 0.10), transparent 45%);
+  filter: blur(18px);
+  z-index: -1;
+}
+
+.prisma-soft-noise {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.32;
+  pointer-events: none;
+}
+
+.prisma-hover-lift {
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.prisma-hover-lift:hover,
+.prisma-hover-lift:focus-within {
+  transform: translateY(-3px);
+  box-shadow: 0 26px 62px rgba(17, 42, 82, 0.14);
+}
