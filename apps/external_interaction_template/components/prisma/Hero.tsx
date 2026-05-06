@@ -4,15 +4,15 @@ import { site } from "@/content/site";
 const operationalStats = [
   {
     value: "3",
-    label: "superficies conectadas"
+    label: "dispositivos sincronizados"
   },
   {
     value: "24/7",
-    label: "visibilidad operativa"
+    label: "control operativo"
   },
   {
     value: "1",
-    label: "flujo centralizado"
+    label: "sistema unificado"
   }
 ];
 
@@ -43,7 +43,7 @@ export function Hero() {
             </a>
           </div>
 
-          <div className="pill-row" aria-label="Modelo operativo PRISMA">
+          <div className="pill-row" aria-label="Modelo operativo de PRISMA: Tablet vende, PC gobierna, Mobile supervisa">
             {surfacePills.map((pill) => (
               <span className="pill" key={pill}>
                 {pill}
@@ -51,7 +51,7 @@ export function Hero() {
             ))}
           </div>
 
-          <div className="hero-proof-grid" aria-label="Indicadores operativos">
+          <div className="hero-proof-grid" aria-label="Beneficios clave del sistema PRISMA">
             {operationalStats.map((item) => (
               <div className="hero-proof-card" key={item.label}>
                 <strong>{item.value}</strong>
@@ -70,13 +70,13 @@ export function Hero() {
           </div>
 
           <div className="hero-floating-card hero-floating-card-top">
-            <span>Ventas</span>
-            <strong>En tiempo real</strong>
+            <span>Ventas activas</span>
+            <strong>Actualización instantánea</strong>
           </div>
 
           <div className="hero-floating-card hero-floating-card-bottom">
-            <span>Alertas</span>
-            <strong>Sin perseguir capturas</strong>
+            <span>Alertas inteligentes</span>
+            <strong>Prevención proactiva</strong>
           </div>
         </div>
       </div>
