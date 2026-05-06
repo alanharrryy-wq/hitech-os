@@ -15,7 +15,7 @@ export function SyncReleaseWorkspace({ workspace }: { workspace: SyncReleaseWork
         <div className="hero-header">
           <div className="hero-copy">
             <div className="kicker">recepción de eventos</div>
-            <h1 className="hero-title">Sincronización, deduplicación y conflictos</h1>
+            <h1 className="hero-title">Sync, dedupe y conflictos</h1>
             <p>
               PC recibe eventos de Tablet, valida contrato, clasifica duplicados y conflictos, y persiste la recepción cuando la ruta trabaja en modo real.
             </p>
@@ -152,7 +152,7 @@ export function SyncReleaseWorkspace({ workspace }: { workspace: SyncReleaseWork
         <div className="section-head">
           <div>
             <div className="kicker">prueba</div>
-            <h2 className="section-title">Datos enviados de prueba</h2>
+            <h2 className="section-title">Payload de prueba dry-run</h2>
             <div className="section-copy">Úsalo contra POST /api/sync/ingest?dryRun=1 para validar contrato sin persistir.</div>
           </div>
         </div>

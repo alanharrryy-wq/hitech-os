@@ -1,7 +1,23 @@
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = process.cwd();
+function resolveTerminalRoot() {
+  const scriptRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+  const candidates = [
+    process.cwd(),
+    path.join(process.cwd(), "apps/terminal-de-venta-system"),
+    scriptRoot
+  ];
+  for (const candidate of candidates) {
+    if (fs.existsSync(path.join(candidate, "products/tablet/app")) && fs.existsSync(path.join(candidate, "tools/prisma-visual-os"))) {
+      return candidate;
+    }
+  }
+  return process.cwd();
+}
+
+const root = resolveTerminalRoot();
 const marker = "PRISMA_VISUAL_OS_LIVE_STATUS_TRUTH_00ZL";
 const files = {
   pos: "products/tablet/app/components/pos/pos-live-binding.tsx",

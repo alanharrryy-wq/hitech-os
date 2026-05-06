@@ -2,9 +2,25 @@
 import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 
 const PACKAGE = "PRISMA_VISUAL_OS_EDITING_WORKBENCH_00ZI";
-const root = process.cwd();
+function resolveTerminalRoot() {
+  const scriptRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+  const candidates = [
+    process.cwd(),
+    path.join(process.cwd(), "apps/terminal-de-venta-system"),
+    scriptRoot
+  ];
+  for (const candidate of candidates) {
+    if (fs.existsSync(path.join(candidate, "products/tablet/app")) && fs.existsSync(path.join(candidate, "tools/prisma-visual-os"))) {
+      return candidate;
+    }
+  }
+  return process.cwd();
+}
+
+const root = resolveTerminalRoot();
 const requiredFiles = [
   "tools/prisma-visual-os/docs/VISUAL_OS_EDITING_MAP.md",
   "tools/prisma-visual-os/config/visual-os-editing-map.json",
