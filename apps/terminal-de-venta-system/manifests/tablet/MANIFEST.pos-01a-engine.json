@@ -1,0 +1,57 @@
+{
+  "package": "PRISMA_TABLET_POS_STANDALONE_CORE_01A_ENGINE",
+  "version": "1.0.0",
+  "targetRoot": "F:/repos/hitech-os/apps/terminal-de-venta-system",
+  "minZipSizeBytes": 250000,
+  "purpose": "Instala el motor local transaccional de venta standalone para Tablet.",
+  "installs": [
+    "products/tablet/app/src/server/pos-engine/constants.ts",
+    "products/tablet/app/src/server/pos-engine/errors.ts",
+    "products/tablet/app/src/server/pos-engine/money.ts",
+    "products/tablet/app/src/server/pos-engine/ids.ts",
+    "products/tablet/app/src/server/pos-engine/types.ts",
+    "products/tablet/app/src/server/pos-engine/event-factory.ts",
+    "products/tablet/app/src/server/pos-engine/repository.prisma.ts",
+    "products/tablet/app/src/server/pos-engine/index.ts",
+    "products/tablet/app/src/server/pos-engine/README.md",
+    "products/tablet/app/tools/verify_pos_engine_01a.mjs",
+    "products/tablet/app/docs/pos/STANDALONE_CORE_01A_ENGINE.md",
+    "products/tablet/app/docs/qa/pos-01a/acceptance.md",
+    "products/tablet/app/docs/qa/pos-01a/scenarios.csv",
+    "products/tablet/app/docs/qa/pos-01a/fixtures/product_catalog_fixture.json",
+    "products/tablet/app/docs/qa/pos-01a/fixtures/sale_engine_cases.json"
+  ],
+  "verifyMarkers": {
+    "products/tablet/app/src/server/pos-engine/repository.prisma.ts": [
+      "completeLocalSale",
+      "tx.sale.create",
+      "tx.saleLine.create",
+      "tx.product.update",
+      "tx.stockMovement.create",
+      "tx.outboxEvent.create"
+    ],
+    "products/tablet/app/src/server/pos-engine/event-factory.ts": [
+      "sale.completed",
+      "ticket.closed",
+      "stock.decremented"
+    ],
+    "products/tablet/app/src/server/pos-engine/errors.ts": [
+      "INSUFFICIENT_STOCK",
+      "PRODUCT_INACTIVE",
+      "EMPTY_CART"
+    ],
+    "products/tablet/app/tools/verify_pos_engine_01a.mjs": [
+      "Verify OK",
+      "completeLocalSale"
+    ],
+    "products/tablet/app/docs/pos/STANDALONE_CORE_01A_ENGINE.md": [
+      "Acceptance criteria",
+      "Tablet puede vender sin PC"
+    ]
+  },
+  "postInstallRecommended": [
+    "cd F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app",
+    "node tools/verify_pos_engine_01a.mjs",
+    "pnpm exec tsc --noEmit"
+  ]
+}

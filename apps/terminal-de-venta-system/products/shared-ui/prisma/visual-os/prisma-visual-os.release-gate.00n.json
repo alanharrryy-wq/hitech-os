@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "system": "PRISMA Visual Operating System",
+    "package": "PRISMA_VISUAL_QA_RELEASE_GATE_00L_00M_00N_20260503_v01",
+    "block": "00N",
+    "version": "20260503_v01"
+  },
+  "statuses": [
+    "READY",
+    "BLOCKED_DEPENDENCY",
+    "FAIL"
+  ],
+  "requiredBeforeApply": [
+    "config/prisma-visual-os/prisma-visual-controls.active.json",
+    "styles/prisma-visual-os/prisma-visual-layers.css",
+    "styles/prisma-visual-os/prisma-visual-controls.generated.css",
+    "docs/design/PRISMA_VISUAL_OS_00D_00E_CONTRACT.md"
+  ],
+  "forbiddenPayloadPrefixes": [
+    "packages/shared-kernel/",
+    "shared/contracts/",
+    "products/tablet/app/"
+  ],
+  "forbiddenPayloadExact": [
+    "shared/TWIN_CHAT_SHARED_CONTEXT_6.1.json"
+  ],
+  "minimums": {
+    "overallStaticScore": 82,
+    "dependencyScore": 100,
+    "surfaceRoleFitScore": 82,
+    "stateVisibilityScore": 82,
+    "variantPackCompleteness": 5
+  },
+  "releaseChecks": [
+    {
+      "id": "dependencies_present",
+      "severity": "blocker"
+    },
+    {
+      "id": "qa_matrix_valid",
+      "severity": "blocker"
+    },
+    {
+      "id": "variant_packs_valid",
+      "severity": "blocker"
+    },
+    {
+      "id": "surface_bindings_detected",
+      "severity": "warning"
+    },
+    {
+      "id": "forbidden_paths_clean",
+      "severity": "blocker"
+    }
+  ],
+  "recommendedOrder": [
+    "00A",
+    "00B",
+    "00C",
+    "00D/00E",
+    "00J/00K",
+    "00L/00M/00N"
+  ]
+}

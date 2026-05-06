@@ -1,0 +1,183 @@
+{
+  "verticalId": "repair",
+  "label": "Taller / reparaciones",
+  "version": "0.3.0",
+  "principle": "Orden de trabajo combina mano de obra, refacciones, diagnostico y entregas; no es ticket instantaneo puro.",
+  "extensions": [
+    {
+      "extensionId": "repair.WorkOrder",
+      "entityName": "WorkOrder",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.repair.WorkOrder.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.repair.WorkOrder.created",
+        "vertical.repair.WorkOrder.updated"
+      ],
+      "fixtures": [
+        "repair_WorkOrder_happy_path.json",
+        "repair_WorkOrder_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "prescriptionId",
+        "appointmentChair",
+        "scaleWeight"
+      ]
+    },
+    {
+      "extensionId": "repair.RepairAsset",
+      "entityName": "RepairAsset",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.repair.RepairAsset.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.repair.RepairAsset.created",
+        "vertical.repair.RepairAsset.updated"
+      ],
+      "fixtures": [
+        "repair_RepairAsset_happy_path.json",
+        "repair_RepairAsset_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "prescriptionId",
+        "appointmentChair",
+        "scaleWeight"
+      ]
+    },
+    {
+      "extensionId": "repair.LaborLine",
+      "entityName": "LaborLine",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.repair.LaborLine.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.repair.LaborLine.created",
+        "vertical.repair.LaborLine.updated"
+      ],
+      "fixtures": [
+        "repair_LaborLine_happy_path.json",
+        "repair_LaborLine_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "prescriptionId",
+        "appointmentChair",
+        "scaleWeight"
+      ]
+    },
+    {
+      "extensionId": "repair.PartReservation",
+      "entityName": "PartReservation",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.repair.PartReservation.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.repair.PartReservation.created",
+        "vertical.repair.PartReservation.updated"
+      ],
+      "fixtures": [
+        "repair_PartReservation_happy_path.json",
+        "repair_PartReservation_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "prescriptionId",
+        "appointmentChair",
+        "scaleWeight"
+      ]
+    },
+    {
+      "extensionId": "repair.DiagnosticNote",
+      "entityName": "DiagnosticNote",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.repair.DiagnosticNote.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.repair.DiagnosticNote.created",
+        "vertical.repair.DiagnosticNote.updated"
+      ],
+      "fixtures": [
+        "repair_DiagnosticNote_happy_path.json",
+        "repair_DiagnosticNote_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "prescriptionId",
+        "appointmentChair",
+        "scaleWeight"
+      ]
+    }
+  ]
+}

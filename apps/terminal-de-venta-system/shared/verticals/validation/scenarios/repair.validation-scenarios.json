@@ -1,0 +1,246 @@
+{
+  "verticalId": "repair",
+  "scenarioVersion": "0.0.1",
+  "scenarios": [
+    {
+      "id": "repair.scenario.01.work_order_create",
+      "title": "Validar work order create para Taller / reparacion",
+      "verticalId": "repair",
+      "primaryScreen": "Cobro",
+      "flowKey": "work_order_create",
+      "initialState": "loading",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Cobro.",
+        "Ejecutar flujo work order create.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo work_order_create termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "repair.work_order_create.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.complete"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:repair:work_order_create:1",
+        "9f5d651720a220a3"
+      ]
+    },
+    {
+      "id": "repair.scenario.02.parts_add",
+      "title": "Validar parts add para Taller / reparacion",
+      "verticalId": "repair",
+      "primaryScreen": "Ticket actual",
+      "flowKey": "parts_add",
+      "initialState": "ready",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ticket actual.",
+        "Ejecutar flujo parts add.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo parts_add termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "repair.parts_add.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.ticket.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:repair:parts_add:2",
+        "279d76c5dca87a6b"
+      ]
+    },
+    {
+      "id": "repair.scenario.03.labor_add",
+      "title": "Validar labor add para Taller / reparacion",
+      "verticalId": "repair",
+      "primaryScreen": "Ventas de hoy",
+      "flowKey": "labor_add",
+      "initialState": "error",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ventas de hoy.",
+        "Ejecutar flujo labor add.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo labor_add termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "repair.labor_add.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.retry"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:repair:labor_add:3",
+        "8e260ea3ad4fa158"
+      ]
+    },
+    {
+      "id": "repair.scenario.04.deposit_payment",
+      "title": "Validar deposit payment para Taller / reparacion",
+      "verticalId": "repair",
+      "primaryScreen": "Turno",
+      "flowKey": "deposit_payment",
+      "initialState": "offline",
+      "actor": "supervisor",
+      "mode": "pc",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Turno.",
+        "Ejecutar flujo deposit payment.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo deposit_payment termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "repair.deposit_payment.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.status.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:repair:deposit_payment:4",
+        "84158e24f2484c3b"
+      ]
+    },
+    {
+      "id": "repair.scenario.05.delivery_close",
+      "title": "Validar delivery close para Taller / reparacion",
+      "verticalId": "repair",
+      "primaryScreen": "Sincronizacion",
+      "flowKey": "delivery_close",
+      "initialState": "sync_pending",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Sincronizacion.",
+        "Ejecutar flujo delivery close.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo delivery_close termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "repair.delivery_close.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.create"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:repair:delivery_close:5",
+        "22d7e724225b7944"
+      ]
+    },
+    {
+      "id": "repair.scenario.06.offline_intake",
+      "title": "Validar offline intake para Taller / reparacion",
+      "verticalId": "repair",
+      "primaryScreen": "Orden de trabajo",
+      "flowKey": "offline_intake",
+      "initialState": "success",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Orden de trabajo.",
+        "Ejecutar flujo offline intake.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo offline_intake termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "repair.offline_intake.completed",
+        "sync.event.queued"
+      ],
+      "requiredPermissions": [
+        "inventory.adjust.local"
+      ],
+      "offlineExpectation": "queda pendiente por enviar",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:repair:offline_intake:6",
+        "5fedb9c4924e7dc4"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+import styles from "./sales.module.css";export function SalesKpiStrip({items}:{items:Array<{label:string;value:string;detail:string}>}){return <section className={styles.kpis}>{items.map(i=><article className={styles.kpi} key={i.label}><span>{i.label}</span><strong>{i.value}</strong><small>{i.detail}</small></article>)}</section>}

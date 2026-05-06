@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "08.device-matrix.1",
+  "cases": [
+    {
+      "caseId": "solo_1_terminal",
+      "plan": "TABLET_SOLO",
+      "activeTerminals": 1,
+      "branches": 1,
+      "expected": "allow"
+    },
+    {
+      "caseId": "solo_2_terminal",
+      "plan": "TABLET_SOLO",
+      "activeTerminals": 2,
+      "branches": 1,
+      "expected": "block_terminal_limit"
+    },
+    {
+      "caseId": "pro_2_terminal",
+      "plan": "TABLET_PRO",
+      "activeTerminals": 2,
+      "branches": 1,
+      "expected": "allow"
+    },
+    {
+      "caseId": "pro_3_terminal",
+      "plan": "TABLET_PRO",
+      "activeTerminals": 3,
+      "branches": 1,
+      "expected": "block_terminal_limit"
+    },
+    {
+      "caseId": "pc_6_terminal_3_branch",
+      "plan": "TABLET_PC_REQUIRED",
+      "activeTerminals": 6,
+      "branches": 3,
+      "expected": "allow"
+    },
+    {
+      "caseId": "pc_7_terminal",
+      "plan": "TABLET_PC_REQUIRED",
+      "activeTerminals": 7,
+      "branches": 3,
+      "expected": "block_terminal_limit"
+    },
+    {
+      "caseId": "pc_4_branch",
+      "plan": "TABLET_PC_REQUIRED",
+      "activeTerminals": 6,
+      "branches": 4,
+      "expected": "block_branch_limit"
+    }
+  ]
+}

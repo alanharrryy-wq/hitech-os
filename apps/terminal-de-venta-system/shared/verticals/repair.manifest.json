@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "verticalId": "repair",
+  "displayName": "Taller / reparacion",
+  "coreRequired": true,
+  "capabilities": {
+    "required": [
+      "core.sales",
+      "core.payments",
+      "repair.work_orders"
+    ],
+    "optional": [
+      "core.inventory.basic",
+      "customer.profile",
+      "core.sync"
+    ]
+  },
+  "surfaces": {
+    "tablet": {
+      "enabled": true,
+      "routes": [
+        "Ordenes",
+        "Vender",
+        "Clientes",
+        "Refacciones",
+        "Cobro",
+        "Turno"
+      ]
+    },
+    "pc": {
+      "enabled": true,
+      "routes": [
+        "Dashboard",
+        "Catalogo",
+        "Inventario",
+        "Auditoria",
+        "Configuracion"
+      ]
+    }
+  },
+  "offline": {
+    "salesAllowed": true,
+    "sensitiveActionsRequireConnection": true
+  }
+}

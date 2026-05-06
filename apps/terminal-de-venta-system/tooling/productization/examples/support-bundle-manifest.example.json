@@ -1,0 +1,24 @@
+{
+  "bundleId": "support_bundle_demo_001",
+  "schemaVersion": "1.0.0",
+  "createdAt": "2026-04-28T09:30:00-06:00",
+  "businessIdMasked": "biz_****001",
+  "deviceIdMasked": "dev_****001",
+  "runtimeMode": "standalone",
+  "includedSections": [
+    "version",
+    "runtimePaths",
+    "database",
+    "outbox",
+    "plugins"
+  ],
+  "redactionRulesApplied": [
+    "redact_tokens",
+    "redact_passwords",
+    "redact_connection_strings",
+    "mask_user_paths"
+  ],
+  "checksums": {
+    "diagnostic-snapshot.json": "sha256-demo-placeholder"
+  }
+}

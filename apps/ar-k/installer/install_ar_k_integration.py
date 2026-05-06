@@ -16,7 +16,7 @@ from pathlib import Path
 
 STATE_DIRNAME = ".ark_install"
 STATE_FILE = "last_apply.json"
-IGNORED_PAYLOAD_PARTS = {STATE_DIRNAME, "__pycache__", "reports"}
+IGNORED_PAYLOAD_PARTS = {STATE_DIRNAME, "__pycache__", "reports", "reports_real"}
 IGNORED_PAYLOAD_SUFFIXES = {".pyc", ".pyo"}
 
 
@@ -76,7 +76,7 @@ def resolve_payload(value: str) -> Path:
 def build_log_file(log_dir: Path) -> Path:
     log_dir.mkdir(parents=True, exist_ok=True)
     stamp = datetime.now().strftime("%y%m%d_%H%M")
-    return log_dir / f"proyecto_int_{stamp}.log"
+    return log_dir / f"Ar-k_int_{stamp}.log"
 
 
 def configure_logging(log_file: Path) -> None:
@@ -160,6 +160,8 @@ def create_backup(plan: InstallPlan) -> dict[str, list[str]]:
     root = Path(plan.root)
     if not (root / "reports").exists():
         cleanup_paths.append(str(root / "reports"))
+    if not (root / "reports_real").exists():
+        cleanup_paths.append(str(root / "reports_real"))
     for change in plan.changes:
         target = Path(change.target)
         if change.action == "replace":

@@ -1,0 +1,22 @@
+{
+  "fixtureVersion": "2026.04.license-local-mock-02.signature-fixtures",
+  "note": "Fixtures documentales para fingerprint de licencia. No son llaves reales ni firma criptográfica final.",
+  "fixtures": [
+    {
+      "fixtureId": "tablet-pro-active-demo",
+      "licenseId": "lic_demo_tablet_pro_001",
+      "businessId": "demo-prisma-store",
+      "canonicalPayloadSha256": "9F1A6C2D8B4E7A0F3D5C1E6B8A2D4F0C7E9B1A3D5F6C8E0A2B4D6F8A0C2E4B6D",
+      "signatureFingerprint": "DEMO-NOT-A-REAL-SIGNATURE-001",
+      "expectedVerification": "mock_valid"
+    },
+    {
+      "fixtureId": "suspended-demo",
+      "licenseId": "lic_demo_suspended_001",
+      "businessId": "demo-prisma-store",
+      "canonicalPayloadSha256": "1C3E5A7D9B0F2D4C6E8A0B2D4F6C8E0A9B7D5F3E1C0A8B6D4F2E0C9A7B5D3F1E",
+      "signatureFingerprint": "DEMO-NOT-A-REAL-SIGNATURE-002",
+      "expectedVerification": "mock_valid_but_suspended"
+    }
+  ]
+}

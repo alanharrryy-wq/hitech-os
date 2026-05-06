@@ -25,6 +25,8 @@ if (-not (Test-Path -LiteralPath $probeScript)) {
   -OriginUrl ([string]$config.origin_url) `
   -FormsHostname ([string]$config.forms_hostname) `
   -FormsOriginUrl ([string]$config.forms_origin_url) `
+  -TemplateHostname ([string]$config.template_hostname) `
+  -TemplateOriginUrl ([string]$config.template_origin_url) `
   -LogDir ([string]$config.log_dir) `
   -FailureThreshold ([int]$config.failure_threshold)
 exit $LASTEXITCODE

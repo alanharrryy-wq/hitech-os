@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "11C",
+  "name": "PRISMA_LICENSE_SERVER_SIGNING_HARDENING_11C",
+  "commands": [
+    "license-server-signing-smoke",
+    "license-server-signing-smoke --http",
+    "license-server-signing-scan",
+    "license-server-signing-material-smoke",
+    "license-server-signing-sanitize",
+    "license-server-signing-sign-license",
+    "license-server-signing-hardening-contract"
+  ],
+  "acceptance": [
+    "offline sign+verify succeeds",
+    "payload tamper fails verification",
+    "signature tamper fails verification",
+    "missing keyId fails verification",
+    "repo PEM scan fails only on non-allowlisted private key blocks",
+    "legacy JS signer is sanitized when it embeds PEM private keys",
+    "production refuses dev-local material"
+  ]
+}

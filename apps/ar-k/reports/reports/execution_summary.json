@@ -6,56 +6,56 @@
     "contract_validator",
     "ai_annotator"
   ],
-  "events_file": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\traces\\events_run_ff2b8a412789d225.json",
-  "execution_id": "run_ff2b8a412789d225",
-  "execution_time": "2026-04-11T21:07:58Z",
+  "events_file": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\traces\\events_run_48d2115aa946f2e7.json",
+  "execution_id": "run_48d2115aa946f2e7",
+  "execution_time": "2026-04-13T00:09:43Z",
   "summaries": [
     {
       "artifacts": [
         {
-          "artifact_id": "art_72e7352abe10fcd0",
-          "created_at": "2026-04-11T21:07:58Z",
+          "artifact_id": "art_47cfa275789419cf",
+          "created_at": "2026-04-13T00:09:43Z",
           "family": "inventory",
-          "hash": "78ffc45fd01c63db4f4487ca4f9825218674f4b28539eb7c75a605ebca00c54f",
+          "hash": "61716d38cec8d915d67369631008d4e5a4ab6bf7ab7e55b4288b35725b5587bf",
           "path": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\artifacts\\inventory\\scanner_inventory.json",
           "producer": "scanner",
-          "snapshot_id": "run_ff2b8a412789d225"
+          "snapshot_id": "run_48d2115aa946f2e7"
         },
         {
-          "artifact_id": "art_9c4fcb0fd890b4a8",
-          "created_at": "2026-04-11T21:07:58Z",
+          "artifact_id": "art_b4221cddb1a71032",
+          "created_at": "2026-04-13T00:09:43Z",
           "family": "routes",
           "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
           "path": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\artifacts\\routes\\route_candidates.json",
           "producer": "scanner",
-          "snapshot_id": "run_ff2b8a412789d225"
+          "snapshot_id": "run_48d2115aa946f2e7"
         },
         {
-          "artifact_id": "art_f5e0cd22e8c01f34",
-          "created_at": "2026-04-11T21:07:58Z",
+          "artifact_id": "art_079a4ed9f7b4b180",
+          "created_at": "2026-04-13T00:09:43Z",
           "family": "boundaries",
           "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
           "path": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\artifacts\\boundaries\\boundary_candidates.json",
           "producer": "scanner",
-          "snapshot_id": "run_ff2b8a412789d225"
+          "snapshot_id": "run_48d2115aa946f2e7"
         },
         {
-          "artifact_id": "art_24bf0ef4a18d93bc",
-          "created_at": "2026-04-11T21:07:58Z",
+          "artifact_id": "art_5a928755401d1dd4",
+          "created_at": "2026-04-13T00:09:43Z",
           "family": "graph",
           "hash": "dd86ec398ef26278456cbc15e1605542a8e086a3f57f84dd5cb65609dce9ed14",
           "path": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\artifacts\\graph\\dependency_graph.json",
           "producer": "scanner",
-          "snapshot_id": "run_ff2b8a412789d225"
+          "snapshot_id": "run_48d2115aa946f2e7"
         },
         {
-          "artifact_id": "art_74c15a54af848a04",
-          "created_at": "2026-04-11T21:07:58Z",
+          "artifact_id": "art_ee6fc546ec0f4186",
+          "created_at": "2026-04-13T00:09:43Z",
           "family": "metrics",
-          "hash": "5f1fb656bd1be9dcc204a7b1e719187775243a425bf38c3384f87ce53630d37e",
+          "hash": "d1399d15362580c0697c4416f1bb90272ec271b56dc058e7fdc14d8bb3e253a2",
           "path": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\artifacts\\metrics\\scanner_metrics.json",
           "producer": "scanner",
-          "snapshot_id": "run_ff2b8a412789d225"
+          "snapshot_id": "run_48d2115aa946f2e7"
         }
       ],
       "engine_id": "scanner",
@@ -63,8 +63,8 @@
         "scanner.started",
         "scanner.completed"
       ],
-      "execution_id": "run_ff2b8a412789d225",
-      "finished_at": "2026-04-11T21:07:58Z",
+      "execution_id": "run_48d2115aa946f2e7",
+      "finished_at": "2026-04-13T00:09:43Z",
       "metrics": {
         "boundary_candidate_count": 0,
         "dependency_edge_count": 4,
@@ -73,84 +73,87 @@
         "parse_errors": 0,
         "python_files": 4,
         "route_candidate_count": 0,
-        "signals_emitted": 12
+        "signals_emitted": 12,
+        "skipped_external_path_count": 0,
+        "skipped_noncanonical_surface_count": 0,
+        "skipped_vendor_dir_count": 0
       },
       "notes": [],
       "registries_written": [
         "signals"
       ],
       "stage": "scan",
-      "started_at": "2026-04-11T21:07:58Z",
+      "started_at": "2026-04-13T00:09:43Z",
       "status": "ok"
     },
     {
       "artifacts": [
         {
-          "created_at": "2026-04-11T21:07:58Z",
+          "created_at": "2026-04-13T00:09:43Z",
           "family": "registry_bundle",
           "format": "json",
-          "hash": "24cc21c769b3fbb5d572d7b162cbc0706e51f57b5f130b0031bc9410b0c0a002",
+          "hash": "3f08a29ca7a6681474d6da0c6d1ae03151b610b99db17f2355fcb623f593f2b9",
           "payload": {
             "boundary_registry": [
               {
-                "boundary_id": "bnd_1fc7b256abfbad20",
+                "boundary_id": "bnd_3ee4c78b5c1e64e5",
                 "boundary_type": "import",
                 "evidence": {
                   "import": ".service",
                   "source_path": "app/__init__.py"
                 },
-                "snapshot_id": "run_ff2b8a412789d225",
+                "snapshot_id": "run_48d2115aa946f2e7",
                 "source_module_id": "mod_9cec7b11237bc29d",
                 "source_of_truth": "scanner.signals",
                 "status": "canonical",
                 "target_id": "mod_fb9baf6216d85a2e",
                 "target_type": "module",
-                "updated_at": "2026-04-11T21:07:58Z"
+                "updated_at": "2026-04-13T00:09:43Z"
               },
               {
-                "boundary_id": "bnd_d6e4df3f86dc2714",
+                "boundary_id": "bnd_9358e0ebccdcd7fa",
                 "boundary_type": "import",
                 "evidence": {
                   "import": "json",
                   "source_path": "app/repository.py"
                 },
-                "snapshot_id": "run_ff2b8a412789d225",
+                "snapshot_id": "run_48d2115aa946f2e7",
                 "source_module_id": "mod_b3c2b671598a92b5",
                 "source_of_truth": "scanner.signals",
                 "status": "canonical",
                 "target_id": "external:json",
                 "target_type": "external",
-                "updated_at": "2026-04-11T21:07:58Z"
+                "updated_at": "2026-04-13T00:09:43Z"
               },
               {
-                "boundary_id": "bnd_cf13ae52d6479f03",
+                "boundary_id": "bnd_22637692a6b481ed",
                 "boundary_type": "import",
                 "evidence": {
                   "import": ".flags",
                   "source_path": "app/service.py"
                 },
-                "snapshot_id": "run_ff2b8a412789d225",
+                "snapshot_id": "run_48d2115aa946f2e7",
                 "source_module_id": "mod_fb9baf6216d85a2e",
                 "source_of_truth": "scanner.signals",
                 "status": "canonical",
                 "target_id": "mod_006637bf5fd89d6e",
                 "target_type": "module",
-                "updated_at": "2026-04-11T21:07:58Z"
+                "updated_at": "2026-04-13T00:09:43Z"
               },
               {
-                "boundary_id": "bnd_6fd5e7cd590d928c",
+                "boundary_id": "bnd_ea8d1d7e8e8e3300",
                 "boundary_type": "import",
                 "evidence": {
                   "import": ".repository",
                   "source_path": "app/service.py"
                 },
-                "snapshot_id": "run_ff2b8a412789d225",
+                "snapshot_id": "run_48d2115aa946f2e7",
                 "source_module_id": "mod_fb9baf6216d85a2e",
                 "source_of_truth": "scanner.signals",
                 "status": "canonical",
                 "target_id": "mod_b3c2b671598a92b5",
                 "target_type": "module",
-                "updated_at": "2026-04-11T21:07:58Z"
+                "updated_at": "2026-04-13T00:09:43Z"
               }
             ],
             "contract_registry": [
@@ -165,7 +168,7 @@
                 "module": "pya.contracts.annotation_contracts",
                 "owner": "contracts",
                 "state": "canonical",
-                "updated_at": "2026-04-11T21:07:58Z",
+                "updated_at": "2026-04-13T00:09:43Z",
                 "version": "1.0.0"
               },
               {
@@ -179,7 +182,7 @@
                 "module": "pya.contracts.artifact_contracts",
                 "owner": "contracts",
                 "state": "canonical",
-                "updated_at": "2026-04-11T21:07:58Z",
+                "updated_at": "2026-04-13T00:09:43Z",
                 "version": "1.0.0"
               },
               {
@@ -193,7 +196,7 @@
                 "module": "pya.contracts.registry_contracts",
                 "owner": "contracts",
                 "state": "canonical",
-                "updated_at": "2026-04-11T21:07:58Z",
+                "updated_at": "2026-04-13T00:09:43Z",
                 "version": "1.0.0"
               },
               {
@@ -207,7 +210,7 @@
                 "module": "pya.contracts.validation_contracts",
                 "owner": "contracts",
                 "state": "canonical",
-                "updated_at": "2026-04-11T21:07:58Z",
+                "updated_at": "2026-04-13T00:09:43Z",
                 "version": "1.0.0"
               },
               {
@@ -221,7 +224,7 @@
                 "module": "pya.contracts.registry_contracts",
                 "owner": "contracts",
                 "state": "canonical",
-                "updated_at": "2026-04-11T21:07:58Z",
+                "updated_at": "2026-04-13T00:09:43Z",
                 "version": "1.0.0"
               },
               {
@@ -235,7 +238,7 @@
                 "module": "pya.contracts.snapshot_contracts",
                 "owner": "contracts",
                 "state": "canonical",
-                "updated_at": "2026-04-11T21:07:58Z",
+                "updated_at": "2026-04-13T00:09:43Z",
                 "version": "1.0.0"
               },
               {
@@ -249,7 +252,7 @@
                 "module": "pya.contracts.engine_contracts",
                 "owner": "contracts",
                 "state": "canonical",
-                "updated_at": "2026-04-11T21:07:58Z",
+                "updated_at": "2026-04-13T00:09:43Z",
                 "version": "1.0.0"
               },
               {
@@ -263,7 +266,7 @@
                 "module": "pya.contracts.event_contracts",
                 "owner": "contracts",
                 "state": "canonical",
-                "updated_at": "2026-04-11T21:07:58Z",
+                "updated_at": "2026-04-13T00:09:43Z",
                 "version": "1.0.0"
               },
               {
@@ -277,7 +280,7 @@
                 "module": "pya.contracts.engine_contracts",
                 "owner": "contracts",
                 "state": "canonical",
-                "updated_at": "2026-04-11T21:07:58Z",
+                "updated_at": "2026-04-13T00:09:43Z",
                 "version": "1.0.0"
               },
               {
@@ -291,7 +294,7 @@
                 "module": "pya.contracts.registry_contracts",
                 "owner": "contracts",
                 "state": "canonical",
-                "updated_at": "2026-04-11T21:07:58Z",
+                "updated_at": "2026-04-13T00:09:43Z",
                 "version": "1.0.0"
               },
               {
@@ -305,7 +308,7 @@
                 "module": "pya.contracts.index_contracts",
                 "owner": "contracts",
                 "state": "canonical",
-                "updated_at": "2026-04-11T21:07:58Z",
+                "updated_at": "2026-04-13T00:09:43Z",
                 "version": "1.0.0"
               },
               {
@@ -319,7 +322,7 @@
                 "module": "pya.contracts.registry_contracts",
                 "owner": "contracts",
                 "state": "canonical",
-                "updated_at": "2026-04-11T21:07:58Z",
+                "updated_at": "2026-04-13T00:09:43Z",
                 "version": "1.0.0"
               },
               {
@@ -333,7 +336,7 @@
                 "module": "pya.contracts.signal_contract",
                 "owner": "contracts",
                 "state": "canonical",
-                "updated_at": "2026-04-11T21:07:58Z",
+                "updated_at": "2026-04-13T00:09:43Z",
                 "version": "1.0.0"
               },
               {
@@ -347,7 +350,7 @@
                 "module": "pya.contracts.snapshot_contracts",
                 "owner": "contracts",
                 "state": "canonical",
-                "updated_at": "2026-04-11T21:07:58Z",
+                "updated_at": "2026-04-13T00:09:43Z",
                 "version": "1.0.0"
               },
               {
@@ -361,7 +364,7 @@
                 "module": "pya.contracts.switch_contracts",
                 "owner": "contracts",
                 "state": "canonical",
-                "updated_at": "2026-04-11T21:07:58Z",
+                "updated_at": "2026-04-13T00:09:43Z",
                 "version": "1.0.0"
               },
               {
@@ -375,7 +378,7 @@
                 "module": "pya.contracts.switch_contracts",
                 "owner": "contracts",
                 "state": "canonical",
-                "updated_at": "2026-04-11T21:07:58Z",
+                "updated_at": "2026-04-13T00:09:43Z",
                 "version": "1.0.0"
               },
               {
@@ -389,7 +392,7 @@
                 "module": "pya.contracts.validation_contracts",
                 "owner": "contracts",
                 "state": "canonical",
-                "updated_at": "2026-04-11T21:07:58Z",
+                "updated_at": "2026-04-13T00:09:43Z",
                 "version": "1.0.0"
               }
             ],
@@ -398,7 +401,7 @@
                 "area": "app",
                 "artifacts": [],
                 "boundaries": [
-                  "bnd_1fc7b256abfbad20"
+                  "bnd_3ee4c78b5c1e64e5"
                 ],
                 "confidence": 0.9,
                 "contracts": [
@@ -414,7 +417,7 @@
                 "observed_in": [
                   "app/__init__.py"
                 ],
-                "snapshot_id": "run_ff2b8a412789d225",
+                "snapshot_id": "run_48d2115aa946f2e7",
                 "source_of_truth": "scanner.signals",
                 "status": "canonical",
                 "switches": [
@@ -424,7 +427,7 @@
                   "python",
                   "module"
                 ],
-                "updated_at": "2026-04-11T21:07:58Z"
+                "updated_at": "2026-04-13T00:09:43Z"
               },
               {
                 "area": "app",
@@ -444,7 +447,7 @@
                 "observed_in": [
                   "app/flags.py"
                 ],
-                "snapshot_id": "run_ff2b8a412789d225",
+                "snapshot_id": "run_48d2115aa946f2e7",
                 "source_of_truth": "scanner.signals",
                 "status": "canonical",
                 "switches": [
@@ -454,13 +457,13 @@
                   "python",
                   "module"
                 ],
-                "updated_at": "2026-04-11T21:07:58Z"
+                "updated_at": "2026-04-13T00:09:43Z"
               },
               {
                 "area": "app",
                 "artifacts": [],
                 "boundaries": [
-                  "bnd_d6e4df3f86dc2714"
+                  "bnd_9358e0ebccdcd7fa"
                 ],
                 "confidence": 0.9,
                 "contracts": [
@@ -476,7 +479,7 @@
                 "observed_in": [
                   "app/repository.py"
                 ],
-                "snapshot_id": "run_ff2b8a412789d225",
+                "snapshot_id": "run_48d2115aa946f2e7",
                 "source_of_truth": "scanner.signals",
                 "status": "canonical",
                 "switches": [
@@ -486,14 +489,14 @@
                   "python",
                   "module"
                 ],
-                "updated_at": "2026-04-11T21:07:58Z"
+                "updated_at": "2026-04-13T00:09:43Z"
               },
               {
                 "area": "app",
                 "artifacts": [],
                 "boundaries": [
-                  "bnd_6fd5e7cd590d928c",
-                  "bnd_cf13ae52d6479f03"
+                  "bnd_22637692a6b481ed",
+                  "bnd_ea8d1d7e8e8e3300"
                 ],
                 "confidence": 0.9,
                 "contracts": [
@@ -509,7 +512,7 @@
                 "observed_in": [
                   "app/service.py"
                 ],
-                "snapshot_id": "run_ff2b8a412789d225",
+                "snapshot_id": "run_48d2115aa946f2e7",
                 "source_of_truth": "scanner.signals",
                 "status": "canonical",
                 "switches": [
@@ -519,14 +522,14 @@
                   "python",
                   "module"
                 ],
-                "updated_at": "2026-04-11T21:07:58Z"
+                "updated_at": "2026-04-13T00:09:43Z"
               }
             ],
             "query_index": [
               {
                 "entity_id": "mod_006637bf5fd89d6e",
                 "entity_type": "module",
-                "index_id": "idx_68c9ec327c07fa46",
+                "index_id": "idx_ac2f0965fe70d750",
                 "lookup_keys": [
                   "app.flags",
                   "app/flags.py",
@@ -535,13 +538,13 @@
                   "python"
                 ],
                 "registry_source": "module_registry",
-                "snapshot_id": "run_ff2b8a412789d225",
-                "updated_at": "2026-04-11T21:07:58Z"
+                "snapshot_id": "run_48d2115aa946f2e7",
+                "updated_at": "2026-04-13T00:09:43Z"
               },
               {
                 "entity_id": "mod_9cec7b11237bc29d",
                 "entity_type": "module",
-                "index_id": "idx_6c783caac960c134",
+                "index_id": "idx_955afefcc416110d",
                 "lookup_keys": [
                   "app.__init__",
                   "app/__init__.py",
@@ -550,13 +553,13 @@
                   "python"
                 ],
                 "registry_source": "module_registry",
-                "snapshot_id": "run_ff2b8a412789d225",
-                "updated_at": "2026-04-11T21:07:58Z"
+                "snapshot_id": "run_48d2115aa946f2e7",
+                "updated_at": "2026-04-13T00:09:43Z"
               },
               {
                 "entity_id": "mod_b3c2b671598a92b5",
                 "entity_type": "module",
-                "index_id": "idx_278a94dc18fec4df",
+                "index_id": "idx_b7f0060d624e7035",
                 "lookup_keys": [
                   "app.repository",
                   "app/repository.py",
@@ -565,13 +568,13 @@
                   "python"
                 ],
                 "registry_source": "module_registry",
-                "snapshot_id": "run_ff2b8a412789d225",
-                "updated_at": "2026-04-11T21:07:58Z"
+                "snapshot_id": "run_48d2115aa946f2e7",
+                "updated_at": "2026-04-13T00:09:43Z"
               },
               {
                 "entity_id": "mod_fb9baf6216d85a2e",
                 "entity_type": "module",
-                "index_id": "idx_f79b35a347e0d2b7",
+                "index_id": "idx_52e38b7a1410312c",
                 "lookup_keys": [
                   "app.service",
                   "app/service.py",
@@ -580,8 +583,8 @@
                   "python"
                 ],
                 "registry_source": "module_registry",
-                "snapshot_id": "run_ff2b8a412789d225",
-                "updated_at": "2026-04-11T21:07:58Z"
+                "snapshot_id": "run_48d2115aa946f2e7",
+                "updated_at": "2026-04-13T00:09:43Z"
               }
             ],
             "switch_registry": [
@@ -607,7 +610,7 @@
                 "switch_id": "module.enabled:mod_006637bf5fd89d6e",
                 "target_id": "mod_006637bf5fd89d6e",
                 "target_type": "module",
-                "updated_at": "2026-04-11T21:07:58Z"
+                "updated_at": "2026-04-13T00:09:43Z"
               },
               {
                 "allowed_overrides": [
@@ -631,7 +634,7 @@
                 "switch_id": "module.enabled:mod_9cec7b11237bc29d",
                 "target_id": "mod_9cec7b11237bc29d",
                 "target_type": "module",
-                "updated_at": "2026-04-11T21:07:58Z"
+                "updated_at": "2026-04-13T00:09:43Z"
               },
               {
                 "allowed_overrides": [
@@ -655,7 +658,7 @@
                 "switch_id": "module.enabled:mod_b3c2b671598a92b5",
                 "target_id": "mod_b3c2b671598a92b5",
                 "target_type": "module",
-                "updated_at": "2026-04-11T21:07:58Z"
+                "updated_at": "2026-04-13T00:09:43Z"
               },
               {
                 "allowed_overrides": [
@@ -679,79 +682,79 @@
                 "switch_id": "module.enabled:mod_fb9baf6216d85a2e",
                 "target_id": "mod_fb9baf6216d85a2e",
                 "target_type": "module",
-                "updated_at": "2026-04-11T21:07:58Z"
+                "updated_at": "2026-04-13T00:09:43Z"
               }
             ]
           },
-          "snapshot_id": "snp_2d2ca277aaba2f0b"
+          "snapshot_id": "snp_422fcf9adc5aae78"
         },
         {
-          "created_at": "2026-04-11T21:07:58Z",
-          "delta_id": "dlt_26dd665145d822df",
+          "created_at": "2026-04-13T00:09:43Z",
+          "delta_id": "dlt_19cd504eb01c4e15",
           "family": "registry_bundle",
-          "hash": "59f5ac751bce16513e74407be9449c00018c48f5852dabb1a97886a162233656",
+          "hash": "82eb91384ddb844a5cb991955b070c71d1b819895ff91bc7083f208ad6f09ab3",
           "payload": {
             "current": {
               "boundary_registry": [
                 {
-                  "boundary_id": "bnd_1fc7b256abfbad20",
+                  "boundary_id": "bnd_3ee4c78b5c1e64e5",
                   "boundary_type": "import",
                   "evidence": {
                     "import": ".service",
                     "source_path": "app/__init__.py"
                   },
-                  "snapshot_id": "run_ff2b8a412789d225",
+                  "snapshot_id": "run_48d2115aa946f2e7",
                   "source_module_id": "mod_9cec7b11237bc29d",
                   "source_of_truth": "scanner.signals",
                   "status": "canonical",
                   "target_id": "mod_fb9baf6216d85a2e",
                   "target_type": "module",
-                  "updated_at": "2026-04-11T21:07:58Z"
+                  "updated_at": "2026-04-13T00:09:43Z"
                 },
                 {
-                  "boundary_id": "bnd_d6e4df3f86dc2714",
+                  "boundary_id": "bnd_9358e0ebccdcd7fa",
                   "boundary_type": "import",
                   "evidence": {
                     "import": "json",
                     "source_path": "app/repository.py"
                   },
-                  "snapshot_id": "run_ff2b8a412789d225",
+                  "snapshot_id": "run_48d2115aa946f2e7",
                   "source_module_id": "mod_b3c2b671598a92b5",
                   "source_of_truth": "scanner.signals",
                   "status": "canonical",
                   "target_id": "external:json",
                   "target_type": "external",
-                  "updated_at": "2026-04-11T21:07:58Z"
+                  "updated_at": "2026-04-13T00:09:43Z"
                 },
                 {
-                  "boundary_id": "bnd_cf13ae52d6479f03",
+                  "boundary_id": "bnd_22637692a6b481ed",
                   "boundary_type": "import",
                   "evidence": {
                     "import": ".flags",
                     "source_path": "app/service.py"
                   },
-                  "snapshot_id": "run_ff2b8a412789d225",
+                  "snapshot_id": "run_48d2115aa946f2e7",
                   "source_module_id": "mod_fb9baf6216d85a2e",
                   "source_of_truth": "scanner.signals",
                   "status": "canonical",
                   "target_id": "mod_006637bf5fd89d6e",
                   "target_type": "module",
-                  "updated_at": "2026-04-11T21:07:58Z"
+                  "updated_at": "2026-04-13T00:09:43Z"
                 },
                 {
-                  "boundary_id": "bnd_6fd5e7cd590d928c",
+                  "boundary_id": "bnd_ea8d1d7e8e8e3300",
                   "boundary_type": "import",
                   "evidence": {
                     "import": ".repository",
                     "source_path": "app/service.py"
                   },
-                  "snapshot_id": "run_ff2b8a412789d225",
+                  "snapshot_id": "run_48d2115aa946f2e7",
                   "source_module_id": "mod_fb9baf6216d85a2e",
                   "source_of_truth": "scanner.signals",
                   "status": "canonical",
                   "target_id": "mod_b3c2b671598a92b5",
                   "target_type": "module",
-                  "updated_at": "2026-04-11T21:07:58Z"
+                  "updated_at": "2026-04-13T00:09:43Z"
                 }
               ],
               "contract_registry": [
@@ -766,7 +769,7 @@
                   "module": "pya.contracts.annotation_contracts",
                   "owner": "contracts",
                   "state": "canonical",
-                  "updated_at": "2026-04-11T21:07:58Z",
+                  "updated_at": "2026-04-13T00:09:43Z",
                   "version": "1.0.0"
                 },
                 {
@@ -780,7 +783,7 @@
                   "module": "pya.contracts.artifact_contracts",
                   "owner": "contracts",
                   "state": "canonical",
-                  "updated_at": "2026-04-11T21:07:58Z",
+                  "updated_at": "2026-04-13T00:09:43Z",
                   "version": "1.0.0"
                 },
                 {
@@ -794,7 +797,7 @@
                   "module": "pya.contracts.registry_contracts",
                   "owner": "contracts",
                   "state": "canonical",
-                  "updated_at": "2026-04-11T21:07:58Z",
+                  "updated_at": "2026-04-13T00:09:43Z",
                   "version": "1.0.0"
                 },
                 {
@@ -808,7 +811,7 @@
                   "module": "pya.contracts.validation_contracts",
                   "owner": "contracts",
                   "state": "canonical",
-                  "updated_at": "2026-04-11T21:07:58Z",
+                  "updated_at": "2026-04-13T00:09:43Z",
                   "version": "1.0.0"
                 },
                 {
@@ -822,7 +825,7 @@
                   "module": "pya.contracts.registry_contracts",
                   "owner": "contracts",
                   "state": "canonical",
-                  "updated_at": "2026-04-11T21:07:58Z",
+                  "updated_at": "2026-04-13T00:09:43Z",
                   "version": "1.0.0"
                 },
                 {
@@ -836,7 +839,7 @@
                   "module": "pya.contracts.snapshot_contracts",
                   "owner": "contracts",
                   "state": "canonical",
-                  "updated_at": "2026-04-11T21:07:58Z",
+                  "updated_at": "2026-04-13T00:09:43Z",
                   "version": "1.0.0"
                 },
                 {
@@ -850,7 +853,7 @@
                   "module": "pya.contracts.engine_contracts",
                   "owner": "contracts",
                   "state": "canonical",
-                  "updated_at": "2026-04-11T21:07:58Z",
+                  "updated_at": "2026-04-13T00:09:43Z",
                   "version": "1.0.0"
                 },
                 {
@@ -864,7 +867,7 @@
                   "module": "pya.contracts.event_contracts",
                   "owner": "contracts",
                   "state": "canonical",
-                  "updated_at": "2026-04-11T21:07:58Z",
+                  "updated_at": "2026-04-13T00:09:43Z",
                   "version": "1.0.0"
                 },
                 {
@@ -878,7 +881,7 @@
                   "module": "pya.contracts.engine_contracts",
                   "owner": "contracts",
                   "state": "canonical",
-                  "updated_at": "2026-04-11T21:07:58Z",
+                  "updated_at": "2026-04-13T00:09:43Z",
                   "version": "1.0.0"
                 },
                 {
@@ -892,7 +895,7 @@
                   "module": "pya.contracts.registry_contracts",
                   "owner": "contracts",
                   "state": "canonical",
-                  "updated_at": "2026-04-11T21:07:58Z",
+                  "updated_at": "2026-04-13T00:09:43Z",
                   "version": "1.0.0"
                 },
                 {
@@ -906,7 +909,7 @@
                   "module": "pya.contracts.index_contracts",
                   "owner": "contracts",
                   "state": "canonical",
-                  "updated_at": "2026-04-11T21:07:58Z",
+                  "updated_at": "2026-04-13T00:09:43Z",
                   "version": "1.0.0"
                 },
                 {
@@ -920,7 +923,7 @@
                   "module": "pya.contracts.registry_contracts",
                   "owner": "contracts",
                   "state": "canonical",
-                  "updated_at": "2026-04-11T21:07:58Z",
+                  "updated_at": "2026-04-13T00:09:43Z",
                   "version": "1.0.0"
                 },
                 {
@@ -934,7 +937,7 @@
                   "module": "pya.contracts.signal_contract",
                   "owner": "contracts",
                   "state": "canonical",
-                  "updated_at": "2026-04-11T21:07:58Z",
+                  "updated_at": "2026-04-13T00:09:43Z",
                   "version": "1.0.0"
                 },
                 {
@@ -948,7 +951,7 @@
                   "module": "pya.contracts.snapshot_contracts",
                   "owner": "contracts",
                   "state": "canonical",
-                  "updated_at": "2026-04-11T21:07:58Z",
+                  "updated_at": "2026-04-13T00:09:43Z",
                   "version": "1.0.0"
                 },
                 {
@@ -962,7 +965,7 @@
                   "module": "pya.contracts.switch_contracts",
                   "owner": "contracts",
                   "state": "canonical",
-                  "updated_at": "2026-04-11T21:07:58Z",
+                  "updated_at": "2026-04-13T00:09:43Z",
                   "version": "1.0.0"
                 },
                 {
@@ -976,7 +979,7 @@
                   "module": "pya.contracts.switch_contracts",
                   "owner": "contracts",
                   "state": "canonical",
-                  "updated_at": "2026-04-11T21:07:58Z",
+                  "updated_at": "2026-04-13T00:09:43Z",
                   "version": "1.0.0"
                 },
                 {
@@ -990,7 +993,7 @@
                   "module": "pya.contracts.validation_contracts",
                   "owner": "contracts",
                   "state": "canonical",
-                  "updated_at": "2026-04-11T21:07:58Z",
+                  "updated_at": "2026-04-13T00:09:43Z",
                   "version": "1.0.0"
                 }
               ],
@@ -999,7 +1002,7 @@
                   "area": "app",
                   "artifacts": [],
                   "boundaries": [
-                    "bnd_1fc7b256abfbad20"
+                    "bnd_3ee4c78b5c1e64e5"
                   ],
                   "confidence": 0.9,
                   "contracts": [
@@ -1015,7 +1018,7 @@
                   "observed_in": [
                     "app/__init__.py"
                   ],
-                  "snapshot_id": "run_ff2b8a412789d225",
+                  "snapshot_id": "run_48d2115aa946f2e7",
                   "source_of_truth": "scanner.signals",
                   "status": "canonical",
                   "switches": [
@@ -1025,7 +1028,7 @@
                     "python",
                     "module"
                   ],
-                  "updated_at": "2026-04-11T21:07:58Z"
+                  "updated_at": "2026-04-13T00:09:43Z"
                 },
                 {
                   "area": "app",
@@ -1045,7 +1048,7 @@
                   "observed_in": [
                     "app/flags.py"
                   ],
-                  "snapshot_id": "run_ff2b8a412789d225",
+                  "snapshot_id": "run_48d2115aa946f2e7",
                   "source_of_truth": "scanner.signals",
                   "status": "canonical",
                   "switches": [
@@ -1055,13 +1058,13 @@
                     "python",
                     "module"
                   ],
-                  "updated_at": "2026-04-11T21:07:58Z"
+                  "updated_at": "2026-04-13T00:09:43Z"
                 },
                 {
                   "area": "app",
                   "artifacts": [],
                   "boundaries": [
-                    "bnd_d6e4df3f86dc2714"
+                    "bnd_9358e0ebccdcd7fa"
                   ],
                   "confidence": 0.9,
                   "contracts": [
@@ -1077,7 +1080,7 @@
                   "observed_in": [
                     "app/repository.py"
                   ],
-                  "snapshot_id": "run_ff2b8a412789d225",
+                  "snapshot_id": "run_48d2115aa946f2e7",
                   "source_of_truth": "scanner.signals",
                   "status": "canonical",
                   "switches": [
@@ -1087,14 +1090,14 @@
                     "python",
                     "module"
                   ],
-                  "updated_at": "2026-04-11T21:07:58Z"
+                  "updated_at": "2026-04-13T00:09:43Z"
                 },
                 {
                   "area": "app",
                   "artifacts": [],
                   "boundaries": [
-                    "bnd_6fd5e7cd590d928c",
-                    "bnd_cf13ae52d6479f03"
+                    "bnd_22637692a6b481ed",
+                    "bnd_ea8d1d7e8e8e3300"
                   ],
                   "confidence": 0.9,
                   "contracts": [
@@ -1110,7 +1113,7 @@
                   "observed_in": [
                     "app/service.py"
                   ],
-                  "snapshot_id": "run_ff2b8a412789d225",
+                  "snapshot_id": "run_48d2115aa946f2e7",
                   "source_of_truth": "scanner.signals",
                   "status": "canonical",
                   "switches": [
@@ -1120,14 +1123,14 @@
                     "python",
                     "module"
                   ],
-                  "updated_at": "2026-04-11T21:07:58Z"
+                  "updated_at": "2026-04-13T00:09:43Z"
                 }
               ],
               "query_index": [
                 {
                   "entity_id": "mod_006637bf5fd89d6e",
                   "entity_type": "module",
-                  "index_id": "idx_68c9ec327c07fa46",
+                  "index_id": "idx_ac2f0965fe70d750",
                   "lookup_keys": [
                     "app.flags",
                     "app/flags.py",
@@ -1136,13 +1139,13 @@
                     "python"
                   ],
                   "registry_source": "module_registry",
-                  "snapshot_id": "run_ff2b8a412789d225",
-                  "updated_at": "2026-04-11T21:07:58Z"
+                  "snapshot_id": "run_48d2115aa946f2e7",
+                  "updated_at": "2026-04-13T00:09:43Z"
                 },
                 {
                   "entity_id": "mod_9cec7b11237bc29d",
                   "entity_type": "module",
-                  "index_id": "idx_6c783caac960c134",
+                  "index_id": "idx_955afefcc416110d",
                   "lookup_keys": [
                     "app.__init__",
                     "app/__init__.py",
@@ -1151,13 +1154,13 @@
                     "python"
                   ],
                   "registry_source": "module_registry",
-                  "snapshot_id": "run_ff2b8a412789d225",
-                  "updated_at": "2026-04-11T21:07:58Z"
+                  "snapshot_id": "run_48d2115aa946f2e7",
+                  "updated_at": "2026-04-13T00:09:43Z"
                 },
                 {
                   "entity_id": "mod_b3c2b671598a92b5",
                   "entity_type": "module",
-                  "index_id": "idx_278a94dc18fec4df",
+                  "index_id": "idx_b7f0060d624e7035",
                   "lookup_keys": [
                     "app.repository",
                     "app/repository.py",
@@ -1166,13 +1169,13 @@
                     "python"
                   ],
                   "registry_source": "module_registry",
-                  "snapshot_id": "run_ff2b8a412789d225",
-                  "updated_at": "2026-04-11T21:07:58Z"
+                  "snapshot_id": "run_48d2115aa946f2e7",
+                  "updated_at": "2026-04-13T00:09:43Z"
                 },
                 {
                   "entity_id": "mod_fb9baf6216d85a2e",
                   "entity_type": "module",
-                  "index_id": "idx_f79b35a347e0d2b7",
+                  "index_id": "idx_52e38b7a1410312c",
                   "lookup_keys": [
                     "app.service",
                     "app/service.py",
@@ -1181,8 +1184,8 @@
                     "python"
                   ],
                   "registry_source": "module_registry",
-                  "snapshot_id": "run_ff2b8a412789d225",
-                  "updated_at": "2026-04-11T21:07:58Z"
+                  "snapshot_id": "run_48d2115aa946f2e7",
+                  "updated_at": "2026-04-13T00:09:43Z"
                 }
               ],
               "switch_registry": [
@@ -1208,7 +1211,7 @@
                   "switch_id": "module.enabled:mod_006637bf5fd89d6e",
                   "target_id": "mod_006637bf5fd89d6e",
                   "target_type": "module",
-                  "updated_at": "2026-04-11T21:07:58Z"
+                  "updated_at": "2026-04-13T00:09:43Z"
                 },
                 {
                   "allowed_overrides": [
@@ -1232,7 +1235,7 @@
                   "switch_id": "module.enabled:mod_9cec7b11237bc29d",
                   "target_id": "mod_9cec7b11237bc29d",
                   "target_type": "module",
-                  "updated_at": "2026-04-11T21:07:58Z"
+                  "updated_at": "2026-04-13T00:09:43Z"
                 },
                 {
                   "allowed_overrides": [
@@ -1256,7 +1259,7 @@
                   "switch_id": "module.enabled:mod_b3c2b671598a92b5",
                   "target_id": "mod_b3c2b671598a92b5",
                   "target_type": "module",
-                  "updated_at": "2026-04-11T21:07:58Z"
+                  "updated_at": "2026-04-13T00:09:43Z"
                 },
                 {
                   "allowed_overrides": [
@@ -1280,22 +1283,22 @@
                   "switch_id": "module.enabled:mod_fb9baf6216d85a2e",
                   "target_id": "mod_fb9baf6216d85a2e",
                   "target_type": "module",
-                  "updated_at": "2026-04-11T21:07:58Z"
+                  "updated_at": "2026-04-13T00:09:43Z"
                 }
               ]
             },
             "previous": null
           },
-          "snapshot_id": "run_ff2b8a412789d225"
+          "snapshot_id": "run_48d2115aa946f2e7"
         },
         {
-          "artifact_id": "art_508b8c8c83ae850c",
-          "created_at": "2026-04-11T21:07:58Z",
+          "artifact_id": "art_e776e7d5e17defa4",
+          "created_at": "2026-04-13T00:09:43Z",
           "family": "metrics",
-          "hash": "5650e5f6873aa82f473b13db63af9089582ce1ac50915696569c1f64d658e244",
+          "hash": "5a0dfe96da7c68eae380837121b01a3d353b5fc3cf55577647f31f43560bd19e",
           "path": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\artifacts\\metrics\\registry_build_summary.json",
           "producer": "registry_builder",
-          "snapshot_id": "run_ff2b8a412789d225"
+          "snapshot_id": "run_48d2115aa946f2e7"
         }
       ],
       "engine_id": "registry_builder",
@@ -1303,13 +1306,14 @@
         "registry_builder.started",
         "registry_builder.completed"
       ],
-      "execution_id": "run_ff2b8a412789d225",
-      "finished_at": "2026-04-11T21:07:58Z",
+      "execution_id": "run_48d2115aa946f2e7",
+      "finished_at": "2026-04-13T00:09:43Z",
       "metrics": {
         "boundary_count": 4,
         "conflict_count": 0,
         "contract_count": 17,
-        "module_count": 4
+        "module_count": 4,
+        "skipped_module_candidate_count": 0
       },
       "notes": [],
       "registries_written": [
@@ -1322,19 +1326,19 @@
         "deltas"
       ],
       "stage": "registry",
-      "started_at": "2026-04-11T21:07:58Z",
+      "started_at": "2026-04-13T00:09:43Z",
       "status": "ok"
     },
     {
       "artifacts": [
         {
-          "artifact_id": "art_dbd87581c4462704",
-          "created_at": "2026-04-11T21:07:58Z",
+          "artifact_id": "art_70ef91564945f7c1",
+          "created_at": "2026-04-13T00:09:43Z",
           "family": "decision_trace",
           "hash": "86e34f7abc32ef163f392f5cbe2b57899fa7423232b7bf55ea2c034a3b8d572d",
           "path": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\artifacts\\decision_trace\\switch_decision_trace.json",
           "producer": "switch_engine",
-          "snapshot_id": "run_ff2b8a412789d225"
+          "snapshot_id": "run_48d2115aa946f2e7"
         }
       ],
       "engine_id": "switch_engine",
@@ -1342,8 +1346,8 @@
         "switch_engine.started",
         "switch_engine.completed"
       ],
-      "execution_id": "run_ff2b8a412789d225",
-      "finished_at": "2026-04-11T21:07:58Z",
+      "execution_id": "run_48d2115aa946f2e7",
+      "finished_at": "2026-04-13T00:09:43Z",
       "metrics": {
         "resolved_count": 4,
         "switch_count": 4,
@@ -1354,19 +1358,19 @@
         "switch_resolutions"
       ],
       "stage": "switch",
-      "started_at": "2026-04-11T21:07:58Z",
+      "started_at": "2026-04-13T00:09:43Z",
       "status": "ok"
     },
     {
       "artifacts": [
         {
-          "artifact_id": "art_dc0abe6800a0404b",
-          "created_at": "2026-04-11T21:07:58Z",
+          "artifact_id": "art_b77d275359d6a194",
+          "created_at": "2026-04-13T00:09:43Z",
           "family": "validation_report",
-          "hash": "1df6db9fe656157f79b0f09b6837605bfa50ee132ce3975a0ad577b1be49eb74",
+          "hash": "ffb5cc8ab532a8a94109ae98610a8842897d79504046b3d688db1da2a56b9841",
           "path": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\artifacts\\validation_report\\validation_report.json",
           "producer": "contract_validator",
-          "snapshot_id": "run_ff2b8a412789d225"
+          "snapshot_id": "run_48d2115aa946f2e7"
         }
       ],
       "engine_id": "contract_validator",
@@ -1374,8 +1378,8 @@
         "contract_validator.started",
         "contract_validator.completed"
       ],
-      "execution_id": "run_ff2b8a412789d225",
-      "finished_at": "2026-04-11T21:07:58Z",
+      "execution_id": "run_48d2115aa946f2e7",
+      "finished_at": "2026-04-13T00:09:43Z",
       "metrics": {
         "critical_count": 0,
         "error_count": 0,
@@ -1387,19 +1391,19 @@
         "validation_report"
       ],
       "stage": "validate",
-      "started_at": "2026-04-11T21:07:58Z",
+      "started_at": "2026-04-13T00:09:43Z",
       "status": "ok"
     },
     {
       "artifacts": [
         {
-          "artifact_id": "art_ea36f142c78323ea",
-          "created_at": "2026-04-11T21:07:58Z",
+          "artifact_id": "art_c725c457dc623317",
+          "created_at": "2026-04-13T00:09:43Z",
           "family": "annotations",
-          "hash": "b601120aac4ce7f6556d393ff6ae483caa1f31aba6775c377dc885e8a7b859bd",
+          "hash": "e6d5da479fa1c25fef52d9c62b9688fcc4b4c677f1c173d0af6bf047f734d7c9",
           "path": "F:\\repos\\hitech-os\\apps\\ar-k\\reports\\artifacts\\annotations\\annotations.json",
           "producer": "ai_annotator",
-          "snapshot_id": "run_ff2b8a412789d225"
+          "snapshot_id": "run_48d2115aa946f2e7"
         }
       ],
       "engine_id": "ai_annotator",
@@ -1407,8 +1411,8 @@
         "ai_annotator.started",
         "ai_annotator.completed"
       ],
-      "execution_id": "run_ff2b8a412789d225",
-      "finished_at": "2026-04-11T21:07:58Z",
+      "execution_id": "run_48d2115aa946f2e7",
+      "finished_at": "2026-04-13T00:09:43Z",
       "metrics": {
         "annotation_count": 4,
         "average_confidence": 0.8
@@ -1418,7 +1422,7 @@
         "annotations"
       ],
       "stage": "annotate",
-      "started_at": "2026-04-11T21:07:58Z",
+      "started_at": "2026-04-13T00:09:43Z",
       "status": "ok"
     }
   ]

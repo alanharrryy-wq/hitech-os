@@ -1,37 +1,41 @@
 {
-  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "target": "ES2022",
-    "jsx": "preserve",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": false,
+    "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
-    "incremental": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "types": ["node", "vitest/globals", "react", "react-dom"],
-    "skipLibCheck": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
     "isolatedModules": true,
-    "exactOptionalPropertyTypes": false,
-    "noPropertyAccessFromIndexSignature": false,
+    "jsx": "react-jsx",
+    "incremental": true,
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@components/*": ["./components/*"]
+      "@/*": [
+        "./*"
+      ]
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "reports", "docs", ".capatch"]
+  "exclude": [
+    "node_modules"
+  ]
 }

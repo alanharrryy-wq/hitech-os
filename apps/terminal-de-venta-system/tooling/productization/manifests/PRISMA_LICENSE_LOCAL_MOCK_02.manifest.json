@@ -1,0 +1,377 @@
+{
+  "packageName": "PRISMA_LICENSE_LOCAL_MOCK_02",
+  "packageVersion": "0.2.2-docs-corrected",
+  "generatedAt": "2026-04-28T14:24:54.952418+00:00",
+  "intent": "Install local license mock contracts, schemas and examples for PRISMA productization. Corrected repeated decision notes, missing test fixtures and manifest file hashes.",
+  "targetProductRoot": "apps/terminal-de-venta-system",
+  "manifestHashPolicy": "Manifest excludes itself from files list to avoid self-hash mismatch.",
+  "installs": [
+    "docs/productization/PRISMA_ENTITLEMENTS_CONTRACT.md",
+    "docs/productization/PRISMA_FEATURE_GATE_ATLAS.md",
+    "docs/productization/PRISMA_FEATURE_KEYS_CATALOG.md",
+    "docs/productization/PRISMA_LICENSE_AUDIT_EVENT_CATALOG.md",
+    "docs/productization/PRISMA_LICENSE_LOCAL_IMPLEMENTATION_BACKLOG.md",
+    "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02.md",
+    "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02_DECISION_NOTE_01.md",
+    "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02_DECISION_NOTE_02.md",
+    "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02_DECISION_NOTE_03.md",
+    "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02_DECISION_NOTE_04.md",
+    "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02_DECISION_NOTE_05.md",
+    "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02_DECISION_NOTE_06.md",
+    "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02_DECISION_NOTE_07.md",
+    "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02_DECISION_NOTE_08.md",
+    "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02_INDEX.md",
+    "docs/productization/PRISMA_LICENSE_NO_PAYMENT_PROCESSING_ADDENDUM.md",
+    "docs/productization/PRISMA_LICENSE_OPERATION_MATRIX.md",
+    "docs/productization/PRISMA_LICENSE_STATE_MACHINE.md",
+    "docs/productization/PRISMA_LICENSE_UI_POLICY.md",
+    "docs/productization/PRISMA_LOCAL_LICENSE_STORE_CONTRACT.md",
+    "docs/productization/PRISMA_OFFLINE_GRACE_POLICY.md",
+    "docs/productization/PRISMA_PLAN_CATALOG_CONTRACT.md",
+    "tooling/productization/README_LICENSE_LOCAL_MOCK_02.md",
+    "tooling/productization/catalogs/license-local/feature-key-catalog.full.json",
+    "tooling/productization/catalogs/license-local/license-event-catalog.full.json",
+    "tooling/productization/checklists/PRISMA_LICENSE_LOCAL_MOCK_02_CHECKLIST.md",
+    "tooling/productization/examples/license-local/feature-resolution.allowed.example.json",
+    "tooling/productization/examples/license-local/feature-resolution.denied.example.json",
+    "tooling/productization/examples/license-local/license.pc-backoffice.active.example.json",
+    "tooling/productization/examples/license-local/license.suspended.example.json",
+    "tooling/productization/examples/license-local/license.tablet-pc-managed.offline-grace.example.json",
+    "tooling/productization/examples/license-local/license.tablet-pro.active.example.json",
+    "tooling/productization/examples/license-local/license.tablet-solo.active.example.json",
+    "tooling/productization/examples/license-local/plan-catalog.example.json",
+    "tooling/productization/installer-plan/PRISMA_LICENSE_LOCAL_MOCK_02_INSTALLER_PLAN.md",
+    "tooling/productization/playbooks/LICENSE_SUSPENSION_GRACE_PLAYBOOK.md",
+    "tooling/productization/playbooks/pc_backoffice_license_playbook.md",
+    "tooling/productization/playbooks/tablet_pc_managed_license_playbook.md",
+    "tooling/productization/playbooks/tablet_pro_license_playbook.md",
+    "tooling/productization/playbooks/tablet_solo_license_playbook.md",
+    "tooling/productization/schemas/entitlement-resolution.schema.json",
+    "tooling/productization/schemas/feature-resolution.schema.json",
+    "tooling/productization/schemas/license-event.schema.json",
+    "tooling/productization/schemas/license-local.schema.json",
+    "tooling/productization/schemas/plan-catalog.schema.json",
+    "tooling/productization/test-cases/license-feature-resolution-cases.json",
+    "tooling/productization/test-cases/license-resolution-matrix.full.json",
+    "tooling/productization/test-cases/license-resolution-matrix.sample.json",
+    "tooling/productization/test-cases/license-signature-fingerprint-fixtures.json",
+    "tooling/productization/test-cases/license-state-machine-cases.csv"
+  ],
+  "files": [
+    {
+      "path": "docs/productization/PRISMA_ENTITLEMENTS_CONTRACT.md",
+      "sha256": "348f64a1be9c2a66407cde5f72c622995f863ed784e469fe2dfb3eb62ea57109",
+      "sizeBytes": 3038
+    },
+    {
+      "path": "docs/productization/PRISMA_FEATURE_GATE_ATLAS.md",
+      "sha256": "007a9c584a17b76f03b3c0a4831b8fc7b78cd9cea1f1d9f7e2b0d851af2b7bc5",
+      "sizeBytes": 7113
+    },
+    {
+      "path": "docs/productization/PRISMA_FEATURE_KEYS_CATALOG.md",
+      "sha256": "fb7bbee93c8119f89f05695ca128019363b203a48d7dc0432a761d798b07146b",
+      "sizeBytes": 3200
+    },
+    {
+      "path": "docs/productization/PRISMA_LICENSE_AUDIT_EVENT_CATALOG.md",
+      "sha256": "dc7187f9a82e89c9212c40c68e3f5643618379e0eda0552e33088c08f07609e1",
+      "sizeBytes": 2328
+    },
+    {
+      "path": "docs/productization/PRISMA_LICENSE_LOCAL_IMPLEMENTATION_BACKLOG.md",
+      "sha256": "bf433e60551daff99ad3ca106b145b6bfea364cfe2727c635fb01b75f25cbecf",
+      "sizeBytes": 2864
+    },
+    {
+      "path": "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02.md",
+      "sha256": "abd97979bef53b67e3af547ee7d9c2cdb2285f8d0a464c6d77ec0984328257ca",
+      "sizeBytes": 5205
+    },
+    {
+      "path": "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02_DECISION_NOTE_01.md",
+      "sha256": "b590cdfec3883f8292092b07ad8cb3b7be3343e1039c96a1257888e0c7dfbc52",
+      "sizeBytes": 955
+    },
+    {
+      "path": "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02_DECISION_NOTE_02.md",
+      "sha256": "d96302fa35f9f86390976a5f1f34a29abc7c81a775889ea24d892e6b1a20d9f6",
+      "sizeBytes": 898
+    },
+    {
+      "path": "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02_DECISION_NOTE_03.md",
+      "sha256": "a4063e6673b06a88e06b623be117142102c99c50a8aff03348905e61dbd193b4",
+      "sizeBytes": 865
+    },
+    {
+      "path": "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02_DECISION_NOTE_04.md",
+      "sha256": "0b214c866c392e7161456b3c9c22e662634f6cd4fe41cf929f0116f3936288ba",
+      "sizeBytes": 891
+    },
+    {
+      "path": "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02_DECISION_NOTE_05.md",
+      "sha256": "b0cd99465ede2841bac9e0b7eee7e0de37c7abeb96fb5cc263acf65b797de11d",
+      "sizeBytes": 879
+    },
+    {
+      "path": "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02_DECISION_NOTE_06.md",
+      "sha256": "397f51c2638f859ea59b70ff83924de7454d0917cfec6cb99d65773e11dbe8d5",
+      "sizeBytes": 885
+    },
+    {
+      "path": "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02_DECISION_NOTE_07.md",
+      "sha256": "0073104d91e6df2a55998f9195c92f7372fc1af3a10d622ceb02172df6d2f2f5",
+      "sizeBytes": 875
+    },
+    {
+      "path": "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02_DECISION_NOTE_08.md",
+      "sha256": "b1598e349ed69efe3794fc701fcf1b27a4a0e849e70ba148a681271b966e2cd5",
+      "sizeBytes": 860
+    },
+    {
+      "path": "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02_INDEX.md",
+      "sha256": "e3af6fdaa4fe9729e1ff8a53e9ebfed08ea8785d17de1270be0d680724c40401",
+      "sizeBytes": 2755
+    },
+    {
+      "path": "docs/productization/PRISMA_LICENSE_NO_PAYMENT_PROCESSING_ADDENDUM.md",
+      "sha256": "f637f2522d0d9f6c6586399b7bd9ecb2e1c528a37edff9655df11b0662e93c20",
+      "sizeBytes": 2605
+    },
+    {
+      "path": "docs/productization/PRISMA_LICENSE_OPERATION_MATRIX.md",
+      "sha256": "0ad47b03b9f5731d2fe9274fb5b96c8d1b06cf3d30a83b2cb3d7390519ea1163",
+      "sizeBytes": 809
+    },
+    {
+      "path": "docs/productization/PRISMA_LICENSE_STATE_MACHINE.md",
+      "sha256": "73967fb5146c4dc6733254371622a9afdab2139c37db164ab04cc85c009d3d61",
+      "sizeBytes": 3936
+    },
+    {
+      "path": "docs/productization/PRISMA_LICENSE_UI_POLICY.md",
+      "sha256": "91910c4715b7ea72d8605a8183ec9aee3129fafc2aa7f9f6c64780eb6911da47",
+      "sizeBytes": 2730
+    },
+    {
+      "path": "docs/productization/PRISMA_LOCAL_LICENSE_STORE_CONTRACT.md",
+      "sha256": "ab36d904b608ff8412c662b59265596141eada32408777506119a458c8a542f0",
+      "sizeBytes": 2730
+    },
+    {
+      "path": "docs/productization/PRISMA_OFFLINE_GRACE_POLICY.md",
+      "sha256": "edfeb9b1a1007e0764a25f291e697340002a76be66fdff5b584af54014e8faeb",
+      "sizeBytes": 2484
+    },
+    {
+      "path": "docs/productization/PRISMA_PLAN_CATALOG_CONTRACT.md",
+      "sha256": "d94e4f07fd20ab010698be88604628ef8019cc8e671bca8bae1e023e27e9dfb3",
+      "sizeBytes": 3189
+    },
+    {
+      "path": "tooling/productization/README_LICENSE_LOCAL_MOCK_02.md",
+      "sha256": "9af5c42a8c518fedd73e89c0e642743921cf2296c9522e7a69d0052592c904ac",
+      "sizeBytes": 588
+    },
+    {
+      "path": "tooling/productization/catalogs/license-local/feature-key-catalog.full.json",
+      "sha256": "e6d0331a4ff6596cf4e2e4fd116516fa395b7be6945bcaf4d60f136c07ee9419",
+      "sizeBytes": 46182
+    },
+    {
+      "path": "tooling/productization/catalogs/license-local/license-event-catalog.full.json",
+      "sha256": "ec00c9ecdd753cc2383d1a2c9f7aec022b8fe52120706872a5a8ef96169e53fa",
+      "sizeBytes": 9212
+    },
+    {
+      "path": "tooling/productization/checklists/PRISMA_LICENSE_LOCAL_MOCK_02_CHECKLIST.md",
+      "sha256": "562460c4d51923d012e5ee2d46486daa4add30cf18497cccef013e116fce81d1",
+      "sizeBytes": 586
+    },
+    {
+      "path": "tooling/productization/examples/license-local/feature-resolution.allowed.example.json",
+      "sha256": "ce0eb6bfef29f011392f4f7c84a94927bf6d2d038caffacff6f81d04a2bea0b8",
+      "sizeBytes": 184
+    },
+    {
+      "path": "tooling/productization/examples/license-local/feature-resolution.denied.example.json",
+      "sha256": "406a225c5a88d8e121795cd6e76931b0a89d56d8860802bb060a74c87d1fc047",
+      "sizeBytes": 213
+    },
+    {
+      "path": "tooling/productization/examples/license-local/license.pc-backoffice.active.example.json",
+      "sha256": "8139ebb86f718ad88bd54bd4e5ba598a18fbec2066fe721bf8b540eadbcec8d3",
+      "sizeBytes": 811
+    },
+    {
+      "path": "tooling/productization/examples/license-local/license.suspended.example.json",
+      "sha256": "d093b12347ff344b3f26f5dc6c42f8aaa28efe5d3bf57fa0d605f6780835a765",
+      "sizeBytes": 955
+    },
+    {
+      "path": "tooling/productization/examples/license-local/license.tablet-pc-managed.offline-grace.example.json",
+      "sha256": "00b0805c54e9439f69530bff372912e046fc865add2ed93513ee5d8b4f20c2fe",
+      "sizeBytes": 943
+    },
+    {
+      "path": "tooling/productization/examples/license-local/license.tablet-pro.active.example.json",
+      "sha256": "09040e0791a591c34560c41df68781fd024e925b4f197c0d41775f2fc75075f3",
+      "sizeBytes": 970
+    },
+    {
+      "path": "tooling/productization/examples/license-local/license.tablet-solo.active.example.json",
+      "sha256": "142caf2db72c183fff7f29073c79adbc56c4a348aea26b3ad68cde0a848c9379",
+      "sizeBytes": 746
+    },
+    {
+      "path": "tooling/productization/examples/license-local/plan-catalog.example.json",
+      "sha256": "5b8a9d15776970767a13992db2051552ccf668dcd2fc6bf590fc65b3ed68ab71",
+      "sizeBytes": 2519
+    },
+    {
+      "path": "tooling/productization/installer-plan/PRISMA_LICENSE_LOCAL_MOCK_02_INSTALLER_PLAN.md",
+      "sha256": "d7437c72682e880164e4e86a8d486143a6b5894bba3bde4846452689d6481c0a",
+      "sizeBytes": 590
+    },
+    {
+      "path": "tooling/productization/playbooks/LICENSE_SUSPENSION_GRACE_PLAYBOOK.md",
+      "sha256": "e9b3e5818c85691add4a6c67c77ed46ae1cc3f20a1255b94115613f4a43271e2",
+      "sizeBytes": 623
+    },
+    {
+      "path": "tooling/productization/playbooks/pc_backoffice_license_playbook.md",
+      "sha256": "6eebeb8028ff107e3a9c912764d184ff60f1d8708b3464565162af03cb3f5a4a",
+      "sizeBytes": 6019
+    },
+    {
+      "path": "tooling/productization/playbooks/tablet_pc_managed_license_playbook.md",
+      "sha256": "554bda17c589a1634af936d879d3b4035e289512324bf0424079548543a7c8b9",
+      "sizeBytes": 5810
+    },
+    {
+      "path": "tooling/productization/playbooks/tablet_pro_license_playbook.md",
+      "sha256": "e13a95efcc6453cdb510384478abe877256eff2a20cf17d75ab9729f902eb5b1",
+      "sizeBytes": 6114
+    },
+    {
+      "path": "tooling/productization/playbooks/tablet_solo_license_playbook.md",
+      "sha256": "8603333615f4be70ac1d46d767da4dfeb88c9345142a79cae1da33c629370744",
+      "sizeBytes": 6754
+    },
+    {
+      "path": "tooling/productization/schemas/entitlement-resolution.schema.json",
+      "sha256": "9854fd64055a6e6575b0dd8e8d03c589985abcae76fc7c99bb97b0f9882a97da",
+      "sizeBytes": 1328
+    },
+    {
+      "path": "tooling/productization/schemas/feature-resolution.schema.json",
+      "sha256": "4409f17585f499464336dfacd1fc2ad3c7e5bd7d9fd42fa9f9777dab99d563f9",
+      "sizeBytes": 802
+    },
+    {
+      "path": "tooling/productization/schemas/license-event.schema.json",
+      "sha256": "76d4da622231233d81db9777f8e4233fbbce14a37aec86fd3a744840ce929893",
+      "sizeBytes": 831
+    },
+    {
+      "path": "tooling/productization/schemas/license-local.schema.json",
+      "sha256": "4131ab21811c1eb9fb685991f31c3c6b5775e83e18ad7378743078f42094caa3",
+      "sizeBytes": 2373
+    },
+    {
+      "path": "tooling/productization/schemas/plan-catalog.schema.json",
+      "sha256": "7cdf0c7bd4ccd5f55cfaf308d35e11cbaa9f51a6c70bd07974647a49d83984aa",
+      "sizeBytes": 1235
+    },
+    {
+      "path": "tooling/productization/test-cases/license-feature-resolution-cases.json",
+      "sha256": "76d80692800328b1a1fb99b4430f39cfd2a9da6545c4af06aeaaf8e61f521d74",
+      "sizeBytes": 1491
+    },
+    {
+      "path": "tooling/productization/test-cases/license-resolution-matrix.full.json",
+      "sha256": "745fc961218e5d2c4a3cc9aea578fe575e7e77aaf262918c46ee096cc14fb959",
+      "sizeBytes": 156261
+    },
+    {
+      "path": "tooling/productization/test-cases/license-resolution-matrix.sample.json",
+      "sha256": "88a2ae9ec4c8bb1823d2ed82f69e6e0a7398c568b028a6dfefa8cb0bd41a3e68",
+      "sizeBytes": 34182
+    },
+    {
+      "path": "tooling/productization/test-cases/license-signature-fingerprint-fixtures.json",
+      "sha256": "248559c54544f2ae475aa32096c4555cc9dda55145f844368e62aee8cf1ebb2b",
+      "sizeBytes": 919
+    },
+    {
+      "path": "tooling/productization/test-cases/license-state-machine-cases.csv",
+      "sha256": "ad09eeed60128628c0026ab1fdf2a6bfe95a4b8c9457417653a1ef67013ea0f2",
+      "sizeBytes": 510
+    },
+    {
+      "path": "tooling/productization/schemas/feature-resolution.allowed.schema.json",
+      "sha256": "1cb73b603f33eca7e267c5e84a1ef024daa5f6f8038c29f1e815afa9cec50a9b",
+      "size": 1086
+    },
+    {
+      "path": "tooling/productization/schemas/feature-resolution.denied.schema.json",
+      "sha256": "dfd17e75c1bd546b08ce3c26c0ebfa48745f99324469f0a46be1ebee3859a4da",
+      "size": 1089
+    },
+    {
+      "path": "tooling/productization/schemas/license.pc-backoffice.active.schema.json",
+      "sha256": "cf51752942bf30a60dfecb462631d5a8552035566c9e6c6f99069c2dcab5b8c0",
+      "size": 2049
+    },
+    {
+      "path": "tooling/productization/schemas/license.suspended.schema.json",
+      "sha256": "bb610d55441ac199ba141b4a0268ab3fce31d6a6a3d7c47c3927031795aaf322",
+      "size": 2070
+    },
+    {
+      "path": "tooling/productization/schemas/license.tablet-pc-managed.offline-grace.schema.json",
+      "sha256": "9f743590f2480163d3f0dc067ab714594d127e7a4ed1eb53ba8744a87baab99a",
+      "size": 2094
+    },
+    {
+      "path": "tooling/productization/schemas/license.tablet-pro.active.schema.json",
+      "sha256": "4911c784bfd6159440f201bfa2c87466e6b5d023d710d432e2f38d341ca96e61",
+      "size": 2080
+    },
+    {
+      "path": "tooling/productization/schemas/license.tablet-solo.active.schema.json",
+      "sha256": "c06df582463e0be97cf913fff4cf8433b82027be19bda337abbe04c4e8930570",
+      "size": 2047
+    }
+  ],
+  "constraints": {
+    "noRuntimeMutation": true,
+    "noDbMutation": true,
+    "noNetworkRequired": true,
+    "noGithubRequired": true,
+    "noPaymentProcessing": true,
+    "tabletMustRemainStandalone": true
+  },
+  "verify": {
+    "requiredFiles": [
+      "docs/productization/PRISMA_LICENSE_LOCAL_MOCK_02.md",
+      "docs/productization/PRISMA_LICENSE_STATE_MACHINE.md",
+      "docs/productization/PRISMA_PLAN_CATALOG_CONTRACT.md",
+      "docs/productization/PRISMA_LICENSE_NO_PAYMENT_PROCESSING_ADDENDUM.md",
+      "tooling/productization/schemas/license-local.schema.json",
+      "tooling/productization/schemas/feature-resolution.schema.json",
+      "tooling/productization/examples/license-local/license.tablet-pro.active.example.json",
+      "tooling/productization/test-cases/license-feature-resolution-cases.json",
+      "tooling/productization/test-cases/license-resolution-matrix.full.json",
+      "tooling/productization/test-cases/license-signature-fingerprint-fixtures.json",
+      "tooling/productization/manifests/PRISMA_LICENSE_LOCAL_MOCK_02.manifest.json"
+    ],
+    "jsonPatterns": [
+      "tooling/productization/schemas/*.json",
+      "tooling/productization/examples/license-local/*.json",
+      "tooling/productization/test-cases/*.json",
+      "tooling/productization/manifests/*.json",
+      "tooling/productization/catalogs/license-local/*.json"
+    ]
+  }
+}

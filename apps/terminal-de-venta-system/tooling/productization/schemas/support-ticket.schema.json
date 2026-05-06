@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Support Ticket",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "ticketId",
+    "businessId",
+    "category",
+    "priority",
+    "status",
+    "subject",
+    "createdAt"
+  ],
+  "properties": {
+    "ticketId": {
+      "type": "string"
+    },
+    "businessId": {
+      "type": "string"
+    },
+    "deviceId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "technical",
+        "license",
+        "plugin",
+        "training",
+        "bug",
+        "diagnostics",
+        "admin"
+      ]
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "normal",
+        "high",
+        "urgent"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "waiting_customer",
+        "waiting_provider",
+        "resolved",
+        "closed",
+        "archived"
+      ]
+    },
+    "subject": {
+      "type": "string"
+    },
+    "diagnosticBundleIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

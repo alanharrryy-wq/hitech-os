@@ -10,7 +10,7 @@
     "start": "next start -p 3200",
     "lint": "node -e \"console.log('external_interaction_forms lint: configure project-specific linting as needed')\"",
     "typecheck": "tsc --noEmit",
-    "test": "node -e \"console.log('external_interaction_forms test: no tests yet')\""
+    "test": "pnpm run typecheck"
   },
   "dependencies": {
     "clsx": "2.1.1",

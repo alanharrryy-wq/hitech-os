@@ -1,0 +1,722 @@
+@import "../effects/prisma-reference-effects.css";
+
+html[data-theme] {
+  background: var(--prisma-app-background);
+}
+
+body {
+  background: var(--prisma-app-background-radial);
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -2;
+}
+
+body::before {
+  background:
+    linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.055) 34%, transparent 38%),
+    radial-gradient(circle at 54% 6%, rgba(255, 255, 255, 0.16), transparent 5%),
+    radial-gradient(circle at 50% 100%, rgba(232, 189, 103, 0.14), transparent 26%);
+  filter: blur(18px);
+  opacity: 0.72;
+}
+
+body::after {
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    radial-gradient(circle at center, transparent 45%, rgba(0, 0, 0, 0.38) 100%);
+  background-size: 96px 96px, 96px 96px, auto;
+  mask-image: radial-gradient(circle at 58% 44%, black 0%, transparent 82%);
+  opacity: 0.42;
+}
+
+[data-theme="prisma-light"] body::before {
+  opacity: 0.58;
+  background:
+    linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.7) 34%, transparent 42%),
+    radial-gradient(circle at 58% 4%, rgba(217, 154, 34, 0.18), transparent 8%),
+    radial-gradient(circle at 50% 100%, rgba(174, 198, 210, 0.22), transparent 28%);
+}
+
+[data-theme="prisma-light"] body::after {
+  opacity: 0.22;
+}
+
+[data-prisma-component] {
+  letter-spacing: 0;
+}
+
+[data-prisma-component="AppShell"] {
+  font-family: var(--prisma-font-family);
+  color: var(--prisma-text-primary);
+  background: var(--prisma-app-background-radial);
+}
+
+[data-prisma-component="Sidebar"],
+[data-prisma-component="CartPanel"],
+[data-prisma-component="TopBar"],
+[data-prisma-component="SearchBar"],
+[data-prisma-component="TerminalStatusCard"],
+[data-prisma-component="ProductCard"],
+[data-prisma-component="SecondaryActionCard"],
+[data-prisma-component="EmptyState"],
+[data-prisma-component="ErrorState"],
+[data-prisma-component="Toast"] {
+  border: 1px solid var(--prisma-border-soft);
+  background: var(--prisma-panel-gradient);
+  box-shadow: var(--prisma-shadow-glass);
+  backdrop-filter: blur(22px);
+}
+
+[data-prisma-component="BrandBlock"] {
+  color: var(--prisma-text-primary);
+}
+
+[data-prisma-component="NavItem"] {
+  transition:
+    color var(--prisma-motion-base) ease,
+    background var(--prisma-motion-base) ease,
+    border-color var(--prisma-motion-base) ease,
+    box-shadow var(--prisma-motion-base) ease,
+    transform var(--prisma-motion-base) ease;
+}
+
+[data-prisma-component="NavItem"][aria-current="page"],
+[data-prisma-component="NavItem"][data-active="true"] {
+  color: var(--prisma-accent-gold-soft);
+  border-color: var(--prisma-border-gold);
+  background: var(--prisma-active-surface);
+  box-shadow: 0 0 26px var(--prisma-accent-gold-glow), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+[data-prisma-component="IconButton"],
+[data-prisma-component="ScanButton"],
+[data-prisma-component="CheckoutButton"],
+[data-prisma-component="CategoryButton"],
+[data-prisma-component="QuantityStepper"] button {
+  transition:
+    transform var(--prisma-motion-fast) ease,
+    box-shadow var(--prisma-motion-base) ease,
+    border-color var(--prisma-motion-base) ease,
+    background var(--prisma-motion-base) ease;
+}
+
+[data-prisma-component="IconButton"]:hover,
+[data-prisma-component="ScanButton"]:hover,
+[data-prisma-component="CategoryButton"]:hover,
+[data-prisma-component="ProductCard"]:hover {
+  transform: translateY(-1px);
+}
+
+[data-prisma-component="CheckoutButton"] {
+  background: var(--prisma-gold-gradient-strong);
+  color: var(--prisma-text-on-gold);
+  border-color: var(--prisma-border-gold);
+  box-shadow: var(--prisma-shadow-gold);
+}
+
+[data-prisma-component="ProductImageStage"] {
+  background: var(--prisma-product-stage-gradient);
+}
+
+[data-prisma-component="FavoriteStar"] {
+  color: var(--prisma-accent-gold);
+}
+
+[data-prisma-component="TotalsSummary"] {
+  border-color: var(--prisma-border-gold);
+}
+
+[data-prisma-component="TotalsSummary"] strong,
+[data-prisma-component="CartPanel"] [data-total-value="true"] {
+  color: var(--prisma-accent-gold-soft);
+}
+
+[data-prisma-component="CategoryButton"][data-active="true"] {
+  color: var(--prisma-text-on-gold);
+  background: var(--prisma-gold-gradient);
+  border-color: var(--prisma-border-gold);
+  box-shadow: var(--prisma-shadow-gold);
+}
+
+[data-theme="prisma-light"] [data-prisma-component="CategoryButton"]:not([data-active="true"]),
+[data-theme="prisma-light"] [data-prisma-component="ScanButton"],
+[data-theme="prisma-light"] [data-prisma-component="IconButton"],
+[data-theme="prisma-light"] [data-prisma-component="SearchBar"] {
+  background: var(--prisma-frosted-accent-gradient);
+  border-color: var(--prisma-accent-cool-frosted-strong);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 16px 42px rgba(71, 117, 143, 0.11);
+  backdrop-filter: blur(24px) saturate(1.12);
+}
+
+[data-theme="prisma-light"] [data-prisma-component="NavItem"][aria-current="page"],
+[data-theme="prisma-light"] [data-prisma-component="NavItem"][data-active="true"] {
+  color: var(--prisma-accent-gold-strong);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.74), rgba(217, 236, 246, 0.5)),
+    radial-gradient(circle at 20% 0%, rgba(255, 241, 200, 0.9), transparent 52%);
+  border-color: var(--prisma-border-gold);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 18px 44px rgba(217, 154, 34, 0.16);
+}
+
+button:disabled,
+a[aria-disabled="true"] {
+  opacity: 0.54;
+  cursor: not-allowed;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--prisma-focus-ring);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+
+/* PRISMA_GLASS_DEPTH_PASS_01: shared optical depth system */
+html[data-theme] {
+  background: var(--prisma-app-background);
+}
+
+body {
+  background:
+    var(--prisma-scene-noise),
+    var(--prisma-app-background-radial);
+}
+
+body::before {
+  background:
+    radial-gradient(circle at 50% -8%, rgba(255, 226, 156, 0.34), transparent 18%),
+    radial-gradient(circle at 70% 8%, rgba(190, 222, 238, 0.18), transparent 23%),
+    linear-gradient(118deg, transparent 0%, rgba(255, 255, 255, 0.075) 34%, transparent 42%),
+    radial-gradient(circle at 50% 103%, rgba(232, 189, 103, 0.18), transparent 28%);
+  filter: blur(24px) saturate(1.18);
+  opacity: 0.88;
+}
+
+body::after {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.022), transparent 22%),
+    radial-gradient(circle at center, transparent 42%, rgba(0, 0, 0, 0.48) 100%),
+    var(--prisma-scene-noise);
+  background-size: auto, auto, 138px 138px;
+  opacity: 0.5;
+}
+
+[data-theme="prisma-light"] body::before {
+  opacity: 0.72;
+  filter: blur(22px) saturate(1.12);
+}
+
+[data-theme="prisma-light"] body::after {
+  opacity: 0.26;
+}
+
+[data-prisma-component="Sidebar"],
+[data-prisma-component="CartPanel"],
+[data-prisma-component="TopBar"],
+[data-prisma-component="SearchBar"],
+[data-prisma-component="TerminalStatusCard"],
+[data-prisma-component="ProductCard"],
+[data-prisma-component="SecondaryActionCard"],
+[data-prisma-component="EmptyState"],
+[data-prisma-component="ErrorState"],
+[data-prisma-component="Toast"] {
+  position: relative;
+  overflow: hidden;
+  border-color: color-mix(in srgb, var(--prisma-glass-edge-top) 34%, var(--prisma-border-soft));
+  background:
+    var(--prisma-glass-inner-bloom),
+    var(--prisma-glass-vignette),
+    var(--prisma-panel-gradient);
+  box-shadow: var(--prisma-shadow-glass);
+  backdrop-filter: blur(var(--prisma-glass-blur)) saturate(var(--prisma-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--prisma-glass-blur)) saturate(var(--prisma-glass-saturate));
+}
+
+[data-prisma-component="Sidebar"]::before,
+[data-prisma-component="CartPanel"]::before,
+[data-prisma-component="TopBar"]::before,
+[data-prisma-component="SearchBar"]::before,
+[data-prisma-component="TerminalStatusCard"]::before,
+[data-prisma-component="ProductCard"]::before,
+[data-prisma-component="SecondaryActionCard"]::before,
+[data-prisma-component="EmptyState"]::before,
+[data-prisma-component="ErrorState"]::before,
+[data-prisma-component="Toast"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(180deg, var(--prisma-glass-edge-top), transparent 16%),
+    linear-gradient(90deg, var(--prisma-glass-edge-side), transparent 18%, transparent 82%, color-mix(in srgb, var(--prisma-accent-cool-frosted-strong) 42%, transparent));
+  opacity: 0.72;
+  mix-blend-mode: screen;
+}
+
+[data-prisma-component="Sidebar"]::after,
+[data-prisma-component="CartPanel"]::after,
+[data-prisma-component="TopBar"]::after,
+[data-prisma-component="SearchBar"]::after,
+[data-prisma-component="TerminalStatusCard"]::after,
+[data-prisma-component="ProductCard"]::after,
+[data-prisma-component="SecondaryActionCard"]::after,
+[data-prisma-component="EmptyState"]::after,
+[data-prisma-component="ErrorState"]::after,
+[data-prisma-component="Toast"]::after {
+  content: "";
+  position: absolute;
+  inset: auto 10px 0;
+  height: 1px;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, var(--prisma-glass-edge-bottom), transparent);
+  opacity: 0.78;
+}
+
+[data-prisma-component="ProductImageStage"] {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--prisma-glass-edge-top) 28%, var(--prisma-border-soft));
+  background:
+    radial-gradient(circle at 48% 10%, rgba(255, 255, 255, 0.22), transparent 28%),
+    radial-gradient(circle at 50% 92%, var(--prisma-accent-gold-glow), transparent 42%),
+    var(--prisma-product-stage-gradient);
+  box-shadow:
+    inset 0 1px 0 var(--prisma-glass-edge-top),
+    inset 0 -18px 36px rgba(0, 0, 0, 0.24),
+    0 18px 48px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(calc(var(--prisma-glass-blur) * 0.78)) saturate(var(--prisma-glass-saturate));
+  -webkit-backdrop-filter: blur(calc(var(--prisma-glass-blur) * 0.78)) saturate(var(--prisma-glass-saturate));
+}
+
+/* PRISMA_LIVING_BACKGROUND_PASS_01B: shared living background motion */
+@keyframes prismaLivingSceneDriftA {
+  0% { transform: translate3d(-1.4%, -1.1%, 0) scale(1.035); opacity: 0.78; }
+  50% { transform: translate3d(1.2%, 0.8%, 0) scale(1.075); opacity: 0.92; }
+  100% { transform: translate3d(-0.4%, 1.4%, 0) scale(1.045); opacity: 0.84; }
+}
+
+@keyframes prismaLivingSceneDriftB {
+  0% { transform: translate3d(1.2%, 0.6%, 0) scale(1.035) rotate(0.001deg); opacity: 0.52; }
+  50% { transform: translate3d(-1.1%, -0.9%, 0) scale(1.065) rotate(0.001deg); opacity: 0.68; }
+  100% { transform: translate3d(0.7%, -1.2%, 0) scale(1.045) rotate(0.001deg); opacity: 0.58; }
+}
+
+@keyframes prismaLivingBackgroundPan {
+  0% { background-position: 48% 0%, 52% 0%, 50% 50%; }
+  50% { background-position: 51% 2%, 49% -1%, 50% 50%; }
+  100% { background-position: 47% 1%, 53% 1%, 50% 50%; }
+}
+
+html,
+body {
+  background-color: var(--prisma-app-background);
+}
+
+body {
+  background:
+    var(--prisma-living-noise),
+    var(--prisma-living-scene-base) !important;
+  background-size: auto, 130% 130% !important;
+  animation: prismaLivingBackgroundPan 46s ease-in-out infinite alternate;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  pointer-events: none;
+  inset: -18%;
+  z-index: -3;
+  will-change: transform, opacity;
+}
+
+body::before {
+  background: var(--prisma-living-haze-a);
+  filter: blur(28px) saturate(1.22);
+  mix-blend-mode: screen;
+  animation: prismaLivingSceneDriftA 36s ease-in-out infinite alternate;
+}
+
+body::after {
+  z-index: -2;
+  background:
+    var(--prisma-living-haze-b),
+    var(--prisma-living-vignette),
+    var(--prisma-living-noise);
+  background-size: 124% 124%, auto, 148px 148px;
+  filter: blur(12px) saturate(1.12);
+  opacity: 0.62;
+  animation: prismaLivingSceneDriftB 44s ease-in-out infinite alternate;
+}
+
+[data-prisma-component="AppShell"],
+[data-prisma-component="Sidebar"],
+[data-prisma-component="CartPanel"],
+[data-prisma-component="TopBar"],
+[data-prisma-component="SearchBar"],
+[data-prisma-component="TerminalStatusCard"],
+[data-prisma-component="ProductCard"],
+[data-prisma-component="SecondaryActionCard"],
+[data-prisma-component="EmptyState"],
+[data-prisma-component="ErrorState"],
+[data-prisma-component="Toast"] {
+  backdrop-filter: blur(var(--prisma-glass-blur)) saturate(var(--prisma-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--prisma-glass-blur)) saturate(var(--prisma-glass-saturate));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  body::before,
+  body::after {
+    animation: none !important;
+  }
+}
+
+/* PRISMA_LAYER_DISCIPLINE_PASS_01C: single-scene background + reduced component overdraw */
+body {
+  background:
+    var(--prisma-living-noise),
+    var(--prisma-living-scene-base) !important;
+  background-size: auto, 126% 126% !important;
+}
+
+body::before {
+  inset: -10% !important;
+  z-index: -3 !important;
+  background: var(--prisma-living-haze-a) !important;
+  filter: blur(34px) saturate(1.08) !important;
+  opacity: var(--prisma-layer-haze-a-opacity) !important;
+  mix-blend-mode: screen !important;
+}
+
+body::after {
+  inset: -8% !important;
+  z-index: -2 !important;
+  background:
+    var(--prisma-living-haze-b),
+    var(--prisma-living-vignette),
+    var(--prisma-living-noise) !important;
+  background-size: 120% 120%, auto, 148px 148px !important;
+  filter: blur(4px) saturate(1.04) !important;
+  opacity: var(--prisma-layer-haze-b-opacity) !important;
+  mix-blend-mode: normal !important;
+}
+
+[data-prisma-component="Sidebar"],
+[data-prisma-component="CartPanel"],
+[data-prisma-component="TopBar"],
+[data-prisma-component="SearchBar"] {
+  background: var(--prisma-layer-panel-surface) !important;
+  border-color: var(--prisma-layer-edge) !important;
+  box-shadow: var(--prisma-layer-soft-shadow) !important;
+  backdrop-filter: blur(var(--prisma-layer-panel-blur)) saturate(var(--prisma-layer-saturate)) !important;
+  -webkit-backdrop-filter: blur(var(--prisma-layer-panel-blur)) saturate(var(--prisma-layer-saturate)) !important;
+}
+
+[data-prisma-component="TerminalStatusCard"],
+[data-prisma-component="ProductCard"],
+[data-prisma-component="SecondaryActionCard"],
+[data-prisma-component="EmptyState"],
+[data-prisma-component="ErrorState"],
+[data-prisma-component="Toast"] {
+  background: var(--prisma-layer-card-surface) !important;
+  border-color: color-mix(in srgb, var(--prisma-glass-edge-top) 20%, var(--prisma-border-soft)) !important;
+  box-shadow: var(--prisma-layer-card-shadow) !important;
+  backdrop-filter: blur(var(--prisma-layer-card-blur)) saturate(1.12) !important;
+  -webkit-backdrop-filter: blur(var(--prisma-layer-card-blur)) saturate(1.12) !important;
+}
+
+[data-prisma-component="ProductCard"]::before,
+[data-prisma-component="SecondaryActionCard"]::before,
+[data-prisma-component="TerminalStatusCard"]::before,
+[data-prisma-component="EmptyState"]::before,
+[data-prisma-component="ErrorState"]::before,
+[data-prisma-component="Toast"]::before {
+  opacity: 0.18 !important;
+  mix-blend-mode: normal !important;
+}
+
+[data-prisma-component="ProductCard"]::after,
+[data-prisma-component="SecondaryActionCard"]::after,
+[data-prisma-component="TerminalStatusCard"]::after,
+[data-prisma-component="EmptyState"]::after,
+[data-prisma-component="ErrorState"]::after,
+[data-prisma-component="Toast"]::after {
+  opacity: 0.28 !important;
+}
+
+[data-prisma-component="Sidebar"]::before,
+[data-prisma-component="CartPanel"]::before,
+[data-prisma-component="TopBar"]::before,
+[data-prisma-component="SearchBar"]::before {
+  opacity: 0.38 !important;
+  mix-blend-mode: screen !important;
+}
+
+[data-prisma-component="ProductImageStage"] {
+  background: var(--prisma-layer-stage-surface) !important;
+  backdrop-filter: blur(12px) saturate(1.12) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.12) !important;
+}
+
+/* PRISMA_BLACK_VISUAL_GOVERNANCE_PASS_01D START */
+/* PRISMA_BLACK_VISUAL_GOVERNANCE_PASS_01D
+   Shared governed scene/materials. Principle: one background, panels interpret, cards frame. */
+body {
+  background: var(--prisma-visual-scene-base) !important;
+  background-size: 132% 132% !important;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -18% !important;
+  pointer-events: none;
+  z-index: -3 !important;
+  opacity: 0.82 !important;
+  background: var(--prisma-visual-haze-main) !important;
+  filter: blur(28px) saturate(1.18) !important;
+  transform: translate3d(0, 0, 0);
+  mix-blend-mode: screen !important;
+  animation: prisma-bg-breathe-governed var(--prisma-motion-bg-duration-governed) ease-in-out infinite alternate;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0 !important;
+  pointer-events: none;
+  z-index: -2 !important;
+  opacity: 1 !important;
+  background:
+    var(--prisma-visual-haze-secondary),
+    var(--prisma-visual-noise) !important;
+  background-size: 128% 128%, 148px 148px !important;
+  filter: none !important;
+  mix-blend-mode: soft-light !important;
+}
+
+@keyframes prisma-bg-breathe-governed {
+  0% { transform: translate3d(-0.8%, -0.4%, 0) scale(1); opacity: var(--prisma-motion-bg-opacity-min); }
+  50% { transform: translate3d(0.4%, 0.6%, 0) scale(1.018); opacity: var(--prisma-motion-bg-opacity-max); }
+  100% { transform: translate3d(0.9%, -0.2%, 0) scale(1.026); opacity: 0.78; }
+}
+
+html[data-layer-stage-haze="0"] body::before,
+html[data-layer-stage-haze="off"] body::before,
+html[data-layer-stage-haze="false"] body::before {
+  opacity: 0 !important;
+}
+
+html[data-layer-stage-noise="0"] body::after,
+html[data-layer-stage-noise="off"] body::after,
+html[data-layer-stage-noise="false"] body::after {
+  background: var(--prisma-visual-haze-secondary) !important;
+  mix-blend-mode: normal !important;
+}
+
+html[data-prisma-profile="perf"] body::after,
+html[data-layer-profile="perf"] body::after {
+  opacity: 0.36 !important;
+  background: var(--prisma-visual-haze-secondary) !important;
+}
+
+html[data-prisma-motion="off"] body::before,
+html[data-layer-motion-enabled="0"] body::before,
+html[data-layer-motion-enabled="off"] body::before {
+  animation: none !important;
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+[data-prisma-component="Sidebar"],
+[data-prisma-component="CartPanel"],
+[data-prisma-component="TopBar"],
+[data-prisma-component="SearchBar"] {
+  background: var(--prisma-glass-panel-governed) !important;
+  border-color: color-mix(in srgb, var(--prisma-edge-top-governed) 46%, rgba(255,255,255,0.08)) !important;
+  box-shadow: var(--prisma-shadow-depth-governed), var(--prisma-inner-stroke-governed) !important;
+  backdrop-filter: blur(var(--prisma-blur-panel-governed)) saturate(1.28) !important;
+  -webkit-backdrop-filter: blur(var(--prisma-blur-panel-governed)) saturate(1.28) !important;
+}
+
+[data-prisma-component="Sidebar"]::before,
+[data-prisma-component="CartPanel"]::before,
+[data-prisma-component="TopBar"]::before,
+[data-prisma-component="SearchBar"]::before {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.20), transparent 22%),
+    radial-gradient(circle at 18% 0%, rgba(255, 218, 142, 0.12), transparent 32%) !important;
+  opacity: 0.66 !important;
+  mix-blend-mode: screen !important;
+}
+
+[data-prisma-component="Sidebar"]::after,
+[data-prisma-component="CartPanel"]::after,
+[data-prisma-component="TopBar"]::after,
+[data-prisma-component="SearchBar"]::after {
+  box-shadow:
+    inset 0 1px 0 var(--prisma-edge-top-governed),
+    inset 1px 0 0 var(--prisma-edge-side-governed),
+    inset -1px 0 0 var(--prisma-edge-cold-governed),
+    inset 0 -1px 0 var(--prisma-edge-bottom-governed) !important;
+  opacity: 1 !important;
+}
+
+[data-prisma-component="TerminalStatusCard"],
+[data-prisma-component="ProductCard"],
+[data-prisma-component="SecondaryActionCard"],
+[data-prisma-component="EmptyState"],
+[data-prisma-component="ErrorState"],
+[data-prisma-component="Toast"] {
+  background: var(--prisma-glass-card-governed) !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
+  box-shadow: var(--prisma-shadow-card-governed) !important;
+  backdrop-filter: blur(var(--prisma-blur-card-governed)) saturate(1.16) !important;
+  -webkit-backdrop-filter: blur(var(--prisma-blur-card-governed)) saturate(1.16) !important;
+}
+
+[data-prisma-component="ProductCard"]::before,
+[data-prisma-component="SecondaryActionCard"]::before,
+[data-prisma-component="TerminalStatusCard"]::before,
+[data-prisma-component="EmptyState"]::before,
+[data-prisma-component="ErrorState"]::before,
+[data-prisma-component="Toast"]::before {
+  opacity: 0.12 !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.13), transparent 24%) !important;
+  mix-blend-mode: normal !important;
+}
+
+[data-prisma-component="ProductCard"]::after,
+[data-prisma-component="SecondaryActionCard"]::after,
+[data-prisma-component="TerminalStatusCard"]::after,
+[data-prisma-component="EmptyState"]::after,
+[data-prisma-component="ErrorState"]::after,
+[data-prisma-component="Toast"]::after {
+  opacity: 0.20 !important;
+}
+
+[data-prisma-component="ProductImageStage"] {
+  background: var(--prisma-glass-stage-governed) !important;
+  backdrop-filter: blur(var(--prisma-blur-stage-governed)) saturate(1.20) !important;
+  -webkit-backdrop-filter: blur(var(--prisma-blur-stage-governed)) saturate(1.20) !important;
+}
+
+html[data-layer-card-blur="0"] [data-prisma-component="ProductCard"],
+html[data-layer-card-blur="off"] [data-prisma-component="ProductCard"],
+html[data-layer-card-blur="false"] [data-prisma-component="ProductCard"],
+html[data-prisma-profile="perf"] [data-prisma-component="ProductCard"],
+html[data-layer-profile="perf"] [data-prisma-component="ProductCard"] {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(8, 16, 24, 0.72) !important;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  [data-prisma-component="Sidebar"],
+  [data-prisma-component="CartPanel"],
+  [data-prisma-component="TopBar"],
+  [data-prisma-component="SearchBar"] {
+    background: rgba(8, 16, 24, 0.86) !important;
+  }
+
+  [data-prisma-component="ProductCard"],
+  [data-prisma-component="SecondaryActionCard"],
+  [data-prisma-component="TerminalStatusCard"] {
+    background: rgba(8, 16, 24, 0.74) !important;
+  }
+}
+/* PRISMA_BLACK_VISUAL_GOVERNANCE_PASS_01D END */
+
+/* PRISMA_BLACK_CSS_LAYER_NORMALIZATION_01F START
+   Shared component layer ownership
+   Role: shared-components
+
+01F ownership:
+- background: body::before/body::after remain the global shared scene overlays.
+- panel: shell/sidebar/topbar/cart/search surfaces consume --prisma-panel-gradient and --prisma-shadow-glass.
+- card: product/secondary/empty/error/toast surfaces frame content; they must not create independent weather.
+- CTA/active: nav current state and checkout button are semantic accents, not decorative glow sources.
+- blend modes: retained for visual stability; replacement belongs to a later aesthetic pass only after screenshots.
+Governance import:
+- Layer IDs map conceptually to stage.haze, stage.vignette, stage.noise, card.blur, card.innerStroke, card.specular, card.shadowAmbient, motion.enabled.
+- Blur should stay bounded to card/panel material recipes.
+   PRISMA 01F rule: comments and ownership markers only; no intentional visual delta.
+   Source governance: Keystone Luxury Kernel + Layer Flags System, adapted conceptually for PRISMA Black.
+   PRISMA_BLACK_CSS_LAYER_NORMALIZATION_01F END */
+
+
+/* PRISMA_REFERENCE_VISUAL_REFINEMENT_01I START
+   Shared material polish for components that declare data-prisma-component. */
+html[data-theme="prisma-dark"] body {
+  background: var(--prisma-reference-grain), var(--prisma-reference-scene) !important;
+}
+
+html[data-theme="prisma-dark"] body::before {
+  background: var(--prisma-reference-haze) !important;
+  filter: blur(30px) saturate(1.24) !important;
+  opacity: 0.92 !important;
+}
+
+html[data-theme="prisma-dark"] [data-prisma-component="Sidebar"],
+html[data-theme="prisma-dark"] [data-prisma-component="TopBar"],
+html[data-theme="prisma-dark"] [data-prisma-component="SearchBar"],
+html[data-theme="prisma-dark"] [data-prisma-component="CartPanel"] {
+  border-color: rgba(255, 229, 166, 0.28) !important;
+  background: var(--prisma-reference-panel-material) !important;
+  box-shadow: var(--prisma-reference-shadow-panel) !important;
+  backdrop-filter: blur(var(--prisma-reference-glass-blur)) saturate(var(--prisma-reference-saturate)) !important;
+  -webkit-backdrop-filter: blur(var(--prisma-reference-glass-blur)) saturate(var(--prisma-reference-saturate)) !important;
+}
+
+html[data-theme="prisma-dark"] [data-prisma-component="ProductCard"],
+html[data-theme="prisma-dark"] [data-prisma-component="SecondaryActionCard"],
+html[data-theme="prisma-dark"] [data-prisma-component="TerminalStatusCard"],
+html[data-theme="prisma-dark"] [data-prisma-component="Toast"],
+html[data-theme="prisma-dark"] [data-prisma-component="EmptyState"],
+html[data-theme="prisma-dark"] [data-prisma-component="ErrorState"] {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  background: var(--prisma-reference-card-material) !important;
+  box-shadow: var(--prisma-reference-shadow-card) !important;
+  backdrop-filter: blur(var(--prisma-reference-card-blur)) saturate(1.28) !important;
+  -webkit-backdrop-filter: blur(var(--prisma-reference-card-blur)) saturate(1.28) !important;
+}
+
+html[data-theme="prisma-dark"] [data-prisma-component="CheckoutButton"],
+html[data-theme="prisma-dark"] [data-prisma-component="ScanButton"][data-prisma-primary="true"] {
+  background: var(--prisma-reference-cta-gradient) !important;
+  border-color: rgba(255, 232, 174, 0.68) !important;
+  box-shadow: var(--prisma-reference-shadow-gold) !important;
+}
+/* PRISMA_REFERENCE_VISUAL_REFINEMENT_01I END */

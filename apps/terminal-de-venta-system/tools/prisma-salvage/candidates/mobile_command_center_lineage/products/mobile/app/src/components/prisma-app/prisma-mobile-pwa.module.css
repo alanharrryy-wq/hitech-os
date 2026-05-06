@@ -1,0 +1,312 @@
+.pageRoot {
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+  color: #fff7df;
+  background:
+    radial-gradient(circle at 14% 8%, rgba(69, 119, 255, .32), transparent 29rem),
+    radial-gradient(circle at 84% 18%, rgba(255, 213, 106, .20), transparent 27rem),
+    radial-gradient(circle at 50% 108%, rgba(41, 232, 181, .16), transparent 28rem),
+    linear-gradient(155deg, #05070d 0%, #07111f 48%, #03040a 100%);
+  padding: clamp(20px, 5vw, 48px);
+  display: grid;
+  place-items: center;
+}
+
+.pageRoot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(circle at center, black 0%, transparent 74%);
+  opacity: .34;
+}
+
+.ambientGlow {
+  position: absolute;
+  width: 70vmin;
+  height: 70vmin;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 35% 35%, rgba(255, 213, 106, .22), transparent 40%),
+    radial-gradient(circle at 65% 65%, rgba(75, 150, 255, .26), transparent 46%);
+  filter: blur(18px);
+  animation: prismaFloat 9s ease-in-out infinite alternate;
+  opacity: .88;
+}
+
+.minimalShell {
+  position: relative;
+  z-index: 1;
+  width: min(840px, 100%);
+  display: grid;
+  gap: 20px;
+}
+
+.brandPill {
+  justify-self: center;
+  border: 1px solid rgba(255, 213, 106, .26);
+  color: #ffe3a0;
+  background: rgba(255, 213, 106, .08);
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 900;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  box-shadow: 0 0 34px rgba(255, 213, 106, .12);
+}
+
+.minimalHero {
+  text-align: center;
+  display: grid;
+  gap: 10px;
+}
+
+.minimalHero span,
+.selectorTopline span,
+.orbLabel {
+  color: #aab8cc;
+  font-size: .78rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+.minimalHero h1 {
+  margin: 0;
+  font-size: clamp(3rem, 12vw, 7.4rem);
+  line-height: .82;
+  letter-spacing: -.095em;
+  text-wrap: balance;
+  text-shadow: 0 24px 70px rgba(0,0,0,.45);
+}
+
+.minimalHero p {
+  margin: 0 auto;
+  max-width: 620px;
+  color: #d8e3f7;
+  line-height: 1.65;
+  font-size: clamp(.98rem, 2vw, 1.12rem);
+}
+
+.installCard,
+.compactCard {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  gap: clamp(18px, 3vw, 26px);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: clamp(28px, 5vw, 44px);
+  padding: clamp(18px, 4vw, 34px);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.16), rgba(255,255,255,.055)),
+    radial-gradient(circle at 84% 12%, rgba(255, 213, 106, .14), transparent 40%);
+  box-shadow:
+    0 36px 110px rgba(0, 0, 0, .42),
+    inset 0 1px 0 rgba(255,255,255,.18),
+    inset 0 -1px 0 rgba(255,255,255,.06);
+  backdrop-filter: blur(24px) saturate(130%);
+}
+
+.installCard::before,
+.compactCard::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255,255,255,.14), transparent 38%, rgba(255, 213, 106, .11));
+  pointer-events: none;
+}
+
+.selectorTopline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.selectorTopline i {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #76ffb2;
+  box-shadow: 0 0 24px #76ffb2;
+}
+
+.platformChooserMinimal {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(14px, 3vw, 24px);
+}
+
+.platformOrbCard {
+  position: relative;
+  overflow: hidden;
+  min-height: clamp(210px, 38vw, 310px);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: clamp(26px, 4vw, 38px);
+  cursor: pointer;
+  color: #fff7df;
+  text-align: left;
+  padding: clamp(20px, 4vw, 30px);
+  display: grid;
+  align-content: end;
+  gap: 10px;
+  background:
+    radial-gradient(circle at 68% 18%, rgba(255,255,255,.20), transparent 24%),
+    linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.045));
+  box-shadow:
+    0 24px 70px rgba(0,0,0,.32),
+    inset 0 1px 0 rgba(255,255,255,.16);
+  transform: translateY(0) scale(1);
+  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease, background .22s ease;
+}
+
+.platformOrbCard::before {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  right: -74px;
+  top: -78px;
+  border-radius: 999px;
+  filter: blur(2px);
+  opacity: .86;
+  transition: transform .26s ease, opacity .26s ease;
+}
+
+.platformOrbCard[data-platform="android"]::before {
+  background: radial-gradient(circle, rgba(80,255,178,.42), rgba(65,119,255,.14) 56%, transparent 70%);
+}
+
+.platformOrbCard[data-platform="ios"]::before {
+  background: radial-gradient(circle, rgba(255,213,106,.45), rgba(255,255,255,.13) 56%, transparent 70%);
+}
+
+.platformOrbCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.13) 46%, transparent 72%);
+  transform: translateX(-120%);
+  transition: transform .55s ease;
+}
+
+.platformOrbCard:hover,
+.platformOrbCard:focus-visible,
+.platformOrbCard[data-selected="true"] {
+  outline: none;
+  transform: translateY(-6px) scale(1.015);
+  border-color: rgba(255, 213, 106, .45);
+  box-shadow:
+    0 34px 90px rgba(0,0,0,.44),
+    0 0 70px rgba(255,213,106,.12),
+    inset 0 1px 0 rgba(255,255,255,.22);
+}
+
+.platformOrbCard:hover::before,
+.platformOrbCard:focus-visible::before,
+.platformOrbCard[data-selected="true"]::before {
+  transform: scale(1.18);
+  opacity: 1;
+}
+
+.platformOrbCard:hover::after,
+.platformOrbCard:focus-visible::after,
+.platformOrbCard[data-selected="true"]::after {
+  transform: translateX(120%);
+}
+
+.orbIcon {
+  position: absolute;
+  top: clamp(18px, 4vw, 28px);
+  left: clamp(18px, 4vw, 28px);
+  width: 66px;
+  height: 66px;
+  display: grid;
+  place-items: center;
+  border-radius: 24px;
+  font-size: 2.15rem;
+  background: rgba(255,255,255,.12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 18px 42px rgba(0,0,0,.24);
+}
+
+.platformOrbCard strong {
+  position: relative;
+  z-index: 1;
+  display: block;
+  font-size: clamp(2rem, 6vw, 3.7rem);
+  line-height: .88;
+  letter-spacing: -.075em;
+}
+
+.orbLabel {
+  position: relative;
+  z-index: 1;
+  color: #ffe3a0;
+}
+
+.minimalMessage {
+  margin: 0;
+  border: 1px solid rgba(255, 213, 106, .24);
+  border-radius: 22px;
+  color: #fff1bf;
+  background: rgba(255, 213, 106, .08);
+  padding: 14px 16px;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.hiddenDashboardLink {
+  justify-self: center;
+  color: rgba(255,255,255,.56);
+  text-decoration: none;
+  font-size: .82rem;
+}
+
+.hiddenDashboardLink:hover,
+.hiddenDashboardLink:focus-visible {
+  color: #ffd56a;
+  outline: none;
+}
+
+.pageHero,
+.installHeader,
+.installStatusGrid,
+.installActions,
+.stepsGrid,
+.guideCard,
+.warning,
+.message,
+.heroLinks,
+.platformChooser,
+.platformCard {
+  display: none;
+}
+
+@keyframes prismaFloat {
+  from { transform: translate3d(-10%, -8%, 0) rotate(0deg) scale(1); }
+  to { transform: translate3d(10%, 6%, 0) rotate(18deg) scale(1.08); }
+}
+
+@media (max-width: 680px) {
+  .pageRoot { padding: 18px; place-items: stretch; }
+  .minimalShell { align-content: center; min-height: calc(100vh - 36px); }
+  .platformChooserMinimal { grid-template-columns: 1fr; }
+  .platformOrbCard { min-height: 178px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambientGlow,
+  .platformOrbCard,
+  .platformOrbCard::before,
+  .platformOrbCard::after {
+    animation: none;
+    transition: none;
+  }
+}

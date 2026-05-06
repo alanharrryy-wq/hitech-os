@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Release Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "releaseId",
+    "packageName",
+    "packageVersion",
+    "channel",
+    "files",
+    "verifyChecks",
+    "rollbackPlan"
+  ],
+  "properties": {
+    "releaseId": {
+      "type": "string"
+    },
+    "packageName": {
+      "type": "string"
+    },
+    "packageVersion": {
+      "type": "string"
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "stable",
+        "pilot",
+        "hotfix",
+        "internal"
+      ]
+    },
+    "compatibleVersions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "checksums": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "migrations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "verifyChecks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rollbackPlan": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "signature": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

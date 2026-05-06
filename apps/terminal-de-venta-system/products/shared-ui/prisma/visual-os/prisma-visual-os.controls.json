@@ -1,0 +1,269 @@
+{
+  "meta": {
+    "system": "PRISMA Visual Operating System",
+    "version": "00A_20260503_v01",
+    "scope": "tri-surface visual governance: tablet, pc, mobile",
+    "mutation": "none_by_default",
+    "owner": "products/shared-ui/prisma/visual-os",
+    "notes": "Control plane for future visual changes. This file defines knobs with closed ranges and operating intent."
+  },
+  "controls": [
+    {
+      "id": "brand_tone",
+      "label": "Tono de marca",
+      "type": "enum",
+      "values": [
+        "premium",
+        "operational",
+        "hybrid"
+      ],
+      "default": "hybrid",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "affects": [
+        "color_temperature",
+        "highlight_strength",
+        "copy_density",
+        "surface_drama"
+      ],
+      "guardrail": "Never let premium drama reduce transaction clarity."
+    },
+    {
+      "id": "surface_density",
+      "label": "Densidad de superficie",
+      "type": "number",
+      "min": 0,
+      "max": 100,
+      "default": 52,
+      "unit": "score",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "affects": [
+        "spacing",
+        "panel_padding",
+        "row_height",
+        "grid_gap"
+      ],
+      "guardrail": "Tablet touch targets stay >= 44px; PC can compress data, mobile must preserve scannability."
+    },
+    {
+      "id": "operational_contrast",
+      "label": "Contraste operativo",
+      "type": "number",
+      "min": 0,
+      "max": 100,
+      "default": 72,
+      "unit": "score",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "affects": [
+        "text_contrast",
+        "border_visibility",
+        "icon_opacity",
+        "foreground_separation"
+      ],
+      "guardrail": "Price, total, stock, offline and error states must remain readable before beauty wins."
+    },
+    {
+      "id": "depth_glass",
+      "label": "Profundidad glass",
+      "type": "number",
+      "min": 0,
+      "max": 100,
+      "default": 64,
+      "unit": "score",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "affects": [
+        "blur",
+        "saturation",
+        "shadow_depth",
+        "inner_bloom",
+        "edge_light"
+      ],
+      "guardrail": "Glass cannot stack so heavily that text and controls sink into the soup."
+    },
+    {
+      "id": "commercial_emphasis",
+      "label": "Énfasis comercial",
+      "type": "enum",
+      "values": [
+        "product",
+        "cart",
+        "action",
+        "data"
+      ],
+      "default": "action",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "affects": [
+        "visual_hierarchy",
+        "cta_weight",
+        "card_prominence",
+        "metric_prominence"
+      ],
+      "guardrail": "Only one primary focus per screen context."
+    },
+    {
+      "id": "motion_temper",
+      "label": "Temple de movimiento",
+      "type": "number",
+      "min": 0,
+      "max": 100,
+      "default": 34,
+      "unit": "score",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "affects": [
+        "duration",
+        "easing",
+        "hover_lift",
+        "press_feedback"
+      ],
+      "guardrail": "Operational controls stay fast; reduced motion mode must be respected."
+    },
+    {
+      "id": "touch_safety",
+      "label": "Seguridad táctil",
+      "type": "number",
+      "min": 0,
+      "max": 100,
+      "default": 86,
+      "unit": "score",
+      "surfaces": [
+        "tablet",
+        "mobile"
+      ],
+      "affects": [
+        "hit_area",
+        "control_spacing",
+        "button_height",
+        "tap_feedback"
+      ],
+      "guardrail": "Any destructive or payment action requires clear distance and visible affordance."
+    },
+    {
+      "id": "data_legibility",
+      "label": "Legibilidad de datos",
+      "type": "number",
+      "min": 0,
+      "max": 100,
+      "default": 78,
+      "unit": "score",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "affects": [
+        "number_weight",
+        "caption_opacity",
+        "table_density",
+        "kpi_emphasis"
+      ],
+      "guardrail": "Numbers carry business decisions; do not style them into decoration."
+    },
+    {
+      "id": "critical_action_weight",
+      "label": "Peso de acción crítica",
+      "type": "number",
+      "min": 0,
+      "max": 100,
+      "default": 84,
+      "unit": "score",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "affects": [
+        "primary_cta_height",
+        "primary_cta_glow",
+        "confirmation_prominence",
+        "danger_spacing"
+      ],
+      "guardrail": "Payment, save, sync retry and destructive decisions must be visually unambiguous."
+    },
+    {
+      "id": "ambient_noise",
+      "label": "Ruido ambiental",
+      "type": "number",
+      "min": 0,
+      "max": 100,
+      "default": 24,
+      "unit": "score",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "affects": [
+        "haze",
+        "grain",
+        "vignette",
+        "background_texture"
+      ],
+      "guardrail": "Background may create atmosphere, never competition."
+    },
+    {
+      "id": "state_signal_strength",
+      "label": "Fuerza de señales de estado",
+      "type": "number",
+      "min": 0,
+      "max": 100,
+      "default": 76,
+      "unit": "score",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "affects": [
+        "error_badges",
+        "offline_indicators",
+        "sync_pending",
+        "stock_warnings"
+      ],
+      "guardrail": "Error, offline, low stock and sync cannot hide behind the brand palette."
+    },
+    {
+      "id": "surface_separation",
+      "label": "Separación de capas",
+      "type": "number",
+      "min": 0,
+      "max": 100,
+      "default": 68,
+      "unit": "score",
+      "surfaces": [
+        "tablet",
+        "pc",
+        "mobile"
+      ],
+      "affects": [
+        "panel_border",
+        "shadow_stack",
+        "z_depth",
+        "section_edges"
+      ],
+      "guardrail": "Nested surfaces must remain distinguishable without circus outlines."
+    }
+  ]
+}

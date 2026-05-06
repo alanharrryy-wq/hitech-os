@@ -1,0 +1,104 @@
+{
+  "package": "PRISMA_LICENSE_SYSTEM_PRO_ROADMAP_05",
+  "version": "0.5.0",
+  "requires": [
+    "PRISMA_LICENSE_CANONICAL_OPERATIONS_04"
+  ],
+  "licenseServer": {
+    "serviceName": "prisma-license-server",
+    "minimumEndpoints": [
+      {
+        "method": "GET",
+        "path": "/health"
+      },
+      {
+        "method": "POST",
+        "path": "/licenses/activate"
+      },
+      {
+        "method": "POST",
+        "path": "/licenses/refresh"
+      },
+      {
+        "method": "POST",
+        "path": "/licenses/revoke"
+      },
+      {
+        "method": "POST",
+        "path": "/licenses/suspend"
+      },
+      {
+        "method": "GET",
+        "path": "/licenses/current"
+      },
+      {
+        "method": "GET",
+        "path": "/customers/:id/licenses"
+      }
+    ],
+    "entities": [
+      "Customer",
+      "Business",
+      "Device",
+      "Plan",
+      "License",
+      "Renewal",
+      "AuditEvent"
+    ],
+    "signaturePolicy": {
+      "privateKeyInRepo": false,
+      "publicKeyVersionedInClient": true,
+      "keyIdRequired": true,
+      "productionAllowsUnsigned": false,
+      "supportedAlgorithms": [
+        "ed25519"
+      ]
+    }
+  },
+  "deviceActivation": {
+    "requiredFields": [
+      "deviceId",
+      "terminalId",
+      "businessId",
+      "customerId",
+      "installationFingerprint",
+      "activatedAt",
+      "lastSeenAt",
+      "plan",
+      "licenseId",
+      "status"
+    ],
+    "states": [
+      "pending",
+      "active",
+      "suspended",
+      "revoked",
+      "replaced"
+    ],
+    "planLimits": {
+      "TABLET_SOLO": {
+        "terminals": 1,
+        "branches": 1
+      },
+      "TABLET_PRO": {
+        "terminals": 2,
+        "branches": 1
+      },
+      "TABLET_PC_REQUIRED": {
+        "terminals": 6,
+        "branches": 3
+      }
+    }
+  },
+  "commands": [
+    "license-pro-readiness",
+    "license-pro-contract"
+  ],
+  "stopConditions": [
+    "license-full-check not FINAL READY",
+    "license-plan-matrix not passing",
+    "missing 04 command block in terminal_de_venta.cmd",
+    "private key committed into repo",
+    "production unsigned licenses accepted"
+  ]
+}

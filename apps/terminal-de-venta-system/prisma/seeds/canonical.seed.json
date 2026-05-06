@@ -1,0 +1,658 @@
+{
+  "businesses": [
+    {
+      "id": "biz_hitech_default",
+      "name": "HITECH Demo Business",
+      "taxId": "HTD260425MX1",
+      "currency": "MXN"
+    }
+  ],
+  "stores": [
+    {
+      "id": "store_obrera_04",
+      "businessId": "biz_hitech_default",
+      "code": "OBR-04",
+      "name": "Sucursal Obrera 04"
+    }
+  ],
+  "terminals": [
+    {
+      "id": "terminal_tablet_01",
+      "businessId": "biz_hitech_default",
+      "storeId": "store_obrera_04",
+      "code": "TBL-01",
+      "name": "Tablet caja 01",
+      "isActive": true
+    }
+  ],
+  "taxRates": [
+    {
+      "id": "tax_mx_iva_16",
+      "businessId": "biz_hitech_default",
+      "name": "IVA 16%",
+      "rateBps": 1600,
+      "isDefault": true,
+      "isActive": true
+    },
+    {
+      "id": "tax_mx_zero",
+      "businessId": "biz_hitech_default",
+      "name": "IVA 0%",
+      "rateBps": 0,
+      "isDefault": false,
+      "isActive": true
+    }
+  ],
+  "priceLists": [
+    {
+      "id": "pl_retail_default",
+      "businessId": "biz_hitech_default",
+      "name": "Menudeo default",
+      "currency": "MXN",
+      "isDefault": true,
+      "isActive": true,
+      "startsAt": "2026-04-01T00:00:00.000Z",
+      "endsAt": null
+    },
+    {
+      "id": "pl_wholesale_reference",
+      "businessId": "biz_hitech_default",
+      "name": "Mayoreo referencia",
+      "currency": "MXN",
+      "isDefault": false,
+      "isActive": true,
+      "startsAt": "2026-04-01T00:00:00.000Z",
+      "endsAt": null
+    }
+  ],
+  "products": [
+    {
+      "id": "prd_ref_355",
+      "businessId": "biz_hitech_default",
+      "sku": "REF-355ML",
+      "name": "Refresco 355 ml",
+      "category": "Bebidas",
+      "priceCents": 3000,
+      "costCents": 1250,
+      "stockOnHand": 5,
+      "taxRateId": "tax_mx_iva_16",
+      "isActive": true
+    },
+    {
+      "id": "prd_bot_600",
+      "businessId": "biz_hitech_default",
+      "sku": "BOT-600ML",
+      "name": "Agua 600 ml",
+      "category": "Bebidas",
+      "priceCents": 2000,
+      "costCents": 800,
+      "stockOnHand": 18,
+      "taxRateId": "tax_mx_iva_16",
+      "isActive": true
+    },
+    {
+      "id": "prd_pap_adobo",
+      "businessId": "biz_hitech_default",
+      "sku": "PAP-ADOBO",
+      "name": "Papas adobadas",
+      "category": "Snacks",
+      "priceCents": 3500,
+      "costCents": 2200,
+      "stockOnHand": 3,
+      "taxRateId": "tax_mx_iva_16",
+      "isActive": true
+    },
+    {
+      "id": "prd_caf_amer",
+      "businessId": "biz_hitech_default",
+      "sku": "CAF-AMER",
+      "name": "Cafe americano",
+      "category": "Cafe",
+      "priceCents": 3700,
+      "costCents": 1400,
+      "stockOnHand": 7,
+      "taxRateId": "tax_mx_iva_16",
+      "isActive": true
+    },
+    {
+      "id": "prd_cho_clas",
+      "businessId": "biz_hitech_default",
+      "sku": "CHO-CLAS",
+      "name": "Chocolate clasico",
+      "category": "Dulces",
+      "priceCents": 2700,
+      "costCents": 1600,
+      "stockOnHand": 11,
+      "taxRateId": "tax_mx_iva_16",
+      "isActive": true
+    }
+  ],
+  "barcodes": [
+    {
+      "id": "bc_ref_355",
+      "businessId": "biz_hitech_default",
+      "productId": "prd_ref_355",
+      "code": "7501000000011",
+      "createdAt": "2026-04-18T07:00:00.000Z"
+    },
+    {
+      "id": "bc_bot_600",
+      "businessId": "biz_hitech_default",
+      "productId": "prd_bot_600",
+      "code": "7501000000028",
+      "createdAt": "2026-04-18T07:01:00.000Z"
+    },
+    {
+      "id": "bc_pap_adobo",
+      "businessId": "biz_hitech_default",
+      "productId": "prd_pap_adobo",
+      "code": "7501000000035",
+      "createdAt": "2026-04-18T07:02:00.000Z"
+    },
+    {
+      "id": "bc_caf_amer",
+      "businessId": "biz_hitech_default",
+      "productId": "prd_caf_amer",
+      "code": "7501000000042",
+      "createdAt": "2026-04-18T07:03:00.000Z"
+    },
+    {
+      "id": "bc_cho_clas",
+      "businessId": "biz_hitech_default",
+      "productId": "prd_cho_clas",
+      "code": "7501000000059",
+      "createdAt": "2026-04-18T07:04:00.000Z"
+    }
+  ],
+  "priceListItems": [
+    {
+      "id": "pli_default_ref_355",
+      "businessId": "biz_hitech_default",
+      "priceListId": "pl_retail_default",
+      "productId": "prd_ref_355",
+      "priceCents": 3000,
+      "startsAt": "2026-04-01T00:00:00.000Z",
+      "endsAt": null
+    },
+    {
+      "id": "pli_default_bot_600",
+      "businessId": "biz_hitech_default",
+      "priceListId": "pl_retail_default",
+      "productId": "prd_bot_600",
+      "priceCents": 2000,
+      "startsAt": "2026-04-01T00:00:00.000Z",
+      "endsAt": null
+    },
+    {
+      "id": "pli_default_pap_adobo",
+      "businessId": "biz_hitech_default",
+      "priceListId": "pl_retail_default",
+      "productId": "prd_pap_adobo",
+      "priceCents": 3500,
+      "startsAt": "2026-04-01T00:00:00.000Z",
+      "endsAt": null
+    },
+    {
+      "id": "pli_default_caf_amer",
+      "businessId": "biz_hitech_default",
+      "priceListId": "pl_retail_default",
+      "productId": "prd_caf_amer",
+      "priceCents": 3700,
+      "startsAt": "2026-04-01T00:00:00.000Z",
+      "endsAt": null
+    },
+    {
+      "id": "pli_default_cho_clas",
+      "businessId": "biz_hitech_default",
+      "priceListId": "pl_retail_default",
+      "productId": "prd_cho_clas",
+      "priceCents": 2700,
+      "startsAt": "2026-04-01T00:00:00.000Z",
+      "endsAt": null
+    }
+  ],
+  "stockSnapshots": [
+    {
+      "id": "stock_ref_355_main",
+      "businessId": "biz_hitech_default",
+      "productId": "prd_ref_355",
+      "location": "A-01",
+      "onHand": 5,
+      "reserved": 0,
+      "available": 5,
+      "daysCover": 0.9,
+      "snapshotAt": "2026-04-18T18:00:00.000Z"
+    },
+    {
+      "id": "stock_bot_600_main",
+      "businessId": "biz_hitech_default",
+      "productId": "prd_bot_600",
+      "location": "A-02",
+      "onHand": 18,
+      "reserved": 0,
+      "available": 18,
+      "daysCover": 2.1,
+      "snapshotAt": "2026-04-18T18:00:00.000Z"
+    },
+    {
+      "id": "stock_pap_adobo_main",
+      "businessId": "biz_hitech_default",
+      "productId": "prd_pap_adobo",
+      "location": "B-02",
+      "onHand": 3,
+      "reserved": 0,
+      "available": 3,
+      "daysCover": 0.6,
+      "snapshotAt": "2026-04-18T18:00:00.000Z"
+    },
+    {
+      "id": "stock_caf_amer_main",
+      "businessId": "biz_hitech_default",
+      "productId": "prd_caf_amer",
+      "location": "C-01",
+      "onHand": 7,
+      "reserved": 0,
+      "available": 7,
+      "daysCover": 3.2,
+      "snapshotAt": "2026-04-18T18:00:00.000Z"
+    },
+    {
+      "id": "stock_cho_clas_main",
+      "businessId": "biz_hitech_default",
+      "productId": "prd_cho_clas",
+      "location": "C-02",
+      "onHand": 11,
+      "reserved": 0,
+      "available": 11,
+      "daysCover": 5.2,
+      "snapshotAt": "2026-04-18T18:00:00.000Z"
+    }
+  ],
+  "stockMovements": [
+    {
+      "id": "mov_ref_355_sale",
+      "businessId": "biz_hitech_default",
+      "productId": "prd_ref_355",
+      "movement": "sale",
+      "qty": -2,
+      "reason": "sale TK-240418-181",
+      "location": "A-01",
+      "createdAt": "2026-04-18T17:40:00.000Z"
+    },
+    {
+      "id": "mov_pap_adobo_sale",
+      "businessId": "biz_hitech_default",
+      "productId": "prd_pap_adobo",
+      "movement": "sale",
+      "qty": -1,
+      "reason": "sale TK-240418-181",
+      "location": "B-02",
+      "createdAt": "2026-04-18T17:40:00.000Z"
+    }
+  ],
+  "suppliers": [
+    {
+      "id": "sup_bebidas_centro",
+      "businessId": "biz_hitech_default",
+      "name": "Bebidas del Centro",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "sup_snacks_mx",
+      "businessId": "biz_hitech_default",
+      "name": "Snacks MX",
+      "status": "ACTIVE"
+    }
+  ],
+  "purchaseOrders": [
+    {
+      "id": "po_demo_001",
+      "businessId": "biz_hitech_default",
+      "supplierId": "sup_bebidas_centro",
+      "folio": "PO-240418-001",
+      "status": "ordered",
+      "createdAt": "2026-04-18T09:00:00.000Z",
+      "expectedAt": "2026-04-20T09:00:00.000Z",
+      "subtotalCents": 56400,
+      "taxCents": 9024,
+      "totalCents": 65424
+    }
+  ],
+  "purchaseOrderLines": [
+    {
+      "id": "pol_demo_001",
+      "businessId": "biz_hitech_default",
+      "purchaseOrderId": "po_demo_001",
+      "productId": "prd_ref_355",
+      "sku": "REF-355ML",
+      "name": "Refresco 355 ml",
+      "qtyOrdered": 24,
+      "unitCostCents": 1250,
+      "lineSubtotalCents": 30000,
+      "lineTaxCents": 4800,
+      "lineTotalCents": 34800
+    },
+    {
+      "id": "pol_demo_002",
+      "businessId": "biz_hitech_default",
+      "purchaseOrderId": "po_demo_001",
+      "productId": "prd_pap_adobo",
+      "sku": "PAP-ADOBO",
+      "name": "Papas adobadas",
+      "qtyOrdered": 12,
+      "unitCostCents": 2200,
+      "lineSubtotalCents": 26400,
+      "lineTaxCents": 4224,
+      "lineTotalCents": 30624
+    }
+  ],
+  "goodsReceipts": [
+    {
+      "id": "gr_demo_001",
+      "businessId": "biz_hitech_default",
+      "purchaseOrderId": "po_demo_001",
+      "supplierId": "sup_bebidas_centro",
+      "folio": "GR-240418-001",
+      "status": "posted",
+      "receivedAt": "2026-04-19T10:30:00.000Z",
+      "subtotalCents": 47000,
+      "taxCents": 7520,
+      "totalCents": 54520
+    }
+  ],
+  "goodsReceiptLines": [
+    {
+      "id": "grl_demo_001",
+      "businessId": "biz_hitech_default",
+      "goodsReceiptId": "gr_demo_001",
+      "purchaseOrderLineId": "pol_demo_001",
+      "productId": "prd_ref_355",
+      "sku": "REF-355ML",
+      "name": "Refresco 355 ml",
+      "qtyReceived": 20,
+      "unitCostCents": 1250,
+      "lineSubtotalCents": 25000,
+      "lineTaxCents": 4000,
+      "lineTotalCents": 29000
+    },
+    {
+      "id": "grl_demo_002",
+      "businessId": "biz_hitech_default",
+      "goodsReceiptId": "gr_demo_001",
+      "purchaseOrderLineId": "pol_demo_002",
+      "productId": "prd_pap_adobo",
+      "sku": "PAP-ADOBO",
+      "name": "Papas adobadas",
+      "qtyReceived": 10,
+      "unitCostCents": 2200,
+      "lineSubtotalCents": 22000,
+      "lineTaxCents": 3520,
+      "lineTotalCents": 25520
+    }
+  ],
+  "replenishmentSignals": [
+    {
+      "id": "rep_ref_355",
+      "businessId": "biz_hitech_default",
+      "productId": "prd_ref_355",
+      "location": "A-01",
+      "suggestedQty": 36,
+      "priority": "high",
+      "createdAt": "2026-04-18T18:02:00.000Z"
+    },
+    {
+      "id": "rep_pap_adobo",
+      "businessId": "biz_hitech_default",
+      "productId": "prd_pap_adobo",
+      "location": "B-02",
+      "suggestedQty": 24,
+      "priority": "high",
+      "createdAt": "2026-04-18T18:03:00.000Z"
+    },
+    {
+      "id": "rep_bot_600",
+      "businessId": "biz_hitech_default",
+      "productId": "prd_bot_600",
+      "location": "A-02",
+      "suggestedQty": 18,
+      "priority": "normal",
+      "createdAt": "2026-04-18T18:04:00.000Z"
+    }
+  ],
+  "cashSessions": [
+    {
+      "id": "cash_session_open_001",
+      "businessId": "biz_hitech_default",
+      "storeId": "store_obrera_04",
+      "terminalId": "terminal_tablet_01",
+      "cashierId": "usr_mariela",
+      "cashier": "Mariela Soto",
+      "openedAt": "2026-04-18T06:55:00.000Z",
+      "closedAt": null,
+      "cashStartCents": 250000,
+      "cashEndCents": null,
+      "expectedCashCents": 270600,
+      "varianceCents": -12000,
+      "status": "OPEN"
+    },
+    {
+      "id": "cash_session_closed_001",
+      "businessId": "biz_hitech_default",
+      "storeId": "store_obrera_04",
+      "terminalId": "terminal_tablet_01",
+      "cashierId": "usr_luis",
+      "cashier": "Luis Tovar",
+      "openedAt": "2026-04-17T14:00:00.000Z",
+      "closedAt": "2026-04-17T22:00:00.000Z",
+      "cashStartCents": 250000,
+      "cashEndCents": 264500,
+      "expectedCashCents": 264500,
+      "varianceCents": 0,
+      "status": "CLOSED"
+    }
+  ],
+  "cashMovements": [
+    {
+      "id": "cash_mov_open",
+      "businessId": "biz_hitech_default",
+      "cashSessionId": "cash_session_open_001",
+      "movement": "opening",
+      "amountCents": 250000,
+      "reason": "fondo inicial",
+      "createdAt": "2026-04-18T06:55:00.000Z"
+    },
+    {
+      "id": "cash_mov_withdrawal",
+      "businessId": "biz_hitech_default",
+      "cashSessionId": "cash_session_open_001",
+      "movement": "withdrawal",
+      "amountCents": -300000,
+      "reason": "retiro por seguridad",
+      "createdAt": "2026-04-18T10:35:00.000Z"
+    },
+    {
+      "id": "cash_mov_change",
+      "businessId": "biz_hitech_default",
+      "cashSessionId": "cash_session_open_001",
+      "movement": "deposit",
+      "amountCents": 40000,
+      "reason": "cambio",
+      "createdAt": "2026-04-18T13:10:00.000Z"
+    }
+  ],
+  "sales": [
+    {
+      "id": "sale_demo_001",
+      "businessId": "biz_hitech_default",
+      "terminalId": "terminal_tablet_01",
+      "cashSessionId": "cash_session_open_001",
+      "folio": "TK-240418-181",
+      "cashier": "Mariela Soto",
+      "totalCents": 9500,
+      "status": "closed",
+      "createdAt": "2026-04-18T17:40:00.000Z"
+    },
+    {
+      "id": "sale_demo_002",
+      "businessId": "biz_hitech_default",
+      "terminalId": "terminal_tablet_01",
+      "cashSessionId": "cash_session_open_001",
+      "folio": "TK-240418-180",
+      "cashier": "Mariela Soto",
+      "totalCents": 5700,
+      "status": "closed",
+      "createdAt": "2026-04-18T17:21:00.000Z"
+    },
+    {
+      "id": "sale_demo_003",
+      "businessId": "biz_hitech_default",
+      "terminalId": "terminal_tablet_01",
+      "cashSessionId": "cash_session_open_001",
+      "folio": "TK-240418-179",
+      "cashier": "Mariela Soto",
+      "totalCents": 5400,
+      "status": "pending_sync",
+      "createdAt": "2026-04-18T16:59:00.000Z"
+    }
+  ],
+  "saleLines": [
+    {
+      "id": "sale_line_demo_001",
+      "businessId": "biz_hitech_default",
+      "saleId": "sale_demo_001",
+      "productId": "prd_ref_355",
+      "sku": "REF-355ML",
+      "productName": "Refresco 355 ml",
+      "qty": 2,
+      "priceCents": 3000,
+      "totalCents": 6000
+    },
+    {
+      "id": "sale_line_demo_002",
+      "businessId": "biz_hitech_default",
+      "saleId": "sale_demo_001",
+      "productId": "prd_pap_adobo",
+      "sku": "PAP-ADOBO",
+      "productName": "Papas adobadas",
+      "qty": 1,
+      "priceCents": 3500,
+      "totalCents": 3500
+    },
+    {
+      "id": "sale_line_demo_003",
+      "businessId": "biz_hitech_default",
+      "saleId": "sale_demo_002",
+      "productId": "prd_bot_600",
+      "sku": "BOT-600ML",
+      "productName": "Agua 600 ml",
+      "qty": 1,
+      "priceCents": 2000,
+      "totalCents": 2000
+    },
+    {
+      "id": "sale_line_demo_004",
+      "businessId": "biz_hitech_default",
+      "saleId": "sale_demo_002",
+      "productId": "prd_caf_amer",
+      "sku": "CAF-AMER",
+      "productName": "Cafe americano",
+      "qty": 1,
+      "priceCents": 3700,
+      "totalCents": 3700
+    },
+    {
+      "id": "sale_line_demo_005",
+      "businessId": "biz_hitech_default",
+      "saleId": "sale_demo_003",
+      "productId": "prd_cho_clas",
+      "sku": "CHO-CLAS",
+      "productName": "Chocolate clasico",
+      "qty": 2,
+      "priceCents": 2700,
+      "totalCents": 5400
+    }
+  ],
+  "saleReturns": [
+    {
+      "id": "return_demo_001",
+      "businessId": "biz_hitech_default",
+      "saleFolio": "TK-240418-181",
+      "reason": "captura duplicada",
+      "amountCents": 3500,
+      "status": "closed",
+      "createdAt": "2026-04-18T17:52:00.000Z",
+      "cashier": "Mariela Soto"
+    },
+    {
+      "id": "return_demo_002",
+      "businessId": "biz_hitech_default",
+      "saleFolio": "TK-240418-179",
+      "reason": "precio incorrecto",
+      "amountCents": 2700,
+      "status": "review",
+      "createdAt": "2026-04-18T17:57:00.000Z",
+      "cashier": "Mariela Soto"
+    }
+  ],
+  "auditCounts": [
+    {
+      "id": "audit_count_001",
+      "businessId": "biz_hitech_default",
+      "location": "A-01",
+      "countedBy": "Supervisor turno",
+      "variance": -2,
+      "status": "open",
+      "countedAt": "2026-04-18T15:30:00.000Z"
+    }
+  ],
+  "outboxEvents": [
+    {
+      "id": "evt_sale_demo_001",
+      "businessId": "biz_hitech_default",
+      "topic": "sale.created",
+      "aggregateId": "TK-240418-181",
+      "payloadJson": "{\"folio\":\"TK-240418-181\",\"totalCents\":9500}",
+      "status": "pending",
+      "attempts": 3,
+      "createdAt": "2026-04-18T17:40:10.000Z",
+      "sentAt": null,
+      "lastError": null
+    },
+    {
+      "id": "evt_return_demo_001",
+      "businessId": "biz_hitech_default",
+      "topic": "return.created",
+      "aggregateId": "return_demo_001",
+      "payloadJson": "{\"saleFolio\":\"TK-240418-181\",\"amountCents\":3500}",
+      "status": "pending",
+      "attempts": 1,
+      "createdAt": "2026-04-18T17:52:10.000Z",
+      "sentAt": null,
+      "lastError": null
+    },
+    {
+      "id": "evt_shift_open_demo_001",
+      "businessId": "biz_hitech_default",
+      "topic": "shift.opened",
+      "aggregateId": "cash_session_open_001",
+      "payloadJson": "{\"terminalId\":\"terminal_tablet_01\",\"cashier\":\"Mariela Soto\"}",
+      "status": "sent",
+      "attempts": 1,
+      "createdAt": "2026-04-18T06:55:10.000Z",
+      "sentAt": "2026-04-18T06:56:00.000Z",
+      "lastError": null
+    },
+    {
+      "id": "evt_sync_failed_001",
+      "businessId": "biz_hitech_default",
+      "topic": "sync.failed",
+      "aggregateId": "heartbeat_240418_001",
+      "payloadJson": "{\"reason\":\"network_timeout\"}",
+      "status": "failed",
+      "attempts": 5,
+      "createdAt": "2026-04-18T17:58:00.000Z",
+      "sentAt": null,
+      "lastError": "network_timeout"
+    }
+  ]
+}

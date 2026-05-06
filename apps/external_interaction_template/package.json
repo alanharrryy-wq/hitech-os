@@ -1,6 +1,6 @@
 {
   "name": "@hitech/external_interaction_template",
-  "version": "0.1.0",
+  "version": "1.0.0-prisma-web-clean-canvas.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -8,40 +8,23 @@
     "dev:multi": "pnpm run dev",
     "build": "next build",
     "start": "next start -p 3110",
-    "lint": "node -e \"console.log('external_interaction_template lint: configure project-specific linting as needed')\"",
+    "lint": "node -e \"console.log('prisma-web lint: no project-specific lint configured yet')\"",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "prisma:generate": "prisma generate",
-    "prisma:push": "prisma db push",
-    "prisma:seed": "tsx prisma/seed.ts",
-    "db:setup": "pnpm run prisma:generate && pnpm run prisma:push && pnpm run prisma:seed",
-    "i18n:guardrails": "python tools/enforce_i18n_guardrails.py --root .",
-    "i18n:new-feature": "python tools/new_feature_i18n_contract.py --root .",
-    "i18n:guardrails:update-baseline": "python tools/enforce_i18n_guardrails.py --root . --update-baseline",
-    "i18n:guard": "python \".\\tools\\enforce_i18n_guardrails.py\" --root \".\""
+    "test": "node -e \"console.log('prisma-web tests: smoke via build/typecheck for v01')\""
   },
   "dependencies": {
-    "@prisma/client": "5.21.1",
     "clsx": "2.1.1",
-    "framer-motion": "11.11.17",
     "lucide-react": "0.468.0",
     "next": "16.1.6",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "tailwind-merge": "2.6.0",
-    "zod": "3.23.8"
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "tailwind-merge": "2.6.0"
   },
   "devDependencies": {
     "@types/node": "22.13.9",
-    "@types/react": "18.3.5",
-    "@types/react-dom": "18.3.0",
-    "autoprefixer": "10.4.20",
-    "postcss": "8.4.49",
-    "prisma": "5.21.1",
-    "tailwindcss": "3.4.17",
-    "tsx": "4.20.5",
-    "typescript": "5.8.2",
-    "vitest": "2.1.8"
+    "@types/react": "19.0.2",
+    "@types/react-dom": "19.0.2",
+    "typescript": "5.8.2"
   },
   "engines": {
     "node": ">=20.0.0 <26.0.0",

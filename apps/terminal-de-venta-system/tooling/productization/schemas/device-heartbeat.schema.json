@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Device Heartbeat",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "deviceId",
+    "businessId",
+    "surface",
+    "runtimeMode",
+    "appVersion",
+    "health",
+    "observedAt"
+  ],
+  "properties": {
+    "deviceId": {
+      "type": "string"
+    },
+    "businessId": {
+      "type": "string"
+    },
+    "surface": {
+      "type": "string",
+      "enum": [
+        "pc",
+        "tablet"
+      ]
+    },
+    "runtimeMode": {
+      "type": "string",
+      "enum": [
+        "dev",
+        "standalone",
+        "pro",
+        "pc_backoffice",
+        "managed",
+        "degraded_managed"
+      ]
+    },
+    "appVersion": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "type": "string"
+    },
+    "licenseStatus": {
+      "type": "string"
+    },
+    "syncStatus": {
+      "type": "string"
+    },
+    "outboxCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "lastSaleAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "lastDiagnosticAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "health": {
+      "type": "string",
+      "enum": [
+        "green",
+        "yellow",
+        "red",
+        "gray"
+      ]
+    },
+    "observedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

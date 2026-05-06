@@ -1,0 +1,148 @@
+{
+  "verticalId": "convenience",
+  "label": "Conveniencia / minisuper",
+  "version": "0.3.0",
+  "principle": "Productos rapidos, codigos de barra, stock simple, cortes y ventas de alto ritmo.",
+  "extensions": [
+    {
+      "extensionId": "convenience.ShelfLocation",
+      "entityName": "ShelfLocation",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.convenience.ShelfLocation.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.convenience.ShelfLocation.created",
+        "vertical.convenience.ShelfLocation.updated"
+      ],
+      "fixtures": [
+        "convenience_ShelfLocation_happy_path.json",
+        "convenience_ShelfLocation_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "appointmentTime",
+        "prescriptionId",
+        "repairOrderId"
+      ]
+    },
+    {
+      "extensionId": "convenience.QuickPriceOverride",
+      "entityName": "QuickPriceOverride",
+      "extensionType": "catalog_extension",
+      "ownerSurface": "pc_backoffice",
+      "storagePolicy": "local_cache",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.convenience.QuickPriceOverride.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "Product"
+      ],
+      "requiredEvents": [
+        "vertical.convenience.QuickPriceOverride.created",
+        "vertical.convenience.QuickPriceOverride.updated"
+      ],
+      "fixtures": [
+        "convenience_QuickPriceOverride_happy_path.json",
+        "convenience_QuickPriceOverride_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "appointmentTime",
+        "prescriptionId",
+        "repairOrderId"
+      ]
+    },
+    {
+      "extensionId": "convenience.SimplePromotion",
+      "entityName": "SimplePromotion",
+      "extensionType": "catalog_extension",
+      "ownerSurface": "pc_backoffice",
+      "storagePolicy": "local_cache",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.convenience.SimplePromotion.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "Product"
+      ],
+      "requiredEvents": [
+        "vertical.convenience.SimplePromotion.created",
+        "vertical.convenience.SimplePromotion.updated"
+      ],
+      "fixtures": [
+        "convenience_SimplePromotion_happy_path.json",
+        "convenience_SimplePromotion_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "appointmentTime",
+        "prescriptionId",
+        "repairOrderId"
+      ]
+    },
+    {
+      "extensionId": "convenience.LowStockSignal",
+      "entityName": "LowStockSignal",
+      "extensionType": "inventory_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_cache",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.convenience.LowStockSignal.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "Product"
+      ],
+      "requiredEvents": [
+        "vertical.convenience.LowStockSignal.created",
+        "vertical.convenience.LowStockSignal.updated"
+      ],
+      "fixtures": [
+        "convenience_LowStockSignal_happy_path.json",
+        "convenience_LowStockSignal_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "appointmentTime",
+        "prescriptionId",
+        "repairOrderId"
+      ]
+    }
+  ]
+}

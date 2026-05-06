@@ -1,0 +1,1 @@
+import{requestJson}from"@/lib/pos/cart-state";export async function createContextualReturn(payload:unknown){const r=await requestJson<{saleReturn:any}>("/api/pos/returns/create",{method:"POST",body:JSON.stringify(payload)});return r.data.saleReturn}

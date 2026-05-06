@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Remote Command",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "commandId",
+    "businessId",
+    "deviceId",
+    "commandType",
+    "requestedAt",
+    "signature"
+  ],
+  "properties": {
+    "commandId": {
+      "type": "string"
+    },
+    "businessId": {
+      "type": "string"
+    },
+    "deviceId": {
+      "type": "string"
+    },
+    "commandType": {
+      "type": "string",
+      "enum": [
+        "CHECK_HEALTH",
+        "GENERATE_DIAGNOSTIC_BUNDLE",
+        "REFRESH_LICENSE",
+        "CHECK_FOR_UPDATES",
+        "STAGE_UPDATE",
+        "APPLY_APPROVED_UPDATE",
+        "DISABLE_PLUGIN",
+        "ENABLE_PLUGIN",
+        "RETRY_SYNC"
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "requestedAt": {
+      "type": "string"
+    },
+    "expiresAt": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "signature": {
+      "type": "string"
+    }
+  }
+}

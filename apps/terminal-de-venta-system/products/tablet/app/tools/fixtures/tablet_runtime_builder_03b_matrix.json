@@ -1,0 +1,437 @@
+{
+  "schemaVersion": "runtime-builder-matrix.03b",
+  "cases": [
+    {
+      "name": "shift=True;p=0;f=0;c=0;active=0;low=0",
+      "input": {
+        "openShift": true,
+        "pendingEvents": 0,
+        "failedEvents": 0,
+        "conflictEvents": 0,
+        "activeProducts": 0,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno abierto",
+        "connection": "En linea",
+        "catalog": "Catalogo vacio",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=True;p=0;f=0;c=0;active=40;low=0",
+      "input": {
+        "openShift": true,
+        "pendingEvents": 0,
+        "failedEvents": 0,
+        "conflictEvents": 0,
+        "activeProducts": 40,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno abierto",
+        "connection": "En linea",
+        "catalog": "Catalogo listo",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=True;p=0;f=0;c=0;active=40;low=5",
+      "input": {
+        "openShift": true,
+        "pendingEvents": 0,
+        "failedEvents": 0,
+        "conflictEvents": 0,
+        "activeProducts": 40,
+        "lowStockProducts": 5
+      },
+      "expected": {
+        "shift": "Turno abierto",
+        "connection": "En linea",
+        "catalog": "Revisar existencias",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=True;p=3;f=0;c=0;active=0;low=0",
+      "input": {
+        "openShift": true,
+        "pendingEvents": 3,
+        "failedEvents": 0,
+        "conflictEvents": 0,
+        "activeProducts": 0,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno abierto",
+        "connection": "Pendientes por enviar",
+        "catalog": "Catalogo vacio",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=True;p=3;f=0;c=0;active=40;low=0",
+      "input": {
+        "openShift": true,
+        "pendingEvents": 3,
+        "failedEvents": 0,
+        "conflictEvents": 0,
+        "activeProducts": 40,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno abierto",
+        "connection": "Pendientes por enviar",
+        "catalog": "Catalogo listo",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=True;p=3;f=0;c=0;active=40;low=5",
+      "input": {
+        "openShift": true,
+        "pendingEvents": 3,
+        "failedEvents": 0,
+        "conflictEvents": 0,
+        "activeProducts": 40,
+        "lowStockProducts": 5
+      },
+      "expected": {
+        "shift": "Turno abierto",
+        "connection": "Pendientes por enviar",
+        "catalog": "Revisar existencias",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=True;p=1;f=1;c=0;active=0;low=0",
+      "input": {
+        "openShift": true,
+        "pendingEvents": 1,
+        "failedEvents": 1,
+        "conflictEvents": 0,
+        "activeProducts": 0,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno abierto",
+        "connection": "Revisar pendientes",
+        "catalog": "Catalogo vacio",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=True;p=1;f=1;c=0;active=40;low=0",
+      "input": {
+        "openShift": true,
+        "pendingEvents": 1,
+        "failedEvents": 1,
+        "conflictEvents": 0,
+        "activeProducts": 40,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno abierto",
+        "connection": "Revisar pendientes",
+        "catalog": "Catalogo listo",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=True;p=1;f=1;c=0;active=40;low=5",
+      "input": {
+        "openShift": true,
+        "pendingEvents": 1,
+        "failedEvents": 1,
+        "conflictEvents": 0,
+        "activeProducts": 40,
+        "lowStockProducts": 5
+      },
+      "expected": {
+        "shift": "Turno abierto",
+        "connection": "Revisar pendientes",
+        "catalog": "Revisar existencias",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=True;p=0;f=0;c=1;active=0;low=0",
+      "input": {
+        "openShift": true,
+        "pendingEvents": 0,
+        "failedEvents": 0,
+        "conflictEvents": 1,
+        "activeProducts": 0,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno abierto",
+        "connection": "Revisar pendientes",
+        "catalog": "Catalogo vacio",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=True;p=0;f=0;c=1;active=40;low=0",
+      "input": {
+        "openShift": true,
+        "pendingEvents": 0,
+        "failedEvents": 0,
+        "conflictEvents": 1,
+        "activeProducts": 40,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno abierto",
+        "connection": "Revisar pendientes",
+        "catalog": "Catalogo listo",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=True;p=0;f=0;c=1;active=40;low=5",
+      "input": {
+        "openShift": true,
+        "pendingEvents": 0,
+        "failedEvents": 0,
+        "conflictEvents": 1,
+        "activeProducts": 40,
+        "lowStockProducts": 5
+      },
+      "expected": {
+        "shift": "Turno abierto",
+        "connection": "Revisar pendientes",
+        "catalog": "Revisar existencias",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=False;p=0;f=0;c=0;active=0;low=0",
+      "input": {
+        "openShift": false,
+        "pendingEvents": 0,
+        "failedEvents": 0,
+        "conflictEvents": 0,
+        "activeProducts": 0,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno cerrado",
+        "connection": "En linea",
+        "catalog": "Catalogo vacio",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=False;p=0;f=0;c=0;active=40;low=0",
+      "input": {
+        "openShift": false,
+        "pendingEvents": 0,
+        "failedEvents": 0,
+        "conflictEvents": 0,
+        "activeProducts": 40,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno cerrado",
+        "connection": "En linea",
+        "catalog": "Catalogo listo",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=False;p=0;f=0;c=0;active=40;low=5",
+      "input": {
+        "openShift": false,
+        "pendingEvents": 0,
+        "failedEvents": 0,
+        "conflictEvents": 0,
+        "activeProducts": 40,
+        "lowStockProducts": 5
+      },
+      "expected": {
+        "shift": "Turno cerrado",
+        "connection": "En linea",
+        "catalog": "Revisar existencias",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=False;p=3;f=0;c=0;active=0;low=0",
+      "input": {
+        "openShift": false,
+        "pendingEvents": 3,
+        "failedEvents": 0,
+        "conflictEvents": 0,
+        "activeProducts": 0,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno cerrado",
+        "connection": "Pendientes por enviar",
+        "catalog": "Catalogo vacio",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=False;p=3;f=0;c=0;active=40;low=0",
+      "input": {
+        "openShift": false,
+        "pendingEvents": 3,
+        "failedEvents": 0,
+        "conflictEvents": 0,
+        "activeProducts": 40,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno cerrado",
+        "connection": "Pendientes por enviar",
+        "catalog": "Catalogo listo",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=False;p=3;f=0;c=0;active=40;low=5",
+      "input": {
+        "openShift": false,
+        "pendingEvents": 3,
+        "failedEvents": 0,
+        "conflictEvents": 0,
+        "activeProducts": 40,
+        "lowStockProducts": 5
+      },
+      "expected": {
+        "shift": "Turno cerrado",
+        "connection": "Pendientes por enviar",
+        "catalog": "Revisar existencias",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=False;p=1;f=1;c=0;active=0;low=0",
+      "input": {
+        "openShift": false,
+        "pendingEvents": 1,
+        "failedEvents": 1,
+        "conflictEvents": 0,
+        "activeProducts": 0,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno cerrado",
+        "connection": "Revisar pendientes",
+        "catalog": "Catalogo vacio",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=False;p=1;f=1;c=0;active=40;low=0",
+      "input": {
+        "openShift": false,
+        "pendingEvents": 1,
+        "failedEvents": 1,
+        "conflictEvents": 0,
+        "activeProducts": 40,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno cerrado",
+        "connection": "Revisar pendientes",
+        "catalog": "Catalogo listo",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=False;p=1;f=1;c=0;active=40;low=5",
+      "input": {
+        "openShift": false,
+        "pendingEvents": 1,
+        "failedEvents": 1,
+        "conflictEvents": 0,
+        "activeProducts": 40,
+        "lowStockProducts": 5
+      },
+      "expected": {
+        "shift": "Turno cerrado",
+        "connection": "Revisar pendientes",
+        "catalog": "Revisar existencias",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=False;p=0;f=0;c=1;active=0;low=0",
+      "input": {
+        "openShift": false,
+        "pendingEvents": 0,
+        "failedEvents": 0,
+        "conflictEvents": 1,
+        "activeProducts": 0,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno cerrado",
+        "connection": "Revisar pendientes",
+        "catalog": "Catalogo vacio",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=False;p=0;f=0;c=1;active=40;low=0",
+      "input": {
+        "openShift": false,
+        "pendingEvents": 0,
+        "failedEvents": 0,
+        "conflictEvents": 1,
+        "activeProducts": 40,
+        "lowStockProducts": 0
+      },
+      "expected": {
+        "shift": "Turno cerrado",
+        "connection": "Revisar pendientes",
+        "catalog": "Catalogo listo",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    },
+    {
+      "name": "shift=False;p=0;f=0;c=1;active=40;low=5",
+      "input": {
+        "openShift": false,
+        "pendingEvents": 0,
+        "failedEvents": 0,
+        "conflictEvents": 1,
+        "activeProducts": 40,
+        "lowStockProducts": 5
+      },
+      "expected": {
+        "shift": "Turno cerrado",
+        "connection": "Revisar pendientes",
+        "catalog": "Revisar existencias",
+        "localSalesAllowed": true,
+        "pcRequiredForBasicSale": false
+      }
+    }
+  ]
+}

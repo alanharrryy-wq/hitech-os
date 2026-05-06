@@ -1,0 +1,624 @@
+{
+  "verticalId": "repair",
+  "verticalName": "Taller / reparacion",
+  "fixtureVersion": "0.0.1",
+  "purpose": "orden de trabajo, refacciones, mano de obra y entrega",
+  "requiredBlocks": [
+    "00A_CORE_CONTRACTS",
+    "00B_VERTICAL_REGISTRY",
+    "00C_VERTICAL_DATA_MODELS",
+    "00D_VERTICAL_EVENTS_PERMISSIONS",
+    "00E_VERTICAL_UX_OPERATIONS"
+  ],
+  "businessProfile": {
+    "tabletRole": "operacion principal o captura rapida segun vertical",
+    "pcRole": "gobierno, auditoria, configuracion y consolidacion",
+    "forbiddenTabletBehaviors": [
+      "backoffice_profundo",
+      "permisos_globales",
+      "compras_formales_sin_pc",
+      "auditoria_pesada"
+    ]
+  },
+  "screensUnderTest": [
+    "Vender",
+    "Cobro",
+    "Ticket actual",
+    "Ventas de hoy",
+    "Turno",
+    "Sincronizacion",
+    "Orden de trabajo",
+    "Refacciones",
+    "Entrega"
+  ],
+  "flowsUnderTest": [
+    "work_order_create",
+    "parts_add",
+    "labor_add",
+    "deposit_payment",
+    "delivery_close",
+    "offline_intake"
+  ],
+  "seedData": {
+    "business": {
+      "id": "biz_repair",
+      "name": "Demo Taller / reparacion",
+      "verticalId": "repair",
+      "mode": "standalone_or_managed"
+    },
+    "terminal": {
+      "id": "terminal_repair_01",
+      "kind": "tablet_pos",
+      "offlineAllowed": true
+    },
+    "operator": {
+      "id": "operator_repair_01",
+      "role": "cajero",
+      "permissions": [
+        "pos.sale.create",
+        "pos.sale.complete",
+        "pos.ticket.view",
+        "shift.view",
+        "sync.status.view",
+        "pos.return.create",
+        "inventory.adjust.local"
+      ]
+    },
+    "products": [
+      {
+        "sku": "REPAIR-SKU-001",
+        "name": "Producto 1 Taller / reparacion",
+        "barcode": "7506129637656",
+        "priceCents": 1125,
+        "stockOnHand": 21,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "d3138173e418c6f7ea88e636"
+        }
+      },
+      {
+        "sku": "REPAIR-SKU-002",
+        "name": "Producto 2 Taller / reparacion",
+        "barcode": "7509247267953",
+        "priceCents": 1250,
+        "stockOnHand": 22,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "027947447f72125181b27829"
+        }
+      },
+      {
+        "sku": "REPAIR-SKU-003",
+        "name": "Producto 3 Taller / reparacion",
+        "barcode": "7509725428413",
+        "priceCents": 1375,
+        "stockOnHand": 23,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "550cf04e0a1b527f46d43f2d"
+        }
+      },
+      {
+        "sku": "REPAIR-SKU-004",
+        "name": "Producto 4 Taller / reparacion",
+        "barcode": "7506376570012",
+        "priceCents": 1500,
+        "stockOnHand": 24,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "8675cef382eeeabfa7e6f7ca"
+        }
+      },
+      {
+        "sku": "REPAIR-SKU-005",
+        "name": "Producto 5 Taller / reparacion",
+        "barcode": "7507403873646",
+        "priceCents": 1625,
+        "stockOnHand": 25,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "3c4c474e8690460121648be6"
+        }
+      },
+      {
+        "sku": "REPAIR-SKU-006",
+        "name": "Producto 6 Taller / reparacion",
+        "barcode": "7500521503943",
+        "priceCents": 1750,
+        "stockOnHand": 26,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "5788cf5e5eeb0a98e1dfd13c"
+        }
+      },
+      {
+        "sku": "REPAIR-SKU-007",
+        "name": "Producto 7 Taller / reparacion",
+        "barcode": "7508451192423",
+        "priceCents": 1875,
+        "stockOnHand": 27,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "f365db5833d158a7476a3305"
+        }
+      },
+      {
+        "sku": "REPAIR-SKU-008",
+        "name": "Producto 8 Taller / reparacion",
+        "barcode": "7507650806002",
+        "priceCents": 2000,
+        "stockOnHand": 28,
+        "isActive": true,
+        "verticalTraits": {
+          "fixtureTrait": "dd72f65024d6d2df0ef4869b"
+        }
+      }
+    ],
+    "services": [
+      {
+        "serviceCode": "REPAIR-SVC-01",
+        "name": "Servicio 1 Taller / reparacion",
+        "priceCents": 1800,
+        "durationMinutes": 15,
+        "verticalTraits": {
+          "fixtureTrait": "ea604954459d1a1ea8e5cbaa"
+        }
+      },
+      {
+        "serviceCode": "REPAIR-SVC-02",
+        "name": "Servicio 2 Taller / reparacion",
+        "priceCents": 2100,
+        "durationMinutes": 30,
+        "verticalTraits": {
+          "fixtureTrait": "be7bb900f217e6dcd77a3719"
+        }
+      },
+      {
+        "serviceCode": "REPAIR-SVC-03",
+        "name": "Servicio 3 Taller / reparacion",
+        "priceCents": 2400,
+        "durationMinutes": 45,
+        "verticalTraits": {
+          "fixtureTrait": "1829643c74c387e1c6a295b4"
+        }
+      },
+      {
+        "serviceCode": "REPAIR-SVC-04",
+        "name": "Servicio 4 Taller / reparacion",
+        "priceCents": 2700,
+        "durationMinutes": 60,
+        "verticalTraits": {
+          "fixtureTrait": "77d919e7a67de756a808f403"
+        }
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "repair.scenario.01.work_order_create",
+      "title": "Validar work order create para Taller / reparacion",
+      "verticalId": "repair",
+      "primaryScreen": "Cobro",
+      "flowKey": "work_order_create",
+      "initialState": "loading",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Cobro.",
+        "Ejecutar flujo work order create.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo work_order_create termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "repair.work_order_create.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.complete"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:repair:work_order_create:1",
+        "9f5d651720a220a3"
+      ]
+    },
+    {
+      "id": "repair.scenario.02.parts_add",
+      "title": "Validar parts add para Taller / reparacion",
+      "verticalId": "repair",
+      "primaryScreen": "Ticket actual",
+      "flowKey": "parts_add",
+      "initialState": "ready",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ticket actual.",
+        "Ejecutar flujo parts add.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo parts_add termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "repair.parts_add.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.ticket.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:repair:parts_add:2",
+        "279d76c5dca87a6b"
+      ]
+    },
+    {
+      "id": "repair.scenario.03.labor_add",
+      "title": "Validar labor add para Taller / reparacion",
+      "verticalId": "repair",
+      "primaryScreen": "Ventas de hoy",
+      "flowKey": "labor_add",
+      "initialState": "error",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ventas de hoy.",
+        "Ejecutar flujo labor add.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo labor_add termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "repair.labor_add.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.retry"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:repair:labor_add:3",
+        "8e260ea3ad4fa158"
+      ]
+    },
+    {
+      "id": "repair.scenario.04.deposit_payment",
+      "title": "Validar deposit payment para Taller / reparacion",
+      "verticalId": "repair",
+      "primaryScreen": "Turno",
+      "flowKey": "deposit_payment",
+      "initialState": "offline",
+      "actor": "supervisor",
+      "mode": "pc",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Turno.",
+        "Ejecutar flujo deposit payment.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo deposit_payment termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "repair.deposit_payment.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.status.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:repair:deposit_payment:4",
+        "84158e24f2484c3b"
+      ]
+    },
+    {
+      "id": "repair.scenario.05.delivery_close",
+      "title": "Validar delivery close para Taller / reparacion",
+      "verticalId": "repair",
+      "primaryScreen": "Sincronizacion",
+      "flowKey": "delivery_close",
+      "initialState": "sync_pending",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Sincronizacion.",
+        "Ejecutar flujo delivery close.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo delivery_close termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "repair.delivery_close.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.create"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:repair:delivery_close:5",
+        "22d7e724225b7944"
+      ]
+    },
+    {
+      "id": "repair.scenario.06.offline_intake",
+      "title": "Validar offline intake para Taller / reparacion",
+      "verticalId": "repair",
+      "primaryScreen": "Orden de trabajo",
+      "flowKey": "offline_intake",
+      "initialState": "success",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Orden de trabajo.",
+        "Ejecutar flujo offline intake.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo offline_intake termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "repair.offline_intake.completed",
+        "sync.event.queued"
+      ],
+      "requiredPermissions": [
+        "inventory.adjust.local"
+      ],
+      "offlineExpectation": "queda pendiente por enviar",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:repair:offline_intake:6",
+        "5fedb9c4924e7dc4"
+      ]
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "scenarioId": "repair.scenario.01.work_order_create",
+      "checks": [
+        {
+          "id": "repair.scenario.01.work_order_create.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "repair.scenario.01.work_order_create.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "repair.scenario.01.work_order_create.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "repair.scenario.01.work_order_create.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "repair.scenario.01.work_order_create.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "repair.scenario.02.parts_add",
+      "checks": [
+        {
+          "id": "repair.scenario.02.parts_add.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "repair.scenario.02.parts_add.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "repair.scenario.02.parts_add.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "repair.scenario.02.parts_add.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "repair.scenario.02.parts_add.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "repair.scenario.03.labor_add",
+      "checks": [
+        {
+          "id": "repair.scenario.03.labor_add.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "repair.scenario.03.labor_add.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "repair.scenario.03.labor_add.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "repair.scenario.03.labor_add.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "repair.scenario.03.labor_add.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "repair.scenario.04.deposit_payment",
+      "checks": [
+        {
+          "id": "repair.scenario.04.deposit_payment.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "repair.scenario.04.deposit_payment.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "repair.scenario.04.deposit_payment.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "repair.scenario.04.deposit_payment.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "repair.scenario.04.deposit_payment.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "repair.scenario.05.delivery_close",
+      "checks": [
+        {
+          "id": "repair.scenario.05.delivery_close.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "repair.scenario.05.delivery_close.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "repair.scenario.05.delivery_close.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "repair.scenario.05.delivery_close.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "repair.scenario.05.delivery_close.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    },
+    {
+      "scenarioId": "repair.scenario.06.offline_intake",
+      "checks": [
+        {
+          "id": "repair.scenario.06.offline_intake.screen",
+          "assertion": "pantalla definida para el vertical",
+          "severity": "blocker"
+        },
+        {
+          "id": "repair.scenario.06.offline_intake.event",
+          "assertion": "evento auditable declarado",
+          "severity": "blocker"
+        },
+        {
+          "id": "repair.scenario.06.offline_intake.permission",
+          "assertion": "permiso declarado cuando aplica",
+          "severity": "major"
+        },
+        {
+          "id": "repair.scenario.06.offline_intake.copy",
+          "assertion": "mensaje humano sin jerga tecnica",
+          "severity": "major"
+        },
+        {
+          "id": "repair.scenario.06.offline_intake.offline",
+          "assertion": "estado offline o pendiente definido",
+          "severity": "major"
+        }
+      ]
+    }
+  ],
+  "fixtureIntegrity": {
+    "anchor": "aabc94b80e53be4544d6bf83029c96eab1d264e268a79fbf9c2ec7fd9b283feb",
+    "noiseProofCorpus": "e0936758b9ad7073c1628d0d5e8b985c1ebe1cb03e993d4c5334f0338283c89c3e1c0ce5773cb119b3ccc56e393c085aa0e8a6f3b7db037c99f5af0888897b8f4e373598a805ec44c9e2bd7c2c2fde0655be2acda10b5e3ffa9998999ad06616d4316311af0696b29dc709cf5110d5f7329e6c26e938541f3da4ff543ed40e347592c73ecdaae70af2f8963c475d153c048f8332044a4591e076c3bba2b572e649da87fb8eac196c027336925b815a3f3d643d96375de63985f73de399077c380b63ccddd2bb7454b2a359b307b482599e31dcb1660298e89a557580dca6a3b91159213c0991a1af334817766bdc23108653ff0c59ffb655706ec886e7ded80208197d2247dc5202f5a7ffdc34332ef398bca2889ba3d869ab1f84be4ace80790ec0dae437670454e202a9a24ca0d9b1a831dccdd8502c998830f2a4c21eb5448ae289a5504e0e78e551529ad07497bb5682d7a33a8827abbee9b41c64514ca4cd9bb5fdad34d6f4ec3b84ff95e2a06d9c7dbfe95af65e01317f3988a3f9d27428837e188d2767e6f62a674d68b164d6a0b72b0222944b2b6bc2883966a683518d038357d2ef700d66dcb5a12ad0bcc49a0def1bf8f40cee2f73cb5acb2fb9fdf29875bceb568ded1ae484761254c7167a4e39e7128e71821f799ffb4e09a1d416c930fcdfcd578b2c226a40d85a1dfa0f7147a87a21be8eea96ac3d02eb30ae92b39c9f46782199e8a8aae13cb8cfe195faaafabbe0baf55ba81578c34d2f2e6ec583553454d35da3f5b5b34c09b91ec08c5d60ca8ff11b3b240b7ad8cf678a836a7d53a7a630ca538c091da2d806afe94f349ba6f951aa31fbb384edfe47a43c2e4ccc386230876123e87fe0c5d3fb615eb3641c09df9857199289d5037d097bdda1f0eabe6ec2e78d5668381998a1b3928239afd0b3632acd3126b7cdd767150a498c1e740086b415408f7d0f5db4a39c321919a76079ede5e475a7a93aa738fb114b95440f7f2ebc632c5ea30222eb9f26b8d49b72f9f881ae266e116a421832133fd9c318fb57459ca61c629804122d9855417c14db23e66b0579afe4ad3da44e7a130eb54a794be7aff1ce3d2ed4e5ae91d3828fe68ba0d8756524b9ee3bb4c9b9df134c74f3acec1ebd38bb3b3f3275c8ae53861cdbf2da6a86e38163ca638e3001e9f0a1893e5a68487ad9a4990ce15ed36faa2d6f3564a08e40c240a08c0266cce78c2e8321e4ec344defc18e1e630367c760eb05f526087c5d2a81054aa73b06dd2df185a06e09a8ba1988649bf43b06a76ef2e052da8529164b5062b9471da8ed7bdba54a8cd48f908ffef4805a8bc6767ba70dda0d8fb40b70173ccdd56d79b124591519bb955e3a7d8080bb204eacee299b6399cd625cef04fc83aec5b3b1b160fe8b626e0249c564684cb10de53ed7c7a8697c55d7d6460d7def003c95c712f9b3ca9e5cabe49d5b07bfa8b2bafb15cf7f78b51e3f97bb808260c5eb94190f735cdde62f2f72693e228edaffb4094f42582c95418ce42357db112e7a27048154005411d27d86a36ee9683259e19f656f16d1d8801587c64c34f53520a442a205855b3b55761f7c13df2a356402aacf14b2407548ac37b9475f0d60fbde5c97846f28426b83f8ee641229fa6e8b827e5cca7258c87062484a84cdb0460eea365951726756e9cf1b242bac858dec0c65d2142f64e102240778c81e21da25a7cd14b8250225622f2b78b9c2658e8e8b163cce987223866b6b3e3ad8bc65494ffa97b0b2733903cd3344b1330552aa3ca0a4aafccff1d9381e161246c3c0953e2a69a5489b764d245518131a1df41d0de119e1de3cf9ed13a6f7465068d17fe03e1fadc060b7e96abe3cd9bb8c58239ef559c79e92a89f4961535f31e6394b3db1c873f1517d415467d9f39d6b57e878f2d8791b3169f7fe5055381910649ff1c5e01cae685f08c399dbdcdd7754bead802f712f6d00525ee6e2330457fa9e40233a38801915c0a10222561cc365688b7b5ddae61019e535832aab899c84a50b6b0fbaf15a2883734a4400b383debe940c661acdd0dbffffd4eaefbdb01e28d5e52ffb33bcdd208ef804a39b232ae7f15546315d12c0ac819d488db9c357bb508d7ed3ade06baff8d992d8052d9c7c74c936879f7055d7420176a89bebb1d6e0c7e116fea9400ebb380167a48a1a81b9eff78447d4dbb6726c2c2209fea8561f76d9452433056f37935cbc1202fe1ce36fefb670079ad176b565d268d044a02ca5a97c372cd5f09fbf14d0b8f0ed63741603e24ca9c29a9cf11149f076bd549ffc206df3c87c7721e352d6cf6ae169945f43bbcc452e8ad22fdccbd9a0c0b12e0e531fd760beaaf72d0ab07f66c5430ba6764e5f7419e14f553397aff4ff61d6c6c66cae29cc7fa87fba1211f53dfaab963b5e9fee89f995b3daf8ea93f3cc46c82761e0ca27405f41467146b5845f5fb6516cd9b6f11230625da507670161bac8e8a42f902a9c7fd3d64635d2ed977681d9eb3ef1e79e2f6f72afab25849c35f343c41a7946ddd578cdc34c5f2a20c8010771e0e5775f670726e34c43008e1760ffd94412f1d27004b9ba17db74be919e45e6a18081de306e8399d8bce0a7146d1bdd3c9c3dff1854e370f419fcc5cb69160a89865db4fe6d953f041ae2d3083736612d7c3a4355c44c5157241db0d56e7c7c0fafee0ea57ff2ab3aa8ed6e3d1300b2531fc6803919cec839e6d3344f2115e5fa3ced2cadadf035c97da627e71ea6fc524ff3b08bacb4fbcd11aba518e5eb6334ed865adf1f2730ebae9ae6527948fd9b6591e0c0df88877104e509a9c74508926562769f1aa7a37244686001e71ed1a6c0246c0ca9f528e48eb4bf5a0894466389535b858084d0966f8708b0d264b3782bfe7ebb8597f455f69e772ce988a279f9073e95e7ec464963567250469412cbea82f17e1fd63afdbce14a2691fb06206c188ca08ed2ef3d5f12b09c5d2b762cd33b92dbb3f2651ae56f780387b2e150c086016d41d07353eddc85af88fdccef78c1951e7fcd08f29d3f97c214ee88d747a184980fb4f523f36b6d3dfea514071e7996bcf6e8e5fe28d69b820b865e4143dcac4a89408f980e9403592186771b9542f59df372f6c78dc39b654386da704d68d251ef668720c1dd3db952f99736efd369ed83b5eb2f0cd55a8e819043ae4abf8e2b7005fa47b6c1e8ee8be6604806ddb8eee39f6b011c5005af7bd223a7f9618d8fafd0df13cc5168d818211aa33f4e9e24966331cd0c7db2b0a3e752d01558613f83db1e7418c1552c664728a1f0afba268f8220cfd263a196c27d1ec8def4afb4b9518e12b3aaffb55df5ef2230f52c48ea36cb991a7ccfac95a008d9ea95952c34f53fe512e4f102fa17c6177e97279f3d6d6c579c1b305d3e02e420d690fe1eb4bb44b2cb67b3356e5d06c4c0f56ee51c00d1ca053704aafcf025b83026cf98fa8082d035f883d7bb7a3f498a732fc520794e2714af3d8084e3352c1e677f707e1e1e5171f1d2b23c7ea82b3ff0e639ee6b22e963d97cbee1caa294a305a7e358f6c313f3feb58ce59ce60e217370fc2e11ef319114460f6e97a1ac70823124be1e52"
+  }
+}

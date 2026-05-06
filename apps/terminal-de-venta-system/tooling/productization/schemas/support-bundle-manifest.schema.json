@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Support Bundle Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bundleId",
+    "schemaVersion",
+    "createdAt",
+    "businessIdMasked",
+    "deviceIdMasked",
+    "runtimeMode",
+    "includedSections",
+    "redactionRulesApplied",
+    "checksums"
+  ],
+  "properties": {
+    "bundleId": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "businessIdMasked": {
+      "type": "string"
+    },
+    "deviceIdMasked": {
+      "type": "string"
+    },
+    "runtimeMode": {
+      "enum": [
+        "dev",
+        "standalone",
+        "pro",
+        "pc_backoffice",
+        "managed",
+        "degraded_managed"
+      ]
+    },
+    "includedSections": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "redactionRulesApplied": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "checksums": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  }
+}

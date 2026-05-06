@@ -1,0 +1,246 @@
+{
+  "verticalId": "apparel",
+  "scenarioVersion": "0.0.1",
+  "scenarios": [
+    {
+      "id": "apparel.scenario.01.variant_lookup",
+      "title": "Validar variant lookup para Ropa / boutique",
+      "verticalId": "apparel",
+      "primaryScreen": "Cobro",
+      "flowKey": "variant_lookup",
+      "initialState": "loading",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Cobro.",
+        "Ejecutar flujo variant lookup.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo variant_lookup termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "apparel.variant_lookup.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.complete"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:apparel:variant_lookup:1",
+        "54fb440797232b66"
+      ]
+    },
+    {
+      "id": "apparel.scenario.02.size_color_sale",
+      "title": "Validar size color sale para Ropa / boutique",
+      "verticalId": "apparel",
+      "primaryScreen": "Ticket actual",
+      "flowKey": "size_color_sale",
+      "initialState": "ready",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ticket actual.",
+        "Ejecutar flujo size color sale.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo size_color_sale termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.ticket.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:apparel:size_color_sale:2",
+        "00df0434f0af912b"
+      ]
+    },
+    {
+      "id": "apparel.scenario.03.exchange_flow",
+      "title": "Validar exchange flow para Ropa / boutique",
+      "verticalId": "apparel",
+      "primaryScreen": "Ventas de hoy",
+      "flowKey": "exchange_flow",
+      "initialState": "error",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ventas de hoy.",
+        "Ejecutar flujo exchange flow.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo exchange_flow termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "apparel.exchange_flow.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.retry"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:apparel:exchange_flow:3",
+        "6e63be38e095d367"
+      ]
+    },
+    {
+      "id": "apparel.scenario.04.cash_change",
+      "title": "Validar cash change para Ropa / boutique",
+      "verticalId": "apparel",
+      "primaryScreen": "Turno",
+      "flowKey": "cash_change",
+      "initialState": "offline",
+      "actor": "supervisor",
+      "mode": "pc",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Turno.",
+        "Ejecutar flujo cash change.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo cash_change termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.status.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:apparel:cash_change:4",
+        "1d564bfd4b5699d7"
+      ]
+    },
+    {
+      "id": "apparel.scenario.05.stock_check",
+      "title": "Validar stock check para Ropa / boutique",
+      "verticalId": "apparel",
+      "primaryScreen": "Sincronizacion",
+      "flowKey": "stock_check",
+      "initialState": "sync_pending",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Sincronizacion.",
+        "Ejecutar flujo stock check.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo stock_check termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "apparel.stock_check.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.create"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:apparel:stock_check:5",
+        "fdc2c96f03eec3f3"
+      ]
+    },
+    {
+      "id": "apparel.scenario.06.return_ticket",
+      "title": "Validar return ticket para Ropa / boutique",
+      "verticalId": "apparel",
+      "primaryScreen": "Variantes",
+      "flowKey": "return_ticket",
+      "initialState": "success",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Variantes.",
+        "Ejecutar flujo return ticket.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo return_ticket termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "apparel.return_ticket.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "inventory.adjust.local"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:apparel:return_ticket:6",
+        "b6716b5f2b708729"
+      ]
+    }
+  ]
+}

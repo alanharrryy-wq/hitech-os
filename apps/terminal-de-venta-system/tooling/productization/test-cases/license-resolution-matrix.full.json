@@ -1,0 +1,4806 @@
+{
+  "matrixVersion": "2026.04.license-local-mock-02.full.corrected",
+  "note": "Matriz completa corregida para planes base, estados de licencia y feature keys principales. Reemplaza la referencia faltante del manifest.",
+  "cases": [
+    {
+      "caseId": "TABLET_SOLO_active_audit_view",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_backup_local_manual",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_backup_local_scheduled",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_catalog_snapshot_publish",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_catalog_write",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "catalog.write",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_dashboard_kpis",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_event_outbox_view",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_export_local_advanced",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_export_local_basic",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_inventory_backoffice_adjust",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_inventory_backoffice_view",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_inventory_local_adjust",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_inventory_local_decrement",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_license_remote_refresh",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_plugin_remote_activate",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_pos_returns_create",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_pos_sale_cancel",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_pos_sales_complete",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_pos_ticket_local",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_purchase_write",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_receiving_write",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_report_today_basic",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_shift_close",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_shift_open",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_support_advanced",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_support_basic",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "support.basic",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_support_remote",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_sync_conflict_resolve",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_sync_ingest",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_active_sync_managed",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "active",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_audit_view",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_backup_local_manual",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_backup_local_scheduled",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_catalog_snapshot_publish",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_catalog_write",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "catalog.write",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_dashboard_kpis",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_event_outbox_view",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_export_local_advanced",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_export_local_basic",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": true,
+      "expectedReason": "OFFLINE_GRACE_PROTECTED_CORE"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_inventory_backoffice_adjust",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_inventory_backoffice_view",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_inventory_local_adjust",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_inventory_local_decrement",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": true,
+      "expectedReason": "OFFLINE_GRACE_PROTECTED_CORE"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_license_remote_refresh",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_plugin_remote_activate",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_pos_returns_create",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_pos_sale_cancel",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_pos_sales_complete",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": true,
+      "expectedReason": "OFFLINE_GRACE_PROTECTED_CORE"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_pos_ticket_local",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": true,
+      "expectedReason": "OFFLINE_GRACE_PROTECTED_CORE"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_purchase_write",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_receiving_write",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_report_today_basic",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": true,
+      "expectedReason": "OFFLINE_GRACE_PROTECTED_CORE"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_shift_close",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_shift_open",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_support_advanced",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_support_basic",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "support.basic",
+      "expectedAllowed": true,
+      "expectedReason": "OFFLINE_GRACE_PROTECTED_CORE"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_support_remote",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_sync_conflict_resolve",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_sync_ingest",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_offline_grace_sync_managed",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_audit_view",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_backup_local_manual",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": true,
+      "expectedReason": "SUSPENDED_DATA_PROTECTION"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_backup_local_scheduled",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_catalog_snapshot_publish",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_catalog_write",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "catalog.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_dashboard_kpis",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_event_outbox_view",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_export_local_advanced",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_export_local_basic",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": true,
+      "expectedReason": "SUSPENDED_DATA_PROTECTION"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_inventory_backoffice_adjust",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_inventory_backoffice_view",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_inventory_local_adjust",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_inventory_local_decrement",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_license_remote_refresh",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_plugin_remote_activate",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_pos_returns_create",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_pos_sale_cancel",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_pos_sales_complete",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_pos_ticket_local",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_purchase_write",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_receiving_write",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_report_today_basic",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_shift_close",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_shift_open",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_support_advanced",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_support_basic",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "support.basic",
+      "expectedAllowed": true,
+      "expectedReason": "SUSPENDED_DATA_PROTECTION"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_support_remote",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_sync_conflict_resolve",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_sync_ingest",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_suspended_sync_managed",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "suspended",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_audit_view",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_backup_local_manual",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_backup_local_scheduled",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_catalog_snapshot_publish",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_catalog_write",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "catalog.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_dashboard_kpis",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_event_outbox_view",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_export_local_advanced",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_export_local_basic",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_inventory_backoffice_adjust",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_inventory_backoffice_view",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_inventory_local_adjust",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_inventory_local_decrement",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_license_remote_refresh",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_plugin_remote_activate",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_pos_returns_create",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_pos_sale_cancel",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_pos_sales_complete",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_pos_ticket_local",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_purchase_write",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_receiving_write",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_report_today_basic",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_shift_close",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_shift_open",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_support_advanced",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_support_basic",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "support.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_support_remote",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_sync_conflict_resolve",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_sync_ingest",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_expired_sync_managed",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "expired",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_audit_view",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_backup_local_manual",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_backup_local_scheduled",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_catalog_snapshot_publish",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_catalog_write",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "catalog.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_dashboard_kpis",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_event_outbox_view",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_export_local_advanced",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_export_local_basic",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_inventory_backoffice_adjust",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_inventory_backoffice_view",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_inventory_local_adjust",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_inventory_local_decrement",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_license_remote_refresh",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_plugin_remote_activate",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_pos_returns_create",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_pos_sale_cancel",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_pos_sales_complete",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_pos_ticket_local",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_purchase_write",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_receiving_write",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_report_today_basic",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_shift_close",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_shift_open",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_support_advanced",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_support_basic",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "support.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_support_remote",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_sync_conflict_resolve",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_sync_ingest",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_SOLO_revoked_sync_managed",
+      "plan": "TABLET_SOLO",
+      "licenseStatus": "revoked",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_active_audit_view",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_backup_local_manual",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_backup_local_scheduled",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_catalog_snapshot_publish",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_catalog_write",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "catalog.write",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_dashboard_kpis",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_event_outbox_view",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_export_local_advanced",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_export_local_basic",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_inventory_backoffice_adjust",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_inventory_backoffice_view",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_inventory_local_adjust",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_inventory_local_decrement",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_license_remote_refresh",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_plugin_remote_activate",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_pos_returns_create",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_pos_sale_cancel",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_pos_sales_complete",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_pos_ticket_local",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_purchase_write",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_receiving_write",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_report_today_basic",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_shift_close",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "shift.close",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_shift_open",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "shift.open",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_support_advanced",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_support_basic",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "support.basic",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_support_remote",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_sync_conflict_resolve",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_sync_ingest",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_active_sync_managed",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "active",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_audit_view",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_backup_local_manual",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_backup_local_scheduled",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_catalog_snapshot_publish",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_catalog_write",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "catalog.write",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_dashboard_kpis",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_event_outbox_view",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_export_local_advanced",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_export_local_basic",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": true,
+      "expectedReason": "OFFLINE_GRACE_PROTECTED_CORE"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_inventory_backoffice_adjust",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_inventory_backoffice_view",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_inventory_local_adjust",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_inventory_local_decrement",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": true,
+      "expectedReason": "OFFLINE_GRACE_PROTECTED_CORE"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_license_remote_refresh",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_plugin_remote_activate",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_pos_returns_create",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_pos_sale_cancel",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_pos_sales_complete",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": true,
+      "expectedReason": "OFFLINE_GRACE_PROTECTED_CORE"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_pos_ticket_local",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": true,
+      "expectedReason": "OFFLINE_GRACE_PROTECTED_CORE"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_purchase_write",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_receiving_write",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_report_today_basic",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": true,
+      "expectedReason": "OFFLINE_GRACE_PROTECTED_CORE"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_shift_close",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_shift_open",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_support_advanced",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_support_basic",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "support.basic",
+      "expectedAllowed": true,
+      "expectedReason": "OFFLINE_GRACE_PROTECTED_CORE"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_support_remote",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_sync_conflict_resolve",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_sync_ingest",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_offline_grace_sync_managed",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "offline_grace",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_audit_view",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_backup_local_manual",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": true,
+      "expectedReason": "SUSPENDED_DATA_PROTECTION"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_backup_local_scheduled",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_catalog_snapshot_publish",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_catalog_write",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "catalog.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_dashboard_kpis",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_event_outbox_view",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_export_local_advanced",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_export_local_basic",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": true,
+      "expectedReason": "SUSPENDED_DATA_PROTECTION"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_inventory_backoffice_adjust",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_inventory_backoffice_view",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_inventory_local_adjust",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_inventory_local_decrement",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_license_remote_refresh",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_plugin_remote_activate",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_pos_returns_create",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_pos_sale_cancel",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_pos_sales_complete",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_pos_ticket_local",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_purchase_write",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_receiving_write",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_report_today_basic",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_shift_close",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_shift_open",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_support_advanced",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_support_basic",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "support.basic",
+      "expectedAllowed": true,
+      "expectedReason": "SUSPENDED_DATA_PROTECTION"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_support_remote",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_sync_conflict_resolve",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_sync_ingest",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_suspended_sync_managed",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "suspended",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_audit_view",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_backup_local_manual",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_backup_local_scheduled",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_catalog_snapshot_publish",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_catalog_write",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "catalog.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_dashboard_kpis",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_event_outbox_view",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_export_local_advanced",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_export_local_basic",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_inventory_backoffice_adjust",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_inventory_backoffice_view",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_inventory_local_adjust",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_inventory_local_decrement",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_license_remote_refresh",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_plugin_remote_activate",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_pos_returns_create",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_pos_sale_cancel",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_pos_sales_complete",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_pos_ticket_local",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_purchase_write",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_receiving_write",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_report_today_basic",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_shift_close",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_shift_open",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_support_advanced",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_support_basic",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "support.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_support_remote",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_sync_conflict_resolve",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_sync_ingest",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_expired_sync_managed",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "expired",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_audit_view",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_backup_local_manual",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_backup_local_scheduled",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_catalog_snapshot_publish",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_catalog_write",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "catalog.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_dashboard_kpis",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_event_outbox_view",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_export_local_advanced",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_export_local_basic",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_inventory_backoffice_adjust",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_inventory_backoffice_view",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_inventory_local_adjust",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_inventory_local_decrement",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_license_remote_refresh",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_plugin_remote_activate",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_pos_returns_create",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_pos_sale_cancel",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_pos_sales_complete",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_pos_ticket_local",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_purchase_write",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_receiving_write",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_report_today_basic",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_shift_close",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_shift_open",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_support_advanced",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_support_basic",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "support.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_support_remote",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_sync_conflict_resolve",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_sync_ingest",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PRO_revoked_sync_managed",
+      "plan": "TABLET_PRO",
+      "licenseStatus": "revoked",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_audit_view",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "audit.view",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_backup_local_manual",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_backup_local_scheduled",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_catalog_snapshot_publish",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_catalog_write",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "catalog.write",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_dashboard_kpis",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_event_outbox_view",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_export_local_advanced",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_export_local_basic",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_inventory_backoffice_adjust",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_inventory_backoffice_view",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_inventory_local_adjust",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_inventory_local_decrement",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_license_remote_refresh",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_plugin_remote_activate",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_pos_returns_create",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_pos_sale_cancel",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_pos_sales_complete",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_pos_ticket_local",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_purchase_write",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "purchase.write",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_receiving_write",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "receiving.write",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_report_today_basic",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_shift_close",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_shift_open",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_support_advanced",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "support.advanced",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_support_basic",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "support.basic",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_support_remote",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_sync_conflict_resolve",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_sync_ingest",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_active_sync_managed",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "active",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_audit_view",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_backup_local_manual",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_backup_local_scheduled",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_catalog_snapshot_publish",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_catalog_write",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "catalog.write",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_dashboard_kpis",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_event_outbox_view",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_export_local_advanced",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_export_local_basic",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_inventory_backoffice_adjust",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_inventory_backoffice_view",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_inventory_local_adjust",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_inventory_local_decrement",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_license_remote_refresh",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_plugin_remote_activate",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_pos_returns_create",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_pos_sale_cancel",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_pos_sales_complete",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_pos_ticket_local",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_purchase_write",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_receiving_write",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_report_today_basic",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_shift_close",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_shift_open",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_support_advanced",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_support_basic",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "support.basic",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_support_remote",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_sync_conflict_resolve",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_sync_ingest",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_offline_grace_sync_managed",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "offline_grace",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_audit_view",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_backup_local_manual",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": true,
+      "expectedReason": "SUSPENDED_DATA_PROTECTION"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_backup_local_scheduled",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_catalog_snapshot_publish",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_catalog_write",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "catalog.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_dashboard_kpis",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_event_outbox_view",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_export_local_advanced",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_export_local_basic",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": true,
+      "expectedReason": "SUSPENDED_DATA_PROTECTION"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_inventory_backoffice_adjust",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_inventory_backoffice_view",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_inventory_local_adjust",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_inventory_local_decrement",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_license_remote_refresh",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_plugin_remote_activate",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_pos_returns_create",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_pos_sale_cancel",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_pos_sales_complete",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_pos_ticket_local",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_purchase_write",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_receiving_write",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_report_today_basic",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_shift_close",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_shift_open",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_support_advanced",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_support_basic",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "support.basic",
+      "expectedAllowed": true,
+      "expectedReason": "SUSPENDED_DATA_PROTECTION"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_support_remote",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_sync_conflict_resolve",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_sync_ingest",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_suspended_sync_managed",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "suspended",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_audit_view",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_backup_local_manual",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_backup_local_scheduled",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_catalog_snapshot_publish",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_catalog_write",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "catalog.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_dashboard_kpis",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_event_outbox_view",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_export_local_advanced",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_export_local_basic",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_inventory_backoffice_adjust",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_inventory_backoffice_view",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_inventory_local_adjust",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_inventory_local_decrement",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_license_remote_refresh",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_plugin_remote_activate",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_pos_returns_create",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_pos_sale_cancel",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_pos_sales_complete",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_pos_ticket_local",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_purchase_write",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_receiving_write",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_report_today_basic",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_shift_close",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_shift_open",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_support_advanced",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_support_basic",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "support.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_support_remote",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_sync_conflict_resolve",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_sync_ingest",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_expired_sync_managed",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "expired",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_audit_view",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_backup_local_manual",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_backup_local_scheduled",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_catalog_snapshot_publish",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_catalog_write",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "catalog.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_dashboard_kpis",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_event_outbox_view",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_export_local_advanced",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_export_local_basic",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_inventory_backoffice_adjust",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_inventory_backoffice_view",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_inventory_local_adjust",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_inventory_local_decrement",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_license_remote_refresh",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_plugin_remote_activate",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_pos_returns_create",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_pos_sale_cancel",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_pos_sales_complete",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_pos_ticket_local",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_purchase_write",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_receiving_write",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_report_today_basic",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_shift_close",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_shift_open",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_support_advanced",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_support_basic",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "support.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_support_remote",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_sync_conflict_resolve",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_sync_ingest",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "PC_BACKOFFICE_revoked_sync_managed",
+      "plan": "PC_BACKOFFICE",
+      "licenseStatus": "revoked",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_audit_view",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_backup_local_manual",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_backup_local_scheduled",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_catalog_snapshot_publish",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_catalog_write",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "catalog.write",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_dashboard_kpis",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_event_outbox_view",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_export_local_advanced",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_export_local_basic",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_inventory_backoffice_adjust",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_inventory_backoffice_view",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_inventory_local_adjust",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_inventory_local_decrement",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_license_remote_refresh",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_plugin_remote_activate",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_pos_returns_create",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_pos_sale_cancel",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_pos_sales_complete",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_pos_ticket_local",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_purchase_write",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_receiving_write",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_report_today_basic",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_shift_close",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_shift_open",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_support_advanced",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_support_basic",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "support.basic",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_support_remote",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "support.remote",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_sync_conflict_resolve",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_sync_ingest",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_active_sync_managed",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "active",
+      "featureKey": "sync.managed",
+      "expectedAllowed": true,
+      "expectedReason": "ENTITLED_BY_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_audit_view",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_backup_local_manual",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_backup_local_scheduled",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_catalog_snapshot_publish",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_catalog_write",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "catalog.write",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_dashboard_kpis",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_event_outbox_view",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_export_local_advanced",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_export_local_basic",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_inventory_backoffice_adjust",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_inventory_backoffice_view",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_inventory_local_adjust",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_inventory_local_decrement",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": true,
+      "expectedReason": "OFFLINE_GRACE_PROTECTED_CORE"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_license_remote_refresh",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_plugin_remote_activate",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_pos_returns_create",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_pos_sale_cancel",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_pos_sales_complete",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": true,
+      "expectedReason": "OFFLINE_GRACE_PROTECTED_CORE"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_pos_ticket_local",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": true,
+      "expectedReason": "OFFLINE_GRACE_PROTECTED_CORE"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_purchase_write",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_receiving_write",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_report_today_basic",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_shift_close",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_shift_open",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_support_advanced",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_support_basic",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "support.basic",
+      "expectedAllowed": false,
+      "expectedReason": "FEATURE_NOT_INCLUDED_IN_PLAN"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_support_remote",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_sync_conflict_resolve",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_sync_ingest",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_offline_grace_sync_managed",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "offline_grace",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "OFFLINE_GRACE_BLOCKS_NON_CORE"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_audit_view",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_backup_local_manual",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": true,
+      "expectedReason": "SUSPENDED_DATA_PROTECTION"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_backup_local_scheduled",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_catalog_snapshot_publish",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_catalog_write",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "catalog.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_dashboard_kpis",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_event_outbox_view",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_export_local_advanced",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_export_local_basic",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": true,
+      "expectedReason": "SUSPENDED_DATA_PROTECTION"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_inventory_backoffice_adjust",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_inventory_backoffice_view",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_inventory_local_adjust",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_inventory_local_decrement",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_license_remote_refresh",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_plugin_remote_activate",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_pos_returns_create",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_pos_sale_cancel",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_pos_sales_complete",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_pos_ticket_local",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_purchase_write",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_receiving_write",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_report_today_basic",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_shift_close",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_shift_open",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_support_advanced",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_support_basic",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "support.basic",
+      "expectedAllowed": true,
+      "expectedReason": "SUSPENDED_DATA_PROTECTION"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_support_remote",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_sync_conflict_resolve",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_sync_ingest",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_suspended_sync_managed",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "suspended",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_SUSPENDED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_audit_view",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_backup_local_manual",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_backup_local_scheduled",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_catalog_snapshot_publish",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_catalog_write",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "catalog.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_dashboard_kpis",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_event_outbox_view",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_export_local_advanced",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_export_local_basic",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_inventory_backoffice_adjust",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_inventory_backoffice_view",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_inventory_local_adjust",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_inventory_local_decrement",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_license_remote_refresh",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_plugin_remote_activate",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_pos_returns_create",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_pos_sale_cancel",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_pos_sales_complete",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_pos_ticket_local",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_purchase_write",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_receiving_write",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_report_today_basic",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_shift_close",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_shift_open",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_support_advanced",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_support_basic",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "support.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_support_remote",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_sync_conflict_resolve",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_sync_ingest",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_expired_sync_managed",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "expired",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_EXPIRED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_audit_view",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "audit.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_backup_local_manual",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "backup.local.manual",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_backup_local_scheduled",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "backup.local.scheduled",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_catalog_snapshot_publish",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "catalog.snapshot.publish",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_catalog_write",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "catalog.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_dashboard_kpis",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "dashboard.kpis",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_event_outbox_view",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "event.outbox.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_export_local_advanced",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "export.local.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_export_local_basic",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "export.local.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_inventory_backoffice_adjust",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "inventory.backoffice.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_inventory_backoffice_view",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "inventory.backoffice.view",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_inventory_local_adjust",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "inventory.local.adjust",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_inventory_local_decrement",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "inventory.local.decrement",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_license_remote_refresh",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "license.remote.refresh",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_plugin_remote_activate",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "plugin.remote.activate",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_pos_returns_create",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "pos.returns.create",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_pos_sale_cancel",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "pos.sale.cancel",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_pos_sales_complete",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "pos.sales.complete",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_pos_ticket_local",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "pos.ticket.local",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_purchase_write",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "purchase.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_receiving_write",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "receiving.write",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_report_today_basic",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "report.today.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_shift_close",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "shift.close",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_shift_open",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "shift.open",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_support_advanced",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "support.advanced",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_support_basic",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "support.basic",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_support_remote",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "support.remote",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_sync_conflict_resolve",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "sync.conflict.resolve",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_sync_ingest",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "sync.ingest",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    },
+    {
+      "caseId": "TABLET_PC_MANAGED_revoked_sync_managed",
+      "plan": "TABLET_PC_MANAGED",
+      "licenseStatus": "revoked",
+      "featureKey": "sync.managed",
+      "expectedAllowed": false,
+      "expectedReason": "LICENSE_REVOKED"
+    }
+  ]
+}

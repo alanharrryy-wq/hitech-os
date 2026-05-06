@@ -1,0 +1,60 @@
+{
+  "pluginId": "plugin_farmacia_lotes_demo",
+  "name": "Farmacia Lotes Demo",
+  "version": "0.1.0",
+  "publisher": "PRISMA Labs",
+  "compatiblePrismaVersions": [
+    ">=0.1.0 <1.0.0"
+  ],
+  "requiredPlan": "TABLET_PC_MANAGED",
+  "permissions": [
+    "plugin.config.read",
+    "plugin.config.write",
+    "inventory.local.view"
+  ],
+  "runtimeSurfaces": [
+    "pc",
+    "tablet"
+  ],
+  "declaredRoutes": [
+    {
+      "routeId": "farmacia_lotes",
+      "surface": "pc",
+      "path": "/centro-prisma/plugins/farmacia-lotes",
+      "label": "Farmacia lotes"
+    }
+  ],
+  "events": [
+    "plugin.manifest.loaded",
+    "plugin.entitlement.blocked"
+  ],
+  "configSchema": {
+    "type": "object"
+  },
+  "offlinePolicy": {
+    "allowedOffline": true,
+    "requiresReviewAfterSync": true,
+    "blockedOperations": [
+      "bulk_adjustment"
+    ]
+  },
+  "syncPolicy": {
+    "syncsEvents": true,
+    "requiresConflictResolver": true,
+    "topics": [
+      "plugin.farmacia.batch.checked"
+    ]
+  },
+  "rollbackPlan": {
+    "canDisableWithoutDataLoss": true,
+    "steps": [
+      "disable_plugin",
+      "hide_routes",
+      "preserve_data"
+    ]
+  },
+  "signature": {
+    "algorithm": "sha256-placeholder",
+    "fingerprint": "demo_fingerprint_0123456789"
+  }
+}

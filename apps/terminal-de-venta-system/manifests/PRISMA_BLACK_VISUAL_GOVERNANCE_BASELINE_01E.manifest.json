@@ -1,0 +1,22 @@
+{
+  "name": "PRISMA_BLACK_VISUAL_GOVERNANCE_BASELINE_01E",
+  "version": "01E",
+  "kind": "non_visual_governance_baseline",
+  "createdAt": "2026-04-30T00:00:00Z",
+  "noVisualChange": true,
+  "installs": [
+    "docs/design/PRISMA_BLACK_VISUAL_GOVERNANCE_BASELINE_01E.md",
+    "docs/qa/PRISMA_BLACK_LAYER_QA_CHECKLIST_01E.md",
+    "shared/contracts/ui/prisma-black-layer-governance.contract.json"
+  ],
+  "doesNotModify": [
+    "products/shared-ui/prisma/tokens/prisma-theme.css",
+    "products/shared-ui/prisma/components/prisma-components.css",
+    "products/tablet/app/components/tablet-shell/prisma-tablet-shell.module.css",
+    "products/tablet/app/components/pos/pos.module.css",
+    "products/pc/app/app/globals.css",
+    "products/tablet/app/app/globals.css"
+  ],
+  "rollbackPolicy": "delete files created by this integration or restore previous versions from backup",
+  "logPolicy": "single operational log under F:/descargasf on Windows"
+}

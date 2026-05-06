@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Diagnostic Snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "snapshotId",
+    "schemaVersion",
+    "createdAt",
+    "runtimeMode",
+    "surface",
+    "businessIdMasked",
+    "deviceIdMasked",
+    "sections"
+  ],
+  "properties": {
+    "snapshotId": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "runtimeMode": {
+      "type": "string"
+    },
+    "surface": {
+      "enum": [
+        "pc",
+        "tablet",
+        "both"
+      ]
+    },
+    "businessIdMasked": {
+      "type": "string"
+    },
+    "deviceIdMasked": {
+      "type": "string"
+    },
+    "sections": {
+      "type": "object"
+    }
+  }
+}

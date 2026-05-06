@@ -1,0 +1,25 @@
+{
+  "package": "PRISMA_LICENSE_SERVER_MVP_06",
+  "version": "0.6.0",
+  "surface": "license-server",
+  "baseUrlDefault": "http://127.0.0.1:3140",
+  "endpoints": [
+    {"method": "GET", "path": "/health", "purpose": "service health"},
+    {"method": "POST", "path": "/licenses/activate", "purpose": "activate device and issue signed dev license"},
+    {"method": "POST", "path": "/licenses/refresh", "purpose": "refresh current license"},
+    {"method": "POST", "path": "/licenses/revoke", "purpose": "revoke license"},
+    {"method": "POST", "path": "/licenses/suspend", "purpose": "suspend license"},
+    {"method": "GET", "path": "/licenses/current", "purpose": "read current license by licenseId or deviceId"},
+    {"method": "GET", "path": "/customers/:id/licenses", "purpose": "list customer licenses"}
+  ],
+  "plans": {
+    "TABLET_SOLO": {"terminalLimit": 1, "branchLimit": 1},
+    "TABLET_PRO": {"terminalLimit": 2, "branchLimit": 1},
+    "TABLET_PC_REQUIRED": {"terminalLimit": 6, "branchLimit": 3}
+  },
+  "states": ["active", "suspended", "revoked"],
+  "signature": {
+    "mvpAlgorithm": "HS256_DEV_ONLY",
+    "productionTarget": "asymmetric signing with private key outside repo and public key embedded/versioned"
+  }
+}

@@ -235,6 +235,7 @@ $RECYCLE.BIN/
 # junk dumps and temp directories
 _attic/
 tools/_local/tmp/
+**/tools/_local/tmp/
 tools/_local/evidence/
 **/_dependency_graphs/
 **/_dependency_graphs/**
@@ -274,3 +275,14 @@ apps/fa-ma/runs/**/inventory.json
 !tools/codex/README.md
 !tools/snapshot/
 !tools/snapshot/README.md
+
+# PRISMA local/generated artifacts
+*.zip
+*.log
+.next/
+node_modules/
+tools/_local/data/
+apps/terminal-de-venta-system/products/tablet/app/data/
+*.db
+*.sqlite
+*.sqlite3

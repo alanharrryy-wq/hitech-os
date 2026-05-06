@@ -1,0 +1,246 @@
+{
+  "verticalId": "beauty",
+  "scenarioVersion": "0.0.1",
+  "scenarios": [
+    {
+      "id": "beauty.scenario.01.book_appointment",
+      "title": "Validar book appointment para Estetica / barberia",
+      "verticalId": "beauty",
+      "primaryScreen": "Cobro",
+      "flowKey": "book_appointment",
+      "initialState": "loading",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Cobro.",
+        "Ejecutar flujo book appointment.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo book_appointment termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "beauty.book_appointment.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.complete"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:beauty:book_appointment:1",
+        "693956eeb0eb7d8c"
+      ]
+    },
+    {
+      "id": "beauty.scenario.02.sell_service",
+      "title": "Validar sell service para Estetica / barberia",
+      "verticalId": "beauty",
+      "primaryScreen": "Ticket actual",
+      "flowKey": "sell_service",
+      "initialState": "ready",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ticket actual.",
+        "Ejecutar flujo sell service.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo sell_service termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "beauty.sell_service.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.ticket.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:beauty:sell_service:2",
+        "5725b3f7fa6fed76"
+      ]
+    },
+    {
+      "id": "beauty.scenario.03.assign_staff",
+      "title": "Validar assign staff para Estetica / barberia",
+      "verticalId": "beauty",
+      "primaryScreen": "Ventas de hoy",
+      "flowKey": "assign_staff",
+      "initialState": "error",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Ventas de hoy.",
+        "Ejecutar flujo assign staff.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo assign_staff termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "beauty.assign_staff.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.retry"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:beauty:assign_staff:3",
+        "2740140cc07111df"
+      ]
+    },
+    {
+      "id": "beauty.scenario.04.commission_capture",
+      "title": "Validar commission capture para Estetica / barberia",
+      "verticalId": "beauty",
+      "primaryScreen": "Turno",
+      "flowKey": "commission_capture",
+      "initialState": "offline",
+      "actor": "supervisor",
+      "mode": "pc",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Turno.",
+        "Ejecutar flujo commission capture.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo commission_capture termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "beauty.commission_capture.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "sync.status.view"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:beauty:commission_capture:4",
+        "4963260c4e4cfe77"
+      ]
+    },
+    {
+      "id": "beauty.scenario.05.cash_change",
+      "title": "Validar cash change para Estetica / barberia",
+      "verticalId": "beauty",
+      "primaryScreen": "Sincronizacion",
+      "flowKey": "cash_change",
+      "initialState": "sync_pending",
+      "actor": "cajero",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Sincronizacion.",
+        "Ejecutar flujo cash change.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo cash_change termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "sale.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "pos.sale.create"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "tiempo_promedio_venta",
+        "tasa_error_captura"
+      ],
+      "traceTags": [
+        "00F:beauty:cash_change:5",
+        "2cab9665cf812885"
+      ]
+    },
+    {
+      "id": "beauty.scenario.06.reschedule",
+      "title": "Validar reschedule para Estetica / barberia",
+      "verticalId": "beauty",
+      "primaryScreen": "Agenda",
+      "flowKey": "reschedule",
+      "initialState": "success",
+      "actor": "supervisor",
+      "mode": "tablet",
+      "preconditions": [
+        "Existe turno operativo cuando la politica lo requiere.",
+        "El catalogo local o vertical esta disponible.",
+        "Los permisos del actor fueron cargados antes de iniciar el flujo."
+      ],
+      "steps": [
+        "Abrir pantalla Agenda.",
+        "Ejecutar flujo reschedule.",
+        "Revisar mensaje operativo en es-MX.",
+        "Confirmar resultado y registro auditable."
+      ],
+      "expectedResult": "El flujo reschedule termina sin lenguaje tecnico visible y deja estado verificable.",
+      "expectedEvents": [
+        "beauty.reschedule.completed",
+        "audit.event.recorded"
+      ],
+      "requiredPermissions": [
+        "inventory.adjust.local"
+      ],
+      "offlineExpectation": "no requiere conexion externa para validar estado local",
+      "failureMessage": "La operacion no se pudo completar. Revisa el dato y vuelve a intentar.",
+      "humanAcceptance": "Un usuario de mostrador entiende que paso y que accion sigue.",
+      "kpiSignals": [
+        "cancelaciones_devoluciones",
+        "latencia_sincronizacion"
+      ],
+      "traceTags": [
+        "00F:beauty:reschedule:6",
+        "adc53bef4d93c646"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Feature Resolution Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "featureKey",
+    "allowed",
+    "reason",
+    "source"
+  ],
+  "properties": {
+    "featureKey": {
+      "type": "string"
+    },
+    "allowed": {
+      "type": "boolean"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "source": {
+      "enum": [
+        "plan",
+        "entitlement",
+        "plugin",
+        "trial",
+        "override",
+        "dev",
+        "none"
+      ]
+    },
+    "licenseStatus": {
+      "type": "string"
+    },
+    "messageKey": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "blockedBy": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

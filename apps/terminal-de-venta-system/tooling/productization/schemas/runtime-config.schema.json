@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/runtime-config.schema.json",
+  "title": "runtime-config",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "runtimeMode",
+    "runtimeRoot",
+    "configRoot",
+    "businessId",
+    "deviceId",
+    "packageType",
+    "paths"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runtimeMode": {
+      "type": "string",
+      "enum": [
+        "dev",
+        "standalone",
+        "pro",
+        "pc_backoffice",
+        "managed",
+        "degraded_managed"
+      ]
+    },
+    "runtimeRoot": {
+      "type": "string",
+      "minLength": 3
+    },
+    "configRoot": {
+      "type": "string",
+      "minLength": 3
+    },
+    "businessId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deviceId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "packageType": {
+      "type": "string",
+      "enum": [
+        "DEV",
+        "TABLET_SOLO",
+        "TABLET_PRO",
+        "PC_BACKOFFICE",
+        "TABLET_PC_MANAGED"
+      ]
+    },
+    "paths": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://prisma.local/schemas/paths.schema.json",
+      "title": "paths",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runtimeRoot",
+        "configRoot",
+        "businessRoot",
+        "tabletDataRoot",
+        "pcDataRoot",
+        "syncRoot",
+        "supportRoot",
+        "updatesRoot",
+        "rollbackRoot",
+        "logsRoot",
+        "exportsRoot",
+        "backupsRoot",
+        "licenseFile"
+      ],
+      "properties": {
+        "runtimeRoot": {
+          "type": "string",
+          "minLength": 3
+        },
+        "configRoot": {
+          "type": "string",
+          "minLength": 3
+        },
+        "businessRoot": {
+          "type": "string",
+          "minLength": 3
+        },
+        "tabletDataRoot": {
+          "type": "string",
+          "minLength": 3
+        },
+        "pcDataRoot": {
+          "type": "string",
+          "minLength": 3
+        },
+        "syncRoot": {
+          "type": "string",
+          "minLength": 3
+        },
+        "supportRoot": {
+          "type": "string",
+          "minLength": 3
+        },
+        "updatesRoot": {
+          "type": "string",
+          "minLength": 3
+        },
+        "rollbackRoot": {
+          "type": "string",
+          "minLength": 3
+        },
+        "logsRoot": {
+          "type": "string",
+          "minLength": 3
+        },
+        "exportsRoot": {
+          "type": "string",
+          "minLength": 3
+        },
+        "backupsRoot": {
+          "type": "string",
+          "minLength": 3
+        },
+        "licenseFile": {
+          "type": "string",
+          "minLength": 3
+        }
+      }
+    },
+    "license": {
+      "type": "object"
+    },
+    "sync": {
+      "type": "object"
+    },
+    "features": {
+      "type": "object"
+    },
+    "support": {
+      "type": "object"
+    },
+    "updates": {
+      "type": "object"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "runtimeMode": {
+            "enum": [
+              "standalone",
+              "pro",
+              "pc_backoffice",
+              "managed",
+              "degraded_managed"
+            ]
+          }
+        }
+      },
+      "then": {
+        "description": "En modos cliente, runtime/config/business roots deben resolverse fuera del repositorio. Esta regla se refuerza en verify porque JSON Schema no inspecciona el filesystem real."
+      }
+    }
+  ]
+}

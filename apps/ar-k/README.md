@@ -7,7 +7,7 @@ Ar-k now ships as a governed System + Kernel + Contracts platform with five engi
 - `pya/system/`: sovereign rules, compatibility, ownership, state model, determinism policy, admission rules
 - `pya/kernel/`: runtime context, governed storage, event bus, pipeline coordinator, barriers, loader, contract checks
 - `pya/contracts/`: canonical shapes and validators for signals, registries, switches, validation, annotations, artifacts, snapshots, engine manifests, events, indices
-- `pya/engines/`: the five governed engines with manifest, entrypoint, internal README, useful iteration-1 behavior, and a frontend observation slice that can inspect TS/JS/JSON/HTML/CSS surfaces without promoting them directly to truth inside the scanner
+- `pya/engines/`: the five governed engines with manifest, entrypoint, internal README, useful iteration-1 behavior, a frontend observation slice that can inspect TS/JS/JSON/HTML/CSS surfaces, and path-classification policy that keeps non-product classes observable but non-canonical
 - `docs/`: constitution, admission, contracts, ownership, integration, parallel development, and per-engine operating notes
 - `installer/install_ar_k_integration.py`: controlled installer with dry-run, apply, verify, rollback, backup, auto-rollback, one main log target, and payload filtering that excludes generated runtime state such as `reports/`, `.ark_install/`, and `__pycache__/`
 
@@ -27,6 +27,16 @@ Ar-k now ships as a governed System + Kernel + Contracts platform with five engi
 - no dependency on current working directory
 - one execution timestamp propagated through the whole run
 - typed failures for admission, ownership, pipeline, and contracts
+
+## Canonical promotion policy (current)
+
+- scanner always observes files, but marks each path with `canonical_source` and optional `non_product_class`
+- registry_builder promotes only canonical product/runtime module candidates
+- non-product classes stay observed but non-canonical by default:
+  - `docs`, `reports`, `_dependency_graphs`
+  - `tests`, `tools`, `scripts`, `fixtures`, `examples`
+  - history/rollback/patch/artifact/backups/hidden paths
+- skipped promotion decisions are explicit in `artifacts/metrics/registry_build_summary.json`
 
 ## Developing the 5 engines in parallel
 
@@ -130,6 +140,17 @@ python -m pya.tools.pya run --root $root --target "$root\examples\sample_app" --
 python -m unittest discover -s "$root\tests" -v
 ```
 
+## Real target validation (current)
+
+```powershell
+$root = "F:\repos\hitech-os\apps\Ar-k"
+$target = "F:\repos\hitech-os\apps\external_interaction_template"
+$out = "$root\reports_real"
+$env:PYTHONPATH = $root
+
+python -m pya.tools.pya run --root $root --target $target --out $out
+```
+
 ## Docs map
 
 - `docs/platform_constitution.md`
@@ -137,6 +158,7 @@ python -m unittest discover -s "$root\tests" -v
 - `docs/execution_plane.md`
 - `docs/contracts_reference.md`
 - `docs/contract_evolution_policy.md`
+- `docs/canonical_promotion_policy.md`
 - `docs/ownership_and_write_paths.md`
 - `docs/integration_of_five_motors.md`
 - `docs/parallel_development_guide.md`

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/contracts/vertical-validation-fixture.schema.json",
+  "title": "PRISMA vertical validation fixture",
+  "type": "object",
+  "required": [
+    "verticalId",
+    "fixtureVersion",
+    "screensUnderTest",
+    "flowsUnderTest",
+    "seedData",
+    "scenarios",
+    "acceptanceChecks"
+  ],
+  "properties": {
+    "verticalId": {
+      "type": "string"
+    },
+    "fixtureVersion": {
+      "type": "string"
+    },
+    "requiredBlocks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "screensUnderTest": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "flowsUnderTest": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "scenarios": {
+      "type": "array",
+      "minItems": 1
+    },
+    "acceptanceChecks": {
+      "type": "array",
+      "minItems": 1
+    }
+  }
+}

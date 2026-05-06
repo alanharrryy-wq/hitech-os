@@ -1,0 +1,26 @@
+{
+  "announcementId": "ann_promotions_001",
+  "title": "Módulo de promociones disponible",
+  "body": "Puedes solicitar activación del módulo de promociones.",
+  "severity": "commercial",
+  "targetPlans": [
+    "TABLET_PRO",
+    "TABLET_PC_MANAGED"
+  ],
+  "targetRoles": [
+    "owner",
+    "supervisor"
+  ],
+  "targetDevices": [
+    "pc"
+  ],
+  "targetVersions": [
+    ">=1.0.0"
+  ],
+  "showFrom": "2026-04-28T00:00:00Z",
+  "showUntil": null,
+  "showOnce": true,
+  "dismissible": true,
+  "ctaType": "request_activation",
+  "ctaTarget": "plugins.promotions.basic"
+}

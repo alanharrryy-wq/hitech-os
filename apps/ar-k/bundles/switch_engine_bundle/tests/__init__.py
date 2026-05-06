@@ -1,0 +1,4 @@
+"""Tests for the homologated switch bundle."""
+
+from __future__ import annotations
+

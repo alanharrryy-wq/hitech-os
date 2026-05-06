@@ -1,0 +1,193 @@
+.launcherPage,
+.detachedPage,
+.bridgePage {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(91, 225, 255, .22), transparent 34rem),
+    radial-gradient(circle at 80% 8%, rgba(147, 91, 255, .26), transparent 28rem),
+    linear-gradient(135deg, #06111d 0%, #0a1020 48%, #05070f 100%);
+  color: #f4fbff;
+  padding: 24px;
+  overflow: hidden;
+}
+.launcherPage::before,
+.detachedPage::before,
+.bridgePage::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(115deg, transparent 0 18%, rgba(255,255,255,.08) 20%, transparent 24% 54%, rgba(136,225,255,.06) 57%, transparent 63%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.022) 0 1px, transparent 1px 44px);
+  mask-image: radial-gradient(circle at center, black, transparent 78%);
+}
+.heroCrystal {
+  max-width: 840px;
+  border: 1px solid rgba(210, 245, 255, .26);
+  border-radius: 34px;
+  padding: 30px;
+  background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.045));
+  backdrop-filter: blur(24px) saturate(140%);
+  box-shadow: 0 24px 90px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.24);
+}
+.eyebrow { margin: 0 0 8px; letter-spacing: .18em; text-transform: uppercase; color: #8feeff; font-size: 11px; font-weight: 800; }
+.heroCrystal h1 { margin: 0; font-size: clamp(42px, 6vw, 84px); line-height: .86; letter-spacing: -.08em; }
+.heroCrystal p { max-width: 680px; color: rgba(244,251,255,.76); font-size: 17px; line-height: 1.6; }
+.heroActions { display: flex; flex-wrap: wrap; gap: 10px; }
+.heroActions a,
+.windowActions button,
+.liveSwitches button,
+.dockbar button,
+.presetMixer button,
+.snapshotActions button,
+.snapshotList button,
+.compareBox button,
+.publishPanel button {
+  color: #f4fbff;
+  background: linear-gradient(135deg, rgba(91,225,255,.18), rgba(135,91,255,.18));
+  border: 1px solid rgba(210,245,255,.28);
+  border-radius: 999px;
+  padding: 9px 13px;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 10px 26px rgba(0,0,0,.22);
+}
+.studioFrame {
+  position: fixed;
+  z-index: 9999;
+  overflow: hidden;
+  border: 1px solid var(--prisma-live-edge, rgba(210,245,255,.42));
+  border-radius: var(--prisma-live-radius, 28px);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.18), rgba(255,255,255,.055)),
+    radial-gradient(circle at 12% 8%, rgba(91,225,255,.2), transparent 26rem),
+    rgba(7, 13, 26, var(--prisma-live-panel-alpha, .84));
+  backdrop-filter: blur(var(--prisma-live-blur, 22px)) saturate(var(--prisma-live-saturation, 126%));
+  box-shadow: var(--prisma-live-shadow, 0 28px 80px rgba(0,0,0,.42)), var(--prisma-live-glow, 0 0 38px rgba(85,225,255,.38));
+  color: #f7fcff;
+  isolation: isolate;
+}
+.studioFrame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: calc(.28 + var(--prisma-live-shine, .72) * .48);
+  background:
+    linear-gradient(112deg, transparent 0 20%, rgba(255,255,255,.24) 22%, transparent 26% 58%, rgba(155,230,255,.12) 60%, transparent 66%),
+    radial-gradient(circle at 92% 0%, rgba(255,255,255,.22), transparent 15rem);
+  mix-blend-mode: screen;
+}
+.studioFrame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--prisma-live-grain, .18);
+  background-image: radial-gradient(circle, rgba(255,255,255,.72) 0 1px, transparent 1px);
+  background-size: 19px 19px;
+}
+.isDetached { position: relative; margin: 0 auto; }
+.isMinimized { height: 76px !important; }
+.aurora { position: absolute; inset: -30%; background: conic-gradient(from 180deg, rgba(91,225,255,.12), transparent, rgba(146,91,255,.14), transparent, rgba(91,225,255,.12)); filter: blur(30px); animation: spin 16s linear infinite; z-index: -1; }
+@keyframes spin { to { transform: rotate(1turn); } }
+.topbar { display: grid; grid-template-columns: 1fr auto auto; gap: 12px; align-items: center; min-height: 72px; padding: 14px 16px; cursor: grab; border-bottom: 1px solid rgba(210,245,255,.16); background: rgba(2,8,18,.38); }
+.topbar p { margin: 0 0 2px; color: #8feeff; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; font-weight: 900; }
+.topbar strong { font-size: 17px; letter-spacing: -.03em; }
+.scoreBadge { display: grid; place-items: center; min-width: 74px; height: 54px; border-radius: 18px; border: 1px solid rgba(210,245,255,.24); background: rgba(255,255,255,.08); box-shadow: var(--prisma-live-neon, 0 0 24px rgba(134,92,255,.32)); }
+.scoreBadge span { font-size: 10px; letter-spacing: .12em; font-weight: 900; }
+.scoreBadge b { font-size: 24px; line-height: 1; }
+.scoreBadge[data-verdict="READY"] { color: #baffef; }
+.scoreBadge[data-verdict="WARN"] { color: #ffe8a3; }
+.scoreBadge[data-verdict="BLOCKED"] { color: #ffb0b0; }
+.windowActions { display: flex; gap: 8px; }
+.body { height: calc(100% - 72px); overflow: auto; padding: 14px; scrollbar-width: thin; }
+.commandDeck { display: grid; grid-template-columns: 1.35fr .9fr; gap: 10px; }
+.connectionPanel,
+.publishPanel,
+.toolbar,
+.presetMixer,
+.scoreGrid,
+.previewLab,
+.snapshotLab,
+.guardrails,
+.exportBox,
+.bridgeCard {
+  border: 1px solid rgba(210,245,255,.18);
+  border-radius: 24px;
+  background: linear-gradient(145deg, rgba(255,255,255,.105), rgba(255,255,255,.045));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14);
+}
+.connectionPanel,
+.publishPanel { padding: 12px; display: grid; gap: 6px; }
+.connectionPanel span,
+.publishPanel span { color: rgba(244,251,255,.58); font-size: 11px; text-transform: uppercase; letter-spacing: .12em; font-weight: 800; }
+.connectionPanel strong,
+.publishPanel strong { font-size: 19px; }
+.connectionPanel input,
+.toolbar input,
+.toolbar select,
+.bridgeCard input { width: 100%; color: #f7fcff; background: rgba(0,0,0,.22); border: 1px solid rgba(210,245,255,.18); border-radius: 14px; padding: 9px; }
+.toolbar { margin-top: 10px; padding: 12px; display: grid; grid-template-columns: 1fr 1fr 1.35fr; gap: 10px; }
+.toolbar label { display: grid; gap: 6px; color: rgba(244,251,255,.7); font-size: 12px; font-weight: 800; }
+.dockbar,
+.liveSwitches { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+.dockbar button[data-active="true"],
+.liveSwitches button[data-active="true"],
+.presetMixer button[data-active="true"] { background: linear-gradient(135deg, rgba(91,225,255,.34), rgba(146,91,255,.32)); box-shadow: var(--prisma-live-glow), inset 0 1px 0 rgba(255,255,255,.24); }
+.presetMixer { padding: 10px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.presetMixer button { text-align: left; border-radius: 20px; display: grid; gap: 3px; }
+.presetMixer span { color: rgba(244,251,255,.62); font-size: 12px; }
+.scoreGrid { margin-top: 10px; padding: 10px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.scoreGrid article { background: rgba(0,0,0,.16); border-radius: 18px; padding: 10px; }
+.scoreGrid span { display: block; color: rgba(244,251,255,.58); font-size: 11px; text-transform: uppercase; }
+.scoreGrid b { font-size: 25px; }
+.scoreGrid meter { width: 100%; height: 8px; }
+.controls { margin-top: 10px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.control { display: grid; grid-template-columns: 1fr 120px 42px; gap: 10px; align-items: center; padding: 10px; border: 1px solid rgba(210,245,255,.16); border-radius: 18px; background: rgba(255,255,255,.06); }
+.control[data-hot="true"] { box-shadow: var(--prisma-live-neon); }
+.control b { display: block; }
+.control small { display: block; color: rgba(244,251,255,.55); font-size: 11px; }
+.control input { accent-color: #8feeff; }
+.control output { text-align: right; font-weight: 900; }
+.previewLab { margin-top: 10px; padding: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.previewCard,
+.layerInspector,
+.compareBox { border-radius: 22px; padding: 14px; background: rgba(0,0,0,.18); border: 1px solid rgba(210,245,255,.18); }
+.previewCard strong { display: block; font-size: 42px; letter-spacing: -.08em; text-shadow: var(--prisma-live-glow); }
+.previewCard button { margin-top: 12px; width: 100%; border: 0; border-radius: 18px; padding: 14px; color: #041018; background: linear-gradient(135deg, #8ff4ff, #c7b6ff); font-weight: 1000; box-shadow: var(--prisma-live-neon); }
+.layerInspector b { display: block; font-size: 28px; }
+.snapshotLab { margin-top: 10px; padding: 10px; display: grid; grid-template-columns: .8fr 1fr 1fr; gap: 10px; }
+.snapshotActions { display: grid; gap: 8px; align-content: start; }
+.snapshotList { display: grid; gap: 6px; max-height: 160px; overflow: auto; }
+.snapshotList button { text-align: left; border-radius: 16px; }
+.snapshotList span { display: block; color: rgba(244,251,255,.6); font-size: 11px; }
+.guardrails { margin-top: 10px; padding: 12px; }
+.guardrails strong { display: block; margin-bottom: 8px; }
+.guardrails p { margin: 6px 0; border-radius: 14px; padding: 9px 10px; background: rgba(255,255,255,.07); }
+.guardrails p[data-level="ok"] { color: #baffef; }
+.guardrails p[data-level="warn"] { color: #ffe8a3; }
+.guardrails p[data-level="block"] { color: #ffb0b0; }
+.exportBox { margin-top: 10px; padding: 12px; }
+.exportBox pre,
+.bridgeCard pre { overflow: auto; max-height: 240px; padding: 12px; border-radius: 16px; background: rgba(0,0,0,.28); color: #dffaff; }
+.resizeHandle { position: absolute; right: 8px; bottom: 8px; width: 26px; height: 26px; border: 0; border-radius: 9px; background: linear-gradient(135deg, #8feeff, #9d80ff); cursor: nwse-resize; box-shadow: var(--prisma-live-neon); }
+.bridgeCard { max-width: 920px; margin: 0 auto; padding: 24px; }
+.statusGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 14px 0; }
+.statusGrid article { padding: 12px; border-radius: 18px; background: rgba(255,255,255,.08); border: 1px solid rgba(210,245,255,.18); }
+.statusGrid strong { display: block; font-size: 20px; }
+.statusGrid span { color: rgba(244,251,255,.58); font-size: 12px; }
+@media (max-width: 760px) {
+  .studioFrame { left: 8px !important; right: 8px !important; top: 8px !important; width: auto !important; height: calc(100vh - 16px) !important; }
+  .topbar { grid-template-columns: 1fr; cursor: default; }
+  .commandDeck,
+  .toolbar,
+  .presetMixer,
+  .scoreGrid,
+  .controls,
+  .previewLab,
+  .snapshotLab,
+  .statusGrid { grid-template-columns: 1fr; }
+}
+

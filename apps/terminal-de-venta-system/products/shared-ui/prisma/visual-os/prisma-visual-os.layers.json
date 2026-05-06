@@ -1,0 +1,183 @@
+{
+  "meta": {
+    "system": "PRISMA Visual Operating System",
+    "package": "PRISMA_VISUAL_OS_CORE_00D_00E_20260503_v01",
+    "blocks": [
+      "00D Visual Layers System",
+      "00E Visual Controls Runtime"
+    ],
+    "owner": "Chat A",
+    "intent": "Define official layer taxonomy and turn active controls into generated CSS variables without touching product logic."
+  },
+  "layers": [
+    {
+      "id": "background",
+      "order": 10,
+      "controls": [
+        "ambient_noise",
+        "brand_tone"
+      ],
+      "protects": [
+        "legibility"
+      ],
+      "examples": [
+        "radial base",
+        "vignette",
+        "texture"
+      ]
+    },
+    {
+      "id": "atmosphere",
+      "order": 20,
+      "controls": [
+        "depth_glass",
+        "ambient_noise",
+        "motion_temper"
+      ],
+      "protects": [
+        "content"
+      ],
+      "examples": [
+        "glow",
+        "bloom",
+        "haze",
+        "halo"
+      ]
+    },
+    {
+      "id": "shell",
+      "order": 30,
+      "controls": [
+        "surface_separation",
+        "surface_density"
+      ],
+      "protects": [
+        "navigation"
+      ],
+      "examples": [
+        "sidebar",
+        "topbar",
+        "frame"
+      ]
+    },
+    {
+      "id": "surface",
+      "order": 40,
+      "controls": [
+        "depth_glass",
+        "surface_separation"
+      ],
+      "protects": [
+        "content"
+      ],
+      "examples": [
+        "cards",
+        "panels",
+        "containers"
+      ]
+    },
+    {
+      "id": "content",
+      "order": 50,
+      "controls": [
+        "data_legibility",
+        "operational_contrast"
+      ],
+      "protects": [
+        "prices",
+        "totals",
+        "stock"
+      ],
+      "examples": [
+        "text",
+        "numbers",
+        "labels"
+      ]
+    },
+    {
+      "id": "action",
+      "order": 60,
+      "controls": [
+        "critical_action_weight",
+        "touch_safety"
+      ],
+      "protects": [
+        "cashflow"
+      ],
+      "examples": [
+        "COBRAR",
+        "Agregar",
+        "Confirmar"
+      ]
+    },
+    {
+      "id": "state",
+      "order": 70,
+      "controls": [
+        "state_signal_strength"
+      ],
+      "protects": [
+        "error clarity"
+      ],
+      "examples": [
+        "error",
+        "warning",
+        "offline",
+        "stock"
+      ]
+    },
+    {
+      "id": "focus",
+      "order": 80,
+      "controls": [
+        "touch_safety",
+        "motion_temper"
+      ],
+      "protects": [
+        "keyboard/touch feedback"
+      ],
+      "examples": [
+        "hover",
+        "active",
+        "focus ring",
+        "press"
+      ]
+    },
+    {
+      "id": "overlay",
+      "order": 90,
+      "controls": [
+        "depth_glass",
+        "surface_separation"
+      ],
+      "protects": [
+        "modal priority"
+      ],
+      "examples": [
+        "dialog",
+        "drawer",
+        "payment panel"
+      ]
+    },
+    {
+      "id": "debug",
+      "order": 100,
+      "controls": [
+        "debug_layers"
+      ],
+      "protects": [
+        "diagnostics only"
+      ],
+      "examples": [
+        "layer outlines",
+        "surface badges"
+      ]
+    }
+  ],
+  "guardrails": [
+    "content layer wins over atmosphere when readability is at risk",
+    "action layer wins over decorative premium effects in checkout and POS",
+    "debug layer must be opt-in and never ship as default visible UI",
+    "Tablet touch targets stay at or above 44px; POS primary actions target 52px or more"
+  ]
+}

@@ -1,0 +1,9 @@
+sequenceDiagram
+  participant M as Masterplan
+  participant C as ControlPlane
+  participant S as SurfaceLock
+  participant A as AtmosphereLock
+  M->>C: token contract
+  C->>S: generated css and tuner
+  S->>A: approved POS surface
+  A->>M: final QA evidence

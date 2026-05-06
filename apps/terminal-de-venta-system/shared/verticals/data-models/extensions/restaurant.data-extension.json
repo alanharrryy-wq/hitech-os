@@ -1,0 +1,183 @@
+{
+  "verticalId": "restaurant",
+  "label": "Restaurante / cafeteria",
+  "version": "0.3.0",
+  "principle": "Venta puede ser consumo abierto; mesas, comandas y cocina son extension, no core POS.",
+  "extensions": [
+    {
+      "extensionId": "restaurant.Table",
+      "entityName": "Table",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.restaurant.Table.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.restaurant.Table.created",
+        "vertical.restaurant.Table.updated"
+      ],
+      "fixtures": [
+        "restaurant_Table_happy_path.json",
+        "restaurant_Table_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "prescriptionId",
+        "sizeColorMatrix",
+        "serialNumber",
+        "routeStopId"
+      ]
+    },
+    {
+      "extensionId": "restaurant.DiningSession",
+      "entityName": "DiningSession",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.restaurant.DiningSession.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.restaurant.DiningSession.created",
+        "vertical.restaurant.DiningSession.updated"
+      ],
+      "fixtures": [
+        "restaurant_DiningSession_happy_path.json",
+        "restaurant_DiningSession_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "prescriptionId",
+        "sizeColorMatrix",
+        "serialNumber",
+        "routeStopId"
+      ]
+    },
+    {
+      "extensionId": "restaurant.KitchenTicket",
+      "entityName": "KitchenTicket",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.restaurant.KitchenTicket.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.restaurant.KitchenTicket.created",
+        "vertical.restaurant.KitchenTicket.updated"
+      ],
+      "fixtures": [
+        "restaurant_KitchenTicket_happy_path.json",
+        "restaurant_KitchenTicket_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "prescriptionId",
+        "sizeColorMatrix",
+        "serialNumber",
+        "routeStopId"
+      ]
+    },
+    {
+      "extensionId": "restaurant.MenuModifier",
+      "entityName": "MenuModifier",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.restaurant.MenuModifier.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.restaurant.MenuModifier.created",
+        "vertical.restaurant.MenuModifier.updated"
+      ],
+      "fixtures": [
+        "restaurant_MenuModifier_happy_path.json",
+        "restaurant_MenuModifier_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "prescriptionId",
+        "sizeColorMatrix",
+        "serialNumber",
+        "routeStopId"
+      ]
+    },
+    {
+      "extensionId": "restaurant.TipAllocation",
+      "entityName": "TipAllocation",
+      "extensionType": "sale_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.restaurant.TipAllocation.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.restaurant.TipAllocation.created",
+        "vertical.restaurant.TipAllocation.updated"
+      ],
+      "fixtures": [
+        "restaurant_TipAllocation_happy_path.json",
+        "restaurant_TipAllocation_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "prescriptionId",
+        "sizeColorMatrix",
+        "serialNumber",
+        "routeStopId"
+      ]
+    }
+  ]
+}

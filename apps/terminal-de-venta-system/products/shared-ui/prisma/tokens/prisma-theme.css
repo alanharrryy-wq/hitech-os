@@ -1,0 +1,608 @@
+:root,
+[data-theme="prisma-dark"] {
+  color-scheme: dark;
+
+  --prisma-app-background: #030506;
+  --prisma-app-background-radial:
+    radial-gradient(circle at 50% -18%, rgba(255, 215, 132, 0.34), transparent 30%),
+    radial-gradient(circle at 72% 4%, rgba(201, 225, 238, 0.2), transparent 24%),
+    radial-gradient(circle at 16% 24%, rgba(91, 130, 169, 0.16), transparent 34%),
+    radial-gradient(circle at 18% 110%, rgba(196, 78, 42, 0.18), transparent 34%),
+    radial-gradient(circle at 88% 100%, rgba(76, 123, 171, 0.18), transparent 32%),
+    linear-gradient(180deg, #111b24 0%, #07111b 42%, #030506 100%);
+  --prisma-surface: rgba(13, 18, 25, 0.58);
+  --prisma-elevated-surface: rgba(22, 29, 39, 0.62);
+  --prisma-glass-surface: rgba(21, 28, 38, 0.42);
+  --prisma-sidebar-surface: rgba(7, 10, 15, 0.68);
+  --prisma-card-surface: rgba(26, 34, 45, 0.48);
+  --prisma-cart-panel-surface: rgba(10, 14, 20, 0.58);
+  --prisma-hover-surface: rgba(255, 255, 255, 0.055);
+  --prisma-active-surface: linear-gradient(90deg, rgba(232, 189, 103, 0.34), rgba(232, 189, 103, 0.12));
+
+  --prisma-text-primary: #f5f1e8;
+  --prisma-text-secondary: #bbb6ab;
+  --prisma-text-muted: #7f838c;
+  --prisma-text-faint: #5f636d;
+  --prisma-text-on-gold: #2b2111;
+
+  --prisma-border-soft: rgba(255, 255, 255, 0.12);
+  --prisma-border-medium: rgba(255, 255, 255, 0.18);
+  --prisma-border-strong: rgba(255, 255, 255, 0.28);
+  --prisma-border-gold: rgba(245, 209, 131, 0.58);
+
+  --prisma-accent-gold: #e8bd67;
+  --prisma-accent-gold-soft: #f5d183;
+  --prisma-accent-gold-strong: #bc8d3e;
+  --prisma-accent-gold-deep: #8b6a32;
+  --prisma-accent-gold-glow: rgba(232, 189, 103, 0.42);
+  --prisma-accent-cool-frosted: rgba(174, 208, 226, 0.12);
+  --prisma-accent-cool-frosted-soft: rgba(205, 229, 241, 0.1);
+  --prisma-accent-cool-frosted-strong: rgba(205, 229, 241, 0.24);
+
+  --prisma-success: #3ad17a;
+  --prisma-warning: #e8bd67;
+  --prisma-danger: #ff6b5e;
+  --prisma-info: #9fc8e8;
+  --prisma-focus-ring: rgba(245, 209, 131, 0.9);
+
+  --prisma-shadow-xs: 0 8px 18px rgba(0, 0, 0, 0.18);
+  --prisma-shadow-sm: 0 16px 36px rgba(0, 0, 0, 0.26);
+  --prisma-shadow-md: 0 22px 58px rgba(0, 0, 0, 0.36);
+  --prisma-shadow-lg: 0 32px 90px rgba(0, 0, 0, 0.48);
+  --prisma-shadow-gold: 0 0 30px rgba(232, 189, 103, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.42);
+  --prisma-shadow-glass: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 -1px 0 rgba(0, 0, 0, 0.38), 0 34px 96px rgba(0, 0, 0, 0.54), 0 0 42px rgba(83, 126, 162, 0.08);
+
+  --prisma-radius-xs: 8px;
+  --prisma-radius-sm: 12px;
+  --prisma-radius-md: 16px;
+  --prisma-radius-lg: 22px;
+  --prisma-radius-xl: 28px;
+  --prisma-radius-pill: 999px;
+
+  --prisma-motion-fast: 120ms;
+  --prisma-motion-base: 180ms;
+  --prisma-motion-slow: 260ms;
+
+  --prisma-font-family: Inter, "SF Pro Display", "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+  --prisma-gold-gradient: linear-gradient(180deg, #f7d88a 0%, #e8bd67 48%, #c89136 100%);
+  --prisma-gold-gradient-strong: linear-gradient(135deg, #fff1b8 0%, #e8bd67 42%, #a86f22 100%);
+  --prisma-glass-gradient:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.028) 36%, rgba(8, 18, 28, 0.26)),
+    linear-gradient(180deg, rgba(35, 48, 62, 0.42), rgba(7, 13, 20, 0.46));
+  --prisma-panel-gradient:
+    radial-gradient(circle at 52% -18%, rgba(255, 255, 255, 0.16), transparent 30%),
+    radial-gradient(circle at 82% 8%, rgba(245, 209, 131, 0.09), transparent 32%),
+    linear-gradient(180deg, rgba(26, 38, 51, 0.46), rgba(7, 13, 20, 0.5));
+  --prisma-product-stage-gradient:
+    radial-gradient(circle at 48% 18%, rgba(255, 255, 255, 0.24), transparent 30%),
+    radial-gradient(circle at 50% 88%, rgba(232, 189, 103, 0.2), transparent 36%),
+    radial-gradient(circle at 18% 28%, rgba(166, 212, 235, 0.13), transparent 34%),
+    linear-gradient(180deg, rgba(52, 65, 78, 0.42), rgba(9, 16, 24, 0.48));
+  --prisma-frosted-accent-gradient:
+    linear-gradient(145deg, rgba(205, 229, 241, 0.22), rgba(255, 255, 255, 0.07));
+  --prisma-soft-highlight: rgba(255, 255, 255, 0.12);
+
+  --prisma-glass-blur: 34px;
+  --prisma-glass-saturate: 1.42;
+  --prisma-glass-edge-top: rgba(255, 245, 213, 0.48);
+  --prisma-glass-edge-side: rgba(232, 189, 103, 0.2);
+  --prisma-glass-edge-bottom: rgba(0, 0, 0, 0.4);
+  --prisma-glass-inner-bloom: radial-gradient(circle at 22% 8%, rgba(255, 255, 255, 0.18), transparent 32%), radial-gradient(circle at 88% 18%, rgba(232, 189, 103, 0.1), transparent 38%);
+  --prisma-glass-vignette: radial-gradient(circle at 50% 0%, transparent 0%, rgba(0, 0, 0, 0.28) 100%);
+  --prisma-scene-noise: repeating-radial-gradient(circle at 32% 44%, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 5px);
+}
+
+[data-theme="prisma-light"] {
+  color-scheme: light;
+
+  --prisma-app-background: #f7f4ed;
+  --prisma-app-background-radial:
+    radial-gradient(circle at 46% -10%, rgba(217, 154, 34, 0.16), transparent 34%),
+    radial-gradient(circle at 11% 26%, rgba(216, 229, 238, 0.54), transparent 28%),
+    radial-gradient(circle at 91% 16%, rgba(255, 246, 221, 0.84), transparent 26%),
+    linear-gradient(180deg, #fbf8f1 0%, #f6f7fa 48%, #eef2f5 100%);
+  --prisma-surface: rgba(255, 255, 255, 0.62);
+  --prisma-elevated-surface: rgba(255, 255, 255, 0.72);
+  --prisma-glass-surface: rgba(255, 255, 255, 0.46);
+  --prisma-sidebar-surface: rgba(255, 255, 255, 0.54);
+  --prisma-card-surface: rgba(255, 255, 255, 0.6);
+  --prisma-cart-panel-surface: rgba(255, 255, 255, 0.66);
+  --prisma-hover-surface: rgba(255, 255, 255, 0.72);
+  --prisma-active-surface: linear-gradient(145deg, rgba(255, 255, 255, 0.74), rgba(218, 235, 246, 0.48));
+
+  --prisma-text-primary: #171a20;
+  --prisma-text-secondary: #4e5562;
+  --prisma-text-muted: #858d99;
+  --prisma-text-faint: #a8afba;
+  --prisma-text-on-gold: #1b1305;
+
+  --prisma-border-soft: rgba(174, 184, 198, 0.36);
+  --prisma-border-medium: rgba(151, 162, 179, 0.48);
+  --prisma-border-strong: rgba(118, 130, 148, 0.62);
+  --prisma-border-gold: rgba(217, 154, 34, 0.46);
+
+  --prisma-accent-gold: #d99a22;
+  --prisma-accent-gold-soft: #fff1c8;
+  --prisma-accent-gold-strong: #b97810;
+  --prisma-accent-gold-deep: #875806;
+  --prisma-accent-gold-glow: rgba(217, 154, 34, 0.26);
+  --prisma-accent-cool-frosted: rgba(215, 232, 242, 0.58);
+  --prisma-accent-cool-frosted-soft: rgba(236, 246, 251, 0.78);
+  --prisma-accent-cool-frosted-strong: rgba(180, 207, 222, 0.7);
+
+  --prisma-success: #238b57;
+  --prisma-warning: #b97810;
+  --prisma-danger: #c4473c;
+  --prisma-info: #47758f;
+  --prisma-focus-ring: rgba(217, 154, 34, 0.58);
+
+  --prisma-shadow-xs: 0 5px 14px rgba(20, 26, 38, 0.05);
+  --prisma-shadow-sm: 0 12px 30px rgba(20, 26, 38, 0.075);
+  --prisma-shadow-md: 0 20px 48px rgba(20, 26, 38, 0.095);
+  --prisma-shadow-lg: 0 30px 82px rgba(20, 26, 38, 0.13);
+  --prisma-shadow-gold: 0 18px 42px rgba(217, 154, 34, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.62);
+  --prisma-shadow-glass: inset 0 1px 0 rgba(255, 255, 255, 0.88), inset 0 -1px 0 rgba(124, 142, 160, 0.16), 0 26px 74px rgba(20, 26, 38, 0.13), 0 0 38px rgba(217, 154, 34, 0.08);
+
+  --prisma-radius-xs: 8px;
+  --prisma-radius-sm: 12px;
+  --prisma-radius-md: 16px;
+  --prisma-radius-lg: 22px;
+  --prisma-radius-xl: 28px;
+  --prisma-radius-pill: 999px;
+
+  --prisma-motion-fast: 120ms;
+  --prisma-motion-base: 180ms;
+  --prisma-motion-slow: 260ms;
+
+  --prisma-font-family: Inter, "SF Pro Display", "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+  --prisma-gold-gradient: linear-gradient(180deg, #fff1c8 0%, #e5b44e 52%, #d99a22 100%);
+  --prisma-gold-gradient-strong: linear-gradient(135deg, #fff6de 0%, #e5b44e 44%, #b97810 100%);
+  --prisma-glass-gradient:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.62), rgba(236, 246, 251, 0.32));
+  --prisma-panel-gradient:
+    radial-gradient(circle at 50% -16%, rgba(255, 255, 255, 0.95), transparent 32%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(248, 252, 255, 0.44));
+  --prisma-product-stage-gradient:
+    radial-gradient(circle at 50% 24%, rgba(255, 255, 255, 0.96), transparent 34%),
+    radial-gradient(circle at 50% 90%, rgba(217, 154, 34, 0.18), transparent 36%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.64), rgba(229, 241, 248, 0.36));
+  --prisma-frosted-accent-gradient:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.68), rgba(217, 236, 246, 0.52));
+  --prisma-soft-highlight: rgba(255, 255, 255, 0.82);
+
+  --prisma-glass-blur: 30px;
+  --prisma-glass-saturate: 1.32;
+  --prisma-glass-edge-top: rgba(255, 255, 255, 0.92);
+  --prisma-glass-edge-side: rgba(217, 154, 34, 0.18);
+  --prisma-glass-edge-bottom: rgba(124, 142, 160, 0.18);
+  --prisma-glass-inner-bloom: radial-gradient(circle at 22% 8%, rgba(255, 255, 255, 0.62), transparent 34%), radial-gradient(circle at 88% 18%, rgba(217, 154, 34, 0.11), transparent 40%);
+  --prisma-glass-vignette: radial-gradient(circle at 50% 0%, transparent 0%, rgba(124, 142, 160, 0.12) 100%);
+  --prisma-scene-noise: repeating-radial-gradient(circle at 32% 44%, rgba(20, 26, 38, 0.025) 0 1px, transparent 1px 5px);
+}
+
+:root {
+  --bg: var(--prisma-app-background);
+  --panel: var(--prisma-surface);
+  --panel-2: var(--prisma-elevated-surface);
+  --panel-3: var(--prisma-card-surface);
+  --border: var(--prisma-border-soft);
+  --text: var(--prisma-text-primary);
+  --muted: var(--prisma-text-muted);
+  --accent: var(--prisma-accent-gold);
+  --accent-2: var(--prisma-accent-cool-frosted);
+  --danger: var(--prisma-danger);
+  --warning: var(--prisma-warning);
+  --radius: var(--prisma-radius-lg);
+}
+
+/* PRISMA_LIVING_BACKGROUND_PASS_01B: stronger cinematic living background tokens */
+:root,
+[data-theme="prisma-dark"] {
+  --prisma-living-scene-base:
+    radial-gradient(ellipse at 50% -18%, rgba(255, 221, 151, 0.46), transparent 31%),
+    radial-gradient(ellipse at 72% 7%, rgba(154, 204, 232, 0.30), transparent 26%),
+    radial-gradient(ellipse at 12% 21%, rgba(64, 121, 170, 0.24), transparent 36%),
+    radial-gradient(ellipse at 18% 105%, rgba(230, 128, 61, 0.22), transparent 35%),
+    radial-gradient(ellipse at 86% 102%, rgba(58, 113, 168, 0.24), transparent 34%),
+    linear-gradient(180deg, #14202b 0%, #07131f 43%, #02070d 100%);
+  --prisma-living-haze-a:
+    radial-gradient(ellipse at 56% 12%, rgba(255, 255, 255, 0.22), transparent 9%),
+    radial-gradient(ellipse at 62% 22%, rgba(190, 223, 240, 0.24), transparent 26%),
+    linear-gradient(112deg, transparent 4%, rgba(255, 255, 255, 0.105) 35%, transparent 48%);
+  --prisma-living-haze-b:
+    radial-gradient(ellipse at 46% 102%, rgba(237, 173, 86, 0.22), transparent 28%),
+    radial-gradient(ellipse at 76% 94%, rgba(99, 166, 215, 0.20), transparent 34%),
+    linear-gradient(18deg, rgba(255, 255, 255, 0.035), transparent 38%, rgba(232, 189, 103, 0.055));
+  --prisma-living-vignette:
+    radial-gradient(ellipse at 50% 42%, transparent 40%, rgba(0, 0, 0, 0.56) 100%);
+  --prisma-living-noise:
+    repeating-radial-gradient(circle at 24% 32%, rgba(255, 255, 255, 0.028) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(115deg, rgba(255,255,255,0.012) 0 1px, transparent 1px 8px);
+
+  --prisma-glass-gradient:
+    radial-gradient(circle at 24% -8%, rgba(255,255,255,0.18), transparent 36%),
+    linear-gradient(145deg, rgba(255,255,255,0.105), rgba(255,255,255,0.026) 40%, rgba(5,13,22,0.24)),
+    linear-gradient(180deg, rgba(35,48,62,0.32), rgba(5,11,18,0.34));
+  --prisma-panel-gradient:
+    radial-gradient(circle at 48% -18%, rgba(255,255,255,0.20), transparent 32%),
+    radial-gradient(circle at 80% 4%, rgba(245,209,131,0.105), transparent 31%),
+    linear-gradient(180deg, rgba(34,47,60,0.34), rgba(5,12,20,0.36));
+  --prisma-card-surface: rgba(20, 29, 40, 0.34);
+  --prisma-cart-panel-surface: rgba(8, 14, 22, 0.36);
+  --prisma-sidebar-surface: rgba(7, 12, 19, 0.42);
+  --prisma-glass-blur: 38px;
+  --prisma-glass-saturate: 1.52;
+}
+
+[data-theme="prisma-light"] {
+  --prisma-living-scene-base:
+    radial-gradient(ellipse at 44% -12%, rgba(217,154,34,0.20), transparent 35%),
+    radial-gradient(ellipse at 15% 24%, rgba(199,224,240,0.58), transparent 30%),
+    radial-gradient(ellipse at 88% 18%, rgba(255,245,220,0.88), transparent 30%),
+    linear-gradient(180deg, #fbf8f1 0%, #f6f8fb 48%, #edf3f7 100%);
+  --prisma-living-haze-a:
+    radial-gradient(ellipse at 58% 10%, rgba(255,255,255,0.78), transparent 18%),
+    linear-gradient(112deg, transparent 4%, rgba(255,255,255,0.62) 34%, transparent 47%);
+  --prisma-living-haze-b:
+    radial-gradient(ellipse at 48% 102%, rgba(217,154,34,0.14), transparent 30%),
+    radial-gradient(ellipse at 80% 96%, rgba(137,185,215,0.18), transparent 35%);
+  --prisma-living-vignette:
+    radial-gradient(ellipse at 50% 42%, transparent 48%, rgba(118, 130, 148, 0.16) 100%);
+  --prisma-living-noise:
+    repeating-radial-gradient(circle at 24% 32%, rgba(20,26,38,0.018) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(115deg, rgba(20,26,38,0.009) 0 1px, transparent 1px 8px);
+}
+
+/* PRISMA_LAYER_DISCIPLINE_PASS_01C: disciplined optical stack tokens
+   Goal: one living scene behind the UI, fewer duplicated haze layers inside cards. */
+:root,
+[data-theme="prisma-dark"] {
+  --prisma-layer-scene-opacity: 1;
+  --prisma-layer-haze-a-opacity: 0.46;
+  --prisma-layer-haze-b-opacity: 0.34;
+  --prisma-layer-panel-blur: 28px;
+  --prisma-layer-card-blur: 16px;
+  --prisma-layer-control-blur: 14px;
+  --prisma-layer-saturate: 1.24;
+
+  --prisma-layer-panel-surface:
+    radial-gradient(circle at 42% -10%, rgba(255, 255, 255, 0.105), transparent 30%),
+    linear-gradient(180deg, rgba(31, 44, 56, 0.34), rgba(5, 12, 20, 0.42));
+  --prisma-layer-card-surface:
+    linear-gradient(180deg, rgba(25, 37, 49, 0.24), rgba(5, 12, 20, 0.30));
+  --prisma-layer-control-surface:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.018)),
+    rgba(8, 16, 25, 0.34);
+  --prisma-layer-stage-surface:
+    radial-gradient(ellipse at 50% 92%, rgba(232, 189, 103, 0.22), transparent 42%),
+    radial-gradient(circle at 18% 22%, rgba(154, 204, 232, 0.15), transparent 36%),
+    linear-gradient(180deg, rgba(54, 71, 86, 0.26), rgba(7, 14, 23, 0.30));
+  --prisma-layer-edge: color-mix(in srgb, var(--prisma-glass-edge-top) 30%, var(--prisma-border-soft));
+  --prisma-layer-soft-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 20px 56px rgba(0,0,0,0.30);
+  --prisma-layer-card-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 14px 34px rgba(0,0,0,0.24);
+}
+
+[data-theme="prisma-light"] {
+  --prisma-layer-haze-a-opacity: 0.34;
+  --prisma-layer-haze-b-opacity: 0.18;
+  --prisma-layer-panel-blur: 24px;
+  --prisma-layer-card-blur: 14px;
+  --prisma-layer-control-blur: 12px;
+  --prisma-layer-saturate: 1.14;
+  --prisma-layer-panel-surface:
+    radial-gradient(circle at 42% -10%, rgba(255, 255, 255, 0.58), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.70), rgba(247,250,252,0.58));
+  --prisma-layer-card-surface:
+    linear-gradient(180deg, rgba(255,255,255,0.58), rgba(247,250,252,0.46));
+  --prisma-layer-control-surface:
+    linear-gradient(180deg, rgba(255,255,255,0.64), rgba(247,250,252,0.42));
+  --prisma-layer-stage-surface:
+    radial-gradient(ellipse at 50% 92%, rgba(217,154,34,0.14), transparent 42%),
+    radial-gradient(circle at 18% 22%, rgba(137,185,215,0.16), transparent 36%),
+    linear-gradient(180deg, rgba(255,255,255,0.50), rgba(237,243,247,0.42));
+}
+
+/* PRISMA_BLACK_VISUAL_GOVERNANCE_PASS_01D START */
+/* PRISMA_BLACK_VISUAL_GOVERNANCE_PASS_01D
+   Visual governance tokens: one scene, governed glass, bounded glow, perf/motion flags. */
+:root,
+[data-theme="prisma-black"] {
+  --prisma-visual-bg-ink: #02070d;
+  --prisma-visual-bg-deep: #06101a;
+  --prisma-visual-bg-petrol: #0b1d2a;
+  --prisma-visual-haze-cold: rgba(112, 166, 205, 0.18);
+  --prisma-visual-haze-cold-soft: rgba(84, 126, 160, 0.10);
+  --prisma-visual-haze-gold: rgba(255, 205, 112, 0.13);
+  --prisma-visual-vignette-strong: rgba(0, 0, 0, 0.62);
+  --prisma-visual-vignette-soft: rgba(0, 0, 0, 0.32);
+  --prisma-visual-noise-opacity: 0.034;
+
+  --prisma-visual-scene-base:
+    radial-gradient(circle at 18% -6%, rgba(255, 205, 112, 0.105), transparent 34%),
+    radial-gradient(circle at 76% 10%, rgba(120, 180, 225, 0.165), transparent 38%),
+    radial-gradient(circle at 48% 110%, rgba(255, 156, 84, 0.072), transparent 35%),
+    linear-gradient(135deg, var(--prisma-visual-bg-ink), var(--prisma-visual-bg-deep) 42%, var(--prisma-visual-bg-petrol));
+
+  --prisma-visual-haze-main:
+    radial-gradient(circle at 26% 24%, var(--prisma-visual-haze-cold), transparent 31%),
+    radial-gradient(circle at 66% 10%, var(--prisma-visual-haze-gold), transparent 29%),
+    radial-gradient(circle at 78% 72%, var(--prisma-visual-haze-cold-soft), transparent 33%);
+
+  --prisma-visual-haze-secondary:
+    radial-gradient(circle at 54% 18%, rgba(255, 255, 255, 0.055), transparent 18%),
+    radial-gradient(circle at 20% 96%, rgba(255, 178, 96, 0.065), transparent 28%),
+    radial-gradient(circle at 94% 42%, rgba(94, 163, 214, 0.075), transparent 30%),
+    linear-gradient(90deg, transparent, rgba(255,255,255,0.035), transparent),
+    radial-gradient(ellipse at center, transparent 46%, var(--prisma-visual-vignette-soft) 100%);
+
+  --prisma-visual-noise:
+    repeating-linear-gradient(115deg, rgba(255,255,255,0.052) 0, rgba(255,255,255,0.052) 1px, transparent 1px, transparent 4px);
+
+  --prisma-glass-panel-governed:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.112), rgba(9, 19, 29, 0.54) 42%, rgba(3, 9, 16, 0.68));
+  --prisma-glass-card-governed:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.072), rgba(8, 18, 28, 0.47) 46%, rgba(3, 9, 15, 0.58));
+  --prisma-glass-control-governed:
+    linear-gradient(180deg, rgba(255,255,255,0.088), rgba(8, 17, 27, 0.58));
+  --prisma-glass-stage-governed:
+    linear-gradient(135deg, rgba(145, 185, 215, 0.16), rgba(255, 210, 122, 0.07) 48%, rgba(5, 12, 20, 0.18));
+  --prisma-glass-cart-governed:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.105), rgba(8, 17, 26, 0.61) 48%, rgba(2, 7, 13, 0.74));
+
+  --prisma-blur-shell-governed: 28px;
+  --prisma-blur-panel-governed: 22px;
+  --prisma-blur-card-governed: 12px;
+  --prisma-blur-stage-governed: 16px;
+  --prisma-blur-chip-governed: 8px;
+
+  --prisma-edge-top-governed: rgba(255, 248, 218, 0.42);
+  --prisma-edge-side-governed: rgba(255, 210, 124, 0.18);
+  --prisma-edge-cold-governed: rgba(120, 180, 220, 0.10);
+  --prisma-edge-bottom-governed: rgba(8, 15, 22, 0.72);
+
+  --prisma-inner-stroke-governed:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.36);
+  --prisma-inner-stroke-card-governed:
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.26);
+
+  --prisma-shadow-depth-governed:
+    0 22px 60px rgba(0, 0, 0, 0.42),
+    0 2px 0 rgba(255, 255, 255, 0.04) inset;
+  --prisma-shadow-card-governed:
+    0 14px 34px rgba(0, 0, 0, 0.30),
+    var(--prisma-inner-stroke-card-governed);
+
+  --prisma-glow-gold-soft-governed: 0 0 28px rgba(255, 199, 92, 0.18);
+  --prisma-glow-gold-strong-governed: 0 0 42px rgba(255, 190, 74, 0.30);
+  --prisma-glow-cold-soft-governed: 0 0 34px rgba(102, 169, 218, 0.16);
+  --prisma-glow-cold-strong-governed: 0 0 48px rgba(108, 180, 235, 0.24);
+
+  --prisma-motion-bg-duration-governed: 34s;
+  --prisma-motion-bg-opacity-min: 0.72;
+  --prisma-motion-bg-opacity-max: 0.88;
+}
+
+html[data-prisma-profile="perf"],
+html[data-layer-profile="perf"] {
+  --prisma-visual-noise-opacity: 0;
+  --prisma-blur-panel-governed: 12px;
+  --prisma-blur-card-governed: 0px;
+  --prisma-blur-stage-governed: 8px;
+  --prisma-glow-gold-soft-governed: 0 0 18px rgba(255, 199, 92, 0.10);
+  --prisma-glow-cold-soft-governed: 0 0 18px rgba(102, 169, 218, 0.08);
+}
+/* PRISMA_BLACK_VISUAL_GOVERNANCE_PASS_01D END */
+
+/* PRISMA_BLACK_CSS_LAYER_NORMALIZATION_01F START
+   Token source map
+   Role: tokens
+
+01F ownership:
+- background/stage tokens: --prisma-app-background*, --prisma-scene-*, --prisma-glass-vignette.
+- panel material tokens: --prisma-panel-gradient, --prisma-glass-gradient, --prisma-shadow-glass, --prisma-glass-*.
+- card tokens: --prisma-card-surface, --prisma-border-soft, --prisma-shadow-*.
+- product stage tokens: --prisma-product-stage-gradient only; local stage glow must not leak into generic cards.
+- CTA/active tokens: --prisma-gold-gradient*, --prisma-active-surface, --prisma-accent-gold-*.
+Governance import:
+- Derive, do not invent.
+- Semantics over decoration.
+- Stage owns scene haze; components consume material tokens.
+No values were changed in 01F; this block is a governed map for later dedupe.
+   PRISMA 01F rule: comments and ownership markers only; no intentional visual delta.
+   Source governance: Keystone Luxury Kernel + Layer Flags System, adapted conceptually for PRISMA Black.
+   PRISMA_BLACK_CSS_LAYER_NORMALIZATION_01F END */
+
+
+/* PRISMA_REFERENCE_VISUAL_TRIAL_01H_SHARED_TOKENS START
+   Shared-only visual trial. No layout, spacing, route, or component structure changes. */
+:root,
+[data-theme="prisma-dark"] {
+  --prisma-reference-bg-ink: #02060b;
+  --prisma-reference-bg-navy: #071421;
+  --prisma-reference-bg-blue: #0d2434;
+  --prisma-reference-warm-gold: #efc36e;
+  --prisma-reference-gold-hot: #ffd98b;
+  --prisma-reference-gold-deep: #9a692b;
+  --prisma-reference-ice-edge: rgba(218, 238, 248, 0.24);
+  --prisma-reference-amber-edge: rgba(255, 215, 146, 0.42);
+  --prisma-reference-panel-alpha: 0.68;
+  --prisma-reference-card-alpha: 0.56;
+  --prisma-reference-cart-alpha: 0.72;
+  --prisma-reference-glass-blur: 42px;
+  --prisma-reference-card-blur: 30px;
+  --prisma-reference-saturate: 1.46;
+  --prisma-reference-scene:
+    radial-gradient(ellipse at 50% -12%, rgba(255, 224, 155, 0.22), transparent 28%),
+    radial-gradient(ellipse at 78% 6%, rgba(218, 238, 248, 0.16), transparent 24%),
+    radial-gradient(ellipse at 30% 18%, rgba(95, 133, 168, 0.16), transparent 34%),
+    radial-gradient(ellipse at 17% 98%, rgba(176, 66, 43, 0.17), transparent 30%),
+    radial-gradient(ellipse at 86% 98%, rgba(56, 105, 158, 0.19), transparent 32%),
+    linear-gradient(180deg, #111923 0%, #06101b 42%, #02060b 100%);
+  --prisma-reference-haze:
+    linear-gradient(108deg, transparent 0%, rgba(255, 255, 255, 0.095) 31%, rgba(255, 255, 255, 0.03) 36%, transparent 46%),
+    radial-gradient(ellipse at 54% 4%, rgba(255, 255, 255, 0.22), transparent 8%),
+    radial-gradient(ellipse at 50% 102%, rgba(239, 195, 110, 0.18), transparent 30%);
+  --prisma-reference-grain:
+    repeating-radial-gradient(circle at 34% 44%, rgba(255, 255, 255, 0.032) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(118deg, rgba(255, 255, 255, 0.014) 0 1px, transparent 1px 9px);
+  --prisma-reference-vignette:
+    radial-gradient(ellipse at 50% 44%, transparent 42%, rgba(0, 0, 0, 0.54) 100%);
+  --prisma-reference-panel-material:
+    var(--prisma-glass-inner-bloom),
+    linear-gradient(180deg, rgba(255,255,255,0.105), transparent 19%),
+    radial-gradient(ellipse at 22% 0%, rgba(239, 195, 110, 0.13), transparent 32%),
+    linear-gradient(148deg, rgba(30, 45, 60, var(--prisma-reference-panel-alpha)), rgba(7, 15, 25, 0.56) 54%, rgba(4, 8, 14, 0.68));
+  --prisma-reference-card-material:
+    linear-gradient(180deg, rgba(255,255,255,0.095), transparent 23%),
+    radial-gradient(ellipse at 50% 14%, rgba(200, 228, 244, 0.12), transparent 31%),
+    linear-gradient(148deg, rgba(31, 43, 56, var(--prisma-reference-card-alpha)), rgba(8, 16, 26, 0.58));
+  --prisma-reference-cart-material:
+    linear-gradient(180deg, rgba(255,255,255,0.11), transparent 20%),
+    radial-gradient(ellipse at 72% 0%, rgba(239, 195, 110, 0.12), transparent 34%),
+    linear-gradient(150deg, rgba(21, 31, 43, var(--prisma-reference-cart-alpha)), rgba(5, 12, 20, 0.72));
+  --prisma-reference-stage-material:
+    radial-gradient(ellipse at 50% 68%, rgba(239, 195, 110, 0.28), transparent 18%),
+    radial-gradient(ellipse at 50% 80%, rgba(255, 120, 60, 0.16), transparent 32%),
+    radial-gradient(ellipse at 46% 14%, rgba(255,255,255,0.24), transparent 30%),
+    linear-gradient(180deg, rgba(45, 62, 77, 0.34), rgba(7, 14, 22, 0.18));
+  --prisma-reference-border-panel:
+    linear-gradient(145deg, rgba(255, 229, 166, 0.50), rgba(218, 238, 248, 0.18) 38%, rgba(255,255,255,0.08) 58%, rgba(0,0,0,0.32));
+  --prisma-reference-shadow-panel:
+    0 34px 92px rgba(0, 0, 0, 0.58),
+    0 0 44px rgba(75, 121, 164, 0.10),
+    inset 0 1px 0 rgba(255, 244, 214, 0.32),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.52);
+  --prisma-reference-shadow-card:
+    0 22px 54px rgba(0, 0, 0, 0.43),
+    0 0 28px rgba(70, 116, 158, 0.09),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.42);
+  --prisma-reference-shadow-gold:
+    0 16px 38px rgba(239, 195, 110, 0.35),
+    0 0 34px rgba(239, 195, 110, 0.22),
+    inset 0 1px 0 rgba(255, 248, 221, 0.56),
+    inset 0 -1px 0 rgba(83, 52, 16, 0.42);
+  --prisma-reference-cta-gradient:
+    linear-gradient(180deg, #ffe5a5 0%, #efc36e 42%, #b77930 100%);
+  --prisma-reference-cta-text: #2a1b0b;
+  --prisma-app-background-radial: var(--prisma-reference-scene);
+  --prisma-panel-gradient: var(--prisma-reference-panel-material);
+  --prisma-card-surface: rgba(24, 36, 49, 0.50);
+  --prisma-cart-panel-surface: rgba(7, 14, 23, 0.70);
+  --prisma-product-stage-gradient: var(--prisma-reference-stage-material);
+  --prisma-border-gold: rgba(255, 216, 143, 0.62);
+  --prisma-accent-gold: var(--prisma-reference-warm-gold);
+  --prisma-accent-gold-soft: var(--prisma-reference-gold-hot);
+  --prisma-shadow-glass: var(--prisma-reference-shadow-panel);
+  --prisma-shadow-gold: var(--prisma-reference-shadow-gold);
+}
+
+[data-theme="prisma-light"] {
+  --prisma-reference-panel-material:
+    linear-gradient(180deg, rgba(255,255,255,0.72), rgba(245, 250, 253, 0.50)),
+    radial-gradient(ellipse at 24% 0%, rgba(217, 154, 34, 0.10), transparent 30%);
+  --prisma-reference-card-material:
+    linear-gradient(180deg, rgba(255,255,255,0.76), rgba(239, 248, 253, 0.44));
+  --prisma-reference-cart-material:
+    linear-gradient(180deg, rgba(255,255,255,0.82), rgba(242, 248, 252, 0.62));
+  --prisma-reference-stage-material:
+    radial-gradient(ellipse at 50% 70%, rgba(217, 154, 34, 0.18), transparent 28%),
+    radial-gradient(ellipse at 46% 18%, rgba(255,255,255,0.92), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.64), rgba(229, 241, 248, 0.32));
+  --prisma-reference-shadow-panel:
+    0 24px 68px rgba(20, 26, 38, 0.14),
+    inset 0 1px 0 rgba(255,255,255,0.86),
+    inset 0 -1px 0 rgba(124, 142, 160, 0.16);
+  --prisma-reference-shadow-card:
+    0 16px 40px rgba(20, 26, 38, 0.10),
+    inset 0 1px 0 rgba(255,255,255,0.78);
+  --prisma-panel-gradient: var(--prisma-reference-panel-material);
+  --prisma-product-stage-gradient: var(--prisma-reference-stage-material);
+  --prisma-shadow-glass: var(--prisma-reference-shadow-panel);
+}
+/* PRISMA_REFERENCE_VISUAL_TRIAL_01H_SHARED_TOKENS END */
+
+/* PRISMA_REFERENCE_VISUAL_REFINEMENT_01I START
+   Stronger cinematic dark tokens. Visual-only: no routes, layout, or TSX changes. */
+:root,
+[data-theme="prisma-dark"] {
+  --prisma-reference-bg-ink: #01050a;
+  --prisma-reference-bg-navy: #06101a;
+  --prisma-reference-bg-blue: #0b2030;
+  --prisma-reference-warm-gold: #efc46f;
+  --prisma-reference-gold-hot: #ffdc94;
+  --prisma-reference-gold-deep: #a06b2a;
+  --prisma-reference-ice-edge: rgba(217, 239, 250, 0.30);
+  --prisma-reference-amber-edge: rgba(255, 222, 157, 0.52);
+  --prisma-reference-panel-alpha: 0.74;
+  --prisma-reference-card-alpha: 0.62;
+  --prisma-reference-cart-alpha: 0.80;
+  --prisma-reference-glass-blur: 46px;
+  --prisma-reference-card-blur: 32px;
+  --prisma-reference-saturate: 1.56;
+  --prisma-reference-scene:
+    radial-gradient(ellipse at 50% -14%, rgba(255, 226, 158, 0.27), transparent 28%),
+    radial-gradient(ellipse at 76% 5%, rgba(207, 234, 248, 0.20), transparent 24%),
+    radial-gradient(ellipse at 30% 18%, rgba(84, 135, 176, 0.20), transparent 36%),
+    radial-gradient(ellipse at 14% 98%, rgba(170, 61, 42, 0.18), transparent 31%),
+    radial-gradient(ellipse at 88% 100%, rgba(54, 103, 157, 0.22), transparent 33%),
+    linear-gradient(180deg, #111c27 0%, #06101b 43%, #01050a 100%);
+  --prisma-reference-haze:
+    linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.13) 31%, rgba(255, 255, 255, 0.04) 37%, transparent 48%),
+    radial-gradient(ellipse at 54% 4%, rgba(255, 255, 255, 0.26), transparent 8%),
+    radial-gradient(ellipse at 50% 103%, rgba(239, 196, 111, 0.22), transparent 31%);
+  --prisma-reference-panel-material:
+    radial-gradient(ellipse at 20% 0%, rgba(255, 235, 183, 0.15), transparent 34%),
+    radial-gradient(ellipse at 84% 0%, rgba(197, 230, 247, 0.11), transparent 32%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 20%),
+    linear-gradient(148deg, rgba(29, 45, 60, var(--prisma-reference-panel-alpha)), rgba(6, 15, 25, 0.62) 54%, rgba(3, 8, 14, 0.76));
+  --prisma-reference-card-material:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.14), transparent 26%),
+    radial-gradient(ellipse at 18% 18%, rgba(197, 230, 247, 0.14), transparent 34%),
+    linear-gradient(148deg, rgba(30, 43, 57, var(--prisma-reference-card-alpha)), rgba(6, 15, 25, 0.64));
+  --prisma-reference-cart-material:
+    radial-gradient(ellipse at 76% 0%, rgba(255, 221, 153, 0.15), transparent 36%),
+    radial-gradient(ellipse at 18% 10%, rgba(203, 234, 248, 0.10), transparent 34%),
+    linear-gradient(150deg, rgba(21, 32, 45, var(--prisma-reference-cart-alpha)), rgba(3, 10, 18, 0.82));
+  --prisma-reference-stage-material:
+    radial-gradient(ellipse at 50% 70%, rgba(239, 196, 111, 0.34), transparent 19%),
+    radial-gradient(ellipse at 50% 84%, rgba(255, 119, 58, 0.18), transparent 33%),
+    radial-gradient(ellipse at 46% 12%, rgba(255,255,255,0.29), transparent 31%),
+    linear-gradient(180deg, rgba(48, 68, 84, 0.40), rgba(5, 13, 22, 0.24));
+  --prisma-reference-shadow-panel:
+    0 38px 104px rgba(0, 0, 0, 0.62),
+    0 0 52px rgba(75, 121, 164, 0.13),
+    inset 0 1px 0 rgba(255, 245, 218, 0.36),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.58);
+  --prisma-reference-shadow-card:
+    0 24px 62px rgba(0, 0, 0, 0.48),
+    0 0 32px rgba(70, 116, 158, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.21),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.46);
+  --prisma-reference-shadow-gold:
+    0 18px 44px rgba(239, 196, 111, 0.38),
+    0 0 38px rgba(239, 196, 111, 0.24),
+    inset 0 1px 0 rgba(255, 250, 229, 0.62),
+    inset 0 -1px 0 rgba(86, 52, 13, 0.46);
+  --prisma-reference-cta-gradient:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 250, 229, 0.82), transparent 44%),
+    linear-gradient(180deg, #ffe7ab 0%, #efc46f 42%, #b97831 100%);
+  --prisma-app-background-radial: var(--prisma-reference-scene);
+  --prisma-panel-gradient: var(--prisma-reference-panel-material);
+  --prisma-glass-gradient: var(--prisma-reference-card-material);
+  --prisma-product-stage-gradient: var(--prisma-reference-stage-material);
+  --prisma-card-surface: rgba(24, 36, 49, 0.56);
+  --prisma-cart-panel-surface: rgba(5, 12, 21, 0.78);
+  --prisma-sidebar-surface: rgba(5, 11, 19, 0.72);
+  --prisma-border-soft: rgba(255, 255, 255, 0.13);
+  --prisma-border-medium: rgba(255, 236, 190, 0.20);
+  --prisma-border-gold: rgba(255, 221, 153, 0.68);
+  --prisma-accent-gold: var(--prisma-reference-warm-gold);
+  --prisma-accent-gold-soft: var(--prisma-reference-gold-hot);
+  --prisma-shadow-glass: var(--prisma-reference-shadow-panel);
+  --prisma-shadow-md: var(--prisma-reference-shadow-card);
+  --prisma-shadow-gold: var(--prisma-reference-shadow-gold);
+}
+/* PRISMA_REFERENCE_VISUAL_REFINEMENT_01I END */

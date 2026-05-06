@@ -9,6 +9,7 @@ from capatch_plugins.runtime_core import initialize_plugin_runtime
 from .exit_codes import EXIT_GENERAL_ERROR
 from .parser import (
     audit_args_requested,
+    capability_args_requested,
     build_parser,
     diagnostic_args_requested,
     patch_args_requested,
@@ -28,6 +29,12 @@ def main(argv: list[str] | None = None) -> int:
     handlers = []
     from .commands_plugin import handle as handle_plugin
     handlers.append(lambda: handle_plugin(args))
+
+    # === CAPATCH PROJECT CAPABILITY HANDLER START ===
+    if capability_args_requested(args):
+        from .commands_capability import handle as handle_capability
+        handlers.append(lambda: handle_capability(args, base_dir=base_dir))
+    # === CAPATCH PROJECT CAPABILITY HANDLER END ===
 
     if patch_args_requested(args):
         from .commands_patch import handle as handle_patch

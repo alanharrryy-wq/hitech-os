@@ -1,0 +1,244 @@
+{
+  "authoritative": "false",
+  "canonical_source": "registry_index.json",
+  "entries": [
+    {
+      "entity_id": "mod_01c0162da7e47a82",
+      "entity_type": "module",
+      "index_id": "idx_5bcad7e56feced00",
+      "lookup_keys": [
+        "ambiguous_frontend_surface",
+        "cell_03",
+        "mod_01c0162da7e47a82",
+        "scenario_002",
+        "workers",
+        "workers.svc_002_03",
+        "workers/svc_002_03.py"
+      ],
+      "registry_source": "module_registry",
+      "snapshot_id": "scenario_002",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "mod_038e6f236ffe7c2d",
+      "entity_type": "module",
+      "index_id": "idx_1f395f5336a8e7f7",
+      "lookup_keys": [
+        "ambiguous_frontend_surface",
+        "cell_02",
+        "mod_038e6f236ffe7c2d",
+        "scenario_002",
+        "ui",
+        "ui.svc_002_02",
+        "ui/svc_002_02.py"
+      ],
+      "registry_source": "module_registry",
+      "snapshot_id": "scenario_002",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "mod_2963eaa6396a832f",
+      "entity_type": "module",
+      "index_id": "idx_93667d0572f8202b",
+      "lookup_keys": [
+        "ambiguous_frontend_surface",
+        "app",
+        "app.svc_002_05",
+        "app/svc_002_05.py",
+        "cell_05",
+        "mod_2963eaa6396a832f",
+        "scenario_002"
+      ],
+      "registry_source": "module_registry",
+      "snapshot_id": "scenario_002",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "mod_2a239065e2570355",
+      "entity_type": "module",
+      "index_id": "idx_7eb7ca391a4090b5",
+      "lookup_keys": [
+        "ambiguous_frontend_surface",
+        "cell_06",
+        "mod_2a239065e2570355",
+        "scenario_002",
+        "services",
+        "services.svc_002_06",
+        "services/svc_002_06.py"
+      ],
+      "registry_source": "module_registry",
+      "snapshot_id": "scenario_002",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "mod_629a5ad99596c49a",
+      "entity_type": "module",
+      "index_id": "idx_e6bb01a52003ee0f",
+      "lookup_keys": [
+        "ambiguous_frontend_surface",
+        "cell_01",
+        "mod_629a5ad99596c49a",
+        "scenario_002",
+        "services",
+        "services.svc_002_01",
+        "services/svc_002_01.py"
+      ],
+      "registry_source": "module_registry",
+      "snapshot_id": "scenario_002",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "mod_861aab15766bc49b",
+      "entity_type": "module",
+      "index_id": "idx_152084966c45ef4a",
+      "lookup_keys": [
+        "ambiguous_frontend_surface",
+        "cell_04",
+        "mod_861aab15766bc49b",
+        "pkg",
+        "pkg.svc_002_04",
+        "pkg/svc_002_04.py",
+        "scenario_002"
+      ],
+      "registry_source": "module_registry",
+      "snapshot_id": "scenario_002",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "mod_c5e9bc3cc800bf50",
+      "entity_type": "module",
+      "index_id": "idx_309d683d21953ea7",
+      "lookup_keys": [
+        "ambiguous_frontend_surface",
+        "cell_07",
+        "mod_c5e9bc3cc800bf50",
+        "scenario_002",
+        "ui",
+        "ui.svc_002_07",
+        "ui/svc_002_07.py"
+      ],
+      "registry_source": "module_registry",
+      "snapshot_id": "scenario_002",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "bnd_07439c29682e58c7",
+      "entity_type": "boundary",
+      "index_id": "idx_dcd0cc72757bc9d8",
+      "lookup_keys": [
+        "import",
+        "mod_2963eaa6396a832f",
+        "mod_2a239065e2570355"
+      ],
+      "registry_source": "boundary_registry",
+      "snapshot_id": "scenario_002",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "bnd_0fd2e3e873669525",
+      "entity_type": "boundary",
+      "index_id": "idx_6cffdcc271bdd6e8",
+      "lookup_keys": [
+        "import",
+        "mod_01c0162da7e47a82",
+        "mod_038e6f236ffe7c2d"
+      ],
+      "registry_source": "boundary_registry",
+      "snapshot_id": "scenario_002",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "bnd_2e9b36f7a07bfc71",
+      "entity_type": "boundary",
+      "index_id": "idx_f1285411396bbea1",
+      "lookup_keys": [
+        "import",
+        "mod_01c0162da7e47a82",
+        "mod_861aab15766bc49b"
+      ],
+      "registry_source": "boundary_registry",
+      "snapshot_id": "scenario_002",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "bnd_35bf5e068aaed2e4",
+      "entity_type": "boundary",
+      "index_id": "idx_f5040c0e56ac5cd6",
+      "lookup_keys": [
+        "import",
+        "mod_2963eaa6396a832f",
+        "mod_861aab15766bc49b"
+      ],
+      "registry_source": "boundary_registry",
+      "snapshot_id": "scenario_002",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "bnd_5278067277bcc044",
+      "entity_type": "boundary",
+      "index_id": "idx_78e7b62802cc28d4",
+      "lookup_keys": [
+        "import",
+        "mod_038e6f236ffe7c2d",
+        "mod_629a5ad99596c49a"
+      ],
+      "registry_source": "boundary_registry",
+      "snapshot_id": "scenario_002",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "bnd_7f2cec39de02fe6c",
+      "entity_type": "boundary",
+      "index_id": "idx_69a346ffbf634784",
+      "lookup_keys": [
+        "cache",
+        "capability:cache",
+        "mod_038e6f236ffe7c2d"
+      ],
+      "registry_source": "boundary_registry",
+      "snapshot_id": "scenario_002",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "bnd_8f98f9bef7c9d20e",
+      "entity_type": "boundary",
+      "index_id": "idx_d00901c9e7ddb58e",
+      "lookup_keys": [
+        "capability:filesystem",
+        "filesystem",
+        "mod_861aab15766bc49b"
+      ],
+      "registry_source": "boundary_registry",
+      "snapshot_id": "scenario_002",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "bnd_d2a1455f732730d9",
+      "entity_type": "boundary",
+      "index_id": "idx_90ad92b9e6a6ba8b",
+      "lookup_keys": [
+        "capability:feature_flag",
+        "feature_flag",
+        "mod_2a239065e2570355"
+      ],
+      "registry_source": "boundary_registry",
+      "snapshot_id": "scenario_002",
+      "updated_at": "2026-04-11T00:00:00Z"
+    },
+    {
+      "entity_id": "bnd_df600f0b89e4c605",
+      "entity_type": "boundary",
+      "index_id": "idx_6cefdd8eb4e32288",
+      "lookup_keys": [
+        "import",
+        "mod_2a239065e2570355",
+        "mod_c5e9bc3cc800bf50"
+      ],
+      "registry_source": "boundary_registry",
+      "snapshot_id": "scenario_002",
+      "updated_at": "2026-04-11T00:00:00Z"
+    }
+  ],
+  "migration_note": "Legacy runtime callers may request query_index.json. The portable canonical artifact remains registry_index.json; this shim presents an alias view without renaming or duplicating the source of truth.",
+  "requested_name": "query_index.json"
+}

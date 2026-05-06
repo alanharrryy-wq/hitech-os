@@ -1,0 +1,2834 @@
+.screen {
+  --prisma-bg-black: #050608;
+  --prisma-bg-deep: #090b10;
+  --prisma-bg-main: #0d0f15;
+  --prisma-bg-panel: rgba(17, 19, 26, 0.82);
+  --prisma-bg-card: rgba(28, 30, 40, 0.74);
+  --prisma-bg-sidebar: rgba(7, 8, 12, 0.92);
+  --prisma-gold-50: #fff4cf;
+  --prisma-gold-100: #f8df9b;
+  --prisma-gold-200: #f5d183;
+  --prisma-gold-300: #e8bd67;
+  --prisma-gold-400: #d7ac5b;
+  --prisma-gold-500: #bc8d3e;
+  --prisma-gold-600: #8b6a32;
+  --prisma-gold-700: #5c4624;
+  --prisma-text-primary: #f4f1ea;
+  --prisma-text-secondary: #b8b5ae;
+  --prisma-text-muted: #7e818b;
+  --prisma-text-faint: #5f636d;
+  --prisma-text-on-gold: #2b2111;
+  --prisma-online: #3ad17a;
+  --prisma-danger: #ff6b5e;
+  --prisma-warning: #e8bd67;
+  min-height: 100vh;
+  color: var(--prisma-text-primary);
+  display: grid;
+  grid-template-columns: 204px minmax(690px, 1fr) 426px;
+  grid-template-rows: 54px minmax(0, 1fr);
+  column-gap: 28px;
+  row-gap: 16px;
+  padding: 28px 30px 26px 0;
+  overflow: hidden;
+  font-family: Inter, "SF Pro Display", "SF Pro Text", Manrope, "Geist Sans", system-ui, sans-serif;
+  background:
+    radial-gradient(circle at 49% -8%, rgba(232, 189, 103, 0.2), transparent 31%),
+    radial-gradient(circle at 28% 99%, rgba(180, 46, 37, 0.13), transparent 29%),
+    radial-gradient(circle at 81% 94%, rgba(62, 104, 170, 0.13), transparent 30%),
+    linear-gradient(180deg, #12141c 0%, #08090d 55%, #050608 100%);
+  position: relative;
+  isolation: isolate;
+}
+
+.screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: 88px 88px;
+  opacity: 0.18;
+  mask-image: radial-gradient(circle at center, black 0%, transparent 76%);
+}
+
+.screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(circle at center, transparent 42%, rgba(0, 0, 0, 0.48) 100%);
+}
+
+.sidebar {
+  grid-row: 1 / span 2;
+  min-height: calc(100vh - 54px);
+  display: flex;
+  flex-direction: column;
+  padding: 30px 16px 20px;
+  background:
+    linear-gradient(180deg, rgba(18, 20, 28, 0.84), rgba(7, 8, 12, 0.94)),
+    var(--prisma-bg-sidebar);
+  border-right: 1px solid rgba(232, 189, 103, 0.16);
+  box-shadow: 24px 0 58px rgba(0, 0, 0, 0.42), inset -1px 0 0 rgba(255, 255, 255, 0.03);
+}
+
+.brandBlock {
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  padding: 4px 6px 20px;
+}
+
+.prismaMark {
+  width: 58px;
+  height: 52px;
+  color: #f2efe6;
+  filter: drop-shadow(0 12px 28px rgba(232, 189, 103, 0.18));
+}
+
+.prismaMarkBack {
+  fill: rgba(255, 255, 255, 0.06);
+}
+
+.prismaMarkFacet {
+  fill: rgba(232, 189, 103, 0.18);
+}
+
+.prismaMarkFacetTwo {
+  fill: rgba(255, 255, 255, 0.11);
+}
+
+.prismaMarkLine {
+  fill: none;
+  stroke: rgba(255, 244, 207, 0.76);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.wordmark {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1;
+  color: var(--prisma-text-primary);
+}
+
+.brandSubtitle {
+  width: 124px;
+  color: rgba(184, 181, 174, 0.74);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.navList {
+  display: grid;
+  gap: 7px;
+  padding-top: 6px;
+}
+
+.navItem,
+.navItemActive {
+  height: 43px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 0 12px;
+  border-radius: 13px;
+  color: var(--prisma-text-muted);
+  border: 1px solid transparent;
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 650;
+  transition: 180ms ease;
+}
+
+.navItem:hover {
+  color: var(--prisma-text-secondary);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.navItemActive {
+  color: var(--prisma-gold-100);
+  background: linear-gradient(90deg, rgba(232, 189, 103, 0.34), rgba(232, 189, 103, 0.12));
+  border-color: rgba(232, 189, 103, 0.58);
+  box-shadow: 0 0 26px rgba(232, 189, 103, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.terminalCard {
+  margin-top: auto;
+  min-height: 67px;
+  display: grid;
+  grid-template-columns: 38px 1fr 16px;
+  align-items: center;
+  gap: 10px;
+  padding: 11px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(30, 32, 42, 0.82), rgba(15, 17, 24, 0.76));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.terminalIconWrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  color: var(--prisma-gold-200);
+  background: rgba(232, 189, 103, 0.1);
+  position: relative;
+}
+
+.onlineDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  position: absolute;
+  right: -1px;
+  bottom: 2px;
+  background: var(--prisma-online);
+  box-shadow: 0 0 12px rgba(58, 209, 122, 0.84);
+}
+
+.terminalText {
+  display: grid;
+  gap: 3px;
+}
+
+.terminalText strong {
+  font-size: 13px;
+  color: var(--prisma-text-primary);
+}
+
+.terminalText span {
+  font-size: 12px;
+  color: var(--prisma-online);
+}
+
+.terminalChevron {
+  color: var(--prisma-text-muted);
+}
+
+.titleBar {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+}
+
+.titleBar h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 760;
+  letter-spacing: 0;
+  color: var(--prisma-text-primary);
+}
+
+.topActions {
+  grid-column: 3;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.iconButton,
+.iconButtonBadge,
+.adminChip,
+.scanButton,
+.moreButton,
+.pageArrow,
+.pageNumber,
+.pageActive,
+.trashButton,
+.chargeButton,
+.secondaryActions button,
+.quantityStepper button,
+.cartItemTitle button,
+.categoryItem,
+.categoryActive,
+.categoryNext,
+.favoriteButton,
+.favoriteActive {
+  appearance: none;
+  font: inherit;
+  border: 0;
+  cursor: default;
+}
+
+.iconButton,
+.iconButtonBadge {
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  color: var(--prisma-text-secondary);
+  background: rgba(24, 27, 35, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 14px 30px rgba(0, 0, 0, 0.23);
+  position: relative;
+}
+
+.iconButtonBadge span {
+  min-width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  position: absolute;
+  right: -4px;
+  top: -4px;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--prisma-text-on-gold);
+  background: linear-gradient(180deg, var(--prisma-gold-200), var(--prisma-gold-400));
+  box-shadow: 0 0 18px rgba(232, 189, 103, 0.38);
+}
+
+.adminChip {
+  height: 50px;
+  min-width: 202px;
+  display: grid;
+  grid-template-columns: 38px 1fr 16px;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 11px 6px 7px;
+  border-radius: 16px;
+  color: var(--prisma-text-secondary);
+  background: rgba(23, 26, 34, 0.76);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 16px 32px rgba(0, 0, 0, 0.24);
+}
+
+.adminAvatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: var(--prisma-text-on-gold);
+  background: linear-gradient(180deg, #f7df9b, #c8953f);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.adminMeta {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+  text-align: left;
+}
+
+.adminMeta strong {
+  color: var(--prisma-text-primary);
+  font-size: 13.5px;
+  font-weight: 720;
+  white-space: nowrap;
+}
+
+.adminMeta small {
+  color: var(--prisma-text-muted);
+  font-size: 11.5px;
+  white-space: nowrap;
+}
+
+.workspace {
+  grid-column: 2;
+  grid-row: 2;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: 58px 92px minmax(480px, 1fr) 54px;
+  gap: 18px;
+}
+
+.searchRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 144px 56px;
+  gap: 14px;
+}
+
+.searchBox {
+  min-width: 0;
+  height: 58px;
+  display: grid;
+  grid-template-columns: 28px 1fr 28px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 18px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(31, 34, 43, 0.8), rgba(16, 18, 25, 0.78));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 18px 42px rgba(0, 0, 0, 0.25);
+}
+
+.searchBox input {
+  min-width: 0;
+  width: 100%;
+  color: var(--prisma-text-primary);
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font-size: 15px;
+  font-weight: 560;
+}
+
+.searchBox input::placeholder {
+  color: rgba(184, 181, 174, 0.58);
+  opacity: 1;
+}
+
+.searchLeadingIcon {
+  color: var(--prisma-text-muted);
+}
+
+.searchTrailingIcon {
+  color: var(--prisma-gold-300);
+}
+
+.scanButton {
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: var(--prisma-gold-100);
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(34, 36, 45, 0.84), rgba(17, 19, 27, 0.8));
+  border: 1px solid rgba(232, 189, 103, 0.26);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 18px 40px rgba(0, 0, 0, 0.22);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.moreButton {
+  height: 58px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  color: var(--prisma-text-secondary);
+  background: rgba(24, 27, 35, 0.74);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.categoryRail {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(70px, 1fr)) 58px;
+  align-items: start;
+  gap: 11px;
+  padding: 2px 0 0;
+}
+
+.categoryItem,
+.categoryActive,
+.categoryNext {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 0;
+  color: var(--prisma-text-muted);
+  background: transparent;
+}
+
+.categoryCircle {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(32, 35, 44, 0.86), rgba(15, 17, 24, 0.82));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 14px 34px rgba(0, 0, 0, 0.22);
+}
+
+.categoryLabel {
+  width: 100%;
+  color: inherit;
+  font-size: 12.5px;
+  font-weight: 660;
+  text-align: center;
+  line-height: 1.15;
+}
+
+.categoryActive {
+  color: var(--prisma-gold-100);
+}
+
+.categoryActive .categoryCircle {
+  color: var(--prisma-text-on-gold);
+  background:
+    radial-gradient(circle at 36% 26%, rgba(255, 244, 207, 0.8), transparent 24%),
+    linear-gradient(180deg, var(--prisma-gold-200), var(--prisma-gold-500));
+  border-color: rgba(255, 244, 207, 0.44);
+  box-shadow: 0 0 26px rgba(232, 189, 103, 0.32), 0 16px 34px rgba(0, 0, 0, 0.3);
+}
+
+.categoryNext .categoryCircle {
+  color: var(--prisma-gold-100);
+  border-color: rgba(232, 189, 103, 0.18);
+}
+
+.productGrid {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.productCard {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: 25px minmax(116px, 1fr) auto;
+  padding: 13px 14px 14px;
+  border-radius: 17px;
+  overflow: hidden;
+  position: relative;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.08), transparent 32%),
+    linear-gradient(180deg, rgba(42, 44, 56, 0.78), rgba(20, 22, 30, 0.8));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.productCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(130deg, rgba(255, 255, 255, 0.12), transparent 28%, transparent 70%, rgba(232, 189, 103, 0.08));
+  opacity: 0.56;
+}
+
+.productCardTop {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.favoriteButton,
+.favoriteActive {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: rgba(126, 129, 139, 0.8);
+  background: rgba(5, 6, 8, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.favoriteActive {
+  color: var(--prisma-gold-200);
+  background: rgba(232, 189, 103, 0.14);
+  border-color: rgba(232, 189, 103, 0.35);
+  filter: drop-shadow(0 0 10px rgba(232, 189, 103, 0.26));
+}
+
+.productStage,
+.productStageCompact {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  min-height: 132px;
+}
+
+.productStageCompact {
+  width: 54px;
+  height: 58px;
+  min-height: 58px;
+}
+
+.productAura {
+  width: 74%;
+  height: 70%;
+  border-radius: 999px;
+  filter: blur(22px);
+  opacity: 0.5;
+  position: absolute;
+}
+
+.glow_red .productAura {
+  background: rgba(255, 58, 46, 0.56);
+}
+
+.glow_gold .productAura {
+  background: rgba(232, 189, 103, 0.52);
+}
+
+.glow_white .productAura {
+  background: rgba(234, 242, 255, 0.46);
+}
+
+.glow_blue .productAura {
+  background: rgba(68, 150, 255, 0.48);
+}
+
+.glow_brown .productAura {
+  background: rgba(160, 70, 48, 0.5);
+}
+
+.glow_amber .productAura {
+  background: rgba(248, 183, 82, 0.46);
+}
+
+.glow_orange .productAura {
+  background: rgba(255, 122, 34, 0.5);
+}
+
+.productPedestal {
+  width: 92px;
+  height: 16px;
+  position: absolute;
+  bottom: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.13);
+  filter: blur(4px);
+  box-shadow: 0 0 34px currentColor;
+}
+
+.productFigure {
+  width: 76px;
+  height: 122px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  z-index: 1;
+  color: #ffffff;
+  box-shadow: 0 22px 34px rgba(0, 0, 0, 0.42);
+  transform: translateY(-3px);
+}
+
+.productFigureCompact {
+  transform: translateY(-1px);
+}
+
+.productStageCompact .productAura {
+  width: 48px;
+  height: 44px;
+  filter: blur(13px);
+  opacity: 0.42;
+}
+
+.productStageCompact .productPedestal {
+  width: 40px;
+  height: 7px;
+  bottom: 4px;
+  filter: blur(3px);
+}
+
+.shape_bottle {
+  width: 52px;
+  height: 124px;
+  border-radius: 15px 15px 22px 22px;
+}
+
+.shape_bottle::before {
+  content: "";
+  width: 22px;
+  height: 20px;
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 7px 7px 3px 3px;
+  background: inherit;
+  filter: brightness(1.15);
+}
+
+.shape_bag {
+  width: 82px;
+  height: 110px;
+  border-radius: 20px 20px 28px 28px;
+  transform: rotate(-4deg) translateY(1px);
+  clip-path: polygon(11% 4%, 90% 0, 100% 21%, 92% 100%, 8% 94%, 0 18%);
+}
+
+.shape_carton,
+.shape_box {
+  width: 72px;
+  height: 118px;
+  border-radius: 9px 9px 13px 13px;
+}
+
+.shape_carton::before {
+  content: "";
+  position: absolute;
+  top: -13px;
+  left: 8px;
+  width: 56px;
+  height: 18px;
+  background: inherit;
+  clip-path: polygon(0 100%, 24% 0, 78% 0, 100% 100%);
+}
+
+.shape_jar {
+  width: 70px;
+  height: 100px;
+  border-radius: 18px 18px 22px 22px;
+}
+
+.shape_jar::before {
+  content: "";
+  position: absolute;
+  width: 56px;
+  height: 18px;
+  top: -13px;
+  border-radius: 10px 10px 4px 4px;
+  background: #21170f;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.shape_bread {
+  width: 94px;
+  height: 86px;
+  border-radius: 28px 32px 24px 20px;
+  transform: rotate(4deg) translateY(10px);
+}
+
+.shape_bread::before {
+  content: "";
+  position: absolute;
+  inset: 11px 13px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.shape_detergent {
+  width: 75px;
+  height: 112px;
+  border-radius: 10px 10px 16px 16px;
+  clip-path: polygon(8% 0, 86% 0, 100% 16%, 94% 100%, 6% 100%, 0 16%);
+}
+
+.shape_detergent::before {
+  content: "";
+  width: 42px;
+  height: 15px;
+  position: absolute;
+  top: -8px;
+  left: 16px;
+  border-radius: 8px 8px 3px 3px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.tone_coke {
+  background: linear-gradient(160deg, #310809 0%, #c91719 42%, #6c0d11 100%);
+}
+
+.tone_sabritas {
+  background: linear-gradient(160deg, #f5d755 0%, #e0ab25 46%, #c13e1b 100%);
+}
+
+.tone_lala {
+  background: linear-gradient(160deg, #f5f7ff 0%, #dce6fb 48%, #266bc2 100%);
+  color: #18406c;
+}
+
+.tone_ciel {
+  background: linear-gradient(160deg, rgba(230, 247, 255, 0.9), rgba(77, 169, 237, 0.74) 48%, rgba(21, 76, 142, 0.78));
+}
+
+.tone_nescafe {
+  background: linear-gradient(160deg, #391d12 0%, #a8361d 46%, #20130f 100%);
+}
+
+.tone_bimbo {
+  background: linear-gradient(160deg, #fff7d5 0%, #f2c05d 45%, #d84235 100%);
+  color: #1d3e75;
+}
+
+.tone_ace {
+  background: linear-gradient(160deg, #fff8ea 0%, #ff7c24 48%, #df2f18 100%);
+  color: #102c74;
+}
+
+.tone_zucaritas {
+  background: linear-gradient(160deg, #2a65e8 0%, #113e9f 52%, #f07c24 100%);
+}
+
+.figureStripe {
+  position: absolute;
+  inset: auto 0 38%;
+  height: 28%;
+  background: rgba(255, 255, 255, 0.88);
+  opacity: 0.88;
+}
+
+.shape_bread .figureStripe {
+  inset: auto 12px 18px;
+  height: 22px;
+  border-radius: 999px;
+}
+
+.figureLabel {
+  position: relative;
+  z-index: 1;
+  padding-top: 2px;
+  color: inherit;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.productFigureCompact .figureLabel {
+  font-size: 7px;
+}
+
+.figureDetail {
+  position: absolute;
+  bottom: 14px;
+  z-index: 1;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.productFigureCompact .figureDetail {
+  display: none;
+}
+
+.productFigureCompact.shape_bottle {
+  width: 24px;
+  height: 52px;
+  border-radius: 8px 8px 11px 11px;
+}
+
+.productFigureCompact.shape_bottle::before {
+  width: 12px;
+  height: 9px;
+  top: -5px;
+  border-radius: 4px 4px 2px 2px;
+}
+
+.productFigureCompact.shape_bag {
+  width: 39px;
+  height: 48px;
+  border-radius: 9px 9px 12px 12px;
+}
+
+.productFigureCompact.shape_carton,
+.productFigureCompact.shape_box {
+  width: 30px;
+  height: 52px;
+  border-radius: 5px 5px 7px 7px;
+}
+
+.productFigureCompact.shape_carton::before {
+  top: -6px;
+  left: 4px;
+  width: 22px;
+  height: 8px;
+}
+
+.productFigureCompact.shape_jar {
+  width: 32px;
+  height: 45px;
+  border-radius: 9px 9px 11px 11px;
+}
+
+.productFigureCompact.shape_jar::before {
+  width: 26px;
+  height: 8px;
+  top: -6px;
+  border-radius: 5px 5px 2px 2px;
+}
+
+.productFigureCompact.shape_bread {
+  width: 44px;
+  height: 40px;
+  border-radius: 14px 15px 12px 10px;
+  transform: rotate(4deg) translateY(2px);
+}
+
+.productFigureCompact.shape_bread::before {
+  inset: 6px 7px;
+}
+
+.productFigureCompact.shape_detergent {
+  width: 31px;
+  height: 50px;
+  border-radius: 5px 5px 8px 8px;
+}
+
+.productFigureCompact.shape_detergent::before {
+  width: 18px;
+  height: 7px;
+  top: -4px;
+  left: 7px;
+}
+
+.productInfo {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 5px;
+}
+
+.productInfo h2 {
+  margin: 0;
+  min-height: 38px;
+  color: var(--prisma-text-primary);
+  font-size: 15.5px;
+  font-weight: 680;
+  line-height: 1.2;
+}
+
+.productInfo strong {
+  color: var(--prisma-gold-100);
+  font-size: 21px;
+  font-weight: 780;
+  line-height: 1;
+}
+
+.productInfo span {
+  color: var(--prisma-text-muted);
+  font-size: 13px;
+  font-weight: 560;
+}
+
+.pagination {
+  width: min(520px, 70%);
+  height: 54px;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border-radius: 17px;
+  background: linear-gradient(180deg, rgba(28, 31, 41, 0.72), rgba(12, 14, 20, 0.7));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 42px rgba(0, 0, 0, 0.28);
+}
+
+.pageArrow,
+.pageNumber,
+.pageActive {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  color: var(--prisma-text-muted);
+  background: transparent;
+  font-size: 13px;
+  font-weight: 760;
+}
+
+.pageActive {
+  color: var(--prisma-gold-100);
+  border: 1px solid rgba(232, 189, 103, 0.48);
+  background: rgba(232, 189, 103, 0.1);
+  box-shadow: 0 0 18px rgba(232, 189, 103, 0.2);
+}
+
+.cartPanel {
+  grid-column: 3;
+  grid-row: 2;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto auto;
+  gap: 17px;
+  padding: 22px;
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(23, 25, 33, 0.88), rgba(10, 12, 17, 0.9)),
+    var(--prisma-bg-panel);
+  border: 1px solid rgba(232, 189, 103, 0.28);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.52), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.cartHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.cartHeader h2 {
+  margin: 0;
+  color: var(--prisma-text-primary);
+  font-size: 21px;
+  font-weight: 760;
+}
+
+.cartHeader span {
+  color: var(--prisma-text-muted);
+  font-size: 12px;
+  font-weight: 590;
+}
+
+.cartHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.itemCount {
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 11px;
+  border-radius: 999px;
+  color: var(--prisma-gold-100) !important;
+  background: rgba(232, 189, 103, 0.12);
+  border: 1px solid rgba(232, 189, 103, 0.24);
+  white-space: nowrap;
+}
+
+.trashButton {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  color: rgba(255, 107, 94, 0.9);
+  background: rgba(255, 107, 94, 0.09);
+  border: 1px solid rgba(255, 107, 94, 0.14);
+}
+
+.cartItems {
+  min-height: 0;
+  display: grid;
+  gap: 2px;
+  align-content: start;
+  overflow: hidden;
+}
+
+.cartItem {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 28px 58px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.cartItemIndex {
+  width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--prisma-gold-100);
+  background: rgba(232, 189, 103, 0.12);
+  border: 1px solid rgba(232, 189, 103, 0.28);
+  font-size: 12px;
+  font-weight: 780;
+}
+
+.cartThumbFallback {
+  width: 54px;
+  height: 58px;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.cartItemMain {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.cartItemTitle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 21px;
+  align-items: start;
+  gap: 6px;
+}
+
+.cartItemTitle strong {
+  color: var(--prisma-text-primary);
+  font-size: 13.5px;
+  font-weight: 690;
+  line-height: 1.24;
+}
+
+.cartItemTitle button {
+  width: 21px;
+  height: 21px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--prisma-text-faint);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.unitPrice {
+  color: var(--prisma-text-muted);
+  font-size: 12.5px;
+  font-weight: 580;
+}
+
+.cartItemBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.quantityStepper {
+  height: 29px;
+  display: inline-grid;
+  grid-template-columns: 26px 27px 26px;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.quantityStepper button {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: var(--prisma-gold-200);
+  background: transparent;
+}
+
+.quantityStepper span {
+  color: var(--prisma-text-primary);
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 780;
+}
+
+.lineTotal {
+  color: var(--prisma-text-primary);
+  font-size: 14px;
+  font-weight: 760;
+  white-space: nowrap;
+}
+
+.totals {
+  display: grid;
+  gap: 10px;
+  padding: 15px 0 3px;
+}
+
+.totalRow,
+.totalGrand {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.totalRow span,
+.totalRow strong {
+  color: var(--prisma-text-secondary);
+  font-size: 14px;
+  font-weight: 640;
+}
+
+.totalGrand {
+  padding-top: 8px;
+  border-top: 1px solid rgba(232, 189, 103, 0.18);
+}
+
+.totalGrand span {
+  color: var(--prisma-gold-200);
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.totalGrand strong {
+  color: var(--prisma-gold-200);
+  font-size: 32px;
+  font-weight: 860;
+  line-height: 1;
+  text-shadow: 0 0 22px rgba(232, 189, 103, 0.28);
+}
+
+.chargeButton {
+  height: 58px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: var(--prisma-text-on-gold);
+  border-radius: 15px;
+  background: linear-gradient(180deg, #f7d88a 0%, #e8bd67 48%, #c89136 100%);
+  box-shadow: 0 0 32px rgba(232, 189, 103, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.chargeButton span {
+  font-size: 17px;
+  font-weight: 890;
+}
+
+.chargeButton strong {
+  min-width: 38px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: rgba(43, 33, 17, 0.84);
+  background: rgba(43, 33, 17, 0.1);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.secondaryActions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.secondaryActions button {
+  min-width: 0;
+  height: 76px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 4px;
+  border-radius: 15px;
+  color: var(--prisma-gold-100);
+  background: linear-gradient(180deg, rgba(30, 33, 42, 0.76), rgba(14, 16, 23, 0.78));
+  border: 1px solid rgba(232, 189, 103, 0.17);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.secondaryActions span {
+  max-width: 100%;
+  color: var(--prisma-text-secondary);
+  font-size: 10.5px;
+  font-weight: 800;
+  line-height: 1.05;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.secondaryActions strong {
+  color: var(--prisma-text-faint);
+  font-size: 11px;
+  font-weight: 780;
+}
+
+@media (max-width: 1260px) {
+  .screen {
+    grid-template-columns: 184px minmax(620px, 1fr) 384px;
+    column-gap: 20px;
+    padding-right: 20px;
+  }
+
+  .sidebar {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .workspace {
+    grid-template-rows: 58px 88px minmax(460px, 1fr) 54px;
+  }
+
+  .productGrid {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 1080px) {
+  .screen {
+    overflow: auto;
+    grid-template-columns: 184px 660px 380px;
+    min-width: 1250px;
+  }
+}
+
+.routeShell {
+  --route-bg-black: #050608;
+  --route-bg-deep: #090b10;
+  --route-panel: rgba(17, 19, 26, 0.82);
+  --route-panel-strong: rgba(24, 27, 36, 0.9);
+  --route-card: rgba(29, 32, 42, 0.74);
+  --route-line: rgba(255, 255, 255, 0.09);
+  --route-gold: #e8bd67;
+  --route-gold-soft: #f5d183;
+  --route-gold-deep: #8b6a32;
+  --route-text: #f4f1ea;
+  --route-secondary: #b8b5ae;
+  --route-muted: #838895;
+  --route-faint: #5f636d;
+  --route-green: #3ad17a;
+  --route-danger: #ff6b5e;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 196px minmax(0, 1fr);
+  gap: 22px;
+  padding: 20px 22px 24px;
+  color: var(--route-text);
+  font-family: Inter, "SF Pro Display", "SF Pro Text", Manrope, "Geist Sans", system-ui, sans-serif;
+  background:
+    radial-gradient(circle at 44% -8%, rgba(232, 189, 103, 0.19), transparent 31%),
+    radial-gradient(circle at 18% 100%, rgba(160, 45, 34, 0.14), transparent 28%),
+    radial-gradient(circle at 84% 92%, rgba(55, 90, 150, 0.13), transparent 30%),
+    linear-gradient(180deg, #11131a 0%, #08090d 54%, #050608 100%);
+  isolation: isolate;
+  position: relative;
+}
+
+.routeShell::before,
+.routeShell::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.routeShell::before {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.026) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: 96px 96px;
+  opacity: 0.16;
+  mask-image: radial-gradient(circle at 58% 44%, black 0%, transparent 78%);
+}
+
+.routeShell::after {
+  background: radial-gradient(circle at center, transparent 45%, rgba(0, 0, 0, 0.48) 100%);
+}
+
+.routeNavRail {
+  min-height: calc(100vh - 44px);
+  position: sticky;
+  top: 20px;
+  align-self: start;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 18px;
+  padding: 18px 14px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(13, 15, 22, 0.94), rgba(7, 8, 12, 0.92));
+  border: 1px solid rgba(232, 189, 103, 0.16);
+  box-shadow: 22px 0 58px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.routeBrand {
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  gap: 11px;
+  align-items: center;
+  padding: 6px 6px 12px;
+  text-decoration: none;
+  color: var(--route-text);
+}
+
+.routeBrandMark {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 17px;
+  background: radial-gradient(circle at 36% 20%, rgba(255, 244, 207, 0.32), transparent 34%), rgba(232, 189, 103, 0.1);
+  border: 1px solid rgba(232, 189, 103, 0.28);
+  box-shadow: 0 0 24px rgba(232, 189, 103, 0.12);
+}
+
+.routeBrandMark span {
+  width: 25px;
+  height: 25px;
+  display: block;
+  background: linear-gradient(135deg, rgba(255, 244, 207, 0.92), rgba(232, 189, 103, 0.2));
+  clip-path: polygon(50% 0, 100% 38%, 50% 100%, 0 38%);
+}
+
+.routeBrandText {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.routeBrandText strong {
+  font-size: 17px;
+  font-weight: 870;
+  line-height: 1;
+}
+
+.routeBrandText small {
+  color: var(--route-gold-soft);
+  font-size: 11px;
+  font-weight: 720;
+}
+
+.routeNavList {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.routeNavItem,
+.routeNavActive {
+  min-height: 46px;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 11px;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 15px;
+  color: var(--route-muted);
+  text-decoration: none;
+  border: 1px solid transparent;
+  font-size: 13.5px;
+  font-weight: 680;
+}
+
+.routeNavItem:hover {
+  color: var(--route-secondary);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.routeNavActive {
+  color: var(--route-gold-soft);
+  background: linear-gradient(90deg, rgba(232, 189, 103, 0.28), rgba(232, 189, 103, 0.1));
+  border-color: rgba(232, 189, 103, 0.48);
+  box-shadow: 0 0 26px rgba(232, 189, 103, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.routeTerminalCard {
+  min-height: 64px;
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 11px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(29, 32, 42, 0.8), rgba(13, 15, 22, 0.78));
+  border: 1px solid var(--route-line);
+}
+
+.routeTerminalIcon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  color: var(--route-gold-soft);
+  background: rgba(232, 189, 103, 0.11);
+}
+
+.routeTerminalCard strong,
+.routeTerminalCard small {
+  display: block;
+}
+
+.routeTerminalCard strong {
+  font-size: 12.5px;
+}
+
+.routeTerminalCard small {
+  color: var(--route-green);
+  font-size: 11.5px;
+}
+
+.routeViewport {
+  min-width: 0;
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.routeTopbar {
+  min-height: 78px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 16px 18px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(24, 27, 36, 0.68), rgba(11, 13, 19, 0.58));
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 48px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(20px);
+}
+
+.routeTitleGroup {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.routeTitleGroup span,
+.routePanelHeader span {
+  color: var(--route-gold-soft);
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 790;
+  letter-spacing: 0;
+}
+
+.routeTitleGroup h1 {
+  margin: 0;
+  color: var(--route-text);
+  font-size: clamp(26px, 2.4vw, 34px);
+  font-weight: 850;
+  line-height: 1.05;
+}
+
+.routeTitleGroup p,
+.routePanelHeader p {
+  margin: 0;
+  color: var(--route-secondary);
+  font-size: 14.5px;
+  line-height: 1.35;
+}
+
+.routeTopbarRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.routeTopIcon,
+.routeGoldGhostButton,
+.routeDarkButton,
+.routePrimaryButton,
+.routeSecondaryButton {
+  appearance: none;
+  font: inherit;
+  border: 0;
+  text-decoration: none;
+}
+
+.routeTopIcon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  color: var(--route-secondary);
+  background: rgba(24, 27, 36, 0.74);
+  border: 1px solid var(--route-line);
+}
+
+.routeUserChip {
+  height: 46px;
+  display: grid;
+  grid-template-columns: 34px auto;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 12px 6px 7px;
+  border-radius: 999px;
+  background: rgba(24, 27, 36, 0.72);
+  border: 1px solid var(--route-line);
+}
+
+.routeUserChip span {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--route-text-on-gold, #2b2111);
+  background: linear-gradient(180deg, #f7d88a, #c89136);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.routeUserChip strong {
+  color: var(--route-text);
+  font-size: 13px;
+}
+
+.routeActionBand {
+  border-radius: 24px;
+}
+
+.routeContent {
+  display: grid;
+  gap: 16px;
+}
+
+.routeKpiStrip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.routeMetricCard {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 42px;
+  align-items: start;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(29, 32, 42, 0.72), rgba(13, 15, 22, 0.7));
+  border: 1px solid var(--route-line);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 40px rgba(0, 0, 0, 0.2);
+}
+
+.routeMetricCard span {
+  color: var(--route-gold-soft);
+  font-size: 11px;
+  font-weight: 820;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.routeMetricCard strong {
+  display: block;
+  margin-top: 7px;
+  color: var(--route-text);
+  font-size: clamp(24px, 2.1vw, 32px);
+  font-weight: 880;
+  line-height: 1;
+}
+
+.routeMetricCard small {
+  display: block;
+  margin-top: 7px;
+  color: var(--route-muted);
+  font-size: 12.5px;
+  line-height: 1.25;
+}
+
+.routeMetricIcon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  color: var(--route-gold-soft);
+  background: rgba(232, 189, 103, 0.09);
+  border: 1px solid rgba(232, 189, 103, 0.16);
+}
+
+.routePanel {
+  min-width: 0;
+  padding: 18px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(24, 27, 36, 0.76), rgba(11, 13, 19, 0.74));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 20px 52px rgba(0, 0, 0, 0.23);
+}
+
+.routePanelHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.routePanelHeader h2 {
+  margin: 4px 0 4px;
+  color: var(--route-text);
+  font-size: 19px;
+  line-height: 1.15;
+  font-weight: 800;
+}
+
+.routeSearchStrip {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) auto auto;
+  gap: 12px;
+}
+
+.routeSearchControl {
+  height: 58px;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) 26px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  border-radius: 18px;
+  color: var(--route-muted);
+  background: linear-gradient(180deg, rgba(29, 32, 42, 0.82), rgba(12, 14, 20, 0.8));
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.routeSearchControl input {
+  min-width: 0;
+  color: var(--route-text);
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font-size: 15px;
+  font-weight: 620;
+}
+
+.routeSearchControl input::placeholder {
+  color: rgba(184, 181, 174, 0.62);
+}
+
+.routeGoldGhostButton,
+.routeDarkButton,
+.routeSecondaryButton {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 16px;
+  border-radius: 16px;
+  color: var(--route-gold-soft);
+  background: linear-gradient(180deg, rgba(35, 37, 47, 0.84), rgba(15, 17, 24, 0.82));
+  border: 1px solid rgba(232, 189, 103, 0.24);
+  font-weight: 820;
+  font-size: 13px;
+}
+
+.routeDarkButton,
+.routeSecondaryButton {
+  color: var(--route-secondary);
+  border-color: var(--route-line);
+}
+
+.routeBadge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 760;
+  white-space: nowrap;
+}
+
+.routeBadge_ok {
+  color: #95f4bf;
+  background: rgba(58, 209, 122, 0.12);
+  border: 1px solid rgba(58, 209, 122, 0.22);
+}
+
+.routeBadge_warn {
+  color: var(--route-gold-soft);
+  background: rgba(232, 189, 103, 0.12);
+  border: 1px solid rgba(232, 189, 103, 0.24);
+}
+
+.routeBadge_danger {
+  color: #ffb2aa;
+  background: rgba(255, 107, 94, 0.12);
+  border: 1px solid rgba(255, 107, 94, 0.23);
+}
+
+.routeBadge_neutral {
+  color: var(--route-secondary);
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid var(--route-line);
+}
+
+.routeActionCard,
+.routeFlowItem,
+.routeProductTile {
+  min-width: 0;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(33, 36, 47, 0.72), rgba(15, 17, 24, 0.7));
+  border: 1px solid var(--route-line);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+
+.routeActionCard {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 13px;
+}
+
+.routeActionCard strong,
+.routeFlowItem strong,
+.routeProductTile strong {
+  color: var(--route-text);
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.routeActionCard p,
+.routeFlowItem p {
+  margin: 3px 0 0;
+  color: var(--route-secondary);
+  font-size: 12.7px;
+  line-height: 1.35;
+}
+
+.routeActionCard small {
+  color: var(--route-gold-soft);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.routeActionIcon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  color: var(--route-gold-soft);
+  background: rgba(232, 189, 103, 0.1);
+}
+
+.routeActionCard_ok {
+  border-color: rgba(58, 209, 122, 0.18);
+}
+
+.routeActionCard_warn {
+  border-color: rgba(232, 189, 103, 0.24);
+}
+
+.routeActionCard_danger {
+  border-color: rgba(255, 107, 94, 0.24);
+}
+
+.routeFlowList {
+  display: grid;
+  gap: 10px;
+}
+
+.routeFlowItem {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 13px;
+}
+
+.routeFlowStep {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  color: var(--route-text-on-gold, #2b2111);
+  background: linear-gradient(180deg, #f7d88a, #c89136);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.routeFlowAside {
+  color: var(--route-gold-soft);
+  font-size: 12px;
+  font-weight: 820;
+}
+
+.routePillCloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.routePill {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  color: var(--route-secondary);
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid var(--route-line);
+  font-size: 13px;
+  font-weight: 690;
+}
+
+.routePill_ok {
+  color: #9af0c2;
+  background: rgba(58, 209, 122, 0.1);
+  border-color: rgba(58, 209, 122, 0.18);
+}
+
+.routePill_warn {
+  color: var(--route-gold-soft);
+  background: rgba(232, 189, 103, 0.1);
+  border-color: rgba(232, 189, 103, 0.22);
+}
+
+.routePill_danger {
+  color: #ffb2aa;
+  background: rgba(255, 107, 94, 0.11);
+  border-color: rgba(255, 107, 94, 0.21);
+}
+
+.routePill_neutral {
+  color: var(--route-secondary);
+}
+
+.routeTableWrap {
+  overflow: auto;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.routeTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.routeTable th,
+.routeTable td {
+  padding: 14px 13px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.065);
+  color: var(--route-secondary);
+  text-align: left;
+  font-size: 13.5px;
+  vertical-align: middle;
+}
+
+.routeTable th {
+  color: var(--route-gold-soft);
+  background: rgba(232, 189, 103, 0.055);
+  font-size: 11px;
+  font-weight: 840;
+  text-transform: uppercase;
+}
+
+.routeTable td:first-child {
+  color: var(--route-text);
+  font-weight: 760;
+}
+
+.routeTable tr:last-child td {
+  border-bottom: 0;
+}
+
+.routeEmptyState {
+  min-height: 188px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  padding: 24px;
+  border-radius: 20px;
+  color: var(--route-secondary);
+  text-align: center;
+  background:
+    radial-gradient(circle at center, rgba(232, 189, 103, 0.1), transparent 44%),
+    rgba(255, 255, 255, 0.035);
+  border: 1px dashed rgba(232, 189, 103, 0.24);
+}
+
+.routeEmptyState span {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  color: var(--route-gold-soft);
+  background: rgba(232, 189, 103, 0.1);
+}
+
+.routeEmptyState strong {
+  color: var(--route-text);
+  font-size: 16px;
+}
+
+.routeEmptyState p {
+  max-width: 440px;
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.routePrimaryButton {
+  min-height: 58px;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  padding: 0 18px;
+  border-radius: 17px;
+  color: #2b2111;
+  background: linear-gradient(180deg, #f7d88a 0%, #e8bd67 48%, #c89136 100%);
+  box-shadow: 0 0 30px rgba(232, 189, 103, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.routePrimaryButton strong {
+  min-width: 36px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(43, 33, 17, 0.12);
+  font-size: 12px;
+}
+
+.routeSecondaryButton {
+  width: 100%;
+  min-height: 50px;
+}
+
+.routeTotalDisplay {
+  display: grid;
+  gap: 6px;
+  padding: 18px;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 82% 12%, rgba(232, 189, 103, 0.2), transparent 38%),
+    linear-gradient(180deg, rgba(33, 36, 47, 0.78), rgba(12, 14, 20, 0.78));
+  border: 1px solid rgba(232, 189, 103, 0.22);
+}
+
+.routeTotalDisplay span {
+  color: var(--route-gold-soft);
+  font-size: 12px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.routeTotalDisplay strong {
+  color: var(--route-gold-soft);
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1;
+  font-weight: 920;
+}
+
+.routeTotalDisplay small {
+  color: var(--route-secondary);
+  font-size: 13px;
+}
+
+.routeProductTile {
+  display: grid;
+  grid-template-rows: auto minmax(58px, auto) auto;
+  gap: 12px;
+  padding: 14px;
+}
+
+.routeProductIcon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 17px;
+  color: var(--route-gold-soft);
+  background: rgba(232, 189, 103, 0.1);
+  border: 1px solid rgba(232, 189, 103, 0.16);
+}
+
+.routeProductTile small {
+  display: block;
+  margin-top: 5px;
+  color: var(--route-muted);
+  font-size: 12.5px;
+  line-height: 1.3;
+}
+
+.routeProductTile footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.routeProductTile footer > span {
+  color: var(--route-gold-soft);
+  font-size: 18px;
+  font-weight: 880;
+}
+
+.salesConsoleLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
+  gap: 16px;
+  align-items: start;
+}
+
+.salesCatalogPanel {
+  min-width: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.routeCategoryLine {
+  display: flex;
+  gap: 9px;
+  overflow: auto;
+  padding-bottom: 2px;
+}
+
+.routeCategoryLine::-webkit-scrollbar {
+  height: 0;
+}
+
+.routeCategoryChip,
+.routeCategoryChipActive {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  padding: 0 13px;
+  border-radius: 999px;
+  color: var(--route-secondary);
+  background: rgba(255, 255, 255, 0.052);
+  border: 1px solid var(--route-line);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.routeCategoryChipActive {
+  color: #2b2111;
+  background: linear-gradient(180deg, #f7d88a, #c89136);
+  border-color: rgba(255, 244, 207, 0.34);
+}
+
+.routeProductGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.routeSideStack {
+  display: grid;
+  gap: 16px;
+}
+
+.routeSummaryRows {
+  display: grid;
+  gap: 10px;
+}
+
+.routeSummaryRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+  padding: 9px 0;
+  color: var(--route-secondary);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.065);
+  font-size: 13.5px;
+}
+
+.routeSummaryRow strong {
+  color: var(--route-text);
+  font-size: 15px;
+}
+
+.routeButtonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.checkoutLayout,
+.returnsLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 430px);
+  gap: 16px;
+  align-items: start;
+}
+
+.paymentGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.paymentGrid .routeActionCard {
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: start;
+  min-height: 154px;
+}
+
+.paymentGrid .routeActionCard small {
+  grid-column: 2;
+  justify-self: start;
+}
+
+.lookupPanel {
+  display: grid;
+  gap: 14px;
+}
+
+.returnReasonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+@media (max-width: 1180px) {
+  .routeShell {
+    grid-template-columns: 88px minmax(0, 1fr);
+    padding: 16px;
+  }
+
+  .routeNavRail {
+    padding: 14px 10px;
+  }
+
+  .routeBrand {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .routeBrandText,
+  .routeNavItem span,
+  .routeNavActive span,
+  .routeTerminalCard span:not(.routeTerminalIcon) {
+    display: none;
+  }
+
+  .routeNavItem,
+  .routeNavActive,
+  .routeTerminalCard {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    padding-inline: 0;
+  }
+
+  .routeTopbar {
+    grid-template-columns: 1fr;
+  }
+
+  .routeTopbarRight {
+    justify-content: space-between;
+  }
+
+  .salesConsoleLayout,
+  .checkoutLayout,
+  .returnsLayout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 920px) {
+  .routeShell {
+    grid-template-columns: 1fr;
+  }
+
+  .routeNavRail {
+    position: relative;
+    top: 0;
+    min-height: auto;
+  }
+
+  .routeNavList {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .routeKpiStrip,
+  .paymentGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .routeProductGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .routeSearchStrip {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.routeGoldGhostButton:disabled,
+.routeDarkButton:disabled,
+.routePrimaryButton:disabled,
+.routeSecondaryButton:disabled {
+  opacity: 0.54;
+  cursor: not-allowed;
+  filter: grayscale(0.15);
+}
+
+/* PRISMA_REFERENCE_VISUAL_REFINEMENT_01I START
+   Tablet POS local polish. Visual-only: layout grid, route structure and TSX untouched. */
+.screen {
+  background:
+    radial-gradient(ellipse at 50% -12%, rgba(255, 226, 158, 0.26), transparent 28%),
+    radial-gradient(ellipse at 78% 6%, rgba(203, 233, 248, 0.18), transparent 24%),
+    radial-gradient(ellipse at 18% 26%, rgba(80, 130, 174, 0.18), transparent 35%),
+    radial-gradient(ellipse at 16% 100%, rgba(168, 58, 42, 0.16), transparent 31%),
+    radial-gradient(ellipse at 88% 98%, rgba(51, 103, 157, 0.20), transparent 33%),
+    linear-gradient(180deg, #101a25 0%, #06101a 48%, #01050a 100%) !important;
+}
+
+.screen::before {
+  background:
+    linear-gradient(112deg, transparent 0%, rgba(255,255,255,0.125) 32%, rgba(255,255,255,0.035) 38%, transparent 50%),
+    radial-gradient(ellipse at 54% 3%, rgba(255,255,255,0.24), transparent 8%),
+    radial-gradient(ellipse at 50% 102%, rgba(239,196,111,0.20), transparent 30%) !important;
+  filter: blur(20px) saturate(1.18);
+  opacity: 0.92 !important;
+  mask-image: none !important;
+}
+
+.screen::after {
+  background:
+    radial-gradient(ellipse at 50% 45%, transparent 40%, rgba(0,0,0,0.58) 100%),
+    repeating-radial-gradient(circle at 34% 44%, rgba(255,255,255,0.026) 0 1px, transparent 1px 5px) !important;
+  opacity: 0.76 !important;
+}
+
+.sidebar,
+.cartPanel,
+.searchBox,
+.scanButton,
+.moreButton,
+.iconButton,
+.iconButtonBadge,
+.adminChip,
+.pagination,
+.secondaryActions button,
+.terminalCard {
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(255,235,183,0.13), transparent 34%),
+    radial-gradient(ellipse at 86% 0%, rgba(203,233,248,0.08), transparent 32%),
+    linear-gradient(180deg, rgba(255,255,255,0.10), transparent 20%),
+    linear-gradient(148deg, rgba(29,45,60,0.72), rgba(6,15,25,0.64) 54%, rgba(3,8,14,0.78)) !important;
+  border-color: rgba(255, 229, 166, 0.24) !important;
+  box-shadow:
+    0 32px 88px rgba(0,0,0,0.56),
+    0 0 44px rgba(72,124,168,0.12),
+    inset 0 1px 0 rgba(255,245,218,0.30),
+    inset 0 -1px 0 rgba(0,0,0,0.52) !important;
+  backdrop-filter: blur(34px) saturate(1.38);
+  -webkit-backdrop-filter: blur(34px) saturate(1.38);
+}
+
+.cartPanel {
+  background:
+    radial-gradient(ellipse at 76% 0%, rgba(255,221,153,0.16), transparent 36%),
+    radial-gradient(ellipse at 18% 10%, rgba(203,234,248,0.10), transparent 34%),
+    linear-gradient(150deg, rgba(20,32,45,0.84), rgba(3,10,18,0.88)) !important;
+  border-color: rgba(255, 221, 153, 0.36) !important;
+}
+
+.productCard {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.16), transparent 28%),
+    radial-gradient(ellipse at 18% 18%, rgba(197,230,247,0.13), transparent 34%),
+    linear-gradient(150deg, rgba(31,45,59,0.66), rgba(6,15,25,0.68)) !important;
+  border-color: rgba(255, 255, 255, 0.13) !important;
+  box-shadow:
+    0 26px 64px rgba(0,0,0,0.48),
+    0 0 34px rgba(70,116,158,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.20),
+    inset 0 -1px 0 rgba(0,0,0,0.42) !important;
+}
+
+.productCard::before {
+  background:
+    linear-gradient(126deg, rgba(255,255,255,0.18), transparent 25%, transparent 72%, rgba(239,196,111,0.12)),
+    radial-gradient(ellipse at 50% 4%, rgba(255,255,255,0.13), transparent 30%) !important;
+  opacity: 0.74 !important;
+}
+
+.productStage,
+.productStageCompact {
+  background:
+    radial-gradient(ellipse at 50% 70%, rgba(239,196,111,0.34), transparent 21%),
+    radial-gradient(ellipse at 50% 86%, rgba(255,119,58,0.17), transparent 34%),
+    radial-gradient(ellipse at 46% 12%, rgba(255,255,255,0.28), transparent 30%),
+    linear-gradient(180deg, rgba(48,68,84,0.36), rgba(5,13,22,0.12));
+}
+
+.productAura {
+  opacity: 0.66 !important;
+  filter: blur(26px) saturate(1.12) !important;
+}
+
+.productPedestal {
+  background: rgba(255, 238, 194, 0.20) !important;
+  box-shadow:
+    0 0 34px currentColor,
+    0 0 64px rgba(239,196,111,0.20) !important;
+}
+
+.productFigure {
+  filter: drop-shadow(0 22px 24px rgba(0,0,0,0.50)) saturate(1.08);
+}
+
+.navItemActive,
+.categoryActive .categoryCircle,
+.pageActive {
+  box-shadow:
+    0 0 32px rgba(239,196,111,0.28),
+    inset 0 1px 0 rgba(255,246,218,0.30) !important;
+}
+
+.chargeButton {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,250,229,0.82), transparent 44%),
+    linear-gradient(180deg, #ffe7ab 0%, #efc46f 42%, #b97831 100%) !important;
+  border: 1px solid rgba(255,232,174,0.68) !important;
+  box-shadow:
+    0 18px 44px rgba(239,196,111,0.40),
+    0 0 38px rgba(239,196,111,0.25),
+    inset 0 1px 0 rgba(255,250,229,0.66),
+    inset 0 -1px 0 rgba(86,52,13,0.48) !important;
+}
+
+.totalGrand strong,
+.productInfo strong {
+  color: #ffdc94 !important;
+  text-shadow: 0 0 24px rgba(239,196,111,0.24);
+}
+/* PRISMA_REFERENCE_VISUAL_REFINEMENT_01I END */
+
+/* PRISMA_TABLET_ATMOSPHERE_GLASS_02A START
+   Tablet POS local polish. Visual-only: no JSX, layout, or business behavior changes. */
+.screen {
+  background:
+    radial-gradient(ellipse at 52% -14%, rgba(255, 230, 166, 0.30), transparent 30%),
+    radial-gradient(ellipse at 72% 3%, rgba(215, 239, 252, 0.18), transparent 26%),
+    radial-gradient(ellipse at 18% 22%, rgba(84, 134, 178, 0.18), transparent 38%),
+    radial-gradient(ellipse at 12% 105%, rgba(181, 76, 45, 0.16), transparent 30%),
+    radial-gradient(ellipse at 90% 105%, rgba(49, 102, 162, 0.20), transparent 34%),
+    linear-gradient(180deg, #111d28 0%, #06111c 44%, #010407 100%) !important;
+  background-size: 120% 120%, 110% 110%, 120% 120%, 110% 110%, 115% 115%, auto !important;
+  animation: prismaTabletSceneDrift02a 46s ease-in-out infinite alternate;
+}
+
+.screen::before {
+  background:
+    linear-gradient(108deg, transparent 0%, rgba(255, 255, 255, 0.13) 30%, rgba(255, 255, 255, 0.035) 38%, transparent 50%),
+    linear-gradient(132deg, transparent 12%, rgba(197, 229, 247, 0.06) 45%, transparent 67%),
+    radial-gradient(ellipse at 54% 2%, rgba(255, 255, 255, 0.25), transparent 8%),
+    radial-gradient(ellipse at 50% 104%, rgba(239, 196, 111, 0.22), transparent 31%) !important;
+  filter: blur(30px) saturate(1.22) !important;
+  opacity: 0.86 !important;
+  animation: prismaTabletHazeBreathe02a 34s ease-in-out infinite alternate;
+}
+
+.screen::after {
+  background:
+    radial-gradient(ellipse at 50% 44%, transparent 40%, rgba(0, 0, 0, 0.58) 100%),
+    repeating-radial-gradient(circle at 34% 44%, rgba(255,255,255,.025) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(118deg, rgba(255,255,255,.011) 0 1px, transparent 1px 9px) !important;
+  opacity: 0.72 !important;
+  animation: prismaTabletGrainFloat02a 54s linear infinite;
+}
+
+.sidebar,
+.cartPanel,
+.searchBox,
+.productCard,
+.terminalCard,
+.categoryItem,
+.categoryActive,
+.secondaryActions button,
+.quantityStepper,
+.routePanel,
+.routeMetricCard,
+.routeSearchControl,
+.routeUserChip,
+.routeTopIcon,
+.routeGoldGhostButton,
+.routeDarkButton,
+.routePrimaryButton,
+.routeSecondaryButton {
+  border-color: rgba(255, 230, 174, 0.22) !important;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.15), transparent 26%),
+    radial-gradient(ellipse at 16% 20%, rgba(197,230,247,0.11), transparent 36%),
+    linear-gradient(148deg, rgba(30,45,60,0.58), rgba(5,14,24,0.62) 58%, rgba(3,8,14,0.70)) !important;
+  box-shadow:
+    0 32px 88px rgba(0,0,0,0.56),
+    0 0 46px rgba(76,122,164,0.12),
+    inset 0 1px 0 rgba(255,248,226,0.30),
+    inset 0 -1px 0 rgba(0,0,0,0.50) !important;
+  backdrop-filter: blur(42px) saturate(1.46) brightness(1.02) !important;
+  -webkit-backdrop-filter: blur(42px) saturate(1.46) brightness(1.02) !important;
+}
+
+.sidebar,
+.cartPanel {
+  border-color: rgba(255, 230, 174, 0.30) !important;
+  background:
+    radial-gradient(ellipse at 18% 0%, rgba(255,236,190,0.17), transparent 34%),
+    radial-gradient(ellipse at 86% 0%, rgba(203,234,250,0.12), transparent 32%),
+    linear-gradient(180deg, rgba(255,255,255,0.13), transparent 20%),
+    linear-gradient(148deg, rgba(29,45,60,0.74), rgba(6,15,25,0.60) 54%, rgba(3,8,14,0.76)) !important;
+}
+
+.productCard::before,
+.cartItem::before,
+.routePanel::before,
+.routeMetricCard::before {
+  opacity: 0.78 !important;
+  background:
+    linear-gradient(180deg, rgba(255,250,232,0.20), transparent 20%),
+    radial-gradient(ellipse at 16% 0%, rgba(255,219,150,0.18), transparent 36%),
+    linear-gradient(111deg, transparent 0%, rgba(255,255,255,0.08) 35%, transparent 47%) !important;
+}
+
+.productStage,
+.productStageCompact,
+.cartThumbFallback {
+  background:
+    radial-gradient(ellipse at 50% 72%, rgba(239,196,111,0.36), transparent 20%),
+    radial-gradient(ellipse at 50% 87%, rgba(255,119,58,0.16), transparent 36%),
+    radial-gradient(ellipse at 46% 12%, rgba(255,255,255,0.30), transparent 31%),
+    linear-gradient(180deg, rgba(48,68,84,0.40), rgba(5,13,22,0.23)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.18),
+    inset 0 -1px 0 rgba(0,0,0,0.34),
+    0 20px 46px rgba(0,0,0,0.28) !important;
+}
+
+.chargeButton,
+.scanButton {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,252,232,0.90), transparent 45%),
+    linear-gradient(180deg, #ffe9b3 0%, #efc46f 42%, #b97930 100%) !important;
+  border-color: rgba(255,232,174,0.70) !important;
+  box-shadow:
+    0 20px 48px rgba(239,196,111,0.40),
+    0 0 42px rgba(239,196,111,0.26),
+    inset 0 1px 0 rgba(255,250,229,0.70),
+    inset 0 -1px 0 rgba(86,52,13,0.50) !important;
+}
+
+@keyframes prismaTabletSceneDrift02a {
+  0% { background-position: 50% 0%, 72% 0%, 18% 16%, 8% 100%, 90% 100%, center; }
+  100% { background-position: 52% 1%, 69% 2%, 20% 17%, 10% 98%, 88% 99%, center; }
+}
+
+@keyframes prismaTabletHazeBreathe02a {
+  0% { opacity: .78; transform: translate3d(-1.1%, -.4%, 0) scale(1.02); }
+  50% { opacity: .90; transform: translate3d(.8%, .2%, 0) scale(1.035); }
+  100% { opacity: .82; transform: translate3d(1.4%, -.2%, 0) scale(1.025); }
+}
+
+@keyframes prismaTabletGrainFloat02a {
+  0% { background-position: center, 0 0, 0 0; }
+  100% { background-position: center, 34px 21px, -48px 32px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screen,
+  .screen::before,
+  .screen::after { animation: none !important; }
+}
+/* PRISMA_TABLET_ATMOSPHERE_GLASS_02A END */
+
+/* PRISMA_TABLET_LOCAL_ATMOSPHERE_GLASS_03A START
+   Tablet-only premium atmosphere pass.
+   Scope: products/tablet/app/components/prisma-dark-pos/prisma-dark-pos.module.css only.
+   Visual-only: background motion, frosted haze, glass depth, luminous borders. No JSX, routes, logic, PC, Mobile, or shared-ui changes. */
+.screen {
+  background:
+    radial-gradient(ellipse at 50% -18%, rgba(255, 233, 177, 0.36), transparent 28%),
+    radial-gradient(ellipse at 68% 2%, rgba(217, 242, 255, 0.19), transparent 24%),
+    radial-gradient(ellipse at 16% 18%, rgba(82, 137, 184, 0.22), transparent 42%),
+    radial-gradient(ellipse at 7% 106%, rgba(190, 78, 48, 0.18), transparent 30%),
+    radial-gradient(ellipse at 96% 104%, rgba(49, 104, 168, 0.24), transparent 35%),
+    linear-gradient(180deg, #122130 0%, #071320 42%, #020407 100%) !important;
+  background-size: 126% 126%, 118% 118%, 132% 132%, 118% 118%, 122% 122%, auto !important;
+  animation: prismaTabletSceneDrift03a 58s ease-in-out infinite alternate !important;
+}
+
+.screen::before {
+  background:
+    linear-gradient(106deg, transparent 0%, rgba(255,255,255,0.145) 28%, rgba(255,255,255,0.045) 38%, transparent 51%),
+    linear-gradient(134deg, transparent 10%, rgba(196,231,250,0.075) 44%, transparent 69%),
+    radial-gradient(ellipse at 49% -2%, rgba(255,255,255,0.34), transparent 9%),
+    radial-gradient(ellipse at 50% 102%, rgba(239,196,111,0.25), transparent 33%),
+    radial-gradient(ellipse at 82% 18%, rgba(103,160,213,0.11), transparent 34%) !important;
+  filter: blur(34px) saturate(1.30) contrast(1.03) !important;
+  opacity: 0.92 !important;
+  transform-origin: center;
+  animation: prismaTabletHazeBreathe03a 42s ease-in-out infinite alternate !important;
+}
+
+.screen::after {
+  background:
+    radial-gradient(ellipse at 50% 42%, transparent 39%, rgba(0,0,0,0.60) 100%),
+    radial-gradient(ellipse at 50% 2%, rgba(255,245,218,0.08), transparent 36%),
+    repeating-radial-gradient(circle at 34% 44%, rgba(255,255,255,.027) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(118deg, rgba(255,255,255,.012) 0 1px, transparent 1px 9px) !important;
+  opacity: 0.76 !important;
+  animation: prismaTabletGrainFloat03a 68s linear infinite !important;
+}
+
+.sidebar,
+.cartPanel,
+.searchBox,
+.productCard,
+.terminalCard,
+.categoryItem,
+.categoryActive,
+.cartItem,
+.secondaryActions button,
+.quantityStepper,
+.routePanel,
+.routeMetricCard,
+.routeSearchControl,
+.routeUserChip,
+.routeTopIcon,
+.routeGoldGhostButton,
+.routeDarkButton,
+.routePrimaryButton,
+.routeSecondaryButton,
+.moreButton,
+.iconButton,
+.iconButtonBadge,
+.adminChip,
+.pagination {
+  border-color: rgba(255, 232, 178, 0.25) !important;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.18), transparent 27%),
+    radial-gradient(ellipse at 18% 18%, rgba(199,234,252,0.13), transparent 38%),
+    linear-gradient(152deg, rgba(33,50,66,0.58), rgba(5,14,24,0.62) 58%, rgba(2,7,12,0.74)) !important;
+  box-shadow:
+    0 34px 92px rgba(0,0,0,0.58),
+    0 0 52px rgba(73,126,171,0.13),
+    0 0 30px rgba(239,196,111,0.055),
+    inset 0 1px 0 rgba(255,250,230,0.32),
+    inset 0 -1px 0 rgba(0,0,0,0.54) !important;
+  backdrop-filter: blur(46px) saturate(1.50) brightness(1.035) !important;
+  -webkit-backdrop-filter: blur(46px) saturate(1.50) brightness(1.035) !important;
+}
+
+.sidebar,
+.cartPanel {
+  border-color: rgba(255, 232, 178, 0.34) !important;
+  background:
+    radial-gradient(ellipse at 18% 0%, rgba(255,238,198,0.19), transparent 34%),
+    radial-gradient(ellipse at 88% 0%, rgba(204,236,252,0.14), transparent 33%),
+    linear-gradient(180deg, rgba(255,255,255,0.145), transparent 21%),
+    linear-gradient(148deg, rgba(30,48,64,0.76), rgba(6,16,27,0.64) 55%, rgba(2,7,13,0.80)) !important;
+}
+
+.productCard {
+  border-color: rgba(255, 238, 197, 0.20) !important;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.19), transparent 28%),
+    radial-gradient(ellipse at 18% 16%, rgba(197,230,247,0.15), transparent 36%),
+    radial-gradient(ellipse at 90% 84%, rgba(239,196,111,0.08), transparent 34%),
+    linear-gradient(150deg, rgba(34,51,67,0.64), rgba(5,14,24,0.70)) !important;
+  box-shadow:
+    0 28px 72px rgba(0,0,0,0.52),
+    0 0 40px rgba(70,116,158,0.14),
+    0 0 28px rgba(239,196,111,0.055),
+    inset 0 1px 0 rgba(255,255,255,0.24),
+    inset 0 -1px 0 rgba(0,0,0,0.46) !important;
+}
+
+.productCard::before,
+.cartItem::before,
+.routePanel::before,
+.routeMetricCard::before {
+  opacity: 0.86 !important;
+  background:
+    linear-gradient(180deg, rgba(255,252,236,0.22), transparent 21%),
+    radial-gradient(ellipse at 14% 0%, rgba(255,224,162,0.22), transparent 38%),
+    linear-gradient(111deg, transparent 0%, rgba(255,255,255,0.105) 34%, transparent 48%) !important;
+}
+
+.productStage,
+.productStageCompact,
+.cartThumbFallback {
+  background:
+    radial-gradient(ellipse at 50% 73%, rgba(239,196,111,0.40), transparent 21%),
+    radial-gradient(ellipse at 50% 88%, rgba(255,119,58,0.18), transparent 36%),
+    radial-gradient(ellipse at 46% 10%, rgba(255,255,255,0.34), transparent 31%),
+    linear-gradient(180deg, rgba(52,73,90,0.42), rgba(5,13,22,0.24)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.20),
+    inset 0 -1px 0 rgba(0,0,0,0.36),
+    0 22px 50px rgba(0,0,0,0.30) !important;
+}
+
+.productAura {
+  opacity: 0.72 !important;
+  filter: blur(30px) saturate(1.18) !important;
+}
+
+.productPedestal {
+  background: rgba(255, 239, 201, 0.23) !important;
+  box-shadow:
+    0 0 38px currentColor,
+    0 0 76px rgba(239,196,111,0.22) !important;
+}
+
+.productFigure {
+  filter: drop-shadow(0 24px 26px rgba(0,0,0,0.55)) saturate(1.10) contrast(1.02) !important;
+}
+
+.chargeButton,
+.scanButton {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,253,235,0.94), transparent 46%),
+    linear-gradient(180deg, #ffeab8 0%, #f1c974 43%, #b97930 100%) !important;
+  border-color: rgba(255,236,186,0.76) !important;
+  box-shadow:
+    0 22px 52px rgba(239,196,111,0.42),
+    0 0 46px rgba(239,196,111,0.28),
+    inset 0 1px 0 rgba(255,252,235,0.74),
+    inset 0 -1px 0 rgba(86,52,13,0.52) !important;
+}
+
+.navItemActive,
+.categoryActive .categoryCircle,
+.pageActive {
+  box-shadow:
+    0 0 36px rgba(239,196,111,0.30),
+    0 0 22px rgba(255,236,190,0.09),
+    inset 0 1px 0 rgba(255,248,226,0.34) !important;
+}
+
+.totalGrand strong,
+.productInfo strong,
+.cartItemPrice,
+.cartItemTotal {
+  color: #ffdf9f !important;
+  text-shadow: 0 0 26px rgba(239,196,111,0.26);
+}
+
+@keyframes prismaTabletSceneDrift03a {
+  0% { background-position: 50% 0%, 70% 0%, 15% 15%, 6% 100%, 96% 100%, center; }
+  33% { background-position: 51% 1%, 68% 2%, 17% 16%, 8% 99%, 94% 99%, center; }
+  66% { background-position: 53% 0%, 69% 1%, 19% 18%, 10% 98%, 91% 100%, center; }
+  100% { background-position: 52% 2%, 67% 3%, 20% 17%, 11% 98%, 90% 99%, center; }
+}
+
+@keyframes prismaTabletHazeBreathe03a {
+  0% { opacity: .80; transform: translate3d(-1.4%, -.5%, 0) scale(1.022); }
+  45% { opacity: .94; transform: translate3d(.7%, .3%, 0) scale(1.04); }
+  100% { opacity: .85; transform: translate3d(1.6%, -.2%, 0) scale(1.026); }
+}
+
+@keyframes prismaTabletGrainFloat03a {
+  0% { background-position: center, 50% 2%, 0 0, 0 0; }
+  100% { background-position: center, 50% 2%, 42px 24px, -56px 38px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screen,
+  .screen::before,
+  .screen::after { animation: none !important; }
+}
+/* PRISMA_TABLET_LOCAL_ATMOSPHERE_GLASS_03A END */
+
+/* PRISMA_TABLET_LAYER_FIX_04A START
+   Purpose: keep the premium atmosphere and glass, but reduce muddy overlays.
+   Diagnosis: the issue is mostly overlay density and frosted intensity, more than z-index.
+   Scope: Tablet only. Visual-only. */
+.screen {
+  isolation: isolate;
+}
+
+/* safety: keep primary content above any decorative fog layers */
+.sidebar,
+.titleBar,
+.topActions,
+.workspace,
+.cartPanel {
+  position: relative;
+  z-index: 1;
+}
+
+/* tone down full-screen haze so the UI stays legible */
+.screen::before {
+  filter: blur(24px) saturate(1.14) contrast(1.01) !important;
+  opacity: 0.34 !important;
+}
+
+.screen::after {
+  opacity: 0.24 !important;
+}
+
+/* keep glass, but stop over-frosting everything */
+.sidebar,
+.cartPanel,
+.searchBox,
+.productCard,
+.terminalCard,
+.categoryItem,
+.categoryActive,
+.cartItem,
+.secondaryActions button,
+.quantityStepper,
+.routePanel,
+.routeMetricCard,
+.routeSearchControl,
+.routeUserChip,
+.routeTopIcon,
+.routeGoldGhostButton,
+.routeDarkButton,
+.routePrimaryButton,
+.routeSecondaryButton,
+.moreButton,
+.iconButton,
+.iconButtonBadge,
+.adminChip,
+.pagination {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.10), transparent 26%),
+    radial-gradient(ellipse at 18% 18%, rgba(199,234,252,0.07), transparent 38%),
+    linear-gradient(152deg, rgba(20,31,42,0.84), rgba(6,14,23,0.86) 58%, rgba(3,7,12,0.90)) !important;
+  box-shadow:
+    0 24px 56px rgba(0,0,0,0.42),
+    0 0 30px rgba(73,126,171,0.08),
+    inset 0 1px 0 rgba(255,250,230,0.18),
+    inset 0 -1px 0 rgba(0,0,0,0.42) !important;
+  backdrop-filter: blur(20px) saturate(1.16) brightness(1.01) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.16) brightness(1.01) !important;
+}
+
+.sidebar,
+.cartPanel {
+  background:
+    radial-gradient(ellipse at 18% 0%, rgba(255,238,198,0.12), transparent 34%),
+    radial-gradient(ellipse at 88% 0%, rgba(204,236,252,0.08), transparent 33%),
+    linear-gradient(180deg, rgba(255,255,255,0.08), transparent 21%),
+    linear-gradient(148deg, rgba(20,35,48,0.88), rgba(7,15,24,0.90) 55%, rgba(3,8,13,0.94)) !important;
+}
+
+/* reduce glossy wash over cards */
+.productCard::before,
+.cartItem::before,
+.routePanel::before,
+.routeMetricCard::before {
+  opacity: 0.28 !important;
+}
+
+.productStage,
+.productStageCompact,
+.cartThumbFallback {
+  background:
+    radial-gradient(ellipse at 50% 73%, rgba(239,196,111,0.22), transparent 19%),
+    radial-gradient(ellipse at 50% 88%, rgba(255,119,58,0.09), transparent 34%),
+    radial-gradient(ellipse at 46% 10%, rgba(255,255,255,0.16), transparent 28%),
+    linear-gradient(180deg, rgba(44,62,78,0.24), rgba(5,13,22,0.12)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.10),
+    inset 0 -1px 0 rgba(0,0,0,0.22),
+    0 14px 30px rgba(0,0,0,0.18) !important;
+}
+
+.productAura {
+  opacity: 0.42 !important;
+  filter: blur(20px) saturate(1.08) !important;
+}
+
+.productPedestal {
+  background: rgba(255, 239, 201, 0.12) !important;
+  box-shadow:
+    0 0 24px currentColor,
+    0 0 40px rgba(239,196,111,0.12) !important;
+}
+
+/* improve text contrast after reducing the fog */
+.titleBar h1,
+.wordmark,
+.productInfo strong,
+.cartItemTitle strong,
+.routePanelHeader h2,
+.routeMetricCard strong,
+.totalGrand strong {
+  text-shadow: 0 1px 10px rgba(0,0,0,0.18) !important;
+}
+/* PRISMA_TABLET_LAYER_FIX_04A END */

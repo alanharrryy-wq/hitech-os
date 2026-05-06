@@ -1,0 +1,9 @@
+caseId,from,to,allowed,reason
+active_to_offline_grace,active,offline_grace,true,remote_check_failed
+offline_grace_to_active,offline_grace,active,true,remote_check_recovered
+active_to_suspended,active,suspended,true,remote_ops_future
+suspended_to_active,suspended,active,true,remote_ops_future
+active_to_revoked,active,revoked,true,remote_ops_future
+revoked_to_active,revoked,active,false,manual_review_required
+trial_to_expired,trial,expired,true,trial_end
+expired_to_active,expired,active,true,renewal_future

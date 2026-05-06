@@ -1,0 +1,52 @@
+{
+  "package": "PRISMA_APP_MOBILE_11_IOS_HOME_ICON_PLAYSTORE",
+  "version": "1.0.0",
+  "createdAt": "2026-05-02",
+  "targetRoot": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "goal": "Force PRISMA App iOS home-screen/PWA bookmark icon to use prisma_playstore_icon_512.png instead of prisma-pwa icons.",
+  "writes": [
+    "products/mobile/app/app/layout.tsx",
+    "products/mobile/app/public/manifest.webmanifest",
+    "products/mobile/app/public/prisma-mobile-sw.js",
+    "products/mobile/app/public/icons/prisma_playstore_icon_512.png",
+    "products/mobile/app/public/icons/prisma_playstore_icon_192.png",
+    "products/mobile/app/tools/verify_prisma_app_mobile_11_ios_home_icon_playstore.mjs",
+    "docs/mobile/PRISMA_APP_MOBILE_11_IOS_HOME_ICON_PLAYSTORE.md",
+    "manifests/mobile/INSTALL_MANIFEST_PRISMA_APP_MOBILE_11_IOS_HOME_ICON_PLAYSTORE.json",
+    "INSTALL_MANIFEST_PRISMA_APP_MOBILE_11_IOS_HOME_ICON_PLAYSTORE.json"
+  ],
+  "deletes": [],
+  "validation": [
+    "python installer --dry-run",
+    "python installer --apply in sandbox",
+    "python installer --verify in sandbox",
+    "node products/mobile/app/tools/verify_prisma_app_mobile_11_ios_home_icon_playstore.mjs from mobile app root in sandbox",
+    "python installer --rollback in sandbox"
+  ],
+  "surfaceCoverage": [
+    {
+      "surfaceId": "prisma.mobile.app",
+      "surface": "Mobile",
+      "state": "TOUCHED",
+      "reason": "PWA/iOS icon metadata, manifest icon references, service-worker cache version and icon assets only"
+    },
+    {
+      "surfaceId": "prisma.tablet.pos",
+      "surface": "Tablet",
+      "state": "EXCLUDED",
+      "reason": "No Tablet files touched"
+    },
+    {
+      "surfaceId": "prisma.pc.backoffice",
+      "surface": "PC",
+      "state": "EXCLUDED",
+      "reason": "No PC files touched"
+    },
+    {
+      "surfaceId": "prisma.shared.kernel",
+      "surface": "Shared Kernel",
+      "state": "EXCLUDED",
+      "reason": "No shared-kernel or shared contract files touched"
+    }
+  ]
+}

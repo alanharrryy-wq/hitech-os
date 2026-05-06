@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "cases": [
+    {
+      "name": "offline sign verify",
+      "expected": "signature_valid"
+    },
+    {
+      "name": "tamper rejection",
+      "expected": "signature_mismatch"
+    },
+    {
+      "name": "prod refuses dev material",
+      "expected": "blocked"
+    },
+    {
+      "name": "repo pem scan",
+      "expected": "zero findings"
+    }
+  ]
+}

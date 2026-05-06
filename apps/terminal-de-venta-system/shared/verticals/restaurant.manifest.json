@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0.0",
+  "verticalId": "restaurant",
+  "displayName": "Restaurante / cafeteria",
+  "coreRequired": true,
+  "capabilities": {
+    "required": [
+      "core.sales",
+      "core.payments",
+      "core.ticket",
+      "core.shift",
+      "restaurant.tables"
+    ],
+    "optional": [
+      "restaurant.kitchen_orders",
+      "restaurant.tips",
+      "core.sync"
+    ]
+  },
+  "surfaces": {
+    "tablet": {
+      "enabled": true,
+      "routes": [
+        "Vender",
+        "Mesas",
+        "Comandas",
+        "Cobro",
+        "Ventas de hoy",
+        "Turno",
+        "Pendientes por enviar"
+      ]
+    },
+    "pc": {
+      "enabled": true,
+      "routes": [
+        "Dashboard",
+        "Catalogo",
+        "Inventario",
+        "Auditoria",
+        "Configuracion"
+      ]
+    }
+  },
+  "offline": {
+    "salesAllowed": true,
+    "sensitiveActionsRequireConnection": false
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "catalogVersion": "2026.04.local-mock",
+  "plans": [
+    {
+      "plan": "TABLET_SOLO",
+      "displayName": "Tablet Solo",
+      "includedFeatures": [
+        "pos.sales.complete",
+        "pos.ticket.local",
+        "inventory.local.decrement",
+        "report.today.basic",
+        "export.local.basic",
+        "support.basic"
+      ],
+      "includedPlugins": [],
+      "offlineGracePolicy": {
+        "recommendedDays": 21,
+        "protectLocalSales": true
+      },
+      "notes": "POS standalone."
+    },
+    {
+      "plan": "TABLET_PRO",
+      "displayName": "Tablet Pro",
+      "includedFeatures": [
+        "pos.sales.complete",
+        "pos.ticket.local",
+        "inventory.local.decrement",
+        "report.today.basic",
+        "export.local.basic",
+        "support.basic",
+        "pos.returns.create",
+        "pos.sale.cancel",
+        "shift.open",
+        "shift.close",
+        "inventory.local.adjust",
+        "event.outbox.view",
+        "export.local.advanced",
+        "backup.local.scheduled"
+      ],
+      "includedPlugins": [
+        "promotions.basic"
+      ],
+      "offlineGracePolicy": {
+        "recommendedDays": 21,
+        "protectLocalSales": true
+      },
+      "notes": "POS avanzado local."
+    },
+    {
+      "plan": "PC_BACKOFFICE",
+      "displayName": "PC Backoffice",
+      "includedFeatures": [
+        "catalog.write",
+        "inventory.backoffice.view",
+        "inventory.backoffice.adjust",
+        "purchase.write",
+        "receiving.write",
+        "audit.view",
+        "dashboard.kpis",
+        "sync.ingest",
+        "support.advanced"
+      ],
+      "includedPlugins": [],
+      "offlineGracePolicy": {
+        "recommendedDays": 14,
+        "protectLocalSales": false
+      },
+      "notes": "Gobierno administrativo."
+    },
+    {
+      "plan": "TABLET_PC_MANAGED",
+      "displayName": "Tablet + PC Managed",
+      "includedFeatures": [
+        "pos.sales.complete",
+        "pos.ticket.local",
+        "inventory.local.decrement",
+        "catalog.write",
+        "dashboard.kpis",
+        "sync.ingest",
+        "sync.managed",
+        "sync.conflict.resolve",
+        "catalog.snapshot.publish",
+        "license.remote.refresh",
+        "plugin.remote.activate",
+        "support.remote"
+      ],
+      "includedPlugins": [
+        "promotions.basic",
+        "sync.managed.basic"
+      ],
+      "offlineGracePolicy": {
+        "recommendedDays": 14,
+        "protectLocalSales": true
+      },
+      "notes": "Operacion administrada."
+    }
+  ]
+}

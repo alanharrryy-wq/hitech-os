@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0.0",
+  "package": "PRISMA_LICENSE_SERVER_SIGNING_11",
+  "version": "0.11.0",
+  "commands": [
+    "license-server-signing-config",
+    "license-server-signing-audit",
+    "license-server-signing-smoke",
+    "license-server-sign-license",
+    "license-server-signing-activate",
+    "license-server-signing-refresh",
+    "license-server-signing-verify",
+    "license-server-signing-contract"
+  ],
+  "files": [
+    "tooling/licensing/server11/license_server_signing_11.py",
+    "local-runtime/license-server/signing-config.local.json",
+    "local-runtime/license-keys/dev/dev-signing-secret.local.json"
+  ],
+  "security": {
+    "productionPrivateKeysInRepo": false,
+    "devRuntimeMaterialAllowed": true,
+    "pemPrivateKeyScanRequired": true
+  },
+  "exitCodes": {
+    "0": "ready",
+    "2": "blocked validation",
+    "3": "production signing refused with dev material",
+    "4": "server unavailable",
+    "5": "http request failed"
+  }
+}

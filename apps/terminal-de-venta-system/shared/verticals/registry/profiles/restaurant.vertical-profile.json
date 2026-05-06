@@ -1,0 +1,91 @@
+{
+  "id": "restaurant",
+  "displayName": "Restaurante / cafeteria",
+  "market": "food_service",
+  "status": "available",
+  "priority": "phase_1",
+  "tabletRole": "Operacion rapida del giro desde Tablet sin convertirla en backoffice.",
+  "pcRole": "Gobierno profundo del giro, auditoria, configuracion, compras, reportes y consolidacion.",
+  "capabilities": [
+    "sales.products",
+    "sales.services",
+    "restaurant.tables",
+    "restaurant.open_tabs",
+    "restaurant.kitchen_tickets",
+    "payments.tips",
+    "shift.cash_control",
+    "offline.sales",
+    "sync.outbox"
+  ],
+  "tabletNavigation": [
+    "Vender",
+    "Mesas",
+    "Cuentas abiertas",
+    "Cobro",
+    "Ventas de hoy",
+    "Turno",
+    "Pendientes por enviar"
+  ],
+  "pcNavigation": [
+    "Menu",
+    "Inventario",
+    "Recetas",
+    "Cocina",
+    "Caja",
+    "Auditoria",
+    "Dashboard",
+    "Sincronizacion"
+  ],
+  "tabletBlockedCapabilities": [
+    "recipe.costing.deep",
+    "supplier.management",
+    "purchase_order.approval",
+    "payroll.full"
+  ],
+  "events": [
+    "restaurant.table.opened",
+    "restaurant.kitchen_ticket.sent",
+    "sale.completed",
+    "tip.recorded",
+    "restaurant.table.closed",
+    "sync.event.pending"
+  ],
+  "permissions": [
+    "offline.use",
+    "payment.receive",
+    "payments.use",
+    "pos.sale.complete",
+    "restaurant.use",
+    "sales.use",
+    "shift.use",
+    "sync.use"
+  ],
+  "offlinePolicy": {
+    "mode": "medium",
+    "allowed": [
+      "venta local permitida",
+      "consulta de datos locales",
+      "registro de pendientes por enviar"
+    ],
+    "blocked": [
+      "recipe.costing.deep",
+      "supplier.management",
+      "purchase_order.approval",
+      "payroll.full"
+    ],
+    "cashierMessage": "Puedes seguir operando con datos locales; lo pendiente se enviara cuando haya conexion."
+  },
+  "kpis": [
+    "ventas netas",
+    "numero de tickets",
+    "ticket promedio",
+    "errores de captura",
+    "pendientes por enviar"
+  ],
+  "acceptanceCriteria": [
+    "El cajero entiende la accion principal en menos de 5 segundos.",
+    "Tablet no muestra administracion pesada del vertical.",
+    "Los eventos minimos quedan registrados.",
+    "Los estados offline y pendiente por enviar son claros."
+  ]
+}

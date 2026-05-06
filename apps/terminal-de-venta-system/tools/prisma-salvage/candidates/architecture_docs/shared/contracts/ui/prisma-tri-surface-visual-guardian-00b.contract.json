@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "00B",
+  "package": "PRISMA_TRI_SURFACE_VISUAL_GUARDIAN_00B",
+  "kind": "tri-surface-visual-governance-contract",
+  "canonicalStatement": "Tablet es el POS autónomo de venta. PC es un asset de backoffice y control avanzado. App móvil es un asset de pulso, consulta y alertas. Shared contracts mantienen consistencia sin imponer dependencia runtime. Ningún asset debe convertirse en requisito para que Tablet venda localmente.",
+  "autonomyInvariants": {
+    "tabletSellsStandalone": true,
+    "tabletDoesNotRequirePc": true,
+    "tabletDoesNotRequireMobile": true,
+    "pcIsBackofficeAsset": true,
+    "mobileIsPulseAsset": true,
+    "noAssetRequiredForTabletSale": true,
+    "triSurfaceCoverageDoesNotImplyHierarchy": true
+  },
+  "requiredSurfaces": [
+    {
+      "id": "prisma.tablet.pos",
+      "label": "Tablet POS standalone",
+      "role": "surface primaria de venta local",
+      "required": true,
+      "runtimeDependencyAllowed": false,
+      "paths": [
+        "products/tablet/app/**"
+      ]
+    },
+    {
+      "id": "prisma.pc.backoffice",
+      "label": "PC Backoffice asset",
+      "role": "asset administrativo, control avanzado, inventario, auditoría, dashboard y reconciliación",
+      "required": true,
+      "runtimeDependencyAllowed": false,
+      "paths": [
+        "products/pc/app/**"
+      ],
+      "excludeAsPc": [
+        "products/pc/app/app/prisma-app/**",
+        "products/pc/app/src/lib/prisma-app/**",
+        "products/pc/app/docs/prisma-app/**",
+        "products/pc/app/app/pulso/**",
+        "products/pc/app/src/lib/pulso/**"
+      ]
+    },
+    {
+      "id": "prisma.mobile.app",
+      "label": "App móvil / Pulso asset",
+      "role": "asset companion para pulso, consulta, alertas y seguimiento ejecutivo",
+      "required": true,
+      "runtimeDependencyAllowed": false,
+      "paths": [
+        "products/mobile/app/**"
+      ],
+      "legacyPaths": [
+        "products/pc/app/app/prisma-app/**",
+        "products/pc/app/src/lib/prisma-app/**",
+        "products/pc/app/docs/prisma-app/**",
+        "products/pc/app/app/pulso/**",
+        "products/pc/app/src/lib/pulso/**"
+      ]
+    }
+  ],
+  "allowedStates": [
+    "TOUCHED",
+    "VALIDATED",
+    "EXCLUDED"
+  ],
+  "forbiddenStates": [
+    "OMITTED"
+  ],
+  "sharedVisualPaths": [
+    "products/shared-ui/prisma/**"
+  ],
+  "sharedGovernancePaths": [
+    "shared/contracts/ui/**",
+    "docs/design/**",
+    "docs/qa/**",
+    "tools/prisma/**",
+    "manifests/**"
+  ],
+  "rules": [
+    "Every visual package must declare all required surfaces.",
+    "A surface-specific changed path requires that surface state TOUCHED.",
+    "Shared visual changes require every surface state TOUCHED or VALIDATED.",
+    "EXCLUDED requires concrete reason, evidence, owner, and reevaluation.",
+    "Mobile/App móvil is not PC; products/mobile/app is its canonical product root.",
+    "No manifest may make PC or Mobile a requirement for Tablet local sale."
+  ]
+}

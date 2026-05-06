@@ -1,0 +1,94 @@
+{
+  "version": "0.2.0",
+  "package": "PRISMA_VERTICALS_ARCHITECTURE_00B_VERTICAL_REGISTRY",
+  "defaultVertical": "convenience",
+  "registryRules": [
+    "Un negocio declara vertical principal.",
+    "La navegacion visible sale del vertical activo, capacidades y permisos.",
+    "Las capacidades bloqueadas no se exponen en Tablet.",
+    "Los eventos verticales usan namespace.",
+    "PC gobierna configuracion profunda; Tablet opera caja."
+  ],
+  "verticals": [
+    {
+      "id": "convenience",
+      "displayName": "Tienda de conveniencia",
+      "market": "retail",
+      "status": "available",
+      "priority": "foundation",
+      "profilePath": "shared/verticals/registry/profiles/convenience.vertical-profile.json"
+    },
+    {
+      "id": "restaurant",
+      "displayName": "Restaurante / cafeteria",
+      "market": "food_service",
+      "status": "available",
+      "priority": "phase_1",
+      "profilePath": "shared/verticals/registry/profiles/restaurant.vertical-profile.json"
+    },
+    {
+      "id": "pharmacy",
+      "displayName": "Farmacia",
+      "market": "regulated_retail",
+      "status": "available",
+      "priority": "phase_1",
+      "profilePath": "shared/verticals/registry/profiles/pharmacy.vertical-profile.json"
+    },
+    {
+      "id": "beauty",
+      "displayName": "Estetica / barberia / salon",
+      "market": "services",
+      "status": "available",
+      "priority": "phase_1",
+      "profilePath": "shared/verticals/registry/profiles/beauty.vertical-profile.json"
+    },
+    {
+      "id": "hardware",
+      "displayName": "Ferreteria",
+      "market": "specialized_retail",
+      "status": "available",
+      "priority": "phase_1",
+      "profilePath": "shared/verticals/registry/profiles/hardware.vertical-profile.json"
+    },
+    {
+      "id": "apparel",
+      "displayName": "Ropa / boutique",
+      "market": "retail_variants",
+      "status": "draft",
+      "priority": "phase_2",
+      "profilePath": "shared/verticals/registry/profiles/apparel.vertical-profile.json"
+    },
+    {
+      "id": "repair",
+      "displayName": "Taller / reparaciones",
+      "market": "service_repair",
+      "status": "draft",
+      "priority": "phase_2",
+      "profilePath": "shared/verticals/registry/profiles/repair.vertical-profile.json"
+    },
+    {
+      "id": "field_route",
+      "displayName": "Venta en campo / ruta",
+      "market": "mobile_sales",
+      "status": "draft",
+      "priority": "phase_2",
+      "profilePath": "shared/verticals/registry/profiles/field_route.vertical-profile.json"
+    },
+    {
+      "id": "grocery_scale",
+      "displayName": "Abarrotes con bascula",
+      "market": "retail_weighted",
+      "status": "draft",
+      "priority": "phase_2",
+      "profilePath": "shared/verticals/registry/profiles/grocery_scale.vertical-profile.json"
+    },
+    {
+      "id": "food_truck",
+      "displayName": "Food truck / punto movil de comida",
+      "market": "mobile_food_service",
+      "status": "draft",
+      "priority": "phase_2",
+      "profilePath": "shared/verticals/registry/profiles/food_truck.vertical-profile.json"
+    }
+  ]
+}

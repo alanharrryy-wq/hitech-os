@@ -1,0 +1,16 @@
+{
+  "package": "PRISMA_LICENSE_CANONICAL_OPERATIONS_04",
+  "version": "0.4.0",
+  "adds": [
+    "tooling/licensing/prisma_license_canon_ops.py",
+    "tooling/licensing/mock_license_server.py",
+    "terminal_de_venta_license_canon.cmd",
+    "docs/productization/PRISMA_LICENSE_CANONICAL_OPERATIONS_04.md"
+  ],
+  "commands": [
+    "terminal_de_venta.cmd license-full-check",
+    "terminal_de_venta.cmd license-diagnose",
+    "terminal_de_venta.cmd license-plan-matrix",
+    "terminal_de_venta.cmd license-set-demo TABLET_PC_REQUIRED"
+  ]
+}

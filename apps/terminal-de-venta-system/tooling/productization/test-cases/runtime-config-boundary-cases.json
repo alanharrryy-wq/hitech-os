@@ -1,0 +1,145 @@
+{
+  "package": "PRISMA_RUNTIME_CONFIG_BOUNDARY_01",
+  "cases": [
+    {
+      "id": "RCB01-001",
+      "case": "runtimeRoot apunta al repo",
+      "expected": "bloquear modo cliente",
+      "code": "RUNTIME_ROOT_POINTS_TO_REPO",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-002",
+      "case": "businessId vacio",
+      "expected": "bloquear arranque",
+      "code": "BUSINESS_ID_MISSING",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-003",
+      "case": "deviceId cambia en cada boot",
+      "expected": "advertir y bloquear registro remoto",
+      "code": "DEVICE_ID_UNSTABLE",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-004",
+      "case": "Tablet Solo sin internet",
+      "expected": "permitir venta local",
+      "code": "OFFLINE_ALLOWED",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-005",
+      "case": "Managed sin PC disponible",
+      "expected": "permitir venta Tablet y marcar degraded",
+      "code": "DEGRADED_MANAGED",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-006",
+      "case": "license vencida pero grace vigente",
+      "expected": "permitir funciones base y avisar",
+      "code": "LICENSE_OFFLINE_GRACE",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-007",
+      "case": "license suspendida",
+      "expected": "limitar premium, permitir export y backup",
+      "code": "LICENSE_SUSPENDED",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-008",
+      "case": "DB cliente dentro del repo",
+      "expected": "bloquear verify cliente",
+      "code": "CUSTOMER_DB_IN_REPO",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-009",
+      "case": "logs no escribibles",
+      "expected": "bloquear modo customer",
+      "code": "LOGS_NOT_WRITABLE",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-010",
+      "case": "backupRoot no escribible antes de update",
+      "expected": "bloquear update",
+      "code": "BACKUP_NOT_WRITABLE",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-011",
+      "case": "plugin sin manifest",
+      "expected": "bloquear instalacion plugin",
+      "code": "PLUGIN_MANIFEST_MISSING",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-012",
+      "case": "plugin pide permiso no declarado",
+      "expected": "bloquear activacion",
+      "code": "PLUGIN_PERMISSION_INVALID",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-013",
+      "case": "update sin checksum",
+      "expected": "bloquear update",
+      "code": "UPDATE_CHECKSUM_MISSING",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-014",
+      "case": "update falla verify",
+      "expected": "rollback automatico",
+      "code": "UPDATE_VERIFY_FAILED",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-015",
+      "case": "support bundle con token visible",
+      "expected": "bloquear envio",
+      "code": "DIAGNOSTIC_SECRET_LEAK",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-016",
+      "case": "announcement comercial durante checkout",
+      "expected": "no mostrar modal",
+      "code": "ANNOUNCEMENT_BLOCKED_DURING_CHECKOUT",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-017",
+      "case": "Remote Ops caido",
+      "expected": "continuar local",
+      "code": "REMOTE_OPS_UNAVAILABLE",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-018",
+      "case": "cwd distinto al repo",
+      "expected": "no afectar resolucion",
+      "code": "CWD_IGNORED",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-019",
+      "case": "ProgramData no existe",
+      "expected": "crear en instalacion",
+      "code": "RUNTIME_ROOT_CREATED",
+      "mutatesState": false
+    },
+    {
+      "id": "RCB01-020",
+      "case": "ruta relativa en modo cliente",
+      "expected": "bloquear",
+      "code": "RELATIVE_PATH_NOT_ALLOWED",
+      "mutatesState": false
+    }
+  ]
+}

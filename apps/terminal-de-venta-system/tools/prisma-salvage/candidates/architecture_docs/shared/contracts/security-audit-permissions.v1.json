@@ -1,0 +1,117 @@
+{
+  "contractId": "PRISMA_SECURITY_AUDIT_PERMISSIONS_01",
+  "version": "1.0.0",
+  "sourceOfTruth": "shared/contracts/security-audit-permissions.v1.json",
+  "roles": [
+    "tablet_operator",
+    "tablet_supervisor",
+    "pc_backoffice",
+    "pc_admin"
+  ],
+  "tabletPermissions": [
+    "pos.sale.create",
+    "pos.sale.complete",
+    "pos.ticket.view",
+    "inventory.local.view",
+    "report.today.view",
+    "export.local.create",
+    "pos.sale.cancel",
+    "pos.return.create",
+    "inventory.local.adjust",
+    "shift.open",
+    "shift.close",
+    "event.outbox.view"
+  ],
+  "pcPermissions": [
+    "catalog.write",
+    "price.write",
+    "inventory.adjust.approve",
+    "purchase.write",
+    "receiving.write",
+    "audit.view",
+    "sync.ingest.write",
+    "sync.conflict.resolve",
+    "export.consolidated.create",
+    "user.permission.manage"
+  ],
+  "sensitiveActions": {
+    "tablet": {
+      "pos.sale.complete": {
+        "permission": "pos.sale.complete",
+        "offlineAllowed": true,
+        "auditRequired": true
+      },
+      "export.local.create": {
+        "permission": "export.local.create",
+        "offlineAllowed": true,
+        "auditRequired": true
+      },
+      "inventory.local.adjust": {
+        "permission": "inventory.local.adjust",
+        "offlineAllowed": true,
+        "auditRequired": true
+      },
+      "shift.close": {
+        "permission": "shift.close",
+        "offlineAllowed": true,
+        "auditRequired": true
+      }
+    },
+    "pc": {
+      "catalog.write": {
+        "permission": "catalog.write",
+        "offlineAllowed": false,
+        "auditRequired": true
+      },
+      "inventory.adjust.approve": {
+        "permission": "inventory.adjust.approve",
+        "offlineAllowed": false,
+        "auditRequired": true
+      },
+      "purchase.write": {
+        "permission": "purchase.write",
+        "offlineAllowed": false,
+        "auditRequired": true
+      },
+      "receiving.write": {
+        "permission": "receiving.write",
+        "offlineAllowed": false,
+        "auditRequired": true
+      },
+      "sync.ingest.persist": {
+        "permission": "sync.ingest.write",
+        "offlineAllowed": false,
+        "auditRequired": true
+      },
+      "sync.conflict.resolve": {
+        "permission": "sync.conflict.resolve",
+        "offlineAllowed": false,
+        "auditRequired": true
+      },
+      "export.consolidated.create": {
+        "permission": "export.consolidated.create",
+        "offlineAllowed": false,
+        "auditRequired": true
+      }
+    }
+  },
+  "auditFields": [
+    "actorId",
+    "role",
+    "terminalId",
+    "businessId",
+    "action",
+    "permission",
+    "entityType",
+    "entityId",
+    "before",
+    "after",
+    "createdAt"
+  ],
+  "offlineRestrictions": [
+    "Tablet can complete local sales and local exports offline.",
+    "Tablet offline writes must keep actorId and outbox events.",
+    "PC governance writes require PC context and must not block basic Tablet sales.",
+    "Conflict resolution must be traceable with actorId before changing conflict state."
+  ]
+}

@@ -15,6 +15,8 @@ from cloudflared_helpers import (
     DEFAULT_HOSTNAME,
     DEFAULT_LOG_DIR,
     DEFAULT_ORIGIN_URL,
+    DEFAULT_TEMPLATE_HOSTNAME,
+    DEFAULT_TEMPLATE_ORIGIN_URL,
     DEFAULT_TUNNEL_NAME,
     RunContext,
     TunnelSetupError,
@@ -92,7 +94,10 @@ def default_multi_app_ingress_routes() -> list[IngressRoute]:
     return compose_ingress_routes(
         DEFAULT_HOSTNAME,
         DEFAULT_ORIGIN_URL,
-        [(DEFAULT_FORMS_HOSTNAME, DEFAULT_FORMS_ORIGIN_URL)],
+        [
+            (DEFAULT_FORMS_HOSTNAME, DEFAULT_FORMS_ORIGIN_URL),
+            (DEFAULT_TEMPLATE_HOSTNAME, DEFAULT_TEMPLATE_ORIGIN_URL),
+        ],
     )
 
 
@@ -274,7 +279,10 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--extra-route",
         action="append",
-        default=[f"{DEFAULT_FORMS_HOSTNAME}={DEFAULT_FORMS_ORIGIN_URL}"],
+        default=[
+            f"{DEFAULT_FORMS_HOSTNAME}={DEFAULT_FORMS_ORIGIN_URL}",
+            f"{DEFAULT_TEMPLATE_HOSTNAME}={DEFAULT_TEMPLATE_ORIGIN_URL}",
+        ],
         help="Additional ingress route format: <hostname>=<origin_url>. Can be repeated.",
     )
     parser.add_argument("--config-path", default=str(DEFAULT_CONFIG_PATH))

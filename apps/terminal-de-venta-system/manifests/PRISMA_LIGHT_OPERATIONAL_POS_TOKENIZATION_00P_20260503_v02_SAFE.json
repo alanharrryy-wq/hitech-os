@@ -1,0 +1,73 @@
+{
+  "packageId": "PRISMA_LIGHT_OPERATIONAL_POS_TOKENIZATION_00P_20260503_v02_SAFE",
+  "version": "v02-safe",
+  "date": "20260503",
+  "block": "00P",
+  "presetId": "PRISMA_LIGHT_OPERATIONAL_POS",
+  "targetRootDefault": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "logDirDefault": "F:\\descargasf",
+  "scope": "Tokenize the light/blue PRISMA operational POS reference as a governed Visual OS preset.",
+  "nonDestructive": true,
+  "allowedTargetPrefixes": [
+    "config/prisma-visual-os/presets/",
+    "styles/prisma-visual-os/",
+    "docs/design/",
+    "tools/prisma-visual-os/",
+    "manifests/"
+  ],
+  "forbiddenTargetPrefixes": [
+    "products/tablet/app/components/pos/",
+    "products/tablet/app/components/checkout/",
+    "packages/shared-kernel/",
+    "shared/contracts/",
+    "shared/TWIN_CHAT_SHARED_CONTEXT_6.1.json"
+  ],
+  "targets": [
+    {
+      "source": "payload/config/prisma-visual-os/presets/prisma-light-operational-pos.recipe.00p.json",
+      "target": "config/prisma-visual-os/presets/prisma-light-operational-pos.recipe.00p.json"
+    },
+    {
+      "source": "payload/config/prisma-visual-os/presets/prisma-light-operational-pos.semantic-map.00p.json",
+      "target": "config/prisma-visual-os/presets/prisma-light-operational-pos.semantic-map.00p.json"
+    },
+    {
+      "source": "payload/config/prisma-visual-os/presets/prisma-light-operational-pos.tokens.00p.json",
+      "target": "config/prisma-visual-os/presets/prisma-light-operational-pos.tokens.00p.json"
+    },
+    {
+      "source": "payload/docs/design/PRISMA_LIGHT_OPERATIONAL_POS_ACCEPTANCE_00P.md",
+      "target": "docs/design/PRISMA_LIGHT_OPERATIONAL_POS_ACCEPTANCE_00P.md"
+    },
+    {
+      "source": "payload/docs/design/PRISMA_LIGHT_OPERATIONAL_POS_MIGRATION_00P.md",
+      "target": "docs/design/PRISMA_LIGHT_OPERATIONAL_POS_MIGRATION_00P.md"
+    },
+    {
+      "source": "payload/docs/design/PRISMA_LIGHT_OPERATIONAL_POS_TOKENIZATION_00P.md",
+      "target": "docs/design/PRISMA_LIGHT_OPERATIONAL_POS_TOKENIZATION_00P.md"
+    },
+    {
+      "source": "payload/styles/prisma-visual-os/prisma-light-operational-pos.tokens.00p.css",
+      "target": "styles/prisma-visual-os/prisma-light-operational-pos.tokens.00p.css"
+    },
+    {
+      "source": "payload/tools/prisma-visual-os/verify_prisma_light_operational_pos_tokenization_00p.mjs",
+      "target": "tools/prisma-visual-os/verify_prisma_light_operational_pos_tokenization_00p.mjs"
+    },
+    {
+      "source": "payload/manifests/PRISMA_LIGHT_OPERATIONAL_POS_TOKENIZATION_00P_20260503_v02_SAFE.json",
+      "target": "manifests/PRISMA_LIGHT_OPERATIONAL_POS_TOKENIZATION_00P_20260503_v02_SAFE.json"
+    }
+  ],
+  "payloadSha256": {
+    "config/prisma-visual-os/presets/prisma-light-operational-pos.recipe.00p.json": "f3ee48f8e29313ce6fbdd84c0fbaaf54edccae508e8371f51be2a5c4a1490a63",
+    "config/prisma-visual-os/presets/prisma-light-operational-pos.semantic-map.00p.json": "f8d48bb29a153f0079a5579bcc366cd847215f620326d5ffbcd7ad5ba28c8be4",
+    "config/prisma-visual-os/presets/prisma-light-operational-pos.tokens.00p.json": "8182848bfa0caf3e3a972312a1db3a878847451b15bd207344ba34fe21859e2e",
+    "docs/design/PRISMA_LIGHT_OPERATIONAL_POS_ACCEPTANCE_00P.md": "55666927d13b836317aac97801ca9d4b646b784dbacef3ea9909a2015637e8ca",
+    "docs/design/PRISMA_LIGHT_OPERATIONAL_POS_MIGRATION_00P.md": "4948bf6d42ff64ba7a03c826c7a21156917a0208e34a1c9289bf28d37bd7f74d",
+    "docs/design/PRISMA_LIGHT_OPERATIONAL_POS_TOKENIZATION_00P.md": "c3cce21e4a13414197e4fcf421d566b608a21b1852e5a4455b16fc91b07c317d",
+    "styles/prisma-visual-os/prisma-light-operational-pos.tokens.00p.css": "d07d7f4727be6909f6f34e08950af15b1ad6c8e56af4efcfa62127de81489c62",
+    "tools/prisma-visual-os/verify_prisma_light_operational_pos_tokenization_00p.mjs": "7b830c91ff3be400056ee59986e0c55472cdce0e9da48d0ed648a923a3685316"
+  }
+}

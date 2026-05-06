@@ -1,0 +1,123 @@
+{
+  "package": "PRISMA_VERTICALS_ARCHITECTURE_00C_VERTICAL_DATA_MODELS",
+  "version": "0.3.0",
+  "generatedAt": "2026-04-29T00:00:00-06:00",
+  "description": "Core vertical data model architecture, contracts, extension declarations, ownership and validators.",
+  "dependsOn": [
+    "PRISMA_VERTICALS_ARCHITECTURE_00A_CORE_CONTRACTS",
+    "PRISMA_VERTICALS_ARCHITECTURE_00B_VERTICAL_REGISTRY"
+  ],
+  "installs": [
+    {
+      "path": "docs/architecture/PRISMA_VERTICALS_00C_CORE_DATA_BOUNDARIES.md",
+      "bytes": 1217,
+      "sha256": "0189cbeedb44e5b25b038a944eb0ccacc1b5bc60f2a57de0ba9782da4ad8a4fd"
+    },
+    {
+      "path": "docs/architecture/PRISMA_VERTICALS_00C_EXTENSION_MODEL_STANDARD.md",
+      "bytes": 906,
+      "sha256": "f2d2b9dd91b447045581de97b8340171d56ddfdc86537f908581c987e2a83e41"
+    },
+    {
+      "path": "docs/architecture/PRISMA_VERTICALS_00C_VERTICAL_ENTITY_MATRIX.md",
+      "bytes": 2679,
+      "sha256": "8f08e9d1a9e06787f3c02ec8d82fc66abe25a65ff6db4621951deb5e6d89385f"
+    },
+    {
+      "path": "docs/architecture/PRISMA_VERTICALS_ARCHITECTURE_00C_VERTICAL_DATA_MODELS.md",
+      "bytes": 46765,
+      "sha256": "e0a6baf4d77f48b15fadd0b035a0d23a48f8008eb073d993ed7bb9cdec5c1760"
+    },
+    {
+      "path": "docs/qa/PRISMA_VERTICALS_00C_QA_MATRIX.md",
+      "bytes": 1037,
+      "sha256": "039feee5780bcc4984305786b3c514ef1eebfe32388baa19aba6c3f9ef8daccb"
+    },
+    {
+      "path": "manifests/PRISMA_VERTICALS_ARCHITECTURE_00C.manifest.json",
+      "bytes": 415,
+      "sha256": "SELF_REFERENTIAL_SKIPPED",
+      "selfReferentialHashPolicy": "skip_sha256_compare"
+    },
+    {
+      "path": "shared/contracts/verticals/data-model.contract.json",
+      "bytes": 2923,
+      "sha256": "acf0778967b55dd5d11ebbaabfdac4173065423731929f191126caa7dcbc3a50"
+    },
+    {
+      "path": "shared/contracts/verticals/vertical-data-extension.schema.json",
+      "bytes": 2300,
+      "sha256": "c6af8f23a3a765b341ed9f99b16dd7ef31f34352034b50aadd5a2eb1bd5ad8b6"
+    },
+    {
+      "path": "shared/verticals/data-models/core-data-model.v0.json",
+      "bytes": 4375,
+      "sha256": "e8aaa0f2251be626530b01bbec5deeac22cd02850f2399ae9dbefd278276ef27"
+    },
+    {
+      "path": "shared/verticals/data-models/entity-ownership.v0.json",
+      "bytes": 3815,
+      "sha256": "4a015c24edaf464839d4787930425467d328f8e56fa19aa8963138729ca7076c"
+    },
+    {
+      "path": "shared/verticals/data-models/extensions/apparel.data-extension.json",
+      "bytes": 6637,
+      "sha256": "ad93197b55dd1e675c2726d6b683a297dcb01389847a8c963414fab6dbc690de"
+    },
+    {
+      "path": "shared/verticals/data-models/extensions/beauty.data-extension.json",
+      "bytes": 6711,
+      "sha256": "dff8fd1e74f91490e807c43f0698007d708933e2805379df4e548a0134052585"
+    },
+    {
+      "path": "shared/verticals/data-models/extensions/convenience.data-extension.json",
+      "bytes": 5633,
+      "sha256": "a01498a1ec38d9bf26193f01ee5cce0eca175feb2ad8f9d247f4b6fa86214bc0"
+    },
+    {
+      "path": "shared/verticals/data-models/extensions/field_route.data-extension.json",
+      "bytes": 6883,
+      "sha256": "b954f280aced99adc74cfef15a28d78a0198e11e76c35fdd9c55d5667bff3858"
+    },
+    {
+      "path": "shared/verticals/data-models/extensions/food_truck.data-extension.json",
+      "bytes": 6883,
+      "sha256": "c98f32241ded00a142ebfd185b3c94af2893844271a556efa339f9ffc4f9f4f1"
+    },
+    {
+      "path": "shared/verticals/data-models/extensions/grocery_scale.data-extension.json",
+      "bytes": 7015,
+      "sha256": "f7ab82b05ea1f30b9a4eff7e298b38ef25ae640468ae824cbd22d334b7fc041e"
+    },
+    {
+      "path": "shared/verticals/data-models/extensions/hardware.data-extension.json",
+      "bytes": 6833,
+      "sha256": "ba87ccc44c9ed33a41ebcadf618b4503c9a5d5e34fdea18c557544c658480a2a"
+    },
+    {
+      "path": "shared/verticals/data-models/extensions/pharmacy.data-extension.json",
+      "bytes": 6936,
+      "sha256": "af30a99b87864ddef2a4446bb4842fc9192bc2451516cab218303856409b0303"
+    },
+    {
+      "path": "shared/verticals/data-models/extensions/repair.data-extension.json",
+      "bytes": 6744,
+      "sha256": "8772f9f759fbec2c1cac372a2f08508830a33080d3a35edb33ffd46556386f44"
+    },
+    {
+      "path": "shared/verticals/data-models/extensions/restaurant.data-extension.json",
+      "bytes": 6831,
+      "sha256": "ded3e06209c5218fca384c5beee917731125153d1dc4022c2631fa06d617f0e0"
+    },
+    {
+      "path": "shared/verticals/data-models/migration-boundaries.v0.json",
+      "bytes": 693,
+      "sha256": "98974c487c6b10c0f55304d0e8ee653efc577a2d9d8f408d950a63f93ac08da8"
+    },
+    {
+      "path": "tools/verticals/validate_vertical_data_models_00c.py",
+      "bytes": 3608,
+      "sha256": "d7efc4302b2c1ddd76b3f4283ee7c433811f27453c1d31af3f3aea0c4d880916"
+    }
+  ]
+}

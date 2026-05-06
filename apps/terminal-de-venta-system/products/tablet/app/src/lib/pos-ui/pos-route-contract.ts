@@ -1,0 +1,1 @@
+export const POS_ROUTE_CONTRACT={pos:{path:"/pos",role:"armar_ticket",next:"/checkout"},checkout:{path:"/checkout",role:"confirmar_cobro"},catalog:{path:"/catalog",role:"catalogo_local"}} as const;export function canNavigateToCheckout(lineCount:number){return lineCount>0}

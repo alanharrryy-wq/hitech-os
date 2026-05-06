@@ -1,0 +1,215 @@
+{
+  "catalogVersion": "2026.04",
+  "events": [
+    {
+      "topic": "license.loaded",
+      "severity": "info",
+      "eventCode": "LIC-001-INFO",
+      "requiresCustomerVisibleNotice": false,
+      "description": "Evento license.loaded con severidad info. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "license.loaded",
+      "severity": "warning",
+      "eventCode": "LIC-001-WARNING",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento license.loaded con severidad warning. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "license.loaded",
+      "severity": "critical",
+      "eventCode": "LIC-001-CRITICAL",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento license.loaded con severidad critical. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "license.invalid",
+      "severity": "info",
+      "eventCode": "LIC-002-INFO",
+      "requiresCustomerVisibleNotice": false,
+      "description": "Evento license.invalid con severidad info. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "license.invalid",
+      "severity": "warning",
+      "eventCode": "LIC-002-WARNING",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento license.invalid con severidad warning. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "license.invalid",
+      "severity": "critical",
+      "eventCode": "LIC-002-CRITICAL",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento license.invalid con severidad critical. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "license.refreshed",
+      "severity": "info",
+      "eventCode": "LIC-003-INFO",
+      "requiresCustomerVisibleNotice": false,
+      "description": "Evento license.refreshed con severidad info. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "license.refreshed",
+      "severity": "warning",
+      "eventCode": "LIC-003-WARNING",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento license.refreshed con severidad warning. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "license.refreshed",
+      "severity": "critical",
+      "eventCode": "LIC-003-CRITICAL",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento license.refreshed con severidad critical. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "license.status_changed",
+      "severity": "info",
+      "eventCode": "LIC-004-INFO",
+      "requiresCustomerVisibleNotice": false,
+      "description": "Evento license.status_changed con severidad info. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "license.status_changed",
+      "severity": "warning",
+      "eventCode": "LIC-004-WARNING",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento license.status_changed con severidad warning. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "license.status_changed",
+      "severity": "critical",
+      "eventCode": "LIC-004-CRITICAL",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento license.status_changed con severidad critical. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "license.grace_started",
+      "severity": "info",
+      "eventCode": "LIC-005-INFO",
+      "requiresCustomerVisibleNotice": false,
+      "description": "Evento license.grace_started con severidad info. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "license.grace_started",
+      "severity": "warning",
+      "eventCode": "LIC-005-WARNING",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento license.grace_started con severidad warning. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "license.grace_started",
+      "severity": "critical",
+      "eventCode": "LIC-005-CRITICAL",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento license.grace_started con severidad critical. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "license.grace_expired",
+      "severity": "info",
+      "eventCode": "LIC-006-INFO",
+      "requiresCustomerVisibleNotice": false,
+      "description": "Evento license.grace_expired con severidad info. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "license.grace_expired",
+      "severity": "warning",
+      "eventCode": "LIC-006-WARNING",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento license.grace_expired con severidad warning. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "license.grace_expired",
+      "severity": "critical",
+      "eventCode": "LIC-006-CRITICAL",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento license.grace_expired con severidad critical. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "feature.denied",
+      "severity": "info",
+      "eventCode": "LIC-007-INFO",
+      "requiresCustomerVisibleNotice": false,
+      "description": "Evento feature.denied con severidad info. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "feature.denied",
+      "severity": "warning",
+      "eventCode": "LIC-007-WARNING",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento feature.denied con severidad warning. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "feature.denied",
+      "severity": "critical",
+      "eventCode": "LIC-007-CRITICAL",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento feature.denied con severidad critical. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "plugin.entitlement_changed",
+      "severity": "info",
+      "eventCode": "LIC-008-INFO",
+      "requiresCustomerVisibleNotice": false,
+      "description": "Evento plugin.entitlement_changed con severidad info. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "plugin.entitlement_changed",
+      "severity": "warning",
+      "eventCode": "LIC-008-WARNING",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento plugin.entitlement_changed con severidad warning. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "plugin.entitlement_changed",
+      "severity": "critical",
+      "eventCode": "LIC-008-CRITICAL",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento plugin.entitlement_changed con severidad critical. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "plan.changed",
+      "severity": "info",
+      "eventCode": "LIC-009-INFO",
+      "requiresCustomerVisibleNotice": false,
+      "description": "Evento plan.changed con severidad info. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "plan.changed",
+      "severity": "warning",
+      "eventCode": "LIC-009-WARNING",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento plan.changed con severidad warning. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "plan.changed",
+      "severity": "critical",
+      "eventCode": "LIC-009-CRITICAL",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento plan.changed con severidad critical. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "device.license_mismatch",
+      "severity": "info",
+      "eventCode": "LIC-010-INFO",
+      "requiresCustomerVisibleNotice": false,
+      "description": "Evento device.license_mismatch con severidad info. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "device.license_mismatch",
+      "severity": "warning",
+      "eventCode": "LIC-010-WARNING",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento device.license_mismatch con severidad warning. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    },
+    {
+      "topic": "device.license_mismatch",
+      "severity": "critical",
+      "eventCode": "LIC-010-CRITICAL",
+      "requiresCustomerVisibleNotice": true,
+      "description": "Evento device.license_mismatch con severidad critical. Debe quedar disponible para soporte y diagnostico sin filtrar secretos."
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "package": "PRISMA_VERTICALS_ARCHITECTURE_00A_CORE_CONTRACTS",
+  "version": "0.1.0",
+  "createdAt": "2026-04-29T12:13:26.004324Z",
+  "type": "architecture_contracts",
+  "targetRoot": "F:/repos/hitech-os/apps/terminal-de-venta-system",
+  "files": [
+    "tools/verticals/validate_vertical_contracts_00a.py",
+    "shared/verticals/convenience.manifest.json",
+    "shared/verticals/restaurant.manifest.json",
+    "shared/verticals/pharmacy.manifest.json",
+    "shared/verticals/beauty.manifest.json",
+    "shared/verticals/hardware.manifest.json",
+    "shared/verticals/apparel.manifest.json",
+    "shared/verticals/repair.manifest.json",
+    "shared/verticals/field_route.manifest.json",
+    "shared/verticals/vertical-registry.seed.json",
+    "shared/contracts/verticals/capabilities.contract.json",
+    "shared/contracts/verticals/vertical-manifest.schema.json",
+    "docs/architecture/PRISMA_VERTICALS_ARCHITECTURE_00A_CORE_CONTRACTS.md",
+    "docs/qa/PRISMA_VERTICALS_00A_QA_MATRIX.md"
+  ],
+  "installPolicy": {
+    "dryRun": true,
+    "apply": true,
+    "verify": true,
+    "rollback": true,
+    "backup": true,
+    "log": "F:/descargasf/PRISMA_VERTICALS_00A_YYMMDD_HHMM.log"
+  }
+}

@@ -1,0 +1,8 @@
+/* PRISMA PC Suppliers UX v08 bridge for package validation.
+   This file intentionally lives beside the verifier that imports ./suppliers-ux-v08.css.
+   Runtime CSS remains owned by app/suppliers-ux-v08.css when present. */
+.reason-callout-v07 summary { font-weight: 700; }
+.product-line-v07 { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.75rem; }
+.trust-checklist-v07 { display: grid; gap: 0.5rem; }
+.calendar-timeline-v07 { display: grid; gap: 0.5rem; }
+.audit-roadmap-v07 { display: grid; gap: 0.5rem; }

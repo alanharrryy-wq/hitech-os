@@ -1,0 +1,567 @@
+{
+  "packageId": "PRISMA_REMOTE_OPS_AI_READY_08_09_FULL_DOCS",
+  "remoteCases": [
+    {
+      "id": "REMOTE-CASE-001",
+      "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "validate",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-002",
+      "command": "RUN_ARBITRARY_COMMAND",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-003",
+      "command": "DELETE_DATABASE",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-004",
+      "command": "RETRY_SYNC",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "validate",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-005",
+      "command": "OPEN_INBOUND_PORT",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-006",
+      "command": "CHECK_HEALTH",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "validate",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-007",
+      "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "validate",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-008",
+      "command": "RUN_ARBITRARY_COMMAND",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-009",
+      "command": "DELETE_DATABASE",
+      "expired": true,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-010",
+      "command": "RETRY_SYNC",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "validate",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-011",
+      "command": "OPEN_INBOUND_PORT",
+      "expired": false,
+      "wrongDevice": true,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-012",
+      "command": "CHECK_HEALTH",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "validate",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-013",
+      "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "validate",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-014",
+      "command": "RUN_ARBITRARY_COMMAND",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-015",
+      "command": "DELETE_DATABASE",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-016",
+      "command": "RETRY_SYNC",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "validate",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-017",
+      "command": "OPEN_INBOUND_PORT",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-018",
+      "command": "CHECK_HEALTH",
+      "expired": true,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-019",
+      "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "validate",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-020",
+      "command": "RUN_ARBITRARY_COMMAND",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-021",
+      "command": "DELETE_DATABASE",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-022",
+      "command": "RETRY_SYNC",
+      "expired": false,
+      "wrongDevice": true,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-023",
+      "command": "OPEN_INBOUND_PORT",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-024",
+      "command": "CHECK_HEALTH",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "validate",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-025",
+      "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "validate",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-026",
+      "command": "RUN_ARBITRARY_COMMAND",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-027",
+      "command": "DELETE_DATABASE",
+      "expired": true,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-028",
+      "command": "RETRY_SYNC",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "validate",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-029",
+      "command": "OPEN_INBOUND_PORT",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-030",
+      "command": "CHECK_HEALTH",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "validate",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-031",
+      "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "validate",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-032",
+      "command": "RUN_ARBITRARY_COMMAND",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-033",
+      "command": "DELETE_DATABASE",
+      "expired": false,
+      "wrongDevice": true,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-034",
+      "command": "RETRY_SYNC",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "validate",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-035",
+      "command": "OPEN_INBOUND_PORT",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-036",
+      "command": "CHECK_HEALTH",
+      "expired": true,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-037",
+      "command": "GENERATE_DIAGNOSTIC_BUNDLE",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "validate",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-038",
+      "command": "RUN_ARBITRARY_COMMAND",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-039",
+      "command": "DELETE_DATABASE",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "reject",
+      "rule": "allowlist + expiry + device scope"
+    },
+    {
+      "id": "REMOTE-CASE-040",
+      "command": "RETRY_SYNC",
+      "expired": false,
+      "wrongDevice": false,
+      "expected": "validate",
+      "rule": "allowlist + expiry + device scope"
+    }
+  ],
+  "aiCases": [
+    {
+      "id": "AI-REDACT-CASE-001",
+      "field": "password",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-002",
+      "field": "connectionString",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-003",
+      "field": "dbDump",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-004",
+      "field": "paymentCard",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-005",
+      "field": "normalLogLine",
+      "expected": "allow",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-006",
+      "field": "syncStatus",
+      "expected": "allow",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-007",
+      "field": "outboxCount",
+      "expected": "allow",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-008",
+      "field": "token",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-009",
+      "field": "password",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-010",
+      "field": "connectionString",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-011",
+      "field": "dbDump",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-012",
+      "field": "paymentCard",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-013",
+      "field": "normalLogLine",
+      "expected": "allow",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-014",
+      "field": "syncStatus",
+      "expected": "allow",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-015",
+      "field": "outboxCount",
+      "expected": "allow",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-016",
+      "field": "token",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-017",
+      "field": "password",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-018",
+      "field": "connectionString",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-019",
+      "field": "dbDump",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-020",
+      "field": "paymentCard",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-021",
+      "field": "normalLogLine",
+      "expected": "allow",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-022",
+      "field": "syncStatus",
+      "expected": "allow",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-023",
+      "field": "outboxCount",
+      "expected": "allow",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-024",
+      "field": "token",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-025",
+      "field": "password",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-026",
+      "field": "connectionString",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-027",
+      "field": "dbDump",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-028",
+      "field": "paymentCard",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-029",
+      "field": "normalLogLine",
+      "expected": "allow",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-030",
+      "field": "syncStatus",
+      "expected": "allow",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-031",
+      "field": "outboxCount",
+      "expected": "allow",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-032",
+      "field": "token",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-033",
+      "field": "password",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-034",
+      "field": "connectionString",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-035",
+      "field": "dbDump",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-036",
+      "field": "paymentCard",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-037",
+      "field": "normalLogLine",
+      "expected": "allow",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-038",
+      "field": "syncStatus",
+      "expected": "allow",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-039",
+      "field": "outboxCount",
+      "expected": "allow",
+      "rule": "redaction before AI context"
+    },
+    {
+      "id": "AI-REDACT-CASE-040",
+      "field": "token",
+      "expected": "redact",
+      "rule": "redaction before AI context"
+    }
+  ]
+}

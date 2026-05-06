@@ -1,0 +1,183 @@
+{
+  "verticalId": "pharmacy",
+  "label": "Farmacia",
+  "version": "0.3.0",
+  "principle": "Control sensible por lote, caducidad, receta y restriccion; no convertir cada producto en expediente medico.",
+  "extensions": [
+    {
+      "extensionId": "pharmacy.Lot",
+      "entityName": "Lot",
+      "extensionType": "inventory_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_cache",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.pharmacy.Lot.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "Product"
+      ],
+      "requiredEvents": [
+        "vertical.pharmacy.Lot.created",
+        "vertical.pharmacy.Lot.updated"
+      ],
+      "fixtures": [
+        "pharmacy_Lot_happy_path.json",
+        "pharmacy_Lot_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "appointmentTime",
+        "repairLaborHours",
+        "colorSizeGrid"
+      ]
+    },
+    {
+      "extensionId": "pharmacy.ExpirationPolicy",
+      "entityName": "ExpirationPolicy",
+      "extensionType": "compliance_extension",
+      "ownerSurface": "pc_backoffice",
+      "storagePolicy": "local_cache",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.pharmacy.ExpirationPolicy.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "Product"
+      ],
+      "requiredEvents": [
+        "vertical.pharmacy.ExpirationPolicy.created",
+        "vertical.pharmacy.ExpirationPolicy.updated"
+      ],
+      "fixtures": [
+        "pharmacy_ExpirationPolicy_happy_path.json",
+        "pharmacy_ExpirationPolicy_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "appointmentTime",
+        "repairLaborHours",
+        "colorSizeGrid"
+      ]
+    },
+    {
+      "extensionId": "pharmacy.PrescriptionReference",
+      "entityName": "PrescriptionReference",
+      "extensionType": "compliance_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_cache",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.pharmacy.PrescriptionReference.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "Product"
+      ],
+      "requiredEvents": [
+        "vertical.pharmacy.PrescriptionReference.created",
+        "vertical.pharmacy.PrescriptionReference.updated"
+      ],
+      "fixtures": [
+        "pharmacy_PrescriptionReference_happy_path.json",
+        "pharmacy_PrescriptionReference_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "appointmentTime",
+        "repairLaborHours",
+        "colorSizeGrid"
+      ]
+    },
+    {
+      "extensionId": "pharmacy.ControlledProductFlag",
+      "entityName": "ControlledProductFlag",
+      "extensionType": "compliance_extension",
+      "ownerSurface": "pc_backoffice",
+      "storagePolicy": "local_cache",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.pharmacy.ControlledProductFlag.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "Product"
+      ],
+      "requiredEvents": [
+        "vertical.pharmacy.ControlledProductFlag.created",
+        "vertical.pharmacy.ControlledProductFlag.updated"
+      ],
+      "fixtures": [
+        "pharmacy_ControlledProductFlag_happy_path.json",
+        "pharmacy_ControlledProductFlag_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "appointmentTime",
+        "repairLaborHours",
+        "colorSizeGrid"
+      ]
+    },
+    {
+      "extensionId": "pharmacy.SubstitutionRule",
+      "entityName": "SubstitutionRule",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.pharmacy.SubstitutionRule.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.pharmacy.SubstitutionRule.created",
+        "vertical.pharmacy.SubstitutionRule.updated"
+      ],
+      "fixtures": [
+        "pharmacy_SubstitutionRule_happy_path.json",
+        "pharmacy_SubstitutionRule_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "tableNumber",
+        "appointmentTime",
+        "repairLaborHours",
+        "colorSizeGrid"
+      ]
+    }
+  ]
+}

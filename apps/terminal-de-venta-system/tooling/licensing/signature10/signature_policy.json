@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1.0.0",
+  "name": "PRISMA_LICENSE_PRODUCTION_SIGNATURE_10_POLICY",
+  "privateKeyRule": "Production private keys must never be committed, packaged, logged, or copied into repo-local runtime folders.",
+  "canonicalization": "json-sort-keys-separators-v1",
+  "environments": {
+    "development": {
+      "allowUnsigned": true,
+      "allowedAlgorithms": [
+        "HS256_DEV_ONLY",
+        "RS256_PROD"
+      ],
+      "requiredEnv": [
+        "PRISMA_LICENSE_ENV=development"
+      ],
+      "notes": "Development may accept unsigned fixtures only when PRISMA_LICENSE_ALLOW_UNSIGNED_DEV=1. Never use this in production."
+    },
+    "staging": {
+      "allowUnsigned": false,
+      "allowedAlgorithms": [
+        "RS256_STAGING",
+        "RS256_PROD"
+      ],
+      "requiredEnv": [
+        "PRISMA_LICENSE_ENV=staging",
+        "PRISMA_LICENSE_PUBLIC_KEY_REGISTRY"
+      ]
+    },
+    "production": {
+      "allowUnsigned": false,
+      "allowedAlgorithms": [
+        "RS256_PROD"
+      ],
+      "requiredEnv": [
+        "PRISMA_LICENSE_ENV=production",
+        "PRISMA_LICENSE_PUBLIC_KEY_REGISTRY"
+      ],
+      "rejectAlgorithms": [
+        "none",
+        "HS256_DEV_ONLY",
+        "UNSIGNED_DEV_ONLY"
+      ]
+    }
+  },
+  "requiredEnvelopeFields": [
+    "schemaVersion",
+    "payload",
+    "signature.alg",
+    "signature.keyId",
+    "signature.value"
+  ],
+  "keyStatusesAllowedForVerification": [
+    "active",
+    "next"
+  ],
+  "rotation": {
+    "recommendedCadenceDays": 180,
+    "overlapDays": 30,
+    "stages": [
+      "generate-next-public-key",
+      "publish-registry",
+      "start-signing-with-next",
+      "observe",
+      "revoke-old"
+    ]
+  }
+}

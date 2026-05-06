@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA license.tablet-pro.active.schema.json",
+  "description": "Audit-link schema generated for PRISMA license-local examples. It exists to make the example-to-schema relationship explicit for productization checks. The broader license contract remains governed by the package 02 license documentation and schemas.",
+  "x-prismaPackage": "PRISMA_FINALIZE_LICENSE_SCHEMA_LINKS_00_09",
+  "x-generatedFromExample": true,
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "licenseId",
+    "customerId",
+    "businessId",
+    "deviceScope",
+    "plan",
+    "status",
+    "features",
+    "plugins",
+    "validUntil",
+    "offlineGraceUntil",
+    "issuedAt",
+    "lastRemoteCheckAt",
+    "signature",
+    "publicKeyVersion",
+    "notes"
+  ],
+  "properties": {
+    "licenseId": {
+      "type": "string"
+    },
+    "customerId": {
+      "type": "string"
+    },
+    "businessId": {
+      "type": "string"
+    },
+    "deviceScope": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "mode",
+        "allowedDeviceIds"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string"
+        },
+        "allowedDeviceIds": {
+          "type": "array",
+          "items": {}
+        }
+      }
+    },
+    "plan": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "plugins": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "validUntil": {
+      "type": "string"
+    },
+    "offlineGraceUntil": {
+      "type": "string"
+    },
+    "issuedAt": {
+      "type": "string"
+    },
+    "lastRemoteCheckAt": {
+      "type": "string"
+    },
+    "signature": {
+      "type": "string"
+    },
+    "publicKeyVersion": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

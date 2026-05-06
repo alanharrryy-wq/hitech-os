@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Announcement",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "announcementId",
+    "title",
+    "body",
+    "severity",
+    "showFrom",
+    "dismissible"
+  ],
+  "properties": {
+    "announcementId": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "body": {
+      "type": "string"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "info",
+        "notice",
+        "warning",
+        "critical",
+        "commercial",
+        "training",
+        "release"
+      ]
+    },
+    "targetPlans": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "targetRoles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "targetDevices": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "targetVersions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "showFrom": {
+      "type": "string"
+    },
+    "showUntil": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "showOnce": {
+      "type": "boolean",
+      "default": false
+    },
+    "dismissible": {
+      "type": "boolean"
+    },
+    "ctaType": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "view_details",
+        "open_support",
+        "request_activation",
+        "open_release_notes",
+        "dismiss",
+        null
+      ]
+    },
+    "ctaTarget": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

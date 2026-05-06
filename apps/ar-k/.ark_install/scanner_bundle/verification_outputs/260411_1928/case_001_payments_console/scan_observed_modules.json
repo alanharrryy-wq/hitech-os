@@ -1,0 +1,252 @@
+[
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "exports": [],
+    "imports": [],
+    "kind": "markdown",
+    "non_product_class": "hidden",
+    "path": ".shadow_steady_lantern_001.md",
+    "routes": [],
+    "surface_kind": "module"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "error": null,
+    "exports": [],
+    "imports": [
+      "__future__"
+    ],
+    "kind": "python",
+    "non_product_class": null,
+    "parse_ok": true,
+    "path": "app/payments_console/routes.py",
+    "routes": []
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "error": null,
+    "exports": [
+      "PaymentsConsoleService",
+      "load_payments_console_snapshot"
+    ],
+    "imports": [
+      "__future__",
+      "app.payments_console.worker",
+      "dataclasses",
+      "json"
+    ],
+    "kind": "python",
+    "non_product_class": null,
+    "parse_ok": true,
+    "path": "app/payments_console/service.py",
+    "routes": []
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "error": null,
+    "exports": [
+      "PaymentsConsoleWorker",
+      "build_payments_console_packet"
+    ],
+    "imports": [
+      "__future__",
+      "hashlib",
+      "math"
+    ],
+    "kind": "python",
+    "non_product_class": null,
+    "parse_ok": true,
+    "path": "app/payments_console/worker.py",
+    "routes": []
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "exports": [],
+    "imports": [],
+    "kind": "markdown",
+    "non_product_class": "docs",
+    "path": "docs/payments_console_architecture.md",
+    "routes": [],
+    "surface_kind": "module"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "error": null,
+    "exports": [],
+    "imports": [],
+    "kind": "python",
+    "non_product_class": "examples",
+    "parse_ok": true,
+    "path": "examples/payments_console_example.py",
+    "routes": []
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "error": null,
+    "exports": [],
+    "imports": [],
+    "kind": "python",
+    "non_product_class": "fixtures",
+    "parse_ok": true,
+    "path": "fixtures/payments_console_seed.py",
+    "routes": []
+  },
+  {
+    "boundaries": [
+      "public_registry_boundary"
+    ],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [],
+    "kind": "json",
+    "non_product_class": null,
+    "path": "public/modules.config.json",
+    "routes": [],
+    "surface_kind": "module_config"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "error": null,
+    "exports": [
+      "main"
+    ],
+    "imports": [
+      "__future__"
+    ],
+    "kind": "python",
+    "non_product_class": "scripts",
+    "parse_ok": true,
+    "path": "scripts/rebuild_payments_console.py",
+    "routes": []
+  },
+  {
+    "boundaries": [
+      "desktop_bridge_boundary"
+    ],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/bridges/PaymentsConsoleBridge.ts",
+    "routes": [],
+    "surface_kind": "desktop_bridge"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "react"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/components/PaymentsConsolePanel.tsx",
+    "routes": [],
+    "surface_kind": "component"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "react"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/components/PaymentsConsoleStats.tsx",
+    "routes": [],
+    "surface_kind": "component"
+  },
+  {
+    "boundaries": [
+      "runtime_entry"
+    ],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "./bridges/PaymentsConsoleBridge",
+      "./pages/PaymentsConsoleScreen",
+      "./routes/register",
+      "react",
+      "react-dom/client",
+      "react-router-dom"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/main.tsx",
+    "routes": [],
+    "surface_kind": "entrypoint"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "../components/PaymentsConsolePanel",
+      "../components/PaymentsConsoleStats",
+      "react"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/pages/PaymentsConsoleScreen.tsx",
+    "routes": [],
+    "surface_kind": "screen"
+  },
+  {
+    "boundaries": [
+      "route_registration"
+    ],
+    "canonical_source": true,
+    "exports": [],
+    "imports": [
+      "../pages/PaymentsConsoleScreen"
+    ],
+    "kind": "typescript",
+    "non_product_class": null,
+    "path": "src/routes/register.ts",
+    "routes": [
+      "/payments-console/steady-001",
+      "/payments-console/steady-001/details",
+      "/payments-console/steady-001/history"
+    ],
+    "surface_kind": "route_surface"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "exports": [],
+    "imports": [
+      "vitest"
+    ],
+    "kind": "typescript",
+    "non_product_class": "tests",
+    "path": "tests/payments_console.spec.ts",
+    "routes": [],
+    "surface_kind": "module"
+  },
+  {
+    "boundaries": [],
+    "canonical_source": false,
+    "error": null,
+    "exports": [
+      "verify_payments_console_policy"
+    ],
+    "imports": [
+      "__future__"
+    ],
+    "kind": "python",
+    "non_product_class": "tooling",
+    "parse_ok": true,
+    "path": "tools/enforce_payments_console_policy.py",
+    "routes": []
+  }
+]

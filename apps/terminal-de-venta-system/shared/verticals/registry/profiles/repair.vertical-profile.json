@@ -1,0 +1,88 @@
+{
+  "id": "repair",
+  "displayName": "Taller / reparaciones",
+  "market": "service_repair",
+  "status": "draft",
+  "priority": "phase_2",
+  "tabletRole": "Operacion rapida del giro desde Tablet sin convertirla en backoffice.",
+  "pcRole": "Gobierno profundo del giro, auditoria, configuracion, compras, reportes y consolidacion.",
+  "capabilities": [
+    "sales.services",
+    "sales.products",
+    "repairs.work_orders",
+    "repairs.deposits",
+    "customers.basic",
+    "inventory.stock",
+    "offline.sales.restricted",
+    "sync.outbox"
+  ],
+  "tabletNavigation": [
+    "Cobrar",
+    "Ordenes",
+    "Refacciones",
+    "Ventas de hoy",
+    "Turno",
+    "Pendientes por enviar"
+  ],
+  "pcNavigation": [
+    "Ordenes",
+    "Clientes",
+    "Refacciones",
+    "Garantias",
+    "Inventario",
+    "Auditoria",
+    "Dashboard"
+  ],
+  "tabletBlockedCapabilities": [
+    "diagnostic_templates.full",
+    "warranty_policy.deep",
+    "supplier.management",
+    "technician_payroll.full"
+  ],
+  "events": [
+    "repair.work_order.opened",
+    "repair.deposit.received",
+    "repair.completed",
+    "sale.completed",
+    "repair.part.used",
+    "sync.event.pending"
+  ],
+  "permissions": [
+    "customers.use",
+    "inventory.use",
+    "offline.use",
+    "payment.receive",
+    "pos.sale.complete",
+    "repairs.use",
+    "sales.use",
+    "sync.use"
+  ],
+  "offlinePolicy": {
+    "mode": "restricted",
+    "allowed": [
+      "venta local permitida",
+      "consulta de datos locales",
+      "registro de pendientes por enviar"
+    ],
+    "blocked": [
+      "diagnostic_templates.full",
+      "warranty_policy.deep",
+      "supplier.management",
+      "technician_payroll.full"
+    ],
+    "cashierMessage": "Puedes seguir operando con datos locales; lo pendiente se enviara cuando haya conexion."
+  },
+  "kpis": [
+    "ventas netas",
+    "numero de tickets",
+    "ticket promedio",
+    "errores de captura",
+    "pendientes por enviar"
+  ],
+  "acceptanceCriteria": [
+    "El cajero entiende la accion principal en menos de 5 segundos.",
+    "Tablet no muestra administracion pesada del vertical.",
+    "Los eventos minimos quedan registrados.",
+    "Los estados offline y pendiente por enviar son claros."
+  ]
+}

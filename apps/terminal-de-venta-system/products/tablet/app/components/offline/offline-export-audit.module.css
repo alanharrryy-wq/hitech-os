@@ -1,0 +1,153 @@
+.page {
+  display: grid;
+  gap: 18px;
+  color: #f8fafc;
+}
+
+.hero,
+.exportCard,
+.panel,
+.kpis article,
+.alert {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 18px;
+}
+
+.hero,
+.exportCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.hero span,
+.exportCard span {
+  color: #facc15;
+  font-size: 0.76rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hero p,
+.exportCard p,
+.row span,
+.empty,
+.muted {
+  color: rgba(248, 250, 252, 0.7);
+}
+
+.hero button,
+.actions a {
+  border: 1px solid rgba(250, 204, 21, 0.35);
+  border-radius: 14px;
+  background: rgba(250, 204, 21, 0.12);
+  color: #facc15;
+  cursor: pointer;
+  font-weight: 900;
+  padding: 12px 14px;
+  text-decoration: none;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.kpis article {
+  display: grid;
+  gap: 6px;
+}
+
+.kpis span {
+  color: rgba(248, 250, 252, 0.62);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.kpis strong {
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.panel {
+  display: grid;
+  gap: 12px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 0;
+}
+
+.row:last-child {
+  border-bottom: 0;
+}
+
+.row div {
+  display: grid;
+  gap: 4px;
+}
+
+.row em {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  font-style: normal;
+  font-weight: 900;
+  padding: 6px 10px;
+}
+
+.ok { color: #86efac; }
+.warn { color: #facc15; }
+.danger { color: #fca5a5; }
+.neutral { color: #e5e7eb; }
+
+.alert {
+  border-color: rgba(248, 113, 113, 0.45);
+  color: #fecaca;
+}
+
+.diagnostics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.diagnostics span {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 8px 10px;
+}
+
+@media (max-width: 900px) {
+  .hero,
+  .exportCard,
+  .columns,
+  .kpis {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    grid-template-columns: 1fr;
+  }
+}

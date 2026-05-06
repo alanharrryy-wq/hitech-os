@@ -15,6 +15,8 @@ from cloudflared_helpers import (
     DEFAULT_LOG_DIR,
     DEFAULT_ORIGIN_PORT,
     DEFAULT_ORIGIN_URL,
+    DEFAULT_TEMPLATE_HOSTNAME,
+    DEFAULT_TEMPLATE_ORIGIN_URL,
     DEFAULT_TUNNEL_NAME,
     RunContext,
     TunnelSetupError,
@@ -290,13 +292,19 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--extra-route",
         action="append",
-        default=[f"{DEFAULT_FORMS_HOSTNAME}={DEFAULT_FORMS_ORIGIN_URL}"],
+        default=[
+            f"{DEFAULT_FORMS_HOSTNAME}={DEFAULT_FORMS_ORIGIN_URL}",
+            f"{DEFAULT_TEMPLATE_HOSTNAME}={DEFAULT_TEMPLATE_ORIGIN_URL}",
+        ],
         help="Additional route format: <hostname>=<origin_url>. Can be repeated.",
     )
     parser.add_argument(
         "--extra-public-url",
         action="append",
-        default=[f"{DEFAULT_FORMS_HOSTNAME}=https://{DEFAULT_FORMS_HOSTNAME}"],
+        default=[
+            f"{DEFAULT_FORMS_HOSTNAME}=https://{DEFAULT_FORMS_HOSTNAME}",
+            f"{DEFAULT_TEMPLATE_HOSTNAME}=https://{DEFAULT_TEMPLATE_HOSTNAME}",
+        ],
         help="Additional public URL format: <hostname>=<public_url>. Can be repeated.",
     )
     parser.add_argument("--config-path", default=str(DEFAULT_CONFIG_PATH))

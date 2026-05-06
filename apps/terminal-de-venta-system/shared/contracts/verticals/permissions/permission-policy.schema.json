@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.verticals.permission-policy.v0",
+  "type": "object",
+  "required": [
+    "verticalId",
+    "version",
+    "permissions",
+    "roleMatrix",
+    "sensitivePermissions"
+  ],
+  "properties": {
+    "verticalId": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer"
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "roleMatrix": {
+      "type": "object"
+    },
+    "sensitivePermissions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

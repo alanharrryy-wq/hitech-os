@@ -1,0 +1,28 @@
+{
+  "package": "PRISMA_SHARED_VISUAL_TRIAL_01H_SHARED_CSS",
+  "version": "01H",
+  "createdAt": "2026-05-02T07:05:44Z",
+  "intent": "Shared visual CSS trial aligned to PRISMA dark glass/gold reference, without changing layout or app logic.",
+  "rootExpected": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "touchPolicy": "Only the three shared UI CSS files are installed. No TSX, route, local CSS, data, package or layout files are touched.",
+  "files": [
+    {
+      "path": "products/shared-ui/prisma/tokens/prisma-theme.css",
+      "sha256": "9784f09922407b8bdf8d51972b6d947e18a9bd7be11fe96608078172ab49b21d",
+      "bytes": 26871,
+      "operation": "replace-or-create-with-backup"
+    },
+    {
+      "path": "products/shared-ui/prisma/components/prisma-components.css",
+      "sha256": "9c076663db08c858ff93ac512f04a7483c415e9afe8b63907c456dda2d96dffc",
+      "bytes": 23729,
+      "operation": "replace-or-create-with-backup"
+    },
+    {
+      "path": "products/shared-ui/prisma/effects/prisma-reference-effects.css",
+      "sha256": "2accbe2d1a6aa0c672ab1d4919fd9f8a3382f2a1f35cf486fc00431c159c697d",
+      "bytes": 4637,
+      "operation": "replace-or-create-with-backup"
+    }
+  ]
+}

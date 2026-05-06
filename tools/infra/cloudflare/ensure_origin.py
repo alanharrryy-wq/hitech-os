@@ -313,6 +313,30 @@ def ensure_forms_origin(
     )
 
 
+def ensure_template_origin(
+    ctx: RunContext,
+    *,
+    repo_root: Path,
+    origin_url: str,
+    state_path: Path,
+    runtime_log_path: Path,
+    wait_seconds: int = 90,
+    launch_cooldown_seconds: int = 120,
+) -> dict[str, Any]:
+    return ensure_next_origin(
+        ctx,
+        repo_root=repo_root,
+        app_relative_path="apps/external_interaction_template",
+        app_display_name="ExternalInteractionTemplate",
+        app_build_command="pnpm -C apps/external_interaction_template build",
+        origin_url=origin_url,
+        state_path=state_path,
+        runtime_log_path=runtime_log_path,
+        wait_seconds=wait_seconds,
+        launch_cooldown_seconds=launch_cooldown_seconds,
+    )
+
+
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Ensure Keystone origin is running and reachable.")
     parser.add_argument("--repo-root", default=str(DEFAULT_REPO_ROOT))

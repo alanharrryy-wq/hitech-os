@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Diagnostic Bundle Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bundleId",
+    "businessId",
+    "deviceId",
+    "level",
+    "createdAt",
+    "includes",
+    "excludes"
+  ],
+  "properties": {
+    "bundleId": {
+      "type": "string"
+    },
+    "businessId": {
+      "type": "string"
+    },
+    "deviceId": {
+      "type": "string"
+    },
+    "level": {
+      "type": "string",
+      "enum": [
+        "basic",
+        "standard",
+        "deep"
+      ]
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "includes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "excludes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "consent": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "checksums": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  }
+}

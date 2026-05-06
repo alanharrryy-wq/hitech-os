@@ -1,0 +1,1489 @@
+# PRISMA Tablet - Matriz Comercial y Base de Construccion
+
+**Version:** 1.0.0
+**Estado:** base de decision para construir codigo
+**Archivo sugerido en repo:** `docs/product/PRISMA_TABLET_COMERCIAL_ELIGIBILITY_BASE.me`
+**Uso:** definir cuando vender Tablet sola, Tablet Pro o Tablet + PC Backoffice obligatorio
+**Idioma visible objetivo:** es-MX
+**Regla madre:** Tablet siempre debe poder vender; PC no debe ser muleta tecnica para cobrar, sino capa de control cuando el negocio lo exige.
+
+---
+
+## 0. Lectura rapida para no hacer cochinero
+
+Este documento define la estrategia comercial y tecnica para PRISMA Tablet y PC.
+
+La decision central es:
+
+> **Tablet debe ser autonomo para venta. PC debe ser obligatorio solo como paquete comercial y operativo cuando el negocio necesita control avanzado.**
+
+Eso significa:
+
+- Tablet **no debe depender tecnicamente de PC** para cobrar.
+- Tablet **siempre debe poder operar venta local**, incluso sin red o sin PC disponible.
+- PC **si puede ser obligatorio comercialmente** para ciertos negocios por auditoria, inventario sensible, multi-sucursal, compras, reportes o control de empleados.
+- Cuando se venda Tablet + PC, la Tablet sigue siendo resiliente: si PC cae, la Tablet no deja de vender; solo restringe acciones sensibles y encola eventos.
+
+Dicho en cristiano de banqueta: la caja no puede dejar de cobrar porque el gerente anda reiniciando la PC. Pero tampoco vas a dejar que una cadena de 8 tiendas opere con pura tablet suelta como si fuera libreta de fiado con bateria.
+
+---
+
+## 1. Objetivo del documento
+
+Este archivo debe servir como base para:
+
+1. definir paquetes comerciales;
+2. decidir que negocios pueden comprar Tablet sola;
+3. decidir que negocios deben comprar Tablet + PC;
+4. traducir esa decision a modulos, permisos, eventos, pantallas y gates de producto;
+5. evitar que el codigo nazca ambiguo;
+6. evitar que PC se vuelva dependencia obligatoria de runtime para vender;
+7. mantener el contrato twin PC <-> Tablet sin matar la venta independiente de Tablet.
+
+Este documento no es una pagina de marketing. Es una base de construccion. Si despues el codigo pregunta "que modo soy?", la respuesta debe salir de aqui.
+
+---
+
+## 2. Decision canonica
+
+### 2.1 Decision principal
+
+PRISMA debe soportar tres paquetes de producto:
+
+| Paquete | Nombre canonico | Dependencia comercial de PC | Dependencia tecnica de PC para vender | Tipo de cliente |
+|---|---|---:|---:|---|
+| Tablet Solo | `TABLET_SOLO` | No | No | negocio chico, una caja, bajo riesgo |
+| Tablet Pro | `TABLET_PRO` | No obligatoria | No | negocio chico serio, mas control local |
+| Tablet + PC Backoffice | `TABLET_PC_REQUIRED` | Si | No para venta local | negocio mediano, multi-sucursal, inventario sensible o auditoria |
+
+La frase importante es esta:
+
+> **En ningun paquete PC debe ser requisito tecnico para cerrar una venta local.**
+
+Si el negocio compro PC, Tablet debe sincronizar y obedecer reglas superiores cuando PC este disponible. Pero si no hay PC o no hay red, Tablet debe seguir vendiendo dentro de las reglas permitidas.
+
+### 2.2 Decision de runtime
+
+Separar paquete comercial de modo tecnico.
+
+| Concepto | Valores sugeridos | Para que sirve |
+|---|---|---|
+| Paquete comercial | `TABLET_SOLO`, `TABLET_PRO`, `TABLET_PC_REQUIRED` | define venta, licenciamiento y alcance funcional |
+| Modo operativo | `standalone`, `managed`, `degraded_managed` | define como corre la Tablet hoy |
+| Estado de conexion | `online`, `offline`, `sync_pending`, `sync_conflict` | define sincronizacion y UI |
+| Perfil de riesgo | `low`, `medium`, `high`, `regulated` | define restricciones y permisos |
+
+Ejemplo:
+
+- Una tienda chica con Tablet Solo corre en `standalone`.
+- Una farmacia con Tablet + PC corre normalmente en `managed`.
+- Si esa farmacia pierde conexion con PC, corre en `degraded_managed`: puede vender, pero no puede hacer ajustes sensibles sin permiso, motivo y evento pendiente.
+
+---
+
+## 3. Principios no negociables
+
+### 3.1 Tablet primero vende
+
+Tablet debe poder ejecutar el ciclo minimo:
+
+1. abrir venta;
+2. buscar o escanear producto;
+3. agregar producto a ticket;
+4. calcular total;
+5. registrar pago;
+6. cerrar ticket;
+7. descontar inventario local si aplica;
+8. registrar evento;
+9. emitir comprobante o resumen;
+10. dejar datos listos para reporte, exportacion o sync.
+
+Si no puede hacer eso sin PC, no es POS autonomo. Es control remoto caro.
+
+### 3.2 PC gobierna cuando existe
+
+PC debe agregar:
+
+- auditoria;
+- compras;
+- recepcion;
+- reabasto;
+- reportes ejecutivos;
+- multi-sucursal;
+- consolidacion de cajas;
+- control de permisos;
+- politicas de precios;
+- conciliacion;
+- analisis de merma;
+- revision de excepciones.
+
+PC no debe agregar "permiso para cobrar" como dependencia dura. Eso seria como ponerle candado al mostrador y darle la llave al router.
+
+### 3.3 Obligatorio ambos no significa bloqueo total
+
+Cuando este documento diga que un negocio debe comprar Tablet + PC, significa:
+
+- PC es obligatorio para el paquete recomendado o permitido;
+- PC es obligatorio para configuracion avanzada y control;
+- PC es obligatorio para auditoria y consolidacion;
+- PC no es obligatorio para que Tablet cierre una venta local ya autorizada.
+
+### 3.4 Offline no es libertinaje
+
+Offline debe permitir continuidad, no anarquia.
+
+En offline se permite vender bajo reglas. No se debe permitir cualquier cambio sensible como si nada:
+
+- cambiar precios criticos;
+- borrar tickets;
+- eliminar movimientos;
+- hacer devoluciones sin motivo;
+- ajustar inventario sin permiso;
+- modificar catalogo maestro en negocios administrados;
+- cerrar conflictos sin revision.
+
+Offline debe dejar rastro. Si no deja rastro, no fue offline first; fue "ahi luego vemos", la madre de todos los incendios.
+
+---
+
+## 4. Definiciones de producto
+
+## 4.1 Tablet Solo (`TABLET_SOLO`)
+
+### Proposito
+
+Vender un POS autonomo, rapido y facil de adoptar para negocios pequenos que necesitan cobrar, controlar catalogo basico e inventario simple sin instalar una PC administrativa.
+
+### Cliente ideal
+
+- una tienda;
+- una caja;
+- pocos productos o catalogo manejable;
+- pocos empleados;
+- dueno presente o supervision directa;
+- inventario de bajo o medio riesgo;
+- reportes diarios suficientes;
+- compras informales o simples;
+- necesidad de empezar rapido.
+
+### Debe incluir
+
+| Area | Alcance minimo |
+|---|---|
+| Venta | ticket, carrito, cantidades, descuentos simples si se habilitan |
+| Catalogo | alta/edicion basica, SKU, nombre, precio, barcode opcional |
+| Inventario local | stock actual, descuento por venta, ajuste simple con motivo |
+| Turno | apertura, cierre, totales, usuario/caja |
+| Reporte diario | ventas, tickets, devoluciones, top productos basico |
+| Exportacion | ventas, catalogo, movimientos |
+| Respaldo | backup local/exportable |
+| Offline | operacion local completa |
+| Auditoria minima | quien hizo que, cuando y en que dispositivo |
+
+### No debe incluir por defecto
+
+- multi-sucursal;
+- compras formales;
+- recepcion avanzada;
+- roles complejos;
+- conciliacion entre cajas;
+- analitica pesada;
+- politicas centralizadas;
+- dashboard ejecutivo profundo;
+- reglas avanzadas de reabasto.
+
+### Riesgo comercial
+
+Si Tablet Solo se infla demasiado, mata el valor de PC. Si queda demasiado limitada, no se vende. La frontera correcta es: **vender bien y controlar lo basico, pero no administrar una empresa completa.**
+
+---
+
+## 4.2 Tablet Pro (`TABLET_PRO`)
+
+### Proposito
+
+Dar una version standalone mas fuerte para negocios pequenos que no necesitan PC completa, pero si requieren mas control, permisos y reportes.
+
+### Cliente ideal
+
+- una tienda;
+- una o dos cajas;
+- varios empleados;
+- inventario algo sensible;
+- dueno no siempre presente;
+- necesita reportes mas claros;
+- requiere permisos por usuario;
+- todavia no necesita backoffice completo.
+
+### Debe incluir adicional a Tablet Solo
+
+| Area | Alcance Pro |
+|---|---|
+| Usuarios | roles basicos: dueno, encargado, cajero |
+| Permisos | devolucion, descuento, ajuste, cambio de precio |
+| Reportes | ventas por usuario, turno, metodo de pago, producto |
+| Inventario | alertas de stock bajo, conteo rapido, historial de movimientos |
+| Exportacion | filtros por fecha, usuario, producto |
+| Auditoria | bitacora local mas visible |
+| Seguridad | bloqueo de acciones sensibles |
+| Configuracion | politicas locales de descuento/devolucion |
+
+### No debe intentar ser PC
+
+Tablet Pro no debe absorber compras, recepcion, reabasto multi-proveedor y dashboard ejecutivo pesado. Si hace eso, se convierte en PC chiquita, incomoda y con pantallita de cocina.
+
+---
+
+## 4.3 Tablet + PC Backoffice (`TABLET_PC_REQUIRED`)
+
+### Proposito
+
+Vender sistema completo para negocios donde operar solo con Tablet seria riesgoso, insuficiente o comercialmente pobre.
+
+### Cliente ideal
+
+- varias sucursales;
+- varias cajas;
+- muchos empleados;
+- inventario caro, regulado o sensible;
+- compras y recepcion formales;
+- dueno o gerente necesita reportes consolidados;
+- existe riesgo importante de merma, fraude o diferencias;
+- se requiere auditoria seria.
+
+### Debe incluir
+
+| Area | PC debe gobernar |
+|---|---|
+| Catalogo maestro | productos, barcodes, precios, categorias, activos/inactivos |
+| Inventario | existencias por ubicacion, movimientos, ajustes, conteos |
+| Compras | ordenes, proveedores, recepcion, diferencias |
+| Reabasto | senales, stock minimo, sugerencias, alertas |
+| Auditoria | quien hizo que, cuando, donde, desde que dispositivo |
+| Usuarios | roles, permisos, supervision, bloqueo |
+| Dashboard | KPIs ejecutivos y operativos |
+| Sync | outbox, reconciliacion, conflictos, latencia |
+| Multi-sucursal | consolidacion y comparativos |
+
+### Tablet dentro de este paquete
+
+Tablet debe enfocarse en:
+
+- venta rapida;
+- devoluciones controladas;
+- turno;
+- escaneo;
+- consulta de stock relevante;
+- eventos locales;
+- cola de sincronizacion;
+- UI clara de estado sync;
+- operacion offline restringida.
+
+---
+
+## 5. Matriz de elegibilidad comercial
+
+## 5.1 Regla general
+
+Usar dos mecanismos:
+
+1. **gatillos duros**, que obligan Tablet + PC;
+2. **puntaje de complejidad**, que recomienda paquete.
+
+Los gatillos duros ganan sobre el puntaje. Si hay gatillo duro, no se vende Tablet Solo aunque el cliente jure por su abuelita que "lo controla en una libreta".
+
+---
+
+## 5.2 Gatillos duros para vender Tablet + PC obligatorio
+
+Si se cumple cualquiera de estos puntos, recomendar o exigir `TABLET_PC_REQUIRED`.
+
+| Gatillo | Por que obliga PC | Riesgo si se vende Tablet sola |
+|---|---|---|
+| 2 o mas sucursales | requiere consolidacion | datos aislados, inventario falso |
+| 3 o mas cajas activas | requiere conciliacion | cortes inconsistentes |
+| inventario caro | cada ajuste duele | perdida invisible |
+| producto regulado o sensible | requiere trazabilidad | riesgo legal/operativo |
+| compras formales frecuentes | requiere recepcion/control | compras contra inventario sin amarre |
+| empleados con permisos distintos | requiere roles/auditoria | devoluciones y ajustes sin control |
+| dueno no opera en tienda | requiere supervision remota | decisiones a ciegas |
+| necesidad de reportes consolidados | requiere backend administrativo | KPIs incompletos |
+| auditoria interna obligatoria | requiere historico fuerte | eventos dispersos |
+| alta merma historica | requiere investigacion | fuga de dinero normalizada |
+| facturacion/contabilidad integrada requerida | requiere control central | doble captura y errores |
+
+---
+
+## 5.3 Puntaje de complejidad
+
+Cuando no exista gatillo duro, calcular puntaje.
+
+| Criterio | 0 puntos | 1 punto | 2 puntos |
+|---|---|---|---|
+| Numero de tiendas | 1 | 1 con operacion compleja | 2 o mas |
+| Numero de cajas | 1 | 2 | 3 o mas |
+| Empleados | 1-2 | 3-7 | 8 o mas |
+| Inventario | bajo riesgo | medio riesgo | alto valor/sensible |
+| Catalogo | menor a 500 SKUs | 500-3000 SKUs | mas de 3000 SKUs |
+| Compras | informales | proveedores recurrentes | ordenes/recepcion formal |
+| Reportes | reporte diario | reportes por turno/usuario | reportes consolidados |
+| Permisos | dueno opera | encargado/cajeros | roles multiples |
+| Merma | baja | media | alta o desconocida |
+| Offline | poco critico | frecuente | critico con auditoria |
+
+### Interpretacion
+
+| Puntaje | Paquete recomendado | Lectura |
+|---:|---|---|
+| 0-4 | `TABLET_SOLO` | negocio simple, baja friccion |
+| 5-9 | `TABLET_PRO` | negocio pequeno pero ya necesita control |
+| 10+ | `TABLET_PC_REQUIRED` | ya hay complejidad operativa seria |
+
+Nota: si un criterio cae en zona de gatillo duro, no usar esta tabla como excusa para bajar paquete. El puntaje es termometro; los gatillos son alarma de incendio.
+
+---
+
+## 6. Segmentos de negocio
+
+## 6.1 Negocios donde Tablet Solo es buena venta
+
+| Negocio | Paquete | Motivo |
+|---|---|---|
+| tiendita de una caja | Tablet Solo | venta y corte diario bastan |
+| puesto fijo pequeno | Tablet Solo | catalogo corto, operacion directa |
+| bazar o pop-up | Tablet Solo | movilidad y rapidez importan mas |
+| food truck | Tablet Solo | operacion independiente, inventario acotado |
+| cafeteria pequena | Tablet Solo | tickets rapidos, control basico |
+| barberia con venta de productos | Tablet Solo | ventas accesorias, inventario pequeno |
+| estetica pequena | Tablet Solo | productos + servicios simples |
+| consultorio con venta menor | Tablet Solo | cobro simple, pocos SKUs |
+| tienda artesanal | Tablet Solo | productos propios, bajo volumen |
+| negocio nuevo probando POS | Tablet Solo | adopcion sin friccion |
+
+### Condicion
+
+Tablet Solo funciona si el dueno puede contestar con la Tablet:
+
+- cuanto vendi hoy;
+- cuantos tickets hice;
+- que productos se vendieron mas;
+- que stock basico queda;
+- quien hizo el corte;
+- que movimientos se hicieron.
+
+---
+
+## 6.2 Negocios donde Tablet Pro conviene mas
+
+| Negocio | Paquete | Motivo |
+|---|---|---|
+| minisuper pequeno de una sucursal | Tablet Pro | mas SKUs y empleados |
+| cafeteria con varios turnos | Tablet Pro | control por cajero/turno |
+| tienda de ropa chica | Tablet Pro | variantes, devoluciones, descuentos |
+| tienda de accesorios/celulares pequena | Tablet Pro | inventario mas sensible |
+| papeleria mediana | Tablet Pro | catalogo mas amplio |
+| ferreteria pequena | Tablet Pro | busqueda y stock importan |
+| abarrotes con encargado | Tablet Pro | dueno no siempre cobra |
+| negocio con promociones frecuentes | Tablet Pro | requiere permisos y reglas |
+
+### Condicion
+
+Tablet Pro funciona si todavia no hay multi-sucursal ni compras formales pesadas, pero ya se necesita:
+
+- permisos;
+- reportes por usuario;
+- control de devoluciones;
+- historial de ajustes;
+- stock bajo;
+- exportacion filtrada;
+- cierre de turno serio.
+
+---
+
+## 6.3 Negocios donde ambos deben venderse si o si
+
+| Negocio | Paquete obligatorio | Motivo fuerte |
+|---|---|---|
+| cadena de tiendas de conveniencia | Tablet + PC | multi-sucursal, inventario, KPIs |
+| farmacia | Tablet + PC | inventario sensible, trazabilidad, lotes/caducidad potencial |
+| licoreria grande | Tablet + PC | inventario sensible, control y auditoria |
+| tienda de electronica | Tablet + PC | alto valor por SKU |
+| celulares y accesorios caros | Tablet + PC | riesgo de perdida y fraude |
+| refaccionaria mediana | Tablet + PC | catalogo amplio, stock critico |
+| ferreteria mediana/grande | Tablet + PC | SKUs numerosos, compras, reabasto |
+| distribuidora | Tablet + PC | compras, recepcion, pedidos, inventario |
+| restaurante con varias cajas | Tablet + PC | turnos, cortes, inventario, usuarios |
+| franquicia | Tablet + PC | estandarizacion y control central |
+| negocio con almacen | Tablet + PC | ubicaciones, recepcion, traspasos |
+| negocio con varias rutas | Tablet + PC | consolidacion operativa |
+| tienda con auditoria interna | Tablet + PC | trazabilidad obligatoria |
+| negocio con merma alta | Tablet + PC | investigacion y excepciones |
+
+### Regla practica
+
+Si el negocio pregunta:
+
+> "Como veo todas mis tiendas, compras, empleados, inventario y perdidas desde un solo lugar?"
+
+La respuesta no es Tablet Solo. La respuesta es Tablet + PC. Si le vendes solo Tablet, no estas siendo flexible; estas dejando una bomba con moño.
+
+---
+
+## 7. Implicaciones para arquitectura
+
+## 7.1 Separar dominio de venta de dominio de administracion
+
+Tablet debe tener dominio propio de POS:
+
+- `sales`
+- `checkout`
+- `tickets`
+- `payments`
+- `shifts`
+- `returns`
+- `local-inventory`
+- `offline-outbox`
+- `sync-status`
+
+PC debe tener dominio de backoffice:
+
+- `catalog-master`
+- `stock-control`
+- `purchasing`
+- `receiving`
+- `replenishment`
+- `audit`
+- `reports`
+- `users-admin`
+- `sync-admin`
+- `kpi-dashboard`
+
+Compartido debe vivir en kernel/contratos:
+
+- eventos canonicos;
+- tipos base;
+- permisos canonicos;
+- reglas de compatibilidad;
+- contratos de sync;
+- vocabulario visible aprobado cuando aplique.
+
+---
+
+## 7.2 La Tablet nunca debe importar modulos PC para vender
+
+Regla tecnica:
+
+> El flujo de venta Tablet no debe depender de modulos PC, rutas PC, repositorios PC ni servicios PC-only.
+
+Puede consumir contratos compartidos, pero no depender de implementacion PC.
+
+Permitido:
+
+- tipos compartidos;
+- eventos compartidos;
+- contratos de sync;
+- validadores de payload;
+- glosario comun.
+
+No permitido:
+
+- llamar repositorios administrativos PC para cerrar venta;
+- bloquear checkout por falta de PC;
+- requerir dashboard PC para calcular ticket;
+- requerir compras/recepcion para descontar stock local;
+- mezclar UI de backoffice en flujo POS.
+
+---
+
+## 7.3 PC no debe duplicar checkout
+
+PC puede consultar ventas, auditar y reportar. No debe convertirse en otra caja salvo que exista un producto futuro separado.
+
+PC debe ver:
+
+- tickets;
+- ventas;
+- devoluciones;
+- cortes;
+- eventos;
+- diferencias;
+- stock;
+- KPIs.
+
+PC no debe robar foco a Tablet en:
+
+- operacion touch;
+- escaneo rapido;
+- cobro en mostrador;
+- armado de ticket;
+- experiencia de cajero.
+
+---
+
+## 8. Modos tecnicos obligatorios
+
+## 8.1 `standalone`
+
+### Aplica a
+
+- Tablet Solo;
+- Tablet Pro;
+- demos;
+- negocios sin PC.
+
+### Comportamiento
+
+- datos locales como fuente primaria;
+- exportacion manual disponible;
+- respaldo local obligatorio;
+- reportes locales;
+- permisos locales;
+- no espera servidor PC para vender.
+
+### Debe mostrar
+
+- estado local;
+- ultima copia de seguridad;
+- usuario activo;
+- turno activo;
+- ventas del dia;
+- alertas basicas.
+
+---
+
+## 8.2 `managed`
+
+### Aplica a
+
+- Tablet + PC con conexion correcta.
+
+### Comportamiento
+
+- PC gobierna catalogo maestro y politicas;
+- Tablet ejecuta ventas;
+- Tablet recibe configuracion;
+- Tablet envia eventos;
+- PC consolida y audita;
+- conflictos se resuelven segun regla.
+
+### Debe mostrar
+
+- conexion activa;
+- ultima sincronizacion;
+- eventos pendientes;
+- politica vigente;
+- sucursal/caja vinculada.
+
+---
+
+## 8.3 `degraded_managed`
+
+### Aplica a
+
+- Tablet + PC cuando no hay red, servidor o sync confiable.
+
+### Comportamiento
+
+- Tablet sigue vendiendo;
+- eventos quedan en outbox;
+- acciones sensibles se bloquean o piden permiso local fuerte;
+- cambios de catalogo maestro se restringen;
+- devoluciones y ajustes dejan motivo obligatorio;
+- conflictos se marcan para PC.
+
+### Acciones permitidas
+
+| Accion | Permitida | Condicion |
+|---|---:|---|
+| vender producto activo ya sincronizado | Si | registrar evento |
+| cerrar ticket | Si | folio local temporal si aplica |
+| abrir/cerrar turno | Si | evento pendiente |
+| devolucion simple | Si/Limitada | motivo y permiso |
+| ajuste de stock | Limitada | permiso, motivo, auditoria |
+| crear producto nuevo | Limitada/No | segun politica |
+| cambiar precio | Limitada/No | segun politica |
+| borrar ticket | No | cancelar/anular con evento, no borrar |
+
+---
+
+## 9. Gates de capacidades
+
+El producto debe definirse por capacidades, no por ifs regados como confeti maldito.
+
+## 9.1 Capacidades base
+
+| Capability | Solo | Pro | PC Required |
+|---|---:|---:|---:|
+| `canSellOffline` | Si | Si | Si |
+| `canManageLocalCatalog` | Si | Si | Limitado si managed |
+| `canEditMasterCatalog` | Si | Si | Solo PC/admin |
+| `canCloseShift` | Si | Si | Si |
+| `canExportData` | Si | Si | Si |
+| `canUseRolePermissions` | Basico | Si | Si, centralizado |
+| `canDoAdvancedPurchasing` | No | No | Si en PC |
+| `canDoReceiving` | No | No | Si en PC |
+| `canSeeExecutiveDashboard` | No | Parcial | Si en PC |
+| `canManageMultipleStores` | No | No | Si |
+| `canResolveSyncConflicts` | No | Parcial | Si en PC |
+| `canAuditAllUsers` | Minimo | Local | Completo en PC |
+| `canConfigureGlobalPolicies` | No | No | Si en PC |
+
+---
+
+## 9.2 Politicas de bloqueo
+
+| Accion sensible | Tablet Solo | Tablet Pro | Tablet + PC |
+|---|---|---|---|
+| descuento | permitido si configurado | permiso requerido | politica PC |
+| devolucion | motivo recomendado | permiso + motivo | permiso + motivo + sync |
+| cancelacion | motivo obligatorio | permiso + motivo | permiso + evento auditable |
+| ajuste inventario | motivo obligatorio | permiso + motivo | preferente PC; Tablet limitado |
+| cambio precio | permitido local | permiso | PC gobierna precio maestro |
+| borrar movimiento | prohibido | prohibido | prohibido |
+| editar ticket cerrado | prohibido | prohibido | prohibido |
+
+Regla: **no borrar; compensar con evento**. Borrar datos operativos es como barrer vidrio bajo el tapete: igual te corta, nomas mas tarde.
+
+---
+
+## 10. Eventos canonicos sugeridos
+
+## 10.1 Eventos Tablet POS
+
+| Evento | Cuando ocurre | Paquetes |
+|---|---|---|
+| `sale.started` | se inicia ticket | todos |
+| `sale.item_added` | se agrega producto | todos |
+| `sale.item_removed` | se quita producto | todos |
+| `sale.discount_applied` | se aplica descuento | Pro/PC o Solo si habilitado |
+| `sale.completed` | venta cerrada | todos |
+| `sale.cancelled` | venta cancelada | todos |
+| `ticket.closed` | ticket queda cerrado | todos |
+| `payment.recorded` | pago registrado | todos |
+| `stock.decremented` | venta descuenta inventario | todos |
+| `stock.adjusted` | ajuste manual | todos con restricciones |
+| `return.created` | inicia devolucion | todos segun permiso |
+| `return.completed` | devolucion cerrada | todos segun permiso |
+| `shift.opened` | turno abierto | todos |
+| `shift.closed` | turno cerrado | todos |
+| `outbox.event_queued` | evento pendiente de sync | Pro/PC, tambien Solo si exporta |
+| `sync.completed` | sincronizacion correcta | Pro/PC |
+| `sync.conflict_detected` | conflicto detectado | PC Required |
+
+## 10.2 Eventos PC Backoffice
+
+| Evento | Cuando ocurre | Paquete |
+|---|---|---|
+| `catalog.product_created` | alta de producto maestro | PC Required |
+| `catalog.product_updated` | cambio maestro | PC Required |
+| `catalog.price_updated` | cambio de precio maestro | PC Required |
+| `barcode.duplicate_detected` | barcode repetido | PC Required |
+| `purchase_order.created` | orden creada | PC Required |
+| `receiving.completed` | recepcion cerrada | PC Required |
+| `stock.count_started` | conteo fisico iniciado | PC Required |
+| `stock.count_closed` | conteo cerrado | PC Required |
+| `audit.exception_created` | excepcion auditable | PC Required |
+| `replenishment.signal_created` | senal de reabasto | PC Required |
+| `sync.policy_published` | PC publica politica | PC Required |
+| `sync.conflict_resolved` | conflicto resuelto | PC Required |
+
+---
+
+## 11. Datos minimos por paquete
+
+## 11.1 Tablet Solo
+
+### Entidades minimas
+
+- `LocalProduct`
+- `LocalBarcode`
+- `LocalTicket`
+- `LocalTicketLine`
+- `LocalPayment`
+- `LocalStockMovement`
+- `LocalShift`
+- `LocalUser`
+- `LocalAuditEvent`
+- `LocalExportBatch`
+
+### Campos minimos por producto
+
+| Campo | Requerido | Nota |
+|---|---:|---|
+| `id` | Si | local estable |
+| `sku` | Si | visible o generado |
+| `name` | Si | nombre visible |
+| `price` | Si | precio actual |
+| `barcode` | No | recomendado |
+| `stock` | No/Si | segun politica de inventario |
+| `isActive` | Si | evita venta de productos deshabilitados |
+| `updatedAt` | Si | auditoria/exportacion |
+
+## 11.2 Tablet Pro
+
+Agregar:
+
+- `Role`
+- `Permission`
+- `Policy`
+- `ReturnReason`
+- `DiscountRule`
+- `InventoryAlert`
+- `AuditLogView`
+
+## 11.3 Tablet + PC
+
+Agregar/centralizar en PC:
+
+- `MasterProduct`
+- `Store`
+- `Register`
+- `WarehouseLocation`
+- `Supplier`
+- `PurchaseOrder`
+- `GoodsReceipt` (canonical replacement for legacy `ReceivingReceipt`)
+- `StockSnapshot`
+- `AuditCount`
+- `ReplenishmentSignal`
+- `OutboxEvent`
+- `SyncPolicy`
+- `SyncConflict`
+- `UserAdmin`
+- `RolePolicy`
+
+---
+
+## 12. Pantallas base sugeridas
+
+## 12.1 Tablet Solo
+
+| Pantalla | Proposito | Obligatoria |
+|---|---|---:|
+| Inicio / Estado del dia | ver ventas, turno, alertas | Si |
+| Venta / Checkout | operar ticket | Si |
+| Buscar producto | encontrar SKU rapido | Si |
+| Catalogo local | administrar productos | Si |
+| Inventario local | ver stock y movimientos | Si |
+| Turno | abrir/cerrar y ver corte | Si |
+| Tickets | consultar tickets del dia | Si |
+| Devoluciones | devolucion basica | Si/segun alcance |
+| Exportar / Respaldo | sacar datos | Si |
+| Configuracion local | impuestos simples, impresora, usuarios | Si |
+
+## 12.2 Tablet Pro
+
+Agregar:
+
+| Pantalla | Proposito |
+|---|---|
+| Usuarios y permisos | controlar acciones sensibles |
+| Reportes locales | ventas por usuario/turno/producto |
+| Auditoria local | ver acciones sensibles |
+| Politicas locales | descuentos, devoluciones, stock bajo |
+| Conteo rapido | inventario operativo |
+
+## 12.3 PC Backoffice
+
+| Pantalla | Proposito |
+|---|---|
+| Dashboard ejecutivo | KPIs y alertas |
+| Catalogo maestro | productos, precios, barcodes |
+| Existencias | stock por tienda/ubicacion |
+| Movimientos | entradas, salidas, ajustes |
+| Conteos | auditoria fisica |
+| Compras | ordenes y proveedores |
+| Recepcion | llegada de mercancia |
+| Reabasto | senales y sugerencias |
+| Auditoria | acciones sensibles |
+| Sync | estado de tablets/eventos/conflictos |
+| Usuarios | roles y permisos |
+| Sucursales/Cajas | estructura operativa |
+
+---
+
+## 13. KPIs por paquete
+
+## 13.1 Tablet Solo
+
+KPIs minimos:
+
+- ventas netas del dia;
+- numero de tickets;
+- ticket promedio;
+- top productos del dia;
+- unidades vendidas;
+- devoluciones/cancelaciones;
+- corte por turno;
+- stock bajo basico;
+- movimientos de inventario.
+
+## 13.2 Tablet Pro
+
+Agregar:
+
+- ventas por cajero;
+- ventas por turno;
+- descuentos aplicados;
+- devoluciones por motivo;
+- ajustes de inventario;
+- productos sin barcode;
+- productividad por usuario;
+- alertas de stock bajo;
+- errores de captura.
+
+## 13.3 Tablet + PC
+
+Agregar en PC:
+
+- ventas netas consolidadas;
+- ticket promedio por sucursal;
+- top SKUs globales;
+- quiebres de stock;
+- sobreinventario;
+- exactitud de inventario;
+- fill rate;
+- merma acumulada;
+- margen por categoria;
+- latencia de sincronizacion;
+- venta perdida estimada;
+- productividad por tienda, caja, ruta o usuario.
+
+---
+
+## 14. Reglas de UX por paquete
+
+## 14.1 Tablet
+
+Tablet debe ser:
+
+- rapida;
+- tactil;
+- clara;
+- tolerante a fallas;
+- con botones grandes;
+- con estados visibles;
+- con errores explicables;
+- con modo offline obvio;
+- con confirmaciones solo donde importa;
+- sin laberintos administrativos.
+
+Si el cajero necesita leer un manual para vender una soda, fallamos como especie y como producto.
+
+## 14.2 PC
+
+PC debe ser:
+
+- analitica;
+- administrable;
+- auditable;
+- filtrable;
+- orientada a tablas y detalle;
+- fuerte en excepciones;
+- clara en reportes;
+- util para supervisar.
+
+PC puede tener mas densidad de informacion. Tablet no. Tablet esta en mostrador, con fila, ruido y alguien preguntando si hay recarga.
+
+---
+
+## 15. Reglas de sincronizacion
+
+## 15.1 Para Tablet Solo
+
+No requiere PC, pero debe soportar:
+
+- exportar datos;
+- importar catalogo si aplica;
+- generar backup;
+- restaurar backup;
+- conservar IDs estables;
+- preservar eventos locales.
+
+## 15.2 Para Tablet Pro
+
+Debe soportar:
+
+- exportacion filtrada;
+- backup programable o manual;
+- preparacion para sync futuro;
+- outbox opcional si se habilita nube despues.
+
+## 15.3 Para Tablet + PC
+
+Debe soportar:
+
+- outbox local;
+- reintentos;
+- estado visual de sync;
+- confirmacion de recepcion PC;
+- conflictos;
+- reconciliacion;
+- politica publicada por PC;
+- bloqueo de acciones sensibles cuando sea necesario;
+- auditoria por dispositivo.
+
+### Regla de oro
+
+El sync no debe ser una fe religiosa. Debe mostrar estado real:
+
+- ultimo sync;
+- eventos pendientes;
+- errores;
+- conflictos;
+- acciones bloqueadas;
+- acciones permitidas offline.
+
+---
+
+## 16. Reglas de permisos
+
+## 16.1 Roles sugeridos
+
+### Tablet Solo
+
+- `owner`
+- `operator`
+
+### Tablet Pro
+
+- `owner`
+- `manager`
+- `cashier`
+
+### Tablet + PC
+
+- `admin`
+- `store_manager`
+- `cashier`
+- `inventory_manager`
+- `auditor`
+- `viewer`
+
+## 16.2 Permisos canonicos
+
+| Permiso | Descripcion |
+|---|---|
+| `sale.create` | iniciar venta |
+| `sale.complete` | cerrar venta |
+| `sale.cancel` | cancelar venta |
+| `discount.apply` | aplicar descuento |
+| `return.create` | iniciar devolucion |
+| `return.complete` | cerrar devolucion |
+| `stock.view` | consultar stock |
+| `stock.adjust` | ajustar inventario |
+| `catalog.view` | ver catalogo |
+| `catalog.create` | crear producto |
+| `catalog.update` | editar producto |
+| `price.update` | cambiar precio |
+| `shift.open` | abrir turno |
+| `shift.close` | cerrar turno |
+| `report.view` | ver reportes |
+| `export.create` | exportar datos |
+| `sync.resolve_conflict` | resolver conflictos |
+| `policy.publish` | publicar politica desde PC |
+
+---
+
+## 17. Reglas de inventario
+
+## 17.1 Tablet Solo
+
+Inventario simple:
+
+- stock por producto;
+- descuento por venta;
+- ajuste manual con motivo;
+- alerta de stock bajo;
+- historial de movimientos;
+- exportacion.
+
+## 17.2 Tablet Pro
+
+Inventario operativo:
+
+- conteo rapido;
+- movimientos por usuario;
+- alertas configurables;
+- productos sin barcode;
+- reporte de ajustes;
+- permiso para ajustes.
+
+## 17.3 PC
+
+Inventario administrativo:
+
+- stock por tienda;
+- stock por ubicacion;
+- compras;
+- recepcion;
+- conteos formales;
+- auditoria;
+- reabasto;
+- merma;
+- quiebres;
+- sobreinventario;
+- exactitud de inventario.
+
+---
+
+## 18. Politica de negocios regulados o sensibles
+
+Este documento no define cumplimiento legal especifico. Esa parte debe validarse segun pais, giro y requerimientos fiscales/regulatorios.
+
+Pero como regla de producto:
+
+Si el negocio maneja productos sensibles, caros, controlados, con caducidad critica o con auditoria obligatoria, se debe recomendar `TABLET_PC_REQUIRED`.
+
+Ejemplos:
+
+- farmacia;
+- alcohol;
+- electronica;
+- celulares;
+- equipo medico;
+- productos con lote/caducidad;
+- inventario de alto valor;
+- negocios auditados por corporativo.
+
+Tablet puede vender en esos negocios, pero PC debe controlar:
+
+- catalogo maestro;
+- lotes/caducidad si aplica;
+- permisos;
+- auditoria;
+- reportes;
+- inventario;
+- excepciones;
+- sync.
+
+---
+
+## 19. Anti-patrones prohibidos
+
+| Anti-patron | Por que mata el producto |
+|---|---|
+| PC requerido para cobrar | destruye autonomia POS |
+| Tablet intentando ser todo el backoffice | vuelve la UI lenta y confusa |
+| Sync invisible | nadie sabe si los datos existen |
+| Borrar tickets | rompe auditoria |
+| Ajustes sin motivo | abre puerta a merma invisible |
+| Permisos quemados en UI | dificil de mantener |
+| Ifs comerciales regados | caos de planes |
+| KPIs sin eventos | tablero de fantasia |
+| Multi-sucursal en Tablet Solo | datos fragmentados |
+| Cambios maestro offline sin control | conflictos seguros |
+
+---
+
+## 20. Checklist para decidir paquete en ventas
+
+Usar este checklist antes de vender.
+
+### Preguntas al cliente
+
+1. Cuantas sucursales tienes?
+2. Cuantas cajas operan al mismo tiempo?
+3. Cuantos empleados venden o ajustan inventario?
+4. El dueno esta presente en la operacion diaria?
+5. Que tan caro o delicado es el inventario?
+6. Manejas compras con proveedores frecuentes?
+7. Necesitas controlar recepcion de mercancia?
+8. Tienes problemas de merma o diferencias?
+9. Necesitas reportes por tienda, caja o usuario?
+10. Necesitas permisos distintos por empleado?
+11. Tienes productos regulados, con caducidad o sensibles?
+12. Necesitas ver varias operaciones desde una sola pantalla?
+
+### Resultado
+
+- Si casi todo es simple: Tablet Solo.
+- Si hay empleados, permisos y control local: Tablet Pro.
+- Si hay sucursales, auditoria, inventario sensible o compras: Tablet + PC.
+
+---
+
+## 21. Checklist tecnico para implementar
+
+Antes de construir una funcion nueva, responder:
+
+1. Vive en Tablet, PC o shared?
+2. Es necesaria para vender?
+3. Debe funcionar offline?
+4. Genera evento?
+5. Requiere permiso?
+6. Cambia inventario, dinero, caja, cliente o ticket?
+7. Que paquete la habilita?
+8. Que pasa en `standalone`?
+9. Que pasa en `managed`?
+10. Que pasa en `degraded_managed`?
+11. Se puede exportar?
+12. Se puede auditar?
+13. Tiene rollback funcional o compensacion?
+
+Si una funcion toca dinero o inventario y no responde esto, no entra. Que se forme, como todos.
+
+---
+
+## 22. Acceptance criteria de producto
+
+## 22.1 Tablet Solo listo
+
+Se considera listo cuando:
+
+- puede crear producto;
+- puede vender producto;
+- puede cerrar ticket;
+- puede registrar pago;
+- puede descontar inventario;
+- puede cerrar turno;
+- puede ver reporte diario;
+- puede exportar ventas;
+- puede operar sin PC;
+- puede respaldar datos;
+- cada accion sensible deja evento local.
+
+## 22.2 Tablet Pro listo
+
+Se considera listo cuando ademas:
+
+- tiene usuarios y roles;
+- puede bloquear acciones sensibles;
+- registra auditoria local clara;
+- muestra ventas por usuario/turno;
+- muestra stock bajo;
+- permite conteo rapido;
+- permite configuracion local de politicas;
+- exporta con filtros.
+
+## 22.3 Tablet + PC listo
+
+Se considera listo cuando:
+
+- PC publica catalogo/politicas;
+- Tablet recibe politica;
+- Tablet vende aun si PC cae;
+- Tablet encola eventos;
+- PC recibe eventos;
+- PC muestra sync status;
+- PC detecta conflictos;
+- PC permite resolver conflictos;
+- PC consolida KPIs;
+- PC audita acciones sensibles;
+- PC gestiona inventario maestro.
+
+---
+
+## 23. Orden recomendado de construccion
+
+## 23.1 Primero: Tablet Solo Core
+
+Construir:
+
+1. catalogo local minimo;
+2. checkout;
+3. tickets;
+4. pago basico;
+5. descuento de stock;
+6. turno;
+7. eventos locales;
+8. reporte del dia;
+9. exportacion/respaldo.
+
+Este es el corazon vendible.
+
+## 23.2 Segundo: Tablet Pro Control
+
+Construir:
+
+1. usuarios;
+2. roles;
+3. permisos;
+4. devoluciones controladas;
+5. ajustes con motivo;
+6. reportes por usuario/turno;
+7. auditoria local;
+8. stock bajo.
+
+## 23.3 Tercero: PC Backoffice Bridge
+
+Construir:
+
+1. catalogo maestro;
+2. sync policy;
+3. outbox ingest;
+4. estado de tablets;
+5. conflictos;
+6. dashboard inicial;
+7. inventario por sucursal;
+8. auditoria.
+
+## 23.4 Cuarto: PC Backoffice Advanced
+
+Construir:
+
+1. compras;
+2. recepcion;
+3. reabasto;
+4. conteos formales;
+5. merma;
+6. fill rate;
+7. margen;
+8. analitica avanzada.
+
+---
+
+## 24. Mapa rapido de carpetas sugeridas
+
+Este mapa es orientativo. Ajustar al repo real sin romper convenciones existentes.
+
+```text
+apps/
+  tablet/
+    src/
+      modules/
+        checkout/
+        catalog-local/
+        tickets/
+        shifts/
+        returns/
+        local-inventory/
+        reports-local/
+        offline-outbox/
+        export-backup/
+        users-local/
+        product-gates/
+  pc/
+    src/
+      modules/
+        catalog-master/
+        stock-control/
+        purchasing/
+        receiving/
+        replenishment/
+        audit/
+        kpi-dashboard/
+        sync-admin/
+        users-admin/
+packages/
+  shared-kernel/
+    src/
+      contracts/
+        events/
+        permissions/
+        product-modes/
+        sync/
+        audit/
+```
+
+Regla: si algo tiene que ver con venta rapida, vive en Tablet. Si tiene que ver con supervision, vive en PC. Si ambos lo necesitan como contrato, vive en shared. Que no se mezclen como cables de audifonos en mochila.
+
+---
+
+## 25. Product gates sugeridos
+
+Crear una capa conceptual de gates para no llenar todo de condicionales dispersos.
+
+### Entrada
+
+- `commercialPackage`
+- `operationMode`
+- `riskProfile`
+- `permissions`
+- `syncStatus`
+- `policy`
+
+### Salida
+
+- capabilities habilitadas;
+- acciones bloqueadas;
+- motivos requeridos;
+- eventos obligatorios;
+- mensajes UI.
+
+### Ejemplo conceptual
+
+```text
+commercialPackage: TABLET_PC_REQUIRED
+operationMode: degraded_managed
+riskProfile: high
+syncStatus: offline
+
+Resultado:
+- puede vender productos activos sincronizados
+- no puede editar precio maestro
+- ajuste de stock requiere manager + motivo
+- devolucion requiere motivo + evento pendiente
+- conflictos se resuelven en PC
+```
+
+No es codigo final. Es contrato mental para construir codigo limpio.
+
+---
+
+## 26. Mensajes UI importantes
+
+## 26.1 Tablet Solo
+
+- "Modo local activo"
+- "Ultimo respaldo"
+- "Venta guardada"
+- "Ticket cerrado"
+- "Stock actualizado"
+- "Exportacion lista"
+
+## 26.2 Tablet Pro
+
+- "Permiso requerido"
+- "Motivo obligatorio"
+- "Accion registrada en auditoria"
+- "Stock bajo"
+- "Corte listo para revisar"
+
+## 26.3 Tablet + PC
+
+- "Sin conexion con PC: venta local permitida"
+- "Eventos pendientes de sincronizar"
+- "Politica local vigente"
+- "Accion bloqueada hasta reconectar"
+- "Conflicto pendiente de resolver en PC"
+- "Sincronizacion completada"
+
+Regla: no decir "error desconocido" como si la app se hubiera ofendido. Decir que paso y que puede hacer el usuario.
+
+---
+
+## 27. Casos ejemplo
+
+## Caso A: Puesto pequeno de cafe
+
+- 1 caja;
+- 1 dueno;
+- pocos productos;
+- no requiere compras formales;
+- necesita reporte del dia.
+
+Resultado: `TABLET_SOLO`.
+
+## Caso B: Minisuper con 2 cajeros y encargado
+
+- 1 sucursal;
+- 2 cajas;
+- varios turnos;
+- ajustes de inventario;
+- devoluciones;
+- dueno no siempre esta.
+
+Resultado: `TABLET_PRO`.
+
+## Caso C: Farmacia con varias sucursales
+
+- inventario sensible;
+- caducidad potencial;
+- empleados;
+- auditoria;
+- varias tiendas.
+
+Resultado: `TABLET_PC_REQUIRED`.
+
+## Caso D: Tienda de celulares
+
+- inventario caro;
+- pocas piezas pero alto valor;
+- riesgo de robo/merma;
+- cambios de precio delicados.
+
+Resultado: `TABLET_PC_REQUIRED`, aunque tenga una sola sucursal.
+
+## Caso E: Tienda de ropa chica
+
+- una sucursal;
+- variantes;
+- devoluciones frecuentes;
+- descuentos;
+- 3 empleados.
+
+Resultado: `TABLET_PRO`, salvo que crezca a multi-sucursal.
+
+---
+
+## 28. Decisiones abiertas para futuras versiones
+
+Estas decisiones no bloquean el core, pero deben resolverse antes de versiones avanzadas:
+
+1. impuestos/fiscalizacion por pais;
+2. integracion con impresora de tickets;
+3. facturacion electronica si aplica;
+4. pagos con terminal externa;
+5. integracion bancaria;
+6. nube opcional entre Tablet y PC;
+7. soporte multi-tablet sin PC local;
+8. politicas por giro regulado;
+9. lotes y caducidades;
+10. variantes complejas de producto.
+
+---
+
+## 29. Resumen canonico para el repo
+
+La regla que debe obedecer el codigo es:
+
+> **Tablet es POS autonomo. PC es backoffice de control.**
+
+Comercialmente:
+
+- vender `TABLET_SOLO` a negocios simples;
+- vender `TABLET_PRO` a negocios pequenos con control local;
+- vender `TABLET_PC_REQUIRED` a negocios complejos, sensibles, auditables o multi-sucursal.
+
+Tecnicamente:
+
+- Tablet nunca depende de PC para cobrar;
+- PC gobierna catalogo, politicas, auditoria y consolidacion cuando existe;
+- offline permite continuidad con restricciones;
+- toda accion sensible genera evento;
+- toda accion sensible requiere permiso, motivo o auditoria segun riesgo;
+- los KPIs nacen de eventos trazables, no de magia.
+
+---
+
+## 30. Primera entrega de codigo derivada
+
+La primera entrega real recomendada ya no debe ser mas gobierno documental.
+
+Debe ser:
+
+```text
+PRISMA_TABLET_POS_STANDALONE_CORE_01
+```
+
+### Objetivo
+
+Construir el nucleo vendible de Tablet Solo.
+
+### Alcance
+
+- catalogo local;
+- checkout;
+- ticket;
+- pago basico;
+- inventario local;
+- turno;
+- eventos locales;
+- reporte del dia;
+- exportacion/respaldo.
+
+### No incluye
+
+- PC obligatorio;
+- dashboard ejecutivo;
+- compras;
+- recepcion;
+- multi-sucursal;
+- sync complejo;
+- permisos avanzados.
+
+### Criterio de salida
+
+Una persona debe poder instalar, abrir Tablet, crear productos, vender, cerrar turno, ver reporte del dia y exportar datos sin depender de PC.
+
+Ese es el primer producto vendible. Lo demas se sube encima, no debajo.

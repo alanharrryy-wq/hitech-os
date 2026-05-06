@@ -1,0 +1,75 @@
+[
+  {
+    "announcementId": "ann_release_060001",
+    "type": "release_note",
+    "title": "Centro PRISMA ya tiene novedades",
+    "body": "Puedes revisar novedades desde Centro PRISMA sin interrumpir checkout.",
+    "severity": "info",
+    "targetPlans": [
+      "TABLET_SOLO",
+      "TABLET_PRO",
+      "PC_BACKOFFICE",
+      "TABLET_PC_MANAGED"
+    ],
+    "targetRoles": [
+      "owner",
+      "admin"
+    ],
+    "targetVersions": [
+      ">=0.1.0"
+    ],
+    "targetSurfaces": [
+      "pc"
+    ],
+    "showFrom": "2026-04-28T00:00:00Z",
+    "showUntil": null,
+    "dismissible": true,
+    "dismissPolicy": {
+      "dismissible": true,
+      "requiresAcknowledgement": false,
+      "snoozeAllowed": true,
+      "snoozeHours": 24
+    },
+    "frequencyPolicy": {
+      "maxShows": 5,
+      "cooldownHours": 12
+    },
+    "blocksCheckout": false
+  },
+  {
+    "announcementId": "ann_maintenance_060002",
+    "type": "maintenance_notice",
+    "title": "Ventana de mantenimiento programada",
+    "body": "Este aviso no bloquea ventas locales.",
+    "severity": "warning",
+    "targetPlans": [
+      "TABLET_PC_MANAGED"
+    ],
+    "targetRoles": [
+      "owner",
+      "admin",
+      "cashier"
+    ],
+    "targetVersions": [
+      "*"
+    ],
+    "targetSurfaces": [
+      "pc",
+      "tablet"
+    ],
+    "showFrom": "2026-04-28T00:00:00Z",
+    "showUntil": "2026-05-02T00:00:00Z",
+    "dismissible": true,
+    "dismissPolicy": {
+      "dismissible": true,
+      "requiresAcknowledgement": false,
+      "snoozeAllowed": true,
+      "snoozeHours": 8
+    },
+    "frequencyPolicy": {
+      "maxShows": 4,
+      "cooldownHours": 8
+    },
+    "blocksCheckout": false
+  }
+]

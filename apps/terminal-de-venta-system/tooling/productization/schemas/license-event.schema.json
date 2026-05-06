@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA License Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "eventId",
+    "businessId",
+    "topic",
+    "occurredAt",
+    "payload"
+  ],
+  "properties": {
+    "eventId": {
+      "type": "string"
+    },
+    "businessId": {
+      "type": "string"
+    },
+    "deviceId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "topic": {
+      "enum": [
+        "license.loaded",
+        "license.invalid",
+        "license.refreshed",
+        "license.status_changed",
+        "license.grace_started",
+        "license.grace_expired",
+        "feature.denied"
+      ]
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "payload": {
+      "type": "object"
+    }
+  }
+}

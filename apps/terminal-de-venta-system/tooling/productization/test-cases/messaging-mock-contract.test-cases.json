@@ -1,0 +1,74 @@
+{
+  "schemaThread": "customer-message-thread.schema.json",
+  "schemaMessage": "customer-message.schema.json",
+  "positive": {
+    "thread": {
+      "threadId": "thread_local_001",
+      "businessId": "biz_demo_001",
+      "deviceId": "dev_demo_001",
+      "surface": "pc",
+      "category": "diagnostics",
+      "status": "local_only",
+      "title": "Revisión de diagnóstico local",
+      "createdAt": "2026-04-28T09:35:00-06:00",
+      "updatedAt": "2026-04-28T09:35:00-06:00",
+      "lastMessagePreview": "Quiero preparar un diagnóstico local sin secretos.",
+      "contextRefs": [
+        {
+          "type": "package",
+          "id": "PRISMA_SUPPORT_BUNDLE_LOCAL_04"
+        }
+      ]
+    },
+    "message": {
+      "messageId": "msg_local_001",
+      "threadId": "thread_local_001",
+      "senderType": "customer",
+      "body": "Quiero preparar un diagnóstico local sin incluir secretos ni datos sensibles.",
+      "status": "created_local",
+      "createdAt": "2026-04-28T09:36:00-06:00",
+      "attachments": [
+        {
+          "refType": "packageId",
+          "refId": "PRISMA_SUPPORT_BUNDLE_LOCAL_04"
+        }
+      ],
+      "contextRefs": [
+        {
+          "type": "route",
+          "id": "pc.center.diagnostics"
+        }
+      ]
+    }
+  },
+  "negative": [
+    {
+      "name": "remote_enabled_not_allowed",
+      "case": {
+        "outboxItemId": "bad",
+        "threadId": "t",
+        "messageId": "m",
+        "status": "queued_mock",
+        "createdAt": "2026-04-28T09:00:00-06:00",
+        "remoteEnabled": true
+      }
+    },
+    {
+      "name": "free_attachment_not_allowed",
+      "case": {
+        "messageId": "m",
+        "threadId": "t",
+        "senderType": "customer",
+        "body": "adjunto libre",
+        "status": "created_local",
+        "createdAt": "2026-04-28T09:00:00-06:00",
+        "attachments": [
+          {
+            "refType": "rawFile",
+            "refId": "C:\\secret.zip"
+          }
+        ]
+      }
+    }
+  ]
+}

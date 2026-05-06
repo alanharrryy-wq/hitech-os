@@ -1,0 +1,263 @@
+{
+  "package": "PRISMA_VISUAL_POS_MINIMAL_SEEDS_02",
+  "version": "0.2.0",
+  "purpose": "Minimal shared visual data for Tablet POS, PC Backoffice and Mobile supervisor.",
+  "generatedFor": {
+    "repo": "F:\\repos\\hitech-os",
+    "systemRoot": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system"
+  },
+  "surfaces": {
+    "tablet": {
+      "name": "Tablet POS",
+      "baseUrl": "http://127.0.0.1:3120",
+      "role": "vende y opera caja"
+    },
+    "pc": {
+      "name": "PC Backoffice",
+      "baseUrl": "http://127.0.0.1:3130",
+      "role": "gobierna inventario, auditoria y KPIs"
+    },
+    "mobile": {
+      "name": "Mobile Supervisor",
+      "baseUrl": "http://127.0.0.1:3140",
+      "role": "supervisa alertas y resumen ejecutivo"
+    }
+  },
+  "business": {
+    "businessId": "biz_prisma_demo_001",
+    "storeId": "store_centro_001",
+    "storeName": "Tienda Prisma Centro",
+    "currency": "MXN",
+    "businessDate": "2026-05-05",
+    "operator": {
+      "operatorId": "op_caja_01",
+      "name": "Cajero mostrador"
+    },
+    "terminal": {
+      "terminalId": "tablet_pos_01",
+      "name": "Tablet Caja 1"
+    }
+  },
+  "catalog": [
+    {
+      "id": "prod_agua_600",
+      "sku": "AGUA-600",
+      "barcode": "7501000000011",
+      "name": "Agua natural 600 ml",
+      "category": "Bebidas",
+      "priceCents": 1200,
+      "costCents": 700,
+      "stockOnHand": 8,
+      "lowStockThreshold": 10,
+      "isActive": true
+    },
+    {
+      "id": "prod_refresco_cola_355",
+      "sku": "REF-COLA-355",
+      "barcode": "7501000000028",
+      "name": "Refresco cola 355 ml",
+      "category": "Bebidas",
+      "priceCents": 1800,
+      "costCents": 1100,
+      "stockOnHand": 42,
+      "lowStockThreshold": 12,
+      "isActive": true
+    },
+    {
+      "id": "prod_papas_sal_45",
+      "sku": "PAPAS-SAL-45",
+      "barcode": "7501000000035",
+      "name": "Papas saladas 45 g",
+      "category": "Botanas",
+      "priceCents": 1700,
+      "costCents": 950,
+      "stockOnHand": 5,
+      "lowStockThreshold": 8,
+      "isActive": true
+    },
+    {
+      "id": "prod_galleta_choco",
+      "sku": "GALL-CHOCO",
+      "barcode": "7501000000042",
+      "name": "Galleta chocolate",
+      "category": "Dulces",
+      "priceCents": 1500,
+      "costCents": 820,
+      "stockOnHand": 31,
+      "lowStockThreshold": 10,
+      "isActive": true
+    },
+    {
+      "id": "prod_cafe_lata",
+      "sku": "CAFE-LATA",
+      "barcode": "7501000000059",
+      "name": "Cafe frio lata",
+      "category": "Bebidas",
+      "priceCents": 2600,
+      "costCents": 1700,
+      "stockOnHand": 0,
+      "lowStockThreshold": 6,
+      "isActive": true
+    }
+  ],
+  "salesToday": [
+    {
+      "ticketNumber": "T-0001",
+      "status": "completed",
+      "paymentMethod": "cash",
+      "operatorId": "op_caja_01",
+      "createdAt": "2026-05-05T09:10:00-06:00",
+      "completedAt": "2026-05-05T09:12:00-06:00",
+      "lines": [
+        {
+          "sku": "AGUA-600",
+          "qty": 2,
+          "unitPriceCents": 1200
+        },
+        {
+          "sku": "PAPAS-SAL-45",
+          "qty": 1,
+          "unitPriceCents": 1700
+        }
+      ],
+      "totalCents": 4100
+    },
+    {
+      "ticketNumber": "T-0002",
+      "status": "completed",
+      "paymentMethod": "card",
+      "operatorId": "op_caja_01",
+      "createdAt": "2026-05-05T10:04:00-06:00",
+      "completedAt": "2026-05-05T10:06:00-06:00",
+      "lines": [
+        {
+          "sku": "REF-COLA-355",
+          "qty": 2,
+          "unitPriceCents": 1800
+        },
+        {
+          "sku": "GALL-CHOCO",
+          "qty": 1,
+          "unitPriceCents": 1500
+        }
+      ],
+      "totalCents": 5100
+    },
+    {
+      "ticketNumber": "T-0003",
+      "status": "completed",
+      "paymentMethod": "cash",
+      "operatorId": "op_caja_01",
+      "createdAt": "2026-05-05T11:20:00-06:00",
+      "completedAt": "2026-05-05T11:21:00-06:00",
+      "lines": [
+        {
+          "sku": "REF-COLA-355",
+          "qty": 1,
+          "unitPriceCents": 1800
+        }
+      ],
+      "totalCents": 1800
+    }
+  ],
+  "events": [
+    {
+      "eventId": "evt_sale_completed_0001",
+      "topic": "sale.completed",
+      "source": "tablet",
+      "status": "acked",
+      "summary": "Ticket T-0001 cerrado"
+    },
+    {
+      "eventId": "evt_stock_low_agua",
+      "topic": "inventory.low_stock_detected",
+      "source": "tablet",
+      "status": "pending",
+      "summary": "Agua natural 600 ml bajo minimo"
+    },
+    {
+      "eventId": "evt_stockout_cafe",
+      "topic": "inventory.low_stock_detected",
+      "source": "tablet",
+      "status": "pending",
+      "summary": "Cafe frio lata sin existencia"
+    }
+  ],
+  "pcDashboard": {
+    "kpis": {
+      "netSalesCents": 11000,
+      "ticketCount": 3,
+      "averageTicketCents": 3667,
+      "unitsSold": 7,
+      "lowStockSkuCount": 3,
+      "stockoutSkuCount": 1,
+      "pendingOutboxEvents": 2,
+      "cancelledTickets": 0,
+      "returnsCount": 0
+    },
+    "topSkus": [
+      {
+        "sku": "REF-COLA-355",
+        "name": "Refresco cola 355 ml",
+        "units": 3,
+        "salesCents": 5400
+      },
+      {
+        "sku": "AGUA-600",
+        "name": "Agua natural 600 ml",
+        "units": 2,
+        "salesCents": 2400
+      },
+      {
+        "sku": "PAPAS-SAL-45",
+        "name": "Papas saladas 45 g",
+        "units": 1,
+        "salesCents": 1700
+      }
+    ],
+    "alerts": [
+      {
+        "severity": "warning",
+        "code": "LOW_STOCK",
+        "sku": "AGUA-600",
+        "message": "Agua natural 600 ml esta por debajo del minimo."
+      },
+      {
+        "severity": "critical",
+        "code": "STOCKOUT",
+        "sku": "CAFE-LATA",
+        "message": "Cafe frio lata esta sin existencia."
+      }
+    ]
+  },
+  "mobileBrief": {
+    "headline": "La tienda lleva $110.00 MXN en ventas netas hoy.",
+    "ownerSummary": [
+      "3 tickets cerrados",
+      "Ticket promedio de $36.67 MXN",
+      "1 SKU sin existencia",
+      "2 eventos pendientes de sincronizacion"
+    ],
+    "priorityAlerts": [
+      "Cafe frio lata sin existencia",
+      "Agua natural 600 ml bajo minimo"
+    ]
+  },
+  "acceptance": {
+    "tablet": [
+      "puede mostrar catalogo activo",
+      "puede armar ticket con productos y totales",
+      "puede mostrar alertas simples de stock"
+    ],
+    "pc": [
+      "puede mostrar KPIs diarios",
+      "puede mostrar top SKUs",
+      "puede mostrar alertas de inventario"
+    ],
+    "mobile": [
+      "puede mostrar resumen ejecutivo",
+      "puede mostrar alertas prioritarias",
+      "puede distinguir venta, stock y sincronizacion"
+    ]
+  }
+}

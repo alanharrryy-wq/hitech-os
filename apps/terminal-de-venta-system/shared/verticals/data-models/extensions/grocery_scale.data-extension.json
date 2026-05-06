@@ -1,0 +1,183 @@
+{
+  "verticalId": "grocery_scale",
+  "label": "Abarrotes con bascula",
+  "version": "0.3.0",
+  "principle": "Pesaje, precio por unidad variable y tolerancias; el peso es dato de linea, no nuevo producto por cada kilo.",
+  "extensions": [
+    {
+      "extensionId": "grocery_scale.ScaleReading",
+      "entityName": "ScaleReading",
+      "extensionType": "inventory_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_cache",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.grocery_scale.ScaleReading.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "Product"
+      ],
+      "requiredEvents": [
+        "vertical.grocery_scale.ScaleReading.created",
+        "vertical.grocery_scale.ScaleReading.updated"
+      ],
+      "fixtures": [
+        "grocery_scale_ScaleReading_happy_path.json",
+        "grocery_scale_ScaleReading_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "appointmentTime",
+        "tableNumber",
+        "prescriptionId",
+        "repairOrderId"
+      ]
+    },
+    {
+      "extensionId": "grocery_scale.WeightedSaleLine",
+      "entityName": "WeightedSaleLine",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.grocery_scale.WeightedSaleLine.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.grocery_scale.WeightedSaleLine.created",
+        "vertical.grocery_scale.WeightedSaleLine.updated"
+      ],
+      "fixtures": [
+        "grocery_scale_WeightedSaleLine_happy_path.json",
+        "grocery_scale_WeightedSaleLine_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "appointmentTime",
+        "tableNumber",
+        "prescriptionId",
+        "repairOrderId"
+      ]
+    },
+    {
+      "extensionId": "grocery_scale.TarePolicy",
+      "entityName": "TarePolicy",
+      "extensionType": "workflow_extension",
+      "ownerSurface": "tablet_local",
+      "storagePolicy": "local_required",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.grocery_scale.TarePolicy.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "SaleLine"
+      ],
+      "requiredEvents": [
+        "vertical.grocery_scale.TarePolicy.created",
+        "vertical.grocery_scale.TarePolicy.updated"
+      ],
+      "fixtures": [
+        "grocery_scale_TarePolicy_happy_path.json",
+        "grocery_scale_TarePolicy_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "appointmentTime",
+        "tableNumber",
+        "prescriptionId",
+        "repairOrderId"
+      ]
+    },
+    {
+      "extensionId": "grocery_scale.UnitPriceByWeight",
+      "entityName": "UnitPriceByWeight",
+      "extensionType": "catalog_extension",
+      "ownerSurface": "pc_backoffice",
+      "storagePolicy": "local_cache",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.grocery_scale.UnitPriceByWeight.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "Product"
+      ],
+      "requiredEvents": [
+        "vertical.grocery_scale.UnitPriceByWeight.created",
+        "vertical.grocery_scale.UnitPriceByWeight.updated"
+      ],
+      "fixtures": [
+        "grocery_scale_UnitPriceByWeight_happy_path.json",
+        "grocery_scale_UnitPriceByWeight_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "appointmentTime",
+        "tableNumber",
+        "prescriptionId",
+        "repairOrderId"
+      ]
+    },
+    {
+      "extensionId": "grocery_scale.ScaleDevice",
+      "entityName": "ScaleDevice",
+      "extensionType": "inventory_extension",
+      "ownerSurface": "pc_backoffice",
+      "storagePolicy": "local_cache",
+      "tabletAccess": "read_write_when_operationally_required",
+      "pcAuthority": "pc_governs_policy_and_history",
+      "syncPolicy": "vertical.grocery_scale.ScaleDevice.v0 events via outbox when changed locally",
+      "auditImpact": "required_when_affects_money_inventory_customer_or_compliance",
+      "offlineImpact": "must_declare_safe_local_behavior_before_tablet_release",
+      "coreRelations": [
+        "Product"
+      ],
+      "requiredEvents": [
+        "vertical.grocery_scale.ScaleDevice.created",
+        "vertical.grocery_scale.ScaleDevice.updated"
+      ],
+      "fixtures": [
+        "grocery_scale_ScaleDevice_happy_path.json",
+        "grocery_scale_ScaleDevice_edge_case.json"
+      ],
+      "acceptanceCriteria": [
+        "extension validates without mutating core schema",
+        "extension has at least one fixture",
+        "extension declares Tablet and PC ownership",
+        "extension can be disabled without breaking other verticals"
+      ],
+      "forbiddenCoreFields": [
+        "appointmentTime",
+        "tableNumber",
+        "prescriptionId",
+        "repairOrderId"
+      ]
+    }
+  ]
+}

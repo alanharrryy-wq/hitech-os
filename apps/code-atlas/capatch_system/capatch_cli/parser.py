@@ -31,6 +31,13 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument('--force-dry-run-on-high-risk', action='store_true', default=True, help='Bloquea escrituras reales cuando el cambio quede en high/critical risk.')
     parser.add_argument('--self-test', action='store_true', help='Imprime un ejemplo minimo de operaciones y sale.')
     parser.add_argument('--smoke-test', action='store_true', help='Corre pruebas rapidas del motor y sale.')
+    # === CAPATCH PROJECT CAPABILITY CLI ARGS START ===
+    capability_group = parser.add_argument_group('project capability packs')
+    capability_group.add_argument('--capability', help='Capability pack a ejecutar. Usa list para listar capabilities.')
+    capability_group.add_argument('--capability-action', choices=['profile', 'plan', 'install', 'verify'], default='profile', help='Accion del capability pack.')
+    capability_group.add_argument('--capability-output', help='Ruta opcional para escribir salida JSON.')
+    capability_group.add_argument('--capability-install-script', action='store_true', help='Reservado; install ya instala el script del pack.')
+    # === CAPATCH PROJECT CAPABILITY CLI ARGS END ===
 
     plugin_group = parser.add_argument_group('plugin runtime')
     plugin_group.add_argument('--plugin-list', action='store_true', help='Lista el registro actual de plugins y sale.')
@@ -69,6 +76,12 @@ def build_parser() -> argparse.ArgumentParser:
     diagnostic_group.add_argument('--show-rollback-command', help='Imprime el rollback command sugerido para un run_id persistido.')
     return parser
 
+
+
+# === CAPATCH PROJECT CAPABILITY REQUEST CHECK START ===
+def capability_args_requested(args: Any) -> bool:
+    return bool(getattr(args, 'capability', None))
+# === CAPATCH PROJECT CAPABILITY REQUEST CHECK END ===
 
 def diagnostic_args_requested(args: Any) -> bool:
     return any(
