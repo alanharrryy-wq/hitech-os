@@ -1,28 +1,42 @@
 export const home = {
   hero: {
-    eyebrow: "PRISMA Web Clean Canvas",
-    title: "Tu negocio conectado en tres superficies.",
-    body: "PRISMA convierte ventas, caja, órdenes, activos y alertas en operación trazable: Tablet para operar, PC para gobernar y Mobile para supervisar.",
-    primaryCta: "Agenda una demo",
-    secondaryCta: "Ver verticales"
+    eyebrow: "PRISMA POS / CENTRO DE MANDO",
+    title: "Controla ventas, caja e inventario sin operar con parches.",
+    body: "PRISMA conecta ventas, caja, inventario, órdenes y alertas en un solo sistema: Tablet para vender, PC para gobernar y Mobile para supervisar desde donde estés.",
+    primaryCta: "Quiero una demo",
+    secondaryCta: "Ver soluciones"
   },
+
   benefits: [
     {
-      title: "Menos caos",
-      body: "Cada evento deja responsable, estado, evidencia e historial. La libreta misteriosa se jubila, por fin."
+      title: "Vende sin perder el control",
+      body: "Cada venta, movimiento de caja y ajuste queda registrado con responsable, estado e historial. Se acabó la libreta misteriosa con letra de doctor cansado."
     },
     {
-      title: "Más control",
-      body: "Caja, inventario, activos, órdenes y alertas se conectan en un modelo común."
+      title: "Gobierna desde la PC",
+      body: "Administra catálogo, inventario, usuarios, reglas, reportes y operación desde un centro de mando claro, sin perseguir archivos sueltos como palomas en plaza."
     },
     {
-      title: "Mejor decisión",
-      body: "El dueño ve lo importante sin perseguir capturas, audios y explicaciones sospechosamente creativas."
+      title: "Supervisa desde el celular",
+      body: "Consulta alertas, ventas, caja e inventario bajo desde fuera del negocio. PRISMA te avisa lo importante antes de que el problema llegue con sombrero."
     }
   ],
+
   surfaces: [
-    { name: "Tablet", rule: "Opera", body: "Vende, captura, ejecuta y deja evidencia donde pasa la acción." },
-    { name: "PC", rule: "Gobierna", body: "Configura, administra, revisa reportes, roles, catálogos y reglas." },
-    { name: "Mobile", rule: "Supervisa", body: "Avisa, resume y ayuda a decidir rápido desde fuera del negocio." }
+    {
+      name: "Tablet",
+      rule: "Vende",
+      body: "La Tablet atiende la operación diaria: ventas, tickets, captura rápida y flujo en mostrador."
+    },
+    {
+      name: "PC",
+      rule: "Gobierna",
+      body: "La PC administra el negocio: inventario, reportes, usuarios, catálogo, reglas y decisiones."
+    },
+    {
+      name: "Mobile",
+      rule: "Supervisa",
+      body: "El celular muestra el pulso del negocio: alertas, resumen de ventas, caja e inventario bajo."
+    }
   ]
 };
