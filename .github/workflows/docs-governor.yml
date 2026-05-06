@@ -6,22 +6,22 @@ on:
       - "docs/**"
       - "tools/docs_governor/**"
       - ".github/workflows/docs-governor.yml"
-    paths-ignore:
-      - "docs/knowledge/codex_chats/**"
+      - "!docs/knowledge/codex_chats/**"
+
   pull_request:
     paths:
       - "docs/**"
       - "tools/docs_governor/**"
       - ".github/workflows/docs-governor.yml"
-    paths-ignore:
-      - "docs/knowledge/codex_chats/**"
+      - "!docs/knowledge/codex_chats/**"
 
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
   docs-governor:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -42,5 +42,3 @@ jobs:
           name: docs-governor-report
           path: tools/docs_governor/reports/*.json
           if-no-files-found: ignore
-
-
