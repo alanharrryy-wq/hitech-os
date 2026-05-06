@@ -606,3 +606,185 @@ No values were changed in 01F; this block is a governed map for later dedupe.
   --prisma-shadow-gold: var(--prisma-reference-shadow-gold);
 }
 /* PRISMA_REFERENCE_VISUAL_REFINEMENT_01I END */
+
+/* PRISMA_TWO_SKIN_TABLET_POS_RUNTIME_00Q START
+   Shared skin contract for the Tablet operational surface. Components keep using
+   semantic tokens; legacy gold/light tokens are mapped for compatibility. */
+html[data-prisma-skin="dark"],
+html[data-theme="prisma-dark"] {
+  --prisma-surface-sidebar: rgba(7, 10, 15, 0.74);
+  --prisma-surface-panel: rgba(13, 18, 25, 0.62);
+  --prisma-surface-card: rgba(24, 36, 49, 0.56);
+  --prisma-surface-cart: rgba(7, 14, 23, 0.72);
+  --prisma-surface-input: rgba(8, 16, 25, 0.58);
+
+  --prisma-action-primary: #efc46f;
+  --prisma-action-primary-hover: #ffdc94;
+  --prisma-action-primary-deep: #a06b2a;
+  --prisma-action-primary-soft: rgba(239, 196, 111, 0.16);
+  --prisma-action-primary-ring: rgba(239, 196, 111, 0.42);
+  --prisma-action-primary-gradient: var(--prisma-gold-gradient);
+  --prisma-text-inverse: var(--prisma-text-on-gold);
+
+  --prisma-shadow-card-lift: 0 24px 62px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  --prisma-shadow-primary-glow: 0 18px 44px rgba(239, 196, 111, 0.38), 0 0 38px rgba(239, 196, 111, 0.24);
+  --prisma-shadow-panel-lift: var(--prisma-shadow-glass);
+
+  --prisma-state-success: var(--prisma-success);
+  --prisma-state-warning: var(--prisma-warning);
+  --prisma-state-danger: var(--prisma-danger);
+  --prisma-state-info: var(--prisma-info);
+
+  --prisma-optical-panel-blur: 28px;
+  --prisma-optical-card-blur: 14px;
+  --prisma-optical-control-blur: 12px;
+  --prisma-optical-panel-saturate: 1.22;
+  --prisma-optical-frost-opacity: 0.78;
+  --prisma-optical-inner-highlight: rgba(255, 245, 218, 0.28);
+  --prisma-optical-card-shadow: var(--prisma-shadow-card-lift);
+  --prisma-optical-primary-glow: rgba(239, 196, 111, 0.34);
+  --prisma-optical-product-glow-opacity: 0.42;
+  --prisma-optical-product-glow-blur: 18px;
+  --prisma-optical-product-pedestal-opacity: 0.88;
+  --prisma-optical-focus-ring: 0 0 0 4px var(--prisma-action-primary-ring);
+  --prisma-accent-cool: var(--prisma-accent-cool-frosted);
+}
+
+html[data-prisma-skin="light"],
+html[data-theme="prisma-light"] {
+  --prisma-surface-sidebar: rgba(255, 255, 255, 0.86);
+  --prisma-surface-panel: rgba(255, 255, 255, 0.82);
+  --prisma-surface-card: rgba(255, 255, 255, 0.90);
+  --prisma-surface-cart: rgba(255, 255, 255, 0.88);
+  --prisma-surface-input: rgba(255, 255, 255, 0.9);
+
+  --prisma-action-primary: #1557ff;
+  --prisma-action-primary-hover: #2f6bff;
+  --prisma-action-primary-deep: #0b38b8;
+  --prisma-action-primary-soft: #dbe8ff;
+  --prisma-action-primary-ring: rgba(21, 87, 255, 0.34);
+  --prisma-action-primary-gradient: linear-gradient(135deg, #1557ff 0%, #0b38b8 100%);
+  --prisma-text-inverse: #ffffff;
+
+  --prisma-border-soft: #e4eaf6;
+  --prisma-border-medium: #d4deef;
+  --prisma-border-strong: #b9c7dc;
+  --prisma-border-action: rgba(21, 87, 255, 0.42);
+  --prisma-shadow-card-lift: 0 20px 46px rgba(32, 45, 82, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.86);
+  --prisma-shadow-primary-glow: 0 20px 42px rgba(21, 87, 255, 0.26);
+  --prisma-shadow-panel-lift: 0 28px 76px rgba(32, 45, 82, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  --prisma-state-success: #1f8f5f;
+  --prisma-state-warning: #b7791f;
+  --prisma-state-danger: #c2413b;
+  --prisma-state-info: #2563eb;
+
+  --prisma-optical-panel-blur: 24px;
+  --prisma-optical-card-blur: 12px;
+  --prisma-optical-control-blur: 10px;
+  --prisma-optical-panel-saturate: 1.16;
+  --prisma-optical-frost-opacity: 0.86;
+  --prisma-optical-inner-highlight: rgba(255, 255, 255, 0.9);
+  --prisma-optical-card-shadow: var(--prisma-shadow-card-lift);
+  --prisma-optical-primary-glow: rgba(21, 87, 255, 0.22);
+  --prisma-optical-product-glow-opacity: 0.28;
+  --prisma-optical-product-glow-blur: 22px;
+  --prisma-optical-product-pedestal-opacity: 0.72;
+  --prisma-optical-focus-ring: 0 0 0 4px var(--prisma-action-primary-ring);
+  --prisma-accent-cool: var(--prisma-accent-cool-frosted);
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] {
+  color-scheme: light;
+  --prisma-app-background: #f7f9ff;
+  --prisma-app-background-radial:
+    radial-gradient(circle at 36% -10%, rgba(21, 87, 255, 0.13), transparent 34%),
+    radial-gradient(circle at 84% 8%, rgba(219, 232, 255, 0.78), transparent 28%),
+    radial-gradient(circle at 11% 24%, rgba(255, 255, 255, 0.88), transparent 28%),
+    linear-gradient(180deg, #ffffff 0%, #f7f9ff 47%, #eef4ff 100%);
+  --prisma-living-scene-base: var(--prisma-app-background-radial);
+  --prisma-living-haze-a:
+    radial-gradient(ellipse at 52% 8%, rgba(255, 255, 255, 0.84), transparent 20%),
+    linear-gradient(112deg, transparent 6%, rgba(255,255,255,0.62) 34%, transparent 48%);
+  --prisma-living-haze-b:
+    radial-gradient(ellipse at 48% 100%, rgba(21, 87, 255, 0.08), transparent 34%),
+    radial-gradient(ellipse at 82% 95%, rgba(125, 168, 255, 0.18), transparent 36%);
+  --prisma-text-primary: #10172f;
+  --prisma-text-secondary: #47506a;
+  --prisma-text-muted: #7a849c;
+  --prisma-text-faint: #a8b1c2;
+  --prisma-accent-gold: var(--prisma-action-primary);
+  --prisma-accent-gold-soft: var(--prisma-action-primary-hover);
+  --prisma-accent-gold-strong: var(--prisma-action-primary-deep);
+  --prisma-accent-gold-deep: #071b5f;
+  --prisma-accent-gold-glow: var(--prisma-optical-primary-glow);
+  --prisma-border-gold: var(--prisma-border-action);
+  --prisma-text-on-gold: #ffffff;
+  --prisma-gold-gradient: var(--prisma-action-primary-gradient);
+  --prisma-gold-gradient-strong: linear-gradient(135deg, #4d83ff 0%, #1557ff 45%, #0b38b8 100%);
+  --prisma-active-surface: linear-gradient(135deg, #1557ff 0%, #0b38b8 100%);
+  --prisma-hover-surface: rgba(219, 232, 255, 0.55);
+  --prisma-panel-gradient:
+    radial-gradient(circle at 28% 0%, rgba(255,255,255,0.88), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.82), rgba(246,250,255,0.66));
+  --prisma-glass-gradient:
+    linear-gradient(180deg, rgba(255,255,255,0.88), rgba(246,250,255,0.62));
+  --prisma-card-surface: var(--prisma-surface-card);
+  --prisma-cart-panel-surface: var(--prisma-surface-cart);
+  --prisma-sidebar-surface: var(--prisma-surface-sidebar);
+  --prisma-product-stage-gradient:
+    radial-gradient(circle at 50% 10%, rgba(255,255,255,0.94), transparent 32%),
+    radial-gradient(ellipse at 50% 92%, rgba(21, 87, 255, 0.13), transparent 42%),
+    linear-gradient(180deg, rgba(255,255,255,0.72), rgba(235,242,255,0.48));
+  --prisma-frosted-accent-gradient:
+    linear-gradient(145deg, rgba(255,255,255,0.94), rgba(244,248,255,0.72));
+  --prisma-soft-highlight: rgba(255, 255, 255, 0.92);
+  --prisma-focus-ring: var(--prisma-action-primary-ring);
+  --prisma-shadow-gold: var(--prisma-shadow-primary-glow), inset 0 1px 0 rgba(255,255,255,0.72);
+  --prisma-shadow-glass: var(--prisma-shadow-panel-lift);
+}
+/* PRISMA_TWO_SKIN_TABLET_POS_RUNTIME_00Q END */
+
+/* PRISMA_LIGHT_TACTILE_POLISH_00R START
+   Final tactile Light polish tokens. Visual-only: no product, data, or flow changes. */
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] {
+  --prisma-light-surface-elevated: rgba(255, 255, 255, 0.96);
+  --prisma-light-surface-glass: rgba(255, 255, 255, 0.78);
+  --prisma-light-border-soft: #e2e9f5;
+  --prisma-light-border-strong: #b7c7e0;
+  --prisma-light-shadow-card:
+    0 18px 42px rgba(32, 45, 82, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  --prisma-light-shadow-card-hover:
+    0 24px 56px rgba(21, 54, 120, 0.17),
+    0 0 0 1px rgba(21, 87, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+  --prisma-light-shadow-button:
+    0 15px 32px rgba(21, 87, 255, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.30);
+  --prisma-light-focus-ring: 0 0 0 4px rgba(21, 87, 255, 0.28);
+  --prisma-light-action-blue: var(--prisma-action-primary);
+  --prisma-light-action-blue-soft: rgba(21, 87, 255, 0.10);
+  --prisma-light-action-blue-deep: var(--prisma-action-primary-deep);
+
+  --prisma-motion-fast: 120ms;
+  --prisma-motion-base: 180ms;
+  --prisma-motion-slow: 240ms;
+  --prisma-motion-pulse: 620ms;
+  --prisma-ease-premium: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --prisma-ease-press: cubic-bezier(0.2, 0.0, 0.2, 1);
+
+  --prisma-shadow-card-hover: var(--prisma-light-shadow-card-hover);
+  --prisma-shadow-button: var(--prisma-light-shadow-button);
+  --prisma-focus-ring-strong: var(--prisma-light-focus-ring);
+  --prisma-disabled-surface: rgba(229, 235, 246, 0.74);
+  --prisma-disabled-text: #8390a8;
+  --prisma-skeleton-surface:
+    linear-gradient(100deg, rgba(255, 255, 255, 0.58) 0%, rgba(219, 232, 255, 0.78) 42%, rgba(255, 255, 255, 0.62) 76%);
+  --prisma-skeleton-border: rgba(21, 87, 255, 0.12);
+  --prisma-state-pulse:
+    0 0 0 1px rgba(21, 87, 255, 0.24),
+    0 0 30px rgba(21, 87, 255, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+/* PRISMA_LIGHT_TACTILE_POLISH_00R END */
