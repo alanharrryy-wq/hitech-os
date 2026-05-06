@@ -38,7 +38,7 @@ for (const file of requiredFiles) {
 }
 
 const packageJson = JSON.parse(read("package.json"));
-if (compareVersion(packageJson.version, "0.28.0") >= 0 && compareVersion(packageJson.version, "0.37.0") < 0) ok(`package version compatible ${packageJson.version}`);
+if (compareVersion(packageJson.version, "0.28.0") >= 0 && compareVersion(packageJson.version, "0.38.0") < 0) ok(`package version compatible ${packageJson.version}`);
 else fail(`package version fuera de rango, recibida ${packageJson.version}`);
 if (packageJson.scripts?.["verify:data-readiness"] === "node tools/verify_prisma_app_mobile_28_data_readiness.mjs") ok("script verify:data-readiness registrado");
 else fail("script verify:data-readiness ausente o distinto");

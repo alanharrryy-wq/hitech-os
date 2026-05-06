@@ -8,9 +8,6 @@ import { prismaMobileErrorMessage } from "@/lib/prisma-app/prisma-mobile-error";
 import type { PrismaMobileClientSnapshot } from "@/lib/prisma-app/prisma-mobile-snapshot-contract";
 import { buildPrismaMobileOperationsList, derivePrismaMobileHero, type PrismaMobileHealthTone } from "@/lib/prisma-app/prisma-mobile-view-model";
 import { PrismaMobilePremiumNavigator } from "./PrismaMobilePremiumNavigator";
-import { PrismaMobilePulseTimeline } from "./PrismaMobilePulseTimeline";
-import { PrismaMobileDecisionLedger } from "./PrismaMobileDecisionLedger";
-import { PrismaMobileDailyBrief } from "./PrismaMobileDailyBrief";
 import styles from "./prisma-mobile-dashboard.module.css";
 
 type LoadState = "idle" | "loading" | "ready" | "refreshing" | "error";
@@ -155,10 +152,6 @@ export function PrismaMobileDashboard() {
           onRefresh={() => void load("refresh")}
           onClearCache={clearCacheAndRefresh}
         />
-
-        <PrismaMobileDailyBrief clientSnapshot={clientSnapshot} />
-        <PrismaMobileDecisionLedger clientSnapshot={clientSnapshot} />
-        <PrismaMobilePulseTimeline clientSnapshot={clientSnapshot} />
       </section>
     </main>
   );

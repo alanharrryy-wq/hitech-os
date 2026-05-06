@@ -28,6 +28,14 @@ const navigator = read("src/components/prisma-app/PrismaMobilePremiumNavigator.t
 const css = read("src/components/prisma-app/prisma-mobile-dashboard.module.css");
 const pkg = JSON.parse(read("package.json"));
 const qa = JSON.parse(read("docs/prisma-app/qa/prisma-app-mobile-27-premium-navigation-scenarios.json"));
+const longSurfaceTags = [
+  "<PrismaMobileCommandCenter",
+  "<PrismaMobileActionInbox",
+  "<PrismaMobileDailyBrief",
+  "<PrismaMobileDecisionLedger",
+  "<PrismaMobilePulseTimeline",
+  "<PrismaMobileHealthRadar"
+];
 
 function compareVersion(actual, minimum) {
   const parse = (value) => String(value || "")
@@ -49,7 +57,7 @@ function compareVersion(actual, minimum) {
 
 const checks = [
   [dashboard.includes("PrismaMobilePremiumNavigator"), "dashboard binds premium navigator"],
-  [!dashboard.includes("<PrismaMobileCommandCenter"), "dashboard no longer renders long modules in one waterfall"],
+  [longSurfaceTags.every((tag) => !dashboard.includes(tag)), "dashboard no longer renders long modules in one waterfall"],
   [navigator.includes('role="tablist"') && navigator.includes('role="tab"') && navigator.includes('role="tabpanel"'), "navigator exposes accessible tab roles"],
   [navigator.includes("ArrowRight") && navigator.includes("ArrowLeft") && navigator.includes("Home") && navigator.includes("End"), "navigator supports keyboard tab rail"],
   [navigator.includes("PrismaMobileHealthRadar") && navigator.includes("PrismaMobileDecisionLedger") && navigator.includes("PrismaMobilePulseTimeline"), "navigator sections include previously raw modules"],

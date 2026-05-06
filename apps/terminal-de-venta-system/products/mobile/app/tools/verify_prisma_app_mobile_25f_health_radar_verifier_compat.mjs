@@ -16,6 +16,7 @@ const corpus = read("docs/prisma-app/qa/prisma-app-mobile-25f-health-radar-verif
 const requiredVerifierTokens = [
   "HEALTH_RADAR_MIN_VERSION",
   "HEALTH_RADAR_MAX_EXCLUSIVE",
+  "const HEALTH_RADAR_MAX_EXCLUSIVE = \"0.38.0\"",
   "assertCompatibleHealthRadarVersion(pkg.version)",
   "compareVersion(version, HEALTH_RADAR_MIN_VERSION) < 0",
   "compareVersion(version, HEALTH_RADAR_MAX_EXCLUSIVE) >= 0",
@@ -30,18 +31,35 @@ if (pkg.scripts?.["verify:health-radar-compat"] !== "node tools/verify_prisma_ap
 if (pkg.prismaMobileHealthRadarVerifierCompatibilityVersion !== "0.25.4") fail("25F compatibility marker missing");
 if (pkg.prismaMobileHealthRadarDuplicateKeyFinalVersion !== "0.25.3") fail("25D duplicate-key marker missing");
 
+const minMatch = verifier.match(/const HEALTH_RADAR_MIN_VERSION = "([^"]+)"/);
+const maxMatch = verifier.match(/const HEALTH_RADAR_MAX_EXCLUSIVE = "([^"]+)"/);
+if (!minMatch || !maxMatch) fail("verifier does not expose parseable health radar version window");
+
+function compareVersion(left, right) {
+  const parse = (value) => String(value ?? "0.0.0")
+    .split(".")
+    .map((part) => Number.parseInt(part.replace(/[^0-9].*$/, ""), 10) || 0);
+  const a = parse(left);
+  const b = parse(right);
+  for (let index = 0; index < 3; index += 1) {
+    if ((a[index] || 0) !== (b[index] || 0)) return (a[index] || 0) - (b[index] || 0);
+  }
+  return 0;
+}
+
+if (compareVersion(pkg.version, minMatch[1]) < 0 || compareVersion(pkg.version, maxMatch[1]) >= 0) {
+  fail(`current package version ${pkg.version} is outside health-radar verifier window ${minMatch[1]}-${maxMatch[1]}`);
+}
+
 if (corpus.length < 6000) fail(`25F corpus too small: ${corpus.length}`);
 let parsed = 0;
-let sawCurrent = false;
 let sawFutureMinorBlocked = false;
 for (const line of corpus) {
   const row = JSON.parse(line);
   if (row.expectedContract !== "PRISMA_APP_MOBILE_25F_HEALTH_RADAR_VERIFIER_COMPAT_FINAL") fail("wrong 25F contract in corpus");
-  if (row.version === pkg.version && row.expected === "pass") sawCurrent = true;
   if (String(row.version).startsWith("0.26.") && row.expected === "fail") sawFutureMinorBlocked = true;
   if (!['pass', 'fail'].includes(row.expected)) fail(`invalid expected value ${row.expected}`);
   parsed += 1;
 }
-if (!sawCurrent) fail(`corpus does not cover current package version ${pkg.version}`);
 if (!sawFutureMinorBlocked) fail("corpus does not cover future-minor blocking");
 console.log(`OK PRISMA_APP_MOBILE_25F_HEALTH_RADAR_VERIFIER_COMPAT verified ${parsed} version-compat vectors`);
