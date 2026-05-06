@@ -56,12 +56,12 @@ export const CONFLICT_CATALOG: Record<ConflictCode, Omit<ConflictFinding, "detai
   },
   invalid_schema: {
     code: "invalid_schema",
-    label: "Schema inválido",
+    label: "Contrato inválido",
     severity: "rejected"
   },
   unknown_topic: {
     code: "unknown_topic",
-    label: "Tópico desconocido",
+    label: "Tema desconocido",
     severity: "rejected"
   }
 };

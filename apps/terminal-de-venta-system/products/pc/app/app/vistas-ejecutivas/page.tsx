@@ -6,7 +6,7 @@ export default function VistasEjecutivasPage() {
     <main className="space-y-6">
       <section>
         <h1 className="text-2xl font-semibold text-white">Vistas ejecutivas detalladas</h1>
-        <p className="mt-2 max-w-3xl text-sm text-white/70">Resumen para dirección y supervisión con tres lentes: margen, excepciones de stock y salud de sincronización.</p>
+        <p className="mt-2 max-w-3xl text-sm text-white/70">Resumen para dirección y supervisión con tres lentes: margen, excepciones de existencias y salud de sincronización.</p>
       </section>
       <section className="grid gap-3 md:grid-cols-4">
         {executiveCards.map((item) => (
@@ -23,12 +23,12 @@ export default function VistasEjecutivasPage() {
       </section>
       <section className="grid gap-6 xl:grid-cols-2">
         <div className="space-y-3">
-          <h2 className="text-lg font-medium text-white">Excepciones de stock</h2>
+          <h2 className="text-lg font-medium text-white">Excepciones de existencias</h2>
           <OpsTable columns={['SKU', 'Nombre', 'Ubicación', 'Disponible', 'Cobertura', 'Severidad']} rows={stockExceptionPreview} />
         </div>
         <div className="space-y-3">
           <h2 className="text-lg font-medium text-white">SLA de sincronización</h2>
-          <OpsTable columns={['Topic', 'Eventos', 'Pendiente', 'Fallo', 'Enviado', 'Latencia prom.']} rows={syncSlaPreview} />
+          <OpsTable columns={['Tema', 'Eventos', 'Pendiente', 'Fallo', 'Enviado', 'Latencia prom.']} rows={syncSlaPreview} />
         </div>
       </section>
     </main>

@@ -4,6 +4,6 @@ export const StockModule: TwinModuleManifest = {
   key: "stock",
   route: "/stock",
   title: "Existencias",
-  description: "Cobertura, quiebres de stock y sobreinventario.",
+  description: "Cobertura, quiebres y sobreinventario.",
   navGroup: "control"
 };

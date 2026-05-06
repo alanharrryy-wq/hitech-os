@@ -31,7 +31,7 @@ export default function GobiernoPage() {
       </div>
 
       <div className="grid cols-2">
-        <SectionCard title="Zonas locales de PC" subtitle="Territorio donde la app puede especializarse como backoffice.">
+        <SectionCard title="Zonas locales de PC" subtitle="Territorio donde la app puede especializarse como panel administrativo.">
           <div className="list">
             {i01GovernanceData.localPcSurfaces.map((item) => (
               <div key={item} className="list-item" style={{ display: "flex", justifyContent: "space-between" }}>

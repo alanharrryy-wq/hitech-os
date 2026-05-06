@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { getNavigation } from "@/composition/navigation";
 import { NavLink } from "./nav-link";
 import { pcMessages } from "@/lib/i18n/messages/es";
+import { PrismaDarkSelector } from "../ui/prisma-dark-selector";
 
 const NAV_ICONS: Record<string, string> = {
   "/": "⌂",
@@ -23,8 +24,8 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
   const current =
     currentPath === "/"
       ? { title: pcMessages.shell.home, description: pcMessages.home.subtitle }
-      : currentPath === "/dashboard"
-        ? { title: "Tablero", description: "KPIs y sincronización" }
+    : currentPath === "/dashboard"
+        ? { title: "Vista general", description: "KPIs y sincronización" }
         : nav.find((item) => item.href === currentPath);
   const controlItems = nav.filter((item) => item.navGroup === "control");
   const utilityItems = nav.filter((item) => item.navGroup === "operation");
@@ -40,7 +41,7 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
             </span>
             <div>
               <div className="brand">PRISMA</div>
-              <div className="subtle">Sistema de gestión inteligente</div>
+              <div className="subtle">Panel administrativo de inventario</div>
             </div>
           </div>
         </div>
@@ -49,8 +50,8 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
         <section className="sidebar-panel sidebar-nav-panel" data-prisma-component="SecondaryActionCard">
           <p className="nav-group-title">Navegación</p>
           <nav className="nav">
-            <NavLink href="/" title={pcMessages.shell.home} description="vista ejecutiva" active={currentPath === "/"} icon={NAV_ICONS["/"]} />
-            <NavLink href="/dashboard" title="Tablero" description="KPIs y sincronización" active={currentPath === "/dashboard"} icon={NAV_ICONS["/dashboard"]} />
+            <NavLink href="/" title={pcMessages.shell.home} description="vista general" active={currentPath === "/"} icon={NAV_ICONS["/"]} />
+            <NavLink href="/dashboard" title="Vista general" description="KPIs y sincronización" active={currentPath === "/dashboard"} icon={NAV_ICONS["/dashboard"]} />
             {controlItems.map((item) => (
               <NavLink
                 key={item.href}
@@ -113,6 +114,7 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
           </label>
 
           <div className="user-shell" data-prisma-component="UserMenu">
+            <PrismaDarkSelector />
             <div className="sync-chip">{pcMessages.shell.syncChip}</div>
             <div className="user-chip">
               <span className="avatar">PC</span>

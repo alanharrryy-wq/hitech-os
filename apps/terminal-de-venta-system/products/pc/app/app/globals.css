@@ -1478,3 +1478,495 @@ body {
   outline-offset: 10px;
 }
 /* PRISMA_PC_SIDEBAR_TRUE_SCROLL_06 END */
+
+/* PRISMA_PC_LIGHT_PREMIUM_GLASS_20260506_v01C START */
+/*
+  Visual-only PC Backoffice Light pass.
+  Intent: premium pearl-white admin surface, blue operational actions, dense readable tables.
+  Scope: PC only. Tablet/Mobile/POS flows untouched.
+*/
+html[data-prisma-surface="pc-backoffice"] {
+  --prisma-pc-light-bg-app: #edf4ff;
+  --prisma-pc-light-bg-canvas: #f8fbff;
+  --prisma-pc-light-ink: #08142f;
+  --prisma-pc-light-text-secondary: #42516f;
+  --prisma-pc-light-text-muted: #6f7f9b;
+  --prisma-pc-light-text-faint: #99a8bf;
+  --prisma-pc-light-blue: #1557ff;
+  --prisma-pc-light-blue-hover: #3374ff;
+  --prisma-pc-light-blue-deep: #0731a6;
+  --prisma-pc-light-blue-soft: rgba(21, 87, 255, 0.10);
+  --prisma-pc-light-blue-ring: rgba(21, 87, 255, 0.28);
+  --prisma-pc-light-blue-glow: rgba(21, 87, 255, 0.24);
+  --prisma-pc-light-border-soft: rgba(191, 207, 232, 0.74);
+  --prisma-pc-light-border-medium: rgba(156, 181, 218, 0.76);
+  --prisma-pc-light-border-strong: rgba(21, 87, 255, 0.38);
+  --prisma-pc-light-panel: rgba(255, 255, 255, 0.68);
+  --prisma-pc-light-panel-dense: rgba(255, 255, 255, 0.82);
+  --prisma-pc-light-card: rgba(255, 255, 255, 0.58);
+  --prisma-pc-light-card-dense: rgba(255, 255, 255, 0.78);
+  --prisma-pc-light-table: rgba(255, 255, 255, 0.90);
+  --prisma-pc-light-control: rgba(255, 255, 255, 0.72);
+  --prisma-pc-light-popover: rgba(255, 255, 255, 0.94);
+  --prisma-pc-light-panel-blur: 32px;
+  --prisma-pc-light-card-blur: 20px;
+  --prisma-pc-light-control-blur: 12px;
+  --prisma-pc-light-saturate: 1.20;
+  --prisma-pc-light-radius-sm: 12px;
+  --prisma-pc-light-radius-md: 16px;
+  --prisma-pc-light-radius-lg: 22px;
+  --prisma-pc-light-radius-xl: 30px;
+  --prisma-pc-light-shadow-panel:
+    0 28px 76px rgba(23, 42, 82, 0.13),
+    0 10px 26px rgba(21, 87, 255, 0.045),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  --prisma-pc-light-shadow-card:
+    0 18px 44px rgba(26, 45, 78, 0.10),
+    0 1px 0 rgba(255, 255, 255, 0.92) inset;
+  --prisma-pc-light-shadow-card-hover:
+    0 22px 56px rgba(21, 66, 135, 0.15),
+    0 0 0 1px rgba(21, 87, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+  --prisma-pc-light-shadow-blue:
+    0 18px 38px rgba(21, 87, 255, 0.27),
+    0 8px 18px rgba(7, 49, 166, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.34);
+  --prisma-pc-light-primary-gradient:
+    radial-gradient(ellipse at 18% 0%, rgba(255, 255, 255, 0.42), transparent 35%),
+    linear-gradient(145deg, #72adff 0%, #3f86ff 18%, #1557ff 48%, #0e43d6 76%, #0731a6 100%);
+  --prisma-pc-light-selected-gradient:
+    radial-gradient(ellipse at 12% 0%, rgba(255, 255, 255, 0.36), transparent 36%),
+    linear-gradient(135deg, rgba(21, 87, 255, 0.18), rgba(255, 255, 255, 0.72));
+  --prisma-pc-light-panel-material:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(245, 249, 255, 0.46));
+  --prisma-pc-light-card-material:
+    radial-gradient(ellipse at 18% 0%, rgba(255, 255, 255, 0.74), transparent 34%),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.62), rgba(239, 246, 255, 0.38));
+  --prisma-pc-light-table-material:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(249, 252, 255, 0.84));
+  --prisma-pc-light-warning: #b77716;
+  --prisma-pc-light-danger: #c43d3d;
+  --prisma-pc-light-success: #1f8f5f;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"],
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] {
+  color-scheme: light;
+  --prisma-app-background: var(--prisma-pc-light-bg-app);
+  --prisma-app-background-radial:
+    radial-gradient(circle at 16% -8%, rgba(96, 154, 255, 0.18), transparent 34%),
+    radial-gradient(circle at 88% 8%, rgba(198, 222, 255, 0.42), transparent 29%),
+    radial-gradient(circle at 52% -4%, rgba(255, 255, 255, 0.92), transparent 28%),
+    radial-gradient(circle at 50% 118%, rgba(21, 87, 255, 0.075), transparent 42%),
+    linear-gradient(180deg, #f9fcff 0%, #edf4ff 52%, #e7effc 100%);
+  --prisma-scene-noise:
+    repeating-radial-gradient(circle at 34% 44%, rgba(8, 20, 47, 0.018) 0 1px, transparent 1px 5px);
+  --prisma-text-primary: var(--prisma-pc-light-ink);
+  --prisma-text-secondary: var(--prisma-pc-light-text-secondary);
+  --prisma-text-muted: var(--prisma-pc-light-text-muted);
+  --prisma-text-faint: var(--prisma-pc-light-text-faint);
+  --prisma-text-on-gold: #ffffff;
+  --prisma-text-on-primary: #ffffff;
+  --prisma-action-primary: var(--prisma-pc-light-blue);
+  --prisma-action-primary-hover: var(--prisma-pc-light-blue-hover);
+  --prisma-action-primary-deep: var(--prisma-pc-light-blue-deep);
+  --prisma-action-primary-soft: var(--prisma-pc-light-blue-soft);
+  --prisma-action-primary-ring: var(--prisma-pc-light-blue-ring);
+  --prisma-action-primary-gradient: var(--prisma-pc-light-primary-gradient);
+  --prisma-accent-gold: var(--prisma-pc-light-blue);
+  --prisma-accent-gold-soft: var(--prisma-pc-light-blue-hover);
+  --prisma-accent-gold-strong: var(--prisma-pc-light-blue-deep);
+  --prisma-accent-gold-glow: var(--prisma-pc-light-blue-glow);
+  --prisma-border-gold: var(--prisma-pc-light-border-strong);
+  --prisma-gold-gradient: var(--prisma-pc-light-primary-gradient);
+  --prisma-gold-gradient-strong: var(--prisma-pc-light-primary-gradient);
+  --prisma-active-surface: var(--prisma-pc-light-primary-gradient);
+  --prisma-hover-surface: rgba(219, 232, 255, 0.62);
+  --prisma-border-soft: var(--prisma-pc-light-border-soft);
+  --prisma-border-medium: var(--prisma-pc-light-border-medium);
+  --prisma-border-strong: rgba(115, 145, 190, 0.80);
+  --prisma-sidebar-surface: var(--prisma-pc-light-panel);
+  --prisma-panel-surface: var(--prisma-pc-light-panel);
+  --prisma-card-surface: var(--prisma-pc-light-card);
+  --prisma-cart-panel-surface: var(--prisma-pc-light-panel-dense);
+  --prisma-glass-surface: var(--prisma-pc-light-card);
+  --prisma-panel-gradient: var(--prisma-pc-light-panel-material);
+  --prisma-glass-gradient: var(--prisma-pc-light-card-material);
+  --prisma-frosted-accent-gradient:
+    radial-gradient(ellipse at 18% 0%, rgba(255, 255, 255, 0.90), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(238, 246, 255, 0.50));
+  --prisma-soft-highlight: rgba(255, 255, 255, 0.88);
+  --prisma-shadow-glass: var(--prisma-pc-light-shadow-panel);
+  --prisma-shadow-gold: var(--prisma-pc-light-shadow-blue);
+  --prisma-shadow-primary-glow: var(--prisma-pc-light-shadow-blue);
+  --prisma-success: var(--prisma-pc-light-success);
+  --prisma-warning: var(--prisma-pc-light-warning);
+  --prisma-danger: var(--prisma-pc-light-danger);
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] body,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] body {
+  color: var(--prisma-pc-light-ink) !important;
+  background: var(--prisma-scene-noise), var(--prisma-app-background-radial) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] body::before,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    linear-gradient(112deg, transparent 10%, rgba(255, 255, 255, 0.38) 34%, transparent 49%),
+    radial-gradient(ellipse at 54% 2%, rgba(255, 255, 255, 0.58), transparent 23%),
+    radial-gradient(ellipse at 72% 18%, rgba(105, 162, 255, 0.12), transparent 30%);
+  filter: blur(12px) saturate(1.08);
+  opacity: 0.74;
+  animation: prismaPcPearlDrift 34s ease-in-out infinite alternate;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .shell,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .shell {
+  width: min(100%, 1580px) !important;
+  gap: clamp(18px, 2vw, 28px) !important;
+  background: transparent !important;
+  isolation: isolate;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .sidebar,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .topbar,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .hero,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .panel,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .brand-block,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .sidebar-panel,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .footer-stack > *,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .topbar-brand,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .search-shell,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .user-shell,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .sidebar,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .topbar,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .hero,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .panel,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .brand-block,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .sidebar-panel,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .footer-stack > *,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .topbar-brand,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .search-shell,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .user-shell {
+  color: var(--prisma-pc-light-ink) !important;
+  background:
+    radial-gradient(ellipse at 18% 0%, rgba(255, 255, 255, 0.86), transparent 30%),
+    linear-gradient(116deg, rgba(255, 255, 255, 0.28), transparent 36%, transparent 72%, rgba(105, 162, 255, 0.08)),
+    var(--prisma-pc-light-panel-material) !important;
+  border-color: var(--prisma-pc-light-border-soft) !important;
+  box-shadow: var(--prisma-pc-light-shadow-panel) !important;
+  backdrop-filter: blur(var(--prisma-pc-light-panel-blur)) saturate(var(--prisma-pc-light-saturate)) !important;
+  -webkit-backdrop-filter: blur(var(--prisma-pc-light-panel-blur)) saturate(var(--prisma-pc-light-saturate)) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .card,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .metric-card,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .metric-detail,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .action-card,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .chip,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .alert-chip,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .inline-chip,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .alert-strip,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .list-item,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .empty-state,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .footer-chip,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .data-state-card,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] [class*="supplier" i][class*="card" i],
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .card,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .metric-card,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .metric-detail,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .action-card,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .chip,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .alert-chip,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .inline-chip,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .alert-strip,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .list-item,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .empty-state,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .footer-chip,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .data-state-card,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] [class*="supplier" i][class*="card" i] {
+  color: var(--prisma-pc-light-ink) !important;
+  background: var(--prisma-pc-light-card-material) !important;
+  border-color: var(--prisma-pc-light-border-soft) !important;
+  box-shadow: var(--prisma-pc-light-shadow-card) !important;
+  backdrop-filter: blur(var(--prisma-pc-light-card-blur)) saturate(1.14) !important;
+  -webkit-backdrop-filter: blur(var(--prisma-pc-light-card-blur)) saturate(1.14) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .table-wrap,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] table,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .mini-card-table-v07,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .table-wrap,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] table,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .mini-card-table-v07 {
+  background: var(--prisma-pc-light-table-material) !important;
+  border-color: var(--prisma-pc-light-border-soft) !important;
+  box-shadow:
+    0 18px 42px rgba(23, 42, 82, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(var(--prisma-pc-light-control-blur)) saturate(1.06) !important;
+  -webkit-backdrop-filter: blur(var(--prisma-pc-light-control-blur)) saturate(1.06) !important;
+  font-variant-numeric: tabular-nums;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] th,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  color: #12346f !important;
+  background:
+    linear-gradient(180deg, rgba(246, 250, 255, 0.98), rgba(233, 241, 255, 0.90)) !important;
+  border-bottom-color: rgba(156, 181, 218, 0.86) !important;
+  letter-spacing: 0.075em;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] td,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] td {
+  color: var(--prisma-pc-light-text-secondary) !important;
+  border-bottom-color: rgba(199, 213, 235, 0.68) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] tr:hover td,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] tr:hover td {
+  color: var(--prisma-pc-light-ink) !important;
+  background:
+    linear-gradient(90deg, rgba(21, 87, 255, 0.10), rgba(255, 255, 255, 0.54)) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(.nav a, .action-card, .card, .metric-card, .footer-chip, .chip, .inline-chip, .alert-chip),
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(.nav a, .action-card, .card, .metric-card, .footer-chip, .chip, .inline-chip, .alert-chip) {
+  transition:
+    transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 140ms ease,
+    background 180ms ease,
+    color 140ms ease;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(.action-card, .card, .metric-card, .footer-chip):hover,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(.action-card, .card, .metric-card, .footer-chip):hover {
+  transform: translateY(-2px);
+  border-color: rgba(21, 87, 255, 0.28) !important;
+  box-shadow: var(--prisma-pc-light-shadow-card-hover) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav a,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav a {
+  color: var(--prisma-pc-light-text-secondary) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(238, 246, 255, 0.38)) !important;
+  border-color: rgba(198, 213, 235, 0.60) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav a:hover,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav a:hover {
+  color: var(--prisma-pc-light-ink) !important;
+  background: var(--prisma-pc-light-selected-gradient) !important;
+  border-color: rgba(21, 87, 255, 0.30) !important;
+  box-shadow: 0 12px 26px rgba(21, 87, 255, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.88) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav a.active,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav a[aria-current="page"],
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav a.active,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav a[aria-current="page"] {
+  color: #ffffff !important;
+  background: var(--prisma-pc-light-primary-gradient) !important;
+  border-color: rgba(21, 87, 255, 0.56) !important;
+  box-shadow: var(--prisma-pc-light-shadow-blue) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav-icon,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav-icon {
+  color: var(--prisma-pc-light-blue) !important;
+  background: rgba(21, 87, 255, 0.10) !important;
+  border-color: rgba(21, 87, 255, 0.18) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav a.active .nav-icon,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .nav a[aria-current="page"] .nav-icon,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav a.active .nav-icon,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .nav a[aria-current="page"] .nav-icon {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(255, 255, 255, 0.24) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .brand-mark:not(.prisma-mark),
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .avatar,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .brand-mark:not(.prisma-mark),
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .avatar {
+  color: #ffffff !important;
+  background: var(--prisma-pc-light-primary-gradient) !important;
+  box-shadow: var(--prisma-pc-light-shadow-blue) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .prisma-shard,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .prisma-shard {
+  filter: drop-shadow(0 18px 24px rgba(21, 87, 255, 0.22)) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .prisma-shard::before,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .prisma-shard::before {
+  border-color: rgba(21, 87, 255, 0.56) !important;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.48), rgba(21, 87, 255, 0.30) 52%, rgba(7, 49, 166, 0.12)) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .prisma-shard::after,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .prisma-shard::after {
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.72), rgba(21, 87, 255, 0.08)) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(.panel-label, .kicker, .nav-group-title, th, .code, .metric, .card-icon, .footer-chip, .alert-chip),
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(.panel-label, .kicker, .nav-group-title, th, .code, .metric, .card-icon, .footer-chip, .alert-chip) {
+  color: var(--prisma-pc-light-blue-deep) !important;
+  text-shadow: none !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .metric,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .metric {
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(button, .button, .primary-button, .action-primary, [data-variant="primary"]),
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(button, .button, .primary-button, .action-primary, [data-variant="primary"]) {
+  border-radius: var(--prisma-pc-light-radius-md);
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(button:not(:disabled), a, input, select, textarea):focus-visible,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(button:not(:disabled), a, input, select, textarea):focus-visible {
+  outline: 3px solid var(--prisma-pc-light-blue-ring) !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 6px rgba(21, 87, 255, 0.10) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(input, select, textarea, .search-shell),
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(input, select, textarea, .search-shell) {
+  color: var(--prisma-pc-light-ink) !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(239, 246, 255, 0.50)) !important;
+  border-color: var(--prisma-pc-light-border-soft) !important;
+  backdrop-filter: blur(var(--prisma-pc-light-control-blur)) saturate(1.10) !important;
+  -webkit-backdrop-filter: blur(var(--prisma-pc-light-control-blur)) saturate(1.10) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .badge.ok,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .badge.ok {
+  color: #126a47 !important;
+  border-color: rgba(31, 143, 95, 0.28) !important;
+  background: rgba(31, 143, 95, 0.10) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .badge.warn,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .badge.warn {
+  color: #935707 !important;
+  border-color: rgba(183, 119, 22, 0.32) !important;
+  background: rgba(183, 119, 22, 0.10) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .badge.danger,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .badge.danger {
+  color: #9f2f2f !important;
+  border-color: rgba(196, 61, 61, 0.30) !important;
+  background: rgba(196, 61, 61, 0.10) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .skip-link,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .skip-link {
+  color: #ffffff !important;
+  border-color: rgba(21, 87, 255, 0.42) !important;
+  background: var(--prisma-pc-light-primary-gradient) !important;
+  box-shadow: var(--prisma-pc-light-shadow-blue) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .prisma-appearance-selector,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .prisma-appearance-selector {
+  color: var(--prisma-pc-light-text-secondary);
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(191, 207, 232, 0.82);
+  box-shadow: 0 14px 32px rgba(23, 42, 82, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.88);
+}
+
+.prisma-appearance-selector {
+  position: relative;
+  z-index: 2;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--prisma-glass-gradient);
+  color: var(--prisma-text-secondary);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.prisma-appearance-label {
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+.prisma-appearance-options {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(8, 20, 47, 0.06);
+}
+
+.prisma-appearance-option {
+  min-height: 32px;
+  border: 0;
+  border-radius: 999px;
+  padding: 0 10px;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 820;
+}
+
+.prisma-appearance-option[data-active="true"] {
+  color: #ffffff !important;
+  background: var(--prisma-pc-light-primary-gradient) !important;
+  box-shadow: 0 10px 24px rgba(21, 87, 255, 0.22), inset 0 1px 0 rgba(255,255,255,0.28) !important;
+}
+
+.prisma-appearance-option:active,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(.nav a, button, .action-card):active,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] :is(.nav a, button, .action-card):active {
+  transform: translateY(1px) scale(0.992);
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .sidebar-main-scroll::-webkit-scrollbar-thumb,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .sidebar-main-scroll::-webkit-scrollbar-thumb,
+html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] .sidebar::-webkit-scrollbar-thumb,
+html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .sidebar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(21, 87, 255, 0.42), rgba(115, 154, 230, 0.24)) !important;
+  border-color: rgba(248, 251, 255, 0.86) !important;
+}
+
+@keyframes prismaPcPearlDrift {
+  from { transform: translate3d(-1.2%, -0.8%, 0) scale(1); opacity: 0.66; }
+  to { transform: translate3d(1.1%, 0.9%, 0) scale(1.018); opacity: 0.86; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-prisma-surface="pc-backoffice"] body::before,
+  html[data-prisma-surface="pc-backoffice"] :is(.nav a, .action-card, .card, .metric-card, .footer-chip, .chip, .inline-chip, .alert-chip) {
+    animation: none !important;
+    transition-duration: 1ms !important;
+  }
+}
+/* PRISMA_PC_LIGHT_PREMIUM_GLASS_20260506_v01C END */

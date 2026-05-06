@@ -4,6 +4,12 @@ import { EmptyState } from "./empty-state";
 import type { BackofficeModuleOverview } from "@/lib/backoffice/overview";
 import type { ReactNode } from "react";
 
+function persistenceLabel(value: BackofficeModuleOverview["meta"]["persistence"]) {
+  if (value === "available") return "disponible";
+  if (value === "unavailable") return "no disponible";
+  return "no requerida";
+}
+
 export function ModuleOverviewPage({ overview, children }: { overview: BackofficeModuleOverview; children?: ReactNode }) {
   return (
     <AppShell currentPath={overview.route}>
@@ -15,8 +21,8 @@ export function ModuleOverviewPage({ overview, children }: { overview: Backoffic
             <p>{overview.description}</p>
           </div>
           <div className="inline-list">
-            <span className="chip">PC backoffice</span>
-            <span className="chip">Persistencia: {overview.meta.persistence}</span>
+            <span className="chip">Panel administrativo</span>
+            <span className="chip">Persistencia: {persistenceLabel(overview.meta.persistence)}</span>
           </div>
         </div>
         <div className="hero-badges">
@@ -49,7 +55,7 @@ export function ModuleOverviewPage({ overview, children }: { overview: Backoffic
           <div>
             <div className="kicker">vista consolidada</div>
             <h2 className="section-title">{overview.table.title}</h2>
-            <div className="section-copy">Lectura de backoffice; no ejecuta venta ni condiciona el POS Tablet.</div>
+            <div className="section-copy">Lectura administrativa; no ejecuta venta ni condiciona el POS Tablet.</div>
           </div>
         </div>
         {overview.table.columns.length ? (

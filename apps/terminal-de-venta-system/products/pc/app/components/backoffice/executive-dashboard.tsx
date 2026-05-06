@@ -1,7 +1,7 @@
 import { AppShell } from "@components/layout/app-shell";
 import { DataTable } from "./data-table";
 import { EmptyState } from "./empty-state";
-import { IngestEventPanel } from "./ingest-event-panel";
+import { EventIntakePanel } from "./ingest-event-panel";
 import { KpiCard } from "./kpi-card";
 import type { BackofficeDashboard } from "@/lib/backoffice/dashboard";
 
@@ -12,19 +12,19 @@ export function ExecutiveDashboard({ dashboard, currentPath }: { dashboard: Back
         <div className="hero-header">
           <div className="hero-copy">
             <div className="kicker">torre de control PC</div>
-            <h1 className="hero-title">Backoffice de sincronización y gobierno</h1>
-            <p>Dashboard de control: ventas consolidadas, eventos, conflictos, stock y auditoría sin bloquear la venta local de Tablet.</p>
+            <h1 className="hero-title">Panel ejecutivo de inventario</h1>
+            <p>Vista de control: ventas consolidadas, eventos, conflictos, existencias y auditoría sin bloquear la venta local de Tablet.</p>
           </div>
           <div className="inline-list">
             <span className="chip">Tablet POS local</span>
-            <span className="chip">PC backoffice</span>
+            <span className="chip">Panel administrativo</span>
             <span className="chip">{dashboard.sync.healthLabel}</span>
           </div>
         </div>
         <div className="hero-badges">
           <span className="alert-chip">/pos es el POS operativo</span>
           <span className="alert-chip">/prisma-dark-pos-reference es referencia visual</span>
-          <span className="alert-chip">lastIngestAt: {dashboard.sync.lastIngestAt ?? "no disponible"}</span>
+          <span className="alert-chip">Última recepción: {dashboard.sync.lastIngestAt ?? "no disponible"}</span>
         </div>
       </section>
 
@@ -65,9 +65,9 @@ export function ExecutiveDashboard({ dashboard, currentPath }: { dashboard: Back
         <article className="card">
           <div className="section-head">
             <div>
-              <div className="kicker">sync visible</div>
+              <div className="kicker">sincronización visible</div>
               <h2 className="section-title">Estado de sincronización</h2>
-              <div className="section-copy">El tablero distingue validación de eventos de persistencia de ingest consolidado.</div>
+              <div className="section-copy">El tablero distingue validación de eventos de persistencia de recepción consolidada.</div>
             </div>
           </div>
           <div className="list">
@@ -84,7 +84,7 @@ export function ExecutiveDashboard({ dashboard, currentPath }: { dashboard: Back
               <strong>{dashboard.sync.conflictCount}</strong>
             </div>
             <div className="list-item">
-              <span>Último evento outbox</span>
+              <span>Último evento de bandeja</span>
               <strong>{dashboard.sync.lastOutboxEventAt ?? "no disponible"}</strong>
             </div>
           </div>
@@ -92,7 +92,7 @@ export function ExecutiveDashboard({ dashboard, currentPath }: { dashboard: Back
         </article>
       </section>
 
-      <IngestEventPanel />
+      <EventIntakePanel />
     </AppShell>
   );
 }

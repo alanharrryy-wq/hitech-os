@@ -14,8 +14,8 @@ export default function Page() {
         <div className="list">
           <div className="list-item">Quiebres visibles: {pcI06DashboardData.alerts.stockoutCount}</div>
           <div className="list-item">Sobreinventario visible: {pcI06DashboardData.alerts.overstockCount}</div>
-          <div className="list-item">Outbox fallido: {pcI06DashboardData.alerts.failedOutbox}</div>
-          <div className="list-item">Outbox pendiente: {pcI06DashboardData.alerts.pendingOutbox}</div>
+          <div className="list-item">Eventos fallidos: {pcI06DashboardData.alerts.failedOutbox}</div>
+          <div className="list-item">Eventos pendientes: {pcI06DashboardData.alerts.pendingOutbox}</div>
           <div className="list-item">Recibos con incidencia: {pcI06DashboardData.alerts.incidentReceipts}</div>
         </div>
       </SectionCard>

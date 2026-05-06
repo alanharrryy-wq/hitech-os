@@ -17,13 +17,13 @@ export default function Page() {
           <div className="list-item"><strong>Incidentes críticos:</strong> {pcI07ValidationData.headline.criticalIncidents} · tono {badgeTone(pcI07ValidationData.headline.criticalIncidents)}</div>
           <div className="list-item"><strong>Cola de revisión:</strong> {pcI07ValidationData.headline.reviewQueue} · tono {badgeTone(pcI07ValidationData.headline.reviewQueue)}</div>
           <div className="list-item"><strong>SKUs activos:</strong> {totals.active_products}</div>
-          <div className="list-item"><strong>Stockouts visibles:</strong> {totals.stockout_slots}</div>
+          <div className="list-item"><strong>Quiebres visibles:</strong> {totals.stockout_slots}</div>
         </div>
       </SectionCard>
       <SectionCard title="Integridad crítica" subtitle="Lo que debería romper release si sale rojo.">
         <div className="list">
-          <div className="list-item"><strong>Barcodes duplicados:</strong> {totals.duplicate_codes}</div>
-          <div className="list-item"><strong>SKUs sin barcode:</strong> {totals.active_without_barcode}</div>
+          <div className="list-item"><strong>Códigos duplicados:</strong> {totals.duplicate_codes}</div>
+          <div className="list-item"><strong>SKUs sin código:</strong> {totals.active_without_barcode}</div>
           <div className="list-item"><strong>Precio menor a costo:</strong> {totals.negative_margin}</div>
           <div className="list-item"><strong>Precio cero o negativo:</strong> {totals.zero_or_negative_price}</div>
         </div>

@@ -7,7 +7,7 @@ export default function DetalleRegistrosPage() {
       <section>
         <h1 className="text-2xl font-semibold text-white">Detalle de registros</h1>
         <p className="mt-2 max-w-3xl text-sm text-white/70">
-          Vista de detalle para movimientos, recepciones y outbox. Menos niebla administrativa, más trazabilidad con placa y apellido.
+          Vista de detalle para movimientos, recepciones y bandeja operativa. Menos niebla administrativa, más trazabilidad con placa y apellido.
         </p>
       </section>
       <section className="grid gap-3 md:grid-cols-4">
@@ -28,8 +28,8 @@ export default function DetalleRegistrosPage() {
         <OpsTable columns={['Folio', 'Proveedor', 'Estado', 'Líneas', 'Lead', 'Recibido']} rows={receiptPreview} />
       </section>
       <section className="space-y-3">
-        <h2 className="text-lg font-medium text-white">Outbox</h2>
-        <OpsTable columns={['Topic', 'Aggregate', 'Estado', 'Edad min', 'Creado', 'Enviado']} rows={outboxPreview} />
+        <h2 className="text-lg font-medium text-white">Bandeja operativa</h2>
+        <OpsTable columns={['Tema', 'Agregado', 'Estado', 'Edad min', 'Creado', 'Enviado']} rows={outboxPreview} />
       </section>
     </main>
   );

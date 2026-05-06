@@ -111,8 +111,8 @@ export function OperationWorkspace({ workspace }: { workspace: OperationWorkspac
         <section className="card">
           <div className="section-head"><div><div className="kicker">reabasto</div><h2 className="section-title">Señales de reabasto</h2><div className="section-copy">Prioridad, stock actual, min/max y sugerido.</div></div></div>
           <DataTable
-            columns={["SKU", "Producto", "Ubicación", "Prioridad", "Stock", "Mín", "Máx", "Sugerido", "Motivo"]}
-            rows={workspace.replenishment.map((row) => ({ SKU: row.sku, Producto: row.name, Ubicación: row.location, Prioridad: row.priority, Stock: row.currentStock, Mín: row.minStock, Máx: row.maxStock, Sugerido: row.suggestedQty, Motivo: row.reason }))}
+            columns={["SKU", "Producto", "Ubicación", "Prioridad", "Existencias", "Mín", "Máx", "Sugerido", "Motivo"]}
+            rows={workspace.replenishment.map((row) => ({ SKU: row.sku, Producto: row.name, Ubicación: row.location, Prioridad: row.priority, Existencias: row.currentStock, Mín: row.minStock, Máx: row.maxStock, Sugerido: row.suggestedQty, Motivo: row.reason }))}
             emptyMessage="No hay señales de reabasto activas."
           />
         </section>

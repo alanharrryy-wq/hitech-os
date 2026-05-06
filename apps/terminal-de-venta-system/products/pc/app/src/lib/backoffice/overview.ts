@@ -56,7 +56,7 @@ const MODULE_TEXT: Record<BackofficeModuleKey, Pick<BackofficeModuleOverview, "r
   stock: {
     route: "/stock",
     eyebrow: "existencias",
-    title: "Stock consolidado",
+    title: "Existencias consolidadas",
     description: "Lectura de cobertura, disponibles y quiebres sin interferir con la venta local Tablet."
   },
   movements: {
@@ -97,8 +97,8 @@ const MODULE_TEXT: Record<BackofficeModuleKey, Pick<BackofficeModuleOverview, "r
   },
   sync: {
     route: "/sync",
-    eyebrow: "sync",
-    title: "Ingesta y reconciliación",
+    eyebrow: "sincronización",
+    title: "Recepción y reconciliación",
     description: "PC valida eventos Tablet, clasifica conflictos y prepara consolidación explícita."
   },
   settings: {
@@ -170,22 +170,22 @@ export async function getBackofficeModuleOverview(key: BackofficeModuleKey): Pro
       return {
         ...baseOverview(key),
         metrics: [
-          { label: "SKUs totales", value: String(totalProducts), note: "Conteo completo de Product." },
-          { label: "Activos", value: String(activeProducts), note: "isActive=true en persistencia canónica." },
+          { label: "SKUs totales", value: String(totalProducts), note: "Conteo completo de productos." },
+          { label: "Activos", value: String(activeProducts), note: "Productos habilitados en persistencia canónica." },
           { label: "Categorías visibles", value: String(categories.size), note: "Agrupación de la muestra visible." }
         ],
         table: {
           title: "Productos consolidados recientes",
-          columns: ["SKU", "Producto", "Categoría", "Precio", "Barcodes", "Estado"],
+          columns: ["SKU", "Producto", "Categoría", "Precio", "Códigos", "Estado"],
           rows: products.map((product: CatalogProductOverviewRow) => ({
             SKU: product.sku,
             Producto: product.name,
             Categoría: product.category,
             Precio: money(product.priceCents),
-            Barcodes: product.barcodes.length,
+            Códigos: product.barcodes.length,
             Estado: product.isActive ? "activo" : "inactivo"
           })),
-          emptyMessage: "No hay productos consolidados en PC todavía. Ejecuta pnpm run db:pc:mass-catalog si ya cargaste Tablet."
+          emptyMessage: "No hay productos consolidados en PC todavía. Carga el catálogo canónico para auditar excepciones."
         },
         notes: [
           "Catálogo PC gobierna productos consolidados; Tablet conserva su catálogo local para vender aunque PC no exista.",
@@ -200,9 +200,9 @@ export async function getBackofficeModuleOverview(key: BackofficeModuleKey): Pro
       return {
         ...baseOverview(key),
         metrics: [
-          { label: "Snapshots", value: String(snapshots.length), note: "StockSnapshot reciente." },
+          { label: "Cortes", value: String(snapshots.length), note: "Cortes recientes de inventario." },
           { label: "Críticos", value: String(critical), note: "Cobertura menor a dos días." },
-          { label: "Ubicaciones", value: String(new Set(snapshots.map((row) => row.location)).size), note: "Locaciones con snapshot." }
+          { label: "Ubicaciones", value: String(new Set(snapshots.map((row) => row.location)).size), note: "Ubicaciones con corte." }
         ],
         table: {
           title: "Cobertura por SKU",
@@ -215,9 +215,9 @@ export async function getBackofficeModuleOverview(key: BackofficeModuleKey): Pro
             Días: row.daysCover.toFixed(1),
             Estado: row.daysCover < 1 ? "crítico" : row.daysCover < 2 ? "en riesgo" : "estable"
           })),
-          emptyMessage: "No hay snapshots de stock consolidados todavía."
+          emptyMessage: "No hay cortes de existencias consolidados todavía."
         },
-        notes: ["Stock PC es vista de gobierno; Tablet decrementa localmente en su venta operativa."]
+        notes: ["Existencias PC es vista de gobierno; Tablet decrementa localmente en su venta operativa."]
       };
     }
 
@@ -253,7 +253,7 @@ export async function getBackofficeModuleOverview(key: BackofficeModuleKey): Pro
       return {
         ...baseOverview(key),
         metrics: [
-          { label: "Conteos", value: String(counts.length), note: "AuditCount reciente." },
+          { label: "Conteos", value: String(counts.length), note: "Conteos recientes." },
           { label: "Con variación", value: String(counts.filter((row) => row.variance !== 0).length), note: "variance diferente de cero." },
           { label: "Pendientes", value: String(counts.filter((row) => row.status.toLowerCase() !== "posted").length), note: "Estado no cerrado." }
         ],
@@ -278,8 +278,8 @@ export async function getBackofficeModuleOverview(key: BackofficeModuleKey): Pro
       return {
         ...baseOverview(key),
         metrics: [
-          { label: "Órdenes", value: String(orders.length), note: "PurchaseOrder reciente." },
-          { label: "Abiertas", value: String(orders.filter((row) => ["ordered", "partial"].includes(row.status)).length), note: "ordered + partial." },
+          { label: "Órdenes", value: String(orders.length), note: "Órdenes recientes." },
+          { label: "Abiertas", value: String(orders.filter((row) => ["ordered", "partial"].includes(row.status)).length), note: "Ordenadas o parciales." },
           { label: "Líneas", value: String(orders.reduce((acc: number, row) => acc + row.lines.length, 0)), note: "Planeación total." }
         ],
         table: {
@@ -304,7 +304,7 @@ export async function getBackofficeModuleOverview(key: BackofficeModuleKey): Pro
       return {
         ...baseOverview(key),
         metrics: [
-          { label: "Recepciones", value: String(receipts.length), note: "GoodsReceipt reciente." },
+          { label: "Recepciones", value: String(receipts.length), note: "Recepciones recientes." },
           { label: "Incidencias", value: String(receipts.filter((row) => row.status !== "posted").length), note: "Estado distinto de posted." },
           { label: "Líneas", value: String(receipts.reduce((acc: number, row) => acc + row.lines.length, 0)), note: "Líneas recibidas." }
         ],
@@ -330,8 +330,8 @@ export async function getBackofficeModuleOverview(key: BackofficeModuleKey): Pro
       return {
         ...baseOverview(key),
         metrics: [
-          { label: "Señales", value: String(signals.length), note: "ReplenishmentSignal." },
-          { label: "Alta prioridad", value: String(signals.filter((row) => row.priority.toLowerCase().includes("high")).length), note: "priority high." },
+          { label: "Señales", value: String(signals.length), note: "Señales de reabasto." },
+          { label: "Alta prioridad", value: String(signals.filter((row) => row.priority.toLowerCase().includes("high")).length), note: "Prioridad alta." },
           { label: "Sugerido total", value: String(signals.reduce((acc: number, row) => acc + row.suggestedQty, 0)), note: "Unidades sugeridas." }
         ],
         table: {
@@ -360,16 +360,16 @@ export async function getBackofficeModuleOverview(key: BackofficeModuleKey): Pro
       return {
         ...baseOverview(key),
         metrics: [
-          { label: "Eventos auditables", value: String(events.length), note: "OutboxEvent reciente." },
-          { label: "Conteos", value: String(counts.length), note: "AuditCount reciente." },
+          { label: "Eventos auditables", value: String(events.length), note: "Eventos recientes de bandeja operativa." },
+          { label: "Conteos", value: String(counts.length), note: "Conteos recientes." },
           { label: "Clasificadores", value: String(catalog.length), note: "Conflictos definidos." }
         ],
         table: {
           title: "Eventos auditables recientes",
-          columns: ["Evento", "Topic", "Estado", "Intentos", "Fecha"],
+          columns: ["Evento", "Tema", "Estado", "Intentos", "Fecha"],
           rows: events.map((row) => ({
             Evento: row.id,
-            Topic: row.topic,
+            Tema: row.topic,
             Estado: row.status,
             Intentos: row.attempts,
             Fecha: formatDate(row.createdAt)
@@ -385,24 +385,24 @@ export async function getBackofficeModuleOverview(key: BackofficeModuleKey): Pro
       return {
         ...baseOverview(key),
         metrics: [
-          { label: "Pendientes", value: String(events.filter((row) => row.status.toLowerCase() === "pending").length), note: "Outbox pending." },
-          { label: "Fallidos", value: String(events.filter((row) => row.status.toLowerCase() === "failed").length), note: "Outbox failed." },
-          { label: "Conflictos", value: String(events.filter((row) => row.status.toLowerCase() === "conflict").length), note: "Outbox conflict." }
+          { label: "Pendientes", value: String(events.filter((row) => row.status.toLowerCase() === "pending").length), note: "Eventos pendientes." },
+          { label: "Fallidos", value: String(events.filter((row) => row.status.toLowerCase() === "failed").length), note: "Eventos fallidos." },
+          { label: "Conflictos", value: String(events.filter((row) => row.status.toLowerCase() === "conflict").length), note: "Eventos en conflicto." }
         ],
         table: {
-          title: "Eventos de outbox",
-          columns: ["Evento", "Topic", "Aggregate", "Estado", "Intentos", "Fecha"],
+          title: "Eventos de bandeja operativa",
+          columns: ["Evento", "Tema", "Agregado", "Estado", "Intentos", "Fecha"],
           rows: events.map((row) => ({
             Evento: row.id,
-            Topic: row.topic,
-            Aggregate: row.aggregateId,
+            Tema: row.topic,
+            Agregado: row.aggregateId,
             Estado: row.status,
             Intentos: row.attempts,
             Fecha: formatDate(row.createdAt)
           })),
-          emptyMessage: "No hay eventos de outbox consolidados todavía."
+          emptyMessage: "No hay eventos de bandeja operativa consolidados todavía."
         },
-        notes: ["Ingest PC actual: persiste eventos validados en OutboxEvent con idempotencia por eventId."]
+        notes: ["Recepción PC actual: persiste eventos validados con idempotencia por ID de evento."]
       };
     }
 
@@ -411,7 +411,7 @@ export async function getBackofficeModuleOverview(key: BackofficeModuleKey): Pro
       ...overview,
       metrics: [
         { label: "Modo offline", value: "permitido", note: "Venta local Tablet no depende de PC." },
-        { label: "Ingest", value: "explícito", note: "Sin watchers de archivos." },
+        { label: "Recepción", value: "explícita", note: "Sin observadores automáticos de archivos." },
         { label: "Referencia visual", value: "separada", note: "/prisma-dark-pos-reference no es POS operativo." }
       ],
       table: {
@@ -419,8 +419,8 @@ export async function getBackofficeModuleOverview(key: BackofficeModuleKey): Pro
         columns: ["Política", "Estado", "Nota"],
         rows: [
           { Política: "Tablet vende sola", Estado: "obligatoria", Nota: "PC no bloquea venta local." },
-          { Política: "Eventos son verdad", Estado: "obligatoria", Nota: "Sync valida y reconcilia." },
-          { Política: "Ingest explícito", Estado: "base lista", Nota: "POST API acepta lotes JSON." },
+          { Política: "Eventos son verdad", Estado: "obligatoria", Nota: "Sincronización valida y reconcilia." },
+          { Política: "Recepción explícita", Estado: "base lista", Nota: "API acepta lotes JSON." },
           { Política: "Permisos sensibles offline", Estado: "pendiente de motor", Nota: "No se finge persistencia." }
         ],
         emptyMessage: "No hay políticas configuradas."

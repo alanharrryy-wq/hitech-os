@@ -11,20 +11,20 @@ export default async function Page() {
     <AppShell currentPath="/outbox-operativo">
       <section className="hero">
         <div className="kicker">capa i05</div>
-        <h1 style={{ margin: 0 }}>Outbox operativo</h1>
+        <h1 style={{ margin: 0 }}>Bandeja operativa</h1>
         <div className="subtle">Cola de salida visible para revisar pendientes y fallos.</div>
       </section>
-      <SectionCard title="Estado de la cola" subtitle="Resumen por status.">
+      <SectionCard title="Estado de la cola" subtitle="Resumen por estado.">
         <div className="list">
           {outbox.outboxStatusSummary.map((item) => (
             <div key={item.status} className="list-item">{item.status}: {item.total} eventos</div>
           ))}
         </div>
       </SectionCard>
-      <SectionCard title="Pendientes recientes" subtitle="Muestra de outbox pendiente o fallido.">
+      <SectionCard title="Pendientes recientes" subtitle="Muestra de eventos pendientes o fallidos.">
         <div className="list">
           {outbox.outboxPending.slice(0, 8).map((item) => (
-            <div key={item.id} className="list-item">{item.topic} · {item.status} · {item.aggregateId}</div>
+            <div key={item.id} className="list-item">Tema {item.topic} · {item.status} · agregado {item.aggregateId}</div>
           ))}
         </div>
       </SectionCard>
