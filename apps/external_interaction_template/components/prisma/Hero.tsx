@@ -35,8 +35,8 @@ export function Hero() {
           50% { transform: translateY(-6px) rotate(0.5deg) scale(1.02); }
         }
         @keyframes prismaHeroTelemetryPulse {
-          0%, 100% { box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25); border-color: rgba(59, 130, 246, 0.3); }
-          50% { box-shadow: 0 16px 40px rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.5); }
+          0%, 100% { box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(59, 130, 246, 0.3); border-color: rgba(59, 130, 246, 0.3); }
+          50% { box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 215, 0, 0.2); border-color: rgba(59, 130, 246, 0.5); }
         }
         @keyframes prismaHeroSignalTravel {
           0% { opacity: 0; transform: translateX(-10px); }
@@ -49,8 +49,12 @@ export function Hero() {
         }
         @keyframes prismaHeroShine {
           0% { box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3); }
-          50% { box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5); }
+          50% { box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5), 0 0 0 1px rgba(255, 215, 0, 0.1); }
           100% { box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3); }
+        }
+        @keyframes prismaHeroLightBeam {
+          0%, 100% { opacity: 0.3; transform: scale(1) rotate(0deg); }
+          50% { opacity: 0.5; transform: scale(1.1) rotate(5deg); }
         }
         @media (prefers-reduced-motion: reduce) {
           .hero { animation: none !important; }
@@ -59,9 +63,11 @@ export function Hero() {
           .pill-row span:last-child::after { animation: none !important; }
           .hero-proof-card { animation: none !important; }
           .button-primary:hover { animation: none !important; }
+          .hero-light-beam { animation: none !important; }
         }
       `}</style>
-      <section className="hero" style={{ background: 'linear-gradient(135deg, rgba(7, 16, 36, 0.98), rgba(5, 11, 24, 1))', padding: '4rem 1.75rem', minHeight: '100vh', display: 'flex', alignItems: 'center', backgroundSize: '200% 200%', animation: 'prismaHeroGlowDrift 20s ease-in-out infinite' }}>
+      <section className="hero" style={{ background: 'radial-gradient(ellipse at top right, rgba(173, 216, 230, 0.15) 0%, transparent 50%), linear-gradient(135deg, rgba(7, 16, 36, 0.98), rgba(5, 11, 24, 1))', padding: '4rem 1.75rem', minHeight: '100vh', display: 'flex', alignItems: 'center', backgroundSize: '200% 200%', animation: 'prismaHeroGlowDrift 20s ease-in-out infinite', position: 'relative' }}>
+        <div className="hero-light-beam" style={{ position: 'absolute', top: '20%', right: '10%', width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(173, 216, 230, 0.2) 0%, transparent 70%)', borderRadius: '50%', animation: 'prismaHeroLightBeam 15s ease-in-out infinite', pointerEvents: 'none' }}></div>
         <div className="hero-inner" style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '46% 54%', gap: '3rem', alignItems: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             <div className="eyebrow" style={{ color: 'rgba(180, 215, 255, 0.95)', letterSpacing: '0.18em', textTransform: 'uppercase', fontSize: '0.9rem', fontWeight: 700 }}>{home.hero.eyebrow}</div>
@@ -101,7 +107,7 @@ export function Hero() {
                       right: '-0.5rem',
                       top: '50%',
                       transform: 'translateY(-50%)',
-                      color: 'rgba(59, 130, 246, 0.6)',
+                      color: 'rgba(255, 215, 0, 0.8)',
                       fontSize: '1rem',
                       animation: 'prismaHeroSignalTravel 2s ease-in-out infinite'
                     }}>→</span>
@@ -114,11 +120,12 @@ export function Hero() {
               {operationalStats.map((item, index) => (
                 <div className="hero-proof-card" key={item.label} style={{
                   background: 'rgba(255, 255, 255, 0.08)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  border: '1px solid rgba(59, 130, 246, 0.3)',
+                  borderTop: '2px solid rgba(255, 215, 0, 0.5)',
                   borderRadius: '16px',
                   padding: '1rem 0.8rem',
                   textAlign: 'center',
-                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
+                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 215, 0, 0.1)',
                   animation: `prismaHeroCardEnter 0.8s ease-out ${index * 0.2}s both`
                 }}>
                   <strong style={{ color: 'white', fontSize: '1.3rem', fontWeight: 800, display: 'block', marginBottom: '0.25rem' }}>{item.value}</strong>
@@ -133,7 +140,7 @@ export function Hero() {
               position: 'relative',
               borderRadius: '24px',
               overflow: 'hidden',
-              boxShadow: '0 25px 60px rgba(0, 20, 70, 0.4), 0 0 40px rgba(59, 130, 246, 0.1)',
+              boxShadow: '0 25px 60px rgba(0, 20, 70, 0.4), 0 0 40px rgba(59, 130, 246, 0.1), 0 0 0 1px rgba(255, 215, 0, 0.2)',
               border: '2px solid rgba(255, 255, 255, 0.1)',
               maxWidth: '500px',
               width: '100%',
@@ -158,6 +165,7 @@ export function Hero() {
               right: '8%',
               background: 'rgba(7, 16, 36, 0.85)',
               border: '1px solid rgba(59, 130, 246, 0.3)',
+              borderTop: '2px solid rgba(255, 215, 0, 0.4)',
               borderRadius: '12px',
               padding: '0.6rem 0.8rem',
               boxShadow: '0 12px 32px rgba(0, 0, 0, 0.25)',
@@ -176,6 +184,7 @@ export function Hero() {
               left: '8%',
               background: 'rgba(7, 16, 36, 0.85)',
               border: '1px solid rgba(59, 130, 246, 0.3)',
+              borderTop: '2px solid rgba(255, 215, 0, 0.4)',
               borderRadius: '12px',
               padding: '0.6rem 0.8rem',
               boxShadow: '0 12px 32px rgba(0, 0, 0, 0.25)',
