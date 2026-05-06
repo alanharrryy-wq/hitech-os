@@ -47,8 +47,16 @@ export function PosProductSearch({
     onSearch();
   }
 
+  const searchExpanded = Boolean(query.trim()) || loading || Boolean(error);
+
   return (
-    <form className={styles.searchCard} onSubmit={submit} data-prisma-component="SearchBar">
+    <form
+      className={styles.searchCard}
+      onSubmit={submit}
+      data-prisma-component="SearchBar"
+      data-prisma-search-expanded={searchExpanded ? "true" : "false"}
+      data-prisma-search-density="05C"
+    >
       <label className={styles.searchLabel}>
         <span>Buscar o escanear</span>
         <div className={styles.searchInputWrap}>

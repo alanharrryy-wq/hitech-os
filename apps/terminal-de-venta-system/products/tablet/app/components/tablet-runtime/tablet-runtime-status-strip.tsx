@@ -4,6 +4,7 @@ import styles from "@components/tablet-shell/prisma-tablet-shell.module.css";
 
 type Props = {
   snapshot: TabletRuntimeSnapshot;
+  variant?: "full" | "compact";
 };
 
 function Chip({ label, value, tone, href }: { label: string; value: string; tone: string; href: string }) {
@@ -15,9 +16,15 @@ function Chip({ label, value, tone, href }: { label: string; value: string; tone
   );
 }
 
-export function TabletRuntimeStatusStrip({ snapshot }: Props) {
+export function TabletRuntimeStatusStrip({ snapshot, variant = "full" }: Props) {
+  const compact = variant === "compact";
   return (
-    <section className={styles.runtimeStrip} aria-label="Estado operativo de la Tablet" data-prisma-component="RuntimeStatusStrip">
+    <section
+      className={[styles.runtimeStrip, compact ? styles.runtimeStripCompact : ""].filter(Boolean).join(" ")}
+      aria-label="Estado operativo de la Tablet"
+      data-prisma-component="RuntimeStatusStrip"
+      data-variant={variant}
+    >
       <div className={styles.runtimeIdentity}>
         <span>{getRuntimeModeLabel(snapshot)}</span>
         <strong>{getRuntimeHeaderLine(snapshot)}</strong>

@@ -24,7 +24,7 @@ export default function ScreenStandardPreviewPage() {
         metrics: [
           { label: "Pantallas objetivo", value: numberMX(5), note: "stock, sales, sync, shift, returns", tone: "ok", emphasis: "primary" },
           { label: "DB nueva", value: "0", note: "usa servicios y Prisma existentes", tone: "ok" },
-          { label: "Placeholders", value: "bloqueados", note: "el motor rechaza copy provisional", tone: "warn" },
+          { label: "Texto de relleno", value: "bloqueado", note: "el motor rechaza contenido temporal sin uso operativo", tone: "warn" },
           { label: "Rollback", value: "por pantalla", note: "inyecciones pequeñas y reversibles", tone: "ok" }
         ],
         sections: [

@@ -1,1 +1,40 @@
 .card{margin:0 0 18px;border:1px solid rgba(255,255,255,.11);border-radius:24px;padding:18px;background:linear-gradient(135deg,rgba(15,23,42,.9),rgba(38,30,14,.5));display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;box-shadow:0 20px 50px rgba(0,0,0,.25)}.card span{color:#facc15;text-transform:uppercase;letter-spacing:.14em;font-size:11px}.card h2{margin:5px 0;font-size:21px}.card p{margin:0;color:rgba(226,232,240,.72)}.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}.actions a{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;border-radius:18px;padding:11px 13px;text-decoration:none;font-weight:850;min-width:140px}.actions a small{display:block;margin-top:3px;color:rgba(226,232,240,.65);font-weight:600}.actions a.warn{border-color:rgba(250,204,21,.36);background:rgba(250,204,21,.12)}.history{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;margin:0;padding:0;list-style:none}.history li{border:1px solid rgba(125,211,252,.22);background:rgba(14,165,233,.12);color:#bae6fd;border-radius:999px;padding:8px 10px;font-size:12px}@media(max-width:900px){.card{grid-template-columns:1fr}.actions{justify-content:flex-start}.actions a{width:100%}}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .card{border-color:var(--prisma-border-soft);background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(246,250,255,.70));box-shadow:var(--prisma-shadow-card-lift);color:var(--prisma-text-primary);backdrop-filter:blur(var(--prisma-optical-card-blur)) saturate(var(--prisma-optical-panel-saturate));-webkit-backdrop-filter:blur(var(--prisma-optical-card-blur)) saturate(var(--prisma-optical-panel-saturate))}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .card span{color:var(--prisma-action-primary)}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .card p{color:var(--prisma-text-secondary)}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actions a{border-color:var(--prisma-border-action);background:var(--prisma-action-primary-soft);color:var(--prisma-action-primary)}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actions a small{color:var(--prisma-text-secondary)}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actions a.warn{border-color:color-mix(in srgb,var(--prisma-state-warning) 42%,var(--prisma-border-soft));background:color-mix(in srgb,var(--prisma-state-warning) 10%,white 90%);color:#7a4a08}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .history li{border-color:var(--prisma-border-action);background:rgba(21,87,255,.09);color:var(--prisma-action-primary)}
+
+/* PRISMA_LIGHT_EXPORT_TACTILE_POLISH_00R */
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .card,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actions a,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .history li {
+  transition:transform var(--prisma-motion-base) var(--prisma-ease-premium),box-shadow var(--prisma-motion-base) var(--prisma-ease-premium),border-color var(--prisma-motion-fast) ease,background var(--prisma-motion-base) ease;
+}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .card:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .history li:hover {
+  transform:translateY(-2px);
+  border-color:var(--prisma-border-action);
+  box-shadow:var(--prisma-shadow-card-hover);
+}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actions a:hover {
+  transform:translateY(-1px);
+  box-shadow:var(--prisma-shadow-card-hover);
+}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actions a:active {
+  transform:translateY(1px) scale(.99);
+  box-shadow:var(--prisma-light-shadow-card);
+}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actions a:focus-visible {
+  outline:none;
+  border-color:var(--prisma-action-primary);
+  box-shadow:var(--prisma-focus-ring-strong),var(--prisma-shadow-card-hover);
+}
+@media (prefers-reduced-motion: reduce){
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .card,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actions a,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .history li{transition:none!important;transform:none!important}
+}

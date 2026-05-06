@@ -1,0 +1,256 @@
+.pageStack {
+  display: grid;
+  gap: 18px;
+  color: var(--prisma-text-primary);
+}
+
+.card,
+.warning,
+.blockedCard,
+.metric,
+.featureItem {
+  border: 1px solid var(--prisma-border-soft);
+  border-radius: var(--prisma-radius-lg);
+  background: var(--prisma-panel-gradient);
+  color: var(--prisma-text-primary);
+  box-shadow: var(--prisma-shadow-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.card,
+.blockedCard {
+  padding: 20px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--prisma-accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.title {
+  margin: 8px 0 4px;
+  color: var(--prisma-text-primary);
+  font-size: clamp(24px, 3vw, 32px);
+}
+
+.copy {
+  margin: 0;
+  color: var(--prisma-text-secondary);
+}
+
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.metric {
+  padding: 12px;
+  background: var(--prisma-glass-gradient);
+}
+
+.metricLabel {
+  color: var(--prisma-text-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 850;
+}
+
+.metricValue {
+  display: inline-block;
+  margin-top: 5px;
+  color: var(--prisma-text-primary);
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  overflow-wrap: anywhere;
+}
+
+.metric_ok,
+.metric_warn,
+.metric_danger {
+  border-radius: 9px;
+  padding: 3px 8px;
+  color: #fff;
+}
+
+.metric_ok {
+  background: var(--prisma-state-success);
+}
+
+.metric_warn {
+  background: var(--prisma-state-warning);
+}
+
+.metric_danger {
+  background: var(--prisma-state-danger);
+}
+
+.warningList {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.warning {
+  padding: 12px;
+  color: var(--prisma-state-warning);
+  background: color-mix(in srgb, var(--prisma-state-warning) 11%, transparent);
+  border-color: color-mix(in srgb, var(--prisma-state-warning) 36%, var(--prisma-border-soft));
+}
+
+.featureList {
+  display: grid;
+  gap: 8px;
+}
+
+.featureItem {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  background: var(--prisma-glass-gradient);
+}
+
+.featureKey {
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+
+.featureReason {
+  color: var(--prisma-text-muted);
+  font-size: 13px;
+}
+
+.badge,
+.warningBadge {
+  display: inline-flex;
+  border-radius: var(--prisma-radius-pill);
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.allowed {
+  color: var(--prisma-state-success);
+  background: color-mix(in srgb, var(--prisma-state-success) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--prisma-state-success) 34%, var(--prisma-border-soft));
+}
+
+.blocked {
+  color: var(--prisma-state-danger);
+  background: color-mix(in srgb, var(--prisma-state-danger) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--prisma-state-danger) 34%, var(--prisma-border-soft));
+}
+
+.blockedCard {
+  color: var(--prisma-state-danger);
+  background: color-mix(in srgb, var(--prisma-state-danger) 10%, transparent);
+  border-color: color-mix(in srgb, var(--prisma-state-danger) 36%, var(--prisma-border-soft));
+}
+
+.refreshForm {
+  margin-top: 16px;
+}
+
+.primaryButton {
+  min-height: 46px;
+  border: 1px solid var(--prisma-border-gold);
+  border-radius: var(--prisma-radius-md);
+  padding: 0 16px;
+  color: var(--prisma-text-on-gold);
+  background: var(--prisma-gold-gradient);
+  box-shadow: var(--prisma-shadow-gold);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 900;
+}
+
+.helper {
+  margin: 10px 0 0;
+  color: var(--prisma-text-muted);
+  font-size: 12px;
+}
+
+.warningBadge {
+  color: var(--prisma-state-warning);
+  background: color-mix(in srgb, var(--prisma-state-warning) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--prisma-state-warning) 34%, var(--prisma-border-soft));
+}
+
+/* PRISMA_LIGHT_LICENSE_TACTILE_00R */
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .card,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .warning,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .blockedCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metric,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .featureItem {
+  background:
+    radial-gradient(circle at 24% 0%, rgba(255,255,255,.86), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,.92), rgba(246,250,255,.70));
+  box-shadow: var(--prisma-shadow-card-lift);
+  backdrop-filter: blur(var(--prisma-optical-card-blur)) saturate(var(--prisma-optical-panel-saturate));
+  -webkit-backdrop-filter: blur(var(--prisma-optical-card-blur)) saturate(var(--prisma-optical-panel-saturate));
+  transition:
+    transform var(--prisma-motion-base) var(--prisma-ease-premium),
+    box-shadow var(--prisma-motion-base) var(--prisma-ease-premium),
+    border-color var(--prisma-motion-fast) ease,
+    background var(--prisma-motion-base) ease;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .card:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metric:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .featureItem:hover {
+  transform: translateY(-2px);
+  border-color: var(--prisma-border-action);
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton {
+  color: var(--prisma-text-inverse);
+  background: var(--prisma-action-primary-gradient);
+  border-color: var(--prisma-border-action);
+  box-shadow: var(--prisma-shadow-button);
+  transition:
+    transform var(--prisma-motion-base) var(--prisma-ease-premium),
+    box-shadow var(--prisma-motion-base) var(--prisma-ease-premium),
+    border-color var(--prisma-motion-fast) ease;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:active {
+  transform: translateY(1px) scale(.99);
+  box-shadow: var(--prisma-light-shadow-card);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:focus-visible {
+  outline: none;
+  border-color: var(--prisma-action-primary);
+  box-shadow: var(--prisma-focus-ring-strong), var(--prisma-shadow-card-hover);
+}
+
+@media (max-width: 720px) {
+  .featureItem {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .card,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .warning,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .blockedCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metric,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .featureItem,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton {
+    transition: none !important;
+    transform: none !important;
+  }
+}

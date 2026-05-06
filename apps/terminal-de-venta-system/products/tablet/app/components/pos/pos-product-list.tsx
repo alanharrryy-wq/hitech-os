@@ -185,8 +185,6 @@ export function PosProductList({
 
               <div className={styles.productText}>
                 <strong className={styles.productName}>{product.name}</strong>
-                <span className={styles.productSku}>SKU {product.sku}</span>
-                {product.barcode ? <span className={styles.productBarcode}>CB {product.barcode}</span> : null}
                 <div className={styles.productMetaRail}>
                   <span className={product.isActive ? styles.badgeOk : styles.badgeDanger}>{product.isActive ? "Activo" : "Inactivo"}</span>
                   {product.category ? <span className={styles.badgeNeutral}>{product.category}</span> : null}

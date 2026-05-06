@@ -169,3 +169,200 @@
     flex-direction: column;
   }
 }
+
+/* PRISMA_LIGHT_TABLET_SALES_00Q */
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .salesPage {
+  color: var(--prisma-text-primary);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .panel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpi,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketRow,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stateCard {
+  border-color: var(--prisma-border-soft);
+  color: var(--prisma-text-primary);
+  background:
+    radial-gradient(circle at 28% 0%, rgba(255,255,255,0.82), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.92), rgba(246,250,255,0.70));
+  box-shadow: var(--prisma-shadow-card-lift);
+  backdrop-filter: blur(var(--prisma-optical-card-blur)) saturate(var(--prisma-optical-panel-saturate));
+  -webkit-backdrop-filter: blur(var(--prisma-optical-card-blur)) saturate(var(--prisma-optical-panel-saturate));
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketRow:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketRow:focus-visible {
+  border-color: var(--prisma-border-action);
+  background:
+    linear-gradient(180deg, #ffffff, var(--prisma-action-primary-soft));
+  box-shadow: 0 20px 44px rgba(32,45,82,0.14);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketMain span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .line span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailHeader p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .panel p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stateCard p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpi small {
+  color: var(--prisma-text-secondary);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailHeader span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .panelEyebrow,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpi span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailCta {
+  color: var(--prisma-action-primary);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketRow > strong,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpi strong {
+  color: var(--prisma-action-primary);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailCta {
+  border-color: var(--prisma-border-action);
+  background: var(--prisma-action-primary-soft);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolbar input {
+  border: 1px solid var(--prisma-border-soft);
+  color: var(--prisma-text-primary);
+  background: var(--prisma-surface-input);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 10px 24px rgba(32,45,82,0.07);
+  outline: none;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolbar input:focus-visible {
+  border-color: var(--prisma-action-primary);
+  box-shadow: var(--prisma-optical-focus-ring);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primary {
+  color: var(--prisma-text-inverse);
+  background: var(--prisma-action-primary-gradient);
+  box-shadow: var(--prisma-shadow-primary-glow);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondary {
+  color: var(--prisma-action-primary);
+  border: 1px solid var(--prisma-border-action);
+  background: var(--prisma-action-primary-soft);
+}
+
+/* PRISMA_LIGHT_SALES_TACTILE_POLISH_00R */
+@keyframes prismaSalesSkeletonSweep {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(110%); }
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpi {
+  display: grid;
+  gap: 7px;
+  align-content: start;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpi span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpi strong,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpi small {
+  display: block;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpi strong {
+  line-height: 1.05;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpi small {
+  line-height: 1.35;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .panel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpi,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketRow,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stateCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primary,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondary,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailCta,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolbar input {
+  transition:
+    transform var(--prisma-motion-base) var(--prisma-ease-premium),
+    box-shadow var(--prisma-motion-base) var(--prisma-ease-premium),
+    border-color var(--prisma-motion-fast) ease,
+    background var(--prisma-motion-base) ease,
+    color var(--prisma-motion-fast) ease;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpi:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketRow:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .panel:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stateCard:hover {
+  transform: translateY(-2px);
+  border-color: var(--prisma-border-action);
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primary:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondary:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailCta:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primary:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondary:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailCta:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketRow:active {
+  transform: translateY(1px) scale(0.99);
+  box-shadow: var(--prisma-light-shadow-card);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketRow:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primary:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondary:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailCta:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolbar input:focus-visible {
+  outline: none;
+  border-color: var(--prisma-action-primary);
+  box-shadow: var(--prisma-focus-ring-strong), var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty {
+  position: relative;
+  overflow: hidden;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--prisma-skeleton-surface);
+  opacity: 0.24;
+  transform: translateX(-110%);
+  animation: prismaSalesSkeletonSweep 1.25s var(--prisma-ease-premium) infinite;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .panel,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpi,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketRow,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .stateCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primary,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondary,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .detailCta,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolbar input {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty::after {
+    animation: none !important;
+    transform: none;
+  }
+}

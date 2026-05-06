@@ -7,8 +7,30 @@ type Props = {
   snapshot: TabletRuntimeSnapshot;
 };
 
+function pendingCount(snapshot: TabletRuntimeSnapshot) {
+  return snapshot.connection.pendingEvents + snapshot.connection.failedEvents + snapshot.connection.conflictEvents;
+}
+
 export function TabletHomeScreen({ snapshot }: Props) {
   const vm = buildTabletHomeViewModel(snapshot);
+  const shiftOpen = snapshot.shift.state === "open";
+  const pending = pendingCount(snapshot);
+
+  const workflowSteps = [
+    { step: "1", title: shiftOpen ? "Turno abierto" : "Abrir turno", description: shiftOpen ? "Caja lista para operar con corte trazable." : "Prepara caja antes de vender para que tickets y corte salgan limpios.", href: "/shift", label: shiftOpen ? "Ver turno" : "Abrir turno", tone: shiftOpen ? "ok" : "warn" },
+    { step: "2", title: "Vender", description: "Busca, escanea, arma el ticket y cobra sin salir del flujo POS.", href: "/pos", label: "Ir a vender", tone: "ok" },
+    { step: "3", title: "Revisar tickets", description: "Consulta ventas cerradas, detalle y devoluciones cuando aplique.", href: "/sales/today", label: "Ventas de hoy", tone: "neutral" },
+    { step: "4", title: "Cerrar o exportar", description: "Cierra turno, revisa pendientes y exporta evidencia si hace falta.", href: "/offline", label: "Soporte", tone: pending > 0 ? "warn" : "neutral" }
+  ];
+
+  const toolCards = [
+    { href: "/catalog", title: "Catalogo", description: "Productos disponibles para venta local.", label: "Abrir" },
+    { href: "/stock", title: "Existencias", description: "Stock operativo, quiebres y senales de reabasto.", label: "Revisar" },
+    { href: "/sync", title: "Pendientes", description: pending > 0 ? `${pending} eventos por revisar.` : "Sin pendientes visibles.", label: pending > 0 ? "Atender" : "Ver" },
+    { href: "/offline", title: "Offline / Export", description: "Auditoria local, exportacion y respaldo operativo.", label: "Abrir" },
+    { href: "/release-gate", title: "Estado del sistema", description: "Revision de flujos criticos antes de liberar.", label: "Ver" },
+    { href: "/settings/license", title: "Licencia", description: "Estado de permisos y activacion de la Tablet.", label: "Revisar" }
+  ];
 
   return (
     <div className={styles.homeShell} data-prisma-component="TabletHomeScreen">
@@ -45,6 +67,48 @@ export function TabletHomeScreen({ snapshot }: Props) {
             <small>{metric.note}</small>
           </article>
         ))}
+      </section>
+
+      <section className={styles.workflowPanel} aria-label="Mapa de flujo de trabajo">
+        <div className={styles.workflowHeader}>
+          <div>
+            <span>Flujo de trabajo</span>
+            <h3>Todo lo importante queda a la vista</h3>
+          </div>
+          <p>Tablet sigue enfocada en vender, pero ya no esconde las pantallas como truco de feria.</p>
+        </div>
+        <div className={styles.workflowSteps}>
+          {workflowSteps.map((step) => (
+            <a className={styles.workflowStep} href={step.href} key={step.title} data-tone={step.tone}>
+              <strong>{step.step}</strong>
+              <span>
+                <b>{step.title}</b>
+                <small>{step.description}</small>
+              </span>
+              <em>{step.label} →</em>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.toolPanel} aria-label="Herramientas disponibles">
+        <div className={styles.workflowHeader}>
+          <div>
+            <span>Herramientas disponibles</span>
+            <h3>Consulta y soporte sin adivinar rutas</h3>
+          </div>
+        </div>
+        <div className={styles.toolGrid}>
+          {toolCards.map((tool) => (
+            <a className={styles.toolCard} href={tool.href} key={tool.href}>
+              <span>
+                <b>{tool.title}</b>
+                <small>{tool.description}</small>
+              </span>
+              <em>{tool.label} →</em>
+            </a>
+          ))}
+        </div>
       </section>
 
       <section className={styles.mainGrid} aria-label="Acciones y alertas">

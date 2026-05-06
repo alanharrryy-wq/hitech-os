@@ -18,11 +18,79 @@ type ControlKey = "glass" | "blur" | "glow" | "neon" | "depth" | "contrast" | "d
 type Controls = Record<ControlKey, number>;
 type DockMode = "free" | "right" | "left" | "bottom";
 type LayerKey = "background" | "atmosphere" | "shell" | "surface" | "content" | "action" | "state" | "focus" | "overlay";
+type WorkbenchMode = "simple" | "advanced" | "expert";
+type ControlRelevance = "primary" | "secondary" | "ghost";
+type LayerGuide = {
+  name: string;
+  plainName: string;
+  intent: string;
+  modifies: string[];
+  doesNotTouch: string[];
+  affectedSelectors: string[];
+};
+type ControlCopy = { label: string; help: string; relevance: ControlRelevance };
 type Snapshot = { id: string; name: string; createdAt: string; surface: PrismaVisualSurface; recipeName: string; controls: Controls; score: StudioScore };
 type StudioScore = { overall: number; readability: number; operation: number; premium: number; motion: number; safety: number; verdict: "READY" | "WARN" | "BLOCKED" };
 
 type FloatingState = { x: number; y: number; width: number; height: number; dock: DockMode; minimized: boolean; surface: PrismaVisualSurface; layer: LayerKey };
 type DragState = { type: "move"; startX: number; startY: number; originX: number; originY: number } | { type: "resize"; startX: number; startY: number; originWidth: number; originHeight: number };
+
+
+const ROUTE_TRUTH_PACKAGE_MARKER = "PRISMA_VISUAL_OS_ROUTE_TRUTH_LAN_POS_BINDING_00ZM";
+
+type PrismaRouteTruth = {
+  protocol: string;
+  host: string;
+  realtimeUrl: string;
+  realtimeHealthUrl: string;
+  realtimeEventsUrl: string;
+  realtimeStateUrl: string;
+  tabletAppUrl: string;
+  tabletPosUrl: string;
+  visualOsProUrl: string;
+  pcUrl: string;
+  mobileUrl: string;
+  surfaceUrls: Record<PrismaVisualSurface, { label: string; targetUrl: string; shortPath: string }>;
+};
+
+function getPrismaBrowserProtocol() {
+  if (typeof window === "undefined") return "http:";
+  return window.location.protocol === "https:" ? "https:" : "http:";
+}
+
+function getPrismaBrowserHost() {
+  if (typeof window === "undefined") return "127.0.0.1";
+  return window.location.hostname || "127.0.0.1";
+}
+
+function getDefaultPrismaRealtimeUrl() {
+  return `${getPrismaBrowserProtocol()}//${getPrismaBrowserHost()}:4177`;
+}
+
+function buildPrismaRouteTruth(serverUrl?: string): PrismaRouteTruth {
+  const protocol = getPrismaBrowserProtocol();
+  const host = getPrismaBrowserHost();
+  const realtimeUrl = serverUrl && serverUrl.trim() ? serverUrl.trim().replace(/\/$/, "") : getDefaultPrismaRealtimeUrl();
+
+  return {
+    protocol,
+    host,
+    realtimeUrl,
+    realtimeHealthUrl: `${realtimeUrl}/health`,
+    realtimeEventsUrl: `${realtimeUrl}/events`,
+    realtimeStateUrl: `${realtimeUrl}/state`,
+    tabletAppUrl: `${protocol}//${host}:3120/`,
+    tabletPosUrl: `${protocol}//${host}:3120/pos`,
+    visualOsProUrl: `${protocol}//${host}:3120/visual-os/pro`,
+    pcUrl: `${protocol}//${host}:3130/`,
+    mobileUrl: `${protocol}//${host}:3140/`,
+    surfaceUrls: {
+      tablet_pos: { label: "Tablet POS", targetUrl: `${protocol}//${host}:3120/pos`, shortPath: "/pos" },
+      pc_backoffice: { label: "PC Backoffice", targetUrl: `${protocol}//${host}:3130/`, shortPath: ":3130/" },
+      mobile_pulse: { label: "Mobile Pulse", targetUrl: `${protocol}//${host}:3140/`, shortPath: ":3140/" }
+    }
+  };
+}
 
 const STORAGE_KEY = "prisma.visual.studio.pro.00r00s.frame";
 const CONTROL_KEY = "prisma.visual.live.controls";
@@ -46,6 +114,158 @@ const layerLabels: Record<LayerKey, string> = {
   focus: "Focus",
   overlay: "Overlay"
 };
+
+const layerGuides: Record<LayerKey, LayerGuide> = {
+  background: {
+    name: "Background",
+    plainName: "Fondo general",
+    intent: "Ajusta el ambiente visual donde viven las pantallas: color base, profundidad, textura, brillo ambiental y movimiento de fondo.",
+    modifies: ["fondo", "ambiente", "textura", "brillo general", "movimiento suave"],
+    doesNotTouch: ["checkout", "ventas", "stock", "tickets", "base de datos"],
+    affectedSelectors: ["html", "body", "fondos radiales", "variables --prisma-live-*"],
+  },
+  atmosphere: {
+    name: "Atmosphere",
+    plainName: "Atmósfera",
+    intent: "Controla neblina, brillo y sensación premium alrededor de la interfaz sin cambiar datos ni acciones.",
+    modifies: ["haze", "glow", "neon", "grain", "shine"],
+    doesNotTouch: ["cobro", "inventario", "rutas API", "persistencia"],
+    affectedSelectors: ["aurora", "gradientes", "overlays decorativos", "variables --prisma-live-*"],
+  },
+  shell: {
+    name: "Shell",
+    plainName: "Marco / navegación",
+    intent: "Ajusta la carcasa visual: navegación, topbar, sidebar, marco de la app y separación general.",
+    modifies: ["marco", "nav", "topbar", "sidebar", "bordes de estructura"],
+    doesNotTouch: ["acciones de venta", "sincronización", "licencias", "reportes"],
+    affectedSelectors: ["shell", "topbar", "sidebar", "navigation", "layout chrome"],
+  },
+  surface: {
+    name: "Surface",
+    plainName: "Superficies / tarjetas",
+    intent: "Ajusta tarjetas, paneles y superficies de lectura: transparencia, blur, sombra, radio y peso visual.",
+    modifies: ["cards", "paneles", "bordes", "sombra", "radio"],
+    doesNotTouch: ["cálculos", "totales", "checkout", "eventos POS"],
+    affectedSelectors: ["cards", "panels", "sections", "metric cards"],
+  },
+  content: {
+    name: "Content",
+    plainName: "Contenido",
+    intent: "Ajusta lectura de textos, números, densidad y jerarquía visual de contenido.",
+    modifies: ["lectura", "contraste", "densidad", "jerarquía", "aire entre bloques"],
+    doesNotTouch: ["origen de datos", "KPIs", "precios", "reportes"],
+    affectedSelectors: ["headings", "labels", "metric values", "copy blocks"],
+  },
+  action: {
+    name: "Action",
+    plainName: "Botones / acciones",
+    intent: "Ajusta cómo se ven los botones y llamadas a la acción sin tocar lo que ejecutan.",
+    modifies: ["botones", "CTA", "hover", "brillo de acción", "forma"],
+    doesNotTouch: ["completeSale", "payment", "cartTotal", "handlers", "API"],
+    affectedSelectors: ["buttons", "CTA", "publish gate", "checkout visual emphasis"],
+  },
+  state: {
+    name: "State",
+    plainName: "Estados / alertas",
+    intent: "Ajusta cómo se distinguen READY, WARN, BLOCKED, vacío, alerta y foco operativo.",
+    modifies: ["badges", "alertas", "scores", "estados", "mensajes"],
+    doesNotTouch: ["reglas de negocio", "validadores", "gates", "score logic"],
+    affectedSelectors: ["scoreBadge", "guardrails", "status chips", "empty states"],
+  },
+  focus: {
+    name: "Focus",
+    plainName: "Foco / selección",
+    intent: "Ajusta la claridad de lo seleccionado: enfoque, borde activo, glow y lectura de foco.",
+    modifies: ["focus rings", "selección", "borde activo", "énfasis"],
+    doesNotTouch: ["navegación real", "forms submit", "atajos", "estado persistente"],
+    affectedSelectors: ["focus-visible", "active controls", "selected layer"],
+  },
+  overlay: {
+    name: "Overlay",
+    plainName: "Overlays / modales",
+    intent: "Ajusta capas flotantes, modales, pop-outs y paneles de edición.",
+    modifies: ["overlays", "modales", "panel Studio", "backdrop", "pop-out"],
+    doesNotTouch: ["pantallas productivas", "checkout", "DB", "rutas API"],
+    affectedSelectors: ["studioFrame", "modal panels", "detached pro", "floating pro"],
+  },
+};
+
+const layerControlCopy: Record<LayerKey, Partial<Record<ControlKey, ControlCopy>>> = {
+  background: {
+    glass: { label: "Neblina del fondo", help: "Qué tan cristalino o sólido se siente el ambiente base.", relevance: "primary" },
+    blur: { label: "Suavidad del fondo", help: "Desenfoque visual detrás de la interfaz.", relevance: "primary" },
+    glow: { label: "Brillo ambiental", help: "Luz general alrededor de la escena.", relevance: "primary" },
+    motion: { label: "Movimiento de fondo", help: "Vida visual sin marear al operador.", relevance: "primary" },
+    grain: { label: "Textura del fondo", help: "Ruido fino para evitar plástico plano.", relevance: "secondary" },
+    contrast: { label: "Lectura de escena", help: "Separación del fondo contra contenido real.", relevance: "secondary" },
+    edge: { label: "Definición de ambiente", help: "Filo sutil entre fondo y paneles.", relevance: "secondary" },
+  },
+  atmosphere: {
+    glow: { label: "Aura premium", help: "Intensidad del halo PRISMA.", relevance: "primary" },
+    neon: { label: "Energía neón", help: "Electricidad visual en acentos vivos.", relevance: "primary" },
+    shine: { label: "Brillo especular", help: "Reflejo tipo cristal pulido.", relevance: "primary" },
+    saturation: { label: "Energía cromática", help: "Cuánto color se siente en la atmósfera.", relevance: "secondary" },
+    grain: { label: "Polvo visual fino", help: "Textura, no mugre digital.", relevance: "secondary" },
+  },
+  shell: {
+    density: { label: "Compacidad del marco", help: "Espacio del shell sin apretar dedos.", relevance: "primary" },
+    radius: { label: "Corte del marco", help: "Redondeo de navegación y contenedores.", relevance: "primary" },
+    shadow: { label: "Peso del marco", help: "Qué tan separada se siente la carcasa.", relevance: "primary" },
+    edge: { label: "Borde del shell", help: "Definición de sidebar/topbar.", relevance: "primary" },
+    contrast: { label: "Lectura de navegación", help: "Claridad de labels y menús.", relevance: "secondary" },
+  },
+  surface: {
+    glass: { label: "Transparencia de tarjeta", help: "Cristal de paneles y cards.", relevance: "primary" },
+    blur: { label: "Blur de tarjeta", help: "Fondo filtrado por paneles.", relevance: "primary" },
+    radius: { label: "Esquinas de tarjeta", help: "Forma de cards y paneles.", relevance: "primary" },
+    shadow: { label: "Sombra de tarjeta", help: "Profundidad de paneles.", relevance: "primary" },
+    glow: { label: "Brillo de borde", help: "Halo de contenedores premium.", relevance: "secondary" },
+    density: { label: "Aire entre tarjetas", help: "Compacto contra respirable.", relevance: "secondary" },
+  },
+  content: {
+    contrast: { label: "Lectura de contenido", help: "Claridad de texto, total y métricas.", relevance: "primary" },
+    density: { label: "Aire de contenido", help: "Espaciado entre líneas, chips y bloques.", relevance: "primary" },
+    saturation: { label: "Color de contenido", help: "Fuerza cromática sin matar lectura.", relevance: "secondary" },
+    glow: { label: "Énfasis de lectura", help: "Brillo suave en valores clave.", relevance: "secondary" },
+  },
+  action: {
+    glow: { label: "Brillo CTA", help: "Qué tanto grita el botón importante.", relevance: "primary" },
+    neon: { label: "Energía de acción", help: "Acento activo en botones.", relevance: "primary" },
+    radius: { label: "Forma del botón", help: "Redondeo de acciones.", relevance: "primary" },
+    motion: { label: "Movimiento de botón", help: "Hover/click visual sin circo.", relevance: "primary" },
+    contrast: { label: "Lectura del CTA", help: "Que el botón se entienda rápido.", relevance: "primary" },
+    edge: { label: "Borde de acción", help: "Filo del botón activo.", relevance: "secondary" },
+  },
+  state: {
+    contrast: { label: "Claridad de estado", help: "READY/WARN/BLOCKED legibles.", relevance: "primary" },
+    glow: { label: "Alerta visual", help: "Énfasis de badges y guardrails.", relevance: "primary" },
+    edge: { label: "Borde de alerta", help: "Separación de mensajes de estado.", relevance: "primary" },
+    saturation: { label: "Color de semáforo", help: "Fuerza de alertas sin teatro barato.", relevance: "secondary" },
+    motion: { label: "Pulso de estado", help: "Movimiento mínimo en señales.", relevance: "secondary" },
+  },
+  focus: {
+    edge: { label: "Anillo de foco", help: "Borde de elemento activo.", relevance: "primary" },
+    glow: { label: "Halo de selección", help: "Resalta lo seleccionado.", relevance: "primary" },
+    contrast: { label: "Foco legible", help: "Que la selección no se pierda.", relevance: "primary" },
+    motion: { label: "Respuesta de foco", help: "Micro-movimiento de selección.", relevance: "secondary" },
+  },
+  overlay: {
+    glass: { label: "Cristal de overlay", help: "Transparencia del panel flotante.", relevance: "primary" },
+    blur: { label: "Backdrop de overlay", help: "Desenfoque detrás del panel.", relevance: "primary" },
+    shadow: { label: "Peso del overlay", help: "Separación del panel sobre la app.", relevance: "primary" },
+    radius: { label: "Forma del overlay", help: "Esquinas del panel flotante.", relevance: "primary" },
+    shine: { label: "Reflejo de overlay", help: "Brillo del vidrio superior.", relevance: "secondary" },
+  },
+};
+
+function getControlCopy(layer: LayerKey, key: ControlKey, fallbackLabel: string, fallbackHelp: string): ControlCopy {
+  return layerControlCopy[layer][key] ?? { label: fallbackLabel, help: fallbackHelp, relevance: "ghost" };
+}
+
+function affectedVarsFor(layer: LayerKey, controls: Controls) {
+  const vars = cssVarsFromControls(controls, layer);
+  return Object.entries(vars).map(([name, value]) => ({ name, value }));
+}
 
 const presets: Record<string, Controls> = {
   "Crystal POS Angel": { glass: 86, blur: 28, glow: 70, neon: 48, depth: 84, contrast: 88, density: 56, motion: 26, radius: 82, shadow: 76, saturation: 62, shine: 78, grain: 18, edge: 84 },
@@ -147,9 +367,10 @@ export default function PrismaStudioProQaClient({ defaultDetached = false }: { d
   const [recipeName, setRecipeName] = useState("CRYSTAL_POS_ANGEL_LIVE_v01");
   const [liveEnabled, setLiveEnabled] = useState(true);
   const [debugLayers, setDebugLayers] = useState(false);
+  const [workbenchMode, setWorkbenchMode] = useState<WorkbenchMode>("simple");
   const [realtimeEnabled, setRealtimeEnabled] = useState(true);
   const [followRemote, setFollowRemote] = useState(true);
-  const [serverUrl, setServerUrl] = useState(PRISMA_REALTIME_DEFAULT_URL);
+  const [serverUrl, setServerUrl] = useState(() => getDefaultPrismaRealtimeUrl());
   const [status, setStatus] = useState<PrismaRealtimeStatus>("idle");
   const [snapshots, setSnapshots] = useState<Snapshot[]>([]);
   const [recipes, setRecipes] = useState<Snapshot[]>([]);
@@ -159,6 +380,7 @@ export default function PrismaStudioProQaClient({ defaultDetached = false }: { d
   const dragRef = useRef<DragState | null>(null);
   const clientId = useMemo(() => createPrismaRealtimeClientId(defaultDetached ? "studio-pro-detached" : "studio-pro-floating"), [defaultDetached]);
   const broadcastTimer = useRef<number | null>(null);
+  const routeTruth = useMemo(() => buildPrismaRouteTruth(serverUrl), [serverUrl]);
 
   useEffect(() => {
     setFloating((current) => readJson(STORAGE_KEY, current));
@@ -190,8 +412,12 @@ export default function PrismaStudioProQaClient({ defaultDetached = false }: { d
     }),
     layer: floating.layer,
     score,
-    studio: "00R_00S"
-  }), [clientId, controls, debugLayers, defaultDetached, floating.layer, floating.surface, liveEnabled, recipeName, score]);
+    studio: "00R_00S",
+    editorMode: workbenchMode
+  }), [clientId, controls, debugLayers, defaultDetached, floating.layer, floating.surface, liveEnabled, recipeName, score, workbenchMode]);
+  const layerGuide = layerGuides[floating.layer];
+  const affectedCssVars = useMemo(() => affectedVarsFor(floating.layer, controls), [controls, floating.layer]);
+  const primaryControls = useMemo(() => controlLabels.filter(([key]) => getControlCopy(floating.layer, key, "", "").relevance === "primary").map(([key]) => key), [floating.layer]);
   const exportJson = useMemo(() => JSON.stringify(payload, null, 2), [payload]);
 
   useEffect(() => {
@@ -218,6 +444,10 @@ export default function PrismaStudioProQaClient({ defaultDetached = false }: { d
     root.dataset.prismaLiveDebug = debugLayers ? "on" : "off";
     root.dataset.prismaStudioMode = defaultDetached ? "detached-pro" : "floating-pro";
     root.dataset.prismaVisualSurface = floating.surface;
+    root.dataset.prismaVosFocusedLayer = floating.layer;
+    root.dataset.prismaVosEditorMode = workbenchMode;
+    root.dataset.prismaVosLayerFocusPackage = "PRISMA_VISUAL_OS_PRO_LAYER_FOCUS_00ZK";
+    root.dataset.prismaVisualLiveStatusTruth = "PRISMA_VISUAL_OS_LIVE_STATUS_TRUTH_00ZL";
     if (liveEnabled && !blocked) {
       applyPrismaRealtimePayload(payload);
       applyExtraVars(controls, floating.layer);
@@ -233,7 +463,7 @@ export default function PrismaStudioProQaClient({ defaultDetached = false }: { d
       }, 80);
     }
     return () => { if (broadcastTimer.current) window.clearTimeout(broadcastTimer.current); };
-  }, [blocked, controls, debugLayers, defaultDetached, exportJson, floating, liveEnabled, payload, realtimeEnabled, serverUrl]);
+  }, [blocked, controls, debugLayers, defaultDetached, exportJson, floating, liveEnabled, payload, realtimeEnabled, serverUrl, workbenchMode]);
 
   useEffect(() => {
     function onMove(event: PointerEvent) {
@@ -296,8 +526,15 @@ export default function PrismaStudioProQaClient({ defaultDetached = false }: { d
         <div className={styles.body}>
           <section className={styles.commandDeck} data-prisma-layer="surface">
             <article className={styles.connectionPanel} data-status={status}>
-              <span>Realtime</span><strong>{status}</strong><input value={serverUrl} onChange={(event) => setServerUrl(event.target.value)} />
+              <span>Realtime</span><strong>{status === "error" ? "error: revisa 4177" : status}</strong><input value={serverUrl} onChange={(event) => setServerUrl(event.target.value)} />
               <a href="/visual-os/realtime" target="_blank" rel="noreferrer">Bridge</a>
+              <div className={styles.routeTruthPanel} data-prisma-vos-route-truth={ROUTE_TRUTH_PACKAGE_MARKER}>
+                <small>Host activo: <b>{routeTruth.host}</b></small>
+                <small>Tablet app: <code>/</code></small>
+                <small>Tablet POS real: <code>{routeTruth.surfaceUrls.tablet_pos.shortPath}</code></small>
+                <small>Studio Pro: <code>/visual-os/pro</code></small>
+                <small>Realtime health: <code>{routeTruth.realtimeHealthUrl}</code></small>
+              </div>
             </article>
             <article className={styles.publishPanel} data-verdict={score.verdict}>
               <span>Publish Gate</span><strong>{blocked ? "Bloqueado" : "Listo"}</strong><button type="button" onClick={publishActive}>Publicar active</button>{copied && <small>{copied}</small>}
@@ -307,7 +544,24 @@ export default function PrismaStudioProQaClient({ defaultDetached = false }: { d
           <section className={styles.toolbar} aria-label="Modo de consola">
             <label>Superficie<select value={floating.surface} onChange={(event) => setFloating((current) => ({ ...current, surface: event.target.value as PrismaVisualSurface }))}><option value="tablet_pos">Tablet POS</option><option value="pc_backoffice">PC Backoffice</option><option value="mobile_pulse">Mobile Pulse</option></select></label>
             <label>Capa<select value={floating.layer} onChange={(event) => setFloating((current) => ({ ...current, layer: event.target.value as LayerKey }))}>{Object.entries(layerLabels).map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select></label>
-            <label>Receta<input value={recipeName} onChange={(event) => setRecipeName(event.target.value)} /></label>
+            <label>Modo anti-pendejos<select value={workbenchMode} onChange={(event) => setWorkbenchMode(event.target.value as WorkbenchMode)}><option value="simple">Simple: solo lo importante</option><option value="advanced">Avanzado: todo con contexto</option><option value="expert">Experto: JSON + tokens</option></select></label>
+            <label className={styles.recipeField}>Receta<input value={recipeName} onChange={(event) => setRecipeName(event.target.value)} /></label>
+          </section>
+
+          <section className={styles.surfaceStatus} aria-label="Estado de superficies Visual OS">
+            {(Object.entries(surfaceLabels) as Array<[PrismaVisualSurface, string]>).map(([surface, label]) => {
+              const selected = floating.surface === surface;
+              const remoteMatch = lastRemote?.surface === surface;
+              const liveOk = status !== "error" && (remoteMatch || selected);
+              const liveLabel = status === "error" ? "realtime sin conexión" : selected ? status : remoteMatch ? "recibió payload" : "no confirmado";
+              return <button key={surface} type="button" data-active={selected} data-live={liveOk} data-realtime-status={status} onClick={() => setFloating((current) => ({ ...current, surface }))}><b>{label}</b><span>{liveLabel}</span></button>;
+            })}
+          </section>
+
+          <section className={styles.scopeBanner} data-prisma-layer="focus" aria-live="polite">
+            <div><span>Editando ahora</span><strong>{surfaceLabels[floating.surface]} → {layerGuide.plainName}</strong><p>{layerGuide.intent}</p></div>
+            <div><span>Sí modifica</span><p>{layerGuide.modifies.join(" · ")}</p></div>
+            <div><span>No toca</span><p>{layerGuide.doesNotTouch.join(" · ")}</p></div>
           </section>
 
           {!defaultDetached && <nav className={styles.dockbar} aria-label="Posición de consola">{(["free", "left", "right", "bottom"] as DockMode[]).map((mode) => <button key={mode} type="button" data-active={floating.dock === mode} onClick={() => setFloating((current) => ({ ...current, dock: mode }))}>{mode}</button>)}</nav>}
@@ -328,13 +582,25 @@ export default function PrismaStudioProQaClient({ defaultDetached = false }: { d
             {(["readability", "operation", "premium", "motion", "safety"] as const).map((key) => <article key={key}><span>{key}</span><b>{score[key]}</b><meter min="0" max="100" value={score[key]} /></article>)}
           </section>
 
-          <section className={styles.controls} aria-label="Perillas visuales">
-            {controlLabels.map(([key, label, help]) => <label key={key} className={styles.control} data-hot={controls[key] > 72}><span><b>{label}</b><small>{help}</small></span><input type="range" min="0" max="100" value={controls[key]} onChange={(event) => setControl(key, Number(event.target.value))} /><output>{controls[key]}</output></label>)}
+          <section className={styles.controlsHeader} aria-label="Resumen de perillas por capa">
+            <div><span>Perillas principales</span><strong>{primaryControls.length ? primaryControls.join(" · ") : "ninguna"}</strong></div>
+            <p>Las perillas fantasma siguen visibles en modo avanzado para contexto, pero en simple no estorban. La capa activa manda, no el buffet de controles.</p>
+          </section>
+
+          <section className={styles.controls} aria-label={`Perillas visuales para ${layerGuide.plainName}`}>
+            {controlLabels.map(([key, label, help]) => {
+              const copy = getControlCopy(floating.layer, key, label, help);
+              const hiddenInSimple = workbenchMode === "simple" && copy.relevance === "ghost";
+              return <label key={key} className={`${styles.control} ${hiddenInSimple ? styles.controlHiddenSimple : ""}`} data-hot={controls[key] > 72} data-relevance={copy.relevance}><span><b>{copy.label}</b><small>{copy.help}</small><em>{copy.relevance === "primary" ? "Principal de capa" : copy.relevance === "secondary" ? "Apoyo" : "Fantasma / indirecta"}</em></span><input type="range" min="0" max="100" value={controls[key]} disabled={hiddenInSimple} onChange={(event) => setControl(key, Number(event.target.value))} /><output>{controls[key]}</output></label>;
+            })}
           </section>
 
           <section className={styles.previewLab} data-prisma-layer="surface">
+            <article className={styles.layerFocusMap} aria-label="Mapa de capas con foco anti-pendejos">
+              {(Object.entries(layerGuides) as Array<[LayerKey, LayerGuide]>).map(([key, guide]) => <button key={key} type="button" data-active={floating.layer === key} data-ghost={floating.layer !== key} onClick={() => setFloating((current) => ({ ...current, layer: key }))}><span>{guide.plainName}</span><small>{floating.layer === key ? "sólida / editando" : "fantasma"}</small></button>)}
+            </article>
             <article className={styles.previewCard}><span>Preview cristal</span><strong>$146.00</strong><small>{lastRemote ? `Remoto: ${lastRemote.recipeName}` : "Local + broadcast cuando el servidor respira"}</small><button type="button">Cobrar</button></article>
-            <article className={styles.layerInspector}><span>Layer inspector</span><b>{layerLabels[floating.layer]}</b><p>Los cambios se aplican como variables CSS vivas y metadata de layer. No es magia; es ingeniería con maquillaje fino.</p></article>
+            <article className={styles.layerInspector}><span>Layer inspector</span><b>{layerGuide.plainName}</b><p>{layerGuide.intent}</p><ul>{affectedCssVars.slice(0, workbenchMode === "expert" ? affectedCssVars.length : 6).map((item) => <li key={item.name}><code>{item.name}</code><span>{item.value}</span></li>)}</ul></article>
           </section>
 
           <section className={styles.snapshotLab} data-prisma-layer="content">
@@ -344,7 +610,7 @@ export default function PrismaStudioProQaClient({ defaultDetached = false }: { d
           </section>
 
           <section className={styles.guardrails} data-prisma-layer="state"><strong>Guardrails</strong>{guardrails.map((message) => <p key={message.text} data-level={message.level}>{message.text}</p>)}</section>
-          <details className={styles.exportBox}><summary>Payload pro JSON</summary><pre suppressHydrationWarning>{exportJson}</pre></details>
+          {workbenchMode !== "simple" && <details className={styles.exportBox} open={workbenchMode === "expert"}><summary>Payload pro JSON</summary><pre suppressHydrationWarning>{exportJson}</pre></details>}
         </div>
       )}
       {!defaultDetached && !floating.minimized && <button type="button" className={styles.resizeHandle} onPointerDown={beginResize} aria-label="Redimensionar consola" />}

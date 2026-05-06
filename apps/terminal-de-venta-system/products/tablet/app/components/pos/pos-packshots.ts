@@ -31,13 +31,15 @@ export const POS_PACKSHOT_FILENAMES = [
 ] as const;
 
 const PACKSHOT_BASE = "/pos-packshots";
+const PRODUCT_PACKSHOT_BASE = "/products/packshots";
 
 type PackshotFile = (typeof POS_PACKSHOT_FILENAMES)[number];
 
 type PackshotRule = {
-  file: PackshotFile;
+  file: PackshotFile | string;
   alt: string;
   kind: PosPackshotKind;
+  base?: string;
 };
 
 function normalizeProductText(value: string | null | undefined) {
@@ -48,7 +50,7 @@ function normalizeProductText(value: string | null | undefined) {
 }
 
 function makePackshot(rule: PackshotRule): PosPackshot {
-  return { src: `${PACKSHOT_BASE}/${rule.file}`, alt: rule.alt, kind: rule.kind };
+  return { src: `${rule.base ?? PACKSHOT_BASE}/${rule.file}`, alt: rule.alt, kind: rule.kind };
 }
 
 function includesAny(text: string, needles: string[]) {
@@ -56,6 +58,38 @@ function includesAny(text: string, needles: string[]) {
 }
 
 function ruleFromProductText(text: string): PackshotRule | null {
+  if (includesAny(text, ["coca cola 600", "coca-cola-600", "coca 600"])) {
+    return { file: "coca-cola-600ml.png", alt: "Packshot de Coca Cola 600 ml", kind: "bottle", base: PRODUCT_PACKSHOT_BASE };
+  }
+
+  if (includesAny(text, ["sabritas original 45", "sabritas-original-45", "sabritas 45"])) {
+    return { file: "sabritas-original-45g.png", alt: "Packshot de Sabritas Original 45 g", kind: "bag", base: PRODUCT_PACKSHOT_BASE };
+  }
+
+  if (includesAny(text, ["leche lala entera 1", "lala entera 1", "lala 1l"])) {
+    return { file: "leche-lala-entera-1l.png", alt: "Packshot de Leche Lala Entera 1 L", kind: "carton", base: PRODUCT_PACKSHOT_BASE };
+  }
+
+  if (includesAny(text, ["agua ciel 1", "ciel 1l", "agua-ciel-1l"])) {
+    return { file: "agua-ciel-1l.png", alt: "Packshot de Agua Ciel 1 L", kind: "water", base: PRODUCT_PACKSHOT_BASE };
+  }
+
+  if (includesAny(text, ["nescafe clasico 200", "nescafe-clasico-200", "nescafe 200"])) {
+    return { file: "nescafe-clasico-200g.png", alt: "Packshot de Nescafe Clasico 200 g", kind: "jar", base: PRODUCT_PACKSHOT_BASE };
+  }
+
+  if (includesAny(text, ["pan bimbo blanco grande", "bimbo blanco grande", "pan-bimbo-blanco-grande"])) {
+    return { file: "pan-bimbo-blanco-grande.png", alt: "Packshot de Pan Bimbo Blanco Grande", kind: "bread", base: PRODUCT_PACKSHOT_BASE };
+  }
+
+  if (includesAny(text, ["ace 1", "ace-1kg", "detergente ace"])) {
+    return { file: "ace-1kg.png", alt: "Packshot de Ace 1 kg", kind: "box", base: PRODUCT_PACKSHOT_BASE };
+  }
+
+  if (includesAny(text, ["zucaritas kelloggs 730", "zucaritas kellogg", "zucaritas-kelloggs-730"])) {
+    return { file: "zucaritas-kelloggs-730g.png", alt: "Packshot de Zucaritas Kelloggs 730 g", kind: "box", base: PRODUCT_PACKSHOT_BASE };
+  }
+
   if (includesAny(text, ["agua", "bonafont", "ciel", "cristal", "mineral", "topo chico"])) {
     return { file: "water_bottle_512.png", alt: "Packshot genérico de agua", kind: "water" };
   }

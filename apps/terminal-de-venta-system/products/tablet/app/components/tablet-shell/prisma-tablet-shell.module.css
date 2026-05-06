@@ -1007,3 +1007,1038 @@ html[data-layer-profile="perf"] .header {
   }
 }
 /* PRISMA_TABLET_FLOW_GUIDED_SIDEBAR_04I::END */
+
+/* PRISMA_LIGHT_TABLET_SHELL_00Q
+ * Scoped shell binding for the two-skin Tablet runtime. Dark keeps the earlier
+ * governed glass/gold stack; Light becomes white frosted with blue operation.
+ */
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .shell {
+  background:
+    radial-gradient(circle at 42% -8%, rgba(21, 87, 255, 0.11), transparent 34%),
+    radial-gradient(circle at 88% 16%, rgba(219, 232, 255, 0.82), transparent 28%),
+    linear-gradient(180deg, #ffffff 0%, #f7f9ff 48%, #eef4ff 100%) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .sidebar,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .brand,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .header,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionBand,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .terminalCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .runtimeStrip,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .runtimePanel {
+  border-color: var(--prisma-border-soft) !important;
+  background:
+    var(--prisma-glass-inner-bloom),
+    var(--prisma-panel-gradient) !important;
+  box-shadow: var(--prisma-shadow-panel-lift) !important;
+  backdrop-filter: blur(var(--prisma-optical-panel-blur)) saturate(var(--prisma-optical-panel-saturate)) !important;
+  -webkit-backdrop-filter: blur(var(--prisma-optical-panel-blur)) saturate(var(--prisma-optical-panel-saturate)) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .sidebar {
+  border-right-color: #dfe7f6 !important;
+  box-shadow: 18px 0 74px rgba(32, 45, 82, 0.09) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .brand {
+  color: var(--prisma-text-primary);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .prismaShard {
+  filter: drop-shadow(0 16px 22px rgba(21, 87, 255, 0.22));
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .prismaShard::before {
+  border-color: rgba(21, 87, 255, 0.68);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.42), rgba(21, 87, 255, 0.34) 52%, rgba(11, 56, 184, 0.12));
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .prismaShard::after {
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.72), rgba(21, 87, 255, 0.08));
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navItem,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statusPill,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .headerIconButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .runtimeIdentity,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .runtimeChip,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .runtimeMetricGrid div {
+  border-color: var(--prisma-border-soft) !important;
+  color: var(--prisma-text-secondary);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.86), rgba(246,250,255,0.62)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.88), 0 10px 24px rgba(32,45,82,0.07) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navItem:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navItem:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .runtimeChip:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .runtimeChip:focus-visible {
+  color: var(--prisma-action-primary);
+  border-color: var(--prisma-border-action) !important;
+  background:
+    linear-gradient(180deg, #ffffff, var(--prisma-action-primary-soft)) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navActive,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navPrimary,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .shell[data-prisma-flow-stage="inicio"] .navActive {
+  color: #ffffff !important;
+  border-color: rgba(21, 87, 255, 0.62) !important;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255,255,255,0.26), transparent 42%),
+    var(--prisma-action-primary-gradient) !important;
+  box-shadow: var(--prisma-shadow-primary-glow), inset 0 1px 0 rgba(255,255,255,0.32) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kicker,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .runtimeIdentity span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .runtimePanelHeader strong,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navFlowHint span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .terminalIcon {
+  color: var(--prisma-action-primary);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navFlowHint {
+  border-color: var(--prisma-border-soft);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.82), rgba(246,250,255,0.62)),
+    var(--prisma-action-primary-soft);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .status_ok,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .runtime_ok {
+  border-color: color-mix(in srgb, var(--prisma-state-success) 34%, var(--prisma-border-soft)) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .status_warn,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .runtime_warn {
+  border-color: color-mix(in srgb, var(--prisma-state-warning) 40%, var(--prisma-border-soft)) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .status_danger,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .runtime_danger {
+  border-color: color-mix(in srgb, var(--prisma-state-danger) 42%, var(--prisma-border-soft)) !important;
+}
+
+/* PRISMA_TABLET_DENSITY_CALIBRATION_07A::START */
+/*
+ * Density pass for Tablet POS.
+ * Goal: make the app feel like a tablet workstation, not a browser at 125% zoom.
+ * Scope: visual density only. No shared-kernel, no data, no sale logic.
+ */
+.shell[data-prisma-visual-surface="tablet-pos"] {
+  grid-template-columns: 200px minmax(0, 1fr);
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .sidebar {
+  padding: 14px 10px;
+  gap: 12px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .brand {
+  min-height: 124px;
+  padding: 12px 8px;
+  gap: 9px;
+  border-radius: 18px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .brandMark {
+  width: 54px;
+  height: 68px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .prismaShard {
+  width: 42px;
+  height: 64px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .brandText strong {
+  font-size: 18px;
+  letter-spacing: 0.14em;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .brandText small {
+  font-size: 7px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .navList {
+  gap: 6px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .navFlowHint {
+  padding: 8px 9px;
+  gap: 2px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .navFlowHint span,
+.shell[data-prisma-visual-surface="tablet-pos"] .navFlowHint small {
+  font-size: 10px;
+  line-height: 1.25;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .navItem,
+.shell[data-prisma-visual-surface="tablet-pos"] .navActive,
+.shell[data-prisma-visual-surface="tablet-pos"] .navPrimary,
+.shell[data-prisma-visual-surface="tablet-pos"] .terminalCard {
+  min-height: 48px;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 8px;
+  padding: 0 10px;
+  border-radius: 15px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .terminalIcon {
+  width: 32px;
+  min-height: 32px;
+  border-radius: 11px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .main {
+  padding: 14px;
+  gap: 12px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .header {
+  min-height: 72px;
+  padding: 12px 16px;
+  gap: 12px;
+  border-radius: 20px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .titleGroup h1 {
+  font-size: clamp(24px, 2vw, 34px);
+  line-height: 1.02;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .titleGroup p {
+  max-width: 680px;
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .kicker {
+  font-size: 10px;
+  letter-spacing: 0.11em;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .headerControls {
+  gap: 8px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .headerIconButton {
+  width: 42px;
+  height: 42px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .statusPill {
+  min-height: 28px;
+  padding: 0 9px;
+  font-size: 11px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .content {
+  gap: 12px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .runtimeStrip {
+  padding: 10px 12px;
+  gap: 10px;
+  border-radius: 18px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .runtimeChip {
+  min-height: 42px;
+  padding: 8px 10px;
+}
+
+@media (max-width: 1180px) {
+  .shell[data-prisma-visual-surface="tablet-pos"] {
+    grid-template-columns: 84px minmax(0, 1fr);
+  }
+
+  .shell[data-prisma-visual-surface="tablet-pos"] .brand {
+    min-height: 74px;
+  }
+
+  .shell[data-prisma-visual-surface="tablet-pos"] .brandMark {
+    width: 34px;
+    height: 38px;
+  }
+
+  .shell[data-prisma-visual-surface="tablet-pos"] .prismaShard {
+    width: 28px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 900px) {
+  .shell[data-prisma-visual-surface="tablet-pos"] {
+    grid-template-columns: 1fr;
+  }
+
+  .shell[data-prisma-visual-surface="tablet-pos"] .main {
+    padding: 10px;
+  }
+
+  .shell[data-prisma-visual-surface="tablet-pos"] .header {
+    padding: 12px;
+  }
+}
+/* PRISMA_TABLET_DENSITY_CALIBRATION_07A::END */
+
+/* PRISMA_LIGHT_TACTILE_POLISH_00R::START */
+@keyframes prismaLightContentEnter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .content {
+  animation: prismaLightContentEnter var(--prisma-motion-slow) var(--prisma-ease-premium) both;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navItem,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navPrimary,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navActive,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .headerIconButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .runtimeChip,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .terminalCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionBand {
+  transition:
+    transform var(--prisma-motion-base) var(--prisma-ease-premium),
+    box-shadow var(--prisma-motion-base) var(--prisma-ease-premium),
+    border-color var(--prisma-motion-fast) ease,
+    background var(--prisma-motion-base) ease,
+    color var(--prisma-motion-fast) ease;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navItem:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navPrimary:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .headerIconButton:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .runtimeChip:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .terminalCard:hover {
+  transform: translateY(-1px);
+  border-color: var(--prisma-border-action) !important;
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navItem:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navPrimary:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navActive:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .headerIconButton:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .runtimeChip:active {
+  transform: translateY(1px) scale(0.99);
+  box-shadow: var(--prisma-light-shadow-card);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navItem:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navPrimary:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navActive:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .headerIconButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .runtimeChip:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .terminalCard:focus-visible {
+  outline: none;
+  border-color: var(--prisma-action-primary) !important;
+  box-shadow: var(--prisma-focus-ring-strong), var(--prisma-shadow-card-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .content,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navItem,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navPrimary,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navActive,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .headerIconButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .runtimeChip,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .terminalCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionBand {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+/* PRISMA_LIGHT_TACTILE_POLISH_00R::END */
+
+/* PRISMA_TABLET_FLOW_CLARITY_05A_NAV_TOPBAR_COLLAPSE::START */
+.sidebarToggleInput {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] {
+  grid-template-columns: 212px minmax(0, 1fr);
+  transition: grid-template-columns var(--prisma-motion-base) var(--prisma-ease-premium);
+}
+
+.sidebarToggleInput:checked + .shell[data-prisma-visual-surface="tablet-pos"] {
+  grid-template-columns: 76px minmax(0, 1fr);
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .sidebar {
+  padding: 12px 9px;
+  gap: 10px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .brand {
+  min-height: 82px;
+  padding: 10px 8px;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  transition:
+    min-height var(--prisma-motion-base) var(--prisma-ease-premium),
+    transform var(--prisma-motion-base) var(--prisma-ease-premium),
+    box-shadow var(--prisma-motion-base) var(--prisma-ease-premium),
+    border-color var(--prisma-motion-fast) ease;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .brand:hover,
+.shell[data-prisma-visual-surface="tablet-pos"] .brand:focus-visible,
+.sidebarToggleInput:focus-visible + .shell[data-prisma-visual-surface="tablet-pos"] .brand {
+  outline: none;
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--prisma-accent-gold) 48%, var(--prisma-border-soft)) !important;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .brandMark {
+  width: 42px;
+  height: 48px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .prismaShard {
+  width: 34px;
+  height: 46px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .brandText strong {
+  font-size: 15px;
+  letter-spacing: 0.12em;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .brandText small {
+  font-size: 6.5px;
+}
+
+.sidebarToggleInput:checked + .shell[data-prisma-visual-surface="tablet-pos"] .brand {
+  min-height: 62px;
+  grid-template-columns: 1fr;
+}
+
+.sidebarToggleInput:checked + .shell[data-prisma-visual-surface="tablet-pos"] .brandText,
+.sidebarToggleInput:checked + .shell[data-prisma-visual-surface="tablet-pos"] .navFlowHint small,
+.sidebarToggleInput:checked + .shell[data-prisma-visual-surface="tablet-pos"] .navGroupLabel,
+.sidebarToggleInput:checked + .shell[data-prisma-visual-surface="tablet-pos"] .navText,
+.sidebarToggleInput:checked + .shell[data-prisma-visual-surface="tablet-pos"] .terminalCard span:last-child {
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.sidebarToggleInput:checked + .shell[data-prisma-visual-surface="tablet-pos"] .brandMark {
+  width: 36px;
+  height: 40px;
+}
+
+.sidebarToggleInput:checked + .shell[data-prisma-visual-surface="tablet-pos"] .prismaShard {
+  width: 28px;
+  height: 36px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .navList {
+  gap: 8px;
+  padding-right: 0;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .navFlowHint {
+  padding: 8px 9px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .navFlowHint span {
+  font-size: 10px;
+}
+
+.navGroup {
+  display: grid;
+  gap: 5px;
+}
+
+.navGroupLabel {
+  padding: 0 6px;
+  color: var(--prisma-text-muted);
+  font-size: 9px;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.navGroupItems {
+  display: grid;
+  gap: 5px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .navItem,
+.shell[data-prisma-visual-surface="tablet-pos"] .navActive,
+.shell[data-prisma-visual-surface="tablet-pos"] .navPrimary {
+  position: relative;
+  min-height: 44px;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  gap: 7px;
+  padding: 0 9px;
+  border-radius: 14px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .navPrimary {
+  min-height: 58px;
+}
+
+.navText {
+  min-width: 0;
+  display: grid;
+  gap: 1px;
+}
+
+.navLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.navText small {
+  color: color-mix(in srgb, currentColor 70%, transparent);
+  font-size: 10px;
+  font-weight: 750;
+  line-height: 1.18;
+  white-space: normal;
+}
+
+.navBadge {
+  min-width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--prisma-radius-pill);
+  color: var(--prisma-text-on-gold);
+  background: var(--prisma-gold-gradient);
+  font-size: 10px;
+  font-weight: 950;
+  box-shadow: 0 0 18px color-mix(in srgb, var(--prisma-accent-gold) 34%, transparent);
+}
+
+.sidebarToggleInput:checked + .shell[data-prisma-visual-surface="tablet-pos"] .navItem,
+.sidebarToggleInput:checked + .shell[data-prisma-visual-surface="tablet-pos"] .navActive,
+.sidebarToggleInput:checked + .shell[data-prisma-visual-surface="tablet-pos"] .navPrimary,
+.sidebarToggleInput:checked + .shell[data-prisma-visual-surface="tablet-pos"] .terminalCard {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  padding: 0;
+}
+
+.sidebarToggleInput:checked + .shell[data-prisma-visual-surface="tablet-pos"] .navBadge {
+  position: absolute;
+  right: 3px;
+  top: 3px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .main {
+  grid-template-rows: auto auto minmax(0, 1fr);
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .header {
+  min-height: 58px;
+  display: grid;
+  grid-template-columns: minmax(185px, 0.58fr) minmax(360px, 1.6fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 9px 12px;
+  border-radius: 18px;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .titleGroup {
+  min-width: 0;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .titleGroup h1 {
+  margin: 1px 0;
+  font-size: clamp(20px, 1.6vw, 28px);
+  line-height: 1;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .titleGroup p {
+  max-width: none;
+  overflow: hidden;
+  color: var(--prisma-text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.22;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shell[data-prisma-visual-surface="tablet-pos"] .kicker {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+
+.runtimeStripCompact {
+  min-width: 0;
+  padding: 0;
+  border: 0 !important;
+  border-radius: 0;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  grid-template-columns: minmax(150px, 0.72fr) minmax(260px, 1.45fr);
+  gap: 8px;
+}
+
+.runtimeStripCompact .runtimeIdentity {
+  min-height: 40px;
+  padding: 6px 9px;
+}
+
+.runtimeStripCompact .runtimeIdentity span { font-size: 8px; }
+.runtimeStripCompact .runtimeIdentity strong { font-size: 12px; }
+.runtimeStripCompact .runtimeIdentity small { font-size: 10px; }
+
+.runtimeStripCompact .runtimeChips {
+  grid-template-columns: repeat(4, minmax(84px, 1fr));
+  gap: 6px;
+}
+
+.runtimeStripCompact .runtimeChip {
+  min-height: 40px;
+  padding: 6px 8px;
+  border-radius: 13px;
+}
+
+.runtimeStripCompact .runtimeChip span { font-size: 8px; }
+.runtimeStripCompact .runtimeChip strong { font-size: 11px; }
+
+.shell[data-prisma-visual-surface="tablet-pos"] .headerControls { gap: 6px; }
+
+.headerTextButton {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  border: 1px solid var(--prisma-border-soft);
+  border-radius: var(--prisma-radius-pill);
+  color: var(--prisma-text-primary);
+  background: var(--prisma-glass-control-governed, var(--prisma-glass-gradient));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 24px rgba(0,0,0,0.16);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+  transition:
+    transform var(--prisma-motion-base) var(--prisma-ease-premium),
+    border-color var(--prisma-motion-fast) ease,
+    box-shadow var(--prisma-motion-base) var(--prisma-ease-premium);
+}
+
+.headerTextButton:hover,
+.headerTextButton:focus-visible {
+  outline: none;
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--prisma-accent-gold) 42%, var(--prisma-border-soft));
+}
+
+.headerTextButton strong {
+  min-width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--prisma-radius-pill);
+  color: var(--prisma-text-on-gold);
+  background: var(--prisma-gold-gradient);
+  font-size: 10px;
+  font-weight: 950;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navPrimary,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navActive[data-primary="true"] {
+  color: var(--prisma-text-inverse) !important;
+  border-color: var(--prisma-border-action) !important;
+  background: var(--prisma-action-primary-gradient) !important;
+  box-shadow: var(--prisma-shadow-primary-glow) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navActive:not([data-primary="true"]) {
+  color: var(--prisma-action-primary) !important;
+  border-color: var(--prisma-border-action) !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255,255,255,0.78), transparent 38%),
+    linear-gradient(180deg, rgba(255,255,255,0.96), rgba(235,242,255,0.78)) !important;
+  box-shadow: var(--prisma-focus-ring-soft), var(--prisma-shadow-card-hover) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .navBadge,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .headerTextButton strong {
+  color: var(--prisma-text-inverse);
+  background: var(--prisma-action-primary-gradient);
+  box-shadow: var(--prisma-shadow-primary-glow);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .headerTextButton {
+  color: var(--prisma-text-primary);
+  border-color: var(--prisma-border-soft);
+  background: var(--prisma-control-surface);
+  box-shadow: var(--prisma-shadow-xs);
+}
+
+@media (max-width: 1280px) {
+  .shell[data-prisma-visual-surface="tablet-pos"] .header {
+    grid-template-columns: minmax(170px, 0.62fr) minmax(280px, 1.4fr) auto;
+  }
+
+  .runtimeStripCompact .runtimeIdentity small,
+  .headerTextButton span { display: none; }
+}
+
+@media (max-width: 1120px) {
+  .shell[data-prisma-visual-surface="tablet-pos"] .header { grid-template-columns: 1fr auto; }
+  .runtimeStripCompact {
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr;
+  }
+  .runtimeStripCompact .runtimeChips { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (max-width: 900px) {
+  .sidebarToggleInput:checked + .shell[data-prisma-visual-surface="tablet-pos"],
+  .shell[data-prisma-visual-surface="tablet-pos"] { grid-template-columns: 1fr; }
+
+  .sidebarToggleInput:checked + .shell[data-prisma-visual-surface="tablet-pos"] .navText,
+  .sidebarToggleInput:checked + .shell[data-prisma-visual-surface="tablet-pos"] .brandText,
+  .sidebarToggleInput:checked + .shell[data-prisma-visual-surface="tablet-pos"] .navGroupLabel {
+    position: static;
+    width: auto;
+    height: auto;
+    opacity: 1;
+    overflow: visible;
+  }
+
+  .runtimeStripCompact .runtimeChips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shell[data-prisma-visual-surface="tablet-pos"],
+  .shell[data-prisma-visual-surface="tablet-pos"] .brand,
+  .headerTextButton { transition: none !important; }
+}
+/* PRISMA_TABLET_FLOW_CLARITY_05A_NAV_TOPBAR_COLLAPSE::END */
+
+/* PRISMA_TABLET_FLOW_CLARITY_05B_GLOBAL_SHELL_HOTFIX::START
+ * Fixes 05A scoping: compact topbar + collapse rail must work on every Tablet route,
+ * not only routes passing visualSurface="tablet-pos".
+ */
+.shell[data-prisma-product="tablet"] {
+  grid-template-columns: 212px minmax(0, 1fr);
+  transition: grid-template-columns var(--prisma-motion-base) var(--prisma-ease-premium);
+}
+
+.sidebarToggleInput:checked + .shell[data-prisma-product="tablet"] {
+  grid-template-columns: 76px minmax(0, 1fr);
+}
+
+.shell[data-prisma-product="tablet"] .main {
+  min-width: 0;
+  overflow-x: hidden;
+  padding: 12px 14px 18px;
+  gap: 12px;
+}
+
+.shell[data-prisma-product="tablet"] .sidebar {
+  padding: 12px 9px;
+  gap: 10px;
+}
+
+.shell[data-prisma-product="tablet"] .brand {
+  min-height: 82px;
+  padding: 10px 8px;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  transition:
+    min-height var(--prisma-motion-base) var(--prisma-ease-premium),
+    transform var(--prisma-motion-base) var(--prisma-ease-premium),
+    box-shadow var(--prisma-motion-base) var(--prisma-ease-premium),
+    border-color var(--prisma-motion-fast) ease;
+}
+
+.shell[data-prisma-product="tablet"] .brand:hover,
+.shell[data-prisma-product="tablet"] .brand:focus-visible,
+.sidebarToggleInput:focus-visible + .shell[data-prisma-product="tablet"] .brand {
+  outline: none;
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--prisma-accent-gold) 48%, var(--prisma-border-soft)) !important;
+}
+
+.shell[data-prisma-product="tablet"] .brandMark {
+  width: 42px;
+  height: 48px;
+}
+
+.shell[data-prisma-product="tablet"] .prismaShard {
+  width: 34px;
+  height: 46px;
+}
+
+.shell[data-prisma-product="tablet"] .brandText strong {
+  font-size: 15px;
+  letter-spacing: 0.12em;
+}
+
+.shell[data-prisma-product="tablet"] .brandText small {
+  font-size: 6.5px;
+}
+
+.sidebarToggleInput:checked + .shell[data-prisma-product="tablet"] .brand {
+  min-height: 62px;
+  grid-template-columns: 1fr;
+}
+
+.sidebarToggleInput:checked + .shell[data-prisma-product="tablet"] .brandText,
+.sidebarToggleInput:checked + .shell[data-prisma-product="tablet"] .navFlowHint small,
+.sidebarToggleInput:checked + .shell[data-prisma-product="tablet"] .navGroupLabel,
+.sidebarToggleInput:checked + .shell[data-prisma-product="tablet"] .navText,
+.sidebarToggleInput:checked + .shell[data-prisma-product="tablet"] .terminalCard span:last-child {
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.sidebarToggleInput:checked + .shell[data-prisma-product="tablet"] .brandMark {
+  width: 36px;
+  height: 40px;
+}
+
+.sidebarToggleInput:checked + .shell[data-prisma-product="tablet"] .prismaShard {
+  width: 28px;
+  height: 36px;
+}
+
+.shell[data-prisma-product="tablet"] .navList {
+  gap: 8px;
+  padding-right: 0;
+}
+
+.shell[data-prisma-product="tablet"] .navFlowHint {
+  padding: 8px 9px;
+}
+
+.shell[data-prisma-product="tablet"] .navFlowHint span {
+  font-size: 10px;
+}
+
+.shell[data-prisma-product="tablet"] .navItem,
+.shell[data-prisma-product="tablet"] .navActive,
+.shell[data-prisma-product="tablet"] .navPrimary {
+  position: relative;
+  min-height: 44px;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  gap: 7px;
+  padding: 0 9px;
+  border-radius: 14px;
+}
+
+.shell[data-prisma-product="tablet"] .navPrimary {
+  min-height: 58px;
+}
+
+.sidebarToggleInput:checked + .shell[data-prisma-product="tablet"] .navItem,
+.sidebarToggleInput:checked + .shell[data-prisma-product="tablet"] .navActive,
+.sidebarToggleInput:checked + .shell[data-prisma-product="tablet"] .navPrimary,
+.sidebarToggleInput:checked + .shell[data-prisma-product="tablet"] .terminalCard {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  padding: 0;
+}
+
+.sidebarToggleInput:checked + .shell[data-prisma-product="tablet"] .navBadge {
+  position: absolute;
+  right: 3px;
+  top: 3px;
+}
+
+.shell[data-prisma-product="tablet"] .header {
+  min-width: 0;
+  max-width: 100%;
+  min-height: 58px;
+  display: grid;
+  grid-template-columns: minmax(165px, 0.45fr) minmax(330px, 1fr) minmax(250px, auto);
+  gap: 8px;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.shell[data-prisma-product="tablet"] .titleGroup {
+  min-width: 0;
+}
+
+.shell[data-prisma-product="tablet"] .titleGroup h1 {
+  margin: 1px 0;
+  font-size: clamp(20px, 1.45vw, 28px);
+  line-height: 1;
+}
+
+.shell[data-prisma-product="tablet"] .titleGroup p {
+  max-width: none;
+  overflow: hidden;
+  color: var(--prisma-text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.22;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shell[data-prisma-product="tablet"] .kicker {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+
+.shell[data-prisma-product="tablet"] .runtimeStripCompact {
+  min-width: 0;
+  padding: 0;
+  border: 0 !important;
+  border-radius: 0;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  grid-template-columns: minmax(120px, 0.52fr) minmax(260px, 1.48fr);
+  gap: 7px;
+}
+
+.shell[data-prisma-product="tablet"] .runtimeStripCompact .runtimeIdentity {
+  min-width: 0;
+  min-height: 40px;
+  padding: 6px 8px;
+}
+
+.shell[data-prisma-product="tablet"] .runtimeStripCompact .runtimeIdentity span { font-size: 8px; }
+.shell[data-prisma-product="tablet"] .runtimeStripCompact .runtimeIdentity strong { font-size: 12px; }
+.shell[data-prisma-product="tablet"] .runtimeStripCompact .runtimeIdentity small { display: none; }
+
+.shell[data-prisma-product="tablet"] .runtimeStripCompact .runtimeChips {
+  min-width: 0;
+  grid-template-columns: repeat(4, minmax(62px, 1fr));
+  gap: 5px;
+}
+
+.shell[data-prisma-product="tablet"] .runtimeStripCompact .runtimeChip {
+  min-width: 0;
+  min-height: 40px;
+  padding: 6px 7px;
+  border-radius: 13px;
+}
+
+.shell[data-prisma-product="tablet"] .runtimeStripCompact .runtimeChip span { font-size: 8px; }
+.shell[data-prisma-product="tablet"] .runtimeStripCompact .runtimeChip strong { font-size: 11px; }
+
+.shell[data-prisma-product="tablet"] .headerControls {
+  min-width: 0;
+  max-width: 100%;
+  justify-content: flex-end;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.shell[data-prisma-product="tablet"] .headerControls > * {
+  min-width: 0;
+  flex: 0 1 auto;
+}
+
+.shell[data-prisma-product="tablet"] .headerControls > *:first-child {
+  max-width: 214px;
+}
+
+.shell[data-prisma-product="tablet"] .headerTextButton {
+  min-height: 40px;
+  flex: 0 0 auto;
+  padding: 0 10px;
+}
+
+.shell[data-prisma-product="tablet"] .headerTextButton span {
+  display: none;
+}
+
+@media (min-width: 1600px) {
+  .shell[data-prisma-product="tablet"] .headerTextButton span {
+    display: inline;
+  }
+}
+
+@media (max-width: 1280px) {
+  .shell[data-prisma-product="tablet"] .header {
+    grid-template-columns: minmax(150px, 0.42fr) minmax(300px, 1fr) minmax(210px, auto);
+  }
+
+  .shell[data-prisma-product="tablet"] .headerControls > *:first-child {
+    max-width: 180px;
+  }
+}
+
+@media (max-width: 1120px) {
+  .shell[data-prisma-product="tablet"] .header {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .shell[data-prisma-product="tablet"] .runtimeStripCompact {
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr;
+  }
+
+  .shell[data-prisma-product="tablet"] .runtimeStripCompact .runtimeChips {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .sidebarToggleInput:checked + .shell[data-prisma-product="tablet"],
+  .shell[data-prisma-product="tablet"] {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebarToggleInput:checked + .shell[data-prisma-product="tablet"] .navText,
+  .sidebarToggleInput:checked + .shell[data-prisma-product="tablet"] .brandText,
+  .sidebarToggleInput:checked + .shell[data-prisma-product="tablet"] .navGroupLabel {
+    position: static;
+    width: auto;
+    height: auto;
+    opacity: 1;
+    overflow: visible;
+  }
+
+  .shell[data-prisma-product="tablet"] .runtimeStripCompact .runtimeChips {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shell[data-prisma-product="tablet"],
+  .shell[data-prisma-product="tablet"] .brand,
+  .shell[data-prisma-product="tablet"] .headerTextButton {
+    transition: none !important;
+  }
+}
+/* PRISMA_TABLET_FLOW_CLARITY_05B_GLOBAL_SHELL_HOTFIX::END */

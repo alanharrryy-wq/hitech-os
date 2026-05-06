@@ -1,1 +1,77 @@
 .page{display:grid;gap:22px}.hero{display:flex;justify-content:space-between;gap:18px;padding:24px;border:1px solid rgba(255,255,255,.12);border-radius:28px;background:linear-gradient(135deg,rgba(15,23,42,.92),rgba(88,69,31,.34));box-shadow:0 24px 60px rgba(0,0,0,.28)}.hero span{color:#f7d98b;text-transform:uppercase;letter-spacing:.16em;font-size:12px}.hero h1{margin:8px 0;font-size:34px}.hero p{max-width:720px;color:rgba(241,245,249,.78)}.heroActions{display:flex;gap:10px;flex-wrap:wrap}.heroActions button,.filterBar button{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;border-radius:999px;padding:11px 14px;font-weight:800}.heroActions button:last-child{background:linear-gradient(135deg,#e7b85a,#fce7a1);color:#271802}.heroActions button:disabled{opacity:.45}.alert{border:1px solid rgba(248,113,113,.45);background:rgba(127,29,29,.26);border-radius:18px;padding:14px;color:#fecaca}.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.kpis article{border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.07);border-radius:22px;padding:18px}.kpis span,.item span{color:#bfdbfe;font-size:12px;text-transform:uppercase;letter-spacing:.12em}.kpis strong{display:block;font-size:30px;margin:8px 0}.kpis small,.item p,.item small,.item em{color:rgba(226,232,240,.72)}.filterBar{display:flex;gap:10px;flex-wrap:wrap}.activeFilter{background:rgba(251,191,36,.24)!important;border-color:rgba(251,191,36,.55)!important}.queue{display:grid;gap:12px}.item{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:18px;background:rgba(15,23,42,.78)}.item h2{margin:6px 0;font-size:20px}.item aside{min-width:120px;text-align:right}.item aside strong{font-size:28px;display:block}.risk_ok{box-shadow:inset 4px 0 0 rgba(34,197,94,.75)}.risk_warn{box-shadow:inset 4px 0 0 rgba(250,204,21,.85)}.risk_danger{box-shadow:inset 4px 0 0 rgba(248,113,113,.85)}.empty{border:1px dashed rgba(255,255,255,.18);border-radius:22px;padding:24px;color:rgba(226,232,240,.76)}.diagnostics{display:flex;gap:10px;flex-wrap:wrap}.diagnostics span{border:1px solid rgba(125,211,252,.28);background:rgba(14,165,233,.12);border-radius:999px;padding:10px 12px;color:#bae6fd;font-size:13px}@media(max-width:900px){.hero,.item{grid-template-columns:1fr;display:grid}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.item aside{text-align:left}}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpis article,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .item,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty{border-color:var(--prisma-border-soft);background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(246,250,255,.70));box-shadow:var(--prisma-shadow-card-lift);color:var(--prisma-text-primary);backdrop-filter:blur(var(--prisma-optical-card-blur)) saturate(var(--prisma-optical-panel-saturate));-webkit-backdrop-filter:blur(var(--prisma-optical-card-blur)) saturate(var(--prisma-optical-panel-saturate))}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpis span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .item span{color:var(--prisma-action-primary)}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpis small,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .item p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .item small,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .item em{color:var(--prisma-text-secondary)}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpis strong,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .item aside strong{color:var(--prisma-action-primary)}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions button,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterBar button{border-color:var(--prisma-border-soft);background:rgba(255,255,255,.86);color:var(--prisma-text-primary)}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions button:last-child,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .activeFilter{border-color:var(--prisma-action-primary)!important;background:var(--prisma-action-primary-gradient)!important;color:var(--prisma-text-inverse)!important}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .diagnostics span{border-color:var(--prisma-border-action);background:rgba(21,87,255,.09);color:var(--prisma-action-primary)}
+
+/* PRISMA_LIGHT_SYNC_TACTILE_POLISH_00R */
+@keyframes prismaSyncSkeletonSweep{from{transform:translateX(-110%)}to{transform:translateX(110%)}}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpis article,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .item,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .diagnostics span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions button,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterBar button {
+  transition:transform var(--prisma-motion-base) var(--prisma-ease-premium),box-shadow var(--prisma-motion-base) var(--prisma-ease-premium),border-color var(--prisma-motion-fast) ease,background var(--prisma-motion-base) ease,opacity var(--prisma-motion-fast) ease;
+}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpis article:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .item:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .diagnostics span:hover {
+  transform:translateY(-2px);
+  border-color:var(--prisma-border-action);
+  box-shadow:var(--prisma-shadow-card-hover);
+}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions button:not(:disabled):hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterBar button:hover {
+  transform:translateY(-1px);
+  box-shadow:var(--prisma-shadow-card-hover);
+}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions button:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterBar button:active {
+  transform:translateY(1px) scale(.99);
+  box-shadow:var(--prisma-light-shadow-card);
+}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions button:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterBar button:focus-visible {
+  outline:none;
+  border-color:var(--prisma-action-primary);
+  box-shadow:var(--prisma-focus-ring-strong),var(--prisma-shadow-card-hover);
+}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions button:disabled {
+  color:var(--prisma-disabled-text)!important;
+  background:var(--prisma-disabled-surface)!important;
+  border-color:var(--prisma-border-soft)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.72)!important;
+  cursor:not-allowed;
+  opacity:.8;
+  transform:none!important;
+}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty{position:relative;overflow:hidden}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty::after{content:"";position:absolute;inset:0;background:var(--prisma-skeleton-surface);opacity:.22;transform:translateX(-110%);animation:prismaSyncSkeletonSweep 1.2s var(--prisma-ease-premium) infinite;pointer-events:none}
+@media (prefers-reduced-motion: reduce){
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpis article,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .item,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .diagnostics span,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions button,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterBar button,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty::after{animation:none!important;transition:none!important;transform:none!important}
+}

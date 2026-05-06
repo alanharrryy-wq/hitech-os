@@ -219,10 +219,19 @@ export function PosScreen() {
       title="Vender"
       subtitle="Busca, escanea, arma el ticket y cobra aquí mismo."
       status={<TabletShellStatusPill tone={checkoutStateTone(checkoutState)}>{copy.label}</TabletShellStatusPill>}
-      visualSurface="tablet-pos-light-operational-00q"
+      visualSurface="tablet-pos"
       visualPreset="PRISMA_LIGHT_OPERATIONAL_POS"
     >
-      <div className={styles.posWorkspace} data-prisma-golden-flow="touch-guided-sidebar-04i" data-prisma-light-operational="00Q" data-prisma-pos-live="00T" data-prisma-layer="surface">
+      <div
+        className={styles.posWorkspace}
+        data-prisma-component="PointOfSaleWorkspace"
+        data-prisma-golden-flow="touch-guided-sidebar-04i"
+        data-prisma-light-operational="00Q"
+        data-prisma-pos-live="00T"
+        data-prisma-layer="surface"
+        data-prisma-cart-state={cart.length ? "active" : "empty"}
+        data-prisma-visual-state={checkoutState === "error" ? "error" : checkoutBusy ? "checkout-busy" : "ready"}
+      >
         <PosLiveBinding />
         <span hidden data-prisma-golden-flow="touch-only-actions-04h" data-prisma-touch-only-actions="04H" />
         <section className={styles.catalogArea}>
@@ -248,6 +257,7 @@ export function PosScreen() {
                 className={category === selectedCategory ? styles.categoryButtonActive : styles.categoryButton}
                 type="button"
                 onClick={() => setSelectedCategory(category)}
+                data-prisma-component="CategoryButton"
                 data-active={category === selectedCategory ? "true" : "false"}
               >
                 <span>{category.slice(0, 2).toUpperCase()}</span>

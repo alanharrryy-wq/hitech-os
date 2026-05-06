@@ -300,3 +300,323 @@
     padding: 20px;
   }
 }
+
+/* PRISMA_LIGHT_TABLET_HOME_00Q */
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroMain,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroAside,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checklistCard {
+  border-color: var(--prisma-border-soft);
+  background:
+    radial-gradient(circle at 28% 0%, rgba(255,255,255,0.82), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.9), rgba(246,250,255,0.68));
+  box-shadow: var(--prisma-shadow-panel-lift);
+  backdrop-filter: blur(var(--prisma-optical-panel-blur)) saturate(var(--prisma-optical-panel-saturate));
+  -webkit-backdrop-filter: blur(var(--prisma-optical-panel-blur)) saturate(var(--prisma-optical-panel-saturate));
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroMain::before {
+  background: radial-gradient(circle, rgba(21, 87, 255, 0.16), transparent 62%);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCopy span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertItem a {
+  color: var(--prisma-action-primary);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCopy h2 {
+  color: var(--prisma-text-primary);
+  letter-spacing: 0;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCopy p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionCard p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertCard p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard small {
+  color: var(--prisma-text-secondary);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionCard[data-priority="primary"] span {
+  color: var(--prisma-text-inverse);
+  background: var(--prisma-action-primary-gradient);
+  box-shadow: var(--prisma-shadow-primary-glow);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .readinessItem,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertItem {
+  border-color: var(--prisma-border-soft);
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(246,250,255,0.68));
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard strong {
+  color: var(--prisma-action-primary);
+}
+
+/* PRISMA_LIGHT_HOME_TACTILE_POLISH_00R */
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroMain,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroAside,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checklistCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .readinessItem,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertItem,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton {
+  transition:
+    transform var(--prisma-motion-base) var(--prisma-ease-premium),
+    box-shadow var(--prisma-motion-base) var(--prisma-ease-premium),
+    border-color var(--prisma-motion-fast) ease,
+    background var(--prisma-motion-base) ease;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionCard:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertCard:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checklistCard:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .readinessItem:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertItem:hover {
+  transform: translateY(-2px);
+  border-color: var(--prisma-border-action);
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionCard:active {
+  transform: translateY(1px) scale(0.99);
+  box-shadow: var(--prisma-light-shadow-card);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionCard:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertItem:focus-visible {
+  outline: none;
+  border-color: var(--prisma-action-primary);
+  box-shadow: var(--prisma-focus-ring-strong), var(--prisma-shadow-card-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroMain,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroAside,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checklistCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .readinessItem,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertItem,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* PRISMA_TABLET_FLOW_CLARITY_05A_HOME_MAP::START */
+.workflowPanel,
+.toolPanel {
+  padding: 16px;
+  border: 1px solid var(--prisma-border-soft);
+  border-radius: var(--prisma-radius-xl);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.025)),
+    rgba(7, 15, 24, 0.66);
+  box-shadow: var(--prisma-shadow-glass);
+  backdrop-filter: blur(18px);
+}
+
+.workflowHeader {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.workflowHeader span {
+  color: var(--prisma-accent-gold-soft);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.workflowHeader h3 {
+  margin: 3px 0 0;
+  color: var(--prisma-text-primary);
+  font-size: clamp(20px, 2vw, 28px);
+  line-height: 1.05;
+}
+
+.workflowHeader p {
+  max-width: 410px;
+  margin: 0;
+  color: var(--prisma-text-secondary);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.workflowSteps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.workflowStep,
+.toolCard {
+  min-width: 0;
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--prisma-border-soft);
+  border-radius: var(--prisma-radius-lg);
+  color: inherit;
+  text-decoration: none;
+  background: color-mix(in srgb, var(--prisma-glass-surface) 42%, transparent);
+  transition:
+    transform var(--prisma-motion-base) var(--prisma-ease-premium),
+    border-color var(--prisma-motion-fast) ease,
+    background var(--prisma-motion-base) ease,
+    box-shadow var(--prisma-motion-base) var(--prisma-ease-premium);
+}
+
+.workflowStep {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+}
+
+.workflowStep > strong {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--prisma-radius-pill);
+  color: var(--prisma-text-on-gold);
+  background: var(--prisma-gold-gradient);
+  font-size: 13px;
+  box-shadow: 0 12px 26px rgba(232, 189, 103, 0.2);
+}
+
+.workflowStep span,
+.toolCard span {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.workflowStep b,
+.toolCard b {
+  color: var(--prisma-text-primary);
+  font-size: 15px;
+}
+
+.workflowStep small,
+.toolCard small {
+  color: var(--prisma-text-secondary);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.workflowStep em,
+.toolCard em {
+  grid-column: 1 / -1;
+  color: var(--prisma-accent-gold-soft);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 950;
+}
+
+.workflowStep:hover,
+.workflowStep:focus-visible,
+.toolCard:hover,
+.toolCard:focus-visible {
+  outline: none;
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--prisma-accent-gold) 38%, var(--prisma-border-soft));
+  background: var(--prisma-hover-surface);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.18);
+}
+
+.toolGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.toolCard {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.toolCard em {
+  grid-column: auto;
+  white-space: nowrap;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowPanel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolPanel {
+  border-color: var(--prisma-border-soft);
+  background:
+    radial-gradient(circle at 28% 0%, rgba(255,255,255,0.82), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.92), rgba(246,250,255,0.72));
+  box-shadow: var(--prisma-shadow-panel-lift);
+  backdrop-filter: blur(var(--prisma-optical-panel-blur)) saturate(var(--prisma-optical-panel-saturate));
+  -webkit-backdrop-filter: blur(var(--prisma-optical-panel-blur)) saturate(var(--prisma-optical-panel-saturate));
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowHeader span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep em,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolCard em { color: var(--prisma-action-primary); }
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolCard {
+  border-color: var(--prisma-border-soft);
+  background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(246,250,255,0.7));
+  box-shadow: var(--prisma-shadow-xs);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep > strong {
+  color: var(--prisma-text-inverse);
+  background: var(--prisma-action-primary-gradient);
+  box-shadow: var(--prisma-shadow-primary-glow);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolCard:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolCard:focus-visible {
+  border-color: var(--prisma-border-action);
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+@media (max-width: 1180px) {
+  .workflowSteps,
+  .toolGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 720px) {
+  .workflowHeader { align-items: start; flex-direction: column; }
+  .workflowSteps,
+  .toolGrid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workflowStep,
+  .toolCard { transition: none !important; }
+  .workflowStep:hover,
+  .workflowStep:focus-visible,
+  .toolCard:hover,
+  .toolCard:focus-visible { transform: none !important; }
+}
+/* PRISMA_TABLET_FLOW_CLARITY_05A_HOME_MAP::END */

@@ -362,3 +362,112 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* PRISMA_LIGHT_CATALOG_TACTILE_POLISH_00R */
+@keyframes prismaCatalogSkeletonSweep {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(110%); }
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogMain,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .drawer,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productTable td,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .drawerNote,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyState,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox button,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .linkButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox input,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .field input {
+  transition:
+    transform var(--prisma-motion-base) var(--prisma-ease-premium),
+    box-shadow var(--prisma-motion-base) var(--prisma-ease-premium),
+    border-color var(--prisma-motion-fast) ease,
+    background var(--prisma-motion-base) ease,
+    opacity var(--prisma-motion-fast) ease;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productTable tbody tr:hover td,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .drawer:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .drawerNote:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyState:hover {
+  transform: translateY(-2px);
+  border-color: var(--prisma-border-action);
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox button:not(:disabled):hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton:not(:disabled):hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .linkButton:hover {
+  transform: translateY(-1px);
+  border-color: var(--prisma-border-action);
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox button:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .linkButton:active {
+  transform: translateY(1px) scale(0.99);
+  box-shadow: var(--prisma-light-shadow-card);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox input:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .field input:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox button:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .linkButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .compactCheck:focus-within,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toggleField:focus-within {
+  outline: none;
+  border-color: var(--prisma-action-primary);
+  box-shadow: var(--prisma-focus-ring-strong), var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox button:disabled,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton:disabled {
+  color: var(--prisma-disabled-text) !important;
+  background: var(--prisma-disabled-surface) !important;
+  border-color: var(--prisma-border-soft) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72) !important;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyState {
+  position: relative;
+  overflow: hidden;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyState::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--prisma-skeleton-surface);
+  opacity: 0.18;
+  transform: translateX(-110%);
+  animation: prismaCatalogSkeletonSweep 1.25s var(--prisma-ease-premium) infinite;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogMain,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .drawer,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productTable td,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .drawerNote,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyState,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox button,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .linkButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox input,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .field input,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyState::after {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
