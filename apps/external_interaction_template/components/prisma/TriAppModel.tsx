@@ -4,9 +4,9 @@ import { site } from "@/content/site";
 export function TriAppModel() {
   return (
     <section className="section">
-      <div className="eyebrow">Modelo operativo</div>
-      <h2 className="large-title">Una plataforma. Tres superficies. Un historial que no se hace pato.</h2>
-      <p className="lead">{site.operatingRule}</p>
+      <div className="eyebrow">Modelo tri-app</div>
+      <h2 className="large-title">Tablet vende. PC gobierna. Mobile supervisa.</h2>
+      <p className="lead">Cada superficie tiene un rol definido en tu operación: ventas y caja en Tablet, gobierno e inventario en PC, y supervisión ligera en Mobile.</p>
       <div className="grid-3" style={{ marginTop: 28 }}>
         {home.surfaces.map((surface) => (
           <article className="card surface-card" key={surface.name}>

@@ -16,10 +16,10 @@ export default function ContactPage() {
       <section className="page-hero">
         <div className="page-hero-inner">
           <div className="eyebrow">Contacto</div>
-          <h1 className="large-title">Pidamos demo antes de inventar un comité.</h1>
-          <p className="lead">Cuéntanos tu giro, cuántas personas operan y qué necesitas controlar primero: venta, caja, inventario, órdenes, activos o alertas.</p>
+          <h1 className="large-title">Hablemos de tu operación y la primera superficie a activar.</h1>
+          <p className="lead">Cuéntanos tu giro, cuántos puntos de venta tienes y qué necesitas controlar primero: ventas, caja, inventario, órdenes o alertas.</p>
           <div className="hero-actions">
-            <a className="button-primary" href={site.whatsappUrl}>WhatsApp</a>
+            <a className="button-primary" href={site.whatsappUrl}>Solicitar demo</a>
             <a className="button-secondary" href={`mailto:${site.email}`}>{site.email}</a>
           </div>
         </div>
