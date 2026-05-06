@@ -42,7 +42,7 @@ jobs:
             --output tools/_local/evidence/ci/repo_analyzer_summary.json
 
       - name: Upload evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: forgeos-root-authority-evidence
           path: tools/_local/evidence/ci
