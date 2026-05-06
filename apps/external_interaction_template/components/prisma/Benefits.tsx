@@ -1,6 +1,6 @@
 import { home } from "@/content/home";
 
-const benefitEvidence = {
+const benefitEvidence: Record<string, string[]> = {
   "Vende sin perder el control": [
     "Ticket registrado",
     "Caja trazable",
@@ -235,7 +235,7 @@ export function Benefits() {
                 <h3 className="benefit-title">{benefit.title}</h3>
                 <p className="benefit-copy">{benefit.body}</p>
                 <div className="benefit-chip-row">
-                  {chips.slice(0, 3).map((chip) => (
+                  {chips.slice(0, 3).map((chip: string) => (
                     <span key={chip} className={`benefit-chip ${isCenter ? 'feature' : ''}`}>{chip}</span>
                   ))}
                 </div>
