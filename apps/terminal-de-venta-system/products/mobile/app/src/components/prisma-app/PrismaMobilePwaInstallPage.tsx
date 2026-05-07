@@ -13,6 +13,7 @@ export function PrismaMobilePwaInstallPage({ mode = "install" }: PrismaMobilePwa
       className={styles.pageRoot}
       data-prisma-product="mobile"
       data-prisma-surface="prisma.mobile.pwa.install.whatsapp.black.landing"
+      data-prisma-zone="mobile-pwa-install"
     >
       <div className={styles.ambientGlow} aria-hidden="true" />
       <div className={styles.starField} aria-hidden="true" />

@@ -11,7 +11,7 @@ const metricToneClass: Record<PrismaMobileKpi["tone"], string> = {
 
 export function PrismaMobileMetricCard({ metric }: { metric: PrismaMobileKpi }) {
   return (
-    <article className={`${styles.metricCard} ${metricToneClass[metric.tone]}`}>
+    <article className={`${styles.metricCard} ${metricToneClass[metric.tone]}`} data-prisma-zone="mobile-kpi-card">
       <span>{metric.label}</span>
       <strong>{metric.value}</strong>
       <small>{metric.note}</small>

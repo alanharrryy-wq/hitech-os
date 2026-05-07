@@ -23,7 +23,12 @@ export function PrismaMobileActionInbox({ clientSnapshot }: { clientSnapshot: Pr
   const inbox = buildPrismaMobileActionInbox(clientSnapshot);
 
   return (
-    <section className={styles.actionInbox} aria-labelledby="prisma-mobile-action-inbox-title" data-prisma-contract={inbox.contractId}>
+    <section
+      className={styles.actionInbox}
+      aria-labelledby="prisma-mobile-action-inbox-title"
+      data-prisma-contract={inbox.contractId}
+      data-prisma-zone="mobile-action-inbox"
+    >
       <header className={styles.actionInboxHeader}>
         <div>
           <span className={styles.commandEyebrow}>Bandeja del dueño</span>

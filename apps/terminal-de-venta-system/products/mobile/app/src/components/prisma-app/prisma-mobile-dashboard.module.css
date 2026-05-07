@@ -269,7 +269,6 @@
 }
 /* PRISMA_APP_MOBILE_20_COMMAND_CENTER END */
 
-
 /* PRISMA_APP_MOBILE_21_OWNER_ACTION_INBOX START */
 .actionInbox{
   border:1px solid rgba(255,229,166,.24);
@@ -421,7 +420,6 @@
   .actionInboxHeader,.actionInboxDigest{grid-template-columns:1fr}
 }
 /* PRISMA_APP_MOBILE_21_OWNER_ACTION_INBOX END */
-
 
 /* PRISMA_APP_MOBILE_22_DAILY_BRIEF START */
 .dailyBrief{
@@ -1303,3 +1301,875 @@
 .pulseTimeline { display: grid; gap: 0.85rem; }
 .pulseTimelineCheckpoint { display: grid; gap: 0.65rem; }
 /* PRISMA_APP_MOBILE_24_PULSE_TIMELINE END */
+
+/* PRISMA Crystal Command Mobile: tokens */
+.mobileRoot {
+  --crystal-bg: #eef3f8;
+  --crystal-bg-soft: #f5f8fc;
+  --crystal-surface: rgba(255, 255, 255, 0.78);
+  --crystal-surface-strong: #ffffff;
+  --crystal-border: rgba(36, 107, 254, 0.16);
+  --crystal-border-strong: rgba(57, 189, 248, 0.34);
+  --crystal-text: #102033;
+  --crystal-text-soft: #31445a;
+  --crystal-muted: #607184;
+  --crystal-blue: #246bfe;
+  --crystal-cyan: #39bdf8;
+  --crystal-cyan-soft: #64d8ff;
+  --crystal-gold: #f3c96b;
+  --crystal-gold-strong: #ffd889;
+  --crystal-success: #22a06b;
+  --crystal-warning: #f59e0b;
+  --crystal-danger: #e05252;
+  min-height: 100svh;
+  color: var(--crystal-text);
+  background:
+    radial-gradient(circle at 14% 10%, rgba(100, 216, 255, 0.28), transparent 24rem),
+    radial-gradient(circle at 88% 4%, rgba(255, 216, 137, 0.24), transparent 22rem),
+    linear-gradient(180deg, var(--crystal-bg-soft) 0%, var(--crystal-bg) 52%, #e8f0f8 100%);
+  padding: 18px;
+}
+
+.mobileRoot h1,
+.mobileRoot h2,
+.mobileRoot h3,
+.mobileRoot h4,
+.mobileRoot p {
+  letter-spacing: 0;
+}
+
+/* PRISMA Crystal Command Mobile: shell */
+.dashboardShell {
+  width: min(1120px, 100%);
+  gap: 14px;
+}
+
+.loadingShell,
+.errorShell {
+  min-height: calc(100svh - 72px);
+  border-radius: 28px;
+  border: 1px solid var(--crystal-border);
+  background: var(--crystal-surface);
+  color: var(--crystal-text);
+  box-shadow: 0 22px 70px rgba(45, 74, 105, 0.14);
+}
+
+.loadingShell h1,
+.errorShell h1 {
+  color: var(--crystal-text);
+  font-size: 2rem;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.loadingShell p,
+.errorShell p {
+  color: var(--crystal-muted);
+}
+
+.loadingPhone {
+  border-radius: 24px;
+  border-color: var(--crystal-border);
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82), 0 18px 44px rgba(45, 74, 105, 0.12);
+}
+
+/* PRISMA Crystal Command Mobile: brand header */
+.brandHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid var(--crystal-border);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 251, 255, 0.72));
+  box-shadow: 0 18px 48px rgba(45, 74, 105, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(14px);
+  padding: 12px;
+}
+
+.brandIdentity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.brandLogo {
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  border: 1px solid rgba(57, 189, 248, 0.34);
+  background:
+    radial-gradient(circle at 34% 26%, rgba(255, 216, 137, 0.54), transparent 34%),
+    linear-gradient(145deg, #ffffff, #e8f6ff);
+  box-shadow: 0 12px 26px rgba(36, 107, 254, 0.14);
+}
+
+.brandLogo img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.brandText {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.brandText p,
+.brandText span,
+.brandMeta span:last-child {
+  margin: 0;
+  color: var(--crystal-muted);
+  font-size: 0.78rem;
+  line-height: 1.25;
+}
+
+.brandText p {
+  color: var(--crystal-blue);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.brandText h1 {
+  margin: 0;
+  color: var(--crystal-text);
+  font-size: 1.34rem;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.brandMeta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
+.statusChip {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  border: 1px solid var(--crystal-border-strong);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--crystal-text);
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.1;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+/* PRISMA Crystal Command Mobile: command card */
+.commandCard {
+  display: grid;
+  gap: 14px;
+  border: 1px solid var(--crystal-border-strong);
+  border-radius: 28px;
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.96), rgba(248, 251, 255, 0.78)),
+    radial-gradient(circle at 86% 16%, rgba(57, 189, 248, 0.18), transparent 18rem);
+  color: var(--crystal-text);
+  box-shadow: 0 22px 64px rgba(45, 74, 105, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  padding: 16px;
+}
+
+.commandCardHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.commandCardHeader span,
+.commandPrimaryMetric span,
+.commandSecondaryGrid span,
+.commandMetaStrip span,
+.premiumNavigatorHeader span,
+.premiumPanelIntro span,
+.panelCard header span,
+.controlPanel span,
+.metricCard span,
+.operationsGrid article span,
+.commandEyebrow,
+.sectionEyebrow {
+  color: var(--crystal-muted);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.commandCardHeader h2 {
+  margin: 4px 0 0;
+  color: var(--crystal-text);
+  font-size: 1.22rem;
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+.commandCardHeader p {
+  max-width: 68ch;
+  margin: 5px 0 0;
+  color: var(--crystal-text-soft);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.commandPrimaryMetric {
+  display: grid;
+  gap: 4px;
+  min-height: 108px;
+  align-content: end;
+  border-radius: 22px;
+  border: 1px solid rgba(36, 107, 254, 0.14);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(100, 216, 255, 0.28), transparent 16rem),
+    linear-gradient(135deg, #ffffff, #f6fbff);
+  padding: 16px;
+}
+
+.commandPrimaryMetric strong {
+  color: var(--crystal-text);
+  font-size: 2.35rem;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.commandPrimaryMetric small,
+.commandSecondaryGrid small,
+.metricCard small,
+.operationsGrid small,
+.panelCard small {
+  color: var(--crystal-muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.commandMetaStrip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.commandMetaStrip span,
+.sourceChip {
+  border: 1px solid rgba(36, 107, 254, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 7px 10px;
+}
+
+/* PRISMA Crystal Command Mobile: KPI grid */
+.commandSecondaryGrid,
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.commandSecondaryGrid article,
+.metricCard,
+.operationsGrid article {
+  min-height: 112px;
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  border: 1px solid rgba(36, 107, 254, 0.12);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.76);
+  color: var(--crystal-text);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92), 0 12px 28px rgba(45, 74, 105, 0.08);
+  padding: 14px;
+}
+
+.commandSecondaryGrid strong,
+.metricCard strong,
+.operationsGrid strong {
+  color: var(--crystal-text);
+  font-size: 1.55rem;
+  line-height: 1.05;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+
+.metricGold,
+.healthReview,
+.commandToneReview {
+  border-color: rgba(245, 158, 11, 0.28) !important;
+  color: #77530a;
+}
+
+.metricGreen,
+.healthOk,
+.commandToneOk {
+  border-color: rgba(34, 160, 107, 0.26) !important;
+  color: #126346;
+}
+
+.metricBlue,
+.metricNeutral {
+  border-color: rgba(36, 107, 254, 0.22) !important;
+  color: var(--crystal-blue);
+}
+
+.metricRed,
+.healthUrgent,
+.commandToneUrgent {
+  border-color: rgba(224, 82, 82, 0.3) !important;
+  color: #9d2626;
+}
+
+.healthOffline,
+.commandToneOffline {
+  border-color: rgba(96, 113, 132, 0.3) !important;
+  color: #43566b;
+}
+
+/* PRISMA Crystal Command Mobile: review-first panel */
+.premiumNavigator,
+.commandCenter,
+.actionInbox,
+.dailyBrief,
+.decisionLedger,
+.pulseTimeline,
+.healthRadarPanel,
+.panelCard,
+.warningPanel,
+.controlPanel,
+.dataReadinessPanel {
+  border: 1px solid var(--crystal-border);
+  background: rgba(255, 255, 255, 0.74);
+  color: var(--crystal-text);
+  box-shadow: 0 18px 46px rgba(45, 74, 105, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+}
+
+.premiumNavigator {
+  border-radius: 28px;
+  padding: 12px;
+}
+
+.premiumNavigatorHeader,
+.commandHeader,
+.actionInboxHeader,
+.dailyBriefHeader,
+.decisionLedgerHeader,
+.pulseTimelineHeader,
+.healthRadarHeader {
+  gap: 12px;
+}
+
+.premiumNavigatorHeader > div,
+.premiumNavigatorHeader > aside,
+.premiumPanelIntro {
+  border: 1px solid rgba(36, 107, 254, 0.12);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.64);
+  color: var(--crystal-text);
+  box-shadow: none;
+}
+
+.premiumNavigatorHeader h2,
+.premiumPanelIntro h3,
+.commandHeader h2,
+.actionInboxHeader h2,
+.dailyBriefHeader h2,
+.decisionLedgerHeader h2,
+.pulseTimelineHeader h2,
+.healthRadarHeader h2,
+.panelCard h2 {
+  color: var(--crystal-text);
+  font-size: 1.2rem;
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+.premiumNavigatorHeader p,
+.premiumPanelIntro p,
+.commandHeader p,
+.actionInboxHeader p,
+.dailyBriefHeader p,
+.decisionLedgerHeader p,
+.pulseTimelineHeader p,
+.healthRadarHeader p,
+.panelCard p {
+  color: var(--crystal-text-soft);
+}
+
+.premiumTabRail {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  border: 1px solid rgba(36, 107, 254, 0.12);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.64);
+  padding: 8px;
+}
+
+.premiumTabRail button {
+  min-height: 54px;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  background: transparent;
+  color: var(--crystal-text-soft);
+  box-shadow: none;
+}
+
+.premiumTabRail button span,
+.premiumTabRail button strong {
+  color: inherit;
+}
+
+.premiumTabActive {
+  border-color: rgba(36, 107, 254, 0.26) !important;
+  background: linear-gradient(135deg, rgba(36, 107, 254, 0.12), rgba(100, 216, 255, 0.16)) !important;
+  color: var(--crystal-blue) !important;
+}
+
+.premiumTabPanel {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 680px;
+}
+
+.premiumPanelStack,
+.premiumPanelGrid,
+.commandBriefGrid,
+.commandSignalGrid,
+.commandDecisionGrid,
+.actionLaneGrid,
+.dailyBriefCardGrid,
+.dailyBriefSectionGrid,
+.decisionLedgerCardGrid,
+.pulseTimelineCardGrid,
+.healthRadarAxes {
+  gap: 10px;
+}
+
+.actionList article,
+.inventoryList article,
+.alertList article,
+.branchList article,
+.commandQueue article,
+.actionCard,
+.dailyBriefCardGrid article,
+.dailyBriefSection,
+.decisionLedgerTimeline article,
+.pulseTimelineRail article,
+.healthRadarAxis {
+  border: 1px solid rgba(36, 107, 254, 0.12);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--crystal-text);
+  box-shadow: none;
+}
+
+.actionList b,
+.pulseTimelineMarker span {
+  background: rgba(36, 107, 254, 0.12);
+  color: var(--crystal-blue);
+}
+
+.actionList span,
+.inventoryList span,
+.alertList span,
+.branchList span,
+.reportGrid p,
+.cashMovements small,
+.commandQueue p,
+.commandSignal p,
+.actionCard p,
+.decisionLedgerDigest li,
+.pulseTimelineNarrative p,
+.healthRadarAxis p,
+.healthRadarAxis small {
+  color: var(--crystal-text-soft);
+}
+
+/* PRISMA Crystal Command Mobile: PWA install */
+.dailyBriefShareBox a,
+.controlPanel button,
+.errorShell button {
+  border: 1px solid rgba(36, 107, 254, 0.24);
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--crystal-blue), var(--crystal-cyan));
+  color: #ffffff;
+  font-weight: 800;
+  box-shadow: 0 12px 28px rgba(36, 107, 254, 0.18);
+}
+
+.secondaryButton {
+  background: rgba(255, 255, 255, 0.72) !important;
+  color: var(--crystal-blue) !important;
+  border-color: rgba(36, 107, 254, 0.18) !important;
+}
+
+/* PRISMA Crystal Command Mobile: states */
+.dataReadinessPanel[data-readiness-level="ready"] {
+  border-color: rgba(34, 160, 107, 0.26);
+}
+
+.dataReadinessPanel[data-readiness-level="partial"],
+.dataReadinessPanel[data-readiness-level="empty"] {
+  border-color: rgba(245, 158, 11, 0.28);
+}
+
+.dataReadinessPanel[data-readiness-level="offline"],
+.dataReadinessPanel[data-readiness-level="blocked"],
+.warningPanel {
+  border-color: rgba(224, 82, 82, 0.28);
+}
+
+.dataReadinessMeta span,
+.dataReadinessGrid article,
+.cashGrid article,
+.reportGrid article,
+.cashMovements p,
+.phoneStats p {
+  border: 1px solid rgba(36, 107, 254, 0.1);
+  background: rgba(255, 255, 255, 0.68);
+  color: var(--crystal-text);
+}
+
+.dataReadinessPanel h4,
+.dataReadinessGrid li b,
+.cashGrid strong,
+.reportGrid strong,
+.phoneStats strong,
+.healthRadarScore span {
+  color: var(--crystal-text);
+}
+
+.dataReadinessPanel p,
+.dataReadinessGrid li small,
+.warningPanel ul,
+.alertList p {
+  color: var(--crystal-text-soft);
+}
+
+.healthRadarScore,
+.commandScoreCard,
+.actionInboxStatus,
+.dailyBriefStatus,
+.decisionLedgerScore,
+.pulseTimelineCheckpoint {
+  border: 1px solid rgba(36, 107, 254, 0.14);
+  background:
+    radial-gradient(circle at top right, rgba(255, 216, 137, 0.22), transparent 9rem),
+    rgba(255, 255, 255, 0.7);
+  color: var(--crystal-text);
+}
+
+/* PRISMA Crystal Command Mobile: responsive */
+@media (max-width: 860px) {
+  .mobileRoot {
+    padding: 12px;
+  }
+
+  .brandHeader,
+  .commandCard,
+  .premiumNavigator,
+  .panelCard,
+  .controlPanel,
+  .warningPanel {
+    border-radius: 22px;
+  }
+
+  .commandCardHeader,
+  .premiumNavigatorHeader,
+  .commandHeader,
+  .actionInboxHeader,
+  .dailyBriefHeader,
+  .decisionLedgerHeader,
+  .pulseTimelineHeader,
+  .healthRadarHeader,
+  .commandDecisionGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .commandSecondaryGrid,
+  .metricGrid,
+  .operationsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .premiumTabRail {
+    position: relative;
+    top: auto;
+    overflow-x: auto;
+    grid-template-columns: repeat(5, minmax(92px, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .brandHeader {
+    align-items: flex-start;
+  }
+
+  .brandMeta {
+    justify-content: flex-start;
+  }
+
+  .brandLogo {
+    width: 46px;
+    height: 46px;
+    flex-basis: 46px;
+  }
+
+  .brandLogo img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .commandPrimaryMetric strong {
+    font-size: 2rem;
+  }
+
+  .commandSecondaryGrid,
+  .metricGrid,
+  .operationsGrid,
+  .controlPanel,
+  .cashGrid,
+  .reportGrid,
+  .decisionLedgerCardGrid,
+  .pulseTimelineCardGrid,
+  .healthRadarAxes {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* PRISMA Crystal Command Mobile: states */
+.premiumTabPanel {
+  content-visibility: visible;
+  contain-intrinsic-size: auto;
+}
+
+.premiumPanelIntro,
+.dataReadinessGrid article,
+.commandBrief,
+.commandSignal,
+.commandQueue,
+.commandDataQuality,
+.actionLane,
+.dailyBriefShareBox,
+.decisionLedgerDigest,
+.pulseTimelineNarrative,
+.pulseTimelineChecklist,
+.healthRadarWatchlist,
+.healthRadarGuardrails {
+  border: 1px solid rgba(36, 107, 254, 0.12);
+  background: rgba(255, 255, 255, 0.76);
+  color: var(--crystal-text);
+  box-shadow: none;
+}
+
+.premiumNavigatorHeader > aside strong,
+.commandScoreCard strong,
+.actionInboxStatus strong,
+.dailyBriefStatus strong,
+.decisionLedgerScore strong,
+.pulseTimelineCheckpoint strong,
+.commandBrief strong,
+.commandSignal strong,
+.commandQueue strong,
+.commandDataQuality strong,
+.actionCard strong,
+.dailyBriefShareBox strong,
+.dailyBriefCardGrid strong,
+.decisionLedgerDigest strong,
+.pulseTimelineChecklist span,
+.healthRadarWatchlist strong,
+.healthRadarGuardrails strong {
+  color: var(--crystal-text);
+}
+
+.premiumNavigatorHeader > aside small,
+.commandScoreCard small,
+.actionInboxStatus small,
+.dailyBriefStatus small,
+.decisionLedgerScore small,
+.pulseTimelineCheckpoint small,
+.commandDataQuality p,
+.commandDataQuality li,
+.dailyBriefShareBox p,
+.pulseTimelineChecklist li,
+.healthRadarGuardrails li,
+.healthRadarGuardrails p {
+  color: var(--crystal-text-soft);
+}
+
+.commandDataQuality,
+.pulseTimelineCheckpoint,
+.healthRadarScore {
+  box-shadow: 0 14px 32px rgba(45, 74, 105, 0.1);
+}
+
+/* PRISMA Crystal Command Mobile: shell */
+.mobileRoot.mobileRoot {
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 100svh !important;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(100, 216, 255, 0.24), transparent 24rem),
+    radial-gradient(circle at 90% 4%, rgba(255, 216, 137, 0.18), transparent 22rem),
+    linear-gradient(180deg, #f5f8fc 0%, #eef3f8 58%, #e8f0f8 100%) !important;
+  color: var(--crystal-text) !important;
+}
+
+.brandHeader.brandHeader,
+.commandCard.commandCard,
+.premiumNavigator.premiumNavigator,
+.premiumNavigatorHeader > div,
+.premiumNavigatorHeader > aside,
+.premiumPanelIntro.premiumPanelIntro,
+.dataReadinessPanel.dataReadinessPanel,
+.commandCenter.commandCenter,
+.panelCard.panelCard,
+.controlPanel.controlPanel,
+.warningPanel.warningPanel,
+.actionInbox.actionInbox,
+.dailyBrief.dailyBrief,
+.decisionLedger.decisionLedger,
+.pulseTimeline.pulseTimeline,
+.healthRadarPanel.healthRadarPanel {
+  border-color: var(--crystal-border) !important;
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.94), rgba(248, 251, 255, 0.78)),
+    radial-gradient(circle at 92% 8%, rgba(100, 216, 255, 0.14), transparent 18rem) !important;
+  color: var(--crystal-text) !important;
+  box-shadow: 0 18px 48px rgba(45, 74, 105, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.92) !important;
+}
+
+.brandHeader .brandText h1 {
+  color: var(--crystal-text) !important;
+  font-size: 1.34rem !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+}
+
+.brandHeader .brandText p,
+.brandHeader .brandText span {
+  color: var(--crystal-muted) !important;
+  font-size: 0.78rem !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0 !important;
+}
+
+.commandCardHeader h2,
+.premiumNavigatorHeader h2,
+.premiumPanelIntro h3,
+.commandHeader h2,
+.panelCard h2,
+.actionInboxHeader h2,
+.dailyBriefHeader h2,
+.decisionLedgerHeader h2,
+.pulseTimelineHeader h2,
+.healthRadarHeader h2 {
+  color: var(--crystal-text) !important;
+  font-size: 1.2rem !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+  text-shadow: none !important;
+}
+
+.commandPrimaryMetric strong,
+.commandSecondaryGrid strong,
+.metricCard strong,
+.operationsGrid strong,
+.commandScoreCard strong,
+.commandBrief strong,
+.commandSignal strong,
+.commandQueue strong,
+.commandDataQuality strong,
+.healthRadarScore span {
+  color: var(--crystal-text) !important;
+  letter-spacing: 0 !important;
+  text-shadow: none !important;
+}
+
+.commandSecondaryGrid article,
+.metricCard.metricCard,
+.operationsGrid article,
+.actionList article,
+.inventoryList article,
+.alertList article,
+.branchList article,
+.cashGrid article,
+.reportGrid article,
+.cashMovements p,
+.commandBrief.commandBrief,
+.commandSignal.commandSignal,
+.commandQueue.commandQueue,
+.commandDataQuality.commandDataQuality,
+.dataReadinessGrid article,
+.actionCard.actionCard,
+.dailyBriefShareBox.dailyBriefShareBox,
+.dailyBriefCardGrid article,
+.dailyBriefSection.dailyBriefSection,
+.decisionLedgerDigest.decisionLedgerDigest,
+.decisionLedgerTimeline article,
+.pulseTimelineNarrative.pulseTimelineNarrative,
+.pulseTimelineChecklist.pulseTimelineChecklist,
+.pulseTimelineRail article,
+.healthRadarAxis.healthRadarAxis,
+.healthRadarWatchlist.healthRadarWatchlist,
+.healthRadarGuardrails.healthRadarGuardrails {
+  border-color: rgba(36, 107, 254, 0.12) !important;
+  background: rgba(255, 255, 255, 0.76) !important;
+  color: var(--crystal-text) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 10px 24px rgba(45, 74, 105, 0.07) !important;
+}
+
+.premiumTabPanel.premiumTabPanel {
+  content-visibility: visible !important;
+  contain-intrinsic-size: auto !important;
+}
+
+@media (max-width: 520px) {
+  .brandHeader.brandHeader {
+    gap: 10px;
+    padding: 10px !important;
+  }
+
+  .brandHeader .brandLogo {
+    width: 44px !important;
+    height: 44px !important;
+    flex-basis: 44px !important;
+  }
+
+  .brandHeader .brandLogo img {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .brandHeader .brandText h1 {
+    font-size: 1.12rem !important;
+  }
+
+  .brandMeta span:last-child {
+    display: none;
+  }
+
+  .commandSecondaryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .commandSecondaryGrid article {
+    min-height: 96px !important;
+    padding: 12px !important;
+  }
+
+  .commandSecondaryGrid strong {
+    font-size: 1.35rem !important;
+  }
+}

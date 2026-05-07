@@ -41,14 +41,14 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   viewportFit: "cover",
-  themeColor: "#07080d",
+  themeColor: "#eef3f8",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const prismaTheme =
-    process.env.NEXT_PUBLIC_PRISMA_THEME === "prisma-light"
-      ? "prisma-light"
-      : "prisma-dark";
+    process.env.NEXT_PUBLIC_PRISMA_THEME === "prisma-dark"
+      ? "prisma-dark"
+      : "prisma-light";
 
   return (
     <html lang="es-MX" data-theme={prismaTheme} data-prisma-surface="mobile-pulse" data-prisma-visual-os="MOBILE_PULSE" data-prisma-vos-binding="00K">

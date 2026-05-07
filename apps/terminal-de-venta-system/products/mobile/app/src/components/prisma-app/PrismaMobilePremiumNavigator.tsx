@@ -59,8 +59,20 @@ function focusTab(id: PremiumTabId) {
 
 function PrismaMobileReadinessPanel({ clientSnapshot }: { clientSnapshot: PrismaMobileClientSnapshot }) {
   const readiness = getPrismaMobileDataReadiness(clientSnapshot.snapshot);
+  const readinessZone = readiness.level === "ready"
+    ? "mobile-success-state"
+    : readiness.level === "empty"
+      ? "mobile-empty-state"
+      : readiness.level === "offline" || readiness.level === "blocked"
+        ? "mobile-offline-state"
+        : "mobile-sync-state";
   return (
-    <section className={styles.dataReadinessPanel} data-readiness-level={readiness.level} aria-label="Madurez y calidad de datos">
+    <section
+      className={styles.dataReadinessPanel}
+      data-readiness-level={readiness.level}
+      data-prisma-zone={readinessZone}
+      aria-label="Madurez y calidad de datos"
+    >
       <header>
         <span>{readiness.label}</span>
         <h4>{readiness.headline}</h4>
@@ -114,7 +126,7 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
       label: "Alertas",
       eyebrow: "Bandeja priorizada",
       title: "Excepciones con dueño y siguiente acción",
-      detail: "Nada de texto aventado como ropa en silla: cada alerta queda en tarjeta accionable.",
+      detail: "Cada alerta conserva dueño, evidencia y siguiente paso operativo.",
       badge: snapshot.alerts.counts.total > 0 ? snapshot.alerts.counts.total.toString() : "ok"
     },
     {
@@ -130,7 +142,7 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
       label: "Sync",
       eyebrow: "Conexión y confianza",
       title: "Radar de salud, timeline y calidad del dato",
-      detail: "Estado de fuentes, eventos, evidencia y próximas revisiones sin leer una sábana de logs.",
+      detail: "Estado de fuentes, eventos, evidencia y próximas revisiones sin abrir reportes largos.",
       badge: syncSignals > 0 ? syncSignals.toString() : "ok"
     }
   ]), [snapshot, syncSignals]);
@@ -162,11 +174,11 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
     <section className={styles.premiumNavigator} aria-labelledby="prisma-mobile-premium-nav-title">
       <header className={styles.premiumNavigatorHeader}>
         <div>
-          <span>PRISMA App · Navegación premium</span>
-          <h2 id="prisma-mobile-premium-nav-title">Información separada por intención</h2>
-          <p>El dueño ve primero lo que decide. El detalle vive donde toca, no todo corrido como ticket de fonda pegado en la pared.</p>
+          <span>PRISMA App · Pulso operativo</span>
+          <h2 id="prisma-mobile-premium-nav-title">Pulso por prioridad</h2>
+          <p>Venta, caja, alertas, inventario y sync ordenados para decidir rápido desde el celular.</p>
         </div>
-        <aside>
+        <aside data-prisma-zone="mobile-sync-state">
           <span>Fuente activa</span>
           <strong>{sourceLabel(clientSnapshot.source)}</strong>
           <small>{formatRelativeFetchLabel(clientSnapshot.fetchedAt)}{clientSnapshot.stale ? " · respaldo local" : " · lectura fresca"}</small>
@@ -210,7 +222,7 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
         {activeTab === "resumen" ? (
           <div className={styles.premiumPanelStack}>
             <PrismaMobileReadinessPanel clientSnapshot={clientSnapshot} />
-            <section className={styles.controlPanel} aria-label="Controles móviles">
+            <section className={styles.controlPanel} aria-label="Controles móviles" data-prisma-zone="mobile-sync-state">
               <div><span>Fuente activa</span><strong>{sourceLabel(clientSnapshot.source)}</strong></div>
               <div><span>Caja</span><strong>{snapshot.cashCurrent.status}</strong></div>
               <div><span>Diferencia</span><strong>{formatSignedMxnFromCents(snapshot.cashCurrent.differenceCents)}</strong></div>
@@ -218,7 +230,7 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
               <button type="button" className={styles.secondaryButton} onClick={onClearCache}>Limpiar caché</button>
             </section>
             <PrismaMobileCommandCenter clientSnapshot={clientSnapshot} />
-            <section className={styles.metricGrid} aria-label="KPIs principales">
+            <section className={styles.metricGrid} aria-label="KPIs principales" data-prisma-zone="mobile-kpi-grid">
               {snapshot.summary.kpis.map((metric) => <PrismaMobileMetricCard key={metric.key} metric={metric} />)}
             </section>
             <section className={styles.operationsGrid} aria-label="Semáforo operativo">
@@ -256,7 +268,7 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
           <div className={styles.premiumPanelStack}>
             <PrismaMobileReadinessPanel clientSnapshot={clientSnapshot} />
             {clientSnapshot.errors.length > 0 ? (
-              <section className={styles.warningPanel} aria-label="Advertencias de carga">
+              <section className={styles.warningPanel} aria-label="Advertencias de carga" data-prisma-zone="mobile-error-state">
                 <strong>La app está usando respaldo porque una lectura falló.</strong>
                 <ul>{clientSnapshot.errors.slice(0, 3).map((error) => <li key={error}>{error}</li>)}</ul>
               </section>

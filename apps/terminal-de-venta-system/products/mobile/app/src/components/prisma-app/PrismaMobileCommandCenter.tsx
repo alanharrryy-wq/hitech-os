@@ -22,7 +22,12 @@ export function PrismaMobileCommandCenter({ clientSnapshot }: { clientSnapshot: 
   const command = buildPrismaMobileCommandCenter(clientSnapshot);
 
   return (
-    <section className={styles.commandCenter} aria-labelledby="prisma-mobile-command-title" data-prisma-contract={command.contractId}>
+    <section
+      className={styles.commandCenter}
+      aria-labelledby="prisma-mobile-command-title"
+      data-prisma-contract={command.contractId}
+      data-prisma-zone="mobile-command-card"
+    >
       <header className={styles.commandHeader}>
         <div>
           <span className={styles.commandEyebrow}>Centro de mando móvil</span>
@@ -59,7 +64,7 @@ export function PrismaMobileCommandCenter({ clientSnapshot }: { clientSnapshot: 
       </div>
 
       <div className={styles.commandDecisionGrid} aria-label="Cola de decisiones móviles">
-        <section className={styles.commandQueue}>
+        <section className={styles.commandQueue} data-prisma-zone="mobile-review-first">
           <header>
             <span>Cola priorizada</span>
             <h3>Qué atender sin abrir PC</h3>

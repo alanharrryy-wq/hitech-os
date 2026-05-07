@@ -12,7 +12,7 @@ type Props = {
 export function PrismaMobilePulseTimeline({ clientSnapshot }: Props) {
   const timeline = useMemo(() => buildPrismaMobilePulseTimeline(clientSnapshot), [clientSnapshot]);
   return (
-    <section className={styles.pulseTimeline} aria-label="Timeline móvil de pulso operativo">
+    <section className={styles.pulseTimeline} aria-label="Timeline móvil de pulso operativo" data-prisma-zone="mobile-pulse-timeline">
       <header className={styles.pulseTimelineHeader}>
         <div>
           <p className={styles.eyebrow}>PRISMA App · Pulso del día</p>
