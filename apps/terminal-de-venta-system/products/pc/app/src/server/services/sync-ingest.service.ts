@@ -12,6 +12,8 @@ import {
   type SyncIngestResult
 } from "@/server/validators/sync-event-contract";
 
+const DEFAULT_REJECTED_SYNC_BUSINESS_ID = "biz_hitech_default";
+
 function aggregateIdFor(event: SyncEventEnvelope) {
   const payload = event.payload;
   const pick = (value: unknown) => (typeof value === "string" && value.trim() ? value.trim() : "");
@@ -49,7 +51,7 @@ async function persistRejected(candidate: unknown, errors: string[], conflicts: 
   await db.outboxEvent.create({
     data: {
       id,
-      businessId: "unknown_business",
+      businessId: DEFAULT_REJECTED_SYNC_BUSINESS_ID,
       topic: "invalid_schema",
       aggregateId: id,
       payloadJson: JSON.stringify({ rejected: candidate }),

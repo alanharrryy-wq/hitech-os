@@ -19,7 +19,7 @@ export function CatalogScreen() {
   const [error, setError] = useState<unknown>(null);
   const [notice, setNotice] = useState("");
 
-  const drawerDockRef = useRef<HTMLDivElement>(null);
+  const drawerDockRef = useRef<HTMLDivElement | null>(null);
 
   function beginEditProduct(product: CatalogProduct) {
     setForm(productToForm(product));

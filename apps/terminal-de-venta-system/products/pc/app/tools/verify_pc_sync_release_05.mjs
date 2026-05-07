@@ -9,7 +9,10 @@ const root = path.resolve(idx >= 0 && args[idx + 1] ? args[idx + 1] : process.cw
 const required = [
   "app/sync/page.tsx",
   "app/api/sync/ingest/route.ts",
+  "app/api/sync/tri-db/run/route.ts",
   "components/sync/sync-release-workspace.tsx",
+  "components/sync/tri-db-sync-action.tsx",
+  "components/sync/tri-db-status-card.tsx",
   "src/modules/sync/types.ts",
   "src/server/validators/sync-event-contract.ts",
   "src/server/services/sync-ingest.service.ts",
@@ -31,17 +34,29 @@ if (findings.length === 0) {
   for (const token of ["persistSyncIngestPayload", "classifySyncIngestPayload", "dryRun", "NextResponse.json"]) {
     if (!route.includes(token)) findings.push({ severity: "BLOCKER", code: "ROUTE_TOKEN_MISSING", message: token });
   }
+  const triDbRunRoute = read("app/api/sync/tri-db/run/route.ts");
+  for (const token of ["guardPcFeatureForApi", '"sync.managed"', "runTriDbSyncNow"]) {
+    if (!triDbRunRoute.includes(token)) findings.push({ severity: "BLOCKER", code: "TRI_DB_ROUTE_TOKEN_MISSING", message: token });
+  }
   const validator = read("src/server/validators/sync-event-contract.ts");
   for (const token of ["REQUIRED_SYNC_EVENT_FIELDS", "classifySyncIngestPayload", "duplicate_event", "negative_stock", "terminal_not_registered", "old_local_price"]) {
     if (!validator.includes(token)) findings.push({ severity: "BLOCKER", code: "VALIDATOR_TOKEN_MISSING", message: token });
   }
   const service = read("src/server/services/sync-ingest.service.ts");
-  for (const token of ["outboxEvent.create", "outboxEvent.findUnique", "eventId", "conflict", "acked", "failed"]) {
+  for (const token of ["outboxEvent.create", "outboxEvent.findUnique", "eventId", "conflict", "acked", "failed", "DEFAULT_REJECTED_SYNC_BUSINESS_ID", "biz_hitech_default"]) {
     if (!service.includes(token)) findings.push({ severity: "BLOCKER", code: "SERVICE_TOKEN_MISSING", message: token });
   }
   const ui = read("components/sync/sync-release-workspace.tsx");
-  for (const label of ["Sync, dedupe y conflictos", "Campos requeridos", "Catálogo de conflictos", "Payload de prueba dry-run"]) {
-    if (!ui.includes(label)) findings.push({ severity: "BLOCKER", code: "UI_LABEL_MISSING", message: label });
+  for (const token of ["TriDbSyncAction", "TriDbStatusCard"]) {
+    if (!ui.includes(token)) findings.push({ severity: "BLOCKER", code: "UI_TOKEN_MISSING", message: token });
+  }
+  const triDbAction = read("components/sync/tri-db-sync-action.tsx");
+  for (const token of ['fetch("/api/sync/tri-db/run"', "Sincronizar ahora"]) {
+    if (!triDbAction.includes(token)) findings.push({ severity: "BLOCKER", code: "TRI_DB_ACTION_TOKEN_MISSING", message: token });
+  }
+  const triDbStatus = read("components/sync/tri-db-status-card.tsx");
+  for (const token of ["Tablet → PC canonical → Mobile", "Cobertura PC cubre Tablet"]) {
+    if (!triDbStatus.includes(token)) findings.push({ severity: "BLOCKER", code: "TRI_DB_STATUS_TOKEN_MISSING", message: token });
   }
 }
 const ok = findings.every((item) => item.severity !== "BLOCKER");

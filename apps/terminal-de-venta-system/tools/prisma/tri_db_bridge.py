@@ -391,6 +391,10 @@ def resolve_row_identity(
             return
 
     if destination_id_exists(dst, table, source_id):
+        if table == "Business":
+            # Business is the tenant root; repeat sync must reuse it so child businessId values stay stable.
+            id_maps.setdefault(table, {})[source_id] = source_id
+            return
         # The source id already exists in PC, but it did not match the natural row
         # above. Do not overwrite PC-owned identity; project the Tablet row under a
         # deterministic bridge id and rewrite children to that id.
@@ -632,6 +636,9 @@ def run_self_test() -> None:
             assert count_rows(dst, "OutboxEvent") == 1
             status = src.execute("SELECT status FROM OutboxEvent WHERE id='evt_01'").fetchone()[0]
             assert status == "acked"
+        run_sync(roots, base, ack_outbox=True)
+        with open_db(dst_db, readonly=True) as dst:
+            assert count_rows(dst, "Business") == 1
         print("SELF_TEST_READY")
         print_summary(summary, None)
 
