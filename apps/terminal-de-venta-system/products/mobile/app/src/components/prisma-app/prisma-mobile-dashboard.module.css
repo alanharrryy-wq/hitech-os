@@ -2139,8 +2139,19 @@
 
 @media (max-width: 520px) {
   .brandHeader.brandHeader {
+    flex-direction: column;
+    align-items: stretch;
     gap: 10px;
     padding: 10px !important;
+  }
+
+  .brandIdentity,
+  .brandMeta {
+    width: 100%;
+  }
+
+  .brandMeta {
+    justify-content: flex-start;
   }
 
   .brandHeader .brandLogo {
@@ -2160,6 +2171,19 @@
 
   .brandMeta span:last-child {
     display: none;
+  }
+
+  .statusChip {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .commandCardHeader {
+    grid-template-columns: 1fr !important;
+  }
+
+  .commandCardHeader h2 {
+    overflow-wrap: anywhere;
   }
 
   .commandSecondaryGrid {
