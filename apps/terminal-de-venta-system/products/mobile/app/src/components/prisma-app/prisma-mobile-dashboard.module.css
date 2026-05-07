@@ -1341,6 +1341,8 @@
 /* PRISMA Crystal Command Mobile: shell */
 .dashboardShell {
   width: min(1120px, 100%);
+  max-width: 100%;
+  box-sizing: border-box;
   gap: 14px;
 }
 
@@ -1379,6 +1381,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  box-sizing: border-box;
+  max-width: 100%;
   gap: 12px;
   border: 1px solid var(--crystal-border);
   border-radius: 24px;
@@ -1473,6 +1477,9 @@
 /* PRISMA Crystal Command Mobile: command card */
 .commandCard {
   display: grid;
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
   gap: 14px;
   border: 1px solid var(--crystal-border-strong);
   border-radius: 28px;
@@ -1490,6 +1497,11 @@
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 12px;
   align-items: start;
+}
+
+.commandCardHeader > div {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .commandCardHeader span,
@@ -1517,6 +1529,9 @@
   font-size: 1.22rem;
   line-height: 1.12;
   letter-spacing: 0;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .commandCardHeader p {
