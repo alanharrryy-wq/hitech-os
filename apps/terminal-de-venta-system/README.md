@@ -1,9 +1,9 @@
 # PRISMA POS · Terminal de Venta System
 
-**Proyecto:** PRISMA POS / Terminal de Venta  
-**Raíz operativa:** `F:\repos\hitech-os\apps\terminal-de-venta-system`  
-**Idioma visible:** `es-MX`  
-**Estado:** arquitectura viva, modular y gobernada  
+**Proyecto:** PRISMA POS / Terminal de Venta
+**Raíz operativa:** `F:\repos\hitech-os\apps\terminal-de-venta-system`
+**Idioma visible:** `es-MX`
+**Estado:** arquitectura viva, modular y gobernada
 **Regla madre:** **Tablet vende sola. PC y App móvil son assets complementarios.**
 
 ---
@@ -888,4 +888,3 @@ Los paquetes entran gobernados, verificables y reversibles.
 ```
 
 Ese es el norte. Todo lo demás es decoración, y la decoración sin contrato termina siendo foquito navideño pegado con cinta en tablero eléctrico.
-

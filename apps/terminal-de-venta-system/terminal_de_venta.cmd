@@ -1527,5 +1527,3 @@ if /I "%~1"=="license-signature-contract" (
 )
 
 :: END PRISMA_LICENSE_PRODUCTION_SIGNATURE_10
-
-

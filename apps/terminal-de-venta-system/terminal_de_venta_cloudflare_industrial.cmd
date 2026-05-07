@@ -19,4 +19,3 @@ set "EXITCODE=%ERRORLEVEL%"
 echo.
 echo Exit code: %EXITCODE%
 exit /b %EXITCODE%
-

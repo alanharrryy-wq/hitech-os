@@ -434,4 +434,3 @@ def run_status_consensus_cli(argv: List[str], black_box_py: Optional[Path] = Non
         sys.stderr.write(f"{type(exc).__name__}: {exc}\n")
         sys.stderr.write(traceback.format_exc())
         return 2
-

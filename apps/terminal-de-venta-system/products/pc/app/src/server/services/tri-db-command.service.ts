@@ -138,4 +138,3 @@ export async function runTriDbSyncNow(): Promise<TriDbSyncNowResult> {
     message: ok ? "Sincronizacion ejecutada y status actualizado." : "Bridge ejecuto, pero fallo la actualizacion de status."
   };
 }
-
