@@ -867,3 +867,239 @@ textarea {
   transform: translateY(-3px);
   box-shadow: 0 26px 62px rgba(17, 42, 82, 0.14);
 }
+
+
+/* PRISMA hero mobile hard fit BEGIN */
+
+/*
+  Hero mobile real:
+  - título corto para celular
+  - una sola columna
+  - visual controlado
+  - nada de scroll horizontal
+  - botones tocables
+*/
+
+.hero-title-mobile {
+  display: none;
+}
+
+.hero-title-desktop {
+  display: inline;
+}
+
+@media (max-width: 900px) {
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .hero {
+    min-height: auto !important;
+    padding: 44px 16px 46px !important;
+    overflow: hidden !important;
+  }
+
+  .hero::before {
+    opacity: 0.72 !important;
+  }
+
+  .hero-inner {
+    width: 100% !important;
+    max-width: 480px !important;
+    margin: 0 auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 26px !important;
+    align-items: start !important;
+  }
+
+  .hero-inner > div:first-child {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .hero-title-desktop {
+    display: none !important;
+  }
+
+  .hero-title-mobile {
+    display: inline !important;
+  }
+
+  .hero h1 {
+    width: 100% !important;
+    max-width: 9.8ch !important;
+    margin: 12px 0 18px !important;
+    font-size: clamp(3rem, 15vw, 4.65rem) !important;
+    line-height: 0.86 !important;
+    letter-spacing: -0.078em !important;
+    text-wrap: balance !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    hyphens: none !important;
+  }
+
+  .hero p {
+    width: 100% !important;
+    max-width: 34ch !important;
+    margin: 0 !important;
+    font-size: 1.02rem !important;
+    line-height: 1.62 !important;
+    color: rgba(255, 255, 255, 0.82) !important;
+  }
+
+  .hero-actions {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    margin-top: 24px !important;
+  }
+
+  .hero-actions a,
+  .hero-actions button {
+    width: 100% !important;
+    min-height: 48px !important;
+    justify-content: center !important;
+  }
+
+  .pill-row {
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    margin-top: 18px !important;
+  }
+
+  .pill {
+    max-width: 100% !important;
+    white-space: normal !important;
+    font-size: 0.72rem !important;
+    padding: 0.48rem 0.66rem !important;
+  }
+
+  .hero-proof-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    margin-top: 18px !important;
+    max-width: 100% !important;
+  }
+
+  .hero-proof-card {
+    padding: 13px 14px !important;
+    border-radius: 18px !important;
+  }
+
+  .hero-proof-card strong {
+    font-size: 1.45rem !important;
+  }
+
+  .hero-visual {
+    width: 100% !important;
+    max-width: 360px !important;
+    margin: 4px auto 0 !important;
+    justify-self: center !important;
+    overflow: visible !important;
+  }
+
+  .hero-card {
+    width: 100% !important;
+    max-width: 360px !important;
+    margin: 0 auto !important;
+    padding: 10px !important;
+    border-radius: 24px !important;
+    transform: none !important;
+  }
+
+  .hero-card img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 245px !important;
+    object-fit: cover !important;
+    border-radius: 18px !important;
+  }
+
+  .hero-floating-card {
+    position: static !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin-top: 10px !important;
+    padding: 11px 12px !important;
+    border-radius: 16px !important;
+    box-shadow: none !important;
+  }
+
+  .hero-floating-card span {
+    font-size: 0.62rem !important;
+  }
+
+  .hero-floating-card strong {
+    font-size: 0.92rem !important;
+    line-height: 1.15 !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero {
+    padding: 38px 14px 42px !important;
+  }
+
+  .hero-inner {
+    max-width: 390px !important;
+    gap: 22px !important;
+  }
+
+  .hero h1 {
+    max-width: 9ch !important;
+    font-size: clamp(2.72rem, 15vw, 4rem) !important;
+    line-height: 0.86 !important;
+  }
+
+  .hero p {
+    max-width: 31ch !important;
+    font-size: 0.96rem !important;
+    line-height: 1.58 !important;
+  }
+
+  .hero-visual,
+  .hero-card {
+    max-width: 320px !important;
+  }
+
+  .hero-card img {
+    max-height: 215px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero {
+    padding-inline: 12px !important;
+  }
+
+  .hero h1 {
+    font-size: 2.62rem !important;
+  }
+
+  .hero p {
+    font-size: 0.92rem !important;
+  }
+
+  .hero-visual,
+  .hero-card {
+    max-width: 292px !important;
+  }
+
+  .hero-card img {
+    max-height: 196px !important;
+  }
+
+  .hero-proof-grid {
+    display: none !important;
+  }
+}
+
+/* PRISMA hero mobile hard fit END */
+
