@@ -1,9 +1,9 @@
 # PRISMA POS · Terminal de Venta System
 
-**Proyecto:** PRISMA POS / Terminal de Venta  
-**Raíz operativa:** `F:\repos\hitech-os\apps\terminal-de-venta-system`  
-**Idioma visible:** `es-MX`  
-**Estado:** arquitectura viva, modular y gobernada  
+**Proyecto:** PRISMA POS / Terminal de Venta
+**Raíz operativa:** `F:\repos\hitech-os\apps\terminal-de-venta-system`
+**Idioma visible:** `es-MX`
+**Estado:** arquitectura viva, modular y gobernada
 **Regla madre:** **Tablet vende sola. PC y App móvil son assets complementarios.**
 
 ---
@@ -244,7 +244,7 @@ Puertos usados para desarrollo local:
 
 | Producto | Puerto | Health / ruta esperada |
 |---|---:|---|
-| Tablet | `3120` | `http://127.0.0.1:3120/prisma-dark-pos-reference` |
+| Tablet | `3120` | `http://127.0.0.1:3120/` |
 | PC | `3130` | `http://127.0.0.1:3130/` |
 
 Cuando se use `pnpm`, preferir ejecución con raíz explícita, no depender del directorio actual:

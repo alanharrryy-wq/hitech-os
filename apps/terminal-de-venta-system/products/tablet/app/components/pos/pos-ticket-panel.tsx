@@ -5,7 +5,8 @@ import type { CartLine } from "@/lib/pos/cart-state";
 import { cartTotalCents, cartTotalQty, formatMoney } from "@/lib/pos/cart-state";
 import type { HeldCart } from "@/lib/pos/held-carts";
 import { getCartLineStockSignal, validateCartForCheckout } from "@/lib/pos/cart-engine";
-import { resolveProductPackshot } from "./pos-packshots";
+import { resolveNextPackshotSrc, resolveProductPackshot } from "./pos-packshots";
+import { usePrismaPackshotSkin } from "./use-prisma-packshot-skin";
 import styles from "./pos.module.css";
 
 function cartThumbClass(name: string) {
@@ -65,9 +66,20 @@ export function PosTicketPanel({
   const checkoutDisabled = !lines.length || Boolean(checkoutBusy);
   const readiness = validateCartForCheckout(lines);
   const diagnosticCopy = checkoutError ? "Revisa el cobro antes de continuar." : checkoutReason || readiness.reason;
+  const packshotSkin = usePrismaPackshotSkin();
 
   return (
-    <aside className={styles.ticketPanel} aria-label="Ticket actual" data-prisma-component="CartPanel">
+    <aside
+      className={styles.ticketPanel}
+      aria-label="Ticket actual"
+      data-prisma-component="CartPanel"
+      data-prisma-zone="tablet-pos-ticket-panel"
+      data-prisma-role="sale-ticket"
+      data-prisma-priority="primary"
+      data-prisma-state={checkoutError ? "error" : lines.length ? "ready" : "empty"}
+      data-prisma-motion="reduced-motion-safe"
+      data-prisma-qa="tablet-qa-cart"
+    >
       <header className={styles.ticketHeader} data-prisma-component="CartHeader">
         <div>
           <span>Ticket activo</span>
@@ -80,17 +92,17 @@ export function PosTicketPanel({
 
       <div className={styles.ticketLines}>
         {!lines.length ? (
-          <div className={styles.emptyTicket} data-prisma-component="EmptyState">
+          <div className={styles.emptyTicket} data-prisma-component="EmptyState" data-prisma-zone="tablet-pos-empty-state" data-prisma-state="empty" data-prisma-qa="tablet-qa-disabled">
             <PrismaIcon name="cart" size={26} />
             <strong>Agrega productos para cobrar</strong>
             <span>El total y el botón de cobro se activan cuando el ticket tiene productos.</span>
           </div>
         ) : (
           lines.map((line) => {
-            const packshot = resolveProductPackshot(line.product.name, line.product.category, line.product.sku);
+            const packshot = resolveProductPackshot(line.product.name, line.product.category, line.product.sku, { skin: packshotSkin });
             const stockSignal = getCartLineStockSignal(line);
             return (
-              <article key={line.product.id} className={styles.ticketLine} data-prisma-component="CartItemRow">
+              <article key={line.product.id} className={styles.ticketLine} data-prisma-component="CartItemRow" data-prisma-zone="tablet-pos-ticket-line" data-prisma-state="ready" data-prisma-motion="hover-lift">
                 <span
                   className={[
                     styles.cartThumb,
@@ -110,6 +122,11 @@ export function PosTicketPanel({
                         loading="lazy"
                         draggable={false}
                         onError={(event) => {
+                          const nextSrc = resolveNextPackshotSrc(event.currentTarget.src, packshot.fallbackSrcs);
+                          if (nextSrc) {
+                            event.currentTarget.src = nextSrc;
+                            return;
+                          }
                           event.currentTarget.closest("[data-prisma-packshot-host]")?.setAttribute("data-packshot-error", "true");
                         }}
                         onLoad={(event) => {
@@ -129,7 +146,7 @@ export function PosTicketPanel({
                   </span>
                   <small className={stockChipClass(stockSignal.tone)}>{stockSignal.label}</small>
                 </div>
-                <div className={styles.stepper} data-prisma-component="QuantityStepper">
+                <div className={styles.stepper} data-prisma-component="QuantityStepper" data-prisma-role="secondary-action" data-prisma-motion="press-feedback">
                   <button type="button" aria-label={`Restar ${line.product.name}`} onClick={() => onDecrement(line.product.id)} disabled={checkoutBusy}>
                     <PrismaIcon name="minus" size={15} />
                   </button>
@@ -148,24 +165,24 @@ export function PosTicketPanel({
         )}
       </div>
 
-      <div className={readiness.ready ? styles.checkoutDiagnosticOk : styles.checkoutDiagnosticWarn} aria-live="polite" data-prisma-component="CheckoutDiagnostic">
-        <strong>{readiness.ready ? "Listo para cobrar" : "Aduana del ticket"}</strong>
+      <div className={readiness.ready ? styles.checkoutDiagnosticOk : styles.checkoutDiagnosticWarn} aria-live="polite" data-prisma-component="CheckoutDiagnostic" data-prisma-role="status-surface" data-prisma-state={readiness.ready ? "ready" : "disabled"}>
+        <strong>{readiness.ready ? "Listo para cobrar" : "Prepara el cobro"}</strong>
         <span>{diagnosticCopy}</span>
       </div>
 
-      <div className={styles.ticketTotalsBreakdown} aria-label="Resumen del ticket">
+      <div className={styles.ticketTotalsBreakdown} aria-label="Resumen del ticket" data-prisma-zone="tablet-pos-total-area" data-prisma-role="sale-total">
         <span>Subtotal</span>
         <strong>{formatMoney(total)}</strong>
         <span>Impuestos</span>
         <strong>Incluidos</strong>
       </div>
 
-      <div className={styles.ticketTotal} data-prisma-component="TotalsSummary">
+      <div className={styles.ticketTotal} data-prisma-component="TotalsSummary" data-prisma-zone="tablet-pos-total-area" data-prisma-role="sale-total" data-prisma-priority="primary" data-prisma-state={lines.length ? "ready" : "empty"}>
         <span>Total a cobrar</span>
         <strong data-total-value="true">{formatMoney(total)}</strong>
       </div>
 
-      {checkoutError ? <div className={styles.paymentError}>Revisa el cobro antes de continuar.</div> : null}
+      {checkoutError ? <div className={styles.paymentError} data-prisma-zone="tablet-pos-error-state" data-prisma-state="error" data-prisma-motion="error-feedback">Revisa el cobro antes de continuar.</div> : null}
 
       <button
         className={lines.length ? styles.checkoutLink : styles.checkoutLinkDisabled}
@@ -173,13 +190,19 @@ export function PosTicketPanel({
         disabled={checkoutDisabled}
         aria-disabled={checkoutDisabled}
         data-prisma-component="CheckoutButton"
+        data-prisma-zone="tablet-pos-cobrar-cta"
+        data-prisma-role="primary-action"
+        data-prisma-priority={checkoutDisabled ? "passive" : "primary"}
+        data-prisma-motion={checkoutDisabled ? "reduced-motion-safe" : "press-feedback"}
+        data-prisma-state={checkoutDisabled ? "disabled" : checkoutBusy ? "loading" : "ready"}
+        data-prisma-qa={checkoutDisabled ? "tablet-qa-disabled" : "tablet-qa-cobrar"}
         onClick={onCheckout}
       >
         <span className={styles.visuallyHidden}>Abrir cobro</span>
         <span>{checkoutBusy ? "COBRANDO" : "COBRAR"}</span>
         <strong>Tocar</strong>
       </button>
-      <div className={styles.secondaryCheckoutActions} aria-label="Acciones secundarias">
+      <div className={styles.secondaryCheckoutActions} aria-label="Acciones secundarias" data-prisma-role="secondary-action">
         <button type="button" disabled data-prisma-component="SecondaryActionCard">
           <PrismaIcon name="receipt" size={18} />
           <span>Cotización</span>
@@ -198,7 +221,7 @@ export function PosTicketPanel({
       </div>
 
       {heldCarts.length ? (
-        <section className={styles.heldCartShelf} aria-label="Tickets guardados" data-prisma-component="HeldCartShelf">
+        <section className={styles.heldCartShelf} aria-label="Tickets en espera" data-prisma-component="HeldCartShelf">
           <header>
             <span>Tickets guardados</span>
             <strong>{heldCarts.length}</strong>
@@ -212,10 +235,10 @@ export function PosTicketPanel({
                 </div>
                 <div className={styles.heldCartActions}>
                   <button type="button" onClick={() => onRestoreHeldCart(heldCart.id)} disabled={checkoutBusy || lines.length > 0} aria-label={`Recuperar ${heldCart.label}`}>
-                    Recuperar
+                    Usar
                   </button>
                   <button type="button" onClick={() => onDiscardHeldCart(heldCart.id)} disabled={checkoutBusy} aria-label={`Descartar ${heldCart.label}`}>
-                    Quitar
+                    Descartar
                   </button>
                 </div>
               </article>

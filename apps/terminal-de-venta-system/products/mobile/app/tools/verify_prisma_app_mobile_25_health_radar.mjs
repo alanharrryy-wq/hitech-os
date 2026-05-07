@@ -4,7 +4,7 @@ import { join } from "node:path";
 
 const root = process.cwd();
 const HEALTH_RADAR_MIN_VERSION = "0.25.3";
-const HEALTH_RADAR_MAX_EXCLUSIVE = "0.37.0";
+const HEALTH_RADAR_MAX_EXCLUSIVE = "0.38.0";
 
 const required = [
   "package.json",
@@ -12,6 +12,7 @@ const required = [
   "src/lib/prisma-app/prisma-mobile-health-radar.ts",
   "src/components/prisma-app/PrismaMobileHealthRadar.tsx",
   "src/components/prisma-app/PrismaMobileDashboard.tsx",
+  "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx",
   "src/components/prisma-app/index.ts",
   "src/components/prisma-app/prisma-mobile-dashboard.module.css",
   "docs/prisma-app/PRISMA_APP_MOBILE_25D_HEALTH_RADAR_DUPLICATE_KEY_FINAL.md",
@@ -127,5 +128,11 @@ const route = read("app/api/mobile/health-radar/route.ts");
 for (const token of ["force-dynamic", "noStoreJsonInit", "health_radar"]) {
   if (!route.includes(token)) fail(`route missing ${token}`);
 }
+
+const dashboard = read("src/components/prisma-app/PrismaMobileDashboard.tsx");
+const navigator = read("src/components/prisma-app/PrismaMobilePremiumNavigator.tsx");
+if (!dashboard.includes("PrismaMobilePremiumNavigator")) fail("dashboard does not delegate to premium navigator");
+if (dashboard.includes("<PrismaMobileHealthRadar")) fail("dashboard must not render health radar directly");
+if (!navigator.includes("<PrismaMobileHealthRadar clientSnapshot={clientSnapshot}")) fail("premium navigator does not own health radar");
 
 console.log(`OK PRISMA_APP_MOBILE_25D_HEALTH_RADAR_DUPLICATE_KEY_FINAL verified ${checked} duplicate-key vectors on app version ${pkg.version}`);

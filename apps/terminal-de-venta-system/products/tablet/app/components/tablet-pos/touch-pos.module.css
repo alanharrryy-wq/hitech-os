@@ -707,3 +707,204 @@
   outline: 3px solid rgba(248, 220, 145, 0.78);
   outline-offset: 3px;
 }
+
+/* PRISMA_LIGHT_TOUCH_POS_LEGACY_POLISH_00R */
+@keyframes prismaTouchSkeletonSweep {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(110%); }
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .runtimeBar,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBlock,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInput,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cartPanel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .miniPanel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketSummary,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dataPanel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dataRow,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .totalBox {
+  border-color: var(--prisma-border-soft);
+  color: var(--prisma-text-primary);
+  background:
+    radial-gradient(circle at 24% 0%, rgba(255,255,255,.86), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,.92), rgba(246,250,255,.70));
+  box-shadow: var(--prisma-shadow-card-lift);
+  backdrop-filter: blur(var(--prisma-optical-card-blur)) saturate(var(--prisma-optical-panel-saturate));
+  -webkit-backdrop-filter: blur(var(--prisma-optical-card-blur)) saturate(var(--prisma-optical-panel-saturate));
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productInfo span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cartLine span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dataRow span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard small,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .totalBox span {
+  color: var(--prisma-text-secondary);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .panelHeader span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .miniPanel span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketSummary span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard svg,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard strong,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .totalBox strong,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productFooter > span {
+  color: var(--prisma-action-primary);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInput input {
+  color: var(--prisma-text-primary);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .scanButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentActive,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productFooter button,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportButton {
+  color: var(--prisma-text-inverse);
+  background: var(--prisma-action-primary-gradient);
+  border-color: var(--prisma-border-action);
+  box-shadow: var(--prisma-shadow-button);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryWideButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .iconOnlyButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentButton {
+  color: var(--prisma-action-primary);
+  background: var(--prisma-action-primary-soft);
+  border-color: var(--prisma-border-action);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cartPanel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .miniPanel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketSummary,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dataPanel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dataRow,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .scanButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryWideButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .iconOnlyButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentActive,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productFooter button {
+  transition:
+    transform var(--prisma-motion-base) var(--prisma-ease-premium),
+    box-shadow var(--prisma-motion-base) var(--prisma-ease-premium),
+    border-color var(--prisma-motion-fast) ease,
+    background var(--prisma-motion-base) ease,
+    opacity var(--prisma-motion-fast) ease;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dataRow:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel:hover {
+  transform: translateY(-2px);
+  border-color: var(--prisma-border-action);
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .scanButton:not(:disabled):hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton:not(:disabled):hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryWideButton:not(:disabled):hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .iconOnlyButton:not(:disabled):hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentButton:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentActive:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutButton:not(:disabled):hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportButton:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productFooter button:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .scanButton:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryWideButton:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .iconOnlyButton:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentButton:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentActive:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutButton:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportButton:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productFooter button:active {
+  transform: translateY(1px) scale(.99);
+  box-shadow: var(--prisma-light-shadow-card);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .scanButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryWideButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .iconOnlyButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentActive:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productFooter button:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchInput:focus-within {
+  outline: none;
+  border-color: var(--prisma-action-primary);
+  box-shadow: var(--prisma-focus-ring-strong), var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productFooter button:disabled,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutButton:disabled,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .scanButton:disabled,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton:disabled,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryWideButton:disabled {
+  color: var(--prisma-disabled-text) !important;
+  background: var(--prisma-disabled-surface) !important;
+  border-color: var(--prisma-border-soft) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72) !important;
+  cursor: not-allowed;
+  opacity: .8;
+  transform: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel {
+  position: relative;
+  overflow: hidden;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--prisma-skeleton-surface);
+  opacity: .22;
+  transform: translateX(-110%);
+  animation: prismaTouchSkeletonSweep 1.2s var(--prisma-ease-premium) infinite;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cartPanel,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .miniPanel,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .ticketSummary,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dataPanel,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dataRow,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .scanButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryWideButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .iconOnlyButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentActive,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checkoutButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productFooter button,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .statePanel::after {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}

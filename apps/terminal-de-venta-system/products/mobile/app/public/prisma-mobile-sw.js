@@ -1,4 +1,4 @@
-const PRISMA_MOBILE_SW_VERSION = "prisma-mobile-pwa-v30-install-landing-black-20260503";
+const PRISMA_MOBILE_SW_VERSION = "prisma-mobile-pwa-logo1-v38-real-install-flow-20260506_163657";
 const PRISMA_MOBILE_CACHE = `prisma-mobile-cache-${PRISMA_MOBILE_SW_VERSION}`;
 const PRISMA_MOBILE_APP_SHELL = "/prisma-app";
 const PRISMA_MOBILE_INSTALL = "/prisma-app/install";

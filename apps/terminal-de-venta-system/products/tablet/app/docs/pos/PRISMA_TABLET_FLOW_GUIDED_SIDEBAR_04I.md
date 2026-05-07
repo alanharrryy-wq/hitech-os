@@ -1,49 +1,57 @@
-# PRISMA Tablet Flow Guided Sidebar 04I
+# PRISMA Tablet Flow Guided Sidebar 04I - Superseded by 05A
 
-## Objetivo
+## Estado
 
-Convertir el menu lateral de Tablet en una navegacion guiada por contexto operativo, no en un tablero de avion con todos los botones visibles todo el tiempo.
+Este criterio queda superado por:
 
-## Regla funcional
+`PRISMA_TABLET_FLOW_CLARITY_05A_NAV_TOPBAR_COLLAPSE`
 
-- En `Inicio` el menu lateral muestra solamente `Inicio`.
-- Al entrar a venta, el menu muestra el flujo minimo para operar: `Inicio`, `Vender`, `Turno`, `Ventas de hoy` y rutas de soporte solo cuando aplican.
-- `Catalogo` y `Existencias` no aparecen como ruido permanente; aparecen cuando el usuario esta en esas rutas o cuando el flujo de control lo amerita.
-- `Pendientes` aparece si existen pendientes/fallidos/conflictos o si la ruta activa es sync.
-- `Estado del sistema` aparece si hay advertencias, problemas de conexion/catalogo o si la ruta activa es release gate.
+## Por que cambio
 
-## Justificacion de producto
+La navegacion contextual anterior escondia rutas para mantener foco POS. La intencion era correcta, pero en uso real y QA visual hizo dificil encontrar pantallas disponibles.
 
-Tablet es POS touch-first. La navegacion debe empujar venta y turno, no convertir la caja en mini backoffice. PC gobierna el control avanzado; Tablet vende, opera caja y deja eventos.
+## Nueva regla
 
-## Estados soportados
+Tablet conserva foco POS, pero la navegacion principal debe estar siempre visible y agrupada:
 
-| Estado | Como se detecta | Menu esperado |
-|---|---|---|
-| `inicio` | `currentPath === /` | Solo `Inicio` |
-| `venta` | `/pos` o `/checkout` | Inicio, Vender, Turno, Ventas de hoy, soporte contextual |
-| `operacion` | ventas, turno, pendientes, devoluciones | Inicio, Vender y ruta activa |
-| `control` | catalogo, stock, inventory, estado | Inicio, Vender y ruta activa/control |
+- Operacion: Vender, Inicio, Turno y caja, Ventas de hoy.
+- Consulta rapida: Catalogo, Existencias.
+- Soporte: Pendientes, Offline / Export, Estado del sistema, Licencia.
+
+## Diferencia clave
+
+Antes:
+
+- En `Inicio`, el sidebar mostraba solo `Inicio`.
+- Catalogo, Existencias, Pendientes y Estado aparecian solo segun contexto.
+
+Ahora:
+
+- El sidebar muestra las pantallas principales siempre.
+- El logo PRISMA contrae/descontrae la barra lateral.
+- Inicio funciona como mapa de trabajo.
+- La barra superior integra el estado operativo en una sola franja compacta.
 
 ## Alcance
 
-Toca solo Tablet:
+Toca solo UI/UX Tablet:
 
 - `components/tablet-shell/tablet-nav.ts`
 - `components/tablet-shell/prisma-tablet-shell.tsx`
 - `components/tablet-shell/prisma-tablet-shell.module.css`
-- `components/pos/pos-screen.tsx`
-- `components/pos/pos-ticket-panel.tsx`
+- `components/tablet-runtime/tablet-runtime-status-strip.tsx`
+- `components/tablet-home/tablet-home-screen.tsx`
+- `components/tablet-home/tablet-home.module.css`
 - `tools/verify_tablet_flow_guided_sidebar_04i.mjs`
 
 ## No toca
 
-- `packages/shared-kernel/*`
-- `shared/*`
-- PC
-- Prisma schema
-- APIs de venta
-
-## Nota de UX
-
-La idea no es esconder por esconder. Es esconder para guiar. En caja, menos ruido equivale a menos errores, menos vueltas y menos cajero picando botones como si estuviera jugando buscaminas con dinero real.
+- backend;
+- DB;
+- Prisma schema;
+- sync contracts;
+- ventas/carrito/cobro;
+- shared-kernel;
+- PC;
+- Mobile;
+- packshots o image resolver.

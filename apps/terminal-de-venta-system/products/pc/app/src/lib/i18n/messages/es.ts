@@ -5,23 +5,23 @@ export const pcMessages = {
   },
   productName: "Panel administrativo de inventario",
   shell: {
-    brand: "Consola operativa",
+    brand: "PRISMA",
     subtitle: "Inventario, SKUs, compras, recepción, auditoría y sincronización con la terminal gemela.",
     footer: "Gemela: terminal de venta. Dominio: inventario y control operativo.",
     home: "Visión general",
-    twinStatus: "Tablet independiente",
-    lastSincronización: "sin respaldo consolidado",
-    lastSync: "sin respaldo consolidado",
+    twinStatus: "Tablet conectada",
+    lastSincronización: "sin sincronización reciente",
+    lastSync: "sin sincronización reciente",
     searchPlaceholder: "Buscar SKU, ID o escanear código",
-    sincronizaciónChip: "Validar eventos",
-    syncChip: "Validar eventos",
-    userChip: "Equipo interno"
+    sincronizaciónChip: "Revisar sincronización",
+    syncChip: "Revisar sincronización",
+    userChip: "Administrador"
   },
   home: {
     kicker: "tablero operativo",
     title: "Visual del inventario",
-    subtitle: "Centro de mando para revisar salud del catálogo, presión de stock, desempeño del día y señales listas para atacar antes de que la operación se haga nudo.",
-    criticalStockTitle: "Productos con stock bajo",
+    subtitle: "Qué puede hacer PRISMA por venta, inventario, compras, reabasto, supervisión y crecimiento multi-sucursal.",
+    criticalStockTitle: "Productos con existencias bajas",
     criticalStockSubtitle: "Lo que ya está pidiendo reabasto o conteo físico antes de volverse quiebre.",
     openOrdersTitle: "Top productos vendidos",
     openOrdersSubtitle: "Lectura rápida del catálogo que sí está empujando venta y margen.",
@@ -46,8 +46,8 @@ export const pcMessages = {
     },
     stock: {
       title: "Existencias",
-      subtitle: "Foto operativa de existencias, cobertura y quiebres de stock.",
-      bullets: ["existencias actuales", "días de inventario", "quiebres de stock", "sobreinventario"]
+      subtitle: "Foto operativa de existencias, cobertura y quiebres.",
+      bullets: ["existencias actuales", "días de inventario", "quiebres", "sobreinventario"]
     },
     sincronización: {
       title: "Sincronización",

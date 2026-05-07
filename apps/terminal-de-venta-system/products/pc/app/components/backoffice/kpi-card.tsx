@@ -15,7 +15,6 @@ export function KpiCard({ kpi }: { kpi: BackofficeKpi }) {
       </div>
       <div className="metric">{kpi.value}</div>
       <div className="metric-note">{kpi.note}</div>
-      <div className="metric-note">Fuente: {kpi.source}</div>
     </article>
   );
 }

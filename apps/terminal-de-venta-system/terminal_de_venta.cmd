@@ -1000,7 +1000,7 @@ echo Dev URLs:
 
 echo   Tablet:     http://127.0.0.1:3120/
 
-echo   Tablet ref: http://127.0.0.1:3120/prisma-dark-pos-reference
+echo   Tablet: http://127.0.0.1:3120/
 
 echo   PC:         http://127.0.0.1:3130/
 
@@ -1410,7 +1410,7 @@ exit /b %ERRORLEVEL%
 
 :health
 
-powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Command "function T($n,$u){try{$r=Invoke-WebRequest -Uri $u -UseBasicParsing -TimeoutSec 8; Write-Host ('OK '+$n+' '+$r.StatusCode+' '+$u) -ForegroundColor Green}catch{Write-Host ('FAIL '+$n+' '+$u+' :: '+$_.Exception.Message) -ForegroundColor Red}}; T 'Tablet' 'http://127.0.0.1:3120/'; T 'TabletRef' 'http://127.0.0.1:3120/prisma-dark-pos-reference'; T 'PC' 'http://127.0.0.1:3130/'; T 'Mobile' 'http://127.0.0.1:3140/prisma-app'"
+powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Command "function T($n,$u){try{$r=Invoke-WebRequest -Uri $u -UseBasicParsing -TimeoutSec 8; Write-Host ('OK '+$n+' '+$r.StatusCode+' '+$u) -ForegroundColor Green}catch{Write-Host ('FAIL '+$n+' '+$u+' :: '+$_.Exception.Message) -ForegroundColor Red}}; T 'Tablet' 'http://127.0.0.1:3120/'; T 'PC' 'http://127.0.0.1:3130/'; T 'Mobile' 'http://127.0.0.1:3140/prisma-app'"
 
 exit /b %ERRORLEVEL%
 
@@ -1527,4 +1527,3 @@ if /I "%~1"=="license-signature-contract" (
 )
 
 :: END PRISMA_LICENSE_PRODUCTION_SIGNATURE_10
-

@@ -8,7 +8,7 @@ export default function ExportablesPage() {
     <main className="space-y-6">
       <section>
         <h1 className="text-2xl font-semibold text-white">Exportables</h1>
-        <p className="mt-2 max-w-3xl text-sm text-white/70">Capa para sacar CSV y JSON sin brincar a scripts sueltos ni a peregrinaciones de carpeta. Aquí vive el catálogo de salidas listas para backoffice.</p>
+        <p className="mt-2 max-w-3xl text-sm text-white/70">Capa para sacar CSV y JSON sin brincar a scripts sueltos ni a peregrinaciones de carpeta. Aquí vive el catálogo de salidas listas para administración.</p>
       </section>
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {exportCatalog.map((item) => (
@@ -23,7 +23,7 @@ export default function ExportablesPage() {
         ))}
       </section>
       <section className="space-y-3">
-        <h2 className="text-lg font-medium text-white">Preview de excepciones exportables</h2>
+        <h2 className="text-lg font-medium text-white">Vista previa de excepciones exportables</h2>
         <OpsTable columns={columns} rows={stockExceptionPreview} />
       </section>
     </main>

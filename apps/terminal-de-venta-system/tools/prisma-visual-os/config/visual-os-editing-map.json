@@ -1,0 +1,351 @@
+{
+  "canonicalUrls": [
+    "http://127.0.0.1:3120/",
+    "http://127.0.0.1:3130/",
+    "http://127.0.0.1:3140/",
+    "http://127.0.0.1:4177/health",
+    "http://127.0.0.1:4177/state",
+    "http://127.0.0.1:3120/visual-os/realtime",
+    "http://127.0.0.1:3120/visual-os/pro"
+  ],
+  "finalizationGate": "PRISMA_VISUAL_OS_FINAL_STABILIZATION_00ZF",
+  "generatedBy": "install_visual_os_i02_editing_workbench.py",
+  "lanes": [
+    {
+      "canonicalFiles": [
+        "tools/prisma-visual-os/realtime/live-preview-server-00q.mjs"
+      ],
+      "compatibilityShims": [
+        "tools/prisma-visual-os/live-preview-server-00q.mjs"
+      ],
+      "forbiddenEdits": [
+        "Do not change canonical ports without updating this map.",
+        "Do not require realtime for checkout."
+      ],
+      "id": "realtime-api",
+      "name": "Visual OS realtime API",
+      "notes": [
+        "clients=0 is advisory only.",
+        "hasLastPayload=false is advisory when no client sent payload yet."
+      ],
+      "ownerType": "active",
+      "purpose": "Owns local realtime health and state for Visual OS controls.",
+      "safeEditRules": [
+        "Keep /health and /state on port 4177.",
+        "Do not make Tablet POS depend on this service."
+      ],
+      "validators": [
+        "node tools/prisma-visual-os/verify_prisma_visual_os_studio_pro_qa_00r_00s.mjs"
+      ]
+    },
+    {
+      "canonicalFiles": [
+        "products/tablet/app/app/visual-os/realtime/page.tsx"
+      ],
+      "compatibilityShims": [],
+      "forbiddenEdits": [
+        "Do not modify Tablet POS business logic here."
+      ],
+      "id": "tablet-realtime-ui",
+      "name": "Tablet Visual OS realtime UI",
+      "notes": [
+        "Observability/editing UI, not a hard runtime dependency."
+      ],
+      "ownerType": "active",
+      "purpose": "Owns Tablet /visual-os/realtime route.",
+      "safeEditRules": [
+        "Keep route /visual-os/realtime available.",
+        "Keep POS live binding safe."
+      ],
+      "validators": [
+        "node tools/prisma-visual-os/verify_prisma_visual_os_pos_live_binding_00t.mjs"
+      ]
+    },
+    {
+      "canonicalFiles": [
+        "products/tablet/app/app/visual-os/pro/page.tsx"
+      ],
+      "compatibilityShims": [],
+      "forbiddenEdits": [
+        "Do not redesign POS from this lane."
+      ],
+      "id": "tablet-pro-ui",
+      "name": "Tablet Visual OS Pro UI",
+      "notes": [
+        "Use this lane for later editor workflow improvements."
+      ],
+      "ownerType": "active",
+      "purpose": "Owns Tablet /visual-os/pro editing surface.",
+      "safeEditRules": [
+        "Keep route /visual-os/pro available.",
+        "Keep editor controls decoupled from checkout."
+      ],
+      "validators": [
+        "node tools/prisma-visual-os/verify_prisma_visual_os_studio_pro_qa_00r_00s.mjs"
+      ]
+    },
+    {
+      "canonicalFiles": [
+        "tools/prisma-visual-os/doctors/doctor_prisma_show_pos_scan_00u.py",
+        "tools/prisma-visual-os/doctors/doctor_prisma_show_pos_scan_00x.py"
+      ],
+      "compatibilityShims": [
+        "tools/prisma-visual-os/doctor_prisma_show_pos_scan_00u.py",
+        "tools/prisma-visual-os/doctor_prisma_show_pos_scan_00x.py"
+      ],
+      "forbiddenEdits": [
+        "Do not import cloud AI providers here."
+      ],
+      "id": "doctors",
+      "name": "Visual OS doctors",
+      "notes": [
+        "Root files may remain compatibility shims."
+      ],
+      "ownerType": "active-with-shims",
+      "purpose": "Owns deterministic diagnostics.",
+      "safeEditRules": [
+        "Keep diagnostics deterministic.",
+        "Write reports under F:\\descargasf."
+      ],
+      "validators": [
+        "node tools/prisma-visual-os/verify_prisma_show_pos_doctor_00u.mjs",
+        "node tools/prisma-visual-os/verify_prisma_show_pos_doctor_00x.mjs"
+      ]
+    },
+    {
+      "canonicalFiles": [
+        "tools/prisma-visual-os/doctors/ai_doctor_prisma_show_pos_00y.py"
+      ],
+      "compatibilityShims": [
+        "tools/prisma-visual-os/ai_doctor_prisma_show_pos_00y.py"
+      ],
+      "forbiddenEdits": [
+        "Do not call paid or remote AI APIs."
+      ],
+      "id": "ai-doctor",
+      "name": "Offline AI doctor",
+      "notes": [
+        "AI-style local reasoning, not live inference."
+      ],
+      "ownerType": "active-with-shim",
+      "purpose": "Owns offline recommendation logic without API calls.",
+      "safeEditRules": [
+        "Keep provider policy none.",
+        "Recommend next action without mutating runtime."
+      ],
+      "validators": [
+        "node tools/prisma-visual-os/verify_prisma_show_pos_ai_doctor_00y.mjs"
+      ]
+    },
+    {
+      "canonicalFiles": [
+        "tools/prisma-visual-os/gates/gate_prisma_visual_release_00n.mjs"
+      ],
+      "compatibilityShims": [
+        "tools/prisma-visual-os/gate_prisma_visual_release_00n.mjs"
+      ],
+      "forbiddenEdits": [
+        "Do not bury failed gates as caveats."
+      ],
+      "id": "gates",
+      "name": "Release gates",
+      "notes": [
+        "00N remains release gate owner."
+      ],
+      "ownerType": "active-with-shim",
+      "purpose": "Owns release readiness decisions.",
+      "safeEditRules": [
+        "Keep blockers explicit.",
+        "Do not call READY with blockers."
+      ],
+      "validators": [
+        "node tools/prisma-visual-os/gate_prisma_visual_release_00n.mjs"
+      ]
+    },
+    {
+      "canonicalFiles": [
+        "tools/prisma-visual-os/qa/run_prisma_visual_cross_surface_qa_00l.mjs"
+      ],
+      "compatibilityShims": [
+        "tools/prisma-visual-os/run_prisma_visual_cross_surface_qa_00l.mjs"
+      ],
+      "forbiddenEdits": [
+        "Do not mutate product files from QA."
+      ],
+      "id": "qa",
+      "name": "Cross-surface QA",
+      "notes": [
+        "00L previously reported READY 100/100."
+      ],
+      "ownerType": "active-with-shim",
+      "purpose": "Owns Visual OS cross-surface QA reports.",
+      "safeEditRules": [
+        "Keep reports under F:\\descargasf."
+      ],
+      "validators": [
+        "node tools/prisma-visual-os/gate_prisma_visual_release_00n.mjs"
+      ]
+    },
+    {
+      "canonicalFiles": [
+        "tools/prisma-visual-os/scoring/score_prisma_visual_os_00a.mjs",
+        "tools/prisma-visual-os/scoring/score_prisma_studio_pro_00s.mjs"
+      ],
+      "compatibilityShims": [
+        "tools/prisma-visual-os/score_prisma_visual_os_00a.mjs",
+        "tools/prisma-visual-os/score_prisma_studio_pro_00s.mjs"
+      ],
+      "forbiddenEdits": [
+        "Do not mix scoring with rendering."
+      ],
+      "id": "scoring",
+      "name": "Visual OS scoring",
+      "notes": [
+        "Scoring is diagnostic."
+      ],
+      "ownerType": "active-with-shims",
+      "purpose": "Owns deterministic quality scoring.",
+      "safeEditRules": [
+        "Keep formulas deterministic.",
+        "Document formula changes."
+      ],
+      "validators": [
+        "node tools/prisma-visual-os/verify_prisma_visual_os_studio_pro_qa_00r_00s.mjs"
+      ]
+    },
+    {
+      "canonicalFiles": [
+        "tools/prisma-visual-os/generators/generate_prisma_visual_os_controls_00e.mjs",
+        "tools/prisma-visual-os/generators/print_prisma_visual_variant_packs_00m.mjs"
+      ],
+      "compatibilityShims": [
+        "tools/prisma-visual-os/generate_prisma_visual_os_controls_00e.mjs",
+        "tools/prisma-visual-os/print_prisma_visual_variant_packs_00m.mjs"
+      ],
+      "forbiddenEdits": [
+        "Do not depend on cwd."
+      ],
+      "id": "generators",
+      "name": "Visual OS generators",
+      "notes": [
+        "Generators produce artifacts, not silent product mutations."
+      ],
+      "ownerType": "active-with-shims",
+      "purpose": "Owns deterministic generation helpers.",
+      "safeEditRules": [
+        "Keep outputs deterministic and inspectable."
+      ],
+      "validators": [
+        "node tools/prisma-visual-os/verify_prisma_visual_os_core_00d_00e.mjs"
+      ]
+    },
+    {
+      "canonicalFiles": [
+        "terminal_de_venta_visual_os.cmd",
+        "terminal_de_venta.cmd",
+        "tools/prisma-visual-os/launchers/run_prisma_visual_os_final_stabilization_00zf.cmd"
+      ],
+      "compatibilityShims": [
+        "tools/prisma-visual-os/run_prisma_visual_os_final_stabilization_00zf.cmd"
+      ],
+      "forbiddenEdits": [
+        "Do not present legacy URLs as canonical."
+      ],
+      "id": "launchers",
+      "name": "Visual OS launchers",
+      "notes": [
+        "Legacy URL cleanup is a separate iteration."
+      ],
+      "ownerType": "mixed",
+      "purpose": "Owns Windows entrypoints and command wrappers.",
+      "safeEditRules": [
+        "Launchers must work from any cwd.",
+        "Prefer %~dp0 or explicit roots.",
+        "Show canonical URLs first."
+      ],
+      "validators": [
+        "node tools/prisma-visual-os/gate_prisma_visual_release_00n.mjs"
+      ]
+    },
+    {
+      "canonicalFiles": [
+        "tools/prisma-visual-os"
+      ],
+      "compatibilityShims": [
+        "tools/prisma-visual-os/verifiers",
+        "tools/prisma-visual-os/tree",
+        "tools/prisma-visual-os/launchers",
+        "tools/prisma-visual-os/docs",
+        "tools/prisma-visual-os/_plans"
+      ],
+      "forbiddenEdits": [
+        "Do not flatten tree again.",
+        "Do not break 00ZF."
+      ],
+      "id": "compatibility-shims",
+      "name": "Compatibility shims",
+      "notes": [
+        "Shim present is not failure; unmapped shim is friction."
+      ],
+      "ownerType": "compatibility",
+      "purpose": "Documents compatibility wrappers retained for older commands.",
+      "safeEditRules": [
+        "Do not delete shims without a governed deprecation package."
+      ],
+      "validators": [
+        "python tools/prisma-visual-os/tree/prisma_visual_os_final_stabilization_00zf.py --verify"
+      ]
+    },
+    {
+      "canonicalFiles": [
+        "tools/visual",
+        "tools/prisma-pos-visual-control"
+      ],
+      "compatibilityShims": [],
+      "forbiddenEdits": [
+        "Do not mass-clean legacy in i02.",
+        "Do not delete old references without deprecation package."
+      ],
+      "id": "legacy-tolerated",
+      "name": "Legacy tolerated areas",
+      "notes": [
+        "/prisma-dark-pos-reference and /prisma-app are legacy route examples."
+      ],
+      "ownerType": "legacy-tolerated",
+      "purpose": "Documents old/reference areas that may exist but are not canonical ownership.",
+      "safeEditRules": [
+        "Legacy may be used for compatibility/reference only.",
+        "Do not promote legacy URLs as canonical."
+      ],
+      "validators": [
+        "node tools/visual/verify_prisma_reference_visual_scope_01h.mjs"
+      ]
+    }
+  ],
+  "launchers": [
+    "terminal_de_venta.cmd",
+    "terminal_de_venta_visual_os.cmd"
+  ],
+  "legacyUrls": [
+    "http://127.0.0.1:3120/prisma-dark-pos-reference",
+    "http://127.0.0.1:3140/prisma-app"
+  ],
+  "marker": "PRISMA_VISUAL_OS_EDITING_WORKBENCH_00ZI",
+  "package": "PRISMA_VISUAL_OS_EDITING_WORKBENCH_00ZI",
+  "schema": "prisma.visual_os.editing_map.v1",
+  "stopConditions": [
+    "Do not proceed if tools/prisma-visual-os is missing.",
+    "Do not proceed if 00ZF is missing or failing.",
+    "Do not proceed if a proposed edit touches Tablet POS business logic without explicit scope.",
+    "Do not proceed if a legacy URL is promoted as canonical.",
+    "Do not proceed if helper --verify fails."
+  ],
+  "targetRootKind": "terminal-de-venta-system",
+  "validators": {
+    "finalizationGate": "python tools/prisma-visual-os/tree/prisma_visual_os_final_stabilization_00zf.py --target-root <target_root> --out-dir F:\\descargasf --verify",
+    "helper": "python tools/prisma-visual-os/tree/prisma_visual_os_editing_workbench_00zi.py --target-root <target_root> --verify",
+    "i02": "node tools/prisma-visual-os/verify_prisma_visual_os_editing_workbench_00zi.mjs",
+    "releaseGate": "node tools/prisma-visual-os/gate_prisma_visual_release_00n.mjs"
+  },
+  "version": "20260505_v01"
+}

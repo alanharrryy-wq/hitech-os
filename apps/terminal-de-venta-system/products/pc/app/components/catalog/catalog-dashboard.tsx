@@ -9,7 +9,7 @@ function money(cents: number) {
 }
 
 function coverageLabel(daysCover: number | null) {
-  if (daysCover === null) return "sin snapshot";
+  if (daysCover === null) return "sin corte";
   if (daysCover < 1) return "crítico";
   if (daysCover < 3) return "riesgo";
   return "estable";
@@ -33,20 +33,19 @@ export function CatalogDashboard({ workspace }: { workspace: CatalogWorkspace })
         <div className="hero-header">
           <div className="hero-copy">
             <div className="kicker">catálogo avanzado</div>
-            <h1 className="hero-title">Catálogo, SKUs y barcodes</h1>
+            <h1 className="hero-title">Catálogo, SKUs y códigos de barras</h1>
             <p>
-              Panel PC para gobernar productos, barcodes, precios, estados y excepciones sin bloquear la venta local de Tablet.
+              Panel PC para gobernar productos, códigos de barras, precios, estados y excepciones sin bloquear la venta local de Tablet.
             </p>
           </div>
           <div className="inline-list">
-            <span className="chip">Fuente: {workspace.meta.source}</span>
-            <span className="chip">Confianza: {workspace.meta.confidence}</span>
+            <span className="chip">Estado: {workspace.meta.persistence === "available" ? "datos disponibles" : "sin datos disponibles"}</span>
             <span className="chip">Actualizado: {workspace.meta.generatedAt}</span>
           </div>
         </div>
         <div className="hero-badges">
           <span className="alert-chip">SKUs activos visibles</span>
-          <span className="alert-chip">Barcodes faltantes y duplicados</span>
+          <span className="alert-chip">Códigos faltantes y duplicados</span>
           <span className="alert-chip">Detalle operativo por SKU</span>
         </div>
       </section>
@@ -72,13 +71,13 @@ export function CatalogDashboard({ workspace }: { workspace: CatalogWorkspace })
           <div className="metric-note">Productos habilitados para gobierno operativo.</div>
         </article>
         <article className="card metric-card">
-          <div className="kicker">barcodes</div>
-          <div className="card-title">Sin barcode</div>
+          <div className="kicker">códigos</div>
+          <div className="card-title">Sin código</div>
           <div className="metric">{workspace.summary.missingBarcodeCount}</div>
           <div className="metric-note">Activos que pueden reventar en caja o recepción.</div>
         </article>
         <article className="card metric-card">
-          <div className="kicker">barcodes</div>
+          <div className="kicker">códigos</div>
           <div className="card-title">Duplicados</div>
           <div className="metric">{workspace.summary.duplicateBarcodeCount}</div>
           <div className="metric-note">Códigos repetidos detectados en muestra operativa.</div>
@@ -96,7 +95,7 @@ export function CatalogDashboard({ workspace }: { workspace: CatalogWorkspace })
         <form className="dashboard-actions" action="/catalog">
           <label className="action-card">
             <strong>Buscar</strong>
-            <input name="q" defaultValue={workspace.filters.q} placeholder="SKU, producto o barcode" />
+            <input name="q" defaultValue={workspace.filters.q} placeholder="SKU, producto o código" />
           </label>
           <label className="action-card">
             <strong>Estado</strong>
@@ -119,8 +118,8 @@ export function CatalogDashboard({ workspace }: { workspace: CatalogWorkspace })
             <strong>Incidencia</strong>
             <select name="issue" defaultValue={workspace.filters.issue}>
               <option value="all">Todas</option>
-              <option value="missing_barcode">Sin barcode</option>
-              <option value="duplicate_barcode">Barcode duplicado</option>
+              <option value="missing_barcode">Sin código</option>
+              <option value="duplicate_barcode">Código duplicado</option>
               <option value="inactive_product">Producto inactivo</option>
               <option value="stale_price">Precio viejo</option>
             </select>
@@ -141,14 +140,14 @@ export function CatalogDashboard({ workspace }: { workspace: CatalogWorkspace })
           </div>
           {workspace.products.length ? (
             <DataTable
-              columns={["SKU", "Producto", "Categoría", "Precio", "Barcodes", "Stock", "Cobertura", "Estado"]}
+              columns={["SKU", "Producto", "Categoría", "Precio", "Códigos", "Existencias", "Cobertura", "Estado"]}
               rows={workspace.products.map((product) => ({
                 SKU: product.sku,
                 Producto: product.name,
                 Categoría: product.category,
                 Precio: money(product.priceCents),
-                Barcodes: product.barcodes.length,
-                Stock: product.stockOnHand,
+                Códigos: product.barcodes.length,
+                Existencias: product.stockOnHand,
                 Cobertura: coverageLabel(product.daysCover),
                 Estado: product.isActive ? "activo" : "inactivo"
               }))}
@@ -169,7 +168,7 @@ export function CatalogDashboard({ workspace }: { workspace: CatalogWorkspace })
             <div>
               <div className="kicker">detalle</div>
               <h2 className="section-title">Ficha del SKU</h2>
-              <div className="section-copy">Muestra barcode, precio, estado, stock y alertas accionables.</div>
+              <div className="section-copy">Muestra códigos, precio, estado, existencias y alertas accionables.</div>
             </div>
           </div>
           {selected ? (
@@ -179,8 +178,8 @@ export function CatalogDashboard({ workspace }: { workspace: CatalogWorkspace })
               <div className="list-item"><span>Categoría</span><strong>{selected.category}</strong></div>
               <div className="list-item"><span>Precio</span><strong>{money(selected.priceCents)}</strong></div>
               <div className="list-item"><span>Costo</span><strong>{money(selected.costCents)}</strong></div>
-              <div className="list-item"><span>Stock</span><strong>{selected.stockOnHand}</strong></div>
-              <div className="list-item"><span>Barcodes</span><strong>{selected.barcodes.length ? selected.barcodes.join(", ") : "sin barcode"}</strong></div>
+              <div className="list-item"><span>Existencias</span><strong>{selected.stockOnHand}</strong></div>
+              <div className="list-item"><span>Códigos</span><strong>{selected.barcodes.length ? selected.barcodes.join(", ") : "sin código"}</strong></div>
               <div className="list-item"><span>Estado</span><StatusBadge value={selected.isActive ? "activo" : "inactivo"} /></div>
               <div className="list-item"><span>Actualizado</span><strong>{selected.updatedAtLabel}</strong></div>
               {selected.issues.length ? selected.issues.map((issue) => (
@@ -206,7 +205,7 @@ export function CatalogDashboard({ workspace }: { workspace: CatalogWorkspace })
           <div>
             <div className="kicker">excepciones</div>
             <h2 className="section-title">Incidencias de catálogo</h2>
-            <div className="section-copy">Problemas que conviene resolver antes de compras, recepción, inventario y sync.</div>
+            <div className="section-copy">Problemas que conviene resolver antes de compras, recepción, inventario y sincronización.</div>
           </div>
         </div>
         <DataTable
@@ -231,8 +230,8 @@ export function CatalogDashboard({ workspace }: { workspace: CatalogWorkspace })
           </div>
         </div>
         <div className="list">
-          <div className="list-item"><span>Alcance</span><strong>Catálogo PC, SKUs, Barcode[], excepciones y detalle.</strong></div>
-          <div className="list-item"><span>No toca</span><strong>Tablet, shared-kernel ni contratos compartidos.</strong></div>
+          <div className="list-item"><span>Alcance</span><strong>Catálogo PC, SKUs, códigos, excepciones y detalle.</strong></div>
+          <div className="list-item"><span>No toca</span><strong>Tablet, kernel compartido ni contratos compartidos.</strong></div>
           <div className="list-item"><span>Persistencia</span><strong>{workspace.meta.persistence}</strong></div>
         </div>
       </section>

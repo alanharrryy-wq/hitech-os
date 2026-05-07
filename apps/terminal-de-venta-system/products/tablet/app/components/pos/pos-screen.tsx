@@ -20,6 +20,94 @@ import { PosSaleSuccess } from "./pos-sale-success";
 import { PosLiveBinding } from "./pos-live-binding";
 import styles from "./pos.module.css";
 
+
+const FEATURED_CATEGORY = "Más vendidos";
+
+type ShowcaseFamilyRule = {
+  key: string;
+  any: string[];
+  categoryHint?: string;
+};
+
+const SHOWCASE_FAMILIES: ShowcaseFamilyRule[] = [
+  { key: "aceite", any: ["aceite", "capullo", "patrona"], categoryHint: "Abarrotes" },
+  { key: "agua", any: ["agua", "bonafont", "ciel", "cristal", "mineral"], categoryHint: "Bebidas" },
+  { key: "leche", any: ["leche", "lala", "deslactosada", "descremada"], categoryHint: "Lácteos" },
+  { key: "pan", any: ["pan", "bimbo", "bolillo"], categoryHint: "Panadería" },
+  { key: "huevos", any: ["huevo", "huevos"], categoryHint: "Abarrotes" },
+  { key: "botana", any: ["papas", "sabritas", "doritos", "cheetos", "takis", "ruffles", "tostitos"], categoryHint: "Botanas" },
+  { key: "dulce", any: ["galletas", "clorets", "halls", "chocolate", "mazapan", "mazapán", "duvalin", "kinder", "m&m"], categoryHint: "Dulces" },
+  { key: "atun", any: ["atun", "atún", "dolores"], categoryHint: "Abarrotes" },
+  { key: "arroz", any: ["arroz", "verde valle"], categoryHint: "Abarrotes" },
+  { key: "cafe", any: ["cafe", "café", "nescafe", "nescafé"], categoryHint: "Abarrotes" },
+  { key: "detergente", any: ["detergente", "ace detergente", "limpiador", "lavatrastes", "blanqueador"], categoryHint: "Limpieza" },
+  { key: "higiene", any: ["jabon", "jabón", "shampoo", "pasta dental", "desodorante", "papel higienico", "papel higiénico"], categoryHint: "Higiene" },
+  { key: "queso", any: ["queso", "oaxaca", "manchego", "panela", "cheddar"], categoryHint: "Lácteos" },
+  { key: "cereal", any: ["cereal", "zucaritas", "avena", "quaker"], categoryHint: "Cereales" },
+  { key: "pasta", any: ["pasta", "espagueti", "spaghetti", "harina"], categoryHint: "Abarrotes" }
+];
+
+function normalizeShowcaseText(value: string | null | undefined) {
+  return (value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function includesShowcaseNeedle(text: string, needles: string[]) {
+  return needles.some((needle) => text.includes(normalizeShowcaseText(needle)));
+}
+
+function showcaseFamily(product: PosProduct) {
+  const text = normalizeShowcaseText(`${product.name} ${product.category ?? ""} ${product.sku ?? ""}`);
+  const direct = SHOWCASE_FAMILIES.find((family) => includesShowcaseNeedle(text, family.any));
+  if (direct) return direct.key;
+
+  const category = normalizeShowcaseText(product.category);
+  const byCategory = SHOWCASE_FAMILIES.find((family) => family.categoryHint && normalizeShowcaseText(family.categoryHint) === category);
+  return byCategory?.key ?? `zz-${category || "general"}`;
+}
+
+function stockPriority(product: PosProduct) {
+  if (!product.isActive) return 100_000;
+  if (product.stockOnHand <= 0) return 90_000;
+  return Math.max(0, 2_000 - product.stockOnHand);
+}
+
+function compareShowcaseProducts(a: PosProduct, b: PosProduct) {
+  const stockDelta = stockPriority(a) - stockPriority(b);
+  if (stockDelta !== 0) return stockDelta;
+  return a.name.localeCompare(b.name, "es-MX");
+}
+
+function buildFeaturedProducts(products: PosProduct[]) {
+  const sorted = [...products].sort(compareShowcaseProducts);
+  const firstByFamily = new Map<string, PosProduct>();
+  const overflow: PosProduct[] = [];
+
+  for (const product of sorted) {
+    const family = showcaseFamily(product);
+    if (!firstByFamily.has(family)) {
+      firstByFamily.set(family, product);
+      continue;
+    }
+    overflow.push(product);
+  }
+
+  const familyOrder = SHOWCASE_FAMILIES.map((family) => family.key);
+  const featured = familyOrder
+    .map((family) => firstByFamily.get(family))
+    .filter((product): product is PosProduct => Boolean(product));
+
+  const extraFamilies = [...firstByFamily.entries()]
+    .filter(([family]) => !familyOrder.includes(family))
+    .map(([, product]) => product)
+    .sort(compareShowcaseProducts);
+
+  return [...featured, ...extraFamilies, ...overflow];
+}
+
 function looksLikeScannedCode(value: string) {
   const clean = value.trim();
   return /^\d{6,14}$/.test(clean) || /^[A-Z0-9][A-Z0-9_-]{5,}$/i.test(clean);
@@ -32,7 +120,7 @@ export function PosScreen() {
   const [productError, setProductError] = useState<unknown>(null);
   const [cart, setCart] = useState<CartLine[]>([]);
   const [heldCarts, setHeldCarts] = useState<HeldCart[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState("Todas");
+  const [selectedCategory, setSelectedCategory] = useState(FEATURED_CATEGORY);
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
   const [cashReceivedCents, setCashReceivedCents] = useState(0);
@@ -42,10 +130,11 @@ export function PosScreen() {
   const [lastReceipt, setLastReceipt] = useState<CompletedSaleReceipt | null>(null);
 
   const categories = useMemo(
-    () => ["Todas", ...Array.from(new Set(products.map((product) => product.category?.trim()).filter(Boolean) as string[])).sort((a, b) => a.localeCompare(b, "es-MX"))],
+    () => [FEATURED_CATEGORY, ...Array.from(new Set(products.map((product) => product.category?.trim()).filter(Boolean) as string[])).sort((a, b) => a.localeCompare(b, "es-MX"))],
     [products]
   );
-  const visibleProducts = selectedCategory === "Todas" ? products : products.filter((product) => (product.category?.trim() || "General") === selectedCategory);
+  const featuredProducts = useMemo(() => buildFeaturedProducts(products), [products]);
+  const visibleProducts = selectedCategory === FEATURED_CATEGORY ? featuredProducts : products.filter((product) => (product.category?.trim() || "General") === selectedCategory);
   const activeProductCount = products.filter((product) => product.isActive).length;
   const checkoutBusy = isCheckoutBusy(checkoutState);
   const checkoutReady = validateCartForCheckout(cart);
@@ -219,13 +308,32 @@ export function PosScreen() {
       title="Vender"
       subtitle="Busca, escanea, arma el ticket y cobra aquí mismo."
       status={<TabletShellStatusPill tone={checkoutStateTone(checkoutState)}>{copy.label}</TabletShellStatusPill>}
-      visualSurface="tablet-pos-light-operational-00q"
+      visualSurface="tablet-pos"
       visualPreset="PRISMA_LIGHT_OPERATIONAL_POS"
     >
-      <div className={styles.posWorkspace} data-prisma-golden-flow="touch-guided-sidebar-04i" data-prisma-light-operational="00Q" data-prisma-pos-live="00T" data-prisma-layer="surface">
+      <div
+        className={styles.posWorkspace}
+        data-prisma-component="PointOfSaleWorkspace"
+        data-prisma-vos-note="PRISMA_VISUAL_OS_POS_TOUCH_BINDING_00B"
+        data-prisma-zone="tablet-pos-root"
+        data-prisma-role="operational-summary"
+        data-prisma-priority="primary"
+        data-prisma-motion="ambient"
+        data-prisma-qa="tablet-qa-pos"
+        data-prisma-vos="00B"
+        data-prisma-vos-stage="00F_00I"
+        data-prisma-vsurface="tablet-pos"
+        data-prisma-vpreset="POS_TOUCH"
+        data-prisma-golden-flow="touch-guided-sidebar-04i"
+        data-prisma-light-operational="00Q"
+        data-prisma-pos-live="00T"
+        data-prisma-layer="surface"
+        data-prisma-cart-state={cart.length ? "active" : "empty"}
+        data-prisma-visual-state={checkoutState === "error" ? "error" : checkoutBusy ? "checkout-busy" : "ready"}
+      >
         <PosLiveBinding />
         <span hidden data-prisma-golden-flow="touch-only-actions-04h" data-prisma-touch-only-actions="04H" />
-        <section className={styles.catalogArea}>
+        <section className={styles.catalogArea} data-prisma-role="operational-summary" data-prisma-priority="primary">
           <PosProductSearch
             query={query}
             setQuery={setQuery}
@@ -241,14 +349,24 @@ export function PosScreen() {
               void loadProducts("");
             }}
           />
-          <nav className={styles.categoryRail}>
+          <nav
+            className={styles.categoryRail}
+            data-prisma-zone="tablet-pos-category-chips"
+            data-prisma-role="secondary-action"
+            data-prisma-priority="support"
+          >
             {categories.map((category) => (
               <button
                 key={category}
                 className={category === selectedCategory ? styles.categoryButtonActive : styles.categoryButton}
                 type="button"
                 onClick={() => setSelectedCategory(category)}
+                data-prisma-component="CategoryButton"
                 data-active={category === selectedCategory ? "true" : "false"}
+                data-prisma-role="secondary-action"
+                data-prisma-priority={category === selectedCategory ? "primary" : "support"}
+                data-prisma-state={category === selectedCategory ? "selected" : undefined}
+                data-prisma-motion="press-feedback"
               >
                 <span>{category.slice(0, 2).toUpperCase()}</span>
                 <strong>{category}</strong>

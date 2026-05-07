@@ -12,17 +12,17 @@ export default async function Page() {
     <AppShell currentPath="/salud-barcodes">
       <section className="hero">
         <div className="kicker">inyección 02</div>
-        <h1 style={{ margin: 0 }}>Salud de barcodes</h1>
+        <h1 style={{ margin: 0 }}>Salud de códigos de barras</h1>
         <div className="subtle">Vista auxiliar por categoría para endurecer calidad de captura y gobierno de producto.</div>
       </section>
 
-      <SectionCard title="Cobertura de códigos" subtitle="Sirve para detectar huecos de barcode antes de abrir auditorías más pesadas.">
+      <SectionCard title="Cobertura de códigos" subtitle="Sirve para detectar huecos de código antes de abrir auditorías más pesadas.">
         <TableSimple
-          columns={["Categoría", "Productos", "Barcodes", "Promedio", "Activos"]}
+          columns={["Categoría", "Productos", "Códigos", "Promedio", "Activos"]}
           rows={barcodeHealthRows.map((row) => ({
             "Categoría": row.categoria,
             "Productos": row.productos,
-            "Barcodes": row.barcodes,
+            "Códigos": row.barcodes,
             "Promedio": row.promedio,
             "Activos": row.activos
           }))}

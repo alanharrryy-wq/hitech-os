@@ -47,11 +47,25 @@ export function PosProductSearch({
     onSearch();
   }
 
+  const searchExpanded = Boolean(query.trim()) || loading || Boolean(error);
+
   return (
-    <form className={styles.searchCard} onSubmit={submit} data-prisma-component="SearchBar">
+    <form
+      className={styles.searchCard}
+      onSubmit={submit}
+      data-prisma-component="SearchBar"
+      data-prisma-zone="tablet-pos-search"
+      data-prisma-role="search-command"
+      data-prisma-priority="primary"
+      data-prisma-state={loading ? "loading" : error ? "error" : state ?? "idle"}
+      data-prisma-motion="reduced-motion-safe"
+      data-prisma-qa="tablet-qa-search"
+      data-prisma-search-expanded={searchExpanded ? "true" : "false"}
+      data-prisma-search-density="05C"
+    >
       <label className={styles.searchLabel}>
         <span>Buscar o escanear</span>
-        <div className={styles.searchInputWrap}>
+        <div className={styles.searchInputWrap} data-prisma-qa="tablet-qa-focus">
           <PrismaIcon name="search" size={22} />
           <input
             autoFocus
@@ -70,10 +84,22 @@ export function PosProductSearch({
       </div>
 
       <div className={styles.searchActions}>
-        <button className={styles.primaryButton} type="submit" disabled={loading} data-prisma-component="IconButton">
+        <button className={styles.primaryButton} type="submit" disabled={loading} data-prisma-component="IconButton" data-prisma-role="primary-action" data-prisma-priority="primary" data-prisma-state={loading ? "loading" : "ready"} data-prisma-motion="press-feedback">
           Buscar
         </button>
-        <button className={styles.secondaryButton} type="button" onClick={onResolve} disabled={loading || !query.trim()} data-prisma-component="ScanButton">
+        <button
+          className={styles.secondaryButton}
+          type="button"
+          onClick={onResolve}
+          disabled={loading || !query.trim()}
+          data-prisma-component="ScanButton"
+          data-prisma-zone="tablet-pos-scan-action"
+          data-prisma-role="scan-command"
+          data-prisma-priority="primary"
+          data-prisma-state={loading ? "loading" : !query.trim() ? "disabled" : "ready"}
+          data-prisma-motion="press-feedback"
+          data-prisma-qa={!query.trim() ? "tablet-qa-disabled" : undefined}
+        >
           <PrismaIcon name="scan" size={18} />
           Resolver código
         </button>

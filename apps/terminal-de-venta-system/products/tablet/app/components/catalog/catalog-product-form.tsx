@@ -22,20 +22,23 @@ export function CatalogProductForm({ form, saving, onChange, onSubmit, onCancelE
     <form className={styles.form} onSubmit={submit}>
       <div className={styles.formHeader}>
         <div>
-          <strong>{form.id ? "Editar producto" : "Nuevo producto"}</strong>
-          <span>{form.id ? "Ajusta datos básicos para venta local." : "Alta rápida para que pueda venderse en Tablet."}</span>
+          <div className={styles.formTitleLine}>
+            <strong>{form.id ? "Editar producto" : "Nuevo producto"}</strong>
+            <span className={form.id ? styles.editModeBadge : styles.createModeBadge}>{form.id ? "Modo edición" : "Alta nueva"}</span>
+          </div>
+          <span>{form.id ? `Editando: ${form.name || "producto seleccionado"}. Guarda cambios para aplicar.` : "Alta rápida para que pueda venderse en Tablet."}</span>
         </div>
         {form.id ? <button type="button" className={styles.linkButton} onClick={onCancelEdit}>Nuevo</button> : null}
       </div>
 
       <label className={styles.field}>
         <span>Nombre</span>
-        <input required value={form.name} onChange={(event) => onChange({ ...form, name: event.target.value })} placeholder="Agua natural 600 ml" />
+        <input required name="catalog-product-name" data-catalog-field="name" value={form.name} onChange={(event) => onChange({ ...form, name: event.target.value })} placeholder="Agua natural 600 ml" />
       </label>
 
       <label className={styles.field}>
         <span>SKU</span>
-        <input required value={form.sku} onChange={(event) => onChange({ ...form, sku: event.target.value })} placeholder="AGUA-600" />
+        <input required name="catalog-product-sku" data-catalog-field="sku" value={form.sku} onChange={(event) => onChange({ ...form, sku: event.target.value })} placeholder="AGUA-600" />
       </label>
 
       <CatalogBarcodeField value={form.barcode} productId={form.id} onChange={(barcode) => onChange({ ...form, barcode })} />

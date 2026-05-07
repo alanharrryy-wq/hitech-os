@@ -362,3 +362,187 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* PRISMA_LIGHT_CATALOG_TACTILE_POLISH_00R */
+@keyframes prismaCatalogSkeletonSweep {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(110%); }
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogMain,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .drawer,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productTable td,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .drawerNote,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyState,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox button,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .linkButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox input,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .field input {
+  transition:
+    transform var(--prisma-motion-base) var(--prisma-ease-premium),
+    box-shadow var(--prisma-motion-base) var(--prisma-ease-premium),
+    border-color var(--prisma-motion-fast) ease,
+    background var(--prisma-motion-base) ease,
+    opacity var(--prisma-motion-fast) ease;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productTable tbody tr:hover td,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .drawer:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .drawerNote:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyState:hover {
+  transform: translateY(-2px);
+  border-color: var(--prisma-border-action);
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox button:not(:disabled):hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton:not(:disabled):hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .linkButton:hover {
+  transform: translateY(-1px);
+  border-color: var(--prisma-border-action);
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox button:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .linkButton:active {
+  transform: translateY(1px) scale(0.99);
+  box-shadow: var(--prisma-light-shadow-card);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox input:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .field input:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox button:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .linkButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .compactCheck:focus-within,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toggleField:focus-within {
+  outline: none;
+  border-color: var(--prisma-action-primary);
+  box-shadow: var(--prisma-focus-ring-strong), var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox button:disabled,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton:disabled {
+  color: var(--prisma-disabled-text) !important;
+  background: var(--prisma-disabled-surface) !important;
+  border-color: var(--prisma-border-soft) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72) !important;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyState {
+  position: relative;
+  overflow: hidden;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyState::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--prisma-skeleton-surface);
+  opacity: 0.18;
+  transform: translateX(-110%);
+  animation: prismaCatalogSkeletonSweep 1.25s var(--prisma-ease-premium) infinite;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogMain,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .drawer,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .productTable td,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .drawerNote,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyState,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox button,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .saveButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .linkButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .searchBox input,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .field input,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyState::after {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* PRISMA_TABLET_CATALOG_EDIT_DRAWER_FIX_01
+   Makes Edit visibly activate the right-side drawer instead of feeling like a dead button. */
+.drawerDock {
+  min-width: 0;
+  scroll-margin: 18px;
+}
+
+.drawerDock[data-editing="true"] .drawer {
+  border-color: var(--prisma-border-action);
+  box-shadow: var(--prisma-focus-ring-strong), var(--prisma-shadow-card-hover);
+}
+
+.drawerDock[data-editing="true"] .drawer::before {
+  content: "Producto en edición";
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 12px;
+  border: 1px solid var(--prisma-border-action);
+  border-radius: var(--prisma-radius-pill);
+  padding: 6px 10px;
+  color: var(--prisma-action-primary);
+  background: color-mix(in srgb, var(--prisma-action-primary) 10%, transparent);
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.formTitleLine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.editModeBadge,
+.createModeBadge {
+  display: inline-flex !important;
+  align-items: center;
+  width: fit-content;
+  border-radius: var(--prisma-radius-pill);
+  padding: 4px 8px;
+  font-size: 0.68rem !important;
+  font-weight: 950;
+  letter-spacing: 0.07em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.editModeBadge {
+  color: var(--prisma-action-primary);
+  border: 1px solid var(--prisma-border-action);
+  background: color-mix(in srgb, var(--prisma-action-primary) 10%, transparent);
+}
+
+.createModeBadge {
+  color: var(--prisma-text-secondary);
+  border: 1px solid var(--prisma-border-soft);
+  background: color-mix(in srgb, var(--prisma-text-muted) 10%, transparent);
+}
+
+.tableAction[aria-pressed="true"] {
+  color: white;
+  border-color: var(--prisma-action-primary);
+  background: linear-gradient(180deg, #4f97ff 0%, #0c63ea 100%);
+  box-shadow: var(--prisma-focus-ring-strong), 0 12px 26px rgba(10, 92, 215, 0.24);
+}
+
+[data-theme="prisma-light"] .tableAction[aria-pressed="true"],
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction[aria-pressed="true"] {
+  color: white;
+  border-color: var(--prisma-action-primary);
+  background: linear-gradient(180deg, #4f97ff 0%, #0c63ea 100%);
+}

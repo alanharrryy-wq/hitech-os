@@ -12,7 +12,7 @@ type Props = {
 export function PrismaMobileDecisionLedger({ clientSnapshot }: Props) {
   const ledger = useMemo(() => buildPrismaMobileDecisionLedger(clientSnapshot), [clientSnapshot]);
   return (
-    <section className={styles.decisionLedger} aria-label="Bitácora móvil de decisiones">
+    <section className={styles.decisionLedger} aria-label="Bitácora móvil de decisiones" data-prisma-zone="mobile-decision-ledger">
       <header className={styles.decisionLedgerHeader}>
         <div>
           <p className={styles.eyebrow}>PRISMA App · Bitácora del dueño</p>

@@ -1,15 +1,15 @@
 export const executiveCards = [
   { title: 'SKUs activos', value: '5,000', note: 'catálogo activo para panel ejecutivo' },
-  { title: 'Quiebres', value: '667', note: 'disponible en cero dentro del snapshot' },
-  { title: 'PO abiertas', value: '467', note: 'ordered + partial' },
-  { title: 'Outbox con presión', value: '2,000', note: 'pending + failed visibles' },
+  { title: 'Quiebres', value: '667', note: 'disponible en cero dentro del corte' },
+  { title: 'Órdenes abiertas', value: '467', note: 'ordenadas y parciales' },
+  { title: 'Bandeja con presión', value: '2,000', note: 'pendientes y fallidos visibles' },
 ];
 
 export const exportCatalog = [
   { key: 'weekly-pack', title: 'Pack ejecutivo semanal', format: 'JSON', cadence: 'semanal', note: 'resumen para supervisión y dirección' },
-  { key: 'monthly-pack', title: 'Pack ejecutivo mensual', format: 'JSON', cadence: 'mensual', note: 'corte consolidado por inventario y sync' },
+  { key: 'monthly-pack', title: 'Pack ejecutivo mensual', format: 'JSON', cadence: 'mensual', note: 'corte consolidado por inventario y sincronización' },
   { key: 'category-margin', title: 'Margen por categoría', format: 'CSV + JSON', cadence: 'bajo demanda', note: 'sirve para mezcla comercial y compras' },
-  { key: 'stock-exception', title: 'Excepciones de stock', format: 'CSV + JSON', cadence: 'diario', note: 'cola de revisión y reabasto' },
+  { key: 'stock-exception', title: 'Excepciones de existencias', format: 'CSV + JSON', cadence: 'diario', note: 'cola de revisión y reabasto' },
   { key: 'sync-sla', title: 'SLA de sincronización', format: 'CSV + JSON', cadence: 'diario', note: 'vigila latencia, pendientes y fallos' },
 ];
 
@@ -35,5 +35,5 @@ export const reportContracts = [
   { contract: 'executive.inventory.health.v1', producer: 'PC / vistas-ejecutivas', consumer: 'dirección y supervisión', cadence: 'diario', format: 'JSON', notes: 'bloque base para tarjetas KPI' },
   { contract: 'executive.category.margin.v1', producer: 'PC / exportables', consumer: 'compras y dirección', cadence: 'bajo demanda', format: 'CSV, JSON', notes: 'exporta mezcla comercial por categoría' },
   { contract: 'operations.stock.exception.v1', producer: 'PC / exportables', consumer: 'inventario y reabasto', cadence: 'diario', format: 'CSV, JSON', notes: 'cola accionable, no cambia inventario directo' },
-  { contract: 'sync.outbox.sla.v1', producer: 'PC / contratos-reporte', consumer: 'operaciones y soporte', cadence: 'diario', format: 'CSV, JSON', notes: 'salud del outbox y latencia de envíos' },
+  { contract: 'sync.outbox.sla.v1', producer: 'PC / contratos-reporte', consumer: 'operaciones y soporte', cadence: 'diario', format: 'CSV, JSON', notes: 'salud de bandeja y latencia de envíos' },
 ];

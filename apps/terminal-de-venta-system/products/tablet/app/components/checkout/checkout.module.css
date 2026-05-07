@@ -338,3 +338,98 @@
     transform: none;
   }
 }
+
+/* PRISMA_LIGHT_CHECKOUT_TACTILE_POLISH_00R */
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .summaryCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .successCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .summaryLines article,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentActive,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cashBox,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .totalHero,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .confirmButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .backLink {
+  transition:
+    transform var(--prisma-motion-base) var(--prisma-ease-premium),
+    box-shadow var(--prisma-motion-base) var(--prisma-ease-premium),
+    border-color var(--prisma-motion-fast) ease,
+    background var(--prisma-motion-base) ease,
+    opacity var(--prisma-motion-fast) ease;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .summaryCard:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentCard:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .successCard:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .summaryLines article:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cashBox:hover {
+  transform: translateY(-2px);
+  border-color: var(--prisma-border-action);
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentButton:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentActive:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .confirmButton:not(:disabled):hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .backLink:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentButton:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentActive:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .confirmButton:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .backLink:active {
+  transform: translateY(1px) scale(.99);
+  box-shadow: var(--prisma-light-shadow-card);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentActive:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .confirmButton:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .backLink:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cashBox input:focus-visible {
+  outline: none;
+  border-color: var(--prisma-action-primary);
+  box-shadow: var(--prisma-focus-ring-strong), var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentActive,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .confirmButton {
+  color: var(--prisma-text-inverse);
+  background: var(--prisma-action-primary-gradient);
+  border-color: var(--prisma-border-action);
+  box-shadow: var(--prisma-shadow-button);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .summaryCard footer strong,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .totalHero strong,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cashBox div strong {
+  color: var(--prisma-action-primary);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .confirmButton:disabled {
+  color: var(--prisma-disabled-text) !important;
+  background: var(--prisma-disabled-surface) !important;
+  border-color: var(--prisma-border-soft) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72) !important;
+  cursor: not-allowed;
+  opacity: .82;
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .summaryCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .successCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .summaryLines article,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .paymentActive,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .cashBox,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .totalHero,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .confirmButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .backLink {
+    transition: none !important;
+    transform: none !important;
+  }
+}

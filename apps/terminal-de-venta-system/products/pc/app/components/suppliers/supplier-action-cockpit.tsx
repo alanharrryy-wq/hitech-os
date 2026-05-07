@@ -26,7 +26,7 @@ type ActionResult = {
 };
 
 const API_BASE = "/api/" + "proveedores";
-const ACTOR = { id: "pc-admin", name: "Equipo interno", role: "Dueño" };
+const ACTOR = { id: "pc-admin", name: "Administrador", role: "Administrador" };
 const DEFAULT_REASON = "Revisión operativa desde panel de Proveedores.";
 
 export function SupplierActionCockpit({

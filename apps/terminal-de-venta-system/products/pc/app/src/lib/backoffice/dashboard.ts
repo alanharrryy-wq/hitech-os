@@ -36,7 +36,7 @@ const EMPTY_DASHBOARD: BackofficeDashboard = {
     { key: "ticketCountToday", label: "Tickets", value: "0", note: "Sin tickets consolidados para hoy.", status: "supported", source: "Sale", tone: "neutral" },
     { key: "averageTicketCents", label: "Ticket promedio", value: "No disponible", note: "Se calcula cuando existan ventas reales.", status: "supported", source: "Sale", tone: "neutral" },
     { key: "topSkus", label: "Top SKUs", value: "0", note: "Sin líneas de venta para ranking.", status: "supported", source: "SaleLine", tone: "neutral" },
-    { key: "lowStockCount", label: "Quiebres de stock", value: "0", note: "Sin snapshots críticos disponibles.", status: "supported", source: "StockSnapshot", tone: "neutral" },
+    { key: "lowStockCount", label: "Quiebres de existencias", value: "0", note: "Sin cortes críticos disponibles.", status: "supported", source: "StockSnapshot", tone: "neutral" },
     { key: "inventoryAccuracy", label: "Exactitud de inventario", value: "Parcial", note: "Proxy por conteos/variaciones; requiere ciclo completo de conteo para exactitud real.", status: "partial", source: "AuditCount", tone: "warn" },
     { key: "shrinkage", label: "Merma", value: "No disponible", note: "No existe modelo durable de merma/costo perdido todavía.", status: "unavailable", source: "Sin fuente canónica", tone: "neutral" },
     { key: "cancellationsReturns", label: "Cancelaciones/devoluciones", value: "0", note: "Proxy por SaleReturn y Sale cancelada.", status: "partial", source: "SaleReturn + Sale", tone: "neutral" },
@@ -172,7 +172,7 @@ export async function getBackofficeDashboard(): Promise<BackofficeDashboard> {
       warnings.push("Aún no hay eventos consolidados.");
     }
     if (lastOutbox?.createdAt) {
-      warnings.push("lastIngestAt usa OutboxEvent como ledger durable mínimo de ingest.");
+      warnings.push("La última recepción usa la bandeja operativa como registro durable mínimo.");
     }
 
     return {
@@ -215,9 +215,9 @@ export async function getBackofficeDashboard(): Promise<BackofficeDashboard> {
         }),
         kpi({
           key: "lowStockCount",
-          label: "Quiebres de stock",
+          label: "Quiebres de existencias",
           value: String(lowStockCount),
-          note: "StockSnapshot con cobertura menor a dos días.",
+          note: "Cortes de inventario con cobertura menor a dos días.",
           status: "supported",
           source: "StockSnapshot(daysCover < 2)",
           tone: lowStockCount > 0 ? "warn" : "ok"
@@ -271,7 +271,7 @@ export async function getBackofficeDashboard(): Promise<BackofficeDashboard> {
           key: "syncLatency",
           label: "Latencia de sincronización",
           value: averageSyncLatencyMs === null ? "Parcial" : `${Math.round(averageSyncLatencyMs / 1000)}s`,
-          note: averageSyncLatencyMs === null ? "Parcial: faltan sentAt suficientes en OutboxEvent." : "Promedio sentAt - createdAt en OutboxEvent.",
+          note: averageSyncLatencyMs === null ? "Parcial: faltan marcas de envío suficientes." : "Promedio entre creación y envío en la bandeja operativa.",
           status: "partial",
           source: "OutboxEvent(sentAt, createdAt)",
           tone: averageSyncLatencyMs === null ? "warn" : "ok"
@@ -280,7 +280,7 @@ export async function getBackofficeDashboard(): Promise<BackofficeDashboard> {
           key: "pendingEvents",
           label: "Eventos pendientes",
           value: String(pendingEvents),
-          note: "OutboxEvent pendiente de envío o consolidación.",
+          note: "Evento pendiente de envío o consolidación.",
           status: "supported",
           source: "OutboxEvent(status=pending)",
           tone: pendingEvents > 0 ? "warn" : "ok"
@@ -289,7 +289,7 @@ export async function getBackofficeDashboard(): Promise<BackofficeDashboard> {
           key: "conflictCount",
           label: "Conflictos",
           value: String(conflictCount),
-          note: "OutboxEvent marcado como conflict.",
+          note: "Evento marcado como conflicto.",
           status: "supported",
           source: "OutboxEvent(status=conflict)",
           tone: conflictCount > 0 ? "danger" : "ok"

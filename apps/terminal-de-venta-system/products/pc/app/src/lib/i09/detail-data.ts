@@ -1,8 +1,8 @@
 export const detailSummary = [
   { title: 'Movimientos', value: '6,000', note: 'detalle operativo reciente' },
   { title: 'Recepciones', value: '540', note: 'último bloque consultable' },
-  { title: 'Outbox', value: '2,000', note: 'eventos con trazabilidad visible' },
-  { title: 'Acciones masivas', value: '3', note: 'solo propuestas con guardrails' },
+  { title: 'Bandeja operativa', value: '2,000', note: 'eventos con trazabilidad visible' },
+  { title: 'Acciones masivas', value: '3', note: 'solo propuestas con resguardos' },
 ];
 
 export const movementPreview = [
@@ -25,12 +25,12 @@ export const outboxPreview = [
 
 export const dateFilterGroups = [
   { title: 'Día', values: ['Hoy', 'Ayer', 'Últimos 7 días', 'Últimos 14 días'], note: 'ideal para colas calientes y movimientos recientes' },
-  { title: 'Semana', values: ['Semana actual', 'Semana pasada', 'Últimas 4 semanas'], note: 'útil para auditoría y comportamiento del outbox' },
+  { title: 'Semana', values: ['Semana actual', 'Semana pasada', 'Últimas 4 semanas'], note: 'útil para auditoría y comportamiento de la bandeja operativa' },
   { title: 'Mes', values: ['Mes actual', 'Mes pasado', 'Últimos 3 meses', 'Año actual'], note: 'sirve para compras, recepción y salud del catálogo' },
 ];
 
 export const bulkActions = [
-  { key: 'outbox-error', title: 'Reintentar outbox en error', candidates: 250, mode: 'preview + lote <= 50', note: 'solo eventos con error y topic permitido' },
-  { key: 'stock-critico', title: 'Enviar a revisión stock crítico', candidates: 600, mode: 'preview + export CSV', note: 'genera cola de reabasto, no toca inventario directo' },
-  { key: 'precios-viejos', title: 'Marcar precios envejecidos', candidates: 700, mode: 'preview + etiqueta de revisión', note: 'no cambia precio, solo señaliza y deja traza' },
+  { key: 'outbox-error', title: 'Reintentar eventos en error', candidates: 250, mode: 'vista previa + lote <= 50', note: 'solo eventos con error y tema permitido' },
+  { key: 'stock-critico', title: 'Enviar a revisión existencias críticas', candidates: 600, mode: 'vista previa + export CSV', note: 'genera cola de reabasto, no toca inventario directo' },
+  { key: 'precios-viejos', title: 'Marcar precios envejecidos', candidates: 700, mode: 'vista previa + etiqueta de revisión', note: 'no cambia precio, solo señaliza y deja traza' },
 ];

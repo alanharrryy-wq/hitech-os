@@ -7,6 +7,7 @@ const required = [
   "src/lib/prisma-app/prisma-mobile-decision-ledger.ts",
   "src/components/prisma-app/PrismaMobileDecisionLedger.tsx",
   "src/components/prisma-app/PrismaMobileDashboard.tsx",
+  "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx",
   "src/components/prisma-app/index.ts",
   "src/components/prisma-app/prisma-mobile-dashboard.module.css",
   "docs/prisma-app/PRISMA_APP_MOBILE_23_DECISION_LEDGER.md",
@@ -40,6 +41,7 @@ for (const rel of required) text(rel);
 const lib = text("src/lib/prisma-app/prisma-mobile-decision-ledger.ts");
 const component = text("src/components/prisma-app/PrismaMobileDecisionLedger.tsx");
 const dashboard = text("src/components/prisma-app/PrismaMobileDashboard.tsx");
+const navigator = text("src/components/prisma-app/PrismaMobilePremiumNavigator.tsx");
 const route = text("app/api/mobile/decision-ledger/route.ts");
 const css = text("src/components/prisma-app/prisma-mobile-dashboard.module.css");
 const pkg = JSON.parse(text("package.json"));
@@ -50,10 +52,12 @@ if (!lib.includes("PRISMA_APP_MOBILE_23_DECISION_LEDGER")) fail("contract id mis
 if (!lib.includes("buildPrismaMobileCommandCenter") || !lib.includes("buildPrismaMobileActionInbox") || !lib.includes("buildPrismaMobileDailyBrief")) fail("decision ledger does not reuse prior v20/v21/v22 builders");
 if (!lib.includes("exportText") || !lib.includes("ownerDigest") || !lib.includes("proofCards")) fail("decision ledger contract incomplete");
 if (!component.includes("Bitácora móvil de decisiones") || !component.includes("ledger.exportText") || !component.includes("decisionLedgerTimeline")) fail("decision ledger component incomplete");
-if (!dashboard.includes("PrismaMobileDecisionLedger") || !dashboard.includes("<PrismaMobileDecisionLedger clientSnapshot={clientSnapshot}")) fail("dashboard does not render decision ledger");
+if (!dashboard.includes("PrismaMobilePremiumNavigator")) fail("dashboard does not delegate to premium navigator");
+if (dashboard.includes("<PrismaMobileDecisionLedger")) fail("dashboard must not render decision ledger directly");
+if (!navigator.includes("<PrismaMobileDecisionLedger clientSnapshot={clientSnapshot}")) fail("premium navigator does not render decision ledger");
 if (!route.includes("dynamic = \"force-dynamic\"") || !route.includes("revalidate = 0") || !route.includes("noStoreJsonInit")) fail("decision ledger endpoint is not no-store dynamic");
 if (!css.includes("PRISMA_APP_MOBILE_23_DECISION_LEDGER START") || !css.includes("decisionLedgerTimeline")) fail("decision ledger css missing");
-if (!(compareVersion(pkg.version, "0.23.0") >= 0 && compareVersion(pkg.version, "0.37.0") < 0)) fail(`package version not compatible with v23-v36 release: ${pkg.version}`);
+if (!(compareVersion(pkg.version, "0.23.0") >= 0 && compareVersion(pkg.version, "0.38.0") < 0)) fail(`package version not compatible with v23-v37 release: ${pkg.version}`);
 if (pkg.scripts["verify:decision-ledger"] !== "node tools/verify_prisma_app_mobile_23_decision_ledger.mjs") fail("verify:decision-ledger script missing");
 if (!pkg.scripts["check:all"].includes("verify:decision-ledger")) fail("check:all does not include decision ledger");
 if (!Array.isArray(scenarios.scenarios) || scenarios.scenarios.length < 480) fail("not enough QA scenarios");

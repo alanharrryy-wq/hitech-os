@@ -6,10 +6,10 @@ import { i01GovernanceData } from "@/lib/i01/governance-data";
 const rows = [
   { Término: "Panel administrativo de inventario", Uso: "Nombre visible del producto PC", Nota: "preferido" },
   { Término: "Terminal de venta", Uso: "Nombre visible de la gemela Tablet", Nota: "preferido" },
-  { Término: "Quiebres de stock", Uso: "Alerta operativa", Nota: "preferido" },
+  { Término: "Quiebres de existencias", Uso: "Alerta operativa", Nota: "preferido" },
   { Término: "Conteos físicos", Uso: "Módulo y operación", Nota: "preferido" },
-  { Término: "Sync", Uso: "Contexto técnico interno", Nota: "tolerado" },
-  { Término: "Barcode", Uso: "Incidencias técnicas o validación", Nota: "tolerado" },
+  { Término: "Sincronización", Uso: "Eventos y estado operativo", Nota: "preferido" },
+  { Término: "Código de barras", Uso: "Incidencias técnicas o validación", Nota: "preferido" },
   { Término: "SKU", Uso: "Operación comercial y técnica", Nota: "tolerado" }
 ];
 

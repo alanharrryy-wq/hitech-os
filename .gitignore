@@ -286,3 +286,11 @@ apps/terminal-de-venta-system/products/tablet/app/data/
 *.db
 *.sqlite
 *.sqlite3
+
+# PRISMA Tablet local/generated packshots
+# These PNGs are copied locally by install_prisma_tablet_packshot_engine_01.py.
+# Keep them out of Git to avoid bloating the repo like puesto de chácharas con tres bodegas.
+/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/light/*.png
+/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/*.png
+!/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/light/README.md
+!/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/README.md

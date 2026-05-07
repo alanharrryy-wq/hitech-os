@@ -22,6 +22,7 @@ const required = [
   "src/lib/prisma-app/prisma-mobile-pulse-timeline.ts",
   "src/components/prisma-app/PrismaMobilePulseTimeline.tsx",
   "src/components/prisma-app/PrismaMobileDashboard.tsx",
+  "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx",
   "src/components/prisma-app/prisma-mobile-dashboard.module.css",
   "docs/prisma-app/PRISMA_APP_MOBILE_24_PULSE_TIMELINE.md",
   "docs/prisma-app/qa/prisma-app-mobile-24-pulse-timeline-scenarios.json",
@@ -32,6 +33,7 @@ for (const rel of required) exists(rel);
 const lib = read("src/lib/prisma-app/prisma-mobile-pulse-timeline.ts");
 const component = read("src/components/prisma-app/PrismaMobilePulseTimeline.tsx");
 const dashboard = read("src/components/prisma-app/PrismaMobileDashboard.tsx");
+const navigator = read("src/components/prisma-app/PrismaMobilePremiumNavigator.tsx");
 const css = read("src/components/prisma-app/prisma-mobile-dashboard.module.css");
 const route = read("app/api/mobile/pulse-timeline/route.ts");
 const pkg = JSON.parse(read("package.json"));
@@ -45,10 +47,12 @@ assert(lib.includes("buildPrismaMobileActionInbox"), "action inbox handoff missi
 assert(lib.includes("buildPrismaMobileCommandCenter"), "command center handoff missing");
 assert(component.includes("timeline.nowCheckpoint.checklist"), "checkpoint checklist missing");
 assert(component.includes("timeline.events.map"), "events renderer missing");
-assert(dashboard.includes("PrismaMobilePulseTimeline"), "dashboard does not mount pulse timeline");
+assert(dashboard.includes("PrismaMobilePremiumNavigator"), "dashboard does not delegate to premium navigator");
+assert(!dashboard.includes("<PrismaMobilePulseTimeline"), "dashboard must not render pulse timeline directly");
+assert(navigator.includes("<PrismaMobilePulseTimeline clientSnapshot={clientSnapshot}"), "premium navigator does not mount pulse timeline");
 assert(css.includes("PRISMA_APP_MOBILE_24_PULSE_TIMELINE START"), "css marker missing");
 assert(route.includes("endpoint: \"pulse_timeline\""), "route endpoint missing");
-assert(compareVersion(pkg.version, "0.24.0") >= 0 && compareVersion(pkg.version, "0.37.0") < 0, `package version compatible with v24-v36 release: ${pkg.version}`);
+assert(compareVersion(pkg.version, "0.24.0") >= 0 && compareVersion(pkg.version, "0.38.0") < 0, `package version compatible with v24-v37 release: ${pkg.version}`);
 assert(pkg.scripts["verify:pulse-timeline"] === "node tools/verify_prisma_app_mobile_24_pulse_timeline.mjs", "verify script missing");
 assert(Array.isArray(scenarios.scenarios) && scenarios.scenarios.length >= 384, "scenarios below 384");
 assert(corpusLines.length >= 3200, "corpus below 3200 lines");

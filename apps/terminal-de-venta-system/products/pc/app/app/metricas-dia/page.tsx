@@ -8,9 +8,9 @@ export default function Page() {
       <section className="hero">
         <div className="kicker">capa i06</div>
         <h1 style={{ margin: 0 }}>Métricas del día</h1>
-        <div className="subtle">Lectura por categoría para backoffice y seguimiento operativo.</div>
+        <div className="subtle">Lectura por categoría para administración y seguimiento operativo.</div>
       </section>
-      <SectionCard title="Salud por categoría" subtitle="Valor de stock, quiebres y días de cobertura.">
+      <SectionCard title="Salud por categoría" subtitle="Valor de existencias, quiebres y días de cobertura.">
         <div className="list">
           {pcI06DashboardData.categoryHealth.map((item) => (
             <div key={item.category} className="list-item">{item.category} · valor ${item.stockValueMx} · quiebres {item.stockoutSlots} · cobertura {item.avgDaysCover} días</div>

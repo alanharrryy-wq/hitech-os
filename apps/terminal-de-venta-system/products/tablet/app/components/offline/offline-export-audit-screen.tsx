@@ -87,7 +87,7 @@ export function OfflineExportAuditScreen() {
     if (!audit) return "Revisando datos locales";
     if (audit.outbox.failed > 0) return `${audit.outbox.failed} eventos fallidos`;
     if (audit.outbox.pending > 0) return `${audit.outbox.pending} pendientes por sincronizar`;
-    return "Offline sano";
+    return "Operación local sana";
   }, [audit]);
 
   const tone = audit?.outbox.failed ? "danger" : audit?.outbox.pending ? "warn" : "ok";
@@ -95,7 +95,7 @@ export function OfflineExportAuditScreen() {
   return (
     <PrismaTabletShellUnified
       currentPath="/offline"
-      title="Offline, outbox y export"
+      title="Sin conexión y exportación"
       subtitle="Todo lo que la Tablet guarda localmente cuando vende sola."
       status={<TabletShellStatusPill tone={tone}>{headline}</TabletShellStatusPill>}
     >
@@ -107,7 +107,7 @@ export function OfflineExportAuditScreen() {
             <p>Ventas, eventos pendientes, movimientos de inventario, stock bajo y descargas, todo desde la base local.</p>
           </div>
           <button type="button" onClick={() => void load()} disabled={state === "loading"}>
-            {state === "loading" ? "Actualizando..." : "Actualizar"}
+            {state === "loading" ? "Actualizando…" : "Actualizar"}
           </button>
         </section>
 
@@ -137,14 +137,14 @@ export function OfflineExportAuditScreen() {
                 "Movimientos JSON": audit.exports.inventoryMovementsJson
               }).map(([label, href]) => <a key={href} href={href} target="_blank" rel="noreferrer">{label}</a>)
             ) : (
-              <span className={styles.muted}>Cargando enlaces...</span>
+              <span className={styles.muted}>Cargando enlaces…</span>
             )}
           </div>
         </section>
 
         <section className={styles.columns}>
           <article className={styles.panel}>
-            <h2>Outbox reciente</h2>
+            <h2>Pendientes recientes</h2>
             {audit && audit.outbox.events.length ? audit.outbox.events.map((event) => (
               <div className={styles.row} key={event.id}>
                 <div><strong>{event.topic}</strong><span>{event.aggregateId} · {new Date(event.createdAt).toLocaleString("es-MX")}</span></div>

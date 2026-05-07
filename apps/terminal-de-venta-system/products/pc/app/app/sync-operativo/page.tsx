@@ -13,7 +13,7 @@ export default async function Page() {
     <AppShell currentPath="/sync-operativo">
       <section className="hero">
         <div className="kicker">capa i05</div>
-        <h1 style={{ margin: 0 }}>Sync operativo</h1>
+        <h1 style={{ margin: 0 }}>Sincronización operativa</h1>
         <div className="subtle">Visión operativa de eventos compartidos y latencia estimada.</div>
       </section>
       <SectionCard title="Latencia" subtitle="Señal rápida de salud de sincronización.">
@@ -24,7 +24,7 @@ export default async function Page() {
       </SectionCard>
       <SectionCard title="Eventos compartidos vigilados" subtitle="Contrato visible para PC y Tablet.">
         <div className="list">
-          {outbox.outboxPending.map((item) => <div key={item.id} className="list-item">{item.topic} · {item.status} · {item.aggregateId}</div>)}
+          {outbox.outboxPending.map((item) => <div key={item.id} className="list-item">Tema {item.topic} · {item.status} · agregado {item.aggregateId}</div>)}
         </div>
       </SectionCard>
     </AppShell>

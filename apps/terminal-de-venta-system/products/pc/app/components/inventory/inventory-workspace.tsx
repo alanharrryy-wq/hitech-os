@@ -28,7 +28,7 @@ function titleFor(view: InventoryWorkspaceView) {
 function copyFor(view: InventoryWorkspaceView) {
   if (view === "counts") return "Diferencias, exactitud y conteos pendientes para cerrar inventario sin rezarle a la libreta.";
   if (view === "audit") return "Bitácora explicable de acciones sensibles, riesgos de integridad y evidencia operativa.";
-  return "Stock actual, ledger derivado y movimientos recientes con antes/después calculado cuando la base lo permite.";
+  return "Existencias actuales, movimientos derivados y actividad reciente con antes/después calculado cuando la base lo permite.";
 }
 
 export function InventoryWorkspaceView({ view, workspace }: { view: InventoryWorkspaceView; workspace: InventoryWorkspace }) {
@@ -43,13 +43,12 @@ export function InventoryWorkspaceView({ view, workspace }: { view: InventoryWor
             <p>{copyFor(view)}</p>
           </div>
           <div className="inline-list">
-            <span className="chip">Fuente: {workspace.meta.source}</span>
-            <span className="chip">Confianza: {workspace.meta.confidence}</span>
+            <span className="chip">Estado: {workspace.meta.persistence === "available" ? "datos disponibles" : "sin datos disponibles"}</span>
             <span className="chip">Actualizado: {workspace.meta.generatedAt}</span>
           </div>
         </div>
         <div className="hero-badges">
-          <span className="alert-chip">Stock visible</span>
+          <span className="alert-chip">Existencias visibles</span>
           <span className="alert-chip">Movimientos trazables</span>
           <span className="alert-chip">Conteos con diferencia</span>
           <span className="alert-chip">Riesgos auditables</span>
@@ -66,13 +65,13 @@ export function InventoryWorkspaceView({ view, workspace }: { view: InventoryWor
       <section className="dashboard-grid">
         <article className="card metric-card">
           <div className="kicker">existencias</div>
-          <div className="card-title">SKUs con snapshot</div>
+          <div className="card-title">SKUs con corte</div>
           <div className="metric">{workspace.summary.stockedSkuCount}</div>
           <div className="metric-note">Productos con foto de inventario por ubicación.</div>
         </article>
         <article className="card metric-card">
           <div className="kicker">riesgo</div>
-          <div className="card-title">Stock crítico</div>
+          <div className="card-title">Existencias críticas</div>
           <div className="metric">{workspace.summary.criticalStockCount}</div>
           <div className="metric-note">Cero, negativo o cobertura menor a dos días.</div>
         </article>
@@ -160,10 +159,10 @@ export function InventoryWorkspaceView({ view, workspace }: { view: InventoryWor
           </div>
         </div>
         <div className="list">
-          <div className="list-item"><span>Alcance</span><strong>Stock, conteos, ledger derivado y auditoría operativa.</strong></div>
-          <div className="list-item"><span>No toca</span><strong>Tablet, shared-kernel, sync compartido ni schema Prisma.</strong></div>
+          <div className="list-item"><span>Alcance</span><strong>Existencias, conteos, movimientos derivados y auditoría operativa.</strong></div>
+          <div className="list-item"><span>No toca</span><strong>Tablet, kernel compartido, sincronización compartida ni esquema Prisma.</strong></div>
           <div className="list-item"><span>Persistencia</span><strong>{workspace.meta.persistence}</strong></div>
-          <div className="list-item"><span>Ledger</span><strong>{workspace.meta.ledgerMode}</strong></div>
+          <div className="list-item"><span>Movimientos</span><strong>{workspace.meta.ledgerMode}</strong></div>
         </div>
       </section>
     </AppShell>
@@ -174,7 +173,7 @@ function StockPanel({ workspace }: { workspace: InventoryWorkspace }) {
   return (
     <section className="grid cols-2">
       <article className="card">
-        <div className="section-head"><div><div className="kicker">stock</div><h2 className="section-title">Existencias por ubicación</h2></div></div>
+        <div className="section-head"><div><div className="kicker">existencias</div><h2 className="section-title">Existencias por ubicación</h2></div></div>
         <DataTable
           columns={["SKU", "Producto", "Ubicación", "Disponible", "Reservado", "Cobertura", "Estado"]}
           rows={workspace.snapshots.map((row) => ({
@@ -186,11 +185,11 @@ function StockPanel({ workspace }: { workspace: InventoryWorkspace }) {
             Cobertura: row.daysCoverLabel,
             Estado: row.stateLabel
           }))}
-          emptyMessage="No hay snapshots para los filtros seleccionados."
+          emptyMessage="No hay cortes de inventario para los filtros seleccionados."
         />
       </article>
       <article className="card">
-        <div className="section-head"><div><div className="kicker">ledger</div><h2 className="section-title">Movimientos recientes</h2></div></div>
+        <div className="section-head"><div><div className="kicker">movimientos</div><h2 className="section-title">Movimientos recientes</h2></div></div>
         <DataTable
           columns={["Fecha", "SKU", "Movimiento", "Cantidad", "Antes", "Después", "Motivo", "Origen"]}
           rows={workspace.ledger.map((row) => ({

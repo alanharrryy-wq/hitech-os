@@ -1,6 +1,62 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+# BEGIN PRISMA BLACK-BOX i02 R5 INCIDENT ENGINE ROUTER
+def _prisma_black_box_i02_r5_incident_engine_router():
+    import os as _prisma_r5_os
+    import sys as _prisma_r5_sys
+    if _prisma_r5_os.environ.get("PRISMA_BB_I02_R5_ROUTER_BYPASS") == "1":
+        return
+    if len(_prisma_r5_sys.argv) > 1 and _prisma_r5_sys.argv[1] in {"incidents", "incident"}:
+        _prisma_r5_os.environ["PRISMA_BB_I02_R5_ROUTER_BYPASS"] = "1"
+        from pathlib import Path as _prisma_r5_Path
+        _prisma_r5_tool_dir = _prisma_r5_Path(__file__).resolve().parent
+        if str(_prisma_r5_tool_dir) not in _prisma_r5_sys.path:
+            _prisma_r5_sys.path.insert(0, str(_prisma_r5_tool_dir))
+        from black_box_incident_engine import main as _prisma_r5_main
+        raise SystemExit(_prisma_r5_main(_prisma_r5_sys.argv[1:]))
+_prisma_black_box_i02_r5_incident_engine_router()
+# END PRISMA BLACK-BOX i02 R5 INCIDENT ENGINE ROUTER
+
+
+# >>> PRISMA BLACK-BOX i02 R4.2b STATUS CONSENSUS REPORT FIX >>>
+def _prisma_black_box_i02_r4_2b_status_consensus_bootstrap():
+    import os as _prisma_os
+    import sys as _prisma_sys
+    from pathlib import Path as _PrismaPath
+    if _prisma_os.environ.get("PRISMA_BLACK_BOX_I02_R4_2_BYPASS") == "1":
+        return
+    if len(_prisma_sys.argv) > 1 and _prisma_sys.argv[1] == "status":
+        _prisma_black_box_dir = _PrismaPath(__file__).resolve().parent
+        if str(_prisma_black_box_dir) not in _prisma_sys.path:
+            _prisma_sys.path.insert(0, str(_prisma_black_box_dir))
+        from black_box_status_consensus import run_status_consensus_cli as _prisma_run_status_consensus_cli
+        raise SystemExit(_prisma_run_status_consensus_cli(_prisma_sys.argv[2:], black_box_py=_PrismaPath(__file__).resolve()))
+_prisma_black_box_i02_r4_2b_status_consensus_bootstrap()
+# <<< PRISMA BLACK-BOX i02 R4.2b STATUS CONSENSUS REPORT FIX <<<
+
+
+# PRISMA BLACK-BOX i02 R4 OUTPUT ROUTER BEGIN
+def _prisma_i02_r4_bootstrap_output_router():
+    """Bootstrap integrated output routing without relying on current working directory."""
+    import sys as _sys
+    from pathlib import Path as _Path
+    try:
+        _black_box_dir = _Path(__file__).resolve().parent
+        if str(_black_box_dir) not in _sys.path:
+            _sys.path.insert(0, str(_black_box_dir))
+        from black_box_output_router import bootstrap_output_router_from_argv, maybe_handle_i02_r4_command
+        maybe_handle_i02_r4_command(_sys.argv)
+        bootstrap_output_router_from_argv(_sys.argv)
+    except SystemExit:
+        raise
+    except Exception as _exc:
+        print(f"[black-box i02 R4 WARN] output router bootstrap skipped: {_exc}", file=_sys.stderr)
+# PRISMA BLACK-BOX i02 R4 OUTPUT ROUTER END
+
+
+
+
 import argparse
 import datetime as dt
 import json
@@ -23,7 +79,7 @@ DEFAULT_ROOT = Path(os.environ.get("PRISMA_ROOT", r"F:\repos\hitech-os\apps\term
 DEFAULT_OUT = Path(os.environ.get("PRISMA_BLACK_BOX_OUT", r"F:\descargasf"))
 
 APPS: dict[str, dict[str, Any]] = {
-    "tablet": {"rel": "products/tablet/app", "port": 3120, "url": "http://127.0.0.1:3120/prisma-dark-pos-reference", "script": "dev"},
+    "tablet": {"rel": "products/tablet/app", "port": 3120, "url": "http://127.0.0.1:3120/", "script": "dev"},
     "pc": {"rel": "products/pc/app", "port": 3130, "url": "http://127.0.0.1:3130/", "script": "dev"},
     "mobile": {"rel": "products/mobile/app", "port": 3140, "url": "http://127.0.0.1:3140/prisma-app", "script": "dev"},
 }
@@ -210,21 +266,86 @@ def http_probe(url: str, timeout: float = 1.25) -> tuple[str, str]:
         return "WARN", f"No responde HTTP: {type(exc).__name__}: {exc}"
 
 
-def candidate_logs(root: Path, out: Path) -> list[Path]:
-    dirs = [root / "tools/_local/logs", root / "tools/_local", out]
+def candidate_logs(root: Path, out: Path, include_external: bool = False, max_age_minutes: int = 1440) -> list[Path]:
+    """Return scoped, fresh logs relevant to PRISMA Terminal de Venta.
+
+    The previous i02/R2 behavior scanned the monorepo parent log directory too broadly,
+    so old `eit-*` logs and unrelated builds could mark the healthy POS runtime as
+    BLOCKED. Cute little disaster, like a smoke alarm triggered by last week's carne asada.
+    """
+    now = time.time()
+    max_age_seconds = max(60, int(max_age_minutes) * 60)
+    scoped_dirs: list[tuple[Path, str]] = [
+        (root / "tools/_local/logs", "project"),
+        (root / "tools/_local", "project"),
+        (out, "black-box"),
+    ]
     if root.name.lower() == "terminal-de-venta-system" and root.parent.name.lower() == "apps":
-        dirs.append(root.parent.parent / "tools/_local/logs")
+        parent_logs = root.parent.parent / "tools/_local/logs"
+        scoped_dirs.append((parent_logs, "parent-runtime"))
+
+    allowed_parent_prefixes = (
+        "terminal-tablet",
+        "terminal-pc",
+        "terminal-mobile",
+        "terminal-de-venta",
+        "prisma_tablet",
+        "prisma_pc",
+        "prisma_mobile",
+        "tablet-",
+        "pc-",
+        "mobile-",
+        "black_box",
+        "prisma_black_box",
+    )
+    denied_prefixes = (
+        "eit-",
+        "eit_",
+        "external_interaction",
+        "cloudflare_",
+        "vscode_",
+    )
+    denied_contains = (
+        "eit_forms",
+        "eit_template",
+        "eit-build",
+        "external_interaction",
+    )
+
+    def is_candidate_file(path: Path, scope: str) -> bool:
+        name = path.name.lower()
+        if not path.is_file():
+            return False
+        if any(name.startswith(x) for x in denied_prefixes) or any(x in name for x in denied_contains):
+            return False
+        try:
+            age = now - path.stat().st_mtime
+        except OSError:
+            return False
+        # Installer and active black-box traces are useful even if a little older.
+        is_stateful_blackbox = name.startswith("black_box") or name.startswith("prisma_black_box")
+        if age > max_age_seconds and not is_stateful_blackbox:
+            return False
+        if scope == "parent-runtime" and not include_external:
+            return name.startswith(allowed_parent_prefixes)
+        return True
+
     files: list[Path] = []
-    for d in dirs:
+    for d, scope in scoped_dirs:
         if not d.exists():
             continue
         for pat in ["*.log", "*.txt", "*.err", "*.out", "*.jsonl"]:
-            files.extend([p for p in d.glob(pat) if p.is_file()])
-    excluded = ("prisma_black_box", "black_box_", "evidence_05a", "install_black_box", "blackbox")
-    files = [p for p in files if not any(token in p.name.lower() for token in excluded)]
-    files.sort(key=lambda p: p.stat().st_mtime, reverse=True)
-    return files[:60]
-
+            for p in d.glob(pat):
+                if is_candidate_file(p, scope):
+                    files.append(p)
+    # Do not parse black-box generated reports as evidence against itself.
+    excluded_exact = {
+        "black_box_heartbeat.jsonl",
+        "prisma_black_box_events.jsonl",
+    }
+    files = [p for p in files if p.name.lower() not in excluded_exact]
+    deduped = sorted(set(files), key=lambda p: p.stat().st_mtime, reverse=True)
+    return deduped[:80]
 
 def preflight_ok_for_log(text: str) -> bool:
     return "PRISMA DEV PREFLIGHT" in text and " OK product=" in text
@@ -234,15 +355,36 @@ def classify_log(text: str, source: str) -> tuple[list[dict[str, Any]], list[dic
     active: list[dict[str, Any]] = []
     resolved: list[dict[str, Any]] = []
     preflight_ok = preflight_ok_for_log(text)
+    source_l = str(source).lower()
+    is_external_noise = any(token in source_l for token in ["eit-", "eit_", "eit_forms", "eit_template", "eit-build", "external_interaction"])
+    canonical_ports = {"3120", "3130", "3140"}
+
     for line_no, line in enumerate(text.splitlines(), 1):
         for pattern_id, regex, safe_fix, message, default_severity in PATTERNS:
             if not re.search(regex, line, re.IGNORECASE):
                 continue
             severity = default_severity
             bucket = active
+
+            # If PC/Tablet preflight eventually says OK, intermediate generate/import warnings
+            # are history, not a current body on the floor.
             if preflight_ok and pattern_id in {"PRISMA_CLIENT_GENERATE_FAILED", "NODE_MODULE_NOT_FOUND"}:
                 severity = "RESOLVED_WARN"
                 bucket = resolved
+
+            # External/non-canonical port collisions must not block Terminal de Venta.
+            # Ports 3100/3200 from EIT are neighbor noise, not our cashier fainting.
+            if pattern_id == "PORT_IN_USE":
+                found_ports = set(re.findall(r":(\d{3,5})", line))
+                if is_external_noise or (found_ports and not (found_ports & canonical_ports)):
+                    severity = "EXTERNAL_WARN"
+                    bucket = resolved
+
+            # Old external module build logs are useful archaeology, not an active runtime failure.
+            if pattern_id == "NODE_MODULE_NOT_FOUND" and is_external_noise:
+                severity = "EXTERNAL_WARN"
+                bucket = resolved
+
             bucket.append({
                 "pattern_id": pattern_id,
                 "severity": severity,
@@ -253,7 +395,6 @@ def classify_log(text: str, source: str) -> tuple[list[dict[str, Any]], list[dic
                 "safe_fix": safe_fix,
             })
     return active, resolved
-
 
 def state_dir(root: Path) -> Path:
     return root / "tools" / "_local" / "black-box"
@@ -428,8 +569,8 @@ def probe_logs(root: Path, out: Path) -> tuple[list[ProbeResult], list[dict[str,
     resolved: list[dict[str, Any]] = []
     logs = candidate_logs(root, out)
     if not logs:
-        return [ProbeResult("logs", "recent logs", "WARN", "No encontre logs recientes", str(root / "tools/_local/logs"))], active, resolved
-    checks.append(ProbeResult("logs", "recent logs", "OK", f"{len(logs)} logs candidatos revisados", "; ".join(str(p) for p in logs[:8])))
+        return [ProbeResult("logs", "recent scoped logs", "WARN", "No encontre logs recientes dentro del scope PRISMA", str(root / "tools/_local/logs"))], active, resolved
+    checks.append(ProbeResult("logs", "recent scoped logs", "OK", f"{len(logs)} logs PRISMA candidatos revisados", "; ".join(str(p) for p in logs[:8])))
     for path in logs:
         try:
             text = path.read_text(encoding="utf-8", errors="replace")[-24000:]
@@ -438,27 +579,52 @@ def probe_logs(root: Path, out: Path) -> tuple[list[ProbeResult], list[dict[str,
         a, r = classify_log(text, str(path))
         active.extend(a)
         resolved.extend(r)
+    blocking_active = [h for h in active if h.get("severity") == "FAIL"]
+    nonblocking = [h for h in active if h.get("severity") != "FAIL"]
+    if nonblocking:
+        resolved.extend(nonblocking)
+        active = blocking_active
     if active:
-        checks.append(ProbeResult("logs", "active known failures", "FAIL", f"{len(active)} patrones activos detectados", active[0].get("source", ""), code=active[0].get("pattern_id", "")))
+        checks.append(ProbeResult("logs", "active known failures", "FAIL", f"{len(active)} patrones activos bloqueantes detectados", active[0].get("source", ""), code=active[0].get("pattern_id", "")))
     elif resolved:
-        checks.append(ProbeResult("logs", "resolved known failures", "WARN", f"{len(resolved)} patrones historicos/resueltos detectados", resolved[0].get("source", ""), code=resolved[0].get("pattern_id", "")))
+        checks.append(ProbeResult("logs", "resolved/external known failures", "WARN", f"{len(resolved)} patrones historicos/externos/resueltos detectados", resolved[0].get("source", ""), code=resolved[0].get("pattern_id", "")))
     else:
-        checks.append(ProbeResult("logs", "known failure patterns", "OK", "Sin patrones activos conocidos en logs recientes"))
+        checks.append(ProbeResult("logs", "known failure patterns", "OK", "Sin patrones activos conocidos en logs recientes dentro del scope"))
     return checks, active, resolved
 
-
 def summarize(checks: list[ProbeResult], active: list[dict[str, Any]], resolved: list[dict[str, Any]]) -> dict[str, Any]:
+    blocking_active = [h for h in active if h.get("severity") == "FAIL"]
+    nonblocking_active = [h for h in active if h.get("severity") != "FAIL"]
+    if nonblocking_active:
+        resolved = list(resolved) + nonblocking_active
+
     fail_count = sum(1 for c in checks if c.status == "FAIL")
     warn_count = sum(1 for c in checks if c.status == "WARN")
     ok_count = sum(1 for c in checks if c.status == "OK")
-    if active or fail_count:
+
+    # If a log probe failed only because all hits were downgraded to resolved/external,
+    # do not keep the synthetic FAIL. It was wearing a fake mustache.
+    if not blocking_active:
+        adjusted_checks: list[ProbeResult] = []
+        for c in checks:
+            if c.probe == "logs" and c.name == "active known failures" and c.status == "FAIL":
+                adjusted_checks.append(ProbeResult(c.probe, "external/resolved known failures", "WARN", "Patrones no bloqueantes detectados en logs externos/resueltos", c.evidence, c.recommendation, c.app, c.code))
+            else:
+                adjusted_checks.append(c)
+        checks[:] = adjusted_checks
+        fail_count = sum(1 for c in checks if c.status == "FAIL")
+        warn_count = sum(1 for c in checks if c.status == "WARN")
+        ok_count = sum(1 for c in checks if c.status == "OK")
+
+    if blocking_active or fail_count:
         status = "BLOCKED"
     elif warn_count or resolved:
         status = "READY_WITH_CAVEATS"
     else:
         status = "READY"
-    if active:
-        root_cause = active[0]
+
+    if blocking_active:
+        root_cause = blocking_active[0]
         active_code = root_cause.get("pattern_id", "ACTIVE_FAILURE")
         active_summary = root_cause.get("summary", "Falla activa detectada")
     else:
@@ -471,28 +637,33 @@ def summarize(checks: list[ProbeResult], active: list[dict[str, Any]], resolved:
             active_code = "NO_ACTIVE_FAILURE"
             active_summary = "Sin causa raiz activa. El estado actual no esta bloqueado."
             root_cause = {"pattern_id": active_code, "summary": active_summary}
+
     if resolved:
-        primary_caveat = {"pattern_id": resolved[0].get("pattern_id"), "summary": f"{resolved[0].get('pattern_id')} - {len(resolved)} patrones historicos/resueltos detectados.", "evidence": resolved[0].get("source", "")}
+        first = resolved[0]
+        primary_caveat = {
+            "pattern_id": first.get("pattern_id"),
+            "summary": f"{first.get('pattern_id')} - {len(resolved)} patrones historicos/externos/resueltos detectados.",
+            "evidence": first.get("source", ""),
+            "severity": first.get("severity", "WARN"),
+        }
     elif warn_count:
         warn = next((c for c in checks if c.status == "WARN"), None)
         primary_caveat = asdict(warn) if warn else None
     else:
         primary_caveat = None
+
     return {
         "status": status,
         "ok": ok_count,
         "warn": warn_count,
         "fail": fail_count,
-        "active_hits": len(active),
+        "active_hits": len(blocking_active),
         "resolved_hits": len(resolved),
         "active_code": active_code,
         "active_summary": active_summary,
         "active_root_cause": root_cause,
         "primary_caveat": primary_caveat,
     }
-
-
-
 
 def run_probe_snapshot(root: Path, out: Path) -> tuple[dict[str, Any], list[ProbeResult], list[dict[str, Any]], list[dict[str, Any]]]:
     """Run probes without emitting a full markdown/json report.
@@ -1041,6 +1212,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    _prisma_i02_r4_bootstrap_output_router()
     parser = build_parser()
     args = parser.parse_args(argv)
     try:

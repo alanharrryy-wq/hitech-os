@@ -18,7 +18,7 @@ export default function TablasOperativasPage() {
       <section>
         <h1 className="text-2xl font-semibold text-white">Tablas operativas</h1>
         <p className="mt-2 max-w-3xl text-sm text-white/70">
-          Capa UX para backoffice con tablas orientadas a cola de trabajo, columnas cortas y semáforo visible.
+          Capa UX para el panel administrativo con tablas orientadas a cola de trabajo, columnas cortas y semáforo visible.
         </p>
       </section>
       <section className="grid gap-3 md:grid-cols-5">
@@ -31,7 +31,7 @@ export default function TablasOperativasPage() {
         ))}
       </section>
       <section className="space-y-3">
-        <h2 className="text-lg font-medium text-white">Stock crítico</h2>
+        <h2 className="text-lg font-medium text-white">Existencias críticas</h2>
         <OpsTable columns={[...stockColumns]} rows={stockRows} />
       </section>
       <section className="space-y-3">

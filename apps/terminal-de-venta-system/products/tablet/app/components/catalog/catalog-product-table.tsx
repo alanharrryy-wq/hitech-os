@@ -33,20 +33,33 @@ export function CatalogProductTable({ products, selectedId, onEdit }: Props) {
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
-            <tr key={product.id} className={selectedId === product.id ? styles.selectedRow : undefined}>
-              <td>
-                <strong>{product.name}</strong>
-                <small>{product.category || "General"}</small>
-              </td>
-              <td>{product.sku}</td>
-              <td>{product.barcode || product.barcodes?.[0] || "Sin código"}</td>
-              <td>{formatMoney(product.priceCents)}</td>
-              <td>{product.stockOnHand}</td>
-              <td><span className={product.isActive ? styles.badgeOk : styles.badgeMuted}>{product.isActive ? "Activo" : "Inactivo"}</span></td>
-              <td><button type="button" className={styles.tableAction} onClick={() => onEdit(product)}>Editar</button></td>
-            </tr>
-          ))}
+          {products.map((product) => {
+            const isSelected = selectedId === product.id;
+            return (
+              <tr key={product.id} className={isSelected ? styles.selectedRow : undefined}>
+                <td>
+                  <strong>{product.name}</strong>
+                  <small>{product.category || "General"}</small>
+                </td>
+                <td>{product.sku}</td>
+                <td>{product.barcode || product.barcodes?.[0] || "Sin código"}</td>
+                <td>{formatMoney(product.priceCents)}</td>
+                <td>{product.stockOnHand}</td>
+                <td><span className={product.isActive ? styles.badgeOk : styles.badgeMuted}>{product.isActive ? "Activo" : "Inactivo"}</span></td>
+                <td>
+                  <button
+                    type="button"
+                    className={styles.tableAction}
+                    aria-pressed={isSelected}
+                    aria-label={isSelected ? `Editando ${product.name}` : `Editar ${product.name}`}
+                    onClick={() => onEdit(product)}
+                  >
+                    {isSelected ? "Editando" : "Editar"}
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

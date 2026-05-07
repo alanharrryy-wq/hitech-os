@@ -1,23 +1,24 @@
+"use client";
+
+import { useEffect } from "react";
+
+const STORAGE_KEY = "prisma.pc.skin";
+const FORCED_SKIN = "light" as const;
+
+function applySkin() {
+  if (typeof document === "undefined") return;
+  const root = document.documentElement;
+  root.dataset.prismaSkin = FORCED_SKIN;
+  root.dataset.prismaSurface = "pc-backoffice";
+  root.dataset.theme = "prisma-light";
+  root.dataset.prismaSkinPreference = FORCED_SKIN;
+}
+
 export function PrismaDarkSelector() {
-  return (
-    <div className="prisma-dark-selector">
-      <span className="prisma-dark-selector-text">Claude Haiku 4.5</span>
-      <svg
-        className="prisma-dark-selector-chevron"
-        width="14"
-        height="14"
-        viewBox="0 0 14 14"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M10.5 5.5L7 9L3.5 5.5"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </div>
-  );
+  useEffect(() => {
+    window.localStorage.setItem(STORAGE_KEY, FORCED_SKIN);
+    applySkin();
+  }, []);
+
+  return null;
 }

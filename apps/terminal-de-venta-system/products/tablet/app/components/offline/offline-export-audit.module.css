@@ -151,3 +151,143 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* PRISMA_LIGHT_OFFLINE_EXPORT_TACTILE_00R */
+@keyframes prismaOfflineSkeletonSweep {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(110%); }
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .page {
+  color: var(--prisma-text-primary);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .panel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpis article,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alert,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .row,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .diagnostics span {
+  border-color: var(--prisma-border-soft);
+  color: var(--prisma-text-primary);
+  background:
+    radial-gradient(circle at 24% 0%, rgba(255,255,255,.86), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,.92), rgba(246,250,255,.70));
+  box-shadow: var(--prisma-shadow-card-lift);
+  backdrop-filter: blur(var(--prisma-optical-card-blur)) saturate(var(--prisma-optical-panel-saturate));
+  -webkit-backdrop-filter: blur(var(--prisma-optical-card-blur)) saturate(var(--prisma-optical-panel-saturate));
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportCard span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpis strong {
+  color: var(--prisma-action-primary);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportCard p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .row span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .muted,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpis span {
+  color: var(--prisma-text-secondary);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero button,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actions a {
+  border-color: var(--prisma-border-action);
+  color: var(--prisma-action-primary);
+  background: var(--prisma-action-primary-soft);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.86);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .panel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpis article,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .row,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .diagnostics span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero button,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actions a {
+  transition:
+    transform var(--prisma-motion-base) var(--prisma-ease-premium),
+    box-shadow var(--prisma-motion-base) var(--prisma-ease-premium),
+    border-color var(--prisma-motion-fast) ease,
+    background var(--prisma-motion-base) ease,
+    opacity var(--prisma-motion-fast) ease;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportCard:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .panel:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpis article:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .row:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .diagnostics span:hover {
+  transform: translateY(-2px);
+  border-color: var(--prisma-border-action);
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero button:not(:disabled):hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actions a:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero button:active,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actions a:active {
+  transform: translateY(1px) scale(.99);
+  box-shadow: var(--prisma-light-shadow-card);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero button:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actions a:focus-visible {
+  outline: none;
+  border-color: var(--prisma-action-primary);
+  box-shadow: var(--prisma-focus-ring-strong), var(--prisma-shadow-card-hover);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero button:disabled {
+  color: var(--prisma-disabled-text) !important;
+  background: var(--prisma-disabled-surface) !important;
+  border-color: var(--prisma-border-soft) !important;
+  cursor: not-allowed;
+  opacity: .8;
+  transform: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .muted {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--prisma-radius-lg);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty::after,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .muted::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--prisma-skeleton-surface);
+  opacity: .18;
+  transform: translateX(-110%);
+  animation: prismaOfflineSkeletonSweep 1.25s var(--prisma-ease-premium) infinite;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .exportCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .panel,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .kpis article,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .row,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .diagnostics span,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero button,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actions a,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty::after,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .muted::after {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}

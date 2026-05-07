@@ -59,7 +59,7 @@ export default function ScorecardsNegocioPage() {
       <section className="space-y-3">
         <h2 className="text-lg font-medium text-white">Categoría</h2>
         <I11Table
-          columns={['Categoría', 'Compra sugerida', 'Stockout', 'Precio viejo', 'Margen %', 'Banda']}
+          columns={['Categoría', 'Compra sugerida', 'Quiebre actual', 'Precio viejo', 'Margen %', 'Banda']}
           rows={categoryRows}
         />
       </section>

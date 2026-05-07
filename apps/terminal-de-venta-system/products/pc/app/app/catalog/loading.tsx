@@ -6,7 +6,7 @@ export default function CatalogLoading() {
       <section className="hero">
         <div className="kicker">catálogo</div>
         <h1 className="hero-title">Cargando catálogo operativo...</h1>
-        <p>PC prepara SKUs, barcodes y excepciones sin inventar datos.</p>
+        <p>PC prepara SKUs, códigos y excepciones sin inventar datos.</p>
       </section>
       <section className="card">
         <div className="empty-state">

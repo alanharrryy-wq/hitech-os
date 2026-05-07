@@ -8,7 +8,7 @@ const inventoryClass: Record<PrismaMobileInventoryItem["state"], string> = { cri
 const branchClass: Record<PrismaMobileBranch["status"], string> = { sano: styles.branchHealthy, revisar: styles.branchReview, urgente: styles.branchUrgent, offline: styles.branchOffline };
 
 export function PrismaMobileActionPanel({ actions }: { actions: PrismaMobileAction[] }) {
-  return <section className={styles.panelCard} aria-labelledby="mobile-actions-title"><header><span>Acciones sugeridas</span><h2 id="mobile-actions-title">Qué revisar primero</h2></header><div className={styles.actionList}>{actions.map((action, index) => <article key={`${action.title}-${index}`}><b>{index + 1}</b><div><strong>{action.title}</strong><span>{action.detail}</span><small>{action.owner}</small></div><em className={priorityClass[action.priority]}>{action.priority}</em></article>)}</div></section>;
+  return <section className={styles.panelCard} aria-labelledby="mobile-actions-title" data-prisma-zone="mobile-review-first"><header><span>Acciones sugeridas</span><h2 id="mobile-actions-title">Qué revisar primero</h2></header><div className={styles.actionList}>{actions.map((action, index) => <article key={`${action.title}-${index}`}><b>{index + 1}</b><div><strong>{action.title}</strong><span>{action.detail}</span><small>{action.owner}</small></div><em className={priorityClass[action.priority]}>{action.priority}</em></article>)}</div></section>;
 }
 
 export function PrismaMobileSalesChart({ points }: { points: PrismaMobileSalesPoint[] }) {

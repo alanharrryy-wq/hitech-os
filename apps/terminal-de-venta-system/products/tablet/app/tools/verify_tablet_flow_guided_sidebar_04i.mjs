@@ -1,4 +1,4 @@
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const root = process.cwd();
@@ -9,24 +9,30 @@ function ok(name, condition) { checks.push({ name, ok: Boolean(condition) }); }
 const nav = file("components/tablet-shell/tablet-nav.ts");
 const shell = file("components/tablet-shell/prisma-tablet-shell.tsx");
 const css = file("components/tablet-shell/prisma-tablet-shell.module.css");
-const pos = file("components/pos/pos-screen.tsx");
-const ticket = file("components/pos/pos-ticket-panel.tsx");
-const qa = file("docs/qa/PRISMA_TABLET_FLOW_GUIDED_SIDEBAR_04I_ACCEPTANCE.md");
+const runtime = file("components/tablet-runtime/tablet-runtime-status-strip.tsx");
+const home = file("components/tablet-home/tablet-home-screen.tsx");
+const homeCss = file("components/tablet-home/tablet-home.module.css");
 
-ok("nav exporta getVisibleTabletNavItems", nav.includes("export function getVisibleTabletNavItems"));
-ok("nav inicio regresa solo Inicio", nav.includes('if (stage === "inicio")') && nav.includes('return [navByHref("/")]'));
-ok("nav detecta pendientes contextuales", nav.includes("hasPendingWork(snapshot)") && nav.includes('navByHref("/sync")'));
-ok("nav detecta estado contextual", nav.includes("hasSystemAttention(snapshot)") && nav.includes('navByHref("/release-gate")'));
-ok("shell usa visibleNavItems", shell.includes("const visibleNavItems = getVisibleTabletNavItems") && shell.includes("visibleNavItems.map"));
-ok("shell declara data-prisma-flow-stage", shell.includes("data-prisma-flow-stage={flowStage}"));
-ok("shell marca GuidedSidebarNav", shell.includes('data-prisma-component="GuidedSidebarNav"'));
-ok("css contiene marker 04I", css.includes("PRISMA_TABLET_FLOW_GUIDED_SIDEBAR_04I"));
-ok("css especializa inicio", css.includes('data-prisma-flow-stage="inicio"'));
-ok("pos ya no importa keyboard bridge", !pos.includes("PosPaymentKeyboardBridge"));
-ok("keyboard bridge eliminado", !existsSync(join(root, "components/pos/pos-payment-keyboard-bridge.tsx")));
-ok("ticket no muestra F2 F3 F4 F5 F6", !/F[2-6]/.test(ticket));
-ok("ticket muestra acciones touch", ticket.includes("Tocar") && ticket.includes("Guardar") && ticket.includes("Limpiar") && ticket.includes("Recuperar"));
-ok("qa documenta inicio limpio", qa.includes("sidebar renderiza solo `Inicio`"));
+ok("nav mantiene export getVisibleTabletNavItems", nav.includes("export function getVisibleTabletNavItems"));
+ok("nav ya no esconde rutas en Inicio", !nav.includes('return [navByHref("/")]') && nav.includes("return TABLET_NAV_ITEMS"));
+ok("nav incluye Vender permanente", nav.includes('href: "/pos"') && nav.includes('primary: true'));
+ok("nav incluye Inicio, Turno, Ventas, Catalogo, Existencias", ["/", "/shift", "/sales/today", "/catalog", "/stock"].every((href) => nav.includes(`href: "${href}"`)));
+ok("nav incluye Soporte completo", ["/sync", "/offline", "/release-gate", "/settings/license"].every((href) => nav.includes(`href: "${href}"`)));
+ok("nav agrupa Operacion Consulta Soporte", nav.includes("TABLET_NAV_GROUP_LABELS") && nav.includes("Consulta rapida") && nav.includes("Soporte"));
+ok("shell usa groupedNavItems", shell.includes("groupedNavItems") && shell.includes("NAV_GROUP_ORDER"));
+ok("shell usa logo como toggle", shell.includes("prisma-tablet-sidebar-toggle") && shell.includes('data-prisma-component="BrandCollapseToggle"'));
+ok("shell integra runtime strip compacto en header", shell.includes('data-prisma-component="TopCommandBar"') && shell.includes('variant="compact"'));
+ok("shell ya no renderiza RuntimeStatusStrip debajo del header", !shell.includes("</header>\n          <TabletRuntimeStatusStrip"));
+ok("runtime strip soporta variante compact", runtime.includes('variant?: "full" | "compact"') && runtime.includes("runtimeStripCompact"));
+ok("css contiene marker 05A", css.includes("PRISMA_TABLET_FLOW_CLARITY_05A_NAV_TOPBAR_COLLAPSE"));
+ok("css contiene hotfix global 05B", css.includes("PRISMA_TABLET_FLOW_CLARITY_05B_GLOBAL_SHELL_HOTFIX"));
+ok("css collapse no depende solo de tablet-pos", css.includes('.sidebarToggleInput:checked + .shell[data-prisma-product="tablet"]') && css.includes('grid-template-columns: 76px minmax(0, 1fr)'));
+ok("css topbar compacta aplica a todas las rutas Tablet", css.includes('.shell[data-prisma-product="tablet"] .header') && css.includes('.shell[data-prisma-product="tablet"] .runtimeStripCompact'));
+ok("css controla overflow de header", css.includes('overflow: hidden') && css.includes('.shell[data-prisma-product="tablet"] .headerControls'));
+ok("home agrega mapa de flujo", home.includes("workflowSteps") && home.includes("Herramientas disponibles"));
+ok("home incluye herramientas ocultas", ["/catalog", "/stock", "/sync", "/offline", "/release-gate", "/settings/license"].every((href) => home.includes(`href: "${href}"`)));
+ok("home css tiene marker 05A", homeCss.includes("PRISMA_TABLET_FLOW_CLARITY_05A_HOME_MAP"));
+ok("reduced motion respetado", css.includes("prefers-reduced-motion") && homeCss.includes("prefers-reduced-motion"));
 
 const failed = checks.filter((check) => !check.ok);
 console.log(JSON.stringify({ ok: failed.length === 0, checks }, null, 2));

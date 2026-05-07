@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import { PrismaBusinessOverview } from "@components/landing/prisma-business-overview";
 
 export default function Page() {
-  redirect("/dashboard");
+  return <PrismaBusinessOverview />;
 }

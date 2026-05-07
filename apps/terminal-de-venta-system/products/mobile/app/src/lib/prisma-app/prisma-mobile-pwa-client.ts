@@ -60,17 +60,6 @@ export function currentAppUrl(): string {
   return new URL("/prisma-app", window.location.origin).toString();
 }
 
-export function androidChromeIntentUrl(targetUrl: string): string {
-  const url = new URL(targetUrl);
-  const path = `${url.host}${url.pathname}${url.search}`;
-  return `intent://${path}#Intent;scheme=${url.protocol.replace(":", "")};package=com.android.chrome;S.browser_fallback_url=${encodeURIComponent(targetUrl)};end`;
-}
-
-export function tryOpenAndroidChrome(targetUrl: string): void {
-  if (typeof window === "undefined") return;
-  window.location.href = androidChromeIntentUrl(targetUrl);
-}
-
 export async function copyText(value: string): Promise<boolean> {
   if (typeof navigator === "undefined" || !navigator.clipboard) return false;
   try {

@@ -16,7 +16,12 @@ export function PrismaMobileDailyBrief({ clientSnapshot }: { clientSnapshot: Pri
   const mailHref = `mailto:?subject=${encodeURIComponent(brief.emailSubject)}&body=${encodeURIComponent(brief.emailBody)}`;
 
   return (
-    <section className={styles.dailyBrief} aria-labelledby="prisma-mobile-daily-brief-title" data-prisma-contract={brief.contractId}>
+    <section
+      className={styles.dailyBrief}
+      aria-labelledby="prisma-mobile-daily-brief-title"
+      data-prisma-contract={brief.contractId}
+      data-prisma-zone="mobile-daily-brief"
+    >
       <header className={styles.dailyBriefHeader}>
         <div>
           <span className={styles.commandEyebrow}>Brief diario móvil</span>
