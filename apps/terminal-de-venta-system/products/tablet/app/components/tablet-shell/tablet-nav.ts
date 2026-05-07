@@ -16,21 +16,21 @@ export type TabletNavItem = {
 export type TabletFlowStage = "inicio" | "venta" | "operacion" | "consulta" | "soporte";
 
 export const TABLET_NAV_GROUP_LABELS: Record<TabletNavGroup, string> = {
-  operacion: "Operacion",
-  consulta: "Consulta rapida",
+  operacion: "Operación",
+  consulta: "Consulta rápida",
   soporte: "Soporte"
 };
 
 export const TABLET_NAV_ITEMS: TabletNavItem[] = [
-  { href: "/pos", label: "Vender", shortLabel: "Vender", description: "Busca, escanea, arma el ticket y cobra.", icon: "cart", group: "operacion", primary: true },
   { href: "/", label: "Inicio", shortLabel: "Inicio", description: "Mapa de trabajo y pulso operativo de la terminal.", icon: "dashboard", group: "operacion" },
   { href: "/shift", label: "Turno y caja", shortLabel: "Turno", description: "Apertura, corte y cierre operativo.", icon: "terminal", group: "operacion" },
-  { href: "/sales/today", label: "Ventas de hoy", shortLabel: "Ventas", description: "Resumen de tickets y productos vendidos.", icon: "receipt", group: "operacion" },
-  { href: "/catalog", label: "Catalogo", shortLabel: "Catalogo", description: "Productos locales disponibles para venta.", icon: "tag", group: "consulta" },
-  { href: "/stock", label: "Existencias", shortLabel: "Stock", description: "Stock operativo local, quiebres y senales de reabasto.", icon: "package", group: "consulta" },
-  { href: "/sync", label: "Pendientes", shortLabel: "Pend.", description: "Envios pendientes, fallidos y trabajo local por revisar.", icon: "bell", group: "soporte" },
-  { href: "/offline", label: "Offline / Export", shortLabel: "Offline", description: "Auditoria local, exportacion y evidencia operativa.", icon: "receipt", group: "soporte" },
-  { href: "/release-gate", label: "Estado del sistema", shortLabel: "Estado", description: "Revision operativa de flujos criticos antes de liberar.", icon: "settings", group: "soporte" },
+  { href: "/pos", label: "Vender", shortLabel: "Vender", description: "Cobro rápido: busca, escanea, arma el ticket y cobra.", icon: "cart", group: "operacion", primary: true },
+  { href: "/catalog", label: "Catálogo", shortLabel: "Catálogo", description: "Productos locales disponibles para venta.", icon: "tag", group: "consulta" },
+  { href: "/stock", label: "Existencias", shortLabel: "Stock", description: "Stock operativo local, quiebres y señales de reabasto.", icon: "package", group: "consulta" },
+  { href: "/sales/today", label: "Ventas de hoy", shortLabel: "Ventas", description: "Resumen de tickets, productos vendidos y devoluciones.", icon: "receipt", group: "consulta" },
+  { href: "/sync", label: "Sincronización", shortLabel: "Sinc.", description: "Envíos pendientes, fallidos y trabajo local por revisar.", icon: "bell", group: "soporte" },
+  { href: "/offline", label: "Sin conexión / Exportar", shortLabel: "Exportar", description: "Auditoría local, exportación y evidencia operativa.", icon: "receipt", group: "soporte" },
+  { href: "/release-gate", label: "Estado del sistema", shortLabel: "Estado", description: "Revisión operativa de flujos críticos antes de liberar.", icon: "settings", group: "soporte" },
   { href: "/settings/license", label: "Licencia", shortLabel: "Lic.", description: "Estado de licencia y permisos de uso de Tablet.", icon: "settings", group: "soporte" }
 ];
 
@@ -71,13 +71,13 @@ export function getTabletFlowCopy(stage: TabletFlowStage, snapshot: TabletRuntim
   if (stage === "venta") {
     return {
       label: snapshot.shift.state === "open" ? "Venta activa" : "Venta guiada",
-      helper: snapshot.shift.state === "open" ? "Vender queda como accion principal; soporte y consulta siguen a la mano." : "Abre turno si la politica lo pide; la Tablet conserva venta local."
+      helper: snapshot.shift.state === "open" ? "Vender queda como acción principal; soporte y consulta siguen a la mano." : "Abre turno si la política lo pide; la Tablet conserva venta local."
     };
   }
   if (stage === "consulta") {
     return {
-      label: "Consulta rapida",
-      helper: "Catalogo y existencias se revisan sin convertir Tablet en backoffice."
+      label: "Consulta rápida",
+      helper: "Catálogo y existencias se revisan sin convertir Tablet en backoffice."
     };
   }
   if (stage === "soporte") {
@@ -87,7 +87,7 @@ export function getTabletFlowCopy(stage: TabletFlowStage, snapshot: TabletRuntim
     };
   }
   return {
-    label: "Operacion diaria",
+    label: "Operación diaria",
     helper: "Turno, tickets y venta quedan visibles en todo momento."
   };
 }

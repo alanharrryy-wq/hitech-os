@@ -43,8 +43,7 @@ export function InventoryWorkspaceView({ view, workspace }: { view: InventoryWor
             <p>{copyFor(view)}</p>
           </div>
           <div className="inline-list">
-            <span className="chip">Fuente: {workspace.meta.source}</span>
-            <span className="chip">Confianza: {workspace.meta.confidence}</span>
+            <span className="chip">Estado: {workspace.meta.persistence === "available" ? "datos disponibles" : "sin datos disponibles"}</span>
             <span className="chip">Actualizado: {workspace.meta.generatedAt}</span>
           </div>
         </div>

@@ -1,6 +1,24 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+# BEGIN PRISMA BLACK-BOX i02 R5 INCIDENT ENGINE ROUTER
+def _prisma_black_box_i02_r5_incident_engine_router():
+    import os as _prisma_r5_os
+    import sys as _prisma_r5_sys
+    if _prisma_r5_os.environ.get("PRISMA_BB_I02_R5_ROUTER_BYPASS") == "1":
+        return
+    if len(_prisma_r5_sys.argv) > 1 and _prisma_r5_sys.argv[1] in {"incidents", "incident"}:
+        _prisma_r5_os.environ["PRISMA_BB_I02_R5_ROUTER_BYPASS"] = "1"
+        from pathlib import Path as _prisma_r5_Path
+        _prisma_r5_tool_dir = _prisma_r5_Path(__file__).resolve().parent
+        if str(_prisma_r5_tool_dir) not in _prisma_r5_sys.path:
+            _prisma_r5_sys.path.insert(0, str(_prisma_r5_tool_dir))
+        from black_box_incident_engine import main as _prisma_r5_main
+        raise SystemExit(_prisma_r5_main(_prisma_r5_sys.argv[1:]))
+_prisma_black_box_i02_r5_incident_engine_router()
+# END PRISMA BLACK-BOX i02 R5 INCIDENT ENGINE ROUTER
+
+
 # >>> PRISMA BLACK-BOX i02 R4.2b STATUS CONSENSUS REPORT FIX >>>
 def _prisma_black_box_i02_r4_2b_status_consensus_bootstrap():
     import os as _prisma_os
@@ -61,7 +79,7 @@ DEFAULT_ROOT = Path(os.environ.get("PRISMA_ROOT", r"F:\repos\hitech-os\apps\term
 DEFAULT_OUT = Path(os.environ.get("PRISMA_BLACK_BOX_OUT", r"F:\descargasf"))
 
 APPS: dict[str, dict[str, Any]] = {
-    "tablet": {"rel": "products/tablet/app", "port": 3120, "url": "http://127.0.0.1:3120/prisma-dark-pos-reference", "script": "dev"},
+    "tablet": {"rel": "products/tablet/app", "port": 3120, "url": "http://127.0.0.1:3120/", "script": "dev"},
     "pc": {"rel": "products/pc/app", "port": 3130, "url": "http://127.0.0.1:3130/", "script": "dev"},
     "mobile": {"rel": "products/mobile/app", "port": 3140, "url": "http://127.0.0.1:3140/prisma-app", "script": "dev"},
 }
@@ -1211,3 +1229,4 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

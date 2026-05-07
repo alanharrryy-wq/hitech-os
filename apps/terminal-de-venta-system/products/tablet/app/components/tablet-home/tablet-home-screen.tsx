@@ -24,12 +24,12 @@ export function TabletHomeScreen({ snapshot }: Props) {
   ];
 
   const toolCards = [
-    { href: "/catalog", title: "Catalogo", description: "Productos disponibles para venta local.", label: "Abrir" },
-    { href: "/stock", title: "Existencias", description: "Stock operativo, quiebres y senales de reabasto.", label: "Revisar" },
+    { href: "/catalog", title: "Catálogo", description: "Productos disponibles para venta local.", label: "Abrir" },
+    { href: "/stock", title: "Existencias", description: "Stock operativo, quiebres y señales de reabasto.", label: "Revisar" },
     { href: "/sync", title: "Pendientes", description: pending > 0 ? `${pending} eventos por revisar.` : "Sin pendientes visibles.", label: pending > 0 ? "Atender" : "Ver" },
-    { href: "/offline", title: "Offline / Export", description: "Auditoria local, exportacion y respaldo operativo.", label: "Abrir" },
-    { href: "/release-gate", title: "Estado del sistema", description: "Revision de flujos criticos antes de liberar.", label: "Ver" },
-    { href: "/settings/license", title: "Licencia", description: "Estado de permisos y activacion de la Tablet.", label: "Revisar" }
+    { href: "/offline", title: "Sin conexión / Exportar", description: "Auditoría local, exportación y respaldo operativo.", label: "Abrir" },
+    { href: "/release-gate", title: "Estado del sistema", description: "Revisión de flujos críticos antes de liberar.", label: "Ver" },
+    { href: "/settings/license", title: "Licencia", description: "Estado de permisos y activación de la Tablet.", label: "Revisar" }
   ];
 
   return (
@@ -46,7 +46,7 @@ export function TabletHomeScreen({ snapshot }: Props) {
             <a className={styles.secondaryButton} href={vm.hero.secondaryHref}>{vm.hero.secondaryLabel}</a>
           </div>
         </div>
-        <div className={styles.heroAside} aria-label="Preparacion de turno">
+        <div className={styles.heroAside} aria-label="Preparación de turno">
           {vm.checklist.map((item) => (
             <div className={styles.readinessItem} key={item.label}>
               <span>
@@ -59,7 +59,7 @@ export function TabletHomeScreen({ snapshot }: Props) {
         </div>
       </section>
 
-      <section className={styles.metricGrid} aria-label="Metricas rapidas">
+      <section className={styles.metricGrid} aria-label="Métricas rápidas">
         {vm.metrics.map((metric) => (
           <article className={styles.metricCard} key={metric.label} data-tone={metric.tone}>
             <span>{metric.label}</span>

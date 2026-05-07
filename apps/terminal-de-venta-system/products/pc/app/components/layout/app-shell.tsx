@@ -23,9 +23,9 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
   const nav = getNavigation();
   const current =
     currentPath === "/"
-      ? { title: pcMessages.shell.home, description: pcMessages.home.subtitle }
+      ? { title: pcMessages.shell.home, description: "Qué puede hacer PRISMA" }
     : currentPath === "/dashboard"
-        ? { title: "Vista general", description: "KPIs y sincronización" }
+        ? { title: "Vista general", description: "KPIs y operación" }
         : nav.find((item) => item.href === currentPath);
   const controlItems = nav.filter((item) => item.navGroup === "control");
   const utilityItems = nav.filter((item) => item.navGroup === "operation");
@@ -34,14 +34,11 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
     <div className="shell" data-prisma-component="AppShell" data-prisma-product="pc">
       <a className="skip-link" href="#prisma-main-content">Saltar al contenido</a>
       <aside className="sidebar" data-prisma-component="Sidebar" aria-label="Navegación principal PC">
-        <div className="brand-block" data-prisma-component="BrandBlock">
+        <div className="brand-block prisma-brand-image-card" data-prisma-component="BrandBlock">
           <div className="brand-row">
-            <span className="brand-mark prisma-mark" aria-hidden="true">
-              <span className="prisma-shard" />
-            </span>
+            <img className="brand-logo-img" src="/brand/prisma-logo-official.png" alt="PRISMA" />
             <div>
-              <div className="brand">PRISMA</div>
-              <div className="subtle">Panel administrativo de inventario</div>
+              <div className="subtle">Sistema inteligente de gestión operativa</div>
             </div>
           </div>
         </div>
@@ -50,8 +47,8 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
         <section className="sidebar-panel sidebar-nav-panel" data-prisma-component="SecondaryActionCard">
           <p className="nav-group-title">Navegación</p>
           <nav className="nav">
-            <NavLink href="/" title={pcMessages.shell.home} description="vista general" active={currentPath === "/"} icon={NAV_ICONS["/"]} />
-            <NavLink href="/dashboard" title="Vista general" description="KPIs y sincronización" active={currentPath === "/dashboard"} icon={NAV_ICONS["/dashboard"]} />
+            <NavLink href="/" title={pcMessages.shell.home} description="Qué puede hacer PRISMA" active={currentPath === "/"} icon={NAV_ICONS["/"]} />
+            <NavLink href="/dashboard" title="Vista general" description="KPIs y operación" active={currentPath === "/dashboard"} icon={NAV_ICONS["/dashboard"]} />
             {controlItems.map((item) => (
               <NavLink
                 key={item.href}

@@ -3591,3 +3591,49 @@ html[data-layer-profile="perf"] .productAura {
   }
 }
 /* PRISMA_TABLET_POS_DENSITY_SEARCH_CARDS_05C::END */
+
+/* PRISMA_TABLET_PACKSHOT_ENGINE_03_SIZE_AND_SHELF::START
+   Scope: Tablet POS product media only.
+   Fixes: water packshots were rendered too small and the default shelf showed repeated water cards.
+   Product logic, sale flow, API, DB and sync remain untouched. */
+.productImageStage[data-prisma-packshot-host] {
+  min-height: 176px;
+}
+
+.productPackshot_water {
+  max-height: 178px;
+  max-width: 92%;
+  transform: translateY(-9px) scale(1.12);
+  clip-path: inset(2% 22% 2% 22% round 10px);
+}
+
+.productPackshot_bottle:not(.productPackshot_water) {
+  max-height: 166px;
+  max-width: 72%;
+  transform: translateY(-8px) scale(1.06);
+}
+
+.productCard:hover .productPackshot_water,
+.productCard:focus-within .productPackshot_water {
+  transform: translateY(-12px) scale(1.15);
+}
+
+.productCard:hover .productPackshot_bottle:not(.productPackshot_water),
+.productCard:focus-within .productPackshot_bottle:not(.productPackshot_water) {
+  transform: translateY(-11px) scale(1.09);
+}
+
+.cartThumbPackshot_water img {
+  max-height: 64px;
+  max-width: 92%;
+  transform: translateY(-4px) scale(1.16);
+  clip-path: inset(2% 22% 2% 22% round 7px);
+}
+
+.cartThumbPackshot_bottle:not(.cartThumbPackshot_water) img {
+  max-height: 60px;
+  max-width: 72%;
+  transform: translateY(-3px) scale(1.08);
+}
+/* PRISMA_TABLET_PACKSHOT_ENGINE_03_SIZE_AND_SHELF::END */
+

@@ -23,9 +23,12 @@ const checks = [
       "Copiar enlace",
       "Ves ambas opciones porque abriste un enlace de PRISMA desde WhatsApp.",
       "Abrir PRISMA",
-      "Si ya la tienes instalada"
+      "Si ya la tienes instalada",
+      "WhatsApp no instala PWAs directo",
+      "iPhone solo instala PWAs desde Safari",
+      "Chrome todavia no entrego el instalador automatico"
     ],
-    mustNotInclude: ["🤖", "🍏", "☘️"]
+    mustNotInclude: ["🤖", "🍏", "☘️", "tryOpenAndroidChrome", "window.location.assign(installUrl)"]
   },
   {
     file: "src/components/prisma-app/prisma-mobile-pwa.module.css",
@@ -35,10 +38,17 @@ const checks = [
       ".platformArrow",
       ".androidGlyph",
       ".appleGlyph",
+      ".installGuide",
+      ".guideSteps",
       "backdrop-filter",
       "PRISMA"
     ],
     mustNotInclude: []
+  },
+  {
+    file: "src/lib/prisma-app/prisma-mobile-pwa-client.ts",
+    mustInclude: ["isAndroidChrome", "isIOSSafari", "currentInstallUrl"],
+    mustNotInclude: ["androidChromeIntentUrl", "package=com.android.chrome"]
   },
   {
     file: "src/lib/prisma-app/mobile-data-plane/data-readiness.ts",
@@ -47,7 +57,7 @@ const checks = [
   },
   {
     file: "public/prisma-mobile-sw.js",
-    mustInclude: ["prisma-mobile-pwa-v30-install-landing-black", "prisma_whatsapp_install_icon.png"],
+    mustInclude: ["v38-real-install-flow", "prisma_whatsapp_install_icon.png"],
     mustNotInclude: []
   },
   {

@@ -104,7 +104,7 @@ export async function getCatalogWorkspace(input: Partial<Record<keyof CatalogFil
         confidence: "blocked",
         persistence: "unavailable",
         generatedAt,
-        warnings: [`Persistencia no disponible: ${message}`]
+        warnings: ["No se pudo cargar la información. Revisa la sincronización o la base local."]
       }
     };
   }

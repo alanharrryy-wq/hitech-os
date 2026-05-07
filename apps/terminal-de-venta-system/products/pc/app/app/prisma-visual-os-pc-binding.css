@@ -655,3 +655,70 @@ html[data-prisma-skin="light"][data-prisma-surface="pc-backoffice"] :is(.max-w-3
   }
 }
 /* PRISMA_PC_LIGHT_BACKOFFICE_01 END */
+
+/* PRISMA_PC_PRODUCT_CLEANUP_01_VISIBLE_RELEASE_HARDENING
+   Capa final de saneamiento visual para PC app.
+   Quita scrollbar amarillo heredado, reduce particiones raras y protege textos largos. */
+:root {
+  scrollbar-color: rgba(83, 119, 185, 0.32) transparent;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(83, 119, 185, 0.32) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(83,119,185,0.32), rgba(83,119,185,0.18)) !important;
+  border: 2px solid transparent !important;
+  border-radius: 999px !important;
+  background-clip: padding-box !important;
+}
+
+.sidebar,
+.sidebar-main-scroll,
+.app-sidebar,
+nav[aria-label="Navegación principal"] {
+  scrollbar-gutter: auto !important;
+}
+
+.sidebar::before,
+.sidebar::after,
+.sidebar-panel::before,
+.sidebar-panel::after {
+  pointer-events: none !important;
+}
+
+.nav-link,
+.sidebar a,
+.sidebar button,
+.card,
+.metric-card,
+.hero,
+.alert-strip {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.metric,
+.metric-card .metric,
+.card .metric {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.04;
+}
+
+.alert-strip .subtle {
+  color: var(--prisma-text-secondary, #53617a) !important;
+}
+

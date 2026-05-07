@@ -182,7 +182,7 @@ export async function getOperationWorkspace(mode: OperationMode): Promise<Operat
       replenishment: [],
       kpis: [],
       alerts: [],
-      meta: { source: "fallback_empty", persistence: "unavailable", confidence: "blocked", generatedAt, warnings: [`Persistencia no disponible: ${message}`] }
+      meta: { source: "fallback_empty", persistence: "unavailable", confidence: "blocked", generatedAt, warnings: ["No se pudo cargar la información. Revisa la sincronización o la base local."] }
     };
   }
 }

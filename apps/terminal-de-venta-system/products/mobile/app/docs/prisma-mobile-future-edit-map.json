@@ -1,0 +1,130 @@
+{
+  "schema": "prisma-mobile-future-edit-map.v1",
+  "generated_at": "2026-05-06T17:17:01.3998962-06:00",
+  "visual_system": "PRISMA Crystal Command Mobile",
+  "zones": [
+    {
+      "zone": "mobile-app-shell",
+      "files": [
+        "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\PrismaMobileDashboard.tsx"
+      ],
+      "purpose": "Main Mobile/PWA shell boundary.",
+      "safe_edits": ["Spacing", "background tone", "shell composition"],
+      "forbidden_edits": ["Snapshot loading contract", "cache behavior", "API routes"],
+      "validation": ["typecheck", "build", "zone verifier"]
+    },
+    {
+      "zone": "mobile-brand-header",
+      "files": [
+        "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\PrismaMobileDashboard.tsx",
+        "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\prisma-mobile-dashboard.module.css"
+      ],
+      "purpose": "Compact PRISMA identity and health chip.",
+      "safe_edits": ["Logo dimensions", "header density", "subtitle presentation"],
+      "forbidden_edits": ["Fake business data", "PWA manifest icon contract"],
+      "validation": ["390x844 screenshot", "no clipped logo"]
+    },
+    {
+      "zone": "mobile-command-card",
+      "files": [
+        "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\PrismaMobileDashboard.tsx",
+        "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\PrismaMobileCommandCenter.tsx",
+        "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\prisma-mobile-dashboard.module.css"
+      ],
+      "purpose": "Owner command center and Estado del negocio card.",
+      "safe_edits": ["Card surface", "metric hierarchy", "compact density"],
+      "forbidden_edits": ["Decision ranking logic", "data quality calculation"],
+      "validation": ["build", "visual screenshots"]
+    },
+    {
+      "zone": "mobile-kpi-grid",
+      "files": [
+        "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\PrismaMobileDashboard.tsx",
+        "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\PrismaMobileMetricCard.tsx",
+        "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\prisma-mobile-dashboard.module.css"
+      ],
+      "purpose": "KPI layout and repeated KPI card style.",
+      "safe_edits": ["Grid columns", "value sizing", "status accents"],
+      "forbidden_edits": ["KPI calculations", "API payload schema"],
+      "validation": ["no clipped KPI cards", "no horizontal overflow"]
+    },
+    {
+      "zone": "mobile-review-first",
+      "files": [
+        "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\PrismaMobilePanels.tsx",
+        "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\PrismaMobileCommandCenter.tsx"
+      ],
+      "purpose": "Prioritized Que revisar primero surfaces.",
+      "safe_edits": ["Presentation order", "chips", "spacing"],
+      "forbidden_edits": ["Priority scoring", "owners", "business rules"],
+      "validation": ["zone verifier", "dashboard screenshot"]
+    },
+    {
+      "zone": "mobile-pwa-install",
+      "files": [
+        "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\PrismaMobilePwaInstallCard.tsx",
+        "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\PrismaMobilePwaInstallPage.tsx",
+        "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\prisma-mobile-pwa.module.css"
+      ],
+      "purpose": "Android/iPhone PWA install surface.",
+      "safe_edits": ["Instruction layout", "button styling", "guide copy when behavior is preserved"],
+      "forbidden_edits": ["Service worker", "manifest", "beforeinstallprompt handlers", "standalone redirect behavior"],
+      "validation": ["install route screenshot", "PWA install verifiers"]
+    },
+    {
+      "zone": "mobile-states",
+      "files": [
+        "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\PrismaMobileDashboard.tsx",
+        "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\PrismaMobilePremiumNavigator.tsx",
+        "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\prisma-mobile-dashboard.module.css"
+      ],
+      "purpose": "Loading, ready, empty, error, offline, sync, and success visibility.",
+      "safe_edits": ["Visible styling", "copy density", "state chip colors"],
+      "forbidden_edits": ["Suppressing errors", "fake success", "sync/outbox contracts"],
+      "validation": ["zone verifier", "manual state review"]
+    }
+  ],
+  "css_sections": [
+    {
+      "file": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\app\\prisma-mobile-pulse-binding.css",
+      "sections": [
+        "PRISMA Crystal Command Mobile: app binding"
+      ]
+    },
+    {
+      "file": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\prisma-mobile-dashboard.module.css",
+      "sections": [
+        "PRISMA Crystal Command Mobile: tokens",
+        "PRISMA Crystal Command Mobile: shell",
+        "PRISMA Crystal Command Mobile: brand header",
+        "PRISMA Crystal Command Mobile: command card",
+        "PRISMA Crystal Command Mobile: KPI grid",
+        "PRISMA Crystal Command Mobile: review-first panel",
+        "PRISMA Crystal Command Mobile: PWA install",
+        "PRISMA Crystal Command Mobile: states",
+        "PRISMA Crystal Command Mobile: responsive"
+      ]
+    },
+    {
+      "file": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\prisma-mobile-pwa.module.css",
+      "sections": [
+        "PRISMA Crystal Command Mobile: PWA install",
+        "PRISMA Crystal Command Mobile: states",
+        "PRISMA Crystal Command Mobile: responsive"
+      ]
+    }
+  ],
+  "routes_to_check": [
+    "/",
+    "/prisma-app",
+    "/prisma-app/install?from=whatsapp",
+    "/prisma-app/offline"
+  ],
+  "public_urls_to_check": [
+    "https://tablet.hitechrts.com/",
+    "https://pc.hitechrts.com/",
+    "https://prisma.hitechrts.com/",
+    "https://prisma.hitechrts.com/prisma-app/install?from=whatsapp",
+    "https://eit.hitechrts.com/"
+  ]
+}

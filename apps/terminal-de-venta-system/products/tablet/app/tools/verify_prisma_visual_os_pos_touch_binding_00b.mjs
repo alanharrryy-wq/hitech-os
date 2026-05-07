@@ -35,12 +35,13 @@ const shellTsx = read(shellTsxPath);
 const shellCss = read(shellCssPath);
 const pkg = JSON.parse(read(pkgPath));
 
-must(posScreen.includes("PRISMA_VISUAL_OS_POS_TOUCH_BINDING_00B"), "PosScreen declara hook 00B");
+must(posScreen.includes("PRISMA_VISUAL_OS_POS_TOUCH_BINDING_00B"), "PosScreen conserva hook 00B");
 must(posScreen.includes('visualSurface="tablet-pos"'), "Shell recibe visualSurface tablet-pos");
-must(posScreen.includes('visualPreset="pos-touch-00b"'), "Shell recibe visualPreset pos-touch-00b");
+must(posScreen.includes('visualPreset="PRISMA_LIGHT_OPERATIONAL_POS"') || posScreen.includes('visualPreset="pos-touch-00b"'), "Shell recibe preset visual actual o legacy");
 must(posScreen.includes('data-prisma-vos="00B"'), "Workspace declara data-prisma-vos 00B");
 must(posScreen.includes('data-prisma-vsurface="tablet-pos"'), "Workspace declara superficie tablet-pos");
 must(posScreen.includes('data-prisma-vpreset="POS_TOUCH"'), "Workspace declara preset POS_TOUCH");
+must(posScreen.includes('data-prisma-zone="tablet-pos-root"'), "Workspace declara zona gobernada POS root");
 must(posScreen.includes("resultCount={visibleProducts.length}"), "Search recibe conteo visible");
 must(posScreen.includes("activeCount={activeProductCount}"), "Search recibe conteo activo");
 must(posScreen.includes("state={productState}"), "Search recibe estado operativo");

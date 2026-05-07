@@ -244,7 +244,7 @@ Puertos usados para desarrollo local:
 
 | Producto | Puerto | Health / ruta esperada |
 |---|---:|---|
-| Tablet | `3120` | `http://127.0.0.1:3120/prisma-dark-pos-reference` |
+| Tablet | `3120` | `http://127.0.0.1:3120/` |
 | PC | `3130` | `http://127.0.0.1:3130/` |
 
 Cuando se use `pnpm`, preferir ejecución con raíz explícita, no depender del directorio actual:
@@ -888,3 +888,4 @@ Los paquetes entran gobernados, verificables y reversibles.
 ```
 
 Ese es el norte. Todo lo demás es decoración, y la decoración sin contrato termina siendo foquito navideño pegado con cinta en tablero eléctrico.
+

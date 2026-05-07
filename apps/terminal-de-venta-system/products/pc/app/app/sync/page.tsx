@@ -1,9 +1,9 @@
-import { SyncReleaseWorkspace } from "@components/sync/sync-release-workspace";
-import { getSyncReleaseWorkspace } from "@/server/services/sync-release.service";
+import { SyncReleaseWorkspace } from "../../components/sync/sync-release-workspace";
+import { getTriDbStatusCard } from "../../src/server/services/tri-db-status.service";
 
 export const dynamic = "force-dynamic";
 
 export default async function SyncPage() {
-  const workspace = await getSyncReleaseWorkspace();
-  return <SyncReleaseWorkspace workspace={workspace} />;
+  const triDbStatus = await getTriDbStatusCard();
+  return <SyncReleaseWorkspace triDbStatus={triDbStatus} />;
 }

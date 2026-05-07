@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
 import { catalogVisibleError } from "@/lib/catalog/product-visible-errors";
 import type { CatalogProduct, CatalogProductFormState } from "@/lib/catalog/product-form-state";
@@ -18,6 +18,21 @@ export function CatalogScreen() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<unknown>(null);
   const [notice, setNotice] = useState("");
+
+  const drawerDockRef = useRef<HTMLDivElement>(null);
+
+  function beginEditProduct(product: CatalogProduct) {
+    setForm(productToForm(product));
+    setNotice(`Editando ${product.name}. Revisa el panel derecho y guarda cambios.`);
+    setError(null);
+
+    window.requestAnimationFrame(() => {
+      drawerDockRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+      const firstInput = drawerDockRef.current?.querySelector<HTMLInputElement>("[data-catalog-field='name']");
+      firstInput?.focus({ preventScroll: true });
+      firstInput?.select();
+    });
+  }
 
   const activeCount = useMemo(() => products.filter((product) => product.isActive).length, [products]);
 
@@ -86,16 +101,18 @@ export function CatalogScreen() {
           {notice ? <div className={styles.notice} role="status">{notice}</div> : null}
           {error ? <div className={styles.errorBox} role="alert">{catalogVisibleError(error)}</div> : null}
 
-          <CatalogProductTable products={products} selectedId={form.id} onEdit={(product) => { setForm(productToForm(product)); setNotice(""); setError(null); }} />
+          <CatalogProductTable products={products} selectedId={form.id} onEdit={beginEditProduct} />
         </section>
 
-        <CatalogProductDrawer
-          form={form}
-          saving={saving}
-          onChange={setForm}
-          onSubmit={() => void saveProduct()}
-          onCancelEdit={() => { setForm(emptyProductForm); setNotice(""); setError(null); }}
-        />
+        <div ref={drawerDockRef} className={styles.drawerDock} data-editing={form.id ? "true" : "false"}>
+          <CatalogProductDrawer
+            form={form}
+            saving={saving}
+            onChange={setForm}
+            onSubmit={() => void saveProduct()}
+            onCancelEdit={() => { setForm(emptyProductForm); setNotice(""); setError(null); }}
+          />
+        </div>
       </div>
     </PrismaTabletShellUnified>
   );

@@ -29,7 +29,7 @@ from typing import Any, Dict, List, Optional, Tuple
 TOOL_NAME = "black_box_status_consensus"
 VERSION = "0.1.0"
 BYPASS_ENV = "PRISMA_BLACK_BOX_I02_R4_2_BYPASS"
-DEFAULT_TABLET_URL = "http://127.0.0.1:3120/prisma-dark-pos-reference"
+DEFAULT_TABLET_URL = "http://127.0.0.1:3120/"
 DEFAULT_PC_URL = "http://127.0.0.1:3130/"
 DEFAULT_MOBILE_URL = "http://127.0.0.1:3140/prisma-app"
 
@@ -434,3 +434,4 @@ def run_status_consensus_cli(argv: List[str], black_box_py: Optional[Path] = Non
         sys.stderr.write(f"{type(exc).__name__}: {exc}\n")
         sys.stderr.write(traceback.format_exc())
         return 2
+

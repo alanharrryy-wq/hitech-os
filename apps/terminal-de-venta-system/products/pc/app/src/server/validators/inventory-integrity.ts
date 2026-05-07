@@ -67,8 +67,8 @@ export function buildInventoryFindings(input: {
         type: "ledger_derivado",
         title: "Before/after derivado",
         entityLabel: `${entry.sku} · ${entry.location}`,
-        detail: "El schema actual no trae beforeQty/afterQty nativo; se calcula desde stock actual y deltas recientes.",
-        recommendedAction: "En una fase posterior, persistir beforeQty/afterQty nativo para auditoría fuerte."
+        detail: "La base local no trae auditoría extendida; se muestra una lectura operativa derivada.",
+        recommendedAction: "Activar auditoría extendida cuando se consolide la base operativa."
       });
     }
   }

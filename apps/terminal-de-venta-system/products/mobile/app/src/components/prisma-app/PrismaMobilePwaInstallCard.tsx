@@ -8,13 +8,13 @@ import {
   currentAppUrl,
   currentInstallUrl,
   isAndroidDevice,
+  isAndroidChrome,
   isChromiumInstallCapable,
   isIOSSafari,
   isIOSDevice,
   isSecurePwaContext,
   isStandaloneDisplay,
-  isWhatsAppWebView,
-  tryOpenAndroidChrome
+  isWhatsAppWebView
 } from "@/lib/prisma-app/prisma-mobile-pwa-client";
 import styles from "./prisma-mobile-pwa.module.css";
 
@@ -28,9 +28,57 @@ type PlatformChoice = "android" | "ios" | null;
 function platformHint(status: PrismaMobilePwaInstallStatus, choice: PlatformChoice) {
   if (status === "installed") return "PRISMA ya está instalada. Abriendo tablero...";
   if (choice === "android") return "Android listo para instalar PRISMA.";
-  if (choice === "ios") return "iPhone listo: abre en Safari y agrega a inicio.";
+  if (choice === "ios") return "iPhone listo: usa Safari y Agregar a pantalla de inicio.";
   if (status === "unsupported") return "Abre PRISMA desde un link seguro HTTPS para instalar.";
   return "Elige tu dispositivo para instalar PRISMA";
+}
+
+function androidGuideSteps(androidChrome: boolean, whatsapp: boolean) {
+  if (androidChrome) {
+    return [
+      "Si aparece el cuadro de Chrome, toca Instalar.",
+      "Si no aparece, abre el menu de Chrome y toca Instalar app.",
+      "Cuando termine, abre PRISMA desde el icono en tu pantalla principal."
+    ];
+  }
+
+  if (whatsapp) {
+    return [
+      "WhatsApp no instala PWAs directo.",
+      "Abre el menu de WhatsApp y toca Abrir en navegador o Abrir en Chrome.",
+      "Ya en Chrome, toca Android de nuevo o usa el menu de Chrome > Instalar app."
+    ];
+  }
+
+  return [
+    "Abre este enlace en Chrome Android.",
+    "Cuando Chrome muestre el cuadro, toca Instalar.",
+    "Si no aparece el cuadro, usa el menu de Chrome > Instalar app."
+  ];
+}
+
+function iosGuideSteps(iosSafari: boolean, whatsapp: boolean) {
+  if (iosSafari) {
+    return [
+      "Toca Compartir en la barra de Safari.",
+      "Elige Agregar a pantalla de inicio.",
+      "Confirma Agregar y abre PRISMA desde el icono nuevo."
+    ];
+  }
+
+  if (whatsapp) {
+    return [
+      "WhatsApp no puede instalar PWAs en iPhone.",
+      "Copia el enlace o usa Compartir para abrirlo en Safari.",
+      "En Safari: Compartir > Agregar a pantalla de inicio."
+    ];
+  }
+
+  return [
+    "Abre este enlace en Safari en tu iPhone.",
+    "Toca Compartir.",
+    "Elige Agregar a pantalla de inicio."
+  ];
 }
 
 export function PrismaMobilePwaInstallCard({ compact = false }: { compact?: boolean }) {
@@ -41,6 +89,7 @@ export function PrismaMobilePwaInstallCard({ compact = false }: { compact?: bool
   const [installUrl, setInstallUrl] = useState("/prisma-app/install?from=whatsapp");
   const [appUrl, setAppUrl] = useState("/prisma-app");
   const [androidDevice, setAndroidDevice] = useState(false);
+  const [androidChrome, setAndroidChrome] = useState(false);
   const [iosDevice, setIosDevice] = useState(false);
   const [iosSafari, setIosSafari] = useState(false);
   const [whatsapp, setWhatsapp] = useState(false);
@@ -49,6 +98,7 @@ export function PrismaMobilePwaInstallCard({ compact = false }: { compact?: bool
     setInstallUrl(currentInstallUrl());
     setAppUrl(currentAppUrl());
     setAndroidDevice(isAndroidDevice());
+    setAndroidChrome(isAndroidChrome());
     setIosDevice(isIOSDevice());
     setIosSafari(isIOSSafari());
     setWhatsapp(isWhatsAppWebView());
@@ -114,14 +164,20 @@ export function PrismaMobilePwaInstallCard({ compact = false }: { compact?: bool
       return;
     }
 
+    if (androidChrome) {
+      setStatus("browser-menu");
+      setMessage("Chrome todavia no entrego el instalador automatico. Usa el menu de Chrome y toca Instalar app.");
+      return;
+    }
+
     if (androidDevice || whatsapp) {
-      setMessage("Abriendo Chrome para instalar PRISMA...");
-      tryOpenAndroidChrome(installUrl);
+      setStatus("browser-menu");
+      setMessage("Para instalar una PWA en Android, abre este enlace en Chrome. Evita el salto automatico que mandaba a una pagina rara.");
       return;
     }
 
     setMessage("Abre este link en Chrome Android para completar la instalación.");
-  }, [androidDevice, installUrl, promptEvent, whatsapp]);
+  }, [androidChrome, androidDevice, promptEvent, whatsapp]);
 
   const installIos = useCallback(() => {
     setChoice("ios");
@@ -139,8 +195,7 @@ export function PrismaMobilePwaInstallCard({ compact = false }: { compact?: bool
     }
 
     if (iosDevice || whatsapp) {
-      setMessage("Abre este link en Safari y agrega PRISMA a tu pantalla de inicio.");
-      window.location.assign(installUrl);
+      setMessage("iPhone solo instala PWAs desde Safari. Copia el enlace, abre Safari y usa Compartir > Agregar a pantalla de inicio.");
       return;
     }
 
@@ -157,6 +212,7 @@ export function PrismaMobilePwaInstallCard({ compact = false }: { compact?: bool
       className={compact ? styles.compactCard : styles.installCard}
       aria-label="Selector de instalación PRISMA App"
       data-prisma-pwa-status={status}
+      data-prisma-zone="mobile-pwa-install"
     >
       <p className={styles.selectorTopline} aria-live="polite">
         <span>{platformHint(status, choice)}</span>
@@ -193,6 +249,17 @@ export function PrismaMobilePwaInstallCard({ compact = false }: { compact?: bool
       </p>
 
       {message ? <p className={styles.minimalMessage}>{message}</p> : null}
+
+      {choice ? (
+        <div className={styles.installGuide} data-platform-guide={choice}>
+          <strong>{choice === "android" ? "Instalacion Android PWA" : "Instalacion iPhone PWA"}</strong>
+          <ol className={styles.guideSteps}>
+            {(choice === "android" ? androidGuideSteps(androidChrome, whatsapp) : iosGuideSteps(iosSafari, whatsapp)).map((step) => (
+              <li key={step}>{step}</li>
+            ))}
+          </ol>
+        </div>
+      ) : null}
 
       <div className={styles.secondaryInstallActions} aria-label="Acciones alternativas de instalación">
         <button type="button" className={styles.copyLinkButton} onClick={() => void copyInstallUrl()}>

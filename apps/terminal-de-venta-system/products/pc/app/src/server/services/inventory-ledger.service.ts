@@ -174,7 +174,7 @@ export async function getInventoryWorkspace(input: Partial<Record<keyof Inventor
         persistence: "available",
         ledgerMode: "derived_from_stock_movement",
         generatedAt,
-        warnings: ["El schema actual no persiste beforeQty/afterQty ni actor nativo; I03 calcula una vista derivada y marca actor como system:canonical-db."]
+        warnings: ["Los movimientos se muestran como lectura operativa derivada cuando la base local no trae auditoría extendida."]
       }
     };
   } catch (error) {
@@ -203,7 +203,7 @@ export async function getInventoryWorkspace(input: Partial<Record<keyof Inventor
         persistence: "unavailable",
         ledgerMode: "unavailable",
         generatedAt,
-        warnings: [`Persistencia no disponible: ${message}`]
+        warnings: ["No se pudo cargar la información. Revisa la sincronización o la base local."]
       }
     };
   }

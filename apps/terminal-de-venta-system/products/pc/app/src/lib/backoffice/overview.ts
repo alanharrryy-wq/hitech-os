@@ -153,7 +153,7 @@ function unavailable(key: BackofficeModuleKey, error: unknown): BackofficeModule
     meta: {
       ...overview.meta,
       persistence: "unavailable",
-      warnings: [`Persistencia no disponible: ${message}`]
+      warnings: ["No se pudo cargar la información. Revisa la sincronización o la base local."]
     }
   };
 }

@@ -15,8 +15,23 @@ const checks = [
   },
   {
     file: "src/components/prisma-app/PrismaMobilePwaInstallCard.tsx",
-    mustInclude: ["Ves ambas opciones porque abriste un enlace de PRISMA desde WhatsApp", "Abrir PRISMA", "Si ya la tienes instalada", "ANDROID", "IPHONE", "Copiar enlace"],
-    mustNotInclude: []
+    mustInclude: [
+      "Ves ambas opciones porque abriste un enlace de PRISMA desde WhatsApp",
+      "Abrir PRISMA",
+      "Si ya la tienes instalada",
+      "ANDROID",
+      "IPHONE",
+      "Copiar enlace",
+      "WhatsApp no instala PWAs directo",
+      "iPhone solo instala PWAs desde Safari",
+      "isAndroidChrome"
+    ],
+    mustNotInclude: ["tryOpenAndroidChrome", "window.location.assign(installUrl)"]
+  },
+  {
+    file: "src/lib/prisma-app/prisma-mobile-pwa-client.ts",
+    mustInclude: ["isAndroidChrome", "isIOSSafari", "currentInstallUrl"],
+    mustNotInclude: ["androidChromeIntentUrl", "package=com.android.chrome"]
   },
   {
     file: "src/lib/prisma-app/mobile-data-plane/data-readiness.ts",

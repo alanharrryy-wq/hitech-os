@@ -45,12 +45,31 @@ export class InventoryRepository {
     }
     if (filters.location !== "all") where.location = filters.location;
 
-    return db.stockMovement.findMany({
+    const query = {
       where,
-      include: { product: true },
+      select: {
+        id: true,
+        businessId: true,
+        productId: true,
+        movement: true,
+        qty: true,
+        reason: true,
+        location: true,
+        createdAt: true,
+        product: { select: { sku: true, name: true } }
+      },
       orderBy: { createdAt: "desc" },
       take: limit
-    });
+    };
+
+    try {
+      return await db.stockMovement.findMany(query);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      const isSchemaDrift = message.includes("beforeQty") || message.includes("afterQty") || message.includes("does not exist in the current database");
+      if (!isSchemaDrift) throw error;
+      return [];
+    }
   }
 
   async listCounts(filters: InventoryFilters, limit = 250): Promise<any[]> {

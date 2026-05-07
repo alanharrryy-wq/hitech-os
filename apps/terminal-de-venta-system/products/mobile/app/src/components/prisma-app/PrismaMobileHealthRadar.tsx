@@ -42,6 +42,7 @@ export function PrismaMobileHealthRadar({ clientSnapshot }: Props) {
       className={styles.healthRadarPanel}
       aria-labelledby="prisma-mobile-health-radar-title"
       data-radar-tone={radar.tone}
+      data-prisma-zone="mobile-health-radar"
     >
       <div className={styles.healthRadarHeader}>
         <div>

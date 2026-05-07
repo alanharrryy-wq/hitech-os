@@ -471,3 +471,79 @@
     transform: none !important;
   }
 }
+
+/* PRISMA_TABLET_CATALOG_EDIT_DRAWER_FIX_01
+   Makes Edit visibly activate the right-side drawer instead of feeling like a dead button. */
+.drawerDock {
+  min-width: 0;
+  scroll-margin: 18px;
+}
+
+.drawerDock[data-editing="true"] .drawer {
+  border-color: var(--prisma-border-action);
+  box-shadow: var(--prisma-focus-ring-strong), var(--prisma-shadow-card-hover);
+}
+
+.drawerDock[data-editing="true"] .drawer::before {
+  content: "Producto en edición";
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 12px;
+  border: 1px solid var(--prisma-border-action);
+  border-radius: var(--prisma-radius-pill);
+  padding: 6px 10px;
+  color: var(--prisma-action-primary);
+  background: color-mix(in srgb, var(--prisma-action-primary) 10%, transparent);
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.formTitleLine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.editModeBadge,
+.createModeBadge {
+  display: inline-flex !important;
+  align-items: center;
+  width: fit-content;
+  border-radius: var(--prisma-radius-pill);
+  padding: 4px 8px;
+  font-size: 0.68rem !important;
+  font-weight: 950;
+  letter-spacing: 0.07em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.editModeBadge {
+  color: var(--prisma-action-primary);
+  border: 1px solid var(--prisma-border-action);
+  background: color-mix(in srgb, var(--prisma-action-primary) 10%, transparent);
+}
+
+.createModeBadge {
+  color: var(--prisma-text-secondary);
+  border: 1px solid var(--prisma-border-soft);
+  background: color-mix(in srgb, var(--prisma-text-muted) 10%, transparent);
+}
+
+.tableAction[aria-pressed="true"] {
+  color: white;
+  border-color: var(--prisma-action-primary);
+  background: linear-gradient(180deg, #4f97ff 0%, #0c63ea 100%);
+  box-shadow: var(--prisma-focus-ring-strong), 0 12px 26px rgba(10, 92, 215, 0.24);
+}
+
+[data-theme="prisma-light"] .tableAction[aria-pressed="true"],
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .tableAction[aria-pressed="true"] {
+  color: white;
+  border-color: var(--prisma-action-primary);
+  background: linear-gradient(180deg, #4f97ff 0%, #0c63ea 100%);
+}
+

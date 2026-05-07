@@ -5,7 +5,8 @@ import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
 import type { PosProduct, UiState } from "@/lib/pos/cart-state";
 import { formatMoney } from "@/lib/pos/cart-state";
 import { PosErrorBanner } from "./pos-error-banner";
-import { resolveProductPackshot } from "./pos-packshots";
+import { resolveNextPackshotSrc, resolveProductPackshot } from "./pos-packshots";
+import { usePrismaPackshotSkin } from "./use-prisma-packshot-skin";
 import styles from "./pos.module.css";
 
 /* PRISMA_POS_VISUAL_SURFACE_LOCK_260503
@@ -64,7 +65,8 @@ function stockCopy(product: PosProduct) {
 
 function ProductMedia({ product }: { product: PosProduct }) {
   const visual = productVisual(product);
-  const packshot = resolveProductPackshot(product.name, product.category, product.sku);
+  const packshotSkin = usePrismaPackshotSkin();
+  const packshot = resolveProductPackshot(product.name, product.category, product.sku, { skin: packshotSkin });
   const stageTone = productStageTone(product);
 
   return (
@@ -90,6 +92,11 @@ function ProductMedia({ product }: { product: PosProduct }) {
             loading="lazy"
             draggable={false}
             onError={(event) => {
+              const nextSrc = resolveNextPackshotSrc(event.currentTarget.src, packshot.fallbackSrcs);
+              if (nextSrc) {
+                event.currentTarget.src = nextSrc;
+                return;
+              }
               event.currentTarget.closest("[data-prisma-packshot-host]")?.setAttribute("data-packshot-error", "true");
             }}
             onLoad={(event) => {
@@ -135,7 +142,7 @@ export function PosProductList({
   }, [products]);
   if (state === "loading") {
     return (
-      <div className={styles.statePanel} data-prisma-component="EmptyState">
+      <div className={styles.statePanel} data-prisma-component="EmptyState" data-prisma-zone="tablet-pos-empty-state" data-prisma-state="loading" data-prisma-motion="reduced-motion-safe">
         <PrismaIcon name="package" size={24} />
         <strong>Cargando catálogo local</strong>
         <span>Consultando productos de la Tablet.</span>
@@ -145,7 +152,7 @@ export function PosProductList({
 
   if (state === "error") {
     return (
-      <div className={styles.statePanel} data-prisma-component="ErrorState">
+      <div className={styles.statePanel} data-prisma-component="ErrorState" data-prisma-zone="tablet-pos-error-state" data-prisma-state="error" data-prisma-motion="error-feedback">
         <PosErrorBanner error={error} />
       </div>
     );
@@ -153,7 +160,7 @@ export function PosProductList({
 
   if (!products.length) {
     return (
-      <div className={styles.statePanel} data-prisma-component="EmptyState">
+      <div className={styles.statePanel} data-prisma-component="EmptyState" data-prisma-zone="tablet-pos-empty-state" data-prisma-state="empty" data-prisma-motion="reduced-motion-safe">
         <PrismaIcon name="package" size={24} />
         <strong>No hay productos para mostrar</strong>
         <span>Busca por nombre, SKU o código de barras.</span>
@@ -163,7 +170,15 @@ export function PosProductList({
 
   return (
     <>
-      <section className={styles.productGrid} aria-label="Productos encontrados" data-prisma-component="ProductGrid">
+      <section
+        className={styles.productGrid}
+        aria-label="Productos encontrados"
+        data-prisma-component="ProductGrid"
+        data-prisma-zone="tablet-pos-product-grid"
+        data-prisma-role="operational-summary"
+        data-prisma-priority="primary"
+        data-prisma-qa="tablet-qa-product-card"
+      >
         {pageProducts.map((product) => {
           const stockState = productStockState(product);
           const disabled = !product.isActive || product.stockOnHand <= 0;
@@ -172,7 +187,13 @@ export function PosProductList({
               key={product.id}
               className={cx(styles.productCard, disabled && styles.productCardDisabled)}
               data-prisma-component="ProductCard"
+              data-prisma-zone="tablet-pos-product-card"
+              data-prisma-role="product-card"
+              data-prisma-priority="primary"
+              data-prisma-motion={disabled ? "reduced-motion-safe" : "hover-lift"}
+              data-prisma-qa="tablet-qa-product-card"
               data-prisma-stock-state={stockState}
+              data-prisma-state={disabled ? "disabled" : stockState}
             >
               <div className={styles.productCardTop}>
                 <span className={cx(styles.productStatusPill, stockState === "ok" && styles.productStatusOk, stockState === "low" && styles.productStatusWarn, (stockState === "empty" || stockState === "inactive") && styles.productStatusDanger)}>
@@ -202,6 +223,12 @@ export function PosProductList({
                   onClick={() => onAdd(product)}
                   disabled={disabled}
                   data-prisma-component="IconButton"
+                  data-prisma-zone="tablet-pos-product-add"
+                  data-prisma-role="primary-action"
+                  data-prisma-priority={disabled ? "passive" : "primary"}
+                  data-prisma-motion="press-feedback"
+                  data-prisma-state={disabled ? "disabled" : "ready"}
+                  data-prisma-qa={disabled ? "tablet-qa-disabled" : undefined}
                 >
                   <PrismaIcon name="plus" size={18} />
                   Agregar

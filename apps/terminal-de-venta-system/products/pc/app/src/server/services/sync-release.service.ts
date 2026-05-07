@@ -102,7 +102,7 @@ export async function getSyncReleaseWorkspace(): Promise<SyncReleaseWorkspace> {
       conflictCatalog: getSyncConflictCatalog(),
       recentEvents: [],
       sampleDryRunPayload: buildSyncDryRunSample(),
-      meta: { persistence: "unavailable", confidence: "blocked", generatedAt, warnings: [`Persistencia no disponible: ${message}`] }
+      meta: { persistence: "unavailable", confidence: "blocked", generatedAt, warnings: ["No se pudo cargar la información. Revisa la sincronización o la base local."] }
     };
   }
 }

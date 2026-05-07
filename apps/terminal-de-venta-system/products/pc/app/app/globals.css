@@ -1970,3 +1970,782 @@ html[data-theme="prisma-light"][data-prisma-surface="pc-backoffice"] .sidebar::-
   }
 }
 /* PRISMA_PC_LIGHT_PREMIUM_GLASS_20260506_v01C END */
+
+/* PRISMA_PC_PRODUCT_CLEANUP_01_VISIBLE_RELEASE_HARDENING
+   Capa final de saneamiento visual para PC app.
+   Quita scrollbar amarillo heredado, reduce particiones raras y protege textos largos. */
+:root {
+  scrollbar-color: rgba(83, 119, 185, 0.32) transparent;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(83, 119, 185, 0.32) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(83,119,185,0.32), rgba(83,119,185,0.18)) !important;
+  border: 2px solid transparent !important;
+  border-radius: 999px !important;
+  background-clip: padding-box !important;
+}
+
+.sidebar,
+.sidebar-main-scroll,
+.app-sidebar,
+nav[aria-label="Navegación principal"] {
+  scrollbar-gutter: auto !important;
+}
+
+.sidebar::before,
+.sidebar::after,
+.sidebar-panel::before,
+.sidebar-panel::after {
+  pointer-events: none !important;
+}
+
+.nav-link,
+.sidebar a,
+.sidebar button,
+.card,
+.metric-card,
+.hero,
+.alert-strip {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.metric,
+.metric-card .metric,
+.card .metric {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.04;
+}
+
+.alert-strip .subtle {
+  color: var(--prisma-text-secondary, #53617a) !important;
+}
+
+/* PRISMA_PC_HOME_BUSINESS_OVERVIEW_01_CLOSE_THE_DEAL_BRAND */
+.brand-logo-img {
+  width: min(184px, 86%);
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 26px;
+  object-fit: contain;
+  filter: drop-shadow(0 24px 42px rgba(26, 102, 255, 0.18));
+}
+
+.brand-block.prisma-brand-image-card {
+  min-height: 188px;
+  padding: 16px 12px;
+  background:
+    radial-gradient(circle at 50% 16%, rgba(55, 145, 255, 0.22), transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(239, 246, 255, 0.7));
+}
+
+.prisma-home {
+  display: grid;
+  gap: 26px;
+}
+
+.prisma-home-hero,
+.prisma-home-section,
+.prisma-home-final {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--prisma-border-soft);
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(62, 137, 255, 0.16), transparent 36%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(236, 244, 255, 0.84));
+  box-shadow: 0 26px 70px rgba(28, 64, 122, 0.10), inset 0 1px 0 rgba(255,255,255,0.85);
+}
+
+.prisma-home-hero {
+  min-height: 620px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(420px, 1fr);
+  align-items: center;
+  gap: 22px;
+  padding: clamp(30px, 4vw, 62px);
+}
+
+.prisma-home-hero-copy {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  align-content: center;
+  gap: 22px;
+}
+
+.prisma-home-kicker {
+  color: #0a46af;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.prisma-home h1,
+.prisma-home h2,
+.prisma-home h3,
+.prisma-home p {
+  margin: 0;
+}
+
+.prisma-home h1 {
+  max-width: 780px;
+  color: #060c27;
+  font-size: clamp(46px, 6.2vw, 92px);
+  line-height: 0.9;
+  letter-spacing: -0.075em;
+  font-weight: 950;
+}
+
+.prisma-home h2 {
+  color: #07112f;
+  font-size: clamp(34px, 4.4vw, 64px);
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+  font-weight: 930;
+}
+
+.prisma-home h3 {
+  color: #07112f;
+  font-size: 22px;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 880;
+}
+
+.prisma-home p {
+  max-width: 680px;
+  color: #405171;
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.prisma-home-hero-copy > p {
+  font-size: clamp(18px, 1.65vw, 24px);
+  line-height: 1.55;
+}
+
+.prisma-home-actions,
+.prisma-home-proof,
+.prisma-mini-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.prisma-home-primary,
+.prisma-home-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 20px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.prisma-home-primary {
+  color: white;
+  background: linear-gradient(135deg, #083aa5, #2767ff 52%, #66d9ff);
+  box-shadow: 0 18px 42px rgba(39, 103, 255, 0.34);
+}
+
+.prisma-home-secondary {
+  color: #0a2f7d;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(61, 117, 204, 0.22);
+}
+
+.prisma-home-proof span,
+.prisma-mini-tags b {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  color: #0b347f;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(63, 118, 196, 0.2);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.prisma-home-hero-visual {
+  position: relative;
+  min-height: 520px;
+  display: grid;
+  place-items: center;
+}
+
+.prisma-orb {
+  position: absolute;
+  width: 82%;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(91, 203, 255, 0.45), transparent 34%),
+    radial-gradient(circle at 50% 80%, rgba(16, 62, 198, 0.3), transparent 48%);
+  filter: blur(10px);
+  opacity: 0.9;
+}
+
+.prisma-home-logo {
+  position: absolute;
+  top: 2%;
+  width: min(330px, 62%);
+  border-radius: 38px;
+  z-index: 2;
+  filter: drop-shadow(0 30px 70px rgba(7, 43, 112, 0.28));
+}
+
+.prisma-home-ecosystem {
+  position: relative;
+  z-index: 3;
+  width: min(680px, 100%);
+  transform: translateY(84px);
+  filter: drop-shadow(0 34px 70px rgba(21, 52, 113, 0.22));
+}
+
+.prisma-home-section {
+  padding: clamp(28px, 4vw, 54px);
+}
+
+.prisma-section-heading {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.prisma-section-heading-center {
+  max-width: 920px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  justify-items: center;
+}
+
+.prisma-pain-grid,
+.prisma-ecosystem-grid,
+.prisma-question-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.prisma-pain-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.prisma-pain-card,
+.prisma-ecosystem-card,
+.prisma-question {
+  position: relative;
+  overflow: hidden;
+  border-radius: 26px;
+  border: 1px solid rgba(53, 104, 179, 0.16);
+  background: rgba(255,255,255,0.68);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.86);
+}
+
+.prisma-pain-card,
+.prisma-ecosystem-card {
+  min-height: 224px;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 22px;
+}
+
+.prisma-card-dot {
+  width: 34px;
+  height: 34px;
+  border-radius: 13px;
+  background: linear-gradient(145deg, #0b3ca7, #4bbdff);
+  box-shadow: 0 16px 32px rgba(35, 106, 246, 0.28);
+}
+
+.prisma-pain-card p,
+.prisma-ecosystem-card p {
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.prisma-ecosystem-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.prisma-ecosystem-card > span {
+  color: #104cb7;
+  font-size: 12px;
+  font-weight: 920;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.prisma-split {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(360px, 0.8fr);
+  gap: 28px;
+  align-items: center;
+}
+
+.prisma-split-reverse {
+  grid-template-columns: minmax(360px, 0.8fr) minmax(0, 0.92fr);
+}
+
+.prisma-split > div {
+  display: grid;
+  gap: 18px;
+}
+
+.prisma-check-list {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 11px;
+}
+
+.prisma-check-list li {
+  position: relative;
+  padding-left: 34px;
+  color: #1e2b48;
+  font-size: 15px;
+  line-height: 1.42;
+  font-weight: 740;
+}
+
+.prisma-check-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #0b45ba, #63d5ff);
+  box-shadow: 0 12px 26px rgba(34, 110, 255, 0.22);
+}
+
+.prisma-check-list li::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  width: 7px;
+  height: 4px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: rotate(-45deg);
+}
+
+.prisma-panel-asset {
+  width: 100%;
+  border-radius: 28px;
+  filter: drop-shadow(0 26px 56px rgba(25, 69, 139, 0.16));
+}
+
+.prisma-question-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.prisma-question {
+  min-height: 106px;
+  display: flex;
+  align-items: center;
+  padding: 22px;
+  color: #07112f;
+  font-size: 22px;
+  line-height: 1.05;
+  font-weight: 920;
+  letter-spacing: -0.035em;
+}
+
+.prisma-compare-table {
+  display: grid;
+  gap: 10px;
+}
+
+.prisma-compare-row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.prisma-compare-row > div {
+  min-height: 72px;
+  display: grid;
+  gap: 5px;
+  align-content: center;
+  padding: 16px 18px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(49, 99, 178, 0.14);
+  color: #17213b;
+  font-size: 15px;
+  font-weight: 780;
+}
+
+.prisma-compare-row > div:first-child {
+  color: #64708a;
+}
+
+.prisma-compare-row span {
+  color: #0d4bbb;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 940;
+}
+
+.prisma-home-final {
+  min-height: 320px;
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+  padding: clamp(30px, 4vw, 56px);
+  background:
+    radial-gradient(circle at 16% 50%, rgba(70, 193, 255, 0.34), transparent 36%),
+    linear-gradient(135deg, #030716, #071b4b 55%, #0c3bb5);
+}
+
+.prisma-home-final img {
+  position: relative;
+  z-index: 2;
+  width: 220px;
+  max-width: 100%;
+  border-radius: 32px;
+  filter: drop-shadow(0 24px 54px rgba(89, 196, 255, 0.28));
+}
+
+.prisma-home-final h2,
+.prisma-home-final p {
+  color: white;
+}
+
+.prisma-home-final p {
+  color: rgba(232, 241, 255, 0.78);
+  margin: 16px 0 22px;
+}
+
+.prisma-final-glow {
+  position: absolute;
+  inset: auto -10% -30% 30%;
+  height: 220px;
+  background: radial-gradient(circle, rgba(103, 216, 255, 0.34), transparent 62%);
+  filter: blur(4px);
+}
+
+html,
+body,
+.shell,
+.sidebar,
+.sidebar-main-scroll {
+  scrollbar-color: rgba(55, 118, 224, 0.3) transparent !important;
+}
+
+*::-webkit-scrollbar-track,
+.sidebar::-webkit-scrollbar-track,
+.sidebar-main-scroll::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+*::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb,
+.sidebar-main-scroll::-webkit-scrollbar-thumb {
+  background: rgba(55, 118, 224, 0.28) !important;
+  border-radius: 999px !important;
+  border: 2px solid transparent !important;
+  background-clip: padding-box !important;
+}
+
+@media (max-width: 1120px) {
+  .prisma-home-hero,
+  .prisma-split,
+  .prisma-split-reverse,
+  .prisma-home-final {
+    grid-template-columns: 1fr;
+  }
+
+  .prisma-home-hero-visual {
+    min-height: 460px;
+  }
+
+  .prisma-pain-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .prisma-ecosystem-grid,
+  .prisma-question-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .prisma-home-hero,
+  .prisma-home-section,
+  .prisma-home-final {
+    border-radius: 24px;
+    padding: 24px;
+  }
+
+  .prisma-pain-grid,
+  .prisma-compare-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* START PRISMA_PC_HOME_MEDIA_ASSETS_02 */
+.prisma-home-inline-logo {
+  width: min(220px, 52vw);
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 2px;
+  filter: drop-shadow(0 24px 42px rgba(14, 75, 186, 0.18));
+}
+
+.prisma-home-hero-media {
+  grid-template-columns: minmax(430px, 0.72fr) minmax(620px, 1fr) !important;
+  gap: clamp(26px, 3.2vw, 54px) !important;
+  min-height: 690px !important;
+}
+
+.prisma-home-main-poster {
+  align-self: stretch;
+  min-height: 560px;
+}
+
+.prisma-home-media-card {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  border-radius: 34px;
+  border: 1px solid rgba(72, 120, 190, 0.18);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(100, 202, 255, 0.20), transparent 40%),
+    rgba(255, 255, 255, 0.72);
+  box-shadow: 0 26px 72px rgba(25, 68, 142, 0.14), inset 0 1px 0 rgba(255,255,255,0.88);
+}
+
+.prisma-home-media-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.prisma-home-main-poster img {
+  object-position: center;
+}
+
+.prisma-media-showcase {
+  background:
+    radial-gradient(circle at 10% 0%, rgba(42, 113, 255, 0.11), transparent 34%),
+    linear-gradient(145deg, rgba(255,255,255,0.94), rgba(236,245,255,0.86));
+}
+
+.prisma-media-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.prisma-media-grid .prisma-home-media-card {
+  min-height: 500px;
+}
+
+.prisma-home-media-card figcaption {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 20px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: 22px;
+  color: #07112f;
+  font-size: 14px;
+  font-weight: 850;
+  line-height: 1.35;
+  background: rgba(255,255,255,0.76);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 18px 40px rgba(16, 48, 108, 0.14);
+}
+
+.prisma-multistore-photo {
+  min-height: 450px;
+  background: #061331;
+}
+
+.prisma-multistore-photo img {
+  object-position: center;
+}
+
+.brand-logo-img {
+  width: min(194px, 86%) !important;
+  height: auto !important;
+  object-fit: contain !important;
+  border-radius: 0 !important;
+  filter: drop-shadow(0 24px 42px rgba(26, 102, 255, 0.18));
+}
+
+.brand-block.prisma-brand-image-card {
+  min-height: 188px;
+  padding: 16px 12px;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(55, 145, 255, 0.20), transparent 44%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.80), rgba(239, 246, 255, 0.72));
+}
+
+@media (max-width: 1280px) {
+  .prisma-home-hero-media {
+    grid-template-columns: 1fr !important;
+  }
+
+  .prisma-home-main-poster {
+    min-height: 640px;
+  }
+}
+
+@media (max-width: 880px) {
+  .prisma-media-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .prisma-home-main-poster,
+  .prisma-media-grid .prisma-home-media-card,
+  .prisma-multistore-photo {
+    min-height: 420px;
+  }
+}
+/* END PRISMA_PC_HOME_MEDIA_ASSETS_02 */
+
+/* START PRISMA_PC_HOME_HERO_IMAGE_03 */
+.prisma-home-hero-media {
+  grid-template-columns: minmax(430px, 0.70fr) minmax(680px, 1fr) !important;
+  gap: clamp(28px, 3.6vw, 58px) !important;
+  align-items: center !important;
+  min-height: 660px !important;
+}
+
+.prisma-home-main-poster {
+  align-self: center !important;
+  min-height: unset !important;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  border-radius: 34px;
+  background: white;
+  border: 1px solid rgba(72, 120, 190, 0.16);
+  box-shadow: 0 28px 72px rgba(25, 68, 142, 0.14), inset 0 1px 0 rgba(255,255,255,0.92);
+}
+
+.prisma-home-main-poster img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  background: white !important;
+}
+
+.prisma-home-media-card img[src="/landing/prisma-home-hero-commercial.png"] {
+  object-fit: contain !important;
+  object-position: center !important;
+  background: white !important;
+}
+
+.prisma-home-inline-logo {
+  width: min(220px, 52vw);
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 2px;
+  filter: drop-shadow(0 24px 42px rgba(14, 75, 186, 0.18));
+}
+
+@media (max-width: 1280px) {
+  .prisma-home-hero-media {
+    grid-template-columns: 1fr !important;
+    min-height: unset !important;
+  }
+
+  .prisma-home-main-poster {
+    max-width: 980px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .prisma-home-main-poster {
+    border-radius: 24px;
+  }
+}
+/* END PRISMA_PC_HOME_HERO_IMAGE_03 */
+
+/* START PRISMA_PC_HOME_VISUAL_TUNE_20260506 */
+.prisma-home {
+  --prisma-ink: #374151;
+  --prisma-ink-strong: #273244;
+  --prisma-ink-soft: #596579;
+  --prisma-blue: #1458d4;
+  --prisma-blue-deep: #08378e;
+  --prisma-line: rgba(76,111,166,.18);
+  --prisma-display-font: "Inter Variable", "Inter", "Aptos Display", "Aptos", "Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--prisma-display-font);
+  color: var(--prisma-ink);
+  gap: clamp(24px, 3vw, 38px);
+}
+.prisma-home h1,.prisma-home h2,.prisma-home h3{color:var(--prisma-ink-strong)!important;font-family:var(--prisma-display-font);text-wrap:balance;text-shadow:none;}
+.prisma-home h1{max-width:840px;font-size:clamp(43px,5.4vw,78px)!important;line-height:1.015!important;letter-spacing:-.048em!important;font-weight:760!important;}
+.prisma-home h2{font-size:clamp(32px,3.85vw,58px)!important;line-height:1.04!important;letter-spacing:-.038em!important;font-weight:730!important;}
+.prisma-home h3{font-size:clamp(20px,1.65vw,25px)!important;line-height:1.14!important;letter-spacing:-.018em!important;font-weight:700!important;}
+.prisma-home p,.prisma-section-lead{color:var(--prisma-ink-soft)!important;font-weight:460;}
+.prisma-home-hero-copy>p,.prisma-section-lead{font-size:clamp(17px,1.35vw,21px)!important;line-height:1.68!important;}
+.prisma-home-kicker{color:var(--prisma-blue)!important;font-size:11px!important;font-weight:760!important;letter-spacing:.18em!important;}
+.prisma-home-hero,.prisma-home-section{border-radius:clamp(26px,2.6vw,40px)!important;box-shadow:0 20px 58px rgba(28,64,122,.075),inset 0 1px 0 rgba(255,255,255,.86)!important;}
+.prisma-home-pain .prisma-section-heading,.prisma-before-after .prisma-section-heading,.prisma-home-final>div:last-child{max-width:1060px;margin-left:auto;margin-right:auto;text-align:center;justify-items:center;}
+.prisma-home-pain .prisma-section-heading p,.prisma-before-after .prisma-section-heading p,.prisma-home-final p{max-width:780px;}
+.prisma-pain-card,.prisma-ecosystem-card,.prisma-question{border:1px solid rgba(64,104,166,.13)!important;background:linear-gradient(180deg,rgba(255,255,255,.84),rgba(246,249,255,.68))!important;box-shadow:0 14px 34px rgba(25,68,142,.07),inset 0 1px 0 rgba(255,255,255,.9)!important;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;}
+.prisma-pain-card:hover,.prisma-ecosystem-card:hover,.prisma-question:hover{transform:translateY(-2px);border-color:rgba(20,88,212,.24)!important;box-shadow:0 20px 46px rgba(25,68,142,.105),inset 0 1px 0 rgba(255,255,255,.94)!important;}
+.prisma-home-primary,.prisma-home-secondary{min-height:50px!important;padding:0 22px!important;font-weight:740!important;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease;}
+.prisma-home-primary:hover,.prisma-home-secondary:hover{transform:translateY(-1px);}.prisma-home-primary:active,.prisma-home-secondary:active{transform:translateY(0);}
+.prisma-home-primary:focus-visible,.prisma-home-secondary:focus-visible{outline:3px solid rgba(20,88,212,.32);outline-offset:4px;}
+.prisma-home-secondary{background:rgba(255,255,255,.88)!important;border-color:rgba(20,88,212,.26)!important;color:var(--prisma-blue-deep)!important;}
+.prisma-home-proof span,.prisma-mini-tags b{background:rgba(255,255,255,.66)!important;color:#31517d!important;font-weight:680!important;border-color:rgba(90,128,188,.16)!important;}
+.prisma-before-after-story{background:radial-gradient(circle at 50% -10%,rgba(52,128,255,.13),transparent 38%),linear-gradient(145deg,rgba(255,255,255,.96),rgba(239,246,255,.88))!important;}
+.prisma-compare-flow{display:grid;gap:0;max-width:1080px;margin:0 auto;border-top:1px solid var(--prisma-line);border-bottom:1px solid var(--prisma-line);}
+.prisma-compare-step{display:grid;grid-template-columns:72px minmax(0,1fr) 54px minmax(0,1.15fr);align-items:center;gap:clamp(12px,2.4vw,30px);min-height:104px;padding:clamp(20px,2.2vw,30px) 0;border-bottom:1px solid rgba(76,111,166,.14);}
+.prisma-compare-step:last-child{border-bottom:0;}.prisma-compare-number{color:rgba(20,88,212,.28);font-size:clamp(28px,3vw,42px);font-weight:650;letter-spacing:-.055em;font-variant-numeric:tabular-nums;}
+.prisma-compare-before,.prisma-compare-after{display:grid;gap:7px;min-width:0;}.prisma-compare-before span,.prisma-compare-after span{color:var(--prisma-blue)!important;font-size:10px;text-transform:uppercase;letter-spacing:.18em;font-weight:760;}
+.prisma-compare-before p,.prisma-compare-after p{margin:0;max-width:none;line-height:1.24!important;}.prisma-compare-before p{color:#778195!important;font-size:clamp(17px,1.45vw,22px)!important;font-weight:560;}.prisma-compare-after p{color:var(--prisma-ink-strong)!important;font-size:clamp(18px,1.55vw,24px)!important;font-weight:720;}
+.prisma-compare-arrow{display:grid;place-items:center;width:42px;height:42px;border-radius:999px;color:var(--prisma-blue);background:rgba(20,88,212,.08);font-size:22px;font-weight:760;}
+.prisma-compare-table,.prisma-compare-row{display:contents!important;}.prisma-compare-row>div{border:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;}
+.prisma-home-final{grid-template-columns:200px minmax(0,1fr)!important;background:radial-gradient(circle at 20% 45%,rgba(92,202,255,.26),transparent 34%),linear-gradient(135deg,#0b1e45,#1149b2 58%,#1c6fff)!important;box-shadow:0 24px 70px rgba(13,49,118,.22)!important;}
+.prisma-home-final h2{color:#f7fbff!important;max-width:980px;}.prisma-home-final p{color:rgba(236,245,255,.82)!important;}.prisma-home-media-card{box-shadow:0 22px 56px rgba(25,68,142,.115),inset 0 1px 0 rgba(255,255,255,.88)!important;}
+@media (max-width:980px){.prisma-compare-step{grid-template-columns:58px 1fr;gap:14px 18px}.prisma-compare-arrow{grid-column:1/-1;justify-self:center;transform:rotate(90deg)}.prisma-compare-after{grid-column:2}.prisma-home-final{grid-template-columns:1fr!important;text-align:center;justify-items:center}}
+@media (max-width:720px){.prisma-home h1{font-size:clamp(40px,14vw,58px)!important}.prisma-home h2{font-size:clamp(30px,10.5vw,44px)!important}.prisma-compare-step{grid-template-columns:1fr;text-align:left;padding:24px 0}.prisma-compare-number,.prisma-compare-arrow,.prisma-compare-after{grid-column:auto}.prisma-compare-arrow{justify-self:start}}
+@media (prefers-reduced-motion:reduce){.prisma-home *,.prisma-home *::before,.prisma-home *::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}.prisma-pain-card:hover,.prisma-ecosystem-card:hover,.prisma-question:hover,.prisma-home-primary:hover,.prisma-home-secondary:hover{transform:none!important}}
+/* END PRISMA_PC_HOME_VISUAL_TUNE_20260506 */
+
+/* START PRISMA_PC_INTERACTIVITY_LAYER_20260506 */
+.prisma-command-center{position:relative;overflow:hidden;display:grid;gap:clamp(18px,2.3vw,26px);padding:clamp(28px,4vw,56px);border:1px solid rgba(80,125,190,.18);border-radius:clamp(26px,3vw,42px);background:radial-gradient(circle at 8% 0%,rgba(31,111,255,.14),transparent 34%),radial-gradient(circle at 94% 18%,rgba(99,211,255,.18),transparent 28%),linear-gradient(145deg,rgba(255,255,255,.94),rgba(236,246,255,.86));box-shadow:0 26px 70px rgba(28,64,122,.105),inset 0 1px 0 rgba(255,255,255,.9)}
+.prisma-command-heading{display:grid;gap:14px;max-width:980px;margin:0 auto;text-align:center;justify-items:center}.prisma-command-heading h2{max-width:940px;color:#273244!important;font-size:clamp(32px,4.1vw,62px)!important;line-height:1.04!important;letter-spacing:-.043em!important;font-weight:730!important;text-wrap:balance}.prisma-command-heading p{max-width:780px;color:#596579!important;font-size:clamp(16px,1.25vw,20px)!important;line-height:1.64!important}.prisma-command-tabs,.prisma-command-actions,.prisma-command-kpis{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}.prisma-command-tabs button,.prisma-command-actions button,.prisma-command-module-rail button,.prisma-command-incident-list button{appearance:none;border:0;font:inherit;cursor:pointer}.prisma-command-tabs button{min-height:44px;padding:0 18px;border-radius:999px;color:#335071;font-size:13px;font-weight:780;background:rgba(255,255,255,.72);border:1px solid rgba(78,126,190,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.86);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease}.prisma-command-tabs button:hover,.prisma-command-actions button:hover,.prisma-command-module-rail button:hover,.prisma-command-incident-list button:hover{transform:translateY(-1px)}.prisma-command-tabs button.is-active,.prisma-command-module-rail button.is-active{color:#fff;background:linear-gradient(135deg,#0a45bf,#2767ff 58%,#63d5ff);border-color:rgba(39,103,255,.34);box-shadow:0 16px 36px rgba(39,103,255,.24)}.prisma-command-tabs button:focus-visible,.prisma-command-actions button:focus-visible,.prisma-command-module-rail button:focus-visible,.prisma-command-incident-list button:focus-visible,.prisma-command-select select:focus-visible,.prisma-command-incidents input:focus-visible{outline:3px solid rgba(39,103,255,.28);outline-offset:4px}.prisma-command-hero{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:18px;align-items:center;padding:clamp(20px,2.4vw,30px);border-radius:30px;border:1px solid rgba(72,120,190,.16);background:rgba(255,255,255,.66);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}.prisma-command-hero span,.prisma-command-panel-kicker,.prisma-command-select span,.prisma-command-incidents label span{color:#1458d4;font-size:10px;font-weight:790;letter-spacing:.16em;text-transform:uppercase}.prisma-command-hero h3,.prisma-command-module-panel h3,.prisma-command-incidents h3{margin:8px 0 0;color:#273244!important;font-size:clamp(22px,2.2vw,34px)!important;line-height:1.08!important;letter-spacing:-.03em!important;font-weight:730!important}.prisma-command-hero p,.prisma-command-module-panel p{margin-top:10px;color:#596579!important;font-size:15px!important;line-height:1.55!important}.prisma-command-select{display:grid;gap:8px}.prisma-command-select select,.prisma-command-incidents input{width:100%;min-height:46px;border-radius:16px;border:1px solid rgba(76,111,166,.22);color:#273244;background:rgba(255,255,255,.86);padding:0 14px;font:inherit;font-size:14px;font-weight:660}.prisma-command-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}.prisma-command-kpis article{display:grid;gap:8px;min-height:126px;padding:18px;border-radius:24px;border:1px solid rgba(72,120,190,.14);background:rgba(255,255,255,.62);box-shadow:inset 0 1px 0 rgba(255,255,255,.88)}.prisma-command-kpis span,.prisma-command-kpis small{color:#66748b;font-size:12px;font-weight:720}.prisma-command-kpis strong{color:#26344b;font-size:clamp(28px,3vw,42px);line-height:1;letter-spacing:-.045em;font-weight:720}.prisma-command-workspace{display:grid;grid-template-columns:minmax(210px,.72fr) minmax(0,1fr) minmax(320px,.95fr);gap:16px;align-items:stretch}.prisma-command-module-rail,.prisma-command-module-panel,.prisma-command-incidents{display:grid;gap:12px;padding:16px;border-radius:28px;border:1px solid rgba(72,120,190,.15);background:rgba(255,255,255,.58);box-shadow:inset 0 1px 0 rgba(255,255,255,.84)}.prisma-command-module-rail button{display:grid;gap:5px;width:100%;min-height:76px;padding:14px;border-radius:20px;text-align:left;color:#334158;background:rgba(255,255,255,.64);border:1px solid rgba(76,111,166,.13);transition:transform .18s ease,box-shadow .18s ease,background .18s ease}.prisma-command-module-rail button span{font-size:14px;font-weight:780}.prisma-command-module-rail button b{font-size:12px;color:inherit;opacity:.72}.prisma-command-module-panel{align-content:start;padding:clamp(20px,2.4vw,30px)}.prisma-command-meter{position:relative;overflow:hidden;height:12px;margin:10px 0;border-radius:999px;background:rgba(58,87,132,.12)}.prisma-command-meter span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#0a45bf,#2767ff,#63d5ff);box-shadow:0 10px 24px rgba(39,103,255,.22);transition:width .24s ease}.prisma-command-actions{justify-content:flex-start;margin-top:8px}.prisma-command-actions button{min-height:42px;padding:0 14px;border-radius:999px;color:#0a3f9e;background:rgba(20,88,212,.08);border:1px solid rgba(20,88,212,.16);font-size:13px;font-weight:750}.prisma-command-search-row{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:14px;align-items:end}.prisma-command-incidents label{display:grid;gap:7px}.prisma-command-incident-list{display:grid;gap:10px;max-height:390px;overflow:auto;padding-right:4px}.prisma-command-incident-list button,.prisma-command-empty{display:grid;gap:6px;width:100%;padding:14px;border-radius:18px;text-align:left;background:rgba(255,255,255,.68);border:1px solid rgba(76,111,166,.14);color:#273244}.prisma-command-incident-list button span{width:fit-content;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:820;letter-spacing:.1em;text-transform:uppercase}.prisma-command-incident-list button b{font-size:14px}.prisma-command-incident-list button small,.prisma-command-empty{color:#64708a;font-size:13px;line-height:1.38;font-weight:560}.prisma-command-incident-list .severity-alta span{color:#991b1b;background:rgba(239,68,68,.11)}.prisma-command-incident-list .severity-media span{color:#92400e;background:rgba(245,158,11,.13)}.prisma-command-incident-list .severity-baja span{color:#166534;background:rgba(34,197,94,.12)}.prisma-command-live{min-height:54px;display:flex;align-items:center;gap:8px;padding:14px 18px;border-radius:22px;color:#3d4c66;background:rgba(255,255,255,.68);border:1px solid rgba(76,111,166,.14);font-size:14px;line-height:1.42}.prisma-command-live strong{color:#1458d4}@media(max-width:1180px){.prisma-command-workspace{grid-template-columns:1fr}.prisma-command-module-rail{grid-template-columns:repeat(5,minmax(160px,1fr));overflow-x:auto}.prisma-command-module-rail button{min-width:160px}}@media(max-width:860px){.prisma-command-hero,.prisma-command-search-row{grid-template-columns:1fr}.prisma-command-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:620px){.prisma-command-center{padding:22px;border-radius:24px}.prisma-command-kpis{grid-template-columns:1fr}.prisma-command-module-rail{grid-template-columns:1fr}.prisma-command-module-rail button{min-width:0}}@media(prefers-reduced-motion:reduce){.prisma-command-center *,.prisma-command-center *::before,.prisma-command-center *::after{transition-duration:.001ms!important;animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}.prisma-command-tabs button:hover,.prisma-command-actions button:hover,.prisma-command-module-rail button:hover,.prisma-command-incident-list button:hover{transform:none!important}}
+/* END PRISMA_PC_INTERACTIVITY_LAYER_20260506 */

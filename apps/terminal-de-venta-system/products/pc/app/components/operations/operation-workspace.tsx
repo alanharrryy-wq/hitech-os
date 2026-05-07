@@ -37,8 +37,7 @@ export function OperationWorkspace({ workspace }: { workspace: OperationWorkspac
             <p>{workspace.description}</p>
           </div>
           <div className="inline-list">
-            <span className="chip">Fuente: {workspace.meta.source}</span>
-            <span className="chip">Confianza: {workspace.meta.confidence}</span>
+            <span className="chip">Estado: {workspace.meta.persistence === "available" ? "datos disponibles" : "sin datos disponibles"}</span>
             <span className="chip">Actualizado: {workspace.meta.generatedAt}</span>
           </div>
         </div>
@@ -67,8 +66,8 @@ export function OperationWorkspace({ workspace }: { workspace: OperationWorkspac
         <section className="card">
           <div className="section-head"><div><div className="kicker">KPI formal</div><h2 className="section-title">Fórmula, fuente, confianza y rango</h2><div className="section-copy">Cada KPI dice de dónde sale y qué tanto se puede confiar. Nada de NaN con sombrero.</div></div></div>
           <DataTable
-            columns={["KPI", "Valor", "Fórmula", "Fuente", "Confianza", "Rango", "Estado"]}
-            rows={workspace.kpis.map((kpi) => ({ KPI: kpi.label, Valor: kpi.value, Fórmula: kpi.formula, Fuente: kpi.source, Confianza: kpi.confidence, Rango: kpi.range, Estado: kpi.status }))}
+            columns={["KPI", "Valor", "Fórmula", "Rango", "Estado"]}
+            rows={workspace.kpis.map((kpi) => ({ KPI: kpi.label, Valor: kpi.value, Fórmula: kpi.formula, Rango: kpi.range, Estado: kpi.status }))}
             emptyMessage="No hay KPIs calculables porque la persistencia no está disponible."
           />
         </section>

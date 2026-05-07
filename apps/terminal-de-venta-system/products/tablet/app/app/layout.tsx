@@ -1,4 +1,5 @@
 import "./globals.css";
+import "./prisma-tablet-light-premium-final.css";
 import { tabletMessages } from "@/lib/i18n/messages/es";
 
 export const metadata = {

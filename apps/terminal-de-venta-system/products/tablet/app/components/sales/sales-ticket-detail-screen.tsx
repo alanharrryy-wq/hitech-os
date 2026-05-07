@@ -67,15 +67,16 @@ function DetailStateCard({ title, message }: { title: string; message: string })
   );
 }
 
-export function SalesTicketDetailScreen({ saleId }: { saleId: string }) {
+export function SalesTicketDetailScreen({ saleId, businessId }: { saleId: string; businessId?: string }) {
   const [state, setState] = useState<DetailState>({ status: "loading" });
 
   useEffect(() => {
     let alive = true;
-    const encoded = encodeURIComponent(saleId);
+    const params = new URLSearchParams({ saleId });
+    if (businessId) params.set("businessId", businessId);
     setState({ status: "loading" });
 
-    requestJson<{ ticket: TicketDetail }>(`/api/pos/sales/detail?saleId=${encoded}`)
+    requestJson<{ ticket: TicketDetail }>(`/api/pos/sales/detail?${params.toString()}`)
       .then((response) => {
         if (!alive) return;
         setState({ status: "ready", ticket: response.data.ticket });
@@ -88,7 +89,7 @@ export function SalesTicketDetailScreen({ saleId }: { saleId: string }) {
     return () => {
       alive = false;
     };
-  }, [saleId]);
+  }, [saleId, businessId]);
 
   return (
     <PrismaTabletShellUnified

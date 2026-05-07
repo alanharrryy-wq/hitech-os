@@ -1,0 +1,157 @@
+{
+  "version": "20260506_v06",
+  "status": "READY",
+  "generated_at": "2026-05-06T22:54:31.841241+00:00",
+  "roots": {
+    "target_root": "F:\\repos\\hitech-os",
+    "terminal_root": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+    "repo_root": "F:\\repos\\hitech-os",
+    "tablet_db": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\data\\tablet-pos.db",
+    "pc_db": "F:\\repos\\hitech-os\\tools\\_local\\data\\terminal-de-venta-system\\canonical.db"
+  },
+  "latest_bridge_summary": "F:\\descargasf\\prisma_tri_db_bridge_20260506_160858.json",
+  "latest_bridge_status": "READY",
+  "last_sync_generated_at": "2026-05-06T22:08:58.397578+00:00",
+  "bridge_tables_projected": 23,
+  "bridge_rows_inserted_or_updated": 586,
+  "bridge_outbox_acknowledged": 72,
+  "tablet": {
+    "path": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\data\\tablet-pos.db",
+    "exists": true,
+    "readable": true,
+    "table_counts": {
+      "Business": 1,
+      "Store": 1,
+      "Terminal": 2,
+      "Product": 145,
+      "Barcode": 145,
+      "StockSnapshot": 145,
+      "CashSession": 6,
+      "CashMovement": 9,
+      "Sale": 15,
+      "SaleLine": 21,
+      "StockMovement": 23,
+      "OutboxEvent": 72
+    },
+    "outbox_by_status": {
+      "acked": 72
+    },
+    "sales_total_cents": 72050,
+    "product_count": 145,
+    "barcode_count": 145,
+    "low_stock_count": 0,
+    "reference_errors": {},
+    "error": null
+  },
+  "pc": {
+    "path": "F:\\repos\\hitech-os\\tools\\_local\\data\\terminal-de-venta-system\\canonical.db",
+    "exists": true,
+    "readable": true,
+    "table_counts": {
+      "Business": 2,
+      "Store": 2,
+      "Terminal": 3,
+      "Product": 292,
+      "Barcode": 292,
+      "StockSnapshot": 292,
+      "CashSession": 8,
+      "CashMovement": 12,
+      "Sale": 18,
+      "SaleLine": 26,
+      "StockMovement": 167,
+      "OutboxEvent": 76
+    },
+    "outbox_by_status": {
+      "failed": 1,
+      "pending": 74,
+      "sent": 1
+    },
+    "sales_total_cents": 92650,
+    "product_count": 292,
+    "barcode_count": 292,
+    "low_stock_count": 0,
+    "reference_errors": {},
+    "error": null
+  },
+  "parity": {
+    "pc_covers_tablet": true,
+    "tables": {
+      "Business": {
+        "tablet_rows": 1,
+        "pc_rows": 2,
+        "pc_covers_tablet": true,
+        "delta_pc_minus_tablet": 1
+      },
+      "Store": {
+        "tablet_rows": 1,
+        "pc_rows": 2,
+        "pc_covers_tablet": true,
+        "delta_pc_minus_tablet": 1
+      },
+      "Terminal": {
+        "tablet_rows": 2,
+        "pc_rows": 3,
+        "pc_covers_tablet": true,
+        "delta_pc_minus_tablet": 1
+      },
+      "Product": {
+        "tablet_rows": 145,
+        "pc_rows": 292,
+        "pc_covers_tablet": true,
+        "delta_pc_minus_tablet": 147
+      },
+      "Barcode": {
+        "tablet_rows": 145,
+        "pc_rows": 292,
+        "pc_covers_tablet": true,
+        "delta_pc_minus_tablet": 147
+      },
+      "StockSnapshot": {
+        "tablet_rows": 145,
+        "pc_rows": 292,
+        "pc_covers_tablet": true,
+        "delta_pc_minus_tablet": 147
+      },
+      "CashSession": {
+        "tablet_rows": 6,
+        "pc_rows": 8,
+        "pc_covers_tablet": true,
+        "delta_pc_minus_tablet": 2
+      },
+      "CashMovement": {
+        "tablet_rows": 9,
+        "pc_rows": 12,
+        "pc_covers_tablet": true,
+        "delta_pc_minus_tablet": 3
+      },
+      "Sale": {
+        "tablet_rows": 15,
+        "pc_rows": 18,
+        "pc_covers_tablet": true,
+        "delta_pc_minus_tablet": 3
+      },
+      "SaleLine": {
+        "tablet_rows": 21,
+        "pc_rows": 26,
+        "pc_covers_tablet": true,
+        "delta_pc_minus_tablet": 5
+      },
+      "StockMovement": {
+        "tablet_rows": 23,
+        "pc_rows": 167,
+        "pc_covers_tablet": true,
+        "delta_pc_minus_tablet": 144
+      },
+      "OutboxEvent": {
+        "tablet_rows": 72,
+        "pc_rows": 76,
+        "pc_covers_tablet": true,
+        "delta_pc_minus_tablet": 4
+      }
+    }
+  },
+  "warnings": [],
+  "evidence": {
+    "latest_status_json": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\shared\\tri-db\\status.latest.json"
+  }
+}

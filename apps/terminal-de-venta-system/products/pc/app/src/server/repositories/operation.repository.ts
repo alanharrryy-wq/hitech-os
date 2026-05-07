@@ -38,11 +38,34 @@ export class OperationRepository {
 
   async listSales(limit = 250): Promise<any[]> {
     const db = prisma as any;
-    return db.sale.findMany({
-      include: { lines: true },
-      orderBy: { createdAt: "desc" },
-      take: limit
-    });
+    const safeLimit = Math.max(1, Math.min(Number(limit) || 250, 500));
+
+    try {
+      return await db.sale.findMany({
+        select: {
+          id: true,
+          businessId: true,
+          terminalId: true,
+          cashSessionId: true,
+          folio: true,
+          cashier: true,
+          totalCents: true,
+          status: true,
+          createdAt: true,
+          lines: true
+        },
+        orderBy: { createdAt: "desc" },
+        take: safeLimit
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      const isSchemaDrift = message.includes("clientRequestId") || message.includes("does not exist in the current database");
+      if (!isSchemaDrift) throw error;
+
+      return await db.$queryRawUnsafe(
+        `SELECT id, businessId, terminalId, cashSessionId, folio, cashier, totalCents, status, createdAt FROM Sale ORDER BY createdAt DESC LIMIT ${safeLimit}`
+      );
+    }
   }
 
   async listReturns(limit = 250): Promise<any[]> {
