@@ -1,0 +1,62 @@
+{
+  "registryId": "PRISMA_ATLAS_REGISTRY",
+  "version": "0.1.0-initial-draft",
+  "generatedAt": "2026-05-08T20:00:00-06:00",
+  "status": "draft-initial",
+  "notes": [
+    "Shared Core fue generado desde ATLAS_CHAT_SHARED_CORE.zip.",
+    "Mobile, Tablet y PC quedan pendientes de confirmar contra sus atlas respectivos.",
+    "Este registry no debe considerarse final hasta que el chat Coordinador valide los cuatro atlas."
+  ],
+  "atlases": [
+    {
+      "atlasId": "PRISMA_ATLAS_SHARED_CORE",
+      "app": "shared",
+      "path": "docs/atlas/ATLAS_SHARED_CORE.md",
+      "json": "docs/atlas/atlas.shared-core.json",
+      "status": "generated"
+    },
+    {
+      "atlasId": "PRISMA_ATLAS_MOBILE",
+      "app": "mobile",
+      "path": "pending-confirmation",
+      "json": "pending-confirmation",
+      "status": "pending"
+    },
+    {
+      "atlasId": "PRISMA_ATLAS_TABLET",
+      "app": "tablet",
+      "path": "pending-confirmation",
+      "json": "pending-confirmation",
+      "status": "pending"
+    },
+    {
+      "atlasId": "PRISMA_ATLAS_PC",
+      "app": "pc",
+      "path": "pending-confirmation",
+      "json": "pending-confirmation",
+      "status": "pending"
+    }
+  ],
+  "sharedCore": {
+    "scope": [
+      "contracts",
+      "visual-os",
+      "prisma-global-db",
+      "shared-ui",
+      "licensing",
+      "runtime-infra",
+      "global-tooling",
+      "cross-app-dependencies"
+    ],
+    "dependencyEvidence": "analysis/all_app_shared_dependency_hits.json",
+    "dependencyHits": {
+      "total": 109,
+      "byApp": {
+        "mobile": 10,
+        "tablet": 58,
+        "pc": 41
+      }
+    }
+  }
+}
