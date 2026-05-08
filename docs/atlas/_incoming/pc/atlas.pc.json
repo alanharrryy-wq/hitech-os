@@ -1,0 +1,538 @@
+{
+  "$schema": "https://hitech.local/schemas/prisma-atlas.schema.json",
+  "atlasId": "atlas.pc.initial.round-2",
+  "app": "pc",
+  "root": "products/pc/app",
+  "version": "atlas.pc.initial.v1",
+  "summary": "Initial PC atlas generated from ATLAS_CHAT_PC.zip and staged only under docs/atlas/_incoming/pc/. PC is documented as the backoffice/governance surface. Prisma canonical schema, Shared Core, twin-kernel, licensing, tri-db and Visual OS shared layers are external dependencies, not PC-owned implementation.",
+  "surfaces": [
+    {
+      "id": "pc.surface.visible-routes",
+      "kind": "visible_routes",
+      "count": 47,
+      "evidence": "analysis/routes_and_apis.json and source_snapshot/products/pc/app/app/**/page.tsx",
+      "routes": [
+        "/",
+        "/acciones-masivas",
+        "/ajustes-inventario",
+        "/alertas-ejecutivas",
+        "/auditoria",
+        "/auditoria-operativa",
+        "/catalogo",
+        "/catalogo-global",
+        "/catalogo-global-v2",
+        "/catalogo-multisucursal",
+        "/compras",
+        "/compras-inteligentes",
+        "/conteos",
+        "/conteos-ciclicos",
+        "/cortes-caja",
+        "/dashboard",
+        "/historial-conteos",
+        "/inventario",
+        "/kpis",
+        "/licencias",
+        "/mermas",
+        "/notificaciones",
+        "/operacion",
+        "/operacion-dashboard",
+        "/operaciones",
+        "/ordenes",
+        "/proveedores",
+        "/proveedores-analytics",
+        "/proveedores-calidad",
+        "/proveedores-compras",
+        "/proveedores-eventos",
+        "/proveedores-historial",
+        "/proveedores-lifecycle",
+        "/proveedores-lista",
+        "/proveedores-matriz",
+        "/proveedores-recepcion",
+        "/proveedores-reconciliacion",
+        "/proveedores-reportes",
+        "/proveedores-sugerencias",
+        "/reabasto",
+        "/recepcion",
+        "/reportes-exportables",
+        "/roles-permisos",
+        "/settings",
+        "/stock",
+        "/stock-historial",
+        "/stock-sucursal",
+        "/sync",
+        "/sync-health",
+        "/transferencias",
+        "/usuarios-sesiones",
+        "/vistas-globales"
+      ],
+      "status": "confirmed_from_zip"
+    },
+    {
+      "id": "pc.surface.api-routes",
+      "kind": "api_routes",
+      "count": 36,
+      "evidence": "analysis/routes_and_apis.json and source_snapshot/products/pc/app/app/api/**/route.ts",
+      "routes": [
+        "/api/backoffice/catalog",
+        "/api/backoffice/stock",
+        "/api/backoffice/sync",
+        "/api/catalog/brands",
+        "/api/catalog/categories",
+        "/api/catalog/export",
+        "/api/catalog/productos",
+        "/api/catalog/quality",
+        "/api/catalog/tags",
+        "/api/dashboard/summary",
+        "/api/inventory/adjustments",
+        "/api/inventory/counts",
+        "/api/inventory/movements",
+        "/api/inventory/reorder",
+        "/api/inventory/snapshots",
+        "/api/purchases/orders",
+        "/api/purchases/receptions",
+        "/api/reorder/suggestions",
+        "/api/settings",
+        "/api/settings/licenses",
+        "/api/settings/users",
+        "/api/suppliers",
+        "/api/suppliers/export",
+        "/api/suppliers/health",
+        "/api/suppliers/import",
+        "/api/suppliers/orders",
+        "/api/suppliers/payments",
+        "/api/suppliers/receptions",
+        "/api/suppliers/recommendations",
+        "/api/suppliers/simulate",
+        "/api/sync/conflicts",
+        "/api/sync/duplicates",
+        "/api/sync/ingest",
+        "/api/sync/queue",
+        "/api/sync/rejected",
+        "/api/sync/status"
+      ],
+      "status": "confirmed_from_zip"
+    },
+    {
+      "id": "pc.surface.shell-and-layout",
+      "kind": "layout",
+      "files": [
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/components/layout/app-shell.tsx",
+        "products/pc/app/app/globals.css",
+        "products/pc/app/app/prisma-visual-os-pc-binding.css"
+      ],
+      "status": "confirmed_from_zip"
+    }
+  ],
+  "changeIntents": [
+    {
+      "intentId": "pc-docs-atlas-initial-staging-round-2",
+      "category": "docs",
+      "userGoal": "Stage the initial PC atlas under docs/atlas/_incoming/pc/ without touching functional code, final product atlas paths, Mobile, Tablet or Shared Core.",
+      "files": {
+        "created": [
+          "docs/atlas/_incoming/pc/ATLAS_PC.md",
+          "docs/atlas/_incoming/pc/ATLAS_PC_VISUAL.md",
+          "docs/atlas/_incoming/pc/ATLAS_PC_INTERACTION.md",
+          "docs/atlas/_incoming/pc/ATLAS_PC_FUNCTIONAL_ENGINES.md",
+          "docs/atlas/_incoming/pc/ATLAS_PC_RUNTIME_DELIVERY.md",
+          "docs/atlas/_incoming/pc/atlas.pc.json",
+          "docs/atlas/_incoming/pc/RESULT_SUMMARY.md",
+          "docs/atlas/_incoming/pc/FILE_MANIFEST.json",
+          "docs/atlas/_incoming/pc/OPEN_QUESTIONS.md",
+          "docs/atlas/_incoming/pc/COVERAGE_NOTES.md"
+        ],
+        "notTouched": [
+          "products/pc/app/docs/atlas/",
+          "products/mobile/",
+          "products/tablet/",
+          "shared/",
+          "functional source code"
+        ]
+      },
+      "verification": {
+        "method": "Canonical schema fields present; JSON validated against templates/prisma-atlas.schema.json before staging; GitHub paths restricted to docs/atlas/_incoming/pc/."
+      },
+      "risk": "low",
+      "rollback": {
+        "action": "Remove docs/atlas/_incoming/pc/* from atlas-coordinator. No code rollback required because no functional files are modified."
+      },
+      "notes": [
+        "Round 1 finding corrected: atlas.pc.json now follows canonical top-level schema.",
+        "External dependencies are not documented as PC-owned code.",
+        "Unconfirmed details are represented as pending/open questions."
+      ]
+    },
+    {
+      "intentId": "pc-backoffice-surface-documentation",
+      "category": "docs",
+      "userGoal": "Document confirmed PC backoffice routes, APIs, modules, shell, services, repositories, runtime and verifiers from the ZIP.",
+      "files": {
+        "evidenceRoots": [
+          "source_snapshot/products/pc/app/app",
+          "source_snapshot/products/pc/app/components",
+          "source_snapshot/products/pc/app/src",
+          "analysis/routes_and_apis.json",
+          "analysis/pc_full_file_inventory.csv"
+        ]
+      },
+      "verification": {
+        "method": "Cross-check path inventory, package scripts, route/API list and source file families."
+      },
+      "risk": "low"
+    },
+    {
+      "intentId": "pc-external-dependency-boundaries",
+      "category": "docs",
+      "userGoal": "Keep Prisma, Shared Core, twin-kernel, licensing, tri-db and Visual OS shared assets as external dependencies.",
+      "files": {
+        "evidenceRoots": [
+          "analysis/shared_dependency_hits.json",
+          "source_snapshot/products/pc/app/package.json",
+          "source_snapshot/products/pc/app/tsconfig.json",
+          "global_context/docs/architecture"
+        ]
+      },
+      "verification": {
+        "method": "Dependency references are documented as external; no shared implementation files are staged."
+      },
+      "risk": "low"
+    }
+  ],
+  "functionalEngines": [
+    {
+      "id": "pc.engine.catalog",
+      "kind": "backoffice_domain",
+      "files": [
+        "products/pc/app/src/server/services/catalog.service.ts",
+        "products/pc/app/src/server/repositories/catalog.repository.ts",
+        "products/pc/app/src/server/validators/catalog-quality.ts"
+      ],
+      "apis": [
+        "/api/catalog/brands",
+        "/api/catalog/categories",
+        "/api/catalog/export",
+        "/api/catalog/productos",
+        "/api/catalog/quality",
+        "/api/catalog/tags",
+        "/api/backoffice/catalog"
+      ],
+      "status": "confirmed_from_zip"
+    },
+    {
+      "id": "pc.engine.inventory",
+      "kind": "backoffice_domain",
+      "files": [
+        "products/pc/app/src/server/services/inventory-ledger.service.ts",
+        "products/pc/app/src/server/repositories/inventory.repository.ts",
+        "products/pc/app/src/server/validators/inventory-integrity.ts"
+      ],
+      "apis": [
+        "/api/inventory/adjustments",
+        "/api/inventory/counts",
+        "/api/inventory/movements",
+        "/api/inventory/reorder",
+        "/api/inventory/snapshots",
+        "/api/backoffice/stock"
+      ],
+      "status": "confirmed_from_zip"
+    },
+    {
+      "id": "pc.engine.purchases-receiving-reorder",
+      "kind": "backoffice_domain",
+      "files": [
+        "products/pc/app/src/server/services/purchase.service.ts",
+        "products/pc/app/src/server/repositories/purchase.repository.ts",
+        "products/pc/app/src/server/validators/purchase-integrity.ts"
+      ],
+      "apis": [
+        "/api/purchases/orders",
+        "/api/purchases/receptions",
+        "/api/reorder/suggestions"
+      ],
+      "status": "confirmed_from_zip"
+    },
+    {
+      "id": "pc.engine.dashboard-operation-kpis",
+      "kind": "backoffice_domain",
+      "files": [
+        "products/pc/app/src/server/services/dashboard.service.ts",
+        "products/pc/app/src/server/services/kpi-formulas.ts",
+        "products/pc/app/src/server/services/operation-control.service.ts",
+        "products/pc/app/src/server/repositories/dashboard.repository.ts",
+        "products/pc/app/src/server/repositories/operation.repository.ts"
+      ],
+      "apis": [
+        "/api/dashboard/summary"
+      ],
+      "status": "confirmed_from_zip"
+    },
+    {
+      "id": "pc.engine.sync",
+      "kind": "sync_and_reconciliation",
+      "files": [
+        "products/pc/app/src/server/repositories/sync.repository.ts",
+        "products/pc/app/src/server/sync/**",
+        "products/pc/app/src/lib/sync-ingest/**"
+      ],
+      "apis": [
+        "/api/sync/conflicts",
+        "/api/sync/duplicates",
+        "/api/sync/ingest",
+        "/api/sync/queue",
+        "/api/sync/rejected",
+        "/api/sync/status",
+        "/api/backoffice/sync"
+      ],
+      "externalContracts": [
+        "global_context/docs/contracts/EVENT_CONTRACT.md",
+        "global_context/docs/contracts/SYNC_RECONCILIATION_CONTRACT.md"
+      ],
+      "status": "confirmed_from_zip"
+    },
+    {
+      "id": "pc.engine.suppliers",
+      "kind": "supplier_lifecycle_and_purchasing",
+      "files": [
+        "products/pc/app/src/lib/suppliers/**",
+        "products/pc/app/components/suppliers/**"
+      ],
+      "apis": [
+        "/api/suppliers",
+        "/api/suppliers/export",
+        "/api/suppliers/health",
+        "/api/suppliers/import",
+        "/api/suppliers/orders",
+        "/api/suppliers/payments",
+        "/api/suppliers/receptions",
+        "/api/suppliers/recommendations",
+        "/api/suppliers/simulate"
+      ],
+      "status": "confirmed_from_zip"
+    },
+    {
+      "id": "pc.engine.settings-licensing",
+      "kind": "admin_and_feature_gates",
+      "files": [
+        "products/pc/app/src/server/repositories/settings.repository.ts",
+        "products/pc/app/src/server/validators/settings-integrity.ts",
+        "products/pc/app/src/server/licensing/**"
+      ],
+      "apis": [
+        "/api/settings",
+        "/api/settings/licenses",
+        "/api/settings/users"
+      ],
+      "externalDependencies": [
+        "shared/licensing"
+      ],
+      "status": "confirmed_from_zip"
+    }
+  ],
+  "visualSystems": [
+    {
+      "id": "pc.visual.prisma-visual-os-binding",
+      "kind": "pc_visual_binding",
+      "files": [
+        "products/pc/app/app/layout.tsx",
+        "products/pc/app/app/globals.css",
+        "products/pc/app/app/prisma-visual-os-pc-binding.css",
+        "products/pc/app/app/suppliers.css",
+        "products/pc/app/app/suppliers-ux-v08.css",
+        "products/pc/app/components/layout/app-shell.tsx"
+      ],
+      "htmlDataBindings": {
+        "data-prisma-surface": "pc-backoffice",
+        "data-prisma-visual-os": "PC_DENSE_ADMIN",
+        "data-prisma-vos-binding": "00J",
+        "data-theme-default": "prisma-light"
+      },
+      "externalDependencies": [
+        "shared-ui/prisma",
+        "styles/prisma-visual-os"
+      ],
+      "status": "confirmed_from_zip"
+    }
+  ],
+  "interactions": [
+    {
+      "id": "pc.interaction.navigation",
+      "kind": "navigation",
+      "summary": "AppShell and module registry compose PC backoffice navigation.",
+      "files": [
+        "products/pc/app/components/layout/app-shell.tsx",
+        "products/pc/app/src/composition/module-registry.ts",
+        "products/pc/app/src/modules/**/module.manifest.ts"
+      ],
+      "externalDependencies": [
+        "@shared-kernel/* / shared/twin-kernel TwinModuleManifest"
+      ],
+      "status": "confirmed_from_zip"
+    },
+    {
+      "id": "pc.interaction.api-service-repository",
+      "kind": "request_flow",
+      "summary": "Next API routes mediate between UI surfaces, server services and Prisma repositories.",
+      "status": "confirmed_from_zip"
+    },
+    {
+      "id": "pc.interaction.sync-bridge",
+      "kind": "sync",
+      "summary": "Sync is documented as a bridge; PC owns local observability/ingest surfaces while global event/reconciliation contracts are external.",
+      "status": "confirmed_from_zip"
+    }
+  ],
+  "runtimeDelivery": [
+    {
+      "id": "pc.runtime.next-prisma-delivery",
+      "kind": "runtime_delivery",
+      "package": {
+        "name": "@hitech/pc",
+        "version": "6.1.1",
+        "dependencies": {
+          "next": "16.1.6",
+          "react": "18.3.1",
+          "@prisma/client": "5.21.1",
+          "zod": "3.23.8"
+        },
+        "devDependencies": {
+          "typescript": "5.8.2",
+          "prisma": "5.21.1"
+        },
+        "scripts": {
+          "dev": "next dev -p 3130",
+          "build": "next build --webpack",
+          "start": "next start -p 3130",
+          "typecheck": "tsc --noEmit",
+          "check:package": "python tools/validate_package.py .",
+          "check:all": "python tools/validate_package.py . && tsc --noEmit",
+          "db:canonical:generate": "python ../../../tooling/scripts/generate_prisma_canonical.py pc"
+        }
+      },
+      "nextConfigFacts": {
+        "externalDir": true,
+        "reactStrictMode": true,
+        "typedRoutes": false,
+        "port": 3130
+      },
+      "tsconfigPaths": {
+        "@/*": "./src/*",
+        "@components/*": "./components/*",
+        "@shared-kernel/*": "../../../shared/twin-kernel/src/*"
+      },
+      "prisma": {
+        "localSchema": "products/pc/app/prisma/schema.prisma",
+        "classification": "deprecated/transitional stub detected in ZIP",
+        "canonicalSchema": "external/global, pending confirmation in full repo"
+      },
+      "status": "confirmed_from_zip_with_external_dependencies_pending"
+    }
+  ],
+  "verification": [
+    {
+      "id": "pc.verify.canonical-json-schema",
+      "path": "templates/prisma-atlas.schema.json",
+      "status": "passed_pre_upload",
+      "note": "atlas.pc.json includes canonical required fields: atlasId, app, root, version, changeIntents and verification."
+    },
+    {
+      "id": "pc.verify.staging-only-paths",
+      "path": "docs/atlas/_incoming/pc/",
+      "status": "passed_pre_upload",
+      "note": "All staged files are under docs/atlas/_incoming/pc/."
+    },
+    {
+      "id": "pc.verify.package-validator-present",
+      "path": "products/pc/app/tools/validate_package.py",
+      "status": "confirmed_from_zip"
+    },
+    {
+      "id": "pc.verify.routes-smoke-present",
+      "path": "products/pc/app/tools/smoke_pc_i01_routes.mjs",
+      "status": "confirmed_from_zip"
+    },
+    {
+      "id": "pc.verify.suppliers-lifecycle-present",
+      "path": "products/pc/app/tools/run_pc_suppliers_lifecycle_scenarios_02.mjs",
+      "status": "confirmed_from_zip"
+    },
+    {
+      "id": "pc.verify.end-to-end-runtime",
+      "status": "pending_full_repo",
+      "note": "Typecheck/build/runtime cannot be asserted from the isolated ZIP because shared dependencies are not included."
+    }
+  ],
+  "rollback": [
+    {
+      "id": "pc.rollback.staging-delete",
+      "action": "Delete docs/atlas/_incoming/pc/* from atlas-coordinator if this staged atlas must be replaced."
+    }
+  ],
+  "sharedDependencies": [
+    {
+      "name": "Prisma canonical schema",
+      "classification": "external_dependency",
+      "pcOwnership": "none",
+      "evidence": "package scripts db:canonical:* and transitional local prisma/schema.prisma"
+    },
+    {
+      "name": "@prisma/client",
+      "classification": "external_runtime_dependency",
+      "pcOwnership": "uses_client_only",
+      "evidence": "package.json and server repositories"
+    },
+    {
+      "name": "shared/twin-kernel / @shared-kernel/*",
+      "classification": "external_shared_dependency",
+      "pcOwnership": "none",
+      "evidence": "tsconfig paths and module manifests using TwinModuleManifest"
+    },
+    {
+      "name": "shared/licensing",
+      "classification": "external_shared_dependency",
+      "pcOwnership": "none",
+      "evidence": "licensing references and settings/licenses surfaces"
+    },
+    {
+      "name": "shared/tri-db",
+      "classification": "external_global_dependency",
+      "pcOwnership": "none",
+      "evidence": "shared dependency hits and runtime/delivery references"
+    },
+    {
+      "name": "shared-ui/prisma and styles/prisma-visual-os",
+      "classification": "external_visual_dependency",
+      "pcOwnership": "none",
+      "evidence": "CSS imports in globals.css and prisma-visual-os-pc-binding.css"
+    }
+  ],
+  "metadata": {
+    "sourceZip": "ATLAS_CHAT_PC.zip",
+    "stagingRoot": "docs/atlas/_incoming/pc/",
+    "counts": {
+      "filesInPcInventory": 400,
+      "visibleRoutes": 47,
+      "apiRoutes": 36,
+      "components": 39,
+      "serverRepositories": 9,
+      "servicesAndEngines": 44,
+      "serverValidators": 4,
+      "verifierTools": 34,
+      "docsMarkdown": 78,
+      "publicAssetsActual": 6,
+      "publicAssetsManifest": 10
+    },
+    "round1Corrections": [
+      "Canonical JSON schema applied.",
+      "Staging-only GitHub path applied.",
+      "External dependencies classified as external.",
+      "Missing public assets documented as open issue instead of invented."
+    ],
+    "openQuestions": [
+      "Confirm canonical Prisma schema and migration source outside the ZIP.",
+      "Confirm availability of shared/twin-kernel, shared/licensing, shared/tri-db, shared-ui/prisma and styles/prisma-visual-os in full repo.",
+      "Resolve four public assets listed in manifest but absent from snapshot.",
+      "Run typecheck, build and verifiers in full repo."
+    ]
+  }
+}
