@@ -1,0 +1,444 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "apis": [
+    {
+      "path": "/api/mobile/summary",
+      "status": "confirmed-in-zip"
+    },
+    {
+      "path": "/api/mobile/snapshot",
+      "status": "confirmed-in-zip"
+    },
+    {
+      "path": "/api/mobile/sales/today",
+      "status": "confirmed-in-zip"
+    },
+    {
+      "path": "/api/mobile/cash/current",
+      "status": "confirmed-in-zip"
+    },
+    {
+      "path": "/api/mobile/inventory/watchlist",
+      "status": "confirmed-in-zip"
+    },
+    {
+      "path": "/api/mobile/alerts",
+      "status": "confirmed-in-zip"
+    },
+    {
+      "path": "/api/mobile/reports/daily",
+      "status": "confirmed-in-zip"
+    },
+    {
+      "path": "/api/mobile/branches",
+      "status": "confirmed-in-zip"
+    },
+    {
+      "path": "/api/mobile/health",
+      "status": "confirmed-in-zip"
+    },
+    {
+      "path": "/api/mobile/command-center",
+      "status": "confirmed-in-zip"
+    },
+    {
+      "path": "/api/mobile/action-inbox",
+      "status": "confirmed-in-zip"
+    },
+    {
+      "path": "/api/mobile/daily-brief",
+      "status": "confirmed-in-zip"
+    },
+    {
+      "path": "/api/mobile/decision-ledger",
+      "status": "confirmed-in-zip"
+    },
+    {
+      "path": "/api/mobile/pulse-timeline",
+      "status": "confirmed-in-zip"
+    },
+    {
+      "path": "/api/mobile/health-radar",
+      "status": "confirmed-in-zip"
+    }
+  ],
+  "artifact": "mobile-atlas-round-2",
+  "changeIntents": [
+    {
+      "dependencies": [
+        "Mobile contracts under src/lib/prisma-app",
+        "External Tablet/PC data sources when summary data crosses service boundaries"
+      ],
+      "filesToReview": [
+        "app/prisma-app/page.tsx",
+        "src/components/prisma-app/PrismaMobileDashboard.tsx",
+        "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx",
+        "app/api/mobile/summary/route.ts",
+        "app/api/mobile/snapshot/route.ts"
+      ],
+      "humanIntent": "Change the main Mobile dashboard experience",
+      "rollback": [
+        "Revert dashboard component changes",
+        "Revert related API contract changes together with consumers",
+        "Do not revert Shared Core from a Mobile-only rollback"
+      ],
+      "routesToReview": [
+        "/prisma-app",
+        "/api/mobile/summary",
+        "/api/mobile/snapshot"
+      ],
+      "verification": [
+        "npm run typecheck",
+        "npm run build",
+        "Run premium navigation and runtime/error guard checks when available"
+      ]
+    },
+    {
+      "dependencies": [
+        "External shared visual styles if imported by Mobile CSS"
+      ],
+      "filesToReview": [
+        "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx",
+        "src/components/prisma-app/PrismaMobileCommandCenter.tsx",
+        "src/components/prisma-app/PrismaMobileActionInbox.tsx",
+        "src/components/prisma-app/PrismaMobileDailyBrief.tsx",
+        "src/components/prisma-app/PrismaMobileDecisionLedger.tsx",
+        "src/components/prisma-app/PrismaMobilePulseTimeline.tsx",
+        "src/components/prisma-app/PrismaMobileHealthRadar.tsx"
+      ],
+      "humanIntent": "Change premium navigation or module ordering",
+      "rollback": [
+        "Revert navigator and labels/order changes",
+        "Keep API route contracts unchanged unless explicitly changed in the same patch"
+      ],
+      "routesToReview": [
+        "/prisma-app"
+      ],
+      "verification": [
+        "npm run verify:premium-navigation",
+        "Smoke every premium surface manually"
+      ]
+    },
+    {
+      "dependencies": [
+        "PWA browser behavior",
+        "Public icon assets",
+        "Service worker/runtime files present in Mobile public assets"
+      ],
+      "filesToReview": [
+        "app/prisma-app/install/page.tsx",
+        "src/components/prisma-app/PrismaMobilePwaInstallCard.tsx",
+        "src/components/prisma-app/PrismaMobilePwaRuntime.tsx",
+        "public/manifest.webmanifest"
+      ],
+      "humanIntent": "Change the Mobile PWA install flow",
+      "rollback": [
+        "Revert install page, install card, runtime, and manifest together",
+        "Do not fabricate or delete missing external assets without ownership confirmation"
+      ],
+      "routesToReview": [
+        "/prisma-app/install"
+      ],
+      "verification": [
+        "npm run verify:pwa",
+        "Confirm all manifest icons exist",
+        "Manual PWA install smoke test"
+      ]
+    },
+    {
+      "dependencies": [
+        "PWA runtime",
+        "Snapshot/cache utilities under src/lib/prisma-app"
+      ],
+      "filesToReview": [
+        "app/prisma-app/offline/page.tsx",
+        "src/components/prisma-app/PrismaMobilePwaRuntime.tsx",
+        "src/lib/prisma-app"
+      ],
+      "humanIntent": "Change offline or stale-data behavior",
+      "rollback": [
+        "Revert offline page and PWA runtime/cache changes together"
+      ],
+      "routesToReview": [
+        "/prisma-app/offline",
+        "/api/mobile/snapshot"
+      ],
+      "verification": [
+        "Offline browser smoke test",
+        "npm run verify:pwa",
+        "npm run verify:runtime-error-guard"
+      ]
+    },
+    {
+      "dependencies": [
+        "Mobile data plane",
+        "External Tablet/PC source contracts"
+      ],
+      "filesToReview": [
+        "src/components/prisma-app/PrismaMobileCommandCenter.tsx",
+        "app/api/mobile/command-center/route.ts",
+        "src/lib/prisma-app"
+      ],
+      "humanIntent": "Change Command Center decisions or signals",
+      "rollback": [
+        "Revert route handler, engine, and component consumer together"
+      ],
+      "routesToReview": [
+        "/prisma-app",
+        "/api/mobile/command-center"
+      ],
+      "verification": [
+        "npm run verify:command-center",
+        "npm run typecheck"
+      ]
+    },
+    {
+      "dependencies": [
+        "Mobile data plane",
+        "External source states"
+      ],
+      "filesToReview": [
+        "src/components/prisma-app/PrismaMobileActionInbox.tsx",
+        "app/api/mobile/action-inbox/route.ts",
+        "src/lib/prisma-app"
+      ],
+      "humanIntent": "Change pending actions or operational recommendations",
+      "rollback": [
+        "Revert route handler, action engine, and UI consumer together"
+      ],
+      "routesToReview": [
+        "/prisma-app",
+        "/api/mobile/action-inbox"
+      ],
+      "verification": [
+        "npm run verify:action-inbox",
+        "Smoke empty and prioritized action states"
+      ]
+    },
+    {
+      "dependencies": [
+        "Daily report/source data from Mobile data plane"
+      ],
+      "filesToReview": [
+        "src/components/prisma-app/PrismaMobileDailyBrief.tsx",
+        "app/api/mobile/daily-brief/route.ts",
+        "src/lib/prisma-app"
+      ],
+      "humanIntent": "Change Daily Brief contents",
+      "rollback": [
+        "Revert daily brief engine, API, and visual consumer"
+      ],
+      "routesToReview": [
+        "/prisma-app",
+        "/api/mobile/daily-brief"
+      ],
+      "verification": [
+        "npm run verify:daily-brief",
+        "Manual density/readability review"
+      ]
+    },
+    {
+      "dependencies": [
+        "Decision/event source contracts"
+      ],
+      "filesToReview": [
+        "src/components/prisma-app/PrismaMobileDecisionLedger.tsx",
+        "app/api/mobile/decision-ledger/route.ts",
+        "src/lib/prisma-app"
+      ],
+      "humanIntent": "Change Decision Ledger behavior",
+      "rollback": [
+        "Revert ledger engine, API, and component"
+      ],
+      "routesToReview": [
+        "/api/mobile/decision-ledger"
+      ],
+      "verification": [
+        "npm run verify:decision-ledger",
+        "Confirm temporal ordering"
+      ]
+    },
+    {
+      "dependencies": [
+        "Pulse/event source contracts"
+      ],
+      "filesToReview": [
+        "src/components/prisma-app/PrismaMobilePulseTimeline.tsx",
+        "app/api/mobile/pulse-timeline/route.ts",
+        "src/lib/prisma-app"
+      ],
+      "humanIntent": "Change Pulse Timeline grouping or chronology",
+      "rollback": [
+        "Revert timeline engine, API, and component"
+      ],
+      "routesToReview": [
+        "/api/mobile/pulse-timeline"
+      ],
+      "verification": [
+        "npm run verify:pulse-timeline",
+        "Confirm order and grouping"
+      ]
+    },
+    {
+      "dependencies": [
+        "Health/source status contracts"
+      ],
+      "filesToReview": [
+        "src/components/prisma-app/PrismaMobileHealthRadar.tsx",
+        "app/api/mobile/health-radar/route.ts",
+        "app/api/mobile/health/route.ts",
+        "src/lib/prisma-app"
+      ],
+      "humanIntent": "Change Health Radar or health status semantics",
+      "rollback": [
+        "Revert health radar route, engine, and component together"
+      ],
+      "routesToReview": [
+        "/api/mobile/health-radar",
+        "/api/mobile/health"
+      ],
+      "verification": [
+        "npm run verify:health-radar",
+        "npm run verify:source-states"
+      ]
+    }
+  ],
+  "generatedFrom": {
+    "inputZip": "ATLAS_CHAT_MOBILE.zip",
+    "mobileSnapshotRoot": "source_snapshot/products/mobile/app",
+    "stagingRoot": "docs/atlas/_incoming/mobile/"
+  },
+  "openQuestions": [
+    "Confirm whether missing PNG PWA assets exist elsewhere in the full monorepo.",
+    "Confirm whether analysis manifests were generated from a different repository state.",
+    "Confirm full-repo source contracts for Tablet and PC data used by Mobile.",
+    "Confirm whether Android and Cloudflare tooling are part of Mobile release ownership or external release coordination."
+  ],
+  "publicAssets": {
+    "confirmedPresent": [
+      "public/icons/prisma-app-icon.svg",
+      "public/icons/prisma-app-maskable.svg",
+      "public/icons/prisma-app-monochrome.svg",
+      "public/icons/prisma_playstore_icon(1).svg",
+      "public/icons/prisma_playstore_icon(2).svg",
+      "public/screenshots/prisma-mobile-pwa-dashboard.png"
+    ],
+    "referencedButMissingInZip": [
+      "public/icons/prisma_playstore_icon_192.png",
+      "public/icons/prisma_playstore_icon_512.png",
+      "public/apple-touch-icon.png",
+      "public/apple-touch-icon-precomposed.png",
+      "public/icons/prisma_ios_touch_icon_180.png",
+      "public/icons/prisma_whatsapp_install_icon.png"
+    ]
+  },
+  "repository": "alanharrryy-wq/hitech-os",
+  "routes": [
+    {
+      "file": "app/page.tsx",
+      "path": "/",
+      "status": "confirmed-in-zip"
+    },
+    {
+      "file": "app/prisma-app/page.tsx",
+      "path": "/prisma-app",
+      "status": "confirmed-in-zip"
+    },
+    {
+      "file": "app/prisma-app/install/page.tsx",
+      "path": "/prisma-app/install",
+      "status": "confirmed-in-zip"
+    },
+    {
+      "file": "app/prisma-app/offline/page.tsx",
+      "path": "/prisma-app/offline",
+      "status": "confirmed-in-zip"
+    }
+  ],
+  "scopeRules": [
+    "No functional code modified.",
+    "Do not stage under products/mobile/app/docs/atlas/ in this upload.",
+    "Do not touch Tablet, PC, or Shared Core files.",
+    "Shared dependencies are external unless physically owned by the Mobile snapshot.",
+    "Do not invent routes, files, or responsibilities not confirmable from the ZIP."
+  ],
+  "sharedDependencies": [
+    {
+      "name": "Shared UI/styles",
+      "ownership": "external-dependency",
+      "status": "referenced-or-required-by-mobile-build-context"
+    },
+    {
+      "name": "Shared Core",
+      "ownership": "external-dependency",
+      "status": "not-mobile-owned"
+    },
+    {
+      "name": "Tablet service",
+      "ownership": "external-dependency",
+      "status": "data-source"
+    },
+    {
+      "name": "PC service",
+      "ownership": "external-dependency",
+      "status": "data-source"
+    },
+    {
+      "name": "Android/Play Store tooling",
+      "ownership": "external-dependency-or-release-tooling",
+      "status": "pending-confirmation"
+    },
+    {
+      "name": "Cloudflare/infra tooling",
+      "ownership": "external-dependency-or-release-tooling",
+      "status": "pending-confirmation"
+    }
+  ],
+  "status": "staged",
+  "surfaces": [
+    "src/components/prisma-app/PrismaMobileDashboard.tsx",
+    "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx",
+    "src/components/prisma-app/PrismaMobileCommandCenter.tsx",
+    "src/components/prisma-app/PrismaMobileActionInbox.tsx",
+    "src/components/prisma-app/PrismaMobileDailyBrief.tsx",
+    "src/components/prisma-app/PrismaMobileDecisionLedger.tsx",
+    "src/components/prisma-app/PrismaMobilePulseTimeline.tsx",
+    "src/components/prisma-app/PrismaMobileHealthRadar.tsx",
+    "src/components/prisma-app/PrismaMobilePwaInstallCard.tsx",
+    "src/components/prisma-app/PrismaMobilePwaRuntime.tsx"
+  ],
+  "verification": {
+    "confirmed": [
+      {
+        "command": "npm run verify:release-hardening",
+        "result": "pass-in-round-2-review"
+      },
+      {
+        "command": "JSON.parse(atlas.mobile.json)",
+        "result": "pass-before-staging"
+      }
+    ],
+    "knownFailuresOrLimitations": [
+      {
+        "command": "npm run verify:pwa",
+        "reason": "Referenced PNG assets are missing from the ZIP snapshot.",
+        "result": "expected-fail-from-zip"
+      },
+      {
+        "command": "Full release checks from extracted ZIP only",
+        "reason": "ZIP is not confirmed to be a self-contained full monorepo checkout.",
+        "result": "limited"
+      }
+    ],
+    "recommendedFullRepoChecks": [
+      "npm run typecheck",
+      "npm run build",
+      "npm run verify:pwa",
+      "npm run verify:release-hardening",
+      "npm run verify:premium-navigation",
+      "npm run verify:data-plane-types",
+      "npm run verify:runtime-error-guard"
+    ]
+  },
+  "version": "round-2"
+}
