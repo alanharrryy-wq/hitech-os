@@ -4,7 +4,7 @@
   "app": "pc",
   "root": "products/pc/app",
   "version": "atlas.pc.initial.v1",
-  "summary": "Initial PC atlas generated from ATLAS_CHAT_PC.zip and staged only under docs/atlas/_incoming/pc/. PC is documented as the backoffice/governance surface. Prisma canonical schema, Shared Core, twin-kernel, licensing, tri-db and Visual OS shared layers are external dependencies, not PC-owned implementation.",
+  "summary": "Initial PC atlas generated from ATLAS_CHAT_PC.zip and staged only under docs/atlas/_incoming/pc/. PC is documented as the backoffice/governance surface. Prisma canonical schema, Shared Core, twin-kernel, licensing, tri-db, Shared UI and global Visual OS layers are external dependencies, not PC-owned implementation.",
   "surfaces": [
     {
       "id": "pc.surface.visible-routes",
@@ -12,58 +12,53 @@
       "count": 47,
       "evidence": "analysis/routes_and_apis.json and source_snapshot/products/pc/app/app/**/page.tsx",
       "routes": [
-        "/",
         "/acciones-masivas",
         "/ajustes-inventario",
         "/alertas-ejecutivas",
-        "/auditoria",
-        "/auditoria-operativa",
-        "/catalogo",
-        "/catalogo-global",
-        "/catalogo-global-v2",
-        "/catalogo-multisucursal",
-        "/compras",
-        "/compras-inteligentes",
-        "/conteos",
-        "/conteos-ciclicos",
-        "/cortes-caja",
+        "/alertas-operativas",
+        "/audit",
+        "/auditoria-inventario",
+        "/catalog",
+        "/catalogo-activo",
+        "/conteos-operativos",
+        "/contratos-reporte",
+        "/counts",
         "/dashboard",
-        "/historial-conteos",
-        "/inventario",
-        "/kpis",
-        "/licencias",
-        "/mermas",
-        "/notificaciones",
-        "/operacion",
-        "/operacion-dashboard",
-        "/operaciones",
-        "/ordenes",
+        "/detalle-registros",
+        "/estados-operativos",
+        "/existencias-criticas",
+        "/exportables",
+        "/filtros-avanzados",
+        "/filtros-fecha",
+        "/forecast-basico",
+        "/glosario",
+        "/gobierno",
+        "/incidencias-recepcion",
+        "/integridad-barcodes",
+        "/metricas-dia",
+        "/movements",
+        "/ordenes-compra",
+        "/outbox-operativo",
+        "/",
+        "/politica-precios",
         "/proveedores",
-        "/proveedores-analytics",
-        "/proveedores-calidad",
-        "/proveedores-compras",
-        "/proveedores-eventos",
-        "/proveedores-historial",
-        "/proveedores-lifecycle",
-        "/proveedores-lista",
-        "/proveedores-matriz",
-        "/proveedores-recepcion",
-        "/proveedores-reconciliacion",
-        "/proveedores-reportes",
-        "/proveedores-sugerencias",
-        "/reabasto",
-        "/recepcion",
-        "/reportes-exportables",
-        "/roles-permisos",
+        "/purchasing",
+        "/receiving",
+        "/recepcion-proveedor",
+        "/referencia-visual",
+        "/replenishment",
+        "/salud-barcodes",
+        "/scorecards-negocio",
+        "/senal-reabasto",
+        "/settings/license",
         "/settings",
         "/stock",
-        "/stock-historial",
-        "/stock-sucursal",
         "/sync",
-        "/sync-health",
-        "/transferencias",
-        "/usuarios-sesiones",
-        "/vistas-globales"
+        "/sync-operativo",
+        "/tablas-operativas",
+        "/tablero-kpi",
+        "/validacion-catalogo",
+        "/vistas-ejecutivas"
       ],
       "status": "confirmed_from_zip"
     },
@@ -73,42 +68,42 @@
       "count": 36,
       "evidence": "analysis/routes_and_apis.json and source_snapshot/products/pc/app/app/api/**/route.ts",
       "routes": [
+        "/api/backoffice/audit/recent",
+        "/api/backoffice/audit",
         "/api/backoffice/catalog",
+        "/api/backoffice/counts",
+        "/api/backoffice/dashboard",
+        "/api/backoffice/movements",
+        "/api/backoffice/purchasing",
+        "/api/backoffice/receiving",
+        "/api/backoffice/replenishment",
         "/api/backoffice/stock",
+        "/api/backoffice/sync/conflicts",
+        "/api/backoffice/sync/ingest",
         "/api/backoffice/sync",
-        "/api/catalog/brands",
-        "/api/catalog/categories",
-        "/api/catalog/export",
-        "/api/catalog/productos",
-        "/api/catalog/quality",
-        "/api/catalog/tags",
-        "/api/dashboard/summary",
-        "/api/inventory/adjustments",
-        "/api/inventory/counts",
-        "/api/inventory/movements",
-        "/api/inventory/reorder",
-        "/api/inventory/snapshots",
-        "/api/purchases/orders",
-        "/api/purchases/receptions",
-        "/api/reorder/suggestions",
-        "/api/settings",
-        "/api/settings/licenses",
-        "/api/settings/users",
-        "/api/suppliers",
-        "/api/suppliers/export",
-        "/api/suppliers/health",
-        "/api/suppliers/import",
-        "/api/suppliers/orders",
-        "/api/suppliers/payments",
-        "/api/suppliers/receptions",
-        "/api/suppliers/recommendations",
-        "/api/suppliers/simulate",
-        "/api/sync/conflicts",
-        "/api/sync/duplicates",
+        "/api/license/features/[key]",
+        "/api/license/features",
+        "/api/license/refresh",
+        "/api/license/refresh/status",
+        "/api/license/status",
+        "/api/proveedores/auditoria",
+        "/api/proveedores/calendario",
+        "/api/proveedores/calidad-datos",
+        "/api/proveedores/compra-inteligente/crear-pedido",
+        "/api/proveedores/compra-inteligente",
+        "/api/proveedores/compra-inteligente/simular",
+        "/api/proveedores/cuentas-pagar/registrar-pago",
+        "/api/proveedores/cuentas-pagar",
+        "/api/proveedores/exportables",
+        "/api/proveedores/inventario",
+        "/api/proveedores/operacion",
+        "/api/proveedores/pedidos",
+        "/api/proveedores/qa/escenarios",
+        "/api/proveedores/recepciones/confirmar",
+        "/api/proveedores/recepciones",
+        "/api/proveedores/senales",
         "/api/sync/ingest",
-        "/api/sync/queue",
-        "/api/sync/rejected",
-        "/api/sync/status"
+        "/api/sync/tri-db/run"
       ],
       "status": "confirmed_from_zip"
     },
@@ -151,7 +146,7 @@
         ]
       },
       "verification": {
-        "method": "Canonical schema fields present; JSON validated against templates/prisma-atlas.schema.json before staging; GitHub paths restricted to docs/atlas/_incoming/pc/."
+        "method": "Canonical schema fields present; JSON checked against templates/prisma-atlas.schema.json before staging; GitHub paths restricted to docs/atlas/_incoming/pc/."
       },
       "risk": "low",
       "rollback": {
@@ -206,49 +201,70 @@
       "files": [
         "products/pc/app/src/server/services/catalog.service.ts",
         "products/pc/app/src/server/repositories/catalog.repository.ts",
+        "products/pc/app/src/server/repositories/product-repository.prisma.ts",
+        "products/pc/app/src/server/repositories/barcode-repository.prisma.ts",
         "products/pc/app/src/server/validators/catalog-quality.ts"
       ],
+      "routes": [
+        "/catalog",
+        "/catalogo-activo",
+        "/validacion-catalogo",
+        "/integridad-barcodes",
+        "/salud-barcodes"
+      ],
       "apis": [
-        "/api/catalog/brands",
-        "/api/catalog/categories",
-        "/api/catalog/export",
-        "/api/catalog/productos",
-        "/api/catalog/quality",
-        "/api/catalog/tags",
         "/api/backoffice/catalog"
       ],
       "status": "confirmed_from_zip"
     },
     {
-      "id": "pc.engine.inventory",
+      "id": "pc.engine.inventory-stock-counts",
       "kind": "backoffice_domain",
       "files": [
         "products/pc/app/src/server/services/inventory-ledger.service.ts",
         "products/pc/app/src/server/repositories/inventory.repository.ts",
+        "products/pc/app/src/server/repositories/stock-repository.prisma.ts",
+        "products/pc/app/src/server/repositories/audit-repository.prisma.ts",
         "products/pc/app/src/server/validators/inventory-integrity.ts"
       ],
+      "routes": [
+        "/stock",
+        "/movements",
+        "/counts",
+        "/auditoria-inventario",
+        "/conteos-operativos"
+      ],
       "apis": [
-        "/api/inventory/adjustments",
-        "/api/inventory/counts",
-        "/api/inventory/movements",
-        "/api/inventory/reorder",
-        "/api/inventory/snapshots",
-        "/api/backoffice/stock"
+        "/api/backoffice/stock",
+        "/api/backoffice/movements",
+        "/api/backoffice/counts",
+        "/api/backoffice/audit",
+        "/api/backoffice/audit/recent"
       ],
       "status": "confirmed_from_zip"
     },
     {
-      "id": "pc.engine.purchases-receiving-reorder",
+      "id": "pc.engine.procurement-receiving-replenishment",
       "kind": "backoffice_domain",
       "files": [
-        "products/pc/app/src/server/services/purchase.service.ts",
-        "products/pc/app/src/server/repositories/purchase.repository.ts",
-        "products/pc/app/src/server/validators/purchase-integrity.ts"
+        "products/pc/app/src/server/repositories/purchase-order-repository.prisma.ts",
+        "products/pc/app/src/server/repositories/operation.repository.ts",
+        "products/pc/app/src/server/validators/procurement-integrity.ts"
+      ],
+      "routes": [
+        "/purchasing",
+        "/receiving",
+        "/replenishment",
+        "/ordenes-compra",
+        "/recepcion-proveedor",
+        "/incidencias-recepcion",
+        "/forecast-basico",
+        "/senal-reabasto"
       ],
       "apis": [
-        "/api/purchases/orders",
-        "/api/purchases/receptions",
-        "/api/reorder/suggestions"
+        "/api/backoffice/purchasing",
+        "/api/backoffice/receiving",
+        "/api/backoffice/replenishment"
       ],
       "status": "confirmed_from_zip"
     },
@@ -256,35 +272,51 @@
       "id": "pc.engine.dashboard-operation-kpis",
       "kind": "backoffice_domain",
       "files": [
-        "products/pc/app/src/server/services/dashboard.service.ts",
-        "products/pc/app/src/server/services/kpi-formulas.ts",
         "products/pc/app/src/server/services/operation-control.service.ts",
-        "products/pc/app/src/server/repositories/dashboard.repository.ts",
+        "products/pc/app/src/server/services/kpi-formulas.ts",
         "products/pc/app/src/server/repositories/operation.repository.ts"
       ],
+      "routes": [
+        "/dashboard",
+        "/metricas-dia",
+        "/tablero-kpi",
+        "/scorecards-negocio",
+        "/vistas-ejecutivas",
+        "/alertas-ejecutivas",
+        "/alertas-operativas"
+      ],
       "apis": [
-        "/api/dashboard/summary"
+        "/api/backoffice/dashboard"
       ],
       "status": "confirmed_from_zip"
     },
     {
-      "id": "pc.engine.sync",
-      "kind": "sync_and_reconciliation",
+      "id": "pc.engine.sync-and-tri-db",
+      "kind": "sync_and_external_tri_db",
       "files": [
-        "products/pc/app/src/server/repositories/sync.repository.ts",
-        "products/pc/app/src/server/sync/**",
-        "products/pc/app/src/lib/sync-ingest/**"
+        "products/pc/app/src/server/services/sync-ingest.service.ts",
+        "products/pc/app/src/server/services/sync-release.service.ts",
+        "products/pc/app/src/server/services/tri-db-command.service.ts",
+        "products/pc/app/src/server/services/tri-db-status.service.ts",
+        "products/pc/app/src/server/repositories/outbox-repository.prisma.ts",
+        "products/pc/app/src/server/sync/events.ts",
+        "products/pc/app/src/server/sync/outbox.ts",
+        "products/pc/app/src/server/validators/sync-event-contract.ts"
+      ],
+      "routes": [
+        "/sync",
+        "/sync-operativo",
+        "/outbox-operativo"
       ],
       "apis": [
-        "/api/sync/conflicts",
-        "/api/sync/duplicates",
+        "/api/backoffice/sync",
+        "/api/backoffice/sync/conflicts",
+        "/api/backoffice/sync/ingest",
         "/api/sync/ingest",
-        "/api/sync/queue",
-        "/api/sync/rejected",
-        "/api/sync/status",
-        "/api/backoffice/sync"
+        "/api/sync/tri-db/run"
       ],
-      "externalContracts": [
+      "externalDependencies": [
+        "shared/tri-db",
         "global_context/docs/contracts/EVENT_CONTRACT.md",
         "global_context/docs/contracts/SYNC_RECONCILIATION_CONTRACT.md"
       ],
@@ -292,36 +324,52 @@
     },
     {
       "id": "pc.engine.suppliers",
-      "kind": "supplier_lifecycle_and_purchasing",
+      "kind": "supplier_lifecycle_and_smart_purchase",
       "files": [
         "products/pc/app/src/lib/suppliers/**",
         "products/pc/app/components/suppliers/**"
       ],
+      "routes": [
+        "/proveedores"
+      ],
       "apis": [
-        "/api/suppliers",
-        "/api/suppliers/export",
-        "/api/suppliers/health",
-        "/api/suppliers/import",
-        "/api/suppliers/orders",
-        "/api/suppliers/payments",
-        "/api/suppliers/receptions",
-        "/api/suppliers/recommendations",
-        "/api/suppliers/simulate"
+        "/api/proveedores/auditoria",
+        "/api/proveedores/calendario",
+        "/api/proveedores/calidad-datos",
+        "/api/proveedores/compra-inteligente/crear-pedido",
+        "/api/proveedores/compra-inteligente",
+        "/api/proveedores/compra-inteligente/simular",
+        "/api/proveedores/cuentas-pagar/registrar-pago",
+        "/api/proveedores/cuentas-pagar",
+        "/api/proveedores/exportables",
+        "/api/proveedores/inventario",
+        "/api/proveedores/operacion",
+        "/api/proveedores/pedidos",
+        "/api/proveedores/qa/escenarios",
+        "/api/proveedores/recepciones/confirmar",
+        "/api/proveedores/recepciones",
+        "/api/proveedores/senales"
       ],
       "status": "confirmed_from_zip"
     },
     {
-      "id": "pc.engine.settings-licensing",
+      "id": "pc.engine.licensing-settings",
       "kind": "admin_and_feature_gates",
       "files": [
-        "products/pc/app/src/server/repositories/settings.repository.ts",
-        "products/pc/app/src/server/validators/settings-integrity.ts",
-        "products/pc/app/src/server/licensing/**"
+        "products/pc/app/src/server/licensing/pc-license-api.ts",
+        "products/pc/app/src/server/licensing/pc-license-refresh.ts",
+        "products/pc/app/src/server/licensing/pc-license-service.ts"
+      ],
+      "routes": [
+        "/settings",
+        "/settings/license"
       ],
       "apis": [
-        "/api/settings",
-        "/api/settings/licenses",
-        "/api/settings/users"
+        "/api/license/features/[key]",
+        "/api/license/features",
+        "/api/license/refresh",
+        "/api/license/refresh/status",
+        "/api/license/status"
       ],
       "externalDependencies": [
         "shared/licensing"
@@ -392,6 +440,7 @@
         "dependencies": {
           "next": "16.1.6",
           "react": "18.3.1",
+          "react-dom": "18.3.1",
           "@prisma/client": "5.21.1",
           "zod": "3.23.8"
         },
@@ -491,13 +540,13 @@
       "name": "shared/licensing",
       "classification": "external_shared_dependency",
       "pcOwnership": "none",
-      "evidence": "licensing references and settings/licenses surfaces"
+      "evidence": "licensing references and API license surfaces"
     },
     {
       "name": "shared/tri-db",
       "classification": "external_global_dependency",
       "pcOwnership": "none",
-      "evidence": "shared dependency hits and runtime/delivery references"
+      "evidence": "tri-db services and sync/tri-db API route"
     },
     {
       "name": "shared-ui/prisma and styles/prisma-visual-os",
@@ -526,7 +575,8 @@
       "Canonical JSON schema applied.",
       "Staging-only GitHub path applied.",
       "External dependencies classified as external.",
-      "Missing public assets documented as open issue instead of invented."
+      "Missing public assets documented as open issue instead of invented.",
+      "Routes and APIs corrected against analysis/routes_and_apis.json."
     ],
     "openQuestions": [
       "Confirm canonical Prisma schema and migration source outside the ZIP.",
