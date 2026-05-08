@@ -5,59 +5,44 @@ Fuente única: `ATLAS_CHAT_PC.zip`
 
 ## Alcance
 
-Este documento registra motores, servicios, repositorios, validadores y flujos funcionales confirmados en PC. No modifica código y no atribuye ownership a Shared Core, Prisma canónico, twin-kernel, licensing ni tri-db.
+Registra motores, servicios, repositorios, validadores y flujos funcionales confirmados dentro de `source_snapshot/products/pc/app`. No atribuye ownership a Prisma canónico, Shared Core, twin-kernel, licensing ni tri-db.
 
 ## Mapa funcional general
 
 ```text
 UI PC Backoffice
   -> API routes Next
-  -> servicios server-side
+  -> servicios server-side / lib services
   -> repositorios Prisma
-  -> Prisma client / schema canónico externo
-
-UI PC Backoffice
-  -> src/lib/*
-  -> motores de dominio, datasets de pantalla y clientes API
+  -> Prisma Client / dependencias externas
 ```
-
-## Motores por dominio
-
-| Dominio | Evidencia principal | Responsabilidad PC confirmada |
-|---|---|---|
-| Catálogo | `src/server/services/catalog.service.ts`, `src/server/repositories/catalog.repository.ts` | Workspace de catálogo, productos, categorías, calidad y exportación |
-| Inventario | `src/server/services/inventory-ledger.service.ts`, `src/server/repositories/inventory.repository.ts` | Snapshots, movimientos, conteos, ajustes y reorder |
-| Compras | `src/server/services/purchase.service.ts`, `src/server/repositories/purchase.repository.ts` | Órdenes, recepciones y sugerencias de compra |
-| Operación | `src/server/services/operation-control.service.ts`, `src/server/repositories/operation.repository.ts` | Control operativo de backoffice |
-| Dashboard/KPI | `src/server/services/dashboard.service.ts`, `src/server/services/kpi-formulas.ts`, `src/server/repositories/dashboard.repository.ts` | Resumen ejecutivo, métricas y fórmulas KPI |
-| Sync | `src/server/sync/**`, `src/lib/sync-ingest/**`, `src/server/repositories/sync.repository.ts` | Ingest, queue, conflicts, duplicates, rejected y status |
-| Proveedores | `src/lib/suppliers/**`, `/api/suppliers/**` | Recomendaciones, lifecycle, recepción, pagos, import/export, simulación y calidad |
-| Settings/licencias | `src/server/repositories/settings.repository.ts`, `src/server/licensing/**` | Configuración PC, usuarios y feature gates hacia licensing externo |
-
-## Repositorios server confirmados
-
-| Archivo | Evidencia funcional |
-|---|---|
-| `products/pc/app/src/server/repositories/catalog.repository.ts` | Métodos para productos y categorías; usa Prisma |
-| `products/pc/app/src/server/repositories/inventory.repository.ts` | Snapshots, movimientos, conteos; usa modelos de inventario/auditoría |
-| `products/pc/app/src/server/repositories/purchase.repository.ts` | Compras, recepciones y sugerencias |
-| `products/pc/app/src/server/repositories/operation.repository.ts` | Superficies operativas |
-| `products/pc/app/src/server/repositories/dashboard.repository.ts` | Resumen de dashboard |
-| `products/pc/app/src/server/repositories/settings.repository.ts` | Settings, usuarios y licencias |
-| `products/pc/app/src/server/repositories/sync.repository.ts` | Estado, queue, conflictos y rejected |
-| `products/pc/app/src/server/repositories/audit-repository.prisma.ts` | Conteos/auditoría |
-| `products/pc/app/src/server/repositories/barcode-repository.prisma.ts` | Barcodes recientes |
 
 ## Servicios server confirmados
 
-| Archivo | Rol |
+| Archivo | Rol confirmado por ubicación/nombre |
 |---|---|
-| `src/server/services/catalog.service.ts` | Construcción del workspace de catálogo |
-| `src/server/services/inventory-ledger.service.ts` | Construcción del workspace de inventario |
-| `src/server/services/purchase.service.ts` | Órdenes, recepciones y compras |
-| `src/server/services/operation-control.service.ts` | Vista/estado operativo |
-| `src/server/services/dashboard.service.ts` | Dashboard y resumen |
+| `src/server/services/catalog.service.ts` | Workspace/servicio catálogo |
+| `src/server/services/inventory-ledger.service.ts` | Workspace/ledger inventario |
 | `src/server/services/kpi-formulas.ts` | Fórmulas KPI y helpers de formato |
+| `src/server/services/operation-control.service.ts` | Workspace/control operativo |
+| `src/server/services/sync-ingest.service.ts` | Ingest de eventos sync |
+| `src/server/services/sync-release.service.ts` | Release/estado sync |
+| `src/server/services/tri-db-command.service.ts` | Comandos tri-db, dependencia externa/global |
+| `src/server/services/tri-db-status.service.ts` | Estado tri-db, dependencia externa/global |
+
+## Repositorios Prisma confirmados
+
+| Archivo | Rol confirmado |
+|---|---|
+| `src/server/repositories/audit-repository.prisma.ts` | Auditoría/conteos |
+| `src/server/repositories/barcode-repository.prisma.ts` | Barcodes |
+| `src/server/repositories/catalog.repository.ts` | Catálogo |
+| `src/server/repositories/inventory.repository.ts` | Inventario, movimientos y conteos |
+| `src/server/repositories/operation.repository.ts` | Operación/backoffice |
+| `src/server/repositories/outbox-repository.prisma.ts` | Outbox/sync |
+| `src/server/repositories/product-repository.prisma.ts` | Producto |
+| `src/server/repositories/purchase-order-repository.prisma.ts` | Órdenes de compra |
+| `src/server/repositories/stock-repository.prisma.ts` | Stock |
 
 ## Validadores server confirmados
 
@@ -65,95 +50,110 @@ UI PC Backoffice
 |---|---|
 | `src/server/validators/catalog-quality.ts` | Calidad de catálogo |
 | `src/server/validators/inventory-integrity.ts` | Integridad de inventario |
-| `src/server/validators/purchase-integrity.ts` | Integridad de compras/recepción |
-| `src/server/validators/settings-integrity.ts` | Integridad de settings/licencias |
+| `src/server/validators/procurement-integrity.ts` | Integridad procurement/compras |
+| `src/server/validators/sync-event-contract.ts` | Contrato/validación de eventos sync |
+
+## Motores por dominio
+
+| Dominio | Evidencia principal | API/rutas relacionadas |
+|---|---|---|
+| Catálogo | `catalog.service.ts`, `catalog.repository.ts`, `product-repository.prisma.ts`, `barcode-repository.prisma.ts`, `catalog-quality.ts` | `/catalog`, `/catalogo-activo`, `/api/backoffice/catalog` |
+| Inventario/stock | `inventory-ledger.service.ts`, `inventory.repository.ts`, `stock-repository.prisma.ts`, `inventory-integrity.ts` | `/stock`, `/movements`, `/counts`, `/api/backoffice/stock`, `/api/backoffice/movements`, `/api/backoffice/counts` |
+| Auditoría | `audit-repository.prisma.ts`, `inventory.repository.ts` | `/audit`, `/auditoria-inventario`, `/api/backoffice/audit`, `/api/backoffice/audit/recent` |
+| Operación/dashboard | `operation-control.service.ts`, `kpi-formulas.ts`, `operation.repository.ts` | `/dashboard`, `/metricas-dia`, `/tablero-kpi`, `/api/backoffice/dashboard` |
+| Procurement | `purchase-order-repository.prisma.ts`, `procurement-integrity.ts`, libs procurement | `/purchasing`, `/receiving`, `/replenishment`, `/api/backoffice/purchasing`, `/api/backoffice/receiving`, `/api/backoffice/replenishment` |
+| Sync | `sync-ingest.service.ts`, `sync-release.service.ts`, `outbox-repository.prisma.ts`, `src/server/sync/**`, `sync-event-contract.ts` | `/sync`, `/sync-operativo`, `/outbox-operativo`, `/api/sync/ingest`, `/api/backoffice/sync*` |
+| Tri-db | `tri-db-command.service.ts`, `tri-db-status.service.ts` | `/api/sync/tri-db/run`; external/global dependency |
+| Licencia | `src/server/licensing/pc-license-api.ts`, `pc-license-refresh.ts`, `pc-license-service.ts` | `/settings/license`, `/api/license/*`; depends on `shared/licensing` |
+| Proveedores | `src/lib/suppliers/**`, `components/suppliers/**` | `/proveedores`, `/api/proveedores/**` |
 
 ## Motor de proveedores
 
-La familia `src/lib/suppliers/**` es el bloque funcional más amplio detectado. Está orientada a lifecycle, políticas, recomendaciones, recepción, órdenes, pagos, exportación, importación, simulación y calidad.
+La familia `src/lib/suppliers/**` es un bloque funcional amplio. Evidencias por nombre de archivo y verificadores:
 
-| Pieza detectada | Rol probable confirmado por nombre/uso |
+| Pieza | Rol |
 |---|---|
-| `lifecycle-scenarios.ts` | Escenarios de vida de proveedor |
-| `lifecycle-validator.ts` | Validación de transiciones |
-| `transition-policy.ts` | Políticas de transición |
-| `event-catalog.ts` | Catálogo de eventos de proveedores |
-| `prisma-mapping.ts` | Mapeo hacia persistencia Prisma |
 | `action-reducer.ts` | Reducción de acciones/eventos |
-| `repository-contract.ts` | Contrato de repositorio de proveedores |
-| `in-memory-repository.ts` | Repositorio en memoria para fixtures/tests |
+| `client-persistence.ts` | Persistencia cliente |
 | `data-quality.ts` | Calidad de datos |
+| `event-catalog.ts` | Catálogo de eventos |
 | `export-contracts.ts` | Contratos de exportación |
+| `in-memory-repository.ts` | Repositorio en memoria para escenarios/tests |
+| `lifecycle-scenarios.ts` | Escenarios lifecycle |
+| `lifecycle-validator.ts` | Validación lifecycle |
+| `prisma-mapping.ts` | Mapeo hacia persistencia Prisma |
+| `repository-contract.ts` | Contrato de repositorio |
+| `transition-policy.ts` | Política de transiciones |
 
-### APIs de proveedores
+### APIs proveedores confirmadas
 
-| API | Responsabilidad |
+- `/api/proveedores/auditoria`
+- `/api/proveedores/calendario`
+- `/api/proveedores/calidad-datos`
+- `/api/proveedores/compra-inteligente`
+- `/api/proveedores/compra-inteligente/crear-pedido`
+- `/api/proveedores/compra-inteligente/simular`
+- `/api/proveedores/cuentas-pagar`
+- `/api/proveedores/cuentas-pagar/registrar-pago`
+- `/api/proveedores/exportables`
+- `/api/proveedores/inventario`
+- `/api/proveedores/operacion`
+- `/api/proveedores/pedidos`
+- `/api/proveedores/qa/escenarios`
+- `/api/proveedores/recepciones`
+- `/api/proveedores/recepciones/confirmar`
+- `/api/proveedores/senales`
+
+## Sync y tri-db
+
+PC confirma superficies y servicios sync, pero el contrato global de eventos y tri-db queda externo.
+
+| Elemento | Clasificación |
 |---|---|
-| `/api/suppliers` | Superficie base de proveedores |
-| `/api/suppliers/recommendations` | Recomendaciones |
-| `/api/suppliers/orders` | Órdenes |
-| `/api/suppliers/receptions` | Recepción |
-| `/api/suppliers/payments` | Pagos |
-| `/api/suppliers/import` | Importación |
-| `/api/suppliers/export` | Exportación |
-| `/api/suppliers/simulate` | Simulación |
-| `/api/suppliers/health` | Salud/calidad |
-
-## Motor de sync
-
-### Responsabilidades PC confirmadas
-
-- Ingest de payloads sync.
-- Clasificación de duplicados.
-- Gestión de conflictos.
-- Cola/rejected/status.
-- Exposición de rutas para observabilidad de sync.
-
-### Dependencias externas
-
-El contrato de eventos y reconciliación global queda fuera de PC. El ZIP incluye `global_context/docs/contracts/EVENT_CONTRACT.md` y `SYNC_RECONCILIATION_CONTRACT.md` como contexto global, no como implementación PC.
+| `sync-ingest.service.ts` | Servicio PC |
+| `sync-release.service.ts` | Servicio PC |
+| `outbox-repository.prisma.ts` | Repositorio PC |
+| `src/server/sync/events.ts`, `outbox.ts` | Soporte server PC |
+| `tri-db-command.service.ts`, `tri-db-status.service.ts` | Servicios PC que consumen dependencia externa/global |
+| `shared/tri-db` | Dependencia externa/global |
 
 ## Licenciamiento
 
-`src/server/licensing/**` y `/api/settings/licenses` confirman gates/licencias en PC. Sin embargo, la fuente de verdad de licensing está referenciada como `shared/licensing`, por tanto:
+`src/server/licensing/**` confirma adaptación PC para licencia:
 
-- PC puede aplicar gates y mostrar estado.
-- PC no posee el contrato global de licencias.
-- Las reglas finales de licensing quedan pendientes de dependencia externa.
+- `pc-license-api.ts`
+- `pc-license-refresh.ts`
+- `pc-license-service.ts`
+
+La fuente de reglas/licensing core se mantiene externa: `shared/licensing`.
 
 ## Prisma y persistencia
 
-### Confirmado
+Confirmado:
 
 - PC usa `@prisma/client`.
-- PC tiene repositorios Prisma.
+- PC tiene repositorios `.prisma.ts` y repositorios server.
 - `src/server/prisma/client.ts` centraliza cliente/fallback runtime.
-- `products/pc/app/prisma/schema.prisma` existe en el snapshot.
+- `products/pc/app/prisma/schema.prisma` existe en snapshot.
 
-### Pendiente
+Pendiente:
 
-- El schema local aparece como stub/transicional.
-- Los scripts apuntan a Prisma canónico externo.
-- El schema canónico y migraciones reales deben confirmarse en repo completo.
-
-## Fixtures y escenarios
-
-`fixtures/**` contiene material de QA para catálogo, inventario, compras, dashboard, runtime, sync y proveedores. Estos fixtures respaldan el atlas como evidencia de comportamiento esperado, pero no sustituyen ejecución real.
+- Schema canónico real fuera del ZIP.
+- Migraciones reales.
+- Disponibilidad de DB completa.
 
 ## Verificadores funcionales
 
-Se detectan 34 herramientas/verificadores en `tools/**`, incluyendo package validator, smoke routes, runtime checks, suppliers lifecycle scenarios, sync y verificadores PC por iteración.
+Se detectan 34 herramientas/verificadores, incluyendo:
+
+- `tools/validate_package.py`
+- `tools/smoke_pc_i01_routes.mjs`
+- `tools/run_pc_suppliers_lifecycle_scenarios_02.mjs`
+- `tools/verify_pc_catalog_02.mjs`
+- `tools/verify_pc_stock_counts_audit_03.mjs`
+- `tools/verify_pc_sync_ingest_06.mjs`
+- verificadores suppliers, dashboard, visual, runtime y registry.
 
 ## Límites de inferencia
 
-No se puede afirmar desde el ZIP:
-
-- Que todos los servicios compilen en repo completo.
-- Que la base canónica esté disponible.
-- Que las migraciones estén aplicadas.
-- Que todos los endpoints respondan en runtime.
-- Que los gates de licencia estén conectados a datos reales.
-
-## Corrección de Ronda 1
-
-En esta ronda, los motores funcionales no se documentan como “mágicos” ni como propiedad global. Cada bloque queda amarrado a archivos de PC o marcado como dependencia externa. Es la diferencia entre decir “la cocina hace comida” y señalar quién trae la tortilla, quién prende el comal y quién cobra, chingón pero con recibo.
+No se afirma pass de compilación ni runtime porque el ZIP no incluye dependencias externas. Motores y responsabilidades se declaran por evidencia de archivos, imports, rutas y nombres confirmados, no por ejecución final.
