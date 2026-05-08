@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "artifact": "mobile-atlas-round-2-staging",
+  "branch": "atlas-coordinator",
+  "files": [
+    {
+      "kind": "atlas-overview",
+      "path": "docs/atlas/_incoming/mobile/ATLAS_MOBILE.md"
+    },
+    {
+      "kind": "atlas-visual",
+      "path": "docs/atlas/_incoming/mobile/ATLAS_MOBILE_VISUAL.md"
+    },
+    {
+      "kind": "atlas-interaction",
+      "path": "docs/atlas/_incoming/mobile/ATLAS_MOBILE_INTERACTION.md"
+    },
+    {
+      "kind": "atlas-functional-engines",
+      "path": "docs/atlas/_incoming/mobile/ATLAS_MOBILE_FUNCTIONAL_ENGINES.md"
+    },
+    {
+      "kind": "atlas-runtime-delivery",
+      "path": "docs/atlas/_incoming/mobile/ATLAS_MOBILE_RUNTIME_DELIVERY.md"
+    },
+    {
+      "kind": "machine-readable-atlas",
+      "path": "docs/atlas/_incoming/mobile/atlas.mobile.json"
+    },
+    {
+      "kind": "result-summary",
+      "path": "docs/atlas/_incoming/mobile/RESULT_SUMMARY.md"
+    },
+    {
+      "kind": "file-manifest",
+      "path": "docs/atlas/_incoming/mobile/FILE_MANIFEST.json"
+    },
+    {
+      "kind": "open-questions",
+      "path": "docs/atlas/_incoming/mobile/OPEN_QUESTIONS.md"
+    },
+    {
+      "kind": "coverage-notes",
+      "path": "docs/atlas/_incoming/mobile/COVERAGE_NOTES.md"
+    }
+  ],
+  "repository": "alanharrryy-wq/hitech-os",
+  "rulesApplied": [
+    "No functional code modified.",
+    "No files staged under products/mobile/app/docs/atlas/.",
+    "No Tablet, PC, or Shared Core files touched.",
+    "All files staged only under docs/atlas/_incoming/mobile/.",
+    "Shared dependencies documented only as external dependencies.",
+    "Routes and ownership not confirmed by the ZIP are marked pending instead of invented."
+  ],
+  "stagingRoot": "docs/atlas/_incoming/mobile/"
+}
