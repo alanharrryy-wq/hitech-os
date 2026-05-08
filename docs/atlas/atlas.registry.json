@@ -1,0 +1,24 @@
+{
+  "registryId": "ATLAS_REGISTRY_COORDINATED_R2",
+  "status": "promoted_from_incoming_with_warnings",
+  "branch": "atlas-coordinator",
+  "pullRequest": 69,
+  "atlases": [
+    {"app":"mobile","root":"products/mobile/app","finalPath":"products/mobile/app/docs/atlas/atlas.mobile.json","incomingPath":"docs/atlas/_incoming/mobile/atlas.mobile.json","coordinatorAction":"normalized_required_schema_fields"},
+    {"app":"tablet","root":"products/tablet/app","finalPath":"products/tablet/app/docs/atlas/atlas.tablet.json","incomingPath":"docs/atlas/_incoming/tablet/atlas.tablet.json","coordinatorAction":"normalized_required_schema_fields"},
+    {"app":"pc","root":"products/pc/app","finalPath":"products/pc/app/docs/atlas/atlas.pc.json","incomingPath":"docs/atlas/_incoming/pc/atlas.pc.json","coordinatorAction":"promoted_as_canonical"},
+    {"app":"shared","root":"apps/terminal-de-venta-system","finalPath":"docs/atlas/atlas.shared-core.json","incomingPath":"docs/atlas/_incoming/shared-core/atlas.shared-core.json","coordinatorAction":"promoted_as_canonical"}
+  ],
+  "warnings": [
+    "Mobile PWA/release assets remain unresolved.",
+    "Tablet release remains blocked by verify:i03a-ticket-detail and verify:04-offline.",
+    "PC full build and package checks require external shared dependencies in the full monorepo.",
+    "Shared Core still has open ownership and pipeline confirmations."
+  ],
+  "ownership": {
+    "mobile":"products/mobile/app/docs/atlas/**",
+    "tablet":"products/tablet/app/docs/atlas/**",
+    "pc":"products/pc/app/docs/atlas/**",
+    "shared":"docs/atlas/ATLAS_SHARED_CORE*.md and docs/atlas/atlas.shared-core.json"
+  }
+}
