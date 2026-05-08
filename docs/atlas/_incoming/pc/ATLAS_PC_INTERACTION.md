@@ -3,206 +3,141 @@
 Destino único: `docs/atlas/_incoming/pc/`  
 Fuente única: `ATLAS_CHAT_PC.zip`
 
-## Alcance de interacción
+## Alcance
 
-Este documento describe cómo interactúan las pantallas PC, navegación, API routes, servicios, sync y validaciones confirmadas dentro del ZIP. No documenta Tablet, Mobile ni Shared Core como propiedad PC.
+Este documento describe interacciones confirmadas para PC: navegación, páginas, API routes, servicios, repositorios, sync, proveedores y licencia. No documenta Tablet, Mobile ni Shared Core como propiedad PC.
 
 ## Modelo de interacción confirmado
 
-PC funciona como backoffice administrativo. La interacción dominante es:
-
 ```text
 Página Next / componente UI
-  -> cliente o acción de pantalla
-  -> API route Next
+  -> datos de pantalla o acción operativa
+  -> API route Next cuando aplica
   -> servicio server-side
   -> repositorio Prisma
-  -> dependencia externa o base canónica cuando aplica
+  -> Prisma client / dependencia externa canónica
 ```
 
 Cuando participa sync:
 
 ```text
 Evento / payload operativo
-  -> API sync o ingest
-  -> clasificación/validación
-  -> cola, duplicados, conflictos o rejected
-  -> persistencia/reconciliación
+  -> /api/sync/ingest o /api/backoffice/sync/ingest
+  -> sync-ingest.service.ts
+  -> sync-event-contract.ts
+  -> outbox / conflicts / tri-db services
 ```
 
-## Navegación
+## Navegación y superficies visibles
 
-`components/layout/app-shell.tsx` y `src/composition/module-registry.ts` forman el centro de navegación de backoffice. Las rutas visibles existen como `app/**/page.tsx`; varias páginas importan `AppShell` para entrar al patrón administrativo.
-
-### Grupos funcionales de navegación
+Las rutas confirmadas provienen de `analysis/routes_and_apis.json` y `app/**/page.tsx`.
 
 | Grupo | Rutas confirmadas |
 |---|---|
-| Inicio | `/`, `/dashboard` |
-| Catálogo | `/catalogo`, `/catalogo-global`, `/catalogo-global-v2`, `/catalogo-multisucursal` |
-| Inventario | `/inventario`, `/stock`, `/stock-historial`, `/stock-sucursal`, `/ajustes-inventario` |
-| Compras/Recepción | `/compras`, `/compras-inteligentes`, `/recepcion`, `/reabasto`, `/ordenes`, `/transferencias` |
-| Auditoría | `/auditoria`, `/auditoria-operativa`, `/conteos`, `/conteos-ciclicos`, `/historial-conteos` |
-| Operación | `/operacion`, `/operacion-dashboard`, `/operaciones`, `/acciones-masivas`, `/cortes-caja`, `/mermas` |
-| Sync | `/sync`, `/sync-health` |
-| Proveedores | `/proveedores`, `/proveedores-analytics`, `/proveedores-calidad`, `/proveedores-compras`, `/proveedores-eventos`, `/proveedores-historial`, `/proveedores-lifecycle`, `/proveedores-lista`, `/proveedores-matriz`, `/proveedores-recepcion`, `/proveedores-reconciliacion`, `/proveedores-reportes`, `/proveedores-sugerencias` |
-| Admin | `/settings`, `/licencias`, `/roles-permisos`, `/usuarios-sesiones`, `/notificaciones` |
-| Reportes/KPIs | `/kpis`, `/reportes-exportables`, `/vistas-globales`, `/alertas-ejecutivas` |
+| Gobierno/guía | `/`, `/gobierno`, `/glosario`, `/referencia-visual` |
+| Dashboard/operación | `/dashboard`, `/alertas-ejecutivas`, `/alertas-operativas`, `/metricas-dia`, `/scorecards-negocio`, `/tablero-kpi`, `/vistas-ejecutivas` |
+| Catálogo/calidad | `/catalog`, `/catalogo-activo`, `/existencias-criticas`, `/integridad-barcodes`, `/salud-barcodes`, `/politica-precios`, `/validacion-catalogo` |
+| Inventario/conteos | `/stock`, `/movements`, `/counts`, `/auditoria-inventario`, `/conteos-operativos`, `/sync-operativo`, `/outbox-operativo` |
+| Compras/recepción/reabasto | `/purchasing`, `/receiving`, `/replenishment`, `/ordenes-compra`, `/recepcion-proveedor`, `/incidencias-recepcion`, `/forecast-basico`, `/senal-reabasto` |
+| Proveedores | `/proveedores` |
+| Sync | `/sync` |
+| Settings/licencia | `/settings`, `/settings/license` |
+| Reportes/detalle | `/exportables`, `/contratos-reporte`, `/detalle-registros`, `/tablas-operativas` |
+| UX/filtros/estado | `/filtros-avanzados`, `/filtros-fecha`, `/estados-operativos`, `/acciones-masivas`, `/ajustes-inventario` |
 
-## Patrón page -> shell -> componentes
+## Interacción API confirmada
 
-### Confirmado
-
-- Las páginas son `page.tsx` en `app/**`.
-- El shell principal se importa desde `@components/layout/app-shell`.
-- Componentes UI se agrupan por dominio (`catalog`, `inventory`, `operations`, `suppliers`, `sync`, `license`, `ui`).
-- Algunas páginas usan datasets/constructores desde `src/lib/**`.
-
-### Pendiente
-
-- No se puede confirmar comportamiento real de usuario sin ejecutar la app completa.
-- No se puede confirmar routing efectivo en navegador sin dependencias externas.
-
-## Interacción API
-
-Se confirman 36 API routes. La mayoría corresponden a lectura de workspace/resumen; algunas soportan `POST` para ingest, importación, simulación o mutaciones operativas.
-
-| Familia API | Función de interacción |
+| Familia API | Rutas |
 |---|---|
-| `/api/dashboard/*` | Resumen ejecutivo y KPIs |
-| `/api/catalog/*` | Catálogo, calidad, exportación, marcas/categorías/tags |
-| `/api/inventory/*` | Snapshots, movimientos, conteos, ajustes, reorder |
-| `/api/purchases/*` | Órdenes y recepciones |
-| `/api/reorder/*` | Sugerencias de reabasto |
-| `/api/sync/*` | Status, queue, conflicts, duplicates, rejected e ingest |
-| `/api/settings/*` | Configuración, usuarios, licencias |
-| `/api/suppliers/*` | Proveedores, recomendaciones, órdenes, recepción, pagos, import/export y simulación |
-| `/api/backoffice/*` | Endpoints agregados de backoffice |
+| Backoffice | `/api/backoffice/audit/recent`, `/api/backoffice/audit`, `/api/backoffice/catalog`, `/api/backoffice/counts`, `/api/backoffice/dashboard`, `/api/backoffice/movements`, `/api/backoffice/purchasing`, `/api/backoffice/receiving`, `/api/backoffice/replenishment`, `/api/backoffice/stock` |
+| Backoffice sync | `/api/backoffice/sync/conflicts`, `/api/backoffice/sync/ingest`, `/api/backoffice/sync` |
+| Licencia | `/api/license/features/[key]`, `/api/license/features`, `/api/license/refresh`, `/api/license/refresh/status`, `/api/license/status` |
+| Proveedores | `/api/proveedores/auditoria`, `/api/proveedores/calendario`, `/api/proveedores/calidad-datos`, `/api/proveedores/compra-inteligente/crear-pedido`, `/api/proveedores/compra-inteligente`, `/api/proveedores/compra-inteligente/simular`, `/api/proveedores/cuentas-pagar/registrar-pago`, `/api/proveedores/cuentas-pagar`, `/api/proveedores/exportables`, `/api/proveedores/inventario`, `/api/proveedores/operacion`, `/api/proveedores/pedidos`, `/api/proveedores/qa/escenarios`, `/api/proveedores/recepciones/confirmar`, `/api/proveedores/recepciones`, `/api/proveedores/senales` |
+| Sync / tri-db | `/api/sync/ingest`, `/api/sync/tri-db/run` |
 
 ## Interacciones por dominio
 
 ### Catálogo
 
-Flujo confirmado:
-
 ```text
-Pantallas catálogo
-  -> componentes catálogo/UI
-  -> /api/catalog/* o /api/backoffice/catalog
+/catalog y pantallas de calidad catálogo
+  -> components/catalog + UI cards/tables
+  -> /api/backoffice/catalog
   -> catalog.service.ts
-  -> catalog.repository.ts
+  -> catalog.repository.ts / barcode-repository.prisma.ts / product-repository.prisma.ts
   -> Prisma externo/canónico
 ```
 
-Responsabilidades PC:
-
-- Administración de catálogo.
-- Calidad de catálogo.
-- Exportación/consulta.
-
-No responsabilidad PC:
-
-- Contrato global de eventos o schema canónico.
-
-### Inventario
-
-Flujo confirmado:
+### Inventario, stock, movimientos y conteos
 
 ```text
-Pantallas inventario/stock/conteos
-  -> /api/inventory/*
+/stock /movements /counts /auditoria-inventario
+  -> inventory workspace / backoffice overview
+  -> /api/backoffice/stock | movements | counts | audit
   -> inventory-ledger.service.ts
-  -> inventory.repository.ts
-  -> modelos Prisma externos/canónicos
+  -> inventory.repository.ts / stock-repository.prisma.ts / audit-repository.prisma.ts
 ```
-
-Responsabilidades PC:
-
-- Snapshots.
-- Movimientos.
-- Conteos.
-- Ajustes y reorder.
 
 ### Compras, recepción y reabasto
 
-Flujo confirmado:
-
 ```text
-Compras / recepción / reabasto
-  -> /api/purchases/* y /api/reorder/suggestions
-  -> purchase.service.ts / purchase.repository.ts
-  -> motores de sugerencia y datos operativos
+/purchasing /receiving /replenishment
+  -> procurement screen data
+  -> /api/backoffice/purchasing | receiving | replenishment
+  -> operation-control.service.ts y repositories de operation/purchase-order
 ```
-
-### Sync
-
-Flujo confirmado:
-
-```text
-Sync UI / ingest payload
-  -> /api/sync/status | queue | conflicts | duplicates | rejected | ingest
-  -> src/server/sync/** y src/lib/sync-ingest/**
-  -> validación, clasificación, persistencia o rechazo
-```
-
-El contrato de eventos/sync global se documenta como dependencia externa.
 
 ### Proveedores
 
-Flujo confirmado:
-
 ```text
-Pantallas proveedores
-  -> components/suppliers + src/lib/suppliers
-  -> /api/suppliers/*
-  -> motores de recomendaciones, recepción, órdenes, pagos, import/export, health y simulación
+/proveedores
+  -> components/suppliers + src/lib/suppliers/**
+  -> /api/proveedores/**
+  -> lifecycle, data quality, smart purchase, recepciones, cuentas por pagar y señales
 ```
 
-La carpeta `src/lib/suppliers/**` contiene motores funcionales ricos: lifecycle, policy, validator, reducer, repository contract, in-memory repository, data quality, export contracts y escenarios.
-
-### Settings/licencias
-
-Flujo confirmado:
+### Sync y tri-db
 
 ```text
-/settings / licencias
-  -> /api/settings/*
-  -> settings.repository.ts
+/sync /sync-operativo /outbox-operativo
+  -> /api/backoffice/sync* o /api/sync/ingest
+  -> sync-ingest.service.ts / sync-release.service.ts
+  -> outbox-repository.prisma.ts
+  -> tri-db-command.service.ts / tri-db-status.service.ts cuando aplica
+```
+
+Tri-db se mantiene como dependencia externa/global.
+
+### Licencia/settings
+
+```text
+/settings /settings/license
+  -> /api/license/*
   -> src/server/licensing/**
   -> shared/licensing como dependencia externa
 ```
 
-PC puede tener gates UI/operativos, pero la política/licensing core queda externa.
-
-## Interacción con Prisma
-
-La interacción con base de datos se canaliza por repositorios y `src/server/prisma/client.ts`. El ZIP indica que el schema local `products/pc/app/prisma/schema.prisma` es un stub/transicional y apunta a un schema canónico externo. Por eso:
-
-- PC usa Prisma.
-- PC tiene repositorios Prisma.
-- El schema canónico no se declara propiedad PC.
-- Migraciones/generadores canónicos quedan pendientes de repo completo.
-
-## Estados de error y validación
-
-Se detectan validadores en `src/server/validators/**`, además de contratos globales en `global_context/docs/contracts/**`.
+## Validaciones e interacción segura
 
 | Área | Validación confirmada |
 |---|---|
-| Catálogo | calidad de catálogo |
-| Inventario | integridad de inventario |
-| Sync | clasificación de conflictos/duplicados/rejected |
-| Proveedores | data quality, lifecycle validator y policy |
+| Catálogo | `src/server/validators/catalog-quality.ts` |
+| Inventario | `src/server/validators/inventory-integrity.ts` |
+| Procurement | `src/server/validators/procurement-integrity.ts` |
+| Sync events | `src/server/validators/sync-event-contract.ts` |
 | Package | `tools/validate_package.py` |
 
-## Interacciones no confirmables desde el ZIP
+## Límites
 
-- Autenticación real y permisos efectivos en runtime.
-- Estado de sesión en navegador.
-- Resultado de mutaciones con base real.
-- Disponibilidad de dependencias externas en repo completo.
-- Comportamiento real de CI.
+No se puede confirmar desde el ZIP:
+
+- Autenticación real.
+- Permisos efectivos por usuario.
+- Estado de sesión.
+- Ejecución real de mutaciones con DB completa.
+- Disponibilidad de shared dependencies en runtime.
+- CI o build final.
 
 ## Resumen
 
-PC interactúa como tablero de control administrativo: páginas densas, shell común, API routes, servicios, repositorios Prisma y motores de dominio. Shared Core, contratos globales, Visual OS global y Prisma canónico son la tubería del edificio, no el departamento de PC. PC abre las llaves y mide presión, pero no se adjudica la compañía de agua.
+PC interactúa como tablero de control administrativo: rutas densas, shell común, API routes de backoffice/proveedores/licencia/sync, servicios server, repositorios Prisma y motores de proveedores/sync. Los contratos globales son la tubería del edificio, PC solo marca qué llaves abre y dónde mide presión.
