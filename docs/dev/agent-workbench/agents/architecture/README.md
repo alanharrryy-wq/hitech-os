@@ -1,0 +1,3 @@
+# architecture
+
+Create APP_INVENTORY.md, PACKAGE_INVENTORY.md, and MONOREPO_ARCHITECTURE_AUDIT.md.
