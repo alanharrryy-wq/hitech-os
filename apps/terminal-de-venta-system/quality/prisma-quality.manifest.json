@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0",
   "systemName": "PRISMA Quality Operating System",
-  "systemVersion": "2.0.6-phase-2-v6-final-repair",
-  "phase": "phase-2-runtime-gates-operational-health",
+  "systemVersion": "3.0.0-phase-3-scenario-gates",
+  "phase": "phase-3-scenario-gates-operational-playbooks",
   "repoName": "terminal-de-venta-system",
   "dbSafetyMode": "real-db-inspect-only",
   "cloudflareMode": "optional-profile-only",
@@ -20,9 +20,11 @@
     "cloudflare",
     "commit",
     "diagnose",
+    "phase3",
     "pr",
     "release",
     "runtime",
+    "scenario",
     "watch"
   ],
   "gates": [
@@ -32,7 +34,12 @@
     "Q13",
     "Q14",
     "Q15",
+    "Q16",
+    "Q17",
+    "Q18",
+    "Q19",
     "Q2",
+    "Q20",
     "Q3",
     "Q4",
     "Q5",
@@ -107,5 +114,22 @@
       3002,
       3003
     ]
+  },
+  "phase3": {
+    "name": "Scenario Gates & Operational Playbooks",
+    "scenarioManifest": "quality/scenarios/scenario-manifest.json",
+    "scenarioRunner": "quality/core/scenario-runner.mjs",
+    "newGates": [
+      "Q16",
+      "Q17",
+      "Q18",
+      "Q19",
+      "Q20"
+    ],
+    "mutatesData": false,
+    "startsServices": false,
+    "requiresCloudflare": false,
+    "fakeGreenForbidden": true,
+    "industrialCRSIncluded": true
   }
 }

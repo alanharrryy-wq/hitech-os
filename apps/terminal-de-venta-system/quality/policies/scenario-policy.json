@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0",
+  "phase": "phase-3-scenario-gates",
+  "rules": {
+    "mutates": "forbidden",
+    "startsServices": "forbidden",
+    "requiresCloudflare": "forbidden",
+    "actualEvidence": "required",
+    "confidence": "required",
+    "fakeGreen": "forbidden"
+  },
+  "severity": {
+    "invalidManifest": "S1",
+    "mutatingScenario": "S1",
+    "requiresCloudflare": "S1",
+    "startsServices": "S1",
+    "readyWithoutEvidence": "S1",
+    "missingScenarioEvidence": "S2",
+    "partialScenarioEvidence": "S3"
+  }
+}

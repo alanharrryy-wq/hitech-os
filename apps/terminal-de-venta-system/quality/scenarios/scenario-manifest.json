@@ -1,0 +1,442 @@
+{
+  "schemaVersion": "1.0",
+  "phase": "phase-3-scenario-gates",
+  "name": "PRISMA Scenario Gates & Operational Playbooks",
+  "principles": [
+    "Scenario runner does not mutate production data.",
+    "Scenario runner does not start services.",
+    "Scenario runner does not require Cloudflare.",
+    "Scenario runner does not invent evidence.",
+    "Every scenario must declare owner, layer, vertical, preconditions, expected evidence, actual evidence and confidence."
+  ],
+  "defaults": {
+    "mutates": false,
+    "requiresCloudflare": false,
+    "startsServices": false,
+    "confidenceFloor": 0.55
+  },
+  "scenarios": [
+    {
+      "id": "SCN_CORE_EVENT_LIFECYCLE",
+      "title": "Core event lifecycle creates entity, event, state, evidence and audit trail",
+      "vertical": "core",
+      "layer": "Core",
+      "owner": "PRISMA Core",
+      "tags": [
+        "event-lifecycle",
+        "knowledge-os",
+        "audit"
+      ],
+      "mutates": false,
+      "requiresCloudflare": false,
+      "startsServices": false,
+      "preconditions": [
+        "Repository contains operational model, schema or route surfaces.",
+        "Scenario runs as static evidence collection only."
+      ],
+      "expectedEvidence": [
+        "Entity vocabulary",
+        "Event vocabulary",
+        "State/status vocabulary",
+        "Evidence/audit/history vocabulary"
+      ],
+      "checks": [
+        {
+          "type": "anyPathExists",
+          "id": "core-schema-or-quality",
+          "paths": [
+            "prisma/schema.prisma",
+            "quality/contracts",
+            "quality/scenarios/scenario-manifest.json"
+          ],
+          "minFound": 1
+        },
+        {
+          "type": "termScan",
+          "id": "core-lifecycle-terms",
+          "roots": [
+            "products",
+            "shared",
+            "prisma",
+            "quality"
+          ],
+          "terms": [
+            "entity",
+            "event",
+            "state",
+            "status",
+            "evidence",
+            "audit",
+            "history",
+            "responsible",
+            "timeline"
+          ],
+          "minTerms": 5,
+          "maxFiles": 900
+        }
+      ]
+    },
+    {
+      "id": "SCN_TABLET_LOCAL_OPERATION",
+      "title": "Tablet operates locally without PC, Mobile, Control or Cloudflare dependency",
+      "vertical": "commerce",
+      "layer": "Tablet",
+      "owner": "PRISMA Tablet",
+      "tags": [
+        "tablet",
+        "local-first",
+        "sovereignty"
+      ],
+      "mutates": false,
+      "requiresCloudflare": false,
+      "startsServices": false,
+      "preconditions": [
+        "Tablet app exists.",
+        "Architecture gates Q1/Q4 already protect hard dependencies."
+      ],
+      "expectedEvidence": [
+        "Tablet app surface",
+        "Tablet package",
+        "Local-first/offline/autonomy vocabulary or equivalent operational surface"
+      ],
+      "checks": [
+        {
+          "type": "pathExists",
+          "id": "tablet-app-root",
+          "path": "products/tablet/app/app"
+        },
+        {
+          "type": "pathExists",
+          "id": "tablet-package",
+          "path": "products/tablet/app/package.json"
+        },
+        {
+          "type": "termScan",
+          "id": "tablet-local-operation-terms",
+          "roots": [
+            "products/tablet/app",
+            "quality/docs",
+            "quality/policies"
+          ],
+          "terms": [
+            "tablet",
+            "local",
+            "offline",
+            "autonomy",
+            "evidence",
+            "operate",
+            "operation",
+            "sync",
+            "partial"
+          ],
+          "minTerms": 4,
+          "maxFiles": 600
+        }
+      ]
+    },
+    {
+      "id": "SCN_PC_GOVERNANCE_REVIEW",
+      "title": "PC governs, audits and reviews without becoming Tablet runtime dependency",
+      "vertical": "control",
+      "layer": "PC",
+      "owner": "PRISMA PC Governance",
+      "tags": [
+        "pc",
+        "governance",
+        "audit",
+        "backoffice"
+      ],
+      "mutates": false,
+      "requiresCloudflare": false,
+      "startsServices": false,
+      "preconditions": [
+        "PC app exists.",
+        "Backoffice routes exist or are intentionally protected."
+      ],
+      "expectedEvidence": [
+        "PC package/app route surface",
+        "Backoffice audit/sync route surface",
+        "Governance/audit vocabulary"
+      ],
+      "checks": [
+        {
+          "type": "pathExists",
+          "id": "pc-package",
+          "path": "products/pc/app/package.json"
+        },
+        {
+          "type": "anyPathExists",
+          "id": "pc-governance-routes",
+          "paths": [
+            "products/pc/app/app/api/backoffice/audit/route.ts",
+            "products/pc/app/app/api/backoffice/audit/recent/route.ts",
+            "products/pc/app/app/api/backoffice/sync/route.ts",
+            "products/pc/app/app/api/backoffice/dashboard/route.ts"
+          ],
+          "minFound": 2
+        },
+        {
+          "type": "termScan",
+          "id": "pc-governance-terms",
+          "roots": [
+            "products/pc/app"
+          ],
+          "terms": [
+            "audit",
+            "sync",
+            "dashboard",
+            "backoffice",
+            "governance",
+            "review",
+            "conflict"
+          ],
+          "minTerms": 4,
+          "maxFiles": 500
+        }
+      ]
+    },
+    {
+      "id": "SCN_MOBILE_SUPERVISION_SNAPSHOT",
+      "title": "Mobile supervises with snapshot, freshness, confidence, alerts and decision ledger",
+      "vertical": "mobile",
+      "layer": "Mobile",
+      "owner": "PRISMA Mobile Intelligence Layer",
+      "tags": [
+        "mobile",
+        "supervision",
+        "snapshot",
+        "truthfulness"
+      ],
+      "mutates": false,
+      "requiresCloudflare": false,
+      "startsServices": false,
+      "preconditions": [
+        "Mobile app exists.",
+        "Mobile acts as supervision layer, not mini POS."
+      ],
+      "expectedEvidence": [
+        "Mobile health/snapshot/data quality routes",
+        "Freshness/confidence terms",
+        "Alerts/action inbox/decision ledger terms"
+      ],
+      "checks": [
+        {
+          "type": "anyPathExists",
+          "id": "mobile-core-routes",
+          "paths": [
+            "products/mobile/app/app/api/mobile/health/route.ts",
+            "products/mobile/app/app/api/mobile/snapshot/route.ts",
+            "products/mobile/app/app/api/mobile/data-quality/route.ts",
+            "products/mobile/app/app/api/mobile/alerts/route.ts",
+            "products/mobile/app/app/api/mobile/action-inbox/route.ts",
+            "products/mobile/app/app/api/mobile/decision-ledger/route.ts",
+            "products/mobile/app/app/api/mobile/health-radar/route.ts",
+            "products/mobile/app/app/api/mobile/pulse-timeline/route.ts",
+            "products/mobile/app/app/api/mobile/daily-brief/route.ts"
+          ],
+          "minFound": 6
+        },
+        {
+          "type": "termScan",
+          "id": "mobile-supervision-terms",
+          "roots": [
+            "products/mobile/app",
+            "quality/docs"
+          ],
+          "terms": [
+            "snapshot",
+            "freshness",
+            "confidence",
+            "alert",
+            "action",
+            "decision",
+            "ledger",
+            "health",
+            "radar",
+            "timeline",
+            "brief",
+            "partial",
+            "offline"
+          ],
+          "minTerms": 7,
+          "maxFiles": 700
+        }
+      ]
+    },
+    {
+      "id": "SCN_CONTROL_AUDIT_TRACE",
+      "title": "Control audits truth and exposes traceability without operating the field directly",
+      "vertical": "control",
+      "layer": "Control",
+      "owner": "PRISMA Control",
+      "tags": [
+        "control",
+        "audit",
+        "trace"
+      ],
+      "mutates": false,
+      "requiresCloudflare": false,
+      "startsServices": false,
+      "preconditions": [
+        "Control center or control documentation exists.",
+        "Control Center local port is manifest-driven."
+      ],
+      "expectedEvidence": [
+        "Control center path or docs",
+        "Control port 3150 in runtime manifest",
+        "Audit/control vocabulary"
+      ],
+      "checks": [
+        {
+          "type": "anyPathExists",
+          "id": "control-center-surface",
+          "paths": [
+            "prisma-control-center/internal/py",
+            "prisma-control-center",
+            "quality/runtime/runtime-port-manifest.json"
+          ],
+          "minFound": 1
+        },
+        {
+          "type": "portManifestContains",
+          "id": "control-port-3150",
+          "serviceId": "control-center",
+          "port": 3150
+        },
+        {
+          "type": "termScan",
+          "id": "control-audit-terms",
+          "roots": [
+            "prisma-control-center",
+            "quality",
+            "products"
+          ],
+          "terms": [
+            "control",
+            "audit",
+            "trace",
+            "evidence",
+            "ledger",
+            "health",
+            "history"
+          ],
+          "minTerms": 4,
+          "maxFiles": 700
+        }
+      ]
+    },
+    {
+      "id": "SCN_INDUSTRIAL_CRS_RECTIFIER_EVENT",
+      "title": "Industrial CRS rectifier event can be modeled as asset, reading, alert, responsible and evidence",
+      "vertical": "industrial",
+      "layer": "Industrial",
+      "owner": "PRISMA Industrial",
+      "tags": [
+        "industrial",
+        "crs",
+        "rectifier",
+        "field"
+      ],
+      "mutates": false,
+      "requiresCloudflare": false,
+      "startsServices": false,
+      "preconditions": [
+        "Industrial may be partially implemented.",
+        "Scenario must not invent CRS support if evidence is missing."
+      ],
+      "expectedEvidence": [
+        "CRS/rectifier vocabulary",
+        "Asset/site/technician vocabulary",
+        "Inspection/maintenance/measurement vocabulary",
+        "Alert/status/evidence vocabulary"
+      ],
+      "checks": [
+        {
+          "type": "termScan",
+          "id": "industrial-crs-terms",
+          "roots": [
+            "products",
+            "shared",
+            "quality",
+            "prisma"
+          ],
+          "terms": [
+            "industrial",
+            "crs",
+            "rectifier",
+            "asset",
+            "site",
+            "technician",
+            "inspection",
+            "maintenance",
+            "measurement",
+            "reading",
+            "alert",
+            "status",
+            "evidence"
+          ],
+          "minTerms": 5,
+          "maxFiles": 1200
+        }
+      ]
+    },
+    {
+      "id": "SCN_SYNC_CONFLICT_EVIDENCE",
+      "title": "Sync conflict produces inspectable evidence, status and governance trail",
+      "vertical": "core",
+      "layer": "Sync",
+      "owner": "PRISMA Sync",
+      "tags": [
+        "sync",
+        "conflict",
+        "evidence"
+      ],
+      "mutates": false,
+      "requiresCloudflare": false,
+      "startsServices": false,
+      "preconditions": [
+        "Sync surface exists.",
+        "Conflicts are evidence-bearing events."
+      ],
+      "expectedEvidence": [
+        "Sync routes or sync code",
+        "Conflict vocabulary",
+        "Evidence/audit vocabulary"
+      ],
+      "checks": [
+        {
+          "type": "anyPathExists",
+          "id": "sync-routes",
+          "paths": [
+            "products/pc/app/app/api/backoffice/sync/route.ts",
+            "products/pc/app/app/api/backoffice/sync/ingest/route.ts",
+            "products/tablet/app/src/server/pos-api",
+            "quality/gates/Q6.mjs"
+          ],
+          "minFound": 2
+        },
+        {
+          "type": "termScan",
+          "id": "sync-conflict-terms",
+          "roots": [
+            "products",
+            "shared",
+            "quality"
+          ],
+          "terms": [
+            "sync",
+            "conflict",
+            "evidence",
+            "audit",
+            "ledger",
+            "status",
+            "ingest",
+            "replay"
+          ],
+          "minTerms": 4,
+          "maxFiles": 900
+        }
+      ]
+    }
+  ]
+}
