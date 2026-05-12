@@ -136,8 +136,39 @@ apps/terminal-de-venta-system/
 | `prisma.pc.backoffice` | PC Backoffice | `products/pc/app/**` |
 | `prisma.mobile.app` | App móvil / Pulso | `products/mobile/app/**` |
 | `prisma.shared.visual` | Shared visual layer | `products/shared-ui/prisma/**`, `shared/contracts/ui/**`, `docs/design/**`, `docs/qa/**`, `tools/prisma/**`, `manifests/**` |
+| `prisma.chart-lab` | Laboratorio visual ECharts | `products/chart-lab/app/**` |
 
 Cuando se toque `prisma.shared.visual`, el cambio debe declarar cobertura de Tablet, PC y App móvil.
+
+### PRISMA Chart Lab
+
+Chart Lab es el taller visual local para disenar, revisar y preparar graficas PRISMA ECharts sin pelear con rutas productivas de PC, Tablet o Mobile.
+
+```powershell
+pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system" install
+pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system" chart-lab:verify
+pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system" chart-lab:dev
+```
+
+URL local:
+
+```text
+http://localhost:3000
+```
+
+Cloudflare queda preparado para Chart Lab como preview separado y public-safe.
+
+```powershell
+pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system" chart-lab:cf:build
+pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system" chart-lab:cf:verify
+pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system" chart-lab:tunnel:doctor
+```
+
+La promocion de graficas se hace por `Chart Promotion Bridge` con dry-run obligatorio:
+
+```powershell
+pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system" chart-lab:promote -- --chart=pc.causal-flow-ribbon --target=pc --dry-run
+```
 
 ---
 

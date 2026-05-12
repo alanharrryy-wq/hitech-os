@@ -60,3 +60,17 @@ Cloudflare multi-host setup command:
 ```powershell
 pwsh -NoProfile -ExecutionPolicy Bypass -File tools/infra/cloudflare/setup_tunnel_forever.ps1
 ```
+
+## PRISMA Chart Lab
+
+The dedicated PRISMA Chart Lab runs locally on port `3000` as a visual workshop for ECharts-based operational charts.
+
+```powershell
+pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system" install
+pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system" chart-lab:verify
+pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system" chart-lab:dev
+```
+
+Open `http://localhost:3000`.
+
+Cloudflare is not configured for Chart Lab yet. Treat it as a local workshop unless a separate public-safe preview route is explicitly added.

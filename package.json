@@ -28,6 +28,9 @@
     "dev": "pnpm -r --if-present dev",
     "dev:keystone": "pnpm -C apps/keystone keystone:scene:studio",
     "dev:operator": "pnpm --filter @hitech/external_interaction_template dev",
+    "dev:chart-lab": "pnpm -C apps/terminal-de-venta-system chart-lab:dev",
+    "build:chart-lab": "pnpm -C apps/terminal-de-venta-system chart-lab:build",
+    "verify:chart-lab": "pnpm -C apps/terminal-de-venta-system chart-lab:verify",
     "dev:forms": "pnpm --filter @hitech/external_interaction_forms dev",
     "dev:multi-app": "pnpm -r --parallel --filter @hitech/keystone --filter @hitech/external_interaction_template --filter @hitech/external_interaction_forms dev:multi",
 
