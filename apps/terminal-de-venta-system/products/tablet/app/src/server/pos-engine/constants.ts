@@ -22,6 +22,8 @@ export const POS_EVENT_SALE_COMPLETED = "sale.completed";
 export const POS_EVENT_TICKET_CLOSED = "ticket.closed";
 export const POS_EVENT_STOCK_DECREMENTED = "stock.decremented";
 export const POS_EVENT_INVENTORY_LOW_STOCK_DETECTED = "inventory.low_stock_detected";
+export const POS_EVENT_CASH_SESSION_OPENED = "cash.session.opened";
+export const POS_EVENT_CASH_MOVEMENT_RECORDED = "cash.movement.recorded";
 
 export const DEFAULT_LOW_STOCK_THRESHOLD = 5;
 export const POS_EVENT_SCHEMA_VERSION = "1.0.0";

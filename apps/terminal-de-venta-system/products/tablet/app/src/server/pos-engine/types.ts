@@ -47,7 +47,9 @@ export type PosSaleLineResult = {
 
 export type PosEngineEvent = {
   eventId: string;
+  eventType: string;
   topic: string;
+  idempotencyKey: string;
   businessId: string;
   terminalId: string;
   actorId: string;
@@ -55,6 +57,7 @@ export type PosEngineEvent = {
   occurredAt: string;
   aggregateId: string;
   schemaVersion: string;
+  correlationId?: string;
   payload: Record<string, unknown>;
 };
 

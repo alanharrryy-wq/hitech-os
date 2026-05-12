@@ -101,7 +101,8 @@ if (exists(files.pkg)) {
 }
 
 const ok = checks.every((item) => item.ok);
-const evidenceDir = path.join(appRoot, "evidence", "verifier-output");
+const terminalRoot = path.resolve(appRoot, "..", "..", "..");
+const evidenceDir = path.join(terminalRoot, "tools", "_local", "evidence", "tablet", "verifier-output");
 fs.mkdirSync(evidenceDir, { recursive: true });
 const report = {
   ok,

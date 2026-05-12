@@ -15,7 +15,9 @@ export const POS_ENGINE_EVENT_FACTORY_TOPICS = [
   "sale.completed",
   "ticket.closed",
   "stock.decremented",
-  "inventory.low_stock_detected"
+  "inventory.low_stock_detected",
+  "cash.session.opened",
+  "cash.movement.recorded"
 ] as const;
 
 type PosEventContext = {
@@ -26,9 +28,13 @@ type PosEventContext = {
 };
 
 function makeEvent(topic: string, aggregateId: string, context: PosEventContext, payload: Record<string, unknown>): PosEngineEvent {
+  const eventId = makePosId("evt");
+  const idempotencyScope = typeof payload.saleId === "string" ? `${aggregateId}:${payload.saleId}` : aggregateId;
   return {
-    eventId: makePosId("evt"),
+    eventId,
+    eventType: topic,
     topic,
+    idempotencyKey: `${topic}:${context.businessId}:${context.terminalId}:${idempotencyScope}`,
     businessId: context.businessId,
     terminalId: context.terminalId,
     actorId: context.actorId,
@@ -36,6 +42,7 @@ function makeEvent(topic: string, aggregateId: string, context: PosEventContext,
     occurredAt: context.occurredAt.toISOString(),
     aggregateId,
     schemaVersion: POS_EVENT_SCHEMA_VERSION,
+    correlationId: aggregateId,
     payload
   };
 }
@@ -63,6 +70,15 @@ export function saleCompletedEvent(result: Omit<CompleteLocalSaleResult, "events
       changeCents: result.changeCents,
       status: result.status,
       lineCount: result.lines.length,
+      lines: result.lines.map((line) => ({
+        id: line.id,
+        productId: line.productId,
+        sku: line.sku,
+        productName: line.productName,
+        qty: line.qty,
+        priceCents: line.priceCents,
+        totalCents: line.totalCents
+      })),
       createdAt: result.createdAt.toISOString()
   });
 }

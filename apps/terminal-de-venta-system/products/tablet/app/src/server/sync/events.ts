@@ -8,6 +8,8 @@ export const TABLET_SYNC_EVENTS: ReadonlyArray<SharedSyncEvent> = [
   "inventory.low_stock_detected",
   "sale.cancelled",
   "sale.refunded",
+  "cash.session.opened",
+  "cash.movement.recorded",
   "shift.opened",
   "shift.closed",
   "stock.adjusted",
