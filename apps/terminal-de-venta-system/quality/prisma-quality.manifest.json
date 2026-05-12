@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0",
   "systemName": "PRISMA Quality Operating System",
-  "systemVersion": "1.0.2-phase-1-v4-boundary-calibrated",
-  "phase": "phase-1-foundation-kernel-contracts-evidence",
+  "systemVersion": "2.0.6-phase-2-v6-final-repair",
+  "phase": "phase-2-runtime-gates-operational-health",
   "repoName": "terminal-de-venta-system",
   "dbSafetyMode": "real-db-inspect-only",
   "cloudflareMode": "optional-profile-only",
@@ -17,23 +17,29 @@
     "Quality"
   ],
   "profiles": [
+    "cloudflare",
     "commit",
+    "diagnose",
     "pr",
     "release",
-    "diagnose",
-    "watch",
-    "cloudflare"
+    "runtime",
+    "watch"
   ],
   "gates": [
     "Q0",
     "Q1",
+    "Q11",
+    "Q13",
+    "Q14",
+    "Q15",
     "Q2",
     "Q3",
     "Q4",
+    "Q5",
     "Q6",
-    "Q9",
-    "Q13",
-    "Q15"
+    "Q7",
+    "Q8",
+    "Q9"
   ],
   "contracts": [
     "CONTRACT_TABLET_SOVEREIGNTY",
@@ -63,5 +69,43 @@
     "version": "v4",
     "description": "Boundary scanner blocks hard runtime dependencies while treating plain vocabulary and documentation as evidence-only.",
     "policy": "quality/policies/boundary-scan-policy.json"
+  },
+  "phase2": {
+    "name": "Runtime Gates & Operational Health",
+    "runtimeManifest": "quality/runtime/runtime-port-manifest.json",
+    "serviceOptionality": "quality/runtime/service-optionality.json",
+    "cloudflareStillOptional": true,
+    "startsServices": false,
+    "mutatesDatabase": false,
+    "newGates": [
+      "Q5",
+      "Q7",
+      "Q8",
+      "Q11",
+      "Q14"
+    ],
+    "version": "v6-final-repair",
+    "portPolicy": "Use PRISMA real local ports only. Do not invent generic Next.js ports.",
+    "expectedPrismaPorts": {
+      "engine": 3100,
+      "prisma-web-eit": 3110,
+      "tablet": 3120,
+      "pc": 3130,
+      "mobile": 3140,
+      "control-center": 3150,
+      "forms": 3200
+    },
+    "disabledUntilDiscovered": [
+      "chart-lab"
+    ],
+    "cliNoTopLevelAwait": true,
+    "cliKeepAliveWatchdog": true,
+    "cliEntryPoint": "quality/bin/prisma-quality.mjs",
+    "forbiddenGenericNextPorts": [
+      3000,
+      3001,
+      3002,
+      3003
+    ]
   }
 }

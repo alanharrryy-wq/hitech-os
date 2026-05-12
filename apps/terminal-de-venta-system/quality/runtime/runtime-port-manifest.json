@@ -1,0 +1,180 @@
+{
+  "schemaVersion": "1.0",
+  "version": "phase-2-v6-final-repair-real-prisma-ports",
+  "description": "PRISMA local runtime surfaces. Ports are based on PRISMA operational convention. PQOS probes only; it never starts or changes services.",
+  "host": "127.0.0.1",
+  "noInventedPorts": true,
+  "doNotChangePorts": true,
+  "cloudflareRequired": false,
+  "forbiddenGenericNextPorts": [
+    3000,
+    3001,
+    3002,
+    3003
+  ],
+  "notes": [
+    "Do not use generic 3000/3001/3002/3003 ports for PRISMA PQOS.",
+    "Chart Lab port is not asserted until discovered from project evidence.",
+    "Cloudflare routes may point to these local ports, but Cloudflare remains optional in base profiles."
+  ],
+  "services": [
+    {
+      "id": "engine",
+      "layer": "Core",
+      "workspace": "engine-or-core-runtime",
+      "defaultPort": 3100,
+      "optionalInProfiles": [
+        "commit",
+        "pr",
+        "runtime",
+        "release"
+      ],
+      "requiredInProfiles": [],
+      "healthPaths": [
+        "/health",
+        "/api/health",
+        "/"
+      ],
+      "localFirstRequired": true,
+      "cloudflareRequired": false,
+      "evidence": "PRISMA local port convention: engine 3100"
+    },
+    {
+      "id": "prisma-web-eit",
+      "layer": "Web",
+      "workspace": "web-or-eit-runtime",
+      "defaultPort": 3110,
+      "optionalInProfiles": [
+        "commit",
+        "pr",
+        "runtime",
+        "release"
+      ],
+      "requiredInProfiles": [],
+      "healthPaths": [
+        "/api/health",
+        "/health",
+        "/"
+      ],
+      "localFirstRequired": false,
+      "cloudflareRequired": false,
+      "evidence": "PRISMA local port convention: web/eit 3110"
+    },
+    {
+      "id": "tablet",
+      "layer": "Tablet",
+      "workspace": "products/tablet/app",
+      "defaultPort": 3120,
+      "optionalInProfiles": [
+        "commit",
+        "pr",
+        "runtime",
+        "release"
+      ],
+      "requiredInProfiles": [],
+      "healthPaths": [
+        "/api/health",
+        "/health",
+        "/"
+      ],
+      "localFirstRequired": true,
+      "cloudflareRequired": false,
+      "evidence": "PRISMA local port convention: tablet 3120"
+    },
+    {
+      "id": "pc",
+      "layer": "PC",
+      "workspace": "products/pc/app",
+      "defaultPort": 3130,
+      "optionalInProfiles": [
+        "commit",
+        "pr",
+        "runtime",
+        "release"
+      ],
+      "requiredInProfiles": [],
+      "healthPaths": [
+        "/api/backoffice/audit/recent",
+        "/api/backoffice/dashboard",
+        "/api/health",
+        "/health",
+        "/"
+      ],
+      "localFirstRequired": false,
+      "cloudflareRequired": false,
+      "evidence": "PRISMA local port convention: pc/backoffice 3130"
+    },
+    {
+      "id": "mobile",
+      "layer": "Mobile",
+      "workspace": "products/mobile/app",
+      "defaultPort": 3140,
+      "optionalInProfiles": [
+        "commit",
+        "pr",
+        "runtime",
+        "release"
+      ],
+      "requiredInProfiles": [],
+      "healthPaths": [
+        "/api/mobile/health",
+        "/api/health",
+        "/health",
+        "/"
+      ],
+      "localFirstRequired": false,
+      "cloudflareRequired": false,
+      "evidence": "PRISMA local port convention: mobile/prisma 3140"
+    },
+    {
+      "id": "control-center",
+      "layer": "Control",
+      "workspace": "prisma-control-center/internal/py",
+      "defaultPort": 3150,
+      "optionalInProfiles": [
+        "commit",
+        "pr",
+        "runtime",
+        "release"
+      ],
+      "requiredInProfiles": [],
+      "healthPaths": [
+        "/health",
+        "/api/health",
+        "/"
+      ],
+      "localFirstRequired": false,
+      "cloudflareRequired": false,
+      "evidence": "PRISMA local port convention: control center 3150"
+    },
+    {
+      "id": "forms",
+      "layer": "Forms",
+      "workspace": "forms-runtime",
+      "defaultPort": 3200,
+      "optionalInProfiles": [
+        "commit",
+        "pr",
+        "runtime",
+        "release"
+      ],
+      "requiredInProfiles": [],
+      "healthPaths": [
+        "/health",
+        "/api/health",
+        "/"
+      ],
+      "localFirstRequired": false,
+      "cloudflareRequired": false,
+      "evidence": "PRISMA local port convention: forms 3200"
+    }
+  ],
+  "disabledUntilDiscovered": [
+    {
+      "id": "chart-lab",
+      "layer": "ChartLab",
+      "reason": "No confirmed PRISMA port. PQOS must not invent 3003 or any generic Next.js port.",
+      "workspace": "products/chart-lab/app"
+    }
+  ]
+}

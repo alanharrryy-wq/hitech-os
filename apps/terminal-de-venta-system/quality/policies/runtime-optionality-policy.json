@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0",
+  "version": "phase-2-v6-final-repair",
+  "rules": {
+    "commit": "runtime services optional",
+    "pr": "runtime services optional unless profile override marks required",
+    "runtime": "runtime services probed on PRISMA real local ports; missing optional service is S3 diagnostic",
+    "release": "runtime gaps may become S2 in later scenario phases, but Phase 2 does not start services",
+    "cloudflare": "only cloudflare profile may require cloudflare-specific checks"
+  },
+  "cloudflareBaseProfiles": "forbidden-as-requirement",
+  "portPolicy": {
+    "mustUsePrismaPorts": true,
+    "doNotInventPorts": true,
+    "forbiddenGenericNextPorts": [
+      3000,
+      3001,
+      3002,
+      3003
+    ],
+    "expectedPrismaPorts": {
+      "engine": 3100,
+      "prisma-web-eit": 3110,
+      "tablet": 3120,
+      "pc": 3130,
+      "mobile": 3140,
+      "control-center": 3150,
+      "forms": 3200
+    }
+  }
+}

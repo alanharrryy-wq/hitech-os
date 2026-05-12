@@ -1,10 +1,30 @@
 import { summarizeFindings } from './severity.mjs';
+
 export function decide(profile, gateResults) {
   const findings = gateResults.flatMap(g => g.findings || []);
   const summary = summarizeFindings(findings, profile);
   const errored = gateResults.some(g => g.status === 'ERROR');
   const blockedGate = gateResults.some(g => g.status === 'BLOCKED');
-  let decision = profile === 'pr' ? 'READY_TO_PR' : profile === 'release' ? 'READY_TO_RELEASE' : profile === 'diagnose' ? 'DIAGNOSIS_READY' : profile === 'watch' ? 'WATCHING' : 'READY_TO_COMMIT';
+  let decision = 'READY_TO_COMMIT';
+  if (profile === 'pr') decision = 'READY_TO_PR';
+  if (profile === 'release') decision = 'READY_TO_RELEASE';
+  if (profile === 'runtime') decision = 'READY_TO_RUNTIME';
+  if (profile === 'cloudflare') decision = 'READY_TO_CLOUDFLARE_CHECK';
+  if (profile === 'diagnose') decision = 'DIAGNOSIS_READY';
+  if (profile === 'watch') decision = 'WATCHING';
   if (summary.blockers.length || errored || blockedGate) decision = 'BLOCKED';
-  return { schemaVersion: '1.0', profile, decision, status: summary.warnings.length ? 'READY_WITH_WARNINGS' : 'READY', exitCode: decision === 'BLOCKED' ? 1 : 0, blockerCount: summary.blockers.length, warningCount: summary.warnings.length, infoCount: summary.info.length, worstSeverity: summary.worst, blockers: summary.blockers, warnings: summary.warnings };
+  const exitCode = decision === 'BLOCKED' ? 1 : 0;
+  return {
+    schemaVersion: '1.0',
+    profile,
+    decision,
+    status: summary.warnings.length ? 'READY_WITH_WARNINGS' : 'READY',
+    exitCode,
+    blockerCount: summary.blockers.length,
+    warningCount: summary.warnings.length,
+    infoCount: summary.info.length,
+    worstSeverity: summary.worst,
+    blockers: summary.blockers,
+    warnings: summary.warnings
+  };
 }

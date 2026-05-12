@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0",
+  "version": "phase-2-v6-final-repair-real-prisma-ports",
+  "principle": "Services are optional evidence in Phase 2 unless explicitly declared required. Wrong ports are a PQOS config bug, not a product blocker.",
+  "states": [
+    "running",
+    "not-running",
+    "partial",
+    "unknown",
+    "misconfigured",
+    "disabled-until-discovered"
+  ],
+  "severityByState": {
+    "optionalNotRunning": "S3",
+    "requiredNotRunning": "S1",
+    "disabledUntilDiscovered": "S4",
+    "cloudflareRequiredInBase": "S1",
+    "healthStatus5xx": "S2",
+    "healthStatus4xx": "S3",
+    "genericNextPortDetected": "S1"
+  },
+  "forbiddenGenericPorts": [
+    3000,
+    3001,
+    3002,
+    3003
+  ],
+  "expectedPrismaPorts": [
+    3100,
+    3110,
+    3120,
+    3130,
+    3140,
+    3150,
+    3200
+  ]
+}

@@ -50,7 +50,9 @@
     "quality:release": "node quality/bin/prisma-quality.mjs --profile release",
     "quality:diagnose": "node quality/bin/prisma-quality.mjs --profile diagnose --diagnose-latest",
     "quality:watch": "node quality/bin/prisma-quality.mjs --profile watch",
-    "quality:cloudflare": "node quality/bin/prisma-quality.mjs --profile cloudflare"
+    "quality:cloudflare": "node quality/bin/prisma-quality.mjs --profile cloudflare",
+    "quality:runtime": "node quality/bin/prisma-quality.mjs --profile runtime",
+    "quality:phase2": "node quality/bin/prisma-quality.mjs --profile runtime"
   },
   "devDependencies": {
     "prisma": "5.21.1"
