@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "id": "CONTRACT_NO_DESTRUCTIVE_TESTING_ON_REAL_DB",
+  "version": "1.0.0",
+  "title": "No Destructive Testing On Real DB",
+  "description": "Real DB is inspect-only. Destructive testing belongs in sandbox phases.",
+  "layer": "Core",
+  "defaultSeverity": "S0",
+  "blockingProfiles": [
+    "commit",
+    "pr",
+    "release"
+  ],
+  "ownedByGate": "Q3",
+  "requiredEvidenceTypes": [
+    "json",
+    "markdown",
+    "ledger"
+  ],
+  "failureExamples": [],
+  "phaseIntroduced": "phase-1"
+}

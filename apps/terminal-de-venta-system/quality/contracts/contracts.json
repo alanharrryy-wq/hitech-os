@@ -1,0 +1,239 @@
+{
+  "schemaVersion": "1.0",
+  "contracts": [
+    {
+      "schemaVersion": "1.0",
+      "id": "CONTRACT_TABLET_SOVEREIGNTY",
+      "version": "1.0.0",
+      "title": "Tablet Sovereignty",
+      "description": "Tablet must operate without PC, Mobile, Control Center, Cloudflare, internet, remote sync, canonical DB, dashboards, tunnels, or public endpoints.",
+      "layer": "Tablet",
+      "defaultSeverity": "S0",
+      "blockingProfiles": [
+        "commit",
+        "pr",
+        "release"
+      ],
+      "ownedByGate": "Q4",
+      "requiredEvidenceTypes": [
+        "json",
+        "markdown",
+        "ledger"
+      ],
+      "failureExamples": [],
+      "phaseIntroduced": "phase-1"
+    },
+    {
+      "schemaVersion": "1.0",
+      "id": "CONTRACT_IDEMPOTENT_SYNC",
+      "version": "1.0.0",
+      "title": "Idempotent Sync",
+      "description": "Sync and ingest flows must not duplicate events when replayed or retried.",
+      "layer": "Core",
+      "defaultSeverity": "S1",
+      "blockingProfiles": [
+        "commit",
+        "pr",
+        "release"
+      ],
+      "ownedByGate": "Q6",
+      "requiredEvidenceTypes": [
+        "json",
+        "markdown",
+        "ledger"
+      ],
+      "failureExamples": [],
+      "phaseIntroduced": "phase-1"
+    },
+    {
+      "schemaVersion": "1.0",
+      "id": "CONTRACT_MOBILE_TRUTHFULNESS",
+      "version": "1.0.0",
+      "title": "Mobile Truthfulness",
+      "description": "Mobile must expose freshness, confidence, partial/offline state, and must not invent operational truth.",
+      "layer": "Mobile",
+      "defaultSeverity": "S1",
+      "blockingProfiles": [
+        "commit",
+        "pr",
+        "release"
+      ],
+      "ownedByGate": "Q9",
+      "requiredEvidenceTypes": [
+        "json",
+        "markdown",
+        "ledger"
+      ],
+      "failureExamples": [],
+      "phaseIntroduced": "phase-1"
+    },
+    {
+      "schemaVersion": "1.0",
+      "id": "CONTRACT_CONTROL_AUDIT_ONLY",
+      "version": "1.0.0",
+      "title": "Control Audit Only",
+      "description": "Control Center observes and audits. It must not become an operational dependency for Tablet.",
+      "layer": "Control",
+      "defaultSeverity": "S2",
+      "blockingProfiles": [
+        "release"
+      ],
+      "ownedByGate": "Q1",
+      "requiredEvidenceTypes": [
+        "json",
+        "markdown",
+        "ledger"
+      ],
+      "failureExamples": [],
+      "phaseIntroduced": "phase-1"
+    },
+    {
+      "schemaVersion": "1.0",
+      "id": "CONTRACT_NO_FAKE_GREEN",
+      "version": "1.0.0",
+      "title": "No Fake Green",
+      "description": "No gate may pass without evidence.",
+      "layer": "Quality",
+      "defaultSeverity": "S1",
+      "blockingProfiles": [
+        "commit",
+        "pr",
+        "release"
+      ],
+      "ownedByGate": "Q15",
+      "requiredEvidenceTypes": [
+        "json",
+        "markdown",
+        "ledger"
+      ],
+      "failureExamples": [],
+      "phaseIntroduced": "phase-1"
+    },
+    {
+      "schemaVersion": "1.0",
+      "id": "CONTRACT_NO_DESTRUCTIVE_TESTING_ON_REAL_DB",
+      "version": "1.0.0",
+      "title": "No Destructive Testing On Real DB",
+      "description": "Real DB is inspect-only. Destructive testing belongs in sandbox phases.",
+      "layer": "Core",
+      "defaultSeverity": "S0",
+      "blockingProfiles": [
+        "commit",
+        "pr",
+        "release"
+      ],
+      "ownedByGate": "Q3",
+      "requiredEvidenceTypes": [
+        "json",
+        "markdown",
+        "ledger"
+      ],
+      "failureExamples": [],
+      "phaseIntroduced": "phase-1"
+    },
+    {
+      "schemaVersion": "1.0",
+      "id": "CONTRACT_CLOUDFLARE_OPTIONAL_BASE",
+      "version": "1.0.0",
+      "title": "Cloudflare Optional Base",
+      "description": "Cloudflare may have its own profile, but it must never block base commit, PR, or release gates unless explicitly requested.",
+      "layer": "Infrastructure",
+      "defaultSeverity": "S1",
+      "blockingProfiles": [
+        "commit",
+        "pr",
+        "release"
+      ],
+      "ownedByGate": "Q15",
+      "requiredEvidenceTypes": [
+        "json",
+        "markdown",
+        "ledger"
+      ],
+      "failureExamples": [],
+      "phaseIntroduced": "phase-1"
+    },
+    {
+      "schemaVersion": "1.0",
+      "id": "CONTRACT_SCHEMA_MIGRATION_PARITY",
+      "version": "1.0.0",
+      "title": "Schema Migration Parity",
+      "description": "Schema and migrations must remain auditable, additive-first, and historically traceable.",
+      "layer": "Core",
+      "defaultSeverity": "S1",
+      "blockingProfiles": [
+        "commit",
+        "pr",
+        "release"
+      ],
+      "ownedByGate": "Q3",
+      "requiredEvidenceTypes": [
+        "json",
+        "markdown",
+        "ledger"
+      ],
+      "failureExamples": [],
+      "phaseIntroduced": "phase-1"
+    },
+    {
+      "schemaVersion": "1.0",
+      "id": "CONTRACT_TRACEABLE_OPERATION",
+      "version": "1.0.0",
+      "title": "Traceable Operation",
+      "description": "Operational outcomes must be traceable from action to evidence.",
+      "layer": "Core",
+      "defaultSeverity": "S2",
+      "blockingProfiles": [
+        "release"
+      ],
+      "ownedByGate": "Q9",
+      "requiredEvidenceTypes": [
+        "json",
+        "markdown",
+        "ledger"
+      ],
+      "failureExamples": [],
+      "phaseIntroduced": "phase-1"
+    },
+    {
+      "schemaVersion": "1.0",
+      "id": "CONTRACT_RELEASE_EVIDENCE_REQUIRED",
+      "version": "1.0.0",
+      "title": "Release Evidence Required",
+      "description": "No release readiness claim may exist without evidence pack outputs.",
+      "layer": "Quality",
+      "defaultSeverity": "S2",
+      "blockingProfiles": [
+        "release"
+      ],
+      "ownedByGate": "Q15",
+      "requiredEvidenceTypes": [
+        "json",
+        "markdown",
+        "ledger"
+      ],
+      "failureExamples": [],
+      "phaseIntroduced": "phase-1"
+    },
+    {
+      "schemaVersion": "1.0",
+      "id": "CONTRACT_PRISMA_NOT_POS_ONLY",
+      "version": "1.0.0",
+      "title": "PRISMA Not POS Only",
+      "description": "PRISMA must remain an operational Knowledge OS, not regress into a POS-only surface.",
+      "layer": "Architecture",
+      "defaultSeverity": "S2",
+      "blockingProfiles": [
+        "release"
+      ],
+      "ownedByGate": "Q1",
+      "requiredEvidenceTypes": [
+        "json",
+        "markdown",
+        "ledger"
+      ],
+      "failureExamples": [],
+      "phaseIntroduced": "phase-1"
+    }
+  ]
+}

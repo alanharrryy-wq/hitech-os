@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1.0",
+  "systemName": "PRISMA Quality Operating System",
+  "systemVersion": "1.0.2-phase-1-v4-boundary-calibrated",
+  "phase": "phase-1-foundation-kernel-contracts-evidence",
+  "repoName": "terminal-de-venta-system",
+  "dbSafetyMode": "real-db-inspect-only",
+  "cloudflareMode": "optional-profile-only",
+  "defaultOutDir": "F:\\descargasf",
+  "layers": [
+    "Tablet",
+    "PC",
+    "Mobile",
+    "Core",
+    "Control",
+    "Cloudflare",
+    "Quality"
+  ],
+  "profiles": [
+    "commit",
+    "pr",
+    "release",
+    "diagnose",
+    "watch",
+    "cloudflare"
+  ],
+  "gates": [
+    "Q0",
+    "Q1",
+    "Q2",
+    "Q3",
+    "Q4",
+    "Q6",
+    "Q9",
+    "Q13",
+    "Q15"
+  ],
+  "contracts": [
+    "CONTRACT_TABLET_SOVEREIGNTY",
+    "CONTRACT_IDEMPOTENT_SYNC",
+    "CONTRACT_MOBILE_TRUTHFULNESS",
+    "CONTRACT_CONTROL_AUDIT_ONLY",
+    "CONTRACT_NO_FAKE_GREEN",
+    "CONTRACT_NO_DESTRUCTIVE_TESTING_ON_REAL_DB",
+    "CONTRACT_CLOUDFLARE_OPTIONAL_BASE",
+    "CONTRACT_SCHEMA_MIGRATION_PARITY",
+    "CONTRACT_TRACEABLE_OPERATION",
+    "CONTRACT_RELEASE_EVIDENCE_REQUIRED",
+    "CONTRACT_PRISMA_NOT_POS_ONLY"
+  ],
+  "writeAllowlist": [
+    "F:\\descargasf\\PRISMA_QUALITY_OS_<runId>"
+  ],
+  "phaseExitRules": {
+    "noFakeGreen": true,
+    "tabletSovereigntyIsS0": true,
+    "cloudflareCannotBlockBase": true,
+    "realDbIsInspectOnly": true,
+    "everyPassRequiresEvidence": true,
+    "criticalSkippedGateBlocks": true
+  },
+  "calibration": {
+    "version": "v4",
+    "description": "Boundary scanner blocks hard runtime dependencies while treating plain vocabulary and documentation as evidence-only.",
+    "policy": "quality/policies/boundary-scan-policy.json"
+  }
+}

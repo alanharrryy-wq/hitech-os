@@ -1,0 +1,3 @@
+export const Status = Object.freeze({ READY: 'READY', READY_WITH_WARNINGS: 'READY_WITH_WARNINGS', BLOCKED: 'BLOCKED', DEGRADED: 'DEGRADED', UNKNOWN: 'UNKNOWN', SKIPPED: 'SKIPPED', NOT_APPLICABLE: 'NOT_APPLICABLE', ERROR: 'ERROR' });
+export function finding({ id, severity = 'S4', layer = 'Quality', title, detail, evidence = [], file = null, recommendation = null }) { return { id, severity, layer, title, detail, evidence, file, recommendation }; }
+export function gateResult({ gateId, title, status, summary, findings = [], evidence = [], startedAt, endedAt }) { return { gateId, title, status, summary, findings, evidence, startedAt, endedAt }; }

@@ -1,0 +1,2 @@
+import childProcess from 'node:child_process';
+export function runCommand(ctx, command, args = [], options = {}) { const startedAt = new Date().toISOString(); const r = childProcess.spawnSync(command, args, { cwd: ctx.repoRoot, encoding: 'utf8', shell: false, timeout: options.timeoutMs ?? 120000 }); const entry = { command, args, startedAt, endedAt: new Date().toISOString(), exitCode: r.status, stdout: (r.stdout || '').slice(0, 20000), stderr: (r.stderr || '').slice(0, 20000), required: options.required ?? false }; ctx.commandsRun.push(entry); return entry; }

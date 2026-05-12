@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0",
+  "version": "1.0.2-v4-hard-dependency-calibrated",
+  "runtimeTabletRoots": [
+    "products/tablet/app/app",
+    "products/tablet/app/src",
+    "products/tablet/app/components"
+  ],
+  "nonBlockingContextRoots": [
+    "products/tablet/app/tools",
+    "products/tablet/app/tools/fixtures",
+    "products/tablet/app/docs",
+    "README.md files",
+    "tests and verifier files"
+  ],
+  "hardDependencySignalsBlock": [
+    "imports from products/pc/app, products/mobile/app or prisma-control-center",
+    "dynamic imports of PC/Mobile/Control implementation",
+    "runtime fetch/http calls to /api/backoffice or external Cloudflare-required endpoint"
+  ],
+  "textualSignalsDoNotBlock": [
+    "backoffice as label, copy, CSS, comments or docs",
+    "PC governance as explanatory text",
+    "Mobile supervision as explanatory text",
+    "Control audit as explanatory text"
+  ],
+  "rule": "PQOS blocks hard runtime dependency, not vocabulary. Words are smoke; imports and required calls are fire.",
+  "severity": {
+    "hardRuntimeCoupling": "S0/S1",
+    "textualSignal": "evidence-only",
+    "toolingReference": "evidence-only"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0",
+  "rules": {
+    "S0": "blocks commit, pr, release",
+    "S1": "blocks commit, pr, release",
+    "S2": "blocks release, warns in pr",
+    "S3": "warning",
+    "S4": "info",
+    "threeS3SameLayerEscalatesTo": "S2"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "id": "CONTRACT_IDEMPOTENT_SYNC",
+  "version": "1.0.0",
+  "title": "Idempotent Sync",
+  "description": "Sync and ingest flows must not duplicate events when replayed or retried.",
+  "layer": "Core",
+  "defaultSeverity": "S1",
+  "blockingProfiles": [
+    "commit",
+    "pr",
+    "release"
+  ],
+  "ownedByGate": "Q6",
+  "requiredEvidenceTypes": [
+    "json",
+    "markdown",
+    "ledger"
+  ],
+  "failureExamples": [],
+  "phaseIntroduced": "phase-1"
+}

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "id": "CONTRACT_TABLET_SOVEREIGNTY",
+  "version": "1.0.0",
+  "title": "Tablet Sovereignty",
+  "description": "Tablet must operate without PC, Mobile, Control Center, Cloudflare, internet, remote sync, canonical DB, dashboards, tunnels, or public endpoints.",
+  "layer": "Tablet",
+  "defaultSeverity": "S0",
+  "blockingProfiles": [
+    "commit",
+    "pr",
+    "release"
+  ],
+  "ownedByGate": "Q4",
+  "requiredEvidenceTypes": [
+    "json",
+    "markdown",
+    "ledger"
+  ],
+  "failureExamples": [],
+  "phaseIntroduced": "phase-1"
+}

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0",
+  "id": "CONTRACT_CONTROL_AUDIT_ONLY",
+  "version": "1.0.0",
+  "title": "Control Audit Only",
+  "description": "Control Center observes and audits. It must not become an operational dependency for Tablet.",
+  "layer": "Control",
+  "defaultSeverity": "S2",
+  "blockingProfiles": [
+    "release"
+  ],
+  "ownedByGate": "Q1",
+  "requiredEvidenceTypes": [
+    "json",
+    "markdown",
+    "ledger"
+  ],
+  "failureExamples": [],
+  "phaseIntroduced": "phase-1"
+}

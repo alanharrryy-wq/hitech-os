@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "id": "CONTRACT_MOBILE_TRUTHFULNESS",
+  "version": "1.0.0",
+  "title": "Mobile Truthfulness",
+  "description": "Mobile must expose freshness, confidence, partial/offline state, and must not invent operational truth.",
+  "layer": "Mobile",
+  "defaultSeverity": "S1",
+  "blockingProfiles": [
+    "commit",
+    "pr",
+    "release"
+  ],
+  "ownedByGate": "Q9",
+  "requiredEvidenceTypes": [
+    "json",
+    "markdown",
+    "ledger"
+  ],
+  "failureExamples": [],
+  "phaseIntroduced": "phase-1"
+}
