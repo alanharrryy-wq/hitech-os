@@ -24,6 +24,8 @@ Define eventos como verdad operacional entre Tablet, PC, outbox, sync y auditori
 - `ticket.closed`
 - `stock.decremented`
 - `inventory.low_stock_detected`
+- `cash.session.opened`
+- `cash.movement.recorded`
 
 ## Later events
 
@@ -42,7 +44,9 @@ Define eventos como verdad operacional entre Tablet, PC, outbox, sync y auditori
 ## Every sensitive event must include
 
 - `eventId`
+- `eventType`
 - `topic`
+- `idempotencyKey`
 - `businessId`
 - `terminalId`
 - `actorId`
@@ -50,6 +54,9 @@ Define eventos como verdad operacional entre Tablet, PC, outbox, sync y auditori
 - `occurredAt`
 - `payload`
 - `schemaVersion`
+- `correlationId` when useful
+
+`topic` remains a compatibility alias. `eventType` is the semantic event name.
 
 ## Canonical machine-readable source
 

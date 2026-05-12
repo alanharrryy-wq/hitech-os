@@ -6,6 +6,8 @@ export const SHARED_SYNC_EVENTS = [
   "inventory.low_stock_detected",
   "sale.cancelled",
   "sale.refunded",
+  "cash.session.opened",
+  "cash.movement.recorded",
   "shift.opened",
   "shift.closed",
   "stock.adjusted",
@@ -22,6 +24,23 @@ export type SharedSyncEvent = (typeof SHARED_SYNC_EVENTS)[number];
 export const SHARED_OUTBOX_STATES = ["pending", "sent", "failed", "acked", "conflict"] as const;
 export type SharedOutboxState = (typeof SHARED_OUTBOX_STATES)[number];
 
+export const SHARED_SYNC_LIFECYCLE_STATES = [
+  "created_local",
+  "queued",
+  "sent",
+  "received",
+  "validated",
+  "accepted",
+  "projected",
+  "reconciled",
+  "conflict",
+  "failed",
+  "dead_letter"
+] as const;
+export type SharedSyncLifecycleState = (typeof SHARED_SYNC_LIFECYCLE_STATES)[number];
+
+export const SHARED_ACKED_COMPATIBILITY_STATUS = "acked" as const;
+
 export const SHARED_CONFLICT_CODES = [
   "product_discontinued",
   "old_local_price",
@@ -37,13 +56,16 @@ export type SharedConflictCode = (typeof SHARED_CONFLICT_CODES)[number];
 
 export const SHARED_EVENT_ENVELOPE_FIELDS = [
   "eventId",
+  "eventType",
   "topic",
+  "idempotencyKey",
   "businessId",
   "terminalId",
   "actorId",
   "source",
   "occurredAt",
   "payload",
-  "schemaVersion"
+  "schemaVersion",
+  "correlationId"
 ] as const;
 export type SharedEventEnvelopeField = (typeof SHARED_EVENT_ENVELOPE_FIELDS)[number];

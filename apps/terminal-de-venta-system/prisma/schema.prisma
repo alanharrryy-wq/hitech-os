@@ -448,19 +448,37 @@ model AuditCount {
 }
 
 model OutboxEvent {
-  id          String   @id
-  businessId  String
-  topic       String
-  aggregateId String
-  payloadJson String
-  status      String
-  attempts    Int      @default(0)
-  createdAt   DateTime @default(now())
-  sentAt      DateTime?
-  lastError   String?
+  id              String   @id
+  businessId      String
+  terminalId      String?
+  topic           String
+  eventType       String?
+  aggregateId     String
+  idempotencyKey  String?
+  correlationId   String?
+  payloadJson     String
+  source          String?
+  schemaVersion   String?
+  status          String
+  lifecycleStatus String?
+  attempts        Int      @default(0)
+  createdAt       DateTime @default(now())
+  sentAt          DateTime?
+  receivedAt      DateTime?
+  validatedAt     DateTime?
+  acceptedAt      DateTime?
+  projectedAt     DateTime?
+  reconciledAt    DateTime?
+  failedAt        DateTime?
+  deadLetterAt    DateTime?
+  conflictCode    String?
+  diagnosticsJson String?
+  lastError       String?
 
   business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
 
   @@index([businessId, status, createdAt])
   @@index([businessId, topic])
+  @@index([businessId, lifecycleStatus, createdAt])
+  @@index([businessId, idempotencyKey])
 }
