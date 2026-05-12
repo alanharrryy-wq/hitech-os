@@ -621,6 +621,15 @@ function filterByConfidence(option: Record<string, unknown>, floor: number): voi
   }
 }
 
+
+// PRISMA_CAUSAL_FLOW_PREMIUM_PATCH_V2: visible forensic/evidence styling without changing chart contracts.
+function causalSeverityColor(severity: string): string {
+  if (severity === "CRITICAL") return "#df3d2f";
+  if (severity === "ERROR") return "#ff6b3d";
+  if (severity === "WARN") return "#e59b2a";
+  return "#086dff";
+}
+
 function applyCausalControls(option: Record<string, unknown>, values: LabChartControlState): void {
   const series = seriesArray(option)[0];
   if (!series) return;
@@ -645,9 +654,27 @@ function applyCausalControls(option: Record<string, unknown>, values: LabChartCo
       })
       .map((link) => {
         const record = link as Record<string, unknown>;
+        const item = isRecord(record.item) ? record.item : {};
+        const severity = String(item.severity ?? "INFO");
+        const confidence = Number(item.confidence ?? 100);
+        const color = causalSeverityColor(severity);
+        const forensicMode = detailLevel === "forensic";
         const lineStyle = isRecord(record.lineStyle) ? record.lineStyle : {};
         lineStyle.opacity = opacity;
+        lineStyle.color = color;
+        lineStyle.shadowBlur = evidenceMode || forensicMode ? Math.max(4, Math.round(confidence / 10)) : 0;
+        lineStyle.shadowColor = color;
         record.lineStyle = lineStyle;
+        record.label = evidenceMode && forensicMode ? {
+          show: true,
+          formatter: `${severity} · ${confidence}%`,
+          color: "#071426",
+          fontSize: 10,
+          fontWeight: 800,
+          backgroundColor: "rgba(255, 255, 255, 0.78)",
+          borderRadius: 8,
+          padding: [2, 6]
+        } : { show: false };
         return record;
       });
     series.links = filteredLinks;
@@ -669,6 +696,14 @@ function applyCausalControls(option: Record<string, unknown>, values: LabChartCo
   series.layoutIterations = layoutDensity === "dense" ? 18 : layoutDensity === "airy" ? 44 : 32;
   const edgeLabel = isRecord(series.edgeLabel) ? series.edgeLabel : {};
   edgeLabel.show = evidenceMode && detailLevel === "forensic";
+  edgeLabel.color = "#071426";
+  edgeLabel.fontSize = 10;
+  edgeLabel.fontWeight = 800;
+  edgeLabel.backgroundColor = "rgba(255, 255, 255, 0.74)";
+  edgeLabel.borderColor = "rgba(8, 109, 255, 0.16)";
+  edgeLabel.borderWidth = 1;
+  edgeLabel.borderRadius = 8;
+  edgeLabel.padding = [2, 5];
   series.edgeLabel = edgeLabel;
 }
 

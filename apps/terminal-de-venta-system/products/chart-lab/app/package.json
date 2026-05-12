@@ -11,11 +11,14 @@
     "typecheck": "tsc --noEmit",
     "verify": "node scripts/verify-chart-lab.mjs",
     "verify:controls": "node scripts/verify-chart-lab-controls.mjs",
+    "verify:chart-source-modes": "node scripts/verify-chart-source-modes.mjs",
     "verify:maps": "node scripts/verify-chart-lab-maps.mjs",
     "verify:passports": "node scripts/verify-chart-lab-passports.mjs",
     "verify:cloudflare": "node scripts/verify-chart-lab-cloudflare.mjs",
     "verify:promotion": "node scripts/verify-chart-lab-promotion.mjs",
     "verify:no-leaks": "node scripts/verify-chart-lab-no-leaks.mjs",
+    "verify:promotion-readiness": "node scripts/verify-promotion-readiness.mjs",
+    "verify:cloudflare-smoke": "node scripts/verify-chart-lab-cloudflare-smoke.mjs",
     "verify:echarts-boundary": "node scripts/verify-chart-lab-echarts-boundary.mjs",
     "verify:all": "node scripts/verify-chart-lab-all.mjs",
     "cf:build": "node scripts/run-chart-lab-cf-build.mjs",
@@ -27,7 +30,8 @@
     "tunnel:doctor": "pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/doctor-chart-lab-tunnel.ps1",
     "promote": "node scripts/promote-chart.mjs",
     "handoff:pack": "node scripts/export-chart-lab-handoff-pack.mjs",
-    "scaffold:chart": "node scripts/create-chart-lab-entry.mjs"
+    "scaffold:chart": "node scripts/create-chart-lab-entry.mjs",
+    "visual-baseline-readiness": "node scripts/visual-baseline-readiness.mjs"
   },
   "dependencies": {
     "echarts": "5.6.0",

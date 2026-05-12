@@ -27,18 +27,35 @@ function asStringArray(value: LabChartControlValue | undefined) {
   return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
 }
 
+// PRISMA_CAUSAL_FLOW_PREMIUM_PATCH_V2: stable labels and selectors for Playwright + premium controls.
+function controlDomId(controlId: string) {
+  return `chart-control-${controlId.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
+}
+
+function controlInputProps(control: LabChartRuntimeControl) {
+  return {
+    id: controlDomId(control.id),
+    name: control.id,
+    "aria-label": control.label,
+    "data-control-id": control.id,
+    "data-control-label": control.label,
+    "data-control-type": control.type
+  };
+}
+
+// PRISMA_KNOBS_AUDIT_INJECTION_V2: stable knob selectors for audit, QA, and product hardening.
 export function ChartControlDeck({ controls, values, onChange, onCopyConfig, onReset, onResetAll }: ChartControlDeckProps) {
   return (
-    <section className="control-deck" aria-label="Runtime chart controls">
+    <section className="control-deck" aria-label="Runtime chart controls" data-testid="chart-control-deck" data-control-count={controls.length}>
       <div className="control-deck__toolbar">
         <div>
           <span className="eyebrow">Runtime Controls</span>
           <h3>Working knobs</h3>
         </div>
         <div className="toolbar-actions">
-          <button type="button" onClick={onCopyConfig}>Copy config</button>
-          <button type="button" onClick={onReset}>Reset chart</button>
-          <button type="button" onClick={onResetAll}>Reset all</button>
+          <button type="button" data-action="copy-current-config" aria-label="Copy Current Config JSON" onClick={onCopyConfig}>Copy Current Config JSON</button>
+          <button type="button" data-action="reset-current-chart" aria-label="Reset current chart" onClick={onReset}>Reset current chart</button>
+          <button type="button" data-action="reset-all-charts" aria-label="Reset all charts" onClick={onResetAll}>Reset all</button>
         </div>
       </div>
 
@@ -48,10 +65,11 @@ export function ChartControlDeck({ controls, values, onChange, onCopyConfig, onR
           const disabled = Boolean(control.disabledReason);
 
           return (
-            <label className="runtime-control" key={control.id} data-control-type={control.type}>
+            <label className="runtime-control" key={control.id} data-control-type={control.type} data-control-id={control.id} data-control-label={control.label}>
               <span>{control.label}</span>
               {control.type === "toggle" ? (
                 <input
+                  {...controlInputProps(control)}
                   type="checkbox"
                   checked={asBoolean(current, Boolean(control.defaultValue))}
                   disabled={disabled}
@@ -62,6 +80,7 @@ export function ChartControlDeck({ controls, values, onChange, onCopyConfig, onR
               {control.type === "range" || control.type === "numeric" ? (
                 <>
                   <input
+                    {...controlInputProps(control)}
                     type="range"
                     min={control.min ?? 0}
                     max={control.max ?? 100}
@@ -70,12 +89,12 @@ export function ChartControlDeck({ controls, values, onChange, onCopyConfig, onR
                     disabled={disabled}
                     onChange={(event) => onChange(control.id, Number(event.target.value))}
                   />
-                  <output>{asNumber(current, asNumber(control.defaultValue, 0))}</output>
+                  <output data-control-id={control.id} data-control-output="value">{asNumber(current, asNumber(control.defaultValue, 0))}</output>
                 </>
               ) : null}
 
               {control.type === "select" ? (
-                <select value={asString(current)} disabled={disabled} onChange={(event) => onChange(control.id, event.target.value)}>
+                <select {...controlInputProps(control)} value={asString(current)} disabled={disabled} onChange={(event) => onChange(control.id, event.target.value)}>
                   {(control.options ?? []).map((option) => (
                     <option value={option.value} key={option.value}>{option.label}</option>
                   ))}
@@ -86,8 +105,12 @@ export function ChartControlDeck({ controls, values, onChange, onCopyConfig, onR
                 <span className="segmented-controls control-segment">
                   {(control.options ?? []).map((option) => (
                     <button
+                      aria-pressed={asString(current) === option.value}
+                      aria-label={`${control.label}: ${option.label}`}
+                      data-control-option={option.value}
+                      data-control-id={control.id}
                       type="button"
-                      key={option.value}
+                          key={option.value}
                       className={asString(current) === option.value ? "is-active" : ""}
                       disabled={disabled}
                       onClick={() => onChange(control.id, option.value)}
@@ -104,8 +127,12 @@ export function ChartControlDeck({ controls, values, onChange, onCopyConfig, onR
                     const selected = asStringArray(current).includes(option.value);
                     return (
                       <button
+                        aria-pressed={selected}
+                        aria-label={`${control.label}: ${option.label}`}
+                        data-control-option={option.value}
+                        data-control-id={control.id}
                         type="button"
-                        key={option.value}
+                              key={option.value}
                         className={selected ? "is-active" : ""}
                         disabled={disabled}
                         onClick={() => {
@@ -123,6 +150,7 @@ export function ChartControlDeck({ controls, values, onChange, onCopyConfig, onR
 
               {control.type === "search" ? (
                 <input
+                  {...controlInputProps(control)}
                   type="search"
                   value={asString(current)}
                   disabled={disabled}
@@ -131,7 +159,7 @@ export function ChartControlDeck({ controls, values, onChange, onCopyConfig, onR
                 />
               ) : null}
 
-              <small>{control.disabledReason ?? `${control.affectedLayer} · ${control.validation}`}</small>
+              <small data-control-id={control.id} data-control-meta="validation">{control.disabledReason ?? `${control.affectedLayer} · ${control.validation}`}</small>
             </label>
           );
         })}

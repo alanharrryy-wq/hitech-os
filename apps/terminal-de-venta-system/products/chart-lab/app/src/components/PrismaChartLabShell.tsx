@@ -109,6 +109,8 @@ function chartConfigPayload(input: {
   };
 }
 
+// PRISMA_CAUSAL_FLOW_PREMIUM_PATCH_V2: Causal Flow Ribbon hero evidence strip.
+// PRISMA_KNOBS_AUDIT_INJECTION_V2: selected chart/tab metadata for code-first audits.
 export function PrismaChartLabShell() {
   const publicSafe = process.env.NEXT_PUBLIC_PRISMA_CHART_LAB_PUBLIC_SAFE === "true";
   const deploymentMode = process.env.NEXT_PUBLIC_PRISMA_CHART_LAB_DEPLOYMENT_MODE ?? "local";
@@ -232,7 +234,7 @@ export function PrismaChartLabShell() {
   }
 
   return (
-    <main className="chart-lab" data-density={density} data-theme={themeMode} data-frame={frame} data-capture="false">
+    <main className="chart-lab" data-density={density} data-theme={themeMode} data-frame={frame} data-capture="false" data-selected-chart-id={selectedChart.id} data-selected-tab={tab} data-active-controls={activeControls}>
       <div className="chart-lab__background" aria-hidden="true" />
       <section className="chart-lab__chrome" aria-label="PRISMA Chart Lab">
         <header className="chart-lab__header">
@@ -332,6 +334,8 @@ export function PrismaChartLabShell() {
                 <button
                   type="button"
                   key={chart.id}
+                  data-chart-id={chart.id}
+                  data-chart-title={chart.title}
                   className={chart.id === selectedChart.id ? "chart-list__item is-active" : "chart-list__item"}
                   onClick={() => selectChart(chart.id)}
                   aria-pressed={chart.id === selectedChart.id}
@@ -384,7 +388,21 @@ export function PrismaChartLabShell() {
               </button>
             </div>
 
-            <article className="chart-frame" data-preview-frame={frame}>
+            <article className="chart-frame" data-preview-frame={frame} data-chart-id={selectedChart.id} data-chart-family={selectedChart.family} data-active-controls={activeControls}>
+              {selectedChart.id === "pc.causal-flow-ribbon" ? (
+                <div className="causal-hero-strip" aria-label="Causal Flow Ribbon evidence summary">
+                  <div>
+                    <span className="eyebrow">Causal command ribbon</span>
+                    <strong>{String(selectedControlState.detailLevel ?? "standard")} · {String(selectedControlState.dataScenario ?? "clean")}</strong>
+                  </div>
+                  <div className="causal-hero-strip__chips">
+                    <span>confidence ≥ {String(selectedControlState.confidenceFloor ?? 0)}%</span>
+                    <span>stage {String(selectedControlState.stageFocus ?? "all")}</span>
+                    <span>evidence {String(selectedControlState.evidenceMode ?? true)}</span>
+                    <span>{activeControls} active knobs</span>
+                  </div>
+                </div>
+              ) : null}
               {selectedChart.Component ? (
                 <selectedChart.Component entry={selectedChart} density={density} size={size} themeMode={themeMode} />
               ) : (
@@ -394,7 +412,7 @@ export function PrismaChartLabShell() {
 
             <div className="tab-strip" role="tablist" aria-label="Chart inspector tabs">
               {inspectorTabs.map((item) => (
-                <button type="button" role="tab" key={item.id} aria-selected={tab === item.id} className={tab === item.id ? "is-active" : ""} onClick={() => setTab(item.id)}>
+                <button type="button" role="tab" key={item.id} data-tab-id={item.id} aria-selected={tab === item.id} className={tab === item.id ? "is-active" : ""} onClick={() => setTab(item.id)}>
                   {item.label}
                 </button>
               ))}

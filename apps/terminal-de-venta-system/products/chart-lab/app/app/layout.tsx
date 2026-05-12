@@ -3,7 +3,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "PRISMA Chart Lab",
-  description: "Canonical visual workshop for PRISMA ECharts operational charts."
+  description: "Canonical visual workshop for PRISMA ECharts operational charts.",
+  // PRISMA_CAUSAL_FLOW_PREMIUM_PATCH_V2: keep public demos console-clean.
+  icons: {
+    icon: "/favicon.svg"
+  }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
