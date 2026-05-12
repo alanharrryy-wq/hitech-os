@@ -37,6 +37,12 @@ model Business {
   replenishmentSignals ReplenishmentSignal[]
   auditCounts       AuditCount[]
   outboxEvents      OutboxEvent[]
+  syncAttempts      SyncAttempt[]
+  syncConflicts     SyncConflict[]
+  deviceHeartbeats  DeviceHeartbeat[]
+  syncCheckpoints   SyncCheckpoint[]
+  syncOutboxStatusBuckets SyncOutboxStatusBucket[]
+  dataSourceFreshnesses DataSourceFreshness[]
 }
 
 model Store {
@@ -481,4 +487,192 @@ model OutboxEvent {
   @@index([businessId, topic])
   @@index([businessId, lifecycleStatus, createdAt])
   @@index([businessId, idempotencyKey])
+}
+
+model SyncAttempt {
+  id                 String   @id
+  businessId         String
+  eventId            String?
+  outboxEventId      String?
+  idempotencyKey     String?
+  source             String
+  deviceId           String?
+  terminalId         String?
+  topic              String?
+  status             String
+  lifecycleStatus    String?
+  attemptNumber      Int      @default(1)
+  receivedAt         DateTime @default(now())
+  startedAt          DateTime?
+  finishedAt         DateTime?
+  durationMs         Int?
+  errorCode          String?
+  diagnosticsJson    String?
+  payloadFingerprint String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now()) @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId, source, status, createdAt])
+  @@index([businessId, deviceId, createdAt])
+  @@index([businessId, idempotencyKey])
+  @@index([status, createdAt])
+  @@index([createdAt])
+  @@index([updatedAt])
+}
+model SyncConflict {
+  id              String   @id
+  businessId      String
+  eventId         String?
+  outboxEventId   String?
+  idempotencyKey  String?
+  source          String
+  deviceId        String?
+  terminalId      String?
+  topic           String?
+  aggregateId     String?
+  conflictCode    String
+  label           String
+  severity        String
+  detail          String
+  status          String   @default("open")
+  detectedAt      DateTime @default(now())
+  resolvedAt      DateTime?
+  resolution      String?
+  diagnosticsJson String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId, status, detectedAt])
+  @@index([businessId, source, severity, detectedAt])
+  @@index([businessId, deviceId, status])
+  @@index([businessId, idempotencyKey])
+  @@index([conflictCode, status])
+  @@index([createdAt])
+  @@index([updatedAt])
+}
+
+model DeviceHeartbeat {
+  id               String   @id
+  businessId       String
+  deviceId         String
+  source           String
+  surface          String
+  runtimeMode      String
+  appVersion       String
+  schemaVersion    String?
+  licenseStatus    String?
+  syncStatus       String?
+  health           String
+  status           String
+  outboxCount      Int?
+  lastSaleAt       DateTime?
+  lastDiagnosticAt DateTime?
+  lastSeenAt       DateTime
+  observedAt       DateTime
+  metadataJson     String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @default(now()) @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId, deviceId, lastSeenAt])
+  @@index([businessId, source, status, lastSeenAt])
+  @@index([businessId, status, updatedAt])
+  @@index([source, health, observedAt])
+  @@index([createdAt])
+  @@index([updatedAt])
+}
+
+model SyncCheckpoint {
+  id                 String   @id
+  businessId         String
+  source             String
+  deviceId           String?
+  terminalId         String?
+  stream             String
+  cursorValue        String?
+  lastEventId        String?
+  lastIdempotencyKey String?
+  lastAttemptId      String?
+  status             String
+  lifecycleStatus    String?
+  checkpointAt       DateTime @default(now())
+  metadataJson       String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now()) @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId, source, deviceId, stream])
+  @@index([businessId, source, status, checkpointAt])
+  @@index([businessId, deviceId, checkpointAt])
+  @@index([status, updatedAt])
+  @@index([createdAt])
+  @@index([updatedAt])
+}
+
+model SyncOutboxStatusBucket {
+  id              String   @id
+  businessId      String
+  source          String
+  deviceId        String?
+  terminalId      String?
+  status          String
+  lifecycleStatus String?
+  topic           String?
+  bucketStartAt   DateTime
+  bucketEndAt     DateTime?
+  count           Int      @default(0)
+  oldestEventAt   DateTime?
+  newestEventAt   DateTime?
+  staleCount      Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId, source, status, bucketStartAt])
+  @@index([businessId, deviceId, status])
+  @@index([businessId, lifecycleStatus, bucketStartAt])
+  @@index([businessId, topic, status])
+  @@index([bucketStartAt])
+  @@index([createdAt])
+  @@index([updatedAt])
+}
+
+model DataSourceFreshness {
+  id                String   @id
+  businessId        String
+  source            String
+  deviceId          String?
+  surface           String?
+  status            String
+  confidence        Float?
+  freshnessSeconds  Int?
+  latencyMs         Int?
+  errorCount        Int      @default(0)
+  lastSeenAt        DateTime?
+  lastEventAt       DateTime?
+  lastCheckpointAt  DateTime?
+  lastHeartbeatAt   DateTime?
+  lastError         String?
+  warningsJson      String?
+  metadataJson      String?
+  observedAt        DateTime @default(now())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now()) @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId, source, status, updatedAt])
+  @@index([businessId, deviceId, lastSeenAt])
+  @@index([businessId, status, observedAt])
+  @@index([source, updatedAt])
+  @@index([freshnessSeconds])
+  @@index([createdAt])
+  @@index([updatedAt])
 }

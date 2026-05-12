@@ -465,6 +465,7 @@ model OutboxEvent {
   terminalId  String?
   topic       String
   aggregateId String
+  idempotencyKey String?
   payloadJson String
   source      String?
   schemaVersion String?
@@ -479,4 +480,5 @@ model OutboxEvent {
 
   @@index([businessId, status, createdAt])
   @@index([businessId, topic])
+  @@index([businessId, idempotencyKey])
 }
