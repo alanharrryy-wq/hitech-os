@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>PRISMA Crystal Ops Console</title>
+  <link rel="stylesheet" href="/styles.css">
+  <!-- PRISMA_BLACKBOX_COMMAND_ITER3_HTML_BEGIN -->
+  <link rel="stylesheet" href="/blackbox_command.css">
+  <!-- PRISMA_BLACKBOX_COMMAND_ITER3_HTML_END -->
+  <!-- PRISMA_CLOUDFLARE_ACTIONS_ITER4_HTML_BEGIN -->
+  <link rel="stylesheet" href="/ops_command.css">
+  <!-- PRISMA_CLOUDFLARE_ACTIONS_ITER4_HTML_END -->
+  <!-- PRISMA_ULTRA_POLISH_RELEASE_ITER5_HTML_BEGIN -->
+  <link rel="stylesheet" href="/release_polish.css">
+  <!-- PRISMA_ULTRA_POLISH_RELEASE_ITER5_HTML_END -->
+</head>
+<body data-prisma="crystal-ops" data-status="empty">
+  <div class="crystal-atmosphere" aria-hidden="true"><i></i><i></i><i></i></div>
+
+  <div class="app-shell">
+    <aside class="side-rail" aria-label="Navegacion PRISMA">
+      <a class="brand-lockup" href="#overview" aria-label="PRISMA Crystal Ops Console">
+        <span class="brand-orb">P</span>
+        <span><strong>PRISMA</strong><small>Crystal Ops</small></span>
+      </a>
+
+      <nav class="nav-stack" aria-label="Vistas">
+        <button class="nav-item active" data-view="overview" type="button"><span>01</span>Resumen</button>
+        <button class="nav-item" data-view="services" type="button"><span>02</span>Servicios</button>
+        <button class="nav-item" data-view="incidents" type="button"><span>03</span>Incidentes</button>
+        <button class="nav-item" data-view="blackbox" type="button"><span>04</span>Black-box</button>
+        <button class="nav-item" data-view="cloudflare" type="button"><span>05</span>Cloudflare</button>
+        <button class="nav-item" data-view="reports" type="button"><span>06</span>Reportes</button>
+      </nav>
+
+      <section class="rail-status glass-card" aria-label="Estado resumido">
+        <small>Estado del sistema</small>
+        <strong id="rail-status">EMPTY</strong>
+        <div class="rail-meter"><span id="rail-meter"></span></div>
+        <dl>
+          <div><dt>Bridge</dt><dd id="rail-bridge">sin dato</dd></div>
+          <div><dt>Black-box</dt><dd id="rail-blackbox">sin dato</dd></div>
+          <div><dt>API</dt><dd id="rail-api">sin dato</dd></div>
+        </dl>
+      </section>
+    </aside>
+
+    <main class="ops-main">
+      <header class="command-bar glass-card">
+        <div class="command-title">
+          <p class="eyebrow">Sistema Inteligente de Gestion Operativa</p>
+          <h1>PRISMA Control Center</h1>
+        </div>
+        <div class="command-strip" aria-label="Estado vivo">
+          <div class="live-pill" id="bridge-pill"><span></span><div><b>Bridge</b><small id="bridge-state">consultando</small></div></div>
+          <div class="time-block"><b id="clock-time">--:--:--</b><small id="clock-date">--</small></div>
+          <div class="score-chip"><small>Health Score</small><b id="header-score">0</b><span>/100</span></div>
+          <div class="mode-chip" id="mode-chip">LOCAL_FULL</div>
+        </div>
+      </header>
+
+      <section class="dashboard-grid" id="overview" data-panel="overview">
+        <article class="hero-core glass-card scan-card">
+          <div class="hero-copy">
+            <p class="eyebrow">Nucleo operativo</p>
+            <h2 id="hero-title">Esperando telemetria</h2>
+            <p id="hero-recommendation">Corre health para encender la consola.</p>
+            <div class="chip-row">
+              <span class="state-chip subtle" id="overall-chip">EMPTY</span>
+              <span class="state-chip subtle" id="fresh-chip">sin timestamp</span>
+              <span class="state-chip subtle" id="run-chip">run pendiente</span>
+            </div>
+          </div>
+          <div class="gauge-wrap" aria-label="Score operativo">
+            <div class="mega-gauge" id="mega-gauge" style="--score:0"><strong id="gauge-score">0</strong><span>%</span><small id="gauge-label">EMPTY</small></div>
+            <div class="gauge-ribs" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+
+
+          </div>
+        </article>
+
+        <section class="kpi-grid" aria-label="Indicadores principales">
+          <article class="kpi glass-card"><small>Servicios PASS</small><strong id="kpi-services">0/0</strong><em id="kpi-services-note">sin datos</em></article>
+          <article class="kpi glass-card"><small>Incidentes activos</small><strong id="kpi-incidents">0</strong><em id="kpi-incidents-note">Black-box</em></article>
+          <article class="kpi glass-card"><small>Cloudflare</small><strong id="kpi-cloudflare">EMPTY</strong><em id="kpi-control-route">control route</em></article>
+          <article class="kpi glass-card"><small>Latencia media</small><strong id="kpi-latency">-</strong><em>local HTTP</em></article>
+          <article class="kpi glass-card"><small>Public mode</small><strong id="kpi-public-mode">PUBLIC</strong><em id="kpi-public-note">redacted ready</em></article>
+          <article class="kpi glass-card"><small>Ultimo health</small><strong id="kpi-last-health">--</strong><em id="kpi-last-health-note">freshness</em></article>
+        </section>
+      </section>
+
+
+
+
+
+      <section class="workspace-grid">
+        <article class="glass-card span-2" id="services" data-panel="services">
+          <div class="card-heading"><div><p class="eyebrow">Matriz de servicios</p><h3>Puertos, origenes y salud</h3></div><span id="services-status" class="state-chip subtle">sin datos</span></div>
+          <div class="service-matrix" id="service-matrix"></div>
+        </article>
+
+        <article class="glass-card" id="incidents" data-panel="incidents">
+          <div class="card-heading"><div><p class="eyebrow">Incidente activo</p><h3>Black-box alert rail</h3></div><span id="incident-count" class="state-chip subtle">0</span></div>
+          <div id="incident-spotlight" class="incident-spotlight empty">Sin incidentes activos.</div>
+        </article>
+
+        <article class="glass-card" id="blackbox" data-panel="blackbox">
+          <div class="card-heading"><div><p class="eyebrow">Black-box</p><h3>Puente y memoria</h3></div><span id="blackbox-chip" class="state-chip subtle">pendiente</span></div>
+          <div class="soft-list" id="blackbox-list"></div>
+        </article>
+
+        <article class="glass-card span-2" id="cloudflare" data-panel="cloudflare">
+          <div class="card-heading"><div><p class="eyebrow">Cloudflare route map</p><h3>Tunel, DNS y endpoints publicos</h3></div><span id="cloudflare-chip" class="state-chip subtle">EMPTY</span></div>
+          <div class="route-grid" id="route-grid"></div>
+        </article>
+
+        <article class="glass-card" id="reports" data-panel="reports">
+          <div class="card-heading"><div><p class="eyebrow">Acciones seguras</p><h3>Cabina de operador</h3></div><span class="state-chip subtle">read-only</span></div>
+          <div class="action-grid">
+            <button id="refresh-button" type="button">Refresh now</button>
+            <button id="pause-button" type="button">Pause</button>
+            <button id="copy-brief" type="button">Copy brief</button>
+            <a href="/latest/health.html" target="_blank" rel="noreferrer">Open report</a>
+          </div>
+        </article>
+      </section>
+
+      <section class="lower-grid">
+        <details class="glass-card" open><summary>Servicios en tabla</summary><input id="service-search" type="search" placeholder="Buscar servicio, puerto, estado"><div class="table-wrap"><table id="services-table"></table></div></details>
+        <details class="glass-card"><summary>Endpoints publicos</summary><div class="table-wrap"><table id="public-table"></table></div></details>
+        <details class="glass-card"><summary>Raw local / sanitized</summary><pre id="raw-block">Sin datos.</pre></details>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js"></script>
+  <!-- PRISMA_BLACKBOX_COMMAND_ITER3_SCRIPT_BEGIN -->
+  <script src="/blackbox_command.js"></script>
+  <!-- PRISMA_BLACKBOX_COMMAND_ITER3_SCRIPT_END -->
+  <!-- PRISMA_CLOUDFLARE_ACTIONS_ITER4_SCRIPT_BEGIN -->
+  <script src="/ops_command.js"></script>
+  <!-- PRISMA_CLOUDFLARE_ACTIONS_ITER4_SCRIPT_END -->
+  <!-- PRISMA_ULTRA_POLISH_RELEASE_ITER5_SCRIPT_BEGIN -->
+  <script src="/release_console.js"></script>
+  <!-- PRISMA_ULTRA_POLISH_RELEASE_ITER5_SCRIPT_END -->
+</body>
+</html>

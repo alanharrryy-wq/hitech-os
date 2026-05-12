@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "1.0",
+  "mode": "optional",
+  "tunnelName": "engine",
+  "configPath": "C:\\Users\\alanh\\.cloudflared\\config.yml",
+  "serviceName": "cloudflared",
+  "localServicesMayBeStarted": false,
+  "restartServiceOnPublicHealthFail": true,
+  "expectedFallback404": true,
+  "knownScheduledTasks": [
+    "HITECH-Cloudflared-PublicHealth"
+  ],
+  "hostnames": [
+    "tablet.hitechrts.com",
+    "pc.hitechrts.com",
+    "prisma.hitechrts.com",
+    "eit.hitechrts.com",
+    "control.hitechrts.com"
+  ],
+  "origins": [
+    {
+      "serviceId": "tablet-3120",
+      "hostname": "tablet.hitechrts.com",
+      "origin": "http://127.0.0.1:3120"
+    },
+    {
+      "serviceId": "pc-3130",
+      "hostname": "pc.hitechrts.com",
+      "origin": "http://127.0.0.1:3130"
+    },
+    {
+      "serviceId": "mobile-3140",
+      "hostname": "prisma.hitechrts.com",
+      "origin": "http://127.0.0.1:3140"
+    },
+    {
+      "serviceId": "prisma-web-3110",
+      "hostname": "eit.hitechrts.com",
+      "origin": "http://127.0.0.1:3110"
+    },
+    {
+      "serviceId": "control-center-3150",
+      "hostname": "control.hitechrts.com",
+      "origin": "http://127.0.0.1:3150",
+      "publicMode": "PUBLIC_REDACTED",
+      "localMode": "LOCAL_FULL"
+    }
+  ],
+  "publicEndpoints": [
+    {
+      "id": "public-tablet",
+      "name": "Tablet public",
+      "url": "https://tablet.hitechrts.com/",
+      "required": false,
+      "contentProbe": {
+        "mode": "any",
+        "needles": ["PRISMA", "__NEXT_DATA__", "html"]
+      }
+    },
+    {
+      "id": "public-pc",
+      "name": "PC public",
+      "url": "https://pc.hitechrts.com/",
+      "required": false,
+      "contentProbe": {
+        "mode": "any",
+        "needles": ["PRISMA", "__NEXT_DATA__", "html"]
+      }
+    },
+    {
+      "id": "public-mobile",
+      "name": "Mobile public",
+      "url": "https://prisma.hitechrts.com/",
+      "required": false,
+      "contentProbe": {
+        "mode": "any",
+        "needles": ["PRISMA", "__NEXT_DATA__", "html"]
+      }
+    },
+    {
+      "id": "public-mobile-install",
+      "name": "Mobile install public",
+      "url": "https://prisma.hitechrts.com/prisma-app/install?from=whatsapp",
+      "required": false,
+      "contentProbe": {
+        "mode": "any",
+        "needles": ["PRISMA", "install", "html"]
+      }
+    },
+    {
+      "id": "public-eit",
+      "name": "EIT public",
+      "url": "https://eit.hitechrts.com/",
+      "required": false,
+      "contentProbe": {
+        "mode": "any",
+        "needles": ["PRISMA", "__NEXT_DATA__", "html"]
+      }
+    },
+    {
+      "id": "public-control-center",
+      "name": "Control Center public",
+      "url": "https://control.hitechrts.com/",
+      "required": false,
+      "contentProbe": {
+        "mode": "all",
+        "needles": ["PRISMA Control Center", "Control Center", "health"]
+      },
+      "securityMode": "PUBLIC_REDACTED"
+    }
+  ],
+  "controlCenter": {
+    "localUrl": "http://127.0.0.1:3150/",
+    "publicUrl": "https://control.hitechrts.com/",
+    "localMode": "LOCAL_FULL",
+    "publicMode": "PUBLIC_REDACTED",
+    "requiredForLocal": false,
+    "requiredForCloudflare": false,
+    "originMayBeStartedByCloudflareUp": true
+  },
+  "quickDevTunnels": {
+    "enabled": false,
+    "note": "This Control Center defaults to the stable Windows cloudflared service and does not mutate quick tunnel configs."
+  }
+}

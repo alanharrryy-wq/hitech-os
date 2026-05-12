@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0",
+  "forceUnknown": false,
+  "dryRun": false,
+  "gracefulStopTimeoutSeconds": 8,
+  "killTimeoutSeconds": 5,
+  "forbiddenPortsForNewServices": [3110, 3120, 3130, 3140],
+  "controlCenterPort": 3150,
+  "processAllowlist": {
+    "names": ["node.exe", "node", "pnpm.exe", "pnpm.cmd", "pnpm", "next.exe", "next", "cmd.exe", "powershell.exe", "pwsh.exe"],
+    "commandLineContains": [
+      "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "PRISMA_CONTROL_CENTER=1"
+    ],
+    "cloudflareNames": ["cloudflared.exe", "cloudflared"]
+  },
+  "processBlocklist": {
+    "names": [],
+    "commandLineContains": [
+      "C:\\Windows\\System32",
+      "Program Files\\Microsoft",
+      "Program Files\\Google",
+      "Program Files\\Mozilla"
+    ]
+  },
+  "recognizedRoots": [
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system"
+  ],
+  "controlCenterRoot": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\prisma-control-center",
+  "stateFile": "F:\\repos\\hitech-os\\tools\\_local\\logs\\prisma-control-center\\state.json"
+}
