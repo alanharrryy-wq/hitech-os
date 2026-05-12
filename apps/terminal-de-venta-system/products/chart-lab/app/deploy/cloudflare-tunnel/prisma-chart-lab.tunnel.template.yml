@@ -1,0 +1,11 @@
+# Copy to a local cloudflared config only after choosing a preview hostname.
+# Do not reuse Mobile, Control, EIT, Tablet, or PC production origins.
+tunnel: <TUNNEL_UUID_OR_NAME>
+credentials-file: C:\Users\<USER>\.cloudflared\<TUNNEL_UUID>.json
+
+ingress:
+  - hostname: prisma-chart-lab-preview.example.com
+    service: http://localhost:3000
+    originRequest:
+      httpHostHeader: localhost
+  - service: http_status:404

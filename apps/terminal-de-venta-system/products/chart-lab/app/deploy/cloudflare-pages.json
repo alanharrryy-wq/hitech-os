@@ -1,0 +1,21 @@
+{
+  "projectName": "prisma-chart-lab",
+  "deploymentMode": "cloudflare-pages-static",
+  "buildCommand": "pnpm -C \"F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\" chart-lab:cf:build",
+  "outputDirectory": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\chart-lab\\app\\out",
+  "environmentPolicy": {
+    "requiredForPublicBuild": {
+      "PRISMA_CHART_LAB_PUBLIC_SAFE": "true",
+      "NEXT_PUBLIC_PRISMA_CHART_LAB_PUBLIC_SAFE": "true",
+      "NEXT_PUBLIC_PRISMA_CHART_LAB_DEPLOYMENT_MODE": "cloudflare-pages",
+      "PRISMA_CHART_LAB_STATIC_EXPORT": "true"
+    },
+    "forbidden": ["DATABASE_URL", "CLOUDFLARE_API_TOKEN", ".env contents", "local filesystem diagnostics"]
+  },
+  "previewPolicy": "Preview deploys may expose mock/demo Chart Lab only after no-leak verification passes.",
+  "productionPolicy": "Production deploy is not default. Promote only after explicit operator approval.",
+  "smokeTest": {
+    "mustContain": ["PRISMA Chart Lab", "mock/demo"],
+    "mustNotContain": ["F:\\\\", "DATABASE_URL", "CLOUDFLARE_API_TOKEN"]
+  }
+}
