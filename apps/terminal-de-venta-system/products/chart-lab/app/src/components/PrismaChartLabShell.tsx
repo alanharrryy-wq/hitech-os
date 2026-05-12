@@ -43,6 +43,11 @@ const inspectorTabs: Array<{ id: LabChartInspectorTab; label: string }> = [
   { id: "health", label: "Health" }
 ];
 
+function initialSearchParam(name: string) {
+  if (typeof window === "undefined") return null;
+  return new URLSearchParams(window.location.search).get(name);
+}
+
 function surfaceLabel(surface: LabChartEntry["surface"]) {
   if (surface === "pc") return "PC governs";
   if (surface === "tablet") return "Tablet operates";
@@ -95,7 +100,7 @@ function chartConfigPayload(input: {
 export function PrismaChartLabShell() {
   const publicSafe = process.env.NEXT_PUBLIC_PRISMA_CHART_LAB_PUBLIC_SAFE === "true";
   const deploymentMode = process.env.NEXT_PUBLIC_PRISMA_CHART_LAB_DEPLOYMENT_MODE ?? "local";
-  const [selectedId, setSelectedId] = useState(chartLabRegistry[0]?.id ?? "");
+  const [selectedId, setSelectedId] = useState(() => initialSearchParam("chart") ?? chartLabRegistry[0]?.id ?? "");
   const [surface, setSurface] = useState<SurfaceFilter>("all");
   const [family, setFamily] = useState<FamilyFilter>("all");
   const [readiness, setReadiness] = useState<ReadinessFilter>("all");
@@ -103,9 +108,15 @@ export function PrismaChartLabShell() {
   const [themeMode, setThemeMode] = useState<LabChartThemeMode>("prisma-crystal");
   const [density, setDensity] = useState<LabChartDensity>("calm");
   const [size, setSize] = useState<LabChartSize>("focus");
-  const [frame, setFrame] = useState<LabChartPreviewFrame>("pc");
+  const [frame, setFrame] = useState<LabChartPreviewFrame>(() => {
+    const value = initialSearchParam("frame");
+    return value === "tablet" || value === "mobile" || value === "pc" ? value : "pc";
+  });
   const [minimumConfidence, setMinimumConfidence] = useState(0);
-  const [tab, setTab] = useState<LabChartInspectorTab>("preview");
+  const [tab, setTab] = useState<LabChartInspectorTab>(() => {
+    const value = initialSearchParam("tab");
+    return inspectorTabs.find((item) => item.id === value)?.id ?? "preview";
+  });
   const [pinnedIds, setPinnedIds] = useState<string[]>([]);
   const [recentIds, setRecentIds] = useState<string[]>([]);
   const [controlStateByChart, setControlStateByChart] = useState<Record<string, LabChartControlState>>({});

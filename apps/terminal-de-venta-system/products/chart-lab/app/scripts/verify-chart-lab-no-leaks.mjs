@@ -27,8 +27,8 @@ function walk(dir) {
       for (const pattern of denied) {
         if (pattern.test(content)) findings.push({ file: path.relative(outDir, absolute), pattern: String(pattern) });
       }
-      if (!allowedLocalhostFiles.has(path.relative(outDir, absolute)) && /localhost|127\.0\.0\.1/i.test(content)) {
-        findings.push({ file: path.relative(outDir, absolute), pattern: "localhost/127.0.0.1" });
+      if (!allowedLocalhostFiles.has(path.relative(outDir, absolute)) && /https?:\/\/(?:localhost|127\.0\.0\.1)|(?:localhost|127\.0\.0\.1):\d+/i.test(content)) {
+        findings.push({ file: path.relative(outDir, absolute), pattern: "local origin URL" });
       }
     }
   }

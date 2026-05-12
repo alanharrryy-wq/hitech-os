@@ -26,6 +26,13 @@ pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system\products\chart-lab\app
 pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system" chart-lab:cf:deploy
 ```
 
+For non-interactive Codex/CI sessions, set a Pages-capable token first:
+
+```powershell
+$env:CLOUDFLARE_API_TOKEN = "<token with Cloudflare Pages/Workers permissions>"
+pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system" chart-lab:cf:deploy
+```
+
 No deploy should be claimed until `wrangler whoami`, the deploy command, and an HTTP smoke for the returned URL pass.
 
 ## Public Safety

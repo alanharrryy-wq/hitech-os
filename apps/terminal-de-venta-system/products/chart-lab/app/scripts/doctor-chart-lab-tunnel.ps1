@@ -49,8 +49,9 @@ $runCommand = if ($tokenAvailable) {
   "cloudflared tunnel login; cloudflared tunnel create $TunnelName; cloudflared tunnel route dns $TunnelName $Hostname; pnpm -C `"$AppRoot`" tunnel:run -- -ConfigPath <config.yml> -TunnelName $TunnelName"
 }
 
+$canRunTunnel = $tokenAvailable -or $configHasIngress
 $report = [ordered]@{
-  status = if ($cloudflared -and $tcp -and $http -and ($tokenAvailable -or $configHasIngress -or $localCredentialsAvailable)) { "READY_OR_PARTIAL" } else { "BLOCKED_OR_INCOMPLETE" }
+  status = if ($cloudflared -and $tcp -and $http -and $canRunTunnel) { "READY" } else { "BLOCKED_OR_INCOMPLETE" }
   cloudflared = [ordered]@{ found = [bool]$cloudflared; path = $cloudflared }
   port = [ordered]@{ port = $Port; listening = [bool]$tcp; processId = if ($tcp) { $tcp.OwningProcess } else { $null } }
   localHttp = [ordered]@{ ok = [bool]$http; statusCode = if ($http) { $http.StatusCode } else { $null }; containsChartLab = if ($http) { $http.Content.Contains("PRISMA Chart Lab") } else { $false } }
@@ -64,5 +65,5 @@ $report | ConvertTo-Json -Depth 8
 
 if (-not $cloudflared) { exit 2 }
 if (-not $tcp -or -not $http) { exit 3 }
-if (-not ($tokenAvailable -or $configHasIngress -or $localCredentialsAvailable)) { exit 4 }
+if (-not $canRunTunnel) { exit 4 }
 exit 0
