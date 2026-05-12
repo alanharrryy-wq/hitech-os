@@ -59,14 +59,31 @@ for (const field of ["eventId", "eventType", "topic", "idempotencyKey", "busines
 
 const schema = read("prisma", "schema.prisma");
 for (const field of ["idempotencyKey", "lifecycleStatus", "receivedAt", "validatedAt", "acceptedAt", "projectedAt", "reconciledAt", "deadLetterAt", "diagnosticsJson"]) {
-  check(`schema OutboxEvent field ${field}`, schema.includes(field));
+  check(`schema OutboxEvent field ${field}`, new RegExp(`model\\s+OutboxEvent[\\s\\S]*${field}`).test(schema));
+}
+for (const model of ["SyncAttempt", "SyncConflict", "DeviceHeartbeat", "SyncCheckpoint", "SyncOutboxStatusBucket", "DataSourceFreshness"]) {
+  check(`schema real model ${model}`, new RegExp(`model\\s+${model}\\s+{`).test(schema));
+}
+for (const indexMarker of ["@@index([businessId, source", "@@index([businessId, deviceId", "@@index([businessId, status", "@@index([freshnessSeconds])"]) {
+  check(`schema observability index marker ${indexMarker}`, schema.includes(indexMarker));
 }
 
 const migration = read("prisma", "migrations", "20260511000000_event_ledger_lifecycle", "migration.sql");
 check("migration is additive", migration.includes('ALTER TABLE "OutboxEvent" ADD COLUMN') && !/DROP\s+TABLE|DELETE\s+FROM/i.test(migration));
+const syncObservabilityMigration = read("prisma", "migrations", "20260512000100_sync_observability_tables", "migration.sql");
+for (const table of ["SyncAttempt", "SyncConflict", "DeviceHeartbeat", "SyncCheckpoint", "SyncOutboxStatusBucket", "DataSourceFreshness"]) {
+  check(`sync observability migration creates ${table}`, syncObservabilityMigration.includes(`CREATE TABLE IF NOT EXISTS "${table}"`) || syncObservabilityMigration.includes(`CREATE TABLE "${table}"`));
+}
+check("sync observability migration is additive-only", !/ALTER\s+TABLE\s+"OutboxEvent"|DROP\s+TABLE|DELETE\s+FROM/i.test(syncObservabilityMigration));
 
 const tabletSaleRoute = read("products", "tablet", "app", "app", "api", "pos", "sales", "complete", "route.ts");
 check("tablet sale route stays local", tabletSaleRoute.includes("posEngineRepository.completeLocalSale") && !tabletSaleRoute.includes("fetch("));
+
+const tabletSchema = read("products", "tablet", "app", "prisma", "schema.prisma");
+check("tablet OutboxEvent has idempotencyKey column", /model\s+OutboxEvent[\s\S]*idempotencyKey\s+String\?/.test(tabletSchema));
+check("tablet OutboxEvent has businessId idempotencyKey index", tabletSchema.includes("@@index([businessId, idempotencyKey])"));
+const tabletMigration = read("products", "tablet", "app", "prisma", "migrations", "20260512000200_outbox_idempotency_key", "migration.sql");
+check("tablet idempotency migration adds column", tabletMigration.includes('ADD COLUMN "idempotencyKey"'));
 
 const tabletEventFactory = read("products", "tablet", "app", "src", "server", "pos-engine", "event-factory.ts");
 for (const token of ["idempotencyKey", "eventType", "correlationId", "lines: result.lines.map", "stock.decremented"]) {
@@ -78,7 +95,7 @@ check("tablet emits cash session event", tabletShiftRepo.includes("POS_EVENT_CAS
 check("tablet emits cash movement event", tabletShiftRepo.includes("POS_EVENT_CASH_MOVEMENT_RECORDED"));
 
 const pcIngest = read("products", "pc", "app", "src", "server", "services", "sync-ingest.service.ts");
-for (const token of ["$transaction", "projectAcceptedSyncEvent", "lifecycleStatus", "idempotencyKey", "reconciledAt", "deadLetterAt", "diagnosticsJson"]) {
+for (const token of ["$transaction", "projectAcceptedSyncEvent", "recordSyncObservability", "lifecycleStatus", "idempotencyKey", "ALREADY_PROCESSED", "reconciledAt", "deadLetterAt", "diagnosticsJson"]) {
   check(`pc ingest ${token}`, pcIngest.includes(token));
 }
 
@@ -97,6 +114,11 @@ check("pc projectors conflict cash overlap", pcProjectors.includes("CASH_SESSION
 
 const pcBackofficeStore = read("products", "pc", "app", "src", "lib", "backoffice", "sync-ingest-store.ts");
 check("backoffice ingest wraps server pipeline", pcBackofficeStore.includes("persistSyncIngestPayload"));
+const pcObservabilityService = read("products", "pc", "app", "src", "server", "services", "sync-observability.service.ts");
+check("pc observability records conflicts", pcObservabilityService.includes("recordSyncConflicts"));
+for (const token of ["syncAttempt", "syncConflict", "syncCheckpoint", "syncOutboxStatusBucket", "dataSourceFreshness"]) {
+  check(`pc observability writes ${token}`, pcObservabilityService.includes(token));
+}
 
 const bridge = read("tools", "prisma", "tri_db_bridge.py");
 for (const token of ["rescue/backfill/diagnostic", "not the primary PRISMA sync path", "compat-acked", "governance_reconciled"]) {

@@ -12,6 +12,7 @@ const schemaPaths = [
   path.join(terminalRoot, "prisma", "schema.prisma"),
   path.join(terminalRoot, "products", "tablet", "app", "prisma", "schema.prisma")
 ];
+const requiredObservabilityTables = ["SyncAttempt", "SyncConflict", "DeviceHeartbeat", "SyncCheckpoint", "SyncOutboxStatusBucket", "DataSourceFreshness"];
 
 const py = String.raw`
 import sqlite3, json, sys, os
@@ -38,7 +39,7 @@ for db in sys.argv[1:]:
     else:
       item["checks"].append({"status":"PASS","message":"topic/eventType alias available"})
     if "idempotencyKey" not in cols:
-      item["checks"].append({"status":"WARN","message":"idempotencyKey column missing in live DB"})
+      item["checks"].append({"status":"FAIL","message":"idempotencyKey column missing in live DB OutboxEvent"})
     total=cur.execute('SELECT COUNT(*) FROM "OutboxEvent"').fetchone()[0]
     item["total"]=total
     status_rows=cur.execute('SELECT status, COUNT(*) FROM "OutboxEvent" GROUP BY status').fetchall() if "status" in cols else []
@@ -70,6 +71,15 @@ const schemaChecks = [];
 for (const schemaPath of schemaPaths) {
   const text = fs.existsSync(schemaPath) ? fs.readFileSync(schemaPath, "utf8") : "";
   schemaChecks.push({ path: schemaPath, status: text.includes("model OutboxEvent") ? "PASS" : "FAIL", message: "schema contains model OutboxEvent" });
+  schemaChecks.push({ path: schemaPath, status: /model\s+OutboxEvent[\s\S]*idempotencyKey\s+String\?/.test(text) ? "PASS" : "FAIL", message: "OutboxEvent.idempotencyKey is a nullable real column" });
+  schemaChecks.push({ path: schemaPath, status: text.includes("@@index([businessId, idempotencyKey])") ? "PASS" : "FAIL", message: "OutboxEvent has businessId + idempotencyKey index" });
+}
+const rootSchema = fs.existsSync(schemaPaths[0]) ? fs.readFileSync(schemaPaths[0], "utf8") : "";
+const syncMigrationPath = path.join(terminalRoot, "prisma", "migrations", "20260512000100_sync_observability_tables", "migration.sql");
+const syncMigration = fs.existsSync(syncMigrationPath) ? fs.readFileSync(syncMigrationPath, "utf8") : "";
+for (const table of requiredObservabilityTables) {
+  schemaChecks.push({ path: schemaPaths[0], status: rootSchema.includes(`model ${table}`) ? "PASS" : "FAIL", message: `root schema contains model ${table}` });
+  schemaChecks.push({ path: syncMigrationPath, status: syncMigration.includes(`"${table}"`) ? "PASS" : "FAIL", message: `sync observability migration creates ${table}` });
 }
 
 const allStatuses = [...schemaChecks.map((item) => item.status), ...dbReports.flatMap((item) => item.checks.map((check) => check.status))];
