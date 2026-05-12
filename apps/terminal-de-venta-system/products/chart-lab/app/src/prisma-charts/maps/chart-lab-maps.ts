@@ -8,6 +8,7 @@ export const chartLabPagesPlaceholder = "https://prisma-chart-lab.pages.dev/";
 export const chartLabTunnelHostnamePlaceholder = "prisma-chart-lab-preview.example.com";
 
 const chartOpsEntries = chartLabRegistry.filter((chart) => chartOpsChartIds.includes(chart.id as (typeof chartOpsChartIds)[number]));
+export const chartLabMapChartIds = [...chartOpsChartIds];
 
 function titleCase(value: string) {
   return value

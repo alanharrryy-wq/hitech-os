@@ -47,7 +47,7 @@ for (const needle of workingTransforms) {
 }
 
 for (const needle of ["Copy Current Config JSON", "Reset current chart", "Reset all", "Control Summary", "ChartControlDeck"]) {
-  if (shell.includes(needle)) pass(`UI control affordance present: ${needle}`);
+  if (shell.includes(needle) || deck.includes(needle)) pass(`UI control affordance present: ${needle}`);
   else fail(`missing UI control affordance: ${needle}`);
 }
 

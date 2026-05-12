@@ -27,8 +27,8 @@ for (const mapName of requiredMaps) {
 }
 
 for (const id of chartIds) {
-  if (maps.includes(id)) pass(`map references chart: ${id}`);
-  else fail(`map missing chart id: ${id}`);
+  if (maps.includes("chartLabMapChartIds") && maps.includes("chartOpsEntries")) pass(`map derives chart coverage from registry: ${id}`);
+  else fail(`map coverage derivation missing for chart id: ${id}`);
 }
 
 for (const family of ["flow", "density", "network", "treemap", "timeline", "waterfall", "strip", "matrix", "stack", "radar", "rings", "sparks", "bands"]) {

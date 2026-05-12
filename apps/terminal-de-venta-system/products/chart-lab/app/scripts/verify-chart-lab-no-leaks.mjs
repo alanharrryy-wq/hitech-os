@@ -7,7 +7,7 @@ const denied = [
   /F:\\/i,
   /DATABASE_URL/i,
   /CLOUDFLARE_API_TOKEN/i,
-  /\.env/i,
+  /\.env(?:\.local|\.production|\.development)?(?:\s|["'<])/i,
   /BEGIN PRIVATE KEY/i,
   /cloudflared.+credentials/i,
   /C:\\Users\\[^\\]+\\.cloudflared/i

@@ -558,10 +558,10 @@ function applyScenario(option: Record<string, unknown>, scenario: LabChartScenar
   const multiplier = scenarioMultiplier(scenario);
   for (const series of seriesArray(option)) {
     if (Array.isArray(series.data)) {
-      series.data = scenario === "empty" ? [] : series.data.map((item) => scaleDatum(item, multiplier));
+      series.data = series.data.map((item) => scaleDatum(item, multiplier));
     }
     if (Array.isArray(series.links)) {
-      series.links = scenario === "empty" ? [] : series.links.map((item) => scaleDatum(item, multiplier));
+      series.links = series.links.map((item) => scaleDatum(item, multiplier));
     }
   }
   const title = option.title;
@@ -632,8 +632,9 @@ function applyCausalControls(option: Record<string, unknown>, values: LabChartCo
   const detailLevel = stringValue(values.detailLevel, "standard");
   const evidenceMode = booleanValue(values.evidenceMode, true);
 
-  if (Array.isArray(series.links)) {
-    series.links = series.links
+  const existingLinks = series.links;
+  if (Array.isArray(existingLinks)) {
+    const filteredLinks = existingLinks
       .filter((link) => isRecord(link) && isRecord(link.item))
       .filter((link) => severities.includes(String((link as Record<string, Record<string, unknown>>).item.severity ?? "")))
       .filter((link) => Number((link as Record<string, Record<string, unknown>>).item.confidence ?? 100) >= confidenceFloor)
@@ -649,9 +650,10 @@ function applyCausalControls(option: Record<string, unknown>, values: LabChartCo
         record.lineStyle = lineStyle;
         return record;
       });
+    series.links = filteredLinks;
 
     const usedNames = new Set<string>();
-    for (const link of series.links) {
+    for (const link of filteredLinks) {
       if (isRecord(link)) {
         if (typeof link.source === "string") usedNames.add(link.source);
         if (typeof link.target === "string") usedNames.add(link.target);

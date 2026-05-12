@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import { chartOpsIds, fail, pass, read, terminalRoot } from "./chart-lab-script-utils.mjs";
 
 const maps = read("src/prisma-charts/maps/chart-lab-maps.ts");
@@ -8,7 +10,12 @@ if (maps.includes("visualTuningPassports")) pass("lab visual tuning passports ex
 else fail("visualTuningPassports export is missing");
 
 for (const id of chartIds) {
-  if (read("src/prisma-charts/maps/chart-lab-maps.ts").includes(id) && sharedAtlas.includes(id)) pass(`passport registered: ${id}`);
+  const passportFile = path.join(terminalRoot, "shared", "prisma-charts", "passports", `${id}.passport.ts`);
+  const expectedSymbol = id
+    .split(/[.-]/)
+    .map((part, index) => (index === 0 ? part : part.charAt(0).toUpperCase() + part.slice(1)))
+    .join("");
+  if (fs.existsSync(passportFile) && sharedAtlas.includes(expectedSymbol)) pass(`passport registered: ${id}`);
   else fail(`passport missing or not registered: ${id}`);
 }
 
