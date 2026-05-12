@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "backup:prisma": "node scripts/prisma-backup-before-migration.mjs",
+    "backup:prisma:dry-run": "node scripts/prisma-backup-before-migration.mjs --dry-run",
+    "backup:prisma:verify": "node scripts/verify-prisma-backup.mjs --latest",
     "chart-lab:build": "pnpm -C products/chart-lab/app build",
     "chart-lab:cf:build": "pnpm -C products/chart-lab/app cf:build",
     "chart-lab:cf:preview": "pnpm -C products/chart-lab/app cf:preview",
@@ -19,6 +22,7 @@
     "chart-lab:typecheck": "pnpm -C products/chart-lab/app typecheck",
     "chart-lab:verify": "pnpm -C products/chart-lab/app verify",
     "chart-lab:verify:all": "pnpm -C products/chart-lab/app verify:all",
+    "chart-lab:verify:chart-source-modes": "pnpm -C products/chart-lab/app verify:chart-source-modes",
     "chart-lab:verify:cloudflare": "pnpm -C products/chart-lab/app verify:cloudflare",
     "chart-lab:verify:controls": "pnpm -C products/chart-lab/app verify:controls",
     "chart-lab:verify:echarts-boundary": "pnpm -C products/chart-lab/app verify:echarts-boundary",
@@ -26,13 +30,21 @@
     "chart-lab:verify:no-leaks": "pnpm -C products/chart-lab/app verify:no-leaks",
     "chart-lab:verify:passports": "pnpm -C products/chart-lab/app verify:passports",
     "chart-lab:verify:promotion": "pnpm -C products/chart-lab/app verify:promotion",
+    "chart-lab:verify:promotion-readiness": "pnpm -C products/chart-lab/app verify:promotion-readiness",
     "mobile:verify": "pnpm -C products/mobile/app verify:product-root && pnpm -C products/mobile/app verify:pwa && pnpm -C products/mobile/app verify:playstore-readiness",
     "mobile:typecheck": "pnpm -C products/mobile/app typecheck",
+    "mobile:verify:snapshot-quality": "pnpm -C products/mobile/app verify:mobile-snapshot-quality",
     "pc:typecheck": "pnpm -C products/pc/app typecheck",
     "prisma:charts:atlas:verify": "node tools/verify_prisma_chart_atlas_01.mjs",
     "prisma:echarts:verify": "node tools/verify_prisma_echarts_pack_01.mjs",
     "prisma:event-sync:verify": "node tools/verify_prisma_event_sync_architecture_01.mjs",
-    "tri-surface:verify": "node tools/prisma/verify_prisma_tri_surface_visual_guardian_00c.mjs"
+    "report:wave": "node scripts/create-prisma-wave-report.mjs",
+    "tri-surface:verify": "node tools/prisma/verify_prisma_tri_surface_visual_guardian_00c.mjs",
+    "verify:chart-source-modes": "pnpm -C products/chart-lab/app verify:chart-source-modes",
+    "verify:no-direct-db-in-ui": "node scripts/verify-no-direct-db-in-ui.mjs",
+    "verify:outbox-integrity": "node scripts/verify-outbox-integrity.mjs",
+    "verify:promotion-readiness": "pnpm -C products/chart-lab/app verify:promotion-readiness",
+    "verify:sync-health": "node scripts/verify-sync-health.mjs"
   },
   "devDependencies": {
     "prisma": "5.21.1"

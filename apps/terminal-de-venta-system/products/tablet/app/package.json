@@ -42,7 +42,8 @@
     "tablet:04:offline": "node tools/verify_tablet_04_offline_export.mjs",
     "verify:04-offline": "node tools/verify_tablet_04_offline_export.mjs",
     "tablet:05:release": "node tools/verify_tablet_05_release_readiness.mjs",
-    "verify:05-release": "node tools/verify_tablet_05_release_readiness.mjs"
+    "verify:05-release": "node tools/verify_tablet_05_release_readiness.mjs",
+    "verify:tablet-sale-flow": "node tools/verify_tablet_standalone_core_closeout_02.mjs"
   },
   "dependencies": {
     "@prisma/client": "5.21.1",
