@@ -20,6 +20,8 @@ export type BackofficeDashboard = {
     lastIngestAt: string | null;
     lastOutboxEventAt: string | null;
     healthLabel: string;
+    dataSourceFreshness: Array<Record<string, unknown>>;
+    outboxStatusBuckets: Array<Record<string, unknown>>;
   };
   meta: {
     source: "canonical_prisma";
@@ -53,7 +55,9 @@ const EMPTY_DASHBOARD: BackofficeDashboard = {
     conflictCount: 0,
     lastIngestAt: null,
     lastOutboxEventAt: null,
-    healthLabel: "sin eventos consolidados"
+    healthLabel: "sin eventos consolidados",
+    dataSourceFreshness: [],
+    outboxStatusBuckets: []
   },
   meta: {
     source: "canonical_prisma",
@@ -92,6 +96,16 @@ function kpi(input: BackofficeKpi): BackofficeKpi {
   return input;
 }
 
+async function readManyIfAvailable(modelName: string, args: Record<string, unknown>) {
+  const model = (prisma as any)[modelName];
+  if (!model?.findMany) return [];
+  try {
+    return await model.findMany(args);
+  } catch {
+    return [];
+  }
+}
+
 export async function getBackofficeDashboard(): Promise<BackofficeDashboard> {
   const generatedAt = new Date().toISOString();
   const { start, end } = dayRange();
@@ -111,7 +125,9 @@ export async function getBackofficeDashboard(): Promise<BackofficeDashboard> {
       auditCounts,
       purchaseLineAggregate,
       receiptLineAggregate,
-      latencyRows
+      latencyRows,
+      dataSourceFreshness,
+      outboxStatusBuckets
     ] = await Promise.all([
       prisma.sale.aggregate({
         where: { status: { in: normalizeStatus("COMPLETED") }, createdAt: { gte: start, lt: end } },
@@ -135,7 +151,9 @@ export async function getBackofficeDashboard(): Promise<BackofficeDashboard> {
       prisma.auditCount.findMany({ orderBy: { countedAt: "desc" }, take: 100 }),
       prisma.purchaseOrderLine.aggregate({ _sum: { qtyOrdered: true } }),
       prisma.goodsReceiptLine.aggregate({ _sum: { qtyReceived: true } }),
-      prisma.outboxEvent.findMany({ where: { sentAt: { not: null } }, orderBy: { sentAt: "desc" }, take: 100 })
+      prisma.outboxEvent.findMany({ where: { sentAt: { not: null } }, orderBy: { sentAt: "desc" }, take: 100 }),
+      readManyIfAvailable("dataSourceFreshness", { orderBy: { updatedAt: "desc" }, take: 10 }),
+      readManyIfAvailable("syncOutboxStatusBucket", { orderBy: { bucketStartAt: "desc" }, take: 20 })
     ]);
 
     const skuMap = new Map<string, { sku: string; productName: string; qty: number; totalCents: number }>();
@@ -302,7 +320,9 @@ export async function getBackofficeDashboard(): Promise<BackofficeDashboard> {
         conflictCount,
         lastIngestAt: lastOutbox?.createdAt ? lastOutbox.createdAt.toISOString() : null,
         lastOutboxEventAt: lastOutbox?.createdAt ? lastOutbox.createdAt.toISOString() : null,
-        healthLabel: buildHealthLabel(pendingEvents, failedEvents, conflictCount, totalEvents)
+        healthLabel: buildHealthLabel(pendingEvents, failedEvents, conflictCount, totalEvents),
+        dataSourceFreshness: dataSourceFreshness as Array<Record<string, unknown>>,
+        outboxStatusBuckets: outboxStatusBuckets as Array<Record<string, unknown>>
       },
       meta: {
         source: "canonical_prisma",

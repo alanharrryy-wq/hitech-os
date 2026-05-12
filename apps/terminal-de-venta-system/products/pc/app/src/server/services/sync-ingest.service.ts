@@ -1,5 +1,6 @@
 import { prisma } from "@/server/prisma/client";
 import { projectAcceptedSyncEvent } from "@/server/services/sync-projectors.service";
+import { recordSyncObservability } from "@/server/services/sync-observability.service";
 import {
   extractSyncEvents,
   validateSyncEventEnvelope,
@@ -59,14 +60,27 @@ function statusForLifecycle(lifecycleStatus: SyncLifecycleState): string {
 }
 
 async function findExistingEvent(tx: any, event: SyncEventEnvelope) {
-  return tx.outboxEvent.findFirst({
-    where: {
-      OR: [
-        { id: event.eventId },
-        ...(event.idempotencyKey ? [{ businessId: event.businessId, idempotencyKey: event.idempotencyKey }] : [])
-      ]
-    }
-  });
+  if (event.idempotencyKey) {
+    const byIdempotencyKey = await tx.outboxEvent.findFirst({
+      where: { businessId: event.businessId, idempotencyKey: event.idempotencyKey },
+      orderBy: { createdAt: "desc" }
+    });
+    if (byIdempotencyKey) return byIdempotencyKey;
+  }
+
+  return tx.outboxEvent.findUnique({ where: { id: event.eventId } });
+}
+
+function duplicateResult(event: SyncEventEnvelope, existing: any): SyncIngestResult {
+  return {
+    eventId: event.eventId,
+    topic: event.topic,
+    status: "duplicate",
+    lifecycleStatus: existing.lifecycleStatus ?? "reconciled",
+    conflicts: [{ code: "duplicate_event", label: "Evento duplicado", severity: "warning", detail: "PC ya procesó este businessId + idempotencyKey o eventId; no se crea otro ledger." }],
+    errors: [],
+    diagnostics: ["ALREADY_PROCESSED", event.idempotencyKey ? "DUPLICATE_IDEMPOTENCY_KEY" : "DUPLICATE_EVENT_ID"]
+  };
 }
 
 async function persistRejected(tx: any, candidate: unknown, errors: string[], conflicts: SyncConflictFinding[]): Promise<SyncIngestResult> {
@@ -101,6 +115,9 @@ async function persistRejected(tx: any, candidate: unknown, errors: string[], co
 }
 
 async function persistConflict(tx: any, event: SyncEventEnvelope, conflicts: SyncConflictFinding[], diagnostics: string[]): Promise<SyncIngestResult> {
+  const existing = await findExistingEvent(tx, event);
+  if (existing) return duplicateResult(event, existing);
+
   const now = new Date();
   await tx.outboxEvent.create({
     data: {
@@ -131,17 +148,7 @@ async function persistConflict(tx: any, event: SyncEventEnvelope, conflicts: Syn
 
 async function persistAndProjectEvent(tx: any, event: SyncEventEnvelope): Promise<SyncIngestResult> {
   const existing = await findExistingEvent(tx, event);
-  if (existing) {
-    return {
-      eventId: event.eventId,
-      topic: event.topic,
-      status: "duplicate",
-      lifecycleStatus: existing.lifecycleStatus ?? "reconciled",
-      conflicts: [{ code: "duplicate_event", label: "Evento duplicado", severity: "warning", detail: "PC ya tiene persistido este eventId o idempotencyKey." }],
-      errors: [],
-      diagnostics: ["DUPLICATE_IDEMPOTENCY_KEY"]
-    };
-  }
+  if (existing) return duplicateResult(event, existing);
 
   const now = new Date();
   const projection = await projectAcceptedSyncEvent(tx, event);
@@ -203,29 +210,39 @@ export async function persistSyncIngestPayload(input: unknown): Promise<SyncInge
   const results = await (prisma as any).$transaction(async (tx: any) => {
     const batchResults: SyncIngestResult[] = [];
     for (const candidate of candidates) {
+      const startedAt = new Date();
       const validation = validateSyncEventEnvelope(candidate);
+      let result: SyncIngestResult;
       if (validation.event && seenInBatch.has(validation.event.idempotencyKey)) {
-        batchResults.push({
+        result = {
           eventId: validation.event.eventId,
           topic: validation.event.topic,
           status: "duplicate",
           lifecycleStatus: "received",
           conflicts: [{ code: "duplicate_event", label: "Evento duplicado", severity: "warning", detail: "El idempotencyKey aparece repetido dentro del mismo lote." }],
           errors: [],
-          diagnostics: ["DUPLICATE_IN_BATCH"]
-        });
+          diagnostics: ["DUPLICATE_IN_BATCH", "ALREADY_PROCESSED"]
+        };
+        batchResults.push(result);
+        await recordSyncObservability({ tx, event: validation.event, candidate, result, startedAt, finishedAt: new Date() });
         continue;
       }
       if (!validation.event) {
-        batchResults.push(await persistRejected(tx, candidate, validation.errors, validation.conflicts));
+        result = await persistRejected(tx, candidate, validation.errors, validation.conflicts);
+        batchResults.push(result);
+        await recordSyncObservability({ tx, event: null, candidate, result, startedAt, finishedAt: new Date() });
         continue;
       }
       seenInBatch.add(validation.event.idempotencyKey);
       if (validation.conflicts.length) {
-        batchResults.push(await persistConflict(tx, validation.event, validation.conflicts, ["VALIDATION_CONFLICT"]));
+        result = await persistConflict(tx, validation.event, validation.conflicts, ["VALIDATION_CONFLICT"]);
+        batchResults.push(result);
+        await recordSyncObservability({ tx, event: validation.event, candidate, result, startedAt, finishedAt: new Date() });
         continue;
       }
-      batchResults.push(await persistAndProjectEvent(tx, validation.event));
+      result = await persistAndProjectEvent(tx, validation.event);
+      batchResults.push(result);
+      await recordSyncObservability({ tx, event: validation.event, candidate, result, startedAt, finishedAt: new Date() });
     }
     return batchResults;
   });
