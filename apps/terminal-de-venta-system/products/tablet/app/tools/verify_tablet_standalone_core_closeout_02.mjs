@@ -85,9 +85,11 @@ function makeId(prefix) {
 }
 
 function makeEvent(topic, aggregateId, occurredAt, payload) {
+  const eventId = makeId("evt");
   return {
-    eventId: makeId("evt"),
+    eventId,
     topic,
+    idempotencyKey: `${topic}:${businessId}:${terminalId}:${aggregateId}:${eventId}`,
     businessId,
     terminalId,
     actorId: cashier,
@@ -259,6 +261,7 @@ async function bootstrapSchema(prisma) {
       terminalId TEXT,
       topic TEXT NOT NULL,
       aggregateId TEXT NOT NULL,
+      idempotencyKey TEXT,
       payloadJson TEXT NOT NULL,
       source TEXT,
       schemaVersion TEXT,
@@ -268,7 +271,8 @@ async function bootstrapSchema(prisma) {
       sentAt DATETIME,
       syncedAt DATETIME,
       lastError TEXT
-    )`
+    )`,
+    `CREATE INDEX IF NOT EXISTS OutboxEvent_businessId_idempotencyKey_idx ON OutboxEvent (businessId, idempotencyKey)`
   ];
 
   for (const statement of statements) {
@@ -437,6 +441,7 @@ async function completeLocalSale(prisma, clientRequestId = makeId("client_reques
           businessId,
           topic: event.topic,
           aggregateId: event.aggregateId,
+          idempotencyKey: event.idempotencyKey,
           payloadJson: JSON.stringify(event),
           status: "pending",
           createdAt: occurredAt
