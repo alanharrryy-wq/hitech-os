@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { ChartControlDeck } from "@/components/ChartControlDeck";
 import { LabEChartFrame } from "@/prisma-charts/components/LabEChartFrame";
 import { applyChartLabControls, countActiveControls, getControlsForChart, getDefaultControlState } from "@/prisma-charts/chart-lab-control-model";
@@ -26,6 +26,18 @@ import type {
   LabChartSize,
   LabChartThemeMode
 } from "@/prisma-charts/chart-lab-types";
+
+
+function HydrationSafeTimestamp() {
+  const [timestamp, setTimestamp] = useState("pending");
+
+  useEffect(() => {
+    setTimestamp(new Date().toISOString());
+  }, []);
+
+  return <>{timestamp}</>;
+}
+
 
 type SurfaceFilter = (typeof chartLabSurfaces)[number];
 type FamilyFilter = (typeof chartLabFamilies)[number];
@@ -411,7 +423,7 @@ export function PrismaChartLabShell() {
                         <div><dt>Active controls</dt><dd>{activeControls}</dd></div>
                         <div><dt>Data scenario</dt><dd>{String(selectedControlState.dataScenario ?? "clean")}</dd></div>
                         <div><dt>Visual recipe</dt><dd>{selectedPassport?.visualRecipe ?? `${selectedChart.family}Recipe`}</dd></div>
-                        <div><dt>Timestamp</dt><dd>{new Date().toISOString()}</dd></div>
+                        <div><dt>Timestamp</dt><dd><HydrationSafeTimestamp /></dd></div>
                       </dl>
                       <div className="toolbar-actions">
                         <button type="button" onClick={copyConfig}>Copy Current Config JSON</button>
