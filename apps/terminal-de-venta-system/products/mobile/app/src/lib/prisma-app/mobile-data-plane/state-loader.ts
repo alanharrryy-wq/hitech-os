@@ -6,7 +6,7 @@ import { emptyInventoryWatchlist, normalizeInventoryWatchlist } from "./inventor
 import { emptyOutboxState, normalizeOutboxState } from "./outbox-adapter";
 import { normalizePcDashboard, offlinePcDashboard } from "./pc-adapter";
 import { emptySalesToday, normalizeSalesToday } from "./sales-adapter";
-import { buildMobileSourceStatuses } from "../mobile-intelligence/source-status";
+import { applyDataSourceFreshness, buildMobileSourceStatuses } from "../mobile-intelligence/source-status";
 import type { DataPlaneRuntimeMode, MobileDataPlaneState } from "./types";
 
 function secondsSince(value: string | null): number | null {
@@ -69,7 +69,7 @@ export async function loadMobileDataPlaneState(): Promise<MobileDataPlaneState> 
   const cash = deriveCashState(salesToday, config);
   const fetchResults = [salesResult, inventoryResult, outboxResult, pcResult, tabletHealthResult, pcHealthResult, controlHealthResult, controlIncidentsResult, blackBoxHealthResult, blackBoxIncidentsResult];
   const probes = fetchResults.map(probeFromFetchResult);
-  const sourceStatuses = buildMobileSourceStatuses(fetchResults);
+  const sourceStatuses = applyDataSourceFreshness(buildMobileSourceStatuses(fetchResults), pcResult.status === "ok" ? pcResult.data : null);
   const mode = runtimeMode({
     tabletOk: salesResult.status === "ok" || tabletHealthResult.status === "ok",
     pcOk: pcResult.status === "ok" || pcHealthResult.status === "ok",

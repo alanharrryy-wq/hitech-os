@@ -4,6 +4,27 @@ import { asRecord, pickArray, readDateIso, readNonNegativeInt, readString, unwra
 export function normalizeOutboxState(payload: unknown): CanonicalOutboxState {
   const data = unwrapOkData(payload);
   const record = asRecord(data);
+  const bucketRows = pickArray(data, ["outboxStatusBuckets", "statusBuckets", "syncOutboxStatusBuckets"]);
+  if (bucketRows.length > 0) {
+    let pending = 0;
+    let failed = 0;
+    let acked = 0;
+    let oldestPendingAt: string | null = null;
+    let lastSyncedAt: string | null = null;
+    for (const raw of bucketRows) {
+      const bucket = asRecord(raw);
+      const status = readString(bucket, ["status", "state"], "pending").toLowerCase();
+      const count = readNonNegativeInt(bucket, ["count", "total"], 0);
+      if (status === "failed" || status === "error") failed += count;
+      else if (status === "acked" || status === "sent" || status === "synced") acked += count;
+      else pending += count;
+      const oldest = typeof bucket.oldestEventAt === "string" ? readDateIso(bucket, ["oldestEventAt"], bucket.oldestEventAt) : null;
+      const newest = typeof bucket.newestEventAt === "string" ? readDateIso(bucket, ["newestEventAt"], bucket.newestEventAt) : null;
+      if (status === "pending" && oldest && (!oldestPendingAt || Date.parse(oldest) < Date.parse(oldestPendingAt))) oldestPendingAt = oldest;
+      if (newest && (!lastSyncedAt || Date.parse(newest) > Date.parse(lastSyncedAt))) lastSyncedAt = newest;
+    }
+    return { pending, failed, acked, lastSyncedAt, oldestPendingAt };
+  }
   const events = pickArray(data, ["events", "items", "outbox", "rows"]);
   if (events.length === 0) {
     return {
