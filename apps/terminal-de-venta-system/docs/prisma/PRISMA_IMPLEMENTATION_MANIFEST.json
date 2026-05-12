@@ -1,0 +1,231 @@
+{
+  "runTimestamp": "2026-05-11T01:55:09.6153907-06:00",
+  "repositoryRoot": "F:\\repos\\hitech-os",
+  "targetAppPath": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "architectureDecision": "Tablet offline-first -> semantic OutboxEvent -> PC sync ingest -> validation -> event ledger -> Prisma ORM projectors -> canonical Prisma-governed database -> Mobile snapshot/view models -> Control audit. TRI-DB bridge is secondary rescue/backfill/diagnostic tooling only.",
+  "createdFiles": [
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\docs\\prisma\\PRISMA_DATA_FLOW_AND_AUTHORITY.md",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\docs\\prisma\\PRISMA_SYNC_STANDARD.md",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\docs\\prisma\\PRISMA_EVENT_CONTRACT.md",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\docs\\prisma\\PRISMA_DATABASE_AUTHORITY.md",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\docs\\prisma\\PRISMA_OPERATOR_MANUAL.md",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\docs\\prisma\\PRISMA_DEVELOPER_HANDOFF.md",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\docs\\prisma\\PRISMA_TESTING_AND_VALIDATION.md",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\docs\\prisma\\PRISMA_GROWTH_GUIDE.md",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\docs\\prisma\\PRISMA_IMPLEMENTATION_MANIFEST.json",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\docs\\prisma\\PRISMA_IMPLEMENTATION_MANIFEST.md",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\prisma\\migrations\\20260511000000_event_ledger_lifecycle\\migration.sql",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\src\\server\\services\\sync-projectors.service.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\lib\\prisma-app\\mobile-data-plane\\runtime-mode.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\tools\\verify_prisma_event_sync_architecture_01.mjs"
+  ],
+  "modifiedFiles": [
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\docs\\contracts\\EVENT_CONTRACT.md",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\docs\\contracts\\SYNC_RECONCILIATION_CONTRACT.md",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\package.json",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\prisma\\schema.prisma",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\components\\offline\\offline-export-audit-screen.tsx",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\tools\\verify_tablet_04_offline_export.mjs",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\src\\server\\pos-engine\\constants.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\src\\server\\pos-engine\\event-factory.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\src\\server\\pos-engine\\types.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\src\\server\\pos-shift\\repository.prisma.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\src\\server\\sync\\events.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\app\\api\\backoffice\\sync\\ingest\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\app\\api\\sync\\ingest\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\components\\sync\\tri-db-status-card.tsx",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\components\\sync\\tri-db-sync-action.tsx",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\src\\lib\\backoffice\\event-contract.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\src\\lib\\backoffice\\sync-ingest-store.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\src\\server\\services\\sync-ingest.service.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\src\\server\\services\\tri-db-command.service.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\src\\server\\sync\\events.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\src\\server\\validators\\sync-event-contract.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\tools\\verify_pc_sync_release_05.mjs",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\app\\api\\mobile\\action-inbox\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\app\\api\\mobile\\command-center\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\app\\api\\mobile\\daily-brief\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\app\\api\\mobile\\decision-ledger\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\app\\api\\mobile\\health-radar\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\app\\api\\mobile\\pulse-timeline\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\PrismaMobilePanels.tsx",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\components\\prisma-app\\PrismaMobilePremiumNavigator.tsx",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\lib\\prisma-app\\mobile-data-plane\\data-readiness.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\lib\\prisma-app\\mobile-data-plane\\endpoint-handlers.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\lib\\prisma-app\\mobile-data-plane\\state-loader.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\lib\\prisma-app\\mobile-data-plane\\types.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\lib\\prisma-app\\prisma-app-api-contracts.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\src\\lib\\prisma-app\\prisma-mobile-snapshot-contract.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\shared\\contracts\\sync-event-contract.v1.json",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\shared\\twin-kernel\\src\\sync\\events.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\tools\\prisma\\tri_db_bridge.py",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\tools\\verify_sync_contract_gate_01.mjs"
+  ],
+  "deletedFiles": [],
+  "routesTouched": [
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\app\\api\\sync\\ingest\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\\app\\api\\backoffice\\sync\\ingest\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\app\\api\\mobile\\snapshot\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\app\\api\\mobile\\action-inbox\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\app\\api\\mobile\\command-center\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\app\\api\\mobile\\daily-brief\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\app\\api\\mobile\\decision-ledger\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\app\\api\\mobile\\health-radar\\route.ts",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\\app\\api\\mobile\\pulse-timeline\\route.ts"
+  ],
+  "prismaModelsTouched": [
+    "OutboxEvent",
+    "Sale",
+    "SaleLine",
+    "Product",
+    "StockMovement",
+    "CashSession",
+    "CashMovement",
+    "ReplenishmentSignal"
+  ],
+  "migrationsTouched": [
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\prisma\\migrations\\20260511000000_event_ledger_lifecycle\\migration.sql"
+  ],
+  "eventTypesTouched": [
+    "sale.completed",
+    "stock.decremented",
+    "cash.session.opened",
+    "cash.movement.recorded",
+    "inventory.low_stock_detected"
+  ],
+  "syncStatesImplemented": [
+    "created_local",
+    "queued",
+    "sent",
+    "received",
+    "validated",
+    "accepted",
+    "projected",
+    "reconciled",
+    "conflict",
+    "failed",
+    "dead_letter"
+  ],
+  "projectorsImplemented": [
+    "projectSaleCompleted",
+    "projectStockDecremented",
+    "projectCashSessionOpened",
+    "projectCashMovementRecorded",
+    "projectLowStockDetected"
+  ],
+  "testsAddedOrUpdated": [
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\tools\\verify_prisma_event_sync_architecture_01.mjs",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\tools\\verify_sync_contract_gate_01.mjs",
+    "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\tools\\verify_tablet_04_offline_export.mjs"
+  ],
+  "commandsRun": [
+    {
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "command": "python tools/prisma/tri_db_bridge.py --self-test",
+      "result": "PASS"
+    },
+    {
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "command": "pnpm run prisma:event-sync:verify",
+      "result": "PASS"
+    },
+    {
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "command": "node tools/verify_sync_contract_gate_01.mjs",
+      "result": "PASS"
+    },
+    {
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "command": "$env:DATABASE_URL='file:./tools/_local/tmp/prisma-validate.db'; pnpm exec prisma validate --schema prisma/schema.prisma",
+      "result": "PASS"
+    },
+    {
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "command": "$env:DATABASE_URL='file:./tools/_local/tmp/prisma-generate.db'; pnpm exec prisma generate --schema prisma/schema.prisma",
+      "result": "BLOCKED: Prisma attempted dependency install"
+    },
+    {
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "command": "pnpm -C products/tablet/app typecheck",
+      "result": "PASS"
+    },
+    {
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "command": "pnpm -C products/pc/app typecheck",
+      "result": "PASS"
+    },
+    {
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "command": "pnpm -C products/mobile/app typecheck",
+      "result": "PASS"
+    },
+    {
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "command": "pnpm -C products/tablet/app build",
+      "result": "PASS"
+    },
+    {
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "command": "pnpm -C products/pc/app build",
+      "result": "PASS"
+    },
+    {
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "command": "pnpm -C products/mobile/app build",
+      "result": "PASS"
+    },
+    {
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app",
+      "command": "node tools/verify_prisma_app_mobile_40_crystal_intelligence.mjs; node tools/verify_prisma_app_mobile_39_premium_polish_boundary.mjs; node tools/verify_prisma_app_mobile_38_optional_adder_boundary.mjs",
+      "result": "PASS"
+    },
+    {
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "command": "pnpm -C products/tablet/app verify:03-pos",
+      "result": "PASS"
+    },
+    {
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "command": "pnpm -C products/tablet/app verify:04-offline",
+      "result": "PASS after fixing outbox label and evidence output path"
+    },
+    {
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "command": "pnpm -C products/pc/app db:canonical:validate",
+      "result": "PASS"
+    }
+  ],
+  "validationResults": {
+    "passed": [
+      "Architecture verifier",
+      "Sync contract gate",
+      "Bridge self-test",
+      "Prisma validate with temporary DATABASE_URL",
+      "Tablet typecheck",
+      "PC typecheck",
+      "Mobile typecheck",
+      "Tablet build",
+      "PC build",
+      "Mobile build",
+      "Mobile crystal/premium/optional verifier trio",
+      "Tablet POS verifier",
+      "Tablet offline verifier",
+      "PC canonical DB validator"
+    ],
+    "failed": [],
+    "blocked": [
+      "Direct root Prisma generate blocked because Prisma attempted to auto-run pnpm add @prisma/client@5.21.1 --silent."
+    ]
+  },
+  "knownRisks": [
+    "Direct root prisma generate is blocked by dependency policy; package-level canonical validator passed its cached generate path.",
+    "Existing workspace had unrelated dirty/untracked Mobile and Control files before this implementation; they were not normalized.",
+    "Visual screenshots were not generated by Codex and must be captured manually if needed."
+  ],
+  "manualFollowUpSteps": [
+    "Manual visual capture later by operator/user if desired.",
+    "Review whether root package should explicitly own @prisma/client before enabling direct root prisma generate."
+  ],
+  "screenshotNote": "Screenshots were intentionally not generated by Codex. Playwright was not used."
+}
+
