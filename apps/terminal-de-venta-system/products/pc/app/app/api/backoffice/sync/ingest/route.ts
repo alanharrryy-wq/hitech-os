@@ -19,9 +19,10 @@ return ok(
       recognizedTopics: RECOGNIZED_EVENT_TOPICS,
       supportedSchemaVersions: SUPPORTED_SCHEMA_VERSIONS,
       statuses: ["accepted", "rejected", "duplicate", "conflict"],
+      lifecycleStatuses: ["received", "validated", "accepted", "projected", "reconciled", "conflict", "failed", "dead_letter"],
       persistence: "outbox_event",
       storageModel: "OutboxEvent",
-      idempotencyKey: "eventId"
+      idempotencyKey: "idempotencyKey/eventId"
     },
     {
       endpoint: "GET /api/backoffice/sync/ingest",

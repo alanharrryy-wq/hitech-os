@@ -15,7 +15,7 @@ export async function GET() {
     mode: "pc-backoffice-sync-ingest",
     methods: ["GET", "POST"],
     dryRun: "POST /api/sync/ingest?dryRun=1 classifica sin persistir",
-    persistence: "OutboxEvent por eventId cuando dryRun no está activo"
+    persistence: "OutboxEvent ledger por idempotencyKey/eventId con Prisma projectors cuando dryRun no está activo"
   });
 }
 

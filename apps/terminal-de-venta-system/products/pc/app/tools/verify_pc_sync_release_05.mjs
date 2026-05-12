@@ -51,11 +51,11 @@ if (findings.length === 0) {
     if (!ui.includes(token)) findings.push({ severity: "BLOCKER", code: "UI_TOKEN_MISSING", message: token });
   }
   const triDbAction = read("components/sync/tri-db-sync-action.tsx");
-  for (const token of ['fetch("/api/sync/tri-db/run"', "Sincronizar ahora"]) {
+  for (const token of ['fetch("/api/sync/tri-db/run"', "Ejecutar bridge"]) {
     if (!triDbAction.includes(token)) findings.push({ severity: "BLOCKER", code: "TRI_DB_ACTION_TOKEN_MISSING", message: token });
   }
   const triDbStatus = read("components/sync/tri-db-status-card.tsx");
-  for (const token of ["Tablet → PC canonical → Mobile", "Cobertura PC cubre Tablet"]) {
+  for (const token of ["TRI-DB rescue/backfill bridge", "Cobertura PC cubre Tablet"]) {
     if (!triDbStatus.includes(token)) findings.push({ severity: "BLOCKER", code: "TRI_DB_STATUS_TOKEN_MISSING", message: token });
   }
 }
