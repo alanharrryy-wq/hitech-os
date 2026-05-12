@@ -18,6 +18,10 @@ import {
   type PrismaMobileSalesTodayPayload,
   type PrismaMobileSummaryPayload
 } from "./prisma-app-api-contracts";
+import {
+  PrismaMobileIntelligenceSnapshotSchema,
+  type PrismaMobileIntelligenceSnapshot
+} from "./mobile-intelligence/contracts";
 
 export const PRISMA_MOBILE_UI_CONTRACT_ID = "PRISMA_APP_MOBILE_17_DATA_PLANE";
 export const PRISMA_MOBILE_SNAPSHOT_API_VERSION = "2026-05-02.mobile.17";
@@ -31,7 +35,8 @@ export const PrismaMobileSnapshotPayloadSchema = z.object({
   alerts: PrismaMobileAlertsPayloadSchema,
   reportsDaily: PrismaMobileReportsDailyPayloadSchema,
   branches: PrismaMobileBranchesPayloadSchema,
-  health: PrismaMobileHealthPayloadSchema
+  health: PrismaMobileHealthPayloadSchema,
+  ...PrismaMobileIntelligenceSnapshotSchema.shape
 });
 
 export const PrismaMobileSnapshotMetaSchema = z.object({
@@ -39,7 +44,7 @@ export const PrismaMobileSnapshotMetaSchema = z.object({
   endpoint: z.literal("snapshot"),
   generatedAt: z.string().datetime(),
   source: z.enum(["api-snapshot", "api-endpoints", "connected-data-plane", "tablet-pos", "pc-backoffice", "local-cache", "unavailable"]),
-  runtimeMode: z.enum(["connected", "partial", "offline"]),
+  runtimeMode: z.enum(["live", "partial", "offline", "stale", "unknown", "demo-disabled"]),
   contractId: z.literal(PRISMA_MOBILE_UI_CONTRACT_ID),
   upstreamContractId: PrismaMobileApiMetaSchema.shape.contractId,
   upstreams: PrismaMobileApiMetaSchema.shape.upstreams
@@ -56,6 +61,7 @@ export const PrismaMobileClientSnapshotSchema = z.object({
 });
 
 export type PrismaMobileSnapshotPayload = z.infer<typeof PrismaMobileSnapshotPayloadSchema>;
+export type PrismaMobileSnapshotIntelligenceFields = PrismaMobileIntelligenceSnapshot;
 export type PrismaMobileSnapshotMeta = z.infer<typeof PrismaMobileSnapshotMetaSchema>;
 export type PrismaMobileSnapshotEnvelope = z.infer<typeof PrismaMobileSnapshotEnvelopeSchema>;
 export type PrismaMobileClientSnapshot = z.infer<typeof PrismaMobileClientSnapshotSchema>;
@@ -70,7 +76,7 @@ export type PrismaMobileSnapshotParts = {
   health: PrismaMobileHealthPayload;
 };
 
-export function buildPrismaMobileSnapshotMeta(source: PrismaMobileSnapshotMeta["source"], runtimeMode: PrismaMobileSnapshotMeta["runtimeMode"] = "connected", upstreams: PrismaMobileSnapshotMeta["upstreams"] = []): PrismaMobileSnapshotMeta {
+export function buildPrismaMobileSnapshotMeta(source: PrismaMobileSnapshotMeta["source"], runtimeMode: PrismaMobileSnapshotMeta["runtimeMode"] = "live", upstreams: PrismaMobileSnapshotMeta["upstreams"] = []): PrismaMobileSnapshotMeta {
   return PrismaMobileSnapshotMetaSchema.parse({
     apiVersion: PRISMA_MOBILE_SNAPSHOT_API_VERSION,
     endpoint: "snapshot",
@@ -83,7 +89,7 @@ export function buildPrismaMobileSnapshotMeta(source: PrismaMobileSnapshotMeta["
   });
 }
 
-export function okMobileSnapshotResponse(data: PrismaMobileSnapshotPayload, source: PrismaMobileSnapshotMeta["source"] = "api-snapshot", runtimeMode: PrismaMobileSnapshotMeta["runtimeMode"] = "connected", upstreams: PrismaMobileSnapshotMeta["upstreams"] = []): PrismaMobileSnapshotEnvelope {
+export function okMobileSnapshotResponse(data: PrismaMobileSnapshotPayload, source: PrismaMobileSnapshotMeta["source"] = "api-snapshot", runtimeMode: PrismaMobileSnapshotMeta["runtimeMode"] = "live", upstreams: PrismaMobileSnapshotMeta["upstreams"] = []): PrismaMobileSnapshotEnvelope {
   return PrismaMobileSnapshotEnvelopeSchema.parse({ ok: true, data, meta: buildPrismaMobileSnapshotMeta(source, runtimeMode, upstreams) });
 }
 

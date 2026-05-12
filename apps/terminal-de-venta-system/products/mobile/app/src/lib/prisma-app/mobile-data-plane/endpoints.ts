@@ -13,6 +13,14 @@ export function pcEndpoint(config: MobileDataPlaneConfig, path: string): string 
   return join(config.pcOrigin, path);
 }
 
+export function controlEndpoint(config: MobileDataPlaneConfig, path: string): string | null {
+  return join(config.controlOrigin, path);
+}
+
+export function blackBoxEndpoint(config: MobileDataPlaneConfig, path: string): string | null {
+  return join(config.blackBoxOrigin, path);
+}
+
 export function mobileDataPlaneEndpointRegistry(config: MobileDataPlaneConfig) {
   return {
     tabletHealth: tabletEndpoint(config, "/api/health"),
@@ -24,6 +32,10 @@ export function mobileDataPlaneEndpointRegistry(config: MobileDataPlaneConfig) {
     pcHealth: pcEndpoint(config, "/api/health"),
     pcDashboard: pcEndpoint(config, "/api/backoffice/dashboard"),
     pcSyncStatus: pcEndpoint(config, "/api/backoffice/sync/status"),
-    pcBranches: pcEndpoint(config, "/api/backoffice/branches")
+    pcBranches: pcEndpoint(config, "/api/backoffice/branches"),
+    controlHealth: controlEndpoint(config, "/api/health"),
+    controlIncidents: controlEndpoint(config, "/api/incidents"),
+    blackBoxHealth: blackBoxEndpoint(config, "/api/health"),
+    blackBoxIncidents: blackBoxEndpoint(config, "/api/incidents")
   };
 }

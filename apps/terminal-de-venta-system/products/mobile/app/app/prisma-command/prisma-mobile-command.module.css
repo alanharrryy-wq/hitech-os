@@ -1,0 +1,221 @@
+.shell {
+  min-height: 100vh;
+  padding: 18px;
+  color: #f8fafc;
+  background:
+    linear-gradient(180deg, rgba(5, 12, 26, .98), rgba(11, 27, 50, .94)),
+    radial-gradient(circle at 82% 8%, rgba(99, 223, 255, .22), transparent 26%),
+    #071426;
+}
+
+.header,
+.disabledPanel,
+.focusPanel,
+.card {
+  border: 1px solid rgba(190, 209, 232, .18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .075);
+  box-shadow: 0 20px 70px rgba(0, 0, 0, .28);
+  backdrop-filter: blur(18px);
+}
+
+.header {
+  max-width: 720px;
+  margin: 0 auto 12px;
+  padding: 18px;
+}
+
+.header p,
+.disabledPanel p {
+  margin: 0;
+  color: #63dfff;
+  font-size: .75rem;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+}
+
+.header h1,
+.disabledPanel h1 {
+  margin: 4px 0 8px;
+  font-size: clamp(2.2rem, 13vw, 4.6rem);
+  line-height: .9;
+  letter-spacing: 0;
+}
+
+.header span,
+.header small,
+.disabledPanel span,
+.cardHeader p,
+.cardFooter,
+.sparkCard small {
+  color: #c8d3e0;
+}
+
+.signalRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.signalRow strong,
+.signalRow small,
+.filterRail button {
+  border: 1px solid rgba(99, 223, 255, .22);
+  border-radius: 999px;
+  padding: 8px 10px;
+  background: rgba(99, 223, 255, .10);
+}
+
+.filterRail {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  max-width: 720px;
+  margin: 0 auto 12px;
+  padding-bottom: 2px;
+}
+
+.filterRail button {
+  min-height: 42px;
+  color: #f8fafc;
+  font-weight: 900;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.focusPanel {
+  display: grid;
+  gap: 4px;
+  max-width: 720px;
+  margin: 0 auto 12px;
+  padding: 12px 14px;
+}
+
+.focusPanel span {
+  color: #63dfff;
+  font-size: .72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.card {
+  min-width: 0;
+  padding: 12px;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.cardHeader h2 {
+  margin: 0 0 3px;
+  font-size: .96rem;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.cardHeader p {
+  margin: 0;
+  font-size: .78rem;
+}
+
+.cardHeader strong {
+  align-self: start;
+  border-radius: 999px;
+  padding: 6px 8px;
+  color: #071426;
+  background: #63dfff;
+  font-size: .76rem;
+  white-space: nowrap;
+}
+
+.chartFrame {
+  position: relative;
+  min-width: 0;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 1px solid rgba(255, 255, 255, .12);
+  margin-top: 8px;
+  padding-top: 8px;
+  font-size: .7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.sparkGrid {
+  display: grid;
+  gap: 8px;
+}
+
+.sparkCard,
+.emptySpark {
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 8px;
+  padding: 8px;
+  background: rgba(0, 0, 0, .16);
+}
+
+.sparkCard header {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.sparkCard header span {
+  color: #e59b2a;
+  font-size: .72rem;
+  font-weight: 900;
+}
+
+.sparkCard small {
+  display: block;
+  margin-top: 4px;
+  font-size: .72rem;
+}
+
+.emptySpark {
+  min-height: 96px;
+  display: grid;
+  place-items: center;
+  color: #c8d3e0;
+}
+
+.disabledPanel {
+  max-width: 680px;
+  margin: 16vh auto;
+  padding: 22px;
+}
+
+.disabledPanel strong {
+  display: block;
+  margin-top: 12px;
+}
+
+@media (max-width: 620px) {
+  .shell {
+    padding: 12px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

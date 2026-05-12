@@ -6,28 +6,59 @@ import { emptyInventoryWatchlist, normalizeInventoryWatchlist } from "./inventor
 import { emptyOutboxState, normalizeOutboxState } from "./outbox-adapter";
 import { normalizePcDashboard, offlinePcDashboard } from "./pc-adapter";
 import { emptySalesToday, normalizeSalesToday } from "./sales-adapter";
+import { buildMobileSourceStatuses } from "../mobile-intelligence/source-status";
 import type { DataPlaneRuntimeMode, MobileDataPlaneState } from "./types";
 
-function runtimeMode(tabletOk: boolean, pcOk: boolean): DataPlaneRuntimeMode {
-  if (tabletOk && pcOk) return "connected";
-  if (tabletOk || pcOk) return "partial";
-  return "offline";
+function secondsSince(value: string | null): number | null {
+  if (!value) return null;
+  const time = Date.parse(value);
+  if (Number.isNaN(time)) return null;
+  return Math.max(0, Math.round((Date.now() - time) / 1000));
+}
+
+function runtimeMode(input: { tabletOk: boolean; pcOk: boolean; staleAfterMs: number; oldestPendingAt: string | null; lastSyncedAt: string | null; warnings: string[] }): DataPlaneRuntimeMode {
+  if (process.env.PRISMA_MOBILE_DEMO_DATA_MODE === "disabled") return "demo-disabled";
+  const oldestPendingAge = secondsSince(input.oldestPendingAt);
+  const lastSyncAge = secondsSince(input.lastSyncedAt);
+  const staleAfterSeconds = Math.max(1, Math.round(input.staleAfterMs / 1000));
+  const staleByPending = oldestPendingAge !== null && oldestPendingAge > staleAfterSeconds;
+  const staleBySync = lastSyncAge !== null && lastSyncAge > staleAfterSeconds;
+  if (input.tabletOk && input.pcOk && (staleByPending || staleBySync)) return "stale";
+  if (input.tabletOk && input.pcOk && input.warnings.length === 0) return "live";
+  if (input.tabletOk || input.pcOk) return "partial";
+  if (input.warnings.length > 0) return "offline";
+  return "unknown";
 }
 
 export async function loadMobileDataPlaneState(): Promise<MobileDataPlaneState> {
   const config = getMobileDataPlaneConfig();
   const endpoints = mobileDataPlaneEndpointRegistry(config);
-  const [salesResult, inventoryResult, outboxResult, pcResult, tabletHealthResult, pcHealthResult] = await Promise.all([
-    fetchJsonWithRetry<unknown>(endpoints.tabletSalesToday, { upstream: "tablet", role: "sales", timeoutMs: config.requestTimeoutMs, retryCount: config.retryCount }),
-    fetchJsonWithRetry<unknown>(endpoints.tabletLowStock, { upstream: "tablet", role: "inventory", timeoutMs: config.requestTimeoutMs, retryCount: config.retryCount }),
-    fetchJsonWithRetry<unknown>(endpoints.tabletOutbox, { upstream: "tablet", role: "events", timeoutMs: config.requestTimeoutMs, retryCount: config.retryCount }),
-    fetchJsonWithRetry<unknown>(endpoints.pcDashboard, { upstream: "pc", role: "dashboard", timeoutMs: config.requestTimeoutMs, retryCount: config.retryCount }),
-    fetchJsonWithRetry<unknown>(endpoints.tabletHealth, { upstream: "tablet", role: "health", timeoutMs: config.requestTimeoutMs, retryCount: 0 }),
-    fetchJsonWithRetry<unknown>(endpoints.pcHealth, { upstream: "pc", role: "health", timeoutMs: config.requestTimeoutMs, retryCount: 0 })
+  const [
+    salesResult,
+    inventoryResult,
+    outboxResult,
+    pcResult,
+    tabletHealthResult,
+    pcHealthResult,
+    controlHealthResult,
+    controlIncidentsResult,
+    blackBoxHealthResult,
+    blackBoxIncidentsResult
+  ] = await Promise.all([
+    fetchJsonWithRetry<unknown>(endpoints.tabletSalesToday, { upstream: "tablet", role: "sales", timeoutMs: config.tabletTimeoutMs, retryCount: config.retryCount }),
+    fetchJsonWithRetry<unknown>(endpoints.tabletLowStock, { upstream: "tablet", role: "inventory", timeoutMs: config.tabletTimeoutMs, retryCount: config.retryCount }),
+    fetchJsonWithRetry<unknown>(endpoints.tabletOutbox, { upstream: "tablet", role: "events", timeoutMs: config.tabletTimeoutMs, retryCount: config.retryCount }),
+    fetchJsonWithRetry<unknown>(endpoints.pcDashboard, { upstream: "pc", role: "dashboard", timeoutMs: config.pcTimeoutMs, retryCount: config.retryCount }),
+    fetchJsonWithRetry<unknown>(endpoints.tabletHealth, { upstream: "tablet", role: "health", timeoutMs: config.tabletTimeoutMs, retryCount: 0 }),
+    fetchJsonWithRetry<unknown>(endpoints.pcHealth, { upstream: "pc", role: "health", timeoutMs: config.pcTimeoutMs, retryCount: 0 }),
+    fetchJsonWithRetry<unknown>(endpoints.controlHealth, { upstream: "control", role: "health", timeoutMs: config.controlTimeoutMs, retryCount: 0 }),
+    fetchJsonWithRetry<unknown>(endpoints.controlIncidents, { upstream: "control", role: "incidents", timeoutMs: config.controlTimeoutMs, retryCount: 0 }),
+    fetchJsonWithRetry<unknown>(endpoints.blackBoxHealth, { upstream: "blackbox", role: "health", timeoutMs: config.blackBoxTimeoutMs, retryCount: 0 }),
+    fetchJsonWithRetry<unknown>(endpoints.blackBoxIncidents, { upstream: "blackbox", role: "incidents", timeoutMs: config.blackBoxTimeoutMs, retryCount: 0 })
   ]);
 
   const warnings = getMobileDataPlaneConfigDiagnostics(config);
-  for (const result of [salesResult, inventoryResult, outboxResult, pcResult]) {
+  for (const result of [salesResult, inventoryResult, outboxResult, pcResult, controlHealthResult, controlIncidentsResult, blackBoxHealthResult, blackBoxIncidentsResult]) {
     if (result.status !== "ok") warnings.push(`${result.upstream}/${result.role}: ${result.error ?? result.status}`);
   }
 
@@ -36,7 +67,16 @@ export async function loadMobileDataPlaneState(): Promise<MobileDataPlaneState> 
   const outbox = outboxResult.status === "ok" ? normalizeOutboxState(outboxResult.data) : emptyOutboxState();
   const pc = pcResult.status === "ok" ? normalizePcDashboard(pcResult.data) : offlinePcDashboard();
   const cash = deriveCashState(salesToday, config);
-  const probes = [salesResult, inventoryResult, outboxResult, pcResult, tabletHealthResult, pcHealthResult].map(probeFromFetchResult);
-  const mode = runtimeMode(salesResult.status === "ok" || tabletHealthResult.status === "ok", pcResult.status === "ok" || pcHealthResult.status === "ok");
-  return { config, probes, salesToday, inventory, outbox, cash, pc, warnings, runtimeMode: mode };
+  const fetchResults = [salesResult, inventoryResult, outboxResult, pcResult, tabletHealthResult, pcHealthResult, controlHealthResult, controlIncidentsResult, blackBoxHealthResult, blackBoxIncidentsResult];
+  const probes = fetchResults.map(probeFromFetchResult);
+  const sourceStatuses = buildMobileSourceStatuses(fetchResults);
+  const mode = runtimeMode({
+    tabletOk: salesResult.status === "ok" || tabletHealthResult.status === "ok",
+    pcOk: pcResult.status === "ok" || pcHealthResult.status === "ok",
+    staleAfterMs: config.staleAfterMs,
+    oldestPendingAt: outbox.oldestPendingAt,
+    lastSyncedAt: outbox.lastSyncedAt,
+    warnings
+  });
+  return { config, probes, sourceStatuses, salesToday, inventory, outbox, cash, pc, warnings, runtimeMode: mode };
 }

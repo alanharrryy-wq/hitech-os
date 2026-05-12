@@ -31,7 +31,7 @@ function upstreamOk(state: MobileDataPlaneState, id: "tablet" | "pc"): boolean {
 function readableSourceSummary(state: MobileDataPlaneState): string {
   const tablet = upstreamOk(state, "tablet") ? "Tablet conectada" : "Tablet sin respuesta";
   const pc = upstreamOk(state, "pc") ? "PC conectada" : "PC sin respuesta";
-  const mode = state.runtimeMode === "connected" ? "lectura completa" : state.runtimeMode === "partial" ? "lectura parcial" : "sin fuentes activas";
+  const mode = state.runtimeMode === "live" ? "lectura completa" : state.runtimeMode === "partial" ? "lectura parcial" : state.runtimeMode === "stale" ? "lectura stale" : "sin fuentes activas";
   return `${tablet} · ${pc} · ${mode}`;
 }
 

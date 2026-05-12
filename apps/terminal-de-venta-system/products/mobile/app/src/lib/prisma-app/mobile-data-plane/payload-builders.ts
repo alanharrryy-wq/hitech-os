@@ -1,6 +1,7 @@
 import type { MobileDataPlaneState } from "./types";
 import type { PrismaMobileAlertsPayload, PrismaMobileBranchesPayload, PrismaMobileCashCurrentPayload, PrismaMobileHealthPayload, PrismaMobileInventoryItem, PrismaMobileInventoryWatchlistPayload, PrismaMobileReportsDailyPayload, PrismaMobileSalesPoint, PrismaMobileSalesTodayPayload, PrismaMobileSummaryPayload } from "../prisma-app-api-contracts";
 import type { PrismaMobileSnapshotPayload } from "../prisma-mobile-snapshot-contract";
+import { buildPrismaMobileIntelligenceSnapshot } from "../mobile-intelligence/snapshot-engine";
 import { classifyInventoryState } from "./inventory-adapter";
 import { buildOperationalAlerts, countAlerts } from "./alerts-policy";
 import { cashStatus } from "./cash-policy";
@@ -122,5 +123,15 @@ export function buildHealthPayload(state: MobileDataPlaneState): PrismaMobileHea
 }
 
 export function buildSnapshotPayload(state: MobileDataPlaneState): PrismaMobileSnapshotPayload {
-  return { summary: buildSummaryPayload(state), salesToday: buildSalesTodayPayload(state), cashCurrent: buildCashCurrentPayload(state), inventoryWatchlist: buildInventoryWatchlistPayload(state), alerts: buildAlertsPayload(state), reportsDaily: buildReportsDailyPayload(state), branches: buildBranchesPayload(state), health: buildHealthPayload(state) };
+  const legacy = {
+    summary: buildSummaryPayload(state),
+    salesToday: buildSalesTodayPayload(state),
+    cashCurrent: buildCashCurrentPayload(state),
+    inventoryWatchlist: buildInventoryWatchlistPayload(state),
+    alerts: buildAlertsPayload(state),
+    reportsDaily: buildReportsDailyPayload(state),
+    branches: buildBranchesPayload(state),
+    health: buildHealthPayload(state)
+  };
+  return { ...legacy, ...buildPrismaMobileIntelligenceSnapshot(state, legacy) };
 }

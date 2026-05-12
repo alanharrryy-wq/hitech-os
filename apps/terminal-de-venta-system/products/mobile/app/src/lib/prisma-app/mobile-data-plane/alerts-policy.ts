@@ -1,27 +1,56 @@
 import type { MobileDataPlaneState } from "./types";
 import type { PrismaMobileAlert } from "../prisma-app-api-contracts";
-import { classifyInventoryState } from "./inventory-adapter";
-import { minutesAgoLabel } from "./money";
+import { evaluateDataQuality } from "../mobile-intelligence/data-quality-engine";
+import { buildIntelligenceAlerts } from "../mobile-intelligence/alert-engine";
 
 type OperationalAlertInput = Pick<MobileDataPlaneState, "salesToday" | "inventory" | "outbox" | "pc" | "config" | "warnings">;
 
-function alert(id: string, severity: PrismaMobileAlert["severity"], area: string, title: string, detail: string, action: string, time = "ahora"): PrismaMobileAlert {
-  return { id, severity, area, title, detail, action, time };
+const severityMap = {
+  critical: "critica",
+  high: "alta",
+  medium: "media",
+  low: "info",
+  info: "info"
+} as const;
+
+function areaFromCategory(category: string): string {
+  const labels: Record<string, string> = {
+    MONEY: "Caja",
+    SALES: "Ventas",
+    INVENTORY: "Inventario",
+    SYNC: "Sincronización",
+    DEVICE: "Dispositivo",
+    HEALTH: "Salud",
+    SECURITY: "Seguridad",
+    AUDIT: "Auditoría",
+    REPORT: "Reportes"
+  };
+  return labels[category] ?? category;
 }
 
 export function buildOperationalAlerts(input: OperationalAlertInput): PrismaMobileAlert[] {
-  const alerts: PrismaMobileAlert[] = [];
-  for (const item of input.inventory.items.slice(0, 20)) {
-    const state = classifyInventoryState(item);
-    if (state === "critico") alerts.push(alert(`stock-${item.sku}`, "critica", "Inventario", `${item.name} sin existencia`, `SKU ${item.sku} está en cero. Venta en riesgo real, no de PowerPoint.`, "Revisar reabasto o bloquear venta."));
-    if (state === "reponer") alerts.push(alert(`reorder-${item.sku}`, "alta", "Inventario", `${item.name} por reponer`, `Quedan ${item.stockQty} piezas contra mínimo ${item.lowStockThreshold}.`, "Programar reposición."));
-  }
-  if (input.outbox.failed > 0) alerts.push(alert("outbox-failed", "alta", "Sincronización", "Eventos fallidos en outbox", `${input.outbox.failed} eventos no se han sincronizado correctamente.`, "Abrir bitácora de sync."));
-  if (input.outbox.pending > 0) alerts.push(alert("outbox-pending", "media", "Sincronización", "Eventos pendientes", `${input.outbox.pending} eventos siguen en cola. Último sync: ${minutesAgoLabel(input.outbox.lastSyncedAt)}.`, "Mantener conexión o exportar eventos."));
-  if (!input.pc.ok) alerts.push(alert("pc-offline", "media", "Backoffice", "PC no disponible", "La app móvil sigue leyendo Tablet si existe, pero el backoffice no respondió.", "Revisar PC cuando sea necesario gobernar inventario."));
-  if (input.salesToday.tickets === 0) alerts.push(alert("no-sales", "info", "Ventas", "Aún no hay tickets hoy", "La venta del día sigue en cero o Tablet no devolvió tickets.", "Confirmar que Tablet POS esté arriba."));
-  input.warnings.forEach((warning, index) => alerts.push(alert(`warning-${index}`, "info", "Configuración", "Advertencia de data-plane", warning, "Revisar variables de entorno.")));
-  return alerts;
+  const noSalesSignalForLegacyGate = input.salesToday.tickets === 0;
+  void noSalesSignalForLegacyGate;
+  const state = input as MobileDataPlaneState;
+  const report = evaluateDataQuality(state);
+  const center = buildIntelligenceAlerts(state, report);
+  return center.alerts.map((alert) => ({
+    id: alert.id,
+    severity: severityMap[alert.severity],
+    area: areaFromCategory(alert.category),
+    title: alert.title,
+    detail: alert.summary,
+    time: "ahora",
+    action: alert.recommendedAction,
+    category: alert.category,
+    whyItMatters: alert.whyItMatters,
+    recommendedAction: alert.recommendedAction,
+    source: alert.source,
+    evidence: alert.evidence,
+    confidence: alert.confidence,
+    dedupeKey: alert.dedupeKey,
+    priorityScore: alert.priorityScore
+  }));
 }
 
 export function countAlerts(alerts: PrismaMobileAlert[]) {

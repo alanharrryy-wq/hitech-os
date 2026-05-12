@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type KeyboardEvent } from "react";
+import { useEffect, useMemo, useState, type KeyboardEvent } from "react";
 import type { PrismaMobileClientSnapshot } from "@/lib/prisma-app/prisma-mobile-snapshot-contract";
 import { getPrismaMobileDataReadiness, type PrismaMobileHealthTone } from "@/lib/prisma-app/prisma-mobile-view-model";
 import { sourceLabel } from "@/lib/prisma-app/prisma-mobile-api-client";
@@ -12,6 +12,7 @@ import { PrismaMobileDecisionLedger } from "./PrismaMobileDecisionLedger";
 import { PrismaMobilePulseTimeline } from "./PrismaMobilePulseTimeline";
 import { PrismaMobileHealthRadar } from "./PrismaMobileHealthRadar";
 import { PrismaMobileMetricCard } from "./PrismaMobileMetricCard";
+import { PrismaMobileCrystalCommand } from "./PrismaMobileCrystalCommand";
 import {
   PrismaMobileActionPanel,
   PrismaMobileAlertsPanel,
@@ -78,6 +79,13 @@ function PrismaMobileReadinessPanel({ clientSnapshot }: { clientSnapshot: Prisma
         <h4>{readiness.headline}</h4>
         <p>{readiness.detail}</p>
       </header>
+
+      {/* MOBILE_PREMIUM_POLISH_PHASE_2 */}
+      <div className={styles.premiumPolishRailNote} data-prisma-zone="mobile-premium-polish-rail">
+        <span>Modo supervisor</span>
+        <strong>No opera POS core.</strong>
+        <p>Si Tablet está local/offline, Mobile degrada a lectura, cache o estado no disponible.</p>
+      </div>
       <div className={styles.dataReadinessMeta}>
         <span>{readiness.sourceSummary}</span>
         <span>Ventas: {readiness.salesState === "with_sales" ? "con tickets" : readiness.salesState === "empty" ? "sin tickets hoy" : "no disponible"}</span>
@@ -101,8 +109,18 @@ function PrismaMobileReadinessPanel({ clientSnapshot }: { clientSnapshot: Prisma
 export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadState, onRefresh, onClearCache }: Props) {
   const [activeTab, setActiveTab] = useState<PremiumTabId>("resumen");
   const snapshot = clientSnapshot.snapshot;
+  const salesRhythmChart = snapshot.chartViewModels.find((chart) => chart.chartKey === "sales-rhythm-hourly") ?? null;
   const badUpstreams = snapshot.health.upstreams.filter((upstream) => !upstream.ok).length;
   const syncSignals = clientSnapshot.errors.length + badUpstreams + (clientSnapshot.stale ? 1 : 0);
+
+  useEffect(() => {
+    function openHealthRadar() {
+      setActiveTab("sync");
+      focusTab("sync");
+    }
+    window.addEventListener("prisma:open-health-radar", openHealthRadar);
+    return () => window.removeEventListener("prisma:open-health-radar", openHealthRadar);
+  }, []);
 
   const tabs = useMemo(() => ([
     {
@@ -116,9 +134,9 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
     {
       id: "caja" as const,
       label: "Caja",
-      eyebrow: "Corte y ventas",
-      title: "Caja, ritmo de venta y corte diario",
-      detail: "Lo necesario para confirmar si el dinero y el flujo comercial van en orden.",
+      eyebrow: "Lectura de caja",
+      title: "Caja como vista de supervisión, no corte POS",
+      detail: "Lectura móvil opcional para revisar flujo. Tablet Solo mantiene cobro, corte, ticket y operación offline.",
       badge: snapshot.salesToday.tickets > 0 ? snapshot.salesToday.tickets.toString() : "0"
     },
     {
@@ -176,7 +194,7 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
         <div>
           <span>PRISMA App · Pulso operativo</span>
           <h2 id="prisma-mobile-premium-nav-title">Pulso por prioridad</h2>
-          <p>Venta, caja, alertas, inventario y sync ordenados para decidir rápido desde el celular.</p>
+          <p>Mobile supervisa. Tablet Solo vende sola. Esta vista premium ordena señales, alertas y reportes sin ser requisito para vender, cobrar, cortar caja ni operar offline.</p>
         </div>
         <aside data-prisma-zone="mobile-sync-state">
           <span>Fuente activa</span>
@@ -184,6 +202,12 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
           <small>{formatRelativeFetchLabel(clientSnapshot.fetchedAt)}{clientSnapshot.stale ? " · respaldo local" : " · lectura fresca"}</small>
         </aside>
       </header>
+
+      {/* MOBILE_OPTIONAL_ADDER_BOUNDARY_PHASE_1 */}
+      <section className={styles.optionalAdderBoundaryCompact} data-prisma-zone="mobile-optional-adder-boundary">
+        <strong>Mobile supervisa.</strong>
+        <span>Tablet Solo vende sola. PC y Mobile son adders opcionales; Cloudflare y soporte remoto son opcionales.</span>
+      </section>
 
       <nav className={styles.premiumTabRail} role="tablist" aria-label="Secciones operativas PRISMA" onKeyDown={handleTabKeyDown}>
         {tabs.map((tab) => {
@@ -241,16 +265,19 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
         ) : null}
 
         {activeTab === "caja" ? (
-          <div className={styles.premiumPanelGrid}>
+          <div className={styles.premiumPanelStack}>
+            <PrismaMobileCrystalCommand clientSnapshot={clientSnapshot} mode="operation" />
             <PrismaMobileCashPanel cash={snapshot.cashCurrent} />
-            <PrismaMobileSalesChart points={snapshot.salesToday.timeline} />
+            <PrismaMobileSalesChart chart={salesRhythmChart} />
             <PrismaMobileReportsPanel cards={snapshot.reportsDaily.cards} />
             <PrismaMobileDailyBrief clientSnapshot={clientSnapshot} />
+            <PrismaMobileCrystalCommand clientSnapshot={clientSnapshot} mode="brief" />
           </div>
         ) : null}
 
         {activeTab === "alertas" ? (
           <div className={styles.premiumPanelStack}>
+            <PrismaMobileCrystalCommand clientSnapshot={clientSnapshot} mode="alerts" />
             <PrismaMobileActionInbox clientSnapshot={clientSnapshot} />
             <PrismaMobileAlertsPanel alerts={snapshot.alerts.alerts} />
             <PrismaMobileDecisionLedger clientSnapshot={clientSnapshot} />
@@ -258,7 +285,8 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
         ) : null}
 
         {activeTab === "inventario" ? (
-          <div className={styles.premiumPanelGrid}>
+          <div className={styles.premiumPanelStack}>
+            <PrismaMobileCrystalCommand clientSnapshot={clientSnapshot} mode="operation" />
             <PrismaMobileInventoryPanel items={snapshot.inventoryWatchlist.items} />
             <PrismaMobileBranchesPanel branches={snapshot.branches.branches} />
           </div>
@@ -266,6 +294,7 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
 
         {activeTab === "sync" ? (
           <div className={styles.premiumPanelStack}>
+            <PrismaMobileCrystalCommand clientSnapshot={clientSnapshot} mode="health" />
             <PrismaMobileReadinessPanel clientSnapshot={clientSnapshot} />
             {clientSnapshot.errors.length > 0 ? (
               <section className={styles.warningPanel} aria-label="Advertencias de carga" data-prisma-zone="mobile-error-state">
@@ -274,6 +303,7 @@ export function PrismaMobilePremiumNavigator({ clientSnapshot, operations, loadS
               </section>
             ) : null}
             <PrismaMobileHealthRadar clientSnapshot={clientSnapshot} />
+            <PrismaMobileCrystalCommand clientSnapshot={clientSnapshot} mode="timeline" />
             <PrismaMobilePulseTimeline clientSnapshot={clientSnapshot} />
           </div>
         ) : null}

@@ -35,7 +35,13 @@ export function getMobileDataPlaneConfig(): MobileDataPlaneConfig {
     businessName: readString("PRISMA_MOBILE_BUSINESS_NAME", "PRISMA Operación"),
     tabletOrigin: readOrigin("PRISMA_MOBILE_TABLET_ORIGIN", "http://127.0.0.1:3120"),
     pcOrigin: readOrigin("PRISMA_MOBILE_PC_ORIGIN", "http://127.0.0.1:3130"),
+    controlOrigin: readOrigin("PRISMA_MOBILE_CONTROL_ORIGIN", null),
+    blackBoxOrigin: readOrigin("PRISMA_MOBILE_BLACKBOX_ORIGIN", null),
     requestTimeoutMs: readInt("PRISMA_MOBILE_SOURCE_TIMEOUT_MS", readInt("PRISMA_MOBILE_REQUEST_TIMEOUT_MS", 2500, 250, 15000), 250, 15000),
+    tabletTimeoutMs: readInt("PRISMA_MOBILE_TABLET_TIMEOUT_MS", 2500, 250, 15000),
+    pcTimeoutMs: readInt("PRISMA_MOBILE_PC_TIMEOUT_MS", 2500, 250, 15000),
+    controlTimeoutMs: readInt("PRISMA_MOBILE_CONTROL_TIMEOUT_MS", 2000, 250, 15000),
+    blackBoxTimeoutMs: readInt("PRISMA_MOBILE_BLACKBOX_TIMEOUT_MS", 2000, 250, 15000),
     retryCount: readInt("PRISMA_MOBILE_RETRY_COUNT", 1, 0, 4),
     staleAfterMs: readInt("PRISMA_MOBILE_STALE_AFTER_MS", 90000, 15000, 86400000),
     lowStockDefaultThreshold: readInt("PRISMA_MOBILE_LOW_STOCK_THRESHOLD", 4, 0, 999999),
@@ -49,6 +55,8 @@ export function getMobileDataPlaneConfigDiagnostics(config = getMobileDataPlaneC
   const warnings: string[] = [];
   if (!config.tabletOrigin) warnings.push("PRISMA_MOBILE_TABLET_ORIGIN no está configurado; ventas e inventario Tablet quedarán no disponibles.");
   if (!config.pcOrigin) warnings.push("PRISMA_MOBILE_PC_ORIGIN no está configurado; dashboard/backoffice quedará no disponible.");
+  if (!config.controlOrigin) warnings.push("PRISMA_MOBILE_CONTROL_ORIGIN no está configurado; auditoría Control queda no disponible.");
+  if (!config.blackBoxOrigin) warnings.push("PRISMA_MOBILE_BLACKBOX_ORIGIN no está configurado; caja negra queda no disponible.");
   if (config.cashDifferenceCriticalCents < config.cashDifferenceWarningCents) warnings.push("El umbral crítico de efectivo es menor que el umbral de advertencia.");
   return warnings;
 }

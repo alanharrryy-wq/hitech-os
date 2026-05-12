@@ -10,10 +10,11 @@ import type {
 } from "../prisma-app-api-contracts";
 import type { PrismaMobileSnapshotPayload } from "../prisma-mobile-snapshot-contract";
 
-export type UpstreamId = "tablet" | "pc";
-export type EndpointRole = "health" | "sales" | "inventory" | "events" | "cash" | "dashboard" | "branch";
-export type DataPlaneRuntimeMode = "connected" | "partial" | "offline";
+export type UpstreamId = "tablet" | "pc" | "control" | "blackbox" | "local";
+export type EndpointRole = "health" | "sales" | "inventory" | "events" | "cash" | "dashboard" | "branch" | "incidents" | "snapshot";
+export type DataPlaneRuntimeMode = "live" | "partial" | "offline" | "stale" | "unknown" | "demo-disabled";
 export type FetchStatus = "ok" | "http_error" | "timeout" | "parse_error" | "network_error" | "disabled";
+export type SourceStatusValue = "ok" | "stale" | "offline" | "error" | "unknown";
 
 export type MobileDataPlaneConfig = {
   businessId: string;
@@ -21,7 +22,13 @@ export type MobileDataPlaneConfig = {
   businessName: string;
   tabletOrigin: string | null;
   pcOrigin: string | null;
+  controlOrigin: string | null;
+  blackBoxOrigin: string | null;
   requestTimeoutMs: number;
+  tabletTimeoutMs: number;
+  pcTimeoutMs: number;
+  controlTimeoutMs: number;
+  blackBoxTimeoutMs: number;
   retryCount: number;
   staleAfterMs: number;
   lowStockDefaultThreshold: number;
@@ -37,6 +44,18 @@ export type UpstreamProbe = {
   status?: number;
   latencyMs?: number;
   error?: string;
+};
+
+export type MobileSourceStatus = {
+  id: UpstreamId;
+  label: string;
+  status: SourceStatusValue;
+  lastSeenAt: string | null;
+  freshnessSeconds: number | null;
+  latencyMs: number | null;
+  errorCount: number;
+  lastError: string | null;
+  warnings: string[];
 };
 
 export type FetchResult<T> = {
@@ -137,6 +156,7 @@ export type CanonicalPcDashboard = {
 export type MobileDataPlaneState = {
   config: MobileDataPlaneConfig;
   probes: UpstreamProbe[];
+  sourceStatuses: MobileSourceStatus[];
   salesToday: CanonicalSalesToday;
   inventory: CanonicalInventoryWatchlist;
   outbox: CanonicalOutboxState;
