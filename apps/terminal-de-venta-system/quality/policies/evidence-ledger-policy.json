@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0",
+  "policyId": "evidence-ledger-policy",
+  "phase": "phase-4",
+  "description": "Policy for PRISMA Evidence Ledger integrity and hardening",
+  "effectiveDate": "2026-05-12",
+  "principles": [
+    "Every gate assertion must have cryptographic evidence",
+    "Evidence is immutable once written to ledger",
+    "Ledger itself is append-only",
+    "No evidence can be deleted or modified",
+    "Evidence must be redacted of sensitive data",
+    "Ledger must support forensic replay"
+  ],
+  "evidenceStructure": {
+    "required": [
+      "schemaVersion",
+      "runId",
+      "evidenceId",
+      "gateId",
+      "type",
+      "summary",
+      "createdAt",
+      "payload"
+    ],
+    "payload": {
+      "mustBeJsonSerializable": true,
+      "mustBeRedacted": true,
+      "mustContainSourceReferences": true
+    }
+  },
+  "ledgerFormat": {
+    "type": "jsonl",
+    "filename": "QUALITY_EVIDENCE_LEDGER.jsonl",
+    "entries": [
+      "evidenceId",
+      "gateId",
+      "type",
+      "path",
+      "sha256",
+      "summary"
+    ],
+    "immutable": true,
+    "appendOnly": true
+  },
+  "integrityCriteria": {
+    "noLedgerTruncation": "Ledger must never be truncated",
+    "noEntryDeletion": "No entry can be removed from ledger",
+    "noEntryModification": "No entry can be changed after creation",
+    "cryptographicHashing": "Each entry must include SHA256 of evidence",
+    "chronologicalOrdering": "Entries must be in creation order"
+  },
+  "redactionRules": {
+    "redactApiKeys": true,
+    "redactSecrets": true,
+    "redactPersonalData": true,
+    "redactCredentials": true,
+    "redactInternalHostnames": true,
+    "redactDatabaseUrls": true
+  },
+  "auditTrail": {
+    "mustIncludeTimestamp": true,
+    "mustIncludeGateId": true,
+    "mustIncludeRunId": true,
+    "mustIncludeEvidenceId": true,
+    "mustBeQueryableByTime": true,
+    "mustBeQuery ableByGate": true
+  },
+  "failureScenarios": {
+    "ledgerCorruption": "S0",
+    "missingEvidence": "S1",
+    "redactionFailure": "S1",
+    "hashMismatch": "S1",
+    "chronologyViolation": "S1"
+  }
+}

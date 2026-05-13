@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0",
-  "version": "phase-2-v6-final-repair-real-prisma-ports",
-  "principle": "Services are optional evidence in Phase 2 unless explicitly declared required. Wrong ports are a PQOS config bug, not a product blocker.",
+  "version": "launcher-os-clean-warnings-3000-3110-3150",
+  "principle": "Offline optional local services are evidence-only in PR/commit. Warnings are reserved for real contract/config drift, not stopped dev services.",
   "states": [
     "running",
     "not-running",
@@ -20,7 +20,6 @@
     "genericNextPortDetected": "S1"
   },
   "forbiddenGenericPorts": [
-    3000,
     3001,
     3002,
     3003
@@ -33,5 +32,37 @@
     3140,
     3150,
     3200
-  ]
+  ],
+  "confirmedLauncherPorts": [
+    3000,
+    3110,
+    3120,
+    3130,
+    3140,
+    3150
+  ],
+  "pqosProbePorts": [
+    3110,
+    3120,
+    3130,
+    3140,
+    3150
+  ],
+  "legacyCleanupOnlyPorts": [
+    3100,
+    3200
+  ],
+  "offlineOptionalServices": {
+    "commit": "info",
+    "pr": "info",
+    "runtime": "info",
+    "release": "info"
+  },
+  "authOrBusinessEndpoints": {
+    "policy": "Do not use authenticated/business endpoints as generic health probes.",
+    "examplesExcluded": [
+      "/api/backoffice/dashboard",
+      "/health"
+    ]
+  }
 }

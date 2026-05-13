@@ -16,7 +16,7 @@ function isRequired(service, profile) {
   return Array.isArray(service.requiredInProfiles) && service.requiredInProfiles.includes(profile);
 }
 
-const FORBIDDEN_PORTS = new Set([3000, 3001, 3002, 3003]);
+const FORBIDDEN_PORTS = new Set([3001, 3002, 3003]);
 
 export async function run(ctx) {
   const manifestPath = path.join(ctx.qualityRoot, 'runtime', 'runtime-port-manifest.json');
@@ -47,7 +47,7 @@ export async function run(ctx) {
         title: 'Forbidden generic Next.js port in runtime manifest',
         detail: `${service.id} uses forbidden generic port ${port}. PRISMA must use real local ports.`,
         file: 'quality/runtime/runtime-port-manifest.json',
-        recommendation: 'Use PRISMA real ports: 3100, 3110, 3120, 3130, 3140, 3150, 3200.'
+        recommendation: 'Use PRISMA confirmed ports: 3000 for Chart Lab launcher evidence and 3110-3150 for operational runtime probes. 3100 and 3200 are cleanup-only legacy/discussed ports.'
       }));
       continue;
     }
@@ -83,15 +83,21 @@ export async function run(ctx) {
 
   for (const p of probes) {
     if (!p.tcp.reachable) {
-      findings.push(finding({
-        id: `Q11_SERVICE_NOT_RUNNING_${p.serviceId}`,
-        severity: p.required ? 'S1' : 'S3',
-        layer: p.layer,
-        title: p.required ? 'Required runtime service not reachable' : 'Optional runtime service not running',
-        detail: `${p.serviceId} was not reachable on ${p.host}:${p.port}. Error: ${p.tcp.error}.`,
-        evidence,
-        recommendation: p.required ? 'Start required service or update runtime manifest.' : 'Start service before runtime smoke if you want live HTTP evidence.'
-      }));
+      // PRISMA_Q11_OPTIONAL_OFFLINE_NO_WARNING_BEGIN
+      // Optional local services remain recorded in evidence.probes, but do not become PR warnings.
+      // PQOS does not start services; live HTTP evidence is optional unless the manifest marks a service required.
+      if (p.required) {
+        findings.push(finding({
+          id: `Q11_SERVICE_NOT_RUNNING_${p.serviceId}`,
+          severity: 'S1',
+          layer: p.layer,
+          title: 'Required runtime service not reachable',
+          detail: `${p.serviceId} was not reachable on ${p.host}:${p.port}. Error: ${p.tcp.error}.`,
+          evidence,
+          recommendation: 'Start required service or update runtime manifest.'
+        }));
+      }
+      // PRISMA_Q11_OPTIONAL_OFFLINE_NO_WARNING_END
       continue;
     }
 
@@ -109,7 +115,7 @@ export async function run(ctx) {
       } else if (h.statusCode >= 400) {
         findings.push(finding({
           id: `Q11_HTTP_4XX_${p.serviceId}_${h.statusCode}`,
-          severity: 'S3',
+          severity: 'INFO',
           layer: p.layer,
           title: 'Runtime health endpoint returned 4xx',
           detail: `${h.url} returned ${h.statusCode}.`,
@@ -122,10 +128,12 @@ export async function run(ctx) {
 
   return {
     gateId: 'Q11',
-    title: 'Runtime Health Probes V6',
+    title: 'Runtime Health Probes Clean Optional',
     status: findings.some(f => ['S0', 'S1'].includes(f.severity)) ? 'BLOCKED' : 'READY',
     summary: `${probes.filter(p => p.tcp.reachable).length}/${probes.length} PRISMA local services reachable on real ports.`,
     findings,
     evidence
   };
 }
+
+// PRISMA_QUALITY_WARNINGS_CLEANER: offline optional local services are evidence-only in PR/commit.

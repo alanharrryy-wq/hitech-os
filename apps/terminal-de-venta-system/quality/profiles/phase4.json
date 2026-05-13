@@ -1,7 +1,8 @@
 {
   "schemaVersion": "1.0",
-  "profile": "pr",
-  "phase": "phase-3-scenario-gates",
+  "profile": "phase4",
+  "phase": "phase-4-data-truth-evidence-ledger-audit-hardening",
+  "description": "Complete Phase 4 profile - all data truth, evidence ledger, and audit hardening gates",
   "gates": [
     "Q0",
     "Q1",
@@ -27,12 +28,5 @@
     "Q24",
     "Q25",
     "Q15"
-  ],
-  "runtimePolicy": {
-    "offlineOptionalServiceSeverity": "info",
-    "offlineOptionalServiceWarnings": false
-  },
-  "warningPolicy": {
-    "offlineOptionalRuntimeServices": "info"
-  }
+  ]
 }

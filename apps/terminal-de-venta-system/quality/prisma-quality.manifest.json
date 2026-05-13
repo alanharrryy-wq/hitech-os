@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0",
   "systemName": "PRISMA Quality Operating System",
-  "systemVersion": "3.0.0-phase-3-scenario-gates",
-  "phase": "phase-3-scenario-gates-operational-playbooks",
+  "systemVersion": "4.0.0-phase-4-data-truth-evidence-ledger",
+  "phase": "phase-4-data-truth-evidence-ledger-audit-hardening",
   "repoName": "terminal-de-venta-system",
   "dbSafetyMode": "real-db-inspect-only",
   "cloudflareMode": "optional-profile-only",
@@ -21,6 +21,9 @@
     "commit",
     "diagnose",
     "phase3",
+    "phase4",
+    "data",
+    "audit",
     "pr",
     "release",
     "runtime",
@@ -40,6 +43,11 @@
     "Q19",
     "Q2",
     "Q20",
+    "Q21",
+    "Q22",
+    "Q23",
+    "Q24",
+    "Q25",
     "Q3",
     "Q4",
     "Q5",
@@ -131,5 +139,27 @@
     "requiresCloudflare": false,
     "fakeGreenForbidden": true,
     "industrialCRSIncluded": true
+  },
+  "phase4": {
+    "name": "Data Truth, Evidence Ledger & Audit Hardening",
+    "dataContractRegistry": "quality/data/data-contract-registry.json",
+    "dataTruthPolicy": "quality/policies/data-truth-policy.json",
+    "evidenceLedgerPolicy": "quality/policies/evidence-ledger-policy.json",
+    "newGates": [
+      "Q21",
+      "Q22",
+      "Q23",
+      "Q24",
+      "Q25"
+    ],
+    "mutatesData": false,
+    "startsServices": false,
+    "requiresCloudflare": false,
+    "fakeGreenForbidden": true,
+    "dataContractEnforced": true,
+    "evidenceLedgerImmutable": true,
+    "auditTrailRequired": true,
+    "corePrinciple": "Tablet opera. PC gobierna. Mobile supervisa. Core registra. Control audita."
   }
 }
+

@@ -54,7 +54,10 @@
     "quality:runtime": "node quality/bin/prisma-quality.mjs --profile runtime",
     "quality:phase2": "node quality/bin/prisma-quality.mjs --profile runtime",
     "quality:scenario": "node quality/bin/prisma-quality.mjs --profile scenario",
-    "quality:phase3": "node quality/bin/prisma-quality.mjs --profile phase3"
+    "quality:phase3": "node quality/bin/prisma-quality.mjs --profile phase3",
+    "quality:data": "node quality/bin/prisma-quality.mjs --profile data",
+    "quality:audit": "node quality/bin/prisma-quality.mjs --profile audit",
+    "quality:phase4": "node quality/bin/prisma-quality.mjs --profile phase4"
   },
   "devDependencies": {
     "prisma": "5.21.1"

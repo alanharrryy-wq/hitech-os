@@ -1,151 +1,69 @@
-# PRISMA Control Center
+# PRISMA Launcher OS - README Operador
 
-Centro operativo para salud local, Cloudflare, panel visual y supervision de PRISMA Terminal de Venta.
+Botonera oficial para levantar y diagnosticar PRISMA. Cada corrida genera ZIP directo en:
 
-## Botones principales
+`F:\descargasf`
+
+No se usa carpeta `PRISMA_LAUNCHER_RUNS` dentro de Descargasf.
+
+## Mapa confirmado de puertos
+
+- `3000`: Chart Lab
+- `3110`: PRISMA Web / EIT / pagina
+- `3120`: Tablet
+- `3130`: PC Backoffice
+- `3140`: Mobile
+- `3150`: Control Center
+
+`3100` y `3200` solo se incluyen en `09_KILL_EVERYTHING_PRISMA.cmd` como limpieza legacy/discutida.
+
+## Botones
 
 1. `01_LEVANTAR_TODO_LOCAL.cmd`
-   - Revisa `3110`, `3120`, `3130`, `3140`.
-   - No toca servicios sanos.
-   - Arranca servicios faltantes con el comando configurado.
-   - Reinicia solo procesos PRISMA reconocidos.
-   - Bloquea procesos desconocidos con `BLOCKED_UNKNOWN_PROCESS`.
+   - Libera `3000,3110,3120,3130,3140,3150`.
+   - Levanta Chart Lab local.
+   - Ejecuta local-up del Control Center.
+   - Abre panel local `3150`.
+   - Deja ZIP en `F:\descargasf`.
 
 2. `02_LEVANTAR_TODO_CLOUDFLARE.cmd`
-   - Valida `cloudflared`, version, servicio Windows, config, tunel, DNS y URLs publicas.
-   - No modifica servicios locales salvo que se habilite en config.
+   - Solo Cloudflare.
+   - No mata puertos.
+   - Deja ZIP en `F:\descargasf`.
 
-3. `03_CHECAR_SALUD_LOCAL_Y_CLOUDFLARE.cmd`
-   - Diagnostico puro. No mata, no reinicia, no modifica configs.
+3. `03_LEVANTAR_TODO_LOCAL_Y_CLOUDFLARE.cmd`
+   - Local primero, Cloudflare despues.
+   - Deja ZIP en `F:\descargasf`.
 
-4. `04_LEVANTAR_LOCAL_LUEGO_CLOUDFLARE.cmd`
-   - Ejecuta local primero.
-   - Confirma salud local.
-   - Ejecuta Cloudflare despues.
-   - Genera reporte final.
+4. `04_DIAGNOSTICO_LOCAL_Y_CLOUDFLARE.cmd`
+   - Diagnostico puro.
+   - No mata nada.
+   - No levanta nada.
+   - Si health sale FAIL, el launcher no falla: genera ZIP de evidencia.
 
-5. `05_ABRIR_PANEL_CONTROL_3150.cmd`
-   - Abre `http://127.0.0.1:3150`.
-   - No toca `3110`, `3120`, `3130`, `3140`.
-   - En localhost muestra `LOCAL_FULL`.
-   - En `control.hitechrts.com` muestra `PUBLIC_REDACTED`.
+5. `05_LEVANTAR_WEB_CONTROL_LOCAL.cmd`
+   - Libera `3110,3150`.
+   - Levanta Web/EIT y Control Center.
 
-## CLI
+6. `06_LEVANTAR_WEB_CONTROL_LOCAL_Y_CLOUDFLARE.cmd`
+   - Web + Control local, despues Cloudflare.
 
-El motor esta en:
+7. `07_ABRIR_PANEL_CONTROL_3150.cmd`
+   - Solo abre `http://127.0.0.1:3150`.
 
-`F:\repos\hitech-os\apps\terminal-de-venta-system\prisma-control-center\internal\py\prisma_control_center.py`
+8. `08_LEVANTAR_CHART_LAB_LOCAL.cmd`
+   - Libera `3000`.
+   - Levanta Chart Lab con `pnpm chart-lab:dev`.
 
-Acciones:
+9. `09_KILL_EVERYTHING_PRISMA.cmd`
+   - Libera `3000,3100,3110,3120,3130,3140,3150,3200`.
+   - No levanta servicios.
 
-- `health`
-- `local-up`
-- `cloudflare-up`
-- `all-up`
-- `panel`
-- `doctor`
-- `self-test`
-- `export-support-bundle`
+## ZIP generado
 
-## Puertos
+Cada ZIP contiene:
 
-- `3110`: PRISMA Web / EIT
-- `3120`: Tablet Core
-- `3130`: PC Backoffice
-- `3140`: Mobile Adder
-- `3150`: PRISMA Control Center panel
+- `transcript.log`
+- `summary.json`
 
-El Control Center no monta nada nuevo en `3110`, `3120`, `3130` o `3140`.
-
-## Panel Cloudflare
-
-URL publica esperada:
-
-`https://control.hitechrts.com/`
-
-Origen local esperado:
-
-`http://127.0.0.1:3150/`
-
-El panel publico no tiene autenticacion avanzada. Por eso queda estrictamente read-only y usa `PUBLIC_REDACTED`:
-
-- no muestra PIDs
-- no muestra command lines
-- no muestra cwd
-- no muestra rutas locales completas
-- no muestra credentials/certs/tokens
-- no exporta support bundles completos
-- no expone acciones destructivas
-
-El reporte publico sanitizado se genera en:
-
-`F:\repos\hitech-os\tools\_local\logs\prisma-control-center\latest\public-health.json`
-
-Si `control.hitechrts.com` falla, la operacion local no se considera caida; Cloudflare se reporta como degradado cuando corresponda.
-
-## Logs y reportes
-
-Todos los reportes se escriben en:
-
-`F:\repos\hitech-os\tools\_local\logs\prisma-control-center`
-
-Cada corrida genera:
-
-- `run_YYYYMMDD_HHMMSS.log`
-- `health_YYYYMMDD_HHMMSS.json`
-- `health_YYYYMMDD_HHMMSS.txt`
-- `health_YYYYMMDD_HHMMSS.html`
-- `latest\health.json`
-- `latest\health.txt`
-- `latest\health.html`
-- `latest\public-health.json`
-
-## Suposicion documentada
-
-El puerto `3110` esta configurado como `PRISMA Web / EIT` porque el repo lo documenta como origen local de `eit.hitechrts.com`. Por seguridad, si ese proceso no fue iniciado por el Control Center y no cae dentro del allowlist PRISMA, se reporta como desconocido y no se detiene.
-
-## Cloudflare ingress esperado
-
-El Control Center valida que el `config.yml` industrial contenga:
-
-```yaml
-  - hostname: control.hitechrts.com
-    service: http://127.0.0.1:3150
-```
-
-Debe estar antes del fallback final:
-
-```yaml
-  - service: http_status:404
-```
-
-El Control Center valida drift y DNS, pero no borra rutas existentes.
-
-<!-- PRISMA_BLACKBOX_BRIDGE_V1_README_BEGIN -->
-## PRISMA Black-box bridge
-
-Black-box no vive dentro del wrapper. Este Control Center queda configurado para escribir su caja negra aqui:
-
-F:\Black-box
-
-Orden real para resolver la ruta:
-
-1. argumento directo del bridge
-2. variable de entorno PRISMA_BLACKBOX_ROOT
-3. internal/config/blackbox_bridge.json
-4. default compilado en internal/py/blackbox_bridge.py
-
-Salidas principales:
-
-F:\Black-box\runtime\prisma_black_box_events.jsonl
-F:\Black-box\runtime\control_center_latest.json
-F:\Black-box\runtime\control_center_bridge_latest.json
-F:\Black-box\reports\prisma_control_center_bridge_*.json
-F:\Black-box\incidents\active\INC_CC_*\incident.json
-F:\Black-box\incidents\timeline\control_center.timeline.jsonl
-
-Endpoint local:
-
-http://127.0.0.1:3150/api/incidents
-<!-- PRISMA_BLACKBOX_BRIDGE_V1_README_END -->
-
+El log vivo de Chart Lab se queda en `%TEMP%` y su ruta queda anotada en `summary.json`.

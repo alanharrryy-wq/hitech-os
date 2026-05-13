@@ -1,45 +1,42 @@
 # PRISMA Crystal Ops Console - README Operador
 
-## Estado del release
+## Puertos locales principales
 
-Este Control Center integra cinco capas:
+- Chart Lab: http://127.0.0.1:3000
+- PRISMA Web / EIT: http://127.0.0.1:3110
+- Tablet: http://127.0.0.1:3120
+- PC Backoffice: http://127.0.0.1:3130
+- Mobile: http://127.0.0.1:3140
+- Control Center: http://127.0.0.1:3150
 
-1. Crystal Shell UI
-2. Data Core vivo
-3. Black-box Command
-4. Cloudflare + Control Actions
-5. Ultra Polish + Release
+## Logs ZIP obligatorios
 
-## URLs locales principales
+Cada launcher deja evidencia directa en:
 
-- Panel: http://127.0.0.1:3150
-- Health API: http://127.0.0.1:3150/api/health
-- Incidents API: http://127.0.0.1:3150/api/incidents
-- Black-box summary: http://127.0.0.1:3150/api/blackbox/summary
-- Ops Cloudflare: http://127.0.0.1:3150/api/ops/cloudflare
-- Release status: http://127.0.0.1:3150/api/release/status
-- Latest report: http://127.0.0.1:3150/latest/health.html
+`F:\descargasf`
+
+Usa los `latest_*.zip` para subir rapido la ultima corrida.
 
 ## Operacion normal
 
-1. Abre el panel local.
-2. Revisa Health Score y estado general.
-3. Si hay DEGRADED, abre Cloudflare + Control Actions.
-4. Usa Run Health solo en local.
-5. Revisa Black-box Command para timeline y evidencia.
-6. Usa Release Check para validar integridad final.
+Para abrir todo local y Cloudflare:
 
-## Seguridad
+1. `03_LEVANTAR_TODO_LOCAL_Y_CLOUDFLARE.cmd`
+2. `07_ABRIR_PANEL_CONTROL_3150.cmd` si necesitas reabrir panel
 
-- En modo publico se redactan rutas y datos sensibles.
-- Run Health es accion local.
-- Black-box conserva evidencia y timeline auditable.
+Para solo diagnosticar:
 
-## Rollback
+- `04_DIAGNOSTICO_LOCAL_Y_CLOUDFLARE.cmd`
 
-Cada iteracion deja manifest en F:\descargasf.
-Para rollback, cambia $MODE = "rollback" en el wrapper correspondiente y ejecútalo.
+Para Web + Control:
 
-## Pendiente operativo conocido
+- `05_LEVANTAR_WEB_CONTROL_LOCAL.cmd`
+- `06_LEVANTAR_WEB_CONTROL_LOCAL_Y_CLOUDFLARE.cmd`
 
-Si control.hitechrts.com sigue en 404 o DEGRADED, revisar cloudflared, config.yml, DNS y service binding al puerto 3150.
+Para Chart Lab:
+
+- `08_LEVANTAR_CHART_LAB_LOCAL.cmd`
+
+Limpieza total de puertos PRISMA:
+
+- `09_KILL_EVERYTHING_PRISMA.cmd`

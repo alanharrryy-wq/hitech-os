@@ -69,22 +69,78 @@ function deriveFreshness(payload){const t=healthTimestamp(payload); const stale=
 function deriveCloudflareStatus(payload){const cf=payload.cloudflare||{}; const r=cloudflareRoute(payload); if(r.ok)return 'PASS'; if(r.statusCode===404||String(r.statusCode)==='404')return 'DEGRADED'; return statusOf(cf.status||cf.state||payload.control_center?.cloudflare||'UNKNOWN');}
 function deriveRecommendation(payload){const cf=deriveCloudflareStatus(payload); if(cf==='DEGRADED')return 'Revisar ruta publica de control.hitechrts.com, origen del tunnel y binding de servicio Control Center.'; const c=counts(payload); if(c.attention)return `Revisar ${c.attention} servicio(s) fuera de PASS y validar Local/LAN/Public.`; return 'Operacion sin accion inmediata.';}
 function deriveModel(healthRaw, incidentsRaw){
-  const health=normalizeHealth(healthRaw); const incidents=normalizeIncidents(incidentsRaw); const active=incidents.activeIncidents||[]; const c=counts(health); const fresh=deriveFreshness(health); const cfStatus=deriveCloudflareStatus(health); const latency=avgLatency(health); const worstLat=worstLatency(health);
-  const serviceWorst=worstStatus(services(health).map(serviceStatus)); const incidentWorst=worstStatus(active.map(i=>i.severity||i.status));
-  let overall=statusOf(health.overallStatus||health.control_center?.status||worstStatus([serviceWorst,cfStatus,incidentWorst]));
-  let sourceScore=asNumber(health.healthScore??health.control_center?.health_score,NaN);
-  if(!Number.isFinite(sourceScore)){sourceScore=100-(c.attention*10)-(active.length*7)-(cfStatus==='DEGRADED'?8:0)-(fresh.stale?6:0);}
+  // PATCH_ID: PRISMA_HEALTH_EMPTY_SCORE_LOGO_20260513_FINAL
+  const health=normalizeHealth(healthRaw);
+  const incidents=normalizeIncidents(incidentsRaw);
+  const active=incidents.activeIncidents||[];
+  const rows=services(health);
+  const c=counts(health);
+  const fresh=deriveFreshness(health);
+  const cfStatus=deriveCloudflareStatus(health);
+  const latency=avgLatency(health);
+  const worstLat=worstLatency(health);
+  const serviceWorst=worstStatus(rows.map(serviceStatus));
+  const incidentWorst=worstStatus(active.map(i=>i.severity||i.status));
+  const route=cloudflareRoute(health);
+
+  const rawScore=health.healthScore??health.control_center?.health_score;
+  const hasScore=Number.isFinite(Number(rawScore));
+  const hasTimestamp=Boolean(healthTimestamp(health));
+  const explicitStatus=statusOf(health.overallStatus||health.control_center?.status||'EMPTY');
+  const hasCloudflareEvidence=Boolean(
+    health.cloudflare?.publicEndpoints?.length ||
+    health.cloudflare?.status ||
+    health.cloudflare?.state ||
+    health.control_center?.cloudflare ||
+    health.control_center?.cloudflare_summary ||
+    health.control_center?.public_health ||
+    route.ok ||
+    (route.statusCode && route.statusCode !== '-')
+  );
+  const hasHealthEvidence=Boolean(
+    hasScore ||
+    hasTimestamp ||
+    health.runId ||
+    rows.length ||
+    active.length ||
+    hasCloudflareEvidence ||
+    health.overallStatus ||
+    health.control_center?.status
+  );
+
+  const componentOverall=worstStatus([serviceWorst,cfStatus,incidentWorst]);
+  const blockers=[];
+  if(c.attention)blockers.push(`${c.attention} servicio(s) requieren atencion`);
+  if(active.length)blockers.push(`${active.length} incidente(s) activos`);
+  if(hasCloudflareEvidence && cfStatus!=='PASS')blockers.push(`Cloudflare ${cfStatus}${route.statusCode&&route.statusCode!=='-'?` (${route.statusCode})`:''}`);
+  if(hasHealthEvidence && fresh.stale)blockers.push(`health stale ${fresh.age}`);
+
+  let overall=explicitStatus;
+  if(!hasHealthEvidence){
+    overall='EMPTY';
+  }else if(['EMPTY','UNKNOWN'].includes(overall)){
+    overall=blockers.length?'DEGRADED':componentOverall;
+  }else if(overall==='PASS' && blockers.length){
+    overall='DEGRADED';
+  }
+
+  let sourceScore=asNumber(rawScore,NaN);
+  if(!hasHealthEvidence){
+    sourceScore=0;
+  }else if(!Number.isFinite(sourceScore)){
+    const base=componentOverall==='PASS'?100:92;
+    sourceScore=base-(c.attention*10)-(active.length*7)-(cfStatus==='DEGRADED'?8:0)-(['UNKNOWN','EMPTY'].includes(cfStatus)?4:0)-(fresh.stale?12:0);
+  }
   const score=clamp(sourceScore);
-  const blockers=[]; if(c.attention)blockers.push(`${c.attention} servicio(s) requieren atencion`); if(active.length)blockers.push(`${active.length} incidente(s) activos`); if(cfStatus!=='PASS')blockers.push(`Cloudflare ${cfStatus}${cloudflareRoute(health).statusCode?` (${cloudflareRoute(health).statusCode})`:''}`); if(fresh.stale)blockers.push(`health stale ${fresh.age}`);
-  if(overall==='PASS' && blockers.length)overall='DEGRADED';
-  return {health,incidents,active,c,fresh,cfStatus,latency,worstLat,serviceWorst,incidentWorst,overall,score,blockers,route:cloudflareRoute(health),recommendation:health.recommendedNextAction||deriveRecommendation(health)};
+  const recommendation=!hasHealthEvidence?'Corre health para encender la consola.':(health.recommendedNextAction||deriveRecommendation(health));
+  return {health,incidents,active,c,fresh,cfStatus,latency,worstLat,serviceWorst,incidentWorst,overall,score,blockers,route,recommendation,hasHealthEvidence};
 }
 
 function renderShell(healthRaw, incidentsRaw){
   const model=deriveModel(healthRaw, incidentsRaw); lastModel=model; lastHealth=model.health; lastIncidents=model.incidents;
   const {health,incidents,active,c,fresh,cfStatus,latency,worstLat,overall,score,blockers,route,recommendation}=model;
   document.body.dataset.status=overall.toLowerCase();
-  setText('header-score',score.toFixed(0)); setText('hero-title',overall==='PASS'?'Operacion cristalina':overall==='DEGRADED'?'Operacion local fuerte, visibilidad degradada':`Estado ${overall}`); setText('hero-recommendation',recommendation);
+  setText('header-score',score.toFixed(0)); setText('hero-title',overall==='PASS'?'Operacion cristalina':overall==='DEGRADED'?'Operacion local fuerte, visibilidad degradada':overall==='EMPTY'?'Esperando telemetria':`Estado ${overall}`); setText('hero-recommendation',recommendation);
   setText('gauge-score',score.toFixed(0)); setText('gauge-label',overall); $('mega-gauge')?.style.setProperty('--score',score);
   setText('overall-chip',overall); setClass('overall-chip',`state-chip ${tone(overall)}`); setText('fresh-chip',`health hace ${fresh.age}${fresh.stale?' / stale':''}`); setClass('fresh-chip',`state-chip ${fresh.stale?'warn':'subtle'}`); setText('run-chip',health.runId?`run ${health.runId}`:'run pendiente');
   setText('rail-status',overall); $('rail-meter').style.width=`${score}%`; setText('rail-bridge',incidents.latestBridge?.ok?'OK':'CHECK'); setText('rail-blackbox',incidents.blackBoxRoot?'ACTIVO':'SIN DATO'); setText('rail-api',incidents.activeIncidents?'OK':'CHECK');

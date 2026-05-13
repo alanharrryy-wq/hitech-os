@@ -1,44 +1,24 @@
 {
   "schemaVersion": "1.0",
-  "version": "phase-2-v6-final-repair-real-prisma-ports",
-  "description": "PRISMA local runtime surfaces. Ports are based on PRISMA operational convention. PQOS probes only; it never starts or changes services.",
+  "version": "launcher-os-clean-warnings-3000-3110-3150",
+  "description": "Runtime probes aligned to confirmed PRISMA app ports. Offline optional services are evidence-only in PR/commit.",
   "host": "127.0.0.1",
   "noInventedPorts": true,
   "doNotChangePorts": true,
   "cloudflareRequired": false,
   "forbiddenGenericNextPorts": [
-    3000,
     3001,
     3002,
     3003
   ],
   "notes": [
-    "Do not use generic 3000/3001/3002/3003 ports for PRISMA PQOS.",
-    "Chart Lab port is not asserted until discovered from project evidence.",
-    "Cloudflare routes may point to these local ports, but Cloudflare remains optional in base profiles."
+    "3000 is Chart Lab and is validated by Launcher OS ZIP evidence, not Q11.",
+    "3110 is PRISMA Web / EIT / page.",
+    "3120 Tablet, 3130 PC, 3140 Mobile, 3150 Control Center.",
+    "3100 and 3200 remain cleanup-only in kill-everything.",
+    "Q11 should not warn on offline optional services in PR/commit; runtime execution can still emit evidence."
   ],
   "services": [
-    {
-      "id": "engine",
-      "layer": "Core",
-      "workspace": "engine-or-core-runtime",
-      "defaultPort": 3100,
-      "optionalInProfiles": [
-        "commit",
-        "pr",
-        "runtime",
-        "release"
-      ],
-      "requiredInProfiles": [],
-      "healthPaths": [
-        "/health",
-        "/api/health",
-        "/"
-      ],
-      "localFirstRequired": true,
-      "cloudflareRequired": false,
-      "evidence": "PRISMA local port convention: engine 3100"
-    },
     {
       "id": "prisma-web-eit",
       "layer": "Web",
@@ -48,17 +28,20 @@
         "commit",
         "pr",
         "runtime",
-        "release"
+        "release",
+        "diagnose"
       ],
       "requiredInProfiles": [],
       "healthPaths": [
-        "/api/health",
-        "/health",
         "/"
       ],
       "localFirstRequired": false,
       "cloudflareRequired": false,
-      "evidence": "PRISMA local port convention: web/eit 3110"
+      "evidence": "PRISMA local port convention: web/eit 3110",
+      "name": "PRISMA Web / EIT",
+      "warningPolicy": "evidence-only-when-offline",
+      "offlineSeverity": "info",
+      "authRequiredPathsExcluded": true
     },
     {
       "id": "tablet",
@@ -69,17 +52,20 @@
         "commit",
         "pr",
         "runtime",
-        "release"
+        "release",
+        "diagnose"
       ],
       "requiredInProfiles": [],
       "healthPaths": [
-        "/api/health",
-        "/health",
         "/"
       ],
       "localFirstRequired": true,
       "cloudflareRequired": false,
-      "evidence": "PRISMA local port convention: tablet 3120"
+      "evidence": "PRISMA local port convention: tablet 3120",
+      "name": "Tablet",
+      "warningPolicy": "evidence-only-when-offline",
+      "offlineSeverity": "info",
+      "authRequiredPathsExcluded": true
     },
     {
       "id": "pc",
@@ -90,19 +76,20 @@
         "commit",
         "pr",
         "runtime",
-        "release"
+        "release",
+        "diagnose"
       ],
       "requiredInProfiles": [],
       "healthPaths": [
-        "/api/backoffice/audit/recent",
-        "/api/backoffice/dashboard",
-        "/api/health",
-        "/health",
         "/"
       ],
       "localFirstRequired": false,
       "cloudflareRequired": false,
-      "evidence": "PRISMA local port convention: pc/backoffice 3130"
+      "evidence": "PRISMA local port convention: pc/backoffice 3130",
+      "name": "PC Backoffice",
+      "warningPolicy": "evidence-only-when-offline",
+      "offlineSeverity": "info",
+      "authRequiredPathsExcluded": true
     },
     {
       "id": "mobile",
@@ -113,18 +100,20 @@
         "commit",
         "pr",
         "runtime",
-        "release"
+        "release",
+        "diagnose"
       ],
       "requiredInProfiles": [],
       "healthPaths": [
-        "/api/mobile/health",
-        "/api/health",
-        "/health",
         "/"
       ],
       "localFirstRequired": false,
       "cloudflareRequired": false,
-      "evidence": "PRISMA local port convention: mobile/prisma 3140"
+      "evidence": "PRISMA local port convention: mobile/prisma 3140",
+      "name": "Mobile",
+      "warningPolicy": "evidence-only-when-offline",
+      "offlineSeverity": "info",
+      "authRequiredPathsExcluded": true
     },
     {
       "id": "control-center",
@@ -135,38 +124,20 @@
         "commit",
         "pr",
         "runtime",
-        "release"
+        "release",
+        "diagnose"
       ],
       "requiredInProfiles": [],
       "healthPaths": [
-        "/health",
-        "/api/health",
         "/"
       ],
       "localFirstRequired": false,
       "cloudflareRequired": false,
-      "evidence": "PRISMA local port convention: control center 3150"
-    },
-    {
-      "id": "forms",
-      "layer": "Forms",
-      "workspace": "forms-runtime",
-      "defaultPort": 3200,
-      "optionalInProfiles": [
-        "commit",
-        "pr",
-        "runtime",
-        "release"
-      ],
-      "requiredInProfiles": [],
-      "healthPaths": [
-        "/health",
-        "/api/health",
-        "/"
-      ],
-      "localFirstRequired": false,
-      "cloudflareRequired": false,
-      "evidence": "PRISMA local port convention: forms 3200"
+      "evidence": "PRISMA local port convention: control center 3150",
+      "name": "Control Center",
+      "warningPolicy": "evidence-only-when-offline",
+      "offlineSeverity": "info",
+      "authRequiredPathsExcluded": true
     }
   ],
   "disabledUntilDiscovered": [
@@ -175,6 +146,44 @@
       "layer": "ChartLab",
       "reason": "No confirmed PRISMA port. PQOS must not invent 3003 or any generic Next.js port.",
       "workspace": "products/chart-lab/app"
+    }
+  ],
+  "confirmedLauncherPorts": [
+    3000,
+    3110,
+    3120,
+    3130,
+    3140,
+    3150
+  ],
+  "pqosProbePorts": [
+    3110,
+    3120,
+    3130,
+    3140,
+    3150
+  ],
+  "legacyCleanupOnlyPorts": [
+    3100,
+    3200
+  ],
+  "offlineOptionalServicePolicy": "evidence-only-no-warning",
+  "chartLab": {
+    "id": "chart-lab",
+    "defaultPort": 3000,
+    "validation": "Launcher ZIP evidence and Cloudflare Pages flow, not Q11 runtime smoke.",
+    "workspace": "products/chart-lab/app"
+  },
+  "legacyExcludedFromRuntimeProbes": [
+    {
+      "id": "engine",
+      "defaultPort": 3100,
+      "reason": "Legacy/discussed cleanup-only port. No active service confirmed."
+    },
+    {
+      "id": "forms",
+      "defaultPort": 3200,
+      "reason": "Legacy/discussed cleanup-only port. No active service confirmed."
     }
   ]
 }
