@@ -51,13 +51,29 @@ async function ensureBarcodeAvailable(businessId: string, code: string | null, p
 }
 
 async function createOutboxEvent(tx: any, businessId: string, topic: string, aggregateId: string, payload: Record<string, unknown>) {
+  const eventId = randomUUID();
+  const idempotencyKey = `${topic}:${businessId}:${aggregateId}:${eventId}`;
+  const envelope = {
+    eventId,
+    eventType: topic,
+    topic,
+    idempotencyKey,
+    businessId,
+    source: "tablet.catalog",
+    occurredAt: nowIso(),
+    aggregateId,
+    schemaVersion: "1.0",
+    correlationId: aggregateId,
+    payload
+  };
   return tx.outboxEvent.create({
     data: {
-      id: randomUUID(),
+      id: eventId,
       businessId,
       topic,
       aggregateId,
-      payloadJson: JSON.stringify({ eventId: randomUUID(), topic, businessId, source: "tablet.catalog", occurredAt: nowIso(), schemaVersion: "1.0", payload }),
+      idempotencyKey,
+      payloadJson: JSON.stringify(envelope),
       status: "pending",
       attempts: 0
     }

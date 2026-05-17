@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "1.0",
+  "version": "launcher-os-clean-warnings-3000-3110-3150",
+  "principle": "Offline optional local services are evidence-only in PR/commit. Warnings are reserved for real contract/config drift, not stopped dev services.",
+  "states": [
+    "running",
+    "not-running",
+    "partial",
+    "unknown",
+    "misconfigured",
+    "disabled-until-discovered"
+  ],
+  "severityByState": {
+    "optionalNotRunning": "S3",
+    "requiredNotRunning": "S1",
+    "disabledUntilDiscovered": "S4",
+    "cloudflareRequiredInBase": "S1",
+    "healthStatus5xx": "S2",
+    "healthStatus4xx": "S3",
+    "genericNextPortDetected": "S1"
+  },
+  "forbiddenGenericPorts": [
+    3001,
+    3002,
+    3003
+  ],
+  "expectedPrismaPorts": [
+    3100,
+    3110,
+    3120,
+    3130,
+    3140,
+    3150,
+    3200
+  ],
+  "confirmedLauncherPorts": [
+    3000,
+    3110,
+    3120,
+    3130,
+    3140,
+    3150
+  ],
+  "pqosProbePorts": [
+    3110,
+    3120,
+    3130,
+    3140,
+    3150
+  ],
+  "legacyCleanupOnlyPorts": [
+    3100,
+    3200
+  ],
+  "offlineOptionalServices": {
+    "commit": "info",
+    "pr": "info",
+    "runtime": "info",
+    "release": "info"
+  },
+  "authOrBusinessEndpoints": {
+    "policy": "Do not use authenticated/business endpoints as generic health probes.",
+    "examplesExcluded": [
+      "/api/backoffice/dashboard",
+      "/health"
+    ]
+  }
+}

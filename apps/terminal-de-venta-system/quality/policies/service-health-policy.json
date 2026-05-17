@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0",
+  "version": "phase-2-v6-final-repair",
+  "healthyStatusCodes": [
+    200,
+    204,
+    301,
+    302,
+    304
+  ],
+  "warningStatusCodes": [
+    400,
+    401,
+    403,
+    404,
+    405
+  ],
+  "blockedStatusCodes": [
+    500,
+    501,
+    502,
+    503,
+    504
+  ],
+  "timeoutMs": 1600,
+  "bodySampleMaxChars": 1200,
+  "portPolicy": {
+    "forbiddenGenericNextPorts": [
+      3000,
+      3001,
+      3002,
+      3003
+    ],
+    "expectedPrismaPorts": [
+      3100,
+      3110,
+      3120,
+      3130,
+      3140,
+      3150,
+      3200
+    ]
+  }
+}

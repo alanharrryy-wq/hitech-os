@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0",
+  "id": "CONTRACT_TRACEABLE_OPERATION",
+  "version": "1.0.0",
+  "title": "Traceable Operation",
+  "description": "Operational outcomes must be traceable from action to evidence.",
+  "layer": "Core",
+  "defaultSeverity": "S2",
+  "blockingProfiles": [
+    "release"
+  ],
+  "ownedByGate": "Q9",
+  "requiredEvidenceTypes": [
+    "json",
+    "markdown",
+    "ledger"
+  ],
+  "failureExamples": [],
+  "phaseIntroduced": "phase-1"
+}

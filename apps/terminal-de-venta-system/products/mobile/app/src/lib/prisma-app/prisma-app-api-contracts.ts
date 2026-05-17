@@ -20,7 +20,7 @@ export const PrismaMobileSeveritySchema = z.enum(["critica", "alta", "media", "i
 export const PrismaMobileHealthSchema = z.enum(["sano", "revisar", "urgente", "offline"]);
 export const PrismaMobileInventoryStateSchema = z.enum(["critico", "reponer", "normal", "sobrestock"]);
 export const PrismaMobilePrioritySchema = z.enum(["alta", "media", "baja"]);
-export const PrismaMobileRuntimeModeSchema = z.enum(["connected", "partial", "offline"]);
+export const PrismaMobileRuntimeModeSchema = z.enum(["live", "partial", "offline", "stale", "unknown", "demo-disabled"]);
 export const PrismaMobileSourceSchema = z.enum(["connected-data-plane", "tablet-pos", "pc-backoffice", "local-cache", "unavailable"]);
 
 export const PrismaMobileApiMetaSchema = z.object({
@@ -113,7 +113,20 @@ export const PrismaMobileAlertSchema = z.object({
   title: z.string().min(1),
   detail: z.string().min(1),
   time: z.string().min(1),
-  action: z.string().min(1)
+  action: z.string().min(1),
+  category: z.string().optional(),
+  whyItMatters: z.string().optional(),
+  recommendedAction: z.string().optional(),
+  source: z.string().optional(),
+  evidence: z.array(z.object({
+    id: z.string(),
+    label: z.string(),
+    source: z.string(),
+    summary: z.string()
+  }).passthrough()).optional(),
+  confidence: z.number().min(0).max(1).optional(),
+  dedupeKey: z.string().optional(),
+  priorityScore: z.number().optional()
 });
 
 export const PrismaMobileReportCardSchema = z.object({
@@ -263,7 +276,7 @@ export function buildMobileApiMeta(
     endpoint,
     generatedAt: new Date().toISOString(),
     source: options.source ?? PRISMA_MOBILE_DATA_SOURCE,
-    runtimeMode: options.runtimeMode ?? "connected",
+    runtimeMode: options.runtimeMode ?? "live",
     upstreams: options.upstreams ?? [],
     contractId: "PRISMA_APP_MOBILE_17_DATA_PLANE"
   });

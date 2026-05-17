@@ -2,10 +2,7 @@ import { noStoreJsonInit, okMobileResponse, type PrismaMobileEndpointId } from "
 import { okMobileSnapshotResponse } from "../prisma-mobile-snapshot-contract";
 import { loadMobileDataPlaneState } from "./state-loader";
 import { buildAlertsPayload, buildBranchesPayload, buildCashCurrentPayload, buildHealthPayload, buildInventoryWatchlistPayload, buildReportsDailyPayload, buildSalesTodayPayload, buildSnapshotPayload, buildSummaryPayload } from "./payload-builders";
-
-function sourceFromMode(mode: "connected" | "partial" | "offline") {
-  return mode === "offline" ? "unavailable" : "connected-data-plane";
-}
+import { sourceFromRuntimeMode } from "./runtime-mode";
 
 export async function mobileDataPlaneJson(endpoint: PrismaMobileEndpointId) {
   const state = await loadMobileDataPlaneState();
@@ -19,10 +16,10 @@ export async function mobileDataPlaneJson(endpoint: PrismaMobileEndpointId) {
     branches: buildBranchesPayload,
     health: buildHealthPayload
   } satisfies Record<PrismaMobileEndpointId, (state: Awaited<ReturnType<typeof loadMobileDataPlaneState>>) => unknown>;
-  return Response.json(okMobileResponse(endpoint, payloadByEndpoint[endpoint](state), { source: sourceFromMode(state.runtimeMode), runtimeMode: state.runtimeMode, upstreams: state.probes }), noStoreJsonInit());
+  return Response.json(okMobileResponse(endpoint, payloadByEndpoint[endpoint](state), { source: sourceFromRuntimeMode(state.runtimeMode), runtimeMode: state.runtimeMode, upstreams: state.probes }), noStoreJsonInit());
 }
 
 export async function mobileDataPlaneSnapshotJson() {
   const state = await loadMobileDataPlaneState();
-  return Response.json(okMobileSnapshotResponse(buildSnapshotPayload(state), sourceFromMode(state.runtimeMode), state.runtimeMode, state.probes), noStoreJsonInit());
+  return Response.json(okMobileSnapshotResponse(buildSnapshotPayload(state), sourceFromRuntimeMode(state.runtimeMode), state.runtimeMode, state.probes), noStoreJsonInit());
 }

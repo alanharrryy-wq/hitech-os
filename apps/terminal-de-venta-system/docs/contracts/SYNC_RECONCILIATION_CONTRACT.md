@@ -23,7 +23,7 @@ Allow Tablet to operate without PC/network and let PC consolidate later.
 
 ## Basic flow
 
-Tablet executes sale -> writes `Sale`/`SaleLine`/`StockMovement` -> creates `OutboxEvent` -> if sync is available, sends events -> PC ingests events -> PC validates contract -> PC updates consolidated view -> PC marks events received -> if conflict exists, PC resolves.
+Tablet executes sale -> writes `Sale`/`SaleLine`/`StockMovement` -> creates semantic `OutboxEvent` -> if sync is available, sends events -> PC ingests events -> PC validates contract -> PC writes event-ledger lifecycle -> PC runs Prisma ORM projectors -> PC reconciles or marks conflict/dead-letter -> Mobile supervises through `/api/mobile/snapshot` -> Control audits.
 
 ## Outbox states
 
@@ -32,6 +32,22 @@ Tablet executes sale -> writes `Sale`/`SaleLine`/`StockMovement` -> creates `Out
 - `failed`
 - `acked`
 - `conflict`
+
+Compatibility note: `acked` is not proof of governed reconciliation unless the event ledger also has `lifecycleStatus = reconciled`.
+
+## Lifecycle states
+
+- `created_local`
+- `queued`
+- `sent`
+- `received`
+- `validated`
+- `accepted`
+- `projected`
+- `reconciled`
+- `conflict`
+- `failed`
+- `dead_letter`
 
 ## Possible conflicts
 

@@ -116,7 +116,7 @@ export async function runTriDbSyncNow(): Promise<TriDbSyncNowResult> {
       outRoot,
       bridge,
       statusRefresh: null,
-      message: "El bridge Tablet -> PC fallo. Revisa stdout/stderr."
+      message: "El bridge secundario TRI-DB fallo. Revisa stdout/stderr; Tablet no depende de esto para vender."
     };
   }
 
@@ -135,6 +135,6 @@ export async function runTriDbSyncNow(): Promise<TriDbSyncNowResult> {
     outRoot,
     bridge,
     statusRefresh,
-    message: ok ? "Sincronizacion ejecutada y status actualizado." : "Bridge ejecuto, pero fallo la actualizacion de status."
+    message: ok ? "Bridge secundario ejecutado y status actualizado. El sync primario sigue siendo OutboxEvent -> PC ingest -> Prisma projectors." : "Bridge ejecuto, pero fallo la actualizacion de status."
   };
 }

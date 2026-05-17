@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0",
+  "policyId": "data-truth-policy",
+  "phase": "phase-4",
+  "description": "Policy for PRISMA Data Truth enforcement",
+  "effectiveDate": "2026-05-12",
+  "principles": [
+    "All data contracts must be explicit and verifiable",
+    "Data sovereignty is immutable once recorded in tablet",
+    "PC governance is write-once with audit trail",
+    "Mobile can only read, never write",
+    "Core ledger is append-only",
+    "Control audits every action"
+  ],
+  "contractValidationRules": {
+    "allContractsMustHaveOwner": true,
+    "allContractsMustHaveSourceOfTruth": true,
+    "allContractsMustHaveIntegrityMode": true,
+    "noReadWriteOnImmutableLayers": true,
+    "tabletCannotImportFromPcOrMobile": true
+  },
+  "dataClassification": {
+    "SOVEREIGN": {
+      "layers": ["Tablet"],
+      "mutationPolicy": "capture-only",
+      "trustLevel": "T0"
+    },
+    "GOVERNED": {
+      "layers": ["PC"],
+      "mutationPolicy": "audit-trail-required",
+      "trustLevel": "T1"
+    },
+    "SUPERVISED": {
+      "layers": ["Mobile"],
+      "mutationPolicy": "read-only",
+      "trustLevel": "T2"
+    },
+    "IMMUTABLE": {
+      "layers": ["Core", "Control"],
+      "mutationPolicy": "append-only",
+      "trustLevel": "T0"
+    }
+  },
+  "enforcementLevel": "MANDATORY",
+  "severity": {
+    "violatedSovereigntyContract": "S0",
+    "violatedAuditTrail": "S1",
+    "missingEvidenceForDataTruth": "S1",
+    "schemaWithoutContract": "S2"
+  },
+  "auditRequirements": {
+    "mutationsRequireAudit": true,
+    "auditMustBeAppendOnly": true,
+    "auditMustIncludeTimestamp": true,
+    "auditMustIncludeActor": true,
+    "auditMustIncludeActionType": true
+  }
+}

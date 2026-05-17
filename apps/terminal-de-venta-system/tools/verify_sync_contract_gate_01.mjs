@@ -10,7 +10,8 @@ const twinManifestPath = path.join(root, "shared", "twin-kernel", "src", "data",
 const tabletEventFactoryPath = path.join(root, "products", "tablet", "app", "src", "server", "pos-engine", "event-factory.ts");
 const tabletConstantsPath = path.join(root, "products", "tablet", "app", "src", "server", "pos-engine", "constants.ts");
 const tabletOutboxPath = path.join(root, "products", "tablet", "app", "src", "server", "pos-outbox", "index.ts");
-const pcEventContractPath = path.join(root, "products", "pc", "app", "src", "lib", "backoffice", "event-contract.ts");
+const pcEventContractPath = path.join(root, "products", "pc", "app", "src", "server", "validators", "sync-event-contract.ts");
+const pcBackofficeEventContractPath = path.join(root, "products", "pc", "app", "src", "lib", "backoffice", "event-contract.ts");
 const pcConflictsPath = path.join(root, "products", "pc", "app", "src", "lib", "backoffice", "conflicts.ts");
 const tabletSyncEventsPath = path.join(root, "products", "tablet", "app", "src", "server", "sync", "events.ts");
 const pcSyncEventsPath = path.join(root, "products", "pc", "app", "src", "server", "sync", "events.ts");
@@ -29,6 +30,8 @@ const expectedTopics = [
   "inventory.low_stock_detected",
   "sale.cancelled",
   "sale.refunded",
+  "cash.session.opened",
+  "cash.movement.recorded",
   "shift.opened",
   "shift.closed",
   "stock.adjusted",
@@ -41,6 +44,19 @@ const expectedTopics = [
 ];
 
 const expectedOutboxStates = ["pending", "sent", "failed", "acked", "conflict"];
+const expectedLifecycleStates = [
+  "created_local",
+  "queued",
+  "sent",
+  "received",
+  "validated",
+  "accepted",
+  "projected",
+  "reconciled",
+  "conflict",
+  "failed",
+  "dead_letter"
+];
 const expectedConflictCodes = [
   "product_discontinued",
   "old_local_price",
@@ -52,7 +68,7 @@ const expectedConflictCodes = [
   "invalid_schema",
   "unknown_topic"
 ];
-const expectedEnvelope = ["eventId", "topic", "businessId", "terminalId", "actorId", "source", "occurredAt", "payload", "schemaVersion"];
+const expectedEnvelope = ["eventId", "eventType", "topic", "idempotencyKey", "businessId", "terminalId", "actorId", "source", "occurredAt", "payload", "schemaVersion", "correlationId"];
 const forbiddenCanonicalTopics = [
   "sync.conflict_detected",
   "sync.conflict_resolved",
@@ -142,6 +158,7 @@ function assertNoForbidden(label, values) {
 const contract = readJson(contractPath);
 compareExact("contract.eventTopics", contract.eventTopics ?? [], expectedTopics);
 compareExact("contract.outboxStates", contract.outboxStates ?? [], expectedOutboxStates);
+compareExact("contract.lifecycleStates", contract.lifecycleStates ?? [], expectedLifecycleStates);
 compareExact("contract.conflictCodes", contract.conflictCodes ?? [], expectedConflictCodes);
 compareExact("contract.envelopeFields", contract.envelopeFields ?? [], expectedEnvelope);
 assertNoForbidden("contract.eventTopics", contract.eventTopics ?? []);
@@ -159,6 +176,7 @@ for (const alias of aliases) {
 const sharedSource = read(sharedEventsPath);
 compareExact("shared/twin-kernel SHARED_SYNC_EVENTS", stringArrayFromConst(sharedSource, "SHARED_SYNC_EVENTS") ?? [], expectedTopics);
 compareExact("shared/twin-kernel SHARED_OUTBOX_STATES", stringArrayFromConst(sharedSource, "SHARED_OUTBOX_STATES") ?? [], expectedOutboxStates);
+compareExact("shared/twin-kernel SHARED_SYNC_LIFECYCLE_STATES", stringArrayFromConst(sharedSource, "SHARED_SYNC_LIFECYCLE_STATES") ?? [], expectedLifecycleStates);
 compareExact("shared/twin-kernel SHARED_CONFLICT_CODES", stringArrayFromConst(sharedSource, "SHARED_CONFLICT_CODES") ?? [], expectedConflictCodes);
 compareExact("shared/twin-kernel SHARED_EVENT_ENVELOPE_FIELDS", stringArrayFromConst(sharedSource, "SHARED_EVENT_ENVELOPE_FIELDS") ?? [], expectedEnvelope);
 
@@ -188,8 +206,11 @@ if (outboxArray.length === 0 || outboxArray.some((item) => item.startsWith("OUTB
 }
 
 const pcEventSource = read(pcEventContractPath);
-compareExact("PC RECOGNIZED_EVENT_TOPICS", stringArrayFromConst(pcEventSource, "RECOGNIZED_EVENT_TOPICS") ?? [], expectedTopics);
-compareExact("PC REQUIRED_EVENT_FIELDS", stringArrayFromConst(pcEventSource, "REQUIRED_EVENT_FIELDS") ?? [], expectedEnvelope);
+compareExact("PC RECOGNIZED_SYNC_TOPICS", stringArrayFromConst(pcEventSource, "RECOGNIZED_SYNC_TOPICS") ?? [], expectedTopics);
+compareExact("PC REQUIRED_SYNC_EVENT_FIELDS", stringArrayFromConst(pcEventSource, "REQUIRED_SYNC_EVENT_FIELDS") ?? [], expectedEnvelope);
+if (!read(pcBackofficeEventContractPath).includes("REQUIRED_SYNC_EVENT_FIELDS")) {
+  pushFailure("PC backoffice event-contract must wrap the server sync contract instead of redefining lifecycle/envelope arrays.");
+}
 
 const pcConflictSource = read(pcConflictsPath);
 compareExact("PC CONFLICT_CATALOG", objectKeys(pcConflictSource, "CONFLICT_CATALOG") ?? [], expectedConflictCodes);
@@ -234,6 +255,7 @@ console.log(JSON.stringify({
   sourceOfTruth: path.relative(root, contractPath),
   eventTopics: expectedTopics.length,
   outboxStates: expectedOutboxStates.length,
+  lifecycleStates: expectedLifecycleStates.length,
   conflictCodes: expectedConflictCodes.length,
   envelopeFields: expectedEnvelope.length
 }, null, 2));

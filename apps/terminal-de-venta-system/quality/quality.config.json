@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0",
+  "defaultOutDir": "F:\\descargasf",
+  "roots": {
+    "repo": ".",
+    "quality": "quality",
+    "tablet": "products/tablet/app",
+    "pc": "products/pc/app",
+    "mobile": "products/mobile/app",
+    "chartLab": "products/chart-lab/app",
+    "shared": "shared",
+    "sharedTwinKernel": "shared/twin-kernel/src",
+    "sharedPrismaCharts": "shared/prisma-charts",
+    "sharedLicensing": "shared/licensing",
+    "prisma": "prisma",
+    "controlCenterPy": "prisma-control-center/internal/py",
+    "toolsPrisma": "tools/prisma",
+    "toolsBlackBox": "tools/black-box",
+    "toolingScripts": "tooling/scripts"
+  },
+  "ignore": [
+    "node_modules",
+    ".next",
+    "dist",
+    "build",
+    "coverage",
+    ".git",
+    ".prisma_backups",
+    "tools/_local/evidence",
+    "logs"
+  ],
+  "scan": {
+    "maxFileBytes": 1048576,
+    "extensions": [
+      ".ts",
+      ".tsx",
+      ".js",
+      ".jsx",
+      ".mjs",
+      ".cjs",
+      ".json",
+      ".md",
+      ".py",
+      ".prisma",
+      ".sql",
+      ".ps1",
+      ".yml",
+      ".yaml"
+    ]
+  }
+}

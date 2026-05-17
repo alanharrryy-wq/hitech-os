@@ -3,14 +3,17 @@
 PRISMA Tri-DB Bridge v04
 
 Purpose:
-  Mirror operational data from the Tablet local SQLite DB into the PC canonical
-  SQLite DB so PC dashboards and Mobile data-plane can see the same operational
-  truth without making Tablet depend on PC to sell.
+  rescue/backfill/diagnostic projection from the Tablet local SQLite DB into the
+  PC canonical SQLite DB. This bridge is not the primary PRISMA sync path.
+  Normal business sync must use Tablet semantic outbox events -> PC ingest ->
+  Prisma ORM projectors -> canonical DB.
 
 Design:
   - Tablet remains the local POS write owner for sales, stock movements, and outbox.
-  - PC receives a durable projection of Tablet rows by common table/column shape.
+  - PC receives an emergency row projection by common table/column shape.
   - Mobile keeps reading Tablet/PC APIs; it does not get a local DB bolted on.
+  - A bridge-side "acked" update is a compatibility marker only; it is not proof
+    that PC governance validated, projected, and reconciled the event.
 
 Safety:
   - No deletes.
@@ -140,6 +143,8 @@ class BridgeSummary:
     backup_dir: str | None
     tables: list[TableCopyResult]
     tablet_outbox_acknowledged: int
+    governance_reconciled: int
+    bridge_role: str
     warnings: list[str]
 
 
@@ -295,7 +300,9 @@ def unique_index_columns(conn: sqlite3.Connection, table: str) -> list[list[str]
     indexes: list[list[str]] = []
     for idx in conn.execute(f"PRAGMA index_list({quote_ident(table)})").fetchall():
         # PRAGMA index_list returns: seq, name, unique, origin, partial
-        if len(idx) >= 3 and int(idx[2]) == 1:
+        is_unique = len(idx) >= 3 and int(idx[2]) == 1
+        is_partial = len(idx) >= 5 and int(idx[4]) == 1
+        if is_unique and not is_partial:
             name = idx[1]
             cols = [row[2] for row in conn.execute(f"PRAGMA index_info({quote_ident(name)})").fetchall()]
             if cols:
@@ -391,6 +398,12 @@ def resolve_row_identity(
             return
 
     if destination_id_exists(dst, table, source_id):
+        if not natural_conflict:
+            # The chosen conflict target is the destination primary key. Repeated
+            # bridge runs must update that same projected row instead of minting
+            # a second id that can collide with other unique constraints.
+            id_maps.setdefault(table, {})[source_id] = source_id
+            return
         if table == "Business":
             # Business is the tenant root; repeat sync must reuse it so child businessId values stay stable.
             id_maps.setdefault(table, {})[source_id] = source_id
@@ -455,6 +468,14 @@ def copy_table(src: sqlite3.Connection, dst: sqlite3.Connection, table: str, id_
             "v04 ya hace mapeo de ids; si este mensaje aparece, hace falta revisar "
             "la restricción concreta y decidir una regla de reconciliación explícita."
         ) from exc
+    except sqlite3.OperationalError as exc:
+        if "ON CONFLICT clause does not match" in str(exc):
+            raise BridgeError(
+                f"No pude proyectar {table}: la llave de conflicto {conflict_cols} "
+                "no coincide con una restricción PRIMARY KEY/UNIQUE completa en la DB destino. "
+                "Los índices únicos parciales no son candidatos válidos para este UPSERT."
+            ) from exc
+        raise
     return TableCopyResult(table=table, source_rows=len(rows), inserted_or_updated=len(rows), common_columns=common)
 
 
@@ -506,7 +527,7 @@ def run_plan(roots: RootInfo) -> BridgeSummary:
             src_rows = count_rows(src, table) if table in table_names(src) else 0
             common = sorted(set(columns(src, table)) & set(columns(dst, table))) if table in table_names(src) and table in table_names(dst) else []
             tables.append(TableCopyResult(table=table, source_rows=src_rows, inserted_or_updated=0, common_columns=common, skipped=not bool(common), reason=None if common else "not_projectable"))
-        return BridgeSummary(VERSION, "plan", "READY", now_iso(), roots, None, tables, 0, warnings)
+        return BridgeSummary(VERSION, "plan", "READY", now_iso(), roots, None, tables, 0, 0, "rescue_backfill_diagnostic", warnings)
 
 
 def run_sync(roots: RootInfo, out_root: Path, ack_outbox: bool = True) -> BridgeSummary:
@@ -533,7 +554,8 @@ def run_sync(roots: RootInfo, out_root: Path, ack_outbox: bool = True) -> Bridge
                 src.execute("BEGIN")
                 acked = acknowledge_tablet_outbox(src)
                 src.commit()
-        return BridgeSummary(VERSION, "sync", "READY", now_iso(), roots, str(backup_dir), tables, acked, warnings)
+        warnings.append("TRI_DB_BRIDGE_COMPAT_ACK_ONLY: acked means copied by bridge, not PC event-governance reconciliation.")
+        return BridgeSummary(VERSION, "sync", "READY", now_iso(), roots, str(backup_dir), tables, acked, 0, "rescue_backfill_diagnostic", warnings)
     except Exception:
         try:
             restore_backup(src_db, dst_db, backup_dir)
@@ -559,7 +581,9 @@ def print_summary(summary: BridgeSummary, summary_path: Path | None) -> None:
     print(f"PC DB: {summary.roots.pc_db}")
     print(f"Tablas proyectables: {sum(1 for t in summary.tables if not t.skipped)}")
     print(f"Filas copiadas/actualizadas: {total_rows}")
-    print(f"Outbox Tablet acked: {summary.tablet_outbox_acknowledged}")
+    print(f"Bridge role: {summary.bridge_role}")
+    print(f"Outbox Tablet compat-acked: {summary.tablet_outbox_acknowledged}")
+    print(f"PC governance reconciled by bridge: {summary.governance_reconciled}")
     if summary.backup_dir:
         print(f"Backup: {summary.backup_dir}")
     if summary.warnings:
@@ -579,6 +603,8 @@ def create_demo_db(path: Path, include_tablet_extra: bool) -> None:
             CREATE TABLE Store (id TEXT PRIMARY KEY, businessId TEXT NOT NULL, code TEXT NOT NULL, name TEXT NOT NULL, createdAt DATETIME NOT NULL, updatedAt DATETIME NOT NULL, UNIQUE(businessId, code), UNIQUE(id, businessId));
             CREATE TABLE Terminal (id TEXT PRIMARY KEY, businessId TEXT NOT NULL, storeId TEXT NOT NULL, code TEXT NOT NULL, name TEXT NOT NULL, isActive BOOLEAN NOT NULL DEFAULT 1, createdAt DATETIME NOT NULL, updatedAt DATETIME NOT NULL, UNIQUE(id, businessId));
             CREATE TABLE Product (id TEXT PRIMARY KEY, businessId TEXT NOT NULL, sku TEXT NOT NULL, name TEXT NOT NULL, category TEXT NOT NULL, priceCents INTEGER NOT NULL, costCents INTEGER NOT NULL, stockOnHand INTEGER NOT NULL DEFAULT 0, taxRateId TEXT, isActive BOOLEAN NOT NULL DEFAULT 1, createdAt DATETIME NOT NULL, updatedAt DATETIME NOT NULL, UNIQUE(id, businessId));
+            CREATE TABLE CashSession (id TEXT PRIMARY KEY, businessId TEXT NOT NULL, storeId TEXT NOT NULL, terminalId TEXT NOT NULL, cashierId TEXT NOT NULL, cashier TEXT NOT NULL, openedAt DATETIME NOT NULL, closedAt DATETIME, cashStartCents INTEGER NOT NULL, cashEndCents INTEGER, expectedCashCents INTEGER, varianceCents INTEGER, status TEXT NOT NULL, createdAt DATETIME NOT NULL, updatedAt DATETIME NOT NULL, UNIQUE(id, businessId));
+            CREATE UNIQUE INDEX uq_cashsession_single_open_per_terminal ON CashSession(businessId, terminalId) WHERE status = 'OPEN';
             CREATE TABLE Sale (id TEXT PRIMARY KEY, businessId TEXT NOT NULL, terminalId TEXT NOT NULL, cashSessionId TEXT, folio TEXT NOT NULL, cashier TEXT NOT NULL, totalCents INTEGER NOT NULL, status TEXT NOT NULL, createdAt DATETIME NOT NULL, UNIQUE(id, businessId));
             CREATE TABLE SaleLine (id TEXT PRIMARY KEY, businessId TEXT NOT NULL, saleId TEXT NOT NULL, productId TEXT NOT NULL, sku TEXT NOT NULL, productName TEXT NOT NULL, qty INTEGER NOT NULL, priceCents INTEGER NOT NULL, totalCents INTEGER NOT NULL, createdAt DATETIME NOT NULL);
             CREATE TABLE OutboxEvent (id TEXT PRIMARY KEY, businessId TEXT NOT NULL, topic TEXT NOT NULL, aggregateId TEXT NOT NULL, payloadJson TEXT NOT NULL, status TEXT NOT NULL, attempts INTEGER NOT NULL DEFAULT 0, createdAt DATETIME NOT NULL, sentAt DATETIME, lastError TEXT);
@@ -605,7 +631,8 @@ def create_demo_db(path: Path, include_tablet_extra: bool) -> None:
             conn.execute("INSERT INTO Store VALUES (?, ?, ?, ?, ?, ?)", ("store_01", "biz_tablet_standalone", "S01", "Tienda", now, now))
             conn.execute("INSERT INTO Terminal VALUES (?, ?, ?, ?, ?, ?, ?, ?)", ("terminal_tablet_local_01", "biz_tablet_standalone", "store_01", "T01", "Tablet", 1, now, now))
             conn.execute("INSERT INTO Product VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", ("prod_01", "biz_tablet_standalone", "SKU-1", "Refresco", "Bebidas", 1500, 900, 9, None, 1, now, now))
-            conn.execute("INSERT INTO Sale (id,businessId,terminalId,cashSessionId,folio,cashier,totalCents,status,createdAt,clientRequestId,subtotalCents,discountCents,completedAt,paymentMethod,cashReceivedCents,changeCents) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", ("sale_01", "biz_tablet_standalone", "terminal_tablet_local_01", None, "T-1", "Caja", 1500, "COMPLETED", now, "req_01", 1500, 0, now, "cash", 2000, 500))
+            conn.execute("INSERT INTO CashSession VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", ("cash_01", "biz_tablet_standalone", "store_01", "terminal_tablet_local_01", "cashier_01", "Caja", now, None, 50000, None, 51500, None, "OPEN", now, now))
+            conn.execute("INSERT INTO Sale (id,businessId,terminalId,cashSessionId,folio,cashier,totalCents,status,createdAt,clientRequestId,subtotalCents,discountCents,completedAt,paymentMethod,cashReceivedCents,changeCents) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", ("sale_01", "biz_tablet_standalone", "terminal_tablet_local_01", "cash_01", "T-1", "Caja", 1500, "COMPLETED", now, "req_01", 1500, 0, now, "cash", 2000, 500))
             conn.execute("INSERT INTO SaleLine VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", ("line_01", "biz_tablet_standalone", "sale_01", "prod_01", "SKU-1", "Refresco", 1, 1500, 1500, now))
             event = {"eventId":"evt_01","topic":"sale.completed","businessId":"biz_tablet_standalone","terminalId":"terminal_tablet_local_01","actorId":"Caja","source":"tablet-pos","occurredAt":now,"schemaVersion":"1.0.0","aggregateId":"sale_01","payload":{"saleId":"sale_01","totalCents":1500}}
             conn.execute("INSERT INTO OutboxEvent (id,businessId,topic,aggregateId,payloadJson,status,attempts,createdAt,sentAt,lastError,terminalId,source,schemaVersion,syncedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", ("evt_01", "biz_tablet_standalone", "sale.completed", "sale_01", json.dumps(event), "pending", 0, now, None, None, "terminal_tablet_local_01", "tablet-pos", "1.0.0", None))
@@ -631,6 +658,7 @@ def run_self_test() -> None:
         with open_db(dst_db, readonly=True) as dst, open_db(src_db, readonly=True) as src:
             assert count_rows(dst, "Business") == 1
             assert count_rows(dst, "Product") == 1
+            assert count_rows(dst, "CashSession") == 1
             assert count_rows(dst, "Sale") == 1
             assert count_rows(dst, "SaleLine") == 1
             assert count_rows(dst, "OutboxEvent") == 1
@@ -644,16 +672,16 @@ def run_self_test() -> None:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="PRISMA Tri-DB Bridge: proyecta Tablet SQLite hacia PC canonical SQLite.")
+    parser = argparse.ArgumentParser(description="PRISMA Tri-DB Bridge: herramienta secundaria de rescate/backfill/diagnostico; no es el sync primario.")
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--plan", action="store_true", help="Valida rutas y muestra qué se copiaría. No modifica DBs.")
-    mode.add_argument("--run", action="store_true", help="Copia/actualiza datos de Tablet en PC canonical con backup y rollback automático.")
+    mode.add_argument("--run", action="store_true", help="Copia/actualiza datos de Tablet en PC canonical con backup y rollback automatico para rescate/backfill.")
     mode.add_argument("--self-test", action="store_true", help="Ejecuta una prueba funcional aislada con DBs temporales.")
     parser.add_argument("--target-root", default=str(Path.cwd()), help="Root del repo hitech-os o de apps/terminal-de-venta-system.")
     parser.add_argument("--tablet-db", default=None, help="Ruta explícita a tablet-pos.db. Opcional.")
     parser.add_argument("--pc-db", default=None, help="Ruta explícita a canonical.db. Opcional.")
     parser.add_argument("--out-root", default=str(DEFAULT_OUT_ROOT), help="Directorio para logs/resúmenes/backups. Default: F:\\descargasf")
-    parser.add_argument("--no-ack-tablet-outbox", action="store_true", help="No marcar OutboxEvent de Tablet como acked tras sync exitoso.")
+    parser.add_argument("--no-ack-tablet-outbox", action="store_true", help="No marcar OutboxEvent de Tablet como acked compat tras bridge exitoso.")
     return parser
 
 

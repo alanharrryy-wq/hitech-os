@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRISMA Control Center Report</title>
+  <style>
+    :root {
+      --ink: #18212f;
+      --muted: #667085;
+      --line: rgba(30, 42, 64, 0.12);
+      --glass: rgba(255, 255, 255, 0.72);
+      --blue: #6aa8ff;
+      --mint: #55c7a8;
+      --violet: #a88cf2;
+      --coral: #ef806f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        linear-gradient(115deg, rgba(106, 168, 255, 0.16), transparent 30%, rgba(85, 199, 168, 0.12) 50%, transparent 70%, rgba(239, 128, 111, 0.10)),
+        linear-gradient(135deg, #f7fbff, #f4f7f2 42%, #fff8f6);
+      padding: 32px;
+    }
+    main { max-width: 1180px; margin: 0 auto; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: flex-end;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    h1 { margin: 0; font-size: clamp(28px, 4vw, 56px); letter-spacing: 0; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--glass);
+      font-weight: 800;
+    }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--glass);
+      box-shadow: 0 22px 48px rgba(40, 61, 89, 0.10);
+      padding: 18px;
+    }
+    .card h2 { margin: 0 0 12px; font-size: 18px; }
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      font-family: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+      color: #334155;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    td, th { border-bottom: 1px solid var(--line); padding: 9px 6px; text-align: left; vertical-align: top; }
+    @media (max-width: 760px) { body { padding: 18px; } header, .grid { display: block; } .card { margin-top: 14px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="pill">PRISMA Control Center</p>
+        <h1>{{overall_status}} · {{health_score}}</h1>
+        <p>{{generated_at}}</p>
+      </div>
+      <div class="pill">{{action}}</div>
+    </header>
+    <section class="grid">
+      <article class="card">
+        <h2>Servicios</h2>
+        {{services_html}}
+      </article>
+      <article class="card">
+        <h2>Cloudflare</h2>
+        {{cloudflare_html}}
+      </article>
+      <article class="card">
+        <h2>Control Center</h2>
+        <pre>{{control_center_text}}</pre>
+      </article>
+      <article class="card">
+        <h2>Acciones</h2>
+        <pre>{{actions_text}}</pre>
+      </article>
+      <article class="card">
+        <h2>Siguiente accion</h2>
+        <pre>{{recommended_next_action}}</pre>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

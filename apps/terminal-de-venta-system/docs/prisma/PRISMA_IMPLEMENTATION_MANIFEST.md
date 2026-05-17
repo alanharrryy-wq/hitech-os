@@ -1,0 +1,130 @@
+# PRISMA Implementation Manifest
+
+Run timestamp: 2026-05-11T01:55:09.6153907-06:00
+
+Repository root: `F:\repos\hitech-os`
+
+Target app: `F:\repos\hitech-os\apps\terminal-de-venta-system`
+
+## Architecture Decision
+
+The standard PRISMA architecture is now documented and guarded as:
+
+Tablet offline-first -> semantic OutboxEvent -> PC sync ingest -> validation -> event ledger -> Prisma ORM projectors -> canonical Prisma-governed database -> Mobile snapshot/view models -> Control audit.
+
+TRI-DB bridge remains only rescue/backfill/diagnostic tooling.
+
+## Required Change Set
+
+- Added Prisma docs for data flow, sync standard, event contract, DB authority, operator manual, developer handoff, testing, growth guide, and implementation manifest.
+- Added lifecycle fields to canonical `OutboxEvent`.
+- Added forward-only migration `20260511000000_event_ledger_lifecycle`.
+- Added semantic event envelope support for `eventType`, `idempotencyKey`, `correlationId`, and lifecycle states.
+- Hardened Tablet event production for sale, stock, cash session, and cash movement events.
+- Consolidated PC ingest through a single server pipeline.
+- Added PC Prisma ORM projectors for sale, stock, cash, and low-stock events.
+- Kept TRI-DB bridge available but relabeled and tested as secondary bridge tooling.
+- Aligned Mobile runtime modes and snapshot/view-model consumption.
+- Added deterministic architecture verifier.
+
+## Optional Proposal Set
+
+- Add `@prisma/client` ownership at the root package if direct root `prisma generate` should be supported.
+- Add narrower runtime integration tests for the projector service using a temp SQLite database and seeded canonical IDs.
+- Expand Control Center audit routes to expose lifecycle timelines per `correlationId`.
+
+## Files Created
+
+- `F:\repos\hitech-os\apps\terminal-de-venta-system\docs\prisma\PRISMA_DATA_FLOW_AND_AUTHORITY.md`
+- `F:\repos\hitech-os\apps\terminal-de-venta-system\docs\prisma\PRISMA_SYNC_STANDARD.md`
+- `F:\repos\hitech-os\apps\terminal-de-venta-system\docs\prisma\PRISMA_EVENT_CONTRACT.md`
+- `F:\repos\hitech-os\apps\terminal-de-venta-system\docs\prisma\PRISMA_DATABASE_AUTHORITY.md`
+- `F:\repos\hitech-os\apps\terminal-de-venta-system\docs\prisma\PRISMA_OPERATOR_MANUAL.md`
+- `F:\repos\hitech-os\apps\terminal-de-venta-system\docs\prisma\PRISMA_DEVELOPER_HANDOFF.md`
+- `F:\repos\hitech-os\apps\terminal-de-venta-system\docs\prisma\PRISMA_TESTING_AND_VALIDATION.md`
+- `F:\repos\hitech-os\apps\terminal-de-venta-system\docs\prisma\PRISMA_GROWTH_GUIDE.md`
+- `F:\repos\hitech-os\apps\terminal-de-venta-system\docs\prisma\PRISMA_IMPLEMENTATION_MANIFEST.json`
+- `F:\repos\hitech-os\apps\terminal-de-venta-system\docs\prisma\PRISMA_IMPLEMENTATION_MANIFEST.md`
+- `F:\repos\hitech-os\apps\terminal-de-venta-system\prisma\migrations\20260511000000_event_ledger_lifecycle\migration.sql`
+- `F:\repos\hitech-os\apps\terminal-de-venta-system\products\pc\app\src\server\services\sync-projectors.service.ts`
+- `F:\repos\hitech-os\apps\terminal-de-venta-system\products\mobile\app\src\lib\prisma-app\mobile-data-plane\runtime-mode.ts`
+- `F:\repos\hitech-os\apps\terminal-de-venta-system\tools\verify_prisma_event_sync_architecture_01.mjs`
+
+## Database / Prisma
+
+Models touched:
+
+- `OutboxEvent`
+- `Sale`
+- `SaleLine`
+- `Product`
+- `StockMovement`
+- `CashSession`
+- `CashMovement`
+- `ReplenishmentSignal`
+
+Migration touched:
+
+- `F:\repos\hitech-os\apps\terminal-de-venta-system\prisma\migrations\20260511000000_event_ledger_lifecycle\migration.sql`
+
+The migration is additive. No destructive migration was introduced.
+
+## Event And Sync Contract
+
+Event types implemented/projected:
+
+- `sale.completed`
+- `stock.decremented`
+- `cash.session.opened`
+- `cash.movement.recorded`
+- `inventory.low_stock_detected`
+
+Lifecycle states:
+
+- `created_local`
+- `queued`
+- `sent`
+- `received`
+- `validated`
+- `accepted`
+- `projected`
+- `reconciled`
+- `conflict`
+- `failed`
+- `dead_letter`
+
+Idempotency strategy:
+
+- Tablet emits `idempotencyKey`.
+- PC stores by `idempotencyKey`/`eventId`.
+- Projectors detect already-projected canonical records before writing again.
+
+Conflict strategy:
+
+- duplicate sale mismatch -> `SALE_DUPLICATE_MISMATCH`
+- negative stock transition -> `STOCK_NEGATIVE_TRANSITION`
+- overlapping cash session -> `CASH_SESSION_OVERLAP`
+- invalid schema or missing product/session/terminal -> structured conflict or dead letter
+
+## Validation Summary
+
+Passed:
+
+- Architecture verifier.
+- Sync contract gate.
+- TRI-DB bridge self-test.
+- Prisma validate with temp `DATABASE_URL`.
+- Tablet/PC/Mobile typechecks.
+- Tablet/PC/Mobile builds.
+- Mobile verifier trio.
+- Tablet POS and offline verifiers.
+- PC canonical DB validator.
+
+Blocked:
+
+- Direct root `prisma generate`, because Prisma attempted to auto-run `pnpm add @prisma/client@5.21.1 --silent`.
+
+## Manual Follow-Up
+
+Screenshots were intentionally not generated by Codex. Playwright was not used. Manual visual capture should be done later by the operator/user.
+

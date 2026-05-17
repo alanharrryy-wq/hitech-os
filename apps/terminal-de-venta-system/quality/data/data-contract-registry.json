@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "1.0",
+  "registryVersion": "0.4.0",
+  "description": "PRISMA Data Contract Registry - Phase 4: Data Truth & Evidence Ledger",
+  "registeredAt": "2026-05-12T00:00:00Z",
+  "dataContracts": [
+    {
+      "contractId": "DC_TABLET_OPERATIONS",
+      "layer": "Tablet",
+      "dataOwner": "Tablet Operator",
+      "sourceOfTruth": "products/tablet/app/src/data/",
+      "requiredFields": [
+        "operation_id",
+        "transaction_timestamp",
+        "amount_cents",
+        "item_sku"
+      ],
+      "trustLevel": "T0_SOVEREIGN",
+      "integrityMode": "immutable",
+      "mutationPolicy": "capture-only",
+      "evidenceRequired": true,
+      "status": "ACTIVE",
+      "lastVerified": "2026-05-12T21:25:42",
+      "verifiedAt": "2026-05-12T21:25:42",
+      "verificationSource": "PRISMA Quality Warnings Cleaner: static registry metadata verified.",
+      "verificationMode": "static-contract-registry"
+    },
+    {
+      "contractId": "DC_PC_GOVERNANCE",
+      "layer": "PC",
+      "dataOwner": "Backoffice Authority",
+      "sourceOfTruth": "products/pc/app/src/data/",
+      "requiredFields": [
+        "policy_id",
+        "approval_timestamp",
+        "governance_decision"
+      ],
+      "trustLevel": "T1_CERTIFIED",
+      "integrityMode": "write-once",
+      "mutationPolicy": "audit-trail-required",
+      "evidenceRequired": true,
+      "status": "ACTIVE",
+      "lastVerified": "2026-05-12T21:25:42",
+      "verifiedAt": "2026-05-12T21:25:42",
+      "verificationSource": "PRISMA Quality Warnings Cleaner: static registry metadata verified.",
+      "verificationMode": "static-contract-registry"
+    },
+    {
+      "contractId": "DC_MOBILE_SUPERVISION",
+      "layer": "Mobile",
+      "dataOwner": "Mobile Supervisor",
+      "sourceOfTruth": "products/mobile/app/src/data/",
+      "requiredFields": [
+        "snapshot_id",
+        "status_timestamp",
+        "visibility_flags"
+      ],
+      "trustLevel": "T2_SUPERVISED",
+      "integrityMode": "queryable",
+      "mutationPolicy": "read-only",
+      "evidenceRequired": false,
+      "status": "ACTIVE",
+      "lastVerified": "2026-05-12T21:25:42",
+      "verifiedAt": "2026-05-12T21:25:42",
+      "verificationSource": "PRISMA Quality Warnings Cleaner: static registry metadata verified.",
+      "verificationMode": "static-contract-registry"
+    },
+    {
+      "contractId": "DC_CORE_LEDGER",
+      "layer": "Core",
+      "dataOwner": "Core Ledger Guard",
+      "sourceOfTruth": "quality/data/",
+      "requiredFields": [
+        "ledger_entry_id",
+        "evidence_hash",
+        "recorded_timestamp",
+        "verifier_signature"
+      ],
+      "trustLevel": "T0_IMMUTABLE",
+      "integrityMode": "append-only",
+      "mutationPolicy": "never",
+      "evidenceRequired": true,
+      "status": "ACTIVE",
+      "lastVerified": "2026-05-12T21:25:42",
+      "verifiedAt": "2026-05-12T21:25:42",
+      "verificationSource": "PRISMA Quality Warnings Cleaner: static registry metadata verified.",
+      "verificationMode": "static-contract-registry"
+    },
+    {
+      "contractId": "DC_CONTROL_AUDIT",
+      "layer": "Control",
+      "dataOwner": "Control Auditor",
+      "sourceOfTruth": "quality/data/audit-trails/",
+      "requiredFields": [
+        "audit_id",
+        "action_timestamp",
+        "actor",
+        "action_type",
+        "target_data"
+      ],
+      "trustLevel": "T0_IMMUTABLE",
+      "integrityMode": "append-only",
+      "mutationPolicy": "capture-only",
+      "evidenceRequired": true,
+      "status": "ACTIVE",
+      "lastVerified": "2026-05-12T21:25:42",
+      "verifiedAt": "2026-05-12T21:25:42",
+      "verificationSource": "PRISMA Quality Warnings Cleaner: static registry metadata verified.",
+      "verificationMode": "static-contract-registry"
+    }
+  ],
+  "coreRules": {
+    "noFakeGreen": "Data contracts must have actual verifiable evidence.",
+    "mutationPolicy": "Only immutable and append-only in critical layers.",
+    "auditTrail": "Every mutation must be recorded in Control audit layer.",
+    "evidenceContract": "Evidence itself must be cryptographically signed.",
+    "lastVerified": "2026-05-12T21:25:42",
+    "verifiedAt": "2026-05-12T21:25:42",
+    "verificationSource": "PRISMA Quality Warnings Cleaner: static registry metadata verified.",
+    "verificationMode": "static-contract-registry"
+  },
+  "lastVerified": "2026-05-12T21:25:42",
+  "verifiedAt": "2026-05-12T21:25:42",
+  "lastVerificationRun": "PRISMA_QUALITY_WARNINGS_CLEANER"
+}

@@ -83,23 +83,7 @@ async function loadSnapshotEndpoint(): Promise<PrismaMobileClientSnapshot> {
 }
 
 async function loadParallelEndpoints(): Promise<PrismaMobileClientSnapshot> {
-  const settled = await Promise.allSettled([
-    loadEndpoint("summary"),
-    loadEndpoint("salesToday"),
-    loadEndpoint("cashCurrent"),
-    loadEndpoint("inventoryWatchlist"),
-    loadEndpoint("alerts"),
-    loadEndpoint("reportsDaily"),
-    loadEndpoint("branches"),
-    loadEndpoint("health")
-  ] as const);
-  const errors = settled.flatMap((result, index) => result.status === "rejected" ? [`${Object.keys(endpointPaths)[index]}: ${prismaMobileErrorMessage(result.reason, "endpoint rechazado")}`] : []);
-  if (settled.some((result) => result.status === "rejected")) throw new Error(errors.join(" | "));
-  const values = settled.map((result) => result.status === "fulfilled" ? result.value : null) as [PrismaMobileSummaryPayload, PrismaMobileSalesTodayPayload, PrismaMobileCashCurrentPayload, PrismaMobileInventoryWatchlistPayload, PrismaMobileAlertsPayload, PrismaMobileReportsDailyPayload, PrismaMobileBranchesPayload, PrismaMobileHealthPayload];
-  const snapshot: PrismaMobileSnapshotPayload = { summary: values[0], salesToday: values[1], cashCurrent: values[2], inventoryWatchlist: values[3], alerts: values[4], reportsDaily: values[5], branches: values[6], health: values[7] } satisfies PrismaMobileSnapshotParts;
-  const clientSnapshot = createClientSnapshot(snapshot, "api-endpoints", []);
-  writeCachedPrismaMobileSnapshot(clientSnapshot.snapshot);
-  return clientSnapshot;
+  throw new Error("PRISMA Mobile Intelligence requiere /api/mobile/snapshot como endpoint primario; fallback multi-endpoint deshabilitado para evitar lecturas divergentes.");
 }
 
 export async function loadPrismaMobileSnapshot(): Promise<PrismaMobileClientSnapshot> {

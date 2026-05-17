@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0",
+  "id": "CONTRACT_PRISMA_NOT_POS_ONLY",
+  "version": "1.0.0",
+  "title": "PRISMA Not POS Only",
+  "description": "PRISMA must remain an operational Knowledge OS, not regress into a POS-only surface.",
+  "layer": "Architecture",
+  "defaultSeverity": "S2",
+  "blockingProfiles": [
+    "release"
+  ],
+  "ownedByGate": "Q1",
+  "requiredEvidenceTypes": [
+    "json",
+    "markdown",
+    "ledger"
+  ],
+  "failureExamples": [],
+  "phaseIntroduced": "phase-1"
+}

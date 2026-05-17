@@ -1,28 +1,5 @@
-import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "@hitech/contracts";
-import { LayerFlagsProvider } from "@hitech/ui-kit";
-import { PitchLayerDevTools, PitchShell, ScreenValuation } from "../../../components/pitch";
-import {
-  resolvePitchLayerFlags,
-  type PitchSearchParamsProps
-} from "../../../lib/pitch/layer-resolution";
+import { notFound } from "next/navigation";
 
-export const dynamic = "force-dynamic";
-
-export default function PitchValuationPage({ searchParams }: PitchSearchParamsProps) {
-  const resolved = resolvePitchLayerFlags(searchParams);
-  const deck = PITCH_DECK_FIXTURE;
-  const screen = PITCH_SCREEN_FIXTURES["04-valuation"];
-
-  return (
-    <LayerFlagsProvider initialResolved={resolved}>
-      <PitchShell
-        title="Keystone Pitch Deck"
-        subtitle="ESTRUCTURA FINANCIERA + VALUACIÓN"
-        nav={{ links: deck.navigation.links, activeSlug: screen.slug }}
-      >
-        <ScreenValuation screen={screen} />
-      </PitchShell>
-      <PitchLayerDevTools visible={resolved.debug} />
-    </LayerFlagsProvider>
-  );
+export default function PitchValuationPage() {
+  notFound();
 }

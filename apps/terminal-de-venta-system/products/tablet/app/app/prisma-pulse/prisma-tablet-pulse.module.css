@@ -1,0 +1,169 @@
+.shell {
+  min-height: 100vh;
+  padding: 22px;
+  color: #f8fafc;
+  background:
+    linear-gradient(135deg, rgba(7, 20, 38, .98), rgba(14, 40, 71, .94)),
+    radial-gradient(circle at 82% 8%, rgba(99, 223, 255, .24), transparent 28%),
+    #071426;
+}
+
+.header,
+.disabledPanel,
+.focusPanel,
+.card {
+  border: 1px solid rgba(99, 223, 255, .24);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .08);
+  box-shadow: 0 18px 58px rgba(0, 0, 0, .22);
+  backdrop-filter: blur(16px);
+}
+
+.header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(190px, 260px);
+  gap: 16px;
+  max-width: 1180px;
+  margin: 0 auto 16px;
+  padding: 18px;
+}
+
+.header p,
+.disabledPanel p {
+  margin: 0;
+  color: #63dfff;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+.header h1,
+.disabledPanel h1 {
+  margin: 4px 0 8px;
+  font-size: clamp(2rem, 6vw, 4.2rem);
+  line-height: .95;
+  letter-spacing: 0;
+}
+
+.header span,
+.header small,
+.disabledPanel span,
+.card footer,
+.card p {
+  color: #c8d3e0;
+}
+
+.header aside {
+  display: grid;
+  gap: 6px;
+  align-content: center;
+}
+
+.header aside strong {
+  font-size: 1.8rem;
+}
+
+.quickFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 1180px;
+  margin: 0 auto 14px;
+}
+
+.quickFilters button {
+  min-height: 48px;
+  border: 1px solid rgba(99, 223, 255, .28);
+  border-radius: 999px;
+  padding: 0 18px;
+  color: #f8fafc;
+  background: rgba(99, 223, 255, .12);
+  font-size: .95rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.focusPanel {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1180px;
+  margin: 0 auto 14px;
+  padding: 14px 16px;
+}
+
+.focusPanel span {
+  color: #63dfff;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.card {
+  min-width: 0;
+  padding: 16px;
+}
+
+.card header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.card h2 {
+  margin: 0 0 4px;
+  font-size: 1.1rem;
+  letter-spacing: 0;
+}
+
+.card header strong {
+  border-radius: 999px;
+  padding: 8px 10px;
+  color: #071426;
+  background: #63dfff;
+}
+
+.chartFrame {
+  position: relative;
+  min-width: 0;
+}
+
+.card footer {
+  border-top: 1px solid rgba(255, 255, 255, .14);
+  margin-top: 10px;
+  padding-top: 10px;
+  font-size: .82rem;
+  font-weight: 800;
+}
+
+.disabledPanel {
+  max-width: 680px;
+  margin: 16vh auto;
+  padding: 24px;
+}
+
+.disabledPanel strong {
+  display: block;
+  margin-top: 12px;
+  color: #f8fafc;
+}
+
+@media (max-width: 860px) {
+  .shell {
+    padding: 14px;
+  }
+
+  .header,
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

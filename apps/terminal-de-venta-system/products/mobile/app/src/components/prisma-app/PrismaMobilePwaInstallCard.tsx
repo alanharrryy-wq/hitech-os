@@ -30,7 +30,7 @@ function platformHint(status: PrismaMobilePwaInstallStatus, choice: PlatformChoi
   if (choice === "android") return "Android listo para instalar PRISMA.";
   if (choice === "ios") return "iPhone listo: usa Safari y Agregar a pantalla de inicio.";
   if (status === "unsupported") return "Abre PRISMA desde un link seguro HTTPS para instalar.";
-  return "Elige tu dispositivo para instalar PRISMA";
+  return "Elige tu dispositivo para instalar supervisión móvil premium opcional. Tablet Solo vende sola.";
 }
 
 function androidGuideSteps(androidChrome: boolean, whatsapp: boolean) {
@@ -115,7 +115,7 @@ export function PrismaMobilePwaInstallCard({ compact = false }: { compact?: bool
     const onInstalled = () => {
       setPromptEvent(null);
       setStatus("installed");
-      setMessage("Listo. PRISMA quedó instalada en este dispositivo.");
+      setMessage("Listo. PRISMA quedó instalada para supervisar. Mobile no es requisito para vender.");
       window.setTimeout(() => window.location.assign("/prisma-app"), 650);
     };
 
@@ -139,7 +139,7 @@ export function PrismaMobilePwaInstallCard({ compact = false }: { compact?: bool
 
     if (!isSecurePwaContext()) {
       setStatus("unsupported");
-      setMessage("Necesita abrirse desde HTTPS para instalarse como app.");
+      setMessage("HTTPS ayuda a instalar la PWA, pero Cloudflare y soporte remoto son opcionales. Tablet Solo vende sola.");
       return;
     }
 

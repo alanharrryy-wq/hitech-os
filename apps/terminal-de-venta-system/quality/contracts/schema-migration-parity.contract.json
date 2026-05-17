@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "id": "CONTRACT_SCHEMA_MIGRATION_PARITY",
+  "version": "1.0.0",
+  "title": "Schema Migration Parity",
+  "description": "Schema and migrations must remain auditable, additive-first, and historically traceable.",
+  "layer": "Core",
+  "defaultSeverity": "S1",
+  "blockingProfiles": [
+    "commit",
+    "pr",
+    "release"
+  ],
+  "ownedByGate": "Q3",
+  "requiredEvidenceTypes": [
+    "json",
+    "markdown",
+    "ledger"
+  ],
+  "failureExamples": [],
+  "phaseIntroduced": "phase-1"
+}

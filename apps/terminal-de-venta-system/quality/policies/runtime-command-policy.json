@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1.0",
+  "phase": "phase-2",
+  "commands": {
+    "nodeCheck": "allowed",
+    "pnpmBuild": "evidence-only in Phase 2 unless user runs it explicitly",
+    "serviceStart": "not started by PQOS Phase 2",
+    "dbMutation": "forbidden"
+  }
+}

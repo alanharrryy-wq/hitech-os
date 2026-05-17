@@ -144,7 +144,7 @@ export function OfflineExportAuditScreen() {
 
         <section className={styles.columns}>
           <article className={styles.panel}>
-            <h2>Pendientes recientes</h2>
+            <h2>Outbox reciente</h2>
             {audit && audit.outbox.events.length ? audit.outbox.events.map((event) => (
               <div className={styles.row} key={event.id}>
                 <div><strong>{event.topic}</strong><span>{event.aggregateId} · {new Date(event.createdAt).toLocaleString("es-MX")}</span></div>

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "id": "CONTRACT_NO_FAKE_GREEN",
+  "version": "1.0.0",
+  "title": "No Fake Green",
+  "description": "No gate may pass without evidence.",
+  "layer": "Quality",
+  "defaultSeverity": "S1",
+  "blockingProfiles": [
+    "commit",
+    "pr",
+    "release"
+  ],
+  "ownedByGate": "Q15",
+  "requiredEvidenceTypes": [
+    "json",
+    "markdown",
+    "ledger"
+  ],
+  "failureExamples": [],
+  "phaseIntroduced": "phase-1"
+}

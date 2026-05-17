@@ -10,6 +10,9 @@
     "incremental": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
     "plugins": [
       {
         "name": "next"
@@ -24,6 +27,9 @@
       ],
       "@shared-kernel/*": [
         "../../../shared/twin-kernel/src/*"
+      ],
+      "@prisma-charts/*": [
+        "../../../shared/prisma-charts/*"
       ]
     }
   },

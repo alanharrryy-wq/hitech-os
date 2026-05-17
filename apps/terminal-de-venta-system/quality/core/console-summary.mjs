@@ -1,0 +1,1 @@
+export function printSummary(ctx, decision) { console.log(''); console.log('=== PRISMA QUALITY OS ==='); console.log(`Profile: ${ctx.profile}`); console.log(`Decision: ${decision.decision}`); console.log(`Blockers: ${decision.blockerCount}`); console.log(`Warnings: ${decision.warningCount}`); console.log(`Run dir: ${ctx.runDir}`); console.log(''); }

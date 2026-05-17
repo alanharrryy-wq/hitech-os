@@ -33,6 +33,42 @@ Allowed for standalone POS. Must cover only minimum local operation: `Business`,
 
 Operator UI may still say "shift" or "turno", but the canonical data model name is `CashSession`.
 
+### 3. PC local build schema
+
+`F:\repos\hitech-os\apps\terminal-de-venta-system\products\pc\app\prisma\schema.prisma` is a build-local non-canonical copy only.
+
+The source of truth remains:
+
+`F:\repos\hitech-os\apps\terminal-de-venta-system\prisma\schema.prisma`
+
+If PC needs local Prisma Client generation, refresh the PC copy from the root schema and keep the non-canonical header.
+
+## Round 2 additive schema contract
+
+PRISMA Commerce Round 2 adds these models additively to the root and Tablet schemas:
+
+- `Brand`
+- `ProductSupplier`
+- `DropdownCatalog`
+- `DropdownOption`
+- `SalePaymentTender`
+- `SaleReturnLine`
+- `CashAdjustment`
+- `User`
+- `Role`
+- `Permission`
+- `AuditEvent`
+- `SupportIncident`
+
+Brand/provider storage must stay relational:
+
+- `Product.brandId -> Brand.id`
+- `ProductSupplier.productId -> Product.id`
+- `ProductSupplier.supplierId -> Supplier.id`
+- `ProductSupplier.isPrimary` marks primary supplier.
+
+Do not reintroduce freeform brand/provider strings on `Product`.
+
 ## Tablet schema must not
 
 - copy the full core without contract

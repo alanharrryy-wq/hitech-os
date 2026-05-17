@@ -1,0 +1,192 @@
+{
+  "schemaVersion": "1.0",
+  "systemName": "PRISMA Quality Operating System",
+  "systemVersion": "4.0.0-phase-4-data-truth-evidence-ledger",
+  "phase": "phase-4-data-truth-evidence-ledger-audit-hardening",
+  "repoName": "terminal-de-venta-system",
+  "dbSafetyMode": "real-db-inspect-only",
+  "cloudflareMode": "optional-profile-only",
+  "defaultOutDir": "F:\\descargasf",
+  "layers": [
+    "Tablet",
+    "PC",
+    "Mobile",
+    "Core",
+    "Control",
+    "Cloudflare",
+    "Quality"
+  ],
+  "profiles": [
+    "cloudflare",
+    "commit",
+    "diagnose",
+    "phase3",
+    "phase4",
+    "data",
+    "audit",
+    "pr",
+    "release",
+    "runtime",
+    "scenario",
+    "watch"
+  ],
+  "gates": [
+    "Q0",
+    "Q1",
+    "Q11",
+    "Q13",
+    "Q14",
+    "Q15",
+    "Q16",
+    "Q17",
+    "Q18",
+    "Q19",
+    "Q2",
+    "Q20",
+    "Q21",
+    "Q22",
+    "Q23",
+    "Q24",
+    "Q25",
+    "Q3",
+    "Q4",
+    "Q5",
+    "Q6",
+    "Q7",
+    "Q8",
+    "Q9",
+    "Q26",
+    "Q27",
+    "Q28",
+    "Q29",
+    "Q30"
+  ],
+  "contracts": [
+    "CONTRACT_TABLET_SOVEREIGNTY",
+    "CONTRACT_IDEMPOTENT_SYNC",
+    "CONTRACT_MOBILE_TRUTHFULNESS",
+    "CONTRACT_CONTROL_AUDIT_ONLY",
+    "CONTRACT_NO_FAKE_GREEN",
+    "CONTRACT_NO_DESTRUCTIVE_TESTING_ON_REAL_DB",
+    "CONTRACT_CLOUDFLARE_OPTIONAL_BASE",
+    "CONTRACT_SCHEMA_MIGRATION_PARITY",
+    "CONTRACT_TRACEABLE_OPERATION",
+    "CONTRACT_RELEASE_EVIDENCE_REQUIRED",
+    "CONTRACT_PRISMA_NOT_POS_ONLY"
+  ],
+  "writeAllowlist": [
+    "F:\\descargasf\\PRISMA_QUALITY_OS_<runId>"
+  ],
+  "phaseExitRules": {
+    "noFakeGreen": true,
+    "tabletSovereigntyIsS0": true,
+    "cloudflareCannotBlockBase": true,
+    "realDbIsInspectOnly": true,
+    "everyPassRequiresEvidence": true,
+    "criticalSkippedGateBlocks": true
+  },
+  "calibration": {
+    "version": "v4",
+    "description": "Boundary scanner blocks hard runtime dependencies while treating plain vocabulary and documentation as evidence-only.",
+    "policy": "quality/policies/boundary-scan-policy.json"
+  },
+  "phase2": {
+    "name": "Runtime Gates & Operational Health",
+    "runtimeManifest": "quality/runtime/runtime-port-manifest.json",
+    "serviceOptionality": "quality/runtime/service-optionality.json",
+    "cloudflareStillOptional": true,
+    "startsServices": false,
+    "mutatesDatabase": false,
+    "newGates": [
+      "Q5",
+      "Q7",
+      "Q8",
+      "Q11",
+      "Q14"
+    ],
+    "version": "v6-final-repair",
+    "portPolicy": "Use PRISMA real local ports only. Do not invent generic Next.js ports.",
+    "expectedPrismaPorts": {
+      "engine": 3100,
+      "prisma-web-eit": 3110,
+      "tablet": 3120,
+      "pc": 3130,
+      "mobile": 3140,
+      "control-center": 3150,
+      "forms": 3200
+    },
+    "disabledUntilDiscovered": [
+      "chart-lab"
+    ],
+    "cliNoTopLevelAwait": true,
+    "cliKeepAliveWatchdog": true,
+    "cliEntryPoint": "quality/bin/prisma-quality.mjs",
+    "forbiddenGenericNextPorts": [
+      3000,
+      3001,
+      3002,
+      3003
+    ]
+  },
+  "phase3": {
+    "name": "Scenario Gates & Operational Playbooks",
+    "scenarioManifest": "quality/scenarios/scenario-manifest.json",
+    "scenarioRunner": "quality/core/scenario-runner.mjs",
+    "newGates": [
+      "Q16",
+      "Q17",
+      "Q18",
+      "Q19",
+      "Q20"
+    ],
+    "mutatesData": false,
+    "startsServices": false,
+    "requiresCloudflare": false,
+    "fakeGreenForbidden": true,
+    "industrialCRSIncluded": true
+  },
+  "phase4": {
+    "name": "Data Truth, Evidence Ledger & Audit Hardening",
+    "dataContractRegistry": "quality/data/data-contract-registry.json",
+    "dataTruthPolicy": "quality/policies/data-truth-policy.json",
+    "evidenceLedgerPolicy": "quality/policies/evidence-ledger-policy.json",
+    "newGates": [
+      "Q21",
+      "Q22",
+      "Q23",
+      "Q24",
+      "Q25"
+    ],
+    "mutatesData": false,
+    "startsServices": false,
+    "requiresCloudflare": false,
+    "fakeGreenForbidden": true,
+    "dataContractEnforced": true,
+    "evidenceLedgerImmutable": true,
+    "auditTrailRequired": true,
+    "corePrinciple": "Tablet opera. PC gobierna. Mobile supervisa. Core registra. Control audita."
+  },
+  "phase5": {
+    "id": "phase5-release-operator-readiness",
+    "name": "PRISMA PQOS Phase 5: Release & Operator Readiness",
+    "gates": [
+      "Q26",
+      "Q27",
+      "Q28",
+      "Q29",
+      "Q30"
+    ],
+    "docs": [
+      "quality/docs/phase-5-release-operator-readiness.md"
+    ],
+    "outputs": [
+      "F:/descargasf/PRISMA_PQOS_PHASE5_RELEASE_OPERATOR_READINESS_*_RESULT.zip"
+    ],
+    "rules": [
+      "No fake green",
+      "Optional local services offline are evidence, not warnings",
+      "Required services offline are blockers",
+      "No permanent PRISMA_LAUNCHER_RUNS in F:/descargasf"
+    ]
+  }
+}

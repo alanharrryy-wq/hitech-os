@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { existsSync, mkdirSync, readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { PrismaClient } from "@prisma/client";
 
 const appRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const projectRoot = path.resolve(appRoot, "..", "..", "..");
@@ -22,6 +22,52 @@ const lowStockThreshold = 5;
 
 const failures = [];
 
+function ensureTabletPrismaClient() {
+  const schemaPath = path.join(appRoot, "prisma", "schema.prisma");
+  const env = {
+    ...process.env,
+    DATABASE_URL: dbUrl,
+    TABLET_DATABASE_URL: dbUrl,
+    TABLET_APP_ROOT: appRoot
+  };
+  const launches = [];
+  const npmExecPath = process.env.npm_execpath;
+
+  if (npmExecPath && npmExecPath.toLowerCase().includes("pnpm")) {
+    launches.push({
+      label: `node ${npmExecPath} exec prisma generate --schema ${schemaPath}`,
+      bin: process.execPath,
+      args: [npmExecPath, "exec", "prisma", "generate", "--schema", schemaPath],
+      shell: false
+    });
+  }
+
+  launches.push({
+    label: `pnpm exec prisma generate --schema ${schemaPath}`,
+    bin: "pnpm",
+    args: ["exec", "prisma", "generate", "--schema", schemaPath],
+    shell: process.platform === "win32"
+  });
+
+  let lastResult = null;
+  for (const launch of launches) {
+    const result = spawnSync(launch.bin, launch.args, {
+      cwd: appRoot,
+      encoding: "utf8",
+      shell: launch.shell,
+      env
+    });
+
+    if (!result.error && result.status === 0) return;
+    lastResult = result;
+  }
+
+  const detail = lastResult
+    ? `${lastResult.error?.message ?? ""}\n${lastResult.stdout ?? ""}\n${lastResult.stderr ?? ""}`.trim()
+    : "No Prisma launcher was available.";
+  throw new Error(`Tablet Prisma Client generation failed.\n${detail}`);
+}
+
 function fail(message) {
   failures.push(message);
 }
@@ -39,9 +85,11 @@ function makeId(prefix) {
 }
 
 function makeEvent(topic, aggregateId, occurredAt, payload) {
+  const eventId = makeId("evt");
   return {
-    eventId: makeId("evt"),
+    eventId,
     topic,
+    idempotencyKey: `${topic}:${businessId}:${terminalId}:${aggregateId}:${eventId}`,
     businessId,
     terminalId,
     actorId: cashier,
@@ -108,6 +156,7 @@ async function bootstrapSchema(prisma) {
       sku TEXT NOT NULL,
       name TEXT NOT NULL,
       category TEXT NOT NULL,
+      brandId TEXT,
       priceCents INTEGER NOT NULL,
       costCents INTEGER NOT NULL,
       stockOnHand INTEGER NOT NULL DEFAULT 0,
@@ -143,6 +192,10 @@ async function bootstrapSchema(prisma) {
       qty INTEGER NOT NULL,
       reason TEXT NOT NULL,
       location TEXT NOT NULL,
+      beforeQty INTEGER,
+      afterQty INTEGER,
+      sourceType TEXT,
+      sourceId TEXT,
       createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
     )`,
     `CREATE TABLE IF NOT EXISTS CashSession (
@@ -170,7 +223,13 @@ async function bootstrapSchema(prisma) {
       clientRequestId TEXT,
       folio TEXT NOT NULL,
       cashier TEXT NOT NULL,
+      subtotalCents INTEGER NOT NULL DEFAULT 0,
+      discountCents INTEGER NOT NULL DEFAULT 0,
       totalCents INTEGER NOT NULL,
+      completedAt DATETIME,
+      paymentMethod TEXT NOT NULL DEFAULT 'cash',
+      cashReceivedCents INTEGER,
+      changeCents INTEGER NOT NULL DEFAULT 0,
       status TEXT NOT NULL,
       createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
     )`,
@@ -200,15 +259,21 @@ async function bootstrapSchema(prisma) {
     `CREATE TABLE IF NOT EXISTS OutboxEvent (
       id TEXT PRIMARY KEY,
       businessId TEXT NOT NULL,
+      terminalId TEXT,
       topic TEXT NOT NULL,
       aggregateId TEXT NOT NULL,
+      idempotencyKey TEXT,
       payloadJson TEXT NOT NULL,
+      source TEXT,
+      schemaVersion TEXT,
       status TEXT NOT NULL,
       attempts INTEGER NOT NULL DEFAULT 0,
       createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       sentAt DATETIME,
+      syncedAt DATETIME,
       lastError TEXT
-    )`
+    )`,
+    `CREATE INDEX IF NOT EXISTS OutboxEvent_businessId_idempotencyKey_idx ON OutboxEvent (businessId, idempotencyKey)`
   ];
 
   for (const statement of statements) {
@@ -377,6 +442,7 @@ async function completeLocalSale(prisma, clientRequestId = makeId("client_reques
           businessId,
           topic: event.topic,
           aggregateId: event.aggregateId,
+          idempotencyKey: event.idempotencyKey,
           payloadJson: JSON.stringify(event),
           status: "pending",
           createdAt: occurredAt
@@ -389,6 +455,9 @@ async function completeLocalSale(prisma, clientRequestId = makeId("client_reques
 }
 
 mkdirSync(tmpRoot, { recursive: true });
+
+ensureTabletPrismaClient();
+const { PrismaClient } = await import("@prisma/client");
 
 const prisma = new PrismaClient({
   datasources: {

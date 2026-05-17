@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1.0",
+  "profile": "prisma-terminal-local",
+  "repoRoot": "F:\\repos\\hitech-os",
+  "terminalRoot": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "services": [
+    {
+      "id": "prisma-web-3110",
+      "name": "PRISMA Web / EIT",
+      "port": 3110,
+      "localUrl": "http://127.0.0.1:3110/",
+      "lanUrl": "http://{lanIp}:3110/",
+      "healthPath": "/",
+      "alternateHealthPaths": [],
+      "contentProbe": {
+        "mode": "any",
+        "needles": ["PRISMA", "__NEXT_DATA__", "html"]
+      },
+      "startCommand": "pnpm -C \"F:\\repos\\hitech-os\\apps\\external_interaction_template\" run dev",
+      "cwd": "F:\\repos\\hitech-os\\apps\\external_interaction_template",
+      "requiredForLocal": true,
+      "requiredForCloudflare": true,
+      "criticality": "high",
+      "productRole": "admin-health",
+      "publicHost": "eit.hitechrts.com",
+      "notes": "3110 is the documented PRISMA Web / EIT origin. The Control Center can start it, but will not stop an unmanaged external_interaction_template process unless it was started and registered by this Control Center."
+    },
+    {
+      "id": "tablet-3120",
+      "name": "PRISMA Tablet Core",
+      "port": 3120,
+      "localUrl": "http://127.0.0.1:3120/",
+      "lanUrl": "http://{lanIp}:3120/",
+      "healthPath": "/",
+      "alternateHealthPaths": ["/pos"],
+      "contentProbe": {
+        "mode": "any",
+        "needles": ["PRISMA", "__NEXT_DATA__", "html"]
+      },
+      "startCommand": "pnpm -C \"F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\" run dev",
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app",
+      "requiredForLocal": true,
+      "requiredForCloudflare": true,
+      "criticality": "critical",
+      "productRole": "tablet-core",
+      "publicHost": "tablet.hitechrts.com"
+    },
+    {
+      "id": "pc-3130",
+      "name": "PRISMA PC Backoffice",
+      "port": 3130,
+      "localUrl": "http://127.0.0.1:3130/",
+      "lanUrl": "http://{lanIp}:3130/",
+      "healthPath": "/",
+      "alternateHealthPaths": [],
+      "contentProbe": {
+        "mode": "any",
+        "needles": ["PRISMA", "__NEXT_DATA__", "html"]
+      },
+      "startCommand": "pnpm -C \"F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app\" run dev",
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\pc\\app",
+      "requiredForLocal": true,
+      "requiredForCloudflare": true,
+      "criticality": "high",
+      "productRole": "pc-adder",
+      "publicHost": "pc.hitechrts.com"
+    },
+    {
+      "id": "mobile-3140",
+      "name": "PRISMA Mobile Adder",
+      "port": 3140,
+      "localUrl": "http://127.0.0.1:3140/",
+      "lanUrl": "http://{lanIp}:3140/",
+      "healthPath": "/",
+      "alternateHealthPaths": ["/prisma-app"],
+      "contentProbe": {
+        "mode": "any",
+        "needles": ["PRISMA", "__NEXT_DATA__", "html"]
+      },
+      "startCommand": "pnpm -C \"F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app\" run dev",
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\mobile\\app",
+      "requiredForLocal": true,
+      "requiredForCloudflare": true,
+      "criticality": "high",
+      "productRole": "mobile-adder",
+      "publicHost": "prisma.hitechrts.com"
+    }
+  ]
+}

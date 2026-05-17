@@ -10,6 +10,8 @@
     "inventory.low_stock_detected",
     "sale.cancelled",
     "sale.refunded",
+    "cash.session.opened",
+    "cash.movement.recorded",
     "shift.opened",
     "shift.closed",
     "stock.adjusted",
@@ -27,6 +29,19 @@
     "acked",
     "conflict"
   ],
+  "lifecycleStates": [
+    "created_local",
+    "queued",
+    "sent",
+    "received",
+    "validated",
+    "accepted",
+    "projected",
+    "reconciled",
+    "conflict",
+    "failed",
+    "dead_letter"
+  ],
   "conflictCodes": [
     "product_discontinued",
     "old_local_price",
@@ -40,14 +55,39 @@
   ],
   "envelopeFields": [
     "eventId",
+    "eventType",
     "topic",
+    "idempotencyKey",
     "businessId",
     "terminalId",
     "actorId",
     "source",
     "occurredAt",
     "payload",
-    "schemaVersion"
+    "schemaVersion",
+    "correlationId"
+  ],
+  "compatibilityMappings": [
+    {
+      "legacy": "topic",
+      "canonical": "eventType",
+      "meaning": "topic remains accepted for existing Tablet and PC code; eventType is the semantic event name required by the PRISMA event contract."
+    },
+    {
+      "legacy": "acked",
+      "canonical": "reconciled",
+      "meaning": "acked is a compatibility outbox status and only means reconciled when lifecycleStatus is reconciled after validation, acceptance, projection, and reconciliation."
+    },
+    {
+      "legacy": "shift.opened",
+      "canonical": "cash.session.opened",
+      "meaning": "shift.opened is accepted as a legacy cash-session-opened event."
+    },
+    {
+      "legacy": "shift.closed",
+      "canonical": "cash.movement.recorded",
+      "meaning": "shift.closed is accepted as a legacy cash-movement/cash-session close event when payload has cash movement data."
+    }
   ],
   "deprecatedAliases": [
     {

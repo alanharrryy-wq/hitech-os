@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0",
+  "id": "CONTRACT_RELEASE_EVIDENCE_REQUIRED",
+  "version": "1.0.0",
+  "title": "Release Evidence Required",
+  "description": "No release readiness claim may exist without evidence pack outputs.",
+  "layer": "Quality",
+  "defaultSeverity": "S2",
+  "blockingProfiles": [
+    "release"
+  ],
+  "ownedByGate": "Q15",
+  "requiredEvidenceTypes": [
+    "json",
+    "markdown",
+    "ledger"
+  ],
+  "failureExamples": [],
+  "phaseIntroduced": "phase-1"
+}

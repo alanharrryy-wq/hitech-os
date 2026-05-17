@@ -98,6 +98,7 @@ async function persistOutboxEvents(tx: TxClient, businessId: string, events: Pos
         businessId,
         topic: event.topic,
         aggregateId: event.aggregateId,
+        idempotencyKey: event.idempotencyKey ?? null,
         payloadJson: JSON.stringify(event),
         terminalId: event.terminalId,
         source: event.source,

@@ -35,11 +35,11 @@ export function PrismaMobilePwaInstallPage({ mode = "install" }: PrismaMobilePwa
                   <img src="/icons/prisma_whatsapp_install_icon.png" alt="" />
                   <span>PRISMA</span>
                 </div>
-                <h1 id="prisma-install-title">{offline ? "PRISMA sigue a la mano" : "Instala PRISMA"}</h1>
+                <h1 id="prisma-install-title">{offline ? "Supervisión móvil offline" : "Instala PRISMA Mobile para supervisar"}</h1>
                 <p>
                   {offline
-                    ? "Esta pantalla queda como respaldo cuando la red se pone payasa."
-                    : "Elige tu dispositivo para instalar la app."}
+                    ? "Esta pantalla es respaldo visual. Tablet Solo vende sola sin Mobile, PC, Cloudflare ni internet."
+                    : "Mobile supervisa. Tablet Solo vende sola. La instalación PWA es un adder premium; no es requisito para vender."}
                 </p>
               </header>
 

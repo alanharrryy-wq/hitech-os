@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "id": "CONTRACT_CLOUDFLARE_OPTIONAL_BASE",
+  "version": "1.0.0",
+  "title": "Cloudflare Optional Base",
+  "description": "Cloudflare may have its own profile, but it must never block base commit, PR, or release gates unless explicitly requested.",
+  "layer": "Infrastructure",
+  "defaultSeverity": "S1",
+  "blockingProfiles": [
+    "commit",
+    "pr",
+    "release"
+  ],
+  "ownedByGate": "Q15",
+  "requiredEvidenceTypes": [
+    "json",
+    "markdown",
+    "ledger"
+  ],
+  "failureExamples": [],
+  "phaseIntroduced": "phase-1"
+}

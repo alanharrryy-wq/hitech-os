@@ -1,0 +1,100 @@
+/* === PRISMA RELEASE POLISH SCORE CLEANUP START === */
+/* PATCH_ID: PRISMA_RELEASE_POLISH_CLEAN_FIXED_20260511_B
+   Score-specific polish was removed from this file.
+   The main stylesheet owns the clean score text presentation.
+*/
+/* === PRISMA RELEASE POLISH SCORE CLEANUP END === */
+/* PRISMA Iteration 5 - Ultra Polish + Release */
+:root{--release-glow:0 0 42px rgba(8,109,255,.22);--release-ring:linear-gradient(135deg,rgba(8,109,255,.35),rgba(115,229,255,.20),rgba(255,255,255,.45))}.release-dock{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:30;display:flex;gap:10px;align-items:center;padding:10px;border:1px solid rgba(23,45,78,.14);border-radius:999px;background:rgba(255,255,255,.74);backdrop-filter:blur(22px);box-shadow:0 20px 60px rgba(8,43,96,.18),inset 0 1px 0 rgba(255,255,255,.95)}.release-dock button,.release-dock a{min-height:38px;padding:8px 13px}.release-dot{width:12px;height:12px;border-radius:999px;background:var(--green);box-shadow:0 0 0 6px rgba(19,185,129,.12),0 0 22px rgba(19,185,129,.42)}.release-dot.warn{background:var(--amber);box-shadow:0 0 0 6px rgba(229,155,42,.12),0 0 22px rgba(229,155,42,.42)}.release-dot.fail{background:var(--red);box-shadow:0 0 0 6px rgba(223,61,47,.12),0 0 22px rgba(223,61,47,.42)}.release-panel{grid-column:1/-1;padding:22px}.release-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.release-scoreboard{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:18px}.release-tile{padding:14px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.72);box-shadow:inset 0 1px 0 #fff}.release-tile small{display:block;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;font-size:10px;font-weight:900}.release-tile strong{display:block;font-size:22px;margin-top:6px}.release-checklist{display:grid;gap:9px}.release-check{display:flex;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.68)}.release-check b{font-weight:900}.release-terminal{max-height:360px;overflow:auto;background:rgba(6,20,48,.94);color:#d8ebff;border-radius:18px;padding:14px;font-size:12px}.release-shimmer{position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 0 40%,rgba(255,255,255,.45) 48%,transparent 56%);transform:translateX(-120%);animation:releaseSweep 9s ease-in-out infinite}.glass-card:hover{box-shadow:var(--shadow),var(--release-glow);border-color:rgba(8,109,255,.20)}.command-bar:after{content:"";position:absolute;left:24px;right:24px;bottom:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--cyan),transparent);opacity:.72}
+
+.state-chip{transition:transform .18s ease,box-shadow .18s ease}.state-chip:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(8,109,255,.10)}body.release-ready .command-bar{box-shadow:var(--shadow),0 0 0 1px rgba(19,185,129,.10),0 26px 80px rgba(19,185,129,.12)}body.release-warning .command-bar{box-shadow:var(--shadow),0 0 0 1px rgba(229,155,42,.14),0 26px 80px rgba(229,155,42,.12)}@keyframes releaseSweep{0%,45%{transform:translateX(-120%)}72%,100%{transform:translateX(120%)}}@media(max-width:1100px){.release-grid{grid-template-columns:1fr}.release-scoreboard{grid-template-columns:repeat(2,1fr)}.release-dock{left:12px;right:12px;transform:none;justify-content:center;flex-wrap:wrap;border-radius:24px}}@media(max-width:640px){.release-scoreboard{grid-template-columns:1fr}.release-dock{position:static;margin:12px;transform:none}.release-panel{padding:16px}}
+
+/* === PRISMA RELEASE DOCK LIQUID STATUS START === */
+/* PATCH_ID: PRISMA_RICH_BG_OPERATOR_PATCH_PY_20260513_A */
+:root{
+  --dock-state:#086dff;
+  --dock-state-2:#36c8ff;
+  --dock-state-rgb:8,109,255;
+}
+body[data-status="pass"],body[data-status="ok"]{
+  --dock-state:#086dff;
+  --dock-state-2:#36c8ff;
+  --dock-state-rgb:8,109,255;
+}
+body[data-status="degraded"],body[data-status="warn"],body[data-status="warning"]{
+  --dock-state:#e59b2a;
+  --dock-state-2:#ffbd5c;
+  --dock-state-rgb:229,155,42;
+}
+body[data-status="fail"],body[data-status="blocked"],body[data-status="error"]{
+  --dock-state:#df3d2f;
+  --dock-state-2:#ff6b5f;
+  --dock-state-rgb:223,61,47;
+}
+.release-dock{
+  z-index:120 !important;
+  padding:8px !important;
+  gap:10px !important;
+  border-radius:999px !important;
+  border:1px solid rgba(255,255,255,.38) !important;
+  background:
+    radial-gradient(circle at 12% 10%,rgba(255,255,255,.54),transparent 32%),
+    radial-gradient(circle at 86% 110%,rgba(var(--dock-state-rgb),.105),transparent 38%),
+    linear-gradient(145deg,rgba(255,255,255,.48),rgba(255,255,255,.20)) !important;
+  box-shadow:
+    0 22px 62px rgba(var(--dock-state-rgb),.13),
+    0 10px 30px rgba(8,54,124,.10),
+    inset 0 1px 0 rgba(255,255,255,.78),
+    inset 0 -12px 22px rgba(3,24,61,.045) !important;
+  backdrop-filter:blur(22px) saturate(1.42) contrast(1.08) !important;
+  -webkit-backdrop-filter:blur(22px) saturate(1.42) contrast(1.08) !important;
+}
+.release-dock::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  padding:1px;
+  pointer-events:none;
+  background:linear-gradient(118deg,rgba(255,255,255,.86),var(--dock-state-2),rgba(117,87,255,.30),rgba(255,255,255,.72));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  opacity:.86;
+}
+.release-dock button,
+.release-dock a{
+  min-height:42px !important;
+  padding:9px 17px !important;
+  border-radius:999px !important;
+  border:1px solid rgba(var(--dock-state-rgb),.22) !important;
+  color:var(--dock-state) !important;
+  font-weight:900 !important;
+  text-decoration:none !important;
+  background:
+    radial-gradient(circle at 24% 12%,rgba(255,255,255,.58),transparent 34%),
+    linear-gradient(145deg,rgba(255,255,255,.42),rgba(255,255,255,.18)) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.74),0 10px 26px rgba(var(--dock-state-rgb),.08) !important;
+}
+.release-dock button:hover,
+.release-dock a:hover{
+  transform:translateY(-1px);
+  border-color:rgba(var(--dock-state-rgb),.36) !important;
+  box-shadow:0 16px 36px rgba(var(--dock-state-rgb),.14),inset 0 1px 0 rgba(255,255,255,.78) !important;
+}
+.release-dot{
+  background:var(--dock-state) !important;
+  box-shadow:0 0 0 7px rgba(var(--dock-state-rgb),.11),0 0 24px rgba(var(--dock-state-rgb),.42) !important;
+}
+.release-dot.warn{
+  background:#e59b2a !important;
+  box-shadow:0 0 0 7px rgba(229,155,42,.11),0 0 24px rgba(229,155,42,.42) !important;
+}
+.release-dot.fail{
+  background:#df3d2f !important;
+  box-shadow:0 0 0 7px rgba(223,61,47,.11),0 0 24px rgba(223,61,47,.42) !important;
+}
+@media(max-width:1100px){
+  .release-dock{border-radius:26px !important;bottom:12px !important}
+}
+/* === PRISMA RELEASE DOCK LIQUID STATUS END === */

@@ -1,15 +1,19 @@
 import crypto from "node:crypto";
+import { SHARED_SYNC_LIFECYCLE_STATES } from "@shared-kernel/sync/events";
 
 export const REQUIRED_SYNC_EVENT_FIELDS = [
   "eventId",
+  "eventType",
   "topic",
+  "idempotencyKey",
   "businessId",
   "terminalId",
   "actorId",
   "source",
   "occurredAt",
   "payload",
-  "schemaVersion"
+  "schemaVersion",
+  "correlationId"
 ] as const;
 
 export const RECOGNIZED_SYNC_TOPICS = [
@@ -20,6 +24,8 @@ export const RECOGNIZED_SYNC_TOPICS = [
   "inventory.low_stock_detected",
   "sale.cancelled",
   "sale.refunded",
+  "cash.session.opened",
+  "cash.movement.recorded",
   "shift.opened",
   "shift.closed",
   "stock.adjusted",
@@ -32,6 +38,8 @@ export const RECOGNIZED_SYNC_TOPICS = [
 ] as const;
 
 export const SUPPORTED_SYNC_SCHEMA_VERSIONS = ["1.0.0"] as const;
+export const SYNC_LIFECYCLE_STATES = SHARED_SYNC_LIFECYCLE_STATES;
+export type SyncLifecycleState = (typeof SYNC_LIFECYCLE_STATES)[number];
 
 export type SyncEventStatus = "accepted" | "duplicate" | "conflict" | "rejected";
 export type SyncConflictSeverity = "warning" | "conflict" | "rejected";
@@ -45,7 +53,9 @@ export type SyncConflictFinding = {
 
 export type SyncEventEnvelope = {
   eventId: string;
+  eventType: string;
   topic: string;
+  idempotencyKey: string;
   businessId: string;
   terminalId: string;
   actorId: string;
@@ -54,14 +64,18 @@ export type SyncEventEnvelope = {
   payload: Record<string, unknown>;
   schemaVersion: string;
   aggregateId?: string;
+  correlationId?: string;
 };
 
 export type SyncIngestResult = {
   eventId: string | null;
   topic: string | null;
   status: SyncEventStatus;
+  lifecycleStatus?: SyncLifecycleState;
   conflicts: SyncConflictFinding[];
   errors: string[];
+  diagnostics?: string[];
+  projectedModels?: string[];
 };
 
 export type SyncIngestClassification = {
@@ -71,7 +85,9 @@ export type SyncIngestClassification = {
   summary: Record<SyncEventStatus, number>;
   meta: {
     persistence: "dry_run" | "outbox_event";
-    idempotencyKey: "eventId";
+    durable?: boolean;
+    storageModel?: string;
+    idempotencyKey: "eventId" | "idempotencyKey";
     recognizedTopics: readonly string[];
     supportedSchemaVersions: readonly string[];
     note: string;
@@ -149,6 +165,10 @@ function payloadConflicts(event: SyncEventEnvelope): SyncConflictFinding[] {
   return conflicts;
 }
 
+export function canonicalEventType(input: Record<string, unknown>) {
+  return asString(input.eventType) || asString(input.topic);
+}
+
 export function getSyncConflictCatalog(): SyncConflictFinding[] {
   return Object.values(SYNC_CONFLICT_CATALOG).map((item) => ({
     ...item,
@@ -163,10 +183,13 @@ export function validateSyncEventEnvelope(input: unknown): { event: SyncEventEnv
     return { event: null, errors: ["El evento debe ser objeto JSON."], conflicts: [conflict("invalid_schema", "La entrada no es objeto JSON.")] };
   }
   for (const field of REQUIRED_SYNC_EVENT_FIELDS) {
+    if (field === "eventType" || field === "topic" || field === "idempotencyKey" || field === "correlationId") continue;
     if (!(field in input)) errors.push(`Falta campo requerido: ${field}.`);
   }
   const eventId = asString(input.eventId);
-  const topic = asString(input.topic);
+  const topic = canonicalEventType(input);
+  const eventType = topic;
+  const idempotencyKey = asString(input.idempotencyKey) || eventId;
   const businessId = asString(input.businessId);
   const terminalId = asString(input.terminalId);
   const actorId = asString(input.actorId);
@@ -175,9 +198,11 @@ export function validateSyncEventEnvelope(input: unknown): { event: SyncEventEnv
   const schemaVersion = asString(input.schemaVersion);
   const payload = isRecord(input.payload) ? input.payload : null;
   const aggregateId = asString(input.aggregateId);
+  const correlationId = asString(input.correlationId);
 
   if (!eventId) errors.push("eventId debe ser texto no vacío.");
-  if (!topic) errors.push("topic debe ser texto no vacío.");
+  if (!topic) errors.push("eventType/topic debe ser texto no vacío.");
+  if (!idempotencyKey) errors.push("idempotencyKey debe ser texto no vacío o resolverse desde eventId.");
   if (!businessId) errors.push("businessId debe ser texto no vacío.");
   if (!terminalId) errors.push("terminalId debe ser texto no vacío.");
   if (!actorId) errors.push("actorId debe ser texto no vacío.");
@@ -195,7 +220,21 @@ export function validateSyncEventEnvelope(input: unknown): { event: SyncEventEnv
   if (errors.length > 0 || conflicts.some((item) => item.severity === "rejected")) {
     return { event: null, errors, conflicts: conflicts.length ? conflicts : [conflict("invalid_schema", "Evento inválido por contrato mínimo.")] };
   }
-  const event: SyncEventEnvelope = { eventId, topic, businessId, terminalId, actorId, source, occurredAt, payload: payload ?? {}, schemaVersion, ...(aggregateId ? { aggregateId } : {}) };
+  const event: SyncEventEnvelope = {
+    eventId,
+    eventType,
+    topic,
+    idempotencyKey,
+    businessId,
+    terminalId,
+    actorId,
+    source,
+    occurredAt,
+    payload: payload ?? {},
+    schemaVersion,
+    ...(aggregateId ? { aggregateId } : {}),
+    ...(correlationId ? { correlationId } : {})
+  };
   return { event, errors, conflicts: payloadConflicts(event) };
 }
 
@@ -219,17 +258,17 @@ export function classifySyncIngestPayload(input: unknown): SyncIngestClassificat
   for (const candidate of candidates) {
     const validation = validateSyncEventEnvelope(candidate);
     const eventId = isRecord(candidate) ? asString(candidate.eventId) || null : null;
-    const topic = isRecord(candidate) ? asString(candidate.topic) || null : null;
-    if (validation.event && seen.has(validation.event.eventId)) {
-      results.push({ eventId: validation.event.eventId, topic: validation.event.topic, status: "duplicate", conflicts: [conflict("duplicate_event", "El eventId aparece repetido dentro del mismo lote.")], errors: [] });
+    const topic = isRecord(candidate) ? canonicalEventType(candidate) || null : null;
+    if (validation.event && seen.has(validation.event.idempotencyKey)) {
+      results.push({ eventId: validation.event.eventId, topic: validation.event.topic, status: "duplicate", lifecycleStatus: "received", conflicts: [conflict("duplicate_event", "El idempotencyKey aparece repetido dentro del mismo lote.")], errors: [] });
       continue;
     }
     if (!validation.event) {
       results.push({ eventId, topic, status: "rejected", conflicts: validation.conflicts, errors: validation.errors });
       continue;
     }
-    seen.add(validation.event.eventId);
-    results.push({ eventId: validation.event.eventId, topic: validation.event.topic, status: validation.conflicts.length ? "conflict" : "accepted", conflicts: validation.conflicts, errors: [] });
+    seen.add(validation.event.idempotencyKey);
+    results.push({ eventId: validation.event.eventId, topic: validation.event.topic, status: validation.conflicts.length ? "conflict" : "accepted", lifecycleStatus: validation.conflicts.length ? "conflict" : "validated", conflicts: validation.conflicts, errors: [] });
   }
   const sum = summary(results);
   return {
@@ -239,7 +278,7 @@ export function classifySyncIngestPayload(input: unknown): SyncIngestClassificat
     summary: sum,
     meta: {
       persistence: "dry_run",
-      idempotencyKey: "eventId",
+      idempotencyKey: "idempotencyKey",
       recognizedTopics: RECOGNIZED_SYNC_TOPICS,
       supportedSchemaVersions: SUPPORTED_SYNC_SCHEMA_VERSIONS,
       note: "Clasificación sin persistencia. Usa POST sin dryRun para persistir en OutboxEvent."

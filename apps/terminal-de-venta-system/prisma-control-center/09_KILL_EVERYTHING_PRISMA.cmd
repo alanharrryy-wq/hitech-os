@@ -1,0 +1,25 @@
+@echo off
+setlocal EnableExtensions
+set "PCC_ROOT=%~dp0"
+
+echo.
+echo ============================================================
+echo PRISMA - KILL EVERYTHING
+echo Libera 3000,3100,3110,3120,3130,3140,3150,3200. No levanta servicios.
+echo Puertos: 3000 Chart Lab, 3110 Web/EIT, 3120 Tablet, 3130 PC, 3140 Mobile, 3150 Control
+echo ZIP: F:\descargasf
+echo Root: %PCC_ROOT%
+echo ============================================================
+echo.
+
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File "%PCC_ROOT%internal\wrappers\kill_everything.ps1" %*
+set "RC=%ERRORLEVEL%"
+
+if not "%RC%"=="0" (
+  echo.
+  echo [ERROR] PRISMA - KILL EVERYTHING fallo con exit code %RC%.
+  echo Revisa el ZIP mas reciente en F:\descargasf
+  pause
+)
+
+exit /b %RC%
