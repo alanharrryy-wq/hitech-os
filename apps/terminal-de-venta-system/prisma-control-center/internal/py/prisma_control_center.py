@@ -116,9 +116,9 @@ def _expected_structure() -> list[Path]:
     return [
         base / "01_LEVANTAR_TODO_LOCAL.cmd",
         base / "02_LEVANTAR_TODO_CLOUDFLARE.cmd",
-        base / "03_CHECAR_SALUD_LOCAL_Y_CLOUDFLARE.cmd",
-        base / "04_LEVANTAR_LOCAL_LUEGO_CLOUDFLARE.cmd",
-        base / "05_ABRIR_PANEL_CONTROL_3150.cmd",
+        base / "03_LEVANTAR_TODO_LOCAL_Y_CLOUDFLARE.cmd",
+        base / "04_DIAGNOSTICO_LOCAL_Y_CLOUDFLARE.cmd",
+        base / "07_ABRIR_PANEL_CONTROL_3150.cmd",
         base / "README_OPERADOR.md",
         base / "internal" / "py" / "prisma_control_center.py",
         base / "internal" / "py" / "services_registry.py",

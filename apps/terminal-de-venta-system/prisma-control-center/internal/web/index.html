@@ -19,6 +19,18 @@
   <!-- PRISMA_ULTRA_POLISH_RELEASE_ITER5_HTML_END -->
 </head>
 <body data-prisma="crystal-ops" data-status="empty">
+  <!-- === PRISMA LIQUID CAPSULE SVG START === -->
+  <!-- PATCH_ID: PRISMA_LIQUID_CAPSULE_NAV_20260513_A -->
+  <svg class="prisma-liquid-filter" width="0" height="0" aria-hidden="true" focusable="false">
+    <filter id="prisma-capsule-edge-refraction" x="-30%" y="-120%" width="160%" height="340%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.006 0.030" numOctaves="1" seed="41" result="noise" />
+      <feGaussianBlur in="noise" stdDeviation="0.50" result="softNoise" />
+      <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="4" xChannelSelector="R" yChannelSelector="G" result="displaced" />
+    </filter>
+  </svg>
+  <!-- === PRISMA LIQUID CAPSULE SVG END === -->
+
+
   <div class="crystal-atmosphere" aria-hidden="true"><i></i><i></i><i></i></div>
 
   <div class="app-shell">
@@ -29,12 +41,12 @@
       </a>
 
       <nav class="nav-stack" aria-label="Vistas">
-        <button class="nav-item active" data-view="overview" type="button"><span>01</span>Resumen</button>
-        <button class="nav-item" data-view="services" type="button"><span>02</span>Servicios</button>
-        <button class="nav-item" data-view="incidents" type="button"><span>03</span>Incidentes</button>
-        <button class="nav-item" data-view="blackbox" type="button"><span>04</span>Black-box</button>
-        <button class="nav-item" data-view="cloudflare" type="button"><span>05</span>Cloudflare</button>
-        <button class="nav-item" data-view="reports" type="button"><span>06</span>Reportes</button>
+        <a class="nav-item active" data-view="overview" aria-controls="overview" data-anchor="#overview" href="#overview" role="button" tabindex="0">Resumen</a>
+        <a class="nav-item" data-view="services" aria-controls="services" data-anchor="#services" href="#services" role="button" tabindex="0">Servicios</a>
+        <a class="nav-item" data-view="incidents" aria-controls="incidents" data-anchor="#incidents" href="#incidents" role="button" tabindex="0">Incidentes</a>
+        <a class="nav-item" data-view="blackbox" aria-controls="blackbox" data-anchor="#blackbox" href="#blackbox" role="button" tabindex="0">Black-box</a>
+        <a class="nav-item" data-view="cloudflare" aria-controls="cloudflare" data-anchor="#cloudflare" href="#cloudflare" role="button" tabindex="0">Cloudflare</a>
+        <a class="nav-item" data-view="reports" aria-controls="reports" data-anchor="#reports" href="#reports" role="button" tabindex="0">Reportes</a>
       </nav>
 
       <section class="rail-status glass-card" aria-label="Estado resumido">
@@ -66,7 +78,7 @@
         </div>
       </header>
 
-      <section class="dashboard-grid" id="overview" data-panel="overview">
+      <section class="dashboard-grid" id="overview" data-panel="overview" tabindex="-1">
         <article class="hero-core glass-card scan-card">
           <div class="hero-copy">
             <p class="eyebrow">Nucleo operativo</p>
@@ -100,35 +112,37 @@
 
 
 
-      <section class="workspace-grid">
-        <article class="glass-card span-2" id="services" data-panel="services">
-          <div class="card-heading"><div><p class="eyebrow">Matriz de servicios</p><h3>Puertos, origenes y salud</h3></div><span id="services-status" class="state-chip subtle">sin datos</span></div>
-          <div class="service-matrix" id="service-matrix"></div>
-        </article>
 
-        <article class="glass-card" id="incidents" data-panel="incidents">
-          <div class="card-heading"><div><p class="eyebrow">Incidente activo</p><h3>Black-box alert rail</h3></div><span id="incident-count" class="state-chip subtle">0</span></div>
-          <div id="incident-spotlight" class="incident-spotlight empty">Sin incidentes activos.</div>
-        </article>
 
-        <article class="glass-card" id="blackbox" data-panel="blackbox">
-          <div class="card-heading"><div><p class="eyebrow">Black-box</p><h3>Puente y memoria</h3></div><span id="blackbox-chip" class="state-chip subtle">pendiente</span></div>
-          <div class="soft-list" id="blackbox-list"></div>
-        </article>
-
-        <article class="glass-card span-2" id="cloudflare" data-panel="cloudflare">
-          <div class="card-heading"><div><p class="eyebrow">Cloudflare route map</p><h3>Tunel, DNS y endpoints publicos</h3></div><span id="cloudflare-chip" class="state-chip subtle">EMPTY</span></div>
-          <div class="route-grid" id="route-grid"></div>
-        </article>
-
-        <article class="glass-card" id="reports" data-panel="reports">
-          <div class="card-heading"><div><p class="eyebrow">Acciones seguras</p><h3>Cabina de operador</h3></div><span class="state-chip subtle">read-only</span></div>
+      <article class="glass-card operator-cockpit" id="reports" data-panel="reports" tabindex="-1">
+          <div class="card-heading"><div><p class="eyebrow">Operator Brief</p><h3>Cabina del operador</h3></div><span class="state-chip subtle">read-only</span></div>
           <div class="action-grid">
             <button id="refresh-button" type="button">Refresh now</button>
             <button id="pause-button" type="button">Pause</button>
             <button id="copy-brief" type="button">Copy brief</button>
             <a href="/latest/health.html" target="_blank" rel="noreferrer">Open report</a>
           </div>
+        </article>
+
+      <section class="workspace-grid">
+        <article class="glass-card span-2" id="services" data-panel="services" tabindex="-1">
+          <div class="card-heading"><div><p class="eyebrow">Matriz de servicios</p><h3>Puertos, origenes y salud</h3></div><span id="services-status" class="state-chip subtle">sin datos</span></div>
+          <div class="service-matrix" id="service-matrix"></div>
+        </article>
+
+        <article class="glass-card" id="incidents" data-panel="incidents" tabindex="-1">
+          <div class="card-heading"><div><p class="eyebrow">Incidente activo</p><h3>Black-box alert rail</h3></div><span id="incident-count" class="state-chip subtle">0</span></div>
+          <div id="incident-spotlight" class="incident-spotlight empty">Sin incidentes activos.</div>
+        </article>
+
+        <article class="glass-card" id="blackbox" data-panel="blackbox" tabindex="-1">
+          <div class="card-heading"><div><p class="eyebrow">Black-box</p><h3>Puente y memoria</h3></div><span id="blackbox-chip" class="state-chip subtle">pendiente</span></div>
+          <div class="soft-list" id="blackbox-list"></div>
+        </article>
+
+        <article class="glass-card span-2" id="cloudflare" data-panel="cloudflare" tabindex="-1">
+          <div class="card-heading"><div><p class="eyebrow">Cloudflare route map</p><h3>Tunel, DNS y endpoints publicos</h3></div><span id="cloudflare-chip" class="state-chip subtle">EMPTY</span></div>
+          <div class="route-grid" id="route-grid"></div>
         </article>
       </section>
 
@@ -141,7 +155,7 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="/app.js"></script>
+  <script src="/app.js?v=pcc-ui-fix-20260513_162109"></script>
   <!-- PRISMA_BLACKBOX_COMMAND_ITER3_SCRIPT_BEGIN -->
   <script src="/blackbox_command.js"></script>
   <!-- PRISMA_BLACKBOX_COMMAND_ITER3_SCRIPT_END -->
@@ -151,5 +165,233 @@
   <!-- PRISMA_ULTRA_POLISH_RELEASE_ITER5_SCRIPT_BEGIN -->
   <script src="/release_console.js"></script>
   <!-- PRISMA_ULTRA_POLISH_RELEASE_ITER5_SCRIPT_END -->
+<!-- === PRISMA NAV CAPSULE HARDFIX START === -->
+  <!-- PATCH_ID: PRISMA_NAV_CAPSULE_HARDFIX_20260513_A -->
+  <script id="prisma-nav-capsule-hardfix">
+  (function(){
+    "use strict";
+
+    const PATCH_ID = "PRISMA_NAV_CAPSULE_HARDFIX_20260513_A";
+    const VIEWS = ["overview","services","incidents","blackbox","cloudflare","reports"];
+    const ALIASES = {
+      resumen:"overview",
+      overview:"overview",
+      servicios:"services",
+      services:"services",
+      incidentes:"incidents",
+      incidents:"incidents",
+      blackbox:"blackbox",
+      "black-box":"blackbox",
+      cloudflare:"cloudflare",
+      reportes:"reports",
+      reports:"reports"
+    };
+
+    function cleanView(value){
+      const raw = String(value || "").trim().replace(/^#/, "").toLowerCase();
+      return ALIASES[raw] || raw || "overview";
+    }
+
+    function navItems(){
+      return Array.from(document.querySelectorAll(".nav-stack .nav-item, .nav-item[data-view]"));
+    }
+
+    function escapeCss(value){
+      if (window.CSS && CSS.escape) return CSS.escape(value);
+      return String(value).replace(/[^a-zA-Z0-9_-]/g, "\$&");
+    }
+
+    function findPanel(view){
+      const safe = cleanView(view);
+      return (
+        document.querySelector('[data-panel="' + escapeCss(safe) + '"]') ||
+        document.getElementById(safe) ||
+        document.querySelector('#' + escapeCss(safe))
+      );
+    }
+
+    function findScrollableParent(el){
+      let node = el && el.parentElement;
+      while (node && node !== document.body && node !== document.documentElement) {
+        const style = getComputedStyle(node);
+        const overflowY = style.overflowY;
+        const canScroll = /(auto|scroll|overlay)/.test(overflowY) && node.scrollHeight > node.clientHeight + 12;
+        if (canScroll) return node;
+        node = node.parentElement;
+      }
+      return document.scrollingElement || document.documentElement;
+    }
+
+    function stickyOffset(){
+      const nav = document.querySelector(".nav-stack");
+      const command = document.querySelector(".command-bar");
+      const navRect = nav ? nav.getBoundingClientRect() : {height:0,bottom:0};
+      const commandRect = command ? command.getBoundingClientRect() : {bottom:0};
+      const visibleBottom = Math.max(
+        0,
+        Math.min(window.innerHeight, navRect.bottom || 0),
+        Math.min(window.innerHeight, commandRect.bottom || 0)
+      );
+      return Math.max(86, Math.ceil(visibleBottom + 18), Math.ceil((navRect.height || 0) + 34));
+    }
+
+    function setActive(view){
+      const safe = cleanView(view);
+      navItems().forEach((item) => {
+        const itemView = cleanView(item.dataset.view || item.getAttribute("href") || item.textContent);
+        const active = itemView === safe;
+        item.classList.toggle("active", active);
+        item.setAttribute("aria-current", active ? "page" : "false");
+        item.setAttribute("aria-pressed", active ? "true" : "false");
+      });
+    }
+
+    function prepareDom(){
+      navItems().forEach((item) => {
+        const view = cleanView(item.dataset.view || item.getAttribute("href") || item.textContent);
+        item.dataset.view = view;
+        item.dataset.anchor = "#" + view;
+        item.setAttribute("aria-controls", view);
+
+        if (item.tagName.toLowerCase() === "a") {
+          item.setAttribute("href", "#" + view);
+          item.setAttribute("role", "button");
+        } else {
+          item.setAttribute("type", "button");
+        }
+      });
+
+      VIEWS.forEach((view) => {
+        const panel = findPanel(view);
+        if (panel) {
+          if (!panel.id) panel.id = view;
+          panel.setAttribute("tabindex", panel.getAttribute("tabindex") || "-1");
+          panel.style.scrollMarginTop = stickyOffset() + "px";
+        }
+      });
+    }
+
+    function scrollWindowTo(target, instant){
+      const offset = stickyOffset();
+      const y = Math.max(0, Math.round(target.getBoundingClientRect().top + window.pageYOffset - offset));
+      window.scrollTo({ top:y, behavior: instant ? "auto" : "smooth" });
+    }
+
+    function scrollContainerTo(container, target, instant){
+      const offset = stickyOffset();
+      if (container === document.scrollingElement || container === document.documentElement || container === document.body) {
+        scrollWindowTo(target, instant);
+        return;
+      }
+
+      const cRect = container.getBoundingClientRect();
+      const tRect = target.getBoundingClientRect();
+      const y = Math.max(0, Math.round(container.scrollTop + tRect.top - cRect.top - offset));
+      container.scrollTo({ top:y, behavior: instant ? "auto" : "smooth" });
+    }
+
+    function go(view, opts){
+      prepareDom();
+
+      const safe = cleanView(view);
+      const target = findPanel(safe);
+
+      setActive(safe);
+
+      if (!target) {
+        console.warn("[PRISMA nav hardfix] No existe panel para", safe, PATCH_ID);
+        return false;
+      }
+
+      try { localStorage.setItem("prisma-crystal-ops-view-v2", safe); } catch (_) {}
+
+      try {
+        history.replaceState({ prismaView:safe, patch:PATCH_ID }, "", "#" + safe);
+      } catch (_) {}
+
+      const container = findScrollableParent(target);
+      scrollContainerTo(container, target, opts && opts.instant);
+
+      // Doble ajuste: muchos layouts sticky se acomodan una fraccion despues.
+      window.setTimeout(() => {
+        const c2 = findScrollableParent(target);
+        scrollContainerTo(c2, target, true);
+        try { target.focus({preventScroll:true}); } catch (_) {}
+      }, opts && opts.instant ? 40 : 360);
+
+      return true;
+    }
+
+    function onNavClick(event){
+      const item = event.target && event.target.closest ? event.target.closest(".nav-item") : null;
+      if (!item) return;
+
+      const view = item.dataset.view || item.getAttribute("href") || item.getAttribute("aria-controls") || "overview";
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+      go(view);
+    }
+
+    function diag(){
+      prepareDom();
+      const rows = navItems().map((item) => {
+        const view = cleanView(item.dataset.view || item.getAttribute("href") || item.textContent);
+        const target = findPanel(view);
+        return {
+          label: (item.textContent || "").trim(),
+          tag: item.tagName,
+          view,
+          href: item.getAttribute("href"),
+          targetFound: !!target,
+          targetTag: target ? target.tagName : null,
+          targetId: target ? target.id : null,
+          targetPanel: target ? target.getAttribute("data-panel") : null
+        };
+      });
+      console.table(rows);
+      return rows;
+    }
+
+    document.addEventListener("click", onNavClick, true);
+    document.addEventListener("keydown", function(event){
+      const item = event.target && event.target.closest ? event.target.closest(".nav-item") : null;
+      if (!item) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      go(item.dataset.view || item.getAttribute("href") || "overview");
+    }, true);
+
+    document.addEventListener("wheel", function(event){
+      const nav = event.target && event.target.closest ? event.target.closest(".nav-stack") : null;
+      if (!nav) return;
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      nav.scrollLeft += event.deltaY;
+      event.preventDefault();
+    }, {capture:true, passive:false});
+
+    window.showView = go;
+    window.PRISMA_NAV_HARDFIX = {
+      patchId: PATCH_ID,
+      go,
+      diag,
+      prepareDom
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", prepareDom);
+    } else {
+      prepareDom();
+    }
+
+    window.addEventListener("hashchange", function(){
+      const view = cleanView(location.hash || "overview");
+      go(view, {instant:false});
+    });
+
+    console.info("[PRISMA nav hardfix] loaded", PATCH_ID);
+  })();
+  </script>
+  <!-- === PRISMA NAV CAPSULE HARDFIX END === -->
 </body>
 </html>
