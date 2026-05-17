@@ -38,6 +38,8 @@
     "prisma:charts:atlas:verify": "node tools/verify_prisma_chart_atlas_01.mjs",
     "prisma:echarts:verify": "node tools/verify_prisma_echarts_pack_01.mjs",
     "prisma:event-sync:verify": "node tools/verify_prisma_event_sync_architecture_01.mjs",
+    "verify:product-integrity": "node tools/verify_prisma_product_integrity.mjs",
+    "verify:round2": "node tools/verify_prisma_round2_productization.mjs",
     "report:wave": "node scripts/create-prisma-wave-report.mjs",
     "tri-surface:verify": "node tools/prisma/verify_prisma_tri_surface_visual_guardian_00c.mjs",
     "verify:chart-source-modes": "pnpm -C products/chart-lab/app verify:chart-source-modes",
@@ -47,7 +49,7 @@
     "verify:sync-health": "node scripts/verify-sync-health.mjs",
     "quality:commit": "node quality/bin/prisma-quality.mjs --profile commit",
     "quality:pr": "node quality/bin/prisma-quality.mjs --profile pr",
-    "quality:release": "node quality/bin/prisma-quality.mjs --profile release",
+    "quality:release": "pnpm quality:phase5 && node quality/bin/prisma-quality.mjs --profile release",
     "quality:diagnose": "node quality/bin/prisma-quality.mjs --profile diagnose --diagnose-latest",
     "quality:watch": "node quality/bin/prisma-quality.mjs --profile watch",
     "quality:cloudflare": "node quality/bin/prisma-quality.mjs --profile cloudflare",
@@ -57,7 +59,8 @@
     "quality:phase3": "node quality/bin/prisma-quality.mjs --profile phase3",
     "quality:data": "node quality/bin/prisma-quality.mjs --profile data",
     "quality:audit": "node quality/bin/prisma-quality.mjs --profile audit",
-    "quality:phase4": "node quality/bin/prisma-quality.mjs --profile phase4"
+    "quality:phase4": "node quality/bin/prisma-quality.mjs --profile phase4",
+    "quality:phase5": "node tools/prisma-pqos-phase5-runner.mjs"
   },
   "devDependencies": {
     "prisma": "5.21.1"

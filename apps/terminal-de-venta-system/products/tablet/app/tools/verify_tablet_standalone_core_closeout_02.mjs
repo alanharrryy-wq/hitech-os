@@ -156,6 +156,7 @@ async function bootstrapSchema(prisma) {
       sku TEXT NOT NULL,
       name TEXT NOT NULL,
       category TEXT NOT NULL,
+      brandId TEXT,
       priceCents INTEGER NOT NULL,
       costCents INTEGER NOT NULL,
       stockOnHand INTEGER NOT NULL DEFAULT 0,

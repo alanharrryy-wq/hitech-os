@@ -54,7 +54,12 @@
     "Q6",
     "Q7",
     "Q8",
-    "Q9"
+    "Q9",
+    "Q26",
+    "Q27",
+    "Q28",
+    "Q29",
+    "Q30"
   ],
   "contracts": [
     "CONTRACT_TABLET_SOVEREIGNTY",
@@ -160,6 +165,28 @@
     "evidenceLedgerImmutable": true,
     "auditTrailRequired": true,
     "corePrinciple": "Tablet opera. PC gobierna. Mobile supervisa. Core registra. Control audita."
+  },
+  "phase5": {
+    "id": "phase5-release-operator-readiness",
+    "name": "PRISMA PQOS Phase 5: Release & Operator Readiness",
+    "gates": [
+      "Q26",
+      "Q27",
+      "Q28",
+      "Q29",
+      "Q30"
+    ],
+    "docs": [
+      "quality/docs/phase-5-release-operator-readiness.md"
+    ],
+    "outputs": [
+      "F:/descargasf/PRISMA_PQOS_PHASE5_RELEASE_OPERATOR_READINESS_*_RESULT.zip"
+    ],
+    "rules": [
+      "No fake green",
+      "Optional local services offline are evidence, not warnings",
+      "Required services offline are blockers",
+      "No permanent PRISMA_LAUNCHER_RUNS in F:/descargasf"
+    ]
   }
 }
-
