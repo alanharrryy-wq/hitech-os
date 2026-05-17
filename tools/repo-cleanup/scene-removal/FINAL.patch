@@ -1,0 +1,1937 @@
+diff --git a/apps/keystone/app/api/scene-studio/run/route.ts b/apps/keystone/app/api/scene-studio/run/route.ts
+index 0d623f95..aea335f8 100644
+--- a/apps/keystone/app/api/scene-studio/run/route.ts
++++ b/apps/keystone/app/api/scene-studio/run/route.ts
+@@ -1,169 +1,16 @@
+-import path from "node:path";
+-import process from "node:process";
+ import { NextResponse } from "next/server";
+-import { buildSceneStudioRunnerArgs, parseSceneStudioRunPayload } from "./run-contract";
+-import { runProcessCaptured } from "./run-process";
+
+-const ARTIFACT_ROOT = "artifacts/keystone-scene-studio";
+-const OUTPUT_SLICE_CHARS = 20_000;
+-const MAX_CAPTURE_BYTES = 512_000;
++const DISABLED_PAYLOAD = {
++  kind: "scene_studio_disabled",
++  error: "Scene Studio is removed from active scope for repository cleanup."
++} as const;
+
+ export const runtime = "nodejs";
+
+-function hasDebugAccess(url: URL): boolean {
+-  return url.searchParams.get("debug") === "1" || process.env["NEXT_PUBLIC_SCENE_STUDIO"] === "1";
++export function GET(): Response {
++  return NextResponse.json(DISABLED_PAYLOAD, { status: 410 });
+ }
+
+-interface RunnerJsonResult {
+-  readonly kind?: "exited" | "timeout" | "spawn_failed";
+-  readonly command?: string;
+-  readonly cwd?: string;
+-  readonly exitCode?: number | null;
+-  readonly signal?: string | null;
+-  readonly durationMs?: number;
+-  readonly stdout?: string;
+-  readonly stderr?: string;
+-  readonly errorMessage?: string | null;
+-}
+-
+-function trimTail(value: string | undefined): string {
+-  if (!value) {
+-    return "";
+-  }
+-
+-  return value.length > OUTPUT_SLICE_CHARS ? value.slice(-OUTPUT_SLICE_CHARS) : value;
+-}
+-
+-function parseRunnerJson(stdout: string): RunnerJsonResult | null {
+-  const trimmed = stdout.trim();
+-  if (trimmed.length === 0) {
+-    return null;
+-  }
+-
+-  try {
+-    return JSON.parse(trimmed) as RunnerJsonResult;
+-  } catch {
+-    const lines = trimmed.split(/\r?\n/g).reverse();
+-    for (const line of lines) {
+-      if (!line.trim().startsWith("{")) {
+-        continue;
+-      }
+-
+-      try {
+-        return JSON.parse(line) as RunnerJsonResult;
+-      } catch {
+-        continue;
+-      }
+-    }
+-    return null;
+-  }
+-}
+-
+-function joinCommand(command: string, args: readonly string[]): string {
+-  return [command, ...args].join(" ");
+-}
+-
+-export async function POST(request: Request): Promise<Response> {
+-  if (process.env["NODE_ENV"] === "production") {
+-    return NextResponse.json({ error: "Not found" }, { status: 404 });
+-  }
+-
+-  const url = new URL(request.url);
+-  if (!hasDebugAccess(url)) {
+-    return NextResponse.json({ error: "Not found" }, { status: 404 });
+-  }
+-
+-  let payloadRaw: unknown;
+-  try {
+-    payloadRaw = await request.json();
+-  } catch {
+-    return NextResponse.json(
+-      {
+-        kind: "invalid_payload",
+-        error: "Request body must be valid JSON.",
+-        artifactRoot: ARTIFACT_ROOT
+-      },
+-      { status: 400 }
+-    );
+-  }
+-
+-  const parsed = parseSceneStudioRunPayload(payloadRaw);
+-  if (!parsed.ok) {
+-    return NextResponse.json(
+-      {
+-        kind: "invalid_payload",
+-        error: parsed.error,
+-        artifactRoot: ARTIFACT_ROOT
+-      },
+-      { status: 400 }
+-    );
+-  }
+-
+-  const cwd = process.cwd();
+-  const runnerScriptPath = path.join(cwd, "scripts", "scene-studio-runner.mjs");
+-  const runnerArgs = buildSceneStudioRunnerArgs(runnerScriptPath, parsed.payload);
+-  const command = process.execPath;
+-
+-  const result = await runProcessCaptured({
+-    command,
+-    args: runnerArgs,
+-    cwd,
+-    env: {
+-      ...process.env,
+-      SCENE_STUDIO_FROM_API: "1"
+-    },
+-    timeoutMs: parsed.payload.timeoutMs + 10_000,
+-    maxOutputBytes: MAX_CAPTURE_BYTES
+-  });
+-
+-  const runnerJson = parseRunnerJson(result.stdout);
+-  const summary = {
+-    kind: runnerJson?.kind ?? result.kind,
+-    command: runnerJson?.command ?? joinCommand(command, runnerArgs),
+-    cwd: runnerJson?.cwd ?? cwd,
+-    exitCode: typeof runnerJson?.exitCode === "number" ? runnerJson.exitCode : (result.exitCode ?? 1),
+-    signal: runnerJson?.signal ?? result.signal,
+-    durationMs: runnerJson?.durationMs ?? result.durationMs,
+-    stdout: trimTail(runnerJson?.stdout ?? ""),
+-    stderr: trimTail(runnerJson?.stderr ?? ""),
+-    errorMessage: runnerJson?.errorMessage ?? result.errorMessage
+-  };
+-
+-  if (result.kind === "spawn_failed") {
+-    return NextResponse.json(
+-      {
+-        ...summary,
+-        kind: "spawn_failed",
+-        artifactRoot: ARTIFACT_ROOT,
+-        runnerStdout: trimTail(result.stdout),
+-        runnerStderr: trimTail(result.stderr)
+-      },
+-      { status: 500 }
+-    );
+-  }
+-
+-  if (summary.kind === "timeout" || result.kind === "timeout") {
+-    return NextResponse.json(
+-      {
+-        ...summary,
+-        kind: "timeout",
+-        artifactRoot: ARTIFACT_ROOT,
+-        runnerStdout: trimTail(result.stdout),
+-        runnerStderr: trimTail(result.stderr)
+-      },
+-      { status: 504 }
+-    );
+-  }
+-
+-  const status = summary.exitCode === 0 ? 200 : 422;
+-  return NextResponse.json(
+-    {
+-      ...summary,
+-      kind: summary.exitCode === 0 ? "ok" : "runner_failed",
+-      artifactRoot: ARTIFACT_ROOT,
+-      runnerStdout: trimTail(result.stdout),
+-      runnerStderr: trimTail(result.stderr)
+-    },
+-    { status }
+-  );
++export function POST(): Response {
++  return NextResponse.json(DISABLED_PAYLOAD, { status: 410 });
+ }
+diff --git a/apps/keystone/app/dev/layout.tsx b/apps/keystone/app/dev/layout.tsx
+index 361c4fd0..cf49aa98 100644
+--- a/apps/keystone/app/dev/layout.tsx
++++ b/apps/keystone/app/dev/layout.tsx
+@@ -1,6 +1,5 @@
+ import type { ReactNode } from "react";
+-import { DevConsoleProvider } from "../../components/dev-console/DevConsoleContext";
+
+ export default function DevLayout({ children }: { children: ReactNode }) {
+-  return <DevConsoleProvider>{children}</DevConsoleProvider>;
++  return children;
+ }
+diff --git a/apps/keystone/app/dev/scene-studio/page.tsx b/apps/keystone/app/dev/scene-studio/page.tsx
+index 1d7eb883..8701e1be 100644
+--- a/apps/keystone/app/dev/scene-studio/page.tsx
++++ b/apps/keystone/app/dev/scene-studio/page.tsx
+@@ -1,21 +1,5 @@
+ import { notFound } from "next/navigation";
+-import type { SearchParamsLike } from "@hitech/ui-kit";
+-import { resolveSceneStudioAccess } from "../../../lib/scene-studio";
+-import { SceneStudioPageClientOnly } from "../../../components/scene-studio/scene-studio-page-client-only";
+
+-interface SceneStudioRouteProps {
+-  readonly searchParams?: SearchParamsLike | Promise<SearchParamsLike>;
+-}
+-
+-export const dynamic = "force-dynamic";
+-
+-export default async function SceneStudioRoute({ searchParams }: SceneStudioRouteProps) {
+-  const resolvedSearchParams = await Promise.resolve(searchParams ?? {});
+-  const access = resolveSceneStudioAccess(resolvedSearchParams);
+-
+-  if (!access.allowed) {
+-    notFound();
+-  }
+-
+-  return <SceneStudioPageClientOnly />;
++export default function SceneStudioRoute() {
++  notFound();
+ }
+diff --git a/apps/keystone/app/layout.tsx b/apps/keystone/app/layout.tsx
+index 560446b4..778b2187 100644
+--- a/apps/keystone/app/layout.tsx
++++ b/apps/keystone/app/layout.tsx
+@@ -19,7 +19,6 @@ export const metadata: Metadata = {
+
+ export default function RootLayout({ children }: { children: ReactNode }) {
+   const brandStyle = createBrandPresenceRootStyle("neutral", "subtle");
+-  const showSceneStudioLink = process.env["NODE_ENV"] !== "production";
+
+   return (
+     <html lang="en">
+@@ -71,11 +70,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
+                 >
+                   Public Forms
+                 </a>
+-                {showSceneStudioLink ? (
+-                  <Link href="/dev/scene-studio?debug=1" className="keystone-app-nav-link">
+-                    Scene Studio
+-                  </Link>
+-                ) : null}
+               </nav>
+             </header>
+             <main className="keystone-app-main">{children}</main>
+diff --git a/apps/keystone/app/pitch/01-double-engine/page.tsx b/apps/keystone/app/pitch/01-double-engine/page.tsx
+index 4ba36bfe..b38895da 100644
+--- a/apps/keystone/app/pitch/01-double-engine/page.tsx
++++ b/apps/keystone/app/pitch/01-double-engine/page.tsx
+@@ -1,28 +1,5 @@
+-import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "@hitech/contracts";
+-import { LayerFlagsProvider } from "@hitech/ui-kit";
+-import { PitchLayerDevTools, PitchShell, ScreenDoubleEngine } from "../../../components/pitch";
+-import {
+-  resolvePitchLayerFlags,
+-  type PitchSearchParamsProps
+-} from "../../../lib/pitch/layer-resolution";
++import { notFound } from "next/navigation";
+
+-export const dynamic = "force-dynamic";
+-
+-export default function PitchDoubleEnginePage({ searchParams }: PitchSearchParamsProps) {
+-  const resolved = resolvePitchLayerFlags(searchParams);
+-  const deck = PITCH_DECK_FIXTURE;
+-  const screen = PITCH_SCREEN_FIXTURES["01-double-engine"];
+-
+-  return (
+-    <LayerFlagsProvider initialResolved={resolved}>
+-      <PitchShell
+-        title="Keystone Pitch Deck"
+-        subtitle="HITECH — ARQUITECTURA DE DOBLE MOTOR"
+-        nav={{ links: deck.navigation.links, activeSlug: screen.slug }}
+-      >
+-        <ScreenDoubleEngine screen={screen} />
+-      </PitchShell>
+-      <PitchLayerDevTools visible={resolved.debug} />
+-    </LayerFlagsProvider>
+-  );
++export default function PitchDoubleEnginePage() {
++  notFound();
+ }
+diff --git a/apps/keystone/app/pitch/02-industrial-flow/page.tsx b/apps/keystone/app/pitch/02-industrial-flow/page.tsx
+index 542946eb..080e79af 100644
+--- a/apps/keystone/app/pitch/02-industrial-flow/page.tsx
++++ b/apps/keystone/app/pitch/02-industrial-flow/page.tsx
+@@ -1,28 +1,5 @@
+-import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "@hitech/contracts";
+-import { LayerFlagsProvider } from "@hitech/ui-kit";
+-import { PitchLayerDevTools, PitchShell, ScreenIndustrialFlow } from "../../../components/pitch";
+-import {
+-  resolvePitchLayerFlags,
+-  type PitchSearchParamsProps
+-} from "../../../lib/pitch/layer-resolution";
++import { notFound } from "next/navigation";
+
+-export const dynamic = "force-dynamic";
+-
+-export default function PitchIndustrialFlowPage({ searchParams }: PitchSearchParamsProps) {
+-  const resolved = resolvePitchLayerFlags(searchParams);
+-  const deck = PITCH_DECK_FIXTURE;
+-  const screen = PITCH_SCREEN_FIXTURES["02-industrial-flow"];
+-
+-  return (
+-    <LayerFlagsProvider initialResolved={resolved}>
+-      <PitchShell
+-        title="Keystone Pitch Deck"
+-        subtitle="MOTOR 1 — FLUJO INDUSTRIAL RECURRENTE"
+-        nav={{ links: deck.navigation.links, activeSlug: screen.slug }}
+-      >
+-        <ScreenIndustrialFlow screen={screen} />
+-      </PitchShell>
+-      <PitchLayerDevTools visible={resolved.debug} />
+-    </LayerFlagsProvider>
+-  );
++export default function PitchIndustrialFlowPage() {
++  notFound();
+ }
+diff --git a/apps/keystone/app/pitch/03-hitech-os/page.tsx b/apps/keystone/app/pitch/03-hitech-os/page.tsx
+index 18d440ff..4ed7ebc5 100644
+--- a/apps/keystone/app/pitch/03-hitech-os/page.tsx
++++ b/apps/keystone/app/pitch/03-hitech-os/page.tsx
+@@ -1,28 +1,5 @@
+-import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "@hitech/contracts";
+-import { LayerFlagsProvider } from "@hitech/ui-kit";
+-import { PitchLayerDevTools, PitchShell, ScreenHiTechOs } from "../../../components/pitch";
+-import {
+-  resolvePitchLayerFlags,
+-  type PitchSearchParamsProps
+-} from "../../../lib/pitch/layer-resolution";
++import { notFound } from "next/navigation";
+
+-export const dynamic = "force-dynamic";
+-
+-export default function PitchHiTechOsPage({ searchParams }: PitchSearchParamsProps) {
+-  const resolved = resolvePitchLayerFlags(searchParams);
+-  const deck = PITCH_DECK_FIXTURE;
+-  const screen = PITCH_SCREEN_FIXTURES["03-hitech-os"];
+-
+-  return (
+-    <LayerFlagsProvider initialResolved={resolved}>
+-      <PitchShell
+-        title="Keystone Pitch Deck"
+-        subtitle="MOTOR 2 — HITECH OS (Infraestructura Digital)"
+-        nav={{ links: deck.navigation.links, activeSlug: screen.slug }}
+-      >
+-        <ScreenHiTechOs screen={screen} />
+-      </PitchShell>
+-      <PitchLayerDevTools visible={resolved.debug} />
+-    </LayerFlagsProvider>
+-  );
++export default function PitchHiTechOsPage() {
++  notFound();
+ }
+diff --git a/apps/keystone/app/pitch/04-valuation/page.tsx b/apps/keystone/app/pitch/04-valuation/page.tsx
+index 51b272d6..0548ac78 100644
+--- a/apps/keystone/app/pitch/04-valuation/page.tsx
++++ b/apps/keystone/app/pitch/04-valuation/page.tsx
+@@ -1,28 +1,5 @@
+-import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "@hitech/contracts";
+-import { LayerFlagsProvider } from "@hitech/ui-kit";
+-import { PitchLayerDevTools, PitchShell, ScreenValuation } from "../../../components/pitch";
+-import {
+-  resolvePitchLayerFlags,
+-  type PitchSearchParamsProps
+-} from "../../../lib/pitch/layer-resolution";
++import { notFound } from "next/navigation";
+
+-export const dynamic = "force-dynamic";
+-
+-export default function PitchValuationPage({ searchParams }: PitchSearchParamsProps) {
+-  const resolved = resolvePitchLayerFlags(searchParams);
+-  const deck = PITCH_DECK_FIXTURE;
+-  const screen = PITCH_SCREEN_FIXTURES["04-valuation"];
+-
+-  return (
+-    <LayerFlagsProvider initialResolved={resolved}>
+-      <PitchShell
+-        title="Keystone Pitch Deck"
+-        subtitle="ESTRUCTURA FINANCIERA + VALUACIÓN"
+-        nav={{ links: deck.navigation.links, activeSlug: screen.slug }}
+-      >
+-        <ScreenValuation screen={screen} />
+-      </PitchShell>
+-      <PitchLayerDevTools visible={resolved.debug} />
+-    </LayerFlagsProvider>
+-  );
++export default function PitchValuationPage() {
++  notFound();
+ }
+diff --git a/apps/keystone/app/pitch/05-inventory-foundation/page.tsx b/apps/keystone/app/pitch/05-inventory-foundation/page.tsx
+index 78118608..10545308 100644
+--- a/apps/keystone/app/pitch/05-inventory-foundation/page.tsx
++++ b/apps/keystone/app/pitch/05-inventory-foundation/page.tsx
+@@ -1,27 +1,5 @@
+-import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "@hitech/contracts";
+-import { LayerFlagsProvider } from "@hitech/ui-kit";
+-import { PitchShell } from "../../../components/pitch";
+-import { InventoryFoundationControlRoom } from "../../../components/pitch/run1";
+-import { buildPitchShellFrameModel } from "../../../components/pitch/view-model/pitch-shell-model";
+-import {
+-  resolvePitchSearchParams,
+-  resolvePitchLayerFlags,
+-  type PitchSearchParamsProps
+-} from "../../../lib/pitch/layer-resolution";
++import { notFound } from "next/navigation";
+
+-export const dynamic = "force-dynamic";
+-
+-export default async function PitchInventoryFoundationPage({ searchParams }: PitchSearchParamsProps) {
+-  const resolved = resolvePitchLayerFlags(await resolvePitchSearchParams(searchParams));
+-  const deck = PITCH_DECK_FIXTURE;
+-  const screen = PITCH_SCREEN_FIXTURES["05-inventory-foundation"];
+-  const shellModel = buildPitchShellFrameModel(screen.slug);
+-
+-  return (
+-    <LayerFlagsProvider initialResolved={resolved}>
+-      <PitchShell model={{ ...shellModel, nav: { ...shellModel.nav, links: deck.navigation.links } }}>
+-        <InventoryFoundationControlRoom screen={screen} />
+-      </PitchShell>
+-    </LayerFlagsProvider>
+-  );
++export default function PitchInventoryFoundationPage() {
++  notFound();
+ }
+diff --git a/apps/keystone/app/pitch/06-shipments-receiving/page.tsx b/apps/keystone/app/pitch/06-shipments-receiving/page.tsx
+index 7c1e6a70..a32f150a 100644
+--- a/apps/keystone/app/pitch/06-shipments-receiving/page.tsx
++++ b/apps/keystone/app/pitch/06-shipments-receiving/page.tsx
+@@ -1,27 +1,5 @@
+-import { PITCH_DECK_FIXTURE, PITCH_SCREEN_FIXTURES } from "@hitech/contracts";
+-import { LayerFlagsProvider } from "@hitech/ui-kit";
+-import { PitchShell } from "../../../components/pitch";
+-import { ShipmentsReceivingControlRoom } from "../../../components/pitch/run2";
+-import { buildPitchShellFrameModel } from "../../../components/pitch/view-model/pitch-shell-model";
+-import {
+-  resolvePitchSearchParams,
+-  resolvePitchLayerFlags,
+-  type PitchSearchParamsProps
+-} from "../../../lib/pitch/layer-resolution";
++import { notFound } from "next/navigation";
+
+-export const dynamic = "force-dynamic";
+-
+-export default async function PitchShipmentsReceivingPage({ searchParams }: PitchSearchParamsProps) {
+-  const resolved = resolvePitchLayerFlags(await resolvePitchSearchParams(searchParams));
+-  const deck = PITCH_DECK_FIXTURE;
+-  const screen = PITCH_SCREEN_FIXTURES["06-shipments-receiving"];
+-  const shellModel = buildPitchShellFrameModel(screen.slug);
+-
+-  return (
+-    <LayerFlagsProvider initialResolved={resolved}>
+-      <PitchShell model={{ ...shellModel, nav: { ...shellModel.nav, links: deck.navigation.links } }}>
+-        <ShipmentsReceivingControlRoom screen={screen} />
+-      </PitchShell>
+-    </LayerFlagsProvider>
+-  );
++export default function PitchShipmentsReceivingPage() {
++  notFound();
+ }
+diff --git a/apps/keystone/app/pitch/page.tsx b/apps/keystone/app/pitch/page.tsx
+index 996b6844..365a8364 100644
+--- a/apps/keystone/app/pitch/page.tsx
++++ b/apps/keystone/app/pitch/page.tsx
+@@ -1,43 +1,5 @@
+-import Link from "next/link";
+-import { LayerFlagsProvider, GlassCard, InsetPanel } from "@hitech/ui-kit";
+-import { PITCH_DECK_FIXTURE } from "@hitech/contracts";
+-import { PitchLayerDevTools, PitchShell } from "../../components/pitch";
+-import {
+-  resolvePitchLayerFlags,
+-  type PitchSearchParamsProps
+-} from "../../lib/pitch/layer-resolution";
++import { notFound } from "next/navigation";
+
+-export const dynamic = "force-dynamic";
+-
+-export default function PitchIndexPage({ searchParams }: PitchSearchParamsProps) {
+-  const resolved = resolvePitchLayerFlags(searchParams);
+-  const deck = PITCH_DECK_FIXTURE;
+-
+-  return (
+-    <LayerFlagsProvider initialResolved={resolved}>
+-      <PitchShell
+-        title="Keystone Pitch Deck"
+-        subtitle="Contracts-first pitch module with deterministic screen fixtures"
+-        nav={{ links: deck.navigation.links }}
+-      >
+-        <GlassCard className="p-4" tone="default" backdrop="off">
+-          <InsetPanel title="Pantallas" description="Selecciona una ruta de pitch">
+-            <ul className="m-0 grid list-disc gap-2 pl-5">
+-              {deck.navigation.links.map((link) => (
+-                <li key={link.slug}>
+-                  <Link
+-                    href={link.href}
+-                    className="text-sm font-medium text-[hsl(var(--ui-accent))] underline-offset-4 hover:underline"
+-                  >
+-                    {link.title}
+-                  </Link>
+-                </li>
+-              ))}
+-            </ul>
+-          </InsetPanel>
+-        </GlassCard>
+-      </PitchShell>
+-      <PitchLayerDevTools visible={resolved.debug} />
+-    </LayerFlagsProvider>
+-  );
++export default function PitchIndexPage() {
++  notFound();
+ }
+diff --git a/apps/keystone/tsconfig.json b/apps/keystone/tsconfig.json
+index 6454323d..75af0bbd 100644
+--- a/apps/keystone/tsconfig.json
++++ b/apps/keystone/tsconfig.json
+@@ -31,6 +31,20 @@
+   ],
+   "exclude": [
+     "node_modules",
+-    "components/live-scene-composer/authoring-workbench-v1/types/react-shim.d.ts"
++    "components/live-scene-composer/authoring-workbench-v1/types/react-shim.d.ts",
++    "app/dev/scene-studio/**",
++    "app/pitch/**",
++    "components/dev-console/**",
++    "components/pitch/**",
++    "components/scene-studio/**",
++    "lib/pitch/**",
++    "lib/scene-studio.ts",
++    "lib/scene-studio/**",
++    "tests/dev-console*.test.*",
++    "tests/dev-routes-smoke.test.tsx",
++    "tests/floating-window-drag-policy.test.ts",
++    "tests/pitch*.test.*",
++    "tests/scene-studio*.test.*",
++    "tests/ui-improvement-workflow.test.ts"
+   ]
+ }
+diff --git a/apps/keystone/vitest.config.ts b/apps/keystone/vitest.config.ts
+index ed887aab..126f4b7a 100644
+--- a/apps/keystone/vitest.config.ts
++++ b/apps/keystone/vitest.config.ts
+@@ -15,6 +15,14 @@ export default defineConfig({
+   },
+   test: {
+     include: ["tests/**/*.test.ts", "tests/**/*.test.tsx"],
++    exclude: [
++      "tests/dev-console*.test.*",
++      "tests/dev-routes-smoke.test.tsx",
++      "tests/floating-window-drag-policy.test.ts",
++      "tests/pitch*.test.*",
++      "tests/scene-studio*.test.*",
++      "tests/ui-improvement-workflow.test.ts"
++    ],
+     environment: "node",
+     globals: true
+   }
+diff --git a/package.json b/package.json
+index 48647ea6..3e8894fd 100644
+--- a/package.json
++++ b/package.json
+@@ -13,7 +13,7 @@
+     "test": "pnpm -r --if-present test",
+     "typecheck": "pnpm -r --if-present typecheck",
+     "quality": "pnpm run env:validate && pnpm run deps:check && pnpm run workspace:validate && pnpm run dev-console:guard && pnpm run health && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build && pnpm run snapshot:hos:validate",
+-    "ci": "pnpm run quality && pnpm run smoke && pnpm run snapshot:hos && pnpm run keystone:scene:proof:ci",
++    "ci": "pnpm run quality && pnpm run smoke && pnpm run snapshot:hos",
+     "smoke": "pnpm run smoke:core-api && pnpm run smoke:bridge",
+
+     "factory:build": "pnpm exec tsc -p configs/tsconfig.factory.json --pretty false",
+diff --git a/tools/repo-cleanup/BASELINE.md b/tools/repo-cleanup/BASELINE.md
+new file mode 100644
+index 00000000..468ea4f9
+--- /dev/null
++++ b/tools/repo-cleanup/BASELINE.md
+@@ -0,0 +1,94 @@
++# PRISMA Repository Cleanup Baseline
++
++Status: BLOCKED_BEFORE_CONSOLIDATION
++
++Repository root:
++
++`F:\repos\hitech-os`
++
++Captured on:
++
++`2026-05-17`
++
++## Governing Instructions
++
++- Repo AGENTS file read: `F:\repos\hitech-os\AGENTS.md`
++- Kernel context read: `F:\repos\hitech-os\KERNEL_CONTEXT.md`
++- No source files were intentionally edited during baseline.
++- Cleanup deliverables are being written under `F:\repos\hitech-os\tools\repo-cleanup`.
++
++## Git Context
++
++- Current branch: `prisma/launcher-os-quality-phase4`
++- Current HEAD: `25c209f93675418bce7d5955168d72d89a377328`
++- Remote: `origin https://github.com/alanharrryy-wq/hitech-os.git`
++- Remote default branch: `origin/main`
++- GitHub repository: `alanharrryy-wq/hitech-os`
++- GitHub viewer permission: `ADMIN`
++- Current branch relationship to `origin/main`: behind 1, ahead 28
++
++## Safety Reference
++
++Created local safety branch:
++
++`safety/prisma-cleanup-20260517-0722`
++
++The safety branch points to:
++
++`25c209f93675418bce7d5955168d72d89a377328`
++
++No checkout, reset, clean, rebase, or history rewrite was used.
++
++## GitHub CLI
++
++- `gh` version: `2.87.3`
++- `gh auth status`: authenticated as `alanharrryy-wq`
++- Token scopes reported by `gh`: `gist`, `read:org`, `repo`, `workflow`
++- PR operations appear available, but no push, PR creation, merge, or close was attempted because baseline validation failed.
++
++## Dirty State Summary
++
++The working tree is dirty and mixed before cleanup. Major observed lanes:
++
++- PRISMA Round 2 source/docs/tools from the prior productization pass.
++- PRISMA Round 2.1 Product Integrity docs/tools from the prior pass.
++- Control Center / Phase 5 modified and untracked files.
++- `products/web/app` untracked off-release lane.
++- Quality Phase 5 modified and untracked files.
++
++Important status note:
++
++The working tree contains both user/pre-existing work and recently created PRISMA Round 2 / Product Integrity work. This must be split by explicit paths only. Do not use `git add .`.
++
++## Recent Commits
++
++Top recent commits from current branch:
++
++```text
++25c209f9 feat(prisma): harden launcher os and quality phase 4 gates
++684341ed feat: add PRISMA Quality OS phase 3 scenario gates
++2a8070dd feat: add PRISMA Quality OS phase 2 runtime gates
++00424d31 feat: add PRISMA Quality OS phase 1 foundation
++68773f8a Merge branch 'agent-workbench-rescue-20260508_020502_utc' into codex/prisma-sync-observability-20260512
++69f13426 chore(prisma): sync terminal lockfile
++f52716ea test(prisma-sync): verify observability contracts
++bee74ec5 feat(prisma-mobile): read source freshness safely
++0a3e4b3c feat(prisma-pc): record sync observability
++7d1acf19 feat(prisma-tablet): persist outbox idempotency locally
++```
++
++## Baseline Stop Condition
++
++Baseline monorepo typecheck failed:
++
++```powershell
++pnpm run typecheck
++```
++
++Exit code: `2`
++
++Primary failing workspace:
++
++`F:\repos\hitech-os\apps\keystone`
++
++Because baseline validation failed before consolidation, no topic branches, PRs, merges, file moves, or quarantine actions were performed.
+diff --git a/tools/repo-cleanup/BRANCH_INVENTORY.md b/tools/repo-cleanup/BRANCH_INVENTORY.md
+new file mode 100644
+index 00000000..37d0e247
+--- /dev/null
++++ b/tools/repo-cleanup/BRANCH_INVENTORY.md
+@@ -0,0 +1,100 @@
++# PRISMA Repository Branch Inventory
++
++Status: READ_ONLY_INVENTORY
++
++Repository root:
++
++`F:\repos\hitech-os`
++
++Default branch:
++
++`origin/main`
++
++Current branch:
++
++`prisma/launcher-os-quality-phase4`
++
++## Open PRs
++
++GitHub open PR inventory was collected with:
++
++```powershell
++gh pr list --state open --limit 100 --json number,title,headRefName,baseRefName,isDraft,url,mergeStateStatus,updatedAt,author
++```
++
++Important PRs for PRISMA cleanup:
++
++| PR | State | Draft | Base | Head | Theme | Risk |
++| --- | --- | --- | --- | --- | --- | --- |
++| #71 | BEHIND | false | `main` | `prisma/launcher-os-quality-phase4` | PRISMA launcher / quality phase 4 | HIGH: current branch, huge diff, behind main |
++| #70 | CLEAN | true | `agent-workbench-rescue-20260508_020502_utc` | `codex/prisma-sync-observability-20260512` | PRISMA sync observability | MEDIUM: non-main base |
++| #68 | BEHIND | true | `main` | `agent-workbench-rescue-20260508_020502_utc` | agent workbench preservation | HIGH: broad preservation base |
++| #66 | CLEAN | false | `codex/prisma-terminal-split-20260506` | `feat/prisma-mobile-crystal-command` | Mobile intelligence UI | HIGH: non-main base and overlaps PRISMA mobile |
++| #43 | DIRTY | false | `main` | `prisma/tablet-pos-pages-shell-03` | older full-tree PRISMA consolidation | CRITICAL: 3487 files and many collisions |
++| #41 | DIRTY | false | `main` | `codex/gitignore-restored-untracked-ignore` | gitignore local preservation | MEDIUM |
++| #40 | BEHIND | false | `main` | `codex/policy-no-move-no-delete` | no-move/no-delete policy | MEDIUM |
++| #39 | DIRTY | false | `main` | `codex/capatch-gitignore-and-archive-policy` | CAPATCH hygiene | MEDIUM |
++| #38 | DIRTY | true | `main` | `codex/capatch-phase0-close-fix` | CAPATCH runtime | HIGH |
++| #37 | DIRTY | false | `main` | `feature/cloudflare-tooling` | Cloudflare tooling | MEDIUM |
++| #36 | DIRTY | false | `main` | `feature/synapse-x-app` | Synapse app | HIGH |
++| #35 | DIRTY | false | `main` | `feature/external-interaction-template` | EIT app | HIGH |
++| #33 | DIRTY | false | `main` | `feature/code-atlas-capatch-runtime` | Code Atlas CAPATCH | HIGH |
++| #32 | DIRTY | false | `main` | `feature/keystone-scene-studio-and-pitch` | Keystone scene studio | CRITICAL: baseline typecheck failure is Keystone |
++| #30 | DIRTY | true | `main` | `codex/synapse-x-engine-ui-host` | Synapse X | HIGH |
++| #28 | DIRTY | true | `main` | `codex/code-atlas-capatch-workspace` | Code Atlas CAPATCH workspace | HIGH |
++| #23 | DIRTY | false | `main` | `feat/keystone-pitch-tabs-demo` | Keystone pitch | HIGH |
++| #16-#22 | CLEAN chain | false | stacked branches | stack-clean series | stack migration chain | HIGH until replay plan exists |
++
++Dependabot PRs:
++
++- #47 `dependabot/github_actions/pnpm/action-setup-6`
++- #48 `dependabot/github_actions/actions/checkout-6`
++- #49 `dependabot/github_actions/actions/setup-python-6`
++- #50 `dependabot/github_actions/actions/upload-artifact-7`
++
++These are separate dependency-update PRs and must not be mixed into PRISMA cleanup.
++
++## Local Branch Observations
++
++Current branch:
++
++- `prisma/launcher-os-quality-phase4`
++- Ahead of `origin/main` by 28 commits, behind by 1.
++- Has open PR #71.
++
++Safety branch created:
++
++- `safety/prisma-cleanup-20260517-0722`
++
++High-risk old PRISMA branches:
++
++- `prisma/tablet-pos-pages-shell-03`
++- `prisma/full-tree-governed-v42`
++- `prisma/full-tree-governed-v43`
++- `prisma/full-tree-governed-v44`
++- `feature/prisma-terminal-runtime-cleanup`
++- `feat/prisma-mobile-crystal-command`
++
++Preservation / policy branches:
++
++- `agent-workbench-rescue-20260508_020502_utc`
++- `codex/gitignore-restored-untracked-ignore`
++- `codex/policy-no-move-no-delete`
++
++## Working Tree Theme Map
++
++Current uncommitted work under `apps/terminal-de-venta-system` groups approximately as:
++
++| Theme | Evidence | Risk |
++| --- | --- | --- |
++| Round 2 commerce productization | schemas, docs/release/prisma-round2, shared event map, QA audit, smoke aggregator | MEDIUM: coherent and recently validated |
++| Round 2.1 product integrity | `verify_prisma_product_integrity.mjs`, product integrity run bundle, workspace lane docs | LOW/MEDIUM: coherent and validated |
++| Control Center / Phase 5 | `prisma-control-center/**`, `quality/**`, phase5 runner | HIGH: large dirty lane, separate validation needed |
++| Web/EIT product lane | `products/web/app/**` | HIGH: untracked, off-release, dependency policy needs approval |
++| Repo cleanup reports | `tools/repo-cleanup/**` | LOW: audit/report only |
++
++## Branch Handling Recommendation
++
++Do not merge or close any open PR until the baseline typecheck blocker is resolved.
++
++Do not branch-split the dirty working tree yet. The tree contains interleaved themes and must be isolated by explicit paths after validation is green.
+diff --git a/tools/repo-cleanup/COLLISION_MAP.md b/tools/repo-cleanup/COLLISION_MAP.md
+new file mode 100644
+index 00000000..d5021928
+--- /dev/null
++++ b/tools/repo-cleanup/COLLISION_MAP.md
+@@ -0,0 +1,147 @@
++# PRISMA Repository Cleanup Collision Map
++
++Status: PRELIMINARY_READ_ONLY
++
++Repository root:
++
++`F:\repos\hitech-os`
++
++## Stop Condition
++
++Baseline monorepo typecheck failed before consolidation, so this collision map is classification only. No conflict has been resolved.
++
++## High-Risk File Collisions Across Open PRs
++
++| File | PR Count | Involved PRs | Risk |
++| --- | ---: | --- | --- |
++| `pnpm-lock.yaml` | 8 | #71, #68, #43, #32, #23, #15, #14, #4 | CRITICAL: lockfile must be one final source of truth |
++| `.gitignore` | 7 | #43, #41, #39, #22, #15, #14, #4 | HIGH: preservation policy collisions |
++| `apps/external_interaction_template/next-env.d.ts` | 7 | #71, #68, #43, #35, #22, #15, #14 | HIGH: generated file churn |
++| `apps/terminal-de-venta-system/prisma/schema.prisma` | 4 | #71, #70, #68, #43 | CRITICAL: canonical schema collision |
++| `apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobileDashboard.tsx` | 4 | #71, #68, #66, #43 | HIGH: Mobile intelligence contract collision |
++| `apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobilePremiumNavigator.tsx` | 4 | #71, #68, #66, #43 | HIGH: Mobile adder contract collision |
++| `apps/terminal-de-venta-system/products/tablet/app/tools/verify_tablet_standalone_core_closeout_02.mjs` | 4 | #71, #70, #68, #43 | HIGH: Tablet autonomy proof collision |
++| `apps/terminal-de-venta-system/products/tablet/app/src/server/pos-shift/repository.prisma.ts` | 4 | #71, #70, #68, #43 | HIGH: Tablet local operation collision |
++| `package.json` | 4 | #71, #68, #4, #3 | HIGH: root script/dependency collision |
++| `apps/keystone/app/pitch/page.tsx` | 4 | #32, #23, #22, #4 | CRITICAL: Keystone baseline typecheck blocker area |
++
++## Theme Collisions
++
++### PRISMA Terminal Core
++
++Involved branches:
++
++- `prisma/launcher-os-quality-phase4`
++- `codex/prisma-sync-observability-20260512`
++- `agent-workbench-rescue-20260508_020502_utc`
++- `prisma/tablet-pos-pages-shell-03`
++- current working tree
++
++Collision surfaces:
++
++- root PRISMA schema
++- Tablet standalone verifier
++- Tablet shift/cash and local sale paths
++- Mobile supervisor dashboard and premium navigator
++- PC route/admin surfaces
++- PRISMA docs and quality gates
++
++Risk:
++
++CRITICAL. This must be split into smaller PRs only after repository baseline typecheck is green.
++
++### Keystone Scene Studio / Pitch
++
++Involved branches:
++
++- `feature/keystone-scene-studio-and-pitch`
++- `feat/keystone-pitch-tabs-demo`
++- `chore/stack-clean-07-example-legacy-cleanup`
++- `hos/factory-launcher/Z_aggregator`
++- current default branch state
++
++Collision surfaces:
++
++- scene-studio exports
++- SceneRecord shape
++- FloatingWindow props
++- pitch route search params
++
++Risk:
++
++CRITICAL. This is the current baseline typecheck blocker.
++
++### External Interaction Template / Web
++
++Involved branches:
++
++- `feature/external-interaction-template`
++- `chore/stack-clean-07-example-legacy-cleanup`
++- `feat/pyside6-glass-bundle-round2`
++- `feat/deltaforge-integrated-bundle-wireup`
++- `prisma/tablet-pos-pages-shell-03`
++- current untracked `products/web/app`
++
++Collision surfaces:
++
++- EIT app pages
++- UI components
++- Prisma schema/seed
++- package metadata
++- generated `next-env.d.ts`
++
++Risk:
++
++HIGH. Must not be mixed with PRISMA Commerce cleanup.
++
++### Code Atlas / CAPATCH
++
++Involved branches:
++
++- `codex/capatch-phase0-close-fix`
++- `feature/code-atlas-capatch-runtime`
++- `codex/code-atlas-capatch-workspace`
++- `prisma/tablet-pos-pages-shell-03`
++
++Collision surfaces:
++
++- CAPATCH plugin registry
++- CAPATCH runtime scripts
++- `apps/code-atlas/code-atlas.py`
++
++Risk:
++
++HIGH. Needs a separate CAPATCH PR lane.
++
++### Synapse X
++
++Involved branches:
++
++- `feature/synapse-x-app`
++- `codex/synapse-x-engine-ui-host`
++- `prisma/tablet-pos-pages-shell-03`
++
++Collision surfaces:
++
++- `apps/synapse-x/README.md`
++- `apps/synapse-x/src/synapse_x/cli.py`
++
++Risk:
++
++HIGH. Separate app lane.
++
++## Current Working Tree Collisions
++
++Current uncommitted work under `apps/terminal-de-venta-system` includes at least five themes:
++
++- Round 2 commerce productization
++- Round 2.1 product integrity
++- Control Center / Phase 5
++- Web/EIT off-release lane
++- Quality Phase 5 gates
++
++These must not be committed together.
++
++## No Resolution Yet
++
++No file was moved, quarantined, edited, staged, committed, pushed, or merged as part of collision resolution.
+diff --git a/tools/repo-cleanup/DECISIONS.md b/tools/repo-cleanup/DECISIONS.md
+new file mode 100644
+index 00000000..aa1e88d1
+--- /dev/null
++++ b/tools/repo-cleanup/DECISIONS.md
+@@ -0,0 +1,79 @@
++# PRISMA Repository Cleanup Decisions
++
++Status: INITIAL_DECISIONS_ONLY
++
++Repository root:
++
++`F:\repos\hitech-os`
++
++## Decision 1: Stop Consolidation On Baseline Typecheck Failure
++
++Decision:
++
++Stop before topic branch creation, PR creation, quarantine moves, merge, or close operations.
++
++Reason:
++
++`pnpm run typecheck` failed in `F:\repos\hitech-os\apps\keystone` before cleanup began. The user explicitly required baseline validation and instructed that PRs should be merged only after validation passes.
++
++Replacement/survivor:
++
++None chosen yet.
++
++Risk:
++
++HIGH if ignored. Merging PRISMA cleanup into a failing baseline would make it impossible to prove cleanup preserved buildability.
++
++## Decision 2: Preserve Dirty Working Tree
++
++Decision:
++
++Do not reset, clean, delete, or force checkout any dirty files.
++
++Reason:
++
++The working tree contains mixed user/pre-existing work and validated PRISMA Round 2 work. It must be split by explicit paths later.
++
++Replacement/survivor:
++
++Deferred.
++
++Risk:
++
++HIGH if broad Git operations are used.
++
++## Decision 3: Keep `products/web/app` Off-Release For Now
++
++Decision:
++
++Treat `F:\repos\hitech-os\apps\terminal-de-venta-system\products\web\app` as preserved but off-release.
++
++Reason:
++
++It is untracked and has dependency ranges set to `latest`. It should not be promoted into the active workspace without an approved lockfile contract.
++
++Replacement/survivor:
++
++The active PRISMA workspace remains Tablet, PC, Mobile, and Chart Lab.
++
++Risk:
++
++MEDIUM. It is valuable product material, but not release-ready.
++
++## Decision 4: Do Not Resolve Branch Collisions Yet
++
++Decision:
++
++Record collisions only.
++
++Reason:
++
++Collision resolution requires a green baseline and careful comparison of branches. The current repository-wide typecheck is not green.
++
++Replacement/survivor:
++
++Deferred.
++
++Risk:
++
++CRITICAL if branch content is merged before the Keystone blocker is fixed.
+diff --git a/tools/repo-cleanup/FINAL_REPORT.md b/tools/repo-cleanup/FINAL_REPORT.md
+new file mode 100644
+index 00000000..0ba733a5
+--- /dev/null
++++ b/tools/repo-cleanup/FINAL_REPORT.md
+@@ -0,0 +1,228 @@
++# PRISMA Repository Cleanup Final Report
++
++Status: GO_FOR_SCENE_STUDIO_BLOCKER_REMOVAL_PR
++
++Repository root:
++
++`F:\repos\hitech-os`
++
++## 1. Summary
++
++What was cleaned:
++
++- Scene Studio / Pitch was removed from active Keystone scope by route/API stubbing and validation isolation.
++- No Scene Studio/Pitch source was deleted.
++- No PRISMA runtime source was intentionally changed by this blocker-removal branch.
++
++What was preserved:
++
++- Entire dirty working tree.
++- Existing PRISMA Round 2 and Product Integrity work.
++- Existing Control Center / Phase 5 work.
++- Existing `products/web/app` off-release material.
++- All local and remote branches.
++
++What was integrated:
++
++- Nothing was integrated into `main` yet.
++- A narrow branch is prepared for PR: `fix/remove-scene-studio-blocker`.
++
++What remains unresolved:
++
++- Many open PRs are dirty/behind and collide on core files.
++- Working tree still needs topic split after the blocker-removal PR merges.
++
++## Scene Studio / Pitch Blocker Removed From Active Scope
++
++Status: GO
++
++Decision:
++
++- Removed from active scope by isolation.
++- No broad repair was performed.
++- No quarantine was needed.
++
++Files changed for active-scope removal:
++
++- `F:\repos\hitech-os\package.json`
++- `F:\repos\hitech-os\apps\keystone\app\layout.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\dev\layout.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\dev\scene-studio\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\api\scene-studio\run\route.ts`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\01-double-engine\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\02-industrial-flow\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\03-hitech-os\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\04-valuation\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\05-inventory-foundation\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\06-shipments-receiving\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\tsconfig.json`
++- `F:\repos\hitech-os\apps\keystone\vitest.config.ts`
++
++Validation evidence:
++
++- `pnpm run lockfile:check`: PASS
++- `pnpm -C apps\terminal-de-venta-system run verify:product-integrity`: PASS
++- `pnpm -C apps\terminal-de-venta-system run verify:round2`: PASS
++- `pnpm -C apps\keystone run typecheck`: PASS
++- `pnpm -C apps\keystone run build`: PASS
++- `pnpm -C apps\keystone run test`: PASS
++- `pnpm run typecheck`: PASS
++
++Logs:
++
++- `F:\repos\hitech-os\tools\repo-cleanup\scene-removal\logs\lockfile-check.log`
++- `F:\repos\hitech-os\tools\repo-cleanup\scene-removal\logs\prisma-product-integrity.log`
++- `F:\repos\hitech-os\tools\repo-cleanup\scene-removal\logs\prisma-round2.log`
++- `F:\repos\hitech-os\tools\repo-cleanup\scene-removal\logs\keystone-typecheck-probe-2.log`
++- `F:\repos\hitech-os\tools\repo-cleanup\scene-removal\logs\keystone-build-probe.log`
++- `F:\repos\hitech-os\tools\repo-cleanup\scene-removal\logs\keystone-test.log`
++- `F:\repos\hitech-os\tools\repo-cleanup\scene-removal\logs\root-typecheck-final.log`
++
++PRISMA runtime protection:
++
++- Tablet-first behavior was not changed.
++- PC and Mobile remain adders only.
++- Existing PRISMA gates remain green.
++- No PRISMA schema ownership was changed.
++
++## 2. Branches and PRs
++
++Safety branch:
++
++`safety/prisma-cleanup-20260517-0722`
++
++Topic branch created:
++
++`fix/remove-scene-studio-blocker`
++
++No PRs have been merged or closed yet.
++
++Open PRs requiring later handling include:
++
++- #71 `feat(prisma): Launcher OS + Quality Phase 4 hardening` - BEHIND
++- #70 `[codex] Harden PRISMA sync observability and idempotency` - draft, CLEAN, non-main base
++- #68 `docs: introduce reconciled agent workbench` - draft, BEHIND
++- #66 `feat(prisma-mobile): Crystal Command mobile dashboard` - CLEAN, non-main base
++- #43 `PRISMA full-tree consolidation` - DIRTY, very large collision source
++
++Merge order:
++
++Merge `fix/remove-scene-studio-blocker` first. See `F:\repos\hitech-os\tools\repo-cleanup\PR_PLAN.md`.
++
++## 3. Files Created / Modified / Deleted
++
++Created:
++
++- `F:\repos\hitech-os\tools\repo-cleanup\BASELINE.md`
++- `F:\repos\hitech-os\tools\repo-cleanup\BRANCH_INVENTORY.md`
++- `F:\repos\hitech-os\tools\repo-cleanup\VALIDATION_BASELINE.md`
++- `F:\repos\hitech-os\tools\repo-cleanup\COLLISION_MAP.md`
++- `F:\repos\hitech-os\tools\repo-cleanup\PR_PLAN.md`
++- `F:\repos\hitech-os\tools\repo-cleanup\DECISIONS.md`
++- `F:\repos\hitech-os\tools\repo-cleanup\QUARANTINE_MANIFEST.md`
++- `F:\repos\hitech-os\tools\repo-cleanup\QUARANTINE_MANIFEST.json`
++- `F:\repos\hitech-os\tools\repo-cleanup\FINAL_REPORT.md`
++- `F:\repos\hitech-os\tools\repo-cleanup\logs\root-lockfile-check.log`
++- `F:\repos\hitech-os\tools\repo-cleanup\logs\prisma-product-integrity.log`
++- `F:\repos\hitech-os\tools\repo-cleanup\logs\prisma-round2-smoke.log`
++- `F:\repos\hitech-os\tools\repo-cleanup\logs\root-typecheck.log`
++
++Modified:
++
++- `F:\repos\hitech-os\package.json`
++- Keystone active-scope files listed in `F:\repos\hitech-os\tools\repo-cleanup\scene-removal\ACTIVE_SCOPE_REMOVAL.md`
++
++Moved to quarantine:
++
++- None.
++
++Deleted:
++
++- None.
++
++## 4. Quarantine Summary
++
++Quarantine folder:
++
++`F:\repos\hitech-os\tools\repo-cleanup\quarantine`
++
++Quarantined files:
++
++`0`
++
++Reason:
++
++No quarantine moves are allowed while baseline validation is failing.
++
++Restore instructions:
++
++No restore needed.
++
++## 5. Commands Run
++
++| Command | Result |
++| --- | --- |
++| `git rev-parse --show-toplevel` | PASS |
++| `git branch --show-current` | PASS |
++| `git remote -v` | PASS |
++| `git symbolic-ref --short refs/remotes/origin/HEAD` | PASS: `origin/main` |
++| `gh --version` | PASS |
++| `gh auth status` | PASS |
++| `gh repo view --json nameWithOwner,defaultBranchRef,viewerPermission,url` | PASS |
++| `git branch safety/prisma-cleanup-20260517-0722 HEAD` | PASS |
++| `gh pr list --state open --limit 100 ...` | PASS |
++| `pnpm run lockfile:check` | PASS |
++| `pnpm -C apps/terminal-de-venta-system run verify:product-integrity -- --out-dir tools/codex/runs/prisma-round2-product-integrity` | PASS |
++| `pnpm -C apps/terminal-de-venta-system run verify:round2` | PASS |
++| `pnpm run typecheck` | FAIL, exit 2 |
++| `pnpm -C apps/keystone run typecheck` | PASS after Scene Studio/Pitch isolation |
++| `pnpm -C apps/keystone run build` | PASS after Scene Studio/Pitch route stubs |
++| `pnpm -C apps/keystone run test` | PASS after Scene Studio/Pitch test exclusion |
++| `pnpm run lockfile:check` | PASS after Scene Studio/Pitch isolation |
++| `pnpm -C apps/terminal-de-venta-system run verify:product-integrity` | PASS after Scene Studio/Pitch isolation |
++| `pnpm -C apps/terminal-de-venta-system run verify:round2` | PASS after Scene Studio/Pitch isolation |
++| `pnpm run typecheck` | PASS after Scene Studio/Pitch isolation |
++
++## 6. Validation Evidence
++
++Baseline validation:
++
++- Root lockfile: PASS
++- PRISMA Product Integrity: PASS 8 / WARN 0 / FAIL 0
++- PRISMA Round 2 smoke: PASS
++- Root typecheck: FAIL in Keystone
++
++Per-PR validation:
++
++- Not run. No PR was created.
++
++Final validation:
++
++- Root typecheck is now PASS on `fix/remove-scene-studio-blocker`.
++- Keystone typecheck/build/test are PASS.
++- PRISMA Product Integrity and Round 2 gates are PASS.
++
++Skipped validation:
++
++- Root lint/build were not run in this blocker-removal PR; the requested final gate was root typecheck plus PRISMA gates.
++
++## 7. Risks
++
++- Scene Studio / Pitch remains intentionally disabled, not repaired.
++- PR #43 is an extremely large dirty collision source and should not be merged as-is.
++- `pnpm-lock.yaml`, `.gitignore`, PRISMA schema, Mobile Dashboard, Tablet verifier, and EIT surfaces collide across multiple branches.
++- Current working tree is mixed and must be split by explicit paths only.
++- Control Center / Phase 5 needs its own lane and validation.
++- `products/web/app` is preserved but off-release.
++
++## 8. Next Steps
++
++1. Merge the blocker-removal PR first.
++2. Resume topic branches after `pnpm run typecheck` remains green on the integration branch.
++3. Split PRISMA Round 2, Product Integrity, Control Center / Phase 5, Web/EIT off-release, and quarantine cleanup into separate PRs.
++4. Merge only green PRs and let GitHub close them by merge.
++
++Recommended branch deletions:
++
++None yet. Branch cleanup should wait until PRs are merged or explicitly abandoned with quarantine evidence.
+diff --git a/tools/repo-cleanup/PR_PLAN.md b/tools/repo-cleanup/PR_PLAN.md
+new file mode 100644
+index 00000000..5f37588a
+--- /dev/null
++++ b/tools/repo-cleanup/PR_PLAN.md
+@@ -0,0 +1,181 @@
++# PRISMA Repository Cleanup PR Plan
++
++Status: UNBLOCKED_BY_SCENE_STUDIO_ISOLATION_PENDING_PR_MERGE
++
++Repository root:
++
++`F:\repos\hitech-os`
++
++## Gate Before Any PR Work
++
++This command now passes on branch `fix/remove-scene-studio-blocker` and must remain green after this branch merges:
++
++```powershell
++pnpm run typecheck
++```
++
++Current result:
++
++GO, exit code `0`.
++
++Evidence:
++
++`F:\repos\hitech-os\tools\repo-cleanup\scene-removal\logs\root-typecheck-final.log`
++
++## Required Precondition PR
++
++### PR 0: Remove Scene Studio / Pitch From Active Scope
++
++Purpose:
++
++Restore the repository-wide typecheck baseline without repairing off-scope Scene Studio/Pitch and without touching PRISMA terminal source.
++
++Scope:
++
++- `F:\repos\hitech-os\apps\keystone\app\layout.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\dev\layout.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\dev\scene-studio\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\api\scene-studio\run\route.ts`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\**\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\tsconfig.json`
++- `F:\repos\hitech-os\apps\keystone\vitest.config.ts`
++- `F:\repos\hitech-os\package.json`
++- `F:\repos\hitech-os\tools\repo-cleanup\scene-removal\**`
++
++Validation:
++
++```powershell
++pnpm run lockfile:check
++pnpm -C apps/terminal-de-venta-system run verify:product-integrity
++pnpm -C apps/terminal-de-venta-system run verify:round2
++pnpm -C apps/keystone run typecheck
++pnpm -C apps/keystone run build
++pnpm -C apps/keystone run test
++pnpm run typecheck
++```
++
++Status:
++
++READY. Merge this branch before the broader cleanup/consolidation PRs.
++
++## Proposed PR Split After Baseline Is Green
++
++### PR 1: PRISMA Round 2 Commerce Core
++
++Purpose:
++
++Preserve the validated Round 2 commerce productization.
++
++Scope:
++
++- schemas
++- shared Round 2 event map
++- Tablet contextual export hardening
++- Tablet standalone verifier bootstrap fix
++- QA readonly audit
++- Round 2 smoke aggregator
++- release docs
++
++Validation:
++
++```powershell
++pnpm -C apps/terminal-de-venta-system run verify:round2
++pnpm -C apps/terminal-de-venta-system run verify:product-integrity
++pnpm run typecheck
++```
++
++### PR 2: PRISMA Product Integrity Gate
++
++Purpose:
++
++Keep workspace and release-lane determinism permanent.
++
++Scope:
++
++- `tools/verify_prisma_product_integrity.mjs`
++- `pnpm-workspace.yaml`
++- Product Integrity docs
++
++Validation:
++
++```powershell
++pnpm -C apps/terminal-de-venta-system install --frozen-lockfile
++pnpm -C apps/terminal-de-venta-system run verify:product-integrity
++pnpm run lockfile:check
++```
++
++### PR 3: Control Center / Phase 5 Lane
++
++Purpose:
++
++Preserve and validate Control Center / Phase 5 without contaminating Tablet Core First.
++
++Scope:
++
++- `apps/terminal-de-venta-system/prisma-control-center/**`
++- `apps/terminal-de-venta-system/quality/**`
++- `apps/terminal-de-venta-system/tools/prisma-pqos-phase5-runner.mjs`
++
++Validation:
++
++```powershell
++pnpm -C apps/terminal-de-venta-system run quality:phase5
++pnpm -C apps/terminal-de-venta-system run quality:release
++```
++
++Status:
++
++Needs dedicated validation. Do not merge into Round 2 core PR.
++
++### PR 4: Web/EIT Off-Release Preservation
++
++Purpose:
++
++Preserve `products/web/app` while keeping it out of active workspace until deterministic.
++
++Scope:
++
++- `apps/terminal-de-venta-system/products/web/app/**`
++- docs explaining off-release status
++
++Validation:
++
++No build validation until dependency versions are pinned. This PR should probably be draft-only or quarantined as off-release if the operator does not approve exact dependency pinning.
++
++### PR 5: Open Branch Retirement / Quarantine Plan
++
++Purpose:
++
++Quarantine or supersede obsolete branch content after surviving implementations are chosen.
++
++Scope:
++
++- `tools/repo-cleanup/quarantine/**`
++- `tools/repo-cleanup/QUARANTINE_MANIFEST.*`
++
++Validation:
++
++```powershell
++pnpm run lockfile:check
++pnpm run typecheck
++```
++
++## Explicit Non-Changes
++
++For the broader cleanup/consolidation plan:
++
++- Do not mix PRISMA Round 2, Control Center / Phase 5, Web/EIT, and quarantine decisions into the Scene Studio blocker-removal PR.
++- Do not move files to quarantine unless a later topic PR proves isolation is insufficient.
++- Do not delete branches.
++- Do not update visual baselines.
++
++## Merge Order
++
++Planned order:
++
++1. Merge `fix/remove-scene-studio-blocker`.
++2. PRISMA Product Integrity Gate.
++3. PRISMA Round 2 Commerce Core.
++4. Control Center / Phase 5 lane.
++5. Web/EIT off-release preservation or quarantine.
++6. Cleanup/quarantine manifest PR.
+diff --git a/tools/repo-cleanup/QUARANTINE_MANIFEST.json b/tools/repo-cleanup/QUARANTINE_MANIFEST.json
+new file mode 100644
+index 00000000..54d53a48
+--- /dev/null
++++ b/tools/repo-cleanup/QUARANTINE_MANIFEST.json
+@@ -0,0 +1,7 @@
++{
++  "status": "EMPTY",
++  "repoRoot": "F:\\repos\\hitech-os",
++  "quarantineRoot": "F:\\repos\\hitech-os\\tools\\repo-cleanup\\quarantine",
++  "reason": "Baseline monorepo typecheck failed before consolidation. No files were moved.",
++  "entries": []
++}
+diff --git a/tools/repo-cleanup/QUARANTINE_MANIFEST.md b/tools/repo-cleanup/QUARANTINE_MANIFEST.md
+new file mode 100644
+index 00000000..b1b42f6d
+--- /dev/null
++++ b/tools/repo-cleanup/QUARANTINE_MANIFEST.md
+@@ -0,0 +1,27 @@
++# PRISMA Repository Cleanup Quarantine Manifest
++
++Status: EMPTY
++
++Repository root:
++
++`F:\repos\hitech-os`
++
++Quarantine root:
++
++`F:\repos\hitech-os\tools\repo-cleanup\quarantine`
++
++## Summary
++
++No files or directories were quarantined in this phase.
++
++Reason:
++
++Baseline monorepo typecheck failed before consolidation. Per stop conditions, no conflict resolution or quarantine moves were performed.
++
++## Entries
++
++None.
++
++## Restore Instructions
++
++No restore action is needed because nothing was moved.
+diff --git a/tools/repo-cleanup/VALIDATION_BASELINE.md b/tools/repo-cleanup/VALIDATION_BASELINE.md
+new file mode 100644
+index 00000000..a68f1556
+--- /dev/null
++++ b/tools/repo-cleanup/VALIDATION_BASELINE.md
+@@ -0,0 +1,86 @@
++# PRISMA Repository Cleanup Validation Baseline
++
++Status: NO-GO
++
++Repository root:
++
++`F:\repos\hitech-os`
++
++## Commands Run
++
++| Command | CWD | Exit | Log |
++| --- | --- | --- | --- |
++| `pnpm run lockfile:check` | `F:\repos\hitech-os` | 0 | `F:\repos\hitech-os\tools\repo-cleanup\logs\root-lockfile-check.log` |
++| `pnpm -C apps/terminal-de-venta-system run verify:product-integrity -- --out-dir tools/codex/runs/prisma-round2-product-integrity` | `F:\repos\hitech-os` | 0 | `F:\repos\hitech-os\tools\repo-cleanup\logs\prisma-product-integrity.log` |
++| `pnpm -C apps/terminal-de-venta-system run verify:round2` | `F:\repos\hitech-os` | 0 | `F:\repos\hitech-os\tools\repo-cleanup\logs\prisma-round2-smoke.log` |
++| `pnpm run typecheck` | `F:\repos\hitech-os` | 2 | `F:\repos\hitech-os\tools\repo-cleanup\logs\root-typecheck.log` |
++
++## Passing Checks
++
++Root lockfile check passed:
++
++```text
++Lockfile is up to date, resolution step is skipped
++Already up to date
++```
++
++PRISMA Product Integrity passed:
++
++```text
++STATUS: GO
++PASS: 8
++WARN: 0
++FAIL: 0
++```
++
++PRISMA Round 2 smoke passed:
++
++```text
++status: PASS
++tablet pcRequiredForBasicSale: false
++PC route smoke: PASS
++Mobile release hardening: ok true
++```
++
++## Failing Baseline Check
++
++Root monorepo typecheck failed:
++
++```powershell
++pnpm run typecheck
++```
++
++Exit code:
++
++`2`
++
++Failing workspace:
++
++`F:\repos\hitech-os\apps\keystone`
++
++Representative failures:
++
++```text
++apps/keystone typecheck: app/dev/scene-studio/ControlRoom.tsx(12,3): error TS2724: "./SceneStudioEditor" has no exported member named "SceneStudioEditorPanel".
++apps/keystone typecheck: app/dev/scene-studio/ControlRoom.tsx(13,3): error TS2305: Module "./SceneStudioEditor" has no exported member "SceneStudioRuntimeProvider".
++apps/keystone typecheck: app/dev/scene-studio/page.tsx(3,10): error TS2305: Module "../../../lib/scene-studio" has no exported member "resolveSceneStudioAccess".
++apps/keystone typecheck: components/pitch/debug/pitch-route-scene-binding.tsx: multiple SceneRecord shape mismatches.
++apps/keystone typecheck: tests/scene-studio-schema.test.ts: multiple missing scene-studio exports.
++```
++
++## Decision
++
++STOP CONSOLIDATION.
++
++No topic branches, PRs, merges, or quarantine moves may start until this baseline failure is resolved or explicitly scoped out by the operator. The failure is outside the PRISMA terminal path but inside the repository-wide build contract.
++
++## Likely Theme
++
++Keystone scene-studio / pitch contract drift:
++
++- Missing exports from `apps/keystone/lib/scene-studio`
++- Component prop contract drift around FloatingWindow / LayerDebugPanel
++- `SceneRecord` shape drift around layers, query, layerProfile, viewport, notes, createdAt, updatedAt, motion
++- Next search params type drift in pitch routes
++
++This should be handled as a separate prerequisite PR before PRISMA cleanup PRs are merged.
+diff --git a/tools/repo-cleanup/scene-removal/ACTIVE_SCOPE_REMOVAL.md b/tools/repo-cleanup/scene-removal/ACTIVE_SCOPE_REMOVAL.md
+new file mode 100644
+index 00000000..7c95adcc
+--- /dev/null
++++ b/tools/repo-cleanup/scene-removal/ACTIVE_SCOPE_REMOVAL.md
+@@ -0,0 +1,48 @@
++# Active Scope Removal
++
++Repo root: `F:\repos\hitech-os`
++
++## Removed from active Keystone runtime/navigation
++
++- `F:\repos\hitech-os\apps\keystone\app\layout.tsx`
++  - Removed the non-production header link to `/dev/scene-studio?debug=1`.
++  - PRISMA impact: none.
++
++- `F:\repos\hitech-os\apps\keystone\app\dev\layout.tsx`
++  - Removed the active `DevConsoleProvider` wrapper from `/dev/**` routes.
++  - PRISMA impact: none.
++
++## Disabled active routes/API
++
++- `F:\repos\hitech-os\apps\keystone\app\dev\scene-studio\page.tsx`
++  - Replaced stale Scene Studio imports and runtime with `notFound()`.
++  - PRISMA impact: none.
++
++- `F:\repos\hitech-os\apps\keystone\app\api\scene-studio\run\route.ts`
++  - Replaced the stale runner/spawn path with `410 Gone`.
++  - PRISMA impact: none.
++
++- `F:\repos\hitech-os\apps\keystone\app\pitch\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\01-double-engine\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\02-industrial-flow\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\03-hitech-os\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\04-valuation\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\05-inventory-foundation\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\06-shipments-receiving\page.tsx`
++  - Replaced stale Pitch runtime imports with `notFound()`.
++  - PRISMA impact: none.
++
++## Removed from active validation
++
++- `F:\repos\hitech-os\apps\keystone\tsconfig.json`
++  - Explicitly excludes off-scope Scene Studio, Pitch, DevConsole, and related tests from Keystone TypeScript validation.
++
++- `F:\repos\hitech-os\apps\keystone\vitest.config.ts`
++  - Explicitly excludes off-scope Scene Studio, Pitch, DevConsole, and route smoke tests from Keystone Vitest runs.
++
++- `F:\repos\hitech-os\package.json`
++  - Removed `pnpm run keystone:scene:proof:ci` from root `ci`.
++
++## Not removed
++
++Source files under Scene Studio/Pitch remain recoverable in place. No source tree was moved to quarantine because explicit isolation unblocked typecheck/build with less risk than moving large directories.
+diff --git a/tools/repo-cleanup/scene-removal/BASELINE.md b/tools/repo-cleanup/scene-removal/BASELINE.md
+new file mode 100644
+index 00000000..c1d5bd40
+--- /dev/null
++++ b/tools/repo-cleanup/scene-removal/BASELINE.md
+@@ -0,0 +1,45 @@
++# Scene Studio / Pitch Blocker Removal Baseline
++
++Repo root: `F:\repos\hitech-os`
++
++Branch: `fix/remove-scene-studio-blocker`
++
++Starting HEAD: `25c209f93675418bce7d5955168d72d89a377328`
++
++Context read before source edits:
++
++- `F:\repos\hitech-os\AGENTS.md`
++- `F:\repos\hitech-os\KERNEL_CONTEXT.md`
++- `F:\repos\hitech-os\tools\repo-cleanup\FINAL_REPORT.md`
++- `F:\repos\hitech-os\tools\repo-cleanup\PR_PLAN.md`
++- `F:\repos\hitech-os\tools\repo-cleanup\VALIDATION_BASELINE.md`
++- `F:\repos\hitech-os\tools\repo-cleanup\COLLISION_MAP.md`
++- `F:\repos\hitech-os\tools\repo-cleanup\BRANCH_INVENTORY.md`
++- `F:\repos\hitech-os\tools\repo-cleanup\DECISIONS.md`
++- `F:\repos\hitech-os\tools\repo-cleanup\QUARANTINE_MANIFEST.md`
++- `F:\repos\hitech-os\tools\repo-cleanup\QUARANTINE_MANIFEST.json`
++- `F:\repos\hitech-os\tools\repo-cleanup\logs\root-typecheck.log`
++
++Known starting validation state from cleanup baseline:
++
++- `pnpm run lockfile:check`: PASS
++- `pnpm -C apps\terminal-de-venta-system run verify:product-integrity`: PASS
++- `pnpm -C apps\terminal-de-venta-system run verify:round2`: PASS
++- `pnpm run typecheck`: FAIL in `F:\repos\hitech-os\apps\keystone`
++
++Starting dirty tree note:
++
++The repository already contained unrelated PRISMA changes under `F:\repos\hitech-os\apps\terminal-de-venta-system` and untracked cleanup/productization material before this branch was created. This branch will stage only explicit blocker-removal paths and will not stage or rewrite existing PRISMA work.
++
++GitHub CLI:
++
++- `gh` is installed.
++- `gh auth status` reports an authenticated account with `repo` and `workflow` scopes.
++
++Safety constraints applied:
++
++- No destructive git commands.
++- No history rewrite.
++- No dependency changes.
++- No lockfile edits planned.
++- No PRISMA runtime or schema changes planned.
+diff --git a/tools/repo-cleanup/scene-removal/DECISION.md b/tools/repo-cleanup/scene-removal/DECISION.md
+new file mode 100644
+index 00000000..8e382746
+--- /dev/null
++++ b/tools/repo-cleanup/scene-removal/DECISION.md
+@@ -0,0 +1,29 @@
++# Decision
++
++Status: GO for explicit isolation from active scope.
++
++Chosen route:
++
++1. Remove Scene Studio/Pitch from active Keystone navigation and direct route execution.
++2. Disable the Scene Studio runner API instead of repairing the stale runner contract.
++3. Exclude off-scope Scene Studio/Pitch/dev-console/test files from Keystone TypeScript and Vitest validation.
++4. Remove Scene Studio from root CI validation so it does not block cleanup.
++5. Do not quarantine files in this branch because no source file needs to be moved to unblock the repo; isolation is smaller and more reversible.
++
++Why this is safest:
++
++- The failures are localized to Keystone Scene Studio/Pitch contract drift.
++- PRISMA has no runtime dependency on those modules.
++- A broad Scene Studio repair would consume effort on off-scope code and risk changing visual/demo behavior.
++- Moving large trees to quarantine is recoverable, but it is heavier than needed because validation can be unblocked with explicit isolation.
++- Stubbing active routes/API makes the decommission honest: Scene Studio/Pitch stops acting like available runtime functionality.
++
++What this intentionally does not do:
++
++- It does not redesign PRISMA.
++- It does not change Tablet-first behavior.
++- It does not make PC or Mobile required.
++- It does not repair Scene Studio/Pitch types.
++- It does not delete source files.
++- It does not update visual baselines.
++- It does not add dependencies.
+diff --git a/tools/repo-cleanup/scene-removal/PRISMA_RUNTIME_IMPACT.md b/tools/repo-cleanup/scene-removal/PRISMA_RUNTIME_IMPACT.md
+new file mode 100644
+index 00000000..f57dfe9f
+--- /dev/null
++++ b/tools/repo-cleanup/scene-removal/PRISMA_RUNTIME_IMPACT.md
+@@ -0,0 +1,33 @@
++# PRISMA Runtime Impact
++
++Repo root: `F:\repos\hitech-os`
++
++## Impact classification
++
++Scene Studio / Pitch affects:
++
++- Tablet runtime: NO
++- Tablet-first standalone operation: NO
++- PRISMA schemas: NO
++- PRISMA validation gates: NO direct runtime dependency
++- PC adder runtime: NO
++- Mobile adder runtime: NO
++- Health/Charts/Control Center observer behavior: NO
++- Root workspace validation: YES, through Keystone `typecheck`
++
++## Evidence
++
++Passing baseline PRISMA gates were already recorded before this blocker-removal branch:
++
++- `pnpm -C apps\terminal-de-venta-system run verify:product-integrity`: PASS
++- `pnpm -C apps\terminal-de-venta-system run verify:round2`: PASS
++
++Search evidence:
++
++- `F:\repos\hitech-os\apps\terminal-de-venta-system` has no runtime import from `F:\repos\hitech-os\apps\keystone`.
++- `F:\repos\hitech-os\apps\terminal-de-venta-system` has no runtime import from Scene Studio/Pitch modules.
++- The only PRISMA matches for `pitch` are documentation/salvage text, not runtime code.
++
++## Protection statement
++
++This blocker-removal branch must not edit `F:\repos\hitech-os\apps\terminal-de-venta-system`, PRISMA schemas, Tablet sale flows, PC adder flows, or Mobile supervisor flows. The fix scope stays in Keystone/root validation and cleanup evidence only.
+diff --git a/tools/repo-cleanup/scene-removal/QUARANTINE_DELTA.md b/tools/repo-cleanup/scene-removal/QUARANTINE_DELTA.md
+new file mode 100644
+index 00000000..eea30020
+--- /dev/null
++++ b/tools/repo-cleanup/scene-removal/QUARANTINE_DELTA.md
+@@ -0,0 +1,22 @@
++# Quarantine Delta
++
++Repo root: `F:\repos\hitech-os`
++
++Quarantine used: NO
++
++No files were moved to:
++
++`F:\repos\hitech-os\tools\repo-cleanup\quarantine\scene-studio-pitch-offscope`
++
++Reason:
++
++Explicit isolation was sufficient:
++
++- Keystone typecheck passes.
++- Keystone build passes.
++- PRISMA verification gates pass.
++- Root typecheck passes.
++
++Restore instructions:
++
++No quarantine restore is needed. To restore Scene Studio/Pitch later, revert the blocker-removal commit and then repair the stale Keystone contracts intentionally in a dedicated PR.
+diff --git a/tools/repo-cleanup/scene-removal/REFERENCE_MAP.md b/tools/repo-cleanup/scene-removal/REFERENCE_MAP.md
+new file mode 100644
+index 00000000..716cc5be
+--- /dev/null
++++ b/tools/repo-cleanup/scene-removal/REFERENCE_MAP.md
+@@ -0,0 +1,75 @@
++# Scene Studio / Pitch Active Reference Map
++
++Repo root: `F:\repos\hitech-os`
++
++## Why root typecheck reaches Scene Studio / Pitch
++
++Root `F:\repos\hitech-os\package.json` defines:
++
++- `typecheck`: `pnpm -r --if-present typecheck`
++
++Workspace `F:\repos\hitech-os\pnpm-workspace.yaml` includes:
++
++- `apps/*`
++- `services/*`
++- `packages/*`
++- `tools/*`
++
++Keystone `F:\repos\hitech-os\apps\keystone\package.json` defines:
++
++- `typecheck`: `tsc --noEmit`
++
++Keystone `F:\repos\hitech-os\apps\keystone\tsconfig.json` includes every `**/*.ts` and `**/*.tsx`, so stale Scene Studio/Pitch files are typechecked even when they are not relevant to PRISMA.
++
++## Current blocker files from baseline typecheck
++
++Observed in `F:\repos\hitech-os\tools\repo-cleanup\logs\root-typecheck.log`:
++
++- `F:\repos\hitech-os\apps\keystone\app\dev\scene-studio\ControlRoom.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\dev\scene-studio\ControlRoomToolbarWindow.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\dev\scene-studio\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\dev\scene-studio\SceneGraphPanel.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\01-double-engine\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\02-industrial-flow\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\03-hitech-os\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\app\pitch\04-valuation\page.tsx`
++- `F:\repos\hitech-os\apps\keystone\components\dev-console\console-core\console-core-diagnostics.ts`
++- `F:\repos\hitech-os\apps\keystone\components\dev-console\console-core\console-core-shell.tsx`
++- `F:\repos\hitech-os\apps\keystone\components\dev-console\DevConsoleContext.tsx`
++- `F:\repos\hitech-os\apps\keystone\components\pitch\debug\pitch-dev-console-stability-helpers.tsx`
++- `F:\repos\hitech-os\apps\keystone\components\pitch\debug\pitch-route-scene-binding.tsx`
++- `F:\repos\hitech-os\apps\keystone\components\pitch\debug\pitch-scene-runtime-bridge.tsx`
++- `F:\repos\hitech-os\apps\keystone\components\scene-studio\scene-studio-diagnostics.tsx`
++- `F:\repos\hitech-os\apps\keystone\components\scene-studio\scene-studio-editor.tsx`
++- `F:\repos\hitech-os\apps\keystone\components\scene-studio\scene-studio-list.tsx`
++- `F:\repos\hitech-os\apps\keystone\components\scene-studio\scene-studio-page.tsx`
++- `F:\repos\hitech-os\apps\keystone\components\scene-studio\scene-studio-preview.tsx`
++- `F:\repos\hitech-os\apps\keystone\components\scene-studio\use-scene-studio-state.ts`
++- `F:\repos\hitech-os\apps\keystone\tests\scene-studio-access.test.ts`
++- `F:\repos\hitech-os\apps\keystone\tests\scene-studio-diagnostics.test.ts`
++- `F:\repos\hitech-os\apps\keystone\tests\scene-studio-schema.test.ts`
++- `F:\repos\hitech-os\apps\keystone\tests\scene-studio-store.test.ts`
++
++## Active route and validation references
++
++Scene Studio/Pitch currently appears in these active Keystone areas:
++
++- `F:\repos\hitech-os\apps\keystone\app\layout.tsx` links to `/dev/scene-studio?debug=1` in non-production.
++- `F:\repos\hitech-os\apps\keystone\app\dev\scene-studio\page.tsx` exposes a Scene Studio route.
++- `F:\repos\hitech-os\apps\keystone\app\api\scene-studio\run\route.ts` exposes a Scene Studio runner API.
++- `F:\repos\hitech-os\apps\keystone\app\pitch\**\page.tsx` exposes Pitch routes.
++- `F:\repos\hitech-os\apps\keystone\components\scene-studio\**` contains stale Scene Studio UI.
++- `F:\repos\hitech-os\apps\keystone\components\pitch\debug\**` and top-level Pitch debug helpers import Scene Studio runtime shapes.
++- `F:\repos\hitech-os\apps\keystone\components\dev-console\**` imports Scene Studio and Pitch debug surfaces.
++- `F:\repos\hitech-os\apps\keystone\tests\*scene-studio*` and `F:\repos\hitech-os\apps\keystone\tests\*pitch*` validate off-scope Scene Studio/Pitch behavior.
++- Root `F:\repos\hitech-os\package.json` includes Scene Studio aliases and a root `ci` suffix that invokes `keystone:scene:proof:ci`.
++
++## PRISMA reference check
++
++Search under `F:\repos\hitech-os\apps\terminal-de-venta-system` found only documentary mentions of the word `pitch`:
++
++- `F:\repos\hitech-os\apps\terminal-de-venta-system\docs\design\PRISMA_BLACK_VISUAL_GOVERNANCE_BASELINE_01E.md`
++- `F:\repos\hitech-os\apps\terminal-de-venta-system\tools\prisma-salvage\candidates\architecture_docs\docs\design\PRISMA_BLACK_VISUAL_GOVERNANCE_BASELINE_01E.md`
++
++No Tablet, PC, Mobile, schema, runtime, or validation path under PRISMA imports Keystone Scene Studio/Pitch.
+diff --git a/tools/repo-cleanup/scene-removal/REMOVAL_SUMMARY.md b/tools/repo-cleanup/scene-removal/REMOVAL_SUMMARY.md
+new file mode 100644
+index 00000000..87cb3c49
+--- /dev/null
++++ b/tools/repo-cleanup/scene-removal/REMOVAL_SUMMARY.md
+@@ -0,0 +1,35 @@
++# Removal Summary
++
++Status: GO
++
++Decision:
++
++Scene Studio / Pitch was removed from active scope by route/API stubbing and validation isolation. No broad Scene Studio repair was performed.
++
++## What changed
++
++- Scene Studio nav entry removed from Keystone shell.
++- `/dev/scene-studio` now returns Next `notFound()`.
++- `/api/scene-studio/run` now returns `410 Gone`.
++- `/pitch` and Pitch subroutes now return Next `notFound()`.
++- Keystone TypeScript excludes off-scope Scene Studio/Pitch/DevConsole/test surfaces.
++- Keystone Vitest excludes off-scope Scene Studio/Pitch/DevConsole/test surfaces.
++- Root `ci` no longer invokes Scene Studio proof.
++
++## What did not change
++
++- No PRISMA runtime files were edited.
++- No PRISMA schema files were edited by this branch.
++- Tablet-first operation was not changed.
++- PC and Mobile remain adders only.
++- No dependency or lockfile changes were introduced.
++- No source files were deleted.
++- No quarantine move was needed.
++
++## Restore instructions
++
++If Scene Studio/Pitch must return later:
++
++1. Revert commit `fix(repo): remove scene studio from active scope`.
++2. Repair Scene Studio/Pitch contracts in a dedicated Keystone PR.
++3. Re-enable route/API/typecheck/test scope only after `pnpm -C apps\keystone run typecheck`, `pnpm -C apps\keystone run build`, and `pnpm -C apps\keystone run test` pass.
+diff --git a/tools/repo-cleanup/scene-removal/VALIDATION.md b/tools/repo-cleanup/scene-removal/VALIDATION.md
+new file mode 100644
+index 00000000..7264b545
+--- /dev/null
++++ b/tools/repo-cleanup/scene-removal/VALIDATION.md
+@@ -0,0 +1,30 @@
++# Validation
++
++Status: GO
++
++Repo root: `F:\repos\hitech-os`
++
++## Required commands
++
++| Command | CWD | Exit | Log |
++| --- | --- | ---: | --- |
++| `pnpm run lockfile:check` | `F:\repos\hitech-os` | 0 | `F:\repos\hitech-os\tools\repo-cleanup\scene-removal\logs\lockfile-check.log` |
++| `pnpm -C apps\terminal-de-venta-system run verify:product-integrity` | `F:\repos\hitech-os` | 0 | `F:\repos\hitech-os\tools\repo-cleanup\scene-removal\logs\prisma-product-integrity.log` |
++| `pnpm -C apps\terminal-de-venta-system run verify:round2` | `F:\repos\hitech-os` | 0 | `F:\repos\hitech-os\tools\repo-cleanup\scene-removal\logs\prisma-round2.log` |
++| `pnpm run typecheck` | `F:\repos\hitech-os` | 0 | `F:\repos\hitech-os\tools\repo-cleanup\scene-removal\logs\root-typecheck-final.log` |
++
++## Additional commands
++
++| Command | CWD | Exit | Log |
++| --- | --- | ---: | --- |
++| `pnpm -C apps\keystone run typecheck` | `F:\repos\hitech-os` | 0 | `F:\repos\hitech-os\tools\repo-cleanup\scene-removal\logs\keystone-typecheck-probe-2.log` |
++| `pnpm -C apps\keystone run build` | `F:\repos\hitech-os` | 0 | `F:\repos\hitech-os\tools\repo-cleanup\scene-removal\logs\keystone-build-probe.log` |
++| `pnpm -C apps\keystone run test` | `F:\repos\hitech-os` | 0 | `F:\repos\hitech-os\tools\repo-cleanup\scene-removal\logs\keystone-test.log` |
++
++## Evidence notes
++
++- `pnpm run typecheck` now reaches `F:\repos\hitech-os\apps\keystone` and finishes successfully.
++- `pnpm -C apps\keystone run build` compiles successfully with Scene Studio/Pitch routes present only as `notFound()` stubs.
++- `pnpm -C apps\keystone run test` passes 9 files / 19 tests after excluding off-scope Scene Studio/Pitch/DevConsole tests.
++- PRISMA Product Integrity and Round 2 gates continue to pass.
++- No lockfile drift was introduced.

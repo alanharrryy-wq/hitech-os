@@ -15,6 +15,14 @@ export default defineConfig({
   },
   test: {
     include: ["tests/**/*.test.ts", "tests/**/*.test.tsx"],
+    exclude: [
+      "tests/dev-console*.test.*",
+      "tests/dev-routes-smoke.test.tsx",
+      "tests/floating-window-drag-policy.test.ts",
+      "tests/pitch*.test.*",
+      "tests/scene-studio*.test.*",
+      "tests/ui-improvement-workflow.test.ts"
+    ],
     environment: "node",
     globals: true
   }
