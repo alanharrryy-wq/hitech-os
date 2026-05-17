@@ -1,0 +1,25 @@
+{
+  "name": "@hitech/prisma-web-eit",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3110",
+    "build": "next build",
+    "start": "next start -p 3110",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@next/env": "latest",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "latest"
+  },
+  "prismaCtxMarker": "PRISMA_CTX_WEB_EIT_GENERATED_V1"
+}
