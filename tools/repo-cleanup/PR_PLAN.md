@@ -58,6 +58,10 @@ Status:
 
 READY. Merge this branch before the broader cleanup/consolidation PRs.
 
+PR:
+
+`https://github.com/alanharrryy-wq/hitech-os/pull/72`
+
 ## Proposed PR Split After Baseline Is Green
 
 ### PR 1: PRISMA Round 2 Commerce Core

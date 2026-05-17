@@ -96,6 +96,10 @@ Topic branch created:
 
 `fix/remove-scene-studio-blocker`
 
+PR opened:
+
+`https://github.com/alanharrryy-wq/hitech-os/pull/72`
+
 No PRs have been merged or closed yet.
 
 Open PRs requiring later handling include:

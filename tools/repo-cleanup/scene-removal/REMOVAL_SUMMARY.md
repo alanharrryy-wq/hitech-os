@@ -2,6 +2,12 @@
 
 Status: GO
 
+Branch: `fix/remove-scene-studio-blocker`
+
+Commit: `3f39219b`
+
+PR: `https://github.com/alanharrryy-wq/hitech-os/pull/72`
+
 Decision:
 
 Scene Studio / Pitch was removed from active scope by route/API stubbing and validation isolation. No broad Scene Studio repair was performed.
