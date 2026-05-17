@@ -3,14 +3,18 @@
 const PUBLIC_HOSTS = new Set(['control.hitechrts.com']);
 const LOCAL_HOSTS = new Set(['127.0.0.1', 'localhost', '::1']);
 const REFRESH_MS = 5000;
-const STALE_AFTER_MS = 90_000;
-const STORE_VIEW = 'prisma-crystal-ops-view-v2';
+const LIVE_AFTER_MS = 5 * 60_000;
+const WARM_AFTER_MS = 15 * 60_000;
+const STALE_AFTER_MS = WARM_AFTER_MS;
+const AUTO_HEALTH_RUN_AFTER_MS = 4 * 60_000 + 30_000;const STORE_VIEW = 'prisma-crystal-ops-view-v2';
 let activeView = localStorage.getItem(STORE_VIEW) || 'overview';
 let autoRefresh = localStorage.getItem('prisma-crystal-paused') !== 'yes';
 let timer = null;
 let lastHealth = null;
 let lastIncidents = null;
 let lastModel = null;
+let autoHealthRunInFlight = false;
+let lastAutoHealthRunAt = 0;
 const $ = (id) => document.getElementById(id);
 const $$ = (selector) => Array.from(document.querySelectorAll(selector));
 const isPublic = () => PUBLIC_HOSTS.has(location.hostname) || !LOCAL_HOSTS.has(location.hostname);
@@ -65,11 +69,15 @@ function cloudflareRoute(payload){const cf=payload.cloudflare||{}; const cc=payl
   return {ok:Boolean(cc.public_health?.ok||endpoint?.probe?.ok||cf.config?.controlRoute?.ok),statusCode:cc.public_health?.statusCode||endpoint?.probe?.statusCode||cf.config?.controlRoute?.statusCode||'-',latencyMs:cc.public_health?.latencyMs||endpoint?.probe?.latencyMs||'-',url:cc.public_url||endpoint?.url||'https://control.hitechrts.com/',diagnosis:cf.diagnosis||cf.reason||''};
 }
 function healthTimestamp(payload){return payload.generatedAt||payload.lastUpdated||payload.control_center?.last_updated||payload.timestamp||payload.time;}
-function deriveFreshness(payload){const t=healthTimestamp(payload); const stale=ageMs(t)>STALE_AFTER_MS; return {timestamp:t,age:ageLabel(t),stale};}
-function deriveCloudflareStatus(payload){const cf=payload.cloudflare||{}; const r=cloudflareRoute(payload); if(r.ok)return 'PASS'; if(r.statusCode===404||String(r.statusCode)==='404')return 'DEGRADED'; return statusOf(cf.status||cf.state||payload.control_center?.cloudflare||'UNKNOWN');}
+function deriveFreshness(payload){
+  const t=healthTimestamp(payload);
+  const ms=ageMs(t);
+  const state=!Number.isFinite(ms)?'STALE':(ms<=LIVE_AFTER_MS?'LIVE':(ms<=WARM_AFTER_MS?'WARM':'STALE'));
+  return {timestamp:t,age:ageLabel(t),ageMs:ms,state,live:state==='LIVE',warm:state==='WARM',stale:state==='STALE'};
+}function deriveCloudflareStatus(payload){const cf=payload.cloudflare||{}; const r=cloudflareRoute(payload); if(r.ok)return 'PASS'; if(r.statusCode===404||String(r.statusCode)==='404')return 'DEGRADED'; return statusOf(cf.status||cf.state||payload.control_center?.cloudflare||'UNKNOWN');}
 function deriveRecommendation(payload){const cf=deriveCloudflareStatus(payload); if(cf==='DEGRADED')return 'Revisar ruta publica de control.hitechrts.com, origen del tunnel y binding de servicio Control Center.'; const c=counts(payload); if(c.attention)return `Revisar ${c.attention} servicio(s) fuera de PASS y validar Local/LAN/Public.`; return 'Operacion sin accion inmediata.';}
 function deriveModel(healthRaw, incidentsRaw){
-  // PATCH_ID: PRISMA_HEALTH_EMPTY_SCORE_LOGO_20260513_FINAL
+  // PATCH_ID: PRISMA_LIVE_WARM_WATERDROP_RAIL_20260513_B
   const health=normalizeHealth(healthRaw);
   const incidents=normalizeIncidents(incidentsRaw);
   const active=incidents.activeIncidents||[];
@@ -122,6 +130,8 @@ function deriveModel(healthRaw, incidentsRaw){
     overall=blockers.length?'DEGRADED':componentOverall;
   }else if(overall==='PASS' && blockers.length){
     overall='DEGRADED';
+  }else if(overall==='DEGRADED' && !blockers.length && !fresh.stale && hasScore && Number(rawScore)>=95){
+    overall=['EMPTY','UNKNOWN','DEGRADED'].includes(componentOverall)?'PASS':componentOverall;
   }
 
   let sourceScore=asNumber(rawScore,NaN);
@@ -135,21 +145,20 @@ function deriveModel(healthRaw, incidentsRaw){
   const recommendation=!hasHealthEvidence?'Corre health para encender la consola.':(health.recommendedNextAction||deriveRecommendation(health));
   return {health,incidents,active,c,fresh,cfStatus,latency,worstLat,serviceWorst,incidentWorst,overall,score,blockers,route,recommendation,hasHealthEvidence};
 }
-
 function renderShell(healthRaw, incidentsRaw){
   const model=deriveModel(healthRaw, incidentsRaw); lastModel=model; lastHealth=model.health; lastIncidents=model.incidents;
   const {health,incidents,active,c,fresh,cfStatus,latency,worstLat,overall,score,blockers,route,recommendation}=model;
   document.body.dataset.status=overall.toLowerCase();
+  document.body.dataset.freshness=fresh.state.toLowerCase();
   setText('header-score',score.toFixed(0)); setText('hero-title',overall==='PASS'?'Operacion cristalina':overall==='DEGRADED'?'Operacion local fuerte, visibilidad degradada':overall==='EMPTY'?'Esperando telemetria':`Estado ${overall}`); setText('hero-recommendation',recommendation);
   setText('gauge-score',score.toFixed(0)); setText('gauge-label',overall); $('mega-gauge')?.style.setProperty('--score',score);
-  setText('overall-chip',overall); setClass('overall-chip',`state-chip ${tone(overall)}`); setText('fresh-chip',`health hace ${fresh.age}${fresh.stale?' / stale':''}`); setClass('fresh-chip',`state-chip ${fresh.stale?'warn':'subtle'}`); setText('run-chip',health.runId?`run ${health.runId}`:'run pendiente');
+  setText('overall-chip',overall); setClass('overall-chip',`state-chip ${tone(overall)}`); setText('fresh-chip',`health hace ${fresh.age} / ${fresh.state.toLowerCase()}`); setClass('fresh-chip',`state-chip ${fresh.live?'pass':fresh.warm?'info':'warn'}`); setText('run-chip',health.runId?`run ${health.runId}`:'run pendiente');
   setText('rail-status',overall); $('rail-meter').style.width=`${score}%`; setText('rail-bridge',incidents.latestBridge?.ok?'OK':'CHECK'); setText('rail-blackbox',incidents.blackBoxRoot?'ACTIVO':'SIN DATO'); setText('rail-api',incidents.activeIncidents?'OK':'CHECK');
   setText('bridge-state',incidents.source?'conectado':'consultando'); setText('mode-chip',mode()); setText('kpi-public-mode',mode()==='PUBLIC_REDACTED'?'PUBLIC':'LOCAL'); setText('kpi-public-note',mode()==='PUBLIC_REDACTED'?'sanitized':'full telemetry');
   setText('kpi-services',`${c.pass}/${c.total}`); setText('kpi-services-note',c.attention?`${c.attention} en atencion`:'todos limpios'); setText('kpi-incidents',String(active.length)); setText('kpi-incidents-note',incidents.latestBridge?.severity||'Black-box');
-  setText('kpi-cloudflare',cfStatus); setText('kpi-control-route',`${route.statusCode} ${route.url}`); setText('kpi-latency',latency===null?'-':`${latency} ms`); setText('kpi-last-health',fresh.age); setText('kpi-last-health-note',fresh.timestamp||'sin timestamp');
-  renderServices(model); renderIncidents(model); renderBlackbox(model); renderCloudflare(model); renderTables(model); renderRaw(model); renderDataCoreOverlay(model); 
+  setText('kpi-cloudflare',cfStatus); setText('kpi-control-route',`${route.statusCode} ${route.url}`); setText('kpi-latency',latency===null?'-':`${latency} ms`); setText('kpi-last-health',fresh.age); setText('kpi-last-health-note',`${fresh.state} · ${fresh.timestamp||'sin timestamp'}`);
+  renderServices(model); renderIncidents(model); renderBlackbox(model); renderCloudflare(model); renderTables(model); renderRaw(model); renderDataCoreOverlay(model);
 }
-
 function renderDataCoreOverlay(model){
   const block=model.blockers.length?model.blockers:['Sin bloqueadores derivados'];
   const html=block.map(item=>`<div class="soft-row"><span>Diagnostico</span><strong>${esc(item)}</strong></div>`).join('');
@@ -163,10 +172,221 @@ function renderCloudflare(model){const payload=model.health; const status=model.
 function renderTables(model){const payload=model.health; const query=($('service-search')?.value||'').toLowerCase(); const rows=services(payload).filter(s=>JSON.stringify(s).toLowerCase().includes(query)); $('services-table').innerHTML='<thead><tr><th>Servicio</th><th>Puerto</th><th>Estado</th><th>Local</th><th>LAN</th><th>Publico</th><th>Latencia</th></tr></thead><tbody>'+rows.map(s=>`<tr><td>${esc(roleLabel(s))}</td><td>${esc(servicePort(s))}</td><td>${chip(serviceStatus(s))}</td><td>${chip(endpointOk(s.localHttp),formatMs(s.localHttp?.latencyMs))}</td><td>${chip(endpointOk(s.lanHttp),formatMs(s.lanHttp?.latencyMs))}</td><td>${chip(endpointOk(s.publicHttp),formatMs(s.publicHttp?.latencyMs))}</td><td>${formatMs(s.localHttp?.latencyMs)}</td></tr>`).join('')+'</tbody>'; const endpoints=payload.cloudflare?.publicEndpoints||[]; $('public-table').innerHTML='<thead><tr><th>Endpoint</th><th>URL</th><th>Status</th><th>Latencia</th></tr></thead><tbody>'+endpoints.map(e=>`<tr><td>${esc(e.name||e.host||'-')}</td><td>${esc(e.url||'-')}</td><td>${chip(e.probe?.ok||e.status,e.probe?.statusCode||e.status)}</td><td>${formatMs(e.probe?.latencyMs)}</td></tr>`).join('')+'</tbody>';}
 function renderRaw(model){$('raw-block').textContent=JSON.stringify(mode()==='PUBLIC_REDACTED'?sanitize(model):model,null,2);}
 function clockTick(){const now=new Date(); setText('clock-time',now.toLocaleTimeString('es-MX',{hour12:false})); setText('clock-date',now.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}).toUpperCase());}
-function showView(view){activeView=view; localStorage.setItem(STORE_VIEW,view); $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.view===view)); const target=document.querySelector(`[data-panel="${view}"]`); if(target)target.scrollIntoView({behavior:'smooth',block:'start'});}
-async function refresh(){document.body.classList.add('loading'); try{const [health,incidents]=await fetchJsonBatch(['/api/health','/api/incidents']); renderShell(health.__error?{}:health,incidents.__error?{}:incidents); toast('Data Core actualizado');}catch(error){toast(`Error: ${error.message}`);}finally{document.body.classList.remove('loading');}}
-function fetchJson(url){return fetch(url,{cache:'no-store',headers:{Accept:'application/json'}}).then(r=>{if(!r.ok)throw new Error(`${url} ${r.status}`); return r.json();});}
+function showView(view){
+  if(window.PRISMA_NAV_CAPSULE_FIX && window.PRISMA_NAV_CAPSULE_FIX.go){
+    return window.PRISMA_NAV_CAPSULE_FIX.go(view);
+  }
+  activeView=view||'overview';
+  localStorage.setItem(STORE_VIEW,activeView);
+  $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.view===activeView));
+  const target=document.querySelector(`[data-panel="${activeView}"]`)||document.getElementById(activeView);
+  if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function shouldAutoRunHealth(model){
+  if(isPublic())return false;
+  if(autoHealthRunInFlight)return false;
+  const age=Number(model?.fresh?.ageMs);
+  const oldEnough=!Number.isFinite(age)||age>=AUTO_HEALTH_RUN_AFTER_MS;
+  if(!oldEnough)return false;
+  return Date.now()-lastAutoHealthRunAt>120_000;
+}
+async function runHealthPreflight(model){
+  autoHealthRunInFlight=true;
+  lastAutoHealthRunAt=Date.now();
+  document.body.dataset.healthPreflight='running';
+  setText('hero-title','Verificando salud operativa');
+  setText('hero-recommendation','Corriendo health antes de marcar visibilidad degradada.');
+  setText('fresh-chip',`health hace ${model?.fresh?.age||'--'} / verificando`);
+  setClass('fresh-chip','state-chip info');
+  toast('Corriendo health antes de degradar');
+  try{
+    const result=await fetchJson('/api/ops/action/run-health');
+    toast(result.ok?'Health actualizado':'Health no pudo actualizarse');
+    return result;
+  }catch(error){
+    toast(`Health preflight fallo: ${error.message}`);
+    return {ok:false,error:String(error)};
+  }finally{
+    autoHealthRunInFlight=false;
+    document.body.dataset.healthPreflight='idle';
+  }
+}
+async function refresh(){
+  document.body.classList.add('loading');
+  try{
+    let [health,incidents]=await fetchJsonBatch(['/api/health','/api/incidents']);
+    let safeHealth=health.__error?{}:health;
+    let safeIncidents=incidents.__error?{}:incidents;
+    const firstModel=deriveModel(safeHealth,safeIncidents);
+    if(shouldAutoRunHealth(firstModel)){
+      await runHealthPreflight(firstModel);
+      [health,incidents]=await fetchJsonBatch(['/api/health','/api/incidents']);
+      safeHealth=health.__error?{}:health;
+      safeIncidents=incidents.__error?{}:incidents;
+    }
+    renderShell(safeHealth,safeIncidents);
+    toast('Data Core actualizado');
+  }catch(error){
+    toast(`Error: ${error.message}`);
+  }finally{
+    document.body.classList.remove('loading');
+  }
+}function fetchJson(url){return fetch(url,{cache:'no-store',headers:{Accept:'application/json'}}).then(r=>{if(!r.ok)throw new Error(`${url} ${r.status}`); return r.json();});}
 function fetchJsonBatch(urls){return Promise.all(urls.map(u=>fetchJson(u).catch(error=>({__error:String(error),url:u}))));}
 function copyBrief(){const m=lastModel; if(!m){toast('Sin datos para copiar'); return;} const brief=`PRISMA Data Core brief\nStatus: ${m.overall}\nScore: ${m.score.toFixed(0)}\nServices PASS: ${m.c.pass}/${m.c.total}\nIncidents: ${m.active.length}\nCloudflare: ${m.cfStatus} ${m.route.statusCode}\nFreshness: ${m.fresh.age}\nBlockers: ${m.blockers.join('; ')||'none'}\nAction: ${m.recommendation}`; navigator.clipboard?.writeText(brief).then(()=>toast('Brief copiado')).catch(()=>toast('No se pudo copiar'));}
 function boot(){clockTick(); setInterval(clockTick,1000); $$('.nav-item').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view))); $('refresh-button')?.addEventListener('click',refresh); $('pause-button')?.addEventListener('click',()=>{autoRefresh=!autoRefresh; localStorage.setItem('prisma-crystal-paused',autoRefresh?'no':'yes'); setText('pause-button',autoRefresh?'Pause':'Resume'); toast(autoRefresh?'Auto-refresh activo':'Auto-refresh pausado');}); $('copy-brief')?.addEventListener('click',copyBrief); $('service-search')?.addEventListener('input',()=>lastModel&&renderTables(lastModel)); showView(activeView); refresh(); timer=setInterval(()=>{if(autoRefresh)refresh();},REFRESH_MS);}
 window.addEventListener('DOMContentLoaded',boot);
+
+/* === PRISMA NAV CAPSULE FIX START === */
+/* PATCH_ID: PRISMA_NAV_CAPSULE_FIX_20260513_A
+   Arregla navegacion de capsula:
+   - Click delegado y robusto.
+   - Mapea data-view a data-panel/id.
+   - Calcula offset real de nav sticky.
+   - Actualiza active state, localStorage y hash.
+   - Evita que todos los clicks terminen pareciendo "ir arriba".
+*/
+(function(){
+  const PATCH_ID = "PRISMA_NAV_CAPSULE_FIX_20260513_A";
+  const STORE_KEY = (typeof STORE_VIEW === "string" && STORE_VIEW) ? STORE_VIEW : "prisma-crystal-ops-view-v2";
+
+  function qs(selector, root){
+    return Array.from((root || document).querySelectorAll(selector));
+  }
+
+  function cleanView(value){
+    const raw = String(value || "").trim().replace(/^#/, "");
+    const aliases = {
+      resumen:"overview",
+      overview:"overview",
+      servicios:"services",
+      services:"services",
+      incidentes:"incidents",
+      incidents:"incidents",
+      blackbox:"blackbox",
+      "black-box":"blackbox",
+      cloudflare:"cloudflare",
+      reportes:"reports",
+      reports:"reports"
+    };
+    return aliases[raw.toLowerCase()] || raw || "overview";
+  }
+
+  function findPanel(view){
+    const safe = cleanView(view);
+    return (
+      document.querySelector('[data-panel="' + safe.replaceAll('"', '\\"') + '"]') ||
+      document.getElementById(safe)
+    );
+  }
+
+  function stickyOffset(){
+    const nav = document.querySelector(".nav-stack");
+    const command = document.querySelector(".command-bar");
+    const navH = nav ? Math.ceil(nav.getBoundingClientRect().height) : 0;
+    const commandTopVisible = command ? Math.max(0, Math.min(command.getBoundingClientRect().bottom, 72)) : 0;
+    return Math.max(82, navH + 28, commandTopVisible + 16);
+  }
+
+  function setActive(view){
+    const safe = cleanView(view);
+    qs(".nav-item").forEach((button) => {
+      const isActive = cleanView(button.dataset.view || button.getAttribute("href")) === safe;
+      button.classList.toggle("active", isActive);
+      button.setAttribute("aria-current", isActive ? "page" : "false");
+      button.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+  }
+
+  function scrollToPanel(view, opts){
+    const safe = cleanView(view);
+    const target = findPanel(safe);
+    setActive(safe);
+
+    try { localStorage.setItem(STORE_KEY, safe); } catch (_) {}
+
+    if (!target) {
+      console.warn("[PRISMA nav] No existe panel para:", safe, "patch:", PATCH_ID);
+      if (typeof toast === "function") toast("No encontre panel: " + safe);
+      return false;
+    }
+
+    target.setAttribute("tabindex", target.getAttribute("tabindex") || "-1");
+
+    const y = Math.max(0, Math.round(target.getBoundingClientRect().top + window.scrollY - stickyOffset()));
+    window.scrollTo({
+      top: y,
+      behavior: opts && opts.instant ? "auto" : "smooth"
+    });
+
+    try {
+      history.replaceState({ prismaView: safe }, "", "#" + safe);
+    } catch (_) {
+      location.hash = safe;
+    }
+
+    window.setTimeout(() => {
+      try { target.focus({ preventScroll: true }); } catch (_) {}
+    }, opts && opts.instant ? 20 : 320);
+
+    return true;
+  }
+
+  window.showView = scrollToPanel;
+  try { showView = scrollToPanel; } catch (_) {}
+
+  document.addEventListener("click", function(event){
+    const button = event.target && event.target.closest ? event.target.closest(".nav-item") : null;
+    if (!button) return;
+
+    const view = button.dataset.view || button.getAttribute("aria-controls") || button.getAttribute("href") || "overview";
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+    scrollToPanel(view);
+  }, true);
+
+  document.addEventListener("wheel", function(event){
+    const nav = event.target && event.target.closest ? event.target.closest(".nav-stack") : null;
+    if (!nav) return;
+    if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+    nav.scrollLeft += event.deltaY;
+    event.preventDefault();
+  }, { passive:false, capture:true });
+
+  function hydrateNav(){
+    qs(".nav-item").forEach((button) => {
+      const view = cleanView(button.dataset.view || button.textContent);
+      button.dataset.view = view;
+      button.dataset.anchor = "#" + view;
+      button.setAttribute("aria-controls", view);
+      button.setAttribute("type", "button");
+    });
+
+    qs("[data-panel]").forEach((panel) => {
+      if (!panel.id && panel.dataset.panel) panel.id = panel.dataset.panel;
+      if (!panel.hasAttribute("tabindex")) panel.setAttribute("tabindex", "-1");
+    });
+
+    const initial = cleanView(location.hash || localStorage.getItem(STORE_KEY) || "overview");
+    setActive(initial);
+  }
+
+  window.addEventListener("hashchange", () => {
+    const view = cleanView(location.hash || "overview");
+    scrollToPanel(view);
+  });
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", hydrateNav);
+  } else {
+    hydrateNav();
+  }
+
+  window.PRISMA_NAV_CAPSULE_FIX = {
+    patchId: PATCH_ID,
+    go: scrollToPanel,
+    hydrate: hydrateNav
+  };
+})();
+ /* === PRISMA NAV CAPSULE FIX END === */

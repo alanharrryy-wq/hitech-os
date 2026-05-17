@@ -4,11 +4,10 @@ set "PCC_ROOT=%~dp0"
 
 echo.
 echo ============================================================
-echo PRISMA - levantar Web + Control local
-echo Levanta Web/EIT 3110 y Control Center 3150; siempre genera health y ZIP.
-echo Puertos: 3000 Chart Lab, 3110 Web/EIT, 3120 Tablet, 3130 PC, 3140 Mobile, 3150 Control
-echo ZIP: F:\descargasf
-echo Root: %PCC_ROOT%
+echo PRISMA - CONTROL CENTER SEGURO v3
+echo Levanta Control Center 3150 y Web/EIT 3110 sin bloquear por todo el stack.
+echo Corrige: HOME readonly, health JSON mezclado y ZIP con logs bloqueados.
+echo Siempre genera evidencia en F:\descargasf.
 echo ============================================================
 echo.
 
@@ -17,8 +16,8 @@ set "RC=%ERRORLEVEL%"
 
 if not "%RC%"=="0" (
   echo.
-  echo [ERROR] PRISMA - levantar Web + Control local fallo con exit code %RC%.
-  echo Revisa el ZIP mas reciente en F:\descargasf
+  echo [ERROR] Control Center seguro termino con exit code %RC%.
+  echo Revisa F:\descargasf\latest_CONTROL_SAFE.zip
   pause
 )
 
