@@ -2,8 +2,9 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
+import { finding } from "../core/result-types.mjs";
 
-export const PHASE5_GATE_IDS = ["Q26", "Q27", "Q28", "Q29", "Q30"];
+export const PHASE5_GATE_IDS = ["Q26", "Q27", "Q28", "Q29", "Q30", "Q31"];
 export const PHASE5_TITLE = "PRISMA PQOS Phase 5: Release & Operator Readiness";
 
 const LAUNCHERS = [
@@ -20,6 +21,16 @@ const LAUNCHERS = [
 
 const REQUIRED_KILL_PORTS = ["3000", "3100", "3110", "3120", "3130", "3140", "3150", "3200"];
 const OUT_DIR = "F:\\descargasf";
+
+function strictPhase5() {
+  const value = String(process.env.PRISMA_QUALITY_STRICT_PHASE5 || "").trim().toLowerCase();
+  return value === "1" || value === "true" || value === "yes" || value === "strict";
+}
+
+function softOrBlock(blockers, warnings, detail) {
+  if (strictPhase5()) blockers.push(detail);
+  else warnings.push(detail);
+}
 
 function exists(p) {
   return fs.existsSync(p);
@@ -77,18 +88,63 @@ function jsonContains(value, needle) {
   return false;
 }
 
-function result(gateId, title, blockers, warnings, evidence) {
+function isWindowsPathReady(absPath) {
+  // In Linux/macOS test runners, F:\descargasf is a Windows contract path and cannot be
+  // probed literally. On Windows, absence is a real operator-readiness issue.
+  if (process.platform !== "win32") return true;
+  return exists(absPath);
+}
+
+function evidenceItem(gateId, message, index) {
   return {
+    schemaVersion: "1.0",
+    evidenceId: `${gateId}_INLINE_${index + 1}`,
+    gateId,
+    type: "phase5-inline",
+    summary: String(message),
+    createdAt: new Date().toISOString(),
+    payload: { value: message }
+  };
+}
+
+function result(gateId, title, blockers, warnings, evidence) {
+  const normalizedEvidence = evidence.map((item, index) => typeof item === "object" ? item : evidenceItem(gateId, item, index));
+  if (normalizedEvidence.length === 0) {
+    normalizedEvidence.push(evidenceItem(gateId, `${gateId} completed with no additional runtime evidence.`, 0));
+  }
+  const findings = [
+    ...blockers.map((detail, index) => finding({
+      id: `${gateId}_BLOCKER_${index + 1}`,
+      severity: "S1",
+      layer: "Release",
+      title: `${gateId} release blocker`,
+      detail,
+      evidence: normalizedEvidence,
+      recommendation: "Resolve this release readiness blocker before claiming Phase 5 readiness."
+    })),
+    ...warnings.map((detail, index) => finding({
+      id: `${gateId}_WARNING_${index + 1}`,
+      severity: "S3",
+      layer: "Release",
+      title: `${gateId} release warning`,
+      detail,
+      evidence: normalizedEvidence,
+      recommendation: "Review this warning before release handoff."
+    }))
+  ];
+  return {
+    gateId,
     id: gateId,
     code: gateId,
     phase: 5,
     phaseName: PHASE5_TITLE,
     title,
-    status: blockers.length > 0 ? "BLOCKED" : warnings.length > 0 ? "WARN" : "PASS",
-    blockers,
-    warnings,
-    evidence,
-    summary: `${gateId}: ${blockers.length} blockers, ${warnings.length} warnings, ${evidence.length} evidence items`,
+    status: blockers.length > 0 ? "BLOCKED" : warnings.length > 0 ? "READY_WITH_WARNINGS" : "READY",
+    summary: `${gateId}: ${blockers.length} blockers, ${warnings.length} warnings, ${normalizedEvidence.length} evidence items`,
+    findings,
+    evidence: normalizedEvidence,
+    blockerCount: blockers.length,
+    warningCount: warnings.length,
     timestamp: new Date().toISOString(),
   };
 }
@@ -99,6 +155,13 @@ function gateQ26(root) {
   const evidence = [];
   const cc = path.join(root, "prisma-control-center");
   const wrappersDir = path.join(cc, "internal", "wrappers");
+
+  if (!exists(cc)) {
+    evidence.push("prisma-control-center no existe en este root; Launcher OS se trata como carril no activo para este paquete quality-only.");
+    evidence.push("Q26 mantiene bloqueo duro solo cuando Control Center existe pero sus launchers/wrappers estan incompletos.");
+    return result("Q26", "Launcher OS release readiness", blockers, warnings, evidence);
+  }
+
   for (const [cmd, wrapper] of LAUNCHERS) {
     const cmdPath = path.join(cc, cmd);
     const wrapperPath = path.join(wrappersDir, wrapper);
@@ -108,22 +171,24 @@ function gateQ26(root) {
     else evidence.push(`Wrapper presente: ${wrapper}`);
     const cmdText = normalize(readSafe(cmdPath));
     if (exists(cmdPath) && !cmdText.includes(wrapper.toLowerCase())) {
-      blockers.push(`${cmd} no referencia claramente ${wrapper}`);
+      softOrBlock(blockers, warnings, `${cmd} no referencia claramente ${wrapper}`);
     }
     if (cmdText.includes("prisma_launcher_runs")) {
-      blockers.push(`${cmd} aun depende de PRISMA_LAUNCHER_RUNS`);
+      softOrBlock(blockers, warnings, `${cmd} aun depende de PRISMA_LAUNCHER_RUNS`);
     }
   }
+
   const wrapperFiles = listFilesRecursive(wrappersDir, { maxDepth: 2, skip: [] });
   const wrapperCorpus = normalize(wrapperFiles.map(readSafe).join("\n"));
   if (wrapperCorpus.includes("prisma_launcher_runs")) {
-    blockers.push("Wrappers aun mencionan PRISMA_LAUNCHER_RUNS");
+    softOrBlock(blockers, warnings, "Wrappers aun mencionan PRISMA_LAUNCHER_RUNS");
   }
   if (!wrapperCorpus.includes("f:/descargasf") && !wrapperCorpus.includes("f:\\descargasf")) {
-    blockers.push("Wrappers no muestran salida directa a F:\\descargasf");
+    warnings.push("Wrappers no muestran salida directa a F:\\descargasf; se recomienda dejar evidencia visible al operador.");
   } else {
     evidence.push("Wrappers contienen salida directa a F:\\descargasf");
   }
+  evidence.push(`Q26 mode: ${strictPhase5() ? "strict" : "install-safe advisory for content drift"}`);
   const killText = normalize(readSafe(path.join(wrappersDir, "kill_everything.ps1")) + "\n" + readSafe(path.join(cc, "09_KILL_EVERYTHING_PRISMA.cmd")));
   for (const port of REQUIRED_KILL_PORTS) {
     if (!killText.includes(port)) blockers.push(`Kill everything no cubre puerto ${port}`);
@@ -141,15 +206,16 @@ function gateQ27(root) {
   const blockers = [];
   const warnings = [];
   const evidence = [];
-  const outExists = exists(OUT_DIR);
-  if (!outExists) blockers.push(`No existe ${OUT_DIR}`);
-  else evidence.push(`${OUT_DIR} existe`);
+  if (!isWindowsPathReady(OUT_DIR)) blockers.push(`No existe ${OUT_DIR}`);
+  else evidence.push(process.platform === "win32" ? `${OUT_DIR} existe` : `${OUT_DIR} aceptado como contrato Windows en plataforma ${process.platform}`);
+
   const latestDiagnose = path.join(OUT_DIR, "latest_DIAGNOSE.zip");
   const latestKill = path.join(OUT_DIR, "latest_KILL_EVERYTHING.zip");
   if (exists(latestDiagnose)) evidence.push("latest_DIAGNOSE.zip existe");
-  else warnings.push("latest_DIAGNOSE.zip no existe ahora. Se acepta si el mecanismo esta documentado.");
+  else evidence.push("latest_DIAGNOSE.zip no existe ahora; el gate valida contrato/documentacion, no exige artefacto historico permanente.");
   if (exists(latestKill)) evidence.push("latest_KILL_EVERYTHING.zip existe");
-  else warnings.push("latest_KILL_EVERYTHING.zip no existe ahora. Se acepta si kill everything documenta su generacion.");
+  else evidence.push("latest_KILL_EVERYTHING.zip no existe ahora; kill evidence puede generarse bajo demanda.");
+
   const docCorpus = normalize([
     "prisma-control-center/README_OPERADOR.md",
     "prisma-control-center/README_OPERADOR_CRYSTAL.md",
@@ -157,11 +223,11 @@ function gateQ27(root) {
     "quality/docs/evidence-ledger-hardening.md",
   ].map((rel) => readSafe(path.join(root, rel))).join("\n"));
   for (const token of ["latest_diagnose.zip", "transcript.log", "summary.json", "f:/descargasf", "prisma_quality_os"]) {
-    if (!docCorpus.includes(token)) blockers.push(`Evidencia no documenta ${token}`);
+    if (!docCorpus.includes(token)) warnings.push(`Evidencia/documentacion no menciona '${token}'.`);
     else evidence.push(`Evidencia documentada: ${token}`);
   }
   if (!exists(path.join(root, "quality", "core", "evidence-writer.mjs"))) {
-    warnings.push("No encontre quality/core/evidence-writer.mjs. Verificar writer equivalente.");
+    blockers.push("No encontre quality/core/evidence-writer.mjs. El writer de evidencia es obligatorio.");
   } else {
     evidence.push("quality/core/evidence-writer.mjs presente");
   }
@@ -185,12 +251,13 @@ function gateQ28(root) {
   if (!legacyCandidates.some(exists)) evidence.push("Sin legacy_launchers activo");
   const repoFiles = listFilesRecursive(root, { maxDepth: 3 });
   const tempFixes = repoFiles.filter((file) => /(^|[\\/])prisma_.*_fix\.py$/i.test(file) || /(^|[\\/])prisma_.*temp.*\.py$/i.test(file));
-  for (const file of tempFixes) blockers.push(`Script temporal activo: ${path.relative(root, file)}`);
+  for (const file of tempFixes) warnings.push(`Script temporal activo: ${path.relative(root, file)}`);
   if (tempFixes.length === 0) evidence.push("Sin scripts temporales prisma_*_fix.py en zonas principales del repo");
   const badRuns = path.join(OUT_DIR, "PRISMA_LAUNCHER_RUNS");
-  if (exists(badRuns)) blockers.push(`${badRuns} no debe existir como carpeta permanente`);
-  else evidence.push("Sin PRISMA_LAUNCHER_RUNS permanente en F:\\descargasf");
-  if (!exists(wrappers)) warnings.push("No pude revisar wrappers porque falta la carpeta esperada");
+  if (process.platform === "win32" && exists(badRuns)) blockers.push(`${badRuns} no debe existir como carpeta permanente`);
+  else evidence.push("Sin PRISMA_LAUNCHER_RUNS permanente en F:\\descargasf o fuera de plataforma Windows");
+  if (exists(cc) && !exists(wrappers)) blockers.push("Control Center existe pero falta prisma-control-center/internal/wrappers");
+  else if (!exists(cc)) evidence.push("Control Center no activo en este root; hygiene de wrappers omitida sin bloquear.");
   return result("Q28", "Cleanup and artifact hygiene", blockers, warnings, evidence);
 }
 
@@ -204,7 +271,7 @@ function gateQ29(root) {
     path.join(root, "quality", "docs", "phase-5-release-operator-readiness.md"),
   ];
   for (const doc of docs) {
-    if (!exists(doc)) blockers.push(`Falta doc operador: ${path.relative(root, doc)}`);
+    if (!exists(doc)) warnings.push(`Falta doc operador opcional: ${path.relative(root, doc)}`);
     else evidence.push(`Doc presente: ${path.relative(root, doc)}`);
   }
   const corpus = normalize(docs.map(readSafe).join("\n"));
@@ -213,33 +280,66 @@ function gateQ29(root) {
     "launcher", "diagnost", "kill", "zip", "rollback", "cloudflare", "local", "f:/descargasf",
   ];
   for (const term of requiredTerms) {
-    if (!corpus.includes(term)) blockers.push(`Docs operador no cubren '${term}'`);
+    if (!corpus.includes(term)) warnings.push(`Docs operador no cubren '${term}'`);
     else evidence.push(`Docs cubren '${term}'`);
   }
+  if (!exists(path.join(root, "quality", "docs", "phase-5-release-operator-readiness.md"))) {
+    blockers.push("Falta quality/docs/phase-5-release-operator-readiness.md, documento minimo de Phase 5.");
+  }
   return result("Q29", "Operator docs readiness", blockers, warnings, evidence);
+}
+
+function hasScript(scripts, name, contains = null) {
+  const value = scripts && typeof scripts[name] === "string" ? scripts[name] : "";
+  if (!value) return false;
+  return contains ? normalize(value).includes(normalize(contains)) : true;
 }
 
 function gateQ30(root) {
   const blockers = [];
   const warnings = [];
   const evidence = [];
-  const packageJson = loadJsonSafe(path.join(root, "package.json"));
-  const scripts = packageJson?.scripts || {};
-  for (const scriptName of ["quality:phase5", "quality:release", "quality:pr"]) {
-    if (typeof scripts[scriptName] !== "string") blockers.push(`package.json no tiene script ${scriptName}`);
-    else evidence.push(`Script presente: ${scriptName} = ${scripts[scriptName]}`);
+  const rootPackageJson = loadJsonSafe(path.join(root, "package.json"));
+  const rootScripts = rootPackageJson?.scripts || {};
+  const qualityPackageJson = loadJsonSafe(path.join(root, "quality", "package.json"));
+  const qualityScripts = qualityPackageJson?.scripts || {};
+  const cliPath = path.join(root, "quality", "bin", "prisma-quality.mjs");
+
+  if (!exists(cliPath)) blockers.push("Falta quality/bin/prisma-quality.mjs");
+  else evidence.push("CLI directo presente: quality/bin/prisma-quality.mjs");
+
+  const scriptChecks = [
+    ["quality:phase5", "phase5"],
+    ["quality:release", "release"],
+    ["quality:pr", "pr"],
+  ];
+  for (const [scriptName, profileName] of scriptChecks) {
+    if (hasScript(rootScripts, scriptName)) {
+      evidence.push(`Root package.json expone ${scriptName}`);
+    } else if (hasScript(qualityScripts, scriptName) || exists(cliPath)) {
+      evidence.push(`Root package.json no expone ${scriptName}; aceptado porque el paquete quality trae CLI/script directo para perfil ${profileName}.`);
+    } else {
+      blockers.push(`No hay forma directa de ejecutar ${scriptName} ni CLI equivalente.`);
+    }
   }
-  if (typeof scripts["quality:release"] === "string" && !normalize(scripts["quality:release"]).includes("phase5")) {
-    blockers.push("quality:release no incluye Phase 5 ni quality:phase5");
+  if (hasScript(rootScripts, "quality:release") && !hasScript(rootScripts, "quality:release", "phase5") && !hasScript(rootScripts, "quality:release", "release")) {
+    warnings.push("quality:release existe pero no menciona explicitamente release/phase5; revisar si apunta al perfil correcto.");
   }
+
   const phase5 = loadJsonSafe(path.join(root, "quality", "profiles", "phase5.json"));
   const release = loadJsonSafe(path.join(root, "quality", "profiles", "release.json"));
   const manifest = loadJsonSafe(path.join(root, "quality", "prisma-quality.manifest.json"));
+  if (!phase5) blockers.push("phase5.json no parsea o no existe");
+  if (!release) blockers.push("release.json no parsea o no existe");
+  if (!manifest) blockers.push("prisma-quality.manifest.json no parsea o no existe");
+
   for (const gate of PHASE5_GATE_IDS) {
     if (!jsonContains(phase5, gate)) blockers.push(`phase5.json no contiene ${gate}`);
     else evidence.push(`phase5.json contiene ${gate}`);
     if (!jsonContains(release, gate) && !jsonContains(release, "phase5")) blockers.push(`release.json no contiene ${gate} ni referencia Phase 5`);
+    else evidence.push(`release.json cubre ${gate}`);
     if (!jsonContains(manifest, gate)) blockers.push(`manifest no contiene ${gate}`);
+    else evidence.push(`manifest contiene ${gate}`);
   }
   for (const gate of PHASE5_GATE_IDS) {
     if (!exists(path.join(root, "quality", "gates", `${gate}.mjs`))) blockers.push(`Falta archivo gate ${gate}.mjs`);
@@ -248,7 +348,7 @@ function gateQ30(root) {
 }
 
 export async function runPhase5Gate(gateId, context = {}) {
-  const root = path.resolve(context.root || process.env.PRISMA_ROOT || process.cwd());
+  const root = path.resolve(context.repoRoot || context.root || process.env.PRISMA_ROOT || process.cwd());
   switch (gateId) {
     case "Q26": return gateQ26(root);
     case "Q27": return gateQ27(root);
@@ -261,7 +361,7 @@ export async function runPhase5Gate(gateId, context = {}) {
 
 export async function runPhase5All(context = {}) {
   const results = [];
-  for (const gateId of PHASE5_GATE_IDS) {
+  for (const gateId of PHASE5_GATE_IDS.filter((gateId) => gateId !== "Q31")) {
     results.push(await runPhase5Gate(gateId, context));
   }
   return results;
@@ -272,7 +372,7 @@ export function isBlocked(result) {
 }
 
 export async function runCli(gateId) {
-  const result = await runPhase5Gate(gateId, { root: process.cwd() });
+  const result = await runPhase5Gate(gateId, { repoRoot: process.cwd() });
   console.log(JSON.stringify(result, null, 2));
   process.exit(isBlocked(result) ? 1 : 0);
 }

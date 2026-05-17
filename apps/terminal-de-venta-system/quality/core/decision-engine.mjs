@@ -16,6 +16,8 @@ export function decide(profile, gateResults) {
   if (profile === 'cloudflare') decision = 'READY_TO_CLOUDFLARE_CHECK';
   if (profile === 'diagnose') decision = 'DIAGNOSIS_READY';
   if (profile === 'watch') decision = 'WATCHING';
+  if (profile === 'automation') decision = 'READY_TO_AUTOMATION';
+  if (profile === 'phase5') decision = 'READY_TO_PHASE5';
 
   if (summary.blockers.length || errored || blockedGate) decision = 'BLOCKED';
 

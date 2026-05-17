@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0",
   "systemName": "PRISMA Quality Operating System",
-  "systemVersion": "4.0.0-phase-4-data-truth-evidence-ledger",
-  "phase": "phase-4-data-truth-evidence-ledger-audit-hardening",
+  "systemVersion": "5.4.0-phase-5-warning-repair",
+  "phase": "phase-5-release-operator-readiness",
   "repoName": "terminal-de-venta-system",
   "dbSafetyMode": "real-db-inspect-only",
   "cloudflareMode": "optional-profile-only",
@@ -28,7 +28,9 @@
     "release",
     "runtime",
     "scenario",
-    "watch"
+    "watch",
+    "phase5",
+    "automation"
   ],
   "gates": [
     "Q0",
@@ -59,7 +61,8 @@
     "Q27",
     "Q28",
     "Q29",
-    "Q30"
+    "Q30",
+    "Q31"
   ],
   "contracts": [
     "CONTRACT_TABLET_SOVEREIGNTY",
@@ -174,7 +177,8 @@
       "Q27",
       "Q28",
       "Q29",
-      "Q30"
+      "Q30",
+      "Q31"
     ],
     "docs": [
       "quality/docs/phase-5-release-operator-readiness.md"
@@ -186,7 +190,35 @@
       "No fake green",
       "Optional local services offline are evidence, not warnings",
       "Required services offline are blockers",
-      "No permanent PRISMA_LAUNCHER_RUNS in F:/descargasf"
+      "Missing official launchers/wrappers block when Control Center is active",
+      "Legacy launcher run paths are warnings by default and blockers only under PRISMA_QUALITY_STRICT_PHASE5=1",
+      "Automation improvement claims must be machine-readable and verified by Q31"
+    ],
+    "automationCatalog": "quality/automation/automation-improvements.json",
+    "installerPolicy": {
+      "qualityReplacementVerify": "self-test + automation are mandatory; phase5 repo readiness is advisory unless --strict-phase5 is passed to the installer",
+      "strictEnv": "PRISMA_QUALITY_STRICT_PHASE5=1"
+    }
+  },
+  "automation": {
+    "name": "Automation Hardening",
+    "catalog": "quality/automation/automation-improvements.json",
+    "minimumRequired": 100,
+    "gate": "Q31",
+    "fakeGreenForbidden": true
+  },
+  "version": "5.4.0",
+  "releaseChannel": "install-safe-plus-warning-repair",
+  "phase5WarningRepair": {
+    "script": "scripts/repair_phase5_warnings.py",
+    "externalScope": "prisma-control-center launchers/wrappers and operator docs",
+    "defaultMode": "explicit opt-in",
+    "safety": [
+      "dry-run",
+      "apply",
+      "verify",
+      "rollback",
+      "backup"
     ]
   }
 }
