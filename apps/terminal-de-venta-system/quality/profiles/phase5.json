@@ -1,0 +1,24 @@
+{
+  "name": "phase5",
+  "id": "phase5-release-operator-readiness",
+  "description": "PRISMA PQOS Phase 5: Release & Operator Readiness. Aduana final antes de PR/release.",
+  "strict": true,
+  "phase": 5,
+  "gates": [
+    "Q26",
+    "Q27",
+    "Q28",
+    "Q29",
+    "Q30"
+  ],
+  "outputs": [
+    "F:/descargasf/PRISMA_PQOS_PHASE5_RELEASE_OPERATOR_READINESS_*_RESULT.zip",
+    "F:/descargasf/PRISMA_PQOS_PHASE5_RELEASE_OPERATOR_READINESS_latest_RESULT.zip"
+  ],
+  "rules": {
+    "noFakeGreen": true,
+    "optionalOfflineIsEvidence": true,
+    "requiredOfflineBlocks": true,
+    "noPermanentLauncherRunsFolder": true
+  }
+}

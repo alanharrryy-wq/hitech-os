@@ -1,0 +1,36 @@
+{
+  "contractId": "PRISMA_COMMERCE_ROUND2_EVENT_MAP_V1",
+  "schemaVersion": "1.0.0",
+  "sourceOfTruth": "shared/contracts/prisma-round2-event-map.v1.json",
+  "mappings": [
+    {
+      "code": "SALE_COMPLETED",
+      "canonicalTopic": "sale.completed",
+      "owner": "tablet-core"
+    },
+    {
+      "code": "INVENTORY_MOVED",
+      "canonicalTopic": "stock.moved",
+      "owner": "tablet-core"
+    },
+    {
+      "code": "PRODUCT_SUPPLIER_LINKED",
+      "canonicalTopic": "catalog.product_supplier.linked",
+      "owner": "shared-catalog"
+    },
+    {
+      "code": "PAYMENT_RECORDED",
+      "canonicalTopic": "payment.recorded",
+      "owner": "tablet-core"
+    },
+    {
+      "code": "CASH_ADJUSTED",
+      "canonicalTopic": "cash.movement.recorded",
+      "owner": "tablet-core"
+    }
+  ],
+  "notes": [
+    "This file records the Round 2 event-code to canonical-topic mapping without changing the frozen sync-event contract semantics.",
+    "Tablet may continue emitting the existing operational topics already covered by shared/contracts/sync-event-contract.v1.json."
+  ]
+}
