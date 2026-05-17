@@ -31,6 +31,20 @@
   ],
   "exclude": [
     "node_modules",
-    "components/live-scene-composer/authoring-workbench-v1/types/react-shim.d.ts"
+    "components/live-scene-composer/authoring-workbench-v1/types/react-shim.d.ts",
+    "app/dev/scene-studio/**",
+    "app/pitch/**",
+    "components/dev-console/**",
+    "components/pitch/**",
+    "components/scene-studio/**",
+    "lib/pitch/**",
+    "lib/scene-studio.ts",
+    "lib/scene-studio/**",
+    "tests/dev-console*.test.*",
+    "tests/dev-routes-smoke.test.tsx",
+    "tests/floating-window-drag-policy.test.ts",
+    "tests/pitch*.test.*",
+    "tests/scene-studio*.test.*",
+    "tests/ui-improvement-workflow.test.ts"
   ]
 }

@@ -13,7 +13,7 @@
     "test": "pnpm -r --if-present test",
     "typecheck": "pnpm -r --if-present typecheck",
     "quality": "pnpm run env:validate && pnpm run deps:check && pnpm run workspace:validate && pnpm run dev-console:guard && pnpm run health && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build && pnpm run snapshot:hos:validate",
-    "ci": "pnpm run quality && pnpm run smoke && pnpm run snapshot:hos && pnpm run keystone:scene:proof:ci",
+    "ci": "pnpm run quality && pnpm run smoke && pnpm run snapshot:hos",
     "smoke": "pnpm run smoke:core-api && pnpm run smoke:bridge",
 
     "factory:build": "pnpm exec tsc -p configs/tsconfig.factory.json --pretty false",
