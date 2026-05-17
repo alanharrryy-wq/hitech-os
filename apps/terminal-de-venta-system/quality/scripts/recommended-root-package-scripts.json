@@ -1,0 +1,7 @@
+{
+  "quality:self-test": "node quality/bin/prisma-quality.mjs --self-test --repo-root .",
+  "quality:phase5": "node quality/bin/prisma-quality.mjs --profile phase5 --repo-root . --out-dir F:/descargasf",
+  "quality:automation": "node quality/bin/prisma-quality.mjs --profile automation --repo-root . --out-dir F:/descargasf",
+  "quality:release": "node quality/bin/prisma-quality.mjs --profile release --repo-root . --out-dir F:/descargasf",
+  "quality:pr": "node quality/bin/prisma-quality.mjs --profile pr --repo-root . --out-dir F:/descargasf"
+}
