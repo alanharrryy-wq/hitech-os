@@ -21,6 +21,25 @@ const saleQty = 14;
 const lowStockThreshold = 5;
 
 const failures = [];
+const outboxSyncMetadataColumnSpecs = [
+  ["lastAttemptAt", "DATETIME"],
+  ["nextRetryAt", "DATETIME"],
+  ["ackedAt", "DATETIME"],
+  ["failedAt", "DATETIME"],
+  ["conflictedAt", "DATETIME"],
+  ["deadLetterAt", "DATETIME"],
+  ["remoteEventId", "TEXT"],
+  ["remoteLedgerId", "TEXT"],
+  ["remoteLifecycleStatus", "TEXT"],
+  ["remoteDiagnosticsJson", "TEXT"],
+  ["remoteConflictCode", "TEXT"],
+  ["remoteRejectedReason", "TEXT"],
+];
+const outboxSyncMetadataIndexes = [
+  "OutboxEvent_businessId_status_nextRetryAt_idx",
+  "OutboxEvent_businessId_remoteLedgerId_idx",
+  "OutboxEvent_businessId_idempotencyKey_key",
+];
 
 function ensureTabletPrismaClient() {
   const schemaPath = path.join(appRoot, "prisma", "schema.prisma");
@@ -123,6 +142,46 @@ function localDayRange() {
 
 function toCsv(headers, rows) {
   return `${headers.join(",")}\n${rows.map((row) => headers.map((header) => String(row[header] ?? "")).join(",")).join("\n")}\n`;
+}
+
+// PRISMA_PEDO_FIX_OUTBOX_SYNC_METADATA_V1
+// Keeps the verifier temp SQLite DB aligned with the current Prisma OutboxEvent model.
+// Runtime Tablet remains local-first. PC is optional. Mobile supervises. No fake green.
+async function ensureOutboxEventSyncMetadata(prisma) {
+  for (const [name, type] of outboxSyncMetadataColumnSpecs) {
+    try {
+      await prisma.$executeRawUnsafe(`ALTER TABLE "OutboxEvent" ADD COLUMN "${name}" ${type}`);
+    } catch (error) {
+      const message = String(error?.message ?? error);
+      if (!/duplicate column name|already exists/i.test(message)) {
+        throw error;
+      }
+    }
+  }
+
+  const indexes = [
+    'CREATE INDEX IF NOT EXISTS "OutboxEvent_businessId_status_nextRetryAt_idx" ON "OutboxEvent"("businessId", "status", "nextRetryAt")',
+    'CREATE INDEX IF NOT EXISTS "OutboxEvent_businessId_remoteLedgerId_idx" ON "OutboxEvent"("businessId", "remoteLedgerId")',
+    'CREATE UNIQUE INDEX IF NOT EXISTS "OutboxEvent_businessId_idempotencyKey_key" ON "OutboxEvent"("businessId", "idempotencyKey")',
+  ];
+
+  for (const sql of indexes) {
+    await prisma.$executeRawUnsafe(sql);
+  }
+}
+
+async function verifyOutboxEventSyncMetadata(prisma) {
+  const columnRows = await prisma.$queryRawUnsafe('PRAGMA table_info("OutboxEvent")');
+  const columns = new Set(columnRows.map((row) => row.name));
+  for (const [name] of outboxSyncMetadataColumnSpecs) {
+    assert(columns.has(name), `Temp OutboxEvent schema missing sync metadata column: ${name}.`);
+  }
+
+  const indexRows = await prisma.$queryRawUnsafe('PRAGMA index_list("OutboxEvent")');
+  const indexes = new Set(indexRows.map((row) => row.name));
+  for (const name of outboxSyncMetadataIndexes) {
+    assert(indexes.has(name), `Temp OutboxEvent schema missing sync metadata index: ${name}.`);
+  }
 }
 
 async function bootstrapSchema(prisma) {
@@ -284,6 +343,18 @@ async function bootstrapSchema(prisma) {
       createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       sentAt DATETIME,
       syncedAt DATETIME,
+      lastAttemptAt DATETIME,
+      nextRetryAt DATETIME,
+      ackedAt DATETIME,
+      failedAt DATETIME,
+      conflictedAt DATETIME,
+      deadLetterAt DATETIME,
+      remoteEventId TEXT,
+      remoteLedgerId TEXT,
+      remoteLifecycleStatus TEXT,
+      remoteDiagnosticsJson TEXT,
+      remoteConflictCode TEXT,
+      remoteRejectedReason TEXT,
       lastError TEXT
     )`,
     `CREATE INDEX IF NOT EXISTS OutboxEvent_businessId_idempotencyKey_idx ON OutboxEvent (businessId, idempotencyKey)`
@@ -482,6 +553,8 @@ const prisma = new PrismaClient({
 
 try {
   await bootstrapSchema(prisma);
+  await ensureOutboxEventSyncMetadata(prisma);
+  await verifyOutboxEventSyncMetadata(prisma);
   await seed(prisma);
 
   const runtimeSource = readProjectFile("src/server/pos-runtime/index.ts");
@@ -604,6 +677,8 @@ try {
     outboxEvents: outbox.length,
     salesToday: salesToday.length,
     exports: ["eventsCsv", "salesCsv"],
+    syncMetadataColumns: outboxSyncMetadataColumnSpecs.map(([name]) => name),
+    syncMetadataIndexes: outboxSyncMetadataIndexes,
     pcRequiredForBasicSale: false
   }, null, 2));
 } finally {

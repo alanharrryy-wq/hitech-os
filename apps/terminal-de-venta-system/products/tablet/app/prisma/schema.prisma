@@ -745,11 +745,27 @@ model OutboxEvent {
   createdAt   DateTime @default(now())
   sentAt      DateTime?
   syncedAt    DateTime?
+  lastAttemptAt DateTime?
+  nextRetryAt DateTime?
+  ackedAt     DateTime?
+  failedAt    DateTime?
+  conflictedAt DateTime?
+  deadLetterAt DateTime?
+  remoteEventId String?
+  remoteLedgerId String?
+  remoteLifecycleStatus String?
+  remoteDiagnosticsJson String?
+  remoteConflictCode String?
+  remoteRejectedReason String?
   lastError   String?
 
   business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
 
   @@index([businessId, status, createdAt])
+  @@index([businessId, status, nextRetryAt])
   @@index([businessId, topic])
+  @@index([businessId, remoteLedgerId])
+  @@unique([businessId, idempotencyKey])
   @@index([businessId, idempotencyKey])
+  @@index([remoteLedgerId])
 }

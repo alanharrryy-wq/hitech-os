@@ -1,0 +1,96 @@
+{
+  "generated_at": "2026-05-18T17:20:32.496016+00:00",
+  "commands": [
+    {
+      "command": "$env:DATABASE_URL='file:F:/repos/hitech-os/apps/terminal-de-venta-system/tools/_local/tmp/master_checklist_root_validate.db'; pnpm exec prisma validate --schema prisma/schema.prisma",
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "exit_code": 0,
+      "result": "PASS",
+      "evidence": "The schema at prisma\\schema.prisma is valid"
+    },
+    {
+      "command": "$env:DATABASE_URL='file:F:/repos/hitech-os/apps/terminal-de-venta-system/tools/_local/tmp/master_checklist_tablet_validate.db'; pnpm exec prisma validate --schema products/tablet/app/prisma/schema.prisma",
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "exit_code": 0,
+      "result": "PASS",
+      "evidence": "The schema at products\\tablet\\app\\prisma\\schema.prisma is valid"
+    },
+    {
+      "command": "pnpm run verify:outbox-integrity",
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "exit_code": 0,
+      "result": "PASS",
+      "evidence": "F:\\descargasf\\OUTBOX_INTEGRITY_REPORT_20260518_171007.md"
+    },
+    {
+      "command": "pnpm run verify:sync-health",
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "exit_code": 0,
+      "result": "PASS",
+      "evidence": "F:\\descargasf\\SYNC_HEALTH_REPORT_20260518_171007.md"
+    },
+    {
+      "command": "pnpm -C products/tablet/app run verify:tablet-sale-flow",
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "exit_code": 0,
+      "result": "PASS",
+      "evidence": "PRISMA_TABLET_STANDALONE_CORE_CLOSEOUT_02 passed with pcRequiredForBasicSale=false and sync metadata assertions"
+    },
+    {
+      "command": "pnpm run verify:tablet-sync-dispatcher",
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "exit_code": 0,
+      "result": "PASS",
+      "evidence": "PRISMA_TABLET_SYNC_DISPATCHER_01 passed"
+    },
+    {
+      "command": "pnpm run verify:sync-closure-truth",
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "exit_code": 0,
+      "result": "PASS",
+      "evidence": "PRISMA_SYNC_CLOSURE_TRUTH passed"
+    },
+    {
+      "command": "pnpm run verify:no-fake-green",
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "exit_code": 0,
+      "result": "PASS",
+      "evidence": "PRISMA_NO_FAKE_GREEN passed"
+    },
+    {
+      "command": "pnpm run verify:ack-required",
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "exit_code": 0,
+      "result": "PASS",
+      "evidence": "PRISMA_ACK_REQUIRED passed"
+    },
+    {
+      "command": "pnpm run verify:pc-ingest-idempotency",
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "exit_code": 0,
+      "result": "PASS",
+      "evidence": "PRISMA_PC_INGEST_IDEMPOTENCY_01 passed"
+    },
+    {
+      "command": "pnpm run verify:mobile-sync-visibility",
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "exit_code": 0,
+      "result": "PASS",
+      "evidence": "PRISMA_MOBILE_SYNC_VISIBILITY_01 passed"
+    },
+    {
+      "command": "python sqlite3 read-only DB evidence check",
+      "cwd": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "exit_code": 0,
+      "result": "PASS",
+      "evidence": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\tools\\codex\\runs\\20260518_master_checklist_green\\DB_EVIDENCE.json"
+    },
+    {
+      "command": "git diff --check -- apps/terminal-de-venta-system/products/tablet/app/tools/verify_tablet_standalone_core_closeout_02.mjs",
+      "cwd": "F:\\repos\\hitech-os",
+      "exit_code": 0,
+      "result": "PASS",
+      "evidence": "exit 0; CRLF warning only"
+    }
+  ]
+}

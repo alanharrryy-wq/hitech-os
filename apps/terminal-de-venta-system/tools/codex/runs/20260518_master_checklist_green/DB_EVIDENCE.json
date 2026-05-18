@@ -1,0 +1,312 @@
+{
+  "generated_at": "2026-05-18T17:20:32.496016+00:00",
+  "mode": "read-only sqlite3",
+  "databases": {
+    "tablet": {
+      "path": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\data\\tablet-pos.db",
+      "exists": true,
+      "tables": [
+        "AuditCount",
+        "Barcode",
+        "Business",
+        "CashMovement",
+        "CashSession",
+        "GoodsReceipt",
+        "GoodsReceiptLine",
+        "OutboxEvent",
+        "PriceList",
+        "PriceListItem",
+        "Product",
+        "PurchaseOrder",
+        "PurchaseOrderLine",
+        "ReplenishmentSignal",
+        "Sale",
+        "SaleLine",
+        "SaleReturn",
+        "StockMovement",
+        "StockSnapshot",
+        "Store",
+        "Supplier",
+        "TaxRate",
+        "Terminal"
+      ],
+      "has_outbox_event": true,
+      "outbox_columns": [
+        "id",
+        "businessId",
+        "topic",
+        "aggregateId",
+        "payloadJson",
+        "status",
+        "attempts",
+        "createdAt",
+        "sentAt",
+        "lastError",
+        "schemaVersion",
+        "source",
+        "syncedAt",
+        "terminalId",
+        "idempotencyKey",
+        "lastAttemptAt",
+        "nextRetryAt",
+        "ackedAt",
+        "failedAt",
+        "conflictedAt",
+        "deadLetterAt",
+        "remoteEventId",
+        "remoteLedgerId",
+        "remoteLifecycleStatus",
+        "remoteDiagnosticsJson",
+        "remoteConflictCode",
+        "remoteRejectedReason"
+      ],
+      "required_outbox_columns": {
+        "id": true,
+        "businessId": true,
+        "idempotencyKey": true,
+        "lastAttemptAt": true,
+        "nextRetryAt": true,
+        "ackedAt": true,
+        "failedAt": true,
+        "conflictedAt": true,
+        "deadLetterAt": true,
+        "remoteEventId": true,
+        "remoteLedgerId": true,
+        "remoteLifecycleStatus": true,
+        "remoteDiagnosticsJson": true,
+        "remoteConflictCode": true,
+        "remoteRejectedReason": true
+      },
+      "outbox_total": 81,
+      "status_counts": {
+        "acked": 72,
+        "pending": 9
+      },
+      "duplicate_idempotency_key_groups": [],
+      "ackedAt_not_null": 0,
+      "remoteEventId_not_null": 0,
+      "remoteLedgerId_not_null": 0,
+      "remoteLifecycleStatus_not_null": 0,
+      "lastAttemptAt_not_null": 0,
+      "nextRetryAt_not_null": 0,
+      "sentAt_not_null": 0,
+      "syncedAt_not_null": 72,
+      "outbox_indexes": [
+        {
+          "name": "idx_prisma_outbox_remote_ledger",
+          "unique": false,
+          "origin": "c",
+          "partial": false
+        },
+        {
+          "name": "idx_prisma_outbox_status_next_retry",
+          "unique": false,
+          "origin": "c",
+          "partial": false
+        },
+        {
+          "name": "OutboxEvent_businessId_idempotencyKey_idx",
+          "unique": false,
+          "origin": "c",
+          "partial": false
+        },
+        {
+          "name": "OutboxEvent_businessId_topic_idx",
+          "unique": false,
+          "origin": "c",
+          "partial": false
+        },
+        {
+          "name": "OutboxEvent_businessId_status_createdAt_idx",
+          "unique": false,
+          "origin": "c",
+          "partial": false
+        },
+        {
+          "name": "sqlite_autoindex_OutboxEvent_1",
+          "unique": true,
+          "origin": "pk",
+          "partial": false
+        }
+      ],
+      "required_observability_tables": {
+        "SyncAttempt": false,
+        "SyncConflict": false,
+        "DeviceHeartbeat": false,
+        "SyncCheckpoint": false,
+        "SyncOutboxStatusBucket": false,
+        "DataSourceFreshness": false
+      },
+      "status": "PASS"
+    },
+    "canonical": {
+      "path": "F:\\repos\\hitech-os\\tools\\_local\\data\\terminal-de-venta-system\\canonical.db",
+      "exists": true,
+      "tables": [
+        "AuditCount",
+        "Barcode",
+        "Business",
+        "CashMovement",
+        "CashSession",
+        "DataSourceFreshness",
+        "DeviceHeartbeat",
+        "GoodsReceipt",
+        "GoodsReceiptLine",
+        "OutboxEvent",
+        "PriceList",
+        "PriceListItem",
+        "Product",
+        "PurchaseOrder",
+        "PurchaseOrderLine",
+        "ReplenishmentSignal",
+        "Sale",
+        "SaleLine",
+        "SaleReturn",
+        "StockMovement",
+        "StockSnapshot",
+        "Store",
+        "Supplier",
+        "SyncAttempt",
+        "SyncCheckpoint",
+        "SyncConflict",
+        "SyncOutboxStatusBucket",
+        "TaxRate",
+        "Terminal",
+        "_prisma_migrations"
+      ],
+      "has_outbox_event": true,
+      "outbox_columns": [
+        "id",
+        "businessId",
+        "topic",
+        "aggregateId",
+        "payloadJson",
+        "status",
+        "attempts",
+        "createdAt",
+        "sentAt",
+        "lastError",
+        "terminalId",
+        "eventType",
+        "idempotencyKey",
+        "correlationId",
+        "source",
+        "schemaVersion",
+        "lifecycleStatus",
+        "receivedAt",
+        "validatedAt",
+        "acceptedAt",
+        "projectedAt",
+        "reconciledAt",
+        "failedAt",
+        "deadLetterAt",
+        "conflictCode",
+        "diagnosticsJson"
+      ],
+      "required_outbox_columns": {
+        "id": true,
+        "businessId": true,
+        "idempotencyKey": true,
+        "lastAttemptAt": false,
+        "nextRetryAt": false,
+        "ackedAt": false,
+        "failedAt": true,
+        "conflictedAt": false,
+        "deadLetterAt": true,
+        "remoteEventId": false,
+        "remoteLedgerId": false,
+        "remoteLifecycleStatus": false,
+        "remoteDiagnosticsJson": false,
+        "remoteConflictCode": false,
+        "remoteRejectedReason": false
+      },
+      "outbox_total": 76,
+      "status_counts": {
+        "acked": 72,
+        "failed": 1,
+        "pending": 2,
+        "sent": 1
+      },
+      "duplicate_idempotency_key_groups": [],
+      "sentAt_not_null": 1,
+      "lifecycleStatus_not_null": 0,
+      "receivedAt_not_null": 0,
+      "validatedAt_not_null": 0,
+      "acceptedAt_not_null": 0,
+      "projectedAt_not_null": 0,
+      "reconciledAt_not_null": 0,
+      "outbox_indexes": [
+        {
+          "name": "idx_outboxevent_business_idempotency",
+          "unique": false,
+          "origin": "c",
+          "partial": false
+        },
+        {
+          "name": "idx_outboxevent_business_lifecycle_created",
+          "unique": false,
+          "origin": "c",
+          "partial": false
+        },
+        {
+          "name": "idx_outboxevent_business_topic",
+          "unique": false,
+          "origin": "c",
+          "partial": false
+        },
+        {
+          "name": "idx_outboxevent_business_status_created",
+          "unique": false,
+          "origin": "c",
+          "partial": false
+        },
+        {
+          "name": "sqlite_autoindex_OutboxEvent_1",
+          "unique": true,
+          "origin": "pk",
+          "partial": false
+        }
+      ],
+      "required_observability_tables": {
+        "SyncAttempt": true,
+        "SyncConflict": true,
+        "DeviceHeartbeat": true,
+        "SyncCheckpoint": true,
+        "SyncOutboxStatusBucket": true,
+        "DataSourceFreshness": true
+      },
+      "status": "PASS"
+    }
+  },
+  "checks": [
+    {
+      "id": "tablet_db_standalone_exists",
+      "status": "PASS",
+      "evidence": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet\\app\\data\\tablet-pos.db"
+    },
+    {
+      "id": "tablet_outbox_sync_metadata_columns_exist",
+      "status": "PASS",
+      "evidence": "OutboxEvent required sync metadata columns all present"
+    },
+    {
+      "id": "tablet_outbox_no_duplicate_idempotency_groups",
+      "status": "PASS",
+      "evidence": "duplicate_idempotency_key_groups=[]"
+    },
+    {
+      "id": "tablet_ack_status_real",
+      "status": "PASS",
+      "evidence": "status_counts={'acked': 72, 'pending': 9}; syncedAt_not_null=72"
+    },
+    {
+      "id": "canonical_db_has_sync_observability_tables",
+      "status": "PASS",
+      "evidence": "F:\\repos\\hitech-os\\tools\\_local\\data\\terminal-de-venta-system\\canonical.db"
+    }
+  ],
+  "notes": [
+    "Live Tablet DB was opened read-only; no reset, delete, destructive migration, or backfill was performed.",
+    "Existing Tablet ACK rows are historical status=acked rows with syncedAt; current ACK metadata columns and indexes are asserted by verify:tablet-sale-flow in a temp DB."
+  ]
+}
