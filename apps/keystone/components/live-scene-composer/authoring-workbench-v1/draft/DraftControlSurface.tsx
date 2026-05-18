@@ -1,6 +1,7 @@
+import type { ReactElement } from "react";
 import { useLiveSceneComposer } from "../LiveSceneComposerProvider";
 
-export function DraftControlSurface(): any {
+export function DraftControlSurface(): ReactElement {
   const composer = useLiveSceneComposer();
   const latestFeedback = composer.state.feedback[0] ?? null;
   return (

@@ -72,6 +72,28 @@ function htmlReport(summary) {
   return `<!doctype html><meta charset="utf-8"><title>${escapeHtml(PHASE5_TITLE)}</title><style>body{font-family:Segoe UI,Arial,sans-serif;background:#0b0d10;color:#e8edf5;padding:24px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #303744;padding:8px}</style><h1>${escapeHtml(PHASE5_TITLE)}</h1><p>Status: <strong>${escapeHtml(summary.status)}</strong></p><p>Root: ${escapeHtml(summary.root)}</p><table><thead><tr><th>Gate</th><th>Status</th><th>Blockers</th><th>Warnings</th></tr></thead><tbody>${rows}</tbody></table><pre>${escapeHtml(JSON.stringify(summary, null, 2))}</pre>`;
 }
 
+function resultBlockers(result) {
+  if (Array.isArray(result.blockers)) return result.blockers;
+  if (Array.isArray(result.findings)) {
+    return result.findings
+      .filter((finding) => finding?.severity === "S1")
+      .map((finding) => finding.detail || finding.title || finding.id)
+      .filter(Boolean);
+  }
+  return [];
+}
+
+function resultWarnings(result) {
+  if (Array.isArray(result.warnings)) return result.warnings;
+  if (Array.isArray(result.findings)) {
+    return result.findings
+      .filter((finding) => finding?.severity !== "S1")
+      .map((finding) => finding.detail || finding.title || finding.id)
+      .filter(Boolean);
+  }
+  return [];
+}
+
 function psQuote(value) {
   return String(value).replaceAll("'", "''");
 }
@@ -102,8 +124,13 @@ ensureDir(reportDir);
 
 try {
   const results = await runPhase5All({ root });
-  const blockers = results.flatMap((result) => result.blockers.map((item) => `${result.id}: ${item}`));
-  const warnings = results.flatMap((result) => result.warnings.map((item) => `${result.id}: ${item}`));
+  const normalizedResults = results.map((result) => ({
+    ...result,
+    blockers: resultBlockers(result),
+    warnings: resultWarnings(result),
+  }));
+  const blockers = normalizedResults.flatMap((result) => result.blockers.map((item) => `${result.id}: ${item}`));
+  const warnings = normalizedResults.flatMap((result) => result.warnings.map((item) => `${result.id}: ${item}`));
   const summary = {
     name: PHASE5_TITLE,
     status: blockers.length ? "BLOCKED" : warnings.length ? "WARN" : "PASS",
@@ -111,7 +138,7 @@ try {
     root,
     blockers,
     warnings,
-    results,
+    results: normalizedResults,
     reportDir,
   };
 

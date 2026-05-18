@@ -65,7 +65,20 @@ function ensureTabletPrismaClient() {
   const detail = lastResult
     ? `${lastResult.error?.message ?? ""}\n${lastResult.stdout ?? ""}\n${lastResult.stderr ?? ""}`.trim()
     : "No Prisma launcher was available.";
+  if (detail.includes("EPERM") && detail.includes("query_engine-windows.dll.node") && canImportPrismaClient(env)) {
+    return;
+  }
   throw new Error(`Tablet Prisma Client generation failed.\n${detail}`);
+}
+
+function canImportPrismaClient(env) {
+  const result = spawnSync(process.execPath, ["-e", "import('@prisma/client').then(()=>process.exit(0)).catch(()=>process.exit(1))"], {
+    cwd: appRoot,
+    encoding: "utf8",
+    shell: false,
+    env
+  });
+  return !result.error && result.status === 0;
 }
 
 function fail(message) {

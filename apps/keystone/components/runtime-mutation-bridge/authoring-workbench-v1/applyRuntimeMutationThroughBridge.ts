@@ -1,6 +1,7 @@
 import { mergeSceneLookModel } from "../../live-scene-composer/scene-look-model";
 import type {
   MutationFeedback,
+  LayoutNode,
   RuntimeMutationCommand,
   RuntimeMutationExecutionContext,
   RuntimeMutationResult,
@@ -14,7 +15,39 @@ import type {
 import type { RuntimeMutationBridgeAdapter } from "./adapters/in-memory-preview-adapter";
 import { validateRuntimeMutationCommand } from "./validateRuntimeMutationCommand";
 
-type MutableSceneDocument = any;
+type Mutable<T> = { -readonly [K in keyof T]: T[K] };
+
+type MutableSceneDocument = Mutable<SceneDocument> & {
+  layoutNodes: Record<string, Mutable<LayoutNode>>;
+  slots: Record<string, Mutable<SlotEntity>>;
+  widgets: Record<string, Mutable<WidgetEntity>>;
+  meta: Mutable<SceneDocument["meta"]>;
+  scene: Mutable<SceneDocument["scene"]>;
+};
+
+function requireLayoutNode(document: MutableSceneDocument, nodeId: string): Mutable<LayoutNode> {
+  const node = document.layoutNodes[nodeId];
+  if (!node) {
+    throw new Error(`Missing layout node ${nodeId} after mutation validation.`);
+  }
+  return node;
+}
+
+function requireSlot(document: MutableSceneDocument, slotId: string): Mutable<SlotEntity> {
+  const slot = document.slots[slotId];
+  if (!slot) {
+    throw new Error(`Missing slot ${slotId} after mutation validation.`);
+  }
+  return slot;
+}
+
+function requireWidget(document: MutableSceneDocument, widgetId: string): Mutable<WidgetEntity> {
+  const widget = document.widgets[widgetId];
+  if (!widget) {
+    throw new Error(`Missing widget ${widgetId} after mutation validation.`);
+  }
+  return widget;
+}
 
 function cloneSceneDocument(document: SceneDocument): SceneDocument {
   return JSON.parse(JSON.stringify(document)) as SceneDocument;
@@ -151,7 +184,7 @@ export function applyRuntimeMutationThroughBridge(
       break;
     }
     case "layout.node.move": {
-      const node = nextDraft.layoutNodes[command.target.id];
+      const node = requireLayoutNode(nextDraft, command.target.id);
       nextDraft.layoutNodes[command.target.id] = {
         ...node,
         frame: {
@@ -164,7 +197,7 @@ export function applyRuntimeMutationThroughBridge(
       break;
     }
     case "layout.node.resize": {
-      const node = nextDraft.layoutNodes[command.target.id];
+      const node = requireLayoutNode(nextDraft, command.target.id);
       nextDraft.layoutNodes[command.target.id] = {
         ...node,
         frame: {
@@ -177,9 +210,9 @@ export function applyRuntimeMutationThroughBridge(
       break;
     }
     case "layout.node.reorder": {
-      const node = nextDraft.layoutNodes[command.target.id];
+      const node = requireLayoutNode(nextDraft, command.target.id);
       if (node.parentId) {
-        const parent = nextDraft.layoutNodes[node.parentId];
+        const parent = requireLayoutNode(nextDraft, node.parentId);
         const childIds = parent.childIds.filter((childId: string) => childId !== node.id);
         childIds.splice(command.payload.toIndex, 0, node.id);
         nextDraft.layoutNodes[node.parentId] = {
@@ -187,7 +220,7 @@ export function applyRuntimeMutationThroughBridge(
           childIds,
         };
         childIds.forEach((childId: string, index: number) => {
-          const child = nextDraft.layoutNodes[childId];
+          const child = requireLayoutNode(nextDraft, childId);
           nextDraft.layoutNodes[childId] = {
             ...child,
             orderIndex: index,
@@ -200,7 +233,7 @@ export function applyRuntimeMutationThroughBridge(
     case "widget.insert-from-prefab": {
       const widget = createWidgetFromPrefab(command.payload.prefab, command.payload.slotId, nextDraft.meta.nextId);
       nextDraft.widgets[widget.id] = widget;
-      const slot = nextDraft.slots[command.payload.slotId];
+      const slot = requireSlot(nextDraft, command.payload.slotId);
       nextDraft.slots[command.payload.slotId] = {
         ...slot,
         widgetIds: [...slot.widgetIds, widget.id],
@@ -213,7 +246,7 @@ export function applyRuntimeMutationThroughBridge(
       break;
     }
     case "widget.update-props": {
-      const widget = nextDraft.widgets[command.target.id];
+      const widget = requireWidget(nextDraft, command.target.id);
       nextDraft.widgets[command.target.id] = {
         ...widget,
         props: {
@@ -225,7 +258,7 @@ export function applyRuntimeMutationThroughBridge(
       break;
     }
     case "widget.update-style": {
-      const widget = nextDraft.widgets[command.target.id];
+      const widget = requireWidget(nextDraft, command.target.id);
       nextDraft.widgets[command.target.id] = {
         ...widget,
         style: coerceStylePatch(widget.style, command.payload.patch),

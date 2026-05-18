@@ -1,7 +1,8 @@
+import type { ReactElement } from "react";
 import { useLiveSceneComposer } from "../LiveSceneComposerProvider";
 import { getCompatiblePrefabs } from "../prefabs/prefab-catalog";
 
-export function InspectorPanel(): any {
+export function InspectorPanel(): ReactElement {
   const composer = useLiveSceneComposer();
   const { inspectorTarget, state } = composer;
   const preview = state.documents.preview;

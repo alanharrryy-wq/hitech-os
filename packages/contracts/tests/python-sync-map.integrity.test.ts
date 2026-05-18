@@ -4,7 +4,9 @@ import path from "node:path";
 
 describe("python sync map integrity", () => {
   it("references schema files that exist", () => {
-    const generatedRoot = path.resolve(process.cwd(), "packages/contracts/schemas/generated");
+    const generatedRoot = fs.existsSync(path.resolve(process.cwd(), "schemas/generated"))
+      ? path.resolve(process.cwd(), "schemas/generated")
+      : path.resolve(process.cwd(), "packages/contracts/schemas/generated");
     const syncMapPath = path.join(generatedRoot, "python-sync-map.json");
     const raw = fs.readFileSync(syncMapPath, "utf8");
     const parsed = JSON.parse(raw) as { schemaFiles?: string[]; pythonModelMap?: Record<string, string> };

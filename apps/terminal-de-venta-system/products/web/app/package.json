@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3110",
-    "build": "next build",
+    "build": "node tools/off-release-gate.mjs build",
     "start": "next start -p 3110",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "node tools/off-release-gate.mjs typecheck"
   },
   "dependencies": {
     "@next/env": "latest",

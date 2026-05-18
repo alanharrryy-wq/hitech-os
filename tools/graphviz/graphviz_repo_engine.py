@@ -18,10 +18,10 @@ import sys
 try:
     from graphviz import Digraph
 except Exception as exc:  # pragma: no cover - import guard
-    raise RuntimeError(
-        "No se pudo importar graphviz. Instala el paquete Python 'graphviz' "
-        "y asegúrate de tener Graphviz CLI disponible en PATH."
-    ) from exc
+    Digraph = None  # type: ignore[assignment]
+    GRAPHVIZ_IMPORT_ERROR = exc
+else:
+    GRAPHVIZ_IMPORT_ERROR = None
 
 
 DEFAULT_REPO_PATH = Path(r"F:\repos\hitech-os")
@@ -596,6 +596,12 @@ def clean_output_targets(config: GraphRunConfig) -> None:
 
 
 def render_folder_graph(display_index: int, payload: dict, config: GraphRunConfig) -> dict:
+    if Digraph is None:
+        raise RuntimeError(
+            "No se pudo importar graphviz. Instala el paquete Python 'graphviz' "
+            "y asegúrate de tener Graphviz CLI disponible en PATH."
+        ) from GRAPHVIZ_IMPORT_ERROR
+
     rel_folder = payload["folder"]
     folder_id = stable_folder_id(rel_folder)
     out_dir = config.output_root / folder_id

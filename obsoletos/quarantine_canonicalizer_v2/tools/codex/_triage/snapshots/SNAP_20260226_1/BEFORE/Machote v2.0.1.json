@@ -1,4 +1,4 @@
-﻿{
+{
   "format_id": "HOS_CONVERSATIONAL_OS",
   "format_version": "2.0.1",
   "mode": "UNKNOWN",
@@ -26,8 +26,8 @@
     "latest_filename": "LATEST.json",
     "template_filename": "Machote v2.0.1.json",
     "file_extension": ".json",
-    "filename_pattern": "S\u003cCHAT_SEQUENCE_3DIGIT\u003e__\u003cCHAT_DISPLAY_NAME_FILESAFE\u003e.json",
-    "snapshot_filename": "\u003cAUTO\u003e",
+    "filename_pattern": "S<CHAT_SEQUENCE_3DIGIT>__<CHAT_DISPLAY_NAME_FILESAFE>.json",
+    "snapshot_filename": "<AUTO>",
     "sequence_only_naming": true,
     "no_temporal_metadata": true,
     "standard_machote_filename_rule": "Machote v2.x.x.json",
@@ -40,13 +40,13 @@
     }
   },
   "naming_policy": {
-    "chat_title_format": "\u003cPROJECT_LABEL\u003e \u003cN\u003e - \u003cTITLE\u003e",
+    "chat_title_format": "<PROJECT_LABEL> <N> - <TITLE>",
     "anti_skip_rule": "INIT_NEW and CONTINUE are chat-level states only. INIT_NEW sets chat_sequence=1. CONTINUE sets new_seq=(prev_seq+1) using only the provided snapshot.",
     "new_chat_not_new_project_rule": "nuevo chat != nuevo proyecto. With snapshot input, keep project identity from snapshot metadata.",
     "filesafe_slug_rules": [
-      "Replace \u0027-\u0027 separators with \u0027__\u0027 only where required by naming policy.",
+      "Replace '-' separators with '__' only where required by naming policy.",
       "Replace spaces with _.",
-      "Remove invalid Windows filename chars: \u003c \u003e : \" / \\\\ | ? *",
+      "Remove invalid Windows filename chars: < > : \" / \\\\ | ? *",
       "Collapse repeated underscores.",
       "Trim underscores from start/end.",
       "Trim trailing dots/spaces.",
@@ -127,7 +127,7 @@
       "12) DISPLAY NAME DETERMINISTIC: identity.chat_display_name is deterministic from sequence and title.",
       "13) FILESAFE DETERMINISTIC: chat_display_name_filesafe derives only from filesafe rules.",
       "14) SNAPSHOT_ID RULE: sha256(project.key|chat_sequence|chat_display_name).",
-      "15) FILENAME RULE: S\u003cCHAT_SEQUENCE_3DIGIT\u003e__\u003cCHAT_DISPLAY_NAME_FILESAFE\u003e.json.",
+      "15) FILENAME RULE: S<CHAT_SEQUENCE_3DIGIT>__<CHAT_DISPLAY_NAME_FILESAFE>.json.",
       "16) TEMPORAL BAN: No dates or timestamps in filenames, IDs, or saved metadata.",
       "17) PROOF REQUIRED: integrity.proof must store canonical string and sha256 output.",
       "18) UNKNOWN DISCIPLINE: Use UNKNOWN when value is not explicit or deterministic.",
@@ -164,7 +164,9 @@
         ]
       },
       "continue_mode": {
-        "required_user_inputs": ["previous snapshot object provided at chat start"],
+        "required_user_inputs": [
+          "previous snapshot object provided at chat start"
+        ],
         "assistant_must_do": [
           "Parse previous snapshot and read prev_seq from identity.chat_sequence.",
           "Set new_seq = prev_seq + 1 with strict monotonicity.",
@@ -182,7 +184,9 @@
       "assistant_uses_snapshot_from_chat_start": true,
       "assistant_must_not_use_disk": true,
       "assistant_output_format": "Must output one JSON bundle containing snapshot data and embedded_files.",
-      "assistant_output_minimum": ["MACHOTE_JSON_BUNDLE_FULL"]
+      "assistant_output_minimum": [
+        "MACHOTE_JSON_BUNDLE_FULL"
+      ]
     },
     "decision_source_of_truth": {
       "chat_sequence": "CONTINUE: only from provided snapshot identity.chat_sequence. INIT_NEW: fixed to 1.",
@@ -264,26 +268,35 @@
     "key": "UNKNOWN",
     "label": "UNKNOWN",
     "display_name": "UNKNOWN",
-    "storage_dir": "\u003cAUTO\u003e",
-    "created_from_mode": "\u003cAUTO\u003e",
+    "storage_dir": "<AUTO>",
+    "created_from_mode": "<AUTO>",
     "metadata": {
       "continue_identity_source": "snapshot_only",
       "name_source": "UNKNOWN",
       "name_confidence": "UNKNOWN",
       "name_rationale_2_lines": "UNKNOWN",
-      "name_source_allowed_values": ["snapshot", "user_provided", "derived_from_chat"],
-      "name_confidence_allowed_values": ["low", "medium", "high", "UNKNOWN"]
+      "name_source_allowed_values": [
+        "snapshot",
+        "user_provided",
+        "derived_from_chat"
+      ],
+      "name_confidence_allowed_values": [
+        "low",
+        "medium",
+        "high",
+        "UNKNOWN"
+      ]
     }
   },
   "identity": {
     "chat_sequence": "UNKNOWN",
     "chat_display_name": "UNKNOWN",
-    "chat_display_name_filesafe": "\u003cAUTO\u003e",
-    "snapshot_id": "\u003cAUTO_DETERMINISTIC\u003e",
+    "chat_display_name_filesafe": "<AUTO>",
+    "snapshot_id": "<AUTO_DETERMINISTIC>",
     "source_latest_ref": {
-      "used": "\u003cAUTO\u003e",
-      "latest_path": "\u003cAUTO\u003e",
-      "latest_snapshot_id": "\u003cAUTO\u003e",
+      "used": "<AUTO>",
+      "latest_path": "<AUTO>",
+      "latest_snapshot_id": "<AUTO>",
       "note": "AUDIT ONLY. NEVER DECISION INPUT."
     }
   },
@@ -295,16 +308,16 @@
       "ordering_preference": "STABLE_ORDER"
     },
     "proof": {
-      "canonical_string_used_for_snapshot_id": "\u003cAUTO\u003e",
-      "sha256_snapshot_id": "\u003cAUTO\u003e",
-      "sha256_template_hash_optional": "\u003cAUTO\u003e"
+      "canonical_string_used_for_snapshot_id": "<AUTO>",
+      "sha256_snapshot_id": "<AUTO>",
+      "sha256_template_hash_optional": "<AUTO>"
     },
     "checks": {
-      "required_minimum_fields_present": "\u003cAUTO\u003e",
-      "sequence_monotonicity_verified": "\u003cAUTO\u003e",
-      "no_disk_decision_verified": "\u003cAUTO\u003e",
-      "no_temporal_metadata_verified": "\u003cAUTO\u003e",
-      "bundle_contract_verified": "\u003cAUTO\u003e"
+      "required_minimum_fields_present": "<AUTO>",
+      "sequence_monotonicity_verified": "<AUTO>",
+      "no_disk_decision_verified": "<AUTO>",
+      "no_temporal_metadata_verified": "<AUTO>",
+      "bundle_contract_verified": "<AUTO>"
     }
   },
   "rehydration_core": {
@@ -369,7 +382,13 @@
       "require_mitigation_for_each_risk": true,
       "require_scope_delta_when_scope_changes": true
     },
-    "generic_phrases_blocklist": ["todo bien", "seguimos", "sin cambios", "pendiente", "n/a"]
+    "generic_phrases_blocklist": [
+      "todo bien",
+      "seguimos",
+      "sin cambios",
+      "pendiente",
+      "n/a"
+    ]
   },
   "state_now": {
     "health": {
@@ -386,7 +405,10 @@
     },
     "contracts": {
       "state": "UNKNOWN",
-      "canonical_files": ["CONTRACT.md", "CHANGES.md"]
+      "canonical_files": [
+        "CONTRACT.md",
+        "CHANGES.md"
+      ]
     },
     "snapshot_lists": {
       "completed_top15": [],
@@ -448,11 +470,11 @@
   },
   "handoff": {
     "user_signal": "UNKNOWN",
-    "assistant_should_prepare_next_snapshot": "\u003cAUTO\u003e",
+    "assistant_should_prepare_next_snapshot": "<AUTO>",
     "handoff_checkpoint": {
-      "confirmed_all_required_fields_present": "\u003cAUTO\u003e",
-      "confirmed_no_orphan_tasks": "\u003cAUTO\u003e",
-      "confirmed_state_matches_reality": "\u003cAUTO\u003e"
+      "confirmed_all_required_fields_present": "<AUTO>",
+      "confirmed_no_orphan_tasks": "<AUTO>",
+      "confirmed_state_matches_reality": "<AUTO>"
     }
   },
   "rotation": {
@@ -475,7 +497,7 @@
       "no_temporal_inputs": true
     },
     "deterministic_filename_rule": {
-      "pattern": "S\u003cCHAT_SEQUENCE_3DIGIT\u003e__\u003cCHAT_DISPLAY_NAME_FILESAFE\u003e.json",
+      "pattern": "S<CHAT_SEQUENCE_3DIGIT>__<CHAT_DISPLAY_NAME_FILESAFE>.json",
       "no_temporal_tokens": true
     }
   },
@@ -484,7 +506,10 @@
     "artifact_filename_rule": "Machote v2.x.x.json",
     "artifact_payload_model": "snapshot_plus_embedded_files",
     "embedded_files_required": true,
-    "required_embedded_languages": ["powershell", "python"],
+    "required_embedded_languages": [
+      "powershell",
+      "python"
+    ],
     "split_delivery_forbidden": true,
     "interactive_steps_forbidden": true,
     "no_temporal_data_rule": "No dates/timestamps in names, IDs, or saved metadata. Sequence-only."
@@ -499,28 +524,28 @@
         "  [Parameter(Mandatory = $true)][string]$BundlePath,",
         "  [Parameter(Mandatory = $true)][string]$OutputDir",
         ")",
-        "$ErrorActionPreference = \u0027Stop\u0027",
+        "$ErrorActionPreference = 'Stop'",
         "if (-not (Test-Path -LiteralPath $BundlePath)) {",
-        "  throw \u0027Bundle file not found.\u0027",
+        "  throw 'Bundle file not found.'",
         "}",
         "$bundle = Get-Content -Raw -LiteralPath $BundlePath | ConvertFrom-Json -Depth 200",
         "$snapshot = $bundle",
         "if (-not $snapshot.storage_policy.snapshot_filename) {",
-        "  throw \u0027storage_policy.snapshot_filename is required.\u0027",
+        "  throw 'storage_policy.snapshot_filename is required.'",
         "}",
         "if (-not (Test-Path -LiteralPath $OutputDir)) {",
         "  New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null",
         "}",
         "$snapshotPath = Join-Path $OutputDir $snapshot.storage_policy.snapshot_filename",
         "if (Test-Path -LiteralPath $snapshotPath) {",
-        "  throw \u0027Snapshot file already exists; refusing overwrite.\u0027",
+        "  throw 'Snapshot file already exists; refusing overwrite.'",
         "}",
         "$latestPath = Join-Path $OutputDir $snapshot.storage_policy.latest_filename",
-        "$enginePath = Join-Path $PSScriptRoot \u0027write_snapshot.py\u0027",
+        "$enginePath = Join-Path $PSScriptRoot 'write_snapshot.py'",
         "python $enginePath --bundle-path $BundlePath --snapshot-path $snapshotPath --latest-path $latestPath",
-        "Write-Output (\u0027SAVED_SNAPSHOT=\u0027 + $snapshotPath)",
-        "Write-Output (\u0027LATEST_MIRROR=\u0027 + $latestPath)",
-        "Write-Output (\u0027NEXT_CHAT=\u0027 + $snapshot.next_chat.display_name)"
+        "Write-Output ('SAVED_SNAPSHOT=' + $snapshotPath)",
+        "Write-Output ('LATEST_MIRROR=' + $latestPath)",
+        "Write-Output ('NEXT_CHAT=' + $snapshot.next_chat.display_name)"
       ]
     },
     {
@@ -537,9 +562,9 @@
         "    directory = os.path.dirname(path)",
         "    if directory:",
         "        os.makedirs(directory, exist_ok=True)",
-        "    fd, temp_path = tempfile.mkstemp(dir=directory or None, prefix=\u0027hos_\u0027)",
+        "    fd, temp_path = tempfile.mkstemp(dir=directory or None, prefix='hos_')",
         "    try:",
-        "        with os.fdopen(fd, \u0027w\u0027, encoding=\u0027utf-8\u0027, newline=\u0027\\\\n\u0027) as handle:",
+        "        with os.fdopen(fd, 'w', encoding='utf-8', newline='\\\\n') as handle:",
         "            handle.write(content)",
         "        os.replace(temp_path, path)",
         "    finally:",
@@ -548,23 +573,23 @@
         "",
         "def main():",
         "    parser = argparse.ArgumentParser()",
-        "    parser.add_argument(\u0027--bundle-path\u0027, required=True)",
-        "    parser.add_argument(\u0027--snapshot-path\u0027, required=True)",
-        "    parser.add_argument(\u0027--latest-path\u0027, required=True)",
+        "    parser.add_argument('--bundle-path', required=True)",
+        "    parser.add_argument('--snapshot-path', required=True)",
+        "    parser.add_argument('--latest-path', required=True)",
         "    args = parser.parse_args()",
         "",
-        "    with open(args.bundle_path, \u0027r\u0027, encoding=\u0027utf-8\u0027) as handle:",
+        "    with open(args.bundle_path, 'r', encoding='utf-8') as handle:",
         "        bundle = json.load(handle)",
         "",
-        "    payload = json.dumps(bundle, ensure_ascii=False, indent=2) + \u0027\\\\n\u0027",
+        "    payload = json.dumps(bundle, ensure_ascii=False, indent=2) + '\\\\n'",
         "",
         "    if os.path.exists(args.snapshot_path):",
-        "        raise FileExistsError(\u0027Snapshot file already exists; refusing overwrite.\u0027)",
+        "        raise FileExistsError('Snapshot file already exists; refusing overwrite.')",
         "",
         "    atomic_write(args.snapshot_path, payload)",
         "    atomic_write(args.latest_path, payload)",
         "",
-        "if __name__ == \u0027__main__\u0027:",
+        "if __name__ == '__main__':",
         "    main()"
       ]
     }

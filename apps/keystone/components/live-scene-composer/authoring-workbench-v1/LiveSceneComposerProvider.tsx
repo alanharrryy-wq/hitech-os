@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useReducer } from "react";
+import { createContext, useContext, useMemo, useReducer, type ReactElement, type ReactNode } from "react";
 import type { AuthoringMode, PrefabDefinition, SelectionTarget, WidgetPropsPatch, WidgetStylePatch } from "./authoring-workbench-contracts";
 import { deriveInspectorTarget } from "./selection/inspector-target";
 import { deriveLegalOperations } from "./selection/selection-model";
@@ -45,10 +45,10 @@ const LiveSceneComposerContext = createContext<LiveSceneComposerContextValue | n
 
 export interface LiveSceneComposerProviderProps {
   readonly initialDocument?: SceneDocument;
-  readonly children: any;
+  readonly children: ReactNode;
 }
 
-export function LiveSceneComposerProvider({ initialDocument, children }: LiveSceneComposerProviderProps): any {
+export function LiveSceneComposerProvider({ initialDocument, children }: LiveSceneComposerProviderProps): ReactElement {
   const registry = useMemo(() => createComposerModuleRegistry(), []);
   const [state, dispatch] = useReducer(workbenchReducer, createInitialWorkbenchState(initialDocument, "safe", registry.descriptors));
   const inspectorTarget = useMemo(

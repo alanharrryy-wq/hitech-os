@@ -478,7 +478,8 @@ export function removeWidget(document: SceneDocument, widgetId: WidgetId): Docum
   if (!widget) {
     return { document, changedTargets: [] };
   }
-  const { [widgetId]: _removed, ...remainingWidgets } = document.widgets;
+  const remainingWidgets = { ...document.widgets };
+  delete remainingWidgets[widgetId];
   const slot = document.slots[widget.slotId];
   return {
     document: {
@@ -605,7 +606,8 @@ export function resetTargetFromBaseline(
   }
 
   const slot = draft.slots[currentWidget.slotId];
-  const { [target.id]: _removed, ...remainingWidgets } = draft.widgets;
+  const remainingWidgets = { ...draft.widgets };
+  delete remainingWidgets[target.id];
   return {
     document: {
       ...draft,

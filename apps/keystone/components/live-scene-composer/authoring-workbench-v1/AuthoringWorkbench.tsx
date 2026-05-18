@@ -4,9 +4,10 @@ import { DraftControlSurface } from "./draft/DraftControlSurface";
 import { getSelectionLabel } from "./model/scene-graph";
 import { InspectorPanel } from "./inspector/InspectorPanel";
 import { StructureTree } from "./structure/StructureTree";
+import type { ReactElement } from "react";
 import type { SceneDocument } from "./authoring-workbench-contracts";
 
-function AuthoringWorkbenchShell(): any {
+function AuthoringWorkbenchShell(): ReactElement {
   const composer = useLiveSceneComposer();
   return (
     <main style={{ display: "grid", gridTemplateColumns: "280px 1fr 320px", gap: 16, color: "#0f172a" }}>
@@ -33,7 +34,7 @@ export interface AuthoringWorkbenchProps {
   readonly initialDocument?: SceneDocument;
 }
 
-export function AuthoringWorkbench(props: AuthoringWorkbenchProps): any {
+export function AuthoringWorkbench(props: AuthoringWorkbenchProps): ReactElement {
   const providerProps = props.initialDocument
     ? { initialDocument: props.initialDocument }
     : {};
