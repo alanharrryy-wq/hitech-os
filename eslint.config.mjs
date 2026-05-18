@@ -8,6 +8,7 @@ const ignores = [
   "**/build/**",
   "**/.turbo/**",
   "**/coverage/**",
+  "**/*.d.ts",
   "tools/codex/**"
 ];
 

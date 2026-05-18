@@ -1,10 +1,10 @@
-import { useMemo } from "react";
+import { useMemo, type MouseEvent, type ReactElement } from "react";
 import { useLiveSceneComposer } from "../LiveSceneComposerProvider";
 import { createCanvasOverlayModel } from "./canvas-view-model";
 
 const gridLineStyle = { position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.16 } as const;
 
-export function CanvasSurface(): any {
+export function CanvasSurface(): ReactElement {
   const composer = useLiveSceneComposer();
   const { state, inspectorTarget } = composer;
   const overlay = useMemo(
@@ -79,12 +79,12 @@ export function CanvasSurface(): any {
               {box.kind === "widget" ? <div style={{ marginTop: 10, fontSize: 12 }}>Preview-aware widget chrome</div> : null}
               {box.selected && box.kind === "layout-node" ? (
                 <div style={{ position: "absolute", right: 8, top: 8, display: "flex", gap: 4, flexWrap: "wrap", width: 120, justifyContent: "flex-end" }}>
-                  <button onClick={(event: any) => { event.stopPropagation(); composer.moveLayoutNode({ kind: "layout-node", id: box.id, sceneId: state.documents.preview.scene.id }, 0, -8); }}>↑</button>
-                  <button onClick={(event: any) => { event.stopPropagation(); composer.moveLayoutNode({ kind: "layout-node", id: box.id, sceneId: state.documents.preview.scene.id }, -8, 0); }}>←</button>
-                  <button onClick={(event: any) => { event.stopPropagation(); composer.moveLayoutNode({ kind: "layout-node", id: box.id, sceneId: state.documents.preview.scene.id }, 8, 0); }}>→</button>
-                  <button onClick={(event: any) => { event.stopPropagation(); composer.moveLayoutNode({ kind: "layout-node", id: box.id, sceneId: state.documents.preview.scene.id }, 0, 8); }}>↓</button>
-                  <button onClick={(event: any) => { event.stopPropagation(); composer.resizeLayoutNode({ kind: "layout-node", id: box.id, sceneId: state.documents.preview.scene.id }, 16, 0); }}>W+</button>
-                  <button onClick={(event: any) => { event.stopPropagation(); composer.resizeLayoutNode({ kind: "layout-node", id: box.id, sceneId: state.documents.preview.scene.id }, 0, 16); }}>H+</button>
+                  <button onClick={(event: MouseEvent<HTMLButtonElement>) => { event.stopPropagation(); composer.moveLayoutNode({ kind: "layout-node", id: box.id, sceneId: state.documents.preview.scene.id }, 0, -8); }}>↑</button>
+                  <button onClick={(event: MouseEvent<HTMLButtonElement>) => { event.stopPropagation(); composer.moveLayoutNode({ kind: "layout-node", id: box.id, sceneId: state.documents.preview.scene.id }, -8, 0); }}>←</button>
+                  <button onClick={(event: MouseEvent<HTMLButtonElement>) => { event.stopPropagation(); composer.moveLayoutNode({ kind: "layout-node", id: box.id, sceneId: state.documents.preview.scene.id }, 8, 0); }}>→</button>
+                  <button onClick={(event: MouseEvent<HTMLButtonElement>) => { event.stopPropagation(); composer.moveLayoutNode({ kind: "layout-node", id: box.id, sceneId: state.documents.preview.scene.id }, 0, 8); }}>↓</button>
+                  <button onClick={(event: MouseEvent<HTMLButtonElement>) => { event.stopPropagation(); composer.resizeLayoutNode({ kind: "layout-node", id: box.id, sceneId: state.documents.preview.scene.id }, 16, 0); }}>W+</button>
+                  <button onClick={(event: MouseEvent<HTMLButtonElement>) => { event.stopPropagation(); composer.resizeLayoutNode({ kind: "layout-node", id: box.id, sceneId: state.documents.preview.scene.id }, 0, 16); }}>H+</button>
                 </div>
               ) : null}
             </div>

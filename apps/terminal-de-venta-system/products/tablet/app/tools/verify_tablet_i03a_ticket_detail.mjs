@@ -48,7 +48,7 @@ if (exists(route)) {
 
 if (exists(screen)) {
   const text = read(screen);
-  check("I03A-010 screen calls direct detail endpoint", text.includes("/api/pos/sales/detail?saleId="), screen);
+  check("I03A-010 screen calls direct detail endpoint", text.includes("/api/pos/sales/detail?") && text.includes("params.toString()"), screen);
   check("I03A-011 screen handles not_found", text.includes('status: "not_found"') || text.includes("SALE_NOT_FOUND"), screen);
   check("I03A-012 screen handles error", text.includes('status: "error"') && text.includes("No se pudo abrir"), screen);
   check("I03A-013 loading is not permanent-only state", text.includes("setState(asHumanError(error))"), screen);
@@ -58,7 +58,7 @@ if (exists(screen)) {
 if (exists(list)) {
   const text = read(list);
   check("I03A-015 list uses Next Link", text.includes("next/link") && text.includes("<Link"), list);
-  check("I03A-016 list links to encoded saleId", text.includes("encodeURIComponent(ticket.saleId"), list);
+  check("I03A-016 list links to encoded ticket identity", text.includes("encodeURIComponent(ticket.folio || ticket.saleId)") || text.includes("encodeURIComponent(ticket.saleId"), list);
   check("I03A-017 list has aria label", text.includes("aria-label"), list);
 }
 

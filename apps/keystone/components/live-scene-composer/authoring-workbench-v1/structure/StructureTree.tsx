@@ -1,7 +1,8 @@
+import type { ReactElement } from "react";
 import { listStructureEntries } from "../model/scene-graph";
 import { useLiveSceneComposer } from "../LiveSceneComposerProvider";
 
-export function StructureTree(): any {
+export function StructureTree(): ReactElement {
   const composer = useLiveSceneComposer();
   const entries = listStructureEntries(composer.state.documents.preview);
   const selectedId = composer.state.selection.primaryTarget?.id ?? null;
