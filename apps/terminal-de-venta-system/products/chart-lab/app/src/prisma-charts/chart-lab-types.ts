@@ -18,7 +18,7 @@ export type LabChartFamily =
   | "future";
 
 export type LabChartReadiness = "working" | "placeholder" | "unavailable";
-export type LabChartDataStatus = "lab/mock" | "shared/mock" | "partial/adapter-ready" | "unavailable";
+export type LabChartDataStatus = "lab/mock" | "shared/mock" | "partial/adapter-ready" | "runtime" | "stale" | "invalid" | "unavailable";
 export type LabChartThemeMode = "prisma-crystal" | "precision-paper";
 export type LabChartDensity = "calm" | "dense";
 export type LabChartSize = "focus" | "wide" | "compact";
@@ -28,6 +28,7 @@ export type LabChartPreviewFrame = "pc" | "tablet" | "mobile";
 export type LabChartInspectorTab =
   | "preview"
   | "controls"
+  | "option-studio"
   | "passport"
   | "maps"
   | "data"

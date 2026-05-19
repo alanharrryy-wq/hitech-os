@@ -21,6 +21,10 @@
     "verify:cloudflare-smoke": "node scripts/verify-chart-lab-cloudflare-smoke.mjs",
     "verify:echarts-boundary": "node scripts/verify-chart-lab-echarts-boundary.mjs",
     "verify:all": "node scripts/verify-chart-lab-all.mjs",
+    "runtime:prepare-db": "py -3 ../../../tools/prisma/prisma_chart_runtime_snapshot.py --repo-root ../../.. --prepare-runtime-db --refresh-runtime-db",
+    "runtime:refresh": "py -3 ../../../tools/prisma/prisma_chart_runtime_snapshot.py --repo-root ../../.. --collect-only",
+    "runtime:status": "py -3 ../../../tools/prisma/prisma_chart_runtime_snapshot.py --repo-root ../../.. --status-only",
+    "runtime:verify": "py -3 ../../../tools/prisma/prisma_chart_runtime_snapshot.py --repo-root ../../.. --status-only && pnpm run verify:chart-source-modes",
     "cf:build": "node scripts/run-chart-lab-cf-build.mjs",
     "cf:preview": "node scripts/run-chart-lab-cf-preview.mjs",
     "cf:deploy": "node scripts/deploy-cloudflare-pages.mjs",
@@ -34,7 +38,9 @@
     "visual-baseline-readiness": "node scripts/visual-baseline-readiness.mjs"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
     "echarts": "5.6.0",
+    "monaco-editor": "^0.55.1",
     "next": "16.1.6",
     "react": "18.3.1",
     "react-dom": "18.3.1"
