@@ -1,21 +1,25 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
-const root = process.argv[2] ? path.resolve(process.argv[2]) : process.cwd();
-const checks = [
-  ['products/tablet/app/src/lib/pos/shift-flow.ts', 'ensureLocalShiftOpenForSale'],
-  ['products/tablet/app/src/lib/pos/shift-flow.ts', '/api/pos/shift/open'],
-  ['products/tablet/app/src/lib/pos/payment-flow.ts', 'SHIFT_NOT_OPEN'],
-  ['products/tablet/app/src/lib/pos/payment-flow.ts', 'ensureLocalShiftOpenForSale'],
-  ['products/tablet/app/src/lib/pos/pos-visible-errors.ts', 'No había caja abierta'],
-  ['products/tablet/app/components/pos/pos-payment-panel.tsx', 'friendlyPosError'],
-  ['products/tablet/app/components/pos/pos-payment-panel.tsx', 'visibleError']
-];
-const failures=[];
-for (const [rel, needle] of checks) {
-  const full = path.join(root, rel);
-  if (!fs.existsSync(full)) { failures.push(`missing ${rel}`); continue; }
-  if (!fs.readFileSync(full, 'utf8').includes(needle)) failures.push(`missing ${needle} in ${rel}`);
+
+const appRoot = process.argv[2] ? path.resolve(process.argv[2]) : process.cwd();
+function read(rel) { return fs.readFileSync(path.join(appRoot, rel), 'utf8'); }
+function has(rel, needle) { return read(rel).includes(needle); }
+
+const failures = [];
+const paymentFlow = read('src/lib/pos/payment-flow.ts');
+const shiftFlow = read('src/lib/pos/shift-flow.ts');
+
+if (paymentFlow.includes('ensureLocalShiftOpenForSale')) failures.push('payment-flow.ts must not import or call ensureLocalShiftOpenForSale');
+if (paymentFlow.includes('apiErrorCode(error) !== "SHIFT_NOT_OPEN"')) failures.push('payment-flow.ts still catches SHIFT_NOT_OPEN to retry sale');
+if (shiftFlow.includes('/api/pos/shift/open')) failures.push('shift-flow.ts must not open /api/pos/shift/open from sale flow');
+if (!has('src/lib/pos/pos-visible-errors.ts', 'Caja cerrada')) failures.push('SHIFT_NOT_OPEN visible copy must say Caja cerrada');
+if (!has('src/server/pos-engine/repository.prisma.ts', 'PosEngineError("SHIFT_NOT_OPEN"')) failures.push('backend SHIFT_NOT_OPEN guard is missing');
+
+if (failures.length) {
+  console.error('BLOCKED PRISMA_TABLET_POS_CHECKOUT_NO_SHIFT_AUTOFIX_00S');
+  failures.forEach((failure) => console.error(`- ${failure}`));
+  process.exit(1);
 }
-if (failures.length) { console.error('BLOCKED PRISMA_TABLET_POS_CHECKOUT_SHIFT_AUTOFIX_00S'); failures.forEach(f=>console.error(`- ${f}`)); process.exit(1); }
-console.log('READY PRISMA_TABLET_POS_CHECKOUT_SHIFT_AUTOFIX_00S');
+
+console.log('READY PRISMA_TABLET_POS_CHECKOUT_NO_SHIFT_AUTOFIX_00S');
