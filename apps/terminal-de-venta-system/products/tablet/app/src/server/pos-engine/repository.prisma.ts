@@ -157,13 +157,17 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
             businessId,
             terminalId: existingSale.terminalId,
             cashSessionId: existingSale.cashSessionId ?? null,
+            clientRequestId: existingSale.clientRequestId ?? null,
             cashier: existingSale.cashier,
+            subtotalCents: existingSale.subtotalCents ?? existingSale.totalCents,
+            discountCents: existingSale.discountCents ?? 0,
             totalCents: existingSale.totalCents,
             paymentMethod: existingSale.paymentMethod ?? "cash",
             cashReceivedCents: existingSale.cashReceivedCents ?? null,
             changeCents: existingSale.changeCents ?? 0,
             status: SALE_STATUS_COMPLETED as "COMPLETED",
             createdAt: existingSale.createdAt,
+            completedAt: existingSale.completedAt ?? existingSale.createdAt,
             lines: existingSale.lines.map((line: any) => ({ id: line.id, productId: line.productId, sku: line.sku, productName: line.productName, qty: line.qty, priceCents: line.priceCents, totalCents: line.totalCents, stockBefore: 0, stockAfter: 0 })),
             events: []
           };
@@ -273,13 +277,17 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
         businessId,
         terminalId,
         cashSessionId,
+        clientRequestId: input.clientRequestId ?? null,
         cashier,
+        subtotalCents: totalCents,
+        discountCents: 0,
         totalCents,
         paymentMethod,
         cashReceivedCents,
         changeCents,
         status: SALE_STATUS_COMPLETED as "COMPLETED",
         createdAt: now,
+        completedAt: now,
         lines: lineResults
       };
 

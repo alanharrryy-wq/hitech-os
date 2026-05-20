@@ -38,6 +38,25 @@ function scoreValue(score: PrismaPayload["score"]): string {
   return "";
 }
 
+function visibleRealtimeStatus(status: string): string {
+  switch (status) {
+    case "idle":
+      return "Realtime en espera";
+    case "booting":
+      return "Conectando realtime";
+    case "connected":
+      return "Realtime conectado";
+    case "reconnecting":
+      return "Reconectando realtime";
+    case "payload_error":
+      return "Payload visual invalido";
+    case "error":
+      return "Realtime sin conexion";
+    default:
+      return status.replace(/_/g, " ");
+  }
+}
+
 function isTabletVisualPayload(payload: PrismaPayload | null | undefined): payload is PrismaPayload {
   if (!payload || payload.type !== "prisma.visual.controls") return false;
   if (payload.surface && payload.surface !== "tablet_pos") return false;
@@ -66,7 +85,7 @@ function applyPayload(payload: PrismaPayload) {
 
 export function PosLiveBinding() {
   const [status, setStatus] = useState("idle");
-  const [recipe, setRecipe] = useState("sin receta");
+  const [recipe, setRecipe] = useState("Receta no recibida");
   const [score, setScore] = useState("");
   const hasRecipeRef = useRef(false);
 
@@ -85,7 +104,7 @@ export function PosLiveBinding() {
       applyPayload(payload);
       hasRecipeRef.current = true;
       markStatus("connected");
-      setRecipe(payload.recipeName || payload.recipe || "sin receta");
+      setRecipe(payload.recipeName || payload.recipe || "Receta no recibida");
       setScore(scoreValue(payload.score));
       return true;
     }
@@ -177,8 +196,8 @@ export function PosLiveBinding() {
       }}
       title={`PRISMA 00T Live POS Binding: ${status}`}
     >
-      <strong style={{ letterSpacing: ".08em" }}>00T Live</strong>
-      <span>{status}</span>
+      <strong style={{ letterSpacing: ".08em" }}>PRISMA Tablet POS</strong>
+      <span>{visibleRealtimeStatus(status)}</span>
       <small style={{ opacity: .72 }}>{recipe}{score ? ` · ${score}` : ""}</small>
     </div>
   );

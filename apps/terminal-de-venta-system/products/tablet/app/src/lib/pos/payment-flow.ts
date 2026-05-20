@@ -6,7 +6,6 @@ import type { PaymentMethod } from "./payment-state";
 import { normalizePaymentMethod } from "./payment-state";
 import { resolvePaymentSessionContext } from "./payment-session";
 import { reviewCashTender } from "./payment-tender";
-import { apiErrorCode, ensureLocalShiftOpenForSale } from "./shift-flow";
 
 export async function completeCartSale(input: {
   lines: CartLine[];
@@ -48,14 +47,7 @@ export async function completeCartSale(input: {
     });
   }
 
-  let response: Awaited<ReturnType<typeof postSale>>;
-  try {
-    response = await postSale();
-  } catch (error) {
-    if (apiErrorCode(error) !== "SHIFT_NOT_OPEN") throw error;
-    await ensureLocalShiftOpenForSale();
-    response = await postSale();
-  }
+  const response = await postSale();
 
   return {
     ...response.data.sale,

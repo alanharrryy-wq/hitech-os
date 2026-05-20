@@ -35,7 +35,7 @@ export async function GET(request: Request) {
     if (!ticket) {
       return fail(
         "SALE_NOT_FOUND",
-        "No encontré ese ticket cerrado en la base local de Tablet.",
+        "No encontré un ticket local con ese identificador después de revisar saleId, folio y clientRequestId.",
         404,
         { saleIdOrFolio, businessId },
       );

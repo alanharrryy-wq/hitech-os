@@ -8,6 +8,32 @@ import { guardTabletFeatureForApi } from "@/server/licensing/tablet-license-api"
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+function buildTicketEvidence(sale: Awaited<ReturnType<typeof posEngineRepository.completeLocalSale>>) {
+  const lookupAliases = [sale.saleId, sale.folio, sale.clientRequestId].filter((value): value is string => Boolean(value));
+  return {
+    contract: "SALE_AS_TICKET_EVIDENCE_V1",
+    canonicalTicketId: sale.saleId,
+    saleId: sale.saleId,
+    folio: sale.folio,
+    businessId: sale.businessId,
+    terminalId: sale.terminalId,
+    cashSessionId: sale.cashSessionId,
+    clientRequestId: sale.clientRequestId,
+    status: sale.status,
+    completedAt: sale.completedAt?.toISOString() ?? sale.createdAt.toISOString(),
+    localDetailHref: `/sales/today/${encodeURIComponent(sale.saleId)}?businessId=${encodeURIComponent(sale.businessId)}`,
+    lookupAliases,
+    payment: {
+      method: sale.paymentMethod,
+      cashReceivedCents: sale.cashReceivedCents,
+      changeCents: sale.changeCents,
+      totalCents: sale.totalCents
+    },
+    evidenceEventIds: sale.events.map((event) => event.eventId),
+    evidenceTopics: sale.events.map((event) => event.topic)
+  };
+}
+
 export async function POST(request: Request) {
   // PRISMA_LICENSE_02AB_BEGIN:pos.sale.complete
   const prismaLicenseGate = await guardTabletFeatureForApi("pos.sale.complete");
@@ -16,6 +42,7 @@ export async function POST(request: Request) {
   try {
     const input = await readCompleteSaleInput(request);
     const sale = await posEngineRepository.completeLocalSale(input);
+    const ticketEvidence = buildTicketEvidence(sale);
     const audit = tabletAuditMeta("pos.sale.complete", {
       actorId: sale.cashier,
       role: "tablet_operator",
@@ -30,10 +57,12 @@ export async function POST(request: Request) {
       },
       createdAt: sale.createdAt
     });
-    return ok({ sale }, { status: 201 }, {
+    return ok({ sale: { ...sale, ticketEvidence }, ticketEvidence }, { status: 201 }, {
       endpoint: "POST /api/pos/sales/complete",
       businessId: sale.businessId,
       terminalId: sale.terminalId,
+      canonicalTicketId: ticketEvidence.canonicalTicketId,
+      ticketDetailHref: ticketEvidence.localDetailHref,
       events: sale.events.map((event) => event.topic),
       audit
     });

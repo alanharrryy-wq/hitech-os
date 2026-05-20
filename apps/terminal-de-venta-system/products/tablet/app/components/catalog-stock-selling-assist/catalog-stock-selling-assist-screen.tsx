@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
 import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
+import { DEFAULT_TABLET_RUNTIME_SNAPSHOT, type TabletRuntimeSnapshot } from "@/lib/tablet-runtime-snapshot/shell-contract";
+import { decideCanSellFromRuntimeSnapshot, type CanSellDecision } from "@/lib/operational-gate/can-sell";
 import { formatMoney, requestJson } from "@/lib/pos/cart-state";
 import type {
   CatalogStockFilter,
@@ -36,6 +38,7 @@ type ProductSearchResponse = { products: CatalogStockSellingAssistProduct[]; cou
 
 type Props = {
   mode: CatalogStockSellingAssistMode;
+  runtimeSnapshot?: TabletRuntimeSnapshot;
 };
 
 const FILTERS: Array<{ id: CatalogStockFilter; label: string; description: string }> = [
@@ -110,15 +113,17 @@ function ProductRow({
   product,
   selected,
   onSelect,
-  onAdd
+  onAdd,
+  gate
 }: {
   product: CatalogStockSellingAssistProduct;
   selected: boolean;
   onSelect: () => void;
   onAdd: () => void;
+  gate: CanSellDecision;
 }) {
   const barcode = getProductBarcode(product);
-  const blockedReason = getBlockedSaleReason(product);
+  const blockedReason = gate.canAddProduct ? getBlockedSaleReason(product) : gate.detail;
   return (
     <article className={[styles.productRow, selected ? styles.productRowSelected : ""].join(" ")} data-prisma-component="CatalogStockProductRow">
       <button type="button" className={styles.productMainButton} onClick={onSelect} aria-pressed={selected}>
@@ -137,7 +142,7 @@ function ProductRow({
         type="button"
         className={styles.rowAddButton}
         onClick={onAdd}
-        disabled={!canSendProductToSale(product)}
+        disabled={!gate.canAddProduct || !canSendProductToSale(product)}
         title={blockedReason || "Agregar a venta"}
       >
         <PrismaIcon name="plus" size={16} />
@@ -150,11 +155,13 @@ function ProductRow({
 function ProductDetailPanel({
   product,
   onAdd,
-  cartNotice
+  cartNotice,
+  gate
 }: {
   product: CatalogStockSellingAssistProduct | null;
   onAdd: (product: CatalogStockSellingAssistProduct) => void;
   cartNotice: string;
+  gate: CanSellDecision;
 }) {
   if (!product) {
     return (
@@ -167,8 +174,8 @@ function ProductDetailPanel({
       </aside>
     );
   }
-  const canAdd = canSendProductToSale(product);
-  const blockedReason = getBlockedSaleReason(product);
+  const canAdd = gate.canAddProduct && canSendProductToSale(product);
+  const blockedReason = gate.canAddProduct ? getBlockedSaleReason(product) : gate.detail;
   return (
     <aside className={styles.detailPanel} aria-label="Detalle ligero de producto" data-prisma-component="ProductDetail">
       <div className={styles.detailHeader}>
@@ -192,14 +199,15 @@ function ProductDetailPanel({
           <PrismaIcon name="cart" size={18} />
           Agregar a venta
         </button>
-        <Link className={styles.secondaryAction} href="/pos">Ir a /pos</Link>
+        <Link className={styles.secondaryAction} href={gate.canShowSellNavigation ? "/pos" : gate.actionHref}>{gate.canShowSellNavigation ? "Abrir venta" : gate.actionLabel}</Link>
       </div>
     </aside>
   );
 }
 
-export function CatalogStockSellingAssistScreen({ mode }: Props) {
+export function CatalogStockSellingAssistScreen({ mode, runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }: Props) {
   const copy = CATALOG_STOCK_SCREEN_COPY[mode];
+  const gate = useMemo(() => decideCanSellFromRuntimeSnapshot(runtimeSnapshot), [runtimeSnapshot]);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<CatalogStockFilter>(mode === "stock" ? "low_stock" : "all");
   const [products, setProducts] = useState<CatalogStockSellingAssistProduct[]>([]);
@@ -258,6 +266,11 @@ export function CatalogStockSellingAssistScreen({ mode }: Props) {
   }
 
   function addToSale(product: CatalogStockSellingAssistProduct) {
+    if (!gate.canAddProduct) {
+      setCartNotice(gate.detail);
+      setSelectedId(product.id);
+      return;
+    }
     const result = addSellingAssistProductToCart(product);
     if (result.ok) {
       setCartNotice(result.message);
@@ -292,7 +305,8 @@ export function CatalogStockSellingAssistScreen({ mode }: Props) {
       currentPath={copy.currentPath}
       title={copy.title}
       subtitle={copy.subtitle}
-      status={<TabletShellStatusPill tone={statusTone(state, products)}>{statusText(state, products)}</TabletShellStatusPill>}
+      status={<TabletShellStatusPill tone={gate.canSell ? statusTone(state, products) : "warn"}>{gate.canSell ? statusText(state, products) : "Caja cerrada"}</TabletShellStatusPill>}
+      runtimeSnapshot={runtimeSnapshot}
     >
       <div className={styles.screen} data-prisma-screen={`catalog-stock-selling-assist-${mode}`}>
         <OfflineStrip online={online} cachedCount={products.length} />
@@ -306,7 +320,7 @@ export function CatalogStockSellingAssistScreen({ mode }: Props) {
           <div className={styles.cartChip} aria-label="Carrito activo">
             <PrismaIcon name="cart" size={20} />
             <span>{cartSummary.hasCart ? `${cartSummary.units} pieza(s) en venta` : "Carrito vacío"}</span>
-            <Link href="/pos">Abrir venta</Link>
+            <Link href={gate.canShowSellNavigation ? "/pos" : gate.actionHref}>{gate.canShowSellNavigation ? "Abrir venta" : gate.actionLabel}</Link>
           </div>
         </section>
 
@@ -364,6 +378,7 @@ export function CatalogStockSellingAssistScreen({ mode }: Props) {
                     selected={selectedProduct?.id === product.id}
                     onSelect={() => setSelectedId(product.id)}
                     onAdd={() => addToSale(product)}
+                    gate={gate}
                   />
                 ))
               ) : (
@@ -376,7 +391,7 @@ export function CatalogStockSellingAssistScreen({ mode }: Props) {
             </div>
           </div>
 
-          <ProductDetailPanel product={selectedProduct} onAdd={addToSale} cartNotice={cartNotice} />
+          <ProductDetailPanel product={selectedProduct} onAdd={addToSale} cartNotice={cartNotice} gate={gate} />
         </section>
       </div>
     </PrismaTabletShellUnified>

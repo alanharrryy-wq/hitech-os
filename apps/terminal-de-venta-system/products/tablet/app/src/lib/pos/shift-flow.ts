@@ -20,22 +20,14 @@ async function readCurrentShift(): Promise<ShiftSummary | null> {
   return response.data.shift ?? null;
 }
 
-async function openZeroFloatShift(): Promise<ShiftSummary> {
-  const response = await requestJson<{ shift: ShiftSummary }>("/api/pos/shift/open", {
-    method: "POST",
-    body: JSON.stringify({ cashier: "tablet-cashier", cashierId: "tablet-cashier", cashStartCents: 0 })
-  });
-  return response.data.shift;
+export async function readLocalShiftForSale(): Promise<ShiftSummary | null> {
+  return readCurrentShift();
 }
 
+/**
+ * Deprecated compatibility surface. Manual shift open lives in /shift only.
+ * Sale completion must surface SHIFT_NOT_OPEN instead of mutating cash state.
+ */
 export async function ensureLocalShiftOpenForSale(): Promise<ShiftSummary | null> {
-  const current = await readCurrentShift();
-  if (current?.canSell) return current;
-
-  try {
-    return await openZeroFloatShift();
-  } catch (error) {
-    if (apiErrorCode(error) === "SHIFT_ALREADY_OPEN") return readCurrentShift();
-    throw error;
-  }
+  return readCurrentShift();
 }

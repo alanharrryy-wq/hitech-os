@@ -13,6 +13,20 @@ function statusTone(state: string) {
   return "danger" as const;
 }
 
+function statusLabel(state: string) {
+  const labels: Record<string, string> = {
+    active: "Licencia activa",
+    development: "Desarrollo",
+    offline_grace: "Gracia offline",
+    missing: "Licencia no configurada",
+    invalid: "Licencia inválida",
+    expired: "Licencia vencida",
+    suspended: "Licencia suspendida",
+    revoked: "Licencia revocada"
+  };
+  return labels[state] ?? "Licencia requiere revisión";
+}
+
 export default async function TabletLicensePage() {
   const status = getTabletLicenseStatus();
   const refreshStatus = getTabletLicenseRefreshStatus();
@@ -23,7 +37,7 @@ export default async function TabletLicensePage() {
       title="Licencia"
       subtitle="Estado local de licenciamiento y continuidad operativa de Tablet."
       kicker="Configuracion Tablet"
-      status={<TabletShellStatusPill tone={statusTone(status.state)}>{status.state}</TabletShellStatusPill>}
+      status={<TabletShellStatusPill tone={statusTone(status.state)}>{statusLabel(status.state)}</TabletShellStatusPill>}
     >
       <main className={styles.pageStack}>
         <LicenseStatusCard status={status} />

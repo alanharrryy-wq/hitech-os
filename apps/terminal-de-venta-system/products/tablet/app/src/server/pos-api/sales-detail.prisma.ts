@@ -2,6 +2,16 @@ import { prisma } from "../prisma/client";
 
 export type GetSaleDetailInput = { businessId: string; saleIdOrFolio: string };
 
+function toIso(value: unknown): string {
+  if (value instanceof Date) return value.toISOString();
+  if (typeof value === "number") return new Date(value).toISOString();
+  if (typeof value === "string") {
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? value : parsed.toISOString();
+  }
+  return new Date(0).toISOString();
+}
+
 function normalizeTicketNeedle(value: string) {
   return value.trim();
 }
@@ -14,19 +24,97 @@ function ticketNeedleWhere(needle: string) {
   ];
 }
 
-function mapSaleDetail(sale: any) {
+function syntheticPaymentTender(sale: any) {
+  return {
+    id: `sale-payment-${sale.id}`,
+    tenderType: sale.paymentMethod ?? "cash",
+    amountCents: sale.totalCents,
+    reference: sale.clientRequestId ?? null,
+    recordedAt: toIso(sale.completedAt ?? sale.createdAt),
+    source: "sale.paymentFields"
+  };
+}
+
+async function outboxEvidenceForSale(sale: any) {
+  const rows = await prisma.outboxEvent.findMany({
+    where: { businessId: sale.businessId, aggregateId: sale.id },
+    orderBy: { createdAt: "asc" },
+    select: {
+      id: true,
+      topic: true,
+      status: true,
+      idempotencyKey: true,
+      terminalId: true,
+      createdAt: true,
+      sentAt: true,
+      syncedAt: true,
+      lastError: true
+    }
+  });
+
+  return rows.map((row: any) => ({
+    id: row.id,
+    topic: row.topic,
+    status: row.status,
+    idempotencyKey: row.idempotencyKey,
+    terminalId: row.terminalId,
+    createdAt: toIso(row.createdAt),
+    sentAt: row.sentAt ? toIso(row.sentAt) : null,
+    syncedAt: row.syncedAt ? toIso(row.syncedAt) : null,
+    lastError: row.lastError ?? null
+  }));
+}
+
+async function mapSaleDetail(sale: any, resolvedBy: "scoped" | "local_alias_fallback") {
+  const outboxEvents = await outboxEvidenceForSale(sale);
+  const store = sale.terminal?.store ?? sale.cashSession?.store ?? null;
+  const business = sale.terminal?.business ?? sale.business ?? null;
+  const paymentTender = syntheticPaymentTender(sale);
+
   return {
     saleId: sale.id,
     folio: sale.folio,
+    canonicalTicketId: sale.id,
+    lookupAliases: [sale.id, sale.folio, sale.clientRequestId].filter(Boolean),
+    resolvedBy,
     businessId: sale.businessId,
+    businessName: business?.name ?? null,
+    storeId: store?.id ?? sale.cashSession?.storeId ?? null,
+    storeName: store?.name ?? null,
     terminalId: sale.terminalId,
+    terminalName: sale.terminal?.name ?? null,
+    cashSessionId: sale.cashSessionId ?? null,
+    cashSession: sale.cashSession
+      ? {
+          id: sale.cashSession.id,
+          storeId: sale.cashSession.storeId,
+          cashierId: sale.cashSession.cashierId,
+          cashier: sale.cashSession.cashier,
+          status: sale.cashSession.status,
+          openedAt: toIso(sale.cashSession.openedAt),
+          closedAt: sale.cashSession.closedAt ? toIso(sale.cashSession.closedAt) : null
+        }
+      : null,
+    clientRequestId: sale.clientRequestId ?? null,
     cashier: sale.cashier,
     status: sale.status,
-    createdAt: sale.createdAt.toISOString(),
-    completedAt: sale.completedAt?.toISOString() ?? null,
+    createdAt: toIso(sale.createdAt),
+    completedAt: sale.completedAt ? toIso(sale.completedAt) : null,
     subtotalCents: sale.subtotalCents,
     discountCents: sale.discountCents,
     totalCents: sale.totalCents,
+    paymentMethod: sale.paymentMethod ?? "cash",
+    cashReceivedCents: sale.cashReceivedCents ?? null,
+    changeCents: sale.changeCents ?? 0,
+    paymentTenders: [paymentTender],
+    evidence: {
+      contract: "SALE_AS_TICKET_EVIDENCE_V1",
+      local: true,
+      outboxEvents,
+      auditEvents: [],
+      evidenceEventIds: outboxEvents.map((event: any) => event.id),
+      evidenceTopics: outboxEvents.map((event: any) => event.topic)
+    },
     lines: sale.lines.map((line: any) => ({
       id: line.id,
       productId: line.productId,
@@ -47,11 +135,11 @@ export async function getSaleDetail(input: GetSaleDetailInput) {
 
   const scopedSale = await prisma.sale.findFirst({
     where: { businessId: input.businessId, OR: or },
-    include: { lines: true },
+    include: { lines: true, terminal: { include: { store: true, business: true } }, business: true, cashSession: { include: { store: true } } },
     orderBy: { createdAt: "desc" },
   });
 
-  if (scopedSale) return mapSaleDetail(scopedSale);
+  if (scopedSale) return mapSaleDetail(scopedSale, "scoped");
 
   // PRISMA_TABLET_TICKET_DETAIL_NOT_FOUND_FIX_01:
   // Fallback local: algunos flujos visuales llegan con businessId omitido, cacheado o
@@ -59,10 +147,10 @@ export async function getSaleDetail(input: GetSaleDetailInput) {
   // intentamos recuperar por identificadores únicos visibles antes de mostrar 404.
   const localFallbackSale = await prisma.sale.findFirst({
     where: { OR: or },
-    include: { lines: true },
+    include: { lines: true, terminal: { include: { store: true, business: true } }, business: true, cashSession: { include: { store: true } } },
     orderBy: { createdAt: "desc" },
   });
 
   if (!localFallbackSale) return null;
-  return mapSaleDetail(localFallbackSale);
+  return mapSaleDetail(localFallbackSale, "local_alias_fallback");
 }

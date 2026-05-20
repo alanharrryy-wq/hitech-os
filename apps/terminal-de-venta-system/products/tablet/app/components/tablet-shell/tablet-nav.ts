@@ -1,5 +1,6 @@
 import type { TabletRuntimeSnapshot } from "@/lib/tablet-runtime-snapshot/shell-contract";
 import type { PrismaIconName } from "@components/prisma-dark-pos/prisma-dark-pos-data";
+import { decideCanSellFromRuntimeSnapshot } from "@/lib/operational-gate/can-sell";
 
 export type TabletNavGroup = "operacion" | "consulta" | "soporte";
 
@@ -27,7 +28,8 @@ export const TABLET_NAV_ITEMS: TabletNavItem[] = [
   { href: "/pos", label: "Vender", shortLabel: "Vender", description: "Cobro rápido: busca, escanea, arma el ticket y cobra.", icon: "cart", group: "operacion", primary: true },
   { href: "/catalog", label: "Catálogo", shortLabel: "Catálogo", description: "Productos locales disponibles para venta.", icon: "tag", group: "consulta" },
   { href: "/stock", label: "Existencias", shortLabel: "Stock", description: "Stock operativo local, quiebres y señales de reabasto.", icon: "package", group: "consulta" },
-  { href: "/sales/today", label: "Ventas de hoy", shortLabel: "Ventas", description: "Resumen de tickets, productos vendidos y devoluciones.", icon: "receipt", group: "consulta" },
+  { href: "/sales/today", label: "Ventas de hoy", shortLabel: "Ventas", description: "Resumen de tickets y productos vendidos.", icon: "receipt", group: "consulta" },
+  { href: "/returns", label: "Devoluciones", shortLabel: "Dev.", description: "Revisión y creación de devoluciones desde tickets existentes.", icon: "receipt", group: "consulta" },
   { href: "/sync", label: "Sincronización", shortLabel: "Sinc.", description: "Envíos pendientes, fallidos y trabajo local por revisar.", icon: "bell", group: "soporte" },
   { href: "/offline", label: "Sin conexión / Exportar", shortLabel: "Exportar", description: "Auditoría local, exportación y evidencia operativa.", icon: "receipt", group: "soporte" },
   { href: "/release-gate", label: "Estado del sistema", shortLabel: "Estado", description: "Revisión operativa de flujos críticos antes de liberar.", icon: "settings", group: "soporte" },
@@ -36,7 +38,7 @@ export const TABLET_NAV_ITEMS: TabletNavItem[] = [
 
 const CONSULTA_PATHS = new Set(["/catalog", "/stock", "/inventory", "/existencias", "/inventory/low-stock"]);
 const SOPORTE_PATHS = new Set(["/sync", "/events/outbox", "/offline", "/settings/export", "/settings/license", "/release-gate"]);
-const OPERATION_PATHS = new Set(["/", "/pos", "/checkout", "/sales", "/sales/today", "/shift", "/returns"]);
+const OPERATION_PATHS = new Set(["/", "/pos", "/checkout", "/sales", "/sales/today", "/shift"]);
 
 export function isTabletNavActive(currentPath: string, href: string) {
   if (href === "/") return currentPath === "/";
@@ -44,7 +46,8 @@ export function isTabletNavActive(currentPath: string, href: string) {
   if (href === "/stock") return currentPath === href || currentPath === "/inventory" || currentPath === "/existencias" || currentPath === "/inventory/low-stock";
   if (href === "/sync") return currentPath === href || currentPath === "/events/outbox";
   if (href === "/offline") return currentPath === href || currentPath === "/settings/export";
-  if (href === "/sales/today") return currentPath === href || currentPath.startsWith("/sales/today") || currentPath === "/sales" || currentPath === "/returns";
+  if (href === "/sales/today") return currentPath === href || currentPath.startsWith("/sales/today") || currentPath === "/sales";
+  if (href === "/returns") return currentPath === href || currentPath.includes("/return");
   return currentPath === href || currentPath.startsWith(`${href}/`);
 }
 
@@ -70,8 +73,8 @@ export function getTabletFlowCopy(stage: TabletFlowStage, snapshot: TabletRuntim
   }
   if (stage === "venta") {
     return {
-      label: snapshot.shift.state === "open" ? "Venta activa" : "Venta guiada",
-      helper: snapshot.shift.state === "open" ? "Vender queda como acción principal; soporte y consulta siguen a la mano." : "Abre turno si la política lo pide; la Tablet conserva venta local."
+      label: snapshot.shift.state === "open" ? "Venta activa" : "Caja cerrada",
+      helper: snapshot.shift.state === "open" ? "Vender queda como acción principal; soporte y consulta siguen a la mano." : "Abre turno para vender; la Tablet no autoabre caja ni depende de PC."
     };
   }
   if (stage === "consulta") {
@@ -92,6 +95,7 @@ export function getTabletFlowCopy(stage: TabletFlowStage, snapshot: TabletRuntim
   };
 }
 
-export function getVisibleTabletNavItems(_currentPath: string, _snapshot: TabletRuntimeSnapshot) {
-  return TABLET_NAV_ITEMS;
+export function getVisibleTabletNavItems(_currentPath: string, snapshot: TabletRuntimeSnapshot) {
+  const decision = decideCanSellFromRuntimeSnapshot(snapshot);
+  return TABLET_NAV_ITEMS.filter((item) => item.href !== "/pos" || decision.canShowSellNavigation);
 }

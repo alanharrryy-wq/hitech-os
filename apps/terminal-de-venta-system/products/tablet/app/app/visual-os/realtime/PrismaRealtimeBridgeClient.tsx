@@ -44,7 +44,7 @@ export default function PrismaRealtimeBridgeClient() {
       <div className={styles.statusGrid}>
         <article data-status={status}><strong>{status}</strong><span>Estado</span></article>
         <article><strong>{lastPayload?.surface ?? "sin payload"}</strong><span>Superficie</span></article>
-        <article><strong>{lastPayload?.recipeName ?? "sin receta"}</strong><span>Receta</span></article>
+        <article><strong>{lastPayload?.recipeName ?? "Receta no recibida"}</strong><span>Receta</span></article>
         <article><strong>{lastPayload?.score?.overall ?? "—"}</strong><span>Score</span></article>
       </div>
       <pre>{lastPayload ? JSON.stringify(lastPayload, null, 2) : "Esperando eventos SSE..."}</pre>
