@@ -1,3 +1,19 @@
+
+/*
+ * PRISMA Chart Runtime Plug Readiness V1
+ *
+ * This module accepts optional runtime chart payloads already shaped as shared chart view models.
+ * It does not fetch, persist, write to browser storage, touch DBs, or claim live readiness.
+ * If a runtime payload is absent, each adapter keeps its existing derived adapter path or deterministic mock fallback.
+ *
+ * Safe producer shape example:
+ * buildPrismaTripleAppChartsViewModel({
+ *   pc: { runtime: { generatedAt, financialOperationalWaterfall: [...] } },
+ *   tablet: { runtime: { generatedAt, shiftPulseBuckets: [...], syncOutboxStatusMatrix: [...] } },
+ *   mobile: { snapshot: { meta: { generatedAt, runtimeMode: "runtime" }, ownerPulseTimeline: [...] } }
+ * })
+ */
+
 export type PrismaChartSurface = "pc" | "tablet" | "mobile";
 export type PrismaChartRenderer = "canvas" | "svg";
 export type PrismaSeverity = "INFO" | "WARN" | "ERROR" | "CRITICAL";
@@ -112,6 +128,16 @@ export type OperationalDensityCell = {
   pressureScore: number;
   dominantCause?: string;
   confidence: number;
+  /** Optional display label used by premium lab heatmaps to preserve exact bucket copy independent of browser timezone. */
+  bucketLabel?: string;
+  /** Visual state for matrix cells; does not alter canonical event semantics. */
+  state?: "normal" | "peak" | "anomaly" | "cold" | "gap";
+  /** Human-readable anomaly/callout label for hover and premium overlays. */
+  anomalyLabel?: string;
+  /** Safe next-action hint shown in lab tooltip only. */
+  actionHint?: string;
+  /** Public-safe evidence pointer, not a secret log path. */
+  evidenceRef?: string;
 };
 
 export type ServiceDependencyNode = {
@@ -288,6 +314,7 @@ export type ConfidenceBand = {
 export type PrismaPcChartsViewModel = {
   causalFlowRibbon: CausalFlowRibbonDatum[];
   operationalDensityField: OperationalDensityCell[];
+  operationalDensityHeatmap: OperationalDensityCell[];
   serviceDependencyGraph: {
     nodes: ServiceDependencyNode[];
     edges: ServiceDependencyEdge[];
@@ -322,6 +349,19 @@ export type PrismaTripleAppChartsViewModel = {
 
 export type PrismaPcChartSource = {
   generatedAt?: string;
+  runtime?: {
+    generatedAt?: string;
+    sourceLabel?: string;
+    evidence?: string[];
+    warnings?: string[];
+    causalFlowRibbon?: CausalFlowRibbonDatum[];
+    operationalDensityField?: OperationalDensityCell[];
+    operationalDensityHeatmap?: OperationalDensityCell[];
+    serviceDependencyGraph?: { nodes?: ServiceDependencyNode[]; edges?: ServiceDependencyEdge[] };
+    inventoryRiskTreemap?: InventoryRiskNode[];
+    decisionLedgerTimeline?: DecisionLedgerPoint[];
+    financialOperationalWaterfall?: OperationalWaterfallStep[];
+  } | null;
   dashboard?: {
     kpis?: Array<{ key: string; label: string; value: string; note?: string; status?: string; source?: string; tone?: string }>;
     topSkus?: Array<{ sku: string; productName: string; qty: number; totalCents: number }>;
@@ -369,6 +409,25 @@ export type PrismaTabletChartSource = {
     connection?: { state?: string; pendingEvents?: number; failedEvents?: number; conflictEvents?: number };
     catalog?: { activeProducts?: number; lowStockProducts?: number; inactiveProducts?: number; lastMovementAt?: string | null };
     sales?: { date?: string; ticketsClosed?: number; totalCents?: number; unitsSold?: number; averageTicketCents?: number };
+    shiftPulseBuckets?: Array<{
+      bucketStart: string;
+      bucketEnd?: string;
+      shiftId?: string;
+      terminalId?: string;
+      cashierId?: string;
+      saleCount?: number;
+      grossSales?: number;
+      totalCents?: number;
+      refundCount?: number;
+      cancellationCount?: number;
+      avgTicket?: number;
+      averageTicketCents?: number;
+      offlineSaleCount?: number;
+      pendingSyncCount?: number;
+      queuePressure?: number;
+      status?: ShiftPulseBucket["status"];
+    }>;
+    syncOutboxStatusMatrix?: SyncOutboxMatrixCell[];
     warnings?: string[];
   } | null;
   syncPanel?: {
@@ -411,6 +470,12 @@ export type PrismaMobileChartSource = {
     money?: { expectedCashCents?: number | null; countedCashCents?: number | null; varianceCents?: number | null; varianceStatus?: string };
     inventory?: { criticalCount?: number | null; reorderCount?: number | null; topRiskSku?: string | null; riskStatus?: string };
     chartViewModels?: Array<{ chartKey: string; points: Array<{ x: string; y: number | null; label: string; status?: string; meta?: Record<string, unknown> }>; confidence?: number; source?: string }>;
+    ownerPulseTimeline?: OwnerPulsePoint[];
+    actionInboxPriorityStack?: ActionPriorityStackDatum[];
+    healthRadarCompact?: HealthRadarAxis[];
+    freshnessBeaconGrid?: FreshnessBeacon[];
+    incidentSparkCards?: IncidentSparkCard[];
+    confidenceMeterBands?: ConfidenceBand[];
   } | null;
   errors?: string[];
 };
@@ -425,6 +490,7 @@ export type PrismaChartAdapterSources = {
 export type PrismaChartId =
   | "pc.causal-flow-ribbon"
   | "pc.operational-density-field"
+  | "ops.operational-density-heatmap"
   | "pc.service-dependency-graph"
   | "pc.inventory-risk-treemap"
   | "pc.decision-ledger-timeline"

@@ -17,7 +17,8 @@
     "db:summary": "python tools/db_summary.py ../../../../../tools/_local/data/terminal-de-venta-system/canonical.db",
     "db:pc:mass-catalog": "node scripts/pc-seed-mass-catalog-04d.mjs",
     "verify:pc:mass-catalog": "node tools/verify_pc_mass_catalog_04d.mjs",
-    "verify:visual-os-pc-binding-00j": "node tools/verify_prisma_visual_os_pc_binding_00j.mjs"
+    "verify:visual-os-pc-binding-00j": "node tools/verify_prisma_visual_os_pc_binding_00j.mjs",
+    "verify:pc-ingest-idempotency": "node tools/verify_pc_ingest_idempotency_01.mjs"
   },
   "dependencies": {
     "@prisma/client": "5.21.1",

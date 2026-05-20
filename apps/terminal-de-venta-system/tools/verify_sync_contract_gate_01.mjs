@@ -52,6 +52,7 @@ const expectedLifecycleStates = [
   "validated",
   "accepted",
   "projected",
+  "recognized_not_projected",
   "reconciled",
   "conflict",
   "failed",

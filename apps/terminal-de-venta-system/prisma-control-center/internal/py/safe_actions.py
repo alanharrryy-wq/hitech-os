@@ -133,3 +133,11 @@ def run_command_capture(command: list[str], timeout: int = 20) -> dict[str, Any]
             "stderr": (exc.stderr or "").strip() if isinstance(exc.stderr, str) else "",
             "timedOut": True,
         }
+    except FileNotFoundError as exc:
+        return {
+            "command": command,
+            "returnCode": 127,
+            "stdout": "",
+            "stderr": str(exc),
+            "timedOut": False,
+        }

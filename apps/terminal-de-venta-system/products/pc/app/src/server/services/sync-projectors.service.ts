@@ -2,7 +2,7 @@ import type { SyncConflictFinding, SyncEventEnvelope, SyncLifecycleState } from 
 
 type TxClient = any;
 
-type ProjectionStatus = Extract<SyncLifecycleState, "projected" | "reconciled" | "conflict" | "dead_letter">;
+type ProjectionStatus = Extract<SyncLifecycleState, "projected" | "recognized_not_projected" | "reconciled" | "conflict" | "dead_letter">;
 
 export type SyncProjectionResult = {
   status: ProjectionStatus;
@@ -53,9 +53,9 @@ function asDate(value: unknown, fallback: string) {
 
 function unsupported(event: SyncEventEnvelope): SyncProjectionResult {
   return {
-    status: "dead_letter",
-    conflicts: [conflict("unknown_topic", `No Prisma projector is registered for ${event.topic}.`, "rejected")],
-    diagnostics: [`UNSUPPORTED_PROJECTOR:${event.topic}`],
+    status: "recognized_not_projected",
+    conflicts: [],
+    diagnostics: [`RECOGNIZED_NOT_PROJECTED:${event.topic}`],
     touchedModels: ["OutboxEvent"]
   };
 }

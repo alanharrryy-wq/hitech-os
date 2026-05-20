@@ -143,6 +143,8 @@ def _expected_structure() -> list[Path]:
         base / "internal" / "web" / "index.html",
         base / "internal" / "web" / "app.js",
         base / "internal" / "web" / "styles.css",
+        base / "internal" / "web" / "quality_bay.css",
+        base / "internal" / "web" / "quality_bay.js",
         base / "internal" / "templates" / "report.html",
         base / "internal" / "templates" / "report.txt",
         base / "internal" / "templates" / "runbook.md",

@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1.0",
+  "id": "customer-drift-policy",
+  "mode": "watchdog",
+  "rules": [
+    "Compare critical file fingerprints with the previous run.",
+    "Warn on drift, block only when a hard gate detects a true break.",
+    "Keep snapshots in the run output folder."
+  ]
+}

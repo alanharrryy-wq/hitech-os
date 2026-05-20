@@ -285,6 +285,101 @@ def _run_health(public: bool) -> dict[str, Any]:
         return {"ok": False, "source": SOURCE, "action": "run-health", "error": str(exc), "log": str(action_log)}
 
 
+
+# PRISMA_V25_BUTTON_ACTIONS_BEGIN
+ACTION_WRAPPERS: dict[str, dict[str, Any]] = {
+    "local": {"label": "Levantar local", "wrapper": "local_up.ps1", "mode": "spawn"},
+    "cloudflare": {"label": "Levantar Cloudflare", "wrapper": "cloudflare_up.ps1", "mode": "spawn"},
+    "all": {"label": "Levantar todo", "wrapper": "all_up.ps1", "mode": "spawn"},
+    "web-control": {"label": "Web Control", "wrapper": "web_control_local.ps1", "mode": "spawn"},
+    "web-control-cloudflare": {"label": "Web + Cloudflare", "wrapper": "web_control_cloudflare.ps1", "mode": "spawn"},
+    "chart-lab": {"label": "Chart Lab", "wrapper": "chart_lab_local.ps1", "mode": "spawn"},
+    "diagnose": {"label": "Diagnostico", "wrapper": "health.ps1", "mode": "spawn"},
+    "panel": {"label": "Reabrir panel", "wrapper": "panel_3150.ps1", "mode": "spawn"},
+    "kill": {"label": "Kill PRISMA", "wrapper": "kill_everything.ps1", "mode": "spawn", "danger": True},
+}
+
+
+def _powershell_executable() -> str:
+    for candidate in ["pwsh.exe", "powershell.exe", "pwsh", "powershell"]:
+        try:
+            probe = subprocess.run(
+                [candidate, "-NoLogo", "-NoProfile", "-Command", "$PSVersionTable.PSVersion.ToString()"],
+                capture_output=True,
+                text=True,
+                timeout=6,
+            )
+            if probe.returncode == 0:
+                return candidate
+        except Exception:
+            continue
+    return "powershell.exe"
+
+
+def _run_wrapper_action(action: str, public: bool) -> dict[str, Any]:
+    if public:
+        return {"ok": False, "status": "FORBIDDEN", "reason": "launcher actions are local-only", "source": SOURCE, "action": action}
+    spec = ACTION_WRAPPERS.get(action)
+    if not spec:
+        return {
+            "ok": False,
+            "status": "UNKNOWN_ACTION",
+            "source": SOURCE,
+            "action": action,
+            "availableActions": sorted(ACTION_WRAPPERS.keys()),
+        }
+    root = _control_root()
+    wrapper = root / "internal" / "wrappers" / str(spec["wrapper"])
+    out_dir = _logs_root()
+    out_dir.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    action_log = out_dir / f"ops_button_{action}_{stamp}.log"
+    if not wrapper.exists():
+        return {"ok": False, "status": "WRAPPER_MISSING", "source": SOURCE, "action": action, "wrapper": str(wrapper)}
+    ps = _powershell_executable()
+    cmd = [ps, "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(wrapper)]
+    try:
+        with action_log.open("w", encoding="utf-8", newline="\n") as fh:
+            fh.write("PRISMA Control Center V25 button action\n")
+            fh.write(f"ACTION: {action}\n")
+            fh.write(f"LABEL: {spec.get('label')}\n")
+            fh.write("COMMAND: " + " ".join(cmd) + "\n")
+            fh.write(f"STARTED: {_now()}\n\n")
+            proc = subprocess.Popen(
+                cmd,
+                cwd=str(root),
+                stdout=fh,
+                stderr=subprocess.STDOUT,
+                text=True,
+            )
+        return {
+            "ok": True,
+            "status": "STARTED",
+            "source": SOURCE,
+            "action": action,
+            "label": spec.get("label"),
+            "pid": proc.pid,
+            "log": str(action_log),
+            "startedAt": _now(),
+            "note": "Launcher started asynchronously; check log/ZIP evidence for completion.",
+        }
+    except Exception as exc:
+        return {"ok": False, "status": "START_FAILED", "source": SOURCE, "action": action, "error": str(exc), "log": str(action_log)}
+
+
+def _actions_payload(public: bool) -> dict[str, Any]:
+    actions = []
+    for key, spec in ACTION_WRAPPERS.items():
+        actions.append({
+            "id": key,
+            "label": spec.get("label"),
+            "url": f"/api/ops/action/{key}",
+            "localOnly": True,
+            "danger": bool(spec.get("danger")),
+        })
+    return {"ok": True, "schemaVersion": "1.0", "source": SOURCE, "time": _now(), "safetyMode": "PUBLIC_REDACTED" if public else "LOCAL_FULL", "actions": actions}
+# PRISMA_V25_BUTTON_ACTIONS_END
+
 def ops_command_payload(path_text: str, public: bool = False) -> dict[str, Any]:
     parsed = urlparse(path_text)
     path = parsed.path.rstrip("/") or "/api/ops/cloudflare"
@@ -293,6 +388,11 @@ def ops_command_payload(path_text: str, public: bool = False) -> dict[str, Any]:
         return _latest_report(public=public)
     if path == "/api/ops/operator-brief":
         return _operator_brief(public=public)
+    if path == "/api/ops/actions":
+        return _actions_payload(public=public)
     if path == "/api/ops/action/run-health":
         return _run_health(public=public)
+    if path.startswith("/api/ops/action/"):
+        action = path.rsplit("/", 1)[-1].strip().lower()
+        return _run_wrapper_action(action, public=public)
     return _cloudflare_payload(public=public)

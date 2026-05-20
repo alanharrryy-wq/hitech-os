@@ -2,12 +2,19 @@
   "name": "@prisma/pqos-quality",
   "private": true,
   "type": "module",
-  "version": "5.3.0",
+  "version": "6.0.0",
   "scripts": {
     "quality:self-test": "node bin/prisma-quality.mjs --self-test --repo-root ..",
     "quality:phase5": "node bin/prisma-quality.mjs --profile phase5 --repo-root ..",
     "quality:automation": "node bin/prisma-quality.mjs --profile automation --repo-root ..",
     "quality:bundle-smoke": "node tests/quality-smoke.mjs",
-    "quality:list-profiles": "node bin/prisma-quality.mjs --list-profiles --repo-root .."
+    "quality:list-profiles": "node bin/prisma-quality.mjs --list-profiles --repo-root ..",
+    "quality:client-readiness": "node bin/prisma-quality.mjs --profile client-readiness --repo-root ..",
+    "quality:demo": "node bin/prisma-quality.mjs --profile demo --repo-root ..",
+    "quality:first-run": "node bin/prisma-quality.mjs --profile first-run --repo-root ..",
+    "quality:support-pack": "node bin/prisma-quality.mjs --profile support-pack --repo-root ..",
+    "quality:upgrade": "node bin/prisma-quality.mjs --profile upgrade --repo-root ..",
+    "quality:pilot": "node bin/prisma-quality.mjs --profile pilot --repo-root ..",
+    "quality:customer-smoke": "node tests/customer-assurance-smoke.mjs"
   }
 }

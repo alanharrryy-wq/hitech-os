@@ -6,7 +6,9 @@
   --panel: rgba(255, 255, 255, 0.78);
   --line: rgba(15, 87, 180, 0.14);
   --blue: #1267ff;
+  --cyan: #6fe2ff;
   --silver: #e7edf6;
+  --deep: #071426;
 }
 
 * { box-sizing: border-box; }
@@ -16,15 +18,67 @@ body {
   color: var(--ink);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background:
-    radial-gradient(circle at 14% 10%, rgba(18, 103, 255, .16), transparent 28rem),
-    radial-gradient(circle at 86% 0%, rgba(180, 205, 240, .42), transparent 24rem),
+    radial-gradient(circle at 16% 8%, rgba(18, 103, 255, .18), transparent 30rem),
+    radial-gradient(circle at 84% 2%, rgba(111, 226, 255, .22), transparent 25rem),
+    radial-gradient(circle at 52% 0%, rgba(12, 30, 62, .10), transparent 26rem),
     linear-gradient(180deg, #ffffff, var(--bg));
 }
 
 .shell {
-  width: min(1120px, calc(100% - 32px));
+  width: min(1160px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 48px 0;
+  padding: 28px 0 48px;
+}
+
+.brandbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.brandmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.brandmark img {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 22px rgba(18, 103, 255, .24));
+}
+
+.brandmark span {
+  display: grid;
+  gap: 2px;
+}
+
+.brandmark strong {
+  letter-spacing: .24em;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.brandmark small,
+.brand-status {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.brand-status {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255,255,255,.62);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.75);
 }
 
 .panel, .card {
@@ -35,7 +89,32 @@ body {
   border-radius: 28px;
 }
 
-.hero { padding: 42px; }
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(300px, .78fr);
+  gap: 24px;
+  align-items: center;
+  overflow: hidden;
+  padding: 42px;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(120deg, rgba(255,255,255,.66), transparent 28%),
+    radial-gradient(circle at 82% 50%, rgba(18, 103, 255, .12), transparent 19rem);
+}
+
+.hero-copy,
+.logo-stage {
+  position: relative;
+  z-index: 1;
+}
+
 .eyebrow {
   margin: 0 0 14px;
   color: var(--blue);
@@ -72,6 +151,35 @@ h1 {
   box-shadow: 0 14px 34px rgba(18,103,255,.24);
 }
 
+.logo-stage {
+  display: grid;
+  place-items: center;
+  min-height: 390px;
+  border: 1px solid rgba(18, 103, 255, .10);
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(18, 103, 255, .20), transparent 13rem),
+    linear-gradient(145deg, rgba(255,255,255,.82), rgba(231,237,246,.32));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 22px 44px rgba(12, 30, 62, .08);
+}
+
+.logo-stage img {
+  width: min(92%, 440px);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 26px 42px rgba(7, 20, 38, .18));
+  transform: translateY(2px);
+}
+
+.logo-aura {
+  position: absolute;
+  width: 60%;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(111,226,255,.34), rgba(18,103,255,.12) 44%, transparent 70%);
+  filter: blur(16px);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -94,7 +202,57 @@ h1 {
   font-weight: 800;
 }
 
+@media (max-width: 980px) {
+  .hero { grid-template-columns: 1fr; }
+  .logo-stage { min-height: 300px; }
+}
+
 @media (max-width: 860px) {
   .grid { grid-template-columns: 1fr; }
   .hero { padding: 28px; }
+  .brandbar { align-items: flex-start; flex-direction: column; }
+}
+
+/* PRISMA global badge: forced visible brand mark */
+.prisma-global-logo-badge {
+  position: fixed;
+  z-index: 99999;
+  top: 18px;
+  left: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 13px 10px 10px;
+  border: 1px solid rgba(111, 226, 255, .42);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(111, 226, 255, .28), transparent 48%),
+    linear-gradient(135deg, rgba(7, 20, 38, .82), rgba(12, 30, 62, .58));
+  box-shadow:
+    0 18px 48px rgba(7, 20, 38, .22),
+    inset 0 1px 0 rgba(255, 255, 255, .22);
+  backdrop-filter: blur(18px) saturate(1.22);
+  -webkit-backdrop-filter: blur(18px) saturate(1.22);
+  color: white;
+  font-weight: 900;
+  letter-spacing: .22em;
+  font-size: 12px;
+  text-decoration: none;
+  pointer-events: none;
+}
+
+.prisma-global-logo-badge img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 14px rgba(111, 226, 255, .42));
+}
+
+@media (max-width: 720px) {
+  .prisma-global-logo-badge {
+    top: 10px;
+    left: 10px;
+    transform: scale(.88);
+    transform-origin: top left;
+  }
 }

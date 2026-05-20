@@ -152,7 +152,7 @@ def validate(root: Path, strict_root: bool = False) -> Dict[str, object]:
         "feature keys",
         "TABLET_SOLO",
         "TABLET_PRO",
-        "TABLET_PC_REQUIRED",
+        "TABLET_PC_MANAGED",
         "standalone",
         "managed",
         "degraded_managed",

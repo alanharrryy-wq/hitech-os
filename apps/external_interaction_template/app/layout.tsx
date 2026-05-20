@@ -22,7 +22,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body>
+        <div className="prisma-global-logo-badge" aria-label="PRISMA">
+          <img src="/prisma/brand/prisma-mark.png" alt="" aria-hidden="true" />
+          <span>PRISMA</span>
+        </div>{children}</body>
     </html>
   );
 }

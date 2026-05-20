@@ -32,6 +32,7 @@ export const SHARED_SYNC_LIFECYCLE_STATES = [
   "validated",
   "accepted",
   "projected",
+  "recognized_not_projected",
   "reconciled",
   "conflict",
   "failed",

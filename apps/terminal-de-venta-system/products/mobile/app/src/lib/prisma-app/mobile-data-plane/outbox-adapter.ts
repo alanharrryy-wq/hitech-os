@@ -16,7 +16,7 @@ export function normalizeOutboxState(payload: unknown): CanonicalOutboxState {
       const status = readString(bucket, ["status", "state"], "pending").toLowerCase();
       const count = readNonNegativeInt(bucket, ["count", "total"], 0);
       if (status === "failed" || status === "error") failed += count;
-      else if (status === "acked" || status === "sent" || status === "synced") acked += count;
+      else if (status === "acked") acked += count;
       else pending += count;
       const oldest = typeof bucket.oldestEventAt === "string" ? readDateIso(bucket, ["oldestEventAt"], bucket.oldestEventAt) : null;
       const newest = typeof bucket.newestEventAt === "string" ? readDateIso(bucket, ["newestEventAt"], bucket.newestEventAt) : null;
@@ -30,7 +30,7 @@ export function normalizeOutboxState(payload: unknown): CanonicalOutboxState {
     return {
       pending: readNonNegativeInt(record, ["pending", "pendingCount"], 0),
       failed: readNonNegativeInt(record, ["failed", "failedCount"], 0),
-      acked: readNonNegativeInt(record, ["acked", "sent", "ackedCount"], 0),
+      acked: readNonNegativeInt(record, ["acked", "ackedCount"], 0),
       lastSyncedAt: typeof record.lastSyncedAt === "string" ? readDateIso(record, ["lastSyncedAt"], record.lastSyncedAt) : null,
       oldestPendingAt: typeof record.oldestPendingAt === "string" ? readDateIso(record, ["oldestPendingAt"], record.oldestPendingAt) : null
     };
@@ -46,7 +46,7 @@ export function normalizeOutboxState(payload: unknown): CanonicalOutboxState {
     const createdAt = readDateIso(event, ["createdAt", "occurredAt"], new Date().toISOString());
     const syncedAt = typeof event.syncedAt === "string" ? readDateIso(event, ["syncedAt"], event.syncedAt) : null;
     if (status === "failed" || status === "error") failed += 1;
-    else if (status === "acked" || status === "sent" || status === "synced") acked += 1;
+    else if (status === "acked") acked += 1;
     else pending += 1;
     if (status === "pending" && (!oldestPendingAt || Date.parse(createdAt) < Date.parse(oldestPendingAt))) oldestPendingAt = createdAt;
     if (syncedAt && (!lastSyncedAt || Date.parse(syncedAt) > Date.parse(lastSyncedAt))) lastSyncedAt = syncedAt;

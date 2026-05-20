@@ -1,3 +1,4 @@
+// PRISMA_PEARL_EXECUTIVE_CONTROL_PRESETS_V1
 import type {
   LabChartControlState,
   LabChartControlValue,
@@ -13,10 +14,10 @@ const scenarioOptions = [
   { label: "Partial", value: "partial" },
   { label: "Stale", value: "stale" },
   { label: "Offline", value: "offline" },
-  { label: "Dense", value: "dense" }
+  { label: "Dense", value: "dense-noir" }
 ];
 const themeOptions = [
-  { label: "Crystal Light", value: "crystal-light" },
+  { label: "Crystal", value: "crystal-light" },
   { label: "Executive Dense", value: "executive-dense" },
   { label: "Forensic", value: "forensic" },
   { label: "High Contrast", value: "high-contrast" }
@@ -154,7 +155,7 @@ export const chartControlSchemas: Record<string, LabChartRuntimeControl[]> = {
       type: "segmented",
       defaultValue: "standard",
       options: [
-        { label: "Calm", value: "calm" },
+        { label: "Calm", value: "calm-night" },
         { label: "Standard", value: "standard" },
         { label: "Forensic", value: "forensic" }
       ],
@@ -190,7 +191,7 @@ export const chartControlSchemas: Record<string, LabChartRuntimeControl[]> = {
       options: [
         { label: "Airy", value: "airy" },
         { label: "Balanced", value: "balanced" },
-        { label: "Dense", value: "dense" }
+        { label: "Dense", value: "dense-noir" }
       ],
       affectedLayer: "layout",
       affectedOptionPath: "series[0].nodeGap / layoutIterations",
@@ -235,6 +236,137 @@ export const chartControlSchemas: Record<string, LabChartRuntimeControl[]> = {
       validation: "plain text",
       risk: "low",
       resetBehavior: "empty"
+    })
+  ]),
+  "ops.operational-density-heatmap": commonChartControls([
+    control({
+      id: "heatPalette",
+      label: "Heat palette",
+      type: "segmented",
+      defaultValue: "control-spectrum",
+      options: [
+        { label: "Controls", value: "control-spectrum" },
+        { label: "Thermal", value: "thermal" },
+        { label: "Aurora", value: "aurora" },
+        { label: "Critical", value: "critical" }
+      ],
+      affectedLayer: "visualMap.inRange.color",
+      affectedOptionPath: "visualMap[].inRange.color",
+      validation: "known heatmap palette",
+      risk: "low",
+      resetBehavior: "returns to PRISMA control-spectrum palette"
+    }),
+    control({
+      id: "heatZoneMode",
+      label: "Heat zones",
+      type: "segmented",
+      defaultValue: "balanced",
+      options: [
+        { label: "Balanced", value: "balanced" },
+        { label: "Gateway noon", value: "gateway-noon" },
+        { label: "Payments night", value: "payments-night" },
+        { label: "Ops wave", value: "ops-wave" },
+        { label: "Stress demo", value: "stress-demo" }
+      ],
+      affectedLayer: "series[0].data.value[2]",
+      affectedDataTransform: "lab-only deterministic heat-zone transform for preview storytelling",
+      validation: "known heat-zone mode",
+      risk: "low",
+      resetBehavior: "balanced distribution"
+    }),
+    control({
+      id: "heatIntensity",
+      label: "Heat intensity",
+      type: "range",
+      defaultValue: 112,
+      min: 70,
+      max: 150,
+      step: 2,
+      affectedLayer: "series[0].data.value[2]",
+      affectedDataTransform: "scales pressure values for visual stress testing without source writes",
+      validation: "70-150",
+      risk: "low",
+      resetBehavior: "112"
+    }),
+    control({
+      id: "hotspotBias",
+      label: "Hotspot bias",
+      type: "range",
+      defaultValue: 18,
+      min: 0,
+      max: 42,
+      step: 1,
+      affectedLayer: "series[0].data.value[2]",
+      affectedDataTransform: "adds localized heat near the selected operational zone",
+      validation: "0-42",
+      risk: "low",
+      resetBehavior: "18"
+    }),
+    control({
+      id: "heatCeiling",
+      label: "Heat ceiling",
+      type: "range",
+      defaultValue: 90,
+      min: 72,
+      max: 100,
+      step: 1,
+      affectedLayer: "visualMap.max",
+      affectedOptionPath: "visualMap[].max",
+      validation: "72-100",
+      risk: "low",
+      resetBehavior: "90"
+    }),
+    control({
+      id: "gridVisibility",
+      label: "Cell grid",
+      type: "range",
+      defaultValue: 18,
+      min: 0,
+      max: 55,
+      step: 1,
+      affectedLayer: "series[0].itemStyle.borderColor",
+      affectedOptionPath: "series[0].itemStyle.borderColor",
+      validation: "0-55",
+      risk: "low",
+      resetBehavior: "18"
+    }),
+    control({
+      id: "showCellNumbers",
+      label: "Cell numbers",
+      type: "toggle",
+      defaultValue: false,
+      affectedLayer: "series[0].label.show",
+      affectedOptionPath: "series[0].label.show",
+      validation: "boolean",
+      risk: "low",
+      resetBehavior: "disabled"
+    }),
+    control({
+      id: "showCallouts",
+      label: "Callouts",
+      type: "toggle",
+      defaultValue: true,
+      affectedLayer: "graphic[].invisible",
+      affectedOptionPath: "graphic[].invisible",
+      validation: "boolean",
+      risk: "low",
+      resetBehavior: "enabled"
+    }),
+    control({
+      id: "motionMode",
+      label: "Motion",
+      type: "segmented",
+      defaultValue: "sweep",
+      options: [
+        { label: "Still", value: "still" },
+        { label: "Sweep", value: "sweep" },
+        { label: "Pulse", value: "pulse" }
+      ],
+      affectedLayer: "animation + CSS frame aura",
+      affectedOptionPath: "animation",
+      validation: "still, sweep, pulse",
+      risk: "low",
+      resetBehavior: "sweep"
     })
   ]),
   "pc.service-dependency-graph": commonChartControls([
@@ -297,6 +429,7 @@ export const chartControlSchemas: Record<string, LabChartRuntimeControl[]> = {
     })
   ]),
   "pc.decision-ledger-timeline": commonChartControls([
+    // PRISMA_DECISION_LEDGER_CONTROL_DECK_V1: deeper controls for audit timeline exploration.
     control({
       id: "impactFloor",
       label: "Impact floor",
@@ -310,6 +443,142 @@ export const chartControlSchemas: Record<string, LabChartRuntimeControl[]> = {
       validation: "0-100",
       risk: "medium",
       resetBehavior: "0"
+    }),
+    control({
+      id: "confidenceFloor",
+      label: "Confidence floor",
+      type: "range",
+      defaultValue: 0,
+      min: 0,
+      max: 100,
+      step: 5,
+      affectedLayer: "timeline points",
+      affectedDataTransform: "filters decision points below confidence",
+      validation: "0-100",
+      risk: "medium",
+      resetBehavior: "0"
+    }),
+    control({
+      id: "evidenceFloor",
+      label: "Evidence floor",
+      type: "range",
+      defaultValue: 0,
+      min: 0,
+      max: 10,
+      step: 1,
+      affectedLayer: "timeline evidence",
+      affectedDataTransform: "keeps only points with enough evidence",
+      validation: "0-10",
+      risk: "medium",
+      resetBehavior: "0"
+    }),
+    control({
+      id: "ledgerStatus",
+      label: "Status",
+      type: "chip-group",
+      defaultValue: ["open", "in_progress", "resolved", "blocked"],
+      options: ["open", "in_progress", "resolved", "blocked"].map((value) => ({ label: value.replace("_", " "), value })),
+      affectedLayer: "timeline events",
+      affectedDataTransform: "filters event markers by status",
+      validation: "one or more known ledger statuses",
+      risk: "medium",
+      resetBehavior: "all statuses enabled"
+    }),
+    control({
+      id: "eventType",
+      label: "Event type",
+      type: "chip-group",
+      defaultValue: ["incident", "decision", "action", "evidence", "resolution"],
+      options: ["incident", "decision", "action", "evidence", "resolution"].map((value) => ({ label: value, value })),
+      affectedLayer: "timeline events",
+      affectedDataTransform: "filters event markers by type",
+      validation: "one or more known event types",
+      risk: "medium",
+      resetBehavior: "all event types enabled"
+    }),
+    control({
+      id: "markerScale",
+      label: "Marker scale",
+      type: "range",
+      defaultValue: 100,
+      min: 70,
+      max: 150,
+      step: 5,
+      affectedLayer: "marker geometry",
+      affectedOptionPath: "series[1].data[].symbolSize / series[2].symbolSize",
+      validation: "70-150",
+      risk: "medium",
+      resetBehavior: "100"
+    }),
+    control({
+      id: "timelineDetail",
+      label: "Detail",
+      type: "segmented",
+      defaultValue: "standard",
+      options: [
+        { label: "Calm", value: "calm-night" },
+        { label: "Standard", value: "standard" },
+        { label: "Forensic", value: "forensic" }
+      ],
+      affectedLayer: "labels/tooltips",
+      affectedOptionPath: "series[1].label / tooltip",
+      validation: "calm, standard, forensic",
+      risk: "low",
+      resetBehavior: "standard"
+    }),
+    control({
+      id: "healthCurve",
+      label: "Health curve",
+      type: "segmented",
+      defaultValue: "smooth",
+      options: [
+        { label: "Sharp", value: "sharp" },
+        { label: "Smooth", value: "smooth" },
+        { label: "Glass", value: "glass" }
+      ],
+      affectedLayer: "health line",
+      affectedOptionPath: "series[0].smooth / series[0].areaStyle",
+      validation: "sharp, smooth, glass",
+      risk: "low",
+      resetBehavior: "smooth"
+    }),
+    control({
+      id: "eventPulse",
+      label: "Event pulse",
+      type: "toggle",
+      defaultValue: true,
+      affectedLayer: "motion emphasis",
+      affectedOptionPath: "series[2].data",
+      validation: "boolean",
+      risk: "low",
+      resetBehavior: "enabled"
+    }),
+    control({
+      id: "riskBand",
+      label: "Risk bands",
+      type: "toggle",
+      defaultValue: true,
+      affectedLayer: "timeline background",
+      affectedOptionPath: "series[0].markArea.data",
+      validation: "boolean",
+      risk: "low",
+      resetBehavior: "enabled"
+    }),
+    control({
+      id: "timeWindow",
+      label: "Time window",
+      type: "segmented",
+      defaultValue: "all",
+      options: [
+        { label: "All", value: "all" },
+        { label: "First", value: "first" },
+        { label: "Recent", value: "recent" }
+      ],
+      affectedLayer: "viewport",
+      affectedOptionPath: "dataZoom[].start / dataZoom[].end",
+      validation: "all, first, recent",
+      risk: "low",
+      resetBehavior: "all"
     })
   ]),
   "pc.financial-operational-waterfall": commonChartControls([
@@ -720,7 +989,301 @@ function filterNumericSeriesData(option: Record<string, unknown>, floor: number)
   }
 }
 
+
+function numericDatumValue(item: unknown): number | null {
+  if (typeof item === "number" && Number.isFinite(item)) return item;
+  if (Array.isArray(item)) {
+    for (let index = item.length - 1; index >= 0; index -= 1) {
+      const part = item[index];
+      if (typeof part === "number" && Number.isFinite(part)) return part;
+    }
+  }
+  if (isRecord(item) && typeof item.value === "number" && Number.isFinite(item.value)) return item.value;
+  if (isRecord(item) && Array.isArray(item.value)) return numericDatumValue(item.value);
+  return null;
+}
+
+function filterCategoryAxisByIndexes(option: Record<string, unknown>, keepIndexes: Set<number>): void {
+  const xAxis = option.xAxis;
+  const axes = Array.isArray(xAxis) ? xAxis.filter(isRecord) : isRecord(xAxis) ? [xAxis] : [];
+  for (const axis of axes) {
+    if (Array.isArray(axis.data)) axis.data = axis.data.filter((_, index) => keepIndexes.has(index));
+  }
+}
+
+function applyShiftPulseControls(option: Record<string, unknown>, values: LabChartControlState): void {
+  const floor = numeric(values.queueFloor, 0);
+  if (floor <= 0) return;
+  const series = seriesArray(option);
+  const queueSeries = series.find((item) => item.name === "Queue pressure") ?? series[0];
+  const queueData = Array.isArray(queueSeries?.data) ? queueSeries.data : [];
+  const keepIndexes = new Set<number>();
+  queueData.forEach((item, index) => {
+    const value = numericDatumValue(item);
+    if ((value ?? 0) >= floor) keepIndexes.add(index);
+  });
+  filterCategoryAxisByIndexes(option, keepIndexes);
+  for (const item of series) {
+    if (Array.isArray(item.data) && item.data.length === queueData.length) {
+      item.data = item.data.filter((_, index) => keepIndexes.has(index));
+    }
+  }
+}
+
+
+
+// PRISMA_DECISION_LEDGER_CONTROL_APPLY_V1: runtime control logic for Decision Ledger without breaking common knobs.
+function decisionLedgerDatumNumber(item: unknown, key: string, fallback = 0): number {
+  if (isRecord(item) && typeof item[key] === "number") return Number(item[key]);
+  if (isRecord(item) && Array.isArray(item.value) && typeof item.value[1] === "number") return Number(item.value[1]);
+  return fallback;
+}
+
+function decisionLedgerDatumString(item: unknown, key: string, fallback = ""): string {
+  if (isRecord(item) && typeof item[key] === "string") return String(item[key]);
+  return fallback;
+}
+
+function setDataZoomWindow(option: Record<string, unknown>, timeWindow: string): void {
+  const zoom = option.dataZoom;
+  const ranges: Record<string, [number, number]> = {
+    all: [0, 100],
+    first: [0, 58],
+    recent: [42, 100]
+  };
+  const [start, end] = ranges[timeWindow] ?? ranges.all;
+  if (!Array.isArray(zoom)) return;
+  for (const item of zoom) {
+    if (!isRecord(item)) continue;
+    item.start = start;
+    item.end = end;
+  }
+}
+
+function applyDecisionLedgerControls(option: Record<string, unknown>, values: LabChartControlState): void {
+  const impactFloor = numeric(values.impactFloor, 0);
+  const confidenceFloor = numeric(values.confidenceFloor, 0);
+  const evidenceFloor = numeric(values.evidenceFloor, 0);
+  const markerScale = numeric(values.markerScale, 100) / 100;
+  const timelineDetail = stringValue(values.timelineDetail, "standard");
+  const healthCurve = stringValue(values.healthCurve, "smooth");
+  const showPulse = booleanValue(values.eventPulse, true);
+  const showRiskBand = booleanValue(values.riskBand, true);
+  const statuses = stringList(values.ledgerStatus, ["open", "in_progress", "resolved", "blocked"]);
+  const eventTypes = stringList(values.eventType, ["incident", "decision", "action", "evidence", "resolution"]);
+
+  setDataZoomWindow(option, stringValue(values.timeWindow, "all"));
+
+  for (const series of seriesArray(option)) {
+    const name = String(series.name ?? "");
+
+    if (name === "Health score") {
+      series.smooth = healthCurve === "sharp" ? false : healthCurve === "glass" ? 0.58 : 0.36;
+      const lineStyle = isRecord(series.lineStyle) ? series.lineStyle : {};
+      lineStyle.width = healthCurve === "glass" ? 4 : healthCurve === "sharp" ? 2 : 3;
+      lineStyle.shadowBlur = healthCurve === "glass" ? 20 : 10;
+      series.lineStyle = lineStyle;
+      const areaStyle = isRecord(series.areaStyle) ? series.areaStyle : {};
+      areaStyle.opacity = healthCurve === "sharp" ? 0.04 : healthCurve === "glass" ? 0.32 : 0.16;
+      series.areaStyle = areaStyle;
+      if (!showRiskBand && isRecord(series.markArea)) series.markArea.data = [];
+      continue;
+    }
+
+    if (name !== "Ledger events" && name !== "Event pulse") continue;
+
+    if (name === "Event pulse" && !showPulse) {
+      series.data = [];
+      continue;
+    }
+
+    if (Array.isArray(series.data)) {
+      series.data = series.data
+        .filter((item) => decisionLedgerDatumNumber(item, "impactScore", 0) >= impactFloor)
+        .filter((item) => decisionLedgerDatumNumber(item, "confidence", 100) >= confidenceFloor)
+        .filter((item) => decisionLedgerDatumNumber(item, "evidenceCount", 0) >= evidenceFloor)
+        .filter((item) => statuses.includes(decisionLedgerDatumString(item, "status", "open")))
+        .filter((item) => eventTypes.includes(decisionLedgerDatumString(item, "type", "decision")))
+        .map((item) => {
+          if (!isRecord(item)) return item;
+          const current = typeof item.symbolSize === "number" ? item.symbolSize : 22;
+          item.symbolSize = Math.max(8, Math.round(current * markerScale));
+          return item;
+        });
+    }
+
+    const label = isRecord(series.label) ? series.label : {};
+    label.show = timelineDetail !== "calm" && name === "Ledger events";
+    label.fontSize = timelineDetail === "forensic" ? 11 : 10;
+    label.distance = timelineDetail === "forensic" ? 12 : 8;
+    series.label = label;
+
+    if (name === "Event pulse") {
+      series.symbolSize = Math.max(20, Math.round(34 * markerScale));
+      const rippleEffect = isRecord(series.rippleEffect) ? series.rippleEffect : {};
+      rippleEffect.scale = timelineDetail === "forensic" ? 3 : 2.35;
+      rippleEffect.number = timelineDetail === "forensic" ? 4 : 2;
+      series.rippleEffect = rippleEffect;
+    }
+  }
+}
+
+
+
+// PRISMA_RADICAL_THEME_RUNTIME_V1
+// Mutates ECharts options from Runtime Controls so themePreset is a rendering engine, not a paint bucket.
+type PrismaRadicalThemeId = "crystal-light" | "paper" | "calm-night" | "dense-noir";
+
+type PrismaRadicalTheme = {
+  id: PrismaRadicalThemeId;
+  mode: "light" | "dark";
+  textPrimary: string;
+  textMuted: string;
+  grid: string;
+  axis: string;
+  accent: string;
+  accent2: string;
+  accent3: string;
+  line: string;
+  areaTop: string;
+  areaBottom: string;
+  pulse: string;
+  statusOpen: string;
+  statusResolved: string;
+  statusProgress: string;
+  statusBlocked: string;
+  tooltipBg: string;
+  tooltipBorder: string;
+  tooltipText: string;
+  zoomBg: string;
+  zoomFill: string;
+  zoomHandle: string;
+  labelBg: string;
+  labelBorder: string;
+  radiusMd: number;
+  lineWidth: number;
+  smooth: number | boolean;
+  labelDensity: "full" | "short" | "quiet" | "minimal";
+  rippleScale: number;
+  rippleNumber: number;
+  shadowBlur: number;
+  glow: string;
+};
+
+const PRISMA_RADICAL_THEMES: Record<PrismaRadicalThemeId, PrismaRadicalTheme> = {
+  "crystal-light": {
+    id: "crystal-light", mode: "light", textPrimary: "#0a1830", textMuted: "#6a7a92", grid: "rgba(77,120,170,0.12)", axis: "rgba(77,120,170,0.22)", accent: "#0b78ff", accent2: "#63dfff", accent3: "#7557ff", line: "#63dfff", areaTop: "rgba(99,223,255,0.26)", areaBottom: "rgba(99,223,255,0.02)", pulse: "rgba(99,223,255,0.26)", statusOpen: "#e59b2a", statusResolved: "#13b981", statusProgress: "#7557ff", statusBlocked: "#df3d2f", tooltipBg: "rgba(255,255,255,0.94)", tooltipBorder: "rgba(99,223,255,0.26)", tooltipText: "#071426", zoomBg: "rgba(255,255,255,0.38)", zoomFill: "rgba(8,109,255,0.16)", zoomHandle: "#ffffff", labelBg: "rgba(255,255,255,0.76)", labelBorder: "rgba(99,223,255,0.20)", radiusMd: 14, lineWidth: 3, smooth: 0.42, labelDensity: "full", rippleScale: 2.6, rippleNumber: 3, shadowBlur: 16, glow: "rgba(99,223,255,0.34)"
+  },
+  paper: {
+    id: "paper", mode: "light", textPrimary: "#2b2115", textMuted: "#8b7a67", grid: "rgba(92,73,44,0.10)", axis: "rgba(92,73,44,0.20)", accent: "#8f5f2d", accent2: "#c9a46a", accent3: "#6b5142", line: "#8f5f2d", areaTop: "rgba(201,164,106,0.24)", areaBottom: "rgba(201,164,106,0.02)", pulse: "rgba(143,95,45,0.16)", statusOpen: "#c47a1b", statusResolved: "#3f8b56", statusProgress: "#7c5db5", statusBlocked: "#b64533", tooltipBg: "rgba(255,251,246,0.96)", tooltipBorder: "rgba(140,112,70,0.18)", tooltipText: "#2b2115", zoomBg: "rgba(255,247,238,0.52)", zoomFill: "rgba(143,95,45,0.14)", zoomHandle: "#fff8f1", labelBg: "rgba(255,250,244,0.82)", labelBorder: "rgba(92,73,44,0.12)", radiusMd: 10, lineWidth: 2, smooth: 0.18, labelDensity: "short", rippleScale: 1.9, rippleNumber: 2, shadowBlur: 8, glow: "rgba(201,164,106,0.18)"
+  },
+  "calm-night": {
+    id: "calm-night", mode: "dark", textPrimary: "#e7f0fb", textMuted: "#7e93ab", grid: "rgba(117,153,196,0.12)", axis: "rgba(117,153,196,0.18)", accent: "#40a9ff", accent2: "#38e1ff", accent3: "#61a0ff", line: "#38e1ff", areaTop: "rgba(56,225,255,0.18)", areaBottom: "rgba(56,225,255,0.01)", pulse: "rgba(56,225,255,0.22)", statusOpen: "#f3b45a", statusResolved: "#2ed39a", statusProgress: "#8e79ff", statusBlocked: "#ff6a63", tooltipBg: "rgba(14,20,33,0.96)", tooltipBorder: "rgba(56,225,255,0.20)", tooltipText: "#eef6ff", zoomBg: "rgba(26,40,60,0.82)", zoomFill: "rgba(64,169,255,0.18)", zoomHandle: "#d9e9f9", labelBg: "rgba(14,20,33,0.82)", labelBorder: "rgba(56,225,255,0.14)", radiusMd: 14, lineWidth: 3, smooth: 0.36, labelDensity: "quiet", rippleScale: 2.35, rippleNumber: 3, shadowBlur: 18, glow: "rgba(56,225,255,0.26)"
+  },
+  "dense-noir": {
+    id: "dense-noir", mode: "dark", textPrimary: "#f7f8fb", textMuted: "#7e8698", grid: "rgba(145,153,181,0.10)", axis: "rgba(145,153,181,0.16)", accent: "#7557ff", accent2: "#29d3ff", accent3: "#ff4fd8", line: "#7557ff", areaTop: "rgba(117,87,255,0.22)", areaBottom: "rgba(117,87,255,0.01)", pulse: "rgba(117,87,255,0.22)", statusOpen: "#ffb44d", statusResolved: "#31d0a2", statusProgress: "#7557ff", statusBlocked: "#ff5c74", tooltipBg: "rgba(12,14,22,0.96)", tooltipBorder: "rgba(117,87,255,0.22)", tooltipText: "#f8fbff", zoomBg: "rgba(19,22,32,0.88)", zoomFill: "rgba(117,87,255,0.22)", zoomHandle: "#e4e7f1", labelBg: "rgba(12,14,22,0.76)", labelBorder: "rgba(117,87,255,0.16)", radiusMd: 10, lineWidth: 4, smooth: 0.52, labelDensity: "minimal", rippleScale: 3.15, rippleNumber: 4, shadowBlur: 24, glow: "rgba(117,87,255,0.30)"
+  }
+};
+
+function prismaRadicalRecord(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === "object" && !Array.isArray(value) ? (value as Record<string, unknown>) : null;
+}
+
+function prismaRadicalArray(value: unknown): Record<string, unknown>[] {
+  return Array.isArray(value) ? value.filter((item): item is Record<string, unknown> => Boolean(prismaRadicalRecord(item))) : [];
+}
+
+function prismaRadicalThemeId(value: unknown): PrismaRadicalThemeId {
+  const normalized = typeof value === "string" ? value.trim().toLowerCase().replace(/_/g, "-") : "crystal-light";
+  if (normalized === "paper" || normalized === "editorial") return "paper";
+  if (normalized === "calm" || normalized === "calm-night" || normalized === "night") return "calm-night";
+  if (normalized === "dense" || normalized === "dense-noir" || normalized === "executive-dense" || normalized === "noir") return "dense-noir";
+  return "crystal-light";
+}
+
+function prismaRadicalStatusColor(status: unknown, t: PrismaRadicalTheme): string {
+  if (status === "resolved") return t.statusResolved;
+  if (status === "blocked" || status === "failed") return t.statusBlocked;
+  if (status === "in_progress") return t.statusProgress;
+  return t.statusOpen;
+}
+
+function prismaRadicalPatchAxis(axis: unknown, t: PrismaRadicalTheme): void {
+  const axes = Array.isArray(axis) ? axis : [axis];
+  for (const raw of axes) {
+    const item = prismaRadicalRecord(raw);
+    if (!item) continue;
+    item.axisLine = { ...(prismaRadicalRecord(item.axisLine) ?? {}), lineStyle: { color: t.axis } };
+    item.axisLabel = { ...(prismaRadicalRecord(item.axisLabel) ?? {}), color: t.textMuted, fontWeight: 750 };
+    item.nameTextStyle = { ...(prismaRadicalRecord(item.nameTextStyle) ?? {}), color: t.textMuted, fontWeight: 900 };
+    item.splitLine = { ...(prismaRadicalRecord(item.splitLine) ?? {}), lineStyle: { color: t.grid, type: t.id === "paper" ? "solid" : "dashed" } };
+  }
+}
+
+function applyRadicalThemeToOption(option: Record<string, unknown>, values: LabChartControlState): void {
+  const themeId = prismaRadicalThemeId(values.themePreset ?? values.theme ?? values.themeMode);
+  const t = PRISMA_RADICAL_THEMES[themeId];
+  option.color = [t.accent, t.accent2, t.statusResolved, t.statusOpen, t.statusBlocked, t.accent3];
+  option.backgroundColor = "transparent";
+  option.textStyle = { ...(prismaRadicalRecord(option.textStyle) ?? {}), color: t.textPrimary };
+  const title = prismaRadicalRecord(option.title);
+  if (title) {
+    title.textStyle = { ...(prismaRadicalRecord(title.textStyle) ?? {}), color: t.textPrimary, fontWeight: 900 };
+    title.subtextStyle = { ...(prismaRadicalRecord(title.subtextStyle) ?? {}), color: t.textMuted, fontWeight: themeId === "paper" ? 650 : 800 };
+  }
+  const legend = prismaRadicalRecord(option.legend);
+  if (legend) legend.textStyle = { ...(prismaRadicalRecord(legend.textStyle) ?? {}), color: t.textMuted, fontWeight: 800 };
+  const tooltip = prismaRadicalRecord(option.tooltip);
+  if (tooltip) {
+    tooltip.backgroundColor = t.tooltipBg;
+    tooltip.borderColor = t.tooltipBorder;
+    tooltip.textStyle = { ...(prismaRadicalRecord(tooltip.textStyle) ?? {}), color: t.tooltipText };
+    tooltip.extraCssText = `border-radius:${t.radiusMd}px;box-shadow:0 22px 70px rgba(0,0,0,${t.mode === "dark" ? ".34" : ".14"});backdrop-filter:blur(${themeId === "paper" ? "4" : "18"}px);`;
+  }
+  prismaRadicalPatchAxis(option.xAxis, t);
+  prismaRadicalPatchAxis(option.yAxis, t);
+  for (const zoom of prismaRadicalArray(option.dataZoom)) {
+    zoom.backgroundColor = t.zoomBg;
+    zoom.fillerColor = t.zoomFill;
+    zoom.borderColor = t.axis;
+    zoom.handleStyle = { ...(prismaRadicalRecord(zoom.handleStyle) ?? {}), color: t.zoomHandle, borderColor: t.accent, shadowBlur: t.shadowBlur, shadowColor: t.glow };
+    zoom.textStyle = { ...(prismaRadicalRecord(zoom.textStyle) ?? {}), color: t.textMuted, fontWeight: 750 };
+  }
+  for (const series of prismaRadicalArray(option.series)) {
+    const name = String(series.name ?? "").toLowerCase();
+    if (name.includes("health") || series.type === "line") {
+      series.smooth = t.smooth;
+      series.lineStyle = { ...(prismaRadicalRecord(series.lineStyle) ?? {}), color: t.line, width: t.lineWidth, shadowBlur: t.shadowBlur, shadowColor: t.glow };
+      series.areaStyle = { ...(prismaRadicalRecord(series.areaStyle) ?? {}), color: { type: "linear", x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: t.areaTop }, { offset: 1, color: t.areaBottom }] } };
+    }
+    if (series.type === "scatter" || name.includes("ledger") || name.includes("event")) {
+      const label = prismaRadicalRecord(series.label) ?? {};
+      label.show = t.labelDensity !== "minimal" && label.show !== false;
+      label.color = t.textPrimary;
+      label.backgroundColor = t.labelBg;
+      label.borderColor = t.labelBorder;
+      label.borderRadius = t.radiusMd;
+      label.fontWeight = themeId === "paper" ? 750 : 900;
+      series.label = label;
+      const data = Array.isArray(series.data) ? series.data : [];
+      series.data = data.map((raw) => {
+        const item = prismaRadicalRecord(raw);
+        if (!item) return raw;
+        const color = prismaRadicalStatusColor(item.status, t);
+        item.itemStyle = { ...(prismaRadicalRecord(item.itemStyle) ?? {}), color, shadowColor: color, shadowBlur: t.shadowBlur };
+        return item;
+      });
+    }
+    if (series.type === "effectScatter" || name.includes("pulse")) {
+      series.symbolSize = themeId === "dense-noir" ? 38 : themeId === "paper" ? 24 : 34;
+      series.rippleEffect = { ...(prismaRadicalRecord(series.rippleEffect) ?? {}), number: t.rippleNumber, scale: t.rippleScale, brushType: "stroke" };
+      series.itemStyle = { ...(prismaRadicalRecord(series.itemStyle) ?? {}), color: t.pulse, shadowBlur: t.shadowBlur, shadowColor: t.glow };
+    }
+  }
+}
+
 function applyChartSpecificControls(chartId: string, option: Record<string, unknown>, values: LabChartControlState): void {
+  applyRadicalThemeToOption(option, values);
   switch (chartId) {
     case "pc.causal-flow-ribbon":
       applyCausalControls(option, values);
@@ -739,13 +1302,13 @@ function applyChartSpecificControls(chartId: string, option: Record<string, unkn
       break;
     }
     case "pc.decision-ledger-timeline":
-      filterNumericSeriesData(option, numeric(values.impactFloor, 0));
+      applyDecisionLedgerControls(option, values);
       break;
     case "pc.financial-operational-waterfall":
       applyScenario(option, numeric(values.moneyScale, 100) > 100 ? "critical" : "clean");
       break;
     case "tablet.shift-pulse-strip":
-      filterNumericSeriesData(option, numeric(values.queueFloor, 0));
+      applyShiftPulseControls(option, values);
       break;
     case "mobile.owner-pulse-timeline":
       filterNumericSeriesData(option, numeric(values.healthFloor, 0));

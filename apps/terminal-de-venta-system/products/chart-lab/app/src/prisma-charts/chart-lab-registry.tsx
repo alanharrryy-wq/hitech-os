@@ -9,6 +9,7 @@ import {
   incidentSparkOption,
   inventoryRiskTreemapOption,
   operationalDensityFieldOption,
+  operationalDensityHeatmapOption,
   ownerPulseTimelineOption,
   serviceDependencyGraphOption,
   shiftPulseStripOption,
@@ -17,6 +18,7 @@ import {
 import { mockMobileCharts, mockPcCharts, mockTabletCharts } from "../../../../../shared/prisma-charts/prismaChartMocks";
 import { ExampleFutureChart } from "./components/ExampleFutureChart";
 import type { LabChartEntry } from "./chart-lab-types";
+import { chartRuntimeDataStatus, chartRuntimeFreshnessLabel, runtimeMobileCharts, runtimePcCharts, runtimeTabletCharts } from "./chart-runtime-data";
 
 const registryPath = "products/chart-lab/app/src/prisma-charts/chart-lab-registry.tsx";
 const sharedMockPath = "shared/prisma-charts/prismaChartMocks.ts";
@@ -25,6 +27,7 @@ const productPromotionBoundary = "Lab code is staging. Product promotion must co
 export const chartOpsChartIds = [
   "pc.causal-flow-ribbon",
   "pc.operational-density-field",
+  "ops.operational-density-heatmap",
   "pc.service-dependency-graph",
   "pc.inventory-risk-treemap",
   "pc.decision-ledger-timeline",
@@ -50,10 +53,10 @@ export const chartLabRegistry: LabChartEntry[] = [
     description: "Premium light Sankey ribbon connecting module, cause, effect, and action target.",
     operationalQuestion: "What caused the operational degradation and where should governance act first?",
     readiness: "working",
-    dataStatus: "shared/mock",
+    dataStatus: chartRuntimeDataStatus,
     mockDataLabel: "Deterministic ChartOps mock from shared/prisma-charts.",
     confidence: 72,
-    freshnessLabel: "Mock generated at the shared deterministic timestamp.",
+    freshnessLabel: chartRuntimeFreshnessLabel,
     promotionTarget: "PC governance / prisma-insights",
     promotionBoundary: productPromotionBoundary,
     sourceModule: "shared/prisma-charts",
@@ -63,7 +66,7 @@ export const chartLabRegistry: LabChartEntry[] = [
     optionBuilderName: "causalFlowRibbonOption",
     renderer: "canvas",
     defaultHeight: 420,
-    getOption: () => causalFlowRibbonOption(mockPcCharts.causalFlowRibbon)
+    getOption: () => causalFlowRibbonOption(runtimePcCharts.causalFlowRibbon)
   },
   {
     id: "pc.operational-density-field",
@@ -75,10 +78,10 @@ export const chartLabRegistry: LabChartEntry[] = [
     description: "Operational pressure field by module and time bucket.",
     operationalQuestion: "Where is operational pressure concentrating over time?",
     readiness: "working",
-    dataStatus: "shared/mock",
+    dataStatus: chartRuntimeDataStatus,
     mockDataLabel: "Deterministic module pressure cells.",
     confidence: 66,
-    freshnessLabel: "Mock freshness; real adapter can replace source later.",
+    freshnessLabel: chartRuntimeFreshnessLabel,
     promotionTarget: "PC governance / prisma-insights",
     promotionBoundary: productPromotionBoundary,
     sourceModule: "shared/prisma-charts",
@@ -88,7 +91,33 @@ export const chartLabRegistry: LabChartEntry[] = [
     optionBuilderName: "operationalDensityFieldOption",
     renderer: "canvas",
     defaultHeight: 390,
-    getOption: () => operationalDensityFieldOption(mockPcCharts.operationalDensityField)
+    getOption: () => operationalDensityFieldOption(runtimePcCharts.operationalDensityField)
+  },
+
+  {
+    id: "ops.operational-density-heatmap",
+    title: "Operational Density Heatmap",
+    shortName: "Ops Heatmap",
+    surface: "pc",
+    family: "density",
+    chartType: "Heatmap Matrix + VisualMap",
+    description: "Interactive premium pixel-field operational heatmap with fine grid cells, heat-zone controls, richer color range, motion modes, two evidence callouts, and tooltip HUD.",
+    operationalQuestion: "Which module is overloaded, when did it happen, and what evidence should governance inspect first?",
+    readiness: "working",
+    dataStatus: chartRuntimeDataStatus,
+    mockDataLabel: "Deterministic 10 × 49 compact operational matrix with smooth pressure field, runtime heat-zone controls, two callouts, confidence, and evidence refs.",
+    confidence: 82,
+    freshnessLabel: chartRuntimeFreshnessLabel,
+    promotionTarget: "PC governance / Mobile supervision shared visual recipe",
+    promotionBoundary: productPromotionBoundary,
+    sourceModule: "shared/prisma-charts",
+    componentPath: "products/chart-lab/app/src/prisma-charts/components/LabEChartFrame.tsx",
+    mockPath: sharedMockPath,
+    registryPath,
+    optionBuilderName: "operationalDensityHeatmapOption",
+    renderer: "canvas",
+    defaultHeight: 430,
+    getOption: () => operationalDensityHeatmapOption(runtimePcCharts.operationalDensityHeatmap)
   },
   {
     id: "pc.service-dependency-graph",
@@ -100,10 +129,10 @@ export const chartLabRegistry: LabChartEntry[] = [
     description: "Force graph for apps, services, endpoints, database, and public edges.",
     operationalQuestion: "Which service dependency is degrading the PRISMA operating surface?",
     readiness: "working",
-    dataStatus: "shared/mock",
+    dataStatus: chartRuntimeDataStatus,
     mockDataLabel: "Deterministic service topology.",
     confidence: 70,
-    freshnessLabel: "Mock topology; safe for visual design.",
+    freshnessLabel: chartRuntimeFreshnessLabel,
     promotionTarget: "PC governance / Control audit",
     promotionBoundary: productPromotionBoundary,
     sourceModule: "shared/prisma-charts",
@@ -113,7 +142,7 @@ export const chartLabRegistry: LabChartEntry[] = [
     optionBuilderName: "serviceDependencyGraphOption",
     renderer: "canvas",
     defaultHeight: 420,
-    getOption: () => serviceDependencyGraphOption(mockPcCharts.serviceDependencyGraph)
+    getOption: () => serviceDependencyGraphOption(runtimePcCharts.serviceDependencyGraph)
   },
   {
     id: "pc.inventory-risk-treemap",
@@ -125,10 +154,10 @@ export const chartLabRegistry: LabChartEntry[] = [
     description: "Treemap for stockout, margin, and revenue-at-risk exploration.",
     operationalQuestion: "Which inventory pockets threaten continuity or money first?",
     readiness: "working",
-    dataStatus: "shared/mock",
+    dataStatus: chartRuntimeDataStatus,
     mockDataLabel: "Deterministic risk hierarchy.",
     confidence: 58,
-    freshnessLabel: "Mock inventory state; promotion requires canonical inventory adapter.",
+    freshnessLabel: chartRuntimeFreshnessLabel,
     promotionTarget: "PC backoffice inventory governance",
     promotionBoundary: productPromotionBoundary,
     sourceModule: "shared/prisma-charts",
@@ -138,7 +167,7 @@ export const chartLabRegistry: LabChartEntry[] = [
     optionBuilderName: "inventoryRiskTreemapOption",
     renderer: "canvas",
     defaultHeight: 420,
-    getOption: () => inventoryRiskTreemapOption(mockPcCharts.inventoryRiskTreemap)
+    getOption: () => inventoryRiskTreemapOption(runtimePcCharts.inventoryRiskTreemap)
   },
   {
     id: "pc.decision-ledger-timeline",
@@ -150,10 +179,10 @@ export const chartLabRegistry: LabChartEntry[] = [
     description: "Auditable timeline for incidents, decisions, evidence, and resolutions.",
     operationalQuestion: "Which decisions changed operational health and with what evidence?",
     readiness: "working",
-    dataStatus: "shared/mock",
+    dataStatus: chartRuntimeDataStatus,
     mockDataLabel: "Deterministic decision ledger points.",
     confidence: 64,
-    freshnessLabel: "Mock ledger state.",
+    freshnessLabel: chartRuntimeFreshnessLabel,
     promotionTarget: "PC governance and Control audit",
     promotionBoundary: productPromotionBoundary,
     sourceModule: "shared/prisma-charts",
@@ -163,7 +192,7 @@ export const chartLabRegistry: LabChartEntry[] = [
     optionBuilderName: "decisionLedgerTimelineOption",
     renderer: "canvas",
     defaultHeight: 360,
-    getOption: () => decisionLedgerTimelineOption(mockPcCharts.decisionLedgerTimeline)
+    getOption: () => decisionLedgerTimelineOption(runtimePcCharts.decisionLedgerTimeline)
   },
   {
     id: "pc.financial-operational-waterfall",
@@ -175,10 +204,10 @@ export const chartLabRegistry: LabChartEntry[] = [
     description: "Waterfall that links operating effects with money impact.",
     operationalQuestion: "How did operational events move money from gross to net?",
     readiness: "working",
-    dataStatus: "shared/mock",
+    dataStatus: chartRuntimeDataStatus,
     mockDataLabel: "Deterministic financial steps.",
     confidence: 55,
-    freshnessLabel: "Mock money bridge.",
+    freshnessLabel: chartRuntimeFreshnessLabel,
     promotionTarget: "PC executive governance",
     promotionBoundary: productPromotionBoundary,
     sourceModule: "shared/prisma-charts",
@@ -188,7 +217,7 @@ export const chartLabRegistry: LabChartEntry[] = [
     optionBuilderName: "financialOperationalWaterfallOption",
     renderer: "canvas",
     defaultHeight: 380,
-    getOption: () => financialOperationalWaterfallOption(mockPcCharts.financialOperationalWaterfall)
+    getOption: () => financialOperationalWaterfallOption(runtimePcCharts.financialOperationalWaterfall)
   },
   {
     id: "tablet.shift-pulse-strip",
@@ -200,10 +229,10 @@ export const chartLabRegistry: LabChartEntry[] = [
     description: "Touch-friendly operational strip for current shift pressure.",
     operationalQuestion: "Can the operator keep selling right now?",
     readiness: "working",
-    dataStatus: "shared/mock",
+    dataStatus: chartRuntimeDataStatus,
     mockDataLabel: "Deterministic shift buckets.",
     confidence: 74,
-    freshnessLabel: "Mock shift pulse.",
+    freshnessLabel: chartRuntimeFreshnessLabel,
     promotionTarget: "Tablet operations pulse",
     promotionBoundary: productPromotionBoundary,
     sourceModule: "shared/prisma-charts",
@@ -213,7 +242,7 @@ export const chartLabRegistry: LabChartEntry[] = [
     optionBuilderName: "shiftPulseStripOption",
     renderer: "svg",
     defaultHeight: 320,
-    getOption: () => shiftPulseStripOption(mockTabletCharts.shiftPulseStrip)
+    getOption: () => shiftPulseStripOption(runtimeTabletCharts.shiftPulseStrip)
   },
   {
     id: "tablet.sync-outbox-status-matrix",
@@ -225,10 +254,10 @@ export const chartLabRegistry: LabChartEntry[] = [
     description: "Touch-readable matrix for local outbox pressure.",
     operationalQuestion: "What needs sync attention without blocking local sales?",
     readiness: "working",
-    dataStatus: "shared/mock",
+    dataStatus: chartRuntimeDataStatus,
     mockDataLabel: "Deterministic outbox matrix.",
     confidence: 68,
-    freshnessLabel: "Mock sync state.",
+    freshnessLabel: chartRuntimeFreshnessLabel,
     promotionTarget: "Tablet operations pulse",
     promotionBoundary: productPromotionBoundary,
     sourceModule: "shared/prisma-charts",
@@ -238,7 +267,7 @@ export const chartLabRegistry: LabChartEntry[] = [
     optionBuilderName: "syncOutboxMatrixOption",
     renderer: "svg",
     defaultHeight: 340,
-    getOption: () => syncOutboxMatrixOption(mockTabletCharts.syncOutboxStatusMatrix)
+    getOption: () => syncOutboxMatrixOption(runtimeTabletCharts.syncOutboxStatusMatrix)
   },
   {
     id: "mobile.owner-pulse-timeline",
@@ -250,10 +279,10 @@ export const chartLabRegistry: LabChartEntry[] = [
     description: "Compact owner timeline for supervision.",
     operationalQuestion: "Is the operation improving or degrading recently?",
     readiness: "working",
-    dataStatus: "shared/mock",
+    dataStatus: chartRuntimeDataStatus,
     mockDataLabel: "Deterministic owner pulse points.",
     confidence: 61,
-    freshnessLabel: "Mock mobile timeline.",
+    freshnessLabel: chartRuntimeFreshnessLabel,
     promotionTarget: "Mobile owner command",
     promotionBoundary: productPromotionBoundary,
     sourceModule: "shared/prisma-charts",
@@ -263,7 +292,7 @@ export const chartLabRegistry: LabChartEntry[] = [
     optionBuilderName: "ownerPulseTimelineOption",
     renderer: "svg",
     defaultHeight: 320,
-    getOption: () => ownerPulseTimelineOption(mockMobileCharts.ownerPulseTimeline)
+    getOption: () => ownerPulseTimelineOption(runtimeMobileCharts.ownerPulseTimeline)
   },
   {
     id: "mobile.action-inbox-priority-stack",
@@ -275,10 +304,10 @@ export const chartLabRegistry: LabChartEntry[] = [
     description: "Priority stack for action owners.",
     operationalQuestion: "Who owns the most urgent unresolved work?",
     readiness: "working",
-    dataStatus: "shared/mock",
+    dataStatus: chartRuntimeDataStatus,
     mockDataLabel: "Deterministic action inbox stacks.",
     confidence: 63,
-    freshnessLabel: "Mock action inbox.",
+    freshnessLabel: chartRuntimeFreshnessLabel,
     promotionTarget: "Mobile action inbox",
     promotionBoundary: productPromotionBoundary,
     sourceModule: "shared/prisma-charts",
@@ -288,7 +317,7 @@ export const chartLabRegistry: LabChartEntry[] = [
     optionBuilderName: "actionInboxPriorityStackOption",
     renderer: "svg",
     defaultHeight: 330,
-    getOption: () => actionInboxPriorityStackOption(mockMobileCharts.actionInboxPriorityStack)
+    getOption: () => actionInboxPriorityStackOption(runtimeMobileCharts.actionInboxPriorityStack)
   },
   {
     id: "mobile.health-radar-compact",
@@ -300,10 +329,10 @@ export const chartLabRegistry: LabChartEntry[] = [
     description: "Compact health dimensions without wrapping the main score.",
     operationalQuestion: "Which dimension explains the current health state?",
     readiness: "working",
-    dataStatus: "shared/mock",
+    dataStatus: chartRuntimeDataStatus,
     mockDataLabel: "Deterministic radar axes.",
     confidence: 58,
-    freshnessLabel: "Mock health dimensions.",
+    freshnessLabel: chartRuntimeFreshnessLabel,
     promotionTarget: "Mobile owner command",
     promotionBoundary: productPromotionBoundary,
     sourceModule: "shared/prisma-charts",
@@ -313,7 +342,7 @@ export const chartLabRegistry: LabChartEntry[] = [
     optionBuilderName: "healthRadarCompactOption",
     renderer: "svg",
     defaultHeight: 360,
-    getOption: () => healthRadarCompactOption(mockMobileCharts.healthRadarCompact)
+    getOption: () => healthRadarCompactOption(runtimeMobileCharts.healthRadarCompact)
   },
   {
     id: "mobile.freshness-beacon-grid",
@@ -325,10 +354,10 @@ export const chartLabRegistry: LabChartEntry[] = [
     description: "Freshness beacons for data state and TTL.",
     operationalQuestion: "Can the owner trust the freshness of each module?",
     readiness: "working",
-    dataStatus: "shared/mock",
+    dataStatus: chartRuntimeDataStatus,
     mockDataLabel: "Deterministic freshness beacons.",
     confidence: 57,
-    freshnessLabel: "Mock freshness state.",
+    freshnessLabel: chartRuntimeFreshnessLabel,
     promotionTarget: "Mobile source status",
     promotionBoundary: productPromotionBoundary,
     sourceModule: "shared/prisma-charts",
@@ -338,7 +367,7 @@ export const chartLabRegistry: LabChartEntry[] = [
     optionBuilderName: "freshnessBeaconGridOption",
     renderer: "svg",
     defaultHeight: 320,
-    getOption: () => freshnessBeaconGridOption(mockMobileCharts.freshnessBeaconGrid)
+    getOption: () => freshnessBeaconGridOption(runtimeMobileCharts.freshnessBeaconGrid)
   },
   {
     id: "mobile.incident-spark-cards",
@@ -350,10 +379,10 @@ export const chartLabRegistry: LabChartEntry[] = [
     description: "Small incident trend card for owner supervision.",
     operationalQuestion: "Which active incident is getting better or worse?",
     readiness: "working",
-    dataStatus: "shared/mock",
+    dataStatus: chartRuntimeDataStatus,
     mockDataLabel: "First deterministic incident spark card.",
     confidence: 60,
-    freshnessLabel: "Mock incident trend.",
+    freshnessLabel: chartRuntimeFreshnessLabel,
     promotionTarget: "Mobile incident cards",
     promotionBoundary: productPromotionBoundary,
     sourceModule: "shared/prisma-charts",
@@ -363,7 +392,7 @@ export const chartLabRegistry: LabChartEntry[] = [
     optionBuilderName: "incidentSparkOption",
     renderer: "svg",
     defaultHeight: 280,
-    getOption: () => incidentSparkOption(mockMobileCharts.incidentSparkCards[0])
+    getOption: () => incidentSparkOption(runtimeMobileCharts.incidentSparkCards[0])
   },
   {
     id: "mobile.confidence-meter-bands",
@@ -375,10 +404,10 @@ export const chartLabRegistry: LabChartEntry[] = [
     description: "Linear confidence explanation without circular score ornament.",
     operationalQuestion: "Why should the owner trust or distrust the snapshot?",
     readiness: "working",
-    dataStatus: "shared/mock",
+    dataStatus: chartRuntimeDataStatus,
     mockDataLabel: "Deterministic confidence bands.",
     confidence: 62,
-    freshnessLabel: "Mock confidence state.",
+    freshnessLabel: chartRuntimeFreshnessLabel,
     promotionTarget: "Mobile data quality panel",
     promotionBoundary: productPromotionBoundary,
     sourceModule: "shared/prisma-charts",
@@ -388,7 +417,7 @@ export const chartLabRegistry: LabChartEntry[] = [
     optionBuilderName: "confidenceMeterBandsOption",
     renderer: "svg",
     defaultHeight: 320,
-    getOption: () => confidenceMeterBandsOption(mockMobileCharts.confidenceMeterBands)
+    getOption: () => confidenceMeterBandsOption(runtimeMobileCharts.confidenceMeterBands)
   },
   {
     id: "example.future-chart",
@@ -403,7 +432,7 @@ export const chartLabRegistry: LabChartEntry[] = [
     dataStatus: "lab/mock",
     mockDataLabel: "Lab-local placeholder mock.",
     confidence: 100,
-    freshnessLabel: "Static extension example.",
+    freshnessLabel: chartRuntimeFreshnessLabel,
     promotionTarget: "Any future PRISMA surface after explicit promotion.",
     promotionBoundary: productPromotionBoundary,
     sourceModule: "products/chart-lab/app",

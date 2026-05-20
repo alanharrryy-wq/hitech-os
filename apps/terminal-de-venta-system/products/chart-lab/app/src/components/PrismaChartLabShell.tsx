@@ -1,7 +1,9 @@
+// PRISMA_PEARL_EXECUTIVE_LUXURY_SHELL_V1
 "use client";
 
 import { useMemo, useState, useEffect } from "react";
 import { ChartControlDeck } from "@/components/ChartControlDeck";
+import { OptionStudioPanel } from "@/components/OptionStudioPanel";
 import { LabEChartFrame } from "@/prisma-charts/components/LabEChartFrame";
 import { applyChartLabControls, countActiveControls, getControlsForChart, getDefaultControlState } from "@/prisma-charts/chart-lab-control-model";
 import { chartLabFamilies, chartLabRegistry, chartLabSurfaces, chartOpsChartIds } from "@/prisma-charts/chart-lab-registry";
@@ -23,6 +25,7 @@ import type {
   LabChartEntry,
   LabChartInspectorTab,
   LabChartPreviewFrame,
+  LabChartRuntimeControl,
   LabChartSize,
   LabChartThemeMode
 } from "@/prisma-charts/chart-lab-types";
@@ -46,6 +49,7 @@ type ReadinessFilter = "all" | LabChartEntry["readiness"];
 const inspectorTabs: Array<{ id: LabChartInspectorTab; label: string }> = [
   { id: "preview", label: "Preview" },
   { id: "controls", label: "Controls" },
+  { id: "option-studio", label: "Option Studio" },
   { id: "passport", label: "Passport" },
   { id: "maps", label: "Maps" },
   { id: "data", label: "Sources" },
@@ -76,6 +80,309 @@ function readinessTone(readiness: LabChartEntry["readiness"]) {
 function asArray<T>(value: T | T[] | null | undefined): T[] {
   if (Array.isArray(value)) return value;
   return value === null || value === undefined ? [] : [value];
+}
+
+
+const HEATMAP_CHART_ID = "ops.operational-density-heatmap";
+
+const heatmapRuntimeControls: LabChartRuntimeControl[] = [
+  {
+    id: "heatPalette",
+    label: "Heat palette",
+    type: "segmented",
+    defaultValue: "control-spectrum",
+    options: [
+      { label: "Controls", value: "control-spectrum" },
+      { label: "Thermal", value: "thermal" },
+      { label: "Aurora", value: "aurora" },
+      { label: "Critical", value: "critical" }
+    ],
+    affectedLayer: "visualMap.inRange.color",
+    validation: "Palette only changes visual encoding; source evidence stays intact.",
+    risk: "low",
+    resetBehavior: "Returns to PRISMA control-spectrum palette."
+  },
+  {
+    id: "heatZoneMode",
+    label: "Heat zones",
+    type: "segmented",
+    defaultValue: "balanced",
+    options: [
+      { label: "Balanced", value: "balanced" },
+      { label: "Gateway noon", value: "gateway-noon" },
+      { label: "Payments night", value: "payments-night" },
+      { label: "Ops wave", value: "ops-wave" },
+      { label: "Stress demo", value: "stress-demo" }
+    ],
+    affectedLayer: "series[0].data.value[2]",
+    validation: "Lab-only deterministic transform for exploring hot-zone storytelling.",
+    risk: "low",
+    resetBehavior: "Balanced distribution with two evidence callouts."
+  },
+  {
+    id: "heatIntensity",
+    label: "Heat intensity",
+    type: "range",
+    defaultValue: 112,
+    min: 70,
+    max: 150,
+    step: 2,
+    affectedLayer: "series[0].data.value[2]",
+    validation: "Scales pressure values for visual stress testing without touching source adapters.",
+    risk: "low",
+    resetBehavior: "112"
+  },
+  {
+    id: "hotspotBias",
+    label: "Hotspot bias",
+    type: "range",
+    defaultValue: 18,
+    min: 0,
+    max: 42,
+    step: 1,
+    affectedLayer: "series[0].data.value[2]",
+    validation: "Adds localized heat near the chosen operational zone.",
+    risk: "low",
+    resetBehavior: "18"
+  },
+  {
+    id: "heatCeiling",
+    label: "Heat ceiling",
+    type: "range",
+    defaultValue: 90,
+    min: 72,
+    max: 100,
+    step: 1,
+    affectedLayer: "visualMap.max",
+    validation: "Lower ceilings reveal yellow/red cells faster; higher ceilings make palette calmer.",
+    risk: "low",
+    resetBehavior: "90"
+  },
+  {
+    id: "gridVisibility",
+    label: "Cell grid",
+    type: "range",
+    defaultValue: 18,
+    min: 0,
+    max: 55,
+    step: 1,
+    affectedLayer: "series[0].itemStyle.borderColor",
+    validation: "Keeps the square-cell texture visible without turning it into a spreadsheet.",
+    risk: "low",
+    resetBehavior: "18"
+  },
+  {
+    id: "showCellNumbers",
+    label: "Cell numbers",
+    type: "toggle",
+    defaultValue: false,
+    affectedLayer: "series[0].label.show",
+    validation: "Off by default because numbers flatten the thermal field into a table.",
+    risk: "low",
+    resetBehavior: "Disabled"
+  },
+  {
+    id: "showCallouts",
+    label: "Callouts",
+    type: "toggle",
+    defaultValue: true,
+    affectedLayer: "graphic[].invisible",
+    validation: "Keeps executive annotations optional and non-destructive.",
+    risk: "low",
+    resetBehavior: "Enabled"
+  },
+  {
+    id: "motionMode",
+    label: "Motion",
+    type: "segmented",
+    defaultValue: "sweep",
+    options: [
+      { label: "Still", value: "still" },
+      { label: "Sweep", value: "sweep" },
+      { label: "Pulse", value: "pulse" }
+    ],
+    affectedLayer: "animation + CSS frame aura",
+    validation: "Cosmetic chart-lab motion only; respects exported static data.",
+    risk: "low",
+    resetBehavior: "Sweep"
+  }
+];
+
+const heatmapDefaultControlState: LabChartControlState = Object.fromEntries(
+  heatmapRuntimeControls.map((control) => [control.id, control.defaultValue])
+) as LabChartControlState;
+
+function getChartDefaultControlState(chartId: string): LabChartControlState {
+  return {
+    ...getDefaultControlState(chartId),
+    ...(chartId === HEATMAP_CHART_ID ? heatmapDefaultControlState : {})
+  };
+}
+
+function getControlsForLabChart(chartId: string) {
+  const controls = getControlsForChart(chartId);
+  if (chartId !== HEATMAP_CHART_ID) return controls;
+  const existingIds = new Set(controls.map((control) => control.id));
+  return [...controls, ...heatmapRuntimeControls.filter((control) => !existingIds.has(control.id))];
+}
+
+function countLabChartActiveControls(chartId: string, values: LabChartControlState) {
+  return getControlsForLabChart(chartId).filter((control) => JSON.stringify(values[control.id] ?? control.defaultValue) !== JSON.stringify(control.defaultValue)).length;
+}
+
+function numericControl(values: LabChartControlState, id: string, fallback: number) {
+  const value = values[id];
+  return typeof value === "number" ? value : fallback;
+}
+
+function stringControl(values: LabChartControlState, id: string, fallback: string) {
+  const value = values[id];
+  return typeof value === "string" ? value : fallback;
+}
+
+function booleanControl(values: LabChartControlState, id: string, fallback: boolean) {
+  const value = values[id];
+  return typeof value === "boolean" ? value : fallback;
+}
+
+function heatmapPalette(value: string) {
+  if (value === "thermal") return ["#06111f", "#103579", "#1769ff", "#18d7ff", "#7f5cff", "#f250b7", "#ff516d", "#ff9d42", "#fff0a6"];
+  if (value === "aurora") return ["#051229", "#083163", "#0d69cd", "#18e4ff", "#3cffd0", "#8d5cff", "#e747ff", "#ff7fc7", "#fff2b8"];
+  if (value === "critical") return ["#061229", "#0d2f75", "#136ee4", "#16d4ff", "#705cff", "#d847e8", "#ff3366", "#ff7b35", "#ffe98f"];
+  return ["#051229", "#0b2e72", "#1167dd", "#18d7ff", "#735cff", "#e44bc2", "#ff536d", "#ff9f4d", "#fff0a8"];
+}
+
+function bucketHour(label: unknown) {
+  if (typeof label !== "string") return 0;
+  const [hour, minute] = label.split(":").map((part) => Number(part));
+  return (Number.isFinite(hour) ? hour : 0) + (Number.isFinite(minute) ? minute / 60 : 0);
+}
+
+function zoneInfluence(zone: string, moduleName: string, hour: number) {
+  if (zone === "gateway-noon") {
+    const moduleBoost = moduleName === "API Gateway" ? 1 : moduleName === "Plataforma Web" || moduleName === "Autenticación" ? 0.62 : 0.18;
+    return Math.exp(-Math.pow(hour - 12.55, 2) / 1.25) * moduleBoost;
+  }
+  if (zone === "payments-night") {
+    const moduleBoost = moduleName === "Pagos" ? 1 : moduleName === "Integraciones" || moduleName === "Data Pipeline" ? 0.72 : 0.16;
+    return Math.exp(-Math.pow(hour - 19.55, 2) / 1.35) * moduleBoost;
+  }
+  if (zone === "ops-wave") {
+    const bandCenter = moduleName === "Reportes" || moduleName === "Notificaciones" ? 10.5 : moduleName === "Órdenes" || moduleName === "Inventario" ? 13.2 : 16.5;
+    return Math.exp(-Math.pow(hour - bandCenter, 2) / 4.8) * 0.78;
+  }
+  if (zone === "stress-demo") {
+    const noon = Math.exp(-Math.pow(hour - 12.4, 2) / 2.2);
+    const night = Math.exp(-Math.pow(hour - 19.4, 2) / 2.0);
+    return Math.max(noon, night) * 0.92;
+  }
+  return 0.34 * Math.exp(-Math.pow(hour - 12.35, 2) / 7.2);
+}
+
+function applyOperationalDensityHeatmapControls(option: Record<string, unknown>, values: LabChartControlState): Record<string, unknown> {
+  const palette = heatmapPalette(stringControl(values, "heatPalette", "control-spectrum"));
+  const zoneMode = stringControl(values, "heatZoneMode", "balanced");
+  const intensity = numericControl(values, "heatIntensity", 112) / 100;
+  const hotspotBias = numericControl(values, "hotspotBias", 18);
+  const heatCeiling = numericControl(values, "heatCeiling", 90);
+  const gridVisibility = numericControl(values, "gridVisibility", 18);
+  const showCellNumbers = booleanControl(values, "showCellNumbers", false);
+  const showCallouts = booleanControl(values, "showCallouts", true);
+  const motionMode = stringControl(values, "motionMode", "sweep");
+  const cloned: Record<string, unknown> = { ...option };
+
+  cloned.animation = motionMode !== "still";
+  cloned.animationDurationUpdate = motionMode === "pulse" ? 980 : motionMode === "sweep" ? 720 : 0;
+  cloned.animationEasingUpdate = motionMode === "pulse" ? "elasticOut" : "quarticOut";
+
+  const visualMapArray = Array.isArray(cloned.visualMap) ? cloned.visualMap : cloned.visualMap ? [cloned.visualMap] : [];
+  cloned.visualMap = visualMapArray.map((visualMap) => ({
+    ...(visualMap as Record<string, unknown>),
+    max: heatCeiling,
+    inRange: { ...((visualMap as Record<string, unknown>).inRange as Record<string, unknown> | undefined), color: palette }
+  }));
+
+  if (!visualMapArray.length) {
+    cloned.visualMap = [{
+      show: false,
+      type: "continuous",
+      min: 0,
+      max: heatCeiling,
+      dimension: 2,
+      seriesIndex: 0,
+      inRange: { color: palette }
+    }];
+  }
+
+  const borderAlpha = Math.max(0, Math.min(0.55, gridVisibility / 100));
+  const seriesArray = Array.isArray(cloned.series) ? cloned.series : [];
+  cloned.series = seriesArray.map((series) => {
+    const seriesRecord = series as Record<string, unknown>;
+    if (seriesRecord.type !== "heatmap") return seriesRecord;
+
+    const nextData = Array.isArray(seriesRecord.data)
+      ? seriesRecord.data.map((cell) => {
+          const cellRecord = cell as Record<string, unknown>;
+          const value = Array.isArray(cellRecord.value) ? [...cellRecord.value] : [];
+          const meta = cellRecord.meta as Record<string, unknown> | undefined;
+          const moduleName = String(meta?.moduleName ?? "");
+          const label = meta?.bucketLabel ?? value[0];
+          const hour = bucketHour(label);
+          const rawScore = typeof value[2] === "number" ? value[2] : Number(value[2] ?? 0);
+          const boostedScore = Math.max(0, Math.min(100, Math.round((rawScore * intensity) + zoneInfluence(zoneMode, moduleName, hour) * hotspotBias)));
+          value[2] = boostedScore;
+          const nextMeta = meta ? {
+            ...meta,
+            pressureScore: boostedScore,
+            warnCount: boostedScore > 68 ? Math.max(Number(meta.warnCount ?? 0), 2) : meta.warnCount,
+            errorCount: boostedScore > 88 ? Math.max(Number(meta.errorCount ?? 0), 1) : meta.errorCount,
+            dominantCause: boostedScore > 88 ? "runtime_heat_zone" : meta.dominantCause
+          } : meta;
+
+          return {
+            ...cellRecord,
+            value,
+            meta: nextMeta,
+            label: { show: showCellNumbers, formatter: showCellNumbers ? "{@[2]}" : "" },
+            itemStyle: {
+              ...((cellRecord.itemStyle as Record<string, unknown> | undefined) ?? {}),
+              borderColor: `rgba(168, 220, 255, ${borderAlpha.toFixed(2)})`,
+              borderWidth: gridVisibility > 0 ? Math.max(0.2, gridVisibility / 45) : 0
+            }
+          };
+        })
+      : seriesRecord.data;
+
+    return {
+      ...seriesRecord,
+      data: nextData,
+      label: { show: showCellNumbers, formatter: showCellNumbers ? (params: any) => `${params.data?.value?.[2] ?? ""}` : "" },
+      itemStyle: {
+        ...((seriesRecord.itemStyle as Record<string, unknown> | undefined) ?? {}),
+        borderColor: `rgba(168, 220, 255, ${borderAlpha.toFixed(2)})`,
+        borderWidth: gridVisibility > 0 ? Math.max(0.2, gridVisibility / 45) : 0,
+        shadowBlur: motionMode === "pulse" ? 8 : 2,
+        shadowColor: motionMode === "pulse" ? "rgba(255, 83, 109, 0.18)" : "rgba(31, 231, 255, 0.08)"
+      },
+      emphasis: {
+        ...((seriesRecord.emphasis as Record<string, unknown> | undefined) ?? {}),
+        label: { show: false },
+        itemStyle: {
+          ...(((seriesRecord.emphasis as Record<string, unknown> | undefined)?.itemStyle as Record<string, unknown> | undefined) ?? {}),
+          borderColor: "rgba(255,255,255,.86)",
+          borderWidth: 1.05,
+          shadowBlur: 16
+        }
+      },
+      blur: { label: { show: false } },
+      select: { label: { show: false } }
+    };
+  });
+
+  const graphicArray = Array.isArray(cloned.graphic) ? cloned.graphic : cloned.graphic ? [cloned.graphic] : [];
+  cloned.graphic = graphicArray.map((graphic) => ({ ...(graphic as Record<string, unknown>), invisible: !showCallouts }));
+
+  return cloned;
 }
 
 function summarizeJson(value: unknown) {
@@ -111,6 +418,11 @@ function chartConfigPayload(input: {
 
 // PRISMA_CAUSAL_FLOW_PREMIUM_PATCH_V2: Causal Flow Ribbon hero evidence strip.
 // PRISMA_KNOBS_AUDIT_INJECTION_V2: selected chart/tab metadata for code-first audits.
+
+function cloneOptionStudioPreview(option: Record<string, unknown>): Record<string, unknown> {
+  return JSON.parse(JSON.stringify(option)) as Record<string, unknown>;
+}
+
 export function PrismaChartLabShell() {
   const publicSafe = process.env.NEXT_PUBLIC_PRISMA_CHART_LAB_PUBLIC_SAFE === "true";
   const deploymentMode = process.env.NEXT_PUBLIC_PRISMA_CHART_LAB_DEPLOYMENT_MODE ?? "local";
@@ -134,6 +446,7 @@ export function PrismaChartLabShell() {
   const [pinnedIds, setPinnedIds] = useState<string[]>([]);
   const [recentIds, setRecentIds] = useState<string[]>([]);
   const [controlStateByChart, setControlStateByChart] = useState<Record<string, LabChartControlState>>({});
+  const [optionStudioOverrideByChart, setOptionStudioOverrideByChart] = useState<Record<string, Record<string, unknown>>>({});
   const [copyStatus, setCopyStatus] = useState("idle");
 
   const filteredCharts = useMemo(
@@ -155,11 +468,11 @@ export function PrismaChartLabShell() {
   );
 
   const selectedChart = filteredCharts.find((chart) => chart.id === selectedId) ?? filteredCharts[0] ?? chartLabRegistry[0];
-  const selectedControls = getControlsForChart(selectedChart.id);
-  const selectedControlState = { ...getDefaultControlState(selectedChart.id), ...(controlStateByChart[selectedChart.id] ?? {}) };
+  const selectedControls = getControlsForLabChart(selectedChart.id);
+  const selectedControlState = { ...getChartDefaultControlState(selectedChart.id), ...(controlStateByChart[selectedChart.id] ?? {}) };
   const workingCount = chartLabRegistry.filter((chart) => chart.readiness === "working").length;
   const placeholderCount = chartLabRegistry.filter((chart) => chart.readiness === "placeholder").length;
-  const activeControls = countActiveControls(selectedChart.id, selectedControlState);
+  const activeControls = selectedChart.id === HEATMAP_CHART_ID ? countLabChartActiveControls(selectedChart.id, selectedControlState) : countActiveControls(selectedChart.id, selectedControlState);
   const selectedPassport = visualTuningPassports.find((item) => item.chartId === selectedChart.id);
   const selectedDataSource = dataSourceMap.find((item) => item.chartId === selectedChart.id);
   const selectedTransport = surfaceTransportMap.find((item) => item.chartId === selectedChart.id);
@@ -170,13 +483,29 @@ export function PrismaChartLabShell() {
   const optionOverride = useMemo(() => {
     const baseOption = selectedChart.getOption?.();
     if (!baseOption) return undefined;
-    return applyChartLabControls({
+    const controlledOption = applyChartLabControls({
       chartId: selectedChart.id,
       option: baseOption,
       values: selectedControlState,
       reducedMotion: false
     });
+    return selectedChart.id === HEATMAP_CHART_ID
+      ? applyOperationalDensityHeatmapControls(controlledOption, selectedControlState)
+      : controlledOption;
   }, [selectedChart, selectedControlState]);
+  const optionStudioOverride = optionStudioOverrideByChart[selectedChart.id];
+  const previewOptionOverride = useMemo(() => {
+    if (!optionStudioOverride) return optionOverride;
+    const controlledStudioOption = applyChartLabControls({
+      chartId: selectedChart.id,
+      option: cloneOptionStudioPreview(optionStudioOverride),
+      values: selectedControlState,
+      reducedMotion: false
+    });
+    return selectedChart.id === HEATMAP_CHART_ID
+      ? applyOperationalDensityHeatmapControls(controlledStudioOption, selectedControlState)
+      : controlledStudioOption;
+  }, [optionOverride, optionStudioOverride, selectedChart.id, selectedControlState]);
 
   function selectChart(chartId: string) {
     setSelectedId(chartId);
@@ -187,7 +516,7 @@ export function PrismaChartLabShell() {
     setControlStateByChart((current) => ({
       ...current,
       [selectedChart.id]: {
-        ...getDefaultControlState(selectedChart.id),
+        ...getChartDefaultControlState(selectedChart.id),
         ...(current[selectedChart.id] ?? {}),
         [controlId]: value
       }
@@ -195,7 +524,19 @@ export function PrismaChartLabShell() {
   }
 
   function resetCurrentChart() {
-    setControlStateByChart((current) => ({ ...current, [selectedChart.id]: getDefaultControlState(selectedChart.id) }));
+    setControlStateByChart((current) => ({ ...current, [selectedChart.id]: getChartDefaultControlState(selectedChart.id) }));
+  }
+
+  function applyOptionStudioPreview(option: Record<string, unknown>) {
+    setOptionStudioOverrideByChart((current) => ({ ...current, [selectedChart.id]: option }));
+  }
+
+  function resetOptionStudioPreview() {
+    setOptionStudioOverrideByChart((current) => {
+      const next = { ...current };
+      delete next[selectedChart.id];
+      return next;
+    });
   }
 
   function resetAllCharts() {
@@ -234,13 +575,18 @@ export function PrismaChartLabShell() {
   }
 
   return (
-    <main className="chart-lab" data-density={density} data-theme={themeMode} data-frame={frame} data-capture="false" data-selected-chart-id={selectedChart.id} data-selected-tab={tab} data-active-controls={activeControls}>
+    <main className="chart-lab" data-luxury-ui="pearl-executive" data-density={density} data-theme={themeMode} data-frame={frame} data-capture="false" data-selected-chart-id={selectedChart.id} data-selected-tab={tab} data-active-controls={activeControls}>
       <div className="chart-lab__background" aria-hidden="true" />
       <section className="chart-lab__chrome" aria-label="PRISMA Chart Lab">
         <header className="chart-lab__header">
-          <div>
-            <span className="eyebrow">PRISMA Chart Lab · {publicSafe ? "public-safe preview" : "local port 3000"}</span>
-            <h1>Canonical chart workshop and promotion factory</h1>
+          {/* PRISMA_CHART_LAB_BRAND_LOGO_V1 */}
+          <div className="prisma-brand-lockup" aria-label="PRISMA Chart Lab brand" data-prisma-brand-logo="true">
+            <img className="prisma-brand-lockup__mark" src="/brand/prisma-prism-mark.png" alt="" aria-hidden="true" loading="eager" decoding="async" />
+            <div className="prisma-brand-lockup__copy">
+              <span className="eyebrow">PRISMA Pearl Executive · {publicSafe ? "public-safe preview" : "local atelier"}</span>
+              <h1>PRISMA Chart Lab</h1>
+              <p className="prisma-brand-lockup__tagline">Governed visual intelligence for audit-ready operational charts.</p>
+            </div>
           </div>
           <div className="header-actions" aria-label="Lab state">
             <span>{chartOpsChartIds.length} ChartOps</span>
@@ -388,7 +734,7 @@ export function PrismaChartLabShell() {
               </button>
             </div>
 
-            <article className="chart-frame" data-preview-frame={frame} data-chart-id={selectedChart.id} data-chart-family={selectedChart.family} data-active-controls={activeControls}>
+            <article className="chart-frame" data-preview-frame={frame} data-chart-id={selectedChart.id} data-chart-family={selectedChart.family} data-active-controls={activeControls} data-heat-palette={selectedChart.id === HEATMAP_CHART_ID ? String(selectedControlState.heatPalette ?? "control-spectrum") : undefined} data-heat-zone={selectedChart.id === HEATMAP_CHART_ID ? String(selectedControlState.heatZoneMode ?? "balanced") : undefined} data-heat-motion={selectedChart.id === HEATMAP_CHART_ID ? String(selectedControlState.motionMode ?? "sweep") : undefined}>
               {selectedChart.id === "pc.causal-flow-ribbon" ? (
                 <div className="causal-hero-strip" aria-label="Causal Flow Ribbon evidence summary">
                   <div>
@@ -403,11 +749,34 @@ export function PrismaChartLabShell() {
                   </div>
                 </div>
               ) : null}
+
+              {selectedChart.id === "ops.operational-density-heatmap" ? (
+                <div className="density-hero-strip" aria-label="Operational Density Heatmap evidence summary">
+                  <div>
+                    <span className="eyebrow">Operational density matrix</span>
+                    <strong>10 modules · 49 half-hour cells · thermal density matrix</strong>
+                  </div>
+                  <div className="density-hero-strip__chips">
+                    <span>{String(selectedControlState.heatPalette ?? "control-spectrum")}</span>
+                    <span>{String(selectedControlState.heatZoneMode ?? "balanced")}</span>
+                    <span>intensity {String(selectedControlState.heatIntensity ?? 112)}</span>
+                    <span>{activeControls} active knobs</span>
+                  </div>
+                </div>
+              ) : null}
               {selectedChart.Component ? (
                 <selectedChart.Component entry={selectedChart} density={density} size={size} themeMode={themeMode} />
               ) : (
-                <LabEChartFrame entry={selectedChart} density={density} size={size} optionOverride={optionOverride} />
+                <LabEChartFrame entry={selectedChart} density={density} size={size} optionOverride={previewOptionOverride} />
               )}
+              {selectedChart.id === "ops.operational-density-heatmap" ? (
+                <div className="density-matrix-legend" aria-label="Densidad Operacional de baja a alta">
+                  <span>Densidad Operacional</span>
+                  <i aria-hidden="true" />
+                  <small>Baja</small>
+                  <small>Alta</small>
+                </div>
+              ) : null}
             </article>
 
             <div className="tab-strip" role="tablist" aria-label="Chart inspector tabs">
@@ -456,6 +825,17 @@ export function PrismaChartLabShell() {
                       <p>{selectedChart.promotionBoundary}</p>
                     </article>
                   </div>
+                ) : null}
+
+                {tab === "option-studio" ? (
+                  <OptionStudioPanel
+                    chart={selectedChart}
+                    canonicalOption={optionOverride}
+                    previewOption={previewOptionOverride}
+                    hasPreviewOverride={Boolean(optionStudioOverride)}
+                    onApplyPreview={applyOptionStudioPreview}
+                    onResetPreview={resetOptionStudioPreview}
+                  />
                 ) : null}
 
                 {tab === "passport" ? (

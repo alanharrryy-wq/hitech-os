@@ -25,6 +25,102 @@ function iso(minutesAgo: number) {
   return new Date(Date.parse(PRISMA_CHART_MOCK_GENERATED_AT) - minutesAgo * 60_000).toISOString();
 }
 
+
+const operationalDensityFieldMock: OperationalDensityCell[] = ["Cloudflare", "Sync", "Inventory", "POS", "Workers"].flatMap((moduleName, moduleIndex) =>
+  ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00"].map((label, bucketIndex) => ({
+    bucketStart: iso(360 - bucketIndex * 45),
+    bucketEnd: iso(330 - bucketIndex * 45),
+    bucketLabel: label,
+    moduleId: moduleName.toLowerCase(),
+    moduleName,
+    eventCount: 3 + moduleIndex + bucketIndex,
+    warnCount: (moduleIndex + bucketIndex) % 3,
+    errorCount: moduleName === "Cloudflare" && bucketIndex > 2 ? 2 : moduleName === "Inventory" && bucketIndex === 4 ? 3 : 0,
+    avgLatencyMs: 80 + moduleIndex * 24 + bucketIndex * 18,
+    staleMinutesAvg: moduleName === "Sync" ? 12 + bucketIndex * 4 : bucketIndex,
+    retryCount: moduleName === "Sync" ? bucketIndex * 2 : moduleIndex,
+    pressureScore: Math.min(96, 16 + moduleIndex * 9 + bucketIndex * 7 + (moduleName === "Inventory" && bucketIndex === 4 ? 24 : 0)),
+    dominantCause: moduleName === "Sync" ? "retry_storm" : moduleName === "Cloudflare" ? "route_probe" : "normal_pressure",
+    confidence: 52 + moduleIndex * 5,
+    state: moduleName === "Inventory" && bucketIndex === 4 ? "anomaly" : moduleName === "Cloudflare" && bucketIndex > 2 ? "peak" : "normal",
+    anomalyLabel: moduleName === "Inventory" && bucketIndex === 4 ? "Stock pressure spike" : undefined,
+    actionHint: moduleName === "Inventory" && bucketIndex === 4 ? "Prepare reorder decision with evidence" : undefined,
+    evidenceRef: moduleName === "Inventory" && bucketIndex === 4 ? "mock:inventory:pressure:12" : undefined
+  }))
+);
+
+const operationalDensityHeatmapModules = [
+  "Plataforma Web",
+  "API Gateway",
+  "Autenticación",
+  "Pagos",
+  "Inventario",
+  "Órdenes",
+  "Notificaciones",
+  "Reportes",
+  "Integraciones",
+  "Data Pipeline"
+] as const;
+
+const operationalDensityHeatmapBuckets = Array.from({ length: 49 }, (_item, index) => `${String(Math.floor(index / 2)).padStart(2, "0")}:${index % 2 === 0 ? "00" : "30"}`);
+
+function operationalDensityBaseScore(moduleIndex: number, bucketIndex: number) {
+  const hour = bucketIndex / 2;
+  const midday = Math.exp(-Math.pow(hour - 12.35, 2) / 14) * (30 + moduleIndex * 1.45);
+  const morning = Math.exp(-Math.pow(hour - 8.35, 2) / 9) * (15 + (moduleIndex % 4) * 3.8);
+  const evening = Math.exp(-Math.pow(hour - 19.15, 2) / 10) * (18 + ((9 - moduleIndex) % 5) * 2.9);
+  const diagonalBand = Math.exp(-Math.pow(hour - (6.35 + moduleIndex * 0.82), 2) / 6.5) * (11 + moduleIndex * 0.95);
+  const gatewayHotspot = Math.exp(-Math.pow(hour - 12.5, 2) / 0.55 - Math.pow(moduleIndex - 1.0, 2) / 0.75) * 34;
+  const paymentsHotspot = Math.exp(-Math.pow(hour - 19.5, 2) / 0.70 - Math.pow(moduleIndex - 3.0, 2) / 0.95) * 38;
+  const reportingWarmRidge = Math.exp(-Math.pow(hour - 10.5, 2) / 5.8 - Math.pow(moduleIndex - 7.2, 2) / 4.8) * 24;
+  const microTexture =
+    Math.sin(hour * 1.13 + moduleIndex * 0.91) * 2.7 +
+    Math.cos(hour * 0.67 - moduleIndex * 1.21) * 1.8;
+  const base = 10 + moduleIndex * 1.62 + Math.sin((hour + moduleIndex * 0.65) / 1.75) * 4.4;
+  return Math.round(Math.max(5, Math.min(99, base + midday + morning + evening + diagonalBand + gatewayHotspot + paymentsHotspot + reportingWarmRidge + microTexture)));
+}
+
+const operationalDensityHeatmapMock: OperationalDensityCell[] = operationalDensityHeatmapModules.flatMap((moduleName, moduleIndex) =>
+  operationalDensityHeatmapBuckets.map((bucketLabel, bucketIndex) => {
+    const spike = moduleName === "API Gateway" && bucketLabel === "12:30" ? 16 : moduleName === "Pagos" && bucketLabel === "19:30" ? 18 : 0;
+    const pressureScore = Math.min(100, operationalDensityBaseScore(moduleIndex, bucketIndex) + spike);
+    const isGatewayPeak = moduleName === "API Gateway" && bucketLabel === "12:30";
+    const isPaymentsAnomaly = moduleName === "Pagos" && bucketLabel === "19:30";
+    const state = isGatewayPeak || isPaymentsAnomaly ? "anomaly" : pressureScore < 18 ? "cold" : "normal";
+    const anomalyLabel = isGatewayPeak
+      ? "Pico de carga 12:45"
+      : isPaymentsAnomaly
+        ? "Anomalía detectada 19:32"
+        : undefined;
+    return {
+      bucketStart: `2026-05-11T${bucketLabel === "24:00" ? "23:59" : bucketLabel}:00.000Z`,
+      bucketEnd: `2026-05-11T${bucketLabel === "24:00" ? "23:59" : bucketLabel}:59.000Z`,
+      bucketLabel,
+      moduleId: moduleName.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+      moduleName,
+      eventCount: Math.max(1, Math.round(pressureScore / 5) + moduleIndex + (bucketIndex % 5)),
+      warnCount: pressureScore > 68 ? 2 + ((moduleIndex + bucketIndex) % 3) : pressureScore > 44 ? 1 : 0,
+      errorCount: state === "anomaly" ? 3 : pressureScore > 84 ? 1 : 0,
+      avgLatencyMs: 55 + pressureScore * 3 + moduleIndex * 9,
+      staleMinutesAvg: pressureScore > 84 ? 18 + moduleIndex : pressureScore > 66 ? 8 + (bucketIndex % 5) : bucketIndex % 3,
+      retryCount: state === "anomaly" ? 8 + moduleIndex : pressureScore > 82 ? 3 + (bucketIndex % 3) : bucketIndex % 2,
+      pressureScore,
+      dominantCause: state === "anomaly" ? "capacity_spike" : pressureScore > 82 ? "load_concentration" : pressureScore < 18 ? "low_activity" : "normal_pressure",
+      confidence: Math.min(97, 60 + Math.round(pressureScore / 4)),
+      state,
+      anomalyLabel,
+      actionHint: isGatewayPeak
+        ? "Escalar gateway y revisar colas antes de promoción"
+        : isPaymentsAnomaly
+          ? "Revisar pagos, latencia y evidencia de transacciones"
+          : pressureScore > 76
+            ? "Mantener vigilancia activa"
+            : "Sin acción inmediata",
+      evidenceRef: anomalyLabel ? `mock:ops-heatmap:${moduleName}:${bucketLabel}` : undefined
+    };
+  })
+);
+
 export const mockPcCharts: PrismaPcChartsViewModel = {
   causalFlowRibbon: [
     { sourceModule: "Cloudflare", causeType: "public_route_404", effectType: "degraded_health", actionTarget: "Review DNS config", weight: 34, severity: "ERROR", confidence: 72, evidenceCount: 4, incidentIds: ["inc_cf_404"], firstSeenAt: iso(180), lastSeenAt: iso(12), ownerRole: "Infra" },
@@ -32,23 +128,8 @@ export const mockPcCharts: PrismaPcChartsViewModel = {
     { sourceModule: "Inventory", causeType: "stockout", effectType: "lost_sale_risk", actionTarget: "Reorder SKU", weight: 26, severity: "CRITICAL", confidence: 58, evidenceCount: 2, incidentIds: ["inc_inv_stockout"], firstSeenAt: iso(90), lastSeenAt: iso(8), ownerRole: "Inventory" },
     { sourceModule: "POS", causeType: "offline_mode", effectType: "pending_evidence", actionTarget: "Keep tablet selling", weight: 14, severity: "INFO", confidence: 78, evidenceCount: 5, incidentIds: ["inc_pos_offline"], firstSeenAt: iso(80), lastSeenAt: iso(3), ownerRole: "Operator" }
   ],
-  operationalDensityField: ["Cloudflare", "Sync", "Inventory", "POS", "Workers"].flatMap((moduleName, moduleIndex) =>
-    ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00"].map((label, bucketIndex) => ({
-      bucketStart: iso(360 - bucketIndex * 45),
-      bucketEnd: iso(330 - bucketIndex * 45),
-      moduleId: moduleName.toLowerCase(),
-      moduleName,
-      eventCount: 3 + moduleIndex + bucketIndex,
-      warnCount: (moduleIndex + bucketIndex) % 3,
-      errorCount: moduleName === "Cloudflare" && bucketIndex > 2 ? 2 : moduleName === "Inventory" && bucketIndex === 4 ? 3 : 0,
-      avgLatencyMs: 80 + moduleIndex * 24 + bucketIndex * 18,
-      staleMinutesAvg: moduleName === "Sync" ? 12 + bucketIndex * 4 : bucketIndex,
-      retryCount: moduleName === "Sync" ? bucketIndex * 2 : moduleIndex,
-      pressureScore: Math.min(96, 16 + moduleIndex * 9 + bucketIndex * 7 + (moduleName === "Inventory" && bucketIndex === 4 ? 24 : 0)),
-      dominantCause: moduleName === "Sync" ? "retry_storm" : moduleName === "Cloudflare" ? "route_probe" : "normal_pressure",
-      confidence: 52 + moduleIndex * 5
-    }))
-  ),
+  operationalDensityField: operationalDensityFieldMock,
+  operationalDensityHeatmap: operationalDensityHeatmapMock,
   serviceDependencyGraph: {
     nodes: [
       { id: "tablet-3120", label: "Tablet 3120", kind: "app", status: "PASS", port: 3120, localUrl: "local-origin-redacted:3120", healthy: true, criticality: "high", owner: "Operator", lastProbeAt: iso(4) },

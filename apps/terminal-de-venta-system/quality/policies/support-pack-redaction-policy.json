@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "id": "support-pack-redaction-policy",
+  "mode": "redacted-export",
+  "include": [
+    "quality reports",
+    "machine summaries",
+    "environment snapshot",
+    "commands run",
+    "evidence ledger",
+    "checksums"
+  ],
+  "exclude": [
+    "raw databases",
+    "PII exports",
+    ".env files",
+    "tokens",
+    "secrets",
+    "node_modules",
+    "build artifacts"
+  ]
+}

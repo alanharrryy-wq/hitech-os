@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "id": "CONTRACT_CUSTOMER_UPGRADE_ROLLBACK",
+  "version": "1.0.0",
+  "title": "Customer Upgrade Rollback",
+  "description": "Customer upgrades must be backup-first, verifiable, and rollbackable, with real DB treated as inspect-only unless an explicit migration plan exists.",
+  "layer": "Release",
+  "defaultSeverity": "S1",
+  "blockingProfiles": [
+    "upgrade",
+    "client-readiness",
+    "pilot"
+  ],
+  "ownedByGate": "C5",
+  "requiredEvidenceTypes": [
+    "json",
+    "markdown",
+    "ledger"
+  ],
+  "failureExamples": [],
+  "phaseIntroduced": "customer-assurance-v1"
+}

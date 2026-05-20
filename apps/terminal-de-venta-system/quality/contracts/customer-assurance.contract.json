@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0",
+  "id": "CONTRACT_CUSTOMER_ASSURANCE",
+  "version": "1.0.0",
+  "title": "Customer Assurance",
+  "description": "PRISMA customer promotion must be installable, demo-safe, supportable, upgradeable, and evidence-backed without changing the operating rule.",
+  "layer": "Quality",
+  "defaultSeverity": "S1",
+  "blockingProfiles": [
+    "client-readiness",
+    "pilot"
+  ],
+  "ownedByGate": "C1",
+  "requiredEvidenceTypes": [
+    "json",
+    "markdown",
+    "ledger"
+  ],
+  "failureExamples": [],
+  "phaseIntroduced": "customer-assurance-v1"
+}

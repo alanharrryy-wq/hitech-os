@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0",
+  "id": "customer-assurance-policy",
+  "mode": "read-only",
+  "principle": "Quality certifies customer readiness without becoming part of the selling path.",
+  "forbidden": [
+    "mutate real DB",
+    "require PC for Tablet checkout",
+    "require Mobile for operation",
+    "require Cloudflare for local sale",
+    "claim green without evidence"
+  ],
+  "profiles": [
+    "client-readiness",
+    "demo",
+    "first-run",
+    "support-pack",
+    "upgrade",
+    "pilot"
+  ]
+}

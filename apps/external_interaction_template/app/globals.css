@@ -867,3 +867,48 @@ textarea {
   transform: translateY(-3px);
   box-shadow: 0 26px 62px rgba(17, 42, 82, 0.14);
 }
+
+/* PRISMA brand badge */
+.prisma-global-logo-badge {
+  position: fixed;
+  z-index: 99999;
+  top: 18px;
+  left: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 13px 9px 9px;
+  border: 1px solid rgba(125, 226, 255, .44);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 22% 18%, rgba(125, 226, 255, .30), transparent 48%),
+    linear-gradient(135deg, rgba(5, 13, 27, .80), rgba(11, 29, 62, .58));
+  box-shadow:
+    0 18px 50px rgba(0, 18, 44, .30),
+    0 0 32px rgba(51, 196, 255, .18),
+    inset 0 1px 0 rgba(255, 255, 255, .22);
+  backdrop-filter: blur(18px) saturate(1.22);
+  -webkit-backdrop-filter: blur(18px) saturate(1.22);
+  color: white;
+  font-weight: 900;
+  letter-spacing: .22em;
+  font-size: 12px;
+  text-decoration: none;
+  pointer-events: none;
+}
+
+.prisma-global-logo-badge img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 15px rgba(111, 226, 255, .46));
+}
+
+@media (max-width: 720px) {
+  .prisma-global-logo-badge {
+    top: 10px;
+    left: 10px;
+    transform: scale(.88);
+    transform-origin: top left;
+  }
+}

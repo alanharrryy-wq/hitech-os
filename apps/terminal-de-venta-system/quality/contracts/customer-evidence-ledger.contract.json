@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0",
+  "id": "CONTRACT_CUSTOMER_EVIDENCE_LEDGER",
+  "version": "1.0.0",
+  "title": "Customer Evidence Ledger",
+  "description": "Every customer-facing readiness claim must be backed by parseable evidence and a customer ledger summary.",
+  "layer": "Audit",
+  "defaultSeverity": "S1",
+  "blockingProfiles": [
+    "client-readiness",
+    "support-pack",
+    "pilot"
+  ],
+  "ownedByGate": "C7",
+  "requiredEvidenceTypes": [
+    "json",
+    "ledger"
+  ],
+  "failureExamples": [],
+  "phaseIntroduced": "customer-assurance-v1"
+}

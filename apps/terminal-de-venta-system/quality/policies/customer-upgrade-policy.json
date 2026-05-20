@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0",
+  "id": "customer-upgrade-policy",
+  "mode": "backup-first",
+  "rules": [
+    "Backup before replacing quality.",
+    "Verify after apply.",
+    "Rollback on failed verification.",
+    "Keep migrations additive-first unless explicitly approved with backup evidence."
+  ]
+}

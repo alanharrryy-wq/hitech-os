@@ -1,3 +1,5 @@
+// PRISMA_ECHARTS_EFFECT_SCATTER_IMPORT_V1
+import { EffectScatterChart } from "echarts/charts";
 let echartsPromise: Promise<typeof import("echarts/core")> | null = null;
 
 export async function loadPrismaEcharts() {
@@ -24,14 +26,16 @@ export async function loadPrismaEcharts() {
         components.DatasetComponent,
         components.DataZoomComponent,
         components.GridComponent,
+        components.GraphicComponent,
         components.LegendComponent,
         components.TitleComponent,
         components.TooltipComponent,
         components.TransformComponent,
         components.VisualMapComponent,
         renderers.CanvasRenderer,
-        renderers.SVGRenderer
-      ]);
+        renderers.SVGRenderer,
+  EffectScatterChart
+]);
       return echarts;
     });
   }

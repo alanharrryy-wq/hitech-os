@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0",
+  "id": "CONTRACT_OPERATIONAL_DRIFT_WATCHDOG",
+  "version": "1.0.0",
+  "title": "Operational Drift Watchdog",
+  "description": "Customer readiness runs must fingerprint critical files and compare with the previous green-capable baseline.",
+  "layer": "Quality",
+  "defaultSeverity": "S3",
+  "blockingProfiles": [
+    "watch",
+    "client-readiness",
+    "pilot"
+  ],
+  "ownedByGate": "C6",
+  "requiredEvidenceTypes": [
+    "json",
+    "ledger"
+  ],
+  "failureExamples": [],
+  "phaseIntroduced": "customer-assurance-v1"
+}

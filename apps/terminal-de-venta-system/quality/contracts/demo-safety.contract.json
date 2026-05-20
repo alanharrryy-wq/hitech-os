@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "id": "CONTRACT_DEMO_SAFETY",
+  "version": "1.0.0",
+  "title": "Demo Safety",
+  "description": "Customer demos must not pollute production data, touch real DB resets, or claim live sync with fake/demo data.",
+  "layer": "Customer",
+  "defaultSeverity": "S1",
+  "blockingProfiles": [
+    "demo",
+    "client-readiness",
+    "pilot"
+  ],
+  "ownedByGate": "C2",
+  "requiredEvidenceTypes": [
+    "json",
+    "markdown",
+    "ledger"
+  ],
+  "failureExamples": [],
+  "phaseIntroduced": "customer-assurance-v1"
+}

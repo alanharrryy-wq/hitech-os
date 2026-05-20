@@ -1,0 +1,45 @@
+{
+  "name": "PRISMA Commercial Package Hygiene Policy",
+  "generated_at": "2026-05-19T02:01:29.686130+00:00",
+  "purpose": "Prevent dev examples, fixtures, handoff evidence, internal audits, and legacy TABLET_PC_REQUIRED naming from shipping in customer commercial payloads.",
+  "canonical_rule": [
+    "Tablet opera/vende sola",
+    "PC gobierna si existe, pero es opcional",
+    "Mobile/App supervisa",
+    "Shared/Core registra y valida contratos",
+    "Control audita"
+  ],
+  "exclude_path_needles": [
+    "/payload/tooling/productization/examples/",
+    "/payload/evidence/",
+    "/payload/handoff/",
+    "/payload/audit/",
+    "/payload/audits/",
+    "/payload/logs/",
+    "/payload/fixtures/",
+    "/payload/fixture/",
+    "/payload/__tests__/",
+    "/payload/tests/",
+    "/payload/test/",
+    "/payload/test-fixtures/",
+    "/payload/test_fixtures/"
+  ],
+  "exclude_basename_patterns": [
+    "^verify_.*\\.(mjs|js|ts|tsx|py|ps1)$",
+    ".*\\.spec\\.(mjs|js|ts|tsx|py)$",
+    ".*\\.test\\.(mjs|js|ts|tsx|py)$",
+    ".*\\.example\\.(json|js|ts|mjs|txt|md)$",
+    ".*fixture.*"
+  ],
+  "doc_replacements": {
+    "TABLET_PC_REQUIRED": "TABLET_PC_MANAGED",
+    "tablet-pc-required": "tablet-pc-managed",
+    "Tablet PC Required": "Tablet PC Managed"
+  },
+  "blocking_rules": [
+    "Do not ship payload/tooling/productization/examples",
+    "Do not ship payload evidence, handoff, audits, logs, fixtures, tests, or verify scripts",
+    "Do not expose TABLET_PC_REQUIRED in customer-visible docs; use TABLET_PC_MANAGED",
+    "Do not make Tablet sales depend on PC, Mobile, cloud, internet, remote care, or canonical DB"
+  ]
+}
