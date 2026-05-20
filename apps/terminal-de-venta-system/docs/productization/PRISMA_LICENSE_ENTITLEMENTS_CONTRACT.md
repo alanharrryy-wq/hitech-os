@@ -119,3 +119,19 @@ Tablet:
 /centro-prisma/estado
 /centro-prisma/soporte
 ```
+
+## 11. Cierre local-first 2026-05-19
+
+La decision de entitlement debe pasar por el License Governor existente en `shared/licensing`, no por reglas duplicadas en UI. El governor debe devolver:
+
+- `customerId`, `businessId`, `storeId`/`branchId`, `deviceId`/`tabletId`, `terminalId`, `licenseId`;
+- `licenseState`, `refreshState`, `assignmentState`, `plan`, `capabilities`, `limits`;
+- `lastSeenAt`, `lastRefreshAt`, `lastDecisionAt`, `denialReason`, `evidenceEvent`, `operationalDecision`.
+
+Reglas:
+
+1. `refresh_disabled` no es denegacion de licencia.
+2. `invalid` o tampered bloquea por seguridad.
+3. `wrong_business`, `wrong_store`, `wrong_device`, `wrong_terminal`, `unassigned` y `exceeded_limit` son denegaciones explicitas y auditables.
+4. `missing`, `expired` y `suspended` pueden degradar a continuidad local solo si la politica de fallback lo permite.
+5. Tablet Solo y Tablet Pro no requieren PC, Mobile, cloud, internet ni DB canonica para venta local basica permitida.

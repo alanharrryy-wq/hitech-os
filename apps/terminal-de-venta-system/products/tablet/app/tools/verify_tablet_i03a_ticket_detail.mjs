@@ -28,6 +28,10 @@ const route = path.join(appRoot, "app", "api", "pos", "sales", "detail", "route.
 const screen = path.join(appRoot, "components", "sales", "sales-ticket-detail-screen.tsx");
 const list = path.join(appRoot, "components", "sales", "sales-ticket-list.tsx");
 const css = path.join(appRoot, "components", "sales", "sales.module.css");
+const completeRoute = path.join(appRoot, "app", "api", "pos", "sales", "complete", "route.ts");
+const detailRepo = path.join(appRoot, "src", "server", "pos-api", "sales-detail.prisma.ts");
+const summaryRepo = path.join(appRoot, "src", "server", "pos-api", "sales-summary.prisma.ts");
+const cartState = path.join(appRoot, "src", "lib", "pos", "cart-state.ts");
 const workflow = path.join(appRoot, "docs", "qa", "TABLET_LOCAL_PY_WORKFLOW_CONTRACT.md");
 const qa = path.join(appRoot, "docs", "qa", "TABLET_I03A_TICKET_DETAIL_HOTFIX.md");
 const pkgPath = path.join(appRoot, "package.json");
@@ -36,6 +40,9 @@ check("I03A-001 sales detail route exists", exists(route), route);
 check("I03A-002 detail screen exists", exists(screen), screen);
 check("I03A-003 ticket list exists", exists(list), list);
 check("I03A-004 sales css exists", exists(css), css);
+check("I03A-004A complete route exists", exists(completeRoute), completeRoute);
+check("I03A-004B detail repository exists", exists(detailRepo), detailRepo);
+check("I03A-004C summary repository exists", exists(summaryRepo), summaryRepo);
 check("I03A-005 workflow contract doc exists", exists(workflow), workflow);
 check("I03A-006 QA doc exists", exists(qa), qa);
 
@@ -46,6 +53,32 @@ if (exists(route)) {
   check("I03A-009 route returns SALE_NOT_FOUND", text.includes("SALE_NOT_FOUND"), route);
 }
 
+if (exists(completeRoute)) {
+  const text = read(completeRoute);
+  check("I03A-009A complete route returns ticketEvidence", text.includes("ticketEvidence") && text.includes("SALE_AS_TICKET_EVIDENCE_V1"), completeRoute);
+  check("I03A-009B complete route canonical id is saleId", text.includes("canonicalTicketId: sale.saleId"), completeRoute);
+  check("I03A-009C complete route publishes localDetailHref", text.includes("localDetailHref"), completeRoute);
+}
+
+if (exists(detailRepo)) {
+  const text = read(detailRepo);
+  check("I03A-009D detail repo accepts id folio clientRequestId", text.includes("{ id: needle }") && text.includes("{ folio: needle }") && text.includes("{ clientRequestId: needle }"), detailRepo);
+  check("I03A-009E detail repo includes local context", text.includes("storeId") && text.includes("cashSession") && text.includes("terminalName"), detailRepo);
+  check("I03A-009F detail repo exposes payment evidence", text.includes("paymentMethod") && text.includes("paymentTenders"), detailRepo);
+  check("I03A-009G detail repo exposes outbox evidence", text.includes("outboxEvidenceForSale") && text.includes("evidenceTopics"), detailRepo);
+}
+
+if (exists(summaryRepo)) {
+  const text = read(summaryRepo);
+  check("I03A-009H today summary uses completed sale status", text.includes('status: "COMPLETED"'), summaryRepo);
+  check("I03A-009I today summary emits saleId businessId", text.includes("saleId: sale.id") && text.includes("businessId: sale.businessId"), summaryRepo);
+}
+
+if (exists(cartState)) {
+  const text = read(cartState);
+  check("I03A-009J cart state has TicketEvidence type", text.includes("export type TicketEvidence") && text.includes("canonicalTicketId"), cartState);
+}
+
 if (exists(screen)) {
   const text = read(screen);
   check("I03A-010 screen calls direct detail endpoint", text.includes("/api/pos/sales/detail?") && text.includes("params.toString()"), screen);
@@ -53,12 +86,14 @@ if (exists(screen)) {
   check("I03A-012 screen handles error", text.includes('status: "error"') && text.includes("No se pudo abrir"), screen);
   check("I03A-013 loading is not permanent-only state", text.includes("setState(asHumanError(error))"), screen);
   check("I03A-014 screen renders ticket lines", text.includes("state.ticket.lines.map"), screen);
+  check("I03A-014A screen offers retry", text.includes("Reintentar lectura") && text.includes("setReloadToken"), screen);
+  check("I03A-014B screen renders payment and context", text.includes("paymentTenders") && text.includes("cashSessionId") && text.includes("businessName"), screen);
 }
 
 if (exists(list)) {
   const text = read(list);
   check("I03A-015 list uses Next Link", text.includes("next/link") && text.includes("<Link"), list);
-  check("I03A-016 list links to encoded ticket identity", text.includes("encodeURIComponent(ticket.folio || ticket.saleId)") || text.includes("encodeURIComponent(ticket.saleId"), list);
+  check("I03A-016 list links to canonical saleId", text.includes("encodeURIComponent(ticket.saleId)") && text.includes("businessId"), list);
   check("I03A-017 list has aria label", text.includes("aria-label"), list);
 }
 
@@ -84,7 +119,9 @@ if (exists(pkgPath)) {
 }
 
 const ok = checks.every((item) => item.ok);
-const evidenceDir = path.join(appRoot, "evidence", "verifier-output");
+const evidenceDir = process.env.PRISMA_EVIDENCE_DIR
+  ? path.resolve(process.env.PRISMA_EVIDENCE_DIR)
+  : path.resolve(appRoot, "..", "..", "..", "tools", "_local", "evidence", "tablet-i03a");
 fs.mkdirSync(evidenceDir, { recursive: true });
 const report = {
   ok,

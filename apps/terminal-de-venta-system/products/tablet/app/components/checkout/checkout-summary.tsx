@@ -15,7 +15,7 @@ export function CheckoutSummary({ lines }: { lines: CartLine[] }) {
           <span>Resumen del ticket</span>
           <h2>{qty} piezas</h2>
         </div>
-        <a href="/pos">Editar ticket</a>
+        <a href="/shift">Ver turno antes de editar</a>
       </header>
       <div className={styles.summaryLines}>
         {lines.map((line) => (

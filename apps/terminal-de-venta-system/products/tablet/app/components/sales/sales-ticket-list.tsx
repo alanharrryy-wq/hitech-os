@@ -12,7 +12,7 @@ export function SalesTicketList({ tickets }: { tickets: SalesTodayTicket[] }) {
   return (
     <section className={styles.ticketList} aria-label="Tickets cerrados del día">
       {tickets.map((ticket) => {
-        const detailHref = `/sales/today/${encodeURIComponent(ticket.folio || ticket.saleId)}`;
+        const detailHref = `/sales/today/${encodeURIComponent(ticket.saleId)}?businessId=${encodeURIComponent(ticket.businessId)}`;
         return (
           <Link
             className={styles.ticketRow}

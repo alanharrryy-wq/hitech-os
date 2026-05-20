@@ -8,13 +8,15 @@ import { cartTotalCents, clearCartStorage, formatMoney, makeClientRequestId, rea
 import type { PaymentMethod } from "@/lib/pos/payment-state";
 import { paymentMethodLabel } from "@/lib/pos/payment-state";
 import { PosErrorBanner } from "@components/pos/pos-error-banner";
+import { decideCanSellFromRuntimeSnapshot } from "@/lib/operational-gate/can-sell";
+import { DEFAULT_TABLET_RUNTIME_SNAPSHOT, type TabletRuntimeSnapshot } from "@/lib/tablet-runtime-snapshot/shell-contract";
 import { PosSaleSuccess } from "@components/pos/pos-sale-success";
 import { CheckoutPaymentMethods } from "./checkout-payment-methods";
 import { CheckoutCashCalculator } from "./checkout-cash-calculator";
 import { CheckoutSummary } from "./checkout-summary";
 import styles from "./checkout.module.css";
 
-export function CheckoutScreen() {
+export function CheckoutScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }: { runtimeSnapshot?: TabletRuntimeSnapshot }) {
   const [lines, setLines] = useState<CartLine[]>([]);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
   const [receivedCents, setReceivedCents] = useState(0);
@@ -23,6 +25,7 @@ export function CheckoutScreen() {
   const [lastSale, setLastSale] = useState<CompletedSale | null>(null);
   const totalCents = useMemo(() => cartTotalCents(lines), [lines]);
   const cashIsShort = paymentMethod === "cash" && receivedCents > 0 && receivedCents < totalCents;
+  const gate = useMemo(() => decideCanSellFromRuntimeSnapshot(runtimeSnapshot), [runtimeSnapshot]);
 
   useEffect(() => {
     setLines(readCartFromStorage());
@@ -35,6 +38,10 @@ export function CheckoutScreen() {
     }
     if (cashIsShort) {
       setError("El efectivo recibido no alcanza para cubrir el total.");
+      return;
+    }
+    if (!gate.canCheckout) {
+      setError("Caja cerrada. Abre turno antes de cobrar; PRISMA Tablet no abre caja automáticamente.");
       return;
     }
     setState("loading");
@@ -66,6 +73,7 @@ export function CheckoutScreen() {
       status={<TabletShellStatusPill tone={state === "error" ? "danger" : state === "success" ? "ok" : "neutral"}>{state === "loading" ? "Cerrando ticket" : state === "success" ? "Ticket cerrado" : "Listo para cobrar"}</TabletShellStatusPill>}
       visualSurface="tablet-checkout"
       visualPreset="POS_TOUCH_REFERENCE"
+      runtimeSnapshot={runtimeSnapshot}
     >
       <div className={styles.checkoutGrid} data-prisma-vos-stage="00F_00I" data-prisma-vsurface="tablet-checkout" data-prisma-layer="surface">
         <CheckoutSummary lines={lines} />
@@ -78,12 +86,13 @@ export function CheckoutScreen() {
           <CheckoutPaymentMethods value={paymentMethod} onChange={setPaymentMethod} />
           {paymentMethod === "cash" ? <CheckoutCashCalculator totalCents={totalCents} receivedCents={receivedCents} onReceivedCents={setReceivedCents} /> : null}
           <PosErrorBanner error={error} />
-          <button className={styles.confirmButton} type="button" onClick={() => void completeSale()} disabled={!lines.length || state === "loading" || cashIsShort} data-prisma-component="CheckoutButton" aria-label="Confirmar cobro">
+          {!gate.canSell ? <PosErrorBanner error="Caja cerrada. Abre turno antes de cobrar." /> : null}
+          <button className={styles.confirmButton} type="button" onClick={() => void completeSale()} disabled={!lines.length || state === "loading" || cashIsShort || !gate.canCheckout} data-prisma-component="CheckoutButton" aria-label="Confirmar cobro">
             <span className={styles.visuallyHidden}>Confirmar cobro</span>
             <span>{state === "loading" ? "Cerrando venta..." : "COBRAR"}</span>
             <PrismaIcon name="receipt" size={20} />
           </button>
-          {!lines.length ? <a className={styles.backLink} href="/pos">Agregar productos para cobrar</a> : null}
+          {!lines.length ? <a className={styles.backLink} href={gate.actionHref}>{gate.canShowSellNavigation ? "Agregar productos para cobrar" : "Abrir turno para cobrar"}</a> : null}
         </section>
       </div>
       <PosSaleSuccess sale={lastSale} onNewSale={() => { setLastSale(null); setReceivedCents(0); }} />

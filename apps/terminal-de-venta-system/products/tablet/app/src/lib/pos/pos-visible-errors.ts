@@ -6,7 +6,7 @@ const ERROR_MESSAGES: Record<string, string> = {
   PRODUCT_NOT_FOUND: "No encontramos ese producto.",
   PRODUCT_INACTIVE: "Este producto está inactivo y no puede venderse.",
   INSUFFICIENT_STOCK: "Existencias insuficientes para este producto.",
-  SHIFT_NOT_OPEN: "No había caja abierta. PRISMA intentó abrir la caja local antes de generar ticket; si persiste, abre turno desde Caja.",
+  SHIFT_NOT_OPEN: "Caja cerrada. Abre turno antes de vender; PRISMA Tablet no abre caja automáticamente ni reintenta la venta.",
   TERMINAL_NOT_FOUND: "No se encontró la terminal configurada.",
   NETWORK_UNAVAILABLE: "No hay conexión disponible. La venta local puede continuar si el modo lo permite.",
   SYNC_PENDING: "Hay operaciones pendientes por enviar.",

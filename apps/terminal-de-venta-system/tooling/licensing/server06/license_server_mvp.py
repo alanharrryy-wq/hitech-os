@@ -24,7 +24,7 @@ VERSION = "0.6.0"
 SERVICE = "prisma-license-server-mvp"
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 3140
-DEFAULT_PLAN = "TABLET_PC_REQUIRED"
+DEFAULT_PLAN = "TABLET_PC_MANAGED"
 DEFAULT_CUSTOMER_ID = "cust_demo"
 DEFAULT_BUSINESS_ID = "biz_demo"
 DEFAULT_DEVICE_ID = "device_demo_tablet_01"
@@ -36,7 +36,7 @@ DEV_SECRET_FALLBACK = "PRISMA_LICENSE_SERVER_MVP_06_DEV_ONLY_NOT_FOR_PRODUCTION"
 PLAN_LIMITS = {
     "TABLET_SOLO": {"terminalLimit": 1, "branchLimit": 1},
     "TABLET_PRO": {"terminalLimit": 2, "branchLimit": 1},
-    "TABLET_PC_REQUIRED": {"terminalLimit": 6, "branchLimit": 3},
+    "TABLET_PC_MANAGED": {"terminalLimit": 6, "branchLimit": 3},
 }
 
 FEATURES_BY_PLAN = {
@@ -64,7 +64,7 @@ FEATURES_BY_PLAN = {
         "shift.open",
         "shift.close",
     ],
-    "TABLET_PC_REQUIRED": [
+    "TABLET_PC_MANAGED": [
         "pos.open",
         "pos.product.search",
         "pos.sale.create",

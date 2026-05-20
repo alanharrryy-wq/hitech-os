@@ -206,7 +206,7 @@ def demo_payload() -> dict[str, Any]:
         "customerId": "cust_demo",
         "businessId": "biz_demo",
         "deviceId": "device_demo_tablet_01",
-        "plan": "TABLET_PC_REQUIRED",
+        "plan": "TABLET_PC_MANAGED",
         "state": "active",
         "issuedAt": "2026-04-30T00:00:00.000Z",
         "validUntil": "2099-12-31T23:59:59.000Z",
@@ -315,7 +315,7 @@ function signPayload(payload) {
   return { payload, signature: { schemaVersion: "11D", algorithm: material.algorithm, keyId: material.keyId, value } };
 }
 if (require.main === module) {
-  const payload = { licenseId: "lic_dev_signed_local", plan: "TABLET_PC_REQUIRED", state: "active", issuedAt: new Date().toISOString() };
+  const payload = { licenseId: "lic_dev_signed_local", plan: "TABLET_PC_MANAGED", state: "active", issuedAt: new Date().toISOString() };
   process.stdout.write(JSON.stringify(signPayload(payload), null, 2) + "\n");
 }
 module.exports = { signPayload };

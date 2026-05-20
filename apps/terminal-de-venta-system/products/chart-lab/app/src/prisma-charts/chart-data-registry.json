@@ -1,217 +1,441 @@
 {
   "schemaVersion": "2026-05-12.chart-data-registry.v1",
   "generatedFrom": "real repo inventory",
-  "sourceModes": ["mock", "fixture", "recorded-real", "live-real"],
+  "sourceModes": [
+    "mock",
+    "fixture",
+    "recorded-real",
+    "live-real"
+  ],
   "charts": [
     {
       "chartId": "pc.causal-flow-ribbon",
       "surface": "pc",
-      "sourceMode": "mock",
-      "sourceLabel": "shared deterministic mock",
-      "source": "shared/prisma-charts/prismaChartMocks.ts#mockPcCharts.causalFlowRibbon",
+      "sourceMode": "recorded-real",
+      "sourceLabel": "partial governance read model from Tablet SQLite snapshot; PC/canonical DB optional and currently absent",
+      "source": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json#pc.causalFlowRibbon",
       "mockPath": "shared/prisma-charts/prismaChartMocks.ts",
       "adapterPath": "shared/prisma-charts/prismaChartAdapters.ts#causalFlowRibbonViewModel",
-      "requiredTablesOrViews": ["CausalChain", "CausalNode", "CausalLink", "ActionItem", "Evidence"],
-      "requiredFields": ["sourceMode", "confidence", "freshnessStatus", "generatedAt", "source"],
+      "requiredTablesOrViews": [
+        "CausalChain",
+        "CausalNode",
+        "CausalLink",
+        "ActionItem",
+        "Evidence"
+      ],
+      "requiredFields": [
+        "sourceMode",
+        "confidence",
+        "freshnessStatus",
+        "generatedAt",
+        "source"
+      ],
       "readiness": "partial",
       "confidence": 0.72,
-      "freshnessStatus": "mock",
-      "generatedAt": "2026-05-12T00:00:00.000-06:00"
+      "freshnessStatus": "partial/adapter-ready",
+      "generatedAt": "2026-05-19T00:41:36Z",
+      "fixturePath": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json",
+      "runtimeDataStatus": "partial/adapter-ready",
+      "runtimeWarning": "PC/canonical DB not found; PC governance charts are derived from the available Tablet SQLite snapshot."
     },
     {
       "chartId": "pc.operational-density-field",
       "surface": "pc",
-      "sourceMode": "mock",
-      "sourceLabel": "shared deterministic mock",
-      "source": "shared/prisma-charts/prismaChartMocks.ts#mockPcCharts.operationalDensityField",
+      "sourceMode": "recorded-real",
+      "sourceLabel": "partial governance read model from Tablet SQLite snapshot; PC/canonical DB optional and currently absent",
+      "source": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json#pc.operationalDensityField",
       "mockPath": "shared/prisma-charts/prismaChartMocks.ts",
       "adapterPath": "shared/prisma-charts/prismaChartAdapters.ts#operationalDensityFieldViewModel",
-      "requiredTablesOrViews": ["OperationalDensityBucket", "Alert", "Incident"],
-      "requiredFields": ["sourceMode", "confidence", "freshnessStatus", "generatedAt", "source"],
+      "requiredTablesOrViews": [
+        "OperationalDensityBucket",
+        "Alert",
+        "Incident"
+      ],
+      "requiredFields": [
+        "sourceMode",
+        "confidence",
+        "freshnessStatus",
+        "generatedAt",
+        "source"
+      ],
       "readiness": "partial",
       "confidence": 0.66,
-      "freshnessStatus": "mock",
-      "generatedAt": "2026-05-12T00:00:00.000-06:00"
+      "freshnessStatus": "partial/adapter-ready",
+      "generatedAt": "2026-05-19T00:41:36Z",
+      "fixturePath": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json",
+      "runtimeDataStatus": "partial/adapter-ready",
+      "runtimeWarning": "PC/canonical DB not found; PC governance charts are derived from the available Tablet SQLite snapshot."
+    },
+    {
+      "chartId": "ops.operational-density-heatmap",
+      "surface": "pc",
+      "sourceMode": "recorded-real",
+      "sourceLabel": "partial governance read model from Tablet SQLite snapshot; PC/canonical DB optional and currently absent",
+      "source": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json#pc.operationalDensityHeatmap",
+      "mockPath": "shared/prisma-charts/prismaChartMocks.ts",
+      "adapterPath": "shared/prisma-charts/prismaChartAdapters.ts#operationalDensityHeatmapViewModel",
+      "requiredTablesOrViews": [
+        "OperationalDensityBucket",
+        "Alert",
+        "Incident",
+        "ServiceHealthProbe"
+      ],
+      "requiredFields": [
+        "sourceMode",
+        "confidence",
+        "freshnessStatus",
+        "generatedAt",
+        "source"
+      ],
+      "readiness": "partial",
+      "confidence": 0.82,
+      "freshnessStatus": "partial/adapter-ready",
+      "generatedAt": "2026-05-19T00:41:36Z",
+      "fixturePath": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json",
+      "runtimeDataStatus": "partial/adapter-ready",
+      "runtimeWarning": "PC/canonical DB not found; PC governance charts are derived from the available Tablet SQLite snapshot."
     },
     {
       "chartId": "pc.service-dependency-graph",
       "surface": "pc",
-      "sourceMode": "mock",
-      "sourceLabel": "shared deterministic mock",
-      "source": "shared/prisma-charts/prismaChartMocks.ts#mockPcCharts.serviceDependencyGraph",
+      "sourceMode": "recorded-real",
+      "sourceLabel": "partial governance read model from Tablet SQLite snapshot; PC/canonical DB optional and currently absent",
+      "source": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json#pc.serviceDependencyGraph",
       "mockPath": "shared/prisma-charts/prismaChartMocks.ts",
       "adapterPath": "shared/prisma-charts/prismaChartAdapters.ts#serviceDependencyGraphViewModel",
-      "requiredTablesOrViews": ["Service", "ServiceDependency", "ServiceHealthProbe"],
-      "requiredFields": ["sourceMode", "confidence", "freshnessStatus", "generatedAt", "source"],
+      "requiredTablesOrViews": [
+        "Service",
+        "ServiceDependency",
+        "ServiceHealthProbe"
+      ],
+      "requiredFields": [
+        "sourceMode",
+        "confidence",
+        "freshnessStatus",
+        "generatedAt",
+        "source"
+      ],
       "readiness": "partial",
       "confidence": 0.7,
-      "freshnessStatus": "mock",
-      "generatedAt": "2026-05-12T00:00:00.000-06:00"
+      "freshnessStatus": "partial/adapter-ready",
+      "generatedAt": "2026-05-19T00:41:36Z",
+      "fixturePath": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json",
+      "runtimeDataStatus": "partial/adapter-ready",
+      "runtimeWarning": "PC/canonical DB not found; PC governance charts are derived from the available Tablet SQLite snapshot."
     },
     {
       "chartId": "pc.inventory-risk-treemap",
       "surface": "pc",
-      "sourceMode": "mock",
-      "sourceLabel": "shared deterministic mock",
-      "source": "shared/prisma-charts/prismaChartMocks.ts#mockPcCharts.inventoryRiskTreemap",
+      "sourceMode": "recorded-real",
+      "sourceLabel": "partial governance read model from Tablet SQLite snapshot; PC/canonical DB optional and currently absent",
+      "source": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json#pc.inventoryRiskTreemap",
       "mockPath": "shared/prisma-charts/prismaChartMocks.ts",
       "adapterPath": "shared/prisma-charts/prismaChartAdapters.ts#inventoryRiskTreemapViewModel",
-      "requiredTablesOrViews": ["InventoryRiskSnapshot", "Product", "StockSnapshot", "ReplenishmentSignal"],
-      "requiredFields": ["sourceMode", "confidence", "freshnessStatus", "generatedAt", "source"],
+      "requiredTablesOrViews": [
+        "InventoryRiskSnapshot",
+        "Product",
+        "StockSnapshot",
+        "ReplenishmentSignal"
+      ],
+      "requiredFields": [
+        "sourceMode",
+        "confidence",
+        "freshnessStatus",
+        "generatedAt",
+        "source"
+      ],
       "readiness": "partial",
       "confidence": 0.58,
-      "freshnessStatus": "mock",
-      "generatedAt": "2026-05-12T00:00:00.000-06:00"
+      "freshnessStatus": "partial/adapter-ready",
+      "generatedAt": "2026-05-19T00:41:36Z",
+      "fixturePath": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json",
+      "runtimeDataStatus": "partial/adapter-ready",
+      "runtimeWarning": "PC/canonical DB not found; PC governance charts are derived from the available Tablet SQLite snapshot."
     },
     {
       "chartId": "pc.decision-ledger-timeline",
       "surface": "pc",
-      "sourceMode": "mock",
-      "sourceLabel": "shared deterministic mock",
-      "source": "shared/prisma-charts/prismaChartMocks.ts#mockPcCharts.decisionLedgerTimeline",
+      "sourceMode": "recorded-real",
+      "sourceLabel": "partial governance read model from Tablet SQLite snapshot; PC/canonical DB optional and currently absent",
+      "source": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json#pc.decisionLedgerTimeline",
       "mockPath": "shared/prisma-charts/prismaChartMocks.ts",
       "adapterPath": "shared/prisma-charts/prismaChartAdapters.ts#decisionLedgerTimelineViewModel",
-      "requiredTablesOrViews": ["DecisionLedger", "DecisionEvidence", "Evidence", "Incident"],
-      "requiredFields": ["sourceMode", "confidence", "freshnessStatus", "generatedAt", "source"],
+      "requiredTablesOrViews": [
+        "DecisionLedger",
+        "DecisionEvidence",
+        "Evidence",
+        "Incident"
+      ],
+      "requiredFields": [
+        "sourceMode",
+        "confidence",
+        "freshnessStatus",
+        "generatedAt",
+        "source"
+      ],
       "readiness": "partial",
       "confidence": 0.64,
-      "freshnessStatus": "mock",
-      "generatedAt": "2026-05-12T00:00:00.000-06:00"
+      "freshnessStatus": "partial/adapter-ready",
+      "generatedAt": "2026-05-19T00:41:36Z",
+      "fixturePath": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json",
+      "runtimeDataStatus": "partial/adapter-ready",
+      "runtimeWarning": "PC/canonical DB not found; PC governance charts are derived from the available Tablet SQLite snapshot."
     },
     {
       "chartId": "pc.financial-operational-waterfall",
       "surface": "pc",
-      "sourceMode": "mock",
-      "sourceLabel": "shared deterministic mock",
-      "source": "shared/prisma-charts/prismaChartMocks.ts#mockPcCharts.financialOperationalWaterfall",
+      "sourceMode": "recorded-real",
+      "sourceLabel": "partial governance read model from Tablet SQLite snapshot; PC/canonical DB optional and currently absent",
+      "source": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json#pc.financialOperationalWaterfall",
       "mockPath": "shared/prisma-charts/prismaChartMocks.ts",
       "adapterPath": "shared/prisma-charts/prismaChartAdapters.ts#financialOperationalWaterfallViewModel",
-      "requiredTablesOrViews": ["FinancialImpactLedger", "Sale", "SaleReturn", "Payment", "ProductCostHistory"],
-      "requiredFields": ["sourceMode", "confidence", "freshnessStatus", "generatedAt", "source"],
+      "requiredTablesOrViews": [
+        "FinancialImpactLedger",
+        "Sale",
+        "SaleReturn",
+        "Payment",
+        "ProductCostHistory"
+      ],
+      "requiredFields": [
+        "sourceMode",
+        "confidence",
+        "freshnessStatus",
+        "generatedAt",
+        "source"
+      ],
       "readiness": "partial",
       "confidence": 0.55,
-      "freshnessStatus": "mock",
-      "generatedAt": "2026-05-12T00:00:00.000-06:00"
+      "freshnessStatus": "partial/adapter-ready",
+      "generatedAt": "2026-05-19T00:41:36Z",
+      "fixturePath": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json",
+      "runtimeDataStatus": "partial/adapter-ready",
+      "runtimeWarning": "PC/canonical DB not found; PC governance charts are derived from the available Tablet SQLite snapshot."
     },
     {
       "chartId": "tablet.shift-pulse-strip",
       "surface": "tablet",
-      "sourceMode": "mock",
-      "sourceLabel": "shared deterministic mock",
-      "source": "shared/prisma-charts/prismaChartMocks.ts#mockTabletCharts.shiftPulseStrip",
+      "sourceMode": "recorded-real",
+      "sourceLabel": "read-only Tablet SQLite runtime snapshot",
+      "source": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json#tablet.shiftPulseStrip",
       "mockPath": "shared/prisma-charts/prismaChartMocks.ts",
       "adapterPath": "shared/prisma-charts/prismaChartAdapters.ts#shiftPulseStripViewModel",
-      "requiredTablesOrViews": ["ShiftPulseBucket", "Sale", "SaleLine", "CashSession", "CashMovement"],
-      "requiredFields": ["sourceMode", "confidence", "freshnessStatus", "generatedAt", "source"],
+      "requiredTablesOrViews": [
+        "ShiftPulseBucket",
+        "Sale",
+        "SaleLine",
+        "CashSession",
+        "CashMovement"
+      ],
+      "requiredFields": [
+        "sourceMode",
+        "confidence",
+        "freshnessStatus",
+        "generatedAt",
+        "source"
+      ],
       "readiness": "partial",
       "confidence": 0.74,
-      "freshnessStatus": "mock",
-      "generatedAt": "2026-05-12T00:00:00.000-06:00"
+      "freshnessStatus": "partial/adapter-ready",
+      "generatedAt": "2026-05-19T00:41:36Z",
+      "fixturePath": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json",
+      "runtimeDataStatus": "partial/adapter-ready",
+      "runtimeWarning": "PC/canonical DB not found; PC governance charts are derived from the available Tablet SQLite snapshot."
     },
     {
       "chartId": "tablet.sync-outbox-status-matrix",
       "surface": "tablet",
-      "sourceMode": "mock",
-      "sourceLabel": "shared deterministic mock",
-      "source": "shared/prisma-charts/prismaChartMocks.ts#mockTabletCharts.syncOutboxStatusMatrix",
+      "sourceMode": "recorded-real",
+      "sourceLabel": "read-only Tablet SQLite runtime snapshot",
+      "source": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json#tablet.syncOutboxStatusMatrix",
       "mockPath": "shared/prisma-charts/prismaChartMocks.ts",
       "adapterPath": "shared/prisma-charts/prismaChartAdapters.ts#syncOutboxMatrixViewModel",
-      "requiredTablesOrViews": ["SyncOutboxStatusBucket", "OutboxEvent", "SyncAttempt"],
-      "requiredFields": ["sourceMode", "confidence", "freshnessStatus", "generatedAt", "source"],
+      "requiredTablesOrViews": [
+        "SyncOutboxStatusBucket",
+        "OutboxEvent",
+        "SyncAttempt"
+      ],
+      "requiredFields": [
+        "sourceMode",
+        "confidence",
+        "freshnessStatus",
+        "generatedAt",
+        "source"
+      ],
       "readiness": "partial",
       "confidence": 0.68,
-      "freshnessStatus": "mock",
-      "generatedAt": "2026-05-12T00:00:00.000-06:00"
+      "freshnessStatus": "partial/adapter-ready",
+      "generatedAt": "2026-05-19T00:41:36Z",
+      "fixturePath": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json",
+      "runtimeDataStatus": "partial/adapter-ready",
+      "runtimeWarning": "PC/canonical DB not found; PC governance charts are derived from the available Tablet SQLite snapshot."
     },
     {
       "chartId": "mobile.owner-pulse-timeline",
       "surface": "mobile",
-      "sourceMode": "mock",
-      "sourceLabel": "shared deterministic mock",
-      "source": "shared/prisma-charts/prismaChartMocks.ts#mockMobileCharts.ownerPulseTimeline",
+      "sourceMode": "recorded-real",
+      "sourceLabel": "partial supervision read model from Tablet SQLite snapshot; PC/canonical optional and currently unknown",
+      "source": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json#mobile.ownerPulseTimeline",
       "mockPath": "shared/prisma-charts/prismaChartMocks.ts",
       "adapterPath": "shared/prisma-charts/prismaChartAdapters.ts#ownerPulseTimelineViewModel",
-      "requiredTablesOrViews": ["OwnerHealthHistory", "User", "ActionItem"],
-      "requiredFields": ["sourceMode", "confidence", "freshnessStatus", "generatedAt", "source"],
+      "requiredTablesOrViews": [
+        "OwnerHealthHistory",
+        "User",
+        "ActionItem"
+      ],
+      "requiredFields": [
+        "sourceMode",
+        "confidence",
+        "freshnessStatus",
+        "generatedAt",
+        "source"
+      ],
       "readiness": "partial",
       "confidence": 0.61,
-      "freshnessStatus": "mock",
-      "generatedAt": "2026-05-12T00:00:00.000-06:00"
+      "freshnessStatus": "partial/adapter-ready",
+      "generatedAt": "2026-05-19T00:41:36Z",
+      "fixturePath": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json",
+      "runtimeDataStatus": "partial/adapter-ready",
+      "runtimeWarning": "PC/canonical DB not found; PC governance charts are derived from the available Tablet SQLite snapshot."
     },
     {
       "chartId": "mobile.action-inbox-priority-stack",
       "surface": "mobile",
-      "sourceMode": "mock",
-      "sourceLabel": "shared deterministic mock",
-      "source": "shared/prisma-charts/prismaChartMocks.ts#mockMobileCharts.actionInboxPriorityStack",
+      "sourceMode": "recorded-real",
+      "sourceLabel": "partial supervision read model from Tablet SQLite snapshot; PC/canonical optional and currently unknown",
+      "source": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json#mobile.actionInboxPriorityStack",
       "mockPath": "shared/prisma-charts/prismaChartMocks.ts",
       "adapterPath": "shared/prisma-charts/prismaChartAdapters.ts#actionInboxPriorityStackViewModel",
-      "requiredTablesOrViews": ["ActionItem", "Alert", "InventoryRiskSnapshot", "DataSourceFreshness"],
-      "requiredFields": ["sourceMode", "confidence", "freshnessStatus", "generatedAt", "source"],
+      "requiredTablesOrViews": [
+        "ActionItem",
+        "Alert",
+        "InventoryRiskSnapshot",
+        "DataSourceFreshness"
+      ],
+      "requiredFields": [
+        "sourceMode",
+        "confidence",
+        "freshnessStatus",
+        "generatedAt",
+        "source"
+      ],
       "readiness": "partial",
       "confidence": 0.69,
-      "freshnessStatus": "mock",
-      "generatedAt": "2026-05-12T00:00:00.000-06:00"
+      "freshnessStatus": "partial/adapter-ready",
+      "generatedAt": "2026-05-19T00:41:36Z",
+      "fixturePath": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json",
+      "runtimeDataStatus": "partial/adapter-ready",
+      "runtimeWarning": "PC/canonical DB not found; PC governance charts are derived from the available Tablet SQLite snapshot."
     },
     {
       "chartId": "mobile.health-radar-compact",
       "surface": "mobile",
-      "sourceMode": "mock",
-      "sourceLabel": "shared deterministic mock",
-      "source": "shared/prisma-charts/prismaChartMocks.ts#mockMobileCharts.healthRadarCompact",
+      "sourceMode": "recorded-real",
+      "sourceLabel": "partial supervision read model from Tablet SQLite snapshot; PC/canonical optional and currently unknown",
+      "source": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json#mobile.healthRadarCompact",
       "mockPath": "shared/prisma-charts/prismaChartMocks.ts",
       "adapterPath": "shared/prisma-charts/prismaChartAdapters.ts#healthRadarCompactViewModel",
-      "requiredTablesOrViews": ["HealthDimensionSnapshot", "DataSourceFreshness", "SyncAttempt"],
-      "requiredFields": ["sourceMode", "confidence", "freshnessStatus", "generatedAt", "source"],
+      "requiredTablesOrViews": [
+        "HealthDimensionSnapshot",
+        "DataSourceFreshness",
+        "SyncAttempt"
+      ],
+      "requiredFields": [
+        "sourceMode",
+        "confidence",
+        "freshnessStatus",
+        "generatedAt",
+        "source"
+      ],
       "readiness": "partial",
       "confidence": 0.67,
-      "freshnessStatus": "mock",
-      "generatedAt": "2026-05-12T00:00:00.000-06:00"
+      "freshnessStatus": "partial/adapter-ready",
+      "generatedAt": "2026-05-19T00:41:36Z",
+      "fixturePath": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json",
+      "runtimeDataStatus": "partial/adapter-ready",
+      "runtimeWarning": "PC/canonical DB not found; PC governance charts are derived from the available Tablet SQLite snapshot."
     },
     {
       "chartId": "mobile.freshness-beacon-grid",
       "surface": "mobile",
-      "sourceMode": "mock",
-      "sourceLabel": "shared deterministic mock",
-      "source": "shared/prisma-charts/prismaChartMocks.ts#mockMobileCharts.freshnessBeaconGrid",
+      "sourceMode": "recorded-real",
+      "sourceLabel": "partial supervision read model from Tablet SQLite snapshot; PC/canonical optional and currently unknown",
+      "source": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json#mobile.freshnessBeaconGrid",
       "mockPath": "shared/prisma-charts/prismaChartMocks.ts",
       "adapterPath": "shared/prisma-charts/prismaChartAdapters.ts#freshnessBeaconGridViewModel",
-      "requiredTablesOrViews": ["DataSourceFreshness", "DeviceHeartbeat", "SyncCheckpoint"],
-      "requiredFields": ["sourceMode", "confidence", "freshnessStatus", "generatedAt", "source"],
+      "requiredTablesOrViews": [
+        "DataSourceFreshness",
+        "DeviceHeartbeat",
+        "SyncCheckpoint"
+      ],
+      "requiredFields": [
+        "sourceMode",
+        "confidence",
+        "freshnessStatus",
+        "generatedAt",
+        "source"
+      ],
       "readiness": "partial",
       "confidence": 0.71,
-      "freshnessStatus": "mock",
-      "generatedAt": "2026-05-12T00:00:00.000-06:00"
+      "freshnessStatus": "partial/adapter-ready",
+      "generatedAt": "2026-05-19T00:41:36Z",
+      "fixturePath": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json",
+      "runtimeDataStatus": "partial/adapter-ready",
+      "runtimeWarning": "PC/canonical DB not found; PC governance charts are derived from the available Tablet SQLite snapshot."
     },
     {
       "chartId": "mobile.incident-spark-cards",
       "surface": "mobile",
-      "sourceMode": "mock",
-      "sourceLabel": "shared deterministic mock",
-      "source": "shared/prisma-charts/prismaChartMocks.ts#mockMobileCharts.incidentSparkCards",
+      "sourceMode": "recorded-real",
+      "sourceLabel": "partial supervision read model from Tablet SQLite snapshot; PC/canonical optional and currently unknown",
+      "source": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json#mobile.incidentSparkCards",
       "mockPath": "shared/prisma-charts/prismaChartMocks.ts",
       "adapterPath": "shared/prisma-charts/prismaChartAdapters.ts#incidentSparkCardsViewModel",
-      "requiredTablesOrViews": ["IncidentTrendBucket", "Incident", "Alert"],
-      "requiredFields": ["sourceMode", "confidence", "freshnessStatus", "generatedAt", "source"],
+      "requiredTablesOrViews": [
+        "IncidentTrendBucket",
+        "Incident",
+        "Alert"
+      ],
+      "requiredFields": [
+        "sourceMode",
+        "confidence",
+        "freshnessStatus",
+        "generatedAt",
+        "source"
+      ],
       "readiness": "partial",
       "confidence": 0.63,
-      "freshnessStatus": "mock",
-      "generatedAt": "2026-05-12T00:00:00.000-06:00"
+      "freshnessStatus": "partial/adapter-ready",
+      "generatedAt": "2026-05-19T00:41:36Z",
+      "fixturePath": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json",
+      "runtimeDataStatus": "partial/adapter-ready",
+      "runtimeWarning": "PC/canonical DB not found; PC governance charts are derived from the available Tablet SQLite snapshot."
     },
     {
       "chartId": "mobile.confidence-meter-bands",
       "surface": "mobile",
-      "sourceMode": "mock",
-      "sourceLabel": "shared deterministic mock",
-      "source": "shared/prisma-charts/prismaChartMocks.ts#mockMobileCharts.confidenceMeterBands",
+      "sourceMode": "recorded-real",
+      "sourceLabel": "partial supervision read model from Tablet SQLite snapshot; PC/canonical optional and currently unknown",
+      "source": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json#mobile.confidenceMeterBands",
       "mockPath": "shared/prisma-charts/prismaChartMocks.ts",
       "adapterPath": "shared/prisma-charts/prismaChartAdapters.ts#confidenceMeterBandsViewModel",
-      "requiredTablesOrViews": ["ConfidenceMetricSnapshot", "DataSourceFreshness"],
-      "requiredFields": ["sourceMode", "confidence", "freshnessStatus", "generatedAt", "source"],
+      "requiredTablesOrViews": [
+        "ConfidenceMetricSnapshot",
+        "DataSourceFreshness"
+      ],
+      "requiredFields": [
+        "sourceMode",
+        "confidence",
+        "freshnessStatus",
+        "generatedAt",
+        "source"
+      ],
       "readiness": "partial",
       "confidence": 0.65,
-      "freshnessStatus": "mock",
-      "generatedAt": "2026-05-12T00:00:00.000-06:00"
+      "freshnessStatus": "partial/adapter-ready",
+      "generatedAt": "2026-05-19T00:41:36Z",
+      "fixturePath": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json",
+      "runtimeDataStatus": "partial/adapter-ready",
+      "runtimeWarning": "PC/canonical DB not found; PC governance charts are derived from the available Tablet SQLite snapshot."
     }
   ]
 }

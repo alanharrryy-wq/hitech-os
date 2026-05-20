@@ -3,6 +3,8 @@ import styles from "./license-ui.module.css";
 type RefreshStatus = {
   state: string;
   enabled: boolean;
+  configurationState?: string;
+  operationalDecision?: string;
   lastRefreshAt: string | null;
   lastSuccessAt: string | null;
   lastFailureAt: string | null;
@@ -11,10 +13,32 @@ type RefreshStatus = {
   plan: string | null;
 };
 
+function refreshStateLabel(state: string) {
+  const labels: Record<string, string> = {
+    refresh_disabled: "Refresh remoto no configurado",
+    missing_server_url: "Servidor remoto no configurado",
+    missing_device_id: "Device ID no configurado",
+    configured: "Configurado",
+    disabled: "Refresh remoto no configurado",
+    never_refreshed: "Sin refresh remoto todavía",
+    fresh: "Refresh remoto vigente",
+    stale: "Refresh remoto pendiente",
+    refresh_failed: "Refresh remoto falló",
+    offline_grace: "Gracia offline activa",
+    revoked: "Licencia revocada",
+    suspended: "Licencia suspendida"
+  };
+  return labels[state] ?? "Refresh requiere revisión";
+}
+
+function visibleValue(value: string | null | undefined, fallback: string) {
+  return value && value.trim() ? value : fallback;
+}
+
 export function LicenseRefreshPanel({ initialStatus }: { initialStatus: RefreshStatus }) {
   const message = initialStatus.enabled
     ? "Refresh remoto disponible si el servidor de licencias está configurado."
-    : "Refresh remoto deshabilitado por configuración local.";
+    : "Refresh remoto no configurado. La operación local continúa si la licencia local es válida.";
 
   return (
     <section className={styles.card}>
@@ -23,16 +47,17 @@ export function LicenseRefreshPanel({ initialStatus }: { initialStatus: RefreshS
       <p className={styles.copy}>{message}</p>
 
       <div className={styles.metricGrid}>
-        <Metric label="Estado" value={initialStatus.state} />
+        <Metric label="Estado" value={refreshStateLabel(initialStatus.state)} />
         <Metric label="Habilitado" value={initialStatus.enabled ? "sí" : "no"} />
+        <Metric label="Configuración" value={refreshStateLabel(initialStatus.configurationState ?? initialStatus.state)} />
         <Metric label="Último intento" value={initialStatus.lastRefreshAt ?? "nunca"} />
         <Metric label="Último éxito" value={initialStatus.lastSuccessAt ?? "nunca"} />
         <Metric label="Último fallo" value={initialStatus.lastFailureAt ?? "nunca"} />
-        <Metric label="Plan" value={initialStatus.plan ?? "n/a"} />
+        <Metric label="Plan" value={visibleValue(initialStatus.plan, "Sin licencia local")} />
       </div>
 
       {initialStatus.lastError ? (
-        <div className={styles.warning}>Error: {initialStatus.lastError}</div>
+        <div className={styles.warning}>Refresh remoto falló: {initialStatus.lastError}</div>
       ) : null}
 
       <form action="/api/license/refresh" method="post" className={styles.refreshForm}>

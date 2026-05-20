@@ -67,13 +67,17 @@ export type CompleteLocalSaleResult = {
   businessId: string;
   terminalId: string;
   cashSessionId: string | null;
+  clientRequestId: string | null;
   cashier: string;
+  subtotalCents: number;
+  discountCents: number;
   totalCents: number;
   paymentMethod: PosPaymentMethod;
   cashReceivedCents: number | null;
   changeCents: number;
   status: "COMPLETED";
   createdAt: Date;
+  completedAt: Date | null;
   lines: PosSaleLineResult[];
   events: PosEngineEvent[];
 };

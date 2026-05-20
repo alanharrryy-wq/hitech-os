@@ -1,6 +1,7 @@
 import type { TabletRuntimeSnapshot } from "@/lib/tablet-runtime-snapshot/shell-contract";
 import { buildTabletHomeViewModel } from "@/lib/tablet-home/home-view-model";
 import { TabletRuntimePanel } from "@components/tablet-runtime/tablet-runtime-panel";
+import { decideCanSellFromRuntimeSnapshot } from "@/lib/operational-gate/can-sell";
 import styles from "./tablet-home.module.css";
 
 type Props = {
@@ -13,12 +14,13 @@ function pendingCount(snapshot: TabletRuntimeSnapshot) {
 
 export function TabletHomeScreen({ snapshot }: Props) {
   const vm = buildTabletHomeViewModel(snapshot);
-  const shiftOpen = snapshot.shift.state === "open";
+  const gate = decideCanSellFromRuntimeSnapshot(snapshot);
+  const shiftOpen = gate.canSell;
   const pending = pendingCount(snapshot);
 
   const workflowSteps = [
     { step: "1", title: shiftOpen ? "Turno abierto" : "Abrir turno", description: shiftOpen ? "Caja lista para operar con corte trazable." : "Prepara caja antes de vender para que tickets y corte salgan limpios.", href: "/shift", label: shiftOpen ? "Ver turno" : "Abrir turno", tone: shiftOpen ? "ok" : "warn" },
-    { step: "2", title: "Vender", description: "Busca, escanea, arma el ticket y cobra sin salir del flujo POS.", href: "/pos", label: "Ir a vender", tone: "ok" },
+    { step: "2", title: shiftOpen ? "Vender" : "Caja cerrada", description: shiftOpen ? "Busca, escanea, arma el ticket y cobra sin salir del flujo POS." : gate.detail, href: shiftOpen ? "/pos" : "/shift", label: shiftOpen ? "Ir a vender" : "Abrir turno", tone: shiftOpen ? "ok" : "warn" },
     { step: "3", title: "Revisar tickets", description: "Consulta ventas cerradas, detalle y devoluciones cuando aplique.", href: "/sales/today", label: "Ventas de hoy", tone: "neutral" },
     { step: "4", title: "Cerrar o exportar", description: "Cierra turno, revisa pendientes y exporta evidencia si hace falta.", href: "/offline", label: "Soporte", tone: pending > 0 ? "warn" : "neutral" }
   ];

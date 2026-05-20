@@ -1,4 +1,5 @@
 export type LicenseRefreshStateCode =
+  | "refresh_disabled"
   | "disabled"
   | "never_refreshed"
   | "fresh"
@@ -11,6 +12,8 @@ export type LicenseRefreshStateCode =
 export type LicenseRefreshState = {
   state: LicenseRefreshStateCode;
   enabled: boolean;
+  configurationState: "configured" | "refresh_disabled" | "missing_server_url" | "missing_device_id";
+  operationalDecision: "informational" | "refresh_available" | "refresh_failed" | "license_blocking";
   lastRefreshAt: string | null;
   lastSuccessAt: string | null;
   lastFailureAt: string | null;
@@ -29,8 +32,10 @@ export type LicenseRefreshResult = {
 
 export function defaultRefreshState(enabled = false): LicenseRefreshState {
   return {
-    state: enabled ? "never_refreshed" : "disabled",
+    state: enabled ? "never_refreshed" : "refresh_disabled",
     enabled,
+    configurationState: enabled ? "configured" : "refresh_disabled",
+    operationalDecision: enabled ? "refresh_available" : "informational",
     lastRefreshAt: null,
     lastSuccessAt: null,
     lastFailureAt: null,
