@@ -414,7 +414,7 @@ def verify_envelope(envelope: Mapping[str, Any], material: SigningMaterial) -> t
         return False, f"verify_error:{exc}"
 
 
-def sample_license(plan: str = "TABLET_PC_REQUIRED", state: str = "active") -> dict[str, Any]:
+def sample_license(plan: str = "TABLET_PC_MANAGED", state: str = "active") -> dict[str, Any]:
     return {
         "schemaVersion": "1.0.0",
         "licenseId": f"lic_server11_{secrets.token_hex(8)}",
@@ -892,7 +892,7 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("sign-payload", help="Sign a payload JSON or generated sample license.")
     p.add_argument("--payload", default=None, help="Path to JSON license payload.")
     p.add_argument("--output", default=None, help="Output signed envelope JSON.")
-    p.add_argument("--plan", default="TABLET_PC_REQUIRED")
+    p.add_argument("--plan", default="TABLET_PC_MANAGED")
     p.add_argument("--state", default="active")
     p.add_argument("--env", default="development", choices=["development", "staging", "production"])
     p.set_defaults(func=command_sign_payload)
@@ -904,7 +904,7 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("activate-and-sign", help="Call server06 activate then sign returned license.")
     p.add_argument("--base-url", default=DEFAULT_BASE_URL)
     p.add_argument("--timeout", type=float, default=8.0)
-    p.add_argument("--plan", default="TABLET_PC_REQUIRED")
+    p.add_argument("--plan", default="TABLET_PC_MANAGED")
     p.add_argument("--device-id", default="device_server11_cli")
     p.add_argument("--terminal-id", default="terminal_server11_cli")
     p.add_argument("--business-id", default="biz_demo")
@@ -926,7 +926,7 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("smoke", help="Run deterministic signing smoke.")
     p.add_argument("--base-url", default=DEFAULT_BASE_URL)
     p.add_argument("--timeout", type=float, default=8.0)
-    p.add_argument("--plan", default="TABLET_PC_REQUIRED")
+    p.add_argument("--plan", default="TABLET_PC_MANAGED")
     p.add_argument("--http", action="store_true", help="Require HTTP activate+sign against server06.")
     p.set_defaults(func=command_smoke)
 

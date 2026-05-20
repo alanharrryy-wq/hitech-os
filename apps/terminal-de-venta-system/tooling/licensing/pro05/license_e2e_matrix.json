@@ -26,8 +26,8 @@
       "expected": "allow"
     },
     {
-      "id": "tablet_pc_required_dashboard",
-      "plan": "TABLET_PC_REQUIRED",
+      "id": "tablet_pc_managed_dashboard",
+      "plan": "TABLET_PC_MANAGED",
       "state": "active",
       "surface": "pc",
       "feature": "pc.dashboard.view",
@@ -51,7 +51,7 @@
     },
     {
       "id": "revoked_extras",
-      "plan": "TABLET_PC_REQUIRED",
+      "plan": "TABLET_PC_MANAGED",
       "state": "revoked",
       "surface": "pc",
       "feature": "pc.dashboard.view",
@@ -59,7 +59,7 @@
     },
     {
       "id": "tampered_signature",
-      "plan": "TABLET_PC_REQUIRED",
+      "plan": "TABLET_PC_MANAGED",
       "state": "invalid",
       "surface": "shared",
       "feature": "signature.verify",

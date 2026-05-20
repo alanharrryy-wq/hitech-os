@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-const crypto = require("node:crypto");
-const fs = require("node:fs");
-const path = require("node:path");
+import crypto from "node:crypto";
+import fs from "node:fs";
+import path from "node:path";
 const PUBLIC_KEY = "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA6O5Ql5/3UKOFfaMVZlhPw9+REGHkdNKjHXnW48eRzeg=\n-----END PUBLIC KEY-----\n";
 function canonical(value) {
   if (value === null) return "null";

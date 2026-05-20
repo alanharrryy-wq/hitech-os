@@ -33,7 +33,7 @@ REQUIRED_FILES = [
 PLAN_EXPECTATIONS = {
     "TABLET_SOLO": {"dashboard": 403},
     "TABLET_PRO": {"dashboard": 403},
-    "TABLET_PC_REQUIRED": {"dashboard": 200},
+    "TABLET_PC_MANAGED": {"dashboard": 200},
     "EXPIRED": {"dashboard": 403},
     "SUSPENDED": {"dashboard": 403},
     "REVOKED": {"dashboard": 403},
@@ -218,7 +218,7 @@ def live_smoke(ctx: Context, expect_dashboard: int = 200) -> None:
 def full_check(ctx: Context, ensure_running: bool) -> None:
     self_check(ctx)
     core_build_gates(ctx)
-    set_demo_license(ctx, "TABLET_PC_REQUIRED")
+    set_demo_license(ctx, "TABLET_PC_MANAGED")
     if ensure_running:
         start_dev_servers_if_needed(ctx)
     live_smoke(ctx, expect_dashboard=200)

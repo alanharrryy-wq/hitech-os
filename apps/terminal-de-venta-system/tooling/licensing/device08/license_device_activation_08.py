@@ -17,7 +17,7 @@ PACKAGE = "PRISMA_LICENSE_DEVICE_ACTIVATION_HARDENING_08"
 PLAN_LIMITS = {
     "TABLET_SOLO": {"terminalLimit": 1, "branchLimit": 1},
     "TABLET_PRO": {"terminalLimit": 2, "branchLimit": 1},
-    "TABLET_PC_REQUIRED": {"terminalLimit": 6, "branchLimit": 3},
+    "TABLET_PC_MANAGED": {"terminalLimit": 6, "branchLimit": 3},
 }
 
 

@@ -87,9 +87,9 @@ LICENSE_FIXTURE_CANDIDATES = {
         "tooling/licensing/fixtures/tablet-pro.active.signed.license.json",
         "tooling/productization/examples/licenses/tablet-pro.active.signed.license.json",
     ],
-    "TABLET_PC_REQUIRED": [
-        "tooling/licensing/fixtures/tablet-pc-required.active.signed.license.json",
-        "tooling/productization/examples/licenses/tablet-pc-required.active.signed.license.json",
+    "TABLET_PC_MANAGED": [
+        "tooling/licensing/fixtures/tablet-pc-managed.active.signed.license.json",
+        "tooling/productization/examples/licenses/tablet-pc-managed.active.signed.license.json",
     ],
     "EXPIRED": [
         "tooling/licensing/fixtures/expired.signed.license.json",
