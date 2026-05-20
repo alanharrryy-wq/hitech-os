@@ -39,6 +39,9 @@ export function LicenseRefreshPanel({ initialStatus }: { initialStatus: RefreshS
   const message = initialStatus.enabled
     ? "Refresh remoto disponible si el servidor de licencias está configurado."
     : "Refresh remoto no configurado. La operación local continúa si la licencia local es válida.";
+  const lastErrorMessage = initialStatus.lastError
+    ? "No se pudo refrescar licencia remota. Se conserva política local vigente."
+    : null;
 
   return (
     <section className={styles.card}>
@@ -56,15 +59,25 @@ export function LicenseRefreshPanel({ initialStatus }: { initialStatus: RefreshS
         <Metric label="Plan" value={visibleValue(initialStatus.plan, "Sin licencia local")} />
       </div>
 
-      {initialStatus.lastError ? (
-        <div className={styles.warning}>Refresh remoto falló: {initialStatus.lastError}</div>
+      {lastErrorMessage ? (
+        <div className={styles.warning}>{lastErrorMessage} Detalle: {initialStatus.lastError}</div>
       ) : null}
 
-      <form action="/api/license/refresh" method="post" className={styles.refreshForm}>
-        <button type="submit" className={styles.primaryButton}>
-          Actualizar licencia
-        </button>
-      </form>
+      {initialStatus.enabled ? (
+        <form action="/api/license/refresh" method="post" className={styles.refreshForm}>
+          <button type="submit" className={styles.primaryButton}>
+            Actualizar licencia
+          </button>
+        </form>
+      ) : (
+        <div className={styles.refreshActions} data-prisma-refresh-state="disabled">
+          <a className={styles.primaryLink} href="http://127.0.0.1:3150/#license-ops">Importar licencia local</a>
+          <a className={styles.secondaryLink} href="http://127.0.0.1:3150/#license-ops">Configurar refresh remoto</a>
+          <button className={styles.disabledButton} type="button" disabled>
+            Actualizar licencia
+          </button>
+        </div>
+      )}
 
       <p className={styles.helper}>
         El refresh remoto es opcional. Si no hay servidor configurado, la licencia local firmada sigue siendo la fuente de operación.

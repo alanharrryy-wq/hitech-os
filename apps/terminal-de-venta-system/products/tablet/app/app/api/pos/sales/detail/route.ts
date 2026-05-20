@@ -1,6 +1,6 @@
 import { toPosApiError } from "@/server/pos-api/errors";
 import { fail, ok } from "@/server/pos-api/responses";
-import { getSaleDetail } from "@/server/pos-api/sales-detail.prisma";
+import { getSaleDetail, getSaleLookupDiagnostic } from "@/server/pos-api/sales-detail.prisma";
 import { DEFAULT_POS_API_BUSINESS_ID } from "@/server/pos-api/validators";
 
 export const runtime = "nodejs";
@@ -33,11 +33,12 @@ export async function GET(request: Request) {
     const ticket = await getSaleDetail({ businessId, saleIdOrFolio });
 
     if (!ticket) {
+      const diagnostic = await getSaleLookupDiagnostic({ businessId, saleIdOrFolio });
       return fail(
         "SALE_NOT_FOUND",
         "No encontré un ticket local con ese identificador después de revisar saleId, folio y clientRequestId.",
         404,
-        { saleIdOrFolio, businessId },
+        { saleIdOrFolio, businessId, diagnostic },
       );
     }
 

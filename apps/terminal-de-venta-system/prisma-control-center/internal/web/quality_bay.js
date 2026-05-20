@@ -20,11 +20,13 @@
   function toast(message){if(typeof window.toast==="function") window.toast(message); else console.info("[PRISMA Quality Bay]", message);}
   async function fetchJson(url){const response=await fetch(url,{cache:"no-store",headers:{Accept:"application/json"}}); const payload=await response.json().catch(()=>({})); if(!response.ok){const err=new Error(payload.error || payload.reason || `${url} ${response.status}`); err.payload=payload; throw err;} return payload;}
   function setSurface(name){
-    const surface = name === "quality" ? "quality" : "operation";
+    const surface = name === "quality" ? "quality" : name === "license" ? "license" : "operation";
     document.body.dataset.prismaInterface = surface;
     try{localStorage.setItem(STORE_INTERFACE, surface);}catch(_e){}
     const qSurface = $("#qualityBaySurface");
     if(qSurface) qSurface.hidden = surface !== "quality";
+    const licenseSurface = $("#licenseOpsSurface");
+    if(licenseSurface) licenseSurface.hidden = surface !== "license";
     $$('[data-prisma-interface-target]').forEach(button => {
       const active = button.dataset.prismaInterfaceTarget === surface;
       button.classList.toggle("active", active);
@@ -40,6 +42,13 @@
       if(chips[1]) chips[1].textContent = "Evidencia local";
       if(chips[2]) chips[2].textContent = "Control audit-only";
       refreshQualityLatest();
+    }else if(surface === "license"){
+      if(title) title.textContent = "PRISMA License Ops";
+      if(subtitle) subtitle.textContent = "Runtime, identidad, licencia local y evidencia de provisioning.";
+      if(chips[0]) chips[0].innerHTML = '<span class="dot"></span>Local-first';
+      if(chips[1]) chips[1].textContent = "ProgramData canonical";
+      if(chips[2]) chips[2].textContent = "Tablet sola";
+      window.PRISMA_LICENSE_OPS?.refresh?.();
     }else{
       if(title) title.textContent = "Cabina operativa premium";
       if(subtitle) subtitle.textContent = "Liquid Metal · reactor, rutas, señales, evidencia y auditoría.";
@@ -165,7 +174,7 @@
       }, {passive:true});
       button.addEventListener("pointerleave",()=>{button.style.setProperty("--mx","50%"); button.style.setProperty("--my","20%");});
     });
-    const initial = (location.hash === "#quality" || location.hash === "#quality-bay") ? "quality" : (localStorage.getItem(STORE_INTERFACE) || "operation");
+    const initial = (location.hash === "#quality" || location.hash === "#quality-bay") ? "quality" : (location.hash === "#license-ops" || location.hash === "#licencias") ? "license" : (localStorage.getItem(STORE_INTERFACE) || "operation");
     setSurface(initial);
     window.setInterval(()=>{if(document.body.dataset.prismaInterface==="quality") refreshQualityLatest();}, 15000);
   }

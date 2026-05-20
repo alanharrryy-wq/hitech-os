@@ -70,16 +70,54 @@ type TicketDetail = {
   lines: TicketLine[];
 };
 
+type TicketLookupDiagnostic = {
+  requestedId: string;
+  businessId: string;
+  attemptedFields: string[];
+  scopedTicketCount: number;
+  totalTicketCount: number;
+  scopedPartialMatches: Array<{
+    saleId: string;
+    folio: string;
+    businessId: string;
+    terminalId: string;
+    clientRequestId?: string | null;
+    status: string;
+    createdAt: string;
+    totalCents: number;
+  }>;
+  latestTickets: Array<{
+    saleId: string;
+    folio: string;
+    businessId: string;
+    terminalId: string;
+    clientRequestId?: string | null;
+    status: string;
+    createdAt: string;
+    totalCents: number;
+  }>;
+  matchedOutboxEvents: Array<{ id: string; topic: string; aggregateId: string; status: string; createdAt: string; lastError?: string | null }>;
+  latestOutboxEvents: Array<{ id: string; topic: string; aggregateId: string; status: string; createdAt: string; lastError?: string | null }>;
+  serverAdapters: string[];
+  nextActions: string[];
+};
+
 type DetailState =
   | { status: "loading" }
   | { status: "ready"; ticket: TicketDetail }
-  | { status: "not_found"; message: string }
+  | { status: "not_found"; message: string; diagnostic?: TicketLookupDiagnostic }
   | { status: "error"; message: string };
 
 function asHumanError(error: unknown) {
   if (error && typeof error === "object") {
-    const maybe = error as { code?: string; message?: string };
-    if (maybe.code === "SALE_NOT_FOUND") return { status: "not_found" as const, message: maybe.message || "No encontré ese ticket." };
+    const maybe = error as { code?: string; message?: string; details?: { diagnostic?: TicketLookupDiagnostic } };
+    if (maybe.code === "SALE_NOT_FOUND") {
+      return {
+        status: "not_found" as const,
+        message: maybe.message || "No encontré ese ticket.",
+        diagnostic: maybe.details?.diagnostic
+      };
+    }
     if (maybe.message) return { status: "error" as const, message: maybe.message };
   }
   return { status: "error" as const, message: "No pude cargar el detalle del ticket." };
@@ -105,6 +143,74 @@ function DetailStateCard({ title, message, canSell, onRetry }: { title: string; 
         <a className={onRetry ? styles.secondary : styles.primary} href={canSell ? "/pos" : "/shift"}>{canSell ? "Nueva venta" : "Abrir turno"}</a>
       </div>
     </section>
+  );
+}
+
+function TicketNotFoundDiagnostic({ message, diagnostic, canSell, onRetry }: { message: string; diagnostic?: TicketLookupDiagnostic; canSell: boolean; onRetry: () => void }) {
+  const latest = diagnostic?.latestTickets ?? [];
+  const outbox = diagnostic?.matchedOutboxEvents.length ? diagnostic.matchedOutboxEvents : diagnostic?.latestOutboxEvents ?? [];
+
+  return (
+    <section className={styles.stateCard} data-prisma-ticket-resolution="not-found-diagnostic">
+      <div className={styles.diagnosticHeader}>
+        <div>
+          <h2>Ticket no encontrado</h2>
+          <p>{message}</p>
+        </div>
+        <span>Resolución server-side</span>
+      </div>
+
+      {diagnostic ? (
+        <>
+          <div className={styles.diagnosticGrid}>
+            <DiagnosticMetric label="ID solicitado" value={diagnostic.requestedId} />
+            <DiagnosticMetric label="Campos intentados" value={diagnostic.attemptedFields.join(" / ")} />
+            <DiagnosticMetric label="Tickets negocio" value={String(diagnostic.scopedTicketCount)} />
+            <DiagnosticMetric label="Tickets locales" value={String(diagnostic.totalTicketCount)} />
+          </div>
+
+          <div className={styles.diagnosticSection}>
+            <strong>Últimos tickets locales</strong>
+            {latest.length ? latest.slice(0, 5).map((ticket) => (
+              <span key={ticket.saleId}>{ticket.folio} · {ticket.saleId} · {ticket.clientRequestId ?? "sin clientRequestId"} · {formatMoney(ticket.totalCents)}</span>
+            )) : <span>Sin tickets locales registrados.</span>}
+          </div>
+
+          <div className={styles.diagnosticSection}>
+            <strong>Outbox / últimos eventos</strong>
+            {outbox.length ? outbox.slice(0, 5).map((event) => (
+              <span key={event.id}>{event.topic} · {event.aggregateId} · {event.status}{event.lastError ? ` · ${event.lastError}` : ""}</span>
+            )) : <span>Sin eventos outbox relacionados.</span>}
+          </div>
+
+          <div className={styles.diagnosticSection}>
+            <strong>Boundary server/adapters</strong>
+            {diagnostic.serverAdapters.map((adapter) => <span key={adapter}>{adapter}</span>)}
+          </div>
+        </>
+      ) : (
+        <div className={styles.diagnosticSection}>
+          <strong>Diagnóstico pendiente</strong>
+          <span>No llegó detalle diagnóstico desde el boundary server.</span>
+        </div>
+      )}
+
+      <div className={styles.actionsRow}>
+        <button className={styles.primary} type="button" onClick={onRetry}>Reintentar lectura</button>
+        <a className={styles.secondary} href="/sales/today">Volver a ventas</a>
+        <a className={styles.secondary} href="http://127.0.0.1:3150/#license-ops">Exportar diagnóstico</a>
+        <a className={styles.secondary} href={canSell ? "/pos" : "/shift"}>{canSell ? "Nueva venta" : "Abrir turno"}</a>
+      </div>
+    </section>
+  );
+}
+
+function DiagnosticMetric({ label, value }: { label: string; value: string }) {
+  return (
+    <div className={styles.diagnosticMetric}>
+      <small>{label}</small>
+      <strong>{value || "-"}</strong>
+    </div>
   );
 }
 
@@ -148,7 +254,7 @@ export function SalesTicketDetailScreen({ saleId, businessId, runtimeSnapshot = 
         ) : null}
 
         {state.status === "not_found" ? (
-          <DetailStateCard title="Ticket no encontrado" message={state.message} canSell={gate.canShowSellNavigation} onRetry={() => setReloadToken((value) => value + 1)} />
+          <TicketNotFoundDiagnostic message={state.message} diagnostic={state.diagnostic} canSell={gate.canShowSellNavigation} onRetry={() => setReloadToken((value) => value + 1)} />
         ) : null}
 
         {state.status === "error" ? (

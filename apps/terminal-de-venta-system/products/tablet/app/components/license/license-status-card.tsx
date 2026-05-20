@@ -109,11 +109,26 @@ function statusCopy(status: NormalizedLicenseStatus, context: RuntimeContext) {
 
 export function LicenseStatusCard({ status, runtimeContext }: { status: NormalizedLicenseStatus; runtimeContext: RuntimeContext }) {
   const tone = toneForState(status.state);
+  const isCustomerPending = status.state === "missing" && runtimeContext.runtimeMode !== "dev";
   return (
     <section className={styles.card}>
       <p className={styles.eyebrow}>Licencia local</p>
-      <h1 className={styles.title}>{status.state === "missing" ? "Continuidad local" : `Plan ${status.plan}`}</h1>
+      <h1 className={styles.title}>{isCustomerPending ? "LICENSE_CUSTOMER_PENDING" : status.state === "missing" ? "Continuidad local" : `Plan ${status.plan}`}</h1>
       <p className={styles.copy}>{stateLabel(status.state)}. {statusCopy(status, runtimeContext)}</p>
+      {isCustomerPending ? (
+        <div className={styles.actionPanel} data-prisma-license-state="LICENSE_CUSTOMER_PENDING">
+          <div>
+            <strong>Instalación pendiente de licencia local</strong>
+            <span>Runtime e identidad quedan trazados; falta instalar la licencia firmada en ProgramData canonical.</span>
+          </div>
+          <div className={styles.ctaGrid}>
+            <a className={styles.primaryLink} href="http://127.0.0.1:3150/#license-ops">Importar licencia local</a>
+            <a className={styles.secondaryLink} href="http://127.0.0.1:3150/#license-ops">Abrir License Ops</a>
+            <a className={styles.secondaryLink} href="http://127.0.0.1:3150/api/license-ops/run/export-evidence-zip">Exportar diagnóstico</a>
+            <a className={styles.secondaryLink} href="http://127.0.0.1:3150/api/license-ops/run/validate-runtime-config">Validar runtime</a>
+          </div>
+        </div>
+      ) : null}
       <div className={styles.metricGrid}>
         <Metric label="Modo runtime" value={runtimeModeLabel(runtimeContext.runtimeMode)} />
         <Metric label="Origen config" value={provenanceLabel(runtimeContext)} />
