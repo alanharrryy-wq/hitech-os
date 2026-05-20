@@ -1,1 +1,50 @@
-"use client";import{useEffect,useMemo,useState}from"react";import{PrismaTabletShellUnified,TabletShellStatusPill}from"@components/tablet-shell/prisma-tablet-shell";import{requestJson}from"@/lib/pos/cart-state";import type{SalesTodaySummary}from"@/lib/sales-today/types";import{buildSalesKpis,filterTickets}from"@/lib/sales-today/view-model";import{SalesKpiStrip}from"./sales-kpi-strip";import{SalesTicketList}from"./sales-ticket-list";import{ContextualExportActions}from"@components/reports/contextual-export-actions";import styles from"./sales.module.css";export function SalesTodayScreen(){const[summary,setSummary]=useState<SalesTodaySummary|null>(null);const[query,setQuery]=useState("");useEffect(()=>{requestJson<{summary:SalesTodaySummary}>("/api/pos/sales/today").then(r=>setSummary(r.data.summary))},[]);const tickets=useMemo(()=>summary?filterTickets(summary.tickets,query):[],[summary,query]);return <PrismaTabletShellUnified currentPath="/sales/today" title="Ventas de hoy" subtitle="Tickets cerrados y resumen operativo del día." status={<TabletShellStatusPill tone="ok">Tickets cerrados</TabletShellStatusPill>}><main className={styles.salesPage}><section className={styles.hero}><span>Ventas de hoy</span><h1>Resumen de caja operativo</h1><p>Tickets reales del día, listos para revisar detalle o iniciar devolución desde el ticket.</p></section>{summary?<SalesKpiStrip items={buildSalesKpis(summary)}/>:<div className={styles.empty}>Cargando ventas del día…</div>}<div className={styles.toolbar}><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Buscar por folio, cajero o producto"/><a className={styles.secondary} href="/pos">Volver a vender</a></div><ContextualExportActions surface="sales"/><SalesTicketList tickets={tickets}/></main></PrismaTabletShellUnified>}
+"use client";
+
+import { useEffect, useMemo, useState, type ChangeEvent } from "react";
+import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
+import { requestJson } from "@/lib/pos/cart-state";
+import type { SalesTodaySummary } from "@/lib/sales-today/types";
+import { buildSalesKpis, filterTickets } from "@/lib/sales-today/view-model";
+import { DEFAULT_TABLET_RUNTIME_SNAPSHOT, type TabletRuntimeSnapshot } from "@/lib/tablet-runtime-snapshot/shell-contract";
+import { decideCanSellFromRuntimeSnapshot } from "@/lib/operational-gate/can-sell";
+import { SalesKpiStrip } from "./sales-kpi-strip";
+import { SalesTicketList } from "./sales-ticket-list";
+import { ContextualExportActions } from "@components/reports/contextual-export-actions";
+import styles from "./sales.module.css";
+
+export function SalesTodayScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }: { runtimeSnapshot?: TabletRuntimeSnapshot }) {
+  const [summary, setSummary] = useState<SalesTodaySummary | null>(null);
+  const [query, setQuery] = useState("");
+  const gate = useMemo(() => decideCanSellFromRuntimeSnapshot(runtimeSnapshot), [runtimeSnapshot]);
+
+  useEffect(() => {
+    requestJson<{ summary: SalesTodaySummary }>("/api/pos/sales/today").then((response) => setSummary(response.data.summary));
+  }, []);
+
+  const tickets = useMemo(() => (summary ? filterTickets(summary.tickets, query) : []), [summary, query]);
+
+  return (
+    <PrismaTabletShellUnified
+      currentPath="/sales/today"
+      title="Ventas de hoy"
+      subtitle="Tickets cerrados y resumen operativo del día."
+      status={<TabletShellStatusPill tone="ok">Tickets cerrados</TabletShellStatusPill>}
+      runtimeSnapshot={runtimeSnapshot}
+    >
+      <main className={styles.salesPage}>
+        <section className={styles.hero}>
+          <span>Ventas de hoy</span>
+          <h1>Resumen de caja operativo</h1>
+          <p>Tickets reales del día, listos para revisar detalle o iniciar devolución desde el ticket.</p>
+        </section>
+        {summary ? <SalesKpiStrip items={buildSalesKpis(summary)} /> : <div className={styles.empty}>Cargando ventas del día…</div>}
+        <div className={styles.toolbar}>
+          <input value={query} onChange={(event: ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)} placeholder="Buscar por folio, cajero o producto" />
+          <a className={styles.secondary} href={gate.canShowSellNavigation ? "/pos" : gate.actionHref}>{gate.canShowSellNavigation ? "Volver a vender" : gate.actionLabel}</a>
+        </div>
+        <ContextualExportActions surface="sales" />
+        <SalesTicketList tickets={tickets} />
+      </main>
+    </PrismaTabletShellUnified>
+  );
+}

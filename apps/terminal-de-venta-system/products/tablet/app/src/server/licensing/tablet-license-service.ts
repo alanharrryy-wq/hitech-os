@@ -1,8 +1,8 @@
-import { FEATURE_KEYS, getFeatureResolution, getLicenseStatus } from "../../../../../../shared/licensing";
-import type { FeatureResolution, NormalizedLicenseStatus } from "../../../../../../shared/licensing";
+import { FEATURE_KEYS, getFeatureResolution, getLicenseGovernorSnapshot } from "../../../../../../shared/licensing";
+import type { FeatureResolution, LicenseGovernorSnapshot, NormalizedLicenseStatus } from "../../../../../../shared/licensing";
 
 export function getTabletLicenseStatus(): NormalizedLicenseStatus {
-  return getLicenseStatus();
+  return getLicenseGovernorSnapshot({ surface: "tablet", featureKeys: getTabletFeatureKeys() }).status;
 }
 
 export function resolveTabletFeature(featureKey: string): FeatureResolution {
@@ -10,6 +10,13 @@ export function resolveTabletFeature(featureKey: string): FeatureResolution {
 }
 
 export function getTabletFeatureList(): FeatureResolution[] {
-  const keys = FEATURE_KEYS.filter((key) => key.startsWith("pos.") || key.startsWith("shift.") || key.startsWith("inventory.local") || key.startsWith("event.") || key.startsWith("export.") || key.startsWith("report."));
-  return keys.map((key) => resolveTabletFeature(key));
+  return getTabletFeatureKeys().map((key) => resolveTabletFeature(key));
+}
+
+export function getTabletLicenseGovernor(): LicenseGovernorSnapshot {
+  return getLicenseGovernorSnapshot({ surface: "tablet", featureKeys: getTabletFeatureKeys() });
+}
+
+function getTabletFeatureKeys(): string[] {
+  return FEATURE_KEYS.filter((key) => key.startsWith("pos.") || key.startsWith("shift.") || key.startsWith("inventory.local") || key.startsWith("event.") || key.startsWith("export.") || key.startsWith("report."));
 }

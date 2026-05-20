@@ -99,3 +99,23 @@ BUSINESS_MISMATCH
 6. No meter Remote Ops como requisito para cerrar una venta local.
 7. No aceptar comandos remotos arbitrarios como parte de refresco de licencia.
 8. No instalar plugins solo por estar listados; deben venir por entitlement activo.
+
+## 7. Separacion refreshState vs licenseState
+
+La maquina de estados de licencia no debe confundir falla/configuracion de refresh con denegacion comercial.
+
+```text
+refresh_disabled -> informacion/configuracion
+refresh_failed -> alerta de conectividad o servidor
+license invalid/revoked -> decision de seguridad/licencia
+assignment wrong_* -> decision de asignacion
+cash SHIFT_NOT_OPEN -> decision operativa de caja
+```
+
+`refresh_disabled` no cambia `licenseState` por si solo. La decision final se calcula con:
+
+```text
+licenseState + assignmentState + feature/capability + cash/shift gate
+```
+
+Estados de asignacion que deben ser visibles y auditables: `unassigned`, `wrong_business`, `wrong_store`, `wrong_device`, `wrong_terminal`, `exceeded_limit`.

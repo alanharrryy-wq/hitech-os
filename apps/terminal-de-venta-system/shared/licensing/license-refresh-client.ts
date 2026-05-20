@@ -10,12 +10,32 @@ function statusFromLocal(enabled: boolean): LicenseRefreshState {
   const persisted = readLicenseRefreshState(enabled);
   const local = loadLocalLicense();
   const nextState = local.state === "offline_grace" ? "offline_grace" : local.state === "revoked" ? "revoked" : local.state === "suspended" ? "suspended" : persisted.state;
-  return { ...persisted, enabled, state: nextState, licenseId: local.licenseId, plan: local.plan };
+  return {
+    ...persisted,
+    enabled,
+    state: nextState,
+    configurationState: enabled ? "configured" : "refresh_disabled",
+    operationalDecision: nextState === "revoked" || nextState === "suspended" ? "license_blocking" : "refresh_available",
+    licenseId: local.licenseId,
+    plan: local.plan
+  };
 }
 
 export function getLicenseRefreshStatus(): LicenseRefreshState {
   const config = getLicenseRefreshConfig();
-  if (!config.enabled) return { ...defaultRefreshState(false), ...readLicenseRefreshState(false), enabled: false, state: "disabled" };
+  if (!config.enabled) return { ...defaultRefreshState(false), ...readLicenseRefreshState(false), enabled: false, state: "refresh_disabled", configurationState: "refresh_disabled", operationalDecision: "informational" };
+  if (!config.serverUrl || !config.deviceId) {
+    const local = loadLocalLicense();
+    return {
+      ...defaultRefreshState(false),
+      enabled: true,
+      state: "refresh_disabled",
+      configurationState: !config.serverUrl ? "missing_server_url" : "missing_device_id",
+      operationalDecision: "informational",
+      licenseId: local.licenseId,
+      plan: local.plan
+    };
+  }
   return statusFromLocal(true);
 }
 
@@ -31,10 +51,16 @@ async function fetchWithTimeout(url: string, init: RequestInit, timeoutMs: numbe
 
 export async function refreshLocalLicenseFromRemote(): Promise<LicenseRefreshResult> {
   const config = getLicenseRefreshConfig();
-  if (!config.enabled || !config.serverUrl) {
-    const status = { ...defaultRefreshState(false), state: "disabled" as const };
+  if (!config.enabled || !config.serverUrl || !config.deviceId) {
+    const status: LicenseRefreshState = {
+      ...defaultRefreshState(false),
+      state: "refresh_disabled",
+      enabled: config.enabled,
+      configurationState: !config.enabled ? "refresh_disabled" : !config.serverUrl ? "missing_server_url" : "missing_device_id",
+      operationalDecision: "informational"
+    };
     writeLicenseRefreshState(status);
-    return { ok: false, state: "disabled", message: "Refresh remoto deshabilitado. Define PRISMA_LICENSE_REFRESH_ENABLED=1 y PRISMA_LICENSE_SERVER_URL.", status };
+    return { ok: true, state: "refresh_disabled", message: "Refresh remoto no configurado. La operación local continúa si la licencia local es válida.", status };
   }
 
   const startedAt = new Date().toISOString();
@@ -73,6 +99,8 @@ export async function refreshLocalLicenseFromRemote(): Promise<LicenseRefreshRes
       state,
       enabled: true,
       lastRefreshAt: startedAt,
+      configurationState: "configured",
+      operationalDecision: state === "revoked" || state === "suspended" ? "license_blocking" : "refresh_available",
       lastSuccessAt: new Date().toISOString(),
       lastFailureAt: previous.lastFailureAt,
       lastError: null,
@@ -90,6 +118,8 @@ export async function refreshLocalLicenseFromRemote(): Promise<LicenseRefreshRes
       ...previous,
       enabled: true,
       state,
+      configurationState: "configured",
+      operationalDecision: state === "offline_grace" ? "informational" : "refresh_failed",
       lastRefreshAt: startedAt,
       lastFailureAt: new Date().toISOString(),
       lastError: message,

@@ -1,6 +1,7 @@
 import type { TabletRuntimeSnapshot, TabletRuntimeTone } from "@/lib/tablet-runtime-snapshot/shell-contract";
 import { formatRuntimeInteger, formatRuntimeMoney, getPendingEventsLabel, getRuntimeActionHref, getRuntimeActionLabel } from "@/lib/tablet-runtime-snapshot/view-model";
 import { buildTabletOperationalPriorities } from "@/lib/tablet-home/operational-priority";
+import { decideCanSellFromRuntimeSnapshot } from "@/lib/operational-gate/can-sell";
 
 export type TabletHomeAction = {
   href: string;
@@ -46,7 +47,8 @@ function toneForReady(ready: boolean): TabletRuntimeTone {
 }
 
 export function buildTabletHomeViewModel(snapshot: TabletRuntimeSnapshot): TabletHomeViewModel {
-  const shiftOpen = snapshot.shift.state === "open";
+  const gate = decideCanSellFromRuntimeSnapshot(snapshot);
+  const shiftOpen = gate.canSell;
   const hasPending = snapshot.connection.pendingEvents + snapshot.connection.failedEvents + snapshot.connection.conflictEvents > 0;
   const catalogReady = snapshot.catalog.state === "ready" || snapshot.catalog.state === "review";
   const hasStockPressure = snapshot.catalog.lowStockProducts > 0;
@@ -86,18 +88,20 @@ export function buildTabletHomeViewModel(snapshot: TabletRuntimeSnapshot): Table
       href: primaryHref,
       label: primaryLabel,
       title: shiftOpen ? "Seguir vendiendo" : "Abrir turno",
-      description: shiftOpen ? "La terminal esta lista para operar ventas locales." : "Abre caja antes de arrancar ventas del turno.",
+      description: shiftOpen ? "La terminal esta lista para operar ventas locales." : gate.detail,
       tone: shiftOpen ? "ok" : "warn",
       priority: "primary"
     },
-    {
-      href: "/pos",
-      label: "Ir a vender",
-      title: "Vender",
-      description: "Busca producto, arma ticket y manda a cobro.",
-      tone: "ok",
-      priority: "secondary"
-    },
+    ...(gate.canShowSellNavigation
+      ? [{
+          href: "/pos",
+          label: "Ir a vender",
+          title: "Vender",
+          description: "Busca producto, arma ticket y manda a cobro.",
+          tone: "ok" as const,
+          priority: "secondary" as const
+        }]
+      : []),
     {
       href: "/sales/today",
       label: "Ver tickets",

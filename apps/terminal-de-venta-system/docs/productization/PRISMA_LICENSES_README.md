@@ -819,3 +819,20 @@ Si el cambio:
 - no deja audit trail;
 
 entonces se rechaza. Sin drama. Como antro decente: no entra porque viene con tenis del caos.
+
+---
+
+## 24. Addendum 2026-05-19 - License Governor local-first
+
+El runtime vivo usa la base existente: licencia local firmada en JSON, `shared/licensing/*`, endpoints `/api/license/*`, fixtures y tooling de licencia. No se debe crear una segunda base de licencias para Tablet si estos contratos alcanzan.
+
+Contrato operativo canonico:
+
+- `licenseState`: estado de la licencia local (`active`, `offline_grace`, `missing`, `invalid`, `expired`, `suspended`, `revoked`, `development`).
+- `refreshState`: estado de refresh remoto (`refresh_disabled`, `never_refreshed`, `fresh`, `stale`, `refresh_failed`, `offline_grace`, `suspended`, `revoked`).
+- `assignmentState`: relacion cliente/negocio/tienda/dispositivo/terminal (`assigned`, `unassigned`, `wrong_business`, `wrong_store`, `wrong_device`, `wrong_terminal`, `exceeded_limit`, `unknown`).
+- `operationalDecision`: decision final (`allow`, `allow_with_warning`, `degrade`, `deny`).
+
+`refresh_disabled` significa configuracion informativa: no hay refresh remoto configurado. Por si solo no niega venta local. La venta local se decide por licencia local/fallback/desarrollo/continuidad, capacidades de `pos.*` y caja/turno abierto.
+
+`TABLET_PC_REQUIRED` queda como alias legado de documentos/fixtures viejos. El nombre canonico para runtime nuevo es `TABLET_PC_MANAGED`. Ninguno de los dos convierte a Tablet en terminal tonta ni vuelve PC requisito silencioso para venta local basica.

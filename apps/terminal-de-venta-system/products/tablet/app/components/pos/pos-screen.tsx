@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
+import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
 import type { CartLine, CompletedSaleReceipt, PosProduct, UiState } from "@/lib/pos/cart-state";
 import { clearCartStorage, readCartFromStorage, requestJson, writeCartToStorage } from "@/lib/pos/cart-state";
 import { addProductToCart, clearCart, decrementCartLine, incrementCartLine, removeCartLine, validateCartForCheckout } from "@/lib/pos/cart-engine";
@@ -18,6 +19,8 @@ import { PosTicketPanel } from "./pos-ticket-panel";
 import { PosPaymentPanel } from "./pos-payment-panel";
 import { PosSaleSuccess } from "./pos-sale-success";
 import { PosLiveBinding } from "./pos-live-binding";
+import { DEFAULT_TABLET_RUNTIME_SNAPSHOT, type TabletRuntimeSnapshot } from "@/lib/tablet-runtime-snapshot/shell-contract";
+import { decideCanSellFromRuntimeSnapshot } from "@/lib/operational-gate/can-sell";
 import styles from "./pos.module.css";
 
 
@@ -113,7 +116,7 @@ function looksLikeScannedCode(value: string) {
   return /^\d{6,14}$/.test(clean) || /^[A-Z0-9][A-Z0-9_-]{5,}$/i.test(clean);
 }
 
-export function PosScreen() {
+export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }: { runtimeSnapshot?: TabletRuntimeSnapshot }) {
   const [query, setQuery] = useState("");
   const [products, setProducts] = useState<PosProduct[]>([]);
   const [productState, setProductState] = useState<UiState>("idle");
@@ -138,6 +141,7 @@ export function PosScreen() {
   const activeProductCount = products.filter((product) => product.isActive).length;
   const checkoutBusy = isCheckoutBusy(checkoutState);
   const checkoutReady = validateCartForCheckout(cart);
+  const gate = useMemo(() => decideCanSellFromRuntimeSnapshot(runtimeSnapshot), [runtimeSnapshot]);
 
   function setHeldCartShelf(next: HeldCart[]) {
     setHeldCarts(next);
@@ -145,6 +149,10 @@ export function PosScreen() {
   }
 
   async function loadProducts(nextQuery = query) {
+    if (!gate.canOperatePos) {
+      setProductState("idle");
+      return;
+    }
     setProductState("loading");
     setProductError(null);
     try {
@@ -158,6 +166,11 @@ export function PosScreen() {
   }
 
   async function resolveCode(nextQuery = query, options: { fallbackSearch?: boolean } = {}) {
+    if (!gate.canAddProduct) {
+      setCheckoutError(gate.detail);
+      setCheckoutState("error");
+      return;
+    }
     const cleanQuery = nextQuery.trim();
     if (!cleanQuery) return;
     setProductError(null);
@@ -187,6 +200,11 @@ export function PosScreen() {
   }
 
   function addProduct(product: PosProduct) {
+    if (!gate.canAddProduct) {
+      setCheckoutError(gate.detail);
+      setCheckoutState("error");
+      return;
+    }
     setLastReceipt(null);
     setCheckoutState("idle");
     setCheckoutError(null);
@@ -255,6 +273,11 @@ export function PosScreen() {
   }
 
   async function openCheckout() {
+    if (!gate.canCheckout) {
+      setCheckoutError(gate.detail);
+      setCheckoutState("error");
+      return;
+    }
     const ready = validateCartForCheckout(cart);
     if (!ready.ready) {
       setCheckoutError(ready.reason);
@@ -270,6 +293,11 @@ export function PosScreen() {
 
   async function confirmSale() {
     if (checkoutBusy) return;
+    if (!gate.canCheckout) {
+      setCheckoutError(gate.detail);
+      setCheckoutState("error");
+      return;
+    }
     const requestId = clientRequestId || (await getOrCreatePaymentRequestId(cart));
     setClientRequestId(requestId);
     setCheckoutState("submitting");
@@ -293,14 +321,35 @@ export function PosScreen() {
   useEffect(() => {
     setCart(readCartFromStorage());
     setHeldCarts(readHeldCartsFromStorage());
-    void loadProducts("");
-  }, []);
+    if (gate.canOperatePos) void loadProducts("");
+  }, [gate.canOperatePos]);
 
   useEffect(() => {
     writeCartToStorage(cart);
   }, [cart]);
 
   const copy = checkoutStateCopy(checkoutState);
+
+  if (!gate.canOperatePos) {
+    return (
+      <PrismaTabletShellUnified
+        currentPath="/pos"
+        title={gate.title}
+        subtitle={gate.detail}
+        status={<TabletShellStatusPill tone={gate.tone}>{gate.actionLabel}</TabletShellStatusPill>}
+        runtimeSnapshot={runtimeSnapshot}
+        visualSurface="tablet-pos"
+        visualPreset="PRISMA_LIGHT_OPERATIONAL_POS"
+      >
+        <section className={styles.statePanel} data-prisma-operational-gate="closed-cash" data-prisma-state="blocked" role="status">
+          <PrismaIcon name="terminal" size={28} />
+          <strong>Caja cerrada / Abrir turno</strong>
+          <span>{gate.detail}</span>
+          <a className={styles.checkoutLink} href={gate.actionHref}>{gate.actionLabel}</a>
+        </section>
+      </PrismaTabletShellUnified>
+    );
+  }
 
   return (
     <PrismaTabletShellUnified
@@ -309,6 +358,7 @@ export function PosScreen() {
       subtitle="Busca, escanea, arma el ticket y cobra aquí mismo."
       status={<TabletShellStatusPill tone={checkoutStateTone(checkoutState)}>{copy.label}</TabletShellStatusPill>}
       visualSurface="tablet-pos"
+      runtimeSnapshot={runtimeSnapshot}
       visualPreset="PRISMA_LIGHT_OPERATIONAL_POS"
     >
       <div
@@ -373,7 +423,7 @@ export function PosScreen() {
               </button>
             ))}
           </nav>
-          <PosProductList products={visibleProducts} state={productState} error={productError} onAdd={addProduct} />
+          <PosProductList products={visibleProducts} state={productState} error={productError} canAddProduct={gate.canAddProduct} blockedReason={gate.detail} onAdd={addProduct} />
         </section>
 
         <PosTicketPanel
@@ -382,6 +432,8 @@ export function PosScreen() {
           checkoutBusy={checkoutBusy}
           checkoutError={checkoutError}
           checkoutReason={checkoutReady.reason}
+          canCheckout={gate.canCheckout}
+          checkoutBlockedReason={gate.detail}
           onIncrement={(productId) => setCart((current) => incrementCartLine(current, productId).lines)}
           onDecrement={(productId) => setCart((current) => decrementCartLine(current, productId).lines)}
           onRemove={(productId) => setCart((current) => removeCartLine(current, productId).lines)}

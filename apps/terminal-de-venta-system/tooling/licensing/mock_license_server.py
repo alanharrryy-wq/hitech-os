@@ -9,7 +9,7 @@ from urllib.parse import parse_qs, urlparse
 FIXTURE_MAP = {
     "tablet-solo": "tooling/licensing/fixtures/tablet-solo.active.signed.license.json",
     "tablet-pro": "tooling/licensing/fixtures/tablet-pro.active.signed.license.json",
-    "tablet-pc-required": "tooling/licensing/fixtures/tablet-pc-required.active.signed.license.json",
+    "tablet-pc-managed": "tooling/licensing/fixtures/tablet-pc-managed.active.signed.license.json",
     "expired": "tooling/productization/examples/licenses/expired.signed.license.json",
     "suspended": "tooling/productization/examples/licenses/suspended.signed.license.json",
     "revoked": "tooling/productization/examples/licenses/revoked.signed.license.json",
@@ -36,7 +36,7 @@ def make_handler(root: Path):
                 return
             if parsed.path == "/licenses/current":
                 qs = parse_qs(parsed.query)
-                fixture_key = (qs.get("fixture") or ["tablet-pc-required"])[0]
+                fixture_key = (qs.get("fixture") or ["tablet-pc-managed"])[0]
                 rel = FIXTURE_MAP.get(fixture_key)
                 if not rel:
                     self._send_json(404, {"ok": False, "code": "UNKNOWN_FIXTURE", "available": sorted(FIXTURE_MAP)})

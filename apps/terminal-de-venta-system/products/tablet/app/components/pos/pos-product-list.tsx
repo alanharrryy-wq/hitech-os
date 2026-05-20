@@ -91,7 +91,7 @@ function ProductMedia({ product }: { product: PosProduct }) {
             alt=""
             loading="lazy"
             draggable={false}
-            onError={(event) => {
+            onError={(event: { currentTarget: HTMLImageElement }) => {
               const nextSrc = resolveNextPackshotSrc(event.currentTarget.src, packshot.fallbackSrcs);
               if (nextSrc) {
                 event.currentTarget.src = nextSrc;
@@ -99,7 +99,7 @@ function ProductMedia({ product }: { product: PosProduct }) {
               }
               event.currentTarget.closest("[data-prisma-packshot-host]")?.setAttribute("data-packshot-error", "true");
             }}
-            onLoad={(event) => {
+            onLoad={(event: { currentTarget: HTMLImageElement }) => {
               event.currentTarget.closest("[data-prisma-packshot-host]")?.removeAttribute("data-packshot-error");
             }}
           />
@@ -119,11 +119,15 @@ export function PosProductList({
   products,
   state,
   error,
+  canAddProduct = true,
+  blockedReason,
   onAdd
 }: {
   products: PosProduct[];
   state: UiState;
   error: unknown;
+  canAddProduct?: boolean;
+  blockedReason?: string;
   onAdd: (product: PosProduct) => void;
 }) {
   const pageSize = 8;
@@ -181,7 +185,7 @@ export function PosProductList({
       >
         {pageProducts.map((product) => {
           const stockState = productStockState(product);
-          const disabled = !product.isActive || product.stockOnHand <= 0;
+          const disabled = !canAddProduct || !product.isActive || product.stockOnHand <= 0;
           return (
             <article
               key={product.id}
@@ -222,6 +226,7 @@ export function PosProductList({
                   type="button"
                   onClick={() => onAdd(product)}
                   disabled={disabled}
+                  title={!canAddProduct ? blockedReason ?? "Abre turno antes de agregar productos." : undefined}
                   data-prisma-component="IconButton"
                   data-prisma-zone="tablet-pos-product-add"
                   data-prisma-role="primary-action"
@@ -231,7 +236,7 @@ export function PosProductList({
                   data-prisma-qa={disabled ? "tablet-qa-disabled" : undefined}
                 >
                   <PrismaIcon name="plus" size={18} />
-                  Agregar
+                  {canAddProduct ? "Agregar" : "Caja cerrada"}
                 </button>
               </div>
             </article>

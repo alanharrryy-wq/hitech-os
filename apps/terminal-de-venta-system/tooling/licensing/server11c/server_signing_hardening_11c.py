@@ -69,7 +69,7 @@ def verify(env: dict, mat: dict):
     return (True, "signature_valid") if hmac.compare_digest(str(sig.get("value","")), expected) else (False, "signature_invalid")
 
 def payload():
-    return {"schemaVersion":"1.0.0","licenseId":"lic_server11c_local_demo","customerId":"cust_demo","businessId":"biz_demo","deviceId":"device_demo_tablet_01","plan":"TABLET_PC_REQUIRED","state":"active","issuedAt":"2026-04-30T00:00:00.000Z","validUntil":"2099-12-31T23:59:59.000Z"}
+    return {"schemaVersion":"1.0.0","licenseId":"lic_server11c_local_demo","customerId":"cust_demo","businessId":"biz_demo","deviceId":"device_demo_tablet_01","plan":"TABLET_PC_MANAGED","state":"active","issuedAt":"2026-04-30T00:00:00.000Z","validUntil":"2099-12-31T23:59:59.000Z"}
 
 def load_allow(root: Path):
     p=root/ALLOWLIST
@@ -114,7 +114,7 @@ function b64u(b){return Buffer.from(b).toString("base64").replace(/=/g,"").repla
 function canonical(o){return JSON.stringify(o,Object.keys(o).sort());}
 function material(){const raw=JSON.parse(fs.readFileSync(matPath,"utf8")); const keyId=raw.key_id||raw.keyId; const sec=raw.secret_b64url||raw.secretMaterialBase64Url; const alg=raw.algorithm==="HS256_DEV_ONLY"?"HS256_DEV_LOCAL":(raw.algorithm||"HS256_DEV_LOCAL"); if(!keyId||!sec) throw new Error("Missing local dev signing material fields"); return {keyId,sec,alg};}
 function signPayload(payload){const m=material(); const secret=Buffer.from(m.sec.replace(/-/g,"+").replace(/_/g,"/"),"base64"); const value=b64u(crypto.createHmac("sha256",secret).update(canonical(payload)).digest()); return {payload, signature:{schemaVersion:"11C",algorithm:m.alg,keyId:m.keyId,value}};}
-if(require.main===module){process.stdout.write(JSON.stringify(signPayload({licenseId:"lic_dev_signed_local",plan:"TABLET_PC_REQUIRED",state:"active",issuedAt:new Date().toISOString()}),null,2)+"\n");}
+if(require.main===module){process.stdout.write(JSON.stringify(signPayload({licenseId:"lic_dev_signed_local",plan:"TABLET_PC_MANAGED",state:"active",issuedAt:new Date().toISOString()}),null,2)+"\n");}
 module.exports={signPayload};
 '''
     p.write_text(safe, encoding="utf-8", newline="\n")

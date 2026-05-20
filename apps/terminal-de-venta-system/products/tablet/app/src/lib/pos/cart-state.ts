@@ -28,12 +28,44 @@ export type CompletedSale = {
   folio: string;
   businessId: string;
   terminalId: string;
+  cashSessionId?: string | null;
+  clientRequestId?: string | null;
   cashier: string;
+  subtotalCents?: number;
+  discountCents?: number;
   totalCents: number;
+  paymentMethod?: string;
+  cashReceivedCents?: number | null;
+  changeCents?: number;
   status: string;
   createdAt: string;
+  completedAt?: string | null;
   lines: Array<{ productId: string; sku: string; productName: string; qty: number; totalCents: number }>;
   events: Array<{ topic: string }>;
+  ticketEvidence?: TicketEvidence;
+};
+
+export type TicketEvidence = {
+  contract: "SALE_AS_TICKET_EVIDENCE_V1";
+  canonicalTicketId: string;
+  saleId: string;
+  folio: string;
+  businessId: string;
+  terminalId: string;
+  cashSessionId?: string | null;
+  clientRequestId?: string | null;
+  status: string;
+  completedAt: string;
+  localDetailHref: string;
+  lookupAliases: string[];
+  payment: {
+    method: string;
+    cashReceivedCents: number | null;
+    changeCents: number;
+    totalCents: number;
+  };
+  evidenceEventIds: string[];
+  evidenceTopics: string[];
 };
 
 export const POS_CART_STORAGE_KEY = "prisma.tablet.pos.activeCart.v2";
@@ -121,4 +153,4 @@ export async function requestJson<T>(url: string, init?: RequestInit): Promise<A
   return payload;
 }
 
-export type CompletedSaleReceipt = CompletedSale & { paymentMethod?: string; cashReceivedCents?: number; changeCents?: number; clientRequestId?: string };
+export type CompletedSaleReceipt = CompletedSale & { paymentMethod?: string; cashReceivedCents?: number | null; changeCents?: number; clientRequestId?: string | null };

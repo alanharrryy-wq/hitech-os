@@ -38,6 +38,8 @@ export function PosTicketPanel({
   checkoutBusy,
   checkoutError,
   checkoutReason,
+  canCheckout = true,
+  checkoutBlockedReason,
   onIncrement,
   onDecrement,
   onRemove,
@@ -52,6 +54,8 @@ export function PosTicketPanel({
   checkoutBusy?: boolean;
   checkoutError?: unknown;
   checkoutReason?: string;
+  canCheckout?: boolean;
+  checkoutBlockedReason?: string;
   onIncrement: (productId: string) => void;
   onDecrement: (productId: string) => void;
   onRemove: (productId: string) => void;
@@ -63,9 +67,10 @@ export function PosTicketPanel({
 }) {
   const qty = cartTotalQty(lines);
   const total = cartTotalCents(lines);
-  const checkoutDisabled = !lines.length || Boolean(checkoutBusy);
+  const checkoutDisabled = !canCheckout || !lines.length || Boolean(checkoutBusy);
   const readiness = validateCartForCheckout(lines);
-  const diagnosticCopy = checkoutError ? "Revisa el cobro antes de continuar." : checkoutReason || readiness.reason;
+  const checkoutReady = canCheckout && readiness.ready;
+  const diagnosticCopy = !canCheckout ? checkoutBlockedReason || "Abre turno antes de cobrar." : checkoutError ? "Revisa el cobro antes de continuar." : checkoutReason || readiness.reason;
   const packshotSkin = usePrismaPackshotSkin();
 
   return (
@@ -121,7 +126,7 @@ export function PosTicketPanel({
                         alt=""
                         loading="lazy"
                         draggable={false}
-                        onError={(event) => {
+                        onError={(event: { currentTarget: HTMLImageElement }) => {
                           const nextSrc = resolveNextPackshotSrc(event.currentTarget.src, packshot.fallbackSrcs);
                           if (nextSrc) {
                             event.currentTarget.src = nextSrc;
@@ -129,7 +134,7 @@ export function PosTicketPanel({
                           }
                           event.currentTarget.closest("[data-prisma-packshot-host]")?.setAttribute("data-packshot-error", "true");
                         }}
-                        onLoad={(event) => {
+                        onLoad={(event: { currentTarget: HTMLImageElement }) => {
                           event.currentTarget.closest("[data-prisma-packshot-host]")?.removeAttribute("data-packshot-error");
                         }}
                       />
@@ -147,16 +152,16 @@ export function PosTicketPanel({
                   <small className={stockChipClass(stockSignal.tone)}>{stockSignal.label}</small>
                 </div>
                 <div className={styles.stepper} data-prisma-component="QuantityStepper" data-prisma-role="secondary-action" data-prisma-motion="press-feedback">
-                  <button type="button" aria-label={`Restar ${line.product.name}`} onClick={() => onDecrement(line.product.id)} disabled={checkoutBusy}>
+                  <button type="button" aria-label={`Restar ${line.product.name}`} onClick={() => onDecrement(line.product.id)} disabled={!canCheckout || checkoutBusy}>
                     <PrismaIcon name="minus" size={15} />
                   </button>
                   <strong>{line.qty}</strong>
-                  <button type="button" aria-label={`Sumar ${line.product.name}`} onClick={() => onIncrement(line.product.id)} disabled={checkoutBusy}>
+                  <button type="button" aria-label={`Sumar ${line.product.name}`} onClick={() => onIncrement(line.product.id)} disabled={!canCheckout || checkoutBusy}>
                     <PrismaIcon name="plus" size={15} />
                   </button>
                 </div>
                 <strong className={styles.lineTotal}>{formatMoney(line.product.priceCents * line.qty)}</strong>
-                <button className={styles.removeButton} type="button" aria-label={`Quitar ${line.product.name}`} onClick={() => onRemove(line.product.id)} disabled={checkoutBusy}>
+                <button className={styles.removeButton} type="button" aria-label={`Quitar ${line.product.name}`} onClick={() => onRemove(line.product.id)} disabled={!canCheckout || checkoutBusy}>
                   <PrismaIcon name="trash" size={16} />
                 </button>
               </article>
@@ -165,8 +170,8 @@ export function PosTicketPanel({
         )}
       </div>
 
-      <div className={readiness.ready ? styles.checkoutDiagnosticOk : styles.checkoutDiagnosticWarn} aria-live="polite" data-prisma-component="CheckoutDiagnostic" data-prisma-role="status-surface" data-prisma-state={readiness.ready ? "ready" : "disabled"}>
-        <strong>{readiness.ready ? "Listo para cobrar" : "Prepara el cobro"}</strong>
+      <div className={checkoutReady ? styles.checkoutDiagnosticOk : styles.checkoutDiagnosticWarn} aria-live="polite" data-prisma-component="CheckoutDiagnostic" data-prisma-role="status-surface" data-prisma-state={checkoutReady ? "ready" : "disabled"}>
+        <strong>{checkoutReady ? "Listo para cobrar" : "Prepara el cobro"}</strong>
         <span>{diagnosticCopy}</span>
       </div>
 
@@ -185,7 +190,7 @@ export function PosTicketPanel({
       {checkoutError ? <div className={styles.paymentError} data-prisma-zone="tablet-pos-error-state" data-prisma-state="error" data-prisma-motion="error-feedback">Revisa el cobro antes de continuar.</div> : null}
 
       <button
-        className={lines.length ? styles.checkoutLink : styles.checkoutLinkDisabled}
+        className={lines.length && canCheckout ? styles.checkoutLink : styles.checkoutLinkDisabled}
         type="button"
         disabled={checkoutDisabled}
         aria-disabled={checkoutDisabled}
@@ -199,7 +204,7 @@ export function PosTicketPanel({
         onClick={onCheckout}
       >
         <span className={styles.visuallyHidden}>Abrir cobro</span>
-        <span>{checkoutBusy ? "COBRANDO" : "COBRAR"}</span>
+        <span>{!canCheckout ? "ABRIR TURNO" : checkoutBusy ? "COBRANDO" : "COBRAR"}</span>
         <strong>Tocar</strong>
       </button>
       <div className={styles.secondaryCheckoutActions} aria-label="Acciones secundarias" data-prisma-role="secondary-action">
@@ -208,7 +213,7 @@ export function PosTicketPanel({
           <span>Cotización</span>
           <small>Pronto</small>
         </button>
-        <button type="button" onClick={onHold} disabled={!lines.length || checkoutBusy} data-prisma-component="HoldCartButton">
+        <button type="button" onClick={onHold} disabled={!canCheckout || !lines.length || checkoutBusy} data-prisma-component="HoldCartButton">
           <PrismaIcon name="save" size={18} />
           <span>Guardar</span>
           <small>Guardar</small>
@@ -234,7 +239,7 @@ export function PosTicketPanel({
                   <span>{heldCartTime(heldCart.createdAt)} · {heldCart.totalQty} pzas · {formatMoney(heldCart.totalCents)}</span>
                 </div>
                 <div className={styles.heldCartActions}>
-                  <button type="button" onClick={() => onRestoreHeldCart(heldCart.id)} disabled={checkoutBusy || lines.length > 0} aria-label={`Recuperar ${heldCart.label}`}>
+                  <button type="button" onClick={() => onRestoreHeldCart(heldCart.id)} disabled={!canCheckout || checkoutBusy || lines.length > 0} aria-label={`Recuperar ${heldCart.label}`}>
                     Usar
                   </button>
                   <button type="button" onClick={() => onDiscardHeldCart(heldCart.id)} disabled={checkoutBusy} aria-label={`Descartar ${heldCart.label}`}>

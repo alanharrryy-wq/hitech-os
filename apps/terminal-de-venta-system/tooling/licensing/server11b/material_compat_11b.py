@@ -110,7 +110,7 @@ def ensure_material(root: Path) -> dict[str, Any]:
 
 def sign_verify(mat: Mapping[str, Any]) -> tuple[bool, str]:
     header = {"alg": mat["algorithm"], "kid": mat["key_id"], "typ": "PRISMA-LICENSE-JWS"}
-    payload = {"licenseId": "lic_11b_smoke", "plan": "TABLET_PC_REQUIRED", "state": "active"}
+    payload = {"licenseId": "lic_11b_smoke", "plan": "TABLET_PC_MANAGED", "state": "active"}
     h = b64url(canonical(header)); p = b64url(canonical(payload))
     sig = hmac.new(b64decode(str(mat["secret_b64url"])), f"{h}.{p}".encode("ascii"), hashlib.sha256).digest()
     compact = f"{h}.{p}.{b64url(sig)}"

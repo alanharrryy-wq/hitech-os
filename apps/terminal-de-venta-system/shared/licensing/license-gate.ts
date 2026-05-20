@@ -20,7 +20,11 @@ export function licenseDeniedEnvelope(resolution: FeatureResolution): LicenseApi
       plan: resolution.plan,
       state: resolution.state,
       requiredPlan: resolution.requiredPlan,
+      assignmentState: resolution.assignmentState,
+      denialReason: resolution.denialReason,
       enforcement: resolution.enforcement,
+      operationalDecision: resolution.operationalDecision,
+      evidenceEvent: resolution.evidenceEvent,
       saleBasicsStillAvailable: resolution.saleBasicsStillAvailable,
       warnings: resolution.warnings
     }

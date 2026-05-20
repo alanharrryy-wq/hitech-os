@@ -1,7 +1,7 @@
 export type LicensePlan =
   | "TABLET_SOLO"
   | "TABLET_PRO"
-  | "TABLET_PC_REQUIRED"
+  | "TABLET_PC_MANAGED"
   | "DEVELOPMENT"
   | "TABLET_SOLO_FALLBACK";
 
@@ -25,18 +25,66 @@ export type LicenseFeatureSource = "license" | "fallback_policy" | "default" | "
 
 export type LicenseEnforcement = "allow" | "warn" | "soft_deny" | "hard_deny";
 
+export type LicenseAssignmentState =
+  | "assigned"
+  | "unassigned"
+  | "wrong_business"
+  | "wrong_store"
+  | "wrong_device"
+  | "wrong_terminal"
+  | "exceeded_limit"
+  | "unknown";
+
+export type LicenseOperationalDecision = "allow" | "allow_with_warning" | "degrade" | "deny";
+
+export type LicenseDenialReason =
+  | "license_missing"
+  | "license_invalid"
+  | "license_expired"
+  | "license_suspended"
+  | "license_revoked"
+  | "device_unassigned"
+  | "wrong_business"
+  | "wrong_store"
+  | "wrong_device"
+  | "wrong_terminal"
+  | "limit_exceeded"
+  | "feature_not_entitled";
+
+export type LicenseEvidenceEvent = {
+  topic: string;
+  occurredAt: string;
+  source: "local_license" | "refresh_state" | "feature_gate" | "fallback_policy";
+  customerId: string | null;
+  businessId: string | null;
+  storeId: string | null;
+  deviceId: string | null;
+  terminalId: string | null;
+  licenseId: string | null;
+  reason: string | null;
+};
+
 export type LicenseDocument = {
   schemaVersion: string;
   licenseId: string;
   customerId: string;
   businessId: string;
+  storeId?: string;
+  branchId?: string;
+  deviceId?: string;
+  tabletId?: string;
+  terminalId?: string;
+  assignmentState?: LicenseAssignmentState;
   plan: Exclude<LicensePlan, "TABLET_SOLO_FALLBACK">;
   state: RawLicenseState;
   validFrom: string;
   validUntil: string;
   issuedAt?: string;
+  lastSeenAt?: string;
+  lastRefreshAt?: string;
   offlineGraceDays?: number;
   features?: Record<string, boolean>;
+  capabilities?: Record<string, boolean>;
   limits?: Record<string, number>;
   notes?: string[];
 };
@@ -52,10 +100,24 @@ export type NormalizedLicenseStatus = {
   plan: LicensePlan;
   customerId: string | null;
   businessId: string | null;
+  storeId: string | null;
+  branchId: string | null;
+  deviceId: string | null;
+  tabletId: string | null;
+  terminalId: string | null;
   licenseId: string | null;
+  assignmentState: LicenseAssignmentState;
   validFrom: string | null;
   validUntil: string | null;
   issuedAt: string | null;
+  capabilities: Record<string, boolean>;
+  limits: Record<string, number>;
+  lastSeenAt: string | null;
+  lastRefreshAt: string | null;
+  lastDecisionAt: string;
+  denialReason: LicenseDenialReason | null;
+  evidenceEvent: LicenseEvidenceEvent;
+  operationalDecision: LicenseOperationalDecision;
   offlineGraceDays: number;
   daysRemaining: number | null;
   source: LicenseSource;
@@ -74,6 +136,10 @@ export type FeatureResolution = {
   state: NormalizedLicenseState;
   requiredPlan?: LicensePlan;
   saleBasicsStillAvailable: boolean;
+  assignmentState: LicenseAssignmentState;
+  denialReason: LicenseDenialReason | null;
+  evidenceEvent: LicenseEvidenceEvent;
+  operationalDecision: LicenseOperationalDecision;
   warnings: LicenseWarning[];
 };
 
