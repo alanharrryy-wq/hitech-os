@@ -85,3 +85,14 @@ La firma futura debe validar:
 6. No meter Remote Ops como requisito para cerrar una venta local.
 7. No aceptar comandos remotos arbitrarios como parte de refresco de licencia.
 8. No instalar plugins solo por estar listados; deben venir por entitlement activo.
+
+## 9. Ledger local sin tabla nueva obligatoria
+
+Tablet no necesita una tabla `License` local para cerrar esta etapa si el JSON firmado, el refresh state, los eventos operativos y los reportes de soporte ya representan la evidencia. El ledger local minimo es:
+
+- licencia local firmada o estado `missing`/`invalid`;
+- `license-refresh-state.json` con `refreshState`, `lastRefreshAt`, `lastSuccessAt`, `lastFailureAt`, `lastError`;
+- `evidenceEvent` calculado por el governor para cada decision sensible;
+- `OutboxEvent`/`AuditEvent` cuando la arquitectura viva los tenga disponibles.
+
+Si en una etapa posterior se agrega tabla de ledger, debe ser aditiva, migrada solo contra DB temporal primero, y nunca requisito para venta local basica de Tablet Solo.
