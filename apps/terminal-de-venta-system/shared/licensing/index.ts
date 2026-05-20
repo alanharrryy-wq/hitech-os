@@ -4,6 +4,7 @@ export * from "./feature-resolver";
 export * from "./license-audit-events";
 export * from "./license-errors";
 export * from "./license-gate";
+export * from "./license-governor";
 export * from "./license-loader";
 export * from "./license-normalizer";
 export * from "./license-paths";

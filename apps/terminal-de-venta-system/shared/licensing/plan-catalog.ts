@@ -28,8 +28,8 @@ export const PLAN_CATALOG: Record<LicensePlan, PlanDefinition> = {
     description: "Tablet con turnos, devoluciones, outbox visible, reportes operativos y export avanzado.",
     features: union(BASIC_POS_FEATURES, TABLET_PRO_FEATURES)
   },
-  TABLET_PC_REQUIRED: {
-    plan: "TABLET_PC_REQUIRED",
+  TABLET_PC_MANAGED: {
+    plan: "TABLET_PC_MANAGED",
     label: "Tablet + PC",
     rank: 30,
     description: "Operación administrada con backoffice, sync, auditoría e inventario avanzado.",
@@ -58,6 +58,6 @@ export function planIncludesFeature(plan: LicensePlan, featureKey: string): bool
 export function requiredPlanForFeature(featureKey: string): LicensePlan | undefined {
   if (PLAN_CATALOG.TABLET_SOLO.features.has(featureKey)) return "TABLET_SOLO";
   if (PLAN_CATALOG.TABLET_PRO.features.has(featureKey)) return "TABLET_PRO";
-  if (PLAN_CATALOG.TABLET_PC_REQUIRED.features.has(featureKey)) return "TABLET_PC_REQUIRED";
+  if (PLAN_CATALOG.TABLET_PC_MANAGED.features.has(featureKey)) return "TABLET_PC_MANAGED";
   return undefined;
 }
