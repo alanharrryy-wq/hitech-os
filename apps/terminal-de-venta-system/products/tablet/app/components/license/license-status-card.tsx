@@ -1,4 +1,5 @@
 import type { FeatureResolution, NormalizedLicenseStatus } from "../../../../../shared/licensing";
+import type { RuntimeContext } from "../../../../../shared/runtime";
 import styles from "./license-ui.module.css";
 
 function toneForState(state: string) {
@@ -67,26 +68,82 @@ function visibleValue(value: string | null | undefined, fallback: string) {
   return value && value.trim() ? value : fallback;
 }
 
-export function LicenseStatusCard({ status }: { status: NormalizedLicenseStatus }) {
+function runtimeModeLabel(mode: RuntimeContext["runtimeMode"]) {
+  const labels: Record<RuntimeContext["runtimeMode"], string> = {
+    dev: "Desarrollo",
+    customer: "Cliente",
+    test: "Prueba",
+    release: "Release"
+  };
+  return labels[mode];
+}
+
+function provenanceLabel(context: RuntimeContext) {
+  const source = context.provenance.runtimeConfig?.source;
+  if (source === "explicit" || source === "env") return "Runtime config explícito";
+  if (source === "programdata") return "ProgramData canonical";
+  if (source === "legacy_programdata") return "ProgramData legacy";
+  if (source === "dev_fallback") return "Fallback dev";
+  return "Sin runtime.json";
+}
+
+function signatureLabel(status: NormalizedLicenseStatus) {
+  if (status.state === "missing") return "No disponible";
+  if (status.state === "invalid") return "Inválida o no verificada";
+  if (status.warnings.some((warning) => warning.code === "LICENSE_UNSIGNED_DEV")) return "Dev sin firma";
+  if (status.source === "local_file" || status.source === "dev_file") return "Firma validada";
+  return "No determinada";
+}
+
+function statusCopy(status: NormalizedLicenseStatus, context: RuntimeContext) {
+  if (status.state === "missing" && context.runtimeMode === "dev") {
+    return "Licencia no configurada. La operación local continúa según capacidades permitidas.";
+  }
+  if (status.state === "missing") {
+    return "Instalación pendiente de licencia local. La venta básica puede continuar en modo limitado si la política lo permite.";
+  }
+  if (status.denialReason === "wrong_device") return "Equipo no asignado a esta licencia. Revisa cliente, negocio, tienda y terminal.";
+  if (status.operationalDecision === "deny") return "La operación requiere revisión antes de vender.";
+  return "La operación local continúa según capacidades permitidas.";
+}
+
+export function LicenseStatusCard({ status, runtimeContext }: { status: NormalizedLicenseStatus; runtimeContext: RuntimeContext }) {
   const tone = toneForState(status.state);
   return (
     <section className={styles.card}>
       <p className={styles.eyebrow}>Licencia local</p>
-      <h1 className={styles.title}>Plan {status.plan}</h1>
-      <p className={styles.copy}>{stateLabel(status.state)}. {status.operationalDecision === "deny" ? "La operación requiere revisión antes de vender." : "La operación local continúa según capacidades permitidas."}</p>
+      <h1 className={styles.title}>{status.state === "missing" ? "Continuidad local" : `Plan ${status.plan}`}</h1>
+      <p className={styles.copy}>{stateLabel(status.state)}. {statusCopy(status, runtimeContext)}</p>
       <div className={styles.metricGrid}>
+        <Metric label="Modo runtime" value={runtimeModeLabel(runtimeContext.runtimeMode)} />
+        <Metric label="Origen config" value={provenanceLabel(runtimeContext)} />
+        <Metric label="Vertical" value={runtimeContext.vertical} />
+        <Metric label="Rol" value={runtimeContext.role} />
         <Metric label="Estado" value={stateLabel(status.state)} accent={tone} />
         <Metric label="Cliente" value={visibleValue(status.customerId, "Sin licencia configurada")} />
-        <Metric label="Negocio" value={visibleValue(status.businessId, "Negocio no declarado")} />
-        <Metric label="Tienda/sucursal" value={visibleValue(status.storeId ?? status.branchId, "Tienda no declarada")} />
-        <Metric label="Terminal/dispositivo" value={visibleValue(status.terminalId ?? status.deviceId ?? status.tabletId, "Equipo no declarado")} />
+        <Metric label="Negocio" value={visibleValue(status.businessId ?? runtimeContext.businessId, "Negocio no declarado")} />
+        <Metric label="Tienda/sucursal" value={visibleValue(status.storeId ?? status.branchId ?? runtimeContext.storeId, "Tienda no declarada")} />
+        <Metric label="Terminal" value={visibleValue(status.terminalId ?? runtimeContext.terminalId, "Terminal no declarada")} />
+        <Metric label="Dispositivo" value={visibleValue(status.deviceId ?? status.tabletId ?? runtimeContext.deviceId, "Equipo no declarado")} />
         <Metric label="Asignación" value={assignmentLabel(status.assignmentState)} />
+        <Metric label="Firma" value={signatureLabel(status)} />
         <Metric label="Vence" value={visibleValue(status.validUntil, "Vigencia no disponible")} />
         <Metric label="Días restantes" value={status.daysRemaining === null ? "Sin vigencia disponible" : String(status.daysRemaining)} />
         <Metric label="Última decisión" value={visibleValue(status.lastDecisionAt, "Sin decisión registrada")} />
         <Metric label="Decisión operativa" value={decisionLabel(status.operationalDecision)} />
+        <Metric label="Archivo licencia" value={visibleValue(runtimeContext.licenseFile, "Sin ruta resuelta")} />
+        <Metric label="Identidad local" value={runtimeContext.deviceIdentity ? "Cargada" : "Pendiente"} />
       </div>
       {status.denialReason ? <div className={styles.warning}>Motivo de revisión: {denialReasonLabel(status.denialReason)}</div> : null}
+      {runtimeContext.blockingIssues.length > 0 ? (
+        <div className={styles.warningList}>
+          {runtimeContext.blockingIssues.map((issue) => (
+            <div key={issue.code} className={styles.warning}>
+              <strong>{issue.code}</strong>: {issue.message}
+            </div>
+          ))}
+        </div>
+      ) : null}
       {status.warnings.length > 0 ? (
         <div className={styles.warningList}>
           {status.warnings.map((warning) => (

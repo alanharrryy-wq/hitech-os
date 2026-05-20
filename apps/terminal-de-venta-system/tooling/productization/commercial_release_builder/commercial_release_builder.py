@@ -197,6 +197,67 @@ def make_install_plan(package_name: str) -> Dict[str, Any]:
     }
 
 
+def make_runtime_paths(client_id: str, branch_id: str) -> Dict[str, str]:
+    runtime_root = "C:\\ProgramData\\PRISMA\\Commerce"
+    config_root = f"{runtime_root}\\Config"
+    business_root = f"{runtime_root}\\Businesses\\{client_id}"
+    return {
+        "runtimeRoot": runtime_root,
+        "configRoot": config_root,
+        "businessRoot": business_root,
+        "tabletDataRoot": f"{business_root}\\Tablet\\Data",
+        "pcDataRoot": f"{business_root}\\PC\\Data",
+        "syncRoot": f"{business_root}\\Sync",
+        "supportRoot": f"{business_root}\\Support",
+        "updatesRoot": f"{runtime_root}\\Updates",
+        "rollbackRoot": f"{runtime_root}\\Rollback",
+        "logsRoot": f"{business_root}\\Logs",
+        "exportsRoot": f"{business_root}\\Exports",
+        "backupsRoot": f"{business_root}\\Backups",
+        "licenseFile": f"{config_root}\\license.json",
+        "deviceIdentityFile": f"{config_root}\\device-identity.json",
+    }
+
+
+def make_runtime_config(client_id: str, branch_id: str, generated_at: str) -> Dict[str, Any]:
+    paths = make_runtime_paths(client_id, branch_id)
+    return {
+        "schemaVersion": "1.0.0",
+        "runtimeMode": "customer",
+        "runtimeProfile": "standalone",
+        "vertical": "commerce",
+        "role": "tablet",
+        "runtimeRoot": paths["runtimeRoot"],
+        "configRoot": paths["configRoot"],
+        "clientId": client_id,
+        "businessId": client_id,
+        "storeId": branch_id,
+        "terminalId": "tablet-terminal-001",
+        "deviceId": "tablet-001",
+        "packageType": "TABLET_SOLO",
+        "paths": paths,
+        "license": {"file": paths["licenseFile"], "mode": "local_signed_with_optional_refresh"},
+        "sync": {"enabled": False, "mode": "none"},
+        "features": {},
+        "support": {"diagnosticsEnabled": True, "requiresConsent": True},
+        "updates": {"channel": "stable", "allowDuringOpenSale": False},
+        "generatedAt": generated_at,
+    }
+
+
+def make_device_identity(client_id: str, branch_id: str, generated_at: str) -> Dict[str, Any]:
+    return {
+        "schemaVersion": "1.0.0",
+        "deviceId": "tablet-001",
+        "terminalId": "tablet-terminal-001",
+        "businessId": client_id,
+        "storeId": branch_id,
+        "vertical": "commerce",
+        "role": "tablet",
+        "createdAt": generated_at,
+    }
+
+
 def validate_zip_contents(zip_path: Path) -> List[Dict[str, str]]:
     errors = []
     with zipfile.ZipFile(zip_path, "r") as zf:
@@ -247,6 +308,9 @@ def build_release(repo_root: Path, out_root: Path, version: str, client_id: str,
         write_json(package_staging / "manifest.release.json", release_manifest)
         write_json(package_staging / "manifest.client.json", client_manifest)
         write_json(package_staging / "install-plan.json", make_install_plan(package_name))
+        if package_name == "config":
+            write_json(package_staging / "runtime.json", make_runtime_config(client_id, branch_id, generated_at))
+            write_json(package_staging / "device-identity.json", make_device_identity(client_id, branch_id, generated_at))
         write_json(package_staging / "healthcheck-profile.json", {"package": package_name, "checks": ["payload-present", "manifest-present", "no-denied-files", "tablet-solo-policy-present"]})
         write_json(package_staging / "rollback-plan.json", {"package": package_name, "rollback": "restore-previous-package-and-data-backup", "dataDestructive": False})
         write_json(package_staging / "package-index.json", payload_result)
