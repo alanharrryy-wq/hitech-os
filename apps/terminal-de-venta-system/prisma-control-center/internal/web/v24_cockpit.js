@@ -1,23 +1,23 @@
 const THEMES = {
   liquid:{
-    subtitle:'Obsidian Rose Royale · reactor, rutas, señales, evidencia y auditoría.',
-    material:'vidrio oscuro profundo, metal líquido pulido, caústicas cian/violeta y brillo óptico vivo.',
+    subtitle:'Liquid Metal · reactor, rutas, senales, evidencia y auditoria.',
+    material:'vidrio oscuro profundo, metal líquido pulido, causticas cian/violeta y brillo optico vivo.',
     reactor:'Halo periférico, sweep parcial y luces vivas alrededor; sin efecto rueda de la fortuna.'
   },
   tactical:{
-    subtitle:'Tactical Graphite · reactor, rutas, señales, evidencia y auditoría.',
+    subtitle:'Tactical Graphite · reactor, rutas, senales, evidencia y auditoria.',
     material:'grafito táctico, fibra oscura, bordes secos, cortes angulares y lectura instrumental sin glow de más.',
-    reactor:'Lectura técnica, halo bajo y foco en precisión más que en ornamento.'
+    reactor:'Lectura técnica, halo bajo y foco en precision más que en ornamento.'
   },
   piel:{
-    subtitle:'Obsidian Rose Royale · reactor, rutas, señales, evidencia y auditoría.',
-    material:'obsidiana lacada, negro vantal, cristal ahumado y rose gold noble con cuarzo rosé: lujo suizo-inglés, frío, caro y perfectamente peinado; cero madera, cero rosa penoso.',
+    subtitle:'Obsidian Rose Royale · reactor, rutas, senales, evidencia y auditoria.',
+    material:'obsidiana lacada, negro vantal, cristal ahumado y rose gold noble con cuarzo rosé: lujo suizo-inglés, frio, caro y perfectamente peinado; cero madera, cero rosa penoso.',
     reactor:'Dial joya: obsidiana espejo, aro rose gold fino, pulso rosé metálico y reflejo de cristal negro como reloj suizo de bóveda privada.'
   },
   pearl:{
-    subtitle:'Pearl Ice · reactor, rutas, señales, evidencia y auditoría.',
-    material:'vidrio hielo transparente, titanio/plata óptica, brillos fríos y azul eléctrico medido; cero beige.',
-    reactor:'Cristal óptico claro, borde plata, reflejos de lente y contraste frío con lectura nítida.'
+    subtitle:'Pearl Ice · reactor, rutas, senales, evidencia y auditoria.',
+    material:'vidrio hielo transparente, titanio/plata óptica, brillos frios y azul eléctrico medido; cero beige.',
+    reactor:'Cristal optico claro, borde plata, reflejos de lente y contraste frio con lectura nitida.'
   }
 };
 const CHARTS={
@@ -286,15 +286,15 @@ wirePrismaButtons();
       const route = routeFromHealth(payload);
 
       let status = 'pending';
-      let label = 'Topology pending';
-      let routeLabel = 'route pending';
-      let cfLabel = 'checking';
+      let label = 'Topologia pendiente';
+      let routeLabel = 'ruta pendiente';
+      let cfLabel = 'verificando';
 
       if(route.ok){
         status = 'pass';
-        label = 'Topology healthy';
+        label = 'Topologia saludable';
         routeLabel = route.statusCode === '-' ? 'public ok' : String(route.statusCode);
-        cfLabel = 'healthy';
+        cfLabel = 'saludable';
       }else if(
         route.hasEvidence &&
         (
@@ -324,13 +324,13 @@ wirePrismaButtons();
           : 'Edge routing';
       }
     }catch(error){
-      setTag('pending', 'Topology pending');
+      setTag('pending', 'Topologia pendiente');
       if(node) node.dataset.health = 'pending';
       if(state){
-        state.textContent = 'checking';
+        state.textContent = 'verificando';
         setStatus(state, 'pending');
       }
-      if(path) path.textContent = 'no health yet';
+      if(path) path.textContent = 'sin health todavia';
     }
   }
 

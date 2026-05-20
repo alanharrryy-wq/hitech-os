@@ -1,0 +1,24 @@
+{
+  "patch": "PRISMA_V40_UIUX_THEME_HARDENING",
+  "scope": "frontend-only",
+  "backend_touched": false,
+  "contract_rule": "Tablet operates independently; PC governs if present; Mobile supervises; Core records; Control audits.",
+  "files_added": [
+    "internal/web/prisma_v40_uiux.css",
+    "internal/web/prisma_v40_uiux.js",
+    "internal/docs/README_V40_UIUX_THEMES.md",
+    "internal/docs/MANIFEST_PRISMA_V40_UIUX.json"
+  ],
+  "files_modified": [
+    "internal/web/index.html",
+    "internal/web/v24_cockpit.js"
+  ],
+  "ui_improvements_count": 50,
+  "ux_improvements_count": 50,
+  "themes": [
+    "liquid",
+    "tactical",
+    "piel",
+    "pearl"
+  ]
+}
