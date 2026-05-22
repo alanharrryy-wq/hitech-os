@@ -5,6 +5,7 @@ import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tab
 import { requestJson } from "@/lib/pos/cart-state";
 import type { PendingSendStatus, SyncPanelResponse } from "@/lib/pending-offline-sync/sync-panel-contract";
 import { filterSyncItems } from "@/lib/pending-offline-sync/sync-panel-view-model";
+import { CatalogPullPanel } from "./catalog-pull-panel";
 import styles from "./pending-offline-sync-panel.module.css";
 
 type FilterMode = "all" | "needs_attention" | PendingSendStatus;
@@ -207,6 +208,8 @@ export function PendingOfflineSyncPanelScreen() {
 
         {dispatchResult ? <div className={[styles.dispatchNote, styles[`dispatchNote_${noteTone}`]].join(" ")}>{dispatchMessage(dispatchResult)}</div> : null}
         {error ? <div className={styles.alert} role="alert">{error}</div> : null}
+
+        <CatalogPullPanel />
 
         <section className={styles.kpis}>
           <article>

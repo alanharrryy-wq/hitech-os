@@ -2,6 +2,7 @@ import { AppShell } from "@components/layout/app-shell";
 import { DataTable } from "@components/backoffice/data-table";
 import { EmptyState } from "@components/backoffice/empty-state";
 import type { CommandCenterModel, CommandMetric, CommandPanel } from "@/server/services/pc-command-center.service";
+import { PcCommandActions } from "./pc-command-actions";
 
 function toneClass(tone?: CommandMetric["tone"]) {
   if (tone === "danger") return "tone-danger";
@@ -60,13 +61,7 @@ export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
               <p className="section-copy">Solo se muestran acciones con ruta real o razon de bloqueo.</p>
             </div>
           </div>
-          <div className="dashboard-actions">
-            {model.actions.map((action) => action.disabledReason ? (
-              <span key={action.label} className="footer-chip" title={action.disabledReason}>{action.label}: {action.disabledReason}</span>
-            ) : (
-              <a key={action.label} className="footer-chip" href={action.href}>{action.label}</a>
-            ))}
-          </div>
+          <PcCommandActions actions={model.actions} />
         </section>
       ) : null}
 

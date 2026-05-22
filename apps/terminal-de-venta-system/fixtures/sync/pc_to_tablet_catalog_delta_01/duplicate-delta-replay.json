@@ -1,0 +1,54 @@
+{
+  "contractId": "PRISMA_PC_TO_TABLET_CATALOG_DELTA_V1",
+  "schemaVersion": "1.0.0",
+  "stream": "pc.catalog.delta.v1",
+  "mode": "delta",
+  "businessId": "biz_hitech_default",
+  "generatedAt": "2026-05-22T12:11:00.000Z",
+  "scope": { "businessId": "biz_hitech_default", "terminalId": "terminal_tablet_local_01", "storeId": "store_pc_main", "target": "tablet" },
+  "cursor": { "requested": "2026-05-22T12:10:02.000Z~07~price_item_cafe", "from": "2026-05-22T12:10:02.000Z~07~price_item_cafe", "to": "2026-05-22T12:10:02.000Z~07~price_item_cafe", "hasMore": false, "checkpointStrategy": "updatedAt_entityRank_id" },
+  "changes": [
+    {
+      "changeId": "pc.catalog.delta.v1:PriceListItem:price_item_cafe:2026-05-22T12:10:02.000Z",
+      "entityType": "PriceListItem",
+      "entityId": "price_item_cafe",
+      "businessId": "biz_hitech_default",
+      "operation": "upsert",
+      "occurredAt": "2026-05-22T12:10:02.000Z",
+      "cursor": "2026-05-22T12:10:02.000Z~07~price_item_cafe",
+      "payload": {
+        "id": "price_item_cafe",
+        "businessId": "biz_hitech_default",
+        "priceListId": "price_default",
+        "productId": "product_cafe_americano",
+        "priceCents": 3900,
+        "startsAt": "2026-05-22T00:00:00.000Z",
+        "endsAt": null,
+        "createdAt": "2026-05-22T12:00:07.000Z",
+        "updatedAt": "2026-05-22T12:10:02.000Z"
+      }
+    },
+    {
+      "changeId": "pc.catalog.delta.v1:PriceListItem:price_item_cafe:2026-05-22T12:10:02.000Z",
+      "entityType": "PriceListItem",
+      "entityId": "price_item_cafe",
+      "businessId": "biz_hitech_default",
+      "operation": "upsert",
+      "occurredAt": "2026-05-22T12:10:02.000Z",
+      "cursor": "2026-05-22T12:10:02.000Z~07~price_item_cafe",
+      "payload": {
+        "id": "price_item_cafe",
+        "businessId": "biz_hitech_default",
+        "priceListId": "price_default",
+        "productId": "product_cafe_americano",
+        "priceCents": 3900,
+        "startsAt": "2026-05-22T00:00:00.000Z",
+        "endsAt": null,
+        "createdAt": "2026-05-22T12:00:07.000Z",
+        "updatedAt": "2026-05-22T12:10:02.000Z"
+      }
+    }
+  ],
+  "counts": { "total": 2, "byEntity": { "PriceListItem": 2 } },
+  "diagnostics": { "source": "pc-canonical-db", "validator": "PRISMA_PC_TO_TABLET_CATALOG_DELTA_V1", "ordering": "updatedAt_entityRank_id", "notes": ["fixture: duplicate delta replay"] }
+}

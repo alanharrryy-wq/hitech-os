@@ -1,0 +1,32 @@
+{
+  "contractId": "PRISMA_PC_TO_TABLET_CATALOG_DELTA_V1",
+  "schemaVersion": "1.0.0",
+  "stream": "pc.catalog.delta.v1",
+  "mode": "delta",
+  "businessId": "biz_hitech_default",
+  "generatedAt": "2026-05-22T12:20:00.000Z",
+  "scope": { "businessId": "biz_hitech_default", "target": "tablet" },
+  "cursor": { "requested": null, "from": null, "to": "2026-05-22T12:20:00.000Z~04~product_invalid", "hasMore": false, "checkpointStrategy": "updatedAt_entityRank_id" },
+  "changes": [
+    {
+      "changeId": "pc.catalog.delta.v1:Product:product_invalid:2026-05-22T12:20:00.000Z",
+      "entityType": "Product",
+      "entityId": "product_invalid",
+      "businessId": "biz_hitech_default",
+      "operation": "upsert",
+      "occurredAt": "2026-05-22T12:20:00.000Z",
+      "cursor": "2026-05-22T12:20:00.000Z~04~product_invalid",
+      "payload": {
+        "id": "product_invalid",
+        "businessId": "biz_hitech_default",
+        "name": "Producto sin SKU",
+        "category": "Bebidas",
+        "priceCents": 1000,
+        "costCents": 500,
+        "isActive": true
+      }
+    }
+  ],
+  "counts": { "total": 1, "byEntity": { "Product": 1 } },
+  "diagnostics": { "source": "pc-canonical-db", "validator": "PRISMA_PC_TO_TABLET_CATALOG_DELTA_V1", "ordering": "updatedAt_entityRank_id", "notes": ["fixture: invalid payload rejected"] }
+}

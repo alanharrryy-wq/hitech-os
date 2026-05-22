@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/server/prisma/client";
 import { getTriDbStatusCard } from "@/server/services/tri-db-status.service";
+import { getPcCatalogDeltaStatus } from "@/server/services/catalog-delta-export.service";
 import { getPcFeatureList, getPcLicenseStatus } from "@/server/licensing/pc-license-service";
 import { getPcLicenseRefreshStatus } from "@/server/licensing/pc-license-refresh";
 
@@ -40,6 +41,15 @@ export type CommandPanel = {
   tone?: "ok" | "warn" | "danger";
 };
 
+export type CommandAction = {
+  label: string;
+  href: string;
+  method?: "GET" | "POST";
+  body?: Record<string, unknown>;
+  disabledReason?: string;
+  successMessage?: string;
+};
+
 export type CommandCenterModel = {
   mode: PcCommandCenterMode;
   currentPath: string;
@@ -53,7 +63,7 @@ export type CommandCenterModel = {
   panels: CommandPanel[];
   tables: CommandTable[];
   diagnostics: Record<string, unknown>;
-  actions?: Array<{ label: string; href: string; disabledReason?: string }>;
+  actions?: CommandAction[];
 };
 
 function readParam(params: SearchLike, key: string) {
@@ -543,11 +553,12 @@ export async function getPcSyncCommandCenter(params?: SearchLike): Promise<Comma
   const topic = readParam(params, "topic");
   const source = readParam(params, "source");
   const where = { businessId, ...(topic ? { topic } : {}), ...(source ? { source } : {}) };
-  const [events, attempts, conflicts, triDb] = await Promise.all([
+  const [events, attempts, conflicts, triDb, catalogStatus] = await Promise.all([
     safe(() => db.outboxEvent.findMany({ where, orderBy: { createdAt: "desc" }, take: limit }), [] as any[]),
     safe(() => db.syncAttempt.findMany({ where, orderBy: { createdAt: "desc" }, take: limit }), [] as any[]),
     safe(() => db.syncConflict.findMany({ where, orderBy: { detectedAt: "desc" }, take: limit }), [] as any[]),
-    getTriDbStatusCard()
+    getTriDbStatusCard(),
+    getPcCatalogDeltaStatus({ businessId })
   ]);
   const buckets = lifecycleBuckets(events);
   const oldestPending = events.filter((event: any) => ["pending", "sent", "received"].includes(String(event.status).toLowerCase())).sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())[0];
@@ -564,6 +575,7 @@ export async function getPcSyncCommandCenter(params?: SearchLike): Promise<Comma
     independenceLine: "PC puede atrasarse o marcar conflicto sin detener venta local de Tablet.",
     metrics: [
       { label: "Eventos", value: numberLabel(events.length), note: "OutboxEvent acotado" },
+      { label: "Delta catalogo", value: numberLabel(catalogStatus.latestExport?.total ?? 0), note: catalogStatus.latestExport ? `Ultimo ${catalogStatus.latestExport.mode}` : "sin export generado", tone: catalogStatus.latestExport ? "ok" : "warn" },
       { label: "Conflictos", value: numberLabel(conflicts.filter((row: any) => row.status !== "resolved").length), note: "SyncConflict abierto", tone: conflicts.length ? "warn" : "ok" },
       { label: "Intentos", value: numberLabel(attempts.length), note: "SyncAttempt" },
       { label: "Duracion prom.", value: `${numberLabel(avgDuration)} ms`, note: "Intentos recientes" },
@@ -578,6 +590,11 @@ export async function getPcSyncCommandCenter(params?: SearchLike): Promise<Comma
       {
         title: "Duplicados",
         body: "El ingest usa idempotencyKey/eventId; duplicados quedan visibles sin proyectar dos veces.",
+        tone: "ok"
+      },
+      {
+        title: "PC a Tablet catalogo",
+        body: "El delta de catalogo usa contrato compartido, cursor determinista y no bloquea ventas locales de Tablet.",
         tone: "ok"
       }
     ],
@@ -634,6 +651,18 @@ export async function getPcSyncCommandCenter(params?: SearchLike): Promise<Comma
         emptyMessage: "Sin conflictos abiertos."
       },
       {
+        title: "Catalogo PC a Tablet",
+        caption: "Estado del export master-data disponible para pull Tablet.",
+        columns: ["Entidad", "Filas PC", "Ultimo delta", "Cursor"],
+        rows: Object.entries(catalogStatus.tableCounts).map(([Entidad, Filas]) => ({
+          Entidad,
+          "Filas PC": Filas,
+          "Ultimo delta": catalogStatus.latestExport?.byEntity?.[Entidad] ?? 0,
+          Cursor: catalogStatus.latestExport?.cursor ?? "sin cursor"
+        })),
+        emptyMessage: "Sin entidades de catalogo soportadas."
+      },
+      {
         title: "Paridad tri-db",
         caption: "Tablet rows, PC rows, delta y cobertura.",
         columns: ["Tabla", "Tablet", "PC", "Delta", "Cubre"],
@@ -647,7 +676,12 @@ export async function getPcSyncCommandCenter(params?: SearchLike): Promise<Comma
         emptyMessage: "Tri-db status no trae tabla de paridad."
       }
     ],
-    diagnostics: { businessId, topic, source, newestReceivedAt: newestReceived?.receivedAt ?? null, triDbSource: triDb.sourcePath }
+    diagnostics: { businessId, topic, source, newestReceivedAt: newestReceived?.receivedAt ?? null, triDbSource: triDb.sourcePath, catalogDelta: catalogStatus },
+    actions: [
+      { label: "Generar delta catalogo", href: "/api/sync/export/catalog-delta", method: "POST", body: { mode: "delta", target: "tablet" }, successMessage: "Delta incremental generado desde PC." },
+      { label: "Generar bootstrap catalogo", href: "/api/sync/export/catalog-delta", method: "POST", body: { mode: "bootstrap", target: "tablet" }, successMessage: "Bootstrap de catalogo generado desde PC." },
+      { label: "Forzar resync catalogo", href: "/api/sync/export/catalog-delta", method: "POST", body: { mode: "resync", target: "tablet" }, successMessage: "Resync de catalogo generado desde PC." }
+    ]
   };
 }
 
@@ -811,7 +845,7 @@ export async function getPcLicenseRuntimeControl(): Promise<CommandCenterModel> 
     },
     actions: [
       refresh.enabled
-        ? { label: "Actualizar licencia", href: "/api/license/refresh" }
+        ? { label: "Actualizar licencia", href: "/api/license/refresh", method: "POST", successMessage: "Refresh de licencia solicitado." }
         : { label: "Actualizar licencia", href: "/license-runtime", disabledReason: "No hay endpoint remoto configurado." }
     ]
   };
@@ -820,11 +854,12 @@ export async function getPcLicenseRuntimeControl(): Promise<CommandCenterModel> 
 export async function getPcTabletCommunication(params?: SearchLike): Promise<CommandCenterModel> {
   const db = prisma as any;
   const businessId = await resolveBusinessId();
-  const [heartbeats, inbound, commands, conflicts] = await Promise.all([
+  const [heartbeats, inbound, commands, conflicts, catalogStatus] = await Promise.all([
     safe(() => db.deviceHeartbeat.findMany({ where: { businessId }, orderBy: { lastSeenAt: "desc" }, take: 120 }), [] as any[]),
     safe(() => db.outboxEvent.findMany({ where: { businessId, source: { contains: "tablet" } }, orderBy: { receivedAt: "desc" }, take: 120 }), [] as any[]),
     safe(() => db.auditEvent.findMany({ where: { businessId, topic: "pc.tablet.governance_command" }, orderBy: { createdAt: "desc" }, take: 120 }), [] as any[]),
-    safe(() => db.syncConflict.findMany({ where: { businessId }, orderBy: { detectedAt: "desc" }, take: 80 }), [] as any[])
+    safe(() => db.syncConflict.findMany({ where: { businessId }, orderBy: { detectedAt: "desc" }, take: 80 }), [] as any[]),
+    getPcCatalogDeltaStatus({ businessId })
   ]);
   const target = readParam(params, "deviceId");
   const filteredHeartbeats = target ? heartbeats.filter((row: any) => row.deviceId === target) : heartbeats;
@@ -843,6 +878,7 @@ export async function getPcTabletCommunication(params?: SearchLike): Promise<Com
       { label: "Tablets objetivo", value: numberLabel(filteredHeartbeats.length), note: "DeviceHeartbeat" },
       { label: "Inbound", value: numberLabel(inbound.length), note: "Tablet a PC" },
       { label: "Gobierno outbound", value: numberLabel(commands.length), note: "AuditEvent command ledger" },
+      { label: "Catalogo exportado", value: numberLabel(catalogStatus.latestExport?.total ?? 0), note: catalogStatus.latestExport ? relativeLabel(catalogStatus.latestExport.createdAt) : "sin delta", tone: catalogStatus.latestExport ? "ok" : "warn" },
       { label: "Ultimo inbound", value: lastInbound ? relativeLabel(lastInbound) : "sin evento", note: "Tablet to PC" },
       { label: "Ultimo outbound", value: lastOutbound ? relativeLabel(lastOutbound) : "sin comando", note: "PC to Tablet" }
     ],
@@ -855,6 +891,11 @@ export async function getPcTabletCommunication(params?: SearchLike): Promise<Com
       {
         title: "Safe to continue selling",
         body: "Catalogo, precio, licencia o runtime pendientes no bloquean ventas locales ya permitidas por Tablet.",
+        tone: "ok"
+      },
+      {
+        title: "Pull catalogo entrante",
+        body: "Tablet solicita el delta a PC y guarda su propio checkpoint local. Esta pantalla no usa Chart Lab ni toasts fake para cerrar sync.",
         tone: "ok"
       }
     ],
@@ -905,6 +946,18 @@ export async function getPcTabletCommunication(params?: SearchLike): Promise<Com
         emptyMessage: "No hay comandos de gobierno registrados."
       },
       {
+        title: "Catalogo disponible para Tablet",
+        caption: "Master-data PC exportable por entidad y ultimo cursor generado.",
+        columns: ["Entidad", "Filas PC", "Ultimo export", "Cursor"],
+        rows: Object.entries(catalogStatus.tableCounts).map(([Entidad, Filas]) => ({
+          Entidad,
+          "Filas PC": Filas,
+          "Ultimo export": catalogStatus.latestExport?.byEntity?.[Entidad] ?? 0,
+          Cursor: catalogStatus.latestExport?.cursor ?? "sin cursor"
+        })),
+        emptyMessage: "Sin catalogo PC disponible para distribuir."
+      },
+      {
         title: "Conflictos relacionados",
         caption: "Version/schema/conflictos que afectan comunicacion.",
         columns: ["Detectado", "Device", "Codigo", "Severidad", "Estado"],
@@ -918,9 +971,12 @@ export async function getPcTabletCommunication(params?: SearchLike): Promise<Com
         emptyMessage: "Sin conflictos de comunicacion registrados."
       }
     ],
-    diagnostics: { businessId, target, commandContract: "pc-tablet-governance-command.v1", outboundDelivery: "audit-ledger-no-fake-ack" },
+    diagnostics: { businessId, target, commandContract: "pc-tablet-governance-command.v1", outboundDelivery: "audit-ledger-no-fake-ack", catalogDelta: catalogStatus },
     actions: [
-      { label: "Registrar refresh runtime", href: "/api/backoffice/tablet-communication/governance-command" }
+      { label: "Generar delta catalogo", href: "/api/sync/export/catalog-delta", method: "POST", body: { mode: "delta", target: target || "all" }, successMessage: "Delta de catalogo generado para Tablet." },
+      { label: "Bootstrap catalogo", href: "/api/sync/export/catalog-delta", method: "POST", body: { mode: "bootstrap", target: target || "all" }, successMessage: "Bootstrap de catalogo generado para Tablet." },
+      { label: "Resync catalogo", href: "/api/sync/export/catalog-delta", method: "POST", body: { mode: "resync", target: target || "all" }, successMessage: "Resync de catalogo generado para Tablet." },
+      { label: "Registrar refresh runtime", href: "/api/backoffice/tablet-communication/governance-command", method: "POST", body: { commandType: "runtime.refresh", target: target || "all", requestedBy: "pc-operator" }, successMessage: "Comando runtime.refresh registrado sin ack falso." }
     ]
   };
 }

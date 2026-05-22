@@ -1,0 +1,8 @@
+{
+  "screen": "/sync",
+  "component": "CatalogPullPanel",
+  "endpoint": "POST /api/pos/sync/pull",
+  "button": "Pedir delta",
+  "retrySafe": true,
+  "expectedDuplicateHandling": "cursor and duplicate changeId prevent double apply"
+}

@@ -50,6 +50,7 @@ model Business {
   auditEvents          AuditEvent[]
   supportIncidents     SupportIncident[]
   outboxEvents         OutboxEvent[]
+  syncCheckpoints      SyncCheckpoint[]
 }
 
 model Store {
@@ -768,4 +769,36 @@ model OutboxEvent {
   @@index([businessId, topic])
   @@index([businessId, remoteLedgerId])
   @@index([businessId, idempotencyKey])
+}
+
+model SyncCheckpoint {
+  id                 String    @id
+  businessId         String
+  source             String
+  scopeKey           String
+  deviceId           String?
+  terminalId         String?
+  stream             String
+  cursorValue        String?
+  lastEventId        String?
+  lastIdempotencyKey String?
+  lastAttemptId      String?
+  status             String
+  lifecycleStatus    String?
+  checkpointAt       DateTime  @default(now())
+  lastAttemptedAt    DateTime?
+  lastSuccessfulAt   DateTime?
+  metadataJson       String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @default(now()) @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@unique([businessId, scopeKey, stream])
+  @@index([businessId, source, deviceId, stream])
+  @@index([businessId, source, status, checkpointAt])
+  @@index([businessId, terminalId, checkpointAt])
+  @@index([status, updatedAt])
+  @@index([createdAt])
+  @@index([updatedAt])
 }

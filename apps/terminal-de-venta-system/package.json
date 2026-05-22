@@ -86,7 +86,8 @@
     "quality:support-pack": "node quality/bin/prisma-quality.mjs --profile support-pack --repo-root . --out-dir F:/descargasf",
     "quality:upgrade": "node quality/bin/prisma-quality.mjs --profile upgrade --repo-root . --out-dir F:/descargasf",
     "quality:pilot": "node quality/bin/prisma-quality.mjs --profile pilot --repo-root . --out-dir F:/descargasf",
-    "verify:supplier-product-supplier-sync": "node tools/verify_supplier_product_supplier_sync_closure_01.mjs"
+    "verify:supplier-product-supplier-sync": "node tools/verify_supplier_product_supplier_sync_closure_01.mjs",
+    "verify:pc-to-tablet-catalog-sync": "node tools/verify_pc_to_tablet_catalog_delta_closure_01.mjs"
   },
   "devDependencies": {
     "prisma": "5.21.1"

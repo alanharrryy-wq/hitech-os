@@ -1,0 +1,224 @@
+{
+  "contractId": "PRISMA_PC_TO_TABLET_CATALOG_DELTA_V1",
+  "schemaVersion": "1.0.0",
+  "stream": "pc.catalog.delta.v1",
+  "mode": "bootstrap",
+  "businessId": "biz_hitech_default",
+  "generatedAt": "2026-05-22T12:00:00.000Z",
+  "scope": {
+    "businessId": "biz_hitech_default",
+    "terminalId": "terminal_tablet_local_01",
+    "storeId": "store_pc_main",
+    "target": "tablet"
+  },
+  "cursor": {
+    "requested": null,
+    "from": null,
+    "to": "2026-05-22T12:00:09.000Z~09~dropdown_option_piece",
+    "hasMore": false,
+    "checkpointStrategy": "updatedAt_entityRank_id"
+  },
+  "changes": [
+    {
+      "changeId": "pc.catalog.delta.v1:TaxRate:tax_mx_iva_16:2026-05-22T12:00:01.000Z",
+      "entityType": "TaxRate",
+      "entityId": "tax_mx_iva_16",
+      "businessId": "biz_hitech_default",
+      "operation": "upsert",
+      "occurredAt": "2026-05-22T12:00:01.000Z",
+      "cursor": "2026-05-22T12:00:01.000Z~01~tax_mx_iva_16",
+      "payload": {
+        "id": "tax_mx_iva_16",
+        "businessId": "biz_hitech_default",
+        "name": "IVA 16",
+        "rateBps": 1600,
+        "isDefault": true,
+        "isActive": true,
+        "createdAt": "2026-05-22T12:00:01.000Z",
+        "updatedAt": "2026-05-22T12:00:01.000Z"
+      }
+    },
+    {
+      "changeId": "pc.catalog.delta.v1:Brand:brand_acme:2026-05-22T12:00:02.000Z",
+      "entityType": "Brand",
+      "entityId": "brand_acme",
+      "businessId": "biz_hitech_default",
+      "operation": "upsert",
+      "occurredAt": "2026-05-22T12:00:02.000Z",
+      "cursor": "2026-05-22T12:00:02.000Z~02~brand_acme",
+      "payload": {
+        "id": "brand_acme",
+        "businessId": "biz_hitech_default",
+        "name": "ACME",
+        "description": "Fixture brand",
+        "status": "ACTIVE",
+        "createdAt": "2026-05-22T12:00:02.000Z",
+        "updatedAt": "2026-05-22T12:00:02.000Z"
+      }
+    },
+    {
+      "changeId": "pc.catalog.delta.v1:Supplier:supplier_central:2026-05-22T12:00:03.000Z",
+      "entityType": "Supplier",
+      "entityId": "supplier_central",
+      "businessId": "biz_hitech_default",
+      "operation": "upsert",
+      "occurredAt": "2026-05-22T12:00:03.000Z",
+      "cursor": "2026-05-22T12:00:03.000Z~03~supplier_central",
+      "payload": {
+        "id": "supplier_central",
+        "businessId": "biz_hitech_default",
+        "name": "Proveedor Central",
+        "status": "ACTIVE",
+        "createdAt": "2026-05-22T12:00:03.000Z",
+        "updatedAt": "2026-05-22T12:00:03.000Z"
+      }
+    },
+    {
+      "changeId": "pc.catalog.delta.v1:Product:product_cafe_americano:2026-05-22T12:00:04.000Z",
+      "entityType": "Product",
+      "entityId": "product_cafe_americano",
+      "businessId": "biz_hitech_default",
+      "operation": "upsert",
+      "occurredAt": "2026-05-22T12:00:04.000Z",
+      "cursor": "2026-05-22T12:00:04.000Z~04~product_cafe_americano",
+      "payload": {
+        "id": "product_cafe_americano",
+        "businessId": "biz_hitech_default",
+        "sku": "CAF-AMER",
+        "name": "Cafe americano",
+        "category": "Bebidas",
+        "brandId": "brand_acme",
+        "taxRateId": "tax_mx_iva_16",
+        "priceCents": 3500,
+        "costCents": 1200,
+        "stockOnHand": 18,
+        "isActive": true,
+        "barcodes": ["7500000000011"],
+        "createdAt": "2026-05-22T12:00:04.000Z",
+        "updatedAt": "2026-05-22T12:00:04.000Z"
+      }
+    },
+    {
+      "changeId": "pc.catalog.delta.v1:ProductSupplier:link_cafe_supplier:2026-05-22T12:00:05.000Z",
+      "entityType": "ProductSupplier",
+      "entityId": "link_cafe_supplier",
+      "businessId": "biz_hitech_default",
+      "operation": "upsert",
+      "occurredAt": "2026-05-22T12:00:05.000Z",
+      "cursor": "2026-05-22T12:00:05.000Z~05~link_cafe_supplier",
+      "payload": {
+        "id": "link_cafe_supplier",
+        "businessId": "biz_hitech_default",
+        "productId": "product_cafe_americano",
+        "supplierId": "supplier_central",
+        "isPrimary": true,
+        "status": "ACTIVE",
+        "leadTimeDays": 2,
+        "createdAt": "2026-05-22T12:00:05.000Z",
+        "updatedAt": "2026-05-22T12:00:05.000Z"
+      }
+    },
+    {
+      "changeId": "pc.catalog.delta.v1:PriceList:price_default:2026-05-22T12:00:06.000Z",
+      "entityType": "PriceList",
+      "entityId": "price_default",
+      "businessId": "biz_hitech_default",
+      "operation": "upsert",
+      "occurredAt": "2026-05-22T12:00:06.000Z",
+      "cursor": "2026-05-22T12:00:06.000Z~06~price_default",
+      "payload": {
+        "id": "price_default",
+        "businessId": "biz_hitech_default",
+        "name": "Lista general",
+        "currency": "MXN",
+        "isDefault": true,
+        "isActive": true,
+        "startsAt": "2026-05-22T00:00:00.000Z",
+        "endsAt": null,
+        "createdAt": "2026-05-22T12:00:06.000Z",
+        "updatedAt": "2026-05-22T12:00:06.000Z"
+      }
+    },
+    {
+      "changeId": "pc.catalog.delta.v1:PriceListItem:price_item_cafe:2026-05-22T12:00:07.000Z",
+      "entityType": "PriceListItem",
+      "entityId": "price_item_cafe",
+      "businessId": "biz_hitech_default",
+      "operation": "upsert",
+      "occurredAt": "2026-05-22T12:00:07.000Z",
+      "cursor": "2026-05-22T12:00:07.000Z~07~price_item_cafe",
+      "payload": {
+        "id": "price_item_cafe",
+        "businessId": "biz_hitech_default",
+        "priceListId": "price_default",
+        "productId": "product_cafe_americano",
+        "priceCents": 3500,
+        "startsAt": "2026-05-22T00:00:00.000Z",
+        "endsAt": null,
+        "createdAt": "2026-05-22T12:00:07.000Z",
+        "updatedAt": "2026-05-22T12:00:07.000Z"
+      }
+    },
+    {
+      "changeId": "pc.catalog.delta.v1:DropdownCatalog:dropdown_units:2026-05-22T12:00:08.000Z",
+      "entityType": "DropdownCatalog",
+      "entityId": "dropdown_units",
+      "businessId": "biz_hitech_default",
+      "operation": "upsert",
+      "occurredAt": "2026-05-22T12:00:08.000Z",
+      "cursor": "2026-05-22T12:00:08.000Z~08~dropdown_units",
+      "payload": {
+        "id": "dropdown_units",
+        "businessId": "biz_hitech_default",
+        "code": "units",
+        "label": "Unidades",
+        "description": "Unidades de venta",
+        "status": "ACTIVE",
+        "createdAt": "2026-05-22T12:00:08.000Z",
+        "updatedAt": "2026-05-22T12:00:08.000Z"
+      }
+    },
+    {
+      "changeId": "pc.catalog.delta.v1:DropdownOption:dropdown_option_piece:2026-05-22T12:00:09.000Z",
+      "entityType": "DropdownOption",
+      "entityId": "dropdown_option_piece",
+      "businessId": "biz_hitech_default",
+      "operation": "upsert",
+      "occurredAt": "2026-05-22T12:00:09.000Z",
+      "cursor": "2026-05-22T12:00:09.000Z~09~dropdown_option_piece",
+      "payload": {
+        "id": "dropdown_option_piece",
+        "businessId": "biz_hitech_default",
+        "catalogId": "dropdown_units",
+        "code": "piece",
+        "label": "Pieza",
+        "sortOrder": 1,
+        "isDefault": true,
+        "status": "ACTIVE",
+        "metadataJson": "{\"unit\":\"piece\"}",
+        "createdAt": "2026-05-22T12:00:09.000Z",
+        "updatedAt": "2026-05-22T12:00:09.000Z"
+      }
+    }
+  ],
+  "counts": {
+    "total": 9,
+    "byEntity": {
+      "TaxRate": 1,
+      "Brand": 1,
+      "Supplier": 1,
+      "Product": 1,
+      "ProductSupplier": 1,
+      "PriceList": 1,
+      "PriceListItem": 1,
+      "DropdownCatalog": 1,
+      "DropdownOption": 1
+    }
+  },
+  "diagnostics": {
+    "source": "pc-canonical-db",
+    "validator": "PRISMA_PC_TO_TABLET_CATALOG_DELTA_V1",
+    "ordering": "updatedAt_entityRank_id",
+    "notes": ["fixture: initial full catalog bootstrap"]
+  }
+}

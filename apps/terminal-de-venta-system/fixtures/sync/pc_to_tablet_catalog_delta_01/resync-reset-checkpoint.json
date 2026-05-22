@@ -1,0 +1,11 @@
+{
+  "mode": "resync",
+  "resetCheckpoint": true,
+  "sourceFixture": "bootstrap-full.json",
+  "expected": {
+    "cursorBefore": null,
+    "status": "applied",
+    "checkpointAdvances": true,
+    "stockPolicy": "existing Product.stockOnHand is preserved on update"
+  }
+}
