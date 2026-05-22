@@ -1,0 +1,11 @@
+{
+  "screen": "/sync",
+  "component": "CatalogPullPanel",
+  "endpoint": "POST /api/pos/sync/pull",
+  "button": "Pedir delta",
+  "expectedResult": {
+    "ok": false,
+    "reason": "pc_unavailable",
+    "localSalesRemainAvailable": true
+  }
+}

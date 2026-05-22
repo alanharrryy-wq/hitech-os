@@ -93,3 +93,36 @@
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dispatchNote_danger{border-color:color-mix(in srgb,var(--prisma-state-danger) 42%,var(--prisma-border-soft));background:color-mix(in srgb,var(--prisma-state-danger) 11%,#fff);color:#a72742}
 :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions .primaryAction{border-color:var(--prisma-border-action)!important;background:var(--prisma-action-primary-gradient)!important;color:var(--prisma-text-inverse)!important;box-shadow:var(--prisma-shadow-primary-glow)!important}
 /* PRISMA_TABLET_SYNC_REAL_DISPATCH_01::END */
+
+/* PRISMA_PC_TO_TABLET_CATALOG_DELTA_V1::START */
+.catalogPull{display:grid;gap:16px;border:1px solid rgba(125,211,252,.22);background:rgba(15,23,42,.72);border-radius:22px;padding:20px;box-shadow:0 18px 42px rgba(0,0,0,.18)}
+.catalogHeader{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.catalogHeader span,.catalogGrid span,.catalogResultGrid span{color:#93c5fd;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.catalogHeader h2{margin:6px 0;font-size:24px}
+.catalogHeader p{max-width:760px;color:rgba(226,232,240,.74)}
+.catalogActions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.catalogActions button{border:1px solid rgba(125,211,252,.28);border-radius:999px;background:rgba(14,165,233,.12);color:#e0f2fe;padding:10px 13px;font-weight:850}
+.catalogActions button:disabled{opacity:.48;cursor:not-allowed}
+.catalogGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.catalogGrid article,.catalogResultGrid article{min-width:0;border:1px solid rgba(255,255,255,.1);border-radius:18px;background:rgba(255,255,255,.06);padding:14px}
+.catalogGrid strong,.catalogResultGrid strong{display:block;margin:7px 0;color:#f8fafc;font-size:24px}
+.catalogGrid small{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;color:rgba(226,232,240,.7);white-space:nowrap}
+.catalogResultGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.catalogEntityList,.catalogFindings{display:flex;gap:8px;flex-wrap:wrap}
+.catalogEntityList span,.catalogFindings span{border:1px solid rgba(148,163,184,.22);border-radius:999px;background:rgba(148,163,184,.1);color:#dbeafe;padding:8px 10px;font-size:12px;font-weight:750}
+.catalogFindings span{border-color:rgba(245,158,11,.35);background:rgba(245,158,11,.12);color:#fde68a}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogPull,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogGrid article,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogResultGrid article{border-color:var(--prisma-border-soft);background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(246,250,255,.76));box-shadow:var(--prisma-shadow-card-lift);color:var(--prisma-text-primary)}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogHeader span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogGrid span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogResultGrid span{color:var(--prisma-action-primary)}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogHeader p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogGrid small{color:var(--prisma-text-secondary)}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogGrid strong,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogResultGrid strong{color:var(--prisma-action-primary)}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogActions button{border-color:var(--prisma-border-action);background:rgba(21,87,255,.08);color:var(--prisma-action-primary)}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .catalogEntityList span{border-color:var(--prisma-border-action);background:rgba(21,87,255,.08);color:var(--prisma-action-primary)}
+@media(max-width:900px){.catalogHeader{display:grid}.catalogActions{justify-content:flex-start}.catalogGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.catalogResultGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.catalogGrid,.catalogResultGrid{grid-template-columns:1fr}.catalogActions button{width:100%}}
+/* PRISMA_PC_TO_TABLET_CATALOG_DELTA_V1::END */

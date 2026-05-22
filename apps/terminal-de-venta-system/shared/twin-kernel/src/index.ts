@@ -6,4 +6,5 @@ export * from "./validation/twin-capability-validator";
 export * from "./data/twin-capability-manifest";
 export * from "./data/twin-parity-matrix";
 export * from "./sync/events";
+export * from "./sync/catalog-delta";
 export * from "./sync/twin-capability-events";

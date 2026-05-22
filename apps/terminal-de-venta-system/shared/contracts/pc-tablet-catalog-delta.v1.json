@@ -1,0 +1,56 @@
+{
+  "contractId": "PRISMA_PC_TO_TABLET_CATALOG_DELTA_V1",
+  "schemaVersion": "1.0.0",
+  "stream": "pc.catalog.delta.v1",
+  "sourceOfTruth": "shared/contracts/pc-tablet-catalog-delta.v1.json",
+  "direction": "PC_TO_TABLET",
+  "modes": ["delta", "bootstrap", "resync"],
+  "operation": "upsert",
+  "checkpointStrategy": "updatedAt_entityRank_id",
+  "entities": [
+    "TaxRate",
+    "Brand",
+    "Supplier",
+    "Product",
+    "ProductSupplier",
+    "PriceList",
+    "PriceListItem",
+    "DropdownCatalog",
+    "DropdownOption"
+  ],
+  "requiredEnvelopeFields": [
+    "contractId",
+    "schemaVersion",
+    "stream",
+    "mode",
+    "businessId",
+    "generatedAt",
+    "scope",
+    "cursor",
+    "changes",
+    "counts",
+    "diagnostics"
+  ],
+  "requiredChangeFields": [
+    "changeId",
+    "entityType",
+    "entityId",
+    "businessId",
+    "operation",
+    "occurredAt",
+    "cursor",
+    "payload"
+  ],
+  "failureCodes": [
+    "duplicate_change",
+    "invalid_schema",
+    "missing_dependency",
+    "stale_cursor",
+    "unknown_entity"
+  ],
+  "notes": [
+    "PC exports canonical catalog/master-data deltas from Prisma canonical DB.",
+    "Tablet maps source PC businessId into its local operational business scope so offline sales stay local.",
+    "Product stockOnHand is set on create only; catalog updates do not reset local Tablet sale stock."
+  ]
+}
