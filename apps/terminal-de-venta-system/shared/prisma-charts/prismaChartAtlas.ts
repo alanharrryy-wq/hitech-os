@@ -6,6 +6,8 @@ import { pcInventoryRiskTreemapPassport } from "./passports/pc.inventory-risk-tr
 import { pcOperationalDensityFieldPassport } from "./passports/pc.operational-density-field.passport";
 import { opsOperationalDensityHeatmapPassport } from "./passports/ops.operational-density-heatmap.passport";
 import { pcServiceDependencyGraphPassport } from "./passports/pc.service-dependency-graph.passport";
+import { pcSyncCommandLifecycleTimelinePassport } from "./passports/pc.sync-command-lifecycle-timeline.passport";
+import { pcTabletCatalogFreshnessGridPassport } from "./passports/pc.tablet-catalog-freshness-grid.passport";
 import { tabletShiftPulseStripPassport } from "./passports/tablet.shift-pulse-strip.passport";
 import { tabletSyncOutboxStatusMatrixPassport } from "./passports/tablet.sync-outbox-status-matrix.passport";
 import { mobileActionInboxPriorityStackPassport } from "./passports/mobile.action-inbox-priority-stack.passport";
@@ -98,6 +100,8 @@ export const prismaChartAtlas = [
   pcInventoryRiskTreemapPassport,
   pcDecisionLedgerTimelinePassport,
   pcFinancialOperationalWaterfallPassport,
+  pcTabletCatalogFreshnessGridPassport,
+  pcSyncCommandLifecycleTimelinePassport,
   tabletShiftPulseStripPassport,
   tabletSyncOutboxStatusMatrixPassport,
   mobileOwnerPulseTimelinePassport,

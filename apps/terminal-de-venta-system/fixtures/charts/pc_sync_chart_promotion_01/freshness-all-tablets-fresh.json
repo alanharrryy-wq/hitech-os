@@ -1,0 +1,33 @@
+{
+  "scenario": "all tablets fresh",
+  "chartId": "pc.tablet-catalog-freshness-grid",
+  "sourceMode": "recorded-real",
+  "data": [
+    {
+      "terminalId": "tablet-norte-01",
+      "terminalLabel": "Tablet Norte 01",
+      "storeId": "store-norte",
+      "stream": "pc.catalog.delta.v1",
+      "lastSuccessfulPullAt": "2026-05-22T17:55:00.000Z",
+      "lastAttemptedPullAt": "2026-05-22T17:55:10.000Z",
+      "checkpointCursor": "2026-05-22T17:50:00.000Z~04~prod_120",
+      "checkpointSummary": "cursor 2026-05-22T17:50:00.000Z~04~prod_120",
+      "freshnessStatus": "fresh",
+      "counts": { "applied": 45, "rejected": 0, "conflicted": 0, "duplicated": 0, "pending": 0, "behind": 0 },
+      "recommendedAction": "none",
+      "lastErrorSummary": null,
+      "evidenceRefs": ["audit_catalog_export_001", "sync_checkpoint_001"],
+      "entityStatuses": [
+        { "entityType": "Product", "status": "fresh", "pcRowCount": 120, "exportedCount": 12, "appliedCount": 12, "rejectedCount": 0, "conflictedCount": 0, "duplicatedCount": 0, "lastCursor": "2026-05-22T17:50:00.000Z~04~prod_120", "note": "current" },
+        { "entityType": "Brand", "status": "fresh", "pcRowCount": 16, "exportedCount": 2, "appliedCount": 2, "rejectedCount": 0, "conflictedCount": 0, "duplicatedCount": 0, "lastCursor": "2026-05-22T17:50:00.000Z~02~brand_016", "note": "current" },
+        { "entityType": "Supplier", "status": "fresh", "pcRowCount": 22, "exportedCount": 3, "appliedCount": 3, "rejectedCount": 0, "conflictedCount": 0, "duplicatedCount": 0, "lastCursor": "2026-05-22T17:50:00.000Z~03~supplier_022", "note": "current" },
+        { "entityType": "ProductSupplier", "status": "fresh", "pcRowCount": 38, "exportedCount": 5, "appliedCount": 5, "rejectedCount": 0, "conflictedCount": 0, "duplicatedCount": 0, "lastCursor": "2026-05-22T17:50:00.000Z~05~ps_038", "note": "current" },
+        { "entityType": "PriceList", "status": "fresh", "pcRowCount": 4, "exportedCount": 1, "appliedCount": 1, "rejectedCount": 0, "conflictedCount": 0, "duplicatedCount": 0, "lastCursor": "2026-05-22T17:50:00.000Z~06~price_004", "note": "current" },
+        { "entityType": "PriceListItem", "status": "fresh", "pcRowCount": 120, "exportedCount": 12, "appliedCount": 12, "rejectedCount": 0, "conflictedCount": 0, "duplicatedCount": 0, "lastCursor": "2026-05-22T17:50:00.000Z~07~pli_120", "note": "current" },
+        { "entityType": "TaxRate", "status": "fresh", "pcRowCount": 3, "exportedCount": 1, "appliedCount": 1, "rejectedCount": 0, "conflictedCount": 0, "duplicatedCount": 0, "lastCursor": "2026-05-22T17:50:00.000Z~01~tax_003", "note": "current" },
+        { "entityType": "DropdownCatalog", "status": "fresh", "pcRowCount": 9, "exportedCount": 1, "appliedCount": 1, "rejectedCount": 0, "conflictedCount": 0, "duplicatedCount": 0, "lastCursor": "2026-05-22T17:50:00.000Z~08~ddc_009", "note": "current" },
+        { "entityType": "DropdownOption", "status": "fresh", "pcRowCount": 54, "exportedCount": 8, "appliedCount": 8, "rejectedCount": 0, "conflictedCount": 0, "duplicatedCount": 0, "lastCursor": "2026-05-22T17:50:00.000Z~09~ddo_054", "note": "current" }
+      ]
+    }
+  ]
+}

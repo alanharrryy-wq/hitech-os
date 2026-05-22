@@ -16,6 +16,9 @@ import type {
   ServiceDependencyEdge,
   ServiceDependencyNode,
   ShiftPulseBucket,
+  SyncCommandLifecycleEvent,
+  TabletCatalogEntityName,
+  TabletCatalogFreshnessGridRow,
   SyncOutboxMatrixCell
 } from "./prismaChartContracts";
 
@@ -121,6 +124,129 @@ const operationalDensityHeatmapMock: OperationalDensityCell[] = operationalDensi
   })
 );
 
+const catalogEntityNames: TabletCatalogEntityName[] = [
+  "Product",
+  "Brand",
+  "Supplier",
+  "ProductSupplier",
+  "PriceList",
+  "PriceListItem",
+  "TaxRate",
+  "DropdownCatalog",
+  "DropdownOption"
+];
+
+const tabletCatalogFreshnessGridMock: TabletCatalogFreshnessGridRow[] = [
+  {
+    terminalId: "tablet-norte-01",
+    terminalLabel: "Tablet Norte 01",
+    storeId: "store-norte",
+    stream: "pc.catalog.delta.v1",
+    lastSuccessfulPullAt: iso(8),
+    lastAttemptedPullAt: iso(7),
+    checkpointCursor: "2026-05-11T07:52:00.000Z~04~prod_120",
+    checkpointSummary: "Cursor matches latest PC catalog export.",
+    freshnessStatus: "fresh",
+    entityStatuses: catalogEntityNames.map((entityType, index) => ({
+      entityType,
+      status: "fresh",
+      pcRowCount: 12 + index,
+      exportedCount: 2 + (index % 3),
+      appliedCount: 2 + (index % 3),
+      rejectedCount: 0,
+      conflictedCount: 0,
+      duplicatedCount: 0,
+      lastCursor: "2026-05-11T07:52:00.000Z~04~prod_120",
+      note: "Applied through Tablet catalog pull checkpoint."
+    })),
+    counts: { applied: 28, rejected: 0, conflicted: 0, duplicated: 0, pending: 0, behind: 0 },
+    recommendedAction: "none",
+    lastErrorSummary: null,
+    evidenceRefs: ["fixture:pc-sync:freshness:tablet-norte-01"]
+  },
+  {
+    terminalId: "tablet-sur-02",
+    terminalLabel: "Tablet Sur 02",
+    storeId: "store-sur",
+    stream: "pc.catalog.delta.v1",
+    lastSuccessfulPullAt: iso(240),
+    lastAttemptedPullAt: iso(34),
+    checkpointCursor: "2026-05-11T04:00:00.000Z~03~supplier_009",
+    checkpointSummary: "Checkpoint is behind latest PC export.",
+    freshnessStatus: "warning",
+    entityStatuses: catalogEntityNames.map((entityType, index) => ({
+      entityType,
+      status: index % 4 === 0 ? "warning" : "fresh",
+      pcRowCount: 10 + index,
+      exportedCount: 3 + (index % 4),
+      appliedCount: index % 4 === 0 ? 1 : 3 + (index % 4),
+      rejectedCount: 0,
+      conflictedCount: index === 3 ? 1 : 0,
+      duplicatedCount: index === 0 ? 1 : 0,
+      lastCursor: "2026-05-11T04:00:00.000Z~03~supplier_009",
+      note: index % 4 === 0 ? "Needs incremental pull." : "Entity checkpoint is acceptable."
+    })),
+    counts: { applied: 21, rejected: 0, conflicted: 1, duplicated: 1, pending: 2, behind: 6 },
+    recommendedAction: "pull_delta",
+    lastErrorSummary: null,
+    evidenceRefs: ["fixture:pc-sync:freshness:tablet-sur-02"]
+  }
+];
+
+const syncCommandLifecycleTimelineMock: SyncCommandLifecycleEvent[] = [
+  {
+    commandId: "audit_catalog_delta_001",
+    terminalId: "tablet-norte-01",
+    terminalLabel: "Tablet Norte 01",
+    commandType: "catalog_delta",
+    status: "exported",
+    timestamp: iso(35),
+    elapsedMs: 42,
+    actor: "pc-operator",
+    source: "pc.audit_event",
+    stream: "pc.catalog.delta.v1",
+    entityCounts: { Product: 4, Brand: 1, PriceListItem: 3 },
+    resultCounts: { applied: 0, rejected: 0, conflicted: 0, duplicated: 0 },
+    reason: null,
+    recommendedAction: "pull_delta",
+    evidenceRef: "fixture:pc-sync:lifecycle:exported"
+  },
+  {
+    commandId: "tablet_pull_001",
+    terminalId: "tablet-norte-01",
+    terminalLabel: "Tablet Norte 01",
+    commandType: "catalog_delta",
+    status: "applied",
+    timestamp: iso(8),
+    elapsedMs: 1120,
+    actor: "tablet-sync",
+    source: "pc.sync_checkpoint",
+    stream: "pc.catalog.delta.v1",
+    entityCounts: { Product: 4, Brand: 1, PriceListItem: 3 },
+    resultCounts: { applied: 8, rejected: 0, conflicted: 0, duplicated: 0 },
+    reason: null,
+    recommendedAction: "none",
+    evidenceRef: "fixture:pc-sync:lifecycle:applied"
+  },
+  {
+    commandId: "tablet_pull_duplicate_001",
+    terminalId: "tablet-sur-02",
+    terminalLabel: "Tablet Sur 02",
+    commandType: "resync",
+    status: "duplicated",
+    timestamp: iso(4),
+    elapsedMs: 86,
+    actor: "tablet-sync",
+    source: "pc.sync_attempt",
+    stream: "pc.catalog.delta.v1",
+    entityCounts: { Product: 1 },
+    resultCounts: { applied: 0, rejected: 0, conflicted: 0, duplicated: 1 },
+    reason: "Duplicate replay was detected by idempotency evidence.",
+    recommendedAction: "none",
+    evidenceRef: "fixture:pc-sync:lifecycle:duplicate"
+  }
+];
+
 export const mockPcCharts: PrismaPcChartsViewModel = {
   causalFlowRibbon: [
     { sourceModule: "Cloudflare", causeType: "public_route_404", effectType: "degraded_health", actionTarget: "Review DNS config", weight: 34, severity: "ERROR", confidence: 72, evidenceCount: 4, incidentIds: ["inc_cf_404"], firstSeenAt: iso(180), lastSeenAt: iso(12), ownerRole: "Infra" },
@@ -167,7 +293,9 @@ export const mockPcCharts: PrismaPcChartsViewModel = {
     { id: "shrink", label: "Merma", kind: "negative", value: -27000, currency: "MXN", source: "inventory", relatedIds: ["stock_adj"], confidence: 34 },
     { id: "incidents", label: "Impacto operativo", kind: "negative", value: -42000, currency: "MXN", source: "incidents", relatedIds: ["inc_cf_404", "inc_sync_retry"], confidence: 30 },
     { id: "net", label: "Neto operativo", kind: "subtotal", value: 358000, currency: "MXN", source: "sales", relatedIds: ["calc_net"], confidence: 44 }
-  ]
+  ],
+  tabletCatalogFreshnessGrid: tabletCatalogFreshnessGridMock,
+  syncCommandLifecycleTimeline: syncCommandLifecycleTimelineMock
 };
 
 export const mockTabletCharts: PrismaTabletChartsViewModel = {

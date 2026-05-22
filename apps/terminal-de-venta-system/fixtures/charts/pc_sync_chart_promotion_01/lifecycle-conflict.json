@@ -1,0 +1,24 @@
+{
+  "scenario": "conflict lifecycle",
+  "chartId": "pc.sync-command-lifecycle-timeline",
+  "sourceMode": "recorded-real",
+  "data": [
+    {
+      "commandId": "conflict_supplier_missing_001",
+      "terminalId": "tablet-bodega-04",
+      "terminalLabel": "Tablet Bodega 04",
+      "commandType": "catalog_delta",
+      "status": "conflicted",
+      "timestamp": "2026-05-22T17:40:00.000Z",
+      "elapsedMs": null,
+      "actor": "pc.sync_conflict",
+      "source": "pc.sync_conflict",
+      "stream": "pc.catalog.delta.v1",
+      "entityCounts": { "ProductSupplier": 1 },
+      "resultCounts": { "applied": 0, "rejected": 0, "conflicted": 1, "duplicated": 0 },
+      "reason": "missing Supplier dependency",
+      "recommendedAction": "investigate",
+      "evidenceRef": "conflict_supplier_missing_001"
+    }
+  ]
+}

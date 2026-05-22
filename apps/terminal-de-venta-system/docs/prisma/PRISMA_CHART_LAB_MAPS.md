@@ -1,6 +1,6 @@
 # PRISMA Chart Lab Maps
 
-The 14 ChartOps maps are first-class Lab assets at:
+The 17 ChartOps maps are first-class Lab assets at:
 
 `F:\repos\hitech-os\apps\terminal-de-venta-system\products\chart-lab\app\src\prisma-charts\maps\chart-lab-maps.ts`
 

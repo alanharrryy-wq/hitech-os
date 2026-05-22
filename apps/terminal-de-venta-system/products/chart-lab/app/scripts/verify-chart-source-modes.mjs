@@ -46,7 +46,7 @@ if (!fs.existsSync(registryPath)) {
   }
 
   const extra = charts.filter((chart) => !expected.includes(chart.chartId));
-  for (const chart of extra) add("WARN", chart.chartId, "extra chart data registry entry not in 14 ChartOps set");
+  for (const chart of extra) add("WARN", chart.chartId, `extra chart data registry entry not in ${expected.length} ChartOps set`);
 
   if (report.charts.length === expected.length) pass(`all ${expected.length} ChartOps charts have source metadata`);
   else fail(`expected ${expected.length} ChartOps charts, found ${report.charts.length}`);

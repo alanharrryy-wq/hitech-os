@@ -1,0 +1,25 @@
+{
+  "scenario": "one tablet error",
+  "chartId": "pc.tablet-catalog-freshness-grid",
+  "sourceMode": "recorded-real",
+  "data": [
+    {
+      "terminalId": "tablet-caja-03",
+      "terminalLabel": "Tablet Caja 03",
+      "storeId": "store-centro",
+      "stream": "pc.catalog.delta.v1",
+      "lastSuccessfulPullAt": "2026-05-22T14:05:00.000Z",
+      "lastAttemptedPullAt": "2026-05-22T17:45:00.000Z",
+      "checkpointCursor": "2026-05-22T14:05:00.000Z~04~prod_100",
+      "checkpointSummary": "last attempt rejected by shared validator",
+      "freshnessStatus": "error",
+      "counts": { "applied": 0, "rejected": 1, "conflicted": 0, "duplicated": 0, "pending": 1, "behind": 4 },
+      "recommendedAction": "investigate",
+      "lastErrorSummary": "Payload PC -> Tablet catalog delta rejected by shared validator.",
+      "evidenceRefs": ["sync_attempt_rejected_001"],
+      "entityStatuses": [
+        { "entityType": "PriceListItem", "status": "error", "pcRowCount": 120, "exportedCount": 4, "appliedCount": 0, "rejectedCount": 1, "conflictedCount": 0, "duplicatedCount": 0, "lastCursor": "2026-05-22T14:05:00.000Z~07~pli_087", "note": "invalid payload rejected" }
+      ]
+    }
+  ]
+}

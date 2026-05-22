@@ -734,6 +734,42 @@ export const chartControlSchemas: Record<string, LabChartRuntimeControl[]> = {
       resetBehavior: "0"
     })
   ]),
+  "pc.tablet-catalog-freshness-grid": commonChartControls([
+    control({
+      id: "freshnessFloor",
+      label: "Freshness floor",
+      type: "range",
+      defaultValue: 0,
+      min: 0,
+      max: 100,
+      step: 5,
+      affectedLayer: "catalog freshness cells",
+      affectedDataTransform: "filters low freshness scores in lab preview only",
+      validation: "0-100",
+      risk: "medium",
+      resetBehavior: "0"
+    })
+  ]),
+  "pc.sync-command-lifecycle-timeline": commonChartControls([
+    control({
+      id: "statusFocus",
+      label: "Status focus",
+      type: "select",
+      defaultValue: "all",
+      options: [
+        { label: "All", value: "all" },
+        { label: "Applied", value: "applied" },
+        { label: "Rejected", value: "rejected" },
+        { label: "Conflicted", value: "conflicted" },
+        { label: "Duplicated", value: "duplicated" }
+      ],
+      affectedLayer: "lifecycle events",
+      affectedDataTransform: "keeps visible events for selected lifecycle status in lab preview only",
+      validation: "known lifecycle status or all",
+      risk: "medium",
+      resetBehavior: "all"
+    })
+  ]),
   "example.future-chart": [
     control({
       id: "disabledPlaceholder",

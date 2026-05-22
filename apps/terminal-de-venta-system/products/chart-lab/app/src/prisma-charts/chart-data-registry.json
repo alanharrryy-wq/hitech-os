@@ -436,6 +436,65 @@
       "fixturePath": "products/chart-lab/app/src/prisma-charts/prisma-chart-runtime.snapshot.json",
       "runtimeDataStatus": "partial/adapter-ready",
       "runtimeWarning": "PC/canonical DB not found; PC governance charts are derived from the available Tablet SQLite snapshot."
+    },
+    {
+      "chartId": "pc.tablet-catalog-freshness-grid",
+      "surface": "pc",
+      "sourceMode": "recorded-real",
+      "sourceLabel": "production PC endpoint is implemented; Chart Lab entry uses deterministic PC sync verifier fixture",
+      "source": "fixtures/charts/pc_sync_chart_promotion_01/freshness-all-tablets-fresh.json#data",
+      "mockPath": "shared/prisma-charts/prismaChartMocks.ts",
+      "adapterPath": "shared/prisma-charts/prismaChartAdapters.ts#buildPcTabletCatalogFreshnessGridViewModel",
+      "requiredTablesOrViews": [
+        "AuditEvent",
+        "DeviceHeartbeat",
+        "SyncCheckpoint",
+        "SyncAttempt",
+        "SyncConflict"
+      ],
+      "requiredFields": [
+        "sourceMode",
+        "confidence",
+        "freshnessStatus",
+        "generatedAt",
+        "source"
+      ],
+      "readiness": "partial",
+      "confidence": 0.74,
+      "freshnessStatus": "partial/adapter-ready",
+      "generatedAt": "2026-05-22T18:00:00Z",
+      "fixturePath": "fixtures/charts/pc_sync_chart_promotion_01/freshness-all-tablets-fresh.json",
+      "runtimeDataStatus": "partial/adapter-ready",
+      "runtimeWarning": "PC endpoint is real, but Chart Lab metadata remains recorded-real because Lab is not the production runtime."
+    },
+    {
+      "chartId": "pc.sync-command-lifecycle-timeline",
+      "surface": "pc",
+      "sourceMode": "recorded-real",
+      "sourceLabel": "production PC endpoint is implemented; Chart Lab entry uses deterministic PC sync verifier fixture",
+      "source": "fixtures/charts/pc_sync_chart_promotion_01/lifecycle-successful-catalog-delta.json#data",
+      "mockPath": "shared/prisma-charts/prismaChartMocks.ts",
+      "adapterPath": "shared/prisma-charts/prismaChartAdapters.ts#buildPcSyncCommandLifecycleTimelineViewModel",
+      "requiredTablesOrViews": [
+        "AuditEvent",
+        "SyncAttempt",
+        "SyncConflict",
+        "SyncCheckpoint"
+      ],
+      "requiredFields": [
+        "sourceMode",
+        "confidence",
+        "freshnessStatus",
+        "generatedAt",
+        "source"
+      ],
+      "readiness": "partial",
+      "confidence": 0.72,
+      "freshnessStatus": "partial/adapter-ready",
+      "generatedAt": "2026-05-22T18:00:00Z",
+      "fixturePath": "fixtures/charts/pc_sync_chart_promotion_01/lifecycle-successful-catalog-delta.json",
+      "runtimeDataStatus": "partial/adapter-ready",
+      "runtimeWarning": "PC endpoint is real, but Chart Lab metadata remains recorded-real because Lab is not the production runtime."
     }
   ]
 }

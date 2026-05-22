@@ -211,6 +211,96 @@ export type OperationalWaterfallStep = {
   confidence: number;
 };
 
+export type TabletCatalogEntityName =
+  | "Product"
+  | "Brand"
+  | "Supplier"
+  | "ProductSupplier"
+  | "PriceList"
+  | "PriceListItem"
+  | "TaxRate"
+  | "DropdownCatalog"
+  | "DropdownOption";
+
+export type TabletCatalogFreshnessStatus = "fresh" | "warning" | "stale" | "unknown" | "error";
+export type TabletCatalogRecommendedAction = "none" | "pull_delta" | "bootstrap" | "resync" | "investigate";
+
+export type TabletCatalogEntityFreshness = {
+  entityType: TabletCatalogEntityName;
+  status: TabletCatalogFreshnessStatus;
+  pcRowCount: number;
+  exportedCount: number;
+  appliedCount: number;
+  rejectedCount: number;
+  conflictedCount: number;
+  duplicatedCount: number;
+  lastCursor?: string | null;
+  note?: string;
+};
+
+export type TabletCatalogFreshnessGridRow = {
+  terminalId: string;
+  terminalLabel: string;
+  storeId?: string | null;
+  stream: string;
+  lastSuccessfulPullAt: string | null;
+  lastAttemptedPullAt: string | null;
+  checkpointCursor: string | null;
+  checkpointSummary: string;
+  freshnessStatus: TabletCatalogFreshnessStatus;
+  entityStatuses: TabletCatalogEntityFreshness[];
+  counts: {
+    applied: number;
+    rejected: number;
+    conflicted: number;
+    duplicated: number;
+    pending: number;
+    behind: number;
+  };
+  recommendedAction: TabletCatalogRecommendedAction;
+  lastErrorSummary?: string | null;
+  evidenceRefs: string[];
+};
+
+export type PcSyncCommandType = "catalog_delta" | "bootstrap" | "resync" | "runtime_refresh";
+export type PcSyncLifecycleStatus =
+  | "created"
+  | "queued"
+  | "exported"
+  | "available"
+  | "pulled"
+  | "applying"
+  | "applied"
+  | "rejected"
+  | "conflicted"
+  | "duplicated"
+  | "expired"
+  | "failed"
+  | "unknown";
+
+export type SyncCommandLifecycleEvent = {
+  commandId: string;
+  terminalId?: string | null;
+  terminalLabel?: string | null;
+  commandType: PcSyncCommandType;
+  status: PcSyncLifecycleStatus;
+  timestamp: string;
+  elapsedMs?: number | null;
+  actor?: string | null;
+  source: "pc.audit_event" | "pc.outbox_event" | "pc.sync_attempt" | "pc.sync_conflict" | "pc.sync_checkpoint";
+  stream: string;
+  entityCounts: Partial<Record<TabletCatalogEntityName, number>>;
+  resultCounts: {
+    applied: number;
+    rejected: number;
+    conflicted: number;
+    duplicated: number;
+  };
+  reason?: string | null;
+  recommendedAction: TabletCatalogRecommendedAction;
+  evidenceRef: string;
+};
+
 export type ShiftPulseBucket = {
   bucketStart: string;
   bucketEnd: string;
@@ -322,6 +412,8 @@ export type PrismaPcChartsViewModel = {
   inventoryRiskTreemap: InventoryRiskNode[];
   decisionLedgerTimeline: DecisionLedgerPoint[];
   financialOperationalWaterfall: OperationalWaterfallStep[];
+  tabletCatalogFreshnessGrid: TabletCatalogFreshnessGridRow[];
+  syncCommandLifecycleTimeline: SyncCommandLifecycleEvent[];
 };
 
 export type PrismaTabletChartsViewModel = {
@@ -361,6 +453,15 @@ export type PrismaPcChartSource = {
     inventoryRiskTreemap?: InventoryRiskNode[];
     decisionLedgerTimeline?: DecisionLedgerPoint[];
     financialOperationalWaterfall?: OperationalWaterfallStep[];
+    tabletCatalogFreshnessGrid?: TabletCatalogFreshnessGridRow[];
+    syncCommandLifecycleTimeline?: SyncCommandLifecycleEvent[];
+  } | null;
+  catalogSync?: {
+    generatedAt?: string;
+    sourceLabel?: string;
+    warnings?: string[];
+    tabletCatalogFreshnessGrid?: TabletCatalogFreshnessGridRow[];
+    syncCommandLifecycleTimeline?: SyncCommandLifecycleEvent[];
   } | null;
   dashboard?: {
     kpis?: Array<{ key: string; label: string; value: string; note?: string; status?: string; source?: string; tone?: string }>;
@@ -495,6 +596,8 @@ export type PrismaChartId =
   | "pc.inventory-risk-treemap"
   | "pc.decision-ledger-timeline"
   | "pc.financial-operational-waterfall"
+  | "pc.tablet-catalog-freshness-grid"
+  | "pc.sync-command-lifecycle-timeline"
   | "tablet.shift-pulse-strip"
   | "tablet.sync-outbox-status-matrix"
   | "mobile.owner-pulse-timeline"

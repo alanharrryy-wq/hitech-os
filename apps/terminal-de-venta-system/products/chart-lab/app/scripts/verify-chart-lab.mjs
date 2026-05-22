@@ -73,10 +73,13 @@ else fail("chart ids must be unique");
 const chartOpsIds = [
   "pc.causal-flow-ribbon",
   "pc.operational-density-field",
+  "ops.operational-density-heatmap",
   "pc.service-dependency-graph",
   "pc.inventory-risk-treemap",
   "pc.decision-ledger-timeline",
   "pc.financial-operational-waterfall",
+  "pc.tablet-catalog-freshness-grid",
+  "pc.sync-command-lifecycle-timeline",
   "tablet.shift-pulse-strip",
   "tablet.sync-outbox-status-matrix",
   "mobile.owner-pulse-timeline",
@@ -88,7 +91,7 @@ const chartOpsIds = [
 ];
 
 const missingChartOps = chartOpsIds.filter((id) => !uniqueChartIds.has(id));
-if (missingChartOps.length === 0) pass("all 14 ChartOps charts are registered");
+if (missingChartOps.length === 0) pass(`all ${chartOpsIds.length} ChartOps charts are registered`);
 else fail(`missing ChartOps chart ids: ${missingChartOps.join(", ")}`);
 if (uniqueChartIds.has("example.future-chart")) pass("Example Future Chart placeholder is registered");
 else fail("Example Future Chart placeholder is missing");

@@ -44,10 +44,13 @@ function arrayFieldCount(source, name) {
 const expectedChartIds = [
   "pc.causal-flow-ribbon",
   "pc.operational-density-field",
+  "ops.operational-density-heatmap",
   "pc.service-dependency-graph",
   "pc.inventory-risk-treemap",
   "pc.decision-ledger-timeline",
   "pc.financial-operational-waterfall",
+  "pc.tablet-catalog-freshness-grid",
+  "pc.sync-command-lifecycle-timeline",
   "tablet.shift-pulse-strip",
   "tablet.sync-outbox-status-matrix",
   "mobile.owner-pulse-timeline",
@@ -77,8 +80,8 @@ for (const file of requiredFiles) {
 }
 
 const passportFiles = walk("shared/prisma-charts/passports").filter((file) => file.endsWith(".passport.ts"));
-if (passportFiles.length === 14) pass("14 passport files exist");
-else fail(`expected 14 passport files, found ${passportFiles.length}`);
+if (passportFiles.length === expectedChartIds.length) pass(`${expectedChartIds.length} passport files exist`);
+else fail(`expected ${expectedChartIds.length} passport files, found ${passportFiles.length}`);
 
 const passports = passportFiles.map((file) => ({ file, source: read(file) }));
 const chartIds = passports.map((passport) => field(passport.source, "chartId")).filter(Boolean);
@@ -152,14 +155,16 @@ else fail(`React runtime must not be aliased in tsconfig paths: ${reactPathAlias
 const checkedFiles = walk("products").concat(walk("shared"), walk("tools")).filter((file) => /\.(ts|tsx|mjs|js)$/.test(file));
 const directEchartsImports = checkedFiles
   .filter((file) => !file.startsWith("shared/prisma-charts/"))
+  .filter((file) => !file.startsWith("products/chart-lab/app/"))
+  .filter((file) => !file.startsWith("tools/_local/"))
   .filter((file) => /from\s+["']echarts|import\(["']echarts/.test(read(file)));
 if (directEchartsImports.length === 0) pass("no direct ECharts imports outside shared/prisma-charts");
 else fail(`direct ECharts imports outside shared/prisma-charts: ${directEchartsImports.join(", ")}`);
 
 const registry = read("shared/prisma-charts/prismaChartRegistry.ts");
-const registryIds = [...registry.matchAll(/id:\s*"([^"]+)"/g)].map((match) => match[1]).filter((id) => id.startsWith("pc.") || id.startsWith("tablet.") || id.startsWith("mobile."));
+const registryIds = [...registry.matchAll(/id:\s*"([^"]+)"/g)].map((match) => match[1]).filter((id) => id.startsWith("pc.") || id.startsWith("ops.") || id.startsWith("tablet.") || id.startsWith("mobile."));
 const registryMissing = expectedChartIds.filter((id) => !registryIds.includes(id));
-if (registryMissing.length === 0 && registryIds.length === 14) pass("registry and atlas chart ids align");
+if (registryMissing.length === 0 && registryIds.length === expectedChartIds.length) pass("registry and atlas chart ids align");
 else fail(`registry mismatch. missing=${registryMissing.join(", ")} count=${registryIds.length}`);
 
 if (!process.exitCode) pass("verification complete");

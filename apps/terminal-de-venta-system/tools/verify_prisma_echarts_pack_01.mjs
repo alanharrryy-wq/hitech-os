@@ -60,9 +60,9 @@ const counts = chartIds.reduce((memo, id) => {
   memo[surface] = (memo[surface] ?? 0) + 1;
   return memo;
 }, {});
-if (chartIds.length === 14) pass("registry has 14 charts");
+if (chartIds.length === 16) pass("registry has 16 product charts");
 else fail(`registry has ${chartIds.length} charts`);
-if (counts.pc === 6) pass("PC registry has 6 charts");
+if (counts.pc === 8) pass("PC registry has 8 charts");
 else fail(`PC registry has ${counts.pc ?? 0} charts`);
 if (counts.tablet === 2) pass("Tablet registry has 2 charts");
 else fail(`Tablet registry has ${counts.tablet ?? 0} charts`);
@@ -122,10 +122,13 @@ if (exists(cleanScoreCss)) {
 }
 
 const pcFiles = walk("products/pc/app/app/prisma-insights/charts").filter((file) => /Pc[A-Z].+\.tsx$/.test(file) && !file.endsWith("PcChartCard.tsx"));
+const pcSyncPromotion = exists("products/pc/app/components/sync/pc-sync-chart-promotion-panel.tsx")
+  ? read("products/pc/app/components/sync/pc-sync-chart-promotion-panel.tsx")
+  : "";
 const tabletFiles = walk("products/tablet/app/app/prisma-pulse/charts").filter((file) => /Tablet[A-Z].+\.tsx$/.test(file) && !file.endsWith("TabletChartCard.tsx"));
 const mobileFiles = walk("products/mobile/app/app/prisma-command/charts").filter((file) => /Mobile[A-Z].+\.tsx$/.test(file) && !file.endsWith("MobileChartCard.tsx"));
-if (pcFiles.length === 6) pass("PC surface has 6 chart components");
-else fail(`PC surface has ${pcFiles.length} chart components`);
+if (pcFiles.length === 6 && pcSyncPromotion.includes("pc.tablet-catalog-freshness-grid") && pcSyncPromotion.includes("pc.sync-command-lifecycle-timeline")) pass("PC surface has 6 insights chart components plus 2 promoted /sync charts");
+else fail(`PC surface component coverage is incomplete. insights=${pcFiles.length}`);
 if (tabletFiles.length === 2) pass("Tablet surface has 2 chart components");
 else fail(`Tablet surface has ${tabletFiles.length} chart components`);
 if (mobileFiles.length === 6) pass("Mobile surface has 6 chart components");

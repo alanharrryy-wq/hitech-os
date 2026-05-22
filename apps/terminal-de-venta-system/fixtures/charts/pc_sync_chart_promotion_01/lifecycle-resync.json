@@ -1,0 +1,24 @@
+{
+  "scenario": "resync lifecycle",
+  "chartId": "pc.sync-command-lifecycle-timeline",
+  "sourceMode": "recorded-real",
+  "data": [
+    {
+      "commandId": "audit_resync_001",
+      "terminalId": "tablet-legacy-05",
+      "terminalLabel": "Tablet Legacy 05",
+      "commandType": "resync",
+      "status": "exported",
+      "timestamp": "2026-05-22T17:10:00.000Z",
+      "elapsedMs": 2900,
+      "actor": "pc-operator",
+      "source": "pc.audit_event",
+      "stream": "pc.catalog.delta.v1",
+      "entityCounts": { "Product": 120, "ProductSupplier": 38, "DropdownOption": 54 },
+      "resultCounts": { "applied": 0, "rejected": 0, "conflicted": 0, "duplicated": 0 },
+      "reason": "checkpoint reset requested",
+      "recommendedAction": "resync",
+      "evidenceRef": "audit_resync_001"
+    }
+  ]
+}

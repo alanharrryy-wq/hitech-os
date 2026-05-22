@@ -1,6 +1,7 @@
 import { AppShell } from "@components/layout/app-shell";
 import { DataTable } from "@components/backoffice/data-table";
 import { EmptyState } from "@components/backoffice/empty-state";
+import { PcSyncChartPromotionPanel } from "@components/sync/pc-sync-chart-promotion-panel";
 import type { CommandCenterModel, CommandMetric, CommandPanel } from "@/server/services/pc-command-center.service";
 import { PcCommandActions } from "./pc-command-actions";
 
@@ -74,6 +75,8 @@ export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
           {model.panels.map((panel) => <Panel key={panel.title} panel={panel} />)}
         </section>
       ) : null}
+
+      {model.mode === "sync" ? <PcSyncChartPromotionPanel /> : null}
 
       {model.tables.length ? model.tables.map((table) => (
         <section className="card" key={table.title}>

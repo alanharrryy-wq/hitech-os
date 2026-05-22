@@ -25,7 +25,9 @@ import type {
   ServiceDependencyEdge,
   ServiceDependencyNode,
   ShiftPulseBucket,
-  SyncOutboxMatrixCell
+  SyncCommandLifecycleEvent,
+  SyncOutboxMatrixCell,
+  TabletCatalogFreshnessGridRow
 } from "./prismaChartContracts";
 import { mockMobileCharts, mockPcCharts, mockTabletCharts, PRISMA_CHART_MOCK_GENERATED_AT } from "./prismaChartMocks";
 import { buildAdapterQuality, buildMockQuality } from "./prismaChartQuality";
@@ -154,25 +156,26 @@ function lower(value: string | undefined | null) {
 }
 
 function pcGeneratedAt(source?: PrismaPcChartSource) {
-  return sourceTime(source?.dashboard?.meta?.generatedAt, source?.generatedAt);
+  return sourceTime(source?.catalogSync?.generatedAt, source?.dashboard?.meta?.generatedAt, source?.generatedAt);
 }
 
 function buildPcQuality(source?: PrismaPcChartSource, options?: PrismaChartAdapterOptions): PrismaChartQuality {
-  if (!source?.dashboard && !source?.triDbStatus) {
+  if (!source?.dashboard && !source?.triDbStatus && !source?.catalogSync) {
     if (mockFallbackAllowed(options)) return buildMockQuality(PRISMA_CHART_MOCK_GENERATED_AT, "PC mock fallback", "No safe PC source was provided to ChartOps adapters.");
     return buildUnavailableQuality("PC source unavailable", "No safe PC source was provided to ChartOps adapters.", options);
   }
   const generatedAt = pcGeneratedAt(source);
   const warnings = [
+    ...(source.catalogSync?.warnings ?? []),
     ...(source.dashboard?.meta?.warnings ?? []),
     ...(source.triDbStatus?.warnings ?? []),
     ...(source.errors ?? [])
   ];
-  const confidence = source.dashboard?.meta?.persistence === "available" ? 66 : source.triDbStatus?.mode === "real" ? 58 : 42;
+  const confidence = source.catalogSync ? 72 : source.dashboard?.meta?.persistence === "available" ? 66 : source.triDbStatus?.mode === "real" ? 58 : 42;
   return buildAdapterQuality(
     generatedAt,
     "server",
-    warnings.length ? "PC canonical/bridge adapter (partial)" : "PC canonical/bridge adapter",
+    source.catalogSync?.sourceLabel ?? (warnings.length ? "PC canonical/bridge adapter (partial)" : "PC canonical/bridge adapter"),
     confidence,
     warnings,
     "partial",
@@ -417,6 +420,18 @@ export function buildPcFinancialOperationalWaterfallViewModel(source?: PrismaPcC
   ];
 }
 
+export function buildPcTabletCatalogFreshnessGridViewModel(source?: PrismaPcChartSource, options?: PrismaChartAdapterOptions): TabletCatalogFreshnessGridRow[] {
+  const directRuntime = cloneTypedArray<TabletCatalogFreshnessGridRow>(source?.runtime?.tabletCatalogFreshnessGrid ?? source?.catalogSync?.tabletCatalogFreshnessGrid);
+  if (directRuntime) return directRuntime;
+  return mockFallback(mockPcCharts.tabletCatalogFreshnessGrid, options);
+}
+
+export function buildPcSyncCommandLifecycleTimelineViewModel(source?: PrismaPcChartSource, options?: PrismaChartAdapterOptions): SyncCommandLifecycleEvent[] {
+  const directRuntime = cloneTypedArray<SyncCommandLifecycleEvent>(source?.runtime?.syncCommandLifecycleTimeline ?? source?.catalogSync?.syncCommandLifecycleTimeline);
+  if (directRuntime) return directRuntime;
+  return mockFallback(mockPcCharts.syncCommandLifecycleTimeline, options);
+}
+
 function buildPcCharts(source?: PrismaPcChartSource, options?: PrismaChartAdapterOptions): SourceResult<PrismaPcChartsViewModel> {
   const quality = buildPcQuality(source, options);
   return {
@@ -428,7 +443,9 @@ function buildPcCharts(source?: PrismaPcChartSource, options?: PrismaChartAdapte
       serviceDependencyGraph: buildPcServiceDependencyGraphViewModel(source, options),
       inventoryRiskTreemap: buildPcInventoryRiskTreemapViewModel(source, options),
       decisionLedgerTimeline: buildPcDecisionLedgerTimelineViewModel(source, options),
-      financialOperationalWaterfall: buildPcFinancialOperationalWaterfallViewModel(source, options)
+      financialOperationalWaterfall: buildPcFinancialOperationalWaterfallViewModel(source, options),
+      tabletCatalogFreshnessGrid: buildPcTabletCatalogFreshnessGridViewModel(source, options),
+      syncCommandLifecycleTimeline: buildPcSyncCommandLifecycleTimelineViewModel(source, options)
     }
   };
 }
