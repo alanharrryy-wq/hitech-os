@@ -1,0 +1,25 @@
+{
+  "scenario": "one tablet stale",
+  "chartId": "pc.tablet-catalog-freshness-grid",
+  "sourceMode": "recorded-real",
+  "data": [
+    {
+      "terminalId": "tablet-sur-02",
+      "terminalLabel": "Tablet Sur 02",
+      "storeId": "store-sur",
+      "stream": "pc.catalog.delta.v1",
+      "lastSuccessfulPullAt": "2026-05-21T10:10:00.000Z",
+      "lastAttemptedPullAt": "2026-05-22T17:30:00.000Z",
+      "checkpointCursor": "2026-05-21T10:10:00.000Z~04~prod_091",
+      "checkpointSummary": "checkpoint older than latest export",
+      "freshnessStatus": "stale",
+      "counts": { "applied": 18, "rejected": 0, "conflicted": 0, "duplicated": 0, "pending": 9, "behind": 9 },
+      "recommendedAction": "resync",
+      "lastErrorSummary": null,
+      "evidenceRefs": ["sync_checkpoint_stale_001"],
+      "entityStatuses": [
+        { "entityType": "Product", "status": "stale", "pcRowCount": 120, "exportedCount": 9, "appliedCount": 0, "rejectedCount": 0, "conflictedCount": 0, "duplicatedCount": 0, "lastCursor": "2026-05-21T10:10:00.000Z~04~prod_091", "note": "behind latest cursor" }
+      ]
+    }
+  ]
+}

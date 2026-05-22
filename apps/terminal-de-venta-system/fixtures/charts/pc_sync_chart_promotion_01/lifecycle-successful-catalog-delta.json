@@ -1,0 +1,41 @@
+{
+  "scenario": "successful catalog delta lifecycle",
+  "chartId": "pc.sync-command-lifecycle-timeline",
+  "sourceMode": "recorded-real",
+  "data": [
+    {
+      "commandId": "audit_catalog_delta_001",
+      "terminalId": "tablet-norte-01",
+      "terminalLabel": "Tablet Norte 01",
+      "commandType": "catalog_delta",
+      "status": "exported",
+      "timestamp": "2026-05-22T17:50:00.000Z",
+      "elapsedMs": 42,
+      "actor": "pc-operator",
+      "source": "pc.audit_event",
+      "stream": "pc.catalog.delta.v1",
+      "entityCounts": { "Product": 12, "Brand": 2, "PriceListItem": 12 },
+      "resultCounts": { "applied": 0, "rejected": 0, "conflicted": 0, "duplicated": 0 },
+      "reason": null,
+      "recommendedAction": "pull_delta",
+      "evidenceRef": "audit_catalog_delta_001"
+    },
+    {
+      "commandId": "checkpoint_catalog_delta_001",
+      "terminalId": "tablet-norte-01",
+      "terminalLabel": "Tablet Norte 01",
+      "commandType": "catalog_delta",
+      "status": "applied",
+      "timestamp": "2026-05-22T17:55:00.000Z",
+      "elapsedMs": 1100,
+      "actor": "tablet-sync",
+      "source": "pc.sync_checkpoint",
+      "stream": "pc.catalog.delta.v1",
+      "entityCounts": { "Product": 12, "Brand": 2, "PriceListItem": 12 },
+      "resultCounts": { "applied": 26, "rejected": 0, "conflicted": 0, "duplicated": 0 },
+      "reason": null,
+      "recommendedAction": "none",
+      "evidenceRef": "checkpoint_catalog_delta_001"
+    }
+  ]
+}

@@ -71,6 +71,22 @@ export const prismaChartRegistry: PrismaChartDefinition[] = [
     route: "/prisma-insights"
   },
   {
+    id: "ops.operational-density-heatmap",
+    surface: "pc",
+    title: "Operational Density Heatmap",
+    componentName: "OpsOperationalDensityHeatmap",
+    renderer: "canvas",
+    echartsSeries: ["heatmap", "visualMap"],
+    purpose: "Lab-governed operational density heatmap for pressure and anomaly exploration.",
+    visualEncoding: "Dense time/module matrix maps pressure, anomaly labels, and evidence callouts.",
+    filters: pcFilters,
+    interactions: pcInteractions,
+    accessibility: "Heatmap exposes module, bucket, pressure, state, and evidence in tooltip text.",
+    responsive: "Lab-first wide heatmap; product promotion requires explicit wrapper.",
+    dataContract: "OperationalDensityCell[]",
+    route: "/prisma-insights/chart-lab"
+  },
+  {
     id: "pc.service-dependency-graph",
     surface: "pc",
     title: "Service Dependency Graph",
@@ -133,6 +149,38 @@ export const prismaChartRegistry: PrismaChartDefinition[] = [
     responsive: "Bars stay readable with rotated compact labels on small widths.",
     dataContract: "OperationalWaterfallStep[]",
     route: "/prisma-insights"
+  },
+  {
+    id: "pc.tablet-catalog-freshness-grid",
+    surface: "pc",
+    title: "Tablet Catalog Freshness Grid",
+    componentName: "PcSyncChartPromotionPanel",
+    renderer: "canvas",
+    echartsSeries: ["heatmap"],
+    purpose: "Show which Tablets are fresh, stale, conflicted, or missing catalog checkpoints by entity.",
+    visualEncoding: "Rows map Tablets, columns map catalog entities, color maps freshness and checkpoint risk.",
+    filters: pcFilters,
+    interactions: pcInteractions,
+    accessibility: "Each row exposes checkpoint, counts, errors, and recommended action as text.",
+    responsive: "Mounted as a compact operational grid inside the PC /sync workflow.",
+    dataContract: "TabletCatalogFreshnessGridRow[]",
+    route: "/sync"
+  },
+  {
+    id: "pc.sync-command-lifecycle-timeline",
+    surface: "pc",
+    title: "Sync Command Lifecycle Timeline",
+    componentName: "PcSyncChartPromotionPanel",
+    renderer: "canvas",
+    echartsSeries: ["scatter"],
+    purpose: "Trace catalog delta, bootstrap, resync, and runtime refresh lifecycle events.",
+    visualEncoding: "Time maps lifecycle order, status lane maps command state, symbol size maps entity volume.",
+    filters: pcFilters,
+    interactions: pcInteractions,
+    accessibility: "Timeline events expose source, terminal, result counts, reason, and recommended action as text.",
+    responsive: "Mounted as a compact event lane inside the PC /sync workflow.",
+    dataContract: "SyncCommandLifecycleEvent[]",
+    route: "/sync"
   },
   {
     id: "tablet.shift-pulse-strip",

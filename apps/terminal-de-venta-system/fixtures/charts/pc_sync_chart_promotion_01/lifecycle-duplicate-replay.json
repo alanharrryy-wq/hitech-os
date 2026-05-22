@@ -1,0 +1,24 @@
+{
+  "scenario": "duplicate replay lifecycle",
+  "chartId": "pc.sync-command-lifecycle-timeline",
+  "sourceMode": "recorded-real",
+  "data": [
+    {
+      "commandId": "attempt_duplicate_001",
+      "terminalId": "tablet-sur-02",
+      "terminalLabel": "Tablet Sur 02",
+      "commandType": "catalog_delta",
+      "status": "duplicated",
+      "timestamp": "2026-05-22T17:58:00.000Z",
+      "elapsedMs": 86,
+      "actor": "tablet-sync",
+      "source": "pc.sync_attempt",
+      "stream": "pc.catalog.delta.v1",
+      "entityCounts": { "Product": 1 },
+      "resultCounts": { "applied": 0, "rejected": 0, "conflicted": 0, "duplicated": 1 },
+      "reason": "idempotent replay ignored",
+      "recommendedAction": "none",
+      "evidenceRef": "attempt_duplicate_001"
+    }
+  ]
+}

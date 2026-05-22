@@ -1,0 +1,24 @@
+{
+  "scenario": "bootstrap lifecycle",
+  "chartId": "pc.sync-command-lifecycle-timeline",
+  "sourceMode": "recorded-real",
+  "data": [
+    {
+      "commandId": "audit_bootstrap_001",
+      "terminalId": "tablet-new-06",
+      "terminalLabel": "Tablet New 06",
+      "commandType": "bootstrap",
+      "status": "available",
+      "timestamp": "2026-05-22T16:00:00.000Z",
+      "elapsedMs": 2600,
+      "actor": "pc-operator",
+      "source": "pc.audit_event",
+      "stream": "pc.catalog.delta.v1",
+      "entityCounts": { "Product": 120, "Brand": 16, "Supplier": 22, "PriceListItem": 120 },
+      "resultCounts": { "applied": 0, "rejected": 0, "conflicted": 0, "duplicated": 0 },
+      "reason": null,
+      "recommendedAction": "bootstrap",
+      "evidenceRef": "audit_bootstrap_001"
+    }
+  ]
+}

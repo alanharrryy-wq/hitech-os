@@ -10,9 +10,11 @@ import type {
   OperationalDensityCell,
   OperationalWaterfallStep,
   OwnerPulsePoint,
+  SyncCommandLifecycleEvent,
   ServiceDependencyEdge,
   ServiceDependencyNode,
   ShiftPulseBucket,
+  TabletCatalogFreshnessGridRow,
   SyncOutboxMatrixCell
 } from "./prismaChartContracts";
 import { formatAgeMinutes, formatCurrencyFromCents, formatPercent, humanizeKey } from "./prismaChartFormatters";
@@ -1238,6 +1240,100 @@ export function financialOperationalWaterfallOption(data: OperationalWaterfallSt
       }
     ]
   } as ChartOption;
+}
+
+function catalogFreshnessScore(status: TabletCatalogFreshnessGridRow["freshnessStatus"]) {
+  if (status === "fresh") return 100;
+  if (status === "warning") return 68;
+  if (status === "stale") return 38;
+  if (status === "error") return 8;
+  return 22;
+}
+
+function lifecycleStatusScore(status: SyncCommandLifecycleEvent["status"]) {
+  if (status === "applied") return 100;
+  if (status === "available" || status === "exported" || status === "pulled") return 76;
+  if (status === "queued" || status === "applying" || status === "created") return 58;
+  if (status === "duplicated") return 44;
+  if (status === "conflicted" || status === "rejected" || status === "failed" || status === "expired") return 14;
+  return 26;
+}
+
+export function tabletCatalogFreshnessGridOption(data: TabletCatalogFreshnessGridRow[]): ChartOption {
+  const entities = Array.from(new Set(data.flatMap((row) => row.entityStatuses.map((entity) => entity.entityType))));
+  const terminals = data.map((row) => row.terminalLabel || row.terminalId);
+  const values = data.flatMap((row, rowIndex) => row.entityStatuses.map((entity) => [
+    entities.indexOf(entity.entityType),
+    rowIndex,
+    catalogFreshnessScore(entity.status),
+    { row, entity }
+  ]));
+  return mergeBase("Tablet Catalog Freshness Grid", "Matrix of Tablet catalog freshness by entity, cursor, and checkpoint evidence.", {
+    grid: { top: 24, left: 118, right: 18, bottom: 54 },
+    xAxis: { type: "category", data: entities, axisLabel: { color: "#66738a", rotate: 28, fontWeight: 800 } },
+    yAxis: { type: "category", data: terminals, axisLabel: { color: "#071426", fontWeight: 900 } },
+    visualMap: { min: 0, max: 100, show: false, inRange: { color: ["#df3d2f", "#e59b2a", "#93a4ba", "#63dfff", "#13b981"] } },
+    tooltip: {
+      formatter: (params: unknown) => {
+        const meta = asRecord(tooltipDataArray(params)[3]);
+        const row = asRecord(meta?.row) as Partial<TabletCatalogFreshnessGridRow> | null;
+        const entity = asRecord(meta?.entity) as Partial<TabletCatalogFreshnessGridRow["entityStatuses"][number]> | null;
+        return row && entity
+          ? `${row.terminalLabel ?? row.terminalId}<br/>${entity.entityType ?? ""}: ${entity.status ?? "unknown"}<br/>PC rows: ${safeNumber(entity.pcRowCount)} · Export: ${safeNumber(entity.exportedCount)}<br/>Applied: ${safeNumber(entity.appliedCount)} · Rejected: ${safeNumber(entity.rejectedCount)} · Conflict: ${safeNumber(entity.conflictedCount)} · Duplicate: ${safeNumber(entity.duplicatedCount)}<br/>Cursor: ${row.checkpointCursor ?? "sin cursor"}<br/>Action: ${row.recommendedAction ?? "investigate"}`
+          : tooltipLabel(params);
+      }
+    },
+    series: [{
+      type: "heatmap",
+      data: values,
+      label: {
+        show: true,
+        formatter: (params: unknown) => {
+          const value = firstTooltipParam(params)?.value;
+          const tupleScore = Array.isArray(value) ? value[2] : value;
+          return `${safeNumber(tupleScore)}%`;
+        },
+        color: "#071426",
+        fontWeight: 900
+      },
+      emphasis: { itemStyle: { borderColor: "#071426", borderWidth: 1 } }
+    }]
+  });
+}
+
+export function syncCommandLifecycleTimelineOption(data: SyncCommandLifecycleEvent[]): ChartOption {
+  const statuses = Array.from(new Set(data.map((event) => event.status)));
+  const sorted = [...data].sort((a, b) => Date.parse(a.timestamp) - Date.parse(b.timestamp));
+  return mergeBase("Sync Command Lifecycle Timeline", "Catalog sync command lifecycle from PC export ledger through observable Tablet outcomes.", {
+    grid: { top: 24, left: 108, right: 18, bottom: 48 },
+    xAxis: { type: "time", axisLabel: { color: "#66738a", fontWeight: 750 } },
+    yAxis: { type: "category", data: statuses, axisLabel: { color: "#071426", fontWeight: 900 } },
+    tooltip: {
+      formatter: (params: unknown) => {
+        const item = tooltipDataRecord(params) as Partial<SyncCommandLifecycleEvent> | null;
+        return item
+          ? `${item.commandType ?? "sync"} / ${item.status ?? "unknown"}<br/>Device: ${item.terminalLabel ?? item.terminalId ?? "all"}<br/>Stream: ${item.stream ?? ""}<br/>Applied: ${safeNumber(item.resultCounts?.applied)} · Rejected: ${safeNumber(item.resultCounts?.rejected)} · Conflict: ${safeNumber(item.resultCounts?.conflicted)} · Duplicate: ${safeNumber(item.resultCounts?.duplicated)}<br/>Reason: ${item.reason ?? "sin error"}<br/>Action: ${item.recommendedAction ?? "none"}`
+          : tooltipLabel(params);
+      }
+    },
+    series: [{
+      type: "scatter",
+      data: sorted.map((event) => ({
+        ...event,
+        value: [event.timestamp, event.status, lifecycleStatusScore(event.status)],
+        symbolSize: Math.max(12, Math.min(30, 10 + Object.values(event.entityCounts).reduce((sum, value) => sum + safeNumber(value), 0) / 4)),
+        itemStyle: { color: statusColor(event.status === "applied" ? "PASS" : event.status === "rejected" || event.status === "conflicted" || event.status === "failed" ? "FAIL" : "DEGRADED"), borderColor: "#fff", borderWidth: 2 }
+      })),
+      label: {
+        show: true,
+        position: "top",
+        formatter: (params: unknown) => (firstTooltipParam(params)?.data as { commandType?: string } | undefined)?.commandType ?? "",
+        color: "#071426",
+        fontWeight: 850
+      },
+      emphasis: { focus: "self", scale: 1.2 }
+    }]
+  });
 }
 
 export function shiftPulseStripOption(data: ShiftPulseBucket[]): ChartOption {

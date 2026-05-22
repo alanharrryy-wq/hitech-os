@@ -1,0 +1,27 @@
+{
+  "scenario": "mixed entity freshness",
+  "chartId": "pc.tablet-catalog-freshness-grid",
+  "sourceMode": "recorded-real",
+  "data": [
+    {
+      "terminalId": "tablet-bodega-04",
+      "terminalLabel": "Tablet Bodega 04",
+      "storeId": "store-bodega",
+      "stream": "pc.catalog.delta.v1",
+      "lastSuccessfulPullAt": "2026-05-22T16:30:00.000Z",
+      "lastAttemptedPullAt": "2026-05-22T17:50:00.000Z",
+      "checkpointCursor": "2026-05-22T16:30:00.000Z~06~price_004",
+      "checkpointSummary": "partial entity freshness",
+      "freshnessStatus": "warning",
+      "counts": { "applied": 20, "rejected": 0, "conflicted": 1, "duplicated": 1, "pending": 4, "behind": 6 },
+      "recommendedAction": "pull_delta",
+      "lastErrorSummary": null,
+      "evidenceRefs": ["sync_checkpoint_mixed_001"],
+      "entityStatuses": [
+        { "entityType": "Product", "status": "fresh", "pcRowCount": 120, "exportedCount": 10, "appliedCount": 10, "rejectedCount": 0, "conflictedCount": 0, "duplicatedCount": 0, "lastCursor": "2026-05-22T16:30:00.000Z~04~prod_118", "note": "current" },
+        { "entityType": "Supplier", "status": "warning", "pcRowCount": 22, "exportedCount": 2, "appliedCount": 1, "rejectedCount": 0, "conflictedCount": 1, "duplicatedCount": 0, "lastCursor": "2026-05-22T16:30:00.000Z~03~supplier_020", "note": "conflict visible" },
+        { "entityType": "PriceListItem", "status": "stale", "pcRowCount": 120, "exportedCount": 6, "appliedCount": 3, "rejectedCount": 0, "conflictedCount": 0, "duplicatedCount": 1, "lastCursor": "2026-05-22T16:30:00.000Z~07~pli_110", "note": "behind latest cursor" }
+      ]
+    }
+  ]
+}

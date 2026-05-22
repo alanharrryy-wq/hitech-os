@@ -34,7 +34,7 @@ pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system" chart-lab:verify:all
 `chart-lab:verify` confirms:
 
 - `echarts`, `echarts/core`, `echarts/charts`, `echarts/components`, and `echarts/renderers` resolve from this package.
-- the 14 ChartOps charts are registered;
+- the 17 ChartOps charts are registered;
 - `Example Future Chart` is registered;
 - the lab script binds port `3000`;
 - React runtime aliases are not configured.

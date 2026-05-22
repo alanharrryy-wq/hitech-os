@@ -1,0 +1,25 @@
+{
+  "scenario": "resync recommended",
+  "chartId": "pc.tablet-catalog-freshness-grid",
+  "sourceMode": "recorded-real",
+  "data": [
+    {
+      "terminalId": "tablet-legacy-05",
+      "terminalLabel": "Tablet Legacy 05",
+      "storeId": "store-centro",
+      "stream": "pc.catalog.delta.v1",
+      "lastSuccessfulPullAt": "2026-05-20T08:00:00.000Z",
+      "lastAttemptedPullAt": "2026-05-22T17:20:00.000Z",
+      "checkpointCursor": "2026-05-20T08:00:00.000Z~01~tax_001",
+      "checkpointSummary": "resync checkpoint reset required",
+      "freshnessStatus": "stale",
+      "counts": { "applied": 0, "rejected": 0, "conflicted": 2, "duplicated": 0, "pending": 45, "behind": 45 },
+      "recommendedAction": "resync",
+      "lastErrorSummary": "Checkpoint is too old for deterministic incremental replay.",
+      "evidenceRefs": ["sync_conflict_resync_001"],
+      "entityStatuses": [
+        { "entityType": "Product", "status": "stale", "pcRowCount": 120, "exportedCount": 12, "appliedCount": 0, "rejectedCount": 0, "conflictedCount": 1, "duplicatedCount": 0, "lastCursor": "2026-05-20T08:00:00.000Z~04~prod_080", "note": "resync recommended" }
+      ]
+    }
+  ]
+}

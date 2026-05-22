@@ -6,7 +6,7 @@ Promotion Bridge must stay dry-run first and apply-blocked by default.
 
 Readiness checks:
 
-- 14 ChartOps charts are listed.
+- 17 ChartOps charts are listed.
 - Each chart has data source metadata.
 - mock charts are never treated as live-real.
 - feature flags default to false/off.
