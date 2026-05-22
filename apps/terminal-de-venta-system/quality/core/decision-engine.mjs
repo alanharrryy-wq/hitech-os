@@ -18,6 +18,12 @@ export function decide(profile, gateResults) {
   if (profile === 'watch') decision = 'WATCHING';
   if (profile === 'automation') decision = 'READY_TO_AUTOMATION';
   if (profile === 'phase5') decision = 'READY_TO_PHASE5';
+  if (profile === 'client-readiness') decision = 'READY_FOR_CUSTOMER_PROMOTION';
+  if (profile === 'demo') decision = 'READY_FOR_CUSTOMER_DEMO';
+  if (profile === 'first-run') decision = 'READY_FOR_FIRST_RUN';
+  if (profile === 'support-pack') decision = 'CUSTOMER_SUPPORT_PACK_READY';
+  if (profile === 'upgrade') decision = 'READY_FOR_CUSTOMER_UPGRADE';
+  if (profile === 'pilot') decision = 'READY_FOR_CUSTOMER_PILOT';
 
   if (summary.blockers.length || errored || blockedGate) decision = 'BLOCKED';
 

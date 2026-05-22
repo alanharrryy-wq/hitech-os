@@ -39,3 +39,29 @@ node quality/bin/prisma-quality.mjs --list-profiles --repo-root .
 ## v5.3 install-safe calibration
 
 Installer verification now separates quality package health from full repo release readiness. Use `--strict-phase5` to make external repo Phase 5 blockers rollback the install.
+
+
+## v6.0 Customer Assurance Layer
+
+This bundle adds customer-facing quality profiles without mutating product code or real databases:
+
+```powershell
+node quality/bin/prisma-quality.mjs --profile client-readiness --repo-root . --out-dir "F:\descargasf"
+node quality/bin/prisma-quality.mjs --profile demo --repo-root . --out-dir "F:\descargasf"
+node quality/bin/prisma-quality.mjs --profile first-run --repo-root . --out-dir "F:\descargasf"
+node quality/bin/prisma-quality.mjs --profile support-pack --repo-root . --out-dir "F:\descargasf"
+node quality/bin/prisma-quality.mjs --profile upgrade --repo-root . --out-dir "F:\descargasf"
+node quality/bin/prisma-quality.mjs --profile pilot --repo-root . --out-dir "F:\descargasf"
+```
+
+New gates:
+
+- `C1` Customer Readiness Gate
+- `C2` Demo Mode Safety
+- `C3` First Run Customer Environment
+- `C4` Support Pack Redaction and Exportability
+- `C5` Upgrade and Rollback Readiness
+- `C6` Operational Drift Watchdog
+- `C7` Customer Evidence Ledger
+
+All customer assurance outputs are written into the normal `PRISMA_QUALITY_OS_*` run folder.

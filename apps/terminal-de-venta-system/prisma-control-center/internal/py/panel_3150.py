@@ -37,6 +37,20 @@ except Exception:
     _prisma_release_status_payload = None
 # PRISMA_ULTRA_POLISH_RELEASE_ITER5_IMPORT_END
 
+# PRISMA_QUALITY_BAY_IMPORT_BEGIN
+try:
+    from quality_command_api import quality_command_payload as _prisma_quality_command_payload
+except Exception:
+    _prisma_quality_command_payload = None
+# PRISMA_QUALITY_BAY_IMPORT_END
+
+# PRISMA_LICENSE_OPS_IMPORT_BEGIN
+try:
+    from license_ops_api import license_ops_payload as _prisma_license_ops_payload
+except Exception:
+    _prisma_license_ops_payload = None
+# PRISMA_LICENSE_OPS_IMPORT_END
+
 
 
 
@@ -129,6 +143,30 @@ class PanelHandler(SimpleHTTPRequestHandler):
         # PRISMA_BLACKBOX_COMMAND_ITER3_ROUTE_BEGIN
         # PRISMA_CLOUDFLARE_ACTIONS_ITER4_ROUTE_BEGIN
         # PRISMA_ULTRA_POLISH_RELEASE_ITER5_ROUTE_BEGIN
+
+        # PRISMA_LICENSE_OPS_ROUTE_BEGIN
+        if self.path.startswith("/api/license-ops"):
+            try:
+                if _prisma_license_ops_payload is None:
+                    self._send_json({"ok": False, "status": "LICENSE_OPS_UNAVAILABLE"}, status=503)
+                else:
+                    self._send_json(_prisma_license_ops_payload(self.path, public=not self._is_local_request()))
+            except Exception as exc:
+                self._send_json({"ok": False, "status": "LICENSE_OPS_ERROR", "error": str(exc)}, status=500)
+            return
+        # PRISMA_LICENSE_OPS_ROUTE_END
+
+        # PRISMA_QUALITY_BAY_ROUTE_BEGIN
+        if self.path.startswith("/api/quality"):
+            try:
+                if _prisma_quality_command_payload is None:
+                    self._send_json({"ok": False, "status": "QUALITY_COMMAND_UNAVAILABLE"}, status=503)
+                else:
+                    self._send_json(_prisma_quality_command_payload(self.path, public=not self._is_local_request()))
+            except Exception as exc:
+                self._send_json({"ok": False, "status": "QUALITY_COMMAND_ERROR", "error": str(exc)}, status=500)
+            return
+        # PRISMA_QUALITY_BAY_ROUTE_END
         if self.path.startswith("/api/release"):
             try:
                 if _prisma_release_status_payload is None:

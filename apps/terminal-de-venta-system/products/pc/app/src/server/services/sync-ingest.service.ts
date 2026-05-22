@@ -17,10 +17,24 @@ import {
 
 const DEFAULT_REJECTED_SYNC_BUSINESS_ID = "biz_hitech_default";
 
+async function ensureLedgerBusiness(tx: any, businessId: string) {
+  const id = businessId?.trim();
+  if (!id) return;
+  await tx.business.upsert({
+    where: { id },
+    create: {
+      id,
+      name: `PRISMA Sync ${id}`,
+      currency: "MXN"
+    },
+    update: {}
+  });
+}
+
 function aggregateIdFor(event: SyncEventEnvelope) {
   const payload = event.payload;
   const pick = (value: unknown) => (typeof value === "string" && value.trim() ? value.trim() : "");
-  return event.aggregateId || pick(payload.saleId) || pick(payload.productId) || pick(payload.ticketId) || event.eventId;
+  return event.aggregateId || pick(payload.saleId) || pick(payload.productSupplierId) || pick(payload.linkId) || pick(payload.supplierId) || pick(payload.productId) || pick(payload.ticketId) || event.eventId;
 }
 
 function diagnosticsPayload(input: {
@@ -37,6 +51,12 @@ function diagnosticsPayload(input: {
     diagnostics: input.diagnostics ?? [],
     projectedModels: input.projectedModels ?? []
   });
+}
+
+function candidateString(candidate: unknown, key: string) {
+  if (!candidate || typeof candidate !== "object" || Array.isArray(candidate)) return "";
+  const value = (candidate as Record<string, unknown>)[key];
+  return typeof value === "string" && value.trim() ? value.trim() : "";
 }
 
 function resultSummary(results: SyncIngestResult[]): Record<SyncEventStatus, number> {
@@ -85,11 +105,14 @@ function duplicateResult(event: SyncEventEnvelope, existing: any): SyncIngestRes
 
 async function persistRejected(tx: any, candidate: unknown, errors: string[], conflicts: SyncConflictFinding[]): Promise<SyncIngestResult> {
   const id = `rejected_${syncPayloadFingerprint(candidate).slice(0, 28)}`;
+  const eventId = candidateString(candidate, "eventId") || id;
+  const topic = candidateString(candidate, "topic") || candidateString(candidate, "eventType") || null;
   const existing = await tx.outboxEvent.findUnique({ where: { id } });
   if (existing) {
-    return { eventId: id, topic: null, status: "duplicate", lifecycleStatus: "dead_letter", conflicts, errors: [], diagnostics: ["REJECTED_EVENT_ALREADY_PERSISTED"] };
+    return { eventId, topic, status: "duplicate", lifecycleStatus: "dead_letter", conflicts, errors: [], diagnostics: ["REJECTED_EVENT_ALREADY_PERSISTED", `REMOTE_LEDGER_ID:${id}`] };
   }
   const now = new Date();
+  await ensureLedgerBusiness(tx, DEFAULT_REJECTED_SYNC_BUSINESS_ID);
   await tx.outboxEvent.create({
     data: {
       id,
@@ -111,7 +134,7 @@ async function persistRejected(tx: any, candidate: unknown, errors: string[], co
       lastError: diagnosticsPayload({ lifecycleStatus: "dead_letter", conflicts, errors })
     }
   });
-  return { eventId: id, topic: null, status: "rejected", lifecycleStatus: "dead_letter", conflicts, errors, diagnostics: ["EVENT_REJECTED_BY_CONTRACT"] };
+  return { eventId, topic, status: "rejected", lifecycleStatus: "dead_letter", conflicts, errors, diagnostics: ["EVENT_REJECTED_BY_CONTRACT", `REMOTE_LEDGER_ID:${id}`] };
 }
 
 async function persistConflict(tx: any, event: SyncEventEnvelope, conflicts: SyncConflictFinding[], diagnostics: string[]): Promise<SyncIngestResult> {
@@ -119,6 +142,7 @@ async function persistConflict(tx: any, event: SyncEventEnvelope, conflicts: Syn
   if (existing) return duplicateResult(event, existing);
 
   const now = new Date();
+  await ensureLedgerBusiness(tx, event.businessId);
   await tx.outboxEvent.create({
     data: {
       id: event.eventId,
@@ -152,6 +176,7 @@ async function persistAndProjectEvent(tx: any, event: SyncEventEnvelope): Promis
 
   const now = new Date();
   const projection = await projectAcceptedSyncEvent(tx, event);
+  await ensureLedgerBusiness(tx, event.businessId);
   const lifecycleStatus = projection.status === "projected" ? "reconciled" : projection.status;
   const status = projection.status === "conflict" || projection.status === "dead_letter" ? projection.status === "conflict" ? "conflict" : "rejected" : "accepted";
   const storageStatus = statusForLifecycle(lifecycleStatus);
@@ -234,6 +259,12 @@ export async function persistSyncIngestPayload(input: unknown): Promise<SyncInge
         continue;
       }
       seenInBatch.add(validation.event.idempotencyKey);
+      if (validation.conflicts.some((item) => item.severity === "rejected")) {
+        result = await persistRejected(tx, candidate, validation.errors, validation.conflicts);
+        batchResults.push(result);
+        await recordSyncObservability({ tx, event: validation.event, candidate, result, startedAt, finishedAt: new Date() });
+        continue;
+      }
       if (validation.conflicts.length) {
         result = await persistConflict(tx, validation.event, validation.conflicts, ["VALIDATION_CONFLICT"]);
         batchResults.push(result);

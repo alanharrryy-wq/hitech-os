@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import os
+import shutil
 import socket
 import subprocess
 from typing import Any
@@ -14,9 +16,20 @@ def is_port_open(host: str, port: int, timeout: float = 1.5) -> bool:
         return False
 
 
+def _powershell_executable() -> str | None:
+    for candidate in ["powershell.exe", "pwsh.exe", "powershell", "pwsh"]:
+        found = shutil.which(candidate)
+        if found:
+            return found
+    return None
+
+
 def _run_powershell_json(script: str, timeout: int = 10) -> Any:
+    ps = _powershell_executable()
+    if ps is None:
+        return []
     completed = subprocess.run(
-        ["powershell.exe", "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", script],
+        [ps, "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", script],
         capture_output=True,
         text=True,
         timeout=timeout,
@@ -71,12 +84,18 @@ def inspect_ports(ports: list[int]) -> dict[int, dict[str, Any]]:
 def process_exists(pid: int) -> bool:
     if not pid:
         return False
+    if _powershell_executable() is None:
+        try:
+            os.kill(int(pid), 0)
+            return True
+        except OSError:
+            return False
     script = f"""
 $proc = Get-CimInstance Win32_Process -Filter "ProcessId={int(pid)}" -ErrorAction SilentlyContinue
 if ($proc) {{ "true" }} else {{ "false" }}
 """
     completed = subprocess.run(
-        ["powershell.exe", "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", script],
+        [_powershell_executable() or "powershell.exe", "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", script],
         capture_output=True,
         text=True,
         timeout=8,
@@ -85,6 +104,9 @@ if ($proc) {{ "true" }} else {{ "false" }}
 
 
 def command_exists(command: str) -> dict[str, Any]:
+    if _powershell_executable() is None:
+        found = shutil.which(command)
+        return {"found": bool(found), "source": found or "", "name": command}
     script = f"""
 $cmd = Get-Command {json.dumps(command)} -ErrorAction SilentlyContinue
 if ($cmd) {{

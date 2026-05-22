@@ -2,12 +2,14 @@ import { FEATURE_KEYS } from "./feature-keys";
 import { resolveFeatures } from "./feature-resolver";
 import { getLicenseRefreshStatus } from "./license-refresh-client";
 import { loadLocalLicense } from "./license-loader";
+import { resolveRuntimeContext, type RuntimeContext } from "../runtime";
 import type { LicenseRefreshState } from "./license-refresh-state";
 import type { FeatureResolution, LicenseSurface, NormalizedLicenseStatus } from "./license-types";
 
 export type LicenseGovernorSnapshot = {
   surface: LicenseSurface;
   status: NormalizedLicenseStatus;
+  runtimeContext: RuntimeContext;
   refreshState: LicenseRefreshState;
   decisions: FeatureResolution[];
   operationalDecision: NormalizedLicenseStatus["operationalDecision"];
@@ -16,6 +18,7 @@ export type LicenseGovernorSnapshot = {
 };
 
 export function getLicenseGovernorSnapshot(options: { surface: LicenseSurface; featureKeys?: string[] }): LicenseGovernorSnapshot {
+  const runtimeContext = resolveRuntimeContext({ role: options.surface });
   const refreshState = getLicenseRefreshStatus();
   const loaded = loadLocalLicense();
   const status: NormalizedLicenseStatus = {
@@ -33,6 +36,7 @@ export function getLicenseGovernorSnapshot(options: { surface: LicenseSurface; f
   return {
     surface: options.surface,
     status,
+    runtimeContext,
     refreshState,
     decisions,
     operationalDecision: status.operationalDecision,

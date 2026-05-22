@@ -48,6 +48,13 @@
     "tri-surface:verify": "node tools/prisma/verify_prisma_tri_surface_visual_guardian_00c.mjs",
     "verify:chart-source-modes": "pnpm -C products/chart-lab/app verify:chart-source-modes",
     "verify:no-direct-db-in-ui": "node scripts/verify-no-direct-db-in-ui.mjs",
+    "verify:runtime-config": "node tools/verify-runtime-config.mjs",
+    "verify:tablet-provisioning": "node tools/verify-tablet-provisioning.mjs",
+    "verify:tablet-solo-smoke": "node tools/verify-tablet-solo-smoke.mjs",
+    "verify:tablet-license-page-layout": "node tools/verify-tablet-license-page-layout.mjs",
+    "verify:tablet-ticket-detail-resolution": "node tools/verify-tablet-ticket-detail-resolution.mjs",
+    "verify:license-ops-console": "node tools/verify-license-ops-console.mjs",
+    "verify:code-atlas-boundaries": "node tools/verify-code-atlas-boundaries.mjs",
     "verify:outbox-integrity": "node scripts/verify-outbox-integrity.mjs",
     "verify:promotion-readiness": "pnpm -C products/chart-lab/app verify:promotion-readiness",
     "verify:sync-health": "node scripts/verify-sync-health.mjs",
@@ -78,7 +85,8 @@
     "quality:first-run": "node quality/bin/prisma-quality.mjs --profile first-run --repo-root . --out-dir F:/descargasf",
     "quality:support-pack": "node quality/bin/prisma-quality.mjs --profile support-pack --repo-root . --out-dir F:/descargasf",
     "quality:upgrade": "node quality/bin/prisma-quality.mjs --profile upgrade --repo-root . --out-dir F:/descargasf",
-    "quality:pilot": "node quality/bin/prisma-quality.mjs --profile pilot --repo-root . --out-dir F:/descargasf"
+    "quality:pilot": "node quality/bin/prisma-quality.mjs --profile pilot --repo-root . --out-dir F:/descargasf",
+    "verify:supplier-product-supplier-sync": "node tools/verify_supplier_product_supplier_sync_closure_01.mjs"
   },
   "devDependencies": {
     "prisma": "5.21.1"

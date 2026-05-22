@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../../../.generated/prisma-client";
 import { existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 

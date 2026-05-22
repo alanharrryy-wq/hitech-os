@@ -90,6 +90,18 @@ function mockFallback<T>(mockData: T, options?: PrismaChartAdapterOptions): T {
   return mockData;
 }
 
+function cloneTypedArray<T>(items: T[] | undefined | null): T[] | null {
+  return Array.isArray(items) && items.length > 0 ? items.map((item) => ({ ...(item as object) }) as T) : null;
+}
+
+function cloneGraphLike<TNode, TEdge>(graph: { nodes?: TNode[]; edges?: TEdge[] } | undefined | null): { nodes: TNode[]; edges: TEdge[] } | null {
+  if (!graph || !Array.isArray(graph.nodes) || !Array.isArray(graph.edges) || graph.nodes.length === 0) return null;
+  return {
+    nodes: graph.nodes.map((node) => ({ ...(node as object) }) as TNode),
+    edges: graph.edges.map((edge) => ({ ...(edge as object) }) as TEdge)
+  };
+}
+
 function buildUnavailableQuality(sourceLabel: string, todo: string, options?: PrismaChartAdapterOptions): PrismaChartQuality {
   return buildAdapterQuality(
     nowIso(),
@@ -175,6 +187,9 @@ function severityFromCounts(failed: number, conflicts: number): CausalFlowRibbon
 }
 
 export function buildPcCausalFlowRibbonViewModel(source?: PrismaPcChartSource, options?: PrismaChartAdapterOptions): CausalFlowRibbonDatum[] {
+  const directRuntime = cloneTypedArray<CausalFlowRibbonDatum>(source?.runtime?.causalFlowRibbon);
+    if (directRuntime) return directRuntime;
+
   if (!source?.dashboard && !source?.triDbStatus) return mockFallback(mockPcCharts.causalFlowRibbon, options);
   const generatedAt = pcGeneratedAt(source);
   const pending = numberOrZero(source.dashboard?.sync?.pendingEvents);
@@ -234,6 +249,9 @@ export function buildPcCausalFlowRibbonViewModel(source?: PrismaPcChartSource, o
 }
 
 export function buildPcOperationalDensityFieldViewModel(source?: PrismaPcChartSource, options?: PrismaChartAdapterOptions): OperationalDensityCell[] {
+  const directRuntime = cloneTypedArray<OperationalDensityCell>(source?.runtime?.operationalDensityField ?? source?.runtime?.operationalDensityHeatmap);
+  if (directRuntime) return directRuntime;
+
   if (!source?.dashboard && !source?.triDbStatus) return mockFallback(mockPcCharts.operationalDensityField, options);
   const generatedAt = pcGeneratedAt(source);
   const modules = [
@@ -259,7 +277,16 @@ export function buildPcOperationalDensityFieldViewModel(source?: PrismaPcChartSo
   }));
 }
 
+export function buildPcOperationalDensityHeatmapViewModel(source?: PrismaPcChartSource, options?: PrismaChartAdapterOptions): OperationalDensityCell[] {
+  const directRuntime = cloneTypedArray<OperationalDensityCell>(source?.runtime?.operationalDensityHeatmap ?? source?.runtime?.operationalDensityField);
+  if (directRuntime) return directRuntime;
+  if (!source?.dashboard && !source?.triDbStatus) return mockFallback(mockPcCharts.operationalDensityHeatmap, options);
+  return buildPcOperationalDensityFieldViewModel(source, options);
+}
+
 export function buildPcServiceDependencyGraphViewModel(source?: PrismaPcChartSource, options?: PrismaChartAdapterOptions): { nodes: ServiceDependencyNode[]; edges: ServiceDependencyEdge[] } {
+  const directRuntime = cloneGraphLike<ServiceDependencyNode, ServiceDependencyEdge>(source?.runtime?.serviceDependencyGraph);
+  if (directRuntime) return directRuntime;
   if (!source?.dashboard && !source?.triDbStatus) return mockFallback(mockPcCharts.serviceDependencyGraph, options);
   const generatedAt = pcGeneratedAt(source);
   const pcStatus = source.dashboard?.meta?.persistence === "available" ? "PASS" : "DEGRADED";
@@ -280,6 +307,9 @@ export function buildPcServiceDependencyGraphViewModel(source?: PrismaPcChartSou
 }
 
 export function buildPcInventoryRiskTreemapViewModel(source?: PrismaPcChartSource, options?: PrismaChartAdapterOptions): InventoryRiskNode[] {
+  const directRuntime = cloneTypedArray<InventoryRiskNode>(source?.runtime?.inventoryRiskTreemap);
+    if (directRuntime) return directRuntime;
+
   const topSkus = source?.dashboard?.topSkus ?? [];
   const lowStock = Number(firstKpi(source, "lowStockCount")?.value ?? source?.triDbStatus?.pc?.lowStockCount ?? 0);
   if (!topSkus.length && !lowStock) return mockFallback(mockPcCharts.inventoryRiskTreemap, options);
@@ -316,6 +346,9 @@ export function buildPcInventoryRiskTreemapViewModel(source?: PrismaPcChartSourc
 }
 
 export function buildPcDecisionLedgerTimelineViewModel(source?: PrismaPcChartSource, options?: PrismaChartAdapterOptions): DecisionLedgerPoint[] {
+  const directRuntime = cloneTypedArray<DecisionLedgerPoint>(source?.runtime?.decisionLedgerTimeline);
+    if (directRuntime) return directRuntime;
+
   if (!source?.dashboard && !source?.triDbStatus) return mockFallback(mockPcCharts.decisionLedgerTimeline, options);
   const generatedAt = pcGeneratedAt(source);
   const points: DecisionLedgerPoint[] = [
@@ -370,6 +403,9 @@ export function buildPcDecisionLedgerTimelineViewModel(source?: PrismaPcChartSou
 }
 
 export function buildPcFinancialOperationalWaterfallViewModel(source?: PrismaPcChartSource, options?: PrismaChartAdapterOptions): OperationalWaterfallStep[] {
+  const directRuntime = cloneTypedArray<OperationalWaterfallStep>(source?.runtime?.financialOperationalWaterfall);
+  if (directRuntime) return directRuntime;
+
   const salesCents = parseMoneyCents(firstKpi(source, "netSalesTodayCents")?.value);
   const topSkuCents = source?.dashboard?.topSkus?.reduce((sum, item) => sum + item.totalCents, 0) ?? 0;
   const value = salesCents || topSkuCents;
@@ -388,6 +424,7 @@ function buildPcCharts(source?: PrismaPcChartSource, options?: PrismaChartAdapte
     data: {
       causalFlowRibbon: buildPcCausalFlowRibbonViewModel(source, options),
       operationalDensityField: buildPcOperationalDensityFieldViewModel(source, options),
+      operationalDensityHeatmap: buildPcOperationalDensityHeatmapViewModel(source, options),
       serviceDependencyGraph: buildPcServiceDependencyGraphViewModel(source, options),
       inventoryRiskTreemap: buildPcInventoryRiskTreemapViewModel(source, options),
       decisionLedgerTimeline: buildPcDecisionLedgerTimelineViewModel(source, options),
@@ -411,6 +448,47 @@ function buildTabletQuality(source?: PrismaTabletChartSource, options?: PrismaCh
 export function buildTabletShiftPulseStripViewModel(source?: PrismaTabletChartSource, options?: PrismaChartAdapterOptions): ShiftPulseBucket[] {
   const runtime = source?.runtime;
   if (!runtime) return mockFallback(mockTabletCharts.shiftPulseStrip, options);
+  if (Array.isArray(runtime.shiftPulseBuckets) && runtime.shiftPulseBuckets.length > 0) {
+    const normalized = runtime.shiftPulseBuckets
+      .filter((bucket) => bucket && typeof bucket.bucketStart === "string")
+      .slice(-24)
+      .map((bucket) => {
+        const saleCount = numberOrZero(bucket.saleCount);
+        const grossSales = numberOrZero(bucket.grossSales ?? bucket.totalCents);
+        const avgTicket = numberOrZero(bucket.avgTicket ?? bucket.averageTicketCents) || (saleCount > 0 ? Math.round(grossSales / saleCount) : 0);
+        const offlineSaleCount = numberOrZero(bucket.offlineSaleCount);
+        const pendingSyncCount = numberOrZero(bucket.pendingSyncCount);
+        const explicitQueue = typeof bucket.queuePressure === "number" && Number.isFinite(bucket.queuePressure) ? bucket.queuePressure : null;
+        const queuePressure = explicitQueue === null ? clamp(pendingSyncCount * 8 + offlineSaleCount * 6) : clamp(explicitQueue);
+        const status: ShiftPulseBucket["status"] =
+          bucket.status === "blocked" || bucket.status === "risk" || bucket.status === "busy" || bucket.status === "normal"
+            ? bucket.status
+            : queuePressure >= 82
+              ? "blocked"
+              : queuePressure >= 66
+                ? "risk"
+                : queuePressure >= 50
+                  ? "busy"
+                  : "normal";
+        return {
+          bucketStart: bucket.bucketStart,
+          bucketEnd: bucket.bucketEnd ?? bucket.bucketStart,
+          shiftId: bucket.shiftId ?? runtime.shift?.cashSessionId ?? "current-shift",
+          terminalId: bucket.terminalId ?? runtime.identity?.terminalId ?? "tablet-local",
+          cashierId: bucket.cashierId ?? runtime.identity?.operatorName,
+          saleCount,
+          grossSales,
+          refundCount: numberOrZero(bucket.refundCount),
+          cancellationCount: numberOrZero(bucket.cancellationCount),
+          avgTicket,
+          offlineSaleCount,
+          pendingSyncCount,
+          queuePressure,
+          status
+        } satisfies ShiftPulseBucket;
+      });
+    if (normalized.length > 0) return normalized;
+  }
   const generatedAt = sourceTime(runtime.generatedAt, source?.generatedAt);
   const pending = numberOrZero(runtime.connection?.pendingEvents);
   const failed = numberOrZero(runtime.connection?.failedEvents);
@@ -456,6 +534,9 @@ function normalizeSyncState(status: string | undefined): SyncOutboxMatrixCell["s
 }
 
 export function buildTabletSyncOutboxStatusMatrixViewModel(source?: PrismaTabletChartSource, options?: PrismaChartAdapterOptions): SyncOutboxMatrixCell[] {
+  const directRuntime = cloneTypedArray<SyncOutboxMatrixCell>(source?.runtime?.syncOutboxStatusMatrix);
+    if (directRuntime) return directRuntime;
+
   const items = source?.syncPanel?.items ?? [];
   const generatedAt = sourceTime(source?.runtime?.generatedAt, source?.generatedAt);
   if (items.length) {
@@ -522,6 +603,9 @@ function findDimension(source: PrismaMobileChartSource | undefined, keys: string
 }
 
 export function buildMobileHealthRadarCompactViewModel(source?: PrismaMobileChartSource, options?: PrismaChartAdapterOptions): HealthRadarAxis[] {
+  const directRuntime = cloneTypedArray<HealthRadarAxis>(source?.snapshot?.healthRadarCompact);
+    if (directRuntime) return directRuntime;
+
   const snapshot = source?.snapshot;
   if (!snapshot) return mockFallback(mockMobileCharts.healthRadarCompact, options);
   const generatedAt = sourceTime(snapshot.meta?.generatedAt, snapshot.dataQuality?.generatedAt, source?.generatedAt);
@@ -550,6 +634,9 @@ export function buildMobileHealthRadarCompactViewModel(source?: PrismaMobileChar
 }
 
 export function buildMobileFreshnessRingsViewModel(source?: PrismaMobileChartSource, options?: PrismaChartAdapterOptions): FreshnessBeacon[] {
+  const directRuntime = cloneTypedArray<FreshnessBeacon>(source?.snapshot?.freshnessBeaconGrid);
+    if (directRuntime) return directRuntime;
+
   const snapshot = source?.snapshot;
   if (!snapshot) return mockFallback(mockMobileCharts.freshnessBeaconGrid, options);
   const generatedAt = sourceTime(snapshot.meta?.generatedAt, snapshot.dataQuality?.generatedAt, source?.generatedAt);
@@ -579,6 +666,9 @@ function priorityLabel(priority: number): ActionPriorityStackDatum["priority"] {
 }
 
 export function buildMobileActionInboxPriorityStackViewModel(source?: PrismaMobileChartSource, options?: PrismaChartAdapterOptions): ActionPriorityStackDatum[] {
+  const directRuntime = cloneTypedArray<ActionPriorityStackDatum>(source?.snapshot?.actionInboxPriorityStack);
+    if (directRuntime) return directRuntime;
+
   const items = source?.snapshot?.actionInbox?.items ?? [];
   if (!items.length) return mockFallback(mockMobileCharts.actionInboxPriorityStack, options);
   const grouped = new Map<string, ActionPriorityStackDatum>();
@@ -609,6 +699,9 @@ export function buildMobileActionInboxPriorityStackViewModel(source?: PrismaMobi
 }
 
 export function buildMobileOwnerPulseTimelineViewModel(source?: PrismaMobileChartSource, options?: PrismaChartAdapterOptions): OwnerPulsePoint[] {
+  const directRuntime = cloneTypedArray<OwnerPulsePoint>(source?.snapshot?.ownerPulseTimeline);
+    if (directRuntime) return directRuntime;
+
   const snapshot = source?.snapshot;
   if (!snapshot) return mockFallback(mockMobileCharts.ownerPulseTimeline, options);
   const generatedAt = sourceTime(snapshot.meta?.generatedAt, snapshot.dataQuality?.generatedAt, source?.generatedAt);
@@ -639,6 +732,9 @@ export function buildMobileOwnerPulseTimelineViewModel(source?: PrismaMobileChar
 }
 
 export function buildMobileIncidentSparkCardsViewModel(source?: PrismaMobileChartSource, options?: PrismaChartAdapterOptions): IncidentSparkCard[] {
+  const directRuntime = cloneTypedArray<IncidentSparkCard>(source?.snapshot?.incidentSparkCards);
+    if (directRuntime) return directRuntime;
+
   const snapshot = source?.snapshot;
   if (!snapshot) return mockFallback(mockMobileCharts.incidentSparkCards, options);
   const alerts = snapshot.alertCenter?.alerts ?? [];
@@ -667,6 +763,9 @@ export function buildMobileIncidentSparkCardsViewModel(source?: PrismaMobileChar
 }
 
 export function buildMobileConfidenceMeterBandsViewModel(source?: PrismaMobileChartSource, options?: PrismaChartAdapterOptions): ConfidenceBand[] {
+  const directRuntime = cloneTypedArray<ConfidenceBand>(source?.snapshot?.confidenceMeterBands);
+    if (directRuntime) return directRuntime;
+
   const snapshot = source?.snapshot;
   if (!snapshot) return mockFallback(mockMobileCharts.confidenceMeterBands, options);
   const report = snapshot.dataQuality;

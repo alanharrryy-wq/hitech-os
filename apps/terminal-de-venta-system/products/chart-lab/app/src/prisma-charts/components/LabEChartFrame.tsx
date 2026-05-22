@@ -73,6 +73,7 @@ export function LabEChartFrame({ entry, density, size, optionOverride }: LabECha
           components.TooltipComponent,
           components.TransformComponent,
           components.VisualMapComponent,
+          components.GraphicComponent,
           renderers.CanvasRenderer,
           renderers.SVGRenderer
         ]);
@@ -100,7 +101,13 @@ export function LabEChartFrame({ entry, density, size, optionOverride }: LabECha
   }, [entry, option]);
 
   useEffect(() => {
-    if (chartRef.current) chartRef.current.setOption(option as never, true);
+    if (!chartRef.current) return;
+    try {
+      chartRef.current.setOption(option as never, true);
+      setState("ready");
+    } catch {
+      setState("error");
+    }
   }, [option]);
 
   return (

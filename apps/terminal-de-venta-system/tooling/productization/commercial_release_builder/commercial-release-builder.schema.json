@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PRISMA Commercial Release Builder 01 Fixed Result",
+  "type": "object",
+  "required": [
+    "status",
+    "generatedAt",
+    "finalReleaseZip",
+    "packageResults",
+    "validationErrors",
+    "tabletSoloPolicy"
+  ],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "FAIL_VALIDATION"
+      ]
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "finalReleaseZip": {
+      "type": "string"
+    },
+    "finalReleaseSha256": {
+      "type": "string"
+    },
+    "packageResults": {
+      "type": "array"
+    },
+    "validationErrors": {
+      "type": "array"
+    },
+    "tabletSoloPolicy": {
+      "type": "object"
+    }
+  }
+}

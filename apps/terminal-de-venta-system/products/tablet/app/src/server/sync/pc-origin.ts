@@ -1,4 +1,7 @@
+import { resolveRuntimeContext } from "../../../../../../shared/runtime";
+
 const DEFAULT_CONNECT_TIMEOUT_MS = 2500;
+const DEFAULT_PC_ORIGIN = "http://127.0.0.1:3130";
 
 export type PrismaTabletPcOriginConfig = {
   enabled: boolean;
@@ -18,6 +21,16 @@ function readFlag(name: string, fallback = false): boolean {
   return ["1", "true", "yes", "on"].includes(raw.trim().toLowerCase());
 }
 
+function asBoolean(value: unknown, fallback = false): boolean {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "string") return ["1", "true", "yes", "on"].includes(value.trim().toLowerCase());
+  return fallback;
+}
+
+function asString(value: unknown): string | null {
+  return typeof value === "string" && value.trim() ? value.trim() : null;
+}
+
 function readInt(name: string, fallback: number, min: number, max: number): number {
   const raw = process.env[name];
   if (!raw) return fallback;
@@ -27,18 +40,23 @@ function readInt(name: string, fallback: number, min: number, max: number): numb
 }
 
 export function loadPrismaTabletPcOriginConfig(): PrismaTabletPcOriginConfig {
-  const origin = sanitizePcOrigin(process.env.PRISMA_TABLET_PC_ORIGIN ?? process.env.PC_ORIGIN ?? "");
+  const runtime = resolveRuntimeContext();
+  const sync = runtime.config?.sync ?? {};
+  const runtimeSyncEnabled = asBoolean(sync.enabled, runtime.packageType === "TABLET_PC_MANAGED");
+  const origin = sanitizePcOrigin(process.env.PRISMA_TABLET_PC_ORIGIN ?? process.env.PC_ORIGIN ?? asString(sync.pcOrigin) ?? asString(sync.origin) ?? (runtimeSyncEnabled ? DEFAULT_PC_ORIGIN : ""));
+  // Default-off by env: the tablet never dispatches to PC unless the operator explicitly enables it.
+  // Runtime/package config can still prefill origin, timeout, batch size and health paths.
   const enabled = readFlag("PRISMA_TABLET_PC_SYNC_ENABLED", false) && Boolean(origin);
   return {
     enabled,
     origin,
-    ingestPath: process.env.PRISMA_TABLET_PC_INGEST_PATH || "/api/sync/ingest",
-    healthPath: process.env.PRISMA_TABLET_PC_HEALTH_PATH || "/api/sync/health",
-    timeoutMs: readInt("PRISMA_TABLET_PC_TIMEOUT_MS", DEFAULT_CONNECT_TIMEOUT_MS, 250, 15000),
-    automaticDispatch: enabled && readFlag("PRISMA_TABLET_SYNC_AUTODISPATCH", false),
-    ackStrict: readFlag("PRISMA_TABLET_SYNC_ACK_STRICT", true),
-    batchSize: readInt("PRISMA_TABLET_SYNC_BATCH_SIZE", 25, 1, 100),
-    maxAttempts: readInt("PRISMA_TABLET_SYNC_MAX_ATTEMPTS", 8, 1, 30)
+    ingestPath: process.env.PRISMA_TABLET_PC_INGEST_PATH || asString(sync.ingestPath) || "/api/sync/ingest",
+    healthPath: process.env.PRISMA_TABLET_PC_HEALTH_PATH || asString(sync.healthPath) || "/api/sync/ingest",
+    timeoutMs: readInt("PRISMA_TABLET_PC_TIMEOUT_MS", Number(sync.timeoutMs) || DEFAULT_CONNECT_TIMEOUT_MS, 250, 15000),
+    automaticDispatch: enabled && readFlag("PRISMA_TABLET_SYNC_AUTODISPATCH", asBoolean(sync.automaticDispatch, false)),
+    ackStrict: readFlag("PRISMA_TABLET_SYNC_ACK_STRICT", asBoolean(sync.ackStrict, true)),
+    batchSize: readInt("PRISMA_TABLET_SYNC_BATCH_SIZE", Number(sync.batchSize) || 25, 1, 100),
+    maxAttempts: readInt("PRISMA_TABLET_SYNC_MAX_ATTEMPTS", Number(sync.maxAttempts) || 8, 1, 30)
   };
 }
 

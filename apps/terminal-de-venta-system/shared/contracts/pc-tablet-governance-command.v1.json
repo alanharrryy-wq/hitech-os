@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hitech.local/contracts/pc-tablet-governance-command.v1.json",
+  "title": "PC to Tablet Governance Command V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract", "commandType", "target", "status", "idempotencyKey", "safeToContinueSelling"],
+  "properties": {
+    "contract": { "const": "pc-tablet-governance-command.v1" },
+    "commandType": {
+      "type": "string",
+      "enum": ["catalog.release", "price-policy.release", "license.refresh", "runtime.refresh"]
+    },
+    "target": {
+      "type": "string",
+      "description": "all, store:<id>, terminal:<id>, or device:<id>"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["queued_for_pickup", "picked_up", "acked", "failed", "cancelled"]
+    },
+    "idempotencyKey": { "type": "string", "minLength": 12 },
+    "operatorNote": { "type": ["string", "null"] },
+    "requestedBy": { "type": ["string", "null"] },
+    "safeToContinueSelling": {
+      "type": "boolean",
+      "const": true,
+      "description": "Tablet must never wait on this command to complete local selling."
+    }
+  }
+}

@@ -91,7 +91,7 @@ function ensureTabletPrismaClient() {
 }
 
 function canImportPrismaClient(env) {
-  const result = spawnSync(process.execPath, ["-e", "import('@prisma/client').then(()=>process.exit(0)).catch(()=>process.exit(1))"], {
+  const result = spawnSync(process.execPath, ["-e", "import('./.generated/prisma-client/index.js').then(()=>process.exit(0)).catch(()=>process.exit(1))"], {
     cwd: appRoot,
     encoding: "utf8",
     shell: false,
@@ -541,7 +541,7 @@ async function completeLocalSale(prisma, clientRequestId = makeId("client_reques
 mkdirSync(tmpRoot, { recursive: true });
 
 ensureTabletPrismaClient();
-const { PrismaClient } = await import("@prisma/client");
+const { PrismaClient } = await import("../.generated/prisma-client/index.js");
 
 const prisma = new PrismaClient({
   datasources: {

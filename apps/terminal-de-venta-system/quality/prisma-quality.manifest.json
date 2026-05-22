@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0",
   "systemName": "PRISMA Quality Operating System",
-  "systemVersion": "5.4.0-phase-5-warning-repair",
+  "systemVersion": "6.0.0-customer-assurance",
   "phase": "phase-5-release-operator-readiness",
   "repoName": "terminal-de-venta-system",
   "dbSafetyMode": "real-db-inspect-only",
@@ -30,7 +30,13 @@
     "scenario",
     "watch",
     "phase5",
-    "automation"
+    "automation",
+    "client-readiness",
+    "demo",
+    "first-run",
+    "support-pack",
+    "upgrade",
+    "pilot"
   ],
   "gates": [
     "Q0",
@@ -62,7 +68,14 @@
     "Q28",
     "Q29",
     "Q30",
-    "Q31"
+    "Q31",
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7"
   ],
   "contracts": [
     "CONTRACT_TABLET_SOVEREIGNTY",
@@ -75,7 +88,13 @@
     "CONTRACT_SCHEMA_MIGRATION_PARITY",
     "CONTRACT_TRACEABLE_OPERATION",
     "CONTRACT_RELEASE_EVIDENCE_REQUIRED",
-    "CONTRACT_PRISMA_NOT_POS_ONLY"
+    "CONTRACT_PRISMA_NOT_POS_ONLY",
+    "CONTRACT_CUSTOMER_ASSURANCE",
+    "CONTRACT_DEMO_SAFETY",
+    "CONTRACT_SUPPORT_PACK_REDACTION",
+    "CONTRACT_CUSTOMER_UPGRADE_ROLLBACK",
+    "CONTRACT_OPERATIONAL_DRIFT_WATCHDOG",
+    "CONTRACT_CUSTOMER_EVIDENCE_LEDGER"
   ],
   "writeAllowlist": [
     "F:\\descargasf\\PRISMA_QUALITY_OS_<runId>"
@@ -207,8 +226,8 @@
     "gate": "Q31",
     "fakeGreenForbidden": true
   },
-  "version": "5.4.0",
-  "releaseChannel": "install-safe-plus-warning-repair",
+  "version": "6.0.0",
+  "releaseChannel": "customer-assurance-layer-v1",
   "phase5WarningRepair": {
     "script": "scripts/repair_phase5_warnings.py",
     "externalScope": "prisma-control-center launchers/wrappers and operator docs",
@@ -219,6 +238,52 @@
       "verify",
       "rollback",
       "backup"
+    ]
+  },
+  "customerAssurance": {
+    "id": "customer-assurance-layer-v1",
+    "name": "PRISMA Customer Assurance Layer",
+    "mode": "read-only",
+    "profiles": [
+      "client-readiness",
+      "demo",
+      "first-run",
+      "support-pack",
+      "upgrade",
+      "pilot"
+    ],
+    "gates": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7"
+    ],
+    "docs": [
+      "quality/docs/customer-assurance-layer.md",
+      "quality/docs/client-readiness.md",
+      "quality/docs/demo-mode.md",
+      "quality/docs/first-run-customer-install.md",
+      "quality/docs/support-pack.md",
+      "quality/docs/upgrade-rollback-customer.md",
+      "quality/docs/customer-evidence-ledger.md",
+      "quality/docs/drift-watchdog.md"
+    ],
+    "policies": [
+      "quality/policies/customer-assurance-policy.json",
+      "quality/policies/demo-safety-policy.json",
+      "quality/policies/support-pack-redaction-policy.json",
+      "quality/policies/customer-upgrade-policy.json",
+      "quality/policies/customer-drift-policy.json"
+    ],
+    "rules": [
+      "Tablet sale path remains local-first and independent.",
+      "PC, Mobile, Control, Cloudflare, and support are optional for local sale.",
+      "Customer-facing green requires parseable evidence.",
+      "Support packs are redacted and exclude raw databases, .env files, tokens, secrets, and PII exports.",
+      "Drift is evidence first and warning by default unless a hard gate blocks."
     ]
   }
 }

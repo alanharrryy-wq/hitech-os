@@ -9,7 +9,9 @@ const roots = [
   "products/mobile/app/app",
   "products/mobile/app/src",
   "products/tablet/app/app",
+  "products/tablet/app/components",
   "products/tablet/app/src",
+  "products/pc/app/components",
   "products/pc/app/app",
   "products/pc/app/src"
 ].map((rel) => path.join(terminalRoot, rel));
@@ -26,7 +28,10 @@ const patterns = [
   { name: "@prisma/client import", regex: /from\s+["']@prisma\/client["']|require\(["']@prisma\/client["']\)/ },
   { name: "PrismaClient construction", regex: /\bnew\s+PrismaClient\b/ },
   { name: "sqlite direct import", regex: /from\s+["'](?:sqlite3|better-sqlite3|@libsql\/client)["']|require\(["'](?:sqlite3|better-sqlite3|@libsql\/client)["']\)/ },
+  { name: "fs direct import in UI", regex: /from\s+["']node:fs["']|from\s+["']fs["']|require\(["'](?:node:fs|fs)["']\)/ },
   { name: "DATABASE_URL in UI", regex: /\bDATABASE_URL\b/ },
+  { name: "ProgramData direct path/env in UI", regex: /process\.env\.ProgramData|C:\\\\ProgramData|C:\\ProgramData/ },
+  { name: "direct license path in UI", regex: /\blicense\.json\b|PRISMA_LICENSE_(?:PATH|FILE)/ },
   { name: "direct db path in UI", regex: /\.(?:db|sqlite|sqlite3)\b/i }
 ];
 

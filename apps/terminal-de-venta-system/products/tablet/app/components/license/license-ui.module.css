@@ -177,6 +177,86 @@
   font-size: 12px;
 }
 
+.actionPanel {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(320px, auto);
+  gap: 14px;
+  align-items: center;
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid color-mix(in srgb, var(--prisma-state-warning) 34%, var(--prisma-border-soft));
+  border-radius: var(--prisma-radius-lg);
+  background:
+    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--prisma-state-warning) 18%, transparent), transparent 34%),
+    var(--prisma-glass-gradient);
+}
+
+.actionPanel strong {
+  display: block;
+  color: var(--prisma-text-primary);
+  font-size: 15px;
+}
+
+.actionPanel span {
+  display: block;
+  margin-top: 4px;
+  color: var(--prisma-text-secondary);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.ctaGrid,
+.refreshActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.ctaGrid {
+  justify-content: flex-end;
+}
+
+.refreshActions {
+  margin-top: 16px;
+}
+
+.primaryLink,
+.secondaryLink,
+.disabledButton {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--prisma-radius-md);
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 900;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.primaryLink {
+  border: 1px solid var(--prisma-border-gold);
+  color: var(--prisma-text-on-gold);
+  background: var(--prisma-gold-gradient);
+  box-shadow: var(--prisma-shadow-gold);
+}
+
+.secondaryLink {
+  border: 1px solid var(--prisma-border-soft);
+  color: var(--prisma-text-primary);
+  background: var(--prisma-glass-gradient);
+}
+
+.disabledButton {
+  border: 1px solid var(--prisma-border-soft);
+  color: var(--prisma-text-muted);
+  background: color-mix(in srgb, var(--prisma-glass-surface) 50%, transparent);
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
 .warningBadge {
   color: var(--prisma-state-warning);
   background: color-mix(in srgb, var(--prisma-state-warning) 12%, transparent);
@@ -240,6 +320,20 @@
 @media (max-width: 720px) {
   .featureItem {
     grid-template-columns: 1fr;
+  }
+
+  .actionPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .ctaGrid {
+    justify-content: stretch;
+  }
+
+  .primaryLink,
+  .secondaryLink,
+  .disabledButton {
+    width: 100%;
   }
 }
 

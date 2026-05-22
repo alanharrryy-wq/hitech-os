@@ -4,6 +4,7 @@ import { pcDecisionLedgerTimelinePassport } from "./passports/pc.decision-ledger
 import { pcFinancialOperationalWaterfallPassport } from "./passports/pc.financial-operational-waterfall.passport";
 import { pcInventoryRiskTreemapPassport } from "./passports/pc.inventory-risk-treemap.passport";
 import { pcOperationalDensityFieldPassport } from "./passports/pc.operational-density-field.passport";
+import { opsOperationalDensityHeatmapPassport } from "./passports/ops.operational-density-heatmap.passport";
 import { pcServiceDependencyGraphPassport } from "./passports/pc.service-dependency-graph.passport";
 import { tabletShiftPulseStripPassport } from "./passports/tablet.shift-pulse-strip.passport";
 import { tabletSyncOutboxStatusMatrixPassport } from "./passports/tablet.sync-outbox-status-matrix.passport";
@@ -92,6 +93,7 @@ export type PrismaChartPassport = {
 export const prismaChartAtlas = [
   pcCausalFlowRibbonPassport,
   pcOperationalDensityFieldPassport,
+  opsOperationalDensityHeatmapPassport,
   pcServiceDependencyGraphPassport,
   pcInventoryRiskTreemapPassport,
   pcDecisionLedgerTimelinePassport,
@@ -125,4 +127,3 @@ export function findChartsByRoute(route: string) {
 export function findChartsByContract(contractType: string) {
   return prismaChartAtlas.filter((passport) => passport.contractType.includes(contractType));
 }
-

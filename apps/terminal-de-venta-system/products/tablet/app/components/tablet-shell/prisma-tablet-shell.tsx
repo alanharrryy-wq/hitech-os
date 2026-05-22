@@ -92,6 +92,7 @@ export function PrismaTabletShellUnified({
         <aside className={styles.sidebar} aria-label="Navegación principal de Tablet" data-prisma-component="Sidebar" data-prisma-role="operational-summary">
           <label className={styles.brand} htmlFor="prisma-tablet-sidebar-toggle" title="Contraer o expandir navegación" data-prisma-component="BrandCollapseToggle">
             <span className={styles.brandMark} aria-hidden="true">
+              <img className={styles.brandImage} src="/prisma/logo-prisma-primary.png" alt="" />
               <span className={styles.prismaShard} />
             </span>
             <span className={styles.brandText}>

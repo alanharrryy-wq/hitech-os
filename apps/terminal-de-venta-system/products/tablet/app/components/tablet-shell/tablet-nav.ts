@@ -29,16 +29,18 @@ export const TABLET_NAV_ITEMS: TabletNavItem[] = [
   { href: "/catalog", label: "Catálogo", shortLabel: "Catálogo", description: "Productos locales disponibles para venta.", icon: "tag", group: "consulta" },
   { href: "/stock", label: "Existencias", shortLabel: "Stock", description: "Stock operativo local, quiebres y señales de reabasto.", icon: "package", group: "consulta" },
   { href: "/sales/today", label: "Ventas de hoy", shortLabel: "Ventas", description: "Resumen de tickets y productos vendidos.", icon: "receipt", group: "consulta" },
+  { href: "/sales/history", label: "Historial ventas", shortLabel: "Historial", description: "Consulta local acotada de tickets anteriores.", icon: "receipt", group: "consulta" },
   { href: "/returns", label: "Devoluciones", shortLabel: "Dev.", description: "Revisión y creación de devoluciones desde tickets existentes.", icon: "receipt", group: "consulta" },
   { href: "/sync", label: "Sincronización", shortLabel: "Sinc.", description: "Envíos pendientes, fallidos y trabajo local por revisar.", icon: "bell", group: "soporte" },
   { href: "/offline", label: "Sin conexión / Exportar", shortLabel: "Exportar", description: "Auditoría local, exportación y evidencia operativa.", icon: "receipt", group: "soporte" },
   { href: "/release-gate", label: "Estado del sistema", shortLabel: "Estado", description: "Revisión operativa de flujos críticos antes de liberar.", icon: "settings", group: "soporte" },
+  { href: "/settings/data", label: "Datos locales", shortLabel: "Datos", description: "Herramientas bloqueadas para reset seguro de ventas.", icon: "settings", group: "soporte" },
   { href: "/settings/license", label: "Licencia", shortLabel: "Lic.", description: "Estado de licencia y permisos de uso de Tablet.", icon: "settings", group: "soporte" }
 ];
 
-const CONSULTA_PATHS = new Set(["/catalog", "/stock", "/inventory", "/existencias", "/inventory/low-stock"]);
-const SOPORTE_PATHS = new Set(["/sync", "/events/outbox", "/offline", "/settings/export", "/settings/license", "/release-gate"]);
-const OPERATION_PATHS = new Set(["/", "/pos", "/checkout", "/sales", "/sales/today", "/shift"]);
+const CONSULTA_PATHS = new Set(["/catalog", "/stock", "/inventory", "/existencias", "/inventory/low-stock", "/sales", "/sales/today", "/sales/history", "/returns"]);
+const SOPORTE_PATHS = new Set(["/sync", "/events/outbox", "/offline", "/settings/export", "/settings/data", "/settings/license", "/release-gate"]);
+const OPERATION_PATHS = new Set(["/", "/pos", "/checkout", "/shift"]);
 
 export function isTabletNavActive(currentPath: string, href: string) {
   if (href === "/") return currentPath === "/";
@@ -47,6 +49,7 @@ export function isTabletNavActive(currentPath: string, href: string) {
   if (href === "/sync") return currentPath === href || currentPath === "/events/outbox";
   if (href === "/offline") return currentPath === href || currentPath === "/settings/export";
   if (href === "/sales/today") return currentPath === href || currentPath.startsWith("/sales/today") || currentPath === "/sales";
+  if (href === "/sales/history") return currentPath === href || currentPath.startsWith("/sales/history");
   if (href === "/returns") return currentPath === href || currentPath.includes("/return");
   return currentPath === href || currentPath.startsWith(`${href}/`);
 }

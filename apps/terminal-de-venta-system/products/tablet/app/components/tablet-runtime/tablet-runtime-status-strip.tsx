@@ -9,9 +9,12 @@ type Props = {
 
 function Chip({ label, value, tone, href }: { label: string; value: string; tone: string; href: string }) {
   return (
-    <a className={[styles.runtimeChip, styles[`runtime_${tone}`]].join(" ")} href={href} data-prisma-component="RuntimeChip">
-      <span>{label}</span>
-      <strong>{value}</strong>
+    <a className={[styles.runtimeChip, styles[`runtime_${tone}`]].join(" ")} href={href} data-prisma-component="RuntimeChip" data-prisma-runtime-chip-tone={tone}>
+      <span className={styles.runtimeChipLabel}>{label}</span>
+      <span className={styles.runtimeChipValueRow}>
+        <strong>{value}</strong>
+        <i className={styles.runtimeChipDot} aria-hidden="true" />
+      </span>
     </a>
   );
 }
@@ -35,6 +38,7 @@ export function TabletRuntimeStatusStrip({ snapshot, variant = "full" }: Props) 
       data-prisma-motion="sync-feedback"
       data-prisma-qa="tablet-qa-sync"
       data-variant={variant}
+      data-prisma-runtime-layout={compact ? "rail" : "full"}
     >
       <div className={styles.runtimeIdentity}>
         <span>{getRuntimeModeLabel(snapshot)}</span>

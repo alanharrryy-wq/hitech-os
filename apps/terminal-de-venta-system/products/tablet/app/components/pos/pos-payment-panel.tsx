@@ -38,6 +38,8 @@ export function PosPaymentPanel({ open, lines, state, error, paymentMethod, cash
       data-prisma-state={busy ? "loading" : visibleError ? "error" : view.canConfirm ? "ready" : "disabled"}
       data-prisma-motion="reduced-motion-safe"
       data-prisma-qa="tablet-qa-checkout"
+      data-prisma-payment-method={paymentMethod}
+      data-prisma-payment-can-confirm={view.canConfirm ? "true" : "false"}
     >
       <div className={styles.paymentPanelCard}>
         <header className={styles.paymentHeader}>

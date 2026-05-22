@@ -10,7 +10,11 @@
     "runtimeRoot",
     "configRoot",
     "businessId",
+    "storeId",
+    "terminalId",
     "deviceId",
+    "vertical",
+    "role",
     "packageType",
     "paths"
   ],
@@ -23,11 +27,44 @@
       "type": "string",
       "enum": [
         "dev",
+        "customer",
+        "test",
+        "release",
         "standalone",
         "pro",
         "pc_backoffice",
         "managed",
         "degraded_managed"
+      ]
+    },
+    "runtimeProfile": {
+      "type": "string",
+      "enum": [
+        "dev",
+        "standalone",
+        "pro",
+        "pc_backoffice",
+        "managed",
+        "degraded_managed"
+      ]
+    },
+    "vertical": {
+      "type": "string",
+      "enum": [
+        "commerce",
+        "industrial",
+        "field",
+        "control"
+      ]
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "tablet",
+        "pc",
+        "mobile",
+        "control",
+        "shared"
       ]
     },
     "runtimeRoot": {
@@ -39,6 +76,18 @@
       "minLength": 3
     },
     "businessId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "storeId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "terminalId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "clientId": {
       "type": "string",
       "minLength": 1
     },
@@ -75,7 +124,8 @@
         "logsRoot",
         "exportsRoot",
         "backupsRoot",
-        "licenseFile"
+        "licenseFile",
+        "deviceIdentityFile"
       ],
       "properties": {
         "runtimeRoot": {
@@ -129,6 +179,10 @@
         "licenseFile": {
           "type": "string",
           "minLength": 3
+        },
+        "deviceIdentityFile": {
+          "type": "string",
+          "minLength": 3
         }
       }
     },
@@ -154,6 +208,8 @@
         "properties": {
           "runtimeMode": {
             "enum": [
+              "customer",
+              "release",
               "standalone",
               "pro",
               "pc_backoffice",

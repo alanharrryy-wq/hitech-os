@@ -39,6 +39,10 @@ REQUIRED_02ABCD_FILES = [
     "shared/licensing/local-license-store.ts",
     "shared/licensing/license-refresh-client.ts",
     "shared/licensing/license-refresh-state.ts",
+    "shared/runtime/runtime-context-types.ts",
+    "shared/runtime/runtime-context-resolver.ts",
+    "shared/runtime/runtime-context-validator.ts",
+    "shared/runtime/device-identity.ts",
     "products/tablet/app/app/api/license/status/route.ts",
     "products/tablet/app/app/api/license/features/route.ts",
     "products/tablet/app/app/api/license/refresh/route.ts",
@@ -50,7 +54,7 @@ REQUIRED_02ABCD_FILES = [
     "products/pc/app/app/api/license/refresh/status/route.ts",
     "products/pc/app/app/settings/license/page.tsx",
     "tooling/licensing/verify_signed_license.js",
-    "local-runtime/license/license.signed.dev.json",
+    "tools/provision-prisma-runtime.mjs",
 ]
 
 BUILD_GATES = [

@@ -1,46 +1,69 @@
-import fs from "node:fs";
-import os from "node:os";
 import path from "node:path";
+import fs from "node:fs";
+import { buildDevPaths, defaultProgramDataRoot, findTerminalSystemRoot, resolveRuntimeContext } from "../runtime";
 
 export type LicensePathResolution = {
   path: string;
-  source: "env" | "programdata" | "dev" | "unix";
+  source: "explicit" | "runtime_config" | "programdata" | "legacy_programdata" | "dev";
   exists: boolean;
+  runtimeMode: "dev" | "customer" | "test" | "release";
+  isDevFallback: boolean;
+  warnings: string[];
+  blockingIssues: string[];
 };
 
-function findSystemRoot(start: string): string {
-  let current = path.resolve(start);
-  for (let i = 0; i < 12; i += 1) {
-    if (fs.existsSync(path.join(current, "products")) || fs.existsSync(path.join(current, "terminal_de_venta.cmd"))) {
-      return current;
-    }
-    const parent = path.dirname(current);
-    if (parent === current) break;
-    current = parent;
-  }
-  return path.resolve(start);
-}
-
 export function getSystemRoot(): string {
-  return path.resolve(process.env.TV_SYSTEM_ROOT || findSystemRoot(process.cwd()));
+  return path.resolve(process.env.TV_SYSTEM_ROOT || findTerminalSystemRoot(process.cwd()));
 }
 
 export function getLicenseCandidatePaths(): LicensePathResolution[] {
-  const candidates: LicensePathResolution[] = [];
-  if (process.env.PRISMA_LICENSE_PATH) {
-    candidates.push({ path: path.resolve(process.env.PRISMA_LICENSE_PATH), source: "env", exists: false });
+  const context = resolveRuntimeContext();
+  const source = context.provenance.licenseFile?.source;
+  const primarySource: LicensePathResolution["source"] =
+    source === "explicit" || source === "env" ? "explicit" :
+    source === "runtime_config" ? "runtime_config" :
+    source === "legacy_programdata" ? "legacy_programdata" :
+    source === "dev_fallback" ? "dev" :
+    "programdata";
+  const candidates: LicensePathResolution[] = [
+    {
+      path: context.licenseFile,
+      source: primarySource,
+      exists: fs.existsSync(context.licenseFile),
+      runtimeMode: context.runtimeMode,
+      isDevFallback: primarySource === "dev",
+      warnings: context.warnings.map((issue) => issue.code),
+      blockingIssues: context.blockingIssues.map((issue) => issue.code)
+    }
+  ];
+
+  if (context.runtimeMode === "dev") {
+    const devUnsigned = path.join(buildDevPaths(getSystemRoot()).runtimeRoot, "license", "license.dev.json");
+    candidates.push({
+      path: devUnsigned,
+      source: "dev",
+      exists: fs.existsSync(devUnsigned),
+      runtimeMode: context.runtimeMode,
+      isDevFallback: true,
+      warnings: context.warnings.map((issue) => issue.code),
+      blockingIssues: context.blockingIssues.map((issue) => issue.code)
+    });
   }
 
-  if (os.platform() === "win32") {
-    const programData = process.env.ProgramData || "C:\\ProgramData";
-    candidates.push({ path: path.join(programData, "PRISMA", "license", "license.json"), source: "programdata", exists: false });
-  } else {
-    candidates.push({ path: "/var/lib/prisma/license/license.json", source: "unix", exists: false });
+  const legacy = path.join(defaultProgramDataRoot(), "PRISMA", "config", "license.json");
+  if (legacy !== context.licenseFile) {
+    candidates.push({
+      path: legacy,
+      source: "legacy_programdata",
+      exists: fs.existsSync(legacy),
+      runtimeMode: context.runtimeMode,
+      isDevFallback: false,
+      warnings: context.warnings.map((issue) => issue.code),
+      blockingIssues: context.blockingIssues.map((issue) => issue.code)
+    });
   }
 
-  candidates.push({ path: path.join(getSystemRoot(), "local-runtime", "license", "license.signed.dev.json"), source: "dev", exists: false });
-  candidates.push({ path: path.join(getSystemRoot(), "local-runtime", "license", "license.dev.json"), source: "dev", exists: false });
-  return candidates.map((candidate) => ({ ...candidate, exists: fs.existsSync(candidate.path) }));
+  return candidates;
 }
 
 export function resolveLocalLicensePath(): LicensePathResolution {

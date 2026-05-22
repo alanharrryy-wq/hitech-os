@@ -1,3 +1,5 @@
+// PRISMA_PEARL_EXECUTIVE_CONTROL_DECK_V1
+// PRISMA_THEME_BUTTON_DATA_VALUE_V1
 "use client";
 
 import type { LabChartControlState, LabChartControlValue, LabChartRuntimeControl } from "@/prisma-charts/chart-lab-types";
@@ -46,11 +48,11 @@ function controlInputProps(control: LabChartRuntimeControl) {
 // PRISMA_KNOBS_AUDIT_INJECTION_V2: stable knob selectors for audit, QA, and product hardening.
 export function ChartControlDeck({ controls, values, onChange, onCopyConfig, onReset, onResetAll }: ChartControlDeckProps) {
   return (
-    <section className="control-deck" aria-label="Runtime chart controls" data-testid="chart-control-deck" data-control-count={controls.length}>
+    <section className="control-deck" aria-label="Runtime chart controls" data-testid="chart-control-deck" data-luxury-ui="pearl-executive" data-control-count={controls.length}>
       <div className="control-deck__toolbar">
         <div>
           <span className="eyebrow">Runtime Controls</span>
-          <h3>Working knobs</h3>
+          <h3>Control instruments</h3>
         </div>
         <div className="toolbar-actions">
           <button type="button" data-action="copy-current-config" aria-label="Copy Current Config JSON" onClick={onCopyConfig}>Copy Current Config JSON</button>
@@ -114,7 +116,7 @@ export function ChartControlDeck({ controls, values, onChange, onCopyConfig, onR
                       className={asString(current) === option.value ? "is-active" : ""}
                       disabled={disabled}
                       onClick={() => onChange(control.id, option.value)}
-                    >
+                     data-value={String(option.value)}>
                       {option.label}
                     </button>
                   ))}

@@ -54,6 +54,11 @@ export function resolveFeature(status: NormalizedLicenseStatus, key: string): Fe
   const rawOverrides = status.raw?.features ?? {};
   const capabilityOverrides = status.capabilities ?? {};
 
+  if (status.state === "missing") {
+    if (BASIC_POS_FEATURES.has(key)) return allowedResolution(status, key, "fallback_policy", "Venta básica permitida por política de continuidad.");
+    return deniedResolution(status, key, "La licencia local no está disponible o es inválida. Funciones avanzadas desactivadas.");
+  }
+
   if (["unassigned", "wrong_business", "wrong_store", "wrong_device", "wrong_terminal", "exceeded_limit"].includes(status.assignmentState)) {
     return deniedResolution(status, key, "Equipo no asignado correctamente a esta licencia. Revisa cliente, negocio, tienda y terminal.", "hard_deny");
   }
@@ -72,11 +77,6 @@ export function resolveFeature(status: NormalizedLicenseStatus, key: string): Fe
   if (rawOverrides[key] === false) return deniedResolution(status, key, "Feature deshabilitada explícitamente por la licencia local.");
 
   if (status.state === "development") return allowedResolution(status, key, "license", "Modo development habilita esta función.");
-
-  if (status.state === "missing") {
-    if (BASIC_POS_FEATURES.has(key)) return allowedResolution(status, key, "fallback_policy", "Venta básica permitida por política de continuidad.");
-    return deniedResolution(status, key, "La licencia local no está disponible o es inválida. Funciones avanzadas desactivadas.");
-  }
 
   if (status.state === "suspended") {
     if (BASIC_POS_FEATURES.has(key)) return allowedResolution(status, key, "fallback_policy", "Modo emergencia: la venta básica sigue disponible, funciones avanzadas quedan bloqueadas.");

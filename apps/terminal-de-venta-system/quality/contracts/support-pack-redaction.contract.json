@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "id": "CONTRACT_SUPPORT_PACK_REDACTION",
+  "version": "1.0.0",
+  "title": "Support Pack Redaction",
+  "description": "Support packs must export useful diagnostics while excluding raw databases, PII, .env files, tokens, and secrets.",
+  "layer": "Support",
+  "defaultSeverity": "S1",
+  "blockingProfiles": [
+    "support-pack",
+    "client-readiness",
+    "pilot"
+  ],
+  "ownedByGate": "C4",
+  "requiredEvidenceTypes": [
+    "json",
+    "markdown",
+    "ledger"
+  ],
+  "failureExamples": [],
+  "phaseIntroduced": "customer-assurance-v1"
+}

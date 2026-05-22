@@ -481,3 +481,331 @@ body {
   color: var(--prisma-text-primary);
 }
 /* PRISMA_BLACK_VISUAL_REFINEMENT_01G::END */
+
+/* PRISMA_TABLET_COBRAR_GREEN_CSS_ONLY_04::START */
+/*
+ * CSS-only patch.
+ * Makes the Tablet cobrar / checkout CTAs green without touching JSX, payment logic, DB, sync, license, Prisma, or backend.
+ * Verified targets:
+ * - checkout-screen: button[data-prisma-component="CheckoutButton"][aria-label="Confirmar cobro"]
+ * - pos-payment-panel: button[data-prisma-zone="tablet-checkout-confirm-action"]
+ * - pos-ticket-panel: button[data-prisma-zone="tablet-pos-cobrar-cta"]
+ * - prisma-dark-pos demo: button[class*="chargeButton"]
+ */
+:root {
+  --prisma-charge-green: #13b86a;
+  --prisma-charge-green-mid: #0fa85f;
+  --prisma-charge-green-deep: #087a3e;
+  --prisma-charge-green-ink: #ffffff;
+  --prisma-charge-green-border: rgba(205, 255, 225, 0.78);
+  --prisma-charge-green-glow: rgba(19, 184, 106, 0.34);
+  --prisma-charge-green-glow-strong: rgba(58, 237, 154, 0.42);
+}
+
+button[data-prisma-component="CheckoutButton"][aria-label="Confirmar cobro"],
+button[data-prisma-zone="tablet-checkout-confirm-action"],
+button[data-prisma-zone="tablet-pos-cobrar-cta"],
+button[class*="chargeButton"] {
+  color: var(--prisma-charge-green-ink) !important;
+  border-color: var(--prisma-charge-green-border) !important;
+  background:
+    radial-gradient(circle at 18% 8%, rgba(255, 255, 255, 0.54), transparent 30%),
+    radial-gradient(circle at 86% 14%, rgba(169, 255, 211, 0.24), transparent 28%),
+    linear-gradient(145deg, rgba(91, 238, 159, 0.98), var(--prisma-charge-green-mid) 48%, var(--prisma-charge-green-deep) 100%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.62),
+    inset 0 -1px 0 rgba(2, 92, 48, 0.28),
+    0 18px 38px rgba(6, 130, 72, 0.30),
+    0 0 34px var(--prisma-charge-green-glow) !important;
+  text-shadow: 0 1px 12px rgba(0, 72, 34, 0.28) !important;
+  transform-origin: center !important;
+  transition:
+    transform 180ms cubic-bezier(.2,.8,.2,1),
+    box-shadow 180ms cubic-bezier(.2,.8,.2,1),
+    border-color 160ms ease,
+    filter 180ms ease !important;
+}
+
+button[data-prisma-component="CheckoutButton"][aria-label="Confirmar cobro"]:hover,
+button[data-prisma-zone="tablet-checkout-confirm-action"]:hover,
+button[data-prisma-zone="tablet-pos-cobrar-cta"]:hover,
+button[class*="chargeButton"]:hover {
+  transform: translateY(-2px) scale(1.01) !important;
+  border-color: rgba(230, 255, 240, 0.94) !important;
+  filter: saturate(1.08) brightness(1.02) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    inset 0 -1px 0 rgba(2, 92, 48, 0.22),
+    0 22px 44px rgba(6, 130, 72, 0.38),
+    0 0 44px var(--prisma-charge-green-glow-strong) !important;
+}
+
+button[data-prisma-component="CheckoutButton"][aria-label="Confirmar cobro"]:active,
+button[data-prisma-zone="tablet-checkout-confirm-action"]:active,
+button[data-prisma-zone="tablet-pos-cobrar-cta"]:active,
+button[class*="chargeButton"]:active {
+  transform: translateY(1px) scale(0.992) !important;
+  filter: saturate(0.98) brightness(0.98) !important;
+}
+
+button[data-prisma-component="CheckoutButton"][aria-label="Confirmar cobro"]:focus-visible,
+button[data-prisma-zone="tablet-checkout-confirm-action"]:focus-visible,
+button[data-prisma-zone="tablet-pos-cobrar-cta"]:focus-visible,
+button[class*="chargeButton"]:focus-visible {
+  outline: none !important;
+  box-shadow:
+    0 0 0 4px rgba(19, 184, 106, 0.18),
+    0 0 0 1px rgba(6, 130, 72, 0.72),
+    0 20px 42px rgba(6, 130, 72, 0.34),
+    0 0 38px var(--prisma-charge-green-glow) !important;
+}
+
+button[data-prisma-component="CheckoutButton"][aria-label="Confirmar cobro"]:disabled,
+button[data-prisma-zone="tablet-checkout-confirm-action"]:disabled,
+button[data-prisma-zone="tablet-pos-cobrar-cta"]:disabled,
+button[class*="chargeButton"]:disabled,
+button[data-prisma-zone="tablet-pos-cobrar-cta"][aria-disabled="true"] {
+  opacity: 0.52 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  filter: grayscale(0.18) saturate(0.82) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    0 8px 20px rgba(6, 130, 72, 0.12) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button[data-prisma-component="CheckoutButton"][aria-label="Confirmar cobro"],
+  button[data-prisma-zone="tablet-checkout-confirm-action"],
+  button[data-prisma-zone="tablet-pos-cobrar-cta"],
+  button[class*="chargeButton"] {
+    transition-duration: 0.01ms !important;
+  }
+
+  button[data-prisma-component="CheckoutButton"][aria-label="Confirmar cobro"]:hover,
+  button[data-prisma-component="CheckoutButton"][aria-label="Confirmar cobro"]:active,
+  button[data-prisma-zone="tablet-checkout-confirm-action"]:hover,
+  button[data-prisma-zone="tablet-checkout-confirm-action"]:active,
+  button[data-prisma-zone="tablet-pos-cobrar-cta"]:hover,
+  button[data-prisma-zone="tablet-pos-cobrar-cta"]:active,
+  button[class*="chargeButton"]:hover,
+  button[class*="chargeButton"]:active {
+    transform: none !important;
+  }
+}
+/* PRISMA_TABLET_COBRAR_GREEN_CSS_ONLY_04::END */
+
+/* PRISMA_TABLET_HOME_LIVING_CRYSTAL_09A_GLOBALS::START */
+:root {
+  --prisma-living-bg-1: #f6f9ff;
+  --prisma-living-bg-2: #eef4ff;
+  --prisma-living-bg-3: #edf6ff;
+  --prisma-living-blue: rgba(62, 122, 255, 0.18);
+  --prisma-living-cyan: rgba(63, 210, 255, 0.11);
+  --prisma-living-mint: rgba(79, 240, 182, 0.14);
+  --prisma-living-violet: rgba(123, 122, 255, 0.10);
+  --prisma-living-shadow: 0 14px 32px rgba(89, 120, 168, 0.10);
+  --prisma-living-shadow-tight: 0 8px 20px rgba(102, 132, 178, 0.10);
+  --prisma-living-border: rgba(196, 214, 240, 0.84);
+  --prisma-living-border-strong: rgba(154, 196, 244, 0.95);
+  --prisma-living-glass: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(246,250,255,0.46));
+  --prisma-living-glass-strong: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(243,248,255,0.56));
+  --prisma-living-sheen: linear-gradient(120deg, rgba(255,255,255,0.72), rgba(255,255,255,0.16) 38%, rgba(255,255,255,0) 64%);
+  --prisma-living-grid: rgba(129, 157, 195, 0.08);
+  --prisma-living-text-soft: #54657f;
+  --prisma-living-text-strong: #0f1735;
+  --prisma-living-success: #15a06b;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body {
+  position: relative;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 10% 15%, rgba(90, 150, 255, 0.18), transparent 20%),
+    radial-gradient(circle at 84% 12%, rgba(71, 224, 189, 0.12), transparent 18%),
+    radial-gradient(circle at 82% 78%, rgba(132, 162, 255, 0.10), transparent 24%),
+    linear-gradient(180deg, var(--prisma-living-bg-1) 0%, var(--prisma-living-bg-2) 45%, #eaf1fb 100%);
+  background-attachment: fixed;
+  color: var(--prisma-living-text-strong);
+  isolation: isolate;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::before,
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::before {
+  background:
+    radial-gradient(circle at 18% 18%, rgba(70, 130, 255, 0.20), transparent 18%),
+    radial-gradient(circle at 72% 16%, rgba(88, 247, 190, 0.16), transparent 16%),
+    radial-gradient(circle at 62% 74%, rgba(151, 145, 255, 0.10), transparent 18%),
+    radial-gradient(circle at 26% 78%, rgba(101, 206, 255, 0.12), transparent 16%);
+  filter: blur(58px);
+  opacity: 0.92;
+  animation: prisma-living-aurora 30s ease-in-out infinite alternate;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::after {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0)),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 74px,
+      rgba(129, 157, 195, 0.045) 74px 75px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 74px,
+      rgba(129, 157, 195, 0.035) 74px 75px
+    );
+  opacity: 0.62;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.82), rgba(0,0,0,0.32));
+  animation: prisma-living-grid-drift 46s linear infinite;
+}
+
+@keyframes prisma-living-aurora {
+  0% {
+    transform: translate3d(-1.4%, -1.1%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(1.2%, 0.8%, 0) scale(1.04);
+  }
+  100% {
+    transform: translate3d(-0.8%, 1.4%, 0) scale(1.02);
+  }
+}
+
+@keyframes prisma-living-grid-drift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(14px, 10px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::before,
+  html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::after {
+    animation: none !important;
+  }
+}
+/* PRISMA_TABLET_HOME_LIVING_CRYSTAL_09A_GLOBALS::END */
+
+/* PRISMA_TABLET_DEBOX_LIVING_CRYSTAL_09B::GLOBALS_START */
+/*
+ * 09B Debox pass.
+ * Moves Tablet light surfaces away from pure black text and hard nested rectangles.
+ * This is intentionally CSS-only: no TSX, no routing, no business logic.
+ */
+html[data-prisma-skin="light"] {
+  --prisma-ink-strong: #233044;
+  --prisma-ink-main: #2d394d;
+  --prisma-ink-soft: #536176;
+  --prisma-ink-muted: #6b7890;
+  --prisma-blue-title: #176df2;
+  --prisma-blue-title-deep: #1059d6;
+  --prisma-blue-soft: rgba(23, 109, 242, 0.12);
+  --prisma-blue-line: rgba(132, 180, 246, 0.64);
+  --prisma-glass-open: rgba(255, 255, 255, 0.36);
+  --prisma-glass-open-strong: rgba(255, 255, 255, 0.54);
+  --prisma-glass-hairline: rgba(190, 212, 242, 0.68);
+  --prisma-glass-hairline-soft: rgba(205, 221, 244, 0.42);
+  --prisma-floating-shadow: 0 10px 24px rgba(92, 125, 172, 0.085);
+  --prisma-floating-shadow-hover: 0 14px 30px rgba(92, 125, 172, 0.13);
+  --prisma-text-primary: var(--prisma-ink-strong);
+  --prisma-text-secondary: var(--prisma-ink-soft);
+  --prisma-text-muted: var(--prisma-ink-muted);
+}
+
+html[data-prisma-skin="light"] body {
+  color: var(--prisma-ink-main);
+}
+
+html[data-prisma-skin="light"] :where(h1, h2, h3, h4, h5, h6) {
+  color: var(--prisma-ink-strong);
+}
+
+html[data-prisma-skin="light"] :where(p, small, li, dt, dd, label, input, textarea, select) {
+  color: var(--prisma-ink-soft);
+}
+
+html[data-prisma-skin="light"] ::selection {
+  color: #ffffff;
+  background: rgba(23, 109, 242, 0.72);
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::before {
+  opacity: 0.72 !important;
+  filter: blur(64px) saturate(1.08) !important;
+}
+
+html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] body::after {
+  opacity: 0.38 !important;
+}
+/* PRISMA_TABLET_DEBOX_LIVING_CRYSTAL_09B::GLOBALS_END */
+
+/* PRISMA_TABLET_DEBOX_LIVING_CRYSTAL_09C::GLOBALS_START */
+/* 09C: debox + runtime strip horizontal + estado/alertas sin caja madre + botones cobalt liquid */
+html[data-prisma-skin="light"] {
+  --prisma-ink-strong: #243247;
+  --prisma-ink-main: #2f3d52;
+  --prisma-ink-soft: #5c6b82;
+  --prisma-ink-muted: #73819a;
+
+  --prisma-title-blue: #176cf2;
+  --prisma-title-blue-deep: #0f58da;
+
+  --prisma-cobalt-hi: #72c3ff;
+  --prisma-cobalt-mid: #2f88ff;
+  --prisma-cobalt-low: #1658db;
+  --prisma-cobalt-edge: rgba(109, 178, 255, 0.82);
+  --prisma-cobalt-edge-soft: rgba(166, 207, 255, 0.72);
+  --prisma-cobalt-shadow: 0 16px 34px rgba(35, 95, 224, 0.24);
+  --prisma-cobalt-shadow-hover: 0 20px 42px rgba(35, 95, 224, 0.32);
+
+  --prisma-frost-border: rgba(188, 213, 244, 0.82);
+  --prisma-frost-border-soft: rgba(203, 221, 246, 0.56);
+  --prisma-frost-surface: linear-gradient(180deg, rgba(255,255,255,0.56), rgba(246,250,255,0.28));
+  --prisma-frost-surface-strong: linear-gradient(180deg, rgba(255,255,255,0.64), rgba(244,248,255,0.34));
+  --prisma-frost-shadow: 0 10px 22px rgba(96, 126, 171, 0.08);
+  --prisma-frost-shadow-hover: 0 14px 28px rgba(96, 126, 171, 0.12);
+}
+
+html[data-prisma-skin="light"] body {
+  color: var(--prisma-ink-main);
+}
+
+html[data-prisma-skin="light"] :where(h1, h2, h3, h4, h5, h6) {
+  color: var(--prisma-ink-strong);
+}
+
+html[data-prisma-skin="light"] :where(p, small, li, dt, dd, label, input, textarea, select) {
+  color: var(--prisma-ink-soft);
+}
+
+html[data-prisma-skin="light"] ::selection {
+  color: #ffffff;
+  background: rgba(23, 108, 242, 0.74);
+}
+/* PRISMA_TABLET_DEBOX_LIVING_CRYSTAL_09C::GLOBALS_END */
+
+/* PRISMA_TABLET_HOME_RUNTIME_LOGO_BUTTONS_09D::TOKENS_START */
+html[data-prisma-skin="light"] {
+  --prisma-ink-strong: #243247;
+  --prisma-ink-main: #2f3d52;
+  --prisma-ink-soft: #5c6b82;
+  --prisma-ink-muted: #73819a;
+  --prisma-title-blue: #176cf2;
+  --prisma-title-blue-deep: #0f58da;
+  --prisma-cobalt-hi: #72c3ff;
+  --prisma-cobalt-mid: #2f88ff;
+  --prisma-cobalt-low: #1658db;
+  --prisma-cobalt-edge: rgba(109, 178, 255, 0.82);
+}
+/* PRISMA_TABLET_HOME_RUNTIME_LOGO_BUTTONS_09D::TOKENS_END */

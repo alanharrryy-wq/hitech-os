@@ -620,3 +620,1027 @@
   .toolCard:focus-visible { transform: none !important; }
 }
 /* PRISMA_TABLET_FLOW_CLARITY_05A_HOME_MAP::END */
+
+/* PRISMA_TABLET_HOME_EMERALD_IDLE_SWEEP_CTA_04::START */
+/*
+ * Emerald glass CTA, quiet mode.
+ * Base state: no neon cloud, only clean crystal and emerald hairline.
+ * Idle state: quick subtle emerald sweep.
+ * Hover/focus: premium gaussian neon returns.
+ * Scope: Tablet Home hero primary action only.
+ * CSS-only. No JSX, no payment logic, no sales logic, no DB, no Prisma, no sync, no backend.
+ */
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions .primaryButton {
+  --prisma-emerald-crystal-edge: rgba(88, 220, 157, 0.72);
+  --prisma-emerald-crystal-edge-hover: rgba(135, 255, 200, 0.96);
+  --prisma-emerald-crystal-text: #087a4f;
+  --prisma-emerald-crystal-text-hover: #045c3b;
+  --prisma-emerald-crystal-sweep: rgba(72, 244, 166, 0.36);
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: var(--prisma-emerald-crystal-text) !important;
+  -webkit-text-fill-color: var(--prisma-emerald-crystal-text) !important;
+  font-weight: 720 !important;
+  letter-spacing: -0.01em !important;
+  border: 1px solid var(--prisma-emerald-crystal-edge) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.70), rgba(255, 255, 255, 0.36) 45%, rgba(231, 255, 246, 0.18) 100%),
+    radial-gradient(circle at 18% 10%, rgba(255, 255, 255, 0.58), transparent 28%),
+    radial-gradient(circle at 86% 18%, rgba(112, 255, 190, 0.11), transparent 34%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.34), rgba(233, 255, 250, 0.10)),
+    rgba(248, 255, 252, 0.20) !important;
+  backdrop-filter: blur(22px) saturate(1.08) brightness(1.035) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(1.08) brightness(1.035) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.84),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.26),
+    inset 0 -1px 0 rgba(71, 222, 155, 0.10),
+    0 0 0 1px rgba(88, 220, 157, 0.10),
+    0 7px 18px rgba(18, 90, 64, 0.055) !important;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.78),
+    0 0 9px rgba(255, 255, 255, 0.30) !important;
+  transform-origin: center !important;
+  transition:
+    transform 190ms cubic-bezier(.2,.8,.2,1),
+    color 190ms ease,
+    box-shadow 210ms cubic-bezier(.2,.8,.2,1),
+    border-color 190ms ease,
+    background 190ms ease,
+    filter 190ms ease !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions .primaryButton::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(110deg, rgba(255, 255, 255, 0.60), transparent 27%, transparent 71%, rgba(143, 255, 209, 0.12)),
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.50), transparent 44%);
+  opacity: 0.74;
+  mix-blend-mode: screen;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions .primaryButton::after {
+  content: "";
+  position: absolute;
+  inset: -52% -32%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(112deg, transparent 37%, rgba(255, 255, 255, 0.34) 47%, var(--prisma-emerald-crystal-sweep) 50%, transparent 62%);
+  opacity: 0;
+  transform: translateX(-82%) rotate(8deg);
+  animation: prismaEmeraldCtaIdleSweep 5.8s cubic-bezier(.2,.8,.2,1) infinite;
+}
+
+@keyframes prismaEmeraldCtaIdleSweep {
+  0%, 64%, 100% {
+    opacity: 0;
+    transform: translateX(-82%) rotate(8deg);
+  }
+  70% {
+    opacity: 0.42;
+  }
+  80% {
+    opacity: 0.26;
+    transform: translateX(72%) rotate(8deg);
+  }
+  88% {
+    opacity: 0;
+    transform: translateX(92%) rotate(8deg);
+  }
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions .primaryButton:hover {
+  color: var(--prisma-emerald-crystal-text-hover) !important;
+  -webkit-text-fill-color: var(--prisma-emerald-crystal-text-hover) !important;
+  transform: translateY(-2px) scale(1.012) !important;
+  border-color: var(--prisma-emerald-crystal-edge-hover) !important;
+  filter: brightness(1.04) saturate(1.07) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.40) 45%, rgba(226, 255, 244, 0.20) 100%),
+    radial-gradient(circle at 18% 10%, rgba(255, 255, 255, 0.66), transparent 30%),
+    radial-gradient(circle at 86% 18%, rgba(112, 255, 190, 0.21), transparent 35%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.40), rgba(233, 255, 250, 0.15)),
+    rgba(248, 255, 252, 0.27) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.34),
+    inset 0 -1px 0 rgba(76, 255, 176, 0.18),
+    0 0 0 1px rgba(187, 255, 225, 0.18),
+    0 10px 24px rgba(18, 120, 76, 0.12),
+    0 0 28px rgba(42, 255, 157, 0.32),
+    0 0 62px rgba(61, 255, 169, 0.22),
+    0 24px 78px rgba(39, 205, 138, 0.18) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions .primaryButton:hover::after {
+  opacity: 0.64;
+  animation: none;
+  transform: translateX(58%) rotate(8deg);
+  transition: transform 720ms cubic-bezier(.2,.8,.2,1), opacity 220ms ease;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions .primaryButton:active {
+  transform: translateY(1px) scale(0.992) !important;
+  filter: brightness(0.995) saturate(0.98) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.58),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(76, 255, 176, 0.10),
+    0 0 0 1px rgba(126, 255, 195, 0.10),
+    0 4px 14px rgba(18, 120, 76, 0.08),
+    0 0 15px rgba(42, 255, 157, 0.16) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions .primaryButton:focus-visible {
+  outline: none !important;
+  border-color: rgba(218, 255, 238, 1) !important;
+  box-shadow:
+    0 0 0 4px rgba(76, 255, 170, 0.14),
+    0 0 0 1px rgba(7, 122, 70, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.28),
+    0 0 26px rgba(42, 255, 157, 0.25),
+    0 0 64px rgba(39, 205, 138, 0.18) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions .primaryButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions .primaryButton::after,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions .primaryButton:hover,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions .primaryButton:active {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+/* PRISMA_TABLET_HOME_EMERALD_IDLE_SWEEP_CTA_04::END */
+
+/* PRISMA_TABLET_HOME_LIVING_CRYSTAL_09A_HOME::START */
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .homeShell {
+  gap: 22px;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroMain,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroAside,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checklistCard {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(193, 214, 241, 0.88);
+  background: var(--prisma-living-glass);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.86),
+    0 14px 32px rgba(106, 134, 177, 0.10);
+  backdrop-filter: blur(22px) saturate(1.2);
+  -webkit-backdrop-filter: blur(22px) saturate(1.2);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroMain::before {
+  background: radial-gradient(circle, rgba(54, 118, 255, 0.14), transparent 62%);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroMain::after,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroAside::before,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard::before,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionCard::before,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--prisma-living-sheen);
+  opacity: 0.28;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCopy span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowHeader span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard span {
+  color: #1f63f2;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCopy h2 {
+  color: #0e1735;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCopy p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowHeader p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard small,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionCard p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertCard p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolCard small,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep small {
+  color: var(--prisma-living-text-soft);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions {
+  gap: 12px;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton {
+  position: relative;
+  overflow: hidden;
+  min-height: 50px;
+  border-radius: 18px;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton::before,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(120deg, rgba(255,255,255,0.64), rgba(255,255,255,0.10) 44%, rgba(255,255,255,0) 70%);
+  opacity: 0.52;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton {
+  color: #0d7b50 !important;
+  border: 1px solid rgba(108, 241, 191, 0.82) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.72), rgba(243,252,247,0.84)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.92),
+    0 8px 18px rgba(89, 175, 137, 0.10) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:focus-visible {
+  transform: translateY(-1px);
+  color: #0c8d5b !important;
+  border-color: rgba(88, 238, 178, 0.98) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.94),
+    0 0 0 1px rgba(109, 241, 191, 0.22),
+    0 8px 16px rgba(112, 202, 159, 0.10),
+    0 0 18px rgba(109, 241, 191, 0.28) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton {
+  color: #122040 !important;
+  border-color: rgba(198, 214, 241, 0.88) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.68), rgba(245,249,255,0.78)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    0 8px 18px rgba(104, 131, 173, 0.08) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(165, 204, 248, 0.94) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.94),
+    0 10px 20px rgba(104, 131, 173, 0.10) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .readinessItem,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertItem {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(200, 217, 241, 0.84);
+  background: linear-gradient(180deg, rgba(255,255,255,0.54), rgba(246,249,255,0.34));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.86);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .readyDot {
+  background: #15a06b;
+  box-shadow:
+    0 0 0 5px rgba(21, 160, 107, 0.14),
+    0 0 14px rgba(21, 160, 107, 0.16);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .warnDot {
+  background: #f0a126;
+  box-shadow:
+    0 0 0 5px rgba(240, 161, 38, 0.12),
+    0 0 12px rgba(240, 161, 38, 0.14);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard {
+  min-height: 134px;
+  border-radius: 24px;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard strong {
+  color: #1d5de1;
+  letter-spacing: -0.03em;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowPanel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolPanel {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowHeader {
+  margin-bottom: 14px;
+  align-items: flex-end;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowHeader h3 {
+  color: #101937;
+  letter-spacing: -0.025em;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowSteps {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolCard {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(194, 214, 241, 0.90);
+  background: var(--prisma-living-glass);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.88),
+    0 12px 28px rgba(106, 134, 177, 0.10);
+  backdrop-filter: blur(22px) saturate(1.2);
+  -webkit-backdrop-filter: blur(22px) saturate(1.2);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep::before,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(130deg, rgba(255,255,255,0.72), rgba(255,255,255,0.16) 42%, rgba(255,255,255,0) 70%);
+  opacity: 0.34;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep::after {
+  content: "";
+  position: absolute;
+  inset: auto auto -12px -12px;
+  width: 88px;
+  height: 88px;
+  border-radius: 999px;
+  opacity: 0.22;
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep > strong {
+  position: relative;
+  z-index: 1;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255,255,255,0.74);
+  color: #ffffff;
+  background: linear-gradient(180deg, rgba(117,178,255,0.98), rgba(45,108,228,0.98));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.34),
+    0 10px 18px rgba(70, 120, 220, 0.20);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep:nth-child(1) > strong {
+  background: linear-gradient(180deg, rgba(102,176,255,0.98), rgba(33,108,234,0.98));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.34), 0 10px 18px rgba(33,108,234,0.22);
+}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep:nth-child(1)::after {
+  background: rgba(50, 119, 248, 0.42);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep:nth-child(2) > strong {
+  background: linear-gradient(180deg, rgba(84,232,213,0.98), rgba(21,170,174,0.98));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.34), 0 10px 18px rgba(21,170,174,0.22);
+}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep:nth-child(2)::after {
+  background: rgba(46, 207, 189, 0.38);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep:nth-child(3) > strong {
+  background: linear-gradient(180deg, rgba(147,153,255,0.98), rgba(92,95,225,0.98));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.34), 0 10px 18px rgba(92,95,225,0.22);
+}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep:nth-child(3)::after {
+  background: rgba(111, 107, 236, 0.34);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep:nth-child(4) > strong {
+  background: linear-gradient(180deg, rgba(88,224,171,0.98), rgba(14,166,104,0.98));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.34), 0 10px 18px rgba(14,166,104,0.22);
+}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep:nth-child(4)::after {
+  background: rgba(41, 196, 130, 0.36);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolCard:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolCard:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(156, 201, 246, 0.98);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.92),
+    0 16px 30px rgba(104, 132, 176, 0.14);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep b,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolCard b {
+  color: #101937;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep em,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolCard em {
+  color: #1d5de1;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolGrid {
+  gap: 14px;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionCard span {
+  color: #ffffff;
+  background: linear-gradient(180deg, rgba(77,144,255,0.96), rgba(24,99,235,0.98));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.34),
+    0 8px 18px rgba(39, 99, 223, 0.18);
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionCard:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertCard:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroMain:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroAside:hover {
+  transform: translateY(-2px);
+  border-color: rgba(156, 201, 246, 0.96);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.90),
+    0 16px 30px rgba(104, 132, 176, 0.14);
+}
+
+@media (max-width: 1180px) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowSteps,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowSteps,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroMain,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroAside,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertCard,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep,
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolCard {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+/* PRISMA_TABLET_HOME_LIVING_CRYSTAL_09A_HOME::END */
+
+/* PRISMA_TABLET_DEBOX_LIVING_CRYSTAL_09B::HOME_START */
+/* Deboxes Home: hero floats, right status loses parent box, text moves to blue/graphite. */
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .homeShell {
+  gap: 22px !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero {
+  gap: 22px !important;
+  align-items: center !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroMain {
+  min-height: 254px !important;
+  padding: clamp(20px, 2.4vw, 34px) clamp(20px, 2.9vw, 42px) !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroMain::before {
+  inset: 4% auto auto -4% !important;
+  width: 72% !important;
+  max-width: 720px !important;
+  height: 82% !important;
+  border-radius: 999px !important;
+  background:
+    radial-gradient(circle at 25% 42%, rgba(255,255,255,0.62), transparent 35%),
+    radial-gradient(circle at 40% 48%, rgba(111, 169, 255, 0.16), transparent 58%),
+    radial-gradient(circle at 68% 58%, rgba(88, 240, 190, 0.08), transparent 62%) !important;
+  filter: blur(26px) !important;
+  opacity: 0.92 !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroMain::after {
+  display: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCopy span {
+  color: var(--prisma-blue-title) !important;
+  letter-spacing: 0.16em !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCopy h2 {
+  color: var(--prisma-ink-strong) !important;
+  letter-spacing: -0.052em !important;
+  text-shadow: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCopy p {
+  color: var(--prisma-ink-soft) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroAside {
+  padding: 0 !important;
+  gap: 10px !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroAside::before {
+  display: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .readinessItem {
+  min-height: 58px !important;
+  border: 1px solid rgba(192, 214, 242, 0.78) !important;
+  border-radius: 19px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.58), rgba(246,250,255,0.31)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.84),
+    0 8px 18px rgba(99, 129, 176, 0.07) !important;
+  backdrop-filter: blur(20px) saturate(1.14) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.14) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .readinessItem strong {
+  color: var(--prisma-ink-strong) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .readinessItem span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .readinessItem span span {
+  color: var(--prisma-ink-soft) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricGrid {
+  gap: 14px !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard {
+  border-color: transparent !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.42), rgba(246,250,255,0.22)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.66),
+    0 8px 18px rgba(99, 129, 176, 0.055) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard::before {
+  opacity: 0.18 !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard span {
+  color: #5e7089 !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .metricCard strong {
+  color: var(--prisma-blue-title-deep) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowHeader span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolPanel .workflowHeader span {
+  color: var(--prisma-blue-title) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowHeader h3,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolPanel .workflowHeader h3 {
+  color: var(--prisma-ink-strong) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowHeader p {
+  color: var(--prisma-ink-soft) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowPanel,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolPanel {
+  margin-top: 2px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolCard {
+  border-color: rgba(196, 216, 243, 0.76) !important;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,0.64), transparent 36%),
+    linear-gradient(180deg, rgba(255,255,255,0.50), rgba(246,250,255,0.28)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.84),
+    0 8px 20px rgba(97, 126, 172, 0.075) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep:focus-visible,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolCard:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolCard:focus-visible {
+  border-color: rgba(151, 199, 250, 0.92) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.90),
+    0 12px 24px rgba(92, 124, 174, 0.11) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep b,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolCard b {
+  color: var(--prisma-ink-strong) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep small,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolCard small {
+  color: var(--prisma-ink-soft) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowStep em,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .toolCard em {
+  color: var(--prisma-blue-title-deep) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertCard,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checklistCard {
+  border-color: rgba(196, 216, 243, 0.58) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.48), rgba(246,250,255,0.26)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.74),
+    0 8px 20px rgba(97, 126, 172, 0.07) !important;
+}
+
+@media (max-width: 1180px) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero {
+    grid-template-columns: 1fr !important;
+  }
+
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroAside {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 720px) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroAside {
+    grid-template-columns: 1fr !important;
+  }
+}
+/* PRISMA_TABLET_DEBOX_LIVING_CRYSTAL_09B::HOME_END */
+
+/* PRISMA_TABLET_DEBOX_LIVING_CRYSTAL_09C::HOME_START */
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroMain {
+  min-height: 244px !important;
+  padding: clamp(18px, 2.4vw, 34px) clamp(18px, 2.8vw, 42px) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroMain::after {
+  display: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroMain::before {
+  inset: 4% auto auto -4% !important;
+  width: 74% !important;
+  height: 84% !important;
+  max-width: 740px !important;
+  border-radius: 999px !important;
+  background:
+    radial-gradient(circle at 26% 44%, rgba(255,255,255,0.66), transparent 34%),
+    radial-gradient(circle at 44% 54%, rgba(107, 167, 255, 0.16), transparent 58%),
+    radial-gradient(circle at 69% 62%, rgba(92, 240, 195, 0.08), transparent 64%) !important;
+  filter: blur(28px) !important;
+  opacity: 0.95 !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCopy span {
+  color: var(--prisma-title-blue) !important;
+  letter-spacing: 0.16em !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCopy h2 {
+  color: var(--prisma-ink-strong) !important;
+  letter-spacing: -0.05em !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCopy p {
+  color: var(--prisma-ink-soft) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroAside {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroAside::before {
+  display: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .readinessItem {
+  min-height: auto !important;
+  padding: 0 14px 0 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  grid-template-columns: auto auto !important;
+  gap: 7px !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .readinessItem strong {
+  color: var(--prisma-ink-strong) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .readinessItem span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .readinessItem span span {
+  color: var(--prisma-ink-soft) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .readyDot,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .warnDot {
+  width: 9px !important;
+  height: 9px !important;
+  margin-top: 2px !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .readyDot {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--prisma-success) 15%, transparent) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .warnDot {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--prisma-warning) 16%, transparent) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton {
+  color: #ffffff !important;
+  border: 1px solid var(--prisma-cobalt-edge) !important;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255,255,255,0.42), transparent 34%),
+    linear-gradient(180deg, var(--prisma-cobalt-hi), var(--prisma-cobalt-mid) 56%, var(--prisma-cobalt-low)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.48),
+    inset 0 -10px 18px rgba(0,0,0,0.08),
+    var(--prisma-cobalt-shadow) !important;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.10) !important;
+  letter-spacing: 0.01em !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:focus-visible {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.52),
+    inset 0 -10px 18px rgba(0,0,0,0.08),
+    var(--prisma-cobalt-shadow-hover) !important;
+  transform: translateY(-1px) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton {
+  color: var(--prisma-ink-strong) !important;
+  border: 1px solid var(--prisma-frost-border) !important;
+  background: var(--prisma-frost-surface-strong) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.86),
+    var(--prisma-frost-shadow) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton:focus-visible {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.90),
+    var(--prisma-frost-shadow-hover) !important;
+  transform: translateY(-1px) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertCard {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertCard h3 {
+  color: var(--prisma-ink-strong) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertCard p {
+  color: var(--prisma-ink-soft) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertItem,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyAlert {
+  border: 1px solid var(--prisma-frost-border-soft) !important;
+  border-radius: 16px !important;
+  background: var(--prisma-frost-surface) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.84),
+    var(--prisma-frost-shadow) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertItem strong {
+  color: var(--prisma-ink-strong) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertItem p {
+  color: var(--prisma-ink-soft) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertItem a {
+  color: var(--prisma-title-blue-deep) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyAlert {
+  color: #0f8b64 !important;
+  background:
+    linear-gradient(180deg, rgba(239,255,249,0.90), rgba(236,248,245,0.68)) !important;
+  border-color: rgba(161, 223, 198, 0.70) !important;
+}
+
+@media (max-width: 1180px) {
+  :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroAside {
+    gap: 8px !important;
+  }
+}
+/* PRISMA_TABLET_DEBOX_LIVING_CRYSTAL_09C::HOME_END */
+
+/* PRISMA_TABLET_HOME_RUNTIME_LOGO_BUTTONS_09D::HOME_START */
+/* Home: remove vertical readiness duplicate and keep hero editorial. */
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .hero {
+  grid-template-columns: 1fr !important;
+  gap: 18px !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroAside {
+  display: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroMain {
+  min-height: 236px !important;
+  padding: clamp(20px, 2.8vw, 42px) clamp(20px, 3.6vw, 56px) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroMain::after {
+  display: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroMain::before {
+  inset: 2% auto auto -3% !important;
+  width: 74% !important;
+  height: 86% !important;
+  max-width: 780px !important;
+  border-radius: 999px !important;
+  background:
+    radial-gradient(circle at 25% 43%, rgba(255,255,255,0.68), transparent 34%),
+    radial-gradient(circle at 42% 54%, rgba(107,167,255,0.16), transparent 58%),
+    radial-gradient(circle at 68% 62%, rgba(92,240,195,0.08), transparent 64%) !important;
+  filter: blur(30px) !important;
+  opacity: 0.98 !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCopy span,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowHeader span {
+  color: var(--prisma-title-blue, #176cf2) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCopy h2,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowHeader h3,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionCard h3,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertCard h3,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .checklistCard h3 {
+  color: var(--prisma-ink-strong, #243247) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroCopy p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .workflowHeader p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .actionCard p,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertCard p {
+  color: var(--prisma-ink-soft, #5c6b82) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton {
+  color: #ffffff !important;
+  border: 1px solid var(--prisma-cobalt-edge, rgba(109,178,255,0.82)) !important;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255,255,255,0.42), transparent 34%),
+    linear-gradient(180deg, var(--prisma-cobalt-hi, #72c3ff), var(--prisma-cobalt-mid, #2f88ff) 56%, var(--prisma-cobalt-low, #1658db)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.48),
+    inset 0 -10px 18px rgba(0,0,0,0.08),
+    0 16px 34px rgba(35,95,224,0.24) !important;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.10) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:hover,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .primaryButton:focus-visible {
+  transform: translateY(-1px) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.52),
+    inset 0 -10px 18px rgba(0,0,0,0.08),
+    0 20px 42px rgba(35,95,224,0.32) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .secondaryButton {
+  color: var(--prisma-ink-strong, #243247) !important;
+  border: 1px solid rgba(188, 213, 244, 0.82) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.64), rgba(244,248,255,0.34)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.86),
+    0 10px 22px rgba(96,126,171,0.08) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertCard {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .alertItem,
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyAlert {
+  border: 1px solid rgba(203, 221, 246, 0.56) !important;
+  border-radius: 16px !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.50), rgba(246,250,255,0.28)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.84),
+    0 10px 22px rgba(96,126,171,0.08) !important;
+  backdrop-filter: blur(18px) saturate(1.1) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.1) !important;
+}
+
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .emptyAlert {
+  color: #0f8b64 !important;
+  background: linear-gradient(180deg, rgba(239,255,249,0.90), rgba(236,248,245,0.68)) !important;
+  border-color: rgba(161, 223, 198, 0.70) !important;
+}
+/* PRISMA_TABLET_HOME_RUNTIME_LOGO_BUTTONS_09D::HOME_END */

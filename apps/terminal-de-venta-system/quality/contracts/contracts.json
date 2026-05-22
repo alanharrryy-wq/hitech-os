@@ -234,6 +234,135 @@
       ],
       "failureExamples": [],
       "phaseIntroduced": "phase-1"
+    },
+    {
+      "schemaVersion": "1.0",
+      "id": "CONTRACT_CUSTOMER_ASSURANCE",
+      "version": "1.0.0",
+      "title": "Customer Assurance",
+      "description": "PRISMA customer promotion must be installable, demo-safe, supportable, upgradeable, and evidence-backed without changing the operating rule.",
+      "layer": "Quality",
+      "defaultSeverity": "S1",
+      "blockingProfiles": [
+        "client-readiness",
+        "pilot"
+      ],
+      "ownedByGate": "C1",
+      "requiredEvidenceTypes": [
+        "json",
+        "markdown",
+        "ledger"
+      ],
+      "failureExamples": [],
+      "phaseIntroduced": "customer-assurance-v1"
+    },
+    {
+      "schemaVersion": "1.0",
+      "id": "CONTRACT_DEMO_SAFETY",
+      "version": "1.0.0",
+      "title": "Demo Safety",
+      "description": "Customer demos must not pollute production data, touch real DB resets, or claim live sync with fake/demo data.",
+      "layer": "Customer",
+      "defaultSeverity": "S1",
+      "blockingProfiles": [
+        "demo",
+        "client-readiness",
+        "pilot"
+      ],
+      "ownedByGate": "C2",
+      "requiredEvidenceTypes": [
+        "json",
+        "markdown",
+        "ledger"
+      ],
+      "failureExamples": [],
+      "phaseIntroduced": "customer-assurance-v1"
+    },
+    {
+      "schemaVersion": "1.0",
+      "id": "CONTRACT_SUPPORT_PACK_REDACTION",
+      "version": "1.0.0",
+      "title": "Support Pack Redaction",
+      "description": "Support packs must export useful diagnostics while excluding raw databases, PII, .env files, tokens, and secrets.",
+      "layer": "Support",
+      "defaultSeverity": "S1",
+      "blockingProfiles": [
+        "support-pack",
+        "client-readiness",
+        "pilot"
+      ],
+      "ownedByGate": "C4",
+      "requiredEvidenceTypes": [
+        "json",
+        "markdown",
+        "ledger"
+      ],
+      "failureExamples": [],
+      "phaseIntroduced": "customer-assurance-v1"
+    },
+    {
+      "schemaVersion": "1.0",
+      "id": "CONTRACT_CUSTOMER_UPGRADE_ROLLBACK",
+      "version": "1.0.0",
+      "title": "Customer Upgrade Rollback",
+      "description": "Customer upgrades must be backup-first, verifiable, and rollbackable, with real DB treated as inspect-only unless an explicit migration plan exists.",
+      "layer": "Release",
+      "defaultSeverity": "S1",
+      "blockingProfiles": [
+        "upgrade",
+        "client-readiness",
+        "pilot"
+      ],
+      "ownedByGate": "C5",
+      "requiredEvidenceTypes": [
+        "json",
+        "markdown",
+        "ledger"
+      ],
+      "failureExamples": [],
+      "phaseIntroduced": "customer-assurance-v1"
+    },
+    {
+      "schemaVersion": "1.0",
+      "id": "CONTRACT_OPERATIONAL_DRIFT_WATCHDOG",
+      "version": "1.0.0",
+      "title": "Operational Drift Watchdog",
+      "description": "Customer readiness runs must fingerprint critical files and compare with the previous green-capable baseline.",
+      "layer": "Quality",
+      "defaultSeverity": "S3",
+      "blockingProfiles": [
+        "watch",
+        "client-readiness",
+        "pilot"
+      ],
+      "ownedByGate": "C6",
+      "requiredEvidenceTypes": [
+        "json",
+        "ledger"
+      ],
+      "failureExamples": [],
+      "phaseIntroduced": "customer-assurance-v1"
+    },
+    {
+      "schemaVersion": "1.0",
+      "id": "CONTRACT_CUSTOMER_EVIDENCE_LEDGER",
+      "version": "1.0.0",
+      "title": "Customer Evidence Ledger",
+      "description": "Every customer-facing readiness claim must be backed by parseable evidence and a customer ledger summary.",
+      "layer": "Audit",
+      "defaultSeverity": "S1",
+      "blockingProfiles": [
+        "client-readiness",
+        "support-pack",
+        "pilot"
+      ],
+      "ownedByGate": "C7",
+      "requiredEvidenceTypes": [
+        "json",
+        "ledger"
+      ],
+      "failureExamples": [],
+      "phaseIntroduced": "customer-assurance-v1"
     }
   ]
 }

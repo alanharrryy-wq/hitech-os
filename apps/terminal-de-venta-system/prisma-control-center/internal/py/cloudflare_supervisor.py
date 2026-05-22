@@ -21,8 +21,8 @@ def _service_command(service_name: str, verb: str) -> dict[str, Any]:
         return {
             "command": script,
             "returnCode": completed.returncode,
-            "stdout": completed.stdout.strip(),
-            "stderr": completed.stderr.strip(),
+            "stdout": (completed.stdout or "").strip(),
+            "stderr": (completed.stderr or "").strip(),
             "ok": completed.returncode == 0,
         }
     except subprocess.TimeoutExpired:

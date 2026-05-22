@@ -4,11 +4,29 @@ import type { EitSiteModel } from "@/lib/eit-site-model";
 export function EitLandingPage({ model }: { model: EitSiteModel }) {
   return (
     <main className="shell">
+      <header className="brandbar" aria-label="PRISMA EIT brand">
+        <a className="brandmark" href="/" aria-label="PRISMA EIT inicio">
+          <img src="/prisma-mark.png" alt="" aria-hidden="true" />
+          <span>
+            <strong>PRISMA</strong>
+            <small>Executive Intelligence Terminal</small>
+          </span>
+        </a>
+        <span className="brand-status">Operational Knowledge OS</span>
+      </header>
+
       <section className="hero panel">
-        <p className="eyebrow">{model.eyebrow}</p>
-        <h1>{model.title}</h1>
-        <p className="subtitle">{model.subtitle}</p>
-        <div className="rule">{model.rule}</div>
+        <div className="hero-copy">
+          <p className="eyebrow">{model.eyebrow}</p>
+          <h1>{model.title}</h1>
+          <p className="subtitle">{model.subtitle}</p>
+          <div className="rule">{model.rule}</div>
+        </div>
+
+        <div className="logo-stage" aria-label="PRISMA logo">
+          <div className="logo-aura" />
+          <img src="/prisma-logo.png" alt="PRISMA" />
+        </div>
       </section>
 
       <section className="grid" aria-label="Pilares PRISMA EIT">

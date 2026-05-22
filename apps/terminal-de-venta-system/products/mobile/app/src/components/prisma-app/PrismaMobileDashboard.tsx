@@ -9,6 +9,7 @@ import type { PrismaMobileClientSnapshot } from "@/lib/prisma-app/prisma-mobile-
 import { buildPrismaMobileOperationsList, derivePrismaMobileHero, type PrismaMobileHealthTone } from "@/lib/prisma-app/prisma-mobile-view-model";
 import { PrismaMobilePremiumNavigator } from "./PrismaMobilePremiumNavigator";
 import { PrismaMobileCrystalCommand } from "./PrismaMobileCrystalCommand";
+import { PrismaMobileMultiContextSwitcher } from "./PrismaMobileMultiContextSwitcher";
 import styles from "./prisma-mobile-dashboard.module.css";
 
 type LoadState = "idle" | "loading" | "ready" | "refreshing" | "error";
@@ -183,6 +184,8 @@ export function PrismaMobileDashboard() {
               {readiness.label}
             </span>
           </div>
+
+          <PrismaMobileMultiContextSwitcher clientSnapshot={clientSnapshot} />
 
           <PrismaMobileCrystalCommand clientSnapshot={clientSnapshot} mode="home" />
 

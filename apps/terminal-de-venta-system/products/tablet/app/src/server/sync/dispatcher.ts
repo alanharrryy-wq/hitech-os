@@ -13,6 +13,8 @@ type PcDispatchEventResult = {
   remoteLedgerId?: string;
   conflictCode?: string | null;
   rejectionCode?: string | null;
+  conflicts?: Array<{ code?: string | null }>;
+  errors?: string[];
   diagnostics?: unknown;
   retryable?: boolean;
 };
@@ -23,6 +25,7 @@ type PcDispatchBatchResponse = {
   events?: PcDispatchEventResult[];
   summary?: unknown;
   diagnostics?: unknown;
+  data?: PcDispatchBatchResponse;
 };
 
 let inFlight = false;
@@ -47,12 +50,15 @@ function backoffDate(attempts: number) {
   return new Date(Date.now() + (seconds + jitter) * 1000);
 }
 
-async function loadPendingEvents(limit: number) {
+async function loadPendingEvents(limit: number, force = false) {
+  const where: any = force
+    ? { status: { in: ["pending", "failed"] } }
+    : {
+        status: { in: ["pending", "failed"] },
+        OR: [{ nextRetryAt: null }, { nextRetryAt: { lte: now() } }]
+      };
   return prisma.outboxEvent.findMany({
-    where: {
-      status: { in: ["pending", "failed"] },
-      OR: [{ nextRetryAt: null }, { nextRetryAt: { lte: now() } }]
-    },
+    where,
     orderBy: [{ createdAt: "asc" }],
     take: limit
   });
@@ -62,19 +68,26 @@ function buildBatch(events: TabletOutboxEvent[]) {
   return {
     source: { app: "tablet", role: "pos", capability: "local-first-sale" },
     createdAt: new Date().toISOString(),
-    events: events.map((event) => ({
-      eventId: event.id,
-      eventType: event.topic,
-      topic: event.topic,
-      idempotencyKey: event.idempotencyKey,
-      businessId: event.businessId,
-      terminalId: event.terminalId,
-      aggregateId: event.aggregateId,
-      source: event.source ?? "tablet-pos",
-      schemaVersion: event.schemaVersion ?? "1.0.0",
-      occurredAt: event.createdAt instanceof Date ? event.createdAt.toISOString() : String(event.createdAt),
-      payload: safePayload(event.payloadJson)
-    }))
+    events: events.map((event) => {
+      const envelope = safePayload(event.payloadJson);
+      const record = isRecord(envelope) ? envelope : {};
+      const payload = isRecord(record.payload) ? record.payload : isRecord(envelope) ? envelope : { rawPayloadJson: event.payloadJson };
+      return {
+        eventId: pickString(record.eventId, event.id),
+        eventType: pickString(record.eventType, record.topic, event.topic),
+        topic: pickString(record.topic, record.eventType, event.topic),
+        idempotencyKey: pickString(record.idempotencyKey, event.idempotencyKey, event.id),
+        businessId: pickString(record.businessId, event.businessId),
+        terminalId: pickString(record.terminalId, event.terminalId, "tablet-terminal-local"),
+        actorId: pickString(record.actorId, payload.actorId, "tablet-operator"),
+        aggregateId: pickString(record.aggregateId, event.aggregateId),
+        correlationId: pickString(record.correlationId, event.aggregateId, event.id),
+        source: pickString(record.source, event.source, "tablet-pos"),
+        schemaVersion: pickString(record.schemaVersion, event.schemaVersion, "1.0.0"),
+        occurredAt: pickString(record.occurredAt, event.createdAt instanceof Date ? event.createdAt.toISOString() : String(event.createdAt)),
+        payload
+      };
+    })
   };
 }
 
@@ -86,14 +99,30 @@ function safePayload(payloadJson: string) {
   }
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function pickString(...values: unknown[]): string {
+  for (const value of values) {
+    if (typeof value === "string" && value.trim()) return value.trim();
+  }
+  return "";
+}
+
 function resultFor(event: TabletOutboxEvent, response: PcDispatchBatchResponse): PcDispatchEventResult | null {
-  const results = response.results ?? response.events ?? [];
+  const data = isRecord(response.data) ? response.data as PcDispatchBatchResponse : response;
+  const results = data.results ?? data.events ?? [];
   return results.find((item) => item.eventId === event.id || item.remoteEventId === event.id) ?? null;
 }
 
 function isAck(result: PcDispatchEventResult): boolean {
   const lifecycle = result.lifecycleStatus ?? result.status;
-  return lifecycle === "projected" || lifecycle === "reconciled" || result.status === "duplicate";
+  return lifecycle === "projected" || lifecycle === "reconciled" || lifecycle === "recognized_not_projected" || result.status === "duplicate";
+}
+
+function remoteIssueCode(result: PcDispatchEventResult, fallback: string) {
+  return result.conflictCode ?? result.rejectionCode ?? result.conflicts?.find((item) => item.code)?.code ?? result.errors?.find(Boolean) ?? fallback;
 }
 
 async function applyAck(event: TabletOutboxEvent, result: PcDispatchEventResult) {
@@ -112,8 +141,8 @@ async function applyAck(event: TabletOutboxEvent, result: PcDispatchEventResult)
         remoteLedgerId: result.remoteLedgerId ?? null,
         remoteLifecycleStatus: result.lifecycleStatus ?? result.status ?? null,
         remoteDiagnosticsJson: toJson(result.diagnostics),
-        remoteConflictCode: result.conflictCode ?? null,
-        remoteRejectedReason: result.rejectionCode ?? null,
+        remoteConflictCode: result.lifecycleStatus === "conflict" ? remoteIssueCode(result, "remote_conflict") : null,
+        remoteRejectedReason: result.lifecycleStatus === "dead_letter" ? remoteIssueCode(result, "remote_rejected") : null,
         lastError: null
       }
     });
@@ -131,29 +160,30 @@ async function applyAck(event: TabletOutboxEvent, result: PcDispatchEventResult)
         remoteEventId: result.remoteEventId ?? result.eventId ?? null,
         remoteLedgerId: result.remoteLedgerId ?? null,
         remoteLifecycleStatus: result.lifecycleStatus ?? result.status ?? null,
-        remoteConflictCode: result.conflictCode ?? "remote_conflict",
+        remoteConflictCode: remoteIssueCode(result, "remote_conflict"),
         remoteDiagnosticsJson: toJson(result.diagnostics),
-        lastError: result.conflictCode ?? "Remote conflict"
+        lastError: remoteIssueCode(result, "Remote conflict")
       }
     });
     return;
   }
 
   if (result.status === "rejected") {
+    const terminal = result.retryable === false || result.lifecycleStatus === "dead_letter";
     await prisma.outboxEvent.update({
       where: { id: event.id },
       data: {
-        status: result.retryable === false ? "failed" : "pending",
-        failedAt: result.retryable === false ? stamp : null,
+        status: terminal ? "failed" : "pending",
+        failedAt: terminal ? stamp : null,
         lastAttemptAt: stamp,
-        nextRetryAt: result.retryable === false ? null : backoffDate(event.attempts + 1),
+        nextRetryAt: terminal ? null : backoffDate(event.attempts + 1),
         attempts: { increment: 1 },
         remoteEventId: result.remoteEventId ?? result.eventId ?? null,
         remoteLedgerId: result.remoteLedgerId ?? null,
         remoteLifecycleStatus: result.lifecycleStatus ?? result.status ?? null,
-        remoteRejectedReason: result.rejectionCode ?? "remote_rejected",
+        remoteRejectedReason: remoteIssueCode(result, "remote_rejected"),
         remoteDiagnosticsJson: toJson(result.diagnostics),
-        lastError: result.rejectionCode ?? "Remote rejected"
+        lastError: remoteIssueCode(result, "Remote rejected")
       }
     });
     return;
@@ -190,7 +220,7 @@ async function markNetworkFailure(events: TabletOutboxEvent[], error: unknown, m
   })));
 }
 
-export async function dispatchTabletOutboxOnce(config: PrismaTabletPcOriginConfig = loadPrismaTabletPcOriginConfig()) {
+export async function dispatchTabletOutboxOnce(config: PrismaTabletPcOriginConfig = loadPrismaTabletPcOriginConfig(), options: { force?: boolean } = {}) {
   if (inFlight) return { ok: false, reason: "dispatcher_in_flight", dispatched: 0 };
   if (!config.enabled) return { ok: false, reason: "pc_sync_disabled", dispatched: 0 };
   const url = pcUrl(config, config.ingestPath);
@@ -201,7 +231,7 @@ export async function dispatchTabletOutboxOnce(config: PrismaTabletPcOriginConfi
 
   inFlight = true;
   try {
-    const events = await loadPendingEvents(config.batchSize);
+    const events = await loadPendingEvents(config.batchSize, options.force === true);
     if (events.length === 0) return { ok: true, reason: "empty", dispatched: 0 };
     const batch = buildBatch(events);
     const controller = new AbortController();
@@ -216,7 +246,8 @@ export async function dispatchTabletOutboxOnce(config: PrismaTabletPcOriginConfi
       const body = await response.json().catch(() => ({} as PcDispatchBatchResponse));
       if (!response.ok) throw new Error(`PC ingest HTTP ${response.status}`);
       await Promise.all(events.map((event: TabletOutboxEvent) => applyAck(event, resultFor(event, body) ?? { status: "failed", retryable: true, diagnostics: body.diagnostics })));
-      return { ok: true, reason: "dispatched", dispatched: events.length, batchId: body.batchId ?? null };
+      const data = isRecord(body.data) ? body.data as PcDispatchBatchResponse : body;
+      return { ok: true, reason: "dispatched", dispatched: events.length, batchId: data.batchId ?? null };
     } catch (error) {
       await markNetworkFailure(events, error, config.maxAttempts);
       return { ok: false, reason: "dispatch_failed", dispatched: 0, error: error instanceof Error ? error.message : String(error) };

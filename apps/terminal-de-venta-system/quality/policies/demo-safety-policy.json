@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0",
+  "id": "demo-safety-policy",
+  "mode": "read-only",
+  "rules": [
+    "Demo data must be separate from production data.",
+    "Demo reset must never target a real DB.",
+    "Demo sync must not call real customer endpoints.",
+    "Demo output must hide internal paths and secrets."
+  ]
+}

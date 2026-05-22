@@ -40,7 +40,13 @@ const expectedTopics = [
   "sync.event.sent",
   "sync.event.failed",
   "sync.conflict.detected",
-  "sync.conflict.resolved"
+  "sync.conflict.resolved",
+  "supplier.created",
+  "supplier.updated",
+  "supplier.disabled",
+  "product.supplier.linked",
+  "product.supplier.unlinked",
+  "product.supplier.updated"
 ];
 
 const expectedOutboxStates = ["pending", "sent", "failed", "acked", "conflict"];
@@ -52,6 +58,7 @@ const expectedLifecycleStates = [
   "validated",
   "accepted",
   "projected",
+  "recognized_not_projected",
   "reconciled",
   "conflict",
   "failed",

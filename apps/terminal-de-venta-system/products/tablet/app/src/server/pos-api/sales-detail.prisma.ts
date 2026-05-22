@@ -24,6 +24,14 @@ function ticketNeedleWhere(needle: string) {
   ];
 }
 
+function ticketNeedleContainsWhere(needle: string) {
+  return [
+    { id: { contains: needle } },
+    { folio: { contains: needle } },
+    { clientRequestId: { contains: needle } },
+  ];
+}
+
 function syntheticPaymentTender(sale: any) {
   return {
     id: `sale-payment-${sale.id}`,
@@ -153,4 +161,128 @@ export async function getSaleDetail(input: GetSaleDetailInput) {
 
   if (!localFallbackSale) return null;
   return mapSaleDetail(localFallbackSale, "local_alias_fallback");
+}
+
+export async function getSaleLookupDiagnostic(input: GetSaleDetailInput) {
+  const needle = normalizeTicketNeedle(input.saleIdOrFolio);
+  const attemptedFields = ["saleId", "folio", "clientRequestId", "local alias fallback"];
+  const containsWhere = needle ? ticketNeedleContainsWhere(needle) : [];
+
+  const [scopedTickets, latestTickets, matchedOutboxEvents, latestOutboxEvents, scopedTicketCount, totalTicketCount] = await Promise.all([
+    needle
+      ? prisma.sale.findMany({
+          where: { businessId: input.businessId, OR: containsWhere },
+          orderBy: { createdAt: "desc" },
+          take: 5,
+          select: {
+            id: true,
+            folio: true,
+            businessId: true,
+            terminalId: true,
+            clientRequestId: true,
+            status: true,
+            createdAt: true,
+            totalCents: true,
+          },
+        })
+      : Promise.resolve([]),
+    prisma.sale.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 5,
+      select: {
+        id: true,
+        folio: true,
+        businessId: true,
+        terminalId: true,
+        clientRequestId: true,
+        status: true,
+        createdAt: true,
+        totalCents: true,
+      },
+    }),
+    needle
+      ? prisma.outboxEvent.findMany({
+          where: {
+            OR: [
+              { id: { contains: needle } },
+              { aggregateId: { contains: needle } },
+              { idempotencyKey: { contains: needle } },
+              { payloadJson: { contains: needle } },
+            ],
+          },
+          orderBy: { createdAt: "desc" },
+          take: 8,
+          select: {
+            id: true,
+            topic: true,
+            aggregateId: true,
+            businessId: true,
+            terminalId: true,
+            status: true,
+            createdAt: true,
+            lastError: true,
+          },
+        })
+      : Promise.resolve([]),
+    prisma.outboxEvent.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 8,
+      select: {
+        id: true,
+        topic: true,
+        aggregateId: true,
+        businessId: true,
+        terminalId: true,
+        status: true,
+        createdAt: true,
+        lastError: true,
+      },
+    }),
+    prisma.sale.count({ where: { businessId: input.businessId } }),
+    prisma.sale.count(),
+  ]);
+
+  const mapTicket = (sale: any) => ({
+    saleId: sale.id,
+    folio: sale.folio,
+    businessId: sale.businessId,
+    terminalId: sale.terminalId,
+    clientRequestId: sale.clientRequestId ?? null,
+    status: sale.status,
+    createdAt: toIso(sale.createdAt),
+    totalCents: sale.totalCents,
+  });
+
+  const mapEvent = (event: any) => ({
+    id: event.id,
+    topic: event.topic,
+    aggregateId: event.aggregateId,
+    businessId: event.businessId,
+    terminalId: event.terminalId,
+    status: event.status,
+    createdAt: toIso(event.createdAt),
+    lastError: event.lastError ?? null,
+  });
+
+  return {
+    requestedId: needle,
+    businessId: input.businessId,
+    attemptedFields,
+    scopedTicketCount,
+    totalTicketCount,
+    scopedPartialMatches: scopedTickets.map(mapTicket),
+    latestTickets: latestTickets.map(mapTicket),
+    matchedOutboxEvents: matchedOutboxEvents.map(mapEvent),
+    latestOutboxEvents: latestOutboxEvents.map(mapEvent),
+    serverAdapters: [
+      "products/tablet/app/app/api/pos/sales/detail/route.ts",
+      "products/tablet/app/src/server/pos-api/sales-detail.prisma.ts",
+      "products/tablet/app/src/server/prisma/client.ts",
+    ],
+    nextActions: [
+      "Revisar si el folio pertenece a otro negocio o terminal local.",
+      "Buscar por clientRequestId desde el recibo o evidencia outbox.",
+      "Exportar diagnostico desde License Ops si soporte necesita evidencia.",
+    ],
+  };
 }

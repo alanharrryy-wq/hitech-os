@@ -18,6 +18,54 @@ const MovementsModule: TwinModuleManifest = {
   navGroup: "control"
 };
 
+const SalesControlModule: TwinModuleManifest = {
+  key: "sales-control",
+  route: "/sales-control",
+  title: "Ventas / Caja",
+  description: "Ventas consolidadas, tickets, KPIs y detalle de auditoria.",
+  navGroup: "control"
+};
+
+const CashSessionsModule: TwinModuleManifest = {
+  key: "cash-sessions",
+  route: "/cash-sessions",
+  title: "Cortes de caja",
+  description: "Sesiones de caja, movimientos, esperado, contado y variaciones.",
+  navGroup: "control"
+};
+
+const DevicesModule: TwinModuleManifest = {
+  key: "devices",
+  route: "/devices",
+  title: "Dispositivos",
+  description: "Fleet de Tablets, heartbeats, frescura, outbox y licencias.",
+  navGroup: "control"
+};
+
+const LicenseRuntimeModule: TwinModuleManifest = {
+  key: "license-runtime",
+  route: "/license-runtime",
+  title: "Licencias y Runtime",
+  description: "Licencia PC, estados Tablet, refresh remoto y readiness.",
+  navGroup: "operation"
+};
+
+const TabletCommunicationModule: TwinModuleManifest = {
+  key: "tablet-communication",
+  route: "/tablet-communication",
+  title: "Comunicacion Tablet",
+  description: "Inbound Tablet-to-PC, gobierno PC-to-Tablet y acks observables.",
+  navGroup: "control"
+};
+
+const DataQualityModule: TwinModuleManifest = {
+  key: "data-quality",
+  route: "/data-quality",
+  title: "Calidad de datos",
+  description: "Integridad canonica, folios, pagos, caja, sync y heartbeat.",
+  navGroup: "operation"
+};
+
 const SettingsModule: TwinModuleManifest = {
   key: "settings",
   route: "/settings",
@@ -27,6 +75,8 @@ const SettingsModule: TwinModuleManifest = {
 };
 
 export const pcModuleRegistry: TwinModuleManifest[] = sortModules([
+  SalesControlModule,
+  CashSessionsModule,
   CatalogModule,
   StockModule,
   MovementsModule,
@@ -37,5 +87,9 @@ export const pcModuleRegistry: TwinModuleManifest[] = sortModules([
   SuppliersModule,
   AuditModule,
   SyncModule,
+  DevicesModule,
+  TabletCommunicationModule,
+  LicenseRuntimeModule,
+  DataQualityModule,
   SettingsModule
 ]);

@@ -1,4 +1,4 @@
-import type { LicenseAssignmentState, LicenseDenialReason, LicenseDocument, LicenseOperationalDecision, LicenseSource, NormalizedLicenseStatus, NormalizedLicenseState } from "./license-types";
+import type { LicenseAssignmentState, LicenseDenialReason, LicenseDocument, LicenseOperationalDecision, LicenseSource, LicenseWarning, NormalizedLicenseStatus, NormalizedLicenseState } from "./license-types";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -19,8 +19,8 @@ function calculateState(document: LicenseDocument, now: Date): NormalizedLicense
   return graceUntil.getTime() >= now.getTime() ? "offline_grace" : "expired";
 }
 
-function assignmentState(document: LicenseDocument): LicenseAssignmentState {
-  return document.assignmentState ?? "assigned";
+function assignmentState(document: LicenseDocument, override?: LicenseAssignmentState | null): LicenseAssignmentState {
+  return override ?? document.assignmentState ?? "assigned";
 }
 
 function denialReason(state: NormalizedLicenseState, assignment: LicenseAssignmentState): LicenseDenialReason | null {
@@ -46,13 +46,13 @@ function operationalDecision(state: NormalizedLicenseState, assignment: LicenseA
   return "allow";
 }
 
-export function normalizeLicenseDocument(document: LicenseDocument, options: { source: LicenseSource; path: string | null; now?: Date }): NormalizedLicenseStatus {
+export function normalizeLicenseDocument(document: LicenseDocument, options: { source: LicenseSource; path: string | null; now?: Date; assignmentState?: LicenseAssignmentState | null; warnings?: LicenseWarning[] }): NormalizedLicenseStatus {
   const now = options.now ?? new Date();
   const validUntil = new Date(document.validUntil);
   const state = calculateState(document, now);
   const daysRemaining = state === "expired" ? 0 : daysBetween(now, validUntil);
-  const warnings = [];
-  const assignment = assignmentState(document);
+  const warnings: LicenseWarning[] = [...(options.warnings ?? [])];
+  const assignment = assignmentState(document, options.assignmentState);
   const reason = denialReason(state, assignment);
   const decision = operationalDecision(state, assignment);
 
@@ -106,8 +106,11 @@ export function normalizeLicenseDocument(document: LicenseDocument, options: { s
   };
 }
 
-export function missingLicenseStatus(path: string | null): NormalizedLicenseStatus {
+export function missingLicenseStatus(path: string | null, options: { customerMode?: boolean } = {}): NormalizedLicenseStatus {
   const now = new Date().toISOString();
+  const warning = options.customerMode
+    ? { code: "LICENSE_CUSTOMER_PENDING", message: "Instalación pendiente de licencia local. La venta básica puede continuar en modo limitado si la política lo permite." }
+    : { code: "LICENSE_MISSING", message: "No se encontró licencia local. La venta básica sigue disponible en modo limitado." };
   return {
     ok: false,
     state: "missing",
@@ -120,7 +123,7 @@ export function missingLicenseStatus(path: string | null): NormalizedLicenseStat
     tabletId: null,
     terminalId: null,
     licenseId: null,
-    assignmentState: "unassigned",
+    assignmentState: "unknown",
     validFrom: null,
     validUntil: null,
     issuedAt: null,
@@ -147,7 +150,7 @@ export function missingLicenseStatus(path: string | null): NormalizedLicenseStat
     daysRemaining: null,
     source: "missing_license",
     path,
-    warnings: [{ code: "LICENSE_MISSING", message: "No se encontró licencia local. La venta básica sigue disponible en modo limitado." }]
+    warnings: [warning]
   };
 }
 

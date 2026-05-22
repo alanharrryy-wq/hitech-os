@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import socket
 import ssl
 import subprocess
@@ -200,9 +201,20 @@ def check_service(service: ServiceDef, action: str = "health", include_lan: bool
     }
 
 
+def _powershell_executable() -> str | None:
+    for candidate in ["powershell.exe", "pwsh.exe", "powershell", "pwsh"]:
+        found = shutil.which(candidate)
+        if found:
+            return found
+    return None
+
+
 def _powershell_json(script: str, timeout: int = 15) -> Any:
+    ps = _powershell_executable()
+    if ps is None:
+        return {}
     completed = subprocess.run(
-        ["powershell.exe", "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", script],
+        [ps, "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", script],
         capture_output=True,
         text=True,
         timeout=timeout,
@@ -216,6 +228,8 @@ def _powershell_json(script: str, timeout: int = 15) -> Any:
 
 
 def windows_service_status(service_name: str) -> dict[str, Any]:
+    if _powershell_executable() is None:
+        return {"found": False, "name": service_name, "status": "Unsupported", "displayName": "", "canStop": False}
     script = f"""
 $svc = Get-Service -Name {json.dumps(service_name)} -ErrorAction SilentlyContinue
 if ($svc) {{
@@ -229,6 +243,8 @@ if ($svc) {{
 
 
 def scheduled_task_status(task_name: str) -> dict[str, Any]:
+    if shutil.which("schtasks.exe") is None:
+        return {"taskName": task_name, "found": False, "returnCode": 127, "stdout": "", "stderr": "schtasks.exe unavailable"}
     result = run_command_capture(["schtasks.exe", "/Query", "/TN", task_name, "/FO", "LIST", "/V"], timeout=15)
     return {
         "taskName": task_name,
