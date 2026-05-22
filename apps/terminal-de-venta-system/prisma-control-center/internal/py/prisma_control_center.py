@@ -114,11 +114,10 @@ def action_all_up() -> int:
 def _expected_structure() -> list[Path]:
     base = CONTROL_ROOT
     return [
+        base / "00_KILL_ALL_LOCAL.cmd",
         base / "01_LEVANTAR_TODO_LOCAL.cmd",
-        base / "02_LEVANTAR_TODO_CLOUDFLARE.cmd",
-        base / "03_LEVANTAR_TODO_LOCAL_Y_CLOUDFLARE.cmd",
-        base / "04_DIAGNOSTICO_LOCAL_Y_CLOUDFLARE.cmd",
-        base / "07_ABRIR_PANEL_CONTROL_3150.cmd",
+        base / "02_LEVANTAR_TODO_LOCAL_CLOUDFLARE.cmd",
+        base / "03_LEVANTAR_SOLO_UN_MODULO.cmd",
         base / "README_OPERADOR.md",
         base / "internal" / "py" / "prisma_control_center.py",
         base / "internal" / "py" / "services_registry.py",

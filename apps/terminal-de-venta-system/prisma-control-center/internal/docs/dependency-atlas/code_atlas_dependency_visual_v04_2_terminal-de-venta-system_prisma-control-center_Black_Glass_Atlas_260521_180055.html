@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>terminal-de-venta-system / prisma-control-center Black Glass Atlas</title>
+<style>
+:root {
+  --bg:#0a0a0b; --bg2:#111113; --glass:rgba(18,18,21,.72); --glass2:rgba(22,22,26,.62);
+  --panel:rgba(16,16,19,.84); --line:rgba(230,199,138,.12); --line-strong:rgba(230,199,138,.28);
+  --gold:#e6c78a; --gold-soft:#b89a5e; --gold-glow:rgba(230,199,138,.28);
+  --text:#ece8e1; --soft:#bfb7aa; --muted:#80786c; --white-glow:rgba(255,255,255,.18);
+  --accent-red:#c75c5c; --accent-ink:#060606; --shadow:rgba(0,0,0,.56);
+  --radius:22px; --mono:"Cascadia Mono","SFMono-Regular",Consolas,monospace;
+  --sans:Inter,"Segoe UI",Aptos,system-ui,sans-serif;
+}
+*{box-sizing:border-box} html,body{min-height:100%}
+body{margin:0;color:var(--text);font-family:var(--sans);background:var(--bg);overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:-3;background:
+  radial-gradient(circle at 16% 12%,rgba(230,199,138,.12),transparent 18rem),
+  radial-gradient(circle at 84% 12%,rgba(255,255,255,.06),transparent 20rem),
+  radial-gradient(circle at 50% 100%,rgba(230,199,138,.08),transparent 28rem),
+  linear-gradient(180deg,#070708,#0a0a0b 28%,#0c0c0d 70%,#090909)}
+body:after{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.2;background:
+  linear-gradient(transparent 0 96%, rgba(230,199,138,.05) 96% 100%),
+  linear-gradient(90deg, transparent 0 96%, rgba(230,199,138,.04) 96% 100%); background-size:100% 44px,44px 100%;mask-image:radial-gradient(circle at 50% 32%, black, transparent 88%)}
+@keyframes floaty{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-10px,0)}}
+@keyframes reveal{0%{opacity:0;transform:translateY(10px);filter:blur(8px)}100%{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes drawLine{from{stroke-dashoffset:120}to{stroke-dashoffset:0}}
+@keyframes glowPulse{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes sweep{0%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+.shell{width:min(100%,1640px);margin:0 auto;padding:24px 24px 40px;animation:reveal .9s ease both}
+.glass{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012)),var(--glass);border:1px solid var(--line);box-shadow:0 32px 84px var(--shadow), inset 0 1px 0 var(--white-glow);backdrop-filter:blur(14px)}
+.hero{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:22px;padding:28px;min-height:290px;border-radius:30px;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 0%,rgba(230,199,138,.03) 24%,rgba(255,255,255,.08) 48%,rgba(230,199,138,.06) 60%,transparent 100%);animation:sweep 9s linear infinite;pointer-events:none}
+.eyebrow{margin:0 0 10px;color:var(--gold);letter-spacing:.24em;text-transform:uppercase;font:900 11px var(--mono)}
+.hero h1{margin:0;font-family:var(--sans);font-size:clamp(40px,6.2vw,86px);line-height:.88;letter-spacing:-.07em;color:#f2eee6;text-shadow:0 0 24px rgba(230,199,138,.08)}
+.subtitle{max-width:80ch;color:var(--soft);line-height:1.68;font-size:15px;margin:16px 0 14px}
+.meta{font:12px var(--mono);color:var(--muted);overflow-wrap:anywhere;line-height:1.5}
+.badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;align-content:flex-start}
+.badge{border:1px solid var(--line);background:rgba(230,199,138,.06);border-radius:999px;padding:7px 11px;font:800 12px var(--mono);color:var(--soft)}
+.exec-card{display:flex;flex-direction:column;justify-content:space-between}
+.executive-note{margin-top:14px;padding:14px 16px;border-radius:18px;border:1px solid rgba(230,199,138,.10);background:rgba(255,255,255,.02);position:relative;overflow:hidden}
+.executive-note:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(230,199,138,.12),transparent);transform:translateX(-120%);animation:sweep 12s linear infinite;opacity:.5}
+.executive-note b{color:var(--gold)}
+.orbit{position:relative;min-height:230px;border-radius:28px;border:1px solid var(--line);background:radial-gradient(circle at 50% 50%,rgba(230,199,138,.09),transparent 8rem),linear-gradient(135deg,rgba(255,255,255,.02),rgba(230,199,138,.04));overflow:hidden;animation:floaty 9s ease-in-out infinite}
+.orbit canvas{display:block;width:100%;height:230px}
+.metrics{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:12px;margin:18px 0}
+.metric{position:relative;padding:15px;border-radius:22px;min-height:102px;overflow:hidden}
+.metric:after{content:"";position:absolute;inset:auto -30% -50% auto;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(230,199,138,.16),transparent 68%);opacity:.8}
+.metric:before{content:"";position:absolute;left:0;top:18px;bottom:18px;width:2px;background:linear-gradient(180deg,transparent,var(--gold-soft),transparent)}
+.metric span{display:block;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;font:900 10px var(--mono)}
+.metric strong{display:block;margin-top:12px;font:950 28px var(--mono);color:#f6f0e2}
+.metric small{display:block;margin-top:6px;color:var(--soft);font-size:12px}
+.command-bar{display:grid;grid-template-columns:1.65fr repeat(5,minmax(140px,1fr));gap:10px;align-items:center;padding:15px;border-radius:24px}
+input,select,button{height:44px;border-radius:14px;padding:0 12px;font:13px var(--sans);outline:none}
+input,select{background:rgba(9,9,10,.88);border:1px solid rgba(230,199,138,.14);color:var(--text)}
+input:focus,select:focus{border-color:var(--line-strong);box-shadow:0 0 0 4px rgba(230,199,138,.08)}
+button{cursor:pointer;border:1px solid rgba(230,199,138,.2);color:#130f09;background:linear-gradient(135deg,#f0deb5,#d7b472 58%,#b38b4d);box-shadow:0 10px 28px rgba(230,199,138,.18);font-weight:900}
+button.ghost{background:rgba(255,255,255,.04);color:var(--soft);border:1px solid var(--line)}
+.toggles{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.chip{position:relative;border-radius:999px;padding:10px 12px;font:850 12px var(--mono);cursor:pointer;user-select:none;color:var(--soft);border:1px solid var(--line);background:rgba(255,255,255,.025);overflow:hidden}
+.chip:hover{border-color:rgba(230,199,138,.24)}
+.chip.active{color:#130f09;background:linear-gradient(135deg,#f2e4c3,#e6c78a,#b78f56);box-shadow:0 0 0 1px rgba(230,199,138,.18),0 10px 24px rgba(230,199,138,.14)}
+.chip:after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(255,255,255,.18),transparent);transform:translateX(-120%);pointer-events:none}
+.chip:hover:after{animation:sweep .8s ease}
+.grid{display:grid;grid-template-columns:420px 1fr;gap:14px}
+.panel{border-radius:24px;overflow:hidden}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.panel-head h2{margin:0;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft)}
+.list{max-height:720px;overflow:auto}
+.item{padding:12px 14px;border-bottom:1px solid rgba(230,199,138,.06);cursor:pointer;transition:.2s ease transform,.2s ease background,.2s ease border-color;position:relative}
+.item:hover,.item.active{background:rgba(230,199,138,.055);transform:translateX(3px)}
+.item:hover:before,.item.active:before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:2px;background:linear-gradient(180deg,transparent,var(--gold),transparent)}
+.item-title{font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#f1ebde}
+.item-path{margin-top:4px;font:11px var(--mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-stats{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+.pill{border-radius:999px;padding:3px 8px;font:850 10px var(--mono);background:rgba(255,255,255,.04);color:var(--soft);border:1px solid rgba(230,199,138,.08)}
+.file{color:#d9cfbb} .external{color:#b89a5e} .unresolved{color:var(--accent-red)} .workspace{color:#e6c78a}
+.graph-stage{position:relative;height:720px;background:radial-gradient(circle at 50% 45%,rgba(230,199,138,.06),transparent 32rem)}
+#graph{display:block;width:100%;height:720px}
+.hud{position:absolute;inset:14px auto auto 14px;display:flex;gap:8px;flex-wrap:wrap;max-width:72%}
+.hud span{border:1px solid var(--line);border-radius:999px;padding:6px 10px;background:rgba(5,5,6,.56);font:850 11px var(--mono);color:var(--soft)}
+.detail{border-top:1px solid var(--line);padding:18px;background:rgba(0,0,0,.18)}
+.detail h3{margin:0 0 10px;font-size:24px;letter-spacing:-.045em;color:#f2eee6}
+.detail-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.kv{border:1px solid rgba(230,199,138,.09);border-radius:16px;padding:10px;background:rgba(255,255,255,.028)}
+.kv span{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em}
+.kv b{display:block;margin-top:5px;font-family:var(--mono);overflow-wrap:anywhere;color:#f6f0e2}
+.tables{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.table-scroll{max-height:420px;overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:10px;border-bottom:1px solid rgba(230,199,138,.08);text-align:left;vertical-align:top}
+th{position:sticky;top:0;background:rgba(12,12,13,.96);color:var(--muted);letter-spacing:.12em;text-transform:uppercase;font:900 10px var(--mono)}
+td.path{font-family:var(--mono);color:var(--soft);overflow-wrap:anywhere}
+.footer{margin:16px 0 0;color:var(--muted);font:12px var(--mono)}
+.section-title{margin:16px 0 10px;color:var(--gold);font:900 11px var(--mono);letter-spacing:.2em;text-transform:uppercase}
+@media(max-width:1280px){.hero,.grid,.tables,.command-bar{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}.badges{justify-content:flex-start}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="hero glass">
+    <section>
+      <p class="eyebrow">Code Atlas Visual V04.2 / Black Glass Atlas</p>
+      <h1>terminal-de-venta-system / prisma-control-center Black Glass Atlas</h1>
+      <p class="subtitle">Elegant dark-mode dependency intelligence atlas for Terminal de Venta. It consumes the V03.1 graph, highlights runtime signal over repo noise, and stays fully read-only because uncontrolled writes are how a clean penthouse becomes a bodega with ghosts.</p>
+      <p class="meta">Graph: F:\descargasf\code_atlas_dependency_consumer_v03_prisma-control-center_260521_1800_graph.json<br>Summary: F:\descargasf\code_atlas_dependency_consumer_v03_prisma-control-center_260521_1800_summary.json</p>
+      <div class="executive-note glass"><b>Executive view:</b> Start in Runtime Focus, inspect the three remaining risk signals, then open workspaces one by one. Same engine, cleaner suit, less street market, more command room at midnight.</div>
+    </section>
+    <section class="exec-card">
+      <div class="badges"><span class="badge">unknown</span><span class="badge">unknown</span><span class="badge">offline html</span></div>
+      <div class="orbit"><canvas id="heroCanvas" width="640" height="230"></canvas></div>
+    </section>
+  </header>
+
+  <section class="metrics" id="metrics"></section>
+
+  <section class="command-bar glass">
+    <input id="search" placeholder="Search node, path, workspace, import...">
+    <select id="workspace"></select>
+    <select id="kind"><option value="">All kinds</option><option>file</option><option>external</option><option>unresolved</option><option>workspace</option></select>
+    <select id="edgeClass"><option value="">All edge classes</option><option>internal</option><option>external</option><option>unresolved</option><option>contains</option></select>
+    <select id="degree"><option value="0">Degree 0+</option><option value="2">Degree 2+</option><option value="5">Degree 5+</option><option value="10">Degree 10+</option><option value="20">Degree 20+</option></select>
+    <button id="exportJson">Export filtered JSON</button>
+  </section>
+  <section class="section-title">Executive filters</section>
+  <section class="toggles">
+    <span class="chip active" data-toggle="runtime">Runtime focus</span>
+    <span class="chip active" data-toggle="hideTooling">Hide tooling</span>
+    <span class="chip" data-toggle="hideExternal">Hide externals</span>
+    <span class="chip active" data-toggle="hideStdlib">Hide stdlib</span>
+    <span class="chip" data-toggle="unresolvedOnly">Risk signals only</span>
+    <span class="chip" data-toggle="neighbors">Selected neighborhood</span>
+    <span class="chip" data-toggle="calm">Calm motion</span>
+  </section>
+
+  <section class="grid">
+    <aside class="panel glass">
+      <div class="panel-head"><h2>Signal nodes</h2><span class="meta" id="nodeCount"></span></div>
+      <div class="list" id="nodeList"></div>
+    </aside>
+    <section class="panel glass">
+      <div class="panel-head"><h2>Constellation field</h2><span class="meta" id="fieldMeta"></span></div>
+      <div class="graph-stage"><canvas id="graph" width="1120" height="720"></canvas><div class="hud" id="hud"></div></div>
+      <div class="detail" id="detail"></div>
+    </section>
+  </section>
+
+  <section class="tables">
+    <section class="panel glass"><div class="panel-head"><h2>Top external surface</h2><span class="meta">packages + stdlib</span></div><div class="table-scroll"><table id="externalTable"></table></div></section>
+    <section class="panel glass"><div class="panel-head"><h2>Risk signals</h2><span class="meta">unresolved edges</span></div><div class="table-scroll"><table id="unresolvedTable"></table></div></section>
+  </section>
+  <p class="footer">Generated by Code Atlas Dependency Visual V04.2 / Black Glass Atlas. Keep Capatch generic. Keep Code Atlas as a consumer. Keep the map elegant enough to show, grounded enough to trust.</p>
+</main>
+<script id="model" type="application/json">{"tool":"code-atlas dependency visual","version":"4.2.0","generated_at":"2026-05-21T18:00:55","graph_version":"3.1.0","graph_generated_at":"2026-05-21T18:00:55","project_profile":{"package_name":"","package_manager":"unknown","frameworks":[],"languages":["JavaScript (8)","Python (17)"],"source_counts":{"js":8,"py":17}},"dependency_summary":{"files_scanned":101,"source_files":25,"edges":163,"internal_edges":45,"external_edges":118,"unresolved_edges":0,"ignored_edges":0,"salvage_edges":0},"workspace_counts":{"(unknown)":25,"(root/tools)":17},"runtime_count":24,"tooling_count":18,"stdlib_external_count":21,"edge_class_counts":{"external":118,"internal":45},"edge_kind_counts":{"python-import":163},"package_edges":0,"top_external":[{"id":"external:__future__","label":"__future__","path":"__future__","inbound":17,"raw":"__future__","stdlib_external":true},{"id":"external:typing","label":"typing","path":"typing","inbound":17,"raw":"typing","stdlib_external":true},{"id":"external:pathlib","label":"pathlib","path":"pathlib","inbound":12,"raw":"pathlib","stdlib_external":true},{"id":"external:json","label":"json","path":"json","inbound":11,"raw":"json","stdlib_external":true},{"id":"external:datetime","label":"datetime","path":"datetime","inbound":8,"raw":"datetime","stdlib_external":true},{"id":"external:urllib","label":"urllib","path":"urllib","inbound":8,"raw":"urllib.parse","stdlib_external":true},{"id":"external:os","label":"os","path":"os","inbound":7,"raw":"os","stdlib_external":true},{"id":"external:subprocess","label":"subprocess","path":"subprocess","inbound":7,"raw":"subprocess","stdlib_external":true},{"id":"external:shutil","label":"shutil","path":"shutil","inbound":6,"raw":"shutil","stdlib_external":true},{"id":"external:time","label":"time","path":"time","inbound":5,"raw":"time","stdlib_external":true},{"id":"external:socket","label":"socket","path":"socket","inbound":3,"raw":"socket","stdlib_external":true},{"id":"external:sys","label":"sys","path":"sys","inbound":3,"raw":"sys","stdlib_external":true},{"id":"external:re","label":"re","path":"re","inbound":2,"raw":"re","stdlib_external":true},{"id":"external:zipfile","label":"zipfile","path":"zipfile","inbound":2,"raw":"zipfile","stdlib_external":true},{"id":"external:argparse","label":"argparse","path":"argparse","inbound":1,"raw":"argparse","stdlib_external":true},{"id":"external:dataclasses","label":"dataclasses","path":"dataclasses","inbound":1,"raw":"dataclasses","stdlib_external":true},{"id":"external:hashlib","label":"hashlib","path":"hashlib","inbound":1,"raw":"hashlib","stdlib_external":true},{"id":"external:html","label":"html","path":"html","inbound":1,"raw":"html","stdlib_external":false},{"id":"external:http","label":"http","path":"http","inbound":1,"raw":"http.server","stdlib_external":true},{"id":"external:py_compile","label":"py_compile","path":"py_compile","inbound":1,"raw":"py_compile","stdlib_external":true},{"id":"external:sqlite3","label":"sqlite3","path":"sqlite3","inbound":1,"raw":"sqlite3","stdlib_external":true},{"id":"external:ssl","label":"ssl","path":"ssl","inbound":1,"raw":"ssl","stdlib_external":false},{"id":"external:threading","label":"threading","path":"threading","inbound":1,"raw":"threading","stdlib_external":true},{"id":"external:webbrowser","label":"webbrowser","path":"webbrowser","inbound":1,"raw":"webbrowser","stdlib_external":false}],"top_files":[{"id":"file:internal/py/health_checks.py","label":"health_checks.py","path":"internal/py/health_checks.py","workspace":"(root/tools)","kind":"file","inbound":3,"outbound":16,"degree":19,"runtime":false},{"id":"file:internal/py/panel_3150.py","label":"panel_3150.py","path":"internal/py/panel_3150.py","workspace":"(root/tools)","kind":"file","inbound":1,"outbound":18,"degree":19,"runtime":false},{"id":"external:__future__","label":"__future__","path":"__future__","workspace":"(unknown)","kind":"external","inbound":17,"outbound":0,"degree":17,"runtime":true},{"id":"external:typing","label":"typing","path":"typing","workspace":"(unknown)","kind":"external","inbound":17,"outbound":0,"degree":17,"runtime":true},{"id":"file:internal/py/config_loader.py","label":"config_loader.py","path":"internal/py/config_loader.py","workspace":"(root/tools)","kind":"file","inbound":10,"outbound":6,"degree":16,"runtime":false},{"id":"file:internal/py/license_ops_api.py","label":"license_ops_api.py","path":"internal/py/license_ops_api.py","workspace":"(root/tools)","kind":"file","inbound":1,"outbound":15,"degree":16,"runtime":false},{"id":"file:internal/py/prisma_control_center.py","label":"prisma_control_center.py","path":"internal/py/prisma_control_center.py","workspace":"(root/tools)","kind":"file","inbound":0,"outbound":15,"degree":15,"runtime":false},{"id":"file:internal/py/safe_actions.py","label":"safe_actions.py","path":"internal/py/safe_actions.py","workspace":"(root/tools)","kind":"file","inbound":4,"outbound":10,"degree":14,"runtime":false},{"id":"file:internal/py/blackbox_bridge.py","label":"blackbox_bridge.py","path":"internal/py/blackbox_bridge.py","workspace":"(root/tools)","kind":"file","inbound":5,"outbound":8,"degree":13,"runtime":false},{"id":"file:internal/py/report_writer.py","label":"report_writer.py","path":"internal/py/report_writer.py","workspace":"(root/tools)","kind":"file","inbound":3,"outbound":10,"degree":13,"runtime":false},{"id":"external:pathlib","label":"pathlib","path":"pathlib","workspace":"(unknown)","kind":"external","inbound":12,"outbound":0,"degree":12,"runtime":true},{"id":"file:internal/py/ports_inspector.py","label":"ports_inspector.py","path":"internal/py/ports_inspector.py","workspace":"(root/tools)","kind":"file","inbound":5,"outbound":7,"degree":12,"runtime":false},{"id":"external:json","label":"json","path":"json","workspace":"(unknown)","kind":"external","inbound":11,"outbound":0,"degree":11,"runtime":true},{"id":"file:internal/py/ops_command_api.py","label":"ops_command_api.py","path":"internal/py/ops_command_api.py","workspace":"(root/tools)","kind":"file","inbound":1,"outbound":10,"degree":11,"runtime":false},{"id":"file:internal/py/quality_command_api.py","label":"quality_command_api.py","path":"internal/py/quality_command_api.py","workspace":"(root/tools)","kind":"file","inbound":1,"outbound":10,"degree":11,"runtime":false},{"id":"file:internal/py/local_supervisor.py","label":"local_supervisor.py","path":"internal/py/local_supervisor.py","workspace":"(root/tools)","kind":"file","inbound":1,"outbound":9,"degree":10,"runtime":false},{"id":"external:datetime","label":"datetime","path":"datetime","workspace":"(unknown)","kind":"external","inbound":8,"outbound":0,"degree":8,"runtime":true},{"id":"external:urllib","label":"urllib","path":"urllib","workspace":"(unknown)","kind":"external","inbound":8,"outbound":0,"degree":8,"runtime":true},{"id":"file:internal/py/blackbox_command_api.py","label":"blackbox_command_api.py","path":"internal/py/blackbox_command_api.py","workspace":"(root/tools)","kind":"file","inbound":1,"outbound":7,"degree":8,"runtime":false},{"id":"file:internal/py/cloudflare_supervisor.py","label":"cloudflare_supervisor.py","path":"internal/py/cloudflare_supervisor.py","workspace":"(root/tools)","kind":"file","inbound":1,"outbound":7,"degree":8,"runtime":false},{"id":"file:internal/py/process_classifier.py","label":"process_classifier.py","path":"internal/py/process_classifier.py","workspace":"(root/tools)","kind":"file","inbound":4,"outbound":4,"degree":8,"runtime":false},{"id":"file:internal/py/release_status_api.py","label":"release_status_api.py","path":"internal/py/release_status_api.py","workspace":"(root/tools)","kind":"file","inbound":1,"outbound":7,"degree":8,"runtime":false},{"id":"external:os","label":"os","path":"os","workspace":"(unknown)","kind":"external","inbound":7,"outbound":0,"degree":7,"runtime":true},{"id":"external:subprocess","label":"subprocess","path":"subprocess","workspace":"(unknown)","kind":"external","inbound":7,"outbound":0,"degree":7,"runtime":true},{"id":"file:internal/py/services_registry.py","label":"services_registry.py","path":"internal/py/services_registry.py","workspace":"(root/tools)","kind":"file","inbound":3,"outbound":4,"degree":7,"runtime":false},{"id":"external:shutil","label":"shutil","path":"shutil","workspace":"(unknown)","kind":"external","inbound":6,"outbound":0,"degree":6,"runtime":true},{"id":"external:time","label":"time","path":"time","workspace":"(unknown)","kind":"external","inbound":5,"outbound":0,"degree":5,"runtime":true},{"id":"external:socket","label":"socket","path":"socket","workspace":"(unknown)","kind":"external","inbound":3,"outbound":0,"degree":3,"runtime":true},{"id":"external:sys","label":"sys","path":"sys","workspace":"(unknown)","kind":"external","inbound":3,"outbound":0,"degree":3,"runtime":true},{"id":"external:re","label":"re","path":"re","workspace":"(unknown)","kind":"external","inbound":2,"outbound":0,"degree":2,"runtime":true},{"id":"external:zipfile","label":"zipfile","path":"zipfile","workspace":"(unknown)","kind":"external","inbound":2,"outbound":0,"degree":2,"runtime":true},{"id":"external:argparse","label":"argparse","path":"argparse","workspace":"(unknown)","kind":"external","inbound":1,"outbound":0,"degree":1,"runtime":true},{"id":"external:dataclasses","label":"dataclasses","path":"dataclasses","workspace":"(unknown)","kind":"external","inbound":1,"outbound":0,"degree":1,"runtime":true},{"id":"external:hashlib","label":"hashlib","path":"hashlib","workspace":"(unknown)","kind":"external","inbound":1,"outbound":0,"degree":1,"runtime":true},{"id":"external:html","label":"html","path":"html","workspace":"(unknown)","kind":"external","inbound":1,"outbound":0,"degree":1,"runtime":true},{"id":"external:http","label":"http","path":"http","workspace":"(unknown)","kind":"external","inbound":1,"outbound":0,"degree":1,"runtime":true},{"id":"external:py_compile","label":"py_compile","path":"py_compile","workspace":"(unknown)","kind":"external","inbound":1,"outbound":0,"degree":1,"runtime":true},{"id":"external:sqlite3","label":"sqlite3","path":"sqlite3","workspace":"(unknown)","kind":"external","inbound":1,"outbound":0,"degree":1,"runtime":true},{"id":"external:ssl","label":"ssl","path":"ssl","workspace":"(unknown)","kind":"external","inbound":1,"outbound":0,"degree":1,"runtime":true},{"id":"external:threading","label":"threading","path":"threading","workspace":"(unknown)","kind":"external","inbound":1,"outbound":0,"degree":1,"runtime":true},{"id":"external:webbrowser","label":"webbrowser","path":"webbrowser","workspace":"(unknown)","kind":"external","inbound":1,"outbound":0,"degree":1,"runtime":true},{"id":"project:root","label":"prisma-control-center","path":"F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\prisma-control-center","workspace":"(unknown)","kind":"project","inbound":0,"outbound":0,"degree":0,"runtime":false}],"unresolved_edges":[],"ignored_edges":[],"unresolved_unique_edges":0,"nodes":[{"id":"external:__future__","label":"__future__","kind":"external","path":"__future__","metadata":{"raw":"__future__"},"inbound":17,"outbound":0,"workspace":"(unknown)","degree":17,"runtime":true,"stdlib_external":true},{"id":"external:argparse","label":"argparse","kind":"external","path":"argparse","metadata":{"raw":"argparse"},"inbound":1,"outbound":0,"workspace":"(unknown)","degree":1,"runtime":true,"stdlib_external":true},{"id":"external:dataclasses","label":"dataclasses","kind":"external","path":"dataclasses","metadata":{"raw":"dataclasses"},"inbound":1,"outbound":0,"workspace":"(unknown)","degree":1,"runtime":true,"stdlib_external":true},{"id":"external:datetime","label":"datetime","kind":"external","path":"datetime","metadata":{"raw":"datetime"},"inbound":8,"outbound":0,"workspace":"(unknown)","degree":8,"runtime":true,"stdlib_external":true},{"id":"external:hashlib","label":"hashlib","kind":"external","path":"hashlib","metadata":{"raw":"hashlib"},"inbound":1,"outbound":0,"workspace":"(unknown)","degree":1,"runtime":true,"stdlib_external":true},{"id":"external:html","label":"html","kind":"external","path":"html","metadata":{"raw":"html"},"inbound":1,"outbound":0,"workspace":"(unknown)","degree":1,"runtime":true,"stdlib_external":false},{"id":"external:http","label":"http","kind":"external","path":"http","metadata":{"raw":"http.server"},"inbound":1,"outbound":0,"workspace":"(unknown)","degree":1,"runtime":true,"stdlib_external":true},{"id":"external:json","label":"json","kind":"external","path":"json","metadata":{"raw":"json"},"inbound":11,"outbound":0,"workspace":"(unknown)","degree":11,"runtime":true,"stdlib_external":true},{"id":"external:os","label":"os","kind":"external","path":"os","metadata":{"raw":"os"},"inbound":7,"outbound":0,"workspace":"(unknown)","degree":7,"runtime":true,"stdlib_external":true},{"id":"external:pathlib","label":"pathlib","kind":"external","path":"pathlib","metadata":{"raw":"pathlib"},"inbound":12,"outbound":0,"workspace":"(unknown)","degree":12,"runtime":true,"stdlib_external":true},{"id":"external:py_compile","label":"py_compile","kind":"external","path":"py_compile","metadata":{"raw":"py_compile"},"inbound":1,"outbound":0,"workspace":"(unknown)","degree":1,"runtime":true,"stdlib_external":true},{"id":"external:re","label":"re","kind":"external","path":"re","metadata":{"raw":"re"},"inbound":2,"outbound":0,"workspace":"(unknown)","degree":2,"runtime":true,"stdlib_external":true},{"id":"external:shutil","label":"shutil","kind":"external","path":"shutil","metadata":{"raw":"shutil"},"inbound":6,"outbound":0,"workspace":"(unknown)","degree":6,"runtime":true,"stdlib_external":true},{"id":"external:socket","label":"socket","kind":"external","path":"socket","metadata":{"raw":"socket"},"inbound":3,"outbound":0,"workspace":"(unknown)","degree":3,"runtime":true,"stdlib_external":true},{"id":"external:sqlite3","label":"sqlite3","kind":"external","path":"sqlite3","metadata":{"raw":"sqlite3"},"inbound":1,"outbound":0,"workspace":"(unknown)","degree":1,"runtime":true,"stdlib_external":true},{"id":"external:ssl","label":"ssl","kind":"external","path":"ssl","metadata":{"raw":"ssl"},"inbound":1,"outbound":0,"workspace":"(unknown)","degree":1,"runtime":true,"stdlib_external":false},{"id":"external:subprocess","label":"subprocess","kind":"external","path":"subprocess","metadata":{"raw":"subprocess"},"inbound":7,"outbound":0,"workspace":"(unknown)","degree":7,"runtime":true,"stdlib_external":true},{"id":"external:sys","label":"sys","kind":"external","path":"sys","metadata":{"raw":"sys"},"inbound":3,"outbound":0,"workspace":"(unknown)","degree":3,"runtime":true,"stdlib_external":true},{"id":"external:threading","label":"threading","kind":"external","path":"threading","metadata":{"raw":"threading"},"inbound":1,"outbound":0,"workspace":"(unknown)","degree":1,"runtime":true,"stdlib_external":true},{"id":"external:time","label":"time","kind":"external","path":"time","metadata":{"raw":"time"},"inbound":5,"outbound":0,"workspace":"(unknown)","degree":5,"runtime":true,"stdlib_external":true},{"id":"external:typing","label":"typing","kind":"external","path":"typing","metadata":{"raw":"typing"},"inbound":17,"outbound":0,"workspace":"(unknown)","degree":17,"runtime":true,"stdlib_external":true},{"id":"external:urllib","label":"urllib","kind":"external","path":"urllib","metadata":{"raw":"urllib.parse"},"inbound":8,"outbound":0,"workspace":"(unknown)","degree":8,"runtime":true,"stdlib_external":true},{"id":"external:webbrowser","label":"webbrowser","kind":"external","path":"webbrowser","metadata":{"raw":"webbrowser"},"inbound":1,"outbound":0,"workspace":"(unknown)","degree":1,"runtime":true,"stdlib_external":false},{"id":"external:zipfile","label":"zipfile","kind":"external","path":"zipfile","metadata":{"raw":"zipfile"},"inbound":2,"outbound":0,"workspace":"(unknown)","degree":2,"runtime":true,"stdlib_external":true},{"id":"file:internal/py/blackbox_bridge.py","label":"blackbox_bridge.py","kind":"file","path":"internal/py/blackbox_bridge.py","metadata":{"workspace":"(root/tools)"},"inbound":5,"outbound":8,"workspace":"(root/tools)","degree":13,"runtime":false,"stdlib_external":false},{"id":"file:internal/py/blackbox_command_api.py","label":"blackbox_command_api.py","kind":"file","path":"internal/py/blackbox_command_api.py","metadata":{"workspace":"(root/tools)"},"inbound":1,"outbound":7,"workspace":"(root/tools)","degree":8,"runtime":false,"stdlib_external":false},{"id":"file:internal/py/cloudflare_supervisor.py","label":"cloudflare_supervisor.py","kind":"file","path":"internal/py/cloudflare_supervisor.py","metadata":{"workspace":"(root/tools)"},"inbound":1,"outbound":7,"workspace":"(root/tools)","degree":8,"runtime":false,"stdlib_external":false},{"id":"file:internal/py/config_loader.py","label":"config_loader.py","kind":"file","path":"internal/py/config_loader.py","metadata":{"workspace":"(root/tools)"},"inbound":10,"outbound":6,"workspace":"(root/tools)","degree":16,"runtime":false,"stdlib_external":false},{"id":"file:internal/py/health_checks.py","label":"health_checks.py","kind":"file","path":"internal/py/health_checks.py","metadata":{"workspace":"(root/tools)"},"inbound":3,"outbound":16,"workspace":"(root/tools)","degree":19,"runtime":false,"stdlib_external":false},{"id":"file:internal/py/license_ops_api.py","label":"license_ops_api.py","kind":"file","path":"internal/py/license_ops_api.py","metadata":{"workspace":"(root/tools)"},"inbound":1,"outbound":15,"workspace":"(root/tools)","degree":16,"runtime":false,"stdlib_external":false},{"id":"file:internal/py/local_supervisor.py","label":"local_supervisor.py","kind":"file","path":"internal/py/local_supervisor.py","metadata":{"workspace":"(root/tools)"},"inbound":1,"outbound":9,"workspace":"(root/tools)","degree":10,"runtime":false,"stdlib_external":false},{"id":"file:internal/py/ops_command_api.py","label":"ops_command_api.py","kind":"file","path":"internal/py/ops_command_api.py","metadata":{"workspace":"(root/tools)"},"inbound":1,"outbound":10,"workspace":"(root/tools)","degree":11,"runtime":false,"stdlib_external":false},{"id":"file:internal/py/panel_3150.py","label":"panel_3150.py","kind":"file","path":"internal/py/panel_3150.py","metadata":{"workspace":"(root/tools)"},"inbound":1,"outbound":18,"workspace":"(root/tools)","degree":19,"runtime":false,"stdlib_external":false},{"id":"file:internal/py/ports_inspector.py","label":"ports_inspector.py","kind":"file","path":"internal/py/ports_inspector.py","metadata":{"workspace":"(root/tools)"},"inbound":5,"outbound":7,"workspace":"(root/tools)","degree":12,"runtime":false,"stdlib_external":false},{"id":"file:internal/py/prisma_control_center.py","label":"prisma_control_center.py","kind":"file","path":"internal/py/prisma_control_center.py","metadata":{"workspace":"(root/tools)"},"inbound":0,"outbound":15,"workspace":"(root/tools)","degree":15,"runtime":false,"stdlib_external":false},{"id":"file:internal/py/process_classifier.py","label":"process_classifier.py","kind":"file","path":"internal/py/process_classifier.py","metadata":{"workspace":"(root/tools)"},"inbound":4,"outbound":4,"workspace":"(root/tools)","degree":8,"runtime":false,"stdlib_external":false},{"id":"file:internal/py/quality_command_api.py","label":"quality_command_api.py","kind":"file","path":"internal/py/quality_command_api.py","metadata":{"workspace":"(root/tools)"},"inbound":1,"outbound":10,"workspace":"(root/tools)","degree":11,"runtime":false,"stdlib_external":false},{"id":"file:internal/py/release_status_api.py","label":"release_status_api.py","kind":"file","path":"internal/py/release_status_api.py","metadata":{"workspace":"(root/tools)"},"inbound":1,"outbound":7,"workspace":"(root/tools)","degree":8,"runtime":false,"stdlib_external":false},{"id":"file:internal/py/report_writer.py","label":"report_writer.py","kind":"file","path":"internal/py/report_writer.py","metadata":{"workspace":"(root/tools)"},"inbound":3,"outbound":10,"workspace":"(root/tools)","degree":13,"runtime":false,"stdlib_external":false},{"id":"file:internal/py/safe_actions.py","label":"safe_actions.py","kind":"file","path":"internal/py/safe_actions.py","metadata":{"workspace":"(root/tools)"},"inbound":4,"outbound":10,"workspace":"(root/tools)","degree":14,"runtime":false,"stdlib_external":false},{"id":"file:internal/py/services_registry.py","label":"services_registry.py","kind":"file","path":"internal/py/services_registry.py","metadata":{"workspace":"(root/tools)"},"inbound":3,"outbound":4,"workspace":"(root/tools)","degree":7,"runtime":false,"stdlib_external":false},{"id":"project:root","label":"prisma-control-center","kind":"project","path":"F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\prisma-control-center","metadata":{"package_name":""},"inbound":0,"outbound":0,"workspace":"(unknown)","degree":0,"runtime":false,"stdlib_external":false}],"edges":[{"source":"file:internal/py/blackbox_bridge.py","target":"external:__future__","kind":"python-import","raw":"__future__","weight":1,"classification":"external"},{"source":"file:internal/py/blackbox_bridge.py","target":"external:datetime","kind":"python-import","raw":"datetime","weight":1,"classification":"external"},{"source":"file:internal/py/blackbox_bridge.py","target":"external:hashlib","kind":"python-import","raw":"hashlib","weight":1,"classification":"external"},{"source":"file:internal/py/blackbox_bridge.py","target":"external:json","kind":"python-import","raw":"json","weight":1,"classification":"external"},{"source":"file:internal/py/blackbox_bridge.py","target":"external:os","kind":"python-import","raw":"os","weight":1,"classification":"external"},{"source":"file:internal/py/blackbox_bridge.py","target":"external:pathlib","kind":"python-import","raw":"pathlib","weight":1,"classification":"external"},{"source":"file:internal/py/blackbox_bridge.py","target":"external:shutil","kind":"python-import","raw":"shutil","weight":1,"classification":"external"},{"source":"file:internal/py/blackbox_bridge.py","target":"external:typing","kind":"python-import","raw":"typing","weight":1,"classification":"external"},{"source":"file:internal/py/blackbox_command_api.py","target":"external:__future__","kind":"python-import","raw":"__future__","weight":1,"classification":"external"},{"source":"file:internal/py/blackbox_command_api.py","target":"external:datetime","kind":"python-import","raw":"datetime","weight":1,"classification":"external"},{"source":"file:internal/py/blackbox_command_api.py","target":"external:json","kind":"python-import","raw":"json","weight":1,"classification":"external"},{"source":"file:internal/py/blackbox_command_api.py","target":"external:pathlib","kind":"python-import","raw":"pathlib","weight":1,"classification":"external"},{"source":"file:internal/py/blackbox_command_api.py","target":"external:typing","kind":"python-import","raw":"typing","weight":1,"classification":"external"},{"source":"file:internal/py/blackbox_command_api.py","target":"external:urllib","kind":"python-import","raw":"urllib.parse","weight":1,"classification":"external"},{"source":"file:internal/py/blackbox_command_api.py","target":"file:internal/py/blackbox_bridge.py","kind":"python-import","raw":"blackbox_bridge","weight":1,"classification":"internal"},{"source":"file:internal/py/cloudflare_supervisor.py","target":"external:__future__","kind":"python-import","raw":"__future__","weight":1,"classification":"external"},{"source":"file:internal/py/cloudflare_supervisor.py","target":"external:subprocess","kind":"python-import","raw":"subprocess","weight":1,"classification":"external"},{"source":"file:internal/py/cloudflare_supervisor.py","target":"external:time","kind":"python-import","raw":"time","weight":1,"classification":"external"},{"source":"file:internal/py/cloudflare_supervisor.py","target":"external:typing","kind":"python-import","raw":"typing","weight":1,"classification":"external"},{"source":"file:internal/py/cloudflare_supervisor.py","target":"file:internal/py/config_loader.py","kind":"python-import","raw":"config_loader","weight":1,"classification":"internal"},{"source":"file:internal/py/cloudflare_supervisor.py","target":"file:internal/py/health_checks.py","kind":"python-import","raw":"health_checks","weight":1,"classification":"internal"},{"source":"file:internal/py/cloudflare_supervisor.py","target":"file:internal/py/safe_actions.py","kind":"python-import","raw":"safe_actions","weight":1,"classification":"internal"},{"source":"file:internal/py/config_loader.py","target":"external:__future__","kind":"python-import","raw":"__future__","weight":1,"classification":"external"},{"source":"file:internal/py/config_loader.py","target":"external:json","kind":"python-import","raw":"json","weight":1,"classification":"external"},{"source":"file:internal/py/config_loader.py","target":"external:os","kind":"python-import","raw":"os","weight":1,"classification":"external"},{"source":"file:internal/py/config_loader.py","target":"external:pathlib","kind":"python-import","raw":"pathlib","weight":1,"classification":"external"},{"source":"file:internal/py/config_loader.py","target":"external:socket","kind":"python-import","raw":"socket","weight":1,"classification":"external"},{"source":"file:internal/py/config_loader.py","target":"external:typing","kind":"python-import","raw":"typing","weight":1,"classification":"external"},{"source":"file:internal/py/health_checks.py","target":"external:__future__","kind":"python-import","raw":"__future__","weight":1,"classification":"external"},{"source":"file:internal/py/health_checks.py","target":"external:json","kind":"python-import","raw":"json","weight":1,"classification":"external"},{"source":"file:internal/py/health_checks.py","target":"external:pathlib","kind":"python-import","raw":"pathlib","weight":1,"classification":"external"},{"source":"file:internal/py/health_checks.py","target":"external:shutil","kind":"python-import","raw":"shutil","weight":1,"classification":"external"},{"source":"file:internal/py/health_checks.py","target":"external:socket","kind":"python-import","raw":"socket","weight":1,"classification":"external"},{"source":"file:internal/py/health_checks.py","target":"external:ssl","kind":"python-import","raw":"ssl","weight":1,"classification":"external"},{"source":"file:internal/py/health_checks.py","target":"external:subprocess","kind":"python-import","raw":"subprocess","weight":1,"classification":"external"},{"source":"file:internal/py/health_checks.py","target":"external:time","kind":"python-import","raw":"time","weight":1,"classification":"external"},{"source":"file:internal/py/health_checks.py","target":"external:typing","kind":"python-import","raw":"typing","weight":1,"classification":"external"},{"source":"file:internal/py/health_checks.py","target":"external:urllib","kind":"python-import","raw":"urllib.error","weight":1,"classification":"external"},{"source":"file:internal/py/health_checks.py","target":"external:urllib","kind":"python-import","raw":"urllib.request","weight":1,"classification":"external"},{"source":"file:internal/py/health_checks.py","target":"file:internal/py/config_loader.py","kind":"python-import","raw":"config_loader","weight":1,"classification":"internal"},{"source":"file:internal/py/health_checks.py","target":"file:internal/py/ports_inspector.py","kind":"python-import","raw":"ports_inspector","weight":1,"classification":"internal"},{"source":"file:internal/py/health_checks.py","target":"file:internal/py/process_classifier.py","kind":"python-import","raw":"process_classifier","weight":1,"classification":"internal"},{"source":"file:internal/py/health_checks.py","target":"file:internal/py/safe_actions.py","kind":"python-import","raw":"safe_actions","weight":1,"classification":"internal"},{"source":"file:internal/py/health_checks.py","target":"file:internal/py/services_registry.py","kind":"python-import","raw":"services_registry","weight":1,"classification":"internal"},{"source":"file:internal/py/license_ops_api.py","target":"external:__future__","kind":"python-import","raw":"__future__","weight":1,"classification":"external"},{"source":"file:internal/py/license_ops_api.py","target":"external:datetime","kind":"python-import","raw":"datetime","weight":1,"classification":"external"},{"source":"file:internal/py/license_ops_api.py","target":"external:json","kind":"python-import","raw":"json","weight":1,"classification":"external"},{"source":"file:internal/py/license_ops_api.py","target":"external:os","kind":"python-import","raw":"os","weight":1,"classification":"external"},{"source":"file:internal/py/license_ops_api.py","target":"external:pathlib","kind":"python-import","raw":"pathlib","weight":1,"classification":"external"},{"source":"file:internal/py/license_ops_api.py","target":"external:shutil","kind":"python-import","raw":"shutil","weight":1,"classification":"external"},{"source":"file:internal/py/license_ops_api.py","target":"external:sqlite3","kind":"python-import","raw":"sqlite3","weight":1,"classification":"external"},{"source":"file:internal/py/license_ops_api.py","target":"external:subprocess","kind":"python-import","raw":"subprocess","weight":1,"classification":"external"},{"source":"file:internal/py/license_ops_api.py","target":"external:sys","kind":"python-import","raw":"sys","weight":1,"classification":"external"},{"source":"file:internal/py/license_ops_api.py","target":"external:typing","kind":"python-import","raw":"typing","weight":1,"classification":"external"},{"source":"file:internal/py/license_ops_api.py","target":"external:urllib","kind":"python-import","raw":"urllib.parse","weight":1,"classification":"external"},{"source":"file:internal/py/license_ops_api.py","target":"external:zipfile","kind":"python-import","raw":"zipfile","weight":1,"classification":"external"},{"source":"file:internal/py/license_ops_api.py","target":"file:internal/py/config_loader.py","kind":"python-import","raw":"config_loader","weight":1,"classification":"internal"},{"source":"file:internal/py/license_ops_api.py","target":"file:internal/py/report_writer.py","kind":"python-import","raw":"report_writer","weight":1,"classification":"internal"},{"source":"file:internal/py/license_ops_api.py","target":"file:internal/py/safe_actions.py","kind":"python-import","raw":"safe_actions","weight":1,"classification":"internal"},{"source":"file:internal/py/local_supervisor.py","target":"external:__future__","kind":"python-import","raw":"__future__","weight":1,"classification":"external"},{"source":"file:internal/py/local_supervisor.py","target":"external:time","kind":"python-import","raw":"time","weight":1,"classification":"external"},{"source":"file:internal/py/local_supervisor.py","target":"external:typing","kind":"python-import","raw":"typing","weight":1,"classification":"external"},{"source":"file:internal/py/local_supervisor.py","target":"file:internal/py/config_loader.py","kind":"python-import","raw":"config_loader","weight":1,"classification":"internal"},{"source":"file:internal/py/local_supervisor.py","target":"file:internal/py/health_checks.py","kind":"python-import","raw":"health_checks","weight":1,"classification":"internal"},{"source":"file:internal/py/local_supervisor.py","target":"file:internal/py/ports_inspector.py","kind":"python-import","raw":"ports_inspector","weight":1,"classification":"internal"},{"source":"file:internal/py/local_supervisor.py","target":"file:internal/py/process_classifier.py","kind":"python-import","raw":"process_classifier","weight":1,"classification":"internal"},{"source":"file:internal/py/local_supervisor.py","target":"file:internal/py/safe_actions.py","kind":"python-import","raw":"safe_actions","weight":1,"classification":"internal"},{"source":"file:internal/py/local_supervisor.py","target":"file:internal/py/services_registry.py","kind":"python-import","raw":"services_registry","weight":1,"classification":"internal"},{"source":"file:internal/py/ops_command_api.py","target":"external:__future__","kind":"python-import","raw":"__future__","weight":1,"classification":"external"},{"source":"file:internal/py/ops_command_api.py","target":"external:datetime","kind":"python-import","raw":"datetime","weight":1,"classification":"external"},{"source":"file:internal/py/ops_command_api.py","target":"external:json","kind":"python-import","raw":"json","weight":1,"classification":"external"},{"source":"file:internal/py/ops_command_api.py","target":"external:os","kind":"python-import","raw":"os","weight":1,"classification":"external"},{"source":"file:internal/py/ops_command_api.py","target":"external:pathlib","kind":"python-import","raw":"pathlib","weight":1,"classification":"external"},{"source":"file:internal/py/ops_command_api.py","target":"external:subprocess","kind":"python-import","raw":"subprocess","weight":1,"classification":"external"},{"source":"file:internal/py/ops_command_api.py","target":"external:sys","kind":"python-import","raw":"sys","weight":1,"classification":"external"},{"source":"file:internal/py/ops_command_api.py","target":"external:typing","kind":"python-import","raw":"typing","weight":1,"classification":"external"},{"source":"file:internal/py/ops_command_api.py","target":"external:urllib","kind":"python-import","raw":"urllib.parse","weight":1,"classification":"external"},{"source":"file:internal/py/ops_command_api.py","target":"file:internal/py/blackbox_bridge.py","kind":"python-import","raw":"blackbox_bridge","weight":1,"classification":"internal"},{"source":"file:internal/py/panel_3150.py","target":"external:__future__","kind":"python-import","raw":"__future__","weight":1,"classification":"external"},{"source":"file:internal/py/panel_3150.py","target":"external:http","kind":"python-import","raw":"http.server","weight":1,"classification":"external"},{"source":"file:internal/py/panel_3150.py","target":"external:json","kind":"python-import","raw":"json","weight":1,"classification":"external"},{"source":"file:internal/py/panel_3150.py","target":"external:threading","kind":"python-import","raw":"threading","weight":1,"classification":"external"},{"source":"file:internal/py/panel_3150.py","target":"external:time","kind":"python-import","raw":"time","weight":1,"classification":"external"},{"source":"file:internal/py/panel_3150.py","target":"external:typing","kind":"python-import","raw":"typing","weight":1,"classification":"external"},{"source":"file:internal/py/panel_3150.py","target":"external:urllib","kind":"python-import","raw":"urllib.request","weight":1,"classification":"external"},{"source":"file:internal/py/panel_3150.py","target":"external:webbrowser","kind":"python-import","raw":"webbrowser","weight":1,"classification":"external"},{"source":"file:internal/py/panel_3150.py","target":"file:internal/py/blackbox_bridge.py","kind":"python-import","raw":"blackbox_bridge","weight":1,"classification":"internal"},{"source":"file:internal/py/panel_3150.py","target":"file:internal/py/blackbox_command_api.py","kind":"python-import","raw":"blackbox_command_api","weight":1,"classification":"internal"},{"source":"file:internal/py/panel_3150.py","target":"file:internal/py/config_loader.py","kind":"python-import","raw":"config_loader","weight":1,"classification":"internal"},{"source":"file:internal/py/panel_3150.py","target":"file:internal/py/license_ops_api.py","kind":"python-import","raw":"license_ops_api","weight":1,"classification":"internal"},{"source":"file:internal/py/panel_3150.py","target":"file:internal/py/ops_command_api.py","kind":"python-import","raw":"ops_command_api","weight":1,"classification":"internal"},{"source":"file:internal/py/panel_3150.py","target":"file:internal/py/ports_inspector.py","kind":"python-import","raw":"ports_inspector","weight":1,"classification":"internal"},{"source":"file:internal/py/panel_3150.py","target":"file:internal/py/process_classifier.py","kind":"python-import","raw":"process_classifier","weight":1,"classification":"internal"},{"source":"file:internal/py/panel_3150.py","target":"file:internal/py/quality_command_api.py","kind":"python-import","raw":"quality_command_api","weight":1,"classification":"internal"},{"source":"file:internal/py/panel_3150.py","target":"file:internal/py/release_status_api.py","kind":"python-import","raw":"release_status_api","weight":1,"classification":"internal"},{"source":"file:internal/py/panel_3150.py","target":"file:internal/py/report_writer.py","kind":"python-import","raw":"report_writer","weight":1,"classification":"internal"},{"source":"file:internal/py/ports_inspector.py","target":"external:__future__","kind":"python-import","raw":"__future__","weight":1,"classification":"external"},{"source":"file:internal/py/ports_inspector.py","target":"external:json","kind":"python-import","raw":"json","weight":1,"classification":"external"},{"source":"file:internal/py/ports_inspector.py","target":"external:os","kind":"python-import","raw":"os","weight":1,"classification":"external"},{"source":"file:internal/py/ports_inspector.py","target":"external:shutil","kind":"python-import","raw":"shutil","weight":1,"classification":"external"},{"source":"file:internal/py/ports_inspector.py","target":"external:socket","kind":"python-import","raw":"socket","weight":1,"classification":"external"},{"source":"file:internal/py/ports_inspector.py","target":"external:subprocess","kind":"python-import","raw":"subprocess","weight":1,"classification":"external"},{"source":"file:internal/py/ports_inspector.py","target":"external:typing","kind":"python-import","raw":"typing","weight":1,"classification":"external"},{"source":"file:internal/py/prisma_control_center.py","target":"external:__future__","kind":"python-import","raw":"__future__","weight":1,"classification":"external"},{"source":"file:internal/py/prisma_control_center.py","target":"external:argparse","kind":"python-import","raw":"argparse","weight":1,"classification":"external"},{"source":"file:internal/py/prisma_control_center.py","target":"external:json","kind":"python-import","raw":"json","weight":1,"classification":"external"},{"source":"file:internal/py/prisma_control_center.py","target":"external:pathlib","kind":"python-import","raw":"pathlib","weight":1,"classification":"external"},{"source":"file:internal/py/prisma_control_center.py","target":"external:py_compile","kind":"python-import","raw":"py_compile","weight":1,"classification":"external"},{"source":"file:internal/py/prisma_control_center.py","target":"external:sys","kind":"python-import","raw":"sys","weight":1,"classification":"external"},{"source":"file:internal/py/prisma_control_center.py","target":"external:typing","kind":"python-import","raw":"typing","weight":1,"classification":"external"},{"source":"file:internal/py/prisma_control_center.py","target":"file:internal/py/cloudflare_supervisor.py","kind":"python-import","raw":"cloudflare_supervisor","weight":1,"classification":"internal"},{"source":"file:internal/py/prisma_control_center.py","target":"file:internal/py/config_loader.py","kind":"python-import","raw":"config_loader","weight":1,"classification":"internal"},{"source":"file:internal/py/prisma_control_center.py","target":"file:internal/py/health_checks.py","kind":"python-import","raw":"health_checks","weight":1,"classification":"internal"},{"source":"file:internal/py/prisma_control_center.py","target":"file:internal/py/local_supervisor.py","kind":"python-import","raw":"local_supervisor","weight":1,"classification":"internal"},{"source":"file:internal/py/prisma_control_center.py","target":"file:internal/py/panel_3150.py","kind":"python-import","raw":"panel_3150","weight":1,"classification":"internal"},{"source":"file:internal/py/prisma_control_center.py","target":"file:internal/py/ports_inspector.py","kind":"python-import","raw":"ports_inspector","weight":1,"classification":"internal"},{"source":"file:internal/py/prisma_control_center.py","target":"file:internal/py/report_writer.py","kind":"python-import","raw":"report_writer","weight":1,"classification":"internal"},{"source":"file:internal/py/prisma_control_center.py","target":"file:internal/py/services_registry.py","kind":"python-import","raw":"services_registry","weight":1,"classification":"internal"},{"source":"file:internal/py/process_classifier.py","target":"external:__future__","kind":"python-import","raw":"__future__","weight":1,"classification":"external"},{"source":"file:internal/py/process_classifier.py","target":"external:pathlib","kind":"python-import","raw":"pathlib","weight":1,"classification":"external"},{"source":"file:internal/py/process_classifier.py","target":"external:typing","kind":"python-import","raw":"typing","weight":1,"classification":"external"},{"source":"file:internal/py/process_classifier.py","target":"file:internal/py/config_loader.py","kind":"python-import","raw":"config_loader","weight":1,"classification":"internal"},{"source":"file:internal/py/quality_command_api.py","target":"external:__future__","kind":"python-import","raw":"__future__","weight":1,"classification":"external"},{"source":"file:internal/py/quality_command_api.py","target":"external:datetime","kind":"python-import","raw":"datetime","weight":1,"classification":"external"},{"source":"file:internal/py/quality_command_api.py","target":"external:json","kind":"python-import","raw":"json","weight":1,"classification":"external"},{"source":"file:internal/py/quality_command_api.py","target":"external:os","kind":"python-import","raw":"os","weight":1,"classification":"external"},{"source":"file:internal/py/quality_command_api.py","target":"external:pathlib","kind":"python-import","raw":"pathlib","weight":1,"classification":"external"},{"source":"file:internal/py/quality_command_api.py","target":"external:re","kind":"python-import","raw":"re","weight":1,"classification":"external"},{"source":"file:internal/py/quality_command_api.py","target":"external:shutil","kind":"python-import","raw":"shutil","weight":1,"classification":"external"},{"source":"file:internal/py/quality_command_api.py","target":"external:subprocess","kind":"python-import","raw":"subprocess","weight":1,"classification":"external"},{"source":"file:internal/py/quality_command_api.py","target":"external:typing","kind":"python-import","raw":"typing","weight":1,"classification":"external"},{"source":"file:internal/py/quality_command_api.py","target":"external:urllib","kind":"python-import","raw":"urllib.parse","weight":1,"classification":"external"},{"source":"file:internal/py/release_status_api.py","target":"external:__future__","kind":"python-import","raw":"__future__","weight":1,"classification":"external"},{"source":"file:internal/py/release_status_api.py","target":"external:datetime","kind":"python-import","raw":"datetime","weight":1,"classification":"external"},{"source":"file:internal/py/release_status_api.py","target":"external:json","kind":"python-import","raw":"json","weight":1,"classification":"external"},{"source":"file:internal/py/release_status_api.py","target":"external:pathlib","kind":"python-import","raw":"pathlib","weight":1,"classification":"external"},{"source":"file:internal/py/release_status_api.py","target":"external:typing","kind":"python-import","raw":"typing","weight":1,"classification":"external"},{"source":"file:internal/py/release_status_api.py","target":"external:urllib","kind":"python-import","raw":"urllib.parse","weight":1,"classification":"external"},{"source":"file:internal/py/release_status_api.py","target":"file:internal/py/blackbox_bridge.py","kind":"python-import","raw":"blackbox_bridge","weight":1,"classification":"internal"},{"source":"file:internal/py/report_writer.py","target":"external:__future__","kind":"python-import","raw":"__future__","weight":1,"classification":"external"},{"source":"file:internal/py/report_writer.py","target":"external:datetime","kind":"python-import","raw":"datetime","weight":1,"classification":"external"},{"source":"file:internal/py/report_writer.py","target":"external:html","kind":"python-import","raw":"html","weight":1,"classification":"external"},{"source":"file:internal/py/report_writer.py","target":"external:pathlib","kind":"python-import","raw":"pathlib","weight":1,"classification":"external"},{"source":"file:internal/py/report_writer.py","target":"external:re","kind":"python-import","raw":"re","weight":1,"classification":"external"},{"source":"file:internal/py/report_writer.py","target":"external:shutil","kind":"python-import","raw":"shutil","weight":1,"classification":"external"},{"source":"file:internal/py/report_writer.py","target":"external:typing","kind":"python-import","raw":"typing","weight":1,"classification":"external"},{"source":"file:internal/py/report_writer.py","target":"external:zipfile","kind":"python-import","raw":"zipfile","weight":1,"classification":"external"},{"source":"file:internal/py/report_writer.py","target":"file:internal/py/blackbox_bridge.py","kind":"python-import","raw":"blackbox_bridge","weight":1,"classification":"internal"},{"source":"file:internal/py/report_writer.py","target":"file:internal/py/config_loader.py","kind":"python-import","raw":"config_loader","weight":1,"classification":"internal"},{"source":"file:internal/py/safe_actions.py","target":"external:__future__","kind":"python-import","raw":"__future__","weight":1,"classification":"external"},{"source":"file:internal/py/safe_actions.py","target":"external:datetime","kind":"python-import","raw":"datetime","weight":1,"classification":"external"},{"source":"file:internal/py/safe_actions.py","target":"external:os","kind":"python-import","raw":"os","weight":1,"classification":"external"},{"source":"file:internal/py/safe_actions.py","target":"external:pathlib","kind":"python-import","raw":"pathlib","weight":1,"classification":"external"},{"source":"file:internal/py/safe_actions.py","target":"external:subprocess","kind":"python-import","raw":"subprocess","weight":1,"classification":"external"},{"source":"file:internal/py/safe_actions.py","target":"external:time","kind":"python-import","raw":"time","weight":1,"classification":"external"},{"source":"file:internal/py/safe_actions.py","target":"external:typing","kind":"python-import","raw":"typing","weight":1,"classification":"external"},{"source":"file:internal/py/safe_actions.py","target":"file:internal/py/config_loader.py","kind":"python-import","raw":"config_loader","weight":1,"classification":"internal"},{"source":"file:internal/py/safe_actions.py","target":"file:internal/py/ports_inspector.py","kind":"python-import","raw":"ports_inspector","weight":1,"classification":"internal"},{"source":"file:internal/py/safe_actions.py","target":"file:internal/py/process_classifier.py","kind":"python-import","raw":"process_classifier","weight":1,"classification":"internal"},{"source":"file:internal/py/services_registry.py","target":"external:__future__","kind":"python-import","raw":"__future__","weight":1,"classification":"external"},{"source":"file:internal/py/services_registry.py","target":"external:dataclasses","kind":"python-import","raw":"dataclasses","weight":1,"classification":"external"},{"source":"file:internal/py/services_registry.py","target":"external:typing","kind":"python-import","raw":"typing","weight":1,"classification":"external"},{"source":"file:internal/py/services_registry.py","target":"file:internal/py/config_loader.py","kind":"python-import","raw":"config_loader","weight":1,"classification":"internal"}]}</script>
+<script>
+const MODEL = JSON.parse(document.getElementById('model').textContent);
+const NODES = MODEL.nodes || [];
+const EDGES = MODEL.edges || [];
+const edgeByNode = new Map();
+for (const e of EDGES) {
+  if (!edgeByNode.has(e.source)) edgeByNode.set(e.source, []);
+  if (!edgeByNode.has(e.target)) edgeByNode.set(e.target, []);
+  edgeByNode.get(e.source).push(e); edgeByNode.get(e.target).push(e);
+}
+const state = { search:'', workspace:'', kind:'', edgeClass:'', degree:0, runtime:true, hideExternal:false, hideStdlib:true, hideTooling:true, unresolvedOnly:false, neighbors:false, calm:false, selected:null };
+const $ = (id)=>document.getElementById(id);
+const fmt = (n)=> new Intl.NumberFormat().format(Number(n||0));
+const workspaceOrder = ['(root)','products/pc/app','products/tablet/app','products/mobile/app'];
+function esc(s){ return String(s??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])); }
+function colorFor(n){
+  if (n.kind==='unresolved') return '#c75c5c';
+  if (n.kind==='workspace') return '#e6c78a';
+  if (n.kind==='external') return n.stdlib_external ? '#8b7a57' : '#b89a5e';
+  if (n.workspace==='products/mobile/app') return '#d6c29b';
+  if (n.workspace==='products/tablet/app') return '#eee0ba';
+  if (n.workspace==='products/pc/app') return '#c9b17e';
+  return '#e4ddd0';
+}
+function alphaForEdge(e){
+  if ((e.classification||'')==='unresolved' || String(e.kind||'').includes('unresolved')) return 'rgba(199,92,92,.62)';
+  if ((e.classification||'')==='contains') return 'rgba(230,199,138,.12)';
+  if ((e.classification||'')==='external') return 'rgba(184,154,94,.16)';
+  return 'rgba(230,199,138,.20)';
+}
+function metricCard(label, value, note){
+  return `<article class="metric glass"><span>${esc(label)}</span><strong>${esc(fmt(value))}</strong><small>${esc(note)}</small></article>`;
+}
+function renderMetrics(){
+  const ds = MODEL.dependency_summary || {};
+  $('metrics').innerHTML = [
+    metricCard('Source files', ds.source_files, 'Analyzed source surface'),
+    metricCard('Edges', ds.edges, 'Total dependency edges'),
+    metricCard('Internal', ds.internal_edges, 'In-repo relationships'),
+    metricCard('External', ds.external_edges, 'Packages + stdlib surface'),
+    metricCard('Unresolved', ds.unresolved_edges, 'Risk signals still open'),
+    metricCard('Ignored', ds.ignored_edges||0, 'Malformed/import-like noise'),
+    metricCard('Runtime nodes', MODEL.runtime_count, 'Product-facing graph'),
+    metricCard('Tooling nodes', MODEL.tooling_count, 'Repo operational layer'),
+  ].join('');
+}
+function populateFilters(){
+  const workspaces = [...new Set(NODES.map(n=>n.workspace||'(unknown)'))].sort((a,b)=>{
+    const ai = workspaceOrder.indexOf(a), bi = workspaceOrder.indexOf(b);
+    if (ai>=0 || bi>=0) return (ai<0?999:ai)-(bi<0?999:bi);
+    return a.localeCompare(b);
+  });
+  $('workspace').innerHTML = '<option value="">All workspaces</option>' + workspaces.map(w=>`<option>${esc(w)}</option>`).join('');
+}
+function matchesNode(n){
+  if (state.workspace && n.workspace !== state.workspace) return false;
+  if (state.kind && n.kind !== state.kind) return false;
+  if (Number(n.degree||0) < state.degree) return false;
+  if (state.runtime && !n.runtime && n.kind!=='workspace' && n.kind!=='unresolved') return false;
+  if (state.hideTooling && !n.runtime && n.kind==='file') return false;
+  if (state.hideExternal && n.kind==='external') return false;
+  if (state.hideStdlib && n.stdlib_external) return false;
+  if (state.unresolvedOnly) {
+    const edges = edgeByNode.get(n.id) || [];
+    if (!edges.some(e => (e.classification||'')==='unresolved' || String(e.kind||'').includes('unresolved'))) return false;
+  }
+  const q = state.search.trim().toLowerCase();
+  if (q) {
+    const hay = [n.id, n.label, n.path, n.workspace, n.kind, (n.metadata||{}).raw].join(' ').toLowerCase();
+    if (!hay.includes(q)) return false;
+  }
+  return true;
+}
+function filteredNodes(){
+  let nodes = NODES.filter(matchesNode);
+  if (state.neighbors && state.selected) {
+    const keep = new Set([state.selected]);
+    for (const e of edgeByNode.get(state.selected) || []) { keep.add(e.source); keep.add(e.target); }
+    nodes = nodes.filter(n=>keep.has(n.id));
+  }
+  return nodes.sort((a,b)=>(Number(b.degree||0)-Number(a.degree||0)) || String(a.label||a.id).localeCompare(String(b.label||b.id)));
+}
+function filteredEdges(nodes){
+  const ids = new Set(nodes.map(n=>n.id));
+  return EDGES.filter(e=>ids.has(e.source) && ids.has(e.target) && (!state.edgeClass || (e.classification||'')===state.edgeClass));
+}
+function renderList(nodes){
+  $('nodeCount').textContent = `${fmt(nodes.length)} visible nodes`;
+  $('nodeList').innerHTML = nodes.slice(0,220).map(n=>`
+    <div class="item ${state.selected===n.id?'active':''}" data-id="${esc(n.id)}">
+      <div class="item-title">${esc(n.label || n.id)}</div>
+      <div class="item-path">${esc(n.path || n.id)}</div>
+      <div class="item-stats">
+        <span class="pill workspace">${esc(n.workspace||'(unknown)')}</span>
+        <span class="pill ${esc(n.kind)}">${esc(n.kind)}</span>
+        <span class="pill">deg ${fmt(n.degree)}</span>
+        <span class="pill">in ${fmt(n.inbound)}</span>
+        <span class="pill">out ${fmt(n.outbound)}</span>
+      </div>
+    </div>
+  `).join('');
+  document.querySelectorAll('#nodeList .item').forEach(el=>el.onclick=()=>{ state.selected = el.dataset.id; renderAll(); });
+  if (!state.selected && nodes[0]) state.selected = nodes[0].id;
+}
+function renderDetail(){
+  const node = NODES.find(n=>n.id===state.selected);
+  if (!node) { $('detail').innerHTML = '<div class="meta">Select a node to inspect its neighborhood.</div>'; return; }
+  const incident = (edgeByNode.get(node.id)||[]).slice(0,18);
+  $('detail').innerHTML = `
+    <h3>${esc(node.label || node.id)}</h3>
+    <div class="meta">${esc(node.path || node.id)}</div>
+    <div class="detail-grid" style="margin-top:12px">
+      <div class="kv"><span>Workspace</span><b>${esc(node.workspace||'(unknown)')}</b></div>
+      <div class="kv"><span>Kind</span><b>${esc(node.kind||'unknown')}</b></div>
+      <div class="kv"><span>Inbound</span><b>${fmt(node.inbound)}</b></div>
+      <div class="kv"><span>Outbound</span><b>${fmt(node.outbound)}</b></div>
+      <div class="kv"><span>Degree</span><b>${fmt(node.degree)}</b></div>
+      <div class="kv"><span>Runtime</span><b>${node.runtime ? 'yes' : 'no'}</b></div>
+      <div class="kv"><span>Stdlib external</span><b>${node.stdlib_external ? 'yes' : 'no'}</b></div>
+      <div class="kv"><span>Node id</span><b>${esc(node.id)}</b></div>
+    </div>
+    <div class="section-title">Selected neighborhood</div>
+    <div class="meta">${incident.map(e=>`${esc(e.source)} → ${esc(e.target)} (${esc(e.classification||e.kind||'edge')})`).join('<br>') || 'No adjacent edges visible.'}</div>
+  `;
+}
+function renderTables(){
+  $('externalTable').innerHTML = `<thead><tr><th>External</th><th>Inbound</th><th>Class</th></tr></thead><tbody>${(MODEL.top_external||[]).slice(0,80).map(r=>`<tr><td class="path">${esc(r.raw || r.label || r.path)}</td><td>${fmt(r.inbound)}</td><td>${r.stdlib_external ? 'stdlib' : 'package'}</td></tr>`).join('')}</tbody>`;
+  $('unresolvedTable').innerHTML = `<thead><tr><th>Source</th><th>Target</th><th>Kind</th></tr></thead><tbody>${(MODEL.unresolved_edges||[]).map(r=>`<tr><td class="path">${esc(r.source)}</td><td class="path">${esc(r.raw || r.target)}</td><td>${esc(r.kind || r.classification || 'unresolved')}</td></tr>`).join('')}</tbody>`;
+}
+let positions = new Map();
+function workspaceCenter(groups, index, w, h){
+  const cols = Math.min(3, groups.length || 1);
+  const rows = Math.max(1, Math.ceil(groups.length / cols));
+  const col = index % cols, row = Math.floor(index / cols);
+  const x = w * (0.18 + (cols===1 ? 0.32 : (0.64 * (col / Math.max(1, cols-1)))));
+  const y = h * (0.20 + (rows===1 ? 0.30 : (0.58 * (row / Math.max(1, rows-1)))));
+  return [x, y];
+}
+function drawGraph(nodes, edges){
+  const canvas = $('graph'); const ctx = canvas.getContext('2d'); const w = canvas.width, h = canvas.height;
+  const t = performance.now()/1000; ctx.clearRect(0,0,w,h);
+  const drawNodes = nodes.slice(0,420);
+  const ids = new Set(drawNodes.map(n=>n.id));
+  const groups = [...new Set(drawNodes.map(n=>n.workspace || '[none]'))];
+  const centers = new Map(groups.map((g,i)=>[g, workspaceCenter(groups, i, w, h)]));
+  const groupIndex = {};
+  ctx.save();
+  for (const [g, c] of centers.entries()) {
+    ctx.strokeStyle = 'rgba(230,199,138,.09)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.ellipse(c[0], c[1], 120, 54, Math.sin(t*.15 + c[0]*.001)*.22, 0, Math.PI*2); ctx.stroke();
+    ctx.fillStyle = 'rgba(230,199,138,.42)'; ctx.font = '11px Segoe UI'; ctx.fillText(g, c[0]-54, c[1]-66);
+  }
+  ctx.restore();
+  for (const n of drawNodes) {
+    const c = centers.get(n.workspace || '[none]') || [w/2, h/2];
+    groupIndex[n.workspace] = (groupIndex[n.workspace] || 0) + 1;
+    const i = groupIndex[n.workspace];
+    const r = 40 + Math.sqrt(i)*17 + (n.kind==='workspace' ? 16 : 0);
+    const a = i*2.399 + (state.calm ? 0 : t*.05);
+    const x = c[0] + Math.cos(a)*r;
+    const y = c[1] + Math.sin(a)*(r*.62);
+    positions.set(n.id, [x,y]);
+  }
+  ctx.lineWidth = 1;
+  for (const e of edges.slice(0,2200)) {
+    if (!ids.has(e.source) || !ids.has(e.target)) continue;
+    const a = positions.get(e.source), b = positions.get(e.target); if (!a || !b) continue;
+    ctx.strokeStyle = alphaForEdge(e);
+    ctx.shadowColor = (e.classification==='unresolved') ? 'rgba(199,92,92,.32)' : 'rgba(230,199,138,.12)';
+    ctx.shadowBlur = (e.classification==='unresolved' || state.selected===e.source || state.selected===e.target) ? 8 : 0;
+    ctx.beginPath();
+    ctx.moveTo(a[0], a[1]);
+    const mx = (a[0] + b[0]) / 2;
+    const my = (a[1] + b[1]) / 2 - 16;
+    ctx.quadraticCurveTo(mx, my, b[0], b[1]);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+  for (const n of drawNodes) {
+    const p = positions.get(n.id); if (!p) continue;
+    const deg = Math.min(28, 5 + Math.sqrt(n.degree || 1) * 2.2);
+    ctx.beginPath();
+    ctx.fillStyle = colorFor(n);
+    ctx.shadowColor = colorFor(n);
+    ctx.shadowBlur = state.selected===n.id ? 22 : 8;
+    ctx.arc(p[0], p[1], state.selected===n.id ? deg+4 : deg, 0, Math.PI*2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    if ((n.degree || 0) > 18 || state.selected===n.id) {
+      ctx.fillStyle = 'rgba(242,238,230,.92)';
+      ctx.font = '11px Segoe UI';
+      ctx.fillText((n.label || n.id).slice(0, 30), p[0] + deg + 5, p[1] + 4);
+    }
+  }
+  $('fieldMeta').textContent = `${fmt(drawNodes.length)} nodes / ${fmt(edges.length)} edges`;
+  $('hud').innerHTML = [
+    `runtime ${state.runtime?'on':'off'}`,
+    `tooling ${state.hideTooling?'hidden':'visible'}`,
+    `externals ${state.hideExternal?'hidden':'visible'}`,
+    `stdlib ${state.hideStdlib?'hidden':'visible'}`,
+    `degree ${state.degree}+`,
+  ].map(x=>`<span>${x}</span>`).join('');
+}
+function drawHero(){
+  const canvas = $('heroCanvas'); const ctx = canvas.getContext('2d'); const w = canvas.width, h = canvas.height; const t = performance.now()/1000;
+  ctx.clearRect(0,0,w,h);
+  for (let ring=0; ring<5; ring++) {
+    ctx.strokeStyle = `rgba(230,199,138,${.14 - ring*.018})`;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.ellipse(w/2, h/2, 80 + ring*38, 28 + ring*17, Math.sin(t*.16 + ring)*.35, 0, Math.PI*2);
+    ctx.stroke();
+  }
+  for (let i=0; i<48; i++) {
+    const a = i*.61 + t*(.12 + (i%4)*.02);
+    const r = 20 + (i%10)*18;
+    const x = w/2 + Math.cos(a)*r;
+    const y = h/2 + Math.sin(a)*(r*.38);
+    ctx.fillStyle = i%7===0 ? '#c75c5c' : (i%3===0 ? '#e6c78a' : '#d8c7a2');
+    ctx.shadowColor = ctx.fillStyle;
+    ctx.shadowBlur = 12;
+    ctx.beginPath();
+    ctx.arc(x, y, i%9===0 ? 3.7 : 2.5, 0, Math.PI*2);
+    ctx.fill();
+  }
+  requestAnimationFrame(drawHero);
+}
+function renderAll(){ const nodes = filteredNodes(); const edges = filteredEdges(nodes); renderList(nodes); renderDetail(); drawGraph(nodes, edges); }
+function bind(){
+  $('search').oninput = e => { state.search = e.target.value; renderAll(); };
+  $('workspace').onchange = e => { state.workspace = e.target.value; renderAll(); };
+  $('kind').onchange = e => { state.kind = e.target.value; renderAll(); };
+  $('edgeClass').onchange = e => { state.edgeClass = e.target.value; renderAll(); };
+  $('degree').onchange = e => { state.degree = Number(e.target.value || 0); renderAll(); };
+  document.querySelectorAll('.chip').forEach(ch => ch.onclick = () => { const k = ch.dataset.toggle; state[k] = !state[k]; ch.classList.toggle('active', state[k]); renderAll(); });
+  $('graph').onclick = e => {
+    const rect = e.target.getBoundingClientRect();
+    const x = (e.clientX - rect.left) * ($('graph').width / rect.width);
+    const y = (e.clientY - rect.top) * ($('graph').height / rect.height);
+    let best = null, bd = 999;
+    for (const [id,p] of positions) { const d = Math.hypot(p[0]-x,p[1]-y); if (d < bd) { bd = d; best = id; } }
+    if (best && bd < 34) { state.selected = best; renderAll(); }
+  };
+  $('exportJson').onclick = () => {
+    const nodes = filteredNodes();
+    const ids = new Set(nodes.map(n=>n.id));
+    const edges = EDGES.filter(e=>ids.has(e.source) && ids.has(e.target));
+    const blob = new Blob([JSON.stringify({tool:'code-atlas dependency visual filtered export',version:'4.2.0',generated_at:new Date().toISOString(),theme:'black_glass_gold',nodes,edges}, null, 2)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'code_atlas_filtered_dependency_graph_black_glass.json'; a.click(); URL.revokeObjectURL(a.href);
+  };
+}
+renderMetrics(); populateFilters(); renderTables(); bind(); renderAll(); drawHero();
+function tick(){ if(!state.calm) renderAll(); requestAnimationFrame(tick); } requestAnimationFrame(tick);
+</script>
+</body>
+</html>

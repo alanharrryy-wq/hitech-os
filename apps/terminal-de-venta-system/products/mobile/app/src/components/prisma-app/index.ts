@@ -12,3 +12,4 @@ export { PrismaMobilePulseTimeline } from "./PrismaMobilePulseTimeline";
 export { PrismaMobileHealthRadar } from "./PrismaMobileHealthRadar";
 
 export { PrismaMobilePremiumNavigator } from "./PrismaMobilePremiumNavigator";
+export { PrismaMobileMultiContextSwitcher } from "./PrismaMobileMultiContextSwitcher";

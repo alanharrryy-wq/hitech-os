@@ -1,1 +1,21 @@
-export const pcRoutes = ["/", "/catalog", "/stock", "/counts", "/purchasing", "/receiving", "/replenishment", "/audit", "/sync", "/settings"] as const;
+export const pcRoutes = [
+  "/",
+  "/dashboard",
+  "/sales-control",
+  "/cash-sessions",
+  "/catalog",
+  "/stock",
+  "/movements",
+  "/counts",
+  "/purchasing",
+  "/receiving",
+  "/replenishment",
+  "/proveedores",
+  "/audit",
+  "/sync",
+  "/devices",
+  "/tablet-communication",
+  "/license-runtime",
+  "/data-quality",
+  "/settings"
+] as const;

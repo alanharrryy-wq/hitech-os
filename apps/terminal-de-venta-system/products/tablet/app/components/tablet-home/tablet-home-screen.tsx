@@ -48,17 +48,7 @@ export function TabletHomeScreen({ snapshot }: Props) {
             <a className={styles.secondaryButton} href={vm.hero.secondaryHref}>{vm.hero.secondaryLabel}</a>
           </div>
         </div>
-        <div className={styles.heroAside} aria-label="Preparación de turno">
-          {vm.checklist.map((item) => (
-            <div className={styles.readinessItem} key={item.label}>
-              <span>
-                <strong>{item.label}</strong>
-                <span>{item.note}</span>
-              </span>
-              <i className={item.ready ? styles.readyDot : styles.warnDot} aria-hidden="true" />
-            </div>
-          ))}
-        </div>
+        {/* 09D: readiness checklist is already represented in the runtime rail; do not duplicate it vertically on Home. */}
       </section>
 
       <section className={styles.metricGrid} aria-label="Métricas rápidas">

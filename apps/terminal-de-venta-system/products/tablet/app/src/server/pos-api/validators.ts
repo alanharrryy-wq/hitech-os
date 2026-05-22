@@ -23,6 +23,16 @@ export type SalesTodayInput = {
   date?: string;
 };
 
+export type SalesHistoryInput = {
+  businessId: string;
+  terminalId?: string;
+  preset: "today" | "yesterday" | "7d" | "30d" | "custom";
+  from?: string;
+  to?: string;
+  query?: string;
+  limit: number;
+};
+
 export type PosListInput = {
   businessId: string;
   terminalId?: string;
@@ -85,6 +95,20 @@ export function readSalesTodayInput(searchParams: URLSearchParams): SalesTodayIn
     businessId: asString(searchParams.get("businessId"), DEFAULT_POS_API_BUSINESS_ID),
     terminalId: asString(searchParams.get("terminalId"), "") || undefined,
     date: asString(searchParams.get("date"), "") || undefined
+  };
+}
+
+export function readSalesHistoryInput(searchParams: URLSearchParams): SalesHistoryInput {
+  const rawPreset = asString(searchParams.get("preset"), "7d").toLowerCase();
+  const preset = rawPreset === "today" || rawPreset === "yesterday" || rawPreset === "30d" || rawPreset === "custom" ? rawPreset : "7d";
+  return {
+    businessId: asString(searchParams.get("businessId"), DEFAULT_POS_API_BUSINESS_ID),
+    terminalId: asString(searchParams.get("terminalId"), "") || undefined,
+    preset,
+    from: asString(searchParams.get("from"), "") || undefined,
+    to: asString(searchParams.get("to"), "") || undefined,
+    query: asString(searchParams.get("q"), "") || undefined,
+    limit: asPositiveInteger(searchParams.get("limit"), 120, 200)
   };
 }
 

@@ -1,9 +1,10 @@
-import { SyncReleaseWorkspace } from "../../components/sync/sync-release-workspace";
-import { getTriDbStatusCard } from "../../src/server/services/tri-db-status.service";
+import { PcCommandCenterPage } from "@components/control/pc-command-center-page";
+import { getPcSyncCommandCenter } from "@/server/services/pc-command-center.service";
 
 export const dynamic = "force-dynamic";
 
-export default async function SyncPage() {
-  const triDbStatus = await getTriDbStatusCard();
-  return <SyncReleaseWorkspace triDbStatus={triDbStatus} />;
+export default async function SyncPage({ searchParams }: { searchParams?: Promise<Record<string, string | string[] | undefined>> }) {
+  const params = searchParams ? await searchParams : undefined;
+  const model = await getPcSyncCommandCenter(params);
+  return <PcCommandCenterPage model={model} />;
 }

@@ -75,3 +75,21 @@
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .filterBar button,
   :global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .empty::after{animation:none!important;transition:none!important;transform:none!important}
 }
+
+/* PRISMA_TABLET_SYNC_REAL_DISPATCH_01::START
+ * Sync panel now distinguishes refresh from real dispatch.
+ * Visual-only additions for new action/diagnostic states.
+ */
+.dispatchNote{border:1px solid rgba(125,211,252,.28);background:rgba(14,165,233,.12);border-radius:18px;padding:14px;color:#bae6fd;font-size:14px;font-weight:800;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.dispatchNote_ok{border-color:rgba(34,197,94,.4);background:rgba(20,184,166,.14);color:#bbf7d0}
+.dispatchNote_warn{border-color:rgba(245,158,11,.42);background:rgba(245,158,11,.12);color:#fde68a}
+.dispatchNote_danger{border-color:rgba(248,113,113,.48);background:rgba(127,29,29,.24);color:#fecaca}
+.dispatchNote_neutral{border-color:rgba(148,163,184,.32);background:rgba(148,163,184,.1);color:#e2e8f0}
+.heroActions .primaryAction{border-color:rgba(125,188,255,.76)!important;background:linear-gradient(138deg,rgba(136,206,255,.96),rgba(35,126,255,.95) 52%,rgba(11,88,220,.98))!important;color:#fff!important;box-shadow:0 16px 34px rgba(31,110,255,.28),inset 0 1px 0 rgba(255,255,255,.52)!important}
+.heroActions .secondaryAction{background:rgba(255,255,255,.12)!important;color:inherit!important}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dispatchNote{border-color:var(--prisma-border-action);background:rgba(21,87,255,.08);color:var(--prisma-action-primary);box-shadow:var(--prisma-shadow-xs)}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dispatchNote_ok{border-color:color-mix(in srgb,var(--prisma-state-success) 40%,var(--prisma-border-soft));background:color-mix(in srgb,var(--prisma-state-success) 10%,#fff);color:color-mix(in srgb,var(--prisma-state-success) 78%,#0f2544)}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dispatchNote_warn{border-color:color-mix(in srgb,var(--prisma-state-warning) 42%,var(--prisma-border-soft));background:color-mix(in srgb,var(--prisma-state-warning) 12%,#fff);color:#865c0f}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .dispatchNote_danger{border-color:color-mix(in srgb,var(--prisma-state-danger) 42%,var(--prisma-border-soft));background:color-mix(in srgb,var(--prisma-state-danger) 11%,#fff);color:#a72742}
+:global(html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"]) .heroActions .primaryAction{border-color:var(--prisma-border-action)!important;background:var(--prisma-action-primary-gradient)!important;color:var(--prisma-text-inverse)!important;box-shadow:var(--prisma-shadow-primary-glow)!important}
+/* PRISMA_TABLET_SYNC_REAL_DISPATCH_01::END */

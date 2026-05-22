@@ -24,6 +24,13 @@ export const POS_EVENT_STOCK_DECREMENTED = "stock.decremented";
 export const POS_EVENT_INVENTORY_LOW_STOCK_DETECTED = "inventory.low_stock_detected";
 export const POS_EVENT_CASH_SESSION_OPENED = "cash.session.opened";
 export const POS_EVENT_CASH_MOVEMENT_RECORDED = "cash.movement.recorded";
+export const POS_EVENT_SUPPLIER_CREATED = "supplier.created";
+export const POS_EVENT_SUPPLIER_UPDATED = "supplier.updated";
+export const POS_EVENT_SUPPLIER_DISABLED = "supplier.disabled";
+export const POS_EVENT_PRODUCT_SUPPLIER_LINKED = "product.supplier.linked";
+export const POS_EVENT_PRODUCT_SUPPLIER_UNLINKED = "product.supplier.unlinked";
+export const POS_EVENT_PRODUCT_SUPPLIER_UPDATED = "product.supplier.updated";
+
 
 export const DEFAULT_LOW_STOCK_THRESHOLD = 5;
 export const POS_EVENT_SCHEMA_VERSION = "1.0.0";

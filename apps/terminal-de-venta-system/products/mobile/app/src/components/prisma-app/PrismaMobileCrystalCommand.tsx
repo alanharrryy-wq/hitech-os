@@ -314,9 +314,9 @@ function DailyBriefPreview({ clientSnapshot }: { clientSnapshot: PrismaMobileCli
         <h3>Guía de cierre</h3>
       </header>
       <div className={styles.briefGrid}>
-        <article><span>Highlights</span>{report.highlights.map((item) => <p key={item}>{item}</p>)}</article>
-        <article><span>Riesgos</span>{report.risks.map((item) => <p key={item}>{item}</p>)}</article>
-        <article><span>Acciones</span>{report.recommendedActions.slice(0, 4).map((item) => <p key={item}>{item}</p>)}</article>
+        <article><span>Highlights</span>{report.highlights.map((item, index) => <p key={`highlight-${index}-${item}`}>{item}</p>)}</article>
+        <article><span>Riesgos</span>{report.risks.map((item, index) => <p key={`risk-${index}-${item}`}>{item}</p>)}</article>
+        <article><span>Acciones</span>{report.recommendedActions.slice(0, 4).map((item, index) => <p key={`action-${index}-${item}`}>{item}</p>)}</article>
       </div>
     </section>
   );

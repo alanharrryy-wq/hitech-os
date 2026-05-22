@@ -71,6 +71,9 @@ function parseArgs() {
   const explicitRoot = argValue(args, "--runtime-root");
   const rootBase = explicitRoot || path.join(defaultProgramDataRoot(), "PRISMA", titleCase(vertical));
   const licenseSource = argValue(args, "--license-file");
+  const pcOrigin = argValue(args, "--pc-origin", packageType === "TABLET_PC_MANAGED" ? "http://127.0.0.1:3130" : null);
+  const pcIngestPath = argValue(args, "--pc-ingest-path", "/api/sync/ingest");
+  const pcHealthPath = argValue(args, "--pc-health-path", "/api/sync/ingest");
   const apply = hasFlag(args, "--apply");
   const dryRun = hasFlag(args, "--dry-run") || !apply;
 
@@ -90,6 +93,9 @@ function parseArgs() {
     clientId,
     runtimeRoot: path.resolve(rootBase),
     licenseSource: licenseSource ? path.resolve(licenseSource) : null,
+    pcOrigin,
+    pcIngestPath,
+    pcHealthPath,
     dryRun,
     apply
   };
@@ -150,7 +156,14 @@ function main() {
     },
     sync: {
       enabled: options.packageType === "TABLET_PC_MANAGED",
-      mode: options.packageType === "TABLET_PC_MANAGED" ? "local_network_optional" : "none"
+      mode: options.packageType === "TABLET_PC_MANAGED" ? "local_network_optional" : "none",
+      pcOrigin: options.packageType === "TABLET_PC_MANAGED" ? options.pcOrigin : undefined,
+      ingestPath: options.packageType === "TABLET_PC_MANAGED" ? options.pcIngestPath : undefined,
+      healthPath: options.packageType === "TABLET_PC_MANAGED" ? options.pcHealthPath : undefined,
+      automaticDispatch: false,
+      ackStrict: true,
+      batchSize: 25,
+      maxAttempts: 8
     },
     features: {},
     support: {

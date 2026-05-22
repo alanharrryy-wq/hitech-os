@@ -34,7 +34,13 @@ export const RECOGNIZED_SYNC_TOPICS = [
   "sync.event.sent",
   "sync.event.failed",
   "sync.conflict.detected",
-  "sync.conflict.resolved"
+  "sync.conflict.resolved",
+  "supplier.created",
+  "supplier.updated",
+  "supplier.disabled",
+  "product.supplier.linked",
+  "product.supplier.unlinked",
+  "product.supplier.updated"
 ] as const;
 
 export const SUPPORTED_SYNC_SCHEMA_VERSIONS = ["1.0.0"] as const;
@@ -161,6 +167,15 @@ function payloadConflicts(event: SyncEventEnvelope): SyncConflictFinding[] {
   }
   if (payload.previousEventId === event.eventId || payload.sequenceError === true) {
     conflicts.push(conflict("inconsistent_sequence", "El payload reporta secuencia inconsistente."));
+  }
+  if ((event.topic === "supplier.created" || event.topic === "supplier.updated" || event.topic === "supplier.disabled") && !asString(payload.supplierId ?? payload.id)) {
+    conflicts.push(conflict("invalid_schema", "supplier.* requires supplierId."));
+  }
+  if ((event.topic === "supplier.created" || event.topic === "supplier.updated") && !asString(payload.name ?? payload.tradeName)) {
+    conflicts.push(conflict("invalid_schema", "supplier.created/updated require name."));
+  }
+  if ((event.topic === "product.supplier.linked" || event.topic === "product.supplier.unlinked" || event.topic === "product.supplier.updated") && (!asString(payload.productId) || !asString(payload.supplierId))) {
+    conflicts.push(conflict("invalid_schema", "product.supplier.* requires productId and supplierId."));
   }
   return conflicts;
 }

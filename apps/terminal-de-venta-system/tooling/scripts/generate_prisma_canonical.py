@@ -33,7 +33,12 @@ def schema_for(app_root: Path) -> Path:
     cache = app_root / "node_modules" / ".cache" / "hitech-prisma-canonical"
     cache.mkdir(parents=True, exist_ok=True)
     target = cache / "schema.prisma"
-    target.write_text(SCHEMA.read_text(encoding="utf-8"), encoding="utf-8")
+    schema_text = SCHEMA.read_text(encoding="utf-8").replace(
+        'generator client {\n  provider = "prisma-client-js"\n}',
+        'generator client {\n  provider = "prisma-client-js"\n  output   = "../../../.generated/prisma-client"\n}',
+        1,
+    )
+    target.write_text(schema_text, encoding="utf-8")
     return target
 
 

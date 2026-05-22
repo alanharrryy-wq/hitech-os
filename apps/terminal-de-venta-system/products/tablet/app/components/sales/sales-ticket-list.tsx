@@ -6,13 +6,22 @@ import type { SalesTodayTicket } from "@/lib/sales-today/types";
 import { formatTicketTime } from "@/lib/sales-today/view-model";
 import styles from "./sales.module.css";
 
-export function SalesTicketList({ tickets }: { tickets: SalesTodayTicket[] }) {
-  if (!tickets.length) return <div className={styles.empty}>Aún no hay tickets cerrados para mostrar.</div>;
+export function SalesTicketList({
+  tickets,
+  basePath = "/sales/today",
+  emptyMessage = "Aún no hay tickets cerrados para mostrar."
+}: {
+  tickets: SalesTodayTicket[];
+  basePath?: "/sales/today" | "/sales/history";
+  emptyMessage?: string;
+}) {
+  const validTickets = tickets.filter((ticket) => ticket.saleId && ticket.saleId !== "undefined");
+  if (!validTickets.length) return <div className={styles.empty}>{emptyMessage}</div>;
 
   return (
     <section className={styles.ticketList} aria-label="Tickets cerrados del día">
-      {tickets.map((ticket) => {
-        const detailHref = `/sales/today/${encodeURIComponent(ticket.saleId)}?businessId=${encodeURIComponent(ticket.businessId)}`;
+      {validTickets.map((ticket) => {
+        const detailHref = `${basePath}/${encodeURIComponent(ticket.saleId)}?businessId=${encodeURIComponent(ticket.businessId)}`;
         return (
           <Link
             className={styles.ticketRow}

@@ -109,12 +109,25 @@ foreach ($owner in $owners) {
 
 Start-Sleep -Seconds 2
 
-$remaining = @(Get-PortOwners -TargetPorts $Ports)
-if ($remaining.Count -gt 0) {
-  Write-Host "[PRISMA] ADVERTENCIA: quedan procesos usando puertos objetivo:" -ForegroundColor Yellow
-  foreach ($owner in $remaining) {
-    Write-Host "  PID=$($owner.Pid) PORTS=$(($owner.Ports | Sort-Object) -join ',')" -ForegroundColor Yellow
+$remainingAll = @(Get-PortOwners -TargetPorts $Ports)
+$remainingReal = @()
+foreach ($owner in $remainingAll) {
+  $ownerPid = [int]$owner.Pid
+  $ownerProc = Get-Process -Id $ownerPid -ErrorAction SilentlyContinue
+  $ownerName = if ($ownerProc) { $ownerProc.ProcessName + ".exe" } else { "UNKNOWN" }
+  if ($ownerPid -eq 0 -or $ownerPid -eq 4 -or $ProtectedNames -contains $ownerName) {
+    Write-Host "[PRISMA] SKIP restante protegido PID=$ownerPid NAME=$ownerName PORTS=$(($owner.Ports | Sort-Object) -join ',')" -ForegroundColor DarkYellow
+    continue
   }
+  $remainingReal += $owner
+}
+
+if ($remainingReal.Count -gt 0) {
+  Write-Host "[PRISMA] ERROR: quedan procesos reales usando puertos objetivo:" -ForegroundColor Red
+  foreach ($owner in $remainingReal) {
+    Write-Host "  PID=$($owner.Pid) PORTS=$(($owner.Ports | Sort-Object) -join ',')" -ForegroundColor Red
+  }
+  throw "No se pudieron liberar todos los puertos PRISMA reales."
 } else {
-  Write-Host "[PRISMA] Puertos liberados." -ForegroundColor Green
+  Write-Host "[PRISMA] Puertos liberados o solo quedan puertos protegidos/sistema ignorables." -ForegroundColor Green
 }

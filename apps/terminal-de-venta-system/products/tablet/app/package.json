@@ -4,12 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev -p 3120",
-    "build": "next build --webpack",
+    "prisma:generate": "prisma generate --schema prisma/schema.prisma",
+    "dev": "pnpm run prisma:generate && next dev -p 3120",
+    "build": "pnpm run prisma:generate && node ../../../tools/run-next-build.mjs",
     "start": "next start -p 3120",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "pnpm run prisma:generate && tsc --noEmit",
     "check:package": "python tools/validate_package.py .",
-    "check:all": "python tools/validate_package.py . && tsc --noEmit",
+    "check:all": "python tools/validate_package.py . && pnpm run typecheck",
     "db:summary": "python tools/db_summary.py data/tablet-pos.db",
     "db:tablet:init": "node scripts/tablet-db.mjs init",
     "db:tablet:generate": "node scripts/tablet-db.mjs generate",
@@ -47,7 +48,8 @@
     "verify:tablet-license-missing-fallback": "node tools/verify_tablet_license_missing_fallback.mjs",
     "verify:tablet-sync-dispatcher": "node tools/verify_tablet_sync_dispatcher_01.mjs",
     "verify:tablet-operational-gate": "node tools/verify_tablet_operational_gate_01.mjs",
-    "verify:tablet-ticket-license-bundle": "node tools/verify_tablet_ticket_license_bundle_01.mjs"
+    "verify:tablet-ticket-license-bundle": "node tools/verify_tablet_ticket_license_bundle_01.mjs",
+    "verify:tablet-sales-history-reset": "node tools/verify_tablet_sales_history_reset_01.mjs"
   },
   "dependencies": {
     "@prisma/client": "5.21.1",

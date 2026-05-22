@@ -16,7 +16,13 @@ export const SHARED_SYNC_EVENTS = [
   "sync.event.sent",
   "sync.event.failed",
   "sync.conflict.detected",
-  "sync.conflict.resolved"
+  "sync.conflict.resolved",
+  "supplier.created",
+  "supplier.updated",
+  "supplier.disabled",
+  "product.supplier.linked",
+  "product.supplier.unlinked",
+  "product.supplier.updated"
 ] as const;
 
 export type SharedSyncEvent = (typeof SHARED_SYNC_EVENTS)[number];

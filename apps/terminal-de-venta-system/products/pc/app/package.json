@@ -4,12 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev -p 3130",
-    "build": "next build --webpack",
+    "prisma:generate": "python ../../../tooling/scripts/generate_prisma_canonical.py pc",
+    "dev": "pnpm run prisma:generate && next dev -p 3130",
+    "build": "pnpm run prisma:generate && node ../../../tools/run-next-build.mjs",
     "start": "next start -p 3130",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "pnpm run prisma:generate && tsc --noEmit",
     "check:package": "python tools/validate_package.py .",
-    "check:all": "python tools/validate_package.py . && tsc --noEmit",
+    "check:all": "python tools/validate_package.py . && pnpm run typecheck",
     "db:canonical:generate": "python ../../../tooling/scripts/generate_prisma_canonical.py pc",
     "db:canonical:migrate": "python ../../../tooling/scripts/migrate_prisma_canonical.py",
     "db:canonical:seed": "node ../../../prisma/seed.mjs",
@@ -18,7 +19,10 @@
     "db:pc:mass-catalog": "node scripts/pc-seed-mass-catalog-04d.mjs",
     "verify:pc:mass-catalog": "node tools/verify_pc_mass_catalog_04d.mjs",
     "verify:visual-os-pc-binding-00j": "node tools/verify_prisma_visual_os_pc_binding_00j.mjs",
-    "verify:pc-ingest-idempotency": "node tools/verify_pc_ingest_idempotency_01.mjs"
+    "verify:pc-ingest-idempotency": "node tools/verify_pc_ingest_idempotency_01.mjs",
+    "verify:pc-uiux-300": "node tools/verify_pc_uiux_300_addendum.mjs",
+    "verify:supplier-sync-contract": "node tools/verify_supplier_sync_contract_01.mjs",
+    "verify:supplier-projectors": "node tools/verify_supplier_projectors_01.mjs"
   },
   "dependencies": {
     "@prisma/client": "5.21.1",

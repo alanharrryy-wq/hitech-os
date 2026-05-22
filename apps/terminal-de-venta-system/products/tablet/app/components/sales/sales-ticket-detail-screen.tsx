@@ -132,24 +132,21 @@ function formatDateTime(value: string) {
   }).format(date);
 }
 
-function DetailStateCard({ title, message, canSell, onRetry }: { title: string; message: string; canSell: boolean; onRetry?: () => void }) {
+function DetailStateCard({ title, message, canSell, backHref, onRetry }: { title: string; message: string; canSell: boolean; backHref: string; onRetry?: () => void }) {
   return (
     <section className={styles.stateCard}>
       <h2>{title}</h2>
       <p>{message}</p>
       <div className={styles.actionsRow}>
         {onRetry ? <button className={styles.primary} type="button" onClick={onRetry}>Reintentar lectura</button> : null}
-        <a className={styles.secondary} href="/sales/today">Volver a ventas</a>
+        <a className={styles.secondary} href={backHref}>Volver a ventas</a>
         <a className={onRetry ? styles.secondary : styles.primary} href={canSell ? "/pos" : "/shift"}>{canSell ? "Nueva venta" : "Abrir turno"}</a>
       </div>
     </section>
   );
 }
 
-function TicketNotFoundDiagnostic({ message, diagnostic, canSell, onRetry }: { message: string; diagnostic?: TicketLookupDiagnostic; canSell: boolean; onRetry: () => void }) {
-  const latest = diagnostic?.latestTickets ?? [];
-  const outbox = diagnostic?.matchedOutboxEvents.length ? diagnostic.matchedOutboxEvents : diagnostic?.latestOutboxEvents ?? [];
-
+function TicketNotFoundDiagnostic({ message, diagnostic, canSell, backHref, onRetry }: { message: string; diagnostic?: TicketLookupDiagnostic; canSell: boolean; backHref: string; onRetry: () => void }) {
   return (
     <section className={styles.stateCard} data-prisma-ticket-resolution="not-found-diagnostic">
       <div className={styles.diagnosticHeader}>
@@ -157,48 +154,33 @@ function TicketNotFoundDiagnostic({ message, diagnostic, canSell, onRetry }: { m
           <h2>Ticket no encontrado</h2>
           <p>{message}</p>
         </div>
-        <span>Resolución server-side</span>
+        <span>Soporte bloqueado</span>
       </div>
 
       {diagnostic ? (
         <>
           <div className={styles.diagnosticGrid}>
-            <DiagnosticMetric label="ID solicitado" value={diagnostic.requestedId} />
-            <DiagnosticMetric label="Campos intentados" value={diagnostic.attemptedFields.join(" / ")} />
+            <DiagnosticMetric label="Búsqueda local" value="sin coincidencia" />
+            <DiagnosticMetric label="Campos revisados" value={String(diagnostic.attemptedFields.length)} />
             <DiagnosticMetric label="Tickets negocio" value={String(diagnostic.scopedTicketCount)} />
             <DiagnosticMetric label="Tickets locales" value={String(diagnostic.totalTicketCount)} />
           </div>
 
-          <div className={styles.diagnosticSection}>
-            <strong>Últimos tickets locales</strong>
-            {latest.length ? latest.slice(0, 5).map((ticket) => (
-              <span key={ticket.saleId}>{ticket.folio} · {ticket.saleId} · {ticket.clientRequestId ?? "sin clientRequestId"} · {formatMoney(ticket.totalCents)}</span>
-            )) : <span>Sin tickets locales registrados.</span>}
-          </div>
-
-          <div className={styles.diagnosticSection}>
-            <strong>Outbox / últimos eventos</strong>
-            {outbox.length ? outbox.slice(0, 5).map((event) => (
-              <span key={event.id}>{event.topic} · {event.aggregateId} · {event.status}{event.lastError ? ` · ${event.lastError}` : ""}</span>
-            )) : <span>Sin eventos outbox relacionados.</span>}
-          </div>
-
-          <div className={styles.diagnosticSection}>
-            <strong>Boundary server/adapters</strong>
-            {diagnostic.serverAdapters.map((adapter) => <span key={adapter}>{adapter}</span>)}
-          </div>
+          <details className={styles.lockedDiagnostic}>
+            <summary>Diagnóstico técnico</summary>
+            <p>Bloqueado para caja. Soporte puede usar el endpoint local y los logs sanitizados desde herramientas administrativas.</p>
+          </details>
         </>
       ) : (
         <div className={styles.diagnosticSection}>
-          <strong>Diagnóstico pendiente</strong>
-          <span>No llegó detalle diagnóstico desde el boundary server.</span>
+          <strong>Diagnóstico técnico bloqueado</strong>
+          <span>No se muestran IDs internos ni errores crudos en caja. Reintenta o vuelve a ventas.</span>
         </div>
       )}
 
       <div className={styles.actionsRow}>
         <button className={styles.primary} type="button" onClick={onRetry}>Reintentar lectura</button>
-        <a className={styles.secondary} href="/sales/today">Volver a ventas</a>
-        <a className={styles.secondary} href="http://127.0.0.1:3150/#license-ops">Exportar diagnóstico</a>
+        <a className={styles.secondary} href={backHref}>Volver a ventas</a>
         <a className={styles.secondary} href={canSell ? "/pos" : "/shift"}>{canSell ? "Nueva venta" : "Abrir turno"}</a>
       </div>
     </section>
@@ -214,7 +196,19 @@ function DiagnosticMetric({ label, value }: { label: string; value: string }) {
   );
 }
 
-export function SalesTicketDetailScreen({ saleId, businessId, runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }: { saleId: string; businessId?: string; runtimeSnapshot?: TabletRuntimeSnapshot }) {
+export function SalesTicketDetailScreen({
+  saleId,
+  businessId,
+  runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT,
+  currentPath = "/sales/today",
+  backHref = "/sales/today"
+}: {
+  saleId: string;
+  businessId?: string;
+  runtimeSnapshot?: TabletRuntimeSnapshot;
+  currentPath?: "/sales/today" | "/sales/history";
+  backHref?: string;
+}) {
   const [state, setState] = useState<DetailState>({ status: "loading" });
   const [reloadToken, setReloadToken] = useState(0);
   const gate = decideCanSellFromRuntimeSnapshot(runtimeSnapshot);
@@ -242,7 +236,7 @@ export function SalesTicketDetailScreen({ saleId, businessId, runtimeSnapshot = 
 
   return (
     <PrismaTabletShellUnified
-      currentPath="/sales/today"
+      currentPath={currentPath}
       title="Detalle de ticket"
       subtitle="Detalle operativo del ticket cerrado."
       status={<TabletShellStatusPill tone="ok">Ticket cerrado</TabletShellStatusPill>}
@@ -250,15 +244,15 @@ export function SalesTicketDetailScreen({ saleId, businessId, runtimeSnapshot = 
     >
       <main className={styles.salesPage}>
         {state.status === "loading" ? (
-          <DetailStateCard title="Cargando detalle…" message="Estoy buscando el ticket en la base local de Tablet." canSell={gate.canShowSellNavigation} />
+          <DetailStateCard title="Cargando detalle…" message="Estoy buscando el ticket en la base local de Tablet." canSell={gate.canShowSellNavigation} backHref={backHref} />
         ) : null}
 
         {state.status === "not_found" ? (
-          <TicketNotFoundDiagnostic message={state.message} diagnostic={state.diagnostic} canSell={gate.canShowSellNavigation} onRetry={() => setReloadToken((value) => value + 1)} />
+          <TicketNotFoundDiagnostic message={state.message} diagnostic={state.diagnostic} canSell={gate.canShowSellNavigation} backHref={backHref} onRetry={() => setReloadToken((value) => value + 1)} />
         ) : null}
 
         {state.status === "error" ? (
-          <DetailStateCard title="No se pudo abrir el detalle" message={state.message} canSell={gate.canShowSellNavigation} onRetry={() => setReloadToken((value) => value + 1)} />
+          <DetailStateCard title="No se pudo abrir el detalle" message={state.message} canSell={gate.canShowSellNavigation} backHref={backHref} onRetry={() => setReloadToken((value) => value + 1)} />
         ) : null}
 
         {state.status === "ready" ? (
@@ -329,7 +323,7 @@ export function SalesTicketDetailScreen({ saleId, businessId, runtimeSnapshot = 
               <div className={styles.actionsStack}>
                 <a className={styles.primary} href={`/sales/today/${encodeURIComponent(state.ticket.saleId)}/return`}>Hacer devolución</a>
                 <a className={styles.secondary} href={gate.canShowSellNavigation ? "/pos" : gate.actionHref}>{gate.canShowSellNavigation ? "Nueva venta" : gate.actionLabel}</a>
-                <a className={styles.secondary} href="/sales/today">Volver</a>
+                <a className={styles.secondary} href={backHref}>Volver</a>
               </div>
             </aside>
           </section>

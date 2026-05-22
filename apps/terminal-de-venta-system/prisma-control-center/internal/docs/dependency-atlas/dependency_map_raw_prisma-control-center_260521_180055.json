@@ -1,0 +1,1051 @@
+{
+  "tool": "capatch dependency-map analyzer",
+  "version": "1.2.0",
+  "root": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\prisma-control-center",
+  "summary": {
+    "files_scanned": 101,
+    "source_files": 25,
+    "edges": 163,
+    "unresolved_edges": 0,
+    "source_counts": {
+      "js": 8,
+      "py": 17
+    }
+  },
+  "project": {
+    "package_name": "",
+    "package_manager": "unknown",
+    "tsconfig": {
+      "path": "",
+      "base_url": ".",
+      "paths": {}
+    },
+    "tsconfigs": [],
+    "pnpm_workspaces": [],
+    "exclude_policy": {
+      "default_excluded_dirs": [
+        ".git",
+        ".hg",
+        ".idea",
+        ".mypy_cache",
+        ".next",
+        ".nox",
+        ".prisma_backups",
+        ".prisma_installer_backups",
+        ".prisma_installer_tmp",
+        ".pytest_cache",
+        ".ruff_cache",
+        ".svn",
+        ".tox",
+        ".turbo",
+        ".venv",
+        ".vscode",
+        "__pycache__",
+        "_chatgpt_patch_backups",
+        "_dependency_graphs",
+        "backup",
+        "backups",
+        "build",
+        "coverage",
+        "dist",
+        "env",
+        "node_modules",
+        "out",
+        "reports",
+        "target",
+        "venv"
+      ],
+      "backup_suffixes": [
+        "_backups",
+        "-backups",
+        ".backup",
+        ".bak"
+      ],
+      "include_hidden_dirs": false,
+      "extra_excludes": [
+        "prisma-salvage"
+      ]
+    }
+  },
+  "edges": [
+    {
+      "source": "internal/py/blackbox_bridge.py",
+      "target": "__future__",
+      "kind": "python-import",
+      "raw": "__future__"
+    },
+    {
+      "source": "internal/py/blackbox_bridge.py",
+      "target": "hashlib",
+      "kind": "python-import",
+      "raw": "hashlib"
+    },
+    {
+      "source": "internal/py/blackbox_bridge.py",
+      "target": "json",
+      "kind": "python-import",
+      "raw": "json"
+    },
+    {
+      "source": "internal/py/blackbox_bridge.py",
+      "target": "os",
+      "kind": "python-import",
+      "raw": "os"
+    },
+    {
+      "source": "internal/py/blackbox_bridge.py",
+      "target": "shutil",
+      "kind": "python-import",
+      "raw": "shutil"
+    },
+    {
+      "source": "internal/py/blackbox_bridge.py",
+      "target": "datetime",
+      "kind": "python-import",
+      "raw": "datetime"
+    },
+    {
+      "source": "internal/py/blackbox_bridge.py",
+      "target": "pathlib",
+      "kind": "python-import",
+      "raw": "pathlib"
+    },
+    {
+      "source": "internal/py/blackbox_bridge.py",
+      "target": "typing",
+      "kind": "python-import",
+      "raw": "typing"
+    },
+    {
+      "source": "internal/py/blackbox_command_api.py",
+      "target": "__future__",
+      "kind": "python-import",
+      "raw": "__future__"
+    },
+    {
+      "source": "internal/py/blackbox_command_api.py",
+      "target": "json",
+      "kind": "python-import",
+      "raw": "json"
+    },
+    {
+      "source": "internal/py/blackbox_command_api.py",
+      "target": "datetime",
+      "kind": "python-import",
+      "raw": "datetime"
+    },
+    {
+      "source": "internal/py/blackbox_command_api.py",
+      "target": "pathlib",
+      "kind": "python-import",
+      "raw": "pathlib"
+    },
+    {
+      "source": "internal/py/blackbox_command_api.py",
+      "target": "typing",
+      "kind": "python-import",
+      "raw": "typing"
+    },
+    {
+      "source": "internal/py/blackbox_command_api.py",
+      "target": "urllib.parse",
+      "kind": "python-import",
+      "raw": "urllib.parse"
+    },
+    {
+      "source": "internal/py/blackbox_command_api.py",
+      "target": "blackbox_bridge",
+      "kind": "python-import",
+      "raw": "blackbox_bridge"
+    },
+    {
+      "source": "internal/py/cloudflare_supervisor.py",
+      "target": "__future__",
+      "kind": "python-import",
+      "raw": "__future__"
+    },
+    {
+      "source": "internal/py/cloudflare_supervisor.py",
+      "target": "subprocess",
+      "kind": "python-import",
+      "raw": "subprocess"
+    },
+    {
+      "source": "internal/py/cloudflare_supervisor.py",
+      "target": "time",
+      "kind": "python-import",
+      "raw": "time"
+    },
+    {
+      "source": "internal/py/cloudflare_supervisor.py",
+      "target": "typing",
+      "kind": "python-import",
+      "raw": "typing"
+    },
+    {
+      "source": "internal/py/cloudflare_supervisor.py",
+      "target": "config_loader",
+      "kind": "python-import",
+      "raw": "config_loader"
+    },
+    {
+      "source": "internal/py/cloudflare_supervisor.py",
+      "target": "health_checks",
+      "kind": "python-import",
+      "raw": "health_checks"
+    },
+    {
+      "source": "internal/py/cloudflare_supervisor.py",
+      "target": "safe_actions",
+      "kind": "python-import",
+      "raw": "safe_actions"
+    },
+    {
+      "source": "internal/py/config_loader.py",
+      "target": "__future__",
+      "kind": "python-import",
+      "raw": "__future__"
+    },
+    {
+      "source": "internal/py/config_loader.py",
+      "target": "json",
+      "kind": "python-import",
+      "raw": "json"
+    },
+    {
+      "source": "internal/py/config_loader.py",
+      "target": "os",
+      "kind": "python-import",
+      "raw": "os"
+    },
+    {
+      "source": "internal/py/config_loader.py",
+      "target": "socket",
+      "kind": "python-import",
+      "raw": "socket"
+    },
+    {
+      "source": "internal/py/config_loader.py",
+      "target": "pathlib",
+      "kind": "python-import",
+      "raw": "pathlib"
+    },
+    {
+      "source": "internal/py/config_loader.py",
+      "target": "typing",
+      "kind": "python-import",
+      "raw": "typing"
+    },
+    {
+      "source": "internal/py/health_checks.py",
+      "target": "__future__",
+      "kind": "python-import",
+      "raw": "__future__"
+    },
+    {
+      "source": "internal/py/health_checks.py",
+      "target": "json",
+      "kind": "python-import",
+      "raw": "json"
+    },
+    {
+      "source": "internal/py/health_checks.py",
+      "target": "shutil",
+      "kind": "python-import",
+      "raw": "shutil"
+    },
+    {
+      "source": "internal/py/health_checks.py",
+      "target": "socket",
+      "kind": "python-import",
+      "raw": "socket"
+    },
+    {
+      "source": "internal/py/health_checks.py",
+      "target": "ssl",
+      "kind": "python-import",
+      "raw": "ssl"
+    },
+    {
+      "source": "internal/py/health_checks.py",
+      "target": "subprocess",
+      "kind": "python-import",
+      "raw": "subprocess"
+    },
+    {
+      "source": "internal/py/health_checks.py",
+      "target": "time",
+      "kind": "python-import",
+      "raw": "time"
+    },
+    {
+      "source": "internal/py/health_checks.py",
+      "target": "urllib.error",
+      "kind": "python-import",
+      "raw": "urllib.error"
+    },
+    {
+      "source": "internal/py/health_checks.py",
+      "target": "urllib.request",
+      "kind": "python-import",
+      "raw": "urllib.request"
+    },
+    {
+      "source": "internal/py/health_checks.py",
+      "target": "pathlib",
+      "kind": "python-import",
+      "raw": "pathlib"
+    },
+    {
+      "source": "internal/py/health_checks.py",
+      "target": "typing",
+      "kind": "python-import",
+      "raw": "typing"
+    },
+    {
+      "source": "internal/py/health_checks.py",
+      "target": "config_loader",
+      "kind": "python-import",
+      "raw": "config_loader"
+    },
+    {
+      "source": "internal/py/health_checks.py",
+      "target": "ports_inspector",
+      "kind": "python-import",
+      "raw": "ports_inspector"
+    },
+    {
+      "source": "internal/py/health_checks.py",
+      "target": "process_classifier",
+      "kind": "python-import",
+      "raw": "process_classifier"
+    },
+    {
+      "source": "internal/py/health_checks.py",
+      "target": "safe_actions",
+      "kind": "python-import",
+      "raw": "safe_actions"
+    },
+    {
+      "source": "internal/py/health_checks.py",
+      "target": "services_registry",
+      "kind": "python-import",
+      "raw": "services_registry"
+    },
+    {
+      "source": "internal/py/license_ops_api.py",
+      "target": "__future__",
+      "kind": "python-import",
+      "raw": "__future__"
+    },
+    {
+      "source": "internal/py/license_ops_api.py",
+      "target": "json",
+      "kind": "python-import",
+      "raw": "json"
+    },
+    {
+      "source": "internal/py/license_ops_api.py",
+      "target": "os",
+      "kind": "python-import",
+      "raw": "os"
+    },
+    {
+      "source": "internal/py/license_ops_api.py",
+      "target": "shutil",
+      "kind": "python-import",
+      "raw": "shutil"
+    },
+    {
+      "source": "internal/py/license_ops_api.py",
+      "target": "sqlite3",
+      "kind": "python-import",
+      "raw": "sqlite3"
+    },
+    {
+      "source": "internal/py/license_ops_api.py",
+      "target": "subprocess",
+      "kind": "python-import",
+      "raw": "subprocess"
+    },
+    {
+      "source": "internal/py/license_ops_api.py",
+      "target": "sys",
+      "kind": "python-import",
+      "raw": "sys"
+    },
+    {
+      "source": "internal/py/license_ops_api.py",
+      "target": "zipfile",
+      "kind": "python-import",
+      "raw": "zipfile"
+    },
+    {
+      "source": "internal/py/license_ops_api.py",
+      "target": "datetime",
+      "kind": "python-import",
+      "raw": "datetime"
+    },
+    {
+      "source": "internal/py/license_ops_api.py",
+      "target": "pathlib",
+      "kind": "python-import",
+      "raw": "pathlib"
+    },
+    {
+      "source": "internal/py/license_ops_api.py",
+      "target": "typing",
+      "kind": "python-import",
+      "raw": "typing"
+    },
+    {
+      "source": "internal/py/license_ops_api.py",
+      "target": "urllib.parse",
+      "kind": "python-import",
+      "raw": "urllib.parse"
+    },
+    {
+      "source": "internal/py/license_ops_api.py",
+      "target": "config_loader",
+      "kind": "python-import",
+      "raw": "config_loader"
+    },
+    {
+      "source": "internal/py/license_ops_api.py",
+      "target": "report_writer",
+      "kind": "python-import",
+      "raw": "report_writer"
+    },
+    {
+      "source": "internal/py/license_ops_api.py",
+      "target": "safe_actions",
+      "kind": "python-import",
+      "raw": "safe_actions"
+    },
+    {
+      "source": "internal/py/local_supervisor.py",
+      "target": "__future__",
+      "kind": "python-import",
+      "raw": "__future__"
+    },
+    {
+      "source": "internal/py/local_supervisor.py",
+      "target": "time",
+      "kind": "python-import",
+      "raw": "time"
+    },
+    {
+      "source": "internal/py/local_supervisor.py",
+      "target": "typing",
+      "kind": "python-import",
+      "raw": "typing"
+    },
+    {
+      "source": "internal/py/local_supervisor.py",
+      "target": "config_loader",
+      "kind": "python-import",
+      "raw": "config_loader"
+    },
+    {
+      "source": "internal/py/local_supervisor.py",
+      "target": "health_checks",
+      "kind": "python-import",
+      "raw": "health_checks"
+    },
+    {
+      "source": "internal/py/local_supervisor.py",
+      "target": "ports_inspector",
+      "kind": "python-import",
+      "raw": "ports_inspector"
+    },
+    {
+      "source": "internal/py/local_supervisor.py",
+      "target": "process_classifier",
+      "kind": "python-import",
+      "raw": "process_classifier"
+    },
+    {
+      "source": "internal/py/local_supervisor.py",
+      "target": "safe_actions",
+      "kind": "python-import",
+      "raw": "safe_actions"
+    },
+    {
+      "source": "internal/py/local_supervisor.py",
+      "target": "services_registry",
+      "kind": "python-import",
+      "raw": "services_registry"
+    },
+    {
+      "source": "internal/py/ops_command_api.py",
+      "target": "__future__",
+      "kind": "python-import",
+      "raw": "__future__"
+    },
+    {
+      "source": "internal/py/ops_command_api.py",
+      "target": "json",
+      "kind": "python-import",
+      "raw": "json"
+    },
+    {
+      "source": "internal/py/ops_command_api.py",
+      "target": "os",
+      "kind": "python-import",
+      "raw": "os"
+    },
+    {
+      "source": "internal/py/ops_command_api.py",
+      "target": "subprocess",
+      "kind": "python-import",
+      "raw": "subprocess"
+    },
+    {
+      "source": "internal/py/ops_command_api.py",
+      "target": "sys",
+      "kind": "python-import",
+      "raw": "sys"
+    },
+    {
+      "source": "internal/py/ops_command_api.py",
+      "target": "datetime",
+      "kind": "python-import",
+      "raw": "datetime"
+    },
+    {
+      "source": "internal/py/ops_command_api.py",
+      "target": "pathlib",
+      "kind": "python-import",
+      "raw": "pathlib"
+    },
+    {
+      "source": "internal/py/ops_command_api.py",
+      "target": "typing",
+      "kind": "python-import",
+      "raw": "typing"
+    },
+    {
+      "source": "internal/py/ops_command_api.py",
+      "target": "urllib.parse",
+      "kind": "python-import",
+      "raw": "urllib.parse"
+    },
+    {
+      "source": "internal/py/ops_command_api.py",
+      "target": "blackbox_bridge",
+      "kind": "python-import",
+      "raw": "blackbox_bridge"
+    },
+    {
+      "source": "internal/py/panel_3150.py",
+      "target": "__future__",
+      "kind": "python-import",
+      "raw": "__future__"
+    },
+    {
+      "source": "internal/py/panel_3150.py",
+      "target": "json",
+      "kind": "python-import",
+      "raw": "json"
+    },
+    {
+      "source": "internal/py/panel_3150.py",
+      "target": "threading",
+      "kind": "python-import",
+      "raw": "threading"
+    },
+    {
+      "source": "internal/py/panel_3150.py",
+      "target": "time",
+      "kind": "python-import",
+      "raw": "time"
+    },
+    {
+      "source": "internal/py/panel_3150.py",
+      "target": "urllib.request",
+      "kind": "python-import",
+      "raw": "urllib.request"
+    },
+    {
+      "source": "internal/py/panel_3150.py",
+      "target": "webbrowser",
+      "kind": "python-import",
+      "raw": "webbrowser"
+    },
+    {
+      "source": "internal/py/panel_3150.py",
+      "target": "http.server",
+      "kind": "python-import",
+      "raw": "http.server"
+    },
+    {
+      "source": "internal/py/panel_3150.py",
+      "target": "typing",
+      "kind": "python-import",
+      "raw": "typing"
+    },
+    {
+      "source": "internal/py/panel_3150.py",
+      "target": "config_loader",
+      "kind": "python-import",
+      "raw": "config_loader"
+    },
+    {
+      "source": "internal/py/panel_3150.py",
+      "target": "ports_inspector",
+      "kind": "python-import",
+      "raw": "ports_inspector"
+    },
+    {
+      "source": "internal/py/panel_3150.py",
+      "target": "process_classifier",
+      "kind": "python-import",
+      "raw": "process_classifier"
+    },
+    {
+      "source": "internal/py/panel_3150.py",
+      "target": "report_writer",
+      "kind": "python-import",
+      "raw": "report_writer"
+    },
+    {
+      "source": "internal/py/panel_3150.py",
+      "target": "blackbox_bridge",
+      "kind": "python-import",
+      "raw": "blackbox_bridge"
+    },
+    {
+      "source": "internal/py/panel_3150.py",
+      "target": "blackbox_command_api",
+      "kind": "python-import",
+      "raw": "blackbox_command_api"
+    },
+    {
+      "source": "internal/py/panel_3150.py",
+      "target": "ops_command_api",
+      "kind": "python-import",
+      "raw": "ops_command_api"
+    },
+    {
+      "source": "internal/py/panel_3150.py",
+      "target": "release_status_api",
+      "kind": "python-import",
+      "raw": "release_status_api"
+    },
+    {
+      "source": "internal/py/panel_3150.py",
+      "target": "quality_command_api",
+      "kind": "python-import",
+      "raw": "quality_command_api"
+    },
+    {
+      "source": "internal/py/panel_3150.py",
+      "target": "license_ops_api",
+      "kind": "python-import",
+      "raw": "license_ops_api"
+    },
+    {
+      "source": "internal/py/ports_inspector.py",
+      "target": "__future__",
+      "kind": "python-import",
+      "raw": "__future__"
+    },
+    {
+      "source": "internal/py/ports_inspector.py",
+      "target": "json",
+      "kind": "python-import",
+      "raw": "json"
+    },
+    {
+      "source": "internal/py/ports_inspector.py",
+      "target": "os",
+      "kind": "python-import",
+      "raw": "os"
+    },
+    {
+      "source": "internal/py/ports_inspector.py",
+      "target": "shutil",
+      "kind": "python-import",
+      "raw": "shutil"
+    },
+    {
+      "source": "internal/py/ports_inspector.py",
+      "target": "socket",
+      "kind": "python-import",
+      "raw": "socket"
+    },
+    {
+      "source": "internal/py/ports_inspector.py",
+      "target": "subprocess",
+      "kind": "python-import",
+      "raw": "subprocess"
+    },
+    {
+      "source": "internal/py/ports_inspector.py",
+      "target": "typing",
+      "kind": "python-import",
+      "raw": "typing"
+    },
+    {
+      "source": "internal/py/prisma_control_center.py",
+      "target": "__future__",
+      "kind": "python-import",
+      "raw": "__future__"
+    },
+    {
+      "source": "internal/py/prisma_control_center.py",
+      "target": "argparse",
+      "kind": "python-import",
+      "raw": "argparse"
+    },
+    {
+      "source": "internal/py/prisma_control_center.py",
+      "target": "json",
+      "kind": "python-import",
+      "raw": "json"
+    },
+    {
+      "source": "internal/py/prisma_control_center.py",
+      "target": "py_compile",
+      "kind": "python-import",
+      "raw": "py_compile"
+    },
+    {
+      "source": "internal/py/prisma_control_center.py",
+      "target": "sys",
+      "kind": "python-import",
+      "raw": "sys"
+    },
+    {
+      "source": "internal/py/prisma_control_center.py",
+      "target": "pathlib",
+      "kind": "python-import",
+      "raw": "pathlib"
+    },
+    {
+      "source": "internal/py/prisma_control_center.py",
+      "target": "typing",
+      "kind": "python-import",
+      "raw": "typing"
+    },
+    {
+      "source": "internal/py/prisma_control_center.py",
+      "target": "cloudflare_supervisor",
+      "kind": "python-import",
+      "raw": "cloudflare_supervisor"
+    },
+    {
+      "source": "internal/py/prisma_control_center.py",
+      "target": "config_loader",
+      "kind": "python-import",
+      "raw": "config_loader"
+    },
+    {
+      "source": "internal/py/prisma_control_center.py",
+      "target": "health_checks",
+      "kind": "python-import",
+      "raw": "health_checks"
+    },
+    {
+      "source": "internal/py/prisma_control_center.py",
+      "target": "local_supervisor",
+      "kind": "python-import",
+      "raw": "local_supervisor"
+    },
+    {
+      "source": "internal/py/prisma_control_center.py",
+      "target": "panel_3150",
+      "kind": "python-import",
+      "raw": "panel_3150"
+    },
+    {
+      "source": "internal/py/prisma_control_center.py",
+      "target": "ports_inspector",
+      "kind": "python-import",
+      "raw": "ports_inspector"
+    },
+    {
+      "source": "internal/py/prisma_control_center.py",
+      "target": "report_writer",
+      "kind": "python-import",
+      "raw": "report_writer"
+    },
+    {
+      "source": "internal/py/prisma_control_center.py",
+      "target": "services_registry",
+      "kind": "python-import",
+      "raw": "services_registry"
+    },
+    {
+      "source": "internal/py/process_classifier.py",
+      "target": "__future__",
+      "kind": "python-import",
+      "raw": "__future__"
+    },
+    {
+      "source": "internal/py/process_classifier.py",
+      "target": "pathlib",
+      "kind": "python-import",
+      "raw": "pathlib"
+    },
+    {
+      "source": "internal/py/process_classifier.py",
+      "target": "typing",
+      "kind": "python-import",
+      "raw": "typing"
+    },
+    {
+      "source": "internal/py/process_classifier.py",
+      "target": "config_loader",
+      "kind": "python-import",
+      "raw": "config_loader"
+    },
+    {
+      "source": "internal/py/quality_command_api.py",
+      "target": "__future__",
+      "kind": "python-import",
+      "raw": "__future__"
+    },
+    {
+      "source": "internal/py/quality_command_api.py",
+      "target": "json",
+      "kind": "python-import",
+      "raw": "json"
+    },
+    {
+      "source": "internal/py/quality_command_api.py",
+      "target": "os",
+      "kind": "python-import",
+      "raw": "os"
+    },
+    {
+      "source": "internal/py/quality_command_api.py",
+      "target": "re",
+      "kind": "python-import",
+      "raw": "re"
+    },
+    {
+      "source": "internal/py/quality_command_api.py",
+      "target": "shutil",
+      "kind": "python-import",
+      "raw": "shutil"
+    },
+    {
+      "source": "internal/py/quality_command_api.py",
+      "target": "subprocess",
+      "kind": "python-import",
+      "raw": "subprocess"
+    },
+    {
+      "source": "internal/py/quality_command_api.py",
+      "target": "datetime",
+      "kind": "python-import",
+      "raw": "datetime"
+    },
+    {
+      "source": "internal/py/quality_command_api.py",
+      "target": "pathlib",
+      "kind": "python-import",
+      "raw": "pathlib"
+    },
+    {
+      "source": "internal/py/quality_command_api.py",
+      "target": "typing",
+      "kind": "python-import",
+      "raw": "typing"
+    },
+    {
+      "source": "internal/py/quality_command_api.py",
+      "target": "urllib.parse",
+      "kind": "python-import",
+      "raw": "urllib.parse"
+    },
+    {
+      "source": "internal/py/release_status_api.py",
+      "target": "__future__",
+      "kind": "python-import",
+      "raw": "__future__"
+    },
+    {
+      "source": "internal/py/release_status_api.py",
+      "target": "json",
+      "kind": "python-import",
+      "raw": "json"
+    },
+    {
+      "source": "internal/py/release_status_api.py",
+      "target": "datetime",
+      "kind": "python-import",
+      "raw": "datetime"
+    },
+    {
+      "source": "internal/py/release_status_api.py",
+      "target": "pathlib",
+      "kind": "python-import",
+      "raw": "pathlib"
+    },
+    {
+      "source": "internal/py/release_status_api.py",
+      "target": "typing",
+      "kind": "python-import",
+      "raw": "typing"
+    },
+    {
+      "source": "internal/py/release_status_api.py",
+      "target": "urllib.parse",
+      "kind": "python-import",
+      "raw": "urllib.parse"
+    },
+    {
+      "source": "internal/py/release_status_api.py",
+      "target": "blackbox_bridge",
+      "kind": "python-import",
+      "raw": "blackbox_bridge"
+    },
+    {
+      "source": "internal/py/report_writer.py",
+      "target": "__future__",
+      "kind": "python-import",
+      "raw": "__future__"
+    },
+    {
+      "source": "internal/py/report_writer.py",
+      "target": "html",
+      "kind": "python-import",
+      "raw": "html"
+    },
+    {
+      "source": "internal/py/report_writer.py",
+      "target": "re",
+      "kind": "python-import",
+      "raw": "re"
+    },
+    {
+      "source": "internal/py/report_writer.py",
+      "target": "shutil",
+      "kind": "python-import",
+      "raw": "shutil"
+    },
+    {
+      "source": "internal/py/report_writer.py",
+      "target": "zipfile",
+      "kind": "python-import",
+      "raw": "zipfile"
+    },
+    {
+      "source": "internal/py/report_writer.py",
+      "target": "datetime",
+      "kind": "python-import",
+      "raw": "datetime"
+    },
+    {
+      "source": "internal/py/report_writer.py",
+      "target": "pathlib",
+      "kind": "python-import",
+      "raw": "pathlib"
+    },
+    {
+      "source": "internal/py/report_writer.py",
+      "target": "typing",
+      "kind": "python-import",
+      "raw": "typing"
+    },
+    {
+      "source": "internal/py/report_writer.py",
+      "target": "config_loader",
+      "kind": "python-import",
+      "raw": "config_loader"
+    },
+    {
+      "source": "internal/py/report_writer.py",
+      "target": "blackbox_bridge",
+      "kind": "python-import",
+      "raw": "blackbox_bridge"
+    },
+    {
+      "source": "internal/py/safe_actions.py",
+      "target": "__future__",
+      "kind": "python-import",
+      "raw": "__future__"
+    },
+    {
+      "source": "internal/py/safe_actions.py",
+      "target": "os",
+      "kind": "python-import",
+      "raw": "os"
+    },
+    {
+      "source": "internal/py/safe_actions.py",
+      "target": "subprocess",
+      "kind": "python-import",
+      "raw": "subprocess"
+    },
+    {
+      "source": "internal/py/safe_actions.py",
+      "target": "time",
+      "kind": "python-import",
+      "raw": "time"
+    },
+    {
+      "source": "internal/py/safe_actions.py",
+      "target": "datetime",
+      "kind": "python-import",
+      "raw": "datetime"
+    },
+    {
+      "source": "internal/py/safe_actions.py",
+      "target": "pathlib",
+      "kind": "python-import",
+      "raw": "pathlib"
+    },
+    {
+      "source": "internal/py/safe_actions.py",
+      "target": "typing",
+      "kind": "python-import",
+      "raw": "typing"
+    },
+    {
+      "source": "internal/py/safe_actions.py",
+      "target": "config_loader",
+      "kind": "python-import",
+      "raw": "config_loader"
+    },
+    {
+      "source": "internal/py/safe_actions.py",
+      "target": "ports_inspector",
+      "kind": "python-import",
+      "raw": "ports_inspector"
+    },
+    {
+      "source": "internal/py/safe_actions.py",
+      "target": "process_classifier",
+      "kind": "python-import",
+      "raw": "process_classifier"
+    },
+    {
+      "source": "internal/py/services_registry.py",
+      "target": "__future__",
+      "kind": "python-import",
+      "raw": "__future__"
+    },
+    {
+      "source": "internal/py/services_registry.py",
+      "target": "dataclasses",
+      "kind": "python-import",
+      "raw": "dataclasses"
+    },
+    {
+      "source": "internal/py/services_registry.py",
+      "target": "typing",
+      "kind": "python-import",
+      "raw": "typing"
+    },
+    {
+      "source": "internal/py/services_registry.py",
+      "target": "config_loader",
+      "kind": "python-import",
+      "raw": "config_loader"
+    }
+  ],
+  "unresolved": []
+}

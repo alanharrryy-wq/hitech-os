@@ -1,5 +1,64 @@
 @echo off
 
+if /I "%~1"=="pc-dev" (
+  setlocal EnableDelayedExpansion
+  for %%I in ("%~dp0.") do set "TV_SYSTEM_ROOT=%%~fI"
+  set "PC_APP=!TV_SYSTEM_ROOT!\products\pc\app"
+  set "OUT_DIR=F:\descargasf"
+  set "PC_DB_FILE=!TV_SYSTEM_ROOT!\tools\_local\data\terminal-de-venta-system\canonical.db"
+  set "PC_DB_URL=file:!PC_DB_FILE:\=/!"
+  set "DATABASE_URL=!PC_DB_URL!"
+  set "PC_DATABASE_URL=!PC_DB_URL!"
+  set "PRISMA_HIDE_UPDATE_MESSAGE=1"
+  set "PRISMA_PREFLIGHT_SCRIPT=!TV_SYSTEM_ROOT!\tools\_local\repair_prisma_client_pnpm_bridge.ps1"
+  where pnpm >nul 2>&1
+  if errorlevel 1 (
+    echo [ERROR] pnpm is not available in PATH.
+    exit /b 1
+  )
+  if not exist "!PC_APP!\package.json" (
+    echo [ERROR] PC app not found:
+    echo         !PC_APP!
+    exit /b 1
+  )
+  if /I "%PRISMA_RUN_DEV_PREFLIGHT%"=="1" if exist "!PRISMA_PREFLIGHT_SCRIPT!" (
+    powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -File "!PRISMA_PREFLIGHT_SCRIPT!" -Root "!TV_SYSTEM_ROOT!" -Product "pc"
+    if errorlevel 1 exit /b 1
+  )
+  pnpm --dir "!PC_APP!" run dev
+  exit /b
+)
+
+if /I "%~1"=="tablet-dev" (
+  setlocal EnableDelayedExpansion
+  for %%I in ("%~dp0.") do set "TV_SYSTEM_ROOT=%%~fI"
+  set "TABLET_APP=!TV_SYSTEM_ROOT!\products\tablet\app"
+  set "OUT_DIR=F:\descargasf"
+  set "TABLET_DB_FILE=!TABLET_APP!\data\tablet-pos.db"
+  set "TABLET_DB_URL=file:!TABLET_DB_FILE:\=/!"
+  set "DATABASE_URL=!TABLET_DB_URL!"
+  set "TABLET_DATABASE_URL=!TABLET_DB_URL!"
+  set "TABLET_RUNTIME_MODE=standalone"
+  set "PRISMA_HIDE_UPDATE_MESSAGE=1"
+  set "PRISMA_PREFLIGHT_SCRIPT=!TV_SYSTEM_ROOT!\tools\_local\repair_prisma_client_pnpm_bridge.ps1"
+  where pnpm >nul 2>&1
+  if errorlevel 1 (
+    echo [ERROR] pnpm is not available in PATH.
+    exit /b 1
+  )
+  if not exist "!TABLET_APP!\package.json" (
+    echo [ERROR] Tablet app not found:
+    echo         !TABLET_APP!
+    exit /b 1
+  )
+  if /I "%PRISMA_RUN_DEV_PREFLIGHT%"=="1" if exist "!PRISMA_PREFLIGHT_SCRIPT!" (
+    powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -File "!PRISMA_PREFLIGHT_SCRIPT!" -Root "!TV_SYSTEM_ROOT!" -Product "tablet"
+    if errorlevel 1 exit /b 1
+  )
+  pnpm --dir "!TABLET_APP!" run dev
+  exit /b
+)
+
 rem PRISMA_LICENSE_SERVER_SIGNING_SCAN_POLICY_11D_START
 
 set "PRISMA_11D_PY=%PYTHON_EXE%"

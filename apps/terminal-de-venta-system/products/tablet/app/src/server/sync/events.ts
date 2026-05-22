@@ -15,5 +15,11 @@ export const TABLET_SYNC_EVENTS: ReadonlyArray<SharedSyncEvent> = [
   "stock.adjusted",
   "sync.event.sent",
   "sync.event.failed",
-  "sync.conflict.detected"
+  "sync.conflict.detected",
+  "supplier.created",
+  "supplier.updated",
+  "supplier.disabled",
+  "product.supplier.linked",
+  "product.supplier.unlinked",
+  "product.supplier.updated"
 ];

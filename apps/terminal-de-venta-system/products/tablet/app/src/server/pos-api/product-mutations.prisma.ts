@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/server/prisma/client";
+import { DEFAULT_CASHIER, DEFAULT_TERMINAL_ID, POS_EVENT_SCHEMA_VERSION } from "@/server/pos-engine/constants";
 import { readBarcodeAvailabilityInput, readProductCreateInput, readProductUpdateInput, type BarcodeAvailabilityInput } from "./product-mutation-validators";
 
 const DEFAULT_BUSINESS_NAME = "PRISMA Tablet Local";
@@ -50,30 +51,55 @@ async function ensureBarcodeAvailable(businessId: string, code: string | null, p
   return existing;
 }
 
+function eventActorFromPayload(payload: Record<string, unknown>) {
+  const actor = typeof payload.actorId === "string" ? payload.actorId.trim() : "";
+  const cashier = typeof payload.cashier === "string" ? payload.cashier.trim() : "";
+  return actor || cashier || DEFAULT_CASHIER;
+}
+
+function eventTerminalFromPayload(payload: Record<string, unknown>) {
+  const terminal = typeof payload.terminalId === "string" ? payload.terminalId.trim() : "";
+  return terminal || DEFAULT_TERMINAL_ID;
+}
+
 async function createOutboxEvent(tx: any, businessId: string, topic: string, aggregateId: string, payload: Record<string, unknown>) {
   const eventId = randomUUID();
-  const idempotencyKey = `${topic}:${businessId}:${aggregateId}:${eventId}`;
+  const terminalId = eventTerminalFromPayload(payload);
+  const actorId = eventActorFromPayload(payload);
+  const idempotencyKey = `${topic}:${businessId}:${terminalId}:${aggregateId}:${eventId}`;
+  const occurredAt = nowIso();
   const envelope = {
     eventId,
     eventType: topic,
     topic,
     idempotencyKey,
     businessId,
+    terminalId,
+    actorId,
     source: "tablet.catalog",
-    occurredAt: nowIso(),
+    occurredAt,
     aggregateId,
-    schemaVersion: "1.0",
+    schemaVersion: POS_EVENT_SCHEMA_VERSION,
     correlationId: aggregateId,
-    payload
+    payload: {
+      ...payload,
+      businessId,
+      terminalId,
+      actorId,
+      occurredAt
+    }
   };
   return tx.outboxEvent.create({
     data: {
       id: eventId,
       businessId,
+      terminalId,
       topic,
       aggregateId,
       idempotencyKey,
       payloadJson: JSON.stringify(envelope),
+      source: envelope.source,
+      schemaVersion: POS_EVENT_SCHEMA_VERSION,
       status: "pending",
       attempts: 0
     }
@@ -129,7 +155,11 @@ export async function createTabletProduct(raw: any) {
           movement: "adjustment",
           qty: input.stockOnHand,
           reason: "alta_inicial_tablet",
-          location: DEFAULT_LOCATION
+          location: DEFAULT_LOCATION,
+          beforeQty: 0,
+          afterQty: input.stockOnHand,
+          sourceType: "catalog.product.created",
+          sourceId: productId
         }
       });
     }
@@ -140,7 +170,9 @@ export async function createTabletProduct(raw: any) {
       name: input.name,
       category: input.category,
       barcode: input.barcode,
+      barcodes: input.barcode ? [input.barcode] : [],
       priceCents: input.priceCents,
+      costCents: input.costCents,
       stockOnHand: input.stockOnHand,
       isActive: input.isActive
     });
@@ -189,15 +221,40 @@ export async function updateTabletProduct(raw: any) {
           movement: "adjustment",
           qty: delta,
           reason: "ajuste_catalogo_tablet",
-          location: DEFAULT_LOCATION
+          location: DEFAULT_LOCATION,
+          beforeQty: existing.stockOnHand,
+          afterQty: input.stockOnHand,
+          sourceType: "catalog.product.updated",
+          sourceId: input.id!
         }
       });
     }
 
     await createOutboxEvent(tx, input.businessId, "catalog.product.updated", input.id!, {
       productId: input.id,
-      before: { sku: existing.sku, name: existing.name, priceCents: existing.priceCents, stockOnHand: existing.stockOnHand, isActive: existing.isActive },
-      after: { sku: input.sku, name: input.name, priceCents: input.priceCents, stockOnHand: input.stockOnHand, isActive: input.isActive }
+      before: {
+        sku: existing.sku,
+        name: existing.name,
+        category: existing.category,
+        barcode: existing.barcodes[0]?.code ?? null,
+        barcodes: existing.barcodes.map((item: any) => item.code),
+        priceCents: existing.priceCents,
+        costCents: existing.costCents,
+        stockOnHand: existing.stockOnHand,
+        isActive: existing.isActive
+      },
+      after: {
+        productId: input.id,
+        sku: input.sku,
+        name: input.name,
+        category: input.category,
+        barcode: input.barcode,
+        barcodes: input.barcode ? [input.barcode] : [],
+        priceCents: input.priceCents,
+        costCents: input.costCents,
+        stockOnHand: input.stockOnHand,
+        isActive: input.isActive
+      }
     });
 
     return serializeProduct(product, barcodeRows);

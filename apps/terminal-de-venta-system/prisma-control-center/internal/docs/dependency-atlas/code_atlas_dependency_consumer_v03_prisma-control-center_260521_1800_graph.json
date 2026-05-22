@@ -1,0 +1,1775 @@
+{
+  "tool": "code-atlas dependency consumer graph",
+  "version": "3.1.0",
+  "generated_at": "2026-05-21T18:00:55",
+  "nodes": [
+    {
+      "id": "external:__future__",
+      "label": "__future__",
+      "kind": "external",
+      "path": "__future__",
+      "metadata": {
+        "raw": "__future__"
+      },
+      "inbound": 17,
+      "outbound": 0
+    },
+    {
+      "id": "external:argparse",
+      "label": "argparse",
+      "kind": "external",
+      "path": "argparse",
+      "metadata": {
+        "raw": "argparse"
+      },
+      "inbound": 1,
+      "outbound": 0
+    },
+    {
+      "id": "external:dataclasses",
+      "label": "dataclasses",
+      "kind": "external",
+      "path": "dataclasses",
+      "metadata": {
+        "raw": "dataclasses"
+      },
+      "inbound": 1,
+      "outbound": 0
+    },
+    {
+      "id": "external:datetime",
+      "label": "datetime",
+      "kind": "external",
+      "path": "datetime",
+      "metadata": {
+        "raw": "datetime"
+      },
+      "inbound": 8,
+      "outbound": 0
+    },
+    {
+      "id": "external:hashlib",
+      "label": "hashlib",
+      "kind": "external",
+      "path": "hashlib",
+      "metadata": {
+        "raw": "hashlib"
+      },
+      "inbound": 1,
+      "outbound": 0
+    },
+    {
+      "id": "external:html",
+      "label": "html",
+      "kind": "external",
+      "path": "html",
+      "metadata": {
+        "raw": "html"
+      },
+      "inbound": 1,
+      "outbound": 0
+    },
+    {
+      "id": "external:http",
+      "label": "http",
+      "kind": "external",
+      "path": "http",
+      "metadata": {
+        "raw": "http.server"
+      },
+      "inbound": 1,
+      "outbound": 0
+    },
+    {
+      "id": "external:json",
+      "label": "json",
+      "kind": "external",
+      "path": "json",
+      "metadata": {
+        "raw": "json"
+      },
+      "inbound": 11,
+      "outbound": 0
+    },
+    {
+      "id": "external:os",
+      "label": "os",
+      "kind": "external",
+      "path": "os",
+      "metadata": {
+        "raw": "os"
+      },
+      "inbound": 7,
+      "outbound": 0
+    },
+    {
+      "id": "external:pathlib",
+      "label": "pathlib",
+      "kind": "external",
+      "path": "pathlib",
+      "metadata": {
+        "raw": "pathlib"
+      },
+      "inbound": 12,
+      "outbound": 0
+    },
+    {
+      "id": "external:py_compile",
+      "label": "py_compile",
+      "kind": "external",
+      "path": "py_compile",
+      "metadata": {
+        "raw": "py_compile"
+      },
+      "inbound": 1,
+      "outbound": 0
+    },
+    {
+      "id": "external:re",
+      "label": "re",
+      "kind": "external",
+      "path": "re",
+      "metadata": {
+        "raw": "re"
+      },
+      "inbound": 2,
+      "outbound": 0
+    },
+    {
+      "id": "external:shutil",
+      "label": "shutil",
+      "kind": "external",
+      "path": "shutil",
+      "metadata": {
+        "raw": "shutil"
+      },
+      "inbound": 6,
+      "outbound": 0
+    },
+    {
+      "id": "external:socket",
+      "label": "socket",
+      "kind": "external",
+      "path": "socket",
+      "metadata": {
+        "raw": "socket"
+      },
+      "inbound": 3,
+      "outbound": 0
+    },
+    {
+      "id": "external:sqlite3",
+      "label": "sqlite3",
+      "kind": "external",
+      "path": "sqlite3",
+      "metadata": {
+        "raw": "sqlite3"
+      },
+      "inbound": 1,
+      "outbound": 0
+    },
+    {
+      "id": "external:ssl",
+      "label": "ssl",
+      "kind": "external",
+      "path": "ssl",
+      "metadata": {
+        "raw": "ssl"
+      },
+      "inbound": 1,
+      "outbound": 0
+    },
+    {
+      "id": "external:subprocess",
+      "label": "subprocess",
+      "kind": "external",
+      "path": "subprocess",
+      "metadata": {
+        "raw": "subprocess"
+      },
+      "inbound": 7,
+      "outbound": 0
+    },
+    {
+      "id": "external:sys",
+      "label": "sys",
+      "kind": "external",
+      "path": "sys",
+      "metadata": {
+        "raw": "sys"
+      },
+      "inbound": 3,
+      "outbound": 0
+    },
+    {
+      "id": "external:threading",
+      "label": "threading",
+      "kind": "external",
+      "path": "threading",
+      "metadata": {
+        "raw": "threading"
+      },
+      "inbound": 1,
+      "outbound": 0
+    },
+    {
+      "id": "external:time",
+      "label": "time",
+      "kind": "external",
+      "path": "time",
+      "metadata": {
+        "raw": "time"
+      },
+      "inbound": 5,
+      "outbound": 0
+    },
+    {
+      "id": "external:typing",
+      "label": "typing",
+      "kind": "external",
+      "path": "typing",
+      "metadata": {
+        "raw": "typing"
+      },
+      "inbound": 17,
+      "outbound": 0
+    },
+    {
+      "id": "external:urllib",
+      "label": "urllib",
+      "kind": "external",
+      "path": "urllib",
+      "metadata": {
+        "raw": "urllib.parse"
+      },
+      "inbound": 8,
+      "outbound": 0
+    },
+    {
+      "id": "external:webbrowser",
+      "label": "webbrowser",
+      "kind": "external",
+      "path": "webbrowser",
+      "metadata": {
+        "raw": "webbrowser"
+      },
+      "inbound": 1,
+      "outbound": 0
+    },
+    {
+      "id": "external:zipfile",
+      "label": "zipfile",
+      "kind": "external",
+      "path": "zipfile",
+      "metadata": {
+        "raw": "zipfile"
+      },
+      "inbound": 2,
+      "outbound": 0
+    },
+    {
+      "id": "file:internal/py/blackbox_bridge.py",
+      "label": "blackbox_bridge.py",
+      "kind": "file",
+      "path": "internal/py/blackbox_bridge.py",
+      "metadata": {
+        "workspace": "(root/tools)"
+      },
+      "inbound": 5,
+      "outbound": 8
+    },
+    {
+      "id": "file:internal/py/blackbox_command_api.py",
+      "label": "blackbox_command_api.py",
+      "kind": "file",
+      "path": "internal/py/blackbox_command_api.py",
+      "metadata": {
+        "workspace": "(root/tools)"
+      },
+      "inbound": 1,
+      "outbound": 7
+    },
+    {
+      "id": "file:internal/py/cloudflare_supervisor.py",
+      "label": "cloudflare_supervisor.py",
+      "kind": "file",
+      "path": "internal/py/cloudflare_supervisor.py",
+      "metadata": {
+        "workspace": "(root/tools)"
+      },
+      "inbound": 1,
+      "outbound": 7
+    },
+    {
+      "id": "file:internal/py/config_loader.py",
+      "label": "config_loader.py",
+      "kind": "file",
+      "path": "internal/py/config_loader.py",
+      "metadata": {
+        "workspace": "(root/tools)"
+      },
+      "inbound": 10,
+      "outbound": 6
+    },
+    {
+      "id": "file:internal/py/health_checks.py",
+      "label": "health_checks.py",
+      "kind": "file",
+      "path": "internal/py/health_checks.py",
+      "metadata": {
+        "workspace": "(root/tools)"
+      },
+      "inbound": 3,
+      "outbound": 16
+    },
+    {
+      "id": "file:internal/py/license_ops_api.py",
+      "label": "license_ops_api.py",
+      "kind": "file",
+      "path": "internal/py/license_ops_api.py",
+      "metadata": {
+        "workspace": "(root/tools)"
+      },
+      "inbound": 1,
+      "outbound": 15
+    },
+    {
+      "id": "file:internal/py/local_supervisor.py",
+      "label": "local_supervisor.py",
+      "kind": "file",
+      "path": "internal/py/local_supervisor.py",
+      "metadata": {
+        "workspace": "(root/tools)"
+      },
+      "inbound": 1,
+      "outbound": 9
+    },
+    {
+      "id": "file:internal/py/ops_command_api.py",
+      "label": "ops_command_api.py",
+      "kind": "file",
+      "path": "internal/py/ops_command_api.py",
+      "metadata": {
+        "workspace": "(root/tools)"
+      },
+      "inbound": 1,
+      "outbound": 10
+    },
+    {
+      "id": "file:internal/py/panel_3150.py",
+      "label": "panel_3150.py",
+      "kind": "file",
+      "path": "internal/py/panel_3150.py",
+      "metadata": {
+        "workspace": "(root/tools)"
+      },
+      "inbound": 1,
+      "outbound": 18
+    },
+    {
+      "id": "file:internal/py/ports_inspector.py",
+      "label": "ports_inspector.py",
+      "kind": "file",
+      "path": "internal/py/ports_inspector.py",
+      "metadata": {
+        "workspace": "(root/tools)"
+      },
+      "inbound": 5,
+      "outbound": 7
+    },
+    {
+      "id": "file:internal/py/prisma_control_center.py",
+      "label": "prisma_control_center.py",
+      "kind": "file",
+      "path": "internal/py/prisma_control_center.py",
+      "metadata": {
+        "workspace": "(root/tools)"
+      },
+      "inbound": 0,
+      "outbound": 15
+    },
+    {
+      "id": "file:internal/py/process_classifier.py",
+      "label": "process_classifier.py",
+      "kind": "file",
+      "path": "internal/py/process_classifier.py",
+      "metadata": {
+        "workspace": "(root/tools)"
+      },
+      "inbound": 4,
+      "outbound": 4
+    },
+    {
+      "id": "file:internal/py/quality_command_api.py",
+      "label": "quality_command_api.py",
+      "kind": "file",
+      "path": "internal/py/quality_command_api.py",
+      "metadata": {
+        "workspace": "(root/tools)"
+      },
+      "inbound": 1,
+      "outbound": 10
+    },
+    {
+      "id": "file:internal/py/release_status_api.py",
+      "label": "release_status_api.py",
+      "kind": "file",
+      "path": "internal/py/release_status_api.py",
+      "metadata": {
+        "workspace": "(root/tools)"
+      },
+      "inbound": 1,
+      "outbound": 7
+    },
+    {
+      "id": "file:internal/py/report_writer.py",
+      "label": "report_writer.py",
+      "kind": "file",
+      "path": "internal/py/report_writer.py",
+      "metadata": {
+        "workspace": "(root/tools)"
+      },
+      "inbound": 3,
+      "outbound": 10
+    },
+    {
+      "id": "file:internal/py/safe_actions.py",
+      "label": "safe_actions.py",
+      "kind": "file",
+      "path": "internal/py/safe_actions.py",
+      "metadata": {
+        "workspace": "(root/tools)"
+      },
+      "inbound": 4,
+      "outbound": 10
+    },
+    {
+      "id": "file:internal/py/services_registry.py",
+      "label": "services_registry.py",
+      "kind": "file",
+      "path": "internal/py/services_registry.py",
+      "metadata": {
+        "workspace": "(root/tools)"
+      },
+      "inbound": 3,
+      "outbound": 4
+    },
+    {
+      "id": "project:root",
+      "label": "prisma-control-center",
+      "kind": "project",
+      "path": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\prisma-control-center",
+      "metadata": {
+        "package_name": ""
+      },
+      "inbound": 0,
+      "outbound": 0
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:internal/py/blackbox_bridge.py",
+      "target": "external:__future__",
+      "kind": "python-import",
+      "raw": "__future__",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/blackbox_bridge.py",
+      "target": "external:datetime",
+      "kind": "python-import",
+      "raw": "datetime",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/blackbox_bridge.py",
+      "target": "external:hashlib",
+      "kind": "python-import",
+      "raw": "hashlib",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/blackbox_bridge.py",
+      "target": "external:json",
+      "kind": "python-import",
+      "raw": "json",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/blackbox_bridge.py",
+      "target": "external:os",
+      "kind": "python-import",
+      "raw": "os",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/blackbox_bridge.py",
+      "target": "external:pathlib",
+      "kind": "python-import",
+      "raw": "pathlib",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/blackbox_bridge.py",
+      "target": "external:shutil",
+      "kind": "python-import",
+      "raw": "shutil",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/blackbox_bridge.py",
+      "target": "external:typing",
+      "kind": "python-import",
+      "raw": "typing",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/blackbox_command_api.py",
+      "target": "external:__future__",
+      "kind": "python-import",
+      "raw": "__future__",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/blackbox_command_api.py",
+      "target": "external:datetime",
+      "kind": "python-import",
+      "raw": "datetime",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/blackbox_command_api.py",
+      "target": "external:json",
+      "kind": "python-import",
+      "raw": "json",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/blackbox_command_api.py",
+      "target": "external:pathlib",
+      "kind": "python-import",
+      "raw": "pathlib",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/blackbox_command_api.py",
+      "target": "external:typing",
+      "kind": "python-import",
+      "raw": "typing",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/blackbox_command_api.py",
+      "target": "external:urllib",
+      "kind": "python-import",
+      "raw": "urllib.parse",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/blackbox_command_api.py",
+      "target": "file:internal/py/blackbox_bridge.py",
+      "kind": "python-import",
+      "raw": "blackbox_bridge",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/cloudflare_supervisor.py",
+      "target": "external:__future__",
+      "kind": "python-import",
+      "raw": "__future__",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/cloudflare_supervisor.py",
+      "target": "external:subprocess",
+      "kind": "python-import",
+      "raw": "subprocess",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/cloudflare_supervisor.py",
+      "target": "external:time",
+      "kind": "python-import",
+      "raw": "time",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/cloudflare_supervisor.py",
+      "target": "external:typing",
+      "kind": "python-import",
+      "raw": "typing",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/cloudflare_supervisor.py",
+      "target": "file:internal/py/config_loader.py",
+      "kind": "python-import",
+      "raw": "config_loader",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/cloudflare_supervisor.py",
+      "target": "file:internal/py/health_checks.py",
+      "kind": "python-import",
+      "raw": "health_checks",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/cloudflare_supervisor.py",
+      "target": "file:internal/py/safe_actions.py",
+      "kind": "python-import",
+      "raw": "safe_actions",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/config_loader.py",
+      "target": "external:__future__",
+      "kind": "python-import",
+      "raw": "__future__",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/config_loader.py",
+      "target": "external:json",
+      "kind": "python-import",
+      "raw": "json",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/config_loader.py",
+      "target": "external:os",
+      "kind": "python-import",
+      "raw": "os",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/config_loader.py",
+      "target": "external:pathlib",
+      "kind": "python-import",
+      "raw": "pathlib",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/config_loader.py",
+      "target": "external:socket",
+      "kind": "python-import",
+      "raw": "socket",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/config_loader.py",
+      "target": "external:typing",
+      "kind": "python-import",
+      "raw": "typing",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/health_checks.py",
+      "target": "external:__future__",
+      "kind": "python-import",
+      "raw": "__future__",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/health_checks.py",
+      "target": "external:json",
+      "kind": "python-import",
+      "raw": "json",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/health_checks.py",
+      "target": "external:pathlib",
+      "kind": "python-import",
+      "raw": "pathlib",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/health_checks.py",
+      "target": "external:shutil",
+      "kind": "python-import",
+      "raw": "shutil",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/health_checks.py",
+      "target": "external:socket",
+      "kind": "python-import",
+      "raw": "socket",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/health_checks.py",
+      "target": "external:ssl",
+      "kind": "python-import",
+      "raw": "ssl",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/health_checks.py",
+      "target": "external:subprocess",
+      "kind": "python-import",
+      "raw": "subprocess",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/health_checks.py",
+      "target": "external:time",
+      "kind": "python-import",
+      "raw": "time",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/health_checks.py",
+      "target": "external:typing",
+      "kind": "python-import",
+      "raw": "typing",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/health_checks.py",
+      "target": "external:urllib",
+      "kind": "python-import",
+      "raw": "urllib.error",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/health_checks.py",
+      "target": "external:urllib",
+      "kind": "python-import",
+      "raw": "urllib.request",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/health_checks.py",
+      "target": "file:internal/py/config_loader.py",
+      "kind": "python-import",
+      "raw": "config_loader",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/health_checks.py",
+      "target": "file:internal/py/ports_inspector.py",
+      "kind": "python-import",
+      "raw": "ports_inspector",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/health_checks.py",
+      "target": "file:internal/py/process_classifier.py",
+      "kind": "python-import",
+      "raw": "process_classifier",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/health_checks.py",
+      "target": "file:internal/py/safe_actions.py",
+      "kind": "python-import",
+      "raw": "safe_actions",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/health_checks.py",
+      "target": "file:internal/py/services_registry.py",
+      "kind": "python-import",
+      "raw": "services_registry",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/license_ops_api.py",
+      "target": "external:__future__",
+      "kind": "python-import",
+      "raw": "__future__",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/license_ops_api.py",
+      "target": "external:datetime",
+      "kind": "python-import",
+      "raw": "datetime",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/license_ops_api.py",
+      "target": "external:json",
+      "kind": "python-import",
+      "raw": "json",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/license_ops_api.py",
+      "target": "external:os",
+      "kind": "python-import",
+      "raw": "os",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/license_ops_api.py",
+      "target": "external:pathlib",
+      "kind": "python-import",
+      "raw": "pathlib",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/license_ops_api.py",
+      "target": "external:shutil",
+      "kind": "python-import",
+      "raw": "shutil",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/license_ops_api.py",
+      "target": "external:sqlite3",
+      "kind": "python-import",
+      "raw": "sqlite3",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/license_ops_api.py",
+      "target": "external:subprocess",
+      "kind": "python-import",
+      "raw": "subprocess",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/license_ops_api.py",
+      "target": "external:sys",
+      "kind": "python-import",
+      "raw": "sys",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/license_ops_api.py",
+      "target": "external:typing",
+      "kind": "python-import",
+      "raw": "typing",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/license_ops_api.py",
+      "target": "external:urllib",
+      "kind": "python-import",
+      "raw": "urllib.parse",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/license_ops_api.py",
+      "target": "external:zipfile",
+      "kind": "python-import",
+      "raw": "zipfile",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/license_ops_api.py",
+      "target": "file:internal/py/config_loader.py",
+      "kind": "python-import",
+      "raw": "config_loader",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/license_ops_api.py",
+      "target": "file:internal/py/report_writer.py",
+      "kind": "python-import",
+      "raw": "report_writer",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/license_ops_api.py",
+      "target": "file:internal/py/safe_actions.py",
+      "kind": "python-import",
+      "raw": "safe_actions",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/local_supervisor.py",
+      "target": "external:__future__",
+      "kind": "python-import",
+      "raw": "__future__",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/local_supervisor.py",
+      "target": "external:time",
+      "kind": "python-import",
+      "raw": "time",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/local_supervisor.py",
+      "target": "external:typing",
+      "kind": "python-import",
+      "raw": "typing",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/local_supervisor.py",
+      "target": "file:internal/py/config_loader.py",
+      "kind": "python-import",
+      "raw": "config_loader",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/local_supervisor.py",
+      "target": "file:internal/py/health_checks.py",
+      "kind": "python-import",
+      "raw": "health_checks",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/local_supervisor.py",
+      "target": "file:internal/py/ports_inspector.py",
+      "kind": "python-import",
+      "raw": "ports_inspector",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/local_supervisor.py",
+      "target": "file:internal/py/process_classifier.py",
+      "kind": "python-import",
+      "raw": "process_classifier",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/local_supervisor.py",
+      "target": "file:internal/py/safe_actions.py",
+      "kind": "python-import",
+      "raw": "safe_actions",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/local_supervisor.py",
+      "target": "file:internal/py/services_registry.py",
+      "kind": "python-import",
+      "raw": "services_registry",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/ops_command_api.py",
+      "target": "external:__future__",
+      "kind": "python-import",
+      "raw": "__future__",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/ops_command_api.py",
+      "target": "external:datetime",
+      "kind": "python-import",
+      "raw": "datetime",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/ops_command_api.py",
+      "target": "external:json",
+      "kind": "python-import",
+      "raw": "json",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/ops_command_api.py",
+      "target": "external:os",
+      "kind": "python-import",
+      "raw": "os",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/ops_command_api.py",
+      "target": "external:pathlib",
+      "kind": "python-import",
+      "raw": "pathlib",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/ops_command_api.py",
+      "target": "external:subprocess",
+      "kind": "python-import",
+      "raw": "subprocess",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/ops_command_api.py",
+      "target": "external:sys",
+      "kind": "python-import",
+      "raw": "sys",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/ops_command_api.py",
+      "target": "external:typing",
+      "kind": "python-import",
+      "raw": "typing",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/ops_command_api.py",
+      "target": "external:urllib",
+      "kind": "python-import",
+      "raw": "urllib.parse",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/ops_command_api.py",
+      "target": "file:internal/py/blackbox_bridge.py",
+      "kind": "python-import",
+      "raw": "blackbox_bridge",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/panel_3150.py",
+      "target": "external:__future__",
+      "kind": "python-import",
+      "raw": "__future__",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/panel_3150.py",
+      "target": "external:http",
+      "kind": "python-import",
+      "raw": "http.server",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/panel_3150.py",
+      "target": "external:json",
+      "kind": "python-import",
+      "raw": "json",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/panel_3150.py",
+      "target": "external:threading",
+      "kind": "python-import",
+      "raw": "threading",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/panel_3150.py",
+      "target": "external:time",
+      "kind": "python-import",
+      "raw": "time",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/panel_3150.py",
+      "target": "external:typing",
+      "kind": "python-import",
+      "raw": "typing",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/panel_3150.py",
+      "target": "external:urllib",
+      "kind": "python-import",
+      "raw": "urllib.request",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/panel_3150.py",
+      "target": "external:webbrowser",
+      "kind": "python-import",
+      "raw": "webbrowser",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/panel_3150.py",
+      "target": "file:internal/py/blackbox_bridge.py",
+      "kind": "python-import",
+      "raw": "blackbox_bridge",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/panel_3150.py",
+      "target": "file:internal/py/blackbox_command_api.py",
+      "kind": "python-import",
+      "raw": "blackbox_command_api",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/panel_3150.py",
+      "target": "file:internal/py/config_loader.py",
+      "kind": "python-import",
+      "raw": "config_loader",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/panel_3150.py",
+      "target": "file:internal/py/license_ops_api.py",
+      "kind": "python-import",
+      "raw": "license_ops_api",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/panel_3150.py",
+      "target": "file:internal/py/ops_command_api.py",
+      "kind": "python-import",
+      "raw": "ops_command_api",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/panel_3150.py",
+      "target": "file:internal/py/ports_inspector.py",
+      "kind": "python-import",
+      "raw": "ports_inspector",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/panel_3150.py",
+      "target": "file:internal/py/process_classifier.py",
+      "kind": "python-import",
+      "raw": "process_classifier",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/panel_3150.py",
+      "target": "file:internal/py/quality_command_api.py",
+      "kind": "python-import",
+      "raw": "quality_command_api",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/panel_3150.py",
+      "target": "file:internal/py/release_status_api.py",
+      "kind": "python-import",
+      "raw": "release_status_api",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/panel_3150.py",
+      "target": "file:internal/py/report_writer.py",
+      "kind": "python-import",
+      "raw": "report_writer",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/ports_inspector.py",
+      "target": "external:__future__",
+      "kind": "python-import",
+      "raw": "__future__",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/ports_inspector.py",
+      "target": "external:json",
+      "kind": "python-import",
+      "raw": "json",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/ports_inspector.py",
+      "target": "external:os",
+      "kind": "python-import",
+      "raw": "os",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/ports_inspector.py",
+      "target": "external:shutil",
+      "kind": "python-import",
+      "raw": "shutil",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/ports_inspector.py",
+      "target": "external:socket",
+      "kind": "python-import",
+      "raw": "socket",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/ports_inspector.py",
+      "target": "external:subprocess",
+      "kind": "python-import",
+      "raw": "subprocess",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/ports_inspector.py",
+      "target": "external:typing",
+      "kind": "python-import",
+      "raw": "typing",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/prisma_control_center.py",
+      "target": "external:__future__",
+      "kind": "python-import",
+      "raw": "__future__",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/prisma_control_center.py",
+      "target": "external:argparse",
+      "kind": "python-import",
+      "raw": "argparse",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/prisma_control_center.py",
+      "target": "external:json",
+      "kind": "python-import",
+      "raw": "json",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/prisma_control_center.py",
+      "target": "external:pathlib",
+      "kind": "python-import",
+      "raw": "pathlib",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/prisma_control_center.py",
+      "target": "external:py_compile",
+      "kind": "python-import",
+      "raw": "py_compile",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/prisma_control_center.py",
+      "target": "external:sys",
+      "kind": "python-import",
+      "raw": "sys",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/prisma_control_center.py",
+      "target": "external:typing",
+      "kind": "python-import",
+      "raw": "typing",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/prisma_control_center.py",
+      "target": "file:internal/py/cloudflare_supervisor.py",
+      "kind": "python-import",
+      "raw": "cloudflare_supervisor",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/prisma_control_center.py",
+      "target": "file:internal/py/config_loader.py",
+      "kind": "python-import",
+      "raw": "config_loader",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/prisma_control_center.py",
+      "target": "file:internal/py/health_checks.py",
+      "kind": "python-import",
+      "raw": "health_checks",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/prisma_control_center.py",
+      "target": "file:internal/py/local_supervisor.py",
+      "kind": "python-import",
+      "raw": "local_supervisor",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/prisma_control_center.py",
+      "target": "file:internal/py/panel_3150.py",
+      "kind": "python-import",
+      "raw": "panel_3150",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/prisma_control_center.py",
+      "target": "file:internal/py/ports_inspector.py",
+      "kind": "python-import",
+      "raw": "ports_inspector",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/prisma_control_center.py",
+      "target": "file:internal/py/report_writer.py",
+      "kind": "python-import",
+      "raw": "report_writer",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/prisma_control_center.py",
+      "target": "file:internal/py/services_registry.py",
+      "kind": "python-import",
+      "raw": "services_registry",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/process_classifier.py",
+      "target": "external:__future__",
+      "kind": "python-import",
+      "raw": "__future__",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/process_classifier.py",
+      "target": "external:pathlib",
+      "kind": "python-import",
+      "raw": "pathlib",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/process_classifier.py",
+      "target": "external:typing",
+      "kind": "python-import",
+      "raw": "typing",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/process_classifier.py",
+      "target": "file:internal/py/config_loader.py",
+      "kind": "python-import",
+      "raw": "config_loader",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/quality_command_api.py",
+      "target": "external:__future__",
+      "kind": "python-import",
+      "raw": "__future__",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/quality_command_api.py",
+      "target": "external:datetime",
+      "kind": "python-import",
+      "raw": "datetime",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/quality_command_api.py",
+      "target": "external:json",
+      "kind": "python-import",
+      "raw": "json",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/quality_command_api.py",
+      "target": "external:os",
+      "kind": "python-import",
+      "raw": "os",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/quality_command_api.py",
+      "target": "external:pathlib",
+      "kind": "python-import",
+      "raw": "pathlib",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/quality_command_api.py",
+      "target": "external:re",
+      "kind": "python-import",
+      "raw": "re",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/quality_command_api.py",
+      "target": "external:shutil",
+      "kind": "python-import",
+      "raw": "shutil",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/quality_command_api.py",
+      "target": "external:subprocess",
+      "kind": "python-import",
+      "raw": "subprocess",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/quality_command_api.py",
+      "target": "external:typing",
+      "kind": "python-import",
+      "raw": "typing",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/quality_command_api.py",
+      "target": "external:urllib",
+      "kind": "python-import",
+      "raw": "urllib.parse",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/release_status_api.py",
+      "target": "external:__future__",
+      "kind": "python-import",
+      "raw": "__future__",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/release_status_api.py",
+      "target": "external:datetime",
+      "kind": "python-import",
+      "raw": "datetime",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/release_status_api.py",
+      "target": "external:json",
+      "kind": "python-import",
+      "raw": "json",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/release_status_api.py",
+      "target": "external:pathlib",
+      "kind": "python-import",
+      "raw": "pathlib",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/release_status_api.py",
+      "target": "external:typing",
+      "kind": "python-import",
+      "raw": "typing",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/release_status_api.py",
+      "target": "external:urllib",
+      "kind": "python-import",
+      "raw": "urllib.parse",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/release_status_api.py",
+      "target": "file:internal/py/blackbox_bridge.py",
+      "kind": "python-import",
+      "raw": "blackbox_bridge",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/report_writer.py",
+      "target": "external:__future__",
+      "kind": "python-import",
+      "raw": "__future__",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/report_writer.py",
+      "target": "external:datetime",
+      "kind": "python-import",
+      "raw": "datetime",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/report_writer.py",
+      "target": "external:html",
+      "kind": "python-import",
+      "raw": "html",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/report_writer.py",
+      "target": "external:pathlib",
+      "kind": "python-import",
+      "raw": "pathlib",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/report_writer.py",
+      "target": "external:re",
+      "kind": "python-import",
+      "raw": "re",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/report_writer.py",
+      "target": "external:shutil",
+      "kind": "python-import",
+      "raw": "shutil",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/report_writer.py",
+      "target": "external:typing",
+      "kind": "python-import",
+      "raw": "typing",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/report_writer.py",
+      "target": "external:zipfile",
+      "kind": "python-import",
+      "raw": "zipfile",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/report_writer.py",
+      "target": "file:internal/py/blackbox_bridge.py",
+      "kind": "python-import",
+      "raw": "blackbox_bridge",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/report_writer.py",
+      "target": "file:internal/py/config_loader.py",
+      "kind": "python-import",
+      "raw": "config_loader",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/safe_actions.py",
+      "target": "external:__future__",
+      "kind": "python-import",
+      "raw": "__future__",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/safe_actions.py",
+      "target": "external:datetime",
+      "kind": "python-import",
+      "raw": "datetime",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/safe_actions.py",
+      "target": "external:os",
+      "kind": "python-import",
+      "raw": "os",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/safe_actions.py",
+      "target": "external:pathlib",
+      "kind": "python-import",
+      "raw": "pathlib",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/safe_actions.py",
+      "target": "external:subprocess",
+      "kind": "python-import",
+      "raw": "subprocess",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/safe_actions.py",
+      "target": "external:time",
+      "kind": "python-import",
+      "raw": "time",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/safe_actions.py",
+      "target": "external:typing",
+      "kind": "python-import",
+      "raw": "typing",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/safe_actions.py",
+      "target": "file:internal/py/config_loader.py",
+      "kind": "python-import",
+      "raw": "config_loader",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/safe_actions.py",
+      "target": "file:internal/py/ports_inspector.py",
+      "kind": "python-import",
+      "raw": "ports_inspector",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/safe_actions.py",
+      "target": "file:internal/py/process_classifier.py",
+      "kind": "python-import",
+      "raw": "process_classifier",
+      "weight": 1,
+      "classification": "internal"
+    },
+    {
+      "source": "file:internal/py/services_registry.py",
+      "target": "external:__future__",
+      "kind": "python-import",
+      "raw": "__future__",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/services_registry.py",
+      "target": "external:dataclasses",
+      "kind": "python-import",
+      "raw": "dataclasses",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/services_registry.py",
+      "target": "external:typing",
+      "kind": "python-import",
+      "raw": "typing",
+      "weight": 1,
+      "classification": "external"
+    },
+    {
+      "source": "file:internal/py/services_registry.py",
+      "target": "file:internal/py/config_loader.py",
+      "kind": "python-import",
+      "raw": "config_loader",
+      "weight": 1,
+      "classification": "internal"
+    }
+  ]
+}
