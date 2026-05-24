@@ -2,11 +2,20 @@
 // PRISMA_CHART_LAB_SINGLE_CHART_WORKBENCH_POWER_STUDIO_V1
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ChartControlDeck, type PowerStudioTab } from "@/components/ChartControlDeck";
 import { LabEChartFrame } from "@/prisma-charts/components/LabEChartFrame";
 import { applyChartLabControls, getControlsForChart, getDefaultControlState } from "@/prisma-charts/chart-lab-control-model";
 import { applyChartLabVisibilityGuard } from "@/prisma-charts/chart-lab-option-pipeline";
+import {
+  CODE_DRAWER_IDS,
+  applyCodeDrawersToOption,
+  getDefaultCodeDrawers,
+  validateCodeDrawer,
+  type ChartCodeDrawerRecipe,
+  type CodeDrawerId,
+  type CodeDrawerState
+} from "@/prisma-charts/chart-lab-code-drawers";
 import { chartLabRegistry } from "@/prisma-charts/chart-lab-registry";
 import type {
   LabChartControlState,
@@ -22,8 +31,9 @@ import type {
 const HEATMAP_CHART_ID = "ops.operational-density-heatmap";
 const LOCAL_STORAGE_KEY = "prisma.chartLab.powerStudio.state.v1";
 const VARIANT_STORAGE_KEY = "prisma.chartLab.powerStudio.variants.v1";
+const CODE_DRAWER_STORAGE_KEY = "prisma.chartLab.powerStudio.codeDrawers.v1";
 
-const powerTabs: PowerStudioTab[] = ["visual", "motion", "interaction", "labels", "data", "advanced"];
+const powerTabs: PowerStudioTab[] = ["visual", "motion", "interaction", "labels", "data", "advanced", "code"];
 
 const LEGACY_VERIFIER_MAP_TABS = [
   "Maps",
@@ -190,11 +200,6 @@ type PersistedState = {
   recentIds?: string[];
 };
 
-function initialSearchParam(name: string) {
-  if (typeof window === "undefined") return null;
-  return new URLSearchParams(window.location.search).get(name);
-}
-
 function readJson<T>(key: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;
   try {
@@ -226,6 +231,41 @@ function getControlsForLabChart(chartId: string) {
   if (chartId !== HEATMAP_CHART_ID) return controls;
   const existingIds = new Set(controls.map((control) => control.id));
   return [...controls, ...heatmapRuntimeControls.filter((control) => !existingIds.has(control.id))];
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function defaultChartLabId() {
+  return chartLabRegistry[0]?.id ?? "";
+}
+
+function safeChartLabId(chartId: unknown) {
+  return typeof chartId === "string" && chartLabRegistry.some((chart) => chart.id === chartId) ? chartId : defaultChartLabId();
+}
+
+function selectedChartFromLocation() {
+  if (typeof window === "undefined") return null;
+  const chartId = new URLSearchParams(window.location.search).get("chart");
+  return chartId ? safeChartLabId(chartId) : null;
+}
+
+function normalizeCodeDrawerRecipe(chartId: string, candidate: unknown): ChartCodeDrawerRecipe {
+  const defaults = getDefaultCodeDrawers(chartId);
+  if (!isRecord(candidate)) return defaults;
+  const next = { ...defaults };
+  for (const id of CODE_DRAWER_IDS) {
+    const incoming = candidate[id];
+    if (!isRecord(incoming)) continue;
+    next[id] = {
+      ...defaults[id],
+      enabled: typeof incoming.enabled === "boolean" ? incoming.enabled : defaults[id].enabled,
+      content: typeof incoming.content === "string" ? incoming.content : defaults[id].content,
+      lastAppliedContent: typeof incoming.lastAppliedContent === "string" ? incoming.lastAppliedContent : defaults[id].lastAppliedContent
+    };
+  }
+  return next;
 }
 
 function countLabChartActiveControls(chartId: string, values: LabChartControlState) {
@@ -468,35 +508,48 @@ function inferPowerTab(control: LabChartRuntimeControl): PowerStudioTab {
   return "advanced";
 }
 
-function randomizeControl(control: LabChartRuntimeControl): LabChartControlValue {
-  if (control.type === "toggle") return Math.random() > 0.5;
+function deterministicUnit(seed: string) {
+  let hash = 2166136261;
+  for (let index = 0; index < seed.length; index += 1) {
+    hash ^= seed.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0) / 4294967295;
+}
+
+function randomizeControl(control: LabChartRuntimeControl, salt: string): LabChartControlValue {
+  const unit = deterministicUnit(`${salt}:${control.id}`);
+  if (control.type === "toggle") return unit > 0.5;
   if (control.type === "range" || control.type === "numeric") {
     const min = control.min ?? 0;
     const max = control.max ?? 100;
     const step = control.step ?? 1;
-    const raw = min + Math.random() * (max - min);
+    const raw = min + unit * (max - min);
     return Math.round(raw / step) * step;
   }
   if (control.type === "segmented" || control.type === "select") {
     const options = control.options ?? [];
-    return options[Math.floor(Math.random() * options.length)]?.value ?? control.defaultValue;
+    return options[Math.floor(unit * options.length)]?.value ?? control.defaultValue;
   }
   if (control.type === "chip-group") {
     const options = control.options ?? [];
-    const selected = options.filter(() => Math.random() > 0.34).map((item) => item.value);
+    const selected = options
+      .filter((item, index) => deterministicUnit(`${salt}:${control.id}:${item.value}:${index}`) > 0.34)
+      .map((item) => item.value);
     return selected.length ? selected : [options[0]?.value ?? ""];
   }
   return control.defaultValue;
 }
 
 export function PrismaChartLabShell() {
-  const persisted = readJson<PersistedState>(LOCAL_STORAGE_KEY, {});
-  const [selectedId, setSelectedId] = useState(() => initialSearchParam("chart") ?? persisted.selectedId ?? chartLabRegistry[0]?.id ?? "");
+  const lastKnownGoodOptionRef = useRef<Record<string, Record<string, unknown>>>({});
+  const [hydrated, setHydrated] = useState(false);
+  const [selectedId, setSelectedId] = useState(() => defaultChartLabId());
   const [search, setSearch] = useState("");
-  const [target, setTarget] = useState<LabChartPreviewFrame>(persisted.target ?? "pc");
-  const [density, setDensity] = useState<LabChartDensity>(persisted.density ?? "calm");
-  const [size, setSize] = useState<LabChartSize>(persisted.size ?? "focus");
-  const [themeMode, setThemeMode] = useState<LabChartThemeMode>(persisted.themeMode ?? "prisma-crystal");
+  const [target, setTarget] = useState<LabChartPreviewFrame>("pc");
+  const [density, setDensity] = useState<LabChartDensity>("calm");
+  const [size, setSize] = useState<LabChartSize>("focus");
+  const [themeMode, setThemeMode] = useState<LabChartThemeMode>("prisma-crystal");
   const [activeTab, setActiveTab] = useState<PowerStudioTab>("visual");
   const [showOriginal, setShowOriginal] = useState(false);
   const [searchPanelOpen, setSearchPanelOpen] = useState(true);
@@ -506,11 +559,18 @@ export function PrismaChartLabShell() {
   const [tourSignal, setTourSignal] = useState(0);
   const [mobileActionsOpen, setMobileActionsOpen] = useState(false);
   const [clipboardFallback, setClipboardFallback] = useState<ClipboardFallback | null>(null);
-  const [pinnedIds, setPinnedIds] = useState<string[]>(persisted.pinnedIds ?? []);
-  const [recentIds, setRecentIds] = useState<string[]>(persisted.recentIds ?? []);
-  const [variants, setVariants] = useState<SavedVariant[]>(() => readJson<SavedVariant[]>(VARIANT_STORAGE_KEY, []));
+  const [pinnedIds, setPinnedIds] = useState<string[]>([]);
+  const [recentIds, setRecentIds] = useState<string[]>([]);
+  const [variants, setVariants] = useState<SavedVariant[]>([]);
+  const [remixSeed, setRemixSeed] = useState(0);
+  const [openCodeDrawers, setOpenCodeDrawers] = useState<Record<CodeDrawerId, boolean>>(() =>
+    Object.fromEntries(CODE_DRAWER_IDS.map((id, index) => [id, index < 2])) as Record<CodeDrawerId, boolean>
+  );
   const [controlStates, setControlStates] = useState<Record<string, LabChartControlState>>(() =>
     Object.fromEntries(chartLabRegistry.map((chart) => [chart.id, getChartDefaultControlState(chart.id)]))
+  );
+  const [codeDrawerStates, setCodeDrawerStates] = useState<Record<string, ChartCodeDrawerRecipe>>(() =>
+    Object.fromEntries(chartLabRegistry.map((chart) => [chart.id, getDefaultCodeDrawers(chart.id)]))
   );
 
   const selectedChart = useMemo<LabChartEntry>(
@@ -521,6 +581,7 @@ export function PrismaChartLabShell() {
   const selectedControls = useMemo(() => getControlsForLabChart(selectedChart.id), [selectedChart.id]);
   const selectedControlState = controlStates[selectedChart.id] ?? getChartDefaultControlState(selectedChart.id);
   const effectiveControls = showOriginal ? getChartDefaultControlState(selectedChart.id) : selectedControlState;
+  const selectedCodeDrawers = codeDrawerStates[selectedChart.id] ?? getDefaultCodeDrawers(selectedChart.id);
   const controlCount = selectedControls.length;
   const overridesCount = countLabChartActiveControls(selectedChart.id, selectedControlState);
   const controlTelemetryLabel = `${controlCount} controls · ${overridesCount} overrides`;
@@ -528,25 +589,75 @@ export function PrismaChartLabShell() {
   const pinnedCharts = useMemo(() => pinnedIds.map((id) => chartLabRegistry.find((chart) => chart.id === id)).filter((chart): chart is LabChartEntry => Boolean(chart)), [pinnedIds]);
   const recentCharts = useMemo(() => recentIds.map((id) => chartLabRegistry.find((chart) => chart.id === id)).filter((chart): chart is LabChartEntry => Boolean(chart)), [recentIds]);
 
-  const previewOptionOverride = useMemo(() => {
-    const baseOption = selectedChart.getOption?.() ?? {};
-    const controlled = applyChartLabControls({
-      chartId: selectedChart.id,
-      option: cloneOptionForStudio(baseOption),
-      values: effectiveControls,
-      reducedMotion: false
-    });
-    const chartOption = selectedChart.id === HEATMAP_CHART_ID ? applyOperationalDensityHeatmapControls(controlled, effectiveControls) : controlled;
-    return applyChartLabVisibilityGuard(chartOption);
-  }, [effectiveControls, selectedChart]);
+  const previewComputation = useMemo(() => {
+    let chartOption: Record<string, unknown> | null = null;
+    try {
+      const baseOption = selectedChart.getOption?.() ?? {};
+      const controlled = applyChartLabControls({
+        chartId: selectedChart.id,
+        option: cloneOptionForStudio(baseOption),
+        values: effectiveControls,
+        reducedMotion: false
+      });
+      chartOption = selectedChart.id === HEATMAP_CHART_ID ? applyOperationalDensityHeatmapControls(controlled, effectiveControls) : controlled;
+      const drawerResult = applyCodeDrawersToOption(chartOption, selectedCodeDrawers, { chartId: selectedChart.id });
+      return {
+        option: applyChartLabVisibilityGuard(drawerResult.option),
+        drawerResult,
+        usedLastKnownGood: false,
+        error: null as string | null
+      };
+    } catch (error) {
+      const fallback = lastKnownGoodOptionRef.current[selectedChart.id] ?? applyChartLabVisibilityGuard(chartOption ?? {});
+      return {
+        option: fallback,
+        drawerResult: { option: fallback, appliedDrawerIds: [], errors: { rawOptionPatch: error instanceof Error ? error.message : "Code drawer fallback used" } },
+        usedLastKnownGood: true,
+        error: error instanceof Error ? error.message : "Code drawer fallback used"
+      };
+    }
+  }, [effectiveControls, selectedChart, selectedCodeDrawers]);
+  const previewOptionOverride = previewComputation.option;
+  const codeDrawerApplyResult = previewComputation.drawerResult;
 
   useEffect(() => {
+    if (!previewComputation.usedLastKnownGood) {
+      lastKnownGoodOptionRef.current[selectedChart.id] = previewOptionOverride;
+    }
+  }, [previewComputation.usedLastKnownGood, previewOptionOverride, selectedChart.id]);
+
+  useEffect(() => {
+    const persisted = readJson<PersistedState>(LOCAL_STORAGE_KEY, {});
+    const persistedVariants = readJson<SavedVariant[]>(VARIANT_STORAGE_KEY, []);
+    const persistedDrawers = readJson<Record<string, unknown>>(CODE_DRAWER_STORAGE_KEY, {});
+    setSelectedId(selectedChartFromLocation() ?? safeChartLabId(persisted.selectedId));
+    if (persisted.target && ["pc", "tablet", "mobile"].includes(persisted.target)) setTarget(persisted.target);
+    if (persisted.density && ["calm", "dense"].includes(persisted.density)) setDensity(persisted.density);
+    if (persisted.size && ["focus", "wide", "compact"].includes(persisted.size)) setSize(persisted.size);
+    if (persisted.themeMode && ["prisma-crystal", "precision-paper"].includes(persisted.themeMode)) setThemeMode(persisted.themeMode);
+    setPinnedIds(Array.isArray(persisted.pinnedIds) ? persisted.pinnedIds.filter((id) => chartLabRegistry.some((chart) => chart.id === id)) : []);
+    setRecentIds(Array.isArray(persisted.recentIds) ? persisted.recentIds.filter((id) => chartLabRegistry.some((chart) => chart.id === id)) : []);
+    setVariants(Array.isArray(persistedVariants) ? persistedVariants : []);
+    setCodeDrawerStates(
+      Object.fromEntries(chartLabRegistry.map((chart) => [chart.id, normalizeCodeDrawerRecipe(chart.id, persistedDrawers[chart.id])]))
+    );
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
     writeJson(LOCAL_STORAGE_KEY, { selectedId, target, density, size, themeMode, pinnedIds, recentIds });
-  }, [density, pinnedIds, recentIds, selectedId, size, target, themeMode]);
+  }, [density, hydrated, pinnedIds, recentIds, selectedId, size, target, themeMode]);
 
   useEffect(() => {
+    if (!hydrated) return;
     writeJson(VARIANT_STORAGE_KEY, variants);
-  }, [variants]);
+  }, [hydrated, variants]);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    writeJson(CODE_DRAWER_STORAGE_KEY, codeDrawerStates);
+  }, [codeDrawerStates, hydrated]);
 
   function selectChart(chartId: string) {
     setSelectedId(chartId);
@@ -563,12 +674,54 @@ export function PrismaChartLabShell() {
     }));
   }
 
+  function updateCodeDrawer(drawerId: CodeDrawerId, updater: (drawer: CodeDrawerState) => CodeDrawerState) {
+    setCodeDrawerStates((current) => {
+      const recipe = current[selectedChart.id] ?? getDefaultCodeDrawers(selectedChart.id);
+      return {
+        ...current,
+        [selectedChart.id]: {
+          ...recipe,
+          [drawerId]: updater(recipe[drawerId])
+        }
+      };
+    });
+  }
+
+  function setCodeDrawerContent(drawerId: CodeDrawerId, content: string) {
+    updateCodeDrawer(drawerId, (drawer) => ({ ...drawer, content }));
+  }
+
+  function applyCodeDrawer(drawerId: CodeDrawerId) {
+    updateCodeDrawer(drawerId, (drawer) => {
+      const enabledDrawer = { ...drawer, enabled: true };
+      const validation = validateCodeDrawer(enabledDrawer);
+      return validation.valid ? { ...enabledDrawer, lastAppliedContent: enabledDrawer.content } : enabledDrawer;
+    });
+  }
+
+  function disableCodeDrawer(drawerId: CodeDrawerId) {
+    updateCodeDrawer(drawerId, (drawer) => ({ ...drawer, enabled: false }));
+  }
+
+  function resetCodeDrawer(drawerId: CodeDrawerId) {
+    const defaults = getDefaultCodeDrawers(selectedChart.id);
+    updateCodeDrawer(drawerId, () => defaults[drawerId]);
+  }
+
+  function copyDrawer(drawer: CodeDrawerState) {
+    void copyText(drawer.label, drawer.content);
+  }
+
   function resetCurrentChart() {
     setControlStates((current) => ({ ...current, [selectedChart.id]: getChartDefaultControlState(selectedChart.id) }));
     setShowOriginal(false);
   }
 
   function resetCurrentTab() {
+    if (activeTab === "code") {
+      setCodeDrawerStates((current) => ({ ...current, [selectedChart.id]: getDefaultCodeDrawers(selectedChart.id) }));
+      return;
+    }
     const tabControls = selectedControls.filter((control) => inferPowerTab(control) === activeTab);
     setControlStates((current) => {
       const next = { ...(current[selectedChart.id] ?? getChartDefaultControlState(selectedChart.id)) };
@@ -579,6 +732,7 @@ export function PrismaChartLabShell() {
 
   function resetAllCharts() {
     setControlStates(Object.fromEntries(chartLabRegistry.map((chart) => [chart.id, getChartDefaultControlState(chart.id)])));
+    setCodeDrawerStates(Object.fromEntries(chartLabRegistry.map((chart) => [chart.id, getDefaultCodeDrawers(chart.id)])));
     setShowOriginal(false);
   }
 
@@ -613,6 +767,7 @@ export function PrismaChartLabShell() {
       density,
       size,
       controls: selectedControlState,
+      codeDrawers: selectedCodeDrawers,
       option: previewOptionOverride
     });
   }
@@ -637,9 +792,11 @@ export function PrismaChartLabShell() {
 
   function remixVisuals() {
     const remixable = selectedControls.filter((control) => ["visual", "motion", "interaction", "labels"].includes(control.powerTab ?? ""));
+    const nextSeed = remixSeed + 1;
+    setRemixSeed(nextSeed);
     setControlStates((current) => {
       const next = { ...(current[selectedChart.id] ?? getChartDefaultControlState(selectedChart.id)) };
-      for (const control of remixable) next[control.id] = randomizeControl(control);
+      for (const control of remixable) next[control.id] = randomizeControl(control, `${selectedChart.id}:${nextSeed}`);
       return { ...current, [selectedChart.id]: next };
     });
   }
@@ -656,6 +813,99 @@ export function PrismaChartLabShell() {
     );
   }
 
+  function renderCodeDrawersPanel() {
+    const finalOptionText = summarizeJson(previewOptionOverride);
+    return (
+      <div className="code-drawers" data-code-drawers="true" data-last-known-good-option={previewComputation.usedLastKnownGood}>
+        <div className="code-drawers__toolbar">
+          <div>
+            <span className="eyebrow">Apache ECharts direct layer</span>
+            <strong>{CODE_DRAWER_IDS.length} drawers · raw patch guarded</strong>
+          </div>
+          <button type="button" onClick={() => void copyText("final ECharts option", previewOptionOverride)}>Copy final ECharts option</button>
+        </div>
+
+        {previewComputation.usedLastKnownGood ? (
+          <div className="code-drawers__fallback" role="status">
+            Last known good option fallback is active. The invalid drawer was skipped and the chart stayed alive.
+          </div>
+        ) : null}
+
+        <details className="code-drawers__final-option">
+          <summary>Show final option diff</summary>
+          <div>
+            <p>Applied drawers: {codeDrawerApplyResult.appliedDrawerIds.length ? codeDrawerApplyResult.appliedDrawerIds.join(", ") : "none"}</p>
+            <textarea readOnly value={finalOptionText} onFocus={(event) => event.currentTarget.select()} />
+          </div>
+        </details>
+
+        <div className="code-drawers__list">
+          {CODE_DRAWER_IDS.map((drawerId) => {
+            const drawer = selectedCodeDrawers[drawerId];
+            const validation = validateCodeDrawer(drawer);
+            const applied = codeDrawerApplyResult.appliedDrawerIds.includes(drawerId);
+            const error = codeDrawerApplyResult.errors[drawerId] ?? validation.error;
+            const status = !drawer.enabled ? "Disabled" : error ? "Invalid JSON" : applied ? "Applied" : validation.status === "Valid" ? "Valid" : validation.status;
+            const open = openCodeDrawers[drawerId] ?? false;
+            return (
+              <article
+                className={`code-drawer-card ${open ? "is-open" : ""}`}
+                key={drawer.id}
+                data-code-drawer-id={drawer.id}
+                data-code-drawer-kind={drawer.kind}
+                data-code-drawer-status={status}
+              >
+                <button
+                  type="button"
+                  className="code-drawer-card__summary"
+                  aria-expanded={open}
+                  onClick={() => setOpenCodeDrawers((current) => ({ ...current, [drawerId]: !open }))}
+                >
+                  <span>
+                    <strong>{drawer.label}</strong>
+                    <small>{drawer.description}</small>
+                  </span>
+                  <em>{status}</em>
+                </button>
+
+                {open ? (
+                  <div className="code-drawer-card__body">
+                    {drawer.kind === "formatter" ? (
+                      <p className="code-drawer-warning">
+                        Formatter drawers are stored as strings and disabled by default. Enable only when the target ECharts formatter syntax is intentional.
+                      </p>
+                    ) : null}
+                    <label className="code-drawer-toggle">
+                      <input
+                        type="checkbox"
+                        checked={drawer.enabled}
+                        onChange={(event) => updateCodeDrawer(drawerId, (current) => ({ ...current, enabled: event.target.checked }))}
+                      />
+                      <span>{drawer.enabled ? "Enabled" : "Disabled"}</span>
+                    </label>
+                    <textarea
+                      value={drawer.content}
+                      spellCheck={false}
+                      aria-label={`${drawer.label} editor`}
+                      onChange={(event) => setCodeDrawerContent(drawerId, event.target.value)}
+                    />
+                    <div className="code-drawer-actions">
+                      <button type="button" onClick={() => applyCodeDrawer(drawerId)}>Apply drawer</button>
+                      <button type="button" onClick={() => disableCodeDrawer(drawerId)}>Disable</button>
+                      <button type="button" onClick={() => resetCodeDrawer(drawerId)}>Reset</button>
+                      <button type="button" onClick={() => copyDrawer(drawer)}>Copy</button>
+                    </div>
+                    {error ? <p className="code-drawer-error" role="alert">{error}</p> : null}
+                  </div>
+                ) : null}
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
   const heroChips = selectedControls
     .slice(0, 5)
     .map((control) => `${control.label}: ${safeOptionLabel(control.options, selectedControlState[control.id] ?? control.defaultValue)}`);
@@ -664,6 +914,8 @@ export function PrismaChartLabShell() {
     <main
       className="chart-lab chart-lab--single-workbench"
       data-power-studio="true"
+      data-hydration-safe="true"
+      data-hydrated={hydrated}
       data-selected-chart={selectedChart.id}
       data-target={target}
       data-active-tab={activeTab}
@@ -893,7 +1145,7 @@ export function PrismaChartLabShell() {
 
           <nav className="power-tabs" aria-label="Power Studio tabs">
             {powerTabs.map((tab) => (
-              <button type="button" key={tab} className={activeTab === tab ? "is-active" : ""} onClick={() => setActiveTab(tab)}>{tab}</button>
+              <button type="button" key={tab} className={activeTab === tab ? "is-active" : ""} onClick={() => setActiveTab(tab)}>{tab === "code" ? "Code" : tab}</button>
             ))}
           </nav>
 
@@ -902,6 +1154,7 @@ export function PrismaChartLabShell() {
             controls={selectedControls}
             values={selectedControlState}
             overridesCount={overridesCount}
+            codePanel={renderCodeDrawersPanel()}
             onChange={updateControl}
             onCopyConfig={copyCurrentConfig}
             onReset={resetCurrentChart}

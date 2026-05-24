@@ -2,15 +2,17 @@
 // PRISMA_CHART_LAB_POWER_STUDIO_CONTROL_DECK_V1
 "use client";
 
+import type { ReactNode } from "react";
 import type { LabChartControlState, LabChartControlValue, LabChartRuntimeControl } from "@/prisma-charts/chart-lab-types";
 
-export type PowerStudioTab = "visual" | "motion" | "interaction" | "labels" | "data" | "advanced";
+export type PowerStudioTab = "visual" | "motion" | "interaction" | "labels" | "data" | "advanced" | "code";
 
 type ChartControlDeckProps = {
   controls: LabChartRuntimeControl[];
   values: LabChartControlState;
   activeTab?: PowerStudioTab;
   overridesCount?: number;
+  codePanel?: ReactNode;
   onChange: (controlId: string, value: LabChartControlValue) => void;
   onReset: () => void;
   onResetAll: () => void;
@@ -41,6 +43,10 @@ const tabMeta: Record<PowerStudioTab, { label: string; intro: string }> = {
   advanced: {
     label: "Advanced",
     intro: "Controles técnicos, overrides y knobs de riesgo medio/alto. La carnicería fina va aquí, con letrero y cuchillo limpio."
+  },
+  code: {
+    label: "Code",
+    intro: "Direct ECharts patches layered after Visual Layers and before the final visibility guard."
   }
 };
 
@@ -116,8 +122,8 @@ function controlCurrentValue(control: LabChartRuntimeControl, values: LabChartCo
   return values[control.id] ?? control.defaultValue;
 }
 
-export function ChartControlDeck({ controls, values, activeTab = "visual", overridesCount, onChange, onCopyConfig, onReset, onResetAll }: ChartControlDeckProps) {
-  const visibleControls = controls.filter((control) => inferTab(control) === activeTab);
+export function ChartControlDeck({ controls, values, activeTab = "visual", overridesCount, codePanel, onChange, onCopyConfig, onReset, onResetAll }: ChartControlDeckProps) {
+  const visibleControls = activeTab === "code" ? [] : controls.filter((control) => inferTab(control) === activeTab);
   const meta = tabMeta[activeTab];
 
   return (
@@ -143,7 +149,16 @@ export function ChartControlDeck({ controls, values, activeTab = "visual", overr
         </div>
       </div>
 
-      {visibleControls.length ? (
+      {activeTab === "code" ? (
+        <div className="code-drawers-panel" data-power-tab="code" data-control-count={controls.length} data-overrides-count={overridesCount}>
+          {codePanel ?? (
+            <div className="empty-power-tab">
+              <strong>No Code drawers are available for this chart yet.</strong>
+              <p>The visual controls stay active; direct patches remain disabled until a drawer is configured.</p>
+            </div>
+          )}
+        </div>
+      ) : visibleControls.length ? (
         <div className="control-grid control-grid--side-rail">
           {visibleControls.map((control) => {
             const current = controlCurrentValue(control, values);

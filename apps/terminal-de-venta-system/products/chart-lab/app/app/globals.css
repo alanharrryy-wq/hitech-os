@@ -6923,6 +6923,182 @@ body,
   font: 12px/1.45 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
 }
 
+.code-drawers {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.code-drawers__toolbar,
+.code-drawer-card__summary,
+.code-drawer-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.code-drawers__toolbar {
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.code-drawers__toolbar strong {
+  display: block;
+  color: #10223d;
+  font-size: 12px;
+}
+
+.code-drawers__toolbar button,
+.code-drawer-actions button {
+  border: 1px solid rgba(8, 109, 255, 0.18);
+  border-radius: 999px;
+  padding: 7px 10px;
+  color: #10223d;
+  font-size: 11px;
+  font-weight: 900;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.code-drawers__fallback,
+.code-drawer-warning,
+.code-drawer-error {
+  margin: 0;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.code-drawers__fallback {
+  border: 1px solid rgba(255, 172, 68, 0.32);
+  color: #7a4b00;
+  background: rgba(255, 243, 217, 0.9);
+}
+
+.code-drawers__final-option {
+  border: 1px solid rgba(8, 109, 255, 0.12);
+  border-radius: 12px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.64);
+}
+
+.code-drawers__final-option summary {
+  cursor: pointer;
+  color: #10223d;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.code-drawers__final-option textarea,
+.code-drawer-card textarea {
+  width: 100%;
+  min-width: 0;
+  resize: vertical;
+  border: 1px solid rgba(8, 109, 255, 0.16);
+  border-radius: 10px;
+  padding: 10px;
+  color: #10223d;
+  background: rgba(246, 250, 255, 0.96);
+  font: 12px/1.45 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+}
+
+.code-drawers__final-option textarea {
+  min-height: 220px;
+  max-height: 42dvh;
+}
+
+.code-drawers__list {
+  display: grid;
+  gap: 9px;
+}
+
+.code-drawer-card {
+  overflow: hidden;
+  border: 1px solid rgba(8, 109, 255, 0.13);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.code-drawer-card__summary {
+  width: 100%;
+  justify-content: space-between;
+  border: 0;
+  padding: 10px;
+  color: #10223d;
+  text-align: left;
+  background: transparent;
+}
+
+.code-drawer-card__summary strong,
+.code-drawer-card__summary small {
+  display: block;
+}
+
+.code-drawer-card__summary small {
+  margin-top: 3px;
+  color: rgba(16, 34, 61, 0.68);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.code-drawer-card__summary em {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  padding: 4px 7px;
+  color: #10223d;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 900;
+  background: rgba(8, 109, 255, 0.09);
+}
+
+.code-drawer-card[data-code-drawer-status="Applied"] .code-drawer-card__summary em {
+  color: #075b37;
+  background: rgba(33, 201, 125, 0.16);
+}
+
+.code-drawer-card[data-code-drawer-status="Invalid JSON"] .code-drawer-card__summary em {
+  color: #8d1d2c;
+  background: rgba(255, 83, 109, 0.15);
+}
+
+.code-drawer-card__body {
+  display: grid;
+  gap: 9px;
+  padding: 0 10px 10px;
+}
+
+.code-drawer-card textarea {
+  min-height: 130px;
+  max-height: 34dvh;
+}
+
+.code-drawer-toggle {
+  display: inline-flex;
+  width: max-content;
+  gap: 8px;
+  align-items: center;
+  color: #10223d;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.code-drawer-warning {
+  border: 1px solid rgba(8, 109, 255, 0.12);
+  color: #24415f;
+  background: rgba(231, 242, 255, 0.92);
+}
+
+.code-drawer-error {
+  border: 1px solid rgba(255, 83, 109, 0.22);
+  color: #8d1d2c;
+  background: rgba(255, 236, 240, 0.9);
+}
+
+.code-drawer-actions {
+  flex-wrap: wrap;
+}
+
 .power-tabs {
   max-width: 100%;
   overflow-x: auto;
@@ -7028,6 +7204,20 @@ body,
 
   .power-tabs button {
     max-width: 8.25rem;
+  }
+
+  .code-drawers__toolbar,
+  .code-drawer-card__summary {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .code-drawer-card__summary em {
+    width: max-content;
+  }
+
+  .code-drawer-actions button {
+    flex: 1 1 120px;
   }
 
   .lab-echart__visibility-warning {

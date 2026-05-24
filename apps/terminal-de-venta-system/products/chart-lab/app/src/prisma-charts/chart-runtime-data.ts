@@ -45,20 +45,46 @@ function hasUsableRuntimeSnapshot(snapshot: RuntimeSnapshot): snapshot is Runtim
   return snapshot.schemaVersion === "1.0" && snapshot.meta?.runtimeReady === true && isRuntimeSourceMode(snapshot.meta?.sourceMode);
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function normalizeRuntimeChartValue(mockValue: unknown, runtimeValue: unknown): unknown {
+  if (runtimeValue === undefined || runtimeValue === null) return mockValue;
+  if (Array.isArray(mockValue)) {
+    if (Array.isArray(runtimeValue)) return runtimeValue.length ? runtimeValue : mockValue;
+    if (isRecord(runtimeValue)) return [runtimeValue];
+    return mockValue;
+  }
+  if (isRecord(mockValue) && isRecord(runtimeValue)) return { ...mockValue, ...runtimeValue };
+  return runtimeValue;
+}
+
+function mergeRuntimeCharts<T>(mockCharts: T, runtimeCharts: Partial<T> | undefined): T {
+  if (!runtimeCharts) return mockCharts;
+  const mockRecord = mockCharts as Record<string, unknown>;
+  const runtimeRecord = runtimeCharts as Record<string, unknown>;
+  const merged: Record<string, unknown> = { ...mockRecord };
+  for (const key of Object.keys(mockRecord)) {
+    merged[key] = normalizeRuntimeChartValue(mockRecord[key], runtimeRecord[key]);
+  }
+  return merged as T;
+}
+
 export const chartRuntimeSnapshotAvailable = hasUsableRuntimeSnapshot(runtimeSnapshot);
 const hasRuntimeGovernanceSource = chartRuntimeSnapshotAvailable
   && Boolean(runtimeSnapshot.meta?.databasePaths?.pc || runtimeSnapshot.meta?.databasePaths?.canonical);
 
 export const runtimePcCharts: PrismaPcChartsViewModel = chartRuntimeSnapshotAvailable
-  ? ({ ...mockPcCharts, ...(runtimeSnapshot.pc ?? {}) } as PrismaPcChartsViewModel)
+  ? mergeRuntimeCharts(mockPcCharts, runtimeSnapshot.pc)
   : mockPcCharts;
 
 export const runtimeTabletCharts: PrismaTabletChartsViewModel = chartRuntimeSnapshotAvailable
-  ? ({ ...mockTabletCharts, ...(runtimeSnapshot.tablet ?? {}) } as PrismaTabletChartsViewModel)
+  ? mergeRuntimeCharts(mockTabletCharts, runtimeSnapshot.tablet)
   : mockTabletCharts;
 
 export const runtimeMobileCharts: PrismaMobileChartsViewModel = chartRuntimeSnapshotAvailable
-  ? ({ ...mockMobileCharts, ...(runtimeSnapshot.mobile ?? {}) } as PrismaMobileChartsViewModel)
+  ? mergeRuntimeCharts(mockMobileCharts, runtimeSnapshot.mobile)
   : mockMobileCharts;
 
 const snapshotDataStatus = isLabRuntimeDataStatus(runtimeSnapshot.meta?.dataStatus)

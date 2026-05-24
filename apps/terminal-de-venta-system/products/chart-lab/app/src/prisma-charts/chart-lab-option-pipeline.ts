@@ -3,6 +3,7 @@ import { applyChartLabControls } from "./chart-lab-control-model";
 import { applyTargetProfileToOption } from "./chart-lab-target-profiles";
 import { getVisualPresetVisibilityFloor, resolveChartLabMotionPreset, resolveChartLabVisualPreset, resolveChartLabInteractionPreset } from "./chart-lab-power-presets";
 import { applyChartLabAdvancedPatch } from "./chart-lab-advanced-patch";
+import { applyCodeDrawersToOption, type ChartCodeDrawerRecipe } from "./chart-lab-code-drawers";
 import type { ChartLabRecipe } from "./chart-lab-recipe-model";
 import type { LabChartControlState } from "./chart-lab-types";
 
@@ -103,6 +104,7 @@ export type ChartLabOptionPipelineInput = {
   baseOption: Record<string, unknown>;
   controls: LabChartControlState;
   recipe?: ChartLabRecipe;
+  codeDrawers?: ChartCodeDrawerRecipe;
   reducedMotion: boolean;
 };
 
@@ -147,6 +149,13 @@ export function buildChartLabOption(input: ChartLabOptionPipelineInput): ChartLa
     warnings.push(...patched.warnings, ...patched.errors);
     appliedLayers.push("advancedPatch");
     finalOption = patched.option;
+  }
+
+  if (input.codeDrawers) {
+    const drawerResult = applyCodeDrawersToOption(finalOption, input.codeDrawers, { chartId: input.chartId });
+    warnings.push(...Object.entries(drawerResult.errors).map(([drawerId, message]) => `${drawerId}: ${message}`));
+    appliedLayers.push(...drawerResult.appliedDrawerIds.map((drawerId) => `codeDrawer:${drawerId}`));
+    finalOption = drawerResult.option;
   }
 
   const guarded = applyChartLabVisibilityGuard(finalOption, getVisualPresetVisibilityFloor(visualPreset.id));

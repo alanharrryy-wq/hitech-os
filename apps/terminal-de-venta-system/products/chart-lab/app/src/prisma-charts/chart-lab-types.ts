@@ -62,7 +62,7 @@ export type LabChartRuntimeControl = {
   risk: "low" | "medium" | "high";
   resetBehavior: string;
   disabledReason?: string;
-  powerTab?: "visual" | "motion" | "interaction" | "labels" | "data" | "advanced";
+  powerTab?: "visual" | "motion" | "interaction" | "labels" | "data" | "advanced" | "code";
 };
 
 export type LabChartControlState = Record<string, LabChartControlValue>;

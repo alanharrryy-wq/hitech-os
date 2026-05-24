@@ -93,6 +93,10 @@ function seriesLooksVisible(series: Record<string, unknown>): boolean {
   return opacityCandidates.length === 0 || opacityCandidates.some((value) => value > 0.05);
 }
 
+function hasRenderedSurface(root: HTMLDivElement) {
+  return Boolean(root.querySelector("canvas, svg"));
+}
+
 export function getVisibleSeriesSummary(option: Record<string, unknown>): VisibleSeriesSummary {
   const series = normalizeSeries(option);
   const seriesCount = series.length;
@@ -188,9 +192,18 @@ export function LabEChartFrame({ entry, density, size, optionOverride, tourSigna
 
         if (disposed || !rootRef.current) return;
         chartRef.current?.dispose();
-        const chart = echarts.init(rootRef.current, prismaEchartsTheme, { renderer: entry.renderer });
-        chartRef.current = chart;
+        let chart = echarts.init(rootRef.current, prismaEchartsTheme, { renderer: entry.renderer });
         chart.setOption(option as never, true);
+        chart.resize();
+        if (!hasRenderedSurface(rootRef.current)) {
+          chart.dispose();
+          const fullEcharts = await import("echarts");
+          if (disposed || !rootRef.current) return;
+          chart = fullEcharts.init(rootRef.current, prismaEchartsTheme, { renderer: entry.renderer }) as unknown as import("echarts/core").ECharts;
+          chart.setOption(option as never, true);
+          chart.resize();
+        }
+        chartRef.current = chart;
         scheduleChartResize(chart);
         resizeObserverRef.current?.disconnect();
         resizeObserverRef.current = new ResizeObserver(() => scheduleChartResize(chart));
