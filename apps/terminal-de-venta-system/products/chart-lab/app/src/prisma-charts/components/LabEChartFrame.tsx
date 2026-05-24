@@ -1,6 +1,9 @@
+// PRISMA_CHART_LAB_POWER_STUDIO_V3_FINAL_INFRASTRUCTURE
+// PRISMA_CHART_LAB_POWER_STUDIO_ECHART_FRAME_V1
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import type { KeyboardEvent } from "react";
 import { prismaEchartsTheme } from "../../../../../../shared/prisma-charts/prismaChartTheme";
 import type { LabChartDensity, LabChartEntry, LabChartSize } from "../chart-lab-types";
 
@@ -9,41 +12,143 @@ type LabEChartFrameProps = {
   density: LabChartDensity;
   size: LabChartSize;
   optionOverride?: Record<string, unknown>;
+  tourSignal?: number;
+};
+
+export type VisibleSeriesSummary = {
+  seriesCount: number;
+  visibleSeriesCount: number;
+  hasSeriesData: boolean;
+  hasDatasetData: boolean;
+  suspectedBlankChart: boolean;
 };
 
 function chartHeight(entry: LabChartEntry, size: LabChartSize, density: LabChartDensity) {
-  const sizeBoost = size === "focus" ? 120 : size === "compact" ? -70 : 40;
-  const densityTrim = density === "dense" ? -24 : 0;
-  return Math.max(260, entry.defaultHeight + sizeBoost + densityTrim);
+  const base = size === "focus" ? 640 : size === "wide" ? 560 : 430;
+  const densityTrim = density === "dense" ? -18 : 0;
+  return Math.max(360, Math.max(entry.defaultHeight, base) + densityTrim);
 }
 
-export function LabEChartFrame({ entry, density, size, optionOverride }: LabEChartFrameProps) {
+function chartClassName(state: "loading" | "ready" | "error" | "empty") {
+  return ["lab-echart", "lab-echart--power-studio", `lab-echart--${state}`].join(" ");
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+export function normalizeSeries(option: Record<string, unknown>): Record<string, unknown>[] {
+  const series = option.series;
+  if (Array.isArray(series)) return series.filter(isRecord);
+  return isRecord(series) ? [series] : [];
+}
+
+function hasArrayData(value: unknown): boolean {
+  return Array.isArray(value) && value.length > 0;
+}
+
+function hasRecordSourceData(value: Record<string, unknown>): boolean {
+  return Object.values(value).some((item) => (Array.isArray(item) ? item.length > 0 : item !== undefined && item !== null));
+}
+
+function hasSeriesRecordData(series: Record<string, unknown>): boolean {
+  return (
+    hasArrayData(series.data) ||
+    hasArrayData(series.nodes) ||
+    hasArrayData(series.links) ||
+    hasArrayData(series.edges) ||
+    hasArrayData(series.children)
+  );
+}
+
+export function hasSeriesData(series: unknown): boolean {
+  const items = Array.isArray(series) ? series : [series];
+  return items.some((item) => isRecord(item) && hasSeriesRecordData(item));
+}
+
+function hasDatasetSourceData(source: unknown): boolean {
+  if (Array.isArray(source)) return source.length > 0;
+  if (isRecord(source)) return hasRecordSourceData(source);
+  return typeof source === "string" && source.trim().length > 0;
+}
+
+export function hasDatasetData(option: Record<string, unknown>): boolean {
+  const dataset = option.dataset;
+  const datasets = Array.isArray(dataset) ? dataset : isRecord(dataset) ? [dataset] : [];
+  return datasets.some((item) => isRecord(item) && hasDatasetSourceData(item.source));
+}
+
+function numericOpacity(value: unknown): number | null {
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+function seriesLooksVisible(series: Record<string, unknown>): boolean {
+  if (series.show === false) return false;
+  const opacityCandidates = [
+    numericOpacity(series.opacity),
+    numericOpacity(isRecord(series.itemStyle) ? series.itemStyle.opacity : undefined),
+    numericOpacity(isRecord(series.lineStyle) ? series.lineStyle.opacity : undefined),
+    numericOpacity(isRecord(series.areaStyle) ? series.areaStyle.opacity : undefined)
+  ].filter((value): value is number => value !== null);
+  return opacityCandidates.length === 0 || opacityCandidates.some((value) => value > 0.05);
+}
+
+export function getVisibleSeriesSummary(option: Record<string, unknown>): VisibleSeriesSummary {
+  const series = normalizeSeries(option);
+  const seriesCount = series.length;
+  const visibleSeriesCount = series.filter(seriesLooksVisible).length;
+  const hasDirectSeriesData = hasSeriesData(series);
+  const hasDirectDatasetData = hasDatasetData(option);
+  return {
+    seriesCount,
+    visibleSeriesCount,
+    hasSeriesData: hasDirectSeriesData,
+    hasDatasetData: hasDirectDatasetData,
+    suspectedBlankChart: !hasDirectDatasetData && (seriesCount === 0 || visibleSeriesCount === 0 || !hasDirectSeriesData)
+  };
+}
+
+export function LabEChartFrame({ entry, density, size, optionOverride, tourSignal = 0 }: LabEChartFrameProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const chartRef = useRef<import("echarts/core").ECharts | null>(null);
+  const resizeObserverRef = useRef<ResizeObserver | null>(null);
+  const resizeFrameRef = useRef<number | null>(null);
+  const resizeTimerRef = useRef<number | null>(null);
+  const tourTimerRef = useRef<number | null>(null);
   const [state, setState] = useState<"loading" | "ready" | "error" | "empty">("loading");
   const option = useMemo(() => optionOverride ?? entry.getOption?.() ?? {}, [entry, optionOverride]);
+  const visibleSeriesSummary = useMemo(() => getVisibleSeriesSummary(option), [option]);
   const height = chartHeight(entry, size, density);
 
-  if (!entry.getOption || !entry.renderer) {
-    return (
-      <div className="lab-empty-chart" style={{ minHeight: height }}>
-        <span>{entry.readiness}</span>
-        <strong>{entry.unavailableReason ?? "This chart is registered but does not expose an ECharts option yet."}</strong>
-      </div>
-    );
+  function clearScheduledResize() {
+    if (resizeFrameRef.current) window.cancelAnimationFrame(resizeFrameRef.current);
+    if (resizeTimerRef.current) window.clearTimeout(resizeTimerRef.current);
+    resizeFrameRef.current = null;
+    resizeTimerRef.current = null;
+  }
+
+  function scheduleChartResize(chart: import("echarts/core").ECharts) {
+    clearScheduledResize();
+    resizeFrameRef.current = window.requestAnimationFrame(() => {
+      chart.resize();
+      resizeFrameRef.current = null;
+    });
+    resizeTimerRef.current = window.setTimeout(() => {
+      chart.resize();
+      resizeTimerRef.current = null;
+    }, 120);
   }
 
   useEffect(() => {
+    if (!entry.getOption || !entry.renderer) {
+      setState("empty");
+      return;
+    }
+
     let disposed = false;
-    let resizeObserver: ResizeObserver | null = null;
 
     async function boot() {
       if (!rootRef.current || !entry.renderer) return;
-      if (!entry.getOption) {
-        setState("empty");
-        return;
-      }
-
       try {
         const [echarts, charts, components, renderers] = await Promise.all([
           import("echarts/core"),
@@ -71,6 +176,9 @@ export function LabEChartFrame({ entry, density, size, optionOverride }: LabECha
           components.LegendComponent,
           components.TitleComponent,
           components.TooltipComponent,
+          components.ToolboxComponent,
+          components.MarkLineComponent,
+          components.MarkPointComponent,
           components.TransformComponent,
           components.VisualMapComponent,
           components.GraphicComponent,
@@ -79,41 +187,139 @@ export function LabEChartFrame({ entry, density, size, optionOverride }: LabECha
         ]);
 
         if (disposed || !rootRef.current) return;
+        chartRef.current?.dispose();
         const chart = echarts.init(rootRef.current, prismaEchartsTheme, { renderer: entry.renderer });
         chartRef.current = chart;
         chart.setOption(option as never, true);
-        resizeObserver = new ResizeObserver(() => chart.resize());
-        resizeObserver.observe(rootRef.current);
+        scheduleChartResize(chart);
+        resizeObserverRef.current?.disconnect();
+        resizeObserverRef.current = new ResizeObserver(() => scheduleChartResize(chart));
+        resizeObserverRef.current.observe(rootRef.current);
         setState("ready");
       } catch {
         if (!disposed) setState("error");
       }
     }
 
+    setState("loading");
     void boot();
 
     return () => {
       disposed = true;
-      resizeObserver?.disconnect();
+      if (tourTimerRef.current) window.clearInterval(tourTimerRef.current);
+      clearScheduledResize();
+      resizeObserverRef.current?.disconnect();
       chartRef.current?.dispose();
       chartRef.current = null;
     };
-  }, [entry, option]);
+  }, [entry.id, entry.renderer]);
 
   useEffect(() => {
-    if (!chartRef.current) return;
+    const chart = chartRef.current;
+    if (!chart) return;
     try {
-      chartRef.current.setOption(option as never, true);
+      chart.setOption(option as never, true);
+      scheduleChartResize(chart);
       setState("ready");
     } catch {
       setState("error");
     }
   }, [option]);
 
+  useEffect(() => {
+    const chart = chartRef.current;
+    if (!chart || tourSignal <= 0) return;
+    if (tourTimerRef.current) window.clearInterval(tourTimerRef.current);
+    let index = 0;
+    const steps = [0, 1, 2, 3, 4];
+    chart.dispatchAction({ type: "downplay" });
+    tourTimerRef.current = window.setInterval(() => {
+      try {
+        const dataIndex = steps[index % steps.length];
+        chart.dispatchAction({ type: "downplay" });
+        chart.dispatchAction({ type: "highlight", seriesIndex: 0, dataIndex });
+        chart.dispatchAction({ type: "showTip", seriesIndex: 0, dataIndex });
+        index += 1;
+        if (index > steps.length) {
+          if (tourTimerRef.current) window.clearInterval(tourTimerRef.current);
+          chart.dispatchAction({ type: "downplay" });
+        }
+      } catch {
+        if (tourTimerRef.current) window.clearInterval(tourTimerRef.current);
+      }
+    }, 850);
+  }, [tourSignal]);
+
+  function restoreChartView() {
+    const chart = chartRef.current;
+    if (!chart) return;
+    chart.dispatchAction({ type: "restore" });
+    chart.dispatchAction({ type: "brush", areas: [] });
+    chart.dispatchAction({ type: "downplay" });
+    chart.dispatchAction({ type: "hideTip" });
+  }
+
+  function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    const chart = chartRef.current;
+    if (!chart) return;
+    if (event.key.toLowerCase() === "r") {
+      restoreChartView();
+      event.preventDefault();
+    }
+    if (event.key.toLowerCase() === "s") {
+      chart.dispatchAction({ type: "takeGlobalCursor", key: "brush", brushOption: { brushType: "rect", brushMode: "single" } });
+      event.preventDefault();
+    }
+    if (event.key === "Escape") {
+      chart.dispatchAction({ type: "brush", areas: [] });
+      chart.dispatchAction({ type: "downplay" });
+      chart.dispatchAction({ type: "hideTip" });
+      event.preventDefault();
+    }
+  }
+
+  if (!entry.getOption || !entry.renderer) {
+    return (
+      <div className="lab-empty-chart lab-empty-chart--power-studio" style={{ minHeight: height }}>
+        <span>{entry.readiness}</span>
+        <strong>{entry.unavailableReason ?? "This chart is registered but does not expose an ECharts option yet."}</strong>
+      </div>
+    );
+  }
+
   return (
-    <div className="lab-echart" aria-label={`${entry.title} preview`} role="img" style={{ minHeight: height }}>
+    <div
+      className={chartClassName(state)}
+      aria-busy={state === "loading"}
+      aria-label={`${entry.title} preview`}
+      data-chart-density={density}
+      data-chart-family={entry.family}
+      data-chart-id={entry.id}
+      data-chart-has-dataset-data={visibleSeriesSummary.hasDatasetData}
+      data-chart-has-series-data={visibleSeriesSummary.hasSeriesData}
+      data-chart-series-count={visibleSeriesSummary.seriesCount}
+      data-chart-size={size}
+      data-chart-suspected-blank={visibleSeriesSummary.suspectedBlankChart}
+      data-chart-visible-series-count={visibleSeriesSummary.visibleSeriesCount}
+      data-polish="power-studio-v1"
+      data-render-state={state}
+      aria-keyshortcuts="R S Escape"
+      role="img"
+      style={{ minHeight: height }}
+      tabIndex={0}
+      onDoubleClick={restoreChartView}
+      onKeyDown={handleKeyDown}
+    >
       <p className="sr-only">{`${entry.title}: ${entry.operationalQuestion}`}</p>
-      <div ref={rootRef} style={{ width: "100%", height }} />
+      <div ref={rootRef} className="lab-echart__canvas" style={{ width: "100%", height }} />
+      {visibleSeriesSummary.suspectedBlankChart ? (
+        <div className="lab-echart__visibility-warning" aria-live="polite">
+          <strong>Chart rendered, but visible data looks too faint or empty.</strong>
+          <span>Check series opacity, data, or visual preset.</span>
+        </div>
+      ) : null}
+      <div className="lab-echart__luxury-rail" aria-hidden="true"><span /><span /><span /></div>
+      <div className="lab-echart__command-hints" aria-hidden="true"><span>R restore</span><span>S select</span><span>Esc clear</span></div>
       {state !== "ready" ? (
         <div className="lab-echart__state" aria-live="polite" style={{ minHeight: height, marginTop: -height }}>
           {state === "loading" ? "Loading chart..." : state === "empty" ? "No data available" : "Chart render failed"}

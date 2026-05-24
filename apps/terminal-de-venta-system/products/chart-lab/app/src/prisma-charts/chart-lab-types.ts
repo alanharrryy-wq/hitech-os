@@ -1,3 +1,4 @@
+// PRISMA_CHART_LAB_POWER_STUDIO_V3_FINAL_INFRASTRUCTURE
 import type { ComponentType } from "react";
 import type { PrismaChartRenderer, PrismaChartSurface } from "../../../../../shared/prisma-charts/prismaChartContracts";
 
@@ -61,6 +62,7 @@ export type LabChartRuntimeControl = {
   risk: "low" | "medium" | "high";
   resetBehavior: string;
   disabledReason?: string;
+  powerTab?: "visual" | "motion" | "interaction" | "labels" | "data" | "advanced";
 };
 
 export type LabChartControlState = Record<string, LabChartControlValue>;
