@@ -151,6 +151,22 @@ export function OptionStudioPanel({
     downloadTextFile(`${safeChartSlug(chart.id)}-option-patch-draft-${timestampSlug()}.patch.txt`, draft, "text/plain;charset=utf-8");
   }
 
+  const optionSafety = useMemo(() => {
+    const checks = [
+      { label: "Windows path", pattern: /[A-Z]:\\|[A-Z]:\//i },
+      { label: "SQLite or DB artifact", pattern: /\.(sqlite|db)\b|tablet-pos\.db/i },
+      { label: "Secret token vocabulary", pattern: /(api[_-]?token|password|private[_-]?key|secret)/i },
+      { label: "Local user path", pattern: /Users\\|repos\\|home\//i }
+    ];
+    const hits = checks.filter((check) => check.pattern.test(text)).map((check) => check.label);
+    return { safe: hits.length === 0, hits };
+  }, [text]);
+
+  const optionDiffSummary = useMemo(() => {
+    if (text === canonicalText) return "No local diff from canonical option.";
+    return `${Math.abs(text.length - canonicalText.length)} character delta from canonical option.`;
+  }, [canonicalText, text]);
+
   const editorAvailable = Boolean(chart.getOption);
 
   return (
@@ -189,6 +205,12 @@ export function OptionStudioPanel({
         <strong>{hasPreviewOverride ? "Preview override active" : "Canonical preview"}</strong>
         <span>{validation.message}</span>
         <small>{copyState}</small>
+      </div>
+
+      <div className="prisma-option-studio-safety" data-safe={optionSafety.safe ? "true" : "false"} aria-label="Public safety and diff hints">
+        <strong>{optionSafety.safe ? "Public-safe option draft" : "Review before export"}</strong>
+        <span>{optionSafety.safe ? "No obvious local path, database, or secret marker detected." : optionSafety.hits.join(" · ")}</span>
+        <small>{optionDiffSummary}</small>
       </div>
 
       {editorAvailable ? (

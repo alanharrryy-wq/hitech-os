@@ -154,6 +154,20 @@ export function SupplierActionCockpit({
     });
   }
 
+  async function confirmRegisterPayment() {
+    if (!selectedPayable) return localError("payment", "Falta cuenta por pagar", "Selecciona una cuenta para registrar pago.");
+    const amountCents = pesosToCents(paymentPesos);
+    if (amountCents <= 0) return localError("payment", "Monto por revisar", "Escribe un monto mayor a cero antes de registrar el pago.");
+
+    const supplierName = cleanVisible(selectedPayable.supplierName ?? "Proveedor");
+    const accepted = window.confirm(
+      `Vas a registrar un pago real.\n\nProveedor: ${supplierName}\nMonto: ${formatMoney(amountCents)}\nReferencia: ${reason || "Sin referencia"}\n\n¿Confirmas el registro del pago?`
+    );
+
+    if (!accepted) return;
+    await registerPayment();
+  }
+
   async function refreshAudit() {
     setResult((current: ActionResult) => ({ ...current, kind: "audit", status: "loading", title: "Consultando auditoría", message: "Estamos trayendo el rastro auditable de Proveedores." }));
     try {
@@ -237,7 +251,7 @@ export function SupplierActionCockpit({
           <button type="button" onClick={runSimulation} disabled={busy || !selectedRecommendation}>Simular compra</button>
           <button type="button" onClick={createSuggestedOrder} disabled={busy || !selectedRecommendation}>Crear pedido sugerido</button>
           <button type="button" onClick={confirmReceiving} disabled={busy || !selectedOrder}>Confirmar recepción</button>
-          <button type="button" onClick={registerPayment} disabled={busy || !selectedPayable}>Registrar pago</button>
+          <button type="button" onClick={confirmRegisterPayment} disabled={busy || !selectedPayable}>Registrar pago</button>
           <button type="button" className="button-secondary-v09" onClick={refreshAudit} disabled={busy}>Ver auditoría</button>
         </div>
       </div>

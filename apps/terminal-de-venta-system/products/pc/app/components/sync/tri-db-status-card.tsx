@@ -128,8 +128,8 @@ export function TriDbStatusCard({ status }: { status: TriDbStatusCardModel }) {
     }}>
       <header style={{ alignItems: "flex-start", display: "grid", gap: 14, gridTemplateColumns: "minmax(0,1fr) auto" }}>
         <div style={{ minWidth: 0 }}>
-          <div style={{ color: CRYSTAL.blue, fontSize: 12, fontWeight: 950, letterSpacing: ".14em", textTransform: "uppercase" }}>Estado TRI-DB</div>
-          <h2 style={{ color: CRYSTAL.text, fontSize: "clamp(1.35rem, 5vw, 2.15rem)", letterSpacing: 0, lineHeight: 1.04, margin: "7px 0 0", overflowWrap: "anywhere" }}>{"TRI-DB rescue/backfill bridge"}</h2>
+          <div style={{ color: CRYSTAL.blue, fontSize: 12, fontWeight: 950, letterSpacing: ".14em", textTransform: "uppercase" }}>Estado sincronización entre equipos</div>
+          <h2 style={{ color: CRYSTAL.text, fontSize: "clamp(1.35rem, 5vw, 2.15rem)", letterSpacing: 0, lineHeight: 1.04, margin: "7px 0 0", overflowWrap: "anywhere" }}>{"sincronización entre equipos rescue/backfill bridge"}</h2>
           <p style={{ color: CRYSTAL.soft, lineHeight: 1.45, margin: "8px 0 0", maxWidth: 760 }}>{STATUS_COPY[status.status]}</p>
         </div>
         <Pill tone={tone(status.status)}>{STATUS_LABEL[status.status]}</Pill>
@@ -142,7 +142,7 @@ export function TriDbStatusCard({ status }: { status: TriDbStatusCardModel }) {
       </div>
       <div style={{ display: "grid", gap: 12, gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", marginTop: 14 }}>
         <SurfacePanel title="Tablet local" {...status.tablet} />
-        <SurfacePanel title="PC canonical" {...status.pc} />
+        <SurfacePanel title="base principal de PC" {...status.pc} />
       </div>
       <div style={{ display: "grid", gap: 12, gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", marginTop: 14 }}>
         <article style={{ background: CRYSTAL.panel, border: `1px solid ${CRYSTAL.line}`, borderRadius: 20, minWidth: 0, padding: 16 }}>

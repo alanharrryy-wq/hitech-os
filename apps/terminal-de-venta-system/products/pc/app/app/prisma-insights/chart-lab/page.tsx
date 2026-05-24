@@ -39,7 +39,7 @@ export default async function PrismaChartLabPage({ searchParams }: { searchParam
         <div>
           <p className={styles.eyebrow}>ChartOps</p>
           <h1>PRISMA Chart Lab</h1>
-          <p>Inspector de las 14 graficas: pasaporte, fuente, contrato, adapter, mock, receta visual y estados soportados.</p>
+          <p>Inspector de las 14 graficas: pasaporte, fuente, contrato, conector, mock, receta visual y estados soportados.</p>
         </div>
         <aside className={styles.telemetry} aria-label="Resumen Chart Lab">
           <span>Atlas activo</span>
@@ -63,7 +63,7 @@ export default async function PrismaChartLabPage({ searchParams }: { searchParam
                 <p><strong>chartId:</strong> {chart.chartId}</p>
                 <p><strong>Pregunta:</strong> {chart.questionAnswered}</p>
                 <p><strong>Componente:</strong> {chart.componentFile}</p>
-                <p><strong>Adapter:</strong> {chart.adapterName}</p>
+                <p><strong>Conector:</strong> {chart.adapterName}</p>
                 <p><strong>Contrato:</strong> {chart.contractType}</p>
                 <p><strong>Mock:</strong> {chart.mockName}</p>
                 <p><strong>Recipe:</strong> {chart.visualRecipe}</p>

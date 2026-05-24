@@ -1,3 +1,4 @@
+// PHASE4_EXECUTIVE_COMMAND_CENTER_PRO_V1
 import type {
   ActionPriorityStackDatum,
   CausalFlowRibbonDatum,
@@ -10,15 +11,13 @@ import type {
   OperationalDensityCell,
   OperationalWaterfallStep,
   OwnerPulsePoint,
-  SyncCommandLifecycleEvent,
   ServiceDependencyEdge,
   ServiceDependencyNode,
   ShiftPulseBucket,
-  TabletCatalogFreshnessGridRow,
   SyncOutboxMatrixCell
 } from "./prismaChartContracts";
 import { formatAgeMinutes, formatCurrencyFromCents, formatPercent, humanizeKey } from "./prismaChartFormatters";
-import { basePrismaChartOption, severityColor, statusColor } from "./prismaChartTheme";
+import { densityColor, mergePrismaChartOption, severityColor, statusColor } from "./prismaChartTheme";
 
 type ChartOption = Record<string, unknown>;
 type TooltipRecord = Record<string, unknown>;
@@ -30,7 +29,7 @@ function timeLabel(iso: string | undefined) {
 }
 
 function mergeBase(title: string, description: string, option: ChartOption): ChartOption {
-  return { ...basePrismaChartOption(title, description), ...option };
+  return mergePrismaChartOption(title, description, option);
 }
 
 
@@ -80,14 +79,7 @@ function densityBucketLabel(item: Pick<OperationalDensityCell, "bucketLabel" | "
 }
 
 function densityStateColor(state: OperationalDensityCell["state"] | undefined, pressureScore: number) {
-  if (state === "anomaly") return "#ff3d6e";
-  if (state === "peak") return "#ffbf4d";
-  if (state === "cold") return "#12345e";
-  if (pressureScore >= 88) return "#ff4f5e";
-  if (pressureScore >= 76) return "#ffbf4d";
-  if (pressureScore >= 58) return "#8b5cff";
-  if (pressureScore >= 36) return "#1fe7ff";
-  return "#0c2f6c";
+  return densityColor(state, pressureScore);
 }
 
 function densityTooltip(item: Partial<OperationalDensityCell> | null | undefined) {
@@ -111,6 +103,42 @@ function densityTooltipFromParams(params: unknown) {
   if (dataRecord?.meta) return densityTooltip(dataRecord.meta as Partial<OperationalDensityCell>);
   const dataArray = tooltipDataArray(params);
   return densityTooltip(asRecord(dataArray[3]) as Partial<OperationalDensityCell> | null) || tooltipLabel(params);
+}
+
+// PRISMA_CHART_SAFE_ARRAY_RUNTIME_GUARD_V1
+type PrismaChartArrayLike<T> =
+  | T[]
+  | {
+      points?: T[];
+      items?: T[];
+      timeline?: T[];
+      data?: T[];
+      rows?: T[];
+      cells?: T[];
+      values?: T[];
+      series?: T[];
+      matrix?: T[];
+      entries?: T[];
+      records?: T[];
+    }
+  | null
+  | undefined;
+
+function coerceChartArray<T>(input: PrismaChartArrayLike<T>): T[] {
+  if (Array.isArray(input)) return input;
+  if (!input || typeof input !== "object") return [];
+  if (Array.isArray(input.points)) return input.points;
+  if (Array.isArray(input.items)) return input.items;
+  if (Array.isArray(input.timeline)) return input.timeline;
+  if (Array.isArray(input.data)) return input.data;
+  if (Array.isArray(input.rows)) return input.rows;
+  if (Array.isArray(input.cells)) return input.cells;
+  if (Array.isArray(input.values)) return input.values;
+  if (Array.isArray(input.series)) return input.series;
+  if (Array.isArray(input.matrix)) return input.matrix;
+  if (Array.isArray(input.entries)) return input.entries;
+  if (Array.isArray(input.records)) return input.records;
+  return [];
 }
 
 export function causalFlowRibbonOption(data: CausalFlowRibbonDatum[] | unknown): ChartOption {
@@ -142,10 +170,11 @@ export function causalFlowRibbonOption(data: CausalFlowRibbonDatum[] | unknown):
   });
 }
 
-export function operationalDensityFieldOption(data: OperationalDensityCell[]): ChartOption {
-  const modules = Array.from(new Set(data.map((item) => item.moduleName)));
-  const buckets = Array.from(new Set(data.map((item) => timeLabel(item.bucketStart))));
-  const values = data.map((item) => [buckets.indexOf(timeLabel(item.bucketStart)), modules.indexOf(item.moduleName), item.pressureScore, item]);
+export function operationalDensityFieldOption(data: PrismaChartArrayLike<OperationalDensityCell>): ChartOption {
+  const safeoperationalDensityFieldData = coerceChartArray<OperationalDensityCell>(data);
+  const modules = Array.from(new Set(safeoperationalDensityFieldData.map((item) => item.moduleName)));
+  const buckets = Array.from(new Set(safeoperationalDensityFieldData.map((item) => timeLabel(item.bucketStart))));
+  const values = safeoperationalDensityFieldData.map((item) => [buckets.indexOf(timeLabel(item.bucketStart)), modules.indexOf(item.moduleName), item.pressureScore, item]);
   return mergeBase("Operational Density Field", "Heatmap of operational pressure by module and time bucket.", {
     grid: { top: 18, left: 86, right: 22, bottom: 42 },
     xAxis: { type: "category", data: buckets, axisLabel: { color: "#66738a" } },
@@ -164,11 +193,12 @@ export function operationalDensityFieldOption(data: OperationalDensityCell[]): C
 }
 
 
-export function operationalDensityHeatmapOption(data: OperationalDensityCell[]): ChartOption {
-  const modules = Array.from(new Set(data.map((item) => item.moduleName)));
-  const buckets = Array.from(new Set(data.map(densityBucketLabel)));
+export function operationalDensityHeatmapOption(data: PrismaChartArrayLike<OperationalDensityCell>): ChartOption {
+  const safeoperationalDensityHeatmapData = coerceChartArray<OperationalDensityCell>(data);
+  const modules = Array.from(new Set(safeoperationalDensityHeatmapData.map((item) => item.moduleName)));
+  const buckets = Array.from(new Set(safeoperationalDensityHeatmapData.map(densityBucketLabel)));
   const majorBuckets = new Set(["00:00", "04:00", "08:00", "12:00", "16:00", "20:00", "24:00"]);
-  const heatCells = data.map((item) => ({
+  const heatCells = safeoperationalDensityHeatmapData.map((item) => ({
     value: [buckets.indexOf(densityBucketLabel(item)), modules.indexOf(item.moduleName), item.pressureScore, item.confidence, item.eventCount],
     meta: item,
     itemStyle: {
@@ -313,12 +343,13 @@ export function serviceDependencyGraphOption(graph: { nodes: ServiceDependencyNo
   });
 }
 
-export function inventoryRiskTreemapOption(data: InventoryRiskNode[]): ChartOption {
-  const roots = data.filter((node) => !node.parentId).map((root) => ({
+export function inventoryRiskTreemapOption(data: PrismaChartArrayLike<InventoryRiskNode>): ChartOption {
+  const safeinventoryRiskTreemapData = coerceChartArray<InventoryRiskNode>(data);
+  const roots = safeinventoryRiskTreemapData.filter((node) => !node.parentId).map((root) => ({
     name: root.label,
     value: root.revenueAtRisk ?? root.marginImpact ?? root.stockoutRisk,
     itemStyle: { color: statusColor(root.stockoutRisk > 75 ? "FAIL" : root.stockoutRisk > 50 ? "DEGRADED" : "PASS") },
-    children: data.filter((node) => node.parentId === root.id).map((child) => ({
+    children: safeinventoryRiskTreemapData.filter((node) => node.parentId === root.id).map((child) => ({
       name: child.label,
       value: child.revenueAtRisk ?? child.marginImpact ?? child.stockoutRisk,
       itemStyle: { color: statusColor(child.stockoutRisk > 75 ? "FAIL" : child.stockoutRisk > 50 ? "DEGRADED" : "PASS") },
@@ -339,10 +370,22 @@ export function inventoryRiskTreemapOption(data: InventoryRiskNode[]): ChartOpti
 }
 
 // PRISMA_DECISION_LEDGER_RADICAL_BASELINE_V1
-export function decisionLedgerTimelineOption(data: DecisionLedgerPoint[]): ChartOption {
+export function decisionLedgerTimelineOption(data: DecisionLedgerPoint[] | { points?: DecisionLedgerPoint[]; items?: DecisionLedgerPoint[]; timeline?: DecisionLedgerPoint[]; data?: DecisionLedgerPoint[] } | null | undefined): ChartOption {
   // PRISMA_DECISION_LEDGER_EXECUTIVE_OPTION_V1: refined, control-safe timeline option.
-  const healthSeries = data.map((point) => [point.time, point.afterHealthScore ?? point.beforeHealthScore ?? point.impactScore]);
-  const eventItems = data.map((point) => {
+  const safeDecisionLedgerData: DecisionLedgerPoint[] = Array.isArray(data)
+    ? data
+    : Array.isArray(data?.points)
+      ? data.points
+      : Array.isArray(data?.items)
+        ? data.items
+        : Array.isArray(data?.timeline)
+          ? data.timeline
+          : Array.isArray(data?.data)
+            ? data.data
+            : [];
+
+  const healthSeries = safeDecisionLedgerData.map((point) => [point.time, point.afterHealthScore ?? point.beforeHealthScore ?? point.impactScore]);
+  const eventItems = safeDecisionLedgerData.map((point) => {
     const eventTone = point.status === "blocked" ? "FAIL" : point.status === "resolved" ? "PASS" : "DEGRADED";
     const eventColor = statusColor(eventTone);
     const symbol = point.type === "incident" ? "path://M12 2L22 20H2L12 2Z" : point.type === "decision" ? "diamond" : point.type === "action" ? "roundRect" : point.type === "resolution" ? "pin" : "circle";
@@ -1242,100 +1285,6 @@ export function financialOperationalWaterfallOption(data: OperationalWaterfallSt
   } as ChartOption;
 }
 
-function catalogFreshnessScore(status: TabletCatalogFreshnessGridRow["freshnessStatus"]) {
-  if (status === "fresh") return 100;
-  if (status === "warning") return 68;
-  if (status === "stale") return 38;
-  if (status === "error") return 8;
-  return 22;
-}
-
-function lifecycleStatusScore(status: SyncCommandLifecycleEvent["status"]) {
-  if (status === "applied") return 100;
-  if (status === "available" || status === "exported" || status === "pulled") return 76;
-  if (status === "queued" || status === "applying" || status === "created") return 58;
-  if (status === "duplicated") return 44;
-  if (status === "conflicted" || status === "rejected" || status === "failed" || status === "expired") return 14;
-  return 26;
-}
-
-export function tabletCatalogFreshnessGridOption(data: TabletCatalogFreshnessGridRow[]): ChartOption {
-  const entities = Array.from(new Set(data.flatMap((row) => row.entityStatuses.map((entity) => entity.entityType))));
-  const terminals = data.map((row) => row.terminalLabel || row.terminalId);
-  const values = data.flatMap((row, rowIndex) => row.entityStatuses.map((entity) => [
-    entities.indexOf(entity.entityType),
-    rowIndex,
-    catalogFreshnessScore(entity.status),
-    { row, entity }
-  ]));
-  return mergeBase("Tablet Catalog Freshness Grid", "Matrix of Tablet catalog freshness by entity, cursor, and checkpoint evidence.", {
-    grid: { top: 24, left: 118, right: 18, bottom: 54 },
-    xAxis: { type: "category", data: entities, axisLabel: { color: "#66738a", rotate: 28, fontWeight: 800 } },
-    yAxis: { type: "category", data: terminals, axisLabel: { color: "#071426", fontWeight: 900 } },
-    visualMap: { min: 0, max: 100, show: false, inRange: { color: ["#df3d2f", "#e59b2a", "#93a4ba", "#63dfff", "#13b981"] } },
-    tooltip: {
-      formatter: (params: unknown) => {
-        const meta = asRecord(tooltipDataArray(params)[3]);
-        const row = asRecord(meta?.row) as Partial<TabletCatalogFreshnessGridRow> | null;
-        const entity = asRecord(meta?.entity) as Partial<TabletCatalogFreshnessGridRow["entityStatuses"][number]> | null;
-        return row && entity
-          ? `${row.terminalLabel ?? row.terminalId}<br/>${entity.entityType ?? ""}: ${entity.status ?? "unknown"}<br/>PC rows: ${safeNumber(entity.pcRowCount)} · Export: ${safeNumber(entity.exportedCount)}<br/>Applied: ${safeNumber(entity.appliedCount)} · Rejected: ${safeNumber(entity.rejectedCount)} · Conflict: ${safeNumber(entity.conflictedCount)} · Duplicate: ${safeNumber(entity.duplicatedCount)}<br/>Cursor: ${row.checkpointCursor ?? "sin cursor"}<br/>Action: ${row.recommendedAction ?? "investigate"}`
-          : tooltipLabel(params);
-      }
-    },
-    series: [{
-      type: "heatmap",
-      data: values,
-      label: {
-        show: true,
-        formatter: (params: unknown) => {
-          const value = firstTooltipParam(params)?.value;
-          const tupleScore = Array.isArray(value) ? value[2] : value;
-          return `${safeNumber(tupleScore)}%`;
-        },
-        color: "#071426",
-        fontWeight: 900
-      },
-      emphasis: { itemStyle: { borderColor: "#071426", borderWidth: 1 } }
-    }]
-  });
-}
-
-export function syncCommandLifecycleTimelineOption(data: SyncCommandLifecycleEvent[]): ChartOption {
-  const statuses = Array.from(new Set(data.map((event) => event.status)));
-  const sorted = [...data].sort((a, b) => Date.parse(a.timestamp) - Date.parse(b.timestamp));
-  return mergeBase("Sync Command Lifecycle Timeline", "Catalog sync command lifecycle from PC export ledger through observable Tablet outcomes.", {
-    grid: { top: 24, left: 108, right: 18, bottom: 48 },
-    xAxis: { type: "time", axisLabel: { color: "#66738a", fontWeight: 750 } },
-    yAxis: { type: "category", data: statuses, axisLabel: { color: "#071426", fontWeight: 900 } },
-    tooltip: {
-      formatter: (params: unknown) => {
-        const item = tooltipDataRecord(params) as Partial<SyncCommandLifecycleEvent> | null;
-        return item
-          ? `${item.commandType ?? "sync"} / ${item.status ?? "unknown"}<br/>Device: ${item.terminalLabel ?? item.terminalId ?? "all"}<br/>Stream: ${item.stream ?? ""}<br/>Applied: ${safeNumber(item.resultCounts?.applied)} · Rejected: ${safeNumber(item.resultCounts?.rejected)} · Conflict: ${safeNumber(item.resultCounts?.conflicted)} · Duplicate: ${safeNumber(item.resultCounts?.duplicated)}<br/>Reason: ${item.reason ?? "sin error"}<br/>Action: ${item.recommendedAction ?? "none"}`
-          : tooltipLabel(params);
-      }
-    },
-    series: [{
-      type: "scatter",
-      data: sorted.map((event) => ({
-        ...event,
-        value: [event.timestamp, event.status, lifecycleStatusScore(event.status)],
-        symbolSize: Math.max(12, Math.min(30, 10 + Object.values(event.entityCounts).reduce((sum, value) => sum + safeNumber(value), 0) / 4)),
-        itemStyle: { color: statusColor(event.status === "applied" ? "PASS" : event.status === "rejected" || event.status === "conflicted" || event.status === "failed" ? "FAIL" : "DEGRADED"), borderColor: "#fff", borderWidth: 2 }
-      })),
-      label: {
-        show: true,
-        position: "top",
-        formatter: (params: unknown) => (firstTooltipParam(params)?.data as { commandType?: string } | undefined)?.commandType ?? "",
-        color: "#071426",
-        fontWeight: 850
-      },
-      emphasis: { focus: "self", scale: 1.2 }
-    }]
-  });
-}
-
 export function shiftPulseStripOption(data: ShiftPulseBucket[]): ChartOption {
   const buckets = data.length > 0 ? data : [];
   const labels = buckets.map((bucket) => timeLabel(bucket.bucketStart));
@@ -1547,10 +1496,11 @@ export function shiftPulseStripOption(data: ShiftPulseBucket[]): ChartOption {
   });
 }
 
-export function syncOutboxMatrixOption(data: SyncOutboxMatrixCell[]): ChartOption {
+export function syncOutboxMatrixOption(data: PrismaChartArrayLike<SyncOutboxMatrixCell>): ChartOption {
+  const safeSyncOutboxMatrixData = coerceChartArray<SyncOutboxMatrixCell>(data);
   const states = ["pending", "sending", "sent", "failed", "retrying"];
   const items = ["event", "sale", "refund", "inventory_adjustment", "cash_shift", "ticket", "customer"];
-  const values = data.map((cell) => [states.indexOf(cell.syncState), items.indexOf(cell.itemType), cell.count, cell]);
+  const values = safeSyncOutboxMatrixData.map((cell) => [states.indexOf(cell.syncState), items.indexOf(cell.itemType), cell.count, cell]);
   return mergeBase("Sync Outbox Status Matrix", "Compact local outbox heatmap for pending, failed, retrying, and sent items.", {
     grid: { top: 14, left: 126, right: 18, bottom: 38 },
     xAxis: { type: "category", data: states.map(humanizeKey), axisLabel: { color: "#d8e1ec" } },
@@ -1568,14 +1518,15 @@ export function syncOutboxMatrixOption(data: SyncOutboxMatrixCell[]): ChartOptio
   });
 }
 
-export function ownerPulseTimelineOption(data: OwnerPulsePoint[]): ChartOption {
+export function ownerPulseTimelineOption(data: PrismaChartArrayLike<OwnerPulsePoint>): ChartOption {
+  const safeownerPulseTimelineData = coerceChartArray<OwnerPulsePoint>(data);
   return mergeBase("Owner Pulse Timeline", "Mobile owner pulse showing recent health trend, incidents, and actions.", {
     grid: { top: 12, left: 38, right: 12, bottom: 32 },
-    xAxis: { type: "category", data: data.map((point) => timeLabel(point.time)), axisLabel: { color: "#d8e1ec" } },
+    xAxis: { type: "category", data: safeownerPulseTimelineData.map((point) => timeLabel(point.time)), axisLabel: { color: "#d8e1ec" } },
     yAxis: { type: "value", min: 0, max: 100, axisLabel: { color: "#d8e1ec" } },
     tooltip: {
       formatter: (params: unknown) => {
-        const item = itemByTooltipIndex(data, params);
+        const item = itemByTooltipIndex(safeownerPulseTimelineData, params);
         const value = firstTooltipParam(params)?.value;
         return item
           ? `${tooltipLabel(params)}<br/>Health: ${safeNumber(value, item.healthScore)}<br/>Incidents: ${item.activeIncidentCount}<br/>Actions: ${item.openActionCount}<br/>Confidence: ${formatPercent(item.dataConfidence)}`
@@ -1583,14 +1534,15 @@ export function ownerPulseTimelineOption(data: OwnerPulsePoint[]): ChartOption {
       }
     },
     series: [
-      { type: "line", data: data.map((point) => point.healthScore), smooth: true, symbolSize: 7, lineStyle: { color: "#63dfff", width: 3 }, areaStyle: { color: "rgba(99,223,255,.12)" } },
-      { type: "scatter", data: data.map((point, index) => ({ value: point.healthScore, name: timeLabel(point.time), itemStyle: { color: statusColor(point.status) }, symbolSize: 7 + point.activeIncidentCount * 2, dataIndex: index })) }
+      { type: "line", data: safeownerPulseTimelineData.map((point) => point.healthScore), smooth: true, symbolSize: 7, lineStyle: { color: "#63dfff", width: 3 }, areaStyle: { color: "rgba(99,223,255,.12)" } },
+      { type: "scatter", data: safeownerPulseTimelineData.map((point, index) => ({ value: point.healthScore, name: timeLabel(point.time), itemStyle: { color: statusColor(point.status) }, symbolSize: 7 + point.activeIncidentCount * 2, dataIndex: index })) }
     ]
   });
 }
 
-export function actionInboxPriorityStackOption(data: ActionPriorityStackDatum[]): ChartOption {
-  const owners = data.map((item) => item.responsibleName);
+export function actionInboxPriorityStackOption(data: PrismaChartArrayLike<ActionPriorityStackDatum>): ChartOption {
+  const safeactionInboxPriorityStackData = coerceChartArray<ActionPriorityStackDatum>(data);
+  const owners = safeactionInboxPriorityStackData.map((item) => item.responsibleName);
   return mergeBase("Action Inbox Priority Stack", "Stacked owner action load by priority, overdue, blocked, and evidence gaps.", {
     grid: { top: 12, left: 88, right: 16, bottom: 28 },
     xAxis: { type: "value", axisLabel: { color: "#d8e1ec" } },
@@ -1598,64 +1550,249 @@ export function actionInboxPriorityStackOption(data: ActionPriorityStackDatum[])
     tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
     legend: { bottom: 0, textStyle: { color: "#d8e1ec" } },
     series: [
-      { type: "bar", name: "Abiertas", stack: "actions", data: data.map((item) => item.openCount), itemStyle: { color: "#63dfff" } },
-      { type: "bar", name: "Vencidas", stack: "actions", data: data.map((item) => item.overdueCount), itemStyle: { color: "#e59b2a" } },
-      { type: "bar", name: "Bloqueadas", stack: "actions", data: data.map((item) => item.blockedCount), itemStyle: { color: "#df3d2f" } },
-      { type: "bar", name: "Sin evidencia", stack: "actions", data: data.map((item) => item.evidenceMissingCount), itemStyle: { color: "#7557ff" } }
+      { type: "bar", name: "Abiertas", stack: "actions", data: safeactionInboxPriorityStackData.map((item) => item.openCount), itemStyle: { color: "#63dfff" } },
+      { type: "bar", name: "Vencidas", stack: "actions", data: safeactionInboxPriorityStackData.map((item) => item.overdueCount), itemStyle: { color: "#e59b2a" } },
+      { type: "bar", name: "Bloqueadas", stack: "actions", data: safeactionInboxPriorityStackData.map((item) => item.blockedCount), itemStyle: { color: "#df3d2f" } },
+      { type: "bar", name: "Sin evidencia", stack: "actions", data: safeactionInboxPriorityStackData.map((item) => item.evidenceMissingCount), itemStyle: { color: "#7557ff" } }
     ]
   });
 }
 
-export function healthRadarCompactOption(data: HealthRadarAxis[]): ChartOption {
+export function healthRadarCompactOption(data: PrismaChartArrayLike<HealthRadarAxis>): ChartOption {
+  const safehealthRadarCompactData = coerceChartArray<HealthRadarAxis>(data);
   return mergeBase("Health Radar Compact", "Compact multidimensional health radar for owner supervision.", {
-    radar: { radius: "64%", indicator: data.map((axis) => ({ name: axis.label, max: 100 })), axisName: { color: "#f8fafc", fontWeight: 800 }, splitLine: { lineStyle: { color: "rgba(255,255,255,.16)" } }, splitArea: { areaStyle: { color: ["rgba(255,255,255,.04)", "rgba(99,223,255,.05)"] } } },
-    tooltip: { formatter: () => data.map((axis) => `${axis.label}: ${axis.value} (${axis.topReason ?? "sin razon"})`).join("<br/>") },
-    series: [{ type: "radar", data: [{ value: data.map((axis) => axis.value), name: "Health", areaStyle: { color: "rgba(99,223,255,.18)" }, lineStyle: { color: "#63dfff", width: 3 }, itemStyle: { color: "#e59b2a" } }] }]
+    radar: { radius: "64%", indicator: safehealthRadarCompactData.map((axis) => ({ name: axis.label, max: 100 })), axisName: { color: "#f8fafc", fontWeight: 800 }, splitLine: { lineStyle: { color: "rgba(255,255,255,.16)" } }, splitArea: { areaStyle: { color: ["rgba(255,255,255,.04)", "rgba(99,223,255,.05)"] } } },
+    tooltip: { formatter: () => safehealthRadarCompactData.map((axis) => `${axis.label}: ${axis.value} (${axis.topReason ?? "sin razon"})`).join("<br/>") },
+    series: [{ type: "radar", data: [{ value: safehealthRadarCompactData.map((axis) => axis.value), name: "Health", areaStyle: { color: "rgba(99,223,255,.18)" }, lineStyle: { color: "#63dfff", width: 3 }, itemStyle: { color: "#e59b2a" } }] }]
   });
 }
 
-export function freshnessBeaconGridOption(data: FreshnessBeacon[]): ChartOption {
+export function freshnessBeaconGridOption(data: PrismaChartArrayLike<FreshnessBeacon>): ChartOption {
+  const safefreshnessBeaconGridData = coerceChartArray<FreshnessBeacon>(data);
   const freshnessScore = (item: FreshnessBeacon) => Math.max(0, Math.min(100, Math.round(100 - (item.staleMinutes / Math.max(1, item.ttlMinutes * 2)) * 100)));
   return mergeBase("Freshness Beacon Grid", "Pictorial freshness beacons by module, source, TTL, and confidence.", {
     grid: { top: 14, left: 32, right: 12, bottom: 42 },
-    xAxis: { type: "category", data: data.map((item) => item.moduleName), axisLabel: { color: "#d8e1ec" } },
+    xAxis: { type: "category", data: safefreshnessBeaconGridData.map((item) => item.moduleName), axisLabel: { color: "#d8e1ec" } },
     yAxis: { type: "value", min: 0, max: 100, axisLabel: { color: "#d8e1ec" } },
     tooltip: {
       formatter: (params: unknown) => {
-        const item = itemByTooltipIndex(data, params);
+        const item = itemByTooltipIndex(safefreshnessBeaconGridData, params);
         return item
           ? `${item.moduleName}<br/>${item.freshnessState}<br/>Age: ${formatAgeMinutes(item.staleMinutes)}<br/>Source: ${item.source}<br/>Confidence: ${formatPercent(item.confidence)}`
           : tooltipLabel(params);
       }
     },
-    series: [{ type: "pictorialBar", symbol: "roundRect", symbolRepeat: true, symbolSize: [22, 10], symbolMargin: 2, data: data.map((item) => ({ value: freshnessScore(item), itemStyle: { color: statusColor(item.freshnessState) } })) }]
+    series: [{ type: "pictorialBar", symbol: "roundRect", symbolRepeat: true, symbolSize: [22, 10], symbolMargin: 2, data: safefreshnessBeaconGridData.map((item) => ({ value: freshnessScore(item), itemStyle: { color: statusColor(item.freshnessState) } })) }]
   });
 }
 
-export function incidentSparkOption(card: IncidentSparkCard): ChartOption {
-  return mergeBase(card.title, `Sparkline for incident ${card.incidentId}.`, {
+export function incidentSparkOption(card: IncidentSparkCard | null | undefined): ChartOption {
+  const safeCard: IncidentSparkCard = card ?? {
+    incidentId: "incident-snapshot-unavailable",
+    title: "Incident Spark",
+    severity: "WARN",
+    state: "active",
+    moduleId: "unknown-module",
+    points: [],
+    recommendedNextAction: "Connect runtime incident snapshot.",
+    evidenceCount: 0
+  };
+
+  const safePoints = Array.isArray(safeCard.points) ? safeCard.points : [];
+  const incidentTone = safeCard.state === "resolved" ? "PASS" : safeCard.severity === "CRITICAL" || safeCard.severity === "ERROR" ? "FAIL" : "DEGRADED";
+
+  return mergeBase(safeCard.title, `Sparkline for incident ${safeCard.incidentId}.`, {
     grid: { top: 8, left: 8, right: 8, bottom: 8 },
-    xAxis: { type: "category", show: false, data: card.points.map((point) => timeLabel(point.time)) },
+    xAxis: { type: "category", show: false, data: safePoints.map((point) => timeLabel(point.time)) },
     yAxis: { type: "value", show: false, min: 0, max: 100 },
-    tooltip: { formatter: (params: unknown) => `${card.title}<br/>Impact: ${safeNumber(firstTooltipParam(params)?.value)}<br/>Action: ${card.recommendedNextAction}` },
-    series: [{ type: "line", data: card.points.map((point) => point.impactScore), smooth: true, symbol: "none", lineStyle: { color: severityColor(card.severity), width: 3 }, areaStyle: { color: "rgba(99,223,255,.10)" } }]
+    tooltip: {
+      trigger: "axis",
+      formatter: (params: unknown) => {
+        const value = firstTooltipParam(params)?.value;
+        return `${safeCard.title}<br/>Health: ${safeNumber(value, 0)}<br/>Incident: ${safeCard.incidentId}<br/>Module: ${safeCard.moduleId}<br/>State: ${humanizeKey(safeCard.state)}<br/>Severity: ${humanizeKey(String(safeCard.severity))}<br/>Evidence: ${safeCard.evidenceCount}<br/>Next: ${safeCard.recommendedNextAction}`;
+      }
+    },
+    series: [
+      {
+        type: "line",
+        smooth: true,
+        symbol: "none",
+        data: safePoints.map((point) => point.healthScore ?? point.impactScore),
+        lineStyle: { width: 2, color: statusColor(incidentTone) },
+        areaStyle: { opacity: 0.16 },
+      },
+    ],
   });
 }
 
-export function confidenceMeterBandsOption(data: ConfidenceBand[]): ChartOption {
+export function confidenceMeterBandsOption(data: PrismaChartArrayLike<ConfidenceBand>): ChartOption {
+  const safeconfidenceMeterBandsData = coerceChartArray<ConfidenceBand>(data);
   return mergeBase("Confidence Meter Bands", "Linear confidence bands explaining why the mobile snapshot can or cannot be trusted.", {
     grid: { top: 12, left: 94, right: 18, bottom: 28 },
     xAxis: { type: "value", min: 0, max: 100, axisLabel: { color: "#d8e1ec" } },
-    yAxis: { type: "category", data: data.map((item) => item.label), axisLabel: { color: "#f8fafc", fontWeight: 800 } },
+    yAxis: { type: "category", data: safeconfidenceMeterBandsData.map((item) => item.label), axisLabel: { color: "#f8fafc", fontWeight: 800 } },
     tooltip: {
       formatter: (params: unknown) => {
-        const item = itemByTooltipIndex(data, params);
+        const item = itemByTooltipIndex(safeconfidenceMeterBandsData, params);
         const value = firstTooltipParam(params)?.value;
         return item
           ? `${item.label}<br/>${safeNumber(value, item.value)}<br/>${item.reason}<br/>Modules: ${item.affectedModules.join(", ")}`
           : tooltipLabel(params);
       }
     },
-    series: [{ type: "bar", data: data.map((item) => ({ value: item.value, itemStyle: { color: statusColor(item.state), borderRadius: [0, 999, 999, 0] } })), label: { show: true, position: "right", formatter: (params: unknown) => formatPercent(safeNumber(firstTooltipParam(params)?.value)), color: "#f8fafc", fontWeight: 900 } }]
+    series: [{ type: "bar", data: safeconfidenceMeterBandsData.map((item) => ({ value: item.value, itemStyle: { color: statusColor(item.state), borderRadius: [0, 999, 999, 0] } })), label: { show: true, position: "right", formatter: (params: unknown) => formatPercent(safeNumber(firstTooltipParam(params)?.value)), color: "#f8fafc", fontWeight: 900 } }]
+  });
+}
+
+/**
+ * Executive Observatory Phase 1 compatibility exports.
+ *
+ * Chart Lab's registry calls these entries as option factories, so they must
+ * remain callable. These preserve the public registry contract while routing
+ * the returned options through mergePrismaChartOption(title, description, option)
+ * so the Executive Observatory foundation still controls the visual baseline.
+ */
+export function syncCommandLifecycleTimelineOption(_input?: unknown): ChartOption {
+  return mergePrismaChartOption("pc.sync-command-lifecycle-timeline", "Sync Command Lifecycle", {
+    title: {
+      text: "Sync Command Lifecycle",
+      subtext: "Command state progression across dispatch, ack, projection and closure",
+      left: 18,
+      top: 12
+    },
+    legend: {
+      top: 18,
+      right: 18,
+      data: ["Queued", "Dispatched", "Acknowledged", "Projected", "Closed"]
+    },
+    grid: {
+      left: 48,
+      right: 32,
+      top: 88,
+      bottom: 48,
+      containLabel: true
+    },
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "line"
+      }
+    },
+    xAxis: {
+      type: "category",
+      boundaryGap: false,
+      data: ["00:00", "04:00", "08:00", "12:00", "16:00", "20:00"]
+    },
+    yAxis: {
+      type: "value",
+      name: "Commands"
+    },
+    series: [
+      {
+        name: "Queued",
+        type: "line",
+        smooth: true,
+        symbol: "circle",
+        symbolSize: 6,
+        data: [18, 22, 19, 27, 21, 16]
+      },
+      {
+        name: "Dispatched",
+        type: "line",
+        smooth: true,
+        symbol: "circle",
+        symbolSize: 6,
+        data: [14, 19, 22, 24, 20, 15]
+      },
+      {
+        name: "Acknowledged",
+        type: "line",
+        smooth: true,
+        symbol: "circle",
+        symbolSize: 6,
+        data: [12, 17, 20, 22, 19, 14]
+      },
+      {
+        name: "Projected",
+        type: "line",
+        smooth: true,
+        symbol: "circle",
+        symbolSize: 6,
+        data: [10, 15, 18, 21, 18, 13]
+      },
+      {
+        name: "Closed",
+        type: "line",
+        smooth: true,
+        symbol: "circle",
+        symbolSize: 6,
+        data: [8, 13, 17, 19, 17, 12]
+      }
+    ]
+  });
+}
+
+export function tabletCatalogFreshnessGridOption(_input?: unknown): ChartOption {
+  return mergePrismaChartOption("tablet.catalog-freshness-grid", "Tablet Catalog Freshness", {
+    title: {
+      text: "Tablet Catalog Freshness",
+      subtext: "Freshness risk by catalog surface and sync window",
+      left: 18,
+      top: 12
+    },
+    tooltip: {
+      position: "top"
+    },
+    grid: {
+      left: 92,
+      right: 32,
+      top: 96,
+      bottom: 56,
+      containLabel: true
+    },
+    xAxis: {
+      type: "category",
+      data: ["Products", "Prices", "Suppliers", "Inventory", "Promos", "Images"],
+      splitArea: {
+        show: true
+      }
+    },
+    yAxis: {
+      type: "category",
+      data: ["Now", "15m", "30m", "1h", "4h", "24h"],
+      splitArea: {
+        show: true
+      }
+    },
+    visualMap: {
+      min: 0,
+      max: 100,
+      calculable: true,
+      orient: "horizontal",
+      left: "center",
+      bottom: 12
+    },
+    series: [
+      {
+        name: "Freshness",
+        type: "heatmap",
+        data: [
+          [0, 0, 96], [1, 0, 94], [2, 0, 91], [3, 0, 88], [4, 0, 93], [5, 0, 90],
+          [0, 1, 92], [1, 1, 89], [2, 1, 87], [3, 1, 81], [4, 1, 86], [5, 1, 84],
+          [0, 2, 86], [1, 2, 82], [2, 2, 79], [3, 2, 74], [4, 2, 78], [5, 2, 76],
+          [0, 3, 78], [1, 3, 73], [2, 3, 69], [3, 3, 64], [4, 3, 68], [5, 3, 66],
+          [0, 4, 64], [1, 4, 58], [2, 4, 54], [3, 4, 49], [4, 4, 53], [5, 4, 51],
+          [0, 5, 42], [1, 5, 36], [2, 5, 31], [3, 5, 27], [4, 5, 33], [5, 5, 29]
+        ],
+        label: {
+          show: false
+        },
+        emphasis: {
+          itemStyle: {
+            borderWidth: 1
+          }
+        }
+      }
+    ]
   });
 }

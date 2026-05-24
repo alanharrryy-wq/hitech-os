@@ -62,7 +62,7 @@ export function TriDbSyncAction() {
         <div style={{ minWidth: 0 }}>
           <div style={{ color: CRYSTAL.blue, fontSize: 12, fontWeight: 950, letterSpacing: ".14em", textTransform: "uppercase" }}>Accion manual</div>
           <h2 style={{ color: CRYSTAL.text, fontSize: "clamp(1.2rem, 4vw, 1.75rem)", letterSpacing: 0, margin: "6px 0 4px" }}>Ejecutar bridge de rescate</h2>
-          <p style={{ color: CRYSTAL.soft, lineHeight: 1.45, margin: 0 }}>Proyecta datos por TRI-DB solo para rescate/backfill/diagnostico. El camino primario es OutboxEvent, ingest PC y projectors Prisma. Tablet puede seguir operando si esta accion falla.</p>
+          <p style={{ color: CRYSTAL.soft, lineHeight: 1.45, margin: 0 }}>Proyecta datos por sincronización entre equipos solo para rescate/backfill/diagnostico. El camino primario es OutboxEvent, recepción de cambios PC y projectors Prisma. Tablet puede seguir operando si esta accion falla.</p>
         </div>
         <button
           type="button"
