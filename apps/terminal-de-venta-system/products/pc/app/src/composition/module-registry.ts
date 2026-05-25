@@ -21,8 +21,8 @@ const MovementsModule: TwinModuleManifest = {
 const SalesControlModule: TwinModuleManifest = {
   key: "sales-control",
   route: "/sales-control",
-  title: "Ventas / Caja",
-  description: "Ventas consolidadas, tickets, KPIs y detalle de auditoria.",
+  title: "Ventas",
+  description: "Ventas, dinero, tickets y cortes antes de cerrar operación.",
   navGroup: "control"
 };
 
@@ -30,46 +30,46 @@ const CashSessionsModule: TwinModuleManifest = {
   key: "cash-sessions",
   route: "/cash-sessions",
   title: "Cortes de caja",
-  description: "Sesiones de caja, movimientos, esperado, contado y variaciones.",
+  description: "Cortes, movimientos, esperado, contado y diferencias.",
   navGroup: "control"
 };
 
 const DevicesModule: TwinModuleManifest = {
   key: "devices",
   route: "/devices",
-  title: "Dispositivos",
-  description: "Fleet de Tablets, heartbeats, frescura, outbox y licencias.",
+  title: "Equipos",
+  description: "Equipos conectados, pulso reciente, pendientes y licencias.",
   navGroup: "control"
 };
 
 const LicenseRuntimeModule: TwinModuleManifest = {
   key: "license-runtime",
   route: "/license-runtime",
-  title: "Licencias y Runtime",
-  description: "Licencia PC, estados Tablet, refresh remoto y readiness.",
+  title: "Licencia",
+  description: "Funciones disponibles, licencia activa y estado de equipos.",
   navGroup: "operation"
 };
 
 const TabletCommunicationModule: TwinModuleManifest = {
   key: "tablet-communication",
   route: "/tablet-communication",
-  title: "Comunicacion Tablet",
-  description: "Inbound Tablet-to-PC, gobierno PC-to-Tablet y acks observables.",
+  title: "Tablet",
+  description: "Comunicación entre PC y tablet, cambios pendientes y confirmaciones.",
   navGroup: "control"
 };
 
 const DataQualityModule: TwinModuleManifest = {
   key: "data-quality",
   route: "/data-quality",
-  title: "Calidad de datos",
-  description: "Integridad canonica, folios, pagos, caja, sync y heartbeat.",
+  title: "Revisión de datos",
+  description: "Datos incompletos, códigos repetidos, pagos, caja y sincronización.",
   navGroup: "operation"
 };
 
 const SettingsModule: TwinModuleManifest = {
   key: "settings",
   route: "/settings",
-  title: "Ajustes",
+  title: "Configuración",
   description: "Políticas, terminales, permisos y reglas sin conexión.",
   navGroup: "operation"
 };
