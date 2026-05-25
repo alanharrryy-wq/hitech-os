@@ -7,6 +7,7 @@ from pathlib import Path
 ROOT = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else Path.cwd().resolve()
 
 TEXT_EXTS = {".ts", ".tsx", ".js", ".mjs", ".json", ".md", ".d.ts", ".py"}
+IMPORT_SCAN_EXTS = {".ts", ".tsx", ".js", ".mjs", ".d.ts"}
 RE_IMPORT = re.compile(r"(?:import|export)\s+(?:[^\"']+?\s+from\s+)?[\"']([^\"']+)[\"']")
 RE_DYNAMIC = re.compile(r"import\([\"']([^\"']+)[\"']\)")
 ALIASES = {
@@ -83,10 +84,14 @@ for path in ROOT.rglob('*'):
     text = path.read_text(encoding='utf-8', errors='ignore')
     if LEGACY_NAME in text:
         errors.append(f'Legacy naming found in {path.relative_to(ROOT)}')
-    for match in list(RE_IMPORT.finditer(text)) + list(RE_DYNAMIC.finditer(text)):
-        spec = match.group(1)
-        if not existing_target(spec, path):
-            errors.append(f'Unresolved import in {path.relative_to(ROOT)} -> {spec}')
+    # Only JS/TS-like files should be checked for JS/TS import specifiers.
+    # Python verifiers can contain quoted JS import snippets as expected tokens;
+    # scanning those strings as real imports creates false positives.
+    if path.suffix in IMPORT_SCAN_EXTS:
+        for match in list(RE_IMPORT.finditer(text)) + list(RE_DYNAMIC.finditer(text)):
+            spec = match.group(1)
+            if not existing_target(spec, path):
+                errors.append(f'Unresolved import in {path.relative_to(ROOT)} -> {spec}')
 
 if errors:
     print('PACKAGE VALIDATION FAILED')
