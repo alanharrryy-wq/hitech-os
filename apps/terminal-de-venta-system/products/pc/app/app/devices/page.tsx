@@ -1,10 +1,8 @@
-import { PcCommandCenterPage } from "@components/control/pc-command-center-page";
-import { getPcDeviceFleet } from "@/server/services/pc-command-center.service";
+import { DecisionScreen } from "@components/uiux/decision-screen";
+import { systemScreenContract } from "@/uiux/system-screen-contract";
 
 export const dynamic = "force-dynamic";
 
-export default async function PcDevicesPage({ searchParams }: { searchParams?: Promise<Record<string, string | string[] | undefined>> }) {
-  const params = searchParams ? await searchParams : undefined;
-  const model = await getPcDeviceFleet(params);
-  return <PcCommandCenterPage model={model} />;
+export default async function DevicesPage() {
+  return <DecisionScreen {...systemScreenContract} currentPath="/devices" />;
 }

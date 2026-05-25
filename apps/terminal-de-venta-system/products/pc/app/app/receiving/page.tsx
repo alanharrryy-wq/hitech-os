@@ -1,9 +1,8 @@
-import { OperationWorkspace } from "@components/operations/operation-workspace";
-import { getOperationWorkspace } from "@/server/services/operation-control.service";
+import { DecisionScreen } from "@components/uiux/decision-screen";
+import { purchasingScreenContract } from "@/uiux/purchasing-screen-contract";
 
 export const dynamic = "force-dynamic";
 
-export default async function RecepciónPage() {
-  const workspace = await getOperationWorkspace("receiving");
-  return <OperationWorkspace workspace={workspace} />;
+export default async function ReceivingPage() {
+  return <DecisionScreen {...purchasingScreenContract} currentPath="/receiving" />;
 }

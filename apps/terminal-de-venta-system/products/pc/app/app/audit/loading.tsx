@@ -1,14 +1,9 @@
-import { AppShell } from "@components/layout/app-shell";
-
-export default function AuditLoading() {
+export default function Loading() {
   return (
-    <AppShell currentPath="/audit">
-      <section className="hero">
-        <div className="kicker">auditoría</div>
-        <h1 className="hero-title">Cargando auditoría...</h1>
-        <p>Buscando acciones sensibles, movimientos raros y conteos con riesgo.</p>
-      </section>
-      <section className="card"><div className="empty-state">Preparando evidencia de auditoría.</div></section>
-    </AppShell>
+    <section className="card">
+      <div className="kicker">preparando vista</div>
+      <h1 className="section-title">Cargando información operativa</h1>
+      <p className="section-copy">Estamos preparando lectura rápida, acción recomendada y detalle operativo.</p>
+    </section>
   );
 }
