@@ -307,6 +307,8 @@ def _powershell_executable() -> str:
                 [candidate, "-NoLogo", "-NoProfile", "-Command", "$PSVersionTable.PSVersion.ToString()"],
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
+                errors="replace",
                 timeout=6,
             )
             if probe.returncode == 0:

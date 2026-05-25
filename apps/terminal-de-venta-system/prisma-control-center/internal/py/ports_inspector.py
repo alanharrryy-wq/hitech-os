@@ -32,6 +32,8 @@ def _run_powershell_json(script: str, timeout: int = 10) -> Any:
         [ps, "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", script],
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         timeout=timeout,
     )
     if completed.returncode != 0 or not completed.stdout.strip():
@@ -98,6 +100,8 @@ if ($proc) {{ "true" }} else {{ "false" }}
         [_powershell_executable() or "powershell.exe", "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", script],
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         timeout=8,
     )
     return completed.stdout.strip().lower() == "true"

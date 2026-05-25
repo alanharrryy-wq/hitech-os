@@ -217,6 +217,8 @@ def _powershell_json(script: str, timeout: int = 15) -> Any:
         [ps, "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", script],
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         timeout=timeout,
     )
     if not completed.stdout.strip():
