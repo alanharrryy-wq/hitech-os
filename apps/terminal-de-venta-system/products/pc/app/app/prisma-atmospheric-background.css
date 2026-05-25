@@ -1,0 +1,107 @@
+:root {
+  --prisma-bg-base-opacity: 1;
+  --prisma-bg-fractures-opacity: 0.42;
+  --prisma-bg-mist-opacity: 0.26;
+  --prisma-z-bg: 0;
+  --prisma-z-content: 2;
+}
+
+html[data-prisma-surface="pc-backoffice"] {
+  background: #05070a;
+}
+
+html[data-prisma-surface="pc-backoffice"] body {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: #05070a !important;
+}
+
+html[data-prisma-surface="pc-backoffice"] body::before {
+  display: none !important;
+}
+
+.prisma-app-content {
+  position: relative;
+  z-index: var(--prisma-z-content);
+  min-height: 100vh;
+  isolation: isolate;
+}
+
+.prisma-atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: var(--prisma-z-bg);
+  pointer-events: none;
+  overflow: hidden;
+  background: #05070a;
+  transform:
+    translate3d(
+      calc(var(--prisma-mx, 0) * -4px),
+      calc(var(--prisma-my, 0) * -3px),
+      0
+    )
+    scale(1.012);
+  transition: transform 260ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.prisma-bg-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  will-change: transform, opacity;
+}
+
+.prisma-bg-base {
+  background-image: url("/backgrounds/prisma/01_prisma_base_graphite_cloudglass.png");
+  opacity: var(--prisma-bg-base-opacity);
+}
+
+.prisma-bg-fractures {
+  background-image: url("/backgrounds/prisma/02_prisma_fractures_light_overlay_alpha.png");
+  opacity: var(--prisma-bg-fractures-opacity);
+  animation: prismaFracturePulse 10s ease-in-out infinite alternate;
+}
+
+.prisma-bg-mist {
+  background-image: url("/backgrounds/prisma/03_prisma_mist_dust_overlay_alpha.png");
+  opacity: var(--prisma-bg-mist-opacity);
+  filter: blur(0.25px);
+  animation: prismaMistDrift 72s ease-in-out infinite alternate;
+}
+
+.prisma-bg-scrim {
+  background:
+    radial-gradient(circle at 50% 38%, rgba(220, 230, 242, 0.035), transparent 42%),
+    radial-gradient(circle at 75% 0%, rgba(118, 178, 255, 0.045), transparent 34%),
+    linear-gradient(180deg, rgba(5, 7, 10, 0.06), rgba(5, 7, 10, 0.18));
+}
+
+@keyframes prismaMistDrift {
+  from { transform: translate3d(-1.2%, -0.8%, 0) scale(1.02); }
+  to { transform: translate3d(1.6%, 1.1%, 0) scale(1.05); }
+}
+
+@keyframes prismaFracturePulse {
+  from {
+    opacity: calc(var(--prisma-bg-fractures-opacity) * 0.82);
+    transform: scale(1);
+  }
+
+  to {
+    opacity: var(--prisma-bg-fractures-opacity);
+    transform: scale(1.004);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prisma-atmosphere,
+  .prisma-bg-fractures,
+  .prisma-bg-mist {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

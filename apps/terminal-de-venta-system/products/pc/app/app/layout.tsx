@@ -1,6 +1,8 @@
 import "./globals.css";
 import "./suppliers-ux-v08.css";
 import "./prisma-visual-os-pc-binding.css";
+import "./prisma-atmospheric-background.css";
+import { PrismaAtmosphericBackground } from "./components/PrismaAtmosphericBackground";
 import { pcMessages } from "@/lib/i18n/messages/es";
 
 export const metadata = {
@@ -46,7 +48,10 @@ export default function RootLayout({ children }: { children: any }) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: prismaSkinBootstrap }} />
       </head>
-      <body>{children}</body>
+      <body>
+        <PrismaAtmosphericBackground />
+        <div className="prisma-app-content">{children}</div>
+      </body>
     </html>
   );
 }
