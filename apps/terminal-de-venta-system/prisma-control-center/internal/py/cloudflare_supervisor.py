@@ -9,13 +9,48 @@ from health_checks import check_cloudflare
 from safe_actions import run_command_capture, start_detached_process
 
 
-def _service_command(service_name: str, verb: str) -> dict[str, Any]:
-    script = f"{verb}-Service -Name {service_name!r} -ErrorAction Stop"
+def _is_windows_admin() -> bool:
+    script = (
+        "$identity = [Security.Principal.WindowsIdentity]::GetCurrent(); "
+        "$principal = [Security.Principal.WindowsPrincipal]::new($identity); "
+        "$principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)"
+    )
     try:
         completed = subprocess.run(
             ["powershell.exe", "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", script],
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=10,
+        )
+    except Exception:
+        return False
+    return completed.returncode == 0 and completed.stdout.strip().lower() == "true"
+
+
+def _service_command(service_name: str, verb: str) -> dict[str, Any]:
+    script = f"{verb}-Service -Name {service_name!r} -ErrorAction Stop"
+    if verb.lower() in {"start", "restart", "stop"} and not _is_windows_admin():
+        return {
+            "command": script,
+            "returnCode": 5,
+            "stdout": "",
+            "stderr": (
+                f"{verb}-Service requires an elevated PowerShell session for Windows service "
+                f"{service_name!r}. Rerun PRISMA Modulo + Cloudflare as Administrator or run: "
+                f"Restart-Service -Name {service_name!r} -Force"
+            ),
+            "ok": False,
+            "requiresElevation": True,
+        }
+    try:
+        completed = subprocess.run(
+            ["powershell.exe", "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", script],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
             timeout=30,
         )
         return {

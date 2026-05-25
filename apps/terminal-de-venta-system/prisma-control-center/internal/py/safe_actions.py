@@ -45,7 +45,14 @@ def stop_process_safely(owner: dict[str, Any], action: str, service_id: str | No
 
     graceful_timeout = int(policy.get("gracefulStopTimeoutSeconds", 8))
     kill_timeout = int(policy.get("killTimeoutSeconds", 5))
-    subprocess.run(["taskkill.exe", "/PID", str(pid), "/T"], capture_output=True, text=True, timeout=graceful_timeout + 5)
+    subprocess.run(
+        ["taskkill.exe", "/PID", str(pid), "/T"],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=graceful_timeout + 5,
+    )
     deadline = time.time() + graceful_timeout
     while time.time() < deadline:
         if not process_exists(pid):
@@ -54,7 +61,14 @@ def stop_process_safely(owner: dict[str, Any], action: str, service_id: str | No
             timeline.append({"time": now_iso(), "event": "stopped-process", "detail": result})
             return result
         time.sleep(0.5)
-    subprocess.run(["taskkill.exe", "/PID", str(pid), "/T", "/F"], capture_output=True, text=True, timeout=kill_timeout + 5)
+    subprocess.run(
+        ["taskkill.exe", "/PID", str(pid), "/T", "/F"],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=kill_timeout + 5,
+    )
     result["status"] = "FORCE_STOPPED"
     result["message"] = "Process required force stop after graceful timeout."
     timeline.append({"time": now_iso(), "event": "force-stopped-process", "detail": result})
@@ -117,7 +131,14 @@ def start_detached_process(service_id: str, command: str, cwd: str, env_extra: d
 
 def run_command_capture(command: list[str], timeout: int = 20) -> dict[str, Any]:
     try:
-        completed = subprocess.run(command, capture_output=True, text=True, timeout=timeout)
+        completed = subprocess.run(
+            command,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=timeout,
+        )
         return {
             "command": command,
             "returnCode": completed.returncode,
