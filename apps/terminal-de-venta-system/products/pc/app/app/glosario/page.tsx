@@ -1,40 +1,49 @@
-import { AppShell } from "@components/layout/app-shell";
-import { SectionCard } from "@components/ui/section-card";
-import { TableSimple } from "@components/ui/table-simple";
-import { i01GovernanceData } from "@/lib/i01/governance-data";
+import { DecisionScreen } from "@components/uiux/decision-screen";
+import { settingsGlossaryScreenContract } from "@/uiux/settings-screen-contract";
 
-const rows = [
-  { Término: "Panel administrativo de inventario", Uso: "Nombre visible del producto PC", Nota: "preferido" },
-  { Término: "Terminal de venta", Uso: "Nombre visible de la gemela Tablet", Nota: "preferido" },
-  { Término: "Quiebres de existencias", Uso: "Alerta operativa", Nota: "preferido" },
-  { Término: "Conteos físicos", Uso: "Módulo y operación", Nota: "preferido" },
-  { Término: "Sincronización", Uso: "Eventos y estado operativo", Nota: "preferido" },
-  { Término: "Código de barras", Uso: "Incidencias técnicas o validación", Nota: "preferido" },
-  { Término: "SKU", Uso: "Operación comercial y técnica", Nota: "tolerado" }
+export const dynamic = "force-dynamic";
+
+const groups = [
+  {
+    title: "Estados",
+    items: ["Bien", "Requiere atención", "Crítico", "Pendiente", "Sin conexión"]
+  },
+  {
+    title: "Acciones",
+    items: ["Revisar", "Guardar", "Descargar", "Reintentar", "Ver detalle"]
+  },
+  {
+    title: "Evidencia",
+    items: ["Fuente", "Confianza", "Último pulso", "Historial", "Base principal"]
+  }
 ];
 
 export default function GlosarioPage() {
   return (
-    <AppShell currentPath="/glosario">
-      <section className="hero">
-        <div className="kicker">i01</div>
-        <h1 style={{ margin: 0 }}>Glosario visible es-MX</h1>
-        <div className="subtle">Capa aditiva para congelar lenguaje visible antes de crecer dashboard, datos y flujos.</div>
-      </section>
-
-      <div className="grid cols-2">
-        <SectionCard title="Términos guía" subtitle="Lo que sí queremos ver en pantallas, módulos y tableros.">
-          <TableSimple columns={["Término", "Uso", "Nota"]} rows={rows} />
-        </SectionCard>
-
-        <SectionCard title="KPIs base" subtitle="La primera ola privilegia claridad de negocio antes que maquillaje.">
-          <div className="list">
-            {i01GovernanceData.kpis.map((item) => (
-              <div key={item} className="list-item">{item}</div>
-            ))}
+    <DecisionScreen {...settingsGlossaryScreenContract} currentPath="/glosario">
+      <section className="card" data-prisma-component="GlossaryGroups">
+        <div className="section-head">
+          <div>
+            <div className="kicker">lenguaje visible</div>
+            <h2 className="section-title">El sistema debe hablar claro primero y mostrar técnica después.</h2>
+            <div className="section-copy">
+              Estos grupos ayudan a mantener la misma voz en pantallas, botones, tablas y evidencia.
+            </div>
           </div>
-        </SectionCard>
-      </div>
-    </AppShell>
+        </div>
+        <div className="dashboard-grid">
+          {groups.map((group) => (
+            <article className="card metric-card" key={group.title}>
+              <div className="kicker">{group.title}</div>
+              <div className="list" style={{ marginTop: 12 }}>
+                {group.items.map((item) => (
+                  <div className="list-item" key={item}>{item}</div>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    </DecisionScreen>
   );
 }

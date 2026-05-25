@@ -6,7 +6,7 @@ import { PrismaDarkSelector } from "../ui/prisma-dark-selector";
 
 const NAV_ICONS: Record<string, string> = {
   "/": "IN",
-  "/dashboard": "OV",
+  "/dashboard": "HO",
   "/sales-control": "VE",
   "/cash-sessions": "CA",
   "/catalog": "CT",
@@ -26,7 +26,7 @@ const NAV_ICONS: Record<string, string> = {
   "/settings": "AJ"
 };
 
-const GROUP_ORDER = ["Overview", "Sales Control", "Inventory", "Purchasing", "Sync", "Devices", "Audit", "Runtime", "Settings"];
+const GROUP_ORDER = ["Ventas y caja", "Inventario", "Compras", "Proveedores", "Sincronización", "Reportes", "Análisis", "Sistema", "Configuración"];
 
 function isActive(currentPath: string, href: string) {
   return currentPath === href || (href !== "/" && currentPath.startsWith(`${href}/`));
@@ -45,7 +45,7 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
     currentPath === "/"
       ? { title: pcMessages.shell.home, description: "Qué puede hacer PRISMA" }
     : currentPath === "/dashboard"
-        ? { title: "Vista general", description: "KPIs y operación" }
+        ? { title: "Hoy", description: "Atención, decisiones y operación" }
         : nav.find((item) => isActive(currentPath, item.href));
   const navGroups = groupedNavigation(nav);
 
@@ -67,7 +67,7 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
             <p className="nav-group-title">Buscar módulo</p>
             <form className="search-shell" action="/sales-control" method="get" data-prisma-component="SidebarSearch">
               <span aria-hidden="true">⌕</span>
-              <input name="q" placeholder="Folio, SKU, device o licencia" aria-label="Buscar en Ventas, Sync y Dispositivos" />
+              <input name="q" placeholder="Producto, folio, equipo o proveedor" aria-label="Buscar en operación, inventario y sincronización" />
             </form>
           </section>
 
@@ -75,7 +75,7 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
             <p className="nav-group-title">Navegación</p>
             <nav className="nav">
               <NavLink href="/" title={pcMessages.shell.home} description="Qué puede hacer PRISMA" active={currentPath === "/"} icon={NAV_ICONS["/"]} />
-              <NavLink href="/dashboard" title="Vista general" description="KPIs y operación" active={currentPath === "/dashboard"} icon={NAV_ICONS["/dashboard"]} />
+              <NavLink href="/dashboard" title="Hoy" description="Atención, decisiones y operación" active={currentPath === "/dashboard"} icon={NAV_ICONS["/dashboard"]} />
             </nav>
           </section>
 
@@ -126,7 +126,7 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
 
           <form className="search-shell" action="/sales-control" method="get" aria-label="Buscar en control de ventas" data-prisma-component="SearchBar">
             <span aria-hidden="true">⌕</span>
-            <input name="q" placeholder="Buscar folio, SKU, terminal o cajero" />
+            <input name="q" placeholder="Buscar producto, folio, equipo o proveedor" />
           </form>
 
           <div className="user-shell" data-prisma-component="UserMenu">

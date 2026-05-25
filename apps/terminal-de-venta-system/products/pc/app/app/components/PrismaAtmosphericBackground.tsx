@@ -3,14 +3,18 @@
 import { useEffect, useRef } from "react";
 
 /**
- * PRISMA Cloudglass atmospheric background for the PC interface.
+ * PRISMA Cloudglass Mist v2 · Executive Pearl background for PC.
  *
  * Layer contract:
- * 1. Base graphite cloudglass image.
- * 2. Fractures / light overlay with alpha.
- * 3. Mist / dust overlay with alpha.
- * 4. Readability scrim.
- * 5. UI content above this component.
+ * B0 graphite base depth
+ * B1 wide base asset, intentionally less zoomed
+ * B2 restrained fracture/light overlay
+ * B3 distant pearl-graphite mist
+ * B4 native mist/dust asset, low opacity
+ * B5 procedural pearl mist veil
+ * B6 soft hero halo
+ * B7 fine noise veil
+ * B8 vignette + readability scrim
  */
 export function PrismaAtmosphericBackground() {
   const ref = useRef<HTMLDivElement>(null);
@@ -30,8 +34,8 @@ export function PrismaAtmosphericBackground() {
         const x = (event.clientX / Math.max(window.innerWidth, 1) - 0.5) * 2;
         const y = (event.clientY / Math.max(window.innerHeight, 1) - 0.5) * 2;
 
-        element.style.setProperty("--prisma-mx", x.toFixed(4));
-        element.style.setProperty("--prisma-my", y.toFixed(4));
+        element.style.setProperty("--prisma-bg-x", x.toFixed(4));
+        element.style.setProperty("--prisma-bg-y", y.toFixed(4));
       });
     };
 
@@ -48,11 +52,16 @@ export function PrismaAtmosphericBackground() {
       ref={ref}
       className="prisma-atmosphere"
       aria-hidden="true"
-      data-prisma-background="fractured-graphite-cloudglass"
+      data-prisma-background="cloudglass-mist-v2-executive-pearl"
     >
       <div className="prisma-bg-layer prisma-bg-base" />
       <div className="prisma-bg-layer prisma-bg-fractures" />
+      <div className="prisma-bg-layer prisma-bg-distant-mist" />
       <div className="prisma-bg-layer prisma-bg-mist" />
+      <div className="prisma-bg-layer prisma-bg-pearl-mist" />
+      <div className="prisma-bg-layer prisma-bg-hero-light" />
+      <div className="prisma-bg-layer prisma-bg-noise" />
+      <div className="prisma-bg-layer prisma-bg-vignette" />
       <div className="prisma-bg-layer prisma-bg-scrim" />
     </div>
   );

@@ -1,9 +1,8 @@
-import { PcCommandCenterPage } from "@components/control/pc-command-center-page";
-import { getPcDataQuality } from "@/server/services/pc-command-center.service";
+import { DecisionScreen } from "@components/uiux/decision-screen";
+import { systemScreenContract } from "@/uiux/system-screen-contract";
 
 export const dynamic = "force-dynamic";
 
-export default async function PcDataQualityPage() {
-  const model = await getPcDataQuality();
-  return <PcCommandCenterPage model={model} />;
+export default async function DataQualityPage() {
+  return <DecisionScreen {...systemScreenContract} currentPath="/data-quality" />;
 }

@@ -1,20 +1,9 @@
-import { AppShell } from "@components/layout/app-shell";
-
-export default function CatalogLoading() {
+export default function Loading() {
   return (
-    <AppShell currentPath="/catalog">
-      <section className="hero">
-        <div className="kicker">catálogo</div>
-        <h1 className="hero-title">Cargando catálogo operativo...</h1>
-        <p>PC prepara SKUs, códigos y excepciones sin inventar datos.</p>
-      </section>
-      <section className="card">
-        <div className="empty-state">
-          <div className="kicker">cargando</div>
-          <strong>Consultando persistencia canónica.</strong>
-          <span>Si la base local no existe, la pantalla mostrará un estado honesto.</span>
-        </div>
-      </section>
-    </AppShell>
+    <section className="card">
+      <div className="kicker">preparando vista</div>
+      <h1 className="section-title">Cargando información operativa</h1>
+      <p className="section-copy">Estamos preparando lectura rápida, acción recomendada y detalle operativo.</p>
+    </section>
   );
 }
