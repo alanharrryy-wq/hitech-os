@@ -2,31 +2,38 @@
 import type { CartLine, CompletedSaleReceipt } from "./cart-state";
 import { requestJson } from "./cart-state";
 import { buildCheckoutPayload } from "./cart-engine";
-import type { PaymentMethod } from "./payment-state";
-import { normalizePaymentMethod } from "./payment-state";
+import type { PaymentMethod, PaymentTenderInput } from "./payment-state";
+import { normalizePaymentMethod, normalizePaymentTenders } from "./payment-state";
 import { resolvePaymentSessionContext } from "./payment-session";
-import { reviewCashTender } from "./payment-tender";
+import { buildPaymentReviewViewModel } from "./payment-view-model";
 
 export async function completeCartSale(input: {
   lines: CartLine[];
-  paymentMethod: PaymentMethod;
-  cashReceivedCents: number;
+  paymentMethod?: PaymentMethod;
+  cashReceivedCents?: number;
+  paymentTenders?: PaymentTenderInput[];
   clientRequestId: string;
 }): Promise<CompletedSaleReceipt> {
-  const paymentMethod = normalizePaymentMethod(input.paymentMethod);
   const session = resolvePaymentSessionContext(input.lines);
   const checkout = buildCheckoutPayload({
     lines: input.lines,
     terminalId: session.terminalId,
     cashier: session.cashier,
-    clientRequestId: input.clientRequestId,
-    paymentMethod,
-    cashReceivedCents: input.cashReceivedCents
+    clientRequestId: input.clientRequestId
   });
   if (!checkout.ready) throw new Error(checkout.reason);
+  const legacyMethod = input.paymentMethod ? normalizePaymentMethod(input.paymentMethod) : null;
+  const paymentTenders = normalizePaymentTenders(
+    input.paymentTenders ?? (legacyMethod ? [{ id: legacyMethod, method: legacyMethod, amountCents: legacyMethod === "cash" ? input.cashReceivedCents ?? 0 : checkout.totalCents, reference: "" }] : undefined)
+  );
 
-  const tender = reviewCashTender(paymentMethod, checkout.totalCents, input.cashReceivedCents);
-  if (!tender.canContinue) throw new Error(tender.visibleDetail);
+  const review = buildPaymentReviewViewModel({ lines: input.lines, paymentTenders });
+  if (!review.canConfirm) throw new Error(review.blockReason ?? review.tenderDetail);
+  const payloadTenders = review.tenders.map((tender) => ({
+    tenderType: tender.method,
+    amountCents: tender.amountCents,
+    reference: tender.reference.trim() || null
+  }));
 
   const payload = {
     ...session,
@@ -34,9 +41,10 @@ export async function completeCartSale(input: {
     terminalId: checkout.terminalId,
     cashier: checkout.cashier,
     clientRequestId: input.clientRequestId,
-    paymentMethod,
-    cashReceivedCents: paymentMethod === "cash" ? input.cashReceivedCents : null,
-    changeCents: tender.changeCents,
+    paymentMethod: review.paymentMethod,
+    cashReceivedCents: review.cashReceivedCents,
+    changeCents: review.changeCents,
+    paymentTenders: payloadTenders,
     items: checkout.items
   };
 
@@ -51,9 +59,10 @@ export async function completeCartSale(input: {
 
   return {
     ...response.data.sale,
-    paymentMethod,
-    cashReceivedCents: paymentMethod === "cash" ? input.cashReceivedCents : undefined,
-    changeCents: tender.changeCents,
+    paymentMethod: review.paymentMethod,
+    cashReceivedCents: review.cashReceivedCents,
+    changeCents: review.changeCents,
+    paymentTenders: response.data.sale.paymentTenders ?? response.data.sale.ticketEvidence?.payment.tenders ?? payloadTenders,
     clientRequestId: input.clientRequestId
   };
 }

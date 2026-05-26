@@ -45,10 +45,12 @@ for (const root of roots) {
   for (const filePath of walkFiles(root, { allowExt: [".ts", ".tsx", ".js", ".jsx", ".mjs"] })) {
     if (isAllowed(filePath)) continue;
     const text = fs.readFileSync(filePath, "utf8");
+    const serverOnly = /import\s+["']server-only["'];?/m.test(text);
     const lines = text.split(/\r?\n/);
     for (let index = 0; index < lines.length; index += 1) {
       const line = lines[index];
       for (const pattern of patterns) {
+        if (serverOnly && pattern.name === "fs direct import in UI") continue;
         if (pattern.regex.test(line)) {
           violations.push({
             file: path.resolve(filePath),

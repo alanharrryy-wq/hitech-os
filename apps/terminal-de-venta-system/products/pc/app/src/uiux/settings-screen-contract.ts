@@ -44,10 +44,10 @@ export const settingsScreenContract = {
     { Área: "Avanzado", "Qué puedes ajustar": "Opciones sensibles cerradas por defecto", Nivel: "Alto cuidado", Acción: "Ver técnica" }
   ],
   evidence: [
-    { label: "Fuente", value: "configuración local, licencia y reglas de navegación" },
-    { label: "Criterio", value: "Todo cambio sensible debe explicar alcance antes de guardar cambios" },
-    { label: "Confianza", value: "alta cuando la configuración del proyecto se conserva sin cambios" },
-    { label: "Rutas", value: "/settings, /settings/license y /glosario" }
+    { kind: "governance" as const,  label: "Fuente", value: "configuración local, licencia y reglas de navegación" },
+    { kind: "governance" as const,  label: "Criterio", value: "Todo cambio sensible debe explicar alcance antes de guardar cambios" },
+    { kind: "governance" as const,  label: "Confianza", value: "alta cuando la configuración del proyecto se conserva sin cambios" },
+    { kind: "governance" as const,  label: "Rutas", value: "/settings, /settings/license y /glosario" }
   ]
 };
 
@@ -94,10 +94,10 @@ export const settingsLicenseScreenContract = {
     { Elemento: "Continuidad", Estado: "Atención", "Qué pasa": "Conviene revisar antes de cambios globales", Acción: "Revisar" }
   ],
   evidence: [
-    { label: "Fuente", value: "servicio local de licencia y estado de actualización" },
-    { label: "Criterio", value: "ningún cambio sensible se aplica sin confirmación visible" },
-    { label: "Confianza", value: "alta cuando el estado local responde correctamente" },
-    { label: "Ruta", value: "/settings/license" }
+    { kind: "governance" as const,  label: "Fuente", value: "servicio local de licencia y estado de actualización" },
+    { kind: "governance" as const,  label: "Criterio", value: "ningún cambio sensible se aplica sin confirmación visible" },
+    { kind: "governance" as const,  label: "Confianza", value: "alta cuando el estado local responde correctamente" },
+    { kind: "governance" as const,  label: "Ruta", value: "/settings/license" }
   ]
 };
 
@@ -145,9 +145,9 @@ export const settingsGlossaryScreenContract = {
     { Término: "Historial", Uso: "Auditoría y cambios", Nota: "Preferido", Acción: "Usar" }
   ],
   evidence: [
-    { label: "Fuente", value: "diccionario visible de PRISMA PC" },
-    { label: "Criterio", value: "términos técnicos se traducen antes de mostrarse al usuario" },
-    { label: "Confianza", value: "alta cuando botones y estados usan palabras permitidas" },
-    { label: "Ruta", value: "/glosario" }
+    { kind: "governance" as const,  label: "Fuente", value: "diccionario visible de PRISMA PC" },
+    { kind: "governance" as const,  label: "Criterio", value: "términos técnicos se traducen antes de mostrarse al usuario" },
+    { kind: "governance" as const,  label: "Confianza", value: "alta cuando botones y estados usan palabras permitidas" },
+    { kind: "governance" as const,  label: "Ruta", value: "/glosario" }
   ]
 };

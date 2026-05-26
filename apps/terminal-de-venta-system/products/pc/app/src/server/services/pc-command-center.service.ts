@@ -227,7 +227,7 @@ export async function getPcSalesControl(params?: SearchLike): Promise<CommandCen
     ? { businessId, id: "__blocked__" }
     : { businessId, createdAt: { gte: range.from, lt: range.toExclusive } };
 
-  const [salesRaw, returns, triDb] = await Promise.all([
+  const [salesRaw, returns, triDb, terminalsRaw, sessionsRaw, heartbeatsRaw, bucketsRaw] = await Promise.all([
     safe(() => db.sale.findMany({
       where,
       include: { lines: true, paymentTenders: true, cashSession: true, terminal: true },
@@ -240,19 +240,29 @@ export async function getPcSalesControl(params?: SearchLike): Promise<CommandCen
       orderBy: { createdAt: "desc" },
       take: limit
     }), [] as any[]),
-    getTriDbStatusCard()
+    getTriDbStatusCard(),
+    safe(() => db.terminal.findMany({ where: { businessId, isActive: true }, orderBy: { name: "asc" }, take: 120 }), [] as any[]),
+    safe(() => db.cashSession.findMany({ where: { businessId }, include: { terminal: true, sales: true }, orderBy: { openedAt: "desc" }, take: 160 }), [] as any[]),
+    safe(() => db.deviceHeartbeat.findMany({ where: { businessId }, orderBy: { lastSeenAt: "desc" }, take: 120 }), [] as any[]),
+    safe(() => db.syncOutboxStatusBucket.findMany({ where: { businessId }, orderBy: { bucketStartAt: "desc" }, take: 160 }), [] as any[])
   ]);
   const sales = filterByQuery(salesRaw, query);
+  const terminals = terminalsRaw;
+  const sessions = sessionsRaw;
+  const heartbeats = heartbeatsRaw.map((heartbeat: any) => ({ ...heartbeat, metadata: asJson(heartbeat.metadataJson) }));
+  const buckets = bucketsRaw;
   const totalCents = sum(sales.map((sale: any) => Number(sale.totalCents ?? 0)));
   const returnCents = sum(returns.map((row: any) => Number(row.amountCents ?? 0)));
   const tenders = sales.flatMap((sale: any) => sale.paymentTenders ?? []);
   const lines = sales.flatMap((sale: any) => sale.lines ?? []);
   const byTerminal = new Map<string, number>();
+  const byTerminalTickets = new Map<string, number>();
   const byCashier = new Map<string, number>();
   const byTender = new Map<string, number>();
   const bySku = new Map<string, { qty: number; total: number; name: string }>();
   for (const sale of sales) {
     byTerminal.set(sale.terminalId ?? "sin terminal", (byTerminal.get(sale.terminalId ?? "sin terminal") ?? 0) + Number(sale.totalCents ?? 0));
+    byTerminalTickets.set(sale.terminalId ?? "sin terminal", (byTerminalTickets.get(sale.terminalId ?? "sin terminal") ?? 0) + 1);
     byCashier.set(sale.cashier ?? "sin cajero", (byCashier.get(sale.cashier ?? "sin cajero") ?? 0) + Number(sale.totalCents ?? 0));
   }
   for (const tender of tenders) {
@@ -270,6 +280,57 @@ export async function getPcSalesControl(params?: SearchLike): Promise<CommandCen
   const saleDetail = selectedSale
     ? sales.find((sale: any) => sale.id === selectedSale || sale.folio === selectedSale) ?? null
     : sales[0] ?? null;
+  const latestHeartbeatByDevice = new Map<string, any>();
+  for (const heartbeat of heartbeats) {
+    if (!latestHeartbeatByDevice.has(heartbeat.deviceId)) latestHeartbeatByDevice.set(heartbeat.deviceId, heartbeat);
+  }
+  const terminalById = new Map(terminals.map((terminal: any) => [terminal.id, terminal]));
+  const terminalByCode = new Map(terminals.map((terminal: any) => [terminal.code, terminal]));
+  const openSessionByTerminal = new Map<string, any>();
+  for (const session of sessions) {
+    const status = String(session.status ?? "").toLowerCase();
+    if ((status === "open" || status === "active" || status === "abierta") && !openSessionByTerminal.has(session.terminalId)) {
+      openSessionByTerminal.set(session.terminalId, session);
+    }
+  }
+  const pendingByDevice = new Map<string, number>();
+  const pendingByTerminal = new Map<string, number>();
+  for (const bucket of buckets) {
+    const status = String(bucket.status ?? "").toLowerCase();
+    if (!["pending", "queued", "sent", "received"].includes(status)) continue;
+    const count = Number(bucket.count ?? 0);
+    if (bucket.deviceId) pendingByDevice.set(bucket.deviceId, (pendingByDevice.get(bucket.deviceId) ?? 0) + count);
+    if (bucket.terminalId) pendingByTerminal.set(bucket.terminalId, (pendingByTerminal.get(bucket.terminalId) ?? 0) + count);
+  }
+  const deviceKeys = new Set<string>([...heartbeats.map((row: any) => row.deviceId), ...terminals.map((row: any) => row.id)]);
+  const deviceRows = Array.from(deviceKeys).map((deviceKey) => {
+    const heartbeat = latestHeartbeatByDevice.get(deviceKey);
+    const metadata = heartbeat?.metadata ?? {};
+    const terminalId = metadata.terminalId ?? metadata.terminal?.id ?? (terminalById.has(deviceKey) ? deviceKey : undefined);
+    const terminal = terminalId ? terminalById.get(terminalId) : terminalByCode.get(deviceKey);
+    const resolvedTerminalId = terminal?.id ?? terminalId ?? deviceKey;
+    const openSession = openSessionByTerminal.get(resolvedTerminalId);
+    const pendingSync = (pendingByDevice.get(deviceKey) ?? 0) + (pendingByTerminal.get(resolvedTerminalId) ?? 0);
+    const heartbeatStatus = heartbeat ? normalizeStatus(heartbeat.health || heartbeat.status || heartbeat.syncStatus) : "sin heartbeat";
+    const alertParts = [
+      pendingSync ? `${pendingSync} pendientes` : "",
+      heartbeat && ["stale", "warning", "offline", "degraded"].includes(String(heartbeat.health ?? "").toLowerCase()) ? normalizeStatus(heartbeat.health) : "",
+      openSession ? "" : "sin caja abierta"
+    ].filter(Boolean);
+    return {
+      "Tablet / dispositivo": terminal?.name ?? metadata.humanName ?? metadata.deviceName ?? deviceKey,
+      DeviceId: heartbeat?.deviceId ?? terminal?.code ?? deviceKey,
+      "Conexión": heartbeatStatus,
+      Caja: openSession ? "abierta" : "cerrada",
+      Turno: openSession?.id ?? "sin turno abierto",
+      Cajero: openSession?.cashier ?? "sin cajero",
+      "Venta hoy": money(byTerminal.get(resolvedTerminalId) ?? 0),
+      Tickets: byTerminalTickets.get(resolvedTerminalId) ?? 0,
+      "Pendientes sync": pendingSync,
+      "Último sync": heartbeat ? relativeLabel(heartbeat.lastSeenAt ?? heartbeat.observedAt) : "sin registro",
+      "Alertas": alertParts.join("; ") || "sin alertas"
+    };
+  });
 
   const panels: CommandPanel[] = [
     ...blockedPanel,
@@ -345,6 +406,13 @@ export async function getPcSalesControl(params?: SearchLike): Promise<CommandCen
         columns: ["Terminal", "Total"],
         rows: Array.from(byTerminal.entries()).map(([Terminal, Total]) => ({ Terminal, Total: money(Total) })),
         emptyMessage: "Sin terminales con venta consolidada en el rango."
+      },
+      {
+        title: "Tablets / dispositivos registrados",
+        caption: "Estado por terminal o heartbeat: caja, turno, cajero, venta, tickets, pendientes y ultimo pulso.",
+        columns: ["Tablet / dispositivo", "DeviceId", "Conexión", "Caja", "Turno", "Cajero", "Venta hoy", "Tickets", "Pendientes sync", "Último sync", "Alertas"],
+        rows: deviceRows,
+        emptyMessage: "No tablets registered. Abre configuración para registrar tablet."
       },
       {
         title: "Top SKUs",

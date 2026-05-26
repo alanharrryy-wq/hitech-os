@@ -38,7 +38,7 @@ function androidGuideSteps(androidChrome: boolean, whatsapp: boolean) {
     return [
       "Si aparece el cuadro de Chrome, toca Instalar.",
       "Si no aparece, abre el menu de Chrome y toca Instalar app.",
-      "Cuando termine, abre PRISMA desde el icono en tu pantalla principal."
+      "Cierra Chrome y entra desde el ícono de PRISMA en tu pantalla principal."
     ];
   }
 
@@ -226,7 +226,7 @@ export function PrismaMobilePwaInstallCard({ compact = false }: { compact?: bool
           </span>
           <span className={styles.platformText}>
             <span className={styles.orbLabel}>ANDROID</span>
-            <strong>Instalar</strong>
+            <strong>Instalar en Android</strong>
           </span>
           <span className={styles.platformArrow} aria-hidden="true">→</span>
         </button>

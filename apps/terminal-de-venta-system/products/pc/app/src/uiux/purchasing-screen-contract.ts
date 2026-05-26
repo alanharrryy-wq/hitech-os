@@ -41,9 +41,9 @@ export const purchasingScreenContract = {
     { Pedido: "Sugerido", Estado: "Bien", "Qué pasa": "Reabasto recomendado", Acción: "Crear" }
   ],
   evidence: [
-    { label: "Fuente", value: "Pedidos, recepciones y señal de reabasto" },
-    { label: "Criterio", value: "prioridad por piezas críticas, pedido enviado y diferencia pendiente" },
-    { label: "Confianza", value: "alta cuando existe pedido y recepción relacionada" },
-    { label: "Historial", value: "disponible en compras y recepciones" }
+    { kind: "technical" as const,  label: "Fuente", value: "Pedidos, recepciones y señal de reabasto" },
+    { kind: "technical" as const,  label: "Criterio", value: "prioridad por piezas críticas, pedido enviado y diferencia pendiente" },
+    { kind: "technical" as const,  label: "Confianza", value: "alta cuando existe pedido y recepción relacionada" },
+    { kind: "technical" as const,  label: "Historial", value: "disponible en compras y recepciones" }
   ]
 };

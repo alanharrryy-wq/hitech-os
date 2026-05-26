@@ -151,10 +151,11 @@ function TicketNotFoundDiagnostic({ message, diagnostic, canSell, backHref, onRe
     <section className={styles.stateCard} data-prisma-ticket-resolution="not-found-diagnostic">
       <div className={styles.diagnosticHeader}>
         <div>
-          <h2>Ticket no encontrado</h2>
+          <h2>No encontramos ese ticket en esta Tablet</h2>
           <p>{message}</p>
+          <p>Puede ser un folio de otra terminal, una venta aún no sincronizada o un identificador incompleto. La devolución necesita el ticket correcto para no afectar caja ni inventario.</p>
         </div>
-        <span>Soporte bloqueado</span>
+        <span>Soporte puede revisar evidencia</span>
       </div>
 
       {diagnostic ? (
@@ -167,14 +168,14 @@ function TicketNotFoundDiagnostic({ message, diagnostic, canSell, backHref, onRe
           </div>
 
           <details className={styles.lockedDiagnostic}>
-            <summary>Diagnóstico técnico</summary>
+            <summary>Evidencia técnica para soporte</summary>
             <p>Bloqueado para caja. Soporte puede usar el endpoint local y los logs sanitizados desde herramientas administrativas.</p>
           </details>
         </>
       ) : (
         <div className={styles.diagnosticSection}>
-          <strong>Diagnóstico técnico bloqueado</strong>
-          <span>No se muestran IDs internos ni errores crudos en caja. Reintenta o vuelve a ventas.</span>
+          <strong>Evidencia técnica protegida</strong>
+          <span>No se muestran IDs internos ni errores crudos en caja. Reintenta, vuelve a ventas o comparte este caso con soporte.</span>
         </div>
       )}
 

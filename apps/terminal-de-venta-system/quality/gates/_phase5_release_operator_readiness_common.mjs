@@ -8,14 +8,11 @@ export const PHASE5_GATE_IDS = ["Q26", "Q27", "Q28", "Q29", "Q30", "Q31"];
 export const PHASE5_TITLE = "PRISMA PQOS Phase 5: Release & Operator Readiness";
 
 const LAUNCHERS = [
+  ["00_KILL_ALL_LOCAL.cmd", "kill_everything.ps1"],
   ["01_LEVANTAR_TODO_LOCAL.cmd", "local_up.ps1"],
-  ["02_LEVANTAR_TODO_CLOUDFLARE.cmd", "cloudflare_up.ps1"],
-  ["03_LEVANTAR_TODO_LOCAL_Y_CLOUDFLARE.cmd", "all_up.ps1"],
-  ["04_DIAGNOSTICO_LOCAL_Y_CLOUDFLARE.cmd", "health.ps1"],
-  ["05_LEVANTAR_WEB_CONTROL_LOCAL.cmd", "web_control_local.ps1"],
-  ["06_LEVANTAR_WEB_CONTROL_LOCAL_Y_CLOUDFLARE.cmd", "web_control_cloudflare.ps1"],
-  ["07_ABRIR_PANEL_CONTROL_3150.cmd", "panel_3150.ps1"],
-  ["08_LEVANTAR_CHART_LAB_LOCAL.cmd", "chart_lab_local.ps1"],
+  ["02_LEVANTAR_TODO_LOCAL_CLOUDFLARE.cmd", "all_up.ps1"],
+  ["03_LEVANTAR_SOLO_UN_MODULO.cmd", "module_cloudflare.ps1"],
+  ["04_ABRIR_ATLAS_DEPENDENCIAS.cmd", "open_dependency_atlas.ps1"],
   ["09_KILL_EVERYTHING_PRISMA.cmd", "kill_everything.ps1"],
 ];
 
@@ -193,12 +190,7 @@ function gateQ26(root) {
   for (const port of REQUIRED_KILL_PORTS) {
     if (!killText.includes(port)) blockers.push(`Kill everything no cubre puerto ${port}`);
   }
-  const healthText = normalize(readSafe(path.join(wrappersDir, "health.ps1")) + "\n" + readSafe(path.join(cc, "04_DIAGNOSTICO_LOCAL_Y_CLOUDFLARE.cmd")));
-  if (healthText.includes("throw") && healthText.includes("fail") && !healthText.includes("optional")) {
-    warnings.push("Diagnostico podria fallar duro ante health FAIL. Revisar opcionalidad runtime.");
-  } else {
-    evidence.push("Diagnostico no parece convertir todo FAIL operativo en bloqueo duro sin contexto.");
-  }
+  evidence.push("Q26 usa solo launchers definitivos: 00, 01, 02, 03, 04 y 09.");
   return result("Q26", "Launcher OS release readiness", blockers, warnings, evidence);
 }
 
@@ -209,10 +201,7 @@ function gateQ27(root) {
   if (!isWindowsPathReady(OUT_DIR)) blockers.push(`No existe ${OUT_DIR}`);
   else evidence.push(process.platform === "win32" ? `${OUT_DIR} existe` : `${OUT_DIR} aceptado como contrato Windows en plataforma ${process.platform}`);
 
-  const latestDiagnose = path.join(OUT_DIR, "latest_DIAGNOSE.zip");
   const latestKill = path.join(OUT_DIR, "latest_KILL_EVERYTHING.zip");
-  if (exists(latestDiagnose)) evidence.push("latest_DIAGNOSE.zip existe");
-  else evidence.push("latest_DIAGNOSE.zip no existe ahora; el gate valida contrato/documentacion, no exige artefacto historico permanente.");
   if (exists(latestKill)) evidence.push("latest_KILL_EVERYTHING.zip existe");
   else evidence.push("latest_KILL_EVERYTHING.zip no existe ahora; kill evidence puede generarse bajo demanda.");
 
@@ -222,7 +211,7 @@ function gateQ27(root) {
     "quality/docs/phase-5-release-operator-readiness.md",
     "quality/docs/evidence-ledger-hardening.md",
   ].map((rel) => readSafe(path.join(root, rel))).join("\n"));
-  for (const token of ["latest_diagnose.zip", "transcript.log", "summary.json", "f:/descargasf", "prisma_quality_os"]) {
+  for (const token of ["latest_all_local.zip", "latest_all_local_cloudflare.zip", "latest_module_cloudflare.zip", "latest_dependency_atlas_open.zip", "latest_kill_everything.zip", "transcript.log", "summary.json", "f:/descargasf", "prisma_quality_os"]) {
     if (!docCorpus.includes(token)) warnings.push(`Evidencia/documentacion no menciona '${token}'.`);
     else evidence.push(`Evidencia documentada: ${token}`);
   }

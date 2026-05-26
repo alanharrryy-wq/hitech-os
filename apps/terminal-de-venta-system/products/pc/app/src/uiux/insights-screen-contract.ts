@@ -54,9 +54,9 @@ export const insightsScreenContract = {
     ]
   },
   evidence: [
-    { label: "Fuente", value: "ventas, inventario, compras y sincronización" },
-    { label: "Criterio", value: "riesgo por venta reciente, disponibilidad y pedidos pendientes" },
-    { label: "Confianza", value: "alta cuando los datos son recientes y consistentes" },
-    { label: "Fórmula", value: "ponderación operativa con severidad, frescura y disponibilidad" }
+    { kind: "technical" as const,  label: "Fuente", value: "ventas, inventario, compras y sincronización" },
+    { kind: "technical" as const,  label: "Criterio", value: "riesgo por venta reciente, disponibilidad y pedidos pendientes" },
+    { kind: "technical" as const,  label: "Confianza", value: "alta cuando los datos son recientes y consistentes" },
+    { kind: "technical" as const,  label: "Fórmula", value: "ponderación operativa con severidad, frescura y disponibilidad" }
   ]
 };

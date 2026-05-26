@@ -6,7 +6,8 @@ import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
 import type { CartLine, CompletedSaleReceipt, PosProduct, UiState } from "@/lib/pos/cart-state";
 import { clearCartStorage, readCartFromStorage, requestJson, writeCartToStorage } from "@/lib/pos/cart-state";
 import { addProductToCart, clearCart, decrementCartLine, incrementCartLine, removeCartLine, validateCartForCheckout } from "@/lib/pos/cart-engine";
-import type { PaymentMethod } from "@/lib/pos/payment-state";
+import type { PaymentMethod, PaymentTenderInput } from "@/lib/pos/payment-state";
+import { createDefaultPaymentTenders, normalizePaymentTenders } from "@/lib/pos/payment-state";
 import { completeCartSale } from "@/lib/pos/payment-flow";
 import type { CheckoutState } from "@/lib/pos/payment-contract";
 import { checkoutStateCopy, checkoutStateTone, isCheckoutBusy } from "@/lib/pos/payment-contract";
@@ -125,8 +126,7 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
   const [heldCarts, setHeldCarts] = useState<HeldCart[]>([]);
   const [selectedCategory, setSelectedCategory] = useState(FEATURED_CATEGORY);
   const [paymentOpen, setPaymentOpen] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
-  const [cashReceivedCents, setCashReceivedCents] = useState(0);
+  const [paymentTenders, setPaymentTenders] = useState<PaymentTenderInput[]>(() => createDefaultPaymentTenders());
   const [checkoutState, setCheckoutState] = useState<CheckoutState>("idle");
   const [checkoutError, setCheckoutError] = useState<unknown>(null);
   const [clientRequestId, setClientRequestId] = useState("");
@@ -220,9 +220,15 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
     setPaymentOpen(false);
     setCheckoutState("idle");
     setCheckoutError(null);
-    setCashReceivedCents(0);
+    setPaymentTenders(createDefaultPaymentTenders());
     setClientRequestId("");
     clearPaymentRequestRecord();
+  }
+
+  function updatePaymentTender(method: PaymentMethod, patch: Partial<Pick<PaymentTenderInput, "amountCents" | "reference">>) {
+    setPaymentTenders((current) =>
+      normalizePaymentTenders(current).map((tender) => (tender.method === method ? { ...tender, ...patch } : tender))
+    );
   }
 
   function clearTicket() {
@@ -303,13 +309,13 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
     setCheckoutState("submitting");
     setCheckoutError(null);
     try {
-      const receipt = await completeCartSale({ lines: cart, paymentMethod, cashReceivedCents, clientRequestId: requestId });
+      const receipt = await completeCartSale({ lines: cart, paymentTenders, clientRequestId: requestId });
       setLastReceipt(receipt);
       setCart([]);
       clearCartStorage();
       clearPaymentRequestRecord();
       setPaymentOpen(false);
-      setCashReceivedCents(0);
+      setPaymentTenders(createDefaultPaymentTenders());
       setCheckoutState("success");
       await loadProducts(query);
     } catch (error) {
@@ -327,6 +333,17 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
   useEffect(() => {
     writeCartToStorage(cart);
   }, [cart]);
+
+  useEffect(() => {
+    if (!gate.canOperatePos) return;
+    const cleanQuery = query.trim();
+    if (cleanQuery.length === 1) return;
+    const delay = cleanQuery.length >= 2 ? 260 : 120;
+    const timer = window.setTimeout(() => {
+      void loadProducts(cleanQuery);
+    }, delay);
+    return () => window.clearTimeout(timer);
+  }, [query, gate.canOperatePos]);
 
   const copy = checkoutStateCopy(checkoutState);
 
@@ -450,11 +467,9 @@ export function PosScreen({ runtimeSnapshot = DEFAULT_TABLET_RUNTIME_SNAPSHOT }:
         lines={cart}
         state={checkoutState}
         error={checkoutError}
-        paymentMethod={paymentMethod}
-        cashReceivedCents={cashReceivedCents}
+        paymentTenders={paymentTenders}
         clientRequestId={clientRequestId}
-        onPaymentMethod={setPaymentMethod}
-        onCashReceivedCents={setCashReceivedCents}
+        onPaymentTenderChange={updatePaymentTender}
         onClose={() => setPaymentOpen(false)}
         onConfirm={() => void confirmSale()}
       />

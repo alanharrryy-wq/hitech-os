@@ -41,9 +41,9 @@ export const salesAndCashScreenContract = {
     { "Corte / caja": "Caja 2", Estado: "Revisar", "Qué pasa": "Diferencia de $85", Acción: "Revisar" }
   ],
   evidence: [
-    { label: "Fuente", value: "Base principal de ventas y caja" },
-    { label: "Cálculo", value: "ventas del día, sesiones abiertas y diferencias registradas" },
-    { label: "Confianza", value: "Alta cuando la sincronización está al día" },
-    { label: "Historial", value: "Disponible en la vista de cortes y auditoría" }
+    { kind: "technical" as const,  label: "Fuente", value: "Base principal de ventas y caja" },
+    { kind: "technical" as const,  label: "Cálculo", value: "ventas del día, sesiones abiertas y diferencias registradas" },
+    { kind: "technical" as const,  label: "Confianza", value: "Alta cuando la sincronización está al día" },
+    { kind: "governance" as const,  label: "Historial", value: "Disponible en la vista de cortes y auditoría" }
   ]
 };

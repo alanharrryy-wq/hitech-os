@@ -6,6 +6,18 @@ export type PosCartLineInput = {
 };
 
 export type PosPaymentMethod = "cash" | "card" | "transfer";
+export type PosSalePaymentMethod = PosPaymentMethod | "mixed";
+
+export type SalePaymentTenderInput = {
+  tenderType: PosPaymentMethod;
+  amountCents: number;
+  reference?: string | null;
+};
+
+export type SalePaymentTenderResult = SalePaymentTenderInput & {
+  id: string;
+  recordedAt: Date;
+};
 
 export type CompleteLocalSaleInput = {
   businessId?: string;
@@ -17,9 +29,10 @@ export type CompleteLocalSaleInput = {
   lowStockThreshold?: number;
   lines: PosCartLineInput[];
   clientRequestId?: string;
-  paymentMethod?: PosPaymentMethod;
+  paymentMethod?: PosSalePaymentMethod;
   cashReceivedCents?: number | null;
   changeCents?: number | null;
+  paymentTenders?: SalePaymentTenderInput[];
 };
 
 export type PosResolvedProduct = {
@@ -72,9 +85,10 @@ export type CompleteLocalSaleResult = {
   subtotalCents: number;
   discountCents: number;
   totalCents: number;
-  paymentMethod: PosPaymentMethod;
+  paymentMethod: PosSalePaymentMethod;
   cashReceivedCents: number | null;
   changeCents: number;
+  paymentTenders: SalePaymentTenderResult[];
   status: "COMPLETED";
   createdAt: Date;
   completedAt: Date | null;

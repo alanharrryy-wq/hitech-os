@@ -1,0 +1,100 @@
+{
+  "version": "v03",
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "routes": [
+    {
+      "route": "/dashboard",
+      "name": "Hoy",
+      "critical": true,
+      "expected": [
+        "Hoy",
+        "atender",
+        "evidencia"
+      ]
+    },
+    {
+      "route": "/sales-control",
+      "name": "Ventas y caja",
+      "critical": true,
+      "expected": [
+        "Ventas",
+        "caja",
+        "dinero"
+      ]
+    },
+    {
+      "route": "/catalog",
+      "name": "Inventario",
+      "critical": true,
+      "expected": [
+        "Inventario",
+        "productos",
+        "atención"
+      ]
+    },
+    {
+      "route": "/purchasing",
+      "name": "Compras",
+      "critical": true,
+      "expected": [
+        "Compras",
+        "pedir",
+        "recibir"
+      ]
+    },
+    {
+      "route": "/proveedores",
+      "name": "Proveedores",
+      "critical": true,
+      "expected": [
+        "Proveedores"
+      ]
+    },
+    {
+      "route": "/sync",
+      "name": "Sincronización",
+      "critical": true,
+      "expected": [
+        "Sincronización",
+        "actualizado"
+      ]
+    },
+    {
+      "route": "/exportables",
+      "name": "Reportes",
+      "critical": true,
+      "expected": [
+        "Reportes",
+        "Descargas"
+      ]
+    },
+    {
+      "route": "/prisma-insights",
+      "name": "Análisis",
+      "critical": true,
+      "expected": [
+        "Análisis"
+      ]
+    },
+    {
+      "route": "/devices",
+      "name": "Sistema",
+      "critical": true,
+      "expected": [
+        "Sistema",
+        "Equipos"
+      ]
+    },
+    {
+      "route": "/settings",
+      "name": "Configuración",
+      "critical": true,
+      "expected": [
+        "Configuración"
+      ]
+    }
+  ]
+}

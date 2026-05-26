@@ -63,14 +63,21 @@ function dispatchTone(result: DispatchResult | null) {
 
 function dispatchMessage(result: DispatchResult | null) {
   if (!result) return "Sin intento de envío todavía.";
+  const targetUrl = result.health?.url ? ` Destino: ${result.health.url}.` : "";
+  const lastError = result.health?.error ? ` Último error: ${result.health.error}.` : result.error ? ` Último error: ${result.error}.` : "";
   if (result.ok && result.reason === "dispatched") return `Envío ejecutado: ${result.dispatched} evento(s) mandado(s) a PC.`;
   if (result.ok && result.reason === "empty") return "La cola no tenía eventos listos para enviar.";
-  if (result.reason === "pc_sync_disabled") return "Sync PC apagado por configuración. La Tablet sigue vendiendo local.";
+  if (result.reason === "pc_sync_disabled") return `Sync PC apagado por configuración. La Tablet sigue vendiendo local.${targetUrl}`;
   if (result.reason === "missing_pc_origin") return "Falta PRISMA_TABLET_PC_ORIGIN. Hay cola local, pero no hay destino PC configurado.";
-  if (result.reason === "pc_unavailable") return "PC no respondió al health check. La cola queda guardada localmente.";
+  if (result.reason === "pc_unavailable") return `PC unavailable. La cola queda guardada localmente.${targetUrl}${lastError} Para iniciar PC usa prisma-control-center/01_LEVANTAR_TODO_LOCAL.cmd.`;
   if (result.reason === "dispatcher_in_flight") return "Ya hay un envío en curso. No se duplicó la operación.";
   if (result.reason === "dispatch_failed") return result.error ? `Falló el envío: ${result.error}` : "Falló el envío. La cola quedó protegida para reintento.";
   return `Resultado de sync: ${result.reason}.`;
+}
+
+function emptyQueueMessage(filter: FilterMode) {
+  if (filter === "all" || filter === "needs_attention" || filter === "pending") return "No pending items to send.";
+  return "No hay elementos en este filtro.";
 }
 
 export function PendingOfflineSyncPanelScreen() {
@@ -191,7 +198,7 @@ export function PendingOfflineSyncPanelScreen() {
           <div>
             <span>Continuidad operativa</span>
             <h1>{panel?.summary.operatorMessage ?? "Revisando trabajo local"}</h1>
-            <p>La Tablet puede seguir vendiendo; aquí ves qué falta por enviar o revisar, sin cables pelados en la cara del cajero.</p>
+            <p>La Tablet puede seguir vendiendo; aquí ves qué falta por enviar o revisar con datos reales de la cola local.</p>
           </div>
           <div className={styles.heroActions}>
             <button className={styles.primaryAction} type="button" onClick={() => void dispatchNow(true)} disabled={busy || sendableCount === 0}>
@@ -244,7 +251,7 @@ export function PendingOfflineSyncPanelScreen() {
 
         <section className={styles.queue}>
           {items.length === 0 ? (
-            <div className={styles.empty}>No hay elementos en este filtro. Extraño, casi sospechosamente ordenado.</div>
+            <div className={styles.empty}>{emptyQueueMessage(filter)}</div>
           ) : (
             items.map((item) => (
               <article className={[styles.item, styles[`risk_${item.risk}`]].join(" ")} key={item.id}>

@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     ],
     apple: [
       { url: "/apple-touch-icon.png", type: "image/png", sizes: "180x180" },
+      { url: "/icons/prisma_ios_touch_icon_180.png", type: "image/png", sizes: "180x180" },
       { url: "/icons/prisma_playstore_icon_512.png", type: "image/png", sizes: "512x512" },
     ],
     shortcut: ["/apple-touch-icon.png"],

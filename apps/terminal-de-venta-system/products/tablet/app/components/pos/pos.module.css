@@ -2622,6 +2622,106 @@ html[data-layer-profile="perf"] .productAura {
 .cashBox{display:grid;gap:12px;padding:16px;border:1px dashed var(--prisma-light-border-medium,var(--prisma-border-soft));border-radius:22px;background:var(--prisma-light-surface-soft,#f2f6ff)}.cashInputLabel{display:grid;gap:8px}.cashInputLabel input{min-height:54px;border:1px solid var(--prisma-light-border-medium,var(--prisma-border-soft));border-radius:16px;padding:0 14px;color:var(--prisma-light-text-primary,var(--prisma-text-primary));background:#fff;font-size:1.15rem;font-weight:850;outline:none}.cashSuggestions{display:flex;flex-wrap:wrap;gap:8px}.cashSuggestions button{min-height:42px;border:1px solid var(--prisma-light-border-medium,var(--prisma-border-soft));border-radius:999px;padding:0 14px;color:var(--prisma-light-brand-primary,#1557ff);background:#fff;font-weight:900}.cashSuggestions button[data-active="true"]{color:var(--prisma-light-text-inverse,#fff);background:var(--prisma-light-brand-primary,#1557ff);border-color:var(--prisma-light-brand-primary,#1557ff)}
 .cashTenderLine,.paymentNonCashNotice{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.74)}.paymentNonCashNotice span{color:var(--prisma-light-text-secondary,var(--prisma-text-secondary));text-align:right}.paymentReview,.paymentReviewReady{display:grid;gap:5px;padding:16px;border-radius:20px;border:1px solid var(--prisma-light-border-soft,var(--prisma-border-soft));background:#fff}.paymentReviewReady{border-color:color-mix(in srgb,var(--prisma-light-success,#19b66a) 48%,var(--prisma-light-border-soft,#e4eaf6));background:var(--prisma-light-success-soft,#e9fff4)}.paymentReview b,.paymentReviewReady b{color:var(--prisma-light-success,#19b66a);font-size:1.42rem;letter-spacing:-.04em}.paymentFooter{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:10px}.paymentOkButton{min-height:58px;color:var(--prisma-light-text-inverse,#fff);background:var(--prisma-light-brand-primary,#1557ff);border-color:var(--prisma-light-brand-primary,#1557ff);box-shadow:var(--prisma-light-shadow-primary,0 18px 42px rgba(21,87,255,.24))}.secondaryCheckoutActions a{min-height:88px;border-radius:18px;border:1px solid var(--prisma-border-soft);display:grid;place-items:center;align-content:center;gap:4px;color:color-mix(in srgb,var(--prisma-text-primary) 84%,transparent);text-decoration:none;font-weight:850;opacity:.84}
 @media(max-width:760px){.paymentMethods,.paymentFooter{grid-template-columns:1fr}.paymentHeader{display:grid}}
+
+.paymentTenderList {
+  display: grid;
+  gap: 10px;
+}
+
+.paymentTenderRow {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) minmax(116px, 140px) minmax(140px, 180px);
+  align-items: end;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--prisma-light-border-soft,var(--prisma-border-soft));
+  border-radius: 16px;
+  background: rgba(255,255,255,.72);
+}
+
+.paymentTenderRow > div {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 2px 8px;
+  align-items: center;
+}
+
+.paymentTenderRow > div > span {
+  grid-row: 1 / span 2;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  color: var(--prisma-light-brand-primary,#1557ff);
+  background: var(--prisma-light-brand-primary-soft,#eaf0ff);
+  font-weight: 950;
+}
+
+.paymentTenderRow strong {
+  color: var(--prisma-light-text-primary,var(--prisma-text-primary));
+  line-height: 1.12;
+}
+
+.paymentTenderRow small,
+.paymentTenderAmount span,
+.paymentTenderReference span {
+  color: var(--prisma-light-text-secondary,var(--prisma-text-secondary));
+  font-size: .76rem;
+  font-weight: 800;
+}
+
+.paymentTenderAmount,
+.paymentTenderReference {
+  display: grid;
+  gap: 5px;
+}
+
+.paymentTenderAmount input,
+.paymentTenderReference input {
+  min-height: 40px;
+  min-width: 0;
+  border: 1px solid var(--prisma-light-border-medium,var(--prisma-border-soft));
+  border-radius: 12px;
+  padding: 0 10px;
+  color: var(--prisma-light-text-primary,var(--prisma-text-primary));
+  background: #fff;
+  font-weight: 850;
+  outline: none;
+}
+
+.paymentTenderRow[data-active="true"] {
+  border-color: color-mix(in srgb,var(--prisma-light-border-active,#2f63ff) 55%,var(--prisma-light-border-soft,#e4eaf6));
+}
+
+.paymentTotalsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.paymentTotalsGrid span {
+  display: grid;
+  gap: 2px;
+  padding: 9px 10px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.78);
+  color: var(--prisma-light-text-secondary,var(--prisma-text-secondary));
+  font-size: .78rem;
+  font-weight: 800;
+}
+
+.paymentTotalsGrid strong {
+  color: var(--prisma-light-text-primary,var(--prisma-text-primary));
+  font-size: .96rem;
+}
+
+@media(max-width:760px){
+  .paymentTenderRow,
+  .paymentTotalsGrid {
+    grid-template-columns:1fr;
+  }
+}
 /* PRISMA_POS_REAL_CHECKOUT_FLOW_00R::END */
 
 /* PRISMA Tablet 31 - checkout finalization fix */

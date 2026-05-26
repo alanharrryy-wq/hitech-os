@@ -47,6 +47,8 @@ def existing_target(spec: str, current: Path) -> bool:
     if spec.startswith("./.next/"):
         return True
     candidates: list[Path] = []
+    if spec.startswith("./.generated/"):
+        candidates.extend(candidate_paths((ROOT / spec[2:]).resolve()))
     if spec.startswith('./') or spec.startswith('../'):
         base = (current.parent / spec).resolve()
         candidates.extend(candidate_paths(base))

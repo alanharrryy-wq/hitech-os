@@ -1,0 +1,3971 @@
+{
+  "$schema": "./tablet-light-preset.schema.json#/definitions/surfaceMap",
+  "metadata": {
+    "package": "PRISMA Tablet Light Visual Preset Engine",
+    "version": "2026-05-25.v1",
+    "generatedFromContextZip": "PRISMA_TABLET_LIGHT_PRESET_ENGINE_CONTEXT_20260525_094411.zip",
+    "context": {
+      "generated_at": "2026-05-25T09:51:28",
+      "root": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+      "tablet_root": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\products\\tablet",
+      "source_file_count": 702,
+      "codex_candidate_count": 1,
+      "zip_target": "F:\\descargasf\\PRISMA_TABLET_LIGHT_PRESET_ENGINE_CONTEXT_20260525_094411.zip",
+      "notes": [
+        "Corrected collector avoids $matches because PowerShell uses $Matches as an automatic hashtable for -match.",
+        "Tablet policy: final visual presets must be light, tactile, luminous, and not dark-dominant."
+      ]
+    },
+    "policy": "Tablet final visual presets must be light, tactile, luminous, high-contrast-soft, and not dark-dominant.",
+    "artifactIntent": "planning + machine-readable maps for a future injector; no runtime code was modified."
+  },
+  "viewportTargets": [
+    {
+      "id": "tablet-landscape-primary",
+      "width": 1366,
+      "height": 768,
+      "density": "comfortable-operational"
+    },
+    {
+      "id": "tablet-landscape-compact",
+      "width": 1024,
+      "height": 768,
+      "density": "compact-touch"
+    },
+    {
+      "id": "tablet-portrait-fallback",
+      "width": 768,
+      "height": 1024,
+      "density": "single-column-drawer"
+    }
+  ],
+  "globalShell": {
+    "currentCss": [
+      "app/app/prisma-tablet-light-premium-final.css",
+      "app/components/tablet-shell/prisma-tablet-shell.module.css"
+    ],
+    "currentRootAttributes": {
+      "data-prisma-skin": "light",
+      "data-prisma-surface": "tablet-pos"
+    },
+    "currentShellGrid": "220px minmax(0,1fr)",
+    "targetOptionalCompactShell": "88px rail + content for POS speed; keep 220px if no layout migration is requested",
+    "layerStackCanonical": [
+      "L0 daylight pearl app background",
+      "L1 safe-area shell grid",
+      "L2 milkglass primary surface",
+      "L3 frosted content cards",
+      "L4 pearl rim hairline borders",
+      "L5 semantic state tint",
+      "L6 soft glow only for active primary action",
+      "L7 motion response layer",
+      "L8 evidence/drawer overlay",
+      "L9 toast/modal/critical confirmation",
+      "L10 debug/evidence collapsed"
+    ],
+    "touchTargetMinimumPx": 48,
+    "wcagFloorPx": 24
+  },
+  "routes": [
+    {
+      "route": "/catalog",
+      "routeFile": "app\\app\\catalog\\page.tsx",
+      "domain": "inventory-catalog",
+      "screenQuestion": "¿Qué productos están listos para venderse?",
+      "currentComponents": [
+        "CatalogScreen",
+        "CatalogProductTable",
+        "CatalogProductDrawer",
+        "CatalogProductForm",
+        "CatalogBarcodeField",
+        "CatalogStockField",
+        "CatalogEmptyState"
+      ],
+      "cssModules": [
+        "app/components/catalog/catalog.module.css"
+      ],
+      "primaryPreset": "tablet.catalog.products.frosted-ledger.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "header": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "86"
+          },
+          "summaryStrip": {
+            "x": 220,
+            "y": 124,
+            "w": "calc(100% - 260px)",
+            "h": "96-132"
+          },
+          "filters": {
+            "x": 220,
+            "y": "after summary",
+            "w": "calc(100% - 260px)",
+            "h": "56-72"
+          },
+          "tableOrGrid": {
+            "x": 220,
+            "y": "after filters",
+            "w": "calc(100% - 260px)",
+            "h": "remaining",
+            "rowH": "56-72 touch-safe"
+          },
+          "drawer": {
+            "dock": "right or bottom on compact",
+            "w": "420-520 desktop-tablet",
+            "maxH": "82dvh compact"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/checkout",
+      "routeFile": "app\\app\\checkout\\page.tsx",
+      "domain": "pos",
+      "screenQuestion": "¿Cómo confirmo el cobro sin fricción?",
+      "currentComponents": [
+        "PosScreen",
+        "PosLiveBinding",
+        "PosProductSearch",
+        "PosProductList",
+        "PosTicketPanel",
+        "PosPaymentPanel",
+        "PosSaleSuccess",
+        "PosErrorBanner"
+      ],
+      "cssModules": [
+        "app/components/pos/pos.module.css"
+      ],
+      "primaryPreset": "tablet.pos.checkout.daylight-lux.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "shell": {
+            "x": 0,
+            "y": 0,
+            "w": "100%",
+            "h": "100dvh",
+            "grid": "220px minmax(0,1fr) current; target 88px compact rail"
+          },
+          "content": {
+            "x": 220,
+            "y": 0,
+            "w": "calc(100% - 220px)",
+            "h": "100dvh",
+            "padding": 20
+          },
+          "posWorkspace": {
+            "x": 240,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "auto",
+            "grid": "minmax(0,1fr) minmax(400px,430px)",
+            "gap": 20
+          },
+          "catalogArea": {
+            "x": 240,
+            "y": 20,
+            "w": "calc(100% - 240px - 450px)",
+            "h": "auto",
+            "minH": 640
+          },
+          "searchCard": {
+            "x": 256,
+            "y": 36,
+            "w": "remaining catalog width",
+            "h": "~100",
+            "minTouch": 64
+          },
+          "categoryRail": {
+            "x": 256,
+            "y": 150,
+            "w": "remaining catalog width",
+            "h": "82+",
+            "scroll": "x"
+          },
+          "productGrid": {
+            "x": 256,
+            "y": 250,
+            "w": "remaining catalog width",
+            "h": "calc(100dvh - 280px)",
+            "cardMin": "150x132"
+          },
+          "ticketPanel": {
+            "x": "right",
+            "y": 20,
+            "w": "400-430",
+            "h": "auto/sticky",
+            "dock": "right"
+          },
+          "payCTA": {
+            "dock": "ticket-bottom",
+            "minH": 64,
+            "glow": "single primary only"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 pearl-blue daylight background",
+        "L1 touch POS shell",
+        "L2 catalog/ticket milkglass surfaces",
+        "L3 product cards and search glass",
+        "L4 active category pearl rim",
+        "L5 subtotal/stock semantic tint",
+        "L6 payment CTA single soft glow",
+        "L7 press/tap response",
+        "L8 payment drawer",
+        "L9 sale success / error modal",
+        "L10 technical sync evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "allowed only for POS/checkout ticket totals and line items",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/events/outbox",
+      "routeFile": "app\\app\\events\\outbox\\page.tsx",
+      "domain": "sync-offline",
+      "screenQuestion": "¿Qué eventos están pendientes o fallaron?",
+      "currentComponents": [
+        "OutboxEventsScreen"
+      ],
+      "cssModules": [],
+      "primaryPreset": "tablet.sync.offline.clean-pulse.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "statusHero": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "112-156"
+          },
+          "actionBand": {
+            "x": 220,
+            "y": "after hero",
+            "w": "calc(100% - 260px)",
+            "h": "72-96"
+          },
+          "evidenceList": {
+            "x": 220,
+            "y": "after action",
+            "w": "calc(100% - 260px)",
+            "h": "remaining",
+            "rowH": "64"
+          },
+          "evidenceDrawer": {
+            "dock": "bottom",
+            "maxH": "76dvh"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight sync field",
+        "L1 shell grid",
+        "L2 sync status hero",
+        "L3 evidence tiles",
+        "L4 status rims",
+        "L5 stale/offline semantic tint",
+        "L6 syncing pulse soft blue",
+        "L7 retry/ack motion",
+        "L8 evidence drawer",
+        "L9 critical sync modal",
+        "L10 raw events collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/existencias",
+      "routeFile": "app\\app\\existencias\\page.tsx",
+      "domain": "inventory-catalog",
+      "screenQuestion": "¿Qué productos necesitan ayuda para vender o reabastecer?",
+      "currentComponents": [
+        "CatalogStockSellingAssistScreen",
+        "MetricCard",
+        "OfflineStrip",
+        "ProductRow",
+        "ProductDetailPanel",
+        "ProductStatusBadge"
+      ],
+      "cssModules": [
+        "app/components/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css",
+        "app/components/catalog/catalog.module.css"
+      ],
+      "primaryPreset": "tablet.catalog.products.frosted-ledger.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "header": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "86"
+          },
+          "summaryStrip": {
+            "x": 220,
+            "y": 124,
+            "w": "calc(100% - 260px)",
+            "h": "96-132"
+          },
+          "filters": {
+            "x": 220,
+            "y": "after summary",
+            "w": "calc(100% - 260px)",
+            "h": "56-72"
+          },
+          "tableOrGrid": {
+            "x": 220,
+            "y": "after filters",
+            "w": "calc(100% - 260px)",
+            "h": "remaining",
+            "rowH": "56-72 touch-safe"
+          },
+          "drawer": {
+            "dock": "right or bottom on compact",
+            "w": "420-520 desktop-tablet",
+            "maxH": "82dvh compact"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/inventory/low-stock",
+      "routeFile": "app\\app\\inventory\\low-stock\\page.tsx",
+      "domain": "inventory-catalog",
+      "screenQuestion": "¿Qué se puede agotar pronto?",
+      "currentComponents": [
+        "LowStockScreen"
+      ],
+      "cssModules": [],
+      "primaryPreset": "tablet.catalog.products.frosted-ledger.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "header": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "86"
+          },
+          "summaryStrip": {
+            "x": 220,
+            "y": 124,
+            "w": "calc(100% - 260px)",
+            "h": "96-132"
+          },
+          "filters": {
+            "x": 220,
+            "y": "after summary",
+            "w": "calc(100% - 260px)",
+            "h": "56-72"
+          },
+          "tableOrGrid": {
+            "x": 220,
+            "y": "after filters",
+            "w": "calc(100% - 260px)",
+            "h": "remaining",
+            "rowH": "56-72 touch-safe"
+          },
+          "drawer": {
+            "dock": "right or bottom on compact",
+            "w": "420-520 desktop-tablet",
+            "maxH": "82dvh compact"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/inventory",
+      "routeFile": "app\\app\\inventory\\page.tsx",
+      "domain": "inventory-catalog",
+      "screenQuestion": "¿Qué debe resolver esta pantalla?",
+      "currentComponents": [],
+      "cssModules": [],
+      "primaryPreset": "tablet.catalog.products.frosted-ledger.v1",
+      "geometry": {
+        "viewport": "1366x768 primary",
+        "zones": {
+          "main": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "auto"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/offline",
+      "routeFile": "app\\app\\offline\\page.tsx",
+      "domain": "sync-offline",
+      "screenQuestion": "¿Qué evidencia offline puedo exportar?",
+      "currentComponents": [
+        "OfflineExportAuditScreen"
+      ],
+      "cssModules": [
+        "app/components/offline/offline-export-audit.module.css"
+      ],
+      "primaryPreset": "tablet.sync.offline.clean-pulse.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "statusHero": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "112-156"
+          },
+          "actionBand": {
+            "x": 220,
+            "y": "after hero",
+            "w": "calc(100% - 260px)",
+            "h": "72-96"
+          },
+          "evidenceList": {
+            "x": 220,
+            "y": "after action",
+            "w": "calc(100% - 260px)",
+            "h": "remaining",
+            "rowH": "64"
+          },
+          "evidenceDrawer": {
+            "dock": "bottom",
+            "maxH": "76dvh"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight sync field",
+        "L1 shell grid",
+        "L2 sync status hero",
+        "L3 evidence tiles",
+        "L4 status rims",
+        "L5 stale/offline semantic tint",
+        "L6 syncing pulse soft blue",
+        "L7 retry/ack motion",
+        "L8 evidence drawer",
+        "L9 critical sync modal",
+        "L10 raw events collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/",
+      "routeFile": "app\\app\\page.tsx",
+      "domain": "home",
+      "screenQuestion": "¿Qué necesita atención antes de vender?",
+      "currentComponents": [
+        "PrismaTabletShellUnified",
+        "TabletHomeScreen",
+        "TabletShellStatusPill",
+        "TabletRuntimeStatusStrip"
+      ],
+      "cssModules": [
+        "app/components/tablet-home/tablet-home.module.css",
+        "app/components/tablet-shell/prisma-tablet-shell.module.css"
+      ],
+      "primaryPreset": "tablet.home.daylight-command.v1",
+      "geometry": {
+        "viewport": "1366x768 primary",
+        "zones": {
+          "main": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "auto"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/pos",
+      "routeFile": "app\\app\\pos\\page.tsx",
+      "domain": "pos",
+      "screenQuestion": "¿Qué estoy vendiendo y cómo cobro rápido?",
+      "currentComponents": [
+        "PosScreen",
+        "PosLiveBinding",
+        "PosProductSearch",
+        "PosProductList",
+        "PosTicketPanel",
+        "PosPaymentPanel",
+        "PosSaleSuccess",
+        "PosErrorBanner"
+      ],
+      "cssModules": [
+        "app/components/pos/pos.module.css"
+      ],
+      "primaryPreset": "tablet.pos.checkout.daylight-lux.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "shell": {
+            "x": 0,
+            "y": 0,
+            "w": "100%",
+            "h": "100dvh",
+            "grid": "220px minmax(0,1fr) current; target 88px compact rail"
+          },
+          "content": {
+            "x": 220,
+            "y": 0,
+            "w": "calc(100% - 220px)",
+            "h": "100dvh",
+            "padding": 20
+          },
+          "posWorkspace": {
+            "x": 240,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "auto",
+            "grid": "minmax(0,1fr) minmax(400px,430px)",
+            "gap": 20
+          },
+          "catalogArea": {
+            "x": 240,
+            "y": 20,
+            "w": "calc(100% - 240px - 450px)",
+            "h": "auto",
+            "minH": 640
+          },
+          "searchCard": {
+            "x": 256,
+            "y": 36,
+            "w": "remaining catalog width",
+            "h": "~100",
+            "minTouch": 64
+          },
+          "categoryRail": {
+            "x": 256,
+            "y": 150,
+            "w": "remaining catalog width",
+            "h": "82+",
+            "scroll": "x"
+          },
+          "productGrid": {
+            "x": 256,
+            "y": 250,
+            "w": "remaining catalog width",
+            "h": "calc(100dvh - 280px)",
+            "cardMin": "150x132"
+          },
+          "ticketPanel": {
+            "x": "right",
+            "y": 20,
+            "w": "400-430",
+            "h": "auto/sticky",
+            "dock": "right"
+          },
+          "payCTA": {
+            "dock": "ticket-bottom",
+            "minH": 64,
+            "glow": "single primary only"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 pearl-blue daylight background",
+        "L1 touch POS shell",
+        "L2 catalog/ticket milkglass surfaces",
+        "L3 product cards and search glass",
+        "L4 active category pearl rim",
+        "L5 subtotal/stock semantic tint",
+        "L6 payment CTA single soft glow",
+        "L7 press/tap response",
+        "L8 payment drawer",
+        "L9 sale success / error modal",
+        "L10 technical sync evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "allowed only for POS/checkout ticket totals and line items",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/prisma-dark-pos-reference",
+      "routeFile": "app\\app\\prisma-dark-pos-reference\\page.tsx",
+      "domain": "visual-reference",
+      "screenQuestion": "Referencia legacy oscura; no apta como Tablet final.",
+      "currentComponents": [
+        "PrismaDarkPosShell"
+      ],
+      "cssModules": [
+        "app/components/prisma-dark-pos/prisma-dark-pos.module.css"
+      ],
+      "primaryPreset": "tablet.visualos.bright-reference.v1",
+      "geometry": {
+        "viewport": "1366x768 primary",
+        "zones": {
+          "studioShell": {
+            "x": 0,
+            "y": 0,
+            "w": "100%",
+            "h": "100dvh",
+            "grid": "tool rail + preview + inspector"
+          },
+          "previewCanvas": {
+            "x": "center",
+            "y": "top",
+            "w": "flex",
+            "h": "remaining",
+            "minH": 520
+          },
+          "inspector": {
+            "dock": "right",
+            "w": "340-420"
+          },
+          "warning": {
+            "note": "dark reference route is quarantine only for final Tablet light UI"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 bright studio background",
+        "L1 visual OS shell",
+        "L2 preview canvas",
+        "L3 inspector panels",
+        "L4 active tool rim",
+        "L5 visual state tint",
+        "L6 demo-only governed glow",
+        "L7 inspector motion",
+        "L8 preview overlay",
+        "L9 QA modal",
+        "L10 debug only"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "quarantine-legacy-dark-reference"
+    },
+    {
+      "route": "/prisma-pulse",
+      "routeFile": "app\\app\\prisma-pulse\\page.tsx",
+      "domain": "visual-reference",
+      "screenQuestion": "¿Qué dice el pulso visual de operación?",
+      "currentComponents": [
+        "PrismaTabletChartsViewModel",
+        "PrismaTabletPulsePanel"
+      ],
+      "cssModules": [],
+      "primaryPreset": "tablet.visualos.bright-reference.v1",
+      "geometry": {
+        "viewport": "1366x768 primary",
+        "zones": {
+          "studioShell": {
+            "x": 0,
+            "y": 0,
+            "w": "100%",
+            "h": "100dvh",
+            "grid": "tool rail + preview + inspector"
+          },
+          "previewCanvas": {
+            "x": "center",
+            "y": "top",
+            "w": "flex",
+            "h": "remaining",
+            "minH": 520
+          },
+          "inspector": {
+            "dock": "right",
+            "w": "340-420"
+          },
+          "warning": {
+            "note": "dark reference route is quarantine only for final Tablet light UI"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 bright studio background",
+        "L1 visual OS shell",
+        "L2 preview canvas",
+        "L3 inspector panels",
+        "L4 active tool rim",
+        "L5 visual state tint",
+        "L6 demo-only governed glow",
+        "L7 inspector motion",
+        "L8 preview overlay",
+        "L9 QA modal",
+        "L10 debug only"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/referencia-visual",
+      "routeFile": "app\\app\\referencia-visual\\page.tsx",
+      "domain": "visual-reference",
+      "screenQuestion": "¿Qué piel visual se está comparando?",
+      "currentComponents": [
+        "PrismaDarkSelector"
+      ],
+      "cssModules": [
+        "app/components/prisma-dark-pos/prisma-dark-pos.module.css"
+      ],
+      "primaryPreset": "tablet.visualos.bright-reference.v1",
+      "geometry": {
+        "viewport": "1366x768 primary",
+        "zones": {
+          "studioShell": {
+            "x": 0,
+            "y": 0,
+            "w": "100%",
+            "h": "100dvh",
+            "grid": "tool rail + preview + inspector"
+          },
+          "previewCanvas": {
+            "x": "center",
+            "y": "top",
+            "w": "flex",
+            "h": "remaining",
+            "minH": 520
+          },
+          "inspector": {
+            "dock": "right",
+            "w": "340-420"
+          },
+          "warning": {
+            "note": "dark reference route is quarantine only for final Tablet light UI"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 bright studio background",
+        "L1 visual OS shell",
+        "L2 preview canvas",
+        "L3 inspector panels",
+        "L4 active tool rim",
+        "L5 visual state tint",
+        "L6 demo-only governed glow",
+        "L7 inspector motion",
+        "L8 preview overlay",
+        "L9 QA modal",
+        "L10 debug only"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/release-gate",
+      "routeFile": "app\\app\\release-gate\\page.tsx",
+      "domain": "system-health",
+      "screenQuestion": "¿Tablet está lista para operar?",
+      "currentComponents": [
+        "PrismaTabletShellUnified",
+        "TabletOperableReleaseGateScreen",
+        "TabletShellStatusPill",
+        "TabletShellStatusPill",
+        "TabletRuntimeStatusStrip"
+      ],
+      "cssModules": [
+        "app/components/tablet-shell/prisma-tablet-shell.module.css"
+      ],
+      "primaryPreset": "tablet.system.release.daylight-gate.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "statusHero": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "112-156"
+          },
+          "actionBand": {
+            "x": 220,
+            "y": "after hero",
+            "w": "calc(100% - 260px)",
+            "h": "72-96"
+          },
+          "evidenceList": {
+            "x": 220,
+            "y": "after action",
+            "w": "calc(100% - 260px)",
+            "h": "remaining",
+            "rowH": "64"
+          },
+          "evidenceDrawer": {
+            "dock": "bottom",
+            "maxH": "76dvh"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/returns",
+      "routeFile": "app\\app\\returns\\page.tsx",
+      "domain": "misc",
+      "screenQuestion": "¿Qué debe resolver esta pantalla?",
+      "currentComponents": [],
+      "cssModules": [],
+      "primaryPreset": "tablet.light.default.surface.v1",
+      "geometry": {
+        "viewport": "1366x768 primary",
+        "zones": {
+          "main": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "auto"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/runtime-snapshot-preview",
+      "routeFile": "app\\app\\runtime-snapshot-preview\\page.tsx",
+      "domain": "system-health",
+      "screenQuestion": "¿Cuál es el estado runtime actual?",
+      "currentComponents": [
+        "PrismaTabletShellUnified",
+        "TabletRuntimePanel",
+        "TabletShellStatusPill",
+        "TabletRuntimeStatusStrip"
+      ],
+      "cssModules": [
+        "app/components/tablet-shell/prisma-tablet-shell.module.css"
+      ],
+      "primaryPreset": "tablet.system.release.daylight-gate.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "statusHero": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "112-156"
+          },
+          "actionBand": {
+            "x": 220,
+            "y": "after hero",
+            "w": "calc(100% - 260px)",
+            "h": "72-96"
+          },
+          "evidenceList": {
+            "x": 220,
+            "y": "after action",
+            "w": "calc(100% - 260px)",
+            "h": "remaining",
+            "rowH": "64"
+          },
+          "evidenceDrawer": {
+            "dock": "bottom",
+            "maxH": "76dvh"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/sales/history/[saleId]",
+      "routeFile": "app\\app\\sales\\history\\[saleId]\\page.tsx",
+      "domain": "sales",
+      "screenQuestion": "¿Qué pasó en este ticket histórico?",
+      "currentComponents": [
+        "SalesTicketDetailScreen"
+      ],
+      "cssModules": [
+        "app/components/sales/sales.module.css"
+      ],
+      "primaryPreset": "tablet.sales.history.pearl-ledger.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "header": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "86"
+          },
+          "kpiStrip": {
+            "x": 220,
+            "y": 124,
+            "w": "calc(100% - 260px)",
+            "h": "92-128"
+          },
+          "mainList": {
+            "x": 220,
+            "y": "after kpis",
+            "w": "calc(100% - 260px)",
+            "h": "remaining",
+            "rowH": "56-72"
+          },
+          "detailPanel": {
+            "dock": "right/bottom",
+            "w": "420",
+            "maxH": "82dvh"
+          },
+          "primaryAction": {
+            "dock": "contextual",
+            "minH": 56
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/sales/history",
+      "routeFile": "app\\app\\sales\\history\\page.tsx",
+      "domain": "sales",
+      "screenQuestion": "¿Qué tickets y ventas debo consultar?",
+      "currentComponents": [
+        "SalesHistoryScreen",
+        "SalesKpiStrip",
+        "SalesTicketList",
+        "SalesTicketStatusChip"
+      ],
+      "cssModules": [
+        "app/components/sales/sales.module.css"
+      ],
+      "primaryPreset": "tablet.sales.history.pearl-ledger.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "header": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "86"
+          },
+          "kpiStrip": {
+            "x": 220,
+            "y": 124,
+            "w": "calc(100% - 260px)",
+            "h": "92-128"
+          },
+          "mainList": {
+            "x": 220,
+            "y": "after kpis",
+            "w": "calc(100% - 260px)",
+            "h": "remaining",
+            "rowH": "56-72"
+          },
+          "detailPanel": {
+            "dock": "right/bottom",
+            "w": "420",
+            "maxH": "82dvh"
+          },
+          "primaryAction": {
+            "dock": "contextual",
+            "minH": 56
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/sales",
+      "routeFile": "app\\app\\sales\\page.tsx",
+      "domain": "sales",
+      "screenQuestion": "¿Qué debe resolver esta pantalla?",
+      "currentComponents": [],
+      "cssModules": [],
+      "primaryPreset": "tablet.sales.history.pearl-ledger.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "header": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "86"
+          },
+          "kpiStrip": {
+            "x": 220,
+            "y": 124,
+            "w": "calc(100% - 260px)",
+            "h": "92-128"
+          },
+          "mainList": {
+            "x": 220,
+            "y": "after kpis",
+            "w": "calc(100% - 260px)",
+            "h": "remaining",
+            "rowH": "56-72"
+          },
+          "detailPanel": {
+            "dock": "right/bottom",
+            "w": "420",
+            "maxH": "82dvh"
+          },
+          "primaryAction": {
+            "dock": "contextual",
+            "minH": 56
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/sales/today/[saleId]",
+      "routeFile": "app\\app\\sales\\today\\[saleId]\\page.tsx",
+      "domain": "sales",
+      "screenQuestion": "¿Qué pasó en este ticket?",
+      "currentComponents": [
+        "SalesTicketDetailScreen",
+        "DetailStateCard",
+        "DiagnosticMetric",
+        "TicketNotFoundDiagnostic"
+      ],
+      "cssModules": [
+        "app/components/sales/sales.module.css"
+      ],
+      "primaryPreset": "tablet.sales.history.pearl-ledger.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "header": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "86"
+          },
+          "kpiStrip": {
+            "x": 220,
+            "y": 124,
+            "w": "calc(100% - 260px)",
+            "h": "92-128"
+          },
+          "mainList": {
+            "x": 220,
+            "y": "after kpis",
+            "w": "calc(100% - 260px)",
+            "h": "remaining",
+            "rowH": "56-72"
+          },
+          "detailPanel": {
+            "dock": "right/bottom",
+            "w": "420",
+            "maxH": "82dvh"
+          },
+          "primaryAction": {
+            "dock": "contextual",
+            "minH": 56
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/sales/today/[saleId]/return",
+      "routeFile": "app\\app\\sales\\today\\[saleId]\\return\\page.tsx",
+      "domain": "sales",
+      "screenQuestion": "¿Qué se devuelve y cuál es el impacto?",
+      "currentComponents": [
+        "ReturnFromTicketScreen"
+      ],
+      "cssModules": [
+        "app/components/returns/returns.module.css"
+      ],
+      "primaryPreset": "tablet.sales.history.pearl-ledger.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "header": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "86"
+          },
+          "kpiStrip": {
+            "x": 220,
+            "y": 124,
+            "w": "calc(100% - 260px)",
+            "h": "92-128"
+          },
+          "mainList": {
+            "x": 220,
+            "y": "after kpis",
+            "w": "calc(100% - 260px)",
+            "h": "remaining",
+            "rowH": "56-72"
+          },
+          "detailPanel": {
+            "dock": "right/bottom",
+            "w": "420",
+            "maxH": "82dvh"
+          },
+          "primaryAction": {
+            "dock": "contextual",
+            "minH": 56
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/sales/today",
+      "routeFile": "app\\app\\sales\\today\\page.tsx",
+      "domain": "sales",
+      "screenQuestion": "¿Qué se vendió hoy?",
+      "currentComponents": [
+        "SalesTodayScreen",
+        "SalesKpiStrip",
+        "SalesTicketList",
+        "SalesTicketStatusChip"
+      ],
+      "cssModules": [
+        "app/components/sales/sales.module.css"
+      ],
+      "primaryPreset": "tablet.sales.history.pearl-ledger.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "header": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "86"
+          },
+          "kpiStrip": {
+            "x": 220,
+            "y": 124,
+            "w": "calc(100% - 260px)",
+            "h": "92-128"
+          },
+          "mainList": {
+            "x": 220,
+            "y": "after kpis",
+            "w": "calc(100% - 260px)",
+            "h": "remaining",
+            "rowH": "56-72"
+          },
+          "detailPanel": {
+            "dock": "right/bottom",
+            "w": "420",
+            "maxH": "82dvh"
+          },
+          "primaryAction": {
+            "dock": "contextual",
+            "minH": 56
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/screen-standard-preview",
+      "routeFile": "app\\app\\screen-standard-preview\\page.tsx",
+      "domain": "visual-reference",
+      "screenQuestion": "¿Cómo se ve una pantalla operacional estándar?",
+      "currentComponents": [
+        "PrismaOperationalScreen"
+      ],
+      "cssModules": [],
+      "primaryPreset": "tablet.visualos.bright-reference.v1",
+      "geometry": {
+        "viewport": "1366x768 primary",
+        "zones": {
+          "studioShell": {
+            "x": 0,
+            "y": 0,
+            "w": "100%",
+            "h": "100dvh",
+            "grid": "tool rail + preview + inspector"
+          },
+          "previewCanvas": {
+            "x": "center",
+            "y": "top",
+            "w": "flex",
+            "h": "remaining",
+            "minH": 520
+          },
+          "inspector": {
+            "dock": "right",
+            "w": "340-420"
+          },
+          "warning": {
+            "note": "dark reference route is quarantine only for final Tablet light UI"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 bright studio background",
+        "L1 visual OS shell",
+        "L2 preview canvas",
+        "L3 inspector panels",
+        "L4 active tool rim",
+        "L5 visual state tint",
+        "L6 demo-only governed glow",
+        "L7 inspector motion",
+        "L8 preview overlay",
+        "L9 QA modal",
+        "L10 debug only"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/settings/data",
+      "routeFile": "app\\app\\settings\\data\\page.tsx",
+      "domain": "settings",
+      "screenQuestion": "¿Qué datos locales puedo limpiar con seguridad?",
+      "currentComponents": [
+        "PrismaTabletShellUnified",
+        "SalesResetPanel",
+        "TabletShellStatusPill",
+        "TabletShellStatusPill",
+        "TabletRuntimeStatusStrip"
+      ],
+      "cssModules": [
+        "app/components/license/license-ui.module.css",
+        "app/components/sales/sales.module.css",
+        "app/components/tablet-shell/prisma-tablet-shell.module.css"
+      ],
+      "primaryPreset": "tablet.settings.soft-form-vault.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "formShell": {
+            "x": 220,
+            "y": 20,
+            "w": "min(760px, calc(100% - 260px))",
+            "h": "auto",
+            "padding": 24
+          },
+          "sideEvidence": {
+            "x": "right",
+            "y": 20,
+            "w": "360",
+            "h": "auto",
+            "optional": true
+          },
+          "dangerZone": {
+            "dock": "below form",
+            "h": "auto",
+            "confirmDialog": "required"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/settings/export",
+      "routeFile": "app\\app\\settings\\export\\page.tsx",
+      "domain": "settings",
+      "screenQuestion": "¿Qué datos puedo exportar?",
+      "currentComponents": [
+        "ExportSettingsScreen"
+      ],
+      "cssModules": [],
+      "primaryPreset": "tablet.settings.soft-form-vault.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "formShell": {
+            "x": 220,
+            "y": 20,
+            "w": "min(760px, calc(100% - 260px))",
+            "h": "auto",
+            "padding": 24
+          },
+          "sideEvidence": {
+            "x": "right",
+            "y": 20,
+            "w": "360",
+            "h": "auto",
+            "optional": true
+          },
+          "dangerZone": {
+            "dock": "below form",
+            "h": "auto",
+            "confirmDialog": "required"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/settings/license",
+      "routeFile": "app\\app\\settings\\license\\page.tsx",
+      "domain": "settings",
+      "screenQuestion": "¿La licencia permite operar?",
+      "currentComponents": [
+        "FeatureList",
+        "LicenseRefreshPanel",
+        "LicenseStatusCard",
+        "PrismaTabletShellUnified",
+        "TabletShellStatusPill",
+        "TabletShellStatusPill",
+        "TabletRuntimeStatusStrip"
+      ],
+      "cssModules": [
+        "app/components/license/license-ui.module.css",
+        "app/components/tablet-shell/prisma-tablet-shell.module.css"
+      ],
+      "primaryPreset": "tablet.settings.soft-form-vault.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "formShell": {
+            "x": 220,
+            "y": 20,
+            "w": "min(760px, calc(100% - 260px))",
+            "h": "auto",
+            "padding": 24
+          },
+          "sideEvidence": {
+            "x": "right",
+            "y": 20,
+            "w": "360",
+            "h": "auto",
+            "optional": true
+          },
+          "dangerZone": {
+            "dock": "below form",
+            "h": "auto",
+            "confirmDialog": "required"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/shift",
+      "routeFile": "app\\app\\shift\\page.tsx",
+      "domain": "cash-shift",
+      "screenQuestion": "¿Puedo cerrar caja con confianza?",
+      "currentComponents": [
+        "ShiftCashClosureScreen"
+      ],
+      "cssModules": [
+        "app/components/shift/shift-cash-closure.module.css"
+      ],
+      "primaryPreset": "tablet.shift.cash.pearl-closeout.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "header": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "86"
+          },
+          "kpiStrip": {
+            "x": 220,
+            "y": 124,
+            "w": "calc(100% - 260px)",
+            "h": "92-128"
+          },
+          "mainList": {
+            "x": 220,
+            "y": "after kpis",
+            "w": "calc(100% - 260px)",
+            "h": "remaining",
+            "rowH": "56-72"
+          },
+          "detailPanel": {
+            "dock": "right/bottom",
+            "w": "420",
+            "maxH": "82dvh"
+          },
+          "primaryAction": {
+            "dock": "contextual",
+            "minH": 56
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/stock",
+      "routeFile": "app\\app\\stock\\page.tsx",
+      "domain": "inventory-catalog",
+      "screenQuestion": "¿Qué existencias requieren atención?",
+      "currentComponents": [
+        "CatalogStockSellingAssistScreen",
+        "ContextualExportBand",
+        "MetricCard",
+        "OfflineStrip",
+        "ProductRow",
+        "ProductDetailPanel",
+        "ProductStatusBadge"
+      ],
+      "cssModules": [
+        "app/components/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css",
+        "app/components/catalog/catalog.module.css",
+        "app/components/reports/contextual-export.module.css"
+      ],
+      "primaryPreset": "tablet.catalog.products.frosted-ledger.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "header": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "86"
+          },
+          "summaryStrip": {
+            "x": 220,
+            "y": 124,
+            "w": "calc(100% - 260px)",
+            "h": "96-132"
+          },
+          "filters": {
+            "x": 220,
+            "y": "after summary",
+            "w": "calc(100% - 260px)",
+            "h": "56-72"
+          },
+          "tableOrGrid": {
+            "x": 220,
+            "y": "after filters",
+            "w": "calc(100% - 260px)",
+            "h": "remaining",
+            "rowH": "56-72 touch-safe"
+          },
+          "drawer": {
+            "dock": "right or bottom on compact",
+            "w": "420-520 desktop-tablet",
+            "maxH": "82dvh compact"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight pearl app background",
+        "L1 safe-area shell grid",
+        "L2 milkglass primary surface",
+        "L3 frosted content cards",
+        "L4 pearl rim hairline borders",
+        "L5 semantic state tint",
+        "L6 soft glow only for active primary action",
+        "L7 motion response layer",
+        "L8 evidence/drawer overlay",
+        "L9 toast/modal/critical confirmation",
+        "L10 debug/evidence collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/sync",
+      "routeFile": "app\\app\\sync\\page.tsx",
+      "domain": "sync-offline",
+      "screenQuestion": "¿Todo está actualizado entre Tablet y PC?",
+      "currentComponents": [
+        "ContextualExportBand",
+        "PendingOfflineSyncPanelScreen",
+        "CatalogPullPanel",
+        "ContextualExportBand"
+      ],
+      "cssModules": [
+        "app/components/reports/contextual-export.module.css",
+        "app/components/sync/pending-offline-sync-panel.module.css"
+      ],
+      "primaryPreset": "tablet.sync.offline.clean-pulse.v1",
+      "geometry": {
+        "viewport": "1366x768 primary, 1024x768 fallback",
+        "zones": {
+          "statusHero": {
+            "x": 220,
+            "y": 20,
+            "w": "calc(100% - 260px)",
+            "h": "112-156"
+          },
+          "actionBand": {
+            "x": 220,
+            "y": "after hero",
+            "w": "calc(100% - 260px)",
+            "h": "72-96"
+          },
+          "evidenceList": {
+            "x": 220,
+            "y": "after action",
+            "w": "calc(100% - 260px)",
+            "h": "remaining",
+            "rowH": "64"
+          },
+          "evidenceDrawer": {
+            "dock": "bottom",
+            "maxH": "76dvh"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 daylight sync field",
+        "L1 shell grid",
+        "L2 sync status hero",
+        "L3 evidence tiles",
+        "L4 status rims",
+        "L5 stale/offline semantic tint",
+        "L6 syncing pulse soft blue",
+        "L7 retry/ack motion",
+        "L8 evidence drawer",
+        "L9 critical sync modal",
+        "L10 raw events collapsed"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/visual-os/detached",
+      "routeFile": "app\\app\\visual-os\\detached\\page.tsx",
+      "domain": "visual-reference",
+      "screenQuestion": "¿Cómo se revisa visualmente sin shell normal?",
+      "currentComponents": [
+        "PrismaStudioProQaClient"
+      ],
+      "cssModules": [
+        "app/app/visual-os/prisma-studio-pro-qa.module.css"
+      ],
+      "primaryPreset": "tablet.visualos.bright-reference.v1",
+      "geometry": {
+        "viewport": "1366x768 primary",
+        "zones": {
+          "studioShell": {
+            "x": 0,
+            "y": 0,
+            "w": "100%",
+            "h": "100dvh",
+            "grid": "tool rail + preview + inspector"
+          },
+          "previewCanvas": {
+            "x": "center",
+            "y": "top",
+            "w": "flex",
+            "h": "remaining",
+            "minH": 520
+          },
+          "inspector": {
+            "dock": "right",
+            "w": "340-420"
+          },
+          "warning": {
+            "note": "dark reference route is quarantine only for final Tablet light UI"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 bright studio background",
+        "L1 visual OS shell",
+        "L2 preview canvas",
+        "L3 inspector panels",
+        "L4 active tool rim",
+        "L5 visual state tint",
+        "L6 demo-only governed glow",
+        "L7 inspector motion",
+        "L8 preview overlay",
+        "L9 QA modal",
+        "L10 debug only"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/visual-os",
+      "routeFile": "app\\app\\visual-os\\page.tsx",
+      "domain": "visual-reference",
+      "screenQuestion": "¿Cómo se audita la experiencia visual?",
+      "currentComponents": [
+        "PrismaStudioProQaClient"
+      ],
+      "cssModules": [
+        "app/app/visual-os/prisma-studio-pro-qa.module.css"
+      ],
+      "primaryPreset": "tablet.visualos.bright-reference.v1",
+      "geometry": {
+        "viewport": "1366x768 primary",
+        "zones": {
+          "studioShell": {
+            "x": 0,
+            "y": 0,
+            "w": "100%",
+            "h": "100dvh",
+            "grid": "tool rail + preview + inspector"
+          },
+          "previewCanvas": {
+            "x": "center",
+            "y": "top",
+            "w": "flex",
+            "h": "remaining",
+            "minH": 520
+          },
+          "inspector": {
+            "dock": "right",
+            "w": "340-420"
+          },
+          "warning": {
+            "note": "dark reference route is quarantine only for final Tablet light UI"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 bright studio background",
+        "L1 visual OS shell",
+        "L2 preview canvas",
+        "L3 inspector panels",
+        "L4 active tool rim",
+        "L5 visual state tint",
+        "L6 demo-only governed glow",
+        "L7 inspector motion",
+        "L8 preview overlay",
+        "L9 QA modal",
+        "L10 debug only"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/visual-os/pro",
+      "routeFile": "app\\app\\visual-os\\pro\\page.tsx",
+      "domain": "visual-reference",
+      "screenQuestion": "¿Cómo se audita visualmente en modo pro?",
+      "currentComponents": [
+        "PrismaStudioProQaClient"
+      ],
+      "cssModules": [
+        "app/app/visual-os/prisma-studio-pro-qa.module.css"
+      ],
+      "primaryPreset": "tablet.visualos.bright-reference.v1",
+      "geometry": {
+        "viewport": "1366x768 primary",
+        "zones": {
+          "studioShell": {
+            "x": 0,
+            "y": 0,
+            "w": "100%",
+            "h": "100dvh",
+            "grid": "tool rail + preview + inspector"
+          },
+          "previewCanvas": {
+            "x": "center",
+            "y": "top",
+            "w": "flex",
+            "h": "remaining",
+            "minH": 520
+          },
+          "inspector": {
+            "dock": "right",
+            "w": "340-420"
+          },
+          "warning": {
+            "note": "dark reference route is quarantine only for final Tablet light UI"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 bright studio background",
+        "L1 visual OS shell",
+        "L2 preview canvas",
+        "L3 inspector panels",
+        "L4 active tool rim",
+        "L5 visual state tint",
+        "L6 demo-only governed glow",
+        "L7 inspector motion",
+        "L8 preview overlay",
+        "L9 QA modal",
+        "L10 debug only"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    },
+    {
+      "route": "/visual-os/realtime",
+      "routeFile": "app\\app\\visual-os\\realtime\\page.tsx",
+      "domain": "visual-reference",
+      "screenQuestion": "¿Qué puente visual está vivo?",
+      "currentComponents": [
+        "PrismaRealtimeBridgeClient"
+      ],
+      "cssModules": [
+        "app/app/visual-os/prisma-studio-pro-qa.module.css"
+      ],
+      "primaryPreset": "tablet.visualos.bright-reference.v1",
+      "geometry": {
+        "viewport": "1366x768 primary",
+        "zones": {
+          "studioShell": {
+            "x": 0,
+            "y": 0,
+            "w": "100%",
+            "h": "100dvh",
+            "grid": "tool rail + preview + inspector"
+          },
+          "previewCanvas": {
+            "x": "center",
+            "y": "top",
+            "w": "flex",
+            "h": "remaining",
+            "minH": 520
+          },
+          "inspector": {
+            "dock": "right",
+            "w": "340-420"
+          },
+          "warning": {
+            "note": "dark reference route is quarantine only for final Tablet light UI"
+          }
+        }
+      },
+      "layerStack": [
+        "L0 bright studio background",
+        "L1 visual OS shell",
+        "L2 preview canvas",
+        "L3 inspector panels",
+        "L4 active tool rim",
+        "L5 visual state tint",
+        "L6 demo-only governed glow",
+        "L7 inspector motion",
+        "L8 preview overlay",
+        "L9 QA modal",
+        "L10 debug only"
+      ],
+      "stateContract": [
+        "idle",
+        "loading",
+        "empty",
+        "active",
+        "success",
+        "warning",
+        "critical",
+        "offline",
+        "disabled"
+      ],
+      "customerTrustVisibility": "internal/operator only",
+      "status": "active-or-mappable"
+    }
+  ],
+  "components": [
+    {
+      "name": "CatalogBarcodeField",
+      "file": "app/components/catalog/catalog-barcode-field.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./catalog.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "CatalogEmptyState",
+      "file": "app/components/catalog/catalog-empty-state.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./catalog.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "CatalogProductDrawer",
+      "file": "app/components/catalog/catalog-product-drawer.tsx",
+      "role": "drawer-panel",
+      "cssImports": [
+        "./catalog.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.drawer.pearl-bottom-sheet"
+    },
+    {
+      "name": "CatalogProductForm",
+      "file": "app/components/catalog/catalog-product-form.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./catalog.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "CatalogProductTable",
+      "file": "app/components/catalog/catalog-product-table.tsx",
+      "role": "ledger-list",
+      "cssImports": [
+        "./catalog.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ledger.clean-frosted-grid"
+    },
+    {
+      "name": "CatalogScreen",
+      "file": "app/components/catalog/catalog-screen.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./catalog.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "CatalogStockField",
+      "file": "app/components/catalog/catalog-stock-field.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./catalog.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "CatalogStockSellingAssistScreen",
+      "file": "app/components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./catalog-stock-selling-assist.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "MetricCard",
+      "file": "app/components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen.tsx",
+      "role": "status-metric",
+      "cssImports": [
+        "./catalog-stock-selling-assist.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "OfflineStrip",
+      "file": "app/components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./catalog-stock-selling-assist.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "ProductDetailPanel",
+      "file": "app/components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen.tsx",
+      "role": "drawer-panel",
+      "cssImports": [
+        "./catalog-stock-selling-assist.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.drawer.pearl-bottom-sheet"
+    },
+    {
+      "name": "ProductRow",
+      "file": "app/components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen.tsx",
+      "role": "ledger-list",
+      "cssImports": [
+        "./catalog-stock-selling-assist.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ledger.clean-frosted-grid"
+    },
+    {
+      "name": "ProductStatusBadge",
+      "file": "app/components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen.tsx",
+      "role": "status-metric",
+      "cssImports": [
+        "./catalog-stock-selling-assist.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "CheckoutCashCalculator",
+      "file": "app/components/checkout/checkout-cash-calculator.tsx",
+      "role": "payment-action",
+      "cssImports": [
+        "./checkout.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.action.pearl-primary-cta"
+    },
+    {
+      "name": "CheckoutPaymentMethods",
+      "file": "app/components/checkout/checkout-payment-methods.tsx",
+      "role": "payment-action",
+      "cssImports": [
+        "./checkout.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.action.pearl-primary-cta"
+    },
+    {
+      "name": "CheckoutScreen",
+      "file": "app/components/checkout/checkout-screen.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./checkout.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "CheckoutSummary",
+      "file": "app/components/checkout/checkout-summary.tsx",
+      "role": "payment-action",
+      "cssImports": [
+        "./checkout.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.action.pearl-primary-cta"
+    },
+    {
+      "name": "AppShell",
+      "file": "app/components/layout/app-shell.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "NavLink",
+      "file": "app/components/layout/nav-link.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "FeatureList",
+      "file": "app/components/license/feature-list.tsx",
+      "role": "ledger-list",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ledger.clean-frosted-grid"
+    },
+    {
+      "name": "LicenseBlockedCard",
+      "file": "app/components/license/feature-list.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "LicenseGateBanner",
+      "file": "app/components/license/feature-list.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "LicenseStatusCard",
+      "file": "app/components/license/feature-list.tsx",
+      "role": "status-metric",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "LicenseWarningBadge",
+      "file": "app/components/license/feature-list.tsx",
+      "role": "status-metric",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "Metric",
+      "file": "app/components/license/feature-list.tsx",
+      "role": "status-metric",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "FeatureList",
+      "file": "app/components/license/license-blocked-card.tsx",
+      "role": "ledger-list",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ledger.clean-frosted-grid"
+    },
+    {
+      "name": "LicenseBlockedCard",
+      "file": "app/components/license/license-blocked-card.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "LicenseGateBanner",
+      "file": "app/components/license/license-blocked-card.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "LicenseStatusCard",
+      "file": "app/components/license/license-blocked-card.tsx",
+      "role": "status-metric",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "LicenseWarningBadge",
+      "file": "app/components/license/license-blocked-card.tsx",
+      "role": "status-metric",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "Metric",
+      "file": "app/components/license/license-blocked-card.tsx",
+      "role": "status-metric",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "FeatureList",
+      "file": "app/components/license/license-gate-banner.tsx",
+      "role": "ledger-list",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ledger.clean-frosted-grid"
+    },
+    {
+      "name": "LicenseBlockedCard",
+      "file": "app/components/license/license-gate-banner.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "LicenseGateBanner",
+      "file": "app/components/license/license-gate-banner.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "LicenseStatusCard",
+      "file": "app/components/license/license-gate-banner.tsx",
+      "role": "status-metric",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "LicenseWarningBadge",
+      "file": "app/components/license/license-gate-banner.tsx",
+      "role": "status-metric",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "Metric",
+      "file": "app/components/license/license-gate-banner.tsx",
+      "role": "status-metric",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "LicenseRefreshPanel",
+      "file": "app/components/license/license-refresh-panel.tsx",
+      "role": "drawer-panel",
+      "cssImports": [
+        "./license-ui.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.drawer.pearl-bottom-sheet"
+    },
+    {
+      "name": "Metric",
+      "file": "app/components/license/license-refresh-panel.tsx",
+      "role": "status-metric",
+      "cssImports": [
+        "./license-ui.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "FeatureList",
+      "file": "app/components/license/license-status-card.tsx",
+      "role": "ledger-list",
+      "cssImports": [
+        "./license-ui.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ledger.clean-frosted-grid"
+    },
+    {
+      "name": "LicenseBlockedCard",
+      "file": "app/components/license/license-status-card.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./license-ui.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "LicenseGateBanner",
+      "file": "app/components/license/license-status-card.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./license-ui.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "LicenseStatusCard",
+      "file": "app/components/license/license-status-card.tsx",
+      "role": "status-metric",
+      "cssImports": [
+        "./license-ui.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "LicenseWarningBadge",
+      "file": "app/components/license/license-status-card.tsx",
+      "role": "status-metric",
+      "cssImports": [
+        "./license-ui.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "Metric",
+      "file": "app/components/license/license-status-card.tsx",
+      "role": "status-metric",
+      "cssImports": [
+        "./license-ui.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "FeatureList",
+      "file": "app/components/license/license-warning-badge.tsx",
+      "role": "ledger-list",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ledger.clean-frosted-grid"
+    },
+    {
+      "name": "LicenseBlockedCard",
+      "file": "app/components/license/license-warning-badge.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "LicenseGateBanner",
+      "file": "app/components/license/license-warning-badge.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "LicenseStatusCard",
+      "file": "app/components/license/license-warning-badge.tsx",
+      "role": "status-metric",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "LicenseWarningBadge",
+      "file": "app/components/license/license-warning-badge.tsx",
+      "role": "status-metric",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "Metric",
+      "file": "app/components/license/license-warning-badge.tsx",
+      "role": "status-metric",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "OfflineExportAuditScreen",
+      "file": "app/components/offline/offline-export-audit-screen.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./offline-export-audit.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "EmptyBlock",
+      "file": "app/components/operational-screen/prisma-operational-screen.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./prisma-operational-screen.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PrismaOperationalScreen",
+      "file": "app/components/operational-screen/prisma-operational-screen.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./prisma-operational-screen.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "RenderSection",
+      "file": "app/components/operational-screen/prisma-operational-screen.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./prisma-operational-screen.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "ScreenAction",
+      "file": "app/components/operational-screen/prisma-operational-screen.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./prisma-operational-screen.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "PosErrorBanner",
+      "file": "app/components/pos/pos-error-banner.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./pos.module.css"
+      ],
+      "libraryHints": [
+        "motion"
+      ],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PACKAGE_MARKER",
+      "file": "app/components/pos/pos-live-binding.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PRISMA_VISUAL_ROUTE_TRUTH_PACKAGE",
+      "file": "app/components/pos/pos-live-binding.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PosLiveBinding",
+      "file": "app/components/pos/pos-live-binding.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "STATE_URL",
+      "file": "app/components/pos/pos-live-binding.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PosPaymentPanel",
+      "file": "app/components/pos/pos-payment-panel.tsx",
+      "role": "payment-action",
+      "cssImports": [
+        "./pos.module.css"
+      ],
+      "libraryHints": [
+        "motion"
+      ],
+      "lightPresetHint": "tablet.action.pearl-primary-cta"
+    },
+    {
+      "name": "PosPaymentRiskBanner",
+      "file": "app/components/pos/pos-payment-risk-banner.tsx",
+      "role": "payment-action",
+      "cssImports": [
+        "./pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.action.pearl-primary-cta"
+    },
+    {
+      "name": "PosProductList",
+      "file": "app/components/pos/pos-product-list.tsx",
+      "role": "ledger-list",
+      "cssImports": [
+        "./pos.module.css"
+      ],
+      "libraryHints": [
+        "motion"
+      ],
+      "lightPresetHint": "tablet.ledger.clean-frosted-grid"
+    },
+    {
+      "name": "ProductMedia",
+      "file": "app/components/pos/pos-product-list.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./pos.module.css"
+      ],
+      "libraryHints": [
+        "motion"
+      ],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PosProductSearch",
+      "file": "app/components/pos/pos-product-search.tsx",
+      "role": "search-command",
+      "cssImports": [
+        "./pos.module.css"
+      ],
+      "libraryHints": [
+        "motion"
+      ],
+      "lightPresetHint": "tablet.input.pearl-command"
+    },
+    {
+      "name": "PosSaleSuccess",
+      "file": "app/components/pos/pos-sale-success.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./pos.module.css"
+      ],
+      "libraryHints": [
+        "motion"
+      ],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "FEATURED_CATEGORY",
+      "file": "app/components/pos/pos-screen.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./pos.module.css"
+      ],
+      "libraryHints": [
+        "motion"
+      ],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PosScreen",
+      "file": "app/components/pos/pos-screen.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./pos.module.css"
+      ],
+      "libraryHints": [
+        "motion"
+      ],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "PosShortcuts",
+      "file": "app/components/pos/pos-shortcuts.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PosTicketPanel",
+      "file": "app/components/pos/pos-ticket-panel.tsx",
+      "role": "ticket-receipt",
+      "cssImports": [
+        "./pos.module.css"
+      ],
+      "libraryHints": [
+        "motion"
+      ],
+      "lightPresetHint": "tablet.ticket.milkglass-receipt"
+    },
+    {
+      "name": "PrismaCartPanel",
+      "file": "app/components/prisma-dark-pos/prisma-cart-panel.tsx",
+      "role": "ticket-receipt",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ticket.milkglass-receipt"
+    },
+    {
+      "name": "PrismaCategoryRail",
+      "file": "app/components/prisma-dark-pos/prisma-category-rail.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PrismaIcon",
+      "file": "app/components/prisma-dark-pos/prisma-dark-pos-icons.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PrismaDarkPosShell",
+      "file": "app/components/prisma-dark-pos/prisma-dark-pos-shell.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PrismaProductCard",
+      "file": "app/components/prisma-dark-pos/prisma-product-card.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "ProductFigure",
+      "file": "app/components/prisma-dark-pos/prisma-product-card.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PrismaProductGrid",
+      "file": "app/components/prisma-dark-pos/prisma-product-grid.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PrismaActionCard",
+      "file": "app/components/prisma-dark-pos/prisma-route-ui.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PrismaDataTable",
+      "file": "app/components/prisma-dark-pos/prisma-route-ui.tsx",
+      "role": "ledger-list",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ledger.clean-frosted-grid"
+    },
+    {
+      "name": "PrismaEmptyState",
+      "file": "app/components/prisma-dark-pos/prisma-route-ui.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PrismaFlowList",
+      "file": "app/components/prisma-dark-pos/prisma-route-ui.tsx",
+      "role": "ledger-list",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ledger.clean-frosted-grid"
+    },
+    {
+      "name": "PrismaKpiStrip",
+      "file": "app/components/prisma-dark-pos/prisma-route-ui.tsx",
+      "role": "status-metric",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "PrismaPanel",
+      "file": "app/components/prisma-dark-pos/prisma-route-ui.tsx",
+      "role": "drawer-panel",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.drawer.pearl-bottom-sheet"
+    },
+    {
+      "name": "PrismaPillCloud",
+      "file": "app/components/prisma-dark-pos/prisma-route-ui.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PrismaPrimaryButton",
+      "file": "app/components/prisma-dark-pos/prisma-route-ui.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PrismaQuickProductCard",
+      "file": "app/components/prisma-dark-pos/prisma-route-ui.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PrismaSearchActionStrip",
+      "file": "app/components/prisma-dark-pos/prisma-route-ui.tsx",
+      "role": "search-command",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.input.pearl-command"
+    },
+    {
+      "name": "PrismaSecondaryButton",
+      "file": "app/components/prisma-dark-pos/prisma-route-ui.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PrismaStatusBadge",
+      "file": "app/components/prisma-dark-pos/prisma-route-ui.tsx",
+      "role": "status-metric",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "PrismaTabletShell",
+      "file": "app/components/prisma-dark-pos/prisma-route-ui.tsx",
+      "role": "ledger-list",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ledger.clean-frosted-grid"
+    },
+    {
+      "name": "PrismaTotalDisplay",
+      "file": "app/components/prisma-dark-pos/prisma-route-ui.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PrismaSearchRow",
+      "file": "app/components/prisma-dark-pos/prisma-search-row.tsx",
+      "role": "search-command",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.input.pearl-command"
+    },
+    {
+      "name": "PrismaMark",
+      "file": "app/components/prisma-dark-pos/prisma-sidebar.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PrismaSidebar",
+      "file": "app/components/prisma-dark-pos/prisma-sidebar.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PrismaTopActionBar",
+      "file": "app/components/prisma-dark-pos/prisma-top-action-bar.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./prisma-dark-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "TabletOperableReleaseGateScreen",
+      "file": "app/components/release-gate/tablet-operable-release-gate-screen.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./tablet-operable-release-gate.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "ContextualExportActions",
+      "file": "app/components/reports/contextual-export-actions.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./contextual-export.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "ContextualExportBand",
+      "file": "app/components/reports/contextual-export-band.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "ReturnFromTicketScreen",
+      "file": "app/components/returns/return-from-ticket-screen.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./returns.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "ReturnImpactSummary",
+      "file": "app/components/returns/return-impact-summary.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./returns.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "SalesHistoryScreen",
+      "file": "app/components/sales/sales-history-screen.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./sales.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "SalesKpiStrip",
+      "file": "app/components/sales/sales-kpi-strip.tsx",
+      "role": "status-metric",
+      "cssImports": [
+        "./sales.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "DetailStateCard",
+      "file": "app/components/sales/sales-ticket-detail-screen.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./sales.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "DiagnosticMetric",
+      "file": "app/components/sales/sales-ticket-detail-screen.tsx",
+      "role": "status-metric",
+      "cssImports": [
+        "./sales.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "SalesTicketDetailScreen",
+      "file": "app/components/sales/sales-ticket-detail-screen.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./sales.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "TicketNotFoundDiagnostic",
+      "file": "app/components/sales/sales-ticket-detail-screen.tsx",
+      "role": "ticket-receipt",
+      "cssImports": [
+        "./sales.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ticket.milkglass-receipt"
+    },
+    {
+      "name": "SalesTicketList",
+      "file": "app/components/sales/sales-ticket-list.tsx",
+      "role": "ticket-receipt",
+      "cssImports": [
+        "./sales.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ticket.milkglass-receipt"
+    },
+    {
+      "name": "SalesTicketStatusChip",
+      "file": "app/components/sales/sales-ticket-status-chip.tsx",
+      "role": "ticket-receipt",
+      "cssImports": [
+        "./sales.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ticket.milkglass-receipt"
+    },
+    {
+      "name": "SalesTodayScreen",
+      "file": "app/components/sales/sales-today-screen.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./sales.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "Metric",
+      "file": "app/components/settings/sales-reset-panel.tsx",
+      "role": "status-metric",
+      "cssImports": [
+        "@components/license/license-ui.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "SalesResetPanel",
+      "file": "app/components/settings/sales-reset-panel.tsx",
+      "role": "drawer-panel",
+      "cssImports": [
+        "@components/license/license-ui.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.drawer.pearl-bottom-sheet"
+    },
+    {
+      "name": "DEFAULT_CASHIER",
+      "file": "app/components/shift/shift-cash-closure-screen.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./shift-cash-closure.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "ShiftCashClosureScreen",
+      "file": "app/components/shift/shift-cash-closure-screen.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./shift-cash-closure.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "CatalogPullPanel",
+      "file": "app/components/sync/catalog-pull-panel.tsx",
+      "role": "drawer-panel",
+      "cssImports": [
+        "./pending-offline-sync-panel.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.drawer.pearl-bottom-sheet"
+    },
+    {
+      "name": "DEFAULT_SYNC_BUSINESS_ID",
+      "file": "app/components/sync/pending-offline-sync-panel-screen.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./pending-offline-sync-panel.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PendingOfflineSyncPanelScreen",
+      "file": "app/components/sync/pending-offline-sync-panel-screen.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./pending-offline-sync-panel.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "TabletHomeScreen",
+      "file": "app/components/tablet-home/tablet-home-screen.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./tablet-home.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "AppChrome",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "CatalogScreen",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "CheckoutButton",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "payment-action",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.action.pearl-primary-cta"
+    },
+    {
+      "name": "DataPanel",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "drawer-panel",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.drawer.pearl-bottom-sheet"
+    },
+    {
+      "name": "DataRow",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "ledger-list",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ledger.clean-frosted-grid"
+    },
+    {
+      "name": "ExportButton",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "ExportPanel",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "drawer-panel",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.drawer.pearl-bottom-sheet"
+    },
+    {
+      "name": "ExportSettingsScreen",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "LowStockScreen",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "Metric",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "status-metric",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "OperationalError",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "OutboxEventsScreen",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "OutboxMiniPanel",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "drawer-panel",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.drawer.pearl-bottom-sheet"
+    },
+    {
+      "name": "RuntimeStatus",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "status-metric",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "SalesTodayScreen",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "screen-root",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.surface.shell.daylight-frame"
+    },
+    {
+      "name": "StatePanel",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "drawer-panel",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.drawer.pearl-bottom-sheet"
+    },
+    {
+      "name": "StatusPill",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "status-metric",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "TicketSummary",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "ticket-receipt",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ticket.milkglass-receipt"
+    },
+    {
+      "name": "TouchCart",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "ticket-receipt",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ticket.milkglass-receipt"
+    },
+    {
+      "name": "TouchPosApp",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "TouchProductList",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "ledger-list",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ledger.clean-frosted-grid"
+    },
+    {
+      "name": "TouchProductSearch",
+      "file": "app/components/tablet-pos/touch-pos-ui.tsx",
+      "role": "search-command",
+      "cssImports": [
+        "./touch-pos.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.input.pearl-command"
+    },
+    {
+      "name": "TabletRuntimePanel",
+      "file": "app/components/tablet-runtime/tablet-runtime-panel.tsx",
+      "role": "ledger-list",
+      "cssImports": [
+        "@components/tablet-shell/prisma-tablet-shell.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ledger.clean-frosted-grid"
+    },
+    {
+      "name": "Chip",
+      "file": "app/components/tablet-runtime/tablet-runtime-status-strip.tsx",
+      "role": "supporting-ui",
+      "cssImports": [
+        "@components/tablet-shell/prisma-tablet-shell.module.css"
+      ],
+      "libraryHints": [
+        "motion"
+      ],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "TabletRuntimeStatusStrip",
+      "file": "app/components/tablet-runtime/tablet-runtime-status-strip.tsx",
+      "role": "ledger-list",
+      "cssImports": [
+        "@components/tablet-shell/prisma-tablet-shell.module.css"
+      ],
+      "libraryHints": [
+        "motion"
+      ],
+      "lightPresetHint": "tablet.ledger.clean-frosted-grid"
+    },
+    {
+      "name": "PrismaTabletShellUnified",
+      "file": "app/components/tablet-shell/prisma-tablet-shell.tsx",
+      "role": "ledger-list",
+      "cssImports": [
+        "./prisma-tablet-shell.module.css"
+      ],
+      "libraryHints": [
+        "motion"
+      ],
+      "lightPresetHint": "tablet.ledger.clean-frosted-grid"
+    },
+    {
+      "name": "TabletShellStatusPill",
+      "file": "app/components/tablet-shell/prisma-tablet-shell.tsx",
+      "role": "ledger-list",
+      "cssImports": [
+        "./prisma-tablet-shell.module.css"
+      ],
+      "libraryHints": [
+        "motion"
+      ],
+      "lightPresetHint": "tablet.ledger.clean-frosted-grid"
+    },
+    {
+      "name": "ActionChip",
+      "file": "app/components/ui/action-chip.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "EmptyState",
+      "file": "app/components/ui/empty-state.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "FlowStep",
+      "file": "app/components/ui/flow-step.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "InlineAlert",
+      "file": "app/components/ui/inline-alert.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "MiniProgress",
+      "file": "app/components/ui/mini-progress.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PrismaDarkSelector",
+      "file": "app/components/ui/prisma-dark-selector.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "PrismaSkinSelector",
+      "file": "app/components/ui/prisma-dark-selector.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "STORAGE_KEY",
+      "file": "app/components/ui/prisma-dark-selector.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "SectionCard",
+      "file": "app/components/ui/section-card.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "StatCard",
+      "file": "app/components/ui/stat-card.tsx",
+      "role": "supporting-ui",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.component.frosted-light-basic"
+    },
+    {
+      "name": "StatusBadge",
+      "file": "app/components/ui/status-badge.tsx",
+      "role": "status-metric",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.status.soft-signal-card"
+    },
+    {
+      "name": "TableSimple",
+      "file": "app/components/ui/table-simple.tsx",
+      "role": "ledger-list",
+      "cssImports": [],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.ledger.clean-frosted-grid"
+    },
+    {
+      "name": "PrismaVisualControlsPanel",
+      "file": "app/components/visual-os/prisma-visual-controls-panel.tsx",
+      "role": "drawer-panel",
+      "cssImports": [
+        "./prisma-visual-controls-panel.module.css"
+      ],
+      "libraryHints": [],
+      "lightPresetHint": "tablet.drawer.pearl-bottom-sheet"
+    }
+  ],
+  "quarantine": {
+    "darkOrLegacyReferenceRoutes": [
+      "/prisma-dark-pos-reference"
+    ],
+    "policy": "May remain as reference/legacy route, but must not be used as final Tablet UI preset source unless explicitly requested by user."
+  },
+  "backgroundPresets": {
+    "pearl-grey-mist": {
+      "layer": "L0",
+      "family": "tablet-light",
+      "surfaceUse": [
+        "/pos",
+        "/catalog",
+        "/sales",
+        "/settings",
+        "/stock"
+      ],
+      "visualBudget": {
+        "background": 0.34,
+        "motion": 0.02,
+        "glass": 0.55,
+        "glow": 0.1,
+        "rim": 0.12,
+        "webgl": 0.0
+      }
+    },
+    "rain-drift-subtle": {
+      "layer": "L0",
+      "family": "tablet-light",
+      "surfaceUse": [
+        "/sync",
+        "/idle",
+        "/ambient",
+        "/settings/export"
+      ],
+      "visualBudget": {
+        "background": 0.38,
+        "motion": 0.16,
+        "glass": 0.55,
+        "glow": 0.08,
+        "rim": 0.1,
+        "webgl": 0.0
+      }
+    },
+    "pearl-grey-mist-v2-crystal": {
+      "layer": "L0 background + L2/L3 glass + L4 rim + L7 motion",
+      "family": "tablet-light",
+      "surfaceUse": [
+        "/pos",
+        "/checkout",
+        "/catalog",
+        "/stock",
+        "/sales/today",
+        "/sales/history",
+        "/settings",
+        "/dashboard"
+      ],
+      "visualBudget": {
+        "background": 0.44,
+        "glass": 0.68,
+        "rim": 0.28,
+        "glow": 0.1,
+        "motion": 0.24,
+        "webgl": 0.0
+      },
+      "assets": [
+        "prisma-tablet-pearl-grey-mist-v2.css",
+        "prisma-tablet-pearl-grey-mist-v2.js",
+        "pearl-grey-mist-v2-smoke-test.html"
+      ]
+    }
+  },
+  "visualDemos": {
+    "tablet.codex-native.glass-gallery.demo.v1": {
+      "surface": "tablet",
+      "theme": "light-only",
+      "panelCount": 32,
+      "groups": [
+        "background",
+        "bundle",
+        "glass",
+        "glow",
+        "library",
+        "motion",
+        "physical",
+        "rim",
+        "shadow"
+      ],
+      "assets": [
+        "prisma-tablet-codex-glass-gallery.css",
+        "prisma-tablet-codex-glass-gallery.js",
+        "tablet-codex-glass-gallery-smoke-test.html",
+        "tablet-codex-glass-gallery.demo.json",
+        "TabletCodexGlassGalleryDemo.tsx",
+        "PRISMA_TABLET_CODEX_NATIVE_GLASS_GALLERY_DEMO.md"
+      ]
+    }
+  },
+  "codexBackgroundGallery": {
+    "tablet.codex-background-gallery.demo.v1": {
+      "theme": "light-only",
+      "backgroundCount": 10,
+      "backgroundIds": [
+        "pearl-grey-mist-v3",
+        "pearl-icefield-light",
+        "executive-mineral-light",
+        "mobile-thin-mist-tablet",
+        "daylight-sync-pulse",
+        "rain-drift-subtle-v2",
+        "clean-evidence-paper",
+        "customer-trust-white",
+        "checkout-warm-pearl",
+        "diamond-glass-light-demo"
+      ],
+      "assets": [
+        "prisma-tablet-codex-background-gallery.css",
+        "prisma-tablet-codex-background-gallery.js",
+        "tablet-codex-background-gallery-smoke-test.html",
+        "tablet-codex-background-gallery.demo.json",
+        "TabletCodexBackgroundGalleryDemo.tsx",
+        "PRISMA_TABLET_CODEX_BACKGROUND_GALLERY.md"
+      ]
+    }
+  }
+}

@@ -24,10 +24,18 @@ function buildTicketEvidence(sale: Awaited<ReturnType<typeof posEngineRepository
     localDetailHref: `/sales/today/${encodeURIComponent(sale.saleId)}?businessId=${encodeURIComponent(sale.businessId)}`,
     lookupAliases,
     payment: {
+      contract: "PRISMA_TABLET_MIXED_PAYMENT_V1",
       method: sale.paymentMethod,
       cashReceivedCents: sale.cashReceivedCents,
       changeCents: sale.changeCents,
-      totalCents: sale.totalCents
+      totalCents: sale.totalCents,
+      tenders: sale.paymentTenders.map((tender) => ({
+        id: tender.id,
+        tenderType: tender.tenderType,
+        amountCents: tender.amountCents,
+        reference: tender.reference ?? null,
+        recordedAt: tender.recordedAt.toISOString()
+      }))
     },
     evidenceEventIds: sale.events.map((event) => event.eventId),
     evidenceTopics: sale.events.map((event) => event.topic)

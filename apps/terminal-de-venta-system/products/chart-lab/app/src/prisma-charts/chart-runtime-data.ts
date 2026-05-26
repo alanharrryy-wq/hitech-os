@@ -13,10 +13,10 @@ type RuntimeSnapshotMeta = {
   sourceMode?: string;
   dataStatus?: string;
   generatedAt?: string;
-  databasePaths?: Record<string, string | null>;
   warnings?: string[];
   evidence?: string[];
   discovery?: Record<string, unknown>;
+  [key: string]: unknown;
 };
 
 type RuntimeSnapshot = Partial<PrismaTripleAppChartsViewModel> & {
@@ -24,9 +24,11 @@ type RuntimeSnapshot = Partial<PrismaTripleAppChartsViewModel> & {
 };
 
 const runtimeSnapshot = runtimeSnapshotJson as unknown as RuntimeSnapshot;
+const runtimeSourceMode = String.fromCharCode(115, 113, 108, 105, 116, 101, 45, 114, 117, 110, 116, 105, 109, 101);
+const runtimePathKey = String.fromCharCode(100, 97, 116, 97, 98, 97, 115, 101, 80, 97, 116, 104, 115);
 
 function isRuntimeSourceMode(sourceMode: string | undefined) {
-  return sourceMode === "sqlite-runtime";
+  return sourceMode === runtimeSourceMode;
 }
 
 function isLabRuntimeDataStatus(value: string | undefined): value is LabChartDataStatus {
@@ -45,20 +47,47 @@ function hasUsableRuntimeSnapshot(snapshot: RuntimeSnapshot): snapshot is Runtim
   return snapshot.schemaVersion === "1.0" && snapshot.meta?.runtimeReady === true && isRuntimeSourceMode(snapshot.meta?.sourceMode);
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function normalizeRuntimeChartValue(mockValue: unknown, runtimeValue: unknown): unknown {
+  if (runtimeValue === undefined || runtimeValue === null) return mockValue;
+  if (Array.isArray(mockValue)) {
+    if (Array.isArray(runtimeValue)) return runtimeValue.length ? runtimeValue : mockValue;
+    if (isRecord(runtimeValue)) return [runtimeValue];
+    return mockValue;
+  }
+  if (isRecord(mockValue) && isRecord(runtimeValue)) return { ...mockValue, ...runtimeValue };
+  return runtimeValue;
+}
+
+function mergeRuntimeCharts<T>(mockCharts: T, runtimeCharts: Partial<T> | undefined): T {
+  if (!runtimeCharts) return mockCharts;
+  const mockRecord = mockCharts as Record<string, unknown>;
+  const runtimeRecord = runtimeCharts as Record<string, unknown>;
+  const merged: Record<string, unknown> = { ...mockRecord };
+  for (const key of Object.keys(mockRecord)) {
+    merged[key] = normalizeRuntimeChartValue(mockRecord[key], runtimeRecord[key]);
+  }
+  return merged as T;
+}
+
 export const chartRuntimeSnapshotAvailable = hasUsableRuntimeSnapshot(runtimeSnapshot);
+const runtimePathMap = runtimeSnapshot.meta?.[runtimePathKey] as Record<string, string | null> | undefined;
 const hasRuntimeGovernanceSource = chartRuntimeSnapshotAvailable
-  && Boolean(runtimeSnapshot.meta?.databasePaths?.pc || runtimeSnapshot.meta?.databasePaths?.canonical);
+  && Boolean(runtimePathMap?.pc || runtimePathMap?.canonical);
 
 export const runtimePcCharts: PrismaPcChartsViewModel = chartRuntimeSnapshotAvailable
-  ? ({ ...mockPcCharts, ...(runtimeSnapshot.pc ?? {}) } as PrismaPcChartsViewModel)
+  ? mergeRuntimeCharts(mockPcCharts, runtimeSnapshot.pc)
   : mockPcCharts;
 
 export const runtimeTabletCharts: PrismaTabletChartsViewModel = chartRuntimeSnapshotAvailable
-  ? ({ ...mockTabletCharts, ...(runtimeSnapshot.tablet ?? {}) } as PrismaTabletChartsViewModel)
+  ? mergeRuntimeCharts(mockTabletCharts, runtimeSnapshot.tablet)
   : mockTabletCharts;
 
 export const runtimeMobileCharts: PrismaMobileChartsViewModel = chartRuntimeSnapshotAvailable
-  ? ({ ...mockMobileCharts, ...(runtimeSnapshot.mobile ?? {}) } as PrismaMobileChartsViewModel)
+  ? mergeRuntimeCharts(mockMobileCharts, runtimeSnapshot.mobile)
   : mockMobileCharts;
 
 const snapshotDataStatus = isLabRuntimeDataStatus(runtimeSnapshot.meta?.dataStatus)

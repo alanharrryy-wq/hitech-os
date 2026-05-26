@@ -17,7 +17,7 @@ It does not start services, mutate databases, require Cloudflare, or claim runti
 
 ## Required evidence
 
-- `latest_DIAGNOSE.zip` mechanism or documentation
+- `latest_ALL_LOCAL.zip`, `latest_ALL_LOCAL_CLOUDFLARE.zip`, `latest_MODULE_CLOUDFLARE.zip`, and `latest_DEPENDENCY_ATLAS_OPEN.zip` mechanism or documentation
 - `latest_KILL_EVERYTHING.zip` mechanism or documentation
 - `transcript.log` and `summary.json` evidence model
 - `F:\descargasf` as operator handoff location
@@ -33,8 +33,12 @@ A gate cannot be READY without evidence. A blocked gate cannot be BLOCKED withou
 Phase 5 distingue entre **blockers** que impiden declarar readiness y **warnings** que son limpieza operacional.
 El paquete incluye `scripts/repair_phase5_warnings.py` para reparar, con backup y rollback, drift externo común en launchers y wrappers:
 
-- `05_LEVANTAR_WEB_CONTROL_LOCAL.cmd` debe llamar claramente a `web_control_local.ps1`.
-- `07_ABRIR_PANEL_CONTROL_3150.cmd` debe llamar claramente a `panel_3150.ps1`.
+- `00_KILL_ALL_LOCAL.cmd` debe llamar claramente a `kill_everything.ps1`.
+- `01_LEVANTAR_TODO_LOCAL.cmd` debe llamar claramente a `local_up.ps1`.
+- `02_LEVANTAR_TODO_LOCAL_CLOUDFLARE.cmd` debe llamar claramente a `all_up.ps1`.
+- `03_LEVANTAR_SOLO_UN_MODULO.cmd` debe llamar claramente a `module_cloudflare.ps1`.
+- `04_ABRIR_ATLAS_DEPENDENCIAS.cmd` debe llamar claramente a `open_dependency_atlas.ps1`.
+- `09_KILL_EVERYTHING_PRISMA.cmd` debe llamar claramente a `kill_everything.ps1`.
 - Los wrappers no deben conservar referencias activas a `PRISMA_LAUNCHER_RUNS`; la evidencia debe apuntar a `F:\descargasf`.
 - El operador debe tener una ruta de rollback documentada para deshacer reparaciones externas.
 
@@ -52,4 +56,3 @@ Rollback:
 $State = Get-Content "F:\descargasf\LATEST_PRISMA_PHASE5_WARNING_REPAIR.json" | ConvertFrom-Json
 py -3 quality\scripts\repair_phase5_warnings.py --rollback --repo-root . --backup "$($State.backup)" --backup-root "F:\descargasf"
 ```
-

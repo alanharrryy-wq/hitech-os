@@ -1,6 +1,6 @@
 # PRISMA Launcher OS - README Operador
 
-Botonera oficial para levantar y diagnosticar PRISMA. Cada corrida genera ZIP directo en:
+Botonera oficial para levantar PRISMA. Cada corrida genera ZIP directo en:
 
 `F:\descargasf`
 
@@ -15,49 +15,33 @@ No se usa carpeta `PRISMA_LAUNCHER_RUNS` dentro de Descargasf.
 - `3140`: Mobile
 - `3150`: Control Center
 
-`3100` y `3200` solo se incluyen en `09_KILL_EVERYTHING_PRISMA.cmd` como limpieza legacy/discutida.
+`3100` y `3200` solo se incluyen en los launchers de kill como limpieza legacy/discutida.
 
-## Botones
+## Botones definitivos
 
-1. `01_LEVANTAR_TODO_LOCAL.cmd`
-   - Libera `3000,3110,3120,3130,3140,3150`.
-   - Levanta Chart Lab local.
-   - Ejecuta local-up del Control Center.
-   - Abre panel local `3150`.
-   - Deja ZIP en `F:\descargasf`.
+1. `00_KILL_ALL_LOCAL.cmd`
+   - Libera puertos/procesos locales PRISMA y deja `latest_KILL_EVERYTHING.zip`.
 
-2. `02_LEVANTAR_TODO_CLOUDFLARE.cmd`
-   - Solo Cloudflare.
-   - No mata puertos.
-   - Deja ZIP en `F:\descargasf`.
+2. `01_LEVANTAR_TODO_LOCAL.cmd`
+   - Levanta stack local completo y abre Control Center.
+   - Deja `latest_ALL_LOCAL.zip`.
 
-3. `03_LEVANTAR_TODO_LOCAL_Y_CLOUDFLARE.cmd`
-   - Local primero, Cloudflare despues.
-   - Deja ZIP en `F:\descargasf`.
+3. `02_LEVANTAR_TODO_LOCAL_CLOUDFLARE.cmd`
+   - Levanta local completo, reinicia/conecta Cloudflare cuando aplique y valida publico.
+   - Deja `latest_ALL_LOCAL_CLOUDFLARE.zip`.
 
-4. `04_DIAGNOSTICO_LOCAL_Y_CLOUDFLARE.cmd`
-   - Diagnostico puro.
-   - No mata nada.
-   - No levanta nada.
-   - Si health sale FAIL, el launcher no falla: genera ZIP de evidencia.
+4. `03_LEVANTAR_SOLO_UN_MODULO.cmd`
+   - Menu quirurgico para levantar un modulo y Cloudflare sin abrir rutas viejas.
+   - Deja `latest_MODULE_CLOUDFLARE.zip`.
 
-5. `05_LEVANTAR_WEB_CONTROL_LOCAL.cmd`
-   - Libera `3110,3150`.
-   - Levanta Web/EIT y Control Center.
+5. `04_ABRIR_ATLAS_DEPENDENCIAS.cmd`
+   - Abre el atlas local de dependencias.
+   - Deja `latest_DEPENDENCY_ATLAS_OPEN.zip`.
 
-6. `06_LEVANTAR_WEB_CONTROL_LOCAL_Y_CLOUDFLARE.cmd`
-   - Web + Control local, despues Cloudflare.
-
-7. `07_ABRIR_PANEL_CONTROL_3150.cmd`
-   - Solo abre `http://127.0.0.1:3150`.
-
-8. `08_LEVANTAR_CHART_LAB_LOCAL.cmd`
-   - Libera `3000`.
-   - Levanta Chart Lab con `pnpm chart-lab:dev`.
-
-9. `09_KILL_EVERYTHING_PRISMA.cmd`
+6. `09_KILL_EVERYTHING_PRISMA.cmd`
    - Libera `3000,3100,3110,3120,3130,3140,3150,3200`.
    - No levanta servicios.
+   - Deja `latest_KILL_EVERYTHING.zip`.
 
 ## ZIP generado
 
@@ -66,4 +50,4 @@ Cada ZIP contiene:
 - `transcript.log`
 - `summary.json`
 
-El log vivo de Chart Lab se queda en `%TEMP%` y su ruta queda anotada en `summary.json`.
+El diagnostico operativo se obtiene desde esos ZIPs y desde los health checks ejecutados por los launchers definitivos.

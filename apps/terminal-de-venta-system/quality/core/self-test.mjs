@@ -45,14 +45,11 @@ export async function runSelfTest({ repoRoot, qualityRoot }) {
     const wrappersDir = path.join(ccRoot, 'internal', 'wrappers');
     fs.mkdirSync(wrappersDir, { recursive: true });
     const launcherPairs = [
+      ['00_KILL_ALL_LOCAL.cmd', 'kill_everything.ps1'],
       ['01_LEVANTAR_TODO_LOCAL.cmd', 'local_up.ps1'],
-      ['02_LEVANTAR_TODO_CLOUDFLARE.cmd', 'cloudflare_up.ps1'],
-      ['03_LEVANTAR_TODO_LOCAL_Y_CLOUDFLARE.cmd', 'all_up.ps1'],
-      ['04_DIAGNOSTICO_LOCAL_Y_CLOUDFLARE.cmd', 'health.ps1'],
-      ['05_LEVANTAR_WEB_CONTROL_LOCAL.cmd', 'web_control_local.ps1'],
-      ['06_LEVANTAR_WEB_CONTROL_LOCAL_Y_CLOUDFLARE.cmd', 'web_control_cloudflare.ps1'],
-      ['07_ABRIR_PANEL_CONTROL_3150.cmd', 'panel_3150.ps1'],
-      ['08_LEVANTAR_CHART_LAB_LOCAL.cmd', 'chart_lab_local.ps1'],
+      ['02_LEVANTAR_TODO_LOCAL_CLOUDFLARE.cmd', 'all_up.ps1'],
+      ['03_LEVANTAR_SOLO_UN_MODULO.cmd', 'module_cloudflare.ps1'],
+      ['04_ABRIR_ATLAS_DEPENDENCIAS.cmd', 'open_dependency_atlas.ps1'],
       ['09_KILL_EVERYTHING_PRISMA.cmd', 'kill_everything.ps1'],
     ];
     for (const [cmd, ps1] of launcherPairs) {

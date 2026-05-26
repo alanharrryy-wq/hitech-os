@@ -20,7 +20,7 @@ $Backup = "$Target.BACKUP_BEFORE_V24_$Stamp"
 if (Test-Path $Target) { Rename-Item -Path $Target -NewName (Split-Path $Backup -Leaf) }
 Copy-Item -Path $Source -Destination $Target -Recurse -Force
 cd $Target
-.\07_ABRIR_PANEL_CONTROL_3150.cmd
+.\01_LEVANTAR_TODO_LOCAL.cmd
 ```
 
 ## Validaciones ejecutadas en sandbox

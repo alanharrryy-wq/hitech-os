@@ -1,0 +1,87 @@
+{
+  "schema": "prisma.tablet.background.liquid_operations.v6",
+  "version": "v6-reference-interface-direction",
+  "created": "2026-05-25",
+  "route": "/visual-os/tablet-background-gallery",
+  "policy": {
+    "visualOsGalleryDefault": "liquid-operations-smoke",
+    "productLightPresetId": "tablet-soft-gray-clouds",
+    "doNotTouchPos": true,
+    "sourceUpdatesAutoReflectInRoute": true,
+    "darkShowcaseOnly": true,
+    "notes": [
+      "V6 follows the uploaded Liquid Operations reference: smoky dark image-like background, liquid glass cards, cyan/orange/green semantic glows.",
+      "This is Visual OS gallery/review only. It does not apply the dark direction to productive Tablet POS."
+    ]
+  },
+  "presets": [
+    {
+      "id": "liquid-operations-smoke",
+      "name": "Liquid Operations Smoke",
+      "tone": "dark-reference",
+      "darkShowcase": true,
+      "applyDefault": false,
+      "galleryDefault": true,
+      "asset": "assets/backgrounds/liquid-operations-smoke.svg",
+      "motion": {
+        "cycleSeconds": 132,
+        "reducedMotion": "static liquid glass frame"
+      },
+      "visualRecipe": [
+        "dark smoky image asset",
+        "liquid glass panels",
+        "orange/cyan/mint semantic glows",
+        "dense operations cards"
+      ]
+    },
+    {
+      "id": "tablet-soft-gray-clouds",
+      "name": "Tablet Soft Gray Clouds",
+      "tone": "light-tablet-safe",
+      "darkShowcase": false,
+      "applyDefault": false,
+      "productDefaultCandidate": true,
+      "asset": "assets/backgrounds/tablet-soft-gray-clouds.svg",
+      "motion": {
+        "cycleSeconds": 108,
+        "reducedMotion": "static light cloud frame"
+      }
+    },
+    {
+      "id": "obsidian-cloud-motion",
+      "name": "Obsidian Cloud Motion",
+      "tone": "dark-showcase",
+      "darkShowcase": true,
+      "applyDefault": false,
+      "asset": "assets/backgrounds/obsidian-cloud-motion.svg",
+      "motion": {
+        "cycleSeconds": 128,
+        "reducedMotion": "static cinematic frame"
+      }
+    },
+    {
+      "id": "storm-glass-horizon",
+      "name": "Storm Glass Horizon",
+      "tone": "dark-showcase",
+      "darkShowcase": true,
+      "applyDefault": false,
+      "asset": "assets/backgrounds/storm-glass-horizon.svg",
+      "motion": {
+        "cycleSeconds": 148,
+        "reducedMotion": "static cinematic frame"
+      }
+    },
+    {
+      "id": "aurora-slate-veil",
+      "name": "Aurora Slate Veil",
+      "tone": "dark-showcase",
+      "darkShowcase": true,
+      "applyDefault": false,
+      "asset": "assets/backgrounds/aurora-slate-veil.svg",
+      "motion": {
+        "cycleSeconds": 136,
+        "reducedMotion": "static cinematic frame"
+      }
+    }
+  ]
+}

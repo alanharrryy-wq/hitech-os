@@ -42,9 +42,9 @@ export const systemScreenContract = {
     { Área: "Historial", Estado: "Bien", "Qué pasa": "Eventos recientes guardados", Acción: "Ver" }
   ],
   evidence: [
-    { label: "Fuente", value: "equipos, licencia, revisión de datos e historial" },
-    { label: "Criterio", value: "prioridad por equipo atrasado, datos repetidos y bloqueo operativo" },
-    { label: "Confianza", value: "alta cuando hay pulso reciente y eventos guardados" },
-    { label: "Historial", value: "disponible en sistema y auditoría" }
+    { kind: "technical" as const,  label: "Fuente", value: "equipos, licencia, revisión de datos e historial" },
+    { kind: "technical" as const,  label: "Criterio", value: "prioridad por equipo atrasado, datos repetidos y bloqueo operativo" },
+    { kind: "technical" as const,  label: "Confianza", value: "alta cuando hay pulso reciente y eventos guardados" },
+    { kind: "governance" as const,  label: "Historial", value: "disponible en sistema y auditoría" }
   ]
 };

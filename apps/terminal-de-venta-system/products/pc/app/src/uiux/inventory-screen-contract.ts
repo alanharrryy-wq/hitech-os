@@ -55,9 +55,9 @@ export const inventoryScreenContract = {
     ]
   },
   evidence: [
-    { label: "Fuente", value: "Existencias, movimientos recientes y conteos" },
-    { label: "Criterio", value: "pocas piezas, venta reciente y diferencias de conteo" },
-    { label: "Confianza", value: "Alta si la base principal y tablet están actualizadas" },
-    { label: "Historial", value: "Movimientos y conteos disponibles bajo demanda" }
+    { kind: "technical" as const,  label: "Fuente", value: "Existencias, movimientos recientes y conteos" },
+    { kind: "technical" as const,  label: "Criterio", value: "pocas piezas, venta reciente y diferencias de conteo" },
+    { kind: "technical" as const,  label: "Confianza", value: "Alta si la base principal y tablet están actualizadas" },
+    { kind: "technical" as const,  label: "Historial", value: "Movimientos y conteos disponibles bajo demanda" }
   ]
 };

@@ -1,0 +1,20 @@
+{
+  "schema": "prisma.tablet.background.patch.atmospheric.v4",
+  "created": "2026-05-25",
+  "operation": "add-background-gallery-presets",
+  "targetRoute": "/visual-os/tablet-background-gallery",
+  "assets": [
+    "tablet-codex-background-gallery-smoke-test.html",
+    "prisma-tablet-background-atmospheric-v4.css",
+    "prisma-tablet-background-atmospheric-v4.js",
+    "tablet-background-presets.atmospheric-v4.json"
+  ],
+  "guardrails": [
+    "do-not-touch-pos",
+    "light-default-only",
+    "dark-showcase-only",
+    "reduced-motion-required",
+    "touch-target-min-48px",
+    "no-external-dependencies"
+  ]
+}

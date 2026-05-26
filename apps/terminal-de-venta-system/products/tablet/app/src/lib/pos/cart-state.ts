@@ -23,6 +23,14 @@ export type CartLine = {
   qty: number;
 };
 
+export type PaymentTenderReceipt = {
+  id?: string;
+  tenderType: string;
+  amountCents: number;
+  reference?: string | null;
+  recordedAt?: string;
+};
+
 export type CompletedSale = {
   saleId: string;
   folio: string;
@@ -37,6 +45,7 @@ export type CompletedSale = {
   paymentMethod?: string;
   cashReceivedCents?: number | null;
   changeCents?: number;
+  paymentTenders?: PaymentTenderReceipt[];
   status: string;
   createdAt: string;
   completedAt?: string | null;
@@ -59,10 +68,12 @@ export type TicketEvidence = {
   localDetailHref: string;
   lookupAliases: string[];
   payment: {
+    contract?: string;
     method: string;
     cashReceivedCents: number | null;
     changeCents: number;
     totalCents: number;
+    tenders?: PaymentTenderReceipt[];
   };
   evidenceEventIds: string[];
   evidenceTopics: string[];
@@ -153,4 +164,4 @@ export async function requestJson<T>(url: string, init?: RequestInit): Promise<A
   return payload;
 }
 
-export type CompletedSaleReceipt = CompletedSale & { paymentMethod?: string; cashReceivedCents?: number | null; changeCents?: number; clientRequestId?: string | null };
+export type CompletedSaleReceipt = CompletedSale & { paymentMethod?: string; cashReceivedCents?: number | null; changeCents?: number; clientRequestId?: string | null; paymentTenders?: PaymentTenderReceipt[] };

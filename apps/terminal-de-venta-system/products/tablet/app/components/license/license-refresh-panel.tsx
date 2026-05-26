@@ -44,7 +44,7 @@ export function LicenseRefreshPanel({ initialStatus }: { initialStatus: RefreshS
     : null;
 
   return (
-    <section className={styles.card}>
+    <section className={styles.card} id="license-refresh">
       <p className={styles.eyebrow}>Refresh remoto</p>
       <h2 className={styles.title}>Actualización de licencia</h2>
       <p className={styles.copy}>{message}</p>
@@ -71,10 +71,11 @@ export function LicenseRefreshPanel({ initialStatus }: { initialStatus: RefreshS
         </form>
       ) : (
         <div className={styles.refreshActions} data-prisma-refresh-state="disabled">
-          <a className={styles.primaryLink} href="http://127.0.0.1:3150/#license-ops">Importar licencia local</a>
-          <a className={styles.secondaryLink} href="http://127.0.0.1:3150/#license-ops">Configurar refresh remoto</a>
+          <a className={styles.primaryLink} href="mailto:contacto@hitechrts.com?subject=Soporte%20licencia%20PRISMA%20Tablet">Request support</a>
+          <a className={styles.secondaryLink} href="#license-status">View license status</a>
+          <a className={styles.secondaryLink} href="https://wa.me/525629563031">View support contact</a>
           <button className={styles.disabledButton} type="button" disabled>
-            Actualizar licencia
+            Update license
           </button>
         </div>
       )}
