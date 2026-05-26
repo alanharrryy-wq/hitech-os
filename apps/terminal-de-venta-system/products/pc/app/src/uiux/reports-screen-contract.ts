@@ -42,9 +42,9 @@ export const reportsScreenContract = {
     { Reporte: "Proveedores", "Para qué sirve": "Pagos, pedidos y recepción", Formato: "CSV", Acción: "Descargar" }
   ],
   evidence: [
-    { label: "Fuente", value: "ventas, inventario, compras y historial" },
-    { label: "Criterio", value: "reportes visibles sólo cuando tienen propósito operativo" },
-    { label: "Confianza", value: "alta cuando corte, tabla y filtros están listos" },
-    { label: "Origen", value: "exportables y métricas internas" }
+    { kind: "technical" as const,  label: "Fuente", value: "ventas, inventario, compras y historial" },
+    { kind: "technical" as const,  label: "Criterio", value: "reportes visibles sólo cuando tienen propósito operativo" },
+    { kind: "technical" as const,  label: "Confianza", value: "alta cuando corte, tabla y filtros están listos" },
+    { kind: "technical" as const,  label: "Origen", value: "exportables y métricas internas" }
   ]
 };

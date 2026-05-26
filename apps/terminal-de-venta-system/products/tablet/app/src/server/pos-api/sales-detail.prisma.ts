@@ -43,6 +43,21 @@ function syntheticPaymentTender(sale: any) {
   };
 }
 
+function mapPaymentTenders(sale: any) {
+  const rows = Array.isArray(sale.paymentTenders) ? sale.paymentTenders : [];
+  const tenders = rows
+    .filter((tender: any) => Number(tender?.amountCents ?? 0) > 0)
+    .map((tender: any) => ({
+      id: tender.id,
+      tenderType: tender.tenderType ?? sale.paymentMethod ?? "cash",
+      amountCents: tender.amountCents,
+      reference: tender.reference ?? null,
+      recordedAt: toIso(tender.recordedAt ?? sale.completedAt ?? sale.createdAt),
+      source: "salePaymentTender"
+    }));
+  return tenders.length ? tenders : [syntheticPaymentTender(sale)];
+}
+
 async function outboxEvidenceForSale(sale: any) {
   const rows = await prisma.outboxEvent.findMany({
     where: { businessId: sale.businessId, aggregateId: sale.id },
@@ -77,7 +92,7 @@ async function mapSaleDetail(sale: any, resolvedBy: "scoped" | "local_alias_fall
   const outboxEvents = await outboxEvidenceForSale(sale);
   const store = sale.terminal?.store ?? sale.cashSession?.store ?? null;
   const business = sale.terminal?.business ?? sale.business ?? null;
-  const paymentTender = syntheticPaymentTender(sale);
+  const paymentTenders = mapPaymentTenders(sale);
 
   return {
     saleId: sale.id,
@@ -114,7 +129,7 @@ async function mapSaleDetail(sale: any, resolvedBy: "scoped" | "local_alias_fall
     paymentMethod: sale.paymentMethod ?? "cash",
     cashReceivedCents: sale.cashReceivedCents ?? null,
     changeCents: sale.changeCents ?? 0,
-    paymentTenders: [paymentTender],
+    paymentTenders,
     evidence: {
       contract: "SALE_AS_TICKET_EVIDENCE_V1",
       local: true,
@@ -143,7 +158,7 @@ export async function getSaleDetail(input: GetSaleDetailInput) {
 
   const scopedSale = await prisma.sale.findFirst({
     where: { businessId: input.businessId, OR: or },
-    include: { lines: true, terminal: { include: { store: true, business: true } }, business: true, cashSession: { include: { store: true } } },
+    include: { lines: true, paymentTenders: true, terminal: { include: { store: true, business: true } }, business: true, cashSession: { include: { store: true } } },
     orderBy: { createdAt: "desc" },
   });
 
@@ -155,7 +170,7 @@ export async function getSaleDetail(input: GetSaleDetailInput) {
   // intentamos recuperar por identificadores únicos visibles antes de mostrar 404.
   const localFallbackSale = await prisma.sale.findFirst({
     where: { OR: or },
-    include: { lines: true, terminal: { include: { store: true, business: true } }, business: true, cashSession: { include: { store: true } } },
+    include: { lines: true, paymentTenders: true, terminal: { include: { store: true, business: true } }, business: true, cashSession: { include: { store: true } } },
     orderBy: { createdAt: "desc" },
   });
 

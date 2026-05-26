@@ -25,9 +25,13 @@ import type {
   CompleteLocalSaleResult,
   PosCartLineInput,
   PosEngineEvent,
+  PosPaymentMethod,
+  PosSalePaymentMethod,
   PosEngineRepository,
   PosResolvedProduct,
-  PosSaleLineResult
+  PosSaleLineResult,
+  SalePaymentTenderInput,
+  SalePaymentTenderResult
 } from "./types";
 
 type TxClient = any;
@@ -110,6 +114,46 @@ async function persistOutboxEvents(tx: TxClient, businessId: string, events: Pos
   }
 }
 
+function normalizePaymentTenders(input: {
+  paymentMethod: CompleteLocalSaleInput["paymentMethod"];
+  cashReceivedCents: number | null;
+  totalCents: number;
+  paymentTenders?: SalePaymentTenderInput[];
+}): { tenders: SalePaymentTenderInput[]; paymentMethod: PosSalePaymentMethod; cashReceivedCents: number | null; changeCents: number } {
+  const rawTenders = Array.isArray(input.paymentTenders) && input.paymentTenders.length
+    ? input.paymentTenders
+    : input.paymentMethod === "cash"
+      ? [{ tenderType: "cash" as const, amountCents: input.cashReceivedCents ?? 0, reference: null }]
+      : [{ tenderType: (input.paymentMethod === "card" || input.paymentMethod === "transfer" ? input.paymentMethod : "cash") as PosPaymentMethod, amountCents: input.totalCents, reference: null }];
+
+  const tenders = rawTenders
+    .map((tender) => ({
+      tenderType: tender.tenderType,
+      amountCents: Math.round(Number(tender.amountCents ?? 0)),
+      reference: typeof tender.reference === "string" && tender.reference.trim() ? tender.reference.trim().slice(0, 120) : null
+    }))
+    .filter((tender) => tender.amountCents > 0);
+
+  if (!tenders.length) throw new PosEngineError("PAYMENT_TENDER_REQUIRED", "Captura al menos un método de pago con importe.", {});
+  if (tenders.some((tender) => tender.tenderType !== "cash" && tender.tenderType !== "card" && tender.tenderType !== "transfer")) {
+    throw new PosEngineError("INVALID_PAYMENT_METHOD", "Método de pago inválido.", {});
+  }
+
+  const paidCents = addCents(tenders.map((tender) => tender.amountCents));
+  const cashPaidCents = addCents(tenders.filter((tender) => tender.tenderType === "cash").map((tender) => tender.amountCents));
+  const nonCashPaidCents = paidCents - cashPaidCents;
+  if (nonCashPaidCents > input.totalCents) {
+    throw new PosEngineError("NON_CASH_OVERPAYMENT", "Tarjeta o transferencia no deben exceder el total pendiente.", { totalCents: input.totalCents, nonCashPaidCents });
+  }
+  if (paidCents < input.totalCents) {
+    throw new PosEngineError("PAYMENT_INCOMPLETE", "El pago no cubre el total del ticket.", { totalCents: input.totalCents, paidCents });
+  }
+
+  const changeCents = paidCents - input.totalCents;
+  const paymentMethod: PosSalePaymentMethod = tenders.length === 1 ? tenders[0].tenderType : "mixed";
+  return { tenders, paymentMethod, cashReceivedCents: cashPaidCents > 0 ? cashPaidCents : null, changeCents };
+}
+
 export class PrismaPosEngineRepository implements PosEngineRepository {
   private readonly db: any;
 
@@ -126,9 +170,8 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
     const allowNegativeStock = input.allowNegativeStock ?? false;
     const lowStockThreshold = input.lowStockThreshold ?? DEFAULT_LOW_STOCK_THRESHOLD;
     const normalizedLines = normalizeLines(input.lines);
-    const paymentMethod = input.paymentMethod ?? "cash";
-    const cashReceivedCents = input.cashReceivedCents ?? null;
-    const changeCents = input.changeCents ?? 0;
+    const requestedPaymentMethod = input.paymentMethod ?? "cash";
+    const requestedCashReceivedCents = input.cashReceivedCents ?? null;
 
     return this.db.$transaction(async (tx: TxClient) => {
       const business = await tx.business.findUnique({ where: { id: businessId } });
@@ -148,7 +191,7 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
       if (input.clientRequestId) {
         const existingSale = await tx.sale.findFirst({
           where: { businessId, clientRequestId: input.clientRequestId },
-          include: { lines: true }
+          include: { lines: true, paymentTenders: true }
         });
         if (existingSale) {
           return {
@@ -165,6 +208,7 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
             paymentMethod: existingSale.paymentMethod ?? "cash",
             cashReceivedCents: existingSale.cashReceivedCents ?? null,
             changeCents: existingSale.changeCents ?? 0,
+            paymentTenders: existingSale.paymentTenders.map((tender: any) => ({ id: tender.id, tenderType: tender.tenderType, amountCents: tender.amountCents, reference: tender.reference ?? null, recordedAt: tender.recordedAt })),
             status: SALE_STATUS_COMPLETED as "COMPLETED",
             createdAt: existingSale.createdAt,
             completedAt: existingSale.completedAt ?? existingSale.createdAt,
@@ -232,6 +276,12 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
       }
 
       const totalCents = addCents(lineResults.map((line) => line.totalCents));
+      const payment = normalizePaymentTenders({
+        paymentMethod: requestedPaymentMethod,
+        cashReceivedCents: requestedCashReceivedCents,
+        totalCents,
+        paymentTenders: input.paymentTenders
+      });
 
       await tx.sale.create({
         data: {
@@ -246,13 +296,30 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
           discountCents: 0,
           totalCents,
           completedAt: now,
-          paymentMethod,
-          cashReceivedCents,
-          changeCents,
+          paymentMethod: payment.paymentMethod,
+          cashReceivedCents: payment.cashReceivedCents,
+          changeCents: payment.changeCents,
           status: SALE_STATUS_COMPLETED,
           createdAt: now
         }
       });
+
+      const paymentTenders: SalePaymentTenderResult[] = [];
+      for (const tender of payment.tenders) {
+        const row = await tx.salePaymentTender.create({
+          data: {
+            id: makePosId("tender"),
+            businessId,
+            saleId,
+            tenderType: tender.tenderType,
+            amountCents: tender.amountCents,
+            reference: tender.reference,
+            metadataJson: JSON.stringify({ contract: "PRISMA_TABLET_MIXED_PAYMENT_V1", changeCents: tender.tenderType === "cash" ? payment.changeCents : 0 }),
+            recordedAt: now
+          }
+        });
+        paymentTenders.push({ id: row.id, tenderType: row.tenderType, amountCents: row.amountCents, reference: row.reference ?? null, recordedAt: row.recordedAt });
+      }
 
       for (const line of lineResults) {
         await tx.saleLine.create({
@@ -282,9 +349,10 @@ export class PrismaPosEngineRepository implements PosEngineRepository {
         subtotalCents: totalCents,
         discountCents: 0,
         totalCents,
-        paymentMethod,
-        cashReceivedCents,
-        changeCents,
+        paymentMethod: payment.paymentMethod,
+        cashReceivedCents: payment.cashReceivedCents,
+        changeCents: payment.changeCents,
+        paymentTenders,
         status: SALE_STATUS_COMPLETED as "COMPLETED",
         createdAt: now,
         completedAt: now,

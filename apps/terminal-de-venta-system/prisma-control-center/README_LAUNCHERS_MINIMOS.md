@@ -1,12 +1,14 @@
 # PRISMA Control Center - Launchers mínimos v2
 
-Esta versión deja la raíz con solo 4 botones operativos:
+Esta versión deja la raíz con solo 6 botones operativos:
 
 ```txt
 00_KILL_ALL_LOCAL.cmd
 01_LEVANTAR_TODO_LOCAL.cmd
 02_LEVANTAR_TODO_LOCAL_CLOUDFLARE.cmd
 03_LEVANTAR_SOLO_UN_MODULO.cmd
+04_ABRIR_ATLAS_DEPENDENCIAS.cmd
+09_KILL_EVERYTHING_PRISMA.cmd
 ```
 
 ## Contrato operativo
@@ -16,6 +18,8 @@ Esta versión deja la raíz con solo 4 botones operativos:
 - `01_LEVANTAR_TODO_LOCAL.cmd` levanta local completo y abre Control Center.
 - `02_LEVANTAR_TODO_LOCAL_CLOUDFLARE.cmd` levanta local completo, reinicia Cloudflare y valida público.
 - `03_LEVANTAR_SOLO_UN_MODULO.cmd` abre un menú para levantar solo un módulo + Cloudflare.
+- `04_ABRIR_ATLAS_DEPENDENCIAS.cmd` abre el atlas de dependencias.
+- `09_KILL_EVERYTHING_PRISMA.cmd` ejecuta kill completo de puertos PRISMA.
 
 ## Puertos tratados como PRISMA
 
@@ -53,10 +57,6 @@ Cada corrida genera ZIP de evidencia en:
 F:\descargasf
 ```
 
-Los launchers viejos se conservaron fuera de la raíz en:
-
-```txt
-internal\legacy_launchers_disabled
-```
+Los launchers viejos se preservan fuera del repositorio activo en `F:\Trash-old` cuando se ejecuta limpieza de reparación.
 
 La raíz queda limpia para que la operación diaria no parezca tablero de nave soviética.

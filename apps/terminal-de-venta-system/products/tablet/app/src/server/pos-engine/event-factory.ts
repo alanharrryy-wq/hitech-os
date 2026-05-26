@@ -68,6 +68,14 @@ export function saleCompletedEvent(result: Omit<CompleteLocalSaleResult, "events
       paymentMethod: result.paymentMethod,
       cashReceivedCents: result.cashReceivedCents,
       changeCents: result.changeCents,
+      paymentBreakdownContract: "PRISMA_TABLET_MIXED_PAYMENT_V1",
+      tenders: result.paymentTenders.map((tender) => ({
+        id: tender.id,
+        tenderType: tender.tenderType,
+        amountCents: tender.amountCents,
+        reference: tender.reference ?? null,
+        recordedAt: tender.recordedAt.toISOString()
+      })),
       status: result.status,
       lineCount: result.lines.length,
       lines: result.lines.map((line) => ({
@@ -90,6 +98,14 @@ export function ticketClosedEvent(result: Omit<CompleteLocalSaleResult, "events"
       totalCents: result.totalCents,
       paymentMethod: result.paymentMethod,
       changeCents: result.changeCents,
+      paymentBreakdownContract: "PRISMA_TABLET_MIXED_PAYMENT_V1",
+      tenders: result.paymentTenders.map((tender) => ({
+        id: tender.id,
+        tenderType: tender.tenderType,
+        amountCents: tender.amountCents,
+        reference: tender.reference ?? null,
+        recordedAt: tender.recordedAt.toISOString()
+      })),
       items: result.lines.map((line) => ({
         productId: line.productId,
         sku: line.sku,

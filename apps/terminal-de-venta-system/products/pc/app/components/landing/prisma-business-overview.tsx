@@ -64,14 +64,14 @@ export function PrismaBusinessOverview() {
         <div className="prisma-home-hero-copy">
           <img className="prisma-home-inline-logo" src="/brand/prisma-logo-official.png" alt="PRISMA" />
           <div className="prisma-home-kicker">Sistema inteligente de gestión operativa</div>
-          <h1 id="prisma-home-title">Controla tus tiendas sin perseguir libretas, audios y capturas.</h1>
+          <h1 id="prisma-home-title">Welcome to Prisma.</h1>
           <p>
-            PRISMA conecta venta, inventario, compras y supervisión en un solo sistema. Vende desde Tablet,
-            gobierna desde PC y supervisa desde la app móvil.
+            Control your stores without chasing notebooks, audio messages, and screenshots. PRISMA conecta venta,
+            inventario, compras y supervisión en un solo sistema.
           </p>
           <div className="prisma-home-actions" aria-label="Acciones principales">
-            <a href="#control-en-vivo" className="prisma-home-primary">Probar control en vivo</a>
-            <a href="#ecosistema" className="prisma-home-secondary">Explorar capacidades</a>
+            <a href="#ecosistema" className="prisma-home-primary">Learn more about Prisma</a>
+            <a href="/dashboard" className="prisma-home-secondary">Start operating</a>
           </div>
           <div className="prisma-home-proof" aria-label="Capacidades destacadas">
             <span>Multi-sucursal</span>
@@ -219,7 +219,7 @@ export function PrismaBusinessOverview() {
             Cobrar es apenas el timbre de la tienda. PRISMA te enseña qué se movió, qué falta, quién tocó qué
             y dónde se está fugando la operación antes de que el negocio empiece a pedir rescate.
           </p>
-          <a href="/dashboard" className="prisma-home-primary">Ver dashboard operativo</a>
+          <a href="/dashboard" className="prisma-home-primary">View operational dashboard</a>
         </div>
       </section>
     </div>

@@ -80,7 +80,8 @@ export function productMatchesQuery(product: CatalogStockSellingAssistProduct, q
     product.sku,
     product.category,
     getProductBarcode(product),
-    ...(product.barcodes ?? [])
+    ...(product.barcodes ?? []),
+    ...(product.aliases ?? [])
   ].map((value) => normalizeSearch(String(value ?? ""))).join(" ");
   return haystack.includes(q);
 }

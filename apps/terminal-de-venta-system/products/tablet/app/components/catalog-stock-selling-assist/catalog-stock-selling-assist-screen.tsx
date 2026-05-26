@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
 import { PrismaIcon } from "@components/prisma-dark-pos/prisma-dark-pos-icons";
@@ -217,6 +217,7 @@ export function CatalogStockSellingAssistScreen({ mode, runtimeSnapshot = DEFAUL
   const [online, setOnline] = useState(true);
   const [cartNotice, setCartNotice] = useState("");
   const [cartSummary, setCartSummary] = useState({ lines: 0, units: 0, hasCart: false });
+  const queryRef = useRef(query);
 
   const metrics = useMemo(() => buildCatalogStockMetrics(products), [products]);
   const visibleProducts = useMemo(() => filterProductsForSellingAssist(products, query, filter, mode), [products, query, filter, mode]);
@@ -283,19 +284,43 @@ export function CatalogStockSellingAssistScreen({ mode, runtimeSnapshot = DEFAUL
   }
 
   useEffect(() => {
+    queryRef.current = query;
+  }, [query]);
+
+  useEffect(() => {
+    const trimmed = query.trim();
+    if (trimmed.length === 1) return;
+    const handle = window.setTimeout(() => {
+      void loadProducts(trimmed);
+    }, trimmed.length >= 2 ? 260 : 120);
+    return () => window.clearTimeout(handle);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
+
+  useEffect(() => {
     setOnline(typeof navigator === "undefined" ? true : navigator.onLine);
     setCartSummary(readSellingAssistCartSummary());
     void loadProducts("");
     function handleOnline() { setOnline(true); }
     function handleOffline() { setOnline(false); setState((current) => (products.length ? "offline" : current)); }
     function handleCart() { setCartSummary(readSellingAssistCartSummary()); }
+    function handleCatalogChanged() {
+      const currentQuery = queryRef.current.trim();
+      if (!currentQuery || currentQuery.length >= 2) void loadProducts(currentQuery);
+    }
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
+    window.addEventListener("focus", handleCatalogChanged);
+    window.addEventListener("prisma:tablet-catalog-updated", handleCatalogChanged as EventListener);
     window.addEventListener("prisma:tablet-cart-updated", handleCart as EventListener);
+    document.addEventListener("visibilitychange", handleCatalogChanged);
     return () => {
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
+      window.removeEventListener("focus", handleCatalogChanged);
+      window.removeEventListener("prisma:tablet-catalog-updated", handleCatalogChanged as EventListener);
       window.removeEventListener("prisma:tablet-cart-updated", handleCart as EventListener);
+      document.removeEventListener("visibilitychange", handleCatalogChanged);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

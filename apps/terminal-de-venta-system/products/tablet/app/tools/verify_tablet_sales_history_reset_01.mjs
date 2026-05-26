@@ -33,17 +33,17 @@ const checks = [
   {
     id: "safe_reset_api",
     file: "app/api/pos/admin/sales-reset/route.ts",
-    must: ["SALES_RESET_CONFIRMATION_REQUIRED", "destructiveAction", "preservesLicenseConfig"]
+    must: ["configure_security", "RESET_SECURITY_NOT_CONFIGURED", "destructiveAction", "preservesLicenseConfig"]
   },
   {
     id: "safe_reset_service",
     file: "src/server/pos-api/sales-reset.prisma.ts",
-    must: ["BORRAR VENTAS TABLET", "tablet.sales.reset", "preservesLicenseConfig"]
+    must: ["TabletLocalSecuritySecret", "tablet.sales.reset", "support_reset", "local_support_outbox", "preservesLicenseConfig"]
   },
   {
     id: "safe_reset_ui",
     file: "components/settings/sales-reset-panel.tsx",
-    must: ["Herramienta bloqueada", "Frase exacta", "No toca licencia"]
+    must: ["Herramienta bloqueada", "Pregunta de seguridad", "PIN admin", "No toca licencia"]
   },
   {
     id: "nav",

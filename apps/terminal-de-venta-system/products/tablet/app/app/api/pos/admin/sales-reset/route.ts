@@ -1,7 +1,7 @@
 import { toPosApiError } from "@/server/pos-api/errors";
 import { fail, ok } from "@/server/pos-api/responses";
 import { DEFAULT_POS_API_BUSINESS_ID } from "@/server/pos-api/validators";
-import { performSalesReset, previewSalesReset, SALES_RESET_CONFIRMATION } from "@/server/pos-api/sales-reset.prisma";
+import { configureSalesResetSecurity, performSalesReset, previewSalesReset } from "@/server/pos-api/sales-reset.prisma";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -29,21 +29,25 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json().catch(() => ({}));
-    const confirmation = typeof body?.confirmation === "string" ? body.confirmation : "";
-    if (confirmation !== SALES_RESET_CONFIRMATION) {
-      return fail(
-        "SALES_RESET_CONFIRMATION_REQUIRED",
-        "Escribe la frase exacta para ejecutar el reset seguro de ventas.",
-        423,
-        { requiredPhrase: SALES_RESET_CONFIRMATION }
-      );
-    }
-
     const businessId = typeof body?.businessId === "string" && body.businessId.trim()
       ? body.businessId.trim()
       : DEFAULT_POS_API_BUSINESS_ID;
     const operatorNote = typeof body?.operatorNote === "string" ? body.operatorNote.slice(0, 600) : null;
-    const result = await performSalesReset({ businessId, confirmation, operatorNote });
+    const questionId = typeof body?.questionId === "string" ? body.questionId : "";
+    const securityAnswer = typeof body?.securityAnswer === "string" ? body.securityAnswer : "";
+    const adminPin = typeof body?.adminPin === "string" ? body.adminPin : "";
+
+    if (body?.action === "configure_security") {
+      const result = await configureSalesResetSecurity({ businessId, questionId, securityAnswer, adminPin, operatorNote });
+      return ok({ result }, { status: 200 }, {
+        endpoint: "POST /api/pos/admin/sales-reset",
+        businessId,
+        destructiveAction: false,
+        securityConfigured: true
+      });
+    }
+
+    const result = await performSalesReset({ businessId, questionId, securityAnswer, adminPin, operatorNote });
     return ok({ result }, { status: 200 }, {
       endpoint: "POST /api/pos/admin/sales-reset",
       businessId,
@@ -51,8 +55,28 @@ export async function POST(request: Request) {
       preservesLicenseConfig: true
     });
   } catch (error) {
-    if (error instanceof Error && error.message === "SALES_RESET_CONFIRMATION_REQUIRED") {
-      return fail("SALES_RESET_CONFIRMATION_REQUIRED", "Confirmación inválida para reset de ventas.", 423);
+    if (error instanceof Error) {
+      if (error.message === "RESET_SECURITY_NOT_CONFIGURED") {
+        return fail("RESET_SECURITY_NOT_CONFIGURED", "Configura primero la pregunta de seguridad y el PIN admin.", 428);
+      }
+      if (error.message === "RESET_ADMIN_PIN_INVALID") {
+        return fail("RESET_ADMIN_PIN_INVALID", "El PIN admin no coincide.", 403);
+      }
+      if (error.message === "RESET_SECURITY_ANSWER_INVALID") {
+        return fail("RESET_SECURITY_ANSWER_INVALID", "La respuesta de seguridad no coincide.", 403);
+      }
+      if (error.message === "RESET_SECURITY_QUESTION_MISMATCH") {
+        return fail("RESET_SECURITY_QUESTION_MISMATCH", "La pregunta seleccionada no corresponde a la configuración local.", 403);
+      }
+      if (error.message === "RESET_ADMIN_PIN_INVALID_FORMAT") {
+        return fail("RESET_ADMIN_PIN_INVALID_FORMAT", "El PIN admin debe tener exactamente 6 dígitos.", 400);
+      }
+      if (error.message === "RESET_SECURITY_ANSWER_INVALID_FORMAT") {
+        return fail("RESET_SECURITY_ANSWER_INVALID_FORMAT", "La respuesta debe ser una sola palabra de 2 a 48 caracteres.", 400);
+      }
+      if (error.message === "RESET_SECURITY_QUESTION_INVALID") {
+        return fail("RESET_SECURITY_QUESTION_INVALID", "Selecciona una pregunta de seguridad válida.", 400);
+      }
     }
     return toPosApiError(error);
   }

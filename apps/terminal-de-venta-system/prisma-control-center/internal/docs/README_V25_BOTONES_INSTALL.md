@@ -19,7 +19,7 @@ cd "F:\descargasf\prisma_control_center_v25_extract\prisma-control-center"
 
 ```powershell
 cd "F:\repos\hitech-os\apps\terminal-de-venta-system\prisma-control-center"
-.\07_ABRIR_PANEL_CONTROL_3150.cmd
+.\01_LEVANTAR_TODO_LOCAL.cmd
 ```
 
 4. Abre:
@@ -52,4 +52,3 @@ Sección visible: **Botones de motores** con 8 botones:
 - `/api/ops/action/run-health`
 - `/api/ops/operator-brief`
 - `/api/ops/action/kill`
-

@@ -42,9 +42,9 @@ export const catalogScreenContract = {
     { Producto: "Papel Z", Estado: "Bien", "Qué falta": "Listo para vender", Acción: "Ver" }
   ],
   evidence: [
-    { label: "Fuente", value: "Catálogo activo, precios y códigos" },
-    { label: "Criterio", value: "productos activos sin datos mínimos o con código repetido" },
-    { label: "Confianza", value: "Alta si la revisión de datos no reporta pendientes" },
-    { label: "Validación", value: "Reglas disponibles en la vista de validación de catálogo" }
+    { kind: "technical" as const,  label: "Fuente", value: "Catálogo activo, precios y códigos" },
+    { kind: "technical" as const,  label: "Criterio", value: "productos activos sin datos mínimos o con código repetido" },
+    { kind: "technical" as const,  label: "Confianza", value: "Alta si la revisión de datos no reporta pendientes" },
+    { kind: "technical" as const,  label: "Validación", value: "Reglas disponibles en la vista de validación de catálogo" }
   ]
 };

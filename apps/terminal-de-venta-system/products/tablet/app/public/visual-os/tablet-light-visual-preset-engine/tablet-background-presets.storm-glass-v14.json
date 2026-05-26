@@ -1,0 +1,91 @@
+{
+  "schema": "prisma.tablet.background.presets",
+  "version": "14.0.0-storm-vapor-glass",
+  "galleryDefault": "storm-cloud-operations-real",
+  "policy": {
+    "visualOsOnly": true,
+    "doNotMutatePos": true,
+    "productLightPresetId": "tablet-soft-gray-clouds",
+    "darkShowcaseDefault": "storm-cloud-operations-real",
+    "note": "Storm Real and Liquid Ops v14 remain Visual OS only. Not applied to productive Tablet POS."
+  },
+  "assets": {
+    "stormImage": "assets/backgrounds/storm-cloud-operations-real.jpg",
+    "displacementImage": "assets/backgrounds/liquid-operations-smoke.svg",
+    "liquidOpsReference": "assets/backgrounds/liquid-operations-ui-reference.png"
+  },
+  "libraries": {
+    "pixijs": "cdn",
+    "gsap": "cdn"
+  },
+  "presets": [
+    {
+      "id": "storm-cloud-operations-real",
+      "name": "Storm Cloud Operations Real",
+      "tone": "dark-showcase",
+      "darkShowcase": true,
+      "applyDefault": false,
+      "imageAsset": "assets/backgrounds/storm-cloud-operations-real.jpg",
+      "displacementAsset": "assets/backgrounds/liquid-operations-smoke.svg",
+      "visualRole": "real storm background with darker grading and more visible vapor displacement",
+      "motion": {
+        "kind": "pixijs-displacement-gsap-drift",
+        "seconds": 16,
+        "reducedMotion": "freeze"
+      },
+      "glass": {
+        "shellBlurPx": 0.5,
+        "heroBlurPx": 3,
+        "panelBlurPx": 1.5,
+        "rowBlurPx": 1,
+        "rim": "hydro selective",
+        "specular": "enabled",
+        "touchTargetPx": 48
+      }
+    },
+    {
+      "id": "liquid-operations-ui-reference",
+      "name": "Liquid Operations UI Reference",
+      "tone": "dark-showcase",
+      "darkShowcase": true,
+      "applyDefault": false,
+      "imageAsset": "assets/backgrounds/liquid-operations-ui-reference.png",
+      "displacementAsset": "assets/backgrounds/liquid-operations-smoke.svg",
+      "visualRole": "reference UI art background for Liquid Ops with visible vapor displacement"
+    },
+    {
+      "id": "tablet-soft-gray-clouds",
+      "name": "Tablet Soft Gray Clouds",
+      "tone": "light-tablet-safe",
+      "darkShowcase": false,
+      "applyDefault": false,
+      "visualRole": "light-first product candidate"
+    },
+    {
+      "id": "obsidian-cloud-motion",
+      "name": "Obsidian Cloud Motion",
+      "tone": "dark-showcase",
+      "darkShowcase": true,
+      "applyDefault": false,
+      "visualRole": "dark cloud comparison"
+    },
+    {
+      "id": "aurora-slate-veil",
+      "name": "Aurora Slate Veil",
+      "tone": "dark-showcase",
+      "darkShowcase": true,
+      "applyDefault": false,
+      "visualRole": "dark aurora comparison"
+    }
+  ],
+  "validations": [
+    "json-parse",
+    "storm-image-exists",
+    "displacement-asset-exists",
+    "liquid-ui-reference-exists",
+    "reduced-motion",
+    "touch-target-48px",
+    "no-pos-mutation",
+    "dark-showcase-not-product-default"
+  ]
+}

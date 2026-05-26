@@ -1,0 +1,66 @@
+{
+  "schema": "prisma.tablet.background.preset.patch.v2",
+  "created": "2026-05-25",
+  "surface": "tablet",
+  "theme": "light",
+  "presets": [
+    {
+      "id": "pearl-grey-mist-v2-crystal",
+      "title": "Pearl Grey Mist v2 Crystal",
+      "kind": "background-plus-crystal-panels",
+      "description": "Grey-forward premium pearl mist background with crystal panels, hydro rim, soft shadows, ambient mist drift and micro tilt.",
+      "recommendedFor": [
+        "/pos",
+        "/checkout",
+        "/catalog",
+        "/stock",
+        "/sales/today",
+        "/sales/history",
+        "/settings",
+        "/dashboard"
+      ],
+      "layer": "L0 background + L2/L3 glass + L4 rim + L7 motion",
+      "visualBudget": {
+        "background": 0.44,
+        "glass": 0.68,
+        "rim": 0.28,
+        "glow": 0.1,
+        "motion": 0.24,
+        "webgl": 0.0
+      },
+      "tokens": {
+        "--pgm-bg-0": "#d7dce1",
+        "--pgm-bg-1": "#e3e7eb",
+        "--pgm-bg-2": "#f3f5f7",
+        "--pgm-bg-3": "#cbd2d8",
+        "--pgm-pearl": "rgba(255,255,255,0.78)",
+        "--pgm-line": "rgba(117,130,143,0.22)"
+      },
+      "assets": [
+        "prisma-tablet-pearl-grey-mist-v2.css",
+        "prisma-tablet-pearl-grey-mist-v2.js",
+        "pearl-grey-mist-v2-smoke-test.html"
+      ],
+      "motion": {
+        "cssKeyframes": [
+          "pgm-mist-drift",
+          "pgm-sheen-sweep",
+          "pgm-float-slow",
+          "pgm-crystal-glint"
+        ],
+        "jsMicrointeraction": [
+          "pointer parallax variables",
+          "card micro tilt"
+        ],
+        "reducedMotion": "static premium frame"
+      },
+      "guardrails": [
+        "no-dark-dominant-background",
+        "touch-target-min-48",
+        "single-primary-glow",
+        "reduced-motion-pass",
+        "glass-legibility-pass"
+      ]
+    }
+  ]
+}

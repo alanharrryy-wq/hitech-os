@@ -22,7 +22,12 @@
     "verify:pc-ingest-idempotency": "node tools/verify_pc_ingest_idempotency_01.mjs",
     "verify:pc-uiux-300": "node tools/verify_pc_uiux_300_addendum.mjs",
     "verify:supplier-sync-contract": "node tools/verify_supplier_sync_contract_01.mjs",
-    "verify:supplier-projectors": "node tools/verify_supplier_projectors_01.mjs"
+    "verify:supplier-projectors": "node tools/verify_supplier_projectors_01.mjs",
+    "verify:pc-uiux-ansi-nav-gate": "node tools/verify_pc_uiux_ansi_nav_gate.mjs --root ../../.. --out .",
+    "verify:pc-uiux-route-adoption": "node tools/verify_pc_uiux_route_adoption_gate_v02.mjs --root ../../..",
+    "verify:pc-uiux-robust": "node tools/verify_pc_uiux_route_adoption_gate_v02.mjs --root ../../..",
+    "verify:pc-uiux-visual": "node tools/visual/verify_pc_uiux_visual_gate_v03.mjs --root ../../..",
+    "verify:pc-uiux-visual:static": "node tools/visual/verify_pc_uiux_visual_gate_v03_static.mjs --root ../../.."
   },
   "dependencies": {
     "@prisma/client": "5.21.1",
@@ -32,6 +37,7 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@types/node": "22.13.9",
     "@types/react": "19.2.14",
     "prisma": "5.21.1",

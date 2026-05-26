@@ -1,8 +1,21 @@
-import { DecisionScreen } from "@components/uiux/decision-screen";
-import { suppliersScreenContract } from "@/uiux/suppliers-screen-contract";
+import { SmartPurchaseWorkbench } from "@components/suppliers/smart-purchase-workbench";
+import { getSupplierDashboardSnapshot } from "@/lib/suppliers/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function SuppliersPage() {
-  return <DecisionScreen {...suppliersScreenContract} currentPath="/proveedores" />;
+  const snapshot = await getSupplierDashboardSnapshot();
+  return (
+    <SmartPurchaseWorkbench
+      generatedAt={snapshot.generatedAt}
+      suppliers={snapshot.suppliers}
+      recommendations={snapshot.recommendations}
+      signals={snapshot.signals}
+      openOrders={snapshot.openOrders}
+      receivingQueue={snapshot.receivingQueue}
+      payables={snapshot.payables}
+      lifecycle={snapshot.lifecycle}
+      inventoryBridge={snapshot.inventoryBridge}
+    />
+  );
 }

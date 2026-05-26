@@ -52,9 +52,20 @@ export function SmartPurchaseWorkbench({
         <div className="supplier-context-bar supplier-context-bar-v07" aria-label="Contexto operativo">
           <span>Actualizado: {formatDate(generatedAt)}</span>
           <span>PRISMA recomienda; tú apruebas</span>
-          <span>Tablet solo recibe avisos ligeros</span>
+          <span>Tablet vende; PC decide compras y proveedores</span>
         </div>
       </section>
+
+      <details className="card supplier-operation-evidence-v07">
+        <summary>Rastro operativo de Proveedores</summary>
+        <div className="mini-section-stack mini-section-stack-v07">
+          <DataChip label="API operacion" value="acciones sensibles pasan por adaptadores auditables" />
+          <DataChip label="Flujo de pedido sugerido" value="recomendación, simulación, pedido, recepción y pago" />
+          <DataChip label="Movimientos previstos" value="inventario, caja y cuentas por pagar se revisan antes de guardar" />
+          <DataChip label="Rastro operativo" value="actor, fecha, motivo y entidad quedan disponibles para auditoría" />
+          <DataChip label="Tablet y App movil" value="Tablet vende local; móvil consulta señales ligeras" />
+        </div>
+      </details>
 
       <section className="supplier-summary-grid supplier-summary-grid-v07" aria-label="Resumen operativo de proveedores">
         {model.summary.map((item) => <MetricCard key={item.id} {...item} />)}

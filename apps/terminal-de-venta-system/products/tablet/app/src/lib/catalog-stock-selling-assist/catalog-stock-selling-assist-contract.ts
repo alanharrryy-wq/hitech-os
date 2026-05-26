@@ -5,6 +5,7 @@ export type CatalogStockSellingAssistMode = "catalog" | "stock";
 export type CatalogStockSellingAssistProduct = PosProduct & {
   businessId?: string;
   costCents?: number;
+  aliases?: string[];
   updatedAt?: string;
 };
 

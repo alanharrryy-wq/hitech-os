@@ -1,0 +1,257 @@
+{
+  "generated_at": "2026-05-25T10:30:02",
+  "installer_root": "F:\\descargasf\\PRISMA_TABLET_LIGHT_VISUAL_PRESET_ENGINE_INSTALLER_RUN",
+  "root": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system",
+  "destination": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\docs\\design\\tablet-light-visual-preset-engine",
+  "result_zip": "F:\\descargasf\\PRISMA_TABLET_LIGHT_PRESET_ENGINE_INSTALL_RESULT_20260525_103002.zip",
+  "checks": [
+    {
+      "name": "root_exists",
+      "ok": true,
+      "detail": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system"
+    },
+    {
+      "name": "payload_exists",
+      "ok": true,
+      "detail": "F:\\descargasf\\PRISMA_TABLET_LIGHT_VISUAL_PRESET_ENGINE_INSTALLER_RUN\\payload"
+    },
+    {
+      "name": "required_payload:PRISMA_TABLET_LIGHT_VISUAL_PRESET_ENGINE.md",
+      "ok": true,
+      "detail": "F:\\descargasf\\PRISMA_TABLET_LIGHT_VISUAL_PRESET_ENGINE_INSTALLER_RUN\\payload\\PRISMA_TABLET_LIGHT_VISUAL_PRESET_ENGINE.md"
+    },
+    {
+      "name": "required_payload:tablet-light-preset.schema.json",
+      "ok": true,
+      "detail": "F:\\descargasf\\PRISMA_TABLET_LIGHT_VISUAL_PRESET_ENGINE_INSTALLER_RUN\\payload\\tablet-light-preset.schema.json"
+    },
+    {
+      "name": "required_payload:tablet-light-adapter.codex-map.json",
+      "ok": true,
+      "detail": "F:\\descargasf\\PRISMA_TABLET_LIGHT_VISUAL_PRESET_ENGINE_INSTALLER_RUN\\payload\\tablet-light-adapter.codex-map.json"
+    },
+    {
+      "name": "required_payload:tablet-preset-application.manifest.json",
+      "ok": true,
+      "detail": "F:\\descargasf\\PRISMA_TABLET_LIGHT_VISUAL_PRESET_ENGINE_INSTALLER_RUN\\payload\\tablet-preset-application.manifest.json"
+    },
+    {
+      "name": "required_payload:visual-verifier-rules.json",
+      "ok": true,
+      "detail": "F:\\descargasf\\PRISMA_TABLET_LIGHT_VISUAL_PRESET_ENGINE_INSTALLER_RUN\\payload\\visual-verifier-rules.json"
+    },
+    {
+      "name": "required_payload:surface-map.generated.json",
+      "ok": true,
+      "detail": "F:\\descargasf\\PRISMA_TABLET_LIGHT_VISUAL_PRESET_ENGINE_INSTALLER_RUN\\payload\\surface-map.generated.json"
+    },
+    {
+      "name": "json_parse:tablet-light-preset.schema.json",
+      "ok": true,
+      "detail": "valid"
+    },
+    {
+      "name": "json_parse:tablet-light-adapter.codex-map.json",
+      "ok": true,
+      "detail": "valid"
+    },
+    {
+      "name": "json_parse:tablet-preset-application.manifest.json",
+      "ok": true,
+      "detail": "valid"
+    },
+    {
+      "name": "json_parse:visual-verifier-rules.json",
+      "ok": true,
+      "detail": "valid"
+    },
+    {
+      "name": "json_parse:surface-map.generated.json",
+      "ok": true,
+      "detail": "valid"
+    },
+    {
+      "name": "schema_declares_schema",
+      "ok": true,
+      "detail": "expects $schema"
+    },
+    {
+      "name": "schema_is_object_contract",
+      "ok": true,
+      "detail": "expects type object"
+    },
+    {
+      "name": "manifest_mentions_tablet",
+      "ok": true,
+      "detail": "expects tablet target"
+    },
+    {
+      "name": "manifest_mentions_light",
+      "ok": true,
+      "detail": "expects light visual family"
+    },
+    {
+      "name": "visual_smoke_html_created",
+      "ok": true,
+      "detail": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\docs\\design\\tablet-light-visual-preset-engine\\visual-smoke-test.html"
+    },
+    {
+      "name": "visual_smoke_svg_created",
+      "ok": true,
+      "detail": "F:\\repos\\hitech-os\\apps\\terminal-de-venta-system\\docs\\design\\tablet-light-visual-preset-engine\\visual-smoke-test.expected.svg"
+    }
+  ],
+  "warnings": [
+    "126 possible dark references found. This can be OK if they are adapter quarantine mappings, but final Tablet preset must remain light."
+  ],
+  "errors": [],
+  "files": {
+    "PRISMA_TABLET_LIGHT_VISUAL_PRESET_ENGINE.md": {
+      "bytes": 7247,
+      "sha256": "59222b1f02f5a1e17761a5108bf511fc8afd170031aaf8c5a70059c37e0fc49b"
+    },
+    "tablet-light-preset.schema.json": {
+      "bytes": 5191,
+      "sha256": "cb05ee9e829edfa4691a5405e278de72549364a2cd3e926d3e44db70968f9a44"
+    },
+    "tablet-light-adapter.codex-map.json": {
+      "bytes": 5406,
+      "sha256": "0a98a11fc9af30d3b0c3173a53c27e32c9d7966e9653b11c75e3b1b01034836f"
+    },
+    "tablet-preset-application.manifest.json": {
+      "bytes": 98887,
+      "sha256": "514c6eb04e5debf76dbded91a769f89fea60f27d9b0bd9c631e96d3b6a5eaa11"
+    },
+    "visual-verifier-rules.json": {
+      "bytes": 6922,
+      "sha256": "93449c6d2f8bee736298659771c15e1d02b8fb8b41a3f4986b73af235d560b1a"
+    },
+    "surface-map.generated.json": {
+      "bytes": 111717,
+      "sha256": "bea0ed13a8a8c2d5a18c1841ad2798412ff257bf73b71d8d05734882fd929d13"
+    }
+  },
+  "dark_token_hit_count": 126,
+  "dark_token_sample": [
+    {
+      "line": 53,
+      "text": "| `visual-verifier-rules.json` | Reglas QA visual, táctil, contraste, no-dark, customer trust y rollback. |"
+    },
+    {
+      "line": 75,
+      "text": "- Dark / Night / Obsidian como UI final."
+    },
+    {
+      "line": 76,
+      "text": "- Graphite dominante."
+    },
+    {
+      "line": 116,
+      "text": "no-dark, touch, contrast, overflow, screenshots, build"
+    },
+    {
+      "line": 209,
+      "text": "6. Sólo aceptar si pasa build + no-dark + touch + contrast + overflow."
+    },
+    {
+      "line": 500,
+      "text": "\"Tablet policy: final visual presets must be light, tactile, luminous, and not dark-dominant.\""
+    },
+    {
+      "line": 503,
+      "text": "\"policy\": \"Tablet final visual presets must be light, tactile, luminous, high-contrast-soft, and not dark-dominant.\","
+    },
+    {
+      "line": 511,
+      "text": "\"obsidian\","
+    },
+    {
+      "line": 512,
+      "text": "\"night\","
+    },
+    {
+      "line": 513,
+      "text": "\"dark\","
+    },
+    {
+      "line": 514,
+      "text": "\"graphite-dominant\","
+    },
+    {
+      "line": 515,
+      "text": "\"black visual governance for Tablet final\""
+    },
+    {
+      "line": 520,
+      "text": "\"guard\": \"no-dark-dominant-background\","
+    },
+    {
+      "line": 521,
+      "text": "\"description\": \"Tablet final cannot use dark dominant skins; legacy dark reference route is quarantine only.\""
+    },
+    {
+      "line": 592,
+      "text": "\"codex\": \"Sync Night Pulse\","
+    },
+    {
+      "line": 623,
+      "text": "\"codex\": \"Settings Matte Graphite\","
+    },
+    {
+      "line": 841,
+      "text": "\"no-dark-token\","
+    },
+    {
+      "line": 1133,
+      "text": "\"no-dark-token\","
+    },
+    {
+      "line": 1428,
+      "text": "\"no-dark-token\","
+    },
+    {
+      "line": 1641,
+      "text": "\"no-dark-token\","
+    },
+    {
+      "line": 1865,
+      "text": "\"no-dark-token\","
+    },
+    {
+      "line": 2061,
+      "text": "\"no-dark-token\","
+    },
+    {
+      "line": 2209,
+      "text": "\"no-dark-token\","
+    },
+    {
+      "line": 2357,
+      "text": "\"no-dark-token\","
+    },
+    {
+      "line": 2505,
+      "text": "\"no-dark-token\","
+    },
+    {
+      "line": 2593,
+      "text": "\"no-dark-token\","
+    },
+    {
+      "line": 2681,
+      "text": "\"no-dark-token\","
+    },
+    {
+      "line": 2807,
+      "text": "\"no-dark-token\","
+    },
+    {
+      "line": 2890,
+      "text": "\"no-dark-token\","
+    },
+    {
+      "line": 2973,
+      "text": "\"no-dark-token\","
+    }
+  ]
+}

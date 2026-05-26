@@ -1,8 +1,9 @@
-import { DecisionScreen } from "@components/uiux/decision-screen";
-import { syncScreenContract } from "@/uiux/sync-screen-contract";
+import { PcCommandCenterPage } from "@components/control/pc-command-center-page";
+import { getPcTabletCommunication } from "@/server/services/pc-command-center.service";
 
 export const dynamic = "force-dynamic";
 
 export default async function TabletCommunicationPage() {
-  return <DecisionScreen {...syncScreenContract} currentPath="/tablet-communication" />;
+  const model = await getPcTabletCommunication();
+  return <PcCommandCenterPage model={model} />;
 }

@@ -41,9 +41,9 @@ export const suppliersScreenContract = {
     { Proveedor: "Dulces Sur", Estado: "Pendiente", "Qué pasa": "Pago vence mañana", Acción: "Ver pago" }
   ],
   evidence: [
-    { label: "Fuente", value: "proveedores, pedidos, recepciones y cuentas por pagar" },
-    { label: "Criterio", value: "cobertura de productos bajos, cumplimiento reciente y vencimientos" },
-    { label: "Confirmación", value: "acciones reales deben revisarse antes de guardar" },
-    { label: "Historial", value: "eventos y responsables disponibles en auditoría" }
+    { kind: "technical" as const,  label: "Fuente", value: "proveedores, pedidos, recepciones y cuentas por pagar" },
+    { kind: "technical" as const,  label: "Criterio", value: "cobertura de productos bajos, cumplimiento reciente y vencimientos" },
+    { kind: "technical" as const,  label: "Confirmación", value: "acciones reales deben revisarse antes de guardar" },
+    { kind: "governance" as const,  label: "Historial", value: "eventos y responsables disponibles en auditoría" }
   ]
 };

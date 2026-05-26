@@ -111,7 +111,7 @@ export function LicenseStatusCard({ status, runtimeContext }: { status: Normaliz
   const tone = toneForState(status.state);
   const isCustomerPending = status.state === "missing" && runtimeContext.runtimeMode !== "dev";
   return (
-    <section className={styles.card}>
+    <section className={styles.card} id="license-status">
       <p className={styles.eyebrow}>Licencia local</p>
       <h1 className={styles.title}>{isCustomerPending ? "LICENSE_CUSTOMER_PENDING" : status.state === "missing" ? "Continuidad local" : `Plan ${status.plan}`}</h1>
       <p className={styles.copy}>{stateLabel(status.state)}. {statusCopy(status, runtimeContext)}</p>
@@ -119,13 +119,13 @@ export function LicenseStatusCard({ status, runtimeContext }: { status: Normaliz
         <div className={styles.actionPanel} data-prisma-license-state="LICENSE_CUSTOMER_PENDING">
           <div>
             <strong>Instalación pendiente de licencia local</strong>
-            <span>Runtime e identidad quedan trazados; falta instalar la licencia firmada en ProgramData canonical.</span>
+            <span>Runtime e identidad quedan trazados. Soporte puede entregar o actualizar la licencia firmada sin sacar al operador de Tablet.</span>
           </div>
           <div className={styles.ctaGrid}>
-            <a className={styles.primaryLink} href="http://127.0.0.1:3150/#license-ops">Importar licencia local</a>
-            <a className={styles.secondaryLink} href="http://127.0.0.1:3150/#license-ops">Abrir License Ops</a>
-            <a className={styles.secondaryLink} href="http://127.0.0.1:3150/api/license-ops/run/export-evidence-zip">Exportar diagnóstico</a>
-            <a className={styles.secondaryLink} href="http://127.0.0.1:3150/api/license-ops/run/validate-runtime-config">Validar runtime</a>
+            <a className={styles.primaryLink} href="mailto:contacto@hitechrts.com?subject=Soporte%20licencia%20PRISMA%20Tablet">Request support</a>
+            <a className={styles.secondaryLink} href="#license-refresh">Update license</a>
+            <a className={styles.secondaryLink} href="#license-status">View license status</a>
+            <a className={styles.secondaryLink} href="https://wa.me/525629563031">View support contact</a>
           </div>
         </div>
       ) : null}

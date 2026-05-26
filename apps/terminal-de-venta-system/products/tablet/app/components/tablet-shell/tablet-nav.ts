@@ -1,6 +1,9 @@
-import type { TabletRuntimeSnapshot } from "@/lib/tablet-runtime-snapshot/shell-contract";
 import type { PrismaIconName } from "@components/prisma-dark-pos/prisma-dark-pos-data";
-import { decideCanSellFromRuntimeSnapshot } from "@/lib/operational-gate/can-sell";
+
+type TabletNavSnapshot = {
+  shift: { state: string };
+  connection: { pendingEvents: number; failedEvents: number; conflictEvents: number };
+};
 
 export type TabletNavGroup = "operacion" | "consulta" | "soporte";
 
@@ -39,14 +42,14 @@ export const TABLET_NAV_ITEMS: TabletNavItem[] = [
 ];
 
 const CONSULTA_PATHS = new Set(["/catalog", "/stock", "/inventory", "/existencias", "/inventory/low-stock", "/sales", "/sales/today", "/sales/history", "/returns"]);
-const SOPORTE_PATHS = new Set(["/sync", "/events/outbox", "/offline", "/settings/export", "/settings/data", "/settings/license", "/release-gate"]);
+const SOPORTE_PATHS = new Set(["/sync", "/offline", "/settings/export", "/settings/data", "/settings/license", "/release-gate"]);
 const OPERATION_PATHS = new Set(["/", "/pos", "/checkout", "/shift"]);
 
 export function isTabletNavActive(currentPath: string, href: string) {
   if (href === "/") return currentPath === "/";
   if (href === "/pos") return currentPath === href || currentPath.startsWith("/pos/") || currentPath === "/checkout" || currentPath.startsWith("/checkout/");
   if (href === "/stock") return currentPath === href || currentPath === "/inventory" || currentPath === "/existencias" || currentPath === "/inventory/low-stock";
-  if (href === "/sync") return currentPath === href || currentPath === "/events/outbox";
+  if (href === "/sync") return currentPath === href;
   if (href === "/offline") return currentPath === href || currentPath === "/settings/export";
   if (href === "/sales/today") return currentPath === href || currentPath.startsWith("/sales/today") || currentPath === "/sales";
   if (href === "/sales/history") return currentPath === href || currentPath.startsWith("/sales/history");
@@ -63,11 +66,11 @@ export function getTabletFlowStage(currentPath: string): TabletFlowStage {
   return "operacion";
 }
 
-export function getTabletPendingCount(snapshot: TabletRuntimeSnapshot) {
+export function getTabletPendingCount(snapshot: TabletNavSnapshot) {
   return snapshot.connection.pendingEvents + snapshot.connection.failedEvents + snapshot.connection.conflictEvents;
 }
 
-export function getTabletFlowCopy(stage: TabletFlowStage, snapshot: TabletRuntimeSnapshot) {
+export function getTabletFlowCopy(stage: TabletFlowStage, snapshot: TabletNavSnapshot) {
   if (stage === "inicio") {
     return {
       label: "Mapa de trabajo",
@@ -98,7 +101,7 @@ export function getTabletFlowCopy(stage: TabletFlowStage, snapshot: TabletRuntim
   };
 }
 
-export function getVisibleTabletNavItems(_currentPath: string, snapshot: TabletRuntimeSnapshot) {
-  const decision = decideCanSellFromRuntimeSnapshot(snapshot);
-  return TABLET_NAV_ITEMS.filter((item) => item.href !== "/pos" || decision.canShowSellNavigation);
+export function getVisibleTabletNavItems(_currentPath: string, snapshot: TabletNavSnapshot) {
+  const canShowSellNavigation = snapshot.shift.state === "open";
+  return TABLET_NAV_ITEMS.filter((item) => item.href !== "/pos" || canShowSellNavigation);
 }

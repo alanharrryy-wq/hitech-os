@@ -1,3 +1,4 @@
+// PRISMA_CHART_LAB_POWER_STUDIO_V3_FINAL_INFRASTRUCTURE
 // PRISMA_PEARL_EXECUTIVE_CONTROL_PRESETS_V1
 import type {
   LabChartControlState,
@@ -39,7 +40,8 @@ function commonChartControls(extra: LabChartRuntimeControl[] = []): LabChartRunt
       affectedDataTransform: "scales or suppresses mock values to preview state behavior",
       validation: "value must be one of clean, critical, partial, stale, offline, dense",
       risk: "low",
-      resetBehavior: "returns to clean"
+      resetBehavior: "returns to clean",
+      powerTab: "data"
     }),
     control({
       id: "themePreset",
@@ -51,7 +53,8 @@ function commonChartControls(extra: LabChartRuntimeControl[] = []): LabChartRunt
       affectedOptionPath: "option.color / option.backgroundColor / textStyle",
       validation: "value must be a known lab theme preset",
       risk: "low",
-      resetBehavior: "returns to Crystal Light"
+      resetBehavior: "returns to Crystal Light",
+      powerTab: "visual"
     }),
     control({
       id: "showLabels",
@@ -62,7 +65,8 @@ function commonChartControls(extra: LabChartRuntimeControl[] = []): LabChartRunt
       affectedOptionPath: "series[].label.show",
       validation: "boolean",
       risk: "low",
-      resetBehavior: "labels on"
+      resetBehavior: "labels on",
+      powerTab: "labels"
     }),
     control({
       id: "animation",
@@ -73,7 +77,8 @@ function commonChartControls(extra: LabChartRuntimeControl[] = []): LabChartRunt
       affectedOptionPath: "option.animation",
       validation: "boolean; disabled when reduced motion is active",
       risk: "low",
-      resetBehavior: "animation on"
+      resetBehavior: "animation on",
+      powerTab: "motion"
     }),
     control({
       id: "visualIntensity",
@@ -81,13 +86,162 @@ function commonChartControls(extra: LabChartRuntimeControl[] = []): LabChartRunt
       type: "range",
       defaultValue: 70,
       min: 20,
-      max: 100,
+      max: 200,
       step: 5,
       affectedLayer: "marks",
-      affectedOptionPath: "series[].itemStyle.opacity / lineStyle.width",
-      validation: "20-100",
+      affectedOptionPath: "series[].itemStyle.opacity / lineStyle.width / itemStyle.shadowBlur",
+      validation: "20-200; safe up to 100, wild 101-160, insane 161-200",
       risk: "medium",
-      resetBehavior: "returns to 70"
+      resetBehavior: "returns to 70",
+      powerTab: "visual"
+    }),
+    control({
+      id: "contrastPunch",
+      label: "Contrast punch",
+      type: "range",
+      defaultValue: 72,
+      min: 0,
+      max: 200,
+      step: 4,
+      affectedLayer: "visual emphasis",
+      affectedOptionPath: "series[].itemStyle.borderWidth / lineStyle.opacity / emphasis",
+      validation: "0-200; boosts visual separation without changing data",
+      risk: "medium",
+      resetBehavior: "returns to 72",
+      powerTab: "visual"
+    }),
+    control({
+      id: "glowAura",
+      label: "Glow aura",
+      type: "range",
+      defaultValue: 8,
+      min: 0,
+      max: 80,
+      step: 2,
+      affectedLayer: "visual atmosphere",
+      affectedOptionPath: "series[].itemStyle.shadowBlur / lineStyle.shadowBlur",
+      validation: "0-80; safe up to 24, wild 25-55, insane 56-80",
+      risk: "medium",
+      resetBehavior: "returns to 8",
+      powerTab: "visual"
+    }),
+    control({
+      id: "motionPreset",
+      label: "Motion preset",
+      type: "segmented",
+      defaultValue: "subtle-premium",
+      options: [
+        { label: "Still", value: "still" },
+        { label: "Subtle", value: "subtle-premium" },
+        { label: "Sweep", value: "sweep-scan" },
+        { label: "Pulse", value: "pulse-alerts" },
+        { label: "Snap", value: "executive-snap" }
+      ],
+      affectedLayer: "motion recipe",
+      affectedOptionPath: "option.animation*",
+      validation: "known motion recipe",
+      risk: "low",
+      resetBehavior: "returns to Subtle",
+      powerTab: "motion"
+    }),
+    control({
+      id: "entranceDuration",
+      label: "Entrance duration",
+      type: "range",
+      defaultValue: 900,
+      min: 0,
+      max: 5000,
+      step: 100,
+      affectedLayer: "motion",
+      affectedOptionPath: "option.animationDuration",
+      validation: "0-5000 ms",
+      risk: "medium",
+      resetBehavior: "900 ms",
+      powerTab: "motion"
+    }),
+    control({
+      id: "updateDuration",
+      label: "Update duration",
+      type: "range",
+      defaultValue: 900,
+      min: 0,
+      max: 5000,
+      step: 100,
+      affectedLayer: "motion",
+      affectedOptionPath: "option.animationDurationUpdate",
+      validation: "0-5000 ms",
+      risk: "medium",
+      resetBehavior: "900 ms",
+      powerTab: "motion"
+    }),
+    control({
+      id: "staggerDelay",
+      label: "Stagger delay",
+      type: "range",
+      defaultValue: 20,
+      min: 0,
+      max: 1500,
+      step: 20,
+      affectedLayer: "motion",
+      affectedOptionPath: "option.animationDelay / option.animationDelayUpdate",
+      validation: "0-1500 ms",
+      risk: "medium",
+      resetBehavior: "20 ms",
+      powerTab: "motion"
+    }),
+    control({
+      id: "easingCurve",
+      label: "Easing",
+      type: "select",
+      defaultValue: "cubicOut",
+      options: [
+        { label: "Linear", value: "linear" },
+        { label: "Cubic out", value: "cubicOut" },
+        { label: "Quartic out", value: "quarticOut" },
+        { label: "Elastic out", value: "elasticOut" },
+        { label: "Bounce out", value: "bounceOut" }
+      ],
+      affectedLayer: "motion",
+      affectedOptionPath: "option.animationEasing / option.animationEasingUpdate",
+      validation: "known ECharts easing string",
+      risk: "low",
+      resetBehavior: "cubicOut",
+      powerTab: "motion"
+    }),
+    control({
+      id: "tooltipMode",
+      label: "Tooltip mode",
+      type: "segmented",
+      defaultValue: "rich",
+      options: [
+        { label: "None", value: "none" },
+        { label: "Simple", value: "simple" },
+        { label: "Rich", value: "rich" },
+        { label: "Forensic", value: "forensic" }
+      ],
+      affectedLayer: "interaction",
+      affectedOptionPath: "option.tooltip",
+      validation: "tooltip presentation only",
+      risk: "low",
+      resetBehavior: "rich",
+      powerTab: "interaction"
+    }),
+    control({
+      id: "hoverSpotlight",
+      label: "Hover spotlight",
+      type: "segmented",
+      defaultValue: "soft",
+      options: [
+        { label: "Off", value: "off" },
+        { label: "Soft", value: "soft" },
+        { label: "Strong", value: "strong" }
+      ],
+      affectedLayer: "interaction",
+      affectedOptionPath: "series[].emphasis / series[].blur",
+      validation: "focuses hovered marks while dimming surrounding noise",
+      risk: "medium",
+      resetBehavior: "soft",
+      powerTab: "interaction"
     }),
     ...extra
   ];
@@ -127,27 +281,29 @@ export const chartControlSchemas: Record<string, LabChartRuntimeControl[]> = {
       type: "range",
       defaultValue: 14,
       min: 8,
-      max: 26,
+      max: 120,
       step: 1,
       affectedLayer: "geometry",
       affectedOptionPath: "series[0].nodeWidth",
-      validation: "8-26",
+      validation: "8-120; safe 8-26, wild 27-60, insane 61-120",
       risk: "medium",
-      resetBehavior: "14"
+      resetBehavior: "14",
+      powerTab: "visual"
     }),
     control({
       id: "ribbonOpacity",
       label: "Ribbon opacity",
       type: "range",
       defaultValue: 46,
-      min: 18,
-      max: 80,
+      min: 0,
+      max: 100,
       step: 2,
       affectedLayer: "links",
       affectedOptionPath: "series[0].links[].lineStyle.opacity",
-      validation: "18-80",
+      validation: "0-100; safe 25-90, wild 10-24 or 91-100, insane 0-9",
       risk: "medium",
-      resetBehavior: "46"
+      resetBehavior: "46",
+      powerTab: "visual"
     }),
     control({
       id: "detailLevel",
@@ -895,15 +1051,101 @@ function applySeriesLabels(option: Record<string, unknown>, show: boolean): void
 }
 
 function applyVisualIntensity(option: Record<string, unknown>, intensity: number): void {
-  const opacity = Math.max(0.2, Math.min(1, intensity / 100));
-  const widthBoost = Math.max(1, Math.round(intensity / 28));
+  const normalized = Math.max(0, Math.min(2, intensity / 100));
+  const opacity = Math.max(0.18, Math.min(1, 0.38 + normalized * 0.44));
+  const widthBoost = Math.max(1, Math.round(1 + normalized * 4));
   for (const series of seriesArray(option)) {
     const itemStyle = isRecord(series.itemStyle) ? series.itemStyle : {};
     itemStyle.opacity = opacity;
+    if (normalized > 1.35) itemStyle.shadowBlur = Math.max(Number(itemStyle.shadowBlur ?? 0), Math.round((normalized - 1) * 12));
     series.itemStyle = itemStyle;
     const lineStyle = isRecord(series.lineStyle) ? series.lineStyle : {};
-    if (Object.keys(lineStyle).length > 0) lineStyle.width = widthBoost;
+    if (Object.keys(lineStyle).length > 0) {
+      lineStyle.width = widthBoost;
+      lineStyle.opacity = Math.max(Number(lineStyle.opacity ?? 0.55), opacity);
+    }
     series.lineStyle = lineStyle;
+  }
+}
+
+function applyPowerStudioAtmosphere(option: Record<string, unknown>, values: LabChartControlState): void {
+  const glowAura = numeric(values.glowAura, 8);
+  const contrastPunch = numeric(values.contrastPunch, 72);
+  const glowColor = contrastPunch > 145 ? "rgba(34, 211, 238, 0.32)" : "rgba(8, 109, 255, 0.18)";
+  const borderWidth = contrastPunch > 160 ? 2 : contrastPunch > 100 ? 1 : 0;
+  for (const series of seriesArray(option)) {
+    const itemStyle = isRecord(series.itemStyle) ? series.itemStyle : {};
+    itemStyle.shadowBlur = Math.max(Number(itemStyle.shadowBlur ?? 0), glowAura);
+    itemStyle.shadowColor = glowColor;
+    if (borderWidth > 0) itemStyle.borderWidth = Math.max(Number(itemStyle.borderWidth ?? 0), borderWidth);
+    series.itemStyle = itemStyle;
+
+    const lineStyle = isRecord(series.lineStyle) ? series.lineStyle : {};
+    if (Object.keys(lineStyle).length > 0 || glowAura > 0) {
+      lineStyle.shadowBlur = Math.max(Number(lineStyle.shadowBlur ?? 0), Math.round(glowAura * 0.72));
+      lineStyle.shadowColor = glowColor;
+      lineStyle.opacity = Math.max(Number(lineStyle.opacity ?? 0.48), Math.min(1, 0.32 + contrastPunch / 210));
+      series.lineStyle = lineStyle;
+    }
+
+    const emphasis = isRecord(series.emphasis) ? series.emphasis : {};
+    const emphasisItemStyle = isRecord(emphasis.itemStyle) ? emphasis.itemStyle : {};
+    emphasisItemStyle.shadowBlur = Math.max(Number(emphasisItemStyle.shadowBlur ?? 0), glowAura + Math.round(contrastPunch / 12));
+    emphasis.itemStyle = emphasisItemStyle;
+    series.emphasis = emphasis;
+  }
+}
+
+function applyMotionDirector(option: Record<string, unknown>, values: LabChartControlState, reducedMotion: boolean): void {
+  const motionPreset = stringValue(values.motionPreset, "subtle-premium");
+  const still = reducedMotion || motionPreset === "still" || !booleanValue(values.animation, true);
+  const entranceDuration = still ? 0 : numeric(values.entranceDuration, motionPreset === "executive-snap" ? 420 : 900);
+  const updateDuration = still ? 0 : numeric(values.updateDuration, motionPreset === "pulse-alerts" ? 1400 : 900);
+  const staggerDelay = still ? 0 : numeric(values.staggerDelay, motionPreset === "sweep-scan" ? 38 : 20);
+  const easingCurve = still ? "linear" : stringValue(values.easingCurve, motionPreset === "pulse-alerts" ? "elasticOut" : "cubicOut");
+  option.animation = !still;
+  option.animationDuration = entranceDuration;
+  option.animationDurationUpdate = updateDuration;
+  option.animationEasing = easingCurve;
+  option.animationEasingUpdate = easingCurve;
+  if (!still && staggerDelay > 0) {
+    option.animationDelay = (index: number) => Math.min(1500, index * staggerDelay);
+    option.animationDelayUpdate = (index: number) => Math.min(1500, index * Math.max(8, Math.round(staggerDelay / 2)));
+  }
+  for (const series of seriesArray(option)) {
+    if (motionPreset === "sweep-scan" || motionPreset === "executive-snap") series.universalTransition = motionPreset === "sweep-scan";
+  }
+}
+
+function applyInteractionStudio(option: Record<string, unknown>, values: LabChartControlState): void {
+  const tooltipMode = stringValue(values.tooltipMode, "rich");
+  const hoverSpotlight = stringValue(values.hoverSpotlight, "soft");
+
+  if (tooltipMode === "none") {
+    option.tooltip = { show: false };
+  } else {
+    const currentTooltip = isRecord(option.tooltip) ? option.tooltip : {};
+    option.tooltip = {
+      ...currentTooltip,
+      show: true,
+      trigger: currentTooltip.trigger ?? "item",
+      confine: true,
+      backgroundColor: tooltipMode === "forensic" ? "rgba(8, 15, 28, 0.94)" : "rgba(255, 255, 255, 0.94)",
+      borderColor: tooltipMode === "forensic" ? "rgba(34, 211, 238, 0.42)" : "rgba(8, 109, 255, 0.24)",
+      textStyle: { color: tooltipMode === "forensic" ? "#eff6ff" : "#071426", fontWeight: tooltipMode === "simple" ? 600 : 700 }
+    };
+  }
+
+  for (const series of seriesArray(option)) {
+    if (hoverSpotlight === "off") continue;
+    const emphasis = isRecord(series.emphasis) ? series.emphasis : {};
+    emphasis.focus = "series";
+    series.emphasis = emphasis;
+    const blur = isRecord(series.blur) ? series.blur : {};
+    const blurItemStyle = isRecord(blur.itemStyle) ? blur.itemStyle : {};
+    blurItemStyle.opacity = hoverSpotlight === "strong" ? 0.12 : 0.34;
+    blur.itemStyle = blurItemStyle;
+    series.blur = blur;
   }
 }
 
@@ -1387,8 +1629,10 @@ export function applyChartLabControls(input: {
   applyThemePreset(input.option, themePreset);
   applySeriesLabels(input.option, booleanValue(input.values.showLabels, true));
   applyVisualIntensity(input.option, numeric(input.values.visualIntensity, 70));
+  applyPowerStudioAtmosphere(input.option, input.values);
   filterByConfidence(input.option, numeric(input.values.confidenceFloor, 0));
-  input.option.animation = booleanValue(input.values.animation, true) && !input.reducedMotion;
+  applyMotionDirector(input.option, input.values, input.reducedMotion);
+  applyInteractionStudio(input.option, input.values);
   applyChartSpecificControls(input.chartId, input.option, input.values);
   return input.option;
 }

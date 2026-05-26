@@ -1,0 +1,254 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/tablet-light-preset.schema.json",
+  "title": "PRISMA Tablet Light Visual Preset Application Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "metadata",
+    "target",
+    "visualPolicy",
+    "routeManifests",
+    "verification"
+  ],
+  "properties": {
+    "schema": {
+      "const": "prisma.tablet.light.visual-preset-application.v1"
+    },
+    "metadata": {
+      "$ref": "#/$defs/metadata"
+    },
+    "target": {
+      "$ref": "#/$defs/target"
+    },
+    "visualPolicy": {
+      "$ref": "#/$defs/visualPolicy"
+    },
+    "routeManifests": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/routeManifest"
+      }
+    },
+    "verification": {
+      "$ref": "#/$defs/verification"
+    }
+  },
+  "$defs": {
+    "metadata": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "version",
+        "generatedAt",
+        "sourceContext"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "generatedAt": {
+          "type": "string"
+        },
+        "sourceContext": {
+          "type": "string"
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "required": [
+        "project",
+        "surface",
+        "theme",
+        "root"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "surface": {
+          "const": "tablet"
+        },
+        "theme": {
+          "const": "light"
+        },
+        "root": {
+          "type": "string"
+        },
+        "viewportTargets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "visualPolicy": {
+      "type": "object",
+      "required": [
+        "noDarkDominant",
+        "touchTargetMinimumPx",
+        "layerOrder",
+        "reducedMotionRequired"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "noDarkDominant": {
+          "const": true
+        },
+        "touchTargetMinimumPx": {
+          "type": "integer",
+          "minimum": 44
+        },
+        "wcagTargetFloorPx": {
+          "type": "integer",
+          "minimum": 24
+        },
+        "singleStrongGlowPerViewport": {
+          "type": "boolean"
+        },
+        "layerOrder": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reducedMotionRequired": {
+          "const": true
+        }
+      }
+    },
+    "routeManifest": {
+      "type": "object",
+      "required": [
+        "route",
+        "domain",
+        "screenQuestion",
+        "preset",
+        "geometry",
+        "components",
+        "layers",
+        "verification"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "route": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "string"
+        },
+        "screenQuestion": {
+          "type": "string"
+        },
+        "preset": {
+          "type": "string"
+        },
+        "geometry": {
+          "type": "object"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/componentBinding"
+          }
+        },
+        "layers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "verification": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "componentBinding": {
+      "type": "object",
+      "required": [
+        "name",
+        "role",
+        "preset",
+        "file",
+        "states"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "preset": {
+          "type": "string"
+        },
+        "file": {
+          "type": "string"
+        },
+        "cssModules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "states": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "libraries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "geometry": {
+          "type": "object"
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "required": [
+        "requiredRules",
+        "visualSnapshotTargets"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "requiredRules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "visualSnapshotTargets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "surfaceMap": {
+      "type": "object"
+    }
+  }
+}

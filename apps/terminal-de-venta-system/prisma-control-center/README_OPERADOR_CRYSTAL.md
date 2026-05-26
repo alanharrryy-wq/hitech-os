@@ -19,24 +19,23 @@ Usa los `latest_*.zip` para subir rapido la ultima corrida.
 
 ## Operacion normal
 
+Para abrir todo local:
+
+- `01_LEVANTAR_TODO_LOCAL.cmd`
+
 Para abrir todo local y Cloudflare:
 
-1. `03_LEVANTAR_TODO_LOCAL_Y_CLOUDFLARE.cmd`
-2. `07_ABRIR_PANEL_CONTROL_3150.cmd` si necesitas reabrir panel
+- `02_LEVANTAR_TODO_LOCAL_CLOUDFLARE.cmd`
 
-Para solo diagnosticar:
+Para levantar solo un modulo:
 
-- `04_DIAGNOSTICO_LOCAL_Y_CLOUDFLARE.cmd`
+- `03_LEVANTAR_SOLO_UN_MODULO.cmd`
 
-Para Web + Control:
+Para abrir el atlas:
 
-- `05_LEVANTAR_WEB_CONTROL_LOCAL.cmd`
-- `06_LEVANTAR_WEB_CONTROL_LOCAL_Y_CLOUDFLARE.cmd`
-
-Para Chart Lab:
-
-- `08_LEVANTAR_CHART_LAB_LOCAL.cmd`
+- `04_ABRIR_ATLAS_DEPENDENCIAS.cmd`
 
 Limpieza total de puertos PRISMA:
 
+- `00_KILL_ALL_LOCAL.cmd`
 - `09_KILL_EVERYTHING_PRISMA.cmd`

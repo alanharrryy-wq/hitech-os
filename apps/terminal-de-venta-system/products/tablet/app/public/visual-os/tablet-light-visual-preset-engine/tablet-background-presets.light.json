@@ -1,0 +1,158 @@
+{
+  "version": "1.0.0",
+  "family": "tablet-light",
+  "policy": {
+    "surface": "tablet",
+    "theme": "light",
+    "noDarkDominant": true,
+    "reducedMotionRequired": true,
+    "notes": [
+      "Tablet final UI must remain clear, tactile, luminous, and high-readability.",
+      "Rain motion is ambient-only and must never compete with POS/customer content."
+    ]
+  },
+  "presets": [
+    {
+      "id": "pearl-grey-mist",
+      "title": "Pearl Grey Mist",
+      "mood": "Light grey premium calm",
+      "recommendedFor": [
+        "/pos",
+        "/catalog",
+        "/sales",
+        "/settings",
+        "/stock"
+      ],
+      "layer": "L0",
+      "visualBudget": {
+        "background": 0.34,
+        "motion": 0.02,
+        "glass": 0.55,
+        "glow": 0.1,
+        "rim": 0.12,
+        "webgl": 0.0
+      },
+      "tokens": {
+        "--pt-bg-base": "#eef2f5",
+        "--pt-bg-field": "#f5f7f9",
+        "--pt-bg-accent": "#d9e2e8",
+        "--pt-bg-glass": "rgba(255,255,255,0.72)",
+        "--pt-bg-line": "rgba(92,111,128,0.18)",
+        "--pt-bg-shadow": "rgba(74,90,110,0.12)"
+      },
+      "cssRecipe": {
+        "background": "radial-gradient(circle at 18% 16%, rgba(255,255,255,0.95), transparent 28%), radial-gradient(circle at 82% 18%, rgba(214,222,228,0.58), transparent 30%), linear-gradient(135deg, #f5f7f9, #e8edf1)"
+      },
+      "visualNotes": [
+        "gris claro premium",
+        "niebla perla suave",
+        "muy legible",
+        "sin dominante oscura"
+      ]
+    },
+    {
+      "id": "rain-drift-subtle",
+      "title": "Rain Drift Subtle",
+      "mood": "Cool rainy ambient",
+      "recommendedFor": [
+        "/sync",
+        "/idle",
+        "/ambient",
+        "/settings/export"
+      ],
+      "layer": "L0",
+      "visualBudget": {
+        "background": 0.38,
+        "motion": 0.16,
+        "glass": 0.55,
+        "glow": 0.08,
+        "rim": 0.1,
+        "webgl": 0.0
+      },
+      "tokens": {
+        "--pt-bg-base": "#eef5f8",
+        "--pt-bg-field": "#f3f8fb",
+        "--pt-bg-accent": "#d7e6ee",
+        "--pt-bg-glass": "rgba(255,255,255,0.70)",
+        "--pt-bg-line": "rgba(95,128,150,0.18)",
+        "--pt-droplet": "rgba(255,255,255,0.16)",
+        "--pt-droplet-stroke": "rgba(165,196,214,0.18)"
+      },
+      "cssRecipe": {
+        "background": "radial-gradient(circle at 16% 12%, rgba(255,255,255,0.94), transparent 28%), radial-gradient(circle at 84% 12%, rgba(188,215,229,0.24), transparent 34%), linear-gradient(140deg, #f3f8fb, #e6f0f5)"
+      },
+      "motion": {
+        "enabled": true,
+        "intensity": "minimal",
+        "dropSeconds": 18,
+        "driftSeconds": 42,
+        "opacityMax": 0.12,
+        "reducedMotionFallback": "static"
+      },
+      "visualNotes": [
+        "lluvia sutil",
+        "gotitas casi imperceptibles",
+        "escurrimientos lentos",
+        "reduced motion friendly"
+      ]
+    },
+    {
+      "id": "pearl-grey-mist-v2-crystal",
+      "title": "Pearl Grey Mist v2 Crystal",
+      "kind": "background-plus-crystal-panels",
+      "description": "Grey-forward premium pearl mist background with crystal panels, hydro rim, soft shadows, ambient mist drift and micro tilt.",
+      "recommendedFor": [
+        "/pos",
+        "/checkout",
+        "/catalog",
+        "/stock",
+        "/sales/today",
+        "/sales/history",
+        "/settings",
+        "/dashboard"
+      ],
+      "layer": "L0 background + L2/L3 glass + L4 rim + L7 motion",
+      "visualBudget": {
+        "background": 0.44,
+        "glass": 0.68,
+        "rim": 0.28,
+        "glow": 0.1,
+        "motion": 0.24,
+        "webgl": 0.0
+      },
+      "tokens": {
+        "--pgm-bg-0": "#d7dce1",
+        "--pgm-bg-1": "#e3e7eb",
+        "--pgm-bg-2": "#f3f5f7",
+        "--pgm-bg-3": "#cbd2d8",
+        "--pgm-pearl": "rgba(255,255,255,0.78)",
+        "--pgm-line": "rgba(117,130,143,0.22)"
+      },
+      "assets": [
+        "prisma-tablet-pearl-grey-mist-v2.css",
+        "prisma-tablet-pearl-grey-mist-v2.js",
+        "pearl-grey-mist-v2-smoke-test.html"
+      ],
+      "motion": {
+        "cssKeyframes": [
+          "pgm-mist-drift",
+          "pgm-sheen-sweep",
+          "pgm-float-slow",
+          "pgm-crystal-glint"
+        ],
+        "jsMicrointeraction": [
+          "pointer parallax variables",
+          "card micro tilt"
+        ],
+        "reducedMotion": "static premium frame"
+      },
+      "guardrails": [
+        "no-dark-dominant-background",
+        "touch-target-min-48",
+        "single-primary-glow",
+        "reduced-motion-pass",
+        "glass-legibility-pass"
+      ]
+    }
+  ]
+}

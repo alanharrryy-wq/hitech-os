@@ -53,9 +53,9 @@ export const syncScreenContract = {
     ]
   },
   evidence: [
-    { label: "Fuente", value: "estado de equipos, cambios por enviar y confirmaciones recientes" },
-    { label: "Criterio", value: "último pulso, cambios nuevos y pendientes de confirmación" },
-    { label: "Riesgo", value: "puede faltar información reciente en tablet si no confirma" },
-    { label: "Historial", value: "detalle disponible en sincronización y tablet" }
+    { kind: "technical" as const,  label: "Fuente", value: "estado de equipos, cambios por enviar y confirmaciones recientes" },
+    { kind: "technical" as const,  label: "Criterio", value: "último pulso, cambios nuevos y pendientes de confirmación" },
+    { kind: "technical" as const,  label: "Riesgo", value: "puede faltar información reciente en tablet si no confirma" },
+    { kind: "technical" as const,  label: "Historial", value: "detalle disponible en sincronización y tablet" }
   ]
 };

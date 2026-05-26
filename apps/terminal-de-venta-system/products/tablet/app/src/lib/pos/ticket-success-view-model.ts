@@ -7,7 +7,7 @@ export function buildTicketSuccessViewModel(sale: CompletedSaleReceipt) {
   const qty = sale.lines.reduce((sum, line) => sum + line.qty, 0);
   const changeCents = sale.changeCents ?? 0;
   return {
-    title: "Ticket cerrado",
+    title: "Venta registrada",
     folio: sale.folio,
     totalLabel: formatMoney(sale.totalCents),
     lineSummary: `${sale.lines.length} líneas · ${qty} piezas`,

@@ -1,5 +1,5 @@
 
-import type { CompleteLocalSaleInput, PosCartLineInput, PosPaymentMethod } from "../pos-engine/types";
+import type { CompleteLocalSaleInput, PosCartLineInput, PosPaymentMethod, PosSalePaymentMethod, SalePaymentTenderInput } from "../pos-engine/types";
 
 export const DEFAULT_POS_API_BUSINESS_ID = "biz_tablet_standalone";
 export const DEFAULT_POS_API_TERMINAL_ID = "terminal_tablet_local_01";
@@ -69,10 +69,29 @@ function asBoolean(value: unknown, fallback = false) {
   return fallback;
 }
 
-function readPaymentMethod(value: unknown): PosPaymentMethod {
+function readPaymentMethod(value: unknown): PosSalePaymentMethod {
   const method = asString(value, "cash").toLowerCase();
-  if (method === "cash" || method === "card" || method === "transfer") return method;
+  if (method === "cash" || method === "card" || method === "transfer" || method === "mixed") return method;
   throw new Error("INVALID_PAYMENT_METHOD");
+}
+
+function readTenderType(value: unknown, index: number): PosPaymentMethod {
+  const method = asString(value).toLowerCase();
+  if (method === "cash" || method === "card" || method === "transfer") return method;
+  throw new Error(`INVALID_PAYMENT_TENDER_METHOD:${index}`);
+}
+
+function readPaymentTenders(value: unknown): SalePaymentTenderInput[] | undefined {
+  if (value === null || value === undefined || value === "") return undefined;
+  if (!Array.isArray(value)) throw new Error("INVALID_PAYMENT_TENDERS");
+  const tenders = value.map((raw: any, index) => {
+    const tenderType = readTenderType(raw?.tenderType ?? raw?.method ?? raw?.paymentMethod, index);
+    const amountCents = asOptionalNonNegativeInteger(raw?.amountCents ?? raw?.amount);
+    if (amountCents === null) throw new Error(`INVALID_PAYMENT_TENDER_AMOUNT:${index}`);
+    const reference = asString(raw?.reference ?? raw?.authorization ?? raw?.folio, "") || null;
+    return { tenderType, amountCents, reference };
+  });
+  return tenders.length ? tenders : undefined;
 }
 
 export function readProductSearchInput(searchParams: URLSearchParams): ProductSearchInput {
@@ -152,8 +171,9 @@ export async function readCompleteSaleInput(request: Request): Promise<CompleteL
   const paymentMethod = readPaymentMethod(body?.paymentMethod);
   const cashReceivedCents = asOptionalNonNegativeInteger(body?.cashReceivedCents);
   const changeCents = asOptionalNonNegativeInteger(body?.changeCents) ?? 0;
+  const paymentTenders = readPaymentTenders(body?.paymentTenders ?? body?.tenders);
 
-  if (paymentMethod === "cash" && cashReceivedCents === null) throw new Error("CASH_RECEIVED_REQUIRED");
+  if (paymentMethod === "cash" && cashReceivedCents === null && !paymentTenders?.length) throw new Error("CASH_RECEIVED_REQUIRED");
 
   return {
     businessId: asString(body?.businessId, DEFAULT_POS_API_BUSINESS_ID),
@@ -167,6 +187,7 @@ export async function readCompleteSaleInput(request: Request): Promise<CompleteL
     paymentMethod,
     cashReceivedCents,
     changeCents,
+    paymentTenders,
     lines: linesSource.map((line: any, index: number) => normalizeLine(line, index))
   };
 }
@@ -179,6 +200,9 @@ export function validatorErrorToMessage(error: unknown) {
   if (message === "INVALID_EXPORT_FORMAT") return { code: "INVALID_EXPORT_FORMAT", message: "Usa format=json o format=csv." };
   if (message === "INVALID_PAYMENT_METHOD") return { code: "INVALID_PAYMENT_METHOD", message: "Método de pago inválido." };
   if (message === "INVALID_PAYMENT_AMOUNT") return { code: "INVALID_PAYMENT_AMOUNT", message: "Monto de pago inválido." };
+  if (message === "INVALID_PAYMENT_TENDERS") return { code: "INVALID_PAYMENT_TENDERS", message: "El desglose de pago no es válido." };
+  if (message.startsWith("INVALID_PAYMENT_TENDER_METHOD:")) return { code: "INVALID_PAYMENT_METHOD", message: "Cada pago debe usar efectivo, tarjeta o transferencia." };
+  if (message.startsWith("INVALID_PAYMENT_TENDER_AMOUNT:")) return { code: "INVALID_PAYMENT_AMOUNT", message: "Cada pago debe traer importe válido." };
   if (message === "CASH_RECEIVED_REQUIRED") return { code: "CASH_RECEIVED_REQUIRED", message: "Captura efectivo recibido para cerrar pago en efectivo." };
   if (message.startsWith("INVALID_LINE_QUANTITY:")) return { code: "INVALID_QUANTITY", message: "Cada línea debe traer cantidad entera mayor a cero." };
   if (message.startsWith("MISSING_LINE_PRODUCT_REF:")) return { code: "PRODUCT_REF_REQUIRED", message: "Cada línea debe traer productId, sku o barcode." };

@@ -12,9 +12,9 @@ export function PosSaleSuccess({ sale, onNewSale }: { sale: CompletedSaleReceipt
   const detailHref = sale.ticketEvidence?.localDetailHref || `/sales/today/${encodeURIComponent(detailKey)}${sale.businessId ? `?businessId=${encodeURIComponent(sale.businessId)}` : ""}`;
 
   return (
-    <section className={styles.successCard} aria-label="Ticket cerrado" data-prisma-zone="tablet-pos-success-state" data-prisma-role="status-surface" data-prisma-state="success" data-prisma-motion="success-feedback">
+    <section className={styles.successCard} aria-label="Venta registrada" data-prisma-zone="tablet-pos-success-state" data-prisma-role="status-surface" data-prisma-state="success" data-prisma-motion="success-feedback">
       <div className={styles.successMainCopy}>
-        <span>Ticket cerrado</span>
+        <span>Venta registrada</span>
         <h2>{view.folio}</h2>
         <p>
           {view.lineSummary} · {view.paymentLabel}
