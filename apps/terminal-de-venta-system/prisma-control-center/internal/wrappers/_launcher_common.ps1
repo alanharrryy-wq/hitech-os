@@ -482,9 +482,31 @@ function Stop-PrismaRuntimeProcesses {
   )
 
   try {
-    $procs = @(Get-CimInstance Win32_Process -ErrorAction Stop | Where-Object {
+    $allProcesses = @(Get-CimInstance Win32_Process -ErrorAction Stop)
+    $processById = @{}
+    foreach ($procInfo in $allProcesses) {
+      $processById[[int]$procInfo.ProcessId] = $procInfo
+    }
+
+    function Test-IsCurrentProcessLineage {
+      param([int]$CandidatePid)
+      $cursor = $currentPid
+      $guard = 0
+      while ($processById.ContainsKey($cursor) -and $guard -lt 64) {
+        if ($CandidatePid -eq $cursor) { return $true }
+        $parent = [int]$processById[$cursor].ParentProcessId
+        if ($CandidatePid -eq $parent) { return $true }
+        if ($parent -le 0 -or $parent -eq $cursor) { break }
+        $cursor = $parent
+        $guard++
+      }
+      return $false
+    }
+
+    $procs = @($allProcesses | Where-Object {
       $cmdLine = [string]$_.CommandLine
       $_.ProcessId -ne $currentPid -and
+      -not (Test-IsCurrentProcessLineage -CandidatePid ([int]$_.ProcessId)) -and
       $targetNames -contains $_.Name -and
       $cmdLine -and
       @(($needles | Where-Object { $cmdLine -like "*$_*" })).Count -gt 0
