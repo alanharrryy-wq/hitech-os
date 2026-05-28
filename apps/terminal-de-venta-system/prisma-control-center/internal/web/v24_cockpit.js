@@ -5,9 +5,9 @@ const THEMES = {
     reactor:'Halo periférico, sweep parcial y luces vivas alrededor; sin efecto rueda de la fortuna.'
   },
   tactical:{
-    subtitle:'Tactical Graphite · reactor, rutas, senales, evidencia y auditoria.',
-    material:'grafito táctico, fibra oscura, bordes secos, cortes angulares y lectura instrumental sin glow de más.',
-    reactor:'Lectura técnica, halo bajo y foco en precision más que en ornamento.'
+    subtitle:'Tactical Frost V4 Â· background limpio, paneles premium y capas gobernadas.',
+    material:'doble glass, borde Ã³ptico brillante, shadow executive/floating y glow insight-violet controlado.',
+    reactor:'motion-glacier ambiental y motion-silk en interacciÃ³n; nada de grid ni selector lateral.'
   },
   piel:{
     subtitle:'Obsidian Rose Royale · reactor, rutas, senales, evidencia y auditoria.',
@@ -96,7 +96,7 @@ themeSelect.addEventListener('change', ()=>setTimeout(syncTopbarHeight, 0));
 syncTopbarHeight();
 
 setInterval(()=>{ freshness.textContent = `Frescura ${3 + Math.floor(Math.random()*3)} s`; }, 1800);
-applyTheme((()=>{ try{return localStorage.getItem('prisma-v28-theme') || 'liquid';}catch(e){return 'liquid';} })());
+applyTheme((()=>{ try{return localStorage.getItem('prisma-v28-theme') || 'tactical';}catch(e){return 'liquid';} })());
 
 
 // V23 tactile motion: subtle node tilt, no carousel nonsense.

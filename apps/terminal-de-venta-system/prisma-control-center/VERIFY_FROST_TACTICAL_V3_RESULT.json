@@ -1,0 +1,111 @@
+{
+  "ok": false,
+  "status": "FAIL",
+  "checks": [
+    {
+      "name": "exists:internal\\web\\index.html",
+      "ok": true,
+      "detail": "<REPO_ROOT>\\apps\\terminal-de-venta-system\\prisma-control-center\\internal\\web\\index.html"
+    },
+    {
+      "name": "exists:internal\\web\\prisma_frost_tactical.css",
+      "ok": true,
+      "detail": "<REPO_ROOT>\\apps\\terminal-de-venta-system\\prisma-control-center\\internal\\web\\prisma_frost_tactical.css"
+    },
+    {
+      "name": "exists:internal\\web\\prisma_frost_tactical.js",
+      "ok": true,
+      "detail": "<REPO_ROOT>\\apps\\terminal-de-venta-system\\prisma-control-center\\internal\\web\\prisma_frost_tactical.js"
+    },
+    {
+      "name": "exists:internal\\web\\assets\\simon-spring-zmMrlEHsFQY-unsplash.jpg",
+      "ok": true,
+      "detail": "<REPO_ROOT>\\apps\\terminal-de-venta-system\\prisma-control-center\\internal\\web\\assets\\simon-spring-zmMrlEHsFQY-unsplash.jpg"
+    },
+    {
+      "name": "index-links-frost-css-v3",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "index-links-frost-js-v3",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "index-preloads-background",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "tactical-label-v3",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "css-targets-tactical-only",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "css-uses-local-background",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "css-kills-grid",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "css-lowblur",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "css-bluegray-glass",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "css-selective-neon",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no-new-external-urls-in-frost-files",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "image-size-ok",
+      "ok": true,
+      "detail": 701836
+    },
+    {
+      "name": "python-compile",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "panel-smoke",
+      "ok": false,
+      "detail": {
+        "returncode": 2,
+        "stdout": {
+          "ok": false,
+          "status": "FAIL",
+          "panelStatusCode": 200,
+          "healthStatusCode": 200,
+          "publicStatusCode": 200,
+          "htmlBytes": 235933,
+          "htmlOk": true,
+          "healthStatus": "FAIL",
+          "publicMode": "PUBLIC_REDACTED",
+          "publicSensitiveHits": []
+        },
+        "stderr": ""
+      }
+    }
+  ]
+}

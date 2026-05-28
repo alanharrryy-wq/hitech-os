@@ -33,35 +33,35 @@ $TcpBlockingStates = @(
 function Add-PortOwner {
   param(
     [hashtable]$Owners,
-    [int]$Pid,
+    [int]$targetPid,
     [int]$Port,
     [string]$Protocol,
     [string]$State,
     [string]$Line
   )
 
-  if ($Pid -lt 0) { return }
+  if ($targetPid -lt 0) { return }
 
-  if (-not $Owners.ContainsKey($Pid)) {
-    $Owners[$Pid] = [ordered]@{
-      Pid = $Pid
+  if (-not $Owners.ContainsKey($targetPid)) {
+    $Owners[$targetPid] = [ordered]@{
+      Pid = $targetPid
       Ports = New-Object System.Collections.Generic.List[int]
       Lines = New-Object System.Collections.Generic.List[string]
       States = New-Object System.Collections.Generic.List[string]
     }
   }
 
-  if (-not $Owners[$Pid].Ports.Contains($Port)) {
-    $Owners[$Pid].Ports.Add($Port)
+  if (-not $Owners[$targetPid].Ports.Contains($Port)) {
+    $Owners[$targetPid].Ports.Add($Port)
   }
 
   if ($Line) {
-    $Owners[$Pid].Lines.Add($Line)
+    $Owners[$targetPid].Lines.Add($Line)
   }
 
   $stateText = if ($State) { "$Protocol/$State" } else { "$Protocol" }
-  if (-not $Owners[$Pid].States.Contains($stateText)) {
-    $Owners[$Pid].States.Add($stateText)
+  if (-not $Owners[$targetPid].States.Contains($stateText)) {
+    $Owners[$targetPid].States.Add($stateText)
   }
 }
 

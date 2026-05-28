@@ -1,0 +1,42 @@
+{
+  "schema_version": "2.0-master",
+  "owner_email": "owner@example.invalid",
+  "pin_default": "000000",
+  "pin_required": true,
+  "allow_clear_without_pin": false,
+  "pin_expiration_minutes": 10,
+  "project_root": "<REPO_ROOT>\\apps\\terminal-de-venta-system",
+  "downloads_root": "F:/descargasf",
+  "block_public_mutations": true,
+  "clear_default_policy": "generated_only",
+  "fallback_pin_evidence": true,
+  "evidence_zip_enabled": true,
+  "smtp": {
+    "enabled": false,
+    "host": "",
+    "port": 587,
+    "username": "",
+    "password_env": "",
+    "from_email": "",
+    "use_tls": true
+  },
+  "known_db_paths": [
+    "products/pc/app/data/canonical.db",
+    "products/tablet/app/data/tablet-pos.db",
+    "products/tablet/app/prisma/data/tablet-pos.db",
+    "products/chart-lab/app/data/chart-runtime-governance.db"
+  ],
+  "safety_notes": [
+    "Mutaciones bloqueadas en requests publicas.",
+    "Clear default borra solamente registros rastreados en lifecycle_records.",
+    "Licencia real no se desvincula por default; License domain solo simula/limpia overrides del propio lifecycle."
+  ],
+  "package_version": "04_EXCELSIOR",
+  "evidence_level": "full",
+  "ui_mode": "simple_two_button",
+  "mode_labels": {
+    "light": "Ligera",
+    "heavy": "Pesada",
+    "longaniza": "Pasada de longaniza"
+  }
+}
