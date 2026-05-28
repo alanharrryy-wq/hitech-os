@@ -1,0 +1,46 @@
+{
+  "pilot": "09_mobile_supervisor_thin_mist_shell",
+  "name": "PRISMA Surface Visual Governor · Pilot 09 Mobile Supervisor Thin Mist Shell",
+  "created": "2026-05-26T22:26:02",
+  "routes": [
+    "/prisma-app",
+    "/prisma-command"
+  ],
+  "surface": "mobile",
+  "role": "supervisor_lightweight_mobile_shell",
+  "source_pilots": [
+    "02_chart_lab_recipe_export",
+    "05_tablet_light_shell",
+    "07_pos_light_safe_shell",
+    "08_checkout_light_safe_shell"
+  ],
+  "active_atmosphere": "aurora-slate-veil.svg",
+  "gates": {
+    "mobile_supervisor_only": true,
+    "battery_friendly": true,
+    "reduced_motion": true,
+    "no_webgl": true,
+    "no_pixi_vapor": true,
+    "no_dark_storm_active": true,
+    "no_heavy_blur": true,
+    "no_background_competing_with_mobile_actions": true,
+    "pages_unchanged": true,
+    "pos_unchanged": true,
+    "checkout_page_unchanged": true,
+    "db_unchanged": true,
+    "dependencies_unchanged": true
+  },
+  "visual_budget": {
+    "background": "mobile_thin_mist_low",
+    "glass": "G0_to_G2_only",
+    "rim": "R0_to_R1_default",
+    "glow": "focus_live_critical_action_only",
+    "motion": "M0_none_or_M1_micro",
+    "webgl": 0
+  },
+  "files": {
+    "prisma_app_layout": "products/mobile/app/app/prisma-app/layout.tsx",
+    "prisma_command_layout": "products/mobile/app/app/prisma-command/layout.tsx",
+    "css": "products/mobile/app/app/prisma-mobile-thin-mist-shell.module.css"
+  }
+}

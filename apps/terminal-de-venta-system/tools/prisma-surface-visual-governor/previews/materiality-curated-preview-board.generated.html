@@ -1,0 +1,3125 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PRISMA M-04 · Materiality Asset Curator</title>
+<style>
+:root {
+  --bg:#071018;
+  --panel:rgba(255,255,255,.075);
+  --panel2:rgba(255,255,255,.12);
+  --line:rgba(210,232,255,.18);
+  --text:#eef8ff;
+  --muted:#9fb7c9;
+  --cyan:#88e7ff;
+  --mint:#98ffd7;
+  --amber:#ffd58a;
+  --coral:#ff9d9d;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(136,231,255,.18), transparent 28%),
+    radial-gradient(circle at 90% 12%, rgba(152,255,215,.10), transparent 30%),
+    linear-gradient(135deg, #06111c, #101d2a 48%, #071018);
+  color:var(--text);
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+}
+header {
+  position:sticky;
+  top:0;
+  z-index:10;
+  padding:26px clamp(18px,3vw,42px);
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg, rgba(7,16,24,.94), rgba(7,16,24,.78));
+  backdrop-filter:blur(14px);
+}
+.eyebrow {
+  margin:0 0 8px;
+  color:var(--cyan);
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  font-weight:800;
+  font-size:12px;
+}
+h1 {
+  margin:0;
+  font-size:clamp(30px,5vw,56px);
+  letter-spacing:-.055em;
+  line-height:.95;
+}
+.subtitle {
+  max-width:980px;
+  color:var(--muted);
+  line-height:1.6;
+}
+.pills {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:16px;
+}
+.pills span {
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:8px 11px;
+  color:var(--muted);
+  background:rgba(255,255,255,.065);
+  font-size:12px;
+}
+.pills b { color:var(--text); }
+main {
+  padding:26px clamp(18px,3vw,42px) 72px;
+}
+.surfaceGrid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:14px;
+  margin-bottom:28px;
+}
+.surfaceCard {
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:16px;
+  background:var(--panel);
+  box-shadow:0 18px 60px rgba(0,0,0,.22);
+}
+.surfaceCard h3 { margin:0 0 10px; }
+.surfaceCard p { margin:6px 0; color:var(--muted); }
+.surfaceCard b { color:var(--mint); }
+.roleSection {
+  margin-bottom:38px;
+  border:1px solid var(--line);
+  border-radius:32px;
+  padding:22px;
+  background:linear-gradient(180deg, rgba(255,255,255,.095), rgba(255,255,255,.052));
+  box-shadow:0 24px 80px rgba(0,0,0,.32);
+}
+.sectionHeader {
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:flex-start;
+  margin-bottom:18px;
+}
+.sectionHeader h2 {
+  margin:0;
+  font-size:30px;
+  letter-spacing:-.04em;
+}
+.sectionHeader p {
+  color:var(--muted);
+  margin:8px 0 0;
+}
+.count {
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:14px 18px;
+  color:var(--mint);
+  font-size:28px;
+  font-weight:900;
+  background:rgba(255,255,255,.075);
+}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:16px;
+}
+.card {
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:24px;
+  background:rgba(255,255,255,.075);
+}
+.imgWrap {
+  height:160px;
+  background:
+    linear-gradient(45deg, rgba(255,255,255,.04) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.04) 75%),
+    linear-gradient(45deg, rgba(255,255,255,.04) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.04) 75%);
+  background-size:24px 24px;
+  background-position:0 0, 12px 12px;
+}
+.imgWrap img {
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.body { padding:13px; }
+.body h3 {
+  margin:0 0 7px;
+  font-size:13px;
+  word-break:break-word;
+}
+.body p {
+  margin:0;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.35;
+  word-break:break-word;
+}
+.chips {
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin:10px 0;
+}
+.chips span {
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:999px;
+  padding:5px 8px;
+  font-size:11px;
+  color:var(--cyan);
+}
+.why {
+  color:var(--amber) !important;
+}
+.notice {
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:18px;
+  background:rgba(255,255,255,.07);
+  color:var(--muted);
+  line-height:1.6;
+  margin-bottom:24px;
+}
+</style>
+</head>
+<body>
+<header>
+  <p class="eyebrow">PRISMA Surface Visual Governor</p>
+  <h1>M-04 Materiality Asset Curator</h1>
+  <p class="subtitle">
+    Este tablero separa fondos reales de logos, packshots, screenshots, íconos y assets dudosos.
+    Sólo lo clasificado como Atmosphere / Background entra directo al Atmosphere Engine.
+  </p>
+  <div class="pills"><span>Atmosphere / Background: <b>208</b></span><span>Brand / Logo: <b>19</b></span><span>Product Packshot: <b>253</b></span><span>Screenshot / QA Evidence: <b>29</b></span><span>UI Icon / Glyph: <b>7</b></span></div>
+</header>
+<main>
+  <div class="notice">
+    <strong>Regla:</strong> el Governor no debe usar logos, packshots, screenshots ni íconos como atmósfera de interfaz.
+    Decorative/Landing requiere gate. POS/Checkout queda protegido.
+  </div>
+  <section class="surfaceGrid">
+
+<article class="surfaceCard">
+  <h3>pc</h3>
+  <p><b>111</b> allowed</p>
+  <p><b>57</b> conditional/gated</p>
+  <p><b>348</b> blocked</p>
+</article>
+
+<article class="surfaceCard">
+  <h3>chart_lab</h3>
+  <p><b>168</b> allowed</p>
+  <p><b>0</b> conditional/gated</p>
+  <p><b>348</b> blocked</p>
+</article>
+
+<article class="surfaceCard">
+  <h3>control_center</h3>
+  <p><b>112</b> allowed</p>
+  <p><b>57</b> conditional/gated</p>
+  <p><b>347</b> blocked</p>
+</article>
+
+<article class="surfaceCard">
+  <h3>tablet_productive</h3>
+  <p><b>27</b> allowed</p>
+  <p><b>0</b> conditional/gated</p>
+  <p><b>489</b> blocked</p>
+</article>
+
+<article class="surfaceCard">
+  <h3>mobile</h3>
+  <p><b>31</b> allowed</p>
+  <p><b>0</b> conditional/gated</p>
+  <p><b>485</b> blocked</p>
+</article>
+
+<article class="surfaceCard">
+  <h3>web_eit_public</h3>
+  <p><b>8</b> allowed</p>
+  <p><b>0</b> conditional/gated</p>
+  <p><b>508</b> blocked</p>
+</article>
+
+<article class="surfaceCard">
+  <h3>pos_checkout</h3>
+  <p><b>0</b> allowed</p>
+  <p><b>208</b> conditional/gated</p>
+  <p><b>308</b> blocked</p>
+</article>
+
+  </section>
+
+<section class="roleSection role-atmosphere_background">
+  <div class="sectionHeader">
+    <div>
+      <p class="eyebrow">Rol de asset</p>
+      <h2>Atmosphere / Background</h2>
+      <p>Fondos y atmósferas reales aptas para Atmosphere Engine.</p>
+    </div>
+    <div class="count">80</div>
+  </div>
+  <div class="grid">
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/prisma-control-center/internal/web/assets/simon-spring-zmMrlEHsFQY-unsplash.jpg" loading="lazy" alt="simon-spring-zmMrlEHsFQY-unsplash.jpg" /></div>
+      <div class="body">
+        <h3>simon-spring-zmMrlEHsFQY-unsplash.jpg</h3>
+        <p>prisma-control-center/internal/web/assets/simon-spring-zmMrlEHsFQY-unsplash.jpg</p>
+        <div class="chips">
+          <span>control_center_visual_governance</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|control_center_visual_governance</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/chart-lab/app/public/surface-visual-governor/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>products/chart-lab/app/public/surface-visual-governor/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/chart-lab/app/public/surface-visual-governor/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>products/chart-lab/app/public/surface-visual-governor/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|mist|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/pilot-09/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/pilot-09/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|mist|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/surface-visual-governor/dashboard/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>products/pc/app/public/surface-visual-governor/dashboard/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/surface-visual-governor/dashboard/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>products/pc/app/public/surface-visual-governor/dashboard/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/surface-visual-governor/dashboard/pilot-04/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>products/pc/app/public/surface-visual-governor/dashboard/pilot-04/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/surface-visual-governor/dashboard/pilot-04/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>products/pc/app/public/surface-visual-governor/dashboard/pilot-04/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/surface-visual-governor/reference-visual/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>products/pc/app/public/surface-visual-governor/reference-visual/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/surface-visual-governor/reference-visual/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>products/pc/app/public/surface-visual-governor/reference-visual/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>products/pc/app/public/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>products/pc/app/public/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/blanqueador-liquido-hogar-1l.png" loading="lazy" alt="blanqueador-liquido-hogar-1l.png" /></div>
+      <div class="body">
+        <h3>blanqueador-liquido-hogar-1l.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/blanqueador-liquido-hogar-1l.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|liquid</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/lavatrastes-liquido-750ml.png" loading="lazy" alt="lavatrastes-liquido-750ml.png" /></div>
+      <div class="body">
+        <h3>lavatrastes-liquido-750ml.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/lavatrastes-liquido-750ml.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|liquid</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/leche-evaporada-387g.png" loading="lazy" alt="leche-evaporada-387g.png" /></div>
+      <div class="body">
+        <h3>leche-evaporada-387g.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/leche-evaporada-387g.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|vapor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/light/blanqueador-liquido-hogar-1l.png" loading="lazy" alt="blanqueador-liquido-hogar-1l.png" /></div>
+      <div class="body">
+        <h3>blanqueador-liquido-hogar-1l.png</h3>
+        <p>products/tablet/app/public/products/packshots/light/blanqueador-liquido-hogar-1l.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|liquid</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/light/lavatrastes-liquido-concentrado-750ml.png" loading="lazy" alt="lavatrastes-liquido-concentrado-750ml.png" /></div>
+      <div class="body">
+        <h3>lavatrastes-liquido-concentrado-750ml.png</h3>
+        <p>products/tablet/app/public/products/packshots/light/lavatrastes-liquido-concentrado-750ml.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|liquid</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/light/leche-evaporada-387g.png" loading="lazy" alt="leche-evaporada-387g.png" /></div>
+      <div class="body">
+        <h3>leche-evaporada-387g.png</h3>
+        <p>products/tablet/app/public/products/packshots/light/leche-evaporada-387g.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|vapor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/surface-visual-governor/checkout-light-safe-shell/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>products/tablet/app/public/surface-visual-governor/checkout-light-safe-shell/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/surface-visual-governor/checkout-light-safe-shell/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>products/tablet/app/public/surface-visual-governor/checkout-light-safe-shell/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/surface-visual-governor/checkout-light-safe-shell/pilot-08/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>products/tablet/app/public/surface-visual-governor/checkout-light-safe-shell/pilot-08/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/surface-visual-governor/checkout-light-safe-shell/pilot-08/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>products/tablet/app/public/surface-visual-governor/checkout-light-safe-shell/pilot-08/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/surface-visual-governor/pos-light-safe-shell/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>products/tablet/app/public/surface-visual-governor/pos-light-safe-shell/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/surface-visual-governor/pos-light-safe-shell/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>products/tablet/app/public/surface-visual-governor/pos-light-safe-shell/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/surface-visual-governor/pos-light-safe-shell/pilot-07/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>products/tablet/app/public/surface-visual-governor/pos-light-safe-shell/pilot-07/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/surface-visual-governor/pos-light-safe-shell/pilot-07/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>products/tablet/app/public/surface-visual-governor/pos-light-safe-shell/pilot-07/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/surface-visual-governor/tablet-light-shell/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>products/tablet/app/public/surface-visual-governor/tablet-light-shell/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/surface-visual-governor/tablet-light-shell/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>products/tablet/app/public/surface-visual-governor/tablet-light-shell/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/surface-visual-governor/tablet-light-shell/pilot-05/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>products/tablet/app/public/surface-visual-governor/tablet-light-shell/pilot-05/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/surface-visual-governor/tablet-light-shell/pilot-05/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>products/tablet/app/public/surface-visual-governor/tablet-light-shell/pilot-05/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|smoke|liquid</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|liquid</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/visual-smoke-test.expected.svg" loading="lazy" alt="visual-smoke-test.expected.svg" /></div>
+      <div class="body">
+        <h3>visual-smoke-test.expected.svg</h3>
+        <p>products/tablet/app/public/visual-os/tablet-light-visual-preset-engine/visual-smoke-test.expected.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|smoke</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/chart-lab/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/chart-lab/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/chart-lab/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/chart-lab/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/mobile/mobile-thin-mist-shell/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/mobile/mobile-thin-mist-shell/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|mist|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/mobile/mobile-thin-mist-shell/pilot-09/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/mobile/mobile-thin-mist-shell/pilot-09/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|mist|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/pc/dashboard/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/pc/dashboard/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/pc/dashboard/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/pc/dashboard/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/pc/dashboard/pilot-04/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/pc/dashboard/pilot-04/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/pc/dashboard/pilot-04/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/pc/dashboard/pilot-04/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/pc/reference-visual/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/pc/reference-visual/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/pc/reference-visual/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/pc/reference-visual/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/pc/reference-visual/pilot-03/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/pc/reference-visual/pilot-03/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/pc/reference-visual/pilot-03/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/pc/reference-visual/pilot-03/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/tablet/checkout-light-safe-shell/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/tablet/checkout-light-safe-shell/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/tablet/checkout-light-safe-shell/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/tablet/checkout-light-safe-shell/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/tablet/checkout-light-safe-shell/pilot-08/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/tablet/checkout-light-safe-shell/pilot-08/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/tablet/checkout-light-safe-shell/pilot-08/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/tablet/checkout-light-safe-shell/pilot-08/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/tablet/pos-light-safe-shell/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/tablet/pos-light-safe-shell/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/tablet/pos-light-safe-shell/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/tablet/pos-light-safe-shell/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/tablet/pos-light-safe-shell/pilot-07/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/tablet/pos-light-safe-shell/pilot-07/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/tablet/pos-light-safe-shell/pilot-07/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/tablet/pos-light-safe-shell/pilot-07/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/tablet/tablet-light-shell/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/tablet/tablet-light-shell/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/tablet/tablet-light-shell/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/tablet/tablet-light-shell/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/tablet/tablet-light-shell/pilot-05/atmosphere-assets/backgrounds/liquid-operations-smoke.svg" loading="lazy" alt="liquid-operations-smoke.svg" /></div>
+      <div class="body">
+        <h3>liquid-operations-smoke.svg</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/tablet/tablet-light-shell/pilot-05/atmosphere-assets/backgrounds/liquid-operations-smoke.svg</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|smoke|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/tablet/tablet-light-shell/pilot-05/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/tablet/tablet-light-shell/pilot-05/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>liquid_vapor_reference</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|liquid_vapor_reference|background|atmosphere|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|mobile_thin_mist|background|atmosphere|mist|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/pilot-09/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/pilot-09/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|mobile_thin_mist|background|atmosphere|mist|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/mobile/mobile-thin-mist-shell/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/mobile/mobile-thin-mist-shell/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|mobile_thin_mist|background|atmosphere|mist|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/prisma-surface-visual-governor/public-mirrors/mobile/mobile-thin-mist-shell/pilot-09/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png" loading="lazy" alt="liquid-operations-ui-reference.png" /></div>
+      <div class="body">
+        <h3>liquid-operations-ui-reference.png</h3>
+        <p>tools/prisma-surface-visual-governor/public-mirrors/mobile/mobile-thin-mist-shell/pilot-09/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|mobile_thin_mist|background|atmosphere|mist|liquid|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/backgrounds/prisma/01_prisma_base_graphite_cloudglass.png" loading="lazy" alt="01_prisma_base_graphite_cloudglass.png" /></div>
+      <div class="body">
+        <h3>01_prisma_base_graphite_cloudglass.png</h3>
+        <p>products/pc/app/public/backgrounds/prisma/01_prisma_base_graphite_cloudglass.png</p>
+        <div class="chips">
+          <span>pc_graphite_cloudglass_stack</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|pc_graphite_cloudglass_stack|background|cloud|graphite|glass|cloudglass</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/backgrounds/prisma/02_prisma_fractures_light_overlay_alpha.png" loading="lazy" alt="02_prisma_fractures_light_overlay_alpha.png" /></div>
+      <div class="body">
+        <h3>02_prisma_fractures_light_overlay_alpha.png</h3>
+        <p>products/pc/app/public/backgrounds/prisma/02_prisma_fractures_light_overlay_alpha.png</p>
+        <div class="chips">
+          <span>pc_graphite_cloudglass_stack</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|pc_graphite_cloudglass_stack|background|fracture|fractures</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/backgrounds/prisma/03_prisma_mist_dust_overlay_alpha.png" loading="lazy" alt="03_prisma_mist_dust_overlay_alpha.png" /></div>
+      <div class="body">
+        <h3>03_prisma_mist_dust_overlay_alpha.png</h3>
+        <p>products/pc/app/public/backgrounds/prisma/03_prisma_mist_dust_overlay_alpha.png</p>
+        <div class="chips">
+          <span>pc_graphite_cloudglass_stack</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|pc_graphite_cloudglass_stack|background|mist|dust</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/chart-lab/app/public/surface-visual-governor/atmosphere-assets/backgrounds/aurora-slate-veil.svg" loading="lazy" alt="aurora-slate-veil.svg" /></div>
+      <div class="body">
+        <h3>aurora-slate-veil.svg</h3>
+        <p>products/chart-lab/app/public/surface-visual-governor/atmosphere-assets/backgrounds/aurora-slate-veil.svg</p>
+        <div class="chips">
+          <span>storm_graphite_dark_showcase</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|storm_graphite_dark_showcase|background|atmosphere|aurora|slate|veil|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/chart-lab/app/public/surface-visual-governor/atmosphere-assets/backgrounds/obsidian-cloud-motion.svg" loading="lazy" alt="obsidian-cloud-motion.svg" /></div>
+      <div class="body">
+        <h3>obsidian-cloud-motion.svg</h3>
+        <p>products/chart-lab/app/public/surface-visual-governor/atmosphere-assets/backgrounds/obsidian-cloud-motion.svg</p>
+        <div class="chips">
+          <span>storm_graphite_dark_showcase</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|storm_graphite_dark_showcase|background|atmosphere|cloud|obsidian|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/chart-lab/app/public/surface-visual-governor/atmosphere-assets/backgrounds/storm-cloud-operations-real.jpg" loading="lazy" alt="storm-cloud-operations-real.jpg" /></div>
+      <div class="body">
+        <h3>storm-cloud-operations-real.jpg</h3>
+        <p>products/chart-lab/app/public/surface-visual-governor/atmosphere-assets/backgrounds/storm-cloud-operations-real.jpg</p>
+        <div class="chips">
+          <span>storm_graphite_dark_showcase</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|storm_graphite_dark_showcase|background|atmosphere|cloud|storm|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/chart-lab/app/public/surface-visual-governor/atmosphere-assets/backgrounds/storm-glass-horizon.svg" loading="lazy" alt="storm-glass-horizon.svg" /></div>
+      <div class="body">
+        <h3>storm-glass-horizon.svg</h3>
+        <p>products/chart-lab/app/public/surface-visual-governor/atmosphere-assets/backgrounds/storm-glass-horizon.svg</p>
+        <div class="chips">
+          <span>storm_graphite_dark_showcase</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|storm_graphite_dark_showcase|background|atmosphere|storm|glass|horizon|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/latest/atmosphere-assets/backgrounds/aurora-slate-veil.svg" loading="lazy" alt="aurora-slate-veil.svg" /></div>
+      <div class="body">
+        <h3>aurora-slate-veil.svg</h3>
+        <p>products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/latest/atmosphere-assets/backgrounds/aurora-slate-veil.svg</p>
+        <div class="chips">
+          <span>storm_graphite_dark_showcase</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|storm_graphite_dark_showcase|background|atmosphere|aurora|slate|mist|veil|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/latest/atmosphere-assets/backgrounds/obsidian-cloud-motion.svg" loading="lazy" alt="obsidian-cloud-motion.svg" /></div>
+      <div class="body">
+        <h3>obsidian-cloud-motion.svg</h3>
+        <p>products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/latest/atmosphere-assets/backgrounds/obsidian-cloud-motion.svg</p>
+        <div class="chips">
+          <span>storm_graphite_dark_showcase</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|storm_graphite_dark_showcase|background|atmosphere|cloud|obsidian|mist|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/latest/atmosphere-assets/backgrounds/storm-cloud-operations-real.jpg" loading="lazy" alt="storm-cloud-operations-real.jpg" /></div>
+      <div class="body">
+        <h3>storm-cloud-operations-real.jpg</h3>
+        <p>products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/latest/atmosphere-assets/backgrounds/storm-cloud-operations-real.jpg</p>
+        <div class="chips">
+          <span>storm_graphite_dark_showcase</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|storm_graphite_dark_showcase|background|atmosphere|cloud|storm|mist|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/latest/atmosphere-assets/backgrounds/storm-glass-horizon.svg" loading="lazy" alt="storm-glass-horizon.svg" /></div>
+      <div class="body">
+        <h3>storm-glass-horizon.svg</h3>
+        <p>products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/latest/atmosphere-assets/backgrounds/storm-glass-horizon.svg</p>
+        <div class="chips">
+          <span>storm_graphite_dark_showcase</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|storm_graphite_dark_showcase|background|atmosphere|storm|mist|glass|horizon|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/pilot-09/atmosphere-assets/backgrounds/aurora-slate-veil.svg" loading="lazy" alt="aurora-slate-veil.svg" /></div>
+      <div class="body">
+        <h3>aurora-slate-veil.svg</h3>
+        <p>products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/pilot-09/atmosphere-assets/backgrounds/aurora-slate-veil.svg</p>
+        <div class="chips">
+          <span>storm_graphite_dark_showcase</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|storm_graphite_dark_showcase|background|atmosphere|aurora|slate|mist|veil|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/pilot-09/atmosphere-assets/backgrounds/obsidian-cloud-motion.svg" loading="lazy" alt="obsidian-cloud-motion.svg" /></div>
+      <div class="body">
+        <h3>obsidian-cloud-motion.svg</h3>
+        <p>products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/pilot-09/atmosphere-assets/backgrounds/obsidian-cloud-motion.svg</p>
+        <div class="chips">
+          <span>storm_graphite_dark_showcase</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|storm_graphite_dark_showcase|background|atmosphere|cloud|obsidian|mist|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/pilot-09/atmosphere-assets/backgrounds/storm-cloud-operations-real.jpg" loading="lazy" alt="storm-cloud-operations-real.jpg" /></div>
+      <div class="body">
+        <h3>storm-cloud-operations-real.jpg</h3>
+        <p>products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/pilot-09/atmosphere-assets/backgrounds/storm-cloud-operations-real.jpg</p>
+        <div class="chips">
+          <span>storm_graphite_dark_showcase</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|storm_graphite_dark_showcase|background|atmosphere|cloud|storm|mist|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/pilot-09/atmosphere-assets/backgrounds/storm-glass-horizon.svg" loading="lazy" alt="storm-glass-horizon.svg" /></div>
+      <div class="body">
+        <h3>storm-glass-horizon.svg</h3>
+        <p>products/mobile/app/public/surface-visual-governor/mobile-thin-mist-shell/pilot-09/atmosphere-assets/backgrounds/storm-glass-horizon.svg</p>
+        <div class="chips">
+          <span>storm_graphite_dark_showcase</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|storm_graphite_dark_showcase|background|atmosphere|storm|mist|glass|horizon|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/surface-visual-governor/dashboard/latest/atmosphere-assets/backgrounds/aurora-slate-veil.svg" loading="lazy" alt="aurora-slate-veil.svg" /></div>
+      <div class="body">
+        <h3>aurora-slate-veil.svg</h3>
+        <p>products/pc/app/public/surface-visual-governor/dashboard/latest/atmosphere-assets/backgrounds/aurora-slate-veil.svg</p>
+        <div class="chips">
+          <span>storm_graphite_dark_showcase</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|storm_graphite_dark_showcase|background|atmosphere|aurora|slate|veil|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/surface-visual-governor/dashboard/latest/atmosphere-assets/backgrounds/obsidian-cloud-motion.svg" loading="lazy" alt="obsidian-cloud-motion.svg" /></div>
+      <div class="body">
+        <h3>obsidian-cloud-motion.svg</h3>
+        <p>products/pc/app/public/surface-visual-governor/dashboard/latest/atmosphere-assets/backgrounds/obsidian-cloud-motion.svg</p>
+        <div class="chips">
+          <span>storm_graphite_dark_showcase</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|storm_graphite_dark_showcase|background|atmosphere|cloud|obsidian|surface|visual-governor</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/surface-visual-governor/dashboard/latest/atmosphere-assets/backgrounds/storm-cloud-operations-real.jpg" loading="lazy" alt="storm-cloud-operations-real.jpg" /></div>
+      <div class="body">
+        <h3>storm-cloud-operations-real.jpg</h3>
+        <p>products/pc/app/public/surface-visual-governor/dashboard/latest/atmosphere-assets/backgrounds/storm-cloud-operations-real.jpg</p>
+        <div class="chips">
+          <span>storm_graphite_dark_showcase</span>
+          <span>conf 86</span>
+        </div>
+        <p class="why">family_atmosphere|storm_graphite_dark_showcase|background|atmosphere|cloud|storm|surface|visual-governor</p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section class="roleSection role-brand_logo">
+  <div class="sectionHeader">
+    <div>
+      <p class="eyebrow">Rol de asset</p>
+      <h2>Brand / Logo</h2>
+      <p>Marca, logos e identidad. No son fondos.</p>
+    </div>
+    <div class="count">19</div>
+  </div>
+  <div class="grid">
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/prisma-control-center-unified-shell-lab-v3/internal/assets/prisma-logo-dark.png" loading="lazy" alt="prisma-logo-dark.png" /></div>
+      <div class="body">
+        <h3>prisma-logo-dark.png</h3>
+        <p>prisma-control-center-unified-shell-lab-v3/internal/assets/prisma-logo-dark.png</p>
+        <div class="chips">
+          <span>control_center_visual_governance</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|logo|prisma-logo</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/prisma-control-center-unified-shell-lab-v3/internal/assets/prisma-logo.png" loading="lazy" alt="prisma-logo.png" /></div>
+      <div class="body">
+        <h3>prisma-logo.png</h3>
+        <p>prisma-control-center-unified-shell-lab-v3/internal/assets/prisma-logo.png</p>
+        <div class="chips">
+          <span>control_center_visual_governance</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|logo|prisma-logo</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/prisma-control-center/internal/web/assets/prisma-logo-crystal-mark.png" loading="lazy" alt="prisma-logo-crystal-mark.png" /></div>
+      <div class="body">
+        <h3>prisma-logo-crystal-mark.png</h3>
+        <p>prisma-control-center/internal/web/assets/prisma-logo-crystal-mark.png</p>
+        <div class="chips">
+          <span>control_center_visual_governance</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|logo|prisma-logo</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/prisma-control-center/internal/web/assets/prisma-logo-full.png" loading="lazy" alt="prisma-logo-full.png" /></div>
+      <div class="body">
+        <h3>prisma-logo-full.png</h3>
+        <p>prisma-control-center/internal/web/assets/prisma-logo-full.png</p>
+        <div class="chips">
+          <span>control_center_visual_governance</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|logo|prisma-logo</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/prisma-control-center/internal/web/assets/prisma-logo-mark.png" loading="lazy" alt="prisma-logo-mark.png" /></div>
+      <div class="body">
+        <h3>prisma-logo-mark.png</h3>
+        <p>prisma-control-center/internal/web/assets/prisma-logo-mark.png</p>
+        <div class="chips">
+          <span>control_center_visual_governance</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|logo|prisma-logo</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/prisma-control-center/internal/web/assets/prisma-logo.png" loading="lazy" alt="prisma-logo.png" /></div>
+      <div class="body">
+        <h3>prisma-logo.png</h3>
+        <p>prisma-control-center/internal/web/assets/prisma-logo.png</p>
+        <div class="chips">
+          <span>control_center_visual_governance</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|logo|prisma-logo</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/prisma-control-center/internal/web/assets/prisma_logo_full.png" loading="lazy" alt="prisma_logo_full.png" /></div>
+      <div class="body">
+        <h3>prisma_logo_full.png</h3>
+        <p>prisma-control-center/internal/web/assets/prisma_logo_full.png</p>
+        <div class="chips">
+          <span>control_center_visual_governance</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|logo</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/prisma-control-center/internal/web/assets/prisma_logo_mark.png" loading="lazy" alt="prisma_logo_mark.png" /></div>
+      <div class="body">
+        <h3>prisma_logo_mark.png</h3>
+        <p>prisma-control-center/internal/web/assets/prisma_logo_mark.png</p>
+        <div class="chips">
+          <span>control_center_visual_governance</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|logo</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/apple-touch-icon-precomposed.png" loading="lazy" alt="apple-touch-icon-precomposed.png" /></div>
+      <div class="body">
+        <h3>apple-touch-icon-precomposed.png</h3>
+        <p>products/mobile/app/public/apple-touch-icon-precomposed.png</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|apple-touch-icon</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/apple-touch-icon.png" loading="lazy" alt="apple-touch-icon.png" /></div>
+      <div class="body">
+        <h3>apple-touch-icon.png</h3>
+        <p>products/mobile/app/public/apple-touch-icon.png</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|apple-touch-icon</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/chart-lab/app/public/brand/prisma-logo-full.png" loading="lazy" alt="prisma-logo-full.png" /></div>
+      <div class="body">
+        <h3>prisma-logo-full.png</h3>
+        <p>products/chart-lab/app/public/brand/prisma-logo-full.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|logo|brand|prisma-logo</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/chart-lab/app/public/brand/prisma-prism-mark-192.png" loading="lazy" alt="prisma-prism-mark-192.png" /></div>
+      <div class="body">
+        <h3>prisma-prism-mark-192.png</h3>
+        <p>products/chart-lab/app/public/brand/prisma-prism-mark-192.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|brand</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/chart-lab/app/public/brand/prisma-prism-mark.png" loading="lazy" alt="prisma-prism-mark.png" /></div>
+      <div class="body">
+        <h3>prisma-prism-mark.png</h3>
+        <p>products/chart-lab/app/public/brand/prisma-prism-mark.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|brand</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/chart-lab/app/public/favicon.svg" loading="lazy" alt="favicon.svg" /></div>
+      <div class="body">
+        <h3>favicon.svg</h3>
+        <p>products/chart-lab/app/public/favicon.svg</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|favicon</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/brand/prisma-logo-main.png" loading="lazy" alt="prisma-logo-main.png" /></div>
+      <div class="body">
+        <h3>prisma-logo-main.png</h3>
+        <p>products/pc/app/public/brand/prisma-logo-main.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|logo|brand|prisma-logo</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/brand/prisma-logo-official.png" loading="lazy" alt="prisma-logo-official.png" /></div>
+      <div class="body">
+        <h3>prisma-logo-official.png</h3>
+        <p>products/pc/app/public/brand/prisma-logo-official.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|logo|brand|prisma-logo</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/brand/prisma-mark.svg" loading="lazy" alt="prisma-mark.svg" /></div>
+      <div class="body">
+        <h3>prisma-mark.svg</h3>
+        <p>products/pc/app/public/brand/prisma-mark.svg</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|brand</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/prisma/logo-prisma-primary.png" loading="lazy" alt="logo-prisma-primary.png" /></div>
+      <div class="body">
+        <h3>logo-prisma-primary.png</h3>
+        <p>products/tablet/app/public/prisma/logo-prisma-primary.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|logo</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/web/app/public/prisma-logo.png" loading="lazy" alt="prisma-logo.png" /></div>
+      <div class="body">
+        <h3>prisma-logo.png</h3>
+        <p>products/web/app/public/prisma-logo.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 92</span>
+        </div>
+        <p class="why">brand/logo|logo|prisma-logo</p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section class="roleSection role-product_packshot">
+  <div class="sectionHeader">
+    <div>
+      <p class="eyebrow">Rol de asset</p>
+      <h2>Product Packshot</h2>
+      <p>Producto/catálogo/packshot. No debe usarse como atmósfera de interfaz.</p>
+    </div>
+    <div class="count">80</div>
+  </div>
+  <div class="grid">
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/icons/prisma-pwa-192.png" loading="lazy" alt="prisma-pwa-192.png" /></div>
+      <div class="body">
+        <h3>prisma-pwa-192.png</h3>
+        <p>products/mobile/app/public/icons/prisma-pwa-192.png</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/icons/prisma-pwa-512.png" loading="lazy" alt="prisma-pwa-512.png" /></div>
+      <div class="body">
+        <h3>prisma-pwa-512.png</h3>
+        <p>products/mobile/app/public/icons/prisma-pwa-512.png</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/icons/prisma_ios_touch_icon_180.png" loading="lazy" alt="prisma_ios_touch_icon_180.png" /></div>
+      <div class="body">
+        <h3>prisma_ios_touch_icon_180.png</h3>
+        <p>products/mobile/app/public/icons/prisma_ios_touch_icon_180.png</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/icons/prisma_playstore_icon_192.png" loading="lazy" alt="prisma_playstore_icon_192.png" /></div>
+      <div class="body">
+        <h3>prisma_playstore_icon_192.png</h3>
+        <p>products/mobile/app/public/icons/prisma_playstore_icon_192.png</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/icons/prisma_playstore_icon_512.png" loading="lazy" alt="prisma_playstore_icon_512.png" /></div>
+      <div class="body">
+        <h3>prisma_playstore_icon_512.png</h3>
+        <p>products/mobile/app/public/icons/prisma_playstore_icon_512.png</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/icons/prisma_whatsapp_install_icon.png" loading="lazy" alt="prisma_whatsapp_install_icon.png" /></div>
+      <div class="body">
+        <h3>prisma_whatsapp_install_icon.png</h3>
+        <p>products/mobile/app/public/icons/prisma_whatsapp_install_icon.png</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/og-image.png" loading="lazy" alt="og-image.png" /></div>
+      <div class="body">
+        <h3>og-image.png</h3>
+        <p>products/mobile/app/public/og-image.png</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/prisma-mobile-maskable-icon.svg" loading="lazy" alt="prisma-mobile-maskable-icon.svg" /></div>
+      <div class="body">
+        <h3>prisma-mobile-maskable-icon.svg</h3>
+        <p>products/mobile/app/public/prisma-mobile-maskable-icon.svg</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/prisma-mobile-premium-mark.svg" loading="lazy" alt="prisma-mobile-premium-mark.svg" /></div>
+      <div class="body">
+        <h3>prisma-mobile-premium-mark.svg</h3>
+        <p>products/mobile/app/public/prisma-mobile-premium-mark.svg</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/prisma-whatsapp-preview.png" loading="lazy" alt="prisma-whatsapp-preview.png" /></div>
+      <div class="body">
+        <h3>prisma-whatsapp-preview.png</h3>
+        <p>products/mobile/app/public/prisma-whatsapp-preview.png</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/landing/prisma-ecosystem.svg" loading="lazy" alt="prisma-ecosystem.svg" /></div>
+      <div class="body">
+        <h3>prisma-ecosystem.svg</h3>
+        <p>products/pc/app/public/landing/prisma-ecosystem.svg</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/landing/prisma-home-hero-commercial.png" loading="lazy" alt="prisma-home-hero-commercial.png" /></div>
+      <div class="body">
+        <h3>prisma-home-hero-commercial.png</h3>
+        <p>products/pc/app/public/landing/prisma-home-hero-commercial.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/landing/prisma-multistore-map.svg" loading="lazy" alt="prisma-multistore-map.svg" /></div>
+      <div class="body">
+        <h3>prisma-multistore-map.svg</h3>
+        <p>products/pc/app/public/landing/prisma-multistore-map.svg</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/landing/prisma-multisucursal-control-total.png" loading="lazy" alt="prisma-multisucursal-control-total.png" /></div>
+      <div class="body">
+        <h3>prisma-multisucursal-control-total.png</h3>
+        <p>products/pc/app/public/landing/prisma-multisucursal-control-total.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/landing/prisma-pc-controla-operacion.png" loading="lazy" alt="prisma-pc-controla-operacion.png" /></div>
+      <div class="body">
+        <h3>prisma-pc-controla-operacion.png</h3>
+        <p>products/pc/app/public/landing/prisma-pc-controla-operacion.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/landing/prisma-pos-vende-con-orden.png" loading="lazy" alt="prisma-pos-vende-con-orden.png" /></div>
+      <div class="body">
+        <h3>prisma-pos-vende-con-orden.png</h3>
+        <p>products/pc/app/public/landing/prisma-pos-vende-con-orden.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/pc/app/public/landing/prisma-smart-replenishment.svg" loading="lazy" alt="prisma-smart-replenishment.svg" /></div>
+      <div class="body">
+        <h3>prisma-smart-replenishment.svg</h3>
+        <p>products/pc/app/public/landing/prisma-smart-replenishment.svg</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/pos-packshots/bread_loaf_512.png" loading="lazy" alt="bread_loaf_512.png" /></div>
+      <div class="body">
+        <h3>bread_loaf_512.png</h3>
+        <p>products/tablet/app/public/pos-packshots/bread_loaf_512.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/pos-packshots/candy_bar_512.png" loading="lazy" alt="candy_bar_512.png" /></div>
+      <div class="body">
+        <h3>candy_bar_512.png</h3>
+        <p>products/tablet/app/public/pos-packshots/candy_bar_512.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/pos-packshots/cereal_box_512.png" loading="lazy" alt="cereal_box_512.png" /></div>
+      <div class="body">
+        <h3>cereal_box_512.png</h3>
+        <p>products/tablet/app/public/pos-packshots/cereal_box_512.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/pos-packshots/chips_bag_512.png" loading="lazy" alt="chips_bag_512.png" /></div>
+      <div class="body">
+        <h3>chips_bag_512.png</h3>
+        <p>products/tablet/app/public/pos-packshots/chips_bag_512.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/pos-packshots/coffee_jar_512.png" loading="lazy" alt="coffee_jar_512.png" /></div>
+      <div class="body">
+        <h3>coffee_jar_512.png</h3>
+        <p>products/tablet/app/public/pos-packshots/coffee_jar_512.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/pos-packshots/cola_bottle_512.png" loading="lazy" alt="cola_bottle_512.png" /></div>
+      <div class="body">
+        <h3>cola_bottle_512.png</h3>
+        <p>products/tablet/app/public/pos-packshots/cola_bottle_512.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/pos-packshots/counter_goods_512.png" loading="lazy" alt="counter_goods_512.png" /></div>
+      <div class="body">
+        <h3>counter_goods_512.png</h3>
+        <p>products/tablet/app/public/pos-packshots/counter_goods_512.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/pos-packshots/detergent_bag_512.png" loading="lazy" alt="detergent_bag_512.png" /></div>
+      <div class="body">
+        <h3>detergent_bag_512.png</h3>
+        <p>products/tablet/app/public/pos-packshots/detergent_bag_512.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/pos-packshots/disposables_stack_512.png" loading="lazy" alt="disposables_stack_512.png" /></div>
+      <div class="body">
+        <h3>disposables_stack_512.png</h3>
+        <p>products/tablet/app/public/pos-packshots/disposables_stack_512.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/pos-packshots/hygiene_bottle_512.png" loading="lazy" alt="hygiene_bottle_512.png" /></div>
+      <div class="body">
+        <h3>hygiene_bottle_512.png</h3>
+        <p>products/tablet/app/public/pos-packshots/hygiene_bottle_512.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/pos-packshots/icecream_bar_512.png" loading="lazy" alt="icecream_bar_512.png" /></div>
+      <div class="body">
+        <h3>icecream_bar_512.png</h3>
+        <p>products/tablet/app/public/pos-packshots/icecream_bar_512.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/pos-packshots/milk_carton_512.png" loading="lazy" alt="milk_carton_512.png" /></div>
+      <div class="body">
+        <h3>milk_carton_512.png</h3>
+        <p>products/tablet/app/public/pos-packshots/milk_carton_512.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/pos-packshots/noodles_cup_512.png" loading="lazy" alt="noodles_cup_512.png" /></div>
+      <div class="body">
+        <h3>noodles_cup_512.png</h3>
+        <p>products/tablet/app/public/pos-packshots/noodles_cup_512.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/pos-packshots/pet_food_bag_512.png" loading="lazy" alt="pet_food_bag_512.png" /></div>
+      <div class="body">
+        <h3>pet_food_bag_512.png</h3>
+        <p>products/tablet/app/public/pos-packshots/pet_food_bag_512.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/pos-packshots/water_bottle_512.png" loading="lazy" alt="water_bottle_512.png" /></div>
+      <div class="body">
+        <h3>water_bottle_512.png</h3>
+        <p>products/tablet/app/public/pos-packshots/water_bottle_512.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/ace-1kg.png" loading="lazy" alt="ace-1kg.png" /></div>
+      <div class="body">
+        <h3>ace-1kg.png</h3>
+        <p>products/tablet/app/public/products/packshots/ace-1kg.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/agua-ciel-1l.png" loading="lazy" alt="agua-ciel-1l.png" /></div>
+      <div class="body">
+        <h3>agua-ciel-1l.png</h3>
+        <p>products/tablet/app/public/products/packshots/agua-ciel-1l.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/coca-cola-600ml.png" loading="lazy" alt="coca-cola-600ml.png" /></div>
+      <div class="body">
+        <h3>coca-cola-600ml.png</h3>
+        <p>products/tablet/app/public/products/packshots/coca-cola-600ml.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot|coca</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/aceite-vegetal.png" loading="lazy" alt="aceite-vegetal.png" /></div>
+      <div class="body">
+        <h3>aceite-vegetal.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/aceite-vegetal.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/agua-con-gas-burbuja-fina-600ml-02.png" loading="lazy" alt="agua-con-gas-burbuja-fina-600ml-02.png" /></div>
+      <div class="body">
+        <h3>agua-con-gas-burbuja-fina-600ml-02.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/agua-con-gas-burbuja-fina-600ml-02.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/agua-con-gas-burbuja-fina-600ml.png" loading="lazy" alt="agua-con-gas-burbuja-fina-600ml.png" /></div>
+      <div class="body">
+        <h3>agua-con-gas-burbuja-fina-600ml.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/agua-con-gas-burbuja-fina-600ml.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/agua-mineral-600ml-02.png" loading="lazy" alt="agua-mineral-600ml-02.png" /></div>
+      <div class="body">
+        <h3>agua-mineral-600ml-02.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/agua-mineral-600ml-02.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/agua-mineral-600ml.png" loading="lazy" alt="agua-mineral-600ml.png" /></div>
+      <div class="body">
+        <h3>agua-mineral-600ml.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/agua-mineral-600ml.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/agua-purificada-600ml.png" loading="lazy" alt="agua-purificada-600ml.png" /></div>
+      <div class="body">
+        <h3>agua-purificada-600ml.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/agua-purificada-600ml.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/agua-tonica-600ml.png" loading="lazy" alt="agua-tonica-600ml.png" /></div>
+      <div class="body">
+        <h3>agua-tonica-600ml.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/agua-tonica-600ml.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/alimento-para-gato-adulto-2kg.png" loading="lazy" alt="alimento-para-gato-adulto-2kg.png" /></div>
+      <div class="body">
+        <h3>alimento-para-gato-adulto-2kg.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/alimento-para-gato-adulto-2kg.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/arroz-1kg.png" loading="lazy" alt="arroz-1kg.png" /></div>
+      <div class="body">
+        <h3>arroz-1kg.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/arroz-1kg.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/arroz-premium-grano-largo-1kg.png" loading="lazy" alt="arroz-premium-grano-largo-1kg.png" /></div>
+      <div class="body">
+        <h3>arroz-premium-grano-largo-1kg.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/arroz-premium-grano-largo-1kg.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/atun-en-agua-140g.png" loading="lazy" alt="atun-en-agua-140g.png" /></div>
+      <div class="body">
+        <h3>atun-en-agua-140g.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/atun-en-agua-140g.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/atun-en-agua-80g.png" loading="lazy" alt="atun-en-agua-80g.png" /></div>
+      <div class="body">
+        <h3>atun-en-agua-80g.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/atun-en-agua-80g.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/avena-hojuelas-500g.png" loading="lazy" alt="avena-hojuelas-500g.png" /></div>
+      <div class="body">
+        <h3>avena-hojuelas-500g.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/avena-hojuelas-500g.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/azucar-refinada-1kg.png" loading="lazy" alt="azucar-refinada-1kg.png" /></div>
+      <div class="body">
+        <h3>azucar-refinada-1kg.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/azucar-refinada-1kg.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/bebida-de-almendra-1l-02.png" loading="lazy" alt="bebida-de-almendra-1l-02.png" /></div>
+      <div class="body">
+        <h3>bebida-de-almendra-1l-02.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/bebida-de-almendra-1l-02.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot|bebida</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/bebida-de-almendra-1l.png" loading="lazy" alt="bebida-de-almendra-1l.png" /></div>
+      <div class="body">
+        <h3>bebida-de-almendra-1l.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/bebida-de-almendra-1l.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot|bebida</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/bebida-de-arroz-1l.png" loading="lazy" alt="bebida-de-arroz-1l.png" /></div>
+      <div class="body">
+        <h3>bebida-de-arroz-1l.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/bebida-de-arroz-1l.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot|bebida</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/bebida-de-avena-1l.png" loading="lazy" alt="bebida-de-avena-1l.png" /></div>
+      <div class="body">
+        <h3>bebida-de-avena-1l.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/bebida-de-avena-1l.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot|bebida</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/bebida-de-soya-1l.png" loading="lazy" alt="bebida-de-soya-1l.png" /></div>
+      <div class="body">
+        <h3>bebida-de-soya-1l.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/bebida-de-soya-1l.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot|bebida</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/bebida-de-yogur-natural-1l.png" loading="lazy" alt="bebida-de-yogur-natural-1l.png" /></div>
+      <div class="body">
+        <h3>bebida-de-yogur-natural-1l.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/bebida-de-yogur-natural-1l.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot|bebida</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/bebida-energetica-energia-intensa-355ml.png" loading="lazy" alt="bebida-energetica-energia-intensa-355ml.png" /></div>
+      <div class="body">
+        <h3>bebida-energetica-energia-intensa-355ml.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/bebida-energetica-energia-intensa-355ml.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot|bebida</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/bebida-isotonica-600ml.png" loading="lazy" alt="bebida-isotonica-600ml.png" /></div>
+      <div class="body">
+        <h3>bebida-isotonica-600ml.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/bebida-isotonica-600ml.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot|bebida</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/cacao-en-polvo-400g.png" loading="lazy" alt="cacao-en-polvo-400g.png" /></div>
+      <div class="body">
+        <h3>cacao-en-polvo-400g.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/cacao-en-polvo-400g.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/cafe-molido-seleccion-premium-250g.png" loading="lazy" alt="cafe-molido-seleccion-premium-250g.png" /></div>
+      <div class="body">
+        <h3>cafe-molido-seleccion-premium-250g.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/cafe-molido-seleccion-premium-250g.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/cafe-soluble-200g.png" loading="lazy" alt="cafe-soluble-200g.png" /></div>
+      <div class="body">
+        <h3>cafe-soluble-200g.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/cafe-soluble-200g.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/cereal-500g.png" loading="lazy" alt="cereal-500g.png" /></div>
+      <div class="body">
+        <h3>cereal-500g.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/cereal-500g.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/chicharos-tiernos-285g.png" loading="lazy" alt="chicharos-tiernos-285g.png" /></div>
+      <div class="body">
+        <h3>chicharos-tiernos-285g.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/chicharos-tiernos-285g.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/crema-acida-400g-02.png" loading="lazy" alt="crema-acida-400g-02.png" /></div>
+      <div class="body">
+        <h3>crema-acida-400g-02.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/crema-acida-400g-02.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/crema-acida-400g.png" loading="lazy" alt="crema-acida-400g.png" /></div>
+      <div class="body">
+        <h3>crema-acida-400g.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/crema-acida-400g.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/crema-corporal-nutricion-intensa-750ml.png" loading="lazy" alt="crema-corporal-nutricion-intensa-750ml.png" /></div>
+      <div class="body">
+        <h3>crema-corporal-nutricion-intensa-750ml.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/crema-corporal-nutricion-intensa-750ml.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/crema-de-cacahuate-550g.png" loading="lazy" alt="crema-de-cacahuate-550g.png" /></div>
+      <div class="body">
+        <h3>crema-de-cacahuate-550g.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/crema-de-cacahuate-550g.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/crema-para-batir-500ml-02.png" loading="lazy" alt="crema-para-batir-500ml-02.png" /></div>
+      <div class="body">
+        <h3>crema-para-batir-500ml-02.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/crema-para-batir-500ml-02.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/crema-para-batir-500ml.png" loading="lazy" alt="crema-para-batir-500ml.png" /></div>
+      <div class="body">
+        <h3>crema-para-batir-500ml.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/crema-para-batir-500ml.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/crema-para-cafe-500ml.png" loading="lazy" alt="crema-para-cafe-500ml.png" /></div>
+      <div class="body">
+        <h3>crema-para-cafe-500ml.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/crema-para-cafe-500ml.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/crema-para-manos-nutricion-intensa-75ml.png" loading="lazy" alt="crema-para-manos-nutricion-intensa-75ml.png" /></div>
+      <div class="body">
+        <h3>crema-para-manos-nutricion-intensa-75ml.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/crema-para-manos-nutricion-intensa-75ml.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/croquetas-para-perro-adulto-2kg.png" loading="lazy" alt="croquetas-para-perro-adulto-2kg.png" /></div>
+      <div class="body">
+        <h3>croquetas-para-perro-adulto-2kg.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/croquetas-para-perro-adulto-2kg.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/desodorante-spray-proteccion-150ml.png" loading="lazy" alt="desodorante-spray-proteccion-150ml.png" /></div>
+      <div class="body">
+        <h3>desodorante-spray-proteccion-150ml.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/desodorante-spray-proteccion-150ml.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/detergente-multiusos-1kg.png" loading="lazy" alt="detergente-multiusos-1kg.png" /></div>
+      <div class="body">
+        <h3>detergente-multiusos-1kg.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/detergente-multiusos-1kg.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot|detergente</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/elote-dulce-en-grano-425g.png" loading="lazy" alt="elote-dulce-en-grano-425g.png" /></div>
+      <div class="body">
+        <h3>elote-dulce-en-grano-425g.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/elote-dulce-en-grano-425g.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/enjuague-bucal-menta-fresca-500ml.png" loading="lazy" alt="enjuague-bucal-menta-fresca-500ml.png" /></div>
+      <div class="body">
+        <h3>enjuague-bucal-menta-fresca-500ml.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/enjuague-bucal-menta-fresca-500ml.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/frijol-negro-seleccionado-900g.png" loading="lazy" alt="frijol-negro-seleccionado-900g.png" /></div>
+      <div class="body">
+        <h3>frijol-negro-seleccionado-900g.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/frijol-negro-seleccionado-900g.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/galletas-saladas-horneadas-200g.png" loading="lazy" alt="galletas-saladas-horneadas-200g.png" /></div>
+      <div class="body">
+        <h3>galletas-saladas-horneadas-200g.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/galletas-saladas-horneadas-200g.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot|galleta</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/galletas-sandwich-rellenas-de-crema-300g.png" loading="lazy" alt="galletas-sandwich-rellenas-de-crema-300g.png" /></div>
+      <div class="body">
+        <h3>galletas-sandwich-rellenas-de-crema-300g.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/galletas-sandwich-rellenas-de-crema-300g.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot|galleta</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/harina-de-trigo-tradicional-1kg.png" loading="lazy" alt="harina-de-trigo-tradicional-1kg.png" /></div>
+      <div class="body">
+        <h3>harina-de-trigo-tradicional-1kg.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/harina-de-trigo-tradicional-1kg.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/huevos-12-unidades-02.png" loading="lazy" alt="huevos-12-unidades-02.png" /></div>
+      <div class="body">
+        <h3>huevos-12-unidades-02.png</h3>
+        <p>products/tablet/app/public/products/packshots/dark/huevos-12-unidades-02.png</p>
+        <div class="chips">
+          <span>web_eit_sober</span>
+          <span>conf 78</span>
+        </div>
+        <p class="why">product/packshot|product|packshot</p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section class="roleSection role-screenshot_qa">
+  <div class="sectionHeader">
+    <div>
+      <p class="eyebrow">Rol de asset</p>
+      <h2>Screenshot / QA Evidence</h2>
+      <p>Capturas, evidencia, snapshots o regresión visual. Sólo evidencia.</p>
+    </div>
+    <div class="count">29</div>
+  </div>
+  <div class="grid">
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/screenshots/prisma-mobile-pwa-dashboard.png" loading="lazy" alt="prisma-mobile-pwa-dashboard.png" /></div>
+      <div class="body">
+        <h3>prisma-mobile-pwa-dashboard.png</h3>
+        <p>products/mobile/app/public/screenshots/prisma-mobile-pwa-dashboard.png</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|screenshot</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/_local/evidence/chart-lab/screenshots/chart-lab-maps-mobile-frame.png" loading="lazy" alt="chart-lab-maps-mobile-frame.png" /></div>
+      <div class="body">
+        <h3>chart-lab-maps-mobile-frame.png</h3>
+        <p>tools/_local/evidence/chart-lab/screenshots/chart-lab-maps-mobile-frame.png</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|screenshot|evidence</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/_local/evidence/chart-lab/screenshots/chart-lab-mobile-viewport.png" loading="lazy" alt="chart-lab-mobile-viewport.png" /></div>
+      <div class="body">
+        <h3>chart-lab-mobile-viewport.png</h3>
+        <p>tools/_local/evidence/chart-lab/screenshots/chart-lab-mobile-viewport.png</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|screenshot|evidence</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t01/checkout_preview.png" loading="lazy" alt="checkout_preview.png" /></div>
+      <div class="body">
+        <h3>checkout_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t01/checkout_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t01/sales_preview.png" loading="lazy" alt="sales_preview.png" /></div>
+      <div class="body">
+        <h3>sales_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t01/sales_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t02/returns_preview.png" loading="lazy" alt="returns_preview.png" /></div>
+      <div class="body">
+        <h3>returns_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t02/returns_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t02/shift_preview.png" loading="lazy" alt="shift_preview.png" /></div>
+      <div class="body">
+        <h3>shift_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t02/shift_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t03/offline_preview.png" loading="lazy" alt="offline_preview.png" /></div>
+      <div class="body">
+        <h3>offline_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t03/offline_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t03/sync_preview.png" loading="lazy" alt="sync_preview.png" /></div>
+      <div class="body">
+        <h3>sync_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t03/sync_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t04/checkout_stock_preview.png" loading="lazy" alt="checkout_stock_preview.png" /></div>
+      <div class="body">
+        <h3>checkout_stock_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t04/checkout_stock_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t04/sales_stock_preview.png" loading="lazy" alt="sales_stock_preview.png" /></div>
+      <div class="body">
+        <h3>sales_stock_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t04/sales_stock_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t04/stock_preview.png" loading="lazy" alt="stock_preview.png" /></div>
+      <div class="body">
+        <h3>stock_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t04/stock_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t05/dashboard_home_preview.png" loading="lazy" alt="dashboard_home_preview.png" /></div>
+      <div class="body">
+        <h3>dashboard_home_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t05/dashboard_home_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t05/dashboard_risks_preview.png" loading="lazy" alt="dashboard_risks_preview.png" /></div>
+      <div class="body">
+        <h3>dashboard_risks_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t05/dashboard_risks_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t05/dashboard_sync_stock_preview.png" loading="lazy" alt="dashboard_sync_stock_preview.png" /></div>
+      <div class="body">
+        <h3>dashboard_sync_stock_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t05/dashboard_sync_stock_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t06/fallback_evidence.png" loading="lazy" alt="fallback_evidence.png" /></div>
+      <div class="body">
+        <h3>fallback_evidence.png</h3>
+        <p>products/tablet/app/docs/qa/t06/fallback_evidence.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa|evidence</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t06/home_hardening_preview.png" loading="lazy" alt="home_hardening_preview.png" /></div>
+      <div class="body">
+        <h3>home_hardening_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t06/home_hardening_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t06/not_found_preview.png" loading="lazy" alt="not_found_preview.png" /></div>
+      <div class="body">
+        <h3>not_found_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t06/not_found_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t06/operator_flow_evidence.png" loading="lazy" alt="operator_flow_evidence.png" /></div>
+      <div class="body">
+        <h3>operator_flow_evidence.png</h3>
+        <p>products/tablet/app/docs/qa/t06/operator_flow_evidence.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa|evidence</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t06/release_gate_evidence.png" loading="lazy" alt="release_gate_evidence.png" /></div>
+      <div class="body">
+        <h3>release_gate_evidence.png</h3>
+        <p>products/tablet/app/docs/qa/t06/release_gate_evidence.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa|evidence</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t06/runtime_error_preview.png" loading="lazy" alt="runtime_error_preview.png" /></div>
+      <div class="body">
+        <h3>runtime_error_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t06/runtime_error_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t07/checkout_rail_preview.png" loading="lazy" alt="checkout_rail_preview.png" /></div>
+      <div class="body">
+        <h3>checkout_rail_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t07/checkout_rail_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t07/home_ux_preview.png" loading="lazy" alt="home_ux_preview.png" /></div>
+      <div class="body">
+        <h3>home_ux_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t07/home_ux_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t07/sales_fastlane_preview.png" loading="lazy" alt="sales_fastlane_preview.png" /></div>
+      <div class="body">
+        <h3>sales_fastlane_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t07/sales_fastlane_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/tablet/app/docs/qa/t07/shift_returns_preview.png" loading="lazy" alt="shift_returns_preview.png" /></div>
+      <div class="body">
+        <h3>shift_returns_preview.png</h3>
+        <p>products/tablet/app/docs/qa/t07/shift_returns_preview.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|qa</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/_local/evidence/chart-lab/screenshots/chart-lab-controls-causal.png" loading="lazy" alt="chart-lab-controls-causal.png" /></div>
+      <div class="body">
+        <h3>chart-lab-controls-causal.png</h3>
+        <p>tools/_local/evidence/chart-lab/screenshots/chart-lab-controls-causal.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|screenshot|evidence</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/_local/evidence/chart-lab/screenshots/chart-lab-landing.png" loading="lazy" alt="chart-lab-landing.png" /></div>
+      <div class="body">
+        <h3>chart-lab-landing.png</h3>
+        <p>tools/_local/evidence/chart-lab/screenshots/chart-lab-landing.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|screenshot|evidence</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/_local/evidence/chart-lab/screenshots/chart-lab-passport.png" loading="lazy" alt="chart-lab-passport.png" /></div>
+      <div class="body">
+        <h3>chart-lab-passport.png</h3>
+        <p>tools/_local/evidence/chart-lab/screenshots/chart-lab-passport.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|screenshot|evidence</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/tools/_local/evidence/chart-lab/screenshots/chart-lab-tablet-viewport.png" loading="lazy" alt="chart-lab-tablet-viewport.png" /></div>
+      <div class="body">
+        <h3>chart-lab-tablet-viewport.png</h3>
+        <p>tools/_local/evidence/chart-lab/screenshots/chart-lab-tablet-viewport.png</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 95</span>
+        </div>
+        <p class="why">screenshot/qa|screenshot|evidence</p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section class="roleSection role-ui_icon">
+  <div class="sectionHeader">
+    <div>
+      <p class="eyebrow">Rol de asset</p>
+      <h2>UI Icon / Glyph</h2>
+      <p>Íconos, glyphs o SVG utilitarios. No son backgrounds.</p>
+    </div>
+    <div class="count">7</div>
+  </div>
+  <div class="grid">
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/icons/prisma-app-icon.svg" loading="lazy" alt="prisma-app-icon.svg" /></div>
+      <div class="body">
+        <h3>prisma-app-icon.svg</h3>
+        <p>products/mobile/app/public/icons/prisma-app-icon.svg</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 84</span>
+        </div>
+        <p class="why">svg/icon|/icons/</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/icons/prisma-app-maskable.svg" loading="lazy" alt="prisma-app-maskable.svg" /></div>
+      <div class="body">
+        <h3>prisma-app-maskable.svg</h3>
+        <p>products/mobile/app/public/icons/prisma-app-maskable.svg</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 84</span>
+        </div>
+        <p class="why">svg/icon|/icons/</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/icons/prisma-app-monochrome.svg" loading="lazy" alt="prisma-app-monochrome.svg" /></div>
+      <div class="body">
+        <h3>prisma-app-monochrome.svg</h3>
+        <p>products/mobile/app/public/icons/prisma-app-monochrome.svg</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 84</span>
+        </div>
+        <p class="why">svg/icon|/icons/</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/icons/prisma_playstore_icon(1).svg" loading="lazy" alt="prisma_playstore_icon(1).svg" /></div>
+      <div class="body">
+        <h3>prisma_playstore_icon(1).svg</h3>
+        <p>products/mobile/app/public/icons/prisma_playstore_icon(1).svg</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 84</span>
+        </div>
+        <p class="why">svg/icon|/icons/</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/products/mobile/app/public/icons/prisma_playstore_icon(2).svg" loading="lazy" alt="prisma_playstore_icon(2).svg" /></div>
+      <div class="body">
+        <h3>prisma_playstore_icon(2).svg</h3>
+        <p>products/mobile/app/public/icons/prisma_playstore_icon(2).svg</p>
+        <div class="chips">
+          <span>mobile_thin_mist</span>
+          <span>conf 84</span>
+        </div>
+        <p class="why">svg/icon|/icons/</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/_dependency_graphs/dependency_graph_package_silver_frost_cyan_terminal-de-venta-system_20260518_164438.svg" loading="lazy" alt="dependency_graph_package_silver_frost_cyan_terminal-de-venta-system_20260518_164438.svg" /></div>
+      <div class="body">
+        <h3>dependency_graph_package_silver_frost_cyan_terminal-de-venta-system_20260518_164438.svg</h3>
+        <p>_dependency_graphs/dependency_graph_package_silver_frost_cyan_terminal-de-venta-system_20260518_164438.svg</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 51</span>
+        </div>
+        <p class="why">svg_default_review</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="imgWrap"><img src="file:///F:/repos/hitech-os/apps/terminal-de-venta-system/_dependency_graphs/visual_control_map_terminal-de-venta-system_silver_frost_cyan_20260518_164438.svg" loading="lazy" alt="visual_control_map_terminal-de-venta-system_silver_frost_cyan_20260518_164438.svg" /></div>
+      <div class="body">
+        <h3>visual_control_map_terminal-de-venta-system_silver_frost_cyan_20260518_164438.svg</h3>
+        <p>_dependency_graphs/visual_control_map_terminal-de-venta-system_silver_frost_cyan_20260518_164438.svg</p>
+        <div class="chips">
+          <span>unclassified_visual_asset</span>
+          <span>conf 51</span>
+        </div>
+        <p class="why">svg_default_review</p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+</main>
+</body>
+</html>

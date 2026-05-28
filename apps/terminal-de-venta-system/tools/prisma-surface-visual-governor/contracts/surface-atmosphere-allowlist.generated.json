@@ -1,0 +1,133 @@
+{
+  "schema": "prisma.surface.visual_governor.surface_atmosphere_allowlist",
+  "version": "M-02.generated",
+  "created_at": "2026-05-27T16:08:39",
+  "rule": "Las imágenes reales son core del Atmosphere Engine. Ninguna familia entra a una ruta sin budget/gate.",
+  "families": [
+    {
+      "id": "pc_graphite_cloudglass_stack",
+      "label": "PC Graphite Cloudglass Stack",
+      "allowed_surfaces": [
+        "pc",
+        "chart_lab",
+        "control_center_separate",
+        "control_center_embedded"
+      ],
+      "blocked_surfaces": [
+        "pos_checkout"
+      ],
+      "notes": "Casa matriz Cloudglass: base graphite + fracture/light + mist/dust.",
+      "detected_asset_count": 3
+    },
+    {
+      "id": "storm_graphite_dark_showcase",
+      "label": "Storm / Graphite Dark Showcase",
+      "allowed_surfaces": [
+        "pc_reference",
+        "chart_lab",
+        "control_center_separate",
+        "control_center_embedded",
+        "visual_os"
+      ],
+      "blocked_surfaces": [
+        "tablet_productive",
+        "pos_checkout",
+        "checkout",
+        "web_eit_public"
+      ],
+      "notes": "Premium oscuro para showcase, Visual OS, Chart Lab y PC referencia. No POS/Checkout.",
+      "detected_asset_count": 108
+    },
+    {
+      "id": "liquid_vapor_reference",
+      "label": "Liquid / Vapor Reference",
+      "allowed_surfaces": [
+        "chart_lab",
+        "control_center_separate",
+        "control_center_embedded",
+        "visual_os",
+        "pc_reference"
+      ],
+      "blocked_surfaces": [
+        "tablet_productive",
+        "pos_checkout",
+        "checkout",
+        "dense_tables"
+      ],
+      "notes": "Familia wow con humo/líquido. Entra con route budget y bozal.",
+      "detected_asset_count": 57
+    },
+    {
+      "id": "tablet_light_soft_clouds",
+      "label": "Tablet Light Soft Clouds",
+      "allowed_surfaces": [
+        "tablet_productive",
+        "tablet_settings",
+        "tablet_sync",
+        "mobile"
+      ],
+      "blocked_surfaces": [
+        "pc_dark_showcase"
+      ],
+      "notes": "Light-first para Tablet productiva. POS sólo con gate explícito.",
+      "detected_asset_count": 27
+    },
+    {
+      "id": "mobile_thin_mist",
+      "label": "Mobile Thin Mist",
+      "allowed_surfaces": [
+        "mobile"
+      ],
+      "blocked_surfaces": [
+        "pos_checkout"
+      ],
+      "notes": "Bajo ruido, battery-friendly, reduced motion.",
+      "detected_asset_count": 24
+    },
+    {
+      "id": "web_eit_sober",
+      "label": "Web/EIT Public Sober",
+      "allowed_surfaces": [
+        "web_eit_public"
+      ],
+      "blocked_surfaces": [
+        "showcase",
+        "demo"
+      ],
+      "notes": "Público sobrio. Nada de exceso visual.",
+      "detected_asset_count": 260
+    },
+    {
+      "id": "control_center_visual_governance",
+      "label": "Control Center / Visual Governance",
+      "allowed_surfaces": [
+        "control_center_separate",
+        "control_center_embedded",
+        "visual_os"
+      ],
+      "blocked_surfaces": [
+        "pos_checkout"
+      ],
+      "notes": "Gobierno, salud, evidencia y command surfaces.",
+      "detected_asset_count": 9
+    }
+  ],
+  "unclassified_visual_asset_count": 28,
+  "hard_bans": {
+    "pos_checkout": [
+      "storm_graphite_dark_showcase",
+      "liquid_vapor_reference",
+      "webgl",
+      "pixi",
+      "heavy_blur",
+      "dark_storm",
+      "background_competes_with_products_or_payment"
+    ],
+    "tablet_productive": [
+      "default_dark_theme",
+      "storm_vapor_default",
+      "webgl",
+      "heavy_blur"
+    ]
+  }
+}

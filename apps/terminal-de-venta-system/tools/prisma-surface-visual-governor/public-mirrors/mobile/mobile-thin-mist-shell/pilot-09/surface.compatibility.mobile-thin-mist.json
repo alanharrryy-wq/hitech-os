@@ -1,0 +1,22 @@
+{
+  "surface": "mobile_supervisor",
+  "allowed": true,
+  "inherits": "surface_visual_governor",
+  "forbidden": [
+    "dark storm active background",
+    "webgl",
+    "pixi vapor",
+    "heavy blur",
+    "background competing with mobile actions",
+    "motion loops",
+    "route page mutation"
+  ],
+  "required": [
+    "battery-friendly",
+    "touch-first",
+    "focus visible",
+    "reduced motion",
+    "pages unchanged",
+    "POS and checkout unchanged"
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "schema": "prisma.surface.visual_governor.surface_route_budgets",
+  "version": "M-02.generated",
+  "created_at": "2026-05-27T16:08:39",
+  "budgets": {
+    "pc_dashboard_hoy": {
+      "surface": "pc",
+      "goal": "Centro de decisiones premium.",
+      "allowed_families": [
+        "pc_graphite_cloudglass_stack",
+        "storm_graphite_dark_showcase"
+      ],
+      "blocked_families": [
+        "liquid_vapor_reference_on_dense_tables"
+      ],
+      "background": "high",
+      "glass": "medium-high",
+      "rim": "signature_only",
+      "glow": "1 strong / 3 medium",
+      "motion": "ambient + micro",
+      "webgl": "none unless demo"
+    },
+    "pc_settings_license": {
+      "surface": "pc",
+      "goal": "Claridad de configuración.",
+      "allowed_families": [
+        "pc_graphite_cloudglass_stack"
+      ],
+      "background": "low-medium",
+      "glass": "low-medium",
+      "rim": "R0-R2",
+      "glow": "focus/action only",
+      "motion": "micro",
+      "webgl": "none"
+    },
+    "chart_lab": {
+      "surface": "chart_lab",
+      "goal": "Taller visual / Power Studio.",
+      "allowed_families": [
+        "storm_graphite_dark_showcase",
+        "liquid_vapor_reference",
+        "pc_graphite_cloudglass_stack"
+      ],
+      "background": "high",
+      "glass": "medium",
+      "rim": "R1-R4",
+      "glow": "chart dependent",
+      "motion": "ambient + chart motion",
+      "webgl": "optional gated"
+    },
+    "tablet_productive": {
+      "surface": "tablet",
+      "goal": "Touch claro, light-first.",
+      "allowed_families": [
+        "tablet_light_soft_clouds"
+      ],
+      "blocked_families": [
+        "storm_graphite_dark_showcase",
+        "liquid_vapor_reference"
+      ],
+      "background": "light / low noise",
+      "glass": "low-medium",
+      "rim": "R0-R2",
+      "glow": "semantic only",
+      "motion": "micro",
+      "webgl": "none"
+    },
+    "pos_checkout": {
+      "surface": "tablet_pos_checkout",
+      "goal": "Vender rápido y tocar fácil.",
+      "allowed_families": [
+        "tablet_light_soft_clouds_only_if_gate_passes"
+      ],
+      "blocked_families": [
+        "storm_graphite_dark_showcase",
+        "liquid_vapor_reference",
+        "pc_graphite_cloudglass_stack"
+      ],
+      "background": "light-only",
+      "glass": "low",
+      "rim": "R0-R1",
+      "glow": "semantic only",
+      "motion": "micro/reduced",
+      "webgl": "forbidden",
+      "extra_bans": [
+        "Pixi",
+        "heavy blur",
+        "dark storm",
+        "vapor competing with products/payment"
+      ]
+    },
+    "mobile": {
+      "surface": "mobile",
+      "goal": "Supervisor ligero.",
+      "allowed_families": [
+        "mobile_thin_mist",
+        "tablet_light_soft_clouds"
+      ],
+      "background": "low noise",
+      "glass": "low",
+      "rim": "R0-R1",
+      "glow": "semantic only",
+      "motion": "reduced/micro",
+      "webgl": "none"
+    },
+    "web_eit": {
+      "surface": "web_eit",
+      "goal": "Público sobrio.",
+      "allowed_families": [
+        "web_eit_sober"
+      ],
+      "background": "low",
+      "glass": "low",
+      "rim": "R0-R1",
+      "glow": "minimal",
+      "motion": "minimal",
+      "webgl": "none"
+    },
+    "control_center": {
+      "surface": "control_center",
+      "goal": "Gobierno, salud y evidencia premium.",
+      "allowed_families": [
+        "storm_graphite_dark_showcase",
+        "pc_graphite_cloudglass_stack",
+        "control_center_visual_governance"
+      ],
+      "conditional_families": [
+        "liquid_vapor_reference only in showcase/reference zones"
+      ],
+      "background": "medium-high",
+      "glass": "medium-high",
+      "rim": "R1-R4 controlled",
+      "glow": "semantic/evidence/live only",
+      "motion": "ambient + micro",
+      "webgl": "demo/reference only"
+    }
+  }
+}

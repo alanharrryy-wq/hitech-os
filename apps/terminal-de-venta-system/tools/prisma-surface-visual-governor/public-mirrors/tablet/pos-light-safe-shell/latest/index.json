@@ -1,0 +1,66 @@
+{
+  "pilot": "07_pos_light_safe_shell",
+  "name": "PRISMA Surface Visual Governor · Pilot 07 POS Light Safe Shell",
+  "route": "/pos",
+  "surface": "tablet_pos",
+  "mode": "light_safe_shell",
+  "active_background_asset": "tablet-soft-gray-clouds.svg",
+  "source_pilots": [
+    "05_tablet_light_shell",
+    "06_pos_final_gate_audit"
+  ],
+  "writes_policy": {
+    "pos_page_tsx_unchanged_required": true,
+    "pos_route_layout_added_or_wrapped": true,
+    "checkout_unchanged_required": true,
+    "dependencies_unchanged_required": true,
+    "db_unchanged_required": true
+  },
+  "gates": {
+    "light_only": true,
+    "touch_first": true,
+    "no_webgl": true,
+    "no_pixi_vapor": true,
+    "no_dark_storm": true,
+    "no_heavy_blur": true,
+    "no_background_competing_with_product_or_payment": true,
+    "checkout_unchanged": true,
+    "dependencies_unchanged": true,
+    "db_unchanged": true
+  },
+  "visual_budget": {
+    "background": "low_medium",
+    "glass": "G1_G2_only",
+    "rim": "R0_R1",
+    "glow": {
+      "strong_max": 1,
+      "medium_max": 2,
+      "semantic_only": true
+    },
+    "motion": "none_or_micro",
+    "webgl": 0,
+    "ambient_layers": 1,
+    "blur": "0_to_1px_on_shell_only"
+  },
+  "active_css_forbidden_terms": [
+    "webgl",
+    "@react-three",
+    "react-three",
+    "three/fiber",
+    "pixi",
+    "pixi_vapor",
+    "storm-cloud-operations-real",
+    "obsidian-cloud-motion",
+    "backdrop-filter",
+    "blur("
+  ],
+  "assets": [
+    "aurora-slate-veil.svg",
+    "liquid-operations-smoke.svg",
+    "liquid-operations-ui-reference.png",
+    "obsidian-cloud-motion.svg",
+    "storm-cloud-operations-real.jpg",
+    "storm-glass-horizon.svg",
+    "tablet-soft-gray-clouds.svg"
+  ]
+}

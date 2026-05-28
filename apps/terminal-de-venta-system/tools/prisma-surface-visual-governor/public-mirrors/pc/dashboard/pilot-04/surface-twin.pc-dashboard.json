@@ -1,0 +1,30 @@
+{
+  "schema": "prisma.surface_twin",
+  "pilot": "04_pc_dashboard_governed_hoy",
+  "surface": "pc_dashboard",
+  "route": "/dashboard",
+  "consumer_role": "real_app_consumer",
+  "upstream_contracts": [
+    "visual-os/materiality-catalog",
+    "chart-lab/recipe-export/latest",
+    "pc/referencia-visual/pilot-03"
+  ],
+  "material_layers": [
+    "B0",
+    "B1",
+    "B3",
+    "G1",
+    "G2",
+    "G3",
+    "R2",
+    "N1",
+    "N2",
+    "N3"
+  ],
+  "forbidden_layers": [
+    "G5_physical_glass",
+    "webgl",
+    "pixi_vapor",
+    "pos_dark_storm"
+  ]
+}

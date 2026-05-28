@@ -1,0 +1,40 @@
+{
+  "pilot": "08_checkout_light_safe_shell",
+  "name": "PRISMA Surface Visual Governor · Pilot 08 Checkout Light Safe Shell",
+  "created": "2026-05-26T20:18:31",
+  "route": "/checkout",
+  "surface": "tablet",
+  "role": "payment_clarity_safe_shell",
+  "source_pilots": [
+    "05_tablet_light_shell",
+    "06_pos_final_gate_audit",
+    "07_pos_light_safe_shell"
+  ],
+  "active_atmosphere": "tablet-soft-gray-clouds.svg",
+  "gates": {
+    "light_only": true,
+    "touch_first": true,
+    "payment_clarity_first": true,
+    "no_webgl": true,
+    "no_pixi_vapor": true,
+    "no_dark_storm": true,
+    "no_heavy_blur": true,
+    "no_background_competing_with_payment": true,
+    "pos_unchanged": true,
+    "checkout_page_unchanged": true,
+    "db_unchanged": true,
+    "dependencies_unchanged": true
+  },
+  "visual_budget": {
+    "background": "low_light_atmosphere",
+    "glass": "G1_to_G2_only",
+    "rim": "R0_to_R1",
+    "glow": "focus_and_primary_payment_only",
+    "motion": "M0_none_or_M1_micro",
+    "webgl": 0
+  },
+  "files": {
+    "layout": "products/tablet/app/app/checkout/layout.tsx",
+    "css": "products/tablet/app/app/checkout/prisma-checkout-light-safe-shell.module.css"
+  }
+}

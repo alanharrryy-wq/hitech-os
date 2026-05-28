@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <defs>
+    <linearGradient id="slate" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#070b0f"/><stop offset=".45" stop-color="#121b24"/><stop offset="1" stop-color="#222b34"/></linearGradient>
+    <linearGradient id="aurora" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#7cb8ff" stop-opacity="0"/><stop offset=".36" stop-color="#87c8ff" stop-opacity=".24"/><stop offset=".60" stop-color="#b7a4ff" stop-opacity=".14"/><stop stop-color="#9ef2d5" stop-opacity="0"/></linearGradient>
+    <filter id="veil"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.01" numOctaves="3" seed="209"/><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#slate)"/>
+  <path d="M-40 360 C220 210 420 470 670 330 C960 166 1180 420 1640 250 L1640 470 C1240 610 1020 370 720 540 C430 700 230 420 -40 620 Z" fill="url(#aurora)" opacity=".78"/>
+  <rect width="1600" height="1000" filter="url(#veil)" opacity=".18" fill="#dce5ec"/>
+  <g opacity=".18" fill="#dce5ec"><ellipse cx="340" cy="700" rx="520" ry="150"/><ellipse cx="1180" cy="770" rx="480" ry="130"/></g>
+</svg>
