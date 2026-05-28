@@ -1,6 +1,6 @@
 ---
-title: PC Tablet Operational Contract
-path: docs/architecture/PC_TABLET_OPERATIONAL_CONTRACT.md
+title: Governance Package Scope Rules
+path: docs/governance/GOVERNANCE_PACKAGE_SCOPE_RULES.md
 status: CURRENT
 version: 2026.05.26-full-doc-governance-v1
 updated: 2026-05-26
@@ -11,30 +11,40 @@ evidence_scope: static package analysis from ALL_CODE_260526_054718, prisma_todo
 note: This document is a governance authority document. It does not claim minute-by-minute runtime state.
 ---
 
-# PC Tablet Operational Contract
+# Governance Package Scope Rules
 
-## Roles
+## Problem solved
 
-| Surface | Role | Can operate alone? |
-|---|---|---|
-| Tablet | Sell, shift, local catalog, outbox, offline evidence | Yes |
-| PC | Backoffice, catalog governance, stock, purchasing, audit, reconciliation | Yes for backoffice, not required for Tablet checkout |
+Previous Government packages were useful but incomplete as a single state authority because they could leave root docs and source authority files unmapped.
 
-## Contract
+## Required scope
 
-1. Tablet owns immediate sale completion.
-2. Tablet records evidence and outbox events.
-3. PC ingests Tablet events when available.
-4. PC governs catalog/inventory/master data where configured.
-5. Tablet can pull PC catalog deltas/bootstrap.
-6. Conflicts must be explainable in business language.
-7. AI must not mutate these flows in v1.
+A Government package must include:
 
-## Unsupported assumptions
+- root docs: `docs/*.md`, `docs/*.json`
+- current authority docs under `docs/prisma`, `docs/sync`, `docs/architecture`, `docs/governance`, `docs/ai`, `docs/control-center`
+- runtime resolver source files named by current authority docs
+- `shared/tri-db/status.latest.json` if present
+- Control Center service config files
+- staleness report
+- unmapped file list
+- legacy doc index
 
-- “PC canonical DB inside source tree is active because it exists.” False.
-- “PC → Tablet is missing because one old backoffice route is stubbed.” False.
-- “Mobile is POS.” False.
+## Required metadata
+
+Every package must emit:
+
+```json
+{
+  "stale_analysis_enabled": true,
+  "docs_root_included": true,
+  "authority_sources_included": true,
+  "legacy_index_included": true,
+  "unmapped_count": 0
+}
+```
+
+`unmapped_count` may be nonzero, but then the report must explain why files are intentionally outside scope.
 
 ## Authority rules used by this document
 

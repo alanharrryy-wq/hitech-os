@@ -1,6 +1,6 @@
 ---
-title: PC Tablet Operational Contract
-path: docs/architecture/PC_TABLET_OPERATIONAL_CONTRACT.md
+title: Tablet to PC Sales Sync Current Authority
+path: docs/sync/TABLET_TO_PC_SALES_SYNC_CURRENT_AUTHORITY.md
 status: CURRENT
 version: 2026.05.26-full-doc-governance-v1
 updated: 2026-05-26
@@ -11,30 +11,33 @@ evidence_scope: static package analysis from ALL_CODE_260526_054718, prisma_todo
 note: This document is a governance authority document. It does not claim minute-by-minute runtime state.
 ---
 
-# PC Tablet Operational Contract
+# Tablet → PC Sales Sync Current Authority
 
-## Roles
+## Status
 
-| Surface | Role | Can operate alone? |
-|---|---|---|
-| Tablet | Sell, shift, local catalog, outbox, offline evidence | Yes |
-| PC | Backoffice, catalog governance, stock, purchasing, audit, reconciliation | Yes for backoffice, not required for Tablet checkout |
+`CURRENT`: Tablet → PC sync has source code evidence for dispatcher/outbox behavior and PC ingest. Runtime enablement may depend on environment/config.
 
-## Contract
+## Authority files
 
-1. Tablet owns immediate sale completion.
-2. Tablet records evidence and outbox events.
-3. PC ingests Tablet events when available.
-4. PC governs catalog/inventory/master data where configured.
-5. Tablet can pull PC catalog deltas/bootstrap.
-6. Conflicts must be explainable in business language.
-7. AI must not mutate these flows in v1.
+```txt
+products/tablet/app/src/server/sync/dispatcher.ts
+products/tablet/app/app/api/pos/sync/dispatch/route.ts
+products/tablet/app/app/api/pos/events/outbox/route.ts
+products/pc/app/app/api/backoffice/sync/ingest/route.ts
+```
 
-## Unsupported assumptions
+## Expected behavior
 
-- “PC canonical DB inside source tree is active because it exists.” False.
-- “PC → Tablet is missing because one old backoffice route is stubbed.” False.
-- “Mobile is POS.” False.
+1. Tablet records local sale/evidence.
+2. Tablet writes outbox events.
+3. Dispatcher sends batches when enabled and PC endpoint is available.
+4. PC ingest receives and persists/validates the payload.
+5. ACK/conflict/rejected/failed states update outbox lifecycle.
+6. Tablet must continue selling if PC is unavailable.
+
+## Current caveat
+
+This package does not run the dispatcher. Treat this as static code authority, not live PASS evidence.
 
 ## Authority rules used by this document
 

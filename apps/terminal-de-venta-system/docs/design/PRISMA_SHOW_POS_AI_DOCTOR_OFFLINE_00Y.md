@@ -1,51 +1,57 @@
+---
+title: PRISMA Show POS AI Doctor Offline 00Y
+path: docs/design/PRISMA_SHOW_POS_AI_DOCTOR_OFFLINE_00Y.md
+status: CURRENT
+version: 2026.05.26-full-doc-governance-v1
+updated: 2026-05-26
+owner: PRISMA Governance
+supersedes: []
+live_verification: false
+evidence_scope: static package analysis from ALL_CODE_260526_054718, prisma_todo_el_show_260526_070949, GOBIERNO_*_260526_0719, and prior PRISMA project context
+note: This document is a governance authority document. It does not claim minute-by-minute runtime state.
+---
+
 # PRISMA Show POS AI Doctor Offline 00Y
 
-## Propósito
+## Status
 
-00Y convierte reportes del Doctor Smart 00X en diagnóstico accionable sin usar APIs externas.
+`CURRENT`: This is a design boundary for offline/support-style AI Doctor behavior. It is not Gemini implementation.
 
-No modifica runtime, no toca POS, no cobra dinero y no necesita internet. Su trabajo es leer evidencia y producir:
+## Policy
 
-- veredicto offline;
-- resumen ejecutivo;
-- bloqueos;
-- riesgos;
-- fortalezas;
-- siguiente paquete recomendado;
-- salida Markdown y JSON en `F:\descargasf`.
-
-## Regla madre
-
-La IA no vende, no cobra, no mueve layout y no aplica cambios.
-
-El POS sigue siendo autónomo. 00Y solamente interpreta reportes.
-
-## Entrada principal
-
-Por defecto busca el reporte más reciente:
-
-```text
-F:\descargasf\prisma_show_pos_doctor_smart_00x_*.json
+```json
+{
+  "defaultProvider": "none",
+  "apiCost": "none",
+  "allowRuntimeMutation": false,
+  "allowRepoMutation": false
+}
 ```
 
-También acepta `--input-json` para analizar un reporte específico.
+## Role
 
-## Comando canónico
+AI Doctor may interpret reports and provide human-readable support explanations. It does not close sales, change stock, mutate runtime, change licenses or rewrite repo files.
 
-```powershell
-F:\repos\hitech-os\apps\terminal-de-venta-system\tools\prisma-visual-os\run_prisma_show_pos_ai_doctor.cmd
+## Relationship to Gemini Copilot
+
+Gemini Copilot may extend this concept with managed file/search context, but must preserve the same first principle:
+
+```txt
+Read/explain first. Mutate never in v1.
 ```
 
-## Salidas
+## Recommended UI copy
 
-```text
-F:\descargasf\prisma_show_pos_ai_doctor_00y_YYMMDD_HHMM.log
-F:\descargasf\prisma_show_pos_ai_doctor_00y_YYMMDD_HHMM.json
-F:\descargasf\prisma_show_pos_ai_doctor_00y_YYMMDD_HHMM.md
+```txt
+AI Doctor can explain what happened and what to inspect next.
+It cannot change your sale, stock, license or database.
 ```
 
-## Política de costo
+## Authority rules used by this document
 
-`defaultProvider = none`.
-
-00Y v01 no usa OpenAI ni servicios externos. Si más adelante se agrega proveedor remoto, debe ser opt-in y nunca bloquear venta POS.
+1. Runtime resolver/configuration wins over filenames that merely look canonical.
+2. `DATABASE_URL` and the application resolver win over discovered SQLite files.
+3. Implemented endpoints win over older closure notes, but stubs must remain documented as stubs.
+4. `PRISMA_CURRENT_STATE.md` and `PRISMA_CURRENT_STATE.json` are the first documents a future AI assistant should read.
+5. Historical docs are preserved in `docs/legacy/**` and must not be treated as current operational authority.
+6. This package excludes live repo execution; any “current” statement means current by static evidence as of the package inputs.

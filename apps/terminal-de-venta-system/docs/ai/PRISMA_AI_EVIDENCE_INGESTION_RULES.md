@@ -1,7 +1,7 @@
 ---
-title: Runtime Modes Contract
-path: docs/architecture/RUNTIME_MODES_CONTRACT.md
-status: CURRENT
+title: PRISMA AI Evidence Ingestion Rules
+path: docs/ai/PRISMA_AI_EVIDENCE_INGESTION_RULES.md
+status: PLANNED
 version: 2026.05.26-full-doc-governance-v1
 updated: 2026-05-26
 owner: PRISMA Governance
@@ -11,27 +11,61 @@ evidence_scope: static package analysis from ALL_CODE_260526_054718, prisma_todo
 note: This document is a governance authority document. It does not claim minute-by-minute runtime state.
 ---
 
-# Runtime Modes Contract
+# PRISMA AI Evidence Ingestion Rules
 
-## Runtime mode labels
+## Allowed by default
 
-| Mode | Meaning |
+```txt
+docs/**/*.md
+docs/**/*.json
+sanitized support bundles
+sanitized logs
+manifest files
+status summaries
+no-leak reports
+health reports
+staleness reports
+```
+
+## Blocked by default
+
+```txt
+.env*
+API keys
+tokens
+raw DBs
+customer PII
+passwords
+private certs
+unredacted logs
+payment data
+```
+
+## Sanitization rules
+
+| Sensitive item | Replacement |
 |---|---|
-| `local_full` | Local machine, full diagnostic capability. |
-| `public_redacted` | Public/tunnel/cloud-safe view with sensitive data redacted. |
-| `demo` | Demonstration mode; must be clearly labeled. |
-| `shadow` | Realistic validation without production mutation. |
-| `planned` | Design documented, not implemented. |
-| `stub_guard` | Endpoint exists but intentionally blocks work. |
-| `runtime_live` | Live local service. Requires fresh verification. |
+| local absolute path | `PRISMA_LOCAL_PATH_REDACTED` if public/external |
+| token/key | `SECRET_REDACTED` |
+| raw customer identifier | `CUSTOMER_REDACTED` when not required |
+| raw DB | never upload; use sanitized metadata/report |
 
-## Rules
+## Gemini source priority
 
-- Public output must be sanitized.
-- Demo/stub data must not masquerade as production.
-- Shadow or lifecycle modes must tag generated data.
-- Control Center may expose full detail only in local/full mode.
-- Gemini may read sanitized evidence in v1; it must not execute runtime changes.
+1. Current-state docs
+2. Current authority docs
+3. Sanitized evidence reports
+4. Historical docs with status warning
+5. Legacy docs only for history
+
+## Output requirement
+
+AI-generated diagnostics must include:
+
+- claim
+- confidence label
+- source path
+- whether live verification is required
 
 ## Authority rules used by this document
 

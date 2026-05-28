@@ -1,6 +1,6 @@
 ---
-title: PC Tablet Operational Contract
-path: docs/architecture/PC_TABLET_OPERATIONAL_CONTRACT.md
+title: PRISMA Legacy Docs Index
+path: docs/PRISMA_LEGACY_DOCS_INDEX.md
 status: CURRENT
 version: 2026.05.26-full-doc-governance-v1
 updated: 2026-05-26
@@ -11,30 +11,20 @@ evidence_scope: static package analysis from ALL_CODE_260526_054718, prisma_todo
 note: This document is a governance authority document. It does not claim minute-by-minute runtime state.
 ---
 
-# PC Tablet Operational Contract
+# PRISMA Legacy Docs Index
 
-## Roles
+This index tracks documents preserved as history but removed from current authority.
 
-| Surface | Role | Can operate alone? |
-|---|---|---|
-| Tablet | Sell, shift, local catalog, outbox, offline evidence | Yes |
-| PC | Backoffice, catalog governance, stock, purchasing, audit, reconciliation | Yes for backoffice, not required for Tablet checkout |
+## Legacy sync docs
 
-## Contract
+| Legacy path | Previous path | Superseded by | Reason |
+|---|---|---|---|
+| `docs/legacy/sync/PRISMA_SYNC_CLOSURE_BUNDLE_20260521.md` | `docs/prisma/PRISMA_SYNC_CLOSURE_BUNDLE_20260521.md` | `docs/sync/PC_TABLET_SYNC_CURRENT_AUTHORITY.md` and `docs/sync/PC_TO_TABLET_CATALOG_DELTA_CLOSURE_01.md` | Its PC → Tablet gap statement is no longer the active authority. |
+| `docs/legacy/sync/PRISMA_SYNC_CLOSURE_PATCH_20260518.md` | `docs/prisma/PRISMA_SYNC_CLOSURE_PATCH_20260518.md` | `docs/sync/PC_TABLET_SYNC_CURRENT_AUTHORITY.md` | Historical patch context only. |
 
-1. Tablet owns immediate sale completion.
-2. Tablet records evidence and outbox events.
-3. PC ingests Tablet events when available.
-4. PC governs catalog/inventory/master data where configured.
-5. Tablet can pull PC catalog deltas/bootstrap.
-6. Conflicts must be explainable in business language.
-7. AI must not mutate these flows in v1.
+## Legacy rule
 
-## Unsupported assumptions
-
-- “PC canonical DB inside source tree is active because it exists.” False.
-- “PC → Tablet is missing because one old backoffice route is stubbed.” False.
-- “Mobile is POS.” False.
+Legacy docs may be quoted only with their status attached. A future AI assistant must not answer from legacy docs unless it also checks the current authority docs.
 
 ## Authority rules used by this document
 

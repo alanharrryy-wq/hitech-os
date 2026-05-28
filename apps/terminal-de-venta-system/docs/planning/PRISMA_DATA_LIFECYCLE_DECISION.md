@@ -1,7 +1,7 @@
 ---
-title: PC to Tablet Catalog Delta Closure 01
-path: docs/sync/PC_TO_TABLET_CATALOG_DELTA_CLOSURE_01.md
-status: CURRENT
+title: PRISMA Data Lifecycle Decision
+path: docs/planning/PRISMA_DATA_LIFECYCLE_DECISION.md
+status: PLANNED
 version: 2026.05.26-full-doc-governance-v1
 updated: 2026-05-26
 owner: PRISMA Governance
@@ -11,43 +11,68 @@ evidence_scope: static package analysis from ALL_CODE_260526_054718, prisma_todo
 note: This document is a governance authority document. It does not claim minute-by-minute runtime state.
 ---
 
-# PC → Tablet Catalog Delta Closure 01
+# PRISMA Data Lifecycle Decision
 
 ## Status
 
-`CURRENT`: PC → Tablet catalog delta authority is implemented through the current sync/export route and Tablet pull route.
+`PLANNED`: This is an approved design direction, not implemented code in the inspected packages.
 
-## Current endpoints
-
-```txt
-PC export:      /api/sync/export/catalog-delta
-Tablet pull:    /api/pos/sync/pull
-```
-
-## Current source authority
+## Location decision
 
 ```txt
-products/pc/app/app/api/sync/export/catalog-delta/route.ts
-products/pc/app/src/server/services/catalog-delta-export.service.ts
-products/tablet/app/app/api/pos/sync/pull/route.ts
-products/tablet/app/src/server/sync/catalog-pull.ts
+prisma-control-center
+└── New tab: PRISMA Data Lifecycle
 ```
 
-## Not current authority
+## UI visible
+
+| Zone | Control |
+|---|---|
+| Inject data | Dropdown: `Ligera`, `Pesada`, `Pasada de longaniza` + button `Inyectar` |
+| Clear | Single `Clear` button |
+| Dashboard | Current counts by domain |
+
+## Internal domains
 
 ```txt
-/api/backoffice/sync/export-pc-to-tablet
+Sales
+Cash
+Inventory
+Catalog
+Suppliers
+Purchasing
+Sync
+Devices
+Identity
+Tenant
+License
+Audit
+Chart Lab
+All
 ```
 
-That route may exist as a stub/guard. It must not be used to claim PC → Tablet catalog sync is missing.
+## Provenance tags
 
-## Data families
+Generated records should carry:
 
-The catalog delta family may include products, barcodes, prices, stock snapshots, supplier links and freshness/cursor data depending on runtime implementation.
+```txt
+source = prisma_data_lifecycle
+batch_id = lifecycle_YYYYMMDD_HHMMSS
+seed_mode = light | heavy | longaniza
+```
 
-## Evidence caveat
+## Clear rules
 
-This document confirms static code authority. It does not claim a fresh live pull test.
+- PIN 6 digits
+- default proposal: `030303`
+- backup required
+- evidence report required
+- clear by domain/provenance, not table wipe
+- no raw production cleanup without tags
+
+## Relationship to Gemini
+
+Gemini may later read Data Lifecycle reports. Gemini must not run Clear or inject data.
 
 ## Authority rules used by this document
 

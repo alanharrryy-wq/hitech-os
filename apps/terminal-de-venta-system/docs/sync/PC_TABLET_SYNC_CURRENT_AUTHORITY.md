@@ -1,6 +1,6 @@
 ---
-title: PC Tablet Operational Contract
-path: docs/architecture/PC_TABLET_OPERATIONAL_CONTRACT.md
+title: PC Tablet Sync Current Authority
+path: docs/sync/PC_TABLET_SYNC_CURRENT_AUTHORITY.md
 status: CURRENT
 version: 2026.05.26-full-doc-governance-v1
 updated: 2026-05-26
@@ -11,30 +11,35 @@ evidence_scope: static package analysis from ALL_CODE_260526_054718, prisma_todo
 note: This document is a governance authority document. It does not claim minute-by-minute runtime state.
 ---
 
-# PC Tablet Operational Contract
+# PC Tablet Sync Current Authority
 
-## Roles
+## Current authority summary
 
-| Surface | Role | Can operate alone? |
+| Flow | Status | Current authority |
 |---|---|---|
-| Tablet | Sell, shift, local catalog, outbox, offline evidence | Yes |
-| PC | Backoffice, catalog governance, stock, purchasing, audit, reconciliation | Yes for backoffice, not required for Tablet checkout |
+| Tablet → PC sales/events | Implemented/gated | Tablet dispatcher + PC ingest. |
+| PC → Tablet catalog delta | Implemented by current route | `/api/sync/export/catalog-delta` + `/api/pos/sync/pull`. |
+| Backoffice export-pc-to-tablet | Stub/guard | Do not treat as current export authority. |
 
-## Contract
+## Tablet → PC evidence paths
 
-1. Tablet owns immediate sale completion.
-2. Tablet records evidence and outbox events.
-3. PC ingests Tablet events when available.
-4. PC governs catalog/inventory/master data where configured.
-5. Tablet can pull PC catalog deltas/bootstrap.
-6. Conflicts must be explainable in business language.
-7. AI must not mutate these flows in v1.
+```txt
+products/tablet/app/src/server/sync/dispatcher.ts
+products/pc/app/app/api/backoffice/sync/ingest/route.ts
+```
 
-## Unsupported assumptions
+## PC → Tablet evidence paths
 
-- “PC canonical DB inside source tree is active because it exists.” False.
-- “PC → Tablet is missing because one old backoffice route is stubbed.” False.
-- “Mobile is POS.” False.
+```txt
+products/pc/app/app/api/sync/export/catalog-delta/route.ts
+products/pc/app/src/server/services/catalog-delta-export.service.ts
+products/tablet/app/app/api/pos/sync/pull/route.ts
+products/tablet/app/src/server/sync/catalog-pull.ts
+```
+
+## Legacy closure docs
+
+Historical closure docs live under `docs/legacy/sync`. They remain useful as history but no longer override this document.
 
 ## Authority rules used by this document
 

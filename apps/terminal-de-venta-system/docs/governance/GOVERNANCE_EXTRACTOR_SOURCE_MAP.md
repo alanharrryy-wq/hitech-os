@@ -1,6 +1,6 @@
 ---
-title: PC to Tablet Catalog Delta Closure 01
-path: docs/sync/PC_TO_TABLET_CATALOG_DELTA_CLOSURE_01.md
+title: Governance Extractor Source Map
+path: docs/governance/GOVERNANCE_EXTRACTOR_SOURCE_MAP.md
 status: CURRENT
 version: 2026.05.26-full-doc-governance-v1
 updated: 2026-05-26
@@ -11,43 +11,50 @@ evidence_scope: static package analysis from ALL_CODE_260526_054718, prisma_todo
 note: This document is a governance authority document. It does not claim minute-by-minute runtime state.
 ---
 
-# PC → Tablet Catalog Delta Closure 01
+# Governance Extractor Source Map
 
-## Status
-
-`CURRENT`: PC → Tablet catalog delta authority is implemented through the current sync/export route and Tablet pull route.
-
-## Current endpoints
+## Required include map
 
 ```txt
-PC export:      /api/sync/export/catalog-delta
-Tablet pull:    /api/pos/sync/pull
-```
-
-## Current source authority
-
-```txt
+docs/*.md
+docs/*.json
+docs/prisma/**/*.md
+docs/sync/**/*.md
+docs/architecture/**/*.md
+docs/governance/**/*.md
+docs/ai/**/*.md
+docs/control-center/**/*.md
+docs/productization/PRISMA_AI_READY_SUPPORT_CONTRACT.md
+docs/productization/PRISMA_SUPPORT_AI_FUTURE_PLAYBOOK.md
+docs/design/PRISMA_SHOW_POS_AI_DOCTOR_OFFLINE_00Y.md
+shared/tri-db/status.latest.json
+products/pc/app/src/server/prisma/client.ts
 products/pc/app/app/api/sync/export/catalog-delta/route.ts
 products/pc/app/src/server/services/catalog-delta-export.service.ts
 products/tablet/app/app/api/pos/sync/pull/route.ts
 products/tablet/app/src/server/sync/catalog-pull.ts
+prisma-control-center/internal/config/*.json
+prisma-control-center/internal/py/*.py
 ```
 
-## Not current authority
+## Exclusions
+
+Do not include secrets or heavy runtime artifacts by default:
 
 ```txt
-/api/backoffice/sync/export-pc-to-tablet
+.env*
+*.db
+*.sqlite
+*.sqlite3
+node_modules/
+.next/
+dist/
+build/
+out/
+*.zip
 ```
 
-That route may exist as a stub/guard. It must not be used to claim PC → Tablet catalog sync is missing.
-
-## Data families
-
-The catalog delta family may include products, barcodes, prices, stock snapshots, supplier links and freshness/cursor data depending on runtime implementation.
-
-## Evidence caveat
-
-This document confirms static code authority. It does not claim a fresh live pull test.
+If DB metadata is required, include a sanitized report, not the DB itself.
 
 ## Authority rules used by this document
 

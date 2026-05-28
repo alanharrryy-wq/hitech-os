@@ -1,6 +1,6 @@
 ---
-title: PC Tablet Operational Contract
-path: docs/architecture/PC_TABLET_OPERATIONAL_CONTRACT.md
+title: Governance Staleness Policy
+path: docs/governance/GOVERNANCE_STALENESS_POLICY.md
 status: CURRENT
 version: 2026.05.26-full-doc-governance-v1
 updated: 2026-05-26
@@ -11,30 +11,38 @@ evidence_scope: static package analysis from ALL_CODE_260526_054718, prisma_todo
 note: This document is a governance authority document. It does not claim minute-by-minute runtime state.
 ---
 
-# PC Tablet Operational Contract
+# Governance Staleness Policy
 
-## Roles
+## Purpose
 
-| Surface | Role | Can operate alone? |
-|---|---|---|
-| Tablet | Sell, shift, local catalog, outbox, offline evidence | Yes |
-| PC | Backoffice, catalog governance, stock, purchasing, audit, reconciliation | Yes for backoffice, not required for Tablet checkout |
+Detect documents that are older than current authority or contradict implementation evidence.
 
-## Contract
+## Staleness signals
 
-1. Tablet owns immediate sale completion.
-2. Tablet records evidence and outbox events.
-3. PC ingests Tablet events when available.
-4. PC governs catalog/inventory/master data where configured.
-5. Tablet can pull PC catalog deltas/bootstrap.
-6. Conflicts must be explainable in business language.
-7. AI must not mutate these flows in v1.
+A document is stale when it:
 
-## Unsupported assumptions
+- says a flow is missing but current route/source exists
+- names a DB file as active without resolver evidence
+- uses old endpoint names as authority
+- describes a demo/stub as live runtime
+- lacks status header while making operational claims
+- contradicts `PRISMA_CURRENT_STATE.md/json`
 
-- “PC canonical DB inside source tree is active because it exists.” False.
-- “PC → Tablet is missing because one old backoffice route is stubbed.” False.
-- “Mobile is POS.” False.
+## Required report fields
+
+```json
+{
+  "path": "docs/...",
+  "status": "STALE | CURRENT | LEGACY | UNKNOWN",
+  "reason": "...",
+  "superseded_by": "docs/...",
+  "recommended_action": "keep | update | move_to_legacy"
+}
+```
+
+## AI ingestion
+
+Gemini must receive staleness metadata with docs. Without this, it may treat a closure note from last week like it just walked in with a royal decree.
 
 ## Authority rules used by this document
 

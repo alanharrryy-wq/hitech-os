@@ -1,6 +1,6 @@
 ---
-title: PC Tablet Operational Contract
-path: docs/architecture/PC_TABLET_OPERATIONAL_CONTRACT.md
+title: PRISMA Legacy Docs README
+path: docs/legacy/README.md
 status: CURRENT
 version: 2026.05.26-full-doc-governance-v1
 updated: 2026-05-26
@@ -11,30 +11,27 @@ evidence_scope: static package analysis from ALL_CODE_260526_054718, prisma_todo
 note: This document is a governance authority document. It does not claim minute-by-minute runtime state.
 ---
 
-# PC Tablet Operational Contract
+# PRISMA Legacy Docs
 
-## Roles
+This folder preserves historical documents that should not be used as current authority.
 
-| Surface | Role | Can operate alone? |
-|---|---|---|
-| Tablet | Sell, shift, local catalog, outbox, offline evidence | Yes |
-| PC | Backoffice, catalog governance, stock, purchasing, audit, reconciliation | Yes for backoffice, not required for Tablet checkout |
+## Rules
 
-## Contract
+1. Legacy docs are not deleted.
+2. Legacy docs must include a status/superseded banner.
+3. Legacy docs may be used for history only.
+4. Current authority lives outside `docs/legacy/**`.
+5. Gemini must warn when citing legacy docs.
 
-1. Tablet owns immediate sale completion.
-2. Tablet records evidence and outbox events.
-3. PC ingests Tablet events when available.
-4. PC governs catalog/inventory/master data where configured.
-5. Tablet can pull PC catalog deltas/bootstrap.
-6. Conflicts must be explainable in business language.
-7. AI must not mutate these flows in v1.
+## Current legacy groups
 
-## Unsupported assumptions
+```txt
+docs/legacy/sync
+```
 
-- “PC canonical DB inside source tree is active because it exists.” False.
-- “PC → Tablet is missing because one old backoffice route is stubbed.” False.
-- “Mobile is POS.” False.
+## Why legacy exists
+
+PRISMA has fast-moving docs. Moving retired docs here prevents old closures from fighting new source code like two señores arguing over whose extension cord is safer.
 
 ## Authority rules used by this document
 
