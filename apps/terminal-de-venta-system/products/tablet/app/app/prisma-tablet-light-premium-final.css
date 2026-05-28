@@ -782,3 +782,69 @@ html[data-prisma-skin="light"][data-prisma-surface="tablet-pos"] [data-prisma-co
   opacity: 0.54 !important;
 }
 /* PRISMA_TABLET_LIGHT_QA_FIX_01C_END */
+
+/* PRISMA_PILOT21T_TABLET_PRODUCTIVE_LIGHT_UPGRADE_START */
+:global([data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"])) {
+  --prisma-tablet-bg-base: #f6f9fd;
+  --prisma-tablet-bg-cloud: rgba(255,255,255,.74);
+  --prisma-tablet-bg-mist: rgba(219,232,248,.44);
+  --prisma-tablet-ink: #132033;
+  --prisma-tablet-muted: #607089;
+  --prisma-tablet-line: rgba(39,62,92,.13);
+  --prisma-tablet-card: rgba(255,255,255,.82);
+  --prisma-tablet-card-strong: rgba(255,255,255,.92);
+  --prisma-tablet-focus: rgba(41,117,209,.24);
+  background:
+    radial-gradient(circle at 14% 8%, rgba(255,255,255,.96), transparent 28%),
+    radial-gradient(circle at 92% 0%, rgba(210,226,248,.62), transparent 34%),
+    linear-gradient(135deg, #f7faff 0%, #eef4fb 54%, #f9fbff 100%);
+  color: var(--prisma-tablet-ink);
+}
+
+:global([data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) [data-prisma-shell]),
+:global([data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) [data-prisma-panel]),
+:global(.prisma-tablet-light-shell),
+:global(.tablet-light-shell) {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.84), rgba(247,250,255,.72)),
+    radial-gradient(circle at 12% 0%, rgba(255,255,255,.88), transparent 28%);
+  border: 1px solid var(--prisma-tablet-line);
+  box-shadow: 0 14px 34px rgba(31,51,77,.10);
+  color: var(--prisma-tablet-ink);
+}
+
+:global([data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) [data-prisma-card]) {
+  background: var(--prisma-tablet-card);
+  border: 1px solid var(--prisma-tablet-line);
+  box-shadow: 0 10px 24px rgba(31,51,77,.08);
+}
+
+:global([data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) :where(button, [role="button"])) {
+  min-height: 42px;
+  touch-action: manipulation;
+}
+
+:global([data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) :where(button, a, input, select, textarea):focus-visible) {
+  outline: 3px solid var(--prisma-tablet-focus);
+  outline-offset: 2px;
+}
+
+
+
+@media (prefers-reduced-motion: reduce) {
+  :global([data-prisma-surface="tablet"]) *,
+  :global(.prisma-tablet-light-shell *),
+  :global(.tablet-light-shell *) {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (hover: hover) {
+  :global([data-prisma-surface="tablet"]:not([data-prisma-interface*="pos"]):not([data-prisma-interface*="checkout"]) :where(button, [role="button"]):hover) {
+    transform: translateY(-1px);
+  }
+}
+/* PRISMA_PILOT21T_TABLET_PRODUCTIVE_LIGHT_UPGRADE_END */

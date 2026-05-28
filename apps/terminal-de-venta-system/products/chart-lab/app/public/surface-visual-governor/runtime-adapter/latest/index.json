@@ -1,0 +1,43 @@
+{
+  "pilot": "17_surface_runtime_adapter_v1",
+  "version": "1.0.0-pilot-17",
+  "mode": "governed-consumption-bridge",
+  "active_application": false,
+  "requires_enforcer": true,
+  "markers": [
+    "surface-runtime-adapter",
+    "route-budget-enforcer",
+    "governed-consumption"
+  ],
+  "public_safety": {
+    "local_paths": "redacted",
+    "database_tokens": "",
+    "pos_checkout": "strict light-safe only"
+  },
+  "routes": {
+    "pos": {
+      "lightFirst": true,
+      "touchFirst": true,
+      "allowWebgl": false,
+      "allowPixi": false,
+      "allowDarkStorm": false
+    },
+    "checkout": {
+      "lightFirst": true,
+      "touchFirst": true,
+      "allowWebgl": false,
+      "allowPixi": false,
+      "allowDarkStorm": false
+    },
+    "dashboard": {
+      "governed": true,
+      "allowAtmosphereAssets": true
+    },
+    "recipe_studio_v2": {
+      "governed": true,
+      "validateBeforeUse": true
+    }
+  },
+  "surface": "chart_lab",
+  "app": "chart-lab"
+}

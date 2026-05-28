@@ -1,0 +1,41 @@
+{
+  "schema": "prisma.surface_visual_governor.pos.compatibility.gate.v1",
+  "surface": "tablet_pos",
+  "route": "/pos",
+  "allowed": true,
+  "allowed_only_if": {
+    "light_only": true,
+    "touch_first": true,
+    "cashier_readability_first": true,
+    "product_grid_priority": true,
+    "payment_flow_priority": true,
+    "reduced_motion_fallback": true,
+    "semantic_glow_only": true,
+    "blur_budget_px_max": 1,
+    "rim_budget": "R0-R1 only",
+    "background": "light_cloudglass_or_plain; reference assets only until explicit application gate"
+  },
+  "forbidden": [
+    "webgl",
+    "three",
+    "@react-three",
+    "pixi",
+    "pixi_vapor",
+    "dark_storm",
+    "storm_vapor_as_default",
+    "obsidian_default",
+    "heavy_blur",
+    "backdrop_blur_over_payment",
+    "background_competing_with_product_or_payment"
+  ],
+  "forbidden_runtime_effects": {
+    "webgl": false,
+    "pixi_vapor": false,
+    "dark_storm": false,
+    "storm_cloud_default": false,
+    "heavy_backdrop_blur": false,
+    "background_animation_over_checkout": false,
+    "background_competing_with_product_or_payment": false
+  },
+  "failure_rule": "Any future POS visual installer must fail if it introduces forbidden runtime effects or modifies checkout without explicit checkout gate."
+}

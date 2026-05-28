@@ -1,0 +1,40 @@
+{
+  "schema": "prisma.surface_compatibility",
+  "pilot": "04_pc_dashboard_governed_hoy",
+  "surfaces": {
+    "pc_dashboard": {
+      "allowed": true,
+      "mode": "governed_high_budget",
+      "route": "/dashboard"
+    },
+    "pc_reference_visual": {
+      "allowed": true,
+      "mode": "upstream_reference",
+      "route": "/referencia-visual"
+    },
+    "chart_lab": {
+      "allowed": true,
+      "mode": "recipe_source_only"
+    },
+    "tablet": {
+      "allowed": false,
+      "policy": "light_first_preserved_no_tablet_write"
+    },
+    "mobile": {
+      "allowed": false,
+      "policy": "no_mobile_write_in_pilot_04"
+    },
+    "pos": {
+      "allowed": false,
+      "hard_gate": "POS_final_only",
+      "blocked": [
+        "recipe_application",
+        "dark_storm",
+        "pixi_vapor",
+        "webgl",
+        "heavy_blur",
+        "background_competing_with_product_or_payment"
+      ]
+    }
+  }
+}

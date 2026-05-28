@@ -1,0 +1,77 @@
+.shell {
+  --prisma-mobile-bg: #f6f8fc;
+  --prisma-mobile-ink: #0f172a;
+  --prisma-mobile-muted: #475569;
+  --prisma-mobile-line: rgba(15, 23, 42, 0.10);
+  --prisma-mobile-panel: rgba(255, 255, 255, 0.86);
+  --prisma-mobile-focus: rgba(37, 99, 235, 0.42);
+  min-height: 100dvh;
+  color: var(--prisma-mobile-ink);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255, 255, 255, 0.96), transparent 34%),
+    radial-gradient(circle at 100% 10%, rgba(219, 234, 254, 0.58), transparent 28%),
+    linear-gradient(180deg, #fbfdff 0%, var(--prisma-mobile-bg) 52%, #eef3f9 100%);
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+}
+.shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url('/surface-visual-governor/mobile-thin-mist-shell/latest/atmosphere-assets/backgrounds/aurora-slate-veil.svg');
+  background-size: cover;
+  background-position: center top;
+  opacity: 0.105;
+}
+.shell::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent 34%),
+    radial-gradient(circle at 50% 100%, rgba(15, 23, 42, 0.055), transparent 46%);
+}
+.content {
+  position: relative;
+  z-index: 1;
+  min-height: 100dvh;
+}
+.shell :global(button),
+.shell :global([role="button"]),
+.shell :global(a),
+.shell :global(input),
+.shell :global(select),
+.shell :global(textarea) {
+  touch-action: manipulation;
+}
+.shell :global(button:focus-visible),
+.shell :global([role="button"]:focus-visible),
+.shell :global(a:focus-visible),
+.shell :global(input:focus-visible),
+.shell :global(select:focus-visible),
+.shell :global(textarea:focus-visible) {
+  outline: 3px solid var(--prisma-mobile-focus);
+  outline-offset: 3px;
+}
+.shell :global([data-mobile-card]),
+.shell :global([data-prisma-card]),
+.shell :global([data-command-card]) {
+  background-color: var(--prisma-mobile-panel);
+  border-color: var(--prisma-mobile-line);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.09);
+}
+.shell :global([data-mobile-primary]),
+.shell :global([data-command-primary]) {
+  min-height: 44px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .shell, .shell::before, .shell::after, .content {
+    animation: none !important;
+    transition: none !important;
+  }
+}
