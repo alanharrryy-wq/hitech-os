@@ -1,107 +1,64 @@
+---
+title: PRISMA Database Authority
+path: docs/prisma/PRISMA_DATABASE_AUTHORITY.md
+status: CURRENT
+version: 2026.05.26-full-doc-governance-v1
+updated: 2026-05-26
+owner: PRISMA Governance
+supersedes: []
+live_verification: false
+evidence_scope: static package analysis from ALL_CODE_260526_054718, prisma_todo_el_show_260526_070949, GOBIERNO_*_260526_0719, and prior PRISMA project context
+note: This document is a governance authority document. It does not claim minute-by-minute runtime state.
+---
+
 # PRISMA Database Authority
 
-Status: canonical database authority decision.
-Scope: apps/terminal-de-venta-system.
+This document resolves database authority for PRISMA.
 
-## Authority
+## Rule mother
 
-Prisma ORM is the model authority for the canonical database:
+The authority is not the file with the prettiest name. The authority is the runtime resolver, explicit environment configuration, and timestamped evidence.
 
-- `F:\repos\hitech-os\apps\terminal-de-venta-system\prisma\schema.prisma`
-- `F:\repos\hitech-os\apps\terminal-de-venta-system\prisma\migrations`
-- Prisma Client usage in PC projectors and canonical readers
+## PC
 
-SQLite is the physical storage engine. It is not the business architecture.
+| Item | Classification |
+|---|---|
+| `DATABASE_URL` | Primary authority when present. |
+| `products/pc/app/src/server/prisma/client.ts` | Resolver authority. |
+| `F:
+| `tools/_local/data/terminal-de-venta-system/canonical.db` | Expected default runtime DB path under repo-local tooling data. |
+| `products/pc/app/data/canonical.db` | Discovered SQLite/source-tree candidate; not active authority by name alone. |
 
-## Canonical Database
+## Tablet
 
-Default PC canonical DB path:
+Tablet owns local/offline POS data and evidence needed to sell without PC.
 
-`F:\repos\hitech-os\tools\_local\data\terminal-de-venta-system\canonical.db`
+Expected local DB candidates found in prior static analysis:
 
-PC resolves this through:
+```txt
+products/tablet/app/data/tablet-pos.db
+products/tablet/app/prisma/data/tablet-pos.db
+```
 
-`F:\repos\hitech-os\apps\terminal-de-venta-system\products\pc\app\src\server\prisma\client.ts`
+Runtime authority must still be resolved by Tablet config/source, not by filename alone.
 
-## Tablet Local Database
+## Chart Lab
 
-Tablet local DB path:
+Chart Lab may use public-safe runtime snapshots and governance DBs. Chart Lab data must not be treated as the operational PC or Tablet source of truth.
 
-`F:\repos\hitech-os\apps\terminal-de-venta-system\products\tablet\app\data\tablet-pos.db`
+## Mobile
 
-Tablet local SQLite is allowed for offline POS autonomy. It is not a direct-copy source of canonical truth for the normal future sync path.
+Mobile is supervision/summary surface. It should not become authority for sales, stock or catalog mutation.
 
-## Models In Scope
+## Control Center
 
-Domain models touched by this architecture:
+Control Center observes, launches, diagnoses and reports. It is not the operational source of sales/inventory truth.
 
-- `Business`
-- `Store`
-- `Terminal`
-- `Product`
-- `Sale`
-- `SaleLine`
-- `StockMovement`
-- `CashSession`
-- `CashMovement`
-- `ReplenishmentSignal`
-- `OutboxEvent`
+## Authority rules used by this document
 
-## Event Ledger
-
-`OutboxEvent` is the compatibility ledger table and now carries lifecycle/governance fields:
-
-- `eventType`
-- `idempotencyKey`
-- `correlationId`
-- `terminalId`
-- `source`
-- `schemaVersion`
-- `lifecycleStatus`
-- `receivedAt`
-- `validatedAt`
-- `acceptedAt`
-- `projectedAt`
-- `reconciledAt`
-- `failedAt`
-- `deadLetterAt`
-- `conflictCode`
-- `diagnosticsJson`
-
-Migration:
-
-`F:\repos\hitech-os\apps\terminal-de-venta-system\prisma\migrations\20260511000000_event_ledger_lifecycle\migration.sql`
-
-## Critical Constraints
-
-`CashSession` has a SQLite partial unique index:
-
-`CashSession(businessId, terminalId) WHERE status = 'OPEN'`
-
-This index enforces one open cash session per terminal but must not be used as a normal SQLite `ON CONFLICT` UPSERT target.
-
-PC projectors check for an existing open session first, then create using Prisma Client.
-The TRI-DB bridge filters partial unique indexes out of UPSERT conflict-target selection.
-
-## Raw SQL Exceptions
-
-Allowed:
-
-- Prisma migrations
-- SQLite-specific partial indexes and triggers
-- safe local preflight/diagnostic scripts
-- validation tools
-- TRI-DB rescue/backfill/diagnostic bridge
-
-Not allowed:
-
-- normal app business projection
-- React components
-- Mobile snapshot business rules
-- direct table-copy sync as future primary architecture
-
-## Spreadsheet / Access Authority
-
-Excel, CSV, XLSX, Access, `.mdb`, `.accdb`, manual sheets, pandas, and openpyxl outputs are child/support artifacts only.
-
-They must never become source of truth and must never override Prisma-governed canonical state silently.
+1. Runtime resolver/configuration wins over filenames that merely look canonical.
+2. `DATABASE_URL` and the application resolver win over discovered SQLite files.
+3. Implemented endpoints win over older closure notes, but stubs must remain documented as stubs.
+4. `PRISMA_CURRENT_STATE.md` and `PRISMA_CURRENT_STATE.json` are the first documents a future AI assistant should read.
+5. Historical docs are preserved in `docs/legacy/**` and must not be treated as current operational authority.
+6. This package excludes live repo execution; any “current” statement means current by static evidence as of the package inputs.
