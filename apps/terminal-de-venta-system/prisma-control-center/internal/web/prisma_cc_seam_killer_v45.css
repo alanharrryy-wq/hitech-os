@@ -1,0 +1,56 @@
+/* PRISMA CC V45 Seam Killer
+   Mata las dos costuras causadas por pseudo-layers viejas del tema Tactical. */
+
+body[data-theme="tactical"]::before,
+body[data-theme="tactical"]::after {
+  content: none !important;
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  background: none !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+  animation: none !important;
+  transform: none !important;
+}
+
+/* Fondo continuo, sin juntas horizontales/verticales heredadas */
+body[data-theme="tactical"] {
+  background-color: #172635 !important;
+  background-image:
+    radial-gradient(920px 560px at 12% 8%, rgba(190,224,255,.18), transparent 60%),
+    radial-gradient(760px 520px at 86% 10%, rgba(112,182,235,.16), transparent 62%),
+    linear-gradient(180deg, rgba(8,15,24,.10), rgba(8,15,24,.24) 48%, rgba(5,10,17,.34)),
+    url("/assets/simon-spring-zmMrlEHsFQY-unsplash.jpg") !important;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat !important;
+  background-size: cover, cover, cover, cover !important;
+  background-position: center center, center center, center center, center center !important;
+  background-attachment: fixed, fixed, fixed, fixed !important;
+}
+
+/* Por si alguna shell grande trae pseudo-layer de costura */
+body[data-theme="tactical"] .page::before,
+body[data-theme="tactical"] .page::after,
+body[data-theme="tactical"] main::before,
+body[data-theme="tactical"] main::after,
+body[data-theme="tactical"] .prismo-shell::before,
+body[data-theme="tactical"] .prismo-shell::after,
+body[data-theme="tactical"] .prismo-grid::before,
+body[data-theme="tactical"] .prismo-grid::after {
+  content: none !important;
+  display: none !important;
+  opacity: 0 !important;
+  background: none !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+}

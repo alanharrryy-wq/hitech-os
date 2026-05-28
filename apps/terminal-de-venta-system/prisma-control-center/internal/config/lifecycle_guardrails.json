@@ -1,0 +1,33 @@
+{
+  "version": "v4-excelsior",
+  "max_products": {
+    "light": 100,
+    "heavy": 500,
+    "longaniza": 2000
+  },
+  "max_days": {
+    "light": 30,
+    "heavy": 120,
+    "longaniza": 360
+  },
+  "max_tablets": {
+    "light": 2,
+    "heavy": 5,
+    "longaniza": 12
+  },
+  "max_users": {
+    "light": 8,
+    "heavy": 20,
+    "longaniza": 60
+  },
+  "max_suppliers": {
+    "light": 12,
+    "heavy": 40,
+    "longaniza": 120
+  },
+  "allow_longaniza": true,
+  "require_pin_for_rollback": true,
+  "public_mutations_blocked": true,
+  "clear_requires_backup": true,
+  "rollback_creates_pre_restore_backup": true
+}

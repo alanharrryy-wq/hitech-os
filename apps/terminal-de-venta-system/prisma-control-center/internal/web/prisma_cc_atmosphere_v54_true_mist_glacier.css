@@ -1,0 +1,127 @@
+/* PRISMA CC V5.4 True Mist + Glacier
+   Pixi/Canvas atmosphere behind UI only. Higher-than-normal visible preset. */
+:root {
+  --prisma-v54-atmo-opacity: .98;
+  --prisma-v54-mist-brightness: 1.32;
+  --prisma-v54-mist-saturate: 1.18;
+  --prisma-v54-glacier-glow: rgba(148, 223, 255, .28);
+  --prisma-v54-glacier-violet: rgba(178, 154, 255, .16);
+}
+
+body[data-theme="tactical"] {
+  isolation: isolate !important;
+}
+
+/* kill old probe label/noise */
+#prisma-atmosphere-v53-root,
+#prisma-atmosphere-v53-badge,
+#prisma-atmosphere-v53-canvas {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+#prisma-atmosphere-v54-root {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+  opacity: var(--prisma-v54-atmo-opacity) !important;
+  visibility: visible !important;
+  display: block !important;
+  mix-blend-mode: screen !important;
+  contain: layout paint size !important;
+}
+
+#prisma-atmosphere-v54-root canvas,
+#prisma-atmosphere-v54-canvas {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: none !important;
+  filter:
+    saturate(var(--prisma-v54-mist-saturate))
+    brightness(var(--prisma-v54-mist-brightness))
+    contrast(1.08) !important;
+}
+
+/* Readability scrim above atmosphere, below UI */
+#prisma-atmosphere-v54-scrim {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 3 !important;
+  pointer-events: none !important;
+  background:
+    radial-gradient(900px 520px at 18% 6%, rgba(219,238,255,.10), transparent 63%),
+    radial-gradient(760px 430px at 78% 18%, rgba(124,206,255,.08), transparent 64%),
+    linear-gradient(180deg, rgba(3,8,14,.04), rgba(5,12,20,.13) 48%, rgba(4,9,16,.23) 100%) !important;
+}
+
+/* UI remains above atmosphere. No Pixi over text/tables/cards. */
+.page,
+.topbarWrap,
+main,
+.panel,
+.card,
+.glass,
+.prismo-shell,
+.prismo-grid,
+.qualityHero,
+.commandPanel,
+.topology,
+.timelineCard,
+textarea,
+input,
+select,
+button,
+table,
+[role="table"] {
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+/* Important floating layers */
+.dropdown,
+.popover,
+[role="listbox"],
+[role="menu"],
+[role="dialog"],
+select,
+option {
+  z-index: 70 !important;
+}
+
+/* Slightly stronger frost highlights on primary panels so mist reads behind them */
+body[data-theme="tactical"] .panel,
+body[data-theme="tactical"] .card,
+body[data-theme="tactical"] .glass,
+body[data-theme="tactical"] .timelineCard,
+body[data-theme="tactical"] .node {
+  box-shadow:
+    0 18px 52px rgba(2, 8, 15, .25),
+    0 38px 96px rgba(3, 10, 19, .13),
+    inset 0 1px 0 rgba(240, 248, 255, .24),
+    0 0 0 1px rgba(199, 230, 255, .10) !important;
+}
+
+body[data-theme="tactical"] .panel::after,
+body[data-theme="tactical"] .card::after,
+body[data-theme="tactical"] .glass::after {
+  opacity: .55 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #prisma-atmosphere-v54-root canvas,
+  #prisma-atmosphere-v54-canvas {
+    animation: none !important;
+  }
+  #prisma-atmosphere-v54-root {
+    opacity: .62 !important;
+  }
+}

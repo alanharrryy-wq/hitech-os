@@ -1,0 +1,326 @@
+{
+  "catalog_version": "v4-excelsior",
+  "required_minimum_improvements": 50,
+  "improvements": [
+    {
+      "id": "V4-001",
+      "name": "Operation lock",
+      "description": "Bloquea operaciones concurrentes para que Inject/Clear/Backup/Rollback no se pisen."
+    },
+    {
+      "id": "V4-002",
+      "name": "Dry-run inject",
+      "description": "Previsualiza impacto de inyección sin escribir DB."
+    },
+    {
+      "id": "V4-003",
+      "name": "Dry-run clear",
+      "description": "Previsualiza limpieza con FK y backup status sin borrar."
+    },
+    {
+      "id": "V4-004",
+      "name": "Evidence bundle",
+      "description": "Genera ZIP de evidencia AI-safe y humano."
+    },
+    {
+      "id": "V4-005",
+      "name": "Schema inventory",
+      "description": "Inventario de tablas, columnas, PKs, FKs y conteos."
+    },
+    {
+      "id": "V4-006",
+      "name": "Domain drilldown",
+      "description": "Detalle por dominio con tablas, totales, generated y manual."
+    },
+    {
+      "id": "V4-007",
+      "name": "Batch detail",
+      "description": "Detalle de batches, registros abiertos, limpiados y errores."
+    },
+    {
+      "id": "V4-008",
+      "name": "Lifecycle history",
+      "description": "Historial unificado de batches, eventos, backups y exports."
+    },
+    {
+      "id": "V4-009",
+      "name": "Data quality report",
+      "description": "Reporte de mezclas, dominios vacíos, tablas faltantes y FK."
+    },
+    {
+      "id": "V4-010",
+      "name": "Safety doctor",
+      "description": "Checklist de configuración, PIN, SMTP, ledger, DB, backups y guardrails."
+    },
+    {
+      "id": "V4-011",
+      "name": "Dashboard snapshot",
+      "description": "Snapshot hashable del dashboard antes/después."
+    },
+    {
+      "id": "V4-012",
+      "name": "Dashboard diff",
+      "description": "Compara snapshot actual contra último snapshot guardado."
+    },
+    {
+      "id": "V4-013",
+      "name": "Generated ratio",
+      "description": "Calcula proporción generated/manual por dominio."
+    },
+    {
+      "id": "V4-014",
+      "name": "Longaniza guardrails",
+      "description": "Riesgo y chunks para datasets largos."
+    },
+    {
+      "id": "V4-015",
+      "name": "Plan dependencies",
+      "description": "Plan muestra dependencias entre motores."
+    },
+    {
+      "id": "V4-016",
+      "name": "Plan chunks",
+      "description": "Plan divide trabajo por chunks para evitar congelones."
+    },
+    {
+      "id": "V4-017",
+      "name": "Risk score",
+      "description": "Score de riesgo por modo y por plan."
+    },
+    {
+      "id": "V4-018",
+      "name": "Estimated timings",
+      "description": "Estimación simple de duración y tamaño."
+    },
+    {
+      "id": "V4-019",
+      "name": "Seed sample preview",
+      "description": "Muestra ejemplos de productos, proveedores, tablets y usuarios."
+    },
+    {
+      "id": "V4-020",
+      "name": "Config validator",
+      "description": "Valida configs JSON, owner email, PIN, caps y defaults."
+    },
+    {
+      "id": "V4-021",
+      "name": "SMTP diagnostics",
+      "description": "Diagnóstico de envío sin exponer secretos."
+    },
+    {
+      "id": "V4-022",
+      "name": "PIN status",
+      "description": "Estado del PIN sin revelar PIN."
+    },
+    {
+      "id": "V4-023",
+      "name": "Evidence index",
+      "description": "Índice sanitizado de evidencia."
+    },
+    {
+      "id": "V4-024",
+      "name": "Backup verify",
+      "description": "Verifica hashes y manifest de backups."
+    },
+    {
+      "id": "V4-025",
+      "name": "Backup catalog enhanced",
+      "description": "Catálogo con tamaño, razón, status y edad."
+    },
+    {
+      "id": "V4-026",
+      "name": "Rollback preview enhanced",
+      "description": "Preview saneado de rollback."
+    },
+    {
+      "id": "V4-027",
+      "name": "Retention preview",
+      "description": "Lista evidencia/backups candidatos a poda."
+    },
+    {
+      "id": "V4-028",
+      "name": "Retention prune",
+      "description": "Poda segura con PIN y evidencia."
+    },
+    {
+      "id": "V4-029",
+      "name": "Public sanitizer strict",
+      "description": "Redacción de paths/secrets en salidas public."
+    },
+    {
+      "id": "V4-030",
+      "name": "Route catalog",
+      "description": "Lista de endpoints lifecycle disponibles."
+    },
+    {
+      "id": "V4-031",
+      "name": "Feature catalog",
+      "description": "Lista de mejoras activas consultable por API."
+    },
+    {
+      "id": "V4-032",
+      "name": "No downgrade manifest",
+      "description": "Contrato explícito de no perder v3."
+    },
+    {
+      "id": "V4-033",
+      "name": "Ledger open records by batch",
+      "description": "Conteo abierto por batch."
+    },
+    {
+      "id": "V4-034",
+      "name": "Ledger stale errors",
+      "description": "Detecta registros con clear_error."
+    },
+    {
+      "id": "V4-035",
+      "name": "Orphan check helper",
+      "description": "Incluye PRAGMA foreign_key_check por DB."
+    },
+    {
+      "id": "V4-036",
+      "name": "Configurable evidence exports",
+      "description": "Política de export AI-safe."
+    },
+    {
+      "id": "V4-037",
+      "name": "CSV dashboard export",
+      "description": "Exporta dashboard por dominio a CSV."
+    },
+    {
+      "id": "V4-038",
+      "name": "JSON report export",
+      "description": "Exporta snapshot JSON consolidado."
+    },
+    {
+      "id": "V4-039",
+      "name": "Markdown executive report",
+      "description": "Genera reporte MD legible."
+    },
+    {
+      "id": "V4-040",
+      "name": "Internal tools panel",
+      "description": "Panel visual técnico sin ensuciar UI principal."
+    },
+    {
+      "id": "V4-041",
+      "name": "Action chips",
+      "description": "UI muestra versión, locks, risk y generated records."
+    },
+    {
+      "id": "V4-042",
+      "name": "Longaniza warning UI",
+      "description": "Advertencia visual antes de modo grande."
+    },
+    {
+      "id": "V4-043",
+      "name": "Safe clear result summary",
+      "description": "Clear resume resultado por dominio."
+    },
+    {
+      "id": "V4-044",
+      "name": "Telemetry metrics",
+      "description": "Métricas de operaciones y tiempos."
+    },
+    {
+      "id": "V4-045",
+      "name": "Operation IDs",
+      "description": "Cada operación tiene operation_id."
+    },
+    {
+      "id": "V4-046",
+      "name": "Failure envelope",
+      "description": "Errores devuelven envelope consistente."
+    },
+    {
+      "id": "V4-047",
+      "name": "Local-only awareness",
+      "description": "Distingue respuestas public/local."
+    },
+    {
+      "id": "V4-048",
+      "name": "DB role detection",
+      "description": "Detecta surface PC/Tablet/ChartLab/Mobile."
+    },
+    {
+      "id": "V4-049",
+      "name": "Read-only endpoints for analysis",
+      "description": "Endpoints seguros para inspección."
+    },
+    {
+      "id": "V4-050",
+      "name": "Write endpoints guarded",
+      "description": "Mutaciones bloqueadas en public."
+    },
+    {
+      "id": "V4-051",
+      "name": "Seed coherence contract",
+      "description": "Plan declara orden y dependencias."
+    },
+    {
+      "id": "V4-052",
+      "name": "Domain status classification",
+      "description": "Limpio, generado, mixto, manual/real."
+    },
+    {
+      "id": "V4-053",
+      "name": "Backup before dangerous ops",
+      "description": "Backup en inject/clear/rollback."
+    },
+    {
+      "id": "V4-054",
+      "name": "Evidence hash manifest",
+      "description": "Exports con SHA-256."
+    },
+    {
+      "id": "V4-055",
+      "name": "Manifest route",
+      "description": "Endpoint de manifest v4."
+    },
+    {
+      "id": "V4-056",
+      "name": "Health contract extended",
+      "description": "Health con features y checks."
+    },
+    {
+      "id": "V4-057",
+      "name": "Verifier expansion",
+      "description": "Verificadores v4 para rutas y mejoras."
+    },
+    {
+      "id": "V4-058",
+      "name": "Temp DB deeper test",
+      "description": "Verificador con DB temporal e inject/clear."
+    },
+    {
+      "id": "V4-059",
+      "name": "CSS polish",
+      "description": "Panel interno responsive y consistente."
+    },
+    {
+      "id": "V4-060",
+      "name": "JS resilience",
+      "description": "Botones técnicos operan con fetch seguro."
+    },
+    {
+      "id": "V4-061",
+      "name": "Bundle README",
+      "description": "README de evidencia dentro del zip exportado."
+    },
+    {
+      "id": "V4-062",
+      "name": "Sanitized latest evidence",
+      "description": "Lista de evidencia sin paths peligrosos."
+    },
+    {
+      "id": "V4-063",
+      "name": "Retention policy config",
+      "description": "Config de conservación de evidencia/backups."
+    },
+    {
+      "id": "V4-064",
+      "name": "Excelsior marker",
+      "description": "Marcadores v4 para verificación no-downgrade."
+    }
+  ]
+}

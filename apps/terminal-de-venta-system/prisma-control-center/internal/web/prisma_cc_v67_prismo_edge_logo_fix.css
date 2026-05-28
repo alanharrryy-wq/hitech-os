@@ -1,0 +1,51 @@
+/* V67 · only PRISMO square edge + logo crop fix */
+
+body[data-prisma-interface="prismo"] #prismoConsoleSurface{
+  border-color:transparent !important;
+  outline:0 !important;
+  box-shadow:none !important;
+  background:transparent !important;
+}
+
+body[data-prisma-interface="prismo"] #prismoConsoleSurface::before,
+body[data-prisma-interface="prismo"] #prismoConsoleSurface::after{
+  content:none !important;
+  display:none !important;
+}
+
+body[data-prisma-interface="prismo"] #prismo-console{
+  border-radius:34px !important;
+  overflow:hidden !important;
+}
+
+body[data-prisma-interface="prismo"] .topbar{
+  overflow:visible !important;
+}
+
+body[data-prisma-interface="prismo"] .brandRow{
+  align-items:center !important;
+}
+
+body[data-prisma-interface="prismo"] .heroIcon{
+  width:88px !important;
+  height:88px !important;
+  min-width:88px !important;
+  flex:0 0 88px !important;
+  overflow:visible !important;
+  display:grid !important;
+  place-items:center !important;
+  transform:translateY(2px) !important;
+}
+
+body[data-prisma-interface="prismo"] .heroLogo{
+  width:78px !important;
+  height:78px !important;
+  max-width:78px !important;
+  max-height:78px !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  display:block !important;
+  transform:none !important;
+  clip-path:none !important;
+  overflow:visible !important;
+}

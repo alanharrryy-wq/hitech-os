@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/prismo-response.schema.json",
+  "title": "PrismoResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "ok",
+    "status",
+    "request_id",
+    "mode",
+    "demo_mode",
+    "read_only",
+    "mutation_allowed",
+    "direct_answer",
+    "certainty_level",
+    "authority",
+    "evidence",
+    "risk",
+    "safe_next_step",
+    "render_blocks",
+    "warnings",
+    "errors",
+    "meta"
+  ],
+  "properties": {
+    "ok": { "type": "boolean" },
+    "status": { "enum": ["success", "partial", "blocked", "error"] },
+    "request_id": { "type": "string", "minLength": 1 },
+    "mode": { "enum": ["ASK", "INSPECT", "IMPROVE", "EVIDENCE"] },
+    "demo_mode": { "type": "boolean" },
+    "read_only": { "const": true },
+    "mutation_allowed": { "const": false },
+    "direct_answer": { "type": "string" },
+    "certainty_level": {
+      "enum": [
+        "CONFIRMADO_POR_CURRENT_STATE",
+        "CONFIRMADO_POR_CODIGO",
+        "CONFIRMADO_POR_DOC_VIGENTE",
+        "CONFIRMADO_POR_EVIDENCIA_TEMPORAL",
+        "HISTORICO_LEGACY",
+        "PLANEADO_NO_IMPLEMENTADO",
+        "NO_CONFIRMADO"
+      ]
+    },
+    "authority": {
+      "type": "object",
+      "required": ["winning_source", "winning_source_type", "precedence_applied", "notes"],
+      "properties": {
+        "winning_source": { "type": "string" },
+        "winning_source_type": {
+          "enum": ["current_state", "code", "current_doc", "temporary_evidence", "legacy", "planned", "unknown"]
+        },
+        "precedence_applied": { "type": "array", "items": { "type": "string" } },
+        "notes": { "type": "string" }
+      }
+    },
+    "evidence": { "type": "array" },
+    "legacy_warning": { "type": "object" },
+    "risk": { "type": "object" },
+    "safe_next_step": { "type": "string" },
+    "render_blocks": { "type": "array" },
+    "improvement_brief": { "type": "object" },
+    "context_pack_request": { "type": "object" },
+    "blocked": { "type": "boolean" },
+    "block_reason": { "type": "string" },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "errors": { "type": "array" },
+    "meta": {
+      "type": "object",
+      "required": ["provider", "schema_version", "generated_at", "input_chars", "render_block_count"],
+      "properties": {
+        "model": { "type": "string" },
+        "provider": { "enum": ["gemini", "demo"] },
+        "latency_ms": { "type": "number" },
+        "schema_version": { "const": "1.0.0" },
+        "generated_at": { "type": "string" },
+        "input_chars": { "type": "integer", "minimum": 0 },
+        "render_block_count": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}
