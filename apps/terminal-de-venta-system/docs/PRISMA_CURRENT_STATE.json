@@ -1,0 +1,88 @@
+{
+  "schema": "prisma_current_state",
+  "version": "2026.05.26-full-doc-governance-v1",
+  "updated": "2026-05-26",
+  "live_verification": false,
+  "evidence_inputs": [
+    "ALL_CODE_260526_054718.zip",
+    "ALL_COMPLEMENTS_260526_054718.zip",
+    "prisma_todo_el_show_terminal-de-venta-system_260526_070949.zip",
+    "GOBIERNO_META_260526_0719.zip",
+    "GOBIERNO_SHARED_260526_0719.zip",
+    "GOBIERNO_DIRECT_260526_0719.zip"
+  ],
+  "precedence": [
+    "docs/PRISMA_CURRENT_STATE.json",
+    "docs/PRISMA_CURRENT_STATE.md",
+    "docs/PRISMA_DOCUMENT_PRECEDENCE_RULES.md",
+    "runtime resolver source files named in authority docs",
+    "current authority docs",
+    "historical docs only when not contradicted",
+    "docs/legacy/** never wins"
+  ],
+  "surfaces": {
+    "tablet": {
+      "status": "CONFIRMED_BY_CODE",
+      "role": "sells offline/local first",
+      "port": 3120
+    },
+    "pc": {
+      "status": "CONFIRMED_BY_CODE_WITH_GAPS",
+      "role": "governs backoffice when present",
+      "port": 3130
+    },
+    "mobile": {
+      "status": "SUPERVISION_SURFACE_CONFIRMED_BY_CODE",
+      "role": "owner/supervision",
+      "port": 3140
+    },
+    "chart_lab": {
+      "status": "CONFIRMED_BY_CODE",
+      "role": "visualization lab/static Cloudflare Pages",
+      "port": 3000
+    },
+    "control_center": {
+      "status": "CONFIRMED_BY_CODE",
+      "role": "local ops/control plane",
+      "port": 3150
+    },
+    "eit_web": {
+      "status": "CONFIRMED_BY_CODE_OR_CONFIG",
+      "role": "web/EIT surface",
+      "port": 3110
+    }
+  },
+  "pc_database_authority": {
+    "status": "RUNTIME_RESOLVED_AUTHORITY",
+    "resolver": "products/pc/app/src/server/prisma/client.ts",
+    "env_wins": "DATABASE_URL",
+    "default_runtime_path": "<REPO_ROOT>\\tools\\_local\\data\\terminal-de-venta-system\\canonical.db",
+    "not_authority": [
+      "products/pc/app/data/canonical.db"
+    ],
+    "reason": "A discovered SQLite filename is not runtime authority. Runtime resolver and DATABASE_URL win."
+  },
+  "sync": {
+    "tablet_to_pc_sales": {
+      "status": "IMPLEMENTED_PARTIAL_OR_GATED",
+      "tablet_dispatcher": "products/tablet/app/src/server/sync/dispatcher.ts",
+      "pc_ingest_route": "/api/backoffice/sync/ingest"
+    },
+    "pc_to_tablet_catalog_delta": {
+      "status": "IMPLEMENTED_BY_CURRENT_ROUTE",
+      "pc_route": "/api/sync/export/catalog-delta",
+      "pc_service": "products/pc/app/src/server/services/catalog-delta-export.service.ts",
+      "tablet_pull_route": "/api/pos/sync/pull",
+      "tablet_service": "products/tablet/app/src/server/sync/catalog-pull.ts",
+      "legacy_stub_route": "/api/backoffice/sync/export-pc-to-tablet"
+    }
+  },
+  "planned_not_implemented": [
+    "PRISMA Gemini Copilot",
+    "PRISMA Data Lifecycle"
+  ],
+  "legacy_docs": [
+    "docs/legacy/sync/PRISMA_SYNC_CLOSURE_BUNDLE_20260521.md",
+    "docs/legacy/sync/PRISMA_SYNC_CLOSURE_PATCH_20260518.md"
+  ]
+}
