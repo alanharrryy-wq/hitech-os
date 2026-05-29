@@ -168,7 +168,25 @@ $CloudflareConfigPath = Join-Path $ControlRoot "internal\config\cloudflare.json"
 
 $LauncherName = $Profile.ToUpperInvariant().Replace("-", "_")
 $Stamp = Get-Date -Format "yyyyMMdd_HHmmss"
-$BaseLogRoot = "<OUTPUT_DIR>"
+$BaseLogRoot = ""
+$forwardOutputDir = Get-NamedForwardArg -ArgsValue $ForwardArgs -Name "-OutputDir"
+if ($forwardOutputDir) {
+  $BaseLogRoot = $forwardOutputDir
+  $ForwardArgs = @(Remove-NamedForwardArg -ArgsValue $ForwardArgs -Name "-OutputDir")
+} elseif (-not [string]::IsNullOrWhiteSpace($env:PRISMA_OUTPUT_DIR)) {
+  $BaseLogRoot = $env:PRISMA_OUTPUT_DIR
+} else {
+  $BaseLogRoot = "<OUTPUT_DIR>"
+}
+$BaseLogRoot = [Environment]::ExpandEnvironmentVariables($BaseLogRoot)
+try {
+  $BaseLogRoot = [System.IO.Path]::GetFullPath($BaseLogRoot)
+} catch {
+  $BaseLogRoot = "<OUTPUT_DIR>"
+}
+if ([string]::IsNullOrWhiteSpace($BaseLogRoot) -or $BaseLogRoot -match '[<>"]') {
+  throw "Output directory invalido para launcher PRISMA: $BaseLogRoot"
+}
 $WorkRoot = Join-Path $env:TEMP "PRISMA_OPERATOR_RUNS"
 $RunDir = Join-Path $WorkRoot ("{0}_{1}" -f $LauncherName, $Stamp)
 $LatestZip = Join-Path $BaseLogRoot ("latest_{0}.zip" -f $LauncherName)
